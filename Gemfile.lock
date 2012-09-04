@@ -42,6 +42,7 @@ GEM
     excon (0.16.2)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    haml (3.1.7)
     heroku (2.31.2)
       heroku-api (~> 0.3.4)
       launchy (>= 0.3.2)
@@ -120,6 +121,7 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
+  haml
   heroku
   jquery-rails
   pg
