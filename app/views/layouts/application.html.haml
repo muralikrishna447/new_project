@@ -17,7 +17,7 @@
 
     %meta{:charset => "utf-8"}
 
-    %title
+    %title Delve
     %meta{:name => "description", :content => ""}
     -# %meta{:name => "keywords", :content => ""}
     -# %meta{:name => "author", :content => ""}
@@ -71,16 +71,15 @@
 
 
     -# For all browsers
-    = stylesheet_link_tag '320andup/style.css'
-    = stylesheet_link_tag '320andup/print.css',  :media => 'print'
+    = stylesheet_link_tag "styles"
+    = stylesheet_link_tag 'print',  :media => 'print'
     -# For progressively larger displays
-    = stylesheet_link_tag '320andup/480.css',  :media => 'only screen and (min-width: 480px)'
-    = stylesheet_link_tag '320andup/600.css',  :media => 'only screen and (min-width: 600px)'
-    = stylesheet_link_tag '320andup/768.css',  :media => 'only screen and (min-width: 768px)'
-    = stylesheet_link_tag '320andup/992.css',  :media => 'only screen and (min-width: 992px)'
+    -# = stylesheet_link_tag '320andup/480.css',  :media => 'only screen and (min-width: 480px)'
+    -# = stylesheet_link_tag '320andup/600.css',  :media => 'only screen and (min-width: 600px)'
+    -# = stylesheet_link_tag '320andup/768.css',  :media => 'only screen and (min-width: 768px)'
+    -# = stylesheet_link_tag '320andup/992.css',  :media => 'only screen and (min-width: 992px)'
     -# For Retina displays
-    = stylesheet_link_tag '320andup/2x.css',  :media => 'only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5)'
-    = stylesheet_link_tag "application"
+    -# = stylesheet_link_tag '320andup/2x.css',  :media => 'only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5)'
 
     -# IE Fixes
     -# ==========================================================================
@@ -128,11 +127,7 @@
     -# ==========================================================================
 
     -# jQuery
-
-    -# %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}
-    -# :javascript
-      window.jQuery || document.write('<script src="/js/jquery-1.7.2.min.js"><\/script>')
-
+    %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}
     -# Custom JS
     = javascript_include_tag "application"
 
