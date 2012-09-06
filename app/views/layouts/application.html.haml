@@ -140,6 +140,10 @@
     -# Custom JS
     = javascript_include_tag "application"
 
+    :javascript
+      $(document).ready(function(){
+        $(".video-container").fitVids();
+      });
     -# Asynchronous Google Analytics
     - if Rails.env.production?
       :javascript
