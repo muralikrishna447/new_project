@@ -1,15 +1,42 @@
 
-.container-fluid
+.container
   .navbar
     .navbar-inner
       %a.brand{ href: root_path } ChefSteps
 
-  .row-fluid
-    .center.span12
-      %img{ src: 'http://lorempixel.com/1600/900/food' }
+  .row
+    .span12
+      .hero
+        %img{ src: 'http://lorempixel.com/1170/430/food' }
+        .hero-overlay
+          %h3 Free to learn
+          %a.btn{ href: '#'} Course Preview
 
-  .row-fluid
+  .row
+    .span8
+      %h2 Learn the modernist technique
+      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce pulvinar lobortis dolor, sit amet mollis sem sagittis in. Etiam nec mauris enim. Praesent suscipit, felis eu facilisis lobortis, eros odio adipiscing felis, et congue justo est ut libero. Praesent dictum, nulla eu ultricies ornare, arcu justo pulvinar nisl, id adipiscing velit nisl nec nunc. Duis mollis, risus vitae suscipit tristique, augue odio pellentesque tortor, in consectetur eros ligula et nulla. In id odio quam. Nulla nisl libero, lacinia ac faucibus in, feugiat eu est. Donec nec mi neque, et lacinia nisi. In hac habitasse platea dictumst.
     .span4
-      Side
-    .span3.offset2
-      Offset
+      %h3 From the creators of Modernist Cuisine
+      %ul.unstyled.creators
+        %li.creator.row
+          .span1
+            %img{ src: 'http://lorempixel.com/100/100/people' }
+          .span3
+            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        %li.creator.row
+          .span1
+            %img{ src: 'http://lorempixel.com/100/100/people/1' }
+          .span3
+            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        %li.creator.row
+          .span1
+            %img{ src: 'http://lorempixel.com/100/100/people/2' }
+          .span3
+            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        %li.creator.row
+          .span1
+            %img{ src: 'http://lorempixel.com/100/100/people/3' }
+          .span3
+            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
