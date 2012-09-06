@@ -122,6 +122,12 @@
     -# ==========================================================================
 
     #main-container
+      - if flash[:notice]
+        %p.notice= notice
+      - if flash[:alert]
+        %p.alert= alert
+      - if flash[:error]
+        %p.alert= flash[:error]
       = yield
 
     -# JS
