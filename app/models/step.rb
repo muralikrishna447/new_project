@@ -2,6 +2,6 @@ class Step < ActiveRecord::Base
   belongs_to :activity
 
   def has_video?
-    !video_url.nil?
+    video_url.to_s != ''
   end
 end

@@ -1,7 +1,7 @@
 class Activity < ActiveRecord::Base
-  has_many :steps
+  has_many :steps, :dependent => :destroy
 
   def has_video?
-    !video_url.nil?
+    video_url.to_s != ''
   end
 end
