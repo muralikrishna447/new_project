@@ -139,11 +139,4 @@
     %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}
     -# Custom JS
     = javascript_include_tag "application"
-
-    -# Asynchronous Google Analytics
-    - if Rails.env.production?
-      :javascript
-        var _gaq=[['_setAccount','UA-34555970-1'],['_trackPageview']];
-        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-        g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-        s.parentNode.insertBefore(g,s)}(document,'script'));
+    = render 'layouts/google_analytics' if Rails.env.production?
