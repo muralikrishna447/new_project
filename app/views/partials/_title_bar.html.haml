@@ -1,0 +1,26 @@
+.row
+  .span9
+    %h2 Intro to Sous Vide
+  .span3
+    .menu
+      %h3
+        Overview
+        %i.icon-caret-down
+      #overview
+        .accordion-group
+          .accordion-heading
+            %a.accordion-toggle{'data-toggle'=> 'collapse', 'data-parent' => '#overview', :href => '#collapseOne'}
+              Module 1
+              %i.icon-caret-down
+          #collapseOne.accordion-body.collapse.in
+            .accordion-inner
+              = link_to "Course", course_path(1)
+        .accordion-group
+          .accordion-heading
+            %a.accordion-toggle{'data-toggle'=> 'collapse', 'data-parent' => '#overview', :href => '#collapseTwo'}
+              Module 2
+              %i.icon-caret-down
+          #collapseTwo.accordion-body.collapse.in
+            .accordion-inner
+              Other STuff and stuff
+
