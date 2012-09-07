@@ -1,7 +1,9 @@
 class Step < ActiveRecord::Base
-  belongs_to :activity
+  belongs_to :activity, touch: true
 
-  def has_video?
-    video_url.to_s != ''
+  attr_accessible :title, :video_url, :activity_id, as: :admin
+
+  def video?
+    video_url.present?
   end
 end

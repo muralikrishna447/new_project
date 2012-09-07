@@ -1,13 +1,13 @@
 = render 'courses/title_bar'
 
-- if activity.has_video?
+- if activity.video?
   .row
     .span12
       .video-container
         %iframe{:src => activity.video_url }
 
 - activity.steps.each_with_index do |step, i|
-  - if step.has_video?
+  - if step.video?
     = render 'video_step', step: step, count: i+1
   - else
     = render 'step', step: step, count: i+1

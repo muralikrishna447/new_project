@@ -1,7 +1,9 @@
 class Activity < ActiveRecord::Base
   has_many :steps, :dependent => :destroy
 
-  def has_video?
-    video_url.to_s != ''
+  attr_accessible :title, :video_url, as: :admin
+
+  def video?
+    video_url.present?
   end
 end
