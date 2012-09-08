@@ -8,6 +8,8 @@ end
 
 def create_step(activity, title='', video_url='')
   s = Step.create
+  s.activity = activity
+  s.title = title
   s.video_url = video_url
   s.save
   s
