@@ -7,7 +7,9 @@
       %li
         %h4 Topic A
         %ul.unstyled
-          %li Activity B
+          - activities.each do |activity|
+            %li
+              =link_to activity.title, activity_path(activity)
       %li
         %h4 Topic C
   %li
