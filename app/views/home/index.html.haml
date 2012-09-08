@@ -4,7 +4,7 @@
       %img{ src: 'http://lorempixel.com/1170/430/food' }
       .hero-overlay
         %h3 Free to learn
-        %a.btn{ href: '#'} Course Preview
+        = link_to "Course Preview", course_path(1), {class: 'btn'}
 
 .row
   .span8
