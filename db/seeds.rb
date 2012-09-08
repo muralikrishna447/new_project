@@ -24,6 +24,8 @@ end
 
 create_admin
 
-lecture = create_activity("Lecture", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
+step-by-step = create_activity("Step-By-Step", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
 create_step(lecture, 'Weeze the Juice')
 create_step(lecture, 'Do stuff', 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
+
+create_activity("Lecture", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
