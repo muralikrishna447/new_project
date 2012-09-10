@@ -1,5 +1,6 @@
 class Activity < ActiveRecord::Base
   has_many :steps, :dependent => :destroy
+  has_many :equipment, :through => :activity_equipment
 
   attr_accessible :title, :video_url, as: :admin
 
@@ -7,3 +8,4 @@ class Activity < ActiveRecord::Base
     video_url.present?
   end
 end
+

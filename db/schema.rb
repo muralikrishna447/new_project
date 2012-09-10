@@ -11,13 +11,30 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120908000108) do
+ActiveRecord::Schema.define(:version => 20120910174915) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "video_url"
+  end
+
+  create_table "activity_equipment", :force => true do |t|
+    t.integer  "activity_id",  :null => false
+    t.integer  "equipment_id", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
+
+  create_table "equipment", :force => true do |t|
+    t.string   "title"
+    t.boolean  "optional"
+    t.string   "product_url"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "rails_admin_histories", :force => true do |t|
