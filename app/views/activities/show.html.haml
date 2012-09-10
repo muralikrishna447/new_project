@@ -6,7 +6,7 @@
       .video-container
         %iframe{src: activity.video_url }
 
-= render 'spec_sheet', ingredients: ingredients, special_equipment: required_equipment, optional_equipment: optional_equipment
+= render 'spec_sheet', activity: activity
 
 - activity.steps.each_with_index do |step, i|
   - if step.video?

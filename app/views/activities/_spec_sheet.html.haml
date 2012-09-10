@@ -4,21 +4,21 @@
   .span6
     %h4 Special Equipment
     %ul
-      - required_equipment.each do |item|
+      - activity.required_equipment.each do |item|
         - if item.product_url?
           %li= link_to item.title, item.product_url
         - else
           %li= item.title
 
-    - if optional_equipment.present?
+    - if activity.optional_equipment.present?
       %h3 Optional Equipment
       %ul
-        - optional_equipment.each do |item|
+        - activity.optional_equipment.each do |item|
           %li= item.title
 
   .span6
     %h4 Ingredients
     %ul
-      - ingredients.each do |item|
-        %li= item.title
+      - activity.ingredients.each do |ingredient|
+        %li== #{ingredient.quantity} #{ingredient.title}
 
