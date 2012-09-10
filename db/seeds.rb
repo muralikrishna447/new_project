@@ -20,12 +20,13 @@ def create_admin
   u.email = "admin@admin.org"
   u.password = 'asdfasdf'
   u.save
+  u
 end
 
 create_admin
 
-step-by-step = create_activity("Step-By-Step", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
-create_step(lecture, 'Weeze the Juice')
-create_step(lecture, 'Do stuff', 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
+step_by_step = create_activity("Step-By-Step", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
+create_step(step_by_step, 'Weeze the Juice')
+create_step(step_by_step, 'Do stuff', 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
 
 create_activity("Lecture", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
