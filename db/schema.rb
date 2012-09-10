@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120910202332) do
+ActiveRecord::Schema.define(:version => 20120910222521) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
@@ -75,6 +75,8 @@ ActiveRecord::Schema.define(:version => 20120910202332) do
     t.string   "video_url"
     t.integer  "step_order"
   end
+
+  add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
