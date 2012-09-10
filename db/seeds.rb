@@ -23,26 +23,86 @@ def create_admin
   u
 end
 
-def create_equipment(title, product_url ='', optional=false, activity=nil)
-  e = Equipment.create
-  e.title = title
+def create_equipment(title, product_url ='', optional=false)
+  e = Equipment.find_or_create_by_title(title)
   e.product_url = product_url
   e.optional = optional
-  e.activity = activity
   e.save
   e
 end
 
+def create_ingredient(title, product_url='')
+  i = Ingredient.find_or_create_by_title(title)
+  i.product_url = product_url
+  i.save
+  i
+end
+
+def create_activity_equipment(activity, equipment)
+  a = ActivityEquipment.new
+  a.activity = activity
+  a.equipment = equipment
+  a.save
+end
+
+def create_activity_ingredient(activity, ingredient, quantity)
+  a = ActivityIngredient.new
+  a.activity = activity
+  a.ingredient = ingredient
+  a.quantity = quantity
+  a.save
+end
+
 def create_bourbon_glazed_step_by_step
-  step_by_step = create_activity("Bourbon Glazed Smoked Chicken Breast", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
-  create_step(step_by_step, 'Trim the breast meat')
-  create_step(step_by_step, 'Prepare the brine', 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
-  create_step(step_by_step, 'Equilibrium brine', 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
-  create_step(step_by_step, 'Cook chicken breasts, sous vide')
-  create_step(step_by_step, 'Prepare Mopping Sauce', 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
-  create_step(step_by_step, 'Prepare the Garnishing Spice Rub')
-  create_step(step_by_step, 'Smoke Brined Chicken Breast')
-  create_step(step_by_step, 'Finish and Package')
+  activity_equipment = [
+    {title: "Smoker"},
+    {title: "Brine Tank"},
+    {title: "Sous Vide Equipment"}
+  ]
+
+  activity_ingredients = [
+    {title: "Heinz Ketchup", quantity: "600g" },
+    {title: "Chicken jus", quantity: "410g" },
+    {title: "Cider vinegar", quantity: "120g" },
+    {title: "Golden brown sugar", quantity: "100g" },
+    {title: "Black strap molasses", quantity: "60g" },
+    {title: "Worchestershire", quantity: "45g" },
+    {title: "Ginger powder", quantity: "0.80g" },
+    {title: "Allspice powder", quantity: "0.75g" }
+  ]
+
+  steps = [
+    { title: "Trim the breast meat",
+      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+    },
+    { title: "Prepare the brine",
+      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+    },
+    { title: "Cook chicken breasts, sous vide"},
+    { title: "Prepare Mopping Sauce",
+      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+    },
+    { title: "Preapre the Garninishing Spice Rub",
+      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+    },
+    { title: "Smoke Brined Chicken Breast"},
+    { title: "Finish and Package"}
+  ]
+  activity = create_activity("Bourbon Glazed Smoked Chicken Breast", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
+
+  activity_equipment.each do |equipment|
+    item = create_equipment(equipment[:title])
+    create_activity_equipment(activity, item)
+  end
+
+  activity_ingredients.each do |ingredient|
+    item = create_ingredient(ingredient[:title])
+    create_activity_ingredient(activity, item, ingredient[:quantity])
+  end
+
+  steps.each do |step|
+    create_step(activity, step[:title], step[:video])
+  end
 
 end
 
