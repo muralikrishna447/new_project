@@ -4,9 +4,17 @@
 .center
   text-align: center
 
-#main-container
-  max-width: 1170px
-  margin: 0 auto
+.hero-unit
+  padding: 0
+  background: black
+  +border-radius(0)
+
+  .row:first-child
+    margin-top: 0
+
+// #main-container
+//   max-width: 1170px
+//   margin: 0 auto
 
 iframe
   border: none
@@ -15,6 +23,12 @@ iframe
 .fluid-width-video-wrapper
   iframe
     min-height: 200px
+
+@media (max-width: 767px)
+  // make this items full-width (remove body padding)
+  .hero-unit
+    margin-left: -20px
+    margin-right: -20px
 
 @import application/home/index
 @import application/title_bar
