@@ -9,6 +9,10 @@
         = image_tag 'carousel/carousel_3.jpg'
     %a.carousel-control.left{ href: '#myCarousel', data: { slide: 'prev' } } &lsaquo;
     %a.carousel-control.right{ href: '#myCarousel', data: { slide: 'next' } } &rsaquo;
+  .caption.middle-left.container
+    .caption-content
+      %h3 Free to learn
+      = link_to "Course Preview", course_path(1), {class: 'btn'}
 
 .container
   .row
