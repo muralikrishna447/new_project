@@ -11,5 +11,13 @@ class Activity < ActiveRecord::Base
   def video?
     video_url.present?
   end
+
+  def optional_equipment
+    equipment.where(optional: true)
+  end
+
+  def required_equipment
+    equipment.where(optional: false)
+  end
 end
 
