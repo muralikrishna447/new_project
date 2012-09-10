@@ -5,6 +5,7 @@
   text-align: center
 
 .hero-unit
+  color: white
   padding: 0
   background: black
   +border-radius(0)
@@ -12,12 +13,21 @@
   .row:first-child
     margin-top: 0
 
+.hero-comments
+  margin-bottom: 0
+
 iframe
   border: none
 
 .fluid-width-video-wrapper
   iframe
     min-height: 200px
+
+.top-video, .course-info, .spec-sheet
+  margin-bottom: 20px
+
+#disqus_thread
+  padding-top: 20px
 
 @media (max-width: 767px)
   // make this items full-width (remove body padding)
@@ -27,7 +37,6 @@ iframe
 
 @import application/title_bar
 @import application/step
-@import application/spec_sheet
 @import application/carousel
 
 @import twitter/bootstrap/responsive

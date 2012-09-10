@@ -1,15 +1,12 @@
-.container
-  = render 'title_bar'
-
-.hero-unit
-  .container
-    .row
-      .span12
-        .video-container
-          %iframe{:src => 'http://www.youtube.com/embed/ydOB-YNJ8Jw'}
+= render 'title_bar'
 
 .container
-  .row
+  .row.top-video
+    .span12
+      .video-container
+        %iframe{src: 'http://www.youtube.com/embed/ydOB-YNJ8Jw'}
+
+  .row.course-info
     .span8
       %h2 Instructors
       %ul.unstyled
@@ -31,6 +28,4 @@
     .span4
       = render 'course_breakdown', activities: activities
 
-  .row
-    .span12
-      = render 'layouts/disqus_comments', id: 'course-1'
+= render 'layouts/disqus_comments', id: 'course-1'

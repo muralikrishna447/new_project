@@ -82,7 +82,7 @@ def create_bourbon_glazed_step_by_step
     { title: "Prepare Mopping Sauce",
       video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
     },
-    { title: "Preapre the Garninishing Spice Rub",
+    { title: "Prepare the Garninishing Spice Rub",
       video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
     },
     { title: "Smoke Brined Chicken Breast"},

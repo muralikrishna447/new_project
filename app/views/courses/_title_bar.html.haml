@@ -1,26 +1,27 @@
-.row
-  .span9
-    %h2 Intro to Sous Vide
-  .span3
-    .menu
-      %h3
-        Overview
-        %i.icon-caret-down
-      #overview
-        .accordion-group
-          .accordion-heading
-            %a.accordion-toggle{ data: { toggle: 'collapse', parent: '#overview' }, :href => '#collapse-one'}
-              Module 1
-              %i.icon-caret-down
-          #collapse-one.accordion-body.collapse.in
-            .accordion-inner
-              = link_to "Course", course_path(1)
-        .accordion-group
-          .accordion-heading
-            %a.accordion-toggle{ data: { toggle: 'collapse', parent: '#overview' }, :href => '#collapse-two'}
-              Module 2
-              %i.icon-caret-down
-          #collapse-two.accordion-body.collapse
-            .accordion-inner
-              Other Stuff and stuff
+.container
+  .row
+    .span9
+      %h2 Intro to Sous Vide
+    .span3
+      .menu
+        %h3
+          Overview
+          %i.icon-caret-down
+        #overview
+          .accordion-group
+            .accordion-heading
+              %a.accordion-toggle{ data: { toggle: 'collapse', parent: '#overview' }, :href => '#collapse-one'}
+                Module 1
+                %i.icon-caret-down
+            #collapse-one.accordion-body.collapse.in
+              .accordion-inner
+                = link_to "Course", course_path(1)
+          .accordion-group
+            .accordion-heading
+              %a.accordion-toggle{ data: { toggle: 'collapse', parent: '#overview' }, :href => '#collapse-two'}
+                Module 2
+                %i.icon-caret-down
+            #collapse-two.accordion-body.collapse
+              .accordion-inner
+                Other Stuff and stuff
 
