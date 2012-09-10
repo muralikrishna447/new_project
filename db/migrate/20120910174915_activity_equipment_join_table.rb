@@ -10,4 +10,3 @@ class ActivityEquipmentJoinTable < ActiveRecord::Migration
   end
 end
 
-
