@@ -19,6 +19,22 @@
 iframe
   border: none
 
+/* ########## */
+/* $CAROUSEL  */
+/* ########## */
+.carousel
+  margin-bottom: 0
+.carousel .item
+  width: 100%
+  max-height: 600px
+
+.carousel .item img
+  width: 100%
+
+.carousel .carousel-control
+  background: none
+  border: none
+  top: 50%
 
 .fluid-width-video-wrapper
   iframe
@@ -26,7 +42,7 @@ iframe
 
 @media (max-width: 767px)
   // make this items full-width (remove body padding)
-  .hero-unit
+  .hero-unit, .slider-block
     margin-left: -20px
     margin-right: -20px
 

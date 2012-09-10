@@ -1,11 +1,14 @@
-.container
-  .row
-    .span12
-      .hero
-        %img{ src: 'http://lorempixel.com/1170/430/food' }
-        .hero-overlay
-          %h3 Free to learn
-          = link_to "Course Preview", course_path(1), {class: 'btn'}
+.slider-block
+  #myCarousel.carousel.slide
+    .carousel-inner
+      .item.active
+        = image_tag 'carousel/carousel_1.jpg'
+      .item
+        = image_tag 'carousel/carousel_2.jpg'
+      .item
+        = image_tag 'carousel/carousel_3.jpg'
+    %a.carousel-control.left{ href: '#myCarousel', data: { slide: 'prev' } } &lsaquo;
+    %a.carousel-control.right{ href: '#myCarousel', data: { slide: 'next' } } &rsaquo;
 
 .container
   .row
