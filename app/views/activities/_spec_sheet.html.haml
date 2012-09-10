@@ -5,7 +5,10 @@
     %h4 Special Equipment
     %ul
       - required_equipment.each do |item|
-        %li= item.title
+        - if item.product_url?
+          %li= link_to item.title, item.product_url
+        - else
+          %li= item.title
 
     - if optional_equipment.present?
       %h3 Optional Equipment

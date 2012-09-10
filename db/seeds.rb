@@ -55,7 +55,7 @@ end
 
 def create_bourbon_glazed_step_by_step
   activity_equipment = [
-    {title: "Smoker"},
+    {title: "Smoker", product_url: "http://www.amazon.com/dp/B00104WRCY/?tag=hyprod-20&hvadid=15475540419&hvpos=1o2&hvexid=&hvnetw=g&hvrand=15365057922131986741&hvpone=&hvptwo=&hvqmt=&ref=asc_df_B00104WRCY"},
     {title: "Brine Tank"},
     {title: "Sous Vide Equipment"}
   ]
@@ -91,7 +91,7 @@ def create_bourbon_glazed_step_by_step
   activity = create_activity("Bourbon Glazed Smoked Chicken Breast", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
 
   activity_equipment.each do |equipment|
-    item = create_equipment(equipment[:title])
+    item = create_equipment(equipment[:title], equipment[:product_url])
     create_activity_equipment(activity, item)
   end
 

@@ -19,5 +19,6 @@ class Activity < ActiveRecord::Base
   def required_equipment
     equipment.where(optional: false)
   end
+
 end
 
