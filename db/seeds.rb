@@ -47,5 +47,5 @@ def create_bourbon_glazed_step_by_step
 end
 
 create_admin
-create_step_by_step
+create_bourbon_glazed_step_by_step
 create_activity("Lecture", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
