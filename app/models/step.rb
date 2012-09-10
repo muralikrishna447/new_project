@@ -7,9 +7,5 @@ class Step < ActiveRecord::Base
   attr_accessible :title, :video_url, :activity_id, as: :admin
 
   scope :ordered, rank(:step_order)
-
-  def video?
-    video_url.present?
-  end
 end
 

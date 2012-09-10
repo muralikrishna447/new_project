@@ -7,8 +7,5 @@ class Equipment < ActiveRecord::Base
 
   scope :optional, where(optional: true)
 
-  def product_url?
-    product_url.present?
-  end
 end
 

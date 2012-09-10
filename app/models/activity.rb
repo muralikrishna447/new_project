@@ -8,10 +8,6 @@ class Activity < ActiveRecord::Base
 
   attr_accessible :title, :video_url, as: :admin
 
-  def video?
-    video_url.present?
-  end
-
   def optional_equipment
     equipment.where(optional: true)
   end
