@@ -1,18 +1,20 @@
 .row.spec-sheet
+  .span12
+    %h3 Spec Sheet
   .span6
-    %h3 Special Equipment
+    %h4 Special Equipment
     %ul
-    - required_equipment.each do |item|
-      %li= item.title
+      - required_equipment.each do |item|
+        %li= item.title
 
     - if optional_equipment.present?
       %h3 Optional Equipment
       %ul
-      - optional_equipment.each do |item|
-        %li= item.title
+        - optional_equipment.each do |item|
+          %li= item.title
 
   .span6
-    %h3 Ingredients
+    %h4 Ingredients
     %ul
       - ingredients.each do |item|
         %li= item.title
