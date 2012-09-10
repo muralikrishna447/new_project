@@ -1,5 +1,4 @@
 class CoursesController < ApplicationController
-  def show
-  end
+  expose(:activities) { Activity.all }
 end
 

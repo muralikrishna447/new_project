@@ -11,7 +11,48 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120906183601) do
+ActiveRecord::Schema.define(:version => 20120910222521) do
+
+  create_table "activities", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "video_url"
+  end
+
+  create_table "activity_equipment", :force => true do |t|
+    t.integer  "activity_id",  :null => false
+    t.integer  "equipment_id", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
+
+  create_table "activity_ingredients", :force => true do |t|
+    t.integer  "activity_id",   :null => false
+    t.integer  "ingredient_id", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "quantity"
+  end
+
+  add_index "activity_ingredients", ["activity_id", "ingredient_id"], :name => "index_activity_ingredients_on_activity_id_and_ingredient_id", :unique => true
+
+  create_table "equipment", :force => true do |t|
+    t.string   "title"
+    t.boolean  "optional"
+    t.string   "product_url"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "ingredients", :force => true do |t|
+    t.string   "title"
+    t.string   "product_url"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "rails_admin_histories", :force => true do |t|
     t.text     "message"
@@ -25,6 +66,17 @@ ActiveRecord::Schema.define(:version => 20120906183601) do
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
+
+  create_table "steps", :force => true do |t|
+    t.string   "title"
+    t.integer  "activity_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "video_url"
+    t.integer  "step_order"
+  end
+
+  add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
