@@ -1,0 +1,72 @@
+/* Large desktop */
+@media (min-width: 1200px)
+  .caption.top-left, .caption.middle-left, .caption.bottom-left
+    margin-left: -585px
+
+  .caption.top-right, .caption.middle-right, .caption.bottom-right
+    margin-left: -625px
+
+/* Portrait tablet*/
+@media (max-width: 980px)
+  /* ################### */
+  /*  $PORTRAIT-CAROUSEL */
+  /* ################### */
+  .caption.top-right, .caption.middle-right, .caption.bottom-right
+    left: 0
+    margin-left: 0
+    margin-right: 25px
+    width: 100%
+
+  .caption.top-left, .caption.middle-left, .caption.bottom-left
+    margin-left: -320px
+
+  .caption.top-left p, .caption.middle-left p, .caption.bottom-left p
+    margin-left: 0
+
+  .caption.top-right p, .caption.middle-right p, .caption.bottom-right p
+    margin-right: 40px
+
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px)
+  // make this items full-width (remove body padding)
+  .hero-unit, .slider-block
+    margin-left: -20px
+    margin-right: -20px
+
+  .caption
+    /* text sizes */
+
+  .caption.top-left, .caption.middle-left, .caption.bottom-left
+    margin-left: -250px
+
+  .caption .large
+    font-size: 27px
+
+  .caption .medium
+    font-size: 24px
+
+  .caption .small
+    font-size: 18px
+
+@media (max-width: 480px)
+  /* ##################### */
+  /* $SMARTHPHONE-CAROUSEL */
+  /* ##################### */
+  .caption
+    /* text sizes */
+
+  .caption.top-left, .caption.middle-left, .caption.bottom-left
+    top: 20%
+    margin-left: -125px
+
+  .caption .large
+    font-size: 22px
+
+  .caption .medium
+    font-size: 20px
+
+  .caption .small
+    font-size: 12px
+
+
