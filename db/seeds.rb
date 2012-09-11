@@ -73,22 +73,22 @@ def create_bourbon_glazed_step_by_step
 
   steps = [
     { title: "Trim the breast meat",
-      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+      video: "TvdqT6FMmgw"
     },
     { title: "Prepare the brine",
-      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+      video: "hLsazIkED2I"
     },
     { title: "Cook chicken breasts, sous vide"},
     { title: "Prepare Mopping Sauce",
-      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+      video: "hLsazIkED2I"
     },
     { title: "Prepare the Garninishing Spice Rub",
-      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+      video: "hLsazIkED2I"
     },
     { title: "Smoke Brined Chicken Breast"},
     { title: "Finish and Package"}
   ]
-  activity = create_activity("Bourbon Glazed Smoked Chicken Breast", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
+  activity = create_activity("Bourbon Glazed Smoked Chicken Breast", "TvdqT6FMmgw")
 
   activity_equipment.each do |equipment|
     item = create_equipment(equipment[:title], equipment[:product_url])
