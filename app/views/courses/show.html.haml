@@ -1,32 +1,31 @@
 = render 'title_bar'
 
-.row
-  .span12
-    .video-container
-      %iframe{:src => 'http://www.youtube.com/embed/ydOB-YNJ8Jw'}
+.container
+  .row.top-video
+    .span12
+      .video-container
+        %iframe{src: youtube_url("Urd5P3yfLZo") }
 
-.row
-  .span8
-    %h2 Instructors
-    %ul.unstyled
-      %li.row
-        .span1
-          %img{ src: 'http://lorempixel.com/100/100/people/2' }
-        .span3
-          %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      %li.row
-        .span1
-          %img{ src: 'http://lorempixel.com/100/100/people/1' }
-        .span3
-          %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      %li.row
-        .span1
-          %img{ src: 'http://lorempixel.com/100/100/people' }
-        .span3
-          %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  .span4
-    = render 'course_breakdown', activities: activities
+  .row.course-info
+    .span8
+      %h2 Instructors
+      %ul.unstyled
+        %li.row.instructor
+          .span1
+            %img{ src: 'http://lorempixel.com/100/100/people/2' }
+          .span3
+            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        %li.row.instructor
+          .span1
+            %img{ src: 'http://lorempixel.com/100/100/people/1' }
+          .span3
+            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        %li.row.instructor
+          .span1
+            %img{ src: 'http://lorempixel.com/100/100/people' }
+          .span3
+            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    .span4
+      = render 'course_breakdown', activities: activities
 
-.row
-  .span12
-    = render 'layouts/disqus_comments', id: 'course-1'
+= render 'layouts/disqus_comments', id: 'course-1'

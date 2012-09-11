@@ -1,16 +1,16 @@
-def create_activity(title, video_url='')
+def create_activity(title, youtube_id='')
   a = Activity.create
   a.title = title
-  a.video_url = video_url
+  a.youtube_id = youtube_id
   a.save
   a
 end
 
-def create_step(activity, title='', video_url='')
+def create_step(activity, title='', youtube_id='')
   s = Step.create
   s.activity = activity
   s.title = title
-  s.video_url = video_url
+  s.youtube_id = youtube_id
   s.save
   s
 end
@@ -73,22 +73,22 @@ def create_bourbon_glazed_step_by_step
 
   steps = [
     { title: "Trim the breast meat",
-      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+      video: "TvdqT6FMmgw"
     },
     { title: "Prepare the brine",
-      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+      video: "hLsazIkED2I"
     },
     { title: "Cook chicken breasts, sous vide"},
     { title: "Prepare Mopping Sauce",
-      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+      video: "hLsazIkED2I"
     },
-    { title: "Preapre the Garninishing Spice Rub",
-      video: "http://www.youtube.com/embed/ydOB-YNJ8Jw"
+    { title: "Prepare the Garninishing Spice Rub",
+      video: "hLsazIkED2I"
     },
     { title: "Smoke Brined Chicken Breast"},
     { title: "Finish and Package"}
   ]
-  activity = create_activity("Bourbon Glazed Smoked Chicken Breast", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
+  activity = create_activity("Bourbon Glazed Smoked Chicken Breast", "TvdqT6FMmgw")
 
   activity_equipment.each do |equipment|
     item = create_equipment(equipment[:title], equipment[:product_url])
@@ -108,4 +108,4 @@ end
 
 create_admin
 create_bourbon_glazed_step_by_step
-create_activity("Lecture", 'http://www.youtube.com/embed/ydOB-YNJ8Jw')
+create_activity("Lecture", 'ydOB-YNJ8Jw')

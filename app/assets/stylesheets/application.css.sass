@@ -1,25 +1,43 @@
 @import twitter/bootstrap-no-sprites
 @import font-awesome
 
+body
+  font-size: 16px
+
 .center
   text-align: center
 
-#main-container
-  max-width: 1170px
-  margin: 0 auto
+.hero-unit
+  color: white
+  padding: 0
+  background: black
+  +border-radius(0)
+
+  .row:first-child
+    margin-top: 0
+
+.hero-comments
+  margin-bottom: 0
 
 iframe
   border: none
-
 
 .fluid-width-video-wrapper
   iframe
     min-height: 200px
 
-@import application/home/index
+.top-video, .course-info, .spec-sheet, .creator, .instructor
+  margin-bottom: 20px
+
+#disqus_thread
+  padding-top: 20px
+
+
+
 @import application/title_bar
 @import application/step
-@import application/spec_sheet
+@import application/carousel
 
 @import twitter/bootstrap/responsive
+@import application/media_queries
 

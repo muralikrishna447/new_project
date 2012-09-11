@@ -128,9 +128,8 @@
         %p.alert= alert
       - if flash[:error]
         %p.alert= flash[:error]
-      .container
-        = render 'layouts/header'
-        = yield
+      = render 'layouts/header'
+      = yield
 
     -# JS
     -# ==========================================================================

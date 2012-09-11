@@ -6,7 +6,7 @@ class Activity < ActiveRecord::Base
   has_many :equipment, through: :activity_equipment
   has_many :ingredients, class_name: ActivityIngredient
 
-  attr_accessible :title, :video_url, as: :admin
+  attr_accessible :title, :youtube_id, as: :admin
 
   def optional_equipment
     equipment.where(optional: true)
@@ -15,6 +15,5 @@ class Activity < ActiveRecord::Base
   def required_equipment
     equipment.where(optional: false)
   end
-
 end
 
