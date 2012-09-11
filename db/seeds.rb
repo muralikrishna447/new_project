@@ -1,16 +1,16 @@
-def create_activity(title, video_url='')
+def create_activity(title, youtube_id='')
   a = Activity.create
   a.title = title
-  a.video_url = video_url
+  a.youtube_id = youtube_id
   a.save
   a
 end
 
-def create_step(activity, title='', video_url='')
+def create_step(activity, title='', youtube_id='')
   s = Step.create
   s.activity = activity
   s.title = title
-  s.video_url = video_url
+  s.youtube_id = youtube_id
   s.save
   s
 end
