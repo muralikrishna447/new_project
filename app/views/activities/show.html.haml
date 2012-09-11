@@ -1,17 +1,17 @@
 = render 'courses/title_bar'
 
 .container
-  - if activity.video_url?
+  - if activity.youtube_id?
     .row.top-video
       .span12
         .video-container
-          %iframe{src: activity.video}
+          %iframe{src: youtube_url(activity.youtube_id)}
 
 = render 'spec_sheet', activity: activity
 
 .container
   - activity.steps.each_with_index do |step, i|
-    - if step.video_url?
+    - if step.youtube_id?
       = render 'video_step', step: step, count: i+1
     - else
       = render 'step', step: step, count: i+1

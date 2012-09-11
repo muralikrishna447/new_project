@@ -1,5 +1,4 @@
 class Activity < ActiveRecord::Base
-  include VideoHelper
   has_many :activity_ingredients
   has_many :activity_equipment
 
@@ -15,10 +14,6 @@ class Activity < ActiveRecord::Base
 
   def required_equipment
     equipment.where(optional: false)
-  end
-
-  def video_url
-    build_video_url(youtube_id)
   end
 end
 

@@ -1,5 +1,5 @@
 module VideoHelper
-  def build_video_url(id)
-    "http://www.youtube.com/embed/#{id}?rel=0&modestbranding=1"
+  def youtube_url(youtube_id)
+    "http://www.youtube.com/embed/#{youtube_id}?rel=0&modestbranding=1&showinfo=0"
   end
 end
