@@ -1,5 +1,5 @@
 class Activity < ActiveRecord::Base
-  include ApplicationHelper
+  include VideoHelper
   has_many :activity_ingredients
   has_many :activity_equipment
 
@@ -7,7 +7,7 @@ class Activity < ActiveRecord::Base
   has_many :equipment, through: :activity_equipment
   has_many :ingredients, class_name: ActivityIngredient
 
-  attr_accessible :title, :video_url, as: :admin
+  attr_accessible :title, :youtube_id, as: :admin
 
   def optional_equipment
     equipment.where(optional: true)
@@ -17,8 +17,8 @@ class Activity < ActiveRecord::Base
     equipment.where(optional: false)
   end
 
-  def video
-    build_video_url(video_url)
+  def video_url
+    build_video_url(youtube_id)
   end
 end
 

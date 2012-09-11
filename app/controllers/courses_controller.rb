@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  include ApplicationHelper
+  include VideoHelper
   expose(:activities) { Activity.all }
 
   def show
