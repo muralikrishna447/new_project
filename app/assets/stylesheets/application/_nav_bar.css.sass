@@ -1,7 +1,15 @@
+.sticky-navbar
+  width: 100%
+  position: relative
+  background: rgba(255, 255, 255, 0.5)
+  z-index: 9999
+  &.stuck-to-top
+    position: fixed
+    top: 0
+
 .menu
   position: relative
   #overview
-    z-index: 9999
     background: white
     position: absolute
     display: none

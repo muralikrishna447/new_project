@@ -1,7 +1,9 @@
 //= require jquery_ujs
+//= require lodash
 //= require jquery.fitvids
-//= require fit-videos
+//= require fit_videos
 //= require carousel
+//= require stick_to_top
 
 //= require twitter/bootstrap/dropdown
 //= require twitter/bootstrap/transition

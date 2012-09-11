@@ -1,5 +1,7 @@
 = render 'courses/title_bar'
 
+= render 'courses/navigation'
+
 .container
   - if activity.youtube_id?
     .row.top-video
@@ -17,3 +19,4 @@
       = render 'step', step: step, count: i+1
 
 = render 'layouts/disqus_comments', id: activity.id
+
