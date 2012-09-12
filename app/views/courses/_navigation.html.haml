@@ -8,30 +8,34 @@
         - else
           = link_to "<", model.prev, { class: 'btn' }
       .span4
-        .menu
-          %h3
-            Overview
-            %i.icon-caret-down
-          #overview
-            .accordion-group
-              .accordion-heading
-                %a.accordion-toggle{ data: { toggle: 'collapse', parent: '#overview' }, :href => '#collapse-one'}
-                  Module 1
-                  %i.icon-caret-down
-              #collapse-one.accordion-body.collapse.in
-                .accordion-inner
-                  = link_to "Course", course_path(1)
-            .accordion-group
-              .accordion-heading
-                %a.accordion-toggle{ data: { toggle: 'collapse', parent: '#overview' }, :href => '#collapse-two'}
-                  Module 2
-                  %i.icon-caret-down
-              #collapse-two.accordion-body.collapse
-                .accordion-inner
-                  Other Stuff and stuff
+        %h4= model.title
+        -# #overview
+        -#   .accordion-group
+        -#     .accordion-heading
+        -#       %a.accordion-toggle{ data: { toggle: 'collapse', parent: '#overview' }, :href => '#collapse-one'}
+        -#         Module 1
+        -#         %i.icon-caret-down
+        -#     #collapse-one.accordion-body.collapse.in
+        -#       .accordion-inner
+        -#         = link_to "Course", course_path(1)
+        -#   .accordion-group
+        -#     .accordion-heading
+        -#       %a.accordion-toggle{ data: { toggle: 'collapse', parent: '#overview' }, :href => '#collapse-two'}
+        -#         Module 2
+        -#         %i.icon-caret-down
+        -#     #collapse-two.accordion-body.collapse
+        -#       .accordion-inner
+        -#         Other Stuff and stuff
       .span1
         - if model.next.nil?
           %a.disabled.btn >
         - else
           = link_to ">", model.next, { class: 'btn' }
+
+      .span2
+        %h5 Spec Sheet
+      .span2
+        %h5 Step-By-Step
+      .span2
+        %h5 Comments
 
