@@ -22,5 +22,5 @@ staging:
     BUNDLE_WITHOUT: "development:test:guard"
     RAILS_ENV: "staging"
   addons:
-    - memcache:5mb
-    - logging:basic
+    - memcachier:dev
+    - newrelic:standard
