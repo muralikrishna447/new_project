@@ -39,3 +39,5 @@ Delve::Application.configure do
 
   config.sass.preferred_syntax = :sass
 end
+
+MAILCHIMP_API_KEY="9875b0250eae48e91a12a26117bba403-us5"
