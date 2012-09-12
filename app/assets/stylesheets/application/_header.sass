@@ -35,15 +35,31 @@
 
 
 .addthis_toolbox
-  width: 200px
-  i
+  width: 300px
+  a
+    line-height: 32px
+    vertical-align: baseline
+  a:hover
+    text-decoration: none
+  i, .at_PinItButton
     display: inline-block
-.addthis_button_facebook i
-  +elegant-icon-sprite('facebook', $dimensions: true)
-.addthis_button_twitter i
-  +elegant-icon-sprite('twitter', $dimensions: true)
-.addthis_button_pinterest .at_PinItButton
-  +elegant-icon-sprite('pinterest', $dimensions: true)
-  border: 0
-.addthis_button_compact img
-  +elegant-icon-sprite-dimensions('pinterest')
+    font-size: 40px
+  .at_PinItButton
+    background: none
+    border: 0
+    text-indent: 0
+    +box-shadow(none)
+
+    width: auto
+    height: auto
+    line-height: inherit
+    background-image: none
+    background-position: 0% 0%
+    background-repeat: repeat
+    &:before
+      content: "\f0d3"
+      font-family: FontAwesome
+      font-weight: normal
+      font-style: normal
+      display: inline-block
+      text-decoration: inherit
