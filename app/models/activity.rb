@@ -15,5 +15,18 @@ class Activity < ActiveRecord::Base
   def required_equipment
     equipment.where(optional: false)
   end
+
+  def next
+    activities = Activity.all
+    i = activities.index(self)
+    activities[i+1]
+  end
+
+  def prev
+    activities = Activity.all
+    i = activities.index(self)
+    return nil if i == 0
+    activities[i-1]
+  end
 end
 
