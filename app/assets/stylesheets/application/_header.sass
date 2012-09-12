@@ -1,0 +1,49 @@
+.navbar
+  margin-bottom: 0
+
+.navbar .brand
+  margin-top: 20px
+  padding-bottom: 8px
+  max-height: 40px
+  width: auto
+
+.navbar .navbar-inner
+  background: white
+  filter: none
+  height: 80px
+  +box-shadow(none)
+  border: 0
+
+.navbar .nav
+  margin-top: 20px
+
+.navbar .nav > li > a
+  color: #333
+  padding: 10px 10px 11px
+  text-shadow: none
+
+.navbar .nav > li > a:hover
+  color: #111
+
+.navbar .nav > li.active > a
+  background: none
+  color: #111
+
+.navbar .nav > li.active > a:hover
+  background: none
+  color: #111
+
+
+.addthis_toolbox
+  width: 200px
+  i
+    display: inline-block
+.addthis_button_facebook i
+  +elegant-icon-sprite('facebook', $dimensions: true)
+.addthis_button_twitter i
+  +elegant-icon-sprite('twitter', $dimensions: true)
+.addthis_button_pinterest .at_PinItButton
+  +elegant-icon-sprite('pinterest', $dimensions: true)
+  border: 0
+.addthis_button_compact img
+  +elegant-icon-sprite-dimensions('pinterest')
