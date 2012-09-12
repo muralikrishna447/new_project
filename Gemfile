@@ -9,6 +9,7 @@ gem "devise"
 gem 'rails_admin'
 gem 'decent_exposure'
 gem 'ranked-model'
+gem 'gibbon'
 
 # Gems used only for assets and not required
 # in production environments by default.
