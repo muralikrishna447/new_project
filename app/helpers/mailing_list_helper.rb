@@ -1,6 +1,6 @@
 module MailingListHelper
   class MailChimpListManager
-    def initialize(list)
+    def initialize
       @gibbon = Gibbon.new(MAILCHIMP_API_KEY)
     end
 
@@ -9,7 +9,7 @@ module MailingListHelper
         id: MAILCHIMP_LIST_ID,
         email_address: email
       }
-      @gb.list_subscribe(params)
+      @gibbon.list_subscribe(params)
     end
 
   end

@@ -3,14 +3,14 @@ class MailingListController < ActionController::Base
 
   def subscribe
     email = params[:email]
-    @chimp = MailChimpListManager.new(MAILCHIMP_LIST)
+    @chimp = MailChimpListManager.new
 
     if @chimp.subscribe_user(email)
       @placeholder = "Thanks for subscribing"
       render 'success', format: :js
     else
       @placeholder = "Something went wrong, please try again..."
-      render 'error', format: :js
+      render 'success', format: :js
     end
   end
 end
