@@ -1,15 +1,15 @@
 class MailingListController < ActionController::Base
   include MailingListHelper
-  expose(:success_placeholder_text) { "Thanks for subscribing"}
-  expose(:error_placeholder_text) { "Something went wrong, please try again..."}
 
   def subscribe
     email = params[:email]
     @chimp = MailChimpListManager.new(MAILCHIMP_LIST)
 
     if @chimp.subscribe_user(email)
+      @placeholder = "Thanks for subscribing"
       render 'success', format: :js
     else
+      @placeholder = "Something went wrong, please try again..."
       render 'error', format: :js
     end
   end
