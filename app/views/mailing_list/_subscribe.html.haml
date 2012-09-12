@@ -1,5 +1,5 @@
 .subscribe
   = form_tag url_for(controller: :mailing_list, action: :subscribe), remote: true do
     .input-append
-      = email_field_tag('email', nil, {class: 'span4', placeholder: 'enter your email for updates', required: 'required'})
+      = email_field_tag('email', nil, {class: 'span4', placeholder: 'enter your email for updates', required: true})
       = button_tag('Submit', {class: 'btn', disable_with: '', data: { behavior: 'loadable'}})
