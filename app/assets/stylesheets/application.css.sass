@@ -22,7 +22,7 @@ body
 iframe
   border: none
 
-.btn[disabled], .btn.disabled
+.btn[disabled][data-behavior~='loadable'], .btn.disabled[data-behavior~='loadable']
   &:before
     display: block
     content: ''
@@ -42,7 +42,6 @@ iframe
   padding-top: 20px
 
 @import application/nav_bar
-@import application/step
 @import application/carousel
 
 @import twitter/bootstrap/responsive
