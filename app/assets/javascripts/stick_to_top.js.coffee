@@ -2,6 +2,8 @@ $ ->
   $scroller_anchor = $('[data-behavior~=stick-to-top-anchor]')
   $scroller = $('[data-behavior~=stick-to-top]')
 
+  return unless $scroller.length > 0 && $scroller_anchor.length > 0
+
   handler = (e) ->
     anchor_position = $scroller_anchor.offset().top
 
