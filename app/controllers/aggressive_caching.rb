@@ -1,4 +1,5 @@
-module AggressiveCaching < ActiveSupport::Concern
+module AggressiveCaching
+  extend ActiveSupport::Concern
   included do
     before_filter :configure_caching if Rails.env.production? || Rails.env.staging?
   end
