@@ -2,8 +2,5 @@
   .row
     .span6
       %h2 Intro to Sous Vide
-    = form_tag url_for(controller: :mailing_list, action: :subscribe), remote: true do
-      .input-append.span6
-        = email_field_tag('email', nil, {class: 'span4', placeholder: 'enter your email for updates'})
-        = button_tag('Submit', {class: 'btn', disable_with: ''})
-
+    .span6
+      = render 'mailing_list/subscribe'
