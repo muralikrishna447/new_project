@@ -26,6 +26,7 @@ group :assets do
 end
 group :development do
   gem 'heroku'
+  gem 'heroku_san'
 end
 
 group :guard do
