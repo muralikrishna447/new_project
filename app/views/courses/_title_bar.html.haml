@@ -1,4 +1,8 @@
 .container
   .row
-    .span9
+    .span8
       %h2 Intro to Sous Vide
+    .span4
+      = form_tag url_for(controller: :mailing_list, action: :subscribe), remote: true do
+        = email_field_tag('email', '', {placeholder: 'enter your email for updates'})
+

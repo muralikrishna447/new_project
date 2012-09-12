@@ -68,4 +68,5 @@ Delve::Application.configure do
 end
 
 MAILCHIMP_API_KEY="9875b0250eae48e91a12a26117bba403-us5"
+MAILCHIMP_LIST="test_list"
 
