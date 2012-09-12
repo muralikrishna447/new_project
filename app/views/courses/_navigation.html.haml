@@ -3,7 +3,10 @@
   .container
     .row
       .span1
-        %a{ class: 'btn' } <
+        - if model.prev.nil?
+          %a.disabled.btn <
+        - else
+          = link_to "<", model.prev, { class: 'btn' }
       .span4
         .menu
           %h3
@@ -27,5 +30,8 @@
                 .accordion-inner
                   Other Stuff and stuff
       .span1
-        %a{ class: 'btn' } >
+        - if model.next.nil?
+          %a.disabled.btn >
+        - else
+          = link_to ">", model.next, { class: 'btn' }
 

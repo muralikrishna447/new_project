@@ -13,3 +13,4 @@ $ ->
       $scroller.removeClass('stuck-to-top')
 
   $(window).scroll _.throttle(handler, 20)
+
