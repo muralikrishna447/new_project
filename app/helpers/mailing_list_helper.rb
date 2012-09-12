@@ -1,4 +1,4 @@
-module MailChimpHelper
+module MailingListHelper
   class MailChimpListManager
     def initialize(list)
       @gb = Gibbon.new(MAILCHIMP_API_KEY)
