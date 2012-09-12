@@ -45,11 +45,3 @@ test:
   pool: 5
   username: delve
   password:
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: delve_production
-  pool: 5
-  username: delve
-  password:
