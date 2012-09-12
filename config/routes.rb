@@ -5,16 +5,9 @@ Delve::Application.routes.draw do
 
   root to: "home#index"
 
-  post 'subscribe' => "mailing_list#subscribe"
+  post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
 
-  resources :courses, :only => [:show] do
-    # resources :modules, :only => [] do
-    #   resources :topics, :only => [] do
-    #     resources :activities, :only => [:show]
-    #   end
-    # end
-  end
-
+  resources :courses, :only => [:show]
   resources :activities, :only => [:show]
 
 end
