@@ -2,13 +2,10 @@
   .navbar-inner
     .container
       %a.brand{ href: root_path } ChefSteps
-      .nav.pull-right
-        .addthis_toolbox.addthis_default_style.addthis_32x32_style
-          %a.addthis_button_facebook
-            %i.icon-facebook-sign
-          %a.addthis_button_twitter
-            %i.icon-twitter-sign
+      .nav.pull-right.addthis-container
+        .addthis_toolbox.addthis_default_style.pull-right
+          %a.addthis_button_facebook_like
+          %a.addthis_button_tweet
           %a.addthis_button_pinterest_pinit
           %a.addthis_button_google_plusone
-          %a.addthis_button_compact
-            %i.icon-plus
+          %a.addthis_pill_style
