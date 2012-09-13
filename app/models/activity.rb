@@ -28,5 +28,13 @@ class Activity < ActiveRecord::Base
     return nil if i == 0
     activities[i-1]
   end
+
+  def spec_sheet?
+    equipment.count > 0 && ingredients.count > 0
+  end
+
+  def step_by_step?
+    steps.count > 0
+  end
 end
 
