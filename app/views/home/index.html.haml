@@ -3,7 +3,7 @@
     .span12
       = render 'mailing_list/subscribe'
 .slider-block
-  #myCarousel.carousel.slide
+  #myCarousel.carousel.slide{ data: { interval: 10000 } }
     .carousel-inner
       .item.active
         = image_tag 'carousel/carousel_1.jpg'
@@ -39,7 +39,10 @@
           .span1
             %img{ src: 'http://lorempixel.com/100/100/people/2/' }
           .span3
-            %b Chris Young &rsaquo; managing directory
+            %b
+              :erb
+                Chris Young <i class='icon-caret-right'></i> managing directory
+
             %p
               :erb
                 Chris is the principal coauthor of the acclaimed six-volume work
@@ -56,7 +59,9 @@
           .span1
             %img{ src: 'http://lorempixel.com/100/100/people/30/' }
           .span3
-            %b Grant Crilly &rsaquo; directory of culinary ops
+            %b
+              :erb
+                Grant Crilly <i class='icon-caret-right'></i> directory of culinary ops
             %p
               Grant was the first development chef hired by the Modernist
               Cuisine team. Prior to this he was chef de cuisine at Busaba in
@@ -69,7 +74,9 @@
           .span1
             %img{ src: 'http://lorempixel.com/100/100/people/5/' }
           .span3
-            %b Ryan Matthew Smith &rsaquo; creative director
+            %b
+              :erb
+                Ryan Matthew Smith <i class='icon-caret-right'></i> creative director
             %p
               :erb
                 Ryan was the principal photographer and photo editor for <em>Modernist
