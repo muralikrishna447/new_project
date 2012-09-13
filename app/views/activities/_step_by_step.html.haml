@@ -1,0 +1,6 @@
+.container#step-by-step
+  - activity.steps.each_with_index do |step, i|
+    - if step.youtube_id?
+      = render 'video_step', step: step, count: i+1
+    - else
+      = render 'step', step: step, count: i+1
