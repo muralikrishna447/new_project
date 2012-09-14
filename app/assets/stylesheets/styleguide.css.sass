@@ -1,23 +1,103 @@
-@import application/colors
+@import bootstrap_config
+@import font-awesome
 
-.styleguide-colors
-  .color
-    line-height: 40px
+.icon-circle-brick
+  &.icon-pinterest
+    color: $brick
 
-    i
-      border: 1px solid black
-      display: inline-block
-      height: 40px
-      width: 40px
+= styleguide-swatch($color)
+  border: 1px solid darken($color, 20%)
+  background: $color
 
-      &.white
-        background: $white
-      &.black
-        background: $black
-      &.brick
-        background: $brick
-      &.brick-light
-        background: $brick-light
+.show-grid [class*="span"]
+  border-radius: 3px
+  background-color: #eee
+  border: 1px solid #ccc
+  line-height: 40px
+  min-height: 40px
+  text-align: center
+
+.styleguide-georgia-light
+  font-family: "Georgia-Light"
+.styleguide-georgia-regular
+  font-family: "Georgia-Regualr"
+.styleguide-georgia-medium
+  font-family: "Georgia-Medium"
+.styleguide-georgia-bold
+  font-family: "Georgia-Bold"
+.styleguide-font-18
+  font-size: 18px
+
+.show-grid
+  .styleguide-blue
+    +styleguide-swatch($blue)
+  .styleguide-blueDark
+    +styleguide-swatch($blueDark)
+  .styleguide-green
+    +styleguide-swatch($green)
+  .styleguide-red
+    +styleguide-swatch($red)
+  .styleguide-yellow
+    +styleguide-swatch($yellow)
+  .styleguide-orange
+    +styleguide-swatch($orange)
+  .styleguide-pink
+    +styleguide-swatch($pink)
+  .styleguide-purple
+    +styleguide-swatch($purple)
+
+  .styleguide-brick
+    +styleguide-swatch($brick)
+    color: $white
+
+  .styleguide-brick-light
+    +styleguide-swatch($brick-light)
+    color: $white
+
+  .styleguide-white
+    +styleguide-swatch($white)
+
+  .styleguide-black
+    +styleguide-swatch($black)
+    color: $white
+  .styleguide-grayDarker
+    +styleguide-swatch($grayDarker)
+    color: $white
+  .styleguide-grayDark
+    +styleguide-swatch($grayDark)
+    color: $white
+  .styleguide-gray
+    +styleguide-swatch($gray)
+    color: $white
+  .styleguide-grayLight
+    +styleguide-swatch($grayLight)
+    color: $white
+  .styleguide-grayLighter
+    +styleguide-swatch($grayLighter)
+    color: $white
 
 
-      
+
+
+
+
+
+// .styleguide-colors
+//   .color
+//     line-height: 40px
+// 
+//     i
+//       border: 1px solid black
+//       display: inline-block
+//       height: 40px
+//       width: 40px
+// 
+//       &.white
+//         background: $white
+//       &.black
+//         background: $black
+//       &.brick
+//         background: $brick
+//       &.brick-light
+//         background: $brick-light
+
