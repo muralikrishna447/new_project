@@ -14,6 +14,7 @@ gem 'rails_admin'
 gem 'decent_exposure'
 gem 'ranked-model'
 gem 'gibbon'
+gem 'newrelic_rpm'
 
 # Gems used only for assets and not required
 # in production environments by default.
