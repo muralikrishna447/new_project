@@ -20,6 +20,19 @@
   background: $grayLight
   color: $black
 
+ul.horizontal-list
+  margin: 0
+  padding: 0
+  li
+    padding-left: 10px
+    display: inline
+    list-style-type: none
+    &:first-child
+      margin: 0
+
+.icon-white
+  color: $white
+
 iframe
   border: none
 
@@ -40,7 +53,7 @@ iframe
   padding-top: 20px
 
 @import application/header
-@import application/nav_bar
+@import application/navigation
 @import application/carousel
 @import application/subscribe
 @import application/home
