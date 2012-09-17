@@ -7,7 +7,7 @@ GC.respond_to?(:copy_on_write_friendly=) and
 before_fork do |server, worker|
   # the following is highly recomended for Rails + "preload_app true"
   # as there's no need for the master process to hold a connection
-  ActiveRecord::Base.connection.disconnect! if defined(ActiveRecord::Base)
+  ActiveRecord::Base.connection.disconnect! if defined?(ActiveRecord::Base)
 end
 
 
