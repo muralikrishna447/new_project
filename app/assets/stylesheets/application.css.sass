@@ -10,14 +10,15 @@
 .hero-unit
   color: $white
   padding: 0
-  background: $black
+  background: $brick
   +border-radius(0)
-
   .row:first-child
     margin-top: 0
 
 .hero-comments
   margin-bottom: 0
+  background: $grayLight
+  color: $black
 
 iframe
   border: none
@@ -35,9 +36,6 @@ iframe
   iframe
     min-height: 200px
 
-.top-video, .course-info, .spec-sheet, .creator, .instructor
-  margin-bottom: 20px
-
 #disqus_thread
   padding-top: 20px
 
@@ -46,6 +44,7 @@ iframe
 @import application/carousel
 @import application/subscribe
 @import application/home
+@import application/courses/show
 
 @import twitter/bootstrap/responsive
 @import application/media_queries
