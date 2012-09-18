@@ -17,6 +17,12 @@ def create_step(step)
   s.title = step[:title]
   s.youtube_id = step[:youtube_id]
   s.save
+
+  step[:ingredients].each do |ingredient|
+    item = create_ingredient(ingredient[:title])
+    create_step_ingredient(s, item, ingredient[:quantity], ingredient[:unit])
+  end
+
   s
 end
 
@@ -67,6 +73,15 @@ def create_recipe_ingredient(recipe, ingredient, quantity, unit)
   a.save
 end
 
+def create_step_ingredient(step, ingredient, quantity, unit)
+  a = StepIngredient.new
+  a.step = step
+  a.ingredient = ingredient
+  a.quantity = quantity
+  a.unit = unit
+  a.save
+end
+
 def create_bourbon_glazed_step_by_step
   glaze = {
     title: "Bourbon Glazed Smoked Chicken Breast",
@@ -101,8 +116,7 @@ def create_bourbon_glazed_step_by_step
         {title: "Ginger powder", quantity: 0.80, unit: 'g' },
         {title: "Allspice powder", quantity: 0.75, unit: "g" }
      ],
-      steps: [
-     ]
+      steps: [ ]
     },
     {title: "Awesome Sauce",
      ingredients: [
@@ -116,7 +130,14 @@ def create_bourbon_glazed_step_by_step
      ],
       steps: [
         {title: 'Make the sauce',
-        youtube_id: "TvdqT6FMmgw"
+        youtube_id: "TvdqT6FMmgw",
+        ingredients: [
+          {title: "Chicken jus", quantity: 410, unit: 'g' },
+          {title: "Cider vinegar", quantity: 120, unit: 'kg' },
+          {title: "Other aweome ingredient", quantity: 100, unit: 'g' },
+          {title: "Black strap molasses", quantity: 60, unit: 'g' },
+          {title: "Worchestershire", quantity: 45, unit: 'g' },
+        ]
         }
      ]
     }
@@ -125,7 +146,8 @@ def create_bourbon_glazed_step_by_step
   activity_steps = [
     { activity: activity,
       title: "Trim the breast meat",
-      youtube_id: "TvdqT6FMmgw"
+      youtube_id: "TvdqT6FMmgw",
+      ingredients: []
     }
   ]
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918205119) do
+ActiveRecord::Schema.define(:version => 20120918205824) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
@@ -79,6 +79,17 @@ ActiveRecord::Schema.define(:version => 20120918205119) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
+
+  create_table "step_ingredients", :force => true do |t|
+    t.integer  "step_id",       :null => false
+    t.integer  "ingredient_id", :null => false
+    t.decimal  "quantity",      :null => false
+    t.string   "unit",          :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "step_ingredients", ["step_id", "ingredient_id"], :name => "index_step_ingredients_on_step_id_and_ingredient_id", :unique => true
 
   create_table "steps", :force => true do |t|
     t.string   "title"

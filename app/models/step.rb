@@ -5,6 +5,8 @@ class Step < ActiveRecord::Base
   belongs_to :activity, touch: true
   belongs_to :recipe, touch: true
 
+  has_many :ingredients, class_name: StepIngredient
+
   attr_accessible :title, :youtube_id, :recipe_id, :activity_id, as: :admin
 
   scope :ordered, rank(:step_order)
