@@ -30,16 +30,16 @@
           %thead
             %tr
               %th Mop Sauce
-              %th Weight
-              %th
+              %th{colspan: 2} Weight
               %th
                 %i.icon-caret-down
           %tbody
             - activity.ingredients.each do |ingredient|
               %tr
                 %td= ingredient.title
-                %td= ingredient.quantity
+                %td.quantity= ingredient.quantity
                 %td kg
+                %td
       .span4
         .row
           .span4

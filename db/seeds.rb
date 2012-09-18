@@ -61,14 +61,14 @@ def create_bourbon_glazed_step_by_step
   ]
 
   activity_ingredients = [
-    {title: "Heinz Ketchup", quantity: "600g" },
-    {title: "Chicken jus", quantity: "410g" },
-    {title: "Cider vinegar", quantity: "120g" },
-    {title: "Golden brown sugar", quantity: "100g" },
-    {title: "Black strap molasses", quantity: "60g" },
-    {title: "Worchestershire", quantity: "45g" },
-    {title: "Ginger powder", quantity: "0.80g" },
-    {title: "Allspice powder", quantity: "0.75g" }
+    {title: "Heinz Ketchup", quantity: "600" },
+    {title: "Chicken jus", quantity: "410" },
+    {title: "Cider vinegar", quantity: "120" },
+    {title: "Golden brown sugar", quantity: "100" },
+    {title: "Black strap molasses", quantity: "60" },
+    {title: "Worchestershire", quantity: "45" },
+    {title: "Ginger powder", quantity: "0.80" },
+    {title: "Allspice powder", quantity: "0.75" }
   ]
 
   steps = [

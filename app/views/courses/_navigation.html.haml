@@ -3,7 +3,7 @@
   .container
     .row
       .span1
-        =link_to "»", model.prev, { class: "#{'disabled' if model.prev.nil?}" }
+        =link_to "<<", model.prev, { class: "#{'disabled' if model.prev.nil?}" }
       .span4
         %h4= model.title
       .span1
