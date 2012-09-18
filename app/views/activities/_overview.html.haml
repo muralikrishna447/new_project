@@ -5,11 +5,20 @@
         %h1= activity.title
         %p= activity.description
       .span4
-        %h5 Difficulty Level
-        %span{ class: "difficulty #{activity.difficulty.downcase}"}
-          = activity.difficulty.capitalize
-        .horizontal-divider
-          %span== #{activity.cooked_this} Cooked This
+        .row
+          .span4
+            %h5 Difficulty Level
+        .row
+          .span4
+            %span{ class: "difficulty #{activity.difficulty.downcase}"}
+              = activity.difficulty.capitalize
+        .row
+          .span4
+            .horizontal-divider
+        .row
+          .span4
+            %i.icon-pot-brick
+            %span== #{activity.cooked_this} Cooked This
       .span12
         .horizontal-divider
     .row

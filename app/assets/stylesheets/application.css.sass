@@ -3,6 +3,7 @@
 @import font-awesome
 
 @import application/fonts
+@import compass/utilities/sprites/sprite-img
 
 .hero-unit
   color: $white
@@ -34,6 +35,16 @@ ul.horizontal-list
 
 .icon-white
   color: $white
+
+.icon-pot-brick
+  +sprite-img("icons/pot-brick.png", 1)
+  display: inline-block
+  vertical-align: middle
+
+.icon-pot-white
+  +sprite-img("icons/pot-white.png", 1)
+  display: inline-block
+  vertical-align: middle
 
 iframe
   border: none
