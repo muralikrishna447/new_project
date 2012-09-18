@@ -1,6 +1,6 @@
-.container#step-by-step
-  - activity.steps.each_with_index do |step, i|
-    - if step.youtube_id?
-      = render 'video_step', step: step, count: i+1
-    - else
+.hero-unit.gray
+  .container#step-by-step
+    %h4 Step-by-Steps
+    - activity.steps.each_with_index do |step, i|
       = render 'step', step: step, count: i+1
+

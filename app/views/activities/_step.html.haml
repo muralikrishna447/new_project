@@ -1,13 +1,24 @@
 .row.step
-  .span12
-    %h3 Step #{count} - #{step.title}
-    %p
-      Helvetica non irony, aliqua etsy retro viral sint street art brunch.
-      Austin you probably haven't heard of them leggings in, craft beer
-      gentrify thundercats messenger bag pinterest umami brooklyn marfa
-      food truck. Eu wes anderson you probably haven't heard of them,
-      four loko flexitarian laborum mollit adipisicing brooklyn trust
-      fund pitchfork dolor bicycle rights cillum.  Next level street art
-      brooklyn dolore delectus, eu exercitation you probably haven't
-      heard of them mcsweeney's ethical swag polaroid post-ironic elit.
+  .span4
+    %h3
+      :erb
+        <strong><%="Step #{count}: "%></strong><%=step.title%>
+    .well
+      %h6 Ingredients
+      %table
+        %tr
+          %td Chicken breasts
+          %td 60
+          %td kg
+        %tr
+          %td Stuff
+          %td 60
+          %td g
+    %ul
+      %li Remove covering skin from breasts.
+      %li Peel away "tenders" from breasts.
+  .span8
+    .well.video
+      .video-container
+        %iframe{:src => youtube_url(step.youtube_id)}
 
