@@ -12,6 +12,8 @@
   padding: 0
   background: $brick
   +border-radius(0)
+  &.gray
+    background: $grayLighter
   .row:first-child
     margin-top: 0
 
@@ -31,7 +33,7 @@ ul.horizontal-list
       margin: 0
 
 .horizontal-divider
-  border-top: 1px solid $grayLighter
+  border-top: 1px solid $grayLight
 
 .icon-white
   color: $white
@@ -63,6 +65,7 @@ iframe
 @import application/courses/show
 @import application/courses/course_breakdown
 @import application/activities/overview
+@import application/activities/step_by_step
 
 @import twitter/bootstrap/responsive
 @import application/media_queries

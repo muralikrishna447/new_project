@@ -54,21 +54,23 @@
             %h5 Equipment
         .row
           - activity.required_equipment.in_groups(2, false).each do |group|
-            %ul.equipment.span2
-              - group.each do |item|
-                - if item.product_url?
-                  %li= link_to item.title, item.product_url
-                - else
-                  %li= item.title
+            .span2
+              %ul.equipment
+                - group.each do |item|
+                  - if item.product_url?
+                    %li= link_to item.title, item.product_url
+                  - else
+                    %li= item.title
         - if activity.optional_equipment.present?
           .row
             .span4
               %h5 Optional Equipment
           .row
             - activity.optional_equipment.in_groups(2, false).each do |group|
-              %ul.equipment.span2
-                - group.each do |item|
-                  - if item.product_url?
-                    %li= link_to item.title, item.product_url
-                  - else
-                    %li= item.title
+              .span2
+                %ul.equipment
+                  - group.each do |item|
+                    - if item.product_url?
+                      %li= link_to item.title, item.product_url
+                    - else
+                      %li= item.title
