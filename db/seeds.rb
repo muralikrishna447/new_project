@@ -15,10 +15,18 @@ def create_step(activity, title='', youtube_id='')
   s
 end
 
-def create_admin
+def create_recipe(activity, title='')
+  s = Recipe.create
+  s.activity = activity
+  s.title = title
+  s.save
+  s
+end
+
+def create_admin(email, password)
   u = User.create
-  u.email = "admin@admin.org"
-  u.password = 'asdfasdf'
+  u.email = email
+  u.password = password
   u.save
   u
 end
@@ -106,6 +114,7 @@ def create_bourbon_glazed_step_by_step
 
 end
 
-create_admin
+create_admin('shaun@substantial.com', 'asdfasdf')
+create_admin('aaron@substantial.com', 'asdfasdf')
 create_bourbon_glazed_step_by_step
 create_activity("Lecture", 'ydOB-YNJ8Jw')
