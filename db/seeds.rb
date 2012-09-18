@@ -43,18 +43,18 @@ def create_equipment(title, product_url ='', optional=false)
 end
 
 def create_ingredient(title, product_url='')
-  i = Ingredient.find_or_create_by_title(title)
-  i.product_url = product_url
-  i.save
-  i
+  ingredient = Ingredient.find_or_create_by_title(title)
+  ingredient.product_url = product_url
+  ingredient.save
+  ingredient
 end
 
 def create_recipe(title, activity)
-  r  = Recipe.create
-  r.title = title
-  r.activity = activity
-  r.save
-  r
+  recipe  = Recipe.create
+  recipe.title = title
+  recipe.activity = activity
+  recipe.save
+  recipe
 end
 
 def create_activity_equipment(activity, equipment)
