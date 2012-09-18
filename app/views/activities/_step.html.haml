@@ -3,14 +3,15 @@
     %h3
       :erb
         <strong><%="Step #{count}: "%></strong><%=step.title%>
-    .well
-      %h6 Ingredients
-      %table
-        - step.ingredients.each do |ingredient|
-          %tr
-            %td= ingredient.title
-            %td= ingredient.quantity
-            %td= ingredient.unit
+    - if step.ingredients.any?
+      .well
+        %h6 Ingredients
+        %table
+          - step.ingredients.each do |ingredient|
+            %tr
+              %td= ingredient.title
+              %td= quantity_number(ingredient.quantity)
+              %td= ingredient.unit
     %p= step.directions
   .span8
     .well.video

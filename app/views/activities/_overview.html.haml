@@ -27,7 +27,7 @@
               - recipe.ingredients.each do |ingredient|
                 %tr
                   %td= ingredient.title
-                  %td.quantity= ingredient.quantity
+                  %td.quantity= quantity_number(ingredient.quantity)
                   %td= ingredient.unit
                   %td
       .span4
