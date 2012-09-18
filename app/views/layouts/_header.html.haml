@@ -1,7 +1,14 @@
 .navbar
   .navbar-inner
     .container
-      %a.brand{ href: root_path } ChefSteps
+      .brand-container
+        %a.brand{ href: root_path }
+          = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
+        .brand-byline
+          brought to you by
+          %a.delve-brand{href: 'http://delvekitchen.com'}
+            = image_tag('delve-logo.png', alt: 'Delve')
+
       .nav.pull-right.addthis-container
         .addthis_toolbox.addthis_default_style.pull-right
           %a.addthis_button_facebook_like

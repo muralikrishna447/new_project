@@ -1,6 +1,15 @@
-.container#step-by-step
-  - activity.steps.each_with_index do |step, i|
-    - if step.youtube_id?
-      = render 'video_step', step: step, count: i+1
-    - else
+.hero-unit.gray
+  .container#step-by-step
+    .row
+      .span12
+        %h4 Step-by-Steps
+    - activity.steps.each_with_index do |step, i|
       = render 'step', step: step, count: i+1
+      .row
+        .span12
+          .horizontal-divider
+    .row
+      .span12
+        %button.cooked-this
+          I cooked this!
+

@@ -1,5 +1,7 @@
 = render 'courses/title_bar'
 
+= render 'activities/breadcrumbs'
+
 = render 'courses/navigation', model: activity
 
 .container
@@ -9,7 +11,7 @@
         .video-container
           %iframe{src: youtube_url(activity.youtube_id)}
 - if activity.spec_sheet?
-  = render 'spec_sheet', activity: activity
+  = render 'overview', activity: activity
 - if activity.step_by_step?
   = render 'step_by_step', activity: activity
 

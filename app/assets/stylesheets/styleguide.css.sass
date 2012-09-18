@@ -1,0 +1,39 @@
+@import bootstrap_config
+@import font-awesome
+
+= styleguide-swatch($color)
+  border: 1px solid darken($color, 20%)
+  background: $color
+
+.show-grid [class*="span"]
+  border-radius: 3px
+  background-color: #eee
+  border: 1px solid #ccc
+  line-height: 40px
+  min-height: 40px
+  text-align: center
+
+.styleguide-georgia-light
+  font-family: "Georgia-Light"
+.styleguide-georgia-regular
+  font-family: "Georgia-Regular"
+.styleguide-georgia-medium
+  font-family: "Georgia-Medium"
+.styleguide-georgia-bold
+  font-family: "Georgia-Bold"
+.styleguide-font-18
+  font-size: 18px
+
+.show-grid
+  .styleguide-brick
+    +styleguide-swatch($brick)
+    color: $white
+  .styleguide-brickLight
+    +styleguide-swatch($brickLight)
+    color: $white
+  .styleguide-white
+    +styleguide-swatch($white)
+  .styleguide-black
+    +styleguide-swatch($black)
+    color: $white
+

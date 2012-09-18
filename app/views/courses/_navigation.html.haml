@@ -3,19 +3,20 @@
   .container
     .row
       .span1
-        =link_to "<", model.prev, { class: "btn #{'disabled' if model.prev.nil?}" }
+        =link_to "<<", model.prev, { class: "#{'disabled' if model.prev.nil?}" }
       .span4
         %h4= model.title
       .span1
-        =link_to ">", model.next, { class: "btn #{'disabled' if model.next.nil?}" }
-
-      .span2
-        %h5
-          %a{href: '#spec-sheet'} Spec Sheet
-      .span2
-        %h5
-          %a{href: '#step-by-step'} Step-By-Step
-      .span2
-        %h5
-          %a{href: '#disqus_thread'} Comments
+        =link_to "»", model.next, { class: "#{'disabled' if model.next.nil?}" }
+      .span6
+        %ul.horizontal-list
+          %li
+            %i.icon-info-sign.icon-white
+            %a{href: '#overview'} Overview
+          %li
+            %i.icon-list-ol.icon-white
+            %a{href: '#step-by-step'} Step-By-Step
+          %li
+            %i.icon-comment.icon-white
+            %a{href: '#disqus_thread'} Comments
 

@@ -1,23 +1,39 @@
+@import bootstrap_config
 @import twitter/bootstrap-no-sprites
 @import font-awesome
 
-body
-  font-size: 16px
-
-.center
-  text-align: center
+@import application/fonts
 
 .hero-unit
-  color: white
+  color: $white
   padding: 0
-  background: black
+  background: $brick
   +border-radius(0)
-
+  &.gray
+    background: $grayLighter
   .row:first-child
     margin-top: 0
 
 .hero-comments
   margin-bottom: 0
+  background: $grayLight
+  color: $black
+
+ul.horizontal-list
+  margin: 0
+  padding: 0
+  li
+    padding-left: 10px
+    display: inline
+    list-style-type: none
+    &:first-child
+      margin: 0
+
+.horizontal-divider
+  border-top: 1px solid $grayLight
+
+.icon-white
+  color: $white
 
 iframe
   border: none
@@ -35,17 +51,20 @@ iframe
   iframe
     min-height: 200px
 
-.top-video, .course-info, .spec-sheet, .creator, .instructor
-  margin-bottom: 20px
-
 #disqus_thread
   padding-top: 20px
 
 @import application/header
-@import application/nav_bar
+@import application/navigation
 @import application/carousel
 @import application/subscribe
+@import application/home
+@import application/courses/show
+@import application/courses/course_breakdown
+@import application/activities/overview
+@import application/activities/step_by_step
 
 @import twitter/bootstrap/responsive
 @import application/media_queries
+@import ss-social
 

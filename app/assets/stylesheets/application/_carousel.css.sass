@@ -15,9 +15,12 @@
   width: 100%
 
 .carousel .carousel-control
-  background: rgba(0, 0, 0, 0.6)
+  background: rgba(255, 255, 255, 0.8)
   border: none
+  color: $brick
   top: 50%
+  &:hover
+    background: $white
 
 .caption
   position: absolute
@@ -26,9 +29,22 @@
   /* text colors */
 
 .caption-content
-  background: rgba(255, 255, 255, 0.8)
+  background: $white
   display: inline-block
-  padding: 0 15px 15px 15px
+  padding: 15px 15px 15px 15px
+  +border-radius(3px)
+  h3
+    +font-serif-large
+  h4
+    +font-serif-small
+    width: 250px
+    padding-bottom: 10px
+    border-bottom: 4px double $grayLight
+  h3, h4
+    line-height: 1em
+  a
+    text-transform: uppercase
+    +font-sans-small
 
 .caption.top-left, .caption.top-right
   top: 25px

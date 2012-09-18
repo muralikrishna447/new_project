@@ -1,6 +1,7 @@
-.subscribe
+- orange ||= false
+.subscribe{ class: ('orange' if orange)  }
   = form_tag mailing_list_subscribe_path, remote: true do
     .input-append
-      = email_field_tag('email', nil, {class: 'span4', placeholder: 'enter your email for updates', required: true})
-      = button_tag('Submit', {class: 'btn', disable_with: '', data: { behavior: 'loadable'}})
+      = email_field_tag('email', nil, {class: 'span4', placeholder: 'Enter your email for updates', required: true})
+      = button_tag('»', {class: 'btn', disable_with: '', data: { behavior: 'loadable'}})
 

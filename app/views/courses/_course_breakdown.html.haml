@@ -1,27 +1,50 @@
 %ul.course-breakdown.unstyled
   %li
     %h3 Syllabus
-  %li
-    %h3 Module 1
-    %ul.unstyled
+  %li.module
+    %h4 Module 1: Introduction
+    %ul
       %li
-        %h4 Topic A
-        %ul.unstyled
-          - activities.each do |activity|
-            %li
-              =link_to activity.title, activity_path(activity)
+        What is sousvide?
+      - activities.each do |activity|
+        %li
+          =link_to activity.title, activity_path(activity)
+  %li.module
+    %h4 Module 2: Preparation
+    %ul
+      - activities.each do |activity|
+        %li
+          =link_to activity.title, activity_path(activity)
+  %li.module
+    %h4 Module 3: Packaging
+    %ul
+      - activities.each do |activity|
+        %li
+          =link_to activity.title, activity_path(activity)
+  %li.module
+    %h4 Module 4: Cooking Temperature
+    %ul
+      - activities.each do |activity|
+        %li
+          =link_to activity.title, activity_path(activity)
+  %li.module
+    %h4 Module 5: Cooking Time
+    %ul
+      - activities.each do |activity|
+        %li
+          =link_to activity.title, activity_path(activity)
+  %li.module
+    %h4 Module 6: Finishing Strategies
+    %ul
       %li
-        %h4 Topic C
-  %li
-    %h3 Module 2
-    %ul.unstyled
-      %li
-        %h4 Topic A
-        %ul.unstyled
-          %li Activity B
-          %li Activity C
-          %li Activity D
-      %li
-        %h4 Topic B
-        %ul.unstyled
-          %li Activity E
+        What is sousvide?
+      - activities.each do |activity|
+        %li
+          =link_to activity.title, activity_path(activity)
+  %li.module
+    %h4 Module 7: Putting it all together
+    %ul
+      - activities.each do |activity|
+        %li
+          =link_to activity.title, activity_path(activity)
+

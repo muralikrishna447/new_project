@@ -1,0 +1,26 @@
+.sticky-navbar
+  width: 100%
+  position: relative
+  background: $brick
+  z-index: 9999
+  margin-bottom: 5px
+  padding: 5px
+  color: $white
+  &.stuck-to-top
+    +box-shadow(0px 0px 6px 0px black)
+    position: fixed
+    top: 0
+  a
+    color: $white
+  h5
+    text-transform: uppercase
+  ul
+    margin-top: 20px
+    li
+      border-left: 1px solid $white
+      margin-right: 10px
+      &:first-child
+        border: none
+  i
+    font-size: 22px
+

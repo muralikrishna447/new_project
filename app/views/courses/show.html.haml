@@ -1,5 +1,9 @@
 = render 'title_bar'
 
+.hero-unit.course-title
+  .container
+    .row12
+      %h3 Accerlated Sous Vide Cooking Course
 .container
   .row.top-video
     .span12
@@ -8,23 +12,65 @@
 
   .row.course-info
     .span8
-      %h2 Instructors
+      %h1 Description
+      %p
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce pulvinar
+        lobortis dolor, sit amet mollis sem sagittis in. Etiam nec mauris enim.
+        Praesent suscipit, felis eu facilisis lobortis, eros odio adipiscing
+        felis, et congue justo est ut libero. Praesent dictum, nulla eu
+        ultricies ornare, arcu justo pulvinar nisl, id adipiscing velit nisl nec
+        nunc. Duis mollis, risus vitae suscipit tristique, augue odio
+        pellentesque tortor, in consectetur eros ligula et nulla. In id odio
+      %h3 Instructors
       %ul.unstyled
-        %li.row.instructor
-          .span1
-            %img{ src: 'http://lorempixel.com/100/100/people/2' }
-          .span3
-            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        %li.row.instructor
-          .span1
-            %img{ src: 'http://lorempixel.com/100/100/people/1' }
-          .span3
-            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        %li.row.instructor
-          .span1
-            %img{ src: 'http://lorempixel.com/100/100/people' }
-          .span3
-            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        %li.instructor
+          .row
+            .span2
+              %img{ src: 'http://lorempixel.com/100/100/people/2' }
+            .span6
+              %h4 Chris Young
+              %p
+                :erb
+                  Chris is the principal coauthor of the acclaimed six-volume work
+                  <em>Modernist Cuisine: The Art and Science of Cooking</em>, which was named
+                  both the 2012 Cookbook of the Year and Best Professional Cookbook
+                  of the year by the James Beard Foundation and has been a worldwide
+                  best seller. Chris was also the founding chef of Heston
+                  Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary
+                  laboratory behind the innovative dishes served at one of the best
+                  restaurants in the world. Prior to becoming a chef, he completed
+                  degrees in theoretical mathematics and biochemistry.
+          .row
+            .span8.horizontal-divider
+        %li.instructor
+          .row
+            .span2
+              %img{ src: 'http://lorempixel.com/100/100/people/1' }
+            .span6
+              %h4 Grant Crilly
+              %p
+                Grant was the first development chef hired by the Modernist
+                Cuisine team. Prior to this he was chef de cuisine at Busaba in
+                Mumbai and Mistral in Seattle, and served as head development chef
+                at Delicious Planet. He has cooked for Pascal Barbot at
+                L’Astrance, worked with Pierré Herme’s team at Grégoire-Ferrandi,
+                and practiced butchery at Bajon Jean Pierrie in Paris.
+          .row
+            .span8.horizontal-divider
+        %li.instructor
+          .row
+            .span2
+              %img{ src: 'http://lorempixel.com/100/100/people' }
+            .span6
+              %h4 Ryan Matthew Smith
+              %p
+                :erb
+                  Ryan was the principal photographer and photo editor for <em>Modernist
+                  Cuisine: The Art and Science of Cooking</em>. Smith’s work has been
+                  featured by PPN, Photographer, Life, Time, The New York Times,
+                  Feature Shoot, Quo, and Abduzeedo.
+          .row
+            .span8.horizontal-divider
     .span4
       = render 'course_breakdown', activities: activities
 

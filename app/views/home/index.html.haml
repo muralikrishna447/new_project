@@ -1,7 +1,3 @@
-.container
-  .row
-    .span12
-      = render 'mailing_list/subscribe'
 .slider-block
   #myCarousel.carousel.slide{ data: { interval: 10000 } }
     .carousel-inner
@@ -15,13 +11,23 @@
     %a.carousel-control.right{ href: '#myCarousel', data: { slide: 'next' } } &rsaquo;
   .caption.middle-left.container
     .caption-content
-      %h3.medium Free to learn
-      = link_to "Course Preview", course_path(1), {class: 'btn small'}
+      %h3 Free to Learn
+      %h4 Cook better with sous vide
+      = link_to "Preview Course »", course_path(1)
+
+.hero-unit.signup-banner
+  .container
+    .row
+      .span9
+        %h2 ChefSteps is building an online culinary school.
+        %h3 Want to know when we launch?
+      .span3
+        = render 'mailing_list/subscribe'
 
 .container
   .row
-    .span8
-      %h2 Learn the modernist technique
+    .intro.span7
+      %h1 Learn the modernist technique
       %p
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce pulvinar
         lobortis dolor, sit amet mollis sem sagittis in. Etiam nec mauris enim.
@@ -32,55 +38,58 @@
         pellentesque tortor, in consectetur eros ligula et nulla. In id odio
         quam. Nulla nisl libero, lacinia ac faucibus in, feugiat eu est. Donec
         nec mi neque, et lacinia nisi. In hac habitasse platea dictumst.
-    .span4
+    .creators.span5
       %h3 From creators of Modernist Cuisine
       %ul.unstyled.creators
-        %li.creator.row
-          .span1
-            %img{ src: 'http://lorempixel.com/100/100/people/2/' }
-          .span3
-            %b
-              :erb
-                Chris Young <i class='icon-caret-right'></i> managing directory
+        %li.creator
+          .row
+            .span1
+              %img{ src: 'http://lorempixel.com/100/100/people/2/' }
+            .span3
+              %h4 Chris Young
+              %p
+                :erb
+                  Chris is the principal coauthor of the acclaimed six-volume work
+                  <em>Modernist Cuisine: The Art and Science of Cooking</em>, which was named
+                  both the 2012 Cookbook of the Year and Best Professional Cookbook
+                  of the year by the James Beard Foundation and has been a worldwide
+                  best seller. Chris was also the founding chef of Heston
+                  Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary
+                  laboratory behind the innovative dishes served at one of the best
+                  restaurants in the world. Prior to becoming a chef, he completed
+                  degrees in theoretical mathematics and biochemistry.
+          .row
+            .span4.horizontal-divider
 
-            %p
-              :erb
-                Chris is the principal coauthor of the acclaimed six-volume work
-                <em>Modernist Cuisine: The Art and Science of Cooking</em>, which was named
-                both the 2012 Cookbook of the Year and Best Professional Cookbook
-                of the year by the James Beard Foundation and has been a worldwide
-                best seller. Chris was also the founding chef of Heston
-                Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary
-                laboratory behind the innovative dishes served at one of the best
-                restaurants in the world. Prior to becoming a chef, he completed
-                degrees in theoretical mathematics and biochemistry.
+        %li.creator
+          .row
+            .span1
+              %img{ src: 'http://lorempixel.com/100/100/people/30/' }
+            .span3
+              %h4 Grant Crilly
+              %p
+                Grant was the first development chef hired by the Modernist
+                Cuisine team. Prior to this he was chef de cuisine at Busaba in
+                Mumbai and Mistral in Seattle, and served as head development chef
+                at Delicious Planet. He has cooked for Pascal Barbot at
+                L’Astrance, worked with Pierré Herme’s team at Grégoire-Ferrandi,
+                and practiced butchery at Bajon Jean Pierrie in Paris.
+          .row
+            .span4.horizontal-divider
 
-        %li.creator.row
-          .span1
-            %img{ src: 'http://lorempixel.com/100/100/people/30/' }
-          .span3
-            %b
-              :erb
-                Grant Crilly <i class='icon-caret-right'></i> directory of culinary ops
-            %p
-              Grant was the first development chef hired by the Modernist
-              Cuisine team. Prior to this he was chef de cuisine at Busaba in
-              Mumbai and Mistral in Seattle, and served as head development chef
-              at Delicious Planet. He has cooked for Pascal Barbot at
-              L’Astrance, worked with Pierré Herme’s team at Grégoire-Ferrandi,
-              and practiced butchery at Bajon Jean Pierrie in Paris.
+        %li.creator
+          .row
+            .span1
+              %img{ src: 'http://lorempixel.com/100/100/people/5/' }
+            .span3
+              %h4 Ryan Matthew Smith
+              %p
+                :erb
+                  Ryan was the principal photographer and photo editor for <em>Modernist
+                  Cuisine: The Art and Science of Cooking</em>. Smith’s work has been
+                  featured by PPN, Photographer, Life, Time, The New York Times,
+                  Feature Shoot, Quo, and Abduzeedo.
+          .row
+            .span4.horizontal-divider
 
-        %li.creator.row
-          .span1
-            %img{ src: 'http://lorempixel.com/100/100/people/5/' }
-          .span3
-            %b
-              :erb
-                Ryan Matthew Smith <i class='icon-caret-right'></i> creative director
-            %p
-              :erb
-                Ryan was the principal photographer and photo editor for <em>Modernist
-                Cuisine: The Art and Science of Cooking</em>. Smith’s work has been
-                featured by PPN, Photographer, Life, Time, The New York Times,
-                Feature Shoot, Quo, and Abduzeedo.
 

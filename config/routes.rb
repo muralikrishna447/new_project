@@ -1,4 +1,6 @@
 Delve::Application.routes.draw do
+  get "styleguide" => "styleguide#index"
+
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   devise_for :users
