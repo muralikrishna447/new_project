@@ -1,12 +1,8 @@
 .navbar
   margin-bottom: 0
 
-.brand-container
-  +clearfix
-
 .navbar .brand
-  margin-top: 20px
-  padding-bottom: 8px
+  padding: 15px 0 0 0
 
 .brand-byline
   clear: left
@@ -26,9 +22,6 @@
   +box-shadow(none)
   border: 0
 
-.navbar .nav
-  margin-top: 20px
-
 .navbar .nav > li > a
   color: #333
   padding: 10px 10px 11px
@@ -45,10 +38,11 @@
   background: none
   color: #111
 
-.addthis_toolbox
-  vertical-align: baseline
-  width: 400px
-  padding-top: 10px
-  a
-    vertical-align: baseline
+.navbar .addthis-container
+  margin-top: 30px
 
+.addthis_toolbox
+  a
+    margin-left: 5px
+    &.addthis_button_google_plusone
+      margin-left: -3px
