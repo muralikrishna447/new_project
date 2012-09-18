@@ -19,14 +19,6 @@ def create_step(activity, title='', youtube_id='')
   s
 end
 
-def create_recipe(activity, title='')
-  s = Recipe.create
-  s.activity = activity
-  s.title = title
-  s.save
-  s
-end
-
 def create_admin(email, password)
   u = User.create
   u.email = email
@@ -50,6 +42,14 @@ def create_ingredient(title, product_url='')
   i
 end
 
+def create_recipe(title, activity)
+  r  = Recipe.create
+  r.title = title
+  r.activity = activity
+  r.save
+  r
+end
+
 def create_activity_equipment(activity, equipment)
   a = ActivityEquipment.new
   a.activity = activity
@@ -57,9 +57,9 @@ def create_activity_equipment(activity, equipment)
   a.save
 end
 
-def create_activity_ingredient(activity, ingredient, quantity, unit)
-  a = ActivityIngredient.new
-  a.activity = activity
+def create_recipe_ingredient(recipe, ingredient, quantity, unit)
+  a = RecipeIngredient.new
+  a.recipe = recipe
   a.ingredient = ingredient
   a.quantity = quantity
   a.unit = unit
@@ -73,15 +73,29 @@ def create_bourbon_glazed_step_by_step
     {title: "Sous Vide Equipment"}
   ]
 
-  activity_ingredients = [
-    {title: "Heinz Ketchup", quantity: 600, unit: 'g' },
-    {title: "Chicken jus", quantity: 410, unit: 'g' },
-    {title: "Cider vinegar", quantity: 120, unit: 'g' },
-    {title: "Golden brown sugar", quantity: 100, unit: 'g' },
-    {title: "Black strap molasses", quantity: 60, unit: 'g' },
-    {title: "Worchestershire", quantity: 45, unit: 'g' },
-    {title: "Ginger powder", quantity: 0.80, unit: 'g' },
-    {title: "Allspice powder", quantity: 0.75, unit: "g" }
+  recipes = [
+    {title: "Mop Sauce",
+     ingredients: [
+        {title: "Chicken jus", quantity: 410, unit: 'g' },
+        {title: "Cider vinegar", quantity: 120, unit: 'g' },
+        {title: "Golden brown sugar", quantity: 100, unit: 'g' },
+        {title: "Black strap molasses", quantity: 60, unit: 'g' },
+        {title: "Worchestershire", quantity: 45, unit: 'g' },
+        {title: "Ginger powder", quantity: 0.80, unit: 'g' },
+        {title: "Allspice powder", quantity: 0.75, unit: "g" }
+     ]
+    },
+    {title: "Awesome Sauce",
+     ingredients: [
+        {title: "Chicken jus", quantity: 410, unit: 'g' },
+        {title: "Cider vinegar", quantity: 120, unit: 'kg' },
+        {title: "Other aweome ingredient", quantity: 100, unit: 'g' },
+        {title: "Black strap molasses", quantity: 60, unit: 'g' },
+        {title: "Worchestershire", quantity: 45, unit: 'g' },
+        {title: "Ginger powder", quantity: 0.80, unit: 'g' },
+        {title: "Allspice powder", quantity: 0.75, unit: "g" }
+     ]
+    }
   ]
 
   steps = [
@@ -122,9 +136,12 @@ def create_bourbon_glazed_step_by_step
     create_activity_equipment(activity, item)
   end
 
-  activity_ingredients.each do |ingredient|
-    item = create_ingredient(ingredient[:title])
-    create_activity_ingredient(activity, item, ingredient[:quantity], ingredient[:unit])
+  recipes.each do |r|
+    recipe = create_recipe(r[:title], activity)
+    r[:ingredients].each do |ingredient|
+      item = create_ingredient(ingredient[:title])
+      create_recipe_ingredient(recipe, item, ingredient[:quantity], ingredient[:unit])
+    end
   end
 
   steps.each do |step|

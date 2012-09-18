@@ -15,20 +15,21 @@
     .row
       .span8
         %h5 Ingredients
-        %table.ingredients
-          %thead
-            %tr
-              %th Mop Sauce
-              %th{colspan: 2} Weight
-              %th
-                %i.icon-caret-down
-          %tbody
-            - activity.ingredients.each do |ingredient|
+        - activity.recipes.each do |recipe|
+          %table.ingredients
+            %thead
               %tr
-                %td= ingredient.title
-                %td.quantity= ingredient.quantity
-                %td= ingredient.unit
-                %td
+                %th=recipe.title
+                %th{colspan: 2} Weight
+                %th
+                  %i.icon-caret-down
+            %tbody
+              - recipe.ingredients.each do |ingredient|
+                %tr
+                  %td= ingredient.title
+                  %td.quantity= ingredient.quantity
+                  %td= ingredient.unit
+                  %td
       .span4
         .row
           .span4

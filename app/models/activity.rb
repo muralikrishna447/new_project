@@ -1,11 +1,10 @@
 class Activity < ActiveRecord::Base
-  has_many :activity_ingredients
   has_many :activity_equipment
 
   has_many :recipes
   has_many :steps, dependent: :destroy
   has_many :equipment, through: :activity_equipment
-  has_many :ingredients, class_name: ActivityIngredient
+  has_many :ingredients, through: :recipes
 
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, as: :admin
 
@@ -30,8 +29,8 @@ class Activity < ActiveRecord::Base
     activities[i-1]
   end
 
-  def spec_sheet?
-    equipment.count > 0 && ingredients.count > 0
+  def overview?
+    equipment.count > 0 || ingredients.count > 0 || description.present?
   end
 
   def step_by_step?

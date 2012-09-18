@@ -10,7 +10,7 @@
       .span12
         .video-container
           %iframe{src: youtube_url(activity.youtube_id)}
-- if activity.spec_sheet?
+- if activity.overview?
   = render 'overview', activity: activity
 - if activity.step_by_step?
   = render 'step_by_step', activity: activity
