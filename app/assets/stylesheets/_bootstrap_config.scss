@@ -29,7 +29,7 @@ $orange:                #f89406;
 $pink:                  #c3325f;
 $purple:                #7a43b6;
 $brick:                 #aa4311;
-$brickLight:           #FFBC99;
+$brickLight:            #FFBC99;
 
 
 // Scaffolding
@@ -50,12 +50,12 @@ $sansFontFamily:        "Helvetica Neue", Helvetica, Arial, sans-serif;
 $serifFontFamily:       Georgia, "Times New Roman", Times, serif;
 $monoFontFamily:        Monaco, Menlo, Consolas, "Courier New", monospace;
 
-$baseFontSize:          12px;
-$baseFontFamily:        $serifFontFamily;
+$baseFontSize:          16px;
+$baseFontFamily:        $sansFontFamily;
 $baseLineHeight:        18px;
-$altFontFamily:         $sansFontFamily;
+$altFontFamily:         $serifFontFamily;
 
-$headingsFontFamily:    $baseFontFamily; // empty to use BS default, $baseFontFamily
+$headingsFontFamily:    $serifFontFamily; // empty to use BS default, $baseFontFamily
 $headingsFontWeight:    normal;    // instead of browser default, bold
 $headingsColor:         inherit; // empty to use BS default, $textColor
 
