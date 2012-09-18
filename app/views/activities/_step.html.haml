@@ -3,20 +3,16 @@
     %h3
       :erb
         <strong><%="Step #{count}: "%></strong><%=step.title%>
-    .well
-      %h6 Ingredients
-      %table
-        %tr
-          %td Chicken breasts
-          %td 60
-          %td kg
-        %tr
-          %td Stuff
-          %td 60
-          %td g
-    %ul
-      %li Remove covering skin from breasts.
-      %li Peel away "tenders" from breasts.
+    - if step.ingredients.any?
+      .well
+        %h6 Ingredients
+        %table
+          - step.ingredients.each do |ingredient|
+            %tr
+              %td= ingredient.title
+              %td= quantity_number(ingredient.quantity)
+              %td= ingredient.unit
+    %p= step.directions
   .span8
     .well.video
       .video-container

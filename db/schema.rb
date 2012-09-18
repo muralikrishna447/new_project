@@ -11,13 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120911170416) do
+ActiveRecord::Schema.define(:version => 20120918210534) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.string   "youtube_id"
+    t.string   "difficulty"
+    t.integer  "cooked_this", :default => 0
+    t.string   "yield"
+    t.text     "timing"
+    t.text     "description"
   end
 
   create_table "activity_equipment", :force => true do |t|
@@ -28,16 +33,6 @@ ActiveRecord::Schema.define(:version => 20120911170416) do
   end
 
   add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
-
-  create_table "activity_ingredients", :force => true do |t|
-    t.integer  "activity_id",   :null => false
-    t.integer  "ingredient_id", :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.string   "quantity"
-  end
-
-  add_index "activity_ingredients", ["activity_id", "ingredient_id"], :name => "index_activity_ingredients_on_activity_id_and_ingredient_id", :unique => true
 
   create_table "equipment", :force => true do |t|
     t.string   "title"
@@ -67,6 +62,37 @@ ActiveRecord::Schema.define(:version => 20120911170416) do
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
 
+  create_table "recipe_ingredients", :force => true do |t|
+    t.integer  "recipe_id",     :null => false
+    t.integer  "ingredient_id", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "unit"
+    t.decimal  "quantity"
+  end
+
+  add_index "recipe_ingredients", ["recipe_id", "ingredient_id"], :name => "index_recipe_ingredients_on_recipe_id_and_ingredient_id", :unique => true
+
+  create_table "recipes", :force => true do |t|
+    t.string   "title"
+    t.integer  "activity_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "recipes", ["activity_id"], :name => "index_recipes_on_activity_id"
+
+  create_table "step_ingredients", :force => true do |t|
+    t.integer  "step_id",       :null => false
+    t.integer  "ingredient_id", :null => false
+    t.decimal  "quantity",      :null => false
+    t.string   "unit",          :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "step_ingredients", ["step_id", "ingredient_id"], :name => "index_step_ingredients_on_step_id_and_ingredient_id", :unique => true
+
   create_table "steps", :force => true do |t|
     t.string   "title"
     t.integer  "activity_id"
@@ -74,9 +100,12 @@ ActiveRecord::Schema.define(:version => 20120911170416) do
     t.datetime "updated_at",  :null => false
     t.string   "youtube_id"
     t.integer  "step_order"
+    t.integer  "recipe_id"
+    t.text     "directions"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
+  add_index "steps", ["recipe_id"], :name => "index_steps_on_recipe_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

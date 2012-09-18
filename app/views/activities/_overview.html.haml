@@ -1,54 +1,42 @@
-- difficulty_level = "easy"
 #overview
   .container
     .row
       .span8
-        %h1=activity.title
-        %p
-          Banh mi adipisicing odd future, squid you probably haven't heard of
-          them ex wolf eu labore blog ad. Pour-over brooklyn fingerstache
-          delectus, id terry richardson wolf pickled master cleanse eiusmod odd
-          future. Lomo banh mi proident odd future do marfa. Incididunt ea qui
-          cliche twee bushwick, ex seitan helvetica craft beer pinterest irure.
-          Food truck duis ethnic, gentrify consequat pickled sapiente selvage
-          lo-fi. Quis bicycle rights cardigan put a bird on it direct trade
-          consequat, aute brunch commodo. Blog pop-up narwhal, sustainable
-          american apparel seitan gastropub keytar banh mi irure pour-over enim
-          godard tofu et.
+        %h1= activity.title
+        %p= activity.description
       .span4
         %h5 Difficulty Level
-        %span{ class: "difficulty #{difficulty_level}"}
-          Easy
+        %span{ class: "difficulty #{activity.difficulty.downcase}"}
+          = activity.difficulty.capitalize
         .horizontal-divider
-        %span 72 Cooked This
+          %span== #{activity.cooked_this} Cooked This
       .span12
         .horizontal-divider
     .row
       .span8
         %h5 Ingredients
-        %table.ingredients
-          %thead
-            %tr
-              %th Mop Sauce
-              %th{colspan: 2} Weight
-              %th
-                %i.icon-caret-down
-          %tbody
-            - activity.ingredients.each do |ingredient|
+        - activity.recipes.each do |recipe|
+          %table.ingredients
+            %thead
               %tr
-                %td= ingredient.title
-                %td.quantity= ingredient.quantity
-                %td kg
-                %td
+                %th=recipe.title
+                %th{colspan: 2} Weight
+                %th
+                  %i.icon-caret-down
+            %tbody
+              - recipe.ingredients.each do |ingredient|
+                %tr
+                  %td= ingredient.title
+                  %td.quantity= quantity_number(ingredient.quantity)
+                  %td= ingredient.unit
+                  %td
       .span4
         .row
           .span4
             %h5 Yield
-            %p 800 g(~4 portions)
+            %p= activity.yield
             %h5 Timing
-            %p
-              74 hours overall including 34 mins preperation and 35 mins to
-              reheat and finish
+            %p= activity.timing
         .row
           .span4
             %h5 Equipment
@@ -74,3 +62,4 @@
                       %li= link_to item.title, item.product_url
                     - else
                       %li= item.title
+

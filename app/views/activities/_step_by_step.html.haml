@@ -1,13 +1,25 @@
 .hero-unit.gray
   .container#step-by-step
-    .row
-      .span12
-        %h4 Step-by-Steps
-    - activity.steps.each_with_index do |step, i|
-      = render 'step', step: step, count: i+1
+    - activity.recipes.each do |recipe|
+      - if recipe.steps.any?
+        .row
+          .span12
+            %h4= recipe.title
+            - recipe.steps.each_with_index do |step, i|
+              = render 'step', step: step, count: i+1
+              .row
+                .span12
+                  .horizontal-divider
+
+    - if activity.steps.any?
       .row
         .span12
-          .horizontal-divider
+          %h4 Assembly Steps
+      - activity.steps.each_with_index do |step, i|
+        = render 'step', step: step, count: i+1
+        .row
+          .span12
+            .horizontal-divider
     .row
       .span12
         %button.cooked-this
