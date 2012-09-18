@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918174110) do
+ActiveRecord::Schema.define(:version => 20120918175153) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
@@ -34,7 +34,8 @@ ActiveRecord::Schema.define(:version => 20120918174110) do
     t.integer  "ingredient_id", :null => false
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-    t.string   "quantity"
+    t.string   "unit"
+    t.decimal  "quantity"
   end
 
   add_index "activity_ingredients", ["activity_id", "ingredient_id"], :name => "index_activity_ingredients_on_activity_id_and_ingredient_id", :unique => true
