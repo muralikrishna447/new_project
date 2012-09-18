@@ -5,7 +5,7 @@ def create_activity(activity)
   a.difficulty = activity[:difficulty]
   a.yield = activity[:yield]
   a.timing = activity[:timing]
-  a.cooked_this_count = 0
+  a.description = activity[:description]
   a.save
   a
 end
@@ -106,6 +106,12 @@ def create_bourbon_glazed_step_by_step
     title: "Bourbon Glazed Smoked Chicken Breast",
     youtube_id: "TvdqT6FMmgw",
     difficulty: "Easy",
+    description: "dio twee umami chambray. Velit VHS ad godard PBR american
+    apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+    aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+    Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+    sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+    rights twee nulla mumblecore cosb",
     yield: "800g(~4 portions)",
     timing: "74 hours overall including 34 mins preperation and 35 misn to reheat and finish"
   }

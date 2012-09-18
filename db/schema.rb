@@ -11,17 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918180334) do
+ActiveRecord::Schema.define(:version => 20120918181437) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.string   "youtube_id"
     t.string   "difficulty"
-    t.integer  "cooked_this_count", :default => 0
+    t.integer  "cooked_this", :default => 0
     t.string   "yield"
     t.text     "timing"
+    t.text     "description"
   end
 
   create_table "activity_equipment", :force => true do |t|
