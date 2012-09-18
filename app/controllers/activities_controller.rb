@@ -1,21 +1,25 @@
 class ActivitiesController < ApplicationController
   include AggressiveCaching
-  expose (:activity)
+  expose(:activity)
 
   def show
-    if session[:cooked_ids].nil?
-      session[:cooked_ids] = []
-    end
-    Rails.logger.info"\n\n\n\n************* #{session.inspect}"
-    @cooked_this = session[:cooked_ids].include?(activity.id.to_s)
+    session[:cooked_ids] = []
+    session[:cooked_ids] ||= []
+    @cooked_this = session[:cooked_ids].include?(activity.id)
   end
 
   def cooked_this
-    activity = Activity.find(params[:id])
+    id = params[:id].to_i
+    return unless id > 0
+    return if session[:cooked_ids] && session[:cooked_ids].include?(id)
+
+    activity = Activity.find_by_id(id)
+    return if activity.nil?
+
     @cooked_count = activity.cooked_this += 1
     if activity.save
-      session[:cooked_ids] << params[:id]
-      Rails.logger.info"\n\n\n\n************* #{session.inspect}"
+      session[:cooked_ids] ||= []
+      session[:cooked_ids] << id
       render 'cooked_success', format: :js
     end
   end

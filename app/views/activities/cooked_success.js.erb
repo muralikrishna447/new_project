@@ -1,5 +1,6 @@
 var $cooked_button = $('button.cooked-this');
-$cooked_button.attr('disabled', true);
+$cooked_button.replaceWith("<h4><%= @cooked_count %> people cooked this, including you. Comment below with how it went!</h4>");
+
 var $cooked_count = $('#cooked-count');
 $cooked_count.text("<%= @cooked_count %>");
 
