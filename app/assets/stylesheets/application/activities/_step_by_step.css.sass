@@ -28,11 +28,17 @@
   border-width: 2px
   margin-bottom: 20px
 
-.cooked-this
+button.cooked-this
   background: $brick
   color: $white
   text-transform: uppercase
-  border: 1px dashed $white
-  margin: 5px
-  padding: 10px
+  border: none
+  +border-radius(5px)
+  padding: 3px
+  .inner
+    border: 1px dashed $white
+    +border-radius(5px)
+    padding: 10px 15px
+    span
+      vertical-align: bottom
 

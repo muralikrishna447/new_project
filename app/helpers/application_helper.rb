@@ -3,3 +3,4 @@ module ApplicationHelper
     number_with_precision(quantity, precision: 2, strip_insignificant_zeros: true)
   end
 end
+
