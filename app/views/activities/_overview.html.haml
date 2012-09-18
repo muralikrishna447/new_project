@@ -18,7 +18,8 @@
         .row
           .span4
             %i.icon-pot-brick
-            %span== #{activity.cooked_this} Cooked This
+            %span#cooked-count= activity.cooked_this
+            %span Cooked This
       .span12
         .horizontal-divider
     .row

@@ -22,8 +22,9 @@
             .horizontal-divider
     .row
       .span12
-        %button.cooked-this
-          .inner
-            %i.icon-pot-white
-            %span I cooked this!
+        = form_tag cooked_this_activity_path, remote: true do
+          = button_tag disable: @cooked_this, class: 'cooked-this' do
+            .inner
+              %i.icon-pot-white
+              %span I cooked this!
 
