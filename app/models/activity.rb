@@ -30,7 +30,7 @@ class Activity < ActiveRecord::Base
   end
 
   def overview?
-    equipment.count > 0 || ingredients.count > 0 || description.present?
+    equipment.any? || ingredients.any? || description.present?
   end
 
   def step_by_step?
