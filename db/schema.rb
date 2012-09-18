@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918200048) do
+ActiveRecord::Schema.define(:version => 20120918205119) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(:version => 20120918200048) do
     t.string   "youtube_id"
     t.integer  "step_order"
     t.integer  "recipe_id"
+    t.text     "directions"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
