@@ -3,11 +3,11 @@
   .container
     .row
       .span1
-        =link_to "<", model.prev, { class: "#{'disabled' if model.prev.nil?}" }
+        =link_to "»", model.prev, { class: "#{'disabled' if model.prev.nil?}" }
       .span4
         %h4= model.title
       .span1
-        =link_to ">", model.next, { class: "#{'disabled' if model.next.nil?}" }
+        =link_to "»", model.next, { class: "#{'disabled' if model.next.nil?}" }
       .span6
         %ul.horizontal-list
           %li

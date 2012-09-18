@@ -1,0 +1,48 @@
+#overview
+  h1
+    +font-serif-large
+    color: $brick
+  h5
+    +font-serif-medium
+    color: $grayLight
+    text-transform: uppercase
+  p
+    +font-sans-medium
+  span
+    +font-sans-medium
+    text-transform: uppercase
+    font-weight: bold
+  .horizontal-divider
+    margin: 10px 0
+  .difficulty
+    &:before
+      content: ''
+      display: block
+      height: 26px
+      padding-right: 30px
+      width: 32px
+    &.easy
+      &:before
+        background: url('/assets/difficulty-easy.png')
+
+  ul.equipment
+    li
+      list-style-type: disc
+      +font-sans-medium
+
+  table.ingredients
+    width: 100%
+    +font-sans-medium
+    thead
+      color: $white
+      background: $gray
+      th
+        padding: 10px
+    tbody
+      tr
+        color: $black
+        td
+          padding-left: 10px
+        td:first-child
+          width: 100%
+
