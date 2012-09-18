@@ -10,11 +10,12 @@ def create_activity(activity)
   a
 end
 
-def create_step(activity, title='', youtube_id='')
+def create_step(step)
   s = Step.create
-  s.activity = activity
-  s.title = title
-  s.youtube_id = youtube_id
+  s.activity = step[:activity]
+  s.recipe = step[:recipe]
+  s.title = step[:title]
+  s.youtube_id = step[:youtube_id]
   s.save
   s
 end
@@ -67,55 +68,6 @@ def create_recipe_ingredient(recipe, ingredient, quantity, unit)
 end
 
 def create_bourbon_glazed_step_by_step
-  activity_equipment = [
-    {title: "Smoker", product_url: "http://www.amazon.com/dp/B00104WRCY/?tag=hyprod-20&hvadid=15475540419&hvpos=1o2&hvexid=&hvnetw=g&hvrand=15365057922131986741&hvpone=&hvptwo=&hvqmt=&ref=asc_df_B00104WRCY"},
-    {title: "Brine Tank"},
-    {title: "Sous Vide Equipment"}
-  ]
-
-  recipes = [
-    {title: "Mop Sauce",
-     ingredients: [
-        {title: "Chicken jus", quantity: 410, unit: 'g' },
-        {title: "Cider vinegar", quantity: 120, unit: 'g' },
-        {title: "Golden brown sugar", quantity: 100, unit: 'g' },
-        {title: "Black strap molasses", quantity: 60, unit: 'g' },
-        {title: "Worchestershire", quantity: 45, unit: 'g' },
-        {title: "Ginger powder", quantity: 0.80, unit: 'g' },
-        {title: "Allspice powder", quantity: 0.75, unit: "g" }
-     ]
-    },
-    {title: "Awesome Sauce",
-     ingredients: [
-        {title: "Chicken jus", quantity: 410, unit: 'g' },
-        {title: "Cider vinegar", quantity: 120, unit: 'kg' },
-        {title: "Other aweome ingredient", quantity: 100, unit: 'g' },
-        {title: "Black strap molasses", quantity: 60, unit: 'g' },
-        {title: "Worchestershire", quantity: 45, unit: 'g' },
-        {title: "Ginger powder", quantity: 0.80, unit: 'g' },
-        {title: "Allspice powder", quantity: 0.75, unit: "g" }
-     ]
-    }
-  ]
-
-  steps = [
-    { title: "Trim the breast meat",
-      video: "TvdqT6FMmgw"
-    },
-    { title: "Prepare the brine",
-      video: "hLsazIkED2I"
-    },
-    { title: "Cook chicken breasts, sous vide"},
-    { title: "Prepare Mopping Sauce",
-      video: "hLsazIkED2I"
-    },
-    { title: "Prepare the Garninishing Spice Rub",
-      video: "hLsazIkED2I"
-    },
-    { title: "Smoke Brined Chicken Breast"},
-    { title: "Finish and Package"}
-  ]
-
   glaze = {
     title: "Bourbon Glazed Smoked Chicken Breast",
     youtube_id: "TvdqT6FMmgw",
@@ -129,7 +81,54 @@ def create_bourbon_glazed_step_by_step
     yield: "800g(~4 portions)",
     timing: "74 hours overall including 34 mins preperation and 35 misn to reheat and finish"
   }
+
+  activity_equipment = [
+    {title: "Smoker", product_url: "http://www.amazon.com/dp/B00104WRCY/?tag=hyprod-20&hvadid=15475540419&hvpos=1o2&hvexid=&hvnetw=g&hvrand=15365057922131986741&hvpone=&hvptwo=&hvqmt=&ref=asc_df_B00104WRCY"},
+    {title: "Brine Tank"},
+    {title: "Sous Vide Equipment"}
+  ]
+
   activity = create_activity(glaze)
+
+  recipes = [
+    {title: "Mop Sauce",
+     ingredients: [
+        {title: "Chicken jus", quantity: 410, unit: 'g' },
+        {title: "Cider vinegar", quantity: 120, unit: 'g' },
+        {title: "Golden brown sugar", quantity: 100, unit: 'g' },
+        {title: "Black strap molasses", quantity: 60, unit: 'g' },
+        {title: "Worchestershire", quantity: 45, unit: 'g' },
+        {title: "Ginger powder", quantity: 0.80, unit: 'g' },
+        {title: "Allspice powder", quantity: 0.75, unit: "g" }
+     ],
+      steps: [
+     ]
+    },
+    {title: "Awesome Sauce",
+     ingredients: [
+        {title: "Chicken jus", quantity: 410, unit: 'g' },
+        {title: "Cider vinegar", quantity: 120, unit: 'kg' },
+        {title: "Other aweome ingredient", quantity: 100, unit: 'g' },
+        {title: "Black strap molasses", quantity: 60, unit: 'g' },
+        {title: "Worchestershire", quantity: 45, unit: 'g' },
+        {title: "Ginger powder", quantity: 0.80, unit: 'g' },
+        {title: "Allspice powder", quantity: 0.75, unit: "g" }
+     ],
+      steps: [
+        {title: 'Make the sauce',
+        youtube_id: "TvdqT6FMmgw"
+        }
+     ]
+    }
+  ]
+
+  activity_steps = [
+    { activity: activity,
+      title: "Trim the breast meat",
+      youtube_id: "TvdqT6FMmgw"
+    }
+  ]
+
 
   activity_equipment.each do |equipment|
     item = create_equipment(equipment[:title], equipment[:product_url])
@@ -142,10 +141,14 @@ def create_bourbon_glazed_step_by_step
       item = create_ingredient(ingredient[:title])
       create_recipe_ingredient(recipe, item, ingredient[:quantity], ingredient[:unit])
     end
+    r[:steps].each do |step|
+      step[:recipe] = recipe
+      create_step(step)
+    end
   end
 
-  steps.each do |step|
-    create_step(activity, step[:title], step[:video])
+  activity_steps.each do |step|
+    create_step(step)
   end
 
 end
