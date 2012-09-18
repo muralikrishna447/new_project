@@ -1,7 +1,11 @@
-def create_activity(title, youtube_id='')
+def create_activity(activity)
   a = Activity.create
-  a.title = title
-  a.youtube_id = youtube_id
+  a.title = activity[:title]
+  a.youtube_id = activity[:youtube_id]
+  a.difficulty = activity[:difficulty]
+  a.yield = activity[:yield]
+  a.timing = activity[:timing]
+  a.cooked_this_count = 0
   a.save
   a
 end
@@ -53,11 +57,12 @@ def create_activity_equipment(activity, equipment)
   a.save
 end
 
-def create_activity_ingredient(activity, ingredient, quantity)
+def create_activity_ingredient(activity, ingredient, quantity, unit)
   a = ActivityIngredient.new
   a.activity = activity
   a.ingredient = ingredient
   a.quantity = quantity
+  a.unit = unit
   a.save
 end
 
@@ -69,14 +74,14 @@ def create_bourbon_glazed_step_by_step
   ]
 
   activity_ingredients = [
-    {title: "Heinz Ketchup", quantity: "600" },
-    {title: "Chicken jus", quantity: "410" },
-    {title: "Cider vinegar", quantity: "120" },
-    {title: "Golden brown sugar", quantity: "100" },
-    {title: "Black strap molasses", quantity: "60" },
-    {title: "Worchestershire", quantity: "45" },
-    {title: "Ginger powder", quantity: "0.80" },
-    {title: "Allspice powder", quantity: "0.75" }
+    {title: "Heinz Ketchup", quantity: 600, unit: 'g' },
+    {title: "Chicken jus", quantity: 410, unit: 'g' },
+    {title: "Cider vinegar", quantity: 120, unit: 'g' },
+    {title: "Golden brown sugar", quantity: 100, unit: 'g' },
+    {title: "Black strap molasses", quantity: 60, unit: 'g' },
+    {title: "Worchestershire", quantity: 45, unit: 'g' },
+    {title: "Ginger powder", quantity: 0.80, unit: 'g' },
+    {title: "Allspice powder", quantity: 0.75, unit: "g" }
   ]
 
   steps = [
@@ -96,7 +101,15 @@ def create_bourbon_glazed_step_by_step
     { title: "Smoke Brined Chicken Breast"},
     { title: "Finish and Package"}
   ]
-  activity = create_activity("Bourbon Glazed Smoked Chicken Breast", "TvdqT6FMmgw")
+
+  glaze = {
+    title: "Bourbon Glazed Smoked Chicken Breast",
+    youtube_id: "TvdqT6FMmgw",
+    difficulty: "Easy",
+    yield: "800g(~4 portions)",
+    timing: "74 hours overall including 34 mins preperation and 35 misn to reheat and finish"
+  }
+  activity = create_activity(glaze)
 
   activity_equipment.each do |equipment|
     item = create_equipment(equipment[:title], equipment[:product_url])
@@ -105,7 +118,7 @@ def create_bourbon_glazed_step_by_step
 
   activity_ingredients.each do |ingredient|
     item = create_ingredient(ingredient[:title])
-    create_activity_ingredient(activity, item, ingredient[:quantity])
+    create_activity_ingredient(activity, item, ingredient[:quantity], ingredient[:unit])
   end
 
   steps.each do |step|
@@ -117,4 +130,4 @@ end
 create_admin('shaun@substantial.com', 'asdfasdf')
 create_admin('aaron@substantial.com', 'asdfasdf')
 create_bourbon_glazed_step_by_step
-create_activity("Lecture", 'ydOB-YNJ8Jw')
+create_activity({title:"Lecture", youtube_id: 'ydOB-YNJ8Jw'})
