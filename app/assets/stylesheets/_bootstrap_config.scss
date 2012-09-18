@@ -70,8 +70,8 @@ $tableBorder:                       #ddd; // table and cell border
 
 // Buttons
 // -------------------------
-$btnBackground:                     $white;
-$btnBackgroundHighlight:            darken($white, 10%);
+$btnBackground:                     $brick;
+$btnBackgroundHighlight:            darken($$btnBackgroundHighlight, 10%);
 $btnBorder:                         #bbb;
 
 $btnPrimaryBackground:              $linkColor;
