@@ -1,6 +1,15 @@
 .hero-unit.gray
   .container#step-by-step
-    %h4 Step-by-Steps
+    .row
+      .span12
+        %h4 Step-by-Steps
     - activity.steps.each_with_index do |step, i|
       = render 'step', step: step, count: i+1
+      .row
+        .span12
+          .horizontal-divider
+    .row
+      .span12
+        %button
+          I cooked this!
 
