@@ -9,10 +9,16 @@
     +font-serif-medium
     color: $black
     box-shadow: none
+    +input-placeholder
+      color: $grayDark
   button
     position: relative
     color: $brick
     height: 38px
+    &:hover
+      background: $white
+      i[class^="icon-"]
+        color: $brickDark
     &:before
       position: absolute
       content: ''

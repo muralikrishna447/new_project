@@ -78,6 +78,14 @@ iframe
 .img-profile
   +border-radius(3px)
 
+=input-placeholder
+  &::-webkit-input-placeholder
+    @content
+  &:-moz-placeholder
+    @content
+  &:-ms-input-placeholder
+    @content
+
 @import application/header
 @import application/navigation
 @import application/carousel
