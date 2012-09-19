@@ -3,7 +3,6 @@ class ActivitiesController < ApplicationController
   expose(:activity)
 
   def show
-    session[:cooked_ids] = []
     session[:cooked_ids] ||= []
     @cooked_this = session[:cooked_ids].include?(activity.id)
   end
