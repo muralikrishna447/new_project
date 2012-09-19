@@ -3,7 +3,7 @@
 @import font-awesome
 
 @import application/fonts
-@import compass/utilities/sprites/sprite-img
+@import application/sprites
 
 .hero-unit
   color: $white
@@ -37,12 +37,12 @@ ul.horizontal-list
   color: $white
 
 .icon-pot-brick
-  +sprite-img("icons/pot-brick.png", 1)
+  +icons-sprite(pot-brick, $dimensions: true)
   display: inline-block
   vertical-align: middle
 
 .icon-pot-white
-  +sprite-img("icons/pot-white.png", 1)
+  +icons-sprite(pot-white, $dimensions: true)
   display: inline-block
   vertical-align: middle
 
