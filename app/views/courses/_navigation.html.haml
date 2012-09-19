@@ -6,7 +6,7 @@
         %ul.nav.nav-activities
           %li
             - if model.prev.present?
-              = link_to model.prev, { class: "#{'disabled' if model.prev.nil?}" } do
+              = link_to model.prev do
                 %i.icon-double-chevron-left
             - else
               %a
@@ -15,8 +15,12 @@
             .navbar-text
               %h4= model.title
           %li
-            = link_to model.next, { class: "#{'disabled' if model.next.nil?}" } do
-              %i.icon-double-chevron-right
+            - if model.next.present?
+              = link_to model.next do
+                %i.icon-double-chevron-right
+            - else
+              %a
+                %i.icon-double-chevron-right.disabled
         %ul.nav.nav-anchors.pull-right
           %li
             %a.icon-info-sign.icon-white{href: '#overview'}
