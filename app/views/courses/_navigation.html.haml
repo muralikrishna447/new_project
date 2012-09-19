@@ -1,22 +1,30 @@
 %div{ data: { behavior: 'stick-to-top-anchor' } }
 .sticky-navbar{ data: { behavior: 'stick-to-top' } }
   .container
-    .row
-      .span1
-        =link_to "<<", model.prev, { class: "#{'disabled' if model.prev.nil?}" }
-      .span4
-        %h4= model.title
-      .span1
-        =link_to "»", model.next, { class: "#{'disabled' if model.next.nil?}" }
-      .span6
-        %ul.horizontal-list
+    .navbar
+      .navbar-inner
+        %ul.nav.nav-activities
           %li
-            %i.icon-info-sign.icon-white
-            %a{href: '#overview'} Overview
+            - if model.prev.present?
+              = link_to model.prev, { class: "#{'disabled' if model.prev.nil?}" } do
+                %i.icon-double-chevron-left
+            - else
+              %a
+                %i.icon-double-chevron-left.disabled
           %li
-            %i.icon-list-ol.icon-white
-            %a{href: '#step-by-step'} Step-By-Step
+            .navbar-text
+              %h4= model.title
           %li
-            %i.icon-comment.icon-white
-            %a{href: '#disqus_thread'} Comments
+            = link_to model.next, { class: "#{'disabled' if model.next.nil?}" } do
+              %i.icon-double-chevron-right
+        %ul.nav.nav-anchors.pull-right
+          %li
+            %a.icon-info-sign.icon-white{href: '#overview'}
+              Overview
+          %li
+            %a.icon-list-ol.icon-white{href: '#step-by-step'}
+              Step-By-Step
+          %li
+            %a.icon-comment{href: '#disqus_thread'}
+              Comments
 
