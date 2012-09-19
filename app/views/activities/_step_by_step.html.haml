@@ -26,7 +26,7 @@
           %h4== #{activity.cooked_this} people cooked this, including you. Comment below with how it went!
         - else
           = form_tag cooked_this_activity_path, remote: true do
-            = button_tag disabled: @cooked_this, class: 'cooked-this' do
+            %button.cooked-this{ data: { remote: true, method: :post } }
               .inner
                 %i.icon-pot-white
                 %span I cooked this!
