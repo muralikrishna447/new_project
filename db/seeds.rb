@@ -16,6 +16,7 @@ def create_step(step)
   s.recipe = step[:recipe]
   s.title = step[:title]
   s.youtube_id = step[:youtube_id]
+  s.directions = step[:directions]
   s.save
 
   step[:ingredients].each do |ingredient|
@@ -131,6 +132,10 @@ def create_bourbon_glazed_step_by_step
       steps: [
         {title: 'Make the sauce',
         youtube_id: "TvdqT6FMmgw",
+        directions: "
+* Open bottle
+* Do stuff
+* Do other stuff",
         ingredients: [
           {title: "Chicken jus", quantity: 410, unit: 'g' },
           {title: "Cider vinegar", quantity: 120, unit: 'kg' },
@@ -147,6 +152,10 @@ def create_bourbon_glazed_step_by_step
     { activity: activity,
       title: "Trim the breast meat",
       youtube_id: "TvdqT6FMmgw",
+      directions: "
+* Mix the stuff
+* Refigerate stuff
+* Do other stuff",
       ingredients: []
     }
   ]
@@ -179,3 +188,4 @@ create_admin('shaun@substantial.com', 'asdfasdf')
 create_admin('aaron@substantial.com', 'asdfasdf')
 create_bourbon_glazed_step_by_step
 create_activity({title:"Lecture", youtube_id: 'ydOB-YNJ8Jw'})
+

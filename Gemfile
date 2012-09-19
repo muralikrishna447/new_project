@@ -15,6 +15,7 @@ gem 'decent_exposure'
 gem 'ranked-model'
 gem 'gibbon'
 gem 'newrelic_rpm'
+gem 'rdiscount'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -45,3 +46,4 @@ group :guard do
   gem 'growl'
   gem 'rb-fsevent'
 end
+
