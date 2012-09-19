@@ -105,7 +105,7 @@ def build_activity(activity_data)
   if activity_data[:recipes].present?
     activity_data[:recipes].each do |r|
       recipe = create_recipe(r[:title], activity)
-      if r[:ingredients].any?
+      if r[:ingredients].present?
         r[:ingredients].each do |ingredient|
           item = create_ingredient(ingredient[:title])
           create_recipe_ingredient(recipe, item, ingredient[:quantity], ingredient[:unit])
