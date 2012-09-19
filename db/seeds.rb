@@ -124,7 +124,7 @@ def build_admin(admin_data)
   create_admin(admin_data[:email], admin_data[:password])
 end
 
-@seed_data = YAML::load(File.open(File.join(Rails.root, "db", "seeds.yml")))
+@seed_data = HashWithIndifferentAccess.new(YAML::load(File.open(File.join(Rails.root, "db", "seeds.yml"))))
 
 @seed_data[:admins].each do |admin|
   build_admin(admin)

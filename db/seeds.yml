@@ -1,58 +1,66 @@
-:admins:
-- :email: shaun@substantial.com
-  :password: asdfasdf
-- :email: aaron@substantial.com
-  :password: asdfasdf
+admins:
+- email: shaun@substantial.com
+  password: asdfasdf
 
-:activities:
-- :title: Lecture
-  :youtube_id: ydOB-YNJ8Jw
-- :title: Bourbon Glazed Smoked Chicken Breast
-  :youtube_id: TvdqT6FMmgw
-  :difficulty: Easy
-  :description: "dio twee umami chambray. Velit VHS ad godard PBR american
+- email: aaron@substantial.com
+  password: asdfasdf
+
+activities:
+- title: Lecture
+  youtube_id: ydOB-YNJ8Jw
+
+- title: Bourbon Glazed Smoked Chicken Breast
+  youtube_id: TvdqT6FMmgw
+  difficulty: Easy
+  description: "dio twee umami chambray. Velit VHS ad godard PBR american
   apparel. Placeat odio leggings typewriter chambray master cleanse squid,
   aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
   Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
   sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
   rights twee nulla mumblecore cosb"
-  :yield: 800g(~4 portions)
-  :timing: 74 hours overall including 34 mins preperation and 35 misn to reheat and finish
-  :activity_equipment:
-  - :title: Smoker
-    :product_url: "http://www.amazon.com/dp/B00104WRCY/?tag=hyprod-20&hvadid=15475540419&hvpos=1o2&hvexid=&hvnetw=g&hvrand=15365057922131986741&hvpone=&hvptwo=&hvqmt=&ref=asc_df_B00104WRCY"
-    :optional: false
-  - :title: Brine Tank
-    :optional: true
-  - :title: Sous Vide Equipment
-    :optional: false
-  :activity_steps:
-  - :title: Trim the breast meat
-    :youtube_id: TvdqT6FMmgw
-    :directions: "
+  yield: 800g(~4 portions)
+  timing: 74 hours overall including 34 mins preperation and 35 misn to reheat and finish
+  activity_equipment:
+  - title: Smoker
+    product_url: "http://www.amazon.com/dp/B00104WRCY/?tag=hyprod-20&hvadid=15475540419&hvpos=1o2&hvexid=&hvnetw=g&hvrand=15365057922131986741&hvpone=&hvptwo=&hvqmt=&ref=asc_df_B00104WRCY"
+    optional: false
+
+  - title: Brine Tank
+    optional: true
+
+  - title: Sous Vide Equipment
+    optional: false
+
+  activity_steps:
+  - title: Trim the breast meat
+    youtube_id: TvdqT6FMmgw
+    directions: "
       * Mix the stuff\n
       * Refigerate stuff\n
       * Do other stuff"
-  :recipes:
-  - :title: Mop Sauce
-    :ingredients:
-    - :title: Chicken jus
-      :quantity: 410
-      :unit: g
-  :steps:
-  - :title: Make the sauce
-    :youtube_id: TvdqT6FMmgw
-    :directions: "
-      * Open bottle\n
-      * Do stuff\n
-      * Do other stuff"
-    :ingredients:
-    - :title: Chicken jus
-      :quantity: 410
-      :unit: g
-    - :title: Cider vinegar
-      :quantity: 120
-      :unit: g
-    - :title: Golden brown sugar
-      :quantity: 100
-      :unit: g
+
+  recipes:
+  - title: Mop Sauce
+    ingredients:
+    - title: Chicken jus
+      quantity: 410
+      unit: g
+    steps:
+    - title: Make the sauce
+      youtube_id: TvdqT6FMmgw
+      directions: "
+        * Open bottle\n
+        * Do stuff\n
+        * Do other stuff"
+      ingredients:
+      - title: Chicken jus
+        quantity: 410
+        unit: g
+
+      - title: Cider vinegar
+        quantity: 120
+        unit: g
+
+      - title: Golden brown sugar
+        quantity: 100
+        unit: g
