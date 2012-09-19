@@ -260,35 +260,25 @@ activities:
         * Infuse for at least 90 minutes before using.\n
         * Or vacuum package the onions in the pickling brine for 1 minute pickling."
 
-  - title: Sous Vide Cooked Salmon Loin
-    yield: 10 portions 40g each
-    ingredients:
-    - title: Salmon loin, skinless
-      quantity: 400
-      unit: g
-    - title: Simple Seafood Brine
-      quantity: 1600
-      unit: g
-    steps:
-    - title: Remove pin bones from salmon loin
-      image_id: 4862
-    - title: Submerge salmon loin in chilled brine for 45 minutes.
-      image_id: 4885
-    - title: Strain salmon portions from the brine.
-      image_id: 4908
-    - title: Vacuum package the salmon loins individually.
-      image_id: 4908
-      directions: "Tip: Add a small amount of olive oil to the packaging with
-        the salmon to make it easier to remove the cooked salmon later."
-    - title: "Sous vide cook at 104 &deg;F / 40 &deg;C for 60 minutes to reach equilibrium temperature."
-      image_id: 5026
-    - title: "Remove cooked salmon and submerge in ice water. Then refigerate for at least 6 hours for texture to set."
-      image_id: 5134
-    - title: Portion chilled salmon loin into ten 40 g portions, each about &frac34; inch / 2 cm thick.
-    - title: Cover and refigerate sliced portions until needed.
+#  watercress
+- title: Watercress Puree
+  youtube_id: TvdqT6FMmgw
+  difficulty: Intermediate
+  yield: 230 g
+  description: "dio twee umami chambray. Velit VHS ad godard PBR american
+  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+  rights twee nulla mumblecore cosb"
 
-  - title: Watercress Puree
-    yield: 230 g
+  activity_equipment:
+  - title: Digital scale
+  - title: Blender
+
+  recipes:
+  - title: Watercress
+    yield: 1700 g
     ingredients:
     - title: Watercress
       quantity: 150
@@ -300,18 +290,65 @@ activities:
       quantity: 2.3
       unit: g
     steps:
-    - title: Weigh out ingredients.
-    - title: Combine
-    - title: Whisk untill all of the sugar and salt dissolves.
-    - title: Refigerate until needed.
-    - title: Clean and trim baby red onions from their tops and bottoms, then quarter them.
-    - title: Seperate all layers of the onion, sorting the red outer petals from the inner white petals.
-    - title: Trim the tops and bottoms of the green onions.
-    - title: Split the trimmed green onions lengthwise and remove the cores.
-    - title: "Place the trimmed red onion petals, white onion petals, and green
-      onion into seperate container and cover with pickling brine."
-    - title: Infuse for at least 90 minutes before using
-    - title: Or vacuum package the onions in the pickling brine for 1 minute pickling.
+    - title: weigh out ingredients
+      image_id: 4738
+      ingredients:
+      - title: Watercress
+        quantity: 150
+        unit: g
+      directions: "* Pick and clean watercress."
+    - title: combine
+      image_id: 4738
+      directions: "* Bring a large pot of water to a roaring boil."
+    - title: ice bath
+      image_id: 4738
+      directions: "* Prepare an ice bath by filling a large container or pot
+        half full with ice and then filling it with cold water."
+    - title: blanch
+      image_id: 4738
+      directions: "* Blanch watercress in boiling water for 45 sec."
+    - title: strain from boiling
+      image_id: 4738
+      directions: "* Strain from the boiling water and plunge into ice bath.\n
+        * Stir watercress in the ice bath to ensure even cooling."
+    - title: strain ice-bath
+      directions: "* Strain watercress from the ice bath and place into blender.\n
+        * Tip: Tare the empty blender top on your scale in advance so that you
+        can then weight your puree without having to remove it from the blender."
+    - title: check-weight
+      ingredients:
+      - title: Xanthan gum
+        quantity: 0.23
+        unit: g
+      directions: "* Check the weight of the puree before adding 0.1% of the puree's weight in xanthan gum.\n 
+        * Tip: If your puree weighs slightly more or less (the water content of
+          the puree will vary) you can adjust the weight of your puree in the ingredient
+          list (see above) and it will recalculate the correct amount of xanthan gum
+          needed.\n
+        * Blend the puree together with the xanthan gum until smooth. The
+          xanthan gum will prevent the puree from seperating and weeping."
+    - title: strain puree
+      directions: "* Strain the puree through a chinoise or sieve\n
+        * If the puree will not be used promptly, vacuum package it to eliminate oxygen and preserve the color of the puree.\n
+        * Season the puree with salt just before serving to avoid discoloration."
+
+
+
+    # Weigh out ingredients.
+
+    # Combine
+    # Whisk untill all of the sugar and salt dissolves.
+    # Refigerate until needed.
+    # Clean and trim baby red onions from their tops and bottoms, then quarter them.
+    # Seperate all layers of the onion, sorting the red outer petals from the inner white petals.
+    # Trim the tops and bottoms of the green onions.
+    # Split the trimmed green onions lengthwise and remove the cores.
+    # Place the trimmed red onion petals, white onion petals, and green
+    #   onion into seperate container and cover with pickling brine.
+    # Infuse for at least 90 minutes before using
+    # Or vacuum package the onions in the pickling brine for 1 minute pickling.
+
+
 
 
 
