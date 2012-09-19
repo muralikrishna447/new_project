@@ -15,7 +15,7 @@ $ ->
     if ($(@).scrollTop() > anchor_position and $scroller.css('position') != 'fixed')
       $scroller.addClass('stuck-to-top')
       $scroller_anchor.css('height', $scroller.outerHeight())
-    else if ($(@).scrollTop() < anchor_position and $scroller.css('position') != 'relative')
+    else if ($(@).scrollTop() < anchor_position and $scroller.css('position') == 'fixed')
       $scroller_anchor.css('height', '0px')
       $scroller.removeClass('stuck-to-top')
 
