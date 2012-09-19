@@ -2,7 +2,7 @@
   .span4
     %h3
       :erb
-        <strong><%="Step #{count}: "%></strong><%=step.title%>
+        <strong><%="Step #{count}: "%></strong><%=raw step.title%>
     - if step.ingredients.any?
       .well
         %h6 Ingredients
@@ -12,10 +12,15 @@
               %td= ingredient.title
               %td= quantity_number(ingredient.quantity)
               %td= ingredient.unit
-    :markdown
-      #{step.directions}
+    - if step.directions.present?
+      :markdown
+        #{raw step.directions}
   .span8
-    .well.video
-      .video-container
-        %iframe{:src => youtube_url(step.youtube_id)}
+    - if step.youtube_id?
+      .well.video
+        .video-container
+          %iframe{:src => youtube_url(step.youtube_id)}
+    - else
+      .well
+        = image_tag("recipes/IMG_#{step.image_id}.jpg")
 

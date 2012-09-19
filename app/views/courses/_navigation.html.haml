@@ -13,7 +13,7 @@
                 %i.icon-double-chevron-left.disabled
           %li.navbar-activity-title
             .navbar-text
-              %h4= model.title
+              %h4= raw model.title
           %li
             - if model.next.present?
               = link_to model.next do

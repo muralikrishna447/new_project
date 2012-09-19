@@ -2,8 +2,8 @@
   .container
     .row
       .span8
-        %h1= activity.title
-        %p= activity.description
+        %h1= raw activity.title
+        %p= raw activity.description
       .span4
         .row
           .span4
@@ -38,12 +38,15 @@
                   %td.quantity= quantity_number(ingredient.quantity)
                   %td= ingredient.unit
       .span4
-        .row
-          .span4
-            %h5 Yield
-            %p= activity.yield
-            %h5 Timing
-            %p= activity.timing
+        - if activity.yield.present? || activity.timing.present?
+          .row
+            .span4
+              - if activity.yield.present?
+                %h5 Yield
+                %p= activity.yield
+              - if activity.timing.present?
+                %h5 Timing
+                %p= activity.timing
         .row
           .span4
             %h5 Equipment
