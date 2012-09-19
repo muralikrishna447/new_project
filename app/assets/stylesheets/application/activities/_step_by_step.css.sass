@@ -3,6 +3,9 @@
   h4
     +font-serif-large
     color: $brick
+  .horizontal-divider
+    border-width: 2px
+    margin-bottom: 20px
 
 .step
   color: $black
@@ -24,15 +27,22 @@
       border: 1px solid $grayLight
       +border-radius(0)
 
-.horizontal-divider
-  border-width: 2px
-  margin-bottom: 20px
-
 .cooked-this
+  display: inline-block
   background: $brick
   color: $white
   text-transform: uppercase
-  border: 1px dashed $white
-  margin: 5px
-  padding: 10px
+  border: none
+  +border-radius(5px)
+  padding: 3px
+  &:hover
+    text-decoration: none
+    color: $white
+    background: $brickDark
+  .inner
+    border: 1px dashed $white
+    +border-radius(5px)
+    padding: 10px 15px
+    span
+      vertical-align: bottom
 

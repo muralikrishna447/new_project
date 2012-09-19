@@ -10,7 +10,11 @@ Delve::Application.routes.draw do
   post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
 
   resources :courses, :only => [:show]
-  resources :activities, :only => [:show]
+  resources :activities, :only => [:show] do
+    member do
+      post 'cooked-this' => 'activities#cooked_this', as: 'cooked_this'
+    end
+  end
 
 end
 

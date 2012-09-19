@@ -22,6 +22,11 @@
             .horizontal-divider
     .row
       .span12
-        %button.cooked-this
-          I cooked this!
+        - if @cooked_this
+          %h4== #{activity.cooked_this} people cooked this, including you. Comment below with how it went!
+        - else
+          %a.cooked-this{ href: cooked_this_activity_path, data: { remote: true, method: :post } }
+            .inner
+              %i.icon-pot-white
+              %span I cooked this!
 
