@@ -27,15 +27,18 @@
       border: 1px solid $grayLight
       +border-radius(0)
 
-button.cooked-this
+.cooked-this
+  display: inline-block
   background: $brick
   color: $white
   text-transform: uppercase
   border: none
   +border-radius(5px)
   padding: 3px
-  &:disabled
-    background: $brickLight
+  &:hover
+    text-decoration: none
+    color: $white
+    background: $brickDark
   .inner
     border: 1px dashed $white
     +border-radius(5px)
