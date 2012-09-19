@@ -20,16 +20,18 @@
   :timing: 74 hours overall including 34 mins preperation and 35 misn to reheat and finish
   :activity_equipment:
   - :title: Smoker
-    :product_url: http://www.amazon.com/dp/B00104WRCY/?tag=hyprod-20&hvadid=15475540419&hvpos=1o2&hvexid=&hvnetw=g&hvrand=15365057922131986741&hvpone=&hvptwo=&hvqmt=&ref=asc_df_B00104WRCY
+    :product_url: "http://www.amazon.com/dp/B00104WRCY/?tag=hyprod-20&hvadid=15475540419&hvpos=1o2&hvexid=&hvnetw=g&hvrand=15365057922131986741&hvpone=&hvptwo=&hvqmt=&ref=asc_df_B00104WRCY"
+    :optional: false
   - :title: Brine Tank
     :optional: true
   - :title: Sous Vide Equipment
+    :optional: false
   :activity_steps:
   - :title: Trim the breast meat
     :youtube_id: TvdqT6FMmgw
     :directions: "
-      * Mix the stuff
-      * Refigerate stuff
+      * Mix the stuff\n
+      * Refigerate stuff\n
       * Do other stuff"
   :recipes:
   - :title: Mop Sauce

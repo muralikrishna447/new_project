@@ -38,7 +38,7 @@ def create_admin(email, password)
   u
 end
 
-def create_equipment(title, product_url ='', optional=false)
+def create_equipment(title, product_url, optional)
   e = Equipment.find_or_create_by_title(title)
   e.product_url = product_url
   e.optional = optional
@@ -88,7 +88,6 @@ end
 
 def build_activity(activity_data)
   activity = create_activity(activity_data)
-  Rails.logger.info "******************\n\n #{activity_data.inspect}"
   if activity_data[:activity_equipment].present?
     activity_data[:activity_equipment].each do |equipment|
       item = create_equipment(equipment[:title], equipment[:product_url], equipment[:optional])
