@@ -39,6 +39,9 @@ group :guard do
   gem 'guard'
   gem 'guard-livereload'
   gem 'guard-pow'
+  # Problems with falling back to polling
+  # https://github.com/guard/listen/issues/62
+  gem 'listen', '0.4.7'
   gem 'growl'
   gem 'rb-fsevent'
 end
