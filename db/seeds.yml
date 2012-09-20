@@ -13,7 +13,7 @@ activities:
 - title: Salmon 104 &deg;F
   youtube_id: Qgg9lVnkOnQ
   difficulty: Intermediate
-  yield: 10 portions
+  yield: 10 servings
   description: "dio twee umami chambray. Velit VHS ad godard PBR american
   apparel. Placeat odio leggings typewriter chambray master cleanse squid,
   aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
@@ -27,12 +27,8 @@ activities:
     - title: Cooked and chilled salmon portions
       quantity: 10
       unit: ea
-    - title: Spice rub
-      unit: a/n
-    - title: Maldon salt
-      unit: a/n
     - title: Pickled onions
-      quantity: 60
+      quantity: 3
       unit: ea
     - title: Horseradish cream
       quantity: 320
@@ -40,35 +36,18 @@ activities:
     - title: Watercress puree
       quantity: 320
       unit: g
+    - title: Maldon salt
+      unit: a/n
     - title: Black pepper, coarse ground
       unit: a/n
     - title: Coriander seed, coarse ground
       unit: a/n
+    - title: Olive oil
+      unit: a/n
     steps:
     - title: Serving
-      ingredients:
-      - title: Cooked and chilled salmon portions
-        quantity: 10
-        unit: ea
-      - title: Spice rub
-        unit: a/n
-      - title: Maldon salt
-        unit: a/n
-      - title: Pickled onions
-        quantity: 60
-        unit: ea
-      - title: Horseradish cream
-        quantity: 320
-        unit: g
-      - title: Watercress puree
-        quantity: 320
-        unit: g
-      - title: Black pepper, coarse ground
-        unit: a/n
-      - title: Coriander seed, coarse ground
-        unit: a/n
       directions: "
-        * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while it's on a sheet tray.\n
+        * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while they are on a sheet tray.\n
         * Strain pickles from their brine and drain them on paper towel.\n
         * Add the salt to the watercress puree.\n
         * Place a spoonful of horseradish cream, a spoonful of watercress puree, and one salmon portion on each chilled plate.\n

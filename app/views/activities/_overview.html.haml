@@ -47,9 +47,10 @@
               - if activity.timing.present?
                 %h5 Timing
                 %p= activity.timing
-        .row
-          .span4
-            %h5 Equipment
+        - if activity.equipment.present?
+          .row
+            .span4
+              %h5 Equipment
         .row
           - activity.required_equipment.in_groups(2, false).each do |group|
             .span2
