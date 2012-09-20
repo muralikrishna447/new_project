@@ -1,4 +1,4 @@
-.hero-unit.gray
+.hero-unit.gray.hero-step-by-step
   .container.step-by-step
     - activity.recipes.each do |recipe|
       - if recipe.steps.any?
@@ -23,7 +23,7 @@
     .row
       .span12
         - if @cooked_this
-          %h4== #{activity.cooked_this} people cooked this, including you. Comment below with how it went!
+          %h4== #{activity.cooked_this} people cooked this, including you. Comment below to tell us how it went!
         - else
           %a.cooked-this{ href: cooked_this_activity_path, data: { remote: true, method: :post } }
             .inner
