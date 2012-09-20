@@ -343,13 +343,13 @@ activities:
         unit: g
       directions: "* Microplane 50 g and place it into a sous vide bag.\n * Add the cream."
     - title: vacuum the bag
-      directions: "* Vacuum package and refigerate.\n
+      directions: "* Vacuum package and refrigerate.\n
         * Refigerate from 1 to 24 hours. The longer the infusion time the hotter the cream will become."
     - title: strain
       directions: "* Strain the cream and then discard the pulp."
     - title: whisk
       directions: "* Whisk salt and xanthan gum into the cream.\n
         * Whip the cream into very soft peaks.\n
-        * Refigerate if not using immediately."
+        * Refrigerate if not using immediately."
 
 
