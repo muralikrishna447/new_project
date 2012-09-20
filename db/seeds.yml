@@ -419,7 +419,7 @@ activities:
     - title: Cordiander seed
       quantity: 4
       unit: g
-    - title:Black pepper
+    - title: Black pepper
       quantity: 5
       unit: g
     steps:
@@ -429,7 +429,7 @@ activities:
       - title: Cordiander seed
         quantity: 4
         unit: g
-      - title:Black pepper
+      - title: Black pepper
         quantity: 5
         unit: g
       directions: "* Coarsely grind coriander seed and black pepper with a spice grinder.\n
