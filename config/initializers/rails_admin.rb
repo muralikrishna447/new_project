@@ -86,6 +86,24 @@ RailsAdmin.config do |config|
     visible false
   end
 
+  config.model Step do
+    configure :step_order do
+      visible false
+    end
+  end
+
+  config.model Ingredient do
+    configure :step_ingredients do
+      visible false
+    end
+    configure :recipe_ingredients do
+      visible false
+    end
+    configure :recipes do
+      visible false
+    end
+  end
+
   config.model Recipe do
     configure :steps do
       orderable true
