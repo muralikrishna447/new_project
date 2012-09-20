@@ -102,6 +102,7 @@ def build_activity(activity_data)
       create_step(step)
     end
   end
+
   if activity_data[:recipes].present?
     activity_data[:recipes].each do |r|
       recipe = create_recipe(r[:title], activity)

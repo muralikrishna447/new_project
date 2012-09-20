@@ -6,8 +6,8 @@ admins:
   password: asdfasdf
 
 activities:
-- title: Lecture
-  youtube_id: ydOB-YNJ8Jw
+# - title: Lecture
+#   youtube_id: ydOB-YNJ8Jw
 
 # assembly
 - title: Salmon 104 &deg;F
@@ -55,7 +55,7 @@ activities:
         * Drizzle a small amount of olive oil over the fish.\n
         * Serve.\n"
 
- # Salmon mi-cut
+# Salmon mi-cut
 - title: Salmon mi-cuit
   youtube_id: i3Vu703ypxc
   difficulty: Intermediate

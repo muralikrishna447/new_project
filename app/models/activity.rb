@@ -1,10 +1,16 @@
 class Activity < ActiveRecord::Base
+  include RankedModel
+  ranks :activity_order
+
   has_many :activity_equipment
 
   has_many :recipes
   has_many :steps, dependent: :destroy
   has_many :equipment, through: :activity_equipment
   has_many :ingredients, through: :recipes
+
+  scope :ordered, rank(:activity_order)
+  default_scope { ordered }
 
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, as: :admin
 

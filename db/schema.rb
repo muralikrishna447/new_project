@@ -11,19 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120919214421) do
+ActiveRecord::Schema.define(:version => 20120920013144) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.string   "youtube_id"
     t.string   "difficulty"
-    t.integer  "cooked_this", :default => 0
+    t.integer  "cooked_this",    :default => 0
     t.string   "yield"
     t.text     "timing"
     t.text     "description"
+    t.integer  "activity_order"
   end
+
+  add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
 
   create_table "activity_equipment", :force => true do |t|
     t.integer  "activity_id",  :null => false
@@ -108,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20120919214421) do
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
   add_index "steps", ["recipe_id"], :name => "index_steps_on_recipe_id"
+  add_index "steps", ["step_order"], :name => "index_steps_on_step_order"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
