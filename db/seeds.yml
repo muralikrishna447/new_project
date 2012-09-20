@@ -132,12 +132,13 @@ activities:
   youtube_id: 1CpDIOt81D0
   difficulty: Intermediate
   yield: 10 portions
-  description: "dio twee umami chambray. Velit VHS ad godard PBR american
-  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
-  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
-  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
-  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
-  rights twee nulla mumblecore cosb"
+  description: >
+    dio twee umami chambray. Velit VHS ad godard PBR american
+    apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+    aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+    Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+    sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+    rights twee nulla mumblecore cosb
 
   activity_equipment:
   - title: Digital scale

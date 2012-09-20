@@ -4,6 +4,5 @@ class Recipe < ActiveRecord::Base
   has_many :steps, dependent: :destroy
 
   attr_accessible :title, :activity_id, as: :admin
-
 end
 
