@@ -108,6 +108,9 @@ RailsAdmin.config do |config|
     configure :steps do
       orderable true
     end
+    configure :ingredients do
+      orderable :true
+    end
   end
 
   config.model Equipment do
