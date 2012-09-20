@@ -14,12 +14,13 @@ activities:
   youtube_id: Qgg9lVnkOnQ
   difficulty: Intermediate
   yield: 10 servings
-  description: "dio twee umami chambray. Velit VHS ad godard PBR american
-  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
-  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
-  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
-  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
-  rights twee nulla mumblecore cosb"
+  description: >
+    dio twee umami chambray. Velit VHS ad godard PBR american
+    apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+    aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+    Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+    sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+    rights twee nulla mumblecore cosb
 
   recipes:
   - title: Assembly
@@ -46,26 +47,27 @@ activities:
       unit: a/n
     steps:
     - title: Serving
-      directions: "
-        * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while they are on a sheet tray.\n
-        * Strain pickles from their brine and drain them on paper towel.\n
-        * Add the salt to the watercress puree.\n
-        * Place a spoonful of horseradish cream, a spoonful of watercress puree, and one salmon portion on each chilled plate.\n
-        * Arrange the pickled onions on the cream and around the salmon.\n
-        * Drizzle a small amount of olive oil over the fish.\n
-        * Serve.\n"
+      directions: >
+        * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while they are on a sheet tray.
+        * Strain pickles from their brine and drain them on paper towel.
+        * Add the salt to the watercress puree.
+        * Place a spoonful of horseradish cream, a spoonful of watercress puree, and one salmon portion on each chilled plate.
+        * Arrange the pickled onions on the cream and around the salmon.
+        * Drizzle a small amount of olive oil over the fish.
+        * Serve.
 
 # Salmon mi-cut
 - title: Salmon mi-cuit
   youtube_id: i3Vu703ypxc
   difficulty: Intermediate
   yield: 10 portions
-  description: "dio twee umami chambray. Velit VHS ad godard PBR american
-  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
-  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
-  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
-  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
-  rights twee nulla mumblecore cosb"
+  description: >
+    dio twee umami chambray. Velit VHS ad godard PBR american
+    apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+    aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+    Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+    sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+    rights twee nulla mumblecore cosb
 
   activity_equipment:
   - title: Immersion circulator (or other sous vide cooking equipment)
@@ -91,7 +93,7 @@ activities:
       unit: g
     steps:
     - title: Weigh out ingredients
-      image_id: 4738
+      image_id: IMG_4738.jpg
       ingredients:
       - title: Water
         quantity: 1600
@@ -105,10 +107,10 @@ activities:
       directions: "* Scale ingredients"
 
     - title: Dissolve salt and sugar into the water
-      directions: "* Dissolve salt and sugar into the water.\n
-        * Chill brine to less than 41 &deg;F / 5 &deg;C\n
-        * Tip: Dissolve the sugar and salt into half the weight of
-        water, then add the rest of the water as ice to quickly chill the brine."
+      directions: >
+        * Dissolve salt and sugar into the water.
+        * Chill brine to less than 41 &deg;F / 5 &deg;C
+        * Tip: Dissolve the sugar and salt into half the weight of water, then add the rest of the water as ice to quickly chill the brine.
     - title: while brine
       directions: "* While brine is chilling, remove pin bones from salmon loin."
     - title: submerge
@@ -116,16 +118,17 @@ activities:
     - title: strain-salmon
       directions: "* Strain salmon portions from the brine."
     - title: vacuum
-      directions: "* Vacuum package the salmon loins individually.\n
-        * Tip: Add a small amount of olive oil to the packaging with salmon to
-        make it easier to remove the cooked salmon later."
+      directions: >
+        * Vacuum package the salmon loins individually.
+        * Tip: Add a small amount of olive oil to the packaging with salmon to make it easier to remove the cooked salmon later.
     - title: cook
       directions: "* Sous vide cook at 104 &deg;F / 40 &deg;C for 60 minutes to reach equilibrium temperature."
     - title: remove cooked
       directions: "* Remove cooked salmon and submerge in ice water. Then refigerate for at least 6 hours for texture to set."
     - title: portion
-      directions: "* Portion chilled salmon loin into ten 40 g portions, each about &frac34; in. / 2 cm. thick\n
-        * Cover and refigerate sliced portions until needed."
+      directions: >
+        * Portion chilled salmon loin into ten 40 g portions, each about &frac34; in. / 2 cm. thick\n
+        * Cover and refigerate sliced portions until needed.
 
 # pickled onions
 - title: Picked Onions
@@ -195,14 +198,15 @@ activities:
       - title: Coriander seed, whole
         quantity: 4
         unit: g
-      directions: "
-        * Scale ingredients\n
-        * Combine ingredients"
+      directions: >
+        * Scale ingredients
+        * Combine ingredients
 
     - title: clean and trim
       image_id: 4817
-      directions: "* Clean and trim baby red onions, then quarter.\n
-       * Seperate onion layers, sorting the red outer petals from the inner white ones"
+      directions: >
+        * Clean and trim baby red onions, then quarter.
+        * Seperate onion layers, sorting the red outer petals from the inner white ones
       ingredients:
       - title: Small red onions
         quantity: 3
@@ -215,21 +219,23 @@ activities:
       ingredients:
       - title: Prepared onions
       - title: Prepared pickling brine
-      directions: "* Place the trimmed red onion petals, white onion petals, and green onions into seperate container and cover with pickling brine.\n
-        * Infuse for at least 90 minutes before using.\n
-        * Or vacuum package the onions in the pickling brine for 1 minute pickling."
+      directions: >
+        * Place the trimmed red onion petals, white onion petals, and green onions into seperate container and cover with pickling brine.
+        * Infuse for at least 90 minutes before using.
+        * Or vacuum package the onions in the pickling brine for 1 minute pickling.
 
 #  watercress
 - title: Watercress Puree
   youtube_id: b6wnr71cNF4
   difficulty: Intermediate
   yield: 230 g
-  description: "dio twee umami chambray. Velit VHS ad godard PBR american
-  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
-  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
-  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
-  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
-  rights twee nulla mumblecore cosb"
+  description: >
+    dio twee umami chambray. Velit VHS ad godard PBR american
+    apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+    aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+    Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+    sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+    rights twee nulla mumblecore cosb
 
   activity_equipment:
   - title: Digital scale
@@ -261,32 +267,32 @@ activities:
       directions: "* Bring a large pot of water to a rolling boil."
     - title: ice bath
       image_id: 4738
-      directions: "* Prepare an ice bath by filling a large container or pot
-        half full with ice and then filling it with cold water."
+      directions: "* Prepare an ice bath by filling a large container or pot half full with ice and then filling it with cold water."
     - title: blanch
       image_id: 4738
       directions: "* Blanch watercress in boiling water for 45 sec."
     - title: strain from boiling
       image_id: 4738
-      directions: "* Strain from the boiling water and plunge into ice bath.\n
-        * Stir watercress in the ice bath to ensure even cooling."
+      directions: >
+        * Strain from the boiling water and plunge into ice bath.
+        * Stir watercress in the ice bath to ensure even cooling.
     - title: strain ice-bath
-      directions: "* Strain watercress from the ice bath and place into blender.\n
-        * Tip: Tare the empty blender top on your scale in advance so that you
-        can then weight your puree without having to remove it from the blender."
+      directions: >
+        * Strain watercress from the ice bath and place into blender.
+        * Tip: Tare the empty blender top on your scale in advance so that you can then weight your puree without having to remove it from the blender.
     - title: check-weight
       ingredients:
       - title: Xanthan gum
         quantity: 0.23
         unit: g
-      directions: "* Check the weight of the puree before adding 0.1% of the puree's weight in xanthan gum,
-        0.23 grams for 230 grams of puree in this case.\n
-        * Blend the puree together with the xanthan gum until smooth. The
-          xanthan gum will prevent the puree from seperating and weeping."
+      directions: >
+        * Check the weight of the puree before adding 0.1% of the puree's weight in xanthan gum, 0.23 grams for 230 grams of puree in this case.
+        * Blend the puree together with the xanthan gum until smooth. The xanthan gum will prevent the puree from seperating and weeping.
     - title: strain puree
-      directions: "* Strain the puree through a chinoise or sieve\n
-        * If the puree will not be used promptly, vacuum package it to eliminate oxygen and preserve the color of the puree.\n
-        * Season the puree with salt just before serving to avoid discoloration."
+      directions: >
+        * Strain the puree through a chinoise or sieve
+        * If the puree will not be used promptly, vacuum package it to eliminate oxygen and preserve the color of the puree.
+        * Season the puree with salt just before serving to avoid discoloration.
 
 
 # horseradish cream
@@ -294,12 +300,13 @@ activities:
   youtube_id: LGQEdKYZ5Zo
   difficulty: Intermediate
   yield: 320 g
-  description: "dio twee umami chambray. Velit VHS ad godard PBR american
-  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
-  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
-  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
-  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
-  rights twee nulla mumblecore cosb"
+  description: >
+    dio twee umami chambray. Velit VHS ad godard PBR american
+    apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+    aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+    Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+    sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+    rights twee nulla mumblecore cosb
 
   activity_equipment:
   - title: Microplane
@@ -324,14 +331,14 @@ activities:
       unit: g
     steps:
     - title: wash
-      image_id: 4738
+      image_id: horseradish_1.jpg
       ingredients:
       - title: Fresh horseradish root
         quantity: 1
         unit: ea
       directions: "* Wash and peel the fresh horseradish."
-    - title: wash
-      image_id: 4738
+    - title: microplane
+      image_id: horseradish_2.jpg
       ingredients:
       - title: peeled and preped horseradish
         quantity: 1
@@ -339,15 +346,22 @@ activities:
       - title: Cream
         quantity: 350
         unit: g
-      directions: "* Microplane 50 g and place it into a sous vide bag.\n * Add the cream."
+      directions: >
+        * Microplane 50 g and place it into a sous vide bag.
+        * Add the cream.
     - title: vacuum the bag
-      directions: "* Vacuum package and refrigerate.\n
-        * Refigerate from 1 to 24 hours. The longer the infusion time the hotter the cream will become."
+      image_id: horseradish_5.jpg
+      directions: >
+        * Vacuum package and refrigerate.
+        * Refigerate from 1 to 24 hours. The longer the infusion time the hotter the cream will become.
     - title: strain
+      image_id: horseradish_6.jpg
       directions: "* Strain the cream and then discard the pulp."
     - title: whisk
-      directions: "* Whisk salt and xanthan gum into the cream.\n
-        * Whip the cream into very soft peaks.\n
-        * Refrigerate if not using immediately."
+      image_id: horseradish_8.jpg
+      directions: >
+        * Whisk salt and xanthan gum into the cream.
+        * Whip the cream into very soft peaks.
+        * Refrigerate if not using immediately.
 
 
