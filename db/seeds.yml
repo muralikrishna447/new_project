@@ -264,16 +264,15 @@ activities:
       unit: g
     steps:
     - title: clean watercress
+      image_id: IMG_5141.jpg
       ingredients:
       - title: Watercress (about 2 bunches)
         quantity: 150
         unit: g
-      directions: "* Pick and clean watercress."
-    - title: boil
-      image_id: IMG_5141.jpg
-      directions: "* Bring a large pot of water to a rolling boil."
-    - title: ice bath
-      directions: "* Prepare an ice bath by filling a large container or pot half full with ice and then filling it with cold water."
+      directions: |
+        * Pick and clean watercress.
+        * Bring a large pot of water to a rolling boil.
+        * Prepare an ice bath by filling a large container or pot half full with ice and then filling it with cold water.
     - title: blanch
       image_id: IMG_5143.jpg
       directions: "* Blanch watercress in boiling water for 45 sec."
