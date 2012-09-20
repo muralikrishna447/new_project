@@ -23,5 +23,8 @@
           %iframe{src: youtube_url(step.youtube_id)}
     - else
       .well
-        %img{src: s3_image_url(step.image_id)}
+        - if step.image_id?
+          %img{src: s3_image_url(step.image_id)}
+        - else
+          = image_tag('img_placeholder.jpg')
 
