@@ -10,7 +10,7 @@
           - step.ingredients.each do |ingredient|
             %tr
               %td= ingredient.title
-              %td= quantity_number(ingredient.quantity)
+              %td.quantity= quantity_number(ingredient.quantity)
               %td= ingredient.unit
     - if step.directions.present?
       .step-directions

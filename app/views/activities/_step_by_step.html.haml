@@ -4,7 +4,6 @@
       - if recipe.steps.any?
         .row
           .span12
-            %h4= recipe.title
             - recipe.steps.each_with_index do |step, i|
               = render 'step', step: step, count: i+1
               .row
