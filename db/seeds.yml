@@ -11,7 +11,7 @@ activities:
 
 # assembly
 - title: Salmon 104 &deg;F
-  youtube_id: TvdqT6FMmgw
+  youtube_id: Qgg9lVnkOnQ
   difficulty: Intermediate
   yield: 10 portions
   description: "dio twee umami chambray. Velit VHS ad godard PBR american
@@ -32,7 +32,7 @@ activities:
     - title: Maldon salt
       unit: a/n
     - title: Pickled onions
-      quantity: 3
+      quantity: 60
       unit: ea
     - title: Horseradish cream
       quantity: 320
@@ -40,6 +40,10 @@ activities:
     - title: Watercress puree
       quantity: 320
       unit: g
+    - title: Black pepper, coarse ground
+      unit: a/n
+    - title: Coriander seed, coarse ground
+      unit: a/n
     steps:
     - title: Serving
       ingredients:
@@ -51,7 +55,7 @@ activities:
       - title: Maldon salt
         unit: a/n
       - title: Pickled onions
-        quantity: 3
+        quantity: 60
         unit: ea
       - title: Horseradish cream
         quantity: 320
@@ -59,6 +63,10 @@ activities:
       - title: Watercress puree
         quantity: 320
         unit: g
+      - title: Black pepper, coarse ground
+        unit: a/n
+      - title: Coriander seed, coarse ground
+        unit: a/n
       directions: "
         * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while it's on a sheet tray.\n
         * Strain pickles from their brine and drain them on paper towel.\n
@@ -68,10 +76,9 @@ activities:
         * Drizzle a small amount of olive oil over the fish.\n
         * Serve.\n"
 
-
  # Salmon mi-cut
 - title: Salmon mi-cuit
-  youtube_id: TvdqT6FMmgw
+  youtube_id: i3Vu703ypxc
   difficulty: Intermediate
   yield: 10 portions
   description: "dio twee umami chambray. Velit VHS ad godard PBR american
@@ -153,7 +160,7 @@ activities:
 
 # pickled onions
 - title: Picked Onions
-  youtube_id: TvdqT6FMmgw
+  youtube_id: 1CpDIOt81D0
   difficulty: Intermediate
   yield: 10 portions
   description: "dio twee umami chambray. Velit VHS ad godard PBR american
@@ -262,7 +269,7 @@ activities:
 
 #  watercress
 - title: Watercress Puree
-  youtube_id: TvdqT6FMmgw
+  youtube_id: b6wnr71cNF4
   difficulty: Intermediate
   yield: 230 g
   description: "dio twee umami chambray. Velit VHS ad godard PBR american
@@ -335,7 +342,7 @@ activities:
 
 # horseradish cream
 - title: Horseradish Cream
-  youtube_id: TvdqT6FMmgw
+  youtube_id: LGQEdKYZ5Zo
   difficulty: Intermediate
   yield: 320 g
   description: "dio twee umami chambray. Velit VHS ad godard PBR american
@@ -395,184 +402,3 @@ activities:
         * Refigerate if not using immediately."
 
 
-# fish spice rub
-- title: Fish Spice Rub
-  youtube_id: TvdqT6FMmgw
-  difficulty: Intermediate
-  yield: 9 g
-  description: "dio twee umami chambray. Velit VHS ad godard PBR american
-  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
-  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
-  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
-  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
-  rights twee nulla mumblecore cosb"
-
-  activity_equipment:
-  - title: Microplane
-  - title: Vacuum packer (or use an improvised strategy)
-    optional: true
-
-  recipes:
-  - title: Fish Spice Rub
-    yield: 9 g
-    ingredients:
-    - title: Cordiander seed
-      quantity: 4
-      unit: g
-    - title: Black pepper
-      quantity: 5
-      unit: g
-    steps:
-    - title: grind
-      image_id: 4738
-      ingredients:
-      - title: Cordiander seed
-        quantity: 4
-        unit: g
-      - title: Black pepper
-        quantity: 5
-        unit: g
-      directions: "* Coarsely grind coriander seed and black pepper with a spice grinder.\n
-        * Reserve until needed"
-
-
-
-
-
-
-# - title: Salmon 104 &deg;F
-#   youtube_id: TvdqT6FMmgw
-#   difficulty: Intermediate
-#   yield: 10 portions
-#   description: "dio twee umami chambray. Velit VHS ad godard PBR american
-#   apparel. Placeat odio leggings typewriter chambray master cleanse squid,
-#   aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
-#   Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
-#   sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
-#   rights twee nulla mumblecore cosb"
-# 
-#   activity_equipment:
-#   - title: Immersion circulator (or other sous vide cooking equipment)
-#   - title: Digital scale
-#   - title: Blender
-#   - title: Chinoise (or sieve)
-#   - title: Microplane
-#   - title: Vacuum packer (or use an improvised strategy)
-#     optional: true
-#   - title: Burr grinder
-#     optional: true
-# 
-#   activity_steps:
-#   - title: Serving
-#     ingredients:
-#     - title: Cooked and chilled salmon portions
-#     - title: Spice rub
-#     - title: Maldon salt
-#     - title: Pickled onions
-#     - title: Horseradish cream
-#     - title: Ramp puree
-#     directions: "
-#       * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while it's on a sheet tray.\n
-#       * Strain pickles from their brine and drain them on paper towel.\n
-#       * Add the salt to the watercress puree.\n
-#       * Place a spoonful of horseradish cream, a spoonful of watercress puree, and one salmon portion on each chilled plate.\n
-#       * Arrange the pickled onions on the cream and around the salmon.\n
-#       * Drizzle a small amount of olive oil over the fish.\n
-#       * Serve.\n"
-# 
-#   recipes:
-#   - title: Simple Seafood Brine
-#     yield: 1700 g
-#     ingredients:
-#     - title: Water
-#       quantity: 1600
-#       unit: g
-#     - title: Salt
-#       quantity: 160
-#       unit: g
-#     - title: Sugar
-#       quantity: 80
-#       unit: g
-#     steps:
-#     - title: Weigh out ingredients
-#       image_id: 4738
-#       ingredients:
-#       - title: Water
-#         quantity: 1600
-#         unit: g
-#       - title: Salt
-#         quantity: 160
-#         unit: g
-#       - title: Sugar
-#         quantity: 80
-#         unit: g
-# 
-#     - title: Dissolve salt and sugar into the water
-#       image_id: 4817
-#       ingredients:
-#       - title: Water
-#         quantity: 1600
-#         unit: g
-#       - title: Salt
-#         quantity: 160
-#         unit: g
-#       - title: Sugar
-#         quantity: 80
-#         unit: g
-# 
-#     - title: Chill brine to less than 41 &deg;F / 5 &deg;C
-#       directions: "Tip: Dissolve the sugar and salt into half the weight of
-#         water, then add the rest of the water as ice to quickly chill the brine."
-# 
-#   - title: Sous Vide Cooked Salmon Loin
-#     yield: 10 portions 40g each
-#     ingredients:
-#     - title: Salmon loin, skinless
-#       quantity: 400
-#       unit: g
-#     - title: Simple Seafood Brine
-#       quantity: 1600
-#       unit: g
-#     steps:
-#     - title: Remove pin bones from salmon loin
-#       image_id: 4862
-#     - title: Submerge salmon loin in chilled brine for 45 minutes.
-#       image_id: 4885
-#     - title: Strain salmon portions from the brine.
-#       image_id: 4908
-#     - title: Vacuum package the salmon loins individually.
-#       image_id: 4908
-#       directions: "Tip: Add a small amount of olive oil to the packaging with
-#         the salmon to make it easier to remove the cooked salmon later."
-#     - title: "Sous vide cook at 104 &deg;F / 40 &deg;C for 60 minutes to reach equilibrium temperature."
-#       image_id: 5026
-#     - title: "Remove cooked salmon and submerge in ice water. Then refigerate for at least 6 hours for texture to set."
-#       image_id: 5134
-#     - title: Portion chilled salmon loin into ten 40 g portions, each about &frac34; inch / 2 cm thick.
-#     - title: Cover and refigerate sliced portions until needed.
-#
-#   - title: Watercress Puree
-#     yield: 230 g
-#     ingredients:
-#     - title: Watercress
-#       quantity: 150
-#       unit: g
-#     - title: Xanthan gum
-#       quantity: 0.23
-#       unit: g
-#     - title: Salt
-#       quantity: 2.3
-#       unit: g
-#     steps:
-#     - title: Weigh out ingredients.
-#     - title: Combine
-#     - title: Whisk untill all of the sugar and salt dissolves.
-#     - title: Refigerate until needed.
-#     - title: Clean and trim baby red onions from their tops and bottoms, then quarter them.
-#     - title: Seperate all layers of the onion, sorting the red outer petals from the inner white petals.
-#     - title: Trim the tops and bottoms of the green onions.
-#     - title: Split the trimmed green onions lengthwise and remove the cores.
-#     - title: "Place the trimmed red onion petals, white onion petals, and green
-#       onion into seperate container and cover with pickling brine."
-#     - title: Infuse for at least 90 minutes before using
-#     - title: Or vacuum package the onions in the pickling brine for 1 minute pickling.

@@ -10,10 +10,8 @@
       .span12
         .video-container
           %iframe{src: youtube_url(activity.youtube_id)}
-- if activity.overview?
-  = render 'overview', activity: activity
-- if activity.step_by_step?
-  = render 'step_by_step', activity: activity
+= render 'overview', activity: activity
+= render 'step_by_step', activity: activity
 
 = render 'layouts/disqus_comments', id: activity.id
 
