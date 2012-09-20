@@ -5,6 +5,15 @@
 @import application/fonts
 @import application/sprites
 
+p
+  +font-sans-medium
+  line-height: 1.6em
+  margin-top: 1.6em
+
+.text li
+  line-height: 1.6em
+  margin-top: 0.8em
+
 .hero-unit
   color: $white
   padding: 0
@@ -50,6 +59,7 @@ ul.horizontal-list
   +icons-sprite(pot-brick, $dimensions: true)
   display: inline-block
   vertical-align: middle
+  margin-top: -5px
 
 .icon-pot-white
   +icons-sprite(pot-white, $dimensions: true)

@@ -13,6 +13,7 @@
 - if activity.overview?
   = render 'overview', activity: activity
 - if activity.step_by_step?
+  #step-by-step
   = render 'step_by_step', activity: activity
 
 = render 'layouts/disqus_comments', id: activity.id
