@@ -102,40 +102,30 @@ activities:
       - title: Sugar
         quantity: 80
         unit: g
+      directions: "* Scale ingredients"
 
     - title: Dissolve salt and sugar into the water
-      image_id: 4817
-      ingredients:
-      - title: Water
-        quantity: 1600
-        unit: g
-      - title: Salt
-        quantity: 160
-        unit: g
-      - title: Sugar
-        quantity: 80
-        unit: g
-
-    - title: Chill brine to less than 41 &deg;F / 5 &deg;C
-      directions: "Tip: Dissolve the sugar and salt into half the weight of
+      directions: "* Dissolve salt and sugar into the water.\n
+        * Chill brine to less than 41 &deg;F / 5 &deg;C\n
+        * Tip: Dissolve the sugar and salt into half the weight of
         water, then add the rest of the water as ice to quickly chill the brine."
-
-    - title: Remove pin bones from salmon loin
-      image_id: 4862
-    - title: Submerge salmon loin in chilled brine for 45 minutes.
-      image_id: 4885
-    - title: Strain salmon portions from the brine.
-      image_id: 4908
-    - title: Vacuum package the salmon loins individually.
-      image_id: 4908
-      directions: "Tip: Add a small amount of olive oil to the packaging with
-        the salmon to make it easier to remove the cooked salmon later."
-    - title: "Sous vide cook at 104 &deg;F / 40 &deg;C for 60 minutes to reach equilibrium temperature."
-      image_id: 5026
-    - title: "Remove cooked salmon and submerge in ice water. Then refigerate for at least 6 hours for texture to set."
-      image_id: 5134
-    - title: Portion chilled salmon loin into ten 40 g portions, each about &frac34; inch / 2 cm thick.
-    - title: Cover and refigerate sliced portions until needed.
+    - title: while brine
+      directions: "* While brine is chilling, remove pin bones from salmon loin."
+    - title: submerge
+      directions: "* Submerge salmon loin in chilled brine for 45 minutes."
+    - title: strain-salmon
+      directions: "* Strain salmon portions from the brine."
+    - title: vacuum
+      directions: "* Vacuum package the salmon loins individually.\n
+        * Tip: Add a small amount of olive oil to the packaging with salmon to
+        make it easier to remove the cooked salmon later."
+    - title: cook
+      directions: "* Sous vide cook at 104 &deg;F / 40 &deg;C for 60 minutes to reach equilibrium temperature."
+    - title: remove cooked
+      directions: "* Remove cooked salmon and submerge in ice water. Then refigerate for at least 6 hours for texture to set."
+    - title: portion
+      directions: "* Portion chilled salmon loin into ten 40 g portions, each about &frac34; in. / 2 cm. thick\n
+        * Cover and refigerate sliced portions until needed."
 
 # pickled onions
 - title: Picked Onions
