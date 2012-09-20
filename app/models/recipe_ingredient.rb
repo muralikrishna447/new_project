@@ -1,5 +1,5 @@
 class RecipeIngredient < ActiveRecord::Base
-  belongs_to :recipe, touch: true
+  belongs_to :recipe, touch: true, inverse_of: :ingredients
   belongs_to :ingredient
 
   attr_accessible :recipe_id, :ingredient_id, :quantity, :unit, as: :admin

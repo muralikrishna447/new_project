@@ -3,7 +3,7 @@ class Step < ActiveRecord::Base
   ranks :step_order, with_same: :recipe_id
 
   belongs_to :activity, touch: true
-  belongs_to :recipe, touch: true
+  belongs_to :recipe, touch: true, inverse_of: :steps
 
   has_many :ingredients, class_name: StepIngredient
 

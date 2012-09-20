@@ -74,6 +74,15 @@ RailsAdmin.config do |config|
   #     # Here goes the fields configuration for the list view
   #   end
   # end
+  config.model Recipe do
+    configure :steps do
+      orderable true
+    end
+
+    configure :ingredients do
+      inverse_of :recipes
+    end
+  end
 
   # Your model's configuration, to help you get started:
 
