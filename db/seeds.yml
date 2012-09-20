@@ -47,6 +47,7 @@ activities:
       unit: a/n
     steps:
     - title: Serving
+      image_id: final_dish_IMG_5402.jpg
       directions: |
         * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while they are on a sheet tray.
         * Strain pickles from their brine and drain them on paper towel.
@@ -133,6 +134,7 @@ activities:
       image_id: IMG_5134.jpg
       directions: "* Remove cooked salmon and submerge in ice water. Then refigerate for at least 6 hours for texture to set."
     - title: portion
+      image_id: salmon_trim_IMG_5376.jpg
       directions: |
         * Portion chilled salmon loin into ten 40 g portions, each about &frac34; in. / 2 cm. thick
         * Cover and refigerate sliced portions until needed.
