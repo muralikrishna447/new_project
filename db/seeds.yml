@@ -395,10 +395,45 @@ activities:
         * Refigerate if not using immediately."
 
 
+# fish spice rub
+- title: Fish Spice Rub
+  youtube_id: TvdqT6FMmgw
+  difficulty: Intermediate
+  yield: 9 g
+  description: "dio twee umami chambray. Velit VHS ad godard PBR american
+  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+  rights twee nulla mumblecore cosb"
 
+  activity_equipment:
+  - title: Microplane
+  - title: Vacuum packer (or use an improvised strategy)
+    optional: true
 
-
-
+  recipes:
+  - title: Fish Spice Rub
+    yield: 9 g
+    ingredients:
+    - title: Cordiander seed
+      quantity: 4
+      unit: g
+    - title:Black pepper
+      quantity: 5
+      unit: g
+    steps:
+    - title: grind
+      image_id: 4738
+      ingredients:
+      - title: Cordiander seed
+        quantity: 4
+        unit: g
+      - title:Black pepper
+        quantity: 5
+        unit: g
+      directions: "* Coarsely grind coriander seed and black pepper with a spice grinder.\n
+        * Reserve until needed"
 
 
 
