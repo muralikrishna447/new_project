@@ -11,9 +11,4 @@
               = image_tag('delve-logo.png', alt: 'Delve')
 
         .nav.pull-right.addthis-container
-          .addthis_toolbox.addthis_default_style.pull-right
-            %a.addthis_button_pinterest_pinit
-            %a.addthis_button_google_plusone{ 'g:plusone:size' => 'standard', 'g:plusone:annotation' => 'none' }
-            %a.addthis_button_facebook_like
-            %a.addthis_button_tweet
-
+          = render 'layouts/share_this'
