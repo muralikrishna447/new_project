@@ -1,3 +1,3 @@
-$(document).ready ->
-  $(".video-container").fitVids()
-
+# $(document).ready ->
+#   $(".video-container").fitVids()
+# 

@@ -81,9 +81,23 @@ iframe
     height: 20px
     width: 20px
 
-.fluid-width-video-wrapper
-  iframe
-    min-height: 200px
+.video-container
+  position: relative
+  padding-top: 30px
+  padding-bottom: 56.25%
+  height: 0
+  overflow: hidden
+
+  iframe, object, embed
+    position: absolute
+    top: 0
+    left: 0
+    height: 100%
+    width: 100%
+
+// .fluid-width-video-wrapper
+//   iframe
+//     min-height: 200px
 
 #disqus_thread
   padding-top: 20px
