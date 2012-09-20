@@ -238,7 +238,7 @@ activities:
   - title: Watercress
     yield: 1700 g
     ingredients:
-    - title: Watercress
+    - title: Watercress (about 2 bunches)
       quantity: 150
       unit: g
     - title: Xanthan gum
@@ -251,13 +251,13 @@ activities:
     - title: weigh out ingredients
       image_id: 4738
       ingredients:
-      - title: Watercress
+      - title: Watercress (about 2 bunches)
         quantity: 150
         unit: g
       directions: "* Pick and clean watercress."
     - title: combine
       image_id: 4738
-      directions: "* Bring a large pot of water to a roaring boil."
+      directions: "* Bring a large pot of water to a rolling boil."
     - title: ice bath
       image_id: 4738
       directions: "* Prepare an ice bath by filling a large container or pot
@@ -278,11 +278,8 @@ activities:
       - title: Xanthan gum
         quantity: 0.23
         unit: g
-      directions: "* Check the weight of the puree before adding 0.1% of the puree's weight in xanthan gum.\n 
-        * Tip: If your puree weighs slightly more or less (the water content of
-          the puree will vary) you can adjust the weight of your puree in the ingredient
-          list (see above) and it will recalculate the correct amount of xanthan gum
-          needed.\n
+      directions: "* Check the weight of the puree before adding 0.1% of the puree's weight in xanthan gum,
+        0.23 grams for 230 grams of puree in this case.\n
         * Blend the puree together with the xanthan gum until smooth. The
           xanthan gum will prevent the puree from seperating and weeping."
     - title: strain puree
