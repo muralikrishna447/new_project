@@ -154,24 +154,6 @@ activities:
   - title: Vacuum chamber sealer
     optional: true
 
-  # activity_steps:
-  # - title: Serving
-  #   ingredients:
-  #   - title: Cooked and chilled salmon portions
-  #   - title: Spice rub
-  #   - title: Maldon salt
-  #   - title: Pickled onions
-  #   - title: Horseradish cream
-  #   - title: Ramp puree
-  #   directions: "
-  #     * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while it's on a sheet tray.\n
-  #     * Strain pickles from their brine and drain them on paper towel.\n
-  #     * Add the salt to the watercress puree.\n
-  #     * Place a spoonful of horseradish cream, a spoonful of watercress puree, and one salmon portion on each chilled plate.\n
-  #     * Arrange the pickled onions on the cream and around the salmon.\n
-  #     * Drizzle a small amount of olive oil over the fish.\n
-  #     * Serve.\n"
-
   recipes:
   - title: Picked Onions
     yield: 900 g (~ 10 portions)
@@ -240,9 +222,9 @@ activities:
 
     - title: stuff
       ingredients:
-      - title: Onions
+      - title: Prepared onions
       - title: Prepared pickling brine
-      directions: "* Place the trimmed red onion petals, white onion petals, and green onion into seperate container and cover with pickling brine.\n
+      directions: "* Place the trimmed red onion petals, white onion petals, and green onions into seperate container and cover with pickling brine.\n
         * Infuse for at least 90 minutes before using.\n
         * Or vacuum package the onions in the pickling brine for 1 minute pickling."
 
