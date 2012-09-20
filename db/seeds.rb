@@ -39,10 +39,9 @@ def create_admin(email, password)
   u
 end
 
-def create_equipment(title, product_url, optional)
+def create_equipment(title, product_url)
   e = Equipment.find_or_create_by_title(title)
   e.product_url = product_url
-  e.optional = optional.present? && optional
   e.save
   e
 end
@@ -62,10 +61,11 @@ def create_recipe(title, activity)
   recipe
 end
 
-def create_activity_equipment(activity, equipment)
+def create_activity_equipment(activity, equipment, optional)
   a = ActivityEquipment.new
   a.activity = activity
   a.equipment = equipment
+  a.optional = optional.present? && optional
   a.save
 end
 
@@ -91,8 +91,8 @@ def build_activity(activity_data)
   activity = create_activity(activity_data)
   if activity_data[:activity_equipment].present?
     activity_data[:activity_equipment].each do |equipment|
-      item = create_equipment(equipment[:title], equipment[:product_url], equipment[:optional])
-      create_activity_equipment(activity, item)
+      item = create_equipment(equipment[:title], equipment[:product_url])
+      create_activity_equipment(activity, item, equipment[:optional])
     end
   end
 
