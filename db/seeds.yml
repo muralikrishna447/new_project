@@ -127,7 +127,7 @@ activities:
       directions: "* Remove cooked salmon and submerge in ice water. Then refigerate for at least 6 hours for texture to set."
     - title: portion
       directions: >
-        * Portion chilled salmon loin into ten 40 g portions, each about &frac34; in. / 2 cm. thick\n
+        * Portion chilled salmon loin into ten 40 g portions, each about &frac34; in. / 2 cm. thick
         * Cover and refigerate sliced portions until needed.
 
 # pickled onions
@@ -255,44 +255,45 @@ activities:
       quantity: 2.3
       unit: g
     steps:
-    - title: weigh out ingredients
-      image_id: 4738
+    - title: clean watercress
       ingredients:
       - title: Watercress (about 2 bunches)
         quantity: 150
         unit: g
       directions: "* Pick and clean watercress."
-    - title: combine
-      image_id: 4738
+    - title: boil
+      image_id: IMG_5141.jpg
       directions: "* Bring a large pot of water to a rolling boil."
     - title: ice bath
-      image_id: 4738
       directions: "* Prepare an ice bath by filling a large container or pot half full with ice and then filling it with cold water."
     - title: blanch
-      image_id: 4738
+      image_id: IMG_5143.jpg
       directions: "* Blanch watercress in boiling water for 45 sec."
     - title: strain from boiling
-      image_id: 4738
-      directions: >
-        * Strain from the boiling water and plunge into ice bath.
-        * Stir watercress in the ice bath to ensure even cooling.
+      image_id: IMG_5157.jpg
+      directions: "
+        * Strain from the boiling water and plunge into ice bath.\n
+        * Stir watercress in the ice bath to ensure even cooling."
     - title: strain ice-bath
-      directions: >
-        * Strain watercress from the ice bath and place into blender.
-        * Tip: Tare the empty blender top on your scale in advance so that you can then weight your puree without having to remove it from the blender.
+      image_id: IMG_5172.jpg
+      directions: "
+        * Strain watercress from the ice bath and place into blender.\n
+        * Tip: Tare the empty blender top on your scale in advance so that you can then weight your puree without having to remove it from the blender."
     - title: check-weight
+      image_id: IMG_5194.jpg
       ingredients:
       - title: Xanthan gum
         quantity: 0.23
         unit: g
-      directions: >
-        * Check the weight of the puree before adding 0.1% of the puree's weight in xanthan gum, 0.23 grams for 230 grams of puree in this case.
-        * Blend the puree together with the xanthan gum until smooth. The xanthan gum will prevent the puree from seperating and weeping.
+      directions: "
+        * Check the weight of the puree before adding 0.1% of the puree's weight in xanthan gum, 0.23 grams for 230 grams of puree in this case.\n
+        * Blend the puree together with the xanthan gum until smooth. The xanthan gum will prevent the puree from seperating and weeping."
     - title: strain puree
-      directions: >
-        * Strain the puree through a chinoise or sieve
-        * If the puree will not be used promptly, vacuum package it to eliminate oxygen and preserve the color of the puree.
-        * Season the puree with salt just before serving to avoid discoloration.
+      image_id: IMG_5207.jpg
+      directions: "
+        * Strain the puree through a chinoise or sieve\n
+        * If the puree will not be used promptly, vacuum package it to eliminate oxygen and preserve the color of the puree.\n
+        * Season the puree with salt just before serving to avoid discoloration."
 
 
 # horseradish cream
@@ -346,22 +347,22 @@ activities:
       - title: Cream
         quantity: 350
         unit: g
-      directions: >
-        * Microplane 50 g and place it into a sous vide bag.
-        * Add the cream.
+      directions: "
+        * Microplane 50 g and place it into a sous vide bag.\n
+        * Add the cream."
     - title: vacuum the bag
       image_id: horseradish_5.jpg
-      directions: >
-        * Vacuum package and refrigerate.
-        * Refigerate from 1 to 24 hours. The longer the infusion time the hotter the cream will become.
+      directions: "
+        * Vacuum package and refrigerate.\n
+        * Refigerate from 1 to 24 hours. The longer the infusion time the hotter the cream will become."
     - title: strain
       image_id: horseradish_6.jpg
       directions: "* Strain the cream and then discard the pulp."
     - title: whisk
       image_id: horseradish_8.jpg
-      directions: >
-        * Whisk salt and xanthan gum into the cream.
-        * Whip the cream into very soft peaks.
-        * Refrigerate if not using immediately.
+      directions: "
+        * Whisk salt and xanthan gum into the cream.\n
+        * Whip the cream into very soft peaks.\n
+        * Refrigerate if not using immediately."
 
 
