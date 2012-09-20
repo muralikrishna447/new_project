@@ -2,17 +2,18 @@ class Activity < ActiveRecord::Base
   include RankedModel
   ranks :activity_order
 
-  has_many :activity_equipment
+  has_many :activity_equipment, inverse_of: :activity
 
-  has_many :recipes
-  has_many :steps, dependent: :destroy
-  has_many :equipment, through: :activity_equipment
-  has_many :ingredients, through: :recipes
+  has_many :recipes, inverse_of: :activity
+  has_many :steps, inverse_of: :activity, dependent: :destroy
+  has_many :equipment, through: :activity_equipment, inverse_of: :activities
 
   scope :ordered, rank(:activity_order)
   default_scope { ordered }
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, as: :admin
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty,
+    :description, :equipment_ids, :recipe_ids, :step_ids,
+    allow_destroy: true, as: :admin
 
   def optional_equipment
     equipment.where(optional: true)
@@ -33,10 +34,6 @@ class Activity < ActiveRecord::Base
     i = activities.index(self)
     return nil if i == 0
     activities[i-1]
-  end
-
-  def overview?
-    equipment.any? || ingredients.any? || description.present?
   end
 
   def step_by_step?

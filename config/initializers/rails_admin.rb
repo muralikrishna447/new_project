@@ -74,13 +74,36 @@ RailsAdmin.config do |config|
   #     # Here goes the fields configuration for the list view
   #   end
   # end
+  config.model ActivityEquipment do
+    visible false
+  end
+
+  config.model RecipeIngredient do
+    visible false
+  end
+
+  config.model StepIngredient do
+    visible false
+  end
+
   config.model Recipe do
     configure :steps do
       orderable true
     end
+  end
 
-    configure :ingredients do
-      inverse_of :recipes
+  config.model Activity do
+    configure :activity_equipment do
+      visible false
+    end
+    configure :activity_order do
+      visible false
+    end
+    configure :recipes do
+      orderable true
+    end
+    configure :steps do
+      orderable true
     end
   end
 
