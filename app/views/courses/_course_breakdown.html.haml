@@ -9,9 +9,6 @@
       %li Why cook sous vide?
       %li What you'll learn in this course
       %li An overview of the sous vide process
-      - activities.each do |activity|
-        %li
-          =link_to activity.title, activity_path(activity)
   %li.module
     %h4 Module 2: Preparation
     %ol
@@ -54,7 +51,11 @@
     %h4 Module 7: Putting it all together
     %ol
       %li Simple sous vide meal from start to finish
-      %li Intermediate sous vide meal from start to finish
+      %li
+        Intermediate sous vide meal from start to finish
+        %ul
+          - activities.each do |activity|
+            %li= link_to raw(activity.title), activity_path(activity)
       %li Advanced sous vide meal from start to finish
       %li Holiday meal prepared sous vide from start to finish
 

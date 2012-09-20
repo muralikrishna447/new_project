@@ -47,14 +47,14 @@ activities:
       unit: a/n
     steps:
     - title: Serving
-      directions: >
-        * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while they are on a sheet tray.
-        * Strain pickles from their brine and drain them on paper towel.
-        * Add the salt to the watercress puree.
-        * Place a spoonful of horseradish cream, a spoonful of watercress puree, and one salmon portion on each chilled plate.
-        * Arrange the pickled onions on the cream and around the salmon.
-        * Drizzle a small amount of olive oil over the fish.
-        * Serve.
+      directions: "
+        * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while they are on a sheet tray.\n
+        * Strain pickles from their brine and drain them on paper towel.\n
+        * Add the salt to the watercress puree.\n
+        * Place a spoonful of horseradish cream, a spoonful of watercress puree, and one salmon portion on each chilled plate.\n
+        * Arrange the pickled onions on the cream and around the salmon.\n
+        * Drizzle a small amount of olive oil over the fish.\n
+        * Serve."
 
 # Salmon mi-cut
 - title: Salmon mi-cuit
@@ -108,10 +108,10 @@ activities:
 
     - title: Dissolve salt and sugar into the water
       image_id: IMG_4817.jpg
-      directions: >
-        * Dissolve salt and sugar into the water.
-        * Chill brine to less than 41 &deg;F / 5 &deg;C
-        * Tip: Dissolve the sugar and salt into half the weight of water, then add the rest of the water as ice to quickly chill the brine.
+      directions: "
+        * Dissolve salt and sugar into the water.\n
+        * Chill brine to less than 41 &deg;F / 5 &deg;C\n
+        * Tip: Dissolve the sugar and salt into half the weight of water, then add the rest of the water as ice to quickly chill the brine.\n"
     - title: while brine
       image_id: IMG_4862.jpg
       directions: "* While brine is chilling, remove pin bones from salmon loin."
@@ -123,9 +123,9 @@ activities:
       directions: "* Strain salmon portions from the brine."
     - title: vacuum
       image_id: IMG_4946.jpg
-      directions: >
-        * Vacuum package the salmon loins individually.
-        * Tip: Add a small amount of olive oil to the packaging with salmon to make it easier to remove the cooked salmon later.
+      directions: "
+        * Vacuum package the salmon loins individually.\n
+        * Tip: Add a small amount of olive oil to the packaging with salmon to make it easier to remove the cooked salmon later."
     - title: cook
       image_id: IMG_5026.jpg
       directions: "* Sous vide cook at 104 &deg;F / 40 &deg;C for 60 minutes to reach equilibrium temperature."
@@ -133,9 +133,9 @@ activities:
       image_id: IMG_5134.jpg
       directions: "* Remove cooked salmon and submerge in ice water. Then refigerate for at least 6 hours for texture to set."
     - title: portion
-      directions: >
-        * Portion chilled salmon loin into ten 40 g portions, each about &frac34; in. / 2 cm. thick
-        * Cover and refigerate sliced portions until needed.
+      directions: "
+        * Portion chilled salmon loin into ten 40 g portions, each about &frac34; in. / 2 cm. thick\n
+        * Cover and refigerate sliced portions until needed."
 
 # pickled onions
 - title: Picked Onions
@@ -205,15 +205,15 @@ activities:
       - title: Coriander seed, whole
         quantity: 4
         unit: g
-      directions: >
-        * Scale ingredients
-        * Combine ingredients
+      directions: "
+        * Scale ingredients\n
+        * Combine ingredients"
 
     - title: clean and trim
       image_id: picked_459.jpg
-      directions: >
-        * Clean and trim baby red onions, then quarter.
-        * Seperate onion layers, sorting the red outer petals from the inner white ones
+      directions: "
+        * Clean and trim baby red onions, then quarter.\n
+        * Seperate onion layers, sorting the red outer petals from the inner white ones"
       ingredients:
       - title: Small red onions
         quantity: 3
@@ -227,10 +227,10 @@ activities:
       ingredients:
       - title: Prepared onions
       - title: Prepared pickling brine
-      directions: >
-        * Place the trimmed red onion petals, white onion petals, and green onions into seperate container and cover with pickling brine.
-        * Infuse for at least 90 minutes before using.
-        * Or vacuum package the onions in the pickling brine for 1 minute pickling.
+      directions: "
+        * Place the trimmed red onion petals, white onion petals, and green onions into seperate container and cover with pickling brine.\n
+        * Infuse for at least 90 minutes before using.\n
+        * Or vacuum package the onions in the pickling brine for 1 minute pickling."
 
 #  watercress
 - title: Watercress Puree
