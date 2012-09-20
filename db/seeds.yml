@@ -178,7 +178,7 @@ activities:
       unit: ea
     steps:
     - title: Scale ingriedients
-      image_id: 4738
+      image_id: picked_6.jpg
       ingredients:
       - title: Water
         quantity: 400
@@ -203,7 +203,7 @@ activities:
         * Combine ingredients
 
     - title: clean and trim
-      image_id: 4817
+      image_id: picked_459.jpg
       directions: >
         * Clean and trim baby red onions, then quarter.
         * Seperate onion layers, sorting the red outer petals from the inner white ones
@@ -215,7 +215,8 @@ activities:
         quantity: 10
         unit: ea
 
-    - title: stuff
+    - title: put in containers
+      image_id: picked_461.jpg
       ingredients:
       - title: Prepared onions
       - title: Prepared pickling brine
