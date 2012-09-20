@@ -23,7 +23,7 @@
     .row
       .span12
         - if @cooked_this
-          %h4== #{activity.cooked_this} people cooked this, including you. Comment below to tell us how it went!
+          %h4== #{pluralize(activity.cooked_this, 'person')} cooked this, including you. Comment below to tell us how it went!
         - else
           %a.cooked-this{ href: cooked_this_activity_path, data: { remote: true, method: :post } }
             .inner
