@@ -18,6 +18,7 @@ def create_step(step)
   s.recipe = step[:recipe]
   s.title = step[:title]
   s.youtube_id = step[:youtube_id]
+  s.image_id = step[:image_id]
   s.directions = step[:directions]
   s.save
 
@@ -41,7 +42,7 @@ end
 def create_equipment(title, product_url, optional)
   e = Equipment.find_or_create_by_title(title)
   e.product_url = product_url
-  e.optional = optional
+  e.optional = optional.present? && optional
   e.save
   e
 end
@@ -104,7 +105,7 @@ def build_activity(activity_data)
   if activity_data[:recipes].present?
     activity_data[:recipes].each do |r|
       recipe = create_recipe(r[:title], activity)
-      if r[:ingredients].any?
+      if r[:ingredients].present?
         r[:ingredients].each do |ingredient|
           item = create_ingredient(ingredient[:title])
           create_recipe_ingredient(recipe, item, ingredient[:quantity], ingredient[:unit])

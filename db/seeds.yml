@@ -9,58 +9,344 @@ activities:
 - title: Lecture
   youtube_id: ydOB-YNJ8Jw
 
-- title: Bourbon Glazed Smoked Chicken Breast
-  youtube_id: TvdqT6FMmgw
-  difficulty: Easy
+# assembly
+- title: Salmon 104 &deg;F
+  youtube_id: Qgg9lVnkOnQ
+  difficulty: Intermediate
+  yield: 10 servings
   description: "dio twee umami chambray. Velit VHS ad godard PBR american
   apparel. Placeat odio leggings typewriter chambray master cleanse squid,
   aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
   Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
   sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
   rights twee nulla mumblecore cosb"
-  yield: 800g(~4 portions)
-  timing: 74 hours overall including 34 mins preperation and 35 misn to reheat and finish
-  activity_equipment:
-  - title: Smoker
-    product_url: "http://www.amazon.com/dp/B00104WRCY/?tag=hyprod-20&hvadid=15475540419&hvpos=1o2&hvexid=&hvnetw=g&hvrand=15365057922131986741&hvpone=&hvptwo=&hvqmt=&ref=asc_df_B00104WRCY"
-    optional: false
-
-  - title: Brine Tank
-    optional: true
-
-  - title: Sous Vide Equipment
-    optional: false
-
-  activity_steps:
-  - title: Trim the breast meat
-    youtube_id: TvdqT6FMmgw
-    directions: "
-      * Mix the stuff\n
-      * Refigerate stuff\n
-      * Do other stuff"
 
   recipes:
-  - title: Mop Sauce
+  - title: Assembly
     ingredients:
-    - title: Chicken jus
-      quantity: 410
+    - title: Cooked and chilled salmon portions
+      quantity: 10
+      unit: ea
+    - title: Pickled onions
+      quantity: 3
+      unit: ea
+    - title: Horseradish cream
+      quantity: 320
+      unit: g
+    - title: Watercress puree
+      quantity: 320
+      unit: g
+    - title: Maldon salt
+      unit: a/n
+    - title: Black pepper, coarse ground
+      unit: a/n
+    - title: Coriander seed, coarse ground
+      unit: a/n
+    - title: Olive oil
+      unit: a/n
+    steps:
+    - title: Serving
+      directions: "
+        * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while they are on a sheet tray.\n
+        * Strain pickles from their brine and drain them on paper towel.\n
+        * Add the salt to the watercress puree.\n
+        * Place a spoonful of horseradish cream, a spoonful of watercress puree, and one salmon portion on each chilled plate.\n
+        * Arrange the pickled onions on the cream and around the salmon.\n
+        * Drizzle a small amount of olive oil over the fish.\n
+        * Serve.\n"
+
+ # Salmon mi-cut
+- title: Salmon mi-cuit
+  youtube_id: i3Vu703ypxc
+  difficulty: Intermediate
+  yield: 10 portions
+  description: "dio twee umami chambray. Velit VHS ad godard PBR american
+  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+  rights twee nulla mumblecore cosb"
+
+  activity_equipment:
+  - title: Immersion circulator (or other sous vide cooking equipment)
+  - title: Digital scale
+  - title: Vacuum packer (or use an improvised strategy)
+    optional: true
+
+  recipes:
+  - title: Salmon mi-cuit
+    yield: 1700 g
+    ingredients:
+    - title: Water
+      quantity: 1600
+      unit: g
+    - title: Salt
+      quantity: 160
+      unit: g
+    - title: Sugar
+      quantity: 80
+      unit: g
+    - title: Salmon loin, skinless
+      quantity: 400
       unit: g
     steps:
-    - title: Make the sauce
-      youtube_id: TvdqT6FMmgw
-      directions: "
-        * Open bottle\n
-        * Do stuff\n
-        * Do other stuff"
+    - title: Weigh out ingredients
+      image_id: 4738
       ingredients:
-      - title: Chicken jus
-        quantity: 410
+      - title: Water
+        quantity: 1600
         unit: g
+      - title: Salt
+        quantity: 160
+        unit: g
+      - title: Sugar
+        quantity: 80
+        unit: g
+      directions: "* Scale ingredients"
 
-      - title: Cider vinegar
-        quantity: 120
-        unit: g
+    - title: Dissolve salt and sugar into the water
+      directions: "* Dissolve salt and sugar into the water.\n
+        * Chill brine to less than 41 &deg;F / 5 &deg;C\n
+        * Tip: Dissolve the sugar and salt into half the weight of
+        water, then add the rest of the water as ice to quickly chill the brine."
+    - title: while brine
+      directions: "* While brine is chilling, remove pin bones from salmon loin."
+    - title: submerge
+      directions: "* Submerge salmon loin in chilled brine for 45 minutes."
+    - title: strain-salmon
+      directions: "* Strain salmon portions from the brine."
+    - title: vacuum
+      directions: "* Vacuum package the salmon loins individually.\n
+        * Tip: Add a small amount of olive oil to the packaging with salmon to
+        make it easier to remove the cooked salmon later."
+    - title: cook
+      directions: "* Sous vide cook at 104 &deg;F / 40 &deg;C for 60 minutes to reach equilibrium temperature."
+    - title: remove cooked
+      directions: "* Remove cooked salmon and submerge in ice water. Then refigerate for at least 6 hours for texture to set."
+    - title: portion
+      directions: "* Portion chilled salmon loin into ten 40 g portions, each about &frac34; in. / 2 cm. thick\n
+        * Cover and refigerate sliced portions until needed."
 
-      - title: Golden brown sugar
-        quantity: 100
+# pickled onions
+- title: Picked Onions
+  youtube_id: 1CpDIOt81D0
+  difficulty: Intermediate
+  yield: 10 portions
+  description: "dio twee umami chambray. Velit VHS ad godard PBR american
+  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+  rights twee nulla mumblecore cosb"
+
+  activity_equipment:
+  - title: Digital scale
+  - title: Vacuum chamber sealer
+    optional: true
+
+  recipes:
+  - title: Picked Onions
+    yield: 900 g (~ 10 portions)
+    ingredients:
+    - title: Water
+      quantity: 400
+      unit: g
+    - title: White wine vinegar
+      quantity: 400
+      unit: g
+    - title: Sugar
+      quantity: 80
+      unit: g
+    - title: Salt
+      quantity: 20
+      unit: g
+    - title: Black pepper, whole
+      quantity: 4
+      unit: g
+    - title: Coriander seed, whole
+      quantity: 4
+      unit: g
+    - title: Small red onions
+      quantity: 3
+      unit: ea
+    - title: Green onions
+      quantity: 10
+      unit: ea
+    steps:
+    - title: Scale ingriedients
+      image_id: 4738
+      ingredients:
+      - title: Water
+        quantity: 400
         unit: g
+      - title: White wine vinegar
+        quantity: 400
+        unit: g
+      - title: Sugar
+        quantity: 80
+        unit: g
+      - title: Salt
+        quantity: 20
+        unit: g
+      - title: Black pepper, whole
+        quantity: 4
+        unit: g
+      - title: Coriander seed, whole
+        quantity: 4
+        unit: g
+      directions: "
+        * Scale ingredients\n
+        * Combine ingredients"
+
+    - title: clean and trim
+      image_id: 4817
+      directions: "* Clean and trim baby red onions, then quarter.\n
+       * Seperate onion layers, sorting the red outer petals from the inner white ones"
+      ingredients:
+      - title: Small red onions
+        quantity: 3
+        unit: ea
+      - title: Green onions
+        quantity: 10
+        unit: ea
+
+    - title: stuff
+      ingredients:
+      - title: Prepared onions
+      - title: Prepared pickling brine
+      directions: "* Place the trimmed red onion petals, white onion petals, and green onions into seperate container and cover with pickling brine.\n
+        * Infuse for at least 90 minutes before using.\n
+        * Or vacuum package the onions in the pickling brine for 1 minute pickling."
+
+#  watercress
+- title: Watercress Puree
+  youtube_id: b6wnr71cNF4
+  difficulty: Intermediate
+  yield: 230 g
+  description: "dio twee umami chambray. Velit VHS ad godard PBR american
+  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+  rights twee nulla mumblecore cosb"
+
+  activity_equipment:
+  - title: Digital scale
+  - title: Blender
+
+  recipes:
+  - title: Watercress
+    yield: 1700 g
+    ingredients:
+    - title: Watercress (about 2 bunches)
+      quantity: 150
+      unit: g
+    - title: Xanthan gum
+      quantity: 0.23
+      unit: g
+    - title: Salt
+      quantity: 2.3
+      unit: g
+    steps:
+    - title: weigh out ingredients
+      image_id: 4738
+      ingredients:
+      - title: Watercress (about 2 bunches)
+        quantity: 150
+        unit: g
+      directions: "* Pick and clean watercress."
+    - title: combine
+      image_id: 4738
+      directions: "* Bring a large pot of water to a rolling boil."
+    - title: ice bath
+      image_id: 4738
+      directions: "* Prepare an ice bath by filling a large container or pot
+        half full with ice and then filling it with cold water."
+    - title: blanch
+      image_id: 4738
+      directions: "* Blanch watercress in boiling water for 45 sec."
+    - title: strain from boiling
+      image_id: 4738
+      directions: "* Strain from the boiling water and plunge into ice bath.\n
+        * Stir watercress in the ice bath to ensure even cooling."
+    - title: strain ice-bath
+      directions: "* Strain watercress from the ice bath and place into blender.\n
+        * Tip: Tare the empty blender top on your scale in advance so that you
+        can then weight your puree without having to remove it from the blender."
+    - title: check-weight
+      ingredients:
+      - title: Xanthan gum
+        quantity: 0.23
+        unit: g
+      directions: "* Check the weight of the puree before adding 0.1% of the puree's weight in xanthan gum,
+        0.23 grams for 230 grams of puree in this case.\n
+        * Blend the puree together with the xanthan gum until smooth. The
+          xanthan gum will prevent the puree from seperating and weeping."
+    - title: strain puree
+      directions: "* Strain the puree through a chinoise or sieve\n
+        * If the puree will not be used promptly, vacuum package it to eliminate oxygen and preserve the color of the puree.\n
+        * Season the puree with salt just before serving to avoid discoloration."
+
+
+# horseradish cream
+- title: Horseradish Cream
+  youtube_id: LGQEdKYZ5Zo
+  difficulty: Intermediate
+  yield: 320 g
+  description: "dio twee umami chambray. Velit VHS ad godard PBR american
+  apparel. Placeat odio leggings typewriter chambray master cleanse squid,
+  aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
+  Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
+  sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
+  rights twee nulla mumblecore cosb"
+
+  activity_equipment:
+  - title: Microplane
+  - title: Vacuum packer (or use an improvised strategy)
+    optional: true
+
+  recipes:
+  - title: Horseradish Cream
+    yield: 320 g
+    ingredients:
+    - title: Fresh horseradish root
+      quantity: 1
+      unit: ea
+    - title: Cream
+      quantity: 350
+      unit: g
+    - title: Xanthan Gum
+      quantity: 0.35
+      unit: g
+    - title: Salt
+      quantity: 3.2
+      unit: g
+    steps:
+    - title: wash
+      image_id: 4738
+      ingredients:
+      - title: Fresh horseradish root
+        quantity: 1
+        unit: ea
+      directions: "* Wash and peel the fresh horseradish."
+    - title: wash
+      image_id: 4738
+      ingredients:
+      - title: peeled and preped horseradish
+        quantity: 1
+        unit: ea
+      - title: Cream
+        quantity: 350
+        unit: g
+      directions: "* Microplane 50 g and place it into a sous vide bag.\n * Add the cream."
+    - title: vacuum the bag
+      directions: "* Vacuum package and refrigerate.\n
+        * Refigerate from 1 to 24 hours. The longer the infusion time the hotter the cream will become."
+    - title: strain
+      directions: "* Strain the cream and then discard the pulp."
+    - title: whisk
+      directions: "* Whisk salt and xanthan gum into the cream.\n
+        * Whip the cream into very soft peaks.\n
+        * Refrigerate if not using immediately."
+
+
