@@ -1,5 +1,5 @@
 class Recipe < ActiveRecord::Base
-  belongs_to :activity, inverse_of: :recipes, touch: true
+  belongs_to :activity, touch: true, inverse_of: :recipes
   has_many :ingredients, class_name: RecipeIngredient, inverse_of: :recipe
   has_many :steps, dependent: :destroy, inverse_of: :recipe
 
