@@ -92,6 +92,12 @@ RailsAdmin.config do |config|
     end
   end
 
+  config.model Equipment do
+    configure :activity_equipment do
+      visible false
+    end
+  end
+
   config.model Activity do
     configure :activity_equipment do
       visible false
@@ -107,8 +113,5 @@ RailsAdmin.config do |config|
     end
   end
 
-  # Your model's configuration, to help you get started:
-
-  # All fields marked as 'hidden' won't be shown anywhere in the rails_admin unless you mark them as visible. (visible(true))
 
 end
