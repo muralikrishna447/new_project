@@ -5,6 +5,8 @@ class Step < ActiveRecord::Base
   belongs_to :activity, touch: true, inverse_of: :steps
   belongs_to :recipe, touch: true, inverse_of: :steps
 
+  validates :title, presence: true
+
   has_many :ingredients, class_name: StepIngredient, dependent: :destroy, inverse_of: :step
 
   attr_accessible :title, :youtube_id, :recipe_id, :directions, :image_id,
@@ -20,7 +22,7 @@ class Step < ActiveRecord::Base
         if current_ids.include? (id)
           ingredients.select { |b| b.id == id }.first.update_attribute(:ingredient_order_position, (index+1))
         else
-          raise "can't add thing"
+          raise "Can't add Ingredient: #{id}"
         end
       end
       (current_ids - ids).each { |id| ingredients.select{|b|b.id == id}.first.destroy}
