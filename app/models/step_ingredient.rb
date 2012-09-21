@@ -9,6 +9,9 @@ class StepIngredient < ActiveRecord::Base
 
   delegate :title, to: :ingredient
 
+  validates :ingredient_id, presence: true
+  validates :step_id, presence: true
+
   scope :ordered, rank(:ingredient_order)
 
   default_scope { ordered }
