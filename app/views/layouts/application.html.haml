@@ -10,7 +10,7 @@
 %html.no-js{:lang => "en", 'xmlns:fb' => "http://ogp.me/ns/fb#" }
 
   %head
-    %title== Delve | #{yield(:title)}
+    %title= [yield(:title), 'ChefSteps'].compact.join(' | ')
 
     -# ==========================================================================
     -# Head
