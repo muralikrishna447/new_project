@@ -5,7 +5,9 @@ module AggressiveCaching
   end
 
   def configure_caching
-    last_modified = File.mtime("#{Rails.root}/public/assets/application.css")
+    app_modified = File.mtime("#{Rails.root}/public/assets/application.css")
+    version_modified = Version.first.updated_at
+    last_modified = [app_modified, version_modified].max
     fresh_when last_modified: last_modified, public: true, etag: last_modified
     expires_in 10.seconds, public: true
   end
