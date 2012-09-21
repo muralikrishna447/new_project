@@ -4,6 +4,7 @@
 
 @import application/fonts
 @import application/sprites
+@import application/custom_mixins
 
 p
   +font-sans-medium
@@ -24,10 +25,21 @@ p
   .row:first-child
     margin-top: 0
 
+.hero-well
+  background: whiteSmoke
+  padding: 20px 0
+  border-top: 1px solid $grayLight
+  border-bottom: 1px solid $grayLight
+
+
 .hero-comments
   margin-bottom: 0
   background: $grayLight
   color: $black
+
+.top-video
+  padding-left: 10px
+  padding-right: 10px
 
 ul.horizontal-list
   margin: 0
@@ -51,6 +63,31 @@ ul.horizontal-list
   @extend .icon-chevron-right
   &:before
     content: "\f054 \f054"
+
+.button
+  display: inline-block
+  background: $brick
+  color: $white
+  text-transform: uppercase
+  border: none
+  +border-radius(5px)
+  padding: 3px
+  +text-selection(none)
+  &.inverse
+    background: $white
+    color: $brick
+    .inner
+      border-color: $brick
+  &:hover
+    text-decoration: none
+    color: $white
+    background: $brickDark
+  .inner
+    border: 1px dashed $white
+    +border-radius(5px)
+    padding: 10px 15px
+    span
+      vertical-align: middle
 
 .icon-white
   color: $white
@@ -104,14 +141,6 @@ iframe
 
 .img-profile
   +border-radius(3px)
-
-=input-placeholder
-  &::-webkit-input-placeholder
-    @content
-  &:-moz-placeholder
-    @content
-  &:-ms-input-placeholder
-    @content
 
 @import application/header
 @import application/navigation

@@ -1,9 +1,18 @@
+- content_for :title, 'Accelerated Sous Vide Cooking'
+
 = render 'title_bar'
 
 .hero-unit.course-title
   .container
-    .row12
-      %h3 Accelerated Sous Vide Cooking Course
+    .row
+      .span8
+        %h3 Accelerated Sous Vide Cooking Course
+      .span4
+        %a.button.pull-right{ href: activity_path(1) }
+          .inner
+            Start Course
+            %i.icon-double-chevron-right
+
 .container
   .row.top-video
     .span12
@@ -53,6 +62,9 @@
       %p
         No other course matches our comprehensive approach to understanding sous vide cooking.
 
+    .span4.pull-right
+      = render 'course_breakdown', activities: activities
+    .span8.pull-left
       %h3 Instructors
       %ul.unstyled
         %li.instructor
@@ -89,8 +101,6 @@
                 and practiced butchery at Bajon Jean Pierrie in Paris.
           .row
             .span8.horizontal-divider
-    .span4
-      = render 'course_breakdown', activities: activities
 
 = render 'layouts/disqus_comments', id: 'course-1'
 

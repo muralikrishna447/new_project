@@ -1,0 +1,16 @@
+=input-placeholder
+  &::-webkit-input-placeholder
+    @content
+  &:-moz-placeholder
+    @content
+  &:-ms-input-placeholder
+    @content
+
+=text-selection($selection: all)
+  -webkit-touch-callout: $selection
+  -webkit-user-select: $selection
+  -khtml-user-select: $selection
+  -moz-user-select: $selection
+  -ms-user-select: $selection
+  user-select: $selection
+

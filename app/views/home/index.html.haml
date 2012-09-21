@@ -1,3 +1,5 @@
+- content_for :title, "Free to Learn Culinary School"
+
 .slider-block
   #myCarousel.carousel.slide{ data: { interval: 10000 } }
     .carousel-inner
@@ -13,7 +15,10 @@
     .caption-content
       %h3 Master sous vide cooking
       %h4 in our first free to learn cooking course
-      = link_to "Preview Course »", course_path(1)
+      %a.button{ href: course_path(1) }
+        .inner
+          Preview Course
+          %i.icon-double-chevron-right
 
 .hero-unit.signup-banner
   .container
