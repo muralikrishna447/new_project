@@ -25,6 +25,9 @@ RailsAdmin.config do |config|
     object_label_method do
       :label
     end
+    configure :ingredient_order do
+      visible false
+    end
   end
 
   config.model Step do
@@ -54,6 +57,9 @@ RailsAdmin.config do |config|
   config.model Recipe do
     configure :steps do
       orderable true
+    end
+    configure :recipe_order do
+      visible false
     end
     configure :ingredients do
       orderable :true
