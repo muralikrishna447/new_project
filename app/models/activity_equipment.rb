@@ -1,7 +1,12 @@
 class ActivityEquipment < ActiveRecord::Base
-  belongs_to :activity, inverse_of: :equipment
-  belongs_to :equipment, inverse_of: :activities
+  belongs_to :activity, touch: true, inverse_of: :equipment
+  belongs_to :equipment, inverse_of: :activity_equipment
 
-  attr_accessible :activity_id, :equipment_id, as: :admin
+  attr_accessible :activity_id, :equipment_id, :optional, as: :admin
+
+  delegate :title, :product_url, :product_url?, to: :equipment
+
+  scope :optional, where(optional: true)
+  scope :required, where(optional: false)
 end
 
