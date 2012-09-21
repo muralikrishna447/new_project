@@ -2,7 +2,7 @@ class Activity < ActiveRecord::Base
   include RankedModel
   ranks :activity_order
 
-  has_many :recipes, dependent: :destroy, inverse_of: :activity
+  has_many :recipes, inverse_of: :activity
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity
 
