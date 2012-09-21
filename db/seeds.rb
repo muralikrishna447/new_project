@@ -136,3 +136,5 @@ end
   build_activity(activity_data)
 end
 
+Version.create
+
