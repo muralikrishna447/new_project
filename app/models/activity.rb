@@ -51,7 +51,7 @@ class Activity < ActiveRecord::Base
           raise "Can't add Recipe: #{id}"
         end
       end
-      (current_ids - ids).each { |id| recipes.select{|b|b.id == id}.first.destroy}
+      (current_ids - ids).each { |id| recipes.select{|b|b.id == id}.first.update_attribute(:activity_id, nil)}
     end
   end
 
