@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120920013144) do
+ActiveRecord::Schema.define(:version => 20120921185009) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
@@ -29,17 +29,17 @@ ActiveRecord::Schema.define(:version => 20120920013144) do
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
 
   create_table "activity_equipment", :force => true do |t|
-    t.integer  "activity_id",  :null => false
-    t.integer  "equipment_id", :null => false
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "activity_id",                     :null => false
+    t.integer  "equipment_id",                    :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "optional",     :default => false
   end
 
   add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
 
   create_table "equipment", :force => true do |t|
     t.string   "title"
-    t.boolean  "optional"
     t.string   "product_url"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
@@ -66,35 +66,41 @@ ActiveRecord::Schema.define(:version => 20120920013144) do
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
 
   create_table "recipe_ingredients", :force => true do |t|
-    t.integer  "recipe_id",     :null => false
-    t.integer  "ingredient_id", :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "recipe_id",        :null => false
+    t.integer  "ingredient_id",    :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.string   "unit"
     t.decimal  "quantity"
+    t.integer  "ingredient_order"
   end
 
+  add_index "recipe_ingredients", ["ingredient_order"], :name => "index_recipe_ingredients_on_ingredient_order"
   add_index "recipe_ingredients", ["recipe_id", "ingredient_id"], :name => "index_recipe_ingredients_on_recipe_id_and_ingredient_id", :unique => true
 
   create_table "recipes", :force => true do |t|
     t.string   "title"
     t.integer  "activity_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.string   "yield"
+    t.integer  "recipe_order"
   end
 
   add_index "recipes", ["activity_id"], :name => "index_recipes_on_activity_id"
+  add_index "recipes", ["recipe_order"], :name => "index_recipes_on_recipe_order"
 
   create_table "step_ingredients", :force => true do |t|
-    t.integer  "step_id",       :null => false
-    t.integer  "ingredient_id", :null => false
+    t.integer  "step_id",          :null => false
+    t.integer  "ingredient_id",    :null => false
     t.decimal  "quantity"
     t.string   "unit"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "ingredient_order"
   end
 
+  add_index "step_ingredients", ["ingredient_order"], :name => "index_step_ingredients_on_ingredient_order"
   add_index "step_ingredients", ["step_id", "ingredient_id"], :name => "index_step_ingredients_on_step_id_and_ingredient_id", :unique => true
 
   create_table "steps", :force => true do |t|
