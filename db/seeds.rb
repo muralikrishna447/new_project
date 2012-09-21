@@ -138,7 +138,7 @@ end
 
 @seed_data[:copy].each do |content|
   c = Copy.find_or_create_by_location(content[:location])
-  c.markdown = content[:markdown]
+  c.copy= content[:copy_content]
   c.save
   c
 end
