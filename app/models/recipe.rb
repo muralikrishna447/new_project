@@ -3,7 +3,7 @@ class Recipe < ActiveRecord::Base
   ranks :recipe_order, with_same: :activity_id
 
   belongs_to :activity, touch: true, inverse_of: :recipes
-  has_many :ingredients, class_name: RecipeIngredient, inverse_of: :recipe
+  has_many :ingredients, dependent: :destroy, class_name: RecipeIngredient, inverse_of: :recipe
   has_many :steps, dependent: :destroy, inverse_of: :recipe
 
   validates :title, presence: true

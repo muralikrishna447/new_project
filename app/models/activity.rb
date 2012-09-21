@@ -2,11 +2,9 @@ class Activity < ActiveRecord::Base
   include RankedModel
   ranks :activity_order
 
-  has_many :activity_equipment, inverse_of: :activity
-
-  has_many :recipes, inverse_of: :activity
+  has_many :recipes, dependent: :destroy, inverse_of: :activity
   has_many :steps, inverse_of: :activity, dependent: :destroy
-  has_many :equipment, through: :activity_equipment, inverse_of: :activities
+  has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity
 
   scope :ordered, rank(:activity_order)
   default_scope { ordered }
@@ -20,11 +18,11 @@ class Activity < ActiveRecord::Base
   end
 
   def optional_equipment
-    equipment.where(optional: true)
+    equipment.optional
   end
 
   def required_equipment
-    equipment.where(optional: false)
+    equipment.required
   end
 
   def next
@@ -43,5 +41,19 @@ class Activity < ActiveRecord::Base
   def step_by_step?
     steps.count > 0
   end
+
+  def recipe_ids=(ids)
+    unless (ids = ids.map(&:to_i).select { |i| i>0 }) == (current_ids = recipes.map(&:id))
+      ids.each_with_index do |id, index|
+        if current_ids.include? (id)
+          recipes.select { |b| b.id == id }.first.update_attribute(:recipe_order_position, (index+1))
+        else
+          raise "Can't add Recipe: #{id}"
+        end
+      end
+      (current_ids - ids).each { |id| recipes.select{|b|b.id == id}.first.destroy}
+    end
+  end
+
 end
 

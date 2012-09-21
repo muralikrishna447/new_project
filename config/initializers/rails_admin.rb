@@ -18,6 +18,9 @@ RailsAdmin.config do |config|
     object_label_method do
       :label
     end
+    configure :ingredient_order do
+      visible false
+    end
   end
 
   config.model StepIngredient do
