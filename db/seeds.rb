@@ -136,5 +136,12 @@ end
   build_activity(activity_data)
 end
 
+@seed_data[:copy].each do |content|
+  c = Copy.find_or_create_by_location(content[:location])
+  c.markdown = content[:markdown]
+  c.save
+  c
+end
+
 Version.create
 

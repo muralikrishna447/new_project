@@ -38,12 +38,14 @@ ActiveRecord::Schema.define(:version => 20120921203420) do
 
   add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
 
-  create_table "copy", :force => true do |t|
+  create_table "copies", :force => true do |t|
     t.string   "location"
     t.text     "markdown"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "copies", ["location"], :name => "index_copies_on_location"
 
   create_table "equipment", :force => true do |t|
     t.string   "title"
