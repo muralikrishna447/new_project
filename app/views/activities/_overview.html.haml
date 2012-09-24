@@ -37,7 +37,11 @@
             %tbody
               - recipe.ingredients.each do |ingredient|
                 %tr
-                  %td= ingredient.title
+                  %td
+                    - if ingredient.product_url?
+                      = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
+                    - else
+                      = ingredient.title
                   %td.quantity= quantity_number(ingredient.quantity)
                   %td= ingredient.unit
       .span4
@@ -60,7 +64,7 @@
               %ul.equipment
                 - group.each do |item|
                   - if item.product_url?
-                    %li= link_to item.title, item.product_url
+                    %li.bullet-for-sale= link_to item.title, item.product_url
                   - else
                     %li= item.title
         - if activity.optional_equipment.present?
@@ -73,7 +77,7 @@
                 %ul.equipment
                   - group.each do |item|
                     - if item.product_url?
-                      %li= link_to item.title, item.product_url
+                      %li.bullet-for-sale= link_to item.title, item.product_url
                     - else
                       %li= item.title
 

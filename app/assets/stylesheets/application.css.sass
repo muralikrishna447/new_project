@@ -64,6 +64,34 @@ ul.horizontal-list
   &:before
     content: "\f054 \f054"
 
+li.bullet-for-sale
+  list-style-type: none !important
+  &:before
+    content: ''
+  *:first-child
+    text-indent: 5px
+    &:before
+      font-family: FontAwesome
+      font-weight: normal
+      font-style: normal
+      display: inline-block
+      text-decoration: inherit
+      content: "\f07a"
+      position: relative
+      left: -8px
+
+.bullet-for-sale
+  text-indent: -20px
+  &:before
+    font-family: FontAwesome
+    font-weight: normal
+    font-style: normal
+    display: inline-block
+    text-decoration: inherit
+    content: "\f07a"
+    position: relative
+    left: -5px
+
 .button
   display: inline-block
   background: $brick
