@@ -5,7 +5,7 @@ class RecipeIngredient < ActiveRecord::Base
   belongs_to :recipe, touch: true, inverse_of: :ingredients
   belongs_to :ingredient, inverse_of: :recipe_ingredients
 
-  delegate :title, :for_sale, :product_url, to: :ingredient
+  delegate :title, :for_sale, :product_url, :product_url?, to: :ingredient
 
   validates :ingredient, presence: true
   validates :recipe, presence: true

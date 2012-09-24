@@ -7,7 +7,7 @@ class StepIngredient < ActiveRecord::Base
 
   attr_accessible :step_id, :ingredient_id, :quantity, :unit, as: :admin
 
-  delegate :title, :for_sale, :product_url, to: :ingredient
+  delegate :title, :for_sale, :product_url, :product_url?, to: :ingredient
 
   validates :ingredient_id, presence: true
   validates :step_id, presence: true
