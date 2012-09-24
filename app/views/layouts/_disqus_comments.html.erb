@@ -6,8 +6,8 @@
         <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
         <script type="text/javascript">
-        var disqus_shortname = 'delvestaging';
-        var disqus_identifier = "<%= id %>";
+        var disqus_shortname = '<%= DISQUS_SHORTNAME %>';
+        var disqus_identifier = "<%= disqus_id %>";
         <% if Rails.env.development? -%>
         var disqus_developer = 1;
         <% end -%>
