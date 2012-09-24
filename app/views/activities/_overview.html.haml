@@ -37,11 +37,11 @@
             %tbody
               - recipe.ingredients.each do |ingredient|
                 %tr
-                  - if ingredient.product_url?
-                    %td
+                  %td
+                    - if ingredient.product_url?
                       = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
-                  - else
-                    %td= ingredient.title
+                    - else
+                      = ingredient.title
                   %td.quantity= quantity_number(ingredient.quantity)
                   %td= ingredient.unit
       .span4
