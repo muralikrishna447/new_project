@@ -374,4 +374,83 @@ activities:
         * Whip the cream into very soft peaks.
         * Refrigerate if not using immediately.
 
-
+copy:
+- location: course-syllabus
+  copy_content: |
+    <li><h3>Syllabus</h3></li>
+    <li class='module'>
+      <h4>Module 1: Introduction</h4>
+      <ol>
+        <li>What is sousvide cooking?</li>
+        <li>The story of sous vide cooking</li>
+        <li>Why cook sous vide?</li>
+        <li>What you'll learn in this course</li>
+        <li>An overview of the sous vide process</li>
+      </ol>
+    </li>
+    <li class='module'>
+      <h4>Module 2: Preparation</h4>
+      <ol>
+        <li>The importance of organization and working clean</li>
+        <li>Trimming and portioning</li>
+        <li>Seasonings, brines, marinades</li>
+        <li>Tips and tricks</li>
+      </ol>
+    </li>
+    <li class='module'>
+      <h4>Module 3: Packaging</h4>
+      <ol>
+        <li>Why package food?</li>
+        <li>Packaging options</li>
+        <li>Vacuum packing</li>
+        <li>Edge sealing</li>
+        <li>Rigid containers</li>
+        <li>Improvised strategies</li>
+      </ol>
+    </li>
+    <li class='module'>
+      <h4>Module 4: Cooking Temperature</h4>
+      <ol>
+        <li>Heat as an ingredient</li>
+        <li>Controlling temperature</li>
+        <li>Sous vide cooking equipment</li>
+        <li>Selecting a cooking temperature</li>
+      </ol>
+    </li>
+    <li class='module'>
+      <h4>Module 5: Cooking Time</h4>
+      <ol>
+        <li>Selecting a cooking time</li>
+        <li>Sous vide cooking strategies</li>
+        <li>Cook to core temperature</li>
+        <li>Cook and hold at temperature</li>
+        <li>Food safety considerations</li>
+      </ol>
+    </li>
+    <li class='module'>
+      <h4>Module 6: Finishing Strategies</h4>
+      <ol>
+        <li>Chilling, freezing, and reheating</li>
+        <li>Tips and tricks</li>
+        <li>Searing strategies</li>
+        <li>Tips and tricks</li>
+      </ol>
+    </li>
+    <li class='module'>
+      <h4>Module 7: Putting it all together</h4>
+      <ol>
+        <li>Simple sous vide meal from start to finish</li>
+        <li>
+          Intermediate sous vide meal from start to finish
+          <ul>
+            <li><a href="/activities/1">Salmon 104 &deg;F</a></li>
+            <li><a href="/activities/2">Salmon mi-cuit</a></li>
+            <li><a href="/activities/3">Picked Onions</a></li>
+            <li><a href="/activities/4">Watercress Puree</a></li>
+            <li><a href="/activities/5">Horseradish Cream</a></li>
+          </ul>
+        </li>
+        <li>Advanced sous vide meal from start to finish</li>
+        <li>Holiday meal prepared sous vide from start to finish</li>
+      </ol>
+    </li>

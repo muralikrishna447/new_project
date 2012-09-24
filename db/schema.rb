@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120921201328) do
+ActiveRecord::Schema.define(:version => 20120921223049) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
@@ -37,6 +37,15 @@ ActiveRecord::Schema.define(:version => 20120921201328) do
   end
 
   add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
+
+  create_table "copies", :force => true do |t|
+    t.string   "location"
+    t.text     "copy"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "copies", ["location"], :name => "index_copies_on_location"
 
   create_table "equipment", :force => true do |t|
     t.string   "title"
