@@ -6,6 +6,6 @@ class Ingredient < ActiveRecord::Base
 
   validates :title, presence: true
 
-  attr_accessible :title, :product_url, as: :admin
+  attr_accessible :title, :product_url, :shopping, as: :admin
 end
 

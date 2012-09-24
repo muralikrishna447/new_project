@@ -9,7 +9,13 @@
         %table
           - step.ingredients.each do |ingredient|
             %tr
-              %td= ingredient.title
+              - if ingredient.product_url.present?
+                %td
+                  = link_to ingredient.title, ingredient.product_url
+                  - if ingredient.for_sale
+                    %i.icon-shopping-cart
+              - else
+                %td= ingredient.title
               %td.quantity= quantity_number(ingredient.quantity)
               %td= ingredient.unit
     - if step.directions.present?
