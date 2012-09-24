@@ -1,10 +1,12 @@
+- disqus_id = "activity-#{activity.id}"
+
 - content_for :title, activity.title.html_safe
 
 = render 'courses/title_bar'
 
 = render 'activities/breadcrumbs'
 
-= render 'courses/navigation', model: activity
+= render 'courses/navigation', model: activity, disqus_id: disqus_id
 
 .hero-unit.hero-well
   .container
@@ -18,5 +20,5 @@
 #step-by-step
   = render 'step_by_step', activity: activity
 
-= render 'layouts/disqus_comments', id: activity.id
+= render 'layouts/disqus_comments', id: disqus_id
 
