@@ -140,7 +140,7 @@ activities:
         * Cover and refigerate sliced portions until needed.
 
 # pickled onions
-- title: Picked Onions
+- title: Pickled Onions
   youtube_id: 1CpDIOt81D0
   difficulty: Intermediate
   yield: 10 portions
@@ -158,7 +158,7 @@ activities:
     optional: true
 
   recipes:
-  - title: Picked Onions
+  - title: Pickled Onions
     yield: 900 g (~ 10 portions)
     ingredients:
     - title: Water
@@ -187,7 +187,7 @@ activities:
       unit: ea
     steps:
     - title: Scale ingriedients
-      image_id: picked_6.jpg
+      image_id: pickled_6.jpg
       ingredients:
       - title: Water
         quantity: 400
@@ -212,7 +212,7 @@ activities:
         * Combine ingredients
 
     - title: clean and trim
-      image_id: picked_459.jpg
+      image_id: pickled_459.jpg
       directions: |
         * Clean and trim baby red onions, then quarter.
         * Seperate onion layers, sorting the red outer petals from the inner white ones
@@ -225,7 +225,7 @@ activities:
         unit: ea
 
     - title: put in containers
-      image_id: picked_461.jpg
+      image_id: pickled_461.jpg
       ingredients:
       - title: Prepared onions
       - title: Prepared pickling brine
@@ -445,7 +445,7 @@ copy:
           <ul>
             <li><a href="/activities/1">Salmon 104 &deg;F</a></li>
             <li><a href="/activities/2">Salmon mi-cuit</a></li>
-            <li><a href="/activities/3">Picked Onions</a></li>
+            <li><a href="/activities/3">Pickled Onions</a></li>
             <li><a href="/activities/4">Watercress Puree</a></li>
             <li><a href="/activities/5">Horseradish Cream</a></li>
           </ul>
