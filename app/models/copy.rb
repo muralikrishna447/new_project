@@ -1,3 +1,3 @@
 class Copy < ActiveRecord::Base
-  attr_accessible :location, :markdown, as: :admin
+  attr_accessible :location, :copy, as: :admin
 end
