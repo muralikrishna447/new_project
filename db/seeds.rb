@@ -33,6 +33,7 @@ def create_step(step)
 end
 
 def create_admin(email, password)
+  return if User.where(email: email).any?
   u = User.create
   u.email = email
   u.password = password
@@ -41,6 +42,7 @@ def create_admin(email, password)
 end
 
 def create_equipment(title, product_url)
+  return if Equipment.where(title: title).any?
   e = Equipment.find_or_create_by_title(title)
   e.product_url = product_url
   e.save
@@ -48,6 +50,7 @@ def create_equipment(title, product_url)
 end
 
 def create_ingredient(title, product_url='')
+  return if Ingredient.where(title: title).any?
   ingredient = Ingredient.find_or_create_by_title(title)
   ingredient.product_url = product_url
   ingredient.save
@@ -55,6 +58,7 @@ def create_ingredient(title, product_url='')
 end
 
 def create_recipe(title, activity)
+  return if Recipe.where(title: title).any?
   recipe  = Recipe.create
   recipe.title = title
   recipe.activity = activity
@@ -89,6 +93,7 @@ def create_step_ingredient(step, ingredient, quantity, unit)
 end
 
 def build_activity(activity_data)
+  return if Activity.where(title: activity_data[:title]).any?
   activity = create_activity(activity_data)
   if activity_data[:activity_equipment].present?
     activity_data[:activity_equipment].each do |equipment|
@@ -138,11 +143,12 @@ end
 end
 
 @seed_data[:copy].each do |content|
+  next if Copy.where(location: content[:location]).any?
   c = Copy.find_or_create_by_location(content[:location])
   c.copy= content[:copy_content]
   c.save
   c
 end
 
-Version.create
+Version.create unless Version.any?
 
