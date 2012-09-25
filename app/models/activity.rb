@@ -1,15 +1,13 @@
 class Activity < ActiveRecord::Base
-  include RankedModel
-  ranks :activity_order
 
   has_many :recipes, inverse_of: :activity
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity
 
-  scope :ordered, rank(:activity_order)
+  scope :ordered, order("activity_order")
   default_scope { ordered }
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty,
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order,
     :description, :equipment_ids, :recipe_ids, :step_ids,
     allow_destroy: true, as: :admin
 

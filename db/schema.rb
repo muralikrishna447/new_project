@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924173630) do
+ActiveRecord::Schema.define(:version => 20120925191652) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(:version => 20120924173630) do
     t.string   "yield"
     t.text     "timing"
     t.text     "description"
-    t.integer  "activity_order"
+    t.decimal  "activity_order"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
