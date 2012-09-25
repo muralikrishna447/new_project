@@ -76,8 +76,11 @@ RailsAdmin.config do |config|
   end
 
   config.model Activity do
-    configure :activity_order do
-      visible false
+    list do
+      field :activity_order
+      field :title
+      field :youtube_id
+      field :difficulty
     end
     configure :recipes do
       orderable true
