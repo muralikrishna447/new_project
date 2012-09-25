@@ -17,49 +17,8 @@
 
   .row.course-info
     .span8
-      %h1 Description
-      %p
-        Sous vide cooking is at the core of modernist cooking. Once used in
-        only the most forward-thinking restaurants, sous vide cooking is
-        rapidly being adopted as a mainstream cooking technique in both homes
-        and restaurants around the world. Through lectures and step-by-step
-        demonstrations you will master this highly flexible way to cook
-        virtually any food.
-
-      %p
-        The course will:
-
-      %ol.text
-        %li
-          Get you started with the basics of sous vide cooking and then quickly
-          have you using intermediate and advanced sous vide techniques.
-
-        %li
-          Develop your intuition for one of the most fundamental ingredients of
-          all cooking: heat.
-
-        %li
-          Understand the relationship between cooking temperature and time so
-          that you get the results you want every time.
-
-        %li
-          Explore different strategies for cooking animal and plant foods so
-          that you can cook anything sous vide with confidence.
-
-        %li
-          Learn to adapt traditional recipes you love to sous vide cooking
-          methods for greater convenience and consistency.
-
-        %li
-          Use your sous vide equipment in ways that unlock your creativity in
-          the kitchen.
-
-        %li
-          Learn the relevant health and food safety issues for sous vide cooking so that you can prepare healthier food and reduces the chance of food borne illness.
-
-      %p
-        No other course matches our comprehensive approach to understanding sous vide cooking.
-
+      :markdown
+        #{course_description.copy.to_s}
     .span4.pull-right
       = render 'course_breakdown', copy: syllabus_copy
     .span8.pull-left
@@ -70,18 +29,8 @@
             .span2
               = image_tag('chris-large.jpg', title: 'Chris Young', class: 'img-profile')
             .span6
-              %h4 Chris Young
-              %p
-                :erb
-                  Chris is the principal coauthor of the acclaimed six-volume work
-                  <em>Modernist Cuisine: The Art and Science of Cooking</em>, which was named
-                  both the 2012 Cookbook of the Year and Best Professional Cookbook
-                  of the year by the James Beard Foundation and has been a worldwide
-                  best seller. Chris was also the founding chef of Heston
-                  Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary
-                  laboratory behind the innovative dishes served at one of the best
-                  restaurants in the world. Prior to becoming a chef, he completed
-                  degrees in theoretical mathematics and biochemistry.
+              :markdown
+                #{bio_chris.copy.to_s}
           .row
             .span8.horizontal-divider
         %li.instructor
@@ -89,14 +38,8 @@
             .span2
               = image_tag('grant-large.jpg', title: 'Chris Young', class: 'img-profile')
             .span6
-              %h4 Grant Crilly
-              %p
-                Grant was the first development chef hired by the Modernist
-                Cuisine team. Prior to this he was chef de cuisine at Busaba in
-                Mumbai and Mistral in Seattle, and served as head development chef
-                at Delicious Planet. He has cooked for Pascal Barbot at
-                L’Astrance, worked with Pierré Herme’s team at Grégoire-Ferrandi,
-                and practiced butchery at Bajon Jean Pierrie in Paris.
+              :markdown
+                #{bio_grant.copy.to_s}
           .row
             .span8.horizontal-divider
 

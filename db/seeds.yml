@@ -333,7 +333,7 @@ activities:
     - title: Cream
       quantity: 350
       unit: g
-    - title: Xanthan Gum
+    - title: Xanthan gum
       quantity: 0.35
       unit: g
     - title: Salt
@@ -375,6 +375,156 @@ activities:
         * Refrigerate if not using immediately.
 
 copy:
+# carousel images
+- location: carousel-images
+  copy_content: |
+    carousel_1.jpg
+    carousel_2.jpg
+    carousel_3.jpg
+
+# instrcutor - chris
+- location: instructor-chris
+  copy_content: |
+    <h4>Chris Young</h4>
+    <p>
+      Chris is the principal coauthor of the acclaimed six-volume work
+      <em>Modernist Cuisine: The Art and Science of Cooking</em>, which was named
+      both the 2012 Cookbook of the Year and Best Professional Cookbook
+      of the year by the James Beard Foundation and has been a worldwide
+      best seller. Chris was also the founding chef of Heston
+      Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary
+      laboratory behind the innovative dishes served at one of the best
+      restaurants in the world. Prior to becoming a chef, he completed
+      degrees in theoretical mathematics and biochemistry.
+    </p>
+# instructor- grant
+- location: instructor-grant
+  copy_content: |
+    <h4>Grant Crilly</h4>
+    <p>
+      Grant was the first development chef hired by the Modernist
+      Cuisine team. Prior to this he was chef de cuisine at Busaba in
+      Mumbai and Mistral in Seattle, and served as head development chef
+      at Delicious Planet. He has cooked for Pascal Barbot at
+      L’Astrance, worked with Pierré Herme’s team at Grégoire-Ferrandi,
+      and practiced butchery at Bajon Jean Pierrie in Paris.
+    </p>
+# creator - chris
+- location: creator-chris
+  copy_content: |
+    <h4>Chris Young</h4>
+    <p>
+      Chris is the principal coauthor of the acclaimed six-volume work
+      <em>Modernist Cuisine: The Art and Science of Cooking</em>, which was named
+      both the 2012 Cookbook of the Year and Best Professional Cookbook
+      of the year by the James Beard Foundation and has been a worldwide
+      best seller. Chris was also the founding chef of Heston
+      Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary
+      laboratory behind the innovative dishes served at one of the best
+      restaurants in the world. Prior to becoming a chef, he completed
+      degrees in theoretical mathematics and biochemistry.
+    </p>
+# creator - grant
+- location: creator-grant
+  copy_content: |
+    <h4>Grant Crilly</h4>
+    <p>
+      Grant was the first development chef hired by the Modernist
+      Cuisine team. Prior to this he was chef de cuisine at Busaba in
+      Mumbai and Mistral in Seattle, and served as head development chef
+      at Delicious Planet. He has cooked for Pascal Barbot at
+      L’Astrance, worked with Pierré Herme’s team at Grégoire-Ferrandi,
+      and practiced butchery at Bajon Jean Pierrie in Paris.
+    </p>
+# creator- ryan
+- location: creator-ryan
+  copy_content: |
+    <h4>Ryan Matthew Smith</h4>
+    <p>
+      Ryan was the principal photographer and photo editor for <em>Modernist
+      Cuisine: The Art and Science of Cooking</em>. Smith’s work has been
+      featured by PPN, Photographer, Life, Time, The New York Times,
+      Feature Shoot, Quo, and Abduzeedo.
+    </p>
+# homepage blurb
+- location: homepage-blurb
+  copy_content: |
+    <h1>Welcome to ChefSteps.com</h1>
+    <p>
+      ChefSteps is a totally new approach to learning the art and science of
+      cooking. Whether you are a professional chef, a culinary student, or a
+      cooking enthusiast, if you are also a curious cook then ChefSteps is
+      for you.
+    </p>
+    <p>
+      Taught by a world-renowned team, you will master techniques of
+      traditional and modernist cooking through practical, hands-on
+      demonstrations with detailed step-by-step explanations. Unlike at other
+      culinary schools, you will also learn the why's behind the how's from
+      experts who bring the science of cooking to life in a compelling and
+      practical way.
+    </p>
+    <p>
+      The classes at ChefSteps are challenging. But your hard work will pay
+      off. The skills you master, the intuition you develop, and the fresh
+      perspective on cooking you gain will give you greater freedom to
+      innovate and express your creative ideas with confidence in the
+      kitchen.
+    </p>
+    <p>
+      ChefSteps courses are free to learn. Sign up above and we'll let you
+      know when our first class starts. We won't share your email address and we
+      don't like SPAM.
+    </p>
+# course description
+- location: course-description
+  copy_content: |
+    <h1>Description</h1>
+    <p>
+      Sous vide cooking is at the core of modernist cooking. Once used in
+      only the most forward-thinking restaurants, sous vide cooking is
+      rapidly being adopted as a mainstream cooking technique in both homes
+      and restaurants around the world. Through lectures and step-by-step
+      demonstrations you will master this highly flexible way to cook
+      virtually any food.
+    </p>
+    <p>
+      The course will:
+    </p>
+    <ol class='text'>
+      <li>
+        Get you started with the basics of sous vide cooking and then quickly
+        have you using intermediate and advanced sous vide techniques.
+      </li>
+      <li>
+        Develop your intuition for one of the most fundamental ingredients of
+        all cooking: heat.
+      </li>
+      <li>
+        Understand the relationship between cooking temperature and time so
+        that you get the results you want every time.
+      </li>
+      <li>
+        Explore different strategies for cooking animal and plant foods so
+        that you can cook anything sous vide with confidence.
+      </li>
+      <li>
+        Learn to adapt traditional recipes you love to sous vide cooking
+        methods for greater convenience and consistency.
+      </li>
+      <li>
+        Use your sous vide equipment in ways that unlock your creativity in
+        the kitchen.
+      </li>
+      <li>
+        Learn the relevant health and food safety issues for sous vide cooking so that you can prepare healthier food and reduces the chance of food borne illness.
+      </li>
+    </ol>
+    <p>
+      No other course matches our comprehensive approach to understanding sous vide cooking.
+    </p>
+
+# course syllabus
 - location: course-syllabus
   copy_content: |
     <li><h3>Syllabus</h3></li>
@@ -454,3 +604,4 @@ copy:
         <li>Holiday meal prepared sous vide from start to finish</li>
       </ol>
     </li>
+
