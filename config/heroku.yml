@@ -10,7 +10,7 @@
 #     - <Heroku config:var name>: <Heroku config:var value>
 #
 production:
-  app: delve-production
+  app: chefsteps-production
   stack: cedar
   config:
     BUNDLE_WITHOUT: "development:test:guard"
