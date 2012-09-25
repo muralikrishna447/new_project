@@ -78,6 +78,7 @@ RailsAdmin.config do |config|
   config.model Activity do
     list do
       field :activity_order
+      field :id
       field :title
       field :youtube_id
       field :difficulty
