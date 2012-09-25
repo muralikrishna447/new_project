@@ -375,6 +375,13 @@ activities:
         * Refrigerate if not using immediately.
 
 copy:
+# carousel images
+- location: carousel-images
+  copy_content: |
+    carousel_1.jpg
+    carousel_2.jpg
+    carousel_3.jpg
+
 # instrcutor - chris
 - location: instructor-chris
   copy_content: |

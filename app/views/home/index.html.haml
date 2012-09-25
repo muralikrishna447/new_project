@@ -4,11 +4,11 @@
   #myCarousel.carousel.slide{ data: { interval: 10000 } }
     .carousel-inner
       .item.active
-        = image_tag 'carousel/carousel_1.jpg'
-      .item
-        = image_tag 'carousel/carousel_2.jpg'
-      .item
-        = image_tag 'carousel/carousel_3.jpg'
+        - carousel_images = split_images_copy(carousel_images_copy)
+        %img{src: carousel_images.first }
+      - carousel_images[1..-1].each do |image|
+        .item
+          %img{src: image }
     %a.carousel-control.left{ href: '#myCarousel', data: { slide: 'prev' } } &lsaquo;
     %a.carousel-control.right{ href: '#myCarousel', data: { slide: 'next' } } &rsaquo;
   .caption.middle-left.container
