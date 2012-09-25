@@ -42,18 +42,7 @@
             .span1
               = image_tag('chris.jpg', title: 'Chris Young', class: 'img-profile')
             .span3
-              %h4 Chris Young
-              %p
-                :erb
-                  Chris is the principal coauthor of the acclaimed six-volume work
-                  <em>Modernist Cuisine: The Art and Science of Cooking</em>, which was named
-                  both the 2012 Cookbook of the Year and Best Professional Cookbook
-                  of the year by the James Beard Foundation and has been a worldwide
-                  best seller. Chris was also the founding chef of Heston
-                  Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary
-                  laboratory behind the innovative dishes served at one of the best
-                  restaurants in the world. Prior to becoming a chef, he completed
-                  degrees in theoretical mathematics and biochemistry.
+              != bio_chris.copy.to_s
           .row
             .span4.horizontal-divider
 
@@ -62,14 +51,7 @@
             .span1
               = image_tag('grant.jpg', title: 'Grant Crilly', class: 'img-profile')
             .span3
-              %h4 Grant Crilly
-              %p
-                Grant was the first development chef hired by the Modernist
-                Cuisine team. Prior to this he was chef de cuisine at Busaba in
-                Mumbai and Mistral in Seattle, and served as head development chef
-                at Delicious Planet. He has cooked for Pascal Barbot at
-                L’Astrance, worked with Pierré Herme’s team at Grégoire-Ferrandi,
-                and practiced butchery at Bajon Jean Pierrie in Paris.
+              != bio_grant.copy.to_s
           .row
             .span4.horizontal-divider
 
@@ -78,13 +60,7 @@
             .span1
               = image_tag('ryan.jpg', title: 'Ryan Matthew Smith', class: 'img-profile')
             .span3
-              %h4 Ryan Matthew Smith
-              %p
-                :erb
-                  Ryan was the principal photographer and photo editor for <em>Modernist
-                  Cuisine: The Art and Science of Cooking</em>. Smith’s work has been
-                  featured by PPN, Photographer, Life, Time, The New York Times,
-                  Feature Shoot, Quo, and Abduzeedo.
+              != bio_ryan.copy.to_s
           .row
             .span4.horizontal-divider
 
