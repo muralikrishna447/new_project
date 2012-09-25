@@ -375,6 +375,36 @@ activities:
         * Refrigerate if not using immediately.
 
 copy:
+# homepage blurb
+- location: homepage-blurb
+  copy_content: |
+    <h1>Welcome to ChefSteps.com</h1>
+    <p>
+      ChefSteps is a totally new approach to learning the art and science of
+      cooking. Whether you are a professional chef, a culinary student, or a
+      cooking enthusiast, if you are also a curious cook then ChefSteps is
+      for you.
+    </p>
+    <p>
+      Taught by a world-renowned team, you will master techniques of
+      traditional and modernist cooking through practical, hands-on
+      demonstrations with detailed step-by-step explanations. Unlike at other
+      culinary schools, you will also learn the why's behind the how's from
+      experts who bring the science of cooking to life in a compelling and
+      practical way.
+    </p>
+    <p>
+      The classes at ChefSteps are challenging. But your hard work will pay
+      off. The skills you master, the intuition you develop, and the fresh
+      perspective on cooking you gain will give you greater freedom to
+      innovate and express your creative ideas with confidence in the
+      kitchen.
+    </p>
+    <p>
+      ChefSteps courses are free to learn. Sign up above and we'll let you
+      know when our first class starts. We won't share your email address and we
+      don't like SPAM.
+    </p>
 # course description
 - location: course-description
   copy_content: |
@@ -503,3 +533,4 @@ copy:
         <li>Holiday meal prepared sous vide from start to finish</li>
       </ol>
     </li>
+

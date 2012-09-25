@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
   include AggressiveCaching
-  def index
-  end
+  expose(:homepage_blurb) { Copy.find_by_location('homepage-blurb') }
 end
