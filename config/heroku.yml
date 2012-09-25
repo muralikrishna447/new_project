@@ -14,7 +14,7 @@ production:
   stack: cedar
   config:
     BUNDLE_WITHOUT: "development:test:guard"
-    FOG_DIRECTORY: chefsteps-staging-assets
+    FOG_DIRECTORY: chefsteps-production-assets
     ASSET_SYNC_GZIP_COMPRESSION: true
     FOG_PROVIDER: AWS
   addons:
