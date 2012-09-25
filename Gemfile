@@ -25,6 +25,7 @@ group :assets do
   gem 'compass-rails'
   gem 'font-awesome-sass-rails'
   gem 'bootstrap-sass-rails'
+  gem 'asset_sync'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
