@@ -14,6 +14,7 @@ production:
   stack: cedar
   config:
     BUNDLE_WITHOUT: "development:test:guard"
+    RAILS_ENV: "production"
     FOG_DIRECTORY: chefsteps-production-assets
     ASSET_SYNC_GZIP_COMPRESSION: true
     FOG_PROVIDER: AWS
