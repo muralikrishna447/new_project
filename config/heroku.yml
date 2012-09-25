@@ -23,8 +23,8 @@ production:
     - newrelic:standard
 
 staging:
-  stack: cedar
   app: delve-staging
+  stack: cedar
   config: &default
     BUNDLE_WITHOUT: "development:test:guard"
     RAILS_ENV: "staging"
