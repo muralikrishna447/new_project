@@ -1,24 +1,25 @@
 - content_for :title, "Free to Learn Culinary School"
 
-.container.slider-block
-  #myCarousel.carousel.slide{ data: { interval: 10000 } }
-    .carousel-inner
-      .item.active
-        - carousel_images = split_images_copy(carousel_images_copy)
-        %img{src: carousel_images.first }
-      - carousel_images[1..-1].each do |image|
-        .item
-          %img{src: image }
-    %a.carousel-control.left{ href: '#myCarousel', data: { slide: 'prev' } } &lsaquo;
-    %a.carousel-control.right{ href: '#myCarousel', data: { slide: 'next' } } &rsaquo;
-  .caption.bottom-left.container
-    .caption-content
-      %h3 Master sous vide cooking
-      %h4 in our first free to learn cooking course
-      %a.button{ href: course_path(1) }
-        .inner
-          Preview Course
-          %i.icon-double-chevron-right
+.hero-unit.hero-well.hero-carousel
+  .container.slider-block
+    #myCarousel.carousel.slide{ data: { interval: 10000 } }
+      .carousel-inner
+        .item.active
+          - carousel_images = split_images_copy(carousel_images_copy)
+          %img{src: carousel_images.first }
+        - carousel_images[1..-1].each do |image|
+          .item
+            %img{src: image }
+      %a.carousel-control.left{ href: '#myCarousel', data: { slide: 'prev' } } &lsaquo;
+      %a.carousel-control.right{ href: '#myCarousel', data: { slide: 'next' } } &rsaquo;
+    .caption.bottom-left.container
+      .caption-content
+        %h3 Master sous vide cooking
+        %h4 in our first free to learn cooking course
+        %a.button{ href: course_path(1) }
+          .inner
+            Preview Course
+            %i.icon-double-chevron-right
 
 .hero-unit.signup-banner
   .container

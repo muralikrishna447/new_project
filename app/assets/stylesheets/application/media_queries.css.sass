@@ -32,8 +32,14 @@
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
+  .top-video
+    padding: 0
+
+  .hero-well
+    padding: 0
+    border: 0
   // make this items full-width (remove body padding)
-  .hero-unit, .slider-block, .sticky-navbar
+  .hero-unit, .slider-block, .sticky-navbar, .top-video
     margin-left: -20px
     margin-right: -20px
 
@@ -67,10 +73,22 @@
       .nav-label
         display: none
 
+  .subscribe button
+    height: 30px
+    padding-top: 5px
+    &:before
+      height: 17px
+
+  .subscribe.orange button
+    height: 30px
+
 @media (max-width: 480px)
   /* ##################### */
   /* $SMARTHPHONE-CAROUSEL */
   /* ##################### */
+  .top-video
+    margin: 0
+
   .caption
     /* text sizes */
 
