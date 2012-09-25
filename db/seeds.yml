@@ -333,7 +333,7 @@ activities:
     - title: Cream
       quantity: 350
       unit: g
-    - title: Xanthan Gum
+    - title: Xanthan gum
       quantity: 0.35
       unit: g
     - title: Salt
@@ -375,6 +375,55 @@ activities:
         * Refrigerate if not using immediately.
 
 copy:
+# course description
+- location: course-description
+  copy_content: |
+    <h1>Description</h1>
+    <p>
+      Sous vide cooking is at the core of modernist cooking. Once used in
+      only the most forward-thinking restaurants, sous vide cooking is
+      rapidly being adopted as a mainstream cooking technique in both homes
+      and restaurants around the world. Through lectures and step-by-step
+      demonstrations you will master this highly flexible way to cook
+      virtually any food.
+    </p>
+    <p>
+      The course will:
+    </p>
+    <ol class='text'>
+      <li>
+        Get you started with the basics of sous vide cooking and then quickly
+        have you using intermediate and advanced sous vide techniques.
+      </li>
+      <li>
+        Develop your intuition for one of the most fundamental ingredients of
+        all cooking: heat.
+      </li>
+      <li>
+        Understand the relationship between cooking temperature and time so
+        that you get the results you want every time.
+      </li>
+      <li>
+        Explore different strategies for cooking animal and plant foods so
+        that you can cook anything sous vide with confidence.
+      </li>
+      <li>
+        Learn to adapt traditional recipes you love to sous vide cooking
+        methods for greater convenience and consistency.
+      </li>
+      <li>
+        Use your sous vide equipment in ways that unlock your creativity in
+        the kitchen.
+      </li>
+      <li>
+        Learn the relevant health and food safety issues for sous vide cooking so that you can prepare healthier food and reduces the chance of food borne illness.
+      </li>
+    </ol>
+    <p>
+      No other course matches our comprehensive approach to understanding sous vide cooking.
+    </p>
+
+# course syllabus
 - location: course-syllabus
   copy_content: |
     <li><h3>Syllabus</h3></li>
