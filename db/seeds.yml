@@ -14,6 +14,7 @@ activities:
   youtube_id: 9lWGCR0RSn4
   difficulty: Intermediate
   yield: 10 servings
+  order: 1
   description: >
     dio twee umami chambray. Velit VHS ad godard PBR american
     apparel. Placeat odio leggings typewriter chambray master cleanse squid,
@@ -62,6 +63,7 @@ activities:
   youtube_id: i3Vu703ypxc
   difficulty: Intermediate
   yield: 10 portions
+  order: 2
   description: >
     dio twee umami chambray. Velit VHS ad godard PBR american
     apparel. Placeat odio leggings typewriter chambray master cleanse squid,
@@ -143,6 +145,7 @@ activities:
 - title: Pickled Onions
   youtube_id: 1CpDIOt81D0
   difficulty: Intermediate
+  order: 3
   yield: 10 portions
   description: >
     dio twee umami chambray. Velit VHS ad godard PBR american
@@ -238,6 +241,7 @@ activities:
 - title: Watercress Puree
   youtube_id: b6wnr71cNF4
   difficulty: Intermediate
+  order: 4
   yield: 230 g
   description: >
     dio twee umami chambray. Velit VHS ad godard PBR american
@@ -309,6 +313,7 @@ activities:
 - title: Horseradish Cream
   youtube_id: LGQEdKYZ5Zo
   difficulty: Intermediate
+  order: 5
   yield: 320 g
   description: >
     dio twee umami chambray. Velit VHS ad godard PBR american

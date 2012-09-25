@@ -8,6 +8,7 @@ def create_activity(activity)
   a.yield = activity[:yield]
   a.timing = activity[:timing]
   a.description = activity[:description]
+  a.activity_order = activity[:order]
   a.save
   a
 end
