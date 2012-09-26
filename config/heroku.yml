@@ -21,6 +21,7 @@ production:
   addons:
     - memcachier:dev
     - newrelic:standard
+    - pgbackups:auto-month
 
 staging:
   app: delve-staging
@@ -34,3 +35,4 @@ staging:
   addons:
     - memcachier:dev
     - newrelic:standard
+    - pgbackups:auto-month
