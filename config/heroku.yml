@@ -24,7 +24,7 @@ production:
     - pgbackups:auto-month
 
 staging:
-  app: delve-staging
+  app: chefsteps-staging
   stack: cedar
   config: &default
     BUNDLE_WITHOUT: "development:test:guard"
