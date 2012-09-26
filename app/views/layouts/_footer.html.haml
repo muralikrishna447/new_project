@@ -1,10 +1,23 @@
-.container
-  .row
-    .span12
-      %a.span3.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
-        Facebook
-      %a.span3.icon-twitter{ href: "http://twitter.com/@chefsteps" }
-        Twitter
-      %a.span3.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
-        Pinterest
+.hero-unit.footer
+  .container
+    .row
+      .span8
+        %p
+          General inquiries:
+          = mail_to 'info@chefsteps.com'
+        %p
+          Press inquiries:
+          = mail_to 'press@chefsteps.com'
+        %p.creative-commons
+          All images and videos are Creative Commons, Non-Commercial
+      .span2.pull-right
+        %p
+          %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
+            Facebook
+        %p
+          %a.icon-twitter{ href: "http://twitter.com/@chefsteps" }
+            Twitter
+        %p
+          %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
+            Pinterest
 
