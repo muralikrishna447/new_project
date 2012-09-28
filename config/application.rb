@@ -69,6 +69,7 @@ module Delve
     # Caching
     config.cache_store = :dalli_store
     config.action_dispatch.rack_cache = {
+      verbose: true,
       metastore: Dalli::Client.new,
       entitystore: 'file:tmp/cache/rack/body',
       allow_reload: false
