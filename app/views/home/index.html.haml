@@ -1,16 +1,13 @@
 - content_for :title, "Free to Learn Culinary School"
 
-.hero-unit.signup-banner.gray
-  .container
+.hero-unit.hero-well
+  .container.signup-banner.gray
     .row
-      .span9
+      .span7
         %h2 ChefSteps is building the free to learn culinary school.
         %h3 Want to know when we launch?
-      .span3
+      .span5
         = render 'mailing_list/subscribe', orange: true
-
-.hero-unit.hero-well
-  .container
     .row.top-video
       .span12
         .video-container
@@ -22,7 +19,7 @@
       .span6
         %h3 Master sous vide cooking
         %h4 in our first free to learn cooking course
-      .span3.pull-right
+      .span.pull-right
         %a.button{ href: course_path(1) }
           .inner
             Preview Course
