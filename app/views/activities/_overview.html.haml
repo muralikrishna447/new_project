@@ -3,8 +3,8 @@
     .row
       .span8
         %h1= raw activity.title
-
-        %p= activity.description
+        :markdown
+          #{activity.description}
       .span4
         -# Removed for demo
         -# .row
