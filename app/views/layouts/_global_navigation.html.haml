@@ -1,13 +1,13 @@
-.container.global-navigation.pull-right
-  .span1
+%ul.nav
+  %li
     - if current_page?(course_path(1))
       Courses
     - else
       %a{ href: course_path(1) } Courses
-  .span1
+  %li
     %a{href: ''} Shop
-  .span1
+  %li
     %a{href: ''} Forums
-  .span1
+  %li
     %a{href: 'http://chefstepsblog.com'} Blog
 

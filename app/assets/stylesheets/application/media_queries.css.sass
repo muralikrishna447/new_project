@@ -32,6 +32,12 @@
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
+  .global-navigation
+    [class*="span"]
+      border-right: none
+      border-bottom: 1px solid $black
+      border-top: 1px solid $black
+      width: 100%
   .top-video
     padding: 0
 
@@ -118,3 +124,10 @@
       padding: 0
     .nav-anchors li
       padding: 0
+
+  .global-navigation
+    .nav > li
+      width: 100%
+      border-right: none
+      border-top: 1px solid $black
+
