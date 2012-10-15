@@ -1,0 +1,13 @@
+.container.global-navigation.pull-right
+  .span1
+    - if current_page?(course_path(1))
+      Courses
+    - else
+      %a{ href: course_path(1) } Courses
+  .span1
+    %a{href: ''} Shop
+  .span1
+    %a{href: ''} Forums
+  .span1
+    %a{href: 'http://chefstepsblog.com'} Blog
+
