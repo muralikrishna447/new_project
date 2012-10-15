@@ -3,11 +3,19 @@
     - if current_page?(course_path(1))
       Courses
     - else
-      %a{ href: course_path(1) } Courses
-  -# %li
-  -#   %a{href: ''} Shop
-  -# %li
-  -#   %a{href: ''} Forums
+      %a{ href: course_path(1) }
+        Courses
+        %i.icon-chevron-right.pull-right
   %li
-    %a{href: 'http://blog.chefsteps.com'} Blog
+    %a{href: ''}
+      Shop
+      %i.icon-chevron-right.pull-right
+  %li
+    %a{href: ''}
+      Forums
+      %i.icon-chevron-right.pull-right
+  %li
+    %a{href: 'http://blog.chefsteps.com'}
+      Blog
+      %i.icon-chevron-right.pull-right
 
