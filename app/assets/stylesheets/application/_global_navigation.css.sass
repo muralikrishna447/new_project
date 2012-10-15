@@ -1,8 +1,7 @@
 .global-navigation
   +font-serif-large
   color: $black
-  a
-    color: $brick
+
   .nav > li
     margin: 0
     border-right: 1px dotted $black
@@ -12,4 +11,13 @@
   .nav > li:last-child
     border-right: none
     padding-right: 0
+
+  i[class^="icon-"]
+    display: none
+
+  .nav > li > a
+    color: $brick
+
+  .nav > li > a:hover
+    color: $brickDark
 
