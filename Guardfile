@@ -22,3 +22,25 @@ guard 'pow' do
   watch(%r{^config/environments/.*\.rb$})
   watch(%r{^config/initializers/.*\.rb$})
 end
+
+guard 'rspec', :cli => "--color --drb --fail-fast -f #{ENV['RSPEC_FORMAT'] || 'progress'}", :bundler => false do
+  watch(%r{spec/(.*)_spec.rb})
+  watch(%r{app/(.*)\.rb})                            { |m| "spec/#{m[1]}_spec.rb" }
+  watch(%r{app/(.*\.haml)})                          { |m| "spec/#{m[1]}_spec.rb" }
+  watch(%r{lib/(.*)\.rb})                            { |m| "spec/lib/#{m[1]}_spec.rb" }
+  watch('spec/spec_helper.rb')                       { "spec" }
+  watch('app/controllers/application_controller.rb') { "spec/controllers" }
+end
+
+guard 'spork' do
+  watch('config/application.rb')
+  watch('config/environment.rb')
+  watch('config/routes.rb')
+  watch(%r{^config/environments/.*\.rb$})
+  watch(%r{^config/initializers/.*\.rb$})
+  watch('spec/spec_helper.rb')
+  # devise caches user model
+  #   watch('app/models/user.rb')
+  #   end
+  #
+end

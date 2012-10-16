@@ -43,6 +43,7 @@ group :guard do
   gem 'guard-livereload'
   gem 'guard-pow'
   gem 'guard-rspec'
+  gem 'guard-spork'
   # Problems with falling back to polling
   # https://github.com/guard/listen/issues/62
   gem 'listen', '0.4.7'
@@ -52,5 +53,6 @@ end
 
 group :test do
   gem 'rspec-rails'
+  gem 'spork', '~> 1.0rc'
 end
 
