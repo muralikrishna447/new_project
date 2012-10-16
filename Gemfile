@@ -10,6 +10,8 @@ gem 'dalli'
 gem 'jquery-rails'
 gem 'haml'
 gem "devise"
+gem 'activeadmin'
+gem 'meta_search'
 gem 'decent_exposure'
 gem 'ranked-model'
 gem 'gibbon'
