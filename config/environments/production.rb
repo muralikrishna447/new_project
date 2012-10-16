@@ -1,3 +1,5 @@
+DOMAIN='chefsteps.com'
+
 Delve::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -52,7 +54,7 @@ Delve::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => 'chefsteps.com' }
+  config.action_mailer.default_url_options = { host: DOMAIN }
 
   # Enable threaded mode
   # config.threadsafe!

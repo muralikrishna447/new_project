@@ -1,0 +1,7 @@
+$ (target) ->
+  $.ajax(
+    type: "GET"
+    url: "http://<%= DOMAIN %>/global-nav-header"
+  ).done (html) ->
+    $(target).html(html)
+
