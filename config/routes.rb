@@ -7,6 +7,7 @@ Delve::Application.routes.draw do
 
   root to: "home#index"
 
+  get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
   post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
 
   resources :courses, :only => [:show]
