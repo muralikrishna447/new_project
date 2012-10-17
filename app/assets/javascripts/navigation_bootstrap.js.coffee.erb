@@ -1,8 +1,8 @@
-window.NavigationBootstrap = ($target) ->
+window.NavigationBootstrap = (target) ->
   $.ajax(
     type: "GET"
     url: "http://<%= DOMAIN %>/global-navigation"
   ).done (html) ->
-    $target.html(html)
+    $(target).html(html)
     $("<link rel=stylesheet type='text/css' href='http://<%= DOMAIN %>/assets/global_navigation.css' />").appendTo('head')
 
