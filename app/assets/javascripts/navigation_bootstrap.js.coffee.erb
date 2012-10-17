@@ -4,4 +4,5 @@ window.NavigationBootstrap = (target) ->
     url: "http://<%= DOMAIN %>/global-navigation"
   ).done (html) ->
     $(target).html(html)
+    $("<link rel=stylesheet type='text/css' href='http://<%= DOMAIN %>/assets/global_navigation.css' />").appendTo('head')
 
