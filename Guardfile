@@ -36,7 +36,7 @@ end
 guard 'jasmine', jasmine_url: 'http://delve.dev/jasmine', port: 80 do
   watch(%r{spec/javascripts/spec\.(js\.coffee|js|coffee)$})        { "spec/javascripts" }
   watch(%r{^spec/javascripts/(.+)Spec\.(js\.coffee|js|coffee)$})
-  watch(%r{app/assets/javascripts/(.+?)\.(js\.coffee|js|coffee)$}) { |m| "spec/javascripts/#{m[1]}Spec.#{m[2]}" }
+  watch(%r{app/assets/javascripts/(.+?)\.(js\.coffee|js|coffee)$}) { |m| "spec/javascripts/#{m[1]}_spec.#{m[2]}" }
 end
 
 guard 'livereload' do
