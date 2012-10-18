@@ -1,8 +1,23 @@
-window.NavigationBootstrap = (target) ->
-  $("<link rel=stylesheet type='text/css' href='http://<%= DOMAIN %>/assets/global_navigation.css' />").appendTo('head')
-  $.ajax(
-    type: "GET"
-    url: "http://<%= DOMAIN %>/global-navigation"
-  ).done (html) ->
-    $(target).html(html)
+window.ChefSteps = {}
+
+class ChefSteps.NavigationBootstrap
+  constructor: (@headerTarget) ->
+
+  cssLink: "<link rel=stylesheet type='text/css' href='http://<%= DOMAIN %>/assets/global_navigation.css' />"
+
+  getHeader: ->
+    $.ajax
+      type: "GET"
+      url: "http://<%= DOMAIN %>/global-navigation"
+      success: @loadHeader
+
+  loadCSS: ->
+    $(@cssLink).appendTo('head')
+
+  loadHeader: (response) ->
+    $(@headerTarget).html(response)
+
+  bootstrap: ->
+    @loadCSS()
+    @getHeader()
 

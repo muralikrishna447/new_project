@@ -1,17 +1,39 @@
 describe "Navigation Bootstrap", ->
   beforeEach ->
-    @targetSpy = jasmine.createSpyObj('target spy', ['html'])
-    spyOn($, "ajax").andCallThrough()
-    NavigationBootstrap(@targetSpy)
+    @fake_target = 'test-target'
+    @bootstrap = new ChefSteps.NavigationBootstrap(@fake_target)
 
-  describe "asynchronously get header", ->
-    it "requests the template asynchronously", ->
-      expect($.ajax.mostRecentCall.args[0]["url"]).toEqual('http://delve.dev/global-navigation')
+  describe "#constructor", ->
+    it "sets the header target", ->
+      expect(@bootstrap.headerTarget).toEqual(@fake_target)
 
-  # describe "displays header", ->
-  #   it "replaces the html of the target specified", ->
-  #     expect(@targetSpy.html).toHaveBeenCalled()
+  describe "#loadCSS", ->
+    it "links to global_navigation.css", ->
+      expect(@bootstrap.cssLink).toEqual("<link rel=stylesheet type='text/css' href='http://delve.dev/assets/global_navigation.css' />")
 
-  #   it "adds a link to global_navigation.css to head", ->
-  #     expect($("link[href='http://delve.dev/assets/global_navigation.css']").length).toEqual(1)
+  describe "#getHeader", ->
+    beforeEach ->
+      spyOn($, "ajax").andCallFake (options) ->
+        options.success()
+      spyOn(@bootstrap, 'loadHeader')
+      @bootstrap.getHeader()
+
+    it "requests the global navigation", ->
+      expect($.ajax.mostRecentCall.args[0].url).toEqual("http://delve.dev/global-navigation")
+
+    it "loads the header on success", ->
+      expect(@bootstrap.loadHeader).toHaveBeenCalled()
+
+  describe "#bootstrap", ->
+    beforeEach ->
+      spyOn(@bootstrap, 'loadCSS')
+      spyOn(@bootstrap, 'getHeader')
+      @bootstrap.bootstrap()
+
+    it "loads the global navigation css", ->
+      expect(@bootstrap.loadCSS).toHaveBeenCalled()
+
+    it "gets the header html", ->
+      expect(@bootstrap.getHeader).toHaveBeenCalled()
+
 
