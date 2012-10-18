@@ -1,0 +1,180 @@
+.navbar-inner
+  padding-right: 0
+
+p
+  +font-sans-medium
+  line-height: 1.6em
+  margin-top: 1.6em
+
+.text li
+  line-height: 1.6em
+  margin-top: 0.8em
+
+.hero-unit
+  color: $white
+  padding: 0
+  background: $brick
+  +border-radius(0)
+  &.gray
+    background: $grayLighter
+  .row:first-child
+    margin-top: 0
+
+.footer
+  background: $black
+  color: $white
+  margin-bottom: 0
+  padding: 2em 0
+  a
+    color: lighten($brick, 10%)
+    &:hover
+      color: $brick
+  p
+    margin: 0.3em 0
+  .creative-commons
+    margin-top: 2em
+
+.hero-well
+  background: whiteSmoke
+  padding: 20px 0
+  border-top: 1px solid $grayLight
+  border-bottom: 1px solid $grayLight
+
+.hero-comments
+  margin-bottom: 0
+  padding-bottom: 2em
+  background: $grayLight
+  color: $black
+
+.top-video
+  padding-left: 10px
+  padding-right: 10px
+
+ul.horizontal-list
+  margin: 0
+  padding: 0
+  li
+    padding-left: 10px
+    display: inline
+    list-style-type: none
+    &:first-child
+      margin: 0
+
+.horizontal-divider
+  border-top: 1px solid $grayLight
+
+.icon-double-chevron-left
+  @extend .icon-chevron-left
+  &:before
+    content: "\f053 \f053"
+
+.icon-double-chevron-right
+  @extend .icon-chevron-right
+  &:before
+    content: "\f054 \f054"
+
+li.bullet-for-sale
+  list-style-type: none !important
+  &:before
+    content: ''
+  *:first-child
+    text-indent: 5px
+    &:before
+      font-family: FontAwesome
+      font-weight: normal
+      font-style: normal
+      display: inline-block
+      text-decoration: none
+      content: "\f07a"
+      position: relative
+      left: -8px
+
+.bullet-for-sale
+  text-indent: -20px
+  &:before
+    font-family: FontAwesome
+    font-weight: normal
+    font-style: normal
+    display: inline-block
+    text-decoration: none
+    content: "\f07a"
+    position: relative
+    left: -5px
+
+.button
+  display: inline-block
+  background: $brick
+  color: $white
+  text-transform: uppercase
+  border: none
+  +border-radius(5px)
+  padding: 3px
+  +text-selection(none)
+  &.inverse
+    background: $white
+    color: $brick
+    .inner
+      border-color: $brick
+  &:hover
+    text-decoration: none
+    color: $white
+    background: $brickDark
+  .inner
+    border: 1px dashed $white
+    +border-radius(5px)
+    padding: 10px 15px
+    span
+      vertical-align: middle
+
+.icon-white
+  color: $white
+
+.icon-pot-brick
+  +icons-sprite(pot-brick, $dimensions: true)
+  display: inline-block
+  vertical-align: middle
+  margin-top: -5px
+
+.icon-pot-white
+  +icons-sprite(pot-white, $dimensions: true)
+  display: inline-block
+  vertical-align: middle
+
+.breadcrumb .active
+  color: $grayDark
+
+iframe
+  border: none
+
+.btn[disabled][data-behavior~='loadable'], .btn.disabled[data-behavior~='loadable']
+  &:before
+    display: block
+    content: ''
+    background: url('ajax-loader.gif') no-repeat
+    background-position: center
+    height: 20px
+    width: 20px
+
+.video-container
+  position: relative
+  padding-top: 30px
+  padding-bottom: 56.25%
+  height: 0
+  overflow: hidden
+
+  iframe, object, embed
+    position: absolute
+    top: 0
+    left: 0
+    height: 100%
+    width: 100%
+
+// .fluid-width-video-wrapper
+//   iframe
+//     min-height: 200px
+
+#disqus_thread
+  padding-top: 20px
+
+.img-profile
+  +border-radius(3px)
