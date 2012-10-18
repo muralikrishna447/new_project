@@ -6,16 +6,16 @@ class ChefSteps.NavigationBootstrap
   cssLink: "<link rel=stylesheet type='text/css' href='http://<%= DOMAIN %>/assets/global_navigation.css' />"
 
   getHeader: =>
-    $.ajax
+    jQuery.ajax
       type: "GET"
       url: "http://<%= DOMAIN %>/global-navigation"
       success: @loadHeader
 
   loadCSS: =>
-    $(@cssLink).appendTo('head')
+    jQuery(@cssLink).appendTo('head')
 
   loadHeader: (response) =>
-    $(@headerTarget).html(response)
+    jQuery(@headerTarget).html(response)
 
   bootstrap: =>
     @loadCSS()

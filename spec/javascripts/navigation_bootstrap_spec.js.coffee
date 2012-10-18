@@ -36,4 +36,3 @@ describe "Navigation Bootstrap", ->
     it "gets the header html", ->
       expect(@bootstrap.getHeader).toHaveBeenCalled()
 
-
