@@ -1,4 +1,4 @@
-DOMAIN='delve-staging.herokuapp.com'
+DOMAIN='staging.chefsteps.com'
 
 Delve::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
