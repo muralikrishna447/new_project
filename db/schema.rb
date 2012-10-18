@@ -95,6 +95,19 @@ ActiveRecord::Schema.define(:version => 20121016175156) do
     t.boolean  "for_sale",    :default => false
   end
 
+  create_table "rails_admin_histories", :force => true do |t|
+    t.text     "message"
+    t.string   "username"
+    t.integer  "item"
+    t.string   "table"
+    t.integer  "month",      :limit => 2
+    t.integer  "year",       :limit => 8
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
+
+  add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
+
   create_table "recipe_ingredients", :force => true do |t|
     t.integer  "recipe_id",        :null => false
     t.integer  "ingredient_id",    :null => false
