@@ -4,6 +4,8 @@ class Activity < ActiveRecord::Base
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
 
+  accepts_nested_attributes_for :steps, :equipment, :recipes
+
   scope :ordered, order("activity_order")
   default_scope { ordered }
 
