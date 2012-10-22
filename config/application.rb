@@ -79,8 +79,8 @@ module Delve
     # CORS
     config.middleware.use Rack::Cors do
       allow do
-        origins 'chefstepsblog.com', 'blog.chefsteps.com'
-        resource '*', headers: :any, methods: [:get, :options]
+        origins '*'
+        resource '/global-navigation', headers: :any, methods: [:get, :options]
       end
     end
   end
