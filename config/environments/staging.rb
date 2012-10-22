@@ -69,9 +69,9 @@ Delve::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
-    [u, p] == ['delve', 'howtochef22'] || [u, p] == ['guest', 'boiling19']
-  end
+  # config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
+  #   [u, p] == ['delve', 'howtochef22'] || [u, p] == ['guest', 'boiling19']
+  # end
 end
 
 MAILCHIMP_API_KEY="9875b0250eae48e91a12a26117bba403-us5"
