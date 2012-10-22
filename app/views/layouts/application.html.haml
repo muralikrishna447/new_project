@@ -117,8 +117,6 @@
 
     :erb
       <script type="text/javascript">var switchTo5x=false;</script>
-      <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-      <script type="text/javascript">stLight.options({publisher: "e4ecf5c2-1671-4b6b-9d04-79142e9dc408"}); </script>
 
   %body
 
@@ -128,7 +126,6 @@
 
     #main-container
       = render 'layouts/header'
-      #header-test
       = render 'layouts/title_bar'
       = yield
       = render 'layouts/footer'
@@ -137,13 +134,6 @@
 
     -# jQuery
     %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"}
-    %script{src: '/assets/navigation_bootstrap.js'}
-
-    :javascript
-      $(function() {
-        var bootstrap = new ChefSteps.NavigationBootstrap('#header-test');
-        bootstrap.bootstrap();
-      });
 
     -# Custom JS
     = javascript_include_tag "application"
