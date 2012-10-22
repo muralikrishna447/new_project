@@ -17,6 +17,8 @@ gem 'gibbon'
 gem 'newrelic_rpm'
 gem 'rdiscount'
 
+gem 'rack-cors', require: 'rack/cors'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
