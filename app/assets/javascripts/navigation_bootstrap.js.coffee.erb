@@ -9,8 +9,8 @@ class ChefSteps.NavigationBootstrap
     jQuery.ajax
       url: "http://<%= DOMAIN %>/global-navigation"
       type: "GET"
-      dataType: 'jsonp'
       success: @loadHeader
+      beforeSend: @allowOrigin
 
   loadCSS: =>
     jQuery(@cssLink).appendTo('head')
@@ -21,4 +21,7 @@ class ChefSteps.NavigationBootstrap
   bootstrap: =>
     @loadCSS()
     @getHeader()
+
+  allowOrigin: (xhr) ->
+    xhr.setRequestHeader("Access-Control-Allow-Origin", "http://<%= DOMAIN %>")
 
