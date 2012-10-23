@@ -5,6 +5,8 @@ ActiveAdmin.register Step do
       f.input :youtube_id
       f.input :directions
       f.input :image_id
+      f.input :recipe
+      f.input :activity
     end
 
     f.inputs "Ingredients" do

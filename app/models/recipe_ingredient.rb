@@ -16,8 +16,8 @@ class RecipeIngredient < ActiveRecord::Base
 
   default_scope { ordered }
 
-  def label
-    [title, [quantity, unit].compact.join].compact.join(" ")
+  def display_quantity
+    "#{quantity} #{unit}"
   end
 end
 

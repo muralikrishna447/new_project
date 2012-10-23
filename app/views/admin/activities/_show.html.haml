@@ -26,6 +26,11 @@
             %th Activity Order
             %td= activity.activity_order
           %tr
+            %th Equipment
+            %td
+              - activity.equipment.map do |equipment|
+                = link_to equipment.title, admin_equipment_path(equipment)
+          %tr
             %th Recipes
             %td
               - activity.recipes.map do |recipe|
@@ -35,4 +40,3 @@
             %td
               - activity.steps.map do |step|
                 = link_to step.title, admin_step_path(step)
-

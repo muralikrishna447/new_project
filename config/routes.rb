@@ -5,8 +5,6 @@ Delve::Application.routes.draw do
 
   get "styleguide" => "styleguide#index"
 
-  
-
   devise_for :users
 
   root to: "home#index"

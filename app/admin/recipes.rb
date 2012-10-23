@@ -1,5 +1,9 @@
 ActiveAdmin.register Recipe do
 
+  show do |recipe|
+    render "show", recipe: recipe
+  end
+
   form do |f|
     f.inputs "Recipe Details" do
       f.input :title

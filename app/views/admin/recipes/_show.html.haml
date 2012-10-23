@@ -1,0 +1,25 @@
+.panel
+  %h3 Recipe
+  .panel_contents
+    .attributes_table
+      %table
+        %tbody
+          %tr
+            %th Title
+            %td= recipe.title
+          %tr
+            %th Activity
+            %td= link_to recipe.activity.title, admin_recipe_path(recipe.activity)
+          %tr
+            %th Ingredients
+            %td
+              %ul
+                - recipe.ingredients.map do |ingredient|
+                  %li= link_to "#{ingredient.display_quantity} #{ingredient.title}", admin_ingredient_path(ingredient)
+          %tr
+            %th Steps
+            %td
+              %ol
+                - recipe.steps.map do |step|
+                  %li= link_to step.title, admin_step_path(step)
+
