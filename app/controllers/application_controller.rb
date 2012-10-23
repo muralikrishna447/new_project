@@ -4,5 +4,6 @@ class ApplicationController < ActionController::Base
   def global_navigation
     render partial: 'layouts/header'
   end
+
 end
 

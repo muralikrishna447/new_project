@@ -33,7 +33,7 @@ guard 'rspec', cli: "--color --drb --fail-fast -f #{ENV['RSPEC_FORMAT'] || 'prog
   watch('app/controllers/application_controller.rb') { "spec/controllers" }
 end
 
-guard 'jasmine', jasmine_url: 'http://delve.dev/jasmine', port: 80 do
+guard 'jasmine', jasmine_url: 'http://delve.dev/jasmine', port: 80, server_env: :test do
   watch(%r{spec/javascripts/spec\.(js\.coffee|js|coffee)$})        { "spec/javascripts" }
   watch(%r{^spec/javascripts/(.+)_spec\.(js\.coffee|js|coffee)$})
   watch(%r{app/assets/javascripts/(.+?)\.(js\.coffee|js|coffee)$}) { |m| "spec/javascripts/#{m[1]}_spec.#{m[2]}" }

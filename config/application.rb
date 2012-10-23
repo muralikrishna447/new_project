@@ -75,5 +75,13 @@ module Delve
       allow_reload: false,
       allow_revalidate: false
     }
+
+    # CORS
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '/global-navigation', headers: :any, methods: [:get, :options]
+      end
+    end
   end
 end

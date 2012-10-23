@@ -7,8 +7,9 @@ class ChefSteps.NavigationBootstrap
 
   getHeader: =>
     jQuery.ajax
-      type: "GET"
       url: "http://<%= DOMAIN %>/global-navigation"
+      dataType: 'html'
+      type: "GET"
       success: @loadHeader
 
   loadCSS: =>
