@@ -1,9 +1,12 @@
 .container
   .navbar
     .navbar-inner
+      .nav.pull-right.addthis-container
+        = render 'layouts/share_this'
+.container.global-navigation
+  .navbar
+    .navbar-inner
       .container
-        .nav.pull-right.addthis-container
-          = render 'layouts/share_this'
         .nav.brand-container
           %a.brand{ href: root_path }
             = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
@@ -11,9 +14,6 @@
             brought to you by
             %a.delve-brand{href: 'http://delvekitchen.com'}
               = image_tag('delve-logo.png', alt: 'Delve')
-
-.container
-  .navbar.global-navigation
-    .navbar-inner.pull-right
-      = render 'layouts/global_navigation'
+        %ul.nav.pull-right
+          = render 'layouts/global_navigation'
 
