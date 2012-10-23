@@ -28,15 +28,18 @@
           %tr
             %th Equipment
             %td
-              - activity.equipment.map do |equipment|
-                = link_to equipment.title, admin_equipment_path(equipment)
+              %ul
+                - activity.equipment.map do |equipment|
+                  %li= link_to equipment.title, admin_equipment_path(equipment)
           %tr
             %th Recipes
             %td
-              - activity.recipes.map do |recipe|
-                = link_to recipe.title, admin_recipe_path(recipe)
+              %ul
+                - activity.recipes.map do |recipe|
+                  %li= link_to recipe.title, admin_recipe_path(recipe)
           %tr
             %th Steps
             %td
-              - activity.steps.map do |step|
-                = link_to step.title, admin_step_path(step)
+              %ol
+                - activity.steps.map do |step|
+                  %li= link_to step.title, admin_step_path(step)
