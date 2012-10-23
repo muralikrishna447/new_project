@@ -1,5 +1,9 @@
 ActiveAdmin.register Activity do
 
+  show do |activity|
+    render "show", activity: activity
+  end
+
   form do |f|
     f.inputs "Activity Details" do
       f.input :title
