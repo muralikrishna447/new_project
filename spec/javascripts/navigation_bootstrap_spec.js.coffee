@@ -14,10 +14,8 @@ describe "Navigation Bootstrap", ->
   describe "#getHeader", ->
     beforeEach ->
       spyOn($, "ajax").andCallFake (options) ->
-        options.beforeSend()
         options.success()
       spyOn(@bootstrap, 'loadHeader')
-      spyOn(@bootstrap, 'allowOrigin')
       @bootstrap.getHeader()
 
     it "requests the global navigation", ->
@@ -25,9 +23,6 @@ describe "Navigation Bootstrap", ->
 
     it "loads the header on success", ->
       expect(@bootstrap.loadHeader).toHaveBeenCalled()
-
-    it "sets the request header", ->
-      expect(@bootstrap.allowOrigin).toHaveBeenCalled()
 
   describe "#bootstrap", ->
     beforeEach ->
