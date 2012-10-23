@@ -41,11 +41,3 @@ describe "Navigation Bootstrap", ->
     it "gets the header html", ->
       expect(@bootstrap.getHeader).toHaveBeenCalled()
 
-  describe "#allowOrigin", ->
-    beforeEach ->
-      @fakeXhr = jasmine.createSpyObj('xhr', ['setRequestHeader'])
-      @bootstrap.allowOrigin(@fakeXhr)
-
-    it "sets the requestHeader to allow our domain", ->
-      expect(@fakeXhr.setRequestHeader).toHaveBeenCalledWith('Access-Control-Allow-Origin', 'http://delve.dev')
-

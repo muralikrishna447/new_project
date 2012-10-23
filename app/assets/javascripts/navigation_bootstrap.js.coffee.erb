@@ -11,7 +11,6 @@ class ChefSteps.NavigationBootstrap
       dataType: 'html'
       type: "GET"
       success: @loadHeader
-      beforeSend: @allowOrigin
 
   loadCSS: =>
     jQuery(@cssLink).appendTo('head')
@@ -22,7 +21,4 @@ class ChefSteps.NavigationBootstrap
   bootstrap: =>
     @loadCSS()
     @getHeader()
-
-  allowOrigin: (xhr) ->
-    xhr.setRequestHeader("Access-Control-Allow-Origin", "http://<%= DOMAIN %>")
 
