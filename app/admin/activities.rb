@@ -25,5 +25,15 @@ ActiveAdmin.register Activity do
     end
     f.buttons
   end
+
+  index do
+    column "Order", :activity_order
+    column :title
+    column :difficulty
+    column :yield
+    column "Description" do |activity|
+      truncate(activity.description, length: 50)
+    end
+  end
 end
 
