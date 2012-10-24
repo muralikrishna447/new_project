@@ -26,10 +26,16 @@
             %th Activity Order
             %td= activity.activity_order
           %tr
-            %th Equipment
+            %th Required Equipment
             %td
               %ul
-                - activity.equipment.map do |equipment|
+                - activity.required_equipment.map do |equipment|
+                  %li= link_to equipment.title, admin_equipment_path(equipment)
+          %tr
+            %th Optional Equipment
+            %td
+              %ul
+                - activity.optional_equipment.map do |equipment|
                   %li= link_to equipment.title, admin_equipment_path(equipment)
           %tr
             %th Recipes
@@ -43,3 +49,4 @@
               %ol
                 - activity.steps.map do |step|
                   %li= link_to step.title, admin_step_path(step)
+
