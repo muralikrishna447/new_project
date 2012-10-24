@@ -13,7 +13,7 @@ class Activity < ActiveRecord::Base
     :description, :equipment_ids, :recipe_ids, :step_ids,
     allow_destroy: true, as: :admin
 
-  def difficulty_enum
+  def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
   end
 

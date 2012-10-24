@@ -1,0 +1,12 @@
+= semantic_form_for [:admin, @recipe] do |f|
+  = f.inputs name: "Recipe Details" do
+    = f.input :title
+    = f.input :yield
+    = f.input :activity
+  = f.inputs name: "Ingredients" do
+    = f.semantic_fields_for :ingredient do |ingredient_form|
+      = ingredient_form.input :unit
+      = ingredient_form.input :quantity
+      = ingredient_form.input :ingredient, as: :select, collection: Ingredient.all
+  = f.actions
+

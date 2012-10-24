@@ -8,8 +8,9 @@ class Recipe < ActiveRecord::Base
 
   validates :title, presence: true
 
-  attr_accessible :title, :activity_id, :yield, :step_ids, :ingredient_ids,
-    allow_destroy: true, as: :admin
+  attr_accessible :title, :activity_id, :yield, :step_ids, :ingredient_ids, allow_destroy: true
+
+  accepts_nested_attributes_for :ingredients, :steps
 
   scope :ordered, rank(:recipe_order)
 
