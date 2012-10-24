@@ -1,6 +1,7 @@
 //= require jquery_ujs
-//= require lodash
 //= require jquery.fitvids
+//= require lodash
+//= require backbone
 //= require fit_videos
 //= require carousel
 //= require stick_to_top
