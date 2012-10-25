@@ -22,6 +22,7 @@ class Recipe < ActiveRecord::Base
       recipe_ingredient = ingredients.find_or_create_by_ingredient_id_and_recipe_id(ingredient.id, self.id)
       recipe_ingredient.update_attributes(ingredient_attr)
     end
+    self
   end
 
 end
