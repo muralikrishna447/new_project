@@ -8,7 +8,7 @@ class Recipe < ActiveRecord::Base
 
   validates :title, presence: true
 
-  attr_accessible :title, :activity_id, :yield, :step_ids, :ingredient_ids, allow_destroy: true
+  attr_accessible :title, :activity_id, :yield, :step_ids, :ingredients, allow_destroy: true
 
   accepts_nested_attributes_for :ingredients, :steps
 
@@ -16,30 +16,13 @@ class Recipe < ActiveRecord::Base
 
   default_scope { ordered }
 
-  def ingredient_ids=(ids)
-    unless (ids = ids.map(&:to_i).select { |i| i>0 }) == (current_ids = ingredients.map(&:id))
-      ids.each_with_index do |id, index|
-        if current_ids.include? (id)
-          ingredients.select { |b| b.id == id }.first.update_attribute(:ingredient_order_position, (index+1))
-        else
-          raise "Can't add Ingredient: #{id}"
-        end
-      end
-      (current_ids - ids).each { |id| ingredients.select{|b|b.id == id}.first.destroy}
+  def update_ingredients(ingredient_attrs)
+    ingredient_attrs.map do |ingredient_attr|
+      ingredient = Ingredient.find_or_create_by_title(ingredient_attr.delete(:title))
+      recipe_ingredient = ingredients.find_or_create_by_ingredient_id_and_recipe_id(ingredient.id, self.id)
+      recipe_ingredient.update_attributes(ingredient_attr)
     end
   end
 
-  def step_ids=(ids)
-    unless (ids = ids.map(&:to_i).select { |i| i>0 }) == (current_ids = steps.map(&:id))
-      ids.each_with_index do |id, index|
-        if current_ids.include? (id)
-          steps.select { |b| b.id == id }.first.update_attribute(:step_order_position, (index+1))
-        else
-          raise "Can't add Step: #{id}"
-        end
-      end
-      (current_ids - ids).each { |id| steps.select{|b|b.id == id}.first.destroy}
-    end
-  end
 end
 
