@@ -17,13 +17,33 @@ class Recipe < ActiveRecord::Base
   default_scope { ordered }
 
   def update_ingredients(ingredient_attrs)
-    ingredient_attrs.map do |ingredient_attr|
-      ingredient = Ingredient.find_or_create_by_title(ingredient_attr.delete(:title))
-      recipe_ingredient = ingredients.find_or_create_by_ingredient_id_and_recipe_id(ingredient.id, self.id)
-      recipe_ingredient.update_attributes(ingredient_attr)
-    end
+    reject_invalid_ingredients(ingredient_attrs)
+    update_and_create_ingredients(ingredient_attrs)
+    delete_old_ingredients(ingredient_attrs)
     self
   end
 
+  private
+
+  def reject_invalid_ingredients(ingredient_attrs)
+    ingredient_attrs.select! do |ingredient_attr|
+      [:title, :quantity, :unit].all? do |test|
+        ingredient_attr[test].present?
+      end
+    end
+  end
+
+  def update_and_create_ingredients(ingredient_attrs)
+    ingredient_attrs.each do |ingredient_attr|
+      ingredient = Ingredient.find_or_create_by_title(ingredient_attr[:title])
+      recipe_ingredient = ingredients.find_or_create_by_ingredient_id_and_recipe_id(ingredient.id, self.id)
+      recipe_ingredient.update_attributes(quantity: ingredient_attr[:quantity], unit: ingredient_attr[:unit])
+    end
+  end
+
+  def delete_old_ingredients(ingredient_attrs)
+    old_ingredient_titles = ingredients.map(&:title) - ingredient_attrs.map {|i| i[:title] }
+    ingredients.joins(:ingredient).where('ingredients.title' => old_ingredient_titles).destroy_all
+  end
 end
 

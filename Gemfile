@@ -40,7 +40,7 @@ group :development, :test do
   gem 'heroku'
   gem 'heroku_san'
   gem 'rspec-rails'
-  gem 'spork', '~> 1.0rc'
+  gem 'spork-rails'
   gem 'jasminerice'
 end
 

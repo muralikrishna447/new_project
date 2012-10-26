@@ -205,9 +205,6 @@ GEM
       rack (>= 0.4)
     rack-cors (0.2.7)
       rack
-    rack-pjax (0.5.9)
-      hpricot (~> 0.8.6)
-      rack (~> 1.3)
     rack-ssl (1.3.2)
       rack
     rack-test (0.6.1)
@@ -264,6 +261,9 @@ GEM
       sass (>= 3.1.10)
       tilt (~> 1.3)
     spork (1.0.0rc3)
+    spork-rails (3.2.0)
+      rails (>= 3.0.0, < 3.3.0)
+      spork (>= 1.0rc0)
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -323,6 +323,6 @@ DEPENDENCIES
   rdiscount
   rspec-rails
   sass-rails (~> 3.2.3)
-  spork (~> 1.0rc)
+  spork-rails
   uglifier (>= 1.0.3)
   unicorn
