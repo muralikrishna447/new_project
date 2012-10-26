@@ -18,10 +18,6 @@ guard 'spork' do
   watch(%r{^config/environments/.*\.rb$})
   watch(%r{^config/initializers/.*\.rb$})
   watch('spec/spec_helper.rb')
-  # devise caches user model
-  #   watch('app/models/user.rb')
-  #   end
-  #
 end
 
 guard 'rspec', cli: "--color --drb --fail-fast -f #{ENV['RSPEC_FORMAT'] || 'progress'}", bundler: false do
