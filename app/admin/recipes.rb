@@ -12,6 +12,12 @@ ActiveAdmin.register Recipe do
       @recipe = Recipe.create(params[:recipe]).update_ingredients(ingredients)
       create!
     end
+
+    def update
+      ingredients = params[:recipe].delete(:ingredients)
+      @recipe = Recipe.find(params[:id]).update_ingredients(ingredients)
+      update!
+    end
   end
 end
 

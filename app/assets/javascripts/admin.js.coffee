@@ -14,3 +14,8 @@ $ ->
     $('input', $copy).val('')
     $copy_destination.append($copy)
 
+$ ->
+  $('[data-behavior~=remove-row]').on 'click', (event) ->
+    event.preventDefault()
+    $(this).closest('tr').remove()
+
