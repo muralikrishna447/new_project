@@ -11,7 +11,7 @@
         %th Quantity
         %th Unit
       %tr#ingredient-row
-        %td= text_field_tag 'recipe[ingredients][][title]'
+        %td= text_field_tag 'recipe[ingredients][][title]', '', {data: {source: Ingredient.titles, provide: 'typeahead'}}
         %td= text_field_tag 'recipe[ingredients][][quantity]'
         %td= text_field_tag 'recipe[ingredients][][unit]'
       - @recipe.ingredients.each do |ingredient|
@@ -23,4 +23,5 @@
   = f.actions
 
 = javascript_include_tag "admin"
+= stylesheet_link_tag 'admin'
 

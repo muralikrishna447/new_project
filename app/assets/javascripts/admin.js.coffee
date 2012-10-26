@@ -1,3 +1,5 @@
+//= require twitter/bootstrap/typeahead
+
 $ ->
   $copy_button = $('[data-behavior~=copy-element]')
   copy_target = $copy_button.data('copy-target')
