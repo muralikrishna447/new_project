@@ -2,7 +2,7 @@
   margin-bottom: 0
 
 .navbar .brand
-  padding: 15px 0 0 0
+  padding: 10px 0 0 0
 
 .brand-byline
   clear: left
@@ -39,4 +39,29 @@
     margin-left: 5px
     &.addthis_button_google_plusone
       margin-left: -3px
+
+.global-navigation
+  +font-serif-large
+  color: $black
+  margin-bottom: 10px
+  ul.nav
+    margin-top: 25px
+  li
+    margin: 0
+    border-right: 1px dotted $black
+    padding: 10px 30px
+    text-align: center
+    line-height: 19px
+  li:last-child
+    border-right: none
+    padding-right: 0
+
+  i[class^="icon-"]
+    display: none
+
+  li > a
+    color: $brick
+
+  li > a:hover
+    color: $brickDark
 

@@ -117,8 +117,6 @@
 
     :erb
       <script type="text/javascript">var switchTo5x=false;</script>
-      <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-      <script type="text/javascript">stLight.options({publisher: "e4ecf5c2-1671-4b6b-9d04-79142e9dc408"}); </script>
 
   %body
 
@@ -135,7 +133,9 @@
     -# ==========================================================================
 
     -# jQuery
-    %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}
+    %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"}
+
     -# Custom JS
     = javascript_include_tag "application"
     = render 'layouts/google_analytics' if Rails.env.production?
+

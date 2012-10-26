@@ -17,6 +17,8 @@ gem 'gibbon'
 gem 'newrelic_rpm'
 gem 'rdiscount'
 
+gem 'rack-cors', require: 'rack/cors'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -33,9 +35,12 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-group :development do
+group :development, :test do
   gem 'heroku'
   gem 'heroku_san'
+  gem 'rspec-rails'
+  gem 'spork', '~> 1.0rc'
+  gem 'jasminerice'
 end
 
 group :guard do
@@ -43,14 +48,12 @@ group :guard do
   gem 'guard-livereload'
   gem 'guard-pow'
   gem 'guard-rspec'
+  gem 'guard-spork'
+  gem 'guard-jasmine'
   # Problems with falling back to polling
   # https://github.com/guard/listen/issues/62
   gem 'listen', '0.4.7'
   gem 'growl'
   gem 'rb-fsevent'
-end
-
-group :test do
-  gem 'rspec-rails'
 end
 

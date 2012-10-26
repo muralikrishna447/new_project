@@ -1,3 +1,5 @@
+DOMAIN='staging.chefsteps.com'
+
 Delve::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -47,11 +49,11 @@ Delve::Application.configure do
   config.action_controller.asset_host = "http://diufzcf311ks0.cloudfront.net"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( print.css styleguide.css )
+  config.assets.precompile += %w( print.css styleguide.css global_navigation.css navigation_bootstrap.js )
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => 'delve-staging.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: DOMAIN }
 
   # Enable threaded mode
   # config.threadsafe!
@@ -67,9 +69,9 @@ Delve::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
-    [u, p] == ['delve', 'howtochef22'] || [u, p] == ['guest', 'boiling19']
-  end
+  # config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
+  #   [u, p] == ['delve', 'howtochef22'] || [u, p] == ['guest', 'boiling19']
+  # end
 end
 
 MAILCHIMP_API_KEY="9875b0250eae48e91a12a26117bba403-us5"
