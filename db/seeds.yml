@@ -5,6 +5,9 @@ admins:
 - email: aaron@substantial.com
   password: asdfasdf
 
+- email: alex@substantial.com
+  password: asdfasdf
+
 - email: chris@delvekitchen.com
   password: howtochef22
 
