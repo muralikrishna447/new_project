@@ -1,4 +1,4 @@
-DOMAIN='chefsteps.com'
+DOMAIN='www.chefsteps.com'
 
 Delve::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
