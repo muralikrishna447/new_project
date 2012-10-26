@@ -43,6 +43,11 @@ Spork.prefork do
     #     --seed 1234
     config.order = "random"
   end
+  require "rails/application"
+  Spork.trap_method(Rails::Application, :reload_routes!) # Rails 3.0
+  Spork.trap_method(Rails::Application::RoutesReloader, :reload!) # Rails 3.1
+
+  require File.dirname(__FILE__) + "/../config/environment.rb"
 end
 
 Spork.each_run do
