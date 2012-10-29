@@ -4,6 +4,8 @@ class Activity < ActiveRecord::Base
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
 
+  accepts_nested_attributes_for :steps, :equipment, :recipes
+
   scope :ordered, order("activity_order")
   default_scope { ordered }
 
@@ -11,7 +13,7 @@ class Activity < ActiveRecord::Base
     :description, :equipment_ids, :recipe_ids, :step_ids,
     allow_destroy: true, as: :admin
 
-  def difficulty_enum
+  def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
   end
 
@@ -42,19 +44,6 @@ class Activity < ActiveRecord::Base
 
   def step_by_step?
     steps.count > 0
-  end
-
-  def recipe_ids=(ids)
-    unless (ids = ids.map(&:to_i).select { |i| i>0 }) == (current_ids = recipes.map(&:id))
-      ids.each_with_index do |id, index|
-        if current_ids.include? (id)
-          recipes.select { |b| b.id == id }.first.update_attribute(:recipe_order_position, (index+1))
-        else
-          raise "Can't add Recipe: #{id}"
-        end
-      end
-      (current_ids - ids).each { |id| recipes.select{|b|b.id == id}.first.update_attribute(:activity_id, nil)}
-    end
   end
 
 end

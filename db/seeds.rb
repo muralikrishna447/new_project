@@ -33,8 +33,8 @@ def create_step(step)
 end
 
 def create_admin(email, password)
-  return if User.where(email: email).any?
-  u = User.create
+  return if AdminUser.where(email: email).any?
+  u = AdminUser.create
   u.email = email
   u.password = password
   u.save

@@ -10,14 +10,14 @@ class RecipeIngredient < ActiveRecord::Base
   validates :ingredient, presence: true
   validates :recipe, presence: true
 
-  attr_accessible :recipe_id, :ingredient_id, :quantity, :unit, as: :admin
+  attr_accessible :recipe_id, :ingredient_id, :quantity, :unit
 
   scope :ordered, rank(:ingredient_order)
 
   default_scope { ordered }
 
-  def label
-    [title, [quantity, unit].compact.join].compact.join(" ")
+  def display_quantity
+    "#{quantity} #{unit}"
   end
 end
 

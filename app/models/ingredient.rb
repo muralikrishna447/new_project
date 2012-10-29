@@ -6,6 +6,11 @@ class Ingredient < ActiveRecord::Base
 
   validates :title, presence: true
 
-  attr_accessible :title, :product_url, :for_sale, as: :admin
+  attr_accessible :title, :product_url, :for_sale
+
+  def self.titles
+    all.map(&:title)
+  end
+
 end
 

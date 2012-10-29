@@ -16,18 +16,5 @@ class Step < ActiveRecord::Base
 
   default_scope { ordered }
 
-  def ingredient_ids=(ids)
-    unless (ids = ids.map(&:to_i).select { |i| i>0 }) == (current_ids = ingredients.map(&:id))
-      ids.each_with_index do |id, index|
-        if current_ids.include? (id)
-          ingredients.select { |b| b.id == id }.first.update_attribute(:ingredient_order_position, (index+1))
-        else
-          raise "Can't add Ingredient: #{id}"
-        end
-      end
-      (current_ids - ids).each { |id| ingredients.select{|b|b.id == id}.first.destroy}
-    end
-  end
-
 end
 

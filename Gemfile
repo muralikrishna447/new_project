@@ -10,7 +10,8 @@ gem 'dalli'
 gem 'jquery-rails'
 gem 'haml'
 gem "devise"
-gem 'rails_admin'
+gem 'activeadmin'
+gem 'meta_search'
 gem 'decent_exposure'
 gem 'ranked-model'
 gem 'gibbon'
@@ -39,7 +40,7 @@ group :development, :test do
   gem 'heroku'
   gem 'heroku_san'
   gem 'rspec-rails'
-  gem 'spork', '~> 1.0rc'
+  gem 'spork-rails'
   gem 'jasminerice'
 end
 

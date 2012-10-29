@@ -1,0 +1,52 @@
+.panel
+  %h3 Activity
+  .panel_contents
+    .attributes_table
+      %table
+        %tbody
+          %tr
+            %th Title
+            %td= activity.title
+          %tr
+            %th Description
+            %td= activity.description
+          %tr
+            %th Youtube Id
+            %td= activity.youtube_id
+          %tr
+            %th Timing
+            %td= activity.timing
+          %tr
+            %th Yield
+            %td= activity.yield
+          %tr
+            %th Difficulty
+            %td= activity.difficulty
+          %tr
+            %th Activity Order
+            %td= activity.activity_order
+          %tr
+            %th Required Equipment
+            %td
+              %ul
+                - activity.required_equipment.map do |equipment|
+                  %li= link_to equipment.title, admin_equipment_path(equipment)
+          %tr
+            %th Optional Equipment
+            %td
+              %ul
+                - activity.optional_equipment.map do |equipment|
+                  %li= link_to equipment.title, admin_equipment_path(equipment)
+          %tr
+            %th Recipes
+            %td
+              %ul
+                - activity.recipes.map do |recipe|
+                  %li= link_to recipe.title, admin_recipe_path(recipe)
+          %tr
+            %th Steps
+            %td
+              %ol
+                - activity.steps.map do |step|
+                  %li= link_to step.title, admin_step_path(step)
+
