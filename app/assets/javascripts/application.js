@@ -9,4 +9,4 @@
 //= require twitter/bootstrap/transition
 //= require twitter/bootstrap/collapse
 //= require twitter/bootstrap/carousel
-//= require twitter/bootstrap/typeahead
+
