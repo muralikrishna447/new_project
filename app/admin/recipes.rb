@@ -8,15 +8,20 @@ ActiveAdmin.register Recipe do
 
   controller do
     def create
-      ingredients = params[:recipe].delete(:ingredients)
+      ingredients = seperate_ingredients
       @recipe = Recipe.create(params[:recipe]).update_ingredients(ingredients)
       create!
     end
 
     def update
-      ingredients = params[:recipe].delete(:ingredients)
+      ingredients = seperate_ingredients
       @recipe = Recipe.find(params[:id]).update_ingredients(ingredients)
       update!
+    end
+
+    private
+    def seperate_ingredients
+      params[:recipe].delete(:ingredients)
     end
   end
 end
