@@ -3,8 +3,10 @@
     .row
       .span8
         %h1= raw activity.title
-        :markdown
-          #{activity.description}
+        - if activity.has_description?
+          -# description.present?
+          :markdown
+            #{activity.description}
       .span4
         -# Removed for demo
         -# .row
@@ -76,7 +78,7 @@
                 %ul.equipment
                   - group.each do |item|
                     - if item.product_url?
-                      %li.bullet-for-sale= link_to item.title, item.product_url
+                      %li.bullet-for-sale= link_to item.title, item.product_url, { target: "_blank"}
                     - else
                       %li= item.title
 
