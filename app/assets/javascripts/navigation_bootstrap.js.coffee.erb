@@ -19,7 +19,7 @@ class ChefSteps.NavigationBootstrap
     jQuery(@headerTarget).html(response)
 
   fixNavLinks: =>
-    $('body .nav a').live 'click', ->
+    jQuery(document).on 'click', 'body .nav a', ->
       top.location = $(this).attr('href')
 
   bootstrap: =>
