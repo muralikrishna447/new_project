@@ -10,4 +10,3 @@
 //= require twitter/bootstrap/collapse
 //= require twitter/bootstrap/carousel
 //= require twitter/bootstrap/typeahead
-//= require_tree ./backbone
