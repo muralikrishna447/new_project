@@ -7,5 +7,7 @@
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
     = f.input :activity_order
 
-  = f.actions
+  = f.actions do
+    = f.action :submit, as: :button
+    = f.action :cancel, as: :link
 
