@@ -22,6 +22,28 @@
             = text_field_tag 'recipe[ingredients][][unit]', ingredient.unit
             = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
 
+  = f.inputs name: "Steps" do
+    %li= button_tag 'Add', {data: {behavior: 'copy-element', 'copy-target' => '#step-row', 'copy-destination' => 'table#steps'}}
+    %table#steps
+      %tr
+        %th Title
+        %th Directions
+        %th Image
+        %th Youtube
+      %tr#step-row
+        %td= text_field_tag 'recipe[step][][title]'
+        %td= text_field_tag 'recipe[step][][directions]'
+        %td= text_field_tag 'recipe[step][][image_id]'
+        %td= text_field_tag 'recipe[step][][youtube_id]'
+      - @recipe.steps.each do |step|
+        %tr
+          %td= text_field_tag 'recipe[step][][title]', step.title
+          %td= text_field_tag 'recipe[step][][directions]', step.directions
+          %td= text_field_tag 'recipe[step][][image_id]', step.image_id
+          %td
+            = text_field_tag 'recipe[steps][][youtube]', step.youtube_id
+            = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
+
   = f.actions do
     = f.action :submit, as: :button
     = f.action :cancel, as: :link
