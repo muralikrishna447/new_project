@@ -22,7 +22,9 @@
             = text_field_tag 'recipe[ingredients][][unit]', ingredient.unit
             = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
 
-  = f.actions
+  = f.actions do
+    = f.action :submit, as: :button
+    = f.action :cancel, as: :link
 
 = javascript_include_tag "admin"
 = stylesheet_link_tag 'admin'
