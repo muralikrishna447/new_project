@@ -42,18 +42,5 @@ class Activity < ActiveRecord::Base
     steps.count > 0
   end
 
-  def recipe_ids=(ids)
-    unless (ids = ids.map(&:to_i).select { |i| i>0 }) == (current_ids = recipes.map(&:id))
-      ids.each_with_index do |id, index|
-        if current_ids.include? (id)
-          recipes.select { |b| b.id == id }.first.update_attribute(:recipe_order_position, (index+1))
-        else
-          raise "Can't add Recipe: #{id}"
-        end
-      end
-      (current_ids - ids).each { |id| recipes.select{|b|b.id == id}.first.update_attribute(:activity_id, nil)}
-    end
-  end
-
 end
 
