@@ -2,19 +2,19 @@
   - if current_page?(course_url(1))
     Course
   - else
-    %a{ href: course_url(1) }
+    %a{ href: course_url(1), target: '_top' }
       Course
       %i.icon-chevron-right.pull-right
 -# %li
--#   %a{href: ''}
+-#   %a{href: '', target: '_top'}
 -#     Shop
 -#     %i.icon-chevron-right.pull-right
 -# %li
--#   %a{href: ''}
+-#   %a{href: '', target: '_top'}
 -#     Forums
 -#     %i.icon-chevron-right.pull-right
 %li
-  %a{href: 'http://blog.chefsteps.com'}
+  %a{href: 'http://blog.chefsteps.com', target: '_top'}
     Blog
     %i.icon-chevron-right.pull-right
 
