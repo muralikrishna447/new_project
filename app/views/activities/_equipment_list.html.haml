@@ -1,0 +1,7 @@
+%ul.equipment
+  - equipment.each do |item|
+    - if item.product_url?
+      %li.bullet-for-sale= link_to item.title, item.product_url, { target: "_blank"}
+    - else
+      %li= item.title
+

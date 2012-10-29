@@ -38,6 +38,10 @@ class Activity < ActiveRecord::Base
     activities[i-1]
   end
 
+  def has_description?
+    description.present?
+  end
+
   def step_by_step?
     steps.count > 0
   end
