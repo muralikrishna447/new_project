@@ -11,7 +11,7 @@
         %th Quantity
         %th Unit
       %tr#ingredient-row
-        %td= text_field_tag 'recipe[ingredients][][title]', '', {data: {source: Ingredient.titles, provide: 'typeahead'}}
+        %td= text_field_tag 'recipe[ingredients][][title]', nil, {data: {source: Ingredient.titles, provide: 'typeahead'}}
         %td= text_field_tag 'recipe[ingredients][][quantity]'
         %td= text_field_tag 'recipe[ingredients][][unit]'
       - @recipe.ingredients.each do |ingredient|
@@ -27,21 +27,21 @@
     %table#steps
       %tr
         %th Title
-        %th Directions
-        %th Image
-        %th Youtube
+        %th Directions (Markdown or HTML)
+        %th Image ID
+        %th Youtube ID
       %tr#step-row
-        %td= text_field_tag 'recipe[step][][title]'
-        %td= text_field_tag 'recipe[step][][directions]'
-        %td= text_field_tag 'recipe[step][][image_id]'
-        %td= text_field_tag 'recipe[step][][youtube_id]'
+        %td= text_field_tag 'recipe[steps][][title]'
+        %td= text_area_tag 'recipe[steps][][directions]', nil, size: '25x15'
+        %td= text_field_tag 'recipe[steps][][image_id]'
+        %td= text_field_tag 'recipe[steps][][youtube_id]'
       - @recipe.steps.each do |step|
         %tr
-          %td= text_field_tag 'recipe[step][][title]', step.title
-          %td= text_field_tag 'recipe[step][][directions]', step.directions
-          %td= text_field_tag 'recipe[step][][image_id]', step.image_id
+          %td= text_field_tag 'recipe[steps][][title]', step.title
+          %td= text_area_tag 'recipe[steps][][directions]', step.directions, rows: 15
+          %td= text_field_tag 'recipe[steps][][image_id]', step.image_id
           %td
-            = text_field_tag 'recipe[steps][][youtube]', step.youtube_id
+            = text_field_tag 'recipe[stepss][][youtube]', step.youtube_id
             = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
 
   = f.actions do
