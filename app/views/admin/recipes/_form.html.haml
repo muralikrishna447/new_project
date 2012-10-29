@@ -16,11 +16,11 @@
         %td= text_field_tag 'recipe[ingredients][][unit]'
       - @recipe.ingredients.each do |ingredient|
         %tr
-          %td
-            = button_tag 'X', {data: { behavior: 'remove-row'}}
-            = text_field_tag 'recipe[ingredients][][title]', ingredient.title
+          %td= text_field_tag 'recipe[ingredients][][title]', ingredient.title
           %td= text_field_tag 'recipe[ingredients][][quantity]', ingredient.quantity
-          %td= text_field_tag 'recipe[ingredients][][unit]', ingredient.unit
+          %td
+            = text_field_tag 'recipe[ingredients][][unit]', ingredient.unit
+            = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
 
   = f.actions
 

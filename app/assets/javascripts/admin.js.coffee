@@ -15,7 +15,8 @@ $ ->
     $copy_destination.append($copy)
 
 $ ->
-  $('[data-behavior~=remove-row]').on 'click', (event) ->
+  $('[data-behavior~=remove-element]').on 'click', (event) ->
     event.preventDefault()
-    $(this).closest('tr').remove()
+    removeTarget = $(this).data('remove-target')
+    $(this).closest(removeTarget).remove()
 
