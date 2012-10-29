@@ -9,7 +9,7 @@ class Ingredient < ActiveRecord::Base
   attr_accessible :title, :product_url, :for_sale
 
   def self.titles
-    Ingredient.all.map(&:title)
+    all.map(&:title)
   end
 
 end
