@@ -3,8 +3,10 @@
     .row
       .span8
         %h1= raw activity.title
-        :markdown
-          #{activity.description}
+        - if activity.has_description?
+          -# description.present?
+          :markdown
+            #{activity.description}
       .span4
         -# Removed for demo
         -# .row
@@ -60,12 +62,7 @@
         .row
           - activity.required_equipment.in_groups(2, false).each do |group|
             .span2
-              %ul.equipment
-                - group.each do |item|
-                  - if item.product_url?
-                    %li.bullet-for-sale= link_to item.title, item.product_url
-                  - else
-                    %li= item.title
+              = render 'equipment_list', equipment: group
         - if activity.optional_equipment.present?
           .row
             .span4
@@ -73,10 +70,4 @@
           .row
             - activity.optional_equipment.in_groups(2, false).each do |group|
               .span2
-                %ul.equipment
-                  - group.each do |item|
-                    - if item.product_url?
-                      %li.bullet-for-sale= link_to item.title, item.product_url
-                    - else
-                      %li= item.title
-
+                = render 'equipment_list', equipment: group
