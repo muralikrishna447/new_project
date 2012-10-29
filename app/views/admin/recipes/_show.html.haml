@@ -14,7 +14,7 @@
             %th Ingredients
             %td
               %ul
-                - recipe.ingredients.map do |ingredient|
+                - recipe.ingredients.each do |ingredient|
                   %li
                     = ingredient.display_quantity
                     = link_to ingredient.title, admin_ingredient_path(ingredient.ingredient_id)
@@ -22,6 +22,6 @@
             %th Steps
             %td
               %ol
-                - recipe.steps.map do |step|
+                - recipe.steps.each do |step|
                   %li= link_to step.title, admin_step_path(step)
 

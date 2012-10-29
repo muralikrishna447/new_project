@@ -10,7 +10,7 @@ class Step < ActiveRecord::Base
   has_many :ingredients, class_name: StepIngredient, dependent: :destroy, inverse_of: :step
 
   attr_accessible :title, :youtube_id, :recipe_id, :directions, :image_id,
-    :ingredient_ids, :activity_id, as: :admin
+    :ingredient_ids, :activity_id
 
   scope :ordered, rank(:step_order)
 
