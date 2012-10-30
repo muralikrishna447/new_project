@@ -10,9 +10,9 @@
         %th Ingredient
         %th Quantity
         %th Unit
-      = render 'ingredient_form', :ingredient => nil
+      = render 'ingredient_form', ingredient: nil
       - @recipe.ingredients.each do |ingredient|
-        = render 'ingredient_form', :ingredient => ingredient
+        = render 'ingredient_form', ingredient: ingredient
 
   = f.inputs name: "Steps" do
     %li= copy_button('Add Step', '#step-row', 'table#steps')
@@ -22,9 +22,9 @@
         %th Directions (Markdown or HTML)
         %th Image Id
         %th Youtube Id
-      = render 'step_form', :step => nil
+      = render 'step_form', step: nil
       - @recipe.steps.each do |step|
-        = render 'step_form', :step => step
+        = render 'step_form', step: step
 
   = f.actions do
     = f.action :submit, as: :button
