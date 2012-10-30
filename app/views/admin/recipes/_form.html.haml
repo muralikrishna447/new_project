@@ -31,13 +31,17 @@
         %th Image Id
         %th Youtube Id
       %tr#step-row
-        %td= text_field_tag 'recipe[steps][][title]'
+        %td
+          = text_field_tag 'recipe[steps][][title]'
+          = hidden_field_tag 'recipe[steps][][id]'
         %td= text_area_tag 'recipe[steps][][directions]', nil, rows: 10
         %td= text_field_tag 'recipe[steps][][image_id]'
         %td= text_field_tag 'recipe[steps][][youtube_id]'
       - @recipe.steps.each do |step|
         %tr
-          %td= text_field_tag 'recipe[steps][][title]', step.title
+          %td
+            = text_field_tag 'recipe[steps][][title]', step.title
+            = hidden_field_tag 'recipe[steps][][id]', step.id
           %td= text_area_tag 'recipe[steps][][directions]', step.directions, rows: 10
           %td= text_field_tag 'recipe[steps][][image_id]', step.image_id
           %td

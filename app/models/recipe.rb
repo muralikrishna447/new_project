@@ -26,7 +26,7 @@ class Recipe < ActiveRecord::Base
   def update_steps(step_attrs)
     reject_invalid_steps(step_attrs)
     update_and_create_steps(step_attrs)
-    delete_old_steps(step_attrs)
+    # delete_old_steps(step_attrs)
     self
   end
 
@@ -42,7 +42,7 @@ class Recipe < ActiveRecord::Base
 
   def reject_invalid_steps(step_attrs)
     step_attrs.select! do |step_attr|
-      [:title, :directions].all? do |test|
+      [:directions].all? do |test|
         step_attr[test].present?
       end
     end
@@ -58,7 +58,7 @@ class Recipe < ActiveRecord::Base
 
   def update_and_create_steps(step_attrs)
     step_attrs.each do |step_attr|
-      step = steps.find_or_create_by_title_and_recipe_id(step_attr[:title], self.id)
+      step = steps.find_or_create_by_id(step_attr[:id])
       step.update_attributes(
                              title: step_attr[:title],
                              directions: step_attr[:directions],
@@ -74,8 +74,8 @@ class Recipe < ActiveRecord::Base
   end
 
   def delete_old_steps(step_attrs)
-    old_step_titles = steps.map(&:title) - step_attrs.map {|i| i[:title] }
-    steps.where(title: old_step_titles).destroy_all
+    old_step_ids = steps.map(&:id) - step_attrs.map {|i| i[:id] }
+    steps.where(id: old_step_ids).destroy_all
   end
 end
 
