@@ -23,12 +23,27 @@ class Recipe < ActiveRecord::Base
     self
   end
 
+  def update_steps(step_attrs)
+    reject_invalid_steps(step_attrs)
+    update_and_create_steps(step_attrs)
+    delete_old_steps(step_attrs)
+    self
+  end
+
   private
 
   def reject_invalid_ingredients(ingredient_attrs)
     ingredient_attrs.select! do |ingredient_attr|
       [:title, :quantity, :unit].all? do |test|
         ingredient_attr[test].present?
+      end
+    end
+  end
+
+  def reject_invalid_steps(step_attrs)
+    step_attrs.select! do |step_attr|
+      [:directions].all? do |test|
+        step_attr[test].present?
       end
     end
   end
@@ -41,9 +56,27 @@ class Recipe < ActiveRecord::Base
     end
   end
 
+  def update_and_create_steps(step_attrs)
+    step_attrs.each do |step_attr|
+      step = steps.find_or_create_by_id(step_attr[:id])
+      step.update_attributes(
+                             title: step_attr[:title],
+                             directions: step_attr[:directions],
+                             youtube_id: step_attr[:youtube_id],
+                             image_id: step_attr[:image_id]
+                            )
+      step_attr[:id] = step.id
+    end
+  end
+
   def delete_old_ingredients(ingredient_attrs)
     old_ingredient_titles = ingredients.map(&:title) - ingredient_attrs.map {|i| i[:title] }
     ingredients.joins(:ingredient).where('ingredients.title' => old_ingredient_titles).destroy_all
+  end
+
+  def delete_old_steps(step_attrs)
+    old_step_ids = steps.map(&:id) - step_attrs.map {|i| i[:id].to_i }
+    steps.where(id: old_step_ids).destroy_all
   end
 end
 
