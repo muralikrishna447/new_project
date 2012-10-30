@@ -6,6 +6,8 @@ class Recipe < ActiveRecord::Base
   has_many :ingredients, dependent: :destroy, class_name: RecipeIngredient, inverse_of: :recipe
   has_many :steps, dependent: :destroy, inverse_of: :recipe
 
+  validates :title, presence: true
+
   attr_accessible :title, :activity_id, :yield, :step_ids, :ingredients, allow_destroy: true
 
   accepts_nested_attributes_for :ingredients, :steps
