@@ -14,7 +14,7 @@ $ ->
     $copy_destination.append($copy)
 
 $ ->
-  $('[data-behavior~=remove-element]').on 'click', (event) ->
+  $(document).on 'click', '[data-behavior~=remove-element]', (event) ->
     event.preventDefault()
     removeTarget = $(this).data('remove-target')
     $(this).closest(removeTarget).remove()
