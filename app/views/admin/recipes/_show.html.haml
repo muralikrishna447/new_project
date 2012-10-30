@@ -21,7 +21,7 @@
           %tr
             %th Steps
             %td
-              %ol
+              %ul
                 - recipe.steps.each_with_index do |step, index|
                   %li= link_to step.title(index) , admin_step_path(step)
 
