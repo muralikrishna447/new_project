@@ -11,7 +11,7 @@
         %th Quantity
         %th Unit
       = render 'ingredient_form', ingredient: nil
-      - @recipe.ingredients.each do |ingredient|
+      - @recipe.ingredients.ordered.each do |ingredient|
         = render 'ingredient_form', ingredient: ingredient
 
   = f.inputs name: "Steps" do
@@ -23,7 +23,7 @@
         %th Image Id
         %th Youtube Id
       = render 'step_form', step: nil
-      - @recipe.steps.each do |step|
+      - @recipe.steps.ordered.each do |step|
         = render 'step_form', step: step
 
   = f.actions do
