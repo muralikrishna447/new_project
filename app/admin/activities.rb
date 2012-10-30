@@ -16,5 +16,25 @@ ActiveAdmin.register Activity do
     end
     default_actions
   end
+
+  controller do
+    def create
+      @activity = Activity.create(params[:activity])
+      @activity.update_equipment(separate_equipment)
+      create!
+    end
+
+    def update
+      @activity = Activity.find(params[:id])
+      @activity.update_equipment(separate_equipment)
+      update!
+    end
+
+    private
+
+    def separate_equipment
+      params[:activity].delete(:equipment)
+    end
+  end
 end
 

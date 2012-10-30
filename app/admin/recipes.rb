@@ -22,6 +22,7 @@ ActiveAdmin.register Recipe do
     end
 
     private
+
     def separate_ingredients
       params[:recipe].delete(:ingredients)
     end

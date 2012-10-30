@@ -12,8 +12,8 @@
   optional = equipment.optional unless is_template
 
 %tr{id: row_id}
-  %td= text_field_tag 'recipe[equipments][][title]', title, title_data_attrs
-  %td= check_box_tag'recipe[equipments][][optional]', optional
+  %td= text_field_tag 'activity[equipment][][title]', title, title_data_attrs
+  %td= check_box_tag('activity[equipment][][optional]', true, checked = optional)
   %td
-    = text_field_tag 'recipe[equipments][][product_url]', product_url
+    = text_field_tag 'activity[equipment][][product_url]', product_url
     = remove_button 'X', 'tr'

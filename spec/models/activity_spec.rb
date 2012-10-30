@@ -4,8 +4,8 @@ describe Activity do
   let(:activity) { Activity.create(title: 'foo') }
 
   describe "#update_equipment" do
-    let(:equipment1) { {title: 'Blender', product_url: 'over the rainbow', optional: true}  }
-    let(:equipment2) { {title: 'Spoon', product_url: '', optional: false}  }
+    let(:equipment1) { {title: 'Blender', product_url: 'over the rainbow', optional: "true"}  }
+    let(:equipment2) { {title: 'Spoon', product_url: '', optional: "false"}  }
     let(:equipment_attrs) {[ equipment1, equipment2 ] }
 
     describe "create" do
@@ -25,7 +25,7 @@ describe Activity do
     end
 
     describe "update" do
-      let(:updated_equipment_attrs) { equipment_attrs << { title: 'Blender', product_url: 'stuff', optional: false} }
+      let(:updated_equipment_attrs) { equipment_attrs << { title: 'Blender', product_url: 'stuff', optional: "false"} }
 
       before do
         activity.update_equipment(equipment_attrs)
