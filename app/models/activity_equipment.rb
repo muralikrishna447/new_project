@@ -4,7 +4,7 @@ class ActivityEquipment < ActiveRecord::Base
 
   validates :activity_id, presence: true
   validates :equipment_id, presence: true
-  attr_accessible :activity_id, :equipment_id, :optional, as: :admin
+  attr_accessible :activity_id, :equipment_id, :optional
 
   delegate :title, :product_url, :product_url?, to: :equipment
 
