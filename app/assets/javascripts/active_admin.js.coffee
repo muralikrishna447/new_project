@@ -1,5 +1,4 @@
 //= require active_admin/base
-//= require jquery-ui-1.9.1.custom
 //= require twitter/bootstrap/typeahead
 
 $ ->
