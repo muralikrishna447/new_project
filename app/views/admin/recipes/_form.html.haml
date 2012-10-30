@@ -5,7 +5,7 @@
     = f.input :activity
   = f.inputs name: "Ingredients" do
     %li= copy_button('Add Ingredient', '#ingredient-row', 'table#ingredients')
-    %table.nested-records#ingredients
+    %table.nested-records.sortable#ingredients
       %tr
         %th Ingredient
         %th Quantity
@@ -39,10 +39,11 @@
   };
 
   $(function() {
-    $('table#steps tbody').sortable({
+    $('table.sortable').sortable({
       cursor: 'move',
       helper: fixHelper,
-      items: 'tr:not(#step-row)'
+      items: 'tr:not(:first)',
+      containment: 'parent'
     }).disableSelection();
   });
 

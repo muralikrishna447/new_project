@@ -35,10 +35,6 @@
 // .other_namespace    applies to a custom namespace named other (eg: /other)
 
 .admin_namespace
-  table#steps
-    tr:nth-child(even)
-      background: $grayLight
-
   table.nested-records
     // hide template row
     tr:nth-child(2)
@@ -57,5 +53,5 @@
       padding: 5px
 
   table.sortable
-    tr:not(#step-row)
-      cursor: move
+    tr:nth-child(even)
+      background: $grayLight
