@@ -4,6 +4,7 @@
   row_id = 'ingredient-row' if is_template
   title_data_attrs = {
     data: {source: Ingredient.titles, provide: 'typeahead'},
+    autocomplete: 'off'
   }
 
   title = ingredient.title unless is_template
