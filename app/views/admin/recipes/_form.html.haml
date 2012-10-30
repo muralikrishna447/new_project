@@ -24,7 +24,7 @@
 
   = f.inputs name: "Steps" do
     %li= button_tag 'Add', {data: {behavior: 'copy-element', 'copy-target' => '#step-row', 'copy-destination' => 'table#steps'}}
-    %table#steps
+    %table#steps.sortable
       %tr
         %th Title
         %th Directions (Markdown or HTML)
@@ -52,3 +52,18 @@
     = f.action :submit, as: :button
     = f.action :cancel, as: :link
 
+:javascript
+  var fixHelper = function(e, ui) {
+    ui.children().each(function() {
+      $(this).width($(this).width());
+    });
+    return ui;
+  };
+
+  $(function() {
+    $('table#steps tbody').sortable({
+      cursor: 'move',
+      helper: fixHelper,
+      items: 'tr:not(#step-row)'
+    }).disableSelection();
+  });

@@ -1,6 +1,6 @@
 //= require active_admin/base
-//= require twitter/bootstrap/typeahead
 //= require jquery-ui-1.9.1.custom
+//= require twitter/bootstrap/typeahead
 
 $ ->
   $('[data-behavior~=copy-element]').on 'click', (event) ->
