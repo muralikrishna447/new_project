@@ -9,9 +9,7 @@ class Activity < ActiveRecord::Base
   scope :ordered, order("activity_order")
   default_scope { ordered }
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order,
-    :description, :equipment_ids, :recipe_ids, :step_ids,
-    allow_destroy: true, as: :admin
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order, :description, :equipment
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
@@ -44,6 +42,38 @@ class Activity < ActiveRecord::Base
 
   def step_by_step?
     steps.count > 0
+  end
+
+  def update_equipment(equipment_attrs)
+    reject_invalid_equipment(equipment_attrs)
+    update_and_create_equipment(equipment_attrs)
+    delete_old_equipment(equipment_attrs)
+    self
+  end
+
+  private
+
+
+  def reject_invalid_equipment(equipment_attrs)
+    equipment_attrs.select! do |equipment_attr|
+      [:title].all? do |test|
+        equipment_attr[test].present?
+      end
+    end
+  end
+
+  def update_and_create_equipment(equipment_attrs)
+    equipment_attrs.each do |equipment_attr|
+      equipment_item = Equipment.find_or_create_by_title(equipment_attr[:title])
+      equipment_item.update_attributes(product_url: equipment_attr[:product_url])
+      activity_equipment = equipment.find_or_create_by_equipment_id_and_activity_id(equipment_item.id, self.id)
+      activity_equipment.update_attributes(optional: equipment_attr[:optional] || false)
+    end
+  end
+
+  def delete_old_equipment(equipment_attrs)
+    old_equipment_titles = equipment.map(&:title) - equipment_attrs.map {|i| i[:title] }
+    equipment.joins(:equipment).where('equipment.title' => old_equipment_titles).destroy_all
   end
 
 end
