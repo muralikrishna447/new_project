@@ -53,5 +53,15 @@
       padding: 5px
 
   table.sortable
-    tr:nth-child(even)
-      background: $grayLight
+    tr
+      &:nth-child(odd)
+        background: white
+      &:nth-child(1)
+        background: none
+
+    td
+      border-top: 1px solid black
+
+    .ui-sortable-helper
+      background: lighten($yellow, 40%) !important
+
