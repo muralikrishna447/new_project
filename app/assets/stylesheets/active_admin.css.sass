@@ -17,6 +17,7 @@
 @import twitter/bootstrap/variables
 @import twitter/bootstrap/mixins
 @import twitter/bootstrap/dropdowns
+@import twitter/bootstrap/sprites
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
@@ -65,3 +66,8 @@
     .ui-sortable-helper
       background: lighten($yellow, 40%) !important
 
+  [data-behavior=remove-element]
+    padding: 3px 2px
+
+  i.icon-align-justify
+    margin: 1px 6px

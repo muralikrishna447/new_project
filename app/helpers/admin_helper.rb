@@ -7,10 +7,12 @@ module AdminHelper
     })
   end
 
-  def remove_button(text, target)
-    button_tag(text, data: {
+  def remove_button(target)
+    button_tag(data: {
       behavior: 'remove-element',
       'remove-target' => target
-    })
+    }) do
+      content_tag(:i, '', class: 'icon-remove')
+    end
   end
 end
