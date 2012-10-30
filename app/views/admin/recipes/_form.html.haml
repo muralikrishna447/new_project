@@ -22,23 +22,9 @@
         %th Directions (Markdown or HTML)
         %th Image Id
         %th Youtube Id
-      %tr#step-row
-        %td
-          = text_field_tag 'recipe[steps][][title]'
-          = hidden_field_tag 'recipe[steps][][id]'
-        %td= text_area_tag 'recipe[steps][][directions]', nil, rows: 10
-        %td= text_field_tag 'recipe[steps][][image_id]'
-        %td= text_field_tag 'recipe[steps][][youtube_id]'
+      = render 'step_form', :step => nil
       - @recipe.steps.each do |step|
-        %tr
-          %td
-            = text_field_tag 'recipe[steps][][title]', step.title
-            = hidden_field_tag 'recipe[steps][][id]', step.id
-          %td= text_area_tag 'recipe[steps][][directions]', step.directions, rows: 10
-          %td= text_field_tag 'recipe[steps][][image_id]', step.image_id
-          %td
-            = text_field_tag 'recipe[steps][][youtube_id]', step.youtube_id
-            = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
+        = render 'step_form', :step => step
 
   = f.actions do
     = f.action :submit, as: :button

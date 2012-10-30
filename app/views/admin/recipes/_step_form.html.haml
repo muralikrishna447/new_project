@@ -1,0 +1,19 @@
+:ruby
+  is_template = step.nil?
+
+  row_id = 'step-row' if is_template
+  title = step.title unless is_template
+  id = step.id unless is_template
+  directions = step.directions unless is_template
+  image_id = step.image_id unless is_template
+  youtube_id = step.youtube_id unless is_template
+
+%tr{id: row_id}
+  %td
+    = text_field_tag 'recipe[steps][][title]', title
+    = hidden_field_tag 'recipe[steps][][id]', id
+  %td= text_area_tag 'recipe[steps][][directions]', directions, rows: 10
+  %td= text_field_tag 'recipe[steps][][image_id]', image_id
+  %td
+    = text_field_tag 'recipe[steps][][youtube_id]', youtube_id
+    = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
