@@ -4,5 +4,9 @@ class Equipment < ActiveRecord::Base
 
   attr_accessible :title, :product_url, as: :admin
 
+  def self.titles
+    all.map(&:title)
+  end
+
 end
 
