@@ -26,7 +26,7 @@ class Recipe < ActiveRecord::Base
   def update_steps(step_attrs)
     reject_invalid_steps(step_attrs)
     update_and_create_steps(step_attrs)
-    # delete_old_steps(step_attrs)
+    delete_old_steps(step_attrs)
     self
   end
 
@@ -65,6 +65,7 @@ class Recipe < ActiveRecord::Base
                              youtube_id: step_attr[:youtube_id],
                              image_id: step_attr[:image_id]
                             )
+      step_attr[:id] = step.id
     end
   end
 
@@ -74,7 +75,7 @@ class Recipe < ActiveRecord::Base
   end
 
   def delete_old_steps(step_attrs)
-    old_step_ids = steps.map(&:id) - step_attrs.map {|i| i[:id] }
+    old_step_ids = steps.map(&:id) - step_attrs.map {|i| i[:id].to_i }
     steps.where(id: old_step_ids).destroy_all
   end
 end

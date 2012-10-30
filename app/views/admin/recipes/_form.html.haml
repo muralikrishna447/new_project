@@ -4,53 +4,31 @@
     = f.input :yield
     = f.input :activity
   = f.inputs name: "Ingredients" do
-    %li= button_tag 'Add', {data: {behavior: 'copy-element', 'copy-target' => '#ingredient-row', 'copy-destination' => 'table#ingredients'}}
-    %table#ingredients
+    %li= copy_button('Add Ingredient', '#ingredient-row', 'table#ingredients')
+    %table.nested-records#ingredients
       %tr
         %th Ingredient
         %th Quantity
         %th Unit
-      %tr#ingredient-row
-        %td= text_field_tag 'recipe[ingredients][][title]', nil, {data: {source: Ingredient.titles, provide: 'typeahead'}}
-        %td= text_field_tag 'recipe[ingredients][][quantity]'
-        %td= text_field_tag 'recipe[ingredients][][unit]'
+      = render 'ingredient_form', ingredient: nil
       - @recipe.ingredients.each do |ingredient|
-        %tr
-          %td= text_field_tag 'recipe[ingredients][][title]', ingredient.title
-          %td= text_field_tag 'recipe[ingredients][][quantity]', ingredient.quantity
-          %td
-            = text_field_tag 'recipe[ingredients][][unit]', ingredient.unit
-            = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
+        = render 'ingredient_form', ingredient: ingredient
 
   = f.inputs name: "Steps" do
-    %li= button_tag 'Add', {data: {behavior: 'copy-element', 'copy-target' => '#step-row', 'copy-destination' => 'table#steps'}}
-    %table#steps.sortable
+    %li= copy_button('Add Step', '#step-row', 'table#steps')
+    %table.nested-records.sortable#steps
       %tr
         %th Title
         %th Directions (Markdown or HTML)
         %th Image Id
         %th Youtube Id
-      %tr#step-row
-        %td
-          = text_field_tag 'recipe[steps][][title]'
-          = hidden_field_tag 'recipe[steps][][id]'
-        %td= text_area_tag 'recipe[steps][][directions]', nil, rows: 10
-        %td= text_field_tag 'recipe[steps][][image_id]'
-        %td= text_field_tag 'recipe[steps][][youtube_id]'
+      = render 'step_form', step: nil
       - @recipe.steps.each do |step|
-        %tr
-          %td
-            = text_field_tag 'recipe[steps][][title]', step.title
-            = hidden_field_tag 'recipe[steps][][id]', step.id
-          %td= text_area_tag 'recipe[steps][][directions]', step.directions, rows: 10
-          %td= text_field_tag 'recipe[steps][][image_id]', step.image_id
-          %td
-            = text_field_tag 'recipe[steps][][youtube_id]', step.youtube_id
-            = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
+        = render 'step_form', step: step
 
   = f.actions do
-    = f.action :submit, as: :button
-    = f.action :cancel, as: :link
+    = f.action :submit
+    = f.action :cancel, wrapper_html: {class: :cancel}, :label => 'Cancel'
 
 :javascript
   var fixHelper = function(e, ui) {
@@ -67,3 +45,4 @@
       items: 'tr:not(#step-row)'
     }).disableSelection();
   });
+
