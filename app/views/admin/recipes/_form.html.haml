@@ -4,7 +4,7 @@
     = f.input :yield
     = f.input :activity
   = f.inputs name: "Ingredients" do
-    %li= button_tag 'Add', {data: {behavior: 'copy-element', 'copy-target' => '#ingredient-row', 'copy-destination' => 'table#ingredients'}}
+    %li= copy_button('Add Ingredient', '#ingredient-row', 'table#ingredients')
     %table#ingredients
       %tr
         %th Ingredient
@@ -23,7 +23,7 @@
             = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
 
   = f.inputs name: "Steps" do
-    %li= button_tag 'Add', {data: {behavior: 'copy-element', 'copy-target' => '#step-row', 'copy-destination' => 'table#steps'}}
+    %li= copy_button('Add Step', '#step-row', 'table#steps')
     %table#steps
       %tr
         %th Title
