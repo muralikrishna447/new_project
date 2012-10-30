@@ -13,4 +13,4 @@
   %td= text_field_tag 'recipe[ingredients][][quantity]', quantity
   %td
     = text_field_tag 'recipe[ingredients][][unit]', unit
-    = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
+    = remove_button 'X', 'tr'

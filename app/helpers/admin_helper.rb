@@ -6,4 +6,11 @@ module AdminHelper
       'copy-destination' => destination
     })
   end
+
+  def remove_button(text, target)
+    button_tag(text, data: {
+      behavior: 'remove-element',
+      'remove-target' => target
+    })
+  end
 end
