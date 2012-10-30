@@ -2,7 +2,9 @@
   is_template = ingredient.nil?
 
   row_id = 'ingredient-row' if is_template
-  title_data_attrs = is_template ? {data: {source: Ingredient.titles, provide: 'typeahead'}} : {}
+  title_data_attrs = {
+    data: {source: Ingredient.titles, provide: 'typeahead'},
+  }
 
   title = ingredient.title unless is_template
   quantity = ingredient.quantity unless is_template
