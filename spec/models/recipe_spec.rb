@@ -11,7 +11,7 @@ describe Recipe do
     ]}
 
 
-    describe "creation" do
+    describe "create" do
       before do
         recipe.update_ingredients(ingredient_attrs)
       end
@@ -24,21 +24,6 @@ describe Recipe do
         recipe.ingredients.first.quantity.should == 2
         recipe.ingredients.first.unit.should == 'g'
         recipe.ingredients.first.title.should == 'Soup'
-      end
-    end
-
-    describe "deletion" do
-      before do
-        recipe.update_ingredients(ingredient_attrs)
-        recipe.update_ingredients(ingredient_attrs[1..-1])
-        recipe.ingredients.reload
-      end
-
-      it "deletes ingredients not included in attribute set" do
-        recipe.ingredients.should have(1).ingredients
-        recipe.ingredients.first.title.should == 'Pepper'
-        recipe.ingredients.first.quantity.should == 1
-        recipe.ingredients.first.unit.should == 'kg'
       end
     end
 
@@ -57,6 +42,21 @@ describe Recipe do
         recipe.ingredients.first.unit.should == 'foobars'
       end
     end
+
+    describe "destroy" do
+      before do
+        recipe.update_ingredients(ingredient_attrs)
+        recipe.update_ingredients(ingredient_attrs[1..-1])
+        recipe.ingredients.reload
+      end
+
+      it "deletes ingredients not included in attribute set" do
+        recipe.ingredients.should have(1).ingredients
+        recipe.ingredients.first.title.should == 'Pepper'
+        recipe.ingredients.first.quantity.should == 1
+        recipe.ingredients.first.unit.should == 'kg'
+      end
+    end
   end
 
   describe "#update_steps" do
@@ -65,7 +65,7 @@ describe Recipe do
     let(:step3) { {title: 'step3', directions: "", image_id: '', youtube_id: ''} }
     let(:step_attrs) { [ step1, step2, step3 ] }
 
-    describe "creation" do
+    describe "create" do
       before do
         recipe.update_steps(step_attrs)
       end
@@ -79,41 +79,62 @@ describe Recipe do
         recipe.steps.first.directions.should == 'Foo and bar on the baz'
         recipe.steps.first.image_id.should == ''
         recipe.steps.first.youtube_id.should == 'pirate booty'
+        recipe.steps.last.title.should == ''
       end
     end
 
     describe "update" do
       before do
         recipe.update_steps(step_attrs)
-        step = recipe.steps.first
-        step.directions = 'sit and spin'
-        recipe.update_steps(step_attrs << step.to_json)
+        update_attr_ids
+        step_attrs.first[:directions] = 'put your left foot in'
+        recipe.update_steps(step_attrs)
         recipe.steps.reload
       end
 
       it "updates existing ingredients" do
+        recipe.steps.should have(2).steps
         recipe.steps.first.title.should == 'step1'
-        recipe.steps.first.directions.should == 'sit and spin'
-        recipe.steps.first.image_id.should == ''
+        recipe.steps.first.directions.should == 'put your left foot in'
+      end
+
+      context "and create" do
+        before do
+          step3[:directions] = 'now with a description'
+          step_attrs << step3
+          recipe.update_steps(step_attrs)
+          recipe.steps.reload
+        end
+
+        it "updates existing ingredients" do
+          recipe.steps.should have(3).steps
+          recipe.steps.first.directions.should == 'put your left foot in'
+          recipe.steps.last.directions.should == 'now with a description'
+        end
+      end
+    end
+
+    describe "destroy" do
+      before do
+        recipe.update_steps(step_attrs)
+        update_attr_ids
+        recipe.update_steps(step_attrs[1..-1])
+        recipe.steps.reload
+      end
+
+      it "deletes ingredients not included in attribute set" do
+        recipe.steps.should have(1).steps
+        recipe.steps.first.title.should == ''
+        recipe.steps.first.directions.should == 'Burrito bagel sandwich'
+        recipe.steps.first.image_id.should == 'happiness'
         recipe.steps.first.youtube_id.should == ''
       end
     end
 
-    # describe "deletion" do
-    #   before do
-    #     recipe.update_steps(step_attrs)
-    #     recipe.update_steps(step_attrs[1..-1])
-    #     recipe.steps.reload
-    #   end
+    def update_attr_ids
+      recipe.steps.each_with_index { |step,index| step_attrs[index][:id] = step.id.to_s }
+    end
 
-    #   it "deletes ingredients not included in attribute set" do
-    #     recipe.steps.should have(1).steps
-    #     recipe.steps.first.title.should == ''
-    #     recipe.steps.first.directions.should == 'Burrito bagel sandwich'
-    #     recipe.steps.first.image_id.should == 'happiness'
-    #     recipe.steps.first.youtube_id.should == ''
-    #   end
-    # end
   end
 end
 
