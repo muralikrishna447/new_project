@@ -8,9 +8,11 @@ ActiveAdmin.register Recipe do
 
   controller do
     def create
+      ingredient_attrs =  separate_ingredients
+      step_attrs = separate_steps
       @recipe = Recipe.create(params[:recipe])
-      @recipe.update_ingredients(separate_ingredients)
-      @recipe.update_steps(separate_steps)
+      @recipe.update_ingredients(ingredient_attrs)
+      @recipe.update_steps(step_attrs)
       create!
     end
 
