@@ -1,0 +1,16 @@
+:ruby
+  is_template = ingredient.nil?
+
+  id = 'ingredient-row' if is_template
+  title_data_attrs = is_template ? {data: {source: Ingredient.titles, provide: 'typeahead'}} : {}
+
+  title = ingredient.title unless is_template
+  quantity = ingredient.quantity unless is_template
+  unit = ingredient.unit unless is_template
+
+%tr{id: id}
+  %td= text_field_tag 'recipe[ingredients][][title]', title, title_data_attrs
+  %td= text_field_tag 'recipe[ingredients][][quantity]', quantity
+  %td
+    = text_field_tag 'recipe[ingredients][][unit]', unit
+    = button_tag 'X', {data: { behavior: 'remove-element', 'remove-target' => 'tr'}}
