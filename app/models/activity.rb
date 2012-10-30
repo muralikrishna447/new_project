@@ -9,7 +9,7 @@ class Activity < ActiveRecord::Base
   scope :ordered, order("activity_order")
   default_scope { ordered }
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order, :description
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order, :description, :equipment
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']

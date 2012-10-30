@@ -19,8 +19,9 @@ ActiveAdmin.register Activity do
 
   controller do
     def create
+      equipment_attrs = separate_equipment
       @activity = Activity.create(params[:activity])
-      @activity.update_equipment(separate_equipment)
+      @activity.update_equipment(equipment_attrs)
       create!
     end
 
