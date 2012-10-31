@@ -28,16 +28,16 @@ describe Recipe do
     end
 
     describe "update" do
-      let(:updated_ingredient_attrs) { ingredient_attrs << { title: 'Soup', quantity: 15, unit: 'foobars' } }
-
       before do
         recipe.update_ingredients(ingredient_attrs)
-        recipe.update_ingredients(updated_ingredient_attrs)
+        ingredient_attrs.first.merge!(quantity: 15, unit: 'foobars')
+        recipe.update_ingredients(ingredient_attrs)
         recipe.ingredients.reload
       end
 
       it "updates existing ingredients" do
         recipe.ingredients.should have(2).ingredients
+        recipe.ingredients.first.title.should == 'Soup'
         recipe.ingredients.first.quantity.should == 15
         recipe.ingredients.first.unit.should == 'foobars'
       end
@@ -55,6 +55,17 @@ describe Recipe do
         recipe.ingredients.first.title.should == 'Pepper'
         recipe.ingredients.first.quantity.should == 1
         recipe.ingredients.first.unit.should == 'kg'
+      end
+    end
+
+    describe "re-ordering" do
+      before do
+        recipe.update_ingredients(ingredient_attrs)
+      end
+
+      it "updates ordering" do
+        recipe.update_ingredients([pepper, soup])
+        recipe.ingredients.ordered.first.title.should == 'Pepper'
       end
     end
   end
@@ -131,10 +142,23 @@ describe Recipe do
       end
     end
 
+    describe "re-ordering" do
+      before do
+        recipe.update_steps(step_attrs)
+        update_attr_ids
+      end
+
+      it "updates ordering" do
+        recipe.update_steps([step2, step3, step1])
+        recipe.steps.ordered.first.title.should == ''
+        recipe.steps.ordered.last.title.should == 'step1'
+      end
+    end
+
     def update_attr_ids
       recipe.steps.each_with_index { |step,index| step_attrs[index][:id] = step.id.to_s }
     end
-
   end
+
 end
 

@@ -52,7 +52,11 @@ class Recipe < ActiveRecord::Base
     ingredient_attrs.each do |ingredient_attr|
       ingredient = Ingredient.find_or_create_by_title(ingredient_attr[:title])
       recipe_ingredient = ingredients.find_or_create_by_ingredient_id_and_recipe_id(ingredient.id, self.id)
-      recipe_ingredient.update_attributes(quantity: ingredient_attr[:quantity], unit: ingredient_attr[:unit])
+      recipe_ingredient.update_attributes(
+        quantity: ingredient_attr[:quantity],
+        unit: ingredient_attr[:unit],
+        ingredient_order_position: :last
+      )
     end
   end
 
@@ -60,11 +64,12 @@ class Recipe < ActiveRecord::Base
     step_attrs.each do |step_attr|
       step = steps.find_or_create_by_id(step_attr[:id])
       step.update_attributes(
-                             title: step_attr[:title],
-                             directions: step_attr[:directions],
-                             youtube_id: step_attr[:youtube_id],
-                             image_id: step_attr[:image_id]
-                            )
+        title: step_attr[:title],
+        directions: step_attr[:directions],
+        youtube_id: step_attr[:youtube_id],
+        image_id: step_attr[:image_id],
+        step_order_position: :last
+      )
       step_attr[:id] = step.id
     end
   end

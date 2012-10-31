@@ -15,7 +15,7 @@ $ brew install phantomjs
 
 Ubuntu:
 ```bash
-$ sudo apt-get instlal phantomjs
+$ sudo apt-get install phantomjs
 ```
 
 For more info: [guard-jasmine](https://github.com/netzpirat/guard-jasmine)

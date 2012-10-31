@@ -18,6 +18,8 @@
 @import twitter/bootstrap/mixins
 @import twitter/bootstrap/dropdowns
 
+@import font-awesome
+
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //
@@ -27,16 +29,14 @@
 //
 // Notice that Active Admin CSS rules are nested within a
 // 'body.active_admin' selector to prevent conflicts with
-// other pages in the app. It is best to wrap your changes in a 
+// other pages in the app. It is best to wrap your changes in a
 // namespace so they are properly recognized. You have options
 // if you e.g. want different styles for different namespaces:
 //
 // .active_admin       applies to any Active Admin namespace
-// .admin_namespace    applies to the admin namespace (eg: /admin)
 // .other_namespace    applies to a custom namespace named other (eg: /other)
 
 .admin_namespace
-
   table.nested-records
     // hide template row
     tr:nth-child(2)
@@ -54,3 +54,27 @@
       text-decoration: none
       padding: 5px
 
+  table.sortable
+    tr
+      &:nth-child(odd)
+        background: white
+      &:nth-child(1)
+        background: none
+
+    td
+      border-top: 1px solid black
+
+    .ui-sortable-helper
+      background: lighten($yellow, 40%) !important
+
+    [data-behavior=remove-element]
+      padding: 1px 2px 0 2px
+
+    i.icon-remove
+      font-size: 14px
+
+    i.icon-reorder
+      float: right
+      margin-top: 6px
+      font-size: 16px
+      cursor: move

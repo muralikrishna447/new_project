@@ -10,7 +10,7 @@ class RecipeIngredient < ActiveRecord::Base
   validates :ingredient, presence: true
   validates :recipe, presence: true
 
-  attr_accessible :recipe_id, :ingredient_id, :quantity, :unit
+  attr_accessible :recipe_id, :ingredient_id, :quantity, :unit, :ingredient_order_position
 
   scope :ordered, rank(:ingredient_order)
 
