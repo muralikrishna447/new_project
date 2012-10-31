@@ -19,3 +19,15 @@ $ ->
     removeTarget = $(this).data('remove-target')
     $(this).closest(removeTarget).remove()
 
+$ ->
+  fixHelper = (e, ui) ->
+    ui.children().each ->
+      $(this).width($(this).width())
+    ui
+
+  $('table.sortable').sortable(
+    cursor: 'move',
+    helper: fixHelper,
+    items: 'tr:not(:first)',
+    containment: 'parent'
+  ).disableSelection()
