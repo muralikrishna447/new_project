@@ -1,8 +1,7 @@
 .row.step
   .span4
     %h3
-      :erb
-        <strong><%="Step #{count}"%></strong>
+      %strong= step.title(count)
     - if step.ingredients.any?
       .well
         %h6 Ingredients

@@ -1,11 +1,10 @@
 = semantic_form_for [:admin, @activity] do |f|
-  = f.inputs name: "Recipe Details" do
+  = f.inputs name: "Activity Details" do
     = f.input :title
     = f.input :description
     = f.input :youtube_id
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
-
   = f.inputs name: "Equipment" do
     %li= copy_button('Add Equipment', '#equipment-row', 'table#equipment')
     %table.nested-records.sortable#equipment
@@ -16,6 +15,15 @@
       = render 'equipment_form', equipment: nil
       - @activity.equipment.ordered.each do |equipment|
         = render 'equipment_form', equipment: equipment
+
+  = f.inputs name: "Recipes" do
+    %li= copy_button('Add Recipe', '#recipe-row', 'table#recipes')
+    %table.nested-records.sortable#recipes
+      %tr
+        %th
+      = render 'recipe_form', recipe: nil
+      - @activity.recipes.ordered.each do |recipe|
+        = render 'recipe_form', recipe: recipe
 
   = f.actions do
     = f.action :submit
