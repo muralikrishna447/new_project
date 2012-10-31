@@ -5,14 +5,16 @@
     = f.input :youtube_id
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
+
+  = f.inputs name: "Equipment" do
     %li= copy_button('Add Equipment', '#equipment-row', 'table#equipment')
-    %table.nested-records#equipment
+    %table.nested-records.sortable#equipment
       %tr
         %th Title
         %th Optional?
         %th Product URL
       = render 'equipment_form', equipment: nil
-      - @activity.equipment.each do |equipment|
+      - @activity.equipment.ordered.each do |equipment|
         = render 'equipment_form', equipment: equipment
 
   = f.actions do

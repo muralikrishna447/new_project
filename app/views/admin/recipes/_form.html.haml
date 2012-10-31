@@ -30,20 +30,3 @@
     = f.action :submit
     = f.action :cancel, wrapper_html: {class: :cancel}, :label => 'Cancel'
 
-:javascript
-  var fixHelper = function(e, ui) {
-    ui.children().each(function() {
-      $(this).width($(this).width());
-    });
-    return ui;
-  };
-
-  $(function() {
-    $('table.sortable').sortable({
-      cursor: 'move',
-      helper: fixHelper,
-      items: 'tr:not(:first)',
-      containment: 'parent'
-    }).disableSelection();
-  });
-
