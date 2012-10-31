@@ -9,4 +9,5 @@
   %td
     = select_tag "activity[recipes][]", options_from_collection_for_select(Recipe.all, "id", "title", recipe_id), include_blank: true
     = remove_button 'tr'
+    = reorder_icon
 

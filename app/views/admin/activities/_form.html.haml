@@ -18,11 +18,11 @@
 
   = f.inputs name: "Recipes" do
     %li= copy_button('Add Recipe', '#recipe-row', 'table#recipes')
-    %table.nested-records#recipes
+    %table.nested-records.sortable#recipes
       %tr
         %th
       = render 'recipe_form', recipe: nil
-      - @activity.recipes.each do |recipe|
+      - @activity.recipes.ordered.each do |recipe|
         = render 'recipe_form', recipe: recipe
 
   = f.actions do
