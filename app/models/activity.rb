@@ -51,8 +51,35 @@ class Activity < ActiveRecord::Base
     self
   end
 
+  def update_recipes(recipe_ids)
+    reject_invalid_recipe_ids(recipe_ids)
+    update_recipe_associations(recipe_ids)
+    delete_old_recipes(recipe_ids)
+    self
+  end
+
   private
 
+  def update_recipe_associations(recipe_ids)
+    recipe_ids.each do |recipe_id|
+      recipe = Recipe.find(recipe_id)
+      recipe.update_attributes(activity: self)
+    end
+  end
+
+  def reject_invalid_recipe_ids(recipe_ids)
+    recipe_ids.select! do |recipe_id|
+      recipe_id.present?
+    end
+  end
+
+  def delete_old_recipes(recipe_ids)
+    old_recipe_ids = recipes.map(&:id) - recipe_ids.map(&:to_i)
+    old_recipe_ids.each do |recipe_id|
+      recipe = Recipe.find(recipe_id)
+      recipe.update_attributes(activity: nil)
+    end
+  end
 
   def reject_invalid_equipment(equipment_attrs)
     equipment_attrs.select! do |equipment_attr|

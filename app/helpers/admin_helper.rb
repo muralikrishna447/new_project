@@ -20,3 +20,4 @@ module AdminHelper
     content_tag(:i, '', class: ['icon-reorder', 'icon-large'])
   end
 end
+

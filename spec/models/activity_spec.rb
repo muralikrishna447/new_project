@@ -65,6 +65,37 @@ describe Activity do
         activity.equipment.ordered.first.title.should == 'Spoon'
       end
     end
+
+    describe "#update_recipes" do
+      let(:recipe1) { Recipe.create(title: 'Mac n Cheese') }
+      let(:recipe2) { Recipe.create(title: 'Hamburger Helper') }
+      let(:recipe3) { Recipe.create(title: 'Scrambled Eggs') }
+      let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id, '' ] }
+
+      describe "update" do
+        before do
+          activity.update_recipes(recipe_ids)
+        end
+
+        it "associates recipes with the activity" do
+          activity.recipes.should have(3).recipes
+          activity.recipes.first.title.should == "Mac n Cheese"
+        end
+      end
+
+      describe "destroy" do
+        before do
+          activity.update_recipes(recipe_ids)
+          activity.update_recipes([recipe1.id.to_s])
+          activity.recipes.reload
+        end
+
+        it "removes the association of recipes not included in the set" do
+          activity.recipes.should have(1).recipes
+          activity.recipes.first.title.should == "Mac n Cheese"
+        end
+      end
+    end
   end
 end
 
