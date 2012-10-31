@@ -70,7 +70,7 @@ describe Activity do
       let(:recipe1) { Recipe.create(title: 'Mac n Cheese') }
       let(:recipe2) { Recipe.create(title: 'Hamburger Helper') }
       let(:recipe3) { Recipe.create(title: 'Scrambled Eggs') }
-      let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id ] }
+      let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id, nil, '' ] }
 
       describe "update" do
         before do

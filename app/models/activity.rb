@@ -52,6 +52,7 @@ class Activity < ActiveRecord::Base
   end
 
   def update_recipes(recipe_ids)
+    reject_invalid_recipe_ids(recipe_ids)
     update_recipe_associations(recipe_ids)
     delete_old_recipes(recipe_ids)
     self
@@ -63,6 +64,12 @@ class Activity < ActiveRecord::Base
     recipe_ids.each do |recipe_id|
       recipe = Recipe.find(recipe_id)
       recipe.update_attributes(activity: self)
+    end
+  end
+
+  def reject_invalid_recipe_ids(recipe_ids)
+    recipe_ids.select! do |recipe_id|
+      recipe_id.present?
     end
   end
 
