@@ -25,11 +25,10 @@ describe Activity do
     end
 
     describe "update" do
-      let(:updated_equipment_attrs) { equipment_attrs << { title: 'Blender', product_url: 'stuff', optional: "false"} }
-
       before do
         activity.update_equipment(equipment_attrs)
-        activity.update_equipment(updated_equipment_attrs)
+        equipment_attrs.first.merge!(product_url: 'stuff', optional: 'false')
+        activity.update_equipment(equipment_attrs)
         activity.equipment.reload
       end
 
