@@ -54,6 +54,17 @@ describe Activity do
         activity.equipment.first.optional.should == false
       end
     end
+
+    describe "re-ordering" do
+      before do
+        activity.update_equipment(equipment_attrs)
+      end
+
+      it "updates ordering" do
+        activity.update_equipment([equipment2, equipment1])
+        activity.equipment.ordered.first.title.should == 'Spoon'
+      end
+    end
   end
 end
 

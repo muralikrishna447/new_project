@@ -67,7 +67,10 @@ class Activity < ActiveRecord::Base
       equipment_item = Equipment.find_or_create_by_title(equipment_attr[:title])
       equipment_item.update_attributes(product_url: equipment_attr[:product_url])
       activity_equipment = equipment.find_or_create_by_equipment_id_and_activity_id(equipment_item.id, self.id)
-      activity_equipment.update_attributes(optional: equipment_attr[:optional] || false)
+      activity_equipment.update_attributes(
+        optional: equipment_attr[:optional] || false,
+        equipment_order_position: :last
+      )
     end
   end
 
