@@ -95,6 +95,17 @@ describe Activity do
           activity.recipes.first.title.should == "Mac n Cheese"
         end
       end
+
+      describe "re-ordering" do
+        before do
+          activity.update_recipes(recipe_ids)
+        end
+
+        it "updates ordering" do
+          activity.update_recipes([recipe2.id, recipe1.id])
+          activity.recipes.ordered.first.title.should == 'Hamburger Helper'
+        end
+      end
     end
   end
 end

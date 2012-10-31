@@ -63,7 +63,7 @@ class Activity < ActiveRecord::Base
   def update_recipe_associations(recipe_ids)
     recipe_ids.each do |recipe_id|
       recipe = Recipe.find(recipe_id)
-      recipe.update_attributes(activity: self)
+      recipe.update_attributes(activity: self, recipe_order_position: :last)
     end
   end
 
