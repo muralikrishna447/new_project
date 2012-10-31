@@ -5,6 +5,8 @@
     = f.input :youtube_id
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
+
+  = f.inputs name: "Equipment" do
     %li= copy_button('Add Equipment', '#equipment-row', 'table#equipment')
     %table.nested-records#equipment
       %tr
