@@ -36,7 +36,7 @@
 // .active_admin       applies to any Active Admin namespace
 // .other_namespace    applies to a custom namespace named other (eg: /other)
 
-.admin_namespace
+body.admin_namespace
   table.nested-records
     // hide template row
     tr:nth-child(2)
@@ -78,3 +78,6 @@
       margin-top: 6px
       font-size: 16px
       cursor: move
+
+  a.admin-button, button.admin-button
+    @include light-button

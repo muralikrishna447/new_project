@@ -4,7 +4,7 @@ module AdminHelper
       behavior: 'copy-element',
       'copy-target' => target,
       'copy-destination' => destination
-    })
+    }, class: 'admin-button')
   end
 
   def remove_button(target)

@@ -4,7 +4,7 @@
     = f.input :yield
     = f.input :activity
   = f.inputs name: "Ingredients" do
-    %li= copy_button('Add Ingredient', '#ingredient-row', 'table#ingredients')
+    %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
     %table.nested-records.sortable#ingredients
       %tr
         %th Ingredient
@@ -15,7 +15,8 @@
         = render 'ingredient_form', ingredient: ingredient
 
   = f.inputs name: "Steps" do
-    %li= copy_button('Add Step', '#step-row', 'table#steps')
+    %li
+      = copy_button 'Add Step', '#step-row', 'table#steps'
     %table.nested-records.sortable#steps
       %tr
         %th Title
@@ -28,5 +29,5 @@
 
   = f.actions do
     = f.action :submit
-    = f.action :cancel, wrapper_html: {class: :cancel}, :label => 'Cancel'
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
 
