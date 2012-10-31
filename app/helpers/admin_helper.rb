@@ -19,5 +19,10 @@ module AdminHelper
   def reorder_icon
     content_tag(:i, '', class: ['icon-reorder', 'icon-large'])
   end
+
+  def admin_button(text, url, options={})
+    options.merge!(class: 'admin-button')
+    link_to text, url, options
+  end
 end
 
