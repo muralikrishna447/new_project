@@ -16,11 +16,11 @@ class Activity < ActiveRecord::Base
   end
 
   def optional_equipment
-    equipment.optional
+    equipment.optional.ordered
   end
 
   def required_equipment
-    equipment.required
+    equipment.required.ordered
   end
 
   def next
