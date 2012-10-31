@@ -74,7 +74,7 @@ class Activity < ActiveRecord::Base
   end
 
   def delete_old_recipes(recipe_ids)
-    old_recipe_ids = recipes.map(&:id) - recipe_ids
+    old_recipe_ids = recipes.map(&:id) - recipe_ids.map(&:to_i)
     old_recipe_ids.each do |recipe_id|
       recipe = Recipe.find(recipe_id)
       recipe.update_attributes(activity: nil)
