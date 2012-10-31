@@ -8,11 +8,11 @@
     .navbar-inner
       .container
         .nav.brand-container
-          %a.brand{ href: root_path }
+          %a.brand{href: root_path, target: '_top'}
             = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
           .brand-byline
             brought to you by
-            %a.delve-brand{href: 'http://delvekitchen.com'}
+            %a.delve-brand{href: 'http://delvekitchen.com', target: '_top'}
               = image_tag('delve-logo.png', alt: 'Delve')
         %ul.nav.pull-right
           = render 'layouts/global_navigation'
