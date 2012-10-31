@@ -8,7 +8,7 @@
 
   = f.inputs name: "Equipment" do
     %li= copy_button('Add Equipment', '#equipment-row', 'table#equipment')
-    %table.nested-records#equipment
+    %table.nested-records.sortable#equipment
       %tr
         %th Title
         %th Optional?
