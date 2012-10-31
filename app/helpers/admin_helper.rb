@@ -12,7 +12,11 @@ module AdminHelper
       behavior: 'remove-element',
       'remove-target' => target
     }) do
-      content_tag(:i, '', class: 'icon-remove')
+      content_tag(:i, '', class: ['icon-remove'])
     end
+  end
+
+  def reorder_icon
+    content_tag(:i, '', class: ['icon-reorder', 'icon-large'])
   end
 end
