@@ -7,9 +7,10 @@
           %tr
             %th Title
             %td= recipe.title
-          %tr
-            %th Activity
-            %td= link_to recipe.activity.title, admin_recipe_path(recipe.activity)
+          - if recipe.activity
+            %tr
+              %th Activity
+              %td= link_to recipe.activity.title, admin_recipe_path(recipe.activity)
           %tr
             %th Ingredients
             %td
