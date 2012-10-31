@@ -1,0 +1,12 @@
+:ruby
+  row_id = "step-#{count}-ingredients-row"
+
+%li= copy_button 'Add Ingredient To Step', "##{row_id}", "table#step-#{count}-ingredients"
+%table.nested-records.sortable{id: "step-#{count}-ingredients"}
+  %tr
+    %th Ingredient
+    %th Quantity
+    %th Unit
+  = render 'ingredient_form', ingredient: nil, ingredients: ingredients, row_id: row_id
+  - step.ingredients.each do |ingredient|
+    = render 'ingredient_form', ingredient: ingredient, ingredients: ingredients

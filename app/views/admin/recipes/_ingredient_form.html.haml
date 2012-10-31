@@ -1,9 +1,10 @@
 :ruby
   is_template = ingredient.nil?
+  ingredients ||= Ingredient.titles
 
-  row_id = 'ingredient-row' if is_template
+  row_id ||= 'ingredient-row' if is_template
   title_data_attrs = {
-    data: {source: Ingredient.titles, provide: 'typeahead'},
+    data: {source: ingredients, provide: 'typeahead'},
     autocomplete: 'off'
   }
 

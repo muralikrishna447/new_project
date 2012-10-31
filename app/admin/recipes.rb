@@ -33,5 +33,13 @@ ActiveAdmin.register Recipe do
       params[:recipe].delete(:steps)
     end
   end
+
+  member_action :associate_ingredients, method: :get do
+    @recipe = Recipe.find(params[:id])
+  end
+
+  member_action :associate_ingredients, method: :put do
+    @recipe = Recipe.find(params[:id])
+  end
 end
 
