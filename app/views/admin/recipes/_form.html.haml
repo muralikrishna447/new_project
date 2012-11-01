@@ -4,7 +4,7 @@
     = f.input :yield
     = f.input :activity
   = section("Ingredients", f) do
-    %li= copy_button('Add Ingredient', '#ingredient-row', 'table#ingredients')
+    %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
     = sortable_table('ingredients') do
       %tr
         %th Ingredient
@@ -15,7 +15,9 @@
         = render 'ingredient_form', ingredient: ingredient
 
   = section("Steps", f) do
-    %li= copy_button('Add Step', '#step-row', 'table#steps')
+    %li.two-button-row
+      = copy_button 'Add Step', '#step-row', 'table#steps'
+      = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_recipe_path(@recipe)
     = sortable_table('steps') do
       %tr
         %th Title
@@ -28,5 +30,5 @@
 
   = f.actions do
     = f.action :submit
-    = f.action :cancel, wrapper_html: {class: :cancel}, :label => 'Cancel'
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
 

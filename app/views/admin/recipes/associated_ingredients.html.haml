@@ -1,0 +1,14 @@
+= semantic_form_for [:admin, @recipe], :url => update_associated_ingredients_admin_recipe_path(@recipe) do |f|
+  = f.inputs name: "Ingredients" do
+    %ul.step-ingredients
+      - @recipe.ingredients.ordered.each do |ingredient|
+        %li= link_to "#{ingredient.title} #{ingredient.display_quantity}", admin_ingredient_path(ingredient.ingredient_id)
+
+  %ul
+    - @recipe.steps.ordered.each_with_index do |step, index|
+      = section("Step: #{step.title(index)}", f) do
+        = render 'step_ingredient_form', step: step, count: index, ingredients: @recipe.ingredients.map(&:title)
+
+  = f.actions do
+    = f.action :submit
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'

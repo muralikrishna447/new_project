@@ -19,5 +19,38 @@ class Step < ActiveRecord::Base
     self[:title] || ''
   end
 
+  def update_ingredients(ingredient_attrs)
+    reject_invalid_ingredients(ingredient_attrs)
+    update_and_create_ingredients(ingredient_attrs)
+    delete_old_ingredients(ingredient_attrs)
+    self
+  end
+
+  private
+
+  def reject_invalid_ingredients(ingredient_attrs)
+    ingredient_attrs.select! do |ingredient_attr|
+      [:title, :quantity, :unit].all? do |test|
+        ingredient_attr[test].present?
+      end
+    end
+  end
+
+  def update_and_create_ingredients(ingredient_attrs)
+    ingredient_attrs.each do |ingredient_attr|
+      ingredient = Ingredient.find_or_create_by_title(ingredient_attr[:title])
+      step_ingredient = ingredients.find_or_create_by_ingredient_id_and_step_id(ingredient.id, self.id)
+      step_ingredient.update_attributes(
+        quantity: ingredient_attr[:quantity],
+        unit: ingredient_attr[:unit],
+        ingredient_order_position: :last
+      )
+    end
+  end
+
+  def delete_old_ingredients(ingredient_attrs)
+    old_ingredient_titles = ingredients.map(&:title) - ingredient_attrs.map {|i| i[:title] }
+    ingredients.joins(:ingredient).where('ingredients.title' => old_ingredient_titles).destroy_all
+  end
 end
 
