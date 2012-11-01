@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Recipe do
-  let(:recipe) { Recipe.create(title: 'foo') }
+  let(:recipe) { Fabricate(:recipe, title: 'foo') }
 
   describe "#update_ingredients" do
     let(:soup) { {title: 'Soup', quantity: 2, unit: 'g'}  }
