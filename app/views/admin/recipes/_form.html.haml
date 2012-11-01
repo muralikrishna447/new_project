@@ -17,7 +17,7 @@
   = f.inputs name: "Steps" do
     %li.two-button-row
       = copy_button 'Add Step', '#step-row', 'table#steps'
-      = admin_button 'Edit ingredients associated with steps', '#'
+      = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_recipe_path(@recipe)
     %table.nested-records.sortable#steps
       %tr
         %th Title

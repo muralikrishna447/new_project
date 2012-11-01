@@ -1,4 +1,4 @@
-= semantic_form_for [:admin, @recipe], :url => associate_ingredients_admin_recipe_path(@recipe) do |f|
+= semantic_form_for [:admin, @recipe], :url => update_associated_ingredients_admin_recipe_path(@recipe) do |f|
   = f.inputs name: "Ingredients" do
     %ul.step-ingredients
       - @recipe.ingredients.ordered.each do |ingredient|
