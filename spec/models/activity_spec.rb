@@ -65,75 +65,75 @@ describe Activity do
         activity.equipment.ordered.first.title.should == 'Spoon'
       end
     end
+  end
 
-    describe "#update_recipes" do
-      let(:recipe1) { Fabricate(:recipe, title: 'Mac n Cheese') }
-      let(:recipe2) { Fabricate(:recipe, title: 'Hamburger Helper') }
-      let(:recipe3) { Fabricate(:recipe, title: 'Scrambled Eggs') }
-      let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id, '' ].map(&:to_s) }
+  describe "#update_recipes" do
+    let(:recipe1) { Fabricate(:recipe, title: 'Mac n Cheese') }
+    let(:recipe2) { Fabricate(:recipe, title: 'Hamburger Helper') }
+    let(:recipe3) { Fabricate(:recipe, title: 'Scrambled Eggs') }
+    let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id, '' ].map(&:to_s) }
 
-      describe "update" do
-        before do
-          activity.update_recipes(recipe_ids)
-        end
-
-        it "associates recipes with the activity" do
-          activity.recipes.should have(3).recipes
-          activity.recipes.first.title.should == "Mac n Cheese"
-        end
+    describe "update" do
+      before do
+        activity.update_recipes(recipe_ids)
       end
 
-      describe "destroy" do
-        before do
-          activity.update_recipes(recipe_ids)
-          activity.update_recipes([recipe_ids.first])
-          activity.recipes.reload
-        end
-
-        it "removes the association of recipes not included in the set" do
-          activity.recipes.should have(1).recipes
-          activity.recipes.first.title.should == "Mac n Cheese"
-        end
-      end
-
-      describe "re-ordering" do
-        before do
-          activity.update_recipes(recipe_ids)
-        end
-
-        it "updates ordering" do
-          activity.update_recipes([recipe2.id, recipe1.id])
-          activity.recipes.ordered.first.title.should == 'Hamburger Helper'
-        end
+      it "associates recipes with the activity" do
+        activity.recipes.should have(3).recipes
+        activity.recipes.first.title.should == "Mac n Cheese"
       end
     end
 
-    describe "#has_ingredients?" do
-      let(:recipe1) { Fabricate.build(:recipe) }
-      let(:recipe2) { Fabricate.build(:recipe) }
+    describe "destroy" do
       before do
-        recipe2.stub(:has_ingredients?).and_return(false)
-        activity.recipes.create(recipe: recipe1)
-        activity.recipes.create(recipe: recipe2)
+        activity.update_recipes(recipe_ids)
+        activity.update_recipes([recipe_ids.first])
+        activity.recipes.reload
       end
 
-      subject { activity.has_ingredients? }
+      it "removes the association of recipes not included in the set" do
+        activity.recipes.should have(1).recipes
+        activity.recipes.first.title.should == "Mac n Cheese"
+      end
+    end
 
-      context "with recipes with ingredients" do
-        before do
-          recipe1.stub(:has_ingredients?).and_return(true)
-        end
-
-        it { subject.should == true }
+    describe "re-ordering" do
+      before do
+        activity.update_recipes(recipe_ids)
       end
 
-      context "with recipes with no ingredients" do
-        before do
-          recipe1.stub(:has_ingredients?).and_return(false)
-        end
-
-        it { subject.should == false }
+      it "updates ordering" do
+        activity.update_recipes([recipe2.id, recipe1.id])
+        activity.recipes.ordered.first.title.should == 'Hamburger Helper'
       end
+    end
+  end
+
+  describe "#has_ingredients?" do
+    let(:recipe1) { Fabricate.build(:recipe) }
+    let(:recipe2) { Fabricate.build(:recipe) }
+    before do
+      recipe2.stub(:has_ingredients?).and_return(false)
+      activity.recipes.create(recipe: recipe1)
+      activity.recipes.create(recipe: recipe2)
+    end
+
+    subject { activity.has_ingredients? }
+
+    context "with recipes with ingredients" do
+      before do
+        recipe1.stub(:has_ingredients?).and_return(true)
+      end
+
+      it { subject.should == true }
+    end
+
+    context "with recipes with no ingredients" do
+      before do
+        recipe1.stub(:has_ingredients?).and_return(false)
+      end
+
+      it { subject.should == false }
     end
   end
 end
