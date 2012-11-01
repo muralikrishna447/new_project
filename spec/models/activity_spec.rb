@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Activity do
-  let(:activity) { Activity.create(title: 'foo') }
+  let(:activity) { Fabricate(:activity, title: 'foo') }
 
   describe "#update_equipment" do
     let(:equipment1) { {title: 'Blender', product_url: 'over the rainbow', optional: "true"}  }
