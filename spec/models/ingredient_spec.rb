@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Ingredient do
   describe "capitalize title" do
-    let(:ingredient) { Ingredient.create(title: 'fOo Bar bAz') }
+    let(:ingredient) { Fabricate(:ingredient, title: 'fOo Bar bAz') }
 
     describe "create" do
       it "capitalizes the first letter of the first word only" do
