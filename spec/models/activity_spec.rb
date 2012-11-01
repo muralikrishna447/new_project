@@ -111,31 +111,28 @@ describe Activity do
     describe "#has_ingredients?" do
       let(:recipe1) { Fabricate.build(:recipe) }
       let(:recipe2) { Fabricate.build(:recipe) }
+      before do
+        recipe2.stub(:has_ingredients?).and_return(false)
+        activity.recipes << recipe1
+        activity.recipes << recipe2
+      end
+
+      subject { activity.has_ingredients? }
 
       context "with recipes with ingredients" do
         before do
           recipe1.stub(:has_ingredients?).and_return(true)
-          recipe2.stub(:has_ingredients?).and_return(false)
-          activity.recipes << recipe1
-          activity.recipes << recipe2
         end
 
-        it "returns true" do
-          activity.has_ingredients?.should be_true
-        end
+        it { subject.should == true }
       end
 
       context "with recipes with no ingredients" do
         before do
           recipe1.stub(:has_ingredients?).and_return(false)
-          recipe2.stub(:has_ingredients?).and_return(false)
-          activity.recipes << recipe1
-          activity.recipes << recipe2
         end
 
-        it "returns false" do
-          activity.has_ingredients?.should be_false
-        end
+        it { subject.should == false }
       end
     end
   end
