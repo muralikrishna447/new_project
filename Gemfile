@@ -42,6 +42,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'spork-rails'
   gem 'jasminerice'
+  gem 'fabrication'
 end
 
 group :guard do
