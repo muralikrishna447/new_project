@@ -113,8 +113,8 @@ describe Activity do
       let(:recipe2) { Fabricate.build(:recipe) }
       before do
         recipe2.stub(:has_ingredients?).and_return(false)
-        activity.recipes << recipe1
-        activity.recipes << recipe2
+        activity.recipes.create(recipe: recipe1)
+        activity.recipes.create(recipe: recipe2)
       end
 
       subject { activity.has_ingredients? }
