@@ -104,18 +104,18 @@ describe Activity do
 
       it "updates ordering" do
         activity.update_recipes([recipe2.id, recipe1.id])
-        activity.recipes.ordered.first.title.should == 'Hamburger Helper'
+        activity.ordered_recipes.first.title.should == 'Hamburger Helper'
       end
     end
   end
 
   describe "#has_ingredients?" do
-    let(:recipe1) { Fabricate.build(:recipe) }
-    let(:recipe2) { Fabricate.build(:recipe) }
+    let(:recipe1) { Fabricate.build(:recipe, :title => 'r1') }
+    let(:recipe2) { Fabricate.build(:recipe, :title => 'r2') }
     before do
       recipe2.stub(:has_ingredients?).and_return(false)
-      activity.recipes.create(recipe: recipe1)
-      activity.recipes.create(recipe: recipe2)
+      activity.recipes << recipe1
+      activity.recipes << recipe2
     end
 
     subject { activity.has_ingredients? }

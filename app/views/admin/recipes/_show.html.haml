@@ -13,7 +13,7 @@
               %td
                 %ul
                   - recipe.activities.each do |activity|
-                    %li= link_to activity.title, admin_recipe_path(activity)
+                    %li= link_to activity.title, admin_activity_path(activity)
           %tr
             %th Ingredients
             %td
