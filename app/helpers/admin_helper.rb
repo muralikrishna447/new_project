@@ -23,5 +23,8 @@ module AdminHelper
   def sortable_table(id, &block)
     content_tag(:table, id: id, class: ['nested-records', 'sortable'], &block)
   end
-end
 
+  def section(name, form, &block)
+    form.inputs(name: name, class: ['inputs', 'no-background'], &block)
+  end
+end
