@@ -160,16 +160,17 @@ describe Recipe do
   end
 
   describe "#has_ingredients?" do
-    describe "with ingredients" do
+    context "with ingredients" do
       before do
         recipe.ingredients.stub(:empty?).and_return(false)
       end
+
       it "returns true" do
         recipe.has_ingredients?.should be_true
       end
     end
 
-    describe "with no ingredients" do
+    context "with no ingredients" do
       before do
         recipe.ingredients.stub(:empty?).and_return(true)
       end

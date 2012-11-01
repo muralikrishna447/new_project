@@ -112,7 +112,7 @@ describe Activity do
       let(:recipe1) { Fabricate.build(:recipe) }
       let(:recipe2) { Fabricate.build(:recipe) }
 
-      describe "with recipes with ingredients" do
+      context "with recipes with ingredients" do
         before do
           recipe1.stub(:has_ingredients?).and_return(true)
           recipe2.stub(:has_ingredients?).and_return(false)
@@ -125,7 +125,7 @@ describe Activity do
         end
       end
 
-      describe "with recipes with no ingredients" do
+      context "with recipes with no ingredients" do
         before do
           recipe1.stub(:has_ingredients?).and_return(false)
           recipe2.stub(:has_ingredients?).and_return(false)
