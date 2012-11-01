@@ -1,4 +1,3 @@
 Fabricator :activity do
-
 end
 

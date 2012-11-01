@@ -107,6 +107,38 @@ describe Activity do
         end
       end
     end
+
+    describe "#has_ingredients?" do
+      let(:recipe1) { Fabricate.build(:recipe) }
+      let(:recipe2) { Fabricate.build(:recipe) }
+
+      describe "with recipes with ingredients" do
+        before do
+          recipe1.stub(:has_ingredients?).and_return(true)
+          recipe2.stub(:has_ingredients?).and_return(false)
+          activity.recipes << recipe1
+          activity.recipes << recipe2
+        end
+
+        it "returns true" do
+          activity.has_ingredients?.should be_true
+        end
+      end
+
+      describe "with recipes with no ingredients" do
+        before do
+          recipe1.stub(:has_ingredients?).and_return(false)
+          recipe2.stub(:has_ingredients?).and_return(false)
+          activity.recipes << recipe1
+          activity.recipes << recipe2
+        end
+
+        it "returns false" do
+          activity.has_ingredients?.should be_false
+        end
+
+      end
+    end
   end
 end
 
