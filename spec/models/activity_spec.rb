@@ -70,7 +70,7 @@ describe Activity do
       let(:recipe1) { Fabricate(:recipe, title: 'Mac n Cheese') }
       let(:recipe2) { Fabricate(:recipe, title: 'Hamburger Helper') }
       let(:recipe3) { Fabricate(:recipe, title: 'Scrambled Eggs') }
-      let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id, '' ] }
+      let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id, '' ].map(&:to_s) }
 
       describe "update" do
         before do
@@ -86,7 +86,7 @@ describe Activity do
       describe "destroy" do
         before do
           activity.update_recipes(recipe_ids)
-          activity.update_recipes([recipe1.id.to_s])
+          activity.update_recipes([recipe_ids.first])
           activity.recipes.reload
         end
 

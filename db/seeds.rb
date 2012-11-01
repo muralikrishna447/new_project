@@ -61,7 +61,7 @@ def create_recipe(title, activity)
   return if Recipe.where(title: title).any?
   recipe  = Recipe.create
   recipe.title = title
-  recipe.activity = activity
+  recipe.activities << activity
   recipe.save
   recipe
 end

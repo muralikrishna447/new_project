@@ -1,20 +1,15 @@
 class Recipe < ActiveRecord::Base
-  include RankedModel
-  ranks :recipe_order, with_same: :activity_id
+  has_many :activity_recipes, inverse_of: :recipe
+  has_many :activities, through: :activity_recipes, inverse_of: :recipes
 
-  belongs_to :activity, touch: true, inverse_of: :recipes
   has_many :ingredients, dependent: :destroy, class_name: RecipeIngredient, inverse_of: :recipe
   has_many :steps, dependent: :destroy, inverse_of: :recipe
 
   validates :title, presence: true
 
-  attr_accessible :title, :activity, :activity_id, :yield, :steps, :ingredients, :recipe_order_position
+  attr_accessible :title, :yield, :steps, :ingredients
 
   accepts_nested_attributes_for :ingredients, :steps
-
-  scope :ordered, rank(:recipe_order)
-
-  default_scope { ordered }
 
   def has_ingredients?
     !ingredients.empty?
