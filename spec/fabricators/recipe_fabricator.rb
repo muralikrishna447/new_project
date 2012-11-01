@@ -1,0 +1,4 @@
+Fabricator :recipe do
+
+end
+

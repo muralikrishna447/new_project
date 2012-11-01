@@ -1,0 +1,4 @@
+Fabricator :ingredient do
+
+end
+

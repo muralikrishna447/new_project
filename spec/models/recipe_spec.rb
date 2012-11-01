@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe Recipe do
-  let(:recipe) { Recipe.create(title: 'foo') }
+  let(:recipe) { Fabricate(:recipe, title: 'foo') }
 
   describe "#update_ingredients" do
     let(:soup) { {title: 'Soup', quantity: 2, unit: 'g'}  }
     let(:pepper) { {title: 'Pepper', quantity: 1, unit: 'kg'}  }
     let(:ingredient_attrs) {[ soup, pepper, pepper,
-      { title: '', quantity: 2, unit: '' }
+                              { title: '', quantity: 2, unit: '' }
     ]}
 
 
@@ -154,11 +154,28 @@ describe Recipe do
         recipe.steps.ordered.last.title.should == 'step1'
       end
     end
-
     def update_attr_ids
       recipe.steps.each_with_index { |step,index| step_attrs[index][:id] = step.id.to_s }
     end
   end
 
+  describe "#has_ingredients?" do
+    subject { recipe.has_ingredients? }
+    context "with ingredients" do
+      before do
+        recipe.ingredients.stub(:empty?).and_return(false)
+      end
+
+      it { subject.should == true }
+    end
+
+    context "with no ingredients" do
+      before do
+        recipe.ingredients.stub(:empty?).and_return(true)
+      end
+
+      it { subject.should == false }
+    end
+  end
 end
 

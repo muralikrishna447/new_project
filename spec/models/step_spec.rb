@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Step, '#title' do
-  let(:step) { Step.new }
+  let(:step) { Fabricate.build(:step) }
 
   it "returns '' if no index provided and step has no title" do
     step.title.should be_blank
@@ -19,7 +19,7 @@ describe Step, '#title' do
 end
 
 describe Step, '#update_ingredients' do
-  let(:step) { Step.create(title: 'foo') }
+  let(:step) { Fabricate(:step, title: 'foo') }
   let(:soup) { {title: 'Soup', quantity: 2, unit: 'g'}  }
   let(:pepper) { {title: 'Pepper', quantity: 1, unit: 'kg'}  }
   let(:ingredient_attrs) {[ soup, pepper, pepper,

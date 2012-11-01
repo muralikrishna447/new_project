@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Activity do
-  let(:activity) { Activity.create(title: 'foo') }
+  let(:activity) { Fabricate(:activity, title: 'foo') }
 
   describe "#update_equipment" do
     let(:equipment1) { {title: 'Blender', product_url: 'over the rainbow', optional: "true"}  }
@@ -67,9 +67,9 @@ describe Activity do
     end
 
     describe "#update_recipes" do
-      let(:recipe1) { Recipe.create(title: 'Mac n Cheese') }
-      let(:recipe2) { Recipe.create(title: 'Hamburger Helper') }
-      let(:recipe3) { Recipe.create(title: 'Scrambled Eggs') }
+      let(:recipe1) { Fabricate(:recipe, title: 'Mac n Cheese') }
+      let(:recipe2) { Fabricate(:recipe, title: 'Hamburger Helper') }
+      let(:recipe3) { Fabricate(:recipe, title: 'Scrambled Eggs') }
       let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id, '' ] }
 
       describe "update" do
@@ -105,6 +105,34 @@ describe Activity do
           activity.update_recipes([recipe2.id, recipe1.id])
           activity.recipes.ordered.first.title.should == 'Hamburger Helper'
         end
+      end
+    end
+
+    describe "#has_ingredients?" do
+      let(:recipe1) { Fabricate.build(:recipe) }
+      let(:recipe2) { Fabricate.build(:recipe) }
+      before do
+        recipe2.stub(:has_ingredients?).and_return(false)
+        activity.recipes << recipe1
+        activity.recipes << recipe2
+      end
+
+      subject { activity.has_ingredients? }
+
+      context "with recipes with ingredients" do
+        before do
+          recipe1.stub(:has_ingredients?).and_return(true)
+        end
+
+        it { subject.should == true }
+      end
+
+      context "with recipes with no ingredients" do
+        before do
+          recipe1.stub(:has_ingredients?).and_return(false)
+        end
+
+        it { subject.should == false }
       end
     end
   end

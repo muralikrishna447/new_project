@@ -58,6 +58,10 @@ class Activity < ActiveRecord::Base
     self
   end
 
+  def has_ingredients?
+    recipes.any?(&:has_ingredients?)
+  end
+
   private
 
   def update_recipe_associations(recipe_ids)
