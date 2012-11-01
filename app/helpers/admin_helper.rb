@@ -19,5 +19,12 @@ module AdminHelper
   def reorder_icon
     content_tag(:i, '', class: ['icon-reorder', 'icon-large'])
   end
-end
 
+  def sortable_table(id, &block)
+    content_tag(:table, id: id, class: ['nested-records', 'sortable'], &block)
+  end
+
+  def section(name, form, &block)
+    form.inputs(name: name, class: ['inputs', 'no-background'], &block)
+  end
+end
