@@ -39,6 +39,8 @@
 body.admin_namespace
   table.nested-records
     display: none
+    padding: 0 1.4em
+
     // hide template row
     tr:nth-child(2)
       display: none
@@ -58,12 +60,9 @@ body.admin_namespace
   table.sortable
     tr
       &:nth-child(odd)
-        background: white
+        background: #f4f4f4
       &:nth-child(1)
         background: none
-
-    td
-      border-top: 1px solid black
 
     .ui-sortable-helper
       background: lighten($yellow, 40%) !important
@@ -80,6 +79,9 @@ body.admin_namespace
       font-size: 16px
       cursor: move
 
+  fieldset.inputs.no-background
+    background: none
+
   a.admin-button, button.admin-button
     @include light-button
 
@@ -94,3 +96,4 @@ body.admin_namespace
   .step-ingredients
     li
       margin-left: 20px
+

@@ -5,9 +5,9 @@
     = f.input :youtube_id
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
-  = f.inputs name: "Equipment" do
+  = section("Equipment", f) do
     %li= copy_button('Add Equipment', '#equipment-row', 'table#equipment')
-    %table.nested-records.sortable#equipment
+    = sortable_table('equipment') do
       %tr
         %th Title
         %th Optional?
@@ -16,9 +16,9 @@
       - @activity.equipment.ordered.each do |equipment|
         = render 'equipment_form', equipment: equipment
 
-  = f.inputs name: "Recipes" do
+  = section("Recipes", f) do
     %li= copy_button('Add Recipe', '#recipe-row', 'table#recipes')
-    %table.nested-records.sortable#recipes
+    = sortable_table('recipes') do
       %tr
         %th
       = render 'recipe_form', recipe: nil

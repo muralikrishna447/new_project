@@ -24,5 +24,12 @@ module AdminHelper
     options.merge!(class: 'admin-button')
     link_to text, url, options
   end
-end
 
+  def sortable_table(id, &block)
+    content_tag(:table, id: id, class: ['nested-records', 'sortable'], &block)
+  end
+
+  def section(name, form, &block)
+    form.inputs(name: name, class: ['inputs', 'no-background'], &block)
+  end
+end

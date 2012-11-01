@@ -3,9 +3,9 @@
     = f.input :title
     = f.input :yield
     = f.input :activity
-  = f.inputs name: "Ingredients" do
+  = section("Ingredients", f) do
     %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
-    %table.nested-records.sortable#ingredients
+    = sortable_table('ingredients') do
       %tr
         %th Ingredient
         %th Quantity
@@ -14,11 +14,11 @@
       - @recipe.ingredients.ordered.each do |ingredient|
         = render 'ingredient_form', ingredient: ingredient
 
-  = f.inputs name: "Steps" do
+  = section("Steps", f) do
     %li.two-button-row
       = copy_button 'Add Step', '#step-row', 'table#steps'
       = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_recipe_path(@recipe)
-    %table.nested-records.sortable#steps
+    = sortable_table('steps') do
       %tr
         %th Title
         %th Directions (Markdown or HTML)
