@@ -3,9 +3,9 @@
     = f.input :title
     = f.input :yield
     = f.input :activity
-  = f.inputs name: "Ingredients" do
-    %li= copy_button('Add Ingredient', '#ingredient-row', 'table#ingredients')
-    %table.nested-records.sortable#ingredients
+  = section("Ingredients", f) do
+    %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
+    = sortable_table('ingredients') do
       %tr
         %th Ingredient
         %th Quantity
@@ -14,9 +14,11 @@
       - @recipe.ingredients.ordered.each do |ingredient|
         = render 'ingredient_form', ingredient: ingredient
 
-  = f.inputs name: "Steps" do
-    %li= copy_button('Add Step', '#step-row', 'table#steps')
-    %table.nested-records.sortable#steps
+  = section("Steps", f) do
+    %li.two-button-row
+      = copy_button 'Add Step', '#step-row', 'table#steps'
+      = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_recipe_path(@recipe)
+    = sortable_table('steps') do
       %tr
         %th Title
         %th Directions (Markdown or HTML)
@@ -28,5 +30,5 @@
 
   = f.actions do
     = f.action :submit
-    = f.action :cancel, wrapper_html: {class: :cancel}, :label => 'Cancel'
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
 
