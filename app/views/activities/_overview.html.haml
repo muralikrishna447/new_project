@@ -27,24 +27,25 @@
       .span12
         .horizontal-divider
     .row
-      .span8
-        %h5 Ingredients
-        - activity.recipes.each do |recipe|
-          %table.ingredients
-            %thead
-              %tr
-                %th=recipe.title
-                %th{colspan: 2} Weight
-            %tbody
-              - recipe.ingredients.each do |ingredient|
+      - activity.has_ingredients?
+        .span8
+          %h5 Ingredients
+          - activity.recipes.each do |recipe|
+            %table.ingredients
+              %thead
                 %tr
-                  %td
-                    - if ingredient.product_url?
-                      = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
-                    - else
-                      = ingredient.title
-                  %td.quantity= quantity_number(ingredient.quantity)
-                  %td= ingredient.unit
+                  %th=recipe.title
+                  %th{colspan: 2} Weight
+              %tbody
+                - recipe.ingredients.each do |ingredient|
+                  %tr
+                    %td
+                      - if ingredient.product_url?
+                        = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
+                      - else
+                        = ingredient.title
+                    %td.quantity= quantity_number(ingredient.quantity)
+                    %td= ingredient.unit
       .span4
         - if activity.yield.present? || activity.timing.present?
           .row
