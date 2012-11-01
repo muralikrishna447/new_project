@@ -67,9 +67,9 @@ describe Activity do
     end
 
     describe "#update_recipes" do
-      let(:recipe1) { Recipe.create(title: 'Mac n Cheese') }
-      let(:recipe2) { Recipe.create(title: 'Hamburger Helper') }
-      let(:recipe3) { Recipe.create(title: 'Scrambled Eggs') }
+      let(:recipe1) { Fabricate(:recipe, title: 'Mac n Cheese') }
+      let(:recipe2) { Fabricate(:recipe, title: 'Hamburger Helper') }
+      let(:recipe3) { Fabricate(:recipe, title: 'Scrambled Eggs') }
       let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id, '' ] }
 
       describe "update" do
