@@ -3,7 +3,7 @@
   field_name_prefix = "step_ingredients[#{step.id}][]"
 
 %li= copy_button 'Add Ingredient To Step', "##{row_id}", "table#step-#{count}-ingredients"
-%table.nested-records.sortable{id: "step-#{count}-ingredients"}
+= sortable_table("step-#{count}-ingredients") do
   %tr
     %th Ingredient
     %th Quantity

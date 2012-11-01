@@ -6,7 +6,7 @@
 
   %ul
     - @recipe.steps.ordered.each_with_index do |step, index|
-      = f.inputs "Step: #{step.title(index)}" do
+      = section("Step: #{step.title(index)}", f) do
         = render 'step_ingredient_form', step: step, count: index, ingredients: @recipe.ingredients.map(&:title)
 
   = f.actions do
