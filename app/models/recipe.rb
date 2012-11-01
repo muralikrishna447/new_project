@@ -8,7 +8,7 @@ class Recipe < ActiveRecord::Base
 
   validates :title, presence: true
 
-  attr_accessible :title, :activity, :yield, :steps, :ingredients, :recipe_order_position
+  attr_accessible :title, :activity, :activity_id, :yield, :steps, :ingredients, :recipe_order_position
 
   accepts_nested_attributes_for :ingredients, :steps
 
