@@ -1,0 +1,4 @@
+Fabricator :activity do
+
+end
+
