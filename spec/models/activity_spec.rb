@@ -86,7 +86,7 @@ describe Activity do
       describe "destroy" do
         before do
           activity.update_recipes(recipe_ids)
-          activity.update_recipes([recipe1.id.to_s])
+          activity.update_recipes([recipe1.id])
           activity.recipes.reload
         end
 
