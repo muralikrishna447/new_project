@@ -16,6 +16,10 @@ class Recipe < ActiveRecord::Base
 
   default_scope { ordered }
 
+  def has_ingredients?
+    !ingredients.empty?
+  end
+
   def update_ingredients(ingredient_attrs)
     reject_invalid_ingredients(ingredient_attrs)
     update_and_create_ingredients(ingredient_attrs)

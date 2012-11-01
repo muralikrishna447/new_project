@@ -59,7 +59,9 @@ class Activity < ActiveRecord::Base
   end
 
   def has_ingredients?
-    !ingredients.empty?
+    recipes.any? do |recipe|
+      recipe.has_ingredients?
+    end
   end
 
   private

@@ -27,8 +27,8 @@
       .span12
         .horizontal-divider
     .row
-      - activity.has_ingredients?
-        .span8
+      .span8
+        - if activity.has_ingredients?
           %h5 Ingredients
           - activity.recipes.each do |recipe|
             %table.ingredients
