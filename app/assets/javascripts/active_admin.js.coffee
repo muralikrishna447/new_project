@@ -11,6 +11,7 @@ $ ->
 
     $copy = $copy_target.clone()
     $('input', $copy).val('')
+    $copy_destination.show()
     $copy_destination.append($copy)
 
 $ ->
@@ -31,3 +32,8 @@ $ ->
     items: 'tr:not(:first)',
     containment: 'parent'
   ).disableSelection()
+
+$ ->
+  $('table.nested-records').each (index, el)->
+    # show table if more than header and template row are present
+    $(el).show() if $(el).find('tr').length > 2
