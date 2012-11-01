@@ -75,7 +75,7 @@ class Activity < ActiveRecord::Base
 
   def delete_old_recipes(recipe_ids)
     old_recipe_ids = recipes.map {|recipe| recipe.recipe.id} - recipe_ids.map(&:to_i)
-    recipes.where(:recipe_id => old_recipe_ids).destroy_all
+    recipes.where(recipe_id: old_recipe_ids).destroy_all
   end
 
   def reject_invalid_equipment(equipment_attrs)
