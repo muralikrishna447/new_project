@@ -22,7 +22,7 @@
       %tr
         %th
       = render 'recipe_form', recipe: nil
-      - @activity.recipes.ordered.each do |recipe|
+      - @activity.ordered_recipes.each do |recipe|
         = render 'recipe_form', recipe: recipe
 
   = f.actions do

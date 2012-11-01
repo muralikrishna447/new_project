@@ -41,8 +41,8 @@
             %th Recipes
             %td
               %ul
-                - activity.recipes.map do |recipe|
-                  %li= link_to recipe.title, admin_recipe_path(recipe.recipe_id)
+                - activity.ordered_recipes.map do |recipe|
+                  %li= link_to recipe.title, admin_recipe_path(recipe)
           %tr
             %th Steps
             %td

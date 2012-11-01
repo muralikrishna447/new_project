@@ -30,7 +30,7 @@
       .span8
         - if activity.has_ingredients?
           %h5 Ingredients
-          - activity.recipes.each do |recipe|
+          - activity.ordered_recipes.each do |recipe|
             = render 'ingredients_list', recipe: recipe
       .span4
         - if activity.yield.present? || activity.timing.present?
