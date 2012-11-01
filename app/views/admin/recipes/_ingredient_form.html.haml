@@ -1,6 +1,7 @@
 :ruby
   is_template = ingredient.nil?
   ingredients ||= Ingredient.titles
+  field_name_prefix ||= "recipe[ingredients][]"
 
   row_id ||= 'ingredient-row' if is_template
   title_data_attrs = {
@@ -13,9 +14,9 @@
   unit = ingredient.unit unless is_template
 
 %tr{id: row_id}
-  %td= text_field_tag 'recipe[ingredients][][title]', title, title_data_attrs
-  %td= text_field_tag 'recipe[ingredients][][quantity]', quantity
+  %td= text_field_tag "#{field_name_prefix}[title]", title, title_data_attrs
+  %td= text_field_tag "#{field_name_prefix}[quantity]", quantity
   %td
-    = text_field_tag 'recipe[ingredients][][unit]', unit
+    = text_field_tag "#{field_name_prefix}[unit]", unit
     = remove_button 'tr'
     = reorder_icon

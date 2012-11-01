@@ -1,5 +1,6 @@
 :ruby
   row_id = "step-#{count}-ingredients-row"
+  field_name_prefix = "step[#{step.id}][ingredients][]"
 
 %li= copy_button 'Add Ingredient To Step', "##{row_id}", "table#step-#{count}-ingredients"
 %table.nested-records.sortable{id: "step-#{count}-ingredients"}
@@ -7,6 +8,6 @@
     %th Ingredient
     %th Quantity
     %th Unit
-  = render 'ingredient_form', ingredient: nil, ingredients: ingredients, row_id: row_id
+  = render 'ingredient_form', ingredient: nil, ingredients: ingredients, row_id: row_id, field_name_prefix: field_name_prefix
   - step.ingredients.each do |ingredient|
-    = render 'ingredient_form', ingredient: ingredient, ingredients: ingredients
+    = render 'ingredient_form', ingredient: ingredient, ingredients: ingredients, field_name_prefix: field_name_prefix
