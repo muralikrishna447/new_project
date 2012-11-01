@@ -30,19 +30,19 @@
             %td
               %ul
                 - activity.required_equipment.map do |equipment|
-                  %li= link_to equipment.title, admin_equipment_path(equipment)
+                  %li= link_to equipment.title, admin_equipment_path(equipment.equipment_id)
           %tr
             %th Optional Equipment
             %td
               %ul
                 - activity.optional_equipment.map do |equipment|
-                  %li= link_to equipment.title, admin_equipment_path(equipment)
+                  %li= link_to equipment.title, admin_equipment_path(equipment.equipment_id)
           %tr
             %th Recipes
             %td
               %ul
                 - activity.recipes.map do |recipe|
-                  %li= link_to recipe.title, admin_recipe_path(recipe)
+                  %li= link_to recipe.title, admin_recipe_path(recipe.recipe_id)
           %tr
             %th Steps
             %td

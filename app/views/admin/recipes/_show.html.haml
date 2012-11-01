@@ -7,10 +7,13 @@
           %tr
             %th Title
             %td= recipe.title
-          - if recipe.activity
+          - unless recipe.activities.empty?
             %tr
-              %th Activity
-              %td= link_to recipe.activity.title, admin_recipe_path(recipe.activity)
+              %th Activities
+              %td
+                %ul
+                  - recipe.activities.each do |activity|
+                    %li= link_to activity.title, admin_recipe_path(activity)
           %tr
             %th Ingredients
             %td

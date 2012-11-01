@@ -2,7 +2,6 @@
   = f.inputs name: "Recipe Details" do
     = f.input :title
     = f.input :yield
-    = f.input :activity
   = section("Ingredients", f) do
     %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
     = sortable_table('ingredients') do

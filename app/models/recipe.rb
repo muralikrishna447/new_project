@@ -1,6 +1,6 @@
 class Recipe < ActiveRecord::Base
   has_many :activity_recipes, inverse_of: :recipe
-  has_many :activities, through: :activity_recipes, inverse_of: :recipe
+  has_many :activities, through: :activity_recipes, inverse_of: :recipes
 
   has_many :ingredients, dependent: :destroy, class_name: RecipeIngredient, inverse_of: :recipe
   has_many :steps, dependent: :destroy, inverse_of: :recipe

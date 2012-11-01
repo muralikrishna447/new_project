@@ -9,7 +9,7 @@ class ActivityRecipe < ActiveRecord::Base
   validates :recipe_id, presence: true
   attr_accessible :activity_id, :recipe_id, :recipe_order_position
 
-  delegate :title, to: :recipe
+  delegate :title, :ingredients, :steps, to: :recipe
 
   scope :ordered, rank(:recipe_order)
 end
