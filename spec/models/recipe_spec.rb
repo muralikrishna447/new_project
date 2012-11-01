@@ -155,6 +155,27 @@ describe Recipe do
       end
     end
 
+    describe "has_ingredients?" do
+      describe "with ingredients" do
+        before do
+          recipe.ingredients.stub(:empty?).and_return(false)
+        end
+        it "returns true" do
+          recipe.has_ingredients?.should be_true
+        end
+      end
+
+      describe "with no ingredients" do
+        before do
+          recipe.ingredients.stub(:empty?).and_return(true)
+        end
+
+        it "returns false" do
+          recipe.has_ingredients?.should be_false
+        end
+      end
+    end
+
     def update_attr_ids
       recipe.steps.each_with_index { |step,index| step_attrs[index][:id] = step.id.to_s }
     end

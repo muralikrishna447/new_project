@@ -136,7 +136,6 @@ describe Activity do
         it "returns false" do
           activity.has_ingredients?.should be_false
         end
-
       end
     end
   end
