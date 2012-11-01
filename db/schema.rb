@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121031154704) do
+ActiveRecord::Schema.define(:version => 20121101192906) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -54,6 +54,17 @@ ActiveRecord::Schema.define(:version => 20121031154704) do
 
   add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
   add_index "activity_equipment", ["equipment_order"], :name => "index_activity_equipment_on_equipment_order"
+
+  create_table "activity_recipes", :force => true do |t|
+    t.integer  "activity_id",  :null => false
+    t.integer  "recipe_id",    :null => false
+    t.integer  "recipe_order"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "activity_recipes", ["activity_id", "recipe_id"], :name => "index_activity_recipes_on_activity_id_and_recipe_id", :unique => true
+  add_index "activity_recipes", ["recipe_order"], :name => "index_activity_recipes_on_recipe_order"
 
   create_table "admin_users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -112,15 +123,10 @@ ActiveRecord::Schema.define(:version => 20121031154704) do
 
   create_table "recipes", :force => true do |t|
     t.string   "title"
-    t.integer  "activity_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "yield"
-    t.integer  "recipe_order"
   end
-
-  add_index "recipes", ["activity_id"], :name => "index_recipes_on_activity_id"
-  add_index "recipes", ["recipe_order"], :name => "index_recipes_on_recipe_order"
 
   create_table "step_ingredients", :force => true do |t|
     t.integer  "step_id",          :null => false
