@@ -5,7 +5,7 @@
     = f.input :activity
   = f.inputs name: "Ingredients" do
     %li= copy_button('Add Ingredient', '#ingredient-row', 'table#ingredients')
-    %table.nested-records.sortable#ingredients
+    = sortable_table('ingredients') do
       %tr
         %th Ingredient
         %th Quantity
@@ -16,7 +16,7 @@
 
   = f.inputs name: "Steps" do
     %li= copy_button('Add Step', '#step-row', 'table#steps')
-    %table.nested-records.sortable#steps
+    = sortable_table('steps') do
       %tr
         %th Title
         %th Directions (Markdown or HTML)
