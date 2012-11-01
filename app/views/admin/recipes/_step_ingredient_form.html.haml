@@ -1,6 +1,6 @@
 :ruby
   row_id = "step-#{count}-ingredients-row"
-  field_name_prefix = "step[#{step.id}][ingredients][]"
+  field_name_prefix = "steps[#{step.id}][ingredients][]"
 
 %li= copy_button 'Add Ingredient To Step', "##{row_id}", "table#step-#{count}-ingredients"
 %table.nested-records.sortable{id: "step-#{count}-ingredients"}
