@@ -42,6 +42,10 @@ class Activity < ActiveRecord::Base
     description.present?
   end
 
+  def has_recipes?
+    recipes.present?
+  end
+
   def step_by_step?
     steps.count > 0
   end

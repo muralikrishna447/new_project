@@ -4,7 +4,6 @@
       .span8
         %h1= raw activity.title
         - if activity.has_description?
-          -# description.present?
           :markdown
             #{activity.description}
       .span4
@@ -19,11 +18,12 @@
         -# .row
         -#   .span4
         -#     .horizontal-divider
-        .row
-          .span4.cooked-this-count
-            %i.icon-pot-brick
-            %span#cooked-count= activity.cooked_this
-            %span.verbage Cooked This
+        - if activity.has_recipes? and activity.cooked_this > 0
+          .row
+            .span4.cooked-this-count
+              %i.icon-pot-brick
+              %span#cooked-count= activity.cooked_this
+              %span.verbage Cooked This
       .span12
         .horizontal-divider
     .row

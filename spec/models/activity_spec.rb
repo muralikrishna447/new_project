@@ -138,3 +138,11 @@ describe Activity do
   end
 end
 
+describe Activity, '#has_recipes?' do
+  subject { Fabricate.build(:activity) }
+  it { should_not have_recipes }
+  context "with recipes" do
+    before { subject.recipes << Fabricate.build(:recipe) }
+    it { should have_recipes }
+  end
+end
