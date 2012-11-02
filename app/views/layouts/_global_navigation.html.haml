@@ -18,15 +18,16 @@
     Blog
     %i.icon-chevron-right.pull-right
 
-%li.authentication.first
-  = link_to '#' do
-    Log in
-    %i.icon-chevron-right.pull-right
+- if show_auth
+  %li.authentication.first
+    = link_to '#' do
+      Log in
+      %i.icon-chevron-right.pull-right
 
-%li.authentication
-  = link_to '#' do
-    Sign up
-    %i.icon-chevron-right.pull-right
-  %span
-    |
+  %li.authentication
+    = link_to '#' do
+      Sign up
+      %i.icon-chevron-right.pull-right
+    %span
+      |
 
