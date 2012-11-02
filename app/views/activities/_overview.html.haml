@@ -4,7 +4,6 @@
       .span8
         %h1= raw activity.title
         - if activity.has_description?
-          -# description.present?
           :markdown
             #{activity.description}
       .span4
@@ -19,32 +18,20 @@
         -# .row
         -#   .span4
         -#     .horizontal-divider
-        .row
-          .span4.cooked-this-count
-            %i.icon-pot-brick
-            %span#cooked-count= activity.cooked_this
-            %span.verbage Cooked This
+        - if activity.has_recipes? and activity.cooked_this > 0
+          .row
+            .span4.cooked-this-count
+              %i.icon-pot-brick
+              %span#cooked-count= activity.cooked_this
+              %span.verbage Cooked This
       .span12
         .horizontal-divider
     .row
       .span8
-        %h5 Ingredients
-        - activity.recipes.each do |recipe|
-          %table.ingredients
-            %thead
-              %tr
-                %th=recipe.title
-                %th{colspan: 2} Weight
-            %tbody
-              - recipe.ingredients.each do |ingredient|
-                %tr
-                  %td
-                    - if ingredient.product_url?
-                      = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
-                    - else
-                      = ingredient.title
-                  %td.quantity= quantity_number(ingredient.quantity)
-                  %td= ingredient.unit
+        - if activity.has_ingredients?
+          %h5 Ingredients
+          - activity.ordered_recipes.each do |recipe|
+            = render 'ingredients_list', recipe: recipe
       .span4
         - if activity.yield.present? || activity.timing.present?
           .row
@@ -58,7 +45,7 @@
         - if activity.equipment.present?
           .row
             .span4
-              %h5 Equipment
+              %h5 Equipment and Materials
         .row
           - activity.required_equipment.in_groups(2, false).each do |group|
             .span2
@@ -66,7 +53,7 @@
         - if activity.optional_equipment.present?
           .row
             .span4
-              %h5 Optional Equipment
+              %h5 Optional Equipment and Materials
           .row
             - activity.optional_equipment.in_groups(2, false).each do |group|
               .span2

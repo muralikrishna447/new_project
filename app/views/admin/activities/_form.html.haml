@@ -1,0 +1,31 @@
+= semantic_form_for [:admin, @activity] do |f|
+  = f.inputs name: "Activity Details" do
+    = f.input :title
+    = f.input :description, label: "Description (Markdown or HTML)"
+    = f.input :youtube_id
+    = f.input :timing
+    = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
+  = section("Equipment", f) do
+    %li= copy_button('Add Equipment', '#equipment-row', 'table#equipment')
+    = sortable_table('equipment') do
+      %tr
+        %th Title
+        %th Optional?
+        %th Product URL
+      = render 'equipment_form', equipment: nil
+      - @activity.equipment.ordered.each do |equipment|
+        = render 'equipment_form', equipment: equipment
+
+  = section("Recipes", f) do
+    %li= copy_button('Add Recipe', '#recipe-row', 'table#recipes')
+    = sortable_table('recipes') do
+      %tr
+        %th
+      = render 'recipe_form', recipe: nil
+      - @activity.ordered_recipes.each do |recipe|
+        = render 'recipe_form', recipe: recipe
+
+  = f.actions do
+    = f.action :submit
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
+

@@ -1,0 +1,33 @@
+= semantic_form_for [:admin, @recipe] do |f|
+  = f.inputs name: "Recipe Details" do
+    = f.input :title
+    = f.input :yield
+  = section("Ingredients", f) do
+    %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
+    = sortable_table('ingredients') do
+      %tr
+        %th Ingredient
+        %th Quantity
+        %th Unit
+      = render 'ingredient_form', ingredient: nil
+      - @recipe.ingredients.ordered.each do |ingredient|
+        = render 'ingredient_form', ingredient: ingredient
+
+  = section("Steps", f) do
+    %li.two-button-row
+      = copy_button 'Add Step', '#step-row', 'table#steps'
+      = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_recipe_path(@recipe)
+    = sortable_table('steps') do
+      %tr
+        %th Title
+        %th Directions (Markdown or HTML)
+        %th Image Id
+        %th Youtube Id
+      = render 'step_form', step: nil
+      - @recipe.steps.ordered.each do |step|
+        = render 'step_form', step: step
+
+  = f.actions do
+    = f.action :submit
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
+

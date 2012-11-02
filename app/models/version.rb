@@ -1,5 +1,5 @@
 class Version < ActiveRecord::Base
-  attr_accessible :version, as: :admin
+  attr_accessible :version
   after_update :purge_cache
 
   def self.current

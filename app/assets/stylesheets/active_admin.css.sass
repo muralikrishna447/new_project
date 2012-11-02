@@ -1,0 +1,99 @@
+// SASS variable overrides must be declared before loading up Active Admin's styles.
+//
+// To view the variables that Active Admin provides, take a look at
+// `app/assets/stylesheets/active_admin/mixins/_variables.css.scss` in the
+// Active Admin source.
+//
+// For example, to change the sidebar width:
+// $sidebar-width: 242px;
+
+// Active Admin's got SASS!
+@import active_admin/mixins
+@import active_admin/base
+
+@import compass/css3/border-radius
+@import compass/css3/box-shadow
+
+@import twitter/bootstrap/variables
+@import twitter/bootstrap/mixins
+@import twitter/bootstrap/dropdowns
+
+@import font-awesome
+
+// Overriding any non-variable SASS must be done after the fact.
+// For example, to change the default status-tag color:
+//
+//   body.active_admin {
+//      .status_tag { background: #6090DB; }
+//   }
+//
+// Notice that Active Admin CSS rules are nested within a
+// 'body.active_admin' selector to prevent conflicts with
+// other pages in the app. It is best to wrap your changes in a
+// namespace so they are properly recognized. You have options
+// if you e.g. want different styles for different namespaces:
+//
+// .active_admin       applies to any Active Admin namespace
+// .other_namespace    applies to a custom namespace named other (eg: /other)
+
+body.admin_namespace
+  table.nested-records
+    display: none
+    padding: 0 1.4em
+
+    // hide template row
+    tr:nth-child(2)
+      display: none
+
+  ul.typeahead
+    list-style-type: none
+    padding-left: 0
+
+    li.active
+      a
+        color: white
+
+    a
+      text-decoration: none
+      padding: 5px
+
+  table.sortable
+    tr
+      &:nth-child(odd)
+        background: #f4f4f4
+      &:nth-child(1)
+        background: none
+
+    .ui-sortable-helper
+      background: lighten($yellow, 40%) !important
+
+    [data-behavior=remove-element]
+      padding: 1px 2px 0 2px
+
+    i.icon-remove
+      font-size: 14px
+
+    i.icon-reorder
+      float: right
+      margin-top: 6px
+      font-size: 16px
+      cursor: move
+
+  fieldset.inputs.no-background
+    background: none
+
+  a.admin-button, button.admin-button
+    @include light-button
+
+  .two-button-row
+    overflow: hidden
+    a, button
+      float: right
+      &:first-child
+        float: left
+
+.admin_recipes.associated_ingredients
+  .step-ingredients
+    li
+      margin-left: 20px
+

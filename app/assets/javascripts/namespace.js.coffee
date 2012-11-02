@@ -1,0 +1,2 @@
+window.ChefSteps = window.ChefSteps || {}
+

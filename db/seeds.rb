@@ -33,8 +33,8 @@ def create_step(step)
 end
 
 def create_admin(email, password)
-  return if User.where(email: email).any?
-  u = User.create
+  return if AdminUser.where(email: email).any?
+  u = AdminUser.create
   u.email = email
   u.password = password
   u.save
@@ -59,9 +59,9 @@ end
 
 def create_recipe(title, activity)
   return if Recipe.where(title: title).any?
-  recipe  = Recipe.create
+  recipe = Recipe.create
   recipe.title = title
-  recipe.activity = activity
+  recipe.activities << activity
   recipe.save
   recipe
 end

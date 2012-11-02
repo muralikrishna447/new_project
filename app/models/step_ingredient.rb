@@ -5,10 +5,9 @@ class StepIngredient < ActiveRecord::Base
   belongs_to :step, inverse_of: :ingredients
   belongs_to :ingredient, inverse_of: :step_ingredients
 
-
   delegate :title, :for_sale, :for_sale?, :product_url, :product_url?, to: :ingredient
 
-  attr_accessible :step_id, :ingredient_id, :quantity, :unit, as: :admin
+  attr_accessible :step_id, :ingredient_id, :quantity, :unit, :ingredient_order_position
 
   validates :ingredient_id, presence: true
   validates :step_id, presence: true
@@ -17,8 +16,8 @@ class StepIngredient < ActiveRecord::Base
 
   default_scope { ordered }
 
-  def label
-    [title, [quantity, unit].compact.join].compact.join(" ")
+  def display_quantity
+    "#{quantity} #{unit}"
   end
 end
 

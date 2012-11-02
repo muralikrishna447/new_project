@@ -1,11 +1,11 @@
 .hero-unit.hero-well.hero-step-by-step
   .container.step-by-step
-    - activity.recipes.each do |recipe|
+    - activity.ordered_recipes.each do |recipe|
       - if recipe.steps.any?
         .row
           .span12
             - recipe.steps.each_with_index do |step, i|
-              = render 'step', step: step, count: i+1
+              = render 'step', step: step, count: i
               .row
                 .span12
                   .horizontal-divider
@@ -15,17 +15,18 @@
         .span12
           %h4 Assembly Steps
       - activity.steps.each_with_index do |step, i|
-        = render 'step', step: step, count: i+1
+        = render 'step', step: step, count: i
         .row
           .span12
             .horizontal-divider
-    .row
-      .span12
-        - if @cooked_this
-          %h4== #{pluralize(activity.cooked_this, 'person')} cooked this, including you. Comment below to tell us how it went!
-        - else
-          %a.button.cooked-this{ href: cooked_this_activity_path, data: { remote: true, method: :post } }
-            .inner
-              %i.icon-pot-white
-              %span I cooked this!
+    - if activity.has_recipes?
+      .row
+        .span12
+          - if @cooked_this
+            %h4== #{pluralize(activity.cooked_this, 'person')} cooked this, including you. Comment below to tell us how it went!
+          - else
+            %a.button.cooked-this{ href: cooked_this_activity_path, data: { remote: true, method: :post } }
+              .inner
+                %i.icon-pot-white
+                %span I cooked this!
 
