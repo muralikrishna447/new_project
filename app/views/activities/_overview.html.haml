@@ -18,7 +18,7 @@
         -# .row
         -#   .span4
         -#     .horizontal-divider
-        - if activity.cooked_this > 0
+        - if activity.has_recipes? and activity.cooked_this > 0
           .row
             .span4.cooked-this-count
               %i.icon-pot-brick
