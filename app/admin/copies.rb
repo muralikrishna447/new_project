@@ -5,8 +5,8 @@ ActiveAdmin.register Copy do
     f.inputs "Copy Details" do
       f.input :location
       f.input :copy, label: "Copy (Markdown or HTML)"
-      f.buttons
     end
+    f.buttons
   end
 
 end
