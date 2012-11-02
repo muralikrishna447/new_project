@@ -1,11 +1,11 @@
-%h2 Log in
-= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-  %div
-    = f.label :email
-    %br/
-    = f.email_field :email
-  %div
-    = f.label :password
-    %br/
-    = f.password_field :password
-  %div= f.submit "Log in"
+#log-in.user-form
+  %h1 Connect to log in (or #{link_to 'sign up', new_user_registration_path})
+  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    = field_set_tag 'Log in to existing account:' do
+      %div
+        = f.label :email, 'Email:'
+        = f.email_field :email
+      %div
+        = f.label :password, 'Password:'
+        = f.password_field :password
+    %div= f.submit "Log in"

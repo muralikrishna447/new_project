@@ -1,0 +1,40 @@
+.user-form
+  max-width: 560px
+  border: 1px solid red
+
+  h1, legend
+    text-align: center
+
+  h1
+    color: $brick
+    border-bottom: 2px solid $grayMedium
+    margin: 0
+    padding: 25px 0
+
+  form
+    background: $grayLight
+
+  fieldset > div
+    margin-bottom: 3px
+
+  legend
+    +font-sans-large
+    border: none
+    padding-top: 20px
+
+  label
+    +font-sans-large
+    text-align: right
+    display: inline-block
+    color: $gray
+    width: 100px
+    margin: 0 10px 0 45px
+
+  input
+    height: 28px
+    width: 257px
+
+#sign-up
+  label[for=user_password_confirmation]
+    vertical-align: middle
+    margin-bottom: 11px
