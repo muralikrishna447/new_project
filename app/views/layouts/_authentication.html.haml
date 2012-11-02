@@ -4,6 +4,13 @@
       Log out
       %i.icon-chevron-right.pull-right
 
+  %li.authentication
+    = link_to '#' do
+      = current_user.name
+      %i.icon-chevron-right.pull-right
+    %span
+      |
+
 - else
   %li.authentication.first
     = link_to new_user_session_path do
