@@ -4,7 +4,6 @@
       .span8
         %h1= raw activity.title
         - if activity.has_description?
-          -# description.present?
           :markdown
             #{activity.description}
       .span4
