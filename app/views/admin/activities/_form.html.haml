@@ -1,7 +1,7 @@
 = semantic_form_for [:admin, @activity] do |f|
   = f.inputs name: "Activity Details" do
     = f.input :title
-    = f.input :description, label: "Description (Markdown)"
+    = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
