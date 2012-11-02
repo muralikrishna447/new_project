@@ -13,8 +13,20 @@
 -#   %a{href: '', target: '_top'}
 -#     Forums
 -#     %i.icon-chevron-right.pull-right
-%li
+%li.last
   %a{href: 'http://blog.chefsteps.com', target: '_top'}
     Blog
     %i.icon-chevron-right.pull-right
+
+%li.authentication.first
+  = link_to '#' do
+    Log in
+    %i.icon-chevron-right.pull-right
+
+%li.authentication
+  = link_to '#' do
+    Sign up
+    %i.icon-chevron-right.pull-right
+  %span
+    |
 

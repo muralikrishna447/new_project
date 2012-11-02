@@ -29,7 +29,6 @@
   .navbar-activity-title
     display: none
 
-
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
   .global-navigation
@@ -139,8 +138,17 @@
       text-align: left
       padding-right: 0
       float: none
+
+      &.authentication span
+        display: none
+
     i[class^="icon-"]
       display: inline-block
 
   .brand-container
     margin-bottom: 20px !important
+
+/* Everything but portrait iphone*/
+@media (min-width: 480px)
+  +authentication-nav
+
