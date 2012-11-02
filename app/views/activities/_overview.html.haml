@@ -45,7 +45,7 @@
         - if activity.equipment.present?
           .row
             .span4
-              %h5 Equipment
+              %h5 Equipment and Materials
         .row
           - activity.required_equipment.in_groups(2, false).each do |group|
             .span2
@@ -53,7 +53,7 @@
         - if activity.optional_equipment.present?
           .row
             .span4
-              %h5 Optional Equipment
+              %h5 Optional Equipment and Materials
           .row
             - activity.optional_equipment.in_groups(2, false).each do |group|
               .span2
