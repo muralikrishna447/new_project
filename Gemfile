@@ -45,6 +45,10 @@ group :development, :test do
   gem 'fabrication'
 end
 
+group :test do
+  gem 'capybara'
+end
+
 group :guard do
   gem 'guard'
   gem 'guard-livereload'
