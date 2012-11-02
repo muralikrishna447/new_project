@@ -56,6 +56,7 @@ class Recipe < ActiveRecord::Base
         unit: ingredient_attr[:unit],
         ingredient_order_position: :last
       )
+      ingredient_attr[:id] = ingredient.id
     end
   end
 
@@ -74,8 +75,8 @@ class Recipe < ActiveRecord::Base
   end
 
   def delete_old_ingredients(ingredient_attrs)
-    old_ingredient_titles = ingredients.map(&:title) - ingredient_attrs.map {|i| i[:title] }
-    ingredients.joins(:ingredient).where('ingredients.title' => old_ingredient_titles).destroy_all
+    old_ingredient_ids = ingredients.map(&:ingredient_id) - ingredient_attrs.map {|i| i[:id].to_i }
+    ingredients.where(:ingredient_id => old_ingredient_ids).destroy_all
   end
 
   def delete_old_steps(step_attrs)
