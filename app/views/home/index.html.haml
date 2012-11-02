@@ -26,41 +26,45 @@
             %i.icon-double-chevron-right
 .container
   .row
-    .intro.span7
-      :markdown
-        #{ homepage_blurb.copy.to_s}
+    - if homepage_blurb
+      .intro.span7
+        :markdown
+          #{ homepage_blurb.copy.to_s}
 
     .creators.span5
       %h3 From creators of Modernist Cuisine
       %ul.unstyled.creators
-        %li.creator
-          .row
-            .span1
-              = image_tag('chris.jpg', title: 'Chris Young', class: 'img-profile')
-            .span3
-              :markdown
-                #{bio_chris.copy.to_s}
-          .row
-            .span4.horizontal-divider
+        - if bio_chris
+          %li.creator
+            .row
+              .span1
+                = image_tag('chris.jpg', title: 'Chris Young', class: 'img-profile')
+              .span3
+                :markdown
+                  #{bio_chris.copy.to_s}
+            .row
+              .span4.horizontal-divider
 
-        %li.creator
-          .row
-            .span1
-              = image_tag('grant.jpg', title: 'Grant Crilly', class: 'img-profile')
-            .span3
-              :markdown
-                #{bio_grant.copy.to_s}
-          .row
-            .span4.horizontal-divider
+        - if bio_grant
+          %li.creator
+            .row
+              .span1
+                = image_tag('grant.jpg', title: 'Grant Crilly', class: 'img-profile')
+              .span3
+                :markdown
+                  #{bio_grant.copy.to_s}
+            .row
+              .span4.horizontal-divider
 
-        %li.creator
-          .row
-            .span1
-              = image_tag('ryan.jpg', title: 'Ryan Matthew Smith', class: 'img-profile')
-            .span3
-              :markdown
-                #{bio_ryan.copy.to_s}
-          .row
-            .span4.horizontal-divider
+        - if bio_ryan
+          %li.creator
+            .row
+              .span1
+                = image_tag('ryan.jpg', title: 'Ryan Matthew Smith', class: 'img-profile')
+              .span3
+                :markdown
+                  #{bio_ryan.copy.to_s}
+            .row
+              .span4.horizontal-divider
 
 
