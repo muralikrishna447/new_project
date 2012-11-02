@@ -51,7 +51,7 @@ class Step < ActiveRecord::Base
 
   def delete_old_ingredients(ingredient_attrs)
     old_ingredient_ids = ingredients.map(&:ingredient_id) - ingredient_attrs.map {|i| i[:id].to_i }
-    ingredients.where(:ingredient_id => old_ingredient_ids).destroy_all
+    ingredients.where(ingredient_id: old_ingredient_ids).destroy_all
   end
 end
 

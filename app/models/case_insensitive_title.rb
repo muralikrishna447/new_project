@@ -9,7 +9,7 @@ module CaseInsensitiveTitle
 
   module ClassMethods
     def find_or_create_by_title(title)
-      self.where('lower(title) = ?', title.downcase).first || self.create(:title => title)
+      self.where('lower(title) = ?', title.downcase).first || self.create(title: title)
     end
   end
 
