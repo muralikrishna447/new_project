@@ -1,5 +1,5 @@
 class Ingredient < ActiveRecord::Base
-  before_save :capitalize_title
+  include CaseInsensitiveTitle
 
   has_many :step_ingredients, dependent: :destroy, inverse_of: :ingredient
   has_many :recipe_ingredients, dependent: :destroy, inverse_of: :ingredient
@@ -13,12 +13,5 @@ class Ingredient < ActiveRecord::Base
   def self.titles
     all.map(&:title)
   end
-
-  private
-
-  def capitalize_title
-    self.title = title.capitalize
-  end
-
 end
 

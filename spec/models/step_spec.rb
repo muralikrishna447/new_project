@@ -46,7 +46,7 @@ describe Step, '#update_ingredients' do
   describe "update" do
     before do
       step.update_ingredients(ingredient_attrs)
-      ingredient_attrs.first.merge!(quantity: 15, unit: 'foobars')
+      ingredient_attrs.first.merge!(title: 'SoUp', quantity: 15, unit: 'foobars')
       step.update_ingredients(ingredient_attrs)
       step.ingredients.reload
     end

@@ -1,24 +1,14 @@
 require 'spec_helper'
 
-describe Ingredient do
-  describe "capitalize title" do
-    let(:ingredient) { Fabricate(:ingredient, title: 'fOo Bar bAz') }
+describe Ingredient, "capitalize title" do
+  let(:ingredient) { Fabricate(:ingredient, title: 'black Pepper') }
 
-    describe "create" do
-      it "capitalizes the first letter of the first word only" do
-        ingredient.title.should == 'Foo bar baz'
-      end
-    end
+  it "capitalizes the first letter of the word when ingredient is created" do
+    ingredient.title.should == 'Black Pepper'
+  end
 
-    describe "update" do
-      before do
-        ingredient.update_attributes(title: 'NuCLeAR ISOtOpEs')
-      end
-
-      it "capitalizes the first letter of the first word only" do
-        ingredient.title.should == 'Nuclear isotopes'
-      end
-    end
+  it "capitalizes the first letter of the word when ingredient is updated" do
+    ingredient.update_attributes(title: 'black pepper')
+    ingredient.title.should == 'Black pepper'
   end
 end
-

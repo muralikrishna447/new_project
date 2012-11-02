@@ -30,7 +30,7 @@ describe Recipe do
     describe "update" do
       before do
         recipe.update_ingredients(ingredient_attrs)
-        ingredient_attrs.first.merge!(quantity: 15, unit: 'foobars')
+        ingredient_attrs.first.merge!(title: 'SouP', quantity: 15, unit: 'foobars')
         recipe.update_ingredients(ingredient_attrs)
         recipe.ingredients.reload
       end
