@@ -1,4 +1,5 @@
 ActiveAdmin.register Activity do
+  menu priority: 2
   action_item only: [:show, :edit] do
     link_to('View on site', activity_path(activity))
   end

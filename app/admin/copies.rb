@@ -1,4 +1,5 @@
 ActiveAdmin.register Copy do
+  menu priority: 4
 
   form do |f|
     f.inputs "Copy Details" do

@@ -1,4 +1,6 @@
 ActiveAdmin.register Step do
+  menu parent: 'More'
+
   form do |f|
     f.inputs "Step Details" do
       f.input :title

@@ -1,4 +1,5 @@
 ActiveAdmin.register Equipment do
+  menu parent: 'More'
 
   index do
     column :id

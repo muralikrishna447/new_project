@@ -1,4 +1,6 @@
 ActiveAdmin.register Version do
+  menu parent: 'More'
+
   form do |f|
     f.inputs "Version" do
       f.input :version

@@ -1,4 +1,5 @@
 ActiveAdmin.register Recipe do
+  menu priority: 3
 
   show do |recipe|
     render "show", recipe: recipe
