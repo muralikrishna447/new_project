@@ -1,4 +1,7 @@
 ActiveAdmin.register Activity do
+  action_item only: [:show, :edit] do
+    link_to('View on site', activity_path(activity))
+  end
 
   show do |activity|
     render "show", activity: activity
