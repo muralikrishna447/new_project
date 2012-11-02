@@ -1,12 +1,19 @@
-%li.authentication.first
-  = link_to '#' do
-    Log in
-    %i.icon-chevron-right.pull-right
+- if user_signed_in?
+  %li.authentication.first
+    = link_to destroy_user_session_path, method: :delete do
+      Log out
+      %i.icon-chevron-right.pull-right
 
-%li.authentication
-  = link_to new_user_registration_path do
-    Sign up
-    %i.icon-chevron-right.pull-right
-  %span
-    |
+- else
+  %li.authentication.first
+    = link_to '#' do
+      Log in
+      %i.icon-chevron-right.pull-right
+
+  %li.authentication
+    = link_to new_user_registration_path do
+      Sign up
+      %i.icon-chevron-right.pull-right
+    %span
+      |
 
