@@ -6,5 +6,12 @@ ActiveAdmin.register Version do
 
     f.buttons
   end
+
+  controller do
+    def update
+      Version.first.update_attributes(version: Time.now.to_s)
+      redirect_to admin_root_path, notice: "Updates published!"
+    end
+  end
 end
 
