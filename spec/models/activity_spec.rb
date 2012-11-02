@@ -27,7 +27,7 @@ describe Activity do
     describe "update" do
       before do
         activity.update_equipment(equipment_attrs)
-        equipment_attrs.first.merge!(product_url: 'stuff', optional: 'false')
+        equipment_attrs.first.merge!(title: 'BleNdeR', product_url: 'stuff', optional: 'false')
         activity.update_equipment(equipment_attrs)
         activity.equipment.reload
       end

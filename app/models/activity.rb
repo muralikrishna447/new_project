@@ -99,12 +99,13 @@ class Activity < ActiveRecord::Base
         optional: equipment_attr[:optional] || false,
         equipment_order_position: :last
       )
+      equipment_attr[:id] = equipment_item.id
     end
   end
 
   def delete_old_equipment(equipment_attrs)
-    old_equipment_titles = equipment.map(&:title) - equipment_attrs.map {|i| i[:title] }
-    equipment.joins(:equipment).where('equipment.title' => old_equipment_titles).destroy_all
+    old_equipment_ids = equipment.map(&:equipment_id) - equipment_attrs.map {|i| i[:id].to_i }
+    equipment.where(equipment_id: old_equipment_ids).destroy_all
   end
 
 end
