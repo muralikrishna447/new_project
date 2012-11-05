@@ -13,6 +13,8 @@
 
   form
     background: $grayLight
+    margin: 0
+    padding-bottom: 50px
 
   legend
     +font-sans-large
@@ -44,6 +46,19 @@
   input
     height: 28px
     width: 257px
+
+  input[type=submit]
+    +font-sans-large
+    padding: 0
+    margin: 10px 0 0 160px
+    background: $brick
+    border: none
+    color: white
+    font-weight: 200
+    height: 37px
+    width: 268px
+    line-height: 37px
+
 
 #sign-up
   label[for=user_password_confirmation]
