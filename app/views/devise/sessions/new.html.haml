@@ -1,11 +1,7 @@
 #log-in.user-form
   %h1 Connect to log in (or #{link_to 'sign up', new_user_registration_path})
-  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-    = field_set_tag 'Log in to existing account:' do
-      %div
-        = f.label :email, 'Email:'
-        = f.email_field :email
-      %div
-        = f.label :password, 'Password:'
-        = f.password_field :password
+  = semantic_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    = f.inputs 'Log in to existing account:' do
+      = f.input :email, label: 'Email:'
+      = f.input :password, label: 'Password:'
     %div= f.submit "Log in"

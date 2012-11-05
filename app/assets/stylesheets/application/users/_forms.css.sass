@@ -14,21 +14,32 @@
   form
     background: $grayLight
 
-  fieldset > div
-    margin-bottom: 3px
-
   legend
     +font-sans-large
     border: none
     padding-top: 20px
 
+  ol
+    margin: 0
+    list-style-type: none
+
   label
     +font-sans-large
+    font-weight: 200
     text-align: right
+    letter-spacing: 1px
     display: inline-block
-    color: $gray
+    vertical-align: baseline
+    color: #AAAAAA
     width: 100px
-    margin: 0 10px 0 45px
+    white-space: normal
+    text-shadow: none
+    line-height: 20px
+    margin: 0 14px 0 45px
+    padding: 0
+
+  abbr[title=required]
+    display: none
 
   input
     height: 28px
