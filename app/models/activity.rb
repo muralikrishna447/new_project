@@ -63,7 +63,8 @@ class Activity < ActiveRecord::Base
     reject_invalid_recipe_ids(recipe_ids)
     update_recipe_associations(recipe_ids)
     delete_old_recipes(recipe_ids)
-    create_activity_steps(recipe_ids)
+    create_activity_recipe_steps(recipe_ids)
+    delete_old_activity_recipe_steps(recipe_ids)
     self
   end
 
@@ -84,11 +85,18 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def create_activity_steps(recipe_ids)
-    recipe_step_steps= Step.joins(:recipe).where(recipe_id: recipe_ids)
-    recipe_step_steps.each do |step|
-      recipe_steps.find_or_create_by_step_id_and_activity_id(step.id, self.id)
+  def create_activity_recipe_steps(recipe_ids)
+    recipe_step_ids = Step.joins(:recipe).where(recipe_id: recipe_ids).map(&:id)
+    recipe_step_ids.each do |step_id|
+      recipe_steps.find_or_create_by_step_id_and_activity_id(step_id, self.id)
     end
+  end
+
+  def delete_old_activity_recipe_steps(recipe_ids)
+    current_step_ids = recipe_steps.map(&:step_id)
+    recipe_step_ids = Step.joins(:recipe).where(recipe_id: recipe_ids).map(&:id)
+    old_step_ids = current_step_ids - recipe_step_ids
+    recipe_steps.where(step_id: old_step_ids).destroy_all
   end
 
   def reject_invalid_recipe_ids(recipe_ids)

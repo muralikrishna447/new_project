@@ -96,11 +96,17 @@ describe Activity do
         activity.update_recipes(recipe_ids)
         activity.update_recipes([recipe_ids.first])
         activity.recipes.reload
+        activity.recipe_steps.reload
       end
 
       it "removes the association of recipes not included in the set" do
         activity.recipes.should have(1).recipes
         activity.recipes.first.title.should == "Mac n Cheese"
+      end
+
+      it "removes the unassociated recipe steps" do
+        activity.recipe_steps.should have(1).steps
+        activity.recipe_steps.first.title.should == 'Step A'
       end
     end
 
