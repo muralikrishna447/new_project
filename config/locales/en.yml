@@ -2,4 +2,18 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: "Please provide a name"
+            email:
+              blank: "Please enter a valid email address"
+              invalid: "The email you entered is invalid"
+              taken: "The email you entered is already being used"
+            password:
+              blank: "Please enter your password"
+              confirmation: "Password does not match confirmation"
+              too_short: "Your password is too short (minimum of 6 characters)"

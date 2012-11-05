@@ -4,6 +4,7 @@
 //= require backbone
 //= require carousel
 //= require stick_to_top
+//= require form_errors
 
 //= require twitter/bootstrap/dropdown
 //= require twitter/bootstrap/transition

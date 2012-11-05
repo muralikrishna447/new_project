@@ -31,13 +31,12 @@
     text-align: right
     letter-spacing: 1px
     display: inline-block
-    vertical-align: baseline
     color: #AAAAAA
     width: 100px
     white-space: normal
     text-shadow: none
     line-height: 20px
-    margin: 0 14px 0 45px
+    margin: 3px 14px 0 45px
     padding: 0
 
   abbr[title=required]
@@ -46,11 +45,12 @@
   input
     height: 28px
     width: 257px
+    margin: 9px 0 0 0
 
   input[type=submit]
     +font-sans-large
     padding: 0
-    margin: 10px 0 0 160px
+    margin: 20px 0 0 160px
     background: $brick
     border: none
     color: white
@@ -59,8 +59,15 @@
     width: 268px
     line-height: 37px
 
+  .input.error
+    input
+      border-color: $red
+      color: $red
 
-#sign-up
-  label[for=user_password_confirmation]
-    vertical-align: middle
-    margin-bottom: 11px
+    p
+      color: $red
+      padding: 0
+      margin: 3px 0 0 25px
+      text-align: center
+      line-height: 18px
+
