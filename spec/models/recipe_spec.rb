@@ -75,22 +75,35 @@ describe Recipe do
     let(:step2) { {title: '', directions: "Burrito bagel sandwich", image_id: 'happiness', youtube_id: ''} }
     let(:step3) { {title: 'step3', directions: "", image_id: '', youtube_id: ''} }
     let(:step_attrs) { [ step1, step2, step3 ] }
+    let(:activity1) { mock('activity 1') }
+    let(:activity2) { mock('activity 2') }
+    let(:activities) { [activity1, activity2] }
 
     describe "create" do
       before do
-        recipe.update_steps(step_attrs)
+        recipe.stub(:activities).and_return(activities)
+        activity1.stub(:update_recipe_steps)
+        activity2.stub(:update_recipe_steps)
       end
 
       it "creates steps for each non-empty attribute set" do
+        recipe.update_steps(step_attrs)
         recipe.steps.should have(2).steps
       end
 
       it "creates steps with specified attributes" do
+        recipe.update_steps(step_attrs)
         recipe.steps.first.title.should == 'step1'
         recipe.steps.first.directions.should == 'Foo and bar on the baz'
         recipe.steps.first.image_id.should == ''
         recipe.steps.first.youtube_id.should == 'pirate booty'
         recipe.steps.last.title.should == ''
+      end
+
+      it "creates the step association between the recipe's activities" do
+        activity1.should_receive(:update_recipe_steps)
+        activity2.should_receive(:update_recipe_steps)
+        recipe.update_steps(step_attrs)
       end
     end
 

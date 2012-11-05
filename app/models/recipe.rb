@@ -26,6 +26,7 @@ class Recipe < ActiveRecord::Base
     reject_invalid_steps(step_attrs)
     update_and_create_steps(step_attrs)
     delete_old_steps(step_attrs)
+    update_activity_recipe_steps
     self
   end
 
@@ -37,6 +38,10 @@ class Recipe < ActiveRecord::Base
         ingredient_attr[test].present?
       end
     end
+  end
+
+  def update_activity_recipe_steps
+    activities.each(&:update_recipe_steps)
   end
 
   def reject_invalid_steps(step_attrs)

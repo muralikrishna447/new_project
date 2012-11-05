@@ -125,6 +125,7 @@ describe Activity do
   describe "#has_ingredients?" do
     let(:recipe1) { Fabricate.build(:recipe, :title => 'r1') }
     let(:recipe2) { Fabricate.build(:recipe, :title => 'r2') }
+
     before do
       recipe2.stub(:has_ingredients?).and_return(false)
       activity.recipes << recipe1
