@@ -160,3 +160,23 @@ describe Activity, '#has_recipes?' do
     it { should have_recipes }
   end
 end
+
+describe Activity, "#update_recipe_steps" do
+  let(:activity) { Fabricate(:activity) }
+  let(:recipe1) { Fabricate(:recipe) }
+  let(:stepA) { Fabricate(:step) }
+
+  before do
+    activity.recipes << recipe1
+    recipe1.steps <<  stepA
+    recipe1.steps.reload
+    activity.recipes.reload
+    activity.update_recipe_steps
+  end
+
+  it "adds recipe_steps" do
+    activity.recipe_steps.should have(1).step
+    activity.recipe_steps.first.step.should == stepA
+  end
+end
+

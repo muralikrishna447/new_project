@@ -68,6 +68,13 @@ class Activity < ActiveRecord::Base
     self
   end
 
+  def update_recipe_steps
+    recipe_ids = recipes.map(&:id)
+    create_activity_recipe_steps(recipe_ids)
+    delete_old_activity_recipe_steps(recipe_ids)
+    self
+  end
+
   def has_ingredients?
     recipes.any?(&:has_ingredients?)
   end
