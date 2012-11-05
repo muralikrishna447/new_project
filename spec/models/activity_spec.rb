@@ -72,6 +72,8 @@ describe Activity do
     let(:recipe2) { Fabricate(:recipe, title: 'Hamburger Helper') }
     let(:recipe3) { Fabricate(:recipe, title: 'Scrambled Eggs') }
     let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id, '' ].map(&:to_s) }
+    let!(:stepA) { Fabricate(:step, title: 'Step A', recipe: recipe1) }
+    let!(:stepB) { Fabricate(:step, title: 'Step B', recipe: recipe2) }
 
     describe "update" do
       before do
@@ -81,6 +83,11 @@ describe Activity do
       it "associates recipes with the activity" do
         activity.recipes.should have(3).recipes
         activity.recipes.first.title.should == "Mac n Cheese"
+      end
+
+      it "create activity recipe steps" do
+        activity.recipe_steps.should have(2).steps
+        activity.recipe_steps.first.title.should == 'Step A'
       end
     end
 

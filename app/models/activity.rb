@@ -6,6 +6,8 @@ class Activity < ActiveRecord::Base
   has_many :activity_recipes, class_name: ActivityRecipe, inverse_of: :activity, dependent: :destroy
   has_many :recipes, through: :activity_recipes, inverse_of: :activities
 
+  has_many :recipe_steps, class_name: ActivityRecipeStep, inverse_of: :activity , dependent: :destroy
+
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
   scope :ordered, order("activity_order")
@@ -61,6 +63,7 @@ class Activity < ActiveRecord::Base
     reject_invalid_recipe_ids(recipe_ids)
     update_recipe_associations(recipe_ids)
     delete_old_recipes(recipe_ids)
+    create_activity_steps(recipe_ids)
     self
   end
 
@@ -78,6 +81,13 @@ class Activity < ActiveRecord::Base
     recipe_ids.each do |recipe_id|
       recipes << Recipe.find(recipe_id) unless recipes.exists?(recipe_id)
       activity_recipes.find_by_recipe_id(recipe_id).update_attributes(recipe_order_position: :last)
+    end
+  end
+
+  def create_activity_steps(recipe_ids)
+    recipe_step_steps= Step.joins(:recipe).where(recipe_id: recipe_ids)
+    recipe_step_steps.each do |step|
+      recipe_steps.find_or_create_by_step_id_and_activity_id(step.id, self.id)
     end
   end
 

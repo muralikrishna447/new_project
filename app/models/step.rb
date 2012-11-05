@@ -6,6 +6,7 @@ class Step < ActiveRecord::Base
   belongs_to :recipe, touch: true, inverse_of: :steps
 
   has_many :ingredients, class_name: StepIngredient, dependent: :destroy, inverse_of: :step
+  has_many :activity_recipe_steps, class_name: ActivityRecipeStep, dependent: :destroy, inverse_of: :step
 
   attr_accessible :title, :youtube_id, :recipe_id, :directions, :image_id,
     :ingredient_ids, :activity_id, :step_order_position
