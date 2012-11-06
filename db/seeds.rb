@@ -1,4 +1,5 @@
 require 'yaml'
+require './lib/copy_creator'
 
 def create_activity(activity)
   a = Activity.create
@@ -132,7 +133,11 @@ def build_admin(admin_data)
   create_admin(admin_data[:email], admin_data[:password])
 end
 
-@seed_data = HashWithIndifferentAccess.new(YAML::load(File.open(File.join(Rails.root, "db", "seeds.yml"))))
+def parse_data(name)
+  HashWithIndifferentAccess.new(YAML::load(File.open(File.join(Rails.root, "db", name))))
+end
+
+@seed_data = parse_data('seeds.yml')
 
 @seed_data[:admins].each do |admin|
   build_admin(admin)
@@ -142,13 +147,7 @@ end
   build_activity(activity_data)
 end
 
-@seed_data[:copy].each do |content|
-  next if Copy.where(location: content[:location]).any?
-  c = Copy.find_or_create_by_location(content[:location])
-  c.copy= content[:copy_content]
-  c.save
-  c
-end
+CopyCreator.create
 
 Version.create unless Version.any?
 
