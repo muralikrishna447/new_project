@@ -206,8 +206,8 @@ end
 describe Activity, "#update_steps" do
   let(:activity) { Fabricate(:activity, title: 'foo') }
 
-  let(:step1) { {title: 'Blend', description: 'blend it'} }
-  let(:step2) { {title: 'Cut', description: ''} }
+  let(:step1) { {title: 'Blend', directions: 'blend it'} }
+  let(:step2) { {title: '', directions: 'cut it'} }
   let(:step_attrs) {[ step1, step2 ] }
 
   describe "create" do
@@ -221,14 +221,14 @@ describe Activity, "#update_steps" do
 
     it "creates steps with specified attributes" do
       activity.steps.first.title.should == 'Blend'
-      activity.steps.first.description.should == 'blend it'
+      activity.steps.first.directions.should == 'blend it'
     end
   end
 
   describe "update" do
     before do
       activity.update_steps(step_attrs)
-      step_attrs.first.merge!(title: 'BleNd', description: 'stuff')
+      step_attrs.first.merge!(title: 'Blend', directions: 'stuff')
       activity.update_steps(step_attrs)
       activity.steps.reload
     end
@@ -236,7 +236,7 @@ describe Activity, "#update_steps" do
     it "updates existing steps" do
       activity.steps.should have(2).steps
       activity.steps.first.title.should == 'Blend'
-      activity.steps.first.description.should == 'stuff'
+      activity.steps.first.directions.should == 'stuff'
     end
   end
 
@@ -249,8 +249,8 @@ describe Activity, "#update_steps" do
 
     it "deletes steps not included in attribute set" do
       activity.steps.should have(1).steps
-      activity.steps.first.title.should == 'Cut'
-      activity.steps.first.description.should == ''
+      activity.steps.first.title.should == ''
+      activity.steps.first.directions.should == 'cut it'
     end
   end
 
@@ -261,7 +261,7 @@ describe Activity, "#update_steps" do
 
     it "updates ordering" do
       activity.update_steps([step2, step1])
-      activity.steps.ordered.first.title.should == 'Cut'
+      activity.steps.ordered.first.directions.should == 'cut it'
     end
   end
 end

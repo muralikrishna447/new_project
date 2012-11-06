@@ -29,9 +29,10 @@ ActiveAdmin.register Activity do
     def create
       equipment_attrs = separate_equipment
       recipe_ids = separate_recipes
+      step_attrs = separate_steps
       @activity = Activity.create(params[:activity])
       @activity.update_equipment(equipment_attrs)
-      @activity.update_recipes(recipe_ids)
+      @activity.update_recipes(step_attrs)
       create!
     end
 
@@ -39,6 +40,7 @@ ActiveAdmin.register Activity do
       @activity = Activity.find(params[:id])
       @activity.update_equipment(separate_equipment)
       @activity.update_recipes(separate_recipes)
+      @activity.update_steps(separate_steps)
       update!
     end
 
@@ -50,6 +52,10 @@ ActiveAdmin.register Activity do
 
     def separate_recipes
       params[:activity].delete(:recipes)
+    end
+
+    def separate_steps
+      params[:activity].delete(:steps)
     end
   end
 
