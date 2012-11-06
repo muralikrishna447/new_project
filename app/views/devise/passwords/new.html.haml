@@ -1,11 +1,10 @@
 #password-reset.user-form
   %h1 Forgot your password?
--# = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
--#   = devise_error_messages!
--#   %div
--#     = f.label :email
--#     %br/
--#     = f.email_field :email
--#   %div= f.submit "Send me reset password instructions"
--# = render "devise/shared/links"
+  = semantic_form_for(@user,
+                      as: :user,
+                      url: password_path('user'),
+                      remote: true) do |f|
+    = f.inputs 'Enter email for password reset instructions' do
+      = f.input :email, required: true, input_html: { type: 'email', required: true}
+    = f.submit "Send Instructions"
 
