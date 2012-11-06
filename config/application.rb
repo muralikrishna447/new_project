@@ -90,5 +90,7 @@ module Delve
         resource '/global-navigation', headers: :any, methods: [:get, :options]
       end
     end
+
+    config.show_user_profiles = true
   end
 end

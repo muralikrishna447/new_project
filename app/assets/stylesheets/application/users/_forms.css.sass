@@ -1,0 +1,76 @@
+.user-form
+  max-width: 560px
+
+  h1, legend
+    text-align: center
+
+  h1
+    color: $brick
+    border-bottom: 2px solid $grayMedium
+    margin: 0
+    padding: 25px 0
+
+  form
+    +border-radius(8px)
+    background: $grayLight
+    margin: 0
+    padding-bottom: 50px
+
+  legend
+    +font-sans-large
+    border: none
+    padding-top: 20px
+
+  ol
+    margin: 0
+    list-style-type: none
+
+  label
+    +font-sans-large
+    font-weight: 200
+    text-align: right
+    letter-spacing: 1px
+    display: inline-block
+    color: #AAAAAA
+    width: 100px
+    white-space: normal
+    text-shadow: none
+    line-height: 20px
+    margin: 3px 14px 0 45px
+    padding: 0
+
+  abbr[title=required]
+    display: none
+
+  input
+    height: 28px
+    width: 257px
+    margin: 9px 0 0 0
+
+  input[type=submit]
+    +font-sans-large
+    padding: 0
+    margin: 20px 0 0 160px
+    background: $brick
+    border: none
+    color: white
+    font-weight: 200
+    height: 37px
+    width: 268px
+    line-height: 37px
+
+  .input.error
+    input
+      border-color: $red
+      color: $red
+
+    p
+      color: $red
+      padding: 0
+      margin: 3px 0 0 25px
+      text-align: center
+      line-height: 18px
+
+#auth-modal
+  +border-radius(16px)
+  border: 10px solid $grayDarker

@@ -21,3 +21,7 @@
           %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
             Pinterest
 
+- unless user_signed_in?
+  #auth-modal.modal.hide.fade
+    = render template: 'devise/sessions/new'
+    = render template: 'devise/registrations/new'

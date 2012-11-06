@@ -13,8 +13,10 @@
 -#   %a{href: '', target: '_top'}
 -#     Forums
 -#     %i.icon-chevron-right.pull-right
-%li
+%li.last
   %a{href: 'http://blog.chefsteps.com', target: '_top'}
     Blog
     %i.icon-chevron-right.pull-right
 
+- if show_auth
+  = render 'layouts/authentication'

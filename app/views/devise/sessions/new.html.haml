@@ -1,0 +1,10 @@
+#log-in.user-form
+  %h1 Connect to log in (or #{link_to 'sign up', '#sign-up'})
+  = semantic_form_for(@user,
+                      as: :user,
+                      url: session_path('user'),
+                      remote: true) do |f|
+    = f.inputs 'Log in to existing account:' do
+      = f.input :email, label: 'Email:'
+      = f.input :password, label: 'Password:'
+    %div= f.submit "Log In"

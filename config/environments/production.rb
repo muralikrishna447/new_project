@@ -1,6 +1,8 @@
 DOMAIN='www.chefsteps.com'
 
 Delve::Application.configure do
+  config.show_user_profiles = false
+
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests

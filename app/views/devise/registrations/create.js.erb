@@ -1,0 +1,9 @@
+<% errors = @user.errors.to_json.html_safe %>
+<% if @user.valid? %>
+  window.location = '<%= after_sign_in_path_for(@user) %>'
+<% else %>
+  $('#sign-up form .error p').remove();
+  $.each(JSON.parse('<%= errors %>'), function(field, errors) {
+    $('#sign-up form #user_' + field + '_input').append('<p>' + errors[0] + '</p>').addClass('error');
+  });
+<% end %>
