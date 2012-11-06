@@ -14,6 +14,6 @@ en:
               invalid: "The email you entered is invalid"
               taken: "The email you entered is already being used"
             password:
-              blank: "Please enter your password"
+              blank: "Please enter a password"
               confirmation: "Password does not match confirmation"
               too_short: "Your password is too short (minimum of 6 characters)"
