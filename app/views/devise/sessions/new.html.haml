@@ -7,4 +7,6 @@
     = f.inputs 'Log in to existing account:' do
       = f.input :email, label: 'Email:'
       = f.input :password, label: 'Password:'
+    = link_to 'Forgot your password?', '#password-reset', class: 'forgot-password'
     = f.submit "Log In", disable_with: 'Submitting&hellip;'.html_safe
+
