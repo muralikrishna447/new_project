@@ -9,4 +9,4 @@
       = f.input :email, label: 'Email:'
       = f.input :password, label: 'Password:'
       = f.input :password_confirmation, label: 'Confirm Password:'
-    %div= f.submit "Sign Up"
+    = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe

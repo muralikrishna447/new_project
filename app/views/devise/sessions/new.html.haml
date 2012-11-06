@@ -7,4 +7,4 @@
     = f.inputs 'Log in to existing account:' do
       = f.input :email, label: 'Email:'
       = f.input :password, label: 'Password:'
-    %div= f.submit "Log In"
+    = f.submit "Log In", disable_with: 'Submitting&hellip;'.html_safe
