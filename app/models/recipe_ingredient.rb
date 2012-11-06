@@ -1,5 +1,7 @@
 class RecipeIngredient < ActiveRecord::Base
   include RankedModel
+  include Quantity
+
   ranks :ingredient_order, with_same: :recipe_id
 
   belongs_to :recipe, touch: true, inverse_of: :ingredients
@@ -15,9 +17,5 @@ class RecipeIngredient < ActiveRecord::Base
   scope :ordered, rank(:ingredient_order)
 
   default_scope { ordered }
-
-  def display_quantity
-    "#{quantity} #{unit}"
-  end
 end
 
