@@ -63,13 +63,12 @@ class Activity < ActiveRecord::Base
     reject_invalid_recipe_ids(recipe_ids)
     update_recipe_associations(recipe_ids)
     delete_old_recipes(recipe_ids)
-    create_activity_recipe_steps(recipe_ids)
-    delete_old_activity_recipe_steps(recipe_ids)
+    update_recipe_steps(recipe_ids)
     self
   end
 
-  def update_recipe_steps
-    recipe_ids = recipes.map(&:id)
+  def update_recipe_steps(recipe_ids = nil)
+    recipe_ids ||= recipes.map(&:id)
     create_activity_recipe_steps(recipe_ids)
     delete_old_activity_recipe_steps(recipe_ids)
     self
