@@ -1,4 +1,4 @@
-DOMAIN='www.chefsteps.com'
+DOMAIN = 'www.chefsteps.com'
 
 Delve::Application.configure do
   config.show_user_profiles = false
@@ -73,7 +73,7 @@ Delve::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 end
 
-MAILCHIMP_API_KEY="9875b0250eae48e91a12a26117bba403-us5"
-MAILCHIMP_LIST_ID="8e9d6bdff4"
-DISQUS_SHORTNAME='chefstepsproduction'
+MAILCHIMP_API_KEY = "9875b0250eae48e91a12a26117bba403-us5"
+MAILCHIMP_LIST_ID = "8e9d6bdff4"
+DISQUS_SHORTNAME = 'chefstepsproduction'
 
