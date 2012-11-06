@@ -9,13 +9,15 @@
     autocomplete: 'off'
   }
 
-  title = ingredient.title unless is_template
-  quantity = ingredient.quantity unless is_template
-  unit = ingredient.unit unless is_template
+  unless is_template
+    title = ingredient.title
+    display_quantity = ingredient.display_quantity
+    unit = ingredient.unit
+  end
 
 %tr{id: row_id, class: ('template-row' if is_template )}
   %td= text_field_tag "#{field_name_prefix}[title]", title, title_data_attrs
-  %td= text_field_tag "#{field_name_prefix}[quantity]", quantity
+  %td= text_field_tag "#{field_name_prefix}[display_quantity]", display_quantity
   %td
     = text_field_tag "#{field_name_prefix}[unit]", unit
     = remove_button 'tr'

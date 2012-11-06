@@ -31,7 +31,7 @@ class Step < ActiveRecord::Base
 
   def reject_invalid_ingredients(ingredient_attrs)
     ingredient_attrs.select! do |ingredient_attr|
-      [:title, :quantity, :unit].all? do |test|
+      [:title, :display_quantity, :unit].all? do |test|
         ingredient_attr[test].present?
       end
     end
@@ -42,7 +42,7 @@ class Step < ActiveRecord::Base
       ingredient = Ingredient.find_or_create_by_title(ingredient_attr[:title])
       step_ingredient = ingredients.find_or_create_by_ingredient_id_and_step_id(ingredient.id, self.id)
       step_ingredient.update_attributes(
-        quantity: ingredient_attr[:quantity],
+        display_quantity: ingredient_attr[:display_quantity],
         unit: ingredient_attr[:unit],
         ingredient_order_position: :last
       )

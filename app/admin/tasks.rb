@@ -1,0 +1,21 @@
+ActiveAdmin.register_page "Tasks" do
+
+  menu false
+  content title: 'Super Admin Tasks' do
+    h2 "The following tasks should only be run by developers of ChefSteps.com", style: 'color: red'
+    render 'task_list'
+  end
+
+  page_action :create_display_quantities, :method => :post do
+    # self in this context is the controller
+    class << self
+      include ActionView::Helpers::NumberHelper
+    end
+
+    (RecipeIngredient.all + StepIngredient.all).each do |ingredient|
+      ingredient.display_quantity = number_with_precision(ingredient.quantity, precision: 2, strip_insignificant_zeros: true)
+      ingredient.save!
+    end
+    redirect_to({action: :index}, notice: "Quantities updated successfully!")
+  end
+end

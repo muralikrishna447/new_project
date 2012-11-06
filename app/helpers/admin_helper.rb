@@ -25,6 +25,11 @@ module AdminHelper
     link_to text, url, options
   end
 
+  def task_button(text, url, options={})
+    options.merge!(method: :post, confirm: 'Are you sure?')
+    admin_button text, url, options
+  end
+
   def sortable_table(id, &block)
     content_tag(:table, id: id, class: ['nested-records', 'sortable'], &block)
   end

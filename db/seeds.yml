@@ -39,16 +39,16 @@ activities:
   - title: Assembly
     ingredients:
     - title: Cooked and chilled salmon portions
-      quantity: 10
+      display_quantity: '10'
       unit: ea
     - title: Pickled onions
-      quantity: 3
+      display_quantity: '3'
       unit: ea
     - title: Horseradish cream
-      quantity: 320
+      display_quantity: '320'
       unit: g
     - title: Watercress puree
-      quantity: 320
+      display_quantity: '320'
       unit: g
     - title: Maldon salt
       unit: a/n
@@ -95,29 +95,29 @@ activities:
     yield: 1700 g
     ingredients:
     - title: Water
-      quantity: 1600
+      display_quantity: '1600'
       unit: g
     - title: Salt
-      quantity: 160
+      display_quantity: '160'
       unit: g
     - title: Sugar
-      quantity: 80
+      display_quantity: '80'
       unit: g
     - title: Salmon loin, skinless
-      quantity: 400
+      display_quantity: '400'
       unit: g
     steps:
     - title: Weigh out ingredients
       image_id: IMG_4738.jpg
       ingredients:
       - title: Water
-        quantity: 1600
+        display_quantity: '1600'
         unit: g
       - title: Salt
-        quantity: 160
+        display_quantity: '160'
         unit: g
       - title: Sugar
-        quantity: 80
+        display_quantity: '80'
         unit: g
       directions: "* Scale ingredients"
 
@@ -177,50 +177,50 @@ activities:
     yield: 900 g (~ 10 portions)
     ingredients:
     - title: Water
-      quantity: 400
+      display_quantity: '400'
       unit: g
     - title: White wine vinegar
-      quantity: 400
+      display_quantity: '400'
       unit: g
     - title: Sugar
-      quantity: 80
+      display_quantity: '80'
       unit: g
     - title: Salt
-      quantity: 20
+      display_quantity: '20'
       unit: g
     - title: Black pepper, whole
-      quantity: 4
+      display_quantity: '4'
       unit: g
     - title: Coriander seed, whole
-      quantity: 4
+      display_quantity: '4'
       unit: g
     - title: Small red onions
-      quantity: 3
+      display_quantity: '3'
       unit: ea
     - title: Green onions
-      quantity: 10
+      display_quantity: '10'
       unit: ea
     steps:
     - title: Scale ingriedients
       image_id: pickled_6.jpg
       ingredients:
       - title: Water
-        quantity: 400
+        display_quantity: '400'
         unit: g
       - title: White wine vinegar
-        quantity: 400
+        display_quantity: '400'
         unit: g
       - title: Sugar
-        quantity: 80
+        display_quantity: '80'
         unit: g
       - title: Salt
-        quantity: 20
+        display_quantity: '20'
         unit: g
       - title: Black pepper, whole
-        quantity: 4
+        display_quantity: '4'
         unit: g
       - title: Coriander seed, whole
-        quantity: 4
+        display_quantity: '4'
         unit: g
       directions: |
         * Scale ingredients
@@ -233,10 +233,10 @@ activities:
         * Seperate onion layers, sorting the red outer petals from the inner white ones
       ingredients:
       - title: Small red onions
-        quantity: 3
+        display_quantity: '3'
         unit: ea
       - title: Green onions
-        quantity: 10
+        display_quantity: '10'
         unit: ea
 
     - title: put in containers
@@ -272,20 +272,20 @@ activities:
     yield: 1700 g
     ingredients:
     - title: Watercress (about 2 bunches)
-      quantity: 150
+      display_quantity: '150'
       unit: g
     - title: Xanthan gum
-      quantity: 0.23
+      display_quantity: '0.23'
       unit: g
     - title: Salt
-      quantity: 2.3
+      display_quantity: '2.3'
       unit: g
     steps:
     - title: clean watercress
       image_id: IMG_5141.jpg
       ingredients:
       - title: Watercress (about 2 bunches)
-        quantity: 150
+        display_quantity: '150'
         unit: g
       directions: |
         * Pick and clean watercress.
@@ -308,7 +308,7 @@ activities:
       image_id: IMG_5194.jpg
       ingredients:
       - title: Xanthan gum
-        quantity: 0.23
+        display_quantity: '0.23'
         unit: g
       directions: |
         * Check the weight of the puree before adding 0.1% of the puree's weight in xanthan gum, 0.23 grams for 230 grams of puree in this case.
@@ -345,33 +345,33 @@ activities:
     yield: 320 g
     ingredients:
     - title: Fresh horseradish root
-      quantity: 1
+      display_quantity: '1'
       unit: ea
     - title: Cream
-      quantity: 350
+      display_quantity: '350'
       unit: g
     - title: Xanthan gum
-      quantity: 0.35
+      display_quantity: '0.35'
       unit: g
     - title: Salt
-      quantity: 3.2
+      display_quantity: '3.2'
       unit: g
     steps:
     - title: wash
       image_id: horseradish_1.jpg
       ingredients:
       - title: Fresh horseradish root
-        quantity: 1
+        display_quantity: '1'
         unit: ea
       directions: "* Wash and peel the fresh horseradish."
     - title: microplane
       image_id: horseradish_2.jpg
       ingredients:
       - title: peeled and preped horseradish
-        quantity: 1
+        display_quantity: '1'
         unit: ea
       - title: Cream
-        quantity: 350
+        display_quantity: '350'
         unit: g
       directions: |
         * Microplane 50 g and place it into a sous vide bag.

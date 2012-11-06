@@ -4,10 +4,10 @@ describe Recipe do
   let(:recipe) { Fabricate(:recipe, title: 'foo') }
 
   describe "#update_ingredients" do
-    let(:soup) { {title: 'Soup', quantity: 2, unit: 'g'}  }
-    let(:pepper) { {title: 'Pepper', quantity: 1, unit: 'kg'}  }
+    let(:soup) { {title: 'Soup', display_quantity: '2', unit: 'g'}  }
+    let(:pepper) { {title: 'Pepper', display_quantity: '1', unit: 'kg'}  }
     let(:ingredient_attrs) {[ soup, pepper, pepper,
-                              { title: '', quantity: 2, unit: '' }
+                              { title: '', display_quantity: '2', unit: '' }
     ]}
 
 
@@ -21,7 +21,7 @@ describe Recipe do
       end
 
       it "creates ingredient with specified attributes" do
-        recipe.ingredients.first.quantity.should == 2
+        recipe.ingredients.first.display_quantity.should == '2'
         recipe.ingredients.first.unit.should == 'g'
         recipe.ingredients.first.title.should == 'Soup'
       end
@@ -30,7 +30,7 @@ describe Recipe do
     describe "update" do
       before do
         recipe.update_ingredients(ingredient_attrs)
-        ingredient_attrs.first.merge!(title: 'SouP', quantity: 15, unit: 'foobars')
+        ingredient_attrs.first.merge!(title: 'SouP', display_quantity: '15', unit: 'foobars')
         recipe.update_ingredients(ingredient_attrs)
         recipe.ingredients.reload
       end
@@ -38,7 +38,7 @@ describe Recipe do
       it "updates existing ingredients" do
         recipe.ingredients.should have(2).ingredients
         recipe.ingredients.first.title.should == 'Soup'
-        recipe.ingredients.first.quantity.should == 15
+        recipe.ingredients.first.display_quantity.should == '15'
         recipe.ingredients.first.unit.should == 'foobars'
       end
     end
@@ -53,7 +53,7 @@ describe Recipe do
       it "deletes ingredients not included in attribute set" do
         recipe.ingredients.should have(1).ingredients
         recipe.ingredients.first.title.should == 'Pepper'
-        recipe.ingredients.first.quantity.should == 1
+        recipe.ingredients.first.display_quantity.should == '1'
         recipe.ingredients.first.unit.should == 'kg'
       end
     end

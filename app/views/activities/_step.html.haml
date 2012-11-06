@@ -15,7 +15,7 @@
                     %i.icon-shopping-cart
               - else
                 %td= ingredient.title
-              %td.quantity= quantity_number(ingredient.quantity)
+              %td.quantity= ingredient.display_quantity
               %td= ingredient.unit
     - if step.directions.present?
       .step-directions
