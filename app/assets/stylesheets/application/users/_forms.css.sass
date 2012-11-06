@@ -1,6 +1,5 @@
 .user-form
   max-width: 560px
-  border: 1px solid red
 
   h1, legend
     text-align: center
@@ -12,6 +11,7 @@
     padding: 25px 0
 
   form
+    +border-radius(8px)
     background: $grayLight
     margin: 0
     padding-bottom: 50px
@@ -71,3 +71,6 @@
       text-align: center
       line-height: 18px
 
+#auth-modal
+  +border-radius(16px)
+  border: 10px solid $grayDarker
