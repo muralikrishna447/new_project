@@ -5,6 +5,6 @@
                       url: password_path('user'),
                       remote: true) do |f|
     = f.inputs 'Enter email for password reset instructions' do
-      = f.input :email, required: true, input_html: { type: 'email', required: true}
+      = f.input :email, label: 'Email:', input_html: { type: 'email', required: true}
     = f.submit "Send Instructions"
 
