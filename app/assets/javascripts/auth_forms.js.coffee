@@ -19,4 +19,8 @@ $ ->
 
   $(window).on 'hashchange', showAuthForm
 
+  # clear hash to support repeated clicks on same trigger
+  $('#auth-modal').on 'hide', ->
+    window.location.hash = ''
+
   showAuthForm()
