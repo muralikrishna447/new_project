@@ -1,5 +1,5 @@
 .container.title-bar
   .span12
-    - unless current_page?('/')
+    - unless current_page?('/') or user_signed_in?
       = render 'mailing_list/subscribe', orange: true
 
