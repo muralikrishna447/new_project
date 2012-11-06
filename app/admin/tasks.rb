@@ -6,7 +6,7 @@ ActiveAdmin.register_page "Tasks" do
     render 'task_list'
   end
 
-  page_action :create_display_quantities, :method => :post do
+  page_action :create_display_quantities, method: :post do
     # self in this context is the controller
     class << self
       include ActionView::Helpers::NumberHelper
@@ -17,5 +17,10 @@ ActiveAdmin.register_page "Tasks" do
       ingredient.save!
     end
     redirect_to({action: :index}, notice: "Quantities updated successfully!")
+  end
+
+  page_action :update_activity_recipe_steps, method: :post do
+    Activity.all.map(&:update_recipe_steps)
+    redirect_to({action: :index}, notice: "Activity recipe steps updated successfully!")
   end
 end
