@@ -12,5 +12,5 @@
     .terms-of-service
       = check_box_tag 'terms', true, false, required: true
       = label_tag 'terms', 'I accept the Terms of Service'
-    = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe
+    = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe, disabled: true
 

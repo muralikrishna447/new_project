@@ -9,6 +9,10 @@ $ ->
     $(this).find('.input').addClass('error')
     $(this).find('#user_password_input').append('<p>' + status.responseText + '</p>')
 
+  $('#sign-up form input#terms').on 'change', (event) ->
+    setValue =  $(event.currentTarget).is(':checked')
+    $("input[value='Sign Up']").attr('disabled', not setValue)
+
   showAuthForm = ->
     id = window.location.hash
     if $(id).hasClass('user-form')
@@ -22,3 +26,4 @@ $ ->
   $(window).on 'hashchange', showAuthForm
 
   showAuthForm()
+
