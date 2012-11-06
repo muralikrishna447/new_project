@@ -23,5 +23,9 @@
 
 - unless user_signed_in?
   #auth-modal.modal.hide.fade
-    = render template: 'devise/sessions/new'
-    = render template: 'devise/registrations/new'
+    .carousel
+      .carousel-inner
+        .item.active
+          = render template: 'devise/sessions/new'
+        .item
+          = render template: 'devise/registrations/new'

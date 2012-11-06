@@ -14,8 +14,8 @@ module ApplicationHelper
     number_with_precision(quantity, precision: 2, strip_insignificant_zeros: true)
   end
 
-  def modal_trigger(path, target, &block)
-    link_to path, data: {toggle: 'modal', target: target}, &block
+  def auth_trigger(target, form_number, &block)
+    link_to '#', class: 'auth-trigger', data: {target: target, 'form-number'=> form_number}, &block
   end
 end
 
