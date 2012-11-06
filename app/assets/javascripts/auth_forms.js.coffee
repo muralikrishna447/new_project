@@ -10,18 +10,15 @@ $ ->
     $(this).find('#user_password_input').append('<p>' + status.responseText + '</p>')
 
   showAuthForm = ->
-    id = window.location.hash || 'NONE'
-    $authForm = $(id + '.user-form')
-    $('.user-form').hide()
-    if $authForm.length > 0
-      $authForm.show()
+    id = window.location.hash
+    if $(id).hasClass('user-form')
+      $('.user-form').hide()
+      $(id).show()
       $('#auth-modal').modal('show')
 
-  $(window).on 'hashchange', showAuthForm
+      window.location.hash = ''
+      history.pushState('', document.title, window.location.pathname)
 
-  # clear hash to support repeated clicks on same trigger
-  $('#auth-modal').on 'hidden', ->
-    window.location.hash = ''
-    history.pushState('', document.title, window.location.pathname)
+  $(window).on 'hashchange', showAuthForm
 
   showAuthForm()
