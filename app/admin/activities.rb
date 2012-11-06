@@ -5,7 +5,7 @@ ActiveAdmin.register Activity do
   end
 
   action_item only: [:show] do
-    link_to('Order Recipe Steps', order_recipe_steps_admin_activity_path(activity))
+    link_to('Order Recipe Steps', recipe_steps_order_admin_activity_path(activity))
   end
 
   show do |activity|
@@ -53,11 +53,11 @@ ActiveAdmin.register Activity do
     end
   end
 
-  member_action :order_recipe_steps, method: :get do
+  member_action :recipe_steps_order, method: :get do
     @activity = Activity.find(params[:id])
   end
 
-  member_action :update_order_recipe_steps, method: :put do
+  member_action :update_recipe_steps_order, method: :put do
     activity_id = params[:activity][:id]
     recipe_step_ids = params[:activity][:recipe_steps][:ids]
     activity = Activity.find(params[:id])
