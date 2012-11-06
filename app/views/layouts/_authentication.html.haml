@@ -13,12 +13,12 @@
 
 - else
   %li.authentication.first
-    = link_to new_user_session_path do
+    = modal_trigger new_user_session_path, '#auth-modal' do
       Log in
       %i.icon-chevron-right.pull-right
 
   %li.authentication
-    = link_to new_user_registration_path do
+    = modal_trigger new_user_registration_path, '#auth-modal' do
       Sign up
       %i.icon-chevron-right.pull-right
     %span

@@ -1,6 +1,9 @@
 #sign-up.user-form
   %h1 Connect to sign up (or #{link_to 'log in', new_user_session_path})
-  = semantic_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+  = semantic_form_for(@user,
+                      as: :user,
+                      url: registration_path('user'),
+                      remote: true) do |f|
     = f.inputs 'Create a new account:' do
       = f.input :name, label: 'Name:'
       = f.input :email, label: 'Email:'

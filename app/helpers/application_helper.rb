@@ -13,5 +13,9 @@ module ApplicationHelper
   def quantity_number(quantity)
     number_with_precision(quantity, precision: 2, strip_insignificant_zeros: true)
   end
+
+  def modal_trigger(path, target, &block)
+    link_to path, data: {toggle: 'modal', target: target}, &block
+  end
 end
 
