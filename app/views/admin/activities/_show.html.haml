@@ -49,4 +49,11 @@
               %ol
                 - activity.steps.each_with_index do |step,index|
                   %li= link_to step.title(index), admin_step_path(step)
+          %tr
+            %th Ordered Recipe Steps
+            %td
+              %ol
+                - activity.recipe_steps.each do |recipe_step|
+                  %li= recipe_step.sorting_title
+
 

@@ -83,6 +83,13 @@ class Activity < ActiveRecord::Base
     activity_recipes.ordered.all.map(&:recipe)
   end
 
+  def update_recipe_step_order(recipe_step_ids)
+    recipe_step_ids.select!(&:present?)
+    recipe_step_ids.each do |recipe_step_id|
+      recipe_steps.find(recipe_step_id).update_attributes(step_order_position: :last)
+    end
+  end
+
   private
 
   def update_recipe_associations(recipe_ids)

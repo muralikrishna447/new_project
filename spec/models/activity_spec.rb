@@ -168,7 +168,7 @@ describe Activity, "#update_recipe_steps" do
 
   before do
     activity.recipes << recipe1
-    recipe1.steps <<  stepA
+    recipe1.steps << stepA
     recipe1.steps.reload
     activity.recipes.reload
     activity.update_recipe_steps
@@ -177,6 +177,29 @@ describe Activity, "#update_recipe_steps" do
   it "adds recipe_steps" do
     activity.recipe_steps.should have(1).step
     activity.recipe_steps.first.step.should == stepA
+  end
+end
+
+describe Activity, "#update_recipe_step_order" do
+  let(:activity) { Fabricate.build(:activity) }
+  let(:stepA) { Fabricate(:step) }
+  let(:stepB) { Fabricate(:step) }
+  let(:recipe1) { Fabricate(:recipe) }
+  let(:recipe2) { Fabricate(:recipe) }
+
+  before do
+    recipe1.steps << stepA
+    recipe2.steps << stepB
+    activity.recipes << recipe1 << recipe2
+    activity.update_recipe_steps
+    activity_steps = activity.recipe_steps
+    @requested_order = [activity_steps.last, activity_steps.first]
+    activity_steps_order_ids = @requested_order.map(&:id).map(&:to_s)
+    activity.update_recipe_step_order(activity_steps_order_ids)
+  end
+
+  it "orders the activity recipe steps" do
+    activity.recipe_steps.ordered.should == @requested_order
   end
 end
 
