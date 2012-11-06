@@ -13,7 +13,7 @@
   quantity = ingredient.quantity unless is_template
   unit = ingredient.unit unless is_template
 
-%tr{id: row_id}
+%tr{id: row_id, class: ('template-row' if is_template )}
   %td= text_field_tag "#{field_name_prefix}[title]", title, title_data_attrs
   %td= text_field_tag "#{field_name_prefix}[quantity]", quantity
   %td

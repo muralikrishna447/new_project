@@ -3,10 +3,10 @@
     = sortable_table('recipe_steps') do
       %tr
         %th
-      - @activity.recipe_steps.ordered.each do |recipe_step|
+      - @activity.recipe_steps.each do |recipe_step|
         = render 'recipe_step_order_form', recipe_step: recipe_step
 
-    = f.actions do
-      = f.action :submit
-      = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
+  = f.actions do
+    = f.action :submit
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
 

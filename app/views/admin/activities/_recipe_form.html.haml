@@ -5,7 +5,7 @@
 
   recipe_id = is_template ? nil : recipe.id
 
-%tr{id: row_id}
+%tr{id: row_id, class: ('template-row' if is_template )}
   %td
     = select_tag "activity[recipes][]", options_from_collection_for_select(Recipe.all, "id", "title", recipe_id), include_blank: true
     = remove_button 'tr'
