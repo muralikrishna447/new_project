@@ -58,7 +58,6 @@ ActiveAdmin.register Activity do
   end
 
   member_action :update_recipe_steps_order, method: :put do
-    activity_id = params[:activity][:id]
     recipe_step_ids = params[:activity][:recipe_steps][:ids]
     activity = Activity.find(params[:id])
     activity.update_recipe_step_order(recipe_step_ids)
