@@ -1,3 +1,5 @@
+require './lib/copy_creator'
+
 ActiveAdmin.register_page "Tasks" do
 
   menu false
@@ -22,5 +24,10 @@ ActiveAdmin.register_page "Tasks" do
   page_action :update_activity_recipe_steps, method: :post do
     Activity.all.map(&:update_recipe_steps)
     redirect_to({action: :index}, notice: "Activity recipe steps updated successfully!")
+  end
+
+  page_action :create_new_copy, method: :post do
+    CopyCreator.create
+    redirect_to({action: :index}, notice: "Copy created successfully!")
   end
 end
