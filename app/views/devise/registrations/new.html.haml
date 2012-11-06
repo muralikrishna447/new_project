@@ -6,7 +6,7 @@
                       remote: true) do |f|
     = f.inputs 'Create a new account:' do
       = f.input :name, label: 'Name:'
-      = f.input :email, label: 'Email:'
+      = f.input :email, label: 'Email:', input_html: { required: true, type: 'email'}
       = f.input :password, label: 'Password:'
       = f.input :password_confirmation, label: 'Confirm Password:'
     = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe
