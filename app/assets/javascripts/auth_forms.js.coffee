@@ -13,9 +13,6 @@ $ ->
     setValue =  $(event.currentTarget).is(':checked')
     $("input[value='Sign Up']").attr('disabled', not setValue)
 
-  $('#password-reset form input#user_email').on 'change', (event) ->
-
-
   showAuthForm = ->
     id = window.location.hash
     if $(id).hasClass('user-form')
