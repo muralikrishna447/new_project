@@ -11,6 +11,6 @@
       = f.input :password_confirmation, label: 'Confirm Password:'
     .terms-of-service
       = check_box_tag 'terms', true, false, required: true
-      = label_tag 'terms', 'I accept the Terms of Service'
+      = label_tag 'terms', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
     = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe, disabled: true
 

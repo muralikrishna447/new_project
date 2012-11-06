@@ -1,0 +1,11 @@
+- content_for :title, 'Terms of Service'
+
+.container
+  .row
+    .span12
+      %h4 Terms of Service
+  .row
+    .span12
+      :markdown
+        #{@terms_of_service.to_s}
+
