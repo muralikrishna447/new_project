@@ -13,12 +13,12 @@
 
 - else
   %li.authentication.first
-    = auth_trigger '#auth-modal', 0 do
+    = link_to '#log-in' do
       Log in
       %i.icon-chevron-right.pull-right
 
   %li.authentication
-    = auth_trigger '#auth-modal', 1 do
+    = link_to '#sign-up' do
       Sign up
       %i.icon-chevron-right.pull-right
     %span

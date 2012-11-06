@@ -6,13 +6,17 @@ $ ->
 
   $('#log-in form').on 'ajax:error', (xhr, status, error)->
     $(this).find('.error p').remove()
-    $(this).find('.input').addClass('error');
+    $(this).find('.input').addClass('error')
     $(this).find('#user_password_input').append('<p>' + status.responseText + '</p>')
 
-  $formsCarousel = $('#auth-modal .carousel')
-  $formsCarousel.carousel(interval: false)
+  showAuthForm = ->
+    id = window.location.hash || 'NONE'
+    $authForm = $(id + '.user-form')
+    $('.user-form').hide()
+    if $authForm.length > 0
+      $authForm.show()
+      $('#auth-modal').modal('show')
 
-  $('.auth-trigger').on 'click', ->
-    $formsCarousel.carousel($(this).data('form-number'))
-    $($(this).data('target')).modal('show')
+  $(window).on 'hashchange', showAuthForm
 
+  showAuthForm()

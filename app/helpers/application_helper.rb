@@ -13,9 +13,5 @@ module ApplicationHelper
   def quantity_number(quantity)
     number_with_precision(quantity, precision: 2, strip_insignificant_zeros: true)
   end
-
-  def auth_trigger(target, form_number, &block)
-    link_to '#', class: 'auth-trigger', data: {target: target, 'form-number'=> form_number}, &block
-  end
 end
 
