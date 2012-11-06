@@ -18,6 +18,6 @@ module Quantity
   private
 
   def store_quantity
-    self.quantity = BigDecimal.new(self.display_quantity)
+    self.quantity = BigDecimal.new(self.display_quantity || '0')
   end
 end
