@@ -3,7 +3,7 @@
     = sortable_table('recipe_steps') do
       %tr
         %th
-      - @activity.recipe_steps.each do |recipe_step|
+      - @activity.ordered_recipe_steps.each do |recipe_step|
         = render 'recipe_step_order_form', recipe_step: recipe_step
 
   = f.actions do

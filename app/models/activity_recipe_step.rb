@@ -12,7 +12,6 @@ class ActivityRecipeStep < ActiveRecord::Base
   delegate :title, :youtube_id, :directions, :image_id, :ingredient_ids, to: :step
 
   scope :ordered, rank(:step_order)
-  default_scope { ordered }
 
   def sorting_title
     "#{recipe.title} - #{title}"
