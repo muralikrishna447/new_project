@@ -1,0 +1,12 @@
+= semantic_form_for [:admin, @activity], url: update_recipe_steps_order_admin_activity_path(@activity) do |f|
+  = section("Recipe Steps", f) do
+    = sortable_table('recipe_steps') do
+      %tr
+        %th
+      - @activity.ordered_recipe_steps.each do |recipe_step|
+        = render 'recipe_step_order_form', recipe_step: recipe_step
+
+  = f.actions do
+    = f.action :submit
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
+

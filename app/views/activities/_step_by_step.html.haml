@@ -1,14 +1,13 @@
 .hero-unit.hero-well.hero-step-by-step
   .container.step-by-step
-    - activity.ordered_recipes.each do |recipe|
-      - if recipe.steps.any?
+    - if activity.recipe_steps.any?
+      - activity.ordered_recipe_steps.each_with_index do |recipe_step, i|
         .row
           .span12
-            - recipe.steps.each_with_index do |step, i|
-              = render 'step', step: step, count: i
-              .row
-                .span12
-                  .horizontal-divider
+            = render 'step', step: recipe_step, count: i
+            .row
+              .span12
+                .horizontal-divider
 
     - if activity.steps.any?
       .row

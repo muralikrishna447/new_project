@@ -8,7 +8,7 @@ ActiveAdmin.register Recipe do
   form partial: 'form'
 
   action_item only: [:show, :edit] do
-    link_to('Edit step ingredients', associated_ingredients_admin_recipe_path(recipe))
+    link_to('Edit Step Ingredients', associated_ingredients_admin_recipe_path(recipe))
   end
 
   controller do
