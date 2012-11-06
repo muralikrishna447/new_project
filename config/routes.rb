@@ -13,6 +13,8 @@ Delve::Application.routes.draw do
 
   post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
 
+  get 'terms-of-service' => 'home#terms_of_service', as: 'terms_of_service'
+
   resources :courses, :only => [:show]
   resources :activities, :only => [:show] do
     member do

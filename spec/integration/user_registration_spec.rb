@@ -14,6 +14,7 @@ describe 'User registration application', :js do
     fill_in 'Email', with: 'bob@bob.com'
     fill_in 'Password', with: 'password'
     fill_in 'Confirm Password', with: 'password'
+    check 'terms'
     click_button 'Sign Up'
 
     page.should have_content('Bob Tester')

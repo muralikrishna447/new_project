@@ -392,6 +392,12 @@ activities:
         * Refrigerate if not using immediately.
 
 copy:
+#terms of service
+- location: terms-of-service
+  copy_content: |
+    * This is the terms of service
+    * This is the terms of service
+    * This is the terms of service
 # carousel images
 - location: carousel-images
   copy_content: |
