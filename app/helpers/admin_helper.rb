@@ -40,9 +40,9 @@ module AdminHelper
 
   def activity_link(activity, text=false)
     if activity.published?
-      link_to text || 'public link', activity_path(activity)
+      link_to text || 'public link', activity_path(activity), target: '_blank'
     else
-      link_to text || 'private link', private_activity_path(activity, PrivateToken.token)
+      link_to text || 'private link', private_activity_path(activity, PrivateToken.token), target: '_blank'
     end
   end
 end
