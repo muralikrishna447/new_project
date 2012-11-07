@@ -11,6 +11,10 @@ class Recipe < ActiveRecord::Base
 
   accepts_nested_attributes_for :ingredients, :steps
 
+  def ordered_steps
+    steps.ordered.recipe_id_not_nil
+  end
+
   def has_ingredients?
     !ingredients.empty?
   end
