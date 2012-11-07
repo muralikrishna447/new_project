@@ -16,7 +16,7 @@ class Activity < ActiveRecord::Base
   scope :ordered, rank(:activity_order)
   scope :published, where(published: true)
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order, :description, :equipment
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order, :description, :equipment, :published
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']

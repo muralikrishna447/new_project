@@ -33,6 +33,7 @@ ActiveAdmin.register Activity do
     column "Description" do |activity|
       truncate(activity.description, length: 50)
     end
+    column :published
     default_actions
   end
 
