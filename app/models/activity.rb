@@ -23,12 +23,8 @@ class Activity < ActiveRecord::Base
   end
 
   def self.find_published(id, token=nil)
-    return published.find(id) if token.nil? || token != private_token
-    find(id)
-  end
-
-  def self.private_token
-    'SECRET'
+    scope = PrivateToken.valid?(token) ? scoped : published
+    scope.find(id)
   end
 
   def optional_equipment

@@ -333,12 +333,14 @@ describe Activity, 'publishing' do
         lambda { Activity.find_published(2) }.should raise_error ActiveRecord::RecordNotFound
       end
 
-      it 'throws not found if token does not match secret' do
+      it 'throws not found if token is invalid' do
+        PrivateToken.should_receive(:valid?).with('bad_token').and_return(false)
         lambda { Activity.find_published(2, 'bad_token') }.should raise_error ActiveRecord::RecordNotFound
       end
 
-      it 'returns activity if token matches secret' do
-        Activity.find_published(2, Activity.private_token).should == private_activity
+      it 'returns activity if token is valid' do
+        PrivateToken.should_receive(:valid?).with('good_token').and_return(true)
+        Activity.find_published(2, 'good_token').should == private_activity
       end
     end
   end
