@@ -14,6 +14,7 @@ class Activity < ActiveRecord::Base
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
   scope :ordered, rank(:activity_order)
+  scope :published, where(published: true)
 
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order, :description, :equipment
 
@@ -30,13 +31,13 @@ class Activity < ActiveRecord::Base
   end
 
   def next
-    activities = Activity.ordered.all
+    activities = Activity.ordered.published.all
     i = activities.index(self)
     activities[i+1]
   end
 
   def prev
-    activities = Activity.ordered.all
+    activities = Activity.ordered.published.all
     i = activities.index(self)
     return nil if i == 0
     activities[i-1]

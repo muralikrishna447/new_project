@@ -267,16 +267,17 @@ describe Activity, "#update_steps" do
 end
 
 describe Activity, 'ordering' do
-  let!(:activity_last) { Fabricate(:activity, activity_order_position: 2) }
-  let!(:activity_first) { Fabricate(:activity, activity_order_position: 0) }
-  let!(:activity_middle) { Fabricate(:activity, activity_order_position: 1) }
+  let!(:activity_last) { Fabricate(:activity, activity_order_position: 2, published: true) }
+  let!(:activity_first) { Fabricate(:activity, activity_order_position: 0, published: true) }
+  let!(:activity_middle) { Fabricate(:activity, activity_order_position: 1, published: true) }
+  let!(:activity_private) { Fabricate(:activity, activity_order_position: 3) }
 
   its "ordered scope returns activities in order" do
-    Activity.ordered.all.should == [activity_first, activity_middle, activity_last]
+    Activity.ordered.all.should == [activity_first, activity_middle, activity_last, activity_private]
   end
 
   context "#next" do
-    it "returns the next ordered activity" do
+    it "returns the next published-ordered activity" do
       activity_first.next.should == activity_middle
       activity_middle.next.should == activity_last
     end
@@ -287,7 +288,7 @@ describe Activity, 'ordering' do
   end
 
   context "#prev" do
-    it "returns the previous ordered activity" do
+    it "returns the previous published-ordered activity" do
       activity_last.prev.should == activity_middle
       activity_middle.prev.should == activity_first
     end
@@ -295,5 +296,18 @@ describe Activity, 'ordering' do
     it "returns nil if at beginning of collection" do
       activity_first.prev.should_not be
     end
+  end
+end
+
+describe Activity, 'publishing' do
+  let!(:public_activity) { Fabricate(:activity, published: true) }
+  let!(:private_activity) { Fabricate(:activity) }
+
+  its "published flag is set to false by default" do
+    private_activity.should_not be_published
+  end
+
+  its "published scope returns published activities only" do
+    Activity.published.all.should == [public_activity]
   end
 end
