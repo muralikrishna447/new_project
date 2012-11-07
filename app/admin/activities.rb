@@ -8,7 +8,7 @@ ActiveAdmin.register Activity do
   end
 
   action_item only: [:show, :edit] do
-    link_to('View on Site', activity_path(activity))
+    activity_link activity, 'View on Site'
   end
 
   action_item only: [:show] do

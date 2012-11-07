@@ -38,11 +38,11 @@ module AdminHelper
     form.inputs(name: name, class: ['inputs', 'no-background'], &block)
   end
 
-  def activity_link(activity)
+  def activity_link(activity, text=false)
     if activity.published?
-      link_to 'public link', activity_path(activity)
+      link_to text || 'public link', activity_path(activity)
     else
-      link_to 'private link', private_activity_path(activity, PrivateToken.token)
+      link_to text || 'private link', private_activity_path(activity, PrivateToken.token)
     end
   end
 end
