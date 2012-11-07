@@ -18,6 +18,8 @@ Delve::Application.routes.draw do
 
   get 'thank-you' => 'thank_you#show', as: 'thank_you'
 
+  resources :user_profiles, :only => [:show]
+
   resources :courses, :only => [:show]
   resources :activities, :only => [:show] do
     member do
