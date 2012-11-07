@@ -25,7 +25,7 @@
         %th Image Id
         %th Youtube Id
       = render 'step_form', step: nil
-      - @recipe.steps.ordered.each do |step|
+      - @recipe.ordered_steps.each do |step|
         = render 'step_form', step: step
 
   = f.actions do

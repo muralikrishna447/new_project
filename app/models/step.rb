@@ -11,6 +11,7 @@ class Step < ActiveRecord::Base
     :ingredient_ids, :activity_id, :step_order_position
 
   scope :ordered, rank(:step_order)
+  scope :recipe_id_not_nil, where('recipe_id IS NOT NULL')
 
   default_scope { ordered }
 
