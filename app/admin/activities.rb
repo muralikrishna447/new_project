@@ -22,7 +22,7 @@ ActiveAdmin.register Activity do
   form partial: 'form'
 
   index do
-    column :title do |activity|
+    column :title, sortable: :title do |activity|
       activity.title.html_safe
     end
     column :difficulty
