@@ -30,13 +30,13 @@ class Activity < ActiveRecord::Base
   end
 
   def next
-    activities = Activity.all
+    activities = Activity.ordered.all
     i = activities.index(self)
     activities[i+1]
   end
 
   def prev
-    activities = Activity.all
+    activities = Activity.ordered.all
     i = activities.index(self)
     return nil if i == 0
     activities[i-1]
