@@ -257,10 +257,11 @@ copy:
     carousel_2.jpg
 - location: thank-you-image-middle-caption
   copy_content: |
-   <a href='/'>Shop For Products <i class='icon-double-chevron-right'></i></a>
+    <a href='/'>Shop For Products <i class='icon-double-chevron-right'></i></a>
 - location: thank-you-image-right
   copy_content: |
     carousel_3.jpg
 - location: thank-you-image-right-caption
-   <a href='http://blog.chefsteps.com'>Read Our Blog <i class='icon-double-chevron-right'></i></a>
+  copy_content: |
+    <a href='http://blog.chefsteps.com'>Read Our Blog <i class='icon-double-chevron-right'></i></a>
 
