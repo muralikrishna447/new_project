@@ -22,6 +22,15 @@ class Activity < ActiveRecord::Base
     ['easy', 'intermediate', 'advanced']
   end
 
+  def self.find_published(id, token=nil)
+    return published.find(id) if token.nil? || token != private_token
+    find(id)
+  end
+
+  def self.private_token
+    'SECRET'
+  end
+
   def optional_equipment
     equipment.optional.ordered
   end

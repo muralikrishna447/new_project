@@ -1,6 +1,6 @@
 class ActivitiesController < ApplicationController
   include AggressiveCaching
-  expose(:activity)
+  expose(:activity) { Activity.find_published(params[:id], params[:token]) }
 
   def show
     session[:cooked_ids] ||= []
