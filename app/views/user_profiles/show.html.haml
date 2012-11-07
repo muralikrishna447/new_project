@@ -1,1 +1,17 @@
-- content_for :title, user.name
+- content_for :title, "#{user.name}'s Profile"
+
+.hero-unit
+  .container
+    .row
+      .span12
+        %h3 My Profile
+
+.container
+  .row.user-profile
+    .span4
+      %h3= user.name
+      %ul.unstyled
+        %li
+          %i.icon-calendar.icon-large
+          %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"
+
