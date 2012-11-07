@@ -1,4 +1,7 @@
 class Activity < ActiveRecord::Base
+  include RankedModel
+
+  ranks :activity_order
 
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
@@ -10,8 +13,7 @@ class Activity < ActiveRecord::Base
 
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
-  scope :ordered, order("activity_order")
-  default_scope { ordered }
+  scope :ordered, rank(:activity_order)
 
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order, :description, :equipment
 
@@ -28,13 +30,13 @@ class Activity < ActiveRecord::Base
   end
 
   def next
-    activities = Activity.all
+    activities = Activity.ordered.all
     i = activities.index(self)
     activities[i+1]
   end
 
   def prev
-    activities = Activity.all
+    activities = Activity.ordered.all
     i = activities.index(self)
     return nil if i == 0
     activities[i-1]

@@ -265,3 +265,35 @@ describe Activity, "#update_steps" do
     end
   end
 end
+
+describe Activity, 'ordering' do
+  let!(:activity_last) { Fabricate(:activity, activity_order_position: 2) }
+  let!(:activity_first) { Fabricate(:activity, activity_order_position: 0) }
+  let!(:activity_middle) { Fabricate(:activity, activity_order_position: 1) }
+
+  its "ordered scope returns activities in order" do
+    Activity.ordered.all.should == [activity_first, activity_middle, activity_last]
+  end
+
+  context "#next" do
+    it "returns the next ordered activity" do
+      activity_first.next.should == activity_middle
+      activity_middle.next.should == activity_last
+    end
+
+    it "returns nil if at end of collectin" do
+      activity_last.next.should_not be
+    end
+  end
+
+  context "#prev" do
+    it "returns the previous ordered activity" do
+      activity_last.prev.should == activity_middle
+      activity_middle.prev.should == activity_first
+    end
+
+    it "returns nil if at beginning of collection" do
+      activity_first.prev.should_not be
+    end
+  end
+end
