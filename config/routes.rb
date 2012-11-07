@@ -16,7 +16,7 @@ Delve::Application.routes.draw do
 
   get 'terms-of-service' => 'home#terms_of_service', as: 'terms_of_service'
 
-  get 'thank-you' => 'home#thank_you', as: 'thank_you'
+  get 'thank-you' => 'thank_you#show', as: 'thank_you'
 
   resources :courses, :only => [:show]
   resources :activities, :only => [:show] do
