@@ -67,6 +67,13 @@ class Activity < ActiveRecord::Base
     self
   end
 
+  def update_steps(step_attrs)
+    reject_invalid_steps(step_attrs)
+    update_and_create_steps(step_attrs)
+    delete_old_steps(step_attrs)
+    self
+  end
+
   def update_recipe_steps(recipe_ids = nil)
     recipe_ids ||= recipes.map(&:id)
     create_activity_recipe_steps(recipe_ids)
@@ -84,6 +91,10 @@ class Activity < ActiveRecord::Base
 
   def ordered_recipe_steps
     recipe_steps.ordered.all
+  end
+
+  def ordered_steps
+    steps.ordered.all
   end
 
   def update_recipe_step_order(recipe_step_ids)
@@ -153,5 +164,31 @@ class Activity < ActiveRecord::Base
     equipment.where(equipment_id: old_equipment_ids).destroy_all
   end
 
+  def reject_invalid_steps(step_attrs)
+    step_attrs.select! do |step_attr|
+      [:directions].all? do |test|
+        step_attr[test].present?
+      end
+    end
+  end
+
+  def update_and_create_steps(step_attrs)
+    step_attrs.each do |step_attr|
+      step = steps.find_or_create_by_id(step_attr[:id])
+      step.update_attributes(
+        title: step_attr[:title],
+        directions: step_attr[:directions],
+        youtube_id: step_attr[:youtube_id],
+        image_id: step_attr[:image_id],
+        step_order_position: :last
+      )
+      step_attr[:id] = step.id
+    end
+  end
+
+  def delete_old_steps(step_attrs)
+    old_step_ids = steps.map(&:id) - step_attrs.map {|i| i[:id].to_i }
+    steps.where(id: old_step_ids).destroy_all
+  end
 end
 
