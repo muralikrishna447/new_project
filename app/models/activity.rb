@@ -33,13 +33,14 @@ class Activity < ActiveRecord::Base
   def next
     activities = Activity.ordered.published.all
     i = activities.index(self)
+    return nil if i.nil?
     activities[i+1]
   end
 
   def prev
     activities = Activity.ordered.published.all
     i = activities.index(self)
-    return nil if i == 0
+    return nil if i.nil? || i == 0
     activities[i-1]
   end
 

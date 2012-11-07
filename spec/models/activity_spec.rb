@@ -285,6 +285,10 @@ describe Activity, 'ordering' do
     it "returns nil if at end of collectin" do
       activity_last.next.should_not be
     end
+
+    it "returns nil if called on private activity" do
+      activity_private.next.should_not be
+    end
   end
 
   context "#prev" do
@@ -295,6 +299,10 @@ describe Activity, 'ordering' do
 
     it "returns nil if at beginning of collection" do
       activity_first.prev.should_not be
+    end
+
+    it "returns nil if called on private activity" do
+      activity_private.prev.should_not be
     end
   end
 end
