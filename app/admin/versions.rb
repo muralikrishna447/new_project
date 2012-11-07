@@ -1,4 +1,6 @@
 ActiveAdmin.register Version do
+  config.filters = false
+
   menu parent: 'More'
 
   form do |f|
