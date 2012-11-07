@@ -17,7 +17,7 @@
           %tr
             %th Ingredients
             %td
-              %ul
+              %ol
                 - recipe.ingredients.each do |ingredient|
                   %li
                     = ingredient.display_quantity
@@ -25,7 +25,7 @@
           %tr
             %th Steps
             %td
-              %ul
+              %ol
                 - recipe.steps.each_with_index do |step, index|
-                  %li= link_to step.title(index) , admin_step_path(step)
+                  %li= step.title(index)
 

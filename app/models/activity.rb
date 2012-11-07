@@ -93,6 +93,10 @@ class Activity < ActiveRecord::Base
     recipe_steps.ordered.all
   end
 
+  def ordered_steps
+    steps.ordered.all
+  end
+
   def update_recipe_step_order(recipe_step_ids)
     recipe_step_ids.select!(&:present?)
     recipe_step_ids.each do |recipe_step_id|
