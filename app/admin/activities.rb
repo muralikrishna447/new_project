@@ -1,5 +1,12 @@
 ActiveAdmin.register Activity do
+  config.sort_order = 'activity_order_asc'
+
   menu priority: 2
+
+  action_item only: [:index] do
+    link_to('Order Activties', activities_order_admin_activities_path)
+  end
+
   action_item only: [:show, :edit] do
     link_to('View on Site', activity_path(activity))
   end
@@ -15,8 +22,9 @@ ActiveAdmin.register Activity do
   form partial: 'form'
 
   index do
-    column "Order", :activity_order
-    column :title
+    column :title do |activity|
+      activity.title.html_safe
+    end
     column :difficulty
     column :yield
     column "Description" do |activity|
@@ -57,6 +65,22 @@ ActiveAdmin.register Activity do
     def separate_steps
       params[:activity].delete(:steps)
     end
+  end
+
+  collection_action :activities_order, method: :get do
+    @activities = Activity.ordered.all
+  end
+
+  collection_action :update_activities_order, method: :post do
+    params[:activity_ids].each do |activity_id|
+      activity = Activity.find(activity_id)
+      if activity
+        activity.activity_order_position = :last
+        activity.save!
+      end
+    end
+
+    redirect_to({action: :index}, notice: "Activity order has been updated")
   end
 
   member_action :recipe_steps_order, method: :get do
