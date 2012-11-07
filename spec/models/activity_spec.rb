@@ -267,16 +267,17 @@ describe Activity, "#update_steps" do
 end
 
 describe Activity, 'ordering' do
-  let!(:activity_last) { Fabricate(:activity, activity_order_position: 2) }
-  let!(:activity_first) { Fabricate(:activity, activity_order_position: 0) }
-  let!(:activity_middle) { Fabricate(:activity, activity_order_position: 1) }
+  let!(:activity_last) { Fabricate(:activity, activity_order_position: 2, published: true) }
+  let!(:activity_first) { Fabricate(:activity, activity_order_position: 0, published: true) }
+  let!(:activity_middle) { Fabricate(:activity, activity_order_position: 1, published: true) }
+  let!(:activity_private) { Fabricate(:activity, activity_order_position: 3) }
 
   its "ordered scope returns activities in order" do
-    Activity.ordered.all.should == [activity_first, activity_middle, activity_last]
+    Activity.ordered.all.should == [activity_first, activity_middle, activity_last, activity_private]
   end
 
   context "#next" do
-    it "returns the next ordered activity" do
+    it "returns the next published-ordered activity" do
       activity_first.next.should == activity_middle
       activity_middle.next.should == activity_last
     end
@@ -284,16 +285,63 @@ describe Activity, 'ordering' do
     it "returns nil if at end of collectin" do
       activity_last.next.should_not be
     end
+
+    it "returns nil if called on private activity" do
+      activity_private.next.should_not be
+    end
   end
 
   context "#prev" do
-    it "returns the previous ordered activity" do
+    it "returns the previous published-ordered activity" do
       activity_last.prev.should == activity_middle
       activity_middle.prev.should == activity_first
     end
 
     it "returns nil if at beginning of collection" do
       activity_first.prev.should_not be
+    end
+
+    it "returns nil if called on private activity" do
+      activity_private.prev.should_not be
+    end
+  end
+end
+
+describe Activity, 'publishing' do
+  let!(:public_activity) { Fabricate(:activity, id: 1, published: true) }
+  let!(:private_activity) { Fabricate(:activity, id: 2) }
+
+  its "published flag is set to false by default" do
+    private_activity.should_not be_published
+  end
+
+  its "published scope returns published activities only" do
+    Activity.published.all.should == [public_activity]
+  end
+
+  context '#find_published' do
+    it 'throws not found if activity does not exist with id' do
+      lambda { Activity.find_published(42) }.should raise_error ActiveRecord::RecordNotFound
+    end
+
+    it 'returns activity if published' do
+      Activity.find_published(1).should == public_activity
+    end
+
+    context 'for private activity' do
+      it 'throws not found' do
+        lambda { Activity.find_published(2) }.should raise_error ActiveRecord::RecordNotFound
+      end
+
+      it 'throws not found if token is invalid' do
+        PrivateToken.should_receive(:valid?).with('bad_token').and_return(false)
+        lambda { Activity.find_published(2, 'bad_token') }.should raise_error ActiveRecord::RecordNotFound
+      end
+
+      it 'returns activity if token is valid' do
+        PrivateToken.should_receive(:valid?).with('good_token').and_return(true)
+        Activity.find_published(2, 'good_token').should == private_activity
+      end
     end
   end
 end

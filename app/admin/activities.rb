@@ -8,7 +8,7 @@ ActiveAdmin.register Activity do
   end
 
   action_item only: [:show, :edit] do
-    link_to('View on Site', activity_path(activity))
+    activity_link activity, 'View on Site'
   end
 
   action_item only: [:show] do
@@ -23,7 +23,7 @@ ActiveAdmin.register Activity do
 
   index do
     column 'Link' do |activity|
-      link_to 'link', activity_path(activity)
+      activity_link(activity)
     end
     column :title, sortable: :title do |activity|
       activity.title.html_safe
@@ -33,6 +33,7 @@ ActiveAdmin.register Activity do
     column "Description" do |activity|
       truncate(activity.description, length: 50)
     end
+    column :published
     default_actions
   end
 

@@ -30,4 +30,13 @@ ActiveAdmin.register_page "Tasks" do
     CopyCreator.create
     redirect_to({action: :index}, notice: "Copy created successfully!")
   end
+
+  page_action :publish_all_activities, method: :post do
+    Activity.all.each do |activity|
+      activity.published = true
+      activity.save!
+    end
+
+    redirect_to({action: :index}, notice: "Activities published!")
+  end
 end
