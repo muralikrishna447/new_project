@@ -203,3 +203,97 @@ describe Activity, "#update_recipe_step_order" do
   end
 end
 
+describe Activity, "#update_steps" do
+  let(:activity) { Fabricate(:activity, title: 'foo') }
+
+  let(:step1) { {title: 'Blend', directions: 'blend it'} }
+  let(:step2) { {title: '', directions: 'cut it'} }
+  let(:step_attrs) {[ step1, step2 ] }
+
+  describe "create" do
+    before do
+      activity.update_steps(step_attrs)
+    end
+
+    it "creates unique steps for each non-empty attribute set" do
+      activity.steps.should have(2).steps
+    end
+
+    it "creates steps with specified attributes" do
+      activity.steps.first.title.should == 'Blend'
+      activity.steps.first.directions.should == 'blend it'
+    end
+  end
+
+  describe "update" do
+    before do
+      activity.update_steps(step_attrs)
+      step_attrs.first.merge!(title: 'Blend', directions: 'stuff')
+      activity.update_steps(step_attrs)
+      activity.steps.reload
+    end
+
+    it "updates existing steps" do
+      activity.steps.should have(2).steps
+      activity.steps.first.title.should == 'Blend'
+      activity.steps.first.directions.should == 'stuff'
+    end
+  end
+
+  describe "destroy" do
+    before do
+      activity.update_steps(step_attrs)
+      activity.update_steps(step_attrs[1..-1])
+      activity.steps.reload
+    end
+
+    it "deletes steps not included in attribute set" do
+      activity.steps.should have(1).steps
+      activity.steps.first.title.should == ''
+      activity.steps.first.directions.should == 'cut it'
+    end
+  end
+
+  describe "re-ordering" do
+    before do
+      activity.update_steps(step_attrs)
+    end
+
+    it "updates ordering" do
+      activity.update_steps([step2, step1])
+      activity.steps.ordered.first.directions.should == 'cut it'
+    end
+  end
+end
+
+describe Activity, 'ordering' do
+  let!(:activity_last) { Fabricate(:activity, activity_order_position: 2) }
+  let!(:activity_first) { Fabricate(:activity, activity_order_position: 0) }
+  let!(:activity_middle) { Fabricate(:activity, activity_order_position: 1) }
+
+  its "ordered scope returns activities in order" do
+    Activity.ordered.all.should == [activity_first, activity_middle, activity_last]
+  end
+
+  context "#next" do
+    it "returns the next ordered activity" do
+      activity_first.next.should == activity_middle
+      activity_middle.next.should == activity_last
+    end
+
+    it "returns nil if at end of collectin" do
+      activity_last.next.should_not be
+    end
+  end
+
+  context "#prev" do
+    it "returns the previous ordered activity" do
+      activity_last.prev.should == activity_middle
+      activity_middle.prev.should == activity_first
+    end
+
+    it "returns nil if at beginning of collection" do
+      activity_first.prev.should_not be
+    end
+  end
+end
