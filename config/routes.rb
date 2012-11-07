@@ -5,6 +5,7 @@ Delve::Application.routes.draw do
 
   get "styleguide" => "styleguide#index"
 
+  get 'users/sign_in' => redirect('/#log-in')
   devise_for :users
 
   root to: "home#index"
@@ -14,6 +15,8 @@ Delve::Application.routes.draw do
   post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
 
   get 'terms-of-service' => 'home#terms_of_service', as: 'terms_of_service'
+
+  get 'thank-you' => 'thank_you#show', as: 'thank_you'
 
   resources :courses, :only => [:show]
   resources :activities, :only => [:show] do
