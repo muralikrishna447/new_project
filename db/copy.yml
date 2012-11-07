@@ -244,17 +244,16 @@ copy:
     carousel_1.jpg
 - location: thank-you-image-left-caption
   copy_content: |
-    image caption
+     <a href='/courses/1'>Take A Course <i class='icon-double-chevron-right'></i></a>
 - location: thank-you-image-middle
   copy_content: |
     carousel_2.jpg
 - location: thank-you-image-middle-caption
   copy_content: |
-    image caption middle
+   <a href='/'>Shop For Products <i class='icon-double-chevron-right'></i></a>
 - location: thank-you-image-right
   copy_content: |
     carousel_3.jpg
 - location: thank-you-image-right-caption
-  copy_content: |
-    image caption right
+   <a href='http://blog.chefsteps.com'>Read Our Blog <i class='icon-double-chevron-right'></i></a>
 

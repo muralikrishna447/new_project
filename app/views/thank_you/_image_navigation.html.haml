@@ -1,4 +1,6 @@
-.image-caption
+.image-with-caption
   %img{src: s3_image_url(image)}
-  %span.caption= caption
+  .image-caption
+    :markdown
+      #{caption}
 
