@@ -37,4 +37,12 @@ module AdminHelper
   def section(name, form, &block)
     form.inputs(name: name, class: ['inputs', 'no-background'], &block)
   end
+
+  def activity_link(activity)
+    if activity.published?
+      link_to 'public link', activity_path(activity)
+    else
+      link_to 'private link', private_activity_path(activity, PrivateToken.token)
+    end
+  end
 end

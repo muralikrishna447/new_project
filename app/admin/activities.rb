@@ -23,7 +23,7 @@ ActiveAdmin.register Activity do
 
   index do
     column 'Link' do |activity|
-      link_to 'link', activity_path(activity)
+      activity_link(activity)
     end
     column :title, sortable: :title do |activity|
       activity.title.html_safe
