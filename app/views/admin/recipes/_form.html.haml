@@ -16,7 +16,8 @@
   = section("Steps", f) do
     %li.two-button-row
       = copy_button 'Add Step', '#step-row', 'table#steps'
-      = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_recipe_path(@recipe)
+      - unless @recipe.id.nil?
+        = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_recipe_path(@recipe)
     = sortable_table('steps') do
       %tr
         %th Title
