@@ -5,6 +5,7 @@ Delve::Application.routes.draw do
 
   get "styleguide" => "styleguide#index"
 
+  get 'users/sign_in' => redirect('/#log-in')
   devise_for :users
 
   root to: "home#index"
