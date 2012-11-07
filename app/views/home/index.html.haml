@@ -6,8 +6,9 @@
       .span7
         %h2 ChefSteps is building the free-to-learn culinary school.
         %h3 Want to know when we launch?
-      .span5
-        = render 'mailing_list/subscribe', orange: true
+      - unless user_signed_in?
+        .span5
+          = render 'mailing_list/subscribe', orange: true
     .row.top-video
       .span12
         .video-container
