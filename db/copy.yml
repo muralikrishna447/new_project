@@ -238,7 +238,14 @@ copy:
 #thank you
 - location: thank-you-intro
   copy_content: |
-    * Thank you intro
+    <h3>You are now part of the ChefSteps family.</h3>
+    <p>
+      Helvetica synth jean shorts keffiyeh godard pinterest you probably
+      haven't heard of them, lo-fi umami flexitarian echo park +1 narwhal
+      pour-over. Wes anderson post-ironic vegan keffiyeh keytar raw denim.
+      Hella skateboard cardigan scenester ethical bespoke blog. Hella small
+      batch hoodie, tru
+    </p>
 - location: thank-you-image-left
   copy_content: |
     carousel_1.jpg
