@@ -2,11 +2,11 @@
 
 .hero-unit.hero-well.hero-home-video
   .container.signup-banner.gray
-    .row
-      .span7
-        %h2 ChefSteps is building the free-to-learn culinary school.
-        %h3 Want to know when we launch?
-      - unless user_signed_in?
+    - unless user_signed_in?
+      .row
+        .span7
+          %h2 ChefSteps is building the free-to-learn culinary school.
+          %h3 Want to know when we launch?
         .span5
           = render 'mailing_list/subscribe', orange: true
     .row.top-video
