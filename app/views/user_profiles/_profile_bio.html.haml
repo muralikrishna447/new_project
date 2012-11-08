@@ -1,18 +1,18 @@
 .row.user-profile-bio
-  .span4
+  .span1
     = image_tag 'chris-large.jpg', class: 'pull-left'
-    .user-bio-info.pull-left
-      %h3= user.name
-      %ul.unstyled
-        %li
-          %i.icon-map-marker.icon-large
-          = "San Francisco, CA"
-        %li
-          %i.icon-globe.icon-large
-          = link_to "delvekitchen.com","http://delvekitchen.com"
-        %li
-          %i.icon-calendar.icon-large
-          = "Joined on #{user.created_at.strftime("%m/%d/%y")}"
+  .span3
+    %h3= user.name
+    %ul.unstyled
+      %li
+        %i.icon-map-marker.icon-large
+        = "San Francisco, CA"
+      %li
+        %i.icon-globe.icon-large
+        = link_to "delvekitchen.com","http://delvekitchen.com"
+      %li
+        %i.icon-calendar.icon-large
+        = "Joined on #{user.created_at.strftime("%m/%d/%y")}"
 .row
   .span4.horizontal-divider
 .row

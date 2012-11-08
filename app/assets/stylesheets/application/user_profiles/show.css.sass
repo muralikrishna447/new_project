@@ -5,9 +5,6 @@
     margin-top: 40px
 
 .user-profile-bio
-
-.user-bio-info
-  margin-left: 20px
   h3
     margin: 0
     line-height: 1em
@@ -24,9 +21,20 @@
 
 .user-profile-intro
   overflow: hidden
+  .intro
+    padding: 20px
   p
     +font-serif-large
     margin-top: 10px
+  > .row
+    background: whitesmoke
+  .row
+    .span4:last-child
+      .user-profile-step
+        padding-right: 30px
+    .span4:first-child
+      .user-profile-step
+        padding-left: 30px
 
 .user-bio-quote
   padding: 0 30px
@@ -44,3 +52,16 @@
     font-size: 3em
     bottom: -15px
     right: 0
+
+.user-profile-step
+  margin-top: 40px
+  +font-serif-large
+  img
+    width: 100%
+    margin-bottom: 15px
+  .step
+    color: $brick
+  p
+    margin-top: 15px
+    +font-sans-small
+

@@ -10,6 +10,7 @@
   .row
     .span4.pull-right
       = render partial: 'profile_bio', user: user
-    .span8.pull-left
-      = render partial: 'profile_intro', user: user
+    .simple-well
+      .span8.pull-left.user-profile-intro
+        = render partial: 'profile_intro', user: user
 
