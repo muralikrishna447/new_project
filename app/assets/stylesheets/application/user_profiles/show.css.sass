@@ -1,0 +1,72 @@
+.user-profile
+  margin-top: 40px
+  margin-bottom: 40px
+  .horizontal-divider
+    margin-top: 40px
+
+.user-profile-bio
+  h3
+    margin: 0
+    line-height: 1em
+  img
+    width: 130px
+  ul
+    margin-top: 10px
+    li
+      padding-bottom: 15px
+      &:last-child
+        padding-bottom: 0
+  i:before
+    color: $gray
+
+.user-profile-intro
+  overflow: hidden
+  .intro
+    padding: 20px 30px
+  p
+    +font-serif-large
+    margin-top: 10px
+  > .row
+    background: whitesmoke
+  .row
+    .span4:last-child
+      .user-profile-step
+        padding-right: 40px
+        padding-left: 15px
+    .span4:first-child
+      .user-profile-step
+        padding-left: 40px
+        padding-right: 15px
+
+.user-bio-quote
+  padding: 0 30px
+  position: relative
+  +font-serif-medium
+  &:before
+    position: absolute
+    font-size: 3em
+    content: '\201C'
+    top: 10px
+    left: 0
+  &:after
+    content: '\201D'
+    position: absolute
+    font-size: 3em
+    bottom: -15px
+    right: 0
+
+.user-profile-step
+  margin-bottom: 20px
+  margin-top: 20px
+  +font-serif-large
+  img
+    width: 100%
+  .thumbnail
+    background: $white
+    margin-bottom: 15px
+  .step
+    color: $brick
+  p
+    margin-top: 15px
+    +font-sans-small
+
