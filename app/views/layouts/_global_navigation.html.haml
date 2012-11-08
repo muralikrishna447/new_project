@@ -1,8 +1,8 @@
 %li
-  - if current_page?(course_url(1))
+  - if current_page?(course_url('accelerated-sous-vide-cooking-course'))
     Course
   - else
-    %a{ href: course_url(1), target: '_top' }
+    %a{ href: course_url('accelerated-sous-vide-cooking-course'), target: '_top' }
       Course
       %i.icon-chevron-right.pull-right
 -# %li
