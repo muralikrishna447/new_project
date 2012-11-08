@@ -6,12 +6,10 @@
       .span12
         %h3 My Profile
 
-.container
-  .row.user-profile
-    .span4
-      %h3= user.name
-      %ul.unstyled
-        %li
-          %i.icon-calendar.icon-large
-          %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"
+.container.user-profile
+  .row
+    .span4.pull-right
+      = render partial: 'profile_bio', user: user
+    .span8.pull-left
+      = render partial: 'profile_intro', user: user
 
