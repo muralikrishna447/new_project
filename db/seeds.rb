@@ -1,4 +1,5 @@
 require 'yaml'
+require './lib/copy_creator'
 
 def create_activity(activity)
   a = Activity.create
@@ -26,7 +27,7 @@ def create_step(step)
   if step[:ingredients].present?
     step[:ingredients].each do |ingredient|
       item = create_ingredient(ingredient[:title])
-      create_step_ingredient(s, item, ingredient[:quantity], ingredient[:unit])
+      create_step_ingredient(s, item, ingredient[:display_quantity], ingredient[:unit])
     end
   end
   s
@@ -74,20 +75,20 @@ def create_activity_equipment(activity, equipment, optional)
   a.save
 end
 
-def create_recipe_ingredient(recipe, ingredient, quantity, unit)
+def create_recipe_ingredient(recipe, ingredient, display_quantity, unit)
   a = RecipeIngredient.new
   a.recipe = recipe
   a.ingredient = ingredient
-  a.quantity = quantity
+  a.display_quantity = display_quantity
   a.unit = unit
   a.save
 end
 
-def create_step_ingredient(step, ingredient, quantity, unit)
+def create_step_ingredient(step, ingredient, display_quantity, unit)
   a = StepIngredient.new
   a.step = step
   a.ingredient = ingredient
-  a.quantity = quantity
+  a.display_quantity = display_quantity
   a.unit = unit
   a.save
 end
@@ -115,7 +116,7 @@ def build_activity(activity_data)
       if r[:ingredients].present?
         r[:ingredients].each do |ingredient|
           item = create_ingredient(ingredient[:title])
-          create_recipe_ingredient(recipe, item, ingredient[:quantity], ingredient[:unit])
+          create_recipe_ingredient(recipe, item, ingredient[:display_quantity], ingredient[:unit])
         end
       end
       if r[:steps].present?
@@ -132,7 +133,11 @@ def build_admin(admin_data)
   create_admin(admin_data[:email], admin_data[:password])
 end
 
-@seed_data = HashWithIndifferentAccess.new(YAML::load(File.open(File.join(Rails.root, "db", "seeds.yml"))))
+def parse_data(name)
+  HashWithIndifferentAccess.new(YAML::load(File.open(File.join(Rails.root, "db", name))))
+end
+
+@seed_data = parse_data('seeds.yml')
 
 @seed_data[:admins].each do |admin|
   build_admin(admin)
@@ -142,13 +147,7 @@ end
   build_activity(activity_data)
 end
 
-@seed_data[:copy].each do |content|
-  next if Copy.where(location: content[:location]).any?
-  c = Copy.find_or_create_by_location(content[:location])
-  c.copy= content[:copy_content]
-  c.save
-  c
-end
+CopyCreator.create
 
 Version.create unless Version.any?
 

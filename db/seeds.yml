@@ -39,16 +39,16 @@ activities:
   - title: Assembly
     ingredients:
     - title: Cooked and chilled salmon portions
-      quantity: 10
+      display_quantity: '10'
       unit: ea
     - title: Pickled onions
-      quantity: 3
+      display_quantity: '3'
       unit: ea
     - title: Horseradish cream
-      quantity: 320
+      display_quantity: '320'
       unit: g
     - title: Watercress puree
-      quantity: 320
+      display_quantity: '320'
       unit: g
     - title: Maldon salt
       unit: a/n
@@ -95,29 +95,29 @@ activities:
     yield: 1700 g
     ingredients:
     - title: Water
-      quantity: 1600
+      display_quantity: '1600'
       unit: g
     - title: Salt
-      quantity: 160
+      display_quantity: '160'
       unit: g
     - title: Sugar
-      quantity: 80
+      display_quantity: '80'
       unit: g
     - title: Salmon loin, skinless
-      quantity: 400
+      display_quantity: '400'
       unit: g
     steps:
     - title: Weigh out ingredients
       image_id: IMG_4738.jpg
       ingredients:
       - title: Water
-        quantity: 1600
+        display_quantity: '1600'
         unit: g
       - title: Salt
-        quantity: 160
+        display_quantity: '160'
         unit: g
       - title: Sugar
-        quantity: 80
+        display_quantity: '80'
         unit: g
       directions: "* Scale ingredients"
 
@@ -177,50 +177,50 @@ activities:
     yield: 900 g (~ 10 portions)
     ingredients:
     - title: Water
-      quantity: 400
+      display_quantity: '400'
       unit: g
     - title: White wine vinegar
-      quantity: 400
+      display_quantity: '400'
       unit: g
     - title: Sugar
-      quantity: 80
+      display_quantity: '80'
       unit: g
     - title: Salt
-      quantity: 20
+      display_quantity: '20'
       unit: g
     - title: Black pepper, whole
-      quantity: 4
+      display_quantity: '4'
       unit: g
     - title: Coriander seed, whole
-      quantity: 4
+      display_quantity: '4'
       unit: g
     - title: Small red onions
-      quantity: 3
+      display_quantity: '3'
       unit: ea
     - title: Green onions
-      quantity: 10
+      display_quantity: '10'
       unit: ea
     steps:
     - title: Scale ingriedients
       image_id: pickled_6.jpg
       ingredients:
       - title: Water
-        quantity: 400
+        display_quantity: '400'
         unit: g
       - title: White wine vinegar
-        quantity: 400
+        display_quantity: '400'
         unit: g
       - title: Sugar
-        quantity: 80
+        display_quantity: '80'
         unit: g
       - title: Salt
-        quantity: 20
+        display_quantity: '20'
         unit: g
       - title: Black pepper, whole
-        quantity: 4
+        display_quantity: '4'
         unit: g
       - title: Coriander seed, whole
-        quantity: 4
+        display_quantity: '4'
         unit: g
       directions: |
         * Scale ingredients
@@ -233,10 +233,10 @@ activities:
         * Seperate onion layers, sorting the red outer petals from the inner white ones
       ingredients:
       - title: Small red onions
-        quantity: 3
+        display_quantity: '3'
         unit: ea
       - title: Green onions
-        quantity: 10
+        display_quantity: '10'
         unit: ea
 
     - title: put in containers
@@ -272,20 +272,20 @@ activities:
     yield: 1700 g
     ingredients:
     - title: Watercress (about 2 bunches)
-      quantity: 150
+      display_quantity: '150'
       unit: g
     - title: Xanthan gum
-      quantity: 0.23
+      display_quantity: '0.23'
       unit: g
     - title: Salt
-      quantity: 2.3
+      display_quantity: '2.3'
       unit: g
     steps:
     - title: clean watercress
       image_id: IMG_5141.jpg
       ingredients:
       - title: Watercress (about 2 bunches)
-        quantity: 150
+        display_quantity: '150'
         unit: g
       directions: |
         * Pick and clean watercress.
@@ -308,7 +308,7 @@ activities:
       image_id: IMG_5194.jpg
       ingredients:
       - title: Xanthan gum
-        quantity: 0.23
+        display_quantity: '0.23'
         unit: g
       directions: |
         * Check the weight of the puree before adding 0.1% of the puree's weight in xanthan gum, 0.23 grams for 230 grams of puree in this case.
@@ -345,33 +345,33 @@ activities:
     yield: 320 g
     ingredients:
     - title: Fresh horseradish root
-      quantity: 1
+      display_quantity: '1'
       unit: ea
     - title: Cream
-      quantity: 350
+      display_quantity: '350'
       unit: g
     - title: Xanthan gum
-      quantity: 0.35
+      display_quantity: '0.35'
       unit: g
     - title: Salt
-      quantity: 3.2
+      display_quantity: '3.2'
       unit: g
     steps:
     - title: wash
       image_id: horseradish_1.jpg
       ingredients:
       - title: Fresh horseradish root
-        quantity: 1
+        display_quantity: '1'
         unit: ea
       directions: "* Wash and peel the fresh horseradish."
     - title: microplane
       image_id: horseradish_2.jpg
       ingredients:
       - title: peeled and preped horseradish
-        quantity: 1
+        display_quantity: '1'
         unit: ea
       - title: Cream
-        quantity: 350
+        display_quantity: '350'
         unit: g
       directions: |
         * Microplane 50 g and place it into a sous vide bag.
@@ -390,235 +390,4 @@ activities:
         * Whisk salt and xanthan gum into the cream.
         * Whip the cream into very soft peaks.
         * Refrigerate if not using immediately.
-
-copy:
-# carousel images
-- location: carousel-images
-  copy_content: |
-    carousel_1.jpg
-    carousel_2.jpg
-    carousel_3.jpg
-
-# instrcutor - chris
-- location: instructor-chris
-  copy_content: |
-    <h4>Chris Young</h4>
-    <p>
-      Chris is the principal coauthor of the acclaimed six-volume work
-      <em>Modernist Cuisine: The Art and Science of Cooking</em>, which was named
-      both the 2012 Cookbook of the Year and Best Professional Cookbook
-      of the year by the James Beard Foundation and has been a worldwide
-      best seller. Chris was also the founding chef of Heston
-      Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary
-      laboratory behind the innovative dishes served at one of the best
-      restaurants in the world. Prior to becoming a chef, he completed
-      degrees in theoretical mathematics and biochemistry.
-    </p>
-# instructor- grant
-- location: instructor-grant
-  copy_content: |
-    <h4>Grant Crilly</h4>
-    <p>
-      Grant was the first development chef hired by the Modernist
-      Cuisine team. Prior to this he was chef de cuisine at Busaba in
-      Mumbai and Mistral in Seattle, and served as head development chef
-      at Delicious Planet. He has cooked for Pascal Barbot at
-      L’Astrance, worked with Pierré Herme’s team at Grégoire-Ferrandi,
-      and practiced butchery at Bajon Jean Pierrie in Paris.
-    </p>
-# creator - chris
-- location: creator-chris
-  copy_content: |
-    <h4>Chris Young</h4>
-    <p>
-      Chris is the principal coauthor of the acclaimed six-volume work
-      <em>Modernist Cuisine: The Art and Science of Cooking</em>, which was named
-      both the 2012 Cookbook of the Year and Best Professional Cookbook
-      of the year by the James Beard Foundation and has been a worldwide
-      best seller. Chris was also the founding chef of Heston
-      Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary
-      laboratory behind the innovative dishes served at one of the best
-      restaurants in the world. Prior to becoming a chef, he completed
-      degrees in theoretical mathematics and biochemistry.
-    </p>
-# creator - grant
-- location: creator-grant
-  copy_content: |
-    <h4>Grant Crilly</h4>
-    <p>
-      Grant was the first development chef hired by the Modernist
-      Cuisine team. Prior to this he was chef de cuisine at Busaba in
-      Mumbai and Mistral in Seattle, and served as head development chef
-      at Delicious Planet. He has cooked for Pascal Barbot at
-      L’Astrance, worked with Pierré Herme’s team at Grégoire-Ferrandi,
-      and practiced butchery at Bajon Jean Pierrie in Paris.
-    </p>
-# creator- ryan
-- location: creator-ryan
-  copy_content: |
-    <h4>Ryan Matthew Smith</h4>
-    <p>
-      Ryan was the principal photographer and photo editor for <em>Modernist
-      Cuisine: The Art and Science of Cooking</em>. Smith’s work has been
-      featured by PPN, Photographer, Life, Time, The New York Times,
-      Feature Shoot, Quo, and Abduzeedo.
-    </p>
-# homepage blurb
-- location: homepage-blurb
-  copy_content: |
-    <h1>Welcome to ChefSteps.com</h1>
-    <p>
-      ChefSteps is a totally new approach to learning the art and science of
-      cooking. Whether you are a professional chef, a culinary student, or a
-      cooking enthusiast, if you are also a curious cook then ChefSteps is
-      for you.
-    </p>
-    <p>
-      Taught by a world-renowned team, you will master techniques of
-      traditional and modernist cooking through practical, hands-on
-      demonstrations with detailed step-by-step explanations. Unlike at other
-      culinary schools, you will also learn the why's behind the how's from
-      experts who bring the science of cooking to life in a compelling and
-      practical way.
-    </p>
-    <p>
-      The classes at ChefSteps are challenging. But your hard work will pay
-      off. The skills you master, the intuition you develop, and the fresh
-      perspective on cooking you gain will give you greater freedom to
-      innovate and express your creative ideas with confidence in the
-      kitchen.
-    </p>
-    <p>
-      ChefSteps courses are free to learn. Sign up above and we'll let you
-      know when our first class starts. We won't share your email address and we
-      don't like SPAM.
-    </p>
-# course description
-- location: course-description
-  copy_content: |
-    <h1>Description</h1>
-    <p>
-      Sous vide cooking is at the core of modernist cooking. Once used in
-      only the most forward-thinking restaurants, sous vide cooking is
-      rapidly being adopted as a mainstream cooking technique in both homes
-      and restaurants around the world. Through lectures and step-by-step
-      demonstrations you will master this highly flexible way to cook
-      virtually any food.
-    </p>
-    <p>
-      The course will:
-    </p>
-    <ol class='text'>
-      <li>
-        Get you started with the basics of sous vide cooking and then quickly
-        have you using intermediate and advanced sous vide techniques.
-      </li>
-      <li>
-        Develop your intuition for one of the most fundamental ingredients of
-        all cooking: heat.
-      </li>
-      <li>
-        Understand the relationship between cooking temperature and time so
-        that you get the results you want every time.
-      </li>
-      <li>
-        Explore different strategies for cooking animal and plant foods so
-        that you can cook anything sous vide with confidence.
-      </li>
-      <li>
-        Learn to adapt traditional recipes you love to sous vide cooking
-        methods for greater convenience and consistency.
-      </li>
-      <li>
-        Use your sous vide equipment in ways that unlock your creativity in
-        the kitchen.
-      </li>
-      <li>
-        Learn the relevant health and food safety issues for sous vide cooking so that you can prepare healthier food and reduces the chance of food borne illness.
-      </li>
-    </ol>
-    <p>
-      No other course matches our comprehensive approach to understanding sous vide cooking.
-    </p>
-
-# course syllabus
-- location: course-syllabus
-  copy_content: |
-    <li><h3>Syllabus</h3></li>
-    <li class='module'>
-      <h4>Module 1: Introduction</h4>
-      <ol>
-        <li>What is sousvide cooking?</li>
-        <li>The story of sous vide cooking</li>
-        <li>Why cook sous vide?</li>
-        <li>What you'll learn in this course</li>
-        <li>An overview of the sous vide process</li>
-      </ol>
-    </li>
-    <li class='module'>
-      <h4>Module 2: Preparation</h4>
-      <ol>
-        <li>The importance of organization and working clean</li>
-        <li>Trimming and portioning</li>
-        <li>Seasonings, brines, marinades</li>
-        <li>Tips and tricks</li>
-      </ol>
-    </li>
-    <li class='module'>
-      <h4>Module 3: Packaging</h4>
-      <ol>
-        <li>Why package food?</li>
-        <li>Packaging options</li>
-        <li>Vacuum packing</li>
-        <li>Edge sealing</li>
-        <li>Rigid containers</li>
-        <li>Improvised strategies</li>
-      </ol>
-    </li>
-    <li class='module'>
-      <h4>Module 4: Cooking Temperature</h4>
-      <ol>
-        <li>Heat as an ingredient</li>
-        <li>Controlling temperature</li>
-        <li>Sous vide cooking equipment</li>
-        <li>Selecting a cooking temperature</li>
-      </ol>
-    </li>
-    <li class='module'>
-      <h4>Module 5: Cooking Time</h4>
-      <ol>
-        <li>Selecting a cooking time</li>
-        <li>Sous vide cooking strategies</li>
-        <li>Cook to core temperature</li>
-        <li>Cook and hold at temperature</li>
-        <li>Food safety considerations</li>
-      </ol>
-    </li>
-    <li class='module'>
-      <h4>Module 6: Finishing Strategies</h4>
-      <ol>
-        <li>Chilling, freezing, and reheating</li>
-        <li>Tips and tricks</li>
-        <li>Searing strategies</li>
-        <li>Tips and tricks</li>
-      </ol>
-    </li>
-    <li class='module'>
-      <h4>Module 7: Putting it all together</h4>
-      <ol>
-        <li>Simple sous vide meal from start to finish</li>
-        <li>
-          Intermediate sous vide meal from start to finish
-          <ul>
-            <li><a href="/activities/1">Salmon 104 &deg;F</a></li>
-            <li><a href="/activities/2">Salmon mi-cuit</a></li>
-            <li><a href="/activities/3">Pickled Onions</a></li>
-            <li><a href="/activities/4">Watercress Puree</a></li>
-            <li><a href="/activities/5">Horseradish Cream</a></li>
-          </ul>
-        </li>
-        <li>Advanced sous vide meal from start to finish</li>
-        <li>Holiday meal prepared sous vide from start to finish</li>
-      </ol>
-    </li>
 

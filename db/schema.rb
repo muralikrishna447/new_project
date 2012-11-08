@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121101192906) do
+ActiveRecord::Schema.define(:version => 20121107214910) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -30,15 +30,16 @@ ActiveRecord::Schema.define(:version => 20121101192906) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.string   "youtube_id"
     t.string   "difficulty"
     t.integer  "cooked_this",    :default => 0
     t.string   "yield"
     t.text     "timing"
     t.text     "description"
-    t.decimal  "activity_order"
+    t.integer  "activity_order"
+    t.boolean  "published",      :default => false
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -54,6 +55,17 @@ ActiveRecord::Schema.define(:version => 20121101192906) do
 
   add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
   add_index "activity_equipment", ["equipment_order"], :name => "index_activity_equipment_on_equipment_order"
+
+  create_table "activity_recipe_steps", :force => true do |t|
+    t.integer  "activity_id", :null => false
+    t.integer  "step_id",     :null => false
+    t.integer  "step_order"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "activity_recipe_steps", ["activity_id", "step_id"], :name => "index_activity_recipe_steps_on_activity_id_and_step_id", :unique => true
+  add_index "activity_recipe_steps", ["step_order"], :name => "index_activity_recipe_steps_on_step_order"
 
   create_table "activity_recipes", :force => true do |t|
     t.integer  "activity_id",  :null => false
@@ -108,6 +120,12 @@ ActiveRecord::Schema.define(:version => 20121101192906) do
     t.boolean  "for_sale",    :default => false
   end
 
+  create_table "private_tokens", :force => true do |t|
+    t.string   "token",      :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "recipe_ingredients", :force => true do |t|
     t.integer  "recipe_id",        :null => false
     t.integer  "ingredient_id",    :null => false
@@ -116,6 +134,7 @@ ActiveRecord::Schema.define(:version => 20121101192906) do
     t.string   "unit"
     t.decimal  "quantity"
     t.integer  "ingredient_order"
+    t.string   "display_quantity"
   end
 
   add_index "recipe_ingredients", ["ingredient_order"], :name => "index_recipe_ingredients_on_ingredient_order"
@@ -136,6 +155,7 @@ ActiveRecord::Schema.define(:version => 20121101192906) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "ingredient_order"
+    t.string   "display_quantity"
   end
 
   add_index "step_ingredients", ["ingredient_order"], :name => "index_step_ingredients_on_ingredient_order"
@@ -170,6 +190,7 @@ ActiveRecord::Schema.define(:version => 20121101192906) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.string   "name",                   :default => "", :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

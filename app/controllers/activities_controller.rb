@@ -1,10 +1,17 @@
 class ActivitiesController < ApplicationController
   include AggressiveCaching
-  expose(:activity)
+  exclude_from_caching :show_private
+
+  expose(:activity) { Activity.find_published(params[:id], params[:token]) }
 
   def show
     session[:cooked_ids] ||= []
     @cooked_this = session[:cooked_ids].include?(activity.id)
+  end
+
+  def show_private
+    show
+    render :show
   end
 
   def cooked_this

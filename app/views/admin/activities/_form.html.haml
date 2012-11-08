@@ -1,5 +1,9 @@
+:ruby
+  field_name_prefix = "activity[steps][]"
+
 = semantic_form_for [:admin, @activity] do |f|
   = f.inputs name: "Activity Details" do
+    = f.input :published
     = f.input :title
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
@@ -24,6 +28,18 @@
       = render 'recipe_form', recipe: nil
       - @activity.ordered_recipes.each do |recipe|
         = render 'recipe_form', recipe: recipe
+
+  = section("Assembly Steps", f) do
+    %li= copy_button 'Add Assembly Step', '#step-row', 'table#steps'
+    = sortable_table('steps') do
+      %tr
+        %th Title
+        %th Directions (Markdown or HTML)
+        %th Image Id
+        %th Youtube Id
+      = render 'admin/recipes/step_form', step: nil, field_name_prefix: field_name_prefix
+      - @activity.steps.ordered.each do |step|
+        = render 'admin/recipes/step_form', step: step, field_name_prefix: field_name_prefix
 
   = f.actions do
     = f.action :submit

@@ -42,19 +42,17 @@
               - if activity.timing.present?
                 %h5 Timing
                 %p= activity.timing
-        - if activity.equipment.present?
+        - if activity.required_equipment.present?
           .row
             .span4
               %h5 Equipment and Materials
         .row
-          - activity.required_equipment.in_groups(2, false).each do |group|
-            .span2
-              = render 'equipment_list', equipment: group
+          .span4
+            = render 'equipment_list', equipment: activity.required_equipment.all
         - if activity.optional_equipment.present?
           .row
             .span4
               %h5 Optional Equipment and Materials
           .row
-            - activity.optional_equipment.in_groups(2, false).each do |group|
-              .span2
-                = render 'equipment_list', equipment: group
+            .span4
+              = render 'equipment_list', equipment: activity.optional_equipment.all

@@ -25,11 +25,24 @@ module AdminHelper
     link_to text, url, options
   end
 
+  def task_button(text, url, options={})
+    options.merge!(method: :post, confirm: 'Are you sure?')
+    admin_button text, url, options
+  end
+
   def sortable_table(id, &block)
     content_tag(:table, id: id, class: ['nested-records', 'sortable'], &block)
   end
 
   def section(name, form, &block)
     form.inputs(name: name, class: ['inputs', 'no-background'], &block)
+  end
+
+  def activity_link(activity, text=false)
+    if activity.published?
+      link_to text || 'public link', activity_path(activity), target: '_blank'
+    else
+      link_to text || 'private link', private_activity_path(activity, PrivateToken.token), target: '_blank'
+    end
   end
 end

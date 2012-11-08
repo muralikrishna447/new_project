@@ -20,10 +20,10 @@ end
 
 describe Step, '#update_ingredients' do
   let(:step) { Fabricate(:step, title: 'foo') }
-  let(:soup) { {title: 'Soup', quantity: 2, unit: 'g'}  }
-  let(:pepper) { {title: 'Pepper', quantity: 1, unit: 'kg'}  }
+  let(:soup) { {title: 'Soup', display_quantity: '2', unit: 'g'}  }
+  let(:pepper) { {title: 'Pepper', display_quantity: '1', unit: 'kg'}  }
   let(:ingredient_attrs) {[ soup, pepper, pepper,
-    { title: '', quantity: 2, unit: '' }
+    { title: '', display_quantity: '2', unit: '' }
   ]}
 
 
@@ -37,7 +37,7 @@ describe Step, '#update_ingredients' do
     end
 
     it "creates ingredient with specified attributes" do
-      step.ingredients.first.quantity.should == 2
+      step.ingredients.first.display_quantity.should == '2'
       step.ingredients.first.unit.should == 'g'
       step.ingredients.first.title.should == 'Soup'
     end
@@ -46,7 +46,7 @@ describe Step, '#update_ingredients' do
   describe "update" do
     before do
       step.update_ingredients(ingredient_attrs)
-      ingredient_attrs.first.merge!(title: 'SoUp', quantity: 15, unit: 'foobars')
+      ingredient_attrs.first.merge!(title: 'SoUp', display_quantity: '15', unit: 'foobars')
       step.update_ingredients(ingredient_attrs)
       step.ingredients.reload
     end
@@ -54,7 +54,7 @@ describe Step, '#update_ingredients' do
     it "updates existing ingredients" do
       step.ingredients.should have(2).ingredients
       step.ingredients.first.title.should == 'Soup'
-      step.ingredients.first.quantity.should == 15
+      step.ingredients.first.display_quantity.should == '15'
       step.ingredients.first.unit.should == 'foobars'
     end
   end
@@ -69,7 +69,7 @@ describe Step, '#update_ingredients' do
     it "deletes ingredients not included in attribute set" do
       step.ingredients.should have(1).ingredients
       step.ingredients.first.title.should == 'Pepper'
-      step.ingredients.first.quantity.should == 1
+      step.ingredients.first.display_quantity.should == '1'
       step.ingredients.first.unit.should == 'kg'
     end
   end

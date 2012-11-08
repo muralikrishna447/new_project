@@ -5,6 +5,12 @@
       %table
         %tbody
           %tr
+            %th Published
+            %td= activity.published
+          %tr
+            %th Link
+            %td= activity_link(activity)
+          %tr
             %th Title
             %td= activity.title
           %tr
@@ -44,9 +50,16 @@
                 - activity.ordered_recipes.map do |recipe|
                   %li= link_to recipe.title, admin_recipe_path(recipe)
           %tr
-            %th Steps
+            %th Ordered Recipe Steps
             %td
               %ol
-                - activity.steps.each_with_index do |step,index|
-                  %li= link_to step.title(index), admin_step_path(step)
+                - activity.ordered_recipe_steps.each do |recipe_step|
+                  %li= recipe_step.sorting_title
+          %tr
+            %th Assembly Steps
+            %td
+              %ol
+                - activity.ordered_steps.each_with_index do |step,index|
+                  %li= step.title(index)
+
 

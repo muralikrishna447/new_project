@@ -11,7 +11,7 @@
   product_url = equipment.product_url unless is_template
   optional = equipment.optional unless is_template
 
-%tr{id: row_id}
+%tr{id: row_id, class: ('template-row' if is_template )}
   %td= text_field_tag 'activity[equipment][][title]', title, title_data_attrs
   %td= check_box_tag('activity[equipment][][optional]', true, checked = optional)
   %td

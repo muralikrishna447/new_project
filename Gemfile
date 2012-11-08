@@ -43,6 +43,9 @@ group :development, :test do
   gem 'spork-rails'
   gem 'jasminerice'
   gem 'fabrication'
+  gem 'capybara'
+  gem 'poltergeist'
+  gem 'database_cleaner'
 end
 
 group :guard do

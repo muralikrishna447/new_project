@@ -1,3 +1,21 @@
+=authentication-nav
+  .global-navigation li.authentication
+    +font-serif-tiny
+    margin-top: 20px
+    border: none
+    padding: 0
+    float: right
+
+    a
+      padding: 0 16px 0 19px
+      display: inline-block
+
+    span
+      color: $grayMedium
+
+    &.first
+      clear: left
+
 .navbar
   margin-bottom: 0
 
@@ -52,9 +70,10 @@
     padding: 10px 30px
     text-align: center
     line-height: 19px
-  li:last-child
-    border-right: none
-    padding-right: 0
+
+    &.last, &:last-child
+      border-right: none
+      padding-right: 0
 
   i[class^="icon-"]
     display: none

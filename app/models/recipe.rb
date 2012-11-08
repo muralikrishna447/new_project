@@ -30,6 +30,7 @@ class Recipe < ActiveRecord::Base
     reject_invalid_steps(step_attrs)
     update_and_create_steps(step_attrs)
     delete_old_steps(step_attrs)
+    update_activity_recipe_steps
     self
   end
 
@@ -37,10 +38,14 @@ class Recipe < ActiveRecord::Base
 
   def reject_invalid_ingredients(ingredient_attrs)
     ingredient_attrs.select! do |ingredient_attr|
-      [:title, :quantity, :unit].all? do |test|
+      [:title, :display_quantity, :unit].all? do |test|
         ingredient_attr[test].present?
       end
     end
+  end
+
+  def update_activity_recipe_steps
+    activities.each(&:update_recipe_steps)
   end
 
   def reject_invalid_steps(step_attrs)
@@ -56,7 +61,7 @@ class Recipe < ActiveRecord::Base
       ingredient = Ingredient.find_or_create_by_title(ingredient_attr[:title])
       recipe_ingredient = ingredients.find_or_create_by_ingredient_id_and_recipe_id(ingredient.id, self.id)
       recipe_ingredient.update_attributes(
-        quantity: ingredient_attr[:quantity],
+        display_quantity: ingredient_attr[:display_quantity],
         unit: ingredient_attr[:unit],
         ingredient_order_position: :last
       )
