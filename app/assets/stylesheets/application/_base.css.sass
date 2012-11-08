@@ -178,3 +178,19 @@ iframe
 
 .img-profile
   +border-radius(3px)
+
+.btn-facebook
+  +buttonBackground($btnFacebookBackground, $btnFacebookBackgroundHighlight)
+  position: relative
+  padding-left: 47px
+  &:before
+    $fb-logo: 'facebook-logo.png'
+    position: absolute
+    background: image-url($fb-logo)
+    width: image-width($fb-logo)
+    height: image-height($fb-logo)
+    display: inline-block
+    left: 5px
+    top: 5px
+    content: ''
+

@@ -11,7 +11,7 @@
     padding: 25px 0
 
   form
-    +border-radius(8px)
+    +border-bottom-radius(8px)
     background: $grayLight
     margin: 0
     padding-bottom: 50px
@@ -19,7 +19,8 @@
   legend
     +font-sans-large
     border: none
-    padding-top: 20px
+    padding-top: 10px
+    margin-bottom: 4px
 
   ol
     margin: 0
@@ -91,6 +92,21 @@
     float: right
     margin-right: 130px
     margin-top: 5px
+
+  .facebook-login
+    width: 100%
+    text-align: center
+    padding: 25px 0
+    border-bottom: 2px dotted $grayMedium
+    position: relative
+    i
+      +font-serif-small
+      position: absolute
+      top: 85px
+      left: 47%
+      background: $grayLight
+      width: 38px
+      color: $gray
 
 
 #auth-modal
