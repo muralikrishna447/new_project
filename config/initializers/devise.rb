@@ -204,8 +204,9 @@ Devise.setup do |config|
 
   # ==> OmniAuth
   # this is the ca_file path for heroku
-  config.omniauth :facebook, '380147598730003', '99cd750ad7d0733a71b1fd7921d4b53b',
-      {:scope => 'email', :client_options => {:ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}}}
+  ssl_options = {ca_file: '/usr/lib/ssl/certs/ca-certificates.crt'}
+  ssl_options.merge!(verify_mode: OpenSSL::SSL::VERIFY_NONE) if Rails.env.development?
+  config.omniauth :facebook, '380147598730003', '99cd750ad7d0733a71b1fd7921d4b53b', {scope: 'email', client_options: {ssl: ssl_options}}
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
