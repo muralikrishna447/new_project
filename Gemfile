@@ -17,6 +17,7 @@ gem 'ranked-model'
 gem 'gibbon'
 gem 'newrelic_rpm'
 gem 'rdiscount'
+gem "friendly_id"
 
 gem 'rack-cors', require: 'rack/cors'
 
