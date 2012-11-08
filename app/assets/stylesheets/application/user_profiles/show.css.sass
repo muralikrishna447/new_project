@@ -28,3 +28,19 @@
     +font-serif-large
     margin-top: 10px
 
+.user-bio-quote
+  padding: 0 30px
+  position: relative
+  +font-serif-medium
+  &:before
+    position: absolute
+    font-size: 3em
+    content: '\201C'
+    top: 10px
+    left: 0
+  &:after
+    content: '\201D'
+    position: absolute
+    font-size: 3em
+    bottom: -15px
+    right: 0
