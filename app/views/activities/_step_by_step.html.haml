@@ -10,9 +10,6 @@
                 .horizontal-divider
 
     - if activity.steps.any?
-      .row
-        .span12
-          %h4 Assembly Steps
       - activity.steps.each_with_index do |step, i|
         = render 'step', step: step, count: i
         .row
