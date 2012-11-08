@@ -4,13 +4,14 @@
   .container
     .row
       .span12
-        %h3 My Profile
+        - profile_title = is_current_user?(user) ? "My Profile" : "#{user.name}'s Profile"
+        %h3=profile_title
 
 .container.user-profile
   .row
     .span4.pull-right
       = render partial: 'profile_bio', user: user
-    - if current_user == user
+    - if is_current_user?(user)
       .span8.pull-left.user-profile-intro
         = render partial: 'profile_intro', user: user
 
