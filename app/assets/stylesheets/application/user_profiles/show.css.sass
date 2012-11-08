@@ -22,7 +22,7 @@
 .user-profile-intro
   overflow: hidden
   .intro
-    padding: 20px
+    padding: 20px 30px
   p
     +font-serif-large
     margin-top: 10px
@@ -31,10 +31,12 @@
   .row
     .span4:last-child
       .user-profile-step
-        padding-right: 30px
+        padding-right: 40px
+        padding-left: 15px
     .span4:first-child
       .user-profile-step
-        padding-left: 30px
+        padding-left: 40px
+        padding-right: 15px
 
 .user-bio-quote
   padding: 0 30px
@@ -54,10 +56,13 @@
     right: 0
 
 .user-profile-step
-  margin-top: 40px
+  margin-bottom: 20px
+  margin-top: 20px
   +font-serif-large
   img
     width: 100%
+  .thumbnail
+    background: $white
     margin-bottom: 15px
   .step
     color: $brick
