@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121107214910) do
+ActiveRecord::Schema.define(:version => 20121108012944) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -40,9 +40,11 @@ ActiveRecord::Schema.define(:version => 20121107214910) do
     t.text     "description"
     t.integer  "activity_order"
     t.boolean  "published",      :default => false
+    t.string   "slug"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
+  add_index "activities", ["slug"], :name => "index_activities_on_slug", :unique => true
 
   create_table "activity_equipment", :force => true do |t|
     t.integer  "activity_id",                        :null => false
