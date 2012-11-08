@@ -1,5 +1,8 @@
 class Activity < ActiveRecord::Base
+  extend FriendlyId
   include RankedModel
+
+  friendly_id :title, use: :slugged
 
   ranks :activity_order
 

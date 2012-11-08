@@ -39,4 +39,9 @@ ActiveAdmin.register_page "Tasks" do
 
     redirect_to({action: :index}, notice: "Activities published!")
   end
+
+  page_action :create_activity_slugs, method: :post do
+    Activity.all.map(&:save!)
+    redirect_to({action: :index}, notice: "Activity slugs created successfully!")
+  end
 end
