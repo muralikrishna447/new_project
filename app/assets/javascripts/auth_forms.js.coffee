@@ -9,7 +9,7 @@ $ ->
     $(this).find('.input').addClass('error')
     $(this).find('#user_password_input').append('<p>' + status.responseText + '</p>')
 
-  $('#sign-up form input#terms').on 'change', (event) ->
+  $('.user-form input#terms').on 'change', (event) ->
     setValue =  $(event.currentTarget).is(':checked')
     $("input[value='Sign Up']").attr('disabled', not setValue)
 

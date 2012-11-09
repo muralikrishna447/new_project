@@ -20,8 +20,7 @@ class User < ActiveRecord::Base
       uid: auth.uid,
     }
     auth_attributes.merge!({
-      name: auth.extra.raw_info.name,
-      password: Devise.friendly_token[0,20]
+      name: auth.extra.raw_info.name
     }) unless persisted?
 
     assign_attributes(auth_attributes, without_protection: true)

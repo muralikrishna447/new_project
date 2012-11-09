@@ -1,0 +1,26 @@
+:ruby
+  user = session["devise.unconfirmed_user"]
+  if user
+    name = user.name
+    email = user.email
+  end
+
+#complete-registration.user-form
+  %h1 New ChefSteps Account
+  = semantic_form_for(@user,
+                      as: :user,
+                      url: registration_path('user'),
+                      remote: true) do |f|
+    %p Welcome, NAME
+    %p
+      Please review your information below and agree
+      to our Terms of Service to sign up for ChefSteps. Or,
+      %a{ href: '#log-in'} log in to an existing account
+      if you have one.
+    = f.input :name, label: 'Name:', input_html: { value: name }
+    = f.input :email, as: :email, label: 'Email:', required: true, input_html: { required: true, value: email }
+    .terms-of-service
+      = check_box_tag 'terms', true, false, required: true
+      = label_tag 'terms', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
+    = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe, disabled: true
+

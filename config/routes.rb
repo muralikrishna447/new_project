@@ -6,7 +6,10 @@ Delve::Application.routes.draw do
   get "styleguide" => "styleguide#index"
 
   get 'users/sign_in' => redirect('/#log-in')
-  devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
+  devise_for :users, controllers: {
+    omniauth_callbacks: 'users/omniauth_callbacks',
+    registrations: 'users/registrations',
+  }
 
   root to: "home#index"
 
