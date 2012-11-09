@@ -11,4 +11,8 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name
 
+  def connected_with_facebook?
+    uid.present? && provider == 'facebook'
+  end
 end
+
