@@ -17,12 +17,16 @@ class User < ActiveRecord::Base
 
   def self.create_user_from_auth(auth)
     user = User.find_or_initialize_by_email(auth.info.email)
-    user.update_attributes(
-      name: auth.extra.raw_info.name,
+    auth_attributes = {
       provider: auth.provider,
       uid: auth.uid,
+    }
+    auth_attributes.merge!({
+      name: auth.extra.raw_info.name,
       password: Devise.friendly_token[0,20]
-    )
+    }) unless user.persisted?
+
+    user.update_attributes(auth_attributes)
     user
   end
 end
