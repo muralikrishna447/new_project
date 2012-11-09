@@ -1,28 +1,51 @@
 require 'spec_helper'
 
-describe User, '#find_for_facebook_oauth' do
+describe User, '#connect_user_with_facebook' do
   let(:auth) { create_auth }
 
-  it 'creates a new user from auth parameters if user does not exist' do
-    User.should_receive(:create_user_from_auth).with(auth)
-    User.find_for_facebook_oauth(auth)
+  context 'if user does not exist' do
+    it 'builds a new user from auth parameters' do
+      User.should_receive(:create_user_from_auth).with(auth)
+      User.connect_user_with_facebook(auth)
+    end
+
+    it 'does not persist new user' do
+      user = User.connect_user_with_facebook(auth)
+      user.should_not be_persisted
+    end
   end
 
-  it 'updates user that has not connected before' do
-    user = Fabricate(:user, email: 'test-user@test.com', name: 'bob')
-    fb_user = User.find_for_facebook_oauth(auth)
-    fb_user.should == user
-    fb_user.provider.should == :facebook
-    fb_user.uid.should == 'ABC'
-    fb_user.encrypted_password.should == user.encrypted_password
-    fb_user.email.should == user.email
-    fb_user.name.should == user.name
-  end
+  context 'if user exists' do
+    it 'does not update user that has connected before' do
+      user = Fabricate(:user, provider: auth.provider, uid: auth.uid)
+      User.should_not_receive(:create_user_from_auth).with(auth)
+      User.connect_user_with_facebook(auth).should == user
+    end
 
-  it 'does not update user that has connected before' do
-    user = Fabricate(:user, provider: auth.provider, uid: auth.uid)
-    User.should_not_receive(:create_user_from_auth).with(auth)
-    User.find_for_facebook_oauth(auth).should == user
+    context 'but has connected before' do
+      let!(:user) { Fabricate(:user, email: 'test-user@test.com', name: 'bob') }
+      let(:connected_user) { User.connect_user_with_facebook(auth) }
+
+      it 'updates provider' do
+        connected_user.provider.should == :facebook
+      end
+
+      it 'updates UID' do
+        connected_user.uid.should == 'ABC'
+      end
+
+      it 'does not update password' do
+        connected_user.encrypted_password.should == user.encrypted_password
+      end
+
+      it 'does not update email' do
+        connected_user.email.should == user.email
+      end
+
+      it 'does not update name' do
+        connected_user.name.should == user.name
+      end
+    end
   end
 
 
