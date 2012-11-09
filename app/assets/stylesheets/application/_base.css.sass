@@ -155,6 +155,28 @@ iframe
     height: 20px
     width: 20px
 
+.btn-primary
+  background-image: none
+  background: $brick
+  &:hover
+    background: $brickDark
+
+.edit-link
+  +font-sans-small
+  text-decoration: none
+  text-transform: uppercase
+  color: $gray
+  font-weight: 500
+  &:hover
+    text-decoration: none
+    color: $grayDark
+    i
+      &:before, &:after
+        color: $grayDark
+  i
+    &:before, &:after
+      color: $gray
+
 .video-container
   position: relative
   padding-top: 30px
