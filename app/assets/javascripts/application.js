@@ -12,3 +12,4 @@
 //= require twitter/bootstrap/carousel
 //= require twitter/bootstrap/modal
 
+//= require_tree ./backbone
