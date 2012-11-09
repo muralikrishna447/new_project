@@ -44,9 +44,10 @@
     .span6.horizontal-divider
   .row
     .span6
-      %p Sorry to see you go.
-      = link_to "Go Back", user_profile_path(resource)
-      %span
-        |
-      = link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete
+      .cancel-actions
+        %p Sorry to see you go.
+        = link_to "Go Back", user_profile_path(resource), class: 'edit-link'
+        %span
+          |
+        = link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: %w{edit-link brick}
 
