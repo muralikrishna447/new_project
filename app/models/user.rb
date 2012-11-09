@@ -14,5 +14,16 @@ class User < ActiveRecord::Base
   def connected_with_facebook?
     uid.present? && provider == 'facebook'
   end
+
+  def image_url
+    image_location = nil
+    if connected_with_facebook?
+      image_location = ApplicationHelper::facebook_image_url(uid)
+    else
+      image_location = gravatar_url if has_gravatar
+    end
+    image_location
+  end
+
 end
 

@@ -26,3 +26,43 @@ describe User, '#connected_with_facebook?' do
   end
 end
 
+describe User, '#image_url' do
+  let(:user) { Fabricate.build(:user) }
+  subject { user.image_url }
+
+  context "user isn't connected with facebook" do
+    before do
+      user.stub(:connected_with_facebook?).and_return(false)
+    end
+
+    context "and doesn't have a gravatar" do
+      before do
+        user.stub(:has_gravatar).and_return(false)
+      end
+
+      it { subject.should == nil }
+    end
+
+    context "and has a gravatar" do
+      before do
+        user.stub(:has_gravatar).and_return(true)
+        user.stub(:gravatar_url).and_return("some gravatar url")
+      end
+
+      it { subject.should == "some gravatar url" }
+    end
+
+  end
+
+  context "user is connected with facebook" do
+    before do
+      user.stub(:connected_with_facebook?).and_return(true)
+      ApplicationHelper.stub(:facebook_image_url).and_return("facebook image url")
+    end
+
+    before { user.stub(:connected_with_facebook?).and_return(true) }
+
+    it { subject.should == "facebook image url" }
+  end
+end
+
