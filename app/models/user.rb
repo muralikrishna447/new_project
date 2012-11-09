@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   validates_presence_of :name
 
   def self.find_for_facebook_oauth(auth)
-    user = User.where(:provider => auth.provider, :uid => auth.uid).first
+    user = User.where(provider: auth.provider, uid: auth.uid).first
     user = create_user_from_auth(auth) unless user
     user
   end
