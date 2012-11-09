@@ -1,6 +1,6 @@
 .row.user-profile-bio
   - if is_current_user?(user)
-    = link_to edit_registration_path(user), class: %w{edit-account edit-link} do
+    = link_to edit_registration_path(user), class: "edit-account uppercase-link" do
       Edit Account Settings
       %i.icon-double-chevron-right
   .span1
