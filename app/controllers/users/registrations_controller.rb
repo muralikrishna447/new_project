@@ -20,15 +20,4 @@ class Users::RegistrationsController < Devise::RegistrationsController
       respond_with resource
     end
   end
-
-  private
-
-  def assign_from_unconfirmed_user
-    unconfirmed_user = session["devise.unconfirmed_user"]
-    self.resource.assign_attributes({
-      provider: unconfirmed_user.provider,
-      uid: unconfirmed_user.uid,
-      password: Devise.friendly_token[0,20]
-    }, without_protection: true) if unconfirmed_user
-  end
 end
