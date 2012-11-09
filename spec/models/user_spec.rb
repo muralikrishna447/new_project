@@ -1,53 +1,62 @@
 require 'spec_helper'
 
-describe User, '#connect_user_with_facebook' do
+describe User, 'facebook connect' do
   let(:auth) { create_auth }
 
-  context 'if user does not exist' do
-    it 'builds a new user from auth parameters' do
-      User.should_receive(:create_user_from_auth).with(auth)
-      User.connect_user_with_facebook(auth)
+  describe User, '#facebook_connected_user' do
+    it 'returns nil if no user exists' do
+      User.facebook_connected_user(auth).should_not be
     end
 
-    it 'does not persist new user' do
-      user = User.connect_user_with_facebook(auth)
-      user.should_not be_persisted
-    end
-  end
-
-  context 'if user exists' do
-    it 'does not update user that has connected before' do
+    it 'returns connected user if one exists' do
       user = Fabricate(:user, provider: auth.provider, uid: auth.uid)
-      User.should_not_receive(:create_user_from_auth).with(auth)
-      User.connect_user_with_facebook(auth).should == user
+      User.facebook_connected_user(auth).should == user
     end
 
-    context 'but has connected before' do
-      let!(:user) { Fabricate(:user, email: 'test-user@test.com', name: 'bob') }
-      let(:connected_user) { User.connect_user_with_facebook(auth) }
+    context 'user exists with same email' do
+      let!(:user) { Fabricate(:user, email: 'test-user@test.com') }
 
-      it 'updates provider' do
-        connected_user.provider.should == :facebook
+      it 'returns user' do
+        User.facebook_connected_user(auth).should == user
       end
 
-      it 'updates UID' do
-        connected_user.uid.should == 'ABC'
-      end
-
-      it 'does not update password' do
-        connected_user.encrypted_password.should == user.encrypted_password
-      end
-
-      it 'does not update email' do
-        connected_user.email.should == user.email
-      end
-
-      it 'does not update name' do
-        connected_user.name.should == user.name
+      it 'assigns information from facebook' do
+        User.any_instance.should_receive(:assign_from_facebook)
+        User.facebook_connected_user(auth)
       end
     end
   end
 
+  describe "assign_from_facebook" do
+    let!(:user) { Fabricate.build(:user, name: '') }
+
+    it "assigns provider" do
+      user.assign_from_facebook(auth).provider.should == :facebook
+    end
+
+    it "assigns uid" do
+      user.assign_from_facebook(auth).uid.should == 'ABC'
+    end
+
+    it "assigns name if blank" do
+      user.assign_from_facebook(auth).name.should == 'user name'
+    end
+
+    it "does not assign name if not blank" do
+      user.name = 'bob'
+      user.assign_from_facebook(auth).name.should == 'bob'
+    end
+
+    it "assigns password record is new" do
+      user.assign_from_facebook(auth).password.should_not == 'secret'
+    end
+
+    it "does not assign password if record exists" do
+      user.name = 'test'
+      user.save!
+      user.assign_from_facebook(auth).password.should == 'secret'
+    end
+  end
 
   def create_auth
     Hashie::Mash.new(

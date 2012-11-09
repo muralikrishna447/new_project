@@ -1,7 +1,9 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   def create
     build_resource
-    assign_from_unconfirmed_user
+
+    fb_data = session["devise.facebook_data"]
+    resource.assign_from_facebook(fb_data) if fb_data
 
     if resource.save
       if resource.active_for_authentication?

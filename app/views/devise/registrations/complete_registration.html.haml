@@ -1,8 +1,8 @@
 :ruby
-  user = session["devise.unconfirmed_user"]
-  if user
-    name = user.name
-    email = user.email
+  auth = session["devise.facebook_data"]
+  if auth
+    name = auth.extra.raw_info.name
+    email = auth.info.email
   end
 
 #complete-registration.user-form

@@ -1,12 +1,12 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def facebook
-    @user = User.connect_user_with_facebook(request.env["omniauth.auth"])
+    auth = request.env["omniauth.auth"]
+    @user = User.facebook_connected_user(auth)
 
-    if @user.persisted?
+    if @user
       sign_in_and_redirect @user, event: :authentication
     else
-      session["devise.facebook_data"] = request.env["omniauth.auth"]
-      session["devise.unconfirmed_user"] = @user
+      session["devise.facebook_data"] = auth
       redirect_to root_url(anchor: 'complete-registration')
     end
   end

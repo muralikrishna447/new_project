@@ -7,35 +7,30 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name
 
-  def self.connect_user_with_facebook(auth)
-    user = find_existing_user(auth.provider, auth.uid)
-    return user if user
-
-    create_user_from_auth(auth)
+  def self.facebook_connected_user(auth)
+    connected_user(auth) || connect_via_email(auth)
   end
 
-  def assign_from_auth(auth)
-    auth_attributes = {
+  def assign_from_facebook(auth)
+    attrs = {
       provider: auth.provider,
       uid: auth.uid,
+      name: self.name.blank? ? auth.extra.raw_info.name : self.name
     }
-    auth_attributes.merge!({
-      name: auth.extra.raw_info.name
-    }) unless persisted?
-
-    assign_attributes(auth_attributes, without_protection: true)
+    attrs.merge!({password: Devise.friendly_token[0,20]}) unless persisted?
+    assign_attributes(attrs, without_protection: true)
+    self
   end
 
   private
 
-  def self.find_existing_user(provider, uid)
-    User.where(provider: provider, uid: uid).first
+  def self.connected_user(auth)
+    User.where(provider: auth.provider, uid: auth.uid).first
   end
 
-  def self.create_user_from_auth(auth)
-    user = User.find_or_initialize_by_email(auth.info.email)
-    user.assign_from_auth(auth)
-    user.save unless user.id.nil?
-    user
+  def self.connect_via_email(auth)
+    user = User.where(email: auth.info.email).first
+    return if user.nil?
+    user.assign_from_facebook(auth)
   end
 end
