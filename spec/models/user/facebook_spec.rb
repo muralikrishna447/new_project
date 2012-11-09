@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe User, 'facebook connect' do
+describe User::Facebook do
   let(:auth) { create_auth }
 
-  describe User, '#facebook_connected_user' do
+  describe '#facebook_connected_user' do
     it 'returns nil if no user exists' do
       User.facebook_connected_user(auth).should_not be
     end
@@ -27,7 +27,7 @@ describe User, 'facebook connect' do
     end
   end
 
-  describe "assign_from_facebook" do
+  describe "#assign_from_facebook" do
     let!(:user) { Fabricate.build(:user, name: '') }
 
     it "assigns provider" do
