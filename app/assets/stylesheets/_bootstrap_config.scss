@@ -93,6 +93,9 @@ $btnDangerBackgroundHighlight:      #bd362f;
 $btnInverseBackground:              #444;
 $btnInverseBackgroundHighlight:     $grayDarker;
 
+$btnFacebookBackground:             #293e69;
+$btnFacebookBackgroundHighlight:    lighten($btnFacebookBackground, 20%);
+
 
 // Forms
 // -------------------------

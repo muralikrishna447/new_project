@@ -7,9 +7,13 @@ gem 'unicorn'
 gem 'memcachier'
 gem 'dalli'
 
+gem "devise"
+gem 'oauth2'
+gem 'omniauth'
+gem 'omniauth-facebook'
+
 gem 'jquery-rails'
 gem 'haml'
-gem "devise"
 gem 'activeadmin'
 gem 'meta_search'
 gem 'decent_exposure'

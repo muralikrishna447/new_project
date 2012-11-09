@@ -4,6 +4,7 @@
                       as: :user,
                       url: session_path('user'),
                       remote: true) do |f|
+    = render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
     = f.inputs 'Log in to existing account:' do
       = f.input :email, label: 'Email:'
       = f.input :password, label: 'Password:'
