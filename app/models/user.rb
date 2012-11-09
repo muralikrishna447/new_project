@@ -16,12 +16,13 @@ class User < ActiveRecord::Base
   private
 
   def self.create_user_from_auth(auth)
-    User.create(
+    user = User.find_or_initialize_by_email(auth.info.email)
+    user.update_attributes(
       name: auth.extra.raw_info.name,
       provider: auth.provider,
       uid: auth.uid,
-      email: auth.info.email,
       password: Devise.friendly_token[0,20]
     )
+    user
   end
 end
