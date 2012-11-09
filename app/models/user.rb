@@ -20,7 +20,8 @@ class User < ActiveRecord::Base
     if connected_with_facebook?
       image_location = ApplicationHelper::facebook_image_url(uid)
     else
-      image_location = gravatar_url if has_gravatar
+      grav_url = gravatar_url(default: "USER_HAS_NO_IMAGE")
+      image_location = grav_url unless grav_url.include?("USER_HAS_NO_IMAGE")
     end
     image_location
   end
