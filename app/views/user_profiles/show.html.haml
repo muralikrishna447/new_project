@@ -9,7 +9,7 @@
 
 .container.user-profile
   .row
-    .span4.pull-right
+    .span4.pull-right.horizontal-divider
       = render partial: 'profile_bio', user: user
     - if is_current_user?(user)
       .span8.pull-left.user-profile-intro
