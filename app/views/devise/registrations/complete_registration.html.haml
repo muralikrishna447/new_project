@@ -1,6 +1,7 @@
 :ruby
   auth = session["devise.facebook_data"]
   if auth
+    uid = auth.uid
     name = auth.extra.raw_info.name
     email = auth.info.email
   end
@@ -11,14 +12,17 @@
                       as: :user,
                       url: registration_path('user'),
                       remote: true) do |f|
-    %p Welcome, NAME
-    %p
-      Please review your information below and agree
-      to our Terms of Service to sign up for ChefSteps. Or,
-      %a{ href: '#log-in'} log in to an existing account
-      if you have one.
-    = f.input :name, label: 'Name:', input_html: { value: name }
-    = f.input :email, as: :email, label: 'Email:', required: true, input_html: { required: true, value: email }
+    .welcome
+      %img{src: facebook_image_url(uid)}
+      %p Welcome, #{name}
+      %p.last
+        Please review your information below and agree
+        to our Terms of Service to sign up for ChefSteps. Or,
+        %a{ href: '#log-in'} log in to an existing account
+        if you have one.
+    = f.inputs do
+      = f.input :name, label: 'Name:', input_html: { value: name }
+      = f.input :email, as: :email, label: 'Email:', required: true, input_html: { required: true, value: email }
     .terms-of-service
       = check_box_tag 'terms', true, false, required: true
       = label_tag 'terms', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
