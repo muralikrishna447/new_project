@@ -1,22 +1,34 @@
 describe 'ChefSteps.Views.AuthForm', ->
   beforeEach ->
     loadFixtures('auth_form')
-    @view = new ChefSteps.Views.AuthForm(el: $('form'))
+    @view = new ChefSteps.Views.AuthForm(el: $('form'), successRedirect: 'location')
     @$input = $('form .input')
     @$terms = $('form input#terms')
     @$submit = $('form input[type="submit"]')
 
   describe 'showErrors', ->
-    beforeEach ->
-      errors = errors: name: ['bad name']
-      xhr = responseText: JSON.stringify(errors)
-      @view.showErrors(null, xhr)
+    describe 'one error', ->
+      beforeEach ->
+        xhr = responseText: JSON.stringify(error: 'invalid')
+        @view.showErrors(null, xhr)
 
-    it 'adds error class to input', ->
-      expect(@$input).toHaveClass('error')
+      it 'adds error class to input', ->
+        expect(@$input).toHaveClass('error')
 
-    it 'appends error to input', ->
-      expect(@$input).toHaveText('bad name')
+      it 'appends error to input', ->
+        expect(@$input).toHaveText('invalid')
+
+    describe 'multiple errors', ->
+      beforeEach ->
+        errors = errors: password: ['bad password']
+        xhr = responseText: JSON.stringify(errors)
+        @view.showErrors(null, xhr)
+
+      it 'adds error class to input', ->
+        expect(@$input).toHaveClass('error')
+
+      it 'appends error to input', ->
+        expect(@$input).toHaveText('bad password')
 
   describe 'clearError', ->
     beforeEach ->
@@ -39,3 +51,4 @@ describe 'ChefSteps.Views.AuthForm', ->
       @$terms.prop('checked', false)
       @$terms.trigger('change')
       expect(@$submit).toHaveAttr('disabled', 'disabled')
+

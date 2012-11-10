@@ -10,7 +10,7 @@
   %h1 New ChefSteps Account
   = semantic_form_for(@user,
                       as: :user,
-                      url: registration_path('user'),
+                      url: registration_path('user', format: :json),
                       remote: true) do |f|
     .welcome
       - if uid
