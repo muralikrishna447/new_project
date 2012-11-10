@@ -1,4 +1,4 @@
-class ChefSteps.AuthForm extends Backbone.View
+class ChefSteps.Views.AuthForm extends Backbone.View
   events:
     'focus input': 'clearError'
     'ajax:error': 'showErrors'
