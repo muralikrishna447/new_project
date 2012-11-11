@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
     if connected_with_facebook?
       ApplicationHelper::facebook_image_url(uid)
     else
-      gravatar_url
+      gravatar_url(default: User.default_image_url )
     end
   end
 
@@ -23,5 +23,8 @@ class User < ActiveRecord::Base
     uid.present? && provider == 'facebook'
   end
 
+  def self.default_image_url
+    image_url('profile-placeholder.png')
+  end
 end
 

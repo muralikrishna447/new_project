@@ -44,9 +44,17 @@ describe User, '#profile_image_url' do
   context "user isn't connected with facebook" do
     before do
       user.stub(:connected_with_facebook?).and_return(false)
-      user.stub(:gravatar_url).and_return("some gravatar url")
+      User.stub(:default_image_url).and_return("DEFAULT_IMAGE_URL")
     end
-      it { subject.should == "some gravatar url" }
+
+    it "uses the gravatar url" do
+      user.stub(:gravatar_url).and_return("some gravatar url")
+      subject.should == "some gravatar url"
+    end
+
+    it "include default placeholder image absolute path" do
+      subject.should include('d=DEFAULT_IMAGE_URL')
+    end
   end
 end
 
