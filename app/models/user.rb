@@ -11,19 +11,16 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name
 
-  def connected_with_facebook?
-    uid.present? && provider == 'facebook'
+  def profile_image_url
+    if connected_with_facebook?
+      ApplicationHelper::facebook_image_url(uid)
+    else
+      gravatar_url
+    end
   end
 
-  def image_url
-    image_location = nil
-    if connected_with_facebook?
-      image_location = ApplicationHelper::facebook_image_url(uid)
-    else
-      grav_url = gravatar_url(default: "USER_HAS_NO_IMAGE")
-      image_location = grav_url unless grav_url.include?("USER_HAS_NO_IMAGE")
-    end
-    image_location
+  def connected_with_facebook?
+    uid.present? && provider == 'facebook'
   end
 
 end

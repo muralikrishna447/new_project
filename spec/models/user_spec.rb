@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe User, '#connected_with_facebook?' do
   let(:user) { Fabricate.build(:user) }
-  subject { user.connected_with_facebook?}
+  subject { user.connected_with_facebook? }
 
   context "hasn't connected with facebook" do
     before { user.uid = nil }
@@ -26,9 +26,9 @@ describe User, '#connected_with_facebook?' do
   end
 end
 
-describe User, '#image_url' do
+describe User, '#profile_image_url' do
   let(:user) { Fabricate.build(:user) }
-  subject { user.image_url }
+  subject { user.profile_image_url }
 
   context "user is connected with facebook" do
     before do
@@ -44,19 +44,9 @@ describe User, '#image_url' do
   context "user isn't connected with facebook" do
     before do
       user.stub(:connected_with_facebook?).and_return(false)
+      user.stub(:gravatar_url).and_return("some gravatar url")
     end
-
-    context "and doesn't have a gravatar" do
-      before { user.stub(:gravatar_url).and_return('some gravatar url with USER_HAS_NO_IMAGE') }
-      it { subject.should == nil }
-    end
-
-    context "and has a gravatar" do
-      before { user.stub(:gravatar_url).and_return('some gravatar url') }
       it { subject.should == "some gravatar url" }
-    end
-
   end
-
 end
 
