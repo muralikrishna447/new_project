@@ -1,14 +1,12 @@
-%h2 Change your password
-= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f|
-  = devise_error_messages!
-  = f.hidden_field :reset_password_token
-  %div
-    = f.label :password, "New password"
-    %br/
-    = f.password_field :password
-  %div
-    = f.label :password_confirmation, "Confirm new password"
-    %br/
-    = f.password_field :password_confirmation
-  %div= f.submit "Change my password"
-= render "devise/shared/links"
+#password-edit.user-form
+  %h1 Change your password
+  = semantic_form_for(@user,
+                      as: :user,
+                      url: password_path(resource_name),
+                      method: :put) do |f|
+    = f.inputs do
+      = devise_error_messages!
+      = f.hidden_field :reset_password_token
+      = f.input :password, label: 'New password:'
+      = f.input :password_confirmation, label: 'Confirm new password:'
+    = f.submit "Change my password"
