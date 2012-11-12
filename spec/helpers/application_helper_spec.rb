@@ -26,3 +26,9 @@ describe ApplicationHelper, "#facebook_image_url" do
     helper.facebook_image_url('ABCD').should == 'https://graph.facebook.com/ABCD/picture'
   end
 end
+
+describe ApplicationHelper, "#default_profile_photo_url" do
+  it "returns URL for default profile photo" do
+    helper.default_profile_photo_url.should include 'http://delve.dev', 'profile-placeholder.png'
+  end
+end

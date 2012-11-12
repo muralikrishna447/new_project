@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe User, '#profile_image_url' do
   let(:user) { Fabricate.build(:user) }
-  subject { user.profile_image_url }
+  subject { user.profile_image_url('DEFAULT_IMAGE_URL') }
 
   context "user is connected with facebook" do
     before do
@@ -16,7 +16,6 @@ describe User, '#profile_image_url' do
   context "user isn't connected with facebook" do
     before do
       user.stub(:connected_with_facebook?).and_return(false)
-      User.stub(:default_image_url).and_return("DEFAULT_IMAGE_URL")
     end
 
     it "uses the gravatar url" do
