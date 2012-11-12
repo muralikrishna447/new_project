@@ -14,8 +14,7 @@ module ApplicationHelper
   end
 
   def default_profile_photo_url
-    root_url = Rails.application.routes.url_helpers.root_url(host: DOMAIN)
-    "#{root_url}#{image_path('profile-placeholder.png')}"
+    image_path('profile-placeholder.png')
   end
 end
 

@@ -29,6 +29,6 @@ end
 
 describe ApplicationHelper, "#default_profile_photo_url" do
   it "returns URL for default profile photo" do
-    helper.default_profile_photo_url.should include 'http://delve.dev', 'profile-placeholder.png'
+    helper.default_profile_photo_url.should include 'profile-placeholder.png'
   end
 end
