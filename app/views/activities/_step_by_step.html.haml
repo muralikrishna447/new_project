@@ -10,7 +10,7 @@
                 .horizontal-divider
 
     - if activity.steps.any?
-      - activity.steps.each_with_index do |step, i|
+      - activity.ordered_steps.each_with_index do |step, i|
         = render 'step', step: step, count: i
         .row
           .span12
