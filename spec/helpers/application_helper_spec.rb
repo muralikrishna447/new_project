@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApplicationHelper, "#current_user?" do
+describe ApplicationHelper, "#is_current_user?" do
   let(:user) { mock('user') }
 
   subject{ helper.is_current_user?(user) }
