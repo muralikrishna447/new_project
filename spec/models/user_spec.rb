@@ -7,7 +7,7 @@ describe User, '#profile_image_url' do
   context "user is connected with facebook" do
     before do
       user.stub(:connected_with_facebook?).and_return(true)
-      ApplicationHelper.stub(:facebook_image_url).and_return("facebook image url")
+      user.stub(:facebook_image_url).and_return("facebook image url")
     end
 
     it { subject.should == "facebook image url" }

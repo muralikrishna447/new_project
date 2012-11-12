@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
+  include ApplicationHelper
   include User::Facebook
   include Gravtastic
+
   gravtastic
 
   devise :database_authenticatable, :registerable,
@@ -13,7 +15,7 @@ class User < ActiveRecord::Base
 
   def profile_image_url
     if connected_with_facebook?
-      ApplicationHelper::facebook_image_url(uid)
+      facebook_image_url(uid)
     else
       gravatar_url(default: User.default_image_url )
     end
