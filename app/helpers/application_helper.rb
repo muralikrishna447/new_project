@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include ActionView::Helpers::AssetTagHelper
+
   def facebook_image_url(uid)
     "https://graph.facebook.com/#{uid}/picture"
   end
@@ -9,6 +11,11 @@ module ApplicationHelper
 
   def is_current_user?(user)
     current_user == user
+  end
+
+  def default_profile_photo_url
+    root_url = Rails.application.routes.url_helpers.root_url(host: DOMAIN)
+    "#{root_url}#{image_path('profile-placeholder.png')}"
   end
 end
 

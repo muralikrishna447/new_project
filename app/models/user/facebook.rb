@@ -13,6 +13,10 @@ module User::Facebook
     self
   end
 
+  def connected_with_facebook?
+    uid.present? && provider == 'facebook'
+  end
+
   module ClassMethods
     def facebook_connected_user(auth)
       connected_user(auth) || connect_via_email(auth)
