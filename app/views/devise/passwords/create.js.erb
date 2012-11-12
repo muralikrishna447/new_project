@@ -1,7 +1,7 @@
-var reset_notice = "<span>Please check your email for further instructions.</span>";
+var reset_notice = "Please check your email for further instructions.";
 $notice_target = $('#password-reset form legend span');
 $notice_target.fadeOut('slow', function(){
-  $notice_target.html(reset_notice);
+  $notice_target.html(reset_notice).addClass('notice');
   $notice_target.fadeIn('slow');
 });
 

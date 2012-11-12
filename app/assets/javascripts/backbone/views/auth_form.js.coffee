@@ -29,4 +29,4 @@ class ChefSteps.Views.AuthForm extends Backbone.View
     @$submitButton.attr('disabled', not termsAccepted)
 
   redirect: (event, data, status, xhr)->
-    window.location = data.location
+    window.location = data.location if data.location
