@@ -9,4 +9,12 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name
 
+  def as_json(options={})
+    {
+      id: id,
+      name: name,
+      email: email
+    }
+  end
+
 end
