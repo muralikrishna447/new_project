@@ -3,7 +3,7 @@ describe 'ChefSteps.Views.AuthForm', ->
     loadFixtures('auth_form')
     @view = new ChefSteps.Views.AuthForm(el: $('form'), successRedirect: 'location')
     @$input = $('form .input')
-    @$terms = $('form input#terms')
+    @$terms = $('form input.terms')
     @$submit = $('form input[type="submit"]')
 
   describe 'showErrors', ->

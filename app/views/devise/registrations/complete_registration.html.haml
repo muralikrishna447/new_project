@@ -25,7 +25,7 @@
       = f.input :name, label: 'Name:', input_html: { value: name }
       = f.input :email, as: :email, label: 'Email:', required: true, input_html: { required: true, value: email }
     .terms-of-service
-      = check_box_tag 'terms', true, false, required: true
-      = label_tag 'terms', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
+      = check_box_tag 'terms-complete-registration', true, false, required: true, class: 'terms'
+      = label_tag 'terms-complete-registration', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
     = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe, disabled: true
 

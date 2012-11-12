@@ -3,10 +3,10 @@ class ChefSteps.Views.AuthForm extends Backbone.View
     'focus input': 'clearError'
     'ajax:error': 'showErrors'
     'ajax:success': 'redirect'
-    'change input#terms': 'enableSubmit'
+    'change input.terms': 'enableSubmit'
 
   initialize: (options)->
-    @$termsCheckbox = @$('input#terms')
+    @$termsCheckbox = @$('input.terms')
     @$submitButton = @$('input[type="submit"]')
 
   clearError: (event)->
