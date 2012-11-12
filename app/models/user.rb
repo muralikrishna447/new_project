@@ -19,10 +19,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def connected_with_facebook?
-    uid.present? && provider == 'facebook'
-  end
-
   def self.default_image_url
     image_url('profile-placeholder.png')
   end
