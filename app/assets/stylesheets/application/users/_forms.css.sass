@@ -1,6 +1,4 @@
 .user-form
-  max-width: 560px
-
   h1, legend
     text-align: center
 
@@ -11,7 +9,7 @@
     padding: 25px 0
 
   form
-    +border-radius(8px)
+    +border-bottom-radius(8px)
     background: $grayLight
     margin: 0
     padding-bottom: 50px
@@ -19,7 +17,8 @@
   legend
     +font-sans-large
     border: none
-    padding-top: 20px
+    padding-top: 10px
+    margin-bottom: 4px
 
   ol
     margin: 0
@@ -36,7 +35,7 @@
     white-space: normal
     text-shadow: none
     line-height: 20px
-    margin: 3px 14px 0 45px
+    margin: 4px 14px 0 45px
     padding: 0
 
   abbr[title=required]
@@ -92,6 +91,38 @@
     margin-right: 130px
     margin-top: 5px
 
+  .facebook-login
+    width: 100%
+    text-align: center
+    padding: 25px 0
+    border-bottom: 2px dotted $grayMedium
+    position: relative
+    a
+      width: 207px
+      margin-left: 30px
+    i
+      +font-serif-small
+      position: absolute
+      top: 85px
+      left: 47%
+      background: $grayLight
+      width: 38px
+      color: $gray
+
+  .welcome
+    padding: 10px 0 20px 0
+
+    p
+      +font-sans-large
+      color: $grayDarker
+      padding: 26px 0 0 0
+      margin: 0 70px 0 160px
+      line-height: 1.2em
+
+    img
+      float: left
+      margin: 15px 0 0 90px
+
 
 #auth-modal
   +border-radius(16px)
@@ -100,4 +131,32 @@
     position: relative
     top: 10px
     right: 10px
+
+.user-edit-form
+  +font-sans-medium
+  h3
+    margin-left: 10px
+  p
+    +font-sans-small
+    margin: 0
+    color: $gray
+  form
+    margin-top: 10px
+    margin-left: 10px
+  input
+    margin-top: 5px
+    width: 268px
+  label
+    margin-top: 10px
+  input[type=submit]
+    +font-sans-small
+    text-transform: uppercase
+    width: auto
+    padding: 5px 10px
+    margin-top: 0
+
+.cancel-actions
+  margin: 10px 0 40px 10px
+  p
+    margin-bottom: 10px
 

@@ -7,9 +7,13 @@ gem 'unicorn'
 gem 'memcachier'
 gem 'dalli'
 
+gem "devise"
+gem 'oauth2'
+gem 'omniauth'
+gem 'omniauth-facebook'
+
 gem 'jquery-rails'
 gem 'haml'
-gem "devise"
 gem 'activeadmin'
 gem 'meta_search'
 gem 'decent_exposure'
@@ -18,6 +22,7 @@ gem 'gibbon'
 gem 'newrelic_rpm'
 gem 'rdiscount'
 gem "friendly_id"
+gem 'gravtastic'
 
 gem 'rack-cors', require: 'rack/cors'
 

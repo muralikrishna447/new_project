@@ -4,7 +4,7 @@
 //= require backbone
 //= require carousel
 //= require stick_to_top
-//= require auth_forms
+//= require auth_modal
 
 //= require twitter/bootstrap/dropdown
 //= require twitter/bootstrap/transition
@@ -12,3 +12,4 @@
 //= require twitter/bootstrap/carousel
 //= require twitter/bootstrap/modal
 
+//= require_tree ./backbone

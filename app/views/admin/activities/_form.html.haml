@@ -38,7 +38,7 @@
         %th Image Id
         %th Youtube Id
       = render 'admin/recipes/step_form', step: nil, field_name_prefix: field_name_prefix
-      - @activity.steps.ordered.each do |step|
+      - @activity.ordered_steps.each do |step|
         = render 'admin/recipes/step_form', step: step, field_name_prefix: field_name_prefix
 
   = f.actions do

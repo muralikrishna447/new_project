@@ -106,7 +106,7 @@ class Activity < ActiveRecord::Base
   end
 
   def ordered_steps
-    steps.ordered.all
+    steps.ordered.activity_id_not_nil.all
   end
 
   def update_recipe_step_order(recipe_step_ids)

@@ -1,0 +1,18 @@
+.row
+  .span8
+    .intro
+      %p= "Welcome back, #{user.name}!"
+      %p
+        parel gastropub cliche pop-up occaecat, consequat viral brooklyn you
+        probably haven't heard of them cupidatat cillum scenester DIY labore.
+        Anim truffaut in trust fund, swag banksy photo booth typewriter.
+        Bushwick pinterest hella proident cupidatat echo park, quinoa fixie
+        wolf blog leggings labore ea kogi gastropub.
+.row
+  - 2.times do |count|
+    = render 'user_profile_step', title: "Cook Things", step_image: 'chris-large.jpg', count: count + 1
+
+.row
+  - 2.times do |count|
+    = render 'user_profile_step', title: "Select Course", step_image: 'chris-large.jpg', count: count + 1
+

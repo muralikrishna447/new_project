@@ -6,7 +6,10 @@ Delve::Application.routes.draw do
   get "styleguide" => "styleguide#index"
 
   get 'users/sign_in' => redirect('/#log-in')
-  devise_for :users
+  devise_for :users, controllers: {
+    omniauth_callbacks: 'users/omniauth_callbacks',
+    registrations: 'users/registrations',
+  }
 
   root to: "home#index"
 
@@ -18,8 +21,10 @@ Delve::Application.routes.draw do
 
   get 'thank-you' => 'thank_you#show', as: 'thank_you'
 
-  resources :courses, :only => [:show]
-  resources :activities, :only => [:show] do
+  resources :user_profiles, only: [:show], path: 'profiles'
+
+  resources :courses, only: [:show]
+  resources :activities, only: [:show] do
     member do
       post 'cooked-this' => 'activities#cooked_this', as: 'cooked_this'
       get ':token' => 'activities#show_private', as: 'private'
