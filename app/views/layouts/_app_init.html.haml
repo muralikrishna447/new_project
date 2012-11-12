@@ -1,5 +1,7 @@
 :javascript
   $(function() {
-    new ChefSteps.init()
+    new ChefSteps.init({
+      profile: '#{j(user_signed_in? ? current_user.to_json : nil)}'
+    })
   });
 
