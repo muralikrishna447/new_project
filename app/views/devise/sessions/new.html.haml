@@ -2,7 +2,7 @@
   %h1 Connect to log in (or #{link_to 'sign up', '#sign-up'})
   = semantic_form_for(@user,
                       as: :user,
-                      url: session_path('user'),
+                      url: session_path('user', format: :json),
                       remote: true) do |f|
     = render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
     = f.inputs 'Log in to existing account:' do

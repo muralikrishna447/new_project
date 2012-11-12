@@ -7,7 +7,8 @@ module User::Facebook
       uid: auth.uid,
       name: self.name.blank? ? auth.extra.raw_info.name : self.name
     }
-    attrs.merge!({password: Devise.friendly_token[0,20]}) unless persisted?
+    update_password = !(persisted? || self.password.present?)
+    attrs.merge!({password: Devise.friendly_token[0,20]}) if update_password
     assign_attributes(attrs, without_protection: true)
     self
   end

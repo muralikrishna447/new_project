@@ -2,7 +2,7 @@
   %h1 Forgot your password?
   = semantic_form_for(@user,
                       as: :user,
-                      url: password_path('user'),
+                      url: password_path('user', format: :json),
                       remote: true) do |f|
     = f.inputs 'Enter email for password reset instructions' do
       = f.input :email, label: 'Email:', input_html: { type: 'email', required: true}
