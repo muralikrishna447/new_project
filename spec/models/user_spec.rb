@@ -36,8 +36,6 @@ describe User, '#profile_image_url' do
       ApplicationHelper.stub(:facebook_image_url).and_return("facebook image url")
     end
 
-    before { user.stub(:connected_with_facebook?).and_return(true) }
-
     it { subject.should == "facebook image url" }
   end
 
