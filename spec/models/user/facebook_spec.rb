@@ -28,7 +28,7 @@ describe User::Facebook do
   end
 
   describe "#assign_from_facebook" do
-    let!(:user) { Fabricate.build(:user, name: '') }
+    let!(:user) { Fabricate.build(:user, name: '', password: '') }
 
     it "assigns provider" do
       user.assign_from_facebook(auth).provider.should == :facebook
@@ -47,12 +47,18 @@ describe User::Facebook do
       user.assign_from_facebook(auth).name.should == 'bob'
     end
 
-    it "assigns password record is new" do
+    it "assigns password if record is new" do
       user.assign_from_facebook(auth).password.should_not == 'secret'
+    end
+
+    it "does not assign password if password already set on record" do
+      user.password = 'new password'
+      user.assign_from_facebook(auth).password.should == 'new password'
     end
 
     it "does not assign password if record exists" do
       user.name = 'test'
+      user.password = 'secret'
       user.save!
       user.assign_from_facebook(auth).password.should == 'secret'
     end
