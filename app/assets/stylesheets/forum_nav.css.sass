@@ -1,9 +1,16 @@
-#custom-header
-  background: white
+@import font-awesome
+
+#custom-header, #custom-footer
   width: 981px
   margin: 0 auto
-  padding: 40px 0 25px
   overflow: hidden
+
+  .pull-right
+    float: right
+
+#custom-header
+  padding: 40px 0 25px
+  background: white
 
   .brand-container
     float: left
@@ -22,12 +29,9 @@
     display: inline-block
     margin: -10px 0 0 5px
 
-  .pull-right
-    float: right
 
   .nav
     list-style: none
-
 
   li
     display: inline-block
@@ -49,3 +53,31 @@
       color: #AA4311
       padding: 0
 
+#custom-footer
+  background: #EEE
+  padding-bottom: 10px
+
+  .row
+    padding: 0 30px
+
+  .span8
+    float: left
+
+  p
+    margin: 0.3em 0
+    font-size: 18px
+    font-weight: 200
+    line-height: 27px
+    color: inherit
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif
+    text-align: left
+
+  a
+    color: #D85516
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+
+  [class^="icon-"], [class*=" icon-"]
+    &:before
+      padding-right: 5px
