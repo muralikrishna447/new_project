@@ -14,7 +14,9 @@ class User < ActiveRecord::Base
       id: id,
       name: name,
       email: email,
-      location: location
+      location: location,
+      website: website,
+      quote: quote
     }
   end
 
