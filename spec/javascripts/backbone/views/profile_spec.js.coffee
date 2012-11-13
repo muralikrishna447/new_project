@@ -3,7 +3,7 @@ describe 'ChefSteps.Views.Profile', ->
     spyOn(ChefSteps, 'new').andCallFake (klass) ->
       switch klass
         when ChefSteps.Views.EditProfile
-          @fake_edit_profile_view = jasmine.createSpyObj('fake edit profile view', ['show', 'hide'])
+          @fake_edit_profile_view = jasmine.createSpyObj('fake edit profile view', ['show', 'hide', 'getProfileValues'])
         when ChefSteps.Views.ProfileBio
           @fake_profile_bio_view = jasmine.createSpyObj('fake bio view', ['show', 'hide'])
 
@@ -21,6 +21,7 @@ describe 'ChefSteps.Views.Profile', ->
     it "shows edit profile when edit is click", ->
       expect(@view.events).toEqual
         "click .edit-profile": "showEditProfile"
+        "click .save-profile": "saveProfile"
 
   describe "#showEditProfile", ->
     beforeEach ->
@@ -42,4 +43,18 @@ describe 'ChefSteps.Views.Profile', ->
     it "hides the edit profile view", ->
       expect(@view.editProfileView.hide).toHaveBeenCalled()
 
+  describe "#saveProfile", ->
+    beforeEach ->
+      @view.editProfileView.getProfileValues.andReturn('some values')
+      spyOn(@view, 'showProfileBio')
+      @view.saveProfile()
+
+    it "gets the profile values from edit view", ->
+      expect(@view.editProfileView.getProfileValues).toHaveBeenCalled()
+
+    it "saves the values to the model", ->
+      expect(@fake_user.save).toHaveBeenCalledWith('some values')
+
+    it "shows the profile bio view", ->
+      expect(@view.showProfileBio).toHaveBeenCalled()
 

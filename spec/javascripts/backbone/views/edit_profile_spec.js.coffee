@@ -30,15 +30,3 @@ describe 'ChefSteps.Views.EditProfile', ->
       @view.hide()
       expect(@view.$el).toBeHidden()
 
-  describe "when save is clicked", ->
-    beforeEach ->
-      spyOn(@view, 'getProfileValues').andReturn('foo attributes')
-      spyOn(@view, 'hide')
-      @view.updateModel()
-
-    it "saves the model with the values from the inputs", ->
-      expect(@fake_user.save).toHaveBeenCalledWith('foo attributes')
-
-    it "hides the edit profile view", ->
-      expect(@view.hide).toHaveBeenCalled()
-

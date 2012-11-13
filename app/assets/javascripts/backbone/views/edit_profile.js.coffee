@@ -5,10 +5,6 @@ class ChefSteps.Views.EditProfile extends Backbone.View
       attributes[name] = @$("[name='#{name}']").val()
     attributes
 
-  updateModel: =>
-    @model.save(@getProfileValues())
-    @hide()
-
   show: =>
     @$el.show()
 
