@@ -52,7 +52,7 @@ Delve::Application.configure do
   config.action_controller.asset_host = "http://dpybg80nberao.cloudfront.net"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( print.css styleguide.css global_navigation.css active_admin.css active_admin/print.css navigation_bootstrap.js active_admin.js )
+  config.assets.precompile += %w( print.css styleguide.css global_navigation.css forum_nav.css active_admin.css active_admin/print.css navigation_bootstrap.js active_admin.js )
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
