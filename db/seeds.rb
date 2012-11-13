@@ -10,6 +10,7 @@ def create_activity(activity)
   a.timing = activity[:timing]
   a.description = activity[:description]
   a.activity_order = activity[:order]
+  a.published = true
   a.save
   a
 end
