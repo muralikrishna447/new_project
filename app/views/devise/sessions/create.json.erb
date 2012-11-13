@@ -1,1 +1,2 @@
-<%= {location: last_stored_location_for(signed_in_resource)}.to_json.html_safe %>
+<% stored_path = last_stored_location_for(signed_in_resource) %>
+<%= {location: stored_path || after_sign_in_path_for(signed_in_resource)}.to_json.html_safe %>
