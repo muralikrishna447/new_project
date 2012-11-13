@@ -24,9 +24,9 @@
         %li
           %i.icon-calendar.icon-large
           %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"
-  .row
-    .span4.horizontal-divider
   - if user.quote.present?
+    .row
+      .span4.horizontal-divider
     .row
       .span4
         %p.user-bio-quote{ data: {attribute: 'profile-quote'} }= user.quote

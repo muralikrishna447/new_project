@@ -1,26 +1,31 @@
 .edit-user-profile
   .row
     .span1
-      = image_tag 'chris-large.jpg', class: 'pull-left'
+      = link_to 'https://en.gravatar.com/site/signup/', target: '_blank', class: 'change-pic' do
+        = image_tag 'chris-large.jpg', class: 'pull-left'
+        .change-pic-label
+          Change pic
+
     .span3
-      %span What is your name?
-      %input{name: 'name', value: user.name }
+      %label{ for: 'name'} What is your name?
+      %input#name{name: 'name', value: user.name }
       %ul.unstyled
         %li
-          %span What is your current hometown?
-          %input{name: 'location', value: user.location }
+          %label.location{ for: 'location'} What is your current hometown?
+          %input#location{name: 'location', value: user.location }
         %li
-          %span What is your personal website/blog?
-          %input{name: 'website', value: user.website }
+          %label.website{ for: 'website'} What is your personal website/blog?
+          %input#website{name: 'website', value: user.website }
   .row
     .span4.horizontal-divider
 
   .row
     .span4
-      %textarea{name: 'quote'}= user.quote
+      %label{ for: 'quote'} Have anything to say?
+      %textarea#quote{name: 'quote'}= user.quote
       .pull-right
         %span.edit-profile-cancel.uppercase-link Cancel
-        %span
+        %span.vertical-divider
           |
         %span.save-profile.uppercase-link.brick Save
 
