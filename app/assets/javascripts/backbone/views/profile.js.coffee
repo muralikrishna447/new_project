@@ -1,12 +1,17 @@
 class ChefSteps.Views.Profile extends Backbone.View
 
-  updateValues: =>
-    _.each @model.attributes, (value, name) =>
-      $("[data-attribute=profile-#{name}]").text(value)
+  initialize: ->
+    @profileBioView = ChefSteps.new(ChefSteps.Views.ProfileBio, model: @model, el: '.user-profile-bio')
+    @editProfileView = ChefSteps.new(ChefSteps.Views.EditProfile, model: @model, el: '.edit-user-profile')
 
-  show: =>
-    @$el.show()
+  events:
+    'click .edit-profile': 'showEditProfile'
 
-  hide: =>
-    @$el.hide()
+  showEditProfile: ->
+    @profileBioView.hide()
+    @editProfileView.show()
+
+  showProfileBio: ->
+    @editProfileView.hide()
+    @profileBioView.show()
 
