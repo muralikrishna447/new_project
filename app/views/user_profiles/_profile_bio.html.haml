@@ -19,6 +19,7 @@
       %li
         %i.icon-calendar.icon-large
         %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"
+  = render 'profile_bio_form'
 .row
   .span4.horizontal-divider
 - if user.quote.present?

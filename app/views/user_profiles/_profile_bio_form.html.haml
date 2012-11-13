@@ -1,0 +1,21 @@
+.edit-user-profile
+  .row
+    .span1
+    .span3
+      %input{name: 'name', value: 'test name'}
+      %ul.unstyled
+        %li
+          %input{name: 'location', value: 'san francisco'}
+        %li
+          %input{name: 'website', value: 'www.chefsteps.com'}
+  .row
+    .span4.horizontal-divider
+
+  .row
+    .span4
+      %textarea{name: 'quote'} my quote
+      %a.edit-profile-cancel{href: '#'} Cancel
+      %span
+        |
+      .save-profile Save
+
