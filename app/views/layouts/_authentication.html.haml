@@ -1,4 +1,9 @@
 - if user_signed_in?
+  .profile-info
+    .text
+      = current_user.name
+      %span San Francisco
+    = image_tag current_user.profile_image_url(default_profile_photo_url)
   %li.authentication.first
     = link_to destroy_user_session_path, method: :delete do
       Log out
