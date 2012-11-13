@@ -7,3 +7,4 @@ describe User, '#to_json' do
     subject.keys.should =~ %w[id email name location quote website]
   end
 end
+

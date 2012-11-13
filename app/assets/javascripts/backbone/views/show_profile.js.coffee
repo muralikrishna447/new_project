@@ -1,4 +1,4 @@
-class ChefSteps.Views.ProfileBio extends Backbone.View
+class ChefSteps.Views.ShowProfile extends Backbone.View
 
   initialize: =>
     @model.bind('change', @updateValues)

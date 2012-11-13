@@ -1,7 +1,7 @@
 class ChefSteps.Views.Profile extends Backbone.View
 
   initialize: ->
-    @profileBioView = ChefSteps.new(ChefSteps.Views.ProfileBio, model: @model, el: '.user-profile-bio')
+    @showProfileView = ChefSteps.new(ChefSteps.Views.ShowProfile, model: @model, el: '.user-profile-bio')
     @editProfileView = ChefSteps.new(ChefSteps.Views.EditProfile, model: @model, el: '.edit-user-profile')
 
   events:
@@ -9,14 +9,14 @@ class ChefSteps.Views.Profile extends Backbone.View
     'click .save-profile': 'saveProfile'
 
   showEditProfile: ->
-    @profileBioView.hide()
+    @showProfileView.hide()
     @editProfileView.show()
 
-  showProfileBio: ->
+  showProfile: ->
     @editProfileView.hide()
-    @profileBioView.show()
+    @showProfileView.show()
 
   saveProfile: =>
     @model.save(@editProfileView.getProfileValues())
-    @showProfileBio()
+    @showProfile()
 

@@ -1,4 +1,4 @@
-describe 'ChefSteps.Views.ProfileBio', ->
+describe 'ChefSteps.Views.ShowProfile', ->
   beforeEach ->
     loadFixtures('profile')
     @fake_user = jasmine.createSpyObj('fake user', ['bind'])
@@ -8,7 +8,7 @@ describe 'ChefSteps.Views.ProfileBio', ->
       website: 'www.stuff.com'
       quote: 'something deep and meaningful'
 
-    @view = new ChefSteps.Views.ProfileBio(el: '.user-profile-bio', model: @fake_user )
+    @view = new ChefSteps.Views.ShowProfile(el: '.user-profile-bio', model: @fake_user )
 
   describe "#initialize", ->
     it "binds to model change event and updates values", ->

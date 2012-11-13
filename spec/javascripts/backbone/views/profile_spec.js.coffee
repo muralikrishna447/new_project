@@ -4,7 +4,7 @@ describe 'ChefSteps.Views.Profile', ->
       switch klass
         when ChefSteps.Views.EditProfile
           @fake_edit_profile_view = jasmine.createSpyObj('fake edit profile view', ['show', 'hide', 'getProfileValues'])
-        when ChefSteps.Views.ProfileBio
+        when ChefSteps.Views.ShowProfile
           @fake_profile_bio_view = jasmine.createSpyObj('fake bio view', ['show', 'hide'])
 
     @fake_user = jasmine.createSpyObj('fake user', ['save', 'attributes'])
@@ -12,7 +12,7 @@ describe 'ChefSteps.Views.Profile', ->
 
   describe '#initialize', ->
     it "instantiates the bio view", ->
-      expect(ChefSteps.new).toHaveBeenCalledWith(ChefSteps.Views.ProfileBio, {model: @fake_user, el: '.user-profile-bio'})
+      expect(ChefSteps.new).toHaveBeenCalledWith(ChefSteps.Views.ShowProfile, {model: @fake_user, el: '.user-profile-bio'})
 
     it "instantiates the edit profile view", ->
       expect(ChefSteps.new).toHaveBeenCalledWith(ChefSteps.Views.EditProfile, {model: @fake_user, el: '.edit-user-profile'})
@@ -31,14 +31,14 @@ describe 'ChefSteps.Views.Profile', ->
       expect(@view.editProfileView.show).toHaveBeenCalled()
 
     it "hides the profile bio view", ->
-      expect(@view.profileBioView.hide).toHaveBeenCalled()
+      expect(@view.showProfileView.hide).toHaveBeenCalled()
 
-  describe "#showProfileBio", ->
+  describe "#showProfile", ->
     beforeEach ->
-      @view.showProfileBio()
+      @view.showProfile()
 
     it "shows the profile bio view", ->
-      expect(@view.profileBioView.show).toHaveBeenCalled()
+      expect(@view.showProfileView.show).toHaveBeenCalled()
 
     it "hides the edit profile view", ->
       expect(@view.editProfileView.hide).toHaveBeenCalled()
@@ -46,7 +46,7 @@ describe 'ChefSteps.Views.Profile', ->
   describe "#saveProfile", ->
     beforeEach ->
       @view.editProfileView.getProfileValues.andReturn('some values')
-      spyOn(@view, 'showProfileBio')
+      spyOn(@view, 'showProfile')
       @view.saveProfile()
 
     it "gets the profile values from edit view", ->
@@ -56,5 +56,5 @@ describe 'ChefSteps.Views.Profile', ->
       expect(@fake_user.save).toHaveBeenCalledWith('some values')
 
     it "shows the profile bio view", ->
-      expect(@view.showProfileBio).toHaveBeenCalled()
+      expect(@view.showProfile).toHaveBeenCalled()
 
