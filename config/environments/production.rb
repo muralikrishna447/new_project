@@ -2,6 +2,7 @@ DOMAIN = 'www.chefsteps.com'
 
 Delve::Application.configure do
   config.show_user_profiles = false
+  config.show_forum = false
 
   # Settings specified here will take precedence over those in config/application.rb
 
