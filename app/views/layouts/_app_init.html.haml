@@ -1,7 +1,7 @@
 :javascript
   $(function() {
     new ChefSteps.init({
-      profile: '#{j(user_signed_in? ? current_user.to_json : nil)}'
+      profile: '#{(user_signed_in? ? current_user.to_json : nil)}'
     })
   });
 
