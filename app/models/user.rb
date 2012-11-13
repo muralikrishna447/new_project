@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
     {
       id: id,
       name: name,
-      email: email
+      email: email,
+      location: location
     }
   end
 
