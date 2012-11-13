@@ -1,7 +1,7 @@
 class ChefSteps.Views.EditProfile extends Backbone.View
   getProfileValues: =>
     attributes = {}
-    _.each @model.attributes, (value, name) =>
+    _.each @model.formKeys, (name) =>
       attributes[name] = @$("[name='#{name}']").val()
     attributes
 

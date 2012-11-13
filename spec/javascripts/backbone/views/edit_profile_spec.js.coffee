@@ -1,12 +1,8 @@
 describe 'ChefSteps.Views.EditProfile', ->
   beforeEach ->
     loadFixtures('profile')
-    @fake_user = jasmine.createSpyObj('fake user', ['save', 'attributes'])
-    @fake_user.attributes =
-      name: ''
-      location: ''
-      website: ''
-      quote: ''
+    @fake_user = jasmine.createSpyObj('fake user', ['save', 'formKeys'])
+    @fake_user.formKeys = ['name', 'location', 'website', 'quote']
     @view = new ChefSteps.Views.EditProfile(el: '.edit-user-profile', model: @fake_user )
 
   describe "#getProfileValues", ->
