@@ -8,23 +8,23 @@
   .span3
     %h3{ data: {attribute: 'profile-name' }}= user.name
     %ul.unstyled
-      %li
-        %i.icon-map-marker.icon-large
-        %span{ data: {attribute: 'profile-location'}}= user.location
-      %li
-        %i.icon-globe.icon-large
-        = link_to "delvekitchen.com","http://delvekitchen.com", data: { attribute: 'profile-website'}
+      - if user.location.present?
+        %li
+          %i.icon-map-marker.icon-large
+          %span{ data: {attribute: 'profile-location'}}= user.location
+      - if user.website.present?
+        %li
+          %i.icon-globe.icon-large
+          = link_to user.website, user.website, data: { attribute: 'profile-website'}
       %li
         %i.icon-calendar.icon-large
         %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"
 .row
   .span4.horizontal-divider
-.row
-  .span4
-    %p.user-bio-quote{ data: {attribute: 'profile-quote'} }
-      ollit banh mi yr gluten-free flexitarian ennui. Wayfarers do
-      single-origin coffee raw denim. Biodiesel portland nihil, craft
-      beer stumptown next level seitan eiusmod officia trust fund
+- if user.quote.present?
+  .row
+    .span4
+      %p.user-bio-quote{ data: {attribute: 'profile-quote'} }= user.quote
 .row
   .span4.horizontal-divider
 
