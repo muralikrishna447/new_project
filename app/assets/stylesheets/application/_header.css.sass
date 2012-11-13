@@ -3,7 +3,7 @@
     +font-serif-tiny
     margin-top: 20px
     border: none
-    padding: 0
+    padding: 9px 0px
     float: right
 
     a
@@ -15,6 +15,11 @@
 
     &.first
       clear: left
+
+    &.authorized
+      background: $grayLighter
+      a
+        padding: 0 14px 0 15px
 
 .navbar
   margin-bottom: 0
@@ -92,7 +97,7 @@
     color: $grayDark
     position: absolute
     right: 0
-    bottom: 0
+    bottom: 10px
     background: $white
     min-width: 170px
     cursor: pointer

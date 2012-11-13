@@ -4,14 +4,14 @@
       = current_user.name
       %span San Francisco
     = image_tag current_user.profile_image_url(default_profile_photo_url)
-  %li.authentication.first
+  %li.authentication.authorized.first
     = link_to destroy_user_session_path, method: :delete do
       Log out
       %i.icon-chevron-right.pull-right
 
-  %li.authentication
+  %li.authentication.authorized
     = link_to user_profile_path(current_user) do
-      = current_user.name
+      Profile
       %i.icon-chevron-right.pull-right
     %span
       |
