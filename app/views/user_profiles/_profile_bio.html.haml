@@ -13,25 +13,23 @@
           %span Edit
       %h3{ data: {attribute: 'profile-name' }}= user.name
       %ul.unstyled
-        - if user.location.present?
-          %li
-            %i.icon-map-marker.icon-large
-            %span{ data: {attribute: 'profile-location'}}= user.location
-        - if user.website.present?
-          %li
-            %i.icon-globe.icon-large
-            = link_to user.website, user.website, data: { attribute: 'profile-website'}
+        %li
+          %i.icon-map-marker.icon-large
+          %span{ data: {attribute: 'profile-location'}}= user.location
+        %li
+          %i.icon-globe.icon-large
+          = link_to user.website, user.website, data: { attribute: 'profile-website'}
         %li
           %i.icon-calendar.icon-large
           %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"
-  - if user.quote.present?
-    .row
-      .span4.horizontal-divider
-    .row
-      .span4
-        %p.user-bio-quote{ data: {attribute: 'profile-quote'} }= user.quote
+  .row
+    .span4.horizontal-divider
+  .row
+    .span4
+      %p.user-bio-quote{ data: {attribute: 'profile-quote'} }= user.quote
   .row
     .span4.horizontal-divider
 
 - if is_current_user?(user)
   = render 'profile_bio_form', user: user
+
