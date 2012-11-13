@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApplicationController do
+describe ApplicationController, type: :controller do
   describe "API serves global navigation header" do
     before do
       get "global_navigation"
