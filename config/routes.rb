@@ -11,7 +11,7 @@ Delve::Application.routes.draw do
     registrations: 'users/registrations',
   }
 
-  get 'users/forum-sso' => 'forum_sso_controller#authenticate', as: 'forum_sso'
+  get 'users/forum-sso' => 'forum_sso#authenticate', as: 'forum_sso'
 
   root to: "home#index"
 

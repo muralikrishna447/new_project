@@ -1,4 +1,4 @@
-class ForumSSOController < ApplicationController
+class ForumSsoController < ApplicationController
   def authenticate
     head :ok
   end

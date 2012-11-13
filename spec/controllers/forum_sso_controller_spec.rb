@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ForumSSOController do
+describe ForumSsoController do
 
   # If the register url parameter is set to "1", send the user to your register/signup page, and then back to this same URL.
   # If the user is not signed in, send them to your signin page, and then back to this same URL.
