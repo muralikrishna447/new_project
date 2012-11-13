@@ -8,3 +8,7 @@ ChefSteps.init = (options)->
 
   ChefSteps.profile = new ChefSteps.Models.Profile(options.profile)
 
+  ChefSteps.router = new ChefSteps.Router()
+  Backbone.history.start(pushState: true)
+
+
