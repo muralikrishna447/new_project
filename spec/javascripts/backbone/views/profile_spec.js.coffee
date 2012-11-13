@@ -22,6 +22,7 @@ describe 'ChefSteps.Views.Profile', ->
       expect(@view.events).toEqual
         "click .edit-profile": "showEditProfile"
         "click .save-profile": "saveProfile"
+        "click .edit-profile-cancel": "showProfile"
 
   describe "#showEditProfile", ->
     beforeEach ->

@@ -1,21 +1,25 @@
 .edit-user-profile
   .row
     .span1
+      = image_tag 'chris-large.jpg', class: 'pull-left'
     .span3
-      %input{name: 'name', value: 'test name'}
+      %span What is your name?
+      %input{name: 'name', value: user.name }
       %ul.unstyled
         %li
-          %input{name: 'location', value: 'san francisco'}
+          %span What is your current hometown?
+          %input{name: 'location', value: user.location }
         %li
-          %input{name: 'website', value: 'www.chefsteps.com'}
+          %span What is your personal website/blog?
+          %input{name: 'website', value: user.website }
   .row
     .span4.horizontal-divider
 
   .row
     .span4
-      %textarea{name: 'quote'} my quote
-      %a.edit-profile-cancel{href: '#'} Cancel
+      %textarea{name: 'quote'}= user.quote
+      %span.edit-profile-cancel.uppercase-link Cancel
       %span
         |
-      .save-profile Save
+      %span.save-profile.uppercase-link.brick Save
 
