@@ -25,6 +25,7 @@ class ForumSsoController < ApplicationController
   end
 
   def redirect_to_registration
+    session['user_return_to'] = forum_sso_path
     redirect_to new_user_registration_path if params[:register]
   end
 end

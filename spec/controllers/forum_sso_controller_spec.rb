@@ -2,14 +2,21 @@ require 'spec_helper'
 
 describe ForumSsoController, type: :controller do
 
-  it 'redirects to sign up if register param set' do
-    get :authenticate, register: 1
-    response.should redirect_to new_user_registration_path
-  end
-
   it 'redirects to log in if there is no authenticated user' do
     get :authenticate
     response.should redirect_to new_user_session_path
+  end
+
+  context 'register param is set' do
+    before { get :authenticate, register: 1 }
+
+    it 'redirects to sign up' do
+      response.should redirect_to new_user_registration_path
+    end
+
+    it 'stores forum sso path as return path' do
+      controller.session['user_return_to'].should == forum_sso_path
+    end
   end
 
   context 'user is authenticated' do
