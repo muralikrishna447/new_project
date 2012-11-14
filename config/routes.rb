@@ -20,8 +20,7 @@ Delve::Application.routes.draw do
 
   post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
 
-  get 'terms-of-service' => 'home#terms_of_service', as: 'terms_of_service'
-
+  get 'terms-of-service' => 'copy#terms_of_service', as: 'terms_of_service'
   get 'thank-you' => 'copy#thank_you', as: 'thank_you'
 
   resources :user_profiles, only: [:show], path: 'profiles'
