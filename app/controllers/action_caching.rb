@@ -1,26 +1,23 @@
 module ActionCaching
   extend ActiveSupport::Concern
 
-  included do
-    before_filter :configure_caching if caching_enabled
-  end
-
-  def configure_caching
-    return if self.class.excluded_actions.include?(self.action_name)
-    self.class.caches_action self.action_name.to_sym, layout: false
-  end
-
   module ClassMethods
-    def exclude_from_action_caching(actions)
-      @@excluded_actions = [actions].flatten.map(&:to_s)
-    end
-
-    def excluded_actions
-      defined?(@@excluded_actions) ? @@excluded_actions : []
+    def caches_actions(options = {})
+      excluded_actions = [options.delete(:exclude)].flatten.compact
+      find_actions.each do |action|
+        unless !caching_enabled? || excluded_actions.include?(action)
+          caches_action action, layout: false
+        end
+      end
     end
 
     private
-    def caching_enabled
+    def find_actions
+      controller_routes = Rails.application.routes.routes.select {|r| r.defaults[:controller] == controller_name}
+      controller_routes.map {|r| r.defaults[:action]}
+    end
+
+    def caching_enabled?
       ActionController::Base.perform_caching
     end
   end
