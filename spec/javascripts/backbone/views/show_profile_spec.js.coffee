@@ -4,7 +4,7 @@ describe 'ChefSteps.Views.ShowProfile', ->
     @fake_user = jasmine.createSpyObj('fake user', ['bind'])
     @fake_user.attributes =
       name: 'foo bar name'
-      location: 'Mars'
+      location: ''
       website: 'www.stuff.com'
       quote: 'something deep and meaningful'
 
@@ -22,7 +22,7 @@ describe 'ChefSteps.Views.ShowProfile', ->
       expect($("[data-attribute=profile-name]", @view.$el).text()).toEqual('foo bar name')
 
     it "updates location", ->
-      expect($("[data-attribute=profile-location]", @view.$el).text()).toEqual('Mars')
+      expect($("[data-attribute=profile-location]", @view.$el).text()).toEqual('')
 
     it "updates website", ->
       expect($("[data-attribute=profile-website]", @view.$el).text()).toEqual('www.stuff.com')
@@ -33,9 +33,8 @@ describe 'ChefSteps.Views.ShowProfile', ->
 
   describe "#checkEmptyValues ", ->
     beforeEach ->
-      $("[data-attribute=profile-location]", @view.$el).text('')
       @view.checkEmptyValues()
 
     it "hides empty fields", ->
-      expect($("[data-attribute=profile-location]", @view.$el).parent()).toHaveClass('invisible')
+      expect($("[data-attribute-invisible=profile-location]")).toHaveClass('invisible')
 

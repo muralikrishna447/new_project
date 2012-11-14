@@ -11,24 +11,26 @@
         .uppercase-link.edit-profile
           %i.icon-edit.icon-large
           %span Edit
-      %div{ class: ('invisible' unless user.name.present?) }
-        %h3{ data: {attribute: 'profile-name' }}= user.name
+      %h3{ data: {'attribute-invisible' => 'profile-name', attribute: 'profile-name' }, class: ('invisible' unless user.name.present?)}
+        = user.name
       %ul.unstyled
-        %li{ class: ('invisible' unless user.location.present?) }
+        %li{ data: {"attribute-invisible" => "profile-website"}, class: ('invisible' unless user.location.present?) }
           %i.icon-map-marker.icon-large
           %span{ data: {attribute: 'profile-location'}}= user.location
-        %li{ class: ('invisible' unless user.website.present?) }
+        %li{ data: {"attribute-invisible" => "profile-website"}, class: ('invisible' unless user.website.present?) }
           %i.icon-globe.icon-large
           = link_to user.website, user.website, data: { attribute: 'profile-website'}
         %li
           %i.icon-calendar.icon-large
           %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"
-  .row
+
+  .row{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}
     .span4.horizontal-divider
 
   .row
-    .span4{ class: ('invisible' unless user.quote.present?)}
+    .span4{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}
       %p.user-bio-quote{ data: {attribute: 'profile-quote'} }= user.quote
+
   .row
     .span4.horizontal-divider
 
