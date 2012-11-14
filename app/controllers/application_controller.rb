@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include StatusHelpers
   protect_from_forgery
 
   def global_navigation

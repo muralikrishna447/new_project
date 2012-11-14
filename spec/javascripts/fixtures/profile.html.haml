@@ -1,0 +1,19 @@
+.user-profile-bio
+  %div
+    %span{ data: {attribute: 'profile-name' }} user name
+  %div{ data: {"attribute-invisible" => "profile-location"}}
+    %span{ data: {attribute: 'profile-location' }}
+  %div
+    %span{ data: {attribute: 'profile-website' }} user website
+  %div
+    %span{ data: {attribute: 'profile-quote' }} user quote
+.edit-user-profile
+  %div
+    %input{name: 'name', value: 'test name'}
+  %div
+    %input{name: 'location', value: 'san francisco'}
+  %div
+    %input{name: 'website', value: 'www.chefsteps.com'}
+  %div
+    %textarea{name: 'quote'} my quote
+

@@ -14,3 +14,8 @@
   -ms-user-select: $selection
   user-select: $selection
 
+=inner-shadow($horizontal-offset : 0, $vertical-offset : 0, $blur-distance: 0, $inset-distance: 0, $color: $gray )
+  -moz-box-shadow: inset $horizontal-offset $vertical-offset $blur-distance $inset-distance $color
+  -webkit-box-shadow: inset $horizontal-offset $vertical-offset $blur-distance $inset-distance $color
+  -box-shadow: inset $horizontal-offset $vertical-offset $blur-distance $inset-distance $color
+

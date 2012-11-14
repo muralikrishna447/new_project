@@ -1,5 +1,13 @@
 require 'spec_helper'
 
+describe User, '#to_json' do
+  subject { JSON.parse(Fabricate.build(:user).to_json) }
+
+  it "only serializes valid keys" do
+    subject.keys.should =~ %w[id email name location quote website]
+  end
+end
+
 describe User, '#profile_image_url' do
   let(:user) { Fabricate.build(:user) }
   subject { user.profile_image_url('DEFAULT_IMAGE_URL') }
