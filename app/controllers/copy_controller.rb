@@ -1,7 +1,4 @@
 class CopyController < ApplicationController
-  include ActionCaching
-  caches_actions
-
   before_filter :authenticate_user!, only: :thank_you
 
   [
