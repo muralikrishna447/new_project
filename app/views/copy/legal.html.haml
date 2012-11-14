@@ -6,7 +6,13 @@
 
   .tab-content
     = tab_pane 'terms', true do
-      TERMS
+      .row
+        .span12
+          %h4 Terms of Service
+      .row
+        .span12
+          :markdown
+            #{terms_of_service.to_s}
     = tab_pane 'privacy' do
       PRIVACY
     = tab_pane 'licensing' do
