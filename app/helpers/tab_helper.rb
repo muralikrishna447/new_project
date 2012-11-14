@@ -1,12 +1,17 @@
 module TabHelper
-  def tab(text, link, active = false)
-    content_tag(:li, class: ('active' if active)) do
-      link_to text, link, data: { toggle: 'tab' }
+  def tab(text, content_id)
+    content_tag(:li, class: ('active' if is_active(content_id))) do
+      link_to text, "##{content_id}", data: { toggle: 'tab' }
     end
   end
 
-  def tab_pane(id, active = false, &block)
-    content_tag(:div, id: id, class: ['tab-pane', ('active' if active)], &block)
+  def tab_pane(id, &block)
+    content_tag(:div, id: id, class: ['tab-pane', ('active' if is_active(id))], &block)
+  end
+
+  private
+  def is_active(id)
+    active_tab == id
   end
 end
 

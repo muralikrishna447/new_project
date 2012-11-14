@@ -10,5 +10,7 @@ class CopyController < ApplicationController
   ].each do |key|
     expose(key) { Copy.find_by_location(key.to_s.dasherize)}
   end
+
+  expose(:active_tab) { params[:type].blank? ? 'terms' : params[:type] }
 end
 

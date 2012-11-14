@@ -22,9 +22,10 @@ Delve::Application.routes.draw do
 
   get 'thank-you' => 'copy#thank_you', as: 'thank_you'
   get 'legal' => 'copy#legal', as: 'legal'
-  get 'terms-of-service' => 'copy#legal', as: 'terms_of_service'
-  get 'privacy' => 'copy#legal', as: 'privacy'
-  get 'licensing' => 'copy#legal', as: 'licensing'
+  get 'legal/:type' => 'copy#legal', as: 'legal_type'
+  get 'legal/terms' => 'copy#legal', as: 'terms_of_service'
+  get 'legal/privacy' => 'copy#legal', as: 'privacy'
+  get 'legal/licensing' => 'copy#legal', as: 'licensing'
 
   resources :user_profiles, only: [:show], path: 'profiles'
 
