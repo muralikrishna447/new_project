@@ -94,17 +94,15 @@
     color: $brickDark
 
   .profile-info
-    +font-sans-medium
     +transition-property(right)
     +transition-duration(0.5s)
-    text-align: right
-    color: $grayDark
     position: absolute
     right: 0
     bottom: 10px
     background: $white
     min-width: 170px
     cursor: pointer
+    text-align: right
 
     .text
       min-width: 122px
@@ -118,6 +116,12 @@
       display: block
       font-size: 12px
       font-weight: 200
+
+    span[data-attribute='profile-name']
+      +font-sans-medium
+      color: $grayDark
+      font-weight: 400
+      padding-bottom: 5px
 
     img
       float: right
