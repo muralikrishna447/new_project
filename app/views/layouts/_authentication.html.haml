@@ -1,5 +1,5 @@
 - if user_signed_in?
-  .profile-info
+  .profile-info{ data: {'click-toggle' => 'active'} }
     .text
       = current_user.name
       %span San Francisco
