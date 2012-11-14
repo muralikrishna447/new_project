@@ -22,7 +22,7 @@ Delve::Application.routes.draw do
 
   get 'terms-of-service' => 'home#terms_of_service', as: 'terms_of_service'
 
-  get 'thank-you' => 'thank_you#show', as: 'thank_you'
+  get 'thank-you' => 'copy#thank_you', as: 'thank_you'
 
   resources :user_profiles, only: [:show], path: 'profiles'
 
