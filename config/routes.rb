@@ -20,9 +20,12 @@ Delve::Application.routes.draw do
 
   post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
 
-  get 'terms-of-service' => 'home#terms_of_service', as: 'terms_of_service'
-
-  get 'thank-you' => 'thank_you#show', as: 'thank_you'
+  get 'thank-you' => 'copy#thank_you', as: 'thank_you'
+  get 'legal' => 'copy#legal', as: 'legal'
+  get 'legal/:type' => 'copy#legal', as: 'legal_type'
+  get 'legal/terms' => 'copy#legal', as: 'terms_of_service'
+  get 'legal/privacy' => 'copy#legal', as: 'privacy'
+  get 'legal/licensing' => 'copy#legal', as: 'licensing'
 
   resources :user_profiles, only: [:show, :update], path: 'profiles'
 

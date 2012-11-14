@@ -12,6 +12,7 @@
 //= require twitter/bootstrap/collapse
 //= require twitter/bootstrap/carousel
 //= require twitter/bootstrap/modal
+//= require twitter/bootstrap/tab
 
 //= require factory
 //= require_tree ./backbone

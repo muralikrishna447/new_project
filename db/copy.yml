@@ -5,6 +5,18 @@ copy:
     * This is the terms of service
     * This is the terms of service
     * This is the terms of service
+# privacy policy
+- location: privacy-policy
+  copy_content: |
+    * This is the privacy policy
+    * This is the privacy policy
+    * This is the privacy policy
+# licensing
+- location: licensing
+  copy_content: |
+    * This is the licensing copy
+    * This is the licensing copy
+    * This is the licensing copy
 # carousel images
 - location: carousel-images
   copy_content: |
