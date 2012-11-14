@@ -9,9 +9,6 @@ ChefSteps.init = (options)->
   if options.profile
     ChefSteps.profile = new ChefSteps.Models.Profile(options.profile)
 
-    new ChefSteps.Views.ProfileHeader(model: ChefSteps.profile, el: '.profile-info')
-
-  ChefSteps.router = new ChefSteps.Router(currentUserId: options.currentUserId)
+  ChefSteps.router = new ChefSteps.Router(currentUser: ChefSteps.profile)
   Backbone.history.start(pushState: true)
-
 
