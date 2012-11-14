@@ -37,3 +37,30 @@ describe User, '#profile_image_url' do
   end
 end
 
+describe User, '#profile_edit_url' do
+  let(:user) { Fabricate.build(:user) }
+  subject { user.profile_edit_url }
+
+  context "user is connected with facebook" do
+    before do
+      user.stub(:connected_with_facebook?).and_return(true)
+      user.stub(:facebook_edit_url).and_return("facebook edit url")
+    end
+
+    it { subject.should == "facebook edit url" }
+  end
+
+  context "user isn't connected with facebook" do
+    before do
+      user.stub(:connected_with_facebook?).and_return(false)
+    end
+
+    it "uses the gravatar url" do
+      user.stub(:gravatar_edit_url).and_return("gravatar edit url")
+      subject.should == "gravatar edit url"
+    end
+
+  end
+end
+
+
