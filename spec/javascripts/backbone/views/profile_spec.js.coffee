@@ -5,7 +5,7 @@ describe 'ChefSteps.Views.Profile', ->
         when ChefSteps.Views.EditProfile
           @fake_edit_profile_view = jasmine.createSpyObj('fake edit profile view', ['show', 'hide', 'getProfileValues'])
         when ChefSteps.Views.ShowProfile
-          @fake_profile_bio_view = jasmine.createSpyObj('fake bio view', ['show', 'hide'])
+          @fake_profile_bio_view = jasmine.createSpyObj('fake bio view', ['show', 'hide', 'checkEmptyValues'])
 
     @fake_user = jasmine.createSpyObj('fake user', ['save', 'attributes'])
     @view = new ChefSteps.Views.Profile(model: @fake_user)
@@ -16,6 +16,9 @@ describe 'ChefSteps.Views.Profile', ->
 
     it "instantiates the edit profile view", ->
       expect(ChefSteps.new).toHaveBeenCalledWith(ChefSteps.Views.EditProfile, {model: @fake_user, el: '.edit-user-profile'})
+
+    it "checks for empty values", ->
+      expect(@view.showProfileView.checkEmptyValues).toHaveBeenCalled()
 
   describe "events", ->
     it "shows edit profile when edit is click", ->
@@ -58,4 +61,7 @@ describe 'ChefSteps.Views.Profile', ->
 
     it "shows the profile bio view", ->
       expect(@view.showProfile).toHaveBeenCalled()
+
+    it "hides empty fields", ->
+      expect(@view.showProfileView.checkEmptyValues).toHaveBeenCalled()
 

@@ -1,11 +1,19 @@
 .user-profile-bio
-  %span{ data: {attribute: 'profile-name' }} user name
-  %span{ data: {attribute: 'profile-location' }} user location
-  %span{ data: {attribute: 'profile-website' }} user website
-  %span{ data: {attribute: 'profile-quote' }} user quote
+  %div
+    %span{ data: {attribute: 'profile-name' }} user name
+  %div
+    %span{ data: {attribute: 'profile-location' }}
+  %div
+    %span{ data: {attribute: 'profile-website' }} user website
+  %div
+    %span{ data: {attribute: 'profile-quote' }} user quote
 .edit-user-profile
-  %input{name: 'name', value: 'test name'}
-  %input{name: 'location', value: 'san francisco'}
-  %input{name: 'website', value: 'www.chefsteps.com'}
-  %textarea{name: 'quote'} my quote
+  %div
+    %input{name: 'name', value: 'test name'}
+  %div
+    %input{name: 'location', value: 'san francisco'}
+  %div
+    %input{name: 'website', value: 'www.chefsteps.com'}
+  %div
+    %textarea{name: 'quote'} my quote
 

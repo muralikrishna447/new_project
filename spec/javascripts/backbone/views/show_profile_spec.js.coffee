@@ -31,3 +31,11 @@ describe 'ChefSteps.Views.ShowProfile', ->
       expect($("[data-attribute=profile-quote]", @view.$el).text()).toEqual('something deep and meaningful')
 
 
+  describe "#checkEmptyValues ", ->
+    beforeEach ->
+      $("[data-attribute=profile-location]", @view.$el).text('')
+      @view.checkEmptyValues()
+
+    it "hides empty fields", ->
+      expect($("[data-attribute=profile-location]", @view.$el).parent()).toHaveClass('invisible')
+

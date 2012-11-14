@@ -13,3 +13,11 @@ class ChefSteps.Views.ShowProfile extends Backbone.View
   hide: =>
     @$el.hide()
 
+  checkEmptyValues: =>
+    _.each @model.attributes, (value, name) =>
+       $field =  $("[data-attribute=profile-#{name}]")
+       if $field.text() == ''
+         $field.parent().addClass('invisible')
+       else
+         $field.parent().removeClass('invisible')
+

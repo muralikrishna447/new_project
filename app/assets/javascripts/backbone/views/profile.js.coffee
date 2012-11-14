@@ -3,6 +3,7 @@ class ChefSteps.Views.Profile extends Backbone.View
   initialize: =>
     @showProfileView = ChefSteps.new(ChefSteps.Views.ShowProfile, model: @model, el: '.user-profile-bio')
     @editProfileView = ChefSteps.new(ChefSteps.Views.EditProfile, model: @model, el: '.edit-user-profile')
+    @showProfileView.checkEmptyValues()
 
   events:
     'click .edit-profile': 'showEditProfile'
@@ -20,4 +21,5 @@ class ChefSteps.Views.Profile extends Backbone.View
   saveProfile: =>
     @model.save(@editProfileView.getProfileValues())
     @showProfile()
+    @showProfileView.checkEmptyValues()
 
