@@ -16,8 +16,8 @@ describe "ChefSteps.Views.ProfileHeader", ->
       @view.updateValues()
 
     it "updates name", ->
-      expect($(".name", @view.$el).text()).toEqual('foo bar name')
+      expect($(".name").text()).toEqual('foo bar name')
 
     it "updates location", ->
-      expect($(".location", @view.$el).text()).toEqual('')
+      expect($(".location").text()).toEqual('')
 
