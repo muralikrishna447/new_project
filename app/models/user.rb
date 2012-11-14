@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include ApplicationHelper
   include User::Facebook
   include Gravtastic
 
@@ -30,5 +31,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  def profile_edit_url
+    connected_with_facebook? ? facebook_edit_url : gravatar_edit_url
+  end
 end
 
