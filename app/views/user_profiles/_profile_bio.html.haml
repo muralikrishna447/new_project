@@ -14,7 +14,7 @@
       %h3{ data: {'attribute-invisible' => 'profile-name', attribute: 'profile-name' }, class: ('invisible' unless user.name.present?)}
         = user.name
       %ul.unstyled
-        %li{ data: {"attribute-invisible" => "profile-website"}, class: ('invisible' unless user.location.present?) }
+        %li{ data: {"attribute-invisible" => "profile-location"}, class: ('invisible' unless user.location.present?) }
           %i.icon-map-marker.icon-large
           %span{ data: {attribute: 'profile-location'}}= user.location
         %li{ data: {"attribute-invisible" => "profile-website"}, class: ('invisible' unless user.website.present?) }
