@@ -5,8 +5,5 @@ class HomeController < ApplicationController
   expose(:bio_chris) { Copy.find_by_location('creator-chris') }
   expose(:bio_grant) { Copy.find_by_location('creator-grant') }
   expose(:bio_ryan) { Copy.find_by_location('creator-ryan') }
-
-  expose(:terms_of_service) { Copy.find_by_location('terms-of-service') }
-
 end
 

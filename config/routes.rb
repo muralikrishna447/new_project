@@ -6,10 +6,13 @@ Delve::Application.routes.draw do
   get "styleguide" => "styleguide#index"
 
   get 'users/sign_in' => redirect('/#log-in')
+  get 'users/sign_up' => redirect('/#sign-up')
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks',
     registrations: 'users/registrations',
   }
+
+  get 'users/forum-sso' => 'forum_sso#authenticate', as: 'forum_sso'
 
   root to: "home#index"
 
@@ -17,11 +20,14 @@ Delve::Application.routes.draw do
 
   post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
 
-  get 'terms-of-service' => 'home#terms_of_service', as: 'terms_of_service'
+  get 'thank-you' => 'copy#thank_you', as: 'thank_you'
+  get 'legal' => 'copy#legal', as: 'legal'
+  get 'legal/:type' => 'copy#legal', as: 'legal_type'
+  get 'legal/terms' => 'copy#legal', as: 'terms_of_service'
+  get 'legal/privacy' => 'copy#legal', as: 'privacy'
+  get 'legal/licensing' => 'copy#legal', as: 'licensing'
 
-  get 'thank-you' => 'thank_you#show', as: 'thank_you'
-
-  resources :user_profiles, only: [:show], path: 'profiles'
+  resources :user_profiles, only: [:show, :update], path: 'profiles'
 
   resources :courses, only: [:show]
   resources :activities, only: [:show] do

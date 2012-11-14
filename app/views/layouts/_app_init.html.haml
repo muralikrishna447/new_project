@@ -1,5 +1,8 @@
 :javascript
   $(function() {
-    new ChefSteps.init()
+    new ChefSteps.init({
+      profile: JSON.parse('#{user_signed_in? ? j(current_user.to_json) : false}'),
+      currentUserId: "#{user_signed_in? ? current_user.id : false}"
+    })
   });
 

@@ -9,7 +9,8 @@
           Press inquiries:
           = mail_to 'press@chefsteps.com'
         %p.creative-commons
-          All images and videos are Creative Commons, Non-Commercial
+          %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
+            All Content is Creative Commons Attribution-NonCommercial-ShareAlike
       .span2.pull-right
         %p
           %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
@@ -20,6 +21,9 @@
         %p
           %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
             Pinterest
+        %p
+          %a.icon-legal{ href: legal_url }
+            Legal
 
 - unless user_signed_in?
   #auth-modal.modal.hide

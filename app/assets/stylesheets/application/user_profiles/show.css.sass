@@ -76,3 +76,68 @@
     margin-top: 15px
     +font-sans-small
 
+.edit-user-profile
+  +font-sans-small
+  color: $gray
+  display: none
+  margin-top: 15px
+  input
+    margin-top: 5px
+    width: 93%
+    padding: 5px 5px 5px 10px
+  li
+    margin-top: 10px
+  label[for='quote']
+    margin-top: 15px
+  textarea
+    width: 96%
+    height: 100px
+    resize: none
+  img
+    width: 130px
+
+.edit-profile
+  position: absolute
+  right: 0
+  bottom: -25px
+
+.change-pic
+  position: relative
+  float: left
+  .change-pic-label
+    +font-sans-tiny
+    color: $white
+    text-transform: uppercase
+    text-align: center
+    position: absolute
+    bottom: 0
+    background: $brick
+    margin: 5px
+    padding: 5px
+    line-height: 11px
+
+#location, #website
+  padding-left: 30px
+  width: 86%
+
+label.location, label.website
+  position: relative
+  &:before
+    font-family: FontAwesome
+    color: $gray
+    font-size: 1.33em
+    position: absolute
+    display: inline-block
+
+label.website
+  &:before
+    top: 37px
+    left: 9px
+    content: '\f0ac'
+
+label.location
+  &:before
+    top: 37px
+    left: 8px
+    content: '\f041'
+

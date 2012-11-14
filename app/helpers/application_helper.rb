@@ -5,6 +5,14 @@ module ApplicationHelper
     "https://graph.facebook.com/#{uid}/picture"
   end
 
+  def facebook_edit_url
+    "https://www.facebook.com"
+  end
+
+  def gravatar_edit_url
+    "https://en.gravatar.com/site/signup/"
+  end
+
   def s3_image_url(image_id)
     "http://d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end

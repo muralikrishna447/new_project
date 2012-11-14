@@ -1,16 +1,27 @@
 class User < ActiveRecord::Base
+  include ApplicationHelper
   include User::Facebook
   include Gravtastic
 
   gravtastic
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+    :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :provider, :uid, as: :admin
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :location, :quote, :website
 
   validates_presence_of :name
+
+  def as_json(options={})
+    {
+      id: id,
+      name: name,
+      email: email,
+      location: location,
+      website: website,
+      quote: quote
+    }
+  end
 
   def profile_image_url(default_image_url)
     if connected_with_facebook?
@@ -20,5 +31,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  def profile_edit_url
+    connected_with_facebook? ? facebook_edit_url : gravatar_edit_url
+  end
 end
 

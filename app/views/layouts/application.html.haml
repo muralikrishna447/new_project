@@ -125,7 +125,9 @@
     -# ==========================================================================
 
     #main-container
-      = render 'layouts/header', show_auth: Rails.application.config.show_user_profiles
+      = render 'layouts/header',
+        show_auth: Rails.application.config.show_user_profiles,
+        show_forum: Rails.application.config.show_forum
       = render 'layouts/title_bar'
       = yield
       = render 'layouts/footer'
