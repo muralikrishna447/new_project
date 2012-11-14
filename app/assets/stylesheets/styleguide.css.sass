@@ -1,5 +1,4 @@
-@import bootstrap_config
-@import font-awesome
+@import application
 
 = styleguide-swatch($color)
   border: 1px solid darken($color, 20%)
@@ -13,32 +12,39 @@
   min-height: 40px
   text-align: center
 
-.styleguide-georgia-light
-  font-family: "Georgia-Light"
-.styleguide-georgia-regular
-  font-family: "Georgia-Regular"
-.styleguide-georgia-medium
-  font-family: "Georgia-Medium"
-.styleguide-georgia-bold
-  font-family: "Georgia-Bold"
-.styleguide-font-18
-  font-size: 18px
+.styleguide-sans-tiny
+  +font-sans-tiny
+.styleguide-sans-small
+  +font-sans-small
+.styleguide-sans-medium
+  +font-sans-medium
+.styleguide-sans-large
+  +font-sans-large
 
-.show-grid
-  font-size: 14px
-  .styleguide-brick
-    +styleguide-swatch($brick)
-    color: $white
-  .styleguide-brickLight
-    +styleguide-swatch($brickLight)
-    color: $white
-  .styleguide-white
-    +styleguide-swatch($white)
-  .styleguide-black
-    +styleguide-swatch($black)
-    color: $white
-  .styleguide-brickDark
-    +styleguide-swatch($brickDark)
-    color: $white
+.styleguide-serif-tiny
+  +font-serif-tiny
+.styleguide-serif-small
+  +font-serif-small
+.styleguide-serif-medium
+  +font-serif-medium
+.styleguide-serif-large
+  +font-serif-large
+
+// .show-grid
+//   font-size: 14px
+//   .styleguide-brick
+//     +styleguide-swatch($brick)
+//     color: $white
+//   .styleguide-brickLight
+//     +styleguide-swatch($brickLight)
+//     color: $white
+//   .styleguide-white
+//     +styleguide-swatch($white)
+//   .styleguide-black
+//     +styleguide-swatch($black)
+//     color: $white
+//   .styleguide-brickDark
+//     +styleguide-swatch($brickDark)
+//     color: $white
 
 
