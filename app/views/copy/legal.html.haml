@@ -1,0 +1,13 @@
+#legal
+  %ul.nav.nav-tabs
+    = tab 'Terms of Service', '#terms', true
+    = tab 'Privacy', '#privacy', false
+    = tab 'Licensing', '#licensing', false
+
+  .tab-content
+    = tab_pane 'terms', true do
+      TERMS
+    = tab_pane 'privacy' do
+      PRIVACY
+    = tab_pane 'licensing' do
+      LICENSING
