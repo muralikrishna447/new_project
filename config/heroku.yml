@@ -18,6 +18,7 @@ production:
     FOG_DIRECTORY: chefsteps-production-assets
     ASSET_SYNC_GZIP_COMPRESSION: true
     FOG_PROVIDER: AWS
+    BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
   addons:
     - memcachier:dev
     - newrelic:standard
@@ -32,6 +33,7 @@ staging:
     FOG_DIRECTORY: chefsteps-staging-assets
     ASSET_SYNC_GZIP_COMPRESSION: true
     FOG_PROVIDER: AWS
+    BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
   addons:
     - memcachier:dev
     - newrelic:standard
