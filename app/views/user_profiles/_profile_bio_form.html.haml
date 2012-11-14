@@ -8,14 +8,14 @@
 
     .span3
       %label{ for: 'name'} What is your name?
-      %input#name{name: 'name', value: user.name }
+      %input#name{type: 'text', name: 'name', value: user.name }
       %ul.unstyled
         %li
           %label.location{ for: 'location'} What is your current hometown?
-          %input#location{name: 'location', value: user.location }
+          %input#location{type: 'text', name: 'location', value: user.location }
         %li
           %label.website{ for: 'website'} What is your personal website/blog?
-          %input#website{name: 'website', value: user.website }
+          %input#website{type: 'text', name: 'website', value: user.website }
   .row
     .span4.horizontal-divider
 

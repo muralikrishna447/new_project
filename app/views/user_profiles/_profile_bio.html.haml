@@ -11,12 +11,13 @@
         .uppercase-link.edit-profile
           %i.icon-edit.icon-large
           %span Edit
-      %h3{ data: {attribute: 'profile-name' }}= user.name
+      %div{ class: ('invisible' unless user.name.present?) }
+        %h3{ data: {attribute: 'profile-name' }}= user.name
       %ul.unstyled
-        %li
+        %li{ class: ('invisible' unless user.location.present?) }
           %i.icon-map-marker.icon-large
           %span{ data: {attribute: 'profile-location'}}= user.location
-        %li
+        %li{ class: ('invisible' unless user.website.present?) }
           %i.icon-globe.icon-large
           = link_to user.website, user.website, data: { attribute: 'profile-website'}
         %li
@@ -26,7 +27,7 @@
     .span4.horizontal-divider
 
   .row
-    .span4
+    .span4{ class: ('invisible' unless user.quote.present?)}
       %p.user-bio-quote{ data: {attribute: 'profile-quote'} }= user.quote
   .row
     .span4.horizontal-divider
