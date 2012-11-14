@@ -1,6 +1,6 @@
 class ActivitiesController < ApplicationController
-  include AggressiveCaching
-  exclude_from_caching :show_private
+  include ActionCaching
+  exclude_from_action_caching :show_private
 
   expose(:activity) { Activity.find_published(params[:id], params[:token]) }
 

@@ -1,5 +1,5 @@
 class CopyController < ApplicationController
-  include AggressiveCaching
+  include ActionCaching
 
   before_filter :authenticate_user!, only: :thank_you
 

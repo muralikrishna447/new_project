@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  include AggressiveCaching
+  include ActionCaching
 
   expose(:homepage_blurb) { Copy.find_by_location('homepage-blurb') }
   expose(:bio_chris) { Copy.find_by_location('creator-chris') }
