@@ -1,13 +1,13 @@
 #legal
   %ul.nav.nav-tabs
     = tab 'Terms of Service', '#terms', true
-    = tab 'Privacy', '#privacy', false
+    = tab 'Privacy Policy', '#privacy', false
     = tab 'Licensing', '#licensing', false
 
   .tab-content
     = tab_pane 'terms', true do
       = render 'legal_layout', title: 'Terms of Service', copy: terms_of_service
     = tab_pane 'privacy' do
-      PRIVACY
+      = render 'legal_layout', title: 'Privacy Policy', copy: privacy_policy
     = tab_pane 'licensing' do
-      LICENSING
+      = render 'legal_layout', title: 'Licensing', copy: licensing
