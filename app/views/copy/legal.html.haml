@@ -6,13 +6,7 @@
 
   .tab-content
     = tab_pane 'terms', true do
-      .row
-        .span12
-          %h4 Terms of Service
-      .row
-        .span12
-          :markdown
-            #{terms_of_service.to_s}
+      = render 'legal_layout', title: 'Terms of Service', copy: terms_of_service
     = tab_pane 'privacy' do
       PRIVACY
     = tab_pane 'licensing' do
