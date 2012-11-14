@@ -1,8 +1,8 @@
 - if user_signed_in?
   .profile-info{ data: {'click-toggle' => 'active'} }
     .text
-      = current_user.name
-      %span= current_user.location
+      %span{ data: {attribute: 'profile-name' }}= current_user.name
+      %span{ data: {attribute: 'profile-location' }}= current_user.location
     = image_tag current_user.profile_image_url(default_profile_photo_url)
   %li.authentication.authorized.first
     = link_to destroy_user_session_path, method: :delete do
