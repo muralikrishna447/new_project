@@ -1,6 +1,4 @@
 class CoursesController < ApplicationController
-  include ActionController
-
   expose(:activities) { Activity.ordered.published.all }
   expose(:syllabus_copy) { Copy.find_by_location('course-syllabus') }
   expose(:course_description) { Copy.find_by_location('course-description') }
