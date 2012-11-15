@@ -33,7 +33,7 @@ Delve::Application.routes.draw do
   resources :activities, only: [:show] do
     member do
       post 'cooked-this' => 'activities#cooked_this', as: 'cooked_this'
-      get ':token' => 'activities#show_private', as: 'private'
+      get ':token' => 'activities#show', as: 'private'
     end
   end
 

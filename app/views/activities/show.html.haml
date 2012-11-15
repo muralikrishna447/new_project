@@ -1,22 +1,23 @@
-- disqus_id = "activity-#{activity.id}"
+- conditional_cache [activity, version], cache_unless: !cache_show do
 
-- content_for :title, activity.title.html_safe
+  - disqus_id = "activity-#{activity.id}"
 
-= render 'activities/breadcrumbs'
+  - content_for :title, activity.title.html_safe
 
-= render 'courses/navigation', model: activity, disqus_id: disqus_id
+  = render 'activities/breadcrumbs'
 
-.hero-unit.hero-well
-  .container
-    - if activity.youtube_id?
-      .row.top-video
-        .span12
-          .video-container
-            %iframe{src: youtube_url(activity.youtube_id)}
+  = render 'courses/navigation', model: activity, disqus_id: disqus_id
 
-= render 'overview', activity: activity
-#step-by-step
-  = render 'step_by_step', activity: activity
+  .hero-unit.hero-well
+    .container
+      - if activity.youtube_id?
+        .row.top-video
+          .span12
+            .video-container
+              %iframe{src: youtube_url(activity.youtube_id)}
 
-= render 'layouts/disqus_comments', disqus_id: disqus_id
+  = render 'overview', activity: activity
+  #step-by-step
+    = render 'step_by_step', activity: activity
 
+  = render 'layouts/disqus_comments', disqus_id: disqus_id

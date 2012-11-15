@@ -45,3 +45,13 @@ describe ApplicationController, '#last_stored_location_for', type: :controller d
   end
 
 end
+
+describe ApplicationController, 'version expose' do
+  before do
+    Version.stub(:current) { 'current version' }
+  end
+
+  it 'exposes current version' do
+    controller.version.should == 'current version'
+  end
+end
