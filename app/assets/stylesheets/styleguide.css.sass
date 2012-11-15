@@ -1,9 +1,11 @@
-@import bootstrap_config
-@import font-awesome
+@import application
 
 = styleguide-swatch($color)
   border: 1px solid darken($color, 20%)
   background: $color
+
+.show-grid
+  margin-top: 10px
 
 .show-grid [class*="span"]
   border-radius: 3px
@@ -13,32 +15,69 @@
   min-height: 40px
   text-align: center
 
-.styleguide-georgia-light
-  font-family: "Georgia-Light"
-.styleguide-georgia-regular
-  font-family: "Georgia-Regular"
-.styleguide-georgia-medium
-  font-family: "Georgia-Medium"
-.styleguide-georgia-bold
-  font-family: "Georgia-Bold"
-.styleguide-font-18
-  font-size: 18px
+.styleguide-sans-tiny
+  +font-sans-tiny
+.styleguide-sans-small
+  +font-sans-small
+.styleguide-sans-medium
+  +font-sans-medium
+.styleguide-sans-large
+  +font-sans-large
 
-.show-grid
-  font-size: 14px
-  .styleguide-brick
+.styleguide-serif-tiny
+  +font-serif-tiny
+.styleguide-serif-small
+  +font-serif-small
+.styleguide-serif-medium
+  +font-serif-medium
+.styleguide-serif-large
+  +font-serif-large
+
+.styleguide-color
+  +font-serif-tiny
+  &.brick
     +styleguide-swatch($brick)
     color: $white
-  .styleguide-brickLight
+  &.brickLight
     +styleguide-swatch($brickLight)
     color: $white
-  .styleguide-white
+  &.white
     +styleguide-swatch($white)
-  .styleguide-black
+  &.black
     +styleguide-swatch($black)
     color: $white
-  .styleguide-brickDark
+  &.brickDark
     +styleguide-swatch($brickDark)
     color: $white
+  &.gray
+    +styleguide-swatch($gray)
+    color: $white
+  &.grayMedium
+    +styleguide-swatch($grayMedium)
+    color: $white
+  &.grayDark
+    +styleguide-swatch($grayDark)
+    color: $white
+  &.grayDarker
+    +styleguide-swatch($grayDarker)
+    color: $white
+  &.grayLight
+    +styleguide-swatch($grayLight)
+  &.grayLighter
+    +styleguide-swatch($grayLighter)
+  &.blue
+    +styleguide-swatch($blue)
+  &.blueDark
+    +styleguide-swatch($blueDark)
 
+.styleguide-row-layout
+  margin-bottom: 10px
+
+.styleguide-row-layout [class*="span"]
+  background-color: #eee
+  text-align: center
+  padding: 10px 0
+
+.styleguide-dark-background
+  background: $black !important
 
