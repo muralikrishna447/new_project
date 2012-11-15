@@ -2,32 +2,12 @@
   .span12
     %h3 Colors
 
-.row.show-grid
-  .span1.styleguide-color.black
-    black
-  .span1.styleguide-color.gray
-    gray
-  .span1.styleguide-color.grayMedium
-    grayMedium
-  .span1.styleguide-color.grayDark
-    grayDark
-  .span1.styleguide-color.grayDarker
-    grayDarker
-  .span1.styleguide-color.grayLight
-    grayLight
-  .span1.styleguide-color.grayLighter
-    grayLighter
-  .span1.styleguide-color.white
-    white
-  .span1.styleguide-color.brick
-    brick
-  .span1.styleguide-color.brickLight
-    brickLight
-  .span1.styleguide-color.brickDark
-    brickDark
-.row.show-grid
-  .span1.styleguide-color.blue
-    brickDark
-  .span1.styleguide-color.blueDark
-    blueDark
+:ruby
+  color_names = %w[black white gray grayMedium grayDark grayDarker grayLight grayLighter white brick
+    brickLight brickDark blue blueDark]
+
+- color_names.in_groups_of(11, false).each do |colors|
+  .row.show-grid
+    - colors.each do |color|
+      .span1.styleguide-color{ class: color}= color
 
