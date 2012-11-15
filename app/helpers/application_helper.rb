@@ -24,5 +24,13 @@ module ApplicationHelper
   def default_profile_photo_url
     image_path('profile-placeholder.png')
   end
+
+  def conditional_cache(name = {}, options = nil, &block)
+    if options.delete(:cache_unless)
+      yield block
+    else
+      cache(name, options, &block)
+    end
+  end
 end
 
