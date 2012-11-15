@@ -1,6 +1,8 @@
 window.ChefSteps ||= {}
-window.ChefSteps.Models ||= {}
-window.ChefSteps.Views ||= {}
+
+
+ChefSteps.Models ||= {}
+ChefSteps.Views ||= {}
 
 ChefSteps.init = (options)->
   _.each $('.user-form'), (form)->
