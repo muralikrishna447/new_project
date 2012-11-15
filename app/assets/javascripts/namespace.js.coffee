@@ -4,6 +4,8 @@ window.ChefSteps ||= {}
 ChefSteps.Models ||= {}
 ChefSteps.Views ||= {}
 
+Handlebars.templates ||= {}
+
 ChefSteps.init = (options)->
   _.each $('.user-form'), (form)->
     new ChefSteps.Views.AuthForm(el: form)
