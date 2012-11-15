@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include StatusHelpers
   protect_from_forgery
 
-  expose(:version) { Version.first }
+  expose(:version) { Version.current }
 
   def global_navigation
     render partial: 'layouts/header', locals: {show_auth: false, show_forum: true}
