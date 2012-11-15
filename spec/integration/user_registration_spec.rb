@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe 'User registration application', :js do
-  before do
-    Version.stub(:current) { 'current version' }
-  end
 
   it "creates a user when valid inputs are supplied" do
     visit '/'
