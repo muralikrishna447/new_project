@@ -32,3 +32,16 @@ describe ApplicationHelper, "#default_profile_photo_url" do
     helper.default_profile_photo_url.should include 'profile-placeholder.png'
   end
 end
+
+describe ApplicationHelper, "#conditional_cache" do
+  it 'should cache if cache_unless is false' do
+    helper.should_receive(:cache)
+    helper.conditional_cache(['test'], cache_unless: false)
+  end
+
+  it 'should not cache if cache_unless is true' do
+    helper.should_not_receive(:cache)
+    helper.conditional_cache(['test'], cache_unless: true) { @run = true }
+    @run.should == true
+  end
+end

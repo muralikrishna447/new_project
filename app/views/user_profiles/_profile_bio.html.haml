@@ -19,7 +19,7 @@
           %span{ data: {attribute: 'profile-location'}}= user.location
         %li{ data: {"attribute-invisible" => "profile-website"}, class: ('invisible' unless user.website.present?) }
           %i.icon-globe.icon-large
-          = link_to user.website, user.website, data: { attribute: 'profile-website'}
+          %a{href: user.website, data: { attribute: 'profile-website'}, target: '_blank'}= user.website
         %li
           %i.icon-calendar.icon-large
           %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"

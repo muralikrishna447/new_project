@@ -35,6 +35,7 @@ group :assets do
   gem 'font-awesome-sass-rails'
   gem 'bootstrap-sass-rails'
   gem 'asset_sync'
+  gem 'turbo-sprockets-rails3'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby

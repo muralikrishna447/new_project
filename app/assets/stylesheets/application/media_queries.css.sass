@@ -92,6 +92,15 @@
     h1
       font-size: 26px
 
+/* Android phone. Weird inbetween*/
+@media (max-width: 520px)
+  .user-form
+    label
+      margin-left: 10px
+    input
+      width: 240px
+    input[type='submit']
+      margin-left: 65px
 
 @media (max-width: 480px)
   /* ##################### */
@@ -158,25 +167,46 @@
     margin-bottom: 20px !important
 
   #auth-modal
+    h1
+      font-size: 20px
+      padding-bottom: 0
+
     input:not([type="checkbox"])
-      width: 157px
+      width: 130px
+
+    .modal-body
+      max-height: 260px
 
     .terms-of-service
-      padding-left: 85px
+      padding-left: 10px
 
     .forgot-password
-      margin-right: 53px
+      margin-right: 63px
 
-    .welcome p
-      font-size: 16px
-      margin-right: 25px
+    .welcome
+      img
+        margin-left: 20px
+      p
+        font-size: 16px
+        margin-right: 25px
+        margin-left: 120px
 
     .facebook-login a
       margin-left: 0
+      width: 190px
+      font-size: 17px
+
+    #password-reset
+      input[type=submit]
+        width: 180px
 
   #password-edit
     input[type=submit]
       margin-left: 40px
+
+  .nav-tabs > li > a
+    font-size: 9px
+
 
 /* Everything but portrait iphone*/
 @media (min-width: 480px)

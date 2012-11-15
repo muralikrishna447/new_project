@@ -1,11 +1,13 @@
 class ChefSteps.Router extends Backbone.Router
   initialize: (options) =>
-    @currentUserId = options.currentUserId
+    @currentUser = options.currentUser
 
   routes:
     "profiles/:id": "showProfile"
 
   showProfile: (id) =>
-    if id == @currentUserId
-      new ChefSteps.Views.Profile(model: ChefSteps.profile, el: '.user-profile')
+    return unless @currentUser
+    if id == @currentUser.id.toString()
+      new ChefSteps.Views.Profile(model: @currentUser, el: '.user-profile')
+      new ChefSteps.Views.ProfileHeader(model: @currentUser, el: '.profile-info')
 
