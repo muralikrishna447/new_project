@@ -1,6 +1,6 @@
 - content_for :title, "Free-to-Learn Culinary School"
 
-- cache [version, user_signed_in?] do
+- cache ['home', version, user_signed_in?] do
   .hero-unit.hero-well.hero-home-video
     .container.signup-banner.gray
       - unless user_signed_in?
