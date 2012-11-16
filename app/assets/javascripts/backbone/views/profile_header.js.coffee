@@ -1,9 +1,12 @@
-class ChefSteps.Views.ProfileHeader extends Backbone.View
+class ChefSteps.Views.ProfileHeader extends ChefSteps.Views.TemplatedView
+
+  el: '.profile-info'
+  templateName: 'profile_header'
 
   initialize: =>
-    @model.bind('change', @updateValues)
+    @model.bind('change', @render)
 
-  updateValues: =>
-    _.each @model.attributes, (value, name) =>
-      @$("[data-attribute=profile-#{name}]").text(value)
+  render: =>
+    @$el.html(@renderTemplate())
+    @
 

@@ -1,1 +1,5 @@
-%span Hi
+.text
+  = hb 'name'
+  %span= hb 'location'
+%img{src: '{{image}}' }
+
