@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe 'User registration application', :js do
+feature 'user registration', :js do
 
-  it "creates a user when valid inputs are supplied" do
+  scenario "creates a user when valid inputs are supplied" do
     visit '/'
     click_link('Sign up')
 
