@@ -17,7 +17,7 @@ describe 'User registration application', :js do
     check 'terms-registration'
     click_button 'Sign Up'
 
-    page.should have_content('Bob Tester')
+    page.should have_content('Thank You Bob Tester')
 
     User.all.should have(1).users
     User.first.name.should == 'Bob Tester'
