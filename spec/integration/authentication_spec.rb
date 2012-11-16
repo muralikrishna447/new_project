@@ -19,7 +19,7 @@ describe 'User registration application', :js do
 
     page.should have_content('Thank You Bob Tester')
 
-    User.all.should have(1).users
+    User.count.should == 1
     User.first.name.should == 'Bob Tester'
   end
 
