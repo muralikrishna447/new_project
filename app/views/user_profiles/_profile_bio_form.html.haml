@@ -19,7 +19,7 @@
         %li.chef-types
           %label Please tell us about your level of culinary experience.
           - User::CHEF_TYPES.each do |chef_type|
-            = radio_button_tag 'chef_type', chef_type
+            = radio_button_tag 'chef_type', chef_type, user.chef_type == chef_type
             %label{ for: "chef_type_#{chef_type}" } #{chef_type.titleize}
   .row
     .span4.horizontal-divider
