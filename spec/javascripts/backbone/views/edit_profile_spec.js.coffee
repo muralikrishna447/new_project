@@ -3,6 +3,7 @@ describe 'ChefSteps.Views.EditProfile', ->
     loadFixtures('profile')
     @fake_user = jasmine.createSpyObj('fake user', ['save', 'formKeys'])
     @fake_user.formKeys = ['name', 'location', 'website', 'quote']
+    @fake_user.radioKeys = ['chef_type']
     @view = new ChefSteps.Views.EditProfile(el: '.edit-user-profile', model: @fake_user )
 
   describe "#getProfileValues", ->
@@ -12,6 +13,7 @@ describe 'ChefSteps.Views.EditProfile', ->
         location: 'san francisco'
         website: 'www.chefsteps.com'
         quote: 'my quote'
+        chef_type: 'noob'
       expect(@view.getProfileValues()).toEqual(profileValues)
 
   describe "#show", ->

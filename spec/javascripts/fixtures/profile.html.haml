@@ -1,6 +1,8 @@
 .user-profile-bio
   %div
     %span{ data: {attribute: 'profile-name' }} user name
+  %div
+    %span{ data: {attribute: 'profile-chef_type' }} Professional
   %div{ data: {"attribute-invisible" => "profile-location"}}
     %span{ data: {attribute: 'profile-location' }}
   %div
@@ -16,4 +18,7 @@
     %input{name: 'website', value: 'www.chefsteps.com'}
   %div
     %textarea{name: 'quote'} my quote
+  %div
+    %input{name: 'chef_type', value: 'profesional'}
+    %input{name: 'chef_type', value: 'noob', checked: 'checked'}
 
