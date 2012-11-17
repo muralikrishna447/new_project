@@ -26,12 +26,12 @@
           %i.icon-calendar.icon-large
           %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"
 
-  .row{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}
-    .span4.horizontal-divider
+  -# .row{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}
+  -#   .span4.horizontal-divider
 
-  .row
-    .span4{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}
-      %p.user-bio-quote{ data: {attribute: 'profile-quote'} }= user.quote
+  -# .row
+  -#   .span4{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}
+  -#     %p.user-bio-quote{ data: {attribute: 'profile-quote'} }= user.quote
 
   .row
     .span4.horizontal-divider
