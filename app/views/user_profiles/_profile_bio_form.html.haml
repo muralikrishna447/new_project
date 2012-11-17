@@ -16,13 +16,18 @@
         %li
           %label.website{ for: 'website'} What is your personal website/blog?
           %input#website{type: 'text', name: 'website', value: user.website }
+        %li.chef-types
+          %label Please tell us about your level of culinary experience.
+          - User::CHEF_TYPES.each do |chef_type|
+            = radio_button_tag 'chef_type', chef_type
+            %label{ for: "chef_type_#{chef_type}" } #{chef_type.titleize}
   .row
     .span4.horizontal-divider
 
   .row
     .span4
-      %label{ for: 'quote'} Have anything to say?
-      %textarea#quote{name: 'quote'}= user.quote
+      -# %label{ for: 'quote'} Have anything to say?
+      -# %textarea#quote{name: 'quote'}= user.quote
       .pull-right
         %span.edit-profile-cancel.uppercase-link Cancel
         %span.vertical-divider
