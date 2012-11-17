@@ -12,6 +12,10 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name
 
+  validates_inclusion_of :chef_type,
+    in: %w[professional_chef culinary_student home_cook novice other],
+    allow_blank: true
+
   def as_json(options={})
     {
       id: id,
