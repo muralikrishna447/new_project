@@ -13,8 +13,8 @@
           %span Edit
       %h3{ data: {'attribute-invisible' => 'profile-name', attribute: 'profile-name' }, class: ('invisible' unless user.name.present?)}
         = user.name
-      .chef-type{ data: {"attribute-invisible" => "profile-chef-type"}, class: ('invisible' unless user.chef_type.present?) }
-        %span{ data: {attribute: 'profile-chef-type'}}= user.chef_type.titleize
+      .chef-type{ data: {"attribute-invisible" => "profile-chef_type"}, class: ('invisible' unless user.chef_type.present?) }
+        %span{ data: {attribute: 'profile-chef_type'}}= user.chef_type.titleize
       %ul.unstyled
         %li{ data: {"attribute-invisible" => "profile-location"}, class: ('invisible' unless user.location.present?) }
           %i.icon-map-marker.icon-large

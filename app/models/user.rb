@@ -10,7 +10,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :location, :quote, :website
+  attr_accessible :name, :email, :password, :password_confirmation,
+    :remember_me, :location, :quote, :website, :chef_type
 
   validates_presence_of :name
 
@@ -23,7 +24,8 @@ class User < ActiveRecord::Base
       email: email,
       location: location,
       website: website,
-      quote: quote
+      quote: quote,
+      chef_type: chef_type
     }
   end
 
