@@ -21,18 +21,6 @@ describe ApplicationHelper, "#is_current_user?" do
   end
 end
 
-describe ApplicationHelper, "#facebook_image_url" do
-  it "generates a facebook graph photo URL with uid" do
-    helper.facebook_image_url('ABCD').should == 'https://graph.facebook.com/ABCD/picture'
-  end
-end
-
-describe ApplicationHelper, "#default_profile_photo_url" do
-  it "returns URL for default profile photo" do
-    helper.default_profile_photo_url.should include 'profile-placeholder.png'
-  end
-end
-
 describe ApplicationHelper, "#conditional_cache" do
   it 'should cache if cache_unless is false' do
     helper.should_receive(:cache)
@@ -45,3 +33,4 @@ describe ApplicationHelper, "#conditional_cache" do
     @run.should == true
   end
 end
+
