@@ -8,16 +8,16 @@ describe "ChefSteps.Views.ProfileHeader", ->
     @view = new ChefSteps.Views.ProfileHeader(model: @fake_user, el: '.profile-info')
 
   describe "#initialize", ->
-    it "binds to model change event and updates values", ->
-      expect(@fake_user.bind).toHaveBeenCalledWith('change', @view.updateValues)
+    it "binds to model change event and renders", ->
+      expect(@fake_user.bind).toHaveBeenCalledWith('change', @view.render)
 
-  describe "#updateValues", ->
+  describe "#render", ->
     beforeEach ->
-      @view.updateValues()
+      spyOn(@view, 'renderTemplate').andReturn('rendered template')
+      spyOn(@view.$el, 'html')
+      @view.render()
 
-    it "updates name", ->
-      expect($(".name").text()).toEqual('foo bar name')
-
-    it "updates location", ->
-      expect($(".location").text()).toEqual('')
+    it "sets the content to the renderTemplate", ->
+      expect(@view.renderTemplate).toHaveBeenCalled()
+      expect(@view.$el.html).toHaveBeenCalledWith('rendered template')
 
