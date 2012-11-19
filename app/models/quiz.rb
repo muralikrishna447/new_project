@@ -1,3 +1,5 @@
 class Quiz < ActiveRecord::Base
-  attr_accessible :title
+  belongs_to :activity
+
+  attr_accessible :title, :activity_id
 end

@@ -14,6 +14,8 @@ class Activity < ActiveRecord::Base
 
   has_many :recipe_steps, class_name: ActivityRecipeStep, inverse_of: :activity , dependent: :destroy
 
+  has_many :quizzes
+
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
   scope :ordered, rank(:activity_order)
