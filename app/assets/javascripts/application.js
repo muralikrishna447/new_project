@@ -13,6 +13,9 @@
 //= require twitter/bootstrap/carousel
 //= require twitter/bootstrap/modal
 //= require twitter/bootstrap/tab
+//= require signals
+//= require crossroads
 
 //= require factory
+//= require router
 //= require_tree ./backbone
