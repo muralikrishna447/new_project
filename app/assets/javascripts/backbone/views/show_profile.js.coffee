@@ -1,4 +1,4 @@
-class ChefSteps.Views.ShowProfile extends Backbone.View
+class ChefSteps.Views.ShowProfile extends ChefSteps.Views.TemplatedView
 
   initialize: =>
     @model.bind('change', @updateValues)
