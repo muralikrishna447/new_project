@@ -13,6 +13,8 @@
           %span Edit
       %h3{ data: {'attribute-invisible' => 'profile-name', attribute: 'profile-name' }, class: ('invisible' unless user.name.present?)}
         = user.name
+      .chef-type{ data: {"attribute-invisible" => "profile-chef_type"}, class: ('invisible' unless user.chef_type.present?) }
+        %span{ data: {attribute: 'profile-chef_type'}}= user.chef_type.titleize
       %ul.unstyled
         %li{ data: {"attribute-invisible" => "profile-location"}, class: ('invisible' unless user.location.present?) }
           %i.icon-map-marker.icon-large
@@ -24,12 +26,12 @@
           %i.icon-calendar.icon-large
           %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"
 
-  .row{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}
-    .span4.horizontal-divider
+  -# .row{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}
+  -#   .span4.horizontal-divider
 
-  .row
-    .span4{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}
-      %p.user-bio-quote{ data: {attribute: 'profile-quote'} }= user.quote
+  -# .row
+  -#   .span4{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}
+  -#     %p.user-bio-quote{ data: {attribute: 'profile-quote'} }= user.quote
 
   .row
     .span4.horizontal-divider

@@ -1,5 +1,5 @@
 .text
-  = hb 'name'
-  %span= hb 'location'
+  %span.profile-name= hb 'name'
+  %span.profile-location= hb 'location'
 %img{src: '{{image}}' }
 

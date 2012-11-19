@@ -5,6 +5,7 @@ class ChefSteps.Views.ShowProfile extends ChefSteps.Views.TemplatedView
 
   updateValues: =>
     _.each @model.attributes, (value, name) =>
+      value = if name == 'chef_type' then @model.chefType() else value
       @$("[data-attribute=profile-#{name}]").text(value)
 
   show: =>
