@@ -43,6 +43,16 @@ def create_admin(email, password)
   u
 end
 
+def create_user(email, password, name)
+  return if User.where(email: email).any?
+  u = User.create
+  u.email = email
+  u.password = password
+  u.name = name
+  u.save
+  u
+end
+
 def create_equipment(title, product_url)
   return if Equipment.where(title: title).any?
   e = Equipment.find_or_create_by_title(title)
@@ -134,6 +144,10 @@ def build_admin(admin_data)
   create_admin(admin_data[:email], admin_data[:password])
 end
 
+def build_user(user_data)
+  create_user(user_data[:email], user_data[:password], user_data[:name])
+end
+
 def parse_data(name)
   HashWithIndifferentAccess.new(YAML::load(File.open(File.join(Rails.root, "db", name))))
 end
@@ -142,6 +156,7 @@ end
 
 @seed_data[:admins].each do |admin|
   build_admin(admin)
+  build_user(admin)
 end
 
 @seed_data[:activities].each do |activity_data|

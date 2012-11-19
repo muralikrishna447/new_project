@@ -1,21 +1,27 @@
 admins:
 - email: shaun@substantial.com
   password: asdfasdf
-
-- email: aaron@substantial.com
-  password: asdfasdf
+  name: Shaun Dern
 
 - email: alex@substantial.com
   password: asdfasdf
+  name: Alex May
 
 - email: chris@delvekitchen.com
   password: howtochef22
+  name: Chris Young
 
 - email: ryan@delvekitchen.com
   password: howtochef22
+  name: Ryan
 
 - email: edward@delvekitchen.com
   password: howtochef22
+  name: Edward Starbird
+  
+- email: michaelnatkin@gmail.com
+  password: pectinex
+  name: Michael Natkin
 
 activities:
 # - title: Lecture
