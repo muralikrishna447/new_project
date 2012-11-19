@@ -6,16 +6,21 @@ $ script/setup
 ```
 
 ## Development
-You need to install phantomjs to run jasmine specs with guard.
 
-OSX:
+Postgre - OSX;
 ```bash
 $ brew install autoconf
-$ brew install phantomjs
 $ brew install postgres
 ```
 
-Ubuntu:
+You need to install phantomjs to run jasmine specs with guard.
+
+PhantomJS - OSX:
+```bash
+$ brew install phantomjs
+```
+
+PhantomJS - Ubuntu:
 ```bash
 $ sudo apt-get install phantomjs
 ```
