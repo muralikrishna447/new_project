@@ -10,5 +10,7 @@ ChefSteps.init = (options)->
     ChefSteps.profile = new ChefSteps.Models.Profile(options.profile)
 
   ChefSteps.router = new ChefSteps.Router(currentUser: ChefSteps.profile)
-  Backbone.history.start(pushState: true)
+  ChefSteps.router.initializeRoutes()
+
+  ChefSteps.router.parse(window.location.pathname)
 
