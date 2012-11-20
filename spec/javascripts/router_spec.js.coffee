@@ -33,3 +33,15 @@ describe 'ChefSteps.Router', ->
     it "has crossroads parse the hash", ->
       expect(@router.crossroads.parse).toHaveBeenCalledWith('some hash')
 
+  describe "#loadHeader", ->
+    beforeEach ->
+      @fake_header = jasmine.createSpyObj('fake header', ['render'])
+      spyOn(ChefSteps, 'new').andReturn(@fake_header)
+      @router.loadHeader()
+
+    it "instantiates the profile header view", ->
+      expect(ChefSteps.new).toHaveBeenCalledWith(ChefSteps.Views.ProfileHeader, model: @router.currentUser)
+
+    it "renders on the header view", ->
+      expect(@fake_header.render).toHaveBeenCalled()
+

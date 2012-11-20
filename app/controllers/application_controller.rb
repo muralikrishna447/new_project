@@ -3,9 +3,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   expose(:version) { Version.current }
+  expose(:current_user_presenter) { current_user.present? ? UserPresenter.new(current_user) : nil }
 
   def global_navigation
-    render partial: 'layouts/header', locals: {show_auth: false, show_forum: true}
+    render partial: 'layouts/header'
   end
 
   # expose devise helper method to views

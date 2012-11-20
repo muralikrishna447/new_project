@@ -1,0 +1,12 @@
+%li.authentication.first
+  %a{href: '#log-in'}
+    Log in
+    %i.icon-chevron-right.pull-right
+
+%li.authentication
+  %a{href: '#sign-up'}
+    Sign up
+    %i.icon-chevron-right.pull-right
+  %span
+    |
+

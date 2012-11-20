@@ -1,5 +1,6 @@
 class UserProfilesController < ApplicationController
   expose(:user)
+  expose(:user_presenter) { UserPresenter.new(user)}
 
   def update
     render_unauthorized unless current_user == user
