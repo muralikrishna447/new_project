@@ -1,0 +1,16 @@
+.profile-info
+  .text
+    %span.profile-name= hb 'name'
+    %span.profile-location= hb 'location'
+  %img{src: '{{image}}' }
+%li.authentication.authorized.first
+  %a{href: '/users/sign_out'  , data: {method: 'delete'}, rel: 'nofollow' }
+    Log out
+    %i.icon-chevron-right.pull-right
+
+%li.authentication.authorized
+  %a{href: '{{profile_url}}' }
+    Profile
+    %i.icon-chevron-right.pull-right
+  %span
+    |
