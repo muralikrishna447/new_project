@@ -10,9 +10,13 @@ class ChefSteps.Views.TemplatedView extends Backbone.View
     @getTemplate()
     @getTemplateJSON()
 
+  extendTemplateJSON: (templateJSON) =>
+    templateJSON
+
   getTemplateJSON: =>
     templateJSON = {}
     templateJSON = @model.toJSON() if @model
+    templateJSON = @extendTemplateJSON(templateJSON)
     templateJSON
 
   renderTemplate: =>

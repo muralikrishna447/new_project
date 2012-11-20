@@ -18,6 +18,7 @@ describe 'ChefSteps.TemplatedView', ->
 
   describe "#getTemplateJSON", ->
     beforeEach ->
+      spyOn(@view, 'extendTemplateJSON').andCallThrough()
       @fake_model.toJSON.andReturn("some fake model json")
 
     it "returns the model's toJSON", ->
@@ -27,6 +28,9 @@ describe 'ChefSteps.TemplatedView', ->
       @view.model = null
       expect(@view.getTemplateJSON()).toEqual({})
 
+    it 'extends the json object', ->
+      @view.getTemplateJSON()
+      expect(@view.extendTemplateJSON).toHaveBeenCalledWith('some fake model json')
 
   describe "#setupTemplate", ->
     beforeEach ->
