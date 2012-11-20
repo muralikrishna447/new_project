@@ -141,3 +141,16 @@ label.location
     left: 8px
     content: '\f041'
 
+.pac-container
+  &:after
+    padding-top: 0
+    content: ''
+
+  .pac-item
+    height: 18px
+    padding: 4px 6px
+    font-size: 16px
+    line-height: 18px
+    color: $gray
+    &.pac-selected, &:hover
+      background: $grayLighter
