@@ -6,6 +6,7 @@
 //= require stick_to_top
 //= require auth_modal
 //= require click_toggle
+//= require location_autocomplete
 
 //= require twitter/bootstrap/dropdown
 //= require twitter/bootstrap/transition
