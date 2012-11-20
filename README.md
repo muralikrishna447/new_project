@@ -26,4 +26,3 @@ $ sudo apt-get install phantomjs
 ```
 
 For more info: [guard-jasmine](https://github.com/netzpirat/guard-jasmine)
-
