@@ -4,5 +4,7 @@ class Quiz < ActiveRecord::Base
 
   belongs_to :activity
 
+  has_many :questions
+
   attr_accessible :title, :activity_id
 end

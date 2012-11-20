@@ -1,3 +1,5 @@
 class Question < ActiveRecord::Base
-  attr_accessible :title
+  belongs_to :quiz
+
+  attr_accessible :title, :quiz_id
 end
