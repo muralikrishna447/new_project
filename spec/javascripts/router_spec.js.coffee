@@ -35,13 +35,24 @@ describe 'ChefSteps.Router', ->
 
   describe "#loadHeader", ->
     beforeEach ->
-      @fake_header = jasmine.createSpyObj('fake header', ['render'])
-      spyOn(ChefSteps, 'new').andReturn(@fake_header)
-      @router.loadHeader()
+        @fake_header = jasmine.createSpyObj('fake header', ['render'])
+        spyOn(ChefSteps, 'new').andReturn(@fake_header)
 
-    it "instantiates the profile header view", ->
-      expect(ChefSteps.new).toHaveBeenCalledWith(ChefSteps.Views.ProfileHeader, model: @router.currentUser, el: '.profile-info')
+    describe 'without a current user', ->
+      beforeEach ->
+        @router.currentUser = null
+        @router.loadHeader()
 
-    it "renders on the header view", ->
-      expect(@fake_header.render).toHaveBeenCalled()
+      it "doesn't load the profile view", ->
+        expect(ChefSteps.new).not.toHaveBeenCalled()
+
+    describe 'with a currentUser', ->
+      beforeEach ->
+        @router.loadHeader()
+
+      it "instantiates the profile header view", ->
+        expect(ChefSteps.new).toHaveBeenCalledWith(ChefSteps.Views.ProfileHeader, model: @router.currentUser, el: '.profile-info')
+
+      it "renders on the header view", ->
+        expect(@fake_header.render).toHaveBeenCalled()
 
