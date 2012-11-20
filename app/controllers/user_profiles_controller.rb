@@ -13,5 +13,9 @@ class UserProfilesController < ApplicationController
       render_resource_not_found
     end
   end
+
+  def edit
+    show
+  end
 end
 

@@ -19,5 +19,11 @@ class ApplicationController < ActionController::Base
   def last_stored_location_for(resource_or_scope)
     session.delete('last_user_return_to')
   end
+
+  # On sign in, if profile isn't complete, nudge them to finish it now
+  def after_sign_in_path_for(user)
+    (user.chef_type == "") ? user_profile_path(user) : super(user)
+  end
+
 end
 
