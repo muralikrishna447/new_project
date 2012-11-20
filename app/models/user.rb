@@ -15,5 +15,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name
 
+  validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
+
 end
 
