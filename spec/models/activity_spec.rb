@@ -4,8 +4,8 @@ describe Activity do
   let(:activity) { Fabricate(:activity, title: 'foo') }
 
   describe "#update_equipment" do
-    let(:equipment1) { {title: 'Blender', product_url: 'over the rainbow', optional: "true"}  }
-    let(:equipment2) { {title: 'Spoon', product_url: '', optional: "false"}  }
+    let(:equipment1) { {title: 'Blender', optional: "true"}  }
+    let(:equipment2) { {title: 'Spoon', optional: "false"}  }
     let(:equipment_attrs) {[ equipment1, equipment2 ] }
 
     describe "create" do
@@ -19,7 +19,6 @@ describe Activity do
 
       it "creates equipment with specified attributes" do
         activity.equipment.first.title.should == 'Blender'
-        activity.equipment.first.product_url.should == 'over the rainbow'
         activity.equipment.first.optional.should == true
       end
     end
@@ -27,7 +26,7 @@ describe Activity do
     describe "update" do
       before do
         activity.update_equipment(equipment_attrs)
-        equipment_attrs.first.merge!(title: 'BleNdeR', product_url: 'stuff', optional: 'false')
+        equipment_attrs.first.merge!(title: 'BleNdeR', optional: 'false')
         activity.update_equipment(equipment_attrs)
         activity.equipment.reload
       end
@@ -35,7 +34,6 @@ describe Activity do
       it "updates existing equipment" do
         activity.equipment.should have(2).equipment
         activity.equipment.first.title.should == 'Blender'
-        activity.equipment.first.product_url.should == 'stuff'
         activity.equipment.first.optional.should == false
       end
     end
@@ -50,7 +48,6 @@ describe Activity do
       it "deletes equipment not included in attribute set" do
         activity.equipment.should have(1).equipment
         activity.equipment.first.title.should == 'Spoon'
-        activity.equipment.first.product_url.should == ''
         activity.equipment.first.optional.should == false
       end
     end
