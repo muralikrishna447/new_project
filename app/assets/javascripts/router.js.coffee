@@ -9,9 +9,8 @@ class ChefSteps.Router
     )
 
   loadHeader: =>
-    if @currentUser
-      headerView = ChefSteps.new(ChefSteps.Views.ProfileHeader, model: @currentUser, el: '.profile-info')
-      headerView.render()
+    headerView = ChefSteps.new(ChefSteps.Views.ProfileHeader, model: @currentUser)
+    headerView.render()
 
   parse: (hash) =>
     @crossroads.parse(hash)
