@@ -2,5 +2,7 @@ class Quiz < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  attr_accessible :title
+  belongs_to :activity
+
+  attr_accessible :title, :activity_id
 end
