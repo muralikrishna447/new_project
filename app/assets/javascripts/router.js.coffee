@@ -1,10 +1,18 @@
-class ChefSteps.Router extends Backbone.Router
-  initialize: (options) =>
+class ChefSteps.Router
+  constructor: (options) ->
     @currentUser = options.currentUser
+    @crossroads = crossroads.create()
+
+  initializeRoutes: =>
+    _.each(@routes, (callback, route) =>
+      @crossroads.addRoute(route, @[callback])
+    )
+
+  parse: (hash) =>
+    @crossroads.parse(hash)
 
   routes:
-    "profiles/:id": "showEditProfile"
-    "profiles:/id/?edit": "showEditProfile"
+    "/profiles/{id}": "showProfile"
 
   showProfile: (id) =>
     return unless @currentUser

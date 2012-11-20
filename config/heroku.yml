@@ -17,6 +17,7 @@ production:
     RAILS_ENV: "production"
     FOG_DIRECTORY: chefsteps-production-assets
     ASSET_SYNC_GZIP_COMPRESSION: true
+    ASSET_SYNC_EXISTING_REMOTE_FILES: ignore
     FOG_PROVIDER: AWS
     BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
   addons:
@@ -32,6 +33,7 @@ staging:
     RAILS_ENV: "staging"
     FOG_DIRECTORY: chefsteps-staging-assets
     ASSET_SYNC_GZIP_COMPRESSION: true
+    ASSET_SYNC_EXISTING_REMOTE_FILES: ignore
     FOG_PROVIDER: AWS
     BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
   addons:
