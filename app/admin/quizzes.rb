@@ -7,5 +7,7 @@ ActiveAdmin.register Quiz do
     column :activity
     default_actions
   end
+
+  form partial: 'form'
 end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121119231431) do
+ActiveRecord::Schema.define(:version => 20121120010958) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -133,9 +133,11 @@ ActiveRecord::Schema.define(:version => 20121119231431) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "activity_id"
+    t.string   "slug"
   end
 
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
+  add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
 
   create_table "recipe_ingredients", :force => true do |t|
     t.integer  "recipe_id",        :null => false
