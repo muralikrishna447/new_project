@@ -7,8 +7,8 @@
 
   .row
     .span1
-      = link_to user.profile_edit_url, target: '_blank', class: 'change-pic' do
-        = image_tag user.profile_image_url(default_profile_photo_url), class: 'pull-left'
+      = link_to user_presenter.profile_edit_url, target: '_blank', class: 'change-pic' do
+        = image_tag user_presenter.profile_image_url(), class: 'pull-left'
         .change-pic-label
           Change pic
 

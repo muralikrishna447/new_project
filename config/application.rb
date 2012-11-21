@@ -91,7 +91,5 @@ module Delve
       end
     end
 
-    config.show_user_profiles = true
-    config.show_forum = true
   end
 end

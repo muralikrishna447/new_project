@@ -1,6 +1,7 @@
 class UserProfilesController < ApplicationController
   expose(:user)
   expose(:encourage_profile) { Copy.find_by_location('encourage-profile') }
+  expose(:user_presenter) { UserPresenter.new(user)}
 
   def update
     render_unauthorized unless current_user == user

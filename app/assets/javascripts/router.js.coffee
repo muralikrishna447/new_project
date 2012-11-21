@@ -8,6 +8,10 @@ class ChefSteps.Router
       @crossroads.addRoute(route, @[callback])
     )
 
+  loadHeader: =>
+    headerView = ChefSteps.new(ChefSteps.Views.ProfileHeader, model: @currentUser)
+    headerView.render()
+
   parse: (hash) =>
     @crossroads.parse(hash)
 
