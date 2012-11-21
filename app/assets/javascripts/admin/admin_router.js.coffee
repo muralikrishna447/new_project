@@ -1,14 +1,6 @@
-class ChefStepsAdmin.Router
-  constructor: (options) ->
-    @crossroads = crossroads.create()
-
-  initializeRoutes: =>
-    _.each(@routes, (callback, route) =>
-      @crossroads.addRoute(route, @[callback])
-    )
-
-  parse: (hash) =>
-    @crossroads.parse(hash)
+class ChefStepsAdmin.Router extends ChefSteps.Router
+  initialize: (options) ->
+   return
 
   routes:
 

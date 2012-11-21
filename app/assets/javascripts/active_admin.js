@@ -2,6 +2,8 @@
 //= require admin/admin_helpers
 //= require twitter/bootstrap/typeahead
 //= require lodash
+//= require signals
+//= require crossroads
 //= require backbone
 //= require handlebars
 
