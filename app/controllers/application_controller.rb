@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
 
   # On sign in, if profile isn't complete, nudge them to finish it now
   def after_sign_in_path_for(user)
-    (user.chef_type == "") ? (user_profile_path(user) + "?edit=1") : super(user)
+    return super(user) if user.admin? || user.chef_type.present?
+    user_profile_path(user, edit: 1)
   end
 
 end

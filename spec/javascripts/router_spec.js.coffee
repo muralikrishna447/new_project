@@ -4,6 +4,7 @@ describe 'ChefSteps.Router', ->
     spyOn(crossroads, 'create').andReturn(@fake_crossroads)
     @fake_user = jasmine.createSpy('fake user')
     @router = new ChefSteps.Router(currentUser: @fake_user)
+    @router.routes = 'route': 'function'
 
   describe "#constructor", ->
     it "sets the current user", ->
@@ -12,12 +13,6 @@ describe 'ChefSteps.Router', ->
     it "creates a new instance of crossroads", ->
       expect(crossroads.create).toHaveBeenCalled()
       expect(@router.crossroads).toEqual(@fake_crossroads)
-
-  describe "routes", ->
-    it "defines route and callback", ->
-      expect(@router.routes).toEqual(
-        "/profiles/{id}": "showProfile"
-      )
 
   describe "#initializeRoutes", ->
     beforeEach ->
