@@ -1,11 +1,13 @@
 class Question < ActiveRecord::Base
-  QUESTION_TYPES = %w[multiple_choice]
+  self.inheritance_column = :question_type
 
   belongs_to :quiz
 
-  serialize :contents
-
   attr_accessible :title, :quiz_id, :contents
-
-  validates_inclusion_of :question_type, in: QUESTION_TYPES
 end
+
+class MultipleChoiceQuestion < Question
+  require_relative 'question/multiple_choice_question_contents'
+  serialize :contents, MultipleChoiceQuestionContents
+end
+
