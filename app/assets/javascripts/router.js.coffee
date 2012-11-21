@@ -1,19 +1,10 @@
-class ChefSteps.Router
-  constructor: (options) ->
+class ChefSteps.Router extends ChefSteps.BaseRouter
+  initialize: (options) =>
     @currentUser = options.currentUser
-    @crossroads = crossroads.create()
-
-  initializeRoutes: =>
-    _.each(@routes, (callback, route) =>
-      @crossroads.addRoute(route, @[callback])
-    )
 
   loadHeader: =>
     headerView = ChefSteps.new(ChefSteps.Views.ProfileHeader, model: @currentUser)
     headerView.render()
-
-  parse: (hash) =>
-    @crossroads.parse(hash)
 
   routes:
     "/profiles/{id}": "showProfile"
