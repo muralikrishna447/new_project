@@ -1,7 +1,5 @@
-describe 'ChefSteps.App.Router', ->
+describe 'ChefSteps.AppRouter', ->
   beforeEach ->
-    @fake_crossroads = jasmine.createSpyObj('fake crossroads instance', ['addRoute', 'parse'])
-    spyOn(crossroads, 'create').andReturn(@fake_crossroads)
     @fake_user = jasmine.createSpy('fake user')
     @router = new ChefSteps.AppRouter(currentUser: @fake_user)
 
