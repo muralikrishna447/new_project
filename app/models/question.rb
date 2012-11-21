@@ -3,7 +3,9 @@ class Question < ActiveRecord::Base
 
   belongs_to :quiz
 
-  attr_accessible :title, :quiz_id
+  serialize :contents
+
+  attr_accessible :title, :quiz_id, :contents
 
   validates_inclusion_of :question_type, in: QUESTION_TYPES
 end
