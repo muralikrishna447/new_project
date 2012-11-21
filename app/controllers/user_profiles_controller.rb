@@ -1,5 +1,6 @@
 class UserProfilesController < ApplicationController
   expose(:user)
+  expose(:encourage_profile) { Copy.find_by_location('encourage-profile') }
 
   def update
     render_unauthorized unless current_user == user
@@ -12,10 +13,6 @@ class UserProfilesController < ApplicationController
     else
       render_resource_not_found
     end
-  end
-
-  def edit
-    show
   end
 end
 

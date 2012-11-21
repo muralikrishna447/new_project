@@ -1,1 +1,1 @@
-<%= {location: user_profile_path(current_user)}.to_json.html_safe %>
+<%= {location: user_profile_path(current_user) + "?edit=1&new_user=1"}.to_json.html_safe %>

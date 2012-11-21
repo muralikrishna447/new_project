@@ -27,7 +27,7 @@ Delve::Application.routes.draw do
   get 'legal/privacy' => 'copy#legal', as: 'privacy'
   get 'legal/licensing' => 'copy#legal', as: 'licensing'
 
-  resources :user_profiles, only: [:show, :update, :edit], path: 'profiles'
+  resources :user_profiles, only: [:show, :update], path: 'profiles'
 
   resources :courses, only: [:show]
   resources :activities, only: [:show] do

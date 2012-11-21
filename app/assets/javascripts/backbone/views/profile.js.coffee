@@ -18,8 +18,12 @@ class ChefSteps.Views.Profile extends Backbone.View
     @editProfileView.hide()
     @showProfileView.show()
 
+  setCompletionURL: (@completion_url) ->
+
   saveProfile: =>
     @model.save(@editProfileView.getProfileValues())
     @showProfile()
     @showProfileView.checkEmptyValues()
+    if @completion_url?
+      window.open(@completion_url, "_self")
 

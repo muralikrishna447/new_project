@@ -276,4 +276,9 @@ copy:
 - location: thank-you-image-right-caption
   copy_content: |
     <a href='http://blog.chefsteps.com'>Read Our Blog <i class='icon-double-chevron-right'></i></a>
+- location: encourage-profile
+  copy_content: |
+    <p>
+      Thank you for registering with ChefSteps.com! Please take a moment to fill out your profile.
+    </p>
 

@@ -12,5 +12,4 @@ ChefSteps.init = (options)->
   ChefSteps.router = new ChefSteps.Router(currentUser: ChefSteps.profile)
   ChefSteps.router.initializeRoutes()
 
-  ChefSteps.router.parse(window.location.pathname)
-
+  ChefSteps.router.parse(window.location.pathname + window.location.search)

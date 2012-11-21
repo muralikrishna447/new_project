@@ -1,5 +1,11 @@
 .edit-user-profile
   .row
+    .span4
+      -if ! user.chef_type?
+        :markdown
+          #{encourage_profile.copy.to_s}
+
+  .row
     .span1
       = link_to user.profile_edit_url, target: '_blank', class: 'change-pic' do
         = image_tag user.profile_image_url(default_profile_photo_url), class: 'pull-left'
