@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  include ApplicationHelper
   include User::Facebook
   include Gravtastic
   include UpdateWhitelistAttributes
