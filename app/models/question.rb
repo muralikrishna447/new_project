@@ -7,7 +7,6 @@ class Question < ActiveRecord::Base
 end
 
 class MultipleChoiceQuestion < Question
-  require_relative 'question/multiple_choice_question_contents'
   serialize :contents, MultipleChoiceQuestionContents
 end
 
