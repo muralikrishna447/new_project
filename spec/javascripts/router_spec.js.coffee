@@ -1,28 +1,21 @@
 describe 'ChefSteps.Router', ->
   beforeEach ->
-    @fake_crossroads = jasmine.createSpyObj('fake crossroads instance', ['addRoute', 'parse'])
-    spyOn(crossroads, 'create').andReturn(@fake_crossroads)
-    @router = new ChefSteps.Router()
+    @fake_user = jasmine.createSpy('fake user')
+    @router = new ChefSteps.Router(currentUser: @fake_user)
 
-  describe "#constructor", ->
-    it "creates a new instance of crossroads", ->
-      expect(crossroads.create).toHaveBeenCalled()
-      expect(@router.crossroads).toEqual(@fake_crossroads)
+  describe "#initialize", ->
+    it "sets the current user", ->
+      expect(@router.currentUser).toEqual(@fake_user)
 
-  describe "#initializeRoutes", ->
+  describe "#loadHeader", ->
     beforeEach ->
-      @router.routes =
-        foo: 'bar'
-      @router.bar = () -> 'stuff'
-      @router.initializeRoutes()
+      @fake_header = jasmine.createSpyObj('fake header', ['render'])
+      spyOn(ChefSteps, 'new').andReturn(@fake_header)
+      @router.loadHeader()
 
-    it "addsRoute for each route under the routes hash" , ->
-      expect(@fake_crossroads.addRoute).toHaveBeenCalledWith('foo', @router.bar)
+    it "instantiates the profile header view", ->
+      expect(ChefSteps.new).toHaveBeenCalledWith(ChefSteps.Views.ProfileHeader, model: @router.currentUser)
 
-  describe "#parse", ->
-    beforeEach ->
-      @router.parse('some hash')
-
-    it "has crossroads parse the hash", ->
-      expect(@router.crossroads.parse).toHaveBeenCalledWith('some hash')
+    it "renders on the header view", ->
+      expect(@fake_header.render).toHaveBeenCalled()
 

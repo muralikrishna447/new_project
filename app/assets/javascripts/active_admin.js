@@ -10,7 +10,7 @@
 //= require admin/admin_namespace
 
 //= require factory
-//= require router
+//= require base_router
 //= require backbone/views/templated_view
 
 //= require_tree ./admin

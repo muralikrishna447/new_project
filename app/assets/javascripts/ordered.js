@@ -4,8 +4,8 @@
 //= require location_autocomplete
 //= require namespace
 //= require factory
+//= require base_router
 //= require router
-//= require app_router
 //= require backbone/views/templated_view
 //= require_tree ./backbone
 //= require_tree ./templates
