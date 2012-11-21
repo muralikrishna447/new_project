@@ -7,12 +7,6 @@ describe 'ChefSteps.AppRouter', ->
     it "sets the current user", ->
       expect(@router.currentUser).toEqual(@fake_user)
 
-  describe "routes", ->
-    it "defines route and callback", ->
-      expect(@router.routes).toEqual(
-        "/profiles/{id}": "showProfile"
-      )
-
   describe "#loadHeader", ->
     beforeEach ->
       @fake_header = jasmine.createSpyObj('fake header', ['render'])
