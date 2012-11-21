@@ -17,8 +17,9 @@ class ChefSteps.Router
 
   routes:
     "/profiles/{id}": "showProfile"
+    "/profiles/{id}{?query}": "showProfile"
 
-  showProfile: (id) =>
+  showProfile: (id, query) =>
     return unless @currentUser
     if id == @currentUser.id.toString()
       prof = new ChefSteps.Views.Profile(model: @currentUser, el: '.user-profile')
