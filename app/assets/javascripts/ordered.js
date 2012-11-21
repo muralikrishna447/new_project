@@ -5,6 +5,7 @@
 //= require namespace
 //= require factory
 //= require router
+//= require app_router
 //= require backbone/views/templated_view
 //= require_tree ./backbone
 //= require_tree ./templates

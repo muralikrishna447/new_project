@@ -1,10 +1,6 @@
-class ChefSteps.Router
+class ChefStepsAdmin.Router
   constructor: (options) ->
     @crossroads = crossroads.create()
-    @initialize(options)
-
-  initialize: (options) =>
-    @
 
   initializeRoutes: =>
     _.each(@routes, (callback, route) =>
@@ -14,5 +10,5 @@ class ChefSteps.Router
   parse: (hash) =>
     @crossroads.parse(hash)
 
-  routes: {}
+  routes:
 
