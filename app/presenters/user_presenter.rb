@@ -8,7 +8,8 @@ class UserPresenter < Presenter
       location: @model.location,
       website: @model.website,
       quote: @model.quote,
-      image: profile_image_url
+      profile_complete: @model.profile_complete?,
+      image: profile_image_url,
     }).to_json
   end
 
