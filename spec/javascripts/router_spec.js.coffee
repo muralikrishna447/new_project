@@ -26,13 +26,23 @@ describe 'ChefSteps.Router', ->
 
     it "does not create profile view if currentUser doesn't exist", ->
       @router.showProfile()
-      expect(ChefSteps.Views.Profile).not.toHaveBeenCalled
+      expect(ChefSteps.Views.Profile).not.toHaveBeenCalled()
 
     it "does not create profile view if currentUser id doesn't match id param", ->
       @router.showProfile('1')
-      expect(ChefSteps.Views.Profile).not.toHaveBeenCalled
+      expect(ChefSteps.Views.Profile).not.toHaveBeenCalled()
 
-    it "creates profile view if currentUser id matches id param", ->
-      @router.showProfile('123')
-      expect(ChefSteps.Views.Profile).toHaveBeenCalled
+    describe "if currentUser id matches id param", ->
+      beforeEach ->
+        @router.showProfile('123')
 
+      it "creates profile view", ->
+        expect(ChefSteps.Views.Profile).toHaveBeenCalled()
+
+      it "creates view with newUser undefined if new_user is not set", ->
+        @router.showProfile('123')
+        expect(ChefSteps.Views.Profile.mostRecentCall.args[0].newUser).toBeUndefined()
+
+      it "creates view with newUser defined", ->
+        @router.showProfile('123', new_user: '1')
+        expect(ChefSteps.Views.Profile.mostRecentCall.args[0].newUser).toEqual('1')
