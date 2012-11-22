@@ -10,6 +10,7 @@ describe 'ChefStepsAdmin.Router', ->
       @fakeView = jasmine.createSpyObj('view', ['render'])
       spyOn(ChefStepsAdmin.Collections, 'Questions').andReturn(@fakeCollection)
       spyOn(ChefStepsAdmin.Views, 'Questions').andReturn(@fakeView)
+      spyOn(ChefStepsAdmin.Views, 'QuizControls')
 
       @router.editQuizQuestions()
 
@@ -24,4 +25,7 @@ describe 'ChefStepsAdmin.Router', ->
 
     it 'renders the view', ->
       expect(@fakeView.render).toHaveBeenCalled()
+
+    it "instantiates a quiz controls view", ->
+      expect(ChefStepsAdmin.Views.QuizControls).toHaveBeenCalledWith(collection: @fakeCollection)
 
