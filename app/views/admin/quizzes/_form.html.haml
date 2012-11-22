@@ -5,7 +5,7 @@
     = f.input :title
     = f.input :activity
     - if @quiz.persisted?
-      %li= link_to 'Edit Questions', '#', class: 'admin-button'
+      %li= link_to 'Edit Questions', questions_admin_quiz_path(@quiz), class: 'admin-button'
   = f.actions do
     = f.action :submit, submit_options
     = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'

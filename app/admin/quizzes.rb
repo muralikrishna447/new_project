@@ -9,5 +9,16 @@ ActiveAdmin.register Quiz do
   end
 
   form partial: 'form'
+
+  controller do
+    def create
+      create! do |format|
+        format.html { redirect_to questions_admin_quiz_path(@quiz) }
+      end
+    end
+  end
+
+  member_action :questions do
+  end
 end
 
