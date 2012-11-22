@@ -1,3 +1,6 @@
+window.ChefSteps ||= {}
+ChefSteps.Views ||= {}
+
 class ChefSteps.Views.TemplatedView extends Backbone.View
 
   getTemplate: =>

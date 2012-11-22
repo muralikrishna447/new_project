@@ -1,6 +1,3 @@
-//= require active_admin/base
-//= require twitter/bootstrap/typeahead
-
 $ ->
   $('[data-behavior~=copy-element]').on 'click', (event) ->
     event.preventDefault()
@@ -37,3 +34,4 @@ $ ->
   $('table.nested-records').each (index, el)->
     # show table if more than header and template row are present
     $(el).show() if $(el).find('tr').length > 2
+
