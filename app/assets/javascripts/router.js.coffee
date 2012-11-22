@@ -8,7 +8,6 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
     headerView.render()
 
   routes:
-    "/profiles/{id}": "showProfile"
     "/profiles/{id}:?query:": "showProfile"
 
   showProfile: (id, query) =>
