@@ -8,6 +8,8 @@ class ChefSteps.Views.Profile extends Backbone.View
 
     @model.on 'change:profile_complete', @profileCompleteChange, @
 
+    @showEditProfile() unless @model.get('profile_complete')
+
   events:
     'click .edit-profile': 'showEditProfile'
     'click .save-profile': 'saveProfile'
