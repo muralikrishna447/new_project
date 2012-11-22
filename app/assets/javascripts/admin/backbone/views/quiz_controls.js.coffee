@@ -5,5 +5,5 @@ class ChefStepsAdmin.Views.QuizControls extends Backbone.View
     'click #add-multiple-choice-question': 'addMultipleChoiceQuestion'
 
   addMultipleChoiceQuestion: ->
-    @collection.add(new ChefStepsAdmin.Models.Question())
+    @collection.create(new ChefStepsAdmin.Models.Question())
 

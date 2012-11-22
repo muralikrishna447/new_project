@@ -2,7 +2,7 @@ describe 'ChefStepsAdmin.Views.Questions', ->
   beforeEach ->
     loadFixtures('question_list')
 
-    @collection = new ChefStepsAdmin.Collections.Questions([{id: 1}, {id: 2}])
+    @collection = new ChefStepsAdmin.Collections.Questions([{id: 1}, {id: 2}], quizId: 'test')
     spyOn(@collection, 'on')
 
     @view = new ChefStepsAdmin.Views.Questions(collection: @collection)
