@@ -13,7 +13,7 @@ class ChefSteps.NavigationBootstrap
       success: @loadHeader
 
   loadCSS: =>
-    jQuery(@cssLink).appendTo('head')
+    jQuery(@cssLink).prependTo('head')
 
   loadHeader: (response) =>
     jQuery(@headerTarget).html(response)
