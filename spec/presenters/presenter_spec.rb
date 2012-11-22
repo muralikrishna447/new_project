@@ -18,3 +18,11 @@ describe Presenter, "#present" do
   end
 end
 
+describe Presenter, "#present_collection" do
+  let(:collection) { [stub, stub, stub] }
+
+  it "presents each item in collection" do
+    presented = JSON.parse(Presenter.present_collection(collection))
+    presented.should have(3).items
+  end
+end
