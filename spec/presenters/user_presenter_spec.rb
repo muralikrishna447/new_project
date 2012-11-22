@@ -7,7 +7,7 @@ describe UserPresenter, "#present" do
   subject { JSON.parse(user_presenter.present) }
 
   it "serializes valid keys" do
-    subject.keys.should =~ %w[id email name location quote website image]
+    subject.keys.should =~ %w[id email name location quote website image profile_complete]
   end
 end
 
