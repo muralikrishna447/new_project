@@ -24,7 +24,7 @@ describe 'ChefSteps.Views.Profile', ->
       expect(@view.registrationCompletionPath).toEqual 'path'
 
     it "adds listener to model's 'change:profile_complete' event", ->
-      expect(@fake_user.on).toHaveBeenCalledWith('change:profile_complete', @view.profileCompleteChange)
+      expect(@fake_user.on).toHaveBeenCalledWith('change:profile_complete', @view.profileCompleteChange, @view)
 
   describe "events", ->
     it "shows edit profile when edit is click", ->

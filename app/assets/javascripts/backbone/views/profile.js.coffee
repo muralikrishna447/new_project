@@ -6,7 +6,7 @@ class ChefSteps.Views.Profile extends Backbone.View
     @showProfileView.checkEmptyValues()
     @registrationCompletionPath = options.registrationCompletionPath
 
-    @model.on 'change:profile_complete', @profileCompleteChange
+    @model.on 'change:profile_complete', @profileCompleteChange, @
 
   events:
     'click .edit-profile': 'showEditProfile'
@@ -26,6 +26,6 @@ class ChefSteps.Views.Profile extends Backbone.View
     @showProfile()
     @showProfileView.checkEmptyValues()
 
-  profileCompleteChange: =>
-    window.open(@completion_url, "_self")
+  profileCompleteChange: ->
+    window.open(@registrationCompletionPath, "_self")
 
