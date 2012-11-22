@@ -7,7 +7,7 @@ class UserProfilesController < ApplicationController
     render_unauthorized unless current_user == user
     if user.present?
       if user.update_whitelist_attributes(params[:user_profile])
-        render json: user
+        render json: user_presenter.present
       else
         render_errors(user)
       end
