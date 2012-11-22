@@ -19,6 +19,8 @@ ActiveAdmin.register Quiz do
   end
 
   member_action :questions do
+    @quiz = Quiz.find(params[:id])
+    @questions = @quiz.questions
   end
 end
 
