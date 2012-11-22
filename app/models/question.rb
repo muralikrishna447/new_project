@@ -5,8 +5,3 @@ class Question < ActiveRecord::Base
 
   attr_accessible :title, :quiz_id, :contents
 end
-
-class MultipleChoiceQuestion < Question
-  serialize :contents, MultipleChoiceQuestionContents
-end
-
