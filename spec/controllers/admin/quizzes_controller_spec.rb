@@ -12,19 +12,23 @@ describe Admin::QuizzesController do
 
   context 'questions action' do
     let(:quiz) { Fabricate.build(:quiz, id: 123) }
+    let(:questions_presenter) { stub }
 
     before do
       Quiz.should_receive(:find).with('123') { quiz }
-      quiz.stub(:questions) { ['q1'] }
-      get :questions, id: quiz.id
+      QuestionPresenter.stub(:present_collection)
+      quiz.stub(:questions) { ['question'] }
     end
 
     it 'assigns quiz model' do
+      get :questions, id: quiz.id
       assigns[:quiz].should == quiz
     end
 
-    it 'assigns questions collection' do
-      assigns[:questions].should == ['q1']
+    it 'assigns presented questions' do
+      QuestionPresenter.should_receive(:present_collection).with(['question']) { 'presented' }
+      get :questions, id: quiz.id
+      assigns[:questions].should == 'presented'
     end
   end
 end

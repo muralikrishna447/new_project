@@ -1,3 +1,7 @@
+:javascript
+  window.ChefStepsAdmin = window.ChefStepsAdmin || {};
+  window.ChefStepsAdmin.questionsData = JSON.parse('#{j(@questions)}');
+
 .quiz-questions
   %h2 Questions for "#{@quiz.title}"
   #questions-list

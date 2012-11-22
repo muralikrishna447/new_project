@@ -20,7 +20,7 @@ ActiveAdmin.register Quiz do
 
   member_action :questions do
     @quiz = Quiz.find(params[:id])
-    @questions = @quiz.questions
+    @questions = QuestionPresenter.present_collection(@quiz.questions)
   end
 end
 

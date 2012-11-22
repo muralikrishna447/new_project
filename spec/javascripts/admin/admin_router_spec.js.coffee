@@ -2,21 +2,26 @@ describe 'ChefStepsAdmin.Router', ->
   beforeEach ->
     @router = new ChefStepsAdmin.Router()
 
-  describe "#createQuiz", ->
+  describe "#editQuizQuestions", ->
     beforeEach ->
-      @fake_quiz_view = jasmine.createSpyObj('fake quiz view', ['render'])
-      @fake_quiz_model = jasmine.createSpy('fake quiz model')
-      spyOn(ChefStepsAdmin.Models, 'Quiz').andReturn(@fake_quiz_model)
-      spyOn(ChefStepsAdmin.Views, 'Quiz').andReturn(@fake_quiz_view)
+      ChefStepsAdmin.questionsData = ['a', 'b']
 
-      @router.createQuiz()
+      @fakeCollection = jasmine.createSpyObj('collection', ['reset'])
+      @fakeView = jasmine.createSpyObj('view', ['render'])
+      spyOn(ChefStepsAdmin.Collections, 'Questions').andReturn(@fakeCollection)
+      spyOn(ChefStepsAdmin.Views, 'Questions').andReturn(@fakeView)
 
-    it "instantiates a quiz model", ->
-      expect(ChefStepsAdmin.Models.Quiz).toHaveBeenCalled()
+      @router.editQuizQuestions()
 
-    it "instantiates a quiz view", ->
-      expect(ChefStepsAdmin.Views.Quiz).toHaveBeenCalledWith(@fake_quiz_model)
+    it "instantiates a questions collection", ->
+      expect(ChefStepsAdmin.Collections.Questions).toHaveBeenCalled()
 
-    it 'renders the quiz view', ->
-      expect(@fake_quiz_view.render).toHaveBeenCalled()
+    it "resets the collection from the global ChefStepsAdmin.questionsData", ->
+      expect(@fakeCollection.reset).toHaveBeenCalledWith(['a', 'b'])
+
+    it "instantiates a questions view", ->
+      expect(ChefStepsAdmin.Views.Questions).toHaveBeenCalledWith(collection: @fakeCollection)
+
+    it 'renders the view', ->
+      expect(@fakeView.render).toHaveBeenCalled()
 

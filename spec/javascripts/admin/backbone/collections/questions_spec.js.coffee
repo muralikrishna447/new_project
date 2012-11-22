@@ -1,0 +1,1 @@
+describe 'ChefStepsAdmin.Collections.Questions', ->

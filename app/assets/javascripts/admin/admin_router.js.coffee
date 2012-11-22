@@ -1,10 +1,11 @@
 class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
   routes:
-    '/admin/quizzes/new' : 'createQuiz'
+    '/admin/quizzes/{id}/questions' : 'editQuizQuestions'
 
-  createQuiz: ->
-    quiz = new ChefStepsAdmin.Models.Quiz()
-    quizView = new ChefStepsAdmin.Views.Quiz(quiz)
-    quizView.render()
+  editQuizQuestions: ->
+    questions = new ChefStepsAdmin.Collections.Questions([])
+    questions.reset(ChefStepsAdmin.questionsData)
 
+    view = new ChefStepsAdmin.Views.Questions(collection: questions)
+    view.render()

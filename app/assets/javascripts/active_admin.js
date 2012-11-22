@@ -14,5 +14,6 @@
 //= require factory
 //= require base_router
 
+//= require_tree ./admin/backbone/models
 //= require_tree ./admin
 
