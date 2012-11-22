@@ -7,7 +7,7 @@ describe 'ChefSteps.Views.Profile', ->
         when ChefSteps.Views.ShowProfile
           @fake_profile_bio_view = jasmine.createSpyObj('fake bio view', ['show', 'hide', 'checkEmptyValues'])
 
-    @fake_user = jasmine.createSpyObj('fake user', ['save', 'attributes'])
+    @fake_user = jasmine.createSpyObj('fake user', ['save', 'attributes', 'on'])
     @view = new ChefSteps.Views.Profile(model: @fake_user, registrationCompletionPath: 'path')
 
   describe '#initialize', ->
@@ -22,6 +22,9 @@ describe 'ChefSteps.Views.Profile', ->
 
     it "assigns registrationCompletionPath", ->
       expect(@view.registrationCompletionPath).toEqual 'path'
+
+    it "adds listener to model's 'change:profile_complete' event", ->
+      expect(@fake_user.on).toHaveBeenCalledWith('change:profile_complete', @view.profileCompleteChange)
 
   describe "events", ->
     it "shows edit profile when edit is click", ->
