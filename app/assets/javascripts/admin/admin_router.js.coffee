@@ -2,9 +2,8 @@ class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
   routes:
     '/admin/quizzes/new' : 'createQuiz'
-    '/admin/quizzes/{id}/edit' : 'editQuiz'
 
-  createQuiz: -> return
-
-  editQuiz: -> return
+  createQuiz: ->
+    quiz = ChefSteps.new(ChefStepsAdmin.Models.Quiz)
+    ChefSteps.new(ChefStepsAdmin.Views.Quiz, quiz)
 
