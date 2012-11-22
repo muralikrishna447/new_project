@@ -1,9 +1,14 @@
 class ChefSteps.Views.Profile extends Backbone.View
 
-  initialize: =>
+  initialize: (options)=>
     @showProfileView = ChefSteps.new(ChefSteps.Views.ShowProfile, model: @model, el: '.user-profile-bio')
     @editProfileView = ChefSteps.new(ChefSteps.Views.EditProfile, model: @model, el: '.edit-user-profile')
     @showProfileView.checkEmptyValues()
+    @registrationCompletionPath = options.registrationCompletionPath
+
+    @model.on('sync', @goToRegistrationCompletePage, @) if options.newUser
+
+    @showEditProfile() unless @model.get('profile_complete')
 
   events:
     'click .edit-profile': 'showEditProfile'
@@ -22,4 +27,7 @@ class ChefSteps.Views.Profile extends Backbone.View
     @model.save(@editProfileView.getProfileValues())
     @showProfile()
     @showProfileView.checkEmptyValues()
+
+  goToRegistrationCompletePage: ->
+    window.open(@registrationCompletionPath, "_self")
 

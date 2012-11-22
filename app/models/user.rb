@@ -17,5 +17,12 @@ class User < ActiveRecord::Base
 
   validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
 
+  def admin?
+    false
+  end
+
+  def profile_complete?
+    chef_type.present?
+  end
 end
 

@@ -1,4 +1,5 @@
 describe 'ChefSteps.Views.Profile', ->
+
   beforeEach ->
     spyOn(ChefSteps, 'new').andCallFake (klass) ->
       switch klass
@@ -7,8 +8,8 @@ describe 'ChefSteps.Views.Profile', ->
         when ChefSteps.Views.ShowProfile
           @fake_profile_bio_view = jasmine.createSpyObj('fake bio view', ['show', 'hide', 'checkEmptyValues'])
 
-    @fake_user = jasmine.createSpyObj('fake user', ['save', 'attributes'])
-    @view = new ChefSteps.Views.Profile(model: @fake_user)
+    @fake_user = jasmine.createSpyObj('fake user', ['save', 'attributes', 'on', 'get'])
+    @view = new ChefSteps.Views.Profile(model: @fake_user, registrationCompletionPath: 'path', newUser: '1')
 
   describe '#initialize', ->
     it "instantiates the bio view", ->
@@ -19,6 +20,12 @@ describe 'ChefSteps.Views.Profile', ->
 
     it "checks for empty values", ->
       expect(@view.showProfileView.checkEmptyValues).toHaveBeenCalled()
+
+    it "assigns registrationCompletionPath", ->
+      expect(@view.registrationCompletionPath).toEqual 'path'
+
+    it "adds listener to model's 'sync' event if new user option set", ->
+      expect(@fake_user.on).toHaveBeenCalledWith('sync', @view.goToRegistrationCompletePage, @view)
 
   describe "events", ->
     it "shows edit profile when edit is click", ->
