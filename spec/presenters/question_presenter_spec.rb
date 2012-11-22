@@ -4,10 +4,10 @@ describe QuestionPresenter, "#present" do
   let(:question) { Fabricate.build(:multiple_choice_question) }
   let(:question_presenter) { QuestionPresenter.new(question) }
 
-  subject { JSON.parse(question_presenter.present) }
+  subject { question_presenter.attributes }
 
   it "serializes valid keys" do
-    subject.keys.should =~ %w[id]
+    subject.keys.should =~ [:id]
   end
 end
 

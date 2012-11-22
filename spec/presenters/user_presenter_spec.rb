@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe UserPresenter, "#present" do
+describe UserPresenter, "#attributes" do
   let(:user) { Fabricate.build(:user) }
   let(:user_presenter) { UserPresenter.new(user) }
 
-  subject { JSON.parse(user_presenter.present) }
+  subject { user_presenter.attributes }
 
   it "serializes valid keys" do
-    subject.keys.should =~ %w[id email name location quote website image profile_complete chef_type]
+    subject.keys.should =~ [:id, :email, :name, :location, :quote, :website, :image, :profile_complete, :chef_type]
   end
 end
 

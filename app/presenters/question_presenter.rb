@@ -1,7 +1,7 @@
 class QuestionPresenter < Presenter
-  def present
-    HashWithIndifferentAccess.new({
+  def attributes
+    {
       id: @model.id
-    }).to_json
+    }
   end
 end
