@@ -14,5 +14,6 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
     return unless @currentUser
     if id == @currentUser.id.toString()
       profileView = new ChefSteps.Views.Profile(model: @currentUser, el: '.user-profile')
+      return unless query
       profileView.setCompletionURL(@registrationCompletionPath) if query.new_user
       profileView.showEditProfile() if query.edit
