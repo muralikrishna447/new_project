@@ -1,7 +1,7 @@
 describe 'ChefSteps.Router', ->
   beforeEach ->
     @fake_user = jasmine.createSpy('fake user')
-    @router = new ChefSteps.Router(currentUser: @fake_user)
+    @router = new ChefSteps.Router(currentUser: @fake_user, registrationCompletionPath: 'path')
 
   describe "#initialize", ->
     it "sets the current user", ->
@@ -14,7 +14,11 @@ describe 'ChefSteps.Router', ->
       @router.loadHeader()
 
     it "instantiates the profile header view", ->
-      expect(ChefSteps.new).toHaveBeenCalledWith(ChefSteps.Views.ProfileHeader, model: @router.currentUser)
+      expect(ChefSteps.new).toHaveBeenCalledWith(
+        ChefSteps.Views.ProfileHeader,
+        model: @router.currentUser,
+        registrationCompletionPath: 'path'
+      )
 
     it "renders on the header view", ->
       expect(@fake_header.render).toHaveBeenCalled()
