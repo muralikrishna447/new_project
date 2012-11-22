@@ -2,8 +2,9 @@
   .row
     .span4
       -unless user.chef_type?
-        :markdown
-          #{encourage_profile.copy.to_s}
+        - if encourage_profile
+          :markdown
+            #{encourage_profile.copy.to_s}
 
     .span1
       = link_to user_presenter.profile_edit_url, target: '_blank', class: 'change-pic' do
