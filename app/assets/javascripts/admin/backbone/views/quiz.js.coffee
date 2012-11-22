@@ -1,2 +1,4 @@
-class ChefStepsAdmin.Views.Quiz extends Backbone.Quiz
+class ChefStepsAdmin.Views.Quiz extends ChefSteps.Views.TemplatedView
+
+  templateName: 'admin/quiz_form'
 

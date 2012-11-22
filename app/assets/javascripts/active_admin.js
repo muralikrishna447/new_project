@@ -8,10 +8,11 @@
 
 //= require admin/admin_helpers
 //= require admin/admin_namespace
+//= require backbone/views/templated_view
+//= require_tree ./templates/admin
 
 //= require factory
 //= require base_router
-//= require backbone/views/templated_view
 
 //= require_tree ./admin
 

@@ -5,5 +5,6 @@ class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
   createQuiz: ->
     quiz = ChefSteps.new(ChefStepsAdmin.Models.Quiz)
-    ChefSteps.new(ChefStepsAdmin.Views.Quiz, quiz)
+    quizView = ChefSteps.new(ChefStepsAdmin.Views.Quiz, quiz)
+    quizView.render()
 
