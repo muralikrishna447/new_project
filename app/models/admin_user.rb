@@ -4,7 +4,7 @@ class AdminUser < ActiveRecord::Base
 
   attr_accessible :email, :password, :password_confirmation, :remember_me
 
-  def admin?()
+  def admin?
     true
   end
 end
