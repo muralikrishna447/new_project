@@ -8,7 +8,7 @@ describe 'ChefSteps.Views.Profile', ->
           @fake_profile_bio_view = jasmine.createSpyObj('fake bio view', ['show', 'hide', 'checkEmptyValues'])
 
     @fake_user = jasmine.createSpyObj('fake user', ['save', 'attributes'])
-    @view = new ChefSteps.Views.Profile(model: @fake_user)
+    @view = new ChefSteps.Views.Profile(model: @fake_user, registrationCompletionPath: 'path')
 
   describe '#initialize', ->
     it "instantiates the bio view", ->
@@ -19,6 +19,9 @@ describe 'ChefSteps.Views.Profile', ->
 
     it "checks for empty values", ->
       expect(@view.showProfileView.checkEmptyValues).toHaveBeenCalled()
+
+    it "assigns registrationCompletionPath", ->
+      expect(@view.registrationCompletionPath).toEqual 'path'
 
   describe "events", ->
     it "shows edit profile when edit is click", ->
