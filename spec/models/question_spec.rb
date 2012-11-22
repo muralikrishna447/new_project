@@ -1,19 +1,15 @@
 require 'spec_helper'
 
 describe Question, 'contents' do
-  let(:test_contents) { MultipleChoiceQuestionContents.new({test: 'stuff'}) }
-  let(:question) { Fabricate.build(:multiple_choice_question) }
-
-  it 'deserializes contents into specific type object' do
-    question.contents = test_contents
-    question.contents.should be_a MultipleChoiceQuestionContents
-    question.contents.test.should == 'stuff'
+  it 'initializes from new with correct content type' do
+    MultipleChoiceQuestion.new.contents.should be_a MultipleChoiceQuestionContents
   end
 
-  it 'serializes contents from specific type object' do
-    question.contents = test_contents
-    question.save
-    question.contents.should == test_contents
+  it 'initializes from create with correct content type' do
+    MultipleChoiceQuestion.create.contents.should be_a MultipleChoiceQuestionContents
   end
 
+  it 'does not override value passed in during initialization' do
+    MultipleChoiceQuestion.new(contents: 'test').contents.should == 'test'
+  end
 end
