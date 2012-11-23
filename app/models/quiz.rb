@@ -7,4 +7,10 @@ class Quiz < ActiveRecord::Base
   has_many :questions
 
   attr_accessible :title, :activity_id
+
+  def add_multiple_choice_question
+    question = MultipleChoiceQuestion.create
+    questions << question
+    question
+  end
 end
