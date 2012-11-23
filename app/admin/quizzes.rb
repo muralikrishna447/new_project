@@ -13,12 +13,12 @@ ActiveAdmin.register Quiz do
   controller do
     def create
       create! do |format|
-        format.html { redirect_to questions_admin_quiz_path(@quiz) }
+        format.html { redirect_to manage_questions_admin_quiz_path(@quiz) }
       end
     end
   end
 
-  member_action :questions do
+  member_action :manage_questions do
     @quiz = Quiz.find(params[:id])
     @questions = QuestionPresenter.present_collection(@quiz.questions)
   end

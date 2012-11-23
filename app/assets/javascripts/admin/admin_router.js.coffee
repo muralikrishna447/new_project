@@ -1,7 +1,7 @@
 class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
   routes:
-    '/admin/quizzes/{id}/questions' : 'editQuizQuestions'
+    '/admin/quizzes/{id}/manage_questions' : 'editQuizQuestions'
 
   editQuizQuestions: (id)->
     questions = new ChefStepsAdmin.Collections.Questions([], quizId: id)
