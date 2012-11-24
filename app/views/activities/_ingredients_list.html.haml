@@ -1,8 +1,17 @@
+%script{:src => "/js/recipe_units.js"}
 %table.ingredients
   %thead
     %tr
       %th=recipe.title
-      %th{colspan: 2} Weight
+      %th#units_header{colspan: 2}
+        #units_grams
+          %span(style="font-weight: bold;") g /
+          %a#switch_to_ounces oz
+        #units_ounces(style="display:none;")
+          %a#switch_to_grams g
+          %span(style="font-weight: bold;") / oz
+
+
   %tbody
     - recipe.ingredients.each do |ingredient|
       %tr
