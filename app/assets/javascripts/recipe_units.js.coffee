@@ -1,3 +1,8 @@
+# refactor code
+# units tests
+# different UI for switching
+# make the test recipe more suitable for testing
+
 cs_units = "grams"
 cs_units_cookie_name = "chefsteps_units"
 cs_scaling = 1.0
@@ -76,12 +81,10 @@ updateUnits = ->
   #$.cookie(cs_units_cookie_name, cs_units, { expires: 1000,  path: '/' })
 
   # animate all the values and units down to black
-  $('.quantity').next().animate {opacity: 0.0}, 300
-  $('.quantity').animate {
+  $('.quantity, .unit').animate {
     opacity: 0.0
   }, 300, ->
 
     # now switch the values and animate back up
     $('.quantity').each(updateUnitsGuts)
-    $('.quantity').animate({opacity: 1}, 300)
-    $('.quantity').next().animate {opacity: 1}, 300
+    $('.quantity, .unit').animate({opacity: 1}, 300)
