@@ -11,3 +11,4 @@ class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
     view = new ChefStepsAdmin.Views.Questions(collection: questions)
 
     view.render()
+

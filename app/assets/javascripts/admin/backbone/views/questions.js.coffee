@@ -5,7 +5,7 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
   el: '#question-list'
 
   render: ->
-    @collection.each (question)=>
+    @collection.each (question) =>
       @addQuestionToList(question)
     @
 
