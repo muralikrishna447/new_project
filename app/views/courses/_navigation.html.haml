@@ -28,6 +28,10 @@
           %li
             %a.icon-list-ol.icon-white{href: '#step-by-step'}
               %span.nav-label Step-By-Step
+          - if show_quiz? && model.has_quizzes?
+            %li
+              %a.icon-beaker.icon-white{href: '#quizzes'}
+                %span.nav-label Quiz
           %li
             %a.icon-comment{href: '#disqus_thread', data: {'disqus-identifier' => disqus_id}}
               %span.nav-label Comments

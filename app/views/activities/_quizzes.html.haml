@@ -1,11 +1,12 @@
 - if show_quiz? and activity.has_quizzes?
-  .hero-well
-    .container
-      .row
-        .span12
-          %h3 Quizzes
-          Take your learning to the next step and complete the following #{'quiz'.pluralize activity.quizzes.count}:
-          %ul
-            - activity.quizzes.each do |quiz|
-              %li
-                = link_to quiz.title, '#'
+  #quizzes
+    .hero-well
+      .container
+        .row
+          .span12
+            %h3 Quizzes
+            Take your learning to the next step and complete the following #{'quiz'.pluralize activity.quizzes.count}:
+            %ul
+              - activity.quizzes.each do |quiz|
+                %li
+                  = link_to quiz.title, '#'
