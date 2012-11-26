@@ -9,4 +9,4 @@
             %ul
               - activity.quizzes.each do |quiz|
                 %li
-                  = link_to quiz.title, '#'
+                  = link_to quiz.title, quiz_path(quiz)
