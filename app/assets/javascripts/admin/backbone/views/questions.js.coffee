@@ -9,7 +9,7 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
       @addQuestionToList(question)
     @
 
-  addQuestionToList: (question)->
-    view = new ChefStepsAdmin.Views.Question(model: question)
-    @$el.append(view.renderTemplate())
+  addQuestionToList: (question) ->
+    view = new ChefStepsAdmin.Views.Question(model: question, id: "question-#{question.id}")
+    @$el.append(view.render().$el)
 

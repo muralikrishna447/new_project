@@ -7,7 +7,8 @@ describe 'ChefStepsAdmin.Views.Questions', ->
 
     @view = new ChefStepsAdmin.Views.Questions(collection: @collection)
 
-    @fakeView = jasmine.createSpyObj('view',['renderTemplate'])
+    @fakeView = jasmine.createSpyObj('view', ['render'])
+    @fakeView.render.andReturn(@fakeView)
 
   describe '#initialize', ->
     it "adds listener to collections's 'add' event", ->
@@ -34,3 +35,4 @@ describe 'ChefStepsAdmin.Views.Questions', ->
     it "adds new question html to list view", ->
       @view.addQuestionToList(@model)
       expect($('ul#question-list li').length).toEqual(1)
+

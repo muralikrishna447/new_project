@@ -12,3 +12,4 @@ describe 'ChefStepsAdmin.Views.QuizControls', ->
       spyOn(Backbone, 'sync')
       @view.addMultipleChoiceQuestion()
       expect(Backbone.sync).toHaveBeenCalled()
+
