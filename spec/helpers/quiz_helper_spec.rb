@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe QuizHelper, '#show_quiz?' do
+describe QuizHelper, '#show_quizzes?' do
   before { helper.stub(:user_signed_in?) { false } }
 
-  subject { helper.show_quiz? }
+  subject { helper.show_quizzes? }
 
   it 'does not show if user is not authenticated' do
     should_not be
