@@ -1,5 +1,5 @@
 module QuizHelper
   def show_quizzes?
-    Rails.application.config.show_quizzes && user_signed_in?
+    Rails.application.config.show_quizzes
   end
 end
