@@ -17,16 +17,8 @@ $ ->
   updateUnits()
 
   # Setup click handlers
-  $("#switch_to_grams").click ->
-    cs_units = "grams"
-    $("#units_grams").show()
-    $("#units_ounces").hide()
-    updateUnits()
-
-  $("#switch_to_ounces").click ->
-    cs_units = "ounces"
-    $("#units_grams").hide()
-    $("#units_ounces").show()
+  $("#change_units").click ->
+    cs_units = if cs_units == "ounces" then "grams" else cs_units = "ounces"
     updateUnits()
 
 setWeight = (obj, weight) -> obj.text(weight)

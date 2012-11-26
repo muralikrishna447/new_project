@@ -2,15 +2,9 @@
 %table.ingredients
   %thead
     %tr
-      %th=recipe.title
-      %th#units_header{colspan: 2}
-        #units_grams
-          %span(style="font-weight: bold;") g /
-          %a#switch_to_ounces oz
-        #units_ounces(style="display:none;")
-          %a#switch_to_grams g
-          %span(style="font-weight: bold;") / oz
-
+      %th#ingredient Ingredient
+      %th#quantity{colspan: 2}
+        %a#change_units{alt: "Click to switch weight units"} Quantity
 
   %tbody
     - recipe.ingredients.each do |ingredient|
