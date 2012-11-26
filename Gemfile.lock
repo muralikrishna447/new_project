@@ -149,6 +149,11 @@ GEM
       spork (>= 0.8.4)
       sys-proctable
     haml (3.1.7)
+    hamlbars (1.1.0)
+      execjs (>= 1.2)
+      haml
+      sprockets
+      tilt
     has_scope (0.5.1)
     hashie (1.2.0)
     heroku (2.31.2)
@@ -365,6 +370,7 @@ DEPENDENCIES
   guard-rspec
   guard-spork
   haml
+  hamlbars
   heroku
   heroku_san
   jasminerice

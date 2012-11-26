@@ -36,6 +36,7 @@ group :assets do
   gem 'bootstrap-sass-rails'
   gem 'asset_sync'
   gem 'turbo-sprockets-rails3'
+  gem 'hamlbars'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby

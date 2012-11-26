@@ -1,6 +1,9 @@
 window.ChefSteps ||= {}
-window.ChefSteps.Models ||= {}
-window.ChefSteps.Views ||= {}
+
+ChefSteps.Models ||= {}
+ChefSteps.Views ||= {}
+
+Handlebars.templates ||= {}
 
 ChefSteps.init = (options)->
   _.each $('.user-form'), (form)->
@@ -9,8 +12,8 @@ ChefSteps.init = (options)->
   if options.profile
     ChefSteps.profile = new ChefSteps.Models.Profile(options.profile)
 
-  ChefSteps.router = new ChefSteps.Router(currentUser: ChefSteps.profile)
+  ChefSteps.router = new ChefSteps.Router(currentUser: ChefSteps.profile, registrationCompletionPath: options.registrationCompletionPath)
+  ChefSteps.router.loadHeader()
   ChefSteps.router.initializeRoutes()
 
-  ChefSteps.router.parse(window.location.pathname)
-
+  ChefSteps.router.parse(window.location.pathname + window.location.search)

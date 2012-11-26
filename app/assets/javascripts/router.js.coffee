@@ -1,22 +1,20 @@
-class ChefSteps.Router
-  constructor: (options) ->
+class ChefSteps.Router extends ChefSteps.BaseRouter
+  initialize: (options) =>
     @currentUser = options.currentUser
-    @crossroads = crossroads.create()
+    @registrationCompletionPath = options.registrationCompletionPath
 
-  initializeRoutes: =>
-    _.each(@routes, (callback, route) =>
-      @crossroads.addRoute(route, @[callback])
-    )
-
-  parse: (hash) =>
-    @crossroads.parse(hash)
+  loadHeader: =>
+    headerView = ChefSteps.new(ChefSteps.Views.ProfileHeader, model: @currentUser)
+    headerView.render()
 
   routes:
-    "/profiles/{id}": "showProfile"
+    "/profiles/{id}:?query:": "showProfile"
 
-  showProfile: (id) =>
+  showProfile: (id, query) =>
     return unless @currentUser
     if id == @currentUser.id.toString()
-      new ChefSteps.Views.Profile(model: @currentUser, el: '.user-profile')
-      new ChefSteps.Views.ProfileHeader(model: @currentUser, el: '.profile-info')
-
+      profileView = new ChefSteps.Views.Profile
+        model: @currentUser,
+        el: '.user-profile',
+        registrationCompletionPath: @registrationCompletionPath,
+        newUser: query && query.new_user

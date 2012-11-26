@@ -1,2 +1,1 @@
-<% stored_path = last_stored_location_for(signed_in_resource) %>
-<%= {location: stored_path || thank_you_path}.to_json.html_safe %>
+<%= {location: user_profile_path(current_user, new_user: 1)}.to_json.html_safe %>

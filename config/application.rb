@@ -70,7 +70,7 @@ module Delve
     config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+    config.assets.version = '1.1'
     config.assets.initialize_on_precompile = false
 
     # Caching
@@ -91,7 +91,5 @@ module Delve
       end
     end
 
-    config.show_user_profiles = true
-    config.show_forum = true
   end
 end
