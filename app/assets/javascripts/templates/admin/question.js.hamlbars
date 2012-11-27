@@ -1,7 +1,8 @@
-%span.type Multiple Choice
-%span.title= hb('title')
-
 .actions
-  %button.edit Edit
-  %button.delete Delete
+  %button.admin-button.edit Edit
+  %button.admin-button.delete Delete
+
+%span.type Multiple Choice
+%h3= hb('title')
+
 

@@ -5,7 +5,9 @@
     %li
       Option
     %li
-      %button.add-option Add Option
+      %button.add-option.admin-button Add Option
 
-%button.done.admin-button Done
+.form-actions.actions
+  %button.cancel.admin-button Cancel
+  %button.done.admin-button Done
 

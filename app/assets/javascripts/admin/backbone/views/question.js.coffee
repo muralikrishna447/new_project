@@ -10,6 +10,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   editEvents:
     'click .add-option': 'addOption'
     'click .done': 'saveForm'
+    'click .cancel': 'cancelEdit'
 
   addOption: (event) =>
     event.preventDefault()
@@ -35,5 +36,9 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   saveForm: (event) =>
     event.preventDefault()
     @model.save(@$('form').serializeObject())
+    @render()
+
+  cancelEdit: (event) =>
+    event.preventDefault()
     @render()
 
