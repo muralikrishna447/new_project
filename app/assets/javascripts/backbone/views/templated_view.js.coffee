@@ -7,7 +7,7 @@ class ChefSteps.Views.TemplatedView extends Backbone.View
     throw new Error("NoTemplateSpecifiedError") unless @templateName
 
     name = "templates/#{@templateName}"
-    @template ||= Handlebars.templates[name]
+    @template = Handlebars.templates[name]
 
   setupTemplate: =>
     @getTemplate()

@@ -1,7 +1,6 @@
 class UserPresenter < Presenter
-
-  def present
-    HashWithIndifferentAccess.new({
+  def attributes
+    {
       id: @model.id,
       name: @model.name,
       email: @model.email,
@@ -11,7 +10,7 @@ class UserPresenter < Presenter
       chef_type: @model.chef_type,
       profile_complete: @model.profile_complete?,
       image: profile_image_url,
-    }).to_json
+    }
   end
 
   def profile_image_url

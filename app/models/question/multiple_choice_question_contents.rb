@@ -1,0 +1,2 @@
+class MultipleChoiceQuestionContents < OpenStruct
+end
