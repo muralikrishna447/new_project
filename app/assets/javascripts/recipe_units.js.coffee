@@ -15,14 +15,15 @@ $ ->
     $(element).attr("orig_value", orig_value)
 
   # Update to preferred units stored in the cookie
-  debugger
-  cs_units = $.cookie cs_units_cookie_name
+  # This cookie code works but we decided that we want to encourage metric, so not using now,
+  # forces user to click to ounces every time if they are that stubborn.
+  # cs_units = $.cookie cs_units_cookie_name
   updateUnits()
 
   # Setup click handler for units toggle
   $("#change_units").click ->
     cs_units = if cs_units == "ounces" then "grams" else cs_units = "ounces"
-    #$.cookie(cs_units_cookie_name, cs_units, { expires: 1000,  path: '/' })
+    # $.cookie(cs_units_cookie_name, cs_units, { expires: 1000,  path: '/' })
     updateUnits()
 
 
@@ -83,7 +84,6 @@ updateOneRowUnits = ->
 
 # Update all rows
 updateUnits = ->
-  alert("hi")
   # animate all the values and units down ...
   $('.qtyfade').animate {
   opacity: 0.0
