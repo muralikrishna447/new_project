@@ -1,4 +1,7 @@
 %span.type Multiple Choice
-%input.title{placeholder: "Please enter your question here.", value: hb('title') }
-%button.add-option Add Option
+%span.title= hb('title')
+
+.actions
+  %button.edit Edit
+  %button.delete Delete
 

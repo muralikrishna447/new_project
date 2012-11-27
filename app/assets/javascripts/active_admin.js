@@ -5,6 +5,7 @@
 //= require crossroads
 //= require backbone
 //= require handlebars
+//= require serialize-object
 
 //= require admin/admin_helpers
 //= require admin/admin_namespace

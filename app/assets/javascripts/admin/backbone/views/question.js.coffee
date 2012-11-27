@@ -3,17 +3,37 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   tagName: "li"
 
-  templateName: 'admin/question'
-
   events:
-    'click .add-option': 'addOption'
-    'submit .add-option': 'addOption'
+    'click .edit': 'renderForm'
+    'click .delete': 'deleteQuestion'
 
-  addOption: (event)=>
-    @$el.append(@make("b", {}, "Stuff"))
+  editEvents:
+    'click .add-option': 'addOption'
+    'click .done': 'saveForm'
+
+  addOption: (event) =>
+    event.preventDefault()
+    @$el.append(@make('b', {}, 'option stuff'))
+
+  deleteQuestion: =>
+    event.preventDefault()
+    @model.destroy()
+    @remove()
 
   render: =>
+    @templateName = 'admin/question'
     @$el.html(@renderTemplate())
     @delegateEvents()
     @
+
+  renderForm: =>
+    @templateName = 'admin/question_form'
+    @$el.html(@renderTemplate())
+    @delegateEvents(@editEvents)
+    @
+
+  saveForm: (event) =>
+    event.preventDefault()
+    @model.save(@$('form').serializeObject())
+    @render()
 

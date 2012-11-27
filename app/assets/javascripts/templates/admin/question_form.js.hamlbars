@@ -1,0 +1,11 @@
+%span.type Multiple Choice
+%form
+  %input{name: 'title', placeholder: "Please enter your question here.", value: hb('title') }
+  %ul.options
+    %li
+      Option
+    %li
+      %button.add-option Add Option
+
+%button.done.admin-button Done
+

@@ -12,6 +12,7 @@ ul#question-list
 
 #question-list
   .question
+    position: relative
     border: 1px solid $black
     float: left
     padding: 20px
@@ -20,11 +21,24 @@ ul#question-list
       float: left
       text-transform: uppercase
       color: $redLight
-    .title
+    input[name=title]
       float: left
       clear: both
       font-size: 14px
       padding: 5px
       width: 97%
       margin-top: 5px
+
+  .actions
+    position: absolute
+    top: 5px
+    right: 5px
+
+  .options
+    list-style-type: none
+    width: 100%
+    float: left
+
+  .done
+    float: left
 
