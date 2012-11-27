@@ -16,7 +16,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     event.preventDefault()
     @$el.append(@make('b', {}, 'option stuff'))
 
-  deleteQuestion: =>
+  deleteQuestion: (event) =>
     event.preventDefault()
     @model.destroy()
     @remove()
