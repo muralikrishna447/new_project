@@ -118,6 +118,10 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  def has_quizzes?
+    quizzes.present?
+  end
+
   private
 
   def update_recipe_associations(recipe_ids)

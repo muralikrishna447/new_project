@@ -91,5 +91,6 @@ module Delve
       end
     end
 
+    config.show_quizzes = true
   end
 end
