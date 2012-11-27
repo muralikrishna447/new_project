@@ -82,14 +82,32 @@ describe 'ChefStepsAdmin.Views.Question', ->
       @view.model.cid = 'matching id'
       spyOn(@view, 'renderForm')
       spyOn(@view, 'render')
+      spyOn(@view, 'saveForm')
 
-    it "renders editForm, if same cid", ->
+    it "renders editForm", ->
       @view.editQuestionEventHandler('matching id')
       expect(@view.renderForm).toHaveBeenCalled()
-      expect(@view.render).not.toHaveBeenCalled()
 
-    it "renders the normal template if not matching cid", ->
-      @view.editQuestionEventHandler('some non matching id')
-      expect(@view.render).toHaveBeenCalled()
-      expect(@view.renderForm).not.toHaveBeenCalled()
+    describe 'without matching cid', ->
+      describe 'and in edit state', ->
+        it "and in edit state, saves the form", ->
+          @view.editState = true
+          @view.editQuestionEventHandler('some non matching id')
+          expect(@view.saveForm).toHaveBeenCalled()
+
+      describe 'and not in edit state', ->
+        it "renders the normal template", ->
+          @view.editState = false
+          @view.editQuestionEventHandler('some non matching id')
+          expect(@view.render).toHaveBeenCalled()
+
+  describe "#triggerEditQuestion", ->
+    beforeEach ->
+      spyOn(ChefStepsAdmin.ViewEvents, 'trigger')
+      @view.triggerEditQuestion()
+
+    it "triggers the editQuestion event", ->
+      expect(ChefStepsAdmin.ViewEvents.trigger).toHaveBeenCalledWith('editQuestion', @view.model.cid)
+
+
 
