@@ -9,7 +9,10 @@ class Question < ActiveRecord::Base
 
   private
   def init_contents
-    contents_class = (self.class.name.to_s + 'Contents').constantize
     self.contents = contents_class.new({}) if self.contents.blank?
+  end
+
+  def contents_class
+    (self.class.name.to_s + 'Contents').constantize
   end
 end
