@@ -56,6 +56,18 @@ activities:
     - title: Watercress puree
       display_quantity: '320'
       unit: g
+    - title: Canteloupe pectin
+      display_quantity: '0.13'
+      unit: g
+    - title: Vitamin I
+      display_quantity: '15.5'
+      unit: g
+    - title: Tarantula knuckles
+      display_quantity: '3'
+      unit: kg
+    - title: Jellied eye of newt
+      display_quantity: 3100
+      unit: g
     - title: Maldon salt
       unit: a/n
     - title: Black pepper, coarse ground

@@ -31,6 +31,7 @@
   table.ingredients
     margin-top: 20px
     width: 100%
+    table-layout: fixed
     +font-sans-medium
     thead
       color: $gray
@@ -47,7 +48,7 @@
         cursor: pointer
 
     tbody
-      .quantity
+      .quantity, .quantity_lbs
         text-align: right
       tr
         color: $black
