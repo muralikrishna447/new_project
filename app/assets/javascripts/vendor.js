@@ -11,4 +11,6 @@
 //= require twitter/bootstrap/tab
 //= require signals
 //= require crossroads
+//= require jquery.cookie
+
 
