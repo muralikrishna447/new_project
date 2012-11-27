@@ -12,6 +12,9 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     'click .done': 'saveForm'
     'click .cancel': 'cancelEdit'
 
+  initialize: (options) =>
+    ChefStepsAdmin.ViewEvents.on("editQuestion", @editQuestionEventHandler)
+
   addOption: (event) =>
     event.preventDefault()
     @$el.append(@make('b', {}, 'option stuff'))
@@ -20,6 +23,12 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     event.preventDefault()
     @model.destroy()
     @remove()
+
+  editQuestionEventHandler: (cid) =>
+    if @model.cid == cid
+      @renderForm()
+    else
+      @render()
 
   render: =>
     @templateName = 'admin/question'

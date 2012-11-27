@@ -21,7 +21,6 @@ describe 'ChefStepsAdmin.Views.Question', ->
     it 'returns reference to self for chaining', ->
       expect(@view.render()).toEqual(@view)
 
-
   describe "#renderForm", ->
     beforeEach ->
       spyOn(@view, 'renderTemplate').andReturn('rendered template')
@@ -77,4 +76,20 @@ describe 'ChefStepsAdmin.Views.Question', ->
 
     it "removes the view", ->
       expect(@view.remove).toHaveBeenCalled()
+
+  describe "#editQuestionEventHandler", ->
+    beforeEach ->
+      @view.model.cid = 'matching id'
+      spyOn(@view, 'renderForm')
+      spyOn(@view, 'render')
+
+    it "renders editForm, if same cid", ->
+      @view.editQuestionEventHandler('matching id')
+      expect(@view.renderForm).toHaveBeenCalled()
+      expect(@view.render).not.toHaveBeenCalled()
+
+    it "renders the normal template if not matching cid", ->
+      @view.editQuestionEventHandler('some non matching id')
+      expect(@view.render).toHaveBeenCalled()
+      expect(@view.renderForm).not.toHaveBeenCalled()
 

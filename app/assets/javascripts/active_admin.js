@@ -13,6 +13,7 @@
 //= require_tree ./templates/admin
 
 //= require factory
+//= require admin/backbone/admin_view_events
 //= require base_router
 
 //= require_tree ./admin/backbone/models
