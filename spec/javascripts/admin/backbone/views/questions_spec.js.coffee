@@ -15,16 +15,19 @@ describe 'ChefStepsAdmin.Views.Questions', ->
       expect(@collection.on).toHaveBeenCalledWith('add', @view.addQuestionToList, @view)
 
   describe '#render', ->
+    beforeEach ->
+      spyOn(@view, 'addQuestionToList')
+
     it 'returns reference to self for chaining', ->
       expect(@view.render()).toEqual(@view)
 
     it 'calls addQuestionToList for each model in collection', ->
-      spyOn(@view, 'addQuestionToList')
       @view.render()
       expect(@view.addQuestionToList.calls.length).toEqual(2)
 
   describe '#addQuestionToList', ->
     beforeEach ->
+      spyOn(ChefStepsAdmin.ViewEvents, 'trigger')
       @model = new ChefStepsAdmin.Models.Question(id: 1)
 
     it 'creates a new Question view for the new model', ->
@@ -35,4 +38,8 @@ describe 'ChefStepsAdmin.Views.Questions', ->
     it "adds new question html to list view", ->
       @view.addQuestionToList(@model)
       expect($('ul#question-list li').length).toEqual(1)
+
+    it "triggers editQuestion event", ->
+      @view.addQuestionToList(@model)
+      expect(ChefStepsAdmin.ViewEvents.trigger).toHaveBeenCalledWith('editQuestion', @model.cid)
 
