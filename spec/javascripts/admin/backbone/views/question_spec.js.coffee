@@ -77,6 +77,14 @@ describe 'ChefStepsAdmin.Views.Question', ->
     it "removes the view", ->
       expect(@view.remove).toHaveBeenCalled()
 
+  describe "#isEditState", ->
+    it "returns true if templateName is set to question form", ->
+      expect(@view.isEditState()).toEqual(false)
+
+    it "returns true if templateName is set to question form", ->
+      @view.templateName = 'admin/question_form'
+      expect(@view.isEditState()).toEqual(true)
+
   describe "#editQuestionEventHandler", ->
     beforeEach ->
       @view.model.cid = 'matching id'
@@ -91,13 +99,13 @@ describe 'ChefStepsAdmin.Views.Question', ->
     describe 'without matching cid', ->
       describe 'and in edit state', ->
         it "and in edit state, saves the form", ->
-          @view.editState = true
+          spyOn(@view, 'isEditState').andReturn(true)
           @view.editQuestionEventHandler('some non matching id')
           expect(@view.saveForm).toHaveBeenCalled()
 
       describe 'and not in edit state', ->
         it "renders the normal template", ->
-          @view.editState = false
+          spyOn(@view, 'isEditState').andReturn(false)
           @view.editQuestionEventHandler('some non matching id')
           expect(@view.render).toHaveBeenCalled()
 
