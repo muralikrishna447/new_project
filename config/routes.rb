@@ -37,5 +37,6 @@ Delve::Application.routes.draw do
     end
   end
 
+  resources :quizzes, only: [:show]
 end
 
