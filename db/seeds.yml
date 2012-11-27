@@ -141,6 +141,16 @@ activities:
 
     - title: Dissolve salt and sugar into the water
       image_id: IMG_4817.jpg
+      ingredients:
+        - title: Water
+          display_quantity: '1600'
+          unit: g
+        - title: Salt
+          display_quantity: '160'
+          unit: g
+        - title: Sugar
+          display_quantity: '80'
+          unit: g
       directions: |
         * Dissolve salt and sugar into the water.
         * Chill brine to less than 41 &deg;F / 5 &deg;C
