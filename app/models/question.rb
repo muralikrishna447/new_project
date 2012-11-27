@@ -9,7 +9,7 @@ class Question < ActiveRecord::Base
 
   private
   def init_contents
-    contents_class = (MultipleChoiceQuestion.to_s + 'Contents').constantize
+    contents_class = (self.class.name.to_s + 'Contents').constantize
     self.contents = contents_class.new({}) if self.contents.blank?
   end
 end
