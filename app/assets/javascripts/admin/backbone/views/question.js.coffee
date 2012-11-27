@@ -3,12 +3,11 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   tagName: "li"
 
+  formTemplate: 'admin/question_form'
+
   events:
     'click .edit': 'triggerEditQuestion'
     'click .delete': 'deleteQuestion'
-
-
-  editEvents:
     'click .add-option': 'addOption'
     'click .done': 'saveForm'
     'click .cancel': 'cancelEdit'
@@ -27,26 +26,20 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   editQuestionEventHandler: (cid) =>
     if @model.cid == cid
-      @renderForm()
+      @render(@formTemplate)
     else if @isEditState()
       @saveForm()
     else
       @render()
 
-  render: =>
-    @templateName = 'admin/question'
+  render: (templateName = 'admin/question') =>
+    @templateName = templateName
     @$el.html(@renderTemplate())
     @delegateEvents()
     @
 
-  renderForm: =>
-    @templateName = 'admin/question_form'
-    @$el.html(@renderTemplate())
-    @delegateEvents(@editEvents)
-    @
-
   isEditState: =>
-    @templateName == 'admin/question_form'
+    @templateName == @formTemplate
 
   saveForm: (event) =>
     event.preventDefault() if event

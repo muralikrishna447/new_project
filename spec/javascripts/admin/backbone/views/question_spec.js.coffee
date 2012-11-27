@@ -21,19 +21,6 @@ describe 'ChefStepsAdmin.Views.Question', ->
     it 'returns reference to self for chaining', ->
       expect(@view.render()).toEqual(@view)
 
-  describe "#renderForm", ->
-    beforeEach ->
-      spyOn(@view, 'renderTemplate').andReturn('rendered template')
-      spyOn(@view, 'delegateEvents')
-      spyOn(@view.$el, 'html')
-      @view.renderForm()
-
-    it "set the content to the question template", ->
-      expect(@view.templateName).toEqual('admin/question_form')
-
-    it "uses the view's editEvents for delegateEvents", ->
-      expect(@view.delegateEvents).toHaveBeenCalledWith(@view.editEvents)
-
   describe "#cancelEdit", ->
     beforeEach ->
       spyOn(@view, 'render')
@@ -82,19 +69,18 @@ describe 'ChefStepsAdmin.Views.Question', ->
       expect(@view.isEditState()).toEqual(false)
 
     it "returns true if templateName is set to question form", ->
-      @view.templateName = 'admin/question_form'
+      @view.templateName = @view.formTemplate
       expect(@view.isEditState()).toEqual(true)
 
   describe "#editQuestionEventHandler", ->
     beforeEach ->
       @view.model.cid = 'matching id'
-      spyOn(@view, 'renderForm')
       spyOn(@view, 'render')
       spyOn(@view, 'saveForm')
 
     it "renders editForm", ->
       @view.editQuestionEventHandler('matching id')
-      expect(@view.renderForm).toHaveBeenCalled()
+      expect(@view.render).toHaveBeenCalledWith(@view.formTemplate)
 
     describe 'without matching cid', ->
       describe 'and in edit state', ->
@@ -116,6 +102,4 @@ describe 'ChefStepsAdmin.Views.Question', ->
 
     it "triggers the editQuestion event", ->
       expect(ChefStepsAdmin.ViewEvents.trigger).toHaveBeenCalledWith('editQuestion', @view.model.cid)
-
-
 
