@@ -1,8 +1,10 @@
 - orange ||= false
 .subscribe.pull-right{ class: ('orange' if orange)  }
-  = form_tag mailing_list_subscribe_path, remote: true do
+  = form_tag "http://www.aweber.com/scripts/addlead.pl", remote: true do
     .input-append
       = email_field_tag('email', nil, {class: 'span4', placeholder: 'Enter your email for updates', required: true})
-      %button.btn
+      %input{ :type=>"hidden", :name=>"listname", :value => 'cs_c_sousvide'}
+      %input{ :type=>"hidden", :name=>"meta_adtracking", :value => 'site_top_form'}
+      %input{ :type=>"hidden", :name=>"redirect", :value => 'http://www.aweber.com/thankyou-coi.htm?m=text'}
+      %button.btn{ :type=>"submit"}
         %i.icon-double-chevron-right
-
