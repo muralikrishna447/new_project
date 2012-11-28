@@ -18,8 +18,6 @@ Delve::Application.routes.draw do
 
   get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
 
-  post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
-
   get 'thank-you' => 'copy#thank_you', as: 'thank_you'
   get 'thank-you-subscribing' => 'copy#thank_you_subscribing', as: 'thank_you_subscribing'
   get 'legal' => 'copy#legal', as: 'legal'
