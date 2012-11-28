@@ -9,9 +9,9 @@
   .container
     .row
       .span12
-        %p
+        %h3
           Test your skills on
-          %b #{quiz.title}!
+          %strong #{quiz.title}!
     .row.hero-unit
       .span8
         = image_tag 'http://placehold.it/745x376/eee', class: 'img-polaroid'
@@ -19,9 +19,9 @@
         %input{value: '20 questions'}
         %input{value: '15 minutes'}
     .row
-      .span8
-        %p
+      .span12
+        %p.pull-left
           Lorem ipsum Quiz Start Text
-      .span2.pull-right
-        .btn-uppercase.btn-primary.btn-x-large Start Quiz
+        .pull-right
+          .btn-uppercase.btn-primary.btn-x-large Start Quiz
 
