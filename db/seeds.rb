@@ -138,6 +138,8 @@ def build_activity(activity_data)
       end
     end
   end
+
+  activity.update_recipe_steps
 end
 
 def build_admin(admin_data)

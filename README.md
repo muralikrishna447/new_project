@@ -7,7 +7,7 @@ $ script/setup
 
 ## Development
 
-Postgre - OSX;
+Postgres - OSX:
 ```bash
 $ brew install autoconf
 $ brew install postgres

@@ -9,3 +9,20 @@ describe Presenter, "#initialize" do
   end
 end
 
+describe Presenter, "#present" do
+  let(:presenter) { Presenter.new(stub) }
+
+  it "converts attributes to json" do
+    presenter.stub(:attributes) { {test: 2} }
+    presenter.present.should == "{\"test\":2}"
+  end
+end
+
+describe Presenter, "#present_collection" do
+  let(:collection) { [stub, stub, stub] }
+
+  it "presents each item in collection" do
+    presented = JSON.parse(Presenter.present_collection(collection))
+    presented.should have(3).items
+  end
+end

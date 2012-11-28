@@ -79,6 +79,8 @@ Delve::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+
+  config.show_quizzes = false
 end
 
 MAILCHIMP_API_KEY = "9875b0250eae48e91a12a26117bba403-us5"
