@@ -18,7 +18,6 @@ gem 'activeadmin'
 gem 'meta_search'
 gem 'decent_exposure'
 gem 'ranked-model'
-gem 'gibbon'
 gem 'newrelic_rpm'
 gem 'rdiscount'
 gem "friendly_id"
