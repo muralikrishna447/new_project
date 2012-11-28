@@ -27,6 +27,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   editQuestionEventHandler: (cid) =>
     if @model.cid == cid
       @render(@formTemplate)
+      console.log 'rendering form', cid
     else if @isEditState()
       @saveForm()
     else

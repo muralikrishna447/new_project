@@ -4,4 +4,5 @@
 
 %span.type Multiple Choice
 %h3= hb('question')
+%h3= hb('instructions')
 
