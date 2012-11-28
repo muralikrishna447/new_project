@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-include Devise::TestHelpers
-
 describe Admin::QuestionsController do
   login_admin
 
