@@ -1,8 +1,15 @@
 %table.ingredients
+  %colgroup
+    %col{width: "80%"}
+    %col{width: "15%"}
+    %col{width: "5%"}
+
   %thead
     %tr
-      %th=recipe.title
-      %th{colspan: 2} Weight
+      %th#ingredient Ingredient
+      %th#quantity{colspan: 2}
+        %a#change_units{title: "Click to change units"} Quantity
+
   %tbody
     - recipe.ingredients.each do |ingredient|
       %tr
@@ -11,6 +18,6 @@
             = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
           - else
             = ingredient.title
-        %td.quantity= ingredient.display_quantity
-        %td= ingredient.unit
+        %td.quantity.qtyfade= ingredient.display_quantity
+        %td.unit.qtyfade= ingredient.unit
 

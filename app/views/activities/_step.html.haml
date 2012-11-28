@@ -15,8 +15,8 @@
                     %i.icon-shopping-cart
               - else
                 %td= ingredient.title
-              %td.quantity= ingredient.display_quantity
-              %td= ingredient.unit
+              %td.quantity.qtyfade= ingredient.display_quantity
+              %td.unit.qtyfade= ingredient.unit
     - if step.directions.present?
       .step-directions
         :markdown

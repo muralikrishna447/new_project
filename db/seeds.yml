@@ -56,6 +56,18 @@ activities:
     - title: Watercress puree
       display_quantity: '320'
       unit: g
+    - title: Canteloupe pectin
+      display_quantity: '0.13'
+      unit: g
+    - title: Vitamin I
+      display_quantity: '15.5'
+      unit: g
+    - title: Tarantula knuckles
+      display_quantity: '3'
+      unit: kg
+    - title: Jellied eye of newt
+      display_quantity: 3100
+      unit: g
     - title: Maldon salt
       unit: a/n
     - title: Black pepper, coarse ground
@@ -68,7 +80,7 @@ activities:
     - title: Serving
       image_id: final_dish_IMG_5402.jpg
       directions: |
-        * Sprinke coriander, black pepper, and Maldon sea salt on each portion of salmon while they are on a sheet tray.
+        * Sprinkle coriander, black pepper, and Maldon sea salt on each portion of salmon while they are on a sheet tray.
         * Strain pickles from their brine and drain them on paper towel.
         * Add the salt to the watercress puree.
         * Place a spoonful of horseradish cream, a spoonful of watercress puree, and one salmon portion on each chilled plate.
@@ -129,6 +141,16 @@ activities:
 
     - title: Dissolve salt and sugar into the water
       image_id: IMG_4817.jpg
+      ingredients:
+        - title: Water
+          display_quantity: '1600'
+          unit: g
+        - title: Salt
+          display_quantity: '160'
+          unit: g
+        - title: Sugar
+          display_quantity: '80'
+          unit: g
       directions: |
         * Dissolve salt and sugar into the water.
         * Chill brine to less than 41 &deg;F / 5 &deg;C

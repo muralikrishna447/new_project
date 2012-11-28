@@ -29,7 +29,6 @@
     .row
       .span8
         - if activity.has_ingredients?
-          %h5 Ingredients
           - activity.ordered_recipes.each do |recipe|
             = render 'ingredients_list', recipe: recipe
       .span4
