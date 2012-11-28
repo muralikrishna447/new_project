@@ -10,8 +10,8 @@ module QuizHelper
         readonly: true,
         thickness: 0.08,
         max: max,
-        fgcolor: '#aa4311',
-        bgcolor: '#EAEAEA'
+        fgcolor: value > 0 ? '#aa4311' : '#EAEAEA',
+        bgcolor: value > 0 ? '#EAEAEA' : 'whiteSmoke'
       }
     end
   end
