@@ -3,9 +3,13 @@ class Question < ActiveRecord::Base
 
   belongs_to :quiz
 
-  attr_accessible :title, :quiz_id, :contents
+  attr_accessible :quiz_id, :contents
 
   after_initialize :init_contents
+
+  def update_contents(params)
+    self.contents.update(params)
+  end
 
   private
   def init_contents

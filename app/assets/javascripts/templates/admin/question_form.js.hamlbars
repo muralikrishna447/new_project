@@ -1,6 +1,7 @@
 %span.type Multiple Choice
 %form
-  %input{name: 'title', placeholder: "Please enter your question here.", value: hb('title') }
+  %input{name: 'question', placeholder: "Please enter your question here.", value: hb('question') }
+  %input{name: 'instructions', placeholder: "Please enter instructions", value: hb('instructions') }
   %ul.options
     %li
       Option
