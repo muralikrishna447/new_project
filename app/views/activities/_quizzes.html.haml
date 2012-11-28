@@ -1,0 +1,16 @@
+- if show_quizzes? and activity.has_quizzes?
+  #quizzes.hero-well
+    .container
+      .row
+        .span12
+          %h3 Quizzes
+          Take your learning to the next step and complete the following #{'quiz'.pluralize activity.quizzes.count}:
+      - activity.quizzes.each_slice(3) do |quizzes|
+        .row
+          - quizzes.each do |quiz|
+            .span4
+              = link_to quiz_path(quiz) do
+                .image-with-caption
+                  = image_tag 'http://placehold.it/370x200/eee' #, class: 'img-polaroid'
+                  .image-caption
+                    .image-caption-text= quiz.title
