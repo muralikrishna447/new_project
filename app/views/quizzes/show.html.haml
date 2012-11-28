@@ -15,8 +15,8 @@
       .span8
         = image_tag 'http://lorempixel.com/745/376/food/', class: 'img-polaroid'
       .span4
-        %input{value: '20 questions'}
-        %input{value: '15 minutes'}
+        = progress_dial 0, 20
+        = progress_dial 0, 15
     .row
       .span12
         %p.pull-left

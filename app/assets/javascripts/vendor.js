@@ -3,6 +3,7 @@
 //= require backbone
 //= require carousel
 //= require handlebars
+//= require jquery.knob
 //= require twitter/bootstrap/dropdown
 //= require twitter/bootstrap/transition
 //= require twitter/bootstrap/collapse
