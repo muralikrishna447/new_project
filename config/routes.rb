@@ -21,6 +21,7 @@ Delve::Application.routes.draw do
   post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
 
   get 'thank-you' => 'copy#thank_you', as: 'thank_you'
+  get 'thank-you-subscribing' => 'copy#thank_you_subscribing', as: 'thank_you_subscribing'
   get 'legal' => 'copy#legal', as: 'legal'
   get 'legal/:type' => 'copy#legal', as: 'legal_type'
   get 'legal/terms' => 'copy#legal', as: 'terms_of_service'

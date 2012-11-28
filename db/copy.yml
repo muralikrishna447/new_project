@@ -276,6 +276,24 @@ copy:
 - location: thank-you-image-right-caption
   copy_content: |
     <a href='http://blog.chefsteps.com'>Read Our Blog <i class='icon-double-chevron-right'></i></a>
+
+- location: encourage-profile
+  copy_content: |
+    <p>
+      Thank you for registering with ChefSteps.com! Please take a moment to fill out your profile.
+    </p>
+
+#thank you for subscribing to email list
+- location: thank-you-subscribing
+  copy_content: |
+    <h3>You're Almost Done - Activate Your Subscription!</h3>
+    <p>
+      Thank you for siging up for the ChefSteps email list. <em>Important:</em> In order to activate your subscription,
+      check your email and click on the link in that email. You will not receive your subscription until you click that
+      link to activate it. If you don't see that email in your inbox shortly, fill out the form again to have another
+      copy of it sent to you.
+    </p>
+
 - location: encourage-profile
   copy_content: |
     <p>
