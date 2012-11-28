@@ -3,8 +3,8 @@
   = form_tag "http://www.aweber.com/scripts/addlead.pl" do
     .input-append
       = email_field_tag('email', nil, {class: 'span4', placeholder: 'Enter your email for updates', required: true})
-      %input{ :type=>"hidden", :name=>"listname", :value => 'cs_c_sousvide'}
-      %input{ :type=>"hidden", :name=>"meta_adtracking", :value => 'site_top_form'}
-      %input{ :type=>"hidden", :name=>"redirect", :value => request.protocol + request.host_with_port + thank_you_subscribing_path + "?m=text"}
+      %input{ type: "hidden", name: "listname", value: 'cs_c_sousvide'}
+      %input{ type: "hidden", name: "meta_adtracking", value: 'site_top_form'}
+      %input{ type: "hidden", name: "redirect", value: thank_you_subscribing_url}
       %button.btn{ :type=>"submit"}
         %i.icon-double-chevron-right
