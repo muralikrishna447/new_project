@@ -7,7 +7,7 @@ class Question < ActiveRecord::Base
 
   belongs_to :quiz
 
-  attr_accessible :quiz_id, :contents
+  attr_accessible :quiz_id, :contents, :question_order_position
 
   after_initialize :init_contents
 
@@ -19,6 +19,7 @@ class Question < ActiveRecord::Base
 
   private
   def init_contents
+    return if persisted?
     self.contents = contents_class.new({}) if self.contents.blank?
   end
 
@@ -26,3 +27,4 @@ class Question < ActiveRecord::Base
     (self.class.name.to_s + 'Contents').constantize
   end
 end
+
