@@ -3,7 +3,6 @@ class ChefSteps.Views.NavHider extends Backbone.View
     $(options.showElement).click(@showOrHide)
 
   showOrHide: =>
-    console.log @$('#header')
     if @$('#header').is(':visible')
       @hide()
     else
