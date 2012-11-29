@@ -3,13 +3,14 @@
   %button.admin-button.delete Delete
 
 %span.type Multiple Choice
-%h3= hb('question')
-%h3= hb('instructions')
+%h4= hb('instructions')
+.question-box
+  %h3= hb('question')
 
-%ul.options
-  = hb 'each options' do
-    = hb 'if correct' do
-      %li.option.correct= hb('answer')
-    = hb 'unless correct' do
-      %li.option= hb('answer')
+  %ul.options
+    = hb 'each options' do
+      = hb 'if correct' do
+        %li.option.correct= hb('answer')
+      = hb 'unless correct' do
+        %li.option= hb('answer')
 
