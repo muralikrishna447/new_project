@@ -7,7 +7,7 @@ describe QuestionPresenter, "#present" do
   subject { question_presenter.attributes }
 
   it "serializes valid keys" do
-    subject.keys.should =~ [:id]
+    subject.keys.should =~ [:id, :question_order]
   end
 end
 

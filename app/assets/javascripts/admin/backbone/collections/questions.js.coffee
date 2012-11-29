@@ -7,3 +7,6 @@ class ChefStepsAdmin.Collections.Questions extends Backbone.Collection
   url: ->
     "/admin/quizzes/#{@quizId}/questions"
 
+  comparator: (question) =>
+    question.get('question_order')
+
