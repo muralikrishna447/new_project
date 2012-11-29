@@ -3,6 +3,10 @@ module QuizHelper
     Rails.application.config.show_quizzes
   end
 
+  def estimated_time(quiz)
+    quiz.questions.count * 20 / 60
+  end
+
   def progress_dial(value, max, label)
     content_tag :div, class: 'dial-wrapper' do
       content = text_field_tag :dial, value, class: 'dial', data: {
