@@ -8,5 +8,8 @@
 
 %ul.options
   = hb 'each options' do
-    %li= "#{hb('answer')} is #{hb('correct')}"
+    = hb 'if correct' do
+      %li.option.correct= hb('answer')
+    = hb 'unless correct' do
+      %li.option= hb('answer')
 

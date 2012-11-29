@@ -25,6 +25,7 @@ ul#question-list
       float: left
       clear: both
       font-weight: bold
+      margin-top: 10px
     input[name=question], input[name=instructions]
       float: left
       clear: both
@@ -35,18 +36,53 @@ ul#question-list
     h3
       float: left
       clear: both
-    .add-option
-      float: left
-      clear: both
 
   .actions
     float: right
 
+
+  .edit-option
+    margin-top: 5px
+    position: relative
+    width: 100%
+    float: left
+    padding: 5px
+    background: whitesmoke
+    input[type=text]
+      display: block
+    label
+      display: inline-block
+    .delete-option
+      position: absolute
+      right: 5px
+      top: 5px
+    &.correct
+      background: lighten($green, 10%)
+
   .options
+    margin-top: 5px
     list-style-type: none
     width: 100%
     float: left
+    .option
+      margin-top: 5px
+      position: relative
+      width: 100%
+      float: left
+
+  .option.correct
+    &:after
+      content: "\2713"
+      color: $green
+      margin-left: 5px
+      font-size: 1.5em
+      font-weight: bold
 
   .form-actions
     margin-top: 20px
+    width: 100%
+    .add-option
+      float: left
+    .cancel, .done
+      float: right
 

@@ -6,7 +6,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   formTemplate: 'admin/question_form'
 
   defaultOption:
-    answer: 'foo bar'
+    answer: ''
     correct: false
 
   events:
@@ -63,7 +63,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     event.preventDefault() if event
     data = @$('form').serializeObject()
     data = _.omit(data, ['answer', 'correct'])
-    data['options'] = _.map(@$('.options .option'), (option) -> $('input', option).serializeObject())
+    data['options'] = _.map(@$('.edit-option'), (option) -> $('input', option).serializeObject())
     @model.save(data)
     @render()
 
