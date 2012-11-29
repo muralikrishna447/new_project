@@ -37,8 +37,10 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   deleteQuestion: (event) =>
     event.preventDefault()
-    @model.destroy()
-    @remove()
+    confirmMessage = $(event.currentTarget).data('confirm')
+    if not confirmMessage || confirm(confirmMessage)
+      @model.destroy()
+      @remove()
 
   editQuestionEventHandler: (cid) =>
     if @model.cid == cid
