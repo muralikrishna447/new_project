@@ -9,7 +9,7 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
 
   routes:
     "/profiles/{id}:?query:": "showProfile"
-    "/quizzes/{id}": "showQuizOverview"
+    "/quizzes/{id}": "startQuizApp"
     "/styleguide": "showStyleguide"
 
   showProfile: (id, query) =>
@@ -21,9 +21,15 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
         registrationCompletionPath: @registrationCompletionPath,
         newUser: query && query.new_user
 
-  showQuizOverview: (id) =>
+  startQuizApp: (id) =>
+    navHider = new ChefSteps.Views.NavHider
+      el: $('[data-behavior~=nav-hideable]')
+      showElement: '.quiz-title'
+
     _.each $('[data-behavior~=progress-dial]'), (input)->
       new ChefSteps.Views.ProgressDial(el: input)
+
+    new ChefSteps.Views.Quiz(el: '#quiz-container', navHider: navHider)
 
   showStyleguide: =>
     _.each $('[data-behavior~=progress-dial]'), (input)->
