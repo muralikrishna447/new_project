@@ -16,7 +16,7 @@
         = image_tag 'http://lorempixel.com/745/376/food/', class: 'img-polaroid'
       .span4
         .pull-left
-          = progress_dial 0, 20, 'questions'
+          = progress_dial 0, quiz.question_count, 'questions'
         .pull-right
           = progress_dial 5, 15, 'est. min.'
     .row

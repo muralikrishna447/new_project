@@ -13,4 +13,8 @@ class Quiz < ActiveRecord::Base
     questions << question
     question
   end
+
+  def question_count
+    questions.count
+  end
 end
