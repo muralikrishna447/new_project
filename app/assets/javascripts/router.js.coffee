@@ -10,6 +10,7 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
   routes:
     "/profiles/{id}:?query:": "showProfile"
     "/quizzes/{id}": "showQuizOverview"
+    "/styleguide": "showStyleguide"
 
   showProfile: (id, query) =>
     return unless @currentUser
@@ -23,3 +24,6 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
   showQuizOverview: (id) =>
     _.each $('input.dial'), (input)->
       new ChefSteps.Views.ProgressDial(el: input)
+
+  showStyleguide: =>
+    new ChefSteps.Views.ProgressDial(el: 'input.dial')
