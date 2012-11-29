@@ -24,7 +24,6 @@ class ChefSteps.Views.ProgressDial extends Backbone.View
     @animateStart = 0
     @animateEnd = if @dialValue() > 0 then @dialValue() else @dialMax()
 
-
   dialValue: ->
     parseFloat(@$dial.val())
 
