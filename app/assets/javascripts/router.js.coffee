@@ -27,4 +27,4 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
 
   showStyleguide: =>
     _.each $('[data-behavior~=progress-dial]'), (input)->
-      new ChefSteps.Views.ProgressDial(el: input)
+      new ChefSteps.Views.ProgressDial(el: input, noAdjustSize: true)

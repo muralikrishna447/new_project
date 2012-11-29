@@ -1,5 +1,7 @@
 class ChefSteps.Views.ProgressDial extends Backbone.View
   initialize: (options)->
+    @setSize() unless options.noAdjustSize
+
     @$dial = @$('input')
 
     @setAnimateRanges()
@@ -28,3 +30,14 @@ class ChefSteps.Views.ProgressDial extends Backbone.View
 
   dialMax: ->
     parseFloat(@$dial.data('max'))
+
+  windowSize: ->
+    $(window).width()
+
+  dialSize: ->
+    return 'large' if @windowSize() >= 1200
+    return 'small' if @windowSize() <= 480
+    return 'medium'
+
+  setSize: ->
+    @$el.addClass(@dialSize())

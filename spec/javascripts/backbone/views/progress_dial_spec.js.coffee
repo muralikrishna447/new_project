@@ -26,3 +26,22 @@ describe 'ChefSteps.View.ProgressDial', ->
       @view.setAnimateRanges()
       expect(@view.animateEnd).toEqual(5)
 
+  describe '#dialSize', ->
+    beforeEach ->
+      @setupWindowSize = (view, width)=>
+        @spy ||= spyOn(view, 'windowSize')
+        @spy.andReturn(width)
+
+    it 'returns large for width >= 1200', ->
+      @setupWindowSize(@view, 1200)
+      expect(@view.dialSize()).toEqual('large')
+
+    it 'returns medium for width < 1200 and width > 480', ->
+      @setupWindowSize(@view, 1199)
+      expect(@view.dialSize()).toEqual('medium')
+      @setupWindowSize(@view, 481)
+      expect(@view.dialSize()).toEqual('medium')
+
+    it 'returns small for width <= 480', ->
+      @setupWindowSize(@view, 480)
+      expect(@view.dialSize()).toEqual('small')
