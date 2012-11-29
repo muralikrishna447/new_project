@@ -7,6 +7,9 @@ class ChefStepsAdmin.Collections.Questions extends Backbone.Collection
   url: ->
     "/admin/quizzes/#{@quizId}/questions"
 
-  comparator: (question) =>
-    question.get('question_order')
+  updateOrder: (order) =>
+    $.ajax "#{@url()}/update_order",
+      type: 'POST',
+      dataType: 'json'
+      data: { question_order: order }
 
