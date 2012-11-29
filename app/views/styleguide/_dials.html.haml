@@ -1,5 +1,12 @@
 .row
   .span12
-    %h3 Progress Dial
-    = progress_dial 5, 15, 'label'
+    %h3 Progress Dials
+.row
+  .span2
+    = progress_dial 5, 20, 'normal'
+  .span2
+    = progress_dial 10, 20, 'medium', 'medium'
+  .span2
+    = progress_dial 15, 20, 'small', 'small'
+
 

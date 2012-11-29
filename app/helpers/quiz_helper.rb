@@ -7,8 +7,8 @@ module QuizHelper
     quiz.questions.count * 20 / 60
   end
 
-  def progress_dial(value, max, label)
-    content_tag :div, class: 'dial-wrapper', data: {behavior: 'progress-dial'} do
+  def progress_dial(value, max, label, size=nil)
+    content_tag :div, class: "dial-wrapper #{size}", data: {behavior: 'progress-dial'} do
       content = text_field_tag :dial, value, data: {
         displayinput: false,
         readonly: true,
