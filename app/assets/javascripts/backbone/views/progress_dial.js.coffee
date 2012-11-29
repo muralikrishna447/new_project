@@ -1,6 +1,6 @@
 class ChefSteps.Views.ProgressDial extends Backbone.View
   initialize: (options)->
-    @$dial = @$('input.dial')
+    @$dial = @$('input')
 
     @setAnimateRanges()
     @$el.show()
