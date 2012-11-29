@@ -14,10 +14,10 @@
     .row.hero-unit
       .span8
         = image_tag 'http://lorempixel.com/745/376/food/', class: 'img-polaroid'
-      .span4
-        .pull-left
+      .span4.dials
+        .dial-left
           = progress_dial 0, quiz.question_count, 'questions'
-        .pull-right
+        .dial-right
           = progress_dial 0, estimated_time(quiz), 'est. min.'
     .row
       .span12

@@ -1,6 +1,5 @@
 .dial-wrapper
   display: none
-  float: left
   width: 180px
   height: 180px
   position: relative
@@ -24,3 +23,22 @@
     strong
       display: block
       font-size: 85px
+
+  &.medium
+    width: 115px
+    height: 115px
+    .dial-text
+      top: 26px
+      line-height: 31px
+      strong
+        font-size: 45px
+
+  &.small
+    width: 90px
+    height: 90px
+    .dial-text
+      +font-sans-tiny
+      top: 18px
+      line-height: 28px
+      strong
+        font-size: 36px

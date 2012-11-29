@@ -29,6 +29,16 @@
   .navbar-activity-title
     display: none
 
+@media (max-width: 979px) and (min-width: 768px)
+  #quiz-overview
+    .hero-unit .dials
+      margin-top: 0
+
+    .dial-left, .dial-right
+      float: none
+      margin-left: 15px
+      margin-top: 7px
+
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
   .global-navigation
@@ -91,6 +101,14 @@
     top: 10%
     h1
       font-size: 26px
+
+  #quiz-overview
+    .hero-unit .dials
+      margin-left: 0
+      margin-top: 0
+
+    .dial-wrapper
+      margin: 0 0 0 20px
 
 /* Android phone. Weird inbetween*/
 @media (max-width: 520px)
@@ -209,6 +227,10 @@
 
   .nav-tabs > li > a
     font-size: 9px
+
+  #quiz-overview
+    .dial-wrapper
+      margin: 0
 
 
 /* Everything but portrait iphone*/
