@@ -8,7 +8,7 @@ module QuizHelper
   end
 
   def progress_dial(value, max, label)
-    content_tag :div, class: 'dial-wrapper' do
+    content_tag :div, class: 'dial-wrapper', data: {behavior: 'progress-dial'} do
       content = text_field_tag :dial, value, class: 'dial', data: {
         displayinput: false,
         readonly: true,

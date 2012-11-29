@@ -1,7 +1,7 @@
 describe 'ChefSteps.View.ProgressDial', ->
   beforeEach ->
     loadFixtures('progress_dial')
-    @view = new ChefSteps.Views.ProgressDial(el: '.dial-wrapper')
+    @view = new ChefSteps.Views.ProgressDial(el: '[data-behavior~=progress-dial]')
 
   describe '#dialValue', ->
     it 'returns value as float', ->

@@ -22,8 +22,8 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
         newUser: query && query.new_user
 
   showQuizOverview: (id) =>
-    _.each $('.dial-wrapper'), (input)->
+    _.each $('[data-behavior~=progress-dial]'), (input)->
       new ChefSteps.Views.ProgressDial(el: input)
 
   showStyleguide: =>
-    new ChefSteps.Views.ProgressDial(el: '.dial-wrapper')
+    new ChefSteps.Views.ProgressDial(el: '[data-behavior~=progress-dial]')
