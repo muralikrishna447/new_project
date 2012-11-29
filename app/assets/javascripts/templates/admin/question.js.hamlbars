@@ -6,3 +6,7 @@
 %h3= hb('question')
 %h3= hb('instructions')
 
+%ul.options
+  = hb 'each options' do
+    %li= "#{hb('answer')} is #{hb('correct')}"
+

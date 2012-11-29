@@ -4,11 +4,9 @@
   %input#question{name: 'question', placeholder: "Please enter your question here.", value: hb('question') }
   %label{ for: 'instructions'} Instructions
   %input#instructions{name: 'instructions', placeholder: "Please enter instructions", value: hb('instructions') }
+  %label Options
   %ul.options
-    %li
-      Option
-    %li
-      %button.add-option.admin-button Add Option
+  %button.add-option.admin-button Add Option
 
 .form-actions.actions
   %button.cancel.admin-button Cancel

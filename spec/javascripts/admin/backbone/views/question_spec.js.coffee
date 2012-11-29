@@ -103,3 +103,20 @@ describe 'ChefStepsAdmin.Views.Question', ->
     it "triggers the editQuestion event", ->
       expect(ChefStepsAdmin.ViewEvents.trigger).toHaveBeenCalledWith('editQuestion', @view.model.cid)
 
+
+  describe "#addOption", ->
+    beforeEach ->
+      @fake_event = jasmine.createSpyObj('fake click event', ['preventDefault'])
+      spyOn(@view, 'addOptionView').andReturn('some option view')
+      spyOn(@view, 'renderOptionView')
+      @view.addOption(@fake_event)
+
+    it "prevents the default event", ->
+      expect(@fake_event.preventDefault).toHaveBeenCalled()
+
+    it "adds a new option view", ->
+      expect(@view.addOptionView).toHaveBeenCalled()
+
+    it "renders the option view", ->
+      expect(@view.renderOptionView).toHaveBeenCalledWith('some option view')
+
