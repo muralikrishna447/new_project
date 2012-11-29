@@ -5,7 +5,10 @@ class ChefSteps.Views.ProgressDial extends Backbone.View
     @setAnimateRanges()
     @$el.show()
     @$dial.val(0)
-    @$dial.knob()
+    @$dial.knob(
+      width: @$el.width(),
+      height: @$el.height()
+    )
     setTimeout(@animateDial, 2000)
 
   animateDial: =>

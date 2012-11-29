@@ -14,8 +14,6 @@ module QuizHelper
         readonly: true,
         thickness: 0.1,
         max: max,
-        width: 180,
-        height: 180,
         fgcolor: value > 0 ? '#aa4311' : '#EAEAEA',
         bgcolor: value > 0 ? '#EAEAEA' : 'whiteSmoke'
       }
