@@ -1,4 +1,8 @@
 class Question < ActiveRecord::Base
+  include RankedModel
+
+  ranks :question_order, with_same: :quiz_id
+
   self.inheritance_column = :question_type
 
   belongs_to :quiz
@@ -6,6 +10,8 @@ class Question < ActiveRecord::Base
   attr_accessible :quiz_id, :contents
 
   after_initialize :init_contents
+
+  scope :ordered, rank(:question_order)
 
   def update_contents(params)
     self.contents.update(params)
