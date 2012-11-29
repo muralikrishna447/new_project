@@ -22,7 +22,9 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
         newUser: query && query.new_user
 
   startQuizApp: (id) =>
-    new ChefSteps.Views.NavHider(el: $('[data-behavior~=nav-hideable]'))
+    new ChefSteps.Views.NavHider
+      el: $('[data-behavior~=nav-hideable]')
+      showElement: '.quiz-title'
 
     _.each $('[data-behavior~=progress-dial]'), (input)->
       new ChefSteps.Views.ProgressDial(el: input)
