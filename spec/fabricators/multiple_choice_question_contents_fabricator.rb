@@ -1,0 +1,1 @@
+Fabricator :multiple_choice_question_contents

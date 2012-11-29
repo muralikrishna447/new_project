@@ -12,7 +12,7 @@ describe 'ChefStepsAdmin.Views.Questions', ->
 
   describe '#initialize', ->
     it "adds listener to collections's 'add' event", ->
-      expect(@collection.on).toHaveBeenCalledWith('add', @view.addQuestionToList, @view)
+      expect(@collection.on).toHaveBeenCalledWith('add', @view.addNewQuestionToList, @view)
 
   describe '#render', ->
     beforeEach ->
@@ -27,7 +27,6 @@ describe 'ChefStepsAdmin.Views.Questions', ->
 
   describe '#addQuestionToList', ->
     beforeEach ->
-      spyOn(ChefStepsAdmin.ViewEvents, 'trigger')
       @model = new ChefStepsAdmin.Models.Question(id: 1)
 
     it 'creates a new Question view for the new model', ->
@@ -39,7 +38,17 @@ describe 'ChefStepsAdmin.Views.Questions', ->
       @view.addQuestionToList(@model)
       expect($('ul#question-list li').length).toEqual(1)
 
+  describe "#addNewQuestionToList", ->
+    beforeEach ->
+      spyOn(ChefStepsAdmin.ViewEvents, 'trigger')
+      spyOn(@view, 'addQuestionToList')
+      @model = new ChefStepsAdmin.Models.Question(id: 1)
+      @view.addNewQuestionToList(@model)
+
+    it "adds the question to the list", ->
+      expect(@view.addQuestionToList).toHaveBeenCalledWith(@model)
+
     it "triggers editQuestion event", ->
-      @view.addQuestionToList(@model)
       expect(ChefStepsAdmin.ViewEvents.trigger).toHaveBeenCalledWith('editQuestion', @model.cid)
+
 

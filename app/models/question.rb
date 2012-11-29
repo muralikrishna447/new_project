@@ -3,13 +3,20 @@ class Question < ActiveRecord::Base
 
   belongs_to :quiz
 
-  attr_accessible :title, :quiz_id, :contents
+  attr_accessible :quiz_id, :contents
 
   after_initialize :init_contents
 
+  def update_contents(params)
+    self.contents.update(params)
+  end
+
   private
   def init_contents
-    contents_class = (MultipleChoiceQuestion.to_s + 'Contents').constantize
     self.contents = contents_class.new({}) if self.contents.blank?
+  end
+
+  def contents_class
+    (self.class.name.to_s + 'Contents').constantize
   end
 end

@@ -5,6 +5,10 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   formTemplate: 'admin/question_form'
 
+  defaultOption:
+    answer: ''
+    correct: false
+
   events:
     'click .edit': 'triggerEditQuestion'
     'click .delete': 'deleteQuestion'
@@ -15,14 +19,28 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editQuestion", @editQuestionEventHandler)
 
+  addOptionView: (option) =>
+    new ChefStepsAdmin.Views.Option(option: option)
+
+  renderOptionViews: =>
+    _.each(@model.get('options'), (option) =>
+      @renderOptionView(@addOptionView(option))
+    )
+
+  renderOptionView: (optionView) =>
+    @$('.options').append(optionView.render().$el)
+
   addOption: (event) =>
     event.preventDefault()
-    @$el.append(@make('b', {}, 'option stuff'))
+    optionView = @addOptionView(@defaultOption)
+    @renderOptionView(optionView)
 
   deleteQuestion: (event) =>
     event.preventDefault()
-    @model.destroy()
-    @remove()
+    confirmMessage = $(event.currentTarget).data('confirm')
+    if not confirmMessage || confirm(confirmMessage)
+      @model.destroy()
+      @remove()
 
   editQuestionEventHandler: (cid) =>
     if @model.cid == cid
@@ -36,6 +54,8 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     @templateName = templateName
     @$el.html(@renderTemplate())
     @delegateEvents()
+    if @isEditState()
+      @renderOptionViews()
     @
 
   isEditState: =>
@@ -43,7 +63,10 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   saveForm: (event) =>
     event.preventDefault() if event
-    @model.save(@$('form').serializeObject())
+    data = @$('form').serializeObject()
+    data = _.omit(data, ['answer', 'correct'])
+    data['options'] = _.map(@$('.edit-option'), (option) -> $('input', option).serializeObject())
+    @model.save(data)
     @render()
 
   cancelEdit: (event) =>
