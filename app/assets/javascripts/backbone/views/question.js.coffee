@@ -1,5 +1,12 @@
 class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
+  className: 'question'
+
   templateName: 'question'
 
   render: ->
-    @renderTemplate()
+    @$el.html(@renderTemplate())
+    @
+
+  show: =>
+    @$el.addClass('visible')
+

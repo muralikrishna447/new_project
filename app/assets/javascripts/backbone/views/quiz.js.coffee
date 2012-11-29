@@ -13,6 +13,8 @@ class ChefSteps.Views.Quiz extends Backbone.View
   loadNextQuestion: ->
     model = @collection.at(@questionIndex)
     question = new ChefSteps.Views.Question(model: model)
-    @$el.html(question.render())
-    @questionIndex += 1
+    @$('>').fadeOut =>
+      @$el.html(question.render().$el)
+      setTimeout(question.show, 1)
 
+    @questionIndex += 1

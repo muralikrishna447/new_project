@@ -1,0 +1,11 @@
+@import compass/css3/transition
+
+.question
+  +transition-property(margin-left opacity)
+  +transition-duration(1.0s)
+  margin-left: 110%
+  opacity: 0
+
+  &.visible
+    margin-left: 0
+    opacity: 1
