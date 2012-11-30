@@ -5,6 +5,8 @@ ActiveAdmin.register Quiz do
     column :id
     column :title
     column :activity
+    column :start_copy
+    column :end_copy
     default_actions
   end
 

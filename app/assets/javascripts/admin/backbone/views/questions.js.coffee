@@ -33,4 +33,3 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
     @addQuestionToList(question)
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', question.cid)
 
-
