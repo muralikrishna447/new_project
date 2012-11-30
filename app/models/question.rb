@@ -7,7 +7,7 @@ class Question < ActiveRecord::Base
 
   belongs_to :quiz
 
-  attr_accessible :quiz_id, :contents, :question_order_position
+  attr_accessible :quiz_id, :contents
 
   after_initialize :init_contents
 
