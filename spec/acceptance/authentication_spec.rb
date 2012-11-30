@@ -1,14 +1,6 @@
 require 'spec_helper'
 
 feature 'user authentication', :js do
-  before :all do
-    DatabaseCleaner.strategy = :truncation
-  end
-
-  after :all do
-    DatabaseCleaner.strategy = :transaction
-  end
-
   scenario "creates a user when valid inputs are supplied and takes user to edit profile page" do
     visit '/'
     click_link('Sign up')
