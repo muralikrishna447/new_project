@@ -1,12 +1,13 @@
 describe 'ChefStepsAdmin.Views.Question', ->
   beforeEach ->
-    @fake_question = jasmine.createSpyObj('fake question', ['save', 'destroy'])
+    @fake_question = jasmine.createSpyObj('fake question', ['save', 'destroy', 'on'])
     @view = new ChefStepsAdmin.Views.Question(model: @fake_question)
 
   describe '#render', ->
     beforeEach ->
       spyOn(@view, 'renderTemplate').andReturn('rendered template')
       spyOn(@view, 'delegateEvents')
+      spyOn(@view, 'updateAttributes')
       spyOn(@view.$el, 'html')
 
     it "calls renderTemplate", ->
@@ -20,6 +21,10 @@ describe 'ChefStepsAdmin.Views.Question', ->
 
     it 'returns reference to self for chaining', ->
       expect(@view.render()).toEqual(@view)
+
+    it "updates the view's attributes", ->
+      @view.render()
+      expect(@view.updateAttributes).toHaveBeenCalled()
 
   describe "#cancelEdit", ->
     beforeEach ->

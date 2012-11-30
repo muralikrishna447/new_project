@@ -5,10 +5,10 @@
 #quiz-questions
   float: left
 
-
 ul#question-list
   width: 600px
   list-style-type: none
+  float: left
 
 #question-list
   .question
@@ -17,6 +17,11 @@ ul#question-list
     float: left
     padding: 20px
     width: 100%
+    background: $white
+    margin-top: 10px
+    &:hover
+      cursor: move
+      border-style: dashed
     .type
       float: left
       text-transform: uppercase

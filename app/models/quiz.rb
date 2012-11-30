@@ -17,4 +17,10 @@ class Quiz < ActiveRecord::Base
   def question_count
     questions.count
   end
+
+  def update_question_order(question_ids)
+    question_ids.each do |question_id|
+      questions.find(question_id).update_attribute(:question_order_position, :last)
+    end
+  end
 end

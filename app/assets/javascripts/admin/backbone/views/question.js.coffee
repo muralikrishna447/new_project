@@ -18,6 +18,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editQuestion", @editQuestionEventHandler)
+    @model.on("change:id", @updateAttributes)
 
   addOptionView: (option) =>
     new ChefStepsAdmin.Views.Option(option: option)
@@ -56,7 +57,11 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     @delegateEvents()
     if @isEditState()
       @renderOptionViews()
+    @updateAttributes()
     @
+
+  updateAttributes: =>
+    @$el.attr('id', "question-#{@model.get('id')}")
 
   isEditState: =>
     @templateName == @formTemplate
