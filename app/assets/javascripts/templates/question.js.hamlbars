@@ -17,5 +17,5 @@
     %ul.answers.row
       = hb 'each_with_index options' do
         %li{ class: hb('answer_width count') }
-          #{hb('index')} | #{hb('answer')} | #{hb('count')}
+          = radio_button_tag 'answer', hb('answer'), false, id: "answer-#{hb('index')}"
 %a Next
