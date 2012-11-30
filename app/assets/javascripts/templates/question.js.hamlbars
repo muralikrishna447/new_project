@@ -1,1 +1,22 @@
-QUESTION
+.container
+  .row
+    .span8
+      .instructions= hb('instructions')
+
+.hero-unit
+  .container
+    .row
+      .span12
+        .question-label QUESTION:
+    .row
+      .span12
+        .question-text= hb('question')
+    .row
+      .span12
+        .question-label YOUR ANSWER:
+    .row
+      .span12
+        %ul.answers
+          = hb 'each options' do
+            %li.answer= hb('answer')
+%a Next
