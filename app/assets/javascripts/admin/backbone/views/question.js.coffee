@@ -57,8 +57,15 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     @delegateEvents()
     if @isEditState()
       @renderOptionViews()
+      @makeOptionsSortable()
     @updateAttributes()
     @
+
+  makeOptionsSortable: =>
+    @$('.options').sortable(
+      cursor: 'move',
+      containment: 'parent'
+    ).disableSelection()
 
   updateAttributes: =>
     @$el.attr('id', "question-#{@model.get('id')}")
