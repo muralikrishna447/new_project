@@ -9,7 +9,7 @@ feature 'user authentication', :js do
     DatabaseCleaner.strategy = :transaction
   end
 
-  scenario "creates a user when valid inputs are supplied" do
+  scenario "creates a user when valid inputs are supplied and takes user to edit profile page" do
     visit '/'
     click_link('Sign up')
 
@@ -24,10 +24,13 @@ feature 'user authentication', :js do
     check 'terms-registration'
     click_button 'Sign Up'
 
-    page.should have_content('Thank You Bob Tester')
+    page.should have_content('Bob Tester')
 
     User.count.should == 1
-    User.first.name.should == 'Bob Tester'
+    user = User.first
+    user.name.should == 'Bob Tester'
+
+    current_path.should == user_profile_path(user)
   end
 
   scenario "authenticates a user when valid credentials are provided" do
