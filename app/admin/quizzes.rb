@@ -1,12 +1,18 @@
 ActiveAdmin.register Quiz do
   menu parent: 'More'
 
+  action_item only: [:show, :edit] do
+    quiz_link quiz, 'View on Site'
+  end
+
   index do
+    column 'Link' do |quiz|
+      quiz_link(quiz)
+    end
     column :id
     column :title
     column :activity
-    column :start_copy
-    column :end_copy
+    column :published
     default_actions
   end
 

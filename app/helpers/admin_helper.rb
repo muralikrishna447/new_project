@@ -45,4 +45,12 @@ module AdminHelper
       link_to text || 'private link', private_activity_path(activity, PrivateToken.token), target: '_blank'
     end
   end
+
+  def quiz_link(quiz, text=false)
+    if quiz.published?
+      link_to text || 'public link', quiz_path(quiz), target: '_blank'
+    else
+      link_to text || 'private link', private_quiz_path(quiz.id, PrivateToken.token), target: '_blank'
+    end
+  end
 end

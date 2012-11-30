@@ -40,3 +40,43 @@ describe Quiz, "update_question_order" do
   end
 end
 
+describe Quiz, 'publishing' do
+  let!(:public_quiz) { Fabricate(:quiz, id: 1, published: true) }
+  let!(:private_quiz) { Fabricate(:quiz, id: 2) }
+
+  its "published flag is set to false by default" do
+    private_quiz.should_not be_published
+  end
+
+  its "published scope returns published quizzes only" do
+    Quiz.published.all.should == [public_quiz]
+  end
+
+  context '#find_published' do
+    it 'throws not found if quiz does not exist with id' do
+      lambda { Quiz.find_published(42) }.should raise_error ActiveRecord::RecordNotFound
+    end
+
+    it 'returns quiz if published' do
+      Quiz.find_published(1).should == public_quiz
+    end
+
+    context 'for private quiz' do
+      it 'throws not found' do
+        lambda { Quiz.find_published(2) }.should raise_error ActiveRecord::RecordNotFound
+      end
+
+      it 'throws not found if token is invalid' do
+        PrivateToken.should_receive(:valid?).with('bad_token').and_return(false)
+        lambda { Quiz.find_published(2, 'bad_token') }.should raise_error ActiveRecord::RecordNotFound
+      end
+
+      it 'returns quiz if token is valid' do
+        PrivateToken.should_receive(:valid?).with('good_token').and_return(true)
+        Quiz.find_published(2, 'good_token').should == private_quiz
+      end
+    end
+  end
+end
+
+

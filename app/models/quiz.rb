@@ -6,7 +6,14 @@ class Quiz < ActiveRecord::Base
 
   has_many :questions
 
-  attr_accessible :title, :activity_id, :start_copy, :end_copy
+  attr_accessible :title, :activity_id, :start_copy, :end_copy, :published
+
+  scope :published, where(published: true)
+
+  def self.find_published(id, token=nil)
+    scope = PrivateToken.valid?(token) ? scoped : published
+    scope.find(id)
+  end
 
   def add_multiple_choice_question
     question = MultipleChoiceQuestion.create
