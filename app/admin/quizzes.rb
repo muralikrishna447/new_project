@@ -2,12 +2,12 @@ ActiveAdmin.register Quiz do
   menu parent: 'More'
 
   action_item only: [:show, :edit] do
-    published_model_link quiz, 'View on Site'
+    link_to_publishable quiz, 'View on Site'
   end
 
   index do
     column 'Link' do |quiz|
-      published_model_link(quiz)
+      link_to_publishable(quiz)
     end
     column :id
     column :title

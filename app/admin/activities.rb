@@ -8,7 +8,7 @@ ActiveAdmin.register Activity do
   end
 
   action_item only: [:show, :edit] do
-    published_model_link activity, 'View on Site'
+    link_to_publishable activity, 'View on Site'
   end
 
   action_item only: [:show] do
@@ -23,7 +23,7 @@ ActiveAdmin.register Activity do
 
   index do
     column 'Link' do |activity|
-      published_model_link(activity)
+      link_to_publishable(activity)
     end
     column :title, sortable: :title do |activity|
       activity.title.html_safe
