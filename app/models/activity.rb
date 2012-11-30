@@ -1,7 +1,7 @@
 class Activity < ActiveRecord::Base
   extend FriendlyId
   include RankedModel
-  include PublishedModel
+  include PublishableModel
 
   friendly_id :title, use: :slugged
 

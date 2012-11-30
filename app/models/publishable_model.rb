@@ -1,4 +1,4 @@
-module PublishedModel
+module PublishableModel
   extend ActiveSupport::Concern
 
   included do
