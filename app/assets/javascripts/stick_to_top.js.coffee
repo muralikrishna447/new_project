@@ -5,7 +5,7 @@ $ ->
   return unless $scroller.length > 0 && $scroller_anchor.length > 0
 
   adjust_scroll = ->
-    window.scrollTo(window.pageXOffset, window.pageYOffset- $scroller.height())
+    window.scrollTo(window.pageXOffset, window.pageYOffset - $scroller.height())
 
   $("a", $scroller).click -> window.setTimeout(adjust_scroll, 1)
 
@@ -15,6 +15,7 @@ $ ->
     if ($(@).scrollTop() > anchor_position and $scroller.css('position') != 'fixed')
       $scroller.addClass('stuck-to-top')
       $scroller_anchor.css('height', $scroller.outerHeight())
+      $scroller_anchor.css('width', $scroller.outerWidth(true))
     else if ($(@).scrollTop() < anchor_position and $scroller.css('position') == 'fixed')
       $scroller_anchor.css('height', '0px')
       $scroller.removeClass('stuck-to-top')

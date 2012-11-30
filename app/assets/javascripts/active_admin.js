@@ -6,6 +6,7 @@
 //= require backbone
 //= require handlebars
 //= require serialize_object
+//= require stick_to_top
 
 //= require admin/admin_helpers
 //= require admin/admin_namespace
