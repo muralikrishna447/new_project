@@ -4,7 +4,8 @@
 
 %h2 Questions for "#{@quiz.title}"
 
-#quiz-controls
+#quiz-control-anchor{ data: { behavior: 'stick-to-top-anchor' } }
+#quiz-controls{ data: { behavior: 'stick-to-top'} }
   = admin_button 'Add Multiple Choice Question', '#', id: 'add-multiple-choice-question'
 
 #quiz-questions
