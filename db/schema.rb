@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121120010958) do
+ActiveRecord::Schema.define(:version => 20121130003726) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -128,12 +128,25 @@ ActiveRecord::Schema.define(:version => 20121120010958) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "questions", :force => true do |t|
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.integer  "quiz_id"
+    t.string   "question_type"
+    t.text     "contents",       :default => ""
+    t.integer  "question_order"
+  end
+
+  add_index "questions", ["question_order"], :name => "index_questions_on_question_order"
+
   create_table "quizzes", :force => true do |t|
     t.string   "title"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "activity_id"
     t.string   "slug"
+    t.string   "start_copy"
+    t.string   "end_copy"
   end
 
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"

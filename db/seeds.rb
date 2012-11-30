@@ -62,7 +62,8 @@ def create_equipment(title, product_url)
 end
 
 def create_ingredient(title, product_url='')
-  return if Ingredient.where(title: title).any?
+  ingredient = Ingredient.where(title: title).first
+  return ingredient if ingredient
   ingredient = Ingredient.find_or_create_by_title(title)
   ingredient.product_url = product_url
   ingredient.save
@@ -101,7 +102,7 @@ def create_step_ingredient(step, ingredient, display_quantity, unit)
   a.ingredient = ingredient
   a.display_quantity = display_quantity
   a.unit = unit
-  a.save
+  a.save!
 end
 
 def build_activity(activity_data)
@@ -138,6 +139,8 @@ def build_activity(activity_data)
       end
     end
   end
+
+  activity.update_recipe_steps
 end
 
 def build_admin(admin_data)

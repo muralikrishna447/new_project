@@ -7,6 +7,7 @@
 //= require base_router
 //= require router
 //= require backbone/views/templated_view
+//= require recipe_units
 //= require_tree ./backbone
 //= require_tree ./templates
 

@@ -31,6 +31,7 @@
   table.ingredients
     margin-top: 20px
     width: 100%
+    table-layout: fixed
     +font-sans-medium
     thead
       color: $gray
@@ -40,8 +41,12 @@
         padding: 7px 0
         font-weight: 400
         text-transform: uppercase
-      th:first-child
+      #ingredient
         text-align: left
+      #quantity
+        text-align: right
+        cursor: pointer
+
     tbody
       .quantity
         text-align: right

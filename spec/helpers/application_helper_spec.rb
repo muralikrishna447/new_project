@@ -34,3 +34,19 @@ describe ApplicationHelper, "#conditional_cache" do
   end
 end
 
+describe ApplicationHelper, "body data" do
+  it 'stores and retreives body data' do
+    helper.add_body_data(foo: 'bar')
+    helper.body_data.should == {foo: 'bar'}
+  end
+
+  it 'accumulates body data' do
+    helper.add_body_data(foo: 'bar')
+    helper.add_body_data(baz: 'bar')
+    helper.body_data.should == {foo: 'bar', baz: 'bar'}
+  end
+
+  it 'returns {} if no body data has been set' do
+    helper.body_data.should == {}
+  end
+end

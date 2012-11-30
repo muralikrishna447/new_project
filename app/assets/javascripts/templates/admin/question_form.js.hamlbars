@@ -1,0 +1,14 @@
+%span.type Multiple Choice
+%form
+  %label{ for: 'question' } Question
+  %input#question{name: 'question', placeholder: "Please enter your question here.", value: hb('question') }
+  %label{ for: 'instructions'} Instructions
+  %input#instructions{name: 'instructions', placeholder: "Please enter instructions", value: hb('instructions') }
+  %label Options
+  %ul.options
+
+.form-actions.actions
+  %button.add-option.admin-button Add Option
+  %button.done.admin-button Done
+  %button.cancel.admin-button Cancel
+

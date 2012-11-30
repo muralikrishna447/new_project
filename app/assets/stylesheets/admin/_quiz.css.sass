@@ -1,0 +1,102 @@
+#quiz-controls
+  float: left
+  margin-right: 40px
+
+#quiz-questions
+  float: left
+
+ul#question-list
+  width: 600px
+  list-style-type: none
+  float: left
+
+#question-list
+  .question
+    position: relative
+    border: 1px solid $black
+    float: left
+    padding: 20px
+    width: 100%
+    background: $white
+    margin-top: 10px
+    &:hover
+      cursor: move
+      border-style: dashed
+    .type
+      float: left
+      text-transform: uppercase
+      color: $redLight
+    label
+      float: left
+      clear: both
+      font-weight: bold
+      margin-top: 10px
+    input[name=question], input[name=instructions]
+      float: left
+      clear: both
+      font-size: 14px
+      padding: 5px
+      width: 97%
+      margin-top: 5px
+    h3, h4
+      float: left
+      margin-bottom: 0
+      clear: both
+    .question-box
+      width: 96%
+      border: 1px solid $grayLight
+      background: whiteSmoke
+      padding: 10px
+      float: left
+      margin-top: 5px
+
+  .actions
+    float: right
+
+  .edit-option
+    list-style-type: none
+    margin-top: 5px
+    position: relative
+    width: 100%
+    float: left
+    padding: 5px
+    background: whitesmoke
+    input[type=text]
+      display: block
+    label
+      display: inline-block
+    .delete-option
+      position: absolute
+      right: 5px
+      top: 5px
+    &.correct
+      background: lighten($green, 40%)
+    &:hover
+      border: 1px dashed $black
+
+  .options
+    margin-top: 5px
+    width: 100%
+    float: left
+    .option
+      margin-top: 5px
+      position: relative
+      width: 100%
+      float: left
+
+  .option.correct
+    &:after
+      content: "\2713"
+      color: $green
+      margin-left: 5px
+      font-size: 1.5em
+      font-weight: bold
+
+  .form-actions
+    margin-top: 20px
+    width: 100%
+    .add-option
+      float: left
+    .cancel, .done
+      float: right
+

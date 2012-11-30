@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe UserPresenter, "#present" do
+describe UserPresenter, "#attributes" do
   let(:user) { Fabricate.build(:user) }
   let(:user_presenter) { UserPresenter.new(user) }
 
-  subject { JSON.parse(user_presenter.present) }
+  subject { user_presenter.attributes }
 
   it "serializes valid keys" do
-    subject.keys.should =~ %w[id email name location quote website image profile_complete chef_type]
+    subject.keys.should =~ [:id, :email, :name, :location, :quote, :website, :image, :profile_complete, :chef_type]
   end
 end
 
@@ -20,7 +20,7 @@ describe UserPresenter, '#profile_image_url' do
   context "user is connected with facebook" do
     before do
       user.stub(:connected_with_facebook?).and_return(true)
-      user_presenter.stub(:facebook_image_url).and_return("facebook image url")
+      UserPresenter.stub(:facebook_image_url).and_return("facebook image url")
     end
 
     it { subject.should == "facebook image url" }
@@ -45,10 +45,8 @@ describe UserPresenter, '#profile_image_url' do
 end
 
 describe UserPresenter, "#facebook_image_url" do
-  let(:user_presenter) { UserPresenter.new(mock('fake user')) }
-
   it "generates a facebook graph photo URL with uid" do
-    user_presenter.facebook_image_url('ABCD').should == 'https://graph.facebook.com/ABCD/picture'
+    UserPresenter.facebook_image_url('ABCD').should == 'https://graph.facebook.com/ABCD/picture'
   end
 end
 

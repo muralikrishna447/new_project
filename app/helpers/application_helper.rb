@@ -15,5 +15,13 @@ module ApplicationHelper
       cache(name, options, &block)
     end
   end
+
+  def add_body_data(data)
+    body_data.merge!(data)
+  end
+
+  def body_data
+    @body_data ||= {}
+  end
 end
 
