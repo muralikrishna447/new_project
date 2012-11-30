@@ -118,16 +118,14 @@
     :erb
       <script type="text/javascript">var switchTo5x=false;</script>
 
-  %body
+  %body{ data: body_data }
 
     -# ==========================================================================
     -# Content
     -# ==========================================================================
 
     #main-container
-      = render 'layouts/header',
-        show_auth: Rails.application.config.show_user_profiles,
-        show_forum: Rails.application.config.show_forum
+      = render 'layouts/header'
       = render 'layouts/title_bar'
       = yield
       = render 'layouts/footer'
@@ -136,6 +134,8 @@
 
     -# jQuery
     %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"}
+
+    %script{src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"}
 
     -# Custom JS
     = javascript_include_tag "application"

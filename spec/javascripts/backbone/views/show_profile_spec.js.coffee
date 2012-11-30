@@ -7,6 +7,9 @@ describe 'ChefSteps.Views.ShowProfile', ->
       location: ''
       website: 'www.stuff.com'
       quote: 'something deep and meaningful'
+      chef_type: 'culinary_student'
+    @fake_user.chefType = ->
+      'Culinary Student'
 
     @view = new ChefSteps.Views.ShowProfile(el: '.user-profile-bio', model: @fake_user )
 
@@ -20,6 +23,9 @@ describe 'ChefSteps.Views.ShowProfile', ->
 
     it "updates name", ->
       expect($("[data-attribute=profile-name]", @view.$el).text()).toEqual('foo bar name')
+
+    it "updates chef type", ->
+      expect($("[data-attribute=profile-chef_type]", @view.$el).text()).toEqual('Culinary Student')
 
     it "updates location", ->
       expect($("[data-attribute=profile-location]", @view.$el).text()).toEqual('')

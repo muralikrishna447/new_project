@@ -15,7 +15,7 @@
       %tr
         %th Title
         %th Optional?
-        %th Product URL
+        %th
       = render 'equipment_form', equipment: nil
       - @activity.equipment.ordered.each do |equipment|
         = render 'equipment_form', equipment: equipment

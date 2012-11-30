@@ -1,0 +1,12 @@
+%input{type: 'text', name: "answer", placeholder: "Please enter an option", value: hb('answer')}
+
+%label
+  Correct Answer
+  = hb 'if correct' do
+    %input{type: 'radio', name: "correct", value: 'true', checked: "checked" }
+  = hb 'unless correct' do
+    %input{type: 'radio', name: "correct", value: 'true' }
+
+%button.delete-option
+  %i.icon-remove
+

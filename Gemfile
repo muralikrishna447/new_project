@@ -18,7 +18,6 @@ gem 'activeadmin'
 gem 'meta_search'
 gem 'decent_exposure'
 gem 'ranked-model'
-gem 'gibbon'
 gem 'newrelic_rpm'
 gem 'rdiscount'
 gem "friendly_id"
@@ -36,6 +35,7 @@ group :assets do
   gem 'bootstrap-sass-rails'
   gem 'asset_sync'
   gem 'turbo-sprockets-rails3'
+  gem 'hamlbars'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby

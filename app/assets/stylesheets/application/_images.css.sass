@@ -1,0 +1,23 @@
+.image-with-caption
+  position: relative
+  margin-top: 20px
+  .image-caption
+    +font-sans-large
+    position: absolute
+    bottom: 0px
+    width: 100%
+    text-align: center
+    background: rgba($black, 0.5)
+    &:hover
+      background: rgba($brick, 0.6)
+  *
+    display: block
+    color: $grayLight
+    margin: 0
+    padding: 0
+  a, .image-caption-text
+    padding-top: 20px
+    padding-bottom: 20px
+    text-decoration: none
+    &:hover
+      color: $grayLight

@@ -12,15 +12,14 @@ Delve::Application.routes.draw do
     registrations: 'users/registrations',
   }
 
-  get 'users/forum-sso' => 'forum_sso#authenticate', as: 'forum_sso'
+  get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
   root to: "home#index"
 
   get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
 
-  post 'subscribe' => "mailing_list#subscribe", as: 'mailing_list_subscribe'
-
   get 'thank-you' => 'copy#thank_you', as: 'thank_you'
+  get 'thank-you-subscribing' => 'copy#thank_you_subscribing', as: 'thank_you_subscribing'
   get 'legal' => 'copy#legal', as: 'legal'
   get 'legal/:type' => 'copy#legal', as: 'legal_type'
   get 'legal/terms' => 'copy#legal', as: 'terms_of_service'
@@ -37,5 +36,6 @@ Delve::Application.routes.draw do
     end
   end
 
+  resources :quizzes, only: [:show]
 end
 

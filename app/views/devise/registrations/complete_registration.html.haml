@@ -14,7 +14,8 @@
                         url: registration_path('user', format: :json),
                         remote: true) do |f|
       .welcome
-        %img{src: image_path('profile-placeholder.png')}
+        - if uid
+          %img{src: UserPresenter.facebook_image_url(uid)}
         %p Welcome, #{name}
         %p.last
           Please review your information below and agree

@@ -43,6 +43,16 @@ def create_admin(email, password)
   u
 end
 
+def create_user(email, password, name)
+  return if User.where(email: email).any?
+  u = User.create
+  u.email = email
+  u.password = password
+  u.name = name
+  u.save
+  u
+end
+
 def create_equipment(title, product_url)
   return if Equipment.where(title: title).any?
   e = Equipment.find_or_create_by_title(title)
@@ -52,7 +62,8 @@ def create_equipment(title, product_url)
 end
 
 def create_ingredient(title, product_url='')
-  return if Ingredient.where(title: title).any?
+  ingredient = Ingredient.where(title: title).first
+  return ingredient if ingredient
   ingredient = Ingredient.find_or_create_by_title(title)
   ingredient.product_url = product_url
   ingredient.save
@@ -91,7 +102,7 @@ def create_step_ingredient(step, ingredient, display_quantity, unit)
   a.ingredient = ingredient
   a.display_quantity = display_quantity
   a.unit = unit
-  a.save
+  a.save!
 end
 
 def build_activity(activity_data)
@@ -128,10 +139,16 @@ def build_activity(activity_data)
       end
     end
   end
+
+  activity.update_recipe_steps
 end
 
 def build_admin(admin_data)
   create_admin(admin_data[:email], admin_data[:password])
+end
+
+def build_user(user_data)
+  create_user(user_data[:email], user_data[:password], user_data[:name])
 end
 
 def parse_data(name)
@@ -142,6 +159,7 @@ end
 
 @seed_data[:admins].each do |admin|
   build_admin(admin)
+  build_user(admin)
 end
 
 @seed_data[:activities].each do |activity_data|
