@@ -39,5 +39,52 @@ feature 'user authentication', :js do
 
     page.should have_content('Bob Tester')
   end
+
+  scenario "reset password" do
+    user = Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password')
+
+    visit '/'
+    click_link('Log in')
+
+    wait_until { page.find("#log-in").visible? }
+    click_link('Forgot your password?')
+    fill_in 'Email', with: 'bob@bob.com'
+    click_button 'Send Instructions'
+
+    page.should have_content('Please check your email')
+    ActionMailer::Base.deliveries.count.should == 1
+
+    user.reload
+    visit edit_user_password_path(user, reset_password_token: user.reset_password_token)
+    page.should have_content('Change your password')
+
+    fill_in 'Password', with: 'newpassword'
+    fill_in 'Confirm Password', with: 'newpassword'
+    click_button 'Change my password'
+
+    page.should have_content('Bob Tester')
+  end
+
+  scenario "log out" do
+    Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password')
+
+    visit '/'
+    click_link('Log in')
+
+    wait_until { page.find("#log-in").visible? }
+
+    fill_in 'Email', with: 'bob@bob.com'
+    fill_in 'Password', with: 'password'
+    click_button 'Log In'
+
+    page.should have_content('Bob Tester')
+
+    find('.profile-info').click
+
+    click_link 'Log out'
+
+    page.should_not have_content('Bob Tester')
+    current_path.should == root_path
+  end
 end
 
