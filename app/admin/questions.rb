@@ -18,7 +18,7 @@ ActiveAdmin.register Question do
   collection_action :update_order, method: :post do
     @quiz = Quiz.find(params[:quiz_id])
     @quiz.update_question_order(params[:question_order])
-    render json: QuestionPresenter.present_collection(@quiz.questions)
+    head :ok
   end
 end
 
