@@ -38,11 +38,12 @@ module AdminHelper
     form.inputs(name: name, class: ['inputs', 'no-background'], &block)
   end
 
-  def activity_link(activity, text=false)
-    if activity.published?
-      link_to text || 'public link', activity_path(activity), target: '_blank'
+  def link_to_publishable(model, text=false)
+    model_name = model.class.to_s.underscore
+    if model.published?
+      link_to text || 'public link', send("#{model_name}_path", model), target: '_blank'
     else
-      link_to text || 'private link', private_activity_path(activity, PrivateToken.token), target: '_blank'
+      link_to text || 'private link', send("private_#{model_name}_path", model, PrivateToken.token), target: '_blank'
     end
   end
 end

@@ -36,6 +36,10 @@ Delve::Application.routes.draw do
     end
   end
 
-  resources :quizzes, only: [:show]
+  resources :quizzes, only: [:show] do
+    member do
+      get ':token' => 'quizzes#show', as: 'private'
+    end
+  end
 end
 
