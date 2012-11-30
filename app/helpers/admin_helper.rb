@@ -38,19 +38,11 @@ module AdminHelper
     form.inputs(name: name, class: ['inputs', 'no-background'], &block)
   end
 
-  def activity_link(activity, text=false)
-    if activity.published?
-      link_to text || 'public link', activity_path(activity), target: '_blank'
+  def published_model_link(model, text=false)
+    if model.published?
+      link_to text || 'public link', send("#{model.class.to_s.underscore}_path", model), target: '_blank'
     else
-      link_to text || 'private link', private_activity_path(activity, PrivateToken.token), target: '_blank'
-    end
-  end
-
-  def quiz_link(quiz, text=false)
-    if quiz.published?
-      link_to text || 'public link', quiz_path(quiz), target: '_blank'
-    else
-      link_to text || 'private link', private_quiz_path(quiz.id, PrivateToken.token), target: '_blank'
+      link_to text || 'private link', send("private_#{model.class.to_s.underscore}_path", model, PrivateToken.token), target: '_blank'
     end
   end
 end
