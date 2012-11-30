@@ -15,7 +15,7 @@ class UserPresenter < Presenter
 
   def profile_image_url
     if @model.connected_with_facebook?
-      facebook_image_url(@model.uid)
+      UserPresenter.facebook_image_url(@model.uid)
     else
       @model.gravatar_url(default: default_profile_photo_url)
     end
@@ -25,7 +25,7 @@ class UserPresenter < Presenter
     @model.connected_with_facebook? ? facebook_edit_url : gravatar_edit_url
   end
 
-  def facebook_image_url(uid)
+  def self.facebook_image_url(uid)
     "https://graph.facebook.com/#{uid}/picture"
   end
 

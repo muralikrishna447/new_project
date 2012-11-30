@@ -1,14 +1,20 @@
 #quiz-controls
   float: left
   margin-right: 40px
+  &.stuck-to-top
+    position: fixed
+    top: 10px
+
+#quiz-control-anchor
+  float: left
 
 #quiz-questions
   float: left
 
-
 ul#question-list
   width: 600px
   list-style-type: none
+  float: left
 
 #question-list
   .question
@@ -17,6 +23,11 @@ ul#question-list
     float: left
     padding: 20px
     width: 100%
+    background: $white
+    margin-top: 10px
+    &:hover
+      cursor: move
+      border-style: dashed
     .type
       float: left
       text-transform: uppercase
@@ -66,6 +77,8 @@ ul#question-list
       top: 5px
     &.correct
       background: lighten($green, 40%)
+    &:hover
+      border: 1px dashed $black
 
   .options
     margin-top: 5px

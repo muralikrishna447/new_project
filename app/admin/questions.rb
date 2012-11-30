@@ -14,6 +14,12 @@ ActiveAdmin.register Question do
       update!
     end
   end
+
+  collection_action :update_order, method: :post do
+    @quiz = Quiz.find(params[:quiz_id])
+    @quiz.update_question_order(params[:question_order])
+    head :ok
+  end
 end
 
 

@@ -7,7 +7,7 @@
   end
 
 #complete-registration.user-form
-  %h1 New ChefSteps Account
+  %h2 New ChefSteps Account
   .modal-body
     = semantic_form_for(@user,
                         as: :user,
@@ -15,7 +15,7 @@
                         remote: true) do |f|
       .welcome
         - if uid
-          %img{src: facebook_image_url(uid)}
+          %img{src: UserPresenter.facebook_image_url(uid)}
         %p Welcome, #{name}
         %p.last
           Please review your information below and agree
