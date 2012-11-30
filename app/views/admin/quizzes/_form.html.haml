@@ -4,6 +4,8 @@
   = f.inputs name: "Quiz Details" do
     = f.input :title
     = f.input :activity
+    = f.input :start_copy
+    = f.input :end_copy
     - if @quiz.persisted?
       %li= link_to 'Edit Questions', manage_questions_admin_quiz_path(@quiz), class: 'admin-button'
   = f.actions do
