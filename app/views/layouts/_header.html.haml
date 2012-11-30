@@ -3,7 +3,7 @@
     .navbar
       .navbar-inner
         .nav.pull-right.addthis-container
-          = render 'layouts/share_this'
+          = render 'layouts/share_this' unless Rails.env.test?
   .container.global-navigation
     .navbar
       .navbar-inner
