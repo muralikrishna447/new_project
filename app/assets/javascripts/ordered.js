@@ -8,6 +8,7 @@
 //= require router
 //= require backbone/views/templated_view
 //= require recipe_units
+//= require handlebar_helpers
 //= require_tree ./backbone/models
 //= require_tree ./backbone
 //= require_tree ./templates
