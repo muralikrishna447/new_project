@@ -11,10 +11,25 @@
 #quiz-questions
   float: left
 
-ul#question-list
+ol#question-list
   width: 600px
   list-style-type: none
   float: left
+  counter-reset: li
+
+  li.question:before
+    content: counter(li)
+    counter-increment: li
+    position: absolute
+    left: -36px
+    top: 40%
+    height: 3em
+    width: 3em
+    line-height: 3em
+    text-align: center
+    font-weight: bold
+    color: $white
+    background: $grayDark
 
 #question-list
   .question
