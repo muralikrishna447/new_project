@@ -14,9 +14,8 @@
     .row
       .span12
         .question-label YOUR ANSWER:
-    .row
-      .span12
-        %ul.answers
-          = hb 'each options' do
-            %li.answer= hb('answer')
+    %ul.answers.row
+      = hb 'each_with_index options' do
+        %li{ class: hb('answer_width count') }
+          #{hb('index')} | #{hb('answer')} | #{hb('count')}
 %a Next

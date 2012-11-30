@@ -1,7 +1,14 @@
-Handlebars.registerHelper 'each_with_index', (array, context) ->
+Handlebars.registerHelper 'each_with_index', (array, block) ->
   buffer = ''
   for i in array
     item = i
     item.index = _i
-    buffer += context.fn(item)
+    item.count = array.length
+    buffer += block.fn(item)
   buffer
+
+Handlebars.registerHelper 'answer_width', (count)->
+  if count % 3 == 0
+    'span4'
+  else
+    'span6'
