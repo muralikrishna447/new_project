@@ -2,6 +2,7 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
   initialize: ->
     @collection.on('add', @addNewQuestionToList, @)
     @collection.on('add remove', @updateQuestionCount, @)
+    $('#question-filters .ordering').on('click', @toggleOrdering)
 
   el: '#question-list'
 
@@ -37,4 +38,14 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
   addNewQuestionToList: (question) =>
     @addQuestionToList(question)
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', question.cid)
+
+  toggleOrdering: (event) =>
+    event.preventDefault()
+    $target = $(event.currentTarget)
+    $target.toggleClass($target.data('toggle'))
+
+    if $target.hasClass('active')
+      ChefStepsAdmin.ViewEvents.trigger('questionOrderingMode')
+    else
+      ChefStepsAdmin.ViewEvents.trigger('questionNormalMode')
 

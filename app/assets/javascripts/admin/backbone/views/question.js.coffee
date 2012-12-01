@@ -4,6 +4,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   tagName: "li"
 
   formTemplate: 'admin/question_form'
+  orderingTemplate: 'admin/question_ordering'
 
   defaultOption:
     answer: ''
@@ -18,6 +19,8 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editQuestion", @editQuestionEventHandler)
+    ChefStepsAdmin.ViewEvents.on("questionOrderingMode", @renderOrderingView)
+    ChefStepsAdmin.ViewEvents.on("questionNormalMode", @render)
     @model.on("change:id", @updateAttributes)
 
   addOptionView: (option) =>
@@ -27,6 +30,9 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     _.each(@model.get('options'), (option) =>
       @renderOptionView(@addOptionView(option))
     )
+
+  renderOrderingView: =>
+    @render(@orderingTemplate)
 
   renderOptionView: (optionView) =>
     @$('.options').append(optionView.render().$el)
