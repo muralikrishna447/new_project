@@ -1,0 +1,12 @@
+.row
+  .span12
+    %h3 Checkboxes
+#checkboxes.row
+  .span4
+    %li{ data: {behavior: 'checkbox'} }
+      = radio_button_tag 'radio', 'val1', false, id: 'val-1'
+      %label{ for: "val-1" } Value 1. This is an example of the ChefSteps styled checkbox.
+  .span4
+    %li.active{ data: {behavior: 'checkbox'} }
+      = radio_button_tag 'radio', 'val2', false, id: 'val-2'
+      %label{ for: "val-2" } Value 2
