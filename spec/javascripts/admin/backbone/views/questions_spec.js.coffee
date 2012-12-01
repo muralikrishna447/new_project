@@ -57,6 +57,6 @@ describe 'ChefStepsAdmin.Views.Questions', ->
   describe "#updateQuestionCount", ->
     it "sets the question count ", ->
       @view.updateQuestionCount()
-      expect($('#question-count').text()).toEqual("Question Count: #{@collection.length}")
+      expect($('#question-count span').text()).toEqual("#{@collection.length}")
 
 
