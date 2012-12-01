@@ -7,14 +7,21 @@ class ChefSteps.Views.Checkbox extends Backbone.View
 
     @$input = @$('input')
 
-    checked = @$input.attr('checked') && true || false
-    @$el.toggleClass('active', checked)
+    @$el.toggleClass('active', @isChecked())
 
-  select: ->
-    if @radio
-      otherInputs = $("[name='#{@$input.attr('name')}']")
-      otherInputs.removeAttr('checked')
-      otherInputs.parent().removeClass('active')
+  select: (event)->
+    if @isChecked()
+      @$input.removeAttr('checked')
+    else
+      @$input.attr('checked', true)
+    @$el.toggleClass('active', @isChecked())
+    @clearOthers() if @radio
 
-    @$input.attr('checked', true)
-    @$el.addClass('active')
+  isChecked: ->
+    @$input.attr('checked') && true || false
+
+  clearOthers: ->
+    otherInputs = $("[name='#{@$input.attr('name')}']").not(@$input)
+    otherInputs.removeAttr('checked')
+    otherInputs.parent().removeClass('active')
+

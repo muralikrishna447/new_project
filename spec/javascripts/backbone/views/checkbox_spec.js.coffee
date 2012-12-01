@@ -28,6 +28,11 @@ describe 'ChefSteps.Views.Checkbox', ->
         expect(@checkbox2.$el).toHaveClass('active')
         expect(@checkbox2.$input).toHaveAttr('checked')
 
+      it 'clears itself when selected again', ->
+        @checkbox1.select()
+        expect(@checkbox1.$el).not.toHaveClass('active')
+        expect(@checkbox1.$input).not.toHaveAttr('checked')
+
   describe 'radio buttons', ->
     beforeEach ->
       @radio1 = new ChefSteps.Views.Checkbox(el: '#radios > div:first')
@@ -50,6 +55,11 @@ describe 'ChefSteps.Views.Checkbox', ->
       it "sets active class", ->
         expect(@radio1.$el).toHaveClass('active')
 
-      it 'clear other radio button', ->
+      it 'clears other radio button', ->
         expect(@radio2.$el).not.toHaveClass('active')
         expect(@radio2.$input).not.toHaveAttr('checked')
+
+      it 'clears itself when selected again', ->
+        @radio1.select()
+        expect(@radio1.$el).not.toHaveClass('active')
+        expect(@radio1.$input).not.toHaveAttr('checked')
