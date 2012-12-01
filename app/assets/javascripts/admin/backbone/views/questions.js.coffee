@@ -1,6 +1,7 @@
 class ChefStepsAdmin.Views.Questions extends Backbone.View
   initialize: ->
     @collection.on('add', @addNewQuestionToList, @)
+    @collection.on('add remove', @updateQuestionCount, @)
 
   el: '#question-list'
 
@@ -8,7 +9,11 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
     @collection.each (question) =>
       @addQuestionToList(question)
     @makeSortable()
+    @updateQuestionCount()
     @
+
+  updateQuestionCount: =>
+    $('#question-count span').text(@collection.length)
 
   makeSortable: =>
     @$el.sortable(
