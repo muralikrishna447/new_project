@@ -1,4 +1,5 @@
 @import compass/css3/images
+@import compass/css3/user-interface
 
 [data-behavior~=checkbox], [data-behavior~=radio]
   border: 1px solid transparent
@@ -14,6 +15,7 @@
 
   label
     +font-sans-medium
+    +user-select(none)
     line-height: 28px
     display: inline
 
