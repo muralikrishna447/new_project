@@ -8,5 +8,9 @@ class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
     @
 
   show: =>
+    @createCheckboxes()
     @$el.addClass('visible')
 
+  createCheckboxes: ->
+    _.each @$('[data-behavior~=checkbox], [data-behavior~=radio]'), (input)->
+      new ChefSteps.Views.Checkbox(el: input)
