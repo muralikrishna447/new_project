@@ -1,12 +1,25 @@
 .row
   .span12
-    %h3 Checkboxes
-#checkboxes.row
-  .span4
-    %li{ data: {behavior: 'checkbox'} }
-      = radio_button_tag 'radio', 'val1', false, id: 'val-1'
-      %label{ for: "val-1" } Value 1. This is an example of the ChefSteps styled checkbox.
-  .span4
-    %li.active{ data: {behavior: 'checkbox'} }
-      = radio_button_tag 'radio', 'val2', false, id: 'val-2'
-      %label{ for: "val-2" } Value 2
+    %h3 Custom Checkbox
+#checkboxes
+  %h4 Checkboxes
+  .row
+    .span4
+      %li{ data: {behavior: 'checkbox'} }
+        = check_box_tag 'check-1', 'val1', true
+        %label{ for: "check-1" } Checkbox 1. This is an example of the ChefSteps styled checkbox.
+    .span4
+      %li{ data: {behavior: 'checkbox'} }
+        = check_box_tag 'check-2', 'val2', false
+        %label{ for: "val-2" } Checkbox 2. You can select multiple.
+
+  %h4 Radio Group
+  .row
+    .span4
+      %li{ data: {behavior: 'radio'} }
+        = radio_button_tag 'radio', 'val1', false, id: 'val-1'
+        %label{ for: "val-1" } Radio 1. This is an example of the ChefSteps styled radio button.
+    .span4
+      %li{ data: {behavior: 'radio'} }
+        = radio_button_tag 'radio', 'val2', true, id: 'val-2'
+        %label{ for: "val-2" } Radio 2. You can only select one.
