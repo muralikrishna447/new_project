@@ -13,3 +13,12 @@ describe Question, 'contents' do
     MultipleChoiceQuestion.new(contents: 'test').contents.should == 'test'
   end
 end
+
+describe Question, 'contents_json' do
+  let(:question) { Fabricate.build(:multiple_choice_question) }
+
+  it 'returns contents json' do
+    question.contents.should_receive(:to_json)
+    question.contents_json
+  end
+end

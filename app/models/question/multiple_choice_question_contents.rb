@@ -6,6 +6,10 @@ class MultipleChoiceQuestionContents < OpenStruct
     end
   end
 
+  def to_json
+    self.marshal_dump
+  end
+
   private
 
   def attribute_keys

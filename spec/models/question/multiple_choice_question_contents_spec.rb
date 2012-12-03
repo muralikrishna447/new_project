@@ -12,3 +12,11 @@ describe MultipleChoiceQuestionContents, '#update' do
   end
 end
 
+describe MultipleChoiceQuestionContents, '#to_json' do
+  let(:contents) { Fabricate.build(:multiple_choice_question_contents) }
+
+  subject { contents.to_json }
+
+  its(:keys) { should =~ [:question, :options] }
+end
+

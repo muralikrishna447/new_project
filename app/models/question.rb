@@ -17,6 +17,10 @@ class Question < ActiveRecord::Base
     self.contents.update(params)
   end
 
+  def contents_json
+    self.contents.to_json
+  end
+
   private
   def init_contents
     return if persisted?
