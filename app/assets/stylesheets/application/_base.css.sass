@@ -244,3 +244,20 @@ iframe
 .invisible
   display: none
 
+.btn-next, .btn-prev
+  height: 67px
+  width: 32px
+  padding: 0
+  text-decoration: none
+  border-color: transparent
+  [class^="icon-"]
+    line-height: 67px
+    color: $white
+
+.btn-next
+  +box-shadow(-1px 0px 2px 0px rgba(0, 0, 0, 0.5))
+  +border-radius(0 67px 67px 0)
+
+.btn-prev
+  +box-shadow(1px 0px 2px 0px rgba(0, 0, 0, 0.5))
+  +border-radius(67px 0 0 67px)
