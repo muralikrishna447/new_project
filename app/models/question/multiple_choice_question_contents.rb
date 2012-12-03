@@ -6,8 +6,12 @@ class MultipleChoiceQuestionContents < OpenStruct
     end
   end
 
-  def to_json
-    self.marshal_dump
+  def to_json(admin)
+    json = self.marshal_dump
+    json[:options].each do |option|
+      option.delete(:correct) unless admin
+    end
+    json
   end
 
   private

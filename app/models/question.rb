@@ -17,8 +17,8 @@ class Question < ActiveRecord::Base
     self.contents.update(params)
   end
 
-  def contents_json
-    self.contents.to_json
+  def contents_json(admin)
+    self.contents.to_json(admin)
   end
 
   private

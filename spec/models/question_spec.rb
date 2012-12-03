@@ -18,7 +18,7 @@ describe Question, 'contents_json' do
   let(:question) { Fabricate.build(:multiple_choice_question) }
 
   it 'returns contents json' do
-    question.contents.should_receive(:to_json)
-    question.contents_json
+    question.contents.should_receive(:to_json).with(false)
+    question.contents_json(false)
   end
 end
