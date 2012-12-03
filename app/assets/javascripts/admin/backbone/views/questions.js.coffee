@@ -14,7 +14,7 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
     @
 
   updateQuestionCount: =>
-    $('#question-count span').text(@collection.length)
+    $('#question-count .count').text(@collection.length)
 
   makeSortable: =>
     @$el.sortable(
