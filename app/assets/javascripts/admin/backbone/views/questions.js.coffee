@@ -44,7 +44,7 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
     $target = $(event.currentTarget)
     $target.toggleClass($target.data('toggle'))
 
-    if $target.hasClass('active')
+    if $target.hasClass($target.data('toggle'))
       ChefStepsAdmin.ViewEvents.trigger('questionOrderingMode')
     else
       ChefStepsAdmin.ViewEvents.trigger('questionNormalMode')
