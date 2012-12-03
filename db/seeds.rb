@@ -169,4 +169,5 @@ end
 CopyCreator.create
 
 Version.create unless Version.any?
+PrivateToken.create(token: PrivateToken.new_token_string) unless PrivateToken.any
 
