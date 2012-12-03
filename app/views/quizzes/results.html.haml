@@ -1,0 +1,15 @@
+- content_for :title, "#{quiz.title.html_safe} Results"
+
+.hero-unit.quiz-title
+  .container
+    .row
+      .span12
+        %h3 Your results for #{quiz.title}
+
+#quiz-results.container
+  = render 'quizzes/multiple_choice_question_results'
+  .horizontal-divider
+  = render 'quizzes/multiple_choice_question_results'
+  .horizontal-divider
+  = render 'quizzes/multiple_choice_question_results'
+
