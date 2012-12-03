@@ -12,7 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def aweber_signup
     uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
-    response = Net::HTTP.post_form(uri, {"email" => current_user.email,
+    response = Net::HTTP.post_form(uri, {"email" => params[:user][:email],
                                          "listname" => "cs_c_sousvide",
                                          "meta_adtracking" =>  "cs_new_site_user"})
   end
