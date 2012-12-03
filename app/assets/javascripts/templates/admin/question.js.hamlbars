@@ -2,10 +2,9 @@
   %button.admin-button.edit Edit
   %button.admin-button.delete{ data: {confirm: "Are you sure?"} } Delete
 
-%span.type Multiple Choice
-%h4= hb('instructions')
+%h3= hb('question')
 .question-box
-  %h3= hb('question')
+  %h4= hb('instructions')
 
   %ul.options
     = hb 'each options' do
