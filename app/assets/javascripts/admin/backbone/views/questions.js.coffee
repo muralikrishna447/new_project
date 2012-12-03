@@ -8,7 +8,7 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
 
   render: =>
     @collection.each (question) =>
-      @addQuestionToList(question)
+      @addQuestionToList(question, false)
     @makeSortable()
     @updateQuestionCount()
     @
@@ -31,9 +31,18 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
       $(questionItem).attr('id').split('-')[1]
     )
 
-  addQuestionToList: (question) =>
+  addQuestionToList: (question, scrollIntoView=true) =>
     view = new ChefStepsAdmin.Views.Question(model: question)
     @$el.append(view.render().$el)
+    if scrollIntoView
+      @scrollElementIntoView(view.$el)
+
+  scrollElementIntoView: ($el) ->
+    offset = $el.offset()
+    $('html body').animate(
+      scrollTop: offset.top,
+      scrollLeft: offset.left
+    )
 
   addNewQuestionToList: (question) =>
     @addQuestionToList(question)
