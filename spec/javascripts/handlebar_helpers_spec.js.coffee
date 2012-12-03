@@ -11,11 +11,11 @@ describe 'Handlebars helpers', ->
 
   describe '#answer_width', ->
     it 'returns .span4 if answer count is modulo 3', ->
-      expect(Handlebars.helpers.answer_width(3*1)).toEqual('span4')
-      expect(Handlebars.helpers.answer_width(3*2)).toEqual('span4')
-      expect(Handlebars.helpers.answer_width(3*3)).toEqual('span4')
+      expect(Handlebars.helpers.answer_width(3*1)).toEqual('span3')
+      expect(Handlebars.helpers.answer_width(3*2)).toEqual('span3')
+      expect(Handlebars.helpers.answer_width(3*3)).toEqual('span3')
 
     it 'returns .span6 if answer count is not modulo 3', ->
-      expect(Handlebars.helpers.answer_width(1)).toEqual('span6')
-      expect(Handlebars.helpers.answer_width(2)).toEqual('span6')
-      expect(Handlebars.helpers.answer_width(4)).toEqual('span6')
+      expect(Handlebars.helpers.answer_width(1)).toEqual('span5')
+      expect(Handlebars.helpers.answer_width(2)).toEqual('span5')
+      expect(Handlebars.helpers.answer_width(4)).toEqual('span5')

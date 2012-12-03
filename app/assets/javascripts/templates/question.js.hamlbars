@@ -3,16 +3,15 @@
     .span8
       .instructions= hb('instructions')
 
-.hero-unit
-  .container
+  .hero-unit
     .row
-      .span12
+      .span9
         .question-label QUESTION:
     .row
-      .span12
+      .span9
         .question-text= hb('question')
     .row
-      .span12
+      .span9
         .question-label YOUR ANSWER:
     %ul.answers.row
       = hb 'each_with_index options' do
@@ -21,4 +20,5 @@
             = radio_button_tag 'answer', hb('answer'), false, id: "answer-#{hb('index')}"
             %label= hb('answer')
 
-%a Next
+%a.btn.btn-primary.btn-next{href: '#'}
+  %i.icon-double-chevron-right

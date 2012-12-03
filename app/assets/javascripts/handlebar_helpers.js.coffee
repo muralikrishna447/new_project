@@ -9,6 +9,6 @@ Handlebars.registerHelper 'each_with_index', (array, block) ->
 
 Handlebars.registerHelper 'answer_width', (count)->
   if count % 3 == 0
-    'span4'
+    'span3'
   else
-    'span6'
+    'span5'
