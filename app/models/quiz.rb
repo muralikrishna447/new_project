@@ -1,5 +1,6 @@
 class Quiz < ActiveRecord::Base
   extend FriendlyId
+  include PublishableModel
   friendly_id :title, use: :slugged
 
   belongs_to :activity

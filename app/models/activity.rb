@@ -1,6 +1,7 @@
 class Activity < ActiveRecord::Base
   extend FriendlyId
   include RankedModel
+  include PublishableModel
 
   friendly_id :title, use: :slugged
 
@@ -19,17 +20,11 @@ class Activity < ActiveRecord::Base
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
   scope :ordered, rank(:activity_order)
-  scope :published, where(published: true)
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order, :description, :equipment, :published
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order, :description, :equipment
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
-  end
-
-  def self.find_published(id, token=nil)
-    scope = PrivateToken.valid?(token) ? scoped : published
-    scope.find(id)
   end
 
   def optional_equipment
