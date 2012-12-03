@@ -7,12 +7,12 @@
 #quiz-control-anchor{ data: { behavior: 'stick-to-top-anchor' } }
 #quiz-controls{ data: { behavior: 'stick-to-top'} }
   = admin_button 'Add Multiple Choice Question', '#', id: 'add-multiple-choice-question'
-
-#quiz-questions
-  #question-filters
-    %button.admin-button.ordering{ data: {toggle: 'active'}} Ordering
   #question-count
     Question Count:
     %span
+
+#quiz-questions
+  #question-filters
+    %button.admin-button.ordering{ data: {toggle: 'active', 'toggle-text' => 'Normal View'}} Re-order View
   %ol#question-list
 

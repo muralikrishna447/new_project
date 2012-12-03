@@ -42,9 +42,15 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
   toggleOrdering: (event) =>
     event.preventDefault()
     $target = $(event.currentTarget)
-    $target.toggleClass($target.data('toggle'))
+    targetToggleClass =$target.data('toggle')
+    toggleText = $target.data('toggle-text')
 
-    if $target.hasClass($target.data('toggle'))
+    oldText = $target.text()
+    $target.text(toggleText)
+    $target.data('toggle-text', oldText)
+    $target.toggleClass(targetToggleClass)
+
+    if $target.hasClass(targetToggleClass)
       ChefStepsAdmin.ViewEvents.trigger('questionOrderingMode')
     else
       ChefStepsAdmin.ViewEvents.trigger('questionNormalMode')
