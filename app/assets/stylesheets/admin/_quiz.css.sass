@@ -11,10 +11,26 @@
 #quiz-questions
   float: left
 
+#question-filters
+  width: 104%
+  .ordering
+    float: right
+
 #question-count
+  float: left
+  position: relative
+  top: 10px
+  left: 16%
+  background: whiteSmoke
+  padding: 1.5em
+  border-radius: 5px
+  color: $grayLight
+  text-align: center
   font-weight: bold
-  font-size: 22px
-  margin-left: 20px
+  .count
+    display: block
+    font-size: 26px
+    margin-bottom: 5px
 
 ol#question-list
   width: 600px
@@ -23,18 +39,16 @@ ol#question-list
   counter-reset: li
 
   li.question:before
-    content: counter(li)
+    content: counter(li) "."
     counter-increment: li
     position: absolute
-    left: -36px
-    top: 40%
-    height: 3em
-    width: 3em
-    line-height: 3em
-    text-align: center
+    left: -60px
+    top: 20px
+    text-align: right
     font-weight: bold
-    color: $white
-    background: $grayDark
+    font-family: Helvetica, Arial, sans-serif
+    font-size: 24px
+    width: 2em
 
 #question-list
   .question
@@ -67,6 +81,7 @@ ol#question-list
     h3, h4
       float: left
       margin-bottom: 0
+    h4
       clear: both
     .question-box
       width: 96%
@@ -87,6 +102,7 @@ ol#question-list
     float: left
     padding: 5px
     background: whitesmoke
+    border: 1px dashed transparent
     input[type=text]
       display: block
     label

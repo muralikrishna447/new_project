@@ -30,6 +30,7 @@ describe 'ChefStepsAdmin.Views.Questions', ->
 
   describe '#addQuestionToList', ->
     beforeEach ->
+      spyOn(@view, 'scrollElementIntoView')
       @model = new ChefStepsAdmin.Models.Question(id: 1)
 
     it 'creates a new Question view for the new model', ->
@@ -40,6 +41,14 @@ describe 'ChefStepsAdmin.Views.Questions', ->
     it "adds new question html to list view", ->
       @view.addQuestionToList(@model)
       expect($('ul#question-list li').length).toEqual(1)
+
+    it "scrolls content into view by default", ->
+      @view.addQuestionToList(@model)
+      expect(@view.scrollElementIntoView).toHaveBeenCalled()
+
+    it "doesn't scroll content into view if requested", ->
+      @view.addQuestionToList(@model, false)
+      expect(@view.scrollElementIntoView).not.toHaveBeenCalled()
 
   describe "#addNewQuestionToList", ->
     beforeEach ->
@@ -57,6 +66,5 @@ describe 'ChefStepsAdmin.Views.Questions', ->
   describe "#updateQuestionCount", ->
     it "sets the question count ", ->
       @view.updateQuestionCount()
-      expect($('#question-count span').text()).toEqual("#{@collection.length}")
-
+      expect($('#question-count .count').text()).toEqual("#{@collection.length}")
 
