@@ -89,14 +89,9 @@ body.admin_namespace
     font-size: 20px
 
 body.admin_namespace button.admin-button.active
-  background: #f3f3f3
-  background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#d8d8d8))
-  background: -moz-linear-gradient(-90deg, #f3f3f3, #d8d8d8)
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f3f3f3', endColorstr='#d8d8d8')
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f3f3f3', endColorstr='#d8d8d8')
+  $startColor: darken(#f3f3f3, 10%)
+  $endColor: darken(#d8d8d8, 20%)
+  +background-image(linear-gradient($startColor, $endColor))
   &:hover
-    background: #f3f3f3
-    background: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#d8d8d8))
-    background: -moz-linear-gradient(-90deg, #f3f3f3, #d8d8d8)
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f3f3f3', endColorstr='#d8d8d8')
-    -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f3f3f3', endColorstr='#d8d8d8')
+    +background-image(linear-gradient($startColor, $endColor))
+
