@@ -25,4 +25,10 @@ describe Presenter, "#present_collection" do
     presented = JSON.parse(Presenter.present_collection(collection))
     presented.should have(3).items
   end
+
+  it "passes optional args to constructor" do
+    stub_presenter = stub('presenter', wrapped_attributes: '')
+    Presenter.should_receive(:new).with(anything, 'arg').exactly(3).times.and_return(stub_presenter)
+    Presenter.present_collection(collection, 'arg')
+  end
 end

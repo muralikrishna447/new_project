@@ -1,7 +1,7 @@
 class Presenter
   attr_accessor :model
 
-  def initialize(model)
+  def initialize(model, *args)
     @model = model
   end
 
@@ -18,9 +18,9 @@ class Presenter
     HashWithIndifferentAccess.new(attributes)
   end
 
-  def self.present_collection(collection)
+  def self.present_collection(collection, *args)
     collection.map do |model|
-      new(model).wrapped_attributes
+      new(model, *args).wrapped_attributes
     end.to_json
   end
 end
