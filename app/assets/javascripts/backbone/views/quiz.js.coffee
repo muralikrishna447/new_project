@@ -8,9 +8,9 @@ class ChefSteps.Views.Quiz extends Backbone.View
 
   startQuiz: ->
     @navHider.hide()
-    @loadNextQuestion()
+    @nextQuestion()
 
-  loadNextQuestion: ->
+  nextQuestion: ->
     model = @collection.at(@questionIndex)
     question = new ChefSteps.Views.Question(model: model)
     @$('>').fadeOut =>

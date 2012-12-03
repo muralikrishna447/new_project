@@ -22,18 +22,18 @@ describe 'ChefSteps.Views.Quiz', ->
       expect(@navHiderSpy.hide).toHaveBeenCalled()
 
     it 'loads first question', ->
-      spyOn(@view, 'loadNextQuestion')
+      spyOn(@view, 'nextQuestion')
       @view.startQuiz()
-      expect(@view.loadNextQuestion).toHaveBeenCalled()
+      expect(@view.nextQuestion).toHaveBeenCalled()
 
-  describe '#loadNextQuestion', ->
+  describe '#nextQuestion', ->
     beforeEach ->
-      @view.loadNextQuestion()
+      @view.nextQuestion()
 
     it 'creates a question view for current question', ->
       expect(ChefSteps.Views.Question).toHaveBeenCalledWith(model: 'q1')
 
     it 'creates a question view for next question on subsequent call', ->
-      @view.loadNextQuestion()
+      @view.nextQuestion()
       expect(ChefSteps.Views.Question.mostRecentCall.args[0]).toEqual(model: 'q2')
 
