@@ -26,18 +26,15 @@ ol#question-list
   counter-reset: li
 
   li.question:before
-    content: counter(li)
+    content: counter(li) "."
     counter-increment: li
     position: absolute
-    left: -36px
-    top: 40%
-    height: 3em
-    width: 3em
-    line-height: 3em
+    left: -25px
+    top: 20px
     text-align: center
     font-weight: bold
-    color: $white
-    background: $grayDark
+    font-family: Helvetica, Arial, sans-serif
+    font-size: 24px
 
 #question-list
   .question
