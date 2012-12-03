@@ -14,6 +14,9 @@ describe 'ChefStepsAdmin.Views.Questions', ->
     it "adds listener to collections's 'add' event", ->
       expect(@collection.on).toHaveBeenCalledWith('add', @view.addNewQuestionToList, @view)
 
+    it "adds listener to collections's 'add' and 'remove' event", ->
+      expect(@collection.on).toHaveBeenCalledWith('add remove', @view.updateQuestionCount, @view)
+
   describe '#render', ->
     beforeEach ->
       spyOn(@view, 'addQuestionToList')
@@ -51,4 +54,8 @@ describe 'ChefStepsAdmin.Views.Questions', ->
     it "triggers editQuestion event", ->
       expect(ChefStepsAdmin.ViewEvents.trigger).toHaveBeenCalledWith('editQuestion', @model.cid)
 
+  describe "#updateQuestionCount", ->
+    it "sets the question count ", ->
+      @view.updateQuestionCount()
+      expect($('#question-count span').text()).toEqual("#{@collection.length}")
 

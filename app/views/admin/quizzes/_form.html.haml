@@ -2,6 +2,7 @@
 
 = semantic_form_for [:admin, @quiz] do |f|
   = f.inputs name: "Quiz Details" do
+    = f.input :published
     = f.input :title
     = f.input :activity
     = f.input :start_copy

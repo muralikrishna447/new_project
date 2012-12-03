@@ -1,14 +1,43 @@
 #quiz-controls
   float: left
   margin-right: 40px
+  &.stuck-to-top
+    position: fixed
+    top: 10px
+
+#quiz-control-anchor
+  float: left
 
 #quiz-questions
   float: left
 
-ul#question-list
+#question-filters
+  width: 104%
+  .ordering
+    float: right
+
+#question-count
+  font-weight: bold
+  font-size: 22px
+  text-align: center
+  margin-top: 10px
+
+ol#question-list
   width: 600px
   list-style-type: none
   float: left
+  counter-reset: li
+
+  li.question:before
+    content: counter(li) "."
+    counter-increment: li
+    position: absolute
+    left: -32px
+    top: 20px
+    text-align: center
+    font-weight: bold
+    font-family: Helvetica, Arial, sans-serif
+    font-size: 24px
 
 #question-list
   .question
@@ -41,6 +70,7 @@ ul#question-list
     h3, h4
       float: left
       margin-bottom: 0
+    h4
       clear: both
     .question-box
       width: 96%
@@ -61,6 +91,7 @@ ul#question-list
     float: left
     padding: 5px
     background: whitesmoke
+    border: 1px dashed transparent
     input[type=text]
       display: block
     label

@@ -87,3 +87,11 @@ body.admin_namespace
 .admin_activities
   #activity_published_input label
     font-size: 20px
+
+body.admin_namespace button.admin-button.active
+  $startColor: darken(#f3f3f3, 10%)
+  $endColor: darken(#d8d8d8, 20%)
+  +background-image(linear-gradient($startColor, $endColor))
+  &:hover
+    +background-image(linear-gradient($startColor, $endColor))
+
