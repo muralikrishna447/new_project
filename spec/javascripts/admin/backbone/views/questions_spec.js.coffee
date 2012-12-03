@@ -59,4 +59,3 @@ describe 'ChefStepsAdmin.Views.Questions', ->
       @view.updateQuestionCount()
       expect($('#question-count span').text()).toEqual("#{@collection.length}")
 
-

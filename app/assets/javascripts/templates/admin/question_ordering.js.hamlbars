@@ -1,3 +1,2 @@
-%span.type Multiple Choice
 %h3= hb('question')
 
