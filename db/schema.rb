@@ -142,6 +142,7 @@ ActiveRecord::Schema.define(:version => 20121204200040) do
   create_table "quiz_images", :force => true do |t|
     t.string   "file_name"
     t.string   "caption"
+    t.integer  "quiz_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
