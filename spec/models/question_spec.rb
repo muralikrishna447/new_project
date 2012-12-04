@@ -4,8 +4,8 @@ describe Question, '#score_answer' do
   let(:question) { Fabricate.build(:multiple_choice_question, id: 123) }
   let(:user) { Fabricate.build(:user, id: 456) }
 
-  let(:answer_model) { Fabricate.build(:answer) }
-  let(:answer_data) { {answer: 'test'} }
+  let(:answer_model) { Fabricate.build(:multiple_choice_answer) }
+  let(:answer_data) { {type: 'multiple_choice', answer: 'test'} }
 
   before do
     question.contents.stub(:correct)
@@ -47,7 +47,7 @@ end
 
 describe Question, '#answer_count' do
   let(:question) { Fabricate(:multiple_choice_question) }
-  before { question.answers << Fabricate(:answer, question: question) }
+  before { question.answers << Fabricate(:multiple_choice_answer, question: question) }
 
   it 'increments count when new answer is added' do
     question.answer_count.should == 1

@@ -1,6 +1,6 @@
 describe Answer, '#update_question_statistics' do
   let(:question) { Fabricate(:multiple_choice_question, correct_answer_count: 1, incorrect_answer_count: 1) }
-  let(:answer) { Fabricate.build(:answer, question: question, correct: @correct) }
+  let(:answer) { Fabricate.build(:multiple_choice_answer, question: question, correct: @correct) }
 
   it "increments question's correct answer count if answer is correct" do
     @correct = true
