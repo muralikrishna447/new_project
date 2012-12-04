@@ -14,6 +14,12 @@ class MultipleChoiceQuestionContents < OpenStruct
     json
   end
 
+  def correct(answer_data)
+    options.any? do|option|
+      option[:answer] == answer_data.answer && option[:correct]
+    end
+  end
+
   private
 
   def attribute_keys

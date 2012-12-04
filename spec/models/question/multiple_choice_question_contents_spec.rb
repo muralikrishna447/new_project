@@ -36,3 +36,23 @@ describe MultipleChoiceQuestionContents, '#to_json' do
   end
 end
 
+describe MultipleChoiceQuestionContents, '#correct' do
+  let(:contents) { Fabricate.build(:multiple_choice_question_contents) }
+  let(:answer) { Fabricate.build(:multiple_choice_answer_contents, answer: 'Answer Correct') }
+
+  it 'returns true if answer matches correct option' do
+    contents.correct(answer).should be_true
+  end
+
+  it 'returns false if answer does not match correct option' do
+    answer.answer = 'Answer Incorrect'
+    contents.correct(answer).should be_false
+  end
+
+  it 'returns false if answer cannot be found in options' do
+    answer.answer = 'invalid answer'
+    contents.correct(answer).should be_false
+    answer.delete_field(:answer)
+    contents.correct(answer).should be_false
+  end
+end
