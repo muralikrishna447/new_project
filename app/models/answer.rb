@@ -1,4 +1,6 @@
 class Answer < ActiveRecord::Base
+  include SerializeableContents
+
   belongs_to :question, counter_cache: :answer_count
   belongs_to :user
 
