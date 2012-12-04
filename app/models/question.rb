@@ -1,5 +1,6 @@
 class Question < ActiveRecord::Base
   include RankedModel
+  include SerializeableContents
 
   ranks :question_order, with_same: :quiz_id
 
@@ -14,14 +15,6 @@ class Question < ActiveRecord::Base
 
   scope :ordered, rank(:question_order)
 
-  def update_contents(params)
-    self.contents.update(params)
-  end
-
-  def contents_json(admin)
-    self.contents.to_json(admin)
-  end
-
   def score_answer(answer_data, user)
     answer = answers.build
     answer.user = user
@@ -33,16 +26,6 @@ class Question < ActiveRecord::Base
 
   def answer_count
     answers.count
-  end
-
-  private
-  def init_contents
-    return if persisted?
-    self.contents = contents_class.new({}) if self.contents.blank?
-  end
-
-  def contents_class
-    (self.class.name.to_s + 'Contents').constantize
   end
 end
 
