@@ -7,7 +7,7 @@ describe QuizzesController, '#show' do
   end
 
   it 'exposes presented questions' do
-    controller.stub(:quiz) { stub('quiz', questions: 'the questions') }
+    controller.stub(:quiz) { stub('quiz', ordered_questions: 'the questions') }
     QuestionPresenter.should_receive(:present_collection) { 'the questions' }
     controller.questions
   end
