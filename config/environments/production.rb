@@ -76,6 +76,8 @@ Delve::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
+  config.filepicker_rails.api_key = "AxKnxZ4VIRRWQy1V37ZYNz"
+
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
@@ -83,7 +85,5 @@ Delve::Application.configure do
   config.show_quizzes = false
 end
 
-MAILCHIMP_API_KEY = "9875b0250eae48e91a12a26117bba403-us5"
-MAILCHIMP_LIST_ID = "8e9d6bdff4"
 DISQUS_SHORTNAME = "chefstepsproduction"
-FILEPICKER_API_KEY = "AxKnxZ4VIRRWQy1V37ZYNz"
+
