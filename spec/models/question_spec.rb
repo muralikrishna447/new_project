@@ -13,8 +13,8 @@ describe Question, '#score_answer' do
 
   subject { question.score_answer(answer_data, user) }
 
-  it 'returns the created answer' do
-    should be_a Answer
+  it 'returns the created answer of the correct type' do
+    should be_a MultipleChoiceAnswer
   end
 
   it "sets answer's user" do
@@ -22,7 +22,7 @@ describe Question, '#score_answer' do
   end
 
   it "sets answer's contents" do
-    subject.contents.should == answer_data
+    subject.contents.answer.should == 'test'
   end
 
   it 'corrects the answer' do

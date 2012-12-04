@@ -16,9 +16,10 @@ class Question < ActiveRecord::Base
   scope :ordered, rank(:question_order)
 
   def score_answer(answer_data, user)
-    answer = answers.build
+    answer = Answer.new_of_type(answer_data[:type])
+    answer.question = self
     answer.user = user
-    answer.contents = answer_data
+    answer.update_contents(answer_data)
     answer.correct = contents.correct(answer_data)
     answer.save!
     answer
