@@ -16,11 +16,11 @@
       Correct Answer:
     .span2
       Students Avg. Score:
-  = render 'quizzes/multiple_choice_question_results'
+  = render 'quizzes/multiple_choice_question_results', is_correct: true
   .row
     .span12
       .horizontal-divider.dotted
-  = render 'quizzes/multiple_choice_question_results'
+  = render 'quizzes/multiple_choice_question_results', is_correct: false
   .row
     .span12
       .horizontal-divider.dotted
