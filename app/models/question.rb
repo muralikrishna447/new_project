@@ -31,6 +31,10 @@ class Question < ActiveRecord::Base
     answer
   end
 
+  def answer_count
+    answers.count
+  end
+
   private
   def init_contents
     return if persisted?

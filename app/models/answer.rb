@@ -1,5 +1,5 @@
 class Answer < ActiveRecord::Base
-  belongs_to :question
+  belongs_to :question, counter_cache: :answer_count
   belongs_to :user
 
   validates_uniqueness_of :question_id, scope: [:user_id]

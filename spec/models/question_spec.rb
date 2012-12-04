@@ -69,7 +69,10 @@ describe Question, '#score_answer' do
 end
 
 describe Question, '#answer_count' do
-end
+  let(:question) { Fabricate(:multiple_choice_question) }
+  before { question.answers << Fabricate(:answer, question: question) }
 
-describe Question, '#incorrect_answer_count' do
+  it 'increments count when new answer is added' do
+    question.answer_count.should == 1
+  end
 end
