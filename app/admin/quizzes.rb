@@ -33,6 +33,7 @@ ActiveAdmin.register Quiz do
 
   member_action :upload_images do
     @quiz = Quiz.find(params[:id])
+    @quiz_images = ImagePresenter.present_collection(@quiz.images)
   end
 end
 
