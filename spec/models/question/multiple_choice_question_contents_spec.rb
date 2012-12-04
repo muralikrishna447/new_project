@@ -1,14 +1,41 @@
 require 'spec_helper'
 
 describe MultipleChoiceQuestionContents, '#update' do
-  let(:multi_choice_contents) { Fabricate.build(:multiple_choice_question_contents) }
+  let(:contents) { MultipleChoiceQuestionContents.new }
   let(:content_attributes) { { question: 'question stuff', instructions: 'instruction stuff',
-                       options: [{title: 'option 1'}] } }
+                       options: [{title: 'option 1'}, {title: 'option 2'}] } }
   let(:params) { {foo: 'bar'}.merge(content_attributes) }
 
-  it "updates values defined in the keys" do
-    multi_choice_contents.update(params)
-    multi_choice_contents.marshal_dump.should == content_attributes
+  it "updates question" do
+    contents.update(params)
+    contents.question.should == 'question stuff'
+  end
+
+  it "updates instructions" do
+    contents.update(params)
+    contents.instructions.should == 'instruction stuff'
+  end
+
+  it "updates options" do
+    contents.update(params)
+    contents.options.should have(2).options
+  end
+
+  context 'unique option ids' do
+    before { contents.stub(:unique_id) { 'abcd' } }
+
+    it 'generates unique id for each option if id not present' do
+      contents.update(params)
+      contents.options.first[:id].should == 'abcd'
+      contents.options.last[:id].should == 'abcd'
+    end
+
+    it 'uses unique id from option if present in params' do
+      params[:options].first[:id] = 'efgh'
+      contents.update(params)
+      contents.options.first[:id].should == 'efgh'
+      contents.options.last[:id].should == 'abcd'
+    end
   end
 end
 
@@ -54,5 +81,14 @@ describe MultipleChoiceQuestionContents, '#correct' do
     contents.correct(answer).should be_false
     answer.delete_field(:answer)
     contents.correct(answer).should be_false
+  end
+end
+
+describe MultipleChoiceQuestionContents, '#unique_id' do
+  let(:contents) { Fabricate.build(:multiple_choice_question_contents) }
+
+  it 'calls SecureRandom#uuid' do
+    SecureRandom.should_receive(:uuid)
+    contents.send(:unique_id)
   end
 end

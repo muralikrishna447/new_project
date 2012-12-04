@@ -14,6 +14,7 @@ module SerializeableContents
   end
 
   private
+
   def init_contents
     return if persisted?
     self.contents = contents_class.new({}) if self.contents.blank?

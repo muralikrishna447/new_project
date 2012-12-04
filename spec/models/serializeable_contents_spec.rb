@@ -14,7 +14,7 @@ describe SerializeableContents, 'initialization' do
   end
 end
 
-describe SerializeableContents, 'contents_json' do
+describe SerializeableContents, '#contents_json' do
   let(:question) { Fabricate.build(:multiple_choice_question) }
 
   it 'returns contents json' do
@@ -22,4 +22,3 @@ describe SerializeableContents, 'contents_json' do
     question.contents_json(false)
   end
 end
-

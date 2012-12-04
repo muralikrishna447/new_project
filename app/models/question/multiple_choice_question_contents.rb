@@ -1,6 +1,7 @@
 class MultipleChoiceQuestionContents < OpenStruct
 
   def update(params)
+    add_option_ids(params[:options])
     attribute_keys.each do |key|
       self.send("#{key.to_s}=", params.delete(key))
     end
@@ -22,8 +23,18 @@ class MultipleChoiceQuestionContents < OpenStruct
 
   private
 
+  def add_option_ids(options)
+    options.each do |option|
+      option.merge!(id: unique_id) unless option[:id]
+    end
+  end
+
+  def unique_id
+    SecureRandom.uuid
+  end
+
   def attribute_keys
-    [:question, :instructions, :options]
+    [:id, :question, :instructions, :options]
   end
 end
 
