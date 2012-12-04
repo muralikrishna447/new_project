@@ -3,8 +3,8 @@ module QuizHelper
     Rails.application.config.show_quizzes
   end
 
-  def estimated_time(quiz)
-    quiz.questions.count * 20 / 60
+  def estimated_time(question_count)
+    question_count * 20 / 60
   end
 
   def progress_dial(value, max, label, size=nil)

@@ -24,7 +24,7 @@
         .dial-left
           = progress_dial 0, quiz.question_count, 'questions'
         .dial-right
-          = progress_dial 0, estimated_time(quiz), 'est. min.'
+          = progress_dial 0, estimated_time(quiz.question_count), 'est. min.'
     .row
       .span12
         %p.pull-left= quiz.start_copy
