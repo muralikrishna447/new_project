@@ -1,4 +1,12 @@
+= render 'layouts/filepicker'
+
+:javascript
+  window.ChefStepsAdmin = window.ChefStepsAdmin || {};
+  window.ChefStepsAdmin.quizImageData= JSON.parse('#{j(@quiz_images)}');
+
 %h2 Upload Images for "#{@quiz.title}"
 
-= render 'layouts/filepicker'
+#image-uploader
+  %button.admin-button{ data: {behavior: 'filepicker'}} Pick a File
+  #image-list
 
