@@ -13,9 +13,13 @@ class Answer < ActiveRecord::Base
   validates_presence_of :user_id
   validates_presence_of :contents
 
-  def self.new_of_type(type, attributes = {})
-    type_valid = ANSWER_TYPES.include?(type.to_sym)
-    type_valid ? answer_class(type).new(attributes) : nil
+  def self.new_from_params(params, user)
+    type = params.delete(:type).to_sym
+    return nil unless ANSWER_TYPES.include?(type)
+    answer_class(type).new.tap do |answer|
+      answer.user = user
+      answer.update_contents(params)
+    end
   end
 
   private

@@ -1,43 +1,42 @@
 require 'spec_helper'
 
+describe Question, '#correct' do
+  let(:question) { Fabricate.build(:multiple_choice_question, id: 123) }
+  let(:answer) { stub }
+
+  it 'corrects answer against question contents' do
+    question.contents.should_receive(:correct).with(answer)
+    question.correct(answer)
+  end
+end
+
 describe Question, '#score_answer' do
   let(:question) { Fabricate.build(:multiple_choice_question, id: 123) }
-  let(:user) { Fabricate.build(:user, id: 456) }
+  let(:user) { Fabricate.build(:user, id: 123) }
 
-  let(:answer_model) { Fabricate.build(:multiple_choice_answer) }
-  let(:answer_data) { {type: 'multiple_choice', answer: 'test'} }
+  let(:answer) { Fabricate.build(:multiple_choice_answer, user: user) }
 
   before do
     question.contents.stub(:correct)
   end
 
-  subject { question.score_answer(answer_data, user) }
-
-  it 'returns the created answer of the correct type' do
-    should be_a MultipleChoiceAnswer
-  end
-
-  it "sets answer's user" do
-    subject.user.should == user
-  end
-
-  it "sets answer's contents" do
-    subject.contents.answer.should == 'test'
-  end
+  subject { question.score_answer(answer) }
 
   it 'corrects the answer' do
-    question.contents.should_receive(:correct).with(answer_data)
+    question.should_receive(:correct).with(answer)
     subject
   end
 
   it "sets answer's correct value to true if correct call returns true" do
-    question.contents.stub(:correct).and_return(true)
-    subject.correct.should be_true
+    question.stub(:correct).and_return(true)
+    subject
+    answer.correct.should be_true
   end
 
   it "sets answer's correct value to false if correct call returns false" do
-    question.contents.stub(:correct).and_return(false)
-    subject.correct.should be_false
+    question.stub(:correct).and_return(false)
+    subject
+    answer.correct.should be_false
   end
 
   it 'associates answer with question' do

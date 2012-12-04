@@ -17,16 +17,37 @@ describe Answer, '#update_question_statistics' do
   end
 end
 
-describe Answer, '#new_of_type' do
+describe Answer, '#new_from_params' do
+  let(:params) do
+    {
+     type: @type || 'multiple_choice',
+     answer: 'true'
+    }
+  end
+  let(:user) { Fabricate.build(:user, id: 456) }
+
+  subject { Answer.new_from_params(params, user) }
+
   it 'initializes an instance of specified type when type is a String' do
-    Answer.new_of_type('multiple_choice').should be_a MultipleChoiceAnswer
+    @type = 'multiple_choice'
+    should be_a MultipleChoiceAnswer
   end
 
   it 'initializes an instance of specified type when type is a Symbol' do
-    Answer.new_of_type(:multiple_choice).should be_a MultipleChoiceAnswer
+    @type = :multiple_choice
+    should be_a MultipleChoiceAnswer
   end
 
   it 'returns nil if specified type is unknown' do
-    Answer.new_of_type(:unknown).should be_nil
+    @type = :unknown
+    should be_nil
+  end
+
+  it "sets answer's user" do
+    subject.user.should == user
+  end
+
+  it "sets answer's contents" do
+    subject.contents.answer.should == 'true'
   end
 end

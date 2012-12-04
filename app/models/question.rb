@@ -15,14 +15,15 @@ class Question < ActiveRecord::Base
 
   scope :ordered, rank(:question_order)
 
-  def score_answer(answer_data, user)
-    answer = Answer.new_of_type(answer_data[:type])
+  def score_answer(answer)
     answer.question = self
-    answer.user = user
-    answer.update_contents(answer_data)
-    answer.correct = contents.correct(answer_data)
+    answer.correct = correct(answer)
     answer.save!
     answer
+  end
+
+  def correct(answer)
+    self.contents.correct(answer)
   end
 
   def answer_count
