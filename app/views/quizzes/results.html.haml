@@ -4,12 +4,25 @@
   .container
     .row
       .span12
-        %h3 Your results for #{quiz.title}
+        %h3 Your Results for #{quiz.title}
 
 #quiz-results.container
+  .results-header.row
+    .span6
+      Questions:
+    .span2
+      Your Answer:
+    .span2
+      Correct Answer:
+    .span2
+      Students Avg. Score:
   = render 'quizzes/multiple_choice_question_results'
-  .horizontal-divider.dotted
+  .row
+    .span12
+      .horizontal-divider.dotted
   = render 'quizzes/multiple_choice_question_results'
-  .horizontal-divider.dotted
+  .row
+    .span12
+      .horizontal-divider.dotted
   = render 'quizzes/multiple_choice_question_results'
 

@@ -2,3 +2,26 @@
   .horizontal-divider
     margin: 20px 0
 
+  .results-header
+    +font-sans-small
+    color: $grayMedium
+    text-transform: uppercase
+    font-weight: 500
+    margin-bottom: 40px
+    [class*='span']
+      text-align: center
+    [class*='span']:first-child
+      text-align: left
+
+  .multiple-choice-results
+    span
+      +font-serif-small
+      color: $grayMedium
+      &.count
+        color: $brick
+    ol
+      margin-left: 45px
+      list-style-type: upper-alpha
+    li
+      padding: 5px 0
+
