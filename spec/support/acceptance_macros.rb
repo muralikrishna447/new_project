@@ -10,5 +10,7 @@ module AcceptanceMacros
     fill_in 'Email', with: 'bob@bob.com'
     fill_in 'Password', with: 'password'
     click_button 'Log In'
+
+    wait_until { page.find(".profile-info").visible? }
   end
 end
