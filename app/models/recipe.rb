@@ -38,7 +38,7 @@ class Recipe < ActiveRecord::Base
 
   def reject_invalid_ingredients(ingredient_attrs)
     ingredient_attrs.select! do |ingredient_attr|
-      [:title, :display_quantity, :unit].all? do |test|
+      [:title, :unit].all? do |test|
         ingredient_attr[test].present?
       end
     end
