@@ -4,17 +4,19 @@ class ChefSteps.Views.Quiz extends Backbone.View
 
   initialize: (options)->
     @navHider = options.navHider
-    @questionIndex = 0
+    @quizCompletionPath = options.quizCompletionPath
+    @collection.on('next', @loadNextQuestion, @)
 
   startQuiz: ->
     @navHider.hide()
-    @nextQuestion()
+    @loadNextQuestion(@collection.first())
 
-  nextQuestion: ->
-    model = @collection.at(@questionIndex)
-    question = new ChefSteps.Views.Question(model: model)
+  loadNextQuestion: (model)->
     @$('>').fadeOut 'slow', =>
+      return @quizComplete() unless model
+      question = new ChefSteps.Views.Question(model: model)
       @$el.html(question.render().$el)
-      setTimeout(question.show, 1)
+      question.$el.animate({marginLeft: 0, opacity: 1}, 1000)
 
-    @questionIndex += 1
+  quizComplete: ->
+    window.location = @quizCompletionPath

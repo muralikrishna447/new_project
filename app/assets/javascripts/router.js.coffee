@@ -36,6 +36,7 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
       el: '#quiz-container'
       collection: questions
       navHider: navHider
+      quizCompletionPath: "/quizzes/#{id}/results"
 
   showStyleguide: =>
     _.each $('[data-behavior~=progress-dial]'), (input)->

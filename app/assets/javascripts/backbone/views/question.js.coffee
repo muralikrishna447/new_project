@@ -11,10 +11,6 @@ class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
     @$el.html(@renderTemplate())
     @
 
-  show: =>
-    @delegateEvents()
-    @$el.addClass('visible')
-
   answerChanged: ->
     if @answerSelected()
       @showNext()
@@ -45,9 +41,8 @@ class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
     answer = new ChefSteps.Models.Answer(question_id: @model.id)
     answer.save(@answerData(), success: @submitSuccess, error: @submitError)
 
-  submitSuccess: ->
-    console.log("ANSWER SUBMITTED")
-    # TODO: load next question
+  submitSuccess: =>
+    @model.collection.next()
 
   submitError: ->
     # TODO: what to do here?

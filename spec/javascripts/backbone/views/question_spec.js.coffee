@@ -13,11 +13,6 @@ describe 'ChefSteps.Views.Question', ->
       ]
     $('#sandbox').html(@view.render().$el)
 
-  describe '#show', ->
-    it 'sets the visible class', ->
-      @view.show()
-      expect(@view.$el).toHaveClass('visible')
-
   describe '#showNext', ->
     it 'shows next button', ->
       $('.btn-next').hide()
@@ -77,3 +72,9 @@ describe 'ChefSteps.Views.Question', ->
     it 'saves answer with data', ->
       @view.submitAnswer()
       expect(@answer.save).toHaveBeenCalledWith('data', jasmine.any(Object))
+
+  describe '#submitSuccess', ->
+    it "calls #next event on model's collection", ->
+      @model.collection = jasmine.createSpyObj('collection', ['next'])
+      @view.submitSuccess()
+      expect(@model.collection.next).toHaveBeenCalled()
