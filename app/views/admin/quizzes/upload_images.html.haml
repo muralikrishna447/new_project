@@ -4,12 +4,15 @@
   window.ChefStepsAdmin = window.ChefStepsAdmin || {};
   window.ChefStepsAdmin.quizImageData= JSON.parse('#{j(@quiz_images)}');
 
+#resource-actions.top
+  = link_to 'Add Questions', manage_questions_admin_quiz_path(@quiz), class: 'admin-button'
+
 %h2 Upload Images for "#{@quiz.title}"
 
 #image-uploader
   %button.admin-button{ data: {behavior: 'filepicker'}} Pick a File
   #image-list
 
-#quiz-image-actions
+#resource-actions.bottom
   = link_to 'Add Questions', manage_questions_admin_quiz_path(@quiz), class: 'admin-button'
 
