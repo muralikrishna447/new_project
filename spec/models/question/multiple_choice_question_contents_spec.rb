@@ -72,14 +72,14 @@ describe MultipleChoiceQuestionContents, '#correct' do
   end
 
   it 'returns false if answer does not match correct option' do
-    answer.id = 'id-answer-2'
+    answer.uid = 'id-answer-2'
     contents.correct(answer).should be_false
   end
 
   it 'returns false if answer cannot be found in options' do
-    answer.id = 'invalid-id'
+    answer.uid = 'invalid-id'
     contents.correct(answer).should be_false
-    answer.delete_field(:id)
+    answer.delete_field(:uid)
     contents.correct(answer).should be_false
   end
 end

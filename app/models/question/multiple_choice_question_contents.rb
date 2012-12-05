@@ -17,7 +17,7 @@ class MultipleChoiceQuestionContents < OpenStruct
 
   def correct(answer_data)
     options.any? do|option|
-      option[:uid] == answer_data.id && option[:correct]
+      option[:uid] == answer_data.uid && option[:correct]
     end
   end
 
