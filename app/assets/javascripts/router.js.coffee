@@ -2,7 +2,6 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
   initialize: (options) =>
     @currentUser = options.currentUser
     @registrationCompletionPath = options.registrationCompletionPath
-    @quizCompletionPath = options.quizCompletionPath
 
   loadHeader: =>
     headerView = ChefSteps.new(ChefSteps.Views.ProfileHeader, model: @currentUser)
@@ -37,7 +36,7 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
       el: '#quiz-container'
       collection: questions
       navHider: navHider
-      quizCompletionPath: @quizCompletionPath
+      quizCompletionPath: "/quizzes/#{id}/results"
 
   showStyleguide: =>
     _.each $('[data-behavior~=progress-dial]'), (input)->

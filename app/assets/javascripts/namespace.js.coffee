@@ -16,7 +16,6 @@ ChefSteps.init = (options)->
   ChefSteps.router = new ChefSteps.Router
     currentUser: ChefSteps.profile
     registrationCompletionPath: options.registrationCompletionPath
-    quizCompletionPath: options.quizCompletionPath
 
   ChefSteps.router.loadHeader()
   ChefSteps.router.initializeRoutes()
