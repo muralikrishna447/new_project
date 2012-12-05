@@ -42,7 +42,7 @@ class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
     option = @selectedOption()
     {
       type: 'multiple_choice',
-      id: option[0].id,
+      uid: option[0].id,
       answer: option.val()
     }
 

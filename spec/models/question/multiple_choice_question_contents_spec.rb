@@ -26,15 +26,15 @@ describe MultipleChoiceQuestionContents, '#update' do
 
     it 'generates unique id for each option if id not present' do
       contents.update(params)
-      contents.options.first[:id].should == 'abcd'
-      contents.options.last[:id].should == 'abcd'
+      contents.options.first[:uid].should == 'abcd'
+      contents.options.last[:uid].should == 'abcd'
     end
 
     it 'uses unique id from option if present in params' do
-      params[:options].first[:id] = 'efgh'
+      params[:options].first[:uid] = 'efgh'
       contents.update(params)
-      contents.options.first[:id].should == 'efgh'
-      contents.options.last[:id].should == 'abcd'
+      contents.options.first[:uid].should == 'efgh'
+      contents.options.last[:uid].should == 'abcd'
     end
   end
 end
@@ -65,7 +65,7 @@ end
 
 describe MultipleChoiceQuestionContents, '#correct' do
   let(:contents) { Fabricate.build(:multiple_choice_question_contents) }
-  let(:answer) { Fabricate.build(:multiple_choice_answer_contents, id: 'id-answer-1') }
+  let(:answer) { Fabricate.build(:multiple_choice_answer_contents, uid: 'id-answer-1') }
 
   it 'returns true if answer matches correct option' do
     contents.correct(answer).should be_true

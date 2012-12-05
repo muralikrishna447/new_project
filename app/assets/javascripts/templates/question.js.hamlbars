@@ -17,7 +17,7 @@
       = hb 'each_with_index options' do
         %div{ class: hb('answer_width count') }
           %li{ data: {behavior: 'radio'} }
-            = radio_button_tag 'answer', hb('answer'), false, id: hb('id')
+            = radio_button_tag 'answer', hb('answer'), false, id: hb('uid')
             %label= hb('answer')
 
 %a.btn.btn-primary.btn-next{href: '#'}

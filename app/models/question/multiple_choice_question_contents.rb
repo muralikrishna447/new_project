@@ -17,7 +17,7 @@ class MultipleChoiceQuestionContents < OpenStruct
 
   def correct(answer_data)
     options.any? do|option|
-      option[:id] == answer_data.id && option[:correct]
+      option[:uid] == answer_data.id && option[:correct]
     end
   end
 
@@ -25,7 +25,7 @@ class MultipleChoiceQuestionContents < OpenStruct
 
   def add_option_ids(options)
     options.each do |option|
-      option.merge!(id: unique_id) unless option[:id]
+      option.merge!(uid: unique_id) unless option[:uid]
     end
   end
 
