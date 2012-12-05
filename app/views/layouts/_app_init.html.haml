@@ -2,7 +2,8 @@
   $(function() {
     new ChefSteps.init({
       profile: JSON.parse('#{user_signed_in? ? j(current_user_presenter.present) : false}'),
-      registrationCompletionPath: "#{thank_you_path}"
+      registrationCompletionPath: "#{thank_you_path}",
+      quizCompletionPath: "/"
     })
   });
 
