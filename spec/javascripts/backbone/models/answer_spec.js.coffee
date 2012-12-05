@@ -4,5 +4,5 @@ describe 'ChefSteps.Models.Answer', ->
 
   describe '#url', ->
     it 'is of form /questions/:question_id/answers', ->
-      expect(@model.url()).toEqual('questions/123/answers')
+      expect(@model.url()).toEqual('/questions/123/answers')
 
