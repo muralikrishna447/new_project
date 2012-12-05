@@ -15,7 +15,7 @@ class Question < ActiveRecord::Base
 
   scope :ordered, rank(:question_order)
 
-  def score_answer(answer)
+  def score(answer)
     answer.question = self
     answer.correct = correct(answer)
     answer.save!

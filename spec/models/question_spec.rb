@@ -10,7 +10,7 @@ describe Question, '#correct' do
   end
 end
 
-describe Question, '#score_answer' do
+describe Question, '#score' do
   let(:question) { Fabricate.build(:multiple_choice_question, id: 123) }
   let(:user) { Fabricate.build(:user, id: 123) }
 
@@ -20,7 +20,7 @@ describe Question, '#score_answer' do
     question.contents.stub(:correct)
   end
 
-  subject { question.score_answer(answer) }
+  subject { question.score(answer) }
 
   it 'corrects the answer' do
     question.should_receive(:correct).with(answer)
