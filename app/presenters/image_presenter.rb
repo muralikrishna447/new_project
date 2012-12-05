@@ -1,8 +1,9 @@
 class ImagePresenter < Presenter
   def attributes
     { id: @model.id,
-      file_name: @model.file_name,
-      caption: @model.caption
+      filename: @model.filename,
+      caption: @model.caption,
+      url: @model.url
     }
   end
 end
