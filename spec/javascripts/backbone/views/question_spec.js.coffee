@@ -77,3 +77,9 @@ describe 'ChefSteps.Views.Question', ->
     it 'saves answer with data', ->
       @view.submitAnswer()
       expect(@answer.save).toHaveBeenCalledWith('data', jasmine.any(Object))
+
+  describe '#submitSuccess', ->
+    it "calls #next event on model's collection", ->
+      @model.collection = jasmine.createSpyObj('collection', ['next'])
+      @view.submitSuccess()
+      expect(@model.collection.next).toHaveBeenCalled()
