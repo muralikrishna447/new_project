@@ -13,10 +13,10 @@
     .row
       .span9
         .question-label YOUR ANSWER:
-    %ul.answers.row
+    .row
       = hb 'each_with_index options' do
         %div{ class: hb('answer_width count') }
-          %li{ data: {behavior: 'radio'} }
+          %div{ data: {behavior: 'radio'} }
             = radio_button_tag 'answer', hb('answer'), false, id: hb('uid')
             %label{ for: hb('uid') }= hb('answer')
 
