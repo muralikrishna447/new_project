@@ -16,5 +16,5 @@ class ChefStepsAdmin.Views.QuizImageUploader extends Backbone.View
 
   filePickerOnSuccess: (fpFiles) =>
     _.each fpFiles, (fpFile) =>
-      @collection.create({filename: fpFile.key})
+      @collection.create(fp)
 
