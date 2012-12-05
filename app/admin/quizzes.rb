@@ -28,7 +28,7 @@ ActiveAdmin.register Quiz do
 
   member_action :manage_questions do
     @quiz = Quiz.find(params[:id])
-    @questions = QuestionPresenter.present_collection(@quiz.questions)
+    @questions = QuestionPresenter.present_collection(@quiz.ordered_questions, true)
   end
 end
 

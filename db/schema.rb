@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121130174415) do
+ActiveRecord::Schema.define(:version => 20121204182259) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -98,6 +98,18 @@ ActiveRecord::Schema.define(:version => 20121130174415) do
   add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
   add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
 
+  create_table "answers", :force => true do |t|
+    t.integer  "question_id",                    :null => false
+    t.integer  "user_id",                        :null => false
+    t.string   "type"
+    t.text     "contents"
+    t.boolean  "correct",     :default => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "answers", ["question_id", "user_id"], :name => "index_answers_on_question_id_and_user_id", :unique => true
+
   create_table "copies", :force => true do |t|
     t.string   "location"
     t.text     "copy"
@@ -129,12 +141,15 @@ ActiveRecord::Schema.define(:version => 20121130174415) do
   end
 
   create_table "questions", :force => true do |t|
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.integer  "quiz_id"
     t.string   "question_type"
-    t.text     "contents",       :default => ""
+    t.text     "contents",               :default => ""
     t.integer  "question_order"
+    t.integer  "answer_count",           :default => 0
+    t.integer  "correct_answer_count",   :default => 0
+    t.integer  "incorrect_answer_count", :default => 0
   end
 
   add_index "questions", ["question_order"], :name => "index_questions_on_question_order"

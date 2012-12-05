@@ -1,5 +1,6 @@
 window.ChefSteps ||= {}
 
+ChefSteps.Collections ||= {}
 ChefSteps.Models ||= {}
 ChefSteps.Views ||= {}
 

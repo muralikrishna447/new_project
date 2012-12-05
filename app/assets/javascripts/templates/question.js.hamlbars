@@ -1,0 +1,24 @@
+.container
+  .row
+    .span8
+      .instructions= hb('instructions')
+
+  .hero-unit
+    .row
+      .span9
+        .question-label QUESTION:
+    .row
+      .span9
+        .question-text= hb('question')
+    .row
+      .span9
+        .question-label YOUR ANSWER:
+    .row
+      = hb 'each_with_index options' do
+        %div{ class: hb('answer_width count') }
+          %div{ data: {behavior: 'radio'} }
+            = radio_button_tag 'answer', hb('answer'), false, id: hb('uid')
+            %label{ for: hb('uid') }= hb('answer')
+
+%a.btn.btn-primary.btn-next{href: '#'}
+  %i.icon-double-chevron-right

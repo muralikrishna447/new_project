@@ -1,3 +1,7 @@
+:javascript
+  window.ChefSteps = window.ChefStepsAdmin || {};
+  window.ChefSteps.questionsData = JSON.parse('#{j(questions)}');
+
 - add_body_data(behavior: 'nav-hideable')
 
 .hero-unit.quiz-title
@@ -6,23 +10,24 @@
       .span12
         %h3= quiz.title
 
-#quiz-container.container
-  .row
-    .span12
-      %h3
-        Test your skills on
-        %strong #{quiz.title}!
-  .row.hero-unit
-    .span8
-      = image_tag 'http://lorempixel.com/745/376/food/', class: 'img-polaroid'
-    .span4.dials
-      .dial-left
-        = progress_dial 0, quiz.question_count, 'questions'
-      .dial-right
-        = progress_dial 0, estimated_time(quiz), 'est. min.'
-  .row
-    .span12
-      %p.pull-left= quiz.start_copy
-      .pull-right
-        #start-quiz.btn-uppercase.btn-primary.btn-x-large Start Quiz
+#quiz-container
+  .container
+    .row
+      .span12
+        %h3
+          Test your skills on
+          %strong #{quiz.title}!
+    .row.hero-unit.overview
+      .span8
+        = image_tag 'http://lorempixel.com/745/376/food/', class: 'img-polaroid'
+      .span4.dials
+        .dial-left
+          = progress_dial 0, quiz.question_count, 'questions'
+        .dial-right
+          = progress_dial 0, estimated_time(quiz.question_count), 'est. min.'
+    .row
+      .span12
+        %p.pull-left= quiz.start_copy
+        .pull-right
+          #start-quiz.btn-uppercase.btn-primary.btn-x-large Start Quiz
 
