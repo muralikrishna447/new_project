@@ -8,7 +8,7 @@ describe 'ChefSteps.Views.Checkbox', ->
       @checkbox2 = new ChefSteps.Views.Checkbox(el: '#checkboxes > div:last')
 
     it 'initializes radio attribute to false if behavior attribute is not radio', ->
-      expect(@checkbox1.radio).toBe(false)
+      expect(@checkbox1.isRadio).toBe(false)
 
     it 'adds active class if input is checked', ->
       expect(@checkbox1.$el).not.toHaveClass('active')
@@ -39,7 +39,7 @@ describe 'ChefSteps.Views.Checkbox', ->
       @radio2 = new ChefSteps.Views.Checkbox(el: '#radios > div:last')
 
     it 'initializes radio attribute to true if behavior attribute is radio', ->
-      expect(@radio1.radio).toBe(true)
+      expect(@radio1.isRadio).toBe(true)
 
     it 'adds active class if input is checked', ->
       expect(@radio1.$el).not.toHaveClass('active')

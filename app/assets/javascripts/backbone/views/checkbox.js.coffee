@@ -3,7 +3,7 @@ class ChefSteps.Views.Checkbox extends Backbone.View
     'click': 'select'
 
   initialize: (options)->
-    @radio = @$el.data('behavior') == 'radio'
+    @isRadio = @$el.data('behavior') == 'radio'
 
     @$input = @$('input')
 
@@ -15,7 +15,7 @@ class ChefSteps.Views.Checkbox extends Backbone.View
     else
       @$input.attr('checked', true)
     @$el.toggleClass('active', @isChecked())
-    @clearOthers() if @radio
+    @clearOthers() if @isRadio
     @$input.trigger('change')
 
   isChecked: ->
