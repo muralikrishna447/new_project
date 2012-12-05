@@ -5,6 +5,7 @@ class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
 
   events:
     'change input': 'answerChanged'
+    'click .btn-next': 'submitAnswer'
 
   render: ->
     @$el.html(@renderTemplate())
@@ -31,8 +32,30 @@ class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
   hideNext: ->
     @_nextButton().fadeOut()
 
+  selectedOption: ->
+    @$('input:checked')
+
   answerSelected: ->
-    @$('input:checked').length > 0
+    @selectedOption().length > 0
+
+  answerData: ->
+    option = @selectedOption()
+    {
+      type: 'multiple_choice',
+      id: option[0].id,
+      answer: option.val()
+    }
+
+  submitAnswer: ->
+    answer = new ChefSteps.Models.Answer(question_id: @model.id)
+    answer.save(@answerData(), success: @submitSuccess, error: @submitError)
+
+  submitSuccess: ->
+    console.log("ANSWER SUBMITTED")
+    # TODO: load next question
+
+  submitError: ->
+    # TODO: what to do here?
 
   _nextButton: ->
     @$('.btn-next')
