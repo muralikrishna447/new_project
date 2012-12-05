@@ -65,21 +65,21 @@ end
 
 describe MultipleChoiceQuestionContents, '#correct' do
   let(:contents) { Fabricate.build(:multiple_choice_question_contents) }
-  let(:answer) { Fabricate.build(:multiple_choice_answer_contents, answer: 'Answer Correct') }
+  let(:answer) { Fabricate.build(:multiple_choice_answer_contents, id: 'id-answer-1') }
 
   it 'returns true if answer matches correct option' do
     contents.correct(answer).should be_true
   end
 
   it 'returns false if answer does not match correct option' do
-    answer.answer = 'Answer Incorrect'
+    answer.id = 'id-answer-2'
     contents.correct(answer).should be_false
   end
 
   it 'returns false if answer cannot be found in options' do
-    answer.answer = 'invalid answer'
+    answer.id = 'invalid-id'
     contents.correct(answer).should be_false
-    answer.delete_field(:answer)
+    answer.delete_field(:id)
     contents.correct(answer).should be_false
   end
 end
