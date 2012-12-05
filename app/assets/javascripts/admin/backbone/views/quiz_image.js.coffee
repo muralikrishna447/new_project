@@ -7,6 +7,7 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
     'click .edit': 'triggerEditImageCaption'
     'click .cancel': 'cancelEdit'
     'click .done': 'saveForm'
+    'click .delete': 'deleteImage'
 
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editImageCaption", @editImageCaptionEventHandler)
@@ -53,4 +54,11 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
   cancelEdit: (event) =>
     event.preventDefault()
     @render()
+
+  deleteImage: (event) =>
+    event.preventDefault()
+    confirmMessage = $(event.currentTarget).data('confirm')
+    if not confirmMessage || confirm(confirmMessage)
+      @model.destroy()
+      @remove()
 

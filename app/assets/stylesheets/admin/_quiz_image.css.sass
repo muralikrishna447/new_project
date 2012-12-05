@@ -7,6 +7,7 @@
     padding: 15px
     background: whitesmoke
     border-radius: 5px
+    position: relative
     img
       float: left
       margin-bottom: 15px
@@ -21,6 +22,22 @@
     .edit
       float: right
       font-size: 24px
+    .delete
+      position: absolute
+      top: 17px
+      left: 17px
+      background: $black
+      border: 2px solid $white
+      padding: 10px
+      padding-bottom: 6px
+      color: white
+      font-size: 24px
+      border-radius: 1em
+      display: none
+      cursor: pointer
+    &:hover
+      .delete
+        display: inline-block
     form
       textarea
         float: left

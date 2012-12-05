@@ -1,4 +1,6 @@
 %img{ src: hb('url') }
+%i.delete.icon-remove
+
 %span.icon-edit.edit
 %span.caption= hb('caption')
 
