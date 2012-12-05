@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe Question, '#correct' do
   let(:question) { Fabricate.build(:multiple_choice_question, id: 123) }
-  let(:answer) { stub }
+  let(:answer) { stub('answer', contents: 'contents') }
 
   it 'corrects answer against question contents' do
-    question.contents.should_receive(:correct).with(answer)
+    question.contents.should_receive(:correct).with('contents')
     question.correct(answer)
   end
 end

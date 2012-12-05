@@ -23,7 +23,7 @@ class Question < ActiveRecord::Base
   end
 
   def correct(answer)
-    self.contents.correct(answer)
+    self.contents.correct(answer.contents)
   end
 
   def answer_count
