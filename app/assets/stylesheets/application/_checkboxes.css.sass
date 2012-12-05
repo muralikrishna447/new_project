@@ -2,13 +2,8 @@
 @import compass/css3/user-interface
 
 [data-behavior~=checkbox], [data-behavior~=radio]
-  border: 1px solid transparent
-  padding: 5px 7px 0 45px
-  position: relative
-  min-height: 35px
   list-style-type: none
   display: inline-block
-  overflow: hidden
 
   input
     display: none
@@ -16,27 +11,34 @@
   label
     +font-sans-medium
     +user-select(none)
-    line-height: 28px
-    display: inline
+    min-height: 35px
+    position: relative
+    border: 1px solid transparent
+    padding: 5px 7px 1px 45px
+    line-height: 26px
 
-  &:before
-    content: ''
-    width: 26px
-    height: 26px
-    background: $beige
-    border: 1px solid darken($beige, 20%)
-    +border-radius(2px)
-    +box-shadow(inset 0px 1px 2px 0px rgba(0, 0, 0, 0.5))
-    position: absolute
-    top: 6px
-    left: 6px
+    &:before
+      content: ''
+      width: 26px
+      height: 26px
+      background: $beige
+      border: 1px solid darken($beige, 20%)
+      +border-radius(2px)
+      +box-shadow(inset 0px 1px 2px 0px rgba(0, 0, 0, 0.5))
+      position: absolute
+      top: 6px
+      left: 6px
 
-  &:hover, &.active
+    &:hover
+      border: 1px solid $grayMedium
+      background: $grayLight
+      +border-radius(2px)
+
+  input:checked + label
     border: 1px solid $grayMedium
     background: $grayLight
     +border-radius(2px)
 
-  &.active
     &:before
       content: "\2713"
       border: 1px solid darken($grayLighter, 20%)
