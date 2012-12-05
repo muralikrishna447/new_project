@@ -6,6 +6,6 @@ class AnswersController < ApplicationController
     answer = Answer.new_from_params(params, current_user)
     return head :error if answer.nil?
     question.score(answer)
-    head :ok
+    render json: {success: true}
   end
 end

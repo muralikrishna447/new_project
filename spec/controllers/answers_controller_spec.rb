@@ -33,6 +33,7 @@ describe AnswersController, "#create" do
     it 'returns 200 if answer is created and scored' do
       post :create, question_id: 1, id: 1
       response.code.should == '200'
+      response.body.should == '{"success":true}'
     end
 
     context 'answer did not get created' do
