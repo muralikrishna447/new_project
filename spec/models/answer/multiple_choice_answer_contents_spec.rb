@@ -8,6 +8,11 @@ describe MultipleChoiceAnswerContents, '#update' do
     contents.answer.should be_false
   end
 
+  it 'saves answer uid' do
+    contents.update(uid: 'ABC')
+    contents.uid.should == 'ABC'
+  end
+
   it 'does not save any other keys' do
     contents.update(bad_key: 'bad')
     contents.bad_key.should be_nil
