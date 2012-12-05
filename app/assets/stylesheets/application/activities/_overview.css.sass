@@ -28,34 +28,37 @@
       list-style-type: disc
       +font-sans-medium
 
-  table.ingredients
-    margin-top: 20px
-    width: 100%
-    table-layout: fixed
-    +font-sans-medium
-    thead
-      color: $gray
-      border-top: 1px solid $gray
-      border-bottom: 1px solid $gray
-      th
-        padding: 7px 0
-        font-weight: 400
-        text-transform: uppercase
-      #ingredient
-        text-align: left
-      #quantity
-        text-align: right
-        cursor: pointer
+table.ingredients
+  margin-top: 20px
+  width: 100%
+  table-layout: fixed
+  +font-sans-medium
+  thead
+    color: $gray
+    border-top: 1px solid $gray
+    border-bottom: 1px solid $gray
+    th
+      padding: 7px 0
+      font-weight: 400
+      text-transform: uppercase
+    #ingredient
+      text-align: left
+    .quantity
+      text-align: right
+      cursor: pointer
 
-    tbody
-      .quantity
-        text-align: right
-      tr
-        color: $black
-        td
-          padding: 7px 10px 0 0
-        td:first-child
-          width: 100%
+  tbody
+    .quantity
+      text-align: right
+    tr
+      color: $black
+      td
+        padding: 7px 10px 0 0
+      td:first-child
+        width: 100%
 
-  .cooked-this-count
-    margin-top: 15px
+.right-of-ingredients
+  margin-top: 20px
+
+.cooked-this-count
+  margin-top: 15px

@@ -1,11 +1,20 @@
 .row.step
   .span4
-    %h3
+    %h3.step_title
       %strong= step.title(count)
     - if step.ingredients.any?
       .well
-        %h6 Ingredients
-        %table
+        %table.ingredients
+          %colgroup
+            %col{width: "70%"}
+            %col{width: "20%"}
+            %col{width: "10%"}
+          %thead
+            %tr
+              %th#ingredient Ingredient
+              %th#quantity{colspan: 2}
+                %a.change_units{title: "Click to change units"} Quantity
+
           - step.ingredients.each do |ingredient|
             %tr
               - if ingredient.product_url.present?
@@ -21,7 +30,7 @@
       .step-directions
         :markdown
           #{raw step.directions}
-  .span8
+  .span8.noprint
     - if step.youtube_id?
       .well.video
         .video-container

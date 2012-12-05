@@ -21,7 +21,7 @@ $ ->
   updateUnits()
 
   # Setup click handler for units toggle
-  $("#change_units").click ->
+  $(".change_units").click ->
     csUnits = if csUnits == "ounces" then "grams" else "ounces"
     # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
     updateUnits()

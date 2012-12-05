@@ -1,0 +1,64 @@
+$print_gray: rgb(220, 220, 220)
+
+p, body, .step-directions li, table.ingredients
+  font-size: 12pt
+
+#overview h1
+  color: black
+  font-size: 15pt
+
+.main-container
+  width: auto
+  margin: 0 10%
+  padding: 0
+  float: none !important
+
+.noprint
+  display: none
+
+.horizontal-divider
+  display: none
+
+.hero-well
+  background: white
+
+.hero-unit.hero-well.hero-step-by-step
+  border: none
+  padding-top: 0px
+
+a, .step strong, table.ingredients thead
+  color: black !important
+
+table.ingredients
+  margin-top: 0
+
+.hero-step-by-step
+  margin-bottom: 20px
+
+  .step
+    page-break-inside: avoid
+
+    .span4
+      width: 100%
+
+    .well
+      background: transparent
+      border:  none !important
+      width: 30%
+      box-shadow:  none
+      display: inline-block
+      clear: none
+
+    .step-directions
+      vertical-align: top
+      display: inline-block
+      width:  50%
+
+
+  .step_title
+    box-shadow: inset 0 0 1em $print_gray
+    padding-left: 20px
+    width:  100%
+    clear: both
+
+
