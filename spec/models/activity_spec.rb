@@ -187,6 +187,12 @@ describe Activity, "#update_recipe_steps" do
     activity.should_not_receive(:update_recipe_step_order)
     activity.update_recipe_steps
   end
+
+  it "does not update recipe step order if activity has no recipes" do
+    activity.recipes.destroy_all
+    activity.should_not_receive(:update_recipe_step_order)
+    activity.update_recipe_steps
+  end
 end
 
 describe Activity, "#update_recipe_step_order" do
