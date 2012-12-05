@@ -6,9 +6,9 @@ class ChefStepsAdmin.Views.QuizImage extends Backbone.View
     @
 
   imageSrc: =>
-    @addOptions(@model.get('url'))
+    @convertImage(@model.get('url'))
 
-  addOptions: (url) =>
+  convertImage: (url) =>
     optionsQueryString = $.param(@imageOptions)
     "#{url}/convert?#{optionsQueryString}"
 
