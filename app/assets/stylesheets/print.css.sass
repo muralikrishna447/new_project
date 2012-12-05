@@ -14,7 +14,7 @@ p, body, .step-directions li, table.ingredients
   float: none !important
 
 .noprint
-  display: none
+  display: none !important
 
 .horizontal-divider
   display: none
@@ -30,6 +30,9 @@ a, .step strong, table.ingredients thead
   color: black !important
 
 table.ingredients
+  margin-top: 0
+
+.right-of-ingredients
   margin-top: 0
 
 .hero-step-by-step
@@ -56,7 +59,7 @@ table.ingredients
 
 
   .step_title
-    box-shadow: 0 0 0.1em 1em $print_gray inset
+    box-shadow: 0 0 0 2em $print_gray inset
     padding-left: 20px
     width:  100%
     clear: both
