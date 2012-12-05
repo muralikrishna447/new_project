@@ -59,6 +59,6 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
     event.preventDefault()
     confirmMessage = $(event.currentTarget).data('confirm')
     if not confirmMessage || confirm(confirmMessage)
-      @model.destroy()
+      @model.destroyImage()
       @remove()
 
