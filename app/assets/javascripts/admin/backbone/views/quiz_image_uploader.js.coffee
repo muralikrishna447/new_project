@@ -1,8 +1,11 @@
 class ChefStepsAdmin.Views.QuizImageUploader extends Backbone.View
 
-  initialize: (options) =>
-
   el: '#image-uploader'
+
+  render: =>
+    if @collection.length == 0
+      @openFilePicker()
+    @
 
   events:
     'click [data-behavior~=filepicker]': 'openFilePicker'

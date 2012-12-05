@@ -1,5 +1,3 @@
-window.filepicker ||= {}
-
 describe 'ChefStepsAdmin.Models.QuizImage', ->
   beforeEach ->
     @model = new ChefStepsAdmin.Models.QuizImage()
@@ -14,7 +12,6 @@ describe 'ChefStepsAdmin.Models.QuizImage', ->
 
   describe "#destroyImage", ->
     beforeEach ->
-      filepicker.remove = jasmine.createSpy('remove')
       @model.buildFPFile = () -> 'filepicker object'
       @model.destroyImage()
 
