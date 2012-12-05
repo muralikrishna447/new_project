@@ -10,3 +10,6 @@
   %button.admin-button{ data: {behavior: 'filepicker'}} Pick a File
   #image-list
 
+#quiz-image-actions
+  = link_to 'Add Questions', manage_questions_admin_quiz_path(@quiz), class: 'admin-button'
+
