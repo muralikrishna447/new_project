@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 feature 'user authentication', :js do
+  include AcceptanceMacros
+
   scenario "creates a user when valid inputs are supplied and takes user to edit profile page" do
     visit '/'
     click_link('Sign up')
@@ -26,17 +28,7 @@ feature 'user authentication', :js do
   end
 
   scenario "authenticates a user when valid credentials are provided" do
-    Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password')
-
-    visit '/'
-    click_link('Log in')
-
-    wait_until { page.find("#log-in").visible? }
-
-    fill_in 'Email', with: 'bob@bob.com'
-    fill_in 'Password', with: 'password'
-    click_button 'Log In'
-
+    login_user
     page.should have_content('Bob Tester')
   end
 
@@ -66,16 +58,7 @@ feature 'user authentication', :js do
   end
 
   scenario "log out" do
-    Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password')
-
-    visit '/'
-    click_link('Log in')
-
-    wait_until { page.find("#log-in").visible? }
-
-    fill_in 'Email', with: 'bob@bob.com'
-    fill_in 'Password', with: 'password'
-    click_button 'Log In'
+    login_user
 
     page.should have_content('Bob Tester')
 
