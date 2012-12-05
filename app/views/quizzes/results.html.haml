@@ -1,0 +1,28 @@
+- content_for :title, "#{quiz.title.html_safe} Results"
+
+.hero-unit.quiz-title
+  .container
+    .row
+      .span12
+        %h3 Your Results for #{quiz.title}
+
+#quiz-results.container
+  .results-header.row
+    .span6
+      Questions:
+    .span2
+      Your Answer:
+    .span2
+      Correct Answer:
+    .span2
+      Students Avg. Score:
+  = render 'quizzes/multiple_choice_question_results', is_correct: true
+  .row
+    .span12
+      .horizontal-divider.dotted
+  = render 'quizzes/multiple_choice_question_results', is_correct: false
+  .row
+    .span12
+      .horizontal-divider.dotted
+  = render 'quizzes/multiple_choice_question_results'
+

@@ -1,0 +1,60 @@
+#quiz-results
+  .horizontal-divider
+    margin: 20px 0
+
+  .results-header
+    +font-sans-small
+    color: $grayMedium
+    text-transform: uppercase
+    font-weight: 500
+    margin-bottom: 30px
+    [class*='span']
+      text-align: center
+    [class*='span']:first-child
+      text-align: left
+
+  .multiple-choice-results
+    span
+      +font-serif-small
+      color: $grayMedium
+      &.count
+        color: $brick
+    ol
+      +font-sans-small
+      margin-top: 15px
+      margin-left: 45px
+      list-style-type: upper-alpha
+    li
+      padding: 5px 0
+
+    span.column-label
+      display: none
+
+    .label
+      position: relative
+      left: 24%
+      +font-serif-large
+      font-weight: normal
+      padding: 0.5em 1.5em
+      text-align: center
+
+    .label.correct
+      background: $green
+      color: $white
+
+    .label.wrong
+      background: $red
+      color: $white
+
+    .label.default
+      color: $black
+
+    .average
+      +font-serif-large
+      color: $brick
+      text-align: center
+      margin-top: 0
+
+    .result-column
+      margin-top: 40px
+
