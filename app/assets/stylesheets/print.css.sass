@@ -1,22 +1,25 @@
 $print_gray: rgb(220, 220, 220)
 
+.noprint
+  display: none !important
+
+@page
+  margin: 1cm
+
 p, body, .step-directions li, table.ingredients
   font-size: 12pt
-
-
 
 #overview h1
   color: black
   font-size: 15pt
 
+.navbar .brand-container
+  margin: 0px auto
+  width:  400px
+
 .main-container
-  width: auto
-  margin: 0 10%
   padding: 0
   float: none !important
-
-.noprint
-  display: none !important
 
 .horizontal-divider
   display: none
@@ -32,10 +35,7 @@ a, .step strong, table.ingredients thead
   color: black !important
 
 table.ingredients
-  margin-top: 0
-
-.right-of-ingredients
-  margin-top: 0
+  margin-top: 6pt
 
 .hero-step-by-step
   margin-top: 1em
@@ -54,6 +54,9 @@ table.ingredients
       box-shadow:  none
       display: inline-block
       clear: none
+
+    .well+.step-directions
+      margin-top: 1.6em
 
     .step-directions
       vertical-align: top
