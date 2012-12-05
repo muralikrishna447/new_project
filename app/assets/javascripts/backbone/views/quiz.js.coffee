@@ -4,6 +4,7 @@ class ChefSteps.Views.Quiz extends Backbone.View
 
   initialize: (options)->
     @navHider = options.navHider
+    @collection.on('next', @loadNextQuestion, @)
 
   startQuiz: ->
     @navHider.hide()
