@@ -18,7 +18,7 @@
         %div{ class: hb('answer_width count') }
           %li{ data: {behavior: 'radio'} }
             = radio_button_tag 'answer', hb('answer'), false, id: hb('uid')
-            %label= hb('answer')
+            %label{ for: hb('uid') }= hb('answer')
 
 %a.btn.btn-primary.btn-next{href: '#'}
   %i.icon-double-chevron-right
