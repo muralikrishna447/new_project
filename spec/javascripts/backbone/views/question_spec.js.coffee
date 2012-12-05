@@ -9,7 +9,7 @@ describe 'ChefSteps.Views.Question', ->
     @view = new ChefSteps.Views.Question(model: @model)
     @view.extendTemplateJSON = ()->
       options: [
-        { id: 'ABCD', answer: 'true' }
+        { uid: 'ABCD', answer: 'true' }
       ]
     $('#sandbox').html(@view.render().$el)
 
@@ -63,8 +63,8 @@ describe 'ChefSteps.Views.Question', ->
     it "returns type of 'multiple_choice'", ->
       expect(@view.answerData().type).toEqual('multiple_choice')
 
-    it 'returns id for selected option', ->
-      expect(@view.answerData().id).toEqual('ABCD')
+    it 'returns uid for selected option', ->
+      expect(@view.answerData().uid).toEqual('ABCD')
 
     it 'returns answer for selected option', ->
       expect(@view.answerData().answer).toEqual('true')
