@@ -11,7 +11,7 @@ class ChefSteps.Views.Quiz extends Backbone.View
     @loadNextQuestion(@collection.first())
 
   loadNextQuestion: (model)->
-    question = new ChefSteps.Views.Question(model: model)
     @$('>').fadeOut 'slow', =>
+      question = new ChefSteps.Views.Question(model: model)
       @$el.html(question.render().$el)
-      setTimeout(question.show, 1)
+      question.$el.animate({marginLeft: 0, opacity: 1}, 1000)

@@ -13,11 +13,6 @@ describe 'ChefSteps.Views.Question', ->
       ]
     $('#sandbox').html(@view.render().$el)
 
-  describe '#show', ->
-    it 'sets the visible class', ->
-      @view.show()
-      expect(@view.$el).toHaveClass('visible')
-
   describe '#showNext', ->
     it 'shows next button', ->
       $('.btn-next').hide()

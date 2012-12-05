@@ -11,10 +11,6 @@ class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
     @$el.html(@renderTemplate())
     @
 
-  show: =>
-    @delegateEvents()
-    @$el.addClass('visible')
-
   answerChanged: ->
     if @answerSelected()
       @showNext()
