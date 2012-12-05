@@ -31,12 +31,6 @@ ActiveAdmin.register Quiz do
     @questions = QuestionPresenter.present_collection(@quiz.questions)
   end
 
-  member_action :images, method: :post do
-    @quiz = Quiz.find(params[:id])
-    @quiz.images.create(filename: params[:filename], url: params[:url])
-    head :ok
-  end
-
   member_action :upload_images do
     @quiz = Quiz.find(params[:id])
     @quiz_images = ImagePresenter.present_collection(@quiz.images)
