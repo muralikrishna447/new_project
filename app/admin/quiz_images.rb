@@ -16,13 +16,14 @@ ActiveAdmin.register QuizImage, as: "Image" do
       render json: ImagePresenter.new(@image).present
     end
 
+
     private
 
     def get_attributes(params)
       {
-       caption: params[:caption],
-       filename: params[:filename],
-       url: params[:url]
+        caption: params[:caption],
+        filename: params[:filename],
+        url: params[:url]
       }
     end
   end
