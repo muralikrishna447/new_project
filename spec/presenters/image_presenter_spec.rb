@@ -7,7 +7,7 @@ describe ImagePresenter, "#present" do
   subject { image_presenter.attributes }
 
   it "serializes valid keys" do
-    subject.keys.should =~ [:id, :filename, :caption, :image_url]
+    subject.keys.should =~ [:id, :filename, :caption, :url]
   end
 end
 

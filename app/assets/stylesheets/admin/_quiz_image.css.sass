@@ -1,9 +1,38 @@
 #image-uploader
   .quiz-image
+    $imageWidth: 250px
+    $imageHeight: 250px
     margin: 10px
     float: left
+    padding: 15px
+    background: whitesmoke
+    border-radius: 5px
+    img
+      float: left
+      margin-bottom: 15px
+      width: $imageWidth
+      height: $imageHeight
+    span
+      font-size: 16px
+      clear: left
+    .caption
+      float: left
+      width: $imageWidth - 25px
+    .edit
+      float: right
+      font-size: 24px
+    form
+      textarea
+        float: left
+        width: $imageWidth - 25px
+        height: 50px
+      button
+        margin-top: 10px
+        float: right
+        clear: left
 
 #quiz-image-actions
   float: left
+  margin-top: 15px
   clear: both
 
