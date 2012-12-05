@@ -95,12 +95,9 @@ activities:
   yield: 10 portions
   order: 2
   description: >
-    dio twee umami chambray. Velit VHS ad godard PBR american
-    apparel. Placeat odio leggings typewriter chambray master cleanse squid,
-    aesthetic seitan ullamco bicycle rights pour-over mlkshk cardigan ea.
-    Mollit bushwick brunch, scenester et direct trade carles eu portland cosby
-    sweater ennui shoreditch. Laboris velit gluten-free, pork belly bicycle
-    rights twee nulla mumblecore cosb
+    This is an incredible salmon dish. The salmon is so happy it will leap
+    off your plate, search for the nearest plumbing fixture and attempt
+    to swim upstream.
 
   activity_equipment:
   - title: Immersion circulator (or other sous vide cooking equipment)
@@ -125,7 +122,7 @@ activities:
       display_quantity: '400'
       unit: g
     steps:
-    - title: Weigh out ingredients
+    - title:
       image_id: IMG_4738.jpg
       ingredients:
       - title: Water
@@ -139,7 +136,7 @@ activities:
         unit: g
       directions: "* Scale ingredients"
 
-    - title: Dissolve salt and sugar into the water
+    - title:
       image_id: IMG_4817.jpg
       ingredients:
         - title: Water
@@ -155,27 +152,27 @@ activities:
         * Dissolve salt and sugar into the water.
         * Chill brine to less than 41 &deg;F / 5 &deg;C
         * Tip: Dissolve the sugar and salt into half the weight of water, then add the rest of the water as ice to quickly chill the brine.
-    - title: while brine
+    - title:
       image_id: IMG_4862.jpg
       directions: "* While brine is chilling, remove pin bones from salmon loin."
-    - title: submerge
+    - title:
       image_id: IMG_4885.jpg
       directions: "* Submerge salmon loin in chilled brine for 45 minutes."
-    - title: strain-salmon
+    - title:
       image_id: IMG_4908.jpg
       directions: "* Strain salmon portions from the brine."
-    - title: vacuum
+    - title:
       image_id: IMG_4946.jpg
       directions: |
         * Vacuum package the salmon loins individually.
         * Tip: Add a small amount of olive oil to the packaging with salmon to make it easier to remove the cooked salmon later.
-    - title: cook
+    - title:
       image_id: IMG_5026.jpg
       directions: "* Sous vide cook at 104 &deg;F / 40 &deg;C for 60 minutes to reach equilibrium temperature."
-    - title: remove cooked
+    - title:
       image_id: IMG_5134.jpg
       directions: "* Remove cooked salmon and submerge in ice water. Then refigerate for at least 6 hours for texture to set."
-    - title: portion
+    - title:
       image_id: salmon_trim_IMG_5376.jpg
       directions: |
         * Portion chilled salmon loin into ten 40 g portions, each about &frac34; in. / 2 cm. thick
