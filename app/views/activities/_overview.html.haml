@@ -31,7 +31,7 @@
         - if activity.has_ingredients?
           - activity.ordered_recipes.each do |recipe|
             = render 'ingredients_list', recipe: recipe
-      .span6.right-of-ingredients
+      .span6
         - if activity.yield.present? || activity.timing.present?
           .row
             .span4

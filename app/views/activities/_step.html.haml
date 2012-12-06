@@ -1,5 +1,5 @@
 .row.step
-  .span4
+  .span4.step_directions_col
     %h3.step_title
       %strong= step.title(count)
     - if step.ingredients.any?
@@ -30,13 +30,13 @@
       .step-directions
         :markdown
           #{raw step.directions}
-  .span8.noprint
+  .span8.step-img-col
     - if step.youtube_id?
-      .well.video
+      .well.video.noprint
         .video-container
           %iframe{src: youtube_url(step.youtube_id)}
     - else
-      .well
+      .well.step-image
         - if step.image_id?
           %img{src: s3_image_url(step.image_id)}
         - else
