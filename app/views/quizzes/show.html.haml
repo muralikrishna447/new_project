@@ -2,7 +2,9 @@
   window.ChefSteps = window.ChefStepsAdmin || {};
   window.ChefSteps.questionsData = JSON.parse('#{j(questions)}');
 
-- add_body_data(behavior: 'nav-hideable')
+:ruby
+  add_body_data behavior: 'nav-hideable'
+  content_for :title, 'Quiz'
 
 .hero-unit.quiz-title
   .container
