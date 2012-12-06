@@ -4,11 +4,16 @@ module QuizHelper
   end
 
   def estimated_time(question_count)
-    question_count * 20 / 60
+    question_count * 20
   end
 
-  def progress_dial(value, max, label, size=nil)
-    content_tag :div, class: "dial-wrapper #{size}", data: {behavior: 'progress-dial'} do
+  def progress_dial(value, max, opts={})
+    opts = {
+      label: '',
+      size: 'normal',
+      display_value: false
+    }.merge(opts)
+    content_tag :div, class: "dial-wrapper #{opts[:size]}", data: {behavior: 'progress-dial'} do
       content = text_field_tag :dial, value, data: {
         displayinput: false,
         readonly: true,
@@ -18,7 +23,8 @@ module QuizHelper
         bgcolor: value > 0 ? '#EAEAEA' : 'whiteSmoke'
       }
       content += content_tag :span, class: 'dial-text' do
-        content_tag(:strong, max) + label
+        display_value = opts[:display_value] || max
+        content_tag(:strong, display_value) + opts[:label]
       end
     end
   end

@@ -15,14 +15,14 @@ describe QuizHelper, '#show_quizzes?' do
 end
 
 describe QuizHelper, '#estimated_time' do
-  it 'is 0 if there are no questions' do
+  it 'is 0s if there are no questions' do
     helper.estimated_time(0).should == 0
   end
 
   it 'adds 20 seconds for every question, rounded to the minute' do
-    helper.estimated_time(2).should == 0
-    helper.estimated_time(3).should == 1
-    helper.estimated_time(6).should == 2
+    helper.estimated_time(2).should == 40
+    helper.estimated_time(3).should == 60
+    helper.estimated_time(6).should == 120
   end
 end
 
@@ -44,7 +44,7 @@ describe QuizHelper, 'question stats' do
 
   context '#question_time_stats' do
     it 'returns [est_time(# questions answered), est_time(# total questions)]' do
-      helper.question_time_stats(quiz).should == [1, 6]
+      helper.question_time_stats(quiz).should == [60, 400]
     end
   end
 end
