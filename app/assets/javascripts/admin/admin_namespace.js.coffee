@@ -3,6 +3,7 @@ window.ChefStepsAdmin ||= {}
 ChefStepsAdmin.Models ||= {}
 ChefStepsAdmin.Collections ||= {}
 ChefStepsAdmin.Views ||= {}
+ChefStepsAdmin.Views.Modules ||= {}
 
 Handlebars.templates ||= {}
 
