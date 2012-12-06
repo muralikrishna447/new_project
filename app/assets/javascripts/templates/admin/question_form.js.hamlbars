@@ -1,5 +1,7 @@
 %form
   %label{ for: 'question' } Question
+  = hb 'if image' do
+    %img{ src: hb('image.url') }
   = hb("upload_image_button 'question-image'")
   %input#question{name: 'question', placeholder: "Please enter your question here.", value: hb('question') }
   %label{ for: 'instructions'} Instructions

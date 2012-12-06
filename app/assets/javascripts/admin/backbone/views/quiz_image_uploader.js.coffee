@@ -14,5 +14,5 @@ class ChefStepsAdmin.Views.QuizImageUploader extends Backbone.View
     _.each fpFiles, (fpFile) =>
       @collection.create(fpFile)
 
-_.defaults(ChefStepsAdmin.Views.QuizImageUploader.prototype, ChefStepsAdmin.Views.Modules.FilePicker)
+_.defaults(ChefStepsAdmin.Views.QuizImageUploader.prototype, ChefStepsAdmin.Views.Modules.FilePickerUpload)
 

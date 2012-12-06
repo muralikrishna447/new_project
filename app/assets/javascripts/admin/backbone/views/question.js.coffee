@@ -90,9 +90,10 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', @model.cid)
 
   singleFilePickerOnSuccess: (fpFile) =>
-    console.log 'success', @, fpFile
+    if @model.get('image')
+      debugger
     @model.save(image: fpFile)
-    @render()
+    @render(@formTemplate)
 
-_.defaults(ChefStepsAdmin.Views.Question.prototype, ChefStepsAdmin.Views.Modules.FilePicker)
+_.defaults(ChefStepsAdmin.Views.Question.prototype, ChefStepsAdmin.Views.Modules.FilePickerUpload)
 

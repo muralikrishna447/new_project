@@ -1,4 +1,4 @@
-ChefStepsAdmin.Views.Modules.FilePicker =
+ChefStepsAdmin.Views.Modules.FilePickerUpload =
   filepickerOptions:
     mimetype: 'image/*'
     service: 'COMPUTER'

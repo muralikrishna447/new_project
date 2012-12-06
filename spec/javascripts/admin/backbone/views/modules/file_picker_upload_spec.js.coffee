@@ -1,6 +1,6 @@
-describe 'ChefStepsAdmin.Views.Modules.FilePicker', ->
+describe 'ChefStepsAdmin.Views.Modules.FilePickerUpload', ->
   beforeEach ->
-    @view_module = ChefStepsAdmin.Views.Modules.FilePicker
+    @view_module = ChefStepsAdmin.Views.Modules.FilePickerUpload
 
   describe "#openMultipleFilePicker", ->
     beforeEach ->
@@ -23,5 +23,4 @@ describe 'ChefStepsAdmin.Views.Modules.FilePicker', ->
   describe "#singleFilePickerOnSuccess", ->
     it "throws an NotImplementedError", ->
       expect(@view_module.singleFilePickerOnSuccess).toThrow("NotImplementedError")
-
 
