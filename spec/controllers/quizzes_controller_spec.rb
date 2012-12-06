@@ -7,7 +7,11 @@ describe QuizzesController, '#show' do
   end
 
   it 'exposes presented questions' do
-    controller.stub(:quiz) { stub('quiz', ordered_questions: 'the questions') }
+    user = stub
+    quiz = stub
+    controller.stub(:current_user) { user }
+    controller.stub(:quiz) { quiz }
+    quiz.should_receive(:questions_remaining_for).with(user).and_return('the questions')
     QuestionPresenter.should_receive(:present_collection) { 'the questions' }
     controller.questions
   end
