@@ -25,18 +25,20 @@
         .dial-left
           = progress_dial *question_count_stats(quiz),
             label: 'questions' do
-            You have
-            %span= remaining_question_count
-            %br
-            remaining #{'question'.pluralize remaining_question_count}
+            - if quiz.started_by?(current_user)
+              You have
+              %span= remaining_question_count
+              %br
+              remaining #{'question'.pluralize remaining_question_count}
         .dial-right
           = progress_dial *question_time_stats(quiz),
             label: 'est. min.',
             display_value: estimated_time(quiz.question_count)/60 do
-            You have
-            %span= estimated_time(remaining_question_count)/60
-            %br
-            est. min. remaining
+            - if quiz.started_by?(current_user)
+              You have
+              %span= estimated_time(remaining_question_count)/60
+              %br
+              est. min. remaining
     .row
       .span12
         %p.pull-left= quiz.start_copy

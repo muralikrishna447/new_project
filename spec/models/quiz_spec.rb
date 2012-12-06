@@ -108,3 +108,18 @@ describe Quiz, "#questions_remaining_for" do
     should =~ []
   end
 end
+
+describe Quiz, '#started_by?' do
+  let(:user) { Fabricate.build(:user) }
+  let(:quiz) { Fabricate(:quiz) }
+
+  it 'returns false if user has answered no questions' do
+    quiz.should_receive(:questions_answered_by).with(user) { [] }
+    quiz.started_by?(user).should_not be
+  end
+
+  it 'returns true if user has answered questions' do
+    quiz.should_receive(:questions_answered_by).with(user) { ['q1'] }
+    quiz.started_by?(user).should be
+  end
+end

@@ -37,4 +37,8 @@ class Quiz < ActiveRecord::Base
   def questions_remaining_for(user)
     ordered_questions - questions_answered_by(user)
   end
+
+  def started_by?(user)
+    questions_answered_by(user).count > 0
+  end
 end
