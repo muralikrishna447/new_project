@@ -18,6 +18,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     'click .cancel': 'render'
     'click #question-image': 'openFilePicker'
 
+
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editQuestion", @editQuestionEventHandler)
     ChefStepsAdmin.ViewEvents.on("questionOrderingMode", @renderOrderingView)
@@ -26,6 +27,18 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   addOptionView: (option) =>
     new ChefStepsAdmin.Views.Option(option: option)
+
+  imageOptions:
+    w: 80,
+    h: 80,
+    fit: 'crop'
+
+  extendTemplateJSON: (templateJSON) =>
+    image = templateJSON['image']
+    if image
+      image.url = @convertImage(image.url)
+      _.extend(templateJSON['image'], image)
+    templateJSON
 
   renderOptionViews: =>
     _.each(@model.get('options'), (option) =>
@@ -90,10 +103,9 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', @model.cid)
 
   singleFilePickerOnSuccess: (fpFile) =>
-    if @model.get('image')
-      debugger
+    @model.destroyImage() if @model.get('image')
     @model.save(image: fpFile)
     @render(@formTemplate)
 
-_.defaults(ChefStepsAdmin.Views.Question.prototype, ChefStepsAdmin.Views.Modules.FilePickerUpload)
+_.defaults(ChefStepsAdmin.Views.Question.prototype, ChefStepsAdmin.Views.Modules.FilePickerUpload, ChefStepsAdmin.Views.Modules.FilePickerDisplay)
 

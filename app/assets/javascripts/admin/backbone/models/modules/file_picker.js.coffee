@@ -5,9 +5,13 @@ ChefStepsAdmin.Models.Modules.FilePicker =
   destroyImage: ->
     filepicker.remove(@buildFPFile(), @destroySuccess)
 
+  getImage: ->
+    throw new Error("NotImplementedError")
+
   buildFPFile: ->
     file = {}
-    file.url = @get('url')
-    file.filename = @get('filename')
+    image = @getImage()
+    file.url = image.url
+    file.filename = image.filename
     file
 
