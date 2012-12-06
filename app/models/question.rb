@@ -8,6 +8,7 @@ class Question < ActiveRecord::Base
 
   belongs_to :quiz
   has_many :answers
+  has_one :image, as: :imageable
 
   attr_accessible :quiz_id, :contents
 
