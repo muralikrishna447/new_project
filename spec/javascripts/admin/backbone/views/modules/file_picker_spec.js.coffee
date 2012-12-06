@@ -16,3 +16,12 @@ describe 'ChefStepsAdmin.Views.Modules.FilePicker', ->
     it "calls filepicker.pick", ->
       expect(filepicker.pick).toHaveBeenCalledWith(@view_module.filepickerOptions, @view_module.singleFilePickerOnSuccess)
 
+  describe "#multipleFilePickerOnSuccess", ->
+    it "throws an NotImplementedError", ->
+      expect(@view_module.multipleFilePickerOnSuccess).toThrow("NotImplementedError")
+
+  describe "#singleFilePickerOnSuccess", ->
+    it "throws an NotImplementedError", ->
+      expect(@view_module.singleFilePickerOnSuccess).toThrow("NotImplementedError")
+
+
