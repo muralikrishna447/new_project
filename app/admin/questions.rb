@@ -10,6 +10,7 @@ ActiveAdmin.register Question do
 
     def update
       @question = Question.find(params[:id])
+      @question.update_image(params.delete(:image))
       @question.update_contents(params)
       update!
     end
