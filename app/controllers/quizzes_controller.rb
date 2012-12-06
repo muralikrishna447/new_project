@@ -1,10 +1,20 @@
 class QuizzesController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :redirect_to_results, only: :show
 
   expose(:quiz) { Quiz.find_published(params[:id], params[:token]) }
-  expose(:questions) { QuestionPresenter.present_collection(quiz.ordered_questions) }
+  expose(:questions) { QuestionPresenter.present_collection(questions_remaining) }
 
   def results
+  end
 
+  private
+
+  def redirect_to_results
+    redirect_to results_quiz_path(quiz) if questions_remaining.empty?
+  end
+
+  def questions_remaining
+    @questions_remaining ||= quiz.questions_remaining_for(current_user)
   end
 end
