@@ -24,6 +24,7 @@ class MultipleChoiceQuestionContents < OpenStruct
   private
 
   def add_option_ids(options)
+    return unless options.present?
     options.each do |option|
       option.merge!(uid: unique_id) unless option[:uid]
     end
