@@ -35,7 +35,7 @@ class ChefSteps.Views.ProgressDial extends Backbone.View
 
   dialSize: ->
     return 'large' if @windowSize() >= 1200
-    return 'small' if @windowSize() <= 480
+    return 'small' if @windowSize() <= 520
     return 'medium'
 
   setSize: ->
