@@ -5,7 +5,7 @@ describe Admin::QuizzesController do
 
   it 'redirects to add questions flow on create' do
     post :create
-    response.should redirect_to(upload_images_admin_quiz_path(Quiz.first))
+    response.should redirect_to(manage_questions_admin_quiz_path(Quiz.first))
   end
 
   context 'manage_questions' do

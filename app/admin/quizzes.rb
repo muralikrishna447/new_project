@@ -21,7 +21,7 @@ ActiveAdmin.register Quiz do
   controller do
     def create
       create! do |format|
-        format.html { redirect_to upload_images_admin_quiz_path(@quiz) }
+        format.html { redirect_to manage_questions_admin_quiz_path(@quiz) }
       end
     end
   end
