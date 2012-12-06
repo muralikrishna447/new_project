@@ -20,5 +20,6 @@
 //= require base_router
 
 //= require_tree ./admin/backbone/models
+//= require_tree ./admin/backbone/views/modules
 //= require_tree ./admin
 
