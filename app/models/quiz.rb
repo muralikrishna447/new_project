@@ -29,4 +29,12 @@ class Quiz < ActiveRecord::Base
       questions.find(question_id).update_attribute(:question_order_position, :last)
     end
   end
+
+  def questions_answered_by(user)
+    ordered_questions.joins(:answers).where('answers.user_id = ?', user.id)
+  end
+
+  def questions_remaining_for(user)
+    ordered_questions - questions_answered_by(user)
+  end
 end
