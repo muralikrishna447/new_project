@@ -22,9 +22,9 @@
         = image_tag 'http://lorempixel.com/745/376/food/', class: 'img-polaroid'
       .span4.dials
         .dial-left
-          = progress_dial 0, quiz.question_count, 'questions'
+          = progress_dial *question_count_stats(quiz), 'questions'
         .dial-right
-          = progress_dial 0, estimated_time(quiz.question_count), 'est. min.'
+          = progress_dial *question_time_stats(quiz), 'est. min.'
     .row
       .span12
         %p.pull-left= quiz.start_copy

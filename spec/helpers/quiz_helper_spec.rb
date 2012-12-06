@@ -25,3 +25,26 @@ describe QuizHelper, '#estimated_time' do
     helper.estimated_time(6).should == 2
   end
 end
+
+describe QuizHelper, 'question stats' do
+  let(:user) { stub }
+  let(:quiz) { stub }
+
+  before do
+    helper.stub(:current_user) { user }
+    quiz.should_receive(:questions_answered_by) { stub(count: 3) }
+    quiz.should_receive(:question_count) { 20 }
+  end
+
+  context '#question_count_stats' do
+    it 'returns [# questions answered, # total questions]' do
+      helper.question_count_stats(quiz).should == [3, 20]
+    end
+  end
+
+  context '#question_time_stats' do
+    it 'returns [est_time(# questions answered), est_time(# total questions)]' do
+      helper.question_time_stats(quiz).should == [1, 6]
+    end
+  end
+end
