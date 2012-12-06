@@ -15,7 +15,8 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     'click .delete': 'deleteQuestion'
     'click .add-option': 'addOption'
     'click .done': 'saveForm'
-    'click .cancel': 'cancelEdit'
+    'click .cancel': 'render'
+    'click #question-image.upload-image': 'openFilepicker'
 
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editQuestion", @editQuestionEventHandler)
@@ -37,13 +38,11 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   renderOptionView: (optionView) =>
     @$('.options').append(optionView.render().$el)
 
-  addOption: (event) =>
-    event.preventDefault()
+  addOption: =>
     optionView = @addOptionView(@defaultOption)
     @renderOptionView(optionView)
 
   deleteQuestion: (event) =>
-    event.preventDefault()
     confirmMessage = $(event.currentTarget).data('confirm')
     if not confirmMessage || confirm(confirmMessage)
       @model.destroy()
@@ -79,7 +78,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   isEditState: =>
     @templateName == @formTemplate
 
-  saveForm: (event) =>
+  saveForm: =>
     event.preventDefault() if event
     data = @$('form').serializeObject()
     data = _.omit(data, ['answer', 'correct'])
@@ -87,10 +86,8 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     @model.save(data)
     @render()
 
-  cancelEdit: (event) =>
-    event.preventDefault()
-    @render()
-
   triggerEditQuestion: =>
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', @model.cid)
 
+  openFilepicker: =>
+    console.log 'open file picker'

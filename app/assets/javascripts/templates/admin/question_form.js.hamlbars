@@ -7,7 +7,7 @@
   %ul.options
 
 .form-actions.actions
-  %button.add-option.admin-button Add Option
-  %button.done.admin-button Done
-  %button.cancel.admin-button Cancel
+  %button.add-option.admin-button{type: 'button'} Add Option
+  %button.done.admin-button{type: 'button'} Done
+  %button.cancel.admin-button{type: 'button'} Cancel
 
