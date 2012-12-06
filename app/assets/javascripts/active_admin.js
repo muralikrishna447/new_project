@@ -11,6 +11,8 @@
 //= require admin/admin_helpers
 //= require admin/admin_namespace
 //= require backbone/views/templated_view
+//= require handlebar_helpers
+//
 //= require_tree ./templates/admin
 
 //= require factory
