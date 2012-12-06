@@ -52,3 +52,28 @@ describe Question, '#answer_count' do
     question.answer_count.should == 1
   end
 end
+
+describe Question, '#update_image' do
+  let(:question) { Fabricate.build(:multiple_choice_question) }
+  let(:image_params) { { url: 'www.foo.bar', filename: 'some file name', key: '123', size: 5005 } }
+
+  subject { question.update_image(image_params) }
+
+  it "creates an image if none exist" do
+    subject.filename.should == 'some file name'
+    subject.url.should == 'www.foo.bar'
+  end
+
+  context "with an existing image" do
+    let(:image) { Fabricate.build(:image) }
+
+    before do
+      question.image = image
+    end
+
+    it "updates the image" do
+      subject.filename.should == 'some file name'
+      subject.url.should == 'www.foo.bar'
+    end
+  end
+end
