@@ -41,4 +41,8 @@ class Quiz < ActiveRecord::Base
   def started_by?(user)
     questions_answered_by(user).count > 0
   end
+
+  def completed_by?(user)
+    questions_remaining_for(user).count == 0
+  end
 end

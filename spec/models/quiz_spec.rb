@@ -123,3 +123,18 @@ describe Quiz, '#started_by?' do
     quiz.started_by?(user).should be
   end
 end
+
+describe Quiz, '#completed_by?' do
+  let(:user) { Fabricate.build(:user) }
+  let(:quiz) { Fabricate(:quiz) }
+
+  it 'returns false if user has not answered all questions' do
+    quiz.should_receive(:questions_remaining_for).with(user) { ['q1'] }
+    quiz.completed_by?(user).should_not be
+  end
+
+  it 'returns true if user has answered all questions' do
+    quiz.should_receive(:questions_remaining_for).with(user) { [] }
+    quiz.completed_by?(user).should be
+  end
+end
