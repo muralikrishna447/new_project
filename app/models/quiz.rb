@@ -31,7 +31,7 @@ class Quiz < ActiveRecord::Base
   end
 
   def questions_answered_by(user)
-    ordered_questions.joins(:answers).where('answers.user_id = ?', user.id)
+    ordered_questions.joins(:answers).where(answers: {user_id: user.id})
   end
 
   def questions_remaining_for(user)
