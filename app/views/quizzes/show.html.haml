@@ -21,10 +21,22 @@
       .span8
         = image_tag 'http://lorempixel.com/745/376/food/', class: 'img-polaroid'
       .span4.dials
+        - remaining_question_count = quiz.questions_remaining_for(current_user).count
         .dial-left
-          = progress_dial *question_count_stats(quiz), label: 'questions'
+          = progress_dial *question_count_stats(quiz),
+            label: 'questions' do
+            You have
+            %span= remaining_question_count
+            %br
+            remaining #{'question'.pluralize remaining_question_count}
         .dial-right
-          = progress_dial *question_time_stats(quiz), label: 'est. min.', display_value: estimated_time(quiz.question_count)/60
+          = progress_dial *question_time_stats(quiz),
+            label: 'est. min.',
+            display_value: estimated_time(quiz.question_count)/60 do
+            You have
+            %span= estimated_time(remaining_question_count)/60
+            %br
+            est. min. remaining
     .row
       .span12
         %p.pull-left= quiz.start_copy

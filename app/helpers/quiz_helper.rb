@@ -7,7 +7,7 @@ module QuizHelper
     question_count * 20
   end
 
-  def progress_dial(value, max, opts={})
+  def progress_dial(value, max, opts={}, &block)
     opts = {
       label: '',
       size: 'normal',
@@ -26,6 +26,10 @@ module QuizHelper
         display_value = opts[:display_value] || max
         content_tag(:strong, display_value) + opts[:label]
       end
+      if block_given?
+        content += content_tag(:div, class: 'dial-caption', &block)
+      end
+      content
     end
   end
 
