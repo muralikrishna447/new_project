@@ -22,10 +22,6 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
     templateJSON['url'] = @convertImage(@model.get('url'))
     templateJSON
 
-  convertImage: (url) =>
-    optionsQueryString = $.param(@imageOptions)
-    "#{url}/convert?#{optionsQueryString}"
-
   imageOptions:
     w: 250,
     h: 250,
@@ -61,4 +57,6 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
     if not confirmMessage || confirm(confirmMessage)
       @model.destroyImage()
       @remove()
+
+_.defaults(ChefStepsAdmin.Views.QuizImage.prototype, ChefStepsAdmin.Views.Modules.FilePickerDisplay)
 
