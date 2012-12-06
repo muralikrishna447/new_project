@@ -16,7 +16,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     'click .add-option': 'addOption'
     'click .done': 'saveForm'
     'click .cancel': 'render'
-    'click #question-image.upload-image': 'openFilepicker'
+    'click #question-image': 'openFilePicker'
 
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editQuestion", @editQuestionEventHandler)
@@ -89,5 +89,8 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   triggerEditQuestion: =>
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', @model.cid)
 
-  openFilepicker: =>
-    console.log 'open file picker'
+  singleFilePickerOnSuccess: (fpFile) =>
+    console.log 'success', @, fpFile
+
+_.defaults(ChefStepsAdmin.Views.Question.prototype, ChefStepsAdmin.Views.Modules.FilePicker)
+
