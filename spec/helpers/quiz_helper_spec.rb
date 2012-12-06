@@ -32,7 +32,7 @@ describe QuizHelper, 'question stats' do
 
   before do
     helper.stub(:current_user) { user }
-    quiz.should_receive(:questions_answered_by) { stub(count: 3) }
+    quiz.should_receive(:questions_answered_by_count) { 3 }
     quiz.should_receive(:question_count) { 20 }
   end
 

@@ -34,12 +34,12 @@ module QuizHelper
   end
 
   def question_count_stats(quiz)
-    [quiz.questions_answered_by(current_user).count,
+    [quiz.questions_answered_by_count(current_user),
      quiz.question_count]
   end
 
   def question_time_stats(quiz)
-    [estimated_time(quiz.questions_answered_by(current_user).count),
+    [estimated_time(quiz.questions_answered_by_count(current_user)),
      estimated_time(quiz.question_count)]
   end
 end

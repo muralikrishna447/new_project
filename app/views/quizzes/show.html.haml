@@ -23,7 +23,7 @@
       .span8
         = image_tag 'http://lorempixel.com/745/376/food/', class: 'img-polaroid'
       .span4.dials
-        - remaining_question_count = quiz.questions_remaining_for(current_user).count
+        - remaining_question_count = quiz.questions_remaining_for_count(current_user)
         .dial-left
           = progress_dial *question_count_stats(quiz),
             label: 'questions' do
