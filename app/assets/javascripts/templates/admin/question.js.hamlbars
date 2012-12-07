@@ -4,7 +4,7 @@
 
 %h3= hb('question')
 = hb 'if image.url' do
-  %img.question-image{ src: hb('image.url') }
+  %img.question-image.img-polaroid{ src: hb('image.url') }
 .question-box
   %h4= hb('instructions')
 

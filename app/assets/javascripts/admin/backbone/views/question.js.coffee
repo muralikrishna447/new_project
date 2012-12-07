@@ -31,8 +31,8 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     new ChefStepsAdmin.Views.Option(option: option)
 
   imageOptions:
-    w: 350,
-    h: 200,
+    w: 300,
+    h: 150,
     fit: 'crop'
 
   extendTemplateJSON: (templateJSON) =>
