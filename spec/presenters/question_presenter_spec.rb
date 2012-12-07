@@ -36,7 +36,7 @@ describe QuestionPresenter, "#present" do
 
   context "with an image" do
     before do
-      ImagePresenter.stub_chain(:new, :present).and_return('image attributes')
+      ImagePresenter.stub_chain(:new, :wrapped_attributes).and_return('image attributes')
       question.stub(:image).and_return(Fabricate.build(:image))
     end
 
