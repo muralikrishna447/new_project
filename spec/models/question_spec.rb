@@ -69,6 +69,12 @@ describe Question, '#update_image' do
     question.image.url.should == 'www.foo.bar'
   end
 
+  it "does nothing if empty hash" do
+    question.update_image({})
+    question.reload
+    question.image.should_not be
+  end
+
   context "with an existing image" do
     let(:image) { Fabricate.build(:image) }
 
