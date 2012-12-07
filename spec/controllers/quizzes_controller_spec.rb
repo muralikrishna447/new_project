@@ -38,3 +38,16 @@ describe QuizzesController, '#show' do
     end
   end
 end
+
+describe QuizzesController, 'quiz results exposure' do
+  it 'should present quiz results for user' do
+    user = stub
+    quiz = stub
+    presenter = stub
+    controller.stub(:current_user) { user }
+    controller.stub(:quiz) { quiz }
+    QuizResultsPresenter.should_receive(:new).with(quiz, user) { presenter }
+    presenter.should_receive(:present)
+    controller.quiz_results
+  end
+end

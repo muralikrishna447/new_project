@@ -4,6 +4,7 @@ class QuizzesController < ApplicationController
 
   expose(:quiz) { Quiz.find_published(params[:id], params[:token]) }
   expose(:questions) { QuestionPresenter.present_collection(questions_remaining) }
+  expose(:quiz_results) { QuizResultsPresenter.new(quiz, current_user).present }
 
   def results
   end
