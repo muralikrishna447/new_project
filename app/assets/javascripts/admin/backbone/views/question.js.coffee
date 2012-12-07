@@ -92,7 +92,6 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     @templateName == @formTemplate
 
   saveForm: =>
-    event.preventDefault() if event
     data = @$('form').serializeObject()
     data = _.omit(data, ['answer', 'correct'])
     data['options'] = _.map(@$('.edit-option'), (option) -> $('input', option).serializeObject())
