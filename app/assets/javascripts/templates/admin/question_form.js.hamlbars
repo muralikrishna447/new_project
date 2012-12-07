@@ -1,9 +1,10 @@
 %form
   %label{ for: 'question' } Question
   .image-controls
-    = hb("upload_image_button 'question-image'")
-    = hb 'if image' do
-      %img{ src: hb('image.url') }
+    = hb 'if image.url' do
+      %img#question-image{ src: hb('image.url') }
+    = hb 'unless image.url' do
+      = hb("upload_image_button 'question-image'")
   %input#question{name: 'question', placeholder: "Please enter your question here.", value: hb('question') }
   %label{ for: 'instructions'} Instructions
   %input#instructions{name: 'instructions', placeholder: "Please enter instructions", value: hb('instructions') }

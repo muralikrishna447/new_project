@@ -73,11 +73,14 @@ ol#question-list
       margin-top: 10px
     input[name=question], input[name=instructions]
       float: left
-      clear: both
+      clear: left
       font-size: 14px
       padding: 5px
-      width: 97%
       margin-top: 5px
+    input[name=question]
+      width: 86%
+    input[name=instructions]
+      width: 97%
     h3, h4
       float: left
       margin-bottom: 0
@@ -143,8 +146,23 @@ ol#question-list
       float: right
 
 .admin_namespace button.admin-button.upload-image
-  float: right
   font-size: 24px
   border-radius: 10px
   padding: 12px 10px 10px 10px
+
+.image-controls
+  position: relative
+  float: right
+  top: 28px
+  right: 0px
+  img
+    cursor: pointer
+    width: 40px
+    height: 40px
+
+.question-image
+  float: left
+  clear: both
+  width: 350px
+  height: 200px
 
