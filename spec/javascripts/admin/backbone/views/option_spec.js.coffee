@@ -4,12 +4,8 @@ describe "ChefStepsAdmin.Views.Option", ->
 
   describe "#deleteOption", ->
     beforeEach ->
-      @fake_event = jasmine.createSpyObj('fake click event', ['preventDefault'])
       spyOn(@view, 'remove')
-      @view.deleteOption(@fake_event)
-
-    it "prevents event defaults", ->
-      expect(@fake_event.preventDefault).toHaveBeenCalled()
+      @view.deleteOption()
 
     it "removes itself from the DOM", ->
       expect(@view.remove).toHaveBeenCalled()

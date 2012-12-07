@@ -6,12 +6,15 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
   events:
     'click .delete-option': 'deleteOption'
     'change input[type=radio]': 'highlightCorrect'
+    'click .delete-option-image': 'deleteImage'
 
   initialize: (options) =>
     @option = options.option
 
-  deleteOption: (event) =>
-    event.preventDefault()
+  deleteImage: =>
+    console.log 'TODO: delete image'
+
+  deleteOption: =>
     @remove()
 
   highlightCorrect: (event) =>
