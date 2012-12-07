@@ -125,12 +125,13 @@
   #quiz-results
     .results-header
       display: none
-    span.label
-      display: block
-      left: 0 !important
-    span.column-label
-      display: inline-block !important
-
+    .multiple-choice-results
+      .column-label
+        display: block
+      .average-label
+        display: inline-block
+      .average
+        +font-serif-tiny
 
 /* Android phone. Weird inbetween*/
 @media (max-width: 520px)

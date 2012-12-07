@@ -2,16 +2,32 @@
   .horizontal-divider
     margin: 20px 0
 
-  .results-header
-    +font-sans-small
-    color: $grayMedium
+  .center
+    display: table-cell
+    vertical-align: middle
+    width: 50%
+
+  .results-header, .column-label, .average-label
+    +font-sans-tiny
+    color: $gray
+
+  .results-header, .column-label
     text-transform: uppercase
     font-weight: 500
+
+  .results-header
     margin-bottom: 30px
     [class*='span']
       text-align: center
+      display: table
     [class*='span']:first-child
       text-align: left
+
+  .column-label, .average-label
+    display: none
+
+  .column-label
+    text-align: center
 
   .multiple-choice-results
     span
@@ -27,16 +43,14 @@
     li
       padding: 5px 0
 
-    span.column-label
-      display: none
-
     .label
-      position: relative
-      left: 24%
       +font-serif-large
       font-weight: normal
       padding: 0.5em 1.5em
       text-align: center
+      display: block
+      margin: 0 auto
+      width: 10px
 
     .label.correct
       background: $green
@@ -56,5 +70,8 @@
       margin-top: 0
 
     .result-column
-      margin-top: 40px
+      width: 100%
+      height: 100%
+      display: table
+      overflow: hidden
 

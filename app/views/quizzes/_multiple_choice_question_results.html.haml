@@ -14,13 +14,16 @@
         readymade trust fund, brunch bicycle rights mixtape consectetur
       %li
         deserunt wes anderson leggings tempor marfa.
-  .span2.result-column
-    %span.column-label Your Answer
-    %span.label{ class: answer_result } a
-  .span2.result-column
-    %span.column-label Correct Answer
-    %span.label.default a
-  .span2.result-column
-    %span.column-label Students Avg. Score
-    %p.average 86%
-
+  .span4{ data: {behavior: 'container-height'} }
+    .result-column
+      .center
+        .column-label Your Answer:
+        %span.label{ class: answer_result } a
+      .center
+        .column-label Correct Answer:
+        %span.label.default a
+  .span2{ data: {behavior: 'container-height'} }
+    .result-column
+      .average.center
+        86%
+        .average-label of students correctly answered.
