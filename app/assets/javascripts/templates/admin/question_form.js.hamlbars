@@ -2,7 +2,7 @@
   %label{ for: 'question' } Question
   .image-controls
     = hb 'if image.url' do
-      %img#question-image{ src: hb('image.url') }
+      %img#question-image.img-polaroid{ src: hb('image.url') }
       %i.icon-ban-circle.delete-image{ data: {confirm: "Are you sure?"} }
       %i.icon-edit.edit-image
     = hb 'unless image.url' do
