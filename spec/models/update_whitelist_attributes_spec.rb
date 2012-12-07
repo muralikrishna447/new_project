@@ -11,4 +11,10 @@ describe User, 'UpdateWhitelistAttributes' do
     user.update_whitelist_attributes({id: 2, name: 'test'})
     user.name.should == 'test'
   end
+
+  it "returns if no attributes" do
+    user.should_not_receive(:update_attributes)
+    user.update_whitelist_attributes(nil)
+    user.update_whitelist_attributes({})
+  end
 end
