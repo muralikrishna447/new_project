@@ -109,10 +109,12 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   cancelEdit: =>
     @render()
 
-  deleteImage: =>
-    @model.destroyImage()
-    @model.set('image', {})
-    @render(@formTemplate)
+  deleteImage: (event) =>
+    confirmMessage = $(event.currentTarget).data('confirm')
+    if not confirmMessage || confirm(confirmMessage)
+      @model.destroyImage()
+      @model.set('image', {})
+      @render(@formTemplate)
 
 _.defaults(ChefStepsAdmin.Views.Question.prototype, ChefStepsAdmin.Views.Modules.FilePickerUpload, ChefStepsAdmin.Views.Modules.FilePickerDisplay)
 

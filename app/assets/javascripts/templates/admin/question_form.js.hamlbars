@@ -3,7 +3,7 @@
   .image-controls
     = hb 'if image.url' do
       %img#question-image{ src: hb('image.url') }
-      %i.icon-ban-circle.delete-image
+      %i.icon-ban-circle.delete-image{ data: {confirm: "Are you sure?"} }
       %i.icon-edit.edit-image
     = hb 'unless image.url' do
       = hb("upload_image_button 'question-image'")
