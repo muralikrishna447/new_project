@@ -4,6 +4,7 @@ class ChefStepsAdmin.Models.Question extends Backbone.Model
 
   destroySuccess: =>
     @set('image', {})
+    @save()
 
   getImage: =>
     @get('image')
