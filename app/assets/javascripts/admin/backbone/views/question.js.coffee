@@ -34,10 +34,8 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     fit: 'crop'
 
   extendTemplateJSON: (templateJSON) =>
-    image = templateJSON['image']
-    if image?
-      image.url = @convertImage(image.url)
-      _.extend(templateJSON['image'], image)
+    if templateJSON['image']?
+      templateJSON['image'].url = @convertImage(templateJSON['image'].url)
     templateJSON
 
   renderOptionViews: =>

@@ -101,3 +101,21 @@ describe 'ChefStepsAdmin.Views.Question', ->
     it "renders the option view", ->
       expect(@view.renderOptionView).toHaveBeenCalledWith('some option view')
 
+  describe "#extendTemplateJSON", ->
+    beforeEach ->
+      spyOn(@view, 'convertImage').andReturn('converted image url')
+
+    it "returns templateJSON if no image", ->
+      expect(@view.extendTemplateJSON({foo: 'bar'})).toEqual({foo: 'bar'})
+
+    it "returns templateJSON with modified image url", ->
+      template_json =
+        foo: 'bar'
+        image: { url: 'some url' }
+
+      converted_json =
+        foo: 'bar'
+        image: { url: 'converted image url' }
+
+      expect(@view.extendTemplateJSON(template_json)).toEqual(converted_json)
+
