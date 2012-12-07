@@ -101,7 +101,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   triggerEditQuestion: =>
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', @model.cid)
 
-  singleFilePickerOnSuccess: (fpFile) =>
+  filePickerOnSuccess: (fpFile) =>
     @model.destroyImage() if @model.get('image')
     @model.save(image: fpFile)
     @render(@formTemplate)

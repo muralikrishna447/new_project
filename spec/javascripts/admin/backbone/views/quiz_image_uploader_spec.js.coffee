@@ -5,22 +5,22 @@ describe 'ChefStepsAdmin.Views.QuizImageUploader', ->
 
   describe "#render", ->
     beforeEach ->
-      spyOn(@view, 'openMultipleFilePicker')
+      spyOn(@view, 'openFilePicker')
 
     it "opens the filepicker dialog if no images", ->
       @fake_images.length = 0
       @view.render()
-      expect(@view.openMultipleFilePicker).toHaveBeenCalled()
+      expect(@view.openFilePicker).toHaveBeenCalled()
 
     it "doesn't open the dialog if images are present", ->
       @fake_images.length = 1
       @view.render()
-      expect(@view.openMultipleFilePicker).not.toHaveBeenCalled()
+      expect(@view.openFilePicker).not.toHaveBeenCalled()
 
-  describe "#multipleFilePickerOnSuccess", ->
+  describe "#filePickerOnSuccess", ->
     beforeEach ->
       fpFiles = ['foo', 'bar', 'baz']
-      @view.multipleFilePickerOnSuccess(fpFiles)
+      @view.filePickerOnSuccess(fpFiles)
 
     it "adds each file to the collection", ->
       expect(@fake_images.create.callCount).toEqual(3)

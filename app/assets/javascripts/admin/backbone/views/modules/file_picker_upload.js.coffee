@@ -1,17 +1,25 @@
 ChefStepsAdmin.Views.Modules.FilePickerUpload =
+  singlePickerType: 'pick'
+  multiplePickerType: 'pickMultiple'
+
   filepickerOptions:
     mimetype: 'image/*'
     service: 'COMPUTER'
 
-  openMultipleFilePicker: ->
-    filepicker.pickMultiple(@filepickerOptions, @multipleFilePickerOnSuccess)
+  filePickerType: 'single'
+
+  getFilePickerType: ->
+    switch @filePickerType
+      when 'single'
+        @singlePickerType
+      when 'multiple'
+        @multiplePickerType
+      else
+        @singlePickerType
 
   openFilePicker: ->
-    filepicker.pick(@filepickerOptions, @singleFilePickerOnSuccess)
+    filepicker[@getFilePickerType()](@filepickerOptions, @filePickerOnSuccess)
 
-  multipleFilePickerOnSuccess: ->
-    throw new Error("NotImplementedError")
-
-  singleFilePickerOnSuccess: ->
+  filePickerOnSuccess: ->
     throw new Error("NotImplementedError")
 
