@@ -1,4 +1,4 @@
 Fabricator :multiple_choice_answer_contents do
-  uid 'answer-id'
-  answer 'true'
+  uid "id-answer-1"
+  answer "Answer Correct"
 end
