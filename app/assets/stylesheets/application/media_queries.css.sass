@@ -126,12 +126,21 @@
     .results-header
       display: none
     .multiple-choice-results
+      border-bottom: 2px solid $grayMedium
+      .bordered.top, .bordered.bottom
+        border-width: 1px 0
+      .center
+        &.bordered.left
+          border-left: none
+        &.bordered.right:last-child
+          border-right: none
       .column-label
         display: block
       .average-label
         display: inline-block
       .average
         +font-serif-tiny
+        line-height: 30px
 
 /* Android phone. Weird inbetween*/
 @media (max-width: 520px)
