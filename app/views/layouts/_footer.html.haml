@@ -1,4 +1,4 @@
-#footer.hero-unit.footer
+#footer.hero-unit.footer.noprint
   .container
     .row
       .span8
@@ -26,7 +26,7 @@
             Legal
 
 - unless user_signed_in?
-  #auth-modal.modal.hide
+  #auth-modal.modal.hide.noprint
     %button.close{ data: { dismiss: 'modal' } }
       %i.icon-remove
     = render template: 'devise/sessions/new'

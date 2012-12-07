@@ -1,5 +1,5 @@
-%div{ data: { behavior: 'stick-to-top-anchor' } }
-.sticky-navbar{ data: { behavior: 'stick-to-top' } }
+.noprint{ data: { behavior: 'stick-to-top-anchor' } }
+.sticky-navbar.noprint{ data: { behavior: 'stick-to-top' } }
   .container
     .navbar
       .navbar-inner
@@ -30,6 +30,9 @@
           %li
             %a.icon-list-ol.icon-white{href: '#step-by-step'}
               %span.nav-label Step-By-Step
+          %li
+            %a.icon-print.icon-white{href: "#", onclick: 'window.print()'}
+              %span.nav-label Print
           - if show_quizzes? && model.has_quizzes?
             %li
               %a.icon-trophy.icon-white{href: '#quizzes'}
