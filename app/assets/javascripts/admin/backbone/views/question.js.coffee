@@ -15,7 +15,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     'click .delete': 'deleteQuestion'
     'click .add-option': 'addOption'
     'click .done': 'saveForm'
-    'click .cancel': 'render'
+    'click .cancel': 'cancelEdit'
     'click #question-image': 'openFilePicker'
 
 
@@ -104,6 +104,9 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     @model.destroyImage() if @model.get('image')
     @model.save(image: fpFile)
     @render(@formTemplate)
+
+  cancelEdit: =>
+    @render()
 
 _.defaults(ChefStepsAdmin.Views.Question.prototype, ChefStepsAdmin.Views.Modules.FilePickerUpload, ChefStepsAdmin.Views.Modules.FilePickerDisplay)
 
