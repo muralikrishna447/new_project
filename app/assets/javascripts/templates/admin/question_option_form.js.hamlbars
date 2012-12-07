@@ -7,6 +7,6 @@
   = hb 'unless correct' do
     %input{type: 'radio', name: "correct", value: 'true' }
 
-%button.delete-option
+%button.delete-option{type: 'button'}
   %i.icon-remove
 

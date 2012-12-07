@@ -73,11 +73,14 @@ ol#question-list
       margin-top: 10px
     input[name=question], input[name=instructions]
       float: left
-      clear: both
+      clear: left
       font-size: 14px
       padding: 5px
-      width: 97%
       margin-top: 5px
+    input[name=question]
+      width: 84%
+    input[name=instructions]
+      width: 97%
     h3, h4
       float: left
       margin-bottom: 0
@@ -141,4 +144,32 @@ ol#question-list
       float: left
     .cancel, .done
       float: right
+
+.image-controls
+  position: relative
+  float: right
+  top: 22px
+  right: 0px
+  img
+    cursor: pointer
+    width: 40px
+    height: 40px
+  [class*=icon-]
+    font-size: 16px
+    color: $gray
+    cursor: pointer
+  .delete-image
+    position: absolute
+  .edit-image
+    &:hover
+      color: $green
+  .delete-image
+    &:hover
+      color: $red
+
+.question-image
+  width: 300px
+  height: 150px
+  float: left
+  clear: both
 

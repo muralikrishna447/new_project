@@ -17,6 +17,7 @@
 @import twitter/bootstrap/variables
 @import twitter/bootstrap/mixins
 @import twitter/bootstrap/dropdowns
+@import twitter/bootstrap/scaffolding
 @import font-awesome
 
 
@@ -25,6 +26,9 @@ $redLight:      #e63742
 @import admin/quiz_image
 
 body.admin_namespace
+  .img-polaroid
+    @extend .img-polaroid
+
   table.nested-records
     display: none
     padding: 0 1.4em
@@ -103,3 +107,8 @@ body.admin_namespace
   a, .admin-button
     float: right
 
+.admin_namespace button.admin-button.upload-image
+  border-radius: 10px
+  padding: 12px 10px 10px 10px
+  [class*=icon-]
+    font-size: 24px

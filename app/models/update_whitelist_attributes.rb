@@ -3,6 +3,7 @@ module UpdateWhitelistAttributes
 
   def update_whitelist_attributes(attributes)
     filtered = {}
+    return unless attributes.present?
     attributes.each do |key, value|
       filtered[key.to_sym] = value if self.class.accessible_attributes.include?(key.to_sym)
     end

@@ -2,19 +2,11 @@ describe 'ChefStepsAdmin.Models.QuizImage', ->
   beforeEach ->
     @model = new ChefStepsAdmin.Models.QuizImage()
 
-  describe "#buildFPFile", ->
+  describe "#destroySuccess", ->
     beforeEach ->
-      @model.set('url', 'some url')
-      @model.set('filename', 'something silly')
+      spyOn(@model, 'destroy')
+      @model.destroySuccess()
 
-    it "builds a filepicker file object", ->
-      expect(@model.buildFPFile()).toEqual({url: 'some url', filename: 'something silly'})
-
-  describe "#destroyImage", ->
-    beforeEach ->
-      @model.buildFPFile = () -> 'filepicker object'
-      @model.destroyImage()
-
-    it "uses the filepicker remove method to destroy the file", ->
-      expect(filepicker.remove).toHaveBeenCalledWith('filepicker object', @model.destroySuccess)
+    it "destroys the model on success", ->
+      expect(@model.destroy).toHaveBeenCalled()
 

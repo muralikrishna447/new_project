@@ -5,7 +5,9 @@ class QuestionPresenter < Presenter
   end
 
   def attributes
-    { id: @model.id }.merge(@model.contents_json(@admin))
+    attrs = { id: @model.id }.merge(@model.contents_json(@admin))
+    attrs[:image] = ImagePresenter.new(@model.image).wrapped_attributes if @model.image.present?
+    attrs
   end
 end
 

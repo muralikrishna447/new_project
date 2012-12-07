@@ -30,3 +30,8 @@ describe 'Handlebars helpers', ->
       expect(Handlebars.helpers.option_width(1)).toEqual('span5')
       expect(Handlebars.helpers.option_width(2)).toEqual('span5')
       expect(Handlebars.helpers.option_width(4)).toEqual('span5')
+
+describe "#upload_button", ->
+    it "returns and upload button with the id passed in", ->
+      upload_button = Handlebars.helpers.upload_image_button('foo').string
+      expect($(upload_button)).toHaveId('foo')

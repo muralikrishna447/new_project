@@ -26,27 +26,10 @@ describe 'ChefStepsAdmin.Views.Question', ->
       @view.render()
       expect(@view.updateAttributes).toHaveBeenCalled()
 
-  describe "#cancelEdit", ->
-    beforeEach ->
-      spyOn(@view, 'render')
-      @fake_event = jasmine.createSpyObj('fake click event', ['preventDefault'])
-      @view.cancelEdit(@fake_event)
-
-    it "prevents event defaults", ->
-      expect(@fake_event.preventDefault).toHaveBeenCalled()
-
-    it "renders the show template without saving", ->
-      expect(@view.render).toHaveBeenCalled()
-      expect(@fake_question.save).not.toHaveBeenCalled()
-
   describe "#saveForm", ->
     beforeEach ->
       spyOn(@view, 'render')
-      @fake_event = jasmine.createSpyObj('fake click event', ['preventDefault'])
-      @view.saveForm(@fake_event)
-
-    it "prevents event defaults", ->
-      expect(@fake_event.preventDefault).toHaveBeenCalled()
+      @view.saveForm()
 
     it "updates the model", ->
       expect(@fake_question.save).toHaveBeenCalled()
@@ -57,11 +40,8 @@ describe 'ChefStepsAdmin.Views.Question', ->
   describe "#deleteQuestion", ->
     beforeEach ->
       spyOn(@view, 'remove')
-      @fake_event = jasmine.createSpyObj('fake click event', ['preventDefault'])
+      @fake_event = jasmine.createSpy('fake click event')
       @view.deleteQuestion(@fake_event)
-
-    it "prevents event defaults", ->
-      expect(@fake_event.preventDefault).toHaveBeenCalled()
 
     it "destroys the model", ->
       expect(@fake_question.destroy).toHaveBeenCalled()
@@ -111,17 +91,31 @@ describe 'ChefStepsAdmin.Views.Question', ->
 
   describe "#addOption", ->
     beforeEach ->
-      @fake_event = jasmine.createSpyObj('fake click event', ['preventDefault'])
       spyOn(@view, 'addOptionView').andReturn('some option view')
       spyOn(@view, 'renderOptionView')
-      @view.addOption(@fake_event)
-
-    it "prevents the default event", ->
-      expect(@fake_event.preventDefault).toHaveBeenCalled()
+      @view.addOption()
 
     it "adds a new option view", ->
       expect(@view.addOptionView).toHaveBeenCalled()
 
     it "renders the option view", ->
       expect(@view.renderOptionView).toHaveBeenCalledWith('some option view')
+
+  describe "#extendTemplateJSON", ->
+    beforeEach ->
+      spyOn(@view, 'convertImage').andReturn('converted image url')
+
+    it "returns templateJSON if no image", ->
+      expect(@view.extendTemplateJSON({foo: 'bar'})).toEqual({foo: 'bar'})
+
+    it "returns templateJSON with modified image url", ->
+      template_json =
+        foo: 'bar'
+        image: { url: 'some url' }
+
+      converted_json =
+        foo: 'bar'
+        image: { url: 'converted image url' }
+
+      expect(@view.extendTemplateJSON(template_json)).toEqual(converted_json)
 

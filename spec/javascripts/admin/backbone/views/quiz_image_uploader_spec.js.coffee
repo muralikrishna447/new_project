@@ -17,13 +17,6 @@ describe 'ChefStepsAdmin.Views.QuizImageUploader', ->
       @view.render()
       expect(@view.openFilePicker).not.toHaveBeenCalled()
 
-  describe "#openFilePicker", ->
-    beforeEach ->
-      @view.openFilePicker()
-
-    it "calls filepicker.pickMultiple", ->
-      expect(filepicker.pickMultiple).toHaveBeenCalledWith(@view.filepickerOptions, @view.filePickerOnSuccess)
-
   describe "#filePickerOnSuccess", ->
     beforeEach ->
       fpFiles = ['foo', 'bar', 'baz']
@@ -31,4 +24,3 @@ describe 'ChefStepsAdmin.Views.QuizImageUploader', ->
 
     it "adds each file to the collection", ->
       expect(@fake_images.create.callCount).toEqual(3)
-

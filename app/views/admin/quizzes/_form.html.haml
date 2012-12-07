@@ -1,4 +1,4 @@
-- submit_options = @quiz.persisted? ? {label: 'Save Details'} : {label: 'Upload Images'}
+- submit_options = @quiz.persisted? ? {label: 'Save Details'} : {label: 'Add Questions'}
 
 = semantic_form_for [:admin, @quiz] do |f|
   = f.inputs name: "Quiz Details" do
@@ -13,5 +13,4 @@
         = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
   - if @quiz.persisted?
     = link_to 'Edit Questions', manage_questions_admin_quiz_path(@quiz), class: 'admin-button'
-    = link_to 'Upload Images', upload_images_admin_quiz_path(@quiz), class: 'admin-button'
 

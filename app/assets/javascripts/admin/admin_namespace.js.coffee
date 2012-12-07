@@ -1,8 +1,10 @@
 window.ChefStepsAdmin ||= {}
 
 ChefStepsAdmin.Models ||= {}
+ChefStepsAdmin.Models.Modules ||= {}
 ChefStepsAdmin.Collections ||= {}
 ChefStepsAdmin.Views ||= {}
+ChefStepsAdmin.Views.Modules ||= {}
 
 Handlebars.templates ||= {}
 

@@ -7,17 +7,14 @@ class ChefStepsAdmin.Views.QuizImageUploader extends Backbone.View
       @openFilePicker()
     @
 
+  filePickerType: 'multiple'
+
   events:
     'click [data-behavior~=filepicker]': 'openFilePicker'
-
-  filepickerOptions:
-    mimetype: 'image/*'
-    service: 'COMPUTER'
-
-  openFilePicker: ->
-    filepicker.pickMultiple(@filepickerOptions, @filePickerOnSuccess)
 
   filePickerOnSuccess: (fpFiles) =>
     _.each fpFiles, (fpFile) =>
       @collection.create(fpFile)
+
+_.defaults(ChefStepsAdmin.Views.QuizImageUploader.prototype, ChefStepsAdmin.Views.Modules.FilePickerUpload)
 

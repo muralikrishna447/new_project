@@ -3,12 +3,7 @@ class ChefStepsAdmin.Models.QuizImage extends Backbone.Model
   destroySuccess: =>
     @destroy()
 
-  destroyImage: =>
-    filepicker.remove(@buildFPFile(), @destroySuccess)
+  getImage: => { filename: @get('filename'), url: @get('url') }
 
-  buildFPFile: =>
-    file = {}
-    file.url = @get('url')
-    file.filename = @get('filename')
-    file
+_.defaults(ChefStepsAdmin.Models.QuizImage.prototype, ChefStepsAdmin.Models.Modules.FilePicker)
 
