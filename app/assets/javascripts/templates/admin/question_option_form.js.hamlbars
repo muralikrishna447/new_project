@@ -7,6 +7,15 @@
   = hb 'unless correct' do
     %input{type: 'radio', name: "correct", value: 'true' }
 
+.option-image-controls
+  -# = hb 'if image.url' do
+  %img.img-polaroid{src: 'http://lorempixel.com/50/50/food'}
+  %i.icon-ban-circle.delete-option-image{ data: {confirm: "Are you sure?"} }
+  %i.icon-edit.edit-option-image
+  -# = hb("upload_image_button uid")
+  -# = hb 'unless image.url' do
+  -#   = hb("upload_image_button 'option-#{hb('uid')}'")
+
 %button.delete-option{type: 'button'}
   %i.icon-remove
 
