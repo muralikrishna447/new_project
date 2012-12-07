@@ -17,6 +17,7 @@ class Question < ActiveRecord::Base
   scope :ordered, rank(:question_order)
 
   def update_image(image_params)
+    self.image.destroy unless image_params.present?
     self.image = Image.new unless image.present?
     self.image.update_whitelist_attributes(image_params)
     self.image

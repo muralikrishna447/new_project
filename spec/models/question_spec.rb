@@ -81,5 +81,11 @@ describe Question, '#update_image' do
       question.image.filename.should == 'some file name'
       question.image.url.should == 'www.foo.bar'
     end
+
+    it "destroys the image if empty hash" do
+      question.update_image({})
+      question.reload
+      question.image.should_not be
+    end
   end
 end
