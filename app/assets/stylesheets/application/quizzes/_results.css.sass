@@ -16,10 +16,11 @@
     font-weight: 500
 
   .results-header
-    margin-bottom: 30px
+    margin-bottom: 1px
     [class*='span']
       text-align: center
       display: table
+      height: 41px
     [class*='span']:first-child
       text-align: left
 
@@ -30,6 +31,11 @@
     text-align: center
 
   .multiple-choice-results
+    &:last-child
+      border-bottom: none
+    [class*='span']:first-child
+      margin-top: 30px
+      margin-bottom: 20px
     span
       +font-serif-small
       color: $grayMedium

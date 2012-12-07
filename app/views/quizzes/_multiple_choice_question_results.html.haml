@@ -1,6 +1,6 @@
 - is_correct ||= false
 - answer_result = is_correct ? 'correct' : 'wrong'
-.row.multiple-choice-results
+.row.multiple-choice-results.bordered.bottom
   .span6
     %span.count 2 <i>of</i> 20
     %span.type Multiple answer question
@@ -16,10 +16,10 @@
         deserunt wes anderson leggings tempor marfa.
   .span4{ data: {behavior: 'container-height'} }
     .result-column
-      .center
+      .center.bordered.left.right
         .column-label Your Answer:
         %span.label{ class: answer_result } a
-      .center
+      .center.bordered.right
         .column-label Correct Answer:
         %span.label.default a
   .span2{ data: {behavior: 'container-height'} }
