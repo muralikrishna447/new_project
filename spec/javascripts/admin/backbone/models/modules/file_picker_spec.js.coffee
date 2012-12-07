@@ -10,9 +10,16 @@ describe 'ChefStepsAdmin.Models.Modules.FilePicker', ->
       expect(@model_module.buildFPFile()).toEqual({url: 'some url', filename: 'filename Zor'})
 
   describe "#destroyImage", ->
+    beforeEach ->
+        spyOn(@model_module, 'buildFPFile').andReturn('filepicker object')
+
+    it "wont include the onSuccess callback if false is passed in", ->
+      spyOn(@model_module, 'hasImage').andReturn(true)
+      @model_module.destroyImage(false)
+      expect(filepicker.remove).toHaveBeenCalledWith('filepicker object')
+
     describe "with a valid image", ->
       beforeEach ->
-        spyOn(@model_module, 'buildFPFile').andReturn('filepicker object')
         spyOn(@model_module, 'hasImage').andReturn(true)
         @model_module.destroyImage()
 
