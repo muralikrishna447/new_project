@@ -21,7 +21,28 @@ class MultipleChoiceQuestionContents < OpenStruct
     end
   end
 
+  def correct_option_display
+    correct_option = options.find {|option| option[:correct]}
+    option_display(correct_option[:uid])
+  end
+
+  def option_display(uid)
+    index = options.index { |o| o[:uid] == uid }
+    return nil if index.nil?
+    option = options[index]
+    return option[:answer].titleize if is_true_false?(option)
+    ('a'..'z').to_a[index]
+  end
+
   private
+
+  def is_true_false?(option)
+    ['true', 'false'].include? option[:answer].downcase
+  end
+
+  def index_to_letter(index)
+    ('a'..'z').to_a[index]
+  end
 
   def add_option_ids(options)
     options.each do |option|

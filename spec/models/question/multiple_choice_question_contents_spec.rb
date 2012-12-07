@@ -92,3 +92,31 @@ describe MultipleChoiceQuestionContents, '#unique_id' do
     contents.send(:unique_id)
   end
 end
+
+describe MultipleChoiceQuestionContents, "#option_display" do
+  let(:mc_contents) { Fabricate.build(:multiple_choice_question_contents) }
+  let(:tf_contents) { Fabricate.build(:true_false_question_contents) }
+
+  it 'returns nil if uid matches no option' do
+    mc_contents.option_display('bad-uid').should_not be
+  end
+
+  it 'returns letter of option specified by uid for multiple choice contents' do
+    mc_contents.option_display('id-answer-1').should == 'a'
+    mc_contents.option_display('id-answer-2').should == 'b'
+  end
+
+  it 'returns true/false value of option specified by uid for multiple choice contents' do
+    tf_contents.option_display('id-answer-1').should == 'True'
+    tf_contents.option_display('id-answer-2').should == 'False'
+  end
+end
+
+describe MultipleChoiceQuestionContents, "#correct_option_display" do
+  let(:mc_contents) { Fabricate.build(:multiple_choice_question_contents) }
+
+  it 'calls option_display with uid of correct option' do
+    mc_contents.should_receive(:option_display).with('id-answer-1') { 'a' }
+    mc_contents.correct_option_display.should == 'a'
+  end
+end
