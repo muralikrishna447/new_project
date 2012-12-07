@@ -1,5 +1,5 @@
 ActiveAdmin.register Quiz do
-  menu parent: 'More'
+  menu priority: 4
 
   action_item only: [:show, :edit] do
     link_to_publishable quiz, 'View on Site'
