@@ -1,5 +1,5 @@
 ActiveAdmin.register Quiz do
-  menu parent: 'More'
+  menu priority: 4
 
   action_item only: [:show, :edit] do
     link_to_publishable quiz, 'View on Site'
@@ -21,14 +21,20 @@ ActiveAdmin.register Quiz do
   controller do
     def create
       create! do |format|
-        format.html { redirect_to manage_questions_admin_quiz_path(@quiz) }
+        format.html { redirect_to upload_images_admin_quiz_path(@quiz) }
       end
     end
   end
 
   member_action :manage_questions do
     @quiz = Quiz.find(params[:id])
-    @questions = QuestionPresenter.present_collection(@quiz.questions)
+    @questions = QuestionPresenter.present_collection(@quiz.ordered_questions, true)
   end
+
+  member_action :upload_images do
+    @quiz = Quiz.find(params[:id])
+    @quiz_images = ImagePresenter.present_collection(@quiz.images)
+  end
+
 end
 

@@ -1,11 +1,13 @@
 class Question < ActiveRecord::Base
   include RankedModel
+  include SerializeableContents
 
   ranks :question_order, with_same: :quiz_id
 
   self.inheritance_column = :question_type
 
   belongs_to :quiz
+  has_many :answers
 
   attr_accessible :quiz_id, :contents
 
@@ -13,18 +15,19 @@ class Question < ActiveRecord::Base
 
   scope :ordered, rank(:question_order)
 
-  def update_contents(params)
-    self.contents.update(params)
+  def score(answer)
+    answer.question = self
+    answer.correct = correct(answer)
+    answer.save!
+    answer
   end
 
-  private
-  def init_contents
-    return if persisted?
-    self.contents = contents_class.new({}) if self.contents.blank?
+  def correct(answer)
+    self.contents.correct(answer.contents)
   end
 
-  def contents_class
-    (self.class.name.to_s + 'Contents').constantize
+  def answer_count
+    answers.count
   end
 end
 

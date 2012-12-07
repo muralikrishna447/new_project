@@ -22,6 +22,7 @@
 
 $redLight:      #e63742
 @import admin/quiz
+@import admin/quiz_image
 
 body.admin_namespace
   table.nested-records
@@ -87,4 +88,18 @@ body.admin_namespace
 .admin_activities
   #activity_published_input label
     font-size: 20px
+
+#resource-actions
+  float: left
+  width: 100%
+  &.top
+    margin-bottom: 20px
+    padding-bottom: 20px
+    border-bottom: 1px solid $black
+  &.bottom
+    margin-top: 20px
+    padding-top: 20px
+    border-top: 1px solid $black
+  a, .admin-button
+    float: right
 

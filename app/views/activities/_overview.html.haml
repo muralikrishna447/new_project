@@ -27,20 +27,20 @@
       .span12
         .horizontal-divider
     .row
-      .span8
+      .span6
         - if activity.has_ingredients?
           - activity.ordered_recipes.each do |recipe|
             = render 'ingredients_list', recipe: recipe
-      .span4
+      .span6
         - if activity.yield.present? || activity.timing.present?
           .row
             .span4
               - if activity.yield.present?
                 %h5 Yield
-                %p= activity.yield
+                = activity.yield
               - if activity.timing.present?
                 %h5 Timing
-                %p= activity.timing
+                = activity.timing
         - if activity.required_equipment.present?
           .row
             .span4

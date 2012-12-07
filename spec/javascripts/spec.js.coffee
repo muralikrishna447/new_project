@@ -4,3 +4,5 @@
 //=require application
 //=require_tree .
 
+window.filepicker ||= jasmine.createSpyObj('fake filepicker', ['pickMultiple', 'remove'])
+

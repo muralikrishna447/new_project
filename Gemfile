@@ -22,6 +22,7 @@ gem 'newrelic_rpm'
 gem 'rdiscount'
 gem "friendly_id"
 gem 'gravtastic'
+gem 'filepicker-rails'
 
 gem 'rack-cors', require: 'rack/cors'
 

@@ -5,7 +5,7 @@ ActiveAdmin.register Question do
   controller do
     def create
       @quiz = Quiz.find(params[:quiz_id])
-      render json: QuestionPresenter.new(@quiz.add_multiple_choice_question).present
+      render json: QuestionPresenter.new(@quiz.add_multiple_choice_question, true).present
     end
 
     def update

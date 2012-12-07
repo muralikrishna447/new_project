@@ -1,5 +1,5 @@
 #header
-  .container
+  .container.noprint
     .navbar
       .navbar-inner
         .nav.pull-right.addthis-container
@@ -15,6 +15,6 @@
               brought to you by
               %a.delve-brand{href: 'http://delvekitchen.com', target: '_top'}
                 = image_tag('delve-logo.png', alt: 'Delve')
-          %ul.nav.pull-right
+          %ul.nav.pull-right.noprint
             = render 'layouts/global_navigation'
 
