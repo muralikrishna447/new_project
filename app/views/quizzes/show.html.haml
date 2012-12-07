@@ -35,10 +35,10 @@
         .dial-right
           = progress_dial *question_time_stats(quiz),
             label: 'est. min.',
-            display_value: estimated_time(quiz.question_count)/60 do
+            display_value: estimated_mins(quiz.question_count) do
             - if quiz.started_by?(current_user)
               You have
-              %span= estimated_time(remaining_question_count)/60
+              %span= estimated_mins(remaining_question_count)
               %br
               est. min. remaining
     .row

@@ -14,15 +14,30 @@ describe QuizHelper, '#show_quizzes?' do
   end
 end
 
-describe QuizHelper, '#estimated_time' do
+describe QuizHelper, '#estimated_mins' do
+  it 'is 1 minute if there are less than 3 questions' do
+    helper.estimated_mins(0).should == 1
+    helper.estimated_mins(1).should == 1
+    helper.estimated_mins(2).should == 1
+  end
+
+  it 'adds 1 minute for every 3 questions' do
+    helper.estimated_mins(3).should == 1
+    helper.estimated_mins(4).should == 1
+    helper.estimated_mins(6).should == 2
+    helper.estimated_mins(9).should == 3
+  end
+end
+
+describe QuizHelper, '#estimated_secs' do
   it 'is 0s if there are no questions' do
-    helper.estimated_time(0).should == 0
+    helper.estimated_secs(0).should == 0
   end
 
   it 'adds 20 seconds for every question, rounded to the minute' do
-    helper.estimated_time(2).should == 40
-    helper.estimated_time(3).should == 60
-    helper.estimated_time(6).should == 120
+    helper.estimated_secs(2).should == 40
+    helper.estimated_secs(3).should == 60
+    helper.estimated_secs(6).should == 120
   end
 end
 

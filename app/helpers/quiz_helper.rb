@@ -3,7 +3,11 @@ module QuizHelper
     Rails.application.config.show_quizzes
   end
 
-  def estimated_time(question_count)
+  def estimated_mins(question_count)
+    [estimated_secs(question_count) / 60, 1].max
+  end
+
+  def estimated_secs(question_count)
     question_count * 20
   end
 
@@ -39,7 +43,7 @@ module QuizHelper
   end
 
   def question_time_stats(quiz)
-    [estimated_time(quiz.questions_answered_by_count(current_user)),
-     estimated_time(quiz.question_count)]
+    [estimated_secs(quiz.questions_answered_by_count(current_user)),
+     estimated_secs(quiz.question_count)]
   end
 end
