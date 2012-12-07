@@ -1,6 +1,7 @@
 //= require stick_to_top
 //= require auth_modal
 //= require click_toggle
+//= require container_height
 //= require location_autocomplete
 //= require namespace
 //= require factory
