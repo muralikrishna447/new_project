@@ -3,6 +3,8 @@
   .image-controls
     = hb 'if image.url' do
       %img#question-image{ src: hb('image.url') }
+      %i.icon-ban-circle.delete-image
+      %i.icon-edit.edit-image
     = hb 'unless image.url' do
       = hb("upload_image_button 'question-image'")
   %input#question{name: 'question', placeholder: "Please enter your question here.", value: hb('question') }
