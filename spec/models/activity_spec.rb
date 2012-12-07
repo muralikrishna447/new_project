@@ -161,19 +161,41 @@ end
 describe Activity, "#update_recipe_steps" do
   let(:activity) { Fabricate(:activity) }
   let(:recipe1) { Fabricate(:recipe) }
-  let(:stepA) { Fabricate(:step) }
+  let(:recipe2) { Fabricate(:recipe) }
+  let(:stepA) { Fabricate(:step, id: 1234) }
+  let(:stepB) { Fabricate(:step, id: 5678) }
 
   before do
     activity.recipes << recipe1
-    recipe1.steps << stepA
+    recipe1.steps << stepA << stepB
     recipe1.steps.reload
     activity.recipes.reload
-    activity.update_recipe_steps
   end
 
   it "adds recipe_steps" do
-    activity.recipe_steps.should have(1).step
-    activity.recipe_steps.first.step.should == stepA
+    activity.update_recipe_steps
+    activity.recipe_steps.should have(2).steps
+    activity.recipe_steps.map(&:step).should =~ [stepA, stepB]
+  end
+
+  it "updates recipe step order if activity has one recipe" do
+    ordered_steps = activity.recipes.first.ordered_steps.all
+    activity.recipes.first.should_receive(:ordered_steps).and_return(ordered_steps)
+    activity.stub(:update_recipe_step_order) { |ids| @recipe_step_ids = ids }
+    activity.update_recipe_steps
+    @recipe_step_ids.should =~ activity.recipe_steps.map(&:id)
+  end
+
+  it "does not update recipe step order if activity has multiple recipes" do
+    activity.recipes << recipe2
+    activity.should_not_receive(:update_recipe_step_order)
+    activity.update_recipe_steps
+  end
+
+  it "does not update recipe step order if activity has no recipes" do
+    activity.recipes.destroy_all
+    activity.should_not_receive(:update_recipe_step_order)
+    activity.update_recipe_steps
   end
 end
 

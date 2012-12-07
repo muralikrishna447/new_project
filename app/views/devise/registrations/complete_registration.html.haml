@@ -28,5 +28,8 @@
       .terms-of-service
         = check_box_tag 'terms-complete-registration', true, false, required: true, class: 'terms'
         = label_tag 'terms-complete-registration', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
+      .ok-to-email
+        = check_box_tag 'ok_to_email', true, true, class: 'ok-to-email'
+        = label_tag 'ok_to_email', "Please email me the latest updates from ChefSteps"
       = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe, disabled: true
 

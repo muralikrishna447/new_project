@@ -7,7 +7,7 @@
 -# <!--[if IE 8]>  <html class="no-js lt-ie9" lang="en"> <![endif]-->
 -# <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 
-%html.no-js{:lang => "en", 'xmlns:fb' => "http://ogp.me/ns/fb#" }
+%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#" }
 
   %head
     %title!= [yield(:title), 'ChefSteps'].compact.join(' | ')
@@ -16,16 +16,16 @@
     -# Head
     -# ==========================================================================
 
-    %meta{:charset => "utf-8"}
+    %meta{charset: "utf-8"}
 
-    %meta{:name => "description", :content => "Free to learn culinary school"}
+    %meta{name: "description", content: "Free to learn culinary school"}
     -# %meta{:name => "keywords", :content => ""}
     -# %meta{:name => "author", :content => ""}
 
     -# Mobile
     -# ==========================================================================
 
-    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1"}
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1"}
     -# %meta{:name => "HandheldFriendly", :content => "True"}
     -# %meta{:name => "MobileOptimized", :content => "320"}
     = csrf_meta_tags
@@ -44,7 +44,7 @@
     -# Favicon
     -# ==========================================================================
 
-    %link{:href => "/favicon.ico", :rel => "shortcut icon"}
+    %link{href: "/favicon.ico", rel: "shortcut icon"}
 
     -# iPad 3 Retina Display
 
@@ -71,8 +71,8 @@
 
 
     -# For all browsers
-    = stylesheet_link_tag 'application', :media => "all"
-    = stylesheet_link_tag 'print',  :media => 'print'
+    = stylesheet_link_tag 'application', media: 'all'
+    = stylesheet_link_tag 'print',  media: 'print'
     -# For progressively larger displays
     -# = stylesheet_link_tag '320andup/480.css',  :media => 'only screen and (min-width: 480px)'
     -# = stylesheet_link_tag '320andup/600.css',  :media => 'only screen and (min-width: 600px)'

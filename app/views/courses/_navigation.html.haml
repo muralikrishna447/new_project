@@ -8,6 +8,7 @@
             - if model.prev.present?
               = link_to model.prev do
                 %i.icon-double-chevron-left
+                %span.nav-anchors.nav-label Prev
             - else
               %a
                 %i.icon-double-chevron-left.disabled
@@ -17,6 +18,7 @@
           %li
             - if model.next.present?
               = link_to model.next do
+                %span.nav-anchors.nav-label Next
                 %i.icon-double-chevron-right
             - else
               %a

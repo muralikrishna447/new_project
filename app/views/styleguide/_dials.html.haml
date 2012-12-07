@@ -2,11 +2,15 @@
   .span12
     %h3 Progress Dials
 .row
-  .span4
-    = progress_dial 5, 20, 'normal'
-  .span4
-    = progress_dial 10, 20, 'medium', 'medium'
-  .span4
-    = progress_dial 15, 20, 'small', 'small'
+  .span3
+    = progress_dial 5, 20, label: 'normal'
+  .span3
+    = progress_dial 10, 20, label: 'medium', size: 'medium'
+  .span3
+    = progress_dial 15, 20, label: 'small', size: 'small'
+  .span3
+    = progress_dial 5, 20, label: 'normal' do
+      a small
+      %span caption
 
 

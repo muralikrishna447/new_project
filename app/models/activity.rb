@@ -87,6 +87,12 @@ class Activity < ActiveRecord::Base
     recipe_ids ||= recipes.map(&:id)
     create_activity_recipe_steps(recipe_ids)
     delete_old_activity_recipe_steps(recipe_ids)
+    if recipes.count == 1
+      recipe_step_ids = recipes.first.ordered_steps.map(&:id).map do |step_id|
+        recipe_steps.where(step_id: step_id).first.id
+      end
+      update_recipe_step_order(recipe_step_ids)
+    end
     self
   end
 

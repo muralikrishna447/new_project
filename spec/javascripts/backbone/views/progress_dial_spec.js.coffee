@@ -36,12 +36,12 @@ describe 'ChefSteps.View.ProgressDial', ->
       @setupWindowSize(@view, 1200)
       expect(@view.dialSize()).toEqual('large')
 
-    it 'returns medium for width < 1200 and width > 480', ->
+    it 'returns medium for width < 1200 and width > 520', ->
       @setupWindowSize(@view, 1199)
       expect(@view.dialSize()).toEqual('medium')
-      @setupWindowSize(@view, 481)
+      @setupWindowSize(@view, 521)
       expect(@view.dialSize()).toEqual('medium')
 
     it 'returns small for width <= 480', ->
-      @setupWindowSize(@view, 480)
+      @setupWindowSize(@view, 520)
       expect(@view.dialSize()).toEqual('small')
