@@ -2,7 +2,9 @@
   window.ChefSteps = window.ChefStepsAdmin || {};
   window.ChefSteps.questionsData = JSON.parse('#{j(questions)}');
 
-- add_body_data(behavior: 'nav-hideable')
+:ruby
+  add_body_data behavior: 'nav-hideable'
+  content_for :title, 'Quiz'
 
 .hero-unit.quiz-title
   .container
@@ -15,19 +17,34 @@
     .row
       .span12
         %h3
-          Test your skills on
+          = quiz.started_by?(current_user) ? "Welcome back to" : "Test your skills on"
           %strong #{quiz.title}!
     .row.hero-unit.overview
       .span8
         = image_tag 'http://lorempixel.com/745/376/food/', class: 'img-polaroid'
       .span4.dials
+        - remaining_question_count = quiz.questions_remaining_for_count(current_user)
         .dial-left
-          = progress_dial 0, quiz.question_count, 'questions'
+          = progress_dial *question_count_stats(quiz),
+            label: 'questions' do
+            - if quiz.started_by?(current_user)
+              You have
+              %span= remaining_question_count
+              %br
+              remaining #{'question'.pluralize remaining_question_count}
         .dial-right
-          = progress_dial 0, estimated_time(quiz.question_count), 'est. min.'
+          = progress_dial *question_time_stats(quiz),
+            label: 'est. min.',
+            display_value: estimated_mins(quiz.question_count) do
+            - if quiz.started_by?(current_user)
+              You have
+              %span= estimated_mins(remaining_question_count)
+              %br
+              est. min. remaining
     .row
       .span12
         %p.pull-left= quiz.start_copy
         .pull-right
-          #start-quiz.btn-uppercase.btn-primary.btn-x-large Start Quiz
+          #start-quiz.btn-uppercase.btn-primary.btn-x-large
+            = quiz.started_by?(current_user) ? "Return to Quiz" : "Start Quiz"
 

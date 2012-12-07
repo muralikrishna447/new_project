@@ -11,7 +11,7 @@ class QuizzesController < ApplicationController
   private
 
   def redirect_to_results
-    redirect_to results_quiz_path(quiz) if questions_remaining.empty?
+    redirect_to results_quiz_path(quiz) if quiz.completed_by?(current_user)
   end
 
   def questions_remaining

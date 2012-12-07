@@ -17,22 +17,22 @@ describe QuizzesController, '#show' do
   end
 
   context 'redirect to results page' do
-    let(:questions) { @questions }
+    let(:user) { Fabricate(:user) }
+    let(:quiz) { stub_model(Quiz, id: 123) }
 
     before do
-      sign_in Fabricate(:user)
-      controller.stub(:quiz) { stub_model(Quiz, id: 123) }
-      controller.stub(:questions_remaining) { @questions }
+      sign_in user
+      controller.stub(:quiz) { quiz }
     end
 
-    it 'does not redirect to results page if there are no more questions remaining' do
-      @questions = ['the questions']
+    it 'does not redirect to results page if quiz has not been completed' do
+      quiz.stub(:completed_by?).with(user).and_return(false)
       get :show, id: 1
       response.should_not redirect_to results_quiz_path(123)
     end
 
-    it 'redirects to results page if there are no more questions remaining' do
-      @questions = []
+    it 'redirects to results page if quiz has been completed' do
+      quiz.stub(:completed_by?).with(user).and_return(true)
       get :show, id: 1
       response.should redirect_to results_quiz_path(123)
     end

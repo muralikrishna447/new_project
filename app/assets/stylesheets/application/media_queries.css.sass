@@ -39,6 +39,12 @@
       margin-left: 15px
       margin-top: 7px
 
+    .dial-caption
+      position: absolute
+      top: 15px
+      margin-left: 122px
+      width: 90px
+
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
   .global-navigation
@@ -108,7 +114,13 @@
       margin-top: 0
 
     .dial-wrapper
-      margin: 0 0 0 20px
+      margin: 20px 0 20px 30px
+
+    .dial-caption
+      position: absolute
+      top: 15px
+      margin-left: 140px
+      width: 90px
 
   #quiz-results
     .results-header
@@ -129,6 +141,10 @@
       width: 240px
     input[type='submit']
       margin-left: 65px
+
+  #quiz-container .dial-caption
+    top: 10px
+    margin-left: 100px
 
 @media (max-width: 480px)
   /* ##################### */
@@ -239,13 +255,21 @@
     font-size: 9px
 
   #quiz-container
+    .dial-left, .dial-right
+      margin: 0
+      height: 185px
+
     .dial-wrapper
+      margin: 15px 25px
+
+    .dial-caption
+      position: relative
+      top: 0
       margin: 0
 
     .question .hero-unit
       background: none
       border: none
-
 /* Everything but portrait iphone*/
 @media (min-width: 480px)
   +authentication-nav

@@ -8,21 +8,30 @@
     +border-radius(100px)
     background: $white
 
-  .dial-text
+  .dial-text, .dial-caption
     +font-sans-small
-    font-weight: bold
+    font-weight: 500
+    text-align: center
+    text-transform: uppercase
+
+  .dial-text
     color: $brick
     position: absolute
     top: 52px
     left: 0
     right: 0
     line-height: 50px
-    text-align: center
-    text-transform: uppercase
 
     strong
       display: block
       font-size: 85px
+
+  .dial-caption
+    color: $gray
+    margin-top: 10px
+    line-height: 20px
+    span
+      color: $brick
 
   &.medium
     width: 115px
@@ -42,3 +51,5 @@
       line-height: 28px
       strong
         font-size: 36px
+    .dial-caption
+      +font-sans-tiny
