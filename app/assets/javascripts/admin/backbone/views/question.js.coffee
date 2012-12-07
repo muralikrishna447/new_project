@@ -35,7 +35,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   extendTemplateJSON: (templateJSON) =>
     image = templateJSON['image']
-    if image
+    if image?
       image.url = @convertImage(image.url)
       _.extend(templateJSON['image'], image)
     templateJSON

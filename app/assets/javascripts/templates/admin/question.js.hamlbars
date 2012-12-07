@@ -3,6 +3,8 @@
   %button.admin-button.delete{ data: {confirm: "Are you sure?"} } Delete
 
 %h3= hb('question')
+= hb 'if image' do
+  %img{ src: hb('image.url') }
 .question-box
   %h4= hb('instructions')
 
