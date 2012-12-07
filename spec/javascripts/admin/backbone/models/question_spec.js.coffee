@@ -21,3 +21,11 @@ describe 'ChefStepsAdmin.Models.Question', ->
     it "returns the image object", ->
       expect(@model.getImage()).toEqual('some image')
 
+  describe "#destroy", ->
+    beforeEach ->
+      spyOn(@model, 'destroyImage')
+      @model.destroy()
+
+    it "destroys associated image", ->
+      expect(@model.destroyImage).toHaveBeenCalledWith(false)
+
