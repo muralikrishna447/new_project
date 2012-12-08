@@ -64,3 +64,13 @@ describe Question, '#answer_for' do
     question.answer_for(answer.user).should == answer
   end
 end
+
+describe Question, '#average_correct' do
+  let(:question) { Fabricate.build(:multiple_choice_question, id: 123) }
+
+  it "returns # of correct divided by # of total" do
+    question.correct_answer_count = 30
+    question.stub(:answer_count) { 40 }
+    question.average_correct.should == 75
+  end
+end
