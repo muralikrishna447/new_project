@@ -29,5 +29,9 @@ class Question < ActiveRecord::Base
   def answer_count
     answers.count
   end
+
+  def answer_for(user)
+    answers.where(user_id: user).first
+  end
 end
 
