@@ -4,7 +4,8 @@ describe 'ChefStepsAdmin.Router', ->
 
   describe "#editQuiz", ->
     beforeEach ->
-      spyOn(ChefStepsAdmin.Views, 'QuizImageUploader')
+      @fakeView = jasmine.createSpyObj('view', ['render'])
+      spyOn(ChefStepsAdmin.Views, 'QuizImageUploader').andReturn(@fakeView)
 
       @router.editQuiz()
 
