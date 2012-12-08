@@ -17,13 +17,35 @@ describe "ChefStepsAdmin.Views.Option", ->
   describe "#filePickerOnSuccess", ->
     beforeEach ->
       spyOn(@view, 'render')
-      @view.filePickerOnSuccess('fp file')
+      spyOn(@view, 'destroyImage')
 
-    it "sets the image", ->
-      expect(@view.option['image']).toEqual('fp file')
+    describe "without a pre-existing image", ->
+      beforeEach ->
+        spyOn(@view, 'hasImage').andReturn(false)
+        @view.filePickerOnSuccess('fp file')
 
-    it "renders the view", ->
-      expect(@view.render).toHaveBeenCalled()
+      it "sets the image", ->
+        expect(@view.option['image']).toEqual('fp file')
+
+      it "renders the view", ->
+        expect(@view.render).toHaveBeenCalled()
+
+      it "doesn't destroy the image", ->
+        expect(@view.destroyImage).not.toHaveBeenCalled()
+
+    describe "with a pre-existing image", ->
+      beforeEach ->
+        spyOn(@view, 'hasImage').andReturn(true)
+        @view.filePickerOnSuccess('fp file')
+
+      it "sets the image", ->
+        expect(@view.option['image']).toEqual('fp file')
+
+      it "renders the view", ->
+        expect(@view.render).toHaveBeenCalled()
+
+      it "destroys the image with the callback", ->
+        expect(@view.destroyImage).toHaveBeenCalledWith(true)
 
   describe "#destroySuccess", ->
     beforeEach ->

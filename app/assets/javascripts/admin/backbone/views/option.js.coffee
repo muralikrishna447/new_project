@@ -24,6 +24,7 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
     @option['image']
 
   filePickerOnSuccess: (fpFile) =>
+    @destroyImage(true)if @hasImage()
     @option['image'] = fpFile
     @render()
 
