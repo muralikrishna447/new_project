@@ -31,6 +31,10 @@ describe QuizResultsPresenter do
       mc_result[:question].should == question.contents.question
     end
 
+    it 'includes the options' do
+      mc_result[:options].should == question.contents.options
+    end
+
     it 'includes correct flag' do
       mc_result[:correct].should == false
     end

@@ -23,6 +23,7 @@ class MultipleChoiceQuestionContents < OpenStruct
 
   def correct_option_display
     correct_option = options.find {|option| option[:correct]}
+    return if correct_option.nil?
     option_display(correct_option[:uid])
   end
 
