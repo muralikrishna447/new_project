@@ -6,11 +6,12 @@ class QuizResultsPresenter
 
   def present
     @quiz.questions.map do |question|
+      contents = question.contents
       answer = question.answer_for(@user)
       {
-        question: question.contents.question,
-        answer: question.contents.option_display(answer.contents.uid),
-        correct_answer: question.contents.correct_option_display,
+        question: contents.question,
+        answer: contents.option_display(answer.contents.uid),
+        correct_answer: contents.correct_option_display,
         average_correct: question.average_correct
       }
     end
