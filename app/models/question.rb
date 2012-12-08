@@ -1,6 +1,7 @@
 class Question < ActiveRecord::Base
   include RankedModel
   include SerializeableContents
+  include Imageable
 
   ranks :question_order, with_same: :quiz_id
 
@@ -28,6 +29,14 @@ class Question < ActiveRecord::Base
 
   def answer_count
     answers.count
+  end
+
+  def answer_for(user)
+    answers.where(user_id: user).first
+  end
+
+  def average_correct
+    (correct_answer_count.to_f / answer_count * 100).to_i
   end
 end
 

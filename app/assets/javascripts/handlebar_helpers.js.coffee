@@ -18,3 +18,11 @@ Handlebars.registerHelper 'option_width', (count)->
     'span3'
   else
     'span5'
+
+Handlebars.registerHelper 'upload_image_button', (id = '') ->
+  uploadButton =
+  "<button type='button' class='admin-button upload-image' id='#{id}'>
+    <i class='icon-picture'></i>
+  </button>"
+  new Handlebars.SafeString(uploadButton)
+

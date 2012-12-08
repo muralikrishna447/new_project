@@ -1,5 +1,12 @@
 %form
   %label{ for: 'question' } Question
+  .image-controls
+    = hb 'if image.url' do
+      %img#question-image.img-polaroid{ src: hb('image.url') }
+      %i.icon-ban-circle.delete-image{ data: {confirm: "Are you sure?"} }
+      %i.icon-edit.edit-image
+    = hb 'unless image.url' do
+      = hb("upload_image_button 'question-image'")
   %input#question{name: 'question', placeholder: "Please enter your question here.", value: hb('question') }
   %label{ for: 'instructions'} Instructions
   %input#instructions{name: 'instructions', placeholder: "Please enter instructions", value: hb('instructions') }
@@ -7,7 +14,7 @@
   %ul.options
 
 .form-actions.actions
-  %button.add-option.admin-button Add Option
-  %button.done.admin-button Done
-  %button.cancel.admin-button Cancel
+  %button.add-option.admin-button{type: 'button'} Add Option
+  %button.done.admin-button{type: 'button'} Done
+  %button.cancel.admin-button{type: 'button'} Cancel
 

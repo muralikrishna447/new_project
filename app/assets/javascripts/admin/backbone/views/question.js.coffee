@@ -16,6 +16,10 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     'click .add-option': 'addOption'
     'click .done': 'saveForm'
     'click .cancel': 'cancelEdit'
+    'click #question-image': 'openFilePicker'
+    'click .edit-image': 'openFilePicker'
+    'click .delete-image': 'deleteImage'
+
 
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editQuestion", @editQuestionEventHandler)
@@ -25,6 +29,16 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   addOptionView: (option) =>
     new ChefStepsAdmin.Views.Option(option: option)
+
+  imageOptions:
+    w: 300,
+    h: 150,
+    fit: 'crop'
+
+  extendTemplateJSON: (templateJSON) =>
+    if templateJSON['image']?
+      templateJSON['image'].url = @convertImage(templateJSON['image'].url)
+    templateJSON
 
   renderOptionViews: =>
     _.each(@model.get('options'), (option) =>
@@ -37,13 +51,11 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   renderOptionView: (optionView) =>
     @$('.options').append(optionView.render().$el)
 
-  addOption: (event) =>
-    event.preventDefault()
+  addOption: =>
     optionView = @addOptionView(@defaultOption)
     @renderOptionView(optionView)
 
   deleteQuestion: (event) =>
-    event.preventDefault()
     confirmMessage = $(event.currentTarget).data('confirm')
     if not confirmMessage || confirm(confirmMessage)
       @model.destroy()
@@ -79,18 +91,30 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
   isEditState: =>
     @templateName == @formTemplate
 
-  saveForm: (event) =>
-    event.preventDefault() if event
+  saveForm: =>
     data = @$('form').serializeObject()
     data = _.omit(data, ['answer', 'correct'])
     data['options'] = _.map(@$('.edit-option'), (option) -> $('input', option).serializeObject())
     @model.save(data)
     @render()
 
-  cancelEdit: (event) =>
-    event.preventDefault()
-    @render()
-
   triggerEditQuestion: =>
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', @model.cid)
+
+  filePickerOnSuccess: (fpFile) =>
+    @model.destroyImage() if @model.get('image')
+    @model.save(image: fpFile)
+    @render(@formTemplate)
+
+  cancelEdit: =>
+    @render()
+
+  deleteImage: (event) =>
+    confirmMessage = $(event.currentTarget).data('confirm')
+    if not confirmMessage || confirm(confirmMessage)
+      @model.destroyImage()
+      @model.set('image', {})
+      @render(@formTemplate)
+
+_.defaults(ChefStepsAdmin.Views.Question.prototype, ChefStepsAdmin.Views.Modules.FilePickerUpload, ChefStepsAdmin.Views.Modules.FilePickerDisplay)
 

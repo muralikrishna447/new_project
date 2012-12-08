@@ -10,6 +10,7 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
     'click .delete': 'deleteImage'
 
   initialize: (options) =>
+    @noCaption = options.noCaption
     ChefStepsAdmin.ViewEvents.on("editImageCaption", @editImageCaptionEventHandler)
 
   render: (templateName = 'admin/quiz_image') =>
@@ -20,15 +21,12 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
 
   extendTemplateJSON: (templateJSON) =>
     templateJSON['url'] = @convertImage(@model.get('url'))
+    templateJSON['noCaption'] = @noCaption
     templateJSON
 
-  convertImage: (url) =>
-    optionsQueryString = $.param(@imageOptions)
-    "#{url}/convert?#{optionsQueryString}"
-
   imageOptions:
-    w: 250,
-    h: 250,
+    w: 300,
+    h: 150,
     fit: 'crop'
 
   triggerEditImageCaption: =>
@@ -61,4 +59,6 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
     if not confirmMessage || confirm(confirmMessage)
       @model.destroyImage()
       @remove()
+
+_.defaults(ChefStepsAdmin.Views.QuizImage.prototype, ChefStepsAdmin.Views.Modules.FilePickerDisplay)
 
