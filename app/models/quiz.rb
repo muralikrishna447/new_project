@@ -7,6 +7,7 @@ class Quiz < ActiveRecord::Base
 
   has_many :questions
   has_many :images, class_name: "QuizImage"
+  has_one :image, as: :imageable
 
   attr_accessible :title, :activity_id, :start_copy, :end_copy
 
