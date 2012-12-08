@@ -5,7 +5,7 @@ class QuizResultsPresenter
   end
 
   def present
-    @quiz.questions.map do |question|
+    @quiz.ordered_questions.map do |question|
       contents = question.contents
       answer = question.answer_for(@user)
       {

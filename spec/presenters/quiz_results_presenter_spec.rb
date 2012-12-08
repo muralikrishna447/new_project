@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe QuizResultsPresenter do
   let(:quiz) do
-    stub(questions: 3.times.map { |i|
+    stub(ordered_questions: 3.times.map { |i|
       i == 2 ? build_tf_question : build_mc_question
     })
   end
@@ -14,8 +14,13 @@ describe QuizResultsPresenter do
     should have(3).results
   end
 
+  it 'uses ordered questions' do
+    quiz.should_receive(:ordered_questions)
+    subject
+  end
+
   it 'retrieves answer for user for each question' do
-    quiz.questions.each do |question|
+    quiz.ordered_questions.each do |question|
       question.should_receive(:answer_for).with(user)
     end
     subject
@@ -24,7 +29,7 @@ describe QuizResultsPresenter do
   context 'the presented result' do
     let(:mc_result) { subject.first }
     let(:tf_result) { subject.last }
-    let(:question) { quiz.questions.first }
+    let(:question) { quiz.ordered_questions.first }
     let(:answer) { question.answer_for(user) }
 
     it 'includes the question' do
