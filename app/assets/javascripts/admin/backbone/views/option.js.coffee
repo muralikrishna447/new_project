@@ -6,7 +6,7 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
   events:
     'click .delete-option': 'deleteOption'
     'change input[type=radio]': 'highlightCorrect'
-    'click .delete-option-image': 'destroyImage'
+    'click .delete-option-image': 'deleteImage'
     'click .edit-option-image': 'openFilePicker'
     'click .option-image-controls img': 'openFilePicker'
     'click .option-image-controls .upload-image': 'openFilePicker'
@@ -28,9 +28,16 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
     @option['image'] = fpFile
     @render()
 
-  deleteOption: =>
-    @destroyImage(true)
-    @remove()
+  deleteImage: (event) =>
+    confirmMessage = $(event.currentTarget).data('confirm')
+    if not confirmMessage || confirm(confirmMessage)
+      @destroyImage()
+
+  deleteOption: (event) =>
+    confirmMessage = $(event.currentTarget).data('confirm')
+    if not confirmMessage || confirm(confirmMessage)
+      @destroyImage(true)
+      @remove()
 
   highlightCorrect: (event) =>
     $('.edit-option').removeClass('correct')

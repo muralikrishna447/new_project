@@ -15,6 +15,6 @@
   = hb 'unless image.url' do
     = hb("upload_image_button uid")
 
-%button.delete-option{type: 'button'}
+%button.delete-option{type: 'button', data: {confirm: "Are you sure?"} }
   %i.icon-remove
 
