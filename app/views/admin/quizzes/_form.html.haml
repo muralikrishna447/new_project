@@ -13,4 +13,5 @@
         = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
   - if @quiz.persisted?
     = link_to 'Edit Questions', manage_questions_admin_quiz_path(@quiz), class: 'admin-button'
+  %button.admin-button{ data: {behavior: 'filepicker'}} Upload Quiz Image
 
