@@ -17,8 +17,10 @@
       %label.label Quiz Image
       #quiz-image
         %button.admin-button{type: 'button', data: {behavior: 'filepicker'}} Upload Quiz Image
+        = hidden_field_tag 'quiz[image_attributes][id]', @quiz.image && @quiz.image.id
         = hidden_field_tag 'quiz[image_attributes][filename]', @quiz.image && @quiz.image.filename
         = hidden_field_tag 'quiz[image_attributes][url]', @quiz.image && @quiz.image.url
+        = hidden_field_tag 'quiz[image_attributes][_destroy]', false
         .image
     %li
       = f.actions do
