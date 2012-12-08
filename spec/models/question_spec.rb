@@ -46,7 +46,7 @@ end
 
 describe Question, '#answer_count' do
   let(:question) { Fabricate(:multiple_choice_question) }
-  before { question.answers << Fabricate(:multiple_choice_answer, question: question) }
+  before { Fabricate(:multiple_choice_answer, question: question) }
 
   it 'increments count when new answer is added' do
     question.answer_count.should == 1
