@@ -6,21 +6,29 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
   events:
     'click .delete-option': 'deleteOption'
     'change input[type=radio]': 'highlightCorrect'
-    'click .delete-option-image': 'deleteImage'
-    'click .edit-option-image': 'uploadImage'
-    'click .option-image-controls img': 'uploadImage'
-    'click .option-image-controls .upload-image': 'uploadImage'
+    'click .delete-option-image': 'destroyImage'
+    'click .edit-option-image': 'openFilePicker'
+    'click .option-image-controls img': 'openFilePicker'
+    'click .option-image-controls .upload-image': 'openFilePicker'
+
+  filePickerType: 'single'
 
   initialize: (options) =>
     @option = options.option
 
-  deleteImage: =>
-    console.log 'TODO: delete image'
+  destroySuccess: =>
+    @option['image'] = {}
+    @render()
 
-  uploadImage: =>
-    console.log "TODO: upload image"
+  getImage: =>
+    @option['image']
+
+  filePickerOnSuccess: (fpFile) =>
+    @option['image'] = fpFile
+    @render()
 
   deleteOption: =>
+    @destroyImage(true)
     @remove()
 
   highlightCorrect: (event) =>
@@ -33,4 +41,6 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
     @$el.addClass('correct') if @option.correct
     @delegateEvents()
     @
+
+_.defaults(ChefStepsAdmin.Views.Option.prototype, ChefStepsAdmin.Views.Modules.FilePickerUpload, ChefStepsAdmin.Models.Modules.FilePicker)
 
