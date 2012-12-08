@@ -31,6 +31,10 @@ describe QuizResultsPresenter do
       mc_result[:question].should == question.contents.question
     end
 
+    it 'includes correct flag' do
+      mc_result[:correct].should == false
+    end
+
     it 'includes the average_correct' do
       mc_result[:average_correct].should == 86
     end

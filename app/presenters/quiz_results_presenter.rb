@@ -10,6 +10,7 @@ class QuizResultsPresenter
       answer = question.answer_for(@user)
       {
         question: contents.question,
+        correct: answer.correct,
         answer: contents.option_display(answer.contents.uid),
         correct_answer: contents.correct_option_display,
         average_correct: question.average_correct
