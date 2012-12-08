@@ -46,10 +46,31 @@ end
 
 describe Question, '#answer_count' do
   let(:question) { Fabricate(:multiple_choice_question) }
-  before { question.answers << Fabricate(:multiple_choice_answer, question: question) }
+  before { Fabricate(:multiple_choice_answer, question: question) }
 
   it 'increments count when new answer is added' do
     question.answer_count.should == 1
   end
 end
 
+describe Question, '#answer_for' do
+  let(:question) { Fabricate.build(:multiple_choice_question, id: 123) }
+  let(:answer) { Fabricate(:multiple_choice_answer, question: question) }
+  it "returns nil if user has not answered question" do
+    question.answer_for(stub_model(User)).should_not be
+  end
+
+  it "returns user's answer if user has answered question" do
+    question.answer_for(answer.user).should == answer
+  end
+end
+
+describe Question, '#average_correct' do
+  let(:question) { Fabricate.build(:multiple_choice_question, id: 123) }
+
+  it "returns # of correct divided by # of total" do
+    question.correct_answer_count = 30
+    question.stub(:answer_count) { 40 }
+    question.average_correct.should == 75
+  end
+end

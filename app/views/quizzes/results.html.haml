@@ -9,20 +9,15 @@
 #quiz-results.container
   .results-header.row
     .span6
-      Questions:
+      .center
+        Questions:
+    .span4
+      .center.bordered.right.left
+        Your Answer:
+      .center.bordered.right
+        Correct Answer:
     .span2
-      Your Answer:
-    .span2
-      Correct Answer:
-    .span2
-      Students Avg. Score:
-  = render 'quizzes/multiple_choice_question_results', is_correct: true
-  .row
-    .span12
-      .horizontal-divider.dotted
-  = render 'quizzes/multiple_choice_question_results', is_correct: false
-  .row
-    .span12
-      .horizontal-divider.dotted
-  = render 'quizzes/multiple_choice_question_results'
-
+      .center
+        Students Avg. Score:
+  - quiz_results.each_with_index do |result, index|
+    = render 'quizzes/multiple_choice_question_results', result: result, count: index+1

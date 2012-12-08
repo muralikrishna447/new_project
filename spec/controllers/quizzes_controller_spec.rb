@@ -16,7 +16,7 @@ describe QuizzesController, '#show' do
     controller.questions
   end
 
-  context 'redirect to results page' do
+  context 'redirect to results action' do
     let(:user) { Fabricate(:user) }
     let(:quiz) { stub_model(Quiz, id: 123) }
 
@@ -25,16 +25,58 @@ describe QuizzesController, '#show' do
       controller.stub(:quiz) { quiz }
     end
 
-    it 'does not redirect to results page if quiz has not been completed' do
+    it 'does not redirect to results action if quiz has not been completed' do
       quiz.stub(:completed_by?).with(user).and_return(false)
       get :show, id: 1
       response.should_not redirect_to results_quiz_path(123)
     end
 
-    it 'redirects to results page if quiz has been completed' do
+    it 'redirects to results action if quiz has been completed' do
       quiz.stub(:completed_by?).with(user).and_return(true)
       get :show, id: 1
       response.should redirect_to results_quiz_path(123)
     end
   end
 end
+
+
+describe QuizzesController, '#results' do
+  it 'authenticates action' do
+    get :results, id: 1
+    response.should redirect_to new_user_session_path
+  end
+
+  it 'exposes presented quiz results for user' do
+    user = stub
+    quiz = stub
+    presenter = stub
+    controller.stub(:current_user) { user }
+    controller.stub(:quiz) { quiz }
+    QuizResultsPresenter.should_receive(:new).with(quiz, user) { presenter }
+    presenter.should_receive(:present)
+    controller.quiz_results
+  end
+
+  context 'redirect to show action' do
+    let(:user) { Fabricate(:user) }
+    let(:quiz) { stub_model(Quiz, id: 123) }
+
+    before do
+      sign_in user
+      controller.stub(:quiz) { quiz }
+    end
+
+    it 'does not redirect to show action if quiz has been completed' do
+      quiz.stub(:completed_by?).with(user).and_return(true)
+      get :results, id: 1
+      response.should_not redirect_to quiz_path(123)
+    end
+
+    it 'redirects to show action if quiz has been not completed' do
+      quiz.stub(:completed_by?).with(user).and_return(false)
+      get :results, id: 1
+      response.should redirect_to quiz_path(123)
+    end
+  end
+end
+
