@@ -1,5 +1,6 @@
 - submit_options = @quiz.persisted? ? {label: 'Save Details'} : {label: 'Add Questions'}
 
+= render 'layouts/filepicker'
 = semantic_form_for [:admin, @quiz] do |f|
   = f.inputs name: "Quiz Details" do
     = f.input :published
