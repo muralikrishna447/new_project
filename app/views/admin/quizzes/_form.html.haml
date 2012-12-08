@@ -4,7 +4,7 @@
 
 :javascript
   window.ChefStepsAdmin = window.ChefStepsAdmin || {};
-  window.ChefStepsAdmin.quizImageData = JSON.parse('#{j(@quiz_image || {}.to_json)}');
+  window.ChefStepsAdmin.quizImageData = JSON.parse('#{j((@quiz.image || {}).to_json)}');
 
 = semantic_form_for [:admin, @quiz] do |f|
   = f.inputs name: "Quiz Details" do
@@ -17,6 +17,9 @@
       %label.label Quiz Image
       #quiz-image
         %button.admin-button{type: 'button', data: {behavior: 'filepicker'}} Upload Quiz Image
+        = hidden_field_tag 'quiz[image_attributes][filename]', @quiz.image && @quiz.image.filename
+        = hidden_field_tag 'quiz[image_attributes][url]', @quiz.image && @quiz.image.url
+        .image
     %li
       = f.actions do
         = f.action :submit, submit_options

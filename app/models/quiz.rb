@@ -10,7 +10,8 @@ class Quiz < ActiveRecord::Base
   has_many :questions
   has_many :images, class_name: "QuizImage"
 
-  attr_accessible :title, :activity_id, :start_copy, :end_copy
+  attr_accessible :title, :activity_id, :start_copy, :end_copy, :image_attributes
+  accepts_nested_attributes_for :image
 
   def add_multiple_choice_question
     question = MultipleChoiceQuestion.create
