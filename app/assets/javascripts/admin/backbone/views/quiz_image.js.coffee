@@ -10,6 +10,7 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
     'click .delete': 'deleteImage'
 
   initialize: (options) =>
+    @noCaption = options.noCaption
     ChefStepsAdmin.ViewEvents.on("editImageCaption", @editImageCaptionEventHandler)
 
   render: (templateName = 'admin/quiz_image') =>
@@ -20,11 +21,12 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
 
   extendTemplateJSON: (templateJSON) =>
     templateJSON['url'] = @convertImage(@model.get('url'))
+    templateJSON['noCaption'] = @noCaption
     templateJSON
 
   imageOptions:
-    w: 250,
-    h: 250,
+    w: 300,
+    h: 150,
     fit: 'crop'
 
   triggerEditImageCaption: =>

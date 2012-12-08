@@ -1,5 +1,11 @@
 - submit_options = @quiz.persisted? ? {label: 'Save Details'} : {label: 'Add Questions'}
 
+= render 'layouts/filepicker'
+
+:javascript
+  window.ChefStepsAdmin = window.ChefStepsAdmin || {};
+  window.ChefStepsAdmin.quizImageData = JSON.parse('#{j((@quiz.image || {}).to_json)}');
+
 = semantic_form_for [:admin, @quiz] do |f|
   = f.inputs name: "Quiz Details" do
     = f.input :published
@@ -7,6 +13,15 @@
     = f.input :activity
     = f.input :start_copy, label: 'Start Message'
     = f.input :end_copy, label: 'End Message'
+    %li
+      %label.label Quiz Image
+      #quiz-image
+        %button.admin-button{type: 'button', data: {behavior: 'filepicker'}} Upload Quiz Image
+        = hidden_field_tag 'quiz[image_attributes][id]', @quiz.image && @quiz.image.id
+        = hidden_field_tag 'quiz[image_attributes][filename]', @quiz.image && @quiz.image.filename
+        = hidden_field_tag 'quiz[image_attributes][url]', @quiz.image && @quiz.image.url
+        = hidden_field_tag 'quiz[image_attributes][_destroy]', false
+        .image
     %li
       = f.actions do
         = f.action :submit, submit_options

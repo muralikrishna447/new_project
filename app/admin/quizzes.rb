@@ -35,6 +35,5 @@ ActiveAdmin.register Quiz do
     @quiz = Quiz.find(params[:id])
     @quiz_images = ImagePresenter.present_collection(@quiz.images)
   end
-
 end
 
