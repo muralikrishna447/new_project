@@ -2,10 +2,17 @@ class ChefStepsAdmin.Views.QuizImageUploader extends Backbone.View
   filePickerType: 'single'
 
   events:
-    'click': 'openFilePicker'
+    'click button': 'openFilePicker'
 
-  filePickerOnSuccess: (fpFiles) =>
-    console.log(fpFiles)
+  render: ()->
+    unless @model.isNew()
+      view = new ChefStepsAdmin.Views.QuizImage(model: @model)
+      @$el.html(view.render().$el)
+
+  filePickerOnSuccess: (fpFile) =>
+    @model.set(fpFile)
+    @model.save()
+    @render()
 
 _.defaults(ChefStepsAdmin.Views.QuizImageUploader.prototype, ChefStepsAdmin.Views.Modules.FilePickerUpload)
 
