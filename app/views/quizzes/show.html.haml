@@ -21,7 +21,8 @@
           %strong #{quiz.title}!
     .row.hero-unit.overview
       .span8
-        = image_tag 'http://lorempixel.com/745/376/food/', class: 'img-polaroid'
+        - if quiz.image
+          = image_tag quiz.image.url, class: 'img-polaroid'
       .span4.dials
         - remaining_question_count = quiz.questions_remaining_for_count(current_user)
         .dial-left

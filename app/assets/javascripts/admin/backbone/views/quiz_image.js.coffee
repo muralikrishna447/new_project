@@ -25,8 +25,8 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
     templateJSON
 
   imageOptions:
-    w: 250,
-    h: 250,
+    w: 300,
+    h: 150,
     fit: 'crop'
 
   triggerEditImageCaption: =>
