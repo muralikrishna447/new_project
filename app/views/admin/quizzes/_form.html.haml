@@ -8,10 +8,12 @@
     = f.input :start_copy, label: 'Start Message'
     = f.input :end_copy, label: 'End Message'
     %li
+      %label.label Quiz Image
+      %button.admin-button{type: 'button', data: {behavior: 'filepicker'}} Upload Quiz Image
+    %li
       = f.actions do
         = f.action :submit, submit_options
         = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
   - if @quiz.persisted?
     = link_to 'Edit Questions', manage_questions_admin_quiz_path(@quiz), class: 'admin-button'
-  %button.admin-button{ data: {behavior: 'filepicker'}} Upload Quiz Image
 
