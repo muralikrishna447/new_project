@@ -1,9 +1,12 @@
 class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
   routes:
+    '/admin/quizzes/{id}/edit' : 'editQuiz'
     '/admin/quizzes/{id}/manage_questions' : 'editQuizQuestions'
     '/admin/quizzes/{id}/upload_images' : 'uploadQuizImages'
 
+  editQuiz: (id)->
+    new ChefStepsAdmin.Views.QuizImageUploader(el: "[data-behavior~='filepicker']")
 
   editQuizQuestions: (id)->
     questions = new ChefStepsAdmin.Collections.Questions([], quizId: id)

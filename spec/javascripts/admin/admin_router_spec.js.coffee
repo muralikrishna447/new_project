@@ -2,6 +2,15 @@ describe 'ChefStepsAdmin.Router', ->
   beforeEach ->
     @router = new ChefStepsAdmin.Router()
 
+  describe "#editQuiz", ->
+    beforeEach ->
+      spyOn(ChefStepsAdmin.Views, 'QuizImageUploader')
+
+      @router.editQuiz()
+
+    it "instantiates a quiz image uploader view", ->
+      expect(ChefStepsAdmin.Views.QuizImageUploader).toHaveBeenCalled()
+
   describe "#editQuizQuestions", ->
     beforeEach ->
       ChefStepsAdmin.questionsData = ['a', 'b']
