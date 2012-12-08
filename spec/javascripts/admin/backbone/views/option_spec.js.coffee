@@ -6,7 +6,8 @@ describe "ChefStepsAdmin.Views.Option", ->
     beforeEach ->
       spyOn(@view, 'remove')
       spyOn(@view, 'destroyImage')
-      @view.deleteOption()
+      @fake_event = jasmine.createSpy('fake click event')
+      @view.deleteOption(@fake_event)
 
     it "destroys the image without callback", ->
       expect(@view.destroyImage).toHaveBeenCalledWith(true)
