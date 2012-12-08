@@ -36,5 +36,10 @@ ActiveAdmin.register Quiz do
     @quiz_images = ImagePresenter.present_collection(@quiz.images)
   end
 
+  member_action :image, method: :post do
+    @quiz = Quiz.find(params[:id])
+    @quiz.update_image(params)
+    render json: @quiz
+  end
 end
 

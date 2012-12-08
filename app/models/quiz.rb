@@ -1,13 +1,14 @@
 class Quiz < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
+  include Imageable
+
   friendly_id :title, use: :slugged
 
   belongs_to :activity
 
   has_many :questions
   has_many :images, class_name: "QuizImage"
-  has_one :image, as: :imageable
 
   attr_accessible :title, :activity_id, :start_copy, :end_copy
 
