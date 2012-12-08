@@ -17,7 +17,7 @@ class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
   uploadQuizImages: (id) ->
     quizImages = new ChefStepsAdmin.Collections.QuizImages([], quizId: id)
     quizImages.reset(ChefStepsAdmin.quizImageData)
-    imageUploaderView = new ChefStepsAdmin.Views.QuizImageUploader(collection: quizImages)
+    imageUploaderView = new ChefStepsAdmin.Views.QuizImagesUploader(collection: quizImages)
     imageUploaderView.render()
 
     quizImagesView = new ChefStepsAdmin.Views.QuizImages(collection: quizImages)

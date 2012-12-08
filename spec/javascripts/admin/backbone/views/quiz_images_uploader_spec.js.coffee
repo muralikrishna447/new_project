@@ -1,7 +1,7 @@
-describe 'ChefStepsAdmin.Views.QuizImageUploader', ->
+describe 'ChefStepsAdmin.Views.QuizImagesUploader', ->
   beforeEach ->
     @fake_images = jasmine.createSpyObj('fake_images', ['create'])
-    @view = new ChefStepsAdmin.Views.QuizImageUploader(collection: @fake_images)
+    @view = new ChefStepsAdmin.Views.QuizImagesUploader(collection: @fake_images)
 
   describe "#render", ->
     beforeEach ->
