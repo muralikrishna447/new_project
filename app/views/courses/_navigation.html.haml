@@ -4,26 +4,20 @@
     .navbar
       .navbar-inner
         %ul.nav.nav-activities
-          %li
-            - if model.prev.present?
-              = link_to model.prev do
-                %i.icon-double-chevron-left
-                %span.nav-anchors.nav-label Prev
-            - else
-              %a
-                %i.icon-double-chevron-left.disabled
           %li.navbar-activity-title
             .navbar-text
               %h4= raw model.title
-          %li
-            - if model.next.present?
-              = link_to model.next do
-                %span.nav-anchors.nav-label Next
-                %i.icon-double-chevron-right
-            - else
-              %a
-                %i.icon-double-chevron-right.disabled
         %ul.nav.nav-anchors.pull-right
+          - if model.prev.present?
+            %li
+              = link_to model.prev do
+                %i.icon-double-chevron-left
+                %span.nav-label &nbsp;Prev
+          - if model.next.present?
+            %li
+              = link_to model.next do
+                %span.nav-anchors.nav-label Next&nbsp;
+                %i.icon-double-chevron-right
           %li
             %a.icon-info-sign.icon-white{href: '#overview'}
               %span.nav-label Overview
