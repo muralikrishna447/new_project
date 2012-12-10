@@ -19,3 +19,10 @@
     .span4
       = fancy_radio_button_tag 'radio', 'radio-2', true do
         Radio 2. You can only select one.
+
+  %h4 Variants
+  .row
+    .span4
+      = fancy_checkbox_tag 'check-variant-1', 'check-variant-1', true do
+        = image_tag 'http://lorempixel.com/181/102/food/1/', class: 'img-polaroid'
+        This is an example of the ChefSteps styled checkbox with an image in the label.
