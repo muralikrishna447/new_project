@@ -4,6 +4,10 @@
       .instructions= hb('instructions')
 
   .hero-unit
+    = hb('if image') do
+      .row
+        .span6.question-image
+          %img.img-polaroid{ src: hb('image.url') }
     .row
       %div{ class: hb('question_width count') }
         .question-label QUESTION:
