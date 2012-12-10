@@ -107,9 +107,29 @@ ol#question-list
     background: whitesmoke
     border: 1px dashed transparent
     input[type=text]
-      display: block
+      float: left
+    input[name=answer]
+      width: 73%
     label
       display: inline-block
+    .option-image-controls
+      float: right
+      position: absolute
+      top: 4px
+      right: 55px
+      img
+        width: 50px
+        height: 50px
+        cursor: pointer
+      .delete-option-image
+        position: absolute
+        top: 22px
+      .edit-option-image
+        &:hover
+          color: $green
+      .delete-option-image
+        &:hover
+          color: $red
     .delete-option
       position: absolute
       right: 5px
@@ -145,6 +165,12 @@ ol#question-list
     .cancel, .done
       float: right
 
+.option-image-controls, .image-controls
+  [class*=icon-]
+    font-size: 16px
+    color: $gray
+    cursor: pointer
+
 .image-controls
   position: relative
   float: right
@@ -154,10 +180,6 @@ ol#question-list
     cursor: pointer
     width: 40px
     height: 40px
-  [class*=icon-]
-    font-size: 16px
-    color: $gray
-    cursor: pointer
   .delete-image
     position: absolute
   .edit-image

@@ -10,8 +10,5 @@
 
   %ul.options
     = hb 'each options' do
-      = hb 'if correct' do
-        %li.option.correct= hb('answer')
-      = hb 'unless correct' do
-        %li.option= hb('answer')
+      = hb '> templates.admin.question_option'
 
