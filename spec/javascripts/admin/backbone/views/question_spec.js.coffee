@@ -119,3 +119,4 @@ describe 'ChefStepsAdmin.Views.Question', ->
 
       expect(@view.extendTemplateJSON(template_json)).toEqual(converted_json)
 
+

@@ -1,6 +1,7 @@
 //= require active_admin/base
 //= require twitter/bootstrap/typeahead
 //= require lodash
+//= require array_remove
 //= require signals
 //= require crossroads
 //= require backbone
