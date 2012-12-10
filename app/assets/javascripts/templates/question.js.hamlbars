@@ -19,10 +19,13 @@
         .question-label YOUR ANSWER:
     .row
       = hb 'each_with_index options' do
-        %div{ class: hb('option_width count') }
+        %div{ class: "option #{hb('option_width count')}" }
           %div{ data: {behavior: 'radio'} }
             = radio_button_tag 'answer', hb('answer'), false, id: hb('uid')
-            %label{ for: hb('uid') }= hb('answer')
+            %label{ for: hb('uid') }
+              = hb('if image') do
+                %img.img-polaroid{ src: hb('image.url') }
+              = hb('answer')
 
     %a.btn.btn-primary.btn-next{href: '#'}
       %i.icon-double-chevron-right
