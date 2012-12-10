@@ -1,7 +1,7 @@
 describe "ChefStepsAdmin.Views.Option", ->
   beforeEach ->
     @fake_question_view = jasmine.createSpyObj('question view', ['removeOptionView'])
-    @view = new ChefStepsAdmin.Views.Option(option: {title: 'some option'}, optionView: @fake_question_view )
+    @view = new ChefStepsAdmin.Views.Option(option: {title: 'some option'}, questionView: @fake_question_view )
 
   describe "#deleteOption", ->
     beforeEach ->

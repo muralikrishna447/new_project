@@ -15,6 +15,7 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
 
   initialize: (options) =>
     @option = options.option
+    @questionView = options.questionView
 
   destroySuccess: =>
     @option['image'] = {}
