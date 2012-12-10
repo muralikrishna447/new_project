@@ -32,7 +32,7 @@ class Question < ActiveRecord::Base
   end
 
   def answer_for(user)
-    answers.where(user_id: user).first
+    answers.find_by_user_id(user)
   end
 
   def average_correct
