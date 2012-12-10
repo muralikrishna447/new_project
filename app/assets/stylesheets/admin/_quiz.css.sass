@@ -121,10 +121,6 @@ ol#question-list
         width: 50px
         height: 50px
         cursor: pointer
-      [class*=icon-]
-        font-size: 16px
-        color: $gray
-        cursor: pointer
       .delete-option-image
         position: absolute
         top: 22px
@@ -169,6 +165,12 @@ ol#question-list
     .cancel, .done
       float: right
 
+.option-image-controls, .image-controls
+  [class*=icon-]
+    font-size: 16px
+    color: $gray
+    cursor: pointer
+
 .image-controls
   position: relative
   float: right
@@ -178,10 +180,6 @@ ol#question-list
     cursor: pointer
     width: 40px
     height: 40px
-  [class*=icon-]
-    font-size: 16px
-    color: $gray
-    cursor: pointer
   .delete-image
     position: absolute
   .edit-image
