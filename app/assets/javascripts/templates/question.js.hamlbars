@@ -3,7 +3,7 @@
     .span8
       .instructions= hb('instructions')
 
-  .hero-unit
+  %div{ class: "hero-unit #{hb('question_width count')}" }
     = hb('if image') do
       .row
         .span6.question-image
