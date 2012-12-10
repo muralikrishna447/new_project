@@ -19,7 +19,7 @@ class ChefStepsAdmin.Views.QuizImageUploader extends Backbone.View
     @render()
 
   updateImageAttributes: (destroy=false)=>
-    @$("[name='quiz[image_attributes][filename]']").val(@model.id)
+    @$("[name='quiz[image_attributes][id]']").val(@model.id)
     @$("[name='quiz[image_attributes][filename]']").val(@model.get('filename'))
     @$("[name='quiz[image_attributes][url]']").val(@model.get('url'))
     @$("[name='quiz[image_attributes][_destroy]']").val(destroy)
