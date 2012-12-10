@@ -7,7 +7,7 @@ class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
     'click .edit': 'triggerEditImageCaption'
     'click .cancel': 'cancelEdit'
     'click .done': 'saveForm'
-    'click .delete': 'deleteImage'
+    'click .delete-image': 'deleteImage'
 
   initialize: (options) =>
     @noCaption = options.noCaption
