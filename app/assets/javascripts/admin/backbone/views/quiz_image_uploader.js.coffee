@@ -2,7 +2,7 @@ class ChefStepsAdmin.Views.QuizImageUploader extends Backbone.View
   filePickerType: 'single'
 
   events:
-    'click button': 'openFilePicker'
+    'click #upload-image': 'openFilePicker'
 
   initialize: (options)->
     @model.destroySuccess = =>

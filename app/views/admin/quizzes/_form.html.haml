@@ -15,13 +15,13 @@
     = f.input :end_copy, label: 'End Message'
     %li
       %label.label Quiz Image
-      #quiz-image
-        %button.admin-button{type: 'button', data: {behavior: 'filepicker'}} Upload Quiz Image
-        = hidden_field_tag 'quiz[image_attributes][id]', @quiz.image && @quiz.image.id
-        = hidden_field_tag 'quiz[image_attributes][filename]', @quiz.image && @quiz.image.filename
-        = hidden_field_tag 'quiz[image_attributes][url]', @quiz.image && @quiz.image.url
-        = hidden_field_tag 'quiz[image_attributes][_destroy]', false
-        .image
+      %button#upload-image.admin-button{type: 'button', data: {behavior: 'filepicker'}} Upload Quiz Image
+      .image
+    = f.semantic_fields_for :image, @quiz.image || Image.new do |image|
+      = image.input :id, as: :hidden
+      = image.input :filename, as: :hidden
+      = image.input :url, as: :hidden
+      = image.input :_destroy, as: :hidden
     %li
       = f.actions do
         = f.action :submit, submit_options

@@ -7,7 +7,7 @@ class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
   editQuiz: (id)->
     model = new ChefStepsAdmin.Models.QuizImage(ChefStepsAdmin.quizImageData)
-    view = new ChefStepsAdmin.Views.QuizImageUploader(el: "#quiz-image", model: model)
+    view = new ChefStepsAdmin.Views.QuizImageUploader(el: "form", model: model)
     view.render()
 
   editQuizQuestions: (id)->
