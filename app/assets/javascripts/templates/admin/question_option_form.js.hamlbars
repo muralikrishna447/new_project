@@ -9,7 +9,7 @@
 
 .option-image-controls
   = hb 'if image.url' do
-    %img.img-polaroid{src: 'http://lorempixel.com/50/50/food'}
+    %img.img-polaroid{src: hb('image.url') }
     %i.icon-ban-circle.delete-option-image{ data: {confirm: "Are you sure?"} }
     %i.icon-edit.edit-option-image
   = hb 'unless image.url' do

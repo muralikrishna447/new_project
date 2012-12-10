@@ -26,9 +26,14 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     ChefStepsAdmin.ViewEvents.on("questionOrderingMode", @renderOrderingView)
     ChefStepsAdmin.ViewEvents.on("questionNormalMode", @render)
     @model.on("change:id", @updateAttributes)
+    @optionViews = []
+
+  initializeOptionViews: =>
+    @optionViews = []
+    @loadOptionViews()
 
   addOptionView: (option) =>
-    new ChefStepsAdmin.Views.Option(option: option)
+    new ChefStepsAdmin.Views.Option(option: option, collection: @)
 
   imageOptions:
     w: 300
@@ -41,15 +46,17 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     templateJSON
 
   renderOptionViews: =>
-    _.each(@model.get('options'), (option) =>
-      @renderOptionView(@addOptionView(option))
+    @initializeOptionViews()
+    _.each(@optionViews, (optionView) =>
+      @renderOptionView(optionView)
     )
 
-  renderOrderingView: =>
-    @render(@orderingTemplate)
+  loadOptionViews: =>
+    _.each @model.get('options'), (option) => @optionViews.push(@addOptionView(option))
 
-  renderOptionView: (optionView) =>
-    @$('.options').append(optionView.render().$el)
+  renderOrderingView: => @render(@orderingTemplate)
+
+  renderOptionView: (optionView) => @$('.options').append(optionView.render().$el)
 
   addOption: =>
     optionView = @addOptionView(@defaultOption)
@@ -60,6 +67,8 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     if not confirmMessage || confirm(confirmMessage)
       @model.destroy()
       @remove()
+
+  removeOptionView: (optionView) => @optionViews.remove(_.indexOf(@optionViews, optionView))
 
   editQuestionEventHandler: (cid) =>
     if @model.cid == cid
@@ -85,16 +94,14 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
       containment: 'parent'
     ).disableSelection()
 
-  updateAttributes: =>
-    @$el.attr('id', "question-#{@model.get('id')}")
+  updateAttributes: => @$el.attr('id', "question-#{@model.get('id')}")
 
-  isEditState: =>
-    @templateName == @formTemplate
+  isEditState: => @templateName == @formTemplate
 
   saveForm: =>
     data = @$('form').serializeObject()
     data = _.omit(data, ['answer', 'correct'])
-    data['options'] = _.map(@$('.edit-option'), (option) -> $('input', option).serializeObject())
+    data['options'] = _.map(@optionViews, (optionView) -> optionView.getFormData())
     @model.save(data)
     @render()
 
@@ -106,8 +113,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     @model.save(image: fpFile)
     @render(@formTemplate)
 
-  cancelEdit: =>
-    @render()
+  cancelEdit: => @render()
 
   deleteImage: (event) =>
     confirmMessage = $(event.currentTarget).data('confirm')
