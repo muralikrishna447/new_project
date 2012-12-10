@@ -29,3 +29,11 @@ describe 'ChefStepsAdmin.Models.Question', ->
     it "destroys associated image", ->
       expect(@model.destroyImage).toHaveBeenCalledWith(false)
 
+  describe "#toJSON", ->
+    beforeEach ->
+      @imageObject = { 'name': 'some image name'}
+      @model.set('image', @imageObject)
+
+    it "it creates a cloned image object", ->
+      expect(@model.toJSON()['image']).not.toBe(@imageObject)
+

@@ -6,6 +6,12 @@ class ChefStepsAdmin.Models.Question extends Backbone.Model
     @set('image', {})
     @save()
 
+  toJSON: (options) =>
+    attributes = _.clone(@attributes)
+    if image = attributes['image']
+      attributes['image'] = _.clone(image)
+    attributes
+
   destroy: =>
     @destroyImage(false)
     super
