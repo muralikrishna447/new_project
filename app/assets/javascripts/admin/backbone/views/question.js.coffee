@@ -33,7 +33,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
     @loadOptionViews()
 
   addOptionView: (option) =>
-    new ChefStepsAdmin.Views.Option(option: option, collection: @)
+    new ChefStepsAdmin.Views.Option(option: option, questionView: @)
 
   imageOptions:
     w: 300

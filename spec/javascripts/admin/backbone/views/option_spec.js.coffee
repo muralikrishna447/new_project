@@ -1,7 +1,7 @@
 describe "ChefStepsAdmin.Views.Option", ->
   beforeEach ->
     @fake_question_view = jasmine.createSpyObj('question view', ['removeOptionView'])
-    @view = new ChefStepsAdmin.Views.Option(option: {title: 'some option'}, collection: @fake_question_view )
+    @view = new ChefStepsAdmin.Views.Option(option: {title: 'some option'}, optionView: @fake_question_view )
 
   describe "#deleteOption", ->
     beforeEach ->
@@ -16,7 +16,7 @@ describe "ChefStepsAdmin.Views.Option", ->
     it "removes itself from the DOM", ->
       expect(@view.remove).toHaveBeenCalled()
 
-    it "has its collection remove the view", ->
+    it "has the question view remove itself", ->
       expect(@fake_question_view.removeOptionView).toHaveBeenCalledWith(@view)
 
   describe "#filePickerOnSuccess", ->

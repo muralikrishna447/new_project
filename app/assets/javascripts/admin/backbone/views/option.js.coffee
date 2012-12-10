@@ -37,7 +37,7 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
     confirmMessage = $(event.currentTarget).data('confirm')
     if not confirmMessage || confirm(confirmMessage)
       @destroyImage(true)
-      @collection.removeOptionView(@)
+      @questionView.removeOptionView(@)
       @remove()
 
   getFormData: =>
