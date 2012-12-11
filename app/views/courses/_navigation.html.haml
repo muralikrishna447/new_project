@@ -7,12 +7,16 @@
           %li.navbar-activity-title
             .navbar-text
               %h4= raw model.title
+
         %ul.nav.nav-anchors.pull-right
           - if model.prev.present?
             %li
               = link_to model.prev do
                 %i.icon-double-chevron-left
                 %span.nav-label &nbsp;Prev
+          %li#syllabus-flyout
+            %a.icon-list-alt.icon-white
+              %span.nav-label Syllabus
           - if model.next.present?
             %li
               = link_to model.next do
@@ -34,4 +38,9 @@
           %li
             %a.icon-comment{href: '#disqus_thread', data: {'disqus-identifier' => disqus_id}}
               %span.nav-label Comments
+
+
+#syllabus-body
+  #syllabus-body-inner
+    = render 'courses/course_breakdown', copy: syllabus_copy
 

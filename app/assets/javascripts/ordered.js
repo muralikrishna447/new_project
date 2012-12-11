@@ -14,4 +14,5 @@
 //= require_tree ./backbone/models
 //= require_tree ./backbone
 //= require_tree ./templates
+//= require syllabus_display
 
