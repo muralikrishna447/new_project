@@ -1,6 +1,7 @@
 class ActivitiesController < ApplicationController
   expose(:activity) { Activity.find_published(params[:id], params[:token]) }
   expose(:cache_show) { params[:token].blank? }
+  expose(:syllabus_copy) { Copy.find_by_location('course-syllabus') }
 
   def show
     session[:cooked_ids] ||= []
