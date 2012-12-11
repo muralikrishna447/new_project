@@ -4,7 +4,7 @@
 
 %h3 Image Sort Question
 .question-box
-  %h4= hb('instructions')
+  %h4= hb!('instructions')
 
   %ul.options
     = hb 'each options' do

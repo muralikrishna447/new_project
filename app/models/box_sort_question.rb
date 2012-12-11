@@ -15,7 +15,7 @@ class BoxSortQuestion < Question
   end
 
   def default_instructions
-    "Please drag and drop the following images into one of the three piles based on which images you remember seeing in the course you've just completed."
+    "Please <strong>drag and drop</strong> the following images into one of the three piles based on which images you remember seeing in the course you've just completed."
   end
 
   def default_options
