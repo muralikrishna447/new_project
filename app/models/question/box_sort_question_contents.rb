@@ -1,9 +1,9 @@
 class BoxSortQuestionContents < OpenStruct
   def update(params)
-    contents = params[:box_sort_question][:contents]
-    add_option_ids(contents[:options])
+    params.merge!(params[:box_sort_question][:contents])
+    add_option_ids(params[:options])
     attribute_keys.each do |key|
-      self.send("#{key.to_s}=", contents.delete(key))
+      self.send("#{key.to_s}=", params.delete(key))
     end
   end
 
