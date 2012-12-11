@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe QuestionPresenter, "#present" do
   let(:admin) { false }
-  let(:question) { stub('question', id: 123, contents_json: {key: 'val'}, image: nil, symbolize_question_type: :important) }
+  let(:question) { stub('question', id: 123, contents_json: {key: 'val'}, image: nil, images: nil, symbolize_question_type: :important) }
   let(:question_presenter) { QuestionPresenter.new(question, admin) }
 
   subject { question_presenter.attributes }
@@ -41,11 +41,22 @@ describe QuestionPresenter, "#present" do
   context "with an image" do
     before do
       ImagePresenter.stub_chain(:new, :wrapped_attributes).and_return('image attributes')
-      question.stub(:image).and_return(Fabricate.build(:image))
+      question.stub(:image).and_return(true)
     end
 
     it "includes the presented image in the attributes" do
       subject[:image].should == 'image attributes'
+    end
+  end
+
+  context "with many images" do
+    before do
+      ImagePresenter.stub(:present_collection).and_return(['imgA attrs', 'imgB attrs'])
+      question.stub(:images).and_return(true)
+    end
+
+    it "includes the presented image in the attributes" do
+      subject[:images].should == ['imgA attrs', 'imgB attrs']
     end
 
   end

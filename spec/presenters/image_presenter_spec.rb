@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ImagePresenter, "#present" do
-  let(:image) { Fabricate.build(:quiz_image) }
+  let(:image) { Fabricate.build(:image) }
   let(:image_presenter) { ImagePresenter.new(image) }
 
   subject { image_presenter.attributes }

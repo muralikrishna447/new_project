@@ -9,8 +9,15 @@ class QuestionPresenter < Presenter
       id: @model.id,
       question_type: @model.symbolize_question_type
     }.merge(@model.contents_json(@admin))
-    attrs[:image] = ImagePresenter.new(@model.image).wrapped_attributes if @model.image.present?
+    add_image_attributes(attrs)
     attrs
+  end
+
+  private
+
+  def add_image_attributes(attrs)
+    attrs[:image] = ImagePresenter.new(@model.image).wrapped_attributes if @model.image.present?
+    attrs[:images] = ImagePresenter.present_collection(@model.images) if @model.images.present?
   end
 end
 
