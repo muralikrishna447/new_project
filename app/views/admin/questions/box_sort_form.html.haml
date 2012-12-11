@@ -1,0 +1,18 @@
+= render 'layouts/filepicker'
+
+-# :javascript
+-#   window.ChefStepsAdmin = window.ChefStepsAdmin || {};
+-#   window.ChefStepsAdmin.quizImageData= JSON.parse('#{j(@quiz_images)}');
+
+#resource-actions.top
+  = link_to 'Finish', manage_questions_admin_quiz_path(@quiz), class: 'admin-button'
+
+%h2 Box Sort Question for "#{@quiz.title}"
+
+%form#box-sort-form
+  %label{ for: 'instructions'} Instructions
+  %input#instructions{type: 'text'}
+
+#resource-actions.bottom
+  = link_to 'Finish', manage_questions_admin_quiz_path(@quiz), class: 'admin-button'
+
