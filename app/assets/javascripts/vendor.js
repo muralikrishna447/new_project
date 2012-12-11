@@ -5,6 +5,7 @@
 //= require handlebars
 //= require jquery.knob
 //= require jquery.ui
+//= require jquery.ui.touch-punch
 //= require twitter/bootstrap/dropdown
 //= require twitter/bootstrap/transition
 //= require twitter/bootstrap/collapse
@@ -14,5 +15,3 @@
 //= require signals
 //= require crossroads
 //= require jquery.cookie
-
-
