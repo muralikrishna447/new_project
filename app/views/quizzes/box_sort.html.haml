@@ -1,0 +1,33 @@
+- content_for :custom_js do
+  :javascript
+    $(document).ready(function() {
+        $('#drag').draggable({
+            revert: 'invalid'
+        });
+        $('#drop1').droppable({
+            accept: '.dropaccept',
+            activeClass: 'dropactive',
+            hoverClass: 'drophover',
+            tolerance: 'intersect'
+        });
+        $('#drop2').droppable({
+            accept: '.dropaccept',
+            activeClass: 'dropactive',
+            hoverClass: 'drophover',
+            tolerance: 'intersect'
+        });
+        $('#drop3').droppable({
+            accept: '.dropaccept',
+            activeClass: 'dropactive',
+            hoverClass: 'drophover',
+            tolerance: 'intersect'
+        });
+    });
+
+#quiz-container
+  .question.box-sort
+    .container
+      #drop1.dropzone Accepts the element if fits inside
+      #drop2.dropzone Accepts the element if intersects
+      #drop3.dropzone Accepts the element if pointer hovers
+      #drag.dropaccept Drag me
