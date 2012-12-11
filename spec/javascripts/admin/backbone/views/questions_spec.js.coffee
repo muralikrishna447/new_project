@@ -68,3 +68,15 @@ describe 'ChefStepsAdmin.Views.Questions', ->
       @view.updateQuestionCount()
       expect($('#question-count .count').text()).toEqual("#{@collection.length}")
 
+
+  describe "#getQuestionView", ->
+    it "defaults to QuestionView", ->
+      model = new ChefStepsAdmin.Models.Question()
+      subject = @view.getQuestionView(model)
+      expect(subject instanceof ChefStepsAdmin.Views.Question ).toBeTruthy()
+
+    it "instantiates a view based on model", ->
+      model = new ChefStepsAdmin.Models.MultipleChoiceQuestion()
+      subject = @view.getQuestionView(model)
+      expect(subject instanceof ChefStepsAdmin.Views.MultipleChoiceQuestion).toBeTruthy()
+
