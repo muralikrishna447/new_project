@@ -1,6 +1,6 @@
 class ChefSteps.Collections.Questions extends Backbone.Collection
-  model: (attrs, options) ->
-    new ChefSteps.Models.Question(attrs, options)
+
+  model: ChefSteps.Models.Question
 
   initialize: (options)->
     @index = 0
@@ -11,3 +11,4 @@ class ChefSteps.Collections.Questions extends Backbone.Collection
   next: ->
     @index += 1
     @trigger('next', @current())
+

@@ -1,0 +1,2 @@
+class ChefStepsAdmin.Models.MultipleChoiceQuestion extends ChefStepsAdmin.Models.Question
+

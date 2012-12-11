@@ -21,11 +21,11 @@
 //= require base_router
 
 
-//= require_tree ./admin/backbone/models
 //= require_tree ./admin/backbone/views/modules
 //= require_tree ./admin/backbone/models/modules
 
 //= require admin/backbone/views/question
+//= require admin/backbone/models/question
 
 //= require_tree ./admin
 

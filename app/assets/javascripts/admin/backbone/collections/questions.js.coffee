@@ -2,7 +2,12 @@ class ChefStepsAdmin.Collections.Questions extends Backbone.Collection
   initialize: (models, options) ->
     @quizId = options.quizId
 
-  model: ChefStepsAdmin.Models.Question
+  model: (attrs, options) ->
+    switch attrs['question_type']
+      when 'multiple_choice'
+        new ChefStepsAdmin.Models.MultipleChoiceQuestion(attrs, options)
+      else
+        new ChefStepsAdmin.Models.Question(attrs, options)
 
   url: ->
     "/admin/quizzes/#{@quizId}/questions"
