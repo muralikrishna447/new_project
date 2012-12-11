@@ -31,8 +31,14 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
       $(questionItem).attr('id').split('-')[1]
     )
 
+  getQuestionView: (question) =>
+    if question instanceof ChefStepsAdmin.Models.BoxSortQuestion
+      new ChefStepsAdmin.Views.BoxSortQuestion(model: question)
+    else
+      new ChefStepsAdmin.Views.MultipleChoiceQuestion(model: question)
+
   addQuestionToList: (question, scrollIntoView=true) =>
-    view = new ChefStepsAdmin.Views.Question(model: question)
+    view = @getQuestionView(question)
     @$el.append(view.render().$el)
     if scrollIntoView
       @scrollElementIntoView(view.$el)

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe QuestionPresenter, "#present" do
   let(:admin) { false }
-  let(:question) { stub('question', id: 123, contents_json: {key: 'val'}, image: nil) }
+  let(:question) { stub('question', id: 123, contents_json: {key: 'val'}, image: nil, symbolize_question_type: :important) }
   let(:question_presenter) { QuestionPresenter.new(question, admin) }
 
   subject { question_presenter.attributes }
@@ -10,6 +10,10 @@ describe QuestionPresenter, "#present" do
   context "without an image" do
     it "serializes id" do
       subject[:id].should == 123
+    end
+
+    it "serializes question type" do
+      subject[:question_type].should == :important
     end
 
     it "merges model's contents_json" do

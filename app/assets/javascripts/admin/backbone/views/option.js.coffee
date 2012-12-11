@@ -42,7 +42,7 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
       @remove()
 
   getFormData: =>
-    _.extend(@$('input').serializeObject(), @option)
+    _.defaults(@$('input').serializeObject(), @option)
 
   highlightCorrect: (event) =>
     $('.edit-option').removeClass('correct')
