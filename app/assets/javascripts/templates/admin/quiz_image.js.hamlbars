@@ -1,6 +1,4 @@
 .image-controls
   %img.img-polaroid{ src: hb('url') }
   %i.icon-ban-circle.delete-image{ data: {confirm: "Are you sure?"} }
-- hb('#unless noCaption') do
-  %i.icon-edit.edit-image
-  %span.caption= hb('caption')
+
