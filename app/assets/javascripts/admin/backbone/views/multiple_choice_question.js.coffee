@@ -54,6 +54,7 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
 
   addOption: =>
     optionView = @addOptionView(@defaultOption)
+    @optionViews.push(optionView)
     @renderOptionView(optionView)
 
   addOptionView: (option) => new ChefStepsAdmin.Views.Option(option: option, questionView: @)
