@@ -65,6 +65,5 @@ class Quiz < ActiveRecord::Base
     question_type.to_s.classify.constantize
   end
 
-
 end
 
