@@ -51,7 +51,6 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
     )
 
   addNewQuestionToList: (question) =>
-    console.log 'adding question', question
     @addQuestionToList(question)
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', question.cid)
 
