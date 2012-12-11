@@ -281,9 +281,16 @@
       top: 0
       margin: 0
 
-    .question .hero-unit
-      background: none
-      border: none
+    .question
+      .hero-unit
+        background: none
+        border: none
+        a
+          right: -20px
+          top: 60%
+      .option img
+        max-width: 145px
+
 /* Everything but portrait iphone*/
 @media (min-width: 480px)
   +authentication-nav

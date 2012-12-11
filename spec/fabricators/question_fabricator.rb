@@ -5,3 +5,7 @@ end
 Fabricator :true_false_question, from: MultipleChoiceQuestion do
   contents { Fabricate(:true_false_question_contents) }
 end
+
+Fabricator :box_sort_question do
+  contents { Fabricate(:box_sort_question_contents) }
+end

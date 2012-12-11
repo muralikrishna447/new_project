@@ -1,0 +1,16 @@
+= render 'layouts/filepicker'
+
+-# :javascript
+-#   window.ChefStepsAdmin = window.ChefStepsAdmin || {};
+-#   window.ChefStepsAdmin.quizImageData= JSON.parse('#{j(@quiz_images)}');
+
+%h2 Box Sort Question for "#{@question.quiz.title}"
+
+= semantic_form_for [:admin, @question], url: admin_question_path(@question) do |f|
+  = f.inputs name: "Question Details" do
+    = f.semantic_fields_for :contents do |contents|
+      = contents.input :instructions
+
+  = f.actions do
+    = f.action :submit, label: 'Save Question'
+

@@ -5,8 +5,6 @@ class Question < ActiveRecord::Base
 
   ranks :question_order, with_same: :quiz_id
 
-  self.inheritance_column = :question_type
-
   belongs_to :quiz
   has_many :answers
 
@@ -32,11 +30,15 @@ class Question < ActiveRecord::Base
   end
 
   def answer_for(user)
-    answers.where(user_id: user).first
+    answers.find_by_user_id(user)
   end
 
   def average_correct
     (correct_answer_count.to_f / answer_count * 100).to_i
+  end
+
+  def symbolize_question_type
+    type.underscore.chomp('_question').to_sym
   end
 end
 

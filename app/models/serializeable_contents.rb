@@ -17,10 +17,14 @@ module SerializeableContents
 
   def init_contents
     return if persisted?
+    return if contents_class.nil?
     self.contents = contents_class.new({}) if self.contents.blank?
   end
 
   def contents_class
-    (self.class.name.to_s + 'Contents').constantize
+    begin
+      (self.class.name.to_s + 'Contents').constantize
+    rescue
+    end
   end
 end
