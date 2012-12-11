@@ -9,7 +9,7 @@
 = semantic_form_for [:admin, @question], url: admin_question_path(@question) do |f|
   = f.inputs name: "Question Details" do
     = f.semantic_fields_for :contents do |contents|
-      = contents.input :instructions
+      = contents.input :instructions, input_html: {value: @question.instructions}
 
   = f.actions do
     = f.action :submit, label: 'Save Question'
