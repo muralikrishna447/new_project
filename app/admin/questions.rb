@@ -6,11 +6,9 @@ ActiveAdmin.register Question do
     def create
       @quiz = Quiz.find(params[:quiz_id])
       case params[:question_type]
-      when "multiple_choice"
-        render json: QuestionPresenter.new(@quiz.add_question(:multiple_choice_question), true).present
       when 'box_sort'
         @question = @quiz.add_question(:box_sort_question)
-        render 'box_sort_form', layout: 'active_admin'
+        redirect_to edit_admin_question_path(@question)
       else
         render json: QuestionPresenter.new(@quiz.add_question(:multiple_choice_question), true).present
       end
