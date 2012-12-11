@@ -1,14 +1,29 @@
 - content_for :custom_js do
   :javascript
     $(document).ready(function() {
+      var handleDrop = function(event, ui) {
+        ui.draggable.css({top: 0, left: 0});
+        $(this).append(ui.draggable);
+        $('.sort-option').css({'z-index': 1});
+      };
+
+      var handleDragStart = function(event, ui) {
+        $('#sort-image').parent().css({'z-index': 10});
+      };
+
       $('#sort-image').draggable({
-        revert: 'invalid'
+        containment: '.hero-unit',
+        revert: 'invalid',
+        opacity: 0.6,
+        zIndex: 10000,
+        start: handleDragStart
       });
       $('.sort-option').droppable({
         accept: '#sort-image',
         activeClass: 'image-active',
         hoverClass: 'image-hover',
-        tolerance: 'intersect'
+        tolerance: 'intersect',
+        drop: handleDrop
       });
     });
 
