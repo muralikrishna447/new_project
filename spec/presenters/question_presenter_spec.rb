@@ -46,8 +46,6 @@ describe QuestionPresenter, "#present" do
   context "with an image" do
     before do
       ImagePresenter.stub_chain(:new, :wrapped_attributes).and_return('image attributes')
-      question.stub_chain(:attributes, :has_key?).and_return(true)
-      question.stub(:images).and_return(false)
       question.stub(:image).and_return(true)
     end
 
@@ -63,9 +61,7 @@ describe QuestionPresenter, "#present" do
   context "with many images" do
     before do
       ImagePresenter.stub(:present_collection).and_return(['imgA attrs', 'imgB attrs'])
-      question.stub_chain(:attributes, :has_key?).and_return(true)
       question.stub(:images).and_return(true)
-      question.stub(:image).and_return(false)
     end
 
     it "includes the presented image in the attributes" do

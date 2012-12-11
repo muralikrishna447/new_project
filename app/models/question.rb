@@ -40,5 +40,21 @@ class Question < ActiveRecord::Base
   def symbolize_question_type
     type.underscore.chomp('_question').to_sym
   end
+
+  def has_image?
+    begin
+      image.present?
+    rescue
+      false
+    end
+  end
+
+  def has_images?
+    begin
+      images.present?
+    rescue
+      false
+    end
+  end
 end
 
