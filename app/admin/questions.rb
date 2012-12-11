@@ -1,6 +1,8 @@
 ActiveAdmin.register Question do
-  belongs_to :quiz
+  belongs_to :quiz, shallow: true
   menu parent: 'More'
+
+  form partial: 'box_sort_form'
 
   controller do
     def create
