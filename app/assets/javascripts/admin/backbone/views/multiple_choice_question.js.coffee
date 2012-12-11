@@ -28,14 +28,11 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
       @renderOptionView(optionView)
     )
 
-  render: (templateName = 'admin/question') =>
-    @templateName = templateName
-    @$el.html(@renderTemplate())
-    @delegateEvents()
+  render: (templateName = @showTemplate) =>
+    super(templateName)
     if @isEditState()
       @renderOptionViews()
       @makeOptionsSortable()
-    @updateAttributes()
     @
 
   filePickerOnSuccess: (fpFile) =>
