@@ -52,6 +52,9 @@
 
   .images
     margin-bottom: 25px
+    [class*='span']
+      margin: 0 auto 10px
+      float: none
 
   .image-caption
     +font-serif-small
@@ -62,20 +65,34 @@
     float: none
     line-height: 22px
 
-  .drophover
-    background: #eee
-
   #sort-image
-    margin: 0 auto 10px
-    float: none
+    z-index: 10
     img
       margin-left: 10px
+
+    &.ui-draggable-dragging
+      img
+        opacity: 0.6
 
   .sort-option
     +border-radius(3px)
     +box-shadow(inset 0px 1px 2px 0px rgba(0, 0, 0, 0.5))
+    z-index: 1
     height: 152px
     background: $beige
+    position: relative
+    &:before
+      display: none
+      content: ""
+      border: 2px dashed $grayLighter
+      position: absolute
+      top: 20px
+      left: 20px
+      bottom: 20px
+      right: 20px
+    &.image-hover
+      &:before
+        display: block
 
   label
     font-weight: bold

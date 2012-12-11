@@ -1,15 +1,15 @@
 - content_for :custom_js do
   :javascript
     $(document).ready(function() {
-        $('#sort-image').draggable({
-            revert: 'invalid'
-        });
-        $('.sort-option').droppable({
-            accept: '.dropaccept',
-            activeClass: 'dropactive',
-            hoverClass: 'drophover',
-            tolerance: 'intersect'
-        });
+      $('#sort-image').draggable({
+        revert: 'invalid'
+      });
+      $('.sort-option').droppable({
+        accept: '#sort-image',
+        activeClass: 'image-active',
+        hoverClass: 'image-hover',
+        tolerance: 'intersect'
+      });
     });
 
 #quiz-container
@@ -21,8 +21,9 @@
             Four loko next level mixtape, aliqua lomo brunch ut direct trade.
       .hero-unit.span9
         .row.images
-          #sort-image.dropaccept.span3
-            = image_tag 'http://lorempixel.com/270/152/food', class: 'img-polaroid'
+          .span3
+            #sort-image
+              = image_tag 'http://lorempixel.com/270/152/food', class: 'img-polaroid'
         .row
           .span4.image-caption
             Four loko next level mixtape, aliqua lomo brunch ut direct trade
