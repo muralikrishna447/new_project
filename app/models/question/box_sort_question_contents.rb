@@ -1,7 +1,7 @@
 class BoxSortQuestionContents < OpenStruct
   def update(params)
-    params.merge!(params[:box_sort_question][:contents])
-    add_option_ids(params[:options])
+    params = params[:box_sort_question]
+    create_options(params[:options])
     attribute_keys.each do |key|
       self.send("#{key.to_s}=", params.delete(key))
     end
@@ -13,10 +13,12 @@ class BoxSortQuestionContents < OpenStruct
 
   private
 
-  def add_option_ids(options)
+  def create_options(options)
     return if options.blank?
-    options.each do |option|
-      option.merge!(uid: unique_id) unless option[:uid]
+    options.map! do |option|
+      {
+        text: option,
+      }
     end
   end
 
@@ -25,7 +27,7 @@ class BoxSortQuestionContents < OpenStruct
   end
 
   def attribute_keys
-    [:id, :instructions, :options]
+    [:instructions, :options]
   end
 end
 
