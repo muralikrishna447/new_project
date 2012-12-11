@@ -3,7 +3,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   tagName: "li"
 
-  showTemplate: 'admin/question'
+  showTemplate: 'admin/multiple_choice_question'
   orderingTemplate: 'admin/question_ordering'
 
   events:

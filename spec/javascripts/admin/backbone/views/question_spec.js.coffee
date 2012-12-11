@@ -12,7 +12,7 @@ describe 'ChefStepsAdmin.Views.Question', ->
 
     it "calls renderTemplate", ->
       @view.render()
-      expect(@view.templateName).toEqual('admin/question')
+      expect(@view.templateName).toEqual('admin/multiple_choice_question')
       expect(@view.$el.html).toHaveBeenCalledWith('rendered template')
 
     it 'delegateEvents on the rendered template', ->

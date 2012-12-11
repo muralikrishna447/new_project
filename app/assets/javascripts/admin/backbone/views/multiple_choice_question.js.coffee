@@ -1,6 +1,6 @@
 class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Question
 
-  showTemplate: 'admin/question'
+  showTemplate: 'admin/multiple_choice_question'
   formTemplate: 'admin/question_form'
 
   defaultOption:
