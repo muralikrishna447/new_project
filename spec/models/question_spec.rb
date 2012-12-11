@@ -75,3 +75,11 @@ describe Question, '#average_correct' do
   end
 end
 
+describe Question, "symbolize_question_type" do
+  let(:question) { Fabricate.build(:multiple_choice_question) }
+
+  it "returns the question type symbolized" do
+    question.question_type = 'FooBarBazQuestion'
+    question.symbolize_question_type.should == :foo_bar_baz_question
+  end
+end

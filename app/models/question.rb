@@ -38,5 +38,9 @@ class Question < ActiveRecord::Base
   def average_correct
     (correct_answer_count.to_f / answer_count * 100).to_i
   end
+
+  def symbolize_question_type
+    question_type.underscore.to_sym
+  end
 end
 
