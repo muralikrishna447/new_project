@@ -1,4 +1,6 @@
 class MultipleChoiceQuestion < Question
+  include Imageable
+
   serialize :contents, MultipleChoiceQuestionContents
 
   def update_from_params(params)

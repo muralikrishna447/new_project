@@ -1,7 +1,6 @@
 class Question < ActiveRecord::Base
   include RankedModel
   include SerializeableContents
-  include Imageable
 
   ranks :question_order, with_same: :quiz_id
 
