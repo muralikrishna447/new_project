@@ -78,8 +78,8 @@ end
 describe Question, "symbolize_question_type" do
   let(:question) { Fabricate.build(:multiple_choice_question) }
 
-  it "returns the question type symbolized" do
+  it "returns the question type symbolized, without question" do
     question.question_type = 'FooBarBazQuestion'
-    question.symbolize_question_type.should == :foo_bar_baz_question
+    question.symbolize_question_type.should == :foo_bar_baz
   end
 end

@@ -40,7 +40,7 @@ class Question < ActiveRecord::Base
   end
 
   def symbolize_question_type
-    question_type.underscore.to_sym
+    question_type.underscore.chomp('_question').to_sym
   end
 end
 
