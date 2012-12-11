@@ -1,10 +1,15 @@
 = render 'layouts/filepicker'
 
--# :javascript
--#   window.ChefStepsAdmin = window.ChefStepsAdmin || {};
--#   window.ChefStepsAdmin.quizImageData= JSON.parse('#{j(@quiz_images)}');
+:javascript
+  window.ChefStepsAdmin = window.ChefStepsAdmin || {};
+  window.ChefStepsAdmin.questionImageData = JSON.parse('#{j(@question.images)}');
+  window.ChefStepsAdmin.questionType = JSON.parse('#{j(@question.question_type)}');
 
 %h2 Box Sort Question for "#{@question.quiz.title}"
+
+#image-uploader
+  %button.admin-button{ data: {behavior: 'filepicker'}} Upload Images for Quiz
+  #image-list
 
 = semantic_form_for [:admin, @question], url: admin_question_path(@question) do |f|
   = f.inputs name: "Question Details" do
