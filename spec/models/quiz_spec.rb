@@ -46,6 +46,10 @@ describe Quiz, "update_question_order" do
   it "updates the order of the questions" do
     quiz.questions.ordered.map(&:id).should == question_ids
   end
+
+  it 'does not change the type of the question' do
+    quiz.questions.ordered.first.should be_a MultipleChoiceQuestion
+  end
 end
 
 describe Quiz, "#questions_answered_by" do
