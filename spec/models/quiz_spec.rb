@@ -34,16 +34,17 @@ end
 describe Quiz, "update_question_order" do
   let(:quiz) { Fabricate(:quiz) }
   let(:questionA) { Fabricate(:multiple_choice_question) }
-  let(:questionB) { Fabricate(:multiple_choice_question) }
-  let(:question_ids) { [ questionA.id, questionB.id ].map(&:to_s) }
+  let(:questionB) { Fabricate(:box_sort_question) }
+  let(:questionC) { Fabricate(:multiple_choice_question) }
+  let(:question_ids) { [ questionA.id, questionB.id, questionC.id ] }
 
   before do
-    quiz.questions << questionB << questionA
-    quiz.update_question_order(question_ids)
+    quiz.questions << questionB << questionC << questionA
+    quiz.update_question_order(question_ids.map(&:to_s))
   end
 
   it "updates the order of the questions" do
-    quiz.questions.ordered.should == [questionA, questionB]
+    quiz.questions.ordered.map(&:id).should == question_ids
   end
 end
 
