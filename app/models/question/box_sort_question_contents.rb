@@ -3,9 +3,7 @@ class BoxSortQuestionContents < OpenStruct
     params = params[:box_sort_question]
     create_options if self.options.blank?
     update_options(params[:options])
-    attribute_keys.each do |key|
-      self.send("#{key.to_s}=", params.delete(key))
-    end
+    self.instructions = params[:instructions]
   end
 
   def to_json(admin)
@@ -29,10 +27,6 @@ class BoxSortQuestionContents < OpenStruct
 
   def unique_id
     SecureRandom.uuid
-  end
-
-  def attribute_keys
-    [:instructions]
   end
 end
 
