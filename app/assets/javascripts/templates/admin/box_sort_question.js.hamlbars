@@ -8,5 +8,5 @@
 
   %ul.options
     = hb 'each options' do
-      = hb '> templates.admin.question_option'
+      = hb '> templates.admin.box_sort_question_option'
 
