@@ -9,8 +9,8 @@ ActiveAdmin.register Question do
       when "multiple_choice"
         render json: QuestionPresenter.new(@quiz.add_question(:multiple_choice_question), true).present
       when 'box_sort'
-        @question = @quiz.add_box_sort_question
-        render 'questions/box_sort_form'
+        @question = @quiz.add_question(:box_sort_question)
+        render 'box_sort_form', layout: 'active_admin'
       else
         render json: QuestionPresenter.new(@quiz.add_question(:multiple_choice_question), true).present
       end

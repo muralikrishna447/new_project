@@ -11,7 +11,9 @@
 
 #quiz-control-anchor{ data: { behavior: 'stick-to-top-anchor' } }
 #quiz-controls{ data: { behavior: 'stick-to-top'} }
-  = admin_button 'Add Multiple Choice Question', '#', id: 'add-multiple-choice-question'
+  %ul
+    %li= admin_button 'Add Multiple Choice Question', '#', id: 'add-multiple-choice-question'
+    %li= link_to 'Add Box Sort Question', admin_quiz_questions_path(@quiz, question_type: 'box_sort'), method: :post, class: 'admin-button'
   #question-count
     .count
     Questions

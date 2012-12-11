@@ -5,3 +5,4 @@ end
 Fabricator :true_false_question, from: MultipleChoiceQuestion do
   contents { Fabricate(:true_false_question_contents) }
 end
+
