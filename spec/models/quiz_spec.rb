@@ -3,16 +3,23 @@ require 'spec_helper'
 describe Quiz, '#add_question' do
   let(:quiz) { Fabricate(:quiz) }
 
-  it "creates a new MultipleChoiceQuestion" do
+  it "adds question to quiz's questions association" do
+    quiz.add_question(:multiple_choice_question)
+    quiz.questions.should have(1).question
+  end
+
+  it "creates a new MultipleChoiceQuestion if multiple_choice_question type specified" do
     question = quiz.add_question(:multiple_choice_question)
     question.should be_a MultipleChoiceQuestion
     question.should be_persisted
   end
 
-  it "adds question to quiz's questions association" do
-    quiz.add_question(:multiple_choice_question)
-    quiz.questions.should have(1).question
+  it "creates a new BoxSortQuestion if box_sort_question type specified" do
+    question = quiz.add_question(:box_sort_question)
+    question.should be_a BoxSortQuestion
+    question.should be_persisted
   end
+
 end
 
 describe Quiz, '#question_count' do
