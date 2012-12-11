@@ -1,0 +1,2 @@
+class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Question
+
