@@ -4,11 +4,13 @@
       var handleDrop = function(event, ui) {
         ui.draggable.css({top: 0, left: 0});
         $(this).append(ui.draggable);
+        $(this).addClass('image-placed');
         $('.sort-option').css({'z-index': 1});
       };
 
       var handleDragStart = function(event, ui) {
         $('#sort-image').parent().css({'z-index': 10});
+        $('.sort-option').removeClass('image-placed')
       };
 
       $('#sort-image').draggable({

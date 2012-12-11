@@ -80,15 +80,27 @@
     &:before
       display: none
       content: ""
-      border: 2px dashed $grayLighter
+      border: 2px dashed $grayLight
       position: absolute
       top: 20px
       left: 20px
       bottom: 20px
       right: 20px
-    &.image-hover
+    &.image-hover, &.image-placed
       &:before
         display: block
+    &.image-placed
+      &:before
+        border-color: $white
+      #sort-image
+        position: absolute !important
+        left: 22px !important
+        top: 22px !important
+        bottom: 22px !important
+        right: 22px !important
+        img
+          width: 96%
+          height: 91%
 
   label
     font-weight: bold
