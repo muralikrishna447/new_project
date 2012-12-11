@@ -5,8 +5,6 @@ class Question < ActiveRecord::Base
 
   ranks :question_order, with_same: :quiz_id
 
-  self.inheritance_column = :question_type
-
   belongs_to :quiz
   has_many :answers
 
@@ -40,7 +38,7 @@ class Question < ActiveRecord::Base
   end
 
   def symbolize_question_type
-    question_type.underscore.chomp('_question').to_sym
+    type.underscore.chomp('_question').to_sym
   end
 end
 
