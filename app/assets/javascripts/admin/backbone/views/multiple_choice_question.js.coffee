@@ -1,7 +1,7 @@
 class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Question
 
+  showTemplate: 'admin/question'
   formTemplate: 'admin/question_form'
-  orderingTemplate: 'admin/question_ordering'
 
   defaultOption:
     answer: ''

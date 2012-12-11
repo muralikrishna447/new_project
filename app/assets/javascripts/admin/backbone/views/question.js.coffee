@@ -3,6 +3,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
 
   tagName: "li"
 
+  showTemplate: 'admin/question'
   orderingTemplate: 'admin/question_ordering'
 
   events:
@@ -21,7 +22,7 @@ class ChefStepsAdmin.Views.Question extends ChefSteps.Views.TemplatedView
       @model.destroy()
       @remove()
 
-  render: (templateName = 'admin/question') =>
+  render: (templateName = @showTemplate) =>
     @templateName = templateName
     @$el.html(@renderTemplate())
     @delegateEvents()
