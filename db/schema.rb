@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121211182921) do
+ActiveRecord::Schema.define(:version => 20121211193255) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -109,6 +109,16 @@ ActiveRecord::Schema.define(:version => 20121211182921) do
   end
 
   add_index "answers", ["question_id", "user_id"], :name => "index_answers_on_question_id_and_user_id", :unique => true
+
+  create_table "box_sort_images", :force => true do |t|
+    t.integer  "question_id",                      :null => false
+    t.boolean  "key_image",     :default => false
+    t.string   "key_rationale", :default => ""
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+  end
+
+  add_index "box_sort_images", ["question_id"], :name => "index_box_sort_images_on_question_id", :unique => true
 
   create_table "copies", :force => true do |t|
     t.string   "location"
