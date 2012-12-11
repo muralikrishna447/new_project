@@ -9,5 +9,14 @@ describe ImagePresenter, "#present" do
   it "serializes valid keys" do
     subject.keys.should =~ [:id, :filename, :caption, :url]
   end
+
+  context "BoxSortImage" do
+    let(:image) { Fabricate.build(:box_sort_image) }
+
+    it "extends attributes to include box sort attributes" do
+      subject.keys.should include :key_image
+      subject.keys.should include :key_rationale
+    end
+  end
 end
 

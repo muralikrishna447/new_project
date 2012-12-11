@@ -4,7 +4,7 @@ describe Admin::QuestionsController, 'create' do
   login_admin
 
   let(:quiz) { Fabricate.build(:quiz, id: 123) }
-  let(:question) { stub('question', id: 456, contents: OpenStruct.new({foo: 'bar'})) }
+  let(:question) { stub('question', id: 456, images: [], contents: OpenStruct.new({foo: 'bar'})) }
 
   before do
     Quiz.stub(:find).with('123') { quiz }
