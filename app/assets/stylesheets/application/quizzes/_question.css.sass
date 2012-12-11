@@ -50,15 +50,35 @@
   margin-left: 0
   opacity: 1
 
-  .dropzone, #drag
-    border: solid 1px #ddd
-    width: 100px
-    height: 100px
-    background: #fff
+  .images
+    margin-bottom: 25px
+
+  .image-caption
+    +font-serif-small
+    font-weight: bold
+    color: $grayDark
+    margin: 0 auto 40px
+    padding-left: 30px
+    float: none
+    line-height: 22px
+
   .drophover
     background: #eee
-  #drag
-    width: 70px
-    height: 70px
-    border-color: #990000
-    background: #ffeeee
+
+  #sort-image
+    margin: 0 auto 10px
+    float: none
+    img
+      margin-left: 10px
+
+  .sort-option
+    +border-radius(3px)
+    +box-shadow(inset 0px 1px 2px 0px rgba(0, 0, 0, 0.5))
+    height: 152px
+    background: $beige
+
+  label
+    font-weight: bold
+    color: $grayDark
+    text-align: center
+    margin-top: 10px

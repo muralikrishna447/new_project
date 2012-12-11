@@ -1,22 +1,10 @@
 - content_for :custom_js do
   :javascript
     $(document).ready(function() {
-        $('#drag').draggable({
+        $('#sort-image').draggable({
             revert: 'invalid'
         });
-        $('#drop1').droppable({
-            accept: '.dropaccept',
-            activeClass: 'dropactive',
-            hoverClass: 'drophover',
-            tolerance: 'intersect'
-        });
-        $('#drop2').droppable({
-            accept: '.dropaccept',
-            activeClass: 'dropactive',
-            hoverClass: 'drophover',
-            tolerance: 'intersect'
-        });
-        $('#drop3').droppable({
+        $('.sort-option').droppable({
             accept: '.dropaccept',
             activeClass: 'dropactive',
             hoverClass: 'drophover',
@@ -27,7 +15,25 @@
 #quiz-container
   .question.box-sort
     .container
-      #drop1.dropzone Accepts the element if fits inside
-      #drop2.dropzone Accepts the element if intersects
-      #drop3.dropzone Accepts the element if pointer hovers
-      #drag.dropaccept Drag me
+      .row
+        .span8
+          .instructions
+            Four loko next level mixtape, aliqua lomo brunch ut direct trade.
+      .hero-unit.span9
+        .row.images
+          #sort-image.dropaccept.span3
+            = image_tag 'http://lorempixel.com/270/152/food', class: 'img-polaroid'
+        .row
+          .span4.image-caption
+            Four loko next level mixtape, aliqua lomo brunch ut direct trade
+            culpa twee vinyl etsy. Consequat ullamco non vegan irure.
+        .row
+          .span3
+            .sort-option
+            %label I remember
+          .span3
+            .sort-option
+            %label I'm not sure
+          .span3
+            .sort-option
+            %label I don't remember
