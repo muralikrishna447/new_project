@@ -14,20 +14,17 @@
               = link_to model.prev do
                 %i.icon-double-chevron-left
                 %span.nav-label &nbsp;Prev
-          %li#syllabus-flyout
-            %a.icon-list-alt.icon-white
-              %span.nav-label Syllabus
           - if model.next.present?
             %li
               = link_to model.next do
                 %span.nav-anchors.nav-label Next&nbsp;
                 %i.icon-double-chevron-right
+          %li#syllabus-flyout
+            %a.icon-list-alt.icon-white
+              %span.nav-label Syllabus
           %li
-            %a.icon-info-sign.icon-white{href: '#overview'}
-              %span.nav-label Overview
-          %li
-            %a.icon-list-ol.icon-white{href: '#step-by-step'}
-              %span.nav-label Step-By-Step
+            %a.icon-chevron-up.icon-white{href: '#overview'}
+              %span.nav-label Top
           %li
             %a.icon-print.icon-white{href: "#", onclick: 'window.print()'}
               %span.nav-label Print

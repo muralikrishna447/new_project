@@ -18,12 +18,14 @@ $ ->
         title: "Accelerated Sous Vide Cooking Course",
         inline: true,
         href:   '#syllabus-body-inner',
-        fixed:  true
+        fixed:  true,
+        opacity: "0.5"
       }
     else
       $.colorbox {
         title: "Accelerated Sous Vide Cooking Course",
         inline: true,
-        href:   htmlNarrow
-        width:  "90%"
+        href:   htmlNarrow,
+        width:  "80%",
+        opacity: "0.5"
       }

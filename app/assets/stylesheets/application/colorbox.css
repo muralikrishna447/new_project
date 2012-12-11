@@ -21,7 +21,7 @@
 */
 #cboxOverlay{background:#000;}
 #colorbox{}
-     #cboxContent{background:#fff; overflow:hidden; border-radius: 10px;}
+     #cboxContent{background:#fff; overflow:hidden; border-radius: 3px;}
         .cboxIframe{background:#fff;}
         #cboxError{padding:50px; border:1px solid #ccc;}
         #cboxLoadedContent{margin-bottom:20px;}
