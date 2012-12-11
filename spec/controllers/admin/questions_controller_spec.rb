@@ -14,7 +14,7 @@ describe Admin::QuestionsController do
     end
 
     it 'adds a question to the quiz' do
-      quiz.should_receive(:add_multiple_choice_question) { question }
+      quiz.should_receive(:add_question) { question }
       post :create, quiz_id: quiz.id
     end
 

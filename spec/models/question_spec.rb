@@ -74,3 +74,4 @@ describe Question, '#average_correct' do
     question.average_correct.should == 75
   end
 end
+

@@ -5,13 +5,20 @@ ActiveAdmin.register Question do
   controller do
     def create
       @quiz = Quiz.find(params[:quiz_id])
-      render json: QuestionPresenter.new(@quiz.add_multiple_choice_question, true).present
+      case params[:question_type]
+      when "multiple_choice"
+        render json: QuestionPresenter.new(@quiz.add_question(:multiple_choice_question), true).present
+      when 'box_sort'
+        @question = @quiz.add_box_sort_question
+        render 'questions/box_sort_form'
+      else
+        render json: QuestionPresenter.new(@quiz.add_question(:multiple_choice_question), true).present
+      end
     end
 
     def update
       @question = Question.find(params[:id])
-      @question.update_image(params.delete(:image))
-      @question.update_contents(params)
+      @question.update_from_params(params)
       update!
     end
   end
