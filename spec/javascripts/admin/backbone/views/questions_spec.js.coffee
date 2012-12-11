@@ -33,10 +33,10 @@ describe 'ChefStepsAdmin.Views.Questions', ->
       spyOn(@view, 'scrollElementIntoView')
       @model = new ChefStepsAdmin.Models.Question(id: 1)
 
-    it 'creates a new Question view for the new model', ->
-      spyOn(ChefStepsAdmin.Views, 'Question').andReturn(@fakeView)
+    it 'creates a new quesiton view for the new model', ->
+      spyOn(@view, 'getQuestionView').andReturn(@fakeView)
       @view.addQuestionToList(@model)
-      expect(ChefStepsAdmin.Views.Question).toHaveBeenCalled()
+      expect(@view.getQuestionView).toHaveBeenCalled()
 
     it "adds new question html to list view", ->
       @view.addQuestionToList(@model)
@@ -70,13 +70,13 @@ describe 'ChefStepsAdmin.Views.Questions', ->
 
 
   describe "#getQuestionView", ->
-    it "defaults to QuestionView", ->
+    it "defaults to MultipleChoiceQuestionView", ->
       model = new ChefStepsAdmin.Models.Question()
       subject = @view.getQuestionView(model)
-      expect(subject instanceof ChefStepsAdmin.Views.Question ).toBeTruthy()
+      expect(subject instanceof ChefStepsAdmin.Views.MultipleChoiceQuestion).toBeTruthy()
 
     it "instantiates a view based on model", ->
-      model = new ChefStepsAdmin.Models.MultipleChoiceQuestion()
+      model = new ChefStepsAdmin.Models.BoxSortQuestion()
       subject = @view.getQuestionView(model)
-      expect(subject instanceof ChefStepsAdmin.Views.MultipleChoiceQuestion).toBeTruthy()
+      expect(subject instanceof ChefStepsAdmin.Views.BoxSortQuestion).toBeTruthy()
 

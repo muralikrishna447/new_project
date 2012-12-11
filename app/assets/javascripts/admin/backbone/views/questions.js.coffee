@@ -32,10 +32,10 @@ class ChefStepsAdmin.Views.Questions extends Backbone.View
     )
 
   getQuestionView: (question) =>
-    if question instanceof ChefStepsAdmin.Models.MultipleChoiceQuestion
-      new ChefStepsAdmin.Views.MultipleChoiceQuestion(model: question)
+    if question instanceof ChefStepsAdmin.Models.BoxSortQuestion
+      new ChefStepsAdmin.Views.BoxSortQuestion(model: question)
     else
-      new ChefStepsAdmin.Views.Question(model: question)
+      new ChefStepsAdmin.Views.MultipleChoiceQuestion(model: question)
 
   addQuestionToList: (question, scrollIntoView=true) =>
     view = @getQuestionView(question)
