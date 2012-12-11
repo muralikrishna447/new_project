@@ -5,19 +5,25 @@ ActiveAdmin.register Question do
   controller do
     def create
       @quiz = Quiz.find(params[:quiz_id])
-      case params[:question_type]
-      when 'box_sort'
-        @question = @quiz.add_question(:box_sort_question)
-        redirect_to edit_admin_question_path(@question)
-      else
-        render json: QuestionPresenter.new(@quiz.add_question(:multiple_choice_question), true).present
-      end
+
+      type = params[:question_type] || 'multiple_choice'
+      question = @quiz.add_question("#{type}_question".to_sym)
+      send("respond_to_#{type}".to_sym, question)
     end
 
     def update
       @question = Question.find(params[:id])
       @question.update_from_params(params)
       update!
+    end
+
+    private
+    def respond_to_box_sort(question)
+      redirect_to edit_admin_question_path(question)
+    end
+
+    def respond_to_multiple_choice(question)
+      render json: QuestionPresenter.new(question, true).present
     end
   end
 
