@@ -19,13 +19,12 @@ class ChefStepsAdmin.Views.BoxSortImages extends Backbone.View
     ).disableSelection()
 
   updateOrder: =>
-    console.log 'update order'
-    # @collection.updateOrder(@getQuestionOrder())
+    @collection.updateOrder(@getQuestionOrder())
 
-  # getQuestionOrder: =>
-  #   _.map(@$('.question'), (questionItem) ->
-  #     $(questionItem).attr('id').split('-')[1]
-  #   )
+  getQuestionOrder: =>
+    _.map(@$('.image:not(.image-placeholder)'), (image) ->
+      _.last($(image).attr('id').split('-'))
+    )
 
   addImageToList: (image) =>
     view = new ChefStepsAdmin.Views.BoxSortImage(model: image)

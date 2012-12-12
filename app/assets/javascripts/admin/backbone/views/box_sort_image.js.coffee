@@ -13,18 +13,18 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     'click .delete-image': 'deleteImage'
 
   initialize: (options) =>
-    @noCaption = options.noCaption
     ChefStepsAdmin.ViewEvents.on("editImageCaption", @editImageCaptionEventHandler)
+    @model.on("change:id", @updateAttributes)
 
   render: (templateName = @showTemplate) =>
     @templateName = templateName
     @$el.html(@renderTemplate())
     @delegateEvents()
+    @updateAttributes()
     @
 
   extendTemplateJSON: (templateJSON) =>
     templateJSON['url'] = @convertImage(@model.get('url'))
-    templateJSON['noCaption'] = @noCaption
     templateJSON
 
   imageOptions:
@@ -67,6 +67,8 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     if not confirmMessage || confirm(confirmMessage)
       @model.destroyImage()
       @remove()
+
+  updateAttributes: => @$el.attr('id', "box-sort-image-#{@model.get('id')}")
 
 _.defaults(ChefStepsAdmin.Views.BoxSortImage.prototype, ChefStepsAdmin.Views.Modules.FilePickerDisplay)
 

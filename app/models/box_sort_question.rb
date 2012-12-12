@@ -29,5 +29,13 @@ class BoxSortQuestion < Question
       text: "I don't remember"
     }]
   end
+
+  def update_image_order(image_ids)
+    image_ids.each do |image_id|
+      image = images.find(image_id)
+      image.update_attributes(image_order_position: :last)
+      # image.becomes(Question).update_attributes({question_order_position: :last, type: type}, without_protection: true)
+    end
+  end
 end
 

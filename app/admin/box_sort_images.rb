@@ -15,5 +15,12 @@ ActiveAdmin.register BoxSortImage, as: "Image" do
       head :ok
     end
   end
+
+  collection_action :update_order, method: :post do
+    @question = Question.find(params[:question_id])
+    Rails.logger.info "****** Image order: #{params[:image_order]}"
+    # @question.update_image_order(params[:image_order])
+    head :ok
+  end
 end
 
