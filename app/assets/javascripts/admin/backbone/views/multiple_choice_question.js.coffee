@@ -38,6 +38,8 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
   filePickerOnSuccess: (fpFile) =>
     @model.destroyImage() if @model.get('image')
     @model.save(image: fpFile)
+    @model.snapshot()
+    @model.set(@formData())
     @render(@formTemplate)
 
   makeOptionsSortable: =>
@@ -88,15 +90,20 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
   triggerEditQuestion: =>
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', @model.cid)
 
-  saveForm: =>
+  formData: =>
     data = @$('form').serializeObject()
     data = _.omit(data, ['answer', 'correct'])
     data['options'] = _.map @$('.options .option'), (optionEl) =>
       @optionViews[$(optionEl).data('uid')].getFormData()
-    @model.save(data)
+    data
+
+  saveForm: =>
+    @model.save(@formData())
     @render()
 
-  cancelEdit: => @render()
+  cancelEdit: =>
+    @model.revert()
+    @render()
 
   isEditState: => @templateName == @formTemplate
 
