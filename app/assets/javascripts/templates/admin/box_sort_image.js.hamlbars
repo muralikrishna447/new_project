@@ -1,3 +1,8 @@
+= hb 'if key_image' do
+  %i.icon-star{ data: {behavior: 'toggle-key-image'} }
+= hb 'unless key_image' do
+  %i.icon-star-empty{ data: {behavior: 'toggle-key-image'} }
+
 %img.img-polaroid{ src: hb('url') }
 %span.caption.edit= hb "default_value caption '<i>Enter caption:</i>'"
 .image-controls

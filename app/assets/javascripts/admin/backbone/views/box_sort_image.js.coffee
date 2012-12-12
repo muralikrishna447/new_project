@@ -11,6 +11,7 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     'keyup input': 'keyPressEventHandler'
     'blur input': 'saveForm'
     'click .delete-image': 'deleteImage'
+    'click [data-behavior~=toggle-key-image]': 'toggleKeyImage'
 
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editImageCaption", @editImageCaptionEventHandler)
@@ -31,6 +32,11 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     w: 300
     h: 150
     fit: 'crop'
+
+  toggleKeyImage: =>
+    currentValue = @model.get('key_image')
+    @model.save('key_image', not currentValue)
+    @render()
 
   triggerEditImageCaption: =>
     ChefStepsAdmin.ViewEvents.trigger('editImageCaption', @model.cid)
