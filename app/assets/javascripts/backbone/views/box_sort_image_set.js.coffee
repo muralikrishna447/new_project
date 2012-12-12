@@ -18,18 +18,12 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
     @$dropTargets.find('img').remove() if @draggedFromPile
 
   moveImages: ->
-    @allImages().css(left: '-=5', top: '-=5')
-    @allImages().animate(
+    allImages = @$('.image-pile img')
+    allImages.css(left: '-=5', top: '-=5')
+    allImages.animate(
       {left: '+=5', top: '+=5'},
-      complete: =>
-        @allImages().css(left: '', top: '')
+      complete: -> allImages.css(left: '', top: '')
     )
-
-  topImage: ->
-    $('.image-pile img:first')
-
-  allImages: ->
-    $('.image-pile img')
 
   dragHelper: (event)=>
     image = $(event.currentTarget)
@@ -42,7 +36,7 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
     @createDraggable()
 
   createDraggable: =>
-    @topImage().draggable
+    @$('.image-pile img:first').draggable
       containment: '.hero-unit'
       revert: 'invalid'
       helper: @dragHelper
