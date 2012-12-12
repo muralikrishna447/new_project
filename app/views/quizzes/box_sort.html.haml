@@ -2,60 +2,74 @@
   :javascript
     $(document).ready(function() {
       var handleDrop = function(event, ui) {
+        var fromPile = draggedFromPile(ui.draggable);
         $(this).append(ui.draggable);
-        if (draggedFromPile()) {
+        if (fromPile) {
           moveImages();
+          createDraggable();
         }
         $(this).addClass('image-placed');
         $('.sort-option').css({'z-index': 1});
       };
 
       var handleDragStart = function(event, ui) {
-        draggableImage().parent().css({'z-index': 10});
+        $(ui.helper).parent().css({'z-index': 10});
         $('.sort-option').removeClass('image-placed')
+        if (draggedFromPile(ui.helper)) {
+          dropTargets().find('img').remove();
+        }
       };
 
-      var draggedFromPile = function() {
-        return draggableImage().parents().hasClass('image-pile');
+      var moveImages = function() {
+        allImages().css({left: '-=5', top: '-=5'});
+        allImages().animate({left: '+=5', top: '+=5'},{
+          complete: function() {
+            allImages().css({left: '', top: ''});
+          }
+        });
+      };
+
+      var draggedFromPile = function(draggable) {
+        return $(draggable).parents().hasClass('image-pile');
       };
 
       var topImage = function() {
         return $('.image-pile img:first');
       };
 
-      var draggableImage = function() {
-        return $('.ui-draggable');
-      }
-
       var allImages = function() {
         return $('.image-pile img');
-      }
+      };
 
-      topImage().draggable({
-        containment: '.hero-unit',
-        revert: 'invalid',
-        helper: function() {
-          if(draggedFromPile()) {
-            return $(this).clone();
-          } else {
-            return $(this);
-          }
-        },
-        opacity: 0.6,
-        zIndex: 10000,
-        start: handleDragStart
-      });
-      $('.sort-option').droppable({
+      var dropTargets = function() {
+        return $('.sort-option');
+      };
+
+      var createDraggable = function() {
+        topImage().draggable({
+          containment: '.hero-unit',
+          revert: 'invalid',
+          helper: function() {
+            if(draggedFromPile(this)) {
+              return $(this).clone();
+            } else {
+              return $(this);
+            }
+          },
+          opacity: 0.6,
+          zIndex: 10000,
+          start: handleDragStart
+        });
+      };
+
+      dropTargets().droppable({
         activeClass: 'image-active',
         hoverClass: 'image-hover',
         tolerance: 'intersect',
         drop: handleDrop
       });
 
-      moveImages = function() {
-        allImages().css({left: '-=5', top: '-=5'})
-        allImages().animate({left: '+=5', top: '+=5'})
-      };
+      createDraggable();
     });
 
 #quiz-container
