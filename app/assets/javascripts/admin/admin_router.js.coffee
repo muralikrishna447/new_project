@@ -1,9 +1,15 @@
 class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
   routes:
+    '/admin/quizzes/new' : 'newQuiz'
     '/admin/quizzes/{id}/edit' : 'editQuiz'
     '/admin/quizzes/{id}/manage_questions' : 'editQuizQuestions'
     '/admin/quizzes/{id}/upload_images' : 'uploadQuizImages'
+
+  newQuiz: ->
+    model = new ChefStepsAdmin.Models.QuizImage(ChefStepsAdmin.quizImageData)
+    view = new ChefStepsAdmin.Views.QuizImageUploader(el: "form", model: model)
+    view.render()
 
   editQuiz: (id)->
     model = new ChefStepsAdmin.Models.QuizImage(ChefStepsAdmin.quizImageData)
