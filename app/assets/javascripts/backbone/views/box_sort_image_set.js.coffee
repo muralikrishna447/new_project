@@ -10,7 +10,12 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
     @createDroppables()
 
   handleDrop: (event, ui)=>
-    $(event.target).append(ui.draggable)
+    droppable = $(event.target)
+    image = ui.draggable
+    droppable.append(image)
+
+    @collection.addAnswer(image.data('image-id'), droppable.data('uid'))
+
     if @draggedFromPile
       waitForRemove = =>
         @makeNextImageDraggable() if @imageCount() > 0
