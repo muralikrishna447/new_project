@@ -26,3 +26,9 @@ Handlebars.registerHelper 'upload_image_button', (id = '') ->
   </button>"
   new Handlebars.SafeString(uploadButton)
 
+Handlebars.registerHelper 'default_value', (value, defaultValue) ->
+  if value
+    new Handlebars.SafeString(value)
+  else
+    new Handlebars.SafeString(defaultValue)
+

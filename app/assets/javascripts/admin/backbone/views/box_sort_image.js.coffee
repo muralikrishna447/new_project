@@ -6,8 +6,10 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
 
   events:
     'click .edit': 'triggerEditImageCaption'
-    'click .cancel': 'cancelEdit'
-    'click .done': 'saveForm'
+    'submit form': 'saveForm'
+    'click .save': 'saveForm'
+    'keyup input': 'keyPressEventHandler'
+    'blur input': 'saveForm'
     'click .delete-image': 'deleteImage'
 
   initialize: (options) =>
@@ -36,6 +38,7 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
   editImageCaptionEventHandler: (cid) =>
     if @model.cid == cid
       @render(@formTemplate)
+      @$('input').focus()
     else if @isEditState()
       @saveForm()
     else
@@ -50,9 +53,13 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     @model.save(data)
     @render()
 
-  cancelEdit: (event) =>
-    event.preventDefault()
+  cancelEdit: =>
     @render()
+
+  keyPressEventHandler: (event) =>
+    switch event.keyCode
+      when 27 # esc key
+        @cancelEdit()
 
   deleteImage: (event) =>
     event.preventDefault()
