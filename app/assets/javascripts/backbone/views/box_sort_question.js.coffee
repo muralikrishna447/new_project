@@ -1,4 +1,4 @@
 class ChefSteps.Views.BoxSortQuestion extends ChefSteps.Views.Question
-  templateName: 'multiple_choice_question'
+  templateName: 'box_sort_question'
 
   answerData: ->

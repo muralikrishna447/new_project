@@ -1,0 +1,36 @@
+:ruby
+  image_data = 10.times.map do |i|
+    {
+      src: "http://lorempixel.com/270/152/food/#{i+1}/Picture #{i+1}",
+      caption: "The caption for image number #{i+1}"
+    }
+  end
+
+.container.box-sort
+  .row
+    .span8
+      .instructions= hb('instructions')
+
+  .hero-unit.span9
+    .row.images
+      .span3
+        .image-pile
+          - image_data.each do |image|
+            = image_tag image[:src], class: 'img-polaroid', data: {caption: image[:caption]}
+    .row
+      .span4.image-caption
+        = image_data.first[:caption]
+    .row
+      .span3
+        .sort-option
+        %label I remember
+      .span3
+        .sort-option
+        %label I'm not sure
+      .span3
+        .sort-option
+        %label I don't remember
+
+    %a.btn.btn-primary.btn-next{href: '#'}
+      %i.icon-double-chevron-right
+
