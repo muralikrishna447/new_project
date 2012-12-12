@@ -1,7 +1,7 @@
 class BoxSortImage < ActiveRecord::Base
 
   belongs_to :question, class_name: 'BoxSortQuestion'
-  has_one :image, as: :imageable
+  has_one :image, as: :imageable, dependent: :destroy
 
   delegate :filename, :filename=, :url, :url=, :caption=, :caption, to: :image, allow_nil: true
 
