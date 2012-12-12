@@ -9,7 +9,7 @@
 .container.box-sort
   .row
     .span8
-      .instructions= hb('instructions')
+      .instructions= hb!('instructions')
 
   .hero-unit.span9
     .row.images
