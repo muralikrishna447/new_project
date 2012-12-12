@@ -24,6 +24,7 @@
     float: left
     padding: 15px
     background: whitesmoke
+    height: $imageHeight + 50px
     border-radius: 5px
     position: relative
     img
@@ -31,15 +32,34 @@
       margin-bottom: 15px
       width: $imageWidth
       height: $imageHeight
-    span
+    .caption
+      overflow: hidden
+      float: left
+      width: $imageWidth
       font-size: 16px
       clear: left
-    .caption
-      float: left
-      width: 100%
+      padding: 5px
+      cursor: text
+      text-overflow: ellipsis
+      white-space: nowrap
+      &:hover
+        background: $white
+      i
+        font-size: 14px
+        color: $grayLight
     &:hover
       .image-controls
         display: block
+    form
+      input
+        position: absolute
+        bottom: 10px
+        left: -10px
+        width: $imageWidth + 40px
+      button
+        margin-top: 10px
+        float: right
+        clear: left
 
   .image-controls
     position: absolute
@@ -61,15 +81,6 @@
     .delete-image
       &:hover
         color: $red
-    form
-      textarea
-        float: left
-        width: $imageWidth - 25px
-        height: 50px
-      button
-        margin-top: 10px
-        float: right
-        clear: left
 
 .quiz-image
   height: 210px

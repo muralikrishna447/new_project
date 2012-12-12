@@ -1,6 +1,8 @@
-%img{ src: hb('url') }
-
+%img.img-polaroid{ src: hb('url') }
+.image-controls
+  %i.icon-ban-circle.delete-image{ data: {confirm: "Are you sure?"} }
 %form
-  %textarea{name: 'caption'}= hb('caption')
-  %button.admin-button.done Save
-  %button.admin-button.cancel Cancel
+  %input{type: 'text', name: 'caption', value: hb('caption')}
+  -# %button.admin-button.done Save
+  -# %button.admin-button.cancel Cancel
+
