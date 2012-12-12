@@ -9,7 +9,7 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     'submit form': 'saveForm'
     'click .save': 'saveForm'
     'keyup input': 'keyPressEventHandler'
-    # 'blur input': 'cancelEdit'
+    'blur input': 'cancelEdit'
     'click .delete-image': 'deleteImage'
 
   initialize: (options) =>
