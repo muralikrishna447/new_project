@@ -2,8 +2,12 @@ require 'spec_helper'
 
 describe QuestionPresenter, "#present" do
   let(:admin) { false }
-  let(:question) { stub('question', id: 123, contents_json: {key: 'val'}, image: nil, symbolize_question_type: :important) }
+  let(:question) { Fabricate.build(:multiple_choice_question, id: 123, type: 'ImportantQuestion') }
   let(:question_presenter) { QuestionPresenter.new(question, admin) }
+
+  before do
+    question.stub(:contents_json).and_return({key: 'val'})
+  end
 
   subject { question_presenter.attributes }
 
@@ -27,6 +31,7 @@ describe QuestionPresenter, "#present" do
 
     it "doesn't include the image key" do
       subject.keys.should_not include :image
+      subject.keys.should_not include :images
     end
   end
 
@@ -41,12 +46,30 @@ describe QuestionPresenter, "#present" do
   context "with an image" do
     before do
       ImagePresenter.stub_chain(:new, :wrapped_attributes).and_return('image attributes')
-      question.stub(:image).and_return(Fabricate.build(:image))
+      question.stub(:image).and_return(true)
     end
 
     it "includes the presented image in the attributes" do
       subject[:image].should == 'image attributes'
     end
 
+    it "doesn't include images if not present" do
+      subject.keys.should_not include :images
+    end
+  end
+
+  context "with many images" do
+    before do
+      ImagePresenter.stub(:present_collection).and_return(['imgA attrs', 'imgB attrs'])
+      question.stub(:images).and_return(true)
+    end
+
+    it "includes the presented image in the attributes" do
+      subject[:images].should == ['imgA attrs', 'imgB attrs']
+    end
+
+    it "doesn't include images if not present" do
+      subject.keys.should_not include :image
+    end
   end
 end

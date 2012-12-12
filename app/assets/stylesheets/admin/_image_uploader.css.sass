@@ -1,0 +1,85 @@
+#image-uploader
+  $imageWidth: 150px
+  $imageHeight: 100px
+  .image-placeholder
+    cursor: pointer
+    p
+      width: $imageWidth
+      height: $imageHeight
+      border: 1px dashed $black
+      color: $grayLight
+      text-align: center
+      &:hover
+        color: $gray
+      i
+        margin-top: 32px
+        font-size: 48px
+        display: block
+      span
+        margin-top: 15px
+        display: block
+        font-size: 16px
+  .image
+    margin: 10px
+    float: left
+    padding: 15px
+    background: whitesmoke
+    border-radius: 5px
+    position: relative
+    img
+      float: left
+      margin-bottom: 15px
+      width: $imageWidth
+      height: $imageHeight
+    span
+      font-size: 16px
+      clear: left
+    .caption
+      float: left
+      width: $imageWidth - 25px
+    .edit
+      float: right
+      font-size: 24px
+    &:hover
+      .image-controls
+        display: block
+
+  .image-controls
+    position: absolute
+    right: 16px
+    top: 16px
+    background: whitesmoke
+    padding: 5px
+    display: none
+    [class*=icon-]
+      font-size: 22px
+      line-height: 0.2em
+      color: $gray
+      cursor: pointer
+    .delete-image
+      position: relative
+    .edit-image
+      &:hover
+        color: $green
+    .delete-image
+      &:hover
+        color: $red
+    form
+      textarea
+        float: left
+        width: $imageWidth - 25px
+        height: 50px
+      button
+        margin-top: 10px
+        float: right
+        clear: left
+
+.quiz-image
+  height: 210px
+  .image-controls
+    float: left
+    margin-left: 240px
+    width: 320px
+    img
+      width: 300px
+      height: 150px

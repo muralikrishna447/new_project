@@ -1,4 +1,4 @@
-class ChefStepsAdmin.Views.QuizImages extends Backbone.View
+class ChefStepsAdmin.Views.BoxSortImages extends Backbone.View
   el: '#image-list'
 
   initialize: ->
@@ -10,6 +10,6 @@ class ChefStepsAdmin.Views.QuizImages extends Backbone.View
     @
 
   addImageToList: (image) =>
-    view = new ChefStepsAdmin.Views.QuizImage(model: image)
+    view = new ChefStepsAdmin.Views.BoxSortImage(model: image)
     @$el.append(view.render().$el)
 

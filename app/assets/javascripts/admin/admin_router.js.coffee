@@ -1,22 +1,17 @@
 class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
   routes:
-    '/admin/quizzes/new' : 'newQuiz'
+    '/admin/quizzes/new' : 'editQuiz'
     '/admin/quizzes/{id}/edit' : 'editQuiz'
     '/admin/quizzes/{id}/manage_questions' : 'editQuizQuestions'
-    '/admin/quizzes/{id}/upload_images' : 'uploadQuizImages'
+    '/admin/questions/{id}/edit' : 'editQuestion'
 
-  newQuiz: ->
+  editQuiz: (id) ->
     model = new ChefStepsAdmin.Models.QuizImage(ChefStepsAdmin.quizImageData)
     view = new ChefStepsAdmin.Views.QuizImageUploader(el: "form", model: model)
     view.render()
 
-  editQuiz: (id)->
-    model = new ChefStepsAdmin.Models.QuizImage(ChefStepsAdmin.quizImageData)
-    view = new ChefStepsAdmin.Views.QuizImageUploader(el: "form", model: model)
-    view.render()
-
-  editQuizQuestions: (id)->
+  editQuizQuestions: (id) ->
     questions = new ChefStepsAdmin.Collections.Questions([], quizId: id)
     questions.reset(ChefStepsAdmin.questionsData)
 
@@ -25,12 +20,12 @@ class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
     view.render()
 
-  uploadQuizImages: (id) ->
-    quizImages = new ChefStepsAdmin.Collections.QuizImages([], quizId: id)
-    quizImages.reset(ChefStepsAdmin.quizImageData)
-    imageUploaderView = new ChefStepsAdmin.Views.QuizImagesUploader(collection: quizImages)
-    imageUploaderView.render()
+  editQuestion: (questionId) ->
+    boxSortImages = new ChefStepsAdmin.Collections.BoxSortImages([])
+    boxSortImages.reset(ChefStepsAdmin.questionImageData)
 
-    quizImagesView = new ChefStepsAdmin.Views.QuizImages(collection: quizImages)
-    quizImagesView.render()
+    new ChefStepsAdmin.Views.BoxSortImageUploader(collection: boxSortImages)
+    boxSortImagesView = new ChefStepsAdmin.Views.BoxSortImages(collection: boxSortImages)
+
+    boxSortImagesView.render()
 
