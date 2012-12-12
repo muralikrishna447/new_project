@@ -1,5 +1,5 @@
 class ChefSteps.Views.MultipleChoiceQuestion extends ChefSteps.Views.Question
-  templateName: 'question'
+  templateName: 'multiple_choice_question'
 
   viewEvents:
     'change input': 'answerChanged'
