@@ -3,6 +3,8 @@ class BoxSortImage < ActiveRecord::Base
 
   ranks :image_order, with_same: :question_id
 
+  after_create :save_to_last_position
+
   belongs_to :question, class_name: 'BoxSortQuestion'
   has_one :image, as: :imageable, dependent: :destroy
 
@@ -17,6 +19,10 @@ class BoxSortImage < ActiveRecord::Base
     self.image.update_attributes(separate_image_params(params))
     self.update_attributes(separate_box_sort_params(params))
     self
+  end
+
+  def save_to_last_position
+    self.update_attributes(image_order_position: :last)
   end
 
   private
