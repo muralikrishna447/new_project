@@ -40,15 +40,18 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
   allImages: ->
     $('.image-pile img')
 
+  dragHelper: (event)=>
+    image = $(event.currentTarget)
+    if $(image).parents().hasClass('image-pile')
+      $(image).clone()
+    else
+      $(image)
+
   createDraggable: =>
     @topImage().draggable
       containment: '.hero-unit'
       revert: 'invalid'
-      helper: ->
-        if $(this).parents().hasClass('image-pile')
-          $(this).clone()
-        else
-          $(this)
+      helper: @dragHelper
       opacity: 0.6
       zIndex: 10000
       start: @handleDragStart
