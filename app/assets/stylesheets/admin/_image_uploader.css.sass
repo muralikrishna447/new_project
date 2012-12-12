@@ -1,7 +1,25 @@
 #image-uploader
-  .quiz-image
-    $imageWidth: 250px
-    $imageHeight: 250px
+  $imageWidth: 150px
+  $imageHeight: 100px
+  .image-placeholder
+    cursor: pointer
+    p
+      width: $imageWidth
+      height: $imageHeight
+      border: 1px dashed $black
+      color: $grayLight
+      text-align: center
+      &:hover
+        color: $gray
+      i
+        margin-top: 32px
+        font-size: 48px
+        display: block
+      span
+        margin-top: 15px
+        display: block
+        font-size: 16px
+  .image
     margin: 10px
     float: left
     padding: 15px
@@ -22,22 +40,29 @@
     .edit
       float: right
       font-size: 24px
-    .delete-image
-      position: absolute
-      top: 17px
-      left: 17px
-      background: $black
-      border: 2px solid $white
-      padding: 10px
-      padding-bottom: 6px
-      color: white
-      font-size: 24px
-      border-radius: 1em
-      display: none
-      cursor: pointer
     &:hover
-      .delete-image
-        display: inline-block
+      .image-controls
+        display: block
+
+  .image-controls
+    position: absolute
+    right: 15px
+    top: 18px
+    background: whitesmoke
+    padding: 5px
+    display: none
+    [class*=icon-]
+      font-size: 22px
+      color: $gray
+      cursor: pointer
+    .delete-image
+      position: relative
+    .edit-image
+      &:hover
+        color: $green
+    .delete-image
+      &:hover
+        color: $red
     form
       textarea
         float: left
@@ -48,3 +73,12 @@
         float: right
         clear: left
 
+.quiz-image
+  height: 210px
+  .image-controls
+    float: left
+    margin-left: 240px
+    width: 320px
+    img
+      width: 300px
+      height: 150px
