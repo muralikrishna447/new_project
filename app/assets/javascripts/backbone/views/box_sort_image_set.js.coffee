@@ -10,9 +10,8 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
     @createDraggable()
 
   handleDrop: (event, ui)=>
-    fromPile = $(ui.draggable).parents().hasClass('image-pile')
     $(event.target).append(ui.draggable)
-    if fromPile
+    if @draggedFromPile
       @moveImages()
       @createDraggable()
     $(event.target).addClass('image-placed')
@@ -21,7 +20,7 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
   handleDragStart: (event, ui)=>
     $(ui.helper).parent().css('z-index': 10)
     @$dropTargets.removeClass('image-placed')
-    @$dropTargets.find('img').remove() if @draggedFromPile(ui.helper)
+    @$dropTargets.find('img').remove() if @draggedFromPile
 
   moveImages: ->
     @allImages().css(left: '-=5', top: '-=5')
@@ -31,9 +30,6 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
         @allImages().css(left: '', top: '')
     )
 
-  draggedFromPile: (draggable)->
-    $(draggable).parents().hasClass('image-pile')
-
   topImage: ->
     $('.image-pile img:first')
 
@@ -42,10 +38,9 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
 
   dragHelper: (event)=>
     image = $(event.currentTarget)
-    if $(image).parents().hasClass('image-pile')
-      $(image).clone()
-    else
-      $(image)
+    @draggedFromPile = image.parents().hasClass('image-pile')
+    return image.clone() if @draggedFromPile
+    image
 
   createDraggable: =>
     @topImage().draggable
