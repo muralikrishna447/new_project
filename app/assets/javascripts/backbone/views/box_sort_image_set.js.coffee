@@ -31,16 +31,16 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
     )
 
   draggedFromPile: (draggable)->
-    return $(draggable).parents().hasClass('image-pile')
+    $(draggable).parents().hasClass('image-pile')
 
   topImage: ->
-    return $('.image-pile img:first')
+    $('.image-pile img:first')
 
   allImages: ->
-    return $('.image-pile img')
+    $('.image-pile img')
 
   dropTargets: ->
-    return $('.sort-option')
+    $('.sort-option')
 
   createDraggable: =>
     @topImage().draggable
@@ -48,9 +48,9 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
       revert: 'invalid'
       helper: ->
         if $(this).parents().hasClass('image-pile')
-          return $(this).clone()
+          $(this).clone()
         else
-          return $(this)
+          $(this)
       opacity: 0.6
       zIndex: 10000
       start: @handleDragStart
