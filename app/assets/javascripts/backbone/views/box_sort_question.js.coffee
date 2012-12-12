@@ -3,7 +3,10 @@ class ChefSteps.Views.BoxSortQuestion extends ChefSteps.Views.Question
 
   render: ->
     super
-    new ChefSteps.Views.BoxSortImageSet(el: @$el)
+    new ChefSteps.Views.BoxSortImageSet
+      el: @$el
+      onComplete: =>
+        @showNext()
     @
 
   answerData: ->
