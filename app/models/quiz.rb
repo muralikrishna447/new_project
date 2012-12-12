@@ -13,8 +13,8 @@ class Quiz < ActiveRecord::Base
   attr_accessible :title, :activity_id, :start_copy, :end_copy, :image_attributes
   accepts_nested_attributes_for :image, allow_destroy: true
 
-  def add_multiple_choice_question
-    question = MultipleChoiceQuestion.create
+  def add_question(question_type)
+    question = question_class_from_type(question_type).create
     questions << question
     question
   end
@@ -29,7 +29,9 @@ class Quiz < ActiveRecord::Base
 
   def update_question_order(question_ids)
     question_ids.each do |question_id|
-      questions.find(question_id).update_attribute(:question_order_position, :last)
+      question = questions.find(question_id)
+      type = question.type
+      question.becomes(Question).update_attributes({question_order_position: :last, type: type}, without_protection: true)
     end
   end
 
@@ -56,4 +58,12 @@ class Quiz < ActiveRecord::Base
   def completed_by?(user)
     questions_remaining_for_count(user) == 0
   end
+
+  private
+
+  def question_class_from_type(question_type)
+    question_type.to_s.classify.constantize
+  end
+
 end
+

@@ -15,3 +15,4 @@
 //= require signals
 //= require crossroads
 //= require jquery.cookie
+//= require jquery.colorbox

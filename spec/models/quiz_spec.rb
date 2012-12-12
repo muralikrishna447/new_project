@@ -1,25 +1,32 @@
 require 'spec_helper'
 
-describe Quiz, '#add_multiple_choice_question' do
+describe Quiz, '#add_question' do
   let(:quiz) { Fabricate(:quiz) }
 
-  it "creates a new MultipleChoiceQuestion" do
-    question = quiz.add_multiple_choice_question
+  it "adds question to quiz's questions association" do
+    quiz.add_question(:multiple_choice_question)
+    quiz.questions.should have(1).question
+  end
+
+  it "creates a new MultipleChoiceQuestion if multiple_choice_question type specified" do
+    question = quiz.add_question(:multiple_choice_question)
     question.should be_a MultipleChoiceQuestion
     question.should be_persisted
   end
 
-  it "adds question to quiz's questions association" do
-    quiz.add_multiple_choice_question
-    quiz.questions.should have(1).question
+  it "creates a new BoxSortQuestion if box_sort_question type specified" do
+    question = quiz.add_question(:box_sort_question)
+    question.should be_a BoxSortQuestion
+    question.should be_persisted
   end
+
 end
 
 describe Quiz, '#question_count' do
   let(:quiz) { Fabricate(:quiz) }
 
   it 'should return count of questions' do
-    quiz.add_multiple_choice_question
+    quiz.add_question(:multiple_choice_question)
     quiz.question_count.should == 1
   end
 end
@@ -27,16 +34,21 @@ end
 describe Quiz, "update_question_order" do
   let(:quiz) { Fabricate(:quiz) }
   let(:questionA) { Fabricate(:multiple_choice_question) }
-  let(:questionB) { Fabricate(:multiple_choice_question) }
-  let(:question_ids) { [ questionA.id, questionB.id ].map(&:to_s) }
+  let(:questionB) { Fabricate(:box_sort_question) }
+  let(:questionC) { Fabricate(:multiple_choice_question) }
+  let(:question_ids) { [ questionA.id, questionB.id, questionC.id ] }
 
   before do
-    quiz.questions << questionB << questionA
-    quiz.update_question_order(question_ids)
+    quiz.questions << questionB << questionC << questionA
+    quiz.update_question_order(question_ids.map(&:to_s))
   end
 
   it "updates the order of the questions" do
-    quiz.questions.ordered.should == [questionA, questionB]
+    quiz.questions.ordered.map(&:id).should == question_ids
+  end
+
+  it 'does not change the type of the question' do
+    quiz.questions.ordered.first.should be_a MultipleChoiceQuestion
   end
 end
 
