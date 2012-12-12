@@ -4,8 +4,11 @@ class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
   events:
     'click .btn-next': 'submitAnswer'
 
+  viewEvents: {}
+
   render: ->
     @$el.html(@renderTemplate())
+    @delegateEvents(_.extend(@viewEvents, @events))
     @
 
   showNext: ->

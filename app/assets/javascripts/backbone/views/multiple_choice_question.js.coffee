@@ -1,8 +1,8 @@
 class ChefSteps.Views.MultipleChoiceQuestion extends ChefSteps.Views.Question
   templateName: 'question'
 
-  initialize: (options)->
-    @$('input').on('change', @answerChanged)
+  viewEvents:
+    'change input': 'answerChanged'
 
   answerChanged: ->
     if @answerSelected()
