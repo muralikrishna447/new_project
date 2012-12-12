@@ -1,3 +1,8 @@
+= hb 'if key_image' do
+  %i.icon-star{ data: {behavior: 'toggle-key-image'} }
+= hb 'unless key_image' do
+  %i.icon-star-empty{ data: {behavior: 'toggle-key-image'} }
+
 %img.img-polaroid{ src: hb('url') }
 .image-controls
   %i.icon-ban-circle.delete-image{ data: {confirm: "Are you sure?"} }
