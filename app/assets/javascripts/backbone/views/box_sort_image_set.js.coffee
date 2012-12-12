@@ -58,7 +58,7 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
 
   createDraggable: =>
     @nextImage().draggable
-      containment: '.hero-unit'
+      containment: '#quiz-container'
       revert: 'invalid'
       helper: @dragHelper
       opacity: 0.6
