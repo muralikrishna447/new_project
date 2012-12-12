@@ -15,6 +15,7 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
 
   initialize: (options) =>
     @option = options.option
+    @uid = @option.uid || @cid
     @questionView = options.questionView
 
   destroySuccess: =>
@@ -50,7 +51,7 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
 
   render: =>
     template = Handlebars.templates['templates/admin/question_option_form']
-    @$el.html(template(@option))
+    @$el.html(template(_.defaults(_.clone(@option), uid: @uid)))
     @$el.addClass('correct') if @option.correct
     @delegateEvents()
     @

@@ -19,7 +19,7 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
 
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editQuestion", @editQuestionEventHandler)
-    @optionViews = []
+    @optionViews = {}
     super(options)
 
   renderOptionViews: =>
@@ -47,20 +47,20 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
     ).disableSelection()
 
   initializeOptionViews: =>
-    @optionViews = []
+    @optionViews = {}
     @loadOptionViews()
 
   renderOptionView: (optionView) => @$('.options').append(optionView.render().$el)
 
   addOption: =>
     optionView = @addOptionView(@defaultOption)
-    @optionViews.push(optionView)
+    @optionViews[optionView.uid] = optionView
     @renderOptionView(optionView)
 
   addOptionView: (option) => new ChefStepsAdmin.Views.Option(option: option, questionView: @)
 
   removeOptionView: (optionView) =>
-    @optionViews.remove(optionView)
+    delete @optionViews[optionView.uid]
 
   imageOptions:
     w: 580
@@ -73,7 +73,9 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
     templateJSON
 
   loadOptionViews: =>
-    _.each @model.get('options'), (option) => @optionViews.push(@addOptionView(option))
+    _.each @model.get('options'), (option) =>
+      optionView = @addOptionView(option)
+      @optionViews[optionView.uid] = optionView
 
   editQuestionEventHandler: (cid) =>
     if @model.cid == cid
@@ -89,7 +91,8 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
   saveForm: =>
     data = @$('form').serializeObject()
     data = _.omit(data, ['answer', 'correct'])
-    data['options'] = _.map(@optionViews, (optionView) -> optionView.getFormData())
+    data['options'] = _.map @$('.options .option'), (optionEl) =>
+      @optionViews[$(optionEl).data('uid')].getFormData()
     @model.save(data)
     @render()
 
