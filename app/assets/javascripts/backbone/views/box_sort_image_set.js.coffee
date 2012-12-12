@@ -15,8 +15,17 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
 
   handleDragStart: (event, ui)=>
     $(ui.helper).parent().css('z-index': 10)
-    @$dropTargets.removeClass(@placedClass)
-    @$dropTargets.find('img').remove() if @draggedFromPile
+
+    removePlaced = =>
+      @$dropTargets.removeClass(@placedClass)
+
+    if @draggedFromPile
+      image = @$dropTargets.find('img')
+      image.fadeOut 'fast', =>
+        image.remove()
+        removePlaced()
+    else
+      removePlaced()
 
   moveImages: ->
     allImages = @$('.image-pile img')
