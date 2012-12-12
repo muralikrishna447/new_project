@@ -26,7 +26,7 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
     @option['image']
 
   filePickerOnSuccess: (fpFile) =>
-    @destroyImage(true)
+    @destroyImage(false)
     @option['image'] = fpFile
     @option = @getFormData()
     @render()
@@ -34,12 +34,12 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
   deleteImage: (event) =>
     confirmMessage = $(event.currentTarget).data('confirm')
     if not confirmMessage || confirm(confirmMessage)
-      @destroyImage()
+      @destroyImage(true)
 
   deleteOption: (event) =>
     confirmMessage = $(event.currentTarget).data('confirm')
     if not confirmMessage || confirm(confirmMessage)
-      @destroyImage(true)
+      @destroyImage(false)
       @questionView.removeOptionView(@)
       @remove()
 

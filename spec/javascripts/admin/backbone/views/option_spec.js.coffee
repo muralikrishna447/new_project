@@ -11,7 +11,7 @@ describe "ChefStepsAdmin.Views.Option", ->
       @view.deleteOption(@fake_event)
 
     it "destroys the image without callback", ->
-      expect(@view.destroyImage).toHaveBeenCalledWith(true)
+      expect(@view.destroyImage).toHaveBeenCalledWith(false)
 
     it "removes itself from the DOM", ->
       expect(@view.remove).toHaveBeenCalled()
@@ -32,7 +32,7 @@ describe "ChefStepsAdmin.Views.Option", ->
       expect(@view.render).toHaveBeenCalled()
 
     it "destroys any pre-existing images", ->
-      expect(@view.destroyImage).toHaveBeenCalledWith(true)
+      expect(@view.destroyImage).toHaveBeenCalledWith(false)
 
   describe "#destroySuccess", ->
     beforeEach ->
