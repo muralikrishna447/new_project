@@ -1,6 +1,7 @@
 class ChefSteps.Views.BoxSortImageSet extends Backbone.View
   initialize: (options)->
-    @dropTargets().droppable
+    @$dropTargets = $('.sort-option')
+    @$dropTargets.droppable
       activeClass: 'image-active'
       hoverClass: 'image-hover'
       tolerance: 'intersect'
@@ -15,12 +16,12 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
       @moveImages()
       @createDraggable()
     $(event.target).addClass('image-placed')
-    $('.sort-option').css('z-index': 1)
+    @$dropTargets.css('z-index': 1)
 
   handleDragStart: (event, ui)=>
     $(ui.helper).parent().css('z-index': 10)
-    $('.sort-option').removeClass('image-placed')
-    @dropTargets().find('img').remove() if @draggedFromPile(ui.helper)
+    @$dropTargets.removeClass('image-placed')
+    @$dropTargets.find('img').remove() if @draggedFromPile(ui.helper)
 
   moveImages: ->
     @allImages().css(left: '-=5', top: '-=5')
@@ -38,9 +39,6 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
 
   allImages: ->
     $('.image-pile img')
-
-  dropTargets: ->
-    $('.sort-option')
 
   createDraggable: =>
     @topImage().draggable
