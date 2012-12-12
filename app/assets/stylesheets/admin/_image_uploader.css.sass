@@ -14,7 +14,7 @@
     height: $imageHeight + 50px
     border-radius: 5px
     position: relative
-    border: 1px dashed $black
+    border: 1px dashed transparent
     cursor: move
     img
       float: left
@@ -45,6 +45,7 @@
         font-size: 14px
         color: $grayLight
     &:hover
+      border: 1px dashed $black
       .image-controls
         display: block
     [data-behavior~='toggle-key-image']
@@ -53,8 +54,12 @@
       top: 8px
       left: 6px
       cursor: pointer
+      z-index: 2
       &.icon-star
         color: $yellow
+    .icon-star-empty + img
+      +grayscale(1)
+
     form
       input
         position: absolute
