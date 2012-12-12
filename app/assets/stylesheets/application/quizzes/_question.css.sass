@@ -66,10 +66,6 @@
     float: none
     line-height: 22px
 
-  #sort-image
-    z-index: 10
-    cursor: pointer
-
   .sort-option
     +border-radius(3px)
     +box-shadow(inset 0px 1px 2px 0px rgba(0, 0, 0, 0.5))
@@ -93,15 +89,14 @@
     &.image-placed
       &:before
         border-color: $white
-      #sort-image
+      .image-box
         position: absolute !important
-        left: 23px !important
-        top: 23px !important
+        left: 22px !important
+        top: 22px !important
         bottom: 23px !important
         right: 23px !important
-        img
-          width: 96%
-          height: 92%
+        width: 80%
+        height: 68%
 
   label
     font-weight: bold
@@ -112,3 +107,27 @@
   .sort-option.image-placed + label
     color: $brick
 
+  .background-images
+    position: relative
+
+  .image-box
+    width: 270px
+    height: 151px
+    cursor: pointer
+    position: absolute
+    &:nth-child(1)
+      top: -15px
+      left: -15px
+      z-index: 1
+    &:nth-child(2)
+      top: -10px
+      left: -10px
+      z-index: 2
+    &:nth-child(3)
+      top: -5px
+      left: -5px
+      z-index: 3
+    &:nth-child(4)
+      top: 0
+      left: 0
+      z-index: 4

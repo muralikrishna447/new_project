@@ -2,31 +2,51 @@
   :javascript
     $(document).ready(function() {
       var handleDrop = function(event, ui) {
-        ui.draggable.css({top: 0, left: 0});
+        var draggedFromPile = $(ui.draggable).parents().hasClass('background-images');
         $(this).append(ui.draggable);
         $(this).addClass('image-placed');
         $('.sort-option').css({'z-index': 1});
+        if (draggedFromPile) {
+          addNewImageToRear();
+        }
       };
 
       var handleDragStart = function(event, ui) {
-        $('#sort-image').parent().css({'z-index': 10});
+        $('.image-box:last').parent().css({'z-index': 10});
         $('.sort-option').removeClass('image-placed')
       };
 
-      $('#sort-image').draggable({
+      $('.image-box:last').draggable({
         containment: '.hero-unit',
         revert: 'invalid',
+        helper: function() {
+          if($(this).parents().hasClass('background-images')) {
+            return $(this).clone();
+          } else {
+            return $(this);
+          }
+        },
         opacity: 0.6,
         zIndex: 10000,
         start: handleDragStart
       });
       $('.sort-option').droppable({
-        accept: '#sort-image',
+        accept: '.image-box',
         activeClass: 'image-active',
         hoverClass: 'image-hover',
         tolerance: 'intersect',
         drop: handleDrop
       });
+
+      addNewImageToRear = function() {
+        $('.image-box').animate({left: '+=5', top: '+=5'},{
+          complete: _.once(function() {
+            image = $('<img class="img-polaroid image-box">').hide();
+            $('.background-images').prepend(image);
+            image.fadeIn()
+          })
+        });
+      };
     });
 
 #quiz-container
@@ -39,8 +59,11 @@
       .hero-unit.span9
         .row.images
           .span3
-            #sort-image
-              = image_tag 'http://lorempixel.com/270/152/food', class: 'img-polaroid'
+            .background-images
+              = image_tag 'http://lorempixel.com/270/152/food/4', class: 'img-polaroid image-box'
+              = image_tag 'http://lorempixel.com/270/152/food/3', class: 'img-polaroid image-box'
+              = image_tag 'http://lorempixel.com/270/152/food/2', class: 'img-polaroid image-box'
+              = image_tag 'http://lorempixel.com/270/152/food/1', class: 'img-polaroid image-box'
         .row
           .span4.image-caption
             Four loko next level mixtape, aliqua lomo brunch ut direct trade
