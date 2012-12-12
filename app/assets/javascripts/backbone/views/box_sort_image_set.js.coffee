@@ -1,6 +1,6 @@
 class ChefSteps.Views.BoxSortImageSet extends Backbone.View
   initialize: (options)->
-    @$dropTargets = $('.sort-option')
+    @$dropTargets = @$('.sort-option')
     @$dropTargets.droppable
       activeClass: 'image-active'
       hoverClass: 'image-hover'

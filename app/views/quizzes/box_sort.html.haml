@@ -1,7 +1,9 @@
 - content_for :custom_js do
   :javascript
     $(document).ready(function() {
-      new ChefSteps.Views.BoxSortImageSet();
+      new ChefSteps.Views.BoxSortImageSet({
+        el: '.box-sort'
+      });
     });
 
 #quiz-container
