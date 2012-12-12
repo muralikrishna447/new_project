@@ -1,3 +1,8 @@
+:ruby
+  image_data = 10.times.map do |i|
+    { src: "http://lorempixel.com/270/152/food/#{i+1}/Picture #{i+1}" }
+  end
+
 - content_for :custom_js do
   :javascript
     $(document).ready(function() {
@@ -17,16 +22,8 @@
         .row.images
           .span3
             .image-pile
-              = image_tag 'http://lorempixel.com/270/152/food/1/Picture 1', class: 'img-polaroid'
-              = image_tag 'http://lorempixel.com/270/152/food/2/Picture 2', class: 'img-polaroid'
-              = image_tag 'http://lorempixel.com/270/152/food/3/Picture 3', class: 'img-polaroid'
-              = image_tag 'http://lorempixel.com/270/152/food/4/Picture 4', class: 'img-polaroid'
-              = image_tag 'http://lorempixel.com/270/152/food/5/Picture 5', class: 'img-polaroid'
-              = image_tag 'http://lorempixel.com/270/152/food/6/Picture 6', class: 'img-polaroid'
-              = image_tag 'http://lorempixel.com/270/152/food/7/Picture 7', class: 'img-polaroid'
-              = image_tag 'http://lorempixel.com/270/152/food/8/Picture 8', class: 'img-polaroid'
-              = image_tag 'http://lorempixel.com/270/152/food/9/Picture 9', class: 'img-polaroid'
-              = image_tag 'http://lorempixel.com/270/152/food/10/Picture 10', class: 'img-polaroid'
+              - image_data.each do |image|
+                = image_tag image[:src], class: 'img-polaroid'
         .row
           .span4.image-caption
             Four loko next level mixtape, aliqua lomo brunch ut direct trade
