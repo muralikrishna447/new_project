@@ -4,7 +4,7 @@ ActiveAdmin.register BoxSortImage, as: "Image" do
   controller do
     def create
       @question = Question.find(params[:question_id])
-      @image = @question.images.create()
+      @image = @question.images.create
       @image.update_from_params(params)
       render json: ImagePresenter.new(@image).present
     end
