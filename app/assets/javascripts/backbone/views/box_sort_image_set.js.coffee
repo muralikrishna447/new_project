@@ -3,6 +3,7 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
     @placedClass = 'image-placed'
 
     @$dropTargets = @$('.sort-option')
+    @$caption = @$('.image-caption')
 
     @createDraggable()
     @createDroppables()
@@ -32,11 +33,19 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
     image
 
   makeNextImageDraggable: ->
+    @updateCaption()
     @moveImages()
     @createDraggable()
 
+  nextImage: ->
+    @$('.image-pile img:first')
+
+  updateCaption: ->
+    @$caption.fadeOut 'fast', =>
+      @$caption.text(@nextImage().data('caption')).fadeIn('fast')
+
   createDraggable: =>
-    @$('.image-pile img:first').draggable
+    @nextImage().draggable
       containment: '.hero-unit'
       revert: 'invalid'
       helper: @dragHelper
