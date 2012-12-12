@@ -11,7 +11,7 @@ describe 'ChefSteps.Views.Quiz', ->
       render: ->
 
     spyOn(@questionView, 'render').andReturn(@questionView)
-    spyOn(ChefSteps.Views, 'Question').andReturn(@questionView)
+    spyOn(ChefSteps.Views, 'MultipleChoiceQuestion').andReturn(@questionView)
 
     @view = new ChefSteps.Views.Quiz
       el: '#quiz-container'
@@ -45,7 +45,7 @@ describe 'ChefSteps.Views.Quiz', ->
 
     it 'creates a question view for current question', ->
       @view.loadNextQuestion('model')
-      expect(ChefSteps.Views.Question).toHaveBeenCalledWith(model: 'model')
+      expect(ChefSteps.Views.MultipleChoiceQuestion).toHaveBeenCalledWith(model: 'model')
 
     it 'renders question view', ->
       @view.loadNextQuestion('model')

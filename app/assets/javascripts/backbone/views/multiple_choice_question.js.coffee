@@ -1,4 +1,4 @@
-class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
+class ChefSteps.Views.MultipleChoiceQuestion extends ChefSteps.Views.TemplatedView
   className: 'question'
 
   templateName: 'question'

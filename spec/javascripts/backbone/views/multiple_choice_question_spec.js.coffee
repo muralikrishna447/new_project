@@ -1,4 +1,4 @@
-describe 'ChefSteps.Views.Question', ->
+describe 'ChefSteps.Views.MultipleChoiceQuestion', ->
   beforeEach ->
     $.fx.off = true
 
@@ -6,7 +6,7 @@ describe 'ChefSteps.Views.Question', ->
     setFixtures(sandbox())
     @model = {id: 123}
     @model.toJSON = -> {}
-    @view = new ChefSteps.Views.Question(model: @model)
+    @view = new ChefSteps.Views.MultipleChoiceQuestion(model: @model)
     @view.extendTemplateJSON = ()->
       options: [
         { uid: 'ABCD', answer: 'true' }
