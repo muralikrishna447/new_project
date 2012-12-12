@@ -1,6 +1,9 @@
 :ruby
   image_data = 10.times.map do |i|
-    { src: "http://lorempixel.com/270/152/food/#{i+1}/Picture #{i+1}" }
+    {
+      src: "http://lorempixel.com/270/152/food/#{i+1}/Picture #{i+1}",
+      caption: "The caption for image number #{i+1}"
+    }
   end
 
 - content_for :custom_js do
@@ -23,11 +26,10 @@
           .span3
             .image-pile
               - image_data.each do |image|
-                = image_tag image[:src], class: 'img-polaroid'
+                = image_tag image[:src], class: 'img-polaroid', data: {caption: image[:caption]}
         .row
           .span4.image-caption
-            Four loko next level mixtape, aliqua lomo brunch ut direct trade
-            culpa twee vinyl etsy. Consequat ullamco non vegan irure.
+            = image_data.first[:caption]
         .row
           .span3
             .sort-option
