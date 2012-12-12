@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(:version => 20121211193255) do
     t.datetime "updated_at",                       :null => false
   end
 
-  add_index "box_sort_images", ["question_id"], :name => "index_box_sort_images_on_question_id", :unique => true
+  add_index "box_sort_images", ["question_id"], :name => "index_box_sort_images_on_question_id"
 
   create_table "copies", :force => true do |t|
     t.string   "location"

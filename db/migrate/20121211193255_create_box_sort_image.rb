@@ -6,6 +6,6 @@ class CreateBoxSortImage < ActiveRecord::Migration
       t.string :key_rationale, default: ''
       t.timestamps
     end
-    add_index(:box_sort_images, :question_id, unique: true)
+    add_index(:box_sort_images, :question_id)
   end
 end
