@@ -13,6 +13,10 @@ class Question < ActiveRecord::Base
 
   scope :ordered, rank(:question_order)
 
+  def ordered_images
+    images.ordered
+  end
+
   def score(answer)
     answer.question = self
     answer.correct = correct(answer)
