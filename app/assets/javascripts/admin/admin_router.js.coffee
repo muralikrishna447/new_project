@@ -19,11 +19,12 @@ class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
     view.render()
 
-  editQuestion: (id) ->
-    if ChefStepsAdmin.questionType == 'BoxSortQuestion'
-      boxSortImages = new ChefStepsAdmin.Collections.QuestionImages([])
-      boxSortImages.reset(ChefStepsAdmin.questionImageData)
-      boxSortImageUploaderView = new ChefStepsAdmin.Views.BoxSortImageUploader(collection: boxSortImages)
-      boxSortImagesView = new ChefStepsAdmin.Views.BoxSortImages(collection: boxSortImages)
-      boxSortImagesView.render()
+  editQuestion: (questionId) ->
+    boxSortImages = new ChefStepsAdmin.Collections.BoxSortImages([])
+    boxSortImages.reset(ChefStepsAdmin.questionImageData)
+
+    new ChefStepsAdmin.Views.BoxSortImageUploader(collection: boxSortImages)
+    boxSortImagesView = new ChefStepsAdmin.Views.BoxSortImages(collection: boxSortImages)
+
+    boxSortImagesView.render()
 
