@@ -1,24 +1,11 @@
+
 #image-uploader
   $imageWidth: 150px
   $imageHeight: 100px
-  .image-placeholder
-    cursor: pointer
-    p
-      width: $imageWidth
-      height: $imageHeight
-      border: 1px dashed $black
-      color: $grayLight
-      text-align: center
-      &:hover
-        color: $gray
-      i
-        margin-top: 32px
-        font-size: 48px
-        display: block
-      span
-        margin-top: 15px
-        display: block
-        font-size: 16px
+
+  #image-list
+    float: left
+
   .image
     margin: 10px
     float: left
@@ -27,6 +14,8 @@
     height: $imageHeight + 50px
     border-radius: 5px
     position: relative
+    border: 1px dashed $black
+    cursor: move
     img
       float: left
       margin-bottom: 15px
@@ -69,6 +58,26 @@
       cursor: pointer
       &:hover
         color: $green
+
+  .image-placeholder
+    cursor: pointer
+    border: 1px dashed transparent
+    p
+      width: $imageWidth
+      height: $imageHeight
+      border: 1px dashed $black
+      color: $grayLight
+      text-align: center
+      &:hover
+        color: $gray
+      i
+        margin-top: 32px
+        font-size: 48px
+        display: block
+      span
+        margin-top: 15px
+        display: block
+        font-size: 16px
 
   .image-controls
     position: absolute
