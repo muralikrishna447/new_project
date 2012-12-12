@@ -1,5 +1,5 @@
 class ChefStepsAdmin.Views.QuizImage extends ChefSteps.Views.TemplatedView
-  className: 'quiz-image'
+  className: 'image quiz-image'
 
   templateName: 'admin/quiz_image'
 

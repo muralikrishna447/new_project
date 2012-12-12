@@ -1,0 +1,4 @@
+%img.img-polaroid{ src: hb('url') }
+.image-controls
+  %i.icon-ban-circle.delete-image{ data: {confirm: "Are you sure?"} }
+

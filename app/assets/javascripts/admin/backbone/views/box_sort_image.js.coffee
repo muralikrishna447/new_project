@@ -1,8 +1,8 @@
 class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
-  className: 'quiz-image'
+  className: 'image'
 
-  formTemplate: 'admin/quiz_image_form'
-  showTemplate: 'admin/quiz_image'
+  formTemplate: 'admin/box_sort_image_form'
+  showTemplate: 'admin/box_sort_image'
 
   events:
     'click .edit': 'triggerEditImageCaption'
