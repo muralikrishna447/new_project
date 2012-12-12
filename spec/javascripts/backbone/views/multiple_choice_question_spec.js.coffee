@@ -1,7 +1,5 @@
 describe 'ChefSteps.Views.MultipleChoiceQuestion', ->
   beforeEach ->
-    $.fx.off = true
-
     setStyleFixtures('.btn-next {display: block}')
     setFixtures(sandbox())
     @model = {id: 123}
