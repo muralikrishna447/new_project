@@ -9,9 +9,12 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
     @createDroppables()
 
   handleDrop: (event, ui)=>
-    $(event.target).append(ui.draggable).addClass(@placedClass)
-    @$dropTargets.css('z-index': 1)
+    $(event.target).append(ui.draggable)
     @makeNextImageDraggable() if @draggedFromPile
+
+  handleStop: (event, ui)=>
+    @$dropTargets.find('img').parent().addClass(@placedClass)
+    @$dropTargets.css('z-index': 1)
 
   handleDragStart: (event, ui)=>
     $(ui.helper).parent().css('z-index': 10)
@@ -61,6 +64,7 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
       opacity: 0.6
       zIndex: 10000
       start: @handleDragStart
+      stop: @handleStop
 
   createDroppables: =>
     @$dropTargets.droppable
