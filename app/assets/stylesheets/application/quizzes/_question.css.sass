@@ -89,7 +89,7 @@
     &.image-placed
       &:before
         border-color: $white
-      .image-box
+      img
         position: absolute !important
         left: 22px !important
         top: 22px !important
@@ -107,31 +107,38 @@
   .sort-option.image-placed + label
     color: $brick
 
-  .background-images
-    position: relative
-
-  .image-box
+  img.ui-draggable-dragging
     width: 270px
     height: 151px
     cursor: pointer
     position: absolute
-    &:nth-child(1)
-      top: 0
-      left: 0
-      z-index: 40
-    &:nth-child(2)
-      top: -5px
-      left: -5px
-      z-index: 30
-    &:nth-child(3)
-      top: -10px
-      left: -10px
-      z-index: 20
-    &:nth-child(4)
-      top: -15px
-      left: -15px
-      z-index: 10
-    &:nth-child(n+5)
-      display: none
-    &.ui-draggable
-      display: block
+
+  .image-pile
+    position: relative
+
+    img
+      width: 270px
+      height: 151px
+      cursor: pointer
+      position: absolute
+      &:nth-child(1)
+        top: 0
+        left: 0
+        z-index: 40
+      &:nth-child(2)
+        top: -5px
+        left: -5px
+        z-index: 30
+      &:nth-child(3)
+        top: -10px
+        left: -10px
+        z-index: 20
+      &:nth-child(4)
+        top: -15px
+        left: -15px
+        z-index: 10
+      &:nth-child(n+5)
+        display: none
+      &.ui-draggable
+        display: block
+        position: relative

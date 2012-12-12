@@ -11,15 +11,27 @@
       };
 
       var handleDragStart = function(event, ui) {
-        $('.image-box.ui-draggable').parent().css({'z-index': 10});
+        draggableImage().parent().css({'z-index': 10});
         $('.sort-option').removeClass('image-placed')
       };
 
       var draggedFromPile = function() {
-        return $('.image-box.ui-draggable').parents().hasClass('background-images');
+        return draggableImage().parents().hasClass('image-pile');
       };
 
-      $('.image-box:first').draggable({
+      var topImage = function() {
+        return $('.image-pile img:first');
+      };
+
+      var draggableImage = function() {
+        return $('.ui-draggable');
+      }
+
+      var allImages = function() {
+        return $('.image-pile img');
+      }
+
+      topImage().draggable({
         containment: '.hero-unit',
         revert: 'invalid',
         helper: function() {
@@ -34,7 +46,6 @@
         start: handleDragStart
       });
       $('.sort-option').droppable({
-        accept: '.image-box',
         activeClass: 'image-active',
         hoverClass: 'image-hover',
         tolerance: 'intersect',
@@ -42,8 +53,8 @@
       });
 
       moveImages = function() {
-        $('.background-images .image-box').css({left: '-=5', top: '-=5'})
-        $('.background-images .image-box').animate({left: '+=5', top: '+=5'})
+        allImages().css({left: '-=5', top: '-=5'})
+        allImages().animate({left: '+=5', top: '+=5'})
       };
     });
 
@@ -57,17 +68,17 @@
       .hero-unit.span9
         .row.images
           .span3
-            .background-images
-              = image_tag 'http://lorempixel.com/270/152/food/1/Picture 1', class: 'img-polaroid image-box'
-              = image_tag 'http://lorempixel.com/270/152/food/2/Picture 2', class: 'img-polaroid image-box'
-              = image_tag 'http://lorempixel.com/270/152/food/3/Picture 3', class: 'img-polaroid image-box'
-              = image_tag 'http://lorempixel.com/270/152/food/4/Picture 4', class: 'img-polaroid image-box'
-              = image_tag 'http://lorempixel.com/270/152/food/5/Picture 5', class: 'img-polaroid image-box'
-              = image_tag 'http://lorempixel.com/270/152/food/6/Picture 6', class: 'img-polaroid image-box'
-              = image_tag 'http://lorempixel.com/270/152/food/7/Picture 7', class: 'img-polaroid image-box'
-              = image_tag 'http://lorempixel.com/270/152/food/8/Picture 8', class: 'img-polaroid image-box'
-              = image_tag 'http://lorempixel.com/270/152/food/9/Picture 9', class: 'img-polaroid image-box'
-              = image_tag 'http://lorempixel.com/270/152/food/10/Picture 10', class: 'img-polaroid image-box'
+            .image-pile
+              = image_tag 'http://lorempixel.com/270/152/food/1/Picture 1', class: 'img-polaroid'
+              = image_tag 'http://lorempixel.com/270/152/food/2/Picture 2', class: 'img-polaroid'
+              = image_tag 'http://lorempixel.com/270/152/food/3/Picture 3', class: 'img-polaroid'
+              = image_tag 'http://lorempixel.com/270/152/food/4/Picture 4', class: 'img-polaroid'
+              = image_tag 'http://lorempixel.com/270/152/food/5/Picture 5', class: 'img-polaroid'
+              = image_tag 'http://lorempixel.com/270/152/food/6/Picture 6', class: 'img-polaroid'
+              = image_tag 'http://lorempixel.com/270/152/food/7/Picture 7', class: 'img-polaroid'
+              = image_tag 'http://lorempixel.com/270/152/food/8/Picture 8', class: 'img-polaroid'
+              = image_tag 'http://lorempixel.com/270/152/food/9/Picture 9', class: 'img-polaroid'
+              = image_tag 'http://lorempixel.com/270/152/food/10/Picture 10', class: 'img-polaroid'
         .row
           .span4.image-caption
             Four loko next level mixtape, aliqua lomo brunch ut direct trade
