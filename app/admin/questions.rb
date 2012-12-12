@@ -21,7 +21,7 @@ ActiveAdmin.register Question do
 
     def edit
       @question = Question.find(params[:id])
-      @question_images = ImagePresenter.present_collection(@question.images)
+      @question_images = ImagePresenter.present_collection(@question.ordered_images)
       edit!
     end
 

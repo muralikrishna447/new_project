@@ -1,24 +1,11 @@
+
 #image-uploader
   $imageWidth: 150px
   $imageHeight: 100px
-  .image-placeholder
-    cursor: pointer
-    p
-      width: $imageWidth
-      height: $imageHeight
-      border: 1px dashed $black
-      color: $grayLight
-      text-align: center
-      &:hover
-        color: $gray
-      i
-        margin-top: 32px
-        font-size: 48px
-        display: block
-      span
-        margin-top: 15px
-        display: block
-        font-size: 16px
+
+  #image-list
+    float: left
+
   .image
     margin: 10px
     float: left
@@ -27,6 +14,8 @@
     height: $imageHeight + 50px
     border-radius: 5px
     position: relative
+    border: 1px dashed $black
+    cursor: move
     img
       float: left
       margin-bottom: 15px
@@ -35,10 +24,10 @@
     .caption
       overflow: hidden
       float: left
-      width: $imageWidth
+      width: $imageWidth - 15px
       font-size: 14px
       clear: left
-      padding: 5px
+      padding: 5px 20px 5px 5px
       cursor: pointer
       text-overflow: ellipsis
       white-space: nowrap
@@ -63,12 +52,31 @@
         position: absolute
         bottom: 10px
         left: -10px
-        width: $imageWidth + 26px
-        padding-right: 26px
+        width: $imageWidth + 38px
       button
         margin-top: 10px
         float: right
         clear: left
+
+  .image-placeholder
+    cursor: pointer
+    border: 1px dashed transparent
+    p
+      width: $imageWidth
+      height: $imageHeight
+      border: 1px dashed $black
+      color: $grayLight
+      text-align: center
+      &:hover
+        color: $gray
+      i
+        margin-top: 32px
+        font-size: 48px
+        display: block
+      span
+        margin-top: 15px
+        display: block
+        font-size: 16px
 
   .image-controls
     position: absolute
