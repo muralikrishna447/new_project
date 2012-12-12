@@ -59,7 +59,8 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
 
   addOptionView: (option) => new ChefStepsAdmin.Views.Option(option: option, questionView: @)
 
-  removeOptionView: (optionView) => @optionViews.remove(_.indexOf(@optionViews, optionView))
+  removeOptionView: (optionView) =>
+    @optionViews.remove(optionView)
 
   imageOptions:
     w: 580
