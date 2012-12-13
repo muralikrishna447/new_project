@@ -2,14 +2,7 @@
 
 - cache ['home', version, user_signed_in?] do
   .hero-unit.hero-well.hero-home-video
-    .container.signup-banner.gray
-      - unless user_signed_in?
-        .row
-          .span7
-            %h2 ChefSteps is building the free-to-learn culinary school.
-            %h3 Want to know when we launch?
-          .span5
-            = render 'mailing_list/subscribe', orange: true
+    .container.signup-banner
       .row.top-video
         .span12
           .video-container
