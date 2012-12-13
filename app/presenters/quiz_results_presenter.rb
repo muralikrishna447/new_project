@@ -19,3 +19,4 @@ class QuizResultsPresenter
     end
   end
 end
+

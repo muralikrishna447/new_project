@@ -5,6 +5,10 @@ ActiveAdmin.register Quiz do
     link_to_publishable quiz, 'View on Site'
   end
 
+  action_item only: [:index] do
+    link_to "Download Report CSV", report_admin_quizzes_path
+  end
+
   index do
     column 'Link' do |quiz|
       link_to_publishable(quiz)
@@ -24,6 +28,10 @@ ActiveAdmin.register Quiz do
         format.html { redirect_to manage_questions_admin_quiz_path(@quiz) }
       end
     end
+  end
+
+  collection_action :report do
+    render csv: Quiz.all, style: :report
   end
 
   member_action :manage_questions do

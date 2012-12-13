@@ -12,6 +12,10 @@ class Quiz < ActiveRecord::Base
   attr_accessible :title, :activity_id, :start_copy, :end_copy, :image_attributes
   accepts_nested_attributes_for :image, allow_destroy: true
 
+  comma :report do
+    title
+  end
+
   def add_question(question_type)
     question = question_class_from_type(question_type).create
     questions << question

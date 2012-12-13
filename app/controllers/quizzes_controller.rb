@@ -24,3 +24,4 @@ class QuizzesController < ApplicationController
     @questions_remaining ||= quiz.questions_remaining_for(current_user)
   end
 end
+
