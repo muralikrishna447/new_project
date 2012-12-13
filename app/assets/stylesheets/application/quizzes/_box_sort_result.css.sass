@@ -19,9 +19,21 @@
     margin-right: 20px
 
   img.key-image
+    height: 250px
     border: 5px solid transparent
+    width: 100%
     &.correct
       border-color: $green
     &.incorrect
       border-color: $red
+
+  .key-image-information
+    padding: 20px 10px
+    width: 100%
+    span
+      float: left
+      +font-serif-small
+      color: $grayMedium
+    p
+      +font-serif-medium
 
