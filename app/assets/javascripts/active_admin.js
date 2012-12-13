@@ -1,5 +1,7 @@
 //= require active_admin/base
 //= require twitter/bootstrap/typeahead
+//= require twitter/bootstrap/tooltip
+//= require twitter/bootstrap/popover
 //= require lodash
 //= require array_remove
 //= require signals
