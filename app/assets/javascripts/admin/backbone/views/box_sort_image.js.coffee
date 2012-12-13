@@ -60,6 +60,7 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     )
     @delegateEvents()
     $target.popover('show')
+    @$('textarea').focus()
 
   isEditState: =>
     @templateName == @formTemplate
