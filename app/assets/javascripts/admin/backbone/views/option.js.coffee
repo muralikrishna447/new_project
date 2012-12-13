@@ -14,7 +14,7 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
   filePickerType: 'single'
 
   initialize: (options) =>
-    @option = options.option
+    @option = _.clone(options.option)
     @uid = @option.uid || @cid
     @questionView = options.questionView
 
