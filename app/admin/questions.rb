@@ -19,6 +19,12 @@ ActiveAdmin.register Question do
       send("respond_to_#{question.symbolize_question_type}_update", question)
     end
 
+    def edit
+      @question = Question.find(params[:id])
+      @question_images = ImagePresenter.present_collection(@question.ordered_images)
+      edit!
+    end
+
     private
     def respond_to_box_sort_create(question)
       redirect_to edit_admin_question_path(question)
@@ -43,5 +49,4 @@ ActiveAdmin.register Question do
     head :ok
   end
 end
-
 

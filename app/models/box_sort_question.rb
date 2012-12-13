@@ -1,6 +1,8 @@
 class BoxSortQuestion < Question
   serialize :contents, BoxSortQuestionContents
 
+  has_many :images, class_name: 'BoxSortImage', foreign_key: 'question_id'
+
   def update_from_params(params)
     update_contents(params)
     save!
@@ -26,6 +28,13 @@ class BoxSortQuestion < Question
     },{
       text: "I don't remember"
     }]
+  end
+
+  def update_image_order(image_ids)
+    image_ids.each do |image_id|
+      image = images.find(image_id)
+      image.update_attributes(image_order_position: :last)
+    end
   end
 end
 

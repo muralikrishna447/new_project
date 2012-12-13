@@ -39,3 +39,33 @@ describe 'ChefStepsAdmin.Router', ->
     it "instantiates a quiz controls view", ->
       expect(ChefStepsAdmin.Views.QuizControls).toHaveBeenCalledWith(collection: @fakeCollection)
 
+  describe "#editQuestion", ->
+    beforeEach ->
+      ChefStepsAdmin.questionImageData = ['a', 'b']
+
+      @fakeCollection = jasmine.createSpyObj('collection', ['reset'])
+      @fakeView = jasmine.createSpyObj('view', ['render'])
+      @fakeUploaderView = jasmine.createSpyObj('uploader view', ['render'])
+      @fakeImagesView = jasmine.createSpyObj('images view', ['render'])
+
+      spyOn(ChefStepsAdmin.Collections, 'BoxSortImages').andReturn(@fakeCollection)
+      spyOn(ChefStepsAdmin.Views, 'BoxSortImageUploader').andReturn(@fakeUploaderView)
+      spyOn(ChefStepsAdmin.Views, 'BoxSortImages').andReturn(@fakeImagesView)
+
+      @router.editQuestion()
+
+    it "instantiates a question image collection", ->
+      expect(ChefStepsAdmin.Collections.BoxSortImages).toHaveBeenCalled()
+
+    it "resets the collection from the global ChefStepsAdmin.questionImageData", ->
+      expect(@fakeCollection.reset).toHaveBeenCalledWith(['a', 'b'])
+
+    it "instantiates a BoxSortImageUploader", ->
+      expect(ChefStepsAdmin.Views.BoxSortImageUploader).toHaveBeenCalledWith(collection: @fakeCollection)
+
+    it "instantiates the BoxSortImages collection view", ->
+      expect(ChefStepsAdmin.Views.BoxSortImages).toHaveBeenCalledWith(collection: @fakeCollection)
+
+    it "renders the collection view", ->
+      expect(@fakeImagesView.render).toHaveBeenCalled()
+

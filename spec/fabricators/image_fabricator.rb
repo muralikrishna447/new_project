@@ -1,4 +1,6 @@
 Fabricator :image
 
-Fabricator :quiz_image
+Fabricator :box_sort_image do
+  image { Fabricate(:image) }
+end
 

@@ -1,10 +1,11 @@
 = render 'layouts/filepicker'
 
--# :javascript
--#   window.ChefStepsAdmin = window.ChefStepsAdmin || {};
--#   window.ChefStepsAdmin.quizImageData= JSON.parse('#{j(@quiz_images)}');
+:javascript
+  window.ChefStepsAdmin = window.ChefStepsAdmin || {};
+  window.ChefStepsAdmin.questionImageData = JSON.parse('#{j(@question_images)}');
 
 %h2 Box Sort Question for "#{@question.quiz.title}"
+
 
 = semantic_form_for [:admin, @question], url: admin_question_path(@question) do |f|
   = f.inputs name: "Question Details" do
@@ -16,4 +17,11 @@
 
   = f.actions do
     = f.action :submit, label: 'Save Question'
+
+#image-uploader
+  #image-list
+    .image.image-placeholder{ data: {behavior: 'filepicker'}}
+      %p.img-polaroid
+        %i.icon-plus
+        %span Upload Images
 
