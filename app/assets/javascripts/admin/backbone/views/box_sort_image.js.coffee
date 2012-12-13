@@ -8,8 +8,8 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     'click .edit': 'triggerEditImageCaption'
     'submit form': 'saveForm'
     'click .save': 'saveForm'
-    'keyup input': 'keyPressEventHandler'
-    'blur input': 'saveForm'
+    'keyup input, textarea': 'keyPressEventHandler'
+    'blur input, textarea': 'saveForm'
     'click .delete-image': 'deleteImage'
     'click [data-behavior~=toggle-key-image]': 'toggleKeyImage'
     'click [data-behavior~=edit-explanation]': 'editKeyImageExplanation'
@@ -58,6 +58,7 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
       content: Handlebars.templates['templates/admin/box_sort_image_explanation_form'](@model.toJSON())
       placement: 'top'
     )
+    @delegateEvents()
     $target.popover('show')
 
   isEditState: =>
@@ -76,6 +77,8 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     switch event.keyCode
       when 27 # esc key
         @cancelEdit()
+      when 13 #enter key
+        @saveForm()
 
   deleteImage: (event) =>
     event.preventDefault()
