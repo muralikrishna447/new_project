@@ -1,6 +1,4 @@
-# Array Remove - By John Resig (MIT Licensed)
-Array.prototype.remove = (from, to) ->
-  rest = @slice((to || from) + 1 || @length)
-  @length = from < 0 ? @length + from : from
-  return @push.apply(@, rest)
-
+Array.prototype.remove = (element) ->
+  index = @indexOf(element)
+  return if index < 0
+  @splice(index, 1)[0]

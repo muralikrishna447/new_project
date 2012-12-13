@@ -15,3 +15,10 @@ class ChefStepsAdmin.Models.MultipleChoiceQuestion extends ChefStepsAdmin.Models
   getImage: =>
     @get('image')
 
+  snapshot: ->
+    @attributeSnapshot = @toJSON()
+
+  revert: ->
+    return unless @attributeSnapshot
+    @clear(silent: true)
+    @set(@attributeSnapshot)
