@@ -24,6 +24,8 @@ gem "friendly_id"
 gem 'gravtastic'
 gem 'filepicker-rails'
 
+gem 'comma'
+
 gem 'rack-cors', require: 'rack/cors'
 
 # Gems used only for assets and not required
