@@ -7,17 +7,6 @@
         %h3 Your Results for #{quiz.title}
 
 #quiz-results.container
-  .results-header.row
-    .span6
-      .center
-        Questions:
-    .span4
-      .center.bordered.right.left
-        Your Answer:
-      .center.bordered.right
-        Correct Answer:
-    .span2
-      .center
-        Students Avg. Score:
-  - quiz_results.each_with_index do |result, index|
-    = render 'quizzes/multiple_choice_question_results', result: result, count: index+1
+  = render 'quizzes/box_sort_question_result'
+  -# = render 'quizzes/multiple_choice_question_results', multiple_choice_results: quiz_results
+
