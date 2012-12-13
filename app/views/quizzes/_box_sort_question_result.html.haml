@@ -3,11 +3,19 @@
     %span.count [index] <i>of</i> [total count]
     %span.type Memorable snapshots
     %h4 [Instructions]
-
+.row.box-sort-result
   .span12
     .swatch.correct
     %span.option-label [correct option1]
 
     .swatch.incorrect
     %span.option-label [wrong option3]
+
+.row.box-sort-result
+  - 3.times do
+    = render 'quizzes/box_sort_question_key_image', correct: true
+
+.row.box-sort-result
+  - 3.times do
+    = render 'quizzes/box_sort_question_key_image', correct: false
 

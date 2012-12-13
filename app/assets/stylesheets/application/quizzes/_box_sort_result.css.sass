@@ -1,4 +1,5 @@
 .box-sort-result
+  margin-top: 20px
   .swatch
     float: left
     $swatchSize: 15px
@@ -7,16 +8,20 @@
     display: inline-block
     margin-top: 2px
     margin-right: 10px
+    &.correct
+      background: $green
+    &.incorrect
+      background: $red
 
   .option-label
     float: left
     +font-serif-small
     margin-right: 20px
 
-  .correct
-    background: $green
-
-  .incorrect
-    background: $red
-
+  img.key-image
+    border: 5px solid transparent
+    &.correct
+      border-color: $green
+    &.incorrect
+      border-color: $red
 
