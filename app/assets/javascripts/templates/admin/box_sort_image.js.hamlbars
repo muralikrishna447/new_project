@@ -1,4 +1,5 @@
-%img.img-polaroid{ src: hb('url') }
+= hb "> templates.admin.box_sort_image_top"
+
 %span.caption.edit= hb "default_value caption '<i>Enter caption:</i>'"
 .image-controls
   %i.icon-ban-circle.delete-image{ data: {confirm: "Are you sure?"} }

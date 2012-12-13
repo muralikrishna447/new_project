@@ -1,10 +1,15 @@
-
 #image-uploader
   $imageWidth: 150px
   $imageHeight: 100px
 
   #image-list
     float: left
+
+  #key-explanation
+    textarea
+      width: 185px
+      height: 50px
+      resize: none
 
   .image
     margin: 10px
@@ -14,13 +19,27 @@
     height: $imageHeight + 50px
     border-radius: 5px
     position: relative
-    border: 1px dashed $black
+    border: 1px dashed transparent
     cursor: move
     img
       float: left
       margin-bottom: 15px
       width: $imageWidth
       height: $imageHeight
+    .key-explanation
+      position: absolute
+      width: $imageWidth - 10px
+      left: 20px
+      top: 92px
+      padding: 5px
+      overflow: hidden
+      white-space: nowrap
+      text-overflow: ellipsis
+      color: $white
+      background: rgba(0, 0, 0, 0.75)
+      cursor: pointer
+      i
+        color: $grayLight
     .caption
       overflow: hidden
       float: left
@@ -45,8 +64,21 @@
         font-size: 14px
         color: $grayLight
     &:hover
+      border: 1px dashed $black
       .image-controls
         display: block
+    [data-behavior~='toggle-key-image']
+      position: absolute
+      font-size: 32px
+      top: 8px
+      left: 6px
+      cursor: pointer
+      z-index: 2
+      &.icon-star
+        color: $yellow
+    .icon-star-empty + img
+      +grayscale(1)
+
     form
       input
         position: absolute
