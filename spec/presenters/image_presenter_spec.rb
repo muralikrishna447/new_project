@@ -15,7 +15,7 @@ describe ImagePresenter, "#present" do
 
     it "extends attributes to include box sort attributes" do
       subject.keys.should include :key_image
-      subject.keys.should include :key_rationale
+      subject.keys.should include :key_explanation
     end
   end
 end

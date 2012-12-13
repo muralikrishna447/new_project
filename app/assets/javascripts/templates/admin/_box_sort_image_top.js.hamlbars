@@ -4,5 +4,5 @@
   %i.icon-star-empty{ data: {behavior: 'toggle-key-image'} }
 
 %img.img-polaroid{ src: hb('url') }
-%span.key-explanation{ data: {behavior: 'edit-explanation'} }= hb("default_value key_rationale '<i>Enter key explanation:</i>'")
+%span.key-explanation{ data: {behavior: 'edit-explanation'} }= hb("default_value key_explanation '<i>Enter key explanation:</i>'")
 
