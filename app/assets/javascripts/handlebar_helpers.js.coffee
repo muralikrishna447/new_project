@@ -1,5 +1,6 @@
 Handlebars.registerHelper 'each_with_index', (array, block) ->
   buffer = ''
+  return buffer unless array and block
   for i in array
     item = i
     item.index = _i
