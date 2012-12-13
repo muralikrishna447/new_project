@@ -12,7 +12,7 @@ describe 'ChefStepsAdmin.Views.Question', ->
 
     it "calls renderTemplate", ->
       @view.render()
-      expect(@view.templateName).toEqual('admin/question')
+      expect(@view.templateName).toEqual('admin/multiple_choice_question')
       expect(@view.$el.html).toHaveBeenCalledWith('rendered template')
 
     it 'delegateEvents on the rendered template', ->
@@ -26,16 +26,13 @@ describe 'ChefStepsAdmin.Views.Question', ->
       @view.render()
       expect(@view.updateAttributes).toHaveBeenCalled()
 
-  describe "#saveForm", ->
+  describe "#renderOrderingView", ->
     beforeEach ->
       spyOn(@view, 'render')
-      @view.saveForm()
+      @view.renderOrderingView()
 
-    it "updates the model", ->
-      expect(@fake_question.save).toHaveBeenCalled()
-
-    it "renders the show template", ->
-      expect(@view.render).toHaveBeenCalled()
+    it "calls render and passes the orderingTemplate", ->
+      expect(@view.render).toHaveBeenCalledWith(@view.orderingTemplate)
 
   describe "#deleteQuestion", ->
     beforeEach ->
@@ -48,75 +45,4 @@ describe 'ChefStepsAdmin.Views.Question', ->
 
     it "removes the view", ->
       expect(@view.remove).toHaveBeenCalled()
-
-  describe "#isEditState", ->
-    it "returns true if templateName is set to question form", ->
-      expect(@view.isEditState()).toEqual(false)
-
-    it "returns true if templateName is set to question form", ->
-      @view.templateName = @view.formTemplate
-      expect(@view.isEditState()).toEqual(true)
-
-  describe "#editQuestionEventHandler", ->
-    beforeEach ->
-      @view.model.cid = 'matching id'
-      spyOn(@view, 'render')
-      spyOn(@view, 'saveForm')
-
-    it "renders editForm", ->
-      @view.editQuestionEventHandler('matching id')
-      expect(@view.render).toHaveBeenCalledWith(@view.formTemplate)
-
-    describe 'without matching cid', ->
-      describe 'and in edit state', ->
-        it "and in edit state, saves the form", ->
-          spyOn(@view, 'isEditState').andReturn(true)
-          @view.editQuestionEventHandler('some non matching id')
-          expect(@view.saveForm).toHaveBeenCalled()
-
-      describe 'and not in edit state', ->
-        it "renders the normal template", ->
-          spyOn(@view, 'isEditState').andReturn(false)
-          @view.editQuestionEventHandler('some non matching id')
-          expect(@view.render).toHaveBeenCalled()
-
-  describe "#triggerEditQuestion", ->
-    beforeEach ->
-      spyOn(ChefStepsAdmin.ViewEvents, 'trigger')
-      @view.triggerEditQuestion()
-
-    it "triggers the editQuestion event", ->
-      expect(ChefStepsAdmin.ViewEvents.trigger).toHaveBeenCalledWith('editQuestion', @view.model.cid)
-
-
-  describe "#addOption", ->
-    beforeEach ->
-      spyOn(@view, 'addOptionView').andReturn('some option view')
-      spyOn(@view, 'renderOptionView')
-      @view.addOption()
-
-    it "adds a new option view", ->
-      expect(@view.addOptionView).toHaveBeenCalled()
-
-    it "renders the option view", ->
-      expect(@view.renderOptionView).toHaveBeenCalledWith('some option view')
-
-  describe "#extendTemplateJSON", ->
-    beforeEach ->
-      spyOn(@view, 'convertImage').andReturn('converted image url')
-
-    it "returns templateJSON if no image", ->
-      expect(@view.extendTemplateJSON({foo: 'bar'})).toEqual({foo: 'bar'})
-
-    it "returns templateJSON with modified image url", ->
-      template_json =
-        foo: 'bar'
-        image: { url: 'some url' }
-
-      converted_json =
-        foo: 'bar'
-        image: { url: 'converted image url' }
-
-      expect(@view.extendTemplateJSON(template_json)).toEqual(converted_json)
-
 

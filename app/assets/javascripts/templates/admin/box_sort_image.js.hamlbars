@@ -1,0 +1,5 @@
+%img.img-polaroid{ src: hb('url') }
+%span.caption.edit= hb "default_value caption '<i>Enter caption:</i>'"
+.image-controls
+  %i.icon-ban-circle.delete-image{ data: {confirm: "Are you sure?"} }
+

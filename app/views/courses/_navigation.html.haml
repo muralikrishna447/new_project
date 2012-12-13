@@ -7,6 +7,7 @@
           %li.navbar-activity-title
             .navbar-text
               %h4= raw model.title
+
         %ul.nav.nav-anchors.pull-right
           - if model.prev.present?
             %li
@@ -18,12 +19,12 @@
               = link_to model.next do
                 %span.nav-anchors.nav-label Next&nbsp;
                 %i.icon-double-chevron-right
+          %li#syllabus-flyout
+            %a.icon-list-alt.icon-white
+              %span.nav-label Syllabus
           %li
-            %a.icon-info-sign.icon-white{href: '#overview'}
-              %span.nav-label Overview
-          %li
-            %a.icon-list-ol.icon-white{href: '#step-by-step'}
-              %span.nav-label Step-By-Step
+            %a.icon-chevron-up.icon-white{href: '#overview'}
+              %span.nav-label Top
           %li
             %a.icon-print.icon-white{href: "#", onclick: 'window.print()'}
               %span.nav-label Print
@@ -34,4 +35,9 @@
           %li
             %a.icon-comment{href: '#disqus_thread', data: {'disqus-identifier' => disqus_id}}
               %span.nav-label Comments
+
+
+#syllabus-body
+  #syllabus-body-inner
+    = render 'courses/course_breakdown', copy: syllabus_copy
 

@@ -55,6 +55,7 @@ group :development, :test do
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'rack-contrib'
+  gem 'pry'
 end
 
 group :guard do

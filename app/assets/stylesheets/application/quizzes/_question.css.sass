@@ -45,3 +45,102 @@
   .option
     img
       max-width: 181px
+
+.box-sort
+  margin-left: 0
+  opacity: 1
+
+  .images
+    margin-bottom: 25px
+    height: 160px
+    [class*='span']
+      margin: 0 auto 10px
+      float: none
+      padding-left: 25px
+
+  .image-caption
+    +font-serif-small
+    text-align: center
+    font-weight: bold
+    color: $grayDark
+    margin: 0 auto 40px
+    padding-left: 30px
+    float: none
+    line-height: 22px
+
+  .sort-option
+    +border-radius(3px)
+    +box-shadow(inset 0px 1px 2px 0px rgba(0, 0, 0, 0.5))
+    z-index: 1
+    height: 170px
+    background: $beige
+    position: relative
+    &:before
+      +border-radius(3px)
+      display: none
+      content: ""
+      border: 2px dashed $grayLight
+      position: absolute
+      top: 20px
+      left: 20px
+      bottom: 20px
+      right: 20px
+    &.image-hover, &.image-placed
+      &:before
+        display: block
+    &.image-placed
+      &:before
+        border-color: $white
+      img
+        position: absolute !important
+        left: 22px !important
+        top: 22px !important
+        bottom: 23px !important
+        right: 23px !important
+        width: 217px
+        height: 115px
+
+  label
+    font-weight: bold
+    color: $grayDark
+    text-align: center
+    margin-top: 10px
+
+  .sort-option.image-placed + label
+    color: $brick
+
+  img.ui-draggable-dragging
+    width: 270px
+    cursor: pointer
+    position: absolute
+    padding: 6px
+
+  .image-pile
+    position: relative
+
+    img
+      width: 270px
+      cursor: pointer
+      position: absolute
+      padding: 6px
+      &:nth-child(1)
+        top: 0
+        left: 0
+        z-index: 40
+      &:nth-child(2)
+        top: -5px
+        left: -5px
+        z-index: 30
+      &:nth-child(3)
+        top: -10px
+        left: -10px
+        z-index: 20
+      &:nth-child(4)
+        top: -15px
+        left: -15px
+        z-index: 10
+      &:nth-child(n+5)
+        display: none
+      &.ui-draggable-dragging
+        display: block
+        position: relative

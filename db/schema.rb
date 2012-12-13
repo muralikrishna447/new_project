@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121206174614) do
+ActiveRecord::Schema.define(:version => 20121212214325) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -110,6 +110,18 @@ ActiveRecord::Schema.define(:version => 20121206174614) do
 
   add_index "answers", ["question_id", "user_id"], :name => "index_answers_on_question_id_and_user_id", :unique => true
 
+  create_table "box_sort_images", :force => true do |t|
+    t.integer  "question_id",                      :null => false
+    t.boolean  "key_image",     :default => false
+    t.string   "key_rationale", :default => ""
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.integer  "image_order"
+  end
+
+  add_index "box_sort_images", ["image_order"], :name => "index_box_sort_images_on_image_order"
+  add_index "box_sort_images", ["question_id"], :name => "index_box_sort_images_on_question_id"
+
   create_table "copies", :force => true do |t|
     t.string   "location"
     t.text     "copy"
@@ -154,7 +166,7 @@ ActiveRecord::Schema.define(:version => 20121206174614) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.integer  "quiz_id"
-    t.string   "question_type"
+    t.string   "type"
     t.text     "contents",               :default => ""
     t.integer  "question_order"
     t.integer  "answer_count",           :default => 0
@@ -163,15 +175,6 @@ ActiveRecord::Schema.define(:version => 20121206174614) do
   end
 
   add_index "questions", ["question_order"], :name => "index_questions_on_question_order"
-
-  create_table "quiz_images", :force => true do |t|
-    t.string   "filename"
-    t.string   "caption"
-    t.integer  "quiz_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "url"
-  end
 
   create_table "quizzes", :force => true do |t|
     t.string   "title"

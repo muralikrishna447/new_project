@@ -74,3 +74,12 @@ describe Question, '#average_correct' do
     question.average_correct.should == 75
   end
 end
+
+describe Question, "symbolize_question_type" do
+  let(:question) { Fabricate.build(:multiple_choice_question) }
+
+  it "returns the question type symbolized, without question" do
+    question.type = 'FooBarBazQuestion'
+    question.symbolize_question_type.should == :foo_bar_baz
+  end
+end

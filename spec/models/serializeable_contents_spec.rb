@@ -12,6 +12,10 @@ describe SerializeableContents, 'initialization' do
   it 'does not override value passed in during initialization' do
     MultipleChoiceQuestion.new(contents: 'test').contents.should == 'test'
   end
+
+  it 'does not init contents if question type is baseclass Question' do
+    Question.new.contents.should be_blank
+  end
 end
 
 describe SerializeableContents, '#contents_json' do

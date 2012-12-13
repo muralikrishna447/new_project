@@ -14,7 +14,8 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
   filePickerType: 'single'
 
   initialize: (options) =>
-    @option = options.option
+    @option = _.clone(options.option)
+    @uid = @option.uid || @cid
     @questionView = options.questionView
 
   destroySuccess: =>
@@ -25,24 +26,26 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
     @option['image']
 
   filePickerOnSuccess: (fpFile) =>
-    @destroyImage(true)
+    @destroyImage(false)
     @option['image'] = fpFile
+    @option = @getFormData()
     @render()
 
   deleteImage: (event) =>
     confirmMessage = $(event.currentTarget).data('confirm')
     if not confirmMessage || confirm(confirmMessage)
-      @destroyImage()
+      @destroyImage(true)
 
   deleteOption: (event) =>
     confirmMessage = $(event.currentTarget).data('confirm')
     if not confirmMessage || confirm(confirmMessage)
-      @destroyImage(true)
+      @destroyImage(false)
       @questionView.removeOptionView(@)
       @remove()
 
   getFormData: =>
-    _.extend(@$('input').serializeObject(), @option)
+    defaults = _.omit(@option, 'correct', 'answer')
+    _.defaults(@$('input').serializeObject(), defaults)
 
   highlightCorrect: (event) =>
     $('.edit-option').removeClass('correct')
@@ -50,7 +53,7 @@ class ChefStepsAdmin.Views.Option extends Backbone.View
 
   render: =>
     template = Handlebars.templates['templates/admin/question_option_form']
-    @$el.html(template(@option))
+    @$el.html(template(_.defaults(_.clone(@option), uid: @uid)))
     @$el.addClass('correct') if @option.correct
     @delegateEvents()
     @

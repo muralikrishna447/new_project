@@ -6,6 +6,16 @@
   .caption.top-right, .caption.middle-right, .caption.bottom-right
     margin-left: -625px
 
+@media (max-width: 1200px)
+  .box-sort
+    .images
+      height: 130px
+    .sort-option
+      height: 150px
+      &.image-placed img
+        width: 166px
+        height: 95px
+
 /* Portrait tablet*/
 @media (max-width: 980px)
   /* ################### */
@@ -33,6 +43,7 @@
   #quiz-container
     .hero-unit .dials
       margin-top: 0
+      margin-bottom: 0
 
     .dial-left, .dial-right
       float: none
@@ -44,6 +55,15 @@
       top: 15px
       margin-left: 122px
       width: 90px
+
+  .box-sort
+    .images
+      height: 100px
+    .sort-option
+      height: 130px
+      &.image-placed img
+        width: 112px
+        height: 75px
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
@@ -141,6 +161,12 @@
       .average
         +font-serif-tiny
         line-height: 30px
+
+  .box-sort
+    .images
+      height: 160px
+    label, .sort-option
+      width: 219px
 
 /* Android phone. Weird inbetween*/
 @media (max-width: 520px)

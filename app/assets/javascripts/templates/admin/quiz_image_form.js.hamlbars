@@ -1,6 +1,0 @@
-%img{ src: hb('url') }
-
-%form
-  %textarea{name: 'caption'}= hb('caption')
-  %button.admin-button.done Save
-  %button.admin-button.cancel Cancel
