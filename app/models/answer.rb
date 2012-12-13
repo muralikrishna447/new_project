@@ -1,7 +1,7 @@
 class Answer < ActiveRecord::Base
   include SerializeableContents
 
-  ANSWER_TYPES = [:multiple_choice]
+  ANSWER_TYPES = [:multiple_choice, :box_sort]
 
   belongs_to :question, counter_cache: :answer_count
   belongs_to :user
