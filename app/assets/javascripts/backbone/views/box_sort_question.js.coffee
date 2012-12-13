@@ -14,3 +14,6 @@ class ChefSteps.Views.BoxSortQuestion extends ChefSteps.Views.Question
     @
 
   answerData: ->
+    {
+      type: 'box_sort',
+    }
