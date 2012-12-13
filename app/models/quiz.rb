@@ -14,6 +14,9 @@ class Quiz < ActiveRecord::Base
 
   comma :report do
     title
+    started_count "Started"
+    completed_count "Completed"
+    question_count "Questions"
   end
 
   def add_question(question_type)
@@ -60,6 +63,14 @@ class Quiz < ActiveRecord::Base
 
   def completed_by?(user)
     questions_remaining_for_count(user) == 0
+  end
+
+  def started_count
+    ordered_questions.first.answer_count
+  end
+
+  def completed_count
+    ordered_questions.last.answer_count
   end
 
   private

@@ -83,3 +83,4 @@ describe Question, "symbolize_question_type" do
     question.symbolize_question_type.should == :foo_bar_baz
   end
 end
+
