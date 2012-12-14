@@ -1,20 +1,31 @@
 #header
-  .container.noprint
-    .navbar
-      .navbar-inner
-        .nav.pull-right.addthis-container
-          = render 'layouts/share_this' unless Rails.env.test?
-  .container.global-navigation
-    .navbar
-      .navbar-inner
-        .container
-          .nav.brand-container
-            %a.brand{href: root_url, target: '_top'}
-              = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
-            .brand-byline
-              brought to you by
-              %a.delve-brand{href: 'http://delvekitchen.com', target: '_top'}
-                = image_tag('delve-logo.png', alt: 'Delve')
-          %ul.nav.pull-right.noprint
-            = render 'layouts/global_navigation'
+  - unless user_signed_in?
+    .row.enter-email
+      .span6.pull-right
+        .title-bar.pull-right.noprint
+          = render 'mailing_list/subscribe', orange: true
+
+  .row.global-navigation
+    .span12
+      .brand-container
+        %a.brand{href: root_url, target: '_top'}
+          = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
+
+      .navbar
+        %ul.nav.noprint
+          = render 'layouts/global_navigation'
+
+      .social-group.noprint
+        %ul
+          %li.social
+            %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
+          %li.social
+            %a.icon-twitter{ href: "http://twitter.com/@chefsteps" }
+          %li.social
+            %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
+          %li.social
+            %a.icon-google-plus{ href: "https://plus.google.com/106370441183974123730/posts" }
+
+      .auth-group.pull-right.noprint
+        #authentication
 
