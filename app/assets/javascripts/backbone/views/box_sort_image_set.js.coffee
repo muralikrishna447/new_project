@@ -1,5 +1,6 @@
 class ChefSteps.Views.BoxSortImageSet extends Backbone.View
   initialize: (options)->
+    @onComplete = options.onComplete
     @placedClass = 'image-placed'
 
     @$dropTargets = @$('.sort-option')
@@ -9,8 +10,17 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
     @createDroppables()
 
   handleDrop: (event, ui)=>
-    $(event.target).append(ui.draggable)
-    @makeNextImageDraggable() if @draggedFromPile
+    droppable = $(event.target)
+    image = ui.draggable
+    droppable.append(image)
+
+    @collection.addAnswer(image.data('image-id'), droppable.data('uid'))
+
+    if @draggedFromPile
+      waitForRemove = =>
+        @makeNextImageDraggable() if @imageCount() > 0
+        @onComplete() if @imageCount() == 0
+      setTimeout(waitForRemove, 1)
 
   handleStop: (event, ui)=>
     @$dropTargets.find('img').parent().addClass(@placedClass)
@@ -52,13 +62,16 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
   nextImage: ->
     @$('.image-pile img:first')
 
+  imageCount: ->
+    @$('.image-pile img').length
+
   updateCaption: ->
     @$caption.fadeOut 'fast', =>
       @$caption.text(@nextImage().data('caption')).fadeIn('fast')
 
   createDraggable: =>
     @nextImage().draggable
-      containment: '.hero-unit'
+      containment: '#quiz-container'
       revert: 'invalid'
       helper: @dragHelper
       opacity: 0.6

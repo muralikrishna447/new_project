@@ -16,7 +16,7 @@ class ImagePresenter < Presenter
     if @model.instance_of?(BoxSortImage)
       attrs.merge!({
         key_image: @model.key_image,
-        key_rationale: @model.key_rationale
+        key_explanation: @model.key_explanation
       })
     end
   end

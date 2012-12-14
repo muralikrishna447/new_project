@@ -10,7 +10,7 @@ class BoxSortImage < ActiveRecord::Base
 
   delegate :filename, :filename=, :url, :url=, :caption=, :caption, to: :image, allow_nil: true
 
-  attr_accessible :key_image, :key_rationale, :question_id, :image_order_position
+  attr_accessible :key_image, :key_explanation, :question_id, :image_order_position
 
   scope :ordered, rank(:image_order)
 
@@ -30,7 +30,7 @@ class BoxSortImage < ActiveRecord::Base
   def separate_box_sort_params(params)
     {
       key_image: params[:key_image],
-      key_rationale: params[:key_rationale]
+      key_explanation: params[:key_explanation]
     }
   end
 

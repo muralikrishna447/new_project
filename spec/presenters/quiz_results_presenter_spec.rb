@@ -32,6 +32,10 @@ describe QuizResultsPresenter do
     let(:question) { quiz.ordered_questions.first }
     let(:answer) { question.answer_for(user) }
 
+    it 'includes the question_type' do
+      mc_result[:question_type].should == :multiple_choice
+    end
+
     it 'includes the question' do
       mc_result[:question].should == question.contents.question
     end
