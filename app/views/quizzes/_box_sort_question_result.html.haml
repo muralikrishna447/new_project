@@ -13,10 +13,6 @@
     %span.option-label= result[:options][2][:text]
 
 .row.box-sort-result
-  - 3.times do
-    = render 'quizzes/box_sort_question_key_image', correct: true
-
-.row.box-sort-result
-  - 3.times do
-    = render 'quizzes/box_sort_question_key_image', correct: false
+  - result[:key_images].each do |image|
+    = render 'quizzes/box_sort_question_key_image', image: image, correct: true
 

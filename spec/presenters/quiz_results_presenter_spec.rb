@@ -93,6 +93,10 @@ describe QuizResultsPresenter do
       let(:result) { results.first }
       let(:question) { quiz.ordered_questions[1] }
 
+      before do
+        ImagePresenter.stub(:wrapped_collection) { ['image'] }
+      end
+
       it 'includes the question order' do
         result[:order].should == 2
       end
@@ -103,6 +107,11 @@ describe QuizResultsPresenter do
 
       it "includes question options" do
         result[:options].should == question.contents.options
+      end
+
+      it "includes key images" do
+        question.should_receive(:key_images)
+        result[:key_images].should have(1).image
       end
     end
   end
