@@ -20,4 +20,5 @@
       .center
         Students Avg. Score:
   - quiz_results.each_with_index do |result, index|
-    = render 'quizzes/multiple_choice_question_results', result: result, count: index+1
+    - if result[:question_type] == :multiple_choice
+      = render 'quizzes/multiple_choice_question_results', result: result, count: index+1
