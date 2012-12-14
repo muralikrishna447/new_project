@@ -6,10 +6,11 @@
 .row.box-sort-result
   .span12
     .swatch.correct
-    %span.option-label [correct option1]
-
+    %span.option-label= result[:options][0][:text]
+    .swatch.ambivalent
+    %span.option-label= result[:options][1][:text]
     .swatch.incorrect
-    %span.option-label [wrong option3]
+    %span.option-label= result[:options][2][:text]
 
 .row.box-sort-result
   - 3.times do
