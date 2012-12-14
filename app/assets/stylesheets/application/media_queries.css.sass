@@ -67,13 +67,6 @@
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
-  .global-navigation
-    [class*="span"]
-      width: 100%
-
-  .social-group
-    display: none
-
   .top-video
     padding: 0
 
@@ -122,7 +115,7 @@
       height: 17px
 
   .subscribe.orange button
-    height: 30px
+    height: 28px
 
   #auth-modal
     top: 10%
@@ -227,14 +220,9 @@
   .global-navigation
     .navbar-inner
       padding-left: 0
-    .nav
-      width: 100%
     ul.nav
       margin-top: 0
     li
-      width: 92%
-      border-right: none
-      border-top: 1px solid $grayLight
       text-align: left
       padding-right: 0
       float: none
@@ -244,9 +232,6 @@
 
     .profile-info
       display: none
-
-  .brand-container
-    margin-bottom: 20px !important
 
   #auth-modal
     h1
@@ -314,3 +299,44 @@
 
 /* Everything but portrait iphone*/
 @media (max-width: 480px)
+  .enter-email
+    padding-bottom: 10px
+    float: left
+    .title-bar
+      .subscribe
+        margin-left: 0px
+    #email
+      width: 300px
+
+  .global-navigation
+    .brand-container
+      margin-bottom: 0px
+
+    .navbar
+      padding-left: 0
+
+      li
+        text-align: left !important
+        padding: 10px 20px 6px 0px
+        border: none
+        width:  auto
+
+    .social-group
+      ul
+        margin-left: -7px
+        li
+          width: 16px
+          margin-right: 8px
+          border:  none
+        li:first-child
+          padding-left: 0px
+
+    .auth-group
+      float: none
+      margin-top: 0px
+      margin-bottom: 9px
+      margin-left: 0px
+      #authentication
+        li.authentication
+          a
+            +font-serif-large
