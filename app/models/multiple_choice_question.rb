@@ -10,11 +10,7 @@ class MultipleChoiceQuestion < Question
   end
 
   def title
-    if contents.question.present?
-      contents.question
-    else
-      'N/A'
-    end
+    contents.question.present? ? contents.question : 'N/A'
   end
 end
 
