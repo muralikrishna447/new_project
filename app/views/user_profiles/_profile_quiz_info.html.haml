@@ -1,0 +1,26 @@
+.row
+  .span2.info-box
+    %span.count 03
+    %span Courses
+  .span2.info-box.active
+    %span.count 03
+    %span Courses
+
+.row
+  .span8.info-set
+    .row
+      .span8
+        %span.section-label
+          %i.icon-trophy
+          Quizzes In Progress
+    .row
+      .span4
+        = render 'profile_quiz_info_card'
+      .span4
+        = render 'profile_quiz_info_card'
+    .row
+      .span4
+        = render 'profile_quiz_info_card'
+      .span4
+        = render 'profile_quiz_info_card'
+

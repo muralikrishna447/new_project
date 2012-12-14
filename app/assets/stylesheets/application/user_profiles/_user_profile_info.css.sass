@@ -1,0 +1,55 @@
+.user-profile-info
+  .info-box
+    background: whiteSmoke
+    height: 110px
+    margin-bottom: 30px
+    &.active
+      padding-bottom: 20px
+      margin-bottom: 0
+      span
+        color: $brick
+    span
+      +font-sans-small
+      color: $gray
+      text-align: center
+      width: 100%
+      float: left
+      clear: both
+      text-transform: uppercase
+      font-weight: bold
+      margin-top: 25px
+    .count
+      font-size: 48px
+
+.user-profile-info
+  .info-set
+    padding-top: 30px
+    background: whiteSmoke
+    span.section-label
+      padding-left: 30px
+      margin-bottom: 10px
+      text-transform: uppercase
+      font-weight: 500
+      float: left
+      +font-sans-medium
+      i
+        color: $gray
+        font-size: 20px
+    figure
+      margin: 0
+      margin-bottom: 30px
+      color: $brick
+      span
+        color: $gray
+    figcaption
+      padding: 10px
+      span
+        padding: 0
+
+    .row .span4:first-child
+      figure
+        margin-left: 30px
+    .row .span4:last-child
+      figure
+        margin-right: 30px
+
