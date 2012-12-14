@@ -12,6 +12,7 @@
 //= require recipe_units
 //= require handlebar_helpers
 //= require_tree ./backbone/models
+//= require ./backbone/views/question
 //= require_tree ./backbone
 //= require_tree ./templates
 //= require syllabus_display

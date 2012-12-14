@@ -9,8 +9,11 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     'submit form': 'saveForm'
     'click .save': 'saveForm'
     'keyup input': 'keyPressEventHandler'
-    'blur input': 'saveForm'
+    'keydown textarea': 'keyPressEventHandler'
+    'blur input, textarea': 'saveForm'
     'click .delete-image': 'deleteImage'
+    'click [data-behavior~=toggle-key-image]': 'toggleKeyImage'
+    'click [data-behavior~=edit-explanation]': 'editKeyImageExplanation'
 
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editImageCaption", @editImageCaptionEventHandler)
@@ -32,8 +35,12 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     h: 150
     fit: 'crop'
 
-  triggerEditImageCaption: =>
-    ChefStepsAdmin.ViewEvents.trigger('editImageCaption', @model.cid)
+  toggleKeyImage: =>
+    currentValue = @model.get('key_image')
+    @model.save('key_image', not currentValue)
+    @render()
+
+  triggerEditImageCaption: => ChefStepsAdmin.ViewEvents.trigger('editImageCaption', @model.cid)
 
   editImageCaptionEventHandler: (cid) =>
     if @model.cid == cid
@@ -43,6 +50,18 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
       @saveForm()
     else
       @render()
+
+  editKeyImageExplanation: =>
+    $target = @$('[data-behavior~=edit-explanation]')
+    $target.popover(
+      title: 'Key Image Explanation'
+      html: true
+      content: Handlebars.templates['templates/admin/box_sort_image_explanation_form'](@model.toJSON())
+      placement: 'top'
+    )
+    @delegateEvents()
+    $target.popover('show')
+    @$('textarea').focus()
 
   isEditState: =>
     @templateName == @formTemplate
@@ -60,6 +79,8 @@ class ChefStepsAdmin.Views.BoxSortImage extends ChefSteps.Views.TemplatedView
     switch event.keyCode
       when 27 # esc key
         @cancelEdit()
+      when 13 #enter key
+        @saveForm()
 
   deleteImage: (event) =>
     event.preventDefault()

@@ -1,21 +1,15 @@
 class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
   className: 'question'
 
-  templateName: 'question'
-
   events:
-    'change input': 'answerChanged'
     'click .btn-next': 'submitAnswer'
+
+  viewEvents: {}
 
   render: ->
     @$el.html(@renderTemplate())
+    @delegateEvents(_.extend(@viewEvents, @events))
     @
-
-  answerChanged: ->
-    if @answerSelected()
-      @showNext()
-    else
-      @hideNext()
 
   showNext: ->
     @_nextButton().fadeIn()
@@ -23,19 +17,8 @@ class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
   hideNext: ->
     @_nextButton().fadeOut()
 
-  selectedOption: ->
-    @$('input:checked')
-
-  answerSelected: ->
-    @selectedOption().length > 0
-
   answerData: ->
-    option = @selectedOption()
-    {
-      type: 'multiple_choice',
-      uid: option[0].id,
-      answer: option.val()
-    }
+    throw new Error('NotImplementedError')
 
   submitAnswer: ->
     answer = new ChefSteps.Models.Answer(question_id: @model.id)
@@ -49,3 +32,5 @@ class ChefSteps.Views.Question extends ChefSteps.Views.TemplatedView
 
   _nextButton: ->
     @$('.btn-next')
+
+

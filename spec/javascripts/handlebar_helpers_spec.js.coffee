@@ -9,6 +9,9 @@ describe 'Handlebars helpers', ->
       expect(block.fn.calls[0].args[0]).toEqual(a: 1, index: 0, count: 2)
       expect(block.fn.calls[1].args[0]).toEqual(b: 2, index: 1, count: 2)
 
+    it "returns an empty string if array is undefined", ->
+      expect(Handlebars.helpers.each_with_index null, null).toEqual('')
+
   describe '#question_width', ->
     it 'returns .span9 if answer count is modulo 3', ->
       expect(Handlebars.helpers.question_width(3*1)).toEqual('span9')

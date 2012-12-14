@@ -19,3 +19,11 @@
   -webkit-box-shadow: inset $horizontal-offset $vertical-offset $blur-distance $inset-distance $color
   -box-shadow: inset $horizontal-offset $vertical-offset $blur-distance $inset-distance $color
 
+=grayscale($gray: 0.7)
+  $grayScale : $gray * 100%
+  -webkit-filter: grayscale($grayScale)
+  -moz-filter: grayscale($grayScale)
+  -ms-filter: grayscale($grayScale)
+  -o-filter: grayscale($grayScale)
+  filter: grayscale($grayScale)
+
