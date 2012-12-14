@@ -47,11 +47,8 @@ class Question < ActiveRecord::Base
   end
 
   def average_correct
-    begin
+    return '-' if answer_count.zero?
     (correct_answer_count.to_f / answer_count * 100).to_i
-    rescue
-      '-'
-    end
   end
 
   def symbolize_question_type
