@@ -1,6 +1,6 @@
 .row.multiple-choice-results.bordered.bottom
   .span6
-    %span.count #{count} <i>of</i> #{quiz_results.count}
+    %span.count #{result[:order]} <i>of</i> #{quiz_results.count}
     %span.type Multiple choice question
     %h4= result[:question]
     %ol

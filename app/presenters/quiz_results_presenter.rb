@@ -9,13 +9,14 @@ class QuizResultsPresenter
       multiple_choice: [],
       box_sort: []
     }
-    @quiz.ordered_questions.each do |question|
+    @quiz.ordered_questions.each_with_index do |question, index|
       contents = question.contents
       answer = question.answer_for(@user)
       question_type = question.symbolize_question_type
       results[question_type] << {
         question: contents.question,
         question_type: question_type,
+        order: index+1,
         options: contents.options,
         correct: answer.correct,
         average_correct: question.average_correct

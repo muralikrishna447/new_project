@@ -32,6 +32,10 @@ describe QuizResultsPresenter do
       let(:question) { quiz.ordered_questions.first }
       let(:answer) { question.answer_for(user) }
 
+      it 'includes the question order' do
+        result[:order].should == 1
+      end
+
       it 'includes the question_type' do
         result[:question_type].should == :multiple_choice
       end
@@ -64,6 +68,10 @@ describe QuizResultsPresenter do
     context 'a true/false result' do
       let(:result) { results.last }
 
+      it 'includes the question order' do
+        result[:order].should == 3
+      end
+
       it "includes the true/false value for the user's answer if true false" do
         result[:answer].should == 'True'
       end
@@ -84,6 +92,10 @@ describe QuizResultsPresenter do
     context 'a box sort result' do
       let(:result) { results.first }
       let(:question) { quiz.ordered_questions[1] }
+
+      it 'includes the question order' do
+        result[:order].should == 2
+      end
 
       it "includes question options" do
         result[:options].should == question.contents.options
