@@ -1,34 +1,108 @@
 @import compass/css3/transition
 
-=authentication-nav
-  li.authentication
-    +font-serif-tiny
-    margin-top: 20px
-    border: none
-    padding: 9px 0px 10px
-    float: right
+=no-icons
+  i[class^="icon-"]
+    display: none
 
-    a
-      padding: 0 16px 0 19px
+.clearfix:after
+  content: ""
+  display: table
+  clear: both
+
+.enter-email
+  float: right
+  margin-top: 14px
+  margin-bottom: -11px
+
+.subscribe form
+  display: inline-block
+  margin-right: -22px
+  margin-bottom: 0px
+
+.global-navigation
+  +font-serif-large
+  color: $black
+  margin-top: 10px
+  margin-bottom: 7px
+  display: inline-block
+
+  .brand-container
+    display: inline-block
+    vertical-align: bottom
+    margin-left: 0px
+    margin-top: 0px
+    margin-bottom: 0px
+    float: none
+
+  .navbar
+    padding-left: 20px
+    display: inline-block
+    vertical-align: bottom
+    margin-bottom: 7px
+
+    .nav > li
+      float: none
+
+    li
+      margin-top: 0px
+      padding-top: 0px
       display: inline-block
+      padding-right: 40px
+      text-align: center
+      line-height: 19px
 
-    span
-      color: $grayMedium
+      &.last, &:last-child
+        padding-right: 0
 
-    &.first
-      clear: left
+    li > a
+      color: $brick
 
-    &.authorized
-      background: $grayLighter
-      a
-        padding: 0 14px 0 15px
+    li > a:hover
+      color: $brickDark
 
+  .social-group
+    display: inline-block
+    vertical-align: bottom
+    margin-bottom: -4px
+    ul
+      display: inline-block
+      li
+        display: inline-block
+        margin-top: 0px
+        padding-left: 0px
+        &:first-child
+          padding-left: 25px
+        list-style-type: none
+
+  .auth-group
+    display: inline-block
+    vertical-align: bottom
+    margin-top: 18px
+    margin-right: -20px
+
+    #authentication
+      display: inline-block
+      vertical-align: bottom
+
+      li.authentication
+        +no-icons
+        display: inline-block
+        vertical-align: bottom
+
+        list-style: none
+        margin-top: 0px
+        border: none
+        background: white
+
+        a
+          display: inline-block
+          +font-serif-small
+
+
+// This stuff applies to both the global nav bar and the sticky navbar
 .navbar
   margin-bottom: 0
   display: inline
-
-.navbar .brand
-  padding: 10px 0 0 0
 
 .navbar .navbar-inner
   background: white
@@ -40,6 +114,7 @@
 .navbar .nav
   float: none
   display: inline
+  +no-icons
 
 .navbar .nav > li > a
   color: $brick
@@ -49,84 +124,3 @@
 .navbar .nav > li.active > a
   background: none
   color: #111
-
-.subscribe form
-  margin-bottom: 8px
-  margin-top: 9px
-
-.brand-container
-  display: inline
-  float: left
-  margin-left: 18px
-
-.global-navigation
-  +font-serif-large
-  color: $black
-  margin-bottom: 0px
-  ul.nav
-    margin-top: 20px
-    padding-bottom: 5px
-    margin-bottom: 5px
-  li
-    margin: 8px 0 0 0
-    padding: 10px 30px
-    text-align: center
-    line-height: 19px
-
-    &.last, &:last-child
-      padding-right: 0
-
-  i[class^="icon-"]
-    display: none
-
-  li > a
-    color: $brick
-
-  li > a:hover
-    color: $brickDark
-
-  .profile-info
-    +transition-property(right)
-    +transition-duration(0.5s)
-    position: absolute
-    right: 0
-    bottom: 5px
-    background: $white
-    cursor: pointer
-    text-align: right
-    width: 300px
-
-    .text, img
-      display: inline-block
-
-    .text
-      padding: 0 2px 4px 0
-      vertical-align: bottom
-
-    span
-      +font-sans-tiny
-      line-height: 12px
-      color: $grayMedium
-      display: block
-      font-size: 12px
-      font-weight: 200
-      width: 250px
-
-    span.profile-name
-      +font-sans-medium
-      color: $grayDark
-      font-weight: 400
-      padding-bottom: 3px
-      line-height: 14px
-
-    span.profile-location
-      height: 12px
-      padding-top: 2px
-
-    img
-      width: 38px
-      height: 38px
-
-    &.active
-      right: 140px
-

@@ -126,8 +126,9 @@
     -# Content
     -# ==========================================================================
 
-    #main-container.container
-      = render 'layouts/header'
+    #main-container
+      .container
+        = render 'layouts/header'
       = render 'layouts/title_bar'
       = yield
       = render 'layouts/footer'

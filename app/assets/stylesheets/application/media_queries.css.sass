@@ -69,10 +69,11 @@
 @media (max-width: 767px)
   .global-navigation
     [class*="span"]
-      border-right: none
-      border-bottom: 1px solid $black
-      border-top: 1px solid $black
       width: 100%
+
+  .social-group
+    display: none
+
   .top-video
     padding: 0
 
@@ -238,12 +239,6 @@
       padding-right: 0
       float: none
 
-      &.authentication span
-        display: none
-
-      &.authentication.first
-        margin-top: 86px
-
     i[class^="icon-"]
       display: inline-block
 
@@ -318,6 +313,4 @@
         max-width: 145px
 
 /* Everything but portrait iphone*/
-@media (min-width: 480px)
-  +authentication-nav
-
+@media (max-width: 480px)

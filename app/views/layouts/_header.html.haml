@@ -1,17 +1,31 @@
 #header
-  .row.sign-in
-    .span6.pull-right
-      #authentication
+  - unless user_signed_in?
+    .row.enter-email
+      .span6.pull-right
+        .title-bar.pull-right.noprint
+          = render 'mailing_list/subscribe', orange: true
+
   .row.global-navigation
     .span12
       .brand-container
         %a.brand{href: root_url, target: '_top'}
           = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
+
       .navbar
-        .navbar-inner
-          %ul.nav.noprint
-            = render 'layouts/global_navigation'
-      - unless user_signed_in?
-        .title-bar.pull-right.noprint
-          = render 'mailing_list/subscribe', orange: true
+        %ul.nav.noprint
+          = render 'layouts/global_navigation'
+
+      .social-group.noprint
+        %ul
+          %li.social
+            %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
+          %li.social
+            %a.icon-twitter{ href: "http://twitter.com/@chefsteps" }
+          %li.social
+            %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
+          %li.social
+            %a.icon-google-plus{ href: "https://plus.google.com/106370441183974123730/posts" }
+
+      .auth-group.pull-right.noprint
+        #authentication
 
