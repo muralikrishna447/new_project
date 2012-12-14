@@ -22,15 +22,10 @@
       .span4.image-caption
         = image_data.first[:caption]
     .row
-      .span3
-        .sort-option{ data: {uid: 'ABCD'} }
-        %label I remember
-      .span3
-        .sort-option{ data: {uid: 'EFGH'} }
-        %label I'm not sure
-      .span3
-        .sort-option{ data: {uid: 'IJKL'} }
-        %label I don't remember
+      = hb 'each options' do
+        .span3
+          .sort-option{ data: {uid: hb('uid')} }
+          %label= hb('text')
 
     %a.btn.btn-primary.btn-next{href: '#'}
       %i.icon-double-chevron-right
