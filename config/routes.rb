@@ -43,7 +43,6 @@ Delve::Application.routes.draw do
   resources :quizzes, only: [:show] do
     member do
       get 'results' => 'quizzes#results'
-      get 'box-sort' => 'quizzes#box_sort'
       get ':token' => 'quizzes#show', as: 'private'
     end
   end

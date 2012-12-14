@@ -10,6 +10,10 @@ class BoxSortQuestionContents < OpenStruct
     self.marshal_dump
   end
 
+  def correct(answer_data)
+    true
+  end
+
   private
 
   def create_options

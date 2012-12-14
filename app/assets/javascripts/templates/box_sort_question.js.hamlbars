@@ -1,0 +1,23 @@
+.container.box-sort
+  .row
+    .span8
+      .instructions= hb!('instructions')
+
+  .hero-unit.span9
+    .row.images
+      .span3
+        .image-pile
+          = hb 'each images' do
+            %img.img-polaroid{ src: hb('url'), data: {'image-id' => hb('id'), caption: hb('caption')} }
+    .row
+      .span4.image-caption
+        = hb('first_caption images')
+    .row
+      = hb 'each options' do
+        .span3
+          .sort-option{ data: {uid: hb('uid')} }
+          %label= hb('text')
+
+    %a.btn.btn-primary.btn-next{href: '#'}
+      %i.icon-double-chevron-right
+

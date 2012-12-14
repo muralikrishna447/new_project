@@ -19,7 +19,7 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
 
   initialize: (options) =>
     ChefStepsAdmin.ViewEvents.on("editQuestion", @editQuestionEventHandler)
-    @optionViews = []
+    @optionViews = {}
     super(options)
 
   renderOptionViews: =>
@@ -38,6 +38,8 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
   filePickerOnSuccess: (fpFile) =>
     @model.destroyImage() if @model.get('image')
     @model.save(image: fpFile)
+    @model.snapshot()
+    @model.set(@formData())
     @render(@formTemplate)
 
   makeOptionsSortable: =>
@@ -47,19 +49,19 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
     ).disableSelection()
 
   initializeOptionViews: =>
-    @optionViews = []
+    @optionViews = {}
     @loadOptionViews()
 
   renderOptionView: (optionView) => @$('.options').append(optionView.render().$el)
 
   addOption: =>
     optionView = @addOptionView(@defaultOption)
-    @optionViews.push(optionView)
+    @optionViews[optionView.uid] = optionView
     @renderOptionView(optionView)
 
   addOptionView: (option) => new ChefStepsAdmin.Views.Option(option: option, questionView: @)
 
-  removeOptionView: (optionView) => @optionViews.remove(_.indexOf(@optionViews, optionView))
+  removeOptionView: (optionView) => delete @optionViews[optionView.uid]
 
   imageOptions:
     w: 580
@@ -72,7 +74,9 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
     templateJSON
 
   loadOptionViews: =>
-    _.each @model.get('options'), (option) => @optionViews.push(@addOptionView(option))
+    _.each @model.get('options'), (option) =>
+      optionView = @addOptionView(option)
+      @optionViews[optionView.uid] = optionView
 
   editQuestionEventHandler: (cid) =>
     if @model.cid == cid
@@ -85,14 +89,20 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
   triggerEditQuestion: =>
     ChefStepsAdmin.ViewEvents.trigger('editQuestion', @model.cid)
 
-  saveForm: =>
+  formData: =>
     data = @$('form').serializeObject()
     data = _.omit(data, ['answer', 'correct'])
-    data['options'] = _.map(@optionViews, (optionView) -> optionView.getFormData())
-    @model.save(data)
+    data['options'] = _.map @$('.options .option'), (optionEl) =>
+      @optionViews[$(optionEl).data('uid')].getFormData()
+    data
+
+  saveForm: =>
+    @model.save(@formData())
     @render()
 
-  cancelEdit: => @render()
+  cancelEdit: =>
+    @model.revert()
+    @render()
 
   isEditState: => @templateName == @formTemplate
 

@@ -9,7 +9,7 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
 
   routes:
     "/profiles/{id}:?query:": "showProfile"
-    "/quizzes/{id}": "startQuizApp"
+    "/quizzes/{id}/:token:": "startQuizApp"
     "/styleguide": "showStyleguide"
 
   showProfile: (id, query) =>

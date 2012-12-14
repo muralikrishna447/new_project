@@ -171,3 +171,38 @@ describe Quiz, '#completed_by?' do
     quiz.completed_by?(user).should be
   end
 end
+
+describe Quiz, "#started_count" do
+  let(:quiz) { Fabricate.build(:quiz) }
+  let(:question) { Fabricate.build(:multiple_choice_question) }
+
+  before do
+    question.stub(:answer_count).and_return(2)
+    quiz.stub_chain(:ordered_questions, :first).and_return(question)
+  end
+
+  subject { quiz.started_count }
+
+  it "returns number of people that have started the quiz" do
+    subject.should == 2
+  end
+
+end
+
+describe Quiz, "#completed_count" do
+  let(:quiz) { Fabricate.build(:quiz) }
+  let(:question) { Fabricate.build(:multiple_choice_question) }
+
+  before do
+    question.stub(:answer_count).and_return(5)
+    quiz.stub_chain(:ordered_questions, :last).and_return(question)
+  end
+
+  subject { quiz.completed_count}
+
+  it "returns number of people that have completed the quiz" do
+    subject.should == 5
+  end
+
+end
+

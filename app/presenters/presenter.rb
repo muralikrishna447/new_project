@@ -18,9 +18,13 @@ class Presenter
     HashWithIndifferentAccess.new(attributes)
   end
 
-  def self.present_collection(collection, *args)
+  def self.wrapped_collection(collection, *args)
     collection.map do |model|
       new(model, *args).wrapped_attributes
-    end.to_json
+    end
+  end
+
+  def self.present_collection(collection, *args)
+    wrapped_collection(collection, *args).to_json
   end
 end
