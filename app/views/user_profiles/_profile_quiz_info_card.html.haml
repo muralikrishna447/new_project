@@ -1,7 +1,8 @@
-%figure.img-polaroid
-  - if quiz.image?
-    %img{ src: quiz.image.url }
-  %figcaption
-    %h5= quiz.title
-    %span= "#{quiz.questions_remaining_for_count(current_user)} of #{quiz.question_count} #{"Question".pluralize(quiz.question_count)} Remaining"
+= link_to quiz_path(quiz) do
+  %figure.img-polaroid
+    - if quiz.image?
+      %img{ src: quiz.image.url }
+    %figcaption
+      %h5= quiz.title
+      %span= "#{quiz.questions_remaining_for_count(current_user)} of #{quiz.question_count} #{"Question".pluralize(quiz.question_count)} Remaining"
 
