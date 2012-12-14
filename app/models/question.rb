@@ -13,6 +13,16 @@ class Question < ActiveRecord::Base
 
   scope :ordered, rank(:question_order)
 
+  comma :report do
+    title
+    average_correct "Average"
+    answer_count "Answered"
+  end
+
+  def title
+    type
+  end
+
   def ordered_images
     images.ordered
   end

@@ -14,8 +14,8 @@ class Quiz < ActiveRecord::Base
 
   comma :report do
     title
-    started_count "Started"
-    completed_count "Completed"
+    started_count "Users Started"
+    completed_count "Users Completed"
     question_count "Questions"
   end
 
