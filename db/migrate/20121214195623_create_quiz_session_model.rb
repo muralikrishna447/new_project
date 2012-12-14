@@ -3,7 +3,7 @@ class CreateQuizSessionModel < ActiveRecord::Migration
     create_table :quiz_sessions do |t|
       t.integer :user_id, null: false
       t.integer :quiz_id, null: false
-      t.boolean :completed, null: false
+      t.boolean :completed, default: false
 
       t.timestamps
     end
