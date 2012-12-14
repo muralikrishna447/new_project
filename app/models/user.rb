@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
 
   CHEF_TYPES = %w[professional_chef culinary_student home_cook novice other]
 
+  has_many :quizzes, class_name: QuizSession, dependent: :destroy, inverse_of: :user
+
   gravtastic
 
   devise :database_authenticatable, :registerable,
@@ -17,6 +19,7 @@ class User < ActiveRecord::Base
 
   validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
 
+
   def admin?
     false
   end
@@ -24,5 +27,10 @@ class User < ActiveRecord::Base
   def profile_complete?
     chef_type.present?
   end
+
+  def quizzes_in_progress
+
+  end
+
 end
 
