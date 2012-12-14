@@ -1,5 +1,5 @@
 .span4
-  %img.key-image{src: image[:url], class: (correct ? 'correct' : 'incorrect')}
+  %img.key-image{src: image[:url], class: image[:display_class]}
   .key-image-information
     %span This is a key image, because:
     %p= image[:key_explanation]

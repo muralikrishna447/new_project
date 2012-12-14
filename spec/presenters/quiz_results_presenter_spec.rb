@@ -94,7 +94,7 @@ describe QuizResultsPresenter do
       let(:question) { quiz.ordered_questions[1] }
 
       before do
-        ImagePresenter.stub(:wrapped_collection) { ['image'] }
+        ImagePresenter.stub(:wrapped_collection) { [{id: 1}] }
       end
 
       it 'includes the question order' do
@@ -112,6 +112,7 @@ describe QuizResultsPresenter do
       it "includes key images" do
         question.should_receive(:key_images)
         result[:key_images].should have(1).image
+        result[:key_images].first.should == {id: 1, display_class: 'correct'}
       end
     end
   end

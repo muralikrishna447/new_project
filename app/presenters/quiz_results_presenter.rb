@@ -36,7 +36,12 @@ class QuizResultsPresenter
   end
 
   def box_sort_results(question, answer)
-    key_images = ImagePresenter.wrapped_collection(question.key_images)
+    answers = answer.contents.answers
+    key_images = ImagePresenter.wrapped_collection(question.key_images).map do |image|
+      answer_for_image = answers.find { |a| a[:id] == image[:id] }
+      image[:display_class] = question.contents.key_image_display_class(answer_for_image[:optionUid])
+      image
+    end
     {
       key_images: key_images
     }
