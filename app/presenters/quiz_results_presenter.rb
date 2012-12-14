@@ -5,11 +5,15 @@ class QuizResultsPresenter
   end
 
   def present
-    @quiz.ordered_questions.map do |question|
+    results = {
+      multiple_choice: [],
+      box_sort: []
+    }
+    @quiz.ordered_questions.each do |question|
       contents = question.contents
       answer = question.answer_for(@user)
       question_type = question.symbolize_question_type
-      {
+      results[question_type] << {
         question: contents.question,
         question_type: question_type,
         options: contents.options,
@@ -17,6 +21,7 @@ class QuizResultsPresenter
         average_correct: question.average_correct
       }.merge(send("#{question_type}_results", contents, answer))
     end
+    results
   end
 
   private

@@ -11,6 +11,6 @@
     .center
       Students Avg. Score:
 
-- multiple_choice_results.each_with_index do |result, index|
+- results.each_with_index do |result, index|
   = render 'quizzes/multiple_choice_question_result', result: result, count: index + 1
 

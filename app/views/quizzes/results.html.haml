@@ -7,6 +7,6 @@
         %h3 Your Results for #{quiz.title}
 
 #quiz-results.container
-  = render 'quizzes/box_sort_question_result'
-  = render 'quizzes/multiple_choice_question_results', multiple_choice_results: quiz_results
+  = render 'quizzes/multiple_choice_question_results', results: quiz_results[:multiple_choice]
+  = render 'quizzes/box_sort_question_results', results: quiz_results[:box_sort]
 

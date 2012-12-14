@@ -8,10 +8,6 @@ describe QuizResultsPresenter do
 
   subject { QuizResultsPresenter.new(quiz, user).present }
 
-  it 'presents one entry per quiz question' do
-    should have(3).results
-  end
-
   it 'uses ordered questions' do
     quiz.should_receive(:ordered_questions)
     subject
@@ -24,58 +20,74 @@ describe QuizResultsPresenter do
     subject
   end
 
-  context 'a multiple choice result' do
-    let(:result) { subject.first }
-    let(:question) { quiz.ordered_questions.first }
-    let(:answer) { question.answer_for(user) }
+  context 'multiple choice results' do
+    let(:results) { subject[:multiple_choice] }
 
-    it 'includes the question_type' do
-      result[:question_type].should == :multiple_choice
+    it 'presents one entry per multiple choice quiz question' do
+      results.should have(2).results
     end
 
-    it 'includes the question' do
-      result[:question].should == question.contents.question
+    context 'a multiple choice result' do
+      let(:result) { results.first }
+      let(:question) { quiz.ordered_questions.first }
+      let(:answer) { question.answer_for(user) }
+
+      it 'includes the question_type' do
+        result[:question_type].should == :multiple_choice
+      end
+
+      it 'includes the question' do
+        result[:question].should == question.contents.question
+      end
+
+      it 'includes the options' do
+        result[:options].should == question.contents.options
+      end
+
+      it 'includes correct flag' do
+        result[:correct].should == false
+      end
+
+      it 'includes the average_correct' do
+        result[:average_correct].should == 86
+      end
+
+      it "includes the letter for the user's answer if multiple choice" do
+        result[:answer].should == 'a'
+      end
+
+      it "includes the letter for the correct answer if multiple choice" do
+        result[:correct_answer].should == 'a'
+      end
     end
 
-    it 'includes the options' do
-      result[:options].should == question.contents.options
-    end
+    context 'a true/false result' do
+      let(:result) { results.last }
 
-    it 'includes correct flag' do
-      result[:correct].should == false
-    end
+      it "includes the true/false value for the user's answer if true false" do
+        result[:answer].should == 'True'
+      end
 
-    it 'includes the average_correct' do
-      result[:average_correct].should == 86
-    end
-
-    it "includes the letter for the user's answer if multiple choice" do
-      result[:answer].should == 'a'
-    end
-
-    it "includes the letter for the correct answer if multiple choice" do
-      result[:correct_answer].should == 'a'
+      it "includes the true/false value for the correct answer if true false" do
+        result[:correct_answer].should == 'True'
+      end
     end
   end
 
-  context 'a true/false result' do
-    let(:result) { subject.last }
+  context 'box sort results' do
+    let(:results) { subject[:box_sort] }
 
-    it "includes the true/false value for the user's answer if true false" do
-      result[:answer].should == 'True'
+    it 'presents one entry per multiple box sort question' do
+      results.should have(1).result
     end
 
-    it "includes the true/false value for the correct answer if true false" do
-      result[:correct_answer].should == 'True'
-    end
-  end
+    context 'a box sort result' do
+      let(:result) { results.first }
+      let(:question) { quiz.ordered_questions[1] }
 
-  context 'a box sort result' do
-    let(:result) { subject[1] }
-    let(:question) { quiz.ordered_questions[1] }
-
-    it "includes question options" do
-      result[:options].should == question.contents.options
+      it "includes question options" do
+        result[:options].should == question.contents.options
+      end
     end
   end
 
