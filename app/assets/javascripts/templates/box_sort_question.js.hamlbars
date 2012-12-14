@@ -20,7 +20,7 @@
             %img.img-polaroid{ src: hb('url'), data: {'image-id' => hb('id'), caption: hb('caption')} }
     .row
       .span4.image-caption
-        = image_data.first[:caption]
+        = hb('first_caption images')
     .row
       = hb 'each options' do
         .span3
