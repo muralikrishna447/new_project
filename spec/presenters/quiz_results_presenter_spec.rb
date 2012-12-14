@@ -97,6 +97,10 @@ describe QuizResultsPresenter do
         result[:order].should == 2
       end
 
+      it "includes question instructions" do
+        result[:instructions].should == question.contents.instructions
+      end
+
       it "includes question options" do
         result[:options].should == question.contents.options
       end

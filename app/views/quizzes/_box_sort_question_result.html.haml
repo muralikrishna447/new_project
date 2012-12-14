@@ -2,7 +2,7 @@
   .span12
     %span.count #{result[:order]} <i>of</i> #{quiz_results.count}
     %span.type Memorable snapshots
-    %h4 [Instructions]
+    %h4!= result[:instructions]
 .row.box-sort-result
   .span12
     .swatch.correct

@@ -15,6 +15,7 @@ class QuizResultsPresenter
       question_type = question.symbolize_question_type
       results[question_type] << {
         question: contents.question,
+        instructions: contents.instructions,
         question_type: question_type,
         order: index+1,
         options: contents.options,
