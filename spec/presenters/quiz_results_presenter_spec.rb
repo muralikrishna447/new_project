@@ -2,9 +2,11 @@ require 'spec_helper'
 
 describe QuizResultsPresenter do
   let(:quiz) do
-    stub(ordered_questions: 3.times.map { |i|
-      i == 2 ? build_tf_question : build_mc_question
-    })
+    stub(ordered_questions: [
+      build_mc_question,
+      build_mc_question,
+      build_tf_question
+    ])
   end
   let(:user) { stub }
 
@@ -26,46 +28,49 @@ describe QuizResultsPresenter do
     subject
   end
 
-  context 'the presented result' do
-    let(:mc_result) { subject.first }
-    let(:tf_result) { subject.last }
+  context 'a multiple choice result' do
+    let(:result) { subject.first }
     let(:question) { quiz.ordered_questions.first }
     let(:answer) { question.answer_for(user) }
 
     it 'includes the question_type' do
-      mc_result[:question_type].should == :multiple_choice
+      result[:question_type].should == :multiple_choice
     end
 
     it 'includes the question' do
-      mc_result[:question].should == question.contents.question
+      result[:question].should == question.contents.question
     end
 
     it 'includes the options' do
-      mc_result[:options].should == question.contents.options
+      result[:options].should == question.contents.options
     end
 
     it 'includes correct flag' do
-      mc_result[:correct].should == false
+      result[:correct].should == false
     end
 
     it 'includes the average_correct' do
-      mc_result[:average_correct].should == 86
+      result[:average_correct].should == 86
     end
 
     it "includes the letter for the user's answer if multiple choice" do
-      mc_result[:answer].should == 'a'
-    end
-
-    it "includes the true/false value for the user's answer if true false" do
-      tf_result[:answer].should == 'True'
+      result[:answer].should == 'a'
     end
 
     it "includes the letter for the correct answer if multiple choice" do
-      mc_result[:correct_answer].should == 'a'
+      result[:correct_answer].should == 'a'
+    end
+  end
+
+  context 'a true/false result' do
+    let(:result) { subject.last }
+
+    it "includes the true/false value for the user's answer if true false" do
+      result[:answer].should == 'True'
     end
 
     it "includes the true/false value for the correct answer if true false" do
-      tf_result[:correct_answer].should == 'True'
+      result[:correct_answer].should == 'True'
     end
   end
 
