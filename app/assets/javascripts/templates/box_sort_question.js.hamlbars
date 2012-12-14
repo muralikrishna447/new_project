@@ -1,12 +1,3 @@
-:ruby
-  image_data = 10.times.map do |i|
-    {
-      image_id: i+1,
-      src: "http://lorempixel.com/270/152/food/#{i+1}/Picture #{i+1}",
-      caption: "The caption for image number #{i+1}"
-    }
-  end
-
 .container.box-sort
   .row
     .span8
