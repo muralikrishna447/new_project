@@ -12,6 +12,13 @@ class Quiz < ActiveRecord::Base
   attr_accessible :title, :activity_id, :start_copy, :end_copy, :image_attributes
   accepts_nested_attributes_for :image, allow_destroy: true
 
+  comma :report do
+    title
+    started_count "Users Started"
+    completed_count "Users Completed"
+    question_count "Questions"
+  end
+
   def add_question(question_type)
     question = question_class_from_type(question_type).create
     questions << question
@@ -56,6 +63,14 @@ class Quiz < ActiveRecord::Base
 
   def completed_by?(user)
     questions_remaining_for_count(user) == 0
+  end
+
+  def started_count
+    ordered_questions.first.answer_count
+  end
+
+  def completed_count
+    ordered_questions.last.answer_count
   end
 
   private

@@ -73,6 +73,11 @@ describe Question, '#average_correct' do
     question.stub(:answer_count) { 40 }
     question.average_correct.should == 75
   end
+
+  it "returns '-' if no one has answered the question" do
+    question.stub(:answer_count) { 0 }
+    question.average_correct.should == '-'
+  end
 end
 
 describe Question, "symbolize_question_type" do
@@ -83,3 +88,4 @@ describe Question, "symbolize_question_type" do
     question.symbolize_question_type.should == :foo_bar_baz
   end
 end
+
