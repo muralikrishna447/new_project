@@ -60,7 +60,7 @@ describe QuestionPresenter, "#present" do
 
   context "with many images" do
     before do
-      ImagePresenter.stub(:present_collection).and_return(['imgA attrs', 'imgB attrs'])
+      ImagePresenter.stub(:wrapped_collection).and_return(['imgA attrs', 'imgB attrs'])
       question.stub(:images).and_return(true)
     end
 

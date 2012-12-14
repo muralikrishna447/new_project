@@ -6,13 +6,6 @@ describe 'ChefSteps.Views.Quiz', ->
 
     @questions = jasmine.createSpyObj('collection', ['first', 'on'])
 
-    @questionView =
-      $el: $('.contents')
-      render: ->
-
-    spyOn(@questionView, 'render').andReturn(@questionView)
-    spyOn(ChefSteps.Views, 'Question').andReturn(@questionView)
-
     @view = new ChefSteps.Views.Quiz
       el: '#quiz-container'
       collection: @questions
@@ -39,13 +32,20 @@ describe 'ChefSteps.Views.Quiz', ->
       expect(@view.loadNextQuestion).toHaveBeenCalledWith('q1')
 
   describe '#loadNextQuestion', ->
+    beforeEach ->
+      @questionView =
+        $el: $('.contents')
+        render: ->
+      spyOn(@questionView, 'render').andReturn(@questionView)
+      spyOn(@view, 'newQuestionView').andReturn(@questionView)
+
     it 'hides contents', ->
       @view.loadNextQuestion('model')
       expect($('.contents')).not.toBeVisible()
 
     it 'creates a question view for current question', ->
       @view.loadNextQuestion('model')
-      expect(ChefSteps.Views.Question).toHaveBeenCalledWith(model: 'model')
+      expect(@view.newQuestionView).toHaveBeenCalledWith('model')
 
     it 'renders question view', ->
       @view.loadNextQuestion('model')
@@ -55,3 +55,22 @@ describe 'ChefSteps.Views.Quiz', ->
       spyOn(@view, 'quizComplete')
       @view.loadNextQuestion(undefined)
       expect(@view.quizComplete).toHaveBeenCalled()
+
+  describe '#newQuestionView', ->
+    beforeEach ->
+      @fakeModel = {
+        get: ->
+          @questionType
+      }
+      spyOn(ChefSteps.Views, 'MultipleChoiceQuestion')
+      spyOn(ChefSteps.Views, 'BoxSortQuestion')
+
+    it "returns new MultipleChoiceQuestion if type is 'multiple_choice'", ->
+      @fakeModel.questionType = 'multiple_choice'
+      @view.newQuestionView(@fakeModel)
+      expect(ChefSteps.Views.MultipleChoiceQuestion).toHaveBeenCalled()
+
+    it "returns BoxSortQuestion if type is 'box_sort'", ->
+      @fakeModel.questionType = 'box_sort'
+      @view.newQuestionView(@fakeModel)
+      expect(ChefSteps.Views.BoxSortQuestion).toHaveBeenCalled()
