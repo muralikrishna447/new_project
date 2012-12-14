@@ -13,6 +13,16 @@ class Question < ActiveRecord::Base
 
   scope :ordered, rank(:question_order)
 
+  comma :report do
+    title
+    average_correct "Average"
+    answer_count "Answered"
+  end
+
+  def title
+    type
+  end
+
   def ordered_images
     images.ordered
   end
@@ -37,6 +47,7 @@ class Question < ActiveRecord::Base
   end
 
   def average_correct
+    return '-' if answer_count.zero?
     (correct_answer_count.to_f / answer_count * 100).to_i
   end
 

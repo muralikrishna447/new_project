@@ -32,3 +32,4 @@ class QuizResultsPresenter
     {}
   end
 end
+

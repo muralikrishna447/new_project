@@ -8,5 +8,9 @@ class MultipleChoiceQuestion < Question
     update_contents(params)
     save!
   end
+
+  def title
+    contents.question.present? ? contents.question : 'N/A'
+  end
 end
 
