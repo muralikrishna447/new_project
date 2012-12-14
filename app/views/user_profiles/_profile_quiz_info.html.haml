@@ -1,10 +1,7 @@
 .row
-  .span2.info-box
-    %span.count 03
-    %span Courses
   .span2.info-box.active
-    %span.count 03
-    %span Courses
+    %span.count= quiz_count
+    %span= "Course".pluralize(quiz_count)
 
 .row
   .span8.info-set
@@ -13,14 +10,9 @@
         %span.section-label
           %i.icon-trophy
           Quizzes In Progress
-    .row
-      .span4
-        = render 'profile_quiz_info_card'
-      .span4
-        = render 'profile_quiz_info_card'
-    .row
-      .span4
-        = render 'profile_quiz_info_card'
-      .span4
-        = render 'profile_quiz_info_card'
+    - started_quizzes.in_groups_of(2, false) do |quizzes|
+      .row
+        - quizzes.each do |quiz|
+          .span4
+            = render 'profile_quiz_info_card', quiz: quiz
 

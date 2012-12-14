@@ -11,12 +11,15 @@ class QuizzesController < ApplicationController
   end
 
   def start
-    QuizSession.find_or_create_by_quiz_id_and_user_id(params[:id], params[:user_id])
+    quiz = Quiz.find(params[:id])
+    session = QuizSession.find_or_create_by_quiz_id_and_user_id(quiz.id, params[:user_id])
+    session.update_attributes(completed: false)
     render json: {'success' => true}, status: :ok
   end
 
   def finish
-    session = QuizSession.find_or_create_by_quiz_id_and_user_id(params[:id], params[:user_id])
+    quiz = Quiz.find(params[:id])
+    session = QuizSession.find_or_create_by_quiz_id_and_user_id(quiz.id, params[:user_id])
     session.update_attributes(completed: true)
     render json: {'success' => true}, status: :ok
   end

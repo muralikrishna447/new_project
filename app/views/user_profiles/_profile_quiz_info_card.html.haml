@@ -1,6 +1,7 @@
 %figure.img-polaroid
-  %img{src: 'http://lorempixel.com/400/200/food/' }
+  - if quiz.image?
+    %img{ src: quiz.image.url }
   %figcaption
-    %h5 Quiz Title
-    %span Some stats
+    %h5= quiz.title
+    %span= "#{quiz.questions_remaining_for_count(current_user)} of #{quiz.question_count} Questions Remaining"
 

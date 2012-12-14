@@ -5,6 +5,10 @@ module Imageable
     has_one :image, as: :imageable
   end
 
+  def image?
+    image.present?
+  end
+
   def update_image(image_params)
     unless image_params.present?
       self.image.destroy if self.image.present?
