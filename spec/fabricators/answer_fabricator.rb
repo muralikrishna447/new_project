@@ -9,3 +9,9 @@ Fabricator :true_false_answer, from: MultipleChoiceAnswer do
   user { Fabricate(:user) }
   contents { Fabricate(:true_false_answer_contents) }
 end
+
+Fabricator :box_sort_answer, from: BoxSortAnswer do
+  question { Fabricate(:box_sort_question) }
+  user { Fabricate(:user) }
+  contents { Fabricate(:box_sort_answer_contents) }
+end

@@ -2,11 +2,7 @@ require 'spec_helper'
 
 describe QuizResultsPresenter do
   let(:quiz) do
-    stub(ordered_questions: [
-      build_mc_question,
-      build_mc_question,
-      build_tf_question
-    ])
+    stub(ordered_questions: [build_mc_question, build_bs_question, build_tf_question])
   end
   let(:user) { stub }
 
@@ -74,17 +70,32 @@ describe QuizResultsPresenter do
     end
   end
 
+  context 'a box sort result' do
+    let(:result) { subject[1] }
+    let(:question) { quiz.ordered_questions[1] }
+
+    it "includes question options" do
+      result[:options].should == question.contents.options
+    end
+  end
+
   def build_mc_question
     Fabricate.build(:multiple_choice_question).tap do |q|
-      q.stub(:answer_for).with(user) { Fabricate.build(:multiple_choice_answer) }
+      q.stub(:answer_for).with(user) { Fabricate.build(:multiple_choice_answer, question: q) }
       q.stub(:average_correct) { 86 }
     end
   end
 
   def build_tf_question
     Fabricate.build(:true_false_question).tap do |q|
-      q.stub(:answer_for).with(user) { Fabricate.build(:true_false_answer) }
+      q.stub(:answer_for).with(user) { Fabricate.build(:true_false_answer, question: q) }
       q.stub(:average_correct) { 86 }
+    end
+  end
+
+  def build_bs_question
+    Fabricate.build(:box_sort_question).tap do |q|
+      q.stub(:answer_for).with(user) { Fabricate.build(:box_sort_answer, question: q) }
     end
   end
 end
