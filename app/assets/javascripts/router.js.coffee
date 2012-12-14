@@ -37,7 +37,9 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
       collection: questions
       navHider: navHider
       quizCompletionPath: "/quizzes/#{id}/results"
+      quizId: id
 
   showStyleguide: =>
     _.each $('[data-behavior~=progress-dial]'), (input)->
       new ChefSteps.Views.ProgressDial(el: input, noAdjustSize: true)
+

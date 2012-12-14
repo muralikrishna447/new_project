@@ -28,9 +28,5 @@ class User < ActiveRecord::Base
     chef_type.present?
   end
 
-  def quizzes_in_progress
-
-  end
-
 end
 
