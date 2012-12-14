@@ -16,8 +16,8 @@
     .row.images
       .span3
         .image-pile
-          - image_data.each do |image|
-            = image_tag image[:src], class: 'img-polaroid', data: {'image-id' => image[:image_id], caption: image[:caption]}
+          = hb 'each images' do
+            %img.img-polaroid{ src: hb('url'), data: {'image-id' => hb('id'), caption: hb('caption')} }
     .row
       .span4.image-caption
         = image_data.first[:caption]
