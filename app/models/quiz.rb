@@ -9,6 +9,8 @@ class Quiz < ActiveRecord::Base
 
   has_many :questions
 
+  has_many :quiz_sessions, dependent: :destroy, inverse_of: :quiz
+
   attr_accessible :title, :activity_id, :start_copy, :end_copy, :image_attributes
   accepts_nested_attributes_for :image, allow_destroy: true
 

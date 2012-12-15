@@ -14,4 +14,6 @@
     - if is_current_user?(user)
       .span8.pull-left.user-profile-intro
         = render partial: 'profile_intro', user: user
+    .span8.pull-left.user-profile-info
+      = render partial: 'profile_quiz_info', user: user
 

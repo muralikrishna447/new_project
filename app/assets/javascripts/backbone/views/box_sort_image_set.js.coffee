@@ -6,7 +6,9 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
     @$dropTargets = @$('.sort-option')
     @$caption = @$('.image-caption')
 
-    @createDraggable()
+    waitForLayout = =>
+      @createDraggable()
+    setTimeout(waitForLayout, 1)
     @createDroppables()
 
   handleDrop: (event, ui)=>
@@ -70,14 +72,20 @@ class ChefSteps.Views.BoxSortImageSet extends Backbone.View
       @$caption.text(@nextImage().data('caption')).fadeIn('fast')
 
   createDraggable: =>
+    image = @nextImage()[0]
     @nextImage().draggable
       containment: '#quiz-container'
+      cursor: 'pointer'
       revert: 'invalid'
       helper: @dragHelper
       opacity: 0.6
       zIndex: 10000
       start: @handleDragStart
       stop: @handleStop
+      cursorAt: {
+        left: Math.floor(image.clientWidth / 4),
+        top: Math.floor(image.clientHeight / 4)
+      }
 
   createDroppables: =>
     @$dropTargets.droppable

@@ -5,6 +5,7 @@ feature 'user authentication', :js do
 
   scenario "creates a user when valid inputs are supplied and takes user to edit profile page" do
     visit '/'
+    page.should have_content('Shop')
     click_link('Sign up')
 
     wait_until { page.find("#sign-up").visible? }
@@ -43,6 +44,7 @@ feature 'user authentication', :js do
     fill_in 'Email', with: 'bob@bob.com'
     click_button 'Send Instructions'
 
+    wait_until { page.find('.notice').visible? }
     page.should have_content('Please check your email')
     ActionMailer::Base.deliveries.count.should == 1
 
@@ -61,8 +63,6 @@ feature 'user authentication', :js do
     login_user
 
     page.should have_content('Bob Tester')
-
-    find('.profile-info').click
 
     click_link 'Log out'
 

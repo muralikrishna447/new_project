@@ -4,7 +4,7 @@ class ChefSteps.Views.BoxSortQuestion extends ChefSteps.Views.Question
   initialize: (options)->
     @collection = new ChefSteps.Collections.BoxSortAnswers()
 
-  render: ->
+  render: =>
     super
     new ChefSteps.Views.BoxSortImageSet
       el: @$el
@@ -18,3 +18,4 @@ class ChefSteps.Views.BoxSortQuestion extends ChefSteps.Views.Question
       type: 'box_sort',
       answers: @collection.toJSON()
     }
+

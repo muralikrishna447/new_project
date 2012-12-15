@@ -111,6 +111,8 @@
     -# :javascript
       try{Typekit.load();}catch(e){}
 
+    %link{href: 'http://fonts.googleapis.com/css?family=EB+Garamond', rel: 'stylesheet', type: 'text/css'}
+
     -# Modernizr
 
     -# %script{:src => "/js/libs/modernizr.custom.js"}
@@ -125,7 +127,8 @@
     -# ==========================================================================
 
     #main-container
-      = render 'layouts/header'
+      .container
+        = render 'layouts/header', { :external => false }
       = render 'layouts/title_bar'
       = yield
       = render 'layouts/footer'
