@@ -10,6 +10,20 @@ class QuizzesController < ApplicationController
   def results
   end
 
+  def start
+    quiz = Quiz.find(params[:id])
+    session = QuizSession.find_or_create_by_quiz_id_and_user_id(quiz.id, params[:user_id])
+    session.update_attributes(completed: false)
+    render json: {'success' => true}, status: :ok
+  end
+
+  def finish
+    quiz = Quiz.find(params[:id])
+    session = QuizSession.find_or_create_by_quiz_id_and_user_id(quiz.id, params[:user_id])
+    session.update_attributes(completed: true)
+    render json: {'success' => true}, status: :ok
+  end
+
   private
 
   def redirect_to_results

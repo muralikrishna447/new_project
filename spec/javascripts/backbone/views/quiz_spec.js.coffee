@@ -23,10 +23,14 @@ describe 'ChefSteps.Views.Quiz', ->
     beforeEach ->
       @questions.first = -> 'q1'
       spyOn(@view, 'loadNextQuestion')
+      spyOn(@view, 'postStart')
       @view.startQuiz()
 
     it 'hides navigation', ->
       expect(@navHiderSpy.hide).toHaveBeenCalled()
+
+    it "starts posts quiz start", ->
+      expect(@view.postStart).toHaveBeenCalled()
 
     it 'loads first question', ->
       expect(@view.loadNextQuestion).toHaveBeenCalledWith('q1')

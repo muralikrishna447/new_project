@@ -26,6 +26,8 @@ Delve::Application.routes.draw do
   get 'legal/privacy' => 'copy#legal', as: 'privacy'
   get 'legal/licensing' => 'copy#legal', as: 'licensing'
 
+  resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
+
   resources :user_profiles, only: [:show, :update], path: 'profiles'
 
   resources :courses, only: [:show]
@@ -42,6 +44,8 @@ Delve::Application.routes.draw do
 
   resources :quizzes, only: [:show] do
     member do
+      post 'start' => 'quizzes#start'
+      post 'finish' => 'quizzes#finish'
       get 'results' => 'quizzes#results'
       get ':token' => 'quizzes#show', as: 'private'
     end
