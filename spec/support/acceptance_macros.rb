@@ -5,12 +5,10 @@ module AcceptanceMacros
     visit '/'
     click_link('Log in')
 
-    wait_until { page.find("#log-in").visible? }
 
     fill_in 'Email', with: 'bob@bob.com'
     fill_in 'Password', with: 'password'
     click_button 'Log In'
 
-    wait_until { page.find(".profile-info").visible? }
   end
 end
