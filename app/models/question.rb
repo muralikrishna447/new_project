@@ -70,5 +70,10 @@ class Question < ActiveRecord::Base
       false
     end
   end
+
+  def update_order(position)
+    type = self.type
+    self.becomes(Question).update_attributes({question_order_position: position, type: type}, without_protection: true)
+  end
 end
 
