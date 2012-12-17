@@ -161,12 +161,19 @@ describe Quiz, '#completed_by?' do
   let(:user) { stub }
   let(:quiz) { Fabricate(:quiz) }
 
+  it 'returns false if quiz has no questions' do
+    quiz.stub(:question_count) { 0 }
+    quiz.completed_by?(user).should_not be
+  end
+
   it 'returns false if user has not answered all questions' do
+    quiz.stub(:question_count) { 11 }
     quiz.should_receive(:questions_remaining_for_count).with(user) { 10 }
     quiz.completed_by?(user).should_not be
   end
 
   it 'returns true if user has answered all questions' do
+    quiz.stub(:question_count) { 11 }
     quiz.should_receive(:questions_remaining_for_count).with(user) { 0 }
     quiz.completed_by?(user).should be
   end

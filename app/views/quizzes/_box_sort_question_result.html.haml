@@ -1,0 +1,18 @@
+.row.box-sort-result
+  .span12
+    %span.type Question
+    %span.count #{result[:order]} <i>of</i> #{quiz_results.count}
+    %h4!= result[:instructions]
+.row.box-sort-result
+  .span12
+    .swatch.correct
+    %span.option-label= result[:options][0][:text]
+    .swatch.ambivalent
+    %span.option-label= result[:options][1][:text]
+    .swatch.incorrect
+    %span.option-label= result[:options][2][:text]
+
+.row.box-sort-result
+  - result[:key_images].each do |image|
+    = render 'quizzes/box_sort_question_key_image', image: image
+

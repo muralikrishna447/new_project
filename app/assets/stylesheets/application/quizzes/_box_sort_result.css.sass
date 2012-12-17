@@ -1,0 +1,43 @@
+.box-sort-result
+  margin-top: 20px
+  .swatch
+    float: left
+    $swatchSize: 15px
+    height: $swatchSize
+    width: $swatchSize
+    display: inline-block
+    margin-top: 2px
+    margin-right: 10px
+    &.correct
+      background: $green
+    &.incorrect
+      background: $red
+    &.ambivalent
+      background: $grayMedium
+
+  .option-label
+    float: left
+    +font-serif-small
+    margin-right: 20px
+
+  img.key-image
+    height: 250px
+    border: 5px solid transparent
+    width: 100%
+    &.correct
+      border-color: $green
+    &.incorrect
+      border-color: $red
+    &.ambivalent
+      border-color: $grayMedium
+
+  .key-image-information
+    padding: 20px 10px
+    width: 100%
+    span
+      float: left
+      +font-serif-small
+      color: $grayMedium
+    p
+      +font-serif-medium
+
