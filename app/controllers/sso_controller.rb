@@ -3,8 +3,8 @@ require "js_connect"
 class SsoController < ApplicationController
   def index
     # 1. Get your client ID and secret here. These must match those in your jsConnect settings.
-    client_id = "1754811973"
-    secret = "876323e28a13929fd0432ac28a5a7a03"
+    client_id = "1924714588"
+    secret = "7ba99d277305511571d4b0ef843daa4c"
 
  
     # 3. Fill in the user information in a way that Vanilla can understand.
