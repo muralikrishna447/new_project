@@ -3,19 +3,19 @@
     .span8
       .instructions= hb!('instructions')
 
-  %div{ class: "hero-unit #{hb('question_width count')}" }
+  .hero-unit.span9
     = hb('if image') do
       .row
         .span6.question-image
           %img.img-polaroid{ src: hb('image.url') }
     .row
-      %div{ class: hb('question_width count') }
+      .span9
         .question-label QUESTION:
     .row
-      %div{ class: hb('question_width count') }
+      .span9
         .question-text= hb('question')
     .row
-      %div{ class: hb('question_width count') }
+      .span9
         .question-label YOUR ANSWER:
     .row
       = hb 'each_with_index options' do

@@ -8,17 +8,11 @@ Handlebars.registerHelper 'each_with_index', (array, block) ->
     buffer += block.fn(item)
   buffer
 
-Handlebars.registerHelper 'question_width', (count)->
-  if count % 3 == 0
-    'span9'
-  else
-    'span10'
-
 Handlebars.registerHelper 'option_width', (count)->
   if count % 3 == 0
     'span3'
   else
-    'span5'
+    'span3 offset1'
 
 Handlebars.registerHelper 'upload_image_button', (id = '') ->
   uploadButton =
