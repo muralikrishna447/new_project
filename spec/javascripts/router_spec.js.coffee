@@ -46,3 +46,15 @@ describe 'ChefSteps.Router', ->
       it "creates view with newUser defined", ->
         @router.showProfile('123', new_user: '1')
         expect(ChefSteps.Views.Profile.mostRecentCall.args[0].newUser).toEqual('1')
+
+  describe "#startQuizApp", ->
+    beforeEach ->
+      spyOn(ChefSteps.Views, 'Quiz')
+
+    it 'passes completion path to quiz view', ->
+      @router.startQuizApp('123')
+      expect(ChefSteps.Views.Quiz.mostRecentCall.args[0].quizCompletionPath).toEqual('/quizzes/123/results')
+
+    it 'passes completion path with token to quiz view if token provided', ->
+      @router.startQuizApp('123', token: 'ABC')
+      expect(ChefSteps.Views.Quiz.mostRecentCall.args[0].quizCompletionPath).toEqual('/quizzes/123/results?token=ABC')

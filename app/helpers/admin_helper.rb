@@ -43,7 +43,7 @@ module AdminHelper
     if model.published?
       link_to text || 'public link', send("#{model_name}_path", model), target: '_blank'
     else
-      link_to text || 'private link', send("private_#{model_name}_path", model, PrivateToken.token), target: '_blank'
+      link_to text || 'private link', send("#{model_name}_path", model, token: PrivateToken.token), target: '_blank'
     end
   end
 end
