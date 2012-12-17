@@ -40,7 +40,7 @@ ActiveAdmin.register Quiz do
 
   member_action :report do
     @quiz = Quiz.find(params[:id])
-    send_data @quiz.full_report, content_type: Mime::CSV, filename: "quiz_#{@quiz.title}_report"
+    send_data QuizReportPresenter.new(@quiz).present, content_type: Mime::CSV, filename: "quiz_#{@quiz.title}_report"
   end
 
   member_action :manage_questions do
