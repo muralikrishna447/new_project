@@ -13,9 +13,8 @@ class QuizReportPresenter
       user_answers = {}
 
       @quiz.ordered_questions.each_with_index do |question, index|
-        header, answers = send("#{question.symbolize_question_type}_header_and_answers", question, index)
-        questions_header += header
-        correct_answers += answers
+        questions_header += send("#{question.symbolize_question_type}_header", question, index)
+        correct_answers += send("#{question.symbolize_question_type}_answers", question)
 
         if question.symbolize_question_type == :multiple_choice
           question.answers.each do |answer|
@@ -44,18 +43,28 @@ class QuizReportPresenter
     csv << [@quiz.started_count, @quiz.completed_count, @quiz.question_count]
   end
 
-  def multiple_choice_header_and_answers(question, question_index)
-    [["Q#{question_index+1} (MultChoice)"], [question.contents.correct_option_display]]
+  def multiple_choice_header(question, question_index)
+    ["Q#{question_index+1} (MultChoice)"]
   end
 
-  def box_sort_header_and_answers(question, question_index)
+  def multiple_choice_answers(question)
+    [question.contents.correct_option_display]
+  end
+
+  def box_sort_header(question, question_index)
     header = []
-    answers = []
     question.images.each_with_index do |image, image_index|
       header << "Q#{question_index+1}I#{image_index+1} (ImageSort)"
+    end
+    header
+  end
+
+  def box_sort_answers(question)
+    answers = []
+    question.images.each_with_index do |image, image_index|
       answers << image.key_image?
     end
-    [header, answers]
+    answers
   end
 
   def box_sort_user_answers(question, user_answers)
