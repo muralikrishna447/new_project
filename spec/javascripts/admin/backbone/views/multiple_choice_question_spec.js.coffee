@@ -84,6 +84,15 @@ describe 'ChefStepsAdmin.Views.MultipleChoiceQuestion', ->
     it "renders the option view", ->
       expect(@view.renderOptionView).toHaveBeenCalledWith('some option view')
 
+    it 'creates option with correct set to true for first option', ->
+      @view.addOption()
+      expect(@view.addOptionView).toHaveBeenCalledWith(answer: '', correct: true)
+
+    it 'creates option with correct set to false for subsequent options', ->
+      @view.optionViews = {firstOption: {}}
+      @view.addOption()
+      expect(@view.addOptionView).toHaveBeenCalledWith(answer: '', correct: false)
+
   describe '#render', ->
     beforeEach ->
       spyOn(@view, 'renderTemplate').andReturn('rendered template')

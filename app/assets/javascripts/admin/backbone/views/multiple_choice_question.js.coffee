@@ -3,10 +3,6 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
   showTemplate: 'admin/multiple_choice_question'
   formTemplate: 'admin/question_form'
 
-  defaultOption:
-    answer: ''
-    correct: false
-
   events:
     'click .edit': 'triggerEditQuestion'
     'click .delete': 'deleteQuestion'
@@ -55,7 +51,9 @@ class ChefStepsAdmin.Views.MultipleChoiceQuestion extends ChefStepsAdmin.Views.Q
   renderOptionView: (optionView) => @$('.options').append(optionView.render().$el)
 
   addOption: =>
-    optionView = @addOptionView(@defaultOption)
+    optionView = @addOptionView
+      answer: ''
+      correct: _.size(@optionViews) == 0
     @optionViews[optionView.uid] = optionView
     @renderOptionView(optionView)
 
