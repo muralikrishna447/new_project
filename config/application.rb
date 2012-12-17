@@ -89,13 +89,10 @@ module Delve
         origins '*'
         resource '/global-navigation', headers: :any, methods: [:get, :options]
       end
-
-      # Primarily for fontawesome
-      allow do
-        origins '*'
-        resource '/assets', headers: :any, methods: [:get]
-      end
     end
+
+    # Primarily to allow fontawesome access from blog/shop/forum in Firefox
+    config.middleware.insert_before 'ActionDispatch::Static', 'Rack::AccessControlHeaders', /assets/
 
     config.show_quizzes = true
   end
