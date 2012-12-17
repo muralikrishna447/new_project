@@ -19,7 +19,7 @@
         .question-label YOUR ANSWER:
     .row
       = hb 'each_with_index options' do
-        %div{ class: "option #{hb('option_width count')}" }
+        %div{ class: "option #{hb('option_width count index')}" }
           %div{ data: {behavior: 'radio'} }
             = radio_button_tag 'answer', hb('answer'), false, id: hb('uid')
             %label{ for: hb('uid') }
