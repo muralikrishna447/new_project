@@ -89,6 +89,12 @@ module Delve
         origins '*'
         resource '/global-navigation', headers: :any, methods: [:get, :options]
       end
+
+      # Primarily for fontawesome
+      allow do
+        origins '*'
+        resource '/assets', headers: :any, methods: [:get]
+      end
     end
 
     config.show_quizzes = true
