@@ -4,24 +4,26 @@ class ActivitiesController < ApplicationController
   expose(:syllabus_copy) { Copy.find_by_location('course-syllabus') }
 
   def show
-    session[:cooked_ids] ||= []
-    @cooked_this = session[:cooked_ids].include?(activity.id)
+    @cooked_this = cooked_ids.include?(activity.id)
   end
 
   def cooked_this
-    id = params[:id].to_i
-    return unless id > 0
-    return if session[:cooked_ids] && session[:cooked_ids].include?(id)
-
-    activity = Activity.find_by_id(id)
-    return if activity.nil?
+    return head :error unless params[:id].present?
+    return head :ok if cooked_ids.include?(activity.id)
 
     @cooked_count = activity.cooked_this += 1
     if activity.save
-      session[:cooked_ids] ||= []
-      session[:cooked_ids] << id
+      cooked_ids << activity.id
       render 'cooked_success', format: :js
+    else
+      head :error
     end
+  end
+
+  private
+
+  def cooked_ids
+    session[:cooked_ids] ||= []
   end
 end
 
