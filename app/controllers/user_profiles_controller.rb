@@ -2,10 +2,15 @@ class UserProfilesController < ApplicationController
   expose(:user)
   expose(:encourage_profile) { Copy.find_by_location('encourage-profile') }
   expose(:user_presenter) { UserPresenter.new(user)}
-  expose(:started_quizzes) { Quiz.joins(:quiz_sessions)
-                             .where(quiz_sessions: { user_id: current_user.id, completed: false })
-                           }
-  expose(:quiz_count) { started_quizzes.count }
+  expose(:started_quizzes) {
+    Quiz.joins(:quiz_sessions).where(quiz_sessions: { user_id: current_user.id, completed: false })
+  }
+
+  expose(:completed_quizzes) {
+    Quiz.joins(:quiz_sessions).where(quiz_sessions: { user_id: current_user.id, completed: true })
+  }
+
+  expose(:quiz_count) { started_quizzes.count + completed_quizzes.count }
 
   def update
     render_unauthorized unless current_user == user

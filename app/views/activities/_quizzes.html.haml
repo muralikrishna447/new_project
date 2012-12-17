@@ -11,7 +11,7 @@
             .span4
               = link_to quiz_path(quiz) do
                 .image-with-caption
-                  - if quiz.image
+                  - if quiz.has_image?
                     = image_tag quiz.image.url, class: 'img-polaroid'
                   .image-caption
                     .image-caption-text= quiz.title

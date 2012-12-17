@@ -64,7 +64,7 @@ class Quiz < ActiveRecord::Base
   end
 
   def completed_by?(user)
-    questions_remaining_for_count(user) == 0
+    question_count > 0 && questions_remaining_for_count(user) == 0
   end
 
   def started_count
@@ -73,6 +73,10 @@ class Quiz < ActiveRecord::Base
 
   def completed_count
     ordered_questions.last.answer_count
+  end
+
+  def has_image?
+    image? && image.url?
   end
 
   private

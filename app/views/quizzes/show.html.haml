@@ -21,7 +21,7 @@
           %strong #{quiz.title}!
     .row.hero-unit.overview
       .span8
-        - if quiz.image && quiz.image.url.present?
+        - if quiz.has_image?
           = image_tag quiz.image.url, class: 'img-polaroid'
       .span4.dials
         - remaining_question_count = quiz.questions_remaining_for_count(current_user)
