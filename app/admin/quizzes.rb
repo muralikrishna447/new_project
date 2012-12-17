@@ -6,11 +6,11 @@ ActiveAdmin.register Quiz do
   end
 
   action_item only: [:index] do
-    link_to "Download Quizzes Report CSV", report_quizzes_admin_quizzes_path
+    link_to "Download Quizzes Report CSV", report_quizzes_admin_quizzes_path(format: :csv)
   end
 
   action_item only: [:show] do
-    link_to "Download Quiz Report CSV", report_admin_quiz_path
+    link_to "Download Quiz Report CSV", report_admin_quiz_path(format: :csv)
   end
 
   index do
@@ -40,7 +40,7 @@ ActiveAdmin.register Quiz do
 
   member_action :report do
     @quiz = Quiz.find(params[:id])
-    render csv: @quiz.ordered_questions, style: :report, filename: "quiz_#{@quiz.title}_report"
+    send_data @quiz.full_report, content_type: Mime::CSV, filename: "quiz_#{@quiz.title}_report"
   end
 
   member_action :manage_questions do
