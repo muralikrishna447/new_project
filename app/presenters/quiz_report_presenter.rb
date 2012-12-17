@@ -15,16 +15,7 @@ class QuizReportPresenter
       @quiz.ordered_questions.each_with_index do |question, index|
         questions_header += send("#{question.symbolize_question_type}_header", question, index)
         correct_answers += send("#{question.symbolize_question_type}_answers", question)
-
-        if question.symbolize_question_type == :multiple_choice
-          question.answers.each do |answer|
-            email = answer.user.email
-            user_answers[email] ||= []
-            user_answers[email] << question.contents.option_display(answer.contents.uid)
-          end
-        else
-          box_sort_user_answers(question, user_answers)
-        end
+        send("#{question.symbolize_question_type}_user_answers", question, user_answers)
       end
 
       csv << questions_header
@@ -49,6 +40,14 @@ class QuizReportPresenter
 
   def multiple_choice_answers(question)
     [question.contents.correct_option_display]
+  end
+
+  def multiple_choice_user_answers(question, user_answers)
+    question.answers.each do |answer|
+      email = answer.user.email
+      user_answers[email] ||= []
+      user_answers[email] << question.contents.option_display(answer.contents.uid)
+    end
   end
 
   def box_sort_header(question, question_index)
