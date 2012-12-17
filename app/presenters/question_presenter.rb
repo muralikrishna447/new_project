@@ -25,7 +25,7 @@ class QuestionPresenter < Presenter
   end
 
   def add_images(attrs)
-    attrs[:images] = ImagePresenter.wrapped_collection(@model.images)
+    attrs[:images] = ImagePresenter.wrapped_collection(@model.images.shuffle)
   end
 end
 

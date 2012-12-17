@@ -61,7 +61,7 @@ describe QuestionPresenter, "#present" do
   context "with many images" do
     before do
       ImagePresenter.stub(:wrapped_collection).and_return(['imgA attrs', 'imgB attrs'])
-      question.stub(:images).and_return(true)
+      question.stub(:images).and_return(['image'])
     end
 
     it "includes the presented image in the attributes" do

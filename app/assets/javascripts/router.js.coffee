@@ -9,7 +9,7 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
 
   routes:
     "/profiles/{id}:?query:": "showProfile"
-    "/quizzes/{id}/:token:": "startQuizApp"
+    "/quizzes/{id}:?query:": "startQuizApp"
     "/styleguide": "showStyleguide"
 
   showProfile: (id, query) =>
@@ -21,7 +21,7 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
         registrationCompletionPath: @registrationCompletionPath,
         newUser: query && query.new_user
 
-  startQuizApp: (id) =>
+  startQuizApp: (id, query) =>
     navHider = new ChefSteps.Views.NavHider
       el: $('[data-behavior~=nav-hideable]')
       showElement: '.quiz-title'
@@ -32,11 +32,14 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
     questions = new ChefSteps.Collections.Questions([], quizId: id)
     questions.reset(ChefSteps.questionsData)
 
+    path = "/quizzes/#{id}/results"
+    path += "?token=#{query.token}" if query && query.token
+
     new ChefSteps.Views.Quiz
       el: '#quiz-container'
       collection: questions
       navHider: navHider
-      quizCompletionPath: "/quizzes/#{id}/results"
+      quizCompletionPath: path
       quizId: id
 
   showStyleguide: =>

@@ -44,3 +44,4 @@ describe 'ChefSteps.Views.MultipleChoiceQuestion', ->
 
     it 'returns answer for selected option', ->
       expect(@view.answerData().answer).toEqual('true')
+
