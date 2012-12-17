@@ -27,6 +27,7 @@ gem 'filepicker-rails'
 gem 'comma'
 
 gem 'rack-cors', require: 'rack/cors'
+gem 'rack-access-control-headers'
 
 # Gems used only for assets and not required
 # in production environments by default.

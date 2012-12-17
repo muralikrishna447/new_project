@@ -24,6 +24,7 @@ class Quiz < ActiveRecord::Base
   def add_question(question_type)
     question = question_class_from_type(question_type).create
     questions << question
+    question.update_order(:last)
     question
   end
 
@@ -37,9 +38,7 @@ class Quiz < ActiveRecord::Base
 
   def update_question_order(question_ids)
     question_ids.each do |question_id|
-      question = questions.find(question_id)
-      type = question.type
-      question.becomes(Question).update_attributes({question_order_position: :last, type: type}, without_protection: true)
+      questions.find(question_id).update_order(:last)
     end
   end
 

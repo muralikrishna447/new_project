@@ -1,7 +1,6 @@
 class ChefStepsAdmin.Views.Questions extends Backbone.View
   initialize: ->
     @collection.on('add', @addNewQuestionToList, @)
-    @collection.on('sync', @updateOrder, @)
     @collection.on('add remove', @updateQuestionCount, @)
     $('#question-filters .ordering').on('click', @toggleOrdering)
 
