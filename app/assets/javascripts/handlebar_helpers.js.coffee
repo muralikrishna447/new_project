@@ -34,7 +34,7 @@ Handlebars.registerHelper 'default_value', (value, defaultValue) ->
     new Handlebars.SafeString(defaultValue)
 
 Handlebars.registerHelper 'first_caption', (array, block) ->
-  if array.length > 0
+  if array && array.length > 0
     array[0].caption
   else
     ''
