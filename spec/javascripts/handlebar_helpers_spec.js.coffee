@@ -18,10 +18,15 @@ describe 'Handlebars helpers', ->
       expect(Handlebars.helpers.option_width(3*2)).toEqual('span3')
       expect(Handlebars.helpers.option_width(3*3)).toEqual('span3')
 
-    it "returns 'span3 offset1' if answer count is not modulo 3", ->
-      expect(Handlebars.helpers.option_width(1)).toEqual('span3 offset1')
-      expect(Handlebars.helpers.option_width(2)).toEqual('span3 offset1')
-      expect(Handlebars.helpers.option_width(4)).toEqual('span3 offset1')
+    it "returns 'span3 offset2' if answer count is not modulo 3 and index == 0", ->
+      expect(Handlebars.helpers.option_width(1, 2)).toEqual('span3 offset2')
+      expect(Handlebars.helpers.option_width(2, 2)).toEqual('span3 offset2')
+      expect(Handlebars.helpers.option_width(4, 2)).toEqual('span3 offset2')
+
+    it "returns 'span3 offset1' if answer count is not modulo 3 and index > 0", ->
+      expect(Handlebars.helpers.option_width(1, 1)).toEqual('span3 offset1')
+      expect(Handlebars.helpers.option_width(2, 1)).toEqual('span3 offset1')
+      expect(Handlebars.helpers.option_width(4, 1)).toEqual('span3 offset1')
 
 describe "#upload_button", ->
     it "returns and upload button with the id passed in", ->

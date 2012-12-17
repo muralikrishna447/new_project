@@ -15,7 +15,7 @@ class SsoController < ApplicationController
        user["uniqueid"] = current_user.id.to_s
        user["name"] = current_user.name
        user["email"] = current_user.email
-       user["photourl"] = current_user.profile_image_url("http://dev/null")
+       user["photourl"] = current_user_presenter.profile_image_url
     end
 
     # 4. Generate the jsConnect string.
