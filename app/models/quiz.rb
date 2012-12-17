@@ -75,6 +75,10 @@ class Quiz < ActiveRecord::Base
     ordered_questions.last.answer_count
   end
 
+  def has_image?
+    image? && image.url?
+  end
+
   private
 
   def question_class_from_type(question_type)
