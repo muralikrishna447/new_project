@@ -20,6 +20,10 @@ class BoxSortQuestion < Question
     "Please <strong>drag and drop</strong> the following images into one of the three piles based on which images you remember seeing in the course you've just completed."
   end
 
+  def key_images
+    images.where(key_image: true)
+  end
+
   def default_options
     [{
       text: "I remember"

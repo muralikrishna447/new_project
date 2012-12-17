@@ -1,5 +1,5 @@
 #header
-  - unless user_signed_in?
+  - unless user_signed_in? or external
     .row.enter-email
       .span6.pull-right
         .title-bar.pull-right.noprint
@@ -26,6 +26,7 @@
           %li.social
             %a.icon-google-plus{ href: "https://plus.google.com/106370441183974123730/posts" }
 
-      .auth-group.pull-right.noprint
-        #authentication
+      -unless external
+        .auth-group.pull-right.noprint
+          #authentication
 

@@ -128,7 +128,7 @@
 
     #main-container
       .container
-        = render 'layouts/header'
+        = render 'layouts/header', { :external => false }
       = render 'layouts/title_bar'
       = yield
       = render 'layouts/footer'

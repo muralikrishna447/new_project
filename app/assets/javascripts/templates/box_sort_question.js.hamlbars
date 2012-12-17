@@ -5,7 +5,7 @@
 
   .hero-unit.span9
     .row.images
-      .span3
+      .span6
         .image-pile
           = hb 'each images' do
             %img.img-polaroid{ src: hb('url'), data: {'image-id' => hb('id'), caption: hb('caption')} }

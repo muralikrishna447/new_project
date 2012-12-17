@@ -1,0 +1,22 @@
+.row.multiple-choice-results.bordered.bottom
+  .span6
+    %span.count #{result[:order]} <i>of</i> #{quiz_results.count}
+    %span.type Multiple choice question
+    %h4= result[:question]
+    %ol
+      - result[:options].each do |option|
+        %li= option[:answer]
+  .span4.bordered.top.bottom{ data: {behavior: 'container-height'} }
+    .result-column
+      .center.bordered.left.right
+        .column-label Your Answer:
+        %span.label{ class: result[:correct] ? 'correct' : 'incorrect' } #{result[:answer]}
+      .center.bordered.right
+        .column-label Correct Answer:
+        %span.label.default #{result[:correct_answer]}
+  .span2{ data: {behavior: 'container-height'} }
+    .result-column
+      .average.center
+        #{result[:average_correct]}%
+        .average-label of students correctly answered.
+
