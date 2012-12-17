@@ -5,9 +5,7 @@ class QuizReportPresenter
 
   def present
     CSV.generate do |csv|
-      csv << [@quiz.title]
-      csv << ["Users Started", "Users Completed", "Questions"]
-      csv << [@quiz.started_count, @quiz.completed_count, @quiz.question_count]
+      add_summary_statistics(csv)
       csv << []
 
       questions_header = ['User']
@@ -39,6 +37,12 @@ class QuizReportPresenter
   end
 
   private
+
+  def add_summary_statistics(csv)
+    csv << [@quiz.title]
+    csv << ["Users Started", "Users Completed", "Questions"]
+    csv << [@quiz.started_count, @quiz.completed_count, @quiz.question_count]
+  end
 
   def multiple_choice_header_and_answers(question, question_index)
     [["Q#{question_index+1} (MultChoice)"], [question.contents.correct_option_display]]
