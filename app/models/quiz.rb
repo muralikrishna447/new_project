@@ -79,6 +79,10 @@ class Quiz < ActiveRecord::Base
   end
 
   def full_report
+    def multiple_choice_header_and_answers(question, question_index)
+      [["Q#{question_index+1} (MultChoice)"], [question.contents.correct_option_display]]
+    end
+
     def box_sort_header_and_answers(question, question_index)
       header = []
       answers = []
@@ -106,25 +110,27 @@ class Quiz < ActiveRecord::Base
       csv << ["Users Started", "Users Completed", "Questions"]
       csv << [started_count, completed_count, question_count]
       csv << []
+
       questions_header = ['User']
       correct_answers = ['Correct Answers']
       user_answers = {}
+
       ordered_questions.each_with_index do |question, index|
+        header, answers = send("#{question.symbolize_question_type}_header_and_answers", question, index)
+        questions_header += header
+        correct_answers += answers
+
         if question.symbolize_question_type == :multiple_choice
-          questions_header << "Q#{index+1} (MultChoice)"
-          correct_answers << question.contents.correct_option_display
           question.answers.each do |answer|
             email = answer.user.email
             user_answers[email] ||= []
             user_answers[email] << question.contents.option_display(answer.contents.uid)
           end
         else
-          header,answers = box_sort_header_and_answers(question, index)
-          questions_header += header
-          correct_answers += answers
           box_sort_user_answers(question, user_answers)
         end
       end
+
       csv << questions_header
       csv << correct_answers
       user_answers.each do |email, answers|
