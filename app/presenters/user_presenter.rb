@@ -26,7 +26,7 @@ class UserPresenter < Presenter
   end
 
   def self.facebook_image_url(uid)
-    "https://graph.facebook.com/#{uid}/picture"
+    "https://graph.facebook.com/#{uid}/picture?type=large"
   end
 
   def facebook_edit_url
