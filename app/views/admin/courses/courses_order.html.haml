@@ -1,0 +1,15 @@
+= semantic_form_for :course_order, url: update_courses_order_admin_courses_path do |f|
+  = section("Courses", f) do
+    = sortable_table('courses') do
+      %tr
+        %th
+      - @courses.each do |course|
+        %tr
+          %td
+            = hidden_field_tag "course_ids[]", course.id
+            != course.title
+            = reorder_icon
+
+  = f.actions do
+    = f.action :submit, label: 'Submit Course Order'
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'

@@ -1,0 +1,19 @@
+.panel
+  %h3 Course
+  .panel_contents
+    .attributes_table
+      %table
+        %tbody
+          %tr
+            %th Published
+            %td= course.published
+          %tr
+            %th Link
+            %td= link_to_publishable(course)
+          %tr
+            %th Title
+            %td= course.title
+          %tr
+            %th Description
+            %td= course.description
+

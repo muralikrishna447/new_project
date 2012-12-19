@@ -25,7 +25,7 @@ ActiveAdmin.register Course do
       course.title.html_safe
     end
     column "Description" do |course|
-      truncate(activity.description, length: 50)
+      truncate(course.description, length: 50)
     end
     column :published
     default_actions
@@ -33,12 +33,12 @@ ActiveAdmin.register Course do
 
   controller do
     def create
-      @activity = Activity.create(params[:course])
+      @course = Course.create(params[:course])
       create!
     end
 
     def update
-      course = Activity.find(params[:id])
+      course = Course.find(params[:id])
       update!
     end
 
@@ -46,12 +46,12 @@ ActiveAdmin.register Course do
   end
 
   collection_action :courses_order, method: :get do
-    @activities = Course.ordered.all
+    @courses = Course.ordered.all
   end
 
   collection_action :update_courses_order, method: :post do
     params[:course_ids].each do |course_id|
-      course = Activity.find(course_id)
+      course = Course.find(course_id)
       if course
         course.course_order_position = :last
         course.save!
