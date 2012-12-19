@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121214195623) do
+ActiveRecord::Schema.define(:version => 20121219174423) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -130,6 +130,16 @@ ActiveRecord::Schema.define(:version => 20121214195623) do
   end
 
   add_index "copies", ["location"], :name => "index_copies_on_location"
+
+  create_table "courses", :force => true do |t|
+    t.string   "title"
+    t.string   "slug"
+    t.text     "description"
+    t.boolean  "published",    :default => false
+    t.decimal  "course_order"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
 
   create_table "equipment", :force => true do |t|
     t.string   "title"

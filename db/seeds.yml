@@ -23,6 +23,29 @@ admins:
   password: pectinex
   name: Michael Natkin
 
+courses:
+- title: Accelerated Sous Vide Cooking Course
+  order: 1
+  description: >
+    Sous vide cooking is at the core of modernist cooking. Once used in only the most forward-thinking restaurants, sous vide cooking is rapidly being adopted as a mainstream cooking technique in both homes and restaurants around the world. Through lectures and step-by-step demonstrations you will master this highly flexible way to cook virtually any food.
+
+    The course will:
+
+    Get you started with the basics of sous vide cooking and then quickly have you using intermediate and advanced sous vide techniques.
+    Develop your intuition for one of the most fundamental ingredients of all cooking: heat.
+    Understand the relationship between cooking temperature and time so that you get the results you want every time.
+    Explore different strategies for cooking animal and plant foods so that you can cook anything sous vide with confidence.
+    Learn to adapt traditional recipes you love to sous vide cooking methods for greater convenience and consistency.
+    Use your sous vide equipment in ways that unlock your creativity in the kitchen.
+    Learn the relevant health and food safety issues for sous vide cooking so that you can prepare healthier food and reduces the chance of food borne illness.
+    No other course matches our comprehensive approach to understanding sous vide cooking.
+
+- title: Gelatin Molds
+  order: 2
+  description: >
+    Gelatin (or gelatine, from Latin: gelatus = stiff, frozen) is a translucent, colorless, brittle (when dry), flavorless solid substance, derived from collagen obtained from various animal by-products. It is commonly used as a gelling agent in food, pharmaceuticals, photography, and cosmetic manufacturing. Substances containing gelatin or functioning in a similar way are called gelatinous. Gelatin is an irreversibly hydrolysed form of collagen, and is classified as a foodstuff. It is found in most gummy candies as well as other products such as marshmallows, gelatin dessert, and some ice cream and yogurt. Household gelatin comes in the form of sheets, granules, or powder. Instant types can be added to the food as they are; others need to be soaked in water beforehand.
+    Gelatin is classed as a food in its own right and not subject to the food additives legislation in Europe. Gelatin has its own E number: 441.[1]
+
 activities:
 # - title: Lecture
 #   youtube_id: ydOB-YNJ8Jw

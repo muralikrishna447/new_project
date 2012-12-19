@@ -5,7 +5,7 @@
     .container
       .row
         .span8
-          %h3 Accelerated Sous Vide Cooking Course
+          %h3= course.title
         .span4
           %a.button.pull-right{ href: activity_path(activities.first) }
             .inner
@@ -19,7 +19,7 @@
     .row.course-info
       .span8
         :markdown
-          #{course_description.copy.to_s}
+          #{course.description}
       .span4.pull-right
         = render 'course_breakdown', copy: syllabus_copy
       .span8.pull-left

@@ -1,6 +1,16 @@
 require 'yaml'
 require './lib/copy_creator'
 
+def create_course(course)
+  c = Course.create
+  c.title = course[:title]
+  c.description = course[:description]
+  c.course_order = course[:order]
+  c.published = true
+  c.save
+  c
+end
+
 def create_activity(activity)
   a = Activity.create
   a.title = activity[:title]
@@ -143,6 +153,11 @@ def build_activity(activity_data)
   activity.update_recipe_steps
 end
 
+def build_course(course_data)
+  return if Course.where(title: course_data[:title]).any?
+  course = create_course(course_data)
+end
+
 def build_admin(admin_data)
   create_admin(admin_data[:email], admin_data[:password])
 end
@@ -164,6 +179,10 @@ end
 
 @seed_data[:activities].each do |activity_data|
   build_activity(activity_data)
+end
+
+@seed_data[:courses].each do |course_data|
+  build_course(course_data)
 end
 
 CopyCreator.create
