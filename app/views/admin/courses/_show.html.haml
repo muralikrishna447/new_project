@@ -16,4 +16,10 @@
           %tr
             %th Description
             %td= course.description
+          %tr
+            %th Activities
+            %td
+              %ul
+                - course.activities.each do |activity|
+                  %li= link_to activity.title, admin_activity_path(activity)
 
