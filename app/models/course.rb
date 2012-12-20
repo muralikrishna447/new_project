@@ -14,4 +14,16 @@ class Course < ActiveRecord::Base
   has_many :inclusions
   has_many :activities, :through => :inclusions, :order => 'inclusions.activity_order ASC'
 
+  def update_activities(activity_ids)
+    activities.delete_all
+    activity_ids.each do |activity_id|
+      activity = Activity.find(activity_id)
+      if activity
+        self.activities << activity
+        self.save!
+      end
+    end
+    self
+  end
+
 end

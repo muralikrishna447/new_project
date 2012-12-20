@@ -39,6 +39,7 @@ ActiveAdmin.register Course do
 
     def update
       course = Course.find(params[:id])
+      @course.update_activities(params[:course].delete[:activities])
       update!
     end
 

@@ -7,12 +7,13 @@
     = f.input :description, label: "Description (Markdown or HTML)"
 
   = section("Activities", f) do
+    %li= copy_button('Add Activity', '#activity-row', 'table#activities')
     = sortable_table('activities') do
       %tr
         %th
-        - course.activities.each do |activity|
-          %li= link_to activity.title, admin_activity_path(activity)
-
+      = render 'activity_form', activity: nil
+      - @course.activities.each do |activity|
+        = render 'activity_form', activity: activity
 
   = f.actions do
     = f.action :submit
