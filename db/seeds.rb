@@ -7,6 +7,12 @@ def create_course(course)
   c.description = course[:description]
   c.course_order = course[:order]
   c.published = true
+  if course[:activities].present?
+    course[:activities].each do |activity|
+      a = Activity.find_by_title(activity[:title])
+      c.activities << a
+    end
+  end
   c.save
   c
 end
