@@ -23,6 +23,10 @@ admins:
   password: pectinex
   name: Michael Natkin
 
+- email: hueezer@gmail.com
+  password: hueezer123
+  name: Huy Nguyen
+
 activities:
 # - title: Lecture
 #   youtube_id: ydOB-YNJ8Jw
