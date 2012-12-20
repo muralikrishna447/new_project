@@ -46,7 +46,7 @@ end
 
 describe UserPresenter, "#facebook_image_url" do
   it "generates a facebook graph photo URL with uid" do
-    UserPresenter.facebook_image_url('ABCD').should == 'https://graph.facebook.com/ABCD/picture'
+    UserPresenter.facebook_image_url('ABCD').should == 'https://graph.facebook.com/ABCD/picture?type=large'
   end
 end
 
