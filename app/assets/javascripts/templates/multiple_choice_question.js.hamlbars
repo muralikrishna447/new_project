@@ -3,19 +3,19 @@
     .span8
       .instructions= hb!('instructions')
 
-  .hero-unit.span9
+  .hero-unit.span8.offset2
     = hb('if image') do
       .row
         .span6.question-image
           %img.img-polaroid{ src: hb('image.url') }
     .row
-      .span9
+      .span8
         .question-label QUESTION:
     .row
-      .span9
+      .span8
         .question-text= hb('question')
     .row
-      .span9
+      .span8
         .question-label YOUR ANSWER:
     .row
       = hb 'each_with_index options' do
