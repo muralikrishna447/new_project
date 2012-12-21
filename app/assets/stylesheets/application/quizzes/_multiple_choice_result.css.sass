@@ -23,18 +23,23 @@
   li.status_right, li.status_wrong
     &:before
       position: absolute
-      left: -42px
+      left: -48px
       font-size: 1.5em
       font-weight: bold
 
+  li.has-image
+    &:before
+      top: 43%
+
+
   li.status_right
     &:before
-      content: "\2713"
+      content: "\2714"
       color: $green
 
   li.status_wrong
     &:before
-      content: "\2716"
+      content: "\2716 "
       color: $red
 
   .label

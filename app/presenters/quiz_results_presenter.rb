@@ -14,7 +14,7 @@ class QuizResultsPresenter
       answer = question.answer_for(@user)
       question_type = question.symbolize_question_type
       options = contents.options
-      if question.type == :multiple_choice
+      if question_type == :multiple_choice
         mcr = multiple_choice_results(question, answer)
         options.each_with_index do |option, idx|
           option[:status] = :status_none

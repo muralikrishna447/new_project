@@ -2,7 +2,7 @@
   .span4
     %img.img-polaroid.key-image{src: image[:url]}
 
-  .span2.key-image-information
+  .span4.key-image-information
     %span This is a key image, because:
-    %p= image[:key_explanation]
+    %p{:class => image[:display_class]}= image[:key_explanation]
 

@@ -3,9 +3,7 @@
     .row
       .span7
         %span.type Question
-        %span.count #{result[:order]}
-    .row
-      .span7
+        %span.count #{result[:order]} -
         %span.student-average
           #{result[:average_correct]}% of students answered correctly
     .row
@@ -13,7 +11,9 @@
         %h4= result[:question]
         %ol
           - result[:options].each_with_index do |option, idx|
-            %li{:class => option[:status].to_s}
+            - c = option[:status].to_s
+            - c += " has-image" if option[:image] && option[:image][:url]
+            %li{:class => c}
               = option[:answer]
               -if option[:image] && option[:image][:url]
                 %img.img-polaroid{ src: option[:image][:url] }
