@@ -33,17 +33,21 @@
     p
       +font-serif-medium
 
-    p.correct, p.incorrect, p.ambivalent
-      &:before
-        font-size: 1.5em
-        font-weight: bold
-        padding-right: 8px
+    // We decided this was a bad idea, since box sort questions don't really
+    // have right or wrong answers. Keeping it around in case we change our minds.
+    //
+    //p.correct, p.incorrect, p.ambivalent
+    //  &:before
+    //    font-size: 1.5em
+    //    font-weight: bold
+    //    padding-right: 8px
+    //
+    //p.correct
+    //  &:before
+    //    content: "\2714"
+    //    color: $green
+    //p.incorrect, p.ambivalent
+    //  &:before
+    //    content: "\2716"
+    //    color: $red
 
-    p.correct
-      &:before
-        content: "\2714"
-        color: $green
-    p.incorrect, p.ambivalent
-      &:before
-        content: "\2716"
-        color: $red
