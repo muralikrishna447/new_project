@@ -13,13 +13,7 @@
         %h4= result[:question]
         %ol
           - result[:options].each_with_index do |option, idx|
-            - if ('a'..'z').to_a[idx] == result[:correct_answer]
-              %li.right-answer
-                = option[:answer]
-                -if option[:image] && option[:image][:url]
-                  %img.img-polaroid{ src: option[:image][:url] }
-
-            - elsif ('a'..'z').to_a[idx] == result[:answer]
-              %li.wrong-answer= option[:answer]
-            - else
-              %li= option[:answer]
+            %li{:class => option[:status].to_s}
+              = option[:answer]
+              -if option[:image] && option[:image][:url]
+                %img.img-polaroid{ src: option[:image][:url] }
