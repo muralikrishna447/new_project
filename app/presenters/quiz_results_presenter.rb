@@ -18,10 +18,11 @@ class QuizResultsPresenter
         mcr = multiple_choice_results(question, answer)
         options.each_with_index do |option, idx|
           option[:status] = :status_none
-          # this is heinous
-          if ('a'..'z').to_a[idx] == mcr[:correct_answer]
+          if option[:correct]
             option[:status] = :status_right
-          elsif ('a'..'z').to_a[idx] == mcr[:answer]
+
+          # this is heinous - for non t/f multiple choices, answer is recorded as the letter of the option, but options array has the full text
+          elsif (mcr[:answer] == option[:answer]) || ('a'..'z').to_a[idx] == mcr[:answer]
             option[:status] = :status_wrong
           end
         end
