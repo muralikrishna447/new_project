@@ -14,14 +14,16 @@ class QuizResultsPresenter
       answer = question.answer_for(@user)
       question_type = question.symbolize_question_type
       options = contents.options
-      mcr = multiple_choice_results(question, answer)
-      options.each_with_index do |option, idx|
-        option[:status] = :status_none
-        # this is heinous
-        if ('a'..'z').to_a[idx] == mcr[:correct_answer]
-          option[:status] = :status_right
-        elsif ('a'..'z').to_a[idx] == mcr[:answer]
-          option[:status] = :status_wrong
+      if question.type == :multiple_choice
+        mcr = multiple_choice_results(question, answer)
+        options.each_with_index do |option, idx|
+          option[:status] = :status_none
+          # this is heinous
+          if ('a'..'z').to_a[idx] == mcr[:correct_answer]
+            option[:status] = :status_right
+          elsif ('a'..'z').to_a[idx] == mcr[:answer]
+            option[:status] = :status_wrong
+          end
         end
       end
 

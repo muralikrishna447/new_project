@@ -21,7 +21,7 @@ class BoxSortQuestionContents < OpenStruct
   def key_image_display_class(uid)
     index = options.index { |o| o[:uid] == uid }
     return 'ambivalent' if index.nil? || index == 1
-    return 'correct' if index == 0
+    return 'correct' if index == 2
     'incorrect'
   end
 
