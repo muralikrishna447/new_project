@@ -35,7 +35,7 @@ $ ->
       menu.find('span').attr 'id', 'language-selector'
       if menu.find('#language-selector').text() == 'Select Language'
         $('#language-selector').text('Translate')
-      menu.find('span').click (e) ->
+      $('#google_translate_element').click (e) ->
         menu_frame = $('.goog-te-menu-frame')
         menu_frame.css 'box-shadow', '0px 0px 6px 0px black'
 
