@@ -2,7 +2,6 @@
   .container
     .row
       .span8
-        %h1= raw activity.title
         - if activity.has_description?
           :markdown
             #{activity.description}
@@ -24,8 +23,6 @@
               %i.icon-pot-brick
               %span#cooked-count= activity.cooked_this
               %span.verbage Cooked This
-      .span12
-        .horizontal-divider
     .row
       .span6
         - if activity.has_ingredients?

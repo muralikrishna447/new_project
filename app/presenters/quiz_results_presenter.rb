@@ -13,12 +13,27 @@ class QuizResultsPresenter
       contents = question.contents
       answer = question.answer_for(@user)
       question_type = question.symbolize_question_type
+      options = contents.options
+      if question_type == :multiple_choice
+        mcr = multiple_choice_results(question, answer)
+        options.each_with_index do |option, idx|
+          option[:status] = :status_none
+          if option[:correct]
+            option[:status] = :status_right
+
+          # this is heinous - for non t/f multiple choices, answer is recorded as the letter of the option, but options array has the full text
+          elsif (mcr[:answer] == option[:answer]) || ('a'..'z').to_a[idx] == mcr[:answer]
+            option[:status] = :status_wrong
+          end
+        end
+      end
+
       results[question_type] << {
         question: contents.question,
         instructions: contents.instructions,
         question_type: question_type,
         order: index+1,
-        options: contents.options,
+        options: options,
         correct: answer.correct,
         average_correct: question.average_correct
       }.merge(send("#{question_type}_results", question, answer))

@@ -26,11 +26,11 @@ class BoxSortQuestion < Question
 
   def default_options
     [{
-      text: "I remember"
+      text: "I don't remember"
     },{
       text: "I'm not sure"
     },{
-      text: "I don't remember"
+      text: "I remember"
     }]
   end
 

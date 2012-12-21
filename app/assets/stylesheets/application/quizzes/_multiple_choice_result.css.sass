@@ -1,20 +1,46 @@
 .multiple-choice-results
+  margin-bottom: 18px
+
+  .img-polaroid
+    max-width: 200px
+
   .bordered.top, .bordered-bottom
     border-width: 0
 
   &:last-child
     border-bottom: none
 
-  [class*='span']:first-child
-    margin-top: 30px
-    margin-bottom: 20px
-  ol
+  ol, ul
+    list-style-type: upper-alpha
     +font-sans-small
     margin-top: 15px
     margin-left: 45px
-    list-style-type: upper-alpha
+
   li
+    position: relative
     padding: 5px 0
+
+  li.status_right, li.status_wrong
+    &:before
+      position: absolute
+      left: -48px
+      font-size: 1.5em
+      font-weight: bold
+
+  li.has-image
+    &:before
+      top: 43%
+
+
+  li.status_right
+    &:before
+      content: "\2714"
+      color: $green
+
+  li.status_wrong
+    &:before
+      content: "\2716 "
+      color: $red
 
   .label
     +font-serif-large
@@ -36,12 +62,6 @@
 
   .label.default
     color: $black
-
-  .average
-    +font-serif-large
-    color: $brick
-    text-align: center
-    margin-top: 0
 
   .result-column
     width: 100%
