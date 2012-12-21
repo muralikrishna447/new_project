@@ -35,10 +35,8 @@ $ ->
 
         # Translate menu opens in the correct location depending on the sticky navbar
         nav_class = $('.sticky-navbar').attr 'class'
-        if /stuck-to-top/g.test(nav_class)
-          menu_frame.css 'margin-top', '60px'
-        else
-          menu_frame.css 'margin-top', '20px'
+        frame_margin = if /stuck-to-top/g.test(nav_class) then '60px' else '20px'
+        menu_frame.css('margin-top', frame_margin )
 
         menu_box = menu_frame.contents().find('div.goog-te-menu2')
 
