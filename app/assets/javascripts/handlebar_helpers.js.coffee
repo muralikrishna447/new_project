@@ -9,11 +9,7 @@ Handlebars.registerHelper 'each_with_index', (array, block) ->
   buffer
 
 Handlebars.registerHelper 'option_width', (count, index)->
-  if count % 3 == 0
-    'span3'
-  else
-    offset = if index == 0 then 2 else 1
-    "span3 offset#{offset}"
+  'span8'
 
 Handlebars.registerHelper 'upload_image_button', (id = '') ->
   uploadButton =

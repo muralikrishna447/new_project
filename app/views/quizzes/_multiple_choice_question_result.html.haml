@@ -1,22 +1,25 @@
-.row.multiple-choice-results.bordered.bottom
-  .span6
-    %span.type Question
-    %span.count #{result[:order]} <i>of</i> #{quiz_results.count}
-    %h4= result[:question]
-    %ol
-      - result[:options].each do |option|
-        %li= option[:answer]
-  .span4.bordered.top.bottom{ data: {behavior: 'container-height'} }
-    .result-column
-      .center.bordered.left.right
-        .column-label Your Answer:
-        %span.label{ class: result[:correct] ? 'correct' : 'incorrect' } #{result[:answer]}
-      .center.bordered.right
-        .column-label Correct Answer:
-        %span.label.default #{result[:correct_answer]}
-  .span2{ data: {behavior: 'container-height'} }
-    .result-column
-      .average.center
-        #{result[:average_correct]}%
-        .average-label of students correctly answered.
+.row.multiple-choice-results
+  .span7
+    .row
+      .span7
+        %span.type Question
+        %span.count #{result[:order]}
+    .row
+      .span7
+        %span.student-average
+          #{result[:average_correct]}% of students answered correctly
+    .row
+      .span7
+        %h4= result[:question]
+        %ol
+          - result[:options].each_with_index do |option, idx|
+            - if ('a'..'z').to_a[idx] == result[:correct_answer]
+              %li.right-answer
+                = option[:answer]
+                -if option[:image] && option[:image][:url]
+                  %img.img-polaroid{ src: option[:image][:url] }
 
+            - elsif ('a'..'z').to_a[idx] == result[:answer]
+              %li.wrong-answer= option[:answer]
+            - else
+              %li= option[:answer]

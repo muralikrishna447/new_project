@@ -2,14 +2,6 @@
   .span6
     .center
       Multiple Choice Questions:
-  .span4
-    .center.bordered.right.left
-      Your Answer:
-    .center.bordered.right
-      Correct Answer:
-  .span2
-    .center
-      Students Avg. Score:
 
 - results.each_with_index do |result, index|
   = render 'quizzes/multiple_choice_question_result', result: result, count: index + 1
