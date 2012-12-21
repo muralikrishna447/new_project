@@ -1,6 +1,7 @@
 toggleBeta = (language) ->
   pattern = /English/g
-  if pattern.test(language)
+  pattern2 = /Translate/g
+  if pattern.test(language) || pattern2.test(language)
     $('#beta-notification').hide()
   else
     $('#beta-notification').show()
@@ -32,7 +33,9 @@ $ ->
       menu.css 'color', 'white'
       menu.find('span').css 'border':'none', 'color':'white'
       menu.find('span').attr 'id', 'language-selector'
-      menu.find('span').click (e) ->
+      if menu.find('#language-selector').text() == 'Select Language'
+        $('#language-selector').text('Translate')
+      $('#google_translate_element').click (e) ->
         menu_frame = $('.goog-te-menu-frame')
         menu_frame.css 'box-shadow', '0px 0px 6px 0px black'
 
