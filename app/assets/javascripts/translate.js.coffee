@@ -20,6 +20,8 @@ $ ->
         $('.goog-te-gadget').append("<span id='beta-notification' style='color:white'>Beta</span>")
       toggleBeta $('.goog-te-menu-value').find('span').first().text()
 
+      $('.goog-te-menu-frame').attr 'id', 'language-frame'
+
       # Hides and restyles the standard Google Translate Select field
       translation_selector.css 'padding', '9px'
       gadget = $('.goog-te-gadget-simple')
@@ -29,6 +31,7 @@ $ ->
       menu = $('.goog-te-menu-value')
       menu.css 'color', 'white'
       menu.find('span').css 'border':'none', 'color':'white'
+      menu.find('span').attr 'id', 'language-selector'
       menu.find('span').click (e) ->
         menu_frame = $('.goog-te-menu-frame')
         menu_frame.css 'box-shadow', '0px 0px 6px 0px black'
