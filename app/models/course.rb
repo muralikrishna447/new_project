@@ -17,8 +17,8 @@ class Course < ActiveRecord::Base
   def update_activities(activity_ids)
     activities.delete_all
     activity_ids.each do |activity_id|
-      activity = Activity.find(activity_id)
-      if activity
+      if activity_id.present?
+        activity = Activity.find(activity_id)
         self.activities << activity
         self.save!
       end

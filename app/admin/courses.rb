@@ -32,14 +32,21 @@ ActiveAdmin.register Course do
   end
 
   controller do
+    def extract_activities
+      activities = params[:course].delete(:activities)
+     end
+
     def create
+      activities = extract_activities
       @course = Course.create(params[:course])
+      @course.update_activities(activities)
       create!
     end
 
     def update
-      course = Course.find(params[:id])
-      @course.update_activities(params[:course].delete[:activities])
+      activities = extract_activities
+      @course = Course.find(params[:id])
+      @course.update_activities(activities)
       update!
     end
 
