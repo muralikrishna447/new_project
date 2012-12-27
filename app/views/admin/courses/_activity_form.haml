@@ -7,7 +7,7 @@
 
 %tr{id: row_id, class: ('activity-row' if is_template )}
   %td
-    = select_tag "course[activities][]", options_from_collection_for_select(Activity.all, "id", "title", activity_id), include_blank: true
+    = select_tag "course[activities][]", options_from_collection_for_select(Activity.all, "id", "admin_title", activity_id), include_blank: true
     = remove_button 'tr'
     = reorder_icon
 

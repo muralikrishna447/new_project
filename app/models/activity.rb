@@ -19,7 +19,12 @@ class Activity < ActiveRecord::Base
 
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :is_module_head
+
+  def admin_title
+    "MODULE: " + title if is_module_head?
+    title
+  end
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
