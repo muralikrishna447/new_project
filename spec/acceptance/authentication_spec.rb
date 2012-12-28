@@ -44,7 +44,7 @@ feature 'user authentication', :js do
     fill_in 'Email', with: 'bob@bob.com'
     click_button 'Send Instructions'
 
-    wait_until { page.find('.notice').visible? }
+    # wait_until { page.find('.notice').visible? }
     page.should have_content('Please check your email')
     ActionMailer::Base.deliveries.count.should == 1
 

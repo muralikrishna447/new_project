@@ -26,4 +26,7 @@ class Course < ActiveRecord::Base
     self
   end
 
+  def moduled_activities
+    activities.slice_before {|a| a.is_module_head?}
+    end
 end
