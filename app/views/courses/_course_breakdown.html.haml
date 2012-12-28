@@ -6,4 +6,7 @@
       %h4= "Module " + (idx + 1).to_s + ": " + m.shift.title
       %ol
         - m.each do |activity|
-          %li= activity.title
+          -if activity.published?
+            %li= link_to (raw activity.title), course_activity_path(course, activity)
+          - else
+            %li= raw activity.title
