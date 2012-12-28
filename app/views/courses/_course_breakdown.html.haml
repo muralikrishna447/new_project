@@ -1,2 +1,7 @@
 %ul.course-breakdown.unstyled
-  != copy
+  %li
+    %h3 Syllabus
+  %li.module
+    %ol
+      - course.activities.each do |activity|
+        %li= activity.title

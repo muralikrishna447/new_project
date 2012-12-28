@@ -22,7 +22,7 @@ class Activity < ActiveRecord::Base
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :is_module_head
 
   def admin_title
-    "MODULE: " + title if is_module_head?
+    return "MODULE: " + title if is_module_head?
     title
   end
 
