@@ -6,7 +6,7 @@
 
   = render 'courses/navigation', course: Course.find(params[:course_id]), activity: activity, disqus_id: disqus_id, syllabus_copy: syllabus_copy
 
-  .hero-unit.hero-well.noprint
+  .hero-unit.hero-well.noprint.activity-hero
     .container
       - if activity.youtube_id?
         .row.top-video

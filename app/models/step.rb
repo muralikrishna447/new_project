@@ -19,6 +19,7 @@ class Step < ActiveRecord::Base
 
   def title(index=nil)
     return "Step %d" % (index.to_i + 1) if self[:title].blank? and index.present?
+    return "" if self[:title] == "-"
     self[:title] || ''
   end
 

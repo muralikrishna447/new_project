@@ -36,6 +36,15 @@
             %a.icon-comment{href: '#disqus_thread', data: {'disqus-identifier' => disqus_id}}
               %span.nav-label Comments
 
+          %li
+            %span.nav-label
+              %div{:id => "google_translate_element"}
+                :javascript
+                  function googleTranslateElementInit() {
+                    new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: 'UA-34555970-1'}, 'google_translate_element');
+                  }
+                %script{:type => "text/javascript", :src => "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"}
+
 
 #syllabus-body
   #syllabus-body-inner
