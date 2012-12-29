@@ -28,5 +28,29 @@ class Course < ActiveRecord::Base
 
   def moduled_activities
     activities.slice_before {|a| a.is_module_head?}
+  end
+
+  def first_published_activity
+    activities.find {|a| a.published? && (! a.is_module_head?)}
+  end
+
+  def next_published_activity(activity)
+    # I'm sure there is a clever one liner for this, writing on an airplane with no doc access
+    found_pivot = false
+    activities.each do |a|
+      return a if found_pivot && a.published? && (! a.is_module_head)
+      found_pivot = true if a == activity
     end
+    nil
+  end
+
+  def prev_published_activity(activity)
+    # I'm sure there is a clever one liner for this, writing on an airplane with no doc access
+    found_pivot = false
+    activities.reverse.each do |a|
+      return a if found_pivot && a.published? && (! a.is_module_head)
+      found_pivot = true if a == activity
+    end
+    nil
+  end
 end

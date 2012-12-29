@@ -4,7 +4,7 @@
 
   - content_for :title, activity.title.html_safe
 
-  = render 'courses/navigation', model: activity, disqus_id: disqus_id, syllabus_copy: syllabus_copy
+  = render 'courses/navigation', course: Course.find(params[:course_id]), activity: activity, disqus_id: disqus_id, syllabus_copy: syllabus_copy
 
   .hero-unit.hero-well.noprint
     .container

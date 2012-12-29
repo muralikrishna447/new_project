@@ -7,7 +7,7 @@
         .span8
           %h3= course.title
         .span4
-          %a.button.pull-right{ href: activity_path(course.activities.first) }
+          %a.button.pull-right{ href: course_activity_path(course, course.first_published_activity) }
             .inner
               Preview More
               %i.icon-double-chevron-right
