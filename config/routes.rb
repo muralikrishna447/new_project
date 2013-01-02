@@ -38,6 +38,14 @@ Delve::Application.routes.draw do
     end
   end
 
+  # Allow top level access to an activity even if it isn't in a course
+  # This will also be the rel=canonical version
+  resources :activities, only: [:show] do
+    member do
+      post 'cooked-this' => 'activities#cooked_this', as: 'cooked_this'
+    end
+  end
+
   resources :questions, only: [] do
     resources :answers, only: [:create]
   end
