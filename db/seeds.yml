@@ -27,6 +27,10 @@ admins:
   password: hueezer123
   name: Huy Nguyen
 
+- email: dbalatero@gmail.com
+  password: lingling
+  name: David Balatero
+
 activities:
 # - title: Lecture
 #   youtube_id: ydOB-YNJ8Jw
