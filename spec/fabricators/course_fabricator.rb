@@ -1,5 +1,5 @@
 Fabricator(:course) do
-  name        "MyString"
-  slug        "MyString"
-  description "MyText"
+  name        "TestCourse"
+  slug        "test-course"
+  description "Test Course"
 end

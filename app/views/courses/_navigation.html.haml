@@ -47,6 +47,9 @@
 
 
 #syllabus-body
+  :javascript
+    course_title = "#{course.title}"
+
   #syllabus-body-inner
-    = render 'courses/course_breakdown', course: Course.find_by_slug('gelatin-molds')
+    = render 'courses/course_breakdown', course: course
 
