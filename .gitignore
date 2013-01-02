@@ -15,3 +15,5 @@
 /tmp
 .rvmrc
 public/assets
+
+.powrc
