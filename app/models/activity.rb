@@ -19,11 +19,36 @@ class Activity < ActiveRecord::Base
 
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :is_module_head
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level
+
+  def is_module_head?
+    nesting_level == 0
+  end
+
+  def is_sub_activity?
+    nesting_level == 2
+  end
+
+  def nesting_level_class
+    return "module" if nesting_level == 0
+    return "subactivity" if nesting_level == 2
+    "activity"
+  end
+
+  def self.nesting_level_name(x)
+    return "0 - Module" if x == 0
+    return "2 - Sub-activity" if x == 2
+    "1 - Normal activity"
+  end
+
+  def nesting_level_name
+    Activity.nesting_level_name(nesting_level)
+  end
 
   def admin_title
-    return "MODULE: " + title if is_module_head?
-    title
+    return title.upcase if is_module_head?
+    return (("&nbsp;" * 8) + title).html_safe if is_sub_activity?
+    (("&nbsp;" * 4) + title).html_safe
   end
 
   def self.difficulty_enum

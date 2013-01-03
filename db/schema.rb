@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(:version => 20121227025850) do
     t.integer  "activity_order"
     t.boolean  "published",      :default => false
     t.string   "slug"
-    t.boolean  "is_module_head"
+    t.integer  "nesting_level",  :default => 1
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"

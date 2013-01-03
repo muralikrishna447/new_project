@@ -26,8 +26,12 @@ class Course < ActiveRecord::Base
     self
   end
 
-  def moduled_activities
-    activities.slice_before {|a| a.is_module_head?}
+  def hierarchical_activities
+    a = activities.slice_before {|x| x.nesting_level == 0}.to_a
+    a2 = a.collect do |m|
+      m.slice_before{ |x| x.nesting_level == 1 }.to_a
+    end
+    a2.to_a
   end
 
   def first_published_activity
@@ -38,7 +42,7 @@ class Course < ActiveRecord::Base
     # I'm sure there is a clever one liner for this, writing on an airplane with no doc access
     found_pivot = false
     activities.each do |a|
-      return a if found_pivot && a.published? && (! a.is_module_head)
+      return a if found_pivot && a.published? && (! a.is_module_head?)
       found_pivot = true if a == activity
     end
     nil
@@ -48,7 +52,7 @@ class Course < ActiveRecord::Base
     # I'm sure there is a clever one liner for this, writing on an airplane with no doc access
     found_pivot = false
     activities.reverse.each do |a|
-      return a if found_pivot && a.published? && (! a.is_module_head)
+      return a if found_pivot && a.published? && (! a.is_module_head?)
       found_pivot = true if a == activity
     end
     nil

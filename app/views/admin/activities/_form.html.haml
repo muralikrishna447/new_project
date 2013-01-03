@@ -4,7 +4,7 @@
 = semantic_form_for [:admin, @activity] do |f|
   = f.inputs name: "Activity Details" do
     = f.input :published
-    = f.input :is_module_head, label: "Module head? NOTE: only title will be used"
+    = f.input :nesting_level, label: "Nesting level", :as => :select, :collection => (0..2).collect { |level| [Activity.nesting_level_name(level), level] }
     = f.input :title
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
