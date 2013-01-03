@@ -1,5 +1,6 @@
 $ ->
-  return
+  return if ! course_title?
+
   $('#syllabus-body-inner h3').html(course_title)
 
   htmlNarrow = $('#syllabus-body').html()

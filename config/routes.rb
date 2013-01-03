@@ -31,11 +31,7 @@ Delve::Application.routes.draw do
   resources :user_profiles, only: [:show, :update], path: 'profiles'
 
   resources :courses, only: [:show] do
-    resources :activities, only: [:show], path: '' do
-      member do
-        post 'cooked-this' => 'activities#cooked_this', as: 'cooked_this'
-      end
-    end
+    resources :activities, only: [:show], path: ''
   end
 
   # Allow top level access to an activity even if it isn't in a course

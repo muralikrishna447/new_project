@@ -3,6 +3,7 @@
   - disqus_id = "activity-#{activity.id}"
 
   - content_for :title, activity.title.html_safe
+  - content_for :canonical_link, activity_url
   - course = Course.find(params[:course_id]) if params[:course_id]
 
   = render 'courses/navigation', course: course, activity: activity, disqus_id: disqus_id
