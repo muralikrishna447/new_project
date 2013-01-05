@@ -7,5 +7,5 @@ class Inclusion < ActiveRecord::Base
   belongs_to :course
   belongs_to :activity
 
-  attr_accessible :course, :activity, :activity_order
+  attr_accessible :course, :activity, :activity_order, :nesting_level
 end

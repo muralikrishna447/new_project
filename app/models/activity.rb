@@ -29,12 +29,6 @@ class Activity < ActiveRecord::Base
     nesting_level == 2
   end
 
-  def nesting_level_class
-    return "module" if nesting_level == 0
-    return "subactivity" if nesting_level == 2
-    "activity"
-  end
-
   def self.nesting_level_name(x)
     return "0 - Module" if x == 0
     return "2 - Sub-activity" if x == 2

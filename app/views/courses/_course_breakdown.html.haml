@@ -1,18 +1,20 @@
 %ul.course-breakdown.unstyled
   %li
     %h3 Syllabus
-  -course.hierarchical_activities.each_with_index do |m, idx|
+  -course.hierarchical_inclusions.each_with_index do |m, idx|
     %li.module
-      %h4= "Module " + (idx + 1).to_s + ": " + m.shift[0].title
+      %h4= "Module " + (idx + 1).to_s + ": " + m.shift[0].activity.title
       %ol
-        - m.each do |activity_group|
-          -activity = activity_group.shift
+        - m.each do |inclusion_group|
+          -inclusion = inclusion_group.shift
+          -activity = inclusion.activity
           -if activity.published?
             %li= link_to (raw activity.title), course_activity_path(course, activity)
           -else
             %li= raw activity.title
           %ul
-            -activity_group.each do |sub_activity|
+            -inclusion_group.each do |sub_inclusion|
+              -sub_activity = sub_inclusion.activity
               -if sub_activity.published?
                 %li= link_to (raw sub_activity.title), course_activity_path(course, sub_activity)
               -else

@@ -6,8 +6,9 @@
   activity_id = is_template ? nil : activity.id
 
 %tr{id: row_id, class: ('activity-row' if is_template )}
-  %td{class: (activity.nesting_level_class if ! is_template)}
+  %td
     = select_tag "course[activities][]", options_from_collection_for_select(Activity.all, "id", "admin_title", activity_id), include_blank: true
+    = select_tag :nesting_level, :collection => (0..2).collect { |level| [Activity.nesting_level_name(level), level] }
     = remove_button 'tr'
     = reorder_icon
 

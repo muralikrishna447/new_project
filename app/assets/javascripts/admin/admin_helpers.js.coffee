@@ -31,7 +31,35 @@ $ ->
   ).disableSelection()
 
 $ ->
+  $('ol.allow-nested').nestedSortable(
+    maxLevels: 3,
+    listType: 'ol',
+    handle: 'div',
+    items: 'li',
+    toleranceElement: '> div'
+    placeholder: 'placeholder',
+    forcePlaceholderSize:true,
+    helper: 'clone',
+    opacity: 0.6,
+    revert: 250,
+    tabSize: 20,
+    tolerance: 'pointer',
+    isTree: true,
+    expandOnHover: 700,
+   ).disableSelection()
+
+$ ->
+  $('.return_activities').click ->
+    arr = $('ol.allow-nested').nestedSortable('toArray')
+    result = "["
+    for act in arr
+      result += "[" + act['item_id'] + ", " + act['depth'] + "]" + ", "
+    result = result.slice(0, -2)
+    result += "]"
+    $('#activity_hierarchy').val(result)
+
+
+$ ->
   $('table.nested-records').each (index, el)->
     # show table if more than header and template row are present
     $(el).show() if $(el).find('tr').length > 2
-

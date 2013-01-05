@@ -7,15 +7,16 @@
     = f.input :description, label: "Description (Markdown or HTML)"
 
   = section("Activities", f) do
+    = hidden_field_tag "activity_hierarchy"
     %li= copy_button('Add Activity', '#activity-row', 'table#activities')
-    = sortable_table('activities') do
-      %tr
-        %th
-      = render 'activity_form', activity: nil
+    %ol.sortable.allow-nested
       - @course.activities.each do |activity|
-        = render 'activity_form', activity: activity
+        %li{id: "act_" + activity.id.to_s}
+          %div
+            =activity.title
+            =remove_button 'li'
 
   = f.actions do
-    = f.action :submit
+    = f.action :submit, wrapper_html: {class: "return_activities"}
     = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
 

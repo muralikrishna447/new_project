@@ -1,4 +1,5 @@
 .noprint{ data: { behavior: 'stick-to-top-anchor' } }
+
 .sticky-navbar.noprint{ data: { behavior: 'stick-to-top' } }
   .container
     .navbar
@@ -19,9 +20,10 @@
               = link_to course_activity_path(course, next_activity) do
                 %span.nav-anchors.nav-label Next&nbsp;
                 %i.icon-double-chevron-right
-          %li#syllabus-flyout
-            %a.icon-list-alt.icon-white
-              %span.nav-label Syllabus
+          - if course
+            %li#syllabus-flyout
+              %a.icon-list-alt.icon-white
+                %span.nav-label Syllabus
           %li
             %a.icon-chevron-up.icon-white{href: '#overview'}
               %span.nav-label Top

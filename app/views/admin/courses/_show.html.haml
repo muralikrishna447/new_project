@@ -21,5 +21,31 @@
             %td
               %ul
                 - course.activities.each do |activity|
-                  %li= link_to activity.admin_title, admin_activity_path(activity), :style => "text-decoration: none;"
+                  %li= link_to activity.title, admin_activity_path(activity), :style => "text-decoration: none;"
 
+          %tr
+            %th Nested Activities
+            %td
+              :erb
+                <% depth = 1%>
+                <ul>
+                <%course.inclusions.each.each do |cfg|%>
+                  <%if depth < cfg.nesting_level %>
+                    <ul>
+                  <%elsif depth > cfg.nesting_level %>
+                      <%
+                      # take care of the free fall
+                      (depth - cfg.nesting_level).times do
+                      %>
+                        </ul>
+                      <%end%>
+                  <%end%>
+                  <li> <%= cfg.activity.title %></li>
+                  <%depth = cfg.nesting_level %>
+                <%end%>
+                <%
+                # take care of the final free fall
+                depth.times do
+                %>
+                  </ul>
+                <%end%>

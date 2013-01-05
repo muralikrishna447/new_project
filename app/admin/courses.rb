@@ -32,21 +32,21 @@ ActiveAdmin.register Course do
   end
 
   controller do
-    def extract_activities
-      activities = params[:course].delete(:activities)
-     end
+    def extract_activity_hierarchy
+      activities = JSON.parse(params[:activity_hierarchy])
+    end
 
     def create
-      activities = extract_activities
+      activity_hierarchy = extract_activity_hierarchy
       @course = Course.create(params[:course])
-      @course.update_activities(activities)
+      @course.update_activities(activity_hierarchy)
       create!
     end
 
     def update
-      activities = extract_activities
+      activity_hierarchy = extract_activity_hierarchy
       @course = Course.find(params[:id])
-      @course.update_activities(activities)
+      @course.update_activities(activity_hierarchy)
       update!
     end
 
