@@ -23,11 +23,14 @@ $ ->
     src_element = $($(this).data('src-element'))
     dest_list = $($(this).data('dest-list'))
     new_element = $($(this).data('insert-what')).clone()
-    new_element.attr("id", "act_" + src_element.val())
+    new_id = "act_" + src_element.val()
+    new_element.attr("id", new_id)
+    if ($("body").find('#' + new_id).length > 0)
+      alert("That activity is already in the syllabus.")
+      return
     name = (src_element.find('option:selected').html())
     new_element.html(new_element.html().replace("Replace", name))
     dest_list.append(new_element)
-
 
 $ ->
   fixHelper = (e, ui) ->
@@ -68,12 +71,10 @@ $ ->
       result += "[" + act['item_id'] + ", " + (act['depth'] - 1) + "]" + ", "
     result = result.slice(0, -2)
     result += "]"
-    alert(result)
     $('#activity_hierarchy').val(result)
 
 $ ->
   $('#activity_select').click ->
-    alert("foo")
     $(this).find("option:last-child").attr({ disabled: 'disabled' })
 
 
