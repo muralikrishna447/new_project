@@ -21,7 +21,7 @@ guard 'spork' do
   watch(%r{^spec/support/.*\.rb$})
 end
 
-guard 'rspec', cli: "--color --drb --fail-fast -f #{ENV['RSPEC_FORMAT'] || 'progress'}", bundler: false do
+guard 'rspec', cli: "--profile --color --drb --fail-fast -f #{ENV['RSPEC_FORMAT'] || 'progress'}", bundler: false do
   watch(%r{spec/(.*)_spec.rb})
   watch(%r{app/(.*)\.rb})                            { |m| "spec/#{m[1]}_spec.rb" }
   watch(%r{app/(.*\.haml)})                          { |m| "spec/#{m[1]}_spec.rb" }
