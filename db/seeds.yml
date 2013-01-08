@@ -428,10 +428,16 @@ activities:
     You have seen the bagel. You have eaten the bagel.
     Now the bagel eats you.
 
+- title: All About Sous Vide
+
+- title: All About Jello
+
 courses:
 - title: Accelerated Sous Vide Cooking Course
   order: 1
   activities:
+  - title: All About Sous Vide
+    nesting_level: 0
   - title: Horseradish Cream
   - title: Salmon 104 &deg;F
   - title: Watercress Puree
@@ -453,6 +459,8 @@ courses:
 - title: Gelatin Molds
   order: 2
   activities:
+  - title: All About Jello
+    nesting_level: 0
   - title: Bagel Of Death
   - title: Watercress Puree
   - title: Horseradish Cream

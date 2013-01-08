@@ -73,6 +73,33 @@ body.admin_namespace
       font-size: 16px
       cursor: move
 
+  #template_activity, #template_module
+    display: none
+
+  .control-row
+    margin-left: 16px
+    margin-bottom: 16px
+
+  // nested activity stuff for both edit and pretty views
+  .nested-activity-list-shared
+    >ol >li  >div
+      text-transform: uppercase
+      &:before
+        content: 'MODULE: '
+      margin-top: 20px
+
+    ol
+      list-style-type: none
+      ol
+        list-style-type: decimal
+        ol
+          list-style-type: none
+          div
+            &:before
+              content: '- '
+
+
+  // nested activity stuff for use in edit form only
   .sortable.allow-nested
     .placeholder
       background-color: #cfcfcf
@@ -93,6 +120,17 @@ body.admin_namespace
         border: 1px solid #999
         background: #c2c2c2
         color: #333
+
+      button
+        float: right
+
+  // nested activity stuff for pretty views only
+  .nested-activity-list-pretty
+    ol ol ol li
+      list-style-type: none
+      margin-left: 14px
+
+
 
 
   fieldset.inputs.no-background
