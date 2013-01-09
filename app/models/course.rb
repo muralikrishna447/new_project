@@ -40,23 +40,17 @@ class Course < ActiveRecord::Base
     inclusion = inclusions.find {|i| i.activity.published? && (i.nesting_level != 0)}
   end
 
-  def next_published_activity(activity)
+  def next_published_activity(activity, inclusion_list = inclusions)
     # I'm sure there is a clever one liner for this, writing on an airplane with no doc access
     found_pivot = false
-    activities.each do |a|
-      return a if found_pivot && a.published? && (! a.is_module_head?)
-      found_pivot = true if a == activity
+    inclusion_list.each do |incl|
+      return incl.activity if found_pivot && incl.activity.published? && (incl.nesting_level != 0)
+      found_pivot = true if incl.activity == activity
     end
     nil
   end
 
   def prev_published_activity(activity)
-    # I'm sure there is a clever one liner for this, writing on an airplane with no doc access
-    found_pivot = false
-    activities.reverse.each do |a|
-      return a if found_pivot && a.published? && (! a.is_module_head?)
-      found_pivot = true if a == activity
-    end
-    nil
+    next_published_activity(activity, inclusions.reverse)
   end
 end

@@ -80,17 +80,32 @@ body.admin_namespace
     margin-left: 16px
     margin-bottom: 16px
 
-  // nested activity stuff for both edit and pretty views
-  .nested-activity-list-shared
-    >ol >li  >div
-      text-transform: uppercase
-      &:before
-        content: 'MODULE: '
-      margin-top: 20px
+  fieldset.inputs.no-background
+    background: none
 
-    ol
+  a.admin-button, button.admin-button
+    @include light-button
+
+  .two-button-row
+    overflow: hidden
+    a, button
+      float: right
+      &:first-child
+        float: left
+
+  // nested activity stuff for both edit and show view
+  .nested-activity-list-shared
+    counter-reset: module-counter
+    .module
+      margin-top: 20px
       list-style-type: none
 
+      > div
+        text-transform: uppercase
+        font-weight: bold
+        &:before
+          content: 'MODULE ' counter(module-counter) ':  '
+          counter-increment: module-counter
 
   // nested activity stuff for use in edit form only
   .sortable.allow-nested
@@ -110,38 +125,22 @@ body.admin_namespace
         padding: 5px
         cursor: move
         border: 1px solid #999
-        background: #c2c2c2
+        background: #eee
         color: #333
 
       button
         float: right
 
-  // nested activity stuff for pretty views only
+  // nested activity stuff for show only
   .nested-activity-list-pretty
-    ol
+    .activity
+      list-style-type: decimal
+
+    .subactivity
       list-style-type: none
-      ol
-        list-style-type: decimal
-        ol
-          list-style-type: none
-          div
-            &:before
-              content: '- '
-
-
-
-  fieldset.inputs.no-background
-    background: none
-
-  a.admin-button, button.admin-button
-    @include light-button
-
-  .two-button-row
-    overflow: hidden
-    a, button
-      float: right
-      &:first-child
-        float: left
+      div
+        &:before
+          content: '- '
 
 .admin_recipes.associated_ingredients
   .step-ingredients

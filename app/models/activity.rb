@@ -21,30 +21,6 @@ class Activity < ActiveRecord::Base
 
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level
 
-  def is_module_head?
-    nesting_level == 0
-  end
-
-  def is_sub_activity?
-    nesting_level == 2
-  end
-
-  def self.nesting_level_name(x)
-    return "0 - Module" if x == 0
-    return "2 - Sub-activity" if x == 2
-    "1 - Normal activity"
-  end
-
-  def nesting_level_name
-    Activity.nesting_level_name(nesting_level)
-  end
-
-  def admin_title
-    return title.upcase if is_module_head?
-    return (("&nbsp;" * 8) + title).html_safe if is_sub_activity?
-    (("&nbsp;" * 4) + title).html_safe
-  end
-
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
   end

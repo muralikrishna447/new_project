@@ -27,7 +27,9 @@
       %ol
 
     .nested-activity-list-shared
-      =render partial: 'shared/nested_activities', :locals => {:for_form => true}
+      =render layout: 'shared/nested_activities', :locals => {:for_form => true, course: @course} do |incl|
+        = raw incl.activity.title.strip
+        = remove_button 'li'
 
   = f.actions do
     = f.action :submit, wrapper_html: {class: "return_activities"}

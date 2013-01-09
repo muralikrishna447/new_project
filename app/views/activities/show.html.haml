@@ -17,8 +17,9 @@
               %iframe{src: youtube_url(activity.youtube_id)}
 
   = render 'overview', activity: activity
-  #step-by-step
-    = render 'step_by_step', activity: activity
+  -if activity.steps.any? || activity.recipe_steps.any?
+    #step-by-step
+      = render 'step_by_step', activity: activity
   = render 'quizzes', activity: activity
   = render 'cooked_this_button', activity: activity
 

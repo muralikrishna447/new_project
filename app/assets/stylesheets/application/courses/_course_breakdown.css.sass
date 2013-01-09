@@ -4,28 +4,43 @@
     color: $brick
     text-transform: none
     margin-top: 3.2em
-  h4
-    +font-sans-small
-    color:  black
-    text-transform: uppercase
-    font-weight: bold
 
-.module
-  margin-top: 20px
-  ul
+.nested-activity-list-shared, .nested-activity-list-pretty
+  counter-reset: module-counter
+
+  ol
+    margin-left: 0
+
+  .module
+    margin-top: 20px
+    list-style-type: none
+
+    > div
+      +font-sans-small
+      color:  black
+      text-transform: uppercase
+      font-weight: bold
+
+      &:before
+        content: 'MODULE ' counter(module-counter) ':  '
+        counter-increment: module-counter
+
+
+  .activity
+    +font-sans-small
+    color: $gray
+    list-style-type: decimal
+    margin-left: 22px
+    margin-top: 10px
+    text-transform: none
+
+  .subactivity
     list-style-type: none
     margin-left: 20px
-    li
-      text-indent: -5px
+
+    > div
       &:before
         content: '-'
         position: relative
         left: -5px
-  li
-    +font-sans-small
-    color: $gray
-    margin-top: 10px
-
-.module:first-child
-  margin-top: 0
 

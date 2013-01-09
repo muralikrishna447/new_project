@@ -7,11 +7,11 @@ $ ->
 
   # Restyle the syllabus to a 2 column format if on a wide device and
   # needed to fit. Could be done on the server side, but this keeps it responsive.
-  $('#syllabus-body-inner').append('<div class="col col1"><ul></ul></div>')
-  $('#syllabus-body-inner').append('<div class="col col2"><ul></ul></div>')
-  num_modules = $('#syllabus-body-inner > ul .module').length
-  $('#syllabus-body-inner > ul .module').slice(0, num_modules / 2).appendTo($('#syllabus-body-inner .col1 ul'))
-  $('#syllabus-body-inner > ul .module').appendTo($('#syllabus-body-inner .col2 ul'))
+  $('#syllabus-body-inner').append('<div class="col col1"><ol></ol></div>')
+  $('#syllabus-body-inner').append('<div class="col col2"><ol></ol></div>')
+  num_modules = $('#syllabus-body-inner .module').length
+  $('#syllabus-body-inner .module').slice(0, num_modules / 2).appendTo($('#syllabus-body-inner .col1 ol'))
+  $('#syllabus-body-inner .module').appendTo($('#syllabus-body-inner .col2 ol'))
 
   $('#syllabus-flyout').click ->
     narrow = ($(window).width() <= 500) ||   (num_modules < 2)
