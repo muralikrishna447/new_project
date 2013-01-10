@@ -25,7 +25,6 @@ module AdminHelper
     }, class: 'admin-button')
   end
 
-
   def reorder_icon
     content_tag(:i, '', class: ['icon-reorder', 'icon-large'])
   end

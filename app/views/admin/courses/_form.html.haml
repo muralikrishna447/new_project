@@ -10,26 +10,41 @@
     = hidden_field_tag "activity_hierarchy"
 
     .control-row
+      = text_field_tag "new_activity_name", nil, size: 80, placeholder: "New Activity or Module Name", style: "width: auto;"
+      = add_activity_to_list_button('Create New Module', '#new_activity_name', '#activity_list', "#template_module")
+      = add_activity_to_list_button('Create New Activity', '#new_activity_name', '#activity_list > li:last-child > ol', "#template_activity")
+
+    .control-row
       = select_tag "activity_select", options_from_collection_for_select(Activity.all, "id", "title")
       = add_activity_to_list_button('Add Module', '#activity_select', '#activity_list', "#template_module")
       = add_activity_to_list_button('Add Activity', '#activity_select', '#activity_list > li:last-child > ol', "#template_activity")
 
     // templates for add buttons to copy
-    %li#template_activity
+    %li#template_activity.activity.mjs-nestedSortable-leaf
       %div
-        Replace
+        %span.disclose
+          %span
+        %span.activity-title
+          Replace
         =remove_button 'li'
 
-    %li#template_module
+    %li#template_module.module.mjs-nestedSortable-leaf
       %div
-        Replace
+        %span.disclose
+          %span
+        %span.activity-title
+          Replace
         =remove_button 'li'
       %ol
 
     .nested-activity-list-shared
       =render layout: 'shared/nested_activities', :locals => {:for_form => true, course: @course} do |incl|
-        = raw incl.activity.title.strip
+        %span.disclose
+          %span
+        %span.activity-title= raw incl.activity.title.strip
         = remove_button 'li'
+      -if @course.inclusions.count == 0
+        %ol#activity_list.sortable.allow-nested
 
   = f.actions do
     = f.action :submit, wrapper_html: {class: "return_activities"}

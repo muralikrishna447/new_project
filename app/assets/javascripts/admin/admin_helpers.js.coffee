@@ -23,14 +23,26 @@ $ ->
     src_element = $($(this).data('src-element'))
     dest_list = $($(this).data('dest-list'))
     new_element = $($(this).data('insert-what')).clone()
-    new_id = "act_" + src_element.val()
-    new_element.attr("id", new_id)
+
+    # Existing activity
+    if src_element.get(0).tagName == 'SELECT'
+      new_id = "act_" + src_element.val()
+      name = (src_element.find('option:selected').html())
+
+    # New activity
+    else
+      name = src_element.val()
+      new_id = "act_" + (100000 + (Date.now() % 100000)).toString()
+
     if ($("body").find('#' + new_id).length > 0)
       alert("That activity is already in the syllabus.")
       return
-    name = (src_element.find('option:selected').html())
+
+    new_element.attr("id", new_id)
     new_element.html(new_element.html().replace("Replace", name))
+    new_element.data("name", name)
     dest_list.append(new_element)
+    new_element.parents(".mjs-nestedSortable-leaf").removeClass("mjs-nestedSortable-leaf").addClass("mjs-nestedSortable-branch").addClass("mjs-nestedSortable-expanded")
 
 $ ->
   fixHelper = (e, ui) ->
@@ -64,11 +76,17 @@ $ ->
    ).disableSelection()
 
 $ ->
+  $(document).on "click", ".disclose", ->
+    $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed', '300').toggleClass('mjs-nestedSortable-expanded', '300')
+
+$ ->
   $('.return_activities').click ->
     arr = $('ol.allow-nested').nestedSortable('toArray')
     result = "["
     for act in arr
-      result += "[" + act['item_id'] + ", " + (act['depth'] - 1) + "]" + ", "
+      li = $('ol.allow-nested').find("#act_" + act['item_id'])
+      title = $.trim(li.data("name"))
+      result += "[" + act['item_id'] + ", " + (act['depth'] - 1) + ', "' + title + '"]' + ", "
     result = result.slice(0, -2)
     result += "]"
     $('#activity_hierarchy').val(result)

@@ -6,11 +6,11 @@ describe Course do
   let!(:course_middle) { Fabricate(:course, course_order_position: 1, published: true) }
   let!(:course_private) { Fabricate(:course, course_order_position: 3) }
 
-  let!(:activity0) { Fabricate(:activity, id: 99, nesting_level: 0, published: true) }
+  let!(:activity0) { Fabricate(:activity, id: 99,  published: true) }
   let!(:activity1) { Fabricate(:activity, id: 100, published: true) }
   let!(:activity2) { Fabricate(:activity, id: 200, published: false) }
   let!(:activity3) { Fabricate(:activity, id: 300, published: true) }
-  let!(:activity4) { Fabricate(:activity, id: 400, nesting_level: 0, published: true) }
+  let!(:activity4) { Fabricate(:activity, id: 400, published: true) }
   let!(:activity5) { Fabricate(:activity, id: 500, published: true) }
 
 
@@ -21,19 +21,38 @@ describe Course do
     Course.ordered.all.should == [course_last, course_first, course_middle, course_private]
   end
 
-  it "adds 3 activities and messes with order" do
-    course_first.update_activities([100, 200, 300])
-    course_first.first_published_activity.should == activity1
-    course_first.update_activities([300, 200, 100])
-    course_first.first_published_activity.should == activity3
-    course_first.next_published_activity(activity3).should == activity1
-    course_first.prev_published_activity(activity3).should == nil
-    course_first.next_published_activity(activity1).should == nil
-    course_first.prev_published_activity(activity1).should == activity3
+  it "adds 3 activities" do
+    c = course_first
+    c.update_activities([[100, 0, ""], [200, 1, ""], [300, 1, ""]])
+    c.activities.count.should == 3
+    c.first_published_activity.should == activity3
   end
 
-  it "handles modules" do
-    course_first.update_activities([99, 100, 200, 300, 400, 500])
-    course_first.moduled_activities.should have(2).array
+  it "adds a more complex hierarchy"do
+    c = course_first
+    c.update_activities([[500, 0, ""], [300, 1, ""], [200, 0, ""], [100, 1, ""], [400, 2, ""]])
+    c.first_published_activity.should == activity3
+    c.next_published_activity(activity3).should == activity1
+    c.prev_published_activity(activity3).should == nil
+    c.next_published_activity(activity4).should == nil
+    c.prev_published_activity(activity4).should == activity1
+  end
+
+  it "has two courses that share an activity" do
+    c1 = course_first
+    c2 = course_last
+    c1.update_activities([[99, 0, ""], [100, 1, ""], [300, 1, ""]])
+    c2.update_activities([[99, 0, ""], [100, 1, ""], [400, 1, ""]])
+    c1.first_published_activity.should == activity1
+    c2.first_published_activity.should == activity1
+    c1.next_published_activity(activity1).should == activity3
+    c2.next_published_activity(activity1).should == activity4
+  end
+
+  it "creates a new module and activity on the fly" do
+    c = course_first
+    c.update_activities([[99, 0, ""], [100,1, ""], [99999, 1, "Cool Activity Dude"], [300, 1, ""]])
+    c.activities.find { |x| x.title == "Cool Activity Dude"}.should_not == nil
+    c.activities.find { |x| x.title == "Fork Me"}.should == nil
   end
 end

@@ -21,4 +21,4 @@
             %td
               .nested-activity-list-shared.nested-activity-list-pretty
                 =render layout: 'shared/nested_activities', :locals => {for_form: false, course: @course} do |incl|
-                  = link_to (raw incl.activity.title.strip), admin_activity_path(incl.activity)
+                  = link_to (raw incl.activity.title.strip), edit_admin_activity_path(incl.activity)

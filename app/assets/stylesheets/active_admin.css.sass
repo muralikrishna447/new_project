@@ -93,20 +93,6 @@ body.admin_namespace
       &:first-child
         float: left
 
-  // nested activity stuff for both edit and show view
-  .nested-activity-list-shared
-    counter-reset: module-counter
-    .module
-      margin-top: 20px
-      list-style-type: none
-
-      > div
-        text-transform: uppercase
-        font-weight: bold
-        &:before
-          content: 'MODULE ' counter(module-counter) ':  '
-          counter-increment: module-counter
-
   // nested activity stuff for use in edit form only
   .sortable.allow-nested
     .placeholder
@@ -125,11 +111,47 @@ body.admin_namespace
         padding: 5px
         cursor: move
         border: 1px solid #999
-        background: #eee
+        background: #c9c9c9
         color: #333
 
       button
         float: right
+
+    .disclose
+      cursor: pointer
+      width: 10px
+      display: none
+
+    li.mjs-nestedSortable-collapsed > ol
+      display: none
+
+
+    li.mjs-nestedSortable-branch > div > .disclose
+      display: inline-block
+
+
+    li.mjs-nestedSortable-collapsed > div > .disclose > span:before
+      content: "\25B6 "
+
+    li.mjs-nestedSortable-expanded > div > .disclose > span:before
+      content: "\25BC "
+
+  // nested activity stuff for both edit and show view
+  .nested-activity-list-shared
+    counter-reset: module-counter
+    .module
+      margin-top: 20px
+      list-style-type: none
+
+      > div
+        text-transform: uppercase
+        font-weight: bold
+        // Once I added the disclosure stuff, (removing the x below) causes
+        // some sort of horrific bug when you start dragging in webkit
+        .xactivity-title
+          &:before
+            content: 'MODULE ' counter(module-counter) ':  '
+            counter-increment: module-counter
 
   // nested activity stuff for show only
   .nested-activity-list-pretty
@@ -141,6 +163,10 @@ body.admin_namespace
       div
         &:before
           content: '- '
+
+  #new_activity_name
+    width: auto
+
 
 .admin_recipes.associated_ingredients
   .step-ingredients
@@ -173,4 +199,5 @@ body.admin_namespace
 
 .input.hidden
   padding: 0
+
 

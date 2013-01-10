@@ -12,6 +12,9 @@
  */
 
 (function($) {
+    if (typeof $.ui.sortable == "undefined") {
+        return
+    }
 
 	$.widget("mjs.nestedSortable", $.extend({}, $.ui.sortable.prototype, {
 
