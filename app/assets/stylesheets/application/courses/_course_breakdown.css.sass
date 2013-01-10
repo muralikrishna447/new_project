@@ -6,7 +6,6 @@
     margin-top: 3.2em
 
 .nested-activity-list-shared, .nested-activity-list-pretty
-  counter-reset: module-counter
 
   ol
     margin-left: 0
@@ -14,6 +13,7 @@
   .module
     margin-top: 20px
     list-style-type: none
+    counter-increment: module-counter
 
     > div
       +font-sans-small
@@ -23,7 +23,6 @@
 
       &:before
         content: 'MODULE ' counter(module-counter) ':  '
-        counter-increment: module-counter
 
 
   .activity

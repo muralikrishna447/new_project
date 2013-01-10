@@ -11,8 +11,9 @@ $ ->
   col2 = $('<div class="col col2 nested-activity-list-shared nested-activity-list-pretty"><ol></ol></div>');
 
   num_modules = $('#syllabus-body-inner .module').length
-  $('#syllabus-body-inner .module').slice(0, num_modules / 2).appendTo(col1)
-  $('#syllabus-body-inner .module').appendTo($(col2))
+  $('#syllabus-body-inner .module').slice(0, num_modules / 2).appendTo(col1.find("ol"))
+  $('#syllabus-body-inner .module').appendTo($(col2.find("ol")))
+  col2.find(".module").first().css("counter-reset", "module-counter " + num_modules / 2)
   $('#syllabus-body-inner').append(col1).append(col2)
 
   $('#syllabus-flyout').click ->

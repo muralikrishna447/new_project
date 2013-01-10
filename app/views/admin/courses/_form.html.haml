@@ -15,7 +15,7 @@
       = add_activity_to_list_button('Create New Activity', '#new_activity_name', '#activity_list > li:last-child > ol', "#template_activity")
 
     .control-row
-      = select_tag "activity_select", options_from_collection_for_select(Activity.all, "id", "title")
+      = select_tag "activity_select", options_from_collection_for_select(Activity.all.sort_by { |a| a.title.to_s }.reject { |a| a.title.to_s.empty?}, "id", "title")
       = add_activity_to_list_button('Add Module', '#activity_select', '#activity_list', "#template_module")
       = add_activity_to_list_button('Add Activity', '#activity_select', '#activity_list > li:last-child > ol', "#template_activity")
 
