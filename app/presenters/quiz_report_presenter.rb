@@ -44,9 +44,11 @@ class QuizReportPresenter
 
   def multiple_choice_user_answers(question, user_answers)
     question.answers.each do |answer|
-      email = answer.user.email
-      user_answers[email] ||= []
-      user_answers[email] << question.contents.option_display(answer.contents.uid)
+      if answer.user
+        email = answer.user.email
+        user_answers[email] ||= []
+        user_answers[email] << question.contents.option_display(answer.contents.uid)
+      end
     end
   end
 
@@ -68,12 +70,14 @@ class QuizReportPresenter
 
   def box_sort_user_answers(question, user_answers)
     question.answers.each do |answer|
-      email = answer.user.email
-      user_answers[email] ||= []
-      question.images.each do |image|
-        user_selection = answer.contents.answers.find {|a| a['id'] == image.id}
-        option = question.contents.option(user_selection['optionUid'])
-        user_answers[email] << (option && option[:text])
+      if answer.user
+        email = answer.user.email
+        user_answers[email] ||= []
+        question.images.each do |image|
+          user_selection = answer.contents.answers.find {|a| a['id'] == image.id}
+          option = question.contents.option(user_selection['optionUid'])
+          user_answers[email] << (option && option[:text])
+        end
       end
     end
   end
