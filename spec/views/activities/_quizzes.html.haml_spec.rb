@@ -20,6 +20,6 @@ describe 'activities/_quizzes.html.haml' do
   it 'renders if quizzes are shown and activity has quizzes' do
     view.stub(:show_quizzes?) { true }
     render 'quizzes', activity: activity
-    rendered.should have_content 'Quizzes'
+    rendered.should_not be_blank
   end
 end
