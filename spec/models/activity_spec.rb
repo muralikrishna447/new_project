@@ -285,47 +285,6 @@ describe Activity, "#update_steps" do
   end
 end
 
-describe Activity, 'ordering' do
-  let!(:activity_last) { Fabricate(:activity, activity_order_position: 2, published: true) }
-  let!(:activity_first) { Fabricate(:activity, activity_order_position: 0, published: true) }
-  let!(:activity_middle) { Fabricate(:activity, activity_order_position: 1, published: true) }
-  let!(:activity_private) { Fabricate(:activity, activity_order_position: 3) }
-
-  its "ordered scope returns activities in order" do
-    Activity.ordered.all.should == [activity_first, activity_middle, activity_last, activity_private]
-  end
-
-  context "#next" do
-    it "returns the next published-ordered activity" do
-      activity_first.next.should == activity_middle
-      activity_middle.next.should == activity_last
-    end
-
-    it "returns nil if at end of collectin" do
-      activity_last.next.should_not be
-    end
-
-    it "returns nil if called on private activity" do
-      activity_private.next.should_not be
-    end
-  end
-
-  context "#prev" do
-    it "returns the previous published-ordered activity" do
-      activity_last.prev.should == activity_middle
-      activity_middle.prev.should == activity_first
-    end
-
-    it "returns nil if at beginning of collection" do
-      activity_first.prev.should_not be
-    end
-
-    it "returns nil if called on private activity" do
-      activity_private.prev.should_not be
-    end
-  end
-end
-
 describe Activity, 'has_quizzes?' do
   let(:activity) { Fabricate.build(:activity) }
 
