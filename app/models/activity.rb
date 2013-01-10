@@ -1,11 +1,8 @@
 class Activity < ActiveRecord::Base
   extend FriendlyId
-  include RankedModel
   include PublishableModel
 
   friendly_id :title, use: :slugged
-
-  ranks :activity_order
 
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
@@ -17,11 +14,12 @@ class Activity < ActiveRecord::Base
 
   has_many :quizzes
 
+  has_many :inclusions
+  has_many :courses, :through => :inclusions
+
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
-  scope :ordered, rank(:activity_order)
-
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :activity_order, :description, :equipment
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']

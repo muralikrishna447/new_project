@@ -16,6 +16,15 @@ module AdminHelper
     end
   end
 
+  def add_activity_to_list_button(text, src_element, dest_list, insert_what)
+    button_tag(text, data: {
+        behavior: 'add_activity_to_list',
+        'src-element' => src_element,
+        'dest-list' => dest_list,
+        'insert_what' => insert_what,
+    }, class: 'admin-button')
+  end
+
   def reorder_icon
     content_tag(:i, '', class: ['icon-reorder', 'icon-large'])
   end

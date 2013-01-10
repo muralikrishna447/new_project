@@ -1,0 +1,22 @@
+- depth = -1
+
+- course.inclusions.each do |incl|
+  -if incl.nesting_level > depth
+    -if for_form && (depth == -1)
+      <ol id = "activity_list" class = "sortable allow-nested">
+    -else
+      <ol>
+  -elsif incl.nesting_level == depth
+    </li>
+  -elsif incl.nesting_level < depth
+    -(depth - incl.nesting_level).times do
+      </li>
+      </ol>
+  <li id="act_#{incl.activity.id}" class="#{incl.nesting_level == 0 ? 'module' : (incl.nesting_level == 1 ? 'activity' :'subactivity')}">
+  %div>
+    = yield incl
+  -depth = incl.nesting_level
+
+-(depth - -1).times do
+  </li>
+  </ol>

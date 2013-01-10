@@ -59,6 +59,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'rack-contrib'
   gem 'pry'
+  gem 'rails-dev-tweaks', '~> 0.6.1'
 end
 
 group :guard do

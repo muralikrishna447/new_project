@@ -1,0 +1,24 @@
+.panel
+  %h3 Course
+  .panel_contents
+    .attributes_table
+      %table
+        %tbody
+          %tr
+            %th Published
+            %td= course.published
+          %tr
+            %th Link
+            %td= link_to_publishable(course)
+          %tr
+            %th Title
+            %td= course.title
+          %tr
+            %th Description
+            %td= course.description
+          %tr
+            %th Activities
+            %td
+              .nested-activity-list-shared.nested-activity-list-pretty
+                =render layout: 'shared/nested_activities', :locals => {for_form: false, course: @course} do |incl|
+                  = link_to (raw incl.activity.title.strip), edit_admin_activity_path(incl.activity)
