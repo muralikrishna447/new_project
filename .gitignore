@@ -15,5 +15,5 @@
 /tmp
 .rvmrc
 public/assets
-
+db/schema.rb.*
 .powrc

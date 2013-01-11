@@ -1,7 +1,8 @@
 class CoursesController < ApplicationController
+
   expose(:activities) { Activity.ordered.published.all }
-  expose(:syllabus_copy) { Copy.find_by_location('course-syllabus') }
-  expose(:course_description) { Copy.find_by_location('course-description') }
+  expose(:activity) { Activity.find_published(params[:id], params[:token])}
+  expose(:course) { Course.find(params[:id]) }
   expose(:bio_chris) { Copy.find_by_location('instructor-chris') }
   expose(:bio_grant) { Copy.find_by_location('instructor-grant') }
 end

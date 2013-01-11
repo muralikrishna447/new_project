@@ -4,7 +4,7 @@ ActiveAdmin.register Activity do
   menu priority: 2
 
   action_item only: [:index] do
-    link_to('Order Activties', activities_order_admin_activities_path)
+    link_to('Order Activities', activities_order_admin_activities_path)
   end
 
   action_item only: [:show, :edit] do

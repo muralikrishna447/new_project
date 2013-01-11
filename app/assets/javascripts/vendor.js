@@ -16,3 +16,4 @@
 //= require crossroads
 //= require jquery.cookie
 //= require jquery.colorbox
+//= require jquery.mjs.nestedSortable

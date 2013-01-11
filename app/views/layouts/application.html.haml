@@ -117,12 +117,16 @@
 
     -# %script{:src => "/js/libs/modernizr.custom.js"}
 
-    :erb
-      <script type="text/javascript">var switchTo5x=false;</script>
+    %script{:type => "text/javascript"}
+      var switchTo5x=false;
 
     -# Google Translate
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
 
+    -# Canonical links for activities, so they can be in multiple courses without a duplicate
+    -# content penalty.
+    -if ! yield(:canonical_link).empty?
+      %link{rel: "canonical", href: yield(:canonical_link) }
   %body{ data: body_data }
 
     -# ==========================================================================

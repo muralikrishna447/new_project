@@ -1,31 +1,30 @@
 $ ->
+  return if ! course_title?
 
-  $('#syllabus-body-inner h3').html("Accelerated Sous Vide Cooking Course")
+  $('#syllabus-body-inner h3').html(course_title)
 
   htmlNarrow = $('#syllabus-body').html()
 
-  # This is a hack to create a two column layout from the same copy used for the
-  # course syllabus on the main course page. It can go away once courses are
-  # a first class object that we can render as needed.
-  $('#syllabus-body-inner').append('<div class="col col1"><ul></ul></div>')
-  $('#syllabus-body-inner').append('<div class="col col2"><ul></ul></div>')
-  $('#syllabus-body-inner > ul .module').slice(0, 4).appendTo($('#syllabus-body-inner .col1 ul'))
-  $('#syllabus-body-inner > ul .module').appendTo($('#syllabus-body-inner .col2 ul'))
+  # Restyle the syllabus to a 2 column format if on a wide device and
+  # needed to fit. Could be done on the server side, but this keeps it responsive.
+  col1 = $('<div class="col col1 nested-activity-list-shared nested-activity-list-pretty"><ol></ol></div>');
+  col2 = $('<div class="col col2 nested-activity-list-shared nested-activity-list-pretty"><ol></ol></div>');
+
+  num_modules = $('#syllabus-body-inner .module').length
+  $('#syllabus-body-inner .module').slice(0, num_modules / 2).appendTo(col1.find("ol"))
+  $('#syllabus-body-inner .module').appendTo($(col2.find("ol")))
+  col2.find(".module").first().css("counter-reset", "module-counter " + num_modules / 2)
+  $('#syllabus-body-inner').append(col1).append(col2)
 
   $('#syllabus-flyout').click ->
-    if $(window).width() >= 500
-      $.colorbox {
-        title: "Accelerated Sous Vide Cooking Course",
-        inline: true,
-        href:   '#syllabus-body-inner',
-        fixed:  true,
-        opacity: "0.5"
-      }
-    else
-      $.colorbox {
-        title: "Accelerated Sous Vide Cooking Course",
-        inline: true,
-        href:   htmlNarrow,
-        width:  "80%",
-        opacity: "0.5"
-      }
+    narrow = ($(window).width() <= 500) ||   (num_modules < 2)
+    hr = if narrow then htmlNarrow else "#syllabus-body-inner"
+    wid = if narrow then "80%" else "60%"
+
+    $.colorbox {
+      title: course_title,
+      inline: true,
+      href: hr,
+      width: wid,
+      opacity: "0.5"
+    }
