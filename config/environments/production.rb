@@ -82,7 +82,7 @@ Delve::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  config.show_quizzes = false
+  config.show_quizzes = true
 end
 
 DISQUS_SHORTNAME = "chefstepsproduction"
