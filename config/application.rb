@@ -93,7 +93,5 @@ module Delve
 
     # Primarily to allow fontawesome access from blog/shop/forum in Firefox
     config.middleware.insert_before 'ActionDispatch::Static', 'Rack::AccessControlHeaders', /assets/
-
-    config.show_quizzes = true
   end
 end
