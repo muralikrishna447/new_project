@@ -1,7 +1,4 @@
 module QuizHelper
-  def show_quizzes?
-    Rails.application.config.show_quizzes
-  end
 
   def estimated_mins(question_count)
     [estimated_secs(question_count) / 60, 1].max
