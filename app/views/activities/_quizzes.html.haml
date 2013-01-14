@@ -1,4 +1,4 @@
-- if show_quizzes? and activity.has_quizzes?
+- if activity.has_quizzes?
   #quizzes.hero-well.noprint
     .container
       - activity.quizzes.each_slice(3) do |quizzes|

@@ -4,21 +4,14 @@ describe 'activities/_quizzes.html.haml' do
   let(:activity) { stub('activity', has_quizzes?: @has_quizzes, quizzes: []) }
   before { @has_quizzes = true }
 
-  it 'does not render if quizzes are not shown' do
-    view.stub(:show_quizzes?) { false }
-    render 'quizzes', activity: activity
-    rendered.should be_blank
-  end
 
   it 'does not render if activity has no quizzes' do
     @has_quizzes = false
-    view.stub(:show_quizzes?) { true }
     render 'quizzes', activity: activity
     rendered.should be_blank
   end
 
-  it 'renders if quizzes are shown and activity has quizzes' do
-    view.stub(:show_quizzes?) { true }
+  it 'renders if activity has quizzes' do
     render 'quizzes', activity: activity
     rendered.should_not be_blank
   end

@@ -30,7 +30,7 @@
           %li
             %a.icon-print.icon-white{href: "#", onclick: 'window.print()'}
               %span.nav-label Print
-          - if show_quizzes? && activity.has_quizzes?
+          - if activity.has_quizzes?
             %li
               %a.icon-trophy.icon-white{href: '#quizzes'}
                 %span.nav-label Quiz
