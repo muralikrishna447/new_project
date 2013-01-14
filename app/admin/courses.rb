@@ -41,6 +41,7 @@ ActiveAdmin.register Course do
       @course = Course.create(params[:course])
       @course.update_activities(activity_hierarchy)
       create!
+      logger.info "**** Created Course" + params[:activity_hierarchy]
     end
 
     def update
@@ -48,6 +49,7 @@ ActiveAdmin.register Course do
       @course = Course.find(params[:id])
       @course.update_activities(activity_hierarchy)
       update!
+      logger.info "**** Updated Course" + params[:activity_hierarchy]
     end
 
     private
