@@ -200,7 +200,7 @@ describe Activity, "#update_recipe_steps" do
 end
 
 describe Activity, "#update_recipe_step_order" do
-  let(:activity) { Fabricate.build(:activity) }
+  let(:activity) { Fabricate(:activity) }
   let(:stepA) { Fabricate(:step) }
   let(:stepB) { Fabricate(:step) }
   let(:recipe1) { Fabricate(:recipe) }
