@@ -11,7 +11,7 @@ class Course < ActiveRecord::Base
 
   attr_accessible :description, :title, :slug, :course_order
 
-  has_many :inclusions, :dependent => :destroy
+  has_many :inclusions, :dependent => :destroy, :order => 'activity_order ASC'
   has_many :activities, :through => :inclusions, :order => 'inclusions.activity_order ASC', :dependent => :destroy
 
   def update_activities(activity_hierarchy)
