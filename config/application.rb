@@ -23,6 +23,9 @@ module Delve
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**}')]
+    config.autoload_paths += %w[
+      lib
+    ].map { |path| Rails.root.join(path) }
 
     # rspec generators
     config.generators do |g|

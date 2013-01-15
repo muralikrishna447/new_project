@@ -19,6 +19,11 @@ class Question < ActiveRecord::Base
     answer_count "Answered"
   end
 
+  def update_from_params(params)
+    update_contents(params)
+    save!
+  end
+
   def title
     type
   end

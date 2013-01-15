@@ -5,8 +5,7 @@ class MultipleChoiceQuestion < Question
 
   def update_from_params(params)
     update_image(params.delete(:image))
-    update_contents(params)
-    save!
+    super
   end
 
   def title
