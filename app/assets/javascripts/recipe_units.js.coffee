@@ -12,7 +12,7 @@ $ ->
     if $(element).siblings(".unit").text() == "kg"
       origValue *= 1000
       $(element).siblings(".unit").text("g")
-    $(element).attr("origValue", origValue)
+    $(element).data("origValue", origValue)
 
   # Update to preferred units stored in the cookie
   # This cookie code works but we decided that we want to encourage metric, so not using now,
@@ -48,7 +48,7 @@ setRow = (cell, qtyLbs, qty, units) ->
 
 # Compute the new ingredient quantities and units for a row
 updateOneRowUnits = ->
-  origValue = Number($(this).attr("origValue")) * csScaling
+  origValue = Number($(this).data("origValue")) * csScaling
   existingUnits = $(this).next().text()
 
   # "a/n" means as needed, don't do anything
