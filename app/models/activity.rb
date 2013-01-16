@@ -14,7 +14,7 @@ class Activity < ActiveRecord::Base
 
   has_many :quizzes
 
-  has_many :inclusions
+  has_many :inclusions, dependent: :destroy
   has_many :courses, :through => :inclusions
 
   accepts_nested_attributes_for :steps, :equipment, :recipes
