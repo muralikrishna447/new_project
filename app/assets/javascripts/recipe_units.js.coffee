@@ -18,14 +18,30 @@ $ ->
   # This cookie code works but we decided that we want to encourage metric, so not using now,
   # forces user to click to ounces every time if they are that stubborn.
   # csUnits = $.cookie csUnitsCookieName
-  updateUnits()
+  updateUnits(false)
 
   # Setup click handler for units toggle
   $(".change_units").click ->
     csUnits = if csUnits == "ounces" then "grams" else "ounces"
     # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
-    updateUnits()
+    updateUnits(true)
 
+  # make all the ingredient amounts editable
+  $(".quantity").editable ((value, settings) ->
+    #debugger
+    old_val = @revert
+    unless isNaN(value)
+      csScaling = csScaling * Number(value) / Number(old_val)
+    else
+      value = old_val
+    value
+  ), {
+    width: "10"
+    onblur: "submit"
+    cssclass: 'quantity-edit'
+    callback: ->
+      updateUnits(false)
+  }
 
 # Replace the ingredient quantities and units for a row
 setRow = (cell, qtyLbs, qty, units) ->
@@ -83,12 +99,15 @@ updateOneRowUnits = ->
 
 
 # Update all rows
-updateUnits = ->
-  # animate all the values and units down ...
-  $('.qtyfade').fadeOut "fast", ->
-    # This test needed so callback only runs once when all of first animations are done
-    if $(".qtyfade:animated").length == 0
+updateUnits = (animate) ->
+  if (animate)
+    # animate all the values and units down ...
+    $('.qtyfade').fadeOut "fast", ->
+      # This test needed so callback only runs once when all of first animations are done
+      if $(".qtyfade:animated").length == 0
 
-      # when that is done, switch the values and animate back up
-      $('.quantity').each(updateOneRowUnits)
+        # when that is done, switch the values and animate back up
+        $('.quantity').each(updateOneRowUnits)
       $('.qtyfade').fadeIn "fast"
+  else
+    $('.quantity').each(updateOneRowUnits)

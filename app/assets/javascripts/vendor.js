@@ -17,3 +17,4 @@
 //= require jquery.cookie
 //= require jquery.colorbox
 //= require jquery.mjs.nestedSortable
+//= require jquery.jeditable/jquery.jeditable
