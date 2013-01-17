@@ -18,6 +18,7 @@
             = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
           - else
             = ingredient.title
-        %td.quantity.qtyfade= ingredient.display_quantity
+        %td.quantity-group.qtyfade
+          %span.main-qty= ingredient.display_quantity
         %td.unit.qtyfade= ingredient.unit
 

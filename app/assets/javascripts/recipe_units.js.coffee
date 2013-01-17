@@ -7,7 +7,7 @@ csScaling = 1.0
 $ ->
   # Store off base value into an attribute for use in future calcs
   # Weights are normally in grams; if we see kg just convert it - will redisplay as kg if above 5 later.
-  $('.quantity').each (i, element) =>
+  $('.main-qty').each (i, element) =>
     origValue = Number($(element).text())
     if $(element).siblings(".unit").text() == "kg"
       origValue *= 1000
@@ -27,7 +27,7 @@ $ ->
     updateUnits(true)
 
   # make all the ingredient amounts editable
-  $(".quantity").editable ((value, settings) ->
+  $(".main-qty").editable ((value, settings) ->
     #debugger
     old_val = @revert
     unless isNaN(value)
@@ -36,16 +36,17 @@ $ ->
       value = old_val
     value
   ), {
-    width: "10"
-    onblur: "submit"
+    width: "auto"
+    onblur: "cancel"
     cssclass: 'quantity-edit'
     callback: ->
       updateUnits(false)
   }
 
 # Replace the ingredient quantities and units for a row
-setRow = (cell, qtyLbs, qty, units) ->
-  cell.siblings(".unit").text(units)
+setRow = (row, qtyLbs, qty, units) ->
+  cell = row.find('.main-qty')
+  row.find('.unit').text(units)
 
   # Round to a sensible number of digits after the decimal
   decDigits = 2
@@ -64,8 +65,8 @@ setRow = (cell, qtyLbs, qty, units) ->
 
 # Compute the new ingredient quantities and units for a row
 updateOneRowUnits = ->
-  origValue = Number($(this).data("origValue")) * csScaling
-  existingUnits = $(this).next().text()
+  origValue = Number($(this).find('.main-qty').data("origValue")) * csScaling
+  existingUnits = $(this).find('.unit').text()
 
   # "a/n" means as needed, don't do anything
   if existingUnits == "a/n"
@@ -102,12 +103,9 @@ updateOneRowUnits = ->
 updateUnits = (animate) ->
   if (animate)
     # animate all the values and units down ...
-    $('.qtyfade').fadeOut "fast", ->
-      # This test needed so callback only runs once when all of first animations are done
-      if $(".qtyfade:animated").length == 0
-
-        # when that is done, switch the values and animate back up
-        $('.quantity').each(updateOneRowUnits)
+    $('.qtyfade').fadeOut "fast"
+    $('.qtyfade').promise().done ->
+      $('.quantity-group').closest('tr').each(updateOneRowUnits)
       $('.qtyfade').fadeIn "fast"
   else
-    $('.quantity').each(updateOneRowUnits)
+    $('.quantity-group').closest('tr').each(updateOneRowUnits)
