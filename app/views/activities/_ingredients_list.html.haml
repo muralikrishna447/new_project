@@ -9,6 +9,8 @@
       %th#ingredient Ingredient
       %th#quantity{colspan: 2}
         %a.change_units{title: "Click to change units"} Quantity
+        %a#recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on column header to change units, or any value to scale the recipe."}
+          %i.icon-cog
 
   %tbody
     - recipe.ingredients.each do |ingredient|
@@ -19,6 +21,8 @@
           - else
             = ingredient.title
         %td.quantity-group.qtyfade
+          %span.lbs-qty
+          %span.lbs-label
           %span.main-qty= ingredient.display_quantity
         %td.unit.qtyfade= ingredient.unit
 

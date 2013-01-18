@@ -2,6 +2,11 @@ csUnits = "grams"
 csUnitsCookieName = "chefsteps_units"
 csScaling = 1.0
 
+# Set up bootstrap tooltips (should be moved to a more general place)
+$ ->
+  $('#recipetip').tooltip({trigger: "hover"}).click ->
+    return false
+
 # On page load, store off the initial amounts of each ingredient and
 # setup click handlers.
 $ ->
@@ -20,21 +25,48 @@ $ ->
   # csUnits = $.cookie csUnitsCookieName
   updateUnits(false)
 
-  # Setup click handler for units toggle
+# Setup click handler for units toggle
+$ ->
   $(".change_units").click ->
     csUnits = if csUnits == "ounces" then "grams" else "ounces"
     # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
     updateUnits(true)
 
-  # make all the ingredient amounts editable
-  $(".main-qty").editable ((value, settings) ->
-    #debugger
-    old_val = @revert
+# make all the ingredient amounts editable
+$ ->
+  $(".main-qty, .lbs-qty").editable ((value, settings) ->
+    item = $(this)
+    old_val = Number(@revert)
+    new_val = Number(value)
+
     unless isNaN(value)
-      csScaling = csScaling * Number(value) / Number(old_val)
+      cell = item.parent()
+
+      if cell.find('.lbs-qty').is(":visible")
+
+        # pounds and ounces
+        if item.hasClass('lbs-qty')
+          # editing pounds
+          old_lbs = old_val
+          old_ozs = Number(cell.find('.main-qty').text())
+          new_total = (new_val * 16) + old_ozs
+        else
+          # editing ounces
+          old_lbs = Number(cell.find('.lbs-qty').text())
+          old_ozs = old_val
+          new_total = (old_lbs * 16) + new_val
+
+        old_total = (old_lbs * 16) + old_ozs
+        csScaling = csScaling * new_total / old_total
+
+      else
+        # Grams, kilograms, or ounces with no pounts
+        csScaling = csScaling * new_val / old_val
     else
       value = old_val
+
     value
+
   ), {
     width: "auto"
     onblur: "cancel"
@@ -57,10 +89,13 @@ setRow = (row, qtyLbs, qty, units) ->
 
   # Special formatting for pounds. Tried having an extra set of columns
   # for pounds but that creates spacing problems.
+  cell.text qty
   if qtyLbs != "" and units == "oz"
-    cell.text qtyLbs + " lbs, " + qty
+    row.find(".lbs-qty, .lbs-label").show()
+    row.find(".lbs-label").text(if qtyLbs == 1 then "lb, " else "lbs, ")
+    row.find(".lbs-qty").text(qtyLbs)
   else
-    cell.text qty
+    row.find(".lbs-qty, .lbs-label").hide()
 
 
 # Compute the new ingredient quantities and units for a row
@@ -109,3 +144,4 @@ updateUnits = (animate) ->
       $('.qtyfade').fadeIn "fast"
   else
     $('.quantity-group').closest('tr').each(updateOneRowUnits)
+
