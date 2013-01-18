@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130111211249) do
+ActiveRecord::Schema.define(:version => 20130118022653) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -140,15 +140,6 @@ ActiveRecord::Schema.define(:version => 20130111211249) do
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
   end
-
-  create_table "courses_activities", :id => false, :force => true do |t|
-    t.integer "course_id"
-    t.integer "activity_id"
-    t.decimal "activity_order"
-  end
-
-  add_index "courses_activities", ["activity_id", "course_id"], :name => "index_courses_activities_on_activity_id_and_course_id"
-  add_index "courses_activities", ["course_id", "activity_id"], :name => "index_courses_activities_on_course_id_and_activity_id"
 
   create_table "equipment", :force => true do |t|
     t.string   "title"
@@ -306,6 +297,7 @@ ActiveRecord::Schema.define(:version => 20130111211249) do
     t.string   "website",                :default => ""
     t.text     "quote",                  :default => ""
     t.string   "chef_type",              :default => "", :null => false
+    t.string   "slug"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
