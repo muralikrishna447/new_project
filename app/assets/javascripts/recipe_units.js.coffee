@@ -75,10 +75,10 @@ $ ->
     value
 
   ), {
-    width: "1"
+    width: "auto"
     onblur: "cancel"
     cssclass: 'quantity-edit'
-    onedit: (settings, inp) ->
+    xonedit: (settings, inp) ->
       settings.width = $(inp).width() + 20
       true
     callback: ->
