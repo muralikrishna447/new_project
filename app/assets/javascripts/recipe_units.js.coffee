@@ -21,6 +21,9 @@ $ ->
     if unit_cell.text() == "kg"
       origValue *= 1000
       unit_cell.text("g")
+    if unit_cell.text() == "a/n"
+      $(element).parent().children().hide()
+
     $(element).data("origValue", origValue)
 
   # Update to preferred units stored in the cookie
