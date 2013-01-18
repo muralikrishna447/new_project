@@ -12,6 +12,3 @@
     - if activity.steps.any?
       - activity.ordered_steps.each_with_index do |step, i|
         = render 'step', step: step, count: i
-        .row
-          .span12
-            .horizontal-divider

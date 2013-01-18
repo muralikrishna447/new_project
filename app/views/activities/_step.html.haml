@@ -36,7 +36,7 @@
         .video-container
           %iframe{src: youtube_url(step.youtube_id)}
     - else
-      .well.step-image
+      .step-image
         - if step.image_id?
           %img{src: s3_image_url(step.image_id)}
         - else
