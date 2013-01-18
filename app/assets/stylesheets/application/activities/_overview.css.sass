@@ -6,9 +6,6 @@
     +font-serif-medium
     color: $gray
     text-transform: uppercase
-  span
-    text-transform: uppercase
-    font-weight: bold
   .horizontal-divider
     margin: 10px 0
   .difficulty
@@ -48,7 +45,7 @@ table.ingredients
       cursor: pointer
 
   tbody
-    .quantity
+    .quantity-group
       text-align: right
     tr
       color: $black
@@ -56,6 +53,16 @@ table.ingredients
         padding: 7px 10px 0 0
       td:first-child
         width: 100%
+
+    .quantity-edit
+      margin-bottom: 0px
+      display: inline
+      input
+        text-align: right
+
+    .lbs-label
+      margin-right: 4px
+
 
 .cooked-this-count
   margin-top: 15px
