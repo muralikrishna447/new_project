@@ -76,7 +76,7 @@ module Delve
     config.assets.version = '4'
     config.assets.initialize_on_precompile = false
 
-    # Caching
+    # Caching intended for test, staging, and production environments
     unless Rails.env.development?
       config.cache_store = :dalli_store
       config.action_dispatch.rack_cache = {
