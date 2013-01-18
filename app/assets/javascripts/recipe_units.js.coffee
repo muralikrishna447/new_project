@@ -14,9 +14,13 @@ $ ->
   # Weights are normally in grams; if we see kg just convert it - will redisplay as kg if above 5 later.
   $('.main-qty').each (i, element) =>
     origValue = Number($(element).text())
-    if $(element).siblings(".unit").text() == "kg"
+    cell = $(element).parent()
+    row = cell.parent()
+    unit_cell = row.find('.unit')
+
+    if unit_cell.text() == "kg"
       origValue *= 1000
-      $(element).siblings(".unit").text("g")
+      unit_cell.text("g")
     $(element).data("origValue", origValue)
 
   # Update to preferred units stored in the cookie
@@ -68,9 +72,12 @@ $ ->
     value
 
   ), {
-    width: "auto"
+    width: "1"
     onblur: "cancel"
     cssclass: 'quantity-edit'
+    onedit: (settings, inp) ->
+      settings.width = $(inp).width() + 20
+      true
     callback: ->
       updateUnits(false)
   }
