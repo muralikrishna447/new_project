@@ -6,7 +6,13 @@
       .row.top-video
         .span12
           .video-container
-            %iframe{src: youtube_url("9lWGCR0RSn4") }
+            %iframe{src: youtube_url(@featured_video) }
+  .container
+    .row
+      .filmstrip
+        - @filmstrip.each do |video|
+          .filmstrip-item
+            %iframe{src: youtube_url(video.youtube_id) }
 
   .hero-unit.signup-banner
     .container
