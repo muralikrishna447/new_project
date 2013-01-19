@@ -6,6 +6,6 @@ class HomeController < ApplicationController
 
   def index
     @featured_video = Video.featured_random
-    @filmstrip = Video.filmstrip
+    @filmstrip = Video.filmstrip.limit(5)
   end
 end
