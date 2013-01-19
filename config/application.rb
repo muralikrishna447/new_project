@@ -76,15 +76,17 @@ module Delve
     config.assets.version = '4'
     config.assets.initialize_on_precompile = false
 
-    # Caching
-    config.cache_store = :dalli_store
-    config.action_dispatch.rack_cache = {
-      verbose: true,
-      metastore: Dalli::Client.new(nil, namespace: 'meta'),
-      entitystore: Dalli::Client.new(nil, namespace: 'entity'),
-      allow_reload: false,
-      allow_revalidate: false
-    }
+    # Caching intended for test, staging, and production environments
+    unless Rails.env.development?
+      config.cache_store = :dalli_store
+      config.action_dispatch.rack_cache = {
+        verbose: true,
+        metastore: Dalli::Client.new(nil, namespace: 'meta'),
+        entitystore: Dalli::Client.new(nil, namespace: 'entity'),
+        allow_reload: false,
+        allow_revalidate: false
+      }
+    end
 
     # CORS
     config.middleware.use Rack::Cors do
