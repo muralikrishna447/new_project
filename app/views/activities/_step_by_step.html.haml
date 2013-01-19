@@ -2,16 +2,8 @@
   .container.step-by-step
     - if activity.recipe_steps.any?
       - activity.ordered_recipe_steps.each_with_index do |recipe_step, i|
-        .row
-          .span12
-            = render 'step', step: recipe_step, count: i
-            .row
-              .span12
-                .horizontal-divider
+        = render 'step', step: recipe_step, count: i
 
     - if activity.steps.any?
       - activity.ordered_steps.each_with_index do |step, i|
         = render 'step', step: step, count: i
-        .row
-          .span12
-            .horizontal-divider
