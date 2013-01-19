@@ -75,12 +75,12 @@ $ ->
     value
 
   ), {
-    width: "1px"
+    width: "10px"
     onblur: "cancel"
     cssclass: 'quantity-edit'
-    onedit: (settings, inp) ->
-      settings.width = $(inp).width() + 20
-      true
+    #onedit: (settings, inp) ->
+      #settings.width = $(inp).width() + 20
+      #true
     callback: ->
       updateUnits(false)
   }
