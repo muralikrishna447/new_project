@@ -24,8 +24,12 @@
                     %i.icon-shopping-cart
               - else
                 %td= ingredient.title
-              %td.quantity.qtyfade= ingredient.display_quantity
-              %td.unit.qtyfade= ingredient.unit
+                %td.quantity-group.qtyfade
+                  .lbs-qty
+                  .lbs-label
+                  .main-qty= ingredient.display_quantity
+                %td.unit.qtyfade= ingredient.unit
+
     - if step.directions.present?
       .step-directions
         :markdown

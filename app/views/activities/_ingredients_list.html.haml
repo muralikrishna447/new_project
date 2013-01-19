@@ -9,6 +9,8 @@
       %th#ingredient Ingredient
       %th#quantity{colspan: 2}
         %a.change_units{title: "Click to change units"} Quantity
+        %a#recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}
+          %i.icon-question-sign
 
   %tbody
     - recipe.ingredients.each do |ingredient|
@@ -18,6 +20,9 @@
             = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
           - else
             = ingredient.title
-        %td.quantity.qtyfade= ingredient.display_quantity
+        %td.quantity-group.qtyfade
+          .lbs-qty
+          .lbs-label
+          .main-qty= ingredient.display_quantity
         %td.unit.qtyfade= ingredient.unit
 
