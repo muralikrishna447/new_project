@@ -85,6 +85,13 @@ $ ->
       updateUnits(false)
   }
 
+# Make the unit labels edit the units
+$ ->
+  $('.lbs-label').click ->
+    $(this).prev().click()
+  $('.unit').click ->
+    $(this).parent().find('.main-qty').click()
+
 # Replace the ingredient quantities and units for a row
 setRow = (row, qtyLbs, qty, units) ->
   cell = row.find('.main-qty')
