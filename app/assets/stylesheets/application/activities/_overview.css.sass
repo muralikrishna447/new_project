@@ -40,7 +40,7 @@ table.ingredients
       text-transform: uppercase
     #ingredient
       text-align: left
-    .quantity
+    #quantity
       text-align: right
       cursor: pointer
 
@@ -62,6 +62,12 @@ table.ingredients
       input
         text-align: right
         width: 40px !important
+
+    .quantity-group, .unit
+      cursor: pointer
+      color: $brick
+      &:hover
+        color: $brickDark
 
     .lbs-label
       margin-right: 4px
