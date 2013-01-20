@@ -10,6 +10,8 @@
       - @filmstrip.each do |video|
         .filmstrip-item{ data: {youtube: video.youtube_id} }
           = image_tag youtube_image(video.youtube_id,0)
+          .filmstrip-item-title
+            = video.title
 
   .hero-unit.signup-banner
     .container
