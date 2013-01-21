@@ -5,3 +5,8 @@ $ ->
     content = "<iframe src='" + youtube_url + "'></iframe"
     video_container = $('.video-container')
     video_container.html(content)
+
+  $('.filmstrip-item').popover(
+    trigger: 'hover',
+    placement: 'top'
+  )

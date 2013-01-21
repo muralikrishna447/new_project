@@ -1,18 +1,15 @@
 - content_for :title, "Free-to-Learn Culinary School"
 
 - cache ['home', version, user_signed_in?] do
-  .hero-unit.hero-well.hero-home-video
-    .container.signup-banner
-      .video-container
-        %iframe{src: youtube_url(@filmstrip.first.youtube_id) }
+  .container
+    .video-container
+      %iframe{src: youtube_url(@filmstrip.first.youtube_id) }
   .container#filmstrip-container
     .filmstrip
       - @filmstrip.each do |video|
-        .filmstrip-item{ data: {youtube: video.youtube_id} }
+        .filmstrip-item{ data: {youtube: video.youtube_id, title: video.title, content: video.description} }
           .filmstrip-item-img
             = image_tag youtube_image(video.youtube_id,0)
-          .filmstrip-item-title
-            = video.title
 
   .hero-unit.signup-banner
     .container

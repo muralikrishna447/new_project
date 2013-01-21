@@ -42,18 +42,19 @@
 
 .filmstrip
   text-align: center
-  margin-bottom: 20px
+  margin: 5px -5px
   .filmstrip-item
     float: left
     width: 20%
     position: relative
+    box-sizing: border-box
+    padding: 5px
     &:hover
       cursor: pointer
       opacity: .8
-    .filmstrip-item-img
-      overflow: hidden
-      img
-        margin: -10%
-    .filmstrip-item-title
-      font-size: 12px
+      
+.filmstrip-item-img
+  overflow: hidden
+  img
+    margin: -10%
 
