@@ -5,11 +5,6 @@ class HomeController < ApplicationController
   expose(:bio_ryan) { Copy.find_by_location('creator-ryan') }
 
   def index
-    @featured_video = Video.featured_random
-    @filmstrip = []
-    @filmstrip << @featured_video
-    Video.filmstrip.limit(4).each do |video|
-      @filmstrip << video
-    end
+    @filmstrip = Video.filmstrip_videos
   end
 end

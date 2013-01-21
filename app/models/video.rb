@@ -7,4 +7,8 @@ class Video < ActiveRecord::Base
   def self.featured_random
     featured.sample(1).first
   end
+
+  def self.filmstrip_videos
+    [Video.featured_random] + filmstrip.limit(4)
+  end
 end
