@@ -1,4 +1,4 @@
-ActiveAdmin.register Video do
+ActiveAdmin.register Video, as: 'Filmstrip Videos' do
   menu priority: 3
 
   form do |f|
