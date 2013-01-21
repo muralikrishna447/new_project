@@ -297,7 +297,6 @@ ActiveRecord::Schema.define(:version => 20130119011958) do
     t.string   "website",                :default => ""
     t.text     "quote",                  :default => ""
     t.string   "chef_type",              :default => "", :null => false
-    t.string   "slug"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
