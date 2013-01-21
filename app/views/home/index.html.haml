@@ -4,7 +4,7 @@
   .hero-unit.hero-well.hero-home-video
     .container.signup-banner
       .video-container
-        %iframe{src: youtube_url(@featured_video) }
+        %iframe{src: youtube_url(@featured_video.youtube_id) }
   .container#filmstrip-container
     .filmstrip
       - @filmstrip.each do |video|

@@ -5,6 +5,6 @@ class Video < ActiveRecord::Base
   scope :filmstrip, where(filmstrip:true)
 
   def self.featured_random
-    featured.sample(1).first.youtube_id
+    featured.sample(1).first
   end
 end
