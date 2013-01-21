@@ -1,5 +1,5 @@
 require 'spec_helper'
 
 describe Video do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:video) { Fabricate(:video, title: 'foo', youtube_id: 'bar') }
 end
