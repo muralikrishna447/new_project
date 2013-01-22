@@ -1,3 +1,18 @@
+crop_thumbnails = (event) ->
+  $('.crop').each ->
+    width = $(this).width()
+    image = $(this).find('.croppable')
+    height = image.height()
+
+    new_height = width*9/16 - 2
+    offset_margin = (height - new_height)/2
+    $(this).css({
+      'height': new_height + 'px',
+      'overflow': 'hidden'
+    })
+
+    image.css('margin-top', '-' + offset_margin + 'px')
+
 $ ->
   $('.filmstrip-item').click ->
     youtube_id = $(this).data('youtube')
@@ -6,7 +21,7 @@ $ ->
     video_container = $('.video-container')
     video_container.html(content)
 
-  $('.filmstrip-item').popover(
-    trigger: 'hover',
-    placement: 'top'
-  )
+  crop_thumbnails()
+
+$(window).resize ->
+  crop_thumbnails()

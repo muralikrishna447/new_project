@@ -10,9 +10,17 @@
         #filmstrip-container
           .filmstrip
             - @filmstrip.each do |video|
-              .filmstrip-item{ data: {youtube: video.youtube_id, title: video.title, content: video.description} }
-                .filmstrip-item-img
-                  = image_tag youtube_image(video.youtube_id,0)
+              .filmstrip-item{ data: {youtube: video.youtube_id} }
+                .filmstrip-thumbnail.crop
+                  .filmstrip-img.croppable
+                    = image_tag youtube_image(video.youtube_id, 0)
+      .new-content
+        %h4 New Content
+        - @new_content.each do |activity|
+          .filmstrip-item{ data: {youtube: activity.youtube_id} }
+            .filmstrip-thumbnail.crop
+              .filmstrip-img.croppable
+                = image_tag youtube_image(activity.youtube_id, 0)
 
   .hero-unit.signup-banner
     .container
