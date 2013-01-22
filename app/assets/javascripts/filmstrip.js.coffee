@@ -4,8 +4,8 @@ crop_thumbnails = (event) ->
     image = $(this).find('.croppable')
     height = image.height()
 
-    new_height = width*9/16 - 2
-    offset_margin = (height - new_height)/2
+    new_height = width*9/16 - 1
+    offset_margin = (height - new_height)/2 + 1
     $(this).css({
       'height': new_height + 'px',
       'overflow': 'hidden'
