@@ -40,11 +40,27 @@
   padding-top: 0px
   padding-bottom: 3px
 
+.video-unit
+  width: 100%
+  position: relative
+
+.featured-and-filmstrip
+  width: 70%
+
+#featured-video
+  width: 100%
+  .video-container
+    margin: 0px
+
+#filmstrip-container
+  width: 100%
+
 .filmstrip
   text-align: center
   margin: 5px -5px
+  font-size: 0px
   .filmstrip-item
-    float: left
+    display: inline-block
     width: 20%
     position: relative
     box-sizing: border-box
@@ -52,9 +68,6 @@
     &:hover
       cursor: pointer
       opacity: .8
-      
+
 .filmstrip-item-img
-  overflow: hidden
-  img
-    margin: -10%
 
