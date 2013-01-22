@@ -20,10 +20,11 @@
         .new-content-header
           %h4 New Content
         - @new_content.each do |activity|
-          .filmstrip-item{ data: {youtube: activity.youtube_id} }
-            .filmstrip-thumbnail.crop
-              .filmstrip-img.croppable
-                = image_tag youtube_image(activity.youtube_id, 0)
+          = link_to activity do
+            .filmstrip-item{ data: {youtube: activity.youtube_id} }
+              .filmstrip-thumbnail.crop
+                .filmstrip-img.croppable
+                  = image_tag youtube_image(activity.youtube_id, 0)
 
   .hero-unit.signup-banner
     .container
