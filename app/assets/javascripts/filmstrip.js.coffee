@@ -1,5 +1,5 @@
 crop_thumbnails = (event) ->
-  $('.crop').each ->
+  $('.crop').each (index) ->
     width = $(this).width()
     image = $(this).find('.croppable')
     height = image.height()
@@ -12,6 +12,10 @@ crop_thumbnails = (event) ->
     })
 
     image.css('margin-top', '-' + offset_margin + 'px')
+
+    $(this).delay(200*index).animate({
+      opacity: 1
+    }, 500)
 
 $ ->
   $('.filmstrip-item').click ->
