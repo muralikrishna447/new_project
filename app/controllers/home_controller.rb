@@ -6,6 +6,6 @@ class HomeController < ApplicationController
 
   def index
     @filmstrip = Video.filmstrip_videos
-    @new_content = Activity.published.with_video.order('updated_at DESC').limit(5)
+    @new_content = Activity.new_content
   end
 end

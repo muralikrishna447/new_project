@@ -3,28 +3,31 @@
 - cache ['home', version, user_signed_in?] do
   .container
     .video-unit
-      .featured-and-filmstrip
-        #featured-video
-          .video-container
-            %iframe{src: youtube_url(@filmstrip.first.youtube_id) }
-        #filmstrip-container
-          .filmstrip
-            - @filmstrip.each do |video|
-              .filmstrip-item{ data: {youtube: video.youtube_id} }
-                .filmstrip-thumbnail.crop
-                  .filmstrip-img.croppable
-                    = image_tag youtube_image(video.youtube_id, 0)
-                  .filmstrip-item-title
-                    = video.title
+      - if @filmstrip.any?
+        .featured-and-filmstrip
+          #featured-video
+            .video-container
+              %iframe{src: youtube_url(@filmstrip.first.youtube_id) }
+          #filmstrip-container
+            .filmstrip
+              - @filmstrip.each do |video|
+                .filmstrip-item{ data: {youtube: video.youtube_id} }
+                  .filmstrip-thumbnail.crop
+                    .filmstrip-img.croppable
+                      = image_tag youtube_image(video.youtube_id, 0)
+                    .filmstrip-item-title
+                      = video.title
       .new-content
         .new-content-header
-          %h4 New Content
+          %h4 What's New
         - @new_content.each do |activity|
           = link_to activity do
             .filmstrip-item{ data: {youtube: activity.youtube_id} }
               .filmstrip-thumbnail.crop
                 .filmstrip-img.croppable
                   = image_tag youtube_image(activity.youtube_id, 0)
+            .new-content-title
+              = activity.title
 
   .hero-unit.signup-banner
     .container

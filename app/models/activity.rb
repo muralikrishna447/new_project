@@ -123,6 +123,10 @@ class Activity < ActiveRecord::Base
     quizzes.present?
   end
 
+  def self.new_content
+    published.with_video.order('updated_at DESC').limit(5)
+  end
+
   private
 
   def update_recipe_associations(recipe_ids)

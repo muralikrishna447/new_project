@@ -11,6 +11,14 @@ class Video < ActiveRecord::Base
   end
 
   def self.filmstrip_videos
-    [Video.featured_random] + filmstrip.sample(4)
+    featured_video = Video.featured_random
+    if featured_video && filmstrip.any?
+      [featured_video] + filmstrip.sample(4)
+    elsif featured_video
+      filmstrip.sample(5)
+    else
+      Activity.new_content
+    end
   end
+
 end
