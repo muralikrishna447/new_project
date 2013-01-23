@@ -20,4 +20,4 @@
 //= require jquery.colorbox
 //= require jquery.mjs.nestedSortable
 //= require jquery.jeditable
-//= require slides.jquery
+//= require responsiveslides
