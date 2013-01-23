@@ -36,7 +36,7 @@
           #{raw step.directions}
   .span8.step-img-col
     - if step.youtube_id?
-      .well.video.noprint
+      .video.noprint
         .video-container
           %iframe{src: youtube_url(step.youtube_id)}
     - else
