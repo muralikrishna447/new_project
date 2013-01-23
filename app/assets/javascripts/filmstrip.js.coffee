@@ -6,14 +6,15 @@ crop_thumbnails = (event) ->
 
     new_height = width*9/16 - 1
     offset_margin = (height - new_height)/2 + 1
-    $(this).css({
+
+    $(this).delay(1500).css({
       'height': new_height + 'px',
       'overflow': 'hidden'
     })
 
     image.css('margin-top', '-' + offset_margin + 'px')
 
-    $(this).delay(200*index).animate({
+    $(this).delay(300*index).animate({
       opacity: 1
     }, 500)
 
@@ -24,7 +25,6 @@ $ ->
     content = "<iframe src='" + youtube_url + "'></iframe"
     video_container = $('.video-container')
     video_container.html(content)
-
   crop_thumbnails()
 
 $(window).resize ->
