@@ -1,7 +1,7 @@
 $ ->
   return if ! course_title?
 
-  $('.course-breakdown').prepend($('<h3>'+html(course_title)+'</h3>'))
+  $('.course-breakdown').prepend('<h3>' + course_title + '</h3>')
 
   htmlNarrow = $('#syllabus-body').html()
 
