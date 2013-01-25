@@ -8,7 +8,7 @@
         <script type="text/javascript">
         var disqus_shortname = '<%= DISQUS_SHORTNAME %>';
         var disqus_identifier = "<%= disqus_id %>";
-        var disqus_url = "<%= request.protocol + request.host_with_port + request.fullpath %>";
+        var disqus_url = "<%= disqus_url %>";
         var disqus_title = '<%= disqus_title %>';
         <% if Rails.env.development? -%>
         var disqus_developer = 1;
