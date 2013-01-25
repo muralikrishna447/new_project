@@ -10,7 +10,7 @@
 #     - <Heroku config:var name>: <Heroku config:var value>
 #
 production:
-  app: chefsteps-production
+  app: production-chefsteps
   stack: cedar
   config:
     BUNDLE_WITHOUT: "development:test:guard"
@@ -24,7 +24,7 @@ production:
     - pgbackups:auto-month
 
 staging:
-  app: chefsteps-staging
+  app: staging-chefsteps
   stack: cedar
   config: &default
     BUNDLE_WITHOUT: "development:test:guard"
