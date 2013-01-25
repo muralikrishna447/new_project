@@ -15,7 +15,7 @@ production:
   config:
     BUNDLE_WITHOUT: "development:test:guard"
     RAILS_ENV: "production"
-    FOG_DIRECTORY: chefsteps-production-assets
+    FOG_DIRECTORY: production-chefsteps-assets
     FOG_PROVIDER: AWS
     BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
   addons:
@@ -29,7 +29,7 @@ staging:
   config: &default
     BUNDLE_WITHOUT: "development:test:guard"
     RAILS_ENV: "staging"
-    FOG_DIRECTORY: chefsteps-staging-assets
+    FOG_DIRECTORY: staging-chefsteps-assets
     FOG_PROVIDER: AWS
     BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
   addons:
