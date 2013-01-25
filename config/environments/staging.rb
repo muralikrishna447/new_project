@@ -12,7 +12,7 @@ Delve::Application.configure do
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
   config.serve_static_assets = true
-  # config.static_cache_control = "public, max-age=2592000"
+  config.static_cache_control = "public, max-age=2592000"
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
@@ -46,10 +46,10 @@ Delve::Application.configure do
 
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  # config.action_controller.asset_host = "http://diufzcf311ks0.cloudfront.net"
+  config.action_controller.asset_host = "http://diufzcf311ks0.cloudfront.net"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  # config.assets.precompile += %w( print.css styleguide.css global_navigation.css forum_nav.css active_admin.css active_admin/print.css navigation_bootstrap.js active_admin.js  jquery.mjs.nestedSortable.js)
+  config.assets.precompile += %w( print.css styleguide.css global_navigation.css forum_nav.css active_admin.css active_admin/print.css navigation_bootstrap.js active_admin.js  jquery.mjs.nestedSortable.js)
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false

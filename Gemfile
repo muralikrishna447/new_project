@@ -38,8 +38,8 @@ group :assets do
   gem 'compass-rails'
   gem 'font-awesome-sass-rails'
   gem 'bootstrap-sass-rails'
-  # gem 'asset_sync'
-  # gem 'turbo-sprockets-rails3'
+  gem 'asset_sync'
+  gem 'turbo-sprockets-rails3'
   gem 'hamlbars'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes

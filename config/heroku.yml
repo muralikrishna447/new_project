@@ -9,30 +9,30 @@
 #   config:
 #     - <Heroku config:var name>: <Heroku config:var value>
 #
-# production:
-#   app: chefsteps-production
-#   stack: cedar
-#   config:
-#     BUNDLE_WITHOUT: "development:test:guard"
-#     RAILS_ENV: "production"
-#     FOG_DIRECTORY: chefsteps-production-assets
-#     FOG_PROVIDER: AWS
-#     BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
-#   addons:
-#     - memcachier:dev
-#     - newrelic:standard
-#     - pgbackups:auto-month
+production:
+  app: chefsteps-production
+  stack: cedar
+  config:
+    BUNDLE_WITHOUT: "development:test:guard"
+    RAILS_ENV: "production"
+    FOG_DIRECTORY: chefsteps-production-assets
+    FOG_PROVIDER: AWS
+    BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
+  addons:
+    - memcachier:dev
+    - newrelic:standard
+    - pgbackups:auto-month
 
-# staging:
-#   app: chefsteps-staging
-#   stack: cedar
-#   config: &default
-#     BUNDLE_WITHOUT: "development:test:guard"
-#     RAILS_ENV: "staging"
-#     FOG_DIRECTORY: chefsteps-staging-assets
-#     FOG_PROVIDER: AWS
-#     BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
-#   addons:
-#     - memcachier:dev
-#     - newrelic:standard
-#     - pgbackups:auto-month
+staging:
+  app: chefsteps-staging
+  stack: cedar
+  config: &default
+    BUNDLE_WITHOUT: "development:test:guard"
+    RAILS_ENV: "staging"
+    FOG_DIRECTORY: chefsteps-staging-assets
+    FOG_PROVIDER: AWS
+    BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
+  addons:
+    - memcachier:dev
+    - newrelic:standard
+    - pgbackups:auto-month
