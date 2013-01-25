@@ -127,6 +127,9 @@
     -# content penalty.
     -if ! yield(:canonical_link).empty?
       %link{rel: "canonical", href: yield(:canonical_link) }
+
+    = render 'layouts/google_analytics' if Rails.env.production?
+
   %body{ data: body_data }
 
     -# ==========================================================================
@@ -150,7 +153,6 @@
     -# Custom JS
     = javascript_include_tag "application"
     = render 'layouts/app_init'
-    = render 'layouts/google_analytics' if Rails.env.production?
     = yield(:custom_js)
 
 
