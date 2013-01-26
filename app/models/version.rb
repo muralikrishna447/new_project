@@ -11,5 +11,6 @@ class Version < ActiveRecord::Base
 
   def purge_cache
     Rails.cache.delete 'version'
+    puts "Version was purged."
   end
 end
