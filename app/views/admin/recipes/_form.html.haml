@@ -27,6 +27,10 @@
       = render 'step_form', step: nil
       - @recipe.ordered_steps.each do |step|
         = render 'step_form', step: step
+    %li.two-button-row
+      = copy_button 'Add Step', '#step-row', 'table#steps'
+      - unless @recipe.id.nil?
+        = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_recipe_path(@recipe)
 
   = f.actions do
     = f.action :submit
