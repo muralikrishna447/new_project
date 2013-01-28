@@ -1,29 +1,8 @@
-- content_for :title, course.title
-
-.hero-unit.course-title
-  .container
-    .row
-      .span8
-        %h3= course.title
-      .span4
-        %a.button.pull-right{ href: course_activity_path(course, course.first_published_activity) }
-          .inner
-            Preview More
-            %i.icon-double-chevron-right
-
 .container
-  .row.top-video
-    .span12
 
-  .row.course-info
-    .span8
-      %h1 Description
-      :markdown
-        #{course.description}
-    .span4.pull-right
-      = render 'course_breakdown'
+  .row
     .span8.pull-left
-      %h3 Instructors
+      %h3 From the Creators of Modernist Cuisine
       %ul.unstyled
         %li.instructor#instructor-chris
           .row
@@ -43,6 +22,10 @@
                 #{bio_grant.copy.to_s}
           .row
             .span8.horizontal-divider
-
-= render 'layouts/disqus_comments', disqus_id: 'course-1'
-
+        %li.instructor#instructor-ryan
+          .row
+            .span2
+              = image_tag('ryan.jpg', title: 'Ryan Matthew Smith', class: 'img-profile')
+            .span6
+              :markdown
+                #{bio_ryan.copy.to_s}

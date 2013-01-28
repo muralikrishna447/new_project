@@ -6,6 +6,9 @@ class HomeController < ApplicationController
 
   def index
     @filmstrip = Video.filmstrip_videos
-    @new_content = Activity.new_content
+  end
+
+  def about
+  	
   end
 end

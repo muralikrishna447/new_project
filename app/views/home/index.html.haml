@@ -51,9 +51,10 @@
                   = image_tag('chris.jpg', title: 'Chris Young', class: 'img-profile')
                 .span3
                   :markdown
-                    #{bio_chris.copy.to_s}
-              .row
-                .span4.horizontal-divider
+                    #{truncate(bio_chris.copy.to_s, length: 200, separator: ', ', omission: '.')}
+                .span3.offset1
+                  = link_to 'Read more...', about_path(anchor:'instructor-chris')
+              %hr
 
           - if bio_grant
             %li.creator
@@ -62,9 +63,10 @@
                   = image_tag('grant.jpg', title: 'Grant Crilly', class: 'img-profile')
                 .span3
                   :markdown
-                    #{bio_grant.copy.to_s}
-              .row
-                .span4.horizontal-divider
+                    #{truncate(bio_grant.copy.to_s, length: 200, separator: '. ', omission: '.')}
+                .span3.offset1
+                  = link_to 'Read more...', about_path(anchor:'instructor-grant')
+              %hr
 
           - if bio_ryan
             %li.creator
@@ -73,8 +75,9 @@
                   = image_tag('ryan.jpg', title: 'Ryan Matthew Smith', class: 'img-profile')
                 .span3
                   :markdown
-                    #{bio_ryan.copy.to_s}
-              .row
-                .span4.horizontal-divider
+                    #{truncate(bio_ryan.copy.to_s, length: 155, separator: '. ', omission: '.')}
+                .span3.offset1
+                  = link_to 'Read more...', about_path(anchor:'instructor-ryan')
+              %hr
 
 
