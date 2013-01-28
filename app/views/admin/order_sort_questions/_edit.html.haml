@@ -1,0 +1,15 @@
+= render 'layouts/filepicker'
+
+:javascript
+  window.ChefStepsAdmin = window.ChefStepsAdmin || {};
+  window.ChefStepsAdmin.questionImageData = JSON.parse('#{j(@question_images)}');
+
+%h2 Order Sort Question for "#{@question.quiz.title}"
+
+#image-uploader
+  #image-list
+    .image.image-placeholder{ data: {behavior: 'filepicker'}}
+      %p.img-polaroid
+        %i.icon-plus
+        %span Upload Images
+
