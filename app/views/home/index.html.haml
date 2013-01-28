@@ -12,7 +12,7 @@
         .featured-and-filmstrip
           #featured-video
             .video-container
-              %iframe{src: youtube_url(@filmstrip.first.youtube_id) }
+              %iframe{src: youtube_url(@filmstrip.first.youtube_id, 1) }
           #filmstrip-container
             .filmstrip
               - @filmstrip.each do |video|
