@@ -1,23 +1,38 @@
 - content_for :title, "Free-to-Learn Culinary School"
 
 - cache ['home', version, user_signed_in?] do
-  .hero-unit.hero-well.hero-home-video
-    .container.signup-banner
-      .row.top-video
-        .span12
-          .video-container
-            %iframe{src: youtube_url("9lWGCR0RSn4") }
+  .hero-unit.signup-banner
+    .container#home-tagline
+      %h2 
+        The free-to-learn culinary school.
+
+  .container
+    .video-unit
+      - if @filmstrip.any?
+        .featured-and-filmstrip
+          #featured-video
+            .video-container
+              %iframe{src: youtube_url(@filmstrip.first.youtube_id) }
+          #filmstrip-container
+            .filmstrip
+              - @filmstrip.each do |video|
+                .filmstrip-item{ data: {youtube: video.youtube_id} }
+                  .filmstrip-thumbnail.crop
+                    .filmstrip-img.croppable
+                      = image_tag youtube_image(video.youtube_id, 0)
+                    .filmstrip-item-title
+                      = video.title
 
   .hero-unit.signup-banner
     .container
       .row
         .span6
-          %h2 ChefSteps is building the free-to-learn culinary school.
+          %h2 ChefSteps is the free-to-learn culinary school.
           %h3 Master sous vide cooking in our first course.
-        .span.pull-right.preview-course-button
+        .span.pull-right
           %a.button{ href: course_path('accelerated-sous-vide-cooking-course') }
             .inner
-              Preview Course
+              Take me to the course 
               %i.icon-double-chevron-right
   .container
     .row
@@ -36,9 +51,10 @@
                   = image_tag('chris.jpg', title: 'Chris Young', class: 'img-profile')
                 .span3
                   :markdown
-                    #{bio_chris.copy.to_s}
-              .row
-                .span4.horizontal-divider
+                    #{truncate(bio_chris.copy.to_s, length: 200, separator: ', ', omission: '.')}
+                .span3.offset1
+                  = link_to 'Read more...', about_path(anchor:'instructor-chris')
+              %hr
 
           - if bio_grant
             %li.creator
@@ -47,9 +63,10 @@
                   = image_tag('grant.jpg', title: 'Grant Crilly', class: 'img-profile')
                 .span3
                   :markdown
-                    #{bio_grant.copy.to_s}
-              .row
-                .span4.horizontal-divider
+                    #{truncate(bio_grant.copy.to_s, length: 200, separator: '. ', omission: '.')}
+                .span3.offset1
+                  = link_to 'Read more...', about_path(anchor:'instructor-grant')
+              %hr
 
           - if bio_ryan
             %li.creator
@@ -58,8 +75,9 @@
                   = image_tag('ryan.jpg', title: 'Ryan Matthew Smith', class: 'img-profile')
                 .span3
                   :markdown
-                    #{bio_ryan.copy.to_s}
-              .row
-                .span4.horizontal-divider
+                    #{truncate(bio_ryan.copy.to_s, length: 155, separator: '. ', omission: '.')}
+                .span3.offset1
+                  = link_to 'Read more...', about_path(anchor:'instructor-ryan')
+              %hr
 
 
