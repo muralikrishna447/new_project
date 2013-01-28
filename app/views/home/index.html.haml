@@ -21,7 +21,7 @@
                     .filmstrip-img.croppable
                       = image_tag youtube_image(video.youtube_id, 0)
                     .filmstrip-item-title
-                      = video.title
+                      = video.title.html_safe
 
   .hero-unit.signup-banner
     .container
