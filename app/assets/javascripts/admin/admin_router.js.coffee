@@ -36,3 +36,5 @@ class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
     new ChefStepsAdmin.Views.OrderSortImageUploader(collection: orderSortImages)
 
+    orderSortImagesView = new ChefStepsAdmin.Views.OrderSortImages(collection: orderSortImages)
+    orderSortImagesView.render()

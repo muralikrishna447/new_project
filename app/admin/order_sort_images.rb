@@ -15,5 +15,12 @@ ActiveAdmin.register OrderSortImage do
       @image.update_from_params(params)
       head :ok
     end
+
+    def destroy
+      @image = OrderSortImage.find(params[:id])
+      @image.destroy
+
+      head :ok
+    end
   end
 end
