@@ -17,7 +17,7 @@ class Video < ActiveRecord::Base
     elsif featured_video && filmstrip.blank?
       [featured_video] + Activity.new_content.limit(4)
     else
-      Activity.with_video.new_content
+      Activity.new_content
     end
   end
 
