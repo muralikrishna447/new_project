@@ -1,6 +1,12 @@
 - content_for :title, "Free-to-Learn Culinary School"
 
 - cache ['home', version, user_signed_in?] do
+  .hero-unit.signup-banner
+    .container#home-tagline
+      %h2 
+        The free-to-learn culinary school.
+        = link_to '#sign-up', class: 'button', id: 'tagline-button' do
+          .inner Join
   .container
     .video-unit
       - if @filmstrip.any?
@@ -17,28 +23,17 @@
                       = image_tag youtube_image(video.youtube_id, 0)
                     .filmstrip-item-title
                       = video.title
-      .new-content
-        .new-content-header
-          %h4 What's New
-        - @new_content.each do |activity|
-          = link_to activity do
-            .filmstrip-item{ data: {youtube: activity.youtube_id} }
-              .filmstrip-thumbnail.crop
-                .filmstrip-img.croppable
-                  = image_tag youtube_image(activity.youtube_id, 0)
-            .new-content-title
-              = activity.title
 
   .hero-unit.signup-banner
     .container
       .row
         .span6
-          %h2 ChefSteps is building the free-to-learn culinary school.
+          %h2 ChefSteps is the free-to-learn culinary school.
           %h3 Master sous vide cooking in our first course.
-        .span.pull-right.preview-course-button
+        .span.pull-right
           %a.button{ href: course_path('accelerated-sous-vide-cooking-course') }
             .inner
-              Preview Course
+              Take me to the course 
               %i.icon-double-chevron-right
   .container
     .row
