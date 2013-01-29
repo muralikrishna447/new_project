@@ -19,10 +19,10 @@
                 %iframe{src: youtube_url(activity.youtube_id)}
               - if activity.transcription?
                 .transcription
-                  .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:'#transcription-id'}}
+                  .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcription-activity-#{activity.id}"}}
                     %i.icon-pencil
                       Transcription
-                  .transcription-content#transcription-id.collapse
+                  .transcription-content.collapse{id: "transcription-activity-#{activity.id}"}
                     = activity.transcription
 
     = render 'overview', activity: activity
