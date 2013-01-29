@@ -17,13 +17,13 @@
             .span12
               .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
                 %iframe{src: youtube_url(activity.youtube_id)}
-              - if activity.transcription?
-                .transcription
-                  .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcription-activity-#{activity.id}"}}
+              - if activity.transcript?
+                .transcript
+                  .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcript-activity-#{activity.id}"}}
                     %i.icon-pencil
-                      Transcription
-                  .transcription-content.collapse{id: "transcription-activity-#{activity.id}"}
-                    = activity.transcription
+                      transcript
+                  .transcript-content.collapse{id: "transcript-activity-#{activity.id}"}
+                    = activity.transcript
 
     = render 'overview', activity: activity
     -if activity.steps.any? || activity.recipe_steps.any?

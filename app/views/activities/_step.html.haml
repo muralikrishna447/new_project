@@ -39,13 +39,13 @@
       .video.noprint
         .video-container
           %iframe{src: youtube_url(step.youtube_id)}
-      - if step.transcription?
-        .transcription
-          .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcription-step-#{step.id}"}}
+      - if step.transcript?
+        .transcript
+          .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcript-step-#{step.id}"}}
             %i.icon-pencil
-              Transcription
-          .transcription-content.collapse{id: "transcription-step-#{step.id}"}
-            = step.transcription
+              Transcript
+          .transcript-content.collapse{id: "transcript-step-#{step.id}"}
+            = step.transcript
     - else
       .step-image
         - if step.image_id?
