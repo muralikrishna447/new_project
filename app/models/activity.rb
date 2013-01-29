@@ -17,6 +17,8 @@ class Activity < ActiveRecord::Base
   has_many :inclusions, dependent: :destroy
   has_many :courses, :through => :inclusions
 
+  scope :with_video, where('youtube_id IS NOT NULL')
+
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level
@@ -119,6 +121,10 @@ class Activity < ActiveRecord::Base
 
   def has_quizzes?
     quizzes.present?
+  end
+
+  def self.new_content
+    published.with_video.order('updated_at DESC').limit(5)
   end
 
   private
