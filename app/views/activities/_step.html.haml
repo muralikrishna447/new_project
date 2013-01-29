@@ -42,7 +42,8 @@
     - else
       .step-image
         - if step.image_id?
-          %img{src: s3_image_url(step.image_id)}
+          %a{:href => s3_image_url(step.image_id), :target => "_blank"}
+            %img{:itemprop => "image", src: s3_image_url(step.image_id)}
         - else
           = image_tag('img_placeholder.jpg')
 
