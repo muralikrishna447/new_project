@@ -17,6 +17,13 @@
             .span12
               .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
                 %iframe{src: youtube_url(activity.youtube_id)}
+              - if activity.transcription?
+                .transcription
+                  .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:'#transcription-id'}}
+                    %i.icon-pencil
+                      Transcription
+                  .transcription-content#transcription-id.collapse
+                    = activity.transcription
 
     = render 'overview', activity: activity
     -if activity.steps.any? || activity.recipe_steps.any?
