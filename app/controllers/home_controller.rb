@@ -7,6 +7,7 @@ class HomeController < ApplicationController
   def index
     @featured_id = Video.featured_id
     @filmstrip = Video.filmstrip_videos
+    @croppable = @filmstrip.map(&:class).include?(Activity)
   end
 
   def about
