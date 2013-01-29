@@ -5,6 +5,7 @@ class HomeController < ApplicationController
   expose(:bio_ryan) { Copy.find_by_location('creator-ryan') }
 
   def index
+    @featured_id = Video.featured_id
     @filmstrip = Video.filmstrip_videos
   end
 
