@@ -1,7 +1,7 @@
 #overview
   .container
     .row
-      .span8
+      .span8{:itemprop => "description"}
         - if activity.has_description?
           :markdown
             #{activity.description}
@@ -34,7 +34,7 @@
             .span4
               - if activity.yield.present?
                 %h5 Yield
-                = activity.yield
+                %span{:itemprop => "recipeYield"}= activity.yield
               - if activity.timing.present?
                 %h5 Timing
                 = activity.timing
