@@ -7,6 +7,7 @@
     = f.input :title
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
+    = f.input :transcript
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
   = section("Equipment", f) do
