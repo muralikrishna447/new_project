@@ -124,7 +124,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.new_content
-    published.with_video.order('updated_at DESC').limit(5)
+    published.with_video.order('updated_at DESC').reject{|a| a.youtube_id == Video.featured_id || a.youtube_id.length < 3}.sample(5)
   end
 
   private
