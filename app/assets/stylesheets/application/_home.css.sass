@@ -1,4 +1,3 @@
-
 .signup-banner
   margin-bottom: 16px
   h2, h3
@@ -44,17 +43,7 @@
 .video-unit
   width: 100%
   position: relative
-
-#home-tagline
-  position: relative
-  h2
-    font-size: 24px
-    text-align: center
-    color: white
-    .button#tagline-button
-      font-size: 18px
-      .inner
-        padding: 5px 10px
+  margin: 20px 0px
 
 .featured-and-filmstrip
   width: 70%
@@ -79,7 +68,8 @@
 
 .filmstrip-item
   position: relative
-  box-sizing: border-box
+  @include box-sizing
+
   padding: 5px
   .filmstrip-thumbnail
     background: black
@@ -91,7 +81,7 @@
   bottom: 0px
   right: 0px
   color: rgba(0,0,0,0)
-  box-sizing: border-box
+  @include box-sizing
   width: 100%
   height: 100%
   padding: 20px 10px
