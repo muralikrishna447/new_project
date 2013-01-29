@@ -4,7 +4,7 @@ csScaling = 1.0
 
 # Set up bootstrap tooltips (should be moved to a more general place)
 $ ->
-  $('#recipetip').tooltip({trigger: "hover"}).click ->
+  $('.recipetip').tooltip({trigger: "hover"}).click ->
     return false
 
 # On page load, store off the initial amounts of each ingredient and

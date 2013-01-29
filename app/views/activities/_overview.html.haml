@@ -5,7 +5,7 @@
         - if activity.has_description?
           :markdown
             #{activity.description}
-      .span4
+      -# .span4
         -# Removed for demo
         -# .row
         -#   .span4
@@ -17,18 +17,13 @@
         -# .row
         -#   .span4
         -#     .horizontal-divider
-        - if activity.has_recipes? and activity.cooked_this > 0
-          .row
-            .span4.cooked-this-count
-              %i.icon-pot-brick
-              %span#cooked-count= activity.cooked_this
-              %span.verbage Cooked This
+
     .row
       .span6
         - if activity.has_ingredients?
           - activity.ordered_recipes.each do |recipe|
             = render 'ingredients_list', recipe: recipe
-      .span6
+      .span6.spec-column
         - if activity.yield.present? || activity.timing.present?
           .row
             .span4
@@ -42,9 +37,9 @@
           .row
             .span4
               %h5 Equipment and Materials
-        .row
-          .span4
-            = render 'equipment_list', equipment: activity.required_equipment.all
+          .row
+            .span4
+              = render 'equipment_list', equipment: activity.required_equipment.all
         - if activity.optional_equipment.present?
           .row
             .span4
@@ -52,3 +47,9 @@
           .row
             .span4
               = render 'equipment_list', equipment: activity.optional_equipment.all
+        - if activity.has_recipes? and activity.cooked_this > 0
+          .row
+            .span4.cooked-this-count
+              %i.icon-pot-brick
+              %span#cooked-count= activity.cooked_this
+              %span.verbage Cooked This
