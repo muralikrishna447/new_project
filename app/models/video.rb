@@ -1,5 +1,5 @@
 class Video < ActiveRecord::Base
-  attr_accessible :featured, :filmstrip, :youtube_id, :title, :description
+  attr_accessible :featured, :filmstrip, :youtube_id, :title, :description, :image_id
 
   scope :featured, where(featured:true)
   scope :filmstrip, where(filmstrip:true)

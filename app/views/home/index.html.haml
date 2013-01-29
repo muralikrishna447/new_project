@@ -12,11 +12,18 @@
             .filmstrip
               - @filmstrip.each do |video|
                 .filmstrip-item{ data: {youtube: video.youtube_id} }
-                  .filmstrip-thumbnail.crop
-                    .filmstrip-img.croppable
-                      = image_tag youtube_image(video.youtube_id, 0)
-                    .filmstrip-item-title
-                      = video.title.html_safe
+                  - if @croppable
+                    .filmstrip-thumbnail.crop
+                      .filmstrip-img.croppable
+                        = image_tag youtube_image(video.youtube_id, 0)
+                      .filmstrip-item-title
+                        = video.title.html_safe
+                  - else
+                    .filmstrip-thumbnail
+                      .filmstrip-img
+                        = image_tag s3_image_url(video.image_id) if video.image_id
+                      .filmstrip-item-title
+                        = video.title.html_safe
 
   .hero-unit.signup-banner
     .container
