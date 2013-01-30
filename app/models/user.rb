@@ -2,6 +2,9 @@ class User < ActiveRecord::Base
   include User::Facebook
   include Gravtastic
   include UpdateWhitelistAttributes
+  extend FriendlyId
+
+  friendly_id :name, use: :slugged
 
   CHEF_TYPES = %w[professional_chef culinary_student home_cook novice other]
 
