@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130129211056) do
+ActiveRecord::Schema.define(:version => 20130130202212) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -60,11 +60,12 @@ ActiveRecord::Schema.define(:version => 20130129211056) do
   add_index "activity_equipment", ["equipment_order"], :name => "index_activity_equipment_on_equipment_order"
 
   create_table "activity_recipe_steps", :force => true do |t|
-    t.integer  "activity_id", :null => false
-    t.integer  "step_id",     :null => false
+    t.integer  "activity_id",     :null => false
+    t.integer  "step_id",         :null => false
     t.integer  "step_order"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "subrecipe_title"
   end
 
   add_index "activity_recipe_steps", ["activity_id", "step_id"], :name => "index_activity_recipe_steps_on_activity_id_and_step_id", :unique => true
@@ -265,8 +266,8 @@ ActiveRecord::Schema.define(:version => 20130129211056) do
   create_table "steps", :force => true do |t|
     t.string   "title"
     t.integer  "activity_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "youtube_id"
     t.integer  "step_order"
     t.integer  "recipe_id"

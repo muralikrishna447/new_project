@@ -3,7 +3,8 @@
     %h3.step_title
       %strong= step.title(count)
     - if step.ingredients.any?
-      .well
+      .well.subrecipe
+        .subrecipe-title= step.subrecipe_title
         %table.ingredients
           %colgroup
             %col{width: "66%"}
