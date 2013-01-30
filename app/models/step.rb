@@ -9,7 +9,7 @@ class Step < ActiveRecord::Base
   has_many :activity_recipe_steps, class_name: ActivityRecipeStep, dependent: :destroy, inverse_of: :step
 
   attr_accessible :title, :youtube_id, :recipe_id, :directions, :image_id,
-    :ingredient_ids, :activity_id, :step_order_position
+    :ingredient_ids, :activity_id, :step_order_position, :transcript
 
   scope :ordered, rank(:step_order)
   scope :recipe_id_not_nil, where('recipe_id IS NOT NULL')
