@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(:version => 20130129211056) do
     t.integer  "activity_order"
     t.boolean  "published",      :default => false
     t.string   "slug"
-    t.text     "transcription"
+    t.text     "transcript"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -272,7 +272,7 @@ ActiveRecord::Schema.define(:version => 20130129211056) do
     t.integer  "recipe_id"
     t.text     "directions"
     t.string   "image_id"
-    t.text     "transcription"
+    t.text     "transcript"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"

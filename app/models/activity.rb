@@ -21,7 +21,7 @@ class Activity < ActiveRecord::Base
 
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
