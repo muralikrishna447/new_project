@@ -61,6 +61,9 @@ group :development, :test do
   gem 'rack-contrib'
   gem 'pry'
   gem 'rails-dev-tweaks', '~> 0.6.1'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'meta_request'
 end
 
 group :guard do
