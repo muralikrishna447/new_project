@@ -6,7 +6,7 @@
       .navbar-inner
         %ul.nav.nav-activities
           %li.navbar-activity-title
-            .navbar-text
+            .navbar-text{:itemprop => "name"}
               %h4= raw activity.title
 
         %ul.nav.nav-anchors.pull-right

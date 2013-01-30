@@ -4,7 +4,7 @@ csScaling = 1.0
 
 # Set up bootstrap tooltips (should be moved to a more general place)
 $ ->
-  $('#recipetip').tooltip({trigger: "hover"}).click ->
+  $('.recipetip').tooltip({trigger: "hover"}).click ->
     return false
 
 # On page load, store off the initial amounts of each ingredient and
@@ -21,7 +21,7 @@ $ ->
     if unit_cell.text() == "kg"
       origValue *= 1000
       unit_cell.text("g")
-    if unit_cell.text() == "a/n"
+    if unit_cell.text() == "a/n" || unit_cell.text() == ""
       $(element).parent().children().hide()
 
     $(element).data("origValue", origValue)
@@ -120,8 +120,9 @@ updateOneRowUnits = ->
   origValue = Number($(this).find('.main-qty').data("origValue")) * csScaling
   existingUnits = $(this).find('.unit').text()
 
-  # "a/n" means as needed, don't do anything
-  if existingUnits == "a/n"
+  # "a/n" means as needed, don't do anything. ditto if blank - used
+  # in cases where we mean "all of a subrecipe from above"
+  if existingUnits == "a/n" || existingUnits == ""
     # ok
 
   # "ea" means each, just round up to nearest integer
