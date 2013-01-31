@@ -6,7 +6,9 @@ class OrderSortQuestion < Question
            foreign_key: 'question_id',
            dependent: :destroy
 
-  delegate :instructions,
+  delegate :question,
+           :instructions,
+           :solutions,
            :options,
            to: :contents,
            allow_nil: true

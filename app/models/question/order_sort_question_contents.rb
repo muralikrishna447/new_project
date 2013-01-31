@@ -18,7 +18,7 @@ class OrderSortQuestionContents < OpenStruct
 
     self.question = q['question']
     self.instructions = q['instructions']
-    self.solutions = q['solutions']
+    self.solutions = parse_text_solutions(q['solutions'])
   end
 
   def to_json(admin)
@@ -28,5 +28,16 @@ class OrderSortQuestionContents < OpenStruct
   # TODO[dbalatero]: implement this.
   def correct(answer_data)
     true
+  end
+
+private
+
+  # TODO[dbalatero]: replace this when we get a real UI.
+  def parse_text_solutions(solutions)
+    return [] if solutions.blank?
+
+    solutions.split('|').map do |solution|
+      { 'order_sort_image_ids' => solution.split(',').map(&:to_i) }
+    end
   end
 end

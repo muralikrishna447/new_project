@@ -1,1 +1,4 @@
+Image ID:
+= hb('id')
+%br
 %img.img-polaroid{ src: hb('url') }
