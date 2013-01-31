@@ -1,5 +1,5 @@
-.row.step
-  .span4.step_directions_col
+.step
+  .step-directions-col
     %h3.step_title
       %strong= step.title(count)
     - if step.ingredients.any?
@@ -36,7 +36,7 @@
       .step-directions
         :markdown
           #{raw step.directions}
-  .span8.step-img-col
+  .step-img-col
     - if step.youtube_id?
       .video.noprint
         .video-container
