@@ -10,7 +10,7 @@
   = f.inputs name: "Question Details" do
     = f.input :question, input_html: { value: @question.question }
     = f.input :instructions, input_html: { value: @question.instructions }
-    = f.input :solutions, input_html: { value: solution_image_ids(@question) }
+    = f.input :solutions, input_html: { value: solution_image_ids(@question) }, hint: 'The format is <solution 1>|<solution 2>|<solution n> (pipe-separated), where a solution is a comma separated list of image IDs, in order. Example: "4,5,6|4,6,5". This is a placeholder UI until we get a real solution creator in place.'
 
   = f.actions do
     = f.action :submit, label: 'Save Question'
