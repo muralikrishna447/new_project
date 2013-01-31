@@ -127,6 +127,10 @@ class Activity < ActiveRecord::Base
     published.with_video.order('updated_at DESC').reject{|a| a.youtube_id == Video.featured_id || a.youtube_id.length < 3}.sample(5)
   end
 
+  def step_images
+    (steps + recipe_steps).map(&:image_id).reject(&:blank?)
+  end
+
   private
 
   def update_recipe_associations(recipe_ids)
@@ -212,5 +216,6 @@ class Activity < ActiveRecord::Base
     old_step_ids = steps.map(&:id) - step_attrs.map {|i| i[:id].to_i }
     steps.where(id: old_step_ids).destroy_all
   end
+
 end
 
