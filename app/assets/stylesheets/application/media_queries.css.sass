@@ -51,6 +51,10 @@
     margin: 0px
 
 @media (max-width: 979px) and (min-width: 768px)
+  .container
+    width: 100%
+    padding: 0px 20px
+    @include box-sizing-border
   #quiz-container
     .hero-unit .dials
       margin-top: 0
@@ -221,6 +225,12 @@
       width: 70%
       padding: 10px
       float: left
+
+  .step
+    .step-directions-col
+      width: 100%
+    .step-img-col
+      width: 100%
 
 @media (max-width: 480px)
   /* ##################### */
