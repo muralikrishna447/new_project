@@ -3,7 +3,7 @@ module AdminQuestionHelper
   def solution_image_ids(question)
     return if question.solutions.blank?
 
-    solutions.map { |solution|
+    question.solutions.map { |solution|
       solution['order_sort_image_ids'].join(',')
     }.join('|')
   end
