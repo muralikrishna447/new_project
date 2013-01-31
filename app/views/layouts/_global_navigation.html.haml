@@ -4,18 +4,19 @@
   - else
     %a{ href: course_url('accelerated-sous-vide-cooking-course'), target: '_top' }
       Course
-      %i.icon-chevron-right.pull-right
 %li
   %a{href: 'http://forum.chefsteps.com', target: '_top'}
     Forum
-    %i.icon-chevron-right.pull-right
 
 %li
   %a{href: 'http://blog.chefsteps.com', target: '_top'}
     Blog
-    %i.icon-chevron-right.pull-right
 
-%li.last
+%li
   %a{href: 'http://store.chefsteps.com', target: '_top'}
     Shop
-    %i.icon-chevron-right.pull-right
+
+%li.last
+  = link_to search_index_path do
+    %i.icon-search
+    Search
