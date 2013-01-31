@@ -5,6 +5,7 @@ class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
     '/admin/quizzes/{id}/edit' : 'editQuiz'
     '/admin/quizzes/{id}/manage_questions' : 'editQuizQuestions'
     '/admin/questions/{id}/edit' : 'editQuestion'
+    '/admin/order_sort_questions/{id}/edit' : 'editOrderSortQuestion'
 
   editQuiz: (id) ->
     model = new ChefStepsAdmin.Models.QuizImage(ChefStepsAdmin.quizImageData)
@@ -29,3 +30,11 @@ class ChefStepsAdmin.Router extends ChefSteps.BaseRouter
 
     boxSortImagesView.render()
 
+  editOrderSortQuestion: (questionId) ->
+    orderSortImages = new ChefStepsAdmin.Collections.OrderSortImages([])
+    orderSortImages.reset(ChefStepsAdmin.questionImageData)
+
+    new ChefStepsAdmin.Views.OrderSortImageUploader(collection: orderSortImages)
+
+    orderSortImagesView = new ChefStepsAdmin.Views.OrderSortImages(collection: orderSortImages)
+    orderSortImagesView.render()
