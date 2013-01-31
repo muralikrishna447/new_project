@@ -4,15 +4,9 @@
       - @recipe.ingredients.ordered.each do |ingredient|
         %li= link_to "#{ingredient.title} #{ingredient.measurement}", admin_ingredient_path(ingredient.ingredient_id)
 
-  %ul
-    / - @recipe.steps.ordered.each_with_index do |step, index|
-    /   = section("Step: #{step.title(index)}", f) do
-    /     = render 'step_ingredient_form', step: step, count: index, ingredients: @recipe.ingredients.map(&:title)
-    = f.semantic_fields_for :steps do |step, index|
-      = section("Step:", step) do
-        = step.inputs :subrecipe_title
-        = render 'step_ingredient_form', step: step, count: index, ingredients: @recipe.ingredients.map(&:title)
+  = f.inputs :for => :steps do |step, index|
+    %li= step.text_field :subrecipe_title, placeholder: 'Subrecipe Title'
+    = render 'step_ingredient_form', step: step, count: index, ingredients: @recipe.ingredients.map(&:title)
   = f.actions do
     = f.action :submit
     = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
-
