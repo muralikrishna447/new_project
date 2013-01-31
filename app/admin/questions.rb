@@ -27,12 +27,8 @@ ActiveAdmin.register Question do
 
     private
 
-    def respond_to_order_sort_create(question)
-      redirect_to_edit(question)
-    end
-
     def respond_to_box_sort_create(question)
-      redirect_to_edit(question)
+      redirect_to edit_admin_question_path(question)
     end
 
     def respond_to_multiple_choice_create(question)
@@ -45,10 +41,6 @@ ActiveAdmin.register Question do
 
     def respond_to_multiple_choice_update(question)
       head :ok
-    end
-
-    def redirect_to_edit(question)
-      redirect_to edit_admin_question_path(question)
     end
   end
 
