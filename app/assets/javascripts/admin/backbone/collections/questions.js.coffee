@@ -6,6 +6,8 @@ class ChefStepsAdmin.Collections.Questions extends Backbone.Collection
     switch attrs['question_type']
       when 'box_sort'
         new ChefStepsAdmin.Models.BoxSortQuestion(attrs, options)
+      when 'order_sort'
+        new ChefStepsAdmin.Models.OrderSortQuestion(attrs, options)
       else
         new ChefStepsAdmin.Models.MultipleChoiceQuestion(attrs, options)
 
