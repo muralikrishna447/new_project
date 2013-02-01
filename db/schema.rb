@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130129211056) do
+ActiveRecord::Schema.define(:version => 20130201212635) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -136,11 +136,21 @@ ActiveRecord::Schema.define(:version => 20130129211056) do
     t.string   "title"
     t.string   "slug"
     t.text     "description"
-    t.boolean  "published",    :default => false
+    t.boolean  "published",         :default => false
     t.decimal  "course_order"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+    t.string   "short_description"
   end
+
+  create_table "courses_activities", :id => false, :force => true do |t|
+    t.integer "course_id"
+    t.integer "activity_id"
+    t.decimal "activity_order"
+  end
+
+  add_index "courses_activities", ["activity_id", "course_id"], :name => "index_courses_activities_on_activity_id_and_course_id"
+  add_index "courses_activities", ["course_id", "activity_id"], :name => "index_courses_activities_on_course_id_and_activity_id"
 
   create_table "equipment", :force => true do |t|
     t.string   "title"

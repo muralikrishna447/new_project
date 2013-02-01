@@ -9,7 +9,7 @@ class Course < ActiveRecord::Base
 
   scope :ordered, rank(:course_order)
 
-  attr_accessible :description, :title, :slug, :course_order
+  attr_accessible :description, :title, :short_description, :slug, :course_order
 
   has_many :inclusions, :dependent => :destroy, :order => 'activity_order ASC'
   has_many :activities, :through => :inclusions, :order => 'inclusions.activity_order ASC'
