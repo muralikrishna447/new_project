@@ -1,3 +1,4 @@
+class Activity < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
 
