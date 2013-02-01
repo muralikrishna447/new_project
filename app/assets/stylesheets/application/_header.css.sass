@@ -14,10 +14,12 @@
   margin-top: 14px
   margin-bottom: -11px
 
-.subscribe form
-  display: inline-block
-  margin-right: -22px
-  margin-bottom: 0px
+.subscribe
+  margin-bottom: -2px
+  form
+    margin: 0px
+    input
+      width: 210px
 
 .global-navigation
   +font-serif-large
@@ -60,14 +62,15 @@
     li > a:hover
       color: $brickDark
 
-    li.social
-      padding-right: 0px
+    .social
+      margin-bottom: -2px
+      li
+        padding-right: 0px
 
   .auth-group
     display: inline-block
     vertical-align: bottom
-    margin-top: 18px
-    margin-right: -20px
+    margin-bottom: 7px
 
     #authentication
       display: inline-block

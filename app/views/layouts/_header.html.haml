@@ -1,10 +1,4 @@
 #header
-  - unless user_signed_in? or external
-    .row.enter-email
-      .span6.pull-right
-        .title-bar.pull-right.noprint
-          = render 'mailing_list/subscribe', orange: true
-
   .row.global-navigation
     .span12
       .brand-container
@@ -31,17 +25,23 @@
             = link_to 'Search', search_index_path
 
       .navbar.noprint
-        %ul.nav
-          %li.social
+        %ul.nav.social
+          %li
             %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
-          %li.social
+          %li
             %a.icon-twitter{ href: "http://twitter.com/@chefsteps" }
-          %li.social
+          %li
             %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
-          %li.social
+          %li
             %a.icon-google-plus{ href: "https://plus.google.com/106370441183974123730/posts" }
 
+      - unless user_signed_in? or external
+        .navbar.noprint
+          %ul.nav.subscribe
+            %li
+              = render 'mailing_list/subscribe'
+
       -unless external
-        .auth-group.pull-right.noprint
+        .auth-group.noprint
           #authentication
 
