@@ -23,6 +23,11 @@ class Activity < ActiveRecord::Base
 
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript
 
+  include PgSearch
+  pg_search_scope :search, against: [:title, :description],
+    using: {tsearch: {dictionary: "english", any_word: true}},
+    associated_against: {steps: [:title, :directions], recipes: :title}
+
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
   end
@@ -129,6 +134,14 @@ class Activity < ActiveRecord::Base
 
   def step_images
     (steps + recipe_steps).map(&:image_id).reject(&:blank?)
+  end
+
+  def self.text_search(query)
+    if query.present?
+      search(query)
+    else
+      published
+    end
   end
 
   private
