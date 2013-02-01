@@ -30,6 +30,8 @@ gem 'comma'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-access-control-headers'
 
+gem 'texticle', require: 'texticle/rails' # Easy full text search
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

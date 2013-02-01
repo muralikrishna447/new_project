@@ -8,8 +8,8 @@
     - @results.each do |result|
       .box.box-small
         = link_to activity_path(result) do
-          %h4= result.title
           / - result.step_images.each do |image|
           /   = s3_image_url(image)
           - if result.step_images.any?
             = image_tag s3_image_url(result.step_images.first)
+          %h4= result.title
