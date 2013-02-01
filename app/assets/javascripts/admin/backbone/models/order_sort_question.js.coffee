@@ -1,0 +1,1 @@
+class ChefStepsAdmin.Models.OrderSortQuestion extends Backbone.Model

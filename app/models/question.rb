@@ -19,6 +19,17 @@ class Question < ActiveRecord::Base
     answer_count "Answered"
   end
 
+  ##
+  # These methods are expected to be implemented in any subclass:
+  ##
+  def instructions
+    raise NotImplementedError, "#instructions should be implemented in #{self.class}"
+  end
+
+  def options
+    raise NotImplementedError, "#options should be implemented in #{self.class}"
+  end
+
   def update_from_params(params)
     update_contents(params)
     save!
