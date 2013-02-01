@@ -142,6 +142,15 @@ ActiveRecord::Schema.define(:version => 20130129211056) do
     t.datetime "updated_at",                      :null => false
   end
 
+  create_table "courses_activities", :id => false, :force => true do |t|
+    t.integer "course_id"
+    t.integer "activity_id"
+    t.decimal "activity_order"
+  end
+
+  add_index "courses_activities", ["activity_id", "course_id"], :name => "index_courses_activities_on_activity_id_and_course_id"
+  add_index "courses_activities", ["course_id", "activity_id"], :name => "index_courses_activities_on_course_id_and_activity_id"
+
   create_table "equipment", :force => true do |t|
     t.string   "title"
     t.string   "product_url"
@@ -265,8 +274,8 @@ ActiveRecord::Schema.define(:version => 20130129211056) do
   create_table "steps", :force => true do |t|
     t.string   "title"
     t.integer  "activity_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "youtube_id"
     t.integer  "step_order"
     t.integer  "recipe_id"
