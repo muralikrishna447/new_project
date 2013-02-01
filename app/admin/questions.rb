@@ -26,6 +26,7 @@ ActiveAdmin.register Question do
     end
 
     private
+
     def respond_to_box_sort_create(question)
       redirect_to edit_admin_question_path(question)
     end

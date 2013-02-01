@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-feature 'user authentication', :js do
+# These features are marked pending until someone can fix the race conditions present.
+feature 'user authentication', :js, :pending do
   include AcceptanceMacros
 
   scenario "creates a user when valid inputs are supplied and takes user to edit profile page" do

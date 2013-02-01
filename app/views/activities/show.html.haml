@@ -10,13 +10,19 @@
 
     = render 'courses/navigation', course: course, activity: activity, disqus_id: disqus_id
 
-    .hero-unit.hero-well.noprint.activity-hero
+    .noprint.activity-hero
       .container
+        %h1= activity.title.html_safe
         - if activity.youtube_id?
-          .row.top-video
-            .span12
-              .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-                %iframe{src: youtube_url(activity.youtube_id)}
+          .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+            %iframe{src: youtube_url(activity.youtube_id)}
+          - if activity.transcript?
+            .transcript
+              .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcript-activity-#{activity.id}"}}
+                %i.icon-pencil
+                  transcript
+              .transcript-content.collapse{id: "transcript-activity-#{activity.id}"}
+                = activity.transcript
 
     = render 'overview', activity: activity
     -if activity.steps.any? || activity.recipe_steps.any?

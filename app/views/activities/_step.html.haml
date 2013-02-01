@@ -1,5 +1,5 @@
-.row.step
-  .span4.step_directions_col
+.step
+  .step-directions-col
     %h3.step_title
       %strong= step.title(count)
     - if step.ingredients.any?
@@ -36,11 +36,18 @@
       .step-directions
         :markdown
           #{raw step.directions}
-  .span8.step-img-col
+  .step-img-col
     - if step.youtube_id?
       .video.noprint
         .video-container
           %iframe{src: youtube_url(step.youtube_id)}
+      - if step.transcript?
+        .transcript
+          .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcript-step-#{step.id}"}}
+            %i.icon-pencil
+              Transcript
+          .transcript-content.collapse{id: "transcript-step-#{step.id}"}
+            = step.transcript
     - else
       .step-image
         - if step.image_id?

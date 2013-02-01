@@ -1,7 +1,7 @@
 class UserPresenter < Presenter
   def attributes
     {
-      id: @model.id,
+      id: @model.slug,
       name: @model.name,
       email: @model.email,
       location: @model.location,

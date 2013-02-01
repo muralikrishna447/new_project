@@ -1,6 +1,5 @@
 .step-by-step
   margin-top: 40px
-  padding-top: 20px
   h4
     +font-serif-large
     color: $brick
@@ -10,16 +9,34 @@
 
 .step
   color: $black
-  padding: 20px 0px
-  border-bottom : 2px solid $grayLight
+  padding: 0px
+  margin: 10px 0px
+  float: left
+  width: 100%
+  @include shadow
+  .step-directions-col
+    float: left
+    width: 50%
+    padding: 10px 50px 20px 20px
+    @include box-sizing-border
+    .step-directions
+      li
+      p
+        margin: 0px
+      font-size: 16px
+  .step-img-col
+    float: right
+    width: 50%
   h3
-    +font-serif-medium
+    +font-sans-small
   strong
     color: $black
     font-weight: normal
   h6
-    +font-sans-medium
+    +font-sans-small
     color: $brick
+  p
+    +font-sans-small
   table
     width: 100%
     .quantity
@@ -42,23 +59,11 @@
 
 .hero-step-by-step
   margin-top: 0px
-  padding-bottom: 20px
+  padding: 0px 0px 20px
   margin-bottom: 0
   .container
     margin-top: 0px
     .step_title
       font-size: 24px
-
-.step-directions
-  line-height: 1.6em
-  li
-    margin-top: 0.8em
-  p
-    margin-top: 0
-  p, li, > *
-    font-weight: normal
-    font-size: 16px
-    line-height: 18px
-    margin-bottom: 0.8em
 
 

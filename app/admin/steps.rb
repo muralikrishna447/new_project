@@ -5,6 +5,7 @@ ActiveAdmin.register Step do
     f.inputs "Step Details" do
       f.input :title
       f.input :youtube_id
+      f.input :transcript
       f.input :directions, label: "Directions (Markdown)"
       f.input :image_id
       f.input :recipe
