@@ -1,17 +1,22 @@
-.container.search-container
+.container.search-container{:class => @results.blank? ? 'no-results' : nil}
   %h2 Search Chefsteps
   = form_tag '/search', :method => :get, class: 'form-inline' do
     = text_field_tag :q, nil, :placeholder => 'Example: sous vide'
     = submit_tag 'Search', class: 'btn btn-primary'
 
-  - if @results
-    - @results.each do |result|
-      - if result.searchable.class == Activity
-        = link_to activity_path(result.searchable) do
-          .box.box-small
-            .box-image
-              - if result.searchable.step_images.any?
-                = image_tag s3_image_url(result.searchable.step_images.first)
-              - else
-                = image_tag 'missing.png'
-            %h4= result.searchable.title
+  - if @results.blank?
+    = "Sorry there were no results for '#{params[:q]}'"
+  - else
+    .search-results
+      - @results.each do |result|
+        - if result.searchable.class == Activity
+          = link_to activity_path(result.searchable) do
+            .box.box-small
+              .box-image
+                - if result.searchable.step_images.any?
+                  = image_tag s3_image_url(result.searchable.step_images.first)
+                - else
+                  = image_tag 'missing.png'
+              %h4= result.searchable.title
+
+      = will_paginate @results
