@@ -265,8 +265,8 @@ ActiveRecord::Schema.define(:version => 20130129211056) do
   create_table "steps", :force => true do |t|
     t.string   "title"
     t.integer  "activity_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "youtube_id"
     t.integer  "step_order"
     t.integer  "recipe_id"

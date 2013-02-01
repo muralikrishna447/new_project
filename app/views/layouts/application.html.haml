@@ -10,7 +10,7 @@
 %html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#" }
 
   %head
-    %title!= [yield(:title), 'ChefSteps'].compact.join(' | ')
+    %title!= ((yield(:title) != "") ? (yield(:title) + " - ") : "") + 'ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine'
 
     -# ==========================================================================
     -# Head
