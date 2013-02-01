@@ -13,10 +13,25 @@
 
       .navbar
         %ul.nav.noprint
-          = render 'layouts/global_navigation'
+          %li
+            - if current_page?(course_url('accelerated-sous-vide-cooking-course'))
+              Course
+            - else
+              = link_to 'Course', course_path('accelerated-sous-vide-cooking-course')
+          %li
+            = link_to 'Forum', 'http://forum.chefsteps.com'
 
-      .social-group.noprint
-        %ul
+          %li
+            = link_to 'Blog', 'http://blog.chefsteps.com'
+
+          %li
+            = link_to 'Shop', 'http://store.chefsteps.com'
+
+          %li.last
+            = link_to 'Search', search_index_path
+
+      .navbar.noprint
+        %ul.nav
           %li.social
             %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
           %li.social
