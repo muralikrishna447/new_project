@@ -6,10 +6,10 @@
 
   - if @results
     - @results.each do |result|
-      .box.box-small
-        = link_to activity_path(result) do
-          / - result.step_images.each do |image|
-          /   = s3_image_url(image)
-          - if result.step_images.any?
-            = image_tag s3_image_url(result.step_images.first)
-          %h4= result.title
+      - if result.searchable.class == Activity
+        = link_to activity_path(result.searchable) do
+          .box.box-small
+            .box-image
+              - if result.searchable.step_images.any?
+                = image_tag s3_image_url(result.searchable.step_images.first)
+            %h4= result.searchable.title

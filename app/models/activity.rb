@@ -24,9 +24,11 @@ class Activity < ActiveRecord::Base
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript
 
   include PgSearch
-  pg_search_scope :search, against: [:title, :description],
-    using: {tsearch: {dictionary: "english", any_word: true}},
-    associated_against: {steps: [:title, :directions], recipes: :title}
+  multisearchable :against => [:title, :description],
+    :if => :published
+  # pg_search_scope :search, against: [:title, :description],
+  #   using: {tsearch: {dictionary: "english", any_word: true}},
+  #   associated_against: {steps: [:title, :directions], recipes: :title}
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
