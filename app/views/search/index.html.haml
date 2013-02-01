@@ -5,7 +5,8 @@
     = submit_tag 'Search', class: 'btn btn-primary'
 
   - if @results.blank?
-    = "Sorry there were no results for '#{params[:q]}'"
+    %h4= "There were no results for '#{params[:q]}' but check these out:"
+
   - else
     .search-results
       - @results.each do |result|
