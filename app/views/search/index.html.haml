@@ -12,4 +12,6 @@
             .box-image
               - if result.searchable.step_images.any?
                 = image_tag s3_image_url(result.searchable.step_images.first)
+              - else
+                = image_tag 'missing.png'
             %h4= result.searchable.title
