@@ -10,14 +10,7 @@
   - else
     .search-results
       - @results.each do |result|
-        - if result.searchable.class == Activity
-          = link_to activity_path(result.searchable) do
-            .box.box-small
-              .box-image
-                - if result.searchable.step_images.any?
-                  = image_tag s3_image_url(result.searchable.step_images.first)
-                - else
-                  = image_tag 'missing.png'
-              %h4= result.searchable.title
+        / - if result.class == PgSearch::Document
+        = render 'result_item', item: result.respond_to?(:searchable) ? result.searchable : result
 
       = will_paginate @results
