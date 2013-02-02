@@ -32,6 +32,7 @@ gem 'rack-access-control-headers'
 
 gem 'pg_search'                             # Postgres text search
 gem 'acts-as-taggable-on'                   # Taggable models
+gem 'kaminari'                              # Pagination
 
 # Gems used only for assets and not required
 # in production environments by default.

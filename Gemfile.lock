@@ -398,6 +398,7 @@ DEPENDENCIES
   heroku_san
   jasminerice
   jquery-rails
+  kaminari
   listen (= 0.4.7)
   memcachier
   meta_request

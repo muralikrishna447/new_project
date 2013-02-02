@@ -8,7 +8,10 @@
       %h4= "There were no results for '#{params[:q]}' but check these out:"
 
     - else
+      = paginate @results
       .search-results
         - @results.each do |result|
           / - if result.class == PgSearch::Document
           = render 'result_item', item: result.respond_to?(:searchable) ? result.searchable : result
+
+      = paginate @results
