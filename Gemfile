@@ -30,9 +30,8 @@ gem 'comma'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-access-control-headers'
 
-# gem 'texticle', require: 'texticle/rails' # Easy full text search
 gem 'pg_search'                             # Postgres text search
-gem 'will_paginate'                         # Pagination
+gem 'acts-as-taggable-on'                   # Taggable models
 
 # Gems used only for assets and not required
 # in production environments by default.

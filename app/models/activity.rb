@@ -1,6 +1,7 @@
 class Activity < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
+  acts_as_taggable
 
   friendly_id :title, use: :slugged
 
@@ -21,12 +22,14 @@ class Activity < ActiveRecord::Base
 
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list
 
   include PgSearch
-  multisearchable :against => [:title, :description],
+  multisearchable :against => [:attached_classes, :title, :tag_list, :description],
     :if => :published
-  # pg_search_scope :search, against: [:title, :description],
+  # multisearchable :against => [:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'],
+  #   :if => :published
+  # pg_search_scope :search, against: {:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'},
   #   using: {tsearch: {dictionary: "english", any_word: true}},
   #   associated_against: {steps: [:title, :directions], recipes: :title}
 
@@ -144,6 +147,13 @@ class Activity < ActiveRecord::Base
     else
       published
     end
+  end
+
+  def attached_classes
+    attached_classes = []
+    attached_classes << 'Recipe' if recipes.any?
+    attached_classes << 'Quiz' if quizzes.any?
+    attached_classes
   end
 
   private

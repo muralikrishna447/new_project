@@ -1,5 +1,6 @@
 class Search
 	def self.query(query)
-    PgSearch.multisearch(query)
+    formatted = query.split(' ').map(&:singularize)
+    PgSearch.multisearch(formatted)
   end
 end

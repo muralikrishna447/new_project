@@ -1,16 +1,14 @@
-.container.search-container{:class => @results.blank? ? 'no-results' : nil}
+.container.search-container{:class => params[:q].blank? ? 'no-results' : nil}
   %h2 Search Chefsteps
   = form_tag '/search', :method => :get, class: 'form-inline' do
     = text_field_tag :q, nil, :placeholder => 'Example: sous vide'
     = submit_tag 'Search', class: 'btn btn-primary'
+  - if params[:q]
+    - if @results.blank?
+      %h4= "There were no results for '#{params[:q]}' but check these out:"
 
-  - if @results.blank?
-    %h4= "There were no results for '#{params[:q]}' but check these out:"
-
-  - else
-    .search-results
-      - @results.each do |result|
-        / - if result.class == PgSearch::Document
-        = render 'result_item', item: result.respond_to?(:searchable) ? result.searchable : result
-
-      = will_paginate @results
+    - else
+      .search-results
+        - @results.each do |result|
+          / - if result.class == PgSearch::Document
+          = render 'result_item', item: result.respond_to?(:searchable) ? result.searchable : result
