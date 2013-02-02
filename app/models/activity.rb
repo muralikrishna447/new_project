@@ -149,11 +149,12 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def attached_classes
+  def attached_classes(weight = 10)
     attached_classes = []
+    attached_classes << self.class
     attached_classes << 'Recipe' if recipes.any?
     attached_classes << 'Quiz' if quizzes.any?
-    attached_classes
+    attached_classes*weight
   end
 
   private
