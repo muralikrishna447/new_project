@@ -5,13 +5,15 @@
     = submit_tag 'Search', class: 'btn btn-primary'
   - if params[:q]
     - if @results.blank?
-      %h4= "There were no results for '#{params[:q]}' but check these out:"
-
+      %h4= "There were no results for '#{params[:q]}' but maybe you'll like these recipes:"
+      .search-results
+        = render partial: 'result_item', collection: @noresults, :as => :item
     - else
       = paginate @results
       .search-results
-        - @results.each do |result|
-          / - if result.class == PgSearch::Document
-          = render 'result_item', item: result.respond_to?(:searchable) ? result.searchable : result
-
+        = render partial: 'result_item', collection: @results, :as => :item
       = paginate @results
+    - if @related_results
+      %h4 Related Results:
+      .search-results
+        = render partial: 'result_item', collection: @related_results, :as => :item
