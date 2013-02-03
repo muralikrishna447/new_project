@@ -25,7 +25,7 @@ class Activity < ActiveRecord::Base
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list
 
   include PgSearch
-  multisearchable :against => [:attached_classes, :title, :tag_list, :description],
+  multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description],
     :if => :published
   # multisearchable :against => [:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'],
   #   :if => :published
@@ -149,12 +149,16 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def attached_classes(weight = 10)
+  def attached_classes_weighted(weight = 10)
     attached_classes = []
     attached_classes << self.class
     attached_classes << 'Recipe' if recipes.any?
     attached_classes << 'Quiz' if quizzes.any?
     attached_classes*weight
+  end
+
+  def tags_weighted(weight = 5)
+    tag_list.join(',')*weight
   end
 
   private

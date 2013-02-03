@@ -29,6 +29,9 @@
 //= require admin/backbone/views/question
 //= require admin/backbone/models/question
 
+//= require select2
+//= require admin/taggable
+
 //= require_tree ./admin/backbone/models
 //= require_tree ./admin
 
