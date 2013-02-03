@@ -10,6 +10,7 @@
         = render partial: 'result_item', collection: @noresults, :as => :item
     - else
       = paginate @results
+      %h4= "Results for '#{params[:q]}':"
       .search-results
         = render partial: 'result_item', collection: @results, :as => :item
       = paginate @results
