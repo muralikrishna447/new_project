@@ -4,6 +4,7 @@
 
   - content_for :title, activity.title.html_safe
   - content_for :canonical_link, activity_url
+  - content_for :keywords, activity.tag_list.join(',')
   - course = Course.find(params[:course_id]) if params[:course_id]
 
   .recipe_schema{:itemscope => true, :itemtype => (activity.has_recipes? ? "http://schema.org/Recipe" : nil)}
