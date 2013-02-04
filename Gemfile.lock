@@ -40,6 +40,8 @@ GEM
     activesupport (3.2.11)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    acts-as-taggable-on (2.3.3)
+      rails (~> 3.0)
     addressable (2.3.2)
     arbre (1.0.1)
       activesupport (>= 3.0.0)
@@ -241,6 +243,9 @@ GEM
       omniauth (~> 1.0)
     orm_adapter (0.4.0)
     pg (0.14.1)
+    pg_search (0.5.7)
+      activerecord (>= 3)
+      activesupport (>= 3)
     poltergeist (1.0.2)
       capybara (~> 1.1)
       childprocess (~> 0.3)
@@ -320,6 +325,8 @@ GEM
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
+    select2-rails (3.2.1)
+      thor (~> 0.14)
     selenium-webdriver (2.25.0)
       childprocess (>= 0.2.5)
       libwebsocket (~> 0.1.3)
@@ -362,6 +369,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin
+  acts-as-taggable-on
   asset_sync
   better_errors
   binding_of_caller
@@ -392,6 +400,7 @@ DEPENDENCIES
   heroku_san
   jasminerice
   jquery-rails
+  kaminari
   listen (= 0.4.7)
   memcachier
   meta_request
@@ -401,6 +410,7 @@ DEPENDENCIES
   omniauth
   omniauth-facebook
   pg
+  pg_search
   poltergeist
   pry
   rack-access-control-headers
@@ -414,6 +424,7 @@ DEPENDENCIES
   rdiscount
   rspec-rails
   sass-rails (~> 3.2.3)
+  select2-rails
   spork-rails
   turbo-sprockets-rails3
   uglifier (>= 1.0.3)

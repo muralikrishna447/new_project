@@ -1,0 +1,8 @@
+= link_to activity_path(item.searchable) do
+  .box.box-small
+    .box-image
+      - if item.searchable.step_images.any?
+        = image_tag s3_image_url(item.searchable.step_images.first)
+      - else
+        = image_tag 'missing.png'
+    %h4= item.searchable.title

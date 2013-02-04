@@ -54,5 +54,7 @@ Delve::Application.routes.draw do
       get 'results' => 'quizzes#results'
     end
   end
+
+  resources :search, only: [:index]
 end
 

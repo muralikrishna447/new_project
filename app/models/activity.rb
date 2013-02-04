@@ -1,6 +1,7 @@
 class Activity < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
+  acts_as_taggable
 
   friendly_id :title, use: :slugged
 
@@ -21,7 +22,16 @@ class Activity < ActiveRecord::Base
 
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list
+
+  include PgSearch
+  multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description],
+    :if => :published
+  # multisearchable :against => [:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'],
+  #   :if => :published
+  # pg_search_scope :search, against: {:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'},
+  #   using: {tsearch: {dictionary: "english", any_word: true}},
+  #   associated_against: {steps: [:title, :directions], recipes: :title}
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
@@ -127,6 +137,30 @@ class Activity < ActiveRecord::Base
     published.with_video.order('updated_at DESC').reject{|a| a.youtube_id == Video.featured_id || a.youtube_id.length < 3}.sample(5)
   end
 
+  def step_images
+    (steps + recipe_steps).map(&:image_id).reject(&:blank?)
+  end
+
+  def self.text_search(query)
+    if query.present?
+      search(query)
+    else
+      published
+    end
+  end
+
+  def attached_classes_weighted(weight = 10)
+    attached_classes = []
+    attached_classes << self.class
+    attached_classes << 'Recipe' if recipes.any?
+    attached_classes << 'Quiz' if quizzes.any?
+    attached_classes*weight
+  end
+
+  def tags_weighted(weight = 5)
+    tag_list.join(',')*weight
+  end
+
   private
 
   def update_recipe_associations(recipe_ids)
@@ -212,5 +246,6 @@ class Activity < ActiveRecord::Base
     old_step_ids = steps.map(&:id) - step_attrs.map {|i| i[:id].to_i }
     steps.where(id: old_step_ids).destroy_all
   end
+
 end
 

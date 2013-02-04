@@ -1,10 +1,4 @@
 #header
-  - unless user_signed_in? or external
-    .row.enter-email
-      .span6.pull-right
-        .title-bar.pull-right.noprint
-          = render 'mailing_list/subscribe', orange: true
-
   .row.global-navigation
     .span12
       .brand-container
@@ -13,20 +7,41 @@
 
       .navbar
         %ul.nav.noprint
-          = render 'layouts/global_navigation'
+          %li
+            - if current_page?(course_url('accelerated-sous-vide-cooking-course'))
+              Course
+            - else
+              = link_to 'Course', course_path('accelerated-sous-vide-cooking-course')
+          %li
+            = link_to 'Forum', 'http://forum.chefsteps.com'
 
-      .social-group.noprint
-        %ul
-          %li.social
+          %li
+            = link_to 'Blog', 'http://blog.chefsteps.com'
+
+          %li
+            = link_to 'Shop', 'http://store.chefsteps.com'
+
+          %li.last
+            = link_to 'Search', search_index_path
+
+      .navbar.noprint
+        %ul.nav.social
+          %li
             %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
-          %li.social
+          %li
             %a.icon-twitter{ href: "http://twitter.com/@chefsteps" }
-          %li.social
+          %li
             %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
-          %li.social
+          %li
             %a.icon-google-plus{ href: "https://plus.google.com/106370441183974123730/posts" }
 
+      - unless user_signed_in? or external
+        .navbar.noprint
+          %ul.nav.subscribe
+            %li
+              = render 'mailing_list/subscribe'
+
       -unless external
-        .auth-group.pull-right.noprint
+        .auth-group.noprint
           #authentication
 

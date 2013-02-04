@@ -5,6 +5,8 @@
   = f.inputs name: "Activity Details" do
     = f.input :published
     = f.input :title
+    %div#alltags{data: {alltags: ActsAsTaggableOn::Tag.all.map(&:name) }}
+    = f.input :tag_list
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
     = f.input :transcript
