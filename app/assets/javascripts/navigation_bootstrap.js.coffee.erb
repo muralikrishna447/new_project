@@ -3,7 +3,7 @@ window.ChefSteps = {}
 class ChefSteps.NavigationBootstrap
   constructor: (@headerTarget) ->
 
-  cssLink: "<link rel=stylesheet type='text/css' href='http://<%= DOMAIN %>/assets/global_navigation.css' />"
+  cssLink: "<link rel=stylesheet type='text/css' href='http://<%= CDN_DOMAIN %>/assets/global_navigation.css' />"
 
   getHeader: =>
     jQuery.ajax

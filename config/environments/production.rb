@@ -1,4 +1,5 @@
 DOMAIN = 'www.chefsteps.com'
+CDN_DOMAIN = 'd1w42w8pbelamn.cloudfront.net'
 
 Delve::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
