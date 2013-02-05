@@ -1,20 +1,59 @@
-#sign-up.user-form
-  %h2 Connect to sign up (or #{link_to 'log in', '#log-in'})
-  .modal-body
-    = semantic_form_for(@user,
-                        as: :user,
-                        url: registration_path('user', format: :json),
-                        remote: true) do |f|
+/ #sign-up.user-form
+/   %h2 Connect to sign up (or #{link_to 'log in', '#log-in'})
+/   .modal-body
+/     = semantic_form_for(@user,
+/                         as: :user,
+/                         url: registration_path('user', format: :json),
+/                         remote: true) do |f|
+/       = render 'devise/shared/facebook_login', text: 'Sign up with <b>Facebook</b>'
+/       = f.inputs 'Create a new account:' do
+/         = f.input :name, label: 'Name:'
+/         = f.input :email, as: :email, label: 'Email:', required: true, input_html: { required: true }
+/         = f.input :password, label: 'Password:'
+/         = f.input :password_confirmation, label: 'Confirm Password:'
+/       .terms-of-service
+/         = check_box_tag 'terms-registration', true, false, required: true, class: 'terms'
+/         = label_tag 'terms-registration', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
+/       .ok-to-email
+/         = check_box_tag 'ok_to_email', true, true, class: 'ok-to-email'
+/         = label_tag 'ok_to_email', "Please email me the latest updates from ChefSteps".html_safe
+/       = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe, disabled: true
+
+.container
+  .box.box-full
+    %h2 Almost done!
+    %h5 Please fill out the following to complete your registration:
+    %hr
+    .registration.standard
+      = form_for @user, url: registration_path(@user), html: {class: 'form-horizontal'} do |f|
+
+        .control-group
+          .control-label= f.label :name
+          .controls= f.text_field :name
+
+        .control-group
+          .control-label= f.label :email
+          .controls= f.text_field :email, {value: params[:email]}
+
+        .control-group
+          .control-label= f.label :password
+          .controls= f.password_field :password
+
+        .control-group
+          .control-label= f.label :password_confirmation, 'Confirmation'
+          .controls= f.password_field :password_confirmation
+
+        .control-group
+          .controls
+            =label_tag :terms_registration, 'I accept' do
+              = check_box_tag :terms_registration
+              = "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
+
+        .control-group
+          .controls
+            =label_tag :okay_to_email, 'I accept' do
+              = check_box_tag :okay_to_email, true, true
+              = "Please email me the latest updates from ChefSteps".html_safe
+            =f.submit 'Sign Up', class: 'btn btn-primary'
+    .registration.facbook
       = render 'devise/shared/facebook_login', text: 'Sign up with <b>Facebook</b>'
-      = f.inputs 'Create a new account:' do
-        = f.input :name, label: 'Name:'
-        = f.input :email, as: :email, label: 'Email:', required: true, input_html: { required: true }
-        = f.input :password, label: 'Password:'
-        = f.input :password_confirmation, label: 'Confirm Password:'
-      .terms-of-service
-        = check_box_tag 'terms-registration', true, false, required: true, class: 'terms'
-        = label_tag 'terms-registration', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
-      .ok-to-email
-        = check_box_tag 'ok_to_email', true, true, class: 'ok-to-email'
-        = label_tag 'ok_to_email', "Please email me the latest updates from ChefSteps".html_safe
-      = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe, disabled: true
