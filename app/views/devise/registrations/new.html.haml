@@ -48,8 +48,8 @@
 
         .control-group
           .controls
-            =label_tag :terms_registration, 'I accept' do
-              = check_box_tag :terms_registration
+            =label_tag :terms_registration do
+              = check_box_tag :terms_registration, true, false, required: true
               = "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
 
         .control-group
