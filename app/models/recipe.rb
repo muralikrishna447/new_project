@@ -77,6 +77,7 @@ class Recipe < ActiveRecord::Base
         directions: step_attr[:directions],
         youtube_id: step_attr[:youtube_id],
         image_id: step_attr[:image_id],
+        image_description: step_attr[:image_description],
         step_order_position: :last
       )
       step_attr[:id] = step.id
