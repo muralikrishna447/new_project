@@ -42,6 +42,11 @@
               = render 'mailing_list/subscribe'
 
       -unless external
-        .auth-group.noprint
-          #authentication
+        / .auth-group.noprint
+        /   #authentication
+        .navbar.noprint
+          %ul.nav
+            %li
+              = link_to new_user_session_path do
+                Sign In
 
