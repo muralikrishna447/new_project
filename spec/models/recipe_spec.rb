@@ -72,7 +72,7 @@ describe Recipe do
 
   describe "#update_steps" do
     let(:step1) { {title: 'step1', directions: "Foo and bar on the baz", image_id: '', youtube_id: 'pirate booty'} }
-    let(:step2) { {title: '', directions: "Burrito bagel sandwich", image_id: 'happiness', image_description: 'is_life', youtube_id: ''} }
+    let(:step2) { {title: '', directions: "Burrito bagel sandwich", image_id: 'happiness', image_description: 'is life', youtube_id: ''} }
     let(:step3) { {title: 'step3', directions: "", image_id: '', youtube_id: ''} }
     let(:step_attrs) { [ step1, step2, step3 ] }
     let(:activity1) { mock('activity 1') }
@@ -151,7 +151,7 @@ describe Recipe do
         recipe.steps.first.title.should == ''
         recipe.steps.first.directions.should == 'Burrito bagel sandwich'
         recipe.steps.first.image_id.should == 'happiness'
-        recipe.steps.first.image.description.should == "is life"
+        recipe.steps.first.image_description.should == "is life"
         recipe.steps.first.youtube_id.should == ''
       end
     end
