@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130202001335) do
+ActiveRecord::Schema.define(:version => 20130205201927) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -283,15 +283,15 @@ ActiveRecord::Schema.define(:version => 20130202001335) do
   create_table "steps", :force => true do |t|
     t.string   "title"
     t.integer  "activity_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.string   "youtube_id"
     t.integer  "step_order"
     t.integer  "recipe_id"
     t.text     "directions"
     t.string   "image_id"
     t.text     "transcript"
-    t.string   "subrecipe_title"
+    t.string   "image_description"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"

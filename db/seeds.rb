@@ -38,6 +38,7 @@ def create_step(step)
   s.title = step[:title]
   s.youtube_id = step[:youtube_id]
   s.image_id = step[:image_id]
+  s.image_description = step[:image_description]
   s.directions = step[:directions]
   s.save
   s.update_attribute(:step_order_position, :last)
