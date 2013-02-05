@@ -47,14 +47,14 @@
           .controls= f.password_field :password_confirmation
 
         .control-group
-          .controls
+          .controls.controls-small
             =label_tag :terms_registration do
               = check_box_tag :terms_registration, true, false, required: true
               = "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
 
         .control-group
-          .controls
-            =label_tag :okay_to_email, 'I accept' do
+          .controls.controls-small
+            =label_tag :okay_to_email do
               = check_box_tag :okay_to_email, true, true
               = "Please email me the latest updates from ChefSteps".html_safe
             =f.submit 'Sign Up', class: 'btn btn-primary'
