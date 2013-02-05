@@ -12,6 +12,10 @@ Delve::Application.routes.draw do
     registrations: 'users/registrations',
   }
 
+  devise_scope :user do
+    get "sign_in", :to => "devise/sessions#new"
+  end
+
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
   root to: "home#index"

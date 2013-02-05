@@ -16,6 +16,8 @@
   .box.login
     = form_for @user, url: session_path(@user) do |f|
       .box-field= render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
+      %hr
       .box-field= f.text_field :email, placeholder: 'email'
-      .box-field= f.text_field :password, placeholder: 'password'
+      .box-field= f.password_field :password, placeholder: 'password'
       = link_to 'Forgot your password?', '#password-reset', class: 'forgot-password'
+      .box-field= f.submit 'Log In', class: 'btn btn-primary'

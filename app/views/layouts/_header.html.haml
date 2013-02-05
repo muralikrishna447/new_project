@@ -47,6 +47,10 @@
         .navbar.noprint
           %ul.nav
             %li
-              = link_to new_user_session_path do
-                Sign In
+              - if user_signed_in?
+                = link_to destroy_user_session_path, method: :delete do
+                  .btn.btn-primary Log Out
+              - else
+                = link_to sign_in_path do
+                  .btn.btn-primary Sign In
 
