@@ -9,6 +9,7 @@
     id = step.id 
     directions = step.directions
     image_id = step.image_id
+    image_description = step.image_description
     youtube_id = step.youtube_id
   end
 
@@ -18,6 +19,7 @@
     = hidden_field_tag "#{field_name_prefix}[id]", id
   %td= text_area_tag "#{field_name_prefix}[directions]", directions, rows: 5
   %td= text_field_tag "#{field_name_prefix}[image_id]", image_id
+  %td= text_area_tag "#{field_name_prefix}[image_description]", image_description, rows: 5
   %td
     = text_field_tag "#{field_name_prefix}[youtube_id]", youtube_id
     = remove_button 'tr'
