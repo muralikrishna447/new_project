@@ -1,9 +1,8 @@
-.hero-unit.hero-well.hero-step-by-step
-  .container.step-by-step{:itemprop => "recipeInstructions"}
-    - if activity.recipe_steps.any?
-      - activity.ordered_recipe_steps.each_with_index do |recipe_step, i|
-        = render 'step', step: recipe_step, count: i
+.container.step-by-step{:itemprop => "recipeInstructions"}
+  - if activity.recipe_steps.any?
+    - activity.ordered_recipe_steps.each_with_index do |recipe_step, i|
+      = render 'step', step: recipe_step, count: i
 
-    - if activity.steps.any?
-      - activity.ordered_steps.each_with_index do |step, i|
-        = render 'step', step: step, count: i
+  - if activity.steps.any?
+    - activity.ordered_steps.each_with_index do |step, i|
+      = render 'step', step: step, count: i

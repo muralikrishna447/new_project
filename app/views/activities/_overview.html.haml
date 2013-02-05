@@ -1,7 +1,7 @@
 #overview
   .container
     .row
-      .span8{:itemprop => "description"}
+      .span12{:itemprop => "description"}
         - if activity.has_description?
           :markdown
             #{activity.description}
