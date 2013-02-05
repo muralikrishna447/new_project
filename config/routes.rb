@@ -56,5 +56,9 @@ Delve::Application.routes.draw do
   end
 
   resources :search, only: [:index]
+
+  resources :sitemaps, :only => :show
+  match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
+
 end
 
