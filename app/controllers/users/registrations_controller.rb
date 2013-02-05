@@ -1,6 +1,11 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   append_after_filter :aweber_signup, :only => :create
 
+  def new
+    @user = User.new
+    @user.email = params[:email]
+  end
+
   protected
   def build_resource(hash=nil)
     hash ||= resource_params || {}

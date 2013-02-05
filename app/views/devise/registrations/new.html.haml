@@ -26,14 +26,16 @@
     %hr
     .registration.standard
       = form_for @user, url: registration_path(@user), html: {class: 'form-horizontal'} do |f|
-
+        .alert
+          - @user.errors.messages.each do |name,message|
+            %div= message[0]
         .control-group
           .control-label= f.label :name
           .controls= f.text_field :name
 
         .control-group
           .control-label= f.label :email
-          .controls= f.text_field :email, {value: params[:email]}
+          .controls= f.text_field :email
 
         .control-group
           .control-label= f.label :password
