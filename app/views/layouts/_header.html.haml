@@ -49,8 +49,8 @@
             %li
               - if user_signed_in?
                 = link_to destroy_user_session_path, method: :delete do
-                  .btn.btn-primary Log Out
-              - else
+                  .btn.btn-primary Sign out
+              - elsif request.path != sign_in_path
                 = link_to sign_in_path do
-                  .btn.btn-primary Sign In
+                  .btn.btn-primary Sign in
 
