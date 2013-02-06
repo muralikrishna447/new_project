@@ -36,7 +36,7 @@ feature 'user authentication', :js do
     login_user
 
     page.should have_content('Bob Tester')
-
+    find('#user-dropdown').click
     click_link 'Sign out'
 
     page.should_not have_content('Bob Tester')
