@@ -20,6 +20,7 @@
   margin-top: 10px
   margin-bottom: 7px
   display: inline-block
+  position: relative
 
   .brand-container
     display: inline-block
@@ -67,10 +68,23 @@
         input
           width: 210px
 
-    .signin
-      a
-        margin-bottom: 2px
-        margin-left: -25px
+  .user-auth
+    .dropdown
+      position: absolute
+      top: 0
+      right: 0
+      img
+        width: 44px
+        height: 44px
+      .dropdown-menu
+        margin-left: -110px
+        margin-top: 5px
+        text-align: center
+        li
+          padding: 0px
+          width: 100%
+          +font-sans-medium
+          color: black
 
   .auth-group
     display: inline-block

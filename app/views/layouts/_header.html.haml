@@ -44,13 +44,17 @@
       -unless external
         / .auth-group.noprint
         /   #authentication
-        .navbar.noprint
-          %ul.nav.signin
-            %li
-              - if user_signed_in?
-                = link_to destroy_user_session_path, method: :delete do
-                  .btn.btn-primary Sign out
-              - elsif request.path != sign_in_path
+        .navbar.user-auth.noprint
+          - if user_signed_in?
+            .dropdown
+              = link_to '#', data: {toggle: 'dropdown'} do
+                = image_tag current_user_presenter.profile_image_url()
+              %ul.dropdown-menu
+                %li= link_to 'Profile', user_profile_path(current_user)
+                %li= link_to 'Sign out', destroy_user_session_path, method: :delete
+          - elsif request.path != sign_in_path
+            %ul.nav
+              %li
                 = link_to sign_in_path do
                   .btn.btn-primary Sign in
 
