@@ -1,0 +1,7 @@
+.container.search-container
+
+  %h2 All ChefSteps Recipes
+  = paginate @results
+  .search-results
+    = render partial: 'result_item', collection: @results, :as => :item
+  = paginate @results
