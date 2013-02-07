@@ -9,7 +9,7 @@ feature 'user authentication', :js do
     fill_in 'email', with: 'bob@bob.com'
     click_button('subscribe-email')
 
-    current_path.should == new_user_registration_path
+    current_path.should == sign_up_path
     fill_in 'user_name', with: 'Bob Tester'
     find_field('user_email').value.should eq 'bob@bob.com'
     fill_in 'user_password', with: 'password'

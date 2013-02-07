@@ -1,8 +1,12 @@
 .container
   .box.box-solo
-    %h2 Forgot your password?
-    %h5 Enter your email for password reset instructions
+    - if params[:aw]
+      %h3 Looks like you've already signed up for our newsletter!
+      %h5 Enter your email and we'll send you a default password.
+    - else
+      %h2 Forgot your password?
+      %h5 Enter your email for password reset instructions.
     %hr
     = form_for @user, url: password_path(@user) do |f|
-      .box-field= f.text_field :email, placeholder: 'email', required: true
+      .box-field= f.text_field :email, value: params[:email], placeholder: 'email', required: true
       .box-field= f.submit 'Send Instructions', class: 'btn btn-primary'
