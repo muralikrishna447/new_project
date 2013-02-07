@@ -7,7 +7,7 @@
 /     %button.btn.btn-primary{ :type=>"submit"}
 /       %i.icon-double-chevron-right
 
-= form_tag 'users/sign_up', class: 'form-inline', :method => :get do
+= form_tag sign_up_url, class: 'form-inline', :method => :get do
   .input-append
     = email_field_tag 'email', nil, {class: 'span3', placeholder: 'Enter your email for updates', required: true}
     %button.btn.btn-primary{ :type=>"submit", id: 'subscribe-email'}
