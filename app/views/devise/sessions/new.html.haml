@@ -1,14 +1,12 @@
-#log-in.user-form
-  %h2 Connect to log in (or #{link_to 'sign up', '#sign-up'})
-  .modal-body
-    = semantic_form_for(@user,
-                        as: :user,
-                        url: session_path('user', format: :json),
-                        remote: true) do |f|
-      = render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
-      = f.inputs 'Log in to existing account:' do
-        = f.input :email, label: 'Email:'
-        = f.input :password, label: 'Password:'
-      = link_to 'Forgot your password?', '#password-reset', class: 'forgot-password'
-      = f.submit "Log In", disable_with: 'Submitting&hellip;'.html_safe
-
+.container
+  .box.box-solo
+    = form_for @user, url: session_path(@user) do |f|
+      - if @signin_message
+        %h2= @signin_message
+        %hr
+      .box-field= render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
+      or
+      .box-field= f.text_field :email, placeholder: 'email'
+      .box-field= f.password_field :password, placeholder: 'password'
+      = link_to 'Forgot your password?', new_user_password_path
+      .box-field= f.submit 'Sign in', class: 'btn btn-primary btn-large'
