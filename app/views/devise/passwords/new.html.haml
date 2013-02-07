@@ -1,11 +1,8 @@
-#password-reset.user-form
-  %h2 Forgot your password?
-  .modal-body
-    = semantic_form_for(@user,
-                        as: :user,
-                        url: password_path('user'),
-                        remote: true) do |f|
-      = f.inputs 'Enter email for password reset instructions' do
-        = f.input :email, label: 'Email:', input_html: { type: 'email', required: true}
-      = f.submit "Send Instructions"
-
+.container
+  .box.box-solo
+    %h2 Forgot your password?
+    %h5 Enter your email for password reset instructions
+    %hr
+    = form_for @user, url: password_path(@user) do |f|
+      .box-field= f.text_field :email, placeholder: 'email', required: true
+      .box-field= f.submit 'Send Instructions', class: 'btn btn-primary'
