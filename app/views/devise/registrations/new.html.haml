@@ -1,24 +1,3 @@
-/ #sign-up.user-form
-/   %h2 Connect to sign up (or #{link_to 'log in', '#log-in'})
-/   .modal-body
-/     = semantic_form_for(@user,
-/                         as: :user,
-/                         url: registration_path('user', format: :json),
-/                         remote: true) do |f|
-/       = render 'devise/shared/facebook_login', text: 'Sign up with <b>Facebook</b>'
-/       = f.inputs 'Create a new account:' do
-/         = f.input :name, label: 'Name:'
-/         = f.input :email, as: :email, label: 'Email:', required: true, input_html: { required: true }
-/         = f.input :password, label: 'Password:'
-/         = f.input :password_confirmation, label: 'Confirm Password:'
-/       .terms-of-service
-/         = check_box_tag 'terms-registration', true, false, required: true, class: 'terms'
-/         = label_tag 'terms-registration', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
-/       .ok-to-email
-/         = check_box_tag 'ok_to_email', true, true, class: 'ok-to-email'
-/         = label_tag 'ok_to_email', "Please email me the latest updates from ChefSteps".html_safe
-/       = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe, disabled: true
-
 .container
   .box.box-full
     %h2 Almost done!

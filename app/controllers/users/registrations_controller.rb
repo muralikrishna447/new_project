@@ -5,7 +5,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     email = params[:email]
     @user = User.where(email: email)
     if @user.any?
-      redirect_to sign_in_path(email: email)
+      redirect_to sign_in_url(email: email)
     else
       @user = User.new
       @user.email = email
