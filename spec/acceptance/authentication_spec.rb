@@ -67,5 +67,16 @@ feature 'user authentication', :js do
 
     #page.should have_content('Bob Tester')
   end
+
+  scenario 'user created from aweber can send an email to recieve a default password' do
+    user = Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password', from_aweber: true)
+    visit '/'
+
+    fill_in 'email', with: 'bob@bob.com'
+    click_button('subscribe-email')
+
+    current_path.should == new_user_password_path
+    page.should have_content("Looks like you've already signed up for our newsletter!")
+  end
 end
 
