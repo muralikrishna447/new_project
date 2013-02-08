@@ -1,13 +1,15 @@
 .container
   .box.box-solo
-    - if params[:aw]
+    - if params[:aw] && params[:email]
       %h3 Looks like you've already signed up for our newsletter!
       %h5= "Click below and we'll send a default password to #{params[:email]}." 
     - else
       %h2 Forgot your password?
       %h5 Enter your email for password reset instructions.
     = form_for @user, url: password_path(@user) do |f|
-      - unless params[:aw]
+      - if params[:aw] && params[:email]
+        = f.hidden_field :email, value: params[:email]
+      - else
         %hr
         .box-field= f.text_field :email, value: params[:email], placeholder: 'email', required: true
       .box-field= f.submit 'Send Instructions', class: 'btn btn-primary'
