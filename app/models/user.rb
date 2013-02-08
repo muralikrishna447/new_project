@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber
 
   validates_presence_of :name
 

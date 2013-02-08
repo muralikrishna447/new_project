@@ -12,7 +12,14 @@ task :create_from_aweber => :environment do
   to_create.each do |email|
     user = User.new
     user.email = email
-    puts "Creating user #{user.inspect}"
-    # user.save
+    user.from_aweber = true
+    user.name = email.split('@').first
+    user.password = "learnsousvide"
+    if user.save!
+      puts "Created user #{user.inspect}"
+    else
+      puts "Failed to create #{user.inspect}"
+    end
+    puts "________________________________________"
   end
 end

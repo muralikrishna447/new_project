@@ -3,9 +3,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def new
     email = params[:email]
-    @user = User.where(email: email)
-    if @user.any?
-      redirect_to sign_in_url(email: email)
+    @user = User.where(email: email).first
+    if @user
+      if @user.from_aweber
+        redirect_to new_user_password_url(email: email, aw: true)
+      else
+        redirect_to sign_in_url(email: email)
+      end
     else
       @user = User.new
       @user.email = email
