@@ -77,6 +77,21 @@ feature 'user authentication', :js do
 
     current_path.should == new_user_password_path
     page.should have_content("Looks like you've already signed up for our newsletter!")
+    click_button 'Send Instructions'
+
+    user.reload
+    visit edit_user_password_path(reset_password_token: user.reset_password_token)
+    page.should have_content('Change your password')
+
+    fill_in 'user_password', with: 'password'
+    fill_in 'user_password_confirmation', with: 'password'
+    click_button 'Update'
+
+    current_path.should eq user_profile_path(user)
+
+    user.reload
+    user.from_aweber.should eq false
   end
+
 end
 
