@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130205201927) do
+ActiveRecord::Schema.define(:version => 20130207185212) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -282,7 +282,6 @@ ActiveRecord::Schema.define(:version => 20130205201927) do
     t.text     "directions"
     t.string   "image_id"
     t.text     "transcript"
-    t.string   "subrecipe_title"
     t.string   "image_description"
   end
 
@@ -328,6 +327,7 @@ ActiveRecord::Schema.define(:version => 20130205201927) do
     t.text     "quote",                  :default => ""
     t.string   "chef_type",              :default => "", :null => false
     t.string   "slug"
+    t.boolean  "from_aweber"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

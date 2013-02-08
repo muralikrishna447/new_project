@@ -14,6 +14,7 @@
 //= require twitter/bootstrap/tab
 //= require twitter/bootstrap/tooltip
 //= require twitter/bootstrap/popover
+//= require twitter/bootstrap/alert
 //= require signals
 //= require crossroads
 //= require jquery.cookie

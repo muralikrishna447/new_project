@@ -1,12 +1,10 @@
-#password-edit.user-form
-  %h2 Change your password
-  = semantic_form_for(@user,
-                      as: :user,
-                      url: password_path(resource_name),
-                      method: :put) do |f|
-    = f.inputs do
-      = devise_error_messages!
+.container
+  .box.box-solo
+    %h3 Change your password
+    %hr
+    = form_for @user, url: password_path(@user), method: :put do |f|
+      = render 'shared/error_messages', target: f
       = f.hidden_field :reset_password_token
-      = f.input :password, label: 'New password:'
-      = f.input :password_confirmation, label: 'Confirm new password:'
-    = f.submit "Change my password"
+      .box-field= f.password_field :password, placeholder: 'New password', required: true
+      .box-field= f.password_field :password_confirmation, placeholder: 'Confirm new password', required: true
+      .box-field= f.submit 'Update', class: 'btn btn-primary btn-large'

@@ -1,0 +1,4 @@
+- if target.object.errors.any?
+  .alert.alert-error
+    - target.object.errors.messages.each do |name,message|
+      %div= message[0]
