@@ -49,7 +49,7 @@ feature 'user authentication', :js do
     visit '/'
     click_link('Sign in')
 
-    click_link('Forgot your password?')
+    click_link('Reset')
     fill_in 'user_email', with: 'bob@bob.com'
     click_button 'Send Instructions'
 
