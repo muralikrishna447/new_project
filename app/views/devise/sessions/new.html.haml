@@ -9,7 +9,10 @@
       .box-field= f.text_field :email, placeholder: 'email'
       .box-field= f.password_field :password, placeholder: 'password'
       .box-field= f.submit 'Sign in', class: 'btn btn-primary btn-large'
-      .pull-left 
-        = link_to 'Sign up for Chefsteps', new_user_registration_path
+      %hr
+      .pull-left
+        %p.pull-left Need an Account? 
+        %p= link_to 'Sign up for Chefsteps', new_user_registration_path, class: 'pull-left'
       .pull-right
-        = link_to 'Forgot your password?', new_user_password_path
+        %p.right Forgot your password?
+        = link_to 'Reset password', new_user_password_path, class: 'pull-right'

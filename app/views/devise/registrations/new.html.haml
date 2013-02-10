@@ -1,7 +1,10 @@
 .container
   .box.box-full
-    %h2 Almost done!
-    %h5 Please fill out the following to complete your registration:
+    - if params[:email]
+      %h2 Almost done!
+      %h5 Please fill out the following to complete your registration:
+    - else
+      %h3 Please fill out the following to complete your registration:
     %hr
     .registration.standard
       = form_for @user, url: registration_path(@user), html: {class: 'form-horizontal'} do |f|
