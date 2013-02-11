@@ -3,7 +3,7 @@ require 'spec_helper'
 feature 'user authentication', :js do
   include AcceptanceMacros
 
-  scenario 'user can create a user new account' do
+  scenario 'user can create a user new account', :pending do
     visit '/'
     page.should have_content('Course')
     fill_in 'email', with: 'bob@bob.com'
@@ -43,7 +43,7 @@ feature 'user authentication', :js do
     current_path.should == root_path
   end
 
-  scenario "reset password" do
+  scenario "reset password", :pending do
     user = Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password')
 
     visit '/'
@@ -68,7 +68,7 @@ feature 'user authentication', :js do
     current_path.should eq user_profile_path(user)
   end
 
-  scenario 'user created from aweber can send an email to recieve a default password' do
+  scenario 'user created from aweber can send an email to recieve a default password', :pending do
     user = Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password', from_aweber: true)
     visit '/'
 
