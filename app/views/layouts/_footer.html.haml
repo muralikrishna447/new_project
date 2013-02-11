@@ -24,14 +24,3 @@
         %p
           %a.icon-legal{ href: legal_url }
             Legal
-
-
-- unless user_signed_in?
-  #auth-modal.modal.hide.noprint
-    %button.close{ data: { dismiss: 'modal' } }
-      %i.icon-remove
-    = render template: 'devise/sessions/new'
-    = render template: 'devise/registrations/new'
-    = render template: 'devise/registrations/complete_registration'
-    = render template: 'devise/passwords/new'
-

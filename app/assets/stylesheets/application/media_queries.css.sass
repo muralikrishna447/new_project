@@ -54,7 +54,7 @@
   .container
     width: 100%
     padding: 0px 20px
-    @include box-sizing-border
+    @include boxsizing
   #quiz-container
     .hero-unit .dials
       margin-top: 0
@@ -197,6 +197,10 @@
     .image-caption
       text-align: left
       padding-left: 5px
+
+  .box.box-solo
+    margin: 20px 0px
+    width: 100%
 
 /* Android phone. Weird inbetween*/
 @media (max-width: 520px)
@@ -394,15 +398,12 @@
         li:first-child
           padding-left: 0px
 
-    .auth-group
-      float: none
-      margin-top: 0px
-      margin-bottom: 9px
-      margin-left: 0px
-      #authentication
-        li.authentication
-          a
-            +font-serif-large
-
   .featured-and-filmstrip
     width: 100%
+
+  .box
+    margin: 0px
+    .registration
+      width: 100%
+      padding: 0px
+      border: none

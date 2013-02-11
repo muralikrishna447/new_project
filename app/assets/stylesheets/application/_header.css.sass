@@ -21,6 +21,7 @@
   margin-top: 10px
   margin-bottom: 7px
   display: inline-block
+  position: relative
 
   .brand-container
     display: inline-block
@@ -68,29 +69,26 @@
         input
           width: 210px
 
-  .auth-group
-    display: inline-block
-    vertical-align: bottom
-    margin-bottom: 7px
-
-    #authentication
-      display: inline-block
-      vertical-align: bottom
-
-      li.authentication
-        +no-icons
-        display: inline-block
-        vertical-align: bottom
-
-        list-style: none
-        margin-top: 0px
-        border: none
-        background: white
-
-        a
-          display: inline-block
-          +font-serif-small
-
+  .user-auth
+    .dropdown
+      position: absolute
+      top: 0
+      right: 0
+      img
+        width: 44px
+        height: 44px
+      .dropdown-menu
+        margin-left: -110px
+        margin-top: 5px
+        li
+          padding: 0px
+          width: 100%
+          +font-sans-medium
+          text-align: left
+          a
+            color: black
+            &:hover
+              color: white
 
 // This stuff applies to both the global nav bar and the sticky navbar
 .navbar

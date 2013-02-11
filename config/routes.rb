@@ -5,12 +5,19 @@ Delve::Application.routes.draw do
 
   get "styleguide" => "styleguide#index"
 
-  get 'users/sign_in' => redirect('/#log-in')
-  get 'users/sign_up' => redirect('/#sign-up')
+  # get 'users/sign_in' => redirect('/#log-in')
+  # get 'users/sign_up' => redirect('/#sign-up')
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks',
     registrations: 'users/registrations',
+    sessions: 'users/sessions',
+    passwords: 'users/passwords'
   }
+
+  devise_scope :user do
+    get "sign_in", :to => "users/sessions#new"
+    get "sign_up", to: 'users/registrations#new'
+  end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
