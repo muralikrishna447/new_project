@@ -74,7 +74,7 @@ module Delve
     config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '5'
+    config.assets.version = '6'
     config.assets.initialize_on_precompile = false
 
     # Caching intended for test, staging, and production environments

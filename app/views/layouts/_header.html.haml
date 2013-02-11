@@ -12,17 +12,22 @@
               Course
             - else
               = link_to 'Course', course_url('accelerated-sous-vide-cooking-course')
+
+          %li
+            = link_to 'Recipes', recipe_gallery_index_url
+
           %li
             = link_to 'Forum', 'http://forum.chefsteps.com'
 
           %li
             = link_to 'Blog', 'http://blog.chefsteps.com'
 
-          %li
+          %li{class: ('last' if external)}
             = link_to 'Shop', 'http://store.chefsteps.com'
 
-          %li.last
-            = link_to 'Search', search_index_url
+          - unless external
+            %li.last
+              = link_to 'Search', search_index_url
 
       .navbar.noprint
         %ul.nav.social

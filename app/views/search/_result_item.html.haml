@@ -5,4 +5,4 @@
         = image_tag s3_image_url(item.searchable.step_images.first)
       - else
         = image_tag 'missing.png'
-    %h4= item.searchable.title
+    %h4= item.searchable.title.html_safe
