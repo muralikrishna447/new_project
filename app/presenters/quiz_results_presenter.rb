@@ -7,7 +7,8 @@ class QuizResultsPresenter
   def present
     results = {
       multiple_choice: [],
-      box_sort: []
+      box_sort: [],
+      order_sort: []
     }
     @quiz.ordered_questions.each_with_index do |question, index|
       contents = question.contents
@@ -32,7 +33,7 @@ class QuizResultsPresenter
         question: contents.question,
         instructions: contents.instructions,
         question_type: question_type,
-        order: index+1,
+        order: index + 1,
         options: options,
         correct: answer.correct,
         average_correct: question.average_correct
@@ -42,6 +43,16 @@ class QuizResultsPresenter
   end
 
   private
+
+  def order_sort_results(question, answer)
+    {
+      answer_images: order_sort_answer_images(question, answer)
+    }
+  end
+
+  def order_sort_answer_images(question, answer)
+    ImagePresenter.wrapped_collection(OrderSortImage.find(answer.contents.answers))
+  end
 
   def multiple_choice_results(question, answer)
     {

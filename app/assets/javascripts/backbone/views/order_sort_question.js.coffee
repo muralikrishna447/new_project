@@ -16,6 +16,20 @@ class ChefSteps.Views.OrderSortQuestion extends ChefSteps.Views.Question
       @addImageToGrid(image)
     @
 
+  answerData: ->
+    {
+      type: 'order_sort',
+      answers: @getImageOrder()
+    }
+
+  # Returns a list of image IDs in the currently arranged order.
+  getImageOrder: ->
+    ids = []
+    @dragContainer().children().each (index, item) ->
+      ids.push(id) if id = $(item).attr('data-image-id')
+
+    ids
+
   # Given an image, builds the template and inserts it into .grid-container.
   addImageToGrid: (image)->
     view = new ChefSteps.Views.OrderSortImage(image: image)
@@ -40,6 +54,7 @@ class ChefSteps.Views.OrderSortQuestion extends ChefSteps.Views.Question
     checkRender()
 
   setupShapeshift: ->
+    view = @
     container = @dragContainer()
 
     container.shapeshift({
@@ -65,8 +80,10 @@ class ChefSteps.Views.OrderSortQuestion extends ChefSteps.Views.Question
           # Mark the fixed square as complete/incomplete.
           if index == items.length - 1
             item.addClass('complete')
+            view.showNext()
           else
             item.removeClass('complete')
+            view.hideNext()
 
           stepMarkerFound = true
         else

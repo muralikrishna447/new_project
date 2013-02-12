@@ -11,6 +11,7 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
     "/profiles/{id}:?query:": "showProfile"
     "/quizzes/{id}:?query:": "startQuizApp"
     "/styleguide": "showStyleguide"
+    "/quizzes/{id}/results:?query:": "showQuizResults"
 
   showProfile: (id, query) =>
     return unless @currentUser
@@ -41,6 +42,15 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
       navHider: navHider
       quizCompletionPath: path
       quizId: id
+
+  showQuizResults: (id, query) ->
+    # Use the shapeshift library to make the results look the same as the UI.
+    $('.grid-container').shapeshift({
+      centerGrid: false,
+      enableAnimationOnInit: false,
+      columns: 4,
+      dragWhitelist: '.draggable'
+    })
 
   showStyleguide: =>
     _.each $('[data-behavior~=progress-dial]'), (input)->
