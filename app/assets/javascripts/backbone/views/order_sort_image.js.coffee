@@ -4,7 +4,6 @@ class ChefSteps.Views.OrderSortImage extends ChefSteps.Views.TemplatedView
   className: 'draggable grid-item'
 
   initialize: (options)->
-    console.log("in init")
     @image = options.image
 
   render: =>

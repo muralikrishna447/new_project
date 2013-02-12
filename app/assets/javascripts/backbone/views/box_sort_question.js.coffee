@@ -6,7 +6,7 @@ class ChefSteps.Views.BoxSortQuestion extends ChefSteps.Views.Question
 
   render: =>
     super
-    new ChefSteps.Views.BoxSortImageSet
+    view = new ChefSteps.Views.BoxSortImageSet
       el: @$el
       collection: @collection
       onComplete: =>
