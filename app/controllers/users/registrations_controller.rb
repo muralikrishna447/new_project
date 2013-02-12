@@ -16,6 +16,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def complete_registration
+    @user = User.new
+  end
+
   protected
   def build_resource(hash=nil)
     hash ||= resource_params || {}
