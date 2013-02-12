@@ -6,30 +6,61 @@
     email = auth.info.email
   end
 
-#complete-registration.user-form
-  %h2 New ChefSteps Account
-  .modal-body
-    = semantic_form_for(@user,
-                        as: :user,
-                        url: registration_path('user', format: :json),
-                        remote: true) do |f|
-      .welcome
-        - if uid
-          %img{src: UserPresenter.facebook_image_url(uid)}
-        %p Welcome, #{name}
-        %p.last
-          Please review your information below and agree
-          to our Terms of Service to sign up for ChefSteps. Or,
-          %a{ href: '#log-in'} log in to an existing account
-          if you have one.
-      = f.inputs do
-        = f.input :name, label: 'Name:', input_html: { value: name }
-        = f.input :email, as: :email, label: 'Email:', required: true, input_html: { required: true, value: email }
-      .terms-of-service
-        = check_box_tag 'terms-complete-registration', true, false, required: true, class: 'terms'
-        = label_tag 'terms-complete-registration', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
-      .ok-to-email
-        = check_box_tag 'ok_to_email', true, true, class: 'ok-to-email'
-        = label_tag 'ok_to_email', "Please email me the latest updates from ChefSteps"
-      = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe, disabled: true
+/ #complete-registration.user-form
+/   %h2 New ChefSteps Account
+/   .modal-body
+/     = semantic_form_for(@user,
+/                         as: :user,
+/                         url: registration_path('user', format: :json),
+/                         remote: true) do |f|
+/       .welcome
+/         - if uid
+/           %img{src: UserPresenter.facebook_image_url(uid)}
+/         %p Welcome, #{name}
+/         %p.last
+/           Please review your information below and agree
+/           to our Terms of Service to sign up for ChefSteps. Or,
+/           %a{ href: '#log-in'} log in to an existing account
+/           if you have one.
+/       = f.inputs do
+/         = f.input :name, label: 'Name:', input_html: { value: name }
+/         = f.input :email, as: :email, label: 'Email:', required: true, input_html: { required: true, value: email }
+/       .terms-of-service
+/         = check_box_tag 'terms-complete-registration', true, false, required: true, class: 'terms'
+/         = label_tag 'terms-complete-registration', "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
+/       .ok-to-email
+/         = check_box_tag 'ok_to_email', true, true, class: 'ok-to-email'
+/         = label_tag 'ok_to_email', "Please email me the latest updates from ChefSteps"
+/       = f.submit "Sign Up", disable_with: 'Submitting&hellip;'.html_safe, disabled: true
 
+.container
+  .box.box-full
+    - if email
+      %h2 Almost done!
+      %h5 Please fill out the following to complete your registration:
+    - else
+      %h3 Please fill out the following to complete your registration:
+    %hr
+    .registration.standard
+      = form_for @user, url: registration_path(@user), html: {class: 'form-horizontal'} do |f|
+        = render 'shared/error_messages', target: f
+        .control-group
+          .control-label= f.label :name
+          .controls= f.text_field :name, value: name
+
+        .control-group
+          .control-label= f.label :email
+          .controls= f.text_field :email, value: email
+
+        .control-group
+          .controls.controls-small
+            =label_tag :terms_registration do
+              = check_box_tag :terms_registration, true, false, required: true
+              = "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
+
+        .control-group
+          .controls.controls-small
+            =label_tag :okay_to_email do
+              = check_box_tag :okay_to_email, true, true
+              = "Please email me the latest updates from ChefSteps".html_safe
+            =f.submit 'Sign up', class: 'btn btn-primary'

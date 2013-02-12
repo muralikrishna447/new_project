@@ -16,6 +16,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def complete_registration
+    @user = User.new
+  end
+
   protected
   def build_resource(hash=nil)
     hash ||= resource_params || {}
@@ -39,7 +43,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def after_sign_up_path_for(resource)
-    request.referrer
+    if URI(request.referer).path == complete_registration_path
+      root_url
+    else
+      request.referrer
+    end
   end
 end
 
