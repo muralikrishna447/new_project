@@ -43,7 +43,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def after_sign_up_path_for(resource)
-    request.referrer
+    if URI(request.referer).path == complete_registration_path
+      root_url
+    else
+      request.referrer
+    end
   end
 end
 
