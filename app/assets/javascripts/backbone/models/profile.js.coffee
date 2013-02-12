@@ -4,6 +4,12 @@ class ChefSteps.Models.Profile extends Backbone.Model
   formKeys: [ 'location', 'name', 'quote', 'website' ]
   radioKeys: [ 'chef_type' ]
 
+  url: ->
+    "/#{@urlRoot}/#{@slugOrId()}"
+
+  slugOrId: ->
+    @get('slug') || @get('id')
+
   chefType: ->
     map =
       'professional_chef': 'Professional Chef'
