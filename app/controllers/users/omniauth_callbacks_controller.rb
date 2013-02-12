@@ -7,7 +7,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in_and_redirect @user, event: :authentication
     else
       session["devise.facebook_data"] = auth
-      redirect_to root_url(anchor: 'complete-registration')
+      redirect_to complete_registration_url(@user)
     end
   end
 end

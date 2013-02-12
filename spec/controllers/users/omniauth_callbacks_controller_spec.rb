@@ -18,7 +18,7 @@ describe Users::OmniauthCallbacksController, '#facebook' do
 
     it 'redirects user to complete registration form' do
       get :facebook
-      should redirect_to 'http://test.host/#complete-registration'
+      should redirect_to 'http://test.host/complete_registration'
     end
   end
 
