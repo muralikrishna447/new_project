@@ -44,6 +44,73 @@
     img
       max-width: 181px
 
+.order-sort
+  .grid-container
+    position: relative
+  .grid-item
+    position: absolute
+    width: 250px
+    height: 240px
+    background-color: #d15129
+    text-indent: 10px
+    color: #fff
+    font-style: italic
+    line-height: 40px
+
+    .caption
+      text-style: italic
+
+    img
+      display: block
+
+    .num
+      display: none
+      width: 25px
+      height: 25px
+      border-radius: 25px
+      border: 2px solid #d15129
+      text-align: center
+      background-color: white
+      color: #d15129
+      line-height: 25px
+      text-indent: 0
+      margin-right: 4px
+
+    .num.show
+      display: inline-block
+
+  .step-marker
+    background-color: #ddd
+    color: #004756
+    font-size: 1.4em
+    text-align: center
+    padding-top: 80px
+    height: 160px
+
+    .large-num
+      border: 4px solid #d15129
+      width: 40px
+      height: 40px
+      text-align: center
+      border-radius: 40px
+      margin: 0 auto
+      font-weight: bold
+      display: block
+      font-size: 20px
+      text-indent: 0
+
+    .done
+      display: none
+
+    .in-progress
+      display: block
+
+  .step-marker.complete
+    .done
+      display: block
+    .in-progress
+      display: none
+
 .box-sort
   .images
     margin-bottom: 25px
