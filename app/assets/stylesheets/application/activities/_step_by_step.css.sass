@@ -2,11 +2,10 @@
   +font-sans-medium
   color: $black
   padding: 0px
-  margin: 10px 0px
+  margin: 20px 0px
   float: left
   width: 100%
   line-height: 20px
-  @include shadow
   .step-directions-col
     float: left
     width: 50%
@@ -17,11 +16,18 @@
       li
         padding: 7px 0px
         line-height: 20px
+        p
+          margin: 0px
       p
-        margin: 0px
+        margin: 10px 0px
   .step-img-col
     float: right
     width: 50%
+    .step-image
+      img
+        @include shadow
+    .video-container
+      @include shadow
   table
     width: 100%
     .quantity
