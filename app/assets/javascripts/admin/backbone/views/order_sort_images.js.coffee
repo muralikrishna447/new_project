@@ -6,11 +6,11 @@ class ChefStepsAdmin.Views.OrderSortImages extends Backbone.View
 
   render: =>
     @collection.each (image) =>
+      console.log(image)
       @addImageToList(image)
     @
 
   addImageToList: (image) =>
     view = new ChefStepsAdmin.Views.OrderSortImage(model: image)
 
-    # $el wraps the template in a <div>, so we want the childNodes.
-    @$el.append(view.render().$el.childNodes)
+    @$el.append(view.render().$el)
