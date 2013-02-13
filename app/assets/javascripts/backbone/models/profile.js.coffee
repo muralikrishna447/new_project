@@ -5,7 +5,7 @@ class ChefSteps.Models.Profile extends Backbone.Model
   radioKeys: [ 'chef_type' ]
 
   url: ->
-    "/#{@urlRoot}/#{@slugOrId()}"
+    "#{@urlRoot}/#{@slugOrId()}"
 
   slugOrId: ->
     @get('slug') || @get('id')

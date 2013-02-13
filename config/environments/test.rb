@@ -1,4 +1,5 @@
-DOMAIN= "delve.dev"
+DOMAIN = "delve.dev"
+CDN_DOMAIN = 'delve.dev'
 DISQUS_SHORTNAME = "chefstepstesting"
 
 Delve::Application.configure do
