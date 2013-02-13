@@ -1,8 +1,8 @@
-.results-header.row
-  .span6
-    .center
-      Image Sorting:
+- if !results.empty?
+  .results-header.row
+    .span6
+      .center
+        Image Sorting:
 
-- results.each_with_index do |result, index|
-  = render 'quizzes/box_sort_question_result', result: result, count: index + 1
-
+  - results.each_with_index do |result, index|
+    = render 'quizzes/box_sort_question_result', result: result, count: index + 1

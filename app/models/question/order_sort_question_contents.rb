@@ -25,12 +25,26 @@ class OrderSortQuestionContents < OpenStruct
     self.marshal_dump
   end
 
-  # TODO[dbalatero]: implement this.
+  # Check a given answer against the set of solutions.
+  #
+  # `answer_data` - OrderSortAnswerContents
   def correct(answer_data)
-    true
+    answer_ids = answer_data.answers.map(&:to_i)
+
+    scorers.any? { |scorer| scorer.matches?(answer_ids) }
   end
 
 private
+
+  # For each available solution, return a scorer we can use to check answers.
+  def scorers
+    solutions.map { |solution| scorer_for_solution(solution) }
+  end
+
+  # Build a scorer for a given solution from the `self.solutions` array.
+  def scorer_for_solution(solution)
+    Delve::OrderSortQuestion::Scorer.new(solution['order_sort_image_ids'])
+  end
 
   # TODO[dbalatero]: replace this when we get a real UI.
   def parse_text_solutions(solutions)

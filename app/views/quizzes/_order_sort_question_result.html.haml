@@ -1,0 +1,27 @@
+.row
+  .span12
+    %span.type Question
+    %span.count #{result[:order]}
+    %span.student-average
+      #{result[:average_correct]}% of students answered correctly
+
+    %h4!= result[:question]
+    %h5!= "(#{result[:instructions]})"
+
+    %p.result
+      - if result[:correct]
+        %i.icon-thumbs-up
+        %em Your answer was correct.
+      - else result[:correct]
+        %i.icon-thumbs-down
+        %em Your answer was incorrect.
+
+.order-sort.clearfix.results
+  .grid-container
+    - result[:answer_images].each_with_index do |image, index|
+      .grid-item
+        = image_tag(image[:url])
+        .caption
+          .num.show
+            = index + 1
+          = image[:caption]

@@ -11,4 +11,5 @@ class ChefStepsAdmin.Views.OrderSortImages extends Backbone.View
 
   addImageToList: (image) =>
     view = new ChefStepsAdmin.Views.OrderSortImage(model: image)
+
     @$el.append(view.render().$el)

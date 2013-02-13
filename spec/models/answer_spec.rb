@@ -69,4 +69,18 @@ describe Answer, '#new_from_params' do
   it "sets answer's contents" do
     subject.contents.answer.should == 'true'
   end
+
+  context 'order sort' do
+    let(:params) do
+      {
+        type: 'order_sort',
+        answers: ["11", "14", "8", "9", "10", "12", "13"]
+      }
+    end
+
+    it 'should create a new item' do
+      answer = Answer.new_from_params(params, user)
+      answer.should be_an_instance_of(OrderSortAnswer)
+    end
+  end
 end

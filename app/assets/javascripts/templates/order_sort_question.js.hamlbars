@@ -1,0 +1,15 @@
+.container.order-sort
+  .row
+    .span8
+      .instructions= hb!('instructions')
+
+  .hero-unit.span11
+    .grid-container
+      .step-marker.grid-item
+        .in-progress
+          .step-text Drag and drop step
+          .large-num 1
+        .done Done!
+
+    %a.btn.btn-primary.btn-next{href: '#'}
+      %i.icon-double-chevron-right

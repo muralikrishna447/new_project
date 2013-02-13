@@ -28,8 +28,12 @@ class ChefSteps.Views.Quiz extends Backbone.View
       success: => window.location = @quizCompletionPath
 
   newQuestionView: (model) ->
-    if model.get('question_type') == 'box_sort'
+    question_type = model.get('question_type')
+
+    if question_type == 'box_sort'
       new ChefSteps.Views.BoxSortQuestion(model: model)
+    else if question_type == 'order_sort'
+      new ChefSteps.Views.OrderSortQuestion(model: model)
     else
       new ChefSteps.Views.MultipleChoiceQuestion(model: model)
 

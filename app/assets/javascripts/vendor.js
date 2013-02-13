@@ -6,6 +6,7 @@
 //= require jquery.knob
 //= require jquery.ui
 //= require jquery.ui.touch-punch
+//= require jquery.shapeshift
 //= require twitter/bootstrap/dropdown
 //= require twitter/bootstrap/transition
 //= require twitter/bootstrap/collapse
