@@ -6,7 +6,6 @@ class ChefStepsAdmin.Views.OrderSortImages extends Backbone.View
 
   render: =>
     @collection.each (image) =>
-      console.log(image)
       @addImageToList(image)
     @
 
