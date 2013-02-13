@@ -15,5 +15,9 @@
   = f.actions do
     = f.action :submit, label: 'Save Question'
 
-%button#upload-image.admin-button{type: 'button', data: {behavior: 'filepicker'}} Upload Image
-
+#image-uploader
+  #image-list
+    .image.image-placeholder{ data: {behavior: 'filepicker'}}
+      %p.img-polaroid
+        %i.icon-plus
+        %span Upload Images

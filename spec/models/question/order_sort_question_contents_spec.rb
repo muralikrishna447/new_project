@@ -41,4 +41,29 @@ describe OrderSortQuestionContents do
       ]
     end
   end
+
+  describe '#correct' do
+    subject do
+      described_class.new(solutions: [
+        { 'order_sort_image_ids' => [1, 2, 3] },
+        { 'order_sort_image_ids' => [1, 3, 2] }
+      ])
+    end
+
+    def answer_data(*answers)
+      double(:answer_data, answers: answers)
+    end
+
+    it 'should return true for a correct answer' do
+      subject.correct(answer_data(1, 2, 3)).should be_true
+    end
+
+    it 'should return true for an alternate correct answer' do
+      subject.correct(answer_data(1, 3, 2)).should be_true
+    end
+
+    it 'should return false for an incorrect answer' do
+      subject.correct(answer_data(2, 1, 3)).should be_false
+    end
+  end
 end
