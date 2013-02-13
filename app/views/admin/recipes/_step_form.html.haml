@@ -11,6 +11,8 @@
     image_id = step.image_id
     image_description = step.image_description
     youtube_id = step.youtube_id
+    audio_clip = step.audio_clip
+    audio_title = step.audio_title
   end
 
 %tr{id: row_id, class: ('template-row' if is_template )}
@@ -20,7 +22,9 @@
   %td= text_area_tag "#{field_name_prefix}[directions]", directions, rows: 5
   %td= text_field_tag "#{field_name_prefix}[image_id]", image_id
   %td= text_area_tag "#{field_name_prefix}[image_description]", image_description, rows: 5
+  %td= text_field_tag "#{field_name_prefix}[youtube_id]", youtube_id
+  %td= text_field_tag "#{field_name_prefix}[audio_clip]", audio_clip
+  %td= text_field_tag "#{field_name_prefix}[audio_title]", audio_title
   %td
-    = text_field_tag "#{field_name_prefix}[youtube_id]", youtube_id
     = remove_button 'tr'
     = reorder_icon
