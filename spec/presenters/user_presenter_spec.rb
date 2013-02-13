@@ -7,7 +7,7 @@ describe UserPresenter, "#attributes" do
   subject { user_presenter.attributes }
 
   it "serializes valid keys" do
-    subject.keys.should =~ [:id, :email, :name, :location, :quote, :website, :image, :profile_complete, :chef_type]
+    subject.keys.should =~ [:id, :slug, :email, :name, :location, :quote, :website, :image, :profile_complete, :chef_type]
   end
 end
 
