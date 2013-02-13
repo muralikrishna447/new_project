@@ -36,6 +36,11 @@
       .step-directions
         :markdown
           #{raw step.directions}
+    - if step.audio_clip?
+      .audio
+        %h4= step.audio_title? ? step.audio_title : 'Audio Clip'
+        %p
+        =s3_audio_url(step.audio_clip)
   .step-img-col
     - if step.youtube_id?
       .video.noprint

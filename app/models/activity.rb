@@ -237,6 +237,8 @@ class Activity < ActiveRecord::Base
         youtube_id: step_attr[:youtube_id],
         image_id: step_attr[:image_id],
         image_description: step_attr[:image_description],
+        audio_clip: step_attr[:audio_clip],
+        audio_title: step_attr[:audio_title],
         step_order_position: :last
       )
       step_attr[:id] = step.id

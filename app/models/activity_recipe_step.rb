@@ -9,7 +9,7 @@ class ActivityRecipeStep < ActiveRecord::Base
 
   attr_accessible :activity_id, :step_id, :step_order_position
 
-  delegate :title, :youtube_id, :youtube_id?, :directions, :image_id, :image_id?, :image_description, :image_description?, :ingredients, :directions, :transcript, :transcript?, to: :step
+  delegate :title, :youtube_id, :youtube_id?, :directions, :image_id, :image_id?, :image_description, :image_description?, :ingredients, :directions, :transcript, :transcript?, :audio_clip, :audio_clip?, :audio_title, :audio_title?, to: :step
 
   scope :ordered, rank(:step_order)
 
