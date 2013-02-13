@@ -11,7 +11,7 @@
             %col{width: "6%"}
           %thead
             %tr
-              %th#ingredient Ingredient
+              %th#ingredient= step.step.subrecipe_title
               %th#quantity{colspan: 2}
                 %a.change_units{title: "Click to change units"} Quantity
                 %a.recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}

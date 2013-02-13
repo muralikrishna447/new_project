@@ -44,6 +44,8 @@ ActiveAdmin.register Recipe do
   end
 
   member_action :update_associated_ingredients, method: :put do
+    @recipe = Recipe.find(params[:id])
+    @recipe.update_attributes(steps_attributes:params[:recipe][:steps_attributes])
     params[:step_ingredients].each do |id, ingredients|
       Step.find(id).update_ingredients(ingredients)
     end

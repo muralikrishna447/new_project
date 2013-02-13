@@ -293,6 +293,7 @@ ActiveRecord::Schema.define(:version => 20130213032124) do
     t.string   "image_description"
     t.string   "audio_clip"
     t.string   "audio_title"
+    t.string   "subrecipe_title"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
