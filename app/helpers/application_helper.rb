@@ -3,6 +3,10 @@ module ApplicationHelper
     "http://d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end
 
+  def s3_audio_url(audio_clip)
+    "<audio controls><source src='http://d2eud0b65jr0pw.cloudfront.net/#{audio_clip}''></source></audio>".html_safe
+  end
+
   def is_current_user?(user)
     current_user == user
   end

@@ -22,7 +22,7 @@ class Activity < ActiveRecord::Base
 
   accepts_nested_attributes_for :steps, :equipment, :recipes
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :image_id
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description],
@@ -237,6 +237,8 @@ class Activity < ActiveRecord::Base
         youtube_id: step_attr[:youtube_id],
         image_id: step_attr[:image_id],
         image_description: step_attr[:image_description],
+        audio_clip: step_attr[:audio_clip],
+        audio_title: step_attr[:audio_title],
         step_order_position: :last
       )
       step_attr[:id] = step.id

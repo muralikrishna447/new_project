@@ -9,6 +9,7 @@
     = f.input :tag_list
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
+    = f.input :image_id
     = f.input :transcript
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
@@ -39,7 +40,10 @@
         %th Title
         %th Directions (Markdown or HTML)
         %th Image Id
+        %th Image Description
         %th Youtube Id
+        %th Audio Clip
+        %th Audio Title
       = render 'admin/recipes/step_form', step: nil, field_name_prefix: field_name_prefix
       - @activity.ordered_steps.each do |step|
         = render 'admin/recipes/step_form', step: step, field_name_prefix: field_name_prefix
