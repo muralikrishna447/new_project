@@ -50,6 +50,9 @@ Delve::Application.routes.draw do
       post 'cooked-this' => 'activities#cooked_this', as: 'cooked_this'
     end
   end
+  match '/feed' => 'activities#feed',
+        :as => :feed,
+        :defaults => { :format => 'atom' }
 
   resources :questions, only: [] do
     resources :answers, only: [:create]
