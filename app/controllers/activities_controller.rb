@@ -20,6 +20,24 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def feed
+    # this will be the name of the feed displayed on the feed reader
+    @title = "ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine"
+
+    # the news items
+    @activities = Activity.order("updated_at desc")
+
+    # this will be our Feed's update timestamp
+    @updated = @activities.first.updated_at unless @activities.empty?
+
+    respond_to do |format|
+      format.atom { render :layout => false }
+
+      # we want the RSS feed to redirect permanently to the ATOM feed
+      format.rss { redirect_to feed_path(:format => :atom), :status => :moved_permanently }
+    end
+  end
+
   private
 
   def cooked_ids
