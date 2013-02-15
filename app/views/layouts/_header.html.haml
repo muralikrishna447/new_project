@@ -58,8 +58,7 @@
                 %li= link_to 'Profile', user_profile_path(current_user)
                 %li= link_to 'Sign out', destroy_user_session_path, method: :delete
           - elsif request.path != sign_in_path
-            %ul.nav
-              %li
-                = link_to sign_in_path do
-                  .btn.btn-primary Sign in
+            .sign-in-button
+              = link_to sign_in_path do
+                .btn.btn-primary Sign in
 
