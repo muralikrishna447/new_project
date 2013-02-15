@@ -28,15 +28,14 @@
 
   .hero-unit.signup-banner
     .container
-      .row
-        .span6
-          %h2 ChefSteps is the free-to-learn culinary school.
-          %h3 Master sous vide cooking in our first course.
-        .span.pull-right
-          %a.button{ href: course_path('accelerated-sous-vide-cooking-course') }
-            .inner
-              Take me to the course 
-              %i.icon-double-chevron-right
+      .pull-left
+        %h2 ChefSteps is the free-to-learn culinary school.
+        %h3 Master sous vide cooking in our first course.
+      .pull-right
+        %a.button{ href: course_path('accelerated-sous-vide-cooking-course') }
+          .inner
+            Take me to the course 
+            %i.icon-double-chevron-right
   .container
     .row
       - if homepage_blurb
