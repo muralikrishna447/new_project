@@ -20,7 +20,9 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  def feed
+  # This is the base feed that we tell feedburner about. Users should never see this.
+  # See note in next method.
+  def base_feed
     # this will be the name of the feed displayed on the feed reader
     @title = "ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine"
 
@@ -31,11 +33,16 @@ class ActivitiesController < ApplicationController
     @updated = @activities.first.updated_at unless @activities.empty?
 
     respond_to do |format|
-      format.atom { render :layout => false }
-
-      # we want the RSS feed to redirect permanently to the ATOM feed
-      format.rss { redirect_to feed_path(:format => :atom), :status => :moved_permanently }
+      format.atom { render 'feed', :layout => false }
     end
+  end
+
+  # See http://support.google.com/feedburner/answer/78464?hl=en under Alternative Traffic Redirection Method
+  # If someone asks for chefsteps.com/feed we will redirect them. This gives us a path to safety
+  # if feedburner goes away someday. Everyone will have bookmarked chefsteps.com/feed in their reader
+  # and we can just change this one redirect below to go direct to base_feed.
+  def feedburner_feed
+    redirect_to "http://feeds.feedburner.com/ChefSteps"
   end
 
   private
