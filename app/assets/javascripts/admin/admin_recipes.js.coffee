@@ -1,14 +1,7 @@
 closeEditorWarning = () ->
-  'Make sure the recipe has been updated before editing the associated ingredients'
+  "Make sure you press 'Update Recipe' to save any changes."
 
-# window.onkeyup ->
-#   alert 'hello'
 $ ->
   if $('.update-warning').is('*')
-    # alert 'hello'
-    window.onbeforeunload = closeEditorWarning
-# window.onbeforeunload = closeEditorWarning
-
-# $ ->
-#   $('.upload-warning').click ->
-#     closeEditorWarning()
+    $('input').keyup ->
+      window.onbeforeunload = closeEditorWarning
