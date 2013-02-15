@@ -8,7 +8,7 @@
         .featured-and-filmstrip
           #featured-video
             .video-container
-              %iframe{src: youtube_url(@featured_id, 1) }
+              %iframe{src: youtube_url(@featured_id, 0) }
           #filmstrip-container
             .filmstrip
               - @filmstrip.each do |video|
