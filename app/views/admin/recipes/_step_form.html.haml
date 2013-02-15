@@ -31,4 +31,4 @@
 
 - if step
   %li.two-button-row
-    = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_recipe_path(@recipe)
+    = link_to 'Edit ingredients associated with steps', associated_ingredients_admin_recipe_path(@recipe), class: 'admin-button update-warning'
