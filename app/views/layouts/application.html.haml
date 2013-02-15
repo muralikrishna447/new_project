@@ -40,9 +40,8 @@
     -# RSS
     -# ==========================================================================
 
-    -# %link{:rel => "alternate", :type => "application/rss+xml", :title => "RSS", :href => "http://feeds.feedburner.com/FEEDNAME"}
-    = auto_discovery_link_tag :atom, "/feed"
-    = auto_discovery_link_tag :rss, "/feed.rss"
+    = auto_discovery_link_tag :atom, "http://feeds.feedburner.com/ChefSteps"
+    = auto_discovery_link_tag :rss, "http://feeds.feedburner.com/ChefSteps"
 
     -# Favicon
     -# ==========================================================================
