@@ -7,6 +7,16 @@ Delve::Application.routes.draw do
   match '/activities/improvised-sous-vide-cooking-running-water-method',
     to: redirect('/activities/improvised-sous-vide-running-water-method')
 
+  match '/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-cooking-insulated-cooler-method',
+    to: redirect('/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-insulated-cooler-method')
+  match '/activities/improvised-sous-vide-cooking-insulated-cooler-method',
+    to: redirect('/activities/improvised-sous-vide-insulated-cooler-method')
+
+  match '/courses/accelerated-sous-vide-cooking-course/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
+    to: redirect('/courses/accelerated-sous-vide-cooking-course/sous-vide-pork-cheek-celery-root-pickled-apples')
+  match '/activities/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
+    to: redirect('/activities/sous-vide-pork-cheek-celery-root-pickled-apples')
+
   devise_for :admin_users, ActiveAdmin::Devise.config
 
   get "styleguide" => "styleguide#index"
