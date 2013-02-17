@@ -71,5 +71,11 @@ Delve::Application.routes.draw do
   resources :sitemaps, :only => :show
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
 
+  # Redirects
+  match '/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-cooking-running-water-method',
+    to: redirect('/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-running-water-method')
+  match '/activities/improvised-sous-vide-cooking-running-water-method',
+    to: redirect('/activities/improvised-sous-vide-running-water-method')
+
 end
 
