@@ -6,15 +6,25 @@
       .icon-th-list
     %ul#collapsible
       %li.nav-item
-        = link_to 'Course', course_url('accelerated-sous-vide-cooking-course')
+        = link_to course_url('accelerated-sous-vide-cooking-course') do
+          %i.icon-book
+          Course
       %li.nav-item
-        = link_to 'Recipes', recipe_gallery_index_url
+        = link_to recipe_gallery_index_url do
+          %i.icon-th-large
+          Recipes
       %li.nav-item
-        = link_to 'Forum', 'http://forum.chefsteps.com'
+        = link_to 'http://forum.chefsteps.com' do
+          %i.icon-comments-alt
+          Forum
       %li.nav-item
-        = link_to 'Blog', 'http://blog.chefsteps.com'
-      %li.nav-item
-        = link_to 'Shop', 'http://store.chefsteps.com'       
+        = link_to 'http://blog.chefsteps.com' do
+          %i.icon-pencil
+          Blog
+      %li.nav-item.nav-item-last
+        = link_to 'http://store.chefsteps.com' do
+          %i.icon-shopping-cart
+          Shop       
       %li.social
         = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
           .icon-facebook

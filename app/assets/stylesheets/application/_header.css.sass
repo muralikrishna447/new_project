@@ -125,12 +125,16 @@
     margin-top: 15px
     li
       display: inline-block
+      i
+        display: none
   #menu-toggle
     display: none
     font-size: 24px
     color: $brick
     text-align: right
     margin-top: 15px
+    &:hover
+      cursor: pointer
 
 @media (max-width: 480px)
   #header
@@ -150,7 +154,16 @@
       .nav-item
         display: block
         clear: both
-        padding: 10px 15px
+        padding: 10px
+        background-color: $brick
+        border-bottom: 1px solid white
+        a
+          color: white
+          font-weight: 200
+        i
+          display: inline-block
+      .nav-item-last
+        border-bottom: none
       .social
         display: none
       .user
