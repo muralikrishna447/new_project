@@ -1,42 +1,42 @@
 #header
-  .navbar
-    .navbar-inner
-      .container
-        = link_to root_url, class: 'brand' do
-          = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
-        .nav-collapse.collapse
-          %ul.nav
-            %li
-              = link_to 'Course', course_url('accelerated-sous-vide-cooking-course')
-            %li
-              = link_to 'Recipes', recipe_gallery_index_url
-            %li
-              = link_to 'Forum', 'http://forum.chefsteps.com'
-            %li
-              = link_to 'Blog', 'http://blog.chefsteps.com'
-            %li
-              = link_to 'Shop', 'http://store.chefsteps.com'
-            %li
-              = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
-                .icon-facebook
-            %li
-              = link_to 'http://twitter.com/@chefsteps', target: 'blank' do
-                .icon-twitter
-            %li
-              = link_to 'http://pinterest.com/chefsteps/', target: 'blank' do
-                .icon-pinterest
-            %li
-              = link_to 'https://plus.google.com/106370441183974123730/posts', target: 'blank' do
-                .icon-google-plus
-            %li
-              = link_to feed_url do
-                .icon-rss
-            - unless external
-              %li
-                = link_to search_index_url do
-                  .icon-search
-            %li
-              = render 'mailing_list/subscribe'
+  = link_to root_url, class: 'brand' do
+    = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
+  .nav-container
+    #menu-toggle
+      .icon-th-list
+    %ul#collapsible
+      %li.nav-item
+        = link_to 'Course', course_url('accelerated-sous-vide-cooking-course')
+      %li.nav-item
+        = link_to 'Recipes', recipe_gallery_index_url
+      %li.nav-item
+        = link_to 'Forum', 'http://forum.chefsteps.com'
+      %li.nav-item
+        = link_to 'Blog', 'http://blog.chefsteps.com'
+      %li.nav-item
+        = link_to 'Shop', 'http://store.chefsteps.com'       
+      %li.social
+        = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
+          .icon-facebook
+      %li.social
+        = link_to 'http://twitter.com/@chefsteps', target: 'blank' do
+          .icon-twitter
+      %li.social
+        = link_to 'http://pinterest.com/chefsteps/', target: 'blank' do
+          .icon-pinterest
+      %li.social
+        = link_to 'https://plus.google.com/106370441183974123730/posts', target: 'blank' do
+          .icon-google-plus
+      %li.social
+        = link_to feed_url do
+          .icon-rss
+      - unless external
+        %li.social
+          = link_to search_index_url do
+            .icon-search
+      %li.user
+        = render 'mailing_list/subscribe'
+      %li.user
         - if user_signed_in?
           .dropdown#user-dropdown
             = link_to '#', data: {toggle: 'dropdown'} do
@@ -48,10 +48,6 @@
           .sign-in-button
             = link_to sign_in_path do
               .btn.btn-primary Sign in
-        = link_to '', class: 'btn btn-navbar', data: {toggle:'collapse', target: '.nav-collapse'} do
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
 
   / .row.global-navigation
   /   .span12
