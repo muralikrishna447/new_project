@@ -1,7 +1,7 @@
 #header
-  = link_to root_url, class: 'brand' do
-    = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
   .nav-container
+    = link_to root_url, class: 'brand' do
+      = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
     #menu-toggle
       .icon-th-list
     %ul#collapsible
@@ -45,8 +45,6 @@
           = link_to search_index_url do
             .icon-search
       %li.user
-        = render 'mailing_list/subscribe'
-      %li.user
         - if user_signed_in?
           .dropdown#user-dropdown
             = link_to '#', data: {toggle: 'dropdown'} do
@@ -58,6 +56,8 @@
           .sign-in-button
             = link_to sign_in_path do
               .btn.btn-primary Sign in
+      %li.user
+        = render 'mailing_list/subscribe'
 
   / .row.global-navigation
   /   .span12

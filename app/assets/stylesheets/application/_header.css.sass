@@ -122,11 +122,21 @@
     float: left
   .nav-container
     float: left
+    width: 100%
     margin-top: 15px
     li
-      display: inline-block
+      float: left
+      list-style: none
       i
         display: none
+    .nav-item
+      margin: 18px 15px 0px
+    .social
+      margin-top: 18px
+    .user
+      margin-top: 5px
+      float: right
+      margin-left: 5px
   #menu-toggle
     display: none
     font-size: 24px
@@ -139,22 +149,25 @@
 @media (max-width: 480px)
   #header
     .nav-container
-      position: absolute
       margin-top: 0px
       top: 10px
       right: 10px
       z-index: 9999
       ul
+        float: right
         margin: 0px
         padding: 0px
         width: 200px
         margin-top: 5px
         background-color: white
         @include shadow
+      li
+        width: 180px
       .nav-item
         display: block
         clear: both
         padding: 10px
+        margin: 0px
         background-color: $brick
         border-bottom: 1px solid white
         a
