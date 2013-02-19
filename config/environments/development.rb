@@ -45,5 +45,5 @@ Delve::Application.configure do
   config.sass.preferred_syntax = :sass
 end
 
-DISQUS_SHORTNAME = "delvestaging"
+Delve::Config.disqus_shortname = "delvestaging"
 
