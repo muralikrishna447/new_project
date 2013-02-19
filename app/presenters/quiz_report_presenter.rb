@@ -52,6 +52,43 @@ class QuizReportPresenter
     end
   end
 
+  def order_sort_header(question, question_index)
+    q = "Q#{question_index + 1}"
+    [
+      "#{q} (OrderSort)",
+      "#{q} (% correct)"
+    ]
+  end
+
+  def order_sort_answers(question)
+    solution = question.contents.solutions.first.try(:fetch, 'order_sort_image_ids')
+
+    answers = []
+    if solution.nil?
+      answers << ''
+    else
+      answers << order_sort_answer_format(solution)
+    end
+
+    # We always want the % correct to be 1.0 (100%).
+    answers << '1.0'
+
+    answers
+  end
+
+  def order_sort_user_answers(question, user_answers)
+    question.answers.each do |answer|
+      if answer.user
+        email = answer.user.email
+        user_answers[email] ||= []
+        user_answers[email] << order_sort_answer_format(answer.contents.answers)
+
+        # TODO[dbalatero]: add the correct score % in here.
+        user_answers[email] << 'TBD'
+      end
+    end
+  end
+
   def box_sort_header(question, question_index)
     header = []
     question.images.each_with_index do |image, image_index|
@@ -80,6 +117,10 @@ class QuizReportPresenter
         end
       end
     end
+  end
+
+  def order_sort_answer_format(answer)
+    answer.join(',')
   end
 end
 
