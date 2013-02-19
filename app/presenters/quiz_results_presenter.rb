@@ -46,7 +46,8 @@ class QuizResultsPresenter
 
   def order_sort_results(question, answer)
     {
-      answer_images: order_sort_answer_images(question, answer)
+      answer_images: order_sort_answer_images(question, answer),
+      solution_score: answer.contents.solution_score
     }
   end
 

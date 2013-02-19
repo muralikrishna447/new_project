@@ -9,12 +9,7 @@
     %h5!= "(#{result[:instructions]})"
 
     %p.result
-      - if result[:correct]
-        %i.icon-thumbs-up
-        %em Your answer was correct.
-      - else result[:correct]
-        %i.icon-thumbs-down
-        %em Your answer was incorrect.
+      %em Your answer was #{formatted_solution_score(result[:solution_score])} correct.
 
 .order-sort.clearfix.results
   .grid-container
