@@ -82,9 +82,7 @@ class QuizReportPresenter
         email = answer.user.email
         user_answers[email] ||= []
         user_answers[email] << order_sort_answer_format(answer.contents.answers)
-
-        # TODO[dbalatero]: add the correct score % in here.
-        user_answers[email] << 'TBD'
+        user_answers[email] << answer.contents.solution_score
       end
     end
   end
