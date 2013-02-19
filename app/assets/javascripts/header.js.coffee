@@ -1,3 +1,3 @@
 $ ->
   $('#menu-toggle').click ->
-    $('#collapsible').toggle()
+    $('#collapsible').slideToggle 'fast'

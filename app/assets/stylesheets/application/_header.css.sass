@@ -134,6 +134,9 @@
       margin-top: 5px
       float: right
       margin-left: 5px
+    .user-auth
+      img
+        width: 40px
   #menu-toggle
     display: none
     font-size: 30px
@@ -145,12 +148,15 @@
     &:hover
       cursor: pointer
 
-@media (max-width: 480px)
+@media (max-width: 640px)
   #header
     .nav-container
       top: 10px
       right: 10px
       z-index: 9999
+      .brand
+        img
+        width: 140px
       #collapsible
         position: absolute
         top: 45px
@@ -186,6 +192,10 @@
         display: none
       .user
         display: none
+      .user-auth
+        display: block
+        float: right
+        width: 100px
     #menu-toggle
       display: block
     ul
