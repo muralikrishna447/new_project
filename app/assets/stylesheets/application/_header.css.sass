@@ -107,23 +107,20 @@
 .global-navigation .navbar .nav
   float: none
 
-//.navbar .nav > li > a
-//  color: $brick
-//  padding: 0
-//  text-shadow: none
+.navbar .nav > li > a
+  text-shadow: none
 
 .navbar .nav > li.active > a
   background: none
   color: #111
 
 #header
-  margin: 10px 0px
   .brand
     float: left
   .nav-container
     float: left
     width: 100%
-    margin-top: 15px
+    margin: 10px 0px
     li
       float: left
       list-style: none
@@ -143,7 +140,7 @@
     color: $brick
     text-align: right
     position: absolute
-    top: 24px
+    top: 20px
     right: 10px
     &:hover
       cursor: pointer
@@ -151,15 +148,16 @@
 @media (max-width: 480px)
   #header
     .nav-container
-      margin-top: 0px
       top: 10px
       right: 10px
       z-index: 9999
       #collapsible
         position: absolute
-        top: 50px
+        top: 45px
         right: 10px
         z-index: 9999
+        a
+          color: white
       ul
         float: right
         margin: 0px
@@ -167,7 +165,7 @@
         width: 200px
         margin-top: 5px
         background-color: white
-        @include shadow
+        @include deep-shadow
       li
         width: 180px
       .nav-item

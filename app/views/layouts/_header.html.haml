@@ -5,44 +5,44 @@
     #menu-toggle
       .icon-th-list
     %ul#collapsible
-      %li.nav-item
-        = link_to course_url('accelerated-sous-vide-cooking-course') do
+      = link_to course_url('accelerated-sous-vide-cooking-course') do
+        %li.nav-item
           %i.icon-book
           Course
-      %li.nav-item
-        = link_to recipe_gallery_index_url do
+      = link_to recipe_gallery_index_url do
+        %li.nav-item
           %i.icon-th-large
           Recipes
-      %li.nav-item
-        = link_to 'http://forum.chefsteps.com' do
+      = link_to 'http://forum.chefsteps.com' do
+        %li.nav-item
           %i.icon-comments-alt
           Forum
-      %li.nav-item
-        = link_to 'http://blog.chefsteps.com' do
+      = link_to 'http://blog.chefsteps.com' do
+        %li.nav-item
           %i.icon-pencil
           Blog
-      %li.nav-item.nav-item-last
-        = link_to 'http://store.chefsteps.com' do
+      = link_to 'http://store.chefsteps.com' do
+        %li.nav-item.nav-item-last
           %i.icon-shopping-cart
           Shop       
-      %li.social
-        = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
+      = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
+        %li.social
           .icon-facebook
-      %li.social
-        = link_to 'http://twitter.com/@chefsteps', target: 'blank' do
+      = link_to 'http://twitter.com/@chefsteps', target: 'blank' do
+        %li.social
           .icon-twitter
-      %li.social
-        = link_to 'http://pinterest.com/chefsteps/', target: 'blank' do
+      = link_to 'http://pinterest.com/chefsteps/', target: 'blank' do
+        %li.social
           .icon-pinterest
-      %li.social
-        = link_to 'https://plus.google.com/106370441183974123730/posts', target: 'blank' do
+      = link_to 'https://plus.google.com/106370441183974123730/posts', target: 'blank' do
+        %li.social
           .icon-google-plus
-      %li.social
-        = link_to feed_url do
+      = link_to feed_url do
+        %li.social
           .icon-rss
       - unless external
-        %li.social
-          = link_to search_index_url do
+        = link_to search_index_url do
+          %li.social
             .icon-search
       %li.user
         - if user_signed_in?
