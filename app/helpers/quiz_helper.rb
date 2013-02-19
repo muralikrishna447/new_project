@@ -1,4 +1,8 @@
 module QuizHelper
+  # Outputs a "0.5" percentage as "50%".
+  def formatted_solution_score(score)
+    number_to_percentage((score.to_f * 100.0).to_i, precision: 0)
+  end
 
   def estimated_mins(question_count)
     [estimated_secs(question_count) / 60, 1].max
