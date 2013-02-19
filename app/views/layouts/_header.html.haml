@@ -53,9 +53,8 @@
             %li= link_to 'Profile', user_profile_path(current_user)
             %li= link_to 'Sign out', destroy_user_session_path, method: :delete
       - elsif request.path != sign_in_path
-        .sign-in-button
-          = link_to sign_in_path do
-            .btn.btn-primary Sign in
+        = link_to sign_in_path do
+          Sign in
     %li.user
       = render 'mailing_list/subscribe'
 
