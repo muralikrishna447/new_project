@@ -124,14 +124,6 @@ ActiveRecord::Schema.define(:version => 20130214180700) do
   add_index "box_sort_images", ["image_order"], :name => "index_box_sort_images_on_image_order"
   add_index "box_sort_images", ["question_id"], :name => "index_box_sort_images_on_question_id"
 
-  create_table "completions", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "course_id"
-    t.integer  "activity_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
   create_table "copies", :force => true do |t|
     t.string   "location"
     t.text     "copy"
@@ -292,9 +284,9 @@ ActiveRecord::Schema.define(:version => 20130214180700) do
     t.string   "image_id"
     t.text     "transcript"
     t.string   "image_description"
+    t.string   "subrecipe_title"
     t.string   "audio_clip"
     t.string   "audio_title"
-    t.string   "subrecipe_title"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"

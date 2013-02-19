@@ -14,35 +14,35 @@ describe Delve::OrderSortQuestion::Scorer do
     end
   end
 
-  describe '#distance_from_solution' do
+  describe '#solution_score' do
     describe 'simple 4-element solution' do
       let(:solution) { [:a, :b, :c, :d] }
 
       subject { described_class.new(solution) }
 
       it 'should do adjacent swaps' do
-        subject.distance_from_solution([:b, :a, :c, :d]).should == 1
+        subject.solution_score([:b, :a, :c, :d]).should be_within(0.001).of(0.833)
       end
 
       it 'should pass non-adjacent single swaps' do
-        subject.distance_from_solution([:d, :b, :c, :a]).should == 3
+        subject.solution_score([:d, :b, :c, :a]).should be_within(0.001).of(0.166)
       end
 
       it 'should deal with double swaps' do
-        subject.distance_from_solution([:b, :a, :d, :c]).should == 1
+        subject.solution_score([:b, :a, :d, :c]).should be_within(0.001).of(0.666)
       end
 
       it 'should deal with insertions' do
-        subject.distance_from_solution([:a, :d, :b, :c]).should == 1
+        subject.solution_score([:a, :d, :b, :c]).should be_within(0.001).of(0.666)
       end
 
       it 'should deal with exact matches' do
-        subject.distance_from_solution([:a, :b, :c, :d]).should == 0
+        subject.solution_score([:a, :b, :c, :d]).should == 1.0
       end
 
       it 'should raise an error if the solution and attempt does not match' do
         expect {
-          subject.distance_from_solution([:haha, :not, :real, :answers])
+          subject.solution_score([:haha, :not, :real, :answers])
         }.to raise_error
       end
     end
@@ -52,7 +52,7 @@ describe Delve::OrderSortQuestion::Scorer do
       subject { described_class.new(solution) }
 
       it 'should deal with end swaps' do
-        subject.distance_from_solution([8, 2, 3, 4, 5, 6, 7, 1]).should == 7
+        subject.solution_score([8, 2, 3, 4, 5, 6, 7, 1]).should be_within(0.001).of(0.535)
       end
     end
   end
