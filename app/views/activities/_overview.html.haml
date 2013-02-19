@@ -21,8 +21,7 @@
     .row
       .span6
         - if activity.has_ingredients?
-          - activity.ordered_recipes.each do |recipe|
-            = render 'ingredients_list', recipe: recipe
+          = render 'ingredients_list', activity: activity
       .span6.spec-column
         - if activity.yield.present? || activity.timing.present?
           .row
@@ -47,7 +46,7 @@
           .row
             .span4
               = render 'equipment_list', equipment: activity.optional_equipment.all
-        - if activity.has_recipes? and activity.cooked_this > 0
+        - if activity.is_recipe? and activity.cooked_this > 0
           .row
             .span4.cooked-this-count
               %i.icon-pot-brick

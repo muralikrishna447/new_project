@@ -8,7 +8,6 @@ ActiveAdmin.register Step do
       f.input :transcript
       f.input :directions, label: "Directions (Markdown)"
       f.input :image_id
-      f.input :recipe
       f.input :activity
     end
 

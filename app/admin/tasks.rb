@@ -14,16 +14,11 @@ ActiveAdmin.register_page "Tasks" do
       include ActionView::Helpers::NumberHelper
     end
 
-    (RecipeIngredient.all + StepIngredient.all).each do |ingredient|
+    RecipeIngredient.all.each do |ingredient|
       ingredient.display_quantity = number_with_precision(ingredient.quantity, precision: 2, strip_insignificant_zeros: true)
       ingredient.save!
     end
     redirect_to({action: :index}, notice: "Quantities updated successfully!")
-  end
-
-  page_action :update_activity_recipe_steps, method: :post do
-    Activity.all.map(&:update_recipe_steps)
-    redirect_to({action: :index}, notice: "Activity recipe steps updated successfully!")
   end
 
   page_action :create_new_copy, method: :post do
@@ -44,4 +39,6 @@ ActiveAdmin.register_page "Tasks" do
     Activity.all.map(&:save!)
     redirect_to({action: :index}, notice: "Activity slugs created successfully!")
   end
+
+
 end

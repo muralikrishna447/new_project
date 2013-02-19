@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130214180700) do
+ActiveRecord::Schema.define(:version => 20130218175151) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -59,6 +59,20 @@ ActiveRecord::Schema.define(:version => 20130214180700) do
 
   add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
   add_index "activity_equipment", ["equipment_order"], :name => "index_activity_equipment_on_equipment_order"
+
+  create_table "activity_ingredients", :force => true do |t|
+    t.integer  "activity_id",      :null => false
+    t.integer  "ingredient_id",    :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "unit"
+    t.decimal  "quantity"
+    t.integer  "ingredient_order"
+    t.string   "display_quantity"
+  end
+
+  add_index "activity_ingredients", ["activity_id", "ingredient_id"], :name => "index_activity_ingredients_on_activity_id_and_ingredient_id", :unique => true
+  add_index "activity_ingredients", ["ingredient_order"], :name => "index_activity_ingredients_on_ingredient_order"
 
   create_table "activity_recipe_steps", :force => true do |t|
     t.integer  "activity_id", :null => false
@@ -124,14 +138,6 @@ ActiveRecord::Schema.define(:version => 20130214180700) do
   add_index "box_sort_images", ["image_order"], :name => "index_box_sort_images_on_image_order"
   add_index "box_sort_images", ["question_id"], :name => "index_box_sort_images_on_question_id"
 
-  create_table "completions", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "course_id"
-    t.integer  "activity_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
   create_table "copies", :force => true do |t|
     t.string   "location"
     t.text     "copy"
@@ -151,6 +157,15 @@ ActiveRecord::Schema.define(:version => 20130214180700) do
     t.datetime "updated_at",                           :null => false
     t.string   "short_description"
   end
+
+  create_table "courses_activities", :id => false, :force => true do |t|
+    t.integer "course_id"
+    t.integer "activity_id"
+    t.decimal "activity_order"
+  end
+
+  add_index "courses_activities", ["activity_id", "course_id"], :name => "index_courses_activities_on_activity_id_and_course_id"
+  add_index "courses_activities", ["course_id", "activity_id"], :name => "index_courses_activities_on_course_id_and_activity_id"
 
   create_table "equipment", :force => true do |t|
     t.string   "title"
@@ -245,20 +260,6 @@ ActiveRecord::Schema.define(:version => 20130214180700) do
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
 
-  create_table "recipe_ingredients", :force => true do |t|
-    t.integer  "recipe_id",        :null => false
-    t.integer  "ingredient_id",    :null => false
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.string   "unit"
-    t.decimal  "quantity"
-    t.integer  "ingredient_order"
-    t.string   "display_quantity"
-  end
-
-  add_index "recipe_ingredients", ["ingredient_order"], :name => "index_recipe_ingredients_on_ingredient_order"
-  add_index "recipe_ingredients", ["recipe_id", "ingredient_id"], :name => "index_recipe_ingredients_on_recipe_id_and_ingredient_id", :unique => true
-
   create_table "recipes", :force => true do |t|
     t.string   "title"
     t.datetime "created_at", :null => false
@@ -292,9 +293,9 @@ ActiveRecord::Schema.define(:version => 20130214180700) do
     t.string   "image_id"
     t.text     "transcript"
     t.string   "image_description"
+    t.string   "subrecipe_title"
     t.string   "audio_clip"
     t.string   "audio_title"
-    t.string   "subrecipe_title"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"

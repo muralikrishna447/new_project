@@ -50,19 +50,15 @@
                 - activity.optional_equipment.map do |equipment|
                   %li= link_to equipment.title, admin_equipment_path(equipment.equipment_id)
           %tr
-            %th Recipes
-            %td
-              %ul
-                - activity.ordered_recipes.map do |recipe|
-                  %li= link_to recipe.title, admin_recipe_path(recipe)
-          %tr
-            %th Ordered Recipe Steps
+            %th Ingredients
             %td
               %ol
-                - activity.ordered_recipe_steps.each do |recipe_step|
-                  %li= recipe_step.sorting_title
+                - activity.ingredients.each do |ingredient|
+                  %li
+                    = ingredient.measurement
+                    = link_to ingredient.title, admin_ingredient_path(ingredient.ingredient_id)
           %tr
-            %th Assembly Steps
+            %th Steps
             %td
               %ol
                 - activity.ordered_steps.each_with_index do |step,index|

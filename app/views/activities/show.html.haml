@@ -8,7 +8,7 @@
   - content_for :keywords, activity.tag_list.join(',')
   - course = Course.find(params[:course_id]) if params[:course_id]
 
-  .recipe_schema{:itemscope => true, :itemtype => (activity.has_recipes? ? "http://schema.org/Recipe" : nil)}
+  .recipe_schema{:itemscope => true, :itemtype => (activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
 
     = render 'courses/navigation', course: course, activity: activity, disqus_id: disqus_id
 
@@ -31,7 +31,7 @@
               = image_tag s3_image_url(activity.image_id)
 
     = render 'overview', activity: activity
-    -if activity.steps.any? || activity.recipe_steps.any?
+    -if activity.steps.any?
       #step-by-step
         = render 'step_by_step', activity: activity
     = render 'quizzes', activity: activity
