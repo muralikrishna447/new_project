@@ -13,37 +13,35 @@ module Delve
         @solution == attempt
       end
 
-      # Public: given a solution attempt, it returns how far away that attempt
-      # is from the actual solution.
+      # Public: given a solution attempt, it scores it against the actual solution and
+      # returns the score, bounded between [0.0, 1.0].
       #
-      # A distance of 0 implies an exact match, and a distance of `solution.size`
-      # implies the worst score possible.
-      def distance_from_solution(attempt)
-        # Convert the solution attempt into an array of indexes into the @solution
-        # array. We can then attempt to sort this array to determine how far an attempt
-        # is from a solution.
-        indexes = get_permutation(attempt)
+      # A score of 1.0 is a perfect 100%, and a score of 0.0 is a 0%.
+      def solution_score(attempt)
+        if attempt.size != @solution.size
+          raise "user attempt had a different number of items from the solution"
+        end
 
-        swaps = 0
+        count = attempt.size
 
-        # Standard bubble sort.
-        loop do
-          swapped = false
-          0.upto(indexes.size - 2) do |i|
-            if indexes[i] > indexes[i + 1]
-              indexes[i], indexes[i + 1] = indexes[i + 1], indexes[i]
-              swapped = true
-            end
-          end
+        possible_correct = 0
+        correct = 0
 
-          if swapped
-            swaps += 1
-          else
-            break
+        (0..(count - 2)).each do |i|
+          ((i + 1)..(count - 1)).each do |j|
+            possible_correct += 1
+            a = @solution[i]
+            b = @solution[j]
+            correct += 1 if attempt.index(a) < attempt.index(b)
           end
         end
 
-        swaps
+        if possible_correct.zero?
+          # avoid div by zero
+          0.0
+        else
+          correct.to_f / possible_correct
+        end
       end
 
     private
