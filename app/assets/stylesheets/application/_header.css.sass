@@ -45,14 +45,20 @@
       padding-top: 0px
       display: inline-block
       padding-right: 22px
+      padding: 0px
+      margin: 0px
       text-align: center
       line-height: 19px
+    .nav-item
+      padding: 0px 10px
 
       &.last, &:last-child
         padding-right: 0
 
     li > a
       color: $brick
+      margin: 0px
+      padding: 0px
 
     li > a:hover
       color: $brickDark
@@ -95,110 +101,110 @@
       right: 0px
 
 // This stuff applies to both the global nav bar and the sticky navbar
-.navbar
-  margin-bottom: 0
+// .navbar
+//   margin-bottom: 0
 
-.navbar .navbar-inner
-  background: white
-  filter: none
-  +box-shadow(none)
-  border: 0
+// .navbar .navbar-inner
+//   background: white
+//   filter: none
+//   +box-shadow(none)
+//   border: 0
 
-.global-navigation .navbar .nav
-  float: none
+// .global-navigation .navbar .nav
+//   float: none
 
-.navbar .nav > li > a
-  text-shadow: none
+// .navbar .nav > li > a
+//   text-shadow: none
 
-.navbar .nav > li.active > a
-  background: none
-  color: #111
+// .navbar .nav > li.active > a
+//   background: none
+//   color: #111
 
-#header
-  .brand
-    float: left
-  .nav-container
-    float: left
-    width: 100%
-    margin: 10px 0px
-    li
-      float: left
-      list-style: none
-      i
-        display: none
-    .nav-item
-      margin: 18px 15px 0px
-    .social
-      margin-top: 18px
-    .user
-      margin-top: 5px
-      float: right
-      margin-left: 5px
-    .user-auth
-      margin-top: 10px
-      img
-        width: 40px
-  #menu-toggle
-    display: none
-    font-size: 36px
-    color: $brick
-    text-align: right
-    position: absolute
-    top: 20px
-    right: 10px
-    &:hover
-      cursor: pointer
+// #header
+//   .brand
+//     float: left
+//   .nav-container
+//     float: left
+//     width: 100%
+//     margin: 10px 0px
+//     li
+//       float: left
+//       list-style: none
+//       i
+//         display: none
+//     .nav-item
+//       margin: 18px 15px 0px
+//     .social
+//       margin-top: 18px
+//     .user
+//       margin-top: 5px
+//       float: right
+//       margin-left: 5px
+//     .user-auth
+//       margin-top: 10px
+//       img
+//         width: 40px
+//   #menu-toggle
+//     display: none
+//     font-size: 36px
+//     color: $brick
+//     text-align: right
+//     position: absolute
+//     top: 20px
+//     right: 10px
+//     &:hover
+//       cursor: pointer
 
-@media (max-width: 640px)
-  #header
-    .nav-container
-      top: 10px
-      right: 10px
-      z-index: 9999
-      .brand
-        img
-        width: 140px
-      #collapsible
-        position: absolute
-        top: 45px
-        right: 10px
-        z-index: 9999
-        a
-          color: white
-      ul
-        float: right
-        margin: 0px
-        padding: 0px
-        width: 200px
-        margin-top: 5px
-        background-color: white
-        @include deep-shadow
-      li
-        width: 180px
-      .nav-item
-        display: block
-        clear: both
-        padding: 10px
-        margin: 0px
-        background-color: $brick
-        border-bottom: 1px solid white
-        a
-          color: white
-          font-weight: 200
-        i
-          display: inline-block
-      .nav-item-last
-        border-bottom: none
-      .social
-        display: none
-      .user
-        display: none
-      .user-auth
-        display: block
-        float: right
-        width: 100px
-        margin-top: 9px
-    #menu-toggle
-      display: block
-    ul
-      display: none
+// @media (max-width: 640px)
+//   #header
+//     .nav-container
+//       top: 10px
+//       right: 10px
+//       z-index: 9999
+//       .brand
+//         img
+//         width: 140px
+//       #collapsible
+//         position: absolute
+//         top: 45px
+//         right: 10px
+//         z-index: 9999
+//         a
+//           color: white
+//       ul
+//         float: right
+//         margin: 0px
+//         padding: 0px
+//         width: 200px
+//         margin-top: 5px
+//         background-color: white
+//         @include deep-shadow
+//       li
+//         width: 180px
+//       .nav-item
+//         display: block
+//         clear: both
+//         padding: 10px
+//         margin: 0px
+//         background-color: $brick
+//         border-bottom: 1px solid white
+//         a
+//           color: white
+//           font-weight: 200
+//         i
+//           display: inline-block
+//       .nav-item-last
+//         border-bottom: none
+//       .social
+//         display: none
+//       .user
+//         display: none
+//       .user-auth
+//         display: block
+//         float: right
+//         width: 100px
+//         margin-top: 9px
+//     #menu-toggle
+//       display: block
+//     ul
+//       display: none
