@@ -101,24 +101,24 @@
       right: 0px
 
 // This stuff applies to both the global nav bar and the sticky navbar
-// .navbar
-//   margin-bottom: 0
+    .navbar
+      margin-bottom: 0
 
-// .navbar .navbar-inner
-//   background: white
-//   filter: none
-//   +box-shadow(none)
-//   border: 0
+    .navbar .navbar-inner
+      background: white
+      filter: none
+      +box-shadow(none)
+      border: 0
 
-// .global-navigation .navbar .nav
-//   float: none
+    .global-navigation .navbar .nav
+      float: none
 
-// .navbar .nav > li > a
-//   text-shadow: none
+    .navbar .nav > li > a
+      text-shadow: none
 
-// .navbar .nav > li.active > a
-//   background: none
-//   color: #111
+    .navbar .nav > li.active > a
+      background: none
+      color: #111
 
 // #header
 //   .brand
@@ -208,3 +208,14 @@
 //       display: block
 //     ul
 //       display: none
+.sticky-navbar
+  .navbar
+    margin-bottom: 0
+    .navbar-inner
+      border: none
+      text-shadow: none
+      box-shadow: none
+      .nav
+        li
+          a
+            text-shadow: none
