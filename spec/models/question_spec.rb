@@ -42,6 +42,11 @@ describe Question, '#score' do
   it 'associates answer with question' do
     subject.question_id.should == question.id
   end
+
+  it 'saves off solution score if present' do
+    question.contents.stub(solution_score: 0.5)
+    subject.contents.solution_score.should == 0.5
+  end
 end
 
 describe Question, '#answer_count' do

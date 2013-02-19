@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe OrderSortQuestionContents do
+  def answer_data(*answers)
+    double(:answer_data, answers: answers)
+  end
+
   describe '#update' do
     describe 'basic update' do
       let(:question_params) do
@@ -42,7 +46,7 @@ describe OrderSortQuestionContents do
     end
   end
 
-  describe '#correct' do
+  describe '#solution_score' do
     subject do
       described_class.new(solutions: [
         { 'order_sort_image_ids' => [1, 2, 3] },
@@ -50,8 +54,17 @@ describe OrderSortQuestionContents do
       ])
     end
 
-    def answer_data(*answers)
-      double(:answer_data, answers: answers)
+    it 'should return true for a correct answer' do
+      subject.solution_score(answer_data(1, 2, 3)).should == 1.0
+    end
+  end
+
+  describe '#correct' do
+    subject do
+      described_class.new(solutions: [
+        { 'order_sort_image_ids' => [1, 2, 3] },
+        { 'order_sort_image_ids' => [1, 3, 2] }
+      ])
     end
 
     it 'should return true for a correct answer' do

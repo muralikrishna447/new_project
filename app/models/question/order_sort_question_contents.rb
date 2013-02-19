@@ -29,16 +29,23 @@ class OrderSortQuestionContents < OpenStruct
   #
   # `answer_data` - OrderSortAnswerContents
   def correct(answer_data)
-    answer_ids = answer_data.answers.map(&:to_i)
+    scorers.any? { |scorer| scorer.matches?(answer_ids(answer_data)) }
+  end
 
-    scorers.any? { |scorer| scorer.matches?(answer_ids) }
+  # Returns the max score the user received.
+  def solution_score(answer_data)
+    scorers.map { |scorer| scorer.solution_score(answer_ids(answer_data)) }.max
   end
 
 private
 
+  def answer_ids(answer_data)
+    answer_data.answers.map(&:to_i)
+  end
+
   # For each available solution, return a scorer we can use to check answers.
   def scorers
-    solutions.map { |solution| scorer_for_solution(solution) }
+    @scorers ||= solutions.map { |solution| scorer_for_solution(solution) }
   end
 
   # Build a scorer for a given solution from the `self.solutions` array.
