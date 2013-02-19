@@ -3,7 +3,8 @@ require 'spec_helper'
 feature 'translation', :js => true do
   scenario "element with id='google_translate_element' is present" do
     activity = Fabricate(:activity, title:'Horseradish Cream', description:'Horseradish cream is so delicious!', published:true)
-    DISQUS_SHORTNAME = "delvestaging"
+    Delve::Config.stub(disqus_shortname: "delvestaging")
+
     visit activity_path(activity)
     page.should have_content('Horseradish')
     wait_until { page.find('#google_translate_element').visible? }
@@ -19,7 +20,7 @@ feature 'translation', :js => true do
   # Leave the test below commented out for the production environment
   # scenario 'will load the language iframe', :driver => :selenium do
   #   activity = Fabricate(:activity, title:'Horseradish Cream', description:'Horseradish cream is so delicious!', published:true)
-  #   DISQUS_SHORTNAME = "delvestaging"
+  #   Delve::Config.disqus_shortname = "delvestaging"
   #   visit activity_path(activity)
   #   page.should have_content('Horseradish')
   #   wait_until { page.find('#google_translate_element').visible? }
@@ -28,5 +29,5 @@ feature 'translation', :js => true do
   #     page.find('a.goog-te-menu2-item').visible?
   #   end
   # end
-  
+
 end

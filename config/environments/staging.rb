@@ -87,5 +87,5 @@ Delve::Application.configure do
   end
 end
 
-DISQUS_SHORTNAME = "delvestaging"
+Delve::Config.disqus_shortname = "delvestaging"
 
