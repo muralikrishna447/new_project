@@ -9,6 +9,7 @@ class HomeController < ApplicationController
     # @featured_id = Video.featured_id
     # @filmstrip = Video.filmstrip_videos
     # @croppable = @filmstrip.map(&:class).include?(Activity)
+    @recipes = Activity.joins(:recipes).last(5)
   end
 
   def about
