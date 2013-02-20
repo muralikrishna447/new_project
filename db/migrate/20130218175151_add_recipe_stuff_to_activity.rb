@@ -24,12 +24,15 @@ class AddRecipeStuffToActivity < ActiveRecord::Migration
     # The activity_id column in activity_ingredients is actually still pointing to recipe ids. I've verified externally
     # that there are no recipes used in multiple activities, and above I've created activities for any recipes that
     # aren't used in any activities. So now, go fix up all those ids.
+    to_save = []
     ActivityIngredient.all.each do |ai|
       recipe = Recipe.find_by_id(ai.activity_id)
       if recipe
         ai.activity_id = recipe.activities.first.id
-        ai.save
+        to_save << ai
       end
     end
+    ActivityIngredient.delete_all
+    to_save.each { |ai| ai.save! }
   end
 end
