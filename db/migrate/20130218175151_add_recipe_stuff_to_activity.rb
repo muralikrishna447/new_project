@@ -28,7 +28,7 @@ class AddRecipeStuffToActivity < ActiveRecord::Migration
       recipe = Recipe.find_by_id(ai.activity_id)
       if recipe
         ai.activity_id = recipe.activities.first.id
-        ai.save!
+        ai.save
       end
     end
   end
