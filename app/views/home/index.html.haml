@@ -5,16 +5,56 @@
         - @recipes.each_with_index do |recipe, index|
           - if index == 0
             .item.active
-              = image_tag s3_image_url(recipe.step_images.last)
+              = image_tag 'http://placehold.it/640x360'
               .carousel-caption
                 %h4= recipe.title
           - else
             .item
-              = image_tag s3_image_url(recipe.step_images.last)
+              = image_tag 'http://placehold.it/640x360'
               .carousel-caption
                 %h4= recipe.title
       = link_to '&lsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control left', data: {slide: 'prev'}
       = link_to '&rsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control right', data: {slide: 'next'}
+
+.row
+  .span12
+    %h2 Recipes
+    %hr
+    %ul.thumbnails
+      - 3.times do
+        %li.span4
+          = link_to '#', class: 'thumbnail' do
+            = image_tag 'http://placehold.it/640x360'
+            .caption
+              %h3 Recipe Example
+    %hr
+
+.row
+  .span12
+    .row
+      .span6
+        %p
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
+        .pull-right
+          %h5 - User Testimonial
+      .span6
+        %p
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis."
+        .pull-right
+          %h5 - User Testimonial
+
+.row
+  .span12
+    .row
+      .span6
+        %h3 Latest from the blog
+        %p
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis. Ut eget massa leo, ornare venenatis orci. Aenean accumsan laoreet tempor. In et ante diam. Sed accumsan velit sit amet massa viverra faucibus.
+      .span6
+        %h3 Latest from the forum
+        %p
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis. Ut eget massa leo, ornare venenatis orci. Aenean accumsan laoreet tempor. In et ante diam. Sed accumsan velit sit amet massa viverra faucibus.
+
 
 - #TODO[huy] Remove old code below
 
