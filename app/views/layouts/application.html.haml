@@ -1,165 +1,35 @@
-!!! 5
-
--# paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
-
--# <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
--# <!--[if IE 7]>  <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
--# <!--[if IE 8]>  <html class="no-js lt-ie9" lang="en"> <![endif]-->
--# <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-
-%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#" }
-
+%html
   %head
-    %title!= ((yield(:title) != "") ? (yield(:title) + " - ") : "") + 'ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine'
-
-    -# ==========================================================================
-    -# Head
-    -# ==========================================================================
-
-    %meta{charset: "utf-8"}
-
-    %meta{name: "description", content: yield(:description)}
-    %meta{:name => "keywords", :content => yield(:keywords)}
-
-    -# %meta{:name => "author", :content => ""}
-
-    -# Mobile
-    -# ==========================================================================
-
-    %meta{name: "viewport", content: "width=device-width, initial-scale=1"}
-    -# %meta{:name => "HandheldFriendly", :content => "True"}
-    -# %meta{:name => "MobileOptimized", :content => "320"}
-    = csrf_meta_tags
-
-    -# iOS web app
-
-    -# %meta{:name => "apple-mobile-web-app-capable", :content => "yes"}
-    -# %meta{:name => "apple-mobile-web-app-status-bar-style", :content => "black"}
-    -# %link{:rel => "apple-touch-startup-image", :href => "/img/touch/startup.png"}
-
-    -# RSS
-    -# ==========================================================================
-
-    = auto_discovery_link_tag :atom, feed_path
-    = auto_discovery_link_tag :rss, feed_path
-
-    -# Favicon
-    -# ==========================================================================
-
-    %link{href: "/favicon.ico", rel: "shortcut icon"}
-
-    -# iPad 3 Retina Display
-
-    -# %link{:rel => "apple-touch-icon-precomposed", :sizes => "144x144", :href => "/img/touch/apple-touch-icon-144x144-precomposed.png"}
-
-    -# iPhone 4 Retina display
-
-    -# %link{:rel => "apple-touch-icon-precomposed", :sizes => "114x114", :href => "/img/touch/apple-touch-icon-114x114-precomposed.png"}
-
-    -# iPad non-Retina display
-
-    -# %link{:rel => "apple-touch-icon-precomposed", :sizes => "72x72", :href => "/img/touch/apple-touch-icon-72x72-precomposed.png"}
-
-    -# Non-Retina iPhone, iPod Touch, Android 2.1+
-
-    -# %link{:rel => "apple-touch-icon-precomposed", :href => "/img/touch/apple-touch-icon-57x57-precomposed.png"}
-
-    -# Nokia
-
-    -# %link{:rel => "shortcut icon", :href => "/img/touch/apple-touch-icon.png"}
-
-    -# CSS
-    -# ==========================================================================
-
-
-    -# For all browsers
+    %title ChefSteps
     = stylesheet_link_tag 'application', media: 'all'
-    = stylesheet_link_tag 'print',  media: 'print'
-    -# For progressively larger displays
-    -# = stylesheet_link_tag '320andup/480.css',  :media => 'only screen and (min-width: 480px)'
-    -# = stylesheet_link_tag '320andup/600.css',  :media => 'only screen and (min-width: 600px)'
-    -# = stylesheet_link_tag '320andup/768.css',  :media => 'only screen and (min-width: 768px)'
-    -# = stylesheet_link_tag '320andup/992.css',  :media => 'only screen and (min-width: 992px)'
-    -# For Retina displays
-    -# = stylesheet_link_tag '320andup/2x.css',  :media => 'only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5)'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+    %meta{charset: 'utf-8'}
+    %meta{name: 'description', content: yield(:description)}
+    %meta{name: 'keywords', content: yield(:keywords)}
+    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1'}
 
-    -# IE Fixes
-    -# ==========================================================================
+  %body
+    .container
+      .navbar.navbar-fixed-top
+        .navbar-inner
+          .container
+            = link_to 'ChefSteps', root_url, class: 'brand'
+            %button.btn.btn-navbar{data: {toggle: 'collapse', target: '.nav-collapse'}}
+              %span.icon-bar
+              %span.icon-bar
+              %span.icon-bar
+            .nav-collapse.collapse
+              %ul.nav
+                %li
+                  = link_to 'Recipes', recipe_gallery_index_path
+                %li
 
-    -#
-    -# Use HTML5 Shim polyfill if not using Modernizr
-    -# Compiled IE stylesheets for legacy IE "Mobile first" support (using SASS)
-    -# nicolasgallagher.com/mobile-first-css-sass-and-ie/
-    -#
 
-    -# /[if (lt IE 9) & (!IEMobile)]
-      -# %script{:src => "//html5shim.googlecode.com/svn/trunk/html5.js"}
-      %script{:src => "/js/libs/selectivizr.min.js"}
-      -# %link{:rel => "stylesheet", :href => "/css/oldie.css"}
-      -# %link{:rel => "stylesheet", :href => "/css/ie8.css"}
-
-    -# [if (lt IE 8) & (!IEMobile)]
-      %link{:rel => "stylesheet", :href => "/css/ie7.css"}
-
-    -# [if IE 6 & (!IEMobile)]
-      %link{:rel => "stylesheet", :href => "/css/ie6.css"}
-
-    -# JS
-    -# ==========================================================================
-
-    -# Typekit - change XXXXXXX to be your site's Typekit Kit ID
-
-    -# %script{:src => "http://use.typekit.com/XXXXXXX.js"}
-    -# :javascript
-      try{Typekit.load();}catch(e){}
-
-    %link{href: 'http://fonts.googleapis.com/css?family=EB+Garamond', rel: 'stylesheet', type: 'text/css'}
-
-    -# Modernizr
-
-    -# %script{:src => "/js/libs/modernizr.custom.js"}
-
-    %script{:type => "text/javascript"}
-      var switchTo5x=false;
-
-    -# Google Translate
-    %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
-
-    -# Canonical links for activities, so they can be in multiple courses without a duplicate
-    -# content penalty.
-    -if ! yield(:canonical_link).empty?
-      %link{rel: "canonical", href: yield(:canonical_link) }
-
-    = render 'layouts/google_analytics' if Rails.env.production?
-
-  %body{ data: body_data }
-
-    -# ==========================================================================
-    -# Content
-    -# ==========================================================================
-
-    #main-container
-      .container
-        = render 'layouts/header', { :external => false }
-      = render 'layouts/title_bar'
-      .container
-        - flash.each do |name, msg|
-          %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
-            %button.close{type: 'button', data: {dismiss: 'alert'}} x
-            = msg
+    .container
+      - flash.each do |name, msg|
+        %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
+          %button.close{type: 'button', data: {dismiss: 'alert'}} x
+          = msg
       = yield
       = render 'layouts/footer'
-    -# JS
-    -# ==========================================================================
-
-    -# jQuery
-    %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"}
-
-    %script{src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"}
-
-    -# Custom JS
-    = javascript_include_tag "application"
-    = render 'layouts/app_init'
-    = yield(:custom_js)
-
-

@@ -14,6 +14,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'haml'
 gem 'activeadmin'
 gem 'meta_search'

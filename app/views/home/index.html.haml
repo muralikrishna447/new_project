@@ -1,85 +1,85 @@
-- content_for :title, ""
-- content_for :description, "Free online cooking school from key members of the Modernist Cuisine team. Our first course will teach you everything you need to know about sous vide cooking."
+/ - content_for :title, ""
+/ - content_for :description, "Free online cooking school from key members of the Modernist Cuisine team. Our first course will teach you everything you need to know about sous vide cooking."
 
-- cache ['home', version, user_signed_in?] do
-  .container
-    .video-unit
-      - if @filmstrip.any?
-        .featured-and-filmstrip
-          #featured-video
-            .video-container
-              %iframe{src: youtube_url(@featured_id, 0), webkitallowfullscreen: true, mozallowfullscreen:true, allowfullscreen: true }
-          #filmstrip-container
-            .filmstrip
-              - @filmstrip.each do |video|
-                .filmstrip-item{ data: {youtube: video.youtube_id} }
-                  - if video.class.to_s == "Video" && video.image_id?
-                    .filmstrip-thumbnail
-                      .filmstrip-img
-                        = image_tag s3_image_url(video.image_id)
-                      .filmstrip-item-title
-                        = video.title.html_safe
-                  - else
-                    .filmstrip-thumbnail.crop
-                      .filmstrip-img.croppable
-                        = image_tag youtube_image(video.youtube_id, 0)
-                      .filmstrip-item-title
-                        = video.title.html_safe
+/ - cache ['home', version, user_signed_in?] do
+/   .container
+/     .video-unit
+/       - if @filmstrip.any?
+/         .featured-and-filmstrip
+/           #featured-video
+/             .video-container
+/               %iframe{src: youtube_url(@featured_id, 0), webkitallowfullscreen: true, mozallowfullscreen:true, allowfullscreen: true }
+/           #filmstrip-container
+/             .filmstrip
+/               - @filmstrip.each do |video|
+/                 .filmstrip-item{ data: {youtube: video.youtube_id} }
+/                   - if video.class.to_s == "Video" && video.image_id?
+/                     .filmstrip-thumbnail
+/                       .filmstrip-img
+/                         = image_tag s3_image_url(video.image_id)
+/                       .filmstrip-item-title
+/                         = video.title.html_safe
+/                   - else
+/                     .filmstrip-thumbnail.crop
+/                       .filmstrip-img.croppable
+/                         = image_tag youtube_image(video.youtube_id, 0)
+/                       .filmstrip-item-title
+/                         = video.title.html_safe
 
-  .hero-unit.signup-banner
-    .container
-      .pull-left
-        %h2 ChefSteps is the free-to-learn culinary school.
-        %h3 Master sous vide cooking in our first course.
-      .pull-right
-        %a.button{ href: course_path('accelerated-sous-vide-cooking-course') }
-          .inner
-            Take me to the course 
-            %i.icon-double-chevron-right
-  .container
-    .row
-      - if homepage_blurb
-        .intro.span7
-          :markdown
-            #{ homepage_blurb.copy.to_s}
+/   .hero-unit.signup-banner
+/     .container
+/       .pull-left
+/         %h2 ChefSteps is the free-to-learn culinary school.
+/         %h3 Master sous vide cooking in our first course.
+/       .pull-right
+/         %a.button{ href: course_path('accelerated-sous-vide-cooking-course') }
+/           .inner
+/             Take me to the course 
+/             %i.icon-double-chevron-right
+/   .container
+/     .row
+/       - if homepage_blurb
+/         .intro.span7
+/           :markdown
+/             #{ homepage_blurb.copy.to_s}
 
-      .creators.span5
-        %h3 From creators of Modernist Cuisine
-        %ul.unstyled.creators
-          - if bio_chris
-            %li.creator
-              .row
-                .span1
-                  = image_tag('chris.jpg', title: 'Chris Young', class: 'img-profile')
-                .span3
-                  :markdown
-                    #{truncate(bio_chris.copy.to_s, length: 200, separator: ', ', omission: '.')}
-                .span3.offset1
-                  = link_to 'Read more...', about_path(anchor:'instructor-chris')
-              %hr
+/       .creators.span5
+/         %h3 From creators of Modernist Cuisine
+/         %ul.unstyled.creators
+/           - if bio_chris
+/             %li.creator
+/               .row
+/                 .span1
+/                   = image_tag('chris.jpg', title: 'Chris Young', class: 'img-profile')
+/                 .span3
+/                   :markdown
+/                     #{truncate(bio_chris.copy.to_s, length: 200, separator: ', ', omission: '.')}
+/                 .span3.offset1
+/                   = link_to 'Read more...', about_path(anchor:'instructor-chris')
+/               %hr
 
-          - if bio_grant
-            %li.creator
-              .row
-                .span1
-                  = image_tag('grant.jpg', title: 'Grant Crilly', class: 'img-profile')
-                .span3
-                  :markdown
-                    #{truncate(bio_grant.copy.to_s, length: 200, separator: '. ', omission: '.')}
-                .span3.offset1
-                  = link_to 'Read more...', about_path(anchor:'instructor-grant')
-              %hr
+/           - if bio_grant
+/             %li.creator
+/               .row
+/                 .span1
+/                   = image_tag('grant.jpg', title: 'Grant Crilly', class: 'img-profile')
+/                 .span3
+/                   :markdown
+/                     #{truncate(bio_grant.copy.to_s, length: 200, separator: '. ', omission: '.')}
+/                 .span3.offset1
+/                   = link_to 'Read more...', about_path(anchor:'instructor-grant')
+/               %hr
 
-          - if bio_ryan
-            %li.creator
-              .row
-                .span1
-                  = image_tag('ryan.jpg', title: 'Ryan Matthew Smith', class: 'img-profile')
-                .span3
-                  :markdown
-                    #{truncate(bio_ryan.copy.to_s, length: 155, separator: '. ', omission: '.')}
-                .span3.offset1
-                  = link_to 'Read more...', about_path(anchor:'instructor-ryan')
-              %hr
+/           - if bio_ryan
+/             %li.creator
+/               .row
+/                 .span1
+/                   = image_tag('ryan.jpg', title: 'Ryan Matthew Smith', class: 'img-profile')
+/                 .span3
+/                   :markdown
+/                     #{truncate(bio_ryan.copy.to_s, length: 155, separator: '. ', omission: '.')}
+/                 .span3.offset1
+/                   = link_to 'Read more...', about_path(anchor:'instructor-ryan')
+/               %hr
 
 
