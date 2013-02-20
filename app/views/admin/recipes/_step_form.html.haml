@@ -2,7 +2,7 @@
   is_template = step.nil?
 
   row_id = 'step-row' if is_template
-  field_name_prefix ||= "recipe[steps][]"
+  field_name_prefix ||= "activity[steps][]"
 
   unless is_template
     title = step.title

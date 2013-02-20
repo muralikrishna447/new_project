@@ -13,6 +13,20 @@
     = f.input :transcript
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
+    = f.input :yield
+
+  = section("Ingredients", f) do
+    %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
+    = sortable_table('ingredients') do
+      %tr
+        %th Ingredient
+        %th Quantity
+        %th Unit
+      = render 'admin/recipes/ingredient_form', ingredient: nil
+      - @activity.ingredients.ordered.each do |ingredient|
+        = render 'admin/recipes/ingredient_form', ingredient: ingredient
+    %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
+
   = section("Equipment", f) do
     %li= copy_button('Add Equipment', '#equipment-row', 'table#equipment')
     = sortable_table('equipment') do
@@ -24,17 +38,11 @@
       - @activity.equipment.ordered.each do |equipment|
         = render 'equipment_form', equipment: equipment
 
-  = section("Recipes", f) do
-    %li= copy_button('Add Recipe', '#recipe-row', 'table#recipes')
-    = sortable_table('recipes') do
-      %tr
-        %th
-      = render 'recipe_form', recipe: nil
-      - @activity.ordered_recipes.each do |recipe|
-        = render 'recipe_form', recipe: recipe
-
-  = section("Assembly Steps", f) do
-    %li= copy_button 'Add Assembly Step', '#step-row', 'table#steps'
+  = section("Steps", f) do
+    %li.two-button-row
+      = copy_button 'Add Step', '#step-row', 'table#steps'
+      - unless @activity.id.nil?
+        = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_activity_path(@activity)
     = sortable_table('steps') do
       %tr
         %th Title
@@ -47,6 +55,10 @@
       = render 'admin/recipes/step_form', step: nil, field_name_prefix: field_name_prefix
       - @activity.ordered_steps.each do |step|
         = render 'admin/recipes/step_form', step: step, field_name_prefix: field_name_prefix
+    %li.two-button-row
+      = copy_button 'Add Step', '#step-row', 'table#steps'
+      - unless @activity.id.nil?
+        = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_activity_path(@activity)
 
   = f.actions do
     = f.action :submit

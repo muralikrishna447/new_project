@@ -1,18 +1,16 @@
 class Step < ActiveRecord::Base
   include RankedModel
-  ranks :step_order, with_same: :recipe_id
+  ranks :step_order, with_same: :activity_id
 
   belongs_to :activity, touch: true, inverse_of: :steps
   belongs_to :recipe, touch: true, inverse_of: :steps
 
   has_many :ingredients, class_name: StepIngredient, dependent: :destroy, inverse_of: :step
-  has_many :activity_recipe_steps, class_name: ActivityRecipeStep, dependent: :destroy, inverse_of: :step
 
-  attr_accessible :title, :youtube_id, :recipe_id, :directions, :image_id, :image_description,
+  attr_accessible :title, :youtube_id, :directions, :image_id, :image_description,
     :ingredient_ids, :activity_id, :step_order_position, :transcript, :audio_clip, :audio_title, :subrecipe_title
 
   scope :ordered, rank(:step_order)
-  scope :recipe_id_not_nil, where('recipe_id IS NOT NULL')
   scope :activity_id_not_nil, where('activity_id IS NOT NULL')
 
   default_scope { ordered }

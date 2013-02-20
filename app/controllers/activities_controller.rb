@@ -33,7 +33,7 @@ class ActivitiesController < ApplicationController
     @updated = @activities.first.updated_at unless @activities.empty?
 
     respond_to do |format|
-      format.atom { render 'feed', :layout => false }
+      format.atom { render 'feed',  :layout => false }
     end
   end
 

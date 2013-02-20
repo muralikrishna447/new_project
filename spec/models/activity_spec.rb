@@ -64,161 +64,71 @@ describe Activity do
     end
   end
 
-  describe "#update_recipes" do
-    let(:recipe1) { Fabricate(:recipe, title: 'Mac n Cheese') }
-    let(:recipe2) { Fabricate(:recipe, title: 'Hamburger Helper') }
-    let(:recipe3) { Fabricate(:recipe, title: 'Scrambled Eggs') }
-    let(:recipe_ids) { [ recipe1.id, recipe2.id, recipe3.id, '' ].map(&:to_s) }
-    let!(:stepA) { Fabricate(:step, title: 'Step A', recipe: recipe1) }
-    let!(:stepB) { Fabricate(:step, title: 'Step B', recipe: recipe2) }
+  describe "#update_ingredients" do
+    let(:soup) { {title: 'Soup', display_quantity: '2', unit: 'g'}  }
+    let(:pepper) { {title: 'Pepper', display_quantity: '1', unit: 'kg'}  }
+    let(:ingredient_attrs) {[ soup, pepper, pepper,
+                              { title: '', display_quantity: '2', unit: '' }
+    ]}
+
+
+    describe "create" do
+      before do
+        activity.update_ingredients(ingredient_attrs)
+      end
+
+      it "creates unique ingredients for each non-empty attribute set" do
+        activity.ingredients.should have(2).ingredients
+      end
+
+      it "creates ingredient with specified attributes" do
+        activity.ingredients.first.display_quantity.should == '2'
+        activity.ingredients.first.unit.should == 'g'
+        activity.ingredients.first.title.should == 'Soup'
+      end
+    end
 
     describe "update" do
       before do
-        activity.update_recipes(recipe_ids)
+        activity.update_ingredients(ingredient_attrs)
+        ingredient_attrs.first.merge!(title: 'SouP', display_quantity: '15', unit: 'foobars')
+        activity.update_ingredients(ingredient_attrs)
+        activity.ingredients.reload
       end
 
-      it "associates recipes with the activity" do
-        activity.recipes.should have(3).recipes
-        activity.recipes.first.title.should == "Mac n Cheese"
-      end
-
-      it "create activity recipe steps" do
-        activity.recipe_steps.should have(2).steps
-        activity.recipe_steps.first.title.should == 'Step A'
+      it "updates existing ingredients" do
+        activity.ingredients.should have(2).ingredients
+        activity.ingredients.first.title.should == 'Soup'
+        activity.ingredients.first.display_quantity.should == '15'
+        activity.ingredients.first.unit.should == 'foobars'
       end
     end
 
     describe "destroy" do
       before do
-        activity.update_recipes(recipe_ids)
-        activity.update_recipes([recipe_ids.first])
-        activity.recipes.reload
-        activity.recipe_steps.reload
+        activity.update_ingredients(ingredient_attrs)
+        activity.update_ingredients(ingredient_attrs[1..-1])
+        activity.ingredients.reload
       end
 
-      it "removes the association of recipes not included in the set" do
-        activity.recipes.should have(1).recipes
-        activity.recipes.first.title.should == "Mac n Cheese"
-      end
-
-      it "removes the unassociated recipe steps" do
-        activity.recipe_steps.should have(1).steps
-        activity.recipe_steps.first.title.should == 'Step A'
+      it "deletes ingredients not included in attribute set" do
+        activity.ingredients.should have(1).ingredients
+        activity.ingredients.first.title.should == 'Pepper'
+        activity.ingredients.first.display_quantity.should == '1'
+        activity.ingredients.first.unit.should == 'kg'
       end
     end
 
     describe "re-ordering" do
       before do
-        activity.update_recipes(recipe_ids)
+        activity.update_ingredients(ingredient_attrs)
       end
 
       it "updates ordering" do
-        activity.update_recipes([recipe2.id, recipe1.id])
-        activity.ordered_recipes.first.title.should == 'Hamburger Helper'
+        activity.update_ingredients([pepper, soup])
+        activity.ingredients.ordered.first.title.should == 'Pepper'
       end
     end
-  end
-
-  describe "#has_ingredients?" do
-    let(:recipe1) { Fabricate.build(:recipe, :title => 'r1') }
-    let(:recipe2) { Fabricate.build(:recipe, :title => 'r2') }
-
-    before do
-      recipe2.stub(:has_ingredients?).and_return(false)
-      activity.recipes << recipe1
-      activity.recipes << recipe2
-    end
-
-    subject { activity.has_ingredients? }
-
-    context "with recipes with ingredients" do
-      before do
-        recipe1.stub(:has_ingredients?).and_return(true)
-      end
-
-      it { subject.should == true }
-    end
-
-    context "with recipes with no ingredients" do
-      before do
-        recipe1.stub(:has_ingredients?).and_return(false)
-      end
-
-      it { subject.should == false }
-    end
-  end
-end
-
-describe Activity, '#has_recipes?' do
-  subject { Fabricate.build(:activity) }
-  it { should_not have_recipes }
-  context "with recipes" do
-    before { subject.recipes << Fabricate.build(:recipe) }
-    it { should have_recipes }
-  end
-end
-
-describe Activity, "#update_recipe_steps" do
-  let(:activity) { Fabricate(:activity) }
-  let(:recipe1) { Fabricate(:recipe) }
-  let(:recipe2) { Fabricate(:recipe) }
-  let(:stepA) { Fabricate(:step, id: 1234) }
-  let(:stepB) { Fabricate(:step, id: 5678) }
-
-  before do
-    activity.recipes << recipe1
-    recipe1.steps << stepA << stepB
-    recipe1.steps.reload
-    activity.recipes.reload
-  end
-
-  it "adds recipe_steps" do
-    activity.update_recipe_steps
-    activity.recipe_steps.should have(2).steps
-    activity.recipe_steps.map(&:step).should =~ [stepA, stepB]
-  end
-
-  it "updates recipe step order if activity has one recipe" do
-    ordered_steps = activity.recipes.first.ordered_steps.all
-    activity.recipes.first.should_receive(:ordered_steps).and_return(ordered_steps)
-    activity.stub(:update_recipe_step_order) { |ids| @recipe_step_ids = ids }
-    activity.update_recipe_steps
-    @recipe_step_ids.should =~ activity.recipe_steps.map(&:id)
-  end
-
-  it "does not update recipe step order if activity has multiple recipes" do
-    activity.recipes << recipe2
-    activity.should_not_receive(:update_recipe_step_order)
-    activity.update_recipe_steps
-  end
-
-  it "does not update recipe step order if activity has no recipes" do
-    activity.recipes.destroy_all
-    activity.should_not_receive(:update_recipe_step_order)
-    activity.update_recipe_steps
-  end
-end
-
-describe Activity, "#update_recipe_step_order" do
-  let(:activity) { Fabricate(:activity) }
-  let(:stepA) { Fabricate(:step) }
-  let(:stepB) { Fabricate(:step) }
-  let(:recipe1) { Fabricate(:recipe) }
-  let(:recipe2) { Fabricate(:recipe) }
-
-  before do
-    recipe1.steps << stepA
-    recipe2.steps << stepB
-    activity.recipes << recipe1 << recipe2
-    activity.update_recipe_steps
-    activity_steps = activity.recipe_steps
-    @requested_order = [activity_steps.last, activity_steps.first]
-    activity_steps_order_ids = @requested_order.map(&:id).map(&:to_s)
-    activity.update_recipe_step_order(activity_steps_order_ids)
-  end
-
-  it "orders the activity recipe steps" do
-    activity.recipe_steps.ordered.should == @requested_order
   end
 end
 

@@ -5,13 +5,14 @@ class Activity < ActiveRecord::Base
 
   friendly_id :title, use: :slugged
 
-  has_many :steps, inverse_of: :activity, dependent: :destroy
-  has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
+  has_many :ingredients, dependent: :destroy, class_name: ActivityIngredient, inverse_of: :activity
 
-  has_many :activity_recipes, class_name: ActivityRecipe, inverse_of: :activity, dependent: :destroy
+  # To remove soon
+  has_many :activity_recipes, inverse_of: :activity
   has_many :recipes, through: :activity_recipes, inverse_of: :activities
 
-  has_many :recipe_steps, class_name: ActivityRecipeStep, inverse_of: :activity , dependent: :destroy
+  has_many :steps, inverse_of: :activity, dependent: :destroy
+  has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
 
   has_many :quizzes
 
@@ -20,9 +21,9 @@ class Activity < ActiveRecord::Base
 
   scope :with_video, where('youtube_id IS NOT NULL')
 
-  accepts_nested_attributes_for :steps, :equipment, :recipes
+  accepts_nested_attributes_for :steps, :equipment, :ingredients
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :image_id
+  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :image_id,  :steps_attributes
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description],
@@ -63,8 +64,8 @@ class Activity < ActiveRecord::Base
     description.present?
   end
 
-  def has_recipes?
-    recipes.present?
+  def is_recipe?
+    ingredients.count > 0
   end
 
   def step_by_step?
@@ -78,14 +79,6 @@ class Activity < ActiveRecord::Base
     self
   end
 
-  def update_recipes(recipe_ids)
-    reject_invalid_recipe_ids(recipe_ids)
-    update_recipe_associations(recipe_ids)
-    delete_old_recipes(recipe_ids)
-    update_recipe_steps(recipe_ids)
-    self
-  end
-
   def update_steps(step_attrs)
     reject_invalid_steps(step_attrs)
     update_and_create_steps(step_attrs)
@@ -93,40 +86,20 @@ class Activity < ActiveRecord::Base
     self
   end
 
-  def update_recipe_steps(recipe_ids = nil)
-    recipe_ids ||= recipes.map(&:id)
-    create_activity_recipe_steps(recipe_ids)
-    delete_old_activity_recipe_steps(recipe_ids)
-    if recipes.count == 1
-      recipe_step_ids = recipes.first.ordered_steps.map(&:id).map do |step_id|
-        recipe_steps.where(step_id: step_id).first.id
-      end
-      update_recipe_step_order(recipe_step_ids)
-    end
+
+  def update_ingredients(ingredient_attrs)
+    reject_invalid_ingredients(ingredient_attrs)
+    update_and_create_ingredients(ingredient_attrs)
+    delete_old_ingredients(ingredient_attrs)
     self
   end
 
   def has_ingredients?
-    recipes.any?(&:has_ingredients?)
-  end
-
-  def ordered_recipes
-    activity_recipes.ordered.all.map(&:recipe)
-  end
-
-  def ordered_recipe_steps
-    recipe_steps.ordered.all
+    !ingredients.empty?
   end
 
   def ordered_steps
     steps.ordered.activity_id_not_nil.all
-  end
-
-  def update_recipe_step_order(recipe_step_ids)
-    recipe_step_ids.select!(&:present?)
-    recipe_step_ids.each do |recipe_step_id|
-      recipe_steps.find(recipe_step_id).update_attributes(step_order_position: :last)
-    end
   end
 
   def has_quizzes?
@@ -138,7 +111,7 @@ class Activity < ActiveRecord::Base
   end
 
   def step_images
-    (steps + recipe_steps).map(&:image_id).reject(&:blank?)
+    steps.map(&:image_id).reject(&:blank?)
   end
 
   def self.text_search(query)
@@ -152,7 +125,7 @@ class Activity < ActiveRecord::Base
   def attached_classes_weighted(weight = 10)
     attached_classes = []
     attached_classes << self.class
-    attached_classes << 'Recipe' if recipes.any?
+    attached_classes << 'Recipe' if is_recipe?
     attached_classes << 'Quiz' if quizzes.any?
     attached_classes*weight
   end
@@ -162,38 +135,6 @@ class Activity < ActiveRecord::Base
   end
 
   private
-
-  def update_recipe_associations(recipe_ids)
-    recipe_ids.each do |recipe_id|
-      recipes << Recipe.find(recipe_id) unless recipes.exists?(recipe_id)
-      activity_recipes.find_by_recipe_id(recipe_id).update_attributes(recipe_order_position: :last)
-    end
-  end
-
-  def create_activity_recipe_steps(recipe_ids)
-    recipe_step_ids = Step.joins(:recipe).where(recipe_id: recipe_ids).map(&:id)
-    recipe_step_ids.each do |step_id|
-      recipe_steps.find_or_create_by_step_id_and_activity_id(step_id, self.id)
-    end
-  end
-
-  def delete_old_activity_recipe_steps(recipe_ids)
-    current_step_ids = recipe_steps.map(&:step_id)
-    recipe_step_ids = Step.joins(:recipe).where(recipe_id: recipe_ids).map(&:id)
-    old_step_ids = current_step_ids - recipe_step_ids
-    recipe_steps.where(step_id: old_step_ids).destroy_all
-  end
-
-  def reject_invalid_recipe_ids(recipe_ids)
-    recipe_ids.select! do |recipe_id|
-      recipe_id.present?
-    end
-  end
-
-  def delete_old_recipes(recipe_ids)
-    old_recipe_ids = recipes.map(&:id) - recipe_ids.map(&:to_i)
-    activity_recipes.where(recipe_id: old_recipe_ids).destroy_all
-  end
 
   def reject_invalid_equipment(equipment_attrs)
     equipment_attrs.select! do |equipment_attr|
@@ -248,6 +189,32 @@ class Activity < ActiveRecord::Base
   def delete_old_steps(step_attrs)
     old_step_ids = steps.map(&:id) - step_attrs.map {|i| i[:id].to_i }
     steps.where(id: old_step_ids).destroy_all
+  end
+
+  def delete_old_ingredients(ingredient_attrs)
+    old_ingredient_ids = ingredients.map(&:ingredient_id) - ingredient_attrs.map {|i| i[:id].to_i }
+    ingredients.where(ingredient_id: old_ingredient_ids).destroy_all
+  end
+
+  def update_and_create_ingredients(ingredient_attrs)
+    ingredient_attrs.each do |ingredient_attr|
+      ingredient = Ingredient.find_or_create_by_title(ingredient_attr[:title])
+      activity_ingredient = ingredients.find_or_create_by_ingredient_id_and_activity_id(ingredient.id, self.id)
+      activity_ingredient.update_attributes(
+          display_quantity: ingredient_attr[:display_quantity],
+          unit: ingredient_attr[:unit],
+          ingredient_order_position: :last
+      )
+      ingredient_attr[:id] = ingredient.id
+    end
+  end
+
+  def reject_invalid_ingredients(ingredient_attrs)
+    ingredient_attrs.select! do |ingredient_attr|
+      [:title, :unit].all? do |test|
+        ingredient_attr[test].present?
+      end
+    end
   end
 
 end

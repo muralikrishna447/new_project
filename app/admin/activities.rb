@@ -7,15 +7,16 @@ ActiveAdmin.register Activity do
     link_to_publishable activity, 'View on Site'
   end
 
-  action_item only: [:show] do
-    link_to('Order Recipe Steps', recipe_steps_order_admin_activity_path(activity))
-  end
-
   show do |activity|
     render "show", activity: activity
   end
 
   form partial: 'form'
+
+  action_item only: [:show, :edit] do
+    link_to('Edit Step Ingredients', associated_ingredients_admin_activity_path(activity))
+  end
+
 
   index do
     column 'Link' do |activity|
@@ -36,20 +37,20 @@ ActiveAdmin.register Activity do
   controller do
     def create
       equipment_attrs = separate_equipment
-      recipe_attrs = separate_recipes
       step_attrs = separate_steps
+      ingredient_attrs = separate_ingredients
       @activity = Activity.create(params[:activity])
       @activity.update_equipment(equipment_attrs)
-      @activity.update_recipes(recipe_attrs)
       @activity.update_steps(step_attrs)
+      @activity.update_ingredients(ingredient_attrs)
       create!
     end
 
     def update
       @activity = Activity.find(params[:id])
       @activity.update_equipment(separate_equipment)
-      @activity.update_recipes(separate_recipes)
       @activity.update_steps(separate_steps)
+      @activity.update_ingredients(separate_ingredients)
       update!
     end
 
@@ -59,12 +60,12 @@ ActiveAdmin.register Activity do
       params[:activity].delete(:equipment)
     end
 
-    def separate_recipes
-      params[:activity].delete(:recipes)
-    end
-
     def separate_steps
       params[:activity].delete(:steps)
+    end
+
+    def separate_ingredients
+      params[:activity].delete(:ingredients)
     end
   end
 
@@ -84,16 +85,18 @@ ActiveAdmin.register Activity do
     redirect_to({action: :index}, notice: "Activity order has been updated")
   end
 
-  member_action :recipe_steps_order, method: :get do
+
+  member_action :associated_ingredients, method: :get do
     @activity = Activity.find(params[:id])
   end
 
-  member_action :update_recipe_steps_order, method: :put do
-    recipe_step_ids = params[:activity][:recipe_steps][:ids]
-    activity = Activity.find(params[:id])
-    activity.update_recipe_step_order(recipe_step_ids)
-
-    redirect_to({action: :show}, notice: "Recipe Steps Order has been updated")
+  member_action :update_associated_ingredients, method: :put do
+    @activity = Activity.find(params[:id])
+    @activity.update_attributes(steps_attributes:params[:activity][:steps_attributes])
+    params[:step_ingredients].each do |id, ingredients|
+      Step.find(id).update_ingredients(ingredients)
+    end
+    redirect_to({action: :show}, notice: "Step's ingredients updated")
   end
 end
 
