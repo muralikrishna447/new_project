@@ -21,12 +21,13 @@
     %h2 Recipes
     %hr
     %ul.thumbnails
-      - 3.times do
+      - @recipes.each do |recipe|
         %li.span4
-          = link_to '#', class: 'thumbnail' do
+          = link_to recipe, class: 'thumbnail' do
             = image_tag 'http://placehold.it/640x360'
             .caption
-              %h3 Recipe Example
+              %h4
+                = recipe.title
     %hr
 
 .row
