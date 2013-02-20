@@ -27,12 +27,12 @@ feature 'user authentication', :js do
 
   end
 
-  scenario "authenticates a user when valid credentials are provided" do
+  scenario "authenticates a user when valid credentials are provided", :pending do
     login_user
     page.should have_content('Bob Tester')
   end
 
-  scenario "log out" do
+  scenario "log out", :pending do
     login_user
 
     page.should have_content('Bob Tester')
