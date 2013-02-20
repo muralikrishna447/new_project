@@ -38,9 +38,11 @@ ActiveAdmin.register Activity do
     def create
       equipment_attrs = separate_equipment
       step_attrs = separate_steps
+      ingredient_attrs = separate_ingredients
       @activity = Activity.create(params[:activity])
       @activity.update_equipment(equipment_attrs)
       @activity.update_steps(step_attrs)
+      @activity.update_ingredients(ingredient_attrs)
       create!
     end
 

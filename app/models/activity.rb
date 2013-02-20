@@ -7,6 +7,10 @@ class Activity < ActiveRecord::Base
 
   has_many :ingredients, dependent: :destroy, class_name: ActivityIngredient, inverse_of: :activity
 
+  # To remove soon
+  has_many :activity_recipes, inverse_of: :activity
+  has_many :recipes, through: :activity_recipes, inverse_of: :activities
+
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
 
