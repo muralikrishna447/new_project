@@ -1,35 +1,32 @@
 .row
   .span12
-    .hero-unit
-      .row
-        .span9
-          %h3 About ChefSteps
-          %p
-            ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
-          %p
-            Taught by a world-renowned team, you will master techniques of traditional and modernist cooking through practical, hands-on demonstrations with detailed step-by-step explanations. Unlike at other culinary schools, you will also learn the why's behind the how's from experts who bring the science of cooking to life in a compelling and practical way.
-          .span1
-            = image_tag 'chris.jpg', class:'img-circle'
-          .span1
-            = image_tag 'grant.jpg', class:'img-circle'
-          .span1
-            = image_tag 'ryan.jpg', class:'img-circle'
-        .span1.pull-right
-          %ul.unstyled
-            %li
-              = link_to 'Facebook', 'https://www.facebook.com/Chefsteps', target: 'blank'
-            %li
-              = link_to 'Twitter', 'http://twitter.com/@chefsteps', target: 'blank'
-            %li
-              = link_to 'Pinterest', 'http://pinterest.com/chefsteps/', target: 'blank'
-            %li
-              = link_to 'Legal', legal_url
-      %p.text-center Handmade in Pike Place, Seattle WA
-
-#footer.hero-unit.footer.noprint
-  .container
     .row
-      .span8
+      .span10
+        %h3 About ChefSteps
+        %p
+          ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
+        %p
+          Taught by a world-renowned team, you will master techniques of traditional and modernist cooking through practical, hands-on demonstrations with detailed step-by-step explanations. Unlike at other culinary schools, you will also learn the why's behind the how's from experts who bring the science of cooking to life in a compelling and practical way.
+        .span1
+          = image_tag 'chris.jpg', class:'img-circle'
+        .span1
+          = image_tag 'grant.jpg', class:'img-circle'
+        .span1
+          = image_tag 'ryan.jpg', class:'img-circle'
+      .span2.pull-right
+        %ul.unstyled
+          %li
+            = link_to 'Facebook', 'https://www.facebook.com/Chefsteps', target: 'blank'
+          %li
+            = link_to 'Twitter', 'http://twitter.com/@chefsteps', target: 'blank'
+          %li
+            = link_to 'Pinterest', 'http://pinterest.com/chefsteps/', target: 'blank'
+          %li
+            = link_to 'Legal', legal_url
+      .span12
+        %p.text-center Handmade in Pike Place, Seattle WA
+
+      .span12
         %p
           General inquiries:
           = mail_to 'info@chefsteps.com'
@@ -39,16 +36,31 @@
         %p.creative-commons
           %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
             All Content is Creative Commons Attribution-NonCommercial-ShareAlike
-      .span2.pull-right
-        %p
-          %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
-            Facebook
-        %p
-          %a.icon-twitter{ href: "http://twitter.com/@chefsteps" }
-            Twitter
-        %p
-          %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
-            Pinterest
-        %p
-          %a.icon-legal{ href: legal_url }
-            Legal
+
+= #TODO Delete old code below
+/ #footer.hero-unit.footer.noprint
+/   .container
+/     .row
+/       .span8
+/         %p
+/           General inquiries:
+/           = mail_to 'info@chefsteps.com'
+/         %p
+/           Press inquiries:
+/           = mail_to 'press@chefsteps.com'
+/         %p.creative-commons
+/           %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
+/             All Content is Creative Commons Attribution-NonCommercial-ShareAlike
+/       .span2.pull-right
+/         %p
+/           %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
+/             Facebook
+/         %p
+/           %a.icon-twitter{ href: "http://twitter.com/@chefsteps" }
+/             Twitter
+/         %p
+/           %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
+/             Pinterest
+/         %p
+/           %a.icon-legal{ href: legal_url }
+/             Legal
