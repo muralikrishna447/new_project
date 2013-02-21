@@ -4,3 +4,4 @@
 //= require ./ordered
 //= require filmstrip
 //= require header
+//= require home

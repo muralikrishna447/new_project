@@ -1,5 +1,6 @@
 .row
   .span12
+    %h1 Explore Modernist Cuisine
     .carousel.slide#hero-carousel
       .carousel-inner
         .item.active
@@ -26,10 +27,12 @@
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc.
             %p
               = link_to 'See More Techniques', '#'
+      / = link_to '&lsaquo;'.html_safe, '#hero-carousel', class: 'carousel-control left', data: {slide: 'prev'}
+      / = link_to '&rsaquo;'.html_safe, '#hero-carousel', class: 'carousel-control right', data: {slide: 'next'}
 
 .row
   .span12
-    .carousel.slide#recipe-carousel{data: {interval: false}}
+    .carousel.slide#recipe-carousel
       .carousel-inner
         .item.active
           .row
@@ -103,29 +106,6 @@
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
         %p
           = link_to 'Follow Us on Twitter', 'http://twitter.com/@chefsteps', target: 'blank'
-
-.row
-  .span12
-    .row
-      .span10
-        %h3 About ChefSteps
-        %p
-          ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
-        %p
-          Taught by a world-renowned team, you will master techniques of traditional and modernist cooking through practical, hands-on demonstrations with detailed step-by-step explanations. Unlike at other culinary schools, you will also learn the why's behind the how's from experts who bring the science of cooking to life in a compelling and practical way.
-        - 3.times do
-          .span1
-            = image_tag 'http://placehold.it/100 x100', class:'img-circle'
-      .span2
-        %ul.unstyled
-          %li
-            = link_to 'Facebook', 'https://www.facebook.com/Chefsteps', target: 'blank'
-          %li
-            = link_to 'Twitter', 'http://twitter.com/@chefsteps', target: 'blank'
-          %li
-            = link_to 'Pinterest', 'http://pinterest.com/chefsteps/', target: 'blank'
-          %li
-            = link_to 'Legal', legal_url
 
 - #TODO[huy] Remove old code below
 
