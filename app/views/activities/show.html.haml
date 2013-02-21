@@ -1,7 +1,9 @@
 %h1
   = @activity.title
-%p
-  = @activity.description
+- if @activity.description?
+  %p
+    :markdown
+      #{@activity.description}
 
 .row
   .span12
@@ -42,11 +44,11 @@
   .span12
     .row
       .span6
-        - if activity.has_ingredients?
-          = render 'ingredients_list', activity: activity
-        - if activity.required_equipment.present?
+        - if @activity.ingredients.any?
+          = render 'ingredients_list', activity: @activity
+        - if @activity.required_equipment.any?
           %h4 Equipment and Materials
-          = render 'equipment_list', equipment: activity.required_equipment.all
+          = render 'equipment_list', equipment: @activity.required_equipment
       .span6
 
 = #TODO Remove old code below

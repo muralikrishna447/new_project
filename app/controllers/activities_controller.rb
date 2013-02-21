@@ -1,5 +1,5 @@
 class ActivitiesController < ApplicationController
-  expose(:activity) { Activity.find_published(params[:id], params[:token]) }
+  # expose(:activity) { Activity.find_published(params[:id], params[:token]) }
   expose(:cache_show) { params[:token].blank? }
   expose(:version) { Version.current }
 
