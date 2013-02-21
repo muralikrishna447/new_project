@@ -34,28 +34,14 @@
   .span12
     .carousel.slide#recipe-carousel
       .carousel-inner
-        .item.active
-          .row
-            .span12
-              %ul.thumbnails
-                - @recipes.each do |recipe|
-                  %li.span4
-                    = link_to recipe, class: 'thumbnail' do
-                      = image_tag 'http://placehold.it/640x360'
-                      .caption
-                        %h4
-                          = recipe.title
-        .item
-          .row
-            .span12
-              %ul.thumbnails
-                - @recipes.each do |recipe|
-                  %li.span4
-                    = link_to recipe, class: 'thumbnail' do
-                      = image_tag 'http://placehold.it/640x360'
-                      .caption
-                        %h4
-                          = recipe.title
+        - @recipes.each_slice(3).with_index do |slice, index|
+          %div{class: "item #{'active' if index == 0}"}
+            .row
+              .span12
+                %ul.thumbnails
+                  - slice.each do |recipe|
+                    %li.span4
+                      = render 'shared/media_centered', media: recipe
       = link_to '&lsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control left', data: {slide: 'prev'}
       = link_to '&rsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control right', data: {slide: 'next'}
 
