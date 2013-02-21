@@ -1,7 +1,13 @@
-.container.search-container
-
-  %h2 All ChefSteps Recipes
-  = paginate @results
-  .search-results
-    = render partial: 'result_item', collection: @results, :as => :item
-  = paginate @results
+.row
+  .span12
+    %h2 Recipes
+    = paginate @recipes
+    %ul.thumbnails
+      - @recipes.each do |recipe|
+        %li.span4
+          = link_to recipe, class: 'thumbnail' do
+            = image_tag 'http://placehold.it/640x360'
+            .caption
+              %h4
+                = recipe.title
+    = paginate @recipes

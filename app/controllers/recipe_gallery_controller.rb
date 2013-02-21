@@ -1,6 +1,6 @@
 class RecipeGalleryController < ApplicationController
 
   def index
-      @results = Kaminari.paginate_array(Activity.where(published: true).order("created_at DESC").select{|a| a.is_recipe?}).page(params[:page]).per(15)
+      @recipes = Activity.published.joins(:ingredients).order('created_at DESC').uniq.page(params[:page]).per(12)
   end
 end
