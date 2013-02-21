@@ -1,54 +1,75 @@
 .row
   .span12
-    .carousel.slide#recipe-carousel
+    .carousel.slide#hero-carousel
       .carousel-inner
-        - @recipes.each_with_index do |recipe, index|
-          - if index == 0
-            .item.active
-              = image_tag 'http://placehold.it/640x360'
-              .carousel-caption
-                %h4= recipe.title
-          - else
-            .item
-              = image_tag 'http://placehold.it/640x360'
-              .carousel-caption
-                %h4= recipe.title
+        .item.active
+          .hero-unit
+            %h2 Recipe
+            %h3 Recipe Title
+            %p
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc.
+            %p
+              = link_to 'See More Recipes', recipe_gallery_index_path
+        .item
+          .hero-unit
+            %h2 Science of
+            %h3 Science Title
+            %p
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc.
+            %p
+              = link_to 'See More Science', '#'
+        .item
+          .hero-unit
+            %h2 Technique
+            %h3 Technique Title
+            %p
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc.
+            %p
+              = link_to 'See More Techniques', '#'
+
+.row
+  .span12
+    .carousel.slide#recipe-carousel{data: {interval: false}}
+      .carousel-inner
+        .item.active
+          .row
+            .span12
+              %ul.thumbnails
+                - @recipes.each do |recipe|
+                  %li.span4
+                    = link_to recipe, class: 'thumbnail' do
+                      = image_tag 'http://placehold.it/640x360'
+                      .caption
+                        %h4
+                          = recipe.title
+        .item
+          .row
+            .span12
+              %ul.thumbnails
+                - @recipes.each do |recipe|
+                  %li.span4
+                    = link_to recipe, class: 'thumbnail' do
+                      = image_tag 'http://placehold.it/640x360'
+                      .caption
+                        %h4
+                          = recipe.title
       = link_to '&lsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control left', data: {slide: 'prev'}
       = link_to '&rsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control right', data: {slide: 'next'}
 
 .row
   .span12
-    %h2 Recipes
-    %hr
-    %ul.thumbnails
-      - @recipes.each do |recipe|
-        %li.span4
-          = link_to recipe, class: 'thumbnail' do
-            = image_tag 'http://placehold.it/640x360'
-            .caption
-              %h4
-                = recipe.title
-    %hr
-
-.row
-  .span12
-    .row
-      - 2.times do
-        .span6
-          %blockquote.pull-right
-            %p
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
-            %small
-              User Testimonial
-
-.row
-  .span12
     .row
       .span6
-        .well
-          %h3 Latest from the Discussion Forums:
-          %p
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis. Ut eget massa leo, ornare venenatis orci. Aenean accumsan laoreet tempor. In et ante diam. Sed accumsan velit sit amet massa viverra faucibus.
+        .row
+          .span6
+            .well
+              %h3 Latest from the Discussion Forums:
+              %p
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis. Ut eget massa leo, ornare venenatis orci. Aenean accumsan laoreet tempor. In et ante diam. Sed accumsan velit sit amet massa viverra faucibus.
+              %p
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis. Ut eget massa leo, ornare venenatis orci. Aenean accumsan laoreet tempor. In et ante diam. Sed accumsan velit sit amet massa viverra faucibus.
+              %p
+                = link_to 'Join The Discussion', '#'
       .span6
         .hero-unit
           %h2 Sign up for a FREE account
@@ -59,6 +80,49 @@
           %button.btn.btn-primary.btn-large
             Sign Up Now
 
+.row
+  .span12
+    .row
+      .span6
+        .hero-unit
+          %h2 Culinary Challenge:
+          %h4 Something Your Grandmother Would Have Cooked
+      .span6
+        - 2.times do
+          %blockquote.pull-right
+            %p
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
+            %small
+              User Testimonial
+
+.row
+  .span12
+    .row
+      .span6.offset3
+        %p
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
+        %p
+          = link_to 'Follow Us on Twitter', 'http://twitter.com/@chefsteps', target: 'blank'
+
+.row
+  .span12
+    .row
+      .span10
+        %h3 About ChefSteps
+        %p
+          ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
+        %p
+          Taught by a world-renowned team, you will master techniques of traditional and modernist cooking through practical, hands-on demonstrations with detailed step-by-step explanations. Unlike at other culinary schools, you will also learn the why's behind the how's from experts who bring the science of cooking to life in a compelling and practical way.
+      .span2
+        %ul.unstyled
+          %li
+            = link_to 'Facebook', 'https://www.facebook.com/Chefsteps', target: 'blank'
+          %li
+            = link_to 'Twitter', 'http://twitter.com/@chefsteps', target: 'blank'
+          %li
+            = link_to 'Pinterest', 'http://pinterest.com/chefsteps/', target: 'blank'
+          %li
+            = link_to 'Legal', legal_url
 
 - #TODO[huy] Remove old code below
 
