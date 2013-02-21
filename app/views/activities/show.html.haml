@@ -50,6 +50,60 @@
           %h4 Equipment and Materials
           = render 'equipment_list', equipment: @activity.required_equipment
       .span6
+        %h3 Techniques
+        .carousel.slide#technique-carousel
+          .carousel-inner
+            .item.active
+              .row
+                .span6
+                  %ul.thumbnails
+                    - 2.times do
+                      %li.span3
+                        = link_to '#', class: 'thumbnail' do
+                          = image_tag 'http://placehold.it/640x360'
+                          .caption
+                            %h4 Technique
+                            Technique Title
+            .item
+              .row
+                .span6
+                  %ul.thumbnails
+                    - 2.times do
+                      %li.span3
+                        = link_to '#', class: 'thumbnail' do
+                          = image_tag 'http://placehold.it/640x360'
+                          .caption
+                            %h4 Science of
+                            Science of Title
+          = link_to '&lsaquo;'.html_safe, '#technique-carousel', class: 'carousel-control left', data: {slide: 'prev'}
+          = link_to '&rsaquo;'.html_safe, '#technique-carousel', class: 'carousel-control right', data: {slide: 'next'}
+        %h3 You might also like
+        .carousel.slide#related-carousel
+          .carousel-inner
+            .item.active
+              .row
+                .span6
+                  %ul.thumbnails
+                    - 2.times do
+                      %li.span3
+                        = link_to '#', class: 'thumbnail' do
+                          = image_tag 'http://placehold.it/640x360'
+                          .caption
+                            %h4 Recipe
+                            Recipe Title
+            .item
+              .row
+                .span6
+                  %ul.thumbnails
+                    - 2.times do
+                      %li.span3
+                        = link_to '#', class: 'thumbnail' do
+                          = image_tag 'http://placehold.it/640x360'
+                          .caption
+                            %h4 Recipe
+                            Recipe Title
+          = link_to '&lsaquo;'.html_safe, '#related-carousel', class: 'carousel-control left', data: {slide: 'prev'}
+          = link_to '&rsaquo;'.html_safe, '#related-carousel', class: 'carousel-control right', data: {slide: 'next'}
 
 = #TODO Remove old code below
 
