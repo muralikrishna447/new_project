@@ -2,8 +2,8 @@
   .span12
     %h2 Recipes
     = paginate @recipes
-    %ul.thumbnails
+    .row
       - @recipes.each do |recipe|
-        %li.span4
-          = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe'
+        .span4
+          = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe', size: 'medium'
     = paginate @recipes

@@ -1,4 +1,5 @@
-.media-centered
+/ Defaults to size medium
+%div{class: "media-centered media-centered-#{ size ||= 'medium' }"}
   = link_to media do
     = image_tag s3_image_url(media_image)
     .title-block
