@@ -41,7 +41,7 @@
                 %ul.thumbnails
                   - slice.each do |recipe|
                     %li.span4
-                      = render 'shared/media_centered', media: recipe
+                      = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe'
       = link_to '&lsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control left', data: {slide: 'prev'}
       = link_to '&rsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control right', data: {slide: 'next'}
 

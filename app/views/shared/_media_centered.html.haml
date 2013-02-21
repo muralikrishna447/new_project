@@ -1,7 +1,7 @@
-= link_to media do
-  .media-centered
-    = image_tag 'http://placehold.it/640x360'
+.media-centered
+  = link_to media do
+    = image_tag s3_image_url(media_image)
     .title-block
-      %h4.title-main Media Type
-      %h4
-        = media.title
+      .title-main
+        = main
+      = media.title
