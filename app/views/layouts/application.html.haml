@@ -1,13 +1,21 @@
-%html
+%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#" }
   %head
     %title ChefSteps
     = stylesheet_link_tag 'application', media: 'all'
+    = stylesheet_link_tag 'print',  media: 'print'
     = javascript_include_tag 'application'
     = csrf_meta_tags
     %meta{charset: 'utf-8'}
     %meta{name: 'description', content: yield(:description)}
     %meta{name: 'keywords', content: yield(:keywords)}
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1'}
+    / = auto_discovery_link_tag :atom, feed_path
+    / = auto_discovery_link_tag :rss, feed_path
+    / %link{href: "/favicon.ico", rel: "shortcut icon"}
+    / %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
+    / -if ! yield(:canonical_link).empty?
+    /   %link{rel: "canonical", href: yield(:canonical_link) }
+    / = render 'layouts/google_analytics' if Rails.env.production?
 
   %body
     .container
