@@ -33,28 +33,31 @@
 .row
   .span12
     .row
-      .span6
-        %p
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
-        .pull-right
-          %h5 - User Testimonial
-      .span6
-        %p
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis."
-        .pull-right
-          %h5 - User Testimonial
+      - 2.times do
+        .span6
+          %blockquote.pull-right
+            %p
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
+            %small
+              User Testimonial
 
 .row
   .span12
     .row
       .span6
-        %h3 Latest from the blog
-        %p
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis. Ut eget massa leo, ornare venenatis orci. Aenean accumsan laoreet tempor. In et ante diam. Sed accumsan velit sit amet massa viverra faucibus.
+        .well
+          %h3 Latest from the Discussion Forums:
+          %p
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis. Ut eget massa leo, ornare venenatis orci. Aenean accumsan laoreet tempor. In et ante diam. Sed accumsan velit sit amet massa viverra faucibus.
       .span6
-        %h3 Latest from the forum
-        %p
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis. Ut eget massa leo, ornare venenatis orci. Aenean accumsan laoreet tempor. In et ante diam. Sed accumsan velit sit amet massa viverra faucibus.
+        .hero-unit
+          %h2 Sign up for a FREE account
+          %ul
+            %li Keep track of your favorite recipes
+            %li Save notes on what you've cooked
+            %li FREE Bonus Content: Sous Vide Time and Temperature data sheets
+          %button.btn.btn-primary.btn-large
+            Sign Up Now
 
 
 - #TODO[huy] Remove old code below
