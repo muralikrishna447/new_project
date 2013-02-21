@@ -5,9 +5,5 @@
     %ul.thumbnails
       - @recipes.each do |recipe|
         %li.span4
-          = link_to recipe, class: 'thumbnail' do
-            = image_tag 'http://placehold.it/640x360'
-            .caption
-              %h5
-                = recipe.title
+          = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe'
     = paginate @recipes
