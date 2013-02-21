@@ -18,47 +18,80 @@
               :markdown
                 #{raw step.directions}
 
-- conditional_cache [activity, version], cache_unless: !cache_show do
+.row
+  .span12
+    .row
+      .span6
+        .row
+          .span4
+            = link_to 'Discuss this on the forum', '#', class: 'btn'
+            = link_to 'Email this Recipe', '#', class: 'btn'
+          .span2
+            = link_to '#' do
+              %i.icon-facebook
+            = link_to '#' do
+              %i.icon-google-plus
+            = link_to '#' do
+              %i.icon-twitter
+            = link_to '#' do
+              %i.icon-pinterest
+      .span6
+        = link_to 'Need Help?', '#', class: 'btn pull-right'
 
-  - disqus_id = "activity-#{activity.id}"
+.row
+  .span12
+    .row
+      .span6
+        - if activity.has_ingredients?
+          = render 'ingredients_list', activity: activity
+        - if activity.required_equipment.present?
+          %h4 Equipment and Materials
+          = render 'equipment_list', equipment: activity.required_equipment.all
+      .span6
 
-  - content_for :title, activity.title.html_safe
-  / - content_for :description, activity.description != "" ? activity.description.html_safe : activity.title.html_safe
-  - content_for :canonical_link, activity_url
-  - content_for :keywords, activity.tag_list.join(',')
-  - course = Course.find(params[:course_id]) if params[:course_id]
+= #TODO Remove old code below
 
-  -if params[:scaling]
-    :javascript
-      paramScaling = #{params[:scaling]};
+/ - conditional_cache [activity, version], cache_unless: !cache_show do
 
-  .recipe_schema{:itemscope => true, :itemtype => (activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
+/   - disqus_id = "activity-#{activity.id}"
 
-    = render 'courses/navigation', course: course, activity: activity, disqus_id: disqus_id
+/   - content_for :title, activity.title.html_safe
+/   / - content_for :description, activity.description != "" ? activity.description.html_safe : activity.title.html_safe
+/   - content_for :canonical_link, activity_url
+/   - content_for :keywords, activity.tag_list.join(',')
+/   - course = Course.find(params[:course_id]) if params[:course_id]
 
-    .noprint.activity-hero
-      .container
-        %h1= activity.title.html_safe
-        - if activity.youtube_id?
-          .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-            %iframe{src: youtube_url(activity.youtube_id), webkitallowfullscreen: true, mozallowfullscreen:true, allowfullscreen: true }
-          - if activity.transcript?
-            .transcript
-              .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcript-activity-#{activity.id}"}}
-                %i.icon-pencil
-                  transcript
-              .transcript-content.collapse{id: "transcript-activity-#{activity.id}"}
-                = activity.transcript
-        - else
-          - if activity.image_id?
-            .activity-image
-              = image_tag s3_image_url(activity.image_id)
+/   -if params[:scaling]
+/     :javascript
+/       paramScaling = #{params[:scaling]};
 
-    = render 'overview', activity: activity
-    -if activity.steps.any?
-      #step-by-step
-        = render 'step_by_step', activity: activity
-    = render 'quizzes', activity: activity
-    = render 'cooked_this_button', activity: activity
+/   .recipe_schema{:itemscope => true, :itemtype => (activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
 
-  = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: activity.title, disqus_url: activity_url
+/     = render 'courses/navigation', course: course, activity: activity, disqus_id: disqus_id
+
+/     .noprint.activity-hero
+/       .container
+/         %h1= activity.title.html_safe
+/         - if activity.youtube_id?
+/           .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+/             %iframe{src: youtube_url(activity.youtube_id), webkitallowfullscreen: true, mozallowfullscreen:true, allowfullscreen: true }
+/           - if activity.transcript?
+/             .transcript
+/               .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcript-activity-#{activity.id}"}}
+/                 %i.icon-pencil
+/                   transcript
+/               .transcript-content.collapse{id: "transcript-activity-#{activity.id}"}
+/                 = activity.transcript
+/         - else
+/           - if activity.image_id?
+/             .activity-image
+/               = image_tag s3_image_url(activity.image_id)
+
+/     = render 'overview', activity: activity
+/     -if activity.steps.any?
+/       #step-by-step
+/         = render 'step_by_step', activity: activity
+/     = render 'quizzes', activity: activity
+/     = render 'cooked_this_button', activity: activity
+
+/   = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: activity.title, disqus_url: activity_url
