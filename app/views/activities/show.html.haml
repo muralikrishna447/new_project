@@ -1,3 +1,23 @@
+%h1
+  = @activity.title
+%p
+  = @activity.description
+
+.row
+  .span12
+    .row
+      .span6
+        %iframe{src: youtube_url(@activity.youtube_id)}
+      .span6
+        - @activity.steps.each_with_index do |step, index|
+          %h3= index + 1
+          .row
+            .span2
+              = image_tag s3_image_url(step.image_id)
+            .span4
+              :markdown
+                #{raw step.directions}
+
 - conditional_cache [activity, version], cache_unless: !cache_show do
 
   - disqus_id = "activity-#{activity.id}"

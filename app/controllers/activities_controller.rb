@@ -4,7 +4,8 @@ class ActivitiesController < ApplicationController
   expose(:version) { Version.current }
 
   def show
-    @cooked_this = cooked_ids.include?(activity.id)
+    # @cooked_this = cooked_ids.include?(activity.id)
+    @activity = Activity.find_published(params[:id], params[:token])
   end
 
   def cooked_this
