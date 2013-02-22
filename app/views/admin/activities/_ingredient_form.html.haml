@@ -16,9 +16,10 @@
   end
 
 %tr{id: row_id, class: ('template-row' if is_template )}
-  %td= text_field_tag "#{field_name_prefix}[title]", title, title_data_attrs
-  %td= text_field_tag "#{field_name_prefix}[display_quantity]", display_quantity
+  %td= text_field_tag "#{field_name_prefix}[title]", title, title_data_attrs.merge({:class => "ingredient"})
+  %td= text_field_tag "#{field_name_prefix}[display_quantity]", display_quantity, class: "quantity"
   %td
-    = text_field_tag "#{field_name_prefix}[unit]", unit
+    = select_tag "#{field_name_prefix}[unit]", options_for_select(%w[g kg ea a/n recipe], unit), class: "unit"
+  %td
     = remove_button 'tr'
     = reorder_icon

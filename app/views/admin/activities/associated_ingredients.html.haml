@@ -5,7 +5,10 @@
         %li= link_to "#{ingredient.title} #{ingredient.measurement}", admin_ingredient_path(ingredient.ingredient_id)
 
   = f.inputs :for => :steps do |step, index|
-    %li= step.text_field :subrecipe_title, placeholder: 'Subrecipe Title'
+    - s = @activity.steps[index - 1]
+    -if s
+      %legend.nested-form-legend
+        %span= "Step #{index}: #{truncate(s.title.blank? ? s.directions : s.title, length: 80)}"
     = render 'step_ingredient_form', step: step, count: index, ingredients: @activity.ingredients.map(&:title)
   = f.actions do
     = f.action :submit

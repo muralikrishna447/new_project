@@ -16,15 +16,22 @@
     = f.input :yield
 
   = section("Ingredients", f) do
-    %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
-    = sortable_table('ingredients') do
-      %tr
-        %th Ingredient
-        %th Quantity
-        %th Unit
-      = render 'admin/recipes/ingredient_form', ingredient: nil
-      - @activity.ingredients.ordered.each do |ingredient|
-        = render 'admin/recipes/ingredient_form', ingredient: ingredient
+    .ingredient-table-div
+      = sortable_table('ingredients') do
+        %colgroup
+          %col.ingredient
+          %col.quantity
+          %col.unit
+          %col.actions
+        %tbody
+          %tr
+            %th.ingredient Ingredient
+            %th.quantity Quantity
+            %th.unit Unit
+            %th
+          = render 'ingredient_form', ingredient: nil
+          - @activity.ingredients.ordered.each do |ingredient|
+            = render 'ingredient_form', ingredient: ingredient
     %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
 
   = section("Equipment", f) do

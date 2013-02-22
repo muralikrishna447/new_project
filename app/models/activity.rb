@@ -24,7 +24,6 @@ class Activity < ActiveRecord::Base
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
   attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :image_id,  :steps_attributes
-
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description],
     :if => :published

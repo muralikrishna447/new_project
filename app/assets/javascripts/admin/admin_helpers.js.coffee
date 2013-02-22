@@ -7,6 +7,7 @@ $ ->
     $copy_destination = $(copy_destination)
 
     $copy = $copy_target.clone()
+    $copy.removeClass('template-row')
     $('input', $copy).val('')
     $copy_destination.show()
     $copy_destination.append($copy)

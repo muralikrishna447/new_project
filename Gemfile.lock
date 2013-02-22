@@ -282,9 +282,6 @@ GEM
       activesupport (= 3.2.11)
       bundler (~> 1.0)
       railties (= 3.2.11)
-    rails-dev-tweaks (0.6.1)
-      actionpack (~> 3.1)
-      railties (~> 3.1)
     rails-erd (1.1.0)
       activerecord (>= 3.0)
       activesupport (>= 3.0)
@@ -431,7 +428,6 @@ DEPENDENCIES
   rack-contrib
   rack-cors
   rails (= 3.2.11)
-  rails-dev-tweaks (~> 0.6.1)
   rails-erd
   railties (= 3.2.11)
   ranked-model

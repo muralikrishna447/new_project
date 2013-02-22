@@ -66,7 +66,6 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'rack-contrib'
   gem 'pry'
-  gem 'rails-dev-tweaks', '~> 0.6.1'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'

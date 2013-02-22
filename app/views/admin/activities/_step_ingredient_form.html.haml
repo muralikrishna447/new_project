@@ -2,14 +2,24 @@
   row_id = "step-#{count}-ingredients-row"
   field_name_prefix = "step_ingredients[#{step.object.id}][]"
 
-%li= copy_button 'Add Ingredient To Step', "##{row_id}", "table#step-#{count}-ingredients"
-= sortable_table("step-#{count}-ingredients") do
-  %tr
-    %th Ingredient
-    %th Quantity
-    %th Unit
-  = render 'ingredient_form', ingredient: nil, ingredients: ingredients, row_id: row_id, field_name_prefix: field_name_prefix
-  - step.object.ingredients.each do |ingredient|
-    = render 'ingredient_form', ingredient: ingredient, ingredients: ingredients, field_name_prefix: field_name_prefix
-%li= copy_button 'Add Ingredient To Step', "##{row_id}", "table#step-#{count}-ingredients"
+.ingredient-table-div
+  = sortable_table("step-#{count}-ingredients") do
+    %colgroup
+      %col.ingredient
+      %col.quantity
+      %col.unit
+      %col.actions
+    %tbody
+      %tr
+        %th.ingredient
+          = step.text_field :subrecipe_title,  placeholder: 'Ingredient block title (e.g. \'For The Beets\')'
+        %th.quantity Quantity
+        %th.unit Unit
+        %th
+      = render 'ingredient_form', ingredient: nil, ingredients: ingredients, row_id: row_id, field_name_prefix: field_name_prefix
+      - step.object.ingredients.each do |ingredient|
+        = render 'ingredient_form', ingredient: ingredient, ingredients: ingredients, field_name_prefix: field_name_prefix
+%li
+  = copy_button 'Add Blank Ingredient', "##{row_id}", "table#step-#{count}-ingredients"
+  = select_tag "add-multiple-#{count}", options_from_collection_for_select(@activity.ingredients.ordered, "id", "title"), multiple: true, class: "multi-ingredients",  data: {'copy-target' => "##{row_id}", 'copy-destination' => "table#step-#{count}-ingredients"}
 
