@@ -1,5 +1,6 @@
 DOMAIN='staging.chefsteps.com'
 CDN_DOMAIN = 'https://d2t0ubu4aw4rxn.cloudfront.net'
+DISQUS_SHORTNAME = "delvestaging"
 
 Delve::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
@@ -86,6 +87,4 @@ Delve::Application.configure do
     [u, p] == ['delve', 'howtochef22'] || [u, p] == ['guest', 'boiling19']
   end
 end
-
-Delve::Config.disqus_shortname = "delvestaging"
 

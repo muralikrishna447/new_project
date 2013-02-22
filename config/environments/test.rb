@@ -1,6 +1,6 @@
 DOMAIN = "delve.dev"
 CDN_DOMAIN = 'delve.dev'
-Delve::Config.disqus_shortname = "chefstepstesting"
+DISQUS_SHORTNAME = "chefstepstesting"
 
 Delve::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb

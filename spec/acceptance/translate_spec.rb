@@ -3,7 +3,6 @@ require 'spec_helper'
 feature 'translation', :js => true do
   scenario "element with id='google_translate_element' is present" do
     activity = Fabricate(:activity, title:'Horseradish Cream', description:'Horseradish cream is so delicious!', published:true)
-    Delve::Config.stub(disqus_shortname: "delvestaging")
 
     visit activity_path(activity)
     page.should have_content('Horseradish')

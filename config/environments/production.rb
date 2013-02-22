@@ -1,5 +1,6 @@
 DOMAIN = 'www.chefsteps.com'
 CDN_DOMAIN = 'd1w42w8pbelamn.cloudfront.net'
+DISQUS_SHORTNAME = "chefstepsproduction"
 
 Delve::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
@@ -83,6 +84,3 @@ Delve::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 end
-
-Delve::Config.disqus_shortname = "chefstepsproduction"
-
