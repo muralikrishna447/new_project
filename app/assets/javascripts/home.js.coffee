@@ -1,4 +1,5 @@
 $ ->
+  video_container = $('#hero-video').find('.video-container')
   first_youtube_id = $('#hero-first').find('.media-hero-play').data('youtubeid')
   player = new YT.Player 'hero-player', {
     videoId: first_youtube_id,
@@ -16,12 +17,15 @@ $ ->
   $('.media-hero-play').click ->
     $('#hero-carousel').carousel('pause')
     youtube_id = $(this).find('.media-hero-play').data('youtubeid')
-    video = $('#hero-video').find('.video-container')
-    video.fadeIn 1000
+    $('#hero-container').fadeOut 1000
     player.playVideo()
+    # video_container.fadeIn 1000
 
   $('#recipe-carousel').carousel({
     interval: false
   })
 
-  loadFirstVideo()
+  $('#player-close').click ->
+    player.stopVideo()
+    $('#hero-container').fadeIn 1000
+    $('#hero-carousel').carousel('cycle')
