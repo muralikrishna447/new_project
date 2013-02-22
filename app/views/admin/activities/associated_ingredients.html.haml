@@ -1,14 +1,21 @@
 = semantic_form_for [:admin, @activity], url: update_associated_ingredients_admin_activity_path(@activity) do |f|
-  = f.inputs name: "Ingredients" do
+  = f.inputs name: "Ingredients (For Reference)" do
     %ul.step-ingredients
       - @activity.ingredients.ordered.each do |ingredient|
-        %li= link_to "#{ingredient.title} #{ingredient.measurement}", admin_ingredient_path(ingredient.ingredient_id)
+        %li
+          #{ingredient.title}, #{ingredient.measurement}
 
   = f.inputs :for => :steps do |step, index|
     - s = @activity.steps[index - 1]
     -if s
+
       %legend.nested-form-legend
-        %span= "Step #{index}: #{truncate(s.title.blank? ? s.directions : s.title, length: 80)}"
+        %span
+          -if s.title.blank?
+            Step #{index}
+          -else
+            = "Step #{index} - #{s.title}"
+
     = render 'step_ingredient_form', step: step, count: index, ingredients: @activity.ingredients.map(&:title)
   = f.actions do
     = f.action :submit

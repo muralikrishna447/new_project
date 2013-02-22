@@ -21,5 +21,8 @@
         = render 'ingredient_form', ingredient: ingredient, ingredients: ingredients, field_name_prefix: field_name_prefix
 %li
   = copy_button 'Add Blank Ingredient', "##{row_id}", "table#step-#{count}-ingredients"
-  = select_tag "add-multiple-#{count}", options_from_collection_for_select(@activity.ingredients.ordered, "id", "title"), multiple: true, class: "multi-ingredients",  data: {'copy-target' => "##{row_id}", 'copy-destination' => "table#step-#{count}-ingredients"}
+  - opts = []
+  - @activity.ingredients.ordered.each do |ai|
+    - opts << [ai.title, ai.id, :'data-quantity' => ai.display_quantity, :'data-unit' => ai.unit]
+  = select_tag "add-multiple-#{count}", options_for_select(opts), multiple: true, class: "multi-ingredients",  data: {'copy-target' => "##{row_id}", 'copy-destination' => "table#step-#{count}-ingredients"}
 
