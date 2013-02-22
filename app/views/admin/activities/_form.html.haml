@@ -59,9 +59,9 @@
         %th Youtube Id
         %th Audio Clip
         %th Audio Title
-      = render 'admin/recipes/step_form', step: nil, field_name_prefix: field_name_prefix
+      = render 'step_form', step: nil, field_name_prefix: field_name_prefix
       - @activity.ordered_steps.each do |step|
-        = render 'admin/recipes/step_form', step: step, field_name_prefix: field_name_prefix
+        = render 'step_form', step: step, field_name_prefix: field_name_prefix
     %li.two-button-row
       = copy_button 'Add Step', '#step-row', 'table#steps'
       - unless @activity.id.nil?

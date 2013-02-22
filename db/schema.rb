@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130218175151) do
+ActiveRecord::Schema.define(:version => 20130222232451) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -73,28 +73,6 @@ ActiveRecord::Schema.define(:version => 20130218175151) do
 
   add_index "activity_ingredients", ["activity_id", "ingredient_id"], :name => "index_activity_ingredients_on_activity_id_and_ingredient_id", :unique => true
   add_index "activity_ingredients", ["ingredient_order"], :name => "index_activity_ingredients_on_ingredient_order"
-
-  create_table "activity_recipe_steps", :force => true do |t|
-    t.integer  "activity_id", :null => false
-    t.integer  "step_id",     :null => false
-    t.integer  "step_order"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  add_index "activity_recipe_steps", ["activity_id", "step_id"], :name => "index_activity_recipe_steps_on_activity_id_and_step_id", :unique => true
-  add_index "activity_recipe_steps", ["step_order"], :name => "index_activity_recipe_steps_on_step_order"
-
-  create_table "activity_recipes", :force => true do |t|
-    t.integer  "activity_id",  :null => false
-    t.integer  "recipe_id",    :null => false
-    t.integer  "recipe_order"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
-  add_index "activity_recipes", ["activity_id", "recipe_id"], :name => "index_activity_recipes_on_activity_id_and_recipe_id", :unique => true
-  add_index "activity_recipes", ["recipe_order"], :name => "index_activity_recipes_on_recipe_order"
 
   create_table "admin_users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -251,13 +229,6 @@ ActiveRecord::Schema.define(:version => 20130218175151) do
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
 
-  create_table "recipes", :force => true do |t|
-    t.string   "title"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "yield"
-  end
-
   create_table "step_ingredients", :force => true do |t|
     t.integer  "step_id",          :null => false
     t.integer  "ingredient_id",    :null => false
@@ -279,7 +250,6 @@ ActiveRecord::Schema.define(:version => 20130218175151) do
     t.datetime "updated_at",        :null => false
     t.string   "youtube_id"
     t.integer  "step_order"
-    t.integer  "recipe_id"
     t.text     "directions"
     t.string   "image_id"
     t.text     "transcript"
@@ -290,7 +260,6 @@ ActiveRecord::Schema.define(:version => 20130218175151) do
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
-  add_index "steps", ["recipe_id"], :name => "index_steps_on_recipe_id"
   add_index "steps", ["step_order"], :name => "index_steps_on_step_order"
 
   create_table "taggings", :force => true do |t|
