@@ -1,16 +1,17 @@
 = content_for :hero do
-  .row-fluid
-    .carousel.slide#hero-carousel
-      .carousel-inner
-        .item.active
-          = render 'shared/media_hero', main: 'Recipe', media_image: @recipes.first.step_images.last, media_object: @recipes.first
-        .item
-          = render 'shared/media_hero', main: 'Recipe', media_image: @recipes.last.step_images.last, media_object: @recipes.last
-.container#hero-video
-  .row
-    .span12
-      .video-container
-        %iframe{src: youtube_url('8eV3nrNVXxo', 0) }
+  .container-fluid#hero-container
+    .row-fluid
+      .carousel.slide#hero-carousel
+        .carousel-inner
+          .item.active
+            = render 'shared/media_hero', main: 'Recipe', media_image: @recipes.first.step_images.last, media_object: @recipes.first
+          .item
+            = render 'shared/media_hero', main: 'Recipe', media_image: @recipes.last.step_images.last, media_object: @recipes.last
+  .container#hero-video
+    .row
+      .span10.offset1
+        .video-container
+          %iframe{src: youtube_url('8eV3nrNVXxo', 0) }
 
 .row
   .span12

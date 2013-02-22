@@ -45,12 +45,12 @@
 
 .media-hero
   position: relative
-  max-height: 718px
+  max-height: 576px
   img
     width: 100%
   .media-block
     position: absolute
-    top: 100px
+    top: 50px
     width: inherit
     padding: 100px
     @include boxsizing
@@ -61,26 +61,26 @@
       height: 200px
 
 .video-container
-  //position: relative
-  overflow: hidden
+  position: relative
+  padding-bottom: 56.25%
+  padding-top: 30px
+  height: 0
   iframe, object, embed
     position: absolute
-    // height: 360px
-    // width: 640px
+    top: 0
+    left: 0
     height: 100%
-    min-height: 360px
     width: 100%
     border: none
 
 // Unique Styles
-#container-hero
+#hero-container
+  width: 100%
   margin: 0px
   padding: 0px
-  margin-top: -60px
+  margin-top: 40px
+  max-height: 576px
+  position: absolute
 
 #hero-video
-  position: absolute
-  top: 0px
-  .video-container
-    max-width: 640px
-    margin: 0 auto
+  margin-top: 40px

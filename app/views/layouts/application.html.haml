@@ -88,8 +88,7 @@
                 %li
                   = link_to 'Sign in', sign_in_path
 
-    .container-fluid#container-hero
-      = yield :hero
+    = yield :hero
 
     .container#main-container
       - flash.each do |name, msg|
