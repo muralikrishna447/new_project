@@ -6,9 +6,8 @@
         = link_to media_object do
           %h2= main
           %h3= media_object.title
-          %p
-            = media_object.description
-        = link_to '#', data: { url: youtube_url(media_object.youtube_id, 1)}, class: 'media-hero-play' do
+          %p= media_object.description
+        = link_to '#', data: { url: youtube_url(media_object.youtube_id, 1), youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
           %i.icon-play
       .media-options
         %p.pull-right

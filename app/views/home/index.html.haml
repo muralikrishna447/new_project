@@ -3,17 +3,14 @@
     .row-fluid
       .carousel.slide#hero-carousel
         .carousel-inner
-          .item.active
-            = render 'shared/media_hero', main: 'Recipe', media_image: @recipes.first.step_images.last, media_object: @recipes.first
-          .item
-            = render 'shared/media_hero', main: 'Recipe', media_image: @recipes.last.step_images.last, media_object: @recipes.last
+          - @recipes.each_with_index do |recipe, index|
+            %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
+              = render 'shared/media_hero', main: 'Recipe', media_image: recipe.step_images.last, media_object: recipe
   .container#hero-video
     .row
       .span10.offset1
         .video-container
-          %iframe{src: youtube_url('8eV3nrNVXxo', 0) }
-      .span1.offset11
-        = link_to 'x', '#'
+          #hero-player
 
 .row
   .span12
