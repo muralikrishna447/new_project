@@ -1,6 +1,5 @@
 DOMAIN = 'delve.dev'
 CDN_DOMAIN = 'delve.dev'
-DISQUS_SHORTNAME = "delvestaging"
 
 Delve::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
@@ -44,5 +43,7 @@ Delve::Application.configure do
   config.assets.debug = true
 
   config.sass.preferred_syntax = :sass
+
+  DISQUS_SHORTNAME = "delvestaging"
 end
 

@@ -1,6 +1,5 @@
 DOMAIN = "delve.dev"
 CDN_DOMAIN = 'delve.dev'
-DISQUS_SHORTNAME = "chefstepstesting"
 
 Delve::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
@@ -39,5 +38,6 @@ Delve::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  DISQUS_SHORTNAME = "chefstepstesting"
 end
 
