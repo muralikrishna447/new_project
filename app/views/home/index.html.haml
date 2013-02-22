@@ -1,34 +1,13 @@
-.row
-  .span12
+= content_for :hero do
+  .container
     %h1 Explore Modernist Cuisine
+  .row-fluid
     .carousel.slide#hero-carousel
       .carousel-inner
         .item.active
-          .hero-unit
-            %h2 Recipe
-            %h3 Recipe Title
-            %p
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc.
-            %p
-              = link_to 'See More Recipes', recipe_gallery_index_path
+          = render 'shared/media_hero', main: 'Recipe', media_image: @recipes.first.step_images.last, media_object: @recipes.first
         .item
-          .hero-unit
-            %h2 Science of
-            %h3 Science Title
-            %p
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc.
-            %p
-              = link_to 'See More Science', '#'
-        .item
-          .hero-unit
-            %h2 Technique
-            %h3 Technique Title
-            %p
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc.
-            %p
-              = link_to 'See More Techniques', '#'
-      / = link_to '&lsaquo;'.html_safe, '#hero-carousel', class: 'carousel-control left', data: {slide: 'prev'}
-      / = link_to '&rsaquo;'.html_safe, '#hero-carousel', class: 'carousel-control right', data: {slide: 'next'}
+          = render 'shared/media_hero', main: 'Recipe', media_image: @recipes.last.step_images.last, media_object: @recipes.last
 
 .row
   .span12
