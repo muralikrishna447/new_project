@@ -21,6 +21,8 @@
 @import twitter/bootstrap/scaffolding
 @import twitter/bootstrap/popovers
 @import twitter/bootstrap/tooltip
+@import twitter/bootstrap/dropdowns
+@import twitter/bootstrap/forms
 @import font-awesome
 @import select2
 
@@ -66,7 +68,8 @@ body.admin_namespace
       padding: 1px 2px 0 2px
 
     i.icon-remove
-      font-size: 14px
+      float: right
+      font-size: 16px
 
     i.icon-reorder
       float: right
@@ -176,6 +179,50 @@ body.admin_namespace
   #new_activity_name
     width: auto
 
+  .ingredient-table-div
+    table
+      width: 550px
+      table-layout: fixed
+    td
+      padding-left: 4px
+      padding-right: 4px
+
+    col.ingredient
+      width: 300px
+    col.quantity
+      width: 60px
+    col.unit
+      width: 90px
+    col.actions
+      width: 55px
+
+    .unit
+      width: 80px
+      text-align: left
+
+    .select2-result-unselectable .select2-result-selectable .select2-match, .select2-choice
+      text-decoration: none
+
+    .ingredient
+      width: 94%
+      text-align: left
+
+    .quantity
+      text-align: right
+      width: 61%
+
+    input
+      padding-top: 4px !important
+      padding-bottom: 3px !important
+
+  .multi-ingredients
+    margin-top: 1px
+    margin-left: 30px
+    width: 300px
+
+  ol
+    .nested-form-legend
+      margin-top: -10px
 
 .admin_activities.associated_ingredients
   .step-ingredients

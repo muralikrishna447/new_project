@@ -3,15 +3,17 @@
     = f.input :title
     = f.input :yield
   = section("Ingredients", f) do
-    %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
-    = sortable_table('ingredients') do
-      %tr
-        %th Ingredient
-        %th Quantity
-        %th Unit
-      = render 'ingredient_form', ingredient: nil
-      - @recipe.ingredients.ordered.each do |ingredient|
-        = render 'ingredient_form', ingredient: ingredient
+    %p
+      foobar
+    .ingredient-table-container
+      = sortable_table('ingredients') do
+        %tr
+          %th Ingredient
+          %th Quantity
+          %th Unit
+        = render 'ingredient_form', ingredient: nil
+        - @recipe.ingredients.ordered.each do |ingredient|
+          = render 'ingredient_form', ingredient: ingredient
     %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
 
   = section("Steps", f) do
