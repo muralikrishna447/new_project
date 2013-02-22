@@ -2,13 +2,14 @@
   = image_tag s3_image_url(media_image)
   .container
     .media-block
-      .title-main
-        %h2
-          = main
-      .media-body
-        %h3
-          = media_object.title
-        %p.lead
-          = media_object.description
-        %p
-          = link_to 'See More Recipes', recipe_gallery_index_path
+      .media-body.lead
+        = link_to media_object do
+          %h2= main
+          %h3= media_object.title
+          %p
+            = media_object.description
+        = link_to youtube_url(media_object.youtube_id, 1) do
+          %i.icon-play
+      .media-options
+        %p.pull-right
+          = link_to 'See More Recipes', recipe_gallery_index_path, class: 'btn btn-primary'
