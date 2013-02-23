@@ -2,13 +2,27 @@
   = image_tag s3_image_url(media_image)
   .container
     .media-block
-      .media-body.lead
-        = link_to media_object do
-          %h2= main
-          %h3= media_object.title
-          %p= media_object.description
-        = link_to '#', data: { url: youtube_url(media_object.youtube_id, 1), youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
-          %i.icon-play
-      .media-options
-        %p.pull-right
-          = link_to 'See More Recipes', recipe_gallery_index_path, class: 'btn btn-primary'
+      .media-background
+        .media
+          %h3.media-heading
+            = main_title
+          %h3.media-heading
+            = media_object.title.html_safe
+          .media-body.pull-left
+            = media_object.description
+          .media-object.pull-right
+            = link_to '#', data: {youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
+              %h2
+                %i.icon-play
+        = link_to 'See More Recipes', recipe_gallery_index_path, class: 'media-index-link'
+      /   = link_to media_object do
+      /     .media-content
+      /       %h3= main
+      /       %h3= media_object.title.html_safe
+      /       %p= media_object.description
+      /   .media-play
+      /     = link_to '#', data: { url: youtube_url(media_object.youtube_id, 1), youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
+      /       %i.icon-play
+      / .media-options
+      /   %p.pull-right
+      /     = link_to 'See More Recipes', recipe_gallery_index_path, class: 'btn btn-primary'

@@ -5,7 +5,7 @@
         .carousel-inner
           - @recipes.each_with_index do |recipe, index|
             %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
-              = render 'shared/media_hero', main: 'Recipe', media_image: recipe.step_images.last, media_object: recipe
+              = render 'shared/media_hero', main_title: 'Recipe', media_image: recipe.step_images.last, media_object: recipe
   .container#hero-video
     .row
       .span10.offset1

@@ -54,11 +54,21 @@
     width: inherit
     padding: 100px
     @include boxsizing
-    .media-body
-      background-color: rgba(255,255,255,.2)
-      text-transform: uppercase
+    .media-background
+      position: relative
+      background-color: rgba(255,255,255,.4)
       padding: 50px
       height: 200px
+      .media-body
+        width: 80%
+      .media-object
+        width: 10%
+        .icon-play
+          font-size: 60px
+    .media-index-link
+      position: absolute
+      bottom: 20px
+      right: 20px
 
 .video-container
   position: relative
