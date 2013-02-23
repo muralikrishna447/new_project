@@ -37,13 +37,10 @@
         .row
           .span6
             .well
-              %h3 Latest from the Discussion Forums:
-              %p
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis. Ut eget massa leo, ornare venenatis orci. Aenean accumsan laoreet tempor. In et ante diam. Sed accumsan velit sit amet massa viverra faucibus.
-              %p
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc. Phasellus hendrerit tristique eros ut venenatis. Ut eget massa leo, ornare venenatis orci. Aenean accumsan laoreet tempor. In et ante diam. Sed accumsan velit sit amet massa viverra faucibus.
-              %p
-                = link_to 'Join The Discussion', '#'
+              - @discussions.each do |discussion|
+                %h4= discussion[:name]
+                %p= discussion[:body].html_safe
+                = link_to 'Join the Discussion', discussion[:url]
       .span6
         .hero-unit
           %h2 Sign up for a FREE account

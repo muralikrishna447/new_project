@@ -10,6 +10,7 @@ class HomeController < ApplicationController
     # @filmstrip = Video.filmstrip_videos
     # @croppable = @filmstrip.map(&:class).include?(Activity)
     @recipes = Activity.published.with_video.joins(:recipes).order("RANDOM()").first(6)
+    @discussions = Forum.discussions.take(3)
   end
 
   def about
