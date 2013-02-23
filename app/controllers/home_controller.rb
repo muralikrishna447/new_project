@@ -11,6 +11,7 @@ class HomeController < ApplicationController
     # @croppable = @filmstrip.map(&:class).include?(Activity)
     @recipes = Activity.published.with_video.joins(:recipes).order("RANDOM()").first(6)
     @discussions = Forum.discussions.take(3)
+    @challenges = Forum.discussions_by_category('culinary-challenge')
   end
 
   def about
