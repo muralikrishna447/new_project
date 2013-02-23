@@ -37,7 +37,6 @@ gem 'kaminari'                              # Pagination
 gem 'select2-rails'                         # Select 2
 gem 'gravatar_image_tag'
 gem 'httparty'
-gem 'twitter'
 
 # Gems used only for assets and not required
 # in production environments by default.

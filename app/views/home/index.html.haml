@@ -70,10 +70,8 @@
   .span12
     .row
       .span6.offset3
-        %p
-          / = @status['text']
-        %p
-          = link_to 'Follow Us on Twitter', 'http://twitter.com/@chefsteps', target: 'blank'
+        #twitter-status
+          = @status.html_safe
 
 - #TODO[huy] Remove old code below
 

@@ -12,7 +12,7 @@ class HomeController < ApplicationController
     @recipes = Activity.published.with_video.joins(:ingredients).order("RANDOM()").first(6)
     @discussions = Forum.discussions.take(3)
     @challenges = Forum.discussions_by_category('culinary-challenge')
-    # @status = Twitter.status
+    @status = Twitter.status_embed
   end
 
   def about
