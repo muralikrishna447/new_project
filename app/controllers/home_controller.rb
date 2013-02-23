@@ -9,9 +9,10 @@ class HomeController < ApplicationController
     # @featured_id = Video.featured_id
     # @filmstrip = Video.filmstrip_videos
     # @croppable = @filmstrip.map(&:class).include?(Activity)
-    @recipes = Activity.published.with_video.joins(:recipes).order("RANDOM()").first(6)
+    @recipes = Activity.published.with_video.joins(:ingredients).order("RANDOM()").first(6)
     @discussions = Forum.discussions.take(3)
     @challenges = Forum.discussions_by_category('culinary-challenge')
+    # @status = Twitter.status
   end
 
   def about
