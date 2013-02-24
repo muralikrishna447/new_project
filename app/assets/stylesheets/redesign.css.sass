@@ -66,10 +66,6 @@
     .media-object
       .icon-play
         font-size: 60px
-    .media-index-link
-      position: absolute
-      bottom: 20px
-      right: 20px
 
 .video-container
   position: relative
@@ -89,7 +85,6 @@
   width: 100%
   margin: 0px
   padding: 0px
-  margin-top: 40px
   max-height: 576px
   position: absolute
   z-index: 999
@@ -125,4 +120,44 @@
   width: 100px
   height: 100px
   background: gray
+
+/* Large desktop */
+@media (min-width: 1200px)
+ 
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px)
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px)
+  .navbar-fixed-top
+    margin-bottom: 0px
+  #hero-container
+    width: 100%
+    left: 0px
+    #hero-carousel
+      h2, h3
+        font-size: 16px
+        line-height: 16px
+      .btn-play
+        width: 50px
+        height: 50px
+        margin-left: 20px
+      .pull-left 
+        float: left
+      .media-header-background
+        height: 90px
+      .hero-carousel-control
+        height: 90px
+        padding: 25px 0px
+        font-size: 40px
+  #hero-video
+    height: inherit
+    .video-container
+      iframe
+        max-height: 185px
+
+
+ 
+/* Landscape phones and down */
+@media (max-width: 480px)
 
