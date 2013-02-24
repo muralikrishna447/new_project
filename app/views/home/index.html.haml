@@ -6,6 +6,8 @@
           - @recipes.each_with_index do |recipe, index|
             %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
               = render 'shared/media_hero', main_title: 'Recipe', media_image: recipe.step_images.last, media_object: recipe
+        = link_to '#hero-carousel', class: 'hero-carousel-control right', data: {slide: 'next'} do
+          %i.icon-chevron-right
   .container#hero-video
     .row
       .span10.offset1
