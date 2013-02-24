@@ -49,7 +49,7 @@
 
 .media-hero
   position: relative
-  max-height: 576px
+  max-height: 546px
   img
     width: 100%
   .media-header-background
@@ -103,8 +103,9 @@
 #hero-video
   margin-top: 40px
   height: 546px
-  .video-container 
-    // display: none
+
+#player-close
+  display: none
 
 #twitter-status
   iframe
@@ -134,28 +135,38 @@
     width: 100%
     left: 0px
     #hero-carousel
-      h2, h3
+      h2
         font-size: 16px
         line-height: 16px
+      h3
+        font-size: 12px
+        line-height: 12px
       .btn-play
         width: 50px
         height: 50px
-        margin-left: 20px
+        margin-left: 10px
       .pull-left 
         float: left
       .media-header-background
-        height: 90px
+        height: 70px
+      .media-heading
+        margin-bottom: 0px
       .hero-carousel-control
-        height: 90px
-        padding: 25px 0px
-        font-size: 40px
+        height: 70px
+        padding: 23px 0px
+        font-size: 30px
+        width: 30px
   #hero-video
     height: inherit
+    margin-top: 0px
     .video-container
+      margin: 0px -20px
       iframe
-        max-height: 185px
-
-
+        min-height: 225px
+  #player-close
+    p
+      margin-top: 30px
+      text-align: right
  
 /* Landscape phones and down */
 @media (max-width: 480px)

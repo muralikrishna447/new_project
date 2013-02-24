@@ -3,7 +3,7 @@ $ ->
   first_youtube_id = $('#hero-first').find('.media-hero-play').data('youtubeid')
   player = new YT.Player 'hero-player', {
     videoId: first_youtube_id,
-    playerVars: { 'modestbranding': 1, 'showinfo': 0, 'rel': 0, 'origin': 'http://www.chefsteps.com', 'vq': 'hd720', 'controls': 0 }
+    playerVars: { 'modestbranding': 1, 'showinfo': 0, 'rel': 0, 'origin': 'http://www.chefsteps.com', 'vq': 'hd720', 'controls': 1 }
   }
 
   $('#hero-carousel').carousel({
@@ -18,6 +18,7 @@ $ ->
     $('#hero-carousel').carousel('pause')
     youtube_id = $(this).find('.media-hero-play').data('youtubeid')
     $('#hero-container').fadeOut 1000
+    $('#player-close').show()
     player.playVideo()
 
   $('#recipe-carousel').carousel({
@@ -28,6 +29,7 @@ $ ->
     player.stopVideo()
     $('#hero-container').fadeIn 1000
     $('#hero-carousel').carousel('cycle')
+    $(this).hide()
 
   $('.standalone-tweet').load ->
     alert $(this).html()
