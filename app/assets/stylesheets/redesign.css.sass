@@ -11,6 +11,10 @@
   -webkit-box-shadow: 0px 0px 8px #888888
   -o-box-shadow: 0px 0px 8px #888888
 
+/* Colors */
+$orange: #DB7354
+$dark-orange: #D25029
+
 #main-container
   margin-top: 60px
 
@@ -120,6 +124,24 @@
   width: 100px
   height: 100px
   background: gray
+
+/* Navbar */
+.navbar-fixed-top
+  .navbar-inner
+    box-shadow: none
+    background-image: none
+    background-color: $orange
+    border-color: $dark-orange
+  .brand
+    text-shadow: none
+    color: white
+  .nav > li > a
+    text-shadow: none
+    color: white
+    text-transform: uppercase
+    font-weight: 200
+
+// BELOW ARE RESPONSIVE STYLES //
 
 /* Large desktop */
 @media (min-width: 1200px)
