@@ -9,14 +9,16 @@
   .span12
     .row
       .span6
-        %iframe{src: youtube_url(@activity.youtube_id)}
+        .video-container
+          %iframe{src: youtube_url(@activity.youtube_id)}
       .span6
         - @activity.steps.each_with_index do |step, index|
-          %h3= index + 1
-          .row
-            .span2
+          .ordered-step
+            .step-element.step-number
+              = index + 1
+            .step-element.step-image
               = image_tag s3_image_url(step.image_id)
-            .span4
+            .step-element.step-content
               :markdown
                 #{raw step.directions}
 

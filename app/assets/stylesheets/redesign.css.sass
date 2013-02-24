@@ -15,10 +15,12 @@
 $orange: #DB7354
 $dark-orange: #D25029
 
+////////////////////////////////////////
+
 #main-container
   margin-top: 60px
 
-// Bootstrap Overrides
+/* Bootstrap Overrides */
 .dropdown-menu
   min-width: 400px
 .well
@@ -26,7 +28,9 @@ $dark-orange: #D25029
   border-radius: 0px
   background-color: rgba(0,0,0,.1)
 
-// Media Objects
+////////////////////////////////////////
+
+/* Media Objects */
 .media-centered
   position: relative
   a
@@ -83,7 +87,28 @@ $dark-orange: #D25029
     width: 100%
     border: none
 
-// Unique Styles
+.ordered-step
+  width: 100%
+  float: left
+  .step-element
+    float: left
+    @include boxsizing
+    padding: 10px
+  .step-number
+    width: 10%
+    text-align: center
+    color: white
+    font-size: 50px
+    line-height: 60px
+    background-color: $orange
+  .step-image
+    width: 20%
+  .step-content
+    width: 70%
+
+////////////////////////////////////////
+
+/* Unique Styles */
 #hero-container
   width: 100%
   margin: 0px
@@ -96,13 +121,17 @@ $dark-orange: #D25029
     bottom: 0
     right: 0px
     font-size: 65px
-    background: gray
+    background-color: $orange
     height: 130px
     vertical-align: middle
     width: 50px
     text-align: center
-    padding: 35px 0px
+    padding: 38px 0px
     @include boxsizing
+    color: white
+    text-decoration: none
+    &:hover
+      background-color: $dark-orange
 
 #hero-video
   margin-top: 40px
@@ -119,7 +148,7 @@ $dark-orange: #D25029
     border-width: 0px !important
     box-shadow: none !important
 
-// Buttons
+/* Buttons *.
 .btn-play
   width: 100px
   height: 100px
