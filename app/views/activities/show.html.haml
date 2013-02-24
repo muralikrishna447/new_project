@@ -5,27 +5,14 @@
     :markdown
       #{@activity.description}
 
+%hr
+
 .row
   .span12
     .row
       .span6
         .video-container
           %iframe{src: youtube_url(@activity.youtube_id)}
-      .span6
-        - @activity.steps.each_with_index do |step, index|
-          .ordered-step
-            .step-element.step-number
-              = index + 1
-            .step-element.step-image
-              = image_tag s3_image_url(step.image_id)
-            .step-element.step-content
-              :markdown
-                #{raw step.directions}
-
-.row
-  .span12
-    .row
-      .span6
         .row
           .span4
             = link_to 'Discuss this on the forum', '#', class: 'btn'
@@ -40,7 +27,19 @@
             = link_to '#' do
               %i.icon-pinterest
       .span6
-        = link_to 'Need Help?', '#', class: 'btn pull-right'
+        .ordered-steps
+          - @activity.steps.each_with_index do |step, index|
+            .ordered-step-item
+              .step-element.step-number
+                = index + 1
+              .step-element.step-image
+                = image_tag s3_image_url(step.image_id)
+              .step-element.step-content
+                :markdown
+                  #{raw step.directions}
+              = link_to 'Need Help?', '#', class: 'btn btn-mini pull-right'
+
+%hr
 
 .row
   .span12
@@ -55,55 +54,17 @@
         %h3 Techniques
         .carousel.slide#technique-carousel
           .carousel-inner
-            .item.active
-              .row
-                .span6
-                  %ul.thumbnails
-                    - 2.times do
-                      %li.span3
-                        = link_to '#', class: 'thumbnail' do
-                          = image_tag 'http://placehold.it/640x360'
-                          .caption
-                            %h4 Technique
-                            Technique Title
-            .item
-              .row
-                .span6
-                  %ul.thumbnails
-                    - 2.times do
-                      %li.span3
-                        = link_to '#', class: 'thumbnail' do
-                          = image_tag 'http://placehold.it/640x360'
-                          .caption
-                            %h4 Science of
-                            Science of Title
+            - @techniques.each_with_index do |technique,index|
+              %div{class: "item #{'active' if index == 0}"}
+                = render 'shared/media_centered', media: technique, media_image: technique.step_images.last, main: 'Technique'
           = link_to '&lsaquo;'.html_safe, '#technique-carousel', class: 'carousel-control left', data: {slide: 'prev'}
           = link_to '&rsaquo;'.html_safe, '#technique-carousel', class: 'carousel-control right', data: {slide: 'next'}
         %h3 You might also like
         .carousel.slide#related-carousel
           .carousel-inner
-            .item.active
-              .row
-                .span6
-                  %ul.thumbnails
-                    - 2.times do
-                      %li.span3
-                        = link_to '#', class: 'thumbnail' do
-                          = image_tag 'http://placehold.it/640x360'
-                          .caption
-                            %h4 Recipe
-                            Recipe Title
-            .item
-              .row
-                .span6
-                  %ul.thumbnails
-                    - 2.times do
-                      %li.span3
-                        = link_to '#', class: 'thumbnail' do
-                          = image_tag 'http://placehold.it/640x360'
-                          .caption
-                            %h4 Recipe
-                            Recipe Title
+            - @recipes.each_with_index do |technique,index|
+              %div{class: "item #{'active' if index == 0}"}
+                = render 'shared/media_centered', media: technique, media_image: technique.step_images.last, main: 'Recipe'
           = link_to '&lsaquo;'.html_safe, '#related-carousel', class: 'carousel-control left', data: {slide: 'prev'}
           = link_to '&rsaquo;'.html_safe, '#related-carousel', class: 'carousel-control right', data: {slide: 'next'}
 

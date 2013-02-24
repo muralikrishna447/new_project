@@ -87,24 +87,27 @@ $dark-orange: #D25029
     width: 100%
     border: none
 
-.ordered-step
-  width: 100%
-  float: left
-  .step-element
+.ordered-steps
+  height: 360px
+  overflow: auto
+  .ordered-step-item
+    width: 100%
     float: left
-    @include boxsizing
-    padding: 10px
-  .step-number
-    width: 10%
-    text-align: center
-    color: white
-    font-size: 50px
-    line-height: 60px
-    background-color: $orange
-  .step-image
-    width: 20%
-  .step-content
-    width: 70%
+    .step-element
+      float: left
+      @include boxsizing
+      padding: 10px
+    .step-number
+      width: 10%
+      text-align: center
+      color: white
+      font-size: 50px
+      line-height: 60px
+      background-color: $orange
+    .step-image
+      width: 20%
+    .step-content
+      width: 70%
 
 ////////////////////////////////////////
 
