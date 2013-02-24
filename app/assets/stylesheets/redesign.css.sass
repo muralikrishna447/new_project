@@ -17,6 +17,10 @@
 // Bootstrap Overrides
 .dropdown-menu
   min-width: 400px
+.well
+  border: none
+  border-radius: 0px
+  background-color: rgba(0,0,0,.1)
 
 // Media Objects
 .media-centered
@@ -48,23 +52,20 @@
   max-height: 576px
   img
     width: 100%
+  .media-header-background
+    background-color: rgba(255,255,255,.5)
+    width: 100%
+    height: 130px
+    position: absolute
+    bottom: 0px
   .media-block
     position: absolute
-    top: 50px
     width: inherit
-    padding: 100px
+    bottom: 0px
     @include boxsizing
-    .media-background
-      position: relative
-      background-color: rgba(255,255,255,.4)
-      padding: 50px
-      height: 200px
-      .media-body
-        width: 80%
-      .media-object
-        width: 10%
-        .icon-play
-          font-size: 60px
+    .media-object
+      .icon-play
+        font-size: 60px
     .media-index-link
       position: absolute
       bottom: 20px
@@ -102,3 +103,14 @@
 #twitter-status
   iframe
     width: 100%
+    border: none
+    border-radius: 0px !important
+    border-width: 0px !important
+    box-shadow: none !important
+
+// Buttons
+.btn-play
+  width: 100px
+  height: 100px
+  background: gray
+

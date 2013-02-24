@@ -19,7 +19,6 @@ $ ->
     youtube_id = $(this).find('.media-hero-play').data('youtubeid')
     $('#hero-container').fadeOut 1000
     player.playVideo()
-    # video_container.fadeIn 1000
 
   $('#recipe-carousel').carousel({
     interval: false
@@ -29,3 +28,7 @@ $ ->
     player.stopVideo()
     $('#hero-container').fadeIn 1000
     $('#hero-carousel').carousel('cycle')
+
+  $('.standalone-tweet').load ->
+    alert $(this).html()
+

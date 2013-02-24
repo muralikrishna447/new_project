@@ -37,10 +37,9 @@
         .row
           .span6
             .well
-              - @discussions.each do |discussion|
-                %h4= discussion[:name]
-                %p= discussion[:body].html_safe
-                = link_to 'Join the Discussion', discussion[:url]
+              %h4= @discussion[:name]
+              %p= @discussion[:body].html_safe
+              = link_to 'Join the Discussion', @discussion[:url]
       .span6
         .hero-unit
           %h2 Sign up for a FREE account
@@ -55,7 +54,7 @@
   .span12
     .row
       .span6
-        .hero-unit
+        .well
           %h2 Culinary Challenge:
           %h4 Something Your Grandmother Would Have Cooked
       .span6
@@ -71,7 +70,9 @@
     .row
       .span6.offset3
         #twitter-status
+          %h3 Latest Tweet:
           = @status.html_safe
+          = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'pull-right'
 
 - #TODO[huy] Remove old code below
 

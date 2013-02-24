@@ -1,17 +1,13 @@
 .media-hero
   = image_tag s3_image_url(media_image)
+  .media-header-background
   .container
     .media-block
-      .media-background
-        .media
-          %h3.media-heading
-            = main_title
-          %h3.media-heading
-            = media_object.title.html_safe
-          .media-body.pull-left
-            = media_object.description
-          .media-object.pull-right
-            = link_to '#', data: {youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
-              %h2
-                %i.icon-play
-        = link_to 'See More Recipes', recipe_gallery_index_path, class: 'media-index-link'
+      .media
+        .media-object.pull-left
+          = link_to '#', data: {youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
+            .btn-play
+        .media-heading.pull-left
+          %h2= main_title
+          %h3= media_object.title.html_safe
+      = link_to 'See More Recipes', recipe_gallery_index_path, class: 'media-index-link'
