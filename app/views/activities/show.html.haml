@@ -31,7 +31,6 @@
         .row
           .span6
             = link_to 'Discuss this on the forum', '#', class: 'btn'
-            = link_to 'Email this Recipe', '#', class: 'btn'
       .span6
         .ordered-steps
           - @activity.steps.each_with_index do |step, index|
@@ -52,7 +51,8 @@
     .row
       .span6
         - if @activity.ingredients.any?
-          = render 'ingredients_list', activity: @activity
+          .activity-ingredients-list
+            = render 'ingredients_list', activity: @activity
         - if @activity.required_equipment.any?
           %h4 Equipment and Materials
           = render 'equipment_list', equipment: @activity.required_equipment
