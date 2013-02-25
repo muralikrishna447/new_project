@@ -137,18 +137,20 @@ $dark-orange: #D25029
     position: absolute
     bottom: 0
     right: 0px
-    font-size: 65px
-    background-color: $orange
     height: 130px
-    vertical-align: middle
-    width: 50px
-    text-align: center
-    padding: 38px 0px
-    @include boxsizing
-    color: white
-    text-decoration: none
-    &:hover
-      background-color: $dark-orange
+    width: 65px
+    // font-size: 65px
+    // background-color: $orange
+    // height: 130px
+    // vertical-align: middle
+    // width: 50px
+    // text-align: center
+    // padding: 38px 0px
+    // @include boxsizing
+    // color: white
+    // text-decoration: none
+    // &:hover
+    //   background-color: $dark-orange
 
 #hero-video
   margin-top: 40px
@@ -178,11 +180,13 @@ $dark-orange: #D25029
   background: $orange
   @include radius(50px)
   transition: box-shadow 200ms
-  -webkit-transition: -webkit-box-shadow 200ms
-  -moz-transition: -moz-box-shadow 200ms
-  -o-transition: -o-box-shadow 200ms
+  opacity: .9
+  -webkit-transition: -webkit-box-shadow 200ms, opacity 200ms
+  -moz-transition: -moz-box-shadow 200ms, opacity 200ms
+  -o-transition: -o-box-shadow 200ms, opacity 200ms
   &:hover
     @include shadow
+    opacity: 1
   .btn-play-trangle
     position: absolute
     width: 0px
@@ -191,7 +195,39 @@ $dark-orange: #D25029
     border-bottom: 20px solid transparent
     border-left: 30px solid white
     margin: 20px 30px
-    opacity: .5
+    opacity: .9
+
+.btn-next
+  background: $orange
+  height: 100%
+  width: 100%
+  @include boxsizing
+  padding: 30% 45%
+  transition: background 200ms
+  -webkit-transition: background 200ms
+  -moz-transition: background 200ms
+  -o-transition: background 200ms
+  &:hover
+    background: $dark-orange
+  .btn-next-icon-top
+    position: absolute
+    width: 10%
+    height: 35%
+    transform: skew(25deg)
+    -webkit-transform: skew(25deg)
+    -moz-transform: skew(25deg)
+    -o-transform: skew(25deg)
+    background: white
+  .btn-next-icon-bottom
+    position: absolute
+    width: 10%
+    height: 35%
+    transform: skew(-25deg)
+    -webkit-transform: skew(-25deg)
+    -moz-transform: skew(25deg)
+    -o-transform: skew(25deg)
+    background: white
+    top: 50%
 
 /* Navbar */
 .navbar-fixed-top
@@ -254,9 +290,7 @@ $dark-orange: #D25029
         margin-bottom: 0px
       .hero-carousel-control
         height: 70px
-        padding: 23px 0px
-        font-size: 30px
-        width: 30px
+        width: 35px
   #hero-video
     height: inherit
     margin-top: 0px
