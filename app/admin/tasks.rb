@@ -8,19 +8,6 @@ ActiveAdmin.register_page "Tasks" do
     render 'task_list'
   end
 
-  page_action :create_display_quantities, method: :post do
-    # self in this context is the controller
-    class << self
-      include ActionView::Helpers::NumberHelper
-    end
-
-    RecipeIngredient.all.each do |ingredient|
-      ingredient.display_quantity = number_with_precision(ingredient.quantity, precision: 2, strip_insignificant_zeros: true)
-      ingredient.save!
-    end
-    redirect_to({action: :index}, notice: "Quantities updated successfully!")
-  end
-
   page_action :create_new_copy, method: :post do
     CopyCreator.create
     redirect_to({action: :index}, notice: "Copy created successfully!")
