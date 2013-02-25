@@ -174,6 +174,7 @@ $dark-orange: #D25029
 
 /* Buttons *.
 .btn-play
+  position: relative
   width: 80px
   height: 80px
   margin: 10px
@@ -209,7 +210,8 @@ $dark-orange: #D25029
   -o-transition: background 200ms
   &:hover
     background: $dark-orange
-  .btn-next-icon-top
+  &:before
+    content: ''
     position: absolute
     width: 10%
     height: 35%
@@ -218,7 +220,8 @@ $dark-orange: #D25029
     -moz-transform: skew(25deg)
     -o-transform: skew(25deg)
     background: white
-  .btn-next-icon-bottom
+  &:after
+    content: ''
     position: absolute
     width: 10%
     height: 35%
