@@ -9,3 +9,5 @@ $ ->
     total_width = item_width*item_count
 
     inner.css 'width', total_width
+    $(this).find('.carousel-small-inner .item').each (index, element) =>
+      $(element).delay(500*index).fadeIn(1000)

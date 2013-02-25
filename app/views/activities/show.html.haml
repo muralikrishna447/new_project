@@ -58,13 +58,11 @@
               %div{class: "item #{'active' if index == 0}"}
                 = render 'shared/media_centered', media: technique, media_image: technique.step_images.last, main: 'Technique'
         %h3 You might also like
-        .carousel.slide#related-carousel
-          .carousel-inner
+        .carousel-small#related-carousel
+          .carousel-small-inner
             - @recipes.each_with_index do |technique,index|
               %div{class: "item #{'active' if index == 0}"}
                 = render 'shared/media_centered', media: technique, media_image: technique.step_images.last, main: 'Recipe'
-          = link_to '&lsaquo;'.html_safe, '#related-carousel', class: 'carousel-control left', data: {slide: 'prev'}
-          = link_to '&rsaquo;'.html_safe, '#related-carousel', class: 'carousel-control right', data: {slide: 'next'}
 
 = #TODO Remove old code below
 
