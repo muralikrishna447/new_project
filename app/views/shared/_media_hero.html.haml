@@ -7,6 +7,7 @@
         .media-object.pull-left
           = link_to '#', data: {youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
             .btn-play
+              .btn-play-trangle
         .media-heading.pull-left
           %h2= main_title
           %h3= media_object.title.html_safe

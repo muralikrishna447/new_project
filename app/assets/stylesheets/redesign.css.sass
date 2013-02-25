@@ -11,6 +11,12 @@
   -webkit-box-shadow: 0px 0px 8px #888888
   -o-box-shadow: 0px 0px 8px #888888
 
+=radius($value)
+  border-radius: $value
+  -moz-border-radius: $value
+  -webkit-border-radius: $value
+  -o-box-border-radius: $value
+
 /* Colors */
 $orange: #DB7354
 $dark-orange: #D25029
@@ -166,9 +172,25 @@ $dark-orange: #D25029
 
 /* Buttons *.
 .btn-play
-  width: 100px
-  height: 100px
-  background: gray
+  width: 80px
+  height: 80px
+  margin: 10px
+  background: $orange
+  @include radius(50px)
+  transition: box-shadow 200ms
+  -webkit-transition: -webkit-box-shadow 200ms
+  -moz-transition: -moz-box-shadow 200ms
+  -o-transition: -o-box-shadow 200ms
+  &:hover
+    @include shadow
+  .btn-play-trangle
+    position: absolute
+    width: 0px
+    height: 0px
+    border-top: 25px solid transparent
+    border-bottom: 25px solid transparent
+    border-left: 40px solid white
+    margin: 15px 25px
 
 /* Navbar */
 .navbar-fixed-top

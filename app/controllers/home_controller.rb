@@ -9,7 +9,7 @@ class HomeController < ApplicationController
     # @featured_id = Video.featured_id
     # @filmstrip = Video.filmstrip_videos
     # @croppable = @filmstrip.map(&:class).include?(Activity)
-    @recipes = Activity.published.with_video.joins(:ingredients).order("RANDOM()").first(6)
+    @recipes = Activity.published.with_video.joins(:ingredients).order("RANDOM()").first(1)
     @discussion = Forum.discussions.first
     @challenges = Forum.discussions_by_category('culinary-challenge')
     @status = Twitter.status_embed
