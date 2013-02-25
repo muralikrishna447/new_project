@@ -1,5 +1,20 @@
-%h1
-  = @activity.title
+.row
+  .span6
+    %h1
+      = @activity.title
+  .span6
+    = link_to '#', class: 'btn-circle' do
+      %i.icon-envelope-alt
+    = link_to '#', class: 'btn-circle' do
+      %i.icon-phone
+    = link_to '#', class: 'btn-circle' do
+      %i.icon-facebook
+    = link_to '#', class: 'btn-circle' do
+      %i.icon-google-plus
+    = link_to '#', class: 'btn-circle' do
+      %i.icon-twitter
+    = link_to '#', class: 'btn-circle' do
+      %i.icon-pinterest
 - if @activity.description?
   %p
     :markdown
@@ -14,18 +29,9 @@
         .video-container
           %iframe{src: youtube_url(@activity.youtube_id)}
         .row
-          .span4
+          .span6
             = link_to 'Discuss this on the forum', '#', class: 'btn'
             = link_to 'Email this Recipe', '#', class: 'btn'
-          .span2
-            = link_to '#', class: 'btn-circle' do
-              %i.icon-facebook
-            = link_to '#', class: 'btn-circle' do
-              %i.icon-google-plus
-            = link_to '#', class: 'btn-circle' do
-              %i.icon-twitter
-            = link_to '#', class: 'btn-circle' do
-              %i.icon-pinterest
       .span6
         .ordered-steps
           - @activity.steps.each_with_index do |step, index|
