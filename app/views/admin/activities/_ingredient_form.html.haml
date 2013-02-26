@@ -3,16 +3,17 @@
   field_name_prefix ||= "activity[ingredients][]"
 
   row_id ||= 'ingredient-row' if is_template
-
+  is_recipe = false
   unless is_template
     title = ingredient.title
     display_quantity = ingredient.display_quantity
     unit = ingredient.unit
     ingredient_id = ingredient.id
+    is_recipe = ingredient.ingredient.sub_activity_id?
   end
 
 %tr{id: row_id, class: ('template-row' if is_template )}
-  %td= hidden_field_tag "#{field_name_prefix}[title]", title, {:'data-ingredient-id' => ingredient_id, :class => "ingredient"}
+  %td= hidden_field_tag "#{field_name_prefix}[title]", title, {:'data-ingredient-id' => is_recipe ? -ingredient_id : ingredient_id, :class => "ingredient"}
   %td= text_field_tag "#{field_name_prefix}[display_quantity]", display_quantity, class: "quantity"
   %td= select_tag "#{field_name_prefix}[unit]", options_for_select(%w[g kg ea a/n recipe], unit), class: "unit"
   %td

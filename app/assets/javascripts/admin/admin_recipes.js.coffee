@@ -13,6 +13,11 @@ $ ->
     $('tr').not('.template-row').find('select.unit').select2()
   ));
 
+formatIngredient = (item) ->
+  if item.id < 0
+    return "Recipe: " + item.title
+  else
+    return item.title
 
 setupIngredientSelect = () ->
   allingredients = $('#allingredients').data('allingredients')
@@ -23,8 +28,10 @@ setupIngredientSelect = () ->
       data: { results: allingredients, text: "title"}
       initSelection: (element, callback) ->
         callback({id: element.data("ingredient-id"), title: element.val()})
-      formatSelection: (x) -> return x.title
-      formatResult: (x) -> return x.title
+      formatSelection: formatIngredient
+      formatResult: formatIngredient
+      escapeMarkup: (x) ->
+        return x
       createSearchChoice: (term) ->
         return {id: new Date().getTime(), title: term}
     }
