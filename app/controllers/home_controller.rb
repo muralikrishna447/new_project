@@ -16,6 +16,8 @@ class HomeController < ApplicationController
   end
 
   def about
-  	
+    @chris = Copy.find_by_location('creator-chris')
+    @grant = Copy.find_by_location('creator-grant')
+    @ryan = Copy.find_by_location('creator-ryan')
   end
 end
