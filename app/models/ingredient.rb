@@ -15,7 +15,12 @@ class Ingredient < ActiveRecord::Base
   attr_accessible :sub_activity_id
 
   def title
-    return Activity.find_by_id(sub_activity_id).title if sub_activity_id?
+    if sub_activity_id?
+      act = Activity.find_by_id(sub_activity_id)
+      if act != nil
+        return act.title
+      end
+    end
     read_attribute(:title)
   end
 

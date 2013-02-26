@@ -36,7 +36,6 @@ setupIngredientSelect = () ->
         return {id: new Date().getTime(), title: term}
     }
   ).addClass("converted").on 'change', (event) ->
-    debugger
     inp = $(event.target)
     inp.val(inp.select2('data')["title"])
     return true

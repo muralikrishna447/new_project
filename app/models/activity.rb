@@ -34,6 +34,11 @@ class Activity < ActiveRecord::Base
      Ingredient.find_or_create_by_sub_activity_id(self.id)
   end
 
+  before_destroy :destroy_as_ingredient
+  def destroy_as_ingredient
+    Ingredient.find_by_sub_activity_id(self.id).destroy
+  end
+
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
   end
