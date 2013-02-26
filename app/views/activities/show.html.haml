@@ -3,18 +3,20 @@
     %h1
       = @activity.title
   .span6
-    = link_to '#', class: 'btn-circle' do
+    = link_to 'javascript:void(0);', class: 'btn-circle' do
       %i.icon-envelope-alt
-    = link_to '#', class: 'btn-circle' do
+    = link_to 'javascript:void(0);', class: 'btn-circle' do
       %i.icon-phone
-    = link_to '#', class: 'btn-circle' do
+    = link_to 'javascript:void(0);', class: 'btn-circle social-action', data: {toggle: 'popover', placement: 'bottom', content: fb_like(current_url(request)), html: true} do
       %i.icon-facebook
-    = link_to '#', class: 'btn-circle' do
+    = link_to 'javascript:void(0);', class: 'btn-circle' do
       %i.icon-google-plus
-    = link_to '#', class: 'btn-circle' do
+    = link_to 'javascript:void(0);', class: 'btn-circle' do
       %i.icon-twitter
-    = link_to '#', class: 'btn-circle' do
+    = link_to 'javascript:void(0);', class: 'btn-circle' do
       %i.icon-pinterest
+    .fb-like{data: {href: 'http://www.chefsteps.com', send: false, width: '248', :'show-faces' => true, font: 'arial'}}
+
   .span12.two-columns
     - if @activity.description?
       :markdown

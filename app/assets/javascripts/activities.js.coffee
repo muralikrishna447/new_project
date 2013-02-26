@@ -1,0 +1,2 @@
+$ ->
+  $('.social-action').popover()

@@ -5,3 +5,4 @@
 //= require filmstrip
 //= require header
 //= require home
+//= require activities
