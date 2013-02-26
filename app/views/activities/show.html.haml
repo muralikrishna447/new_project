@@ -2,10 +2,6 @@
   .span6
     %h1
       = @activity.title
-    - if @activity.description?
-      %p
-        :markdown
-          #{@activity.description}
   .span6
     = link_to '#', class: 'btn-circle' do
       %i.icon-envelope-alt
@@ -19,7 +15,10 @@
       %i.icon-twitter
     = link_to '#', class: 'btn-circle' do
       %i.icon-pinterest
-
+  .span12.two-columns
+    - if @activity.description?
+      :markdown
+        #{@activity.description}
 
 %hr
 
