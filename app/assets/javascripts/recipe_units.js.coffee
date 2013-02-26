@@ -67,7 +67,7 @@ $ ->
         csScaling = csScaling * new_total / old_total
 
       else
-        # Grams, kilograms, or ounces with no pounts
+        # Any other unit (including ounces with no pounds)
         csScaling = csScaling * new_val / old_val
     else
       value = old_val
@@ -120,7 +120,7 @@ updateOneRowUnits = ->
   origValue = Number($(this).find('.main-qty').data("origValue")) * csScaling
   existingUnits = $(this).find('.unit').text()
 
-  # "a/n" means as needed, don't do anything. ditto if blank - used
+  # "a/n" means as needed, don't do anything. ditto if blank - formerly used
   # in cases where we mean "all of a subrecipe from above"
   if existingUnits == "a/n" || existingUnits == ""
     # ok
@@ -128,6 +128,9 @@ updateOneRowUnits = ->
   # "ea" means each, just round up to nearest integer
   else if existingUnits == "ea"
     setRow $(this), "", Math.ceil(origValue), "ea"
+
+  else if existingUnits == "recipe" || existingUnits == "recipes"
+    setRow $(this), "", origValue, if origValue <= 1 then "recipe" else "recipes"
 
   # grams or kilograms
   else if csUnits == "grams"
