@@ -2,6 +2,9 @@
   .span6
     %h1
       = @activity.title
+    - if @activity.description?
+      :markdown
+        #{@activity.description}
   .span6
     = link_to 'javascript:void(0);', class: 'btn-circle' do
       %i.icon-envelope-alt
@@ -11,16 +14,10 @@
       %i.icon-facebook
     = link_to 'javascript:void(0);', class: 'btn-circle' do
       %i.icon-google-plus
-    = link_to 'javascript:void(0);', class: 'btn-circle' do
+    = link_to "https://twitter.com/intent/tweet?text=I love this #{@activity.title} recipe on ChefSteps!&hashtags=chefsteps", class: 'btn-circle' do
       %i.icon-twitter
     = link_to 'javascript:void(0);', class: 'btn-circle' do
       %i.icon-pinterest
-    .fb-like{data: {href: 'http://www.chefsteps.com', send: false, width: '248', :'show-faces' => true, font: 'arial'}}
-
-  .span12.two-columns
-    - if @activity.description?
-      :markdown
-        #{@activity.description}
 
 %hr
 
@@ -41,7 +38,7 @@
               .step-element.step-content
                 :markdown
                   #{raw step.directions}
-              = link_to 'Need Help?', '#', class: 'btn btn-mini pull-right'
+              / = link_to '?', '#', class: 'btn btn-warning btn-mini pull-right'
 
 %hr
 

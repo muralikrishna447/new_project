@@ -1,2 +1,3 @@
 $ ->
-  $('.social-action').popover()
+  $('.social-action').each ->
+    $(this).popover()
