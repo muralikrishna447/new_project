@@ -40,6 +40,9 @@ $dark-orange: #D25029
   border-radius: 0px
   background-color: rgba(0,0,0,.1)
 
+.well-opaque
+  background-color: rgba(255,255,255,.8)
+
 ////////////////////////////////////////
 
 /* Media Objects */
@@ -101,6 +104,10 @@ $dark-orange: #D25029
 .ordered-steps
   height: 360px
   overflow: auto
+  background: -webkit-linear-gradient(white 30%, hsla(0,0%,100%,0)), -webkit-linear-gradient(hsla(0,0%,100%,0), white 70%) bottom, -webkit-radial-gradient(50% 0, rgba(0,0,0,.2), transparent 70%), -webkit-radial-gradient(50% 100%, rgba(0,0,0,.2), transparent 70%) bottom
+  background-repeat: no-repeat
+  background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px
+  background-attachment: local, local, scroll, scroll
   .ordered-step-item
     width: 100%
     float: left
@@ -188,24 +195,17 @@ $dark-orange: #D25029
     padding-right: 5px
 
 #footer
+  margin-top: 50px
   background-image: url('/assets/footer.jpg')
   background-position: left center
   background-repeat: no-repeat
   background-size: 100%
-  .footer-content
-    background-color: rgba(255,255,255,.7)
-    margin: 100px
-    padding: 40px
-    .footer-body
-      width: 80%
-      float: left
-      height: 300px
-    .footer-social
-      width: 20%
-      float: right
-      height: 300px
-      padding-left: 20px
-      @include boxsizing
+  #footer-body
+    margin-top: 50px
+  .footer-social
+    color: white
+    &:hover
+      text-decoration: none
 
 /* Buttons *.
 .btn-play
