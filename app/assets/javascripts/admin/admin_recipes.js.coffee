@@ -9,9 +9,35 @@ $ ->
 $ ->
   $('tr').not('.template-row').find('select.unit').select2()
 
-  $(document).on('click', '.admin-button', ( ->
+  $(document).on('click', 'button', ( ->
     $('tr').not('.template-row').find('select.unit').select2()
   ));
+
+
+setupIngredientSelect = () ->
+  allingredients = $('#allingredients').data('allingredients')
+  allingredients.unshift({id: 0, title: ""})
+  $('tr').not('.template-row').find('input.ingredient').not(".converted").select2(
+    {
+      placeholder: "Ingredient or Sub-Recipe"
+      data: { results: allingredients, text: "title"}
+      initSelection: (element, callback) ->
+        callback({id: element.data("ingredient-id"), title: element.val()})
+      formatSelection: (x) -> return x.title
+      formatResult: (x) -> return x.title
+      createSearchChoice: (term) ->
+        return {id: new Date().getTime(), title: term}
+    }
+  ).addClass("converted").on 'change', (event) ->
+    debugger
+    inp = $(event.target)
+    inp.val(inp.select2('data')["title"])
+    return true
+
+
+$ ->
+  setupIngredientSelect()
+  $(document).on('click', 'button', ( -> setupIngredientSelect()));
 
 $ ->
   $('.multi-ingredients').select2(

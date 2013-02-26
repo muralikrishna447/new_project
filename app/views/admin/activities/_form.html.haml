@@ -1,3 +1,6 @@
+-all_ingredients = Ingredient.all.map { |i| {id: i.id, title: i.title}}
+%div#allingredients{data: {allingredients: all_ingredients.to_json}}
+
 :ruby
   field_name_prefix = "activity[steps][]"
 
