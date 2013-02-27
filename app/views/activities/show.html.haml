@@ -14,7 +14,7 @@
       %i.icon-facebook
     = link_to 'javascript:void(0);', class: 'btn-circle' do
       %i.icon-google-plus
-    = link_to "https://twitter.com/intent/tweet?text=I love this #{@activity.title} recipe on ChefSteps!&hashtags=chefsteps", class: 'btn-circle' do
+    = link_to "https://twitter.com/intent/tweet?text=I love this #{@activity.title} recipe on ChefSteps!&hashtags=chefsteps&url=#{ url_encode(current_url(request))}", class: 'btn-circle' do
       %i.icon-twitter
     = link_to 'javascript:void(0);', class: 'btn-circle' do
       %i.icon-pinterest
