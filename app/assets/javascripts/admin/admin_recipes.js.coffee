@@ -1,9 +1,9 @@
 closeEditorWarning = () ->
-  "Make sure you press 'Update Recipe' to save any changes."
+  "Make sure you press 'Update Activity' to save any changes."
 
 $ ->
   if $('.update-warning').is('*')
-    $('input').keyup ->
+    $(window).keyup ->
       window.onbeforeunload = closeEditorWarning
 
 $ ->
