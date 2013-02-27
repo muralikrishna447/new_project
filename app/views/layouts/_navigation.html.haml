@@ -1,7 +1,8 @@
 .navbar.navbar-fixed-top
   .navbar-inner
     .container
-      = link_to 'chefsteps', root_url, class: 'brand'
+      = link_to root_url, class: 'brand' do
+        chefsteps
       %button.btn.btn-navbar{data: {toggle: 'collapse', target: '.nav-collapse'}}
         %span.icon-bar
         %span.icon-bar
