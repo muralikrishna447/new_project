@@ -1,8 +1,8 @@
 .container
   .box.box-full
     - if params[:email]
-      %h2 Almost done!
-      %h5 Please fill out the following to complete your registration:
+      %h2 Thanks for signing up for our Newsletter!
+      %h5 If you would like to create an account, please complete following:
     - else
       %h3 Please fill out the following to complete your registration:
     %hr
@@ -30,12 +30,12 @@
             =label_tag :terms_registration do
               = check_box_tag :terms_registration, true, false, required: true
               = "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
-
         .control-group
           .controls.controls-small
-            =label_tag :okay_to_email do
-              = check_box_tag :okay_to_email, true, true
-              = "Please email me the latest updates from ChefSteps".html_safe
+            - unless params[:email]
+              =label_tag :okay_to_email do
+                = check_box_tag :okay_to_email, true, true
+                = "Please email me the latest updates from ChefSteps".html_safe
             =f.submit 'Sign up', class: 'btn btn-primary'
     .registration.facebook
       = render 'devise/shared/facebook_login', text: 'Sign up with <b>Facebook</b>'

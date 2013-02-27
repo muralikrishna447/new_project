@@ -11,6 +11,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
         redirect_to sign_in_url(email: email)
       end
     else
+      if Rails.env.production?
+        uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
+        response = Net::HTTP.post_form(uri,
+                                        { "email" => email,
+                                          "listname" => "cs_c_sousvide",
+                                          "meta_adtracking" => "site_top_form"})
+      else
+        logger.debug 'Newsletter Signup'
+      end
       @user = User.new
       @user.email = email
     end
