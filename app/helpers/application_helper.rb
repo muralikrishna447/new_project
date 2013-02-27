@@ -44,7 +44,8 @@ module ApplicationHelper
   end
 
   def current_url(request)
-    "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
+    # "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
+    "#{request.protocol}www.chefsteps.com#{request.fullpath}"
   end
 
   def fb_like(url)
