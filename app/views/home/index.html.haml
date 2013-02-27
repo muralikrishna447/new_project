@@ -40,7 +40,8 @@
         .row
           .span6
             .well
-              %h4= @discussion[:name]
+              %h3 Latest From Our Forums:
+              %h5= @discussion[:name]
               %p= @discussion[:body].html_safe
               = link_to 'Join the Discussion', @discussion[:url]
       .span6
@@ -53,20 +54,21 @@
           %button.btn.btn-primary.btn-large
             Sign Up Now
 
-.row
-  .span12
-    .row
-      .span6
-        .well
-          %h2 Culinary Challenge:
-          %h4 Something Your Grandmother Would Have Cooked
-      .span6
-        - 2.times do
-          %blockquote.pull-right
-            %p
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
-            %small
-              User Testimonial
+= # TODO Implement Culinary Challenge and Testimonials
+/ .row
+/   .span12
+/     .row
+/       .span6
+/         .well
+/           %h2 Culinary Challenge:
+/           %h4 Something Your Grandmother Would Have Cooked
+/       .span6
+/         - 2.times do
+/           %blockquote.pull-right
+/             %p
+/               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
+/             %small
+/               User Testimonial
 
 .row
   .span12

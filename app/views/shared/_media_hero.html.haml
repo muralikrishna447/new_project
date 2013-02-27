@@ -1,5 +1,6 @@
 .media-hero
-  = image_tag s3_image_url(media_image)
+  = link_to media_object do
+    = image_tag s3_image_url(media_image)
   .media-header-background
   .container
     .media-block
