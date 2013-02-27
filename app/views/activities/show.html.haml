@@ -8,15 +8,13 @@
   .span6
     = render 'layouts/social_buttons'
 
-%hr
-
 .row
   .span12
     .row
-      .span6
+      .span6.section
         .video-container
           %iframe{src: youtube_url(@activity.youtube_id)}
-      .span6
+      .span6.section
         .ordered-steps
           - @activity.steps.each_with_index do |step, index|
             .ordered-step-item
@@ -29,19 +27,17 @@
                   #{raw step.directions}
               / = link_to '?', '#', class: 'btn btn-warning btn-mini pull-right'
 
-%hr
-
 .row
   .span12
     .row
-      .span6
+      .span6.section
         - if @activity.ingredients.any?
           .activity-ingredients-list
             = render 'ingredients_list', activity: @activity
         - if @activity.required_equipment.any?
           %h4 Equipment and Materials
           = render 'equipment_list', equipment: @activity.required_equipment
-      .span6
+      .span6.section
         %h3 Techniques
         .carousel-small#technique-carousel
           .carousel-small-inner
