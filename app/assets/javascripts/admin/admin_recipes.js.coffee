@@ -15,30 +15,79 @@ $ ->
 
 formatIngredient = (item) ->
   if item.id < 0
-    return "Recipe: " + item.title
+    return item.title + " <b>[RECIPE]</b>"
   else
     return item.title
 
+splitIngredient = (term) ->
+  # a/n Tofu Eyeballs [or an Tofu Eyeballs]
+  if s = term.match(/(an|a\/n)+\s*(.*)/)
+    return {"unit": "a/n", "ingredient": s[2]}
+
+  # 10 g Tofu Eyeballs (or kg, ea, each, r, recipe)
+  if s = term.match(/([\d]+)\s+(g|kg|ea|each|r|recipe)+\s+(.*)/)
+    quantity = s[1]
+    unit = if s[2] then s[2] else "g"
+    unit = "ea" if unit == "each"
+    unit = "a/n" if unit == "an"
+    unit = "recipe" if unit == "r"
+    ingredient = s[3]
+    return {"quantity": quantity, "unit": unit, "ingredient": ingredient}
+
+  # None of the above, assumed to be a nekkid ingredient
+  return {"ingredient" : term}
+
+
+matchIngredient = (term, text, options) ->
+  return text.toUpperCase().indexOf(splitIngredient(term)["ingredient"].toUpperCase()) >= 0;
+
+capitalizeFirstLetter = (string) ->
+  return string.charAt(0).toUpperCase() + string.slice(1)
+
+createSearchChoice = (term, cell) ->
+  s = splitIngredient(term)
+  row = $(cell).parents("tr")
+  row.find(".quantity").val(s["quantity"]) if s["quantity"]
+  row.find(".unit").val(s["unit"]).trigger("change") if s["unit"]
+  return {id: new Date().getTime(), title: capitalizeFirstLetter(s["ingredient"])}
+
 setupIngredientSelect = () ->
   allingredients = $('#allingredients').data('allingredients')
-  allingredients.unshift({id: 0, title: ""})
-  $('tr').not('.template-row').find('input.ingredient').not(".converted").select2(
-    {
-      placeholder: "Ingredient or Sub-Recipe"
-      data: { results: allingredients, text: "title"}
-      initSelection: (element, callback) ->
-        callback({id: element.data("ingredient-id"), title: element.val()})
-      formatSelection: formatIngredient
-      formatResult: formatIngredient
-      escapeMarkup: (x) ->
-        return x
-      createSearchChoice: (term) ->
-        return {id: new Date().getTime(), title: term}
-    }
-  ).addClass("converted").on 'change', (event) ->
-    inp = $(event.target)
-    inp.val(inp.select2('data')["title"])
-    return true
+
+  # Convert new rows that get added into select2, but don't double convert old ones
+  $('tr').not('.template-row').find('input.ingredient').not(".converted").each (index, cell) =>
+    $(cell).select2(
+      {
+        placeholder:        "Ingredient or Sub-Recipe"
+        data:               { results: allingredients, text: "title" }
+        createSearchChoice: (term) -> createSearchChoice(term, $(cell))
+        initSelection:      (element, callback) -> callback({id: element.data("ingredient-id"), title: element.val()})
+        formatSelection:    formatIngredient
+        formatResult:       formatIngredient
+        matcher:            matchIngredient
+        escapeMarkup:       (x) -> return x
+      }
+
+    ).addClass("converted").on 'change', (event) ->
+      # Make the hidden input value equal to the ingredient title b/c that is
+      # what the receiving controller is expecting
+      inp = $(event.target)
+      inp.val(inp.select2('data')["title"])
+
+      # For recipes, make sure the quantity is set to "recipe"
+      id = inp.select2('data')["id"]
+      if id < 0
+        $(this).parents("tr").find(".unit").val("recipe").trigger("change")
+        qty = $(this).parents("tr").find(".quantity")
+        qty.val("1") if ! qty.val()
+
+      # If we just filled in the last row, add a new row
+      if ($(this).parents("tr").is(":last-child"))
+        $('html, body').scrollTop($('#copy-ingredient-button').offset().top)
+        $('#copy-ingredient-button button').click()
+        $(this).parents("tbody").find("tr:last-child .ingredient").select2("open")
+
+      return true
 
 
 $ ->

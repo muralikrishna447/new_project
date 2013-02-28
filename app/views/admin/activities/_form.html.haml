@@ -1,4 +1,4 @@
--all_ingredients = Ingredient.all.map { |i| {id: i.sub_activity_id? ? -i.id : i.id, title: i.title}}.select { |i| i[:title] != nil}
+-all_ingredients = Ingredient.all.map { |i| {id: i.sub_activity_id? ? -i.id : i.id, title: i.title}}.select { |i| i[:title] != nil}.sort_by { |i| i[:title]}
 %div#allingredients{data: {allingredients: all_ingredients.to_json}}
 
 :ruby
@@ -35,7 +35,7 @@
           = render 'ingredient_form', ingredient: nil
           - @activity.ingredients.ordered.each do |ingredient|
             = render 'ingredient_form', ingredient: ingredient
-    %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
+    %li#copy-ingredient-button= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
 
   = section("Equipment", f) do
     %li= copy_button('Add Equipment', '#equipment-row', 'table#equipment')
