@@ -23,6 +23,12 @@
   -webkit-border-radius: $value
   -o-box-border-radius: $value
 
+=transition($value)
+  transition: $value
+  -moz-transition: $value
+  -webkit-transition: $value
+  -o-transition: $value
+
 /* Colors */
 $orange: #DB7354
 $dark-orange: #D25029
@@ -151,13 +157,58 @@ $dark-orange: #D25029
 /* Emphasizes the content being hovered */
 .ordered-steps:hover > .ordered-step-item
   opacity: .3
+  @include transition(opacity 200ms)
 .ordered-steps:hover > .ordered-step-item:hover
   opacity: 1
+  @include transition(opacity 200ms)
+  .step-number
+    background: $orange
+    color: white
 
 .prependable
   text-align: right
   width: 100%
   padding-right: 2px
+
+.activity-ingredients-list
+  table
+    width: 100%
+  th
+    font-size: 17.5px
+  th#ingredient
+    text-align: left
+  th#quantity
+    text-align: right
+  td
+    font-size: 14px
+    div
+      display: inline-block
+      form
+        margin: 0px
+        input
+          width: 60px
+  td.quantity-group
+    text-align: right
+    padding-right: 5px
+  .ingredient-item
+    height: 20px
+    @include transition(opacity 500ms)
+    .ingredient-title, .prependable
+      font-weight: 400
+      @include transition(opacity 500ms)
+    .quantity-group, .unit
+      @include transition(opacity 500ms)
+  .ingredient-highlighted
+    .ingredient-title, .prependable
+      font-weight: 700
+      opacity: 1
+    .quantity-group, .unit
+      opacity: .2
+  .ingredient-unhighlighted
+    opacity: .2
+    font-weight: 40
+
+//////////
 
 .carousel-small
   overflow: auto
@@ -215,37 +266,6 @@ $dark-orange: #D25029
   .media-centered
     img
       height: 210px
-
-.activity-ingredients-list
-  table
-    width: 100%
-  th
-    font-size: 17.5px
-  th#ingredient
-    text-align: left
-  th#quantity
-    text-align: right
-  td
-    font-size: 14px
-    div
-      display: inline-block
-      form
-        margin: 0px
-        input
-          width: 60px
-  td.quantity-group
-    text-align: right
-    padding-right: 5px
-  .ingredient-item
-    height: 20px
-  .ingredient-highlighted
-    .ingredient-title, .prependable
-      font-weight: bold
-      opacity: 1
-    .quantity-group, .unit
-      opacity: .3
-  .ingredient-unhighlighted
-    opacity: .3
 
 #footer
   margin-top: 50px
