@@ -29,6 +29,35 @@
               .step-element.step-content
                 :markdown
                   #{raw step.directions}
+                - if step.ingredients.any?
+                  .well
+                    %table.ingredients
+                      %colgroup
+                        %col{width: "66%"}
+                        %col{width: "120px"}
+                        %col{width: "6%"}
+                      %thead
+                        %tr
+                          %th#ingredient= step.subrecipe_title ? step.subrecipe_title : "Ingredient"
+                          %th#quantity{colspan: 2}
+                            %a.change_units{title: "Click to change units"} Quantity
+                            %a.recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}
+                              %i.icon-question-sign
+
+                      - step.ingredients.each do |ingredient|
+                        %tr
+                          - if ingredient.product_url.present?
+                            %td
+                              = link_to ingredient.title, ingredient.product_url
+                              - if ingredient.for_sale
+                                %i.icon-shopping-cart
+                          - else
+                            %td= ingredient.title
+                            %td.quantity-group.qtyfade
+                              .lbs-qty
+                              .lbs-label
+                              .main-qty= ingredient.display_quantity
+                            %td.unit.qtyfade= ingredient.unit
               / = link_to '?', '#', class: 'btn btn-warning btn-mini pull-right'
 
 .row
