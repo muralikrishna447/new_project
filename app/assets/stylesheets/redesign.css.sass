@@ -148,6 +148,12 @@ $dark-orange: #D25029
       .step-ingredients
         display: none
 
+/* Emphasizes the content being hovered */
+.ordered-steps:hover > .ordered-step-item
+  opacity: .3
+.ordered-steps:hover > .ordered-step-item:hover
+  opacity: 1
+
 .prependable
   text-align: right
   width: 100%
@@ -211,6 +217,8 @@ $dark-orange: #D25029
       height: 210px
 
 .activity-ingredients-list
+  table
+    width: 100%
   th
     font-size: 17.5px
   th#ingredient
@@ -228,6 +236,12 @@ $dark-orange: #D25029
   td.quantity-group
     text-align: right
     padding-right: 5px
+  .ingredient-item
+    height: 20px
+  .ingredient-highlighted
+    .ingredient-title, .prependable
+      font-weight: bold
+      opacity: 1
 
 #footer
   margin-top: 50px
