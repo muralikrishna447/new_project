@@ -1,34 +1,31 @@
-clearHighlights = (num_ingredients) ->
-  # $('.ingredient-title').css 'font-weight', 'normal'
-  # if num_ingredients > 0
-  #   $('.ingredient-item').css 'opacity', '.2'
-  # else
-  #   $('.ingredient-item').css 'opacity', '1'
-  $('.prependable').text('')
-  $('.ingredient-item').removeClass('ingredient-highlighted')
-
-highlight = (item,prepend_qty) ->
-  # item.css 'opacity', '1'
-  # item.find('.ingredient-title').css 'font-weight', 'bold'
-  prependable = item.find('.prependable')
-  prependable.text(prepend_qty)
-  # prependable.css 'font-weight', 'bold'
-  item.addClass('ingredient-highlighted')
-
 adjustStepHeight = () ->
   height = $('#video-ingredient-unit').height()
   $('.ordered-steps').height(height)
 
+clearHighlights = () ->
+  $('.prependable').text('')
+  $('.ingredient-item').removeClass('ingredient-highlighted')
+  $('.ingredient-item').removeClass('ingredient-unhighlighted')
+
+highlight = (item,prepend_qty) ->
+  prependable = item.find('.prependable')
+  prependable.text(prepend_qty)
+  item.addClass('ingredient-highlighted')
+
 $ ->
   adjustStepHeight()
 
+  # When a user hover overs a step, the ingredients used in the step are highlighted in the full ingredients list
   $('.ordered-step-item').hover ->
+    clearHighlights()
     ingredients = $(this).find('.ingredient-item')
-    clearHighlights(ingredients.length)
     ingredients.each ->
       ingredient_id = $(this).data('ingredient-id')
       quantity = $(this).find('.main-qty').text()
       unit = $(this).find('.unit').text()
       item = $('#full-ingredients-list').find("*[data-ingredient-id='" + ingredient_id + "']")
-      prepend_qty = quantity + " " + unit + " of "
+      prepend_qty = quantity + " " + unit
       highlight(item,prepend_qty)
+    if ingredients.length > 0
+      $('.ingredient-item').not($('.ingredient-highlighted')).each ->
+        $(this).addClass('ingredient-unhighlighted')
