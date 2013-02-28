@@ -6,3 +6,4 @@
 //= require header
 //= require home
 //= require activities
+//= require step_ingredients

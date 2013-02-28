@@ -31,7 +31,8 @@
                 :markdown
                   #{raw step.directions}
                 - if step.ingredients.any?
-                  = render 'ingredients_list', ingredients: step.ingredients
+                  .step-ingredients
+                    = render 'ingredients_list', ingredients: step.ingredients
 
               / = link_to '?', '#', class: 'btn btn-warning btn-mini pull-right'
 
