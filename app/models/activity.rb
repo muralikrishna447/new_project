@@ -144,6 +144,14 @@ class Activity < ActiveRecord::Base
     tag_list.join(',')*weight
   end
 
+  def true_ingredient_ids
+    ingredients.map(&:ingredient_id)
+  end
+
+  def related_by_ingredients
+    Activity.published.joins(:ingredients).where('activity_ingredients.ingredient_id IN(?) AND activities.id != ?', true_ingredient_ids, id).uniq
+  end
+
   private
 
   def reject_invalid_equipment(equipment_attrs)

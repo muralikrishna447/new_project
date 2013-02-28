@@ -47,9 +47,9 @@
         %h3 You might also like
         .carousel-small#related-carousel
           .carousel-small-inner
-            - @recipes.each_with_index do |technique,index|
+            - @recipes.each_with_index do |recipe,index|
               %div{class: "item #{'active' if index == 0}"}
-                = render 'shared/media_centered', media: technique, media_image: technique.step_images.last, main: 'Recipe'
+                = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe'
 
 = #TODO Remove old code below
 
