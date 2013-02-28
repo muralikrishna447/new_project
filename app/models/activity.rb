@@ -149,6 +149,7 @@ class Activity < ActiveRecord::Base
   end
 
   def related_by_ingredients
+    # Todo Will need to optimize this
     Activity.published.joins(:ingredients).where('activity_ingredients.ingredient_id IN(?) AND activities.id != ?', true_ingredient_ids, id).uniq
   end
 
