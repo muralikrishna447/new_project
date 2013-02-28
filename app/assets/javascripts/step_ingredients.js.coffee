@@ -9,8 +9,12 @@ clearHighlights = () ->
 
 highlight = (item,prepend_qty) ->
   prependable = item.find('.prependable')
-  prependable.text(prepend_qty)
+  prependable.html(prepend_qty)
   item.addClass('ingredient-highlighted')
+
+showImage = (image_url) ->
+  viewer = $('#image-viewer')
+  viewer.find('#image-viewer-container').html("<img src='" + image_url + "' />")
 
 $ ->
   adjustStepHeight()
@@ -24,8 +28,10 @@ $ ->
       quantity = $(this).find('.main-qty').text()
       unit = $(this).find('.unit').text()
       item = $('#full-ingredients-list').find("*[data-ingredient-id='" + ingredient_id + "']")
-      prepend_qty = quantity + " " + unit
+      prepend_qty = quantity + " " + unit + " <span style='opacity: .3; font-weight: 400;'>of</span>"
       highlight(item,prepend_qty)
     if ingredients.length > 0
       $('.ingredient-item').not($('.ingredient-highlighted')).each ->
         $(this).addClass('ingredient-unhighlighted')
+    image_url = $(this).find('.step-image').data('img')
+    showImage(image_url)

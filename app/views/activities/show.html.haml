@@ -15,6 +15,10 @@
         #video-ingredient-unit
           .video-container
             %iframe{src: youtube_url(@activity.youtube_id)}
+            #image-viewer
+              #image-viewer-container
+              #image-viewer-close
+                %i.icon-remove
           - if @activity.ingredients.any?
             .activity-ingredients-list#full-ingredients-list.section
               = render 'ingredients_list', ingredients: @activity.ingredients
@@ -35,6 +39,7 @@
                 - if step.ingredients.any?
                   .step-ingredients
                     = render 'ingredients_list', ingredients: step.ingredients
+              .step-image{data: {img: s3_image_url(step.image_id)}}
 
               / = link_to '?', '#', class: 'btn btn-warning btn-mini pull-right'
 

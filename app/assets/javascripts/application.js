@@ -7,3 +7,4 @@
 //= require home
 //= require activities
 //= require step_ingredients
+//= require fullscreen

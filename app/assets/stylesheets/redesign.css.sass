@@ -120,6 +120,8 @@ $dark-orange: #D25029
     height: 100%
     width: 100%
     border: none
+  #image-viewer
+    position: absolute
 
 .ordered-steps
   overflow: auto
@@ -161,9 +163,7 @@ $dark-orange: #D25029
 .ordered-steps:hover > .ordered-step-item:hover
   opacity: 1
   @include transition(opacity 200ms)
-  .step-number
-    background: $orange
-    color: white
+
 
 .prependable
   text-align: right
@@ -173,7 +173,8 @@ $dark-orange: #D25029
 .activity-ingredients-list
   table
     width: 100%
-  th
+  thead
+    line-height: 30px
     font-size: 17.5px
   th#ingredient
     text-align: left
