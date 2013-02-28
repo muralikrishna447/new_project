@@ -14,7 +14,12 @@ highlight = (item,prepend_qty) ->
 
 showImage = (image_url) ->
   viewer = $('#image-viewer')
+  viewer.show()
   viewer.find('#image-viewer-container').html("<img src='" + image_url + "' />")
+
+hideViewer = () ->
+  viewer = $('#image-viewer')
+  viewer.fadeOut 500
 
 $ ->
   adjustStepHeight()
@@ -35,3 +40,6 @@ $ ->
         $(this).addClass('ingredient-unhighlighted')
     image_url = $(this).find('.step-image').data('img')
     showImage(image_url)
+
+  $('#image-viewer').click ->
+    hideViewer()
