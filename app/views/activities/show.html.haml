@@ -12,11 +12,12 @@
   .span12
     .row
       .span6.section
-        .video-container
-          %iframe{src: youtube_url(@activity.youtube_id)}
-        - if @activity.ingredients.any?
-          .activity-ingredients-list
-            = render 'ingredients_list', ingredients: @activity.ingredients
+        #video-ingredient-unit
+          .video-container
+            %iframe{src: youtube_url(@activity.youtube_id)}
+          - if @activity.ingredients.any?
+            .activity-ingredients-list#full-ingredients-list
+              = render 'ingredients_list', ingredients: @activity.ingredients
         - if @activity.required_equipment.any?
           %h4 Equipment and Materials
           = render 'equipment_list', equipment: @activity.required_equipment
