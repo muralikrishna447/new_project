@@ -3,8 +3,10 @@ closeEditorWarning = () ->
 
 $ ->
   if $('.update-warning').is('*')
-    $(window).keyup ->
+    $('input, textarea').change ->
       window.onbeforeunload = closeEditorWarning
+    $('#activity_submit_action').click ->
+      window.onbeforeunload = null
 
 $ ->
   $('tr').not('.template-row').find('select.unit').select2()
