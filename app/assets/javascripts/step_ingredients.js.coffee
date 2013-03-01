@@ -12,10 +12,10 @@ highlight = (item,prepend_qty) ->
   prependable.html(prepend_qty)
   item.addClass('ingredient-highlighted')
 
-showImage = (image_url) ->
+showImage = (image) ->
   viewer = $('#image-viewer')
   viewer.show()
-  viewer.find('#image-viewer-container').html("<img src='" + image_url + "' />")
+  viewer.find('#image-viewer-container').html(image)
 
 hideViewer = () ->
   viewer = $('#image-viewer')
@@ -38,8 +38,8 @@ $ ->
     if ingredients.length > 0
       $('.ingredient-item').not($('.ingredient-highlighted')).each ->
         $(this).addClass('ingredient-unhighlighted')
-    image_url = $(this).find('.step-image').data('img')
-    showImage(image_url)
+    image = $(this).find('.step-image').html()
+    showImage(image)
 
   $('#image-viewer').click ->
     hideViewer()

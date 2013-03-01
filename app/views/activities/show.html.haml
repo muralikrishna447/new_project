@@ -39,8 +39,8 @@
                 - if step.ingredients.any?
                   .step-ingredients
                     = render 'ingredients_list', ingredients: step.ingredients
-              .step-image{data: {img: s3_image_url(step.image_id)}}
-
+              .step-image
+                = image_tag s3_image_url(step.image_id)
               / = link_to '?', '#', class: 'btn btn-warning btn-mini pull-right'
 
 .row
