@@ -153,6 +153,16 @@ class Activity < ActiveRecord::Base
     Activity.published.joins(:ingredients).where('activity_ingredients.ingredient_id IN(?) AND activities.id != ?', true_ingredient_ids, id).uniq
   end
 
+  def featured_image
+    if featured_image_id?
+      featured_image_id
+    elsif image_id?
+      image_id
+    else
+      step_images.last
+    end
+  end
+
   private
 
   def reject_invalid_equipment(equipment_attrs)
