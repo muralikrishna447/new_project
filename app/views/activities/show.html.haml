@@ -50,13 +50,15 @@
       .carousel-small-inner
         - @techniques.each_with_index do |technique,index|
           %div{class: "item #{'active' if index == 0}"}
-            = render 'shared/media_centered', media: technique, main: 'Technique', size: 'small'
+            = link_to technique_path(technique) do
+              = render 'shared/media_centered', media: technique, main: 'Technique', size: 'small'
     %h3 You might also like
     .carousel-small#related-carousel
       .carousel-small-inner
         - @recipes.each_with_index do |recipe,index|
           %div{class: "item #{'active' if index == 0}"}
-            = render 'shared/media_centered', media: recipe, main: 'Recipe', size: 'small'
+            = link_to activity_path(recipe) do
+              = render 'shared/media_centered', media: recipe, main: 'Recipe', size: 'small'
 
 = #TODO Remove old code below
 

@@ -5,5 +5,6 @@
     .row
       - @recipes.each do |recipe|
         .span4
-          = render 'shared/media_centered', media: recipe, main: 'Recipe', size: 'medium'
+          = link_to activity_path(recipe) do
+            = render 'shared/media_centered', media: recipe, main: 'Recipe', size: 'medium'
     = paginate @recipes

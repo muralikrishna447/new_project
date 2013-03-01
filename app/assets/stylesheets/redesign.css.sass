@@ -86,6 +86,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     text-align: center
     top: 20%
     width: 100%
+    color: white
     text-shadow: 0px 1px rgba(0,0,0,.6)
     .title-main
       background-color: rgba(255,255,255,.8)
@@ -93,11 +94,17 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
       padding: 5px 0px
       color: black
       text-shadow: none
+  @include transition(box-shadow 200ms)
+  @include transition(-webkit-box-shadow 200ms)
+  @include transition(-moz-box-shadow 200ms)
+  @include transition(-o-box-shadow 200ms)
+  &:hover
+    @include shadow
 
 .media-centered-medium
   width: 100%
   margin-bottom: 20px
-  height: 228px
+  height: 208px
 
 .media-hero
   position: relative
