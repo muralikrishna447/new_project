@@ -44,14 +44,19 @@
               %h5= @discussion[:name]
               %p= @discussion[:body].html_safe
               = link_to 'Join the Discussion', @discussion[:url]
+            #twitter-status
+              %h3 Latest Tweet:
+              = @status.html_safe
+              = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'pull-right'
       .span6
         .hero-unit
           %h2 Sign up for a FREE account
+          %hr
           %ul
             %li Keep track of your favorite recipes
             %li Save notes on what you've cooked
             %li FREE Bonus Content: Sous Vide Time and Temperature data sheets
-          %button.btn.btn-primary.btn-large
+          = link_to sign_up_path, class: 'btn btn-primary btn-large' do
             Sign Up Now
 
 = # TODO Implement Culinary Challenge and Testimonials
@@ -69,15 +74,6 @@
 /               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
 /             %small
 /               User Testimonial
-
-.row
-  .span12
-    .row
-      .span6.offset3
-        #twitter-status
-          %h3 Latest Tweet:
-          = @status.html_safe
-          = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'pull-right'
 
 - #TODO[huy] Remove old code below
 

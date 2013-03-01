@@ -3,7 +3,7 @@
   .row
     .span6.offset3.text-center
       %h2 Search Chefsteps
-      = form_tag '/search', :method => :get do
+      = form_tag '/search', :method => :get, class: 'form-inline' do
         = text_field_tag :q, nil, :placeholder => 'Example: sous vide'
         = submit_tag 'Search', class: 'btn btn-primary'
   - if params[:q]

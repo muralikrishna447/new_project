@@ -9,10 +9,8 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      .nav-collapse.collapse
+      .nav-collapse.collapse.pull-right
         %ul.nav
-          %li
-            = link_to 'Home', root_path
           %li
             = link_to 'Recipes', recipe_gallery_index_path
           %li.dropdown
@@ -66,8 +64,12 @@
                     .media-body
                       %h5.media-heading Science Title
                       %p Science Description
-          %li= link_to 'Search', search_index_path
+          %li
+            = link_to 'Search', search_index_path
 
 
           %li
-            = link_to 'Sign in', sign_in_path
+            - if current_user
+              = link_to 'Profile', user_profile_path(current_user)
+            - else
+              = link_to 'Sign in', sign_in_path

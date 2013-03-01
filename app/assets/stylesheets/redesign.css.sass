@@ -7,7 +7,7 @@
 
 =shadow
   box-shadow: 0px 0px 8px #888888
-  -moz-box-box-shadow: 0px 0px 8px #888888
+  -moz-box-shadow: 0px 0px 8px #888888
   -webkit-box-shadow: 0px 0px 8px #888888
   -o-box-shadow: 0px 0px 8px #888888
 
@@ -32,6 +32,7 @@
 /* Colors */
 $orange: #DB7354
 $dark-orange: #D25029
+$darker-orange: #B84724
 
 ////////////////////////////////////////
 
@@ -39,6 +40,9 @@ $dark-orange: #D25029
   margin-top: 60px
 
 /* Bootstrap Overrides */
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
+  height: inherit
+
 .dropdown-menu
   min-width: 400px
 .well
@@ -48,6 +52,11 @@ $dark-orange: #D25029
 
 .well-opaque
   background-color: rgba(255,255,255,.8)
+
+.hero-unit
+  background: none
+  border-radius: 0px
+  @include shadow
 
 ////////////////////////////////////////
 
@@ -297,7 +306,17 @@ $dark-orange: #D25029
     &:hover
       text-decoration: none
 
-/* Buttons *.
+/* Buttons */
+
+.btn-primary
+  background: $dark_orange
+  border: none
+  border-radius: 0px
+  @include transition(all 100ms)
+  &:hover
+    background: $darker_orange
+    @include transition(all 100ms)
+
 .btn-play
   position: relative
   width: 80px

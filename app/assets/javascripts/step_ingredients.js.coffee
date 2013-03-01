@@ -14,8 +14,8 @@ highlight = (item,prepend_qty) ->
 
 showImage = (image) ->
   viewer = $('#image-viewer')
-  viewer.show()
   viewer.find('#image-viewer-container').html(image)
+  viewer.show()
 
 hideViewer = () ->
   viewer = $('#image-viewer')
