@@ -17,6 +17,7 @@ class Activity < ActiveRecord::Base
 
   scope :with_video, where("youtube_id <> ''")
   scope :techniques, where(activity_type: 'Technique')
+  scope :sciences, where(activity_type: 'Science')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
@@ -30,7 +31,7 @@ class Activity < ActiveRecord::Base
   #   using: {tsearch: {dictionary: "english", any_word: true}},
   #   associated_against: {steps: [:title, :directions], recipes: :title}
 
-  TYPES = %w[Recipe Technique]
+  TYPES = %w[Recipe Technique Science]
 
   before_save :strip_title
   def strip_title
