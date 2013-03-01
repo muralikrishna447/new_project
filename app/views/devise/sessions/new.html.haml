@@ -1,18 +1,21 @@
-.container
-  .box.box-solo
-    = form_for @user, url: session_path(@user) do |f|
-      - if @signin_message
-        %h2= @signin_message
-        %hr
-      .box-field= render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
-      or
-      .box-field= f.text_field :email, placeholder: 'email'
-      .box-field= f.password_field :password, placeholder: 'password'
-      .box-field= f.submit 'Sign in', class: 'btn btn-primary btn-large'
+.row
+  .span6.offset3
+    .hero-unit
+      %h2 Sign into Chefsteps
       %hr
-      .pull-left
-        %p.pull-left Need an Account? 
-        %p= link_to 'Sign up for Chefsteps', new_user_registration_path, class: 'pull-left'
-      .pull-right
-        %p.right Forgot your password?
-        = link_to 'Reset password', new_user_password_path, class: 'pull-right'
+      = form_for @user, url: session_path(@user) do |f|
+        - if @signin_message
+          %h2= @signin_message
+          %hr
+        = render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
+        %p or
+        %p= f.text_field :email, placeholder: 'email'
+        %p= f.password_field :password, placeholder: 'password'
+        %p= f.submit 'Sign in', class: 'btn btn-primary btn-large'
+
+    .pull-left
+      %p.pull-left Need an Account? 
+      %p= link_to 'Sign up for Chefsteps', new_user_registration_path, class: 'pull-left'
+    .pull-right
+      %p.right Forgot your password?
+      = link_to 'Reset password', new_user_password_path, class: 'pull-right'
