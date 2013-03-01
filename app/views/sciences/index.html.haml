@@ -1,0 +1,9 @@
+.row
+  .span12
+    %h2 Science of
+    = paginate @sciences
+    .row
+      - @sciences.each do |science|
+        .span4
+          = render 'shared/media_centered', media: science, main: 'Science', size: 'medium'
+    = paginate @sciences

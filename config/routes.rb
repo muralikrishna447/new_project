@@ -68,6 +68,7 @@ Delve::Application.routes.draw do
     end
   end
   resources :techniques, only: [:index, :show]
+  resources :sciences, only: [:index, :show]
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
   match '/feed' => 'activities#feedburner_feed', as: :feed
 
