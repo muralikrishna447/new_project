@@ -1,0 +1,2 @@
+class Technique < Activity
+end

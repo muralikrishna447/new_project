@@ -6,7 +6,7 @@ class ActivitiesController < ApplicationController
   def show
     # @cooked_this = cooked_ids.include?(activity.id)
     @activity = Activity.includes(:ingredients).find_published(params[:id], params[:token])
-    @techniques = Activity.published.last(4)
+    @techniques = Technique.published.last(4)
     @recipes = @activity.related_by_ingredients
   end
 

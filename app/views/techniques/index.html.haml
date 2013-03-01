@@ -1,0 +1,9 @@
+.row
+  .span12
+    %h2 Techniques
+    = paginate @techniques
+    .row
+      - @techniques.each do |technique|
+        .span4
+          = render 'shared/media_centered', media: technique, main: 'Technique', size: 'medium'
+    = paginate @techniques

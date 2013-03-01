@@ -6,7 +6,7 @@
       :markdown
         #{@activity.description}
   .span6
-    = render 'layouts/social_buttons'
+    = render 'layouts/social_buttons', media_object: @activity
 
 .row
   .span12
@@ -40,7 +40,7 @@
                   .step-ingredients
                     = render 'ingredients_list', ingredients: step.ingredients
               .step-image
-                = image_tag s3_image_url(step.image_id)
+                = image_tag s3_image_url(step.image_id) if step.image_id?
               / = link_to '?', '#', class: 'btn btn-warning btn-mini pull-right'
 
 .row
