@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(:version => 20130301211313) do
     t.text     "transcript"
     t.string   "image_id"
     t.string   "featured_image_id"
-    t.string   "type"
+    t.string   "activity_type"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"

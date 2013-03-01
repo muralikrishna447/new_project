@@ -16,10 +16,11 @@ class Activity < ActiveRecord::Base
   has_many :courses, :through => :inclusions
 
   scope :with_video, where("youtube_id <> ''")
+  scope :techniques, where(activity_type: 'Technique')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
-  attr_accessible :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id,  :steps_attributes
+  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id,  :steps_attributes
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description],
     :if => :published
@@ -28,6 +29,8 @@ class Activity < ActiveRecord::Base
   # pg_search_scope :search, against: {:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'},
   #   using: {tsearch: {dictionary: "english", any_word: true}},
   #   associated_against: {steps: [:title, :directions], recipes: :title}
+
+  TYPES = %w[Recipe Technique]
 
   before_save :strip_title
   def strip_title
