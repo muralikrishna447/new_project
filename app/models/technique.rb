@@ -1,2 +1,0 @@
-class Technique < Activity
-end
