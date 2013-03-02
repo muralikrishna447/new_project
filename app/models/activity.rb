@@ -17,10 +17,11 @@ class Activity < ActiveRecord::Base
 
   scope :with_video, where("youtube_id <> ''")
   scope :techniques, where(activity_type: 'Technique')
-  scope :sciences, where(activity_type: 'Science')
+  scope :sciences, where("activity_type iLIKE '%Science%'")
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
+  serialize :activity_type, Array
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id,  :steps_attributes
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description],

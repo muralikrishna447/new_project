@@ -3,9 +3,9 @@
     .row-fluid
       .carousel.slide#hero-carousel
         .carousel-inner
-          - @recipes.each_with_index do |recipe, index|
+          - @heroes.each_with_index do |hero, index|
             %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
-              = render 'shared/media_hero', main_title: 'Recipe', media_image: recipe.step_images.last, media_object: recipe
+              = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
         = link_to '#hero-carousel', class: 'hero-carousel-control right', data: {slide: 'next'} do
           / %i.icon-chevron-right
           .btn-next
@@ -29,7 +29,8 @@
                 %ul.thumbnails
                   - slice.each do |recipe|
                     %li.span4
-                      = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe'
+                      = link_to activity_path(recipe) do
+                        = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe'
       = link_to '&lsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control left', data: {slide: 'prev'}
       = link_to '&rsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control right', data: {slide: 'next'}
 

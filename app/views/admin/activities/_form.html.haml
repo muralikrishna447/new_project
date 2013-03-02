@@ -6,13 +6,18 @@
 
 / The Update Warning class will prompt the user to save the recipe before leaving the page
 .update-warning
-
 = semantic_form_for [:admin, @activity] do |f|
   = f.inputs name: "Activity Details" do
-    = f.input :activity_type, as: :select, collection: Activity::TYPES
     = f.input :published
     = f.input :title
-    %div#alltags{data: {alltags: ActsAsTaggableOn::Tag.all.map(&:name) }}
+    %li
+      %label
+        Activity Type
+      - Activity::TYPES.each do |type|
+        %label
+          = check_box_tag :activity_type, type, @activity.activity_type.include?(type), :name => 'activity[activity_type][]'
+          = type
+    %div#alltags{data: {alltags: ActsAsTaggableOn::Tag.all.map(&:name) }, style: 'clear: both;'}
     = f.input :tag_list
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
