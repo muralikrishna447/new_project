@@ -16,7 +16,7 @@ class Activity < ActiveRecord::Base
   has_many :courses, :through => :inclusions
 
   scope :with_video, where("youtube_id <> ''")
-  scope :techniques, where(activity_type: 'Technique')
+  scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
