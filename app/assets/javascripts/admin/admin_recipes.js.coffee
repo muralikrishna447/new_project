@@ -32,30 +32,34 @@ splitIngredient = (term) ->
   result = {}
 
   # a/n Tofu Eyeballs [or an Tofu Eyeballs]
-  if s = term.match(/\b(an|a\/n)+\s+(.*)/)
+  if s = term.match(/\b(an|a\/n)+\s*(.*)/)
     result = {"unit": "a/n", "ingredient": s[2]}
 
-  else if s = term.match(/(.*)\b(an|a\/n)/)
+  # Tofu Eyeballs a/n
+  else if s = term.match(/(.+)\s*(an|a\/n)/)
     result = {"unit": "a/n", "ingredient": s[1]}
 
-    # 10 g Tofu Eyeballs (or kg, ea, each, r, recipe)
+  # 10 g Tofu Eyeballs (or kg, ea, each, r, recipe)
   else if s = term.match(/([\d]+)\s*(g|kg|ea|each|r|recipe)+\s+(.*)/)
-    quantity = s[1]
     unit = if s[2] then s[2] else "g"
-    unit = "ea" if unit == "each"
-    unit = "a/n" if unit == "an"
-    unit = "recipe" if unit == "r"
-    ingredient = s[3]
-    result = {"quantity": quantity, "unit": unit, "ingredient": ingredient}
+    result = {"quantity": s[1], "unit": unit, "ingredient": s[3]}
+
+  else if s = term.match(/(.+)\s+([\d]+)\s*(g|kg|ea|each|r|recipe)+/)
+    unit = if s[3] then s[3] else "g"
+    result = {"quantity": s[2], "unit": unit, "ingredient": s[1]}
 
   # None of the above, assumed to be a nekkid ingredient
   else
     result = {"ingredient" : term}
     if result["ingredient"].match(/\[RECIPE\]/)
-      result["quantity"] = 1
+      result["quantity"] = -1
       result["unit"] = "recipe"
 
   # Normalize the results
+  result["unit"] = "ea" if result["unit"] == "each"
+  result["unit"] = "a/n" if result["unit"] == "an"
+  result["unit"] = "recipe" if result["unit"] == "r"
+
   result["ingredient"] = capitalizeFirstLetter($.trim(result["ingredient"]).replace(/\[RECIPE\]/,''))
 
   return result
@@ -68,6 +72,15 @@ matchIngredient = (term) ->
   return term.toUpperCase().indexOf(splitIngredient(this.query)["ingredient"].toUpperCase()) >= 0;
 
 updateRow = (row, data) ->
+  # Special to force 1 recipe only if the user hasn't specified a quantity for a recipe
+  if (data["quantity"] == -1)
+    existing_quantity = row.find(".quantity").val()
+    if (! existing_quantity)
+      data["quantity"] = 1
+    else
+      data["quantity"] = existing_quantity
+
+  # Update the quantity and unit
   row.find(".quantity").val(data["quantity"]) if data["quantity"]
   row.find(".unit").val(data["unit"]).trigger("change") if data["unit"]
 
