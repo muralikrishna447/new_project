@@ -1,5 +1,6 @@
 $ ->
   $('[data-behavior~=copy-element]').on 'click', (event) ->
+    console.log "XXXX COPY START"
     event.preventDefault()
     copy_target = $(this).data('copy-target')
     copy_destination = $(this).data('copy-destination')
@@ -11,9 +12,12 @@ $ ->
     $('input', $copy).val('')
     $copy_destination.show()
     $copy_destination.append($copy)
+    console.log "XXXX COPY END"
+
 
 $ ->
   $(document).on 'click', '[data-behavior~=remove-element]', (event) ->
+    console.log "XXXX REMOVE"
     event.preventDefault()
     removeTarget = $(this).data('remove-target')
     $(this).closest(removeTarget).remove()

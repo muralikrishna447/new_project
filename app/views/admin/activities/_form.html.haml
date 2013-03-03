@@ -1,4 +1,4 @@
--all_ingredients = Ingredient.all.map { |i| {id: i.sub_activity_id? ? -i.id : i.id, title: i.title}}.select { |i| i[:title] != nil}.sort_by { |i| i[:title]}
+-all_ingredients = Ingredient.all.map { |i| i.sub_activity_id? ? "#{i.title} [RECIPE]" : i.title}.select { |i| i != nil}.sort
 %div#allingredients{data: {allingredients: all_ingredients.to_json}}
 
 :ruby
