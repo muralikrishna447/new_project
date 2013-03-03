@@ -29,29 +29,40 @@ $ ->
   ));
 
 splitIngredient = (term) ->
+  result = {}
+
   # a/n Tofu Eyeballs [or an Tofu Eyeballs]
   if s = term.match(/\b(an|a\/n)+\s+(.*)/)
-    return {"unit": "a/n", "ingredient": s[2]}
+    result = {"unit": "a/n", "ingredient": s[2]}
 
-  # 10 g Tofu Eyeballs (or kg, ea, each, r, recipe)
-  if s = term.match(/([\d]+)\s*(g|kg|ea|each|r|recipe)+\s+(.*)/)
+  else if s = term.match(/(.*)\b(an|a\/n)/)
+    result = {"unit": "a/n", "ingredient": s[1]}
+
+    # 10 g Tofu Eyeballs (or kg, ea, each, r, recipe)
+  else if s = term.match(/([\d]+)\s*(g|kg|ea|each|r|recipe)+\s+(.*)/)
     quantity = s[1]
     unit = if s[2] then s[2] else "g"
     unit = "ea" if unit == "each"
     unit = "a/n" if unit == "an"
     unit = "recipe" if unit == "r"
     ingredient = s[3]
-    return {"quantity": quantity, "unit": unit, "ingredient": ingredient}
+    result = {"quantity": quantity, "unit": unit, "ingredient": ingredient}
 
   # None of the above, assumed to be a nekkid ingredient
-  return {"ingredient" : term}
+  else
+    result = {"ingredient" : term}
+    if result["ingredient"].match(/\[RECIPE\]/)
+      result["quantity"] = 1
+      result["unit"] = "recipe"
+
+  # Normalize the results
+  result["ingredient"] = capitalizeFirstLetter($.trim(result["ingredient"]).replace(/\[RECIPE\]/,''))
+
+  return result
 
 
 capitalizeFirstLetter = (string) ->
   return string.charAt(0).toUpperCase() + string.slice(1)
-
-createSearchChoice = (term, cell) ->
-  return {id: new Date().getTime(), title: capitalizeFirstLetter(s["ingredient"])}
 
 matchIngredient = (term) ->
   return term.toUpperCase().indexOf(splitIngredient(this.query)["ingredient"].toUpperCase()) >= 0;
@@ -68,7 +79,24 @@ finalizeIngredient = (inp) ->
   row = $(inp).parents("tr")
   row.find(".quantity").val(s["quantity"]) if s["quantity"]
   row.find(".unit").val(s["unit"]).trigger("change") if s["unit"]
-  $(inp).val(capitalizeFirstLetter($.trim(s["ingredient"]).replace(/\[RECIPE\]/,'')))
+  $(inp).val(s["ingredient"])
+
+sortIngredients = (items) ->
+  beginswith = []
+  caseSensitive = []
+  caseInsensitive = []
+
+  q = splitIngredient(this.query)["ingredient"]
+  while item = items.shift()
+    unless item.toLowerCase().indexOf(q.toLowerCase())
+      beginswith.push item
+    else if ~item.indexOf(q)
+      caseSensitive.push item
+    else
+      caseInsensitive.push item
+
+  return beginswith.concat(caseSensitive, caseInsensitive)
+
 
 
 setupIngredientTypeahead = () ->
@@ -76,23 +104,13 @@ setupIngredientTypeahead = () ->
 
   # Convert new rows that get added into select2, but don't double convert old ones
   $('tr').not('.template-row').find('input.ingredient').not(".converted").each (index, cell) =>
-    $(cell).typeahead(
+    $(cell).addClass("converted").typeahead(
       {
         source: allingredients
+        sorter: sortIngredients
         matcher: matchIngredient
         updater: updateIngredient
       }
-
-    ).addClass("converted").on('change', (event) ->
-
-      # For recipes, make sure the quantity is set to "recipe"
-      #id = inp.select2('data')["id"]
-      #if id < 0
-        #$(this).parents("tr").find(".unit").val("recipe").trigger("change")
-        #qty = $(this).parents("tr").find(".quantity")
-        #qty.val("1") if ! qty.val()
-
-      return true
 
     ).on('keypress', (event) ->
       # Side benefit of this behavior - without it, a keypress triggers the delete row button
