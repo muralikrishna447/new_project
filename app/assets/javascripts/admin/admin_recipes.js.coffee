@@ -67,18 +67,19 @@ capitalizeFirstLetter = (string) ->
 matchIngredient = (term) ->
   return term.toUpperCase().indexOf(splitIngredient(this.query)["ingredient"].toUpperCase()) >= 0;
 
+updateRow = (row, data) ->
+  row.find(".quantity").val(data["quantity"]) if data["quantity"]
+  row.find(".unit").val(data["unit"]).trigger("change") if data["unit"]
+
 updateIngredient = (item) ->
-  s = splitIngredient(this.query)
   row = this.$element.parents("tr")
-  row.find(".quantity").val(s["quantity"]) if s["quantity"]
-  row.find(".unit").val(s["unit"]).trigger("change") if s["unit"]
-  return capitalizeFirstLetter(item)
+  updateRow(row, splitIngredient(this.query))
+  return item
 
 finalizeIngredient = (inp) ->
   s = splitIngredient($(inp).val())
   row = $(inp).parents("tr")
-  row.find(".quantity").val(s["quantity"]) if s["quantity"]
-  row.find(".unit").val(s["unit"]).trigger("change") if s["unit"]
+  updateRow(row, s)
   $(inp).val(s["ingredient"])
 
 sortIngredients = (items) ->
