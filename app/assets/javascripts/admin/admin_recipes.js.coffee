@@ -1,10 +1,12 @@
 closeEditorWarning = () ->
-  "Make sure you press 'Update Recipe' to save any changes."
+  "Make sure you press 'Update Activity' to save any changes."
 
 $ ->
   if $('.update-warning').is('*')
-    $('input').keyup ->
+    $('input, textarea').change ->
       window.onbeforeunload = closeEditorWarning
+    $('#activity_submit_action').click ->
+      window.onbeforeunload = null
 
 scrollIntoView = (elem) ->
   if elem.position()
