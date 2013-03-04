@@ -8,6 +8,10 @@
   - content_for :keywords, activity.tag_list.join(',')
   - course = Course.find(params[:course_id]) if params[:course_id]
 
+  -if params[:scaling]
+    :javascript
+      paramScaling = #{params[:scaling]};
+
   .recipe_schema{:itemscope => true, :itemtype => (activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
 
     = render 'courses/navigation', course: course, activity: activity, disqus_id: disqus_id
