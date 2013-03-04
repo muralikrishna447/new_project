@@ -1,3 +1,6 @@
+-all_ingredients = Ingredient.all.map { |i| i.sub_activity_id? ? "#{i.title} [RECIPE]" : i.title}.select { |i| i != nil}.sort
+%div#allingredients{data: {allingredients: all_ingredients.to_json}}
+
 :ruby
   field_name_prefix = "activity[steps][]"
 
@@ -35,7 +38,7 @@
           = render 'ingredient_form', ingredient: nil
           - @activity.ingredients.ordered.each do |ingredient|
             = render 'ingredient_form', ingredient: ingredient
-    %li= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
+    %li#copy-ingredient-button= copy_button 'Add Ingredient', '#ingredient-row', 'table#ingredients'
 
   = section("Equipment", f) do
     %li= copy_button('Add Equipment', '#equipment-row', 'table#equipment')

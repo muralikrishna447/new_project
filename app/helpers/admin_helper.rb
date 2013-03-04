@@ -1,6 +1,6 @@
 module AdminHelper
   def copy_button(text, target, destination)
-    button_tag(text, data: {
+    button_tag(text, type: "button", data: {
       behavior: 'copy-element',
       'copy-target' => target,
       'copy-destination' => destination
@@ -8,16 +8,14 @@ module AdminHelper
   end
 
   def remove_button(target)
-    button_tag(data: {
-      behavior: 'remove-element',
-      'remove-target' => target
-    }) do
-      content_tag(:i, '', class: ['icon-remove'])
-    end
+    content_tag(:i, '', class: ['icon-remove', 'icon-large'], data: {
+        behavior: 'remove-element',
+        'remove-target' => target
+    })
   end
 
   def add_activity_to_list_button(text, src_element, dest_list, insert_what)
-    button_tag(text, data: {
+    button_tag(text, type: "button", data: {
         behavior: 'add_activity_to_list',
         'src-element' => src_element,
         'dest-list' => dest_list,

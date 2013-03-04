@@ -17,9 +17,13 @@
       %tr
         %td
           - if ingredient.product_url?
-            = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
+            =link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale), target: "_blank"}
+          - elsif ingredient.sub_activity_id != nil
+            -subact = Activity.find_by_id(ingredient.sub_activity_id)
+            =link_to subact.title, activity_path(subact), { target: "_blank", onclick: "addScalingToLink(this);"}
           - else
-            = ingredient.title
+            =ingredient.title
+
         %td.quantity-group.qtyfade
           .lbs-qty
           .lbs-label

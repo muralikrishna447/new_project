@@ -7,7 +7,7 @@ class ActivityIngredient < ActiveRecord::Base
   belongs_to :activity, touch: true, inverse_of: :ingredients
   belongs_to :ingredient, inverse_of: :activity_ingredients
 
-  delegate :title, :for_sale, :for_sale?, :product_url, :product_url?, to: :ingredient
+  delegate :title, :for_sale, :for_sale?, :product_url, :product_url?, :sub_activity_id, to: :ingredient
 
   validates :ingredient, presence: true
   validates :activity, presence: true
