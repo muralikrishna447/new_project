@@ -40,15 +40,22 @@
       .span6
         .row
           .span6
-            .well
-              %h3 Latest From Our Forums:
-              %h5= @discussion[:name]
-              %p= @discussion[:body].html_safe
-              = link_to 'Join the Discussion', @discussion[:url]
+            %h3 Latest From Our Forums:
+            %h4= @discussion[:name]
+            %blockquote
+              %p= truncate(@discussion[:body].html_safe, length: 300, separator: ' ')
+              %small
+                %cite
+                  = @discussion[:first_name]
+            - discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+            = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'
+
+            %hr
+
             #twitter-status
               %h3 Latest Tweet:
               = @status.html_safe
-              = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'pull-right'
+              = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
       .span6
         .hero-unit
           %h2 Sign up for a FREE account
