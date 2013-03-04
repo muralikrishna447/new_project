@@ -4,7 +4,7 @@ module AdminHelper
       behavior: 'copy-element',
       'copy-target' => target,
       'copy-destination' => destination
-    }, class: 'btn-small')
+    }, class: 'btn-small btn-warning')
   end
 
   def remove_button(target)

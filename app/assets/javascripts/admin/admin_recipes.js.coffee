@@ -5,6 +5,8 @@ $ ->
   if $('.update-warning').is('*')
     $('input, textarea').change ->
       window.onbeforeunload = closeEditorWarning
+    $('.btn-warning').click ->
+      window.onbeforeunload = closeEditorWarning
     $('#activity_submit_action').click ->
       window.onbeforeunload = null
 
