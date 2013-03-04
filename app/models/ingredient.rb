@@ -34,5 +34,13 @@ class Ingredient < ActiveRecord::Base
   def self.titles
     all.map(&:title)
   end
+
+  def self.find_or_create_by_subactivity_or_ingredient_title(title)
+    sub_act = Activity.find_by_title(title)
+    if sub_act != nil
+      return find_or_create_by_sub_activity_id(sub_act.id)
+    end
+    find_or_create_by_title(title)
+  end
 end
 
