@@ -29,6 +29,21 @@ class Activity < ActiveRecord::Base
   #   using: {tsearch: {dictionary: "english", any_word: true}},
   #   associated_against: {steps: [:title, :directions], recipes: :title}
 
+  before_save :strip_title
+  def strip_title
+    self.title.strip! if self.title?
+  end
+
+  after_commit :create_as_ingredient
+  def create_as_ingredient
+     Ingredient.find_or_create_by_sub_activity_id(self.id)
+  end
+
+  before_destroy :destroy_as_ingredient
+  def destroy_as_ingredient
+    Ingredient.find_by_sub_activity_id(self.id).destroy
+  end
+
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
   end
@@ -193,7 +208,13 @@ class Activity < ActiveRecord::Base
 
   def update_and_create_ingredients(ingredient_attrs)
     ingredient_attrs.each do |ingredient_attr|
-      ingredient = Ingredient.find_or_create_by_title(ingredient_attr[:title])
+      title = ingredient_attr[:title].strip
+      sub_act = Activity.find_by_title(title)
+      if sub_act != nil
+        ingredient = Ingredient.find_or_create_by_sub_activity_id(sub_act.id)
+      else
+        ingredient = Ingredient.find_or_create_by_title(title)
+      end
       activity_ingredient = ingredients.find_or_create_by_ingredient_id_and_activity_id(ingredient.id, self.id)
       activity_ingredient.update_attributes(
           display_quantity: ingredient_attr[:display_quantity],

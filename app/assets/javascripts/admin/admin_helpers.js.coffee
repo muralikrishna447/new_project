@@ -12,6 +12,7 @@ $ ->
     $copy_destination.show()
     $copy_destination.append($copy)
 
+
 $ ->
   $(document).on 'click', '[data-behavior~=remove-element]', (event) ->
     event.preventDefault()

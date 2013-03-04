@@ -1,25 +1,20 @@
 :ruby
   is_template = ingredient.nil?
-  ingredients ||= Ingredient.titles
   field_name_prefix ||= "activity[ingredients][]"
-
   row_id ||= 'ingredient-row' if is_template
-  title_data_attrs = {
-    data: {source: ingredients, provide: 'typeahead'},
-    autocomplete: 'off'
-  }
-
+  is_recipe = false
   unless is_template
     title = ingredient.title
     display_quantity = ingredient.display_quantity
     unit = ingredient.unit
+    ingredient_id = ingredient.id
+    is_recipe = ingredient.ingredient.sub_activity_id?
   end
 
 %tr{id: row_id, class: ('template-row' if is_template )}
-  %td= text_field_tag "#{field_name_prefix}[title]", title, title_data_attrs.merge({:class => "ingredient"})
+  %td= text_field_tag "#{field_name_prefix}[title]", title, {:'data-provide' => "typeahead",  :'autocomplete' => 'off', :"class" => "ingredient"}
   %td= text_field_tag "#{field_name_prefix}[display_quantity]", display_quantity, class: "quantity"
-  %td
-    = select_tag "#{field_name_prefix}[unit]", options_for_select(%w[g kg ea a/n recipe], unit), class: "unit"
+  %td= select_tag "#{field_name_prefix}[unit]", options_for_select(%w[g kg ea a/n recipe], unit), class: "unit"
   %td
     = remove_button 'tr'
     = reorder_icon

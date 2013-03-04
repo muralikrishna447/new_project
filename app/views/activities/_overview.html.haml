@@ -46,9 +46,21 @@
           .row
             .span4
               = render 'equipment_list', equipment: activity.optional_equipment.all
+        - self_as_ingredient = Ingredient.find_by_sub_activity_id(activity)
+        - used_in = self_as_ingredient.activities
+        - if ! used_in.empty?
+          .row
+            .span4
+              %h5 Used In
+              %ul.used-in
+                - used_in.each do |used_in_act|
+                  %li= link_to used_in_act.title, activity_path(used_in_act)
+
+
         - if activity.is_recipe? and activity.cooked_this > 0
           .row
             .span4.cooked-this-count
               %i.icon-pot-brick
               %span#cooked-count= activity.cooked_this
               %span.verbage Cooked This
+

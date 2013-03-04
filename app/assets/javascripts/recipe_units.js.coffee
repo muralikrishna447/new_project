@@ -1,6 +1,10 @@
 csUnits = "grams"
 csUnitsCookieName = "chefsteps_units"
-csScaling = 1.0
+
+unless paramScaling?
+  csScaling = 1.0
+else
+  csScaling = paramScaling
 
 # Set up bootstrap tooltips (should be moved to a more general place)
 $ ->
@@ -24,6 +28,10 @@ $ ->
     if unit_cell.text() == "a/n" || unit_cell.text() == ""
       $(element).parent().children().hide()
 
+    $(element).data("origValue", origValue)
+
+  $('.yield').each (i, element) =>
+    origValue = Number($(element).text())
     $(element).data("origValue", origValue)
 
   # Update to preferred units stored in the cookie
@@ -67,7 +75,7 @@ $ ->
         csScaling = csScaling * new_total / old_total
 
       else
-        # Grams, kilograms, or ounces with no pounts
+        # Any other unit (including ounces with no pounds)
         csScaling = csScaling * new_val / old_val
     else
       value = old_val
@@ -120,7 +128,7 @@ updateOneRowUnits = ->
   origValue = Number($(this).find('.main-qty').data("origValue")) * csScaling
   existingUnits = $(this).find('.unit').text()
 
-  # "a/n" means as needed, don't do anything. ditto if blank - used
+  # "a/n" means as needed, don't do anything. ditto if blank - formerly used
   # in cases where we mean "all of a subrecipe from above"
   if existingUnits == "a/n" || existingUnits == ""
     # ok
@@ -128,6 +136,9 @@ updateOneRowUnits = ->
   # "ea" means each, just round up to nearest integer
   else if existingUnits == "ea"
     setRow $(this), "", Math.ceil(origValue), "ea"
+
+  else if existingUnits == "recipe" || existingUnits == "recipes"
+    setRow $(this), "", origValue, if origValue <= 1 then "recipe" else "recipes"
 
   # grams or kilograms
   else if csUnits == "grams"
@@ -162,4 +173,11 @@ updateUnits = (animate) ->
       $('.qtyfade').fadeIn "fast"
   else
     $('.quantity-group').closest('tr').each(updateOneRowUnits)
+
+addScalingToLink = (anchor) ->
+  window.open($(anchor).attr("href") + '?scaling=' + $(anchor).parents('tr').find('.main-qty').text());
+  return false;
+
+# make globally available
+window.addScalingToLink = addScalingToLink
 

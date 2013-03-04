@@ -16,6 +16,6 @@ module CaseInsensitiveTitle
   private
 
   def capitalize_title
-    self.title[0] = title[0].capitalize
+    self.title[0] = title[0].capitalize unless (title == nil) || title.blank?
   end
 end
