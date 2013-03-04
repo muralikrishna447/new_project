@@ -1,7 +1,7 @@
 .row
   .span6
     %h1
-      = @activity.title
+      = @activity.title.html_safe
     - if @activity.description?
       :markdown
         #{@activity.description}
