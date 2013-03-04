@@ -1,0 +1,16 @@
+%tr
+  %td
+    - if ingredient.product_url?
+      =link_to ingredient.title.html_safe, ingredient.product_url, { class: ('for-sale-after' if ingredient.for_sale), target: "_blank"}
+    - elsif ingredient.sub_activity_id != nil
+      -subact = Activity.find_by_id(ingredient.sub_activity_id)
+      =link_to subact.title.html_safe, activity_path(subact), { target: "_blank", onclick: "addScalingToLink(this);"}
+    - else
+      =ingredient.title.html_safe
+
+  %td.quantity-group.qtyfade
+    .lbs-qty
+    .lbs-label
+    .main-qty= ingredient.display_quantity
+  %td.unit.qtyfade= ingredient.unit
+

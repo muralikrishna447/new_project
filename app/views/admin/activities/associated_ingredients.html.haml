@@ -16,7 +16,15 @@
           -else
             = "Step #{index} - #{s.title}"
 
-    = render 'step_ingredient_form', step: step, count: index, ingredients: @activity.ingredients.map(&:title)
+      .step-group.row
+
+        .step-directions.well.span4
+          :markdown
+            #{raw s.directions}
+
+        .ingredients-form.span8
+          = render 'step_ingredient_form', step: step, count: index, ingredients: @activity.ingredients.map(&:title)
+
   = f.actions do
     = f.action :submit
     = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'

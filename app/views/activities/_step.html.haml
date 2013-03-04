@@ -11,7 +11,7 @@
             %col{width: "6%"}
           %thead
             %tr
-              %th#ingredient= step.subrecipe_title ? step.subrecipe_title : "Ingredient"
+              %th#ingredient= step.subrecipe_title? ? step.subrecipe_title : "Ingredient"
               %th#quantity{colspan: 2}
                 %a.change_units{title: "Click to change units"} Quantity
                 %a.recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}
@@ -19,18 +19,7 @@
 
           - step.ingredients.each do |ingredient|
             %tr
-              - if ingredient.product_url.present?
-                %td
-                  = link_to ingredient.title, ingredient.product_url
-                  - if ingredient.for_sale
-                    %i.icon-shopping-cart
-              - else
-                %td= ingredient.title
-                %td.quantity-group.qtyfade
-                  .lbs-qty
-                  .lbs-label
-                  .main-qty= ingredient.display_quantity
-                %td.unit.qtyfade= ingredient.unit
+              = render 'ingredient_row', ingredient: ingredient
 
     - if step.directions.present?
       .step-directions

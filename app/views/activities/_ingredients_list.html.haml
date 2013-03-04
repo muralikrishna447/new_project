@@ -1,8 +1,8 @@
 %table.ingredients{:itemprop => "ingredients"}
   %colgroup
-    %col{width: "70%"}
+    %col{width: "68%"}
     %col{width: "120px"}
-    %col{width: "6%"}
+    %col{width: "8%"}
 
   %thead
     %tr
@@ -14,15 +14,4 @@
 
   %tbody
     - activity.ingredients.each do |ingredient|
-      %tr
-        %td
-          - if ingredient.product_url?
-            = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
-          - else
-            = ingredient.title
-        %td.quantity-group.qtyfade
-          .lbs-qty
-          .lbs-label
-          .main-qty= ingredient.display_quantity
-        %td.unit.qtyfade= ingredient.unit
-
+      = render 'ingredient_row', ingredient: ingredient

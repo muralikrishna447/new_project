@@ -6,7 +6,7 @@ class StepIngredient < ActiveRecord::Base
   belongs_to :step, inverse_of: :ingredients
   belongs_to :ingredient, inverse_of: :step_ingredients
 
-  delegate :title, :for_sale, :for_sale?, :product_url, :product_url?, to: :ingredient
+  delegate :title, :for_sale, :for_sale?, :product_url, :product_url?, :sub_activity_id, to: :ingredient
 
   attr_accessible :step_id, :ingredient_id, :quantity, :unit, :ingredient_order_position
 

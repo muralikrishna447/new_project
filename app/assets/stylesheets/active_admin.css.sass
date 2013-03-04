@@ -15,6 +15,9 @@
 @import compass/css3/border-radius
 @import compass/css3/box-shadow
 
+@import bootstrap_config
+@import twitter/bootstrap-no-sprites
+
 @import twitter/bootstrap/variables
 @import twitter/bootstrap/mixins
 @import twitter/bootstrap/dropdowns
@@ -23,6 +26,7 @@
 @import twitter/bootstrap/tooltip
 @import twitter/bootstrap/dropdowns
 @import twitter/bootstrap/forms
+
 @import font-awesome
 @import select2
 
@@ -223,11 +227,32 @@ body.admin_namespace
   ol
     .nested-form-legend
       margin-top: -10px
+      border-bottom: 0
 
 .admin_activities.associated_ingredients
+  .inputs
+    background-color: white
+
   .step-ingredients
     li
       margin-left: 20px
+
+  .step-group
+    margin-left: 5px
+    margin-top: 20px
+
+    .step-directions
+      vertical-align: top
+      line-height: 20px
+      li
+        padding: 7px 0px
+        line-height: 20px
+        p
+          margin: 0px
+      p
+        margin: 10px 0px
+
+
 
 .admin_activities
   #activity_published_input label
