@@ -39,7 +39,8 @@ class Step < ActiveRecord::Base
 
   def update_and_create_ingredients(ingredient_attrs)
     ingredient_attrs.each do |ingredient_attr|
-      ingredient = Ingredient.find_or_create_by_title(ingredient_attr[:title])
+      title = ingredient_attr[:title].strip
+      ingredient = Ingredient.find_or_create_by_subactivity_or_ingredient_title(title)
       step_ingredient = ingredients.find_or_create_by_ingredient_id_and_step_id(ingredient.id, self.id)
       step_ingredient.update_attributes(
         display_quantity: ingredient_attr[:display_quantity],
