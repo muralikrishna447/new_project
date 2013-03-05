@@ -34,3 +34,6 @@ $ ->
   $('.standalone-tweet').load ->
     alert $(this).html()
 
+  # Helps Prevent the media centered items to load up with black boxes
+  $('.media-centered-overlay').show()
+

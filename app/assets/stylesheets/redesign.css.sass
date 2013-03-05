@@ -84,26 +84,31 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   a
     color: white
     font-size: 18px
+  .media-centered-overlay
+    display: none
+    opacity: 0
+    background: black
+    position: absolute
+    width: 100%
+    height: 100%
+    @include transition(opacity 300ms)
   .title-block
     text-transform: uppercase
     position: absolute
     text-align: center
-    top: 40%
+    top: 35%
     width: 100%
     color: white
     text-shadow: 0px 1px rgba(0,0,0,.6)
     .title-type
       background-color: rgba(255,255,255,.8)
-      margin: 0px 35% 3%
+      margin: 0px 100px 3%
       padding: 5px 0px
       color: black
       text-shadow: none
-  @include transition(box-shadow 200ms)
-  @include transition(-webkit-box-shadow 200ms)
-  @include transition(-moz-box-shadow 200ms)
-  @include transition(-o-box-shadow 200ms)
   &:hover
-    @include shadow
+    .media-centered-overlay
+      opacity: .5
 
 .media-centered-medium
   width: 100%
