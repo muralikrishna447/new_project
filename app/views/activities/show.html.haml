@@ -62,6 +62,7 @@
             = link_to technique_path(technique) do
               = render 'shared/media_centered', media: technique, main: 'Technique', size: 'small'
     %h3 You might also like
+    %h4= @recipes.count
     .carousel-scroll#related-carousel
       .carousel-scroll-inner
         - @recipes.each_with_index do |recipe,index|
