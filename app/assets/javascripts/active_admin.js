@@ -2,6 +2,7 @@
 //= require twitter/bootstrap/typeahead
 //= require twitter/bootstrap/tooltip
 //= require twitter/bootstrap/popover
+//= require twitter/bootstrap/tab
 //= require lodash
 //= require array_remove
 //= require signals

@@ -20,11 +20,20 @@
     = text_field_tag "#{field_name_prefix}[title]", title
     = hidden_field_tag "#{field_name_prefix}[id]", id
   %td= text_area_tag "#{field_name_prefix}[directions]", directions, rows: 5
-  %td= text_field_tag "#{field_name_prefix}[image_id]", image_id
-  %td= text_area_tag "#{field_name_prefix}[image_description]", image_description, rows: 5
-  %td= text_field_tag "#{field_name_prefix}[youtube_id]", youtube_id
-  %td= text_field_tag "#{field_name_prefix}[audio_clip]", audio_clip, placeholder: 'example.wav'
-  %td= text_field_tag "#{field_name_prefix}[audio_title]", audio_title, placeholder: 'Example Title'
+  %td
+    %ul.nav.nav-tabs
+      %li{"data-toggle" => "tab", :href => "#image_stuff"} Image
+      %li{"data-toggle" => "tab", :href => "#video_stuff"} Video
+      %li{"data-toggle" => "tab", :href => "#audio_stuff"} Audio
+    .tab-content
+      .tab-pane.active#image_stuff
+        = text_field_tag "#{field_name_prefix}[image_id]", image_id
+        = text_area_tag "#{field_name_prefix}[image_description]", image_description, rows: 5
+      .tab-pane.active#video_stuff
+        = text_field_tag "#{field_name_prefix}[youtube_id]", youtube_id
+      .tab-pane.active#audio_stuff
+        = text_field_tag "#{field_name_prefix}[audio_clip]", audio_clip, placeholder: 'example.wav'
+        = text_field_tag "#{field_name_prefix}[audio_title]", audio_title, placeholder: 'Example Title'
   %td
     = remove_button 'tr'
     = reorder_icon
