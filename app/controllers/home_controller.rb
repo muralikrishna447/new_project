@@ -12,7 +12,6 @@ class HomeController < ApplicationController
     @recipes = Activity.published.with_video.joins(:ingredients).order("RANDOM()").first(6)
     @heroes = [Activity.published.with_video.joins(:ingredients).last, Activity.published.with_video.techniques.last, Activity.published.with_video.sciences.last]
     @discussion = Forum.discussions.first
-    @challenges = Forum.discussions_by_category('culinary-challenge')
     @status = Twitter.status_embed
   end
 

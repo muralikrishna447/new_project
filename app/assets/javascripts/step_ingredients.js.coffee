@@ -30,10 +30,14 @@ $ ->
     ingredients = $(this).find('.ingredient-item')
     ingredients.each ->
       ingredient_id = $(this).data('ingredient-id')
+      if $(this).find('.lbs-qty').text() != 'Click to edit'
+        lbs_quantity = $(this).find('.lbs-qty').text() + ' ' + $(this).find('.lbs-label').text()
+      else
+        lbs_quantity = ''
       quantity = $(this).find('.main-qty').text()
       unit = $(this).find('.unit').text()
       item = $('#full-ingredients-list').find("*[data-ingredient-id='" + ingredient_id + "']")
-      prepend_qty = quantity + " " + unit + " <span style='opacity: .3; font-weight: 400;'>of</span>"
+      prepend_qty = lbs_quantity + " " + quantity + " " + unit + " <span style='opacity: .3; font-weight: 400;'>of</span>"
       highlight(item,prepend_qty)
     if ingredients.length > 0
       $('.ingredient-item').not($('.ingredient-highlighted')).each ->
