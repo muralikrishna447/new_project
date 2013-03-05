@@ -1,6 +1,14 @@
 .container.order-sort
   .row
     .span8
+      .question-label QUESTION:
+
+  .row
+    .span8
+      .question-text= hb('question')
+
+  .row
+    .span8
       .instructions= hb!('instructions')
 
   .hero-unit.span11
