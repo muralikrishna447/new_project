@@ -21,7 +21,7 @@
         %h1= activity.title.html_safe
         - if activity.youtube_id?
           .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-            %iframe{src: youtube_url(activity.youtube_id)}
+            %iframe{src: youtube_url(activity.youtube_id), webkitallowfullscreen: true, mozallowfullscreen:true, allowfullscreen: true }
           - if activity.transcript?
             .transcript
               .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcript-activity-#{activity.id}"}}

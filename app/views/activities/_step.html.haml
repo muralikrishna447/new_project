@@ -34,7 +34,7 @@
     - if step.youtube_id?
       .video.noprint
         .video-container
-          %iframe{src: youtube_url(step.youtube_id)}
+          %iframe{src: youtube_url(step.youtube_id), webkitallowfullscreen: true, mozallowfullscreen:true, allowfullscreen: true }
       - if step.transcript?
         .transcript
           .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcript-step-#{step.id}"}}
