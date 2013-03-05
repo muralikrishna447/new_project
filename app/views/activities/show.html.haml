@@ -29,6 +29,12 @@
           .section
             %h4 Equipment and Materials
             = render 'equipment_list', equipment: @activity.required_equipment
+        - if @activity.used_in_activities.any?
+          .section
+            %h4 Used In
+            %ul
+            - @activity.used_in_activities.each do |activity|
+              %li= link_to activity.title, activity
       .span6.section
         .ordered-steps
           - @activity.steps.each_with_index do |step, index|

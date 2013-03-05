@@ -6,6 +6,9 @@ class Activity < ActiveRecord::Base
   friendly_id :title, use: :slugged
 
   has_many :ingredients, dependent: :destroy, class_name: ActivityIngredient, inverse_of: :activity
+  # The as_ingredient relationship returns the ingredient version of the activity
+  has_one :as_ingredient, class_name: Ingredient, foreign_key: 'sub_activity_id'
+  has_many :used_in_activities, source: :activities, through: :as_ingredient
 
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
