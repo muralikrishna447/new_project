@@ -55,17 +55,17 @@
 .row
   .span12
     %h3 Techniques
-    .carousel-small#technique-carousel
-      .carousel-small-inner
+    .carousel-scroll#technique-carousel
+      .carousel-scroll-inner
         - @techniques.each_with_index do |technique,index|
-          %div{class: "item #{'active' if index == 0}"}
+          .item
             = link_to technique_path(technique) do
               = render 'shared/media_centered', media: technique, main: 'Technique', size: 'small'
     %h3 You might also like
-    .carousel-small#related-carousel
-      .carousel-small-inner
+    .carousel-scroll#related-carousel
+      .carousel-scroll-inner
         - @recipes.each_with_index do |recipe,index|
-          %div{class: "item #{'active' if index == 0}"}
+          .item
             = link_to activity_path(recipe) do
               = render 'shared/media_centered', media: recipe, main: 'Recipe', size: 'small'
 
