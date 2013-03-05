@@ -14,7 +14,10 @@
       .span6.section
         #video-ingredient-unit
           .video-container
-            %iframe{src: youtube_url(@activity.youtube_id)}
+            - if @activity.youtube_id?
+              %iframe{src: youtube_url(@activity.youtube_id)}
+            - elsif @activity.image_id?
+              = image_tag s3_image_url(@activity.image_id)
             #image-viewer
               #image-viewer-container
               #image-viewer-close
