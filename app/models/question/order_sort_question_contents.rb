@@ -1,3 +1,5 @@
+require 'delve/order_sort_question/scorer'
+
 class OrderSortQuestionContents < OpenStruct
   # Schema:
   #   {
@@ -45,7 +47,7 @@ private
 
   # For each available solution, return a scorer we can use to check answers.
   def scorers
-    @scorers ||= solutions.map { |solution| scorer_for_solution(solution) }
+    solutions.map { |solution| scorer_for_solution(solution) }
   end
 
   # Build a scorer for a given solution from the `self.solutions` array.
