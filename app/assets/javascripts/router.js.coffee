@@ -52,6 +52,9 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
       dragWhitelist: '.draggable'
     })
 
+    _.each $('.order-sort .toggle-tabs'), (tab) ->
+      new ChefSteps.Views.OrderSortTabToggler(el: tab)
+
   showStyleguide: =>
     _.each $('[data-behavior~=progress-dial]'), (input)->
       new ChefSteps.Views.ProgressDial(el: input, noAdjustSize: true)
