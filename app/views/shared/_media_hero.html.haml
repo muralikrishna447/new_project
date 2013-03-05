@@ -12,5 +12,5 @@
         .media-heading.pull-left
           %h2= media_object.title.html_safe
           - media_object.activity_type.each do |type|
-            .label.label-large.label-important
+            %div{class: "label label-large label-#{type}"}
               = type
