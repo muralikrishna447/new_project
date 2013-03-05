@@ -1,5 +1,5 @@
-%tr
-  %td
+%tr.ingredient-item{data: {:'ingredient-id' => ingredient.ingredient.id}}
+  %td.ingredient-title
     - if ingredient.product_url?
       =link_to ingredient.title.html_safe, ingredient.product_url, { class: ('for-sale-after' if ingredient.for_sale), target: "_blank"}
     - elsif ingredient.sub_activity_id != nil
@@ -7,10 +7,26 @@
       =link_to subact.title.html_safe, activity_path(subact), { target: "_blank", onclick: "addScalingToLink(this);"}
     - else
       =ingredient.title.html_safe
-
+  %td
+    .prependable
   %td.quantity-group.qtyfade
     .lbs-qty
     .lbs-label
     .main-qty= ingredient.display_quantity
   %td.unit.qtyfade= ingredient.unit
+
+- # TODO Make sure the ingredient list works with scaling and activites as ingredients. Below is the redesign code
+/ %tr.ingredient-item{data: {:'ingredient-id' => ingredient.ingredient.id}}
+/   %td.ingredient-title
+/     - if ingredient.product_url?
+/       = link_to ingredient.title, ingredient.product_url, { class: ('bullet-for-sale' if ingredient.for_sale) }
+/     - else
+/       = ingredient.title
+/   %td
+/     .prependable
+/   %td.quantity-group.qtyfade
+/     .lbs-qty
+/     .lbs-label
+/     .main-qty= ingredient.display_quantity
+/   %td.unit.qtyfade= ingredient.unit
 

@@ -14,7 +14,7 @@
 
   %tbody
 
-    - activity.ingredients.each do |ingredient|
+    - ingredients.each do |ingredient|
       = render 'ingredient_row', ingredient: ingredient
 
     - # TODO Make sure the ingredient list works with scaling and activites as ingredients. Below is the redesign code
