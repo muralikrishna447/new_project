@@ -42,7 +42,8 @@
               .step-element.step-number
                 = index + 1
               .step-element.step-content
-                %h4= step.title
+                - if step.title?
+                  %h4= step.title
                 :markdown
                   #{raw step.directions}
                 - if step.ingredients.any?
@@ -61,8 +62,7 @@
           .item
             = link_to technique_path(technique) do
               = render 'shared/media_centered', media: technique, main: 'Technique', size: 'small'
-    %h3 You might also like
-    %h4= @recipes.count
+    %h3 Related
     .carousel-scroll#related-carousel
       .carousel-scroll-inner
         - @recipes.each_with_index do |recipe,index|
