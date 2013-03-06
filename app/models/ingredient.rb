@@ -19,6 +19,8 @@ class Ingredient < ActiveRecord::Base
     if self.sub_activity_id?
       self.title= Activity.find_by_id(self.sub_activity_id).title
     end
+    self.title = self.title.strip if self.title?
+    true
   end
 
   def title
