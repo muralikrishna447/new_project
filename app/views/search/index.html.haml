@@ -14,7 +14,8 @@
         / = render partial: 'result_item', collection: @noresults, :as => :item
         - @noresults.each do |result_item|
           .span4
-            = render 'shared/media_centered', media: result_item.searchable, main: 'Recipe', size: 'medium'
+            = link_to result_item.searchable do
+              = render 'shared/media_centered', media: result_item.searchable, main: 'Recipe', size: 'medium'
 
     - else
       %h4= "Results for '#{params[:q]}':"
@@ -24,7 +25,8 @@
         / = render partial: 'result_item', collection: @results, :as => :item
         - @results.each do |result_item|
           .span4
-            = render 'shared/media_centered', media: result_item.searchable, main: 'Recipe', size: 'medium'
+            = link_to result_item.searchable do
+              = render 'shared/media_centered', media: result_item.searchable, main: 'Recipe', size: 'medium'
 
       = paginate @results
 
@@ -35,4 +37,5 @@
         / = render partial: 'result_item', collection: @related_results, :as => :item
         - @related_results.each do |result_item|
           .span4
-            = render 'shared/media_centered', media: result_item.searchable, main: 'Recipe', size: 'medium'
+            = link_to result_item.searchable do
+              = render 'shared/media_centered', media: result_item.searchable, main: 'Recipe', size: 'medium'
