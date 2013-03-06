@@ -25,7 +25,7 @@ $ ->
   adjustStepHeight()
 
   # When a user hover overs a step, the ingredients used in the step are highlighted in the full ingredients list
-  $('.ordered-step-item').hover ->
+  $('.ordered-step-item').click ->
     clearHighlights()
     ingredients = $(this).find('.ingredient-item')
     ingredients.each ->
