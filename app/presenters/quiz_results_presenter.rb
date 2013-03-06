@@ -45,14 +45,24 @@ class QuizResultsPresenter
   private
 
   def order_sort_results(question, answer)
+    answer_images = order_sort_correct_answer_images(question, answer)
+
     {
-      answer_images: order_sort_answer_images(question, answer),
+      best_solution_answer_images: answer_images,
+      user_answer_image_ids: answer.contents.answers.join(','),
+      best_solution_image_ids: answer.contents.best_solution.join(','),
       solution_score: answer.contents.solution_score
     }
   end
 
-  def order_sort_answer_images(question, answer)
-    ImagePresenter.wrapped_collection(OrderSortImage.find(answer.contents.answers))
+  def order_sort_correct_answer_images(question, answer)
+    images = OrderSortImage.find(answer.contents.best_solution).to_a.group_by(&:id)
+    sorted = []
+    answer.contents.best_solution.each do |id|
+      sorted << images[id].first
+    end
+
+    ImagePresenter.wrapped_collection(sorted)
   end
 
   def multiple_choice_results(question, answer)
