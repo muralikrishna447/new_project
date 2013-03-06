@@ -166,7 +166,7 @@ class Activity < ActiveRecord::Base
   def related_by_ingredients
     # Todo Will need to optimize this
     # Activity.published.joins(:ingredients).where('activity_ingredients.ingredient_id IN(?) AND activities.id != ?', true_ingredient_ids, id).uniq
-    ids = Activity.published.joins(:ingredients).uniq.map{|a| [self.compare(a), a.id]}.reject{|a| a[0] < 0.1 || self.id == a[1]}.sort{|a,b| a[0] <=> b[0]}.reverse.map{|a| a[1]}
+    ids = Activity.published.joins(:ingredients).uniq.map{|a| [self.compare(a), a.id]}.reject{|a| a[0] == 0 || self.id == a[1]}.sort{|a,b| a[0] <=> b[0]}.reverse.map{|a| a[1]}
     activities = Activity.find(ids).group_by(&:id)
     ids.map { |id| activities[id].first }
   end

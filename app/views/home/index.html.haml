@@ -52,10 +52,11 @@
 
             %hr
 
-            #twitter-status
-              %h3 Latest Tweet:
-              = @status.html_safe
-              = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
+            - if @status
+              #twitter-status
+                %h3 Latest Tweet:
+                = @status.html_safe
+                = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
       .span6
         .hero-unit
           %h2 Sign up for a FREE account
