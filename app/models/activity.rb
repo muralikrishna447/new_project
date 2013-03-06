@@ -19,6 +19,7 @@ class Activity < ActiveRecord::Base
   has_many :courses, :through => :inclusions
 
   scope :with_video, where("youtube_id <> ''")
+  scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
 
