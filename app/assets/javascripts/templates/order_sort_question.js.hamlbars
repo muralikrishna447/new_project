@@ -17,6 +17,7 @@
         .in-progress
           .step-text Drag and drop step
           .large-num 1
+          .step-text here!
         .done Done!
 
     %a.btn.btn-primary.btn-next{href: '#'}
