@@ -60,7 +60,8 @@ task :set_activity_types => :environment do
     70, # Vacuum packing
     71, #Edge sealing
     116, # Equilibrium Brining
-    135 # Breaking Down a Halibut
+    135, # Breaking Down a Halibut
+    189 #Making Berry Drops with Liquid Nitrogen
   ]
   techniques = Activity.find(technique_ids)
   techniques.each do |technique|
