@@ -13,9 +13,11 @@
               = link_to about_path do
                 = image_tag 'chris.jpg', class:'img-circle'
             .span1
-              = image_tag 'grant.jpg', class:'img-circle'
+              = link_to about_path do
+                = image_tag 'grant.jpg', class:'img-circle'
             .span1
-              = image_tag 'ryan.jpg', class:'img-circle'
+              = link_to about_path do
+                = image_tag 'ryan.jpg', class:'img-circle'
           .span2
             = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
               %div.footer-social
