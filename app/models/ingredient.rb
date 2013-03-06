@@ -19,7 +19,8 @@ class Ingredient < ActiveRecord::Base
     if self.sub_activity_id?
       self.title= Activity.find_by_id(self.sub_activity_id).title
     end
-    self.title.strip! if self.title?
+    self.title = self.title.strip if self.title?
+    true
   end
 
   def title
@@ -37,6 +38,7 @@ class Ingredient < ActiveRecord::Base
   end
 
   def self.find_or_create_by_subactivity_or_ingredient_title(title)
+    title.strip!
     sub_act = Activity.find_by_title(title)
     if sub_act != nil
       return find_or_create_by_sub_activity_id(sub_act.id)
