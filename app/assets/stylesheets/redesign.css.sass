@@ -183,6 +183,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     .step-content
       width: 90%
       padding-top: 0px
+      padding-bottom: 0px
       h4
         margin-top: 12px
         margin-bottom: 0px
@@ -190,19 +191,25 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
         list-style: none
         padding: 5px 0px
         margin: 0px
+    .step-actions
+      margin-left: 10%
+      .step-action-item
+        padding: 0px 10px
+        display: inline-block
       .step-ingredients
-        display: none
-    .step-image
-      display: none
+        .step-ingredients-source
+          display: none
+      .step-image
+        img
+          display: none
 
 /* Emphasizes the content being hovered */
-.ordered-steps:hover > .ordered-step-item
-  opacity: .3
-  @include transition(opacity 200ms)
-.ordered-steps:hover > .ordered-step-item:hover
-  opacity: 1
-  @include transition(opacity 200ms)
-
+// .ordered-steps:hover > .ordered-step-item
+//   opacity: .3
+//   @include transition(opacity 200ms)
+// .ordered-steps:hover > .ordered-step-item:hover
+//   opacity: 1
+//   @include transition(opacity 200ms)
 
 .prependable
   text-align: right
