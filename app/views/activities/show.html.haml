@@ -28,7 +28,7 @@
               #image-viewer-close
                 %i.icon-remove.icon-large
           - if @activity.ingredients.any?
-            .activity-ingredients-list#full-ingredients-list.section
+            .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
               = render 'ingredients_list', ingredients: @activity.ingredients
         - if @activity.required_equipment.any?
           .section
@@ -43,7 +43,7 @@
       .span6.section
         .ordered-steps
           - @activity.steps.each_with_index do |step, index|
-            .ordered-step-item
+            .ordered-step-item{id: "order-step-item-#{index}"}
               .step-element.step-number
                 = index + 1
               .step-element.step-content

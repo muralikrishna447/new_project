@@ -46,6 +46,12 @@ $ ->
     csUnits = if csUnits == "ounces" then "grams" else "ounces"
     # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
     updateUnits(true)
+    step_id = $('#full-ingredients-list').data('target')
+    if step_id.length > 0
+      step = $('#' + step_id)
+      setTimeout (->
+        window.showStepIngredients(step)
+      ), 1000
 
 # make all the ingredient amounts editable
 $ ->

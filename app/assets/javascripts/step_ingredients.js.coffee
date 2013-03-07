@@ -21,7 +21,10 @@ hideViewer = () ->
   viewer = $('#image-viewer')
   viewer.fadeOut 500
 
-showStepIngredients = (step_ingredients) ->
+setTargetStep = (target) ->
+  $('#full-ingredients-list').attr('data-target', target)
+
+window.showStepIngredients = (step_ingredients) ->
   ingredients = $(step_ingredients).find('.ingredient-item')
   ingredients.each ->
     ingredient_id = $(this).data('ingredient-id')
@@ -62,7 +65,9 @@ $ ->
   # When a user hover overs a step, the ingredients used in the step are highlighted in the full ingredients list
   $('.step-ingredients').click ->
     clearHighlights()
-    showStepIngredients($(this))
+    window.showStepIngredients($(this))
+    step_id = $(this).closest('.ordered-step-item').attr('id')
+    setTargetStep(step_id)
     # ingredients = $(this).find('.ingredient-item')
     # ingredients.each ->
     #   ingredient_id = $(this).data('ingredient-id')
