@@ -74,7 +74,7 @@
       .carousel-scroll-inner
         - @techniques.each_with_index do |technique,index|
           .item
-            = link_to technique_path(technique) do
+            = link_to activity_path(technique) do
               = render 'shared/media_centered', media: technique, main: 'Technique', size: 'small'
     %h3 Related
     .carousel-scroll#related-carousel
