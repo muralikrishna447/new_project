@@ -22,62 +22,13 @@
               %li
                 = link_to sciences_path do
                   Science
-              / %li
-              /   = link_to '#' do
-              /     .media
-              /       %h4
-              /         .pull-left
-              /           Ingredients
-              /         .pull-right
-              /           %small
-              /             See More Ingredients
-              /   = link_to '#' do
-              /     .media
-              /       .pull-left
-              /         = image_tag 'http://placehold.it/50x50', class:'media-object'
-              /       .media-body
-              /         %h5.media-heading Ingredient Title
-              /         %p Ingredient Description
-              / %li
-              /   = link_to techniques_path do
-              /     .media
-              /       %h4
-              /         .pull-left
-              /           Techniques
-              /         .pull-right
-              /           %small
-              /             See More Techniques
-              /   = link_to '#' do
-              /     .media
-              /       .pull-left
-              /         = image_tag 'http://placehold.it/50x50', class:'media-object'
-              /       .media-body
-              /         %h5.media-heading Technique Title
-              /         %p Technique Description
-              / %li
-              /   = link_to sciences_path do
-              /     .media
-              /       %h4
-              /         .pull-left
-              /           Science
-              /         .pull-right
-              /           %small
-              /             See More Science
-              /   = link_to '#' do
-              /     .media
-              /       .pull-left
-              /         = image_tag 'http://placehold.it/50x50', class:'media-object'
-              /       .media-body
-              /         %h5.media-heading Science Title
-              /         %p Science Description
+          %li= link_to 'Forum', 'http://forum.chefsteps.com'
+          %li= link_to 'Shop', 'http://store.chefsteps.com'
           %li
-            = link_to 'Forum', 'http://forum.chefsteps.com'
-          %li
-            = link_to 'Shop', 'http://store.chefsteps.com'
-          %li
-            = link_to 'Search', search_index_path
-
-
+            / = link_to 'Search', search_index_path
+            = form_tag '/search', :method => :get, class: 'navbar-form' do
+              = text_field_tag :q, nil, :placeholder => 'search', class: 'span2'
+              / = submit_tag 'Search', class: 'btn btn-primary'
           %li
             - if current_user
               = link_to 'Profile', user_profile_path(current_user)
