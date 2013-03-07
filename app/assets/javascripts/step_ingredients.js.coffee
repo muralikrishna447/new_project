@@ -26,7 +26,7 @@ showStepIngredients = (step_ingredients) ->
   ingredients.each ->
     ingredient_id = $(this).data('ingredient-id')
     # Sets lbs quantity to nothing if it says Click to Edit
-    if $(this).find('.lbs-qty').text() != 'Click to edit'
+    if $(this).find('.lbs-qty').text() != 'Click to edit' && $(this).find('.lbs-qty').css('display') !='none'
       lbs_quantity = $(this).find('.lbs-qty').text() + ' ' + $(this).find('.lbs-label').text()
     else
       lbs_quantity = ''
