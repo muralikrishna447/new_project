@@ -54,16 +54,15 @@
                 / - if step.ingredients.any?
                 /   .step-ingredients
                 /     = render 'ingredients_list', ingredients: step.ingredients
-              .step-actions
+              .step-actions.btn-group
                 -if step.ingredients.any?
-                  .step-action-item.step-ingredients
-                    .btn.btn-primary.btn-small
-                      Show Ingredients
+                  .btn.step-action-item.step-ingredients
+                    %i.icon-th-list
                     .step-ingredients-source
                       = render 'ingredients_list', ingredients: step.ingredients
                 - if step.image_id?
-                  .step-action-item.step-image
-                    %i.icon-picture.icon-large
+                  .btn.step-action-item.step-image
+                    %i.icon-picture
                     .step-image-source
                       = image_tag s3_image_url(step.image_id)
                 
