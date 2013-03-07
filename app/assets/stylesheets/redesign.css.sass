@@ -117,7 +117,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 
 .media-hero
   position: relative
-  max-height: 546px
+  max-height: 586px
   img
     width: 100%
   .media-header-background
@@ -290,7 +290,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   width: 100%
   margin: 0px
   padding: 0px
-  max-height: 546px
+  max-height: 586px
   position: absolute
   z-index: 999
   .hero-carousel-control
@@ -302,10 +302,19 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 
 #hero-video
   margin-top: 40px
-  height: 546px
+  height: 586px
+  .span10
+    padding-top: 20px
+    padding-bottom: 20px
+    .video-container
+      @include shadow
 
 #player-close
   display: none
+  color: $orange
+  margin-top: 20px
+  margin-right: 20px
+  float: right
 
 #twitter-status
   iframe
