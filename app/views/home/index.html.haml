@@ -29,9 +29,9 @@
           %div{class: "item #{'active' if index == 0}"}
             .row
               .span12
-                %ul.thumbnails
+                .row
                   - slice.each do |recipe|
-                    %li.span4
+                    .span4
                       = link_to activity_path(recipe) do
                         = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe'
       = link_to '&lsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control left', data: {slide: 'prev'}
