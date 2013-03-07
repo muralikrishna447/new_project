@@ -1,5 +1,6 @@
 //= require jquery
 //= require twitter/bootstrap
+//= require jquery.hammer
 //= require ./vendor
 //= require ./ordered
 //= require filmstrip

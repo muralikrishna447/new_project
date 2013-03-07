@@ -38,3 +38,15 @@ $ ->
   # Helps Prevent the media centered items to load up with black boxes
   $('.media-centered-overlay').show()
 
+  $('#hero-container').hammer().on 'swipeleft', '', (event) ->
+    $('#hero-carousel').carousel('next')
+
+  $('#hero-container').hammer().on 'swiperight', '', (event) ->
+    $('#hero-carousel').carousel('prev')
+
+  $('#recipe-carousel').hammer().on 'swipeleft', '', (event) ->
+    $(this).carousel('next')
+    
+  $('#recipe-carousel').hammer().on 'swiperight', '', (event) ->
+    $(this).carousel('prev')
+

@@ -4,7 +4,6 @@
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
     = csrf_meta_tags
-    = javascript_include_tag 'application'
     = render 'layouts/twitter'
     %meta{charset: 'utf-8'}
     %meta{name: 'description', content: yield(:description)}
@@ -34,4 +33,4 @@
 
     = render 'layouts/footer'
   / = render 'layouts/youtube'
-
+  = javascript_include_tag 'application'
