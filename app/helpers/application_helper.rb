@@ -42,5 +42,33 @@ module ApplicationHelper
       content += label_tag label_for, &block
     end
   end
+
+  def apply_shortcode(orig, shortcode, contents)
+    case shortcode
+      when 'c'
+        c = contents
+        f = (c.to_f * 1.8 + 32).round
+        "#{f} &deg;F / #{c} &deg;C"
+
+      when 'f'
+        f = contents
+        c = ((f.to_f - 32) / 1.8).round
+        "#{f} &deg;F / #{c} &deg;C"
+
+      when 'amzn'
+        asin, anchor_text = contents.split(/\s/, 2)
+        link_to anchor_text, "http://www.amazon.com/dp/#{asin}/?tag=delvkitc-20"
+      else
+        orig
+    end
+  end
+
+  def apply_shortcodes(text)
+    text.gsub(/\[(\w+)\s+([^\]]*)\]/) do |orig|
+      shortcode = $1
+      contents = $2
+      apply_shortcode(orig, shortcode, contents)
+    end
+  end
 end
 
