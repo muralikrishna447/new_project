@@ -47,10 +47,6 @@ class Question < ActiveRecord::Base
     answer.question = self
     answer.correct = correct(answer)
 
-    if self.contents.respond_to?(:solution_score)
-      answer.contents.solution_score = self.contents.solution_score(answer.contents)
-    end
-
     answer.save!
     answer
   end
