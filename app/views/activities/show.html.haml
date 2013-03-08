@@ -5,11 +5,7 @@
 
 .row
   .span6
-    %h1
-      = @activity.title.html_safe
-    - if @activity.description?
-      :markdown
-        #{@activity.description}
+    %h1= @activity.title.html_safe
   .span6
     = render 'layouts/social_buttons', media_object: @activity
 
@@ -26,6 +22,10 @@
             #image-viewer-container
             #image-viewer-close
               %i.icon-remove.icon-large
+        - if @activity.description?
+          .section
+            :markdown
+              #{@activity.description}
         - if @activity.ingredients.any?
           .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
             = render 'ingredients_list', ingredients: @activity.ingredients
@@ -55,16 +55,15 @@
                 /     = render 'ingredients_list', ingredients: step.ingredients
               .step-actions.btn-group
                 -if step.ingredients.any?
-                  .btn.step-action-item.step-ingredients
+                  .btn.step-action-item.step-ingredients.btn-primary
                     %i.icon-th-list
                     .step-ingredients-source
                       = render 'ingredients_list', ingredients: step.ingredients
                 - if step.image_id?
-                  .btn.step-action-item.step-image
+                  .btn.step-action-item.step-image.btn-primary
                     %i.icon-picture
                     .step-image-source
-                      = image_tag s3_image_url(step.image_id)
-                
+                      = image_tag s3_image_url(step.image_id)             
 
 .row
   .span12
