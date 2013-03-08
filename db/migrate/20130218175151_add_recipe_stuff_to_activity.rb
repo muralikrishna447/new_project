@@ -5,6 +5,7 @@
 
 class AddRecipeStuffToActivity < ActiveRecord::Migration
   def change
+    # This fails if there is no activity ingredients table
     # drop_table  :activity_ingredients
     rename_table :recipe_ingredients, :activity_ingredients
     execute "ALTER TABLE activity_ingredients ADD PRIMARY KEY (id);"
