@@ -22,5 +22,8 @@ test:
 staging:
   <<: *defaults
 
+staging2:
+  <<: *defaults
+
 production:
   <<: *defaults
