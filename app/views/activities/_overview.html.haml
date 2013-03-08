@@ -4,7 +4,7 @@
       .span12{:itemprop => "description"}
         - if activity.has_description?
           :markdown
-            #{activity.description}
+            #{apply_shortcodes(activity.description)}
       -# .span4
         -# Removed for demo
         -# .row
