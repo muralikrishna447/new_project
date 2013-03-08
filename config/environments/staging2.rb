@@ -1,3 +1,4 @@
+# Staging 2 Environment
 DOMAIN='staging.chefsteps.com'
 CDN_DOMAIN = 'https://dpokczwqy1mzl.cloudfront.net'
 
