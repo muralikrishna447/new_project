@@ -8,7 +8,7 @@ class AddRecipeStuffToActivity < ActiveRecord::Migration
     # This fails if there is no activity ingredients table
     # drop_table  :activity_ingredients
     rename_table :recipe_ingredients, :activity_ingredients
-    execute "ALTER TABLE activity_ingredients ADD PRIMARY KEY (id);"
+    # execute "ALTER TABLE activity_ingredients ADD PRIMARY KEY (id);"
     rename_column :activity_ingredients, :recipe_id, :activity_id
     rename_index :activity_ingredients, "index_recipe_ingredients_on_ingredient_order", "index_activity_ingredients_on_ingredient_order"
     rename_index :activity_ingredients, "index_recipe_ingredients_on_recipe_id_and_ingredient_id", "index_activity_ingredients_on_activity_id_and_ingredient_id"
