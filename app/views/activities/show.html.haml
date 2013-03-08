@@ -69,14 +69,43 @@
         .community-toggle
           .btn.btn-primary
             %i.icon-comments Community
-        %h4= @discussion[:name]
-        %blockquote
-          %p= truncate(@discussion[:body].html_safe, length: 300, separator: ' ')
-          %small
-            %cite
-              = @discussion[:first_name]
-        - discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
-        = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'         
+        / %h4= @discussion[:name]
+        / %blockquote
+        /   %p= truncate(@discussion[:body].html_safe, length: 300, separator: ' ')
+        /   %small
+        /     %cite
+        /       = @discussion[:first_name]
+        - #discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+        / = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'
+        .community-content
+          %h4 Salmon and albumin
+          %blockquote
+            %p My family really only like salmon cooked sous-vide in oil, we also don't really have much access to good seafood in Denver unless you pay an arm and a leg.
+            %p I've done quite a bit at 50C as well as much shorter cook time at 57.5C. Is brining the best way to get rid of the albumin, if so is a typical 6.4% brine what should be used? And for how long?
+            %small
+              %cite
+                Johan Edstrom
+          %blockquote
+            %p So-called albumin protein is mostly a function of cooking temperature more than anything else. Worth trying 113 °F / 45 °C to see what you think of that temperature, you will certainly see less albumin percolating to the surface of the flesh.
+            %p Adding salt via a brine tends to help retain juices in the flesh—for complex reasons that I hope to explore in a future course—and so at any given temperature you'll see less juice percolate to the surface, which means you'll see less albumin.
+            %p Have you checked out the salmon 104 °F recipe on our course page?
+            %small
+              %cite
+                Chris Young
+
+          %blockquote
+            %p My family really only like salmon cooked sous-vide in oil, we also don't really have much access to good seafood in Denver unless you pay an arm and a leg.
+            %p I've done quite a bit at 50C as well as much shorter cook time at 57.5C. Is brining the best way to get rid of the albumin, if so is a typical 6.4% brine what should be used? And for how long?
+            %small
+              %cite
+                Johan Edstrom
+          %blockquote
+            %p So-called albumin protein is mostly a function of cooking temperature more than anything else. Worth trying 113 °F / 45 °C to see what you think of that temperature, you will certainly see less albumin percolating to the surface of the flesh.
+            %p Adding salt via a brine tends to help retain juices in the flesh—for complex reasons that I hope to explore in a future course—and so at any given temperature you'll see less juice percolate to the surface, which means you'll see less albumin.
+            %p Have you checked out the salmon 104 °F recipe on our course page?
+            %small
+              %cite
+                Chris Young  
 
 .row
   .span12
