@@ -68,7 +68,15 @@
       .span6.community
         .community-toggle
           .btn.btn-primary
-            %i.icon-comments Community          
+            %i.icon-comments Community
+        %h4= @discussion[:name]
+        %blockquote
+          %p= truncate(@discussion[:body].html_safe, length: 300, separator: ' ')
+          %small
+            %cite
+              = @discussion[:first_name]
+        - discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+        = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'         
 
 .row
   .span12

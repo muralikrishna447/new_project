@@ -290,17 +290,21 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   overflow: hidden
 
 .community
-  background: gray
+  border: 1px solid black
+  background: white
   height: 100%
   position: absolute
   top: 0px
   left: 100%
+  padding: 20px
+  @include boxsizing
 
 .community-open
   left: 50%
 
 .community-toggle
   left: -140px
+  top: 0px
   position: absolute
 
 //////////
