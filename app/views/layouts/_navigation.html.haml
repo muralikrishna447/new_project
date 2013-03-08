@@ -16,11 +16,14 @@
           %li.dropdown
             = link_to 'Resources', '#', class: 'dropdown-toggle', data: {toggle: 'dropdown'}
             %ul.dropdown-menu
+              .dropdown-background
               %li
                 = link_to techniques_path do
+                  / %i.icon-cogs.icon-2x
                   Techniques
               %li
                 = link_to sciences_path do
+                  / %i.icon-beaker.icon-2x
                   Science
           %li= link_to 'Forum', 'http://forum.chefsteps.com'
           %li= link_to 'Shop', 'http://store.chefsteps.com'
