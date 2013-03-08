@@ -1,4 +1,5 @@
 //= require jquery
+//= require jquery-ui
 //= require twitter/bootstrap
 //= require jquery.hammer
 //= require ./vendor
@@ -8,3 +9,4 @@
 //= require home
 //= require activities
 //= require step_ingredients
+//= require community

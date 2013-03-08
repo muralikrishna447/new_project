@@ -7,11 +7,12 @@
   .span6
     %h1= @activity.title.html_safe
   .span6
-    = render 'layouts/social_buttons', media_object: @activity
+    .pull-right
+      = render 'layouts/social_buttons', media_object: @activity
 
 .row
   .span12
-    .row
+    .row#main-content
       .span6.section#video-ingredient-unit
         .video-container
           - if @activity.youtube_id?
@@ -63,7 +64,11 @@
                   .btn.step-action-item.step-image.btn-primary
                     %i.icon-picture
                     .step-image-source
-                      = image_tag s3_image_url(step.image_id)             
+                      = image_tag s3_image_url(step.image_id)
+      .span6.community
+        .community-toggle
+          .btn.btn-primary
+            %i.icon-comments Community          
 
 .row
   .span12
