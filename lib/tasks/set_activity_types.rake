@@ -63,7 +63,8 @@ task :set_activity_types => :environment do
     135, # Breaking Down a Halibut
     189 #Making Berry Drops with Liquid Nitrogen
   ]
-  techniques = Activity.find(technique_ids)
+  # techniques = Activity.find(technique_ids)
+  techniques = Activity.where('id in(?)', technique_ids)
   techniques.each do |technique|
     if technique.activity_type.include? 'Technique'
       puts "#{technique.title} is already a Technique"
