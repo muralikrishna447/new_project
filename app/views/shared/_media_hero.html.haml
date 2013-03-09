@@ -14,3 +14,7 @@
           - media_object.activity_type.each do |type|
             %div{class: "label label-large label-#{type}"}
               = type
+        .pull-right
+          = link_to '#hero-carousel', class: 'hero-carousel-control right', data: {slide: 'next'} do
+            / %i.icon-chevron-right
+            .btn-next

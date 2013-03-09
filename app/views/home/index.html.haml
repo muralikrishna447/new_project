@@ -9,9 +9,6 @@
           - @heroes.each_with_index do |hero, index|
             %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
               = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
-        = link_to '#hero-carousel', class: 'hero-carousel-control right', data: {slide: 'next'} do
-          / %i.icon-chevron-right
-          .btn-next
   .container#hero-video
     .row
       .span10.offset1
