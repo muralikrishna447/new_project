@@ -532,10 +532,20 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 /* Large desktop */
 @media (min-width: 1200px)
   .media-hero
-    img
-      margin-top: -15%
+    height: 586px
+
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
+  #hero-container
+    width: 100%
+    left: 0px
+    #hero-carousel
+      h2
+        font-size: 20px
+        line-height: 26px
+      h3
+        font-size: 12px
+        line-height: 12px
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
