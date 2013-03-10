@@ -6,7 +6,10 @@
     .media-block
       .media
         .media-object.pull-left
-          = link_to '#', data: {youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
+          / = link_to '#', data: {youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
+          /   .btn-play
+          /     .btn-play-trangle
+          = link_to media_object do
             .btn-play
               .btn-play-trangle
         .media-heading.pull-left
