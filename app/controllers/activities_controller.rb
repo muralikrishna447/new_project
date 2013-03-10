@@ -8,6 +8,7 @@ class ActivitiesController < ApplicationController
     @activity = Activity.includes(:ingredients).find_published(params[:id], params[:token])
     @techniques = Activity.published.techniques.last(4)
     @recipes = @activity.related_by_ingredients
+    @discussion = Forum.discussions.first
   end
 
   def cooked_this

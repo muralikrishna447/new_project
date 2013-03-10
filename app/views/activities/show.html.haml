@@ -5,31 +5,31 @@
 
 .row
   .span6
-    %h1
-      = @activity.title.html_safe
-    - if @activity.description?
-      :markdown
-        #{@activity.description}
+    %h1= @activity.title.html_safe
   .span6
-    = render 'layouts/social_buttons', media_object: @activity
+    .pull-right
+      = render 'layouts/social_buttons', media_object: @activity
 
 .row
   .span12
-    .row
-      .span6.section
-        #video-ingredient-unit
-          .video-container
-            - if @activity.youtube_id?
-              %iframe{src: youtube_url(@activity.youtube_id)}
-            - elsif @activity.image_id?
-              = image_tag s3_image_url(@activity.image_id)
-            #image-viewer
-              #image-viewer-container
-              #image-viewer-close
-                %i.icon-remove.icon-large
-          - if @activity.ingredients.any?
-            .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
-              = render 'ingredients_list', ingredients: @activity.ingredients
+    .row#main-content
+      .span6.section#video-ingredient-unit
+        .video-container
+          - if @activity.youtube_id?
+            %iframe{src: youtube_url(@activity.youtube_id)}
+          - elsif @activity.image_id?
+            = image_tag s3_image_url(@activity.image_id)
+          #image-viewer
+            #image-viewer-container
+            #image-viewer-close
+              %i.icon-remove.icon-large
+        - if @activity.description?
+          .section
+            :markdown
+              #{@activity.description}
+        - if @activity.ingredients.any?
+          .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
+            = render 'ingredients_list', ingredients: @activity.ingredients
         - if @activity.required_equipment.any?
           .section
             %h4 Equipment and Materials
@@ -56,16 +56,53 @@
                 /     = render 'ingredients_list', ingredients: step.ingredients
               .step-actions.btn-group
                 -if step.ingredients.any?
-                  .btn.step-action-item.step-ingredients
+                  .btn.step-action-item.step-ingredients.btn-primary
                     %i.icon-th-list
                     .step-ingredients-source
                       = render 'ingredients_list', ingredients: step.ingredients
                 - if step.image_id?
-                  .btn.step-action-item.step-image
+                  .btn.step-action-item.step-image.btn-primary
                     %i.icon-picture
                     .step-image-source
                       = image_tag s3_image_url(step.image_id)
-                
+      .span6.community
+        .community-toggle
+          .btn.btn-primary
+            %i.icon-comments Community
+        / %h4= @discussion[:name]
+        / %blockquote
+        /   %p= truncate(@discussion[:body].html_safe, length: 300, separator: ' ')
+        /   %small
+        /     %cite
+        /       = @discussion[:first_name]
+        - #discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+        / = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'
+        .community-content
+          %h4 Salmon and albumin
+          %blockquote
+            %p My family really only like salmon cooked sous-vide in oil, we also don't really have much access to good seafood in Denver unless you pay an arm and a leg.
+            %p I've done quite a bit at 50C as well as much shorter cook time at 57.5C. Is brining the best way to get rid of the albumin, if so is a typical 6.4% brine what should be used? And for how long?
+            %small
+              %cite
+                Johan Edstrom
+          %blockquote
+            %p So-called albumin protein is mostly a function of cooking temperature more than anything else. Worth trying 113 °F / 45 °C to see what you think of that temperature, you will certainly see less albumin percolating to the surface of the flesh.
+            %p Adding salt via a brine tends to help retain juices in the flesh—for complex reasons that I hope to explore in a future course—and so at any given temperature you'll see less juice percolate to the surface, which means you'll see less albumin.
+            %p Have you checked out the salmon 104 °F recipe on our course page?
+            %small
+              %cite
+                Chris Young
+
+          %blockquote
+            %p I love Salmon, Sushi first!! :)  I have always Cedar Planked my salmon and have love the results. Now that I have seen the 104F video, I am going to have to give it a try.
+            %small
+              %cite
+                Allen Johnson
+          %blockquote
+            %p @Johan, 43C is my favourite temp too, as 40C is barely warm once it gets served. Have the same problem in UK too with fish, salmon is great, but good seafood here costs a bomb!
+            %small
+              %cite
+                Grace
 
 .row
   .span12

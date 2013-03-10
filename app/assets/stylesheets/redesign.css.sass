@@ -285,6 +285,35 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     opacity: .2
     font-weight: 40
 
+#main-content
+  position: relative
+  overflow: hidden
+
+.community
+  border: 1px solid black
+  background: white
+  height: 100%
+  position: absolute
+  top: 0px
+  left: 100%
+  padding: 30px 20px 20px
+  @include boxsizing
+  .community-content
+    height: 100%
+    overflow: auto
+    -webkit-overflow-scrolling: touch
+
+.community-open
+  left: 50%
+
+.community-toggle
+  left: -140px
+  top: 0px
+  position: absolute
+
+.community-toggle-open
+  left: 0px
+
 //////////
 
 .carousel-scroll
@@ -319,11 +348,13 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   position: absolute
   z-index: 999
   .hero-carousel-control
-    position: absolute
+    //position: absolute
     bottom: 0
     right: 0px
     height: 100px
     width: 65px
+    float: right
+    position: relative
 
 #hero-video
   margin-top: 40px
