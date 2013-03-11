@@ -1,26 +1,24 @@
-# $.fn.scrollBottom = function() { 
-#   return $(document).height() - this.scrollTop() - this.height(); 
-# };
+setOverlay = (scrollable, top_hidden, bottom_hidden) ->
+  if top_hidden > 0
+    scrollable.parent().find('.scroll-overlay-top').show()
+  else
+    scrollable.parent().find('.scroll-overlay-top').hide()
 
-# $.fn.scrollBottom = () ->
-#   $(document).height() - this.scrollTop() - this.height()
+  if bottom_hidden > 0
+    scrollable.parent().find('.scroll-overlay-bottom').show()
+  else
+    scrollable.parent().find('.scroll-overlay-bottom').hide()
 
 $ ->
   $('.scroll-shadow').each ->
     scrollable = $(this)
     total_height = scrollable.find('.scroll-shadow-content').height()
     window_height = $(this).height()
-    bottom = total_height - window_height
-    bottom_low = bottom - 5
-    bottom_high = bottom + 5
+    top_hidden = $(this).scrollTop() # Height of the hidden content at the top of the scrollable element
+    bottom_hidden = total_height - window_height - top_hidden # Height of the hidden content at the bottom of the scrollable element
+    setOverlay(scrollable, top_hidden, bottom_hidden) # Sets the overlay when the page loads
+
     scrollable.scroll ->
-      y = $(this).scrollTop()
-      $('#scrollable-y').text(y)
-      $('#scrollable-window-height').text(window_height)
-      $('#scrollable-total-height').text(total_height)
-      if bottom_low > y > 0
-        # $(this).css 'background', 'blue'
-      else if bottom_low < y < bottom_high
-        # $(this).css 'background', 'red'
-      else
-        # $(this).css 'background', 'gray'
+      top_hidden = $(this).scrollTop()
+      bottom_hidden = total_height - window_height - top_hidden
+      setOverlay(scrollable, top_hidden, bottom_hidden)
