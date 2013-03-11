@@ -56,7 +56,8 @@ $ ->
     cursor: 'move',
     helper: fixHelper,
     items: 'tr:not(:first)',
-    containment: 'parent'
+    containment: 'parent',
+    axis: 'y'
   ).disableSelection()
 
 $ ->

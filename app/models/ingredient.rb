@@ -14,11 +14,13 @@ class Ingredient < ActiveRecord::Base
   # a (nested) activity - which will also typically be used in some activity.
   attr_accessible :sub_activity_id
 
-  before_save :get_title_from_subactivity
-  def get_title_from_subactivity
+  before_save :fix_title
+  def fix_title
     if self.sub_activity_id?
       self.title= Activity.find_by_id(self.sub_activity_id).title
     end
+    self.title = self.title.strip if self.title?
+    true
   end
 
   def title
@@ -36,6 +38,7 @@ class Ingredient < ActiveRecord::Base
   end
 
   def self.find_or_create_by_subactivity_or_ingredient_title(title)
+    title.strip!
     sub_act = Activity.find_by_title(title)
     if sub_act != nil
       return find_or_create_by_sub_activity_id(sub_act.id)

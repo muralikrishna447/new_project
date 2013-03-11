@@ -12,4 +12,10 @@ class OrderSortQuestion < Question
            :options,
            to: :contents,
            allow_nil: true
+
+  def score(answer)
+    answer.contents.solution_score = self.contents.solution_score(answer.contents)
+    answer.contents.best_solution = self.contents.best_solution(answer.contents)
+    super
+  end
 end

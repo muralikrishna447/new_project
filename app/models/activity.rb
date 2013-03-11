@@ -31,7 +31,8 @@ class Activity < ActiveRecord::Base
 
   before_save :strip_title
   def strip_title
-    self.title.strip! if self.title?
+    self.title = self.title.strip if self.title?
+    true
   end
 
   after_commit :create_as_ingredient

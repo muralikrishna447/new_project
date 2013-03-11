@@ -49,8 +49,12 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
       centerGrid: false,
       enableAnimationOnInit: false,
       columns: 4,
-      dragWhitelist: '.draggable'
+      dragWhitelist: '.draggable',
+      animateSpeed: 500
     })
+
+    _.each $('.order-sort .toggle-tabs'), (tab) ->
+      new ChefSteps.Views.OrderSortTabToggler(el: tab)
 
   showStyleguide: =>
     _.each $('[data-behavior~=progress-dial]'), (input)->

@@ -24,7 +24,7 @@
     - if step.directions.present?
       .step-directions
         :markdown
-          #{raw step.directions}
+          #{raw apply_shortcodes(step.directions)}
     - if step.audio_clip?
       .audio
         %h4= step.audio_title? ? step.audio_title : 'Audio Clip'
