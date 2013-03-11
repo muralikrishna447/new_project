@@ -10,3 +10,4 @@
 //= require activities
 //= require step_ingredients
 //= require community
+//= require scroll_shadow

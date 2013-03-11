@@ -4,6 +4,14 @@
 - content_for :keywords, @activity.tag_list.join(',')
 
 .row
+  %h3 Scroll Y
+  #scrollable-y
+  %h3 Window Height
+  #scrollable-window-height
+  %h3 Total Height
+  #scrollable-total-height
+
+.row
   .span6
     %h1= @activity.title.html_safe
   .span6
@@ -38,30 +46,33 @@
             %h4 Used In
             %ul
             - @activity.used_in_activities.each do |activity|
-              %li= link_to activity.title, activity
+              %li= link_to activity.title.html_safe, activity
       .span6.section
-        .ordered-steps
-          - @activity.steps.each_with_index do |step, index|
-            .ordered-step-item{id: "order-step-item-#{index}"}
-              .step-element.step-number
-                = index + 1
-              .step-element.step-content
-                - if step.title?
-                  %h4= step.title
-                :markdown
-                  #{raw step.directions}
-                .step-actions.btn-group
-                  -if step.ingredients.any?
-                    .btn.step-action-item.step-ingredients.btn-primary
-                      %i.icon-th-list
-                      .step-ingredients-source
-                        = render 'ingredients_list', ingredients: step.ingredients
+        .ordered-steps.scroll-shadow
+          .scroll-shadow-content.pull-left
+            - @activity.steps.each_with_index do |step, index|
+              .ordered-step-item{id: "order-step-item-#{index}"}
+                .step-element.step-number
+                  = index + 1
+                .step-element.step-content
+                  - if step.title?
+                    %h4= step.title
+                  :markdown
+                    #{raw step.directions}
+                  .step-actions.btn-group
+                    -if step.ingredients.any?
+                      .btn.step-action-item.step-ingredients.btn-primary
+                        %i.icon-th-list
+                        .step-ingredients-source
+                          = render 'ingredients_list', ingredients: step.ingredients
+                    - if step.image_id?
+                      .btn.step-action-item.step-image-btn.btn-primary
+                        %i.icon-picture
                   - if step.image_id?
-                    .btn.step-action-item.step-image-btn.btn-primary
-                      %i.icon-picture
-                - if step.image_id?
-                  .step-image{id: "step-image-#{index}"}
-                    = image_tag s3_image_url(step.image_id)
+                    .step-image{id: "step-image-#{index}"}
+                      = image_tag s3_image_url(step.image_id)
+          .scroll-shadow-overlay-top.pull-left
+          .scroll-shadow-overlay-bottom
       .span6.community
         .community-toggle
           .btn.btn-primary
