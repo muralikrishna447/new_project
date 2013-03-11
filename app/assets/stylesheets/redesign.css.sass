@@ -341,22 +341,12 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   max-height: 586px
   z-index: 999
   .hero-carousel-control
-    //position: absolute
     bottom: 0
     right: 0px
     height: 100px
     width: 65px
     float: right
     position: relative
-
-#hero-video
-  margin-top: 40px
-  height: 586px
-  .span10
-    padding-top: 20px
-    padding-bottom: 20px
-    .video-container
-      @include shadow
 
 #player-close
   display: none
@@ -372,11 +362,6 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     border-radius: 0px !important
     border-width: 0px !important
     box-shadow: none !important
-
-// #recipe-gallery
-//   .media-centered
-//     img
-//       height: 210px
 
 #footer
   margin-top: 50px
@@ -561,18 +546,12 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
       .hero-carousel-control
         height: 70px
         width: 35px
-  #hero-video
-    height: inherit
-    margin-top: 0px
-    .video-container
-      margin: 0px -20px
-      iframe
-        min-height: 225px
-  #player-close
-    p
-      margin-top: 30px
-      text-align: right
+    .media-block
+      width: 100%
  
 /* Landscape phones and down */
 @media (max-width: 480px)
+  #hero-container
+    .media-object
+      margin-bottom: 0px
 
