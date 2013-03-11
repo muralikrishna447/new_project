@@ -60,7 +60,7 @@
                     .btn.step-action-item.step-image-btn.btn-primary
                       %i.icon-picture
                 - if step.image_id?
-                  .step-image
+                  .step-image{id: "step-image-#{index}"}
                     = image_tag s3_image_url(step.image_id)
       .span6.community
         .community-toggle

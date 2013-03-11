@@ -96,4 +96,7 @@ $ ->
 
   $('.step-image-btn').click ->
     image = $(this).closest('.step-content').find('.step-image')
+    $('.step-image').each ->
+      if $(this).attr('id') != image.attr('id') && $(this).css('display') == 'block'
+        $(this).toggle('blind', 300)
     image.toggle('blind', 300)
