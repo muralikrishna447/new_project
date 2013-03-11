@@ -16,7 +16,10 @@
       .span6.section#video-ingredient-unit
         .video-container
           - if @activity.youtube_id?
-            %iframe{src: youtube_url(@activity.youtube_id)}
+            - if params[:autoplay]
+              %iframe{src: youtube_url(@activity.youtube_id, 1)}
+            - else
+              %iframe{src: youtube_url(@activity.youtube_id)}
           - elsif @activity.image_id?
             = image_tag s3_image_url(@activity.image_id)
           #image-viewer

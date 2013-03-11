@@ -9,14 +9,14 @@
           - @heroes.each_with_index do |hero, index|
             %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
               = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
-  .container#hero-video
-    .row
-      .span10.offset1
-        .video-container
-          #hero-player
-      .span1
-        = link_to '#', id: 'player-close' do
-          %i.icon-remove.icon-large
+  / .container#hero-video
+  /   .row
+  /     .span10.offset1
+  /       .video-container
+  /         #hero-player
+  /     .span1
+  /       = link_to '#', id: 'player-close' do
+  /         %i.icon-remove.icon-large
 
 .row
   .span12
