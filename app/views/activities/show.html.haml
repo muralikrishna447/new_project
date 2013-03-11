@@ -112,14 +112,14 @@
         - @techniques.each_with_index do |technique,index|
           .item
             = link_to activity_path(technique) do
-              = render 'shared/media_centered', media: technique, main: 'Technique', size: 'small'
+              = render 'shared/media_centered', media: technique, size: 'small'
     %h3 Related
     .carousel-scroll#related-carousel
       .carousel-scroll-inner
         - @recipes.each_with_index do |recipe,index|
           .item
             = link_to activity_path(recipe) do
-              = render 'shared/media_centered', media: recipe, main: 'Recipe', size: 'small'
+              = render 'shared/media_centered', media: recipe, size: 'small'
 
 = #TODO Remove old code below
 

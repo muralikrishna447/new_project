@@ -15,7 +15,7 @@
         - @noresults.each do |result_item|
           .span4
             = link_to result_item.searchable do
-              = render 'shared/media_centered', media: result_item.searchable, main: 'Recipe', size: 'medium'
+              = render 'shared/media_centered', media: result_item.searchable, size: 'medium'
 
     - else
       %h4= "Results for '#{params[:q]}':"
@@ -26,7 +26,7 @@
         - @results.each do |result_item|
           .span4
             = link_to result_item.searchable do
-              = render 'shared/media_centered', media: result_item.searchable, main: 'Recipe', size: 'medium'
+              = render 'shared/media_centered', media: result_item.searchable, size: 'medium'
 
       = paginate @results
 
@@ -38,4 +38,4 @@
         - @related_results.each do |result_item|
           .span4
             = link_to result_item.searchable do
-              = render 'shared/media_centered', media: result_item.searchable, main: 'Recipe', size: 'medium'
+              = render 'shared/media_centered', media: result_item.searchable, size: 'medium'
