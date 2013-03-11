@@ -12,15 +12,6 @@ highlight = (item,prepend_qty) ->
   prependable.html(prepend_qty)
   item.addClass('ingredient-highlighted')
 
-showImage = (image) ->
-  viewer = $('#image-viewer')
-  viewer.find('#image-viewer-container').html(image)
-  viewer.show()
-
-hideViewer = () ->
-  viewer = $('#image-viewer')
-  viewer.fadeOut 500
-
 setTargetStep = (target) ->
   $('#full-ingredients-list').attr('data-target', target)
 
@@ -103,9 +94,6 @@ $ ->
     #   $('.ingredient-item').not($('.ingredient-highlighted')).each ->
     #     $(this).addClass('ingredient-unhighlighted')
 
-  $('#image-viewer').click ->
-    hideViewer()
-
-  $('.step-image').click ->
-    image = $(this).find('.step-image-source').html()
-    showImage(image)
+  $('.step-image-btn').click ->
+    image = $(this).closest('.step-content').find('.step-image')
+    image.toggle('blind', 300)
