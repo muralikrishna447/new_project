@@ -131,8 +131,8 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 
 .media-centered-medium
   width: 100%
-  margin-bottom: 20px
-  height: 208px
+  //margin-bottom: 20px
+  //height: 208px
 
 .media-hero
   position: relative
@@ -322,11 +322,31 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
       float: left
       display: none
 
+.item
+  float: left
+
+.item-medium
+  width: 370px
+  margin: 0px 10px
+
 /* Swipe */
 .swipe
   overflow: hidden
   visibility: hidden
   position: relative
+  .swipe-indicators
+    width: 45px
+    margin: 10px auto
+  .swipe-indicator-btn
+    background: gray
+    height: 20px
+    width: 20px
+    display: inline-block
+    text-align: center
+    margin: 0 auto
+    border-radius: 10px
+  .indicator-active
+    background: $dark_orange
 
 .swipe-wrap
   overflow: hidden
@@ -587,6 +607,10 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 @media (max-width: 1200px)
   .media-centered-medium
     height: inherit
+
+  .item-medium
+    width: 285px
+    margin: 0px 14px
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
