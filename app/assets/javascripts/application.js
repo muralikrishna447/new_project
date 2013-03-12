@@ -2,6 +2,7 @@
 //= require jquery-ui
 //= require twitter/bootstrap
 //= require jquery.hammer
+//= require swipe
 //= require ./vendor
 //= require ./ordered
 //= require filmstrip
