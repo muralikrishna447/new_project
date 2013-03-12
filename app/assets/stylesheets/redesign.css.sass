@@ -338,6 +338,23 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   padding: 0px
   max-height: 586px
   z-index: 999
+  #hero-carousel
+    .carousel-indicators
+      position: relative
+      width: 75px
+      margin: 0 auto
+      right: 0px
+      top: 0px
+      li
+        width: 20px
+        height: 20px
+        margin: 20px 2px
+        border-radius: 10px
+        background: gray
+        &:hover
+          background: $orange
+      .active
+        background: $dark_orange
   .hero-carousel-control
     bottom: 0
     right: 0px
@@ -510,13 +527,6 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
       background-color: $dark-orange
 
 /* Scroll Shadow */
-
-.scroll-overlay-top
-
-
-.scroll-overlay-bottom
-
-
 .scroll-overlay-top
   pointer-events: none
   height: 120px

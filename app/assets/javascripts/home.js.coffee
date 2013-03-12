@@ -7,10 +7,6 @@ $ ->
       playerVars: { 'modestbranding': 1, 'showinfo': 0, 'rel': 0, 'origin': 'http://www.chefsteps.com', 'vq': 'hd720', 'controls': 1 }
     }
 
-    $('#hero-carousel').carousel({
-      interval: 8000
-    })
-
     $('#hero-carousel').bind 'slid', ->
       youtube_id = $(this).find('.active').find('.media-hero-play').data('youtubeid')
       player.cueVideoById(youtube_id)
@@ -27,6 +23,13 @@ $ ->
       $('#hero-container').fadeIn 1000
       $('#hero-carousel').carousel('cycle')
       $(this).hide()
+
+  $('#hero-carousel').carousel({
+    interval: 8000
+  })
+
+  # $('#hero-carousel-indicators li').click ->
+  #   $(this).data('')
 
   $('#recipe-carousel').carousel({
     interval: false
