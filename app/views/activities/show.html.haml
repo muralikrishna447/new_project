@@ -16,13 +16,12 @@
       .span6.section#video-ingredient-unit
         .video-container
           - if @activity.youtube_id?
-            %iframe{src: youtube_url(@activity.youtube_id)}
+            - if params[:autoplay]
+              %iframe{src: youtube_url(@activity.youtube_id, 1)}
+            - else
+              %iframe{src: youtube_url(@activity.youtube_id)}
           - elsif @activity.image_id?
             = image_tag s3_image_url(@activity.image_id)
-          #image-viewer
-            #image-viewer-container
-            #image-viewer-close
-              %i.icon-remove.icon-large
         - if @activity.description?
           .section
             :markdown
@@ -39,44 +38,37 @@
             %h4 Used In
             %ul
             - @activity.used_in_activities.each do |activity|
-              %li= link_to activity.title, activity
+              %li= link_to activity.title.html_safe, activity
       .span6.section
-        .ordered-steps
-          - @activity.steps.each_with_index do |step, index|
-            .ordered-step-item{id: "order-step-item-#{index}"}
-              .step-element.step-number
-                = index + 1
-              .step-element.step-content
-                - if step.title?
-                  %h4= step.title
-                :markdown
-                  #{raw step.directions}
-                / - if step.ingredients.any?
-                /   .step-ingredients
-                /     = render 'ingredients_list', ingredients: step.ingredients
-              .step-actions.btn-group
-                -if step.ingredients.any?
-                  .btn.step-action-item.step-ingredients.btn-primary
-                    %i.icon-th-list
-                    .step-ingredients-source
-                      = render 'ingredients_list', ingredients: step.ingredients
-                - if step.image_id?
-                  .btn.step-action-item.step-image.btn-primary
-                    %i.icon-picture
-                    .step-image-source
+        .ordered-steps.scroll-shadow
+          .scroll-shadow-content.pull-left
+            - @activity.steps.each_with_index do |step, index|
+              .ordered-step-item{id: "order-step-item-#{index}"}
+                .step-element.step-number
+                  = index + 1
+                .step-element.step-content
+                  - if step.title?
+                    %h4= step.title
+                  :markdown
+                    #{raw step.directions}
+                  .step-actions.btn-group
+                    -if step.ingredients.any?
+                      .btn.step-action-item.step-ingredients.btn-primary
+                        %i.icon-th-list
+                        .step-ingredients-source
+                          = render 'ingredients_list', ingredients: step.ingredients
+                    - if step.image_id?
+                      .btn.step-action-item.step-image-btn.btn-primary
+                        %i.icon-picture
+                  - if step.image_id?
+                    .step-image{id: "step-image-#{index}"}
                       = image_tag s3_image_url(step.image_id)
+        .scroll-overlay-top
+        .scroll-overlay-bottom
       .span6.community
         .community-toggle
           .btn.btn-primary
             %i.icon-comments Community
-        / %h4= @discussion[:name]
-        / %blockquote
-        /   %p= truncate(@discussion[:body].html_safe, length: 300, separator: ' ')
-        /   %small
-        /     %cite
-        /       = @discussion[:first_name]
-        - #discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
-        / = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'
         .community-content
           %h4 Salmon and albumin
           %blockquote
@@ -112,14 +104,14 @@
         - @techniques.each_with_index do |technique,index|
           .item
             = link_to activity_path(technique) do
-              = render 'shared/media_centered', media: technique, main: 'Technique', size: 'small'
+              = render 'shared/media_centered', media: technique, size: 'small'
     %h3 Related
     .carousel-scroll#related-carousel
       .carousel-scroll-inner
         - @recipes.each_with_index do |recipe,index|
           .item
             = link_to activity_path(recipe) do
-              = render 'shared/media_centered', media: recipe, main: 'Recipe', size: 'small'
+              = render 'shared/media_centered', media: recipe, size: 'small'
 
 = #TODO Remove old code below
 

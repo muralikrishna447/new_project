@@ -6,5 +6,5 @@
       - @sciences.each do |science|
         .span4
           = link_to science do
-            = render 'shared/media_centered', media: science, main: 'Science', size: 'medium'
+            = render 'shared/media_centered', media: science, size: 'medium'
     = paginate @sciences

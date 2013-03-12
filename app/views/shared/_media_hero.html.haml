@@ -9,7 +9,7 @@
           / = link_to '#', data: {youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
           /   .btn-play
           /     .btn-play-trangle
-          = link_to media_object do
+          = link_to activity_path(media_object, autoplay: true) do
             .btn-play
               .btn-play-trangle
         .media-heading.pull-left
@@ -19,5 +19,4 @@
               = type
         .pull-right
           = link_to '#hero-carousel', class: 'hero-carousel-control right', data: {slide: 'next'} do
-            / %i.icon-chevron-right
             .btn-next
