@@ -53,3 +53,17 @@ $ ->
   $('#recipe-carousel').hammer().on 'swiperight', '', (event) ->
     $(this).carousel('prev')
 
+  window.mySwipe = Swipe(document.getElementById('swiper'),{
+    stopPropagation: true,
+    continuous: true,
+    transitionEnd: (index, elem) ->
+      $('.swipe-indicator-btn').removeClass 'indicator-active'
+      id = '#swipe-indicator-' + index
+      $(id).addClass 'indicator-active'
+    })
+
+  $('.swipe-indicator-btn').each ->
+    $(this).click ->
+      index = $(this).data('slide-to-index')
+      window.mySwipe.slide(index, 300)
+

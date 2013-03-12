@@ -14,21 +14,35 @@
           - @heroes.each_with_index do |hero, index|
             %li{class: "#{'active' if index == 0}",data: {target: '#hero-carousel', :'slide-to' => index}}
 
+/ .row
+/   .span12
+/     .carousel.slide#recipe-carousel
+/       .carousel-inner
+/         - @recipes.each_slice(3).with_index do |slice, index|
+/           %div{class: "item #{'active' if index == 0}"}
+/             .row
+/               .span12
+/                 .row
+/                   - slice.each do |recipe|
+/                     .span4
+/                       = link_to activity_path(recipe) do
+/                         = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe'
+/       = link_to '&lsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control left', data: {slide: 'prev'}
+/       = link_to '&rsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control right', data: {slide: 'next'}
+
 .row
   .span12
-    .carousel.slide#recipe-carousel
-      .carousel-inner
-        - @recipes.each_slice(3).with_index do |slice, index|
-          %div{class: "item #{'active' if index == 0}"}
-            .row
-              .span12
-                .row
-                  - slice.each do |recipe|
-                    .span4
-                      = link_to activity_path(recipe) do
-                        = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe'
-      = link_to '&lsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control left', data: {slide: 'prev'}
-      = link_to '&rsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control right', data: {slide: 'next'}
+    .swipe#swiper
+      .swipe-wrap
+        - @recipes.each_slice(3).with_index do |slice,index|
+          %div
+            - slice.each do |recipe|
+              .item.item-medium
+                = link_to activity_path(recipe) do
+                  = render 'shared/media_centered', media: recipe
+      .swipe-indicators
+        - @recipes.each_slice(3).with_index do |slice,index|
+          .swipe-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
 
 .row
   .span12
