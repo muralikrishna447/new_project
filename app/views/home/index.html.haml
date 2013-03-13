@@ -54,7 +54,7 @@
                   = render 'shared/media_centered', media: recipe
       .swipe-indicators#content-indicators
         - @recipes.each_slice(3).with_index do |slice,index|
-          .swipe-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
+          .swipe-indicator-btn.content-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
 
 .row
   .span12
