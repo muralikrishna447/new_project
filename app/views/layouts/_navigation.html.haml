@@ -17,14 +17,9 @@
             = link_to 'Resources', '#', class: 'dropdown-toggle', data: {toggle: 'dropdown'}
             %ul.dropdown-menu
               .dropdown-background
-              %li
-                = link_to techniques_path do
-                  / %i.icon-cogs.icon-2x
-                  Techniques
-              %li
-                = link_to sciences_path do
-                  / %i.icon-beaker.icon-2x
-                  Science
+              %li= link_to 'Techniques', techniques_path
+              %li= link_to 'Knowledge', sciences_path
+              %li= link_to 'Course', course_path('accelerated-sous-vide-cooking-course')
           %li= link_to 'Community', 'http://forum.chefsteps.com'
           %li= link_to 'Shop', 'http://store.chefsteps.com'
           %li
