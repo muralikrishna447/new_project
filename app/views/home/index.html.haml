@@ -1,19 +1,7 @@
 - content_for :title, ""
 - content_for :description, "Free online cooking school from key members of the Modernist Cuisine team. Our first course will teach you everything you need to know about sous vide cooking."
 
-= content_for :hero do
-  / .container-fluid
-  /   .row-fluid
-  /     .carousel.slide#hero-carousel
-  /       .carousel-inner
-  /         - @heroes.each_with_index do |hero, index|
-  /           %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
-  /             = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
-
-  /       %ol.carousel-indicators
-  /         - @heroes.each_with_index do |hero, index|
-  /           %li{class: "#{'active' if index == 0}",data: {target: '#hero-carousel', :'slide-to' => index}}
-  
+= content_for :hero do  
   .container-fluid#hero-container
     .row-fluid
       .span12
@@ -25,22 +13,6 @@
         .swipe-indicators#hero-indicators
           - @heroes.each_with_index do |hero, index|
             .swipe-indicator-btn.hero-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "hero-swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
-
-/ .row
-/   .span12
-/     .carousel.slide#recipe-carousel
-/       .carousel-inner
-/         - @recipes.each_slice(3).with_index do |slice, index|
-/           %div{class: "item #{'active' if index == 0}"}
-/             .row
-/               .span12
-/                 .row
-/                   - slice.each do |recipe|
-/                     .span4
-/                       = link_to activity_path(recipe) do
-/                         = render 'shared/media_centered', media: recipe, media_image: recipe.step_images.last, main: 'Recipe'
-/       = link_to '&lsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control left', data: {slide: 'prev'}
-/       = link_to '&rsaquo;'.html_safe, '#recipe-carousel', class: 'carousel-control right', data: {slide: 'next'}
 
 .row
   .span12
