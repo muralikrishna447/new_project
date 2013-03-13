@@ -15,7 +15,8 @@
         = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
           %i.icon-chevron-right
       - if @course
-        = link_to 'javascript:void(0);', class: 'btn-circle syllabus-popover', data: {toggle: 'popover', placement: 'bottom', content: course_syllabus(@course), html: true} do
+        / = link_to 'javascript:void(0);', class: 'btn-circle syllabus-popover', data: {toggle: 'popover', placement: 'bottom', content: course_syllabus(@course), html: true} do
+        = link_to '#syllabus-modal', class: 'btn-circle', data: {toggle: 'modal'} do
           %i.icon-file-alt
     .pull-right
       = render 'layouts/social_buttons', media_object: @activity
@@ -122,6 +123,14 @@
           .item
             = link_to activity_path(recipe) do
               = render 'shared/media_centered', media: recipe, size: 'small'
+
+- if @course
+  .modal.hide.fade#syllabus-modal
+    .modal-header
+      = button_tag "X", class: 'close', data: {dismiss:'modal'}
+      %h3= @course.title
+    .modal-body
+      = course_syllabus(@course)
 
 = #TODO Remove old code below
 
