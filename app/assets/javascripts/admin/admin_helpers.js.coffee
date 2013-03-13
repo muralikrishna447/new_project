@@ -12,6 +12,10 @@ $ ->
     $copy_destination.show()
     $copy_destination.append($copy)
 
+    callback = $(this).data('callback')
+    if callback != ""
+      window[callback]($copy)
+
 
 $ ->
   $(document).on 'click', '[data-behavior~=remove-element]', (event) ->

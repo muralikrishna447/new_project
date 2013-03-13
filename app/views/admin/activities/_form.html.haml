@@ -53,23 +53,24 @@
 
   = section("Steps", f) do
     %li.two-button-row
-      = copy_button 'Add Step', '#step-row', 'table#steps'
+      = copy_button 'Add Step', '#step-row', 'table#steps', 'stepCopied'
       - unless @activity.id.nil?
         = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_activity_path(@activity)
     = sortable_table('steps') do
+      %colgroup
+        %col.title
+        %col.directions
+        %col.media
+        %col.actions
       %tr
         %th Title
         %th Directions (Markdown or HTML)
-        %th Image Id
-        %th Image Description
-        %th Youtube Id
-        %th Audio Clip
-        %th Audio Title
+        %th Media
       = render 'step_form', step: nil, field_name_prefix: field_name_prefix
       - @activity.ordered_steps.each do |step|
         = render 'step_form', step: step, field_name_prefix: field_name_prefix
     %li.two-button-row
-      = copy_button 'Add Step', '#step-row', 'table#steps'
+      = copy_button 'Add Step', '#step-row', 'table#steps', 'stepCopied'
       - unless @activity.id.nil?
         = admin_button 'Edit ingredients associated with steps', associated_ingredients_admin_activity_path(@activity)
 

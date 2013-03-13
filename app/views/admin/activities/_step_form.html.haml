@@ -16,24 +16,27 @@
   end
 
 %tr{id: row_id, class: ('template-row' if is_template )}
-  %td
-    = text_field_tag "#{field_name_prefix}[title]", title
+  %td.title
+    = text_field_tag "#{field_name_prefix}[title]", title, placeholder: "Step title"
     = hidden_field_tag "#{field_name_prefix}[id]", id
-  %td= text_area_tag "#{field_name_prefix}[directions]", directions, rows: 5
-  %td
-    %ul.nav.nav-tabs
-      %li{"data-toggle" => "tab", :href => "#image_stuff"} Image
-      %li{"data-toggle" => "tab", :href => "#video_stuff"} Video
-      %li{"data-toggle" => "tab", :href => "#audio_stuff"} Audio
-    .tab-content
-      .tab-pane.active#image_stuff
-        = text_field_tag "#{field_name_prefix}[image_id]", image_id
-        = text_area_tag "#{field_name_prefix}[image_description]", image_description, rows: 5
-      .tab-pane.active#video_stuff
-        = text_field_tag "#{field_name_prefix}[youtube_id]", youtube_id
-      .tab-pane.active#audio_stuff
-        = text_field_tag "#{field_name_prefix}[audio_clip]", audio_clip, placeholder: 'example.wav'
-        = text_field_tag "#{field_name_prefix}[audio_title]", audio_title, placeholder: 'Example Title'
+  %td.directions= text_area_tag "#{field_name_prefix}[directions]", directions, placeholder: "This is how we do it", rows: 10
+  %td.media
+    %ul.nav.nav-pills
+      %li.active
+        %a{data: {toggle: :pill, target: "#media-tabs-#{id} .image-tab"}} Image
+      %li
+        %a{data: {toggle: :pill, target: "#media-tabs-#{id} .video-tab"}} Video
+      %li
+        %a{data: {toggle: :pill, target: "#media-tabs-#{id} .audio-tab"}} Audio
+    .tab-content.media-tabs{id: "media-tabs-#{id}"}
+      .tab-pane.active.image-tab
+        = text_field_tag "#{field_name_prefix}[image_id]", image_id, placeholder: 'Image file name'
+        = text_area_tag "#{field_name_prefix}[image_description]", image_description, rows: 5, placeholder: "Image description"
+      .tab-pane.video-tab
+        = text_field_tag "#{field_name_prefix}[youtube_id]", youtube_id, placeholder: 'YouTube ID'
+      .tab-pane.audio-tab
+        = text_field_tag "#{field_name_prefix}[audio_clip]", audio_clip, placeholder: 'Audio file name'
+        = text_field_tag "#{field_name_prefix}[audio_title]", audio_title, placeholder: 'Audio title'
   %td
     = remove_button 'tr'
     = reorder_icon

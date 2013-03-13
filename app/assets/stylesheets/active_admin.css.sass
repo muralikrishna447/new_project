@@ -43,7 +43,7 @@ body.admin_namespace
     padding: 0 1.4em
 
     // hide template row
-    tr.template-row:nth-child(2)
+    tr.template-row
       display: none
 
   ul.typeahead
@@ -230,6 +230,56 @@ body.admin_namespace
     .nested-form-legend
       margin-top: -10px
       border-bottom: 0
+
+  #steps
+    max-width: 1200px
+    col.title
+      width: 10%
+    col.directions
+      width: 50%
+    col.media
+      width: 20%
+    col.actions
+      width: 5%
+
+    td
+      padding: 20px 5px
+
+    th
+      text-align: left
+
+    .nav-pills > li
+      cursor: pointer
+
+    .nav-pills > .active > a
+      background-color: rgb(201, 208, 214)
+
+    .nav-pills > li > a.has-data
+      &:after
+        margin-left: 5px
+        content: "\2714 "
+
+    .media-tabs
+      width: 100%
+      padding-top:  5px
+      box-sizing: border-box
+
+      .tab-pane
+        box-sizing: border-box
+        min-height: 100px
+
+    input, textarea
+      width: 99%
+      margin-bottom: 6px
+      padding: 10px
+      box-sizing: border-box
+
+    .nav-pills, .nav-tabs
+      a
+        text-decoration: none
+
+
+
 
 .admin_activities.associated_ingredients
   .inputs
