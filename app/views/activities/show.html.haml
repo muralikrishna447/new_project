@@ -7,6 +7,16 @@
   .span6
     %h1= @activity.title.html_safe
   .span6
+    .pull-left
+      - if @course && (prev_activity = @course.prev_published_activity(@activity))
+        = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
+          %i.icon-chevron-left
+      - if @course && (next_activity = @course.next_published_activity(@activity))
+        = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
+          %i.icon-chevron-right
+      - if @course
+        %a.btn-circle
+          %i.icon-file-alt
     .pull-right
       = render 'layouts/social_buttons', media_object: @activity
 

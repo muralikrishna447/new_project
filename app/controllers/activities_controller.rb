@@ -9,6 +9,9 @@ class ActivitiesController < ApplicationController
     @techniques = Activity.published.techniques.last(4)
     @recipes = @activity.related_by_ingredients
     @discussion = Forum.discussions.first
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
+    end
   end
 
   def cooked_this
