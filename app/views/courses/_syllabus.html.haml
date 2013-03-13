@@ -1,0 +1,13 @@
+%h4= course.title
+- course.inclusions.each do |inclusion|
+  - case inclusion.nesting_level
+  - when 0
+    / = inclusion.nesting_level
+    %h5= inclusion.activity.title
+  - when 1
+    = "&nbsp;".html_safe*4 + inclusion.activity.title
+    %br
+  - when 2
+    %small
+      = "&nbsp;".html_safe*12 + inclusion.activity.title
+    %br

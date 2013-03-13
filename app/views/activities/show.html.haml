@@ -15,7 +15,7 @@
         = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
           %i.icon-chevron-right
       - if @course
-        %a.btn-circle
+        = link_to 'javascript:void(0);', class: 'btn-circle syllabus-popover', data: {toggle: 'popover', placement: 'bottom', content: course_syllabus(@course), html: true} do
           %i.icon-file-alt
     .pull-right
       = render 'layouts/social_buttons', media_object: @activity
