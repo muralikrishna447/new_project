@@ -2,17 +2,29 @@
 - content_for :description, "Free online cooking school from key members of the Modernist Cuisine team. Our first course will teach you everything you need to know about sous vide cooking."
 
 = content_for :hero do
+  / .container-fluid
+  /   .row-fluid
+  /     .carousel.slide#hero-carousel
+  /       .carousel-inner
+  /         - @heroes.each_with_index do |hero, index|
+  /           %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
+  /             = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
+
+  /       %ol.carousel-indicators
+  /         - @heroes.each_with_index do |hero, index|
+  /           %li{class: "#{'active' if index == 0}",data: {target: '#hero-carousel', :'slide-to' => index}}
+  
   .container-fluid#hero-container
     .row-fluid
-      .carousel.slide#hero-carousel
-        .carousel-inner
+      .span12
+        .swipe#hero-swiper
+          .swipe-wrap
+            - @heroes.each_with_index do |hero, index|
+              %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
+                = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
+        .swipe-indicators#hero-indicators
           - @heroes.each_with_index do |hero, index|
-            %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
-              = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
-
-        %ol.carousel-indicators
-          - @heroes.each_with_index do |hero, index|
-            %li{class: "#{'active' if index == 0}",data: {target: '#hero-carousel', :'slide-to' => index}}
+            .swipe-indicator-btn.hero-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "hero-swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
 
 / .row
 /   .span12
@@ -40,7 +52,7 @@
               .item.item-medium
                 = link_to activity_path(recipe) do
                   = render 'shared/media_centered', media: recipe
-      .swipe-indicators
+      .swipe-indicators#content-indicators
         - @recipes.each_slice(3).with_index do |slice,index|
           .swipe-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
 

@@ -67,3 +67,17 @@ $ ->
       index = $(this).data('slide-to-index')
       window.mySwipe.slide(index, 300)
 
+  window.mySwipe = Swipe(document.getElementById('hero-swiper'),{
+    stopPropagation: true,
+    continuous: true,
+    transitionEnd: (index, elem) ->
+      $('.hero-indicator-btn').removeClass 'indicator-active'
+      id = '#hero-swipe-indicator-' + index
+      $(id).addClass 'indicator-active'
+    })
+
+  $('.hero-indicator-btn').each ->
+    $(this).click ->
+      index = $(this).data('slide-to-index')
+      window.mySwipe.slide(index, 300)
+
