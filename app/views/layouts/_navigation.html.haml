@@ -14,7 +14,9 @@
           %li
             = link_to 'Recipes', recipe_gallery_index_path
           %li.dropdown
-            = link_to 'Resources', '#', class: 'dropdown-toggle', data: {toggle: 'dropdown'}
+            = link_to 'javascript:voide(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+              %i.icon-angle-down
+              Resources
             %ul.dropdown-menu
               .dropdown-background
               %li= link_to 'Techniques', techniques_path

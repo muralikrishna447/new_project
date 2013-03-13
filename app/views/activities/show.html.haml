@@ -8,13 +8,15 @@
     %h1= @activity.title.html_safe
   .span6
     .pull-left
-      - if @course && (prev_activity = @course.prev_published_activity(@activity))
-        = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
-          %i.icon-chevron-left
-      - if @course && (next_activity = @course.next_published_activity(@activity))
-        = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
-          %i.icon-chevron-right
       - if @course
+        - prev_activity = @course.prev_published_activity(@activity)
+        - next_activity = @course.next_published_activity(@activity)
+        - if prev_activity
+          = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
+            %i.icon-chevron-left
+        - if next_activity
+          = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
+            %i.icon-chevron-right
         .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
           %i.icon-file-alt
     .pull-right
