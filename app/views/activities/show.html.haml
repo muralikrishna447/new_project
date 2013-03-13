@@ -15,8 +15,7 @@
         = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
           %i.icon-chevron-right
       - if @course
-        / = link_to 'javascript:void(0);', class: 'btn-circle syllabus-popover', data: {toggle: 'popover', placement: 'bottom', content: course_syllabus(@course), html: true} do
-        = link_to '#syllabus-modal', class: 'btn-circle', data: {toggle: 'modal'} do
+        .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
           %i.icon-file-alt
     .pull-right
       = render 'layouts/social_buttons', media_object: @activity

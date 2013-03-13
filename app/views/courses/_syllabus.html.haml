@@ -1,13 +1,14 @@
 .course-syllabus
-  - course.inclusions.each do |inclusion|
-    = link_to course_activity_path(course, inclusion.activity) do
-      - case inclusion.nesting_level
-      - when 0
-        .nested-0
+  - course.inclusions.each do |inclusion|  
+    - case inclusion.nesting_level
+    - when 0
+      .nested-0
+        %h4= inclusion.activity.title
+    - when 1
+      .nested-1
+        = link_to course_activity_path(course, inclusion.activity) do
           = inclusion.activity.title
-      - when 1
-        .nested-1
-          = inclusion.activity.title
-      - when 2
-        .nested-2
+    - when 2
+      .nested-2
+        = link_to course_activity_path(course, inclusion.activity) do
           = inclusion.activity.title
