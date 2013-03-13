@@ -1,9 +1,10 @@
 module AdminHelper
-  def copy_button(text, target, destination)
+  def copy_button(text, target, destination, callback = "")
     button_tag(text, type: "button", data: {
       behavior: 'copy-element',
       'copy-target' => target,
-      'copy-destination' => destination
+      'copy-destination' => destination,
+      'callback' => callback
     }, class: 'btn-small btn-warning')
   end
 
