@@ -1,9 +1,11 @@
+- module_number = 0 
 .course-syllabus
-  - course.inclusions.each do |inclusion|  
+  - course.inclusions.each_with_index do |inclusion| 
     - case inclusion.nesting_level
     - when 0
+      - module_number += 1
       .nested-0
-        %h4= inclusion.activity.title
+        %h4= "Module #{module_number}: " + inclusion.activity.title
     - when 1
       .nested-1
         = link_to course_activity_path(course, inclusion.activity) do
