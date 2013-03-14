@@ -2,7 +2,7 @@
   .span12
     %h2 Science of
     = paginate @sciences
-    .row
+    .row.gallery
       - @sciences.each do |science|
         .span4
           = link_to science do
