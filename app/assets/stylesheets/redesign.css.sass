@@ -37,6 +37,7 @@ $blue: #006DCC
 $blue-opaque: rgba(0,109,204,.8)
 $red: #DA4f49
 $red-opaque: rgba(218,79,73,.8)
+$light-gray: #ccc
 
 ////////////////////////////////////////
 
@@ -354,15 +355,18 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 .swipe-indicators
   margin: 10px auto
 .swipe-indicator-btn
-  background: gray
+  background: white
   height: 20px
   width: 20px
   display: inline-block
   text-align: center
   margin: 0 auto
   border-radius: 10px
+  border: 1px solid $light-gray
+  @include boxsizing
 .indicator-active
-  background: $dark_orange
+  border: 2px solid $orange
+  background: white
 
 .swipe-wrap
   overflow: hidden
