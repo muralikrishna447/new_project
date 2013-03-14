@@ -10,6 +10,8 @@ class HomeController < ApplicationController
     # @filmstrip = Video.filmstrip_videos
     # @croppable = @filmstrip.map(&:class).include?(Activity)
     @recipes = Activity.published.with_video.recipes.order("RANDOM()").first(6)
+    @techniques = Activity.published.with_video.techniques.order("RANDOM()").first(6)
+    @sciences = Activity.published.with_video.sciences.order("RANDOM()").first(6)
     @heroes = [Activity.published.with_video.recipes.order('updated_at ASC').last, Activity.published.with_video.techniques.last, Activity.published.with_video.sciences.last]
     @discussion = Forum.discussions.first
     @status = Twitter.status_embed

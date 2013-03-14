@@ -14,21 +14,43 @@
           - @heroes.each_with_index do |hero, index|
             .swipe-indicator-btn.hero-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "hero-swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
 
-.row
-  .span12
-    .swipe#swiper
-      .swipe-wrap
-        - @recipes.each_slice(3).with_index do |slice,index|
-          %div
-            - slice.each do |recipe|
-              .item.item-medium
-                = link_to activity_path(recipe) do
-                  = render 'shared/media_centered', media: recipe
-      .swipe-indicators#content-indicators
-        - @recipes.each_slice(3).with_index do |slice,index|
-          .swipe-indicator-btn.content-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
+/ .row
+/   .span12
+/     .swipe#swiper
+/       .swipe-wrap
+/         - @recipes.each_slice(3).with_index do |slice,index|
+/           %div
+/             - slice.each do |recipe|
+/               .item.item-medium
+/                 = link_to activity_path(recipe) do
+/                   = render 'shared/media_centered', media: recipe
+/       .swipe-indicators#content-indicators
+/         - @recipes.each_slice(3).with_index do |slice,index|
+/           .swipe-indicator-btn.content-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
 
 .row
+  .span12
+    .row
+      .span4
+        %h4.text-center Recipes
+        .vertical-swipe
+          - @recipes.each do |recipe|
+            = link_to activity_path(recipe) do
+              = render 'shared/media_centered', media: recipe
+      .span4
+        %h4.text-center Techniques
+        .vertical-swipe
+          - @techniques.each do |technique|
+            = link_to activity_path(technique) do
+              = render 'shared/media_centered', media: technique
+      .span4
+        %h4.text-center Knowledge
+        .vertical-swipe
+          - @sciences.each do |science|
+            = link_to activity_path(science) do
+              = render 'shared/media_centered', media: science
+
+.row.section
   .span12
     .row
       .span6
