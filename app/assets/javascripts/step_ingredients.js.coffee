@@ -1,7 +1,3 @@
-adjustStepHeight = () ->
-  height = $('#video-ingredient-unit').height()
-  $('.ordered-steps').height(height)
-
 clearHighlights = () ->
   $('.prependable').text('')
   $('.ingredient-item').removeClass('ingredient-highlighted')
@@ -53,7 +49,7 @@ window.showStepIngredients = (step_ingredients) ->
       $(this).addClass('ingredient-unhighlighted')
 
 $ ->
-  adjustStepHeight()
+  # adjustStepHeight()
 
   # When a user hover overs a step, the ingredients used in the step are highlighted in the full ingredients list
   $('.step-ingredients').click ->

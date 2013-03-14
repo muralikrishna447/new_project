@@ -8,6 +8,8 @@
     %h1= @activity.title.html_safe
   .span6
     .pull-left
+      .btn-circle#show-all
+        %i.icon-file
       - if @course
         - prev_activity = @course.prev_published_activity(@activity)
         - next_activity = @course.next_published_activity(@activity)
