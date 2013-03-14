@@ -58,7 +58,7 @@ $ ->
       clearHighlights()
     else
       clearHighlights()
-      window.showStepIngredients($(this))
+      window.showStepIngredients($(this).closest('.ordered-step-item'))
       step_id = $(this).closest('.ordered-step-item').attr('id')
       setTargetStep(step_id)
       $(this).attr('data-active', true)
