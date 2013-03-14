@@ -33,22 +33,32 @@
     .row
       .span4
         %h4.text-center Recipes
-        .vertical-swipe
-          - @recipes.each do |recipe|
-            = link_to activity_path(recipe) do
-              = render 'shared/media_centered', media: recipe
+        / .vertical-swipe
+        /   - @recipes.each do |recipe|
+        /     = link_to activity_path(recipe) do
+        /       = render 'shared/media_centered', media: recipe
+        .swipe#recipe-swiper
+          .swipe-wrap
+            - @recipes.each do |recipe|
+              %div
+                = link_to activity_path(recipe) do
+                  = render 'shared/media_centered', media: recipe
       .span4
         %h4.text-center Techniques
-        .vertical-swipe
-          - @techniques.each do |technique|
-            = link_to activity_path(technique) do
-              = render 'shared/media_centered', media: technique
+        .swipe#technique-swiper
+          .swipe-wrap
+            - @techniques.each do |technique|
+              %div
+                = link_to activity_path(technique) do
+                  = render 'shared/media_centered', media: technique
       .span4
         %h4.text-center Knowledge
-        .vertical-swipe
-          - @sciences.each do |science|
-            = link_to activity_path(science) do
-              = render 'shared/media_centered', media: science
+        .swipe#knowledge-swiper
+          .swipe-wrap
+            - @sciences.each do |science|
+              %dive
+                = link_to activity_path(science) do
+                  = render 'shared/media_centered', media: science
 
 .row.section
   .span12

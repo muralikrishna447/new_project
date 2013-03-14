@@ -31,3 +31,18 @@ $ ->
     $(this).click ->
       index = $(this).data('slide-to-index')
       window.mySwipe.slide(index, 300)
+
+  window.recipeSwipe = Swipe(document.getElementById('recipe-swiper'),{
+    stopPropagation: true,
+    continuous: true
+    })
+
+  window.recipeSwipe = Swipe(document.getElementById('technique-swiper'),{
+    stopPropagation: true,
+    continuous: true
+    })
+
+  window.recipeSwipe = Swipe(document.getElementById('knowledge-swiper'),{
+    stopPropagation: true,
+    continuous: true
+    })
