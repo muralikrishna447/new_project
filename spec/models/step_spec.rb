@@ -20,10 +20,10 @@ end
 
 describe Step, '#update_ingredients' do
   let(:step) { Fabricate(:step, title: 'foo') }
-  let(:soup) { {title: 'Soup', display_quantity: '2', unit: 'g'}  }
-  let(:pepper) { {title: 'Pepper', display_quantity: '1', unit: 'kg'}  }
+  let(:soup) { {title: 'Soup', note: 'hot', display_quantity: '2', unit: 'g'}  }
+  let(:pepper) { {title: 'Pepper', note: 'black', display_quantity: '1', unit: 'kg'}  }
   let(:ingredient_attrs) {[ soup, pepper, pepper,
-    { title: '', display_quantity: '2', unit: '' }
+    { title: '', note: "yarg", display_quantity: '2', unit: '' }
   ]}
 
 
