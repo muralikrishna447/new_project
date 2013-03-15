@@ -3,10 +3,10 @@
 - content_for :canonical_link, activity_url(@activity)
 - content_for :keywords, @activity.tag_list.join(',')
 
-.row
+.row.printable
   .span6
     %h1= @activity.title.html_safe
-  .span6
+  .span6.noprint
     .pull-left
       .btn-circle#show-all
         %i.icon-file
@@ -24,7 +24,7 @@
     .pull-right
       = render 'layouts/social_buttons', media_object: @activity
 
-.row
+.row.printable.printable-column
   .span12
     .row#main-content
       .span6.section#video-ingredient-unit
@@ -82,7 +82,7 @@
                       = render 'ingredients_list', ingredients: step.ingredients
         .scroll-overlay-top
         .scroll-overlay-bottom
-      .span6.community
+      .span6.community.noprint
         .community-toggle
           .btn.btn-primary
             %i.icon-comments Community

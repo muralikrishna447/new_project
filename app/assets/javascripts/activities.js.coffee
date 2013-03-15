@@ -32,4 +32,4 @@ $ ->
     $(this).popover()
 
   $('.syllabus-popover').each ->
-    $(this).popover() 
+    $(this).popover()
