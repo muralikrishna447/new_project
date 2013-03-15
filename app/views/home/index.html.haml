@@ -33,10 +33,6 @@
     .row
       .span4
         %h4.text-center Recipes
-        / .vertical-swipe
-        /   - @recipes.each do |recipe|
-        /     = link_to activity_path(recipe) do
-        /       = render 'shared/media_centered', media: recipe
         .swipe#recipe-swiper
           .swipe-wrap
             - @recipes.each do |recipe|
@@ -93,19 +89,3 @@
           /   %li FREE Bonus Content: Sous Vide Time and Temperature data sheets
           = link_to sign_up_path, class: 'btn btn-primary btn-large pull' do
             Sign Up Now
-
-= # TODO Implement Culinary Challenge and Testimonials
-/ .row
-/   .span12
-/     .row
-/       .span6
-/         .well
-/           %h2 Culinary Challenge:
-/           %h4 Something Your Grandmother Would Have Cooked
-/       .span6
-/         - 2.times do
-/           %blockquote.pull-right
-/             %p
-/               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
-/             %small
-/               User Testimonial
