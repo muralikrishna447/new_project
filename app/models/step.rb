@@ -43,6 +43,7 @@ class Step < ActiveRecord::Base
       ingredient = Ingredient.find_or_create_by_subactivity_or_ingredient_title(title)
       step_ingredient = ingredients.find_or_create_by_ingredient_id_and_step_id(ingredient.id, self.id)
       step_ingredient.update_attributes(
+        note: ingredient_attr[:note],
         display_quantity: ingredient_attr[:display_quantity],
         unit: ingredient_attr[:unit],
         ingredient_order_position: :last

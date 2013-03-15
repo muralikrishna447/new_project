@@ -8,7 +8,7 @@ class StepIngredient < ActiveRecord::Base
 
   delegate :title, :for_sale, :for_sale?, :product_url, :product_url?, :sub_activity_id, to: :ingredient
 
-  attr_accessible :step_id, :ingredient_id, :quantity, :unit, :ingredient_order_position
+  attr_accessible :step_id, :ingredient_id, :quantity, :unit, :ingredient_order_position, :note
 
   validates :ingredient_id, presence: true
   validates :step_id, presence: true

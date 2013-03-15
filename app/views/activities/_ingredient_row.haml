@@ -7,6 +7,8 @@
       =link_to subact.title.html_safe, activity_path(subact), { target: "_blank", onclick: "addScalingToLink(this);"}
     - else
       =ingredient.title.html_safe
+    - if ingredient.note?
+      %span.note= apply_shortcodes(ingredient.note).html_safe
 
   %td.quantity-group.qtyfade
     .lbs-qty

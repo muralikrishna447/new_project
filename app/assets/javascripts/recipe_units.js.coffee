@@ -3,6 +3,10 @@ csTempUnits = "c"
 csLengthUnits = "cm"
 csUnitsCookieName = "chefsteps_units"
 
+# NOTE WELL there are some places where we are using children(), not find() here very on purpose, because it is
+# possible to have a quantity row nested in a quantity row, specifically when shortcodes like [ea 5] are used
+# in the ingredient notes field.
+
 
 unless paramScaling?
   csScaling = 1.0
@@ -23,7 +27,7 @@ $ ->
     origValue = Number($(element).text())
     cell = $(element).parent()
     row = cell.parent()
-    unit_cell = row.find('.unit')
+    unit_cell = row.children('.unit')
 
     if unit_cell.text() == "kg"
       origValue *= 1000
@@ -52,7 +56,7 @@ $ ->
 
 # make all the ingredient amounts editable
 $ ->
-  $(".ingredients .main-qty, .ingredients .lbs-qty").editable ((value, settings) ->
+  $(".quantity-group .main-qty, .quantity-group .lbs-qty").editable ((value, settings) ->
     item = $(this)
     old_val = Number(@revert)
     new_val = Number(value)
@@ -66,11 +70,11 @@ $ ->
         if item.hasClass('lbs-qty')
           # editing pounds
           old_lbs = old_val
-          old_ozs = Number(cell.find('.main-qty').text())
+          old_ozs = Number(cell.children('.main-qty').text())
           new_total = (new_val * 16) + old_ozs
         else
           # editing ounces
-          old_lbs = Number(cell.find('.lbs-qty').text())
+          old_lbs = Number(cell.children('.lbs-qty').text())
           old_ozs = old_val
           new_total = (old_lbs * 16) + new_val
 
@@ -101,12 +105,12 @@ $ ->
   $('.lbs-label').click ->
     $(this).prev().click()
   $('.unit').click ->
-    $(this).parent().find('.main-qty').click()
+    $(this).parent().children('.main-qty').click()
 
 # Replace the ingredient quantities and units for a row
 setRow = (row, qtyLbs, qty, units) ->
-  cell = row.find('.main-qty')
-  row.find('.unit').text(units)
+  cell = row.children('.quantity-group').find('.main-qty')
+  row.children('.unit').text(units)
 
   # Round to a sensible number of digits after the decimal
   decDigits = 2
@@ -119,17 +123,17 @@ setRow = (row, qtyLbs, qty, units) ->
   # for pounds but that creates spacing problems.
   cell.text qty
   if qtyLbs != "" and units == "oz"
-    row.find(".lbs-qty, .lbs-label").show()
-    row.find(".lbs-label").text(if qtyLbs == 1 then "lb, " else "lbs, ")
-    row.find(".lbs-qty").text(qtyLbs)
+    row.children('.quantity-group').children(".lbs-qty, .lbs-label").show()
+    row.children('.quantity-group').children(".lbs-label").text(if qtyLbs == 1 then "lb, " else "lbs, ")
+    row.children('.quantity-group').children(".lbs-qty").text(qtyLbs)
   else
-    row.find(".lbs-qty, .lbs-label").hide()
+    row.children('.quantity-group').children(".lbs-qty, .lbs-label").hide()
 
 
 # Compute the new ingredient quantities and units for a row
 updateOneRowUnits = ->
-  origValue = Number($(this).find('.main-qty').data("origValue")) * csScaling
-  existingUnits = $(this).find('.unit').text()
+  origValue = Number($(this).children('.quantity-group').find('.main-qty').data("origValue")) * csScaling
+  existingUnits = $(this).children('.unit').text()
 
   # "a/n" means as needed, don't do anything. ditto if blank - formerly used
   # in cases where we mean "all of a subrecipe from above"
@@ -172,15 +176,15 @@ updateUnits = (animate) ->
     # animate all the values and units down ...
     $('.qtyfade').fadeOut "fast"
     $('.qtyfade').promise().done ->
-      $('.quantity-group').closest('tr').each(updateOneRowUnits)
+      $('.quantity-group').parent().each(updateOneRowUnits)
       $('.text-quantity-group').each(updateOneRowUnits)
       $('.qtyfade').fadeIn "fast"
   else
-    $('.quantity-group').closest('tr').each(updateOneRowUnits)
+    $('.quantity-group').parent().each(updateOneRowUnits)
     $('.text-quantity-group').each(updateOneRowUnits)
 
 addScalingToLink = (anchor) ->
-  window.open($(anchor).attr("href") + '?scaling=' + $(anchor).parents('tr').find('.main-qty').text());
+  window.open($(anchor).attr("href") + '?scaling=' + $(anchor).parents('tr').children('.quantity-group').find('.main-qty').text());
   return false;
 
 # make globally available
@@ -245,7 +249,6 @@ fractionForSixteenths = (numerator) ->
 
 updateOneLength = ->
   v = Number($(this).find('.length').attr("data-orig-value"))
-  #debugger if v == 11
   if csLengthUnits == "in"
 
     # Convert to feet, inches, and 16ths of an inch
