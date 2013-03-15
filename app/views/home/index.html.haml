@@ -69,7 +69,7 @@
             %h3 Latest From Our Forums:
             %h4= @discussion[:name]
             %blockquote
-              %p= truncate(@discussion[:body].html_safe, length: 300, separator: ' ')
+              %p= truncate(strip_tags(@discussion[:body]), length: 300, separator: ' ')
               %small
                 %cite
                   = @discussion[:first_name]
