@@ -1,18 +1,32 @@
 - content_for :title, ""
 - content_for :description, "Free online cooking school from key members of the Modernist Cuisine team. Our first course will teach you everything you need to know about sous vide cooking."
 
-= content_for :hero do
+= content_for :hero do  
   .container-fluid#hero-container
     .row-fluid
-      .carousel.slide#hero-carousel
-        .carousel-inner
+      .span12
+        .swipe#hero-swiper
+          .swipe-wrap
+            - @heroes.each_with_index do |hero, index|
+              %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
+                = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
+        .swipe-indicators#hero-indicators
           - @heroes.each_with_index do |hero, index|
-            %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
-              = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
+            .swipe-indicator-btn.hero-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "hero-swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
 
-        %ol.carousel-indicators
-          - @heroes.each_with_index do |hero, index|
-            %li{class: "#{'active' if index == 0}",data: {target: '#hero-carousel', :'slide-to' => index}}
+/ .row
+/   .span12
+/     .swipe#swiper
+/       .swipe-wrap
+/         - @recipes.each_slice(3).with_index do |slice,index|
+/           %div
+/             - slice.each do |recipe|
+/               .item.item-medium
+/                 = link_to activity_path(recipe) do
+/                   = render 'shared/media_centered', media: recipe
+/       .swipe-indicators#content-indicators
+/         - @recipes.each_slice(3).with_index do |slice,index|
+/           .swipe-indicator-btn.content-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
 
 / .row
 /   .span12
@@ -32,64 +46,66 @@
 
 .row
   .span12
-    .swipe#swiper
-      .swipe-wrap
-        - @recipes.each_slice(3).with_index do |slice,index|
-          %div
-            - slice.each do |recipe|
-              .item.item-medium
+    .row
+      .span4
+        %h4.text-center Recipes
+        .swipe#recipe-swiper
+          .swipe-wrap
+            - @recipes.each do |recipe|
+              %div
                 = link_to activity_path(recipe) do
                   = render 'shared/media_centered', media: recipe
-      .swipe-indicators
-        - @recipes.each_slice(3).with_index do |slice,index|
-          .swipe-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
+      .span4
+        %h4.text-center Techniques
+        .swipe#technique-swiper
+          .swipe-wrap
+            - @techniques.each do |technique|
+              %div
+                = link_to activity_path(technique) do
+                  = render 'shared/media_centered', media: technique
+      .span4
+        %h4.text-center Knowledge
+        .swipe#knowledge-swiper
+          .swipe-wrap
+            - @sciences.each do |science|
+              %dive
+                = link_to activity_path(science) do
+                  = render 'shared/media_centered', media: science
 
-.row
+.row.section
   .span12
     .row
-      .span6
-        .row
-          .span6
-            %h3 Latest From Our Forums:
-            %h4= @discussion[:name]
-            %blockquote
-              %p= truncate(@discussion[:body].html_safe, length: 300, separator: ' ')
-              %small
-                %cite
-                  = @discussion[:first_name]
-            - discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
-            = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'
+      .span8
+        %h3 Latest From Our Forums:
+        %h4= @discussion[:name]
+        %blockquote
+          %p= truncate(strip_tags(@discussion[:body]), length: 300, separator: ' ')
+          %small
+            %cite
+              = @discussion[:first_name]
+        - discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+        = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'
 
-            %hr
+        %hr
 
-            - if @status
-              #twitter-status
-                %h3 Latest Tweet:
-                = @status.html_safe
-                = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
-      .span6
-        .hero-unit
-          %h2 Sign up for a FREE account
-          %hr
-          / %ul
-          /   %li Keep track of your favorite recipes
-          /   %li Save notes on what you've cooked
-          /   %li FREE Bonus Content: Sous Vide Time and Temperature data sheets
-          = link_to sign_up_path, class: 'btn btn-primary btn-large pull' do
-            Sign Up Now
+        - if @status
+          #twitter-status
+            %h3 Latest Tweet:
+            = @status.html_safe
+            = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
+      .span4
+        .well
+          %h3 Sign up for free account
+          %ul
+            / %li Get updated on new content
+            / %li Keep track of your favorite recipes
+            / %li Save notes on what you've cooked
+            / %li FREE Bonus Content: Sous Vide Time and Temperature data sheets
+          = form_tag sign_up_url, :method => :get do
+            %p= email_field_tag 'email', nil, {class: 'input-block-level', placeholder: 'Enter email', required: true}
+            %p= submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
+          / = link_to sign_up_path, class: 'btn btn-primary btn-large pull' do
+          /   Sign Up Now
 
-= # TODO Implement Culinary Challenge and Testimonials
-/ .row
-/   .span12
-/     .row
-/       .span6
-/         .well
-/           %h2 Culinary Challenge:
-/           %h4 Something Your Grandmother Would Have Cooked
-/       .span6
-/         - 2.times do
-/           %blockquote.pull-right
-/             %p
-/               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius consectetur arcu, nec adipiscing turpis porta id. Nulla pellentesque, mauris quis commodo fringilla, quam lorem vehicula lorem, feugiat rhoncus tellus felis non nunc."
-/             %small
-/               User Testimonial
+= content_for :footer do
+  = render 'layouts/footer'

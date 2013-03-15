@@ -45,5 +45,20 @@ Delve::Application.configure do
   config.sass.preferred_syntax = :sass
 
   DISQUS_SHORTNAME = "delvestaging"
+
+  # Bullet Gem
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.alert = false
+    Bullet.bullet_logger = false
+    Bullet.console = true
+    Bullet.growl = false
+    # Bullet.xmpp = { :account => 'bullets_account@jabber.org',
+    #                 :password => 'bullets_password_for_jabber',
+    #                 :receiver => 'your_account@jabber.org',
+    #                 :show_online_status => true }
+    Bullet.rails_logger = false
+    Bullet.airbrake = false
+  end
 end
 

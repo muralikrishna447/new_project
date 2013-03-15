@@ -3,115 +3,148 @@
 - content_for :canonical_link, activity_url(@activity)
 - content_for :keywords, @activity.tag_list.join(',')
 
-.row
-  .span6
-    %h1= @activity.title.html_safe
-  .span6
-    .pull-right
-      = render 'layouts/social_buttons', media_object: @activity
+-if params[:scaling]
+  :javascript
+    paramScaling = #{params[:scaling]};
 
-.row
-  .span12
-    .row#main-content
-      .span6.section#video-ingredient-unit
-        .video-container
-          - if @activity.youtube_id?
-            - if params[:autoplay]
-              %iframe{src: youtube_url(@activity.youtube_id, 1)}
-            - else
-              %iframe{src: youtube_url(@activity.youtube_id)}
-          - elsif @activity.image_id?
-            = image_tag s3_image_url(@activity.image_id)
-        - if @activity.description?
-          .section
-            :markdown
-              #{@activity.description}
-        - if @activity.ingredients.any?
-          .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
-            = render 'ingredients_list', ingredients: @activity.ingredients
-        - if @activity.required_equipment.any?
-          .section
-            %h4 Equipment and Materials
-            = render 'equipment_list', equipment: @activity.required_equipment
-        - if @activity.used_in_activities.any?
-          .section
-            %h4 Used In
-            %ul
-            - @activity.used_in_activities.each do |activity|
-              %li= link_to activity.title.html_safe, activity
-      .span6.section
-        .ordered-steps.scroll-shadow
-          .scroll-shadow-content.pull-left
-            - @activity.steps.each_with_index do |step, index|
-              .ordered-step-item{id: "order-step-item-#{index}"}
-                .step-element.step-number
-                  = index + 1
-                .step-element.step-content
-                  - if step.title?
-                    %h4= step.title
-                  :markdown
-                    #{raw step.directions}
-                  .step-actions.btn-group
-                    -if step.ingredients.any?
-                      .btn.step-action-item.step-ingredients.btn-primary
-                        %i.icon-th-list
-                        .step-ingredients-source
-                          = render 'ingredients_list', ingredients: step.ingredients
+.recipe_schema{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
+
+  .row.printable
+    .span6
+      %h1= @activity.title.html_safe
+    .span6.noprint
+      .pull-left
+        .btn-circle#show-all
+          %i.icon-file
+        - if @course
+          - prev_activity = @course.prev_published_activity(@activity)
+          - next_activity = @course.next_published_activity(@activity)
+          - if prev_activity
+            = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
+              %i.icon-chevron-left
+          - if next_activity
+            = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
+              %i.icon-chevron-right
+          .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
+            %i.icon-file-alt
+      .pull-right
+        = render 'layouts/social_buttons', media_object: @activity
+
+  .row.printable.printable-column
+    .span12
+      .row#main-content
+        .span6.section#video-ingredient-unit
+          .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+            - if @activity.youtube_id?
+              - if params[:autoplay]
+                %iframe{src: youtube_url(@activity.youtube_id, 1)}
+              - else
+                %iframe{src: youtube_url(@activity.youtube_id)}
+            - elsif @activity.image_id?
+              = image_tag s3_image_url(@activity.image_id)
+          - if @activity.description?
+            .section
+              :markdown
+                #{@activity.description}
+          - if @activity.ingredients.any?
+            .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
+              = render 'ingredients_list', ingredients: @activity.ingredients
+          - if @activity.required_equipment.any?
+            .section
+              %h4 Equipment and Materials
+              = render 'equipment_list', equipment: @activity.required_equipment
+          - if @activity.used_in_activities.any?
+            .section
+              %h4 Used In
+              %ul
+              - @activity.used_in_activities.each do |activity|
+                %li= link_to activity.title.html_safe, activity
+        .span6.section
+          .ordered-steps.scroll-shadow
+            .scroll-shadow-content.pull-left
+              - @activity.steps.each_with_index do |step, index|
+                .ordered-step-item{id: "order-step-item-#{index}"}
+                  .step-element.step-number
+                    = index + 1
+                  .step-element.step-content
+                    - if step.title?
+                      %h4= step.title
+                    :markdown
+                      #{raw step.directions}
+                    .step-actions.btn-group
+                      -if step.ingredients.any?
+                        .btn.step-action-item.step-ingredients.btn-primary
+                          %i.icon-th-list
+                      - if step.image_id?
+                        .btn.step-action-item.step-image-btn.btn-primary
+                          %i.icon-picture
                     - if step.image_id?
-                      .btn.step-action-item.step-image-btn.btn-primary
-                        %i.icon-picture
-                  - if step.image_id?
-                    .step-image{id: "step-image-#{index}"}
-                      = image_tag s3_image_url(step.image_id)
-        .scroll-overlay-top
-        .scroll-overlay-bottom
-      .span6.community
-        .community-toggle
-          .btn.btn-primary
-            %i.icon-comments Community
-        .community-content
-          %h4 Salmon and albumin
-          %blockquote
-            %p My family really only like salmon cooked sous-vide in oil, we also don't really have much access to good seafood in Denver unless you pay an arm and a leg.
-            %p I've done quite a bit at 50C as well as much shorter cook time at 57.5C. Is brining the best way to get rid of the albumin, if so is a typical 6.4% brine what should be used? And for how long?
-            %small
-              %cite
-                Johan Edstrom
-          %blockquote
-            %p So-called albumin protein is mostly a function of cooking temperature more than anything else. Worth trying 113 °F / 45 °C to see what you think of that temperature, you will certainly see less albumin percolating to the surface of the flesh.
-            %p Adding salt via a brine tends to help retain juices in the flesh—for complex reasons that I hope to explore in a future course—and so at any given temperature you'll see less juice percolate to the surface, which means you'll see less albumin.
-            %p Have you checked out the salmon 104 °F recipe on our course page?
-            %small
-              %cite
-                Chris Young
+                      .step-image{id: "step-image-#{index}"}
+                        = image_tag s3_image_url(step.image_id)
+                    - if step.ingredients.any?
+                      .step-ingredients-source.well.section
+                        = render 'ingredients_list', ingredients: step.ingredients
+          .scroll-overlay-top
+          .scroll-overlay-bottom
+        .span6.community.noprint
+          .community-toggle
+            .btn.btn-primary
+              %i.icon-comments Community
+          .community-content
+            %h4 Salmon and albumin
+            %blockquote
+              %p My family really only like salmon cooked sous-vide in oil, we also don't really have much access to good seafood in Denver unless you pay an arm and a leg.
+              %p I've done quite a bit at 50C as well as much shorter cook time at 57.5C. Is brining the best way to get rid of the albumin, if so is a typical 6.4% brine what should be used? And for how long?
+              %small
+                %cite
+                  Johan Edstrom
+            %blockquote
+              %p So-called albumin protein is mostly a function of cooking temperature more than anything else. Worth trying 113 °F / 45 °C to see what you think of that temperature, you will certainly see less albumin percolating to the surface of the flesh.
+              %p Adding salt via a brine tends to help retain juices in the flesh—for complex reasons that I hope to explore in a future course—and so at any given temperature you'll see less juice percolate to the surface, which means you'll see less albumin.
+              %p Have you checked out the salmon 104 °F recipe on our course page?
+              %small
+                %cite
+                  Chris Young
 
-          %blockquote
-            %p I love Salmon, Sushi first!! :)  I have always Cedar Planked my salmon and have love the results. Now that I have seen the 104F video, I am going to have to give it a try.
-            %small
-              %cite
-                Allen Johnson
-          %blockquote
-            %p @Johan, 43C is my favourite temp too, as 40C is barely warm once it gets served. Have the same problem in UK too with fish, salmon is great, but good seafood here costs a bomb!
-            %small
-              %cite
-                Grace
+            %blockquote
+              %p I love Salmon, Sushi first!! :)  I have always Cedar Planked my salmon and have love the results. Now that I have seen the 104F video, I am going to have to give it a try.
+              %small
+                %cite
+                  Allen Johnson
+            %blockquote
+              %p @Johan, 43C is my favourite temp too, as 40C is barely warm once it gets served. Have the same problem in UK too with fish, salmon is great, but good seafood here costs a bomb!
+              %small
+                %cite
+                  Grace
 
-.row
-  .span12
-    %h3 Techniques
-    .carousel-scroll#technique-carousel
-      .carousel-scroll-inner
-        - @techniques.each_with_index do |technique,index|
-          .item
-            = link_to activity_path(technique) do
-              = render 'shared/media_centered', media: technique, size: 'small'
-    %h3 Related
-    .carousel-scroll#related-carousel
-      .carousel-scroll-inner
-        - @recipes.each_with_index do |recipe,index|
-          .item
-            = link_to activity_path(recipe) do
-              = render 'shared/media_centered', media: recipe, size: 'small'
+  .row
+    .span12
+      %h3 Techniques
+      .carousel-scroll#technique-carousel
+        .carousel-scroll-inner
+          - @techniques.each_with_index do |technique,index|
+            .item
+              = link_to activity_path(technique) do
+                = render 'shared/media_centered', media: technique, size: 'small'
+      %h3 Related
+      .carousel-scroll#related-carousel
+        .carousel-scroll-inner
+          - @recipes.each_with_index do |recipe,index|
+            .item
+              = link_to activity_path(recipe) do
+                = render 'shared/media_centered', media: recipe, size: 'small'
+
+  - if @course
+    .modal.hide.fade#syllabus-modal
+      .modal-header
+        = button_tag "X", class: 'close', data: {dismiss:'modal'}
+        %h3= @course.title
+      .modal-body
+        = course_syllabus(@course)
+
+/ .section
+/   - disqus_id = "activity-#{@activity.id}"
+/   = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
 
 = #TODO Remove old code below
 

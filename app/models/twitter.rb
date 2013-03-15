@@ -8,7 +8,7 @@ class Twitter
   def self.status_embed
     if self.status
       status_id = self.status['id']
-      response = HTTParty.get("https://api.twitter.com/1/statuses/oembed.json?id=#{status_id}&hide_thread=true&omit_script=true")
+      response = HTTParty.get("https://api.twitter.com/1/statuses/oembed.json?id=#{status_id}&hide_thread=true&omit_script=true&hide_media=true")
       response['html']
     end
   end

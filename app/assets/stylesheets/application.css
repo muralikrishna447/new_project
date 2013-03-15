@@ -13,4 +13,5 @@
  *= require twitter/bootstrap/_responsive
  *= require _font-awesome
  *= require redesign
+ *= require application/responsiveslides
  */

@@ -37,11 +37,13 @@ $blue: #006DCC
 $blue-opaque: rgba(0,109,204,.8)
 $red: #DA4f49
 $red-opaque: rgba(218,79,73,.8)
+$light-gray: #ccc
 
 ////////////////////////////////////////
 
 #main-container
   margin-top: 60px
+  margin-bottom: 60px
 
 /* Bootstrap Overrides */
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
@@ -75,9 +77,10 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     z-index: -1
     opacity: .6
 .well
-  border: none
+  border: 1px solid #ccc
   border-radius: 0px
   background-color: rgba(0,0,0,.1)
+  @include boxsizing
 
 .well-opaque
   background-color: rgba(255,255,255,.8)
@@ -87,9 +90,24 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   border-radius: 0px
   @include shadow
 
+.modal
+  border-radius: 0px
+
+.input-block-level
+  width: 100%
+
+h1, h2, h3, h4
+  font-family: 'Raleway', sans-serif
+  letter-spacing: 1px
+
 ////////////////////////////////////////
 
 /* Media Objects */
+
+.gallery
+  .media-centered
+    margin-bottom: 20px
+
 .section
   margin-top: 20px
   
@@ -157,6 +175,9 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     .media-object
       .icon-play
         font-size: 60px
+
+#video-ingredient-unit
+  min-height: 600px
 
 .video-container
   position: relative
@@ -237,12 +258,14 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   width: 100%
   padding-right: 2px
 
-.activity-ingredients-list
+.activity-ingredients-list, .step-ingredients-source
+  position: relative
   table
     width: 100%
   thead
     line-height: 30px
     font-size: 17.5px
+    border-bottom: 1px solid black
   th#ingredient
     text-align: left
   th#quantity
@@ -251,7 +274,8 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
       margin-left: -11px
     .icon-question-sign
       position: absolute
-      margin-left: 18px
+      margin-left: 15px
+      margin-top: 5px
   td
     font-size: 14px
     div
@@ -280,6 +304,9 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   .ingredient-unhighlighted
     opacity: .2
     font-weight: 40
+
+.step-ingredients-source
+  display: none
 
 #main-content
   position: relative
@@ -310,6 +337,21 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 .community-toggle-open
   left: 0px
 
+/* One Sheet Toggle Classes */
+.step-image-show
+  display: block
+
+/* Course */
+.course-syllabus
+  .nested-1
+    padding-left: 10px
+  .nested-2
+    padding-left: 20px
+  a
+    color: black
+    &:hover
+      color: $orange
+
 //////////
 
 .carousel-scroll
@@ -334,19 +376,24 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   overflow: hidden
   visibility: hidden
   position: relative
-  .swipe-indicators
-    width: 45px
-    margin: 10px auto
-  .swipe-indicator-btn
-    background: gray
-    height: 20px
-    width: 20px
-    display: inline-block
-    text-align: center
-    margin: 0 auto
-    border-radius: 10px
-  .indicator-active
-    background: $dark_orange
+
+.swipe-indicators
+  margin: 10px auto
+
+.swipe-indicator-btn
+  background: white
+  height: 20px
+  width: 20px
+  display: inline-block
+  text-align: center
+  margin: 0 auto
+  border-radius: 10px
+  border: 1px solid $light-gray
+  @include boxsizing
+  
+.indicator-active
+  border: 2px solid $orange
+  background: white
 
 .swipe-wrap
   overflow: hidden
@@ -356,6 +403,28 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   float: left
   width: 100%
   position: relative
+
+#hero-indicators
+  width: 68px
+
+.hero-swiper-next
+  bottom: 0
+  right: 0px
+  height: 100px
+  width: 65px
+  float: right
+  position: relative
+
+#content-indicators
+  width: 45px
+
+.vertical-swipe
+  width: 370px
+  height: 208px
+  overflow: auto
+  -webkit-overflow-scrolling: touch
+  .item
+    margin: 0px
 
 ////////////////////////////////////////
 
@@ -447,7 +516,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 /* Buttons */
 
 .btn-primary
-  background: $dark_orange
+  background: $orange
   border: none
   border-radius: 0px
   @include transition(all 100ms)
@@ -537,6 +606,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     background: $dark-orange
     text-decoration: none
     color: white
+    cursor: pointer
 
 /* Navbar */
 .navbar-fixed-top
@@ -551,8 +621,6 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   .nav > li > a
     text-shadow: none
     color: white
-    text-transform: uppercase
-    font-weight: 200
   .btn-navbar
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from($orange), to($dark-orange))
     background-image: -moz-linear-gradient(top, $orange, $dark-orange)
@@ -605,9 +673,20 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     img
       margin-top: -15%
 
+  .media-centered-medium
+    height: 208px
+
 @media (max-width: 1200px)
   .media-centered-medium
-    height: inherit
+    height: 168px
+
+  .item-medium
+    width: 285px
+    margin: 0px 14px
+
+  .vertical-swipe
+    width: 300px
+    height: 168px
 
   .item-medium
     width: 285px
@@ -621,6 +700,13 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
         width: 72%
         h2
           font-size: 20px
+
+  .media-centered-medium
+    height: 128px
+
+  .vertical-swipe
+    width: 228px
+    height: 128px
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
@@ -655,10 +741,16 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
         width: 35px
     .media-block
       width: 100%
+
+  .media-centered-medium
+    height: inherit
+
+  .vertical-swipe
+    width: 100%
+    height: 400px
  
 /* Landscape phones and down */
 @media (max-width: 480px)
   #hero-container
     .media-object
       margin-bottom: 0px
-

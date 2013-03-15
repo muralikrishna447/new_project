@@ -73,6 +73,7 @@ group :development, :test do
   gem 'meta_request'
   gem 'thin'
   gem 'rails-erd'
+  gem 'bullet'
 end
 
 group :guard do

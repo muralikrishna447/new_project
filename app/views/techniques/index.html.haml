@@ -2,7 +2,7 @@
   .span12
     %h2 Techniques
     = paginate @techniques
-    .row
+    .row.gallery
       - @techniques.each do |technique|
         .span4
           = link_to technique do
