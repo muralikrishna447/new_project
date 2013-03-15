@@ -6,6 +6,7 @@
   = sortable_table("step-#{count}-ingredients") do
     %colgroup
       %col.ingredient
+      %col.note
       %col.quantity
       %col.unit
       %col.actions
@@ -13,6 +14,7 @@
       %tr
         %th.ingredient
           = step.text_field :subrecipe_title,  placeholder: 'Ingredient block title (e.g. \'For The Beets\')'
+        %th.quantity Note
         %th.quantity Quantity
         %th.unit Unit
         %th
@@ -22,7 +24,7 @@
 %li
   - opts = []
   - @activity.ingredients.ordered.each do |ai|
-    - opts << [ai.title, ai.id, :'data-quantity' => ai.display_quantity, :'data-unit' => ai.unit]
+    - opts << [ai.title, ai.id, :'data-note' => ai.note, :'data-quantity' => ai.display_quantity, :'data-unit' => ai.unit]
   = select_tag "add-multiple-#{count}", options_for_select(opts), multiple: true, class: "multi-ingredients",  data: {'copy-target' => "##{row_id}", 'copy-destination' => "table#step-#{count}-ingredients"}
   = copy_button 'Add Blank Ingredient', "##{row_id}", "table#step-#{count}-ingredients"
 

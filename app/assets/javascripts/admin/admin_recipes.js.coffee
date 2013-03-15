@@ -172,6 +172,7 @@ $ ->
       $copy = $copy_target.clone()
       $copy.removeClass('template-row')
       $('input', $copy).val($(this).html())
+      $copy.find('.note').val($(this).data('note'))
       $copy.find('.quantity').val($(this).data('quantity'))
       $copy.find('.unit').val($(this).data('unit'))
       $copy_destination.show()
