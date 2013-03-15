@@ -59,36 +59,37 @@
 .row.section
   .span12
     .row
-      .span6
-        .row
-          .span6
-            %h3 Latest From Our Forums:
-            %h4= @discussion[:name]
-            %blockquote
-              %p= truncate(strip_tags(@discussion[:body]), length: 300, separator: ' ')
-              %small
-                %cite
-                  = @discussion[:first_name]
-            - discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
-            = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'
+      .span8
+        %h3 Latest From Our Forums:
+        %h4= @discussion[:name]
+        %blockquote
+          %p= truncate(strip_tags(@discussion[:body]), length: 300, separator: ' ')
+          %small
+            %cite
+              = @discussion[:first_name]
+        - discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+        = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'
 
-            %hr
+        %hr
 
-            - if @status
-              #twitter-status
-                %h3 Latest Tweet:
-                = @status.html_safe
-                = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
-      .span6
-        .hero-unit
-          %h2 Sign up for a FREE account
-          %hr
-          / %ul
-          /   %li Keep track of your favorite recipes
-          /   %li Save notes on what you've cooked
-          /   %li FREE Bonus Content: Sous Vide Time and Temperature data sheets
-          = link_to sign_up_path, class: 'btn btn-primary btn-large pull' do
-            Sign Up Now
+        - if @status
+          #twitter-status
+            %h3 Latest Tweet:
+            = @status.html_safe
+            = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
+      .span4
+        .well
+          %h3 Sign up for free account
+          %ul
+            / %li Get updated on new content
+            / %li Keep track of your favorite recipes
+            / %li Save notes on what you've cooked
+            / %li FREE Bonus Content: Sous Vide Time and Temperature data sheets
+          = form_tag sign_up_url, :method => :get do
+            %p= email_field_tag 'email', nil, {class: 'input-block-level', placeholder: 'Enter email', required: true}
+            %p= submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
+          / = link_to sign_up_path, class: 'btn btn-primary btn-large pull' do
+          /   Sign Up Now
 
 = content_for :footer do
   = render 'layouts/footer'
