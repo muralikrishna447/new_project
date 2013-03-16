@@ -172,6 +172,7 @@ $ ->
       $copy = $copy_target.clone()
       $copy.removeClass('template-row')
       $('input', $copy).val($(this).html())
+      $copy.find('.note').val($(this).data('note'))
       $copy.find('.quantity').val($(this).data('quantity'))
       $copy.find('.unit').val($(this).data('unit'))
       $copy_destination.show()
@@ -180,3 +181,33 @@ $ ->
     $('tr').not('.template-row').find('select.unit').select2()
     $(this).select2("val", [])
     return true
+
+updateMediaPills = () ->
+  $('.media .nav-pills li a').each ->
+    content = $($(this).data('target'))
+    has_data = false
+    $(content).find('input, textarea').each ->
+      has_data = true if $(this).val()
+    if has_data
+      $(this).addClass("has-data")
+    else
+      $(this).removeClass("has-data")
+
+activateContentfulPills = () ->
+  $('.media .nav-pills').each ->
+    $(this).find('.has-data:first').tab('show')
+
+
+$ ->
+  updateMediaPills()
+  activateContentfulPills()
+  $(document).on 'keydown click', (event) ->
+    updateMediaPills()
+
+window.stepCopied = (newStep) ->
+  new_tabs_id = "media-tabs-" + (100000 + (Date.now() % 100000)).toString()
+  media_tabs = $(newStep).find('.media-tabs')
+  media_tabs.attr('id', new_tabs_id)
+  $(newStep).find('[data-target*=media-tabs]').each ->
+    newTarget = $(this).data('target').replace('media-tabs-', new_tabs_id)
+    $(this).attr('data-target', newTarget)

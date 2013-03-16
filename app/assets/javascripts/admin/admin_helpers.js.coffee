@@ -12,6 +12,10 @@ $ ->
     $copy_destination.show()
     $copy_destination.append($copy)
 
+    callback = $(this).data('callback')
+    if callback != ""
+      window[callback]($copy)
+
 
 $ ->
   $(document).on 'click', '[data-behavior~=remove-element]', (event) ->
@@ -56,7 +60,8 @@ $ ->
     cursor: 'move',
     helper: fixHelper,
     items: 'tr:not(:first)',
-    containment: 'parent'
+    containment: 'parent',
+    axis: 'y'
   ).disableSelection()
 
 $ ->

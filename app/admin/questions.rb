@@ -1,6 +1,6 @@
 ActiveAdmin.register Question do
   belongs_to :quiz, shallow: true
-  menu parent: 'More'
+  #menu parent: 'More'
 
   form partial: 'box_sort_form'
 

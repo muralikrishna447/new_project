@@ -300,3 +300,9 @@ copy:
       Thank you for registering with ChefSteps.com! Please take a moment to fill out your profile.
     </p>
 
+- location: jobs
+  copy_content: |
+    <p>
+      Working for ChefSteps is more fun than wrasslin' alligators.
+    </p>
+

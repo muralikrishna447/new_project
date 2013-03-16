@@ -50,6 +50,7 @@ Delve::Application.routes.draw do
   get 'legal/terms' => 'copy#legal', as: 'terms_of_service'
   get 'legal/privacy' => 'copy#legal', as: 'privacy'
   get 'legal/licensing' => 'copy#legal', as: 'licensing'
+  get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'

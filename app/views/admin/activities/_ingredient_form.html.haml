@@ -5,6 +5,7 @@
   is_recipe = false
   unless is_template
     title = ingredient.title
+    note = ingredient.note
     display_quantity = ingredient.display_quantity
     unit = ingredient.unit
     ingredient_id = ingredient.id
@@ -13,6 +14,7 @@
 
 %tr{id: row_id, class: ('template-row' if is_template )}
   %td= text_field_tag "#{field_name_prefix}[title]", title, {:'data-provide' => "typeahead",  :'autocomplete' => 'off', :"class" => "ingredient"}
+  %td= text_field_tag "#{field_name_prefix}[note]", note, class: "note"
   %td= text_field_tag "#{field_name_prefix}[display_quantity]", display_quantity, class: "quantity"
   %td= select_tag "#{field_name_prefix}[unit]", options_for_select(%w[g kg ea a/n recipe], unit), class: "unit"
   %td

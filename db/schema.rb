@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130301211313) do
+ActiveRecord::Schema.define(:version => 20130314223754) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20130301211313) do
     t.decimal  "quantity"
     t.integer  "ingredient_order"
     t.string   "display_quantity"
+    t.string   "note"
   end
 
   add_index "activity_ingredients", ["activity_id", "ingredient_id"], :name => "index_activity_ingredients_on_activity_id_and_ingredient_id", :unique => true
@@ -241,6 +242,7 @@ ActiveRecord::Schema.define(:version => 20130301211313) do
     t.datetime "updated_at",       :null => false
     t.integer  "ingredient_order"
     t.string   "display_quantity"
+    t.string   "note"
   end
 
   add_index "step_ingredients", ["ingredient_order"], :name => "index_step_ingredients_on_ingredient_order"
