@@ -17,4 +17,6 @@
  *= require application/quizzes/_overview
  *= require application/quizzes/_box_sort_result
  *= require application/quizzes/_multiple_choice_result
+ *= require application/quizzes/_order_sort_result
+ *= require application/quizzes/_question
  */
