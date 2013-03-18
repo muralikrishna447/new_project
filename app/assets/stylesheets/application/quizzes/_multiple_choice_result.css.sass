@@ -1,3 +1,5 @@
+@import bootstrap_config
+
 .multiple-choice-results
   margin-bottom: 18px
 
@@ -35,12 +37,12 @@
   li.status_right
     &:before
       content: "\2714"
-      //color: $green
+      color: $green
 
   li.status_wrong
     &:before
       content: "\2716 "
-      //color: $red
+      color: $red
 
   .label
     //+font-serif-large
@@ -53,15 +55,15 @@
     line-height: 28px
 
   .label.correct
-    //background: $green
-    //color: $white
+    background: $green
+    color: $white
 
   .label.incorrect
-    //background: $red
-    //color: $white
+    background: $red
+    color: $white
 
   .label.default
-    //color: $black
+    color: $black
 
   .result-column
     width: 100%
