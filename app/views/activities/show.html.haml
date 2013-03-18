@@ -117,6 +117,8 @@
                 %cite
                   Grace
 
+  = render 'quizzes', activity: @activity
+
   .row
     .span12
       %h3 Techniques
@@ -133,6 +135,8 @@
             .item
               = link_to activity_path(recipe) do
                 = render 'shared/media_centered', media: recipe, size: 'small'
+
+
 
   - if @course
     .modal.hide.fade#syllabus-modal
