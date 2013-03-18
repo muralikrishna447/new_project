@@ -1,3 +1,5 @@
+@import bootstrap_config
+
 .dial-wrapper
   display: none
   width: 180px
@@ -6,7 +8,7 @@
 
   canvas
     //+border-radius(100px)
-    //background: $white
+    background: $white
 
   .dial-text, .dial-caption
     //+font-sans-small
@@ -15,7 +17,7 @@
     text-transform: uppercase
 
   .dial-text
-    //color: $brick
+    color: $brick
     position: absolute
     top: 52px
     left: 0
@@ -27,11 +29,11 @@
       font-size: 85px
 
   .dial-caption
-    //color: $gray
+    color: $gray
     margin-top: 10px
     line-height: 20px
     span
-      //color: $brick
+      color: $brick
 
   &.medium
     width: 115px
