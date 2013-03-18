@@ -21,12 +21,13 @@
   /         = link_to 'javascript:void(0);', class: 'hero-swiper-next' do
   /           .btn-hero-next
 
-  .media-header
-    .media-header-left
-      .media-header-content
-        %h3= media_object.title.html_safe
-    .media-header-right
-      .btn-play.pull-left
-        .btn-play-triangle
-      .media-header-content
-        = "See the #{media_object.activity_type.first}"
+  = link_to activity_path(media_object, autoplay: true) do
+    .media-header
+      .media-header-left
+        .media-header-content
+          %h3= media_object.title.html_safe
+      .media-header-right
+        .btn-play.pull-left
+          .btn-play-triangle
+        .media-header-content
+          = "See the #{media_object.activity_type.first}"
