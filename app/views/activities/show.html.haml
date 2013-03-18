@@ -144,9 +144,10 @@
       .modal-body
         = course_syllabus(@course)
 
-/ .section
-/   - disqus_id = "activity-#{@activity.id}"
-/   = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
+.container-fluid
+  .section
+    - disqus_id = "activity-#{@activity.id}"
+    = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
 
 = #TODO Remove old code below
 
