@@ -16,4 +16,5 @@
  *= require application/responsiveslides
  *= require application/quizzes/_overview
  *= require application/quizzes/_box_sort_result
+ *= require application/quizzes/_multiple_choice_result
  */
