@@ -100,6 +100,9 @@ h1, h2, h3, h4
   font-family: 'Raleway', sans-serif
   letter-spacing: 1px
 
+.word-wrap
+  word-wrap: break-word
+
 ////////////////////////////////////////
 
 /* Media Objects */
@@ -196,7 +199,6 @@ h1, h2, h3, h4
       display: table-cell
       vertical-align: middle
       height: 100px
-      width: 1000px
 
 #video-ingredient-unit
   min-height: 600px
@@ -712,6 +714,9 @@ h1, h2, h3, h4
   .media-centered-medium
     height: 208px
 
+  .media-header-content
+    width: 468px
+
 @media (max-width: 1200px)
   .media-centered-medium
     height: 168px
@@ -723,6 +728,9 @@ h1, h2, h3, h4
   .vertical-swipe
     width: 300px
     height: 168px
+
+  .media-header-content
+    width: 376px
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
@@ -739,6 +747,9 @@ h1, h2, h3, h4
   .vertical-swipe
     width: 228px
     height: 128px
+
+  .media-header-content
+    width: 289px
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
@@ -786,3 +797,12 @@ h1, h2, h3, h4
   #hero-container
     .media-object
       margin-bottom: 0px
+
+  .media-hero .media-header .media-header-content
+    height: 60px
+    h3
+      font-size: 14px
+      line-height: 14px
+
+  .btn-play
+    margin: 5px 10px 5px 25px
