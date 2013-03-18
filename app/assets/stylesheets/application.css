@@ -17,4 +17,5 @@
  *= require application/quizzes/_overview
  *= require application/quizzes/_question
  *= require application/quizzes/_results
+ *= require application/_dials
  */
