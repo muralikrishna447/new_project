@@ -13,6 +13,10 @@ class ActivitiesController < ApplicationController
     if params[:course_id]
       @course = Course.find(params[:course_id])
     end
+
+    if @activity.has_quizzes?
+      render template: 'activities/quizzes'
+    end
   end
 
   def cooked_this
