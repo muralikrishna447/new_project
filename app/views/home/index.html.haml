@@ -1,18 +1,18 @@
 - content_for :title, ""
 - content_for :description, "Free online cooking school from key members of the Modernist Cuisine team. Our first course will teach you everything you need to know about sous vide cooking."
 
-= content_for :hero do  
-  .container#hero-container
-    .row
-      .span12
-        .swipe#hero-swiper
-          .swipe-wrap
-            - @heroes.each_with_index do |hero, index|
-              %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
-                = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
-        .swipe-indicators#hero-indicators
+/= content_for :hero do  
+.container#hero-container
+  .row
+    .span12
+      .swipe#hero-swiper
+        .swipe-wrap
           - @heroes.each_with_index do |hero, index|
-            .swipe-indicator-btn.hero-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "hero-swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
+            %div{class: "item #{'active' if index == 0}", id: "#{'hero-first' if index == 0}"}
+              = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_image: hero.step_images.last, media_object: hero
+      .swipe-indicators#hero-indicators
+        - @heroes.each_with_index do |hero, index|
+          .swipe-indicator-btn.hero-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "hero-swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
 
 / .row
 /   .span12
