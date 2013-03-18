@@ -154,7 +154,7 @@ h1, h2, h3, h4
 
 .media-hero
   position: relative
-  max-height: 586px
+  //max-height: 586px
   img
     width: 100%
   .media-header-background
@@ -441,10 +441,9 @@ h1, h2, h3, h4
   margin-left: 20px
 
 #hero-container
-  width: 100%
-  margin: 0px
+  margin-top: -20px
   padding: 0px
-  max-height: 586px
+  //max-height: 586px
   z-index: 999
   #hero-carousel
     .carousel-indicators
@@ -549,7 +548,7 @@ h1, h2, h3, h4
     margin: 20px 30px
     opacity: .9
 
-.btn-next
+.btn-hero-next
   background: $orange
   height: 100%
   width: 100%
@@ -607,6 +606,21 @@ h1, h2, h3, h4
     text-decoration: none
     color: white
     cursor: pointer
+
+/* Quiz button */
+.btn-next, .btn-prev
+  height: 67px
+  width: 32px
+  padding: 0
+  text-decoration: none
+  border-color: transparent
+  [class^="icon-"]
+    line-height: 67px
+    color: white
+
+.btn-next
+  //+box-shadow(-1px 0px 2px 0px rgba(0, 0, 0, 0.5))
+  //+border-radius(0 67px 67px 0)
 
 /* Navbar */
 .navbar-fixed-top
@@ -671,7 +685,8 @@ h1, h2, h3, h4
   .media-hero
     height: 586px
     img
-      margin-top: -15%
+      margin-top: -5%
+      margin-bottom: -5%
 
   .media-centered-medium
     height: 208px

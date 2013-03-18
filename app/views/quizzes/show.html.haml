@@ -6,11 +6,11 @@
   add_body_data behavior: 'nav-hideable'
   content_for :title, 'Quiz'
 
-.hero-unit.quiz-title
+.quiz-title
   .container
     .row
       .span12
-        %h3= quiz.title
+        %h2= quiz.title
 
 #quiz-container
   .container
@@ -19,7 +19,7 @@
         %h3
           = quiz.started_by?(current_user) ? "Welcome back to" : "Test your skills on"
           %strong #{quiz.title}!
-    .row.hero-unit.overview
+    .row.overview
       .span8
         - if quiz.has_image?
           = image_tag quiz.image.url, class: 'img-polaroid'
@@ -46,6 +46,6 @@
       .span12
         %p.pull-left= quiz.start_copy
         .pull-right
-          #start-quiz.btn-uppercase.btn-primary.btn-x-large
+          #start-quiz.btn.btn-primary.btn-large
             = quiz.started_by?(current_user) ? "Return to Quiz" : "Start Quiz"
 

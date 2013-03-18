@@ -86,7 +86,7 @@
                         = render 'ingredients_list', ingredients: step.ingredients
           .scroll-overlay-top
           .scroll-overlay-bottom
-        .span6.community.noprint
+        .span6.community.noprint.hide
           .community-toggle
             .btn.btn-primary
               %i.icon-comments Community
@@ -134,6 +134,8 @@
               = link_to activity_path(recipe) do
                 = render 'shared/media_centered', media: recipe, size: 'small'
 
+
+
   - if @course
     .modal.hide.fade#syllabus-modal
       .modal-header
@@ -142,9 +144,10 @@
       .modal-body
         = course_syllabus(@course)
 
-/ .section
-/   - disqus_id = "activity-#{@activity.id}"
-/   = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
+.container-fluid
+  .section
+    - disqus_id = "activity-#{@activity.id}"
+    = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
 
 = #TODO Remove old code below
 

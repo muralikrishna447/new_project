@@ -12,7 +12,7 @@ class ActivityIngredient < ActiveRecord::Base
   validates :ingredient, presence: true
   validates :activity, presence: true
 
-  attr_accessible :activity_id, :ingredient_id, :quantity, :unit, :ingredient_order_position
+  attr_accessible :activity_id, :ingredient_id, :quantity, :unit, :ingredient_order_position, :note
 
   scope :ordered, rank(:ingredient_order)
 

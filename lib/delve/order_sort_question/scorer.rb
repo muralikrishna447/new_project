@@ -1,6 +1,8 @@
 module Delve
   module OrderSortQuestion
     class Scorer
+      attr_reader :solution
+
       # Public: Given a solution, constructs a scorer.
       #
       # `solution` can be an array of objects to be compared with an attempt.

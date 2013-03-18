@@ -1,6 +1,14 @@
 .container.order-sort
   .row
     .span8
+      .question-label QUESTION:
+
+  .row
+    .span8
+      .question-text= hb('question')
+
+  .row
+    .span8
       .instructions= hb!('instructions')
 
   .hero-unit.span11
@@ -9,7 +17,8 @@
         .in-progress
           .step-text Drag and drop step
           .large-num 1
+          .step-text here!
         .done Done!
 
     %a.btn.btn-primary.btn-next{href: '#'}
-      %i.icon-double-chevron-right
+      %i.icon-double-angle-right

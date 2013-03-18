@@ -19,5 +19,5 @@
           %label= hb('text')
 
     %a.btn.btn-primary.btn-next{href: '#'}
-      %i.icon-double-chevron-right
+      %i.icon-double-angle-right
 

@@ -14,4 +14,9 @@
  *= require _font-awesome
  *= require redesign
  *= require application/responsiveslides
+ *= require application/quizzes/_overview
+ *= require application/quizzes/_question
+ *= require application/quizzes/_results
+ *= require application/_dials
+ *= require application/_checkboxes
  */

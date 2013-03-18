@@ -1,3 +1,5 @@
+require 'delve/order_sort_question/scorer'
+
 class OrderSortQuestionContents < OpenStruct
   # Schema:
   #   {
@@ -37,6 +39,22 @@ class OrderSortQuestionContents < OpenStruct
     scorers.map { |scorer| scorer.solution_score(answer_ids(answer_data)) }.max
   end
 
+  def best_solution(answer_data)
+    ids = answer_ids(answer_data)
+    max_score = -1
+    current_best_solution = nil
+
+    scorers.each do |scorer|
+      score = scorer.solution_score(ids)
+      if score > max_score
+        max_score = score
+        current_best_solution = scorer.solution
+      end
+    end
+
+    current_best_solution
+  end
+
 private
 
   def answer_ids(answer_data)
@@ -45,7 +63,7 @@ private
 
   # For each available solution, return a scorer we can use to check answers.
   def scorers
-    @scorers ||= solutions.map { |solution| scorer_for_solution(solution) }
+    solutions.map { |solution| scorer_for_solution(solution) }
   end
 
   # Build a scorer for a given solution from the `self.solutions` array.

@@ -1,3 +1,5 @@
+@import bootstrap_config
+
 #quiz-results
   .horizontal-divider
     margin: 20px 0
@@ -8,7 +10,7 @@
     width: 50%
 
   .results-header, .column-label, .average-label
-    +font-sans-tiny
+    //+font-sans-tiny
     color: $gray
 
   .results-header, .column-label
@@ -32,9 +34,9 @@
 
 
   .count, .type, .student-average
-    +font-serif-small
+    //+font-serif-small
     color: $grayMedium
 
   @import application/quizzes/box_sort_result
   @import application/quizzes/multiple_choice_result
-
+  @import application/quizzes/order_sort_result

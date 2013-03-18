@@ -4,7 +4,7 @@
       .span12{:itemprop => "description"}
         - if activity.has_description?
           :markdown
-            #{activity.description}
+            #{apply_shortcodes(activity.description)}
       -# .span4
         -# Removed for demo
         -# .row
@@ -54,7 +54,7 @@
               %h5 Used In
               %ul.used-in
                 - used_in.each do |used_in_act|
-                  %li= link_to used_in_act.title, activity_path(used_in_act)
+                  %li= link_to used_in_act.title.html_safe, activity_path(used_in_act)
 
 
         - if activity.is_recipe? and activity.cooked_this > 0
