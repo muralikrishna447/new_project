@@ -78,7 +78,7 @@
       .span8
         %h3 Latest From Our Forums:
         %h4= @discussion[:name]
-        %blockquote
+        %blockquote.word-wrap
           %p= truncate(strip_tags(@discussion[:body]), length: 300, separator: ' ')
           %small
             %cite
