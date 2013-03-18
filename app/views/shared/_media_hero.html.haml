@@ -1,22 +1,32 @@
 .media-hero
   = link_to media_object do
-    = image_tag s3_image_url(media_image)
-  .media-header-background
-  .container
-    .media-block
-      .media
-        .media-object.pull-left
-          / = link_to '#', data: {youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
-          /   .btn-play
-          /     .btn-play-trangle
-          = link_to activity_path(media_object, autoplay: true) do
-            .btn-play
-              .btn-play-trangle
-        .media-heading.pull-left
-          %h2= media_object.title.html_safe
-          - media_object.activity_type.each do |type|
-            %div{class: "label label-large label-#{type}"}
-              = type
-        .pull-right
-          = link_to 'javascript:void(0);', class: 'hero-swiper-next' do
-            .btn-hero-next
+    = image_tag s3_image_url(media_object.featured_image)
+  / .media-header-background
+  / .container
+  /   .media-block
+  /     .media
+  /       .media-object.pull-left
+  /         / = link_to '#', data: {youtubeid: media_object.youtube_id}, class: 'media-hero-play' do
+  /         /   .btn-play
+  /         /     .btn-play-trangle
+  /         = link_to activity_path(media_object, autoplay: true) do
+  /           .btn-play
+  /             .btn-play-trangle
+  /       .media-heading.pull-left
+  /         %h2= media_object.title.html_safe
+  /         - media_object.activity_type.each do |type|
+  /           %div{class: "label label-large label-#{type}"}
+  /             = type
+  /       .pull-right
+  /         = link_to 'javascript:void(0);', class: 'hero-swiper-next' do
+  /           .btn-hero-next
+
+  .media-header
+    .media-header-left
+      .media-header-content
+        %h3= media_object.title.html_safe
+    .media-header-right
+      .btn-play.pull-left
+        .btn-play-triangle
+      .media-header-content
+        = "See the #{media_object.activity_type.first}"

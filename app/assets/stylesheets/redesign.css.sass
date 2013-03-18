@@ -175,6 +175,27 @@ h1, h2, h3, h4
     .media-object
       .icon-play
         font-size: 60px
+  .media-header
+    background-color: rgba(255,255,255,.5)
+    width: 100%
+    position: absolute
+    bottom: 0px
+    .media-header-left
+      float: left
+      width: 40%
+      margin-left: 10%
+      .media-header-content
+        text-align: right
+    .media-header-right
+      float: left
+      width: 50%
+      .media-header-content
+        text-aigin: left
+    .media-header-content
+      display: table-cell
+      vertical-align: middle
+      height: 100px
+      width: 1000px
 
 #video-ingredient-unit
   min-height: 600px
@@ -535,7 +556,7 @@ h1, h2, h3, h4
   &:hover
     @include shadow
     opacity: 1
-  .btn-play-trangle
+  .btn-play-triangle
     position: absolute
     width: 0px
     height: 0px
