@@ -13,8 +13,6 @@ gem 'oauth2'
 gem 'omniauth'
 gem 'omniauth-facebook'
 
-gem 'jquery-rails'
-gem 'jquery-ui-rails'
 gem 'haml'
 gem 'activeadmin'
 gem 'meta_search'
@@ -41,6 +39,8 @@ gem 'httparty'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
+  gem 'jquery-rails'
+  gem 'jquery-ui-rails'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass-rails'
