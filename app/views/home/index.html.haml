@@ -60,15 +60,16 @@
   .span12
     .row
       .span8
-        %h3 Latest From Our Forums:
-        %h4= @discussion[:name]
-        %blockquote.word-wrap
-          %p= truncate(strip_tags(@discussion[:body]), length: 300, separator: ' ')
-          %small
-            %cite
-              = @discussion[:first_name]
-        - discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
-        = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'
+        - cache @discussion do
+          %h3 Latest From Our Forums:
+          %h4= @discussion[:name]
+          %blockquote.word-wrap
+            %p= truncate(strip_tags(@discussion[:body]), length: 300, separator: ' ')
+            %small
+              %cite
+                = @discussion[:first_name]
+          - discussion_link = @discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+          = link_to 'Join the Discussion', discussion_link, class: 'btn btn-primary'
 
         %hr
 
