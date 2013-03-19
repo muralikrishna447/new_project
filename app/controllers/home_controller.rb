@@ -7,7 +7,7 @@ class HomeController < ApplicationController
     @heroes = [ Activity.published.recipes.includes(:steps).order('updated_at ASC').last,
                 Activity.published.techniques.includes(:steps).order('updated_at ASC').last,
                 Activity.published.sciences.includes(:steps).order('updated_at ASC').last ]
-    @discussion = Forum.discussions.first
+    # @discussion = Forum.discussions.first
     @status = Twitter.status_embed
   end
 

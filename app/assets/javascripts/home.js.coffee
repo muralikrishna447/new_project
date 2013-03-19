@@ -46,3 +46,16 @@ $ ->
     stopPropagation: true,
     continuous: true
     })
+
+  $.getJSON '/discussion', (data) ->
+    discussion = data
+    name = discussion['name']
+    body = $('<div>' + discussion['body'] + '</div>').text()
+    shortbody = $.trim(body).substring(0, 300).trim(this) + "..."
+    author = discussion['first_name']
+    link = discussion['url'].replace('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+    target = $('#discussion')
+    target.find('.discussion-name').text(name)
+    target.find('.discussion-body').text(shortbody)
+    target.find('.discussion-author').text(author)
+    target.find('.discussion-link').attr('href', link)
