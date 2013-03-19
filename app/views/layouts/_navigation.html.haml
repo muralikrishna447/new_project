@@ -14,25 +14,25 @@
         %span.icon-bar
       .nav-collapse.collapse.pull-right
         %ul.nav
-          %li
+          %li.nav-item-border
             = link_to 'Recipes', recipe_gallery_index_path
-          %li.dropdown
-            = link_to 'javascript:voide(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-              %i.icon-angle-down
+          %li.dropdown.nav-item-border
+            = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
               Resources
+              %i.icon-angle-down
             %ul.dropdown-menu
               .dropdown-background
               %li= link_to 'Techniques', techniques_path
               %li= link_to 'Knowledge', sciences_path
               %li= link_to 'Course', course_path('accelerated-sous-vide-cooking-course')
-          %li= link_to 'Community', 'http://forum.chefsteps.com'
-          %li= link_to 'Shop', 'http://store.chefsteps.com'
-          %li
+          %li.nav-item-border= link_to 'Community', 'http://forum.chefsteps.com'
+          %li.nav-item-border= link_to 'Shop', 'http://store.chefsteps.com'
+          %li.nav-item-border
             / = link_to 'Search', search_index_path
-            = form_tag '/search', :method => :get, class: 'navbar-form' do
-              = text_field_tag :q, nil, :placeholder => 'search', class: 'span2'
+            = form_tag '/search', :method => :get, class: 'navbar-form form-search' do
+              = text_field_tag :q, nil, :placeholder => 'search', class: 'span2 search-query'
               / = submit_tag 'Search', class: 'btn btn-primary'
-          %li
+          %li.nav-item-border
             - if current_user
               = link_to 'Profile', user_profile_path(current_user)
             - else

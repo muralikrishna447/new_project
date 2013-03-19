@@ -6,10 +6,10 @@
   -o-box-sizing: border-box
 
 =shadow
-  box-shadow: 0px 0px 8px #888888
-  -moz-box-shadow: 0px 0px 8px #888888
-  -webkit-box-shadow: 0px 0px 8px #888888
-  -o-box-shadow: 0px 0px 8px #888888
+  box-shadow: 0px 0px 5px #888888
+  -moz-box-shadow: 0px 0px 5px #888888
+  -webkit-box-shadow: 0px 0px 5px #888888
+  -o-box-shadow: 0px 0px 5px #888888
 
 =dark-shadow
   box-shadow: 0px 0px 5px black
@@ -80,7 +80,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 .well
   border: 1px solid #ccc
   border-radius: 0px
-  background-color: $off-white
+  background-color: rgba(0,0,0,.1)
   @include boxsizing
 
 .well-opaque
@@ -476,6 +476,7 @@ h1, h2, h3, h4
       font-size: 13px
       margin-top: -5px
       margin-left: 3px
+      font-weight: 400
 
 
 #hero-container
@@ -668,7 +669,7 @@ h1, h2, h3, h4
   .navbar-inner
     box-shadow: none
     background-image: none
-    background-color: $off-white
+    background-color: white
     border-color: $dark-orange
     border: none
     border-top: 2px solid $dark-orange
@@ -676,9 +677,22 @@ h1, h2, h3, h4
   .brand
     text-shadow: none
     color: black
+  .nav
+    .nav-item-border
+      border-left: 1px solid $light-gray
   .nav > li > a
     text-shadow: none
     color: black
+    line-height: 45px
+    font-size: 16px
+    font-weight: 200
+    &:hover
+      background: $orange
+      color: white
+  .navbar-form
+    margin: 18px 10px 17px
+    input
+      margin: 0px
   .btn-navbar
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from($orange), to($dark-orange))
     background-image: -moz-linear-gradient(top, $orange, $dark-orange)
