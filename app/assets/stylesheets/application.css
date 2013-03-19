@@ -9,9 +9,8 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require twitter/bootstrap
+ *= require twitter/bootstrap-no-sprites
  *= require twitter/bootstrap/_responsive
- *= require _font-awesome
  *= require redesign
  *= require application/responsiveslides
  *= require application/quizzes/_overview

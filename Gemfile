@@ -44,7 +44,7 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass-rails'
-  gem 'font-awesome-sass-rails'
+  # gem 'font-awesome-sass-rails'
   gem 'bootstrap-sass-rails'
   gem 'asset_sync'
   gem 'turbo-sprockets-rails3'
