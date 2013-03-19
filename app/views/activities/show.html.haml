@@ -78,12 +78,19 @@
                       - if step.image_id?
                         .btn.step-action-item.step-image-btn.btn-primary
                           %i.icon-picture
+                      - if step.youtube_id?
+                        .btn.step-action-item.step-video-btn.btn-primary
+                          %i.icon-facetime-video
                     - if step.image_id?
                       .step-image{id: "step-image-#{index}"}
                         = image_tag s3_image_url(step.image_id)
                     - if step.ingredients.any?
                       .step-ingredients-source.well.section
                         = render 'ingredients_list', ingredients: step.ingredients
+                    - if step.youtube_id?
+                      .step-video{id: "step-video-#{index}"}
+                        .video-container
+                          %iframe{src: youtube_url(step.youtube_id)}
           .scroll-overlay-top
           .scroll-overlay-bottom
         .span6.community.noprint.hide

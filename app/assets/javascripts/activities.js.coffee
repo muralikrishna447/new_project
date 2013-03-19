@@ -14,6 +14,8 @@ $ ->
         $(this).show 'blind', {direction: 'vertical'}, 500
       $('.step-ingredients-source').each ->
         $(this).show 'blind', {direction: 'vertical'}, 500
+      $('.step-video').each ->
+        $(this).show 'blind', {direction: 'vertical'}, 500
       $('.step-actions').each ->
         $(this).hide 'blind', {direction: 'vertical'}, 500
       $('.scroll-overlay-top').hide()
@@ -23,6 +25,8 @@ $ ->
       $('.step-image').each ->
         $(this).hide 'blind', {direction: 'vertical'}, 500
       $('.step-ingredients-source').each ->
+        $(this).hide 'blind', {direction: 'vertical'}, 500
+      $('.step-video').each ->
         $(this).hide 'blind', {direction: 'vertical'}, 500
       $('.step-actions').each ->
         $(this).show 'blind', {direction: 'vertical'}, 500
