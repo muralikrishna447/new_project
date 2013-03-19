@@ -29,7 +29,8 @@
             %ul.dropdown-menu
               .dropdown-background
               %li= link_to 'Sous Vide Course', course_path('accelerated-sous-vide-cooking-course')
-              %li= link_to 'Knowledge', sciences_path
+              %li= link_to 'Culinary Knowledge', sciences_path
+          = # TODO REMOVE Older Navbar setup below
           / %li.nav-item-border
           /   = link_to 'Recipes', recipe_gallery_index_path
           / %li.nav-item-border
@@ -46,12 +47,12 @@
           %li.nav-item-border= link_to 'Community', 'http://forum.chefsteps.com'
           %li.nav-item-border= link_to 'Shop', 'http://store.chefsteps.com'
           %li.nav-item-border
-            / = link_to 'Search', search_index_path
-            = form_tag '/search', :method => :get, class: 'navbar-form form-search' do
-              = text_field_tag :q, nil, :placeholder => 'search', class: 'span2 search-query'
-              / = submit_tag 'Search', class: 'btn btn-primary'
-          %li.nav-item-border
             - if current_user
               = link_to 'Profile', user_profile_path(current_user)
             - else
               = link_to 'Sign in', sign_in_path
+          %li.nav-item-border
+            / = link_to 'Search', search_index_path
+            = form_tag '/search', :method => :get, class: 'navbar-form form-search' do
+              = text_field_tag :q, nil, :placeholder => 'search', class: 'span2 search-query'
+              / = submit_tag 'Search', class: 'btn btn-primary'
