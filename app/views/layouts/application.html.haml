@@ -35,5 +35,6 @@
     = yield :footer
   / = render 'layouts/youtube'
   = javascript_include_tag 'application'
+  %script{src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"}
   = render 'layouts/app_init'
   = yield(:custom_js)
