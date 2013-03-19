@@ -14,17 +14,35 @@
         %span.icon-bar
       .nav-collapse.collapse.pull-right
         %ul.nav
-          %li.nav-item-border
-            = link_to 'Recipes', recipe_gallery_index_path
           %li.dropdown.nav-item-border
             = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-              Resources
+              Cooking
               %i.icon-angle-down
             %ul.dropdown-menu
               .dropdown-background
+              %li= link_to 'Recipes', recipe_gallery_index_path
               %li= link_to 'Techniques', techniques_path
+          %li.dropdown.nav-item-border
+            = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+              Learning
+              %i.icon-angle-down
+            %ul.dropdown-menu
+              .dropdown-background
+              %li= link_to 'Sous Vide Course', course_path('accelerated-sous-vide-cooking-course')
               %li= link_to 'Knowledge', sciences_path
-              %li= link_to 'Course', course_path('accelerated-sous-vide-cooking-course')
+          / %li.nav-item-border
+          /   = link_to 'Recipes', recipe_gallery_index_path
+          / %li.nav-item-border
+          /   = link_to 'Techniques', recipe_gallery_index_path
+          / %li.dropdown.nav-item-border
+          /   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+          /     Learning
+          /     %i.icon-angle-down
+          /   %ul.dropdown-menu
+          /     .dropdown-background
+          /     %li= link_to 'Techniques', techniques_path
+          /     %li= link_to 'Knowledge', sciences_path
+          /     %li= link_to 'Course', course_path('accelerated-sous-vide-cooking-course')
           %li.nav-item-border= link_to 'Community', 'http://forum.chefsteps.com'
           %li.nav-item-border= link_to 'Shop', 'http://store.chefsteps.com'
           %li.nav-item-border
