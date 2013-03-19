@@ -1,5 +1,6 @@
 / Defaults to size medium
 %div{class: "media-centered media-centered-#{ size ||= 'medium' }"}
+  .media-centered-overlay
   - if media.featured_image
     = image_tag s3_image_url(media.featured_image)
   - else
