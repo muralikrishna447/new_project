@@ -3,7 +3,7 @@
     .span12
       .row
         .container#footer-body
-          .span10.well.well-opaque
+          .span12.well.well-opaque
             %h3 About ChefSteps
             %p
               ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
@@ -18,42 +18,42 @@
             .span1
               = link_to about_path do
                 = image_tag 'ryan.jpg', class:'img-circle'
-          .span2
-            = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
-              %div.footer-social
-                .btn-circle
-                  %i.icon-facebook
-                Facebook
-            = link_to 'http://twitter.com/@chefsteps', target: 'blank' do
-              %div.footer-social
-                .btn-circle
-                  %i.icon-twitter
-                Twitter
-            = link_to 'http://pinterest.com/chefsteps/', target: 'blank' do
-              %div.footer-social
-                .btn-circle
-                  %i.icon-pinterest
-                Pinterest
-            = link_to 'https://plus.google.com/106370441183974123730/posts', target: 'blank' do
-              %div.footer-social
-                .btn-circle
-                  %i.icon-google-plus
-                Google+
 
-          .span12.text-center Handmade in Pike Place, Seattle WA
+            .span12.text-center Handmade in Pike Place, Seattle WA
 
-          .span12
-            %p
-              General inquiries:
-              = mail_to 'info@chefsteps.com'
-            %p
-              Press inquiries:
-              = mail_to 'press@chefsteps.com'
-            %p
-              = link_to 'Legal', legal_url
-            %p.creative-commons
-              %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
-                All Content is Creative Commons Attribution-NonCommercial-ShareAlike
+            .span12
+              %p
+                General inquiries:
+                = mail_to 'info@chefsteps.com'
+              %p
+                Press inquiries:
+                = mail_to 'press@chefsteps.com'
+              %p
+                = link_to 'Legal', legal_url
+              %p.creative-commons
+                %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
+                  All Content is Creative Commons Attribution-NonCommercial-ShareAlike
+          / .span2
+          /   = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
+          /     %div.footer-social
+          /       .btn-circle
+          /         %i.icon-facebook
+          /       Facebook
+          /   = link_to 'http://twitter.com/@chefsteps', target: 'blank' do
+          /     %div.footer-social
+          /       .btn-circle
+          /         %i.icon-twitter
+          /       Twitter
+          /   = link_to 'http://pinterest.com/chefsteps/', target: 'blank' do
+          /     %div.footer-social
+          /       .btn-circle
+          /         %i.icon-pinterest
+          /       Pinterest
+          /   = link_to 'https://plus.google.com/106370441183974123730/posts', target: 'blank' do
+          /     %div.footer-social
+          /       .btn-circle
+          /         %i.icon-google-plus
+          /       Google+
 
 = #TODO Delete old code below
 / #footer.hero-unit.footer.noprint
