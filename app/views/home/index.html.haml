@@ -52,7 +52,7 @@
         .swipe#knowledge-swiper
           .swipe-wrap
             - @sciences.each do |science|
-              %dive
+              %div
                 = link_to activity_path(science) do
                   = render 'shared/media_centered', media: science
 
