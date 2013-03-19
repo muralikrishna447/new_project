@@ -1,19 +1,41 @@
 - content_for :title, "#{user.name}'s Profile"
+.row
+  .span12
+    .well
+      %h2 My Profile
+      %hr
+      %p
+        name:
+        = user.name
+      %p
+        email:
+        = user.email
 
-.hero-unit
-  .container
-    .row
-      .span12
-        - profile_title = is_current_user?(user) ? "My Profile" : "#{user.name}'s Profile"
-        %h3=profile_title
+      .section
+        %h3 Quizzes
+        = render partial: 'profile_quiz_info', user: user
 
-.container.user-profile
-  .row
-    .span4.pull-right.horizontal-divider
-      = render partial: 'profile_bio', user: user
-    - if is_current_user?(user)
-      .span8.pull-left.user-profile-intro
-        = render partial: 'profile_intro', user: user
-    .span8.pull-left.user-profile-info
-      = render partial: 'profile_quiz_info', user: user
+      .section
+        - if is_current_user?(user)
+          = link_to edit_registration_path(user), class: 'btn btn-primary' do
+            Edit Account Settings
+          = link_to sign_out_path, class: 'btn btn-primary' do
+            Sign Out
+
+/ .hero-unit
+/   .container
+/     .row
+/       .span12
+/         - profile_title = is_current_user?(user) ? "My Profile" : "#{user.name}'s Profile"
+/         %h3=profile_title
+
+/ .container.user-profile
+/   .row
+/     .span4.pull-right.horizontal-divider
+/       = render partial: 'profile_bio', user: user
+/     - if is_current_user?(user)
+/       .span8.pull-left.user-profile-intro
+/         = render partial: 'profile_intro', user: user
+/     .span8.pull-left.user-profile-info
+/       = render partial: 'profile_quiz_info', user: user
 
