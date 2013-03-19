@@ -3,8 +3,11 @@
     .container
       = link_to root_url, class: 'brand' do
         / = image_tag 'logo-window.png', id: 'logo-window'
-        #logo-window
-        .logo-text ChefSteps
+        .logo-wrapper
+          .logo-window
+          .logo-block
+            .logo-text ChefSteps
+            .logo-subtext cooking connected
       %button.btn.btn-navbar{data: {toggle: 'collapse', target: '.nav-collapse'}}
         %span.icon-bar
         %span.icon-bar
