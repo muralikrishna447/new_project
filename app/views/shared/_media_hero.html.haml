@@ -30,4 +30,7 @@
         .btn-play.pull-left
           .btn-play-triangle
         .media-header-content
-          = "See the #{media_object.activity_type.first}"
+          - if media_object.activity_type.first == 'Science'
+            = "See the Video"
+          - else
+            = "See the #{media_object.activity_type.first}"
