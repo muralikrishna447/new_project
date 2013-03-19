@@ -3,34 +3,56 @@
     .container
       = link_to root_url, class: 'brand' do
         / = image_tag 'logo-window.png', id: 'logo-window'
-        #logo-window
-        .logo-text chefsteps
+        .logo-wrapper
+          .logo-window
+          .logo-block
+            .logo-text ChefSteps
+            .logo-subtext cook connected
       %button.btn.btn-navbar{data: {toggle: 'collapse', target: '.nav-collapse'}}
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
       .nav-collapse.collapse.pull-right
         %ul.nav
-          %li
-            = link_to 'Recipes', recipe_gallery_index_path
-          %li.dropdown
-            = link_to 'javascript:voide(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+          %li.dropdown.nav-item-border
+            = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+              Cooking
               %i.icon-angle-down
-              Resources
             %ul.dropdown-menu
               .dropdown-background
+              %li= link_to 'Recipes', recipe_gallery_index_path
               %li= link_to 'Techniques', techniques_path
-              %li= link_to 'Knowledge', sciences_path
-              %li= link_to 'Course', course_path('accelerated-sous-vide-cooking-course')
-          %li= link_to 'Community', 'http://forum.chefsteps.com'
-          %li= link_to 'Shop', 'http://store.chefsteps.com'
-          %li
-            / = link_to 'Search', search_index_path
-            = form_tag '/search', :method => :get, class: 'navbar-form' do
-              = text_field_tag :q, nil, :placeholder => 'search', class: 'span2'
-              / = submit_tag 'Search', class: 'btn btn-primary'
-          %li
+          %li.dropdown.nav-item-border
+            = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+              Learning
+              %i.icon-angle-down
+            %ul.dropdown-menu
+              .dropdown-background
+              %li= link_to 'Sous Vide Course', course_path('accelerated-sous-vide-cooking-course')
+              %li= link_to 'Culinary Knowledge', sciences_path
+          = # TODO REMOVE Older Navbar setup below
+          / %li.nav-item-border
+          /   = link_to 'Recipes', recipe_gallery_index_path
+          / %li.nav-item-border
+          /   = link_to 'Techniques', recipe_gallery_index_path
+          / %li.dropdown.nav-item-border
+          /   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+          /     Learning
+          /     %i.icon-angle-down
+          /   %ul.dropdown-menu
+          /     .dropdown-background
+          /     %li= link_to 'Techniques', techniques_path
+          /     %li= link_to 'Knowledge', sciences_path
+          /     %li= link_to 'Course', course_path('accelerated-sous-vide-cooking-course')
+          %li.nav-item-border= link_to 'Community', 'http://forum.chefsteps.com'
+          %li.nav-item-border= link_to 'Shop', 'http://store.chefsteps.com'
+          %li.nav-item-border
             - if current_user
               = link_to 'Profile', user_profile_path(current_user)
             - else
               = link_to 'Sign in', sign_in_path
+          %li.nav-item-border
+            / = link_to 'Search', search_index_path
+            = form_tag '/search', :method => :get, class: 'navbar-form form-search' do
+              = text_field_tag :q, nil, :placeholder => 'search', class: 'span2 search-query'
+              / = submit_tag 'Search', class: 'btn btn-primary'

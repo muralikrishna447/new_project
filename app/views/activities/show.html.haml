@@ -126,7 +126,7 @@
             .item
               = link_to activity_path(technique) do
                 = render 'shared/media_centered', media: technique, size: 'small'
-      %h3 Related
+      %h3 Recipes
       .carousel-scroll#related-carousel
         .carousel-scroll-inner
           - @recipes.each_with_index do |recipe,index|
@@ -143,11 +143,11 @@
         %h3= @course.title
       .modal-body
         = course_syllabus(@course)
-
-.container-fluid
-  .section
-    - disqus_id = "activity-#{@activity.id}"
-    = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
+  .row
+    .span12
+      .section.well
+        - disqus_id = "activity-#{@activity.id}"
+        = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
 
 = #TODO Remove old code below
 

@@ -6,10 +6,10 @@
   -o-box-sizing: border-box
 
 =shadow
-  box-shadow: 0px 0px 8px #888888
-  -moz-box-shadow: 0px 0px 8px #888888
-  -webkit-box-shadow: 0px 0px 8px #888888
-  -o-box-shadow: 0px 0px 8px #888888
+  box-shadow: 0px 0px 5px #888888
+  -moz-box-shadow: 0px 0px 5px #888888
+  -webkit-box-shadow: 0px 0px 5px #888888
+  -o-box-shadow: 0px 0px 5px #888888
 
 =dark-shadow
   box-shadow: 0px 0px 5px black
@@ -38,11 +38,12 @@ $blue-opaque: rgba(0,109,204,.8)
 $red: #DA4f49
 $red-opaque: rgba(218,79,73,.8)
 $light-gray: #ccc
+$off-white: #F2F2F2
 
 ////////////////////////////////////////
 
 #main-container
-  margin-top: 60px
+  margin-top: 70px
   margin-bottom: 60px
 
 /* Bootstrap Overrides */
@@ -98,7 +99,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 
 h1, h2, h3, h4
   font-family: 'Raleway', sans-serif
-  letter-spacing: 1px
+  font-weight: 500
 
 .word-wrap
   word-wrap: break-word
@@ -193,6 +194,7 @@ h1, h2, h3, h4
     .media-header-right
       float: left
       width: 50%
+      text-transform: uppercase
       .media-header-content
         text-aigin: left
     .media-header-content
@@ -412,11 +414,11 @@ h1, h2, h3, h4
   text-align: center
   margin: 0 auto
   border-radius: 10px
-  border: 1px solid $light-gray
+  border: 1px solid $orange
   @include boxsizing
   
 .indicator-active
-  border: 2px solid $orange
+  border: 2px solid $dark_orange
   background: white
 
 .swipe-wrap
@@ -453,19 +455,37 @@ h1, h2, h3, h4
 ////////////////////////////////////////
 
 /* Unique Styles */
-#logo-window
-  // height: 20px
-  box-shadow: 5px 0px 0px 0px white, 10px 0px 0px 0px white, 0px 6px 0px 0px white, 5px 6px 0px 0px white, 10px 6px 0px 0px white, 0px 12px 0px 0px white, 5px 12px 0px 0px white, 10px 12px 0px 0px white, 0px 18px 0px 0px white, 5px 18px 0px 0px white, 10px 18px 0px 0px white
-  background: white
-  width: 4px
-  height: 5px
-  overflow: hidden
-  float: left
-.logo-text
-  margin-left: 20px
+.logo-wrapper
+  $width: 7px
+  $height: 10px
+  $spacing: 2px
+  height: 4*$height + 3*$spacing
+  .logo-window
+    box-shadow: $width + $spacing 0px 0px 0px $dark_orange, 2*($width + $spacing) 0px 0px 0px $dark_orange, 0px $height + $spacing 0px 0px $dark_orange, $width + $spacing $height + $spacing 0px 0px $dark_orange, 2*($width + $spacing) $height + $spacing 0px 0px $dark_orange, 0px 2*($height + $spacing) 0px 0px $dark_orange, $width + $spacing 2*($height + $spacing) 0px 0px $dark_orange, 2*($width + $spacing) 2*($height + $spacing) 0px 0px $dark_orange, 0px 3*($height + $spacing) 0px 0px $dark_orange, $width + $spacing 3*($height + $spacing) 0px 0px $dark_orange, 2*($width + $spacing) 3*($height + $spacing) 0px 0px $dark_orange
+    background: $dark_orange
+    width: $width
+    height: $height
+    overflow: hidden
+    float: left
+  .logo-block
+    float: left
+    margin-left: 22px
+    .logo-text
+      font-size: 30px
+      line-height: 29px
+      font-weight: 500
+      font-family: 'Raleway', sans-serif
+      margin-top: 3px
+    .logo-subtext
+      font-size: 14px
+      margin-top: -5px
+      margin-left: 3px
+      font-weight: 400
+      margin-bottom: -1px
+
 
 #hero-container
-  margin-top: -20px
+  margin-top: -23px
   padding: 0px
   //max-height: 586px
   z-index: 999
@@ -549,9 +569,9 @@ h1, h2, h3, h4
 
 .btn-play
   position: relative
-  width: 50px
-  height: 50px
-  margin: 25px 10px 20px 25px
+  width: 40px
+  height: 40px
+  margin: 30px 10px 20px 30px
   //background: $orange
   border: 1px solid black
   @include boxsizing
@@ -569,10 +589,10 @@ h1, h2, h3, h4
     position: absolute
     width: 0px
     height: 0px
-    border-top: 12px solid transparent
-    border-bottom: 12px solid transparent
-    border-left: 20px solid black
-    margin: 13px 18px
+    border-top: 7px solid transparent
+    border-bottom: 7px solid transparent
+    border-left: 12px solid black
+    margin: 12px 15px
     opacity: .9
 
 .btn-hero-next
@@ -654,14 +674,31 @@ h1, h2, h3, h4
   .navbar-inner
     box-shadow: none
     background-image: none
-    background-color: $orange
+    background-color: white
     border-color: $dark-orange
+    border: none
+    border-top: 2px solid $dark-orange
+    @include shadow
   .brand
     text-shadow: none
-    color: white
+    color: black
+    padding: 4px 20px
+  .nav
+    .nav-item-border
+      border-left: 1px solid $light-gray
   .nav > li > a
     text-shadow: none
-    color: white
+    color: black
+    line-height: 34px
+    font-size: 16px
+    font-weight: 200
+    &:hover
+      background: $orange
+      color: white
+  .navbar-form
+    margin: 12px 10px 12px
+    input
+      margin: 0px
   .btn-navbar
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from($orange), to($dark-orange))
     background-image: -moz-linear-gradient(top, $orange, $dark-orange)
