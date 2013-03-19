@@ -80,7 +80,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 .well
   border: 1px solid #ccc
   border-radius: 0px
-  background-color: rgba(0,0,0,.1)
+  background-color: $off-white
   @include boxsizing
 
 .well-opaque
@@ -454,10 +454,13 @@ h1, h2, h3, h4
 /* Unique Styles */
 #logo-window
   // height: 20px
-  box-shadow: 5px 0px 0px 0px $dark_orange, 10px 0px 0px 0px $dark_orange, 0px 6px 0px 0px $dark_orange, 5px 6px 0px 0px $dark_orange, 10px 6px 0px 0px $dark_orange, 0px 12px 0px 0px $dark_orange, 5px 12px 0px 0px $dark_orange, 10px 12px 0px 0px $dark_orange, 0px 18px 0px 0px $dark_orange, 5px 18px 0px 0px $dark_orange, 10px 18px 0px 0px $dark_orange
+  $width: 6px
+  $height: 8px
+  $spacing: 1px
+  box-shadow: $width + $spacing 0px 0px 0px $dark_orange, 2*($width + $spacing) 0px 0px 0px $dark_orange, 0px $height + $spacing 0px 0px $dark_orange, $width + $spacing $height + $spacing 0px 0px $dark_orange, 2*($width + $spacing) $height + $spacing 0px 0px $dark_orange, 0px 2*($height + $spacing) 0px 0px $dark_orange, $width + $spacing 2*($height + $spacing) 0px 0px $dark_orange, 2*($width + $spacing) 2*($height + $spacing) 0px 0px $dark_orange, 0px 3*($height + $spacing) 0px 0px $dark_orange, $width + $spacing 3*($height + $spacing) 0px 0px $dark_orange, 2*($width + $spacing) 3*($height + $spacing) 0px 0px $dark_orange
   background: $dark_orange
-  width: 4px
-  height: 5px
+  width: $width
+  height: $height
   overflow: hidden
   float: left
 .logo-text
