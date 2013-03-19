@@ -33,7 +33,7 @@
     .row
       .span4
         %h4.text-center 
-          = link_to 'Recipes', recipe_gallery_index_path
+          = link_to 'Recipes', recipe_gallery_index_path, class: 'black-link'
         .swipe#recipe-swiper
           .swipe-wrap
             - @recipes.each do |recipe|
@@ -42,7 +42,7 @@
                   = render 'shared/media_centered', media: recipe
       .span4
         %h4.text-center
-          = link_to 'Techniques', techniques_path
+          = link_to 'Techniques', techniques_path, class: 'black-link'
         .swipe#technique-swiper
           .swipe-wrap
             - @techniques.each do |technique|
@@ -51,7 +51,7 @@
                   = render 'shared/media_centered', media: technique
       .span4
         %h4.text-center
-          = link_to 'Knowledge', sciences_path
+          = link_to 'Knowledge', sciences_path, class: 'black-link'
         .swipe#knowledge-swiper
           .swipe-wrap
             - @sciences.each do |science|
