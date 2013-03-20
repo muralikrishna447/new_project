@@ -90,5 +90,13 @@ module ApplicationHelper
     end
   end
 
+  def canonical_nav_link(path,external=false)
+    if external
+      'http://www.chefsteps.com' + path
+    else
+      path
+    end
+  end
+
 end
 
