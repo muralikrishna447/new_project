@@ -1,10 +1,12 @@
 adjustStepHeight = () ->
-  height = $('#video-ingredient-unit').height()
-  $('.ordered-steps').css 'height', height
+  window_width = $(window).width()
+  unless window_width <= 767
+    height = $('#video-ingredient-unit').height()
+    $('.ordered-steps').css 'height', height
 
 $ ->
   height = $('#video-ingredient-unit').height()
-  adjustStepHeight() 
+  adjustStepHeight()
 
   i = 0
   $('#show-all').click ->
