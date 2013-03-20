@@ -51,7 +51,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   height: inherit
 
 .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle
-  background: $dark_orange
+  background: $orange
   color: white
 
 .navbar .nav > li > .dropdown-menu
@@ -64,7 +64,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
       color: white
       padding: 3px 10px
       &:hover
-        background: $dark_orange
+        background: $orange
   &:after
     content: normal
   &:before
@@ -718,13 +718,7 @@ h1, h2, h3, h4
     line-height: 34px
     font-size: 16px
     font-weight: 200
-    background: -moz-linear-gradient(top, rgba(232,232,232,1) 0%, rgba(232,232,232,1) 1%, rgba(255,255,255,0) 100%)
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(232,232,232,1)), color-stop(1%,rgba(232,232,232,1)), color-stop(100%,rgba(255,255,255,0)))
-    background: -webkit-linear-gradient(top, rgba(232,232,232,1) 0%,rgba(232,232,232,1) 1%,rgba(255,255,255,0) 100%)
-    background: -o-linear-gradient(top, rgba(232,232,232,1) 0%,rgba(232,232,232,1) 1%,rgba(255,255,255,0) 100%)
-    background: -ms-linear-gradient(top, rgba(232,232,232,1) 0%,rgba(232,232,232,1) 1%,rgba(255,255,255,0) 100%)
-    background: linear-gradient(to bottom, rgba(232,232,232,1) 0%,rgba(232,232,232,1) 1%,rgba(255,255,255,0) 100%)
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8e8e8', endColorstr='#00ffffff',GradientType=0 )
+    @include transition(background 300ms)
     &:hover
       background: $orange
       color: white
