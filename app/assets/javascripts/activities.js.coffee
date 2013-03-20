@@ -9,6 +9,7 @@ $ ->
   i = 0
   $('#show-all').click ->
     if ++i % 2
+      $('#show-all-icon').attr 'class', 'icon-resize-small'
       $('.ordered-steps').height 'inherit'
       $('.step-image').each ->
         $(this).show 'blind', {direction: 'vertical'}, 500
@@ -21,6 +22,7 @@ $ ->
       $('.scroll-overlay-top').hide()
       $('.scroll-overlay-bottom').hide()
     else
+      $('#show-all-icon').attr 'class', 'icon-resize-full'
       $('.ordered-steps').height height
       $('.step-image').each ->
         $(this).hide 'blind', {direction: 'vertical'}, 500
