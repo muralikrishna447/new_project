@@ -27,8 +27,9 @@
         .media-header-content
           %h3= media_object.title.html_safe
       .media-header-right
-        .btn-play.pull-left
-          .btn-play-triangle
+        / .btn-play.pull-left
+        /   .btn-play-triangle
+        .btn-play-image.pull-left
         .media-header-content
           - if media_object.activity_type.first == 'Science'
             = "See the Video"

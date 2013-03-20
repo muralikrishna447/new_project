@@ -463,6 +463,9 @@ h1, h2, h3, h4
 ////////////////////////////////////////
 
 /* Unique Styles */
+#chefsteps-logo
+  height: 46px
+  
 .logo-wrapper
   $width: 7px
   $height: 10px
@@ -583,6 +586,14 @@ h1, h2, h3, h4
   &:hover
     background: $darker_orange
     @include transition(all 100ms)
+
+.btn-play-image
+  position: relative
+  background: image-url('play-button.png') no-repeat
+  width: 34px
+  height: 34px
+  margin: 33px 10px 20px 33px
+  @include boxsizing
 
 .btn-play
   position: relative
@@ -877,3 +888,6 @@ h1, h2, h3, h4
 
   .btn-play
     margin: 5px 10px 5px 25px
+
+  .btn-play-image
+    margin: 13px 10px 13px 25px
