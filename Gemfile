@@ -7,6 +7,7 @@ gem 'pg'
 gem 'unicorn'
 gem 'memcachier'
 gem 'dalli'
+gem 'cache_digests'
 
 gem "devise"
 gem 'oauth2'
