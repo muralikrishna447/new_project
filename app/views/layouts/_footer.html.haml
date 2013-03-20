@@ -1,4 +1,6 @@
-.container-fluid#footer
+.container-fluid#footer{style: "background-image: url('#{s3_image_url(Setting.last.footer_image)}')"}
+  / .footer-image
+  /   = image_tag s3_image_url(Setting.last.footer_image)
   .row-fluid
     .span12
       .row
@@ -9,19 +11,17 @@
               ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
             %p
               Taught by a world-renowned team, you will master techniques of traditional and modernist cooking through practical, hands-on demonstrations with detailed step-by-step explanations. Unlike at other culinary schools, you will also learn the why's behind the how's from experts who bring the science of cooking to life in a compelling and practical way.
-            .span1
+            .section
               = link_to about_path do
                 = image_tag 'chris.jpg', class:'img-circle'
-            .span1
+
               = link_to about_path do
                 = image_tag 'grant.jpg', class:'img-circle'
-            .span1
+
               = link_to about_path do
                 = image_tag 'ryan.jpg', class:'img-circle'
 
-            .span12.text-center Handmade in Pike Place, Seattle WA
-
-            .span12
+            .section
               %p
                 General inquiries:
                 = mail_to 'info@chefsteps.com'
@@ -33,6 +33,8 @@
               %p.creative-commons
                 %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
                   All Content is Creative Commons Attribution-NonCommercial-ShareAlike
+
+            .section.text-center Handmade in Pike Place, Seattle WA
           / .span2
           /   = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
           /     %div.footer-social

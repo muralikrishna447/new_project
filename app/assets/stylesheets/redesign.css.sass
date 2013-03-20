@@ -538,12 +538,21 @@ h1, h2, h3, h4
 
 #footer
   margin-top: 50px
-  background-image: url('http://d2eud0b65jr0pw.cloudfront.net/final_dish_IMG_5402.jpg')
-  background-position: left center
+  //background-image: url('http://d2eud0b65jr0pw.cloudfront.net/final_dish_IMG_5402.jpg')
+  background-position: center top
   background-repeat: no-repeat
-  background-size: 100%
+  //background-size: 100%
+  .footer-image
+    max-height: 600px
+    overflow: hidden
+    position: absolute
+    left: 0px
+    z-index: -1
+    img
+      width: 100%
   #footer-body
     margin-top: 50px
+    z-index: 999
   .footer-social
     color: white
     &:hover
@@ -854,6 +863,10 @@ h1, h2, h3, h4
   .vertical-swipe
     width: 100%
     height: 400px
+
+  #footer
+    margin: 0px -20px
+    padding: 0px 20px
  
 /* Landscape phones and down */
 @media (max-width: 480px)
