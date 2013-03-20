@@ -3,7 +3,7 @@ window.ChefSteps = {}
 class ChefSteps.NavigationBootstrap
   constructor: (@headerTarget) ->
 
-  cssLink: "<link rel=stylesheet type='text/css' href='http://<%= CDN_DOMAIN %>/assets/global_navigation.css' />"
+  # cssLink: "<link rel=stylesheet type='text/css' href='http://<%= CDN_DOMAIN %>/assets/global_navigation.css' />"
 
   getHeader: =>
     jQuery.ajax
@@ -12,8 +12,8 @@ class ChefSteps.NavigationBootstrap
       type: "GET"
       success: @loadHeader
 
-  loadCSS: =>
-    jQuery(@cssLink).prependTo('head')
+  # loadCSS: =>
+  #   jQuery(@cssLink).prependTo('head')
 
   loadHeader: (response) =>
     jQuery(@headerTarget).html(response)
@@ -23,7 +23,7 @@ class ChefSteps.NavigationBootstrap
       top.location = $(this).attr('href')
 
   bootstrap: =>
-    @loadCSS()
+    # @loadCSS()
     @getHeader()
     @fixNavLinks()
 

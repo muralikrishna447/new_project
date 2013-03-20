@@ -1,125 +1,71 @@
-= # TODO Remove old header
+%link{href: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css", rel: "stylesheet", type: "text/css"}
+%link{href: "//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
+/ %link{href: "http://d1w42w8pbelamn.cloudfront.net/assets/application-85090e91c472f2d28846db739e443393.css", rel: "stylesheet", type: "text/css"}
+= stylesheet_link_tag 'application', media: 'all'
+= javascript_include_tag 'application'
+= render 'layouts/navigation'
 
 / #header
-/   .nav-container
-/     = link_to root_url, class: 'brand' do
-/       = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
-/     #menu-toggle
-/       .icon-th-list
-/     %ul#collapsible
-/       = link_to course_url('accelerated-sous-vide-cooking-course') do
-/         %li.nav-item
-/           %i.icon-book
-/           Course
-/       = link_to recipe_gallery_index_url do
-/         %li.nav-item
-/           %i.icon-th-large
-/           Recipes
-/       = link_to 'http://forum.chefsteps.com' do
-/         %li.nav-item
-/           %i.icon-comments-alt
-/           Forum
-/       = link_to 'http://blog.chefsteps.com' do
-/         %li.nav-item
-/           %i.icon-pencil
-/           Blog
-/       = link_to 'http://store.chefsteps.com' do
-/         %li.nav-item.nav-item-last
-/           %i.icon-shopping-cart
-/           Shop       
-/       = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
-/         %li.social
-/           .icon-facebook
-/       = link_to 'http://twitter.com/@chefsteps', target: 'blank' do
-/         %li.social
-/           .icon-twitter
-/       = link_to 'http://pinterest.com/chefsteps/', target: 'blank' do
-/         %li.social
-/           .icon-pinterest
-/       = link_to 'https://plus.google.com/106370441183974123730/posts', target: 'blank' do
-/         %li.social
-/           .icon-google-plus
-/       = link_to feed_url do
-/         %li.social
-/           .icon-rss
-/       - unless external
-/         = link_to search_index_url do
-/           %li.social
-/             .icon-search
-/     %li.user.user-auth
-/       - if user_signed_in?
-/         .dropdown#user-dropdown
-/           = link_to '#', data: {toggle: 'dropdown'} do
-/             = gravatar_image_tag(current_user.email, alt: current_user.name, gravatar: { default: 'http://www.chefsteps.com/assets/default_avatar.png'})
-/           %ul.dropdown-menu
-/             %li= link_to 'Profile', user_profile_path(current_user)
-/             %li= link_to 'Sign out', destroy_user_session_path, method: :delete
-/       - elsif request.path != sign_in_path
-/         = link_to sign_in_path do
-/           Sign in
-/     %li.user
-/       = render 'mailing_list/subscribe'
-#header
-  .row.global-navigation
-    .span12
-      .brand-container
-        %a.brand{href: root_url, target: '_top'}
-          = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
+/   .row.global-navigation
+/     .span12
+/       .brand-container
+/         %a.brand{href: root_url, target: '_top'}
+/           = image_tag('chefsteps-logo.png', alt: 'ChefSteps')
 
-      .navbar#menu
-        %ul.nav.noprint
-          %li.nav-item
-            - if current_page?(course_url('accelerated-sous-vide-cooking-course'))
-              Course
-            - else
-              = link_to 'Course', course_url('accelerated-sous-vide-cooking-course')
+/       .navbar#menu
+/         %ul.nav.noprint
+/           %li.nav-item
+/             - if current_page?(course_url('accelerated-sous-vide-cooking-course'))
+/               Course
+/             - else
+/               = link_to 'Course', course_url('accelerated-sous-vide-cooking-course')
 
-          %li.nav-item
-            = link_to 'Recipes', recipe_gallery_index_url
+/           %li.nav-item
+/             = link_to 'Recipes', recipe_gallery_index_url
 
-          %li.nav-item
-            = link_to 'Forum', 'http://forum.chefsteps.com'
+/           %li.nav-item
+/             = link_to 'Forum', 'http://forum.chefsteps.com'
 
-          %li.nav-item
-            = link_to 'Blog', 'http://blog.chefsteps.com'
+/           %li.nav-item
+/             = link_to 'Blog', 'http://blog.chefsteps.com'
 
-          %li.last.nav-item
-            = link_to 'Shop', 'http://store.chefsteps.com'
+/           %li.last.nav-item
+/             = link_to 'Shop', 'http://store.chefsteps.com'
 
-      .navbar.noprint#social
-        %ul.nav.social
-          %li
-            %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
-          %li
-            %a.icon-twitter{ href: "http://twitter.com/@chefsteps" }
-          %li
-            %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
-          %li
-            %a.icon-google-plus{ href: "https://plus.google.com/106370441183974123730/posts" }
-          %li
-            %a.icon-rss{ href: feed_url }
-          - unless external
-            %li
-              %a.icon-search{ href: search_index_url }
+/       .navbar.noprint#social
+/         %ul.nav.social
+/           %li
+/             %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
+/           %li
+/             %a.icon-twitter{ href: "http://twitter.com/@chefsteps" }
+/           %li
+/             %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
+/           %li
+/             %a.icon-google-plus{ href: "https://plus.google.com/106370441183974123730/posts" }
+/           %li
+/             %a.icon-rss{ href: feed_url }
+/           - unless external
+/             %li
+/               %a.icon-search{ href: search_index_url }
 
 
-      - unless user_signed_in? or external
-        .navbar.noprint#subscribe
-          %ul.nav.subscribe
-            %li
-              = render 'mailing_list/subscribe'
+/       - unless user_signed_in? or external
+/         .navbar.noprint#subscribe
+/           %ul.nav.subscribe
+/             %li
+/               = render 'mailing_list/subscribe'
 
-      -unless external
-        .navbar.user-auth.noprint#user-auth
-          - if user_signed_in?
-            .dropdown#user-dropdown
-              = link_to '#', data: {toggle: 'dropdown'} do
-                = gravatar_image_tag(current_user.email, alt: current_user.name, gravatar: { default: 'http://www.chefsteps.com/assets/default_avatar.png'})
-              %ul.dropdown-menu
-                %li= link_to 'Profile', user_profile_path(current_user)
-                %li= link_to 'Sign out', destroy_user_session_path, method: :delete
-          - elsif request.path != sign_in_path
-            .sign-in-button
-              = link_to sign_in_path do
-                .btn.btn-primary Sign in
+/       -unless external
+/         .navbar.user-auth.noprint#user-auth
+/           - if user_signed_in?
+/             .dropdown#user-dropdown
+/               = link_to '#', data: {toggle: 'dropdown'} do
+/                 = gravatar_image_tag(current_user.email, alt: current_user.name, gravatar: { default: 'http://www.chefsteps.com/assets/default_avatar.png'})
+/               %ul.dropdown-menu
+/                 %li= link_to 'Profile', user_profile_path(current_user)
+/                 %li= link_to 'Sign out', destroy_user_session_path, method: :delete
+/           - elsif request.path != sign_in_path
+/             .sign-in-button
+/               = link_to sign_in_path do
+/                 .btn.btn-primary Sign in
 
