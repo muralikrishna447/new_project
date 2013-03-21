@@ -45,7 +45,7 @@
           - if @activity.description?
             .section
               :markdown
-                #{@activity.description}
+                #{apply_shortcodes(@activity.description)}
           - if @activity.ingredients.any?
             .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
               = render 'ingredients_list', ingredients: @activity.ingredients
