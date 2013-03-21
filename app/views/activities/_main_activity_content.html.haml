@@ -25,7 +25,7 @@
         %ul
         - activity.used_in_activities.each do |activity|
           %li= link_to activity.title.html_safe, activity
-  .span6.section
+  .span6.section.scroll-shadow-wrapper
     .ordered-steps.scroll-shadow
       .scroll-shadow-content.pull-left
         - activity.steps.each_with_index do |step, index|

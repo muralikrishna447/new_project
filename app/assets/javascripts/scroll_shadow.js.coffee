@@ -1,13 +1,13 @@
 setOverlay = (scrollable, top_hidden, bottom_hidden) ->
   if top_hidden > 0
-    scrollable.parent().find('.scroll-overlay-top').show()
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-top').show()
   else
-    scrollable.parent().find('.scroll-overlay-top').hide()
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-top').hide()
 
   if bottom_hidden > 50
-    scrollable.parent().find('.scroll-overlay-bottom').show()
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-bottom').show()
   else
-    scrollable.parent().find('.scroll-overlay-bottom').hide()
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-bottom').hide()
 
 $ ->
   $('.scroll-shadow').each ->

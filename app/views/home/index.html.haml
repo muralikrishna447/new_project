@@ -42,6 +42,11 @@
                 %div
                   = link_to activity_path(recipe) do
                     = render 'shared/media_centered', media: recipe, size: 'medium'
+          .vertical-slider-3.infinite-scroll
+            - @recipes.each do |recipe|
+              %div.infinite-scroll-item
+                = link_to activity_path(recipe) do
+                  = render 'shared/media_centered', media: recipe, size: 'medium'
       .span4
         %h4.text-center
           = link_to 'Techniques', techniques_path, class: 'black-link'
