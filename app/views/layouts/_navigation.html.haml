@@ -44,7 +44,11 @@
               = link_to 'Profile', user_profile_url(current_user)
             - else
               = link_to 'Sign in', sign_in_url
-          %li
-            .nav-item-border
-            = form_tag search_index_url, :method => :get, class: 'navbar-form form-search' do
-              = text_field_tag :q, nil, :placeholder => 'search', class: 'span2 search-query'
+          - unless external
+            %li
+              .nav-item-border
+              .nav-search
+                = link_to 'javascript:void(0);', id: 'nav-search-toggle' do
+                  %i.icon-search.icon-large
+                = form_tag search_index_url, :method => :get, class: 'navbar-form form-search nav-search-form' do
+                  = text_field_tag :q, nil, :placeholder => 'search', class: 'search-query'

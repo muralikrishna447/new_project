@@ -22,7 +22,7 @@
     = render 'layouts/google_analytics' if Rails.env.production?
 
   %body
-    = render 'layouts/navigation'
+    = render 'layouts/navigation', external: false
 
     = yield :hero
 

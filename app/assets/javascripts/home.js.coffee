@@ -59,3 +59,6 @@ $ ->
     target.find('.discussion-body').text(shortbody)
     target.find('.discussion-author').text(author)
     target.find('.discussion-link').attr('href', link)
+
+  $('#nav-search-toggle').click ->
+    $(this).closest('.nav-search').find('.form-search').toggleClass('nav-search-show', 300)

@@ -77,6 +77,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     top: 0px
     z-index: -1
     opacity: .6
+
 .well
   border: 1px solid #ccc
   border-radius: 0px
@@ -748,6 +749,29 @@ h1, h2, h3, h4
     &:hover
       background-image: none
       background-color: $dark-orange
+      float: left
+  .nav-search
+    height: 54px
+    @include transition(background 300ms)
+    &:hover
+      background: $orange
+      cursor: pointer
+      #nav-search-toggle
+        color: white
+        text-decoration: none
+    #nav-search-toggle
+      margin: 21px 10px 22px
+      color: black
+      float: left
+    .nav-search-form
+      float: left
+      width: 0px
+      padding: 0px
+      margin-right: 0px
+      margin-left: 0px
+      overflow: hidden
+    .nav-search-show
+      width: 220px
 
 /* Scroll Shadow */
 .scroll-overlay-top

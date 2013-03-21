@@ -119,34 +119,31 @@ $offwhite: #F2F2F2
     &:hover
       background-image: none
       background-color: $dark-orange
+  .nav-search
+    height: 54px
+    @include transition(background 300ms)
+    &:hover
+      background: $orange
+      cursor: pointer
+      #nav-search-toggle
+        color: white
+        text-decoration: none
+    #nav-search-toggle
+      margin: 21px 10px 22px
+      color: black
+      float: left
+    .nav-search-form
+      float: left
+      width: 0px
+      padding: 0px
+      margin-right: 0px
+      margin-left: 0px
+      overflow: hidden
+    .nav-search-show
+      width: 220px
 
-.logo-wrapper
-  $width: 7px
-  $height: 10px
-  $spacing: 2px
-  height: 4*$height + 3*$spacing
-  .logo-window
-    box-shadow: $width + $spacing 0px 0px 0px $dark_orange, 2*($width + $spacing) 0px 0px 0px $dark_orange, 0px $height + $spacing 0px 0px $dark_orange, $width + $spacing $height + $spacing 0px 0px $dark_orange, 2*($width + $spacing) $height + $spacing 0px 0px $dark_orange, 0px 2*($height + $spacing) 0px 0px $dark_orange, $width + $spacing 2*($height + $spacing) 0px 0px $dark_orange, 2*($width + $spacing) 2*($height + $spacing) 0px 0px $dark_orange, 0px 3*($height + $spacing) 0px 0px $dark_orange, $width + $spacing 3*($height + $spacing) 0px 0px $dark_orange, 2*($width + $spacing) 3*($height + $spacing) 0px 0px $dark_orange
-    background: $dark_orange
-    width: $width
-    height: $height
-    overflow: hidden
-    float: left
-  .logo-block
-    float: left
-    margin-left: 22px
-    .logo-text
-      font-size: 30px
-      line-height: 29px
-      font-weight: 500
-      font-family: 'Raleway', sans-serif
-      margin-top: 3px
-    .logo-subtext
-      font-size: 14px
-      margin-top: -5px
-      margin-left: 3px
-      font-weight: 400
-      margin-bottom: -1px
+#chefsteps-logo
+  height: 46px
 
 .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle
   background: $dark_orange
