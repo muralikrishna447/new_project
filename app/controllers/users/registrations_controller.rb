@@ -25,6 +25,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def create
+    @user = User.new(params[:user])
+    if @user.save
+      sign_in @user
+      redirect_to user_profile_path(@user), notice: "Welcome to ChefSteps!"
+    else
+      render :new
+    end
+  end
+
   def complete_registration
     @user = User.new
   end
