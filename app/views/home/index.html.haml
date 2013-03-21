@@ -39,7 +39,7 @@
             - @recipes.each do |recipe|
               %div
                 = link_to activity_path(recipe) do
-                  = render 'shared/media_centered', media: recipe
+                  = render 'shared/media_centered', media: recipe, size: 'medium'
       .span4
         %h4.text-center
           = link_to 'Techniques', techniques_path, class: 'black-link'
@@ -48,7 +48,7 @@
             - @techniques.each do |technique|
               %div
                 = link_to activity_path(technique) do
-                  = render 'shared/media_centered', media: technique
+                  = render 'shared/media_centered', media: technique, size: 'medium'
       .span4
         %h4.text-center
           = link_to 'Knowledge', sciences_path, class: 'black-link'
@@ -57,7 +57,7 @@
             - @sciences.each do |science|
               %div
                 = link_to activity_path(science) do
-                  = render 'shared/media_centered', media: science
+                  = render 'shared/media_centered', media: science, size: 'medium'
 
 .row.section
   .span12
