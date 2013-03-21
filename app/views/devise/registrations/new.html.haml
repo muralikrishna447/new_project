@@ -33,8 +33,11 @@
               = "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
         .control-group
           .controls.controls-small
-            - unless params[:email]
-              =label_tag :okay_to_email do
+            - if params[:email]
+              .hide
+                = check_box_tag :okay_to_email, true, true
+            - else
+              = label_tag :okay_to_email do
                 = check_box_tag :okay_to_email, true, true
                 = "Please email me the latest updates from ChefSteps".html_safe
             =f.submit 'Sign up', class: 'btn btn-primary btn-large'
