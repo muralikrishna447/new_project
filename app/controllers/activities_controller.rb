@@ -9,7 +9,6 @@ class ActivitiesController < ApplicationController
     @techniques = Activity.published.techniques.last(6)
     # @recipes = @activity.related_by_ingredients
     @recipes = Activity.published.recipes.last(6)
-    @discussion = Forum.discussions.first
     if params[:course_id]
       @course = Course.find(params[:course_id])
     end

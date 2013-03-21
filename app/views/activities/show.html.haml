@@ -33,66 +33,7 @@
   .row.printable.printable-column
     .span12
       .row#main-content
-        .span6.section#video-ingredient-unit
-          .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-            - if @activity.youtube_id?
-              - if params[:autoplay]
-                %iframe{src: youtube_url(@activity.youtube_id, 1)}
-              - else
-                %iframe{src: youtube_url(@activity.youtube_id)}
-            - elsif @activity.image_id?
-              = image_tag s3_image_url(@activity.image_id)
-          - if @activity.description?
-            .section
-              :markdown
-                #{apply_shortcodes(@activity.description)}
-          - if @activity.ingredients.any?
-            .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
-              = render 'ingredients_list', ingredients: @activity.ingredients
-          - if @activity.required_equipment.any?
-            .section
-              %h4 Equipment and Materials
-              = render 'equipment_list', equipment: @activity.required_equipment
-          - if @activity.used_in_activities.any?
-            .section
-              %h4 Used In
-              %ul
-              - @activity.used_in_activities.each do |activity|
-                %li= link_to activity.title.html_safe, activity
-        .span6.section
-          .ordered-steps.scroll-shadow
-            .scroll-shadow-content.pull-left
-              - @activity.steps.each_with_index do |step, index|
-                .ordered-step-item{id: "order-step-item-#{index}"}
-                  .step-element.step-number
-                    = index + 1
-                  .step-element.step-content
-                    - if step.title?
-                      %h4= step.title
-                    :markdown
-                      #{raw step.directions}
-                    .step-actions.btn-group
-                      -if step.ingredients.any?
-                        .btn.step-action-item.step-ingredients.btn-primary
-                          %i.icon-th-list
-                      - if step.image_id?
-                        .btn.step-action-item.step-image-btn.btn-primary
-                          %i.icon-picture
-                      - if step.youtube_id?
-                        .btn.step-action-item.step-video-btn.btn-primary
-                          %i.icon-facetime-video
-                    - if step.image_id?
-                      .step-image{id: "step-image-#{index}"}
-                        = image_tag s3_image_url(step.image_id)
-                    - if step.ingredients.any?
-                      .step-ingredients-source.well.section
-                        = render 'ingredients_list', ingredients: step.ingredients
-                    - if step.youtube_id?
-                      .step-video{id: "step-video-#{index}"}
-                        .video-container
-                          %iframe{src: youtube_url(step.youtube_id)}
-          .scroll-overlay-top
-          .scroll-overlay-bottom
+        = render 'main_activity_content', activity: @activity
         .span6.community.noprint.hide
           .community-toggle
             .btn.btn-primary
