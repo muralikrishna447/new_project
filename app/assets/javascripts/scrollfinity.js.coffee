@@ -48,21 +48,10 @@ $ ->
     scrollable.children().each ->
       total_height += $(this).outerHeight()
     window_height = scrollable.height()
-
     scrollable.scroll ->
       scroll_top = scrollable.scrollTop()
       scroll_bottom = total_height - window_height - scroll_top
-      $('#scroll_top').text(scroll_top)
-      $('#scroll_bottom').text(scroll_bottom)
       if scroll_top == 0
         addTopElement(scrollable)
       if scroll_bottom == 0
         addBottomElement(scrollable)
-
-    scrollable.bind 'scrollstop', (e) ->
-      alert 'hello'
-
-      # clearTimeout timeout
-      # timeout = setTimeout( ->
-      #   alert 'stopped'
-      # , 2000)
