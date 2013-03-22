@@ -461,14 +461,6 @@ h1, h2, h3, h4
   .item
     margin: 0px
 
-.vertical-slider-3
-  width: 370px
-  height: 624px
-  overflow: auto
-  -webkit-overflow-scrolling: touch
-  .item
-    margin: 0px
-
 ////////////////////////////////////////
 
 /* Unique Styles */
@@ -594,6 +586,15 @@ h1, h2, h3, h4
   @include transition(all 100ms)
   &:hover
     background: $darker_orange
+    @include transition(all 100ms)
+
+.btn-gray
+  background: $light-gray
+  border: none
+  border-radius: 0px
+  @include transition(all 100ms)
+  &:hover
+    background: gray
     @include transition(all 100ms)
 
 .btn-play-image
@@ -838,12 +839,12 @@ h1, h2, h3, h4
     width: 285px
     margin: 0px 14px
 
-  .vertical-slider-3
-    width: 300px
-    height: 504px
-
   .media-header-content
     width: 376px
+
+  .vertical-slider-2
+    width: 300px
+    height: 336px
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
@@ -859,6 +860,10 @@ h1, h2, h3, h4
 
   .media-header-content
     width: 289px
+
+  .vertical-slider-2
+    width: 228px
+    height: 246px
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)

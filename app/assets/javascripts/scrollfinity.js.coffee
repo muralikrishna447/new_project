@@ -55,3 +55,11 @@ $ ->
         addTopElement(scrollable)
       if scroll_bottom == 0
         addBottomElement(scrollable)
+
+  $('.scrollfinity-down').click ->
+    scrollable = $(this).prev('.scrollfinity')
+    height = scrollable.children().first().outerHeight()
+    if (!scrollable.is(":animated"))
+      scrollable.animate
+        scrollTop: scrollable.scrollTop() + height
+      , 300
