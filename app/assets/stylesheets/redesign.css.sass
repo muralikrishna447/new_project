@@ -761,6 +761,8 @@ h1, h2, h3, h4
       float: left
   .nav-search
     height: 54px
+    width: 40px
+    overflow: hidden
     @include transition(background 300ms)
     &:hover
       background: $orange
@@ -774,13 +776,15 @@ h1, h2, h3, h4
       float: left
     .nav-search-form
       float: left
-      width: 0px
+      width: 160px
       padding: 0px
       margin-right: 0px
       margin-left: 0px
       overflow: hidden
-    .nav-search-show
-      width: 220px
+      input
+        width: 160px
+  .nav-search-show
+    width: 210px
 
 /* Scroll Shadow */
 .scroll-shadow-wrapper

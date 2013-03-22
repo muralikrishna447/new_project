@@ -64,4 +64,4 @@ $ ->
       target.find('.discussion-link').attr('href', link)
 
   $('#nav-search-toggle').click ->
-    $(this).closest('.nav-search').find('.form-search').toggleClass('nav-search-show', 300)
+    $(this).closest('.nav-search').toggleClass('nav-search-show', 300)
