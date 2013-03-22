@@ -57,7 +57,8 @@ $ ->
         addBottomElement(scrollable)
 
   $('.scrollfinity-down').click ->
-    scrollable = $(this).prev('.scrollfinity')
+    button = $(this)
+    scrollable = button.prev('.scrollfinity')
     height = scrollable.children().first().outerHeight()
     if (!scrollable.is(":animated"))
       scrollable.animate
