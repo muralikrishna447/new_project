@@ -109,10 +109,11 @@
         %hr
 
         - if @status
-          #twitter-status
-            %h3 Latest Tweet:
-            = @status.html_safe
-            = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
+          - cache @status, expires: 10.minutes do
+            #twitter-status
+              %h3 Latest Tweet:
+              = @status.html_safe
+              = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
       .span4
         .well
           %h3 Join The Community!
