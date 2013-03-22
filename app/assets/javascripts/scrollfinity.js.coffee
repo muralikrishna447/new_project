@@ -29,9 +29,20 @@ addBottomElement = (scrollable) ->
     previous_height += $(this).outerHeight()
   scrollable.scrollTop(previous_height - scrollable.height())
 
+is_touch_device = ->
+  # works on most browsers 
+  !!("ontouchstart" of window) or !!("onmsgesturechange" of window) # works on ie10
+
 $ ->
+  # Touch device detection
+  if is_touch_device()
+    $('.only-non-touch').hide()
+  else
+    $('.only-touch').hide()
+
   $('.scrollfinity').each ->
     scrollable = $(this)
+    initScrollfinity(scrollable)
 
     total_height = 0
     scrollable.children().each ->
