@@ -453,9 +453,9 @@ h1, h2, h3, h4
 #content-indicators
   width: 45px
 
-.vertical-swipe
+.vertical-slider-2
   width: 370px
-  height: 208px
+  height: 416px
   overflow: auto
   -webkit-overflow-scrolling: touch
   .item
@@ -466,6 +466,14 @@ h1, h2, h3, h4
 /* Unique Styles */
 #chefsteps-logo
   height: 46px
+
+.signup-box
+  overflow: hidden
+  .input-signup-email
+    border: none
+    border-radius: 0px
+    width: 100%
+    @include boxsizing
   
 .logo-wrapper
   $width: 7px
@@ -586,6 +594,15 @@ h1, h2, h3, h4
   @include transition(all 100ms)
   &:hover
     background: $darker_orange
+    @include transition(all 100ms)
+
+.btn-gray
+  background: $light-gray
+  border: none
+  border-radius: 0px
+  @include transition(all 100ms)
+  &:hover
+    background: gray
     @include transition(all 100ms)
 
 .btn-play-image
@@ -752,6 +769,8 @@ h1, h2, h3, h4
       float: left
   .nav-search
     height: 54px
+    width: 40px
+    overflow: hidden
     @include transition(background 300ms)
     &:hover
       background: $orange
@@ -765,15 +784,20 @@ h1, h2, h3, h4
       float: left
     .nav-search-form
       float: left
-      width: 0px
+      width: 160px
       padding: 0px
       margin-right: 0px
       margin-left: 0px
       overflow: hidden
-    .nav-search-show
-      width: 220px
+      input
+        width: 160px
+  .nav-search-show
+    width: 210px
 
 /* Scroll Shadow */
+.scroll-shadow-wrapper
+  position: relative
+
 .scroll-overlay-top
   pointer-events: none
   height: 120px
@@ -827,12 +851,12 @@ h1, h2, h3, h4
     width: 285px
     margin: 0px 14px
 
-  .vertical-swipe
-    width: 300px
-    height: 168px
-
   .media-header-content
     width: 376px
+
+  .vertical-slider-2
+    width: 300px
+    height: 336px
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
@@ -846,12 +870,12 @@ h1, h2, h3, h4
   .media-centered-medium
     height: 128px
 
-  .vertical-swipe
-    width: 228px
-    height: 128px
-
   .media-header-content
     width: 289px
+
+  .vertical-slider-2
+    width: 228px
+    height: 246px
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
@@ -890,13 +914,12 @@ h1, h2, h3, h4
   .media-centered-medium
     height: inherit
 
-  .vertical-swipe
-    width: 100%
-    height: 400px
-
   #footer
     margin: 0px -20px
     padding: 0px 20px
+
+  .vertical-slider-2
+    width: 100%
  
 /* Landscape phones and down */
 @media (max-width: 480px)

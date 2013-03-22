@@ -1,8 +1,10 @@
 $ ->
   # Hero Swiper
   window.heroSwipe = Swipe(document.getElementById('hero-swiper'),{
-    stopPropagation: true,
+    stopPropagation: false,
     continuous: true,
+    auto: 5000,
+    speed: 600,
     transitionEnd: (index, elem) ->
       $('.hero-indicator-btn').removeClass 'indicator-active'
       id = '#hero-swipe-indicator-' + index
@@ -62,4 +64,4 @@ $ ->
       target.find('.discussion-link').attr('href', link)
 
   $('#nav-search-toggle').click ->
-    $(this).closest('.nav-search').find('.form-search').toggleClass('nav-search-show', 300)
+    $(this).closest('.nav-search').toggleClass('nav-search-show', 300)
