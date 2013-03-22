@@ -37,6 +37,8 @@ $ ->
   # Touch device detection
   if is_touch_device()
     $('.only-non-touch').hide()
+    $('.only-touch').each ->
+      $(this).show()
   else
     $('.only-touch').hide()
 

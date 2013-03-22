@@ -36,52 +36,52 @@
         %h4.text-center 
           = link_to 'Recipes', recipe_gallery_index_path, class: 'black-link'
         - cache @recipes do
-          .swipe#recipe-swiper.only-touch.visible-phone
+          .swipe#recipe-swiper.only-touch
             .swipe-wrap
               - @recipes.each do |recipe|
                 %div
                   = link_to activity_path(recipe) do
                     = render 'shared/media_centered', media: recipe, size: 'medium'
-          .vertical-slider-2.scrollfinity.only-non-touch.hidden-phone
+          .vertical-slider-2.scrollfinity.only-non-touch
             - @recipes.each do |recipe|
               %div.scrollfinity-item
                 = link_to activity_path(recipe) do
                   = render 'shared/media_centered', media: recipe, size: 'medium'
-          .btn.btn-gray.btn-block.scrollfinity-down.only-non-touch.hidden-phone
+          .btn.btn-gray.btn-block.scrollfinity-down.only-non-touch
             %icon.icon-angle-down
       .span4
         %h4.text-center
           = link_to 'Techniques', techniques_path, class: 'black-link'
         - cache @techniques do
-          .swipe#technique-swiper.only-touch.visible-phone
+          .swipe#technique-swiper.only-touch
             .swipe-wrap
               - @techniques.each do |technique|
                 %div
                   = link_to activity_path(technique) do
                     = render 'shared/media_centered', media: technique, size: 'medium'
-          .vertical-slider-2.scrollfinity.only-non-touch.hidden-phone
+          .vertical-slider-2.scrollfinity.only-non-touch
             - @techniques.each do |technique|
               %div.scrollfinity-item
                 = link_to activity_path(technique) do
                   = render 'shared/media_centered', media: technique, size: 'medium'
-          .btn.btn-gray.btn-block.scrollfinity-down.only-non-touch.hidden-phone
+          .btn.btn-gray.btn-block.scrollfinity-down.only-non-touch
             %icon.icon-angle-down
       .span4
         %h4.text-center
           = link_to 'Knowledge', sciences_path, class: 'black-link'
         - cache @sciences do
-          .swipe#knowledge-swiper.only-touch.visible-phone
+          .swipe#knowledge-swiper.only-touch
             .swipe-wrap
               - @sciences.each do |science|
                 %div
                   = link_to activity_path(science) do
                     = render 'shared/media_centered', media: science, size: 'medium'
-          .vertical-slider-2.scrollfinity.only-non-touch.hidden-phone
+          .vertical-slider-2.scrollfinity.only-non-touch
             - @sciences.each do |science|
               %div.scrollfinity-item
                 = link_to activity_path(science) do
                   = render 'shared/media_centered', media: science, size: 'medium'
-          .btn.btn-gray.btn-block.scrollfinity-down.only-non-touch.hidden-phone
+          .btn.btn-gray.btn-block.scrollfinity-down.only-non-touch
             %icon.icon-angle-down
 
 .row.section
