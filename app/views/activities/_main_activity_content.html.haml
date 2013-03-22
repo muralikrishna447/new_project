@@ -36,7 +36,7 @@
               - if step.title?
                 %h4= step.title
               :markdown
-                #{raw step.directions}
+                #{apply_shortcodes(step.directions)}
               .step-actions.btn-group
                 -if step.ingredients.any?
                   .btn.step-action-item.step-ingredients.btn-primary
