@@ -4,7 +4,7 @@ $ ->
     stopPropagation: true,
     continuous: true,
     auto: 5000,
-    speed: 1000,
+    speed: 600,
     transitionEnd: (index, elem) ->
       $('.hero-indicator-btn').removeClass 'indicator-active'
       id = '#hero-swipe-indicator-' + index
