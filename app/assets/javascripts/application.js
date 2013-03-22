@@ -1,5 +1,6 @@
 //= require jquery
 //= require jquery-ui
+//= require mobile_detect
 //= require twitter/bootstrap
 //= require jquery.hammer
 //= require swipe
