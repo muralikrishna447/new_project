@@ -3,6 +3,7 @@
 //= require twitter/bootstrap
 //= require jquery.hammer
 //= require swipe
+//= require scrollevents
 //= require ./vendor
 //= require ./ordered
 //= require filmstrip

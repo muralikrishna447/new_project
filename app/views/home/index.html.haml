@@ -42,6 +42,8 @@
                 %div
                   = link_to activity_path(recipe) do
                     = render 'shared/media_centered', media: recipe, size: 'medium'
+          #scroll_top
+          #scroll_bottom
           .vertical-slider-3.scrollfinity.only-non-touch
             - @recipes.each do |recipe|
               %div.scrollfinity-item
