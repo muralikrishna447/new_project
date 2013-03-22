@@ -1,7 +1,7 @@
 $ ->
   # Hero Swiper
   window.heroSwipe = Swipe(document.getElementById('hero-swiper'),{
-    stopPropagation: true,
+    stopPropagation: false,
     continuous: true,
     auto: 5000,
     speed: 600,
