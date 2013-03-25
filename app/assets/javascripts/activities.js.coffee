@@ -43,4 +43,8 @@ $ ->
     $(this).popover()
 
   $('#activity-description-maximize').click ->
-    $('.activity-description').toggleClass 'maximize-description'
+    $('.activity-description').toggleClass 'maximize-description', 300, 'easeInCubic'
+    if ($(this).text() == 'more')
+      $(this).text 'less'
+    else
+      $(this).text 'more'
