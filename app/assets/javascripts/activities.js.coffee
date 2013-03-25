@@ -32,7 +32,6 @@ collapseSteps = (height) ->
   $('.scroll-overlay-bottom').show()
 
 $ ->
-
   height = $('#video-ingredient-unit').height()
   adjustStepHeight()
 
@@ -48,6 +47,9 @@ $ ->
 
   $('.syllabus-popover').each ->
     $(this).popover()
+
+  if $('#activity-description').text().length > 180
+    $('#activity-description-maximize').show()
 
   $('#activity-description-maximize').click ->
     $('.activity-description').toggleClass 'maximize-description', 300, 'easeInCubic'
