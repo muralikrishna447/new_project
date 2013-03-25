@@ -41,3 +41,6 @@ $ ->
 
   $('.syllabus-popover').each ->
     $(this).popover()
+
+  $('#activity-description-maximize').click ->
+    $('.activity-description').toggleClass 'maximize-description'
