@@ -13,12 +13,13 @@
         .activity-description
           :markdown
             #{apply_shortcodes(activity.description)}
-        .pull-right
+        .text-right
           = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
     - if activity.ingredients.any?
-      .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
-        .well
-          = render 'ingredients_list', ingredients: activity.ingredients
+      .section
+        .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
+          .well
+            = render 'ingredients_list', ingredients: activity.ingredients
     - if activity.yield.present?
       .section
         %h4 Yield
