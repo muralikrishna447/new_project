@@ -21,14 +21,10 @@
     = f.input :tag_list
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
-    %li.filepicker-group
-      = image_tag filepicker_admin_image(""), class: "filepicker-preview"
-      = f.label "Hero Image", class: "label"
-      = f.filepicker_field :image_id, button_text: "Choose Image", button_class: "btn-small btn-warning", dragdrop: true, data: {fpclass: "fpsubgroup"}
-    %li.filepicker-group
-      = image_tag filepicker_admin_image(""), class: "filepicker-preview"
-      = f.label "Featured Image", class: "label"
-      = text_field_tag :featured_image_id, @activity.featured_image_id, type: "filepicker-dragdrop", data: {:'fp-button_class' => 'btn-small btn-warning', :'fp-class' => "fpsubgroup", :'fp-drag-text' => "Or drop file here"}
+    %li
+      = render 'filepicker_group', label_text: "Hero Image", param: :image_id, value: @activity.image_id
+    %li
+      = render 'filepicker_group', label_text: "Featured Image", param: :featured_image_id, value: @activity.featured_image_id
     = f.input :transcript
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum

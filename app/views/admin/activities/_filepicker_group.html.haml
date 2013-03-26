@@ -1,0 +1,5 @@
+.filepicker-group
+  -if defined? label_text
+    = label_tag '', label_text, class: "label"
+  = image_tag "", class: "filepicker-preview"
+  = text_field_tag param, value, type: "filepicker-dragdrop", data: {:'fp-button_class' => 'btn-small btn-warning', :'fp-class' => "fpsubgroup", :'fp-drag-text' => "Or drop file here"}
