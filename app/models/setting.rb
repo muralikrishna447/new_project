@@ -12,17 +12,17 @@ class Setting < ActiveRecord::Base
   def self.featured_activities
     featured_activities = []
     current_settings = Setting.last
-    if current_settings.featured_activity_1_id?
+    if current_settings && current_settings.featured_activity_1_id?
       featured_recipe = Activity.published.includes(:steps).find(current_settings.featured_activity_1_id)
     else
       featured_recipe = Activity.published.recipes.includes(:steps).order('updated_at ASC').last
     end
-    if current_settings.featured_activity_2_id?
+    if current_settings && current_settings.featured_activity_2_id?
       featured_technique = Activity.published.includes(:steps).find(current_settings.featured_activity_2_id)
     else
       featured_technique = Activity.published.techniques.includes(:steps).order('updated_at ASC').last
     end
-    if current_settings.featured_activity_3_id?
+    if current_settings && current_settings.featured_activity_3_id?
       featured_science = Activity.published.includes(:steps).find(current_settings.featured_activity_3_id)
     else
       featured_science = Activity.published.sciences.includes(:steps).order('updated_at ASC').last
