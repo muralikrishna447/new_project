@@ -7,8 +7,8 @@
 = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
 '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'btn-circle' do
   %i.icon-google-plus
-= link_to "https://twitter.com/intent/tweet?text=I love this #{media_object.title} recipe on ChefSteps!&hashtags=chefsteps&url=#{ url_encode(current_url(request))}", class: 'btn-circle' do
+= link_to "https://twitter.com/intent/tweet?text=I love this #{media_object.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn-circle' do
   %i.icon-twitter
-= link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{s3_image_url(media_object.step_images.last)}", onclick: "javascript:window.open(this.href,
+= link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{filepicker_hero_image(media_object.featured_image)}", onclick: "javascript:window.open(this.href,
 '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn-circle' do
   %i.icon-pinterest

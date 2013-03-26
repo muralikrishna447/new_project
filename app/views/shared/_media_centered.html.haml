@@ -3,7 +3,10 @@
   %div{class: "media-centered media-centered-#{size}"}
     .media-centered-overlay
     - if media.featured_image
-      = image_tag s3_image_url(media.featured_image)
+      -if size == 'small'
+        = image_tag filepicker_slider_image(media.featured_image)
+      -else
+        = image_tag filepicker_gallery_image(media.featured_image)
     - else
       = image_tag '/assets/missing.png'
     .title-block

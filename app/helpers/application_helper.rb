@@ -3,6 +3,35 @@ module ApplicationHelper
     "http://d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end
 
+  def filepicker_arbitrary_image(url, width)
+    if ! url.start_with?('http://', 'https://')
+      # Legacy naked S3 image ref
+      s3_image_url(url)
+    else
+      url + "/convert?fit=max&w=#{width}&h=#{(width * 16.0 / 9.0).floor}"
+    end
+  end
+
+  def filepicker_hero_image(url)
+    filepicker_arbitrary_image(url, 1170)
+  end
+
+  def filepicker_activity_hero_image(url)
+    filepicker_arbitrary_image(url, 570)
+  end
+
+  def filepicker_gallery_image(url)
+    filepicker_arbitrary_image(url, 370)
+  end
+
+  def filepicker_slider_image(url)
+    filepicker_arbitrary_image(url, 355)
+  end
+
+  def filepicker_step_image(url)
+    filepicker_arbitrary_image(url, 480)
+  end
+
   def s3_audio_url(audio_clip)
     "<audio controls><source src='http://d2eud0b65jr0pw.cloudfront.net/#{audio_clip}''></source></audio>".html_safe
   end

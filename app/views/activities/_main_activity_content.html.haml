@@ -7,7 +7,7 @@
         - else
           %iframe{src: youtube_url(activity.youtube_id)}
       - elsif activity.image_id?
-        = image_tag s3_image_url(activity.image_id)
+        = image_tag filepicker_activity_hero_image(activity.image_id)
     - if activity.description?
       .section
         :markdown
@@ -35,7 +35,7 @@
         - activity.used_in_activities.published.each do |activity|
           %li= link_to activity.title.html_safe, activity
   .span6.section.scroll-shadow-wrapper
-    .ordered-steps.scroll-shadow
+    .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
       .scroll-shadow-content.pull-left
         - activity.steps.each_with_index do |step, index|
           .ordered-step-item{id: "order-step-item-#{index}"}
@@ -57,14 +57,14 @@
                   .btn.step-action-item.step-video-btn.btn-primary
                     %i.icon-facetime-video
               - if step.image_id?
-                .step-image{id: "step-image-#{index}"}
-                  = image_tag s3_image_url(step.image_id)
-              - if step.ingredients.any?
-                .step-ingredients-source.well.section
-                  = render 'ingredients_list', ingredients: step.ingredients
+                .step-image{:itemprop => "image", id: "step-image-#{index}"}
+                  = image_tag filepicker_step_image(step.image_id)
               - if step.youtube_id?
                 .step-video{id: "step-video-#{index}"}
                   .video-container
                     %iframe{src: youtube_url(step.youtube_id)}
+              - if step.ingredients.any?
+                .step-ingredients-source.well.section
+                  = render 'ingredients_list', ingredients: step.ingredients
     .scroll-overlay-top
     .scroll-overlay-bottom
