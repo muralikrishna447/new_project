@@ -107,3 +107,24 @@ $ ->
   $('table.nested-records').each (index, el)->
     # show table if more than header and template row are present
     $(el).show() if $(el).find('tr').length > 2
+
+
+filepickerPreviewUpdateOne = (preview, url) ->
+  admin_width = 200
+  preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 16.0 / 9.0)].join(""))
+  if url then preview.show() else preview.hide()
+
+
+filepickerPreviewUpdateAll = ->
+  $('[type=filepicker-dragdrop]').each ->
+    preview = $(this).parent().find('.filepicker-preview')
+    val = $(this).attr('value')
+    filepickerPreviewUpdateOne(preview, val)
+
+$ ->
+  filepickerPreviewUpdateAll()
+  $('[type=filepicker-dragdrop]').change (event) ->
+    preview = $(this).parent().find('.filepicker-preview')
+    val = if event.originalEvent.fpfile then event.originalEvent.fpfile.url else ''
+    filepickerPreviewUpdateOne(preview, val)
+

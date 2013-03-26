@@ -1,3 +1,4 @@
+= render 'layouts/filepicker'
 -all_ingredients = Ingredient.all.map { |i| i.sub_activity_id? ? "#{i.title} [RECIPE]" : i.title}.select { |i| i != nil}.sort
 %div#allingredients{data: {allingredients: all_ingredients.to_json}}
 
@@ -11,8 +12,7 @@
     = f.input :published
     = f.input :title
     %li
-      %label
-        Activity Type
+      = f.label "Activity Type", class: "label"
       - Activity::TYPES.each do |type|
         %label
           = check_box_tag :activity_type, type, @activity.activity_type.include?(type), :name => 'activity[activity_type][]'
@@ -21,8 +21,14 @@
     = f.input :tag_list
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
-    = f.input :featured_image_id
-    = f.input :image_id
+    %li.filepicker-group
+      = image_tag filepicker_admin_image(""), class: "filepicker-preview"
+      = f.label "Hero Image", class: "label"
+      = f.filepicker_field :image_id, button_text: "Choose Image", button_class: "btn-small btn-warning", dragdrop: true, data: {fpclass: "fpsubgroup"}
+    %li.filepicker-group
+      = image_tag filepicker_admin_image(""), class: "filepicker-preview"
+      = f.label "Featured Image", class: "label"
+      = text_field_tag :featured_image_id, @activity.featured_image_id, type: "filepicker-dragdrop", data: {:'fp-button_class' => 'btn-small btn-warning', :'fp-class' => "fpsubgroup", :'fp-drag-text' => "Or drop file here"}
     = f.input :transcript
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum

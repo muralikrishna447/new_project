@@ -32,6 +32,10 @@ module ApplicationHelper
     filepicker_arbitrary_image(url, 480)
   end
 
+  def filepicker_admin_image(url)
+    filepicker_arbitrary_image(url, 200)
+  end
+
   def s3_audio_url(audio_clip)
     "<audio controls><source src='http://d2eud0b65jr0pw.cloudfront.net/#{audio_clip}''></source></audio>".html_safe
   end
