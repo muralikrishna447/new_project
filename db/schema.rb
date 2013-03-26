@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130319231112) do
+ActiveRecord::Schema.define(:version => 20130326004604) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -233,10 +233,22 @@ ActiveRecord::Schema.define(:version => 20130319231112) do
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
 
+  create_table "send_texts", :force => true do |t|
+    t.integer  "from_user_id"
+    t.string   "to_phone_number"
+    t.integer  "activity_id"
+    t.text     "content"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
   create_table "settings", :force => true do |t|
     t.string   "footer_image"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.integer  "featured_activity_1_id"
+    t.integer  "featured_activity_2_id"
+    t.integer  "featured_activity_3_id"
   end
 
   create_table "step_ingredients", :force => true do |t|
