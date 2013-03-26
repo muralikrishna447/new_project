@@ -10,11 +10,12 @@
       - elsif activity.image_id?
         = image_tag s3_image_url(activity.image_id)
     - if activity.description?
-      .section
+      .section.activity-description-wrapper
         .activity-description#activity-description
           :markdown
             #{apply_shortcodes(activity.description)}
-        .text-right
+          .activity-description-overlay
+        .text-center
           = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
     - if activity.ingredients.any?
       .section
