@@ -5,12 +5,23 @@ class ChefStepsAdmin.Views.OrderSortSolutions extends Backbone.View
     @imageCollection = options.imageCollection
     @solutions = options.solutions
 
+    @setupAddNew()
+
+  setupAddNew: ->
+    view = @
+    $('#add-solution').click (event) ->
+      view.addBlankSolution()
+      event.preventDefault()
+
   render: ->
     _.each @solutions, (solution) =>
       @addSolutionToList(solution.order_sort_image_ids)
     @
 
+  
+
   addBlankSolution: ->
+    @addSolutionToList(@imageCollectionIds())
     @
 
   imageCollectionIds: ->

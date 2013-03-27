@@ -14,6 +14,7 @@ class ChefStepsAdmin.Views.OrderSortSolution extends ChefSteps.Views.TemplatedVi
     @$el.html(@renderTemplate())
     @updateSolutionField()
     @makeSortable()
+    @setupRemoveLink()
     @
 
   handleImageAdded: (image) ->
@@ -29,6 +30,18 @@ class ChefStepsAdmin.Views.OrderSortSolution extends ChefSteps.Views.TemplatedVi
 
     @render()
     @markDirty()
+
+  setupRemoveLink: ->
+    view = @
+    @$el.find('.remove').click (event) ->
+      view.removeSolution()
+      event.preventDefault()
+
+  removeSolution: ->
+    @undelegateEvents()
+    @$el.removeData().unbind()
+
+    @remove()
 
   setHandlersOnImages: ->
     view = @

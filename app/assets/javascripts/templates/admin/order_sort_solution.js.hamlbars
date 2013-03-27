@@ -8,3 +8,5 @@
       = hb('this.caption')
 
 %input{type: 'hidden', name: 'order_sort_question[solutions][]', value: '', class: 'solution-field'}
+%a.remove{ href: '#'}
+  remove this
