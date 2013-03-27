@@ -6,7 +6,7 @@ class ChefStepsAdmin.Views.OrderSortSolution extends ChefSteps.Views.TemplatedVi
     @solution = options.solution
     @imageCollection = options.imageCollection
 
-    @setCaptionHandlerOnImages()
+    @setHandlersOnImages()
 
     @imageCollection.on('add', @handleImageAdded, @)
 
@@ -21,22 +21,32 @@ class ChefStepsAdmin.Views.OrderSortSolution extends ChefSteps.Views.TemplatedVi
 
   addImageToSolution: (image) ->
     image.off('change:id', @addImageToSolution, @)
+
     @solution.push(parseInt(image.id))
+
     @setCaptionHandler(image)
+    @setDestroyHandler(image)
+
     @render()
     @markDirty()
 
-  handleImageRemoved: (image) ->
-
-
-  setCaptionHandlerOnImages: ->
+  setHandlersOnImages: ->
     view = @
     @imageCollection.each (image) ->
       view.setCaptionHandler(image)
+      view.setDestroyHandler(image)
     @
 
   setCaptionHandler: (image) ->
     image.on('change:caption', @refreshForImage, @)
+
+  setDestroyHandler: (image) ->
+    image.on('destroy', @handleImageDestroy, @)
+
+  handleImageDestroy: (image) ->
+    @solution.remove(image.get('id'))
+    @render()
+    @markDirty()
 
   refreshForImage: (image) ->
     @render()
