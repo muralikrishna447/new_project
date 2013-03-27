@@ -27,6 +27,8 @@
               %i.icon-chevron-right
         .btn-circle#show-all
           %i.icon-resize-full#show-all-icon
+        .btn-circle{onclick: 'window.print()'}
+          %i.icon-print
       .pull-right.display-inline-fix
         = render 'layouts/social_buttons', media_object: @activity
 
