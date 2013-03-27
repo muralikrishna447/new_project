@@ -6,7 +6,6 @@
 //= require swipe
 //= require ./vendor
 //= require ./ordered
-//= require filmstrip
 //= require header
 //= require home
 //= require activities
