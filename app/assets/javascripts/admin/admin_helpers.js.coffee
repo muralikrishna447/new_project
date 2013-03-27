@@ -112,8 +112,13 @@ $ ->
 filepickerPreviewUpdateOne = (preview, fpfile) ->
   if fpfile
     admin_width = 200
-    url = JSON.parse(fpfile).url
-    preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 16.0 / 9.0)].join(""))
+    if fpfile[0] == '{'
+      url = JSON.parse(fpfile).url
+      preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 16.0 / 9.0)].join(""))
+    else
+      # Legacy, this can go as soon as rake task is run
+      url = "http://d2eud0b65jr0pw.cloudfront.net/" + fpfile
+      preview.attr('src', url)
     preview.parent().show()
   else
     preview.parent().hide()
