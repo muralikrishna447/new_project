@@ -3,37 +3,47 @@ module ApplicationHelper
     "http://d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end
 
-  def filepicker_arbitrary_image(url, width)
-    if ! url.start_with?('http://', 'https://')
-      # Legacy naked S3 image ref
-      s3_image_url(url)
+  def filepicker_arbitrary_image(fpfile, width)
+    if ! fpfile.start_with?('{')
+      # Legacy naked S3 image id. Still used for a few images that don't
+      # have UI to set.
+      s3_image_url(fpfile)
     else
-      url + "/convert?fit=max&w=#{width}&h=#{(width * 16.0 / 9.0).floor}"
+      url = ActiveSupport::JSON.decode(fpfile)["url"]
+      url + "/convert?fit=max&w=#{width}&h=#{(width * 16.0 / 9.0).floor}&cache=true"
     end
   end
 
-  def filepicker_hero_image(url)
-    filepicker_arbitrary_image(url, 1170)
+  def filepicker_hero_image(fpfile)
+    filepicker_arbitrary_image(fpfile, 1170)
   end
 
-  def filepicker_activity_hero_image(url)
-    filepicker_arbitrary_image(url, 570)
+  def filepicker_activity_hero_image(fpfile)
+    filepicker_arbitrary_image(fpfile, 570)
   end
 
-  def filepicker_gallery_image(url)
-    filepicker_arbitrary_image(url, 370)
+  def filepicker_gallery_image(fpfile)
+    filepicker_arbitrary_image(fpfile, 370)
   end
 
-  def filepicker_slider_image(url)
-    filepicker_arbitrary_image(url, 355)
+  def filepicker_slider_image(fpfile)
+    filepicker_arbitrary_image(fpfile, 355)
   end
 
-  def filepicker_step_image(url)
-    filepicker_arbitrary_image(url, 480)
+  def filepicker_step_image(fpfile)
+    filepicker_arbitrary_image(fpfile, 480)
   end
 
-  def filepicker_admin_image(url)
-    filepicker_arbitrary_image(url, 200)
+  def filepicker_admin_image(fpfile)
+    filepicker_arbitrary_image(fpfile, 200)
+  end
+
+  def filepicker_image_description(fpfile, description)
+    if ! description.blank?
+      description
+    else
+      ActiveSupport::JSON.decode(fpfile)["filename"]
+    end
   end
 
   def s3_audio_url(audio_clip)

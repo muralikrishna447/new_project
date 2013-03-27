@@ -109,10 +109,15 @@ $ ->
     $(el).show() if $(el).find('tr').length > 2
 
 
-filepickerPreviewUpdateOne = (preview, url) ->
-  admin_width = 200
-  preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 16.0 / 9.0)].join(""))
-  if url then preview.parent().show() else preview.parent().hide()
+filepickerPreviewUpdateOne = (preview, fpfile) ->
+  if fpfile
+    admin_width = 200
+    url = JSON.parse(fpfile).url
+    preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 16.0 / 9.0)].join(""))
+    preview.parent().show()
+  else
+    preview.parent().hide()
+    preview.attr('src', '')
 
 
 filepickerPreviewUpdateAll = ->
@@ -128,7 +133,7 @@ $ ->
   $(document).on "click", ".filepicker-pick-button", (event) ->
     event.preventDefault()
     filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"}, (fpfiles) =>
-      $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(fpfiles[0].url)
+      $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(JSON.stringify(fpfiles[0]))
       filepickerPreviewUpdateAll()
 
   $(document).on "click", ".remove-filepicker-image", (event) ->
@@ -143,7 +148,7 @@ setupFilepickerDropPanes = ->
       dragLeave: =>
         $(this).html("Or drop file here").css("border-style", "outset")
       onSuccess: (fpfiles) =>
-        $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(fpfiles[0].url)
+        $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(JSON.stringify(fpfiles[0]))
         filepickerPreviewUpdateAll()
         $(this).html("Or drop file here").css("border-style", "outset")
       onProgress: (percentage) =>
