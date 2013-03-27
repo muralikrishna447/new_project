@@ -42,7 +42,13 @@ module ApplicationHelper
     if ! description.blank?
       description
     else
-      ActiveSupport::JSON.decode(fpfile)["filename"]
+      if fpfile.start_with?('{')
+        ActiveSupport::JSON.decode(fpfile)["filename"]
+      else
+        # Legacy naked S3 image id. Still used for a few images that don't
+        # have UI to set.
+        fpfile
+      end
     end
   end
 
