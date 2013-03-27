@@ -6,23 +6,54 @@ class ChefStepsAdmin.Views.OrderSortSolution extends ChefSteps.Views.TemplatedVi
     @solution = options.solution
     @imageCollection = options.imageCollection
 
+    @setCaptionHandlerOnImages()
+
+    @imageCollection.on('add', @handleImageAdded, @)
+
   render: =>
     @$el.html(@renderTemplate())
     @updateSolutionField()
     @makeSortable()
     @
+
+  handleImageAdded: (image) ->
+    image.on('change:id', @addImageToSolution, @)
+
+  addImageToSolution: (image) ->
+    image.off('change:id', @addImageToSolution, @)
+    @solution.push(parseInt(image.id))
+    @setCaptionHandler(image)
+    @render()
+    @markDirty()
+
+  handleImageRemoved: (image) ->
+
+
+  setCaptionHandlerOnImages: ->
+    view = @
+    @imageCollection.each (image) ->
+      view.setCaptionHandler(image)
+    @
+
+  setCaptionHandler: (image) ->
+    image.on('change:caption', @refreshForImage, @)
+
+  refreshForImage: (image) ->
+    @render()
  
   makeSortable: =>
     # Make this sortable.
     view = @
-    el = @$el
-    el.find('ol').sortable(
+    @$el.find('ol').sortable(
       update: (e, ui) ->
         # Mark the solution as edited (or 'dirty') when the user drags an item.
         # That way we can show them that they need to save the page.
-        el.addClass('dirty')
+        view.markDirty()
         view.refreshSolution()
     )
+
+  markDirty: ->
+    @$el.addClass('dirty')
 
   refreshSolution: =>
     @solution = _.map @$el.find('.solution-list li'), (el) ->
@@ -37,9 +68,12 @@ class ChefStepsAdmin.Views.OrderSortSolution extends ChefSteps.Views.TemplatedVi
     collection = @imageCollection
 
     _.map @solution, (imageId) ->
+      image = collection.get(imageId)
+      caption = if _.isUndefined(image) then 'no caption set' else image.get('caption')
+
       {
         imageId: imageId,
-        caption: collection.get(imageId).get('caption')
+        caption: caption
       }
 
   extendTemplateJSON: (templateJSON) =>
