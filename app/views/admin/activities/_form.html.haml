@@ -1,3 +1,4 @@
+= render 'layouts/filepicker'
 -all_ingredients = Ingredient.all.map { |i| i.sub_activity_id? ? "#{i.title} [RECIPE]" : i.title}.select { |i| i != nil}.sort
 %div#allingredients{data: {allingredients: all_ingredients.to_json}}
 
@@ -11,8 +12,7 @@
     = f.input :published
     = f.input :title
     %li
-      %label
-        Activity Type
+      = f.label "Activity Type", class: "label"
       - Activity::TYPES.each do |type|
         %label
           = check_box_tag :activity_type, type, @activity.activity_type.include?(type), :name => 'activity[activity_type][]'
@@ -21,8 +21,10 @@
     = f.input :tag_list
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
-    = f.input :featured_image_id
-    = f.input :image_id
+    %li
+      = render 'filepicker_group', label_text: "Hero Image", param: :image_id, value: @activity.image_id
+    %li
+      = render 'filepicker_group', label_text: "Featured Image", param: :featured_image_id, value: @activity.featured_image_id
     = f.input :transcript
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
