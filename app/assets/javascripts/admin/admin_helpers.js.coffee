@@ -112,19 +112,49 @@ $ ->
 filepickerPreviewUpdateOne = (preview, url) ->
   admin_width = 200
   preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 16.0 / 9.0)].join(""))
-  if url then preview.show() else preview.hide()
+  if url then preview.parent().show() else preview.parent().hide()
 
 
 filepickerPreviewUpdateAll = ->
-  $('[type=filepicker-dragdrop]').each ->
+  $('.filepicker-real-file').each ->
     preview = $(this).parent().find('.filepicker-preview')
     val = $(this).attr('value')
     filepickerPreviewUpdateOne(preview, val)
 
 $ ->
   filepickerPreviewUpdateAll()
-  $('[type=filepicker-dragdrop]').change (event) ->
-    preview = $(this).parent().find('.filepicker-preview')
-    val = if event.originalEvent.fpfile then event.originalEvent.fpfile.url else ''
-    filepickerPreviewUpdateOne(preview, val)
+
+$ ->
+  $(document).on "click", ".filepicker-pick-button", (event) ->
+    event.preventDefault()
+    filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"}, (fpfiles) =>
+      $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(fpfiles[0].url)
+      filepickerPreviewUpdateAll()
+
+  $(document).on "click", ".remove-filepicker-image", (event) ->
+    $(this).parents('.filepicker-group').find('.filepicker-real-file').val('')
+    filepickerPreviewUpdateAll()
+
+setupFilepickerDropPanes = ->
+  $('.filepicker-drop-pane').each ->
+    filepicker.makeDropPane $(this),
+      dragEnter: =>
+        $(this).html("Drop to upload").css("border-style", "inset")
+      dragLeave: =>
+        $(this).html("Or drop file here").css("border-style", "outset")
+      onSuccess: (fpfiles) =>
+        $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(fpfiles[0].url)
+        filepickerPreviewUpdateAll()
+        $(this).html("Or drop file here").css("border-style", "outset")
+      onProgress: (percentage) =>
+        $(this).text("Uploading ("+percentage+"%)")
+
+$ ->
+  setupFilepickerDropPanes()
+  $(document).on "click", (event) ->
+    setupFilepickerDropPanes()
+
+
+
+
 

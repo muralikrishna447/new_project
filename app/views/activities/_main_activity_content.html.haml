@@ -7,7 +7,7 @@
         - else
           %iframe{src: youtube_url(activity.youtube_id)}
       - elsif activity.image_id?
-        = image_tag filepicker_activity_hero_image(activity.image_id)
+        = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.image_description, title: activity.image_description
     - if activity.description?
       .section
         :markdown
@@ -58,7 +58,7 @@
                     %i.icon-facetime-video
               - if step.image_id?
                 .step-image{:itemprop => "image", id: "step-image-#{index}"}
-                  = image_tag filepicker_step_image(step.image_id)
+                  = image_tag filepicker_step_image(step.image_id), alt: step.image_description, title: step.image_description
               - if step.youtube_id?
                 .step-video{id: "step-video-#{index}"}
                   .video-container
