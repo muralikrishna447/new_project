@@ -29,6 +29,8 @@
           %i.icon-resize-full#show-all-icon
         .btn-circle{onclick: 'window.print()'}
           %i.icon-print
+        = # TODO Make cooked this button work
+        /= render 'cooked_this_button', activity: activity
       .pull-right.display-inline-fix
         = render 'layouts/social_buttons', media_object: @activity
 
@@ -98,50 +100,3 @@
       .section.well
         - disqus_id = "activity-#{@activity.id}"
         = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
-
-= #TODO Remove old code below
-
-/ - conditional_cache [activity, version], cache_unless: !cache_show do
-
-/   - disqus_id = "activity-#{activity.id}"
-
-/   - content_for :title, activity.title.html_safe
-/   / - content_for :description, activity.description != "" ? activity.description.html_safe : activity.title.html_safe
-/   - content_for :canonical_link, activity_url
-/   - content_for :keywords, activity.tag_list.join(',')
-/   - course = Course.find(params[:course_id]) if params[:course_id]
-
-/   -if params[:scaling]
-/     :javascript
-/       paramScaling = #{params[:scaling]};
-
-/   .recipe_schema{:itemscope => true, :itemtype => (activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
-
-/     = render 'courses/navigation', course: course, activity: activity, disqus_id: disqus_id
-
-/     .noprint.activity-hero
-/       .container
-/         %h1= activity.title.html_safe
-/         - if activity.youtube_id?
-/           .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-/             %iframe{src: youtube_url(activity.youtube_id), webkitallowfullscreen: true, mozallowfullscreen:true, allowfullscreen: true }
-/           - if activity.transcript?
-/             .transcript
-/               .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcript-activity-#{activity.id}"}}
-/                 %i.icon-pencil
-/                   transcript
-/               .transcript-content.collapse{id: "transcript-activity-#{activity.id}"}
-/                 = activity.transcript
-/         - else
-/           - if activity.image_id?
-/             .activity-image
-/               = image_tag s3_image_url(activity.image_id)
-
-/     = render 'overview', activity: activity
-/     -if activity.steps.any?
-/       #step-by-step
-/         = render 'step_by_step', activity: activity
-/     = render 'quizzes', activity: activity
-/     = render 'cooked_this_button', activity: activity
-
-/   = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: activity.title, disqus_url: activity_url
