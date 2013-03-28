@@ -6,9 +6,10 @@
       -subact = Activity.find_by_id(ingredient.sub_activity_id)
       =link_to subact.title.html_safe, activity_path(subact), { target: "_blank", onclick: "addScalingToLink(this);"}
     - else
-      =ingredient.title.html_safe
-    - if ingredient.note?
-      %span.note= apply_shortcodes(ingredient.note).html_safe
+      - if ingredient.note?
+        = "#{ingredient.title.html_safe}, #{apply_shortcodes(ingredient.note).html_safe}"
+      - else
+        = ingredient.title.html_safe
   %td
     .prependable
   %td.quantity-group.qtyfade
