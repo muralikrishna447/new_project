@@ -896,6 +896,61 @@ h1, h2, h3, h4
     bottom: 0
     background: white
 
+.scroll-overlay-left
+  pointer-events: none
+  width: 20px
+  margin-left: -20px
+  height: 100%
+  position: absolute
+  left: 0px
+  top: 0px
+  display: none
+  background: white
+  &:before
+    content: ''
+    box-shadow: 0 0 15px gray
+    border-radius: 100px / 10px
+    position: absolute
+    top: 0px
+    bottom: 0
+    left: 8px
+    right: 0px
+  &:after
+    content: ''
+    position: absolute
+    top: -10px
+    left: 0
+    right: 0
+    bottom: -10px
+    background: white
+
+.scroll-overlay-right
+  pointer-events: none
+  width: 20px
+  margin-right: -20px
+  height: 100%
+  position: absolute
+  right: 0px
+  top: 0px
+  display: none
+  &:before
+    content: ''
+    box-shadow: 0 0 15px gray
+    border-radius: 100px / 10px
+    position: absolute
+    top: 0
+    bottom: 0px
+    left: 0
+    right: 8px
+  &:after
+    content: ''
+    position: absolute
+    top: -10px
+    left: 0px
+    right: 0px
+    bottom: -10px
+    background: white
+
 // BELOW ARE RESPONSIVE STYLES //
 
 /* Large desktop */
