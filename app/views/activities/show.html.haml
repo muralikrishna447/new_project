@@ -72,8 +72,8 @@
   .row
     .span12
       %h3 Techniques
-      .carousel-scroll#technique-carousel
-        .carousel-scroll-inner
+      .carousel-scroll#technique-carousel.scroll-shadow-horizontal
+        .carousel-scroll-inner.scroll-shadow-content
           - @techniques.each_with_index do |technique,index|
             .item
               = link_to activity_path(technique) do

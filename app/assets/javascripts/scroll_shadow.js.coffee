@@ -22,3 +22,11 @@ $ ->
       top_hidden = $(this).scrollTop()
       bottom_hidden = total_height - window_height - top_hidden
       setOverlay(scrollable, top_hidden, bottom_hidden)
+
+  $('.scroll-shadow-horizontal').each ->
+    scrollable = $(this)
+    total_width = scrollable.find('.scroll-shadow-content').width()
+    window_width = $(this).width()
+    left_hidden = $(this).scrollLeft()
+    alert window_width
+    right_hidden = total_width - window_width - left_hidden
