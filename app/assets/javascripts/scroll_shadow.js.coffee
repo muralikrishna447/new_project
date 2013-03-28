@@ -4,7 +4,7 @@ setOverlay = (scrollable, top_hidden, bottom_hidden) ->
   else
     scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-top').hide()
 
-  if bottom_hidden > 50
+  if bottom_hidden > 0
     scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-bottom').show()
   else
     scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-bottom').hide()
