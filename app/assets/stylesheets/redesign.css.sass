@@ -137,6 +137,7 @@ h1, h2, h3, h4
 
 .media-centered
   position: relative
+  @include boxsizing
   .media-centered-overlay
     //display: none
     opacity: 0
@@ -422,8 +423,9 @@ h1, h2, h3, h4
   overflow: auto
   -webkit-overflow-scrolling: touch
   .carousel-scroll-inner
-    height: 160px
+    height: 180px
     .item
+      margin: 10px
       width: 285px
       float: left
       display: none
