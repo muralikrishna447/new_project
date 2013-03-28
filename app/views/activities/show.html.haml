@@ -68,7 +68,7 @@
               %small
                 %cite
                   Grace
-                  
+
 - content_for :sliders do
   .row
     .span12
@@ -93,16 +93,17 @@
         .scroll-overlay-left
         .scroll-overlay-right
 
-
-  - if @course
-    .modal.hide.fade#syllabus-modal
-      .modal-header
-        = button_tag "X", class: 'close', data: {dismiss:'modal'}
-        %h3= @course.title
-      .modal-body
-        = course_syllabus(@course)
   .row
     .span12
-      .section.well
+      %h3 Discussion
+      .section
         - disqus_id = "activity-#{@activity.id}"
         = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
+
+- if @course
+  .modal.hide.fade#syllabus-modal
+    .modal-header
+      = button_tag "X", class: 'close', data: {dismiss:'modal'}
+      %h3= @course.title
+    .modal-body
+      = course_syllabus(@course)
