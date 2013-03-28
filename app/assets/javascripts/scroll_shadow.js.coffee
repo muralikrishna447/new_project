@@ -41,3 +41,8 @@ $ ->
     left_hidden = $(this).scrollLeft()
     right_hidden = total_width - window_width - left_hidden
     setOverlayHorizontal(scrollable, left_hidden, right_hidden)
+
+    scrollable.scroll ->
+      left_hidden = $(this).scrollLeft()
+      right_hidden = total_width - window_width - left_hidden
+      setOverlayHorizontal(scrollable, left_hidden, right_hidden)
