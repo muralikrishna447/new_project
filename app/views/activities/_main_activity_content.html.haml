@@ -1,14 +1,14 @@
-- cache activity do
-  .span6.section#video-ingredient-unit
-    .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-      - if activity.youtube_id?
-        .noprint
-          - if params[:autoplay]
-            %iframe{src: youtube_url(activity.youtube_id, 1)}
-          - else
-            %iframe{src: youtube_url(activity.youtube_id)}
-      - elsif activity.image_id?
-        = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title
+.span6.section#video-ingredient-unit
+  .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+    - if activity.youtube_id?
+      .noprint
+        - if params[:autoplay]
+          %iframe{src: youtube_url(activity.youtube_id, 1)}
+        - else
+          %iframe{src: youtube_url(activity.youtube_id)}
+    - elsif activity.image_id?
+      = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title
+  - cache [activity, 'ingredients'] do
     - if activity.description?
       .section.activity-description-wrapper
         .activity-description#activity-description
@@ -40,6 +40,7 @@
         %ul
         - activity.used_in_activities.published.each do |activity|
           %li= link_to activity.title.html_safe, activity
+- cache [activity, 'steps'] do
   .span6.section.scroll-shadow-wrapper
     .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
       .scroll-shadow-content.pull-left
