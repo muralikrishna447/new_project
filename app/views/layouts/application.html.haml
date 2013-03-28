@@ -33,6 +33,11 @@
           = msg
       = yield
 
+    .container-fluid#slider-container
+      .row-fluid
+        .container
+          = yield :sliders
+
     = yield :footer
   / = render 'layouts/youtube'
   

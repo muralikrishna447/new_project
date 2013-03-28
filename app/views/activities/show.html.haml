@@ -68,12 +68,13 @@
               %small
                 %cite
                   Grace
-
+                  
+- content_for :sliders do
   .row
     .span12
       %h3 Techniques
-      .scroll-shadow-wrapper
-        .carousel-scroll#technique-carousel.scroll-shadow-horizontal
+      .scroll-shadow-wrapper#technique-carousel
+        .carousel-scroll.scroll-shadow-horizontal
           .carousel-scroll-inner.scroll-shadow-content
             - @techniques.each_with_index do |technique,index|
               .item
@@ -82,8 +83,8 @@
         .scroll-overlay-left
         .scroll-overlay-right
       %h3 Recipes
-      .scroll-shadow-wrapper
-        .carousel-scroll#related-carousel.scroll-shadow-horizontal
+      .scroll-shadow-wrapper#related-carousel
+        .carousel-scroll.scroll-shadow-horizontal
           .carousel-scroll-inner.scroll-shadow-content
             - @recipes.each_with_index do |recipe,index|
               .item
