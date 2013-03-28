@@ -11,7 +11,7 @@ describe OrderSortQuestionContents do
         {
           question: "How do you cook a steak?",
           instructions: "Please arrange the scrambled pictures in the correct order.",
-          solutions: "1,3,4, 7, 5|1,4,3,5,7"
+          solutions: ["1,3,4, 7, 5", "1,4,3,5,7"]
         }.with_indifferent_access
       end
 
@@ -34,12 +34,12 @@ describe OrderSortQuestionContents do
     end
 
     it 'should handle blank solutions' do
-      subject.update('order_sort_question' => { 'solutions' => '' })
+      subject.update('order_sort_question' => { 'solutions' => nil })
       subject.solutions.should == []
     end
 
     it 'should handle 1 solution' do
-      subject.update('order_sort_question' => { 'solutions' => '1,2,3' })
+      subject.update('order_sort_question' => { 'solutions' => ['1,2,3'] })
       subject.solutions.should == [
         { 'order_sort_image_ids' => [1, 2, 3] }
       ]
