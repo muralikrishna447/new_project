@@ -7,7 +7,7 @@ describe OrderSortQuestion do
         'order_sort_question' => {
           'question' => 'How do you cook?',
           'instructions' => 'Arrange the photos in order.',
-          'solutions' => "1, 2, 3, 4"
+          'solutions' => ["1, 2, 3, 4"]
         }
       }
     end
