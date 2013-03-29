@@ -1,40 +1,36 @@
 - content_for :title, "#{user.name}'s Profile"
 .row
   .span12
-    .well
-      %h2 My Profile
-      %hr
-      %p
-        name:
-        = user.name
-      %p
-        email:
-        = user.email
+    %h1= "#{user.name}'s Profile"
+    .section
+      - if is_current_user?(user)
+        = link_to edit_registration_path(user), class: 'btn btn-primary' do
+          Edit Account Settings
+        = link_to sign_out_path, class: 'btn btn-primary' do
+          Sign Out
+    %hr
 
-      .section
-        %h3 Quizzes
-        = render partial: 'profile_quiz_info', user: user
+    .section
+      %h2 Quizzes
+      = render partial: 'profile_quiz_info', user: user
 
-      .section
-        - if is_current_user?(user)
-          = link_to edit_registration_path(user), class: 'btn btn-primary' do
-            Edit Account Settings
-          = link_to sign_out_path, class: 'btn btn-primary' do
-            Sign Out
-.row
+
+.row.section
   .span4
     %h2 Categories
+    %hr
     - @categories.each do |category|
       / = category.inspect
       / = category[:depth]
       - category_link = category[:url].gsub('https://forum.chefsteps.com','http://forum.chefsteps.com')
-      = link_to category_link do
-        - if category[:depth] == '1' 
-          %h3= category[:name]
-        - else
+      - if category[:depth] == '1' 
+        %h3= category[:name]
+      - else
+        = link_to category_link do
           %h4= category[:name]  
   .span8
-    %h2 My Discussions
+    %h2 Community Discussions
+    %hr
     - @discussions.each do |discussion|
       / = discussion.inspect
       - discussion_link = discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
