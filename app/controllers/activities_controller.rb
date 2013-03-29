@@ -16,6 +16,8 @@ class ActivitiesController < ApplicationController
     if @activity.has_quizzes?
       render template: 'activities/quizzes'
     end
+
+    @user_activity = UserActivity.new
   end
 
   def cooked_this

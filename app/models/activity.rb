@@ -18,6 +18,9 @@ class Activity < ActiveRecord::Base
   has_many :inclusions, dependent: :destroy
   has_many :courses, :through => :inclusions
 
+  has_many :user_activities
+  has_many :users, through: :user_activities
+
   scope :with_video, where("youtube_id <> ''")
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
