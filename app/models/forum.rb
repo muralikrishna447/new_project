@@ -18,4 +18,10 @@ class Forum
     c = c['Discussions'].map{|h| Hash[h.map { |k,v| [k.underscore.to_sym, v] }]}
   end
 
+  def self.user(user_email)
+    response = HTTParty.get("https://chefsteps.vanillaforums.com/api/v1/users/get.json?access_token=50e20b3672d3cb211635a7b9db196f46&User.Email=#{user_email}")
+    c = ActiveSupport::JSON.decode(response.body)
+    # c = c['Profile'].map{|h| Hash[h.map { |k,v| [k.underscore.to_sym, v] }]}
+  end
+
 end

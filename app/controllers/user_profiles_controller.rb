@@ -1,5 +1,5 @@
 class UserProfilesController < ApplicationController
-  expose(:user)
+  # expose(:user)
   expose(:encourage_profile) { Copy.find_by_location('encourage-profile') }
   expose(:user_presenter) { UserPresenter.new(user)}
   expose(:started_quizzes) {
@@ -15,6 +15,7 @@ class UserProfilesController < ApplicationController
   def show
     @categories = Forum.categories
     @discussions = Forum.discussions
+    @user = User.find(params[:id])
   end
 
   def update

@@ -1,10 +1,10 @@
-- content_for :title, "#{user.name}'s Profile"
+- content_for :title, "#{@user.name}'s Profile"
 .row
   .span12
-    %h1= "#{user.name}'s Profile"
+    %h1= "#{@user.name}'s Profile"
     .section
-      - if is_current_user?(user)
-        = link_to edit_registration_path(user), class: 'btn btn-primary' do
+      - if is_current_user?(@user)
+        = link_to edit_registration_path(@user), class: 'btn btn-primary' do
           Edit Account Settings
         = link_to sign_out_path, class: 'btn btn-primary' do
           Sign Out
@@ -13,7 +13,7 @@
     .section
       %h2 Quizzes
       - if completed_quizzes.any?
-        = render partial: 'profile_quiz_info', user: user
+        = render partial: 'profile_quiz_info', user: @user
       - else
         You haven't completed any quizzes
 
