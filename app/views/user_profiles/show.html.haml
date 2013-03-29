@@ -1,38 +1,24 @@
 - content_for :title, "#{@user.name}'s Profile"
-.row
-  .span12
+
+.row.section
+  .span4.well
     %h1= "#{@user.name}'s Profile"
     .section
       - if is_current_user?(@user)
         = link_to edit_registration_path(@user), class: 'btn btn-primary' do
-          Edit Account Settings
+          %i.icon-cogs
+          Settings
         = link_to sign_out_path, class: 'btn btn-primary' do
-          Sign Out
-    %hr
-
-    .section
-      %h2 Quizzes
-      - if completed_quizzes.any?
-        = render partial: 'profile_quiz_info', user: @user
-      - else
-        You haven't completed any quizzes
-
-.row.section
-  .span4
-    %h2 Categories
-    %hr
-    - @categories.each do |category|
-      / = category.inspect
-      / = category[:depth]
-      - category_link = category[:url].gsub('https://forum.chefsteps.com','http://forum.chefsteps.com')
-      - if category[:depth] == '1' 
-        %h3= category[:name]
-      - else
-        = link_to category_link do
-          %h4= category[:name]  
+          %i.icon-signout
+          Sign out
   .span8
-    %h2 Community Discussions
-    %hr
+    %h3 Cook a Recipe
+    = render 'shared/horizontal_scroller', items: @recipes
+
+    %h3 Learn a Technique
+    = render 'shared/horizontal_scroller', items: @techniques
+
+    %h3 Join a Discussion
     - @discussions.each do |discussion|
       / = discussion.inspect
       - discussion_link = discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
@@ -46,6 +32,15 @@
           %small
             %cite
               = discussion[:first_name]
+
+- content_for :bottom do
+  .row.section
+    .span12
+      %h2 Quizzes
+      - if completed_quizzes.any?
+        = render partial: 'profile_quiz_info', user: @user
+      - else
+        You haven't completed any quizzes
 
 .hide
   %iframe{src:'http://forum.chefsteps.com/entry/jsconnect?client_id=1924714588&Target=%2F'}
