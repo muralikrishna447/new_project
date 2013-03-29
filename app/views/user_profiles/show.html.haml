@@ -12,6 +12,10 @@
           %i.icon-signout
           Sign out
   .span8
+    %h3 Activities
+    - @user.user_activities.each do |user_activity|
+      %div
+        = @user.name + ' cooked ' + user_activity.activity.title + ' ' + time_ago_in_words(user_activity.created_at) + ' ago'
     %h3 Cook a Recipe
     = render 'shared/horizontal_scroller', items: @recipes
 
