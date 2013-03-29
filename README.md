@@ -1,3 +1,5 @@
+<a href="https://codeclimate.com/github/rails/rails"><img src="https://codeclimate.com/github/rails/rails.png" /></a>
+
 # Delve
 
 To get started run:
