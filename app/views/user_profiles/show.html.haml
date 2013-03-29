@@ -34,10 +34,14 @@
         - else
           %h4= category[:name]  
   .span8
-    %h2 Discussions
+    %h2 My Discussions
     - @discussions.each do |discussion|
+      / = discussion.inspect
       - discussion_link = discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
-      %h4= discussion[:name]
+      %h4
+        = discussion[:name]
+        %i.icon-comments
+        %small= discussion[:count_comments]
       = link_to discussion_link do
         %blockquote.word-wrap
           %p= truncate(strip_tags(discussion[:body]), length: 300, separator: ' ')
