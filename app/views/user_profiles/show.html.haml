@@ -1,26 +1,49 @@
-- content_for :title, "#{user.name}'s Profile"
-.row
-  .span12
-    .well
-      %h2 My Profile
-      %hr
-      %p
-        name:
-        = user.name
-      %p
-        email:
-        = user.email
+- content_for :title, "#{@user.name}'s Profile"
 
-      .section
-        %h3 Quizzes
-        = render partial: 'profile_quiz_info', user: user
+.row.section
+  .span4.well
+    %h1= "#{@user.name}'s Profile"
+    .section
+      - if is_current_user?(@user)
+        = link_to edit_registration_path(@user), class: 'btn btn-primary' do
+          %i.icon-cogs
+          Settings
+        = link_to sign_out_path, class: 'btn btn-primary' do
+          %i.icon-signout
+          Sign out
+  .span8
+    %h3 Cook a Recipe
+    = render 'shared/horizontal_scroller', items: @recipes
 
-      .section
-        - if is_current_user?(user)
-          = link_to edit_registration_path(user), class: 'btn btn-primary' do
-            Edit Account Settings
-          = link_to sign_out_path, class: 'btn btn-primary' do
-            Sign Out
+    %h3 Learn a Technique
+    = render 'shared/horizontal_scroller', items: @techniques
+
+    %h3 Join a Discussion
+    - @discussions.each do |discussion|
+      / = discussion.inspect
+      - discussion_link = discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+      %h4
+        = discussion[:name]
+        %i.icon-comments
+        %small= discussion[:count_comments]
+      = link_to discussion_link do
+        %blockquote.word-wrap
+          %p= truncate(strip_tags(discussion[:body]), length: 300, separator: ' ')
+          %small
+            %cite
+              = discussion[:first_name]
+
+- content_for :bottom do
+  .row.section
+    .span12
+      %h2 Quizzes
+      - if completed_quizzes.any?
+        = render partial: 'profile_quiz_info', user: @user
+      - else
+        You haven't completed any quizzes
+
+.hide
+  %iframe{src:'http://forum.chefsteps.com/entry/jsconnect?client_id=1924714588&Target=%2F'}
 
 / .hero-unit
 /   .container
