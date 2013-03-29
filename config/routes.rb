@@ -88,6 +88,7 @@ Delve::Application.routes.draw do
 
   resources :search, only: [:index]
   resources :recipe_gallery, only: [:index], path: 'recipe-gallery'
+  resources :user_activities
 
   resources :sitemaps, :only => :show
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
