@@ -32,8 +32,8 @@
         = # TODO Make cooked this button work
         /= render 'cooked_this_button', activity: activity
         = form_for @user_activity do |f|
-          = f.text_field :activity_id, value: @activity.id
-          = f.submit 'Cooked this'
+          = f.hidden_field :activity_id, value: @activity.id
+          = f.submit 'Cooked this', class: 'btn btn-primary'
       .pull-right.display-inline-fix
         = render 'layouts/social_buttons', media_object: @activity
 

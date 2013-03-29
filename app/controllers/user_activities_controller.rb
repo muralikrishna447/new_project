@@ -4,7 +4,7 @@ class UserActivitiesController < ApplicationController
     @user_activity.action = 'Cooked'
     @user_activity.user_id = current_user.id
     if @user_activity.save
-      redirect_to @user_activity.activity
+      redirect_to @user_activity.activity, notice: 'Yay!'
     else
       render @user_activity.activity
     end
