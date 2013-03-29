@@ -12,8 +12,10 @@
 
     .section
       %h2 Quizzes
-      = render partial: 'profile_quiz_info', user: user
-
+      - if completed_quizzes.any?
+        = render partial: 'profile_quiz_info', user: user
+      - else
+        You haven't completed any quizzes
 
 .row.section
   .span4
