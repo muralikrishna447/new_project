@@ -1,10 +1,11 @@
 class HomeController < ApplicationController
 
   def index
-    @recipes = Activity.published.recipes.includes(:steps).order('created_at DESC').first(6)
-    @techniques = Activity.published.techniques.includes(:steps).order('created_at DESC').first(6)
-    @sciences = Activity.published.sciences.includes(:steps).order('created_at DESC').first(6)
     @heroes = Setting.featured_activities
+    @recipes = Activity.published.recipes.includes(:steps).last(6) - @heroes
+    @techniques = Activity.published.techniques.includes(:steps).last(6) - @heroes
+    @sciences = Activity.published.sciences.includes(:steps).last(6) - @heroes
+    
 
     # @discussion = Forum.discussions.first
     @status = Twitter.status_embed
