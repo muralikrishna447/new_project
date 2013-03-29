@@ -21,6 +21,32 @@
             Edit Account Settings
           = link_to sign_out_path, class: 'btn btn-primary' do
             Sign Out
+.row
+  .span4
+    %h2 Categories
+    - @categories.each do |category|
+      / = category.inspect
+      / = category[:depth]
+      - category_link = category[:url].gsub('https://forum.chefsteps.com','http://forum.chefsteps.com')
+      = link_to category_link do
+        - if category[:depth] == '1' 
+          %h3= category[:name]
+        - else
+          %h4= category[:name]  
+  .span8
+    %h2 Discussions
+    - @discussions.each do |discussion|
+      - discussion_link = discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+      %h4= discussion[:name]
+      = link_to discussion_link do
+        %blockquote.word-wrap
+          %p= truncate(strip_tags(discussion[:body]), length: 300, separator: ' ')
+          %small
+            %cite
+              = discussion[:first_name]
+
+.hide
+  %iframe{src:'http://forum.chefsteps.com/entry/jsconnect?client_id=1924714588&Target=%2F'}
 
 / .hero-unit
 /   .container

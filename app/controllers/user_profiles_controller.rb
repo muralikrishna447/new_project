@@ -12,6 +12,11 @@ class UserProfilesController < ApplicationController
 
   expose(:quiz_count) { started_quizzes.count + completed_quizzes.count }
 
+  def show
+    @categories = Forum.categories
+    @discussions = Forum.discussions
+  end
+
   def update
     render_unauthorized unless current_user == user
     if user.present?
