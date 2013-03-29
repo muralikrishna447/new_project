@@ -40,7 +40,7 @@ splitIngredient = (term) ->
     result = {"unit": "a/n", "ingredient": s[2]}
 
   # Tofu Eyeballs a/n
-  else if s = term.match(/(.+)\s+(an|a\/n)/)
+  else if s = term.match(/(.+)\s+(an|a\/n)\b/)
     result = {"unit": "a/n", "ingredient": s[1]}
 
   # 10 g Tofu Eyeballs (or kg, ea, each, r, recipe)
