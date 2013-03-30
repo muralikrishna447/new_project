@@ -111,6 +111,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 h1, h2, h3, h4
   font-family: 'Raleway', sans-serif
   font-weight: 500
+  -webkit-font-smoothing: antialiased
 
 .word-wrap
   word-wrap: break-word
@@ -240,7 +241,6 @@ h1, h2, h3, h4
     margin-bottom: 20px
     .btn-count
       font-size: 20px
-      padding-bottom: 2px
     .btn-text
       font-size: 12px
 
@@ -646,8 +646,9 @@ h1, h2, h3, h4
 
 .btn-primary
   background: $orange
-  border: none
+  border: 0px
   border-radius: 0px
+  @include boxsizing
   @include transition(all 100ms)
   &:hover
     background: $darker_orange
