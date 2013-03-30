@@ -88,7 +88,8 @@ class Activity < ActiveRecord::Base
   end
 
   def is_recipe?
-    ingredients.count > 0
+    # ingredients.count > 0
+    activity_type.include?('Recipe')
   end
 
   def step_by_step?
