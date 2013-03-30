@@ -1,4 +1,6 @@
 class UserActivitiesController < ApplicationController
+  before_filter :authenticate_user!
+  
   def create
     @user_activity = UserActivity.new(params[:user_activity])
     @user_activity.action = 'Cooked'
