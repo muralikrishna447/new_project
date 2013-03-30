@@ -10,13 +10,17 @@
 .recipe_schema{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
 
   .row.printable
-    .span6
-      %h1= @activity.title.html_safe
-      = form_for @user_activity do |f|
-        = f.hidden_field :activity_id, value: @activity.id
-        %button.btn.btn-primary{onclick: 'formSubmit()'}
-          = @activity.users.count
-          Cooked this
+    .span6.relative
+      %h1.activity-title
+        = @activity.title.html_safe
+      .activity-action-btn
+        = form_for @user_activity do |f|
+          = f.hidden_field :activity_id, value: @activity.id
+          %button.btn.btn-primary{onclick: 'formSubmit()'}
+            .btn-count
+              = @activity.users.count
+            .btn-text
+              cooked this
     .span6.noprint
       .pull-left.display-inline-fix
         - if @course
