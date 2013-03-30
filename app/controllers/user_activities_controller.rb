@@ -6,7 +6,8 @@ class UserActivitiesController < ApplicationController
     if @user_activity.save
       redirect_to @user_activity.activity, notice: 'Yay!'
     else
-      render @user_activity.activity
+      flash[:error] = 'Sorry, no spam allowed.'
+      redirect_to activity_path(@user_activity.activity)
     end
   end
 end
