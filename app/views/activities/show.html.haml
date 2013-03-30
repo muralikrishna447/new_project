@@ -12,6 +12,11 @@
   .row.printable
     .span6
       %h1= @activity.title.html_safe
+      = form_for @user_activity do |f|
+        = f.hidden_field :activity_id, value: @activity.id
+        %button.btn.btn-primary{onclick: 'formSubmit()'}
+          = @activity.users.count
+          Cooked this
     .span6.noprint
       .pull-left.display-inline-fix
         - if @course
@@ -29,13 +34,6 @@
           %i.icon-resize-full#show-all-icon
         .btn-circle{onclick: 'window.print()'}
           %i.icon-print
-        = # TODO Make cooked this button work
-        /= render 'cooked_this_button', activity: activity
-        = form_for @user_activity do |f|
-          = f.hidden_field :activity_id, value: @activity.id
-          %button.btn.btn-primary{onclick: 'formSubmit()'}
-            = @activity.users.count
-            Cooked this
       .pull-right.display-inline-fix
         = render 'layouts/social_buttons', media_object: @activity
 
