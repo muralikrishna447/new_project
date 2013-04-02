@@ -31,7 +31,7 @@ class Activity < ActiveRecord::Base
   serialize :activity_type, Array
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id,  :steps_attributes
   include PgSearch
-  multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description],
+  multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
   # multisearchable :against => [:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'],
   #   :if => :published
@@ -156,6 +156,14 @@ class Activity < ActiveRecord::Base
 
   def tags_weighted(weight = 5)
     tag_list.join(',')*weight
+  end
+
+  def ingredients_weighted(weight = 2)
+    ingredients.map(&:ingredient).map(&:title).join(',')*weight
+  end
+
+  def steps_weighted(weight = 1)
+    steps.map{|a|[a.title, a.directions]}.flatten.join(',')*weight
   end
 
   def true_ingredient_ids

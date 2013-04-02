@@ -20,7 +20,7 @@
     - else
       %h4= "Results for '#{params[:q]}':"
       = paginate @results
-      .row.search-results
+      .row.search-results.gallery
         = # TODO Remove unused partial
         / = render partial: 'result_item', collection: @results, :as => :item
         - @results.each do |result_item|
