@@ -1,6 +1,0 @@
-var $cooked_link = $('a.cooked-this');
-$cooked_link.replaceWith("<h4><%= pluralize(@cooked_count, "person") %> cooked this, including you. Comment below to tell us how it went!</h4>");
-
-var $cooked_count = $('#cooked-count');
-$cooked_count.text("<%= @cooked_count %>");
-
