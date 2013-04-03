@@ -20,19 +20,6 @@ class ActivitiesController < ApplicationController
     @user_activity = UserActivity.new
   end
 
-  def cooked_this
-    return head :error unless params[:id].present?
-    return head :ok if cooked_ids.include?(activity.id)
-
-    @cooked_count = activity.cooked_this += 1
-    if activity.save
-      cooked_ids << activity.id
-      render 'cooked_success', format: :js
-    else
-      head :error
-    end
-  end
-
   # This is the base feed that we tell feedburner about. Users should never see this.
   # See note in next method.
   def base_feed
@@ -58,10 +45,5 @@ class ActivitiesController < ApplicationController
     redirect_to "http://feeds.feedburner.com/ChefSteps"
   end
 
-  private
-
-  def cooked_ids
-    session[:cooked_ids] ||= []
-  end
 end
 
