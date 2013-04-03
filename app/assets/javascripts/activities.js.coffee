@@ -48,8 +48,11 @@ $ ->
   $('.syllabus-popover').each ->
     $(this).popover()
 
-  if $('#activity-description').text().length > 450
+  activity_description = $('#activity-description')
+  if activity_description.text().length > 455
     $('#activity-description-maximize').show()
+  else
+    activity_description.find('.activity-description-overlay').hide()
 
   $('#activity-description-maximize').click ->
     overlay = $(this).closest('.activity-description-wrapper').find('.activity-description-overlay')
