@@ -28,11 +28,14 @@
 
         .control-group
           .controls.controls-small
-            =label_tag :terms_registration do
-              = check_box_tag :terms_registration, true, false, required: true
-              = "I accept the #{link_to "Terms of Service", terms_of_service_path, target: '_blank'}".html_safe
+            = f.submit 'Sign up', class: 'btn btn-primary btn-large'
+
         .control-group
           .controls.controls-small
+            = label_tag :terms_registration do
+              .hide
+                = check_box_tag :terms_registration, true, true, required: true
+              = "By tapping Sign up above, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path, class: 'black-link'}</b>.".html_safe
             - if params[:email]
               .hide
                 = check_box_tag :okay_to_email, true, true
@@ -40,7 +43,7 @@
               = label_tag :okay_to_email do
                 = check_box_tag :okay_to_email, true, true
                 = "Please email me the latest updates from ChefSteps".html_safe
-            =f.submit 'Sign up', class: 'btn btn-primary btn-large'
+
     %hr
     .registration.facebook
       = render 'devise/shared/facebook_login', text: 'Sign up with <b>Facebook</b>'
