@@ -29,7 +29,7 @@ collapseSteps = (height) ->
     $(this).hide 'blind', {direction: 'vertical'}, 500
   $('.step-actions').each ->
     $(this).show 'blind', {direction: 'vertical'}, 500
-  $('.scroll-overlay-bottom').show()
+  # $('.scroll-overlay-bottom').show()
 
 $ ->
   height = $('#video-ingredient-unit').height()
@@ -41,6 +41,8 @@ $ ->
       expandSteps()
     else
       collapseSteps(height)
+      if $('.ordered-steps').height() >= height
+        $('.scroll-overlay-bottom').show()
 
   $('.social-action').each ->
     $(this).popover()
