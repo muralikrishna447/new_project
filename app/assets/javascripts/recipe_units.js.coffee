@@ -196,37 +196,6 @@ addScalingToLink = (anchor) ->
 # make globally available
 window.addScalingToLink = addScalingToLink
 
-############### TEMPERATURE
-
-updateOneTemp = ->
-  v = $(this).find('.temperature').data("orig-value")
-  v = Math.round(Number(v) * 1.8 + 32) if csTempUnits == "f"
-  $(this).find('.temperature').text(v)
-  $(this).find('.temperature-unit').html(if csTempUnits == 'c' then '&deg;C' else '&deg;F')
-
-# Update all temps
-updateTempUnits =  ->
-    # animate all the values and units down ...
-    $('.temperature-group').fadeOut "fast"
-    $('.temperature-group').promise().done ->
-      $('.temperature-group').each(updateOneTemp)
-      $('.temperature-group').fadeIn "fast"
-
-# Setup click handler for temp toggles
-$ ->
-  $(".temperature-group").click ->
-    csTempUnits = if csTempUnits == "c" then "f" else "c"
-    # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
-    updateTempUnits(true)
-
-# On page load, store off the initial temps
-$ ->
-  # Store off base value into an attribute for use in future calcs
-  # Weights are normally in grams; if we see kg just convert it - will redisplay as kg if above 5 later.
-  $('.temperature').each (i, element) =>
-    origValue = Number($(element).text())
-    $(element).data("origValue", origValue)
-
 ############### LENGTH
 
 
