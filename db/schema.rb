@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130329223844) do
+ActiveRecord::Schema.define(:version => 20130403000522) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(:version => 20130329223844) do
     t.text     "image_id"
     t.text     "featured_image_id"
     t.string   "activity_type"
+    t.integer  "discussion_id"
+    t.string   "discussion_url"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
