@@ -430,7 +430,6 @@ DEPENDENCIES
   meta_request
   meta_search
   newrelic_rpm
-  nokogiri
   oauth2
   omniauth
   omniauth-facebook
