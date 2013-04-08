@@ -2,6 +2,14 @@
 - content_for :description, @activity.description != "" ? @activity.description.html_safe : @activity.title.html_safe
 - content_for :canonical_link, activity_url(@activity)
 - content_for :keywords, @activity.tag_list.join(',')
+- content_for :facebook_og do
+  %meta{:'og:url' => activity_url(@activity)}
+  %meta{:'og:title' => @activity.title.html_safe}
+  %meta{:'og:description' => @activity.description != "" ? @activity.description.html_safe : @activity.title.html_safe}
+  - if @activity.image_id?
+    %meta{:'og:image' => filepicker_activity_hero_image(@activity.image_id)}
+  - elsif @activity.featured_image_id?
+    %meta{:'og:image' => filepicker_activity_hero_image(@activity.featured_image_id)}
 
 -if params[:scaling]
   :javascript
