@@ -273,7 +273,6 @@ h1, h2, h3, h4
 .activity-description-wrapper
   position: relative
   .activity-description
-    height: 100px
     overflow: hidden
     .activity-description-overlay
       position: absolute
@@ -972,6 +971,9 @@ h1, h2, h3, h4
   .media-header-content
     width: 468px
 
+  .activity-description
+    height: 100px
+
 @media (max-width: 1200px)
   .media-centered-medium
     height: 168px
@@ -987,9 +989,8 @@ h1, h2, h3, h4
     width: 300px
     height: 336px
 
-  .activity-description-wrapper
-    .activity-description
-      height: 140px
+  .activity-description
+    height: 140px
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
@@ -1013,9 +1014,8 @@ h1, h2, h3, h4
   .nav-item-border
     display: none
 
-  .activity-description-wrapper
-    .activity-description
-      height: 160px
+  .activity-description
+    height: 160px
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
