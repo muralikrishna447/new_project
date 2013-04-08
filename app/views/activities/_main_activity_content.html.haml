@@ -34,6 +34,10 @@
       .section
         %h4 Equipment and Materials
         = render 'equipment_list', equipment: activity.required_equipment
+    - if activity.optional_equipment.any?
+      .section
+        %h4 Optional Equipment
+        = render 'equipment_list', equipment: activity.optional_equipment
     - if activity.used_in_activities.published.any?
       .section
         %h4 Used In
