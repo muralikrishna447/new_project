@@ -39,6 +39,8 @@
           %i.icon-resize-full#show-all-icon
         .btn-circle{onclick: 'window.print()'}
           %i.icon-print
+        = link_to get_edit_partial_activity_path(@activity), method: :get, remote: true, class: 'btn-circle' do
+          %i.icon-edit
       .pull-right.display-inline-fix
         = render 'layouts/social_buttons', media_object: @activity
 

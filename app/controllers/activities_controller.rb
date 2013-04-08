@@ -45,5 +45,12 @@ class ActivitiesController < ApplicationController
     redirect_to "http://feeds.feedburner.com/ChefSteps"
   end
 
+  def get_edit_partial
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+    respond_to do |format|
+      format.js { render 'get_edit_partial'}
+    end
+  end
+
 end
 

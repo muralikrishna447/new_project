@@ -63,3 +63,4 @@ $ ->
       $(this).text 'less'
     else
       $(this).text 'more'
+
