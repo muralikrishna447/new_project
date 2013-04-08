@@ -957,6 +957,24 @@ h1, h2, h3, h4
     bottom: -10px
     background: white
 
+// WYSIWYG EDITING
+
+*[data-wysiwyg]
+  form, textarea
+    width: 100%
+    max-width: 100%
+    li
+      list-style-type: none
+
+.wysiwyg-available
+  @include boxsizing
+  border: 2px solid #dadada
+  border-radius: 7px
+  #padding: 5px
+  outline: none
+  border-color: #9ecaed
+  box-shadow: 0 0 10px #9ecaed
+
 // BELOW ARE RESPONSIVE STYLES //
 
 /* Large desktop */

@@ -64,3 +64,13 @@ $ ->
     else
       $(this).text 'more'
 
+
+$ ->
+  $(document).on 'mouseenter', '*[data-wysiwyg]', ->
+    $(this).addClass('wysiwyg-available')
+
+  $(document).on 'mouseleave', '*[data-wysiwyg]', ->
+    $(this).removeClass('wysiwyg-available')
+
+  $(document).on 'click', '.wysiwyg-available', ->
+    $.ajax($('#wysiwyg-link').attr('href'), {data: {partialname: $(this).data("wysiwyg") }})

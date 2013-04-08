@@ -39,7 +39,7 @@
           %i.icon-resize-full#show-all-icon
         .btn-circle{onclick: 'window.print()'}
           %i.icon-print
-        = link_to get_edit_partial_activity_path(@activity), method: :get, remote: true, class: 'btn-circle' do
+        = link_to get_edit_partial_activity_path(@activity, ), method: :get, remote: true, class: 'btn-circle' do
           %i.icon-edit
       .pull-right.display-inline-fix
         = render 'layouts/social_buttons', media_object: @activity
@@ -103,3 +103,5 @@
       %h3= @course.title
     .modal-body
       = course_syllabus(@course)
+
+= link_to "nothing", get_edit_partial_activity_path(@activity), method: :get, remote: true, class: 'btn-circle', id: 'wysiwyg-link'

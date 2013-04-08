@@ -48,7 +48,7 @@ class ActivitiesController < ApplicationController
   def get_edit_partial
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
     respond_to do |format|
-      format.js { render 'get_edit_partial'}
+      format.js { render 'get_edit_partial', locals: {partial_name: params[:partialname]}}
     end
   end
 
