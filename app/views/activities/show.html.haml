@@ -39,8 +39,9 @@
           %i.icon-resize-full#show-all-icon
         .btn-circle{onclick: 'window.print()'}
           %i.icon-print
-        %button{type: "button", class: "btn btn-primary btn-large", data: {toggle: "button"}, id: "edit-mode"}
+        .btn-circle#edit-mode
           %i.icon-edit
+
       .pull-right.display-inline-fix
         = render 'layouts/social_buttons', media_object: @activity
 
@@ -104,4 +105,5 @@
     .modal-body
       = course_syllabus(@course)
 
-= link_to "nothing", get_edit_partial_activity_path(@activity), method: :get, remote: true, class: 'btn-circle', id: 'wysiwyg-link'
+// This isn't for clicking just providing the right link from the helper over to activities.js.coffee. Nicer way?
+= link_to "nothing", get_edit_partial_activity_path(@activity), method: :get, remote: true, id: 'wysiwyg-link', style:"display: none;"

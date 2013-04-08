@@ -46,9 +46,18 @@ class ActivitiesController < ApplicationController
   end
 
   def get_edit_partial
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+    @activity = Activity.find(params[:id])
     respond_to do |format|
       format.js { render 'get_edit_partial', locals: {partial_name: params[:partialname]}}
+    end
+  end
+
+  def update_edit_partial
+    @activity = Activity.find(params[:id])
+    @activity.update_attributes(params[:activity])
+    @activity.save!
+    respond_to do |format|
+      format.js { render 'get_show_partial', locals: {partial_name: params[:partialname]}}
     end
   end
 

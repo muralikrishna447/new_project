@@ -64,12 +64,13 @@ $ ->
     else
       $(this).text 'more'
 
-$ ->
-  $('#editModeButton').button()
 
 
 
 $ ->
+  $('#edit-mode').click ->
+    $('#edit-mode').toggleClass('active')
+
   $(document).on 'mouseenter', '*[data-wysiwyg]:not(.wysiwyg-active)', ->
     if $('#edit-mode').hasClass('active')
       $(this).addClass('wysiwyg-available')
@@ -79,3 +80,9 @@ $ ->
 
   $(document).on 'click', '.wysiwyg-available', ->
     $.ajax($('#wysiwyg-link').attr('href'), {data: {partialname: $(this).data("wysiwyg") }})
+
+  $(document).on 'click', '*', (event) ->
+    active_form_group = $('.wysiwyg-active')
+    if $(active_form_group).length == 1
+      if ! $(event.target).closest($(active_form_group)).is($(active_form_group))
+        $(active_form_group).find('form').submit()
