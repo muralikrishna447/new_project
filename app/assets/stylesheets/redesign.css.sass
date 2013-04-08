@@ -965,6 +965,9 @@ h1, h2, h3, h4
     max-width: 100%
     li
       list-style-type: none
+  label
+    margin-right: 8px
+    vertical-align: top
 
 .wysiwyg-available
   @include boxsizing
@@ -977,6 +980,44 @@ h1, h2, h3, h4
 
 #edit-mode.active
   background: #0088cc
+
+.video-container.wysiwyg-available
+  .noprint
+    visibility: hidden
+
+.inline-group
+  display: inline-block
+
+.video-container
+  .filepicker-group
+    margin-top: 30px
+  .featured-image-group
+    margin-left: 40px
+
+// Note this is duplicated over in admin CSS - should remove from there
+.filepicker-group
+  margin-bottom: 5px
+
+  .filepicker-preview-group
+
+    .remove-filepicker-image
+      padding-left: 2px
+      display: inline-block
+      vertical-align: bottom
+      cursor: pointer
+
+  .filepicker-preview
+    margin-bottom: 5px
+    max-width: 200px
+
+  .filepicker-subgroup
+    .btn-small
+      box-sizing: border-box
+      padding: 3px 8px
+      border: 2px outset buttonface
+      margin-top: 2px
+      display: inline-block
+      cursor: pointer
 
 // BELOW ARE RESPONSIVE STYLES //
 

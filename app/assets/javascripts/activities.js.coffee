@@ -64,8 +64,7 @@ $ ->
     else
       $(this).text 'more'
 
-
-
+# Wysiwyg mode stuff
 
 $ ->
   $('#edit-mode').click ->
@@ -79,10 +78,77 @@ $ ->
     $(this).removeClass('wysiwyg-available')
 
   $(document).on 'click', '.wysiwyg-available', ->
-    $.ajax($('#wysiwyg-link').attr('href'), {data: {partialname: $(this).data("wysiwyg") }})
+    $.ajax($('#wysiwyg-link').attr('href'), {
+      data: {partialname: $(this).data("wysiwyg") }
+    })
 
   $(document).on 'click', '*', (event) ->
     active_form_group = $('.wysiwyg-active')
     if $(active_form_group).length == 1
       if ! $(event.target).closest($(active_form_group)).is($(active_form_group))
-        $(active_form_group).find('form').submit()
+        form = $(active_form_group).find('form')
+        hidden_input_str = "<input type='hidden' name='partialname' value='";
+        hidden_input_str += $(active_form_group).data("wysiwyg")
+        hidden_input_str += "'>"
+        form.append(hidden_input_str)
+        form.submit()
+
+# Filepicker (for wysiwyg). This is duplicated in admin, should remove from there or share.
+
+
+filepickerPreviewUpdateOne = (preview, fpfile) ->
+  if fpfile
+    admin_width = 200
+    if fpfile[0] == '{'
+      url = JSON.parse(fpfile).url
+      preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 16.0 / 9.0)].join(""))
+    else
+      # Legacy, this can go as soon as rake task is run
+      url = "http://d2eud0b65jr0pw.cloudfront.net/" + fpfile
+      preview.attr('src', url)
+    preview.parent().show()
+  else
+    preview.parent().hide()
+    preview.attr('src', '')
+
+
+filepickerPreviewUpdateAll = ->
+  $('.filepicker-real-file').each ->
+    preview = $(this).parent().find('.filepicker-preview')
+    val = $(this).attr('value')
+    filepickerPreviewUpdateOne(preview, val)
+
+$ ->
+  filepickerPreviewUpdateAll()
+
+$ ->
+  $(document).on "click", ".filepicker-pick-button", (event) ->
+    event.preventDefault()
+    filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"}, (fpfiles) =>
+      $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(JSON.stringify(fpfiles[0]))
+      filepickerPreviewUpdateAll()
+
+  $(document).on "click", ".remove-filepicker-image", (event) ->
+    $(this).parents('.filepicker-group').find('.filepicker-real-file').val('')
+    filepickerPreviewUpdateAll()
+
+setupFilepickerDropPanes = ->
+  $('.filepicker-drop-pane').each ->
+    filepicker.makeDropPane $(this),
+      dragEnter: =>
+        $(this).html("Drop to upload").css("border-style", "inset")
+      dragLeave: =>
+        $(this).html("Or drop file here").css("border-style", "outset")
+      onSuccess: (fpfiles) =>
+        $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(JSON.stringify(fpfiles[0]))
+        filepickerPreviewUpdateAll()
+        $(this).html("Or drop file here").css("border-style", "outset")
+      onProgress: (percentage) =>
+        $(this).text("Uploading ("+percentage+"%)")
+
+$ ->
+  setupFilepickerDropPanes()
+  $(document).on "click", (event) ->
+    setupFilepickerDropPanes()
+
+window.setupFilepickerDropPanes = setupFilepickerDropPanes
