@@ -64,10 +64,15 @@ $ ->
     else
       $(this).text 'more'
 
+$ ->
+  $('#editModeButton').button()
+
+
 
 $ ->
-  $(document).on 'mouseenter', '*[data-wysiwyg]', ->
-    $(this).addClass('wysiwyg-available')
+  $(document).on 'mouseenter', '*[data-wysiwyg]:not(.wysiwyg-active)', ->
+    if $('#edit-mode').hasClass('active')
+      $(this).addClass('wysiwyg-available')
 
   $(document).on 'mouseleave', '*[data-wysiwyg]', ->
     $(this).removeClass('wysiwyg-available')
