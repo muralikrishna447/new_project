@@ -11,7 +11,7 @@
 
   .row.printable
     .span6.relative
-      %h1.activity-title
+      %h1.activity-title{itemprop: 'name'}
         = @activity.title.html_safe
       / - if @activity.is_recipe?
       /   .activity-action-btn

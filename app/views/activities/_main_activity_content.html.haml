@@ -7,7 +7,9 @@
         - else
           %iframe{src: youtube_url(activity.youtube_id)}
     - elsif activity.image_id?
-      = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title
+      = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title, itemprop: 'image'
+    - elsif activity.featured_image_id?
+      = image_tag filepicker_activity_hero_image(activity.featured_image_id), alt: activity.title, title: activity.title, itemprop: 'image'
   - cache [activity, 'ingredients'] do
     - if activity.description?
       .section.activity-description-wrapper
@@ -68,9 +70,9 @@
                   .btn.step-action-item.step-video-btn.btn-primary
                     %i.icon-facetime-video
               - if step.image_id?
-                .step-image{:itemprop => "image", id: "step-image-#{index}"}
+                .step-image{id: "step-image-#{index}"}
                   -descrip = filepicker_image_description(step.image_id, step.image_description)
-                  = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip
+                  = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip, :itemprop => 'image'
               - if step.youtube_id?
                 .step-video{id: "step-video-#{index}"}
                   .video-container
