@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130403000522) do
+ActiveRecord::Schema.define(:version => 20130408214027) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -234,6 +234,18 @@ ActiveRecord::Schema.define(:version => 20130403000522) do
 
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
+
+  create_table "revision_records", :force => true do |t|
+    t.string   "revisionable_type", :limit => 100,                    :null => false
+    t.integer  "revisionable_id",                                     :null => false
+    t.integer  "revision",                                            :null => false
+    t.binary   "data"
+    t.datetime "created_at",                                          :null => false
+    t.boolean  "trash",                            :default => false
+  end
+
+  add_index "revision_records", ["revisionable_id"], :name => "revision_records_id"
+  add_index "revision_records", ["revisionable_type", "created_at", "trash"], :name => "revision_records_type_and_created_at"
 
   create_table "settings", :force => true do |t|
     t.string   "footer_image"

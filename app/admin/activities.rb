@@ -17,6 +17,10 @@ ActiveAdmin.register Activity do
     link_to('Edit Step Ingredients', associated_ingredients_admin_activity_path(activity))
   end
 
+  action_item only: [:show] do
+    link_to('Versions', versions_admin_activity_path(activity))
+  end
+
 
   index do
     column 'Link' do |activity|
@@ -48,10 +52,12 @@ ActiveAdmin.register Activity do
 
     def update
       @activity = Activity.find(params[:id])
-      @activity.update_equipment(separate_equipment)
-      @activity.update_steps(separate_steps)
-      @activity.update_ingredients(separate_ingredients)
-      update!
+      @activity.store_revision do
+        @activity.update_equipment(separate_equipment)
+        @activity.update_steps(separate_steps)
+        @activity.update_ingredients(separate_ingredients)
+        update!
+      end
     end
 
     private
@@ -97,6 +103,17 @@ ActiveAdmin.register Activity do
       Step.find(id).update_ingredients(ingredients)
     end
     redirect_to({action: :show}, notice: "Step's ingredients updated")
+  end
+
+  member_action :versions, method: :get do
+    @activity = Activity.find(params[:id])
+  end
+
+  member_action :restore_version, method: :get do
+    @activity = Activity.find(params[:id])
+    @version = params[:version]
+    @activity.restore_revision!(@version)
+    redirect_to({action: :show}, notice: "Version #{@version} has been restored")
   end
 end
 

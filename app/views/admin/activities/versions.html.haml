@@ -1,0 +1,10 @@
+-last_rev_num = @activity.last_revision().revision
+%ul
+  -last_rev_num.downto(1) do |rev_num|
+    %li
+      -rev = @activity.revision(rev_num)
+      ="Revision ##{rev_num}, #{rev.created_at.localtime.strftime("%a %b %d, %Y %l:%M:%S %p %Z")}"
+      =link_to "View", activity_path(@activity, version: rev_num), target: "preview"
+      =link_to "Restore", restore_version_admin_activity_path(@activity, version: rev_num)
+
+%iframe{name: "preview", style: "width: 100%; height: 1000px;"}
