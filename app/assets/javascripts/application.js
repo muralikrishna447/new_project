@@ -2,7 +2,6 @@
 //= require jquery-ui
 //= require mobile_detect
 //= require twitter/bootstrap
-//= require jquery.hammer
 //= require swipe
 //= require ./vendor
 //= require ./ordered
