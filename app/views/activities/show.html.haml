@@ -21,6 +21,8 @@
     .span6.relative
       %h1.activity-title{itemprop: 'name'}
         = @activity.title.html_safe
+      = @viewed_activities.count
+      = @viewed_activities.inspect
       / - if @activity.is_recipe?
       /   .activity-action-btn
       /     = form_for @user_activity do |f|
