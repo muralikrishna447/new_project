@@ -6,9 +6,9 @@ class ActivitiesController < ApplicationController
   def show
     # @cooked_this = cooked_ids.include?(activity.id)
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
-    @techniques = Activity.published.techniques.last(6)
+    @techniques = Activity.published.techniques.includes(:steps).last(6)
     # @recipes = @activity.related_by_ingredients
-    @recipes = Activity.published.recipes.last(6)
+    @recipes = Activity.published.recipes.includes(:steps).last(6)
     if params[:course_id]
       @course = Course.find(params[:course_id])
     end
