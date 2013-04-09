@@ -1,10 +1,26 @@
--last_rev_num = @activity.last_revision().revision
-%ul
-  -last_rev_num.downto(1) do |rev_num|
-    %li
-      -rev = @activity.revision(rev_num)
-      ="Revision ##{rev_num}, #{rev.created_at.localtime.strftime("%a %b %d, %Y %l:%M:%S %p %Z")}"
-      =link_to "View", activity_path(@activity, version: rev_num), target: "preview"
-      =link_to "Restore", restore_version_admin_activity_path(@activity, version: rev_num)
+.admin-activity-versions
 
-%iframe{name: "preview", style: "width: 100%; height: 1000px;"}
+  .preview-group#left-group
+    .controls
+      =select_tag "left", options_for_select(@versions, @versions[0]), id: 'select-left'
+      =link_to "Make Live", '#', class: "admin-button", id: "make-live-left"
+      .loading-indicator#loading-left.pull-right
+        %i.icon-spinner.icon-spin.icon-2x
+
+    %iframe.preview#preview-left{src: activity_path(@activity, version: @versions[0].last)}
+
+  .preview-group#right-group
+    .controls
+      =select_tag "left", options_for_select(@versions, @versions[1]), id: 'select-right'
+      =link_to "Make Live", '#', class: "admin-button", id: "make-live-right"
+      .loading-indicator#loading-right.pull-right
+        %i.icon-spinner.icon-spin.icon-2x
+
+    %iframe.preview#preview-right{src: activity_path(@activity, version: @versions[1].last)}
+
+  .preview-group#diff-group
+    %h3 Difference
+    .preview#preview-diff
+      Diff goes here
+
+  #urls{data: {:'activity_path' => activity_path(@activity), :'restore_version_admin_activity_path' => restore_version_admin_activity_path(@activity)}}

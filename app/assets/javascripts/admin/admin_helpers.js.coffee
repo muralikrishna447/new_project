@@ -164,6 +164,45 @@ $ ->
   $(document).on "click", (event) ->
     setupFilepickerDropPanes()
 
+restoreVersion = (version) ->
+  path = $('#urls').data('restore_version_admin_activity_path') + "?version=" + version
+  window.location = path
+
+updateDiff =  ->
+  version_left = $('#select-left').val()
+  version_right = $('#select-right').val()
+  $('#preview-diff').html('Updating!' + version_left)
+
+$ ->
+  updateDiff()
+
+  $('.preview-group select').on "change", (event) ->
+    activity_path = $('#urls').data('activity_path') + "?version=" + $(this).val()
+    $(this).closest('.preview-group').find('.preview').attr("src", activity_path)
+    $(this).closest('.preview-group').find('.loading-indicator').fadeIn()
+    updateDiff()
+
+  $('#make-live-left').click ->
+    restoreVersion($('#select-left').val())
+
+  $('#make-live-right').click ->
+    restoreVersion($('#select-right').val())
+
+
+  # Keep the two iframes scrolling together - not sure I love this :)
+  $('#preview-left').load ->
+    $('#loading-left').fadeOut()
+    $('#preview-left').contents().scroll ->
+      if $('#preview-right').contents() && $('#preview-left').contents()
+       $('#preview-right').contents().scrollTop($('#preview-left').contents().scrollTop())
+
+  $('#preview-right').load ->
+    $('#loading-right').fadeOut()
+    $('#preview-right').contents().scroll ->
+      if $('#preview-left').contents() && $('#preview-right').contents()
+        $('#preview-left').contents().scrollTop($('#preview-right').contents().scrollTop())
+
+
 
 
 

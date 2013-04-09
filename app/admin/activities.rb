@@ -107,13 +107,22 @@ ActiveAdmin.register Activity do
 
   member_action :versions, method: :get do
     @activity = Activity.find(params[:id])
+    last_rev_num = @activity.last_revision().revision
+    @versions = last_rev_num.downto(1).map do |r|
+      rev = @activity.revision(r)
+      ["##{r} - #{rev.created_at.localtime.strftime('%a %b %d, %Y %l:%M:%S %p %Z')}", r]
+    end
   end
 
   member_action :restore_version, method: :get do
     @activity = Activity.find(params[:id])
     @version = params[:version]
     @activity.restore_revision!(@version)
-    redirect_to({action: :show}, notice: "Version #{@version} has been restored")
+    redirect_to({action: :show}, notice: "Version #{@version} has been restored and is the new version #{@activity.last_revision().revision}")
+  end
+
+  member_action :get_diff, method: :get do
+    render json: {message: "foo!!"}
   end
 end
 
