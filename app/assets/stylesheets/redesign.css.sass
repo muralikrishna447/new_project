@@ -51,10 +51,10 @@ $offwhite: #F2F2F2
   .row
     margin-left: 0px
 
-#popup-bottom
+.popup-bottom
   position: fixed
-  bottom: 0px
   padding: 10px 0px
+  bottom: -200px
   width: 100%
   @include boxsizing
   z-index: 9999
@@ -69,6 +69,9 @@ $offwhite: #F2F2F2
     margin: 10px 0px
     .input-signup-email
       margin: 0px
+
+.popup-bottom-show
+  bottom: 0px
 
 #technique-carousel, #related-carousel
   .scroll-overlay-left, .scroll-overlay-right
@@ -1084,7 +1087,7 @@ h1, h2, h3, h4
     margin: 0px -20px
     padding: 0px 20px
 
-  #popup-bottom
+  .popup-bottom
     margin: 0px -20px
     padding: 20px
 

@@ -63,3 +63,7 @@ $ ->
       $(this).text 'less'
     else
       $(this).text 'more'
+
+  popup_bottom = $('.popup-bottom')
+  if popup_bottom.is('*')
+    popup_bottom.toggleClass 'popup-bottom-show', 1000
