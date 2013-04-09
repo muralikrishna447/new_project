@@ -13,11 +13,15 @@
     youtube_id = step.youtube_id
     audio_clip = step.audio_clip
     audio_title = step.audio_title
+    hide_number = step.hide_number
   end
 
 %tr{id: row_id, class: ('template-row' if is_template )}
   %td.title
     = text_field_tag "#{field_name_prefix}[title]", title, placeholder: "Step title"
+    = label_tag hide_number, class: 'checkbox' do
+      = check_box_tag "#{field_name_prefix}[hide_number]", hide_number, false
+      Hide Number
     = hidden_field_tag "#{field_name_prefix}[id]", id
   %td.directions= text_area_tag "#{field_name_prefix}[directions]", directions, placeholder: "This is how we do it", rows: 10
   %td.media
