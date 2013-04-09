@@ -20,7 +20,7 @@
   %td.title
     = text_field_tag "#{field_name_prefix}[title]", title, placeholder: "Step title"
     = label_tag hide_number, class: 'checkbox' do
-      = check_box_tag "#{field_name_prefix}[hide_number]", hide_number, false
+      = check_box_tag "#{field_name_prefix}[hide_number]", hide_number, hide_number
       Hide Number
     = hidden_field_tag "#{field_name_prefix}[id]", id
   %td.directions= text_area_tag "#{field_name_prefix}[directions]", directions, placeholder: "This is how we do it", rows: 10
