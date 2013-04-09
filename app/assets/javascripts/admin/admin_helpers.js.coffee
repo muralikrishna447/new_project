@@ -171,7 +171,13 @@ restoreVersion = (version) ->
 updateDiff =  ->
   version_left = $('#select-left').val()
   version_right = $('#select-right').val()
-  $('#preview-diff').html('Updating!' + version_left)
+  path = $('#urls').data('get_diff_admin_activity_path') + "?version_left=" + version_left + "&version_right=" + version_right
+  $('#loading-diff').fadeIn()
+  $.ajax path,
+    success: (data, status, xhr) ->
+      $('#preview-diff').html(data)
+      $('#loading-diff').fadeOut()
+
 
 $ ->
   updateDiff()
@@ -188,19 +194,11 @@ $ ->
   $('#make-live-right').click ->
     restoreVersion($('#select-right').val())
 
-
-  # Keep the two iframes scrolling together - not sure I love this :)
   $('#preview-left').load ->
     $('#loading-left').fadeOut()
-    $('#preview-left').contents().scroll ->
-      if $('#preview-right').contents() && $('#preview-left').contents()
-       $('#preview-right').contents().scrollTop($('#preview-left').contents().scrollTop())
 
   $('#preview-right').load ->
     $('#loading-right').fadeOut()
-    $('#preview-right').contents().scroll ->
-      if $('#preview-left').contents() && $('#preview-right').contents()
-        $('#preview-left').contents().scrollTop($('#preview-right').contents().scrollTop())
 
 
 

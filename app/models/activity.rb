@@ -196,6 +196,13 @@ class Activity < ActiveRecord::Base
     end
   end
 
+
+  def deep_json
+    as_json(root: false,
+            except: [:updated_at, :created_at],
+            include: {:ingredients => {except: [:updated_at, :created_at]}})
+  end
+
   private
 
   def reject_invalid_equipment(equipment_attrs)

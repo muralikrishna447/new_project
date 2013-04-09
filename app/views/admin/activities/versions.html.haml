@@ -19,8 +19,14 @@
     %iframe.preview#preview-right{src: activity_path(@activity, version: @versions[1].last)}
 
   .preview-group#diff-group
-    %h3 Difference
-    .preview#preview-diff
-      Diff goes here
 
-  #urls{data: {:'activity_path' => activity_path(@activity), :'restore_version_admin_activity_path' => restore_version_admin_activity_path(@activity)}}
+    .controls
+      .diff-label
+        %h3 Difference
+      .loading-indicator#loading-diff.pull-right
+        %i.icon-spinner.icon-spin.icon-2x
+    .preview
+      %pre#preview-diff
+
+
+  #urls{data: {:'activity_path' => activity_path(@activity), :'restore_version_admin_activity_path' => restore_version_admin_activity_path(@activity), :'get_diff_admin_activity_path' => get_diff_admin_activity_path(@activity)}}
