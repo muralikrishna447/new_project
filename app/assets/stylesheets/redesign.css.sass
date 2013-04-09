@@ -51,6 +51,25 @@ $offwhite: #F2F2F2
   .row
     margin-left: 0px
 
+#popup-bottom
+  position: fixed
+  bottom: 0px
+  padding: 10px 0px
+  width: 100%
+  @include boxsizing
+  z-index: 9999
+  background: $offwhite
+  @include shadow
+  .row
+    margin-left: 0px
+  h3
+    margin: 0px
+  form
+    float: right
+    margin: 10px 0px
+    .input-signup-email
+      margin: 0px
+
 #technique-carousel, #related-carousel
   .scroll-overlay-left, .scroll-overlay-right
     &:after
@@ -1064,6 +1083,10 @@ h1, h2, h3, h4
   #slider-container
     margin: 0px -20px
     padding: 0px 20px
+
+  #popup-bottom
+    margin: 0px -20px
+    padding: 20px
 
   #footer
     margin: 0px -20px
