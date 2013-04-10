@@ -56,10 +56,10 @@ Spork.prefork do
   end
 
   require 'capybara/poltergeist'
-  # Uncomment to debug poltergeist
-  # Capybara.register_driver :poltergeist do |app|
-  #   Capybara::Poltergeist::Driver.new(app, {debug: true})
-  # end
+  Capybara.register_driver :poltergeist do |app|
+    Capybara::Poltergeist::Driver.new(app, {js_errors: false})
+    # Set debug: true to debug poltergeist
+  end
   Capybara.javascript_driver = :poltergeist
 
 end
