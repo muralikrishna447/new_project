@@ -11,7 +11,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130410021410) do
+
+ActiveRecord::Schema.define(:version => 20130410192912) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -45,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20130410021410) do
     t.text     "image_id"
     t.text     "featured_image_id"
     t.string   "activity_type"
+    t.integer  "last_edited_by_id"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -241,6 +243,19 @@ ActiveRecord::Schema.define(:version => 20130410021410) do
 
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
+
+
+  create_table "revision_records", :force => true do |t|
+    t.string   "revisionable_type", :limit => 100,                    :null => false
+    t.integer  "revisionable_id",                                     :null => false
+    t.integer  "revision",                                            :null => false
+    t.binary   "data"
+    t.datetime "created_at",                                          :null => false
+    t.boolean  "trash",                            :default => false
+  end
+
+  add_index "revision_records", ["revisionable_id"], :name => "revision_records_id"
+  add_index "revision_records", ["revisionable_type", "created_at", "trash"], :name => "revision_records_type_and_created_at"
 
   create_table "send_texts", :force => true do |t|
     t.integer  "from_user_id"

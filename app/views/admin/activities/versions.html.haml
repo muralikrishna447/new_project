@@ -1,0 +1,27 @@
+.admin-activity-versions
+  .preview-group#left-group
+    .controls
+      =select_tag "left", options_for_select(@versions, @versions[1]), id: 'select-left'
+      =link_to "Make Live", '#', class: "admin-button", id: "make-live-left"
+      .loading-indicator#loading-left.pull-right
+        %i.icon-spinner.icon-spin.icon-2x
+
+    %iframe.preview#preview-left{src: activity_path(@activity, version: @versions[1].last, minimal: true)}
+
+  .preview-group#right-group
+    .controls
+      =select_tag "left", options_for_select(@versions, @versions[0]), id: 'select-right'
+      =link_to "Make Live", '#', class: "admin-button", id: "make-live-right"
+      .loading-indicator#loading-right.pull-right
+        %i.icon-spinner.icon-spin.icon-2x
+
+    %iframe.preview#preview-right{src: activity_path(@activity, version: @versions[0].last, minimal: true)}
+
+  .preview-group#diff-group
+
+    .controls
+      .diff-label
+        %h3 Difference
+    .preview#preview-diff
+
+  #urls{data: {:'activity_path' => activity_path(@activity, minimal: true), :'restore_version_admin_activity_path' => restore_version_admin_activity_path(@activity)}}

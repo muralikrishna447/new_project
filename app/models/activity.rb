@@ -2,6 +2,7 @@ class Activity < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   acts_as_taggable
+  acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}, :quizzes, :inclusions], :dependent => :keep, :on_destroy => true
 
   friendly_id :title, use: :slugged
 
@@ -20,6 +21,8 @@ class Activity < ActiveRecord::Base
 
   has_many :user_activities
   has_many :users, through: :user_activities
+
+  belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
 
   scope :with_video, where("youtube_id <> ''")
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
@@ -62,11 +65,14 @@ class Activity < ActiveRecord::Base
   end
 
   def optional_equipment
-    equipment.optional.ordered
+    # Using the optional/required scopes hits the database and messes up the
+    # versions view (which depends on plucking everything from the in-memory temp model)
+    equipment.select { |x| x.optional }
   end
 
   def required_equipment
-    equipment.required.ordered
+    # See note in optional_equipment
+    equipment.select { |x| ! x.optional }
   end
 
   def next
