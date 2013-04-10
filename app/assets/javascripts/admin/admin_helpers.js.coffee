@@ -168,7 +168,7 @@ restoreVersion = (version) ->
   path = $('#urls').data('restore_version_admin_activity_path') + "?version=" + version
   window.location = path
 
-updateDiff =  ->
+xupdateDiff =  ->
   version_left = $('#select-left').val()
   version_right = $('#select-right').val()
   path = $('#urls').data('get_diff_admin_activity_path') + "?version_left=" + version_left + "&version_right=" + version_right
@@ -178,15 +178,43 @@ updateDiff =  ->
       $('#preview-diff').html(data)
       $('#loading-diff').fadeOut()
 
+updateDiff = ->
+  $("#id_description_iframe").contents().find("body").html()
+
+  # get the baseText and newText values from the two textboxes, and split them into lines
+  base = difflib.stringAsLines($("#preview-left").contents().find("body").html())
+  newtxt = difflib.stringAsLines($("#preview-right").contents().find("body").html())
+
+  # create a SequenceMatcher instance that diffs the two sets of lines
+  sm = new difflib.SequenceMatcher(base, newtxt)
+
+  # get the opcodes from the SequenceMatcher instance
+  # opcodes is a list of 3-tuples describing what changes should be made to the base text
+  # in order to yield the new text
+  opcodes = sm.get_opcodes()
+  diffoutputdiv = $("#preview-diff").get(0)
+  diffoutputdiv.removeChild diffoutputdiv.firstChild  while diffoutputdiv.firstChild
+
+  # build the diff view and add it to the current DOM
+  diffoutputdiv.appendChild diffview.buildView(
+    baseTextLines: base
+    newTextLines: newtxt
+    opcodes: opcodes
+
+    # set the display titles for each resource
+    baseTextName: "Left Version"
+    newTextName: "Right Version"
+    contextSize: 1
+    viewType: 1
+  )
+
 
 $ ->
-  updateDiff()
 
   $('.preview-group select').on "change", (event) ->
-    activity_path = $('#urls').data('activity_path') + "?version=" + $(this).val()
+    activity_path = $('#urls').data('activity_path') + "&version=" + $(this).val()
     $(this).closest('.preview-group').find('.preview').attr("src", activity_path)
     $(this).closest('.preview-group').find('.loading-indicator').fadeIn()
-    updateDiff()
 
   $('#make-live-left').click ->
     restoreVersion($('#select-left').val())
@@ -195,9 +223,11 @@ $ ->
     restoreVersion($('#select-right').val())
 
   $('#preview-left').load ->
+    updateDiff()
     $('#loading-left').fadeOut()
 
   $('#preview-right').load ->
+    updateDiff()
     $('#loading-right').fadeOut()
 
 

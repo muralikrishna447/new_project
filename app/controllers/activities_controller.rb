@@ -20,6 +20,11 @@ class ActivitiesController < ApplicationController
       render template: 'activities/quizzes'
     end
 
+    @minimal = false
+    if params[:minimal]
+      @minimal = true
+    end
+
     @user_activity = UserActivity.new
   end
 
