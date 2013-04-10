@@ -111,7 +111,7 @@
       = course_syllabus(@course)
 
 - content_for :popup_bottom do
-  - if @viewed_activities.count > 3 && current_user.nil?
+  - if @viewed_activities && @viewed_activities.count > 3 && current_user.nil?
     .container-fluid.popup-bottom
       .row-fluid
         .container
