@@ -168,22 +168,17 @@ restoreVersion = (version) ->
   path = $('#urls').data('restore_version_admin_activity_path') + "?version=" + version
   window.location = path
 
-xupdateDiff =  ->
-  version_left = $('#select-left').val()
-  version_right = $('#select-right').val()
-  path = $('#urls').data('get_diff_admin_activity_path') + "?version_left=" + version_left + "&version_right=" + version_right
-  $('#loading-diff').fadeIn()
-  $.ajax path,
-    success: (data, status, xhr) ->
-      $('#preview-diff').html(data)
-      $('#loading-diff').fadeOut()
+cleanText = (htmlString) ->
+  htmlString.split("\n").map($.trim).filter((line) ->
+    line isnt ""
+  ).join "\n"
 
 updateDiff = ->
   $("#id_description_iframe").contents().find("body").html()
 
   # get the baseText and newText values from the two textboxes, and split them into lines
-  base = difflib.stringAsLines($("#preview-left").contents().find("body").html())
-  newtxt = difflib.stringAsLines($("#preview-right").contents().find("body").html())
+  base = difflib.stringAsLines(cleanText($("#preview-left").contents().find("body").text()))
+  newtxt = difflib.stringAsLines(cleanText($("#preview-right").contents().find("body").text()))
 
   # create a SequenceMatcher instance that diffs the two sets of lines
   sm = new difflib.SequenceMatcher(base, newtxt)
@@ -204,8 +199,8 @@ updateDiff = ->
     # set the display titles for each resource
     baseTextName: "Left Version"
     newTextName: "Right Version"
-    contextSize: 1
-    viewType: 1
+    contextSize: "0"
+    viewType: 0
   )
 
 
@@ -223,10 +218,12 @@ $ ->
     restoreVersion($('#select-right').val())
 
   $('#preview-left').load ->
+    $(this).get(0).contentWindow.expandSteps()
     updateDiff()
     $('#loading-left').fadeOut()
 
   $('#preview-right').load ->
+    $(this).get(0).contentWindow.expandSteps()
     updateDiff()
     $('#loading-right').fadeOut()
 

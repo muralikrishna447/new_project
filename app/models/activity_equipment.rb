@@ -15,5 +15,7 @@ class ActivityEquipment < ActiveRecord::Base
 
   scope :optional, where(optional: true)
   scope :required, where(optional: false)
+
+  default_scope { ordered }
 end
 

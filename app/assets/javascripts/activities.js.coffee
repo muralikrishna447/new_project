@@ -63,3 +63,5 @@ $ ->
       $(this).text 'less'
     else
       $(this).text 'more'
+
+window.expandSteps = expandSteps

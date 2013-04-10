@@ -1,53 +1,6 @@
-# https://gist.github.com/agius/2631752
-def json_differences(a, b)
-  return [a.class.name, nil] if !a.nil? && b.nil?
-  return [nil, b.class.name] if !b.nil? && a.nil?
-
-  differences = {}
-  a.each do |k, v|
-    if !v.nil? && b[k].nil?
-      differences[k] = [v, nil]
-      next
-    elsif !b[k].nil? && v.nil?
-      differences[k] = [nil, b[k]]
-      next
-    end
-
-    if v.is_a?(Hash)
-      unless b[k].is_a?(Hash)
-        differences[k] = "Different types"
-        next
-      end
-      diff = json_differences(a[k], b[k])
-      differences[k] = diff if !diff.nil? && diff.count > 0
-
-    elsif v.is_a?(Array)
-      unless b[k].is_a?(Array)
-        differences[k] = "Different types"
-        next
-      end
-
-      c = 0
-      diff = v.map do |n|
-        if n.is_a?(Hash)
-          diffs = json_differences(n, b[k][c])
-          c += 1
-          ["Differences: ", diffs] unless diffs.nil?
-        else
-          c += 1
-          [n , b[c]] unless b[c] == n
-        end
-      end.compact
-
-      differences[k] = diff if diff.count > 0
-
-    else
-      differences[k] = [v, b[k]] unless v == b[k]
-
-    end
-  end
-
-  return differences if !differences.nil? && differences.count > 0
+def version_popup_entry(rev_num, rev)
+  user = rev.last_edited_by ? rev.last_edited_by.email : "unknown"
+  ["##{rev_num} by #{user} at #{rev.updated_at.localtime.strftime('%a %b %d, %Y %l:%M:%S %p %Z')}", rev_num]
 end
 
 
@@ -70,7 +23,7 @@ ActiveAdmin.register Activity do
     link_to('Edit Step Ingredients', associated_ingredients_admin_activity_path(activity))
   end
 
-  action_item only: [:show] do
+  action_item only: [:show, :edit] do
     link_to('Versions', versions_admin_activity_path(activity))
   end
 
@@ -100,6 +53,7 @@ ActiveAdmin.register Activity do
       @activity.update_equipment(equipment_attrs)
       @activity.update_steps(step_attrs)
       @activity.update_ingredients(ingredient_attrs)
+      @activity.last_edited_by = current_admin_user
       create!
     end
 
@@ -109,6 +63,7 @@ ActiveAdmin.register Activity do
         @activity.update_equipment(separate_equipment)
         @activity.update_steps(separate_steps)
         @activity.update_ingredients(separate_ingredients)
+        @activity.last_edited_by = current_admin_user
         update!
       end
     end
@@ -151,9 +106,13 @@ ActiveAdmin.register Activity do
 
   member_action :update_associated_ingredients, method: :put do
     @activity = Activity.find(params[:id])
-    @activity.update_attributes(steps_attributes:params[:activity][:steps_attributes])
-    params[:step_ingredients].each do |id, ingredients|
-      Step.find(id).update_ingredients(ingredients)
+    @activity.store_revision do
+      @activity.update_attributes(steps_attributes:params[:activity][:steps_attributes])
+      params[:step_ingredients].each do |id, ingredients|
+        Step.find(id).update_ingredients(ingredients)
+      end
+      @activity.last_edited_by = current_admin_user
+      @activity.save!
     end
     redirect_to({action: :show}, notice: "Step's ingredients updated")
   end
@@ -162,24 +121,17 @@ ActiveAdmin.register Activity do
     @activity = Activity.find(params[:id])
     last_rev_num = @activity.last_revision().revision
     @versions = last_rev_num.downto(1).map do |r|
-      rev = @activity.revision(r)
-      ["##{r} - #{rev.created_at.localtime.strftime('%a %b %d, %Y %l:%M:%S %p %Z')}", r]
+      rev = @activity.restore_revision(r)
+      version_popup_entry(r, rev)
     end
+    @versions.unshift(version_popup_entry(last_rev_num + 1, @activity))
   end
 
   member_action :restore_version, method: :get do
     @activity = Activity.find(params[:id])
     @version = params[:version]
     @activity.restore_revision!(@version)
-    redirect_to({action: :show}, notice: "Version #{@version} has been restored and is the new version #{@activity.last_revision().revision}")
-  end
-
-  member_action :get_diff, method: :get do
-    left = Activity.find(params[:id]).restore_revision(params[:version_left]).deep_json
-    right = Activity.find(params[:id]).restore_revision(params[:version_right]).deep_json
-    diff = json_differences(left, right)
-
-    render text: JSON.pretty_generate(diff)
+    redirect_to({action: :show}, notice: "Version #{@version} has been restored and is the new version #{@activity.last_revision().revision + 1}")
   end
 end
 

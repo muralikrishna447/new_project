@@ -6,9 +6,11 @@ class ActivitiesController < ApplicationController
   def show
     # @cooked_this = cooked_ids.include?(activity.id)
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
-    if params[:version]
+
+    if params[:version] && params[:version].to_i <= @activity.last_revision().revision
         @activity = @activity.restore_revision(params[:version])
     end
+
     @techniques = Activity.published.techniques.last(6)
     # @recipes = @activity.related_by_ingredients
     @recipes = Activity.published.recipes.last(6)
