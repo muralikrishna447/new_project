@@ -113,3 +113,22 @@
       %h3= @course.title
     .modal-body
       = course_syllabus(@course)
+
+- content_for :popup_bottom do
+  - if @viewed_activities && @viewed_activities.count > 3 && current_user.nil?
+    .container-fluid.popup-bottom
+      .row-fluid
+        .container
+          .row
+            .span12
+              .row
+                .span6.text-right
+                  %h3 Join the community
+                  Let's help each other become better cooks.
+                .span6
+                  = form_tag sign_up_url, :method => :get do
+                    = email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
+                    = hidden_field_tag :source, 'popup'
+                    = submit_tag 'Sign Up Now', class: 'btn btn-primary', id: 'subscribe-email'
+                .popup-bottom-close
+                  %i.icon-remove

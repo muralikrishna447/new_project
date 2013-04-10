@@ -44,16 +44,20 @@
       .section
         %h4 Used In
         %ul
-        - activity.used_in_activities.published.each do |activity|
-          %li= link_to activity.title.html_safe, activity
+          - activity.used_in_activities.published.each do |activity|
+            %li= link_to activity.title.html_safe, activity
 - cache [activity, 'steps'] do
   .span6.section.scroll-shadow-wrapper
     .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
       .scroll-shadow-content.pull-left
-        - activity.steps.each_with_index do |step, index|
+        - step_number = 0
+        - activity.steps.each_with_index do |step,index|
           .ordered-step-item{id: "order-step-item-#{index}"}
             .step-element.step-number
-              = index + 1
+              - if step.hide_number?
+                - step_number
+              - else
+                = step_number+=1
             .step-element.step-content
               - if step.title?
                 %h4= step.title

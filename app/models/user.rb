@@ -12,13 +12,15 @@ class User < ActiveRecord::Base
   has_many :user_activities
   has_many :activities, through: :user_activities
 
+  serialize :viewed_activities, Array
+
   gravtastic
 
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities
 
   validates_presence_of :name
 

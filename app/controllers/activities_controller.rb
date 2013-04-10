@@ -4,16 +4,15 @@ class ActivitiesController < ApplicationController
   expose(:version) { Version.current }
 
   def show
-    # @cooked_this = cooked_ids.include?(activity.id)
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
 
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
         @activity = @activity.restore_revision(params[:version])
     end
 
-    @techniques = Activity.published.techniques.last(6)
-    # @recipes = @activity.related_by_ingredients
-    @recipes = Activity.published.recipes.last(6)
+    @techniques = Activity.published.techniques.includes(:steps).last(6)
+    @recipes = Activity.published.recipes.includes(:steps).last(6)
+
     if params[:course_id]
       @course = Course.find(params[:course_id])
     end
@@ -28,6 +27,11 @@ class ActivitiesController < ApplicationController
     end
 
     @user_activity = UserActivity.new
+
+    # cookies.delete(:viewed_activities)
+    @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
+    @viewed_activities << [@activity.id, DateTime.now]
+    cookies[:viewed_activities] = @viewed_activities.to_json
   end
 
   # This is the base feed that we tell feedburner about. Users should never see this.
@@ -37,10 +41,10 @@ class ActivitiesController < ApplicationController
     @title = "ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine"
 
     # the news items
-    @activities = Activity.order("updated_at desc")
+    @activities = Activity.published.order("updated_at desc")
 
     # this will be our Feed's update timestamp
-    @updated = @activities.first.updated_at unless @activities.empty?
+    @updated = @activities.published.first.updated_at unless @activities.empty?
 
     respond_to do |format|
       format.atom { render 'feed',  :layout => false }
