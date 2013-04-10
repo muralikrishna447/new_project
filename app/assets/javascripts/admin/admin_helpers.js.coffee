@@ -218,12 +218,16 @@ $ ->
     restoreVersion($('#select-right').val())
 
   $('#preview-left').load ->
-    $(this).get(0).contentWindow.expandSteps()
+    cw = $(this).get(0).contentWindow
+    cw.expandSteps()
+    #$(this).height(cw.document.body.scrollHeight)
     updateDiff()
     $('#loading-left').fadeOut()
 
   $('#preview-right').load ->
-    $(this).get(0).contentWindow.expandSteps()
+    cw = $(this).get(0).contentWindow
+    cw.expandSteps()
+    #$(this).height(cw.document.body.scrollHeight)
     updateDiff()
     $('#loading-right').fadeOut()
 
