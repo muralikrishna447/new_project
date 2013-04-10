@@ -1,7 +1,4 @@
 $ ->
-  $('#myCarousel').each (_, carousel) ->
-    $(carousel).carousel()
-
   $('.carousel-scroll').each ->
     inner = $(this).find('.carousel-scroll-inner')
     item_count = $(this).find('.carousel-scroll-inner .item').size()
