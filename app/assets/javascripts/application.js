@@ -3,8 +3,7 @@
 //= require mobile_detect
 //= require twitter/bootstrap
 //= require swipe
-//= require ./vendor
-//= require ./ordered
+
 //= require home
 //= require activities
 //= require step_ingredients
