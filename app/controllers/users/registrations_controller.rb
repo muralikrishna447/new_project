@@ -27,9 +27,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create
     @user = User.new(params[:user])
+    if cookies[:viewed_activities]
+      @user.viewed_activities = JSON.parse(cookies[:viewed_activities])
+    end
     if @user.save
       sign_in @user
       redirect_to user_profile_path(@user), notice: "Welcome to ChefSteps!"
+      cookies.delete(:viewed_activities)
     else
       render :new
     end
