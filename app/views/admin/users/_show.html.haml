@@ -1,0 +1,27 @@
+.row
+  .span12
+    %h1 User
+    %dl
+      %dt ID
+      %dd= user.id
+
+      %dt Name
+      %dd= user.name
+
+      %dt Email
+      %dd= user.email
+
+      %dt Sign in count
+      %dd= user.sign_in_count
+
+      %dt Created at
+      %dd= user.created_at
+
+      %dt Viewed activities
+      %dd
+        %ol
+          - user.viewed_activities.each do |activity|
+            - activity_object = Activity.find(activity[0])
+            %li
+              = link_to activity_object.title, activity_object
+              = activity[1]
