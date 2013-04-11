@@ -1,6 +1,6 @@
 def version_popup_entry(rev_num, rev)
   user = rev.last_edited_by ? rev.last_edited_by.email : "unknown"
-  ["##{rev_num} by #{user} at #{rev.updated_at.localtime.strftime('%a %b %d, %Y %l:%M:%S %p %Z')}", rev_num]
+  ["##{rev_num} #{user[/[^@]+/]} #{rev.updated_at.localtime.strftime('%a %b %d, %Y %l:%M %p %Z')}", rev_num]
 end
 
 
@@ -119,10 +119,14 @@ ActiveAdmin.register Activity do
 
   member_action :versions, method: :get do
     @activity = Activity.find(params[:id])
-    last_rev_num = @activity.last_revision().revision
-    @versions = last_rev_num.downto(1).map do |r|
-      rev = @activity.restore_revision(r)
-      version_popup_entry(r, rev)
+    @versions = []
+    last_rev_num = 0
+    if @activity.last_revision()
+      last_rev_num = @activity.last_revision().revision
+        @versions = last_rev_num.downto(1).map do |r|
+          rev = @activity.restore_revision(r)
+          version_popup_entry(r, rev)
+        end
     end
     @versions.unshift(version_popup_entry(last_rev_num + 1, @activity))
   end
