@@ -3,7 +3,8 @@ require 'spec_helper'
 feature 'user authentication', :js do
   include AcceptanceMacros
 
-  scenario 'user can create a user new account', :pending do
+
+  scenario 'user can create a user new account', pending: true do
     visit '/'
     page.should have_content('Course')
     fill_in 'email', with: 'bob@bob.com'
@@ -27,12 +28,14 @@ feature 'user authentication', :js do
 
   end
 
-  scenario "authenticates a user when valid credentials are provided", :pending do
+
+  scenario "authenticates a user when valid credentials are provided", pending: true do
     login_user
     page.should have_content('Bob Tester')
   end
 
-  scenario "log out", :pending do
+  scenario "log out", pending: true  do
+
     login_user
 
     page.should have_content('Bob Tester')
@@ -42,7 +45,8 @@ feature 'user authentication', :js do
     current_path.should == root_path
   end
 
-  scenario "reset password", :pending do
+
+  scenario "reset password", pending: true do
     user = Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password')
 
     visit '/'
@@ -67,7 +71,7 @@ feature 'user authentication', :js do
     current_path.should eq user_profile_path(user)
   end
 
-  scenario 'user created from aweber can send an email to recieve a default password', :pending do
+  scenario 'user created from aweber can send an email to recieve a default password', pending: true do
     user = Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password', from_aweber: true)
     visit '/'
 
@@ -92,7 +96,7 @@ feature 'user authentication', :js do
     user.from_aweber.should eq false
   end
 
-  scenario 'user is prompted with a signup popup after viewing 3 activities' do
+  scenario 'user is prompted with a signup popup after viewing 3 activities', pending: true do
     i = 0
     4.times do
       i+=1
