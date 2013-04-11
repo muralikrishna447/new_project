@@ -45,8 +45,6 @@ ActiveRecord::Schema.define(:version => 20130410192912) do
     t.text     "image_id"
     t.text     "featured_image_id"
     t.string   "activity_type"
-    t.integer  "discussion_id"
-    t.string   "discussion_url"
     t.integer  "last_edited_by_id"
   end
 
@@ -140,6 +138,15 @@ ActiveRecord::Schema.define(:version => 20130410192912) do
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
     t.string   "short_description"
+  end
+
+  create_table "entries", :force => true do |t|
+    t.text     "content"
+    t.text     "image_id"
+    t.integer  "user_id"
+    t.integer  "activity_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "equipment", :force => true do |t|
@@ -247,6 +254,15 @@ ActiveRecord::Schema.define(:version => 20130410192912) do
 
   add_index "revision_records", ["revisionable_id"], :name => "revision_records_id"
   add_index "revision_records", ["revisionable_type", "created_at", "trash"], :name => "revision_records_type_and_created_at"
+
+  create_table "send_texts", :force => true do |t|
+    t.integer  "from_user_id"
+    t.string   "to_phone_number"
+    t.integer  "activity_id"
+    t.text     "content"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "settings", :force => true do |t|
     t.string   "footer_image"
@@ -363,5 +379,19 @@ ActiveRecord::Schema.define(:version => 20130410192912) do
     t.datetime "updated_at",  :null => false
     t.text     "image_id"
   end
+
+  create_table "votes", :force => true do |t|
+    t.boolean  "vote",          :default => false, :null => false
+    t.integer  "voteable_id",                      :null => false
+    t.string   "voteable_type",                    :null => false
+    t.integer  "voter_id"
+    t.string   "voter_type"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+  end
+
+  add_index "votes", ["voteable_id", "voteable_type"], :name => "index_votes_on_voteable_id_and_voteable_type"
+  add_index "votes", ["voter_id", "voter_type", "voteable_id", "voteable_type"], :name => "fk_one_vote_per_user_per_entity", :unique => true
+  add_index "votes", ["voter_id", "voter_type"], :name => "index_votes_on_voter_id_and_voter_type"
 
 end
