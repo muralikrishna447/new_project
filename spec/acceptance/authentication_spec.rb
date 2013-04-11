@@ -32,7 +32,7 @@ feature 'user authentication', :js do
     page.should have_content('Bob Tester')
   end
 
-  scenario "log out" do
+  scenario "log out", pending: true  do
     login_user
 
     page.should have_content('Bob Tester')
