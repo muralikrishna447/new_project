@@ -3,5 +3,16 @@
 %link{href: "http://fonts.googleapis.com/css?family=Raleway:200,400,500,600,700", rel: "stylesheet", type: "text/css"}
 %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
 %script{src: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"}
+/ %script{src: '//api.filepicker.io/v1/filepicker.js'}
+= render 'layouts/filepicker'
 = stylesheet_link_tag 'global_navigation', media: 'all'
+= javascript_include_tag 'forum_filepicker', media: 'all'
 = render 'layouts/navigation', external: true
+
+%div{style: "margin-top: 200px;"}
+  %button.filepicker-button
+  / %input{type:'filepicker-dragdrop', name:'myName', :'data-fp-multiple' => true}
+
+.cleditorMain
+  %iframe
+    %body
