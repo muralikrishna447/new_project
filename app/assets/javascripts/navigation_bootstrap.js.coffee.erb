@@ -29,15 +29,14 @@ class ChefSteps.NavigationBootstrap
 
 $ ->
   filepicker.setKey('<%= ::Rails.application.config.filepicker_rails.api_key %>')
-  $(document).on "click", ".cleditorButton", (event) ->
+  $(document).on "click", ".cleditorButton[title='Insert Image']", (event) ->
     event.preventDefault()
-    if $(this).attr('title') == 'Insert Image'
-      doc = $('.cleditorMain').find('iframe')[0].contentWindow.document
+    doc = $('.cleditorMain').find('iframe')[0].contentWindow.document
 
-      filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"}, (fpfiles) =>
-        console.log(JSON.stringify(fpfiles))
-        url = JSON.stringify(fpfiles[0]['url'])
-        convert = "/convert?fit=max&w=400"
-        url_with_conversion = JSON.parse(url) + convert
-        content = "<img src='" + url_with_conversion + "'/>"
-        $(doc).find('body').append(content)
+    filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"}, (fpfiles) =>
+      console.log(JSON.stringify(fpfiles))
+      url = JSON.stringify(fpfiles[0]['url'])
+      convert = "/convert?fit=max&w=400"
+      url_with_conversion = JSON.parse(url) + convert
+      content = "<img src='" + url_with_conversion + "'/>"
+      $(doc).find('body').append(content)
