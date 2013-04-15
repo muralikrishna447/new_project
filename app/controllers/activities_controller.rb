@@ -3,6 +3,24 @@ class ActivitiesController < ApplicationController
   expose(:cache_show) { params[:token].blank? }
   expose(:version) { Version.current }
 
+  before_filter :find_activity
+
+  def find_activity
+    @activity = Activity.find params[:id]
+
+    # If an old id or a numeric id was used to find the record, then
+    # the request path will not match the activity_path, and we should do
+    # a 301 redirect that uses the current friendly id.
+    if request.path != activity_path(@activity)
+      # Wish I could just do params: params but that creates ugly urls
+      redir_params = {}
+      redir_params[:version] = params[:version] if defined? params[:version]
+      redir_params[:minimal] = params[:minimal] if defined? params[:minimal]
+      redir_params[:token] = params[:token] if defined? params[:token]
+      redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
+    end
+  end
+
   def show
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
 

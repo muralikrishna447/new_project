@@ -428,6 +428,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   kaminari
+  launchy
   listen (= 0.4.7)
   memcachier
   meta_request

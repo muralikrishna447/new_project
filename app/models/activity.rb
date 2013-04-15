@@ -4,7 +4,7 @@ class Activity < ActiveRecord::Base
   acts_as_taggable
   acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}, :quizzes, :inclusions], :dependent => :keep, :on_destroy => true
 
-  friendly_id :title, use: :slugged
+  friendly_id :title, use: [:slugged, :history]
 
   has_many :ingredients, dependent: :destroy, class_name: ActivityIngredient, inverse_of: :activity
   # The as_ingredient relationship returns the ingredient version of the activity
