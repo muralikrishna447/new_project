@@ -30,8 +30,8 @@ class ChefSteps.NavigationBootstrap
 $ ->
   filepicker.setKey('<%= ::Rails.application.config.filepicker_rails.api_key %>')
   $(document).on "click", ".cleditorButton", (event) ->
+    event.preventDefault()
     if $(this).attr('title') == 'Insert Image'
-      event.preventDefault()
       doc = $('.cleditorMain').find('iframe')[0].contentWindow.document
 
       filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"}, (fpfiles) =>
