@@ -28,8 +28,9 @@ class ChefSteps.NavigationBootstrap
     @fixNavLinks()
 
 $ ->
+  $(".cleditorButton[title='Insert Image']").attr 'class', 'forum-filepicker'
   filepicker.setKey('<%= ::Rails.application.config.filepicker_rails.api_key %>')
-  $(document).on "click", ".cleditorButton[title='Insert Image']", (event) ->
+  $(document).on "click", ".forum-filepicker", (event) ->
     event.preventDefault()
     doc = $('.cleditorMain').find('iframe')[0].contentWindow.document
 
