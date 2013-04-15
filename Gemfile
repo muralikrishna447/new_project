@@ -77,6 +77,7 @@ group :development, :test do
   gem 'thin'
   gem 'rails-erd'
   gem 'bullet'
+  gem 'launchy'
 end
 
 group :guard do
