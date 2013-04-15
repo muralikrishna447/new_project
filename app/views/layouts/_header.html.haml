@@ -5,7 +5,6 @@
 %script{src: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"}
 / = render 'layouts/filepicker', external:  true
 / = render 'layouts/forum_filepicker', external: true
-= filepicker_js_include_tag
 = stylesheet_link_tag 'global_navigation', media: 'all'
 = render 'layouts/navigation', external: true
 
@@ -16,29 +15,3 @@
 / .cleditorMain
 /   %iframe
 /     %body
-
-:javascript
-  filepicker.setKey('<%= ::Rails.application.config.filepicker_rails.api_key %>');
-  $(function() {
-    return $(document).on("click", ".cleditorButton", function(event) {
-      var doc,
-        _this = this;
-      if ($(this).attr('title') === 'Insert Image') {
-        event.preventDefault();
-        doc = $('.cleditorMain').find('iframe')[0].contentWindow.document;
-        return filepicker.pickAndStore({
-          mimetype: "image/*"
-        }, {
-          location: "S3"
-        }, function(fpfiles) {
-          var content, convert, url, url_with_conversion;
-          console.log(JSON.stringify(fpfiles));
-          url = JSON.stringify(fpfiles[0]['url']);
-          convert = "/convert?fit=max&w=400";
-          url_with_conversion = JSON.parse(url) + convert;
-          content = "<img src='" + url_with_conversion + "'/>";
-          return $(doc).find('body').append(content);
-        });
-      }
-    });
-  });
