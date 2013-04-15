@@ -1,6 +1,5 @@
 $ ->
   $(document).on "click", ".cleditorButton", (event) ->
-    alert $(this).attr 'title'
     if $(this).attr('title') == 'Insert Image'
       event.preventDefault()
       doc = $('.cleditorMain').find('iframe')[0].contentWindow.document
