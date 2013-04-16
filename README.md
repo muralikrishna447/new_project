@@ -28,3 +28,12 @@ $ sudo apt-get install phantomjs
 ```
 
 For more info: [guard-jasmine](https://github.com/netzpirat/guard-jasmine)
+
+## Forum Photo Uploads
+We use Filepicker for image uploads.  The main code can be found in navigation_bootstrap.js.coffee.erb.
+
+This file is precompiled, then synced with the cdn as navigation_bootstrap.js
+
+To get vanilla to use this file, it is included in the Forum > Dashboard > Customize Theme
+
+Make sure to use the latest uploaded version of navigation_bootstrap.js.  You may need to go to CloudFront account to find this.
