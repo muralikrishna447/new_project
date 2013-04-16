@@ -10,7 +10,7 @@
 
     - if current_user && current_user.course_ids.include?(@course.id)
       You are enrolled into this course.
-      = link_to 'First activity', '#', class: 'btn btn-primary btn-large pull-right'
+      = link_to 'First activity', course_activity_path(@course, @course.inclusions.first.activity), class: 'btn btn-primary btn-large pull-right'
     - else
       = form_tag enroll_course_path(@course) do
         = submit_tag 'Enroll', class: 'btn btn-primary btn-large pull-right'
