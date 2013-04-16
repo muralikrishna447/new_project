@@ -8,7 +8,7 @@ class HomeController < ApplicationController
     
 
     # @discussion = Forum.discussions.first
-    @status = Twitter.status_embed
+    #@status = Twitter.status_embed
   end
 
   def about
