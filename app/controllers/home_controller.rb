@@ -9,6 +9,7 @@ class HomeController < ApplicationController
       # @discussion = Forum.discussions.first
       @status = Twitter.status_embed
     else
+      @courses = Course.published
       render 'new_visitor_homepage'
     end
   end

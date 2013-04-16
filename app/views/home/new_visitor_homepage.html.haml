@@ -1,6 +1,16 @@
 .row
   .span12
     .row
-      .span8.offset2.well
+      .span4.offset4
         %h2 Learn, cook, eat, share.
-        %h3 ChefSteps is here to help you kick ass in the kitchen.
+        %h2 ChefSteps is here to help you kick ass in the kitchen.
+        We'll keep you up to date with the latest from ChefSteps.  We don't like spam, and we don't do shady stuff with your info.
+        = form_tag sign_up_url, :method => :get, class: 'form-inline' do
+          %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Email Address', required: true}
+          %p= submit_tag 'Subscribe Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+
+.row
+  .span12
+    %h2.text-center We offer a variety of cooking courses...
+    - @courses.each do |course|
+      = course.title
