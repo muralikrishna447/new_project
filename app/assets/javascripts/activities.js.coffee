@@ -68,9 +68,9 @@ $ ->
 # Wysiwyg mode stuff
 
 $ ->
-  #$('#edit-mode').click ->
-    #debugger
-    #$('body').toggleClass('edit-mode', $('#edit-mode').hasClass('active'))
+
+  # Don't show edit switch until page is fully loaded
+  $('#edit-group').show('fast')
 
   # See https://github.com/twitter/bootstrap/issues/2380 for reason why this exists
   $('body').on 'click', '#edit-group .btn', (event) ->
@@ -85,14 +85,18 @@ $ ->
   $(document).on 'mouseenter', '*[data-wysiwyg]:not(.wysiwyg-active)', ->
     if $('#edit-mode').hasClass('active')
       $(this).addClass('wysiwyg-available')
-      $(this).prepend($('#edit-target'))
-      $('#edit-target').show()
+      et = $('#edit-target')
+      eti = $('#edit-target-inner')
+      $(this).prepend(et)
+      et.show()
+      eti.css('margin-top', (et.height() - eti.height()) / 2)
 
   $(document).on 'mouseleave', '*[data-wysiwyg]', ->
     $(this).removeClass('wysiwyg-available')
     $('#edit-target').hide()
 
   $(document).on 'click', '.wysiwyg-available', ->
+    $('#edit-target').hide().appendTo('body')
     $.ajax($('#wysiwyg-link').attr('href'), {
       data: {partialname: $(this).data("wysiwyg") }
     })
