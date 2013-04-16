@@ -60,6 +60,9 @@ Delve::Application.routes.draw do
 
   resources :courses, only: [:show] do
     resources :activities, only: [:show], path: ''
+    member do
+      post 'enroll' => 'courses#enroll'
+    end
   end
 
   # Allow top level access to an activity even if it isn't in a course
