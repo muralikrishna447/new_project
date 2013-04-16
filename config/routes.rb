@@ -58,7 +58,7 @@ Delve::Application.routes.draw do
 
   resources :user_profiles, only: [:show, :update], path: 'profiles'
 
-  resources :courses, only: [:show] do
+  resources :courses, only: [:index, :show] do
     resources :activities, only: [:show], path: ''
     member do
       post 'enroll' => 'courses#enroll'
