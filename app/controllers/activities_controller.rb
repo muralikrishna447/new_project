@@ -11,7 +11,7 @@ class ActivitiesController < ApplicationController
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the activity_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    if request.path != activity_path(@activity)
+    if request.path != activity_path(@activity) && params[:course_id].nil?
       # Wish I could just do params: params but that creates ugly urls
       redir_params = {}
       redir_params[:version] = params[:version] if defined? params[:version]
