@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :quizzes, class_name: QuizSession, dependent: :destroy, inverse_of: :user
   has_many :user_activities
   has_many :activities, through: :user_activities
+  has_many :enrollments
+  has_many :courses, through: :enrollments
 
   serialize :viewed_activities, Array
 
