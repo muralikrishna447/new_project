@@ -64,6 +64,7 @@ $ ->
     else
       $(this).text 'more'
 
+<<<<<<< HEAD
 # Wysiwyg mode stuff
 
 $ ->
@@ -152,3 +153,15 @@ $ ->
     setupFilepickerDropPanes()
 
 window.setupFilepickerDropPanes = setupFilepickerDropPanes
+window.expandSteps = expandSteps
+
+$ ->
+  # User Registration popup shows up after viewing 3 activities
+  popup_bottom = $('.popup-bottom')
+  if popup_bottom.is('*')
+    popup_bottom.addClass 'popup-bottom-show', 1000
+
+    $('.popup-bottom-close').click ->
+      popup_bottom.removeClass 'popup-bottom-show', 500
+
+

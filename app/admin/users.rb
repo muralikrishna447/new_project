@@ -25,6 +25,10 @@ ActiveAdmin.register User do
     default_actions
   end
 
+  show do |user|
+    render "show", user: user
+  end
+
   form do |f|
     f.inputs "User Details" do
       f.input :email

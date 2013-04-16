@@ -3,12 +3,34 @@ class ActivitiesController < ApplicationController
   expose(:cache_show) { params[:token].blank? }
   expose(:version) { Version.current }
 
+  before_filter :find_activity
+
+  def find_activity
+    @activity = Activity.find params[:id]
+
+    # If an old id or a numeric id was used to find the record, then
+    # the request path will not match the activity_path, and we should do
+    # a 301 redirect that uses the current friendly id.
+    if request.path != activity_path(@activity)
+      # Wish I could just do params: params but that creates ugly urls
+      redir_params = {}
+      redir_params[:version] = params[:version] if defined? params[:version]
+      redir_params[:minimal] = params[:minimal] if defined? params[:minimal]
+      redir_params[:token] = params[:token] if defined? params[:token]
+      redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
+    end
+  end
+
   def show
-    # @cooked_this = cooked_ids.include?(activity.id)
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
-    @techniques = Activity.published.techniques.last(6)
-    # @recipes = @activity.related_by_ingredients
-    @recipes = Activity.published.recipes.last(6)
+
+    if params[:version] && params[:version].to_i <= @activity.last_revision().revision
+        @activity = @activity.restore_revision(params[:version])
+    end
+
+    @techniques = Activity.published.techniques.includes(:steps).last(6)
+    @recipes = Activity.published.recipes.includes(:steps).last(6)
+
     if params[:course_id]
       @course = Course.find(params[:course_id])
     end
@@ -17,7 +39,17 @@ class ActivitiesController < ApplicationController
       render template: 'activities/quizzes'
     end
 
+    @minimal = false
+    if params[:minimal]
+      @minimal = true
+    end
+
     @user_activity = UserActivity.new
+
+    # cookies.delete(:viewed_activities)
+    @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
+    @viewed_activities << [@activity.id, DateTime.now]
+    cookies[:viewed_activities] = @viewed_activities.to_json
   end
 
   # This is the base feed that we tell feedburner about. Users should never see this.
@@ -27,10 +59,10 @@ class ActivitiesController < ApplicationController
     @title = "ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine"
 
     # the news items
-    @activities = Activity.order("updated_at desc")
+    @activities = Activity.published.order("updated_at desc")
 
     # this will be our Feed's update timestamp
-    @updated = @activities.first.updated_at unless @activities.empty?
+    @updated = @activities.published.first.updated_at unless @activities.empty?
 
     respond_to do |format|
       format.atom { render 'feed',  :layout => false }

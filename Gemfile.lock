@@ -42,6 +42,8 @@ GEM
       multi_json (~> 1.0)
     acts-as-taggable-on (2.3.3)
       rails (~> 3.0)
+    acts_as_revisionable (1.2.2)
+      activerecord (>= 2.3.9)
     addressable (2.3.2)
     arbre (1.0.1)
       activesupport (>= 3.0.0)
@@ -390,6 +392,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin
   acts-as-taggable-on
+  acts_as_revisionable
   asset_sync
   better_errors
   binding_of_caller
@@ -425,6 +428,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   kaminari
+  launchy
   listen (= 0.4.7)
   memcachier
   meta_request

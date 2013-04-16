@@ -36,3 +36,7 @@
 //= require_tree ./admin/backbone/models
 //= require_tree ./admin
 
+//= require difflib
+//= require diffview
+
+

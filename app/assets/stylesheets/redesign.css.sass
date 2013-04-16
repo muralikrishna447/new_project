@@ -51,6 +51,36 @@ $offwhite: #F2F2F2
   .row
     margin-left: 0px
 
+.popup-bottom
+  position: fixed
+  padding: 10px 0px
+  bottom: -200px
+  width: 100%
+  @include boxsizing
+  z-index: 9999
+  background: $offwhite
+  @include shadow
+  .row
+    margin-left: 0px
+  h3
+    margin: 0px
+  form
+    margin: 10px 0px
+    .input-signup-email
+      margin: 0px
+
+  .popup-bottom-close
+    position: absolute
+    top: 10px
+    right: 10px
+    font-size: 20px
+    &:hover
+      color: $dark-orange
+      cursor: pointer
+
+.popup-bottom-show
+  bottom: 0px
+
 #technique-carousel, #related-carousel
   .scroll-overlay-left, .scroll-overlay-right
     &:after
@@ -273,7 +303,6 @@ h1, h2, h3, h4
 .activity-description-wrapper
   position: relative
   .activity-description
-    height: 100px
     overflow: hidden
     .activity-description-overlay
       position: absolute
@@ -305,7 +334,7 @@ h1, h2, h3, h4
   .ordered-step-item
     width: 100%
     float: left
-    padding: 10px 0px
+    padding: 0px
     border: 1px solid $offwhite
     border-bottom: 1px solid $light-gray
     @include boxsizing
@@ -319,16 +348,21 @@ h1, h2, h3, h4
       width: 10%
       text-align: center
       font-size: 30px
-      line-height: 40px
+      line-height: 30px
+      padding-top: 20px
     .step-content
       width: 90%
+      padding: 20px 10px 10px 5px
       h4
         margin-top: 0px
         margin-bottom: 0px
+        padding-bottom: 5px
       ul, li
         list-style: none
-        padding: 5px 0px
+        padding: 0px 0px 10px 0px
         margin: 0px
+      ul
+        padding: 0px
     .step-actions
       margin-bottom: 10px
       .step-action-item
@@ -1034,6 +1068,9 @@ h1, h2, h3, h4
   .media-header-content
     width: 468px
 
+  .activity-description
+    height: 100px
+
 @media (max-width: 1200px)
   .media-centered-medium
     height: 168px
@@ -1049,9 +1086,8 @@ h1, h2, h3, h4
     width: 300px
     height: 336px
 
-  .activity-description-wrapper
-    .activity-description
-      height: 140px
+  .activity-description
+    height: 140px
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
@@ -1075,9 +1111,8 @@ h1, h2, h3, h4
   .nav-item-border
     display: none
 
-  .activity-description-wrapper
-    .activity-description
-      height: 160px
+  .activity-description
+    height: 160px
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
@@ -1121,6 +1156,12 @@ h1, h2, h3, h4
   #slider-container
     margin: 0px -20px
     padding: 0px 20px
+
+  .popup-bottom
+    margin: 0px -20px
+    padding: 20px
+    .text-right
+      text-align: left
 
   #footer
     margin: 0px -20px
