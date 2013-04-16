@@ -103,24 +103,30 @@ class Activity < ActiveRecord::Base
   end
 
   def update_equipment(equipment_attrs)
-    reject_invalid_equipment(equipment_attrs)
-    update_and_create_equipment(equipment_attrs)
-    delete_old_equipment(equipment_attrs)
+    if equipment_attrs
+      reject_invalid_equipment(equipment_attrs)
+      update_and_create_equipment(equipment_attrs)
+      delete_old_equipment(equipment_attrs)
+    end
     self
   end
 
   def update_steps(step_attrs)
-    reject_invalid_steps(step_attrs)
-    update_and_create_steps(step_attrs)
-    delete_old_steps(step_attrs)
+    if step_attrs
+      reject_invalid_steps(step_attrs)
+      update_and_create_steps(step_attrs)
+      delete_old_steps(step_attrs)
+    end
     self
   end
 
 
   def update_ingredients(ingredient_attrs)
-    reject_invalid_ingredients(ingredient_attrs)
-    update_and_create_ingredients(ingredient_attrs)
-    delete_old_ingredients(ingredient_attrs)
+    if ingredient_attrs
+      reject_invalid_ingredients(ingredient_attrs)
+      update_and_create_ingredients(ingredient_attrs)
+      delete_old_ingredients(ingredient_attrs)
+    end
     self
   end
 

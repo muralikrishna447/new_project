@@ -3,7 +3,7 @@ class ActivitiesController < ApplicationController
   expose(:cache_show) { params[:token].blank? }
   expose(:version) { Version.current }
 
-  before_filter :find_activity
+  #before_filter :find_activity
 
   def find_activity
     @activity = Activity.find params[:id]

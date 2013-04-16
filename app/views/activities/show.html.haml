@@ -20,22 +20,16 @@
 .recipe_schema{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
 
   .row.printable
+
+
     .span6.relative
-      %h1.activity-title{itemprop: 'name'}
-        = @activity.title.html_safe
-      / - if @activity.is_recipe?
-      /   .activity-action-btn
-      /     = form_for @user_activity do |f|
-      /       = f.hidden_field :activity_id, value: @activity.id
-      /       %button.btn.btn-primary{onclick: 'formSubmit()'}
-      /         .btn-count
-      /           = @activity.users.count
-      /         .btn-text
-      /           cooked this
+      %h1.activity-title{itemprop: 'name', data: {wysiwyg: "title"}}
+        = render 'show_title'
+
     .span6.noprint
 
       - if ! @minimal
-        .pull-left.display-inline-fix
+        .pull-left.display-inline-fix.hide-when-editing
           - if @course
             .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
               %i.icon-file-alt
@@ -51,9 +45,13 @@
             %i.icon-resize-full#show-all-icon
           .btn-circle{onclick: 'window.print()'}
             %i.icon-print
-          .btn-circle#edit-mode
-            %i.icon-edit
         .pull-right.display-inline-fix
+          .btn-group#edit-group{data: {toggle: 'buttons-radio'}}
+            %button.btn.btn-primary.active{type: 'button'}
+              VIEW
+            %button#edit-mode.btn.btn-primary{type: 'button'}
+              EDIT
+        .pull-right.display-inline-fix.hide-when-editing
           = render 'layouts/social_buttons', media_object: @activity
 
   .row.printable.printable-column
@@ -95,7 +93,7 @@
 - content_for :bottom do
   - if ! @minimal
 
-    .row
+    .row.hide-when-editing
       .span12
         %h3 Techniques
         #technique-carousel
@@ -104,7 +102,7 @@
         #related-carousel
           = render 'shared/horizontal_scroller', items: @recipes
 
-    .row
+    .row.hide-when-editing
       .span12
         %h3 Discussion
         .section
@@ -121,7 +119,7 @@
 
 - content_for :popup_bottom do
   - if @viewed_activities && @viewed_activities.count > 3 && current_user.nil?
-    .container-fluid.popup-bottom
+    .container-fluid.popup-bottom.hide-when-editing
       .row-fluid
         .container
           .row
@@ -141,3 +139,6 @@
 // This isn't for clicking just providing the right link from the helper over to activities.js.coffee. Nicer way?
 = link_to "nothing", get_edit_partial_activity_path(@activity), method: :get, remote: true, id: 'wysiwyg-link', style:"display: none;"
 
+#edit-target
+  #edit-target-inner
+    %i.icon-edit.icon-large

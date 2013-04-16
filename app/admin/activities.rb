@@ -61,9 +61,9 @@ ActiveAdmin.register Activity do
       @activity = Activity.find(params[:id])
 
       @activity.store_revision do
-        @activity.update_equipment(separate_equipment) if  separate_equipment
-        @activity.update_steps(separate_steps) if  separate_steps
-        @activity.update_ingredients(separate_ingredients) if separate_ingredients
+        @activity.update_equipment(separate_equipment)
+        @activity.update_steps(separate_steps)
+        @activity.update_ingredients(separate_ingredients)
         update!
       end
     end

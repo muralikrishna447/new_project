@@ -29,6 +29,12 @@
   -webkit-transition: $value
   -o-transition: $value
 
+=rotate($rotation)
+  -webkit-transform: rotate(#{$rotation})
+  -o-transform: rotate(#{$rotation})
+  -moz-transform: rotate(#{$rotation})
+
+
 /* Colors */
 $orange: #DB7354
 $dark-orange: #D25029
@@ -993,6 +999,32 @@ h1, h2, h3, h4
 
 // WYSIWYG EDITING
 
+#edit-group
+  margin-left: 20px
+  margin-top: 11px
+
+#edit-target
+  display: none
+  @include boxsizing
+  position: absolute
+  top: 2px
+  left: -30px
+  width:  30px
+  height:  60px
+  max-height: 90%
+  font-size:  15px
+  border: 2px solid #9ecaed
+  border-right-color:  white
+  border-top-left-radius: 7px
+  border-bottom-left-radius: 7px
+  z-index: 999
+  color: #0088cc
+
+  #edit-target-inner
+    //@include rotate(-90deg)
+    margin-left: 3px
+    margin-top:  10px
+
 *[data-wysiwyg]
   form, textarea
     width: 100%
@@ -1003,14 +1035,20 @@ h1, h2, h3, h4
     margin-right: 8px
     vertical-align: top
 
+*[data-wysiwyg=title]
+  #activity_title
+    font-size: 38.5px
+    width:  100%
+
 .wysiwyg-available
   @include boxsizing
-  border: 2px solid #dadada
+  border: 2px solid
   border-radius: 7px
-  #padding: 5px
   outline: none
   border-color: #9ecaed
-  box-shadow: 0 0 10px #9ecaed
+  position:  relative
+  top: -2px
+  left:  -2px
 
 #edit-mode.active
   background: #0088cc

@@ -64,19 +64,33 @@ $ ->
     else
       $(this).text 'more'
 
-<<<<<<< HEAD
+
 # Wysiwyg mode stuff
 
 $ ->
-  $('#edit-mode').click ->
-    $('#edit-mode').toggleClass('active')
+  #$('#edit-mode').click ->
+    #debugger
+    #$('body').toggleClass('edit-mode', $('#edit-mode').hasClass('active'))
+
+  # See https://github.com/twitter/bootstrap/issues/2380 for reason why this exists
+  $('body').on 'click', '#edit-group .btn', (event) ->
+    event.stopPropagation()
+    $('#edit-group .btn').toggleClass('active')
+    if $('#edit-mode').hasClass('active')
+      $('.hide-when-editing').hide('fast')
+    else
+      $('.hide-when-editing').show('fast')
+
 
   $(document).on 'mouseenter', '*[data-wysiwyg]:not(.wysiwyg-active)', ->
     if $('#edit-mode').hasClass('active')
       $(this).addClass('wysiwyg-available')
+      $(this).prepend($('#edit-target'))
+      $('#edit-target').show()
 
   $(document).on 'mouseleave', '*[data-wysiwyg]', ->
     $(this).removeClass('wysiwyg-available')
+    $('#edit-target').hide()
 
   $(document).on 'click', '.wysiwyg-available', ->
     $.ajax($('#wysiwyg-link').attr('href'), {

@@ -1,0 +1,8 @@
+= semantic_form_for [@activity], url: update_edit_partial_activity_path, :html => {:method => :post}, remote: true do |f|
+  = f.input :title, label: false
+  - Activity::TYPES.each do |type|
+    %label
+      = check_box_tag :activity_type, type, @activity.activity_type.include?(type), :name => 'activity[activity_type][]'
+      = type
+  %div#alltags{data: {alltags: ActsAsTaggableOn::Tag.all.map(&:name) }, style: 'clear: both;'}
+    = f.input :tag_list
