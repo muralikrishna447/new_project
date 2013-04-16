@@ -28,8 +28,7 @@ class ChefSteps.NavigationBootstrap
     @fixNavLinks()
 
 $ ->
-  $(".cleditorButton[title='Insert Image']").attr 'class', 'forum-filepicker'
-  filepicker.setKey('<%= ::Rails.application.config.filepicker_rails.api_key %>')
+  filepicker.setKey('Ad8qmyXRSpy36YcW4CINQz')
   $(document).on "click", ".forum-filepicker", (event) ->
     event.preventDefault()
     doc = $('.cleditorMain').find('iframe')[0].contentWindow.document
@@ -39,5 +38,5 @@ $ ->
       url = JSON.stringify(fpfiles[0]['url'])
       convert = "/convert?fit=max&w=400"
       url_with_conversion = JSON.parse(url) + convert
-      content = "<img src='" + url_with_conversion + "'/>"
+      content = "<br/><a href='" + JSON.parse(url) + "' target='_blank'><img src='" + url_with_conversion + "'/></a><br/>"
       $(doc).find('body').append(content)

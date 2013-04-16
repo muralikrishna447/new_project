@@ -3,6 +3,7 @@ require 'spec_helper'
 feature 'user authentication', :js do
   include AcceptanceMacros
 
+
   scenario 'user can create a user new account', pending: true do
     visit '/'
     page.should have_content('Course')
@@ -27,12 +28,14 @@ feature 'user authentication', :js do
 
   end
 
+
   scenario "authenticates a user when valid credentials are provided", pending: true do
     login_user
     page.should have_content('Bob Tester')
   end
 
   scenario "log out", pending: true  do
+
     login_user
 
     page.should have_content('Bob Tester')
@@ -41,6 +44,7 @@ feature 'user authentication', :js do
     page.should_not have_content('Bob Tester')
     current_path.should == root_path
   end
+
 
   scenario "reset password", pending: true do
     user = Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password')
