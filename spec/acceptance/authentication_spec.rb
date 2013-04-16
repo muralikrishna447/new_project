@@ -108,5 +108,16 @@ feature 'user authentication', :js do
     page.should have_content('Join the community')
   end
 
+  scenario 'new visitor is shown the new visitor homepage' do
+    visit '/'
+    page.should have_content('ChefSteps is here to help you kick ass in the kitchen.')
+  end
+
+  scenario 'returning visitor is shown the default homepage' do
+    login_user
+    visit '/'
+    page.should_not have_content('ChefSteps is here to help you kick ass in the kitchen.')
+  end
+
 end
 

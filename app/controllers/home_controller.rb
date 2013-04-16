@@ -5,10 +5,12 @@ class HomeController < ApplicationController
     @recipes = Activity.published.recipes.includes(:steps).last(6) - @heroes
     @techniques = Activity.published.techniques.includes(:steps).last(6) - @heroes
     @sciences = Activity.published.sciences.includes(:steps).last(6) - @heroes
-    
-
-    # @discussion = Forum.discussions.first
-    @status = Twitter.status_embed
+    if cookies[:returning_visitor]
+      # @discussion = Forum.discussions.first
+      @status = Twitter.status_embed
+    else
+      render 'new_visitor_homepage'
+    end
   end
 
   def about
