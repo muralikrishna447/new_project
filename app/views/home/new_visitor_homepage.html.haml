@@ -12,6 +12,9 @@
 .row
   .span12
     %h2.text-center We offer a variety of cooking courses...
-    - @courses.each do |course|
-      .media-box
-        = course.title
+    .row
+      - @courses.each do |course|
+        .span4
+          .media-box
+            = image_tag filepicker_gallery_image(course.first_published_activity.featured_image)
+            = course.title

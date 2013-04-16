@@ -1,4 +1,37 @@
 @import 'mixins'
 
 .media-box
-  background: blue
+  @include boxsizing
+  position: relative
+  width: 100%
+  border: 1px solid $light-gray
+  padding: 10px
+  background: white
+  text-align: center
+  img
+    width: 100%
+    margin-bottom: 10px
+
+  &:before, &:after
+    content: ""
+    position: absolute
+    z-index: -1
+    bottom: 15px
+    left: 5%
+    width: 90%
+    height: 20%
+    -webkit-box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7)
+    -moz-box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7)
+    box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7)
+  &:after
+    -webkit-transform: rotate(2deg)
+    -moz-transform: rotate(2deg)
+    -ms-transform: rotate(2deg)
+    -o-transform: rotate(2deg)
+    transform: rotate(2deg)
+  &:before
+    -webkit-transform: rotate(-2deg)
+    -moz-transform: rotate(-2deg)
+    -ms-transform: rotate(-2deg)
+    -o-transform: rotate(-2deg)
+    transform: rotate(-2deg)
