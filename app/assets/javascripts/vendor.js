@@ -22,3 +22,4 @@
 //= require jquery.mjs.nestedSortable
 //= require jquery.jeditable
 //= require responsiveslides
+

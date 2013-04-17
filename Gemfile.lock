@@ -59,6 +59,8 @@ GEM
     bootstrap-sass-rails (2.3.0.0)
       railties (>= 3.1.0)
       sass-rails (>= 3.1.0)
+    bootstrap-wysihtml5-rails (0.3.1.19)
+      railties (>= 3.0)
     bourbon (3.1.1)
       sass (>= 3.2.0)
       thor
@@ -397,6 +399,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-sass-rails
+  bootstrap-wysihtml5-rails
   bullet
   cache_digests
   capybara

@@ -182,4 +182,6 @@ $ ->
     $('.popup-bottom-close').click ->
       popup_bottom.removeClass 'popup-bottom-show', 500
 
-
+$ ->
+  $("#foobar").each (x) ->
+    $(x).wysihtml5()

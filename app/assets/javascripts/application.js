@@ -10,3 +10,5 @@
 //= require step_ingredients
 //= require community
 //= require scroll_shadow
+//= require bootstrap-wysihtml5
+//= require bootstrap-wysihtml5/locales
