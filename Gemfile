@@ -38,6 +38,7 @@ gem 'gravatar_image_tag'
 gem 'httparty'
 gem 'rest-client'
 gem 'acts_as_revisionable'
+gem 'coffee-filter'
 gem 'bootstrap-wysihtml5-rails'
 
 

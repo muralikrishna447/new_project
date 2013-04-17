@@ -1036,10 +1036,13 @@ h1, h2, h3, h4
     margin-right: 8px
     vertical-align: top
 
+// Making this match h1. I tried @including h1 but that was a no go.
 *[data-wysiwyg=title]
   #activity_title
     font-size: 38.5px
-    width:  100%
+    line-height: 40px
+    width: 100%
+
 
 .wysiwyg-available
   @include boxsizing
