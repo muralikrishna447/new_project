@@ -69,6 +69,14 @@ $ ->
       $(this).text 'more'
 
 
+findOrCreateHiddenInput = (parent, name, value) ->
+  inp = parent.find("input[name='" + name + "']")
+  if inp.length == 0
+    inp = $("<input type='hidden'>").appendTo(parent)
+    inp.attr("name", name)
+  inp.attr("value", value)
+
+
 # Wysiwyg mode stuff
 
 $ ->
@@ -101,8 +109,14 @@ $ ->
 
   $(document).on 'click', '.wysiwyg-available', ->
     $('#edit-target').hide().appendTo('body')
+    edit_id = "edit_" + new Date().getTime().toString()
+    # This makes sure our whole round trip happens on the right div with no race conditions.
+    # Don't use data(), it won't be findable later b/c not stored in dom.
+    $('.wysiwyg-available').attr("data-edit_id", edit_id)
     $.ajax($('#wysiwyg-link').attr('href'), {
-      data: {partialname: $(this).data("wysiwyg") }
+      data:
+        partial_name: $(this).data("wysiwyg")
+        edit_id: edit_id
     })
 
   $(document).on 'click', '*', (event) ->
@@ -110,11 +124,10 @@ $ ->
     if $(active_form_group).length == 1
       if ! $(event.target).closest($(active_form_group)).is($(active_form_group))
         form = $(active_form_group).find('form')
-        hidden_input_str = "<input type='hidden' name='partialname' value='";
-        hidden_input_str += $(active_form_group).data("wysiwyg")
-        hidden_input_str += "'>"
-        form.append(hidden_input_str)
+        findOrCreateHiddenInput(form, "partial_name", $(active_form_group).data("wysiwyg"))
+        findOrCreateHiddenInput(form, "edit_id", $(active_form_group).attr("data-edit_id"))
         form.submit()
+        event.stopPropagation()
 
 # Filepicker (for wysiwyg). This is duplicated in admin, should remove from there or share.
 
@@ -173,14 +186,14 @@ window.setupFilepickerDropPanes = setupFilepickerDropPanes
 window.expandSteps = expandSteps
 
 # This clearly needs some refactoring out to a separate file!
-window.wysiwygActivatedCallback = (selector) ->
+window.wysiwygActivatedCallback = (elem) ->
   setupFilepickerDropPanes()
   adjustActivityLayout()
   filepickerPreviewUpdateAll()
 
-  $(selector).find('form').enableClientSideValidations();
+  $(elem).find('form').enableClientSideValidations();
 
-  $(selector).find("textarea:not(.nohtml)").wysihtml5
+  $(elem).find("textarea:not(.nohtml)").wysihtml5
     image: false,
     html: true
     customTemplates:
@@ -204,10 +217,10 @@ window.wysiwygActivatedCallback = (selector) ->
           "</ul>" +
         "</li>"
 
-window.wysiwygDeactivatedCallback = (selector) ->
+window.wysiwygDeactivatedCallback = (elem) ->
   prepareForScaling()
   adjustActivityLayout()
-  $(selector).removeClass('wysiwyg-active')
+  $(elem).removeClass('wysiwyg-active')
   $('.hide-when-editing').hide()
 
 
