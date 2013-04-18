@@ -1,7 +1,7 @@
 .row
   .span12
     .row
-      .span4.offset4
+      .span6.offset3
         %h2 Learn, cook, eat, share.
         %h2 ChefSteps is here to help you kick ass in the kitchen.
         We'll keep you up to date with the latest from ChefSteps.  We don't like spam, and we don't do shady stuff with your info.
@@ -21,7 +21,7 @@
               = course.title
 
     .row.section
-      .span8
+      .span6.offset1
         %p.lead 
           %strong And teachers and community to help you succeed.
           %br
@@ -40,17 +40,19 @@
           %br
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
       .span6
-        .media-box
-          - if @recipes.any?
-            = image_tag filepicker_gallery_image(@recipes.first.featured_image)
-            = @recipes.first.title
+        = render 'shared/horizontal_scroller', items: @recipes
+        / .media-box
+        /   - if @recipes.any?
+        /     = image_tag filepicker_gallery_image(@recipes.first.featured_image)
+        /     = @recipes.first.title
 
     .row.section
       .span6
-        .media-box
-          - if @techniques.any?
-            = image_tag filepicker_gallery_image(@techniques.first.featured_image)
-            = @techniques.first.title
+        = render 'shared/horizontal_scroller', items: @techniques
+        / .media-box
+        /   - if @techniques.any?
+        /     = image_tag filepicker_gallery_image(@techniques.first.featured_image)
+        /     = @techniques.first.title
       .span6
         %p.lead
           %strong Pefect a New Technique
@@ -64,10 +66,11 @@
           %br
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
       .span6
-        .media-box
-          - if @sciences.any?
-            = image_tag filepicker_gallery_image(@sciences.first.featured_image)
-            = @sciences.first.title
+        = render 'shared/horizontal_scroller', items: @sciences
+        / .media-box
+        /   - if @sciences.any?
+        /     = image_tag filepicker_gallery_image(@sciences.first.featured_image)
+        /     = @sciences.first.title
 
     .row.section
       %h2.text-center Did we mention its free?
