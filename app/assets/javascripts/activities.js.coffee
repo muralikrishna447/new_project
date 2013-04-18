@@ -178,6 +178,8 @@ window.wysiwygActivatedCallback = (selector) ->
   adjustActivityLayout()
   filepickerPreviewUpdateAll()
 
+  $(selector).find('form').enableClientSideValidations();
+
   $(selector).find("textarea:not(.nohtml)").wysihtml5
     image: false,
     html: true

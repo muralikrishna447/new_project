@@ -80,6 +80,10 @@ GEM
       ffi (~> 1.0, >= 1.0.6)
     choice (0.1.6)
     chunky_png (1.2.6)
+    client_side_validations (3.2.5)
+    client_side_validations-formtastic (2.2.1)
+      client_side_validations (~> 3.2.0)
+      formtastic (~> 2.2.0)
     coderay (1.0.8)
     coffee-filter (0.1.3)
       coffee-script (>= 2.2.0)
@@ -406,6 +410,8 @@ DEPENDENCIES
   bullet
   cache_digests
   capybara
+  client_side_validations
+  client_side_validations-formtastic
   coffee-filter
   coffee-rails (~> 3.2.1)
   comma

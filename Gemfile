@@ -40,6 +40,8 @@ gem 'rest-client'
 gem 'acts_as_revisionable'
 gem 'coffee-filter'
 gem 'bootstrap-wysihtml5-rails'
+gem 'client_side_validations'
+gem 'client_side_validations-formtastic'
 
 
 # Gems used only for assets and not required

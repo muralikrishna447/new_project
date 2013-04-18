@@ -12,3 +12,5 @@
 //= require scroll_shadow
 //= require bootstrap-wysihtml5
 //= require bootstrap-wysihtml5/locales
+//= require rails.validations
+//= require rails.validations.formtastic
