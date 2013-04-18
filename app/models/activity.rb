@@ -24,6 +24,8 @@ class Activity < ActiveRecord::Base
 
   belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
 
+  validates :title, presence: true
+
   scope :with_video, where("youtube_id <> ''")
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")

@@ -122,13 +122,8 @@ $ ->
 filepickerPreviewUpdateOne = (preview, fpfile) ->
   if fpfile
     admin_width = 200
-    if fpfile[0] == '{'
-      url = JSON.parse(fpfile).url
-      preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 16.0 / 9.0)].join(""))
-    else
-      # Legacy, this can go as soon as rake task is run
-      url = "http://d2eud0b65jr0pw.cloudfront.net/" + fpfile
-      preview.attr('src', url)
+    url = JSON.parse(fpfile).url
+    preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 9.0 / 16.0)].join(""))
     preview.parent().show()
   else
     preview.parent().hide()
@@ -181,6 +176,7 @@ window.expandSteps = expandSteps
 window.wysiwygActivatedCallback = (selector) ->
   setupFilepickerDropPanes()
   adjustActivityLayout()
+  filepickerPreviewUpdateAll()
 
   $(selector).find("textarea:not(.nohtml)").wysihtml5
     image: false,
@@ -210,6 +206,7 @@ window.wysiwygDeactivatedCallback = (selector) ->
   prepareForScaling()
   adjustActivityLayout()
   $(selector).removeClass('wysiwyg-active')
+  $('.hide-when-editing').hide()
 
 
 $ ->

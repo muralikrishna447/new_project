@@ -10,7 +10,7 @@ module ApplicationHelper
       s3_image_url(fpfile)
     else
       url = ActiveSupport::JSON.decode(fpfile)["url"]
-      url + "/convert?fit=max&w=#{width}&h=#{(width * 16.0 / 9.0).floor}&cache=true"
+      url + "/convert?fit=max&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
     end
   end
 
