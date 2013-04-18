@@ -1008,23 +1008,16 @@ h1, h2, h3, h4
   display: none
   @include boxsizing
   position: absolute
-  top: 2px
-  left: -30px
-  width:  30px
-  height:  60px
-  max-height: 90%
+  top: -1%
+  left: -1%
+  width:  102%
+  height:  102%
   font-size:  15px
   border: 2px solid #9ecaed
-  border-right-color:  white
-  border-top-left-radius: 7px
-  border-bottom-left-radius: 7px
+  border-radius: 7px
   z-index: 999
   color: #0088cc
-
-  #edit-target-inner
-    //@include rotate(-90deg)
-    margin-left: 3px
-    margin-top:  10px
+  background-color: rgba(158, 202, 237, 0.2)
 
 *[data-wysiwyg]
   form, textarea
@@ -1043,22 +1036,11 @@ h1, h2, h3, h4
     line-height: 40px
     width: 100%
 
-
-.wysiwyg-available
-  @include boxsizing
-  border: 2px solid
-  border-radius: 7px
-  outline: none
-  border-color: #9ecaed
-  position:  relative
-  top: -2px
-  left:  -2px
-
 #edit-mode.active
   background: #0088cc
 
 .video-container.wysiwyg-available
-  .noprint
+  .xnoprint
     visibility: hidden
 
 .inline-group

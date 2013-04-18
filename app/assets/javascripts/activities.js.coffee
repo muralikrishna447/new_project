@@ -98,10 +98,8 @@ $ ->
     if $('#edit-mode').hasClass('active')
       $(this).addClass('wysiwyg-available')
       et = $('#edit-target')
-      eti = $('#edit-target-inner')
       $(this).prepend(et)
       et.show()
-      eti.css('margin-top', (et.height() - eti.height()) / 2)
 
   $(document).on 'mouseleave', '*[data-wysiwyg]', ->
     $(this).removeClass('wysiwyg-available')
