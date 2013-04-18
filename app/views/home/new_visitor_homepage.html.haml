@@ -49,9 +49,10 @@
           .swipe-wrap
             - @recipes.each do |recipe|
               = link_to activity_path(recipe) do
-                .media-box
-                  = image_tag filepicker_gallery_image(@recipes.first.featured_image)
-                  = @recipes.first.title
+                .media-box.media-box-medium.pull-left
+                  - if recipe.featured_image
+                    = image_tag filepicker_gallery_image(recipe.featured_image)
+                    = recipe.title
 
     .row.section
       .span6
