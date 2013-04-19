@@ -45,14 +45,17 @@
         /   - if @recipes.any?
         /     = image_tag filepicker_gallery_image(@recipes.first.featured_image)
         /     = @recipes.first.title
-        .swipe.horizontal-swiper{data: {direction: 'right'}}
-          .swipe-wrap
+        .horizontal-swiper{data: {direction: 'right'}}
+          .horizontal-swiper-wrap
             - @recipes.each do |recipe|
-              = link_to activity_path(recipe) do
-                .media-box.media-box-medium.pull-left
+              
+              .media-box.media-box-medium.pull-left
+                = link_to activity_path(recipe) do
                   - if recipe.featured_image
                     = image_tag filepicker_gallery_image(recipe.featured_image)
                     = recipe.title
+          .horizontal-swiper-btn-right.btn.btn-circle
+            %i.icon-chevron-right
 
     .row.section
       .span6
