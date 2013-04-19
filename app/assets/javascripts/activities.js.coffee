@@ -76,6 +76,8 @@ findOrCreateHiddenInput = (parent, name, value) ->
     inp.attr("name", name)
   inp.attr("value", value)
 
+clickInClass = (event, klass) ->
+  $(event.target).closest(klass).is(klass)
 
 # Wysiwyg mode stuff
 
@@ -96,35 +98,39 @@ $ ->
 
   $(document).on 'mouseenter', '*[data-wysiwyg]:not(.wysiwyg-active)', ->
     if $('#edit-mode').hasClass('active')
-      $(this).addClass('wysiwyg-available')
-      et = $('#edit-target')
-      $(this).prepend(et)
-      et.show()
+      $(this).prepend("<div class='edit-target'></div>")
 
   $(document).on 'mouseleave', '*[data-wysiwyg]', ->
-    $(this).removeClass('wysiwyg-available')
-    $('#edit-target').hide()
-
-  $(document).on 'click', '.wysiwyg-available', ->
-    $('#edit-target').hide().appendTo('body')
-    edit_id = "edit_" + new Date().getTime().toString()
-    # This makes sure our whole round trip happens on the right div with no race conditions.
-    # Don't use data(), it won't be findable later b/c not stored in dom.
-    $('.wysiwyg-available').attr("data-edit_id", edit_id)
-    $.ajax($('#wysiwyg-link').attr('href'), {
-      data:
-        partial_name: $(this).data("wysiwyg")
-        edit_id: edit_id
-    })
+    $('.edit-target').remove()
 
   $(document).on 'click', '*', (event) ->
-    active_form_group = $('.wysiwyg-active')
-    if $(active_form_group).length == 1
-      if ! $(event.target).closest($(active_form_group)).is($(active_form_group))
-        form = $(active_form_group).find('form')
-        findOrCreateHiddenInput(form, "partial_name", $(active_form_group).data("wysiwyg"))
-        findOrCreateHiddenInput(form, "edit_id", $(active_form_group).attr("data-edit_id"))
-        form.submit()
+
+    if $('#edit-mode').hasClass('active')
+
+      # Close out and submit any existing edit (as long as we clicked somewhere outside of any existing edit)
+      if ! clickInClass(event, '.wysiwyg-active')
+        $('.wysiwyg-active').each ->
+          $(this).removeClass('wysiwyg-active')
+          form = $(this).find('form')
+          findOrCreateHiddenInput(form, "partial_name", $(this).data("wysiwyg"))
+          findOrCreateHiddenInput(form, "edit_id", $(this).attr("data-edit_id"))
+          form.submit()
+          event.stopPropagation()
+
+      # Start a new edit?
+      if $(this).hasClass('edit-target')
+        new_edit = $(this).parent()
+        if ! new_edit.hasClass('wysiwyg-active')
+          edit_id = "edit_" + new Date().getTime().toString()
+          # This makes sure our whole round trip happens on the right div with no race conditions.
+          # Don't use data(), it won't be findable later b/c not stored in dom.
+          $(new_edit).addClass('wysiwyg-active')
+          new_edit.attr("data-edit_id", edit_id)
+          $.ajax($('#wysiwyg-link').attr('href'), {
+            data:
+              partial_name: $(new_edit).data("wysiwyg")
+              edit_id: edit_id
+          })
         event.stopPropagation()
 
 # Filepicker (for wysiwyg). This is duplicated in admin, should remove from there or share.
@@ -186,7 +192,6 @@ window.expandSteps = expandSteps
 # This clearly needs some refactoring out to a separate file!
 window.wysiwygActivatedCallback = (elem) ->
   setupFilepickerDropPanes()
-  adjustActivityLayout()
   filepickerPreviewUpdateAll()
 
   $(elem).find('form').enableClientSideValidations();
@@ -218,7 +223,6 @@ window.wysiwygActivatedCallback = (elem) ->
 window.wysiwygDeactivatedCallback = (elem) ->
   prepareForScaling()
   adjustActivityLayout()
-  $(elem).removeClass('wysiwyg-active')
   $('.hide-when-editing').hide()
 
 

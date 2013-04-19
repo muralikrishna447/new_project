@@ -1,5 +1,4 @@
 sel = '*[data-edit_id="' + "#{j edit_id}" + '"]'
 elem = $(sel).get()
 $(elem).fadeOut('fast', function() { $(this).html("#{j render :partial => 'edit_' + partial_name}").fadeIn()})
-$(elem).removeClass('wysiwyg-available').addClass('wysiwyg-active')
 $(elem).promise().done(function() { wysiwygActivatedCallback(elem) })
