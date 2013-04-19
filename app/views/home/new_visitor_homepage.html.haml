@@ -45,7 +45,7 @@
         /   - if @recipes.any?
         /     = image_tag filepicker_gallery_image(@recipes.first.featured_image)
         /     = @recipes.first.title
-        .swipe#recipe-swiper
+        .swipe.horizontal-swiper{data: {direction: 'right'}}
           .swipe-wrap
             - @recipes.each do |recipe|
               = link_to activity_path(recipe) do

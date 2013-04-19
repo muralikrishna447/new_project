@@ -8,7 +8,7 @@ class HomeController < ApplicationController
     if cookies[:returning_visitor]
       # @discussion = Forum.discussions.first
       @status = Twitter.status_embed
-    else
+    elsif params[:new_visitor]     
       @courses = Course.published
       render 'new_visitor_homepage'
     end
