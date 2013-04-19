@@ -86,14 +86,16 @@ $ ->
   # Don't show edit switch until page is fully loaded
   $('#edit-group').show('fast')
 
-  # See https://github.com/twitter/bootstrap/issues/2380 for reason why this exists
-  $('body').on 'click', '#edit-group .btn', (event) ->
-    event.stopPropagation()
-    $('#edit-group .btn').toggleClass('active')
-    if $('#edit-mode').hasClass('active')
-      $('.hide-when-editing').hide('fast')
-    else
-      $('.hide-when-editing').show('fast')
+  # Start/stop editing
+  $('#edit-mode').click ->
+    $('#edit-mode').addClass('active')
+    $('.hide-when-editing').hide('fast')
+    $('.show-when-editing').show('fast')
+
+  $('#edit-save').click ->
+    $('#edit-mode').removeClass('active')
+    $('.hide-when-editing').show('fast')
+    $('.show-when-editing').hide('fast')
 
 
   $(document).on 'mouseenter', '*[data-wysiwyg]:not(.wysiwyg-active)', ->

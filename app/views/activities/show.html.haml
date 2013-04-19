@@ -45,12 +45,9 @@
             %i.icon-resize-full#show-all-icon
           .btn-circle{onclick: 'window.print()'}
             %i.icon-print
-        .pull-right.display-inline-fix
-          .btn-group#edit-group{data: {toggle: 'buttons-radio'}}
-            %button.btn.btn-primary.active{type: 'button'}
-              VIEW
-            %button#edit-mode.btn.btn-primary{type: 'button'}
-              EDIT
+        .pull-right
+          = render :partial => 'edit_toolbar'
+
         .pull-right.display-inline-fix.hide-when-editing
           = render 'layouts/social_buttons', media_object: @activity
 

@@ -6,5 +6,3 @@
       %iframe{src: youtube_url(@activity.youtube_id)}
 - elsif @activity.image_id?
   = image_tag filepicker_activity_hero_image(@activity.image_id), alt: @activity.title, title: @activity.title, itemprop: 'image'
-- elsif @activity.featured_image_id?
-  = image_tag filepicker_activity_hero_image(@activity.featured_image_id), alt: @activity.title, title: @activity.title, itemprop: 'image'
