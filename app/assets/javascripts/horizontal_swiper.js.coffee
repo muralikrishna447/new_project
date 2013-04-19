@@ -12,7 +12,7 @@ $ ->
       #   first_object = swiper_wrap.children().first()
       #   first_object.remove()
       first_object = swiper_wrap.children().first()
-      swiper_wrap.children().animate {left: '-=340'}, 300, ->
+      swiper_wrap.children().animate {left: '-=340'}, 600, 'easeOutExpo', ->
         first_object.remove()
         swiper_wrap.children().css 'left', '0'
         swiper_wrap.append first_object
