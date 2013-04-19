@@ -138,4 +138,5 @@
 
 // This isn't for clicking just providing the right link from the helper over to activities.js.coffee. Nicer way?
 = link_to "nothing", get_edit_partial_activity_path(@activity), method: :get, remote: true, id: 'wysiwyg-link', style:"display: none;"
+= link_to "nothing", get_show_partial_activity_path(@activity), method: :get, remote: true, id: 'wysiwyg-cancel-link', style:"display: none;"
 

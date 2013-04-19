@@ -133,6 +133,22 @@ $ ->
           })
         event.stopPropagation()
 
+
+  # Escape cancels current edit
+  $(document).on 'keydown', '*', (event) ->
+    if $('#edit-mode').hasClass('active')
+      active = $('.wysiwyg-active')
+      if active.length > 0 && event.keyCode == 27
+        event.stopPropagation()
+        $('.wysiwyg-active').each ->
+          $(this).removeClass('wysiwyg-active')
+          $.ajax($('#wysiwyg-cancel-link').attr('href'), {
+          data:
+            partial_name: $(this).data("wysiwyg")
+            edit_id: $(this).attr("data-edit_id")
+          })
+
+
 # Filepicker (for wysiwyg). This is duplicated in admin, should remove from there or share.
 
 

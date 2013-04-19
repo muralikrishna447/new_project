@@ -67,6 +67,7 @@ Delve::Application.routes.draw do
   resources :activities, only: [:show] do
     member do
       get 'get_edit_partial' => 'activities#get_edit_partial'
+      get 'get_show_partial' => 'activities#get_show_partial'
       post 'update_edit_partial' => 'activities#update_edit_partial'
     end
   end

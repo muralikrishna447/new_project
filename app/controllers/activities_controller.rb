@@ -80,20 +80,28 @@ class ActivitiesController < ApplicationController
   def get_edit_partial
     @activity = Activity.find(params[:id])
     respond_to do |format|
-      format.js { puts "yo"; render 'get_edit_partial', locals: {partial_name: params[:partial_name], edit_id: params[:edit_id]}}
+      format.js { render 'get_edit_partial', locals: {partial_name: params[:partial_name], edit_id: params[:edit_id]}}
     end
   end
 
   def update_edit_partial
     @activity = Activity.find(params[:id])
-    @activity.store_revision do
-      @activity.update_attributes(params[:activity])
-      @activity.save!
+    @activity.attributes=(params[:activity])
+    if @activity.changed?
+      @activity.store_revision do
+        @activity.save!
+      end
     end
     respond_to do |format|
       format.js { render 'get_show_partial', locals: {partial_name: params[:partial_name], edit_id: params[:edit_id]}}
     end
   end
 
+  def get_show_partial
+    @activity = Activity.find(params[:id])
+    respond_to do |format|
+      format.js { render 'get_show_partial', locals: {partial_name: params[:partial_name], edit_id: params[:edit_id]}}
+    end
+  end
 end
 
