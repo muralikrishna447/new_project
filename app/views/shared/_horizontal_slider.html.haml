@@ -5,6 +5,7 @@
         = link_to activity_path(item) do
           - if item.featured_image
             = image_tag filepicker_gallery_image(item.featured_image)
-            = item.title
+            = truncate(item.title, length: 40)
   %div{class: "horizontal-slider-btn-#{direction} btn btn-circle"}
     %i{class: "icon-chevron-#{direction}"}
+  %div{class: "horizontal-slider-shadow-overlay-#{direction}"}
