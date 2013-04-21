@@ -10,4 +10,4 @@
 //= require step_ingredients
 //= require community
 //= require scroll_shadow
-//= require horizontal_swiper
+//= require horizontal_slider

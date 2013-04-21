@@ -1,0 +1,11 @@
+.horizontal-slider{data: {direction: direction}}
+  .horizontal-slider-wrap
+    - items.each do |item|
+      %div{class: "media-box media-box-medium pull-#{direction}"}
+      .media-box.media-box-medium.pull-left
+        = link_to activity_path(item) do
+          - if item.featured_image
+            = image_tag filepicker_gallery_image(item.featured_image)
+            = item.title
+  %div{class: "horizontal-slider-btn-#{direction} btn btn-circle"}
+    %i{class: "icon-chevron-#{direction}"}

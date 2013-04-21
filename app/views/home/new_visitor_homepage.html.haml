@@ -40,30 +40,11 @@
           %br
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
       .span6
-        / = render 'shared/horizontal_scroller', items: @recipes
-        / .media-box
-        /   - if @recipes.any?
-        /     = image_tag filepicker_gallery_image(@recipes.first.featured_image)
-        /     = @recipes.first.title
-        .horizontal-swiper{data: {direction: 'right'}}
-          .horizontal-swiper-wrap
-            - @recipes.each do |recipe|
-              
-              .media-box.media-box-medium.pull-left
-                = link_to activity_path(recipe) do
-                  - if recipe.featured_image
-                    = image_tag filepicker_gallery_image(recipe.featured_image)
-                    = recipe.title
-          .horizontal-swiper-btn-right.btn.btn-circle
-            %i.icon-chevron-right
+        = render 'shared/horizontal_slider', items: @recipes, direction: 'right'
 
     .row.section
       .span6
-        = render 'shared/horizontal_scroller', items: @techniques
-        / .media-box
-        /   - if @techniques.any?
-        /     = image_tag filepicker_gallery_image(@techniques.first.featured_image)
-        /     = @techniques.first.title
+        = render 'shared/horizontal_slider', items: @techniques, direction: 'left'
       .span6
         %p.lead
           %strong Pefect a New Technique
@@ -77,11 +58,7 @@
           %br
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
       .span6
-        = render 'shared/horizontal_scroller', items: @sciences
-        / .media-box
-        /   - if @sciences.any?
-        /     = image_tag filepicker_gallery_image(@sciences.first.featured_image)
-        /     = @sciences.first.title
+        = render 'shared/horizontal_slider', items: @sciences, direction: 'right'
 
     .row.section
       %h2.text-center Did we mention its free?
