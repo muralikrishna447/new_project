@@ -111,10 +111,33 @@ h1, h2, h3, h4
 
 /* Media Objects */
 
+.text-orange
+  color: $orange
+
 .black-link
   color: black
   &:hover
     color: black
+
+.madlib, .madlib input
+  font-family: "Raleway", san-serif
+  font-size: 30px
+  font-weight: 500
+  -webkit-font-smoothing: antialiased
+  line-height: 40px
+  input
+    font-size: 24px
+    line-height: 26px
+
+.input-underlined
+  input[type=text], input[type=email]
+    border: none
+    box-shadow: none 
+    border-bottom: 1px dashed gray
+    text-align: center
+    padding: 0px
+  input[type=text], input[type=email]
+    width: 300px
 
 .gallery
   .media-centered
