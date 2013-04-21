@@ -13,11 +13,15 @@
     youtube_id = step.youtube_id
     audio_clip = step.audio_clip
     audio_title = step.audio_title
+    hide_number = step.hide_number
   end
 
 %tr{id: row_id, class: ('template-row' if is_template )}
   %td.title
     = text_field_tag "#{field_name_prefix}[title]", title, placeholder: "Step title"
+    = label_tag hide_number, class: 'checkbox' do
+      = check_box_tag "#{field_name_prefix}[hide_number]", hide_number, hide_number
+      Hide Number
     = hidden_field_tag "#{field_name_prefix}[id]", id
   %td.directions= text_area_tag "#{field_name_prefix}[directions]", directions, placeholder: "This is how we do it", rows: 10
   %td.media
@@ -30,8 +34,8 @@
         %a{data: {toggle: :pill, target: "#media-tabs-#{id} .audio-tab"}} Audio
     .tab-content.media-tabs{id: "media-tabs-#{id}"}
       .tab-pane.active.image-tab
-        = text_field_tag "#{field_name_prefix}[image_id]", image_id, placeholder: 'Image file name'
-        = text_area_tag "#{field_name_prefix}[image_description]", image_description, rows: 5, placeholder: "Image description"
+        = render 'filepicker_group', param: "#{field_name_prefix}[image_id]", value: image_id
+        = text_area_tag "#{field_name_prefix}[image_description]", image_description, rows: 3, placeholder: "Image description"
       .tab-pane.video-tab
         = text_field_tag "#{field_name_prefix}[youtube_id]", youtube_id, placeholder: 'YouTube ID'
       .tab-pane.audio-tab

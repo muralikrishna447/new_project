@@ -1,8 +1,10 @@
 $ ->
   # Hero Swiper
   window.heroSwipe = Swipe(document.getElementById('hero-swiper'),{
-    stopPropagation: true,
+    stopPropagation: false,
     continuous: true,
+    auto: 5000,
+    speed: 600,
     transitionEnd: (index, elem) ->
       $('.hero-indicator-btn').removeClass 'indicator-active'
       id = '#hero-swipe-indicator-' + index
@@ -46,3 +48,20 @@ $ ->
     stopPropagation: true,
     continuous: true
     })
+
+  if $('#discussion').is('*')
+    $.getJSON '/discussion', (data) ->
+      discussion = data
+      name = discussion['name']
+      body = $('<div>' + discussion['body'] + '</div>').text()
+      shortbody = $.trim(body).substring(0, 300).trim(this) + "..."
+      author = discussion['first_name']
+      link = discussion['url'].replace('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+      target = $('#discussion')
+      target.find('.discussion-name').text(name)
+      target.find('.discussion-body').text(shortbody)
+      target.find('.discussion-author').text(author)
+      target.find('.discussion-link').attr('href', link)
+
+  $('#nav-search-toggle').click ->
+    $(this).closest('.nav-search').toggleClass('nav-search-show', 300)

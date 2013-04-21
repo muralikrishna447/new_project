@@ -1,0 +1,13 @@
+.filepicker-group
+  -if defined? label_text
+    = label_tag '', label_text, class: "label"
+  = hidden_field_tag param, value, class: "filepicker-real-file"
+  .filepicker-preview-group
+    = image_tag '/assets/missing.png', class: "filepicker-preview"
+    .btn-small.remove-filepicker-image
+      %i.icon-remove
+  .filepicker-subgroup
+    .filepicker-pick-button.btn-small.btn-warning
+      Pick file
+    .filepicker-drop-pane.btn-small.btn-warning
+      Or drop file here

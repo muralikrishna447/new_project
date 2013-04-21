@@ -3,7 +3,7 @@ window.ChefSteps = {}
 class ChefSteps.NavigationBootstrap
   constructor: (@headerTarget) ->
 
-  cssLink: "<link rel=stylesheet type='text/css' href='http://<%= CDN_DOMAIN %>/assets/global_navigation.css' />"
+  # cssLink: "<link rel=stylesheet type='text/css' href='http://<%= CDN_DOMAIN %>/assets/global_navigation.css' />"
 
   getHeader: =>
     jQuery.ajax
@@ -12,8 +12,8 @@ class ChefSteps.NavigationBootstrap
       type: "GET"
       success: @loadHeader
 
-  loadCSS: =>
-    jQuery(@cssLink).prependTo('head')
+  # loadCSS: =>
+  #   jQuery(@cssLink).prependTo('head')
 
   loadHeader: (response) =>
     jQuery(@headerTarget).html(response)
@@ -23,7 +23,20 @@ class ChefSteps.NavigationBootstrap
       top.location = $(this).attr('href')
 
   bootstrap: =>
-    @loadCSS()
+    # @loadCSS()
     @getHeader()
     @fixNavLinks()
 
+$ ->
+  filepicker.setKey('Ad8qmyXRSpy36YcW4CINQz')
+  $(document).on "click", ".forum-filepicker", (event) ->
+    event.preventDefault()
+    doc = $('.cleditorMain').find('iframe')[0].contentWindow.document
+
+    filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"}, (fpfiles) =>
+      console.log(JSON.stringify(fpfiles))
+      url = JSON.stringify(fpfiles[0]['url'])
+      convert = "/convert?fit=max&w=400"
+      url_with_conversion = JSON.parse(url) + convert
+      content = "<br/><a href='" + JSON.parse(url) + "' target='_blank'><img src='" + url_with_conversion + "'/></a><br/>"
+      $(doc).find('body').append(content)

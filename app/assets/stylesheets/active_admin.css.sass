@@ -27,12 +27,18 @@
 @import twitter/bootstrap/dropdowns
 @import twitter/bootstrap/forms
 
-@import font-awesome
+//@import font-awesome
 @import select2
 
 $redLight:      #e63742
 @import admin/quiz
 @import admin/image_uploader
+@import admin/order_sort_question
+
+.clearfix:after
+  content: ""
+  display: table
+  clear: both
 
 body.admin_namespace
   .img-polaroid
@@ -280,11 +286,43 @@ body.admin_namespace
       padding: 10px
       box-sizing: border-box
 
+    input[type='checkbox']
+      width: inherit
+
     .nav-pills, .nav-tabs
       a
         text-decoration: none
 
 
+.filepicker-group
+  margin-bottom: 5px
+
+  .filepicker-preview-group
+
+    .remove-filepicker-image
+      padding-left: 2px
+      display: inline-block
+      vertical-align: bottom
+      cursor: pointer
+
+  .filepicker-preview
+    margin-bottom: 5px
+    max-width: 200px
+
+  .filepicker-subgroup
+    .btn-small
+      box-sizing: border-box
+      padding: 3px 8px
+      border: 2px outset buttonface
+      margin-top: 2px
+      display: inline-block
+      cursor: pointer
+
+li
+  .filepicker-subgroup
+    margin-left: 20%
+    button
+      margin-left: 5px
 
 
 .admin_activities.associated_ingredients
@@ -347,4 +385,89 @@ body.admin_namespace
       border: none
       box-shadow: none
 
+.admin-activity-versions
+  #urls
+    display: none
+
+  .preview-group
+    width: 32%
+    float: left
+
+    .controls
+      select
+        width: auto
+        margin-top: 6px
+        font-size: 95%
+
+      .loading-indicator
+        margin-top: 8px
+        display: inline-block
+      .diff-label
+        display: inline-block
+
+      > *
+        margin-right: 5px
+
+    .preview
+      width: 100%
+      border: 1px solid #dcdcdc
+
+      pre
+        background: none
+        border:  none
+        margin:  none
+
+    iframe.preview
+      height: 30000px
+
+  #right-group, #diff-group
+    margin-left: 20px
+
+  #preview-diff
+    padding: 10px
+    text-align: top
+
+
+table.diff
+  border-collapse: collapse
+  border: 1px solid darkgray
+  white-space: pre-wrap
+  tbody
+    font-family: Courier, monospace
+    th
+      font-family: verdana,arial,'Bitstream Vera Sans',helvetica,sans-serif
+      background: #EED
+      font-size: 11px
+      font-weight: normal
+      border: 1px solid #BBC
+      color: #886
+      padding: .3em .5em .1em 2em
+      text-align: right
+      vertical-align: top
+  thead
+    border-bottom: 1px solid #BBC
+    background: #EFEFEF
+    font-family: Verdana
+    th.texttitle
+      text-align: left
+  tbody td
+    padding: 0px .4em
+    padding-top: .4em
+    vertical-align: top
+  .empty
+    background-color: #DDD
+  .replace
+    background-color: #ffdd88
+  .delete
+    background-color: #E99
+  .skip
+    background-color: #EFEFEF
+    border: 1px solid #AAA
+    border-right: 1px solid #BBC
+  .insert
+    background-color: #99ee99
+  th.author
+    text-align: right
+    border-top: 1px solid #BBC
+    background: #efefef
 

@@ -1,3 +1,5 @@
+include ApplicationHelper
+
 module AdminHelper
   def copy_button(text, target, destination, callback = "")
     button_tag(text, type: "button", data: {

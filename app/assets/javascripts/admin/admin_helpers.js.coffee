@@ -107,3 +107,132 @@ $ ->
   $('table.nested-records').each (index, el)->
     # show table if more than header and template row are present
     $(el).show() if $(el).find('tr').length > 2
+
+
+filepickerPreviewUpdateOne = (preview, fpfile) ->
+  if fpfile
+    admin_width = 200
+    if fpfile[0] == '{'
+      url = JSON.parse(fpfile).url
+      preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 16.0 / 9.0)].join(""))
+    else
+      # Legacy, this can go as soon as rake task is run
+      url = "http://d2eud0b65jr0pw.cloudfront.net/" + fpfile
+      preview.attr('src', url)
+    preview.parent().show()
+  else
+    preview.parent().hide()
+    preview.attr('src', '')
+
+
+filepickerPreviewUpdateAll = ->
+  $('.filepicker-real-file').each ->
+    preview = $(this).parent().find('.filepicker-preview')
+    val = $(this).attr('value')
+    filepickerPreviewUpdateOne(preview, val)
+
+$ ->
+  filepickerPreviewUpdateAll()
+
+$ ->
+  $(document).on "click", ".filepicker-pick-button", (event) ->
+    event.preventDefault()
+    filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"}, (fpfiles) =>
+      $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(JSON.stringify(fpfiles[0]))
+      filepickerPreviewUpdateAll()
+
+  $(document).on "click", ".remove-filepicker-image", (event) ->
+    $(this).parents('.filepicker-group').find('.filepicker-real-file').val('')
+    filepickerPreviewUpdateAll()
+
+setupFilepickerDropPanes = ->
+  $('.filepicker-drop-pane').each ->
+    filepicker.makeDropPane $(this),
+      dragEnter: =>
+        $(this).html("Drop to upload").css("border-style", "inset")
+      dragLeave: =>
+        $(this).html("Or drop file here").css("border-style", "outset")
+      onSuccess: (fpfiles) =>
+        $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(JSON.stringify(fpfiles[0]))
+        filepickerPreviewUpdateAll()
+        $(this).html("Or drop file here").css("border-style", "outset")
+      onProgress: (percentage) =>
+        $(this).text("Uploading ("+percentage+"%)")
+
+$ ->
+  setupFilepickerDropPanes()
+  $(document).on "click", (event) ->
+    setupFilepickerDropPanes()
+
+restoreVersion = (version) ->
+  path = $('#urls').data('restore_version_admin_activity_path') + "?version=" + version
+  window.location = path
+
+cleanText = (htmlString) ->
+  htmlString.split("\n").map($.trim).filter((line) ->
+    line isnt ""
+  ).join "\n"
+
+updateDiff = ->
+  $("#id_description_iframe").contents().find("body").html()
+
+  # get the baseText and newText values from the two textboxes, and split them into lines
+  base = difflib.stringAsLines(cleanText($("#preview-left").contents().find("body").text()))
+  newtxt = difflib.stringAsLines(cleanText($("#preview-right").contents().find("body").text()))
+
+  # create a SequenceMatcher instance that diffs the two sets of lines
+  sm = new difflib.SequenceMatcher(base, newtxt)
+
+  # get the opcodes from the SequenceMatcher instance
+  # opcodes is a list of 3-tuples describing what changes should be made to the base text
+  # in order to yield the new text
+  opcodes = sm.get_opcodes()
+  diffoutputdiv = $("#preview-diff").get(0)
+  diffoutputdiv.removeChild diffoutputdiv.firstChild  while diffoutputdiv.firstChild
+
+  # build the diff view and add it to the current DOM
+  diffoutputdiv.appendChild diffview.buildView(
+    baseTextLines: base
+    newTextLines: newtxt
+    opcodes: opcodes
+
+    # set the display titles for each resource
+    baseTextName: "Left Version"
+    newTextName: "Right Version"
+    contextSize: "0"
+    viewType: 0
+  )
+
+
+$ ->
+
+  $('.preview-group select').on "change", (event) ->
+    activity_path = $('#urls').data('activity_path') + "&version=" + $(this).val()
+    $(this).closest('.preview-group').find('.preview').attr("src", activity_path)
+    $(this).closest('.preview-group').find('.loading-indicator').fadeIn()
+
+  $('#make-live-left').click ->
+    restoreVersion($('#select-left').val())
+
+  $('#make-live-right').click ->
+    restoreVersion($('#select-right').val())
+
+  $('#preview-left').load ->
+    cw = $(this).get(0).contentWindow
+    cw.expandSteps()
+    #$(this).height(cw.document.body.scrollHeight)
+    updateDiff()
+    $('#loading-left').fadeOut()
+
+  $('#preview-right').load ->
+    cw = $(this).get(0).contentWindow
+    cw.expandSteps()
+    #$(this).height(cw.document.body.scrollHeight)
+    updateDiff()
+    $('#loading-right').fadeOut()
+
+
+
+
+
+

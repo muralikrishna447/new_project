@@ -1,8 +1,0 @@
-= link_to activity_path(item) do
-  .box.box-small
-    .box-image
-      - if item.step_images.any?
-        = image_tag s3_image_url(item.step_images.last)
-      - else
-        = image_tag 'missing.png'
-    %h4= item.title.html_safe

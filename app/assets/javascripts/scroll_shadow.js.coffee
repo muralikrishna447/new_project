@@ -1,13 +1,24 @@
 setOverlay = (scrollable, top_hidden, bottom_hidden) ->
   if top_hidden > 0
-    scrollable.parent().find('.scroll-overlay-top').show()
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-top').show()
   else
-    scrollable.parent().find('.scroll-overlay-top').hide()
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-top').hide()
 
-  if bottom_hidden > 50
-    scrollable.parent().find('.scroll-overlay-bottom').show()
+  if bottom_hidden > 0
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-bottom').show()
   else
-    scrollable.parent().find('.scroll-overlay-bottom').hide()
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-bottom').hide()
+
+setOverlayHorizontal = (scrollable, left_hidden, right_hidden) ->
+  if left_hidden > 0
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-left').show()
+  else
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-left').hide()
+
+  if right_hidden > 0
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-right').show()
+  else
+    scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-right').hide()
 
 $ ->
   $('.scroll-shadow').each ->
@@ -22,3 +33,16 @@ $ ->
       top_hidden = $(this).scrollTop()
       bottom_hidden = total_height - window_height - top_hidden
       setOverlay(scrollable, top_hidden, bottom_hidden)
+
+  $('.scroll-shadow-horizontal').each ->
+    scrollable = $(this)
+    total_width = scrollable.find('.scroll-shadow-content').width()
+    window_width = $(this).width()
+    left_hidden = $(this).scrollLeft()
+    right_hidden = total_width - window_width - left_hidden
+    setOverlayHorizontal(scrollable, left_hidden, right_hidden)
+
+    scrollable.scroll ->
+      left_hidden = $(this).scrollLeft()
+      right_hidden = total_width - window_width - left_hidden
+      setOverlayHorizontal(scrollable, left_hidden, right_hidden)

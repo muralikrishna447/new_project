@@ -19,6 +19,7 @@ ActiveAdmin.register OrderSortQuestion do
 
     def edit
       @question = Question.find(params[:id])
+      @solutions = @question.contents.solutions.to_json
       @question_images = ImagePresenter.present_collection(@question.images)
 
       edit!

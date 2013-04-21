@@ -45,10 +45,12 @@ class ChefSteps.Router extends ChefSteps.BaseRouter
 
   showQuizResults: (id, query) ->
     # Use the shapeshift library to make the results look the same as the UI.
+    columns = if $('body').hasClass('mobile-device') then 3 else 4
+
     $('.grid-container').shapeshift({
       centerGrid: false,
       enableAnimationOnInit: false,
-      columns: 4,
+      columns: columns,
       dragWhitelist: '.draggable',
       animateSpeed: 500
     })

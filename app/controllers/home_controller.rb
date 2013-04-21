@@ -1,14 +1,14 @@
 class HomeController < ApplicationController
 
   def index
-    @recipes = Activity.published.recipes.includes(:steps).order("RANDOM()").first(6)
-    @techniques = Activity.published.techniques.includes(:steps).order("RANDOM()").first(6)
-    @sciences = Activity.published.sciences.includes(:steps).order("RANDOM()").first(6)
-    @heroes = [ Activity.published.recipes.includes(:steps).order('updated_at ASC').last,
-                Activity.published.techniques.includes(:steps).last,
-                Activity.published.sciences.includes(:steps).last ]
-    @discussion = Forum.discussions.first
-    @status = Twitter.status_embed
+    @heroes = Setting.featured_activities
+    @recipes = Activity.published.recipes.includes(:steps).last(6) - @heroes
+    @techniques = Activity.published.techniques.includes(:steps).last(6) - @heroes
+    @sciences = Activity.published.sciences.includes(:steps).last(6) - @heroes
+    
+
+    # @discussion = Forum.discussions.first
+    #@status = Twitter.status_embed
   end
 
   def about

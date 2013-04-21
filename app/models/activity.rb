@@ -2,8 +2,9 @@ class Activity < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   acts_as_taggable
+  acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}, :quizzes, :inclusions], :dependent => :keep, :on_destroy => true
 
-  friendly_id :title, use: :slugged
+  friendly_id :title, use: [:slugged, :history]
 
   has_many :ingredients, dependent: :destroy, class_name: ActivityIngredient, inverse_of: :activity
   # The as_ingredient relationship returns the ingredient version of the activity
@@ -18,6 +19,11 @@ class Activity < ActiveRecord::Base
   has_many :inclusions, dependent: :destroy
   has_many :courses, :through => :inclusions
 
+  has_many :user_activities
+  has_many :users, through: :user_activities
+
+  belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
+
   scope :with_video, where("youtube_id <> ''")
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
@@ -28,7 +34,7 @@ class Activity < ActiveRecord::Base
   serialize :activity_type, Array
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id,  :steps_attributes
   include PgSearch
-  multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description],
+  multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
   # multisearchable :against => [:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'],
   #   :if => :published
@@ -59,11 +65,14 @@ class Activity < ActiveRecord::Base
   end
 
   def optional_equipment
-    equipment.optional.ordered
+    # Using the optional/required scopes hits the database and messes up the
+    # versions view (which depends on plucking everything from the in-memory temp model)
+    equipment.select { |x| x.optional }
   end
 
   def required_equipment
-    equipment.required.ordered
+    # See note in optional_equipment
+    equipment.select { |x| ! x.optional }
   end
 
   def next
@@ -85,7 +94,8 @@ class Activity < ActiveRecord::Base
   end
 
   def is_recipe?
-    ingredients.count > 0
+    # ingredients.count > 0
+    activity_type.include?('Recipe')
   end
 
   def step_by_step?
@@ -152,6 +162,14 @@ class Activity < ActiveRecord::Base
 
   def tags_weighted(weight = 5)
     tag_list.join(',')*weight
+  end
+
+  def ingredients_weighted(weight = 2)
+    ingredients.map(&:ingredient).map(&:title).join(',')*weight
+  end
+
+  def steps_weighted(weight = 1)
+    steps.map{|a|[a.title, a.directions]}.flatten.join(',')*weight
   end
 
   def true_ingredient_ids
@@ -229,7 +247,8 @@ class Activity < ActiveRecord::Base
         image_description: step_attr[:image_description],
         audio_clip: step_attr[:audio_clip],
         audio_title: step_attr[:audio_title],
-        step_order_position: :last
+        step_order_position: :last,
+        hide_number: step_attr[:hide_number]
       )
       step_attr[:id] = step.id
     end

@@ -8,20 +8,22 @@
     %meta{charset: 'utf-8'}
     %meta{name: 'description', content: yield(:description)}
     %meta{name: 'keywords', content: yield(:keywords)}
-    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no'}
+    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1'}
+    = yield :facebook_og
     / YouTube Iframe API can't be loaded async so we have to load it directly
     %script{src:'http://www.youtube.com/iframe_api'}
     = auto_discovery_link_tag :atom, feed_path
     = auto_discovery_link_tag :rss, feed_path
     %link{href: "/favicon.ico", rel: "shortcut icon"}
     %link{href: "http://fonts.googleapis.com/css?family=Raleway:200,400,500,600,700", rel: "stylesheet", type: "text/css"}
+    %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
     = render 'layouts/google_analytics' if Rails.env.production?
 
   %body
-    = render 'layouts/navigation'
+    = render 'layouts/navigation', external: false
 
     = yield :hero
 
@@ -32,9 +34,17 @@
           = msg
       = yield
 
+    .container-fluid#slider-container
+      .row-fluid
+        .container
+          = yield :bottom
+
+    = yield :popup_bottom
+
     = yield :footer
   / = render 'layouts/youtube'
-  = javascript_include_tag 'application'
+  
   %script{src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"}
+  = javascript_include_tag 'application'
   = render 'layouts/app_init'
   = yield(:custom_js)

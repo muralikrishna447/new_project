@@ -7,14 +7,13 @@ gem 'pg'
 gem 'unicorn'
 gem 'memcachier'
 gem 'dalli'
+gem 'cache_digests'
 
 gem "devise"
 gem 'oauth2'
 gem 'omniauth'
 gem 'omniauth-facebook'
 
-gem 'jquery-rails'
-gem 'jquery-ui-rails'
 gem 'haml'
 gem 'activeadmin'
 gem 'meta_search'
@@ -37,14 +36,18 @@ gem 'kaminari'                              # Pagination
 gem 'select2-rails'                         # Select 2
 gem 'gravatar_image_tag'
 gem 'httparty'
+gem 'rest-client'
+gem 'acts_as_revisionable'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
+  gem 'jquery-rails'
+  gem 'jquery-ui-rails'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass-rails'
-  gem 'font-awesome-sass-rails'
+  # gem 'font-awesome-sass-rails'
   gem 'bootstrap-sass-rails'
   gem 'asset_sync'
   gem 'turbo-sprockets-rails3'
@@ -74,6 +77,7 @@ group :development, :test do
   gem 'thin'
   gem 'rails-erd'
   gem 'bullet'
+  gem 'launchy'
 end
 
 group :guard do

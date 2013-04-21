@@ -11,17 +11,36 @@ class Users::RegistrationsController < Devise::RegistrationsController
         redirect_to sign_in_url(email: email)
       end
     else
+      if params[:source] == 'popup'
+        listname = 'popup'
+      else
+        listname = 'cs_c_sousvide'
+      end
       if Rails.env.production?
         uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
         response = Net::HTTP.post_form(uri,
                                         { "email" => email,
-                                          "listname" => "cs_c_sousvide",
+                                          "listname" => listname,
                                           "meta_adtracking" => "site_top_form"})
       else
         logger.debug 'Newsletter Signup'
       end
       @user = User.new
       @user.email = email
+    end
+  end
+
+  def create
+    @user = User.new(params[:user])
+    if cookies[:viewed_activities]
+      @user.viewed_activities = JSON.parse(cookies[:viewed_activities])
+    end
+    if @user.save
+      sign_in @user
+      redirect_to user_profile_path(@user), notice: "Welcome to ChefSteps!"
+      cookies.delete(:viewed_activities)
+    else
+      render :new
     end
   end
 

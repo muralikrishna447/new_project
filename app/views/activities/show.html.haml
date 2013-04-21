@@ -2,6 +2,14 @@
 - content_for :description, @activity.description != "" ? @activity.description.html_safe : @activity.title.html_safe
 - content_for :canonical_link, activity_url(@activity)
 - content_for :keywords, @activity.tag_list.join(',')
+- content_for :facebook_og do
+  %meta{property: 'og:url', content: activity_url(@activity)}
+  %meta{property: 'og:title', content: @activity.title.html_safe}
+  %meta{property: 'og:description', content: @activity.description != "" ? @activity.description.html_safe : @activity.title.html_safe}
+  - if @activity.image_id?
+    %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.image_id)}
+  - elsif @activity.featured_image_id?
+    %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.featured_image_id)}
 
 -if params[:scaling]
   :javascript
@@ -10,188 +18,117 @@
 .recipe_schema{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
 
   .row.printable
-    .span6
-      %h1= @activity.title.html_safe
+    .span6.relative
+      %h1.activity-title{itemprop: 'name'}
+        = @activity.title.html_safe
+      / - if @activity.is_recipe?
+      /   .activity-action-btn
+      /     = form_for @user_activity do |f|
+      /       = f.hidden_field :activity_id, value: @activity.id
+      /       %button.btn.btn-primary{onclick: 'formSubmit()'}
+      /         .btn-count
+      /           = @activity.users.count
+      /         .btn-text
+      /           cooked this
     .span6.noprint
-      .pull-left
-        .btn-circle#show-all
-          %i.icon-file
-        - if @course
-          - prev_activity = @course.prev_published_activity(@activity)
-          - next_activity = @course.next_published_activity(@activity)
-          - if prev_activity
-            = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
-              %i.icon-chevron-left
-          - if next_activity
-            = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
-              %i.icon-chevron-right
-          .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
-            %i.icon-file-alt
-      .pull-right
-        = render 'layouts/social_buttons', media_object: @activity
+      - if ! @minimal
+        .pull-left.display-inline-fix
+          - if @course
+            .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
+              %i.icon-file-alt
+            - prev_activity = @course.prev_published_activity(@activity)
+            - next_activity = @course.next_published_activity(@activity)
+            - if prev_activity
+              = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
+                %i.icon-chevron-left
+            - if next_activity
+              = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
+                %i.icon-chevron-right
+          .btn-circle#show-all
+            %i.icon-resize-full#show-all-icon
+          .btn-circle{onclick: 'window.print()'}
+            %i.icon-print
+        .pull-right.display-inline-fix
+          = render 'layouts/social_buttons', media_object: @activity
 
   .row.printable.printable-column
     .span12
       .row#main-content
-        .span6.section#video-ingredient-unit
-          .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-            - if @activity.youtube_id?
-              - if params[:autoplay]
-                %iframe{src: youtube_url(@activity.youtube_id, 1)}
-              - else
-                %iframe{src: youtube_url(@activity.youtube_id)}
-            - elsif @activity.image_id?
-              = image_tag s3_image_url(@activity.image_id)
-          - if @activity.description?
-            .section
-              :markdown
-                #{@activity.description}
-          - if @activity.ingredients.any?
-            .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
-              = render 'ingredients_list', ingredients: @activity.ingredients
-          - if @activity.required_equipment.any?
-            .section
-              %h4 Equipment and Materials
-              = render 'equipment_list', equipment: @activity.required_equipment
-          - if @activity.used_in_activities.any?
-            .section
-              %h4 Used In
-              %ul
-              - @activity.used_in_activities.each do |activity|
-                %li= link_to activity.title.html_safe, activity
-        .span6.section
-          .ordered-steps.scroll-shadow
-            .scroll-shadow-content.pull-left
-              - @activity.steps.each_with_index do |step, index|
-                .ordered-step-item{id: "order-step-item-#{index}"}
-                  .step-element.step-number
-                    = index + 1
-                  .step-element.step-content
-                    - if step.title?
-                      %h4= step.title
-                    :markdown
-                      #{raw step.directions}
-                    .step-actions.btn-group
-                      -if step.ingredients.any?
-                        .btn.step-action-item.step-ingredients.btn-primary
-                          %i.icon-th-list
-                      - if step.image_id?
-                        .btn.step-action-item.step-image-btn.btn-primary
-                          %i.icon-picture
-                    - if step.image_id?
-                      .step-image{id: "step-image-#{index}"}
-                        = image_tag s3_image_url(step.image_id)
-                    - if step.ingredients.any?
-                      .step-ingredients-source.well.section
-                        = render 'ingredients_list', ingredients: step.ingredients
-          .scroll-overlay-top
-          .scroll-overlay-bottom
-        .span6.community.noprint.hide
-          .community-toggle
-            .btn.btn-primary
-              %i.icon-comments Community
-          .community-content
-            %h4 Salmon and albumin
-            %blockquote
-              %p My family really only like salmon cooked sous-vide in oil, we also don't really have much access to good seafood in Denver unless you pay an arm and a leg.
-              %p I've done quite a bit at 50C as well as much shorter cook time at 57.5C. Is brining the best way to get rid of the albumin, if so is a typical 6.4% brine what should be used? And for how long?
-              %small
-                %cite
-                  Johan Edstrom
-            %blockquote
-              %p So-called albumin protein is mostly a function of cooking temperature more than anything else. Worth trying 113 °F / 45 °C to see what you think of that temperature, you will certainly see less albumin percolating to the surface of the flesh.
-              %p Adding salt via a brine tends to help retain juices in the flesh—for complex reasons that I hope to explore in a future course—and so at any given temperature you'll see less juice percolate to the surface, which means you'll see less albumin.
-              %p Have you checked out the salmon 104 °F recipe on our course page?
-              %small
-                %cite
-                  Chris Young
+        = render 'main_activity_content', activity: @activity
+        - if ! @minimal
+          .span6.community.noprint.hide
+            .community-toggle
+              .btn.btn-primary
+                %i.icon-comments Community
+            .community-content
+              %h4 Salmon and albumin
+              %blockquote
+                %p My family really only like salmon cooked sous-vide in oil, we also don't really have much access to good seafood in Denver unless you pay an arm and a leg.
+                %p I've done quite a bit at 50C as well as much shorter cook time at 57.5C. Is brining the best way to get rid of the albumin, if so is a typical 6.4% brine what should be used? And for how long?
+                %small
+                  %cite
+                    Johan Edstrom
+              %blockquote
+                %p So-called albumin protein is mostly a function of cooking temperature more than anything else. Worth trying 113 °F / 45 °C to see what you think of that temperature, you will certainly see less albumin percolating to the surface of the flesh.
+                %p Adding salt via a brine tends to help retain juices in the flesh—for complex reasons that I hope to explore in a future course—and so at any given temperature you'll see less juice percolate to the surface, which means you'll see less albumin.
+                %p Have you checked out the salmon 104 °F recipe on our course page?
+                %small
+                  %cite
+                    Chris Young
 
-            %blockquote
-              %p I love Salmon, Sushi first!! :)  I have always Cedar Planked my salmon and have love the results. Now that I have seen the 104F video, I am going to have to give it a try.
-              %small
-                %cite
-                  Allen Johnson
-            %blockquote
-              %p @Johan, 43C is my favourite temp too, as 40C is barely warm once it gets served. Have the same problem in UK too with fish, salmon is great, but good seafood here costs a bomb!
-              %small
-                %cite
-                  Grace
+              %blockquote
+                %p I love Salmon, Sushi first!! :)  I have always Cedar Planked my salmon and have love the results. Now that I have seen the 104F video, I am going to have to give it a try.
+                %small
+                  %cite
+                    Allen Johnson
+              %blockquote
+                %p @Johan, 43C is my favourite temp too, as 40C is barely warm once it gets served. Have the same problem in UK too with fish, salmon is great, but good seafood here costs a bomb!
+                %small
+                  %cite
+                    Grace
 
-  .row
-    .span12
-      %h3 Techniques
-      .carousel-scroll#technique-carousel
-        .carousel-scroll-inner
-          - @techniques.each_with_index do |technique,index|
-            .item
-              = link_to activity_path(technique) do
-                = render 'shared/media_centered', media: technique, size: 'small'
-      %h3 Recipes
-      .carousel-scroll#related-carousel
-        .carousel-scroll-inner
-          - @recipes.each_with_index do |recipe,index|
-            .item
-              = link_to activity_path(recipe) do
-                = render 'shared/media_centered', media: recipe, size: 'small'
+- content_for :bottom do
+  - if ! @minimal
 
+    .row
+      .span12
+        %h3 Techniques
+        #technique-carousel
+          = render 'shared/horizontal_scroller', items: @techniques
+        %h3 Recipes
+        #related-carousel
+          = render 'shared/horizontal_scroller', items: @recipes
 
+    .row
+      .span12
+        %h3 Discussion
+        .section
+          - disqus_id = "activity-#{@activity.id}"
+          = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
 
-  - if @course
-    .modal.hide.fade#syllabus-modal
-      .modal-header
-        = button_tag "X", class: 'close', data: {dismiss:'modal'}
-        %h3= @course.title
-      .modal-body
-        = course_syllabus(@course)
-  .row
-    .span12
-      .section.well
-        - disqus_id = "activity-#{@activity.id}"
-        = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
+- if @course
+  .modal.hide.fade#syllabus-modal
+    .modal-header
+      = button_tag "X", class: 'close', data: {dismiss:'modal'}
+      %h3= @course.title
+    .modal-body
+      = course_syllabus(@course)
 
-= #TODO Remove old code below
-
-/ - conditional_cache [activity, version], cache_unless: !cache_show do
-
-/   - disqus_id = "activity-#{activity.id}"
-
-/   - content_for :title, activity.title.html_safe
-/   / - content_for :description, activity.description != "" ? activity.description.html_safe : activity.title.html_safe
-/   - content_for :canonical_link, activity_url
-/   - content_for :keywords, activity.tag_list.join(',')
-/   - course = Course.find(params[:course_id]) if params[:course_id]
-
-/   -if params[:scaling]
-/     :javascript
-/       paramScaling = #{params[:scaling]};
-
-/   .recipe_schema{:itemscope => true, :itemtype => (activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
-
-/     = render 'courses/navigation', course: course, activity: activity, disqus_id: disqus_id
-
-/     .noprint.activity-hero
-/       .container
-/         %h1= activity.title.html_safe
-/         - if activity.youtube_id?
-/           .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-/             %iframe{src: youtube_url(activity.youtube_id), webkitallowfullscreen: true, mozallowfullscreen:true, allowfullscreen: true }
-/           - if activity.transcript?
-/             .transcript
-/               .btn.btn-primary.pull-right{data: {toggle: 'collapse', target:"#transcript-activity-#{activity.id}"}}
-/                 %i.icon-pencil
-/                   transcript
-/               .transcript-content.collapse{id: "transcript-activity-#{activity.id}"}
-/                 = activity.transcript
-/         - else
-/           - if activity.image_id?
-/             .activity-image
-/               = image_tag s3_image_url(activity.image_id)
-
-/     = render 'overview', activity: activity
-/     -if activity.steps.any?
-/       #step-by-step
-/         = render 'step_by_step', activity: activity
-/     = render 'quizzes', activity: activity
-/     = render 'cooked_this_button', activity: activity
-
-/   = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: activity.title, disqus_url: activity_url
+- content_for :popup_bottom do
+  - if @viewed_activities && @viewed_activities.count > 3 && current_user.nil?
+    .container-fluid.popup-bottom
+      .row-fluid
+        .container
+          .row
+            .span12
+              .row
+                .span6.text-right
+                  %h3 Join the community
+                  Let's help each other become better cooks.
+                .span6
+                  = form_tag sign_up_url, :method => :get do
+                    = email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
+                    = hidden_field_tag :source, 'popup'
+                    = submit_tag 'Sign Up Now', class: 'btn btn-primary', id: 'subscribe-email'
+                .popup-bottom-close
+                  %i.icon-remove

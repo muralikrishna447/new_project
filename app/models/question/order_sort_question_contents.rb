@@ -71,11 +71,10 @@ private
     Delve::OrderSortQuestion::Scorer.new(solution['order_sort_image_ids'])
   end
 
-  # TODO[dbalatero]: replace this when we get a real UI.
   def parse_text_solutions(solutions)
     return [] if solutions.blank?
 
-    solutions.split('|').map do |solution|
+    solutions.map do |solution|
       { 'order_sort_image_ids' => solution.split(',').map(&:to_i) }
     end
   end

@@ -46,12 +46,52 @@ $offwhite: #F2F2F2
   margin-top: 70px
   margin-bottom: 60px
 
+#slider-container
+  background: $offwhite
+  .row
+    margin-left: 0px
+
+.popup-bottom
+  position: fixed
+  padding: 10px 0px
+  bottom: -200px
+  width: 100%
+  @include boxsizing
+  z-index: 9999
+  background: $offwhite
+  @include shadow
+  .row
+    margin-left: 0px
+  h3
+    margin: 0px
+  form
+    margin: 10px 0px
+    .input-signup-email
+      margin: 0px
+
+  .popup-bottom-close
+    position: absolute
+    top: 10px
+    right: 10px
+    font-size: 20px
+    &:hover
+      color: $dark-orange
+      cursor: pointer
+
+.popup-bottom-show
+  bottom: 0px
+
+#technique-carousel, #related-carousel
+  .scroll-overlay-left, .scroll-overlay-right
+    &:after
+      background: $offwhite
+
 /* Bootstrap Overrides */
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
   height: inherit
 
 .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle
-  background: $dark_orange
+  background: $orange
   color: white
 
 .navbar .nav > li > .dropdown-menu
@@ -64,7 +104,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
       color: white
       padding: 3px 10px
       &:hover
-        background: $dark_orange
+        background: $orange
   &:after
     content: normal
   &:before
@@ -77,6 +117,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     top: 0px
     z-index: -1
     opacity: .6
+
 .well
   border: 1px solid #ccc
   border-radius: 0px
@@ -100,13 +141,22 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 h1, h2, h3, h4
   font-family: 'Raleway', sans-serif
   font-weight: 500
+  -webkit-font-smoothing: antialiased
 
 .word-wrap
   word-wrap: break-word
 
+.display-inline-fix
+  word-spacing : -4px
+
 ////////////////////////////////////////
 
 /* Media Objects */
+
+.black-link
+  color: black
+  &:hover
+    color: black
 
 .gallery
   .media-centered
@@ -114,6 +164,9 @@ h1, h2, h3, h4
 
 .section
   margin-top: 20px
+
+.relative
+  position: relative
   
 .two-columns
   column-count: 2
@@ -128,11 +181,9 @@ h1, h2, h3, h4
 
 .media-centered
   position: relative
-  a
-    color: white
-    font-size: 18px
+  @include boxsizing
   .media-centered-overlay
-    display: none
+    //display: none
     opacity: 0
     background: black
     position: absolute
@@ -140,16 +191,21 @@ h1, h2, h3, h4
     height: 100%
     @include transition(opacity 300ms)
   .title-block
-    text-transform: uppercase
     position: absolute
     text-align: center
-    top: 45%
+    bottom: 0
     width: 100%
-    color: white
-    text-shadow: 0px 1px rgba(0,0,0,.6)
+    color: black
+    background: rgba(255,255,255,.6)
+    padding: 10px 0px
+    @include transition(color 500ms)
+    @include transition(background 500ms)
   &:hover
     .media-centered-overlay
       opacity: .5
+    .title-block
+      color: white
+      background: none
 
 .media-centered-medium
   width: 100%
@@ -196,11 +252,27 @@ h1, h2, h3, h4
       width: 50%
       text-transform: uppercase
       .media-header-content
-        text-aigin: left
+        text-align: left
     .media-header-content
       display: table-cell
       vertical-align: middle
       height: 100px
+
+// .activity-title
+//   margin-right: 90px
+
+// .activity-action-btn
+//   .btn
+//     position: absolute
+//     width: 80px
+//     bottom: 0
+//     right: 0
+//     padding: 5px
+//     margin-bottom: 20px
+//     .btn-count
+//       font-size: 20px
+//     .btn-text
+//       font-size: 12px
 
 #video-ingredient-unit
   min-height: 600px
@@ -228,6 +300,30 @@ h1, h2, h3, h4
       &:hover
         cursor: pointer
 
+.activity-description-wrapper
+  position: relative
+  .activity-description
+    overflow: hidden
+    .activity-description-overlay
+      position: absolute
+      height: inherit
+      width: 100%
+      top: 0px
+      background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 60%, rgba(255,255,255,1) 100%)
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(60%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1)))
+      background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 60%,rgba(255,255,255,1) 100%)
+      background: -o-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 60%,rgba(255,255,255,1) 100%)
+      background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 60%,rgba(255,255,255,1) 100%)
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 60%,rgba(255,255,255,1) 100%)
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 )
+
+  .maximize-description
+    height: inherit
+
+#activity-description-maximize
+  display: none
+  width: 100%
+
 .ordered-steps
   overflow: auto
   -webkit-overflow-scrolling: touch
@@ -238,7 +334,10 @@ h1, h2, h3, h4
   .ordered-step-item
     width: 100%
     float: left
-    padding: 10px 0px
+    padding: 0px
+    border: 1px solid $offwhite
+    border-bottom: 1px solid $light-gray
+    @include boxsizing
     .step-element
       float: left
       @include boxsizing
@@ -249,18 +348,21 @@ h1, h2, h3, h4
       width: 10%
       text-align: center
       font-size: 30px
-      line-height: 40px
+      line-height: 30px
+      padding-top: 20px
     .step-content
       width: 90%
-      padding-top: 0px
-      padding-bottom: 0px
+      padding: 20px 10px 10px 5px
       h4
-        margin-top: 12px
+        margin-top: 0px
         margin-bottom: 0px
+        padding-bottom: 5px
       ul, li
         list-style: none
-        padding: 5px 0px
+        padding: 0px 0px 10px 0px
         margin: 0px
+      ul
+        padding: 0px
     .step-actions
       margin-bottom: 10px
       .step-action-item
@@ -269,6 +371,8 @@ h1, h2, h3, h4
         .step-ingredients-source
           display: none
     .step-image
+      display: none
+    .step-video
       display: none
 
 /* Emphasizes the content being hovered */
@@ -338,6 +442,10 @@ h1, h2, h3, h4
   position: relative
   overflow: hidden
 
+
+.alwayshidden
+  display: none !important
+
 .community
   border: 1px solid black
   background: white
@@ -370,25 +478,24 @@ h1, h2, h3, h4
 /* Course */
 .course-syllabus
   .nested-1
-    padding-left: 10px
+    margin-left: 10px
   .nested-2
-    padding-left: 20px
-  a
-    color: black
-    &:hover
-      color: $orange
+    margin-left: 30px
+    display: list-item
+    list-style-type: disc
 
 //////////
 
 .carousel-scroll
-  overflow: auto
+  overflow-x: auto
+  overflow-y: hidden
   -webkit-overflow-scrolling: touch
   .carousel-scroll-inner
-    height: 160px
+    height: 180px
     .item
+      margin: 10px
       width: 285px
       float: left
-      display: none
 
 .item
   float: left
@@ -444,9 +551,9 @@ h1, h2, h3, h4
 #content-indicators
   width: 45px
 
-.vertical-swipe
+.vertical-slider-2
   width: 370px
-  height: 208px
+  height: 416px
   overflow: auto
   -webkit-overflow-scrolling: touch
   .item
@@ -455,6 +562,17 @@ h1, h2, h3, h4
 ////////////////////////////////////////
 
 /* Unique Styles */
+#chefsteps-logo
+  height: 46px
+
+.signup-box
+  overflow: hidden
+  .input-signup-email
+    border: none
+    border-radius: 0px
+    width: 100%
+    @include boxsizing
+  
 .logo-wrapper
   $width: 7px
   $height: 10px
@@ -531,12 +649,21 @@ h1, h2, h3, h4
 
 #footer
   margin-top: 50px
-  background-image: url('http://d2eud0b65jr0pw.cloudfront.net/final_dish_IMG_5402.jpg')
-  background-position: left center
+  //background-image: url('http://d2eud0b65jr0pw.cloudfront.net/final_dish_IMG_5402.jpg')
+  background-position: center top
   background-repeat: no-repeat
-  background-size: 100%
+  //background-size: 100%
+  .footer-image
+    max-height: 600px
+    overflow: hidden
+    position: absolute
+    left: 0px
+    z-index: -1
+    img
+      width: 100%
   #footer-body
     margin-top: 50px
+    z-index: 999
   .footer-social
     color: white
     &:hover
@@ -560,40 +687,30 @@ h1, h2, h3, h4
 
 .btn-primary
   background: $orange
-  border: none
+  border: 0px
   border-radius: 0px
+  @include boxsizing
   @include transition(all 100ms)
   &:hover
     background: $darker_orange
     @include transition(all 100ms)
 
-.btn-play
-  position: relative
-  width: 40px
-  height: 40px
-  margin: 30px 10px 20px 30px
-  //background: $orange
-  border: 1px solid black
-  @include boxsizing
-  @include radius(50px)
-  transition: box-shadow 200ms
-  opacity: .9
-  -webkit-transition: -webkit-box-shadow 200ms, opacity 200ms
-  -moz-transition: -moz-box-shadow 200ms, opacity 200ms
-  -o-transition: -o-box-shadow 200ms, opacity 200ms
+.btn-gray
+  background: $light-gray
+  border: none
+  border-radius: 0px
+  @include transition(all 100ms)
   &:hover
-    @include shadow
-    opacity: 1
-    cursor: pointer
-  .btn-play-triangle
-    position: absolute
-    width: 0px
-    height: 0px
-    border-top: 7px solid transparent
-    border-bottom: 7px solid transparent
-    border-left: 12px solid black
-    margin: 12px 15px
-    opacity: .9
+    background: gray
+    @include transition(all 100ms)
+
+.btn-play-image
+  position: relative
+  background: image-url('play-button.png') no-repeat
+  width: 34px
+  height: 34px
+  margin: 33px 10px 20px 33px
+  @include boxsizing
 
 .btn-hero-next
   background: $orange
@@ -633,7 +750,7 @@ h1, h2, h3, h4
   height: 20px
   width: 20px
   padding: 10px
-  margin: 5px 0px
+  margin: 5px 2px
   border-radius: 50%
   background: $orange
   background-image: none
@@ -665,10 +782,6 @@ h1, h2, h3, h4
     line-height: 67px
     color: white
 
-.btn-next
-  //+box-shadow(-1px 0px 2px 0px rgba(0, 0, 0, 0.5))
-  //+border-radius(0 67px 67px 0)
-
 /* Navbar */
 .navbar-fixed-top
   .navbar-inner
@@ -685,13 +798,23 @@ h1, h2, h3, h4
     padding: 4px 20px
   .nav
     .nav-item-border
-      border-left: 1px solid $light-gray
+      width: 1px
+      height: 100%
+      position: absolute
+      background: -moz-linear-gradient(top, rgba(204,204,204,1) 0%, rgba(235,235,235,1) 60%, rgba(255,255,255,0) 100%)
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(204,204,204,1)), color-stop(60%,rgba(235,235,235,1)), color-stop(100%,rgba(255,255,255,0)))
+      background: -webkit-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
+      background: -o-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
+      background: -ms-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
+      background: linear-gradient(to bottom, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#00ffffff',GradientType=0 )
   .nav > li > a
     text-shadow: none
     color: black
     line-height: 34px
     font-size: 16px
     font-weight: 200
+    @include transition(background 300ms)
     &:hover
       background: $orange
       color: white
@@ -710,37 +833,166 @@ h1, h2, h3, h4
     &:hover
       background-image: none
       background-color: $dark-orange
+      float: left
+  .nav-search
+    height: 54px
+    width: 40px
+    overflow: hidden
+    @include transition(background 300ms)
+    &:hover
+      background: $orange
+      cursor: pointer
+      #nav-search-toggle
+        color: white
+        text-decoration: none
+    #nav-search-toggle
+      margin: 21px 10px 22px
+      color: black
+      float: left
+    .nav-search-form
+      float: left
+      width: 160px
+      padding: 0px
+      margin-right: 0px
+      margin-left: 0px
+      overflow: hidden
+      input
+        width: 160px
+  .nav-search-show
+    width: 210px
 
 /* Scroll Shadow */
+.scroll-shadow-wrapper
+  position: relative
+
+.scroll-shadow-horizontal
+  height: 180px
+  overflow-x: auto
+  overflow-y: hidden
+
 .scroll-overlay-top
   pointer-events: none
-  height: 120px
+  height: 20px
+  margin-top: -20px
   width: 100%
   position: absolute
   top: 0px
   display: none
-  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%) /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0))) /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%) /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%) /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%) /* IE10+ */
-  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%) /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ) /* IE6-9 */
+  background: white
+  // background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%) /* FF3.6+ */
+  // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0))) /* Chrome,Safari4+ */
+  // background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%) /* Chrome10+,Safari5.1+ */
+  // background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%) /* Opera 11.10+ */
+  // background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%) /* IE10+ */
+  // background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%) /* W3C */
+  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ) /* IE6-9 */
+
+  // background: -webkit-radial-gradient(50% 0%, closest-corner, rgba(0,0,0,.2), rgba(0,0,0,0))
+  &:before
+    content: ''
+    box-shadow: 0 0 15px gray
+    border-radius: 100px / 10px
+    position: absolute
+    top: 8px
+    bottom: 0
+    left: 0
+    right: 0%
+  &:after
+    content: ''
+    position: absolute
+    top: 0
+    left: -10px
+    right: 0
+    bottom: 0
+    background: white
 
 .scroll-overlay-bottom
   pointer-events: none
-  height: 120px
+  height: 20px
+  margin-bottom: -20px
   width: 100%
   position: absolute
   bottom: 0px
   display: none
-  background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%) /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))) /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%) /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%) /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%) /* IE10+ */
-  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%) /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ) /* IE6-9 */
+  // background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%) /* FF3.6+ */
+  // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))) /* Chrome,Safari4+ */
+  // background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%) /* Chrome10+,Safari5.1+ */
+  // background: -o-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%) /* Opera 11.10+ */
+  // background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%) /* IE10+ */
+  // background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%) /* W3C */
+  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ) /* IE6-9 */
+  &:before
+    content: ''
+    box-shadow: 0 0 15px gray
+    border-radius: 100px / 10px
+    position: absolute
+    top: 0
+    bottom: 8px
+    left: 0
+    right: 0%
+  &:after
+    content: ''
+    position: absolute
+    top: 0
+    left: -10px
+    right: 0
+    bottom: 0
+    background: white
+
+.scroll-overlay-left
+  pointer-events: none
+  width: 20px
+  margin-left: -20px
+  height: 100%
+  position: absolute
+  left: 0px
+  top: 0px
+  display: none
+  background: white
+  &:before
+    content: ''
+    box-shadow: 0 0 15px black
+    border-radius: 100px / 10px
+    position: absolute
+    top: 5px
+    bottom: 5px
+    left: 17px
+    right: 0px
+  &:after
+    content: ''
+    position: absolute
+    top: -10px
+    left: 0
+    right: 0
+    bottom: -10px
+    background: white
+
+.scroll-overlay-right
+  pointer-events: none
+  width: 20px
+  margin-right: -20px
+  height: 100%
+  position: absolute
+  right: 0px
+  top: 0px
+  display: none
+  &:before
+    content: ''
+    box-shadow: 0 0 15px black
+    border-radius: 100px / 10px
+    position: absolute
+    top: 5px
+    bottom: 5px
+    left: 0
+    right: 17px
+  &:after
+    content: ''
+    position: absolute
+    top: -10px
+    left: 0px
+    right: 0px
+    bottom: -10px
+    background: white
 
 // BELOW ARE RESPONSIVE STYLES //
 
@@ -758,6 +1010,9 @@ h1, h2, h3, h4
   .media-header-content
     width: 468px
 
+  .activity-description
+    height: 100px
+
 @media (max-width: 1200px)
   .media-centered-medium
     height: 168px
@@ -766,16 +1021,15 @@ h1, h2, h3, h4
     width: 285px
     margin: 0px 14px
 
-  .vertical-swipe
-    width: 300px
-    height: 168px
-
-  .item-medium
-    width: 285px
-    margin: 0px 14px
-
   .media-header-content
     width: 376px
+
+  .vertical-slider-2
+    width: 300px
+    height: 336px
+
+  .activity-description
+    height: 140px
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
@@ -789,12 +1043,18 @@ h1, h2, h3, h4
   .media-centered-medium
     height: 128px
 
-  .vertical-swipe
-    width: 228px
-    height: 128px
-
   .media-header-content
     width: 289px
+
+  .vertical-slider-2
+    width: 228px
+    height: 246px
+
+  .nav-item-border
+    display: none
+
+  .activity-description
+    height: 160px
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
@@ -832,10 +1092,28 @@ h1, h2, h3, h4
 
   .media-centered-medium
     height: inherit
+    img
+      width: 100%
 
-  .vertical-swipe
+  #slider-container
+    margin: 0px -20px
+    padding: 0px 20px
+
+  .popup-bottom
+    margin: 0px -20px
+    padding: 20px
+    .text-right
+      text-align: left
+
+  #footer
+    margin: 0px -20px
+    padding: 0px 20px
+
+  .vertical-slider-2
     width: 100%
-    height: 400px
+
+  .nav-item-border
+    display: none
  
 /* Landscape phones and down */
 @media (max-width: 480px)
@@ -851,3 +1129,16 @@ h1, h2, h3, h4
 
   .btn-play
     margin: 5px 10px 5px 25px
+
+  .btn-play-image
+    margin: 13px 10px 13px 25px
+
+  .nav-item-border
+    display: none
+
+  .ordered-steps
+    .ordered-step-item
+      .step-number
+        width: 15%
+      .step-content
+        width: 85%

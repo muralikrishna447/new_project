@@ -60,7 +60,7 @@ class ChefSteps.Views.OrderSortQuestion extends ChefSteps.Views.Question
     container.shapeshift({
       dragWhitelist: '.draggable',
       centerGrid: true,
-      columns: 4,
+      columns: @gridColumns(),
       animateSpeed: 350
     })
 
@@ -93,6 +93,13 @@ class ChefSteps.Views.OrderSortQuestion extends ChefSteps.Views.Question
             $numIndicator.text(index + 1).addClass('show')
           else
             $numIndicator.text('').removeClass('show')
+    @
+
+  gridColumns: ->
+    if @onMobileDevice() then 3 else 4
+
+  onMobileDevice: ->
+    $('body').hasClass('mobile-device')
 
   dragContainer: ->
     @$('.grid-container')

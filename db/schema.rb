@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130314223754) do
+ActiveRecord::Schema.define(:version => 20130413050615) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -42,9 +42,12 @@ ActiveRecord::Schema.define(:version => 20130314223754) do
     t.boolean  "published",         :default => false
     t.string   "slug"
     t.text     "transcript"
-    t.string   "image_id"
-    t.string   "featured_image_id"
+    t.text     "image_id"
+    t.text     "featured_image_id"
     t.string   "activity_type"
+    t.integer  "discussion_id"
+    t.string   "discussion_url"
+    t.integer  "last_edited_by_id"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -146,6 +149,17 @@ ActiveRecord::Schema.define(:version => 20130314223754) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "friendly_id_slugs", :force => true do |t|
+    t.string   "slug",                         :null => false
+    t.integer  "sluggable_id",                 :null => false
+    t.string   "sluggable_type", :limit => 40
+    t.datetime "created_at"
+  end
+
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], :name => "index_friendly_id_slugs_on_slug_and_sluggable_type", :unique => true
+  add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
+  add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
+
   create_table "images", :force => true do |t|
     t.string   "filename"
     t.string   "url"
@@ -233,6 +247,27 @@ ActiveRecord::Schema.define(:version => 20130314223754) do
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
 
+  create_table "revision_records", :force => true do |t|
+    t.string   "revisionable_type", :limit => 100,                    :null => false
+    t.integer  "revisionable_id",                                     :null => false
+    t.integer  "revision",                                            :null => false
+    t.binary   "data"
+    t.datetime "created_at",                                          :null => false
+    t.boolean  "trash",                            :default => false
+  end
+
+  add_index "revision_records", ["revisionable_id"], :name => "revision_records_id"
+  add_index "revision_records", ["revisionable_type", "created_at", "trash"], :name => "revision_records_type_and_created_at"
+
+  create_table "settings", :force => true do |t|
+    t.string   "footer_image"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.integer  "featured_activity_1_id"
+    t.integer  "featured_activity_2_id"
+    t.integer  "featured_activity_3_id"
+  end
+
   create_table "step_ingredients", :force => true do |t|
     t.integer  "step_id",          :null => false
     t.integer  "ingredient_id",    :null => false
@@ -256,12 +291,13 @@ ActiveRecord::Schema.define(:version => 20130314223754) do
     t.string   "youtube_id"
     t.integer  "step_order"
     t.text     "directions"
-    t.string   "image_id"
+    t.text     "image_id"
     t.text     "transcript"
     t.string   "image_description"
     t.string   "subrecipe_title"
     t.string   "audio_clip"
     t.string   "audio_title"
+    t.boolean  "hide_number"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
@@ -282,6 +318,14 @@ ActiveRecord::Schema.define(:version => 20130314223754) do
 
   create_table "tags", :force => true do |t|
     t.string "name"
+  end
+
+  create_table "user_activities", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "activity_id"
+    t.string   "action"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -306,6 +350,7 @@ ActiveRecord::Schema.define(:version => 20130314223754) do
     t.string   "chef_type",              :default => "", :null => false
     t.string   "slug"
     t.boolean  "from_aweber"
+    t.text     "viewed_activities"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -327,7 +372,7 @@ ActiveRecord::Schema.define(:version => 20130314223754) do
     t.boolean  "filmstrip"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
-    t.string   "image_id"
+    t.text     "image_id"
   end
 
 end

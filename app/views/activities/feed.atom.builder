@@ -20,7 +20,7 @@ atom_feed :language => 'en-US' do |feed|
           xhtml.iframe src: youtube_url(activity.youtube_id)
         end
         if activity.transcript?
-          xhtml.h3 Transcript
+          xhtml.h3 'Transcript'
           xhtml.div activity.transcript
         end
       end
