@@ -20,35 +20,37 @@
             = submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
 
 .container
-  .row
+  .row.section
     .span12
-      .row.section
-        %h2.text-center.text-orange We offer a variety of cooking courses...
-        - if @courses.any?
-          - @courses.each do |course|
-            .span4
-              .media-box
-                = image_tag filepicker_gallery_image(course.first_published_activity.featured_image)
-                = course.title
-
-      .row.section
-        .span6.offset1
-          %p.lead 
-            %strong And teachers and community to help you succeed.
-            %br
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
+      %h2.text-center.text-orange We offer a variety of cooking courses...
+  .row.section
+    - if @courses.any?
+      - @courses.each do |course|
         .span4
           .media-box
-            - if @courses.any?
-              = image_tag filepicker_gallery_image(@courses.first.first_published_activity.featured_image)
-              = @courses.first.title
+            = image_tag filepicker_gallery_image(course.first_published_activity.featured_image)
+            = course.title
+
+  .row.section
+    .span6.offset1
+      %p.lead 
+        %strong And teachers and community to help you succeed.
+        %br
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
+    .span4
+      .media-box
+        - if @courses.any?
+          = image_tag filepicker_gallery_image(@courses.first.first_published_activity.featured_image)
+          = @courses.first.title
 
 .container-fluid.well-gradient
   .row-fluid
     %hr
     .container
-      .row
-        %h2.text-center.text-orange Or just take in smaller bits...
+      .row.section
+        .span12
+          %h2.text-center.text-orange Or just take in smaller bits...
+      .row.section
         .span6
           %p.lead
             %strong Learn a New Recipe.
@@ -77,7 +79,9 @@
 
 .container
   .row.section
-    %h2.text-center.text-orange Did we mention its free?
+    %span12
+      %h2.text-center.text-orange Did we mention its free?
+  .row.section
     .span6
       %p.lead
         %strong Some lead title.
