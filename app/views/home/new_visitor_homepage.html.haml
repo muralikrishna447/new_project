@@ -2,12 +2,19 @@
   .span12
     .row
       .span6.offset3
-        %h2 Learn, cook, eat, share.
-        %h2 ChefSteps is here to help you kick ass in the kitchen.
-        We'll keep you up to date with the latest from ChefSteps.  We don't like spam, and we don't do shady stuff with your info.
         = form_tag sign_up_url, :method => :get, class: 'form-inline' do
-          %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Email Address', required: true}
-          %p= submit_tag 'Subscribe Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+          %h2
+            Hi ChefSteps,
+            %br
+            I am
+            = text_field_tag 'name', nil, {placeholder: 'Name', required: true}
+            and my email is
+            = email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Email Address', required: true}
+            &#46;
+            %br
+            I want to learn how to be a kick-ass cook.
+            %br
+          = submit_tag 'Subscribe Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
 
 .row
   .span12
