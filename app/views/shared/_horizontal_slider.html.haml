@@ -1,7 +1,6 @@
 .horizontal-slider{data: {direction: direction}}
   .horizontal-slider-wrap
     - items.each do |item|
-      %div{class: "media-box media-box-medium pull-#{direction}"}
       .media-box.media-box-medium.pull-left
         = link_to activity_path(item) do
           - if item.featured_image

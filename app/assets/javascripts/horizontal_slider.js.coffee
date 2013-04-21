@@ -20,11 +20,11 @@ $ ->
 
     if direction == 'left'
       btn_left = slider.find('.horizontal-slider-btn-left')
-      slider_start_left = slider_wrap_width - object_width
-      slider_wrap.children().animate {left: '-=' + object_width*4}
+      slider_start_left = slider_wrap_width - slider.parent().width()
+      slider_wrap.children().css 'left', '-' + slider_start_left
       btn_left.click ->
-        first_object = slider_wrap.children().first()
-        slider_wrap.children().animate {left: '-=340'}, 600, 'easeOutExpo', ->
-          first_object.remove()
-          slider_wrap.children().css 'left', '0'
-          slider_wrap.append first_object
+        last_object = slider_wrap.children().last()
+        slider_wrap.children().animate {left: '+=340'}, 600, 'easeOutExpo', ->
+          last_object.remove()
+          slider_wrap.children().css 'left', '-' + slider_start_left
+          slider_wrap.prepend last_object
