@@ -25,14 +25,12 @@
   %body
     = render 'layouts/navigation', external: false
 
-    = yield :hero
-
-    .container#main-container
+    .container
       - flash.each do |name, msg|
         %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
           %button.close{type: 'button', data: {dismiss: 'alert'}} x
           = msg
-      = yield
+    = yield
 
     .container-fluid#slider-container
       .row-fluid

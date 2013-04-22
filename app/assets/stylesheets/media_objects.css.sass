@@ -1,0 +1,48 @@
+@import 'mixins'
+
+.media-box
+  @include boxsizing
+  position: relative
+  width: 100%
+  border: 1px solid $light-gray
+  padding: 10px
+  background: white
+  text-align: center
+  font-weight: bold
+  margin-bottom: 20px
+  color: black
+  img
+    width: 100%
+    margin-bottom: 10px
+  a
+    color: black
+
+  &:before, &:after
+    content: ""
+    position: absolute
+    z-index: -1
+    bottom: 15px
+    left: 2%
+    width: 96%
+    height: 20%
+    -webkit-box-shadow: 0 15px 10px gray
+    -moz-box-shadow: 0 15px 10px gray
+    box-shadow: 0 15px 10px gray
+  &:after
+    -webkit-transform: rotate(2deg)
+    -moz-transform: rotate(2deg)
+    -ms-transform: rotate(2deg)
+    -o-transform: rotate(2deg)
+    transform: rotate(2deg)
+  &:before
+    -webkit-transform: rotate(-2deg)
+    -moz-transform: rotate(-2deg)
+    -ms-transform: rotate(-2deg)
+    -o-transform: rotate(-2deg)
+    transform: rotate(-2deg)
+
+.media-box-medium
+  width: 300px
+  //margin-left: 10px
+  //margin-right: 10px
+  margin: 20px

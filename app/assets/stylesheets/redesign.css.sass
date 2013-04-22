@@ -1,50 +1,16 @@
-// Mixins
-=boxsizing
-  box-sizing: border-box
-  -moz-box-sizing: border-box
-  -webkit-box-sizing: border-box
-  -o-box-sizing: border-box
+@import 'mixins'
 
-=shadow
-  box-shadow: 0px 0px 5px #888888
-  -moz-box-shadow: 0px 0px 5px #888888
-  -webkit-box-shadow: 0px 0px 5px #888888
-  -o-box-shadow: 0px 0px 5px #888888
-
-=dark-shadow
-  box-shadow: 0px 0px 5px black
-  -moz-box-box-shadow: 0px 0px 5px black
-  -webkit-box-shadow: 0px 0px 5px black
-  -o-box-shadow: 0px 0px 5px black
-
-=radius($value)
-  border-radius: $value
-  -moz-border-radius: $value
-  -webkit-border-radius: $value
-  -o-box-border-radius: $value
-
-=transition($value)
-  transition: $value
-  -moz-transition: $value
-  -webkit-transition: $value
-  -o-transition: $value
-
-/* Colors */
-$orange: #DB7354
-$dark-orange: #D25029
-$darker-orange: #B84724
-$blue: #006DCC
-$blue-opaque: rgba(0,109,204,.8)
-$red: #DA4f49
-$red-opaque: rgba(218,79,73,.8)
-$light-gray: #ccc
-$offwhite: #F2F2F2
-
-////////////////////////////////////////
+.top-container
+  margin-top: 56px
 
 #main-container
   margin-top: 70px
   margin-bottom: 60px
+
+.container-fluid
+  .container
+    .row
+      margin-left: inherit
 
 #slider-container
   background: $offwhite
@@ -127,6 +93,17 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 .well-opaque
   background-color: rgba(255,255,255,.8)
 
+.well-gradient
+  padding: 20px
+  background: rgb(255,255,255)
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(242,242,242,1) 100%)
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(242,242,242,1)))
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
+  background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
+  background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 )
+
 .hero-unit
   background: none
   border-radius: 0px
@@ -153,10 +130,33 @@ h1, h2, h3, h4
 
 /* Media Objects */
 
+.text-orange
+  color: $orange
+
 .black-link
   color: black
   &:hover
     color: black
+
+.madlib, .madlib input
+  font-family: "Raleway", san-serif
+  font-size: 30px
+  font-weight: 500
+  -webkit-font-smoothing: antialiased
+  line-height: 40px
+  input
+    font-size: 24px
+    line-height: 26px
+
+.input-underlined
+  input[type=text], input[type=email]
+    border: none
+    box-shadow: none 
+    border-bottom: 1px dashed gray
+    text-align: center
+    padding: 0px
+  input[type=text], input[type=email]
+    width: 300px
 
 .gallery
   .media-centered

@@ -1,0 +1,68 @@
+.horizontal-slider
+  position: relative
+  height: 248px
+  overflow: hidden
+  .horizontal-slider-wrap
+    height: 248px
+    position: relative
+  .horizontal-slider-btn-right
+    position: absolute
+    top: 50%
+    right: 10px
+    margin-top: -21px
+  .horizontal-slider-btn-left
+    position: absolute
+    top: 50%
+    left: 10px
+    margin-top: -21px
+  .horizontal-slider-shadow-overlay-right
+    pointer-events: none
+    width: 20px
+    margin-right: -20px
+    height: 100%
+    position: absolute
+    right: 0px
+    top: 0px
+    &:before
+      content: ''
+      box-shadow: 0 0 15px black
+      border-radius: 100px / 10px
+      position: absolute
+      top: 5px
+      bottom: 5px
+      left: 0
+      right: 17px
+    &:after
+      content: ''
+      position: absolute
+      top: -10px
+      left: 0px
+      right: 0px
+      bottom: -10px
+      background: white
+  .horizontal-slider-shadow-overlay-left
+    pointer-events: none
+    width: 20px
+    margin-left: -20px
+    height: 100%
+    position: absolute
+    left: 0px
+    top: 0px
+    background: white
+    &:before
+      content: ''
+      box-shadow: 0 0 15px black
+      border-radius: 100px / 10px
+      position: absolute
+      top: 5px
+      bottom: 5px
+      left: 17px
+      right: 0px
+    &:after
+      content: ''
+      position: absolute
+      top: -10px
+      left: 0
+      right: 0
+      bottom: -10px
+      background: white
