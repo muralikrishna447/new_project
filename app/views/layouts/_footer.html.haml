@@ -4,35 +4,42 @@
       .row
         .container#footer-body
           .span12.well.well-opaque
-            %h3 About ChefSteps
-            %p
-              ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
-            %p
-              Taught by a world-renowned team, you will master techniques of traditional and modernist cooking through practical, hands-on demonstrations with detailed step-by-step explanations. Unlike at other culinary schools, you will also learn the why's behind the how's from experts who bring the science of cooking to life in a compelling and practical way.
-            .section
-              = link_to about_path do
-                = image_tag 'chris.jpg', class:'img-circle'
+            .span4
+              %h3 About ChefSteps
+              %p
+                ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
+              %p
+                Taught by a world-renowned team, you will master techniques of traditional and modernist cooking through practical, hands-on demonstrations with detailed step-by-step explanations. Unlike at other culinary schools, you will also learn the why's behind the how's from experts who bring the science of cooking to life in a compelling and practical way.
+              .section
+                = link_to about_path do
+                  = image_tag 'chris.jpg', class:'img-circle'
 
-              = link_to about_path do
-                = image_tag 'grant.jpg', class:'img-circle'
+                = link_to about_path do
+                  = image_tag 'grant.jpg', class:'img-circle'
 
-              = link_to about_path do
-                = image_tag 'ryan.jpg', class:'img-circle'
+                = link_to about_path do
+                  = image_tag 'ryan.jpg', class:'img-circle'
 
-            .section
+            .span4.offset1
+              %h3 Contact
               %p
                 General inquiries:
                 = mail_to 'info@chefsteps.com'
               %p
                 Press inquiries:
                 = mail_to 'press@chefsteps.com'
+
+            .span2
+              %h3 Other Stuff
               %p
                 = link_to 'Legal', legal_url
               %p.creative-commons
                 %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
-                  All Content is Creative Commons Attribution-NonCommercial-ShareAlike
+                  = image_tag 'by-nc-sa.png'
 
-            .section.text-center Handmade in Pike Place, Seattle WA
+            .span12
+              .section.text-center 
+                %h3 Handmade in Pike Place, Seattle WA
           / .span2
           /   = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
           /     %div.footer-social
