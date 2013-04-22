@@ -2,13 +2,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   append_after_filter :aweber_signup, :only => :create
 
   def new
+    name = params[:name]
     email = params[:email]
-    @user = User.where(email: email).first
+    @user = User.where(name: name, email: email).first
     if @user
       if @user.from_aweber
-        redirect_to new_user_password_url(email: email, aw: true)
+        redirect_to new_user_password_url(name: name, email: email, aw: true)
       else
-        redirect_to sign_in_url(email: email)
+        redirect_to sign_in_url(name: name, email: email)
       end
     else
       if params[:source] == 'popup'
@@ -26,6 +27,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         logger.debug 'Newsletter Signup'
       end
       @user = User.new
+      @user.name = name
       @user.email = email
     end
   end
@@ -37,7 +39,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
     if @user.save
       sign_in @user
-      redirect_to user_profile_path(@user), notice: "Welcome to ChefSteps!"
+      redirect_to user_profile_path(@user), notice: "Welcome to ChefSteps! Please check your email to confirm your registration."
       cookies.delete(:viewed_activities)
     else
       render :new
