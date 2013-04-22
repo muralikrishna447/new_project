@@ -27,21 +27,19 @@
     - if @courses.any?
       - @courses.each do |course|
         .span4
-          .media-box
-            = image_tag filepicker_gallery_image(course.first_published_activity.featured_image)
-            = course.title
+          = render 'shared/media_box_2', title: course.title, image: course.first_published_activity.featured_image
 
   .row.section
-    .span6.offset1
+    .span6.offset3
       %p.lead 
         %strong And teachers and community to help you succeed.
         %br
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
-    .span4
-      .media-box
-        - if @courses.any?
-          = image_tag filepicker_gallery_image(@courses.first.first_published_activity.featured_image)
-          = @courses.first.title
+    / .span4
+    /   .media-box
+    /     - if @courses.any?
+    /       = image_tag filepicker_gallery_image(@courses.first.first_published_activity.featured_image)
+    /       = @courses.first.title
 
 .container-fluid.well-gradient
   .row-fluid

@@ -11,11 +11,19 @@
   font-weight: bold
   margin-bottom: 20px
   color: black
+  -webkit-transition: background 300ms, border-color 300ms
+  -moz-transition: background 300ms, border-color 300ms
+  -o-transition: background 300ms, border-color 300ms
+  transition: background 300ms, border-color 300ms
   img
     width: 100%
     margin-bottom: 10px
   a
     color: black
+    -webkit-transition: color 300ms
+    -moz-transition: color 300ms
+    -o-transition: color 300ms
+    transition: color 300ms
 
   &:before, &:after
     content: ""
@@ -40,9 +48,52 @@
     -ms-transform: rotate(-2deg)
     -o-transform: rotate(-2deg)
     transform: rotate(-2deg)
+  &:hover
+    background: $orange
+    border-color: $dark_orange
+    cursor: pointer
+    a
+      color: white
+      text-decoration: none
 
 .media-box-medium
   width: 300px
   //margin-left: 10px
   //margin-right: 10px
   margin: 20px
+
+.media-box-2
+  @include boxsizing
+  position: relative
+  width: 100%
+  border: 1px solid $light-gray
+  padding: 10px
+  background: white
+  text-align: center
+  font-weight: bold
+  margin-bottom: 20px
+  color: black
+  -webkit-transition: background 300ms, border-color 300ms
+  -moz-transition: background 300ms, border-color 300ms
+  -o-transition: background 300ms, border-color 300ms
+  transition: background 300ms, border-color 300ms
+  img
+    width: 100%
+    margin-top: 10px
+  a
+    color: black
+    -webkit-transition: color 300ms
+    -moz-transition: color 300ms
+    -o-transition: color 300ms
+    transition: color 300ms
+  &:after
+    content: ''
+    width: 0
+    height: 0
+    border-left: 10px solid transparent
+    border-right: 10px solid transparent
+    border-top: 10px solid white
+    top: 40px
+    left: 50%
+    margin-left: -10px
+    position: absolute
