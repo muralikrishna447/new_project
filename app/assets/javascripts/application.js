@@ -14,3 +14,4 @@
 //= require bootstrap-wysihtml5/locales
 //= require rails.validations
 //= require rails.validations.formtastic
+

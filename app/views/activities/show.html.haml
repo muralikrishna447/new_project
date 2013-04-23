@@ -17,14 +17,14 @@
   :javascript
     paramScaling = #{params[:scaling]};
 
-.recipe_schema{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil)}
+.recipe_schema{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), :'data-ng-app' => "ChefStepsApp"}
 
   .row.printable
 
 
-    .span6.relative
-      %h1.activity-title{itemprop: 'name', data: {wysiwyg: "title"}}
-        = render 'show_title'
+    .span6.relative{'ng-controller' => "ActivityController"}
+      = render 'show_title'
+      = render 'edit_title'
 
     .span6.noprint
 

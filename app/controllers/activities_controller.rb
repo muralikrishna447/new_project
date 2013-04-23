@@ -32,34 +32,48 @@ class ActivitiesController < ApplicationController
   def show
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
 
-    if params[:version] && params[:version].to_i <= @activity.last_revision().revision
-        @activity = @activity.restore_revision(params[:version])
+    respond_to do |format|
+      format.html do
+        if params[:version] && params[:version].to_i <= @activity.last_revision().revision
+          @activity = @activity.restore_revision(params[:version])
+        end
+
+        @live_public_version = (@activity.last_revision().revision + 1) rescue 1
+
+        @techniques = Activity.published.techniques.includes(:steps).last(6)
+        @recipes = Activity.published.recipes.includes(:steps).last(6)
+
+        if params[:course_id]
+          @course = Course.find(params[:course_id])
+        end
+
+        if @activity.has_quizzes?
+          render template: 'activities/quizzes'
+        end
+
+        @minimal = false
+        if params[:minimal]
+          @minimal = true
+        end
+
+        @user_activity = UserActivity.new
+
+        # cookies.delete(:viewed_activities)
+        @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
+        @viewed_activities << [@activity.id, DateTime.now]
+        cookies[:viewed_activities] = @viewed_activities.to_json
+      end
+
+      format.json do
+        respond_with @activity
+      end
     end
+  end
 
-    @live_public_version = (@activity.last_revision().revision + 1) rescue 1
-
-    @techniques = Activity.published.techniques.includes(:steps).last(6)
-    @recipes = Activity.published.recipes.includes(:steps).last(6)
-
-    if params[:course_id]
-      @course = Course.find(params[:course_id])
+  def update
+    respond_to do |format|
+      format.json { respond_with Activity.update(params[:id], params[:activity]) }
     end
-
-    if @activity.has_quizzes?
-      render template: 'activities/quizzes'
-    end
-
-    @minimal = false
-    if params[:minimal]
-      @minimal = true
-    end
-
-    @user_activity = UserActivity.new
-
-    # cookies.delete(:viewed_activities)
-    @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
-    @viewed_activities << [@activity.id, DateTime.now]
-    cookies[:viewed_activities] = @viewed_activities.to_json
   end
 
   # This is the base feed that we tell feedburner about. Users should never see this.

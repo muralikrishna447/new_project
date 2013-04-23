@@ -69,6 +69,10 @@ $ ->
       $(this).text 'more'
 
 
+
+# Wysiwyg mode stuff
+
+
 findOrCreateHiddenInput = (parent, name, value) ->
   inp = parent.find("input[name='" + name + "']")
   if inp.length == 0
@@ -79,7 +83,6 @@ findOrCreateHiddenInput = (parent, name, value) ->
 clickInClass = (event, klass) ->
   $(event.target).closest(klass).is(klass)
 
-# Wysiwyg mode stuff
 
 submitActiveEdit = ->
   $('.wysiwyg-active').each ->
