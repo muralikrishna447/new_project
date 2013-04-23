@@ -129,7 +129,7 @@
                 .span6
                   = form_tag sign_up_url, :method => :get do
                     = email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
-                    = hidden_field_tag :source, 'popup'
+                    = hidden_field_tag :signed_up_from, 'bottom_popup_cta'
                     = submit_tag 'Sign Up Now', class: 'btn btn-primary', id: 'subscribe-email'
                 .popup-bottom-close
                   %i.icon-remove
