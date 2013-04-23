@@ -7,7 +7,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user
       redirect_to sign_in_url(email: email)
     else
-      aweber_signup
+      aweber_signup(email)
       @user = User.new
       @user.email = email
       @user.signed_up_from = params[:signed_up_from]
@@ -41,7 +41,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     self.resource.assign_from_facebook(fb_data) if fb_data
   end
 
-  def aweber_signup(listname='cs_c_sousvide', meta_adtracking='site_top_form')
+  def aweber_signup(email, listname='cs_c_sousvide', meta_adtracking='site_top_form')
     if Rails.env.production?
       uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
       response = Net::HTTP.post_form(uri,
