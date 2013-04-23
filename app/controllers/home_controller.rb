@@ -6,14 +6,9 @@ class HomeController < ApplicationController
     @techniques = Activity.published.techniques.includes(:steps).last(6) - @heroes
     @sciences = Activity.published.sciences.includes(:steps).last(6) - @heroes
     @courses = Course.published
-    if cookies[:returning_visitor]
-      # @discussion = Forum.discussions.first
-      # @status = Twitter.status_embed
-    elsif params[:new_visitor]     
-      render 'new_visitor_homepage'
-    else
-      render 'new_visitor_homepage'
-    end
+    # cookies.delete(:returning_visitor)
+    @returning_visitor = cookies[:returning_visitor]
+    @new_visitor = params[:new_visitor] || !@returning_visitor
   end
 
   def about
