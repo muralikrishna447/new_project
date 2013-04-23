@@ -7,7 +7,7 @@ class HomeController < ApplicationController
     @sciences = Activity.published.sciences.includes(:steps).last(6) - @heroes
     if cookies[:returning_visitor]
       # @discussion = Forum.discussions.first
-      @status = Twitter.status_embed
+      # @status = Twitter.status_embed
     elsif params[:new_visitor]     
       @courses = Course.published
       render 'new_visitor_homepage'
