@@ -10,3 +10,4 @@
         .swipe-indicators#hero-indicators
           - @heroes.each_with_index do |hero, index|
             .swipe-indicator-btn.hero-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "hero-swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
+  %hr
