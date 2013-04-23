@@ -10,6 +10,7 @@
     .registration.standard
       = form_for @user, url: registration_path(@user), html: {class: 'form-horizontal'} do |f|
         = render 'shared/error_messages', target: f
+        = f.hidden_field :signed_up_from
         .control-group
           .control-label= f.label :name
           .controls= f.text_field :name
@@ -36,13 +37,6 @@
               .hide
                 = check_box_tag :terms_registration, true, true, required: true
               = "By tapping Sign up above, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path, class: 'black-link'}</b>.".html_safe
-            - if params[:email]
-              .hide
-                = check_box_tag :okay_to_email, true, true
-            - else
-              = label_tag :okay_to_email do
-                = check_box_tag :okay_to_email, true, true
-                = "Please email me the latest updates from ChefSteps".html_safe
 
     %hr
     .registration.facebook

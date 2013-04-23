@@ -10,6 +10,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       aweber_signup
       @user = User.new
       @user.email = email
+      @user.signed_up_from = params[:signed_up_from]
     end
   end
 
