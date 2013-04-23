@@ -62,22 +62,37 @@
         .span6
           = render 'shared/horizontal_slider', items: @sciences, direction: 'right'
 
-.container
-  .row.section
-    %span12
-      %h2.text-center.text-orange Did we mention its free?
-  .row.section
-    .span6
-      %p.lead
-        %strong Some lead title.
-        %br
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
-    .span6
-      %p.lead
-        We'll keep you up to date with the latest from ChefSteps.  We don't like spam, and we don't do shady stuff with your info.
-      = form_tag sign_up_url, :method => :get, class: 'form-inline' do
-        %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Email Address', required: true}
-        %p= submit_tag 'Subscribe Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+- if @new_user
+  .container
+    .row.section
+      %span12
+        %h2.text-center.text-orange Did we mention its free?
+    .row.section
+      .span6
+        %p.lead
+          %strong Some lead title.
+          %br
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
+      .span6
+        %p.lead
+          We'll keep you up to date with the latest from ChefSteps.  We don't like spam, and we don't do shady stuff with your info.
+        = form_tag sign_up_url, :method => :get, class: 'form-inline' do
+          %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Email Address', required: true}
+          %p= submit_tag 'Subscribe Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+
+- else
+  .container
+    .row
+      .span6
+      .span6#discussion
+        %h3 Latest From Our Forums:
+        %h4.discussion-name
+        %blockquote.word-wrap
+          %p.discussion-body
+          %small
+            %cite
+              .discussion-author
+        = link_to 'Join the Discussion', '#', class: 'btn btn-primary discussion-link'
 
 = content_for :footer do
   = render 'layouts/footer'
