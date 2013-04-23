@@ -1,49 +1,39 @@
-.container
-  .hero-unit
-    - if params[:email]
-      / %h2 Thanks for signing up for our Newsletter!
-      / %h5 If you would like to create an account, please complete following:
+.container#main-container
+  .row
+    .span8.offset2.well
       %h3 Please fill out the following to complete your registration:
-    - else
-      %h3 Please fill out the following to complete your registration:
-    %hr
-    .registration.standard
-      = form_for @user, url: registration_path(@user), html: {class: 'form-horizontal'} do |f|
-        = render 'shared/error_messages', target: f
-        .control-group
-          .control-label= f.label :name
-          .controls= f.text_field :name
+      %hr
+      .registration.standard
+        = form_for @user, url: registration_path(@user), html: {class: 'form-horizontal'} do |f|
+          = render 'shared/error_messages', target: f
+          = f.hidden_field :signed_up_from
+          .control-group
+            .control-label= f.label :name
+            .controls= f.text_field :name
 
-        .control-group
-          .control-label= f.label :email
-          .controls= f.text_field :email
+          .control-group
+            .control-label= f.label :email
+            .controls= f.text_field :email
 
-        .control-group
-          .control-label= f.label :password
-          .controls= f.password_field :password
+          .control-group
+            .control-label= f.label :password
+            .controls= f.password_field :password
 
-        .control-group
-          .control-label= f.label :password_confirmation, 'Confirmation'
-          .controls= f.password_field :password_confirmation
+          .control-group
+            .control-label= f.label :password_confirmation, 'Confirmation'
+            .controls= f.password_field :password_confirmation
 
-        .control-group
-          .controls.controls-small
-            = f.submit 'Sign up', class: 'btn btn-primary btn-large'
+          .control-group
+            .controls.controls-small
+              = f.submit 'Sign up', class: 'btn btn-primary btn-large'
 
-        .control-group
-          .controls.controls-small
-            = label_tag :terms_registration do
-              .hide
-                = check_box_tag :terms_registration, true, true, required: true
-              = "By tapping Sign up above, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path, class: 'black-link'}</b>.".html_safe
-            - if params[:email]
-              .hide
-                = check_box_tag :okay_to_email, true, true
-            - else
-              = label_tag :okay_to_email do
-                = check_box_tag :okay_to_email, true, true
-                = "Please email me the latest updates from ChefSteps".html_safe
+          .control-group
+            .controls.controls-small
+              = label_tag :terms_registration do
+                .hide
+                  = check_box_tag :terms_registration, true, true, required: true
+                = "By tapping Sign up above, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path, class: 'black-link'}</b>.".html_safe
 
-    %hr
-    .registration.facebook
-      = render 'devise/shared/facebook_login', text: 'Sign up with <b>Facebook</b>'
+        %hr
+        .registration.facebook
+          = render 'devise/shared/facebook_login', text: 'Sign up with <b>Facebook</b>'
