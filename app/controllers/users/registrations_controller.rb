@@ -1,26 +1,13 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  append_after_filter :aweber_signup, :only => :create
+  # append_after_filter :aweber_signup, :only => :create
 
   def new
     email = params[:email]
     @user = User.where(email: email).first
     if @user
-      if @user.from_aweber
-        redirect_to new_user_password_url(email: email, aw: true)
-      else
-        redirect_to sign_in_url(email: email)
-      end
+      redirect_to sign_in_url(email: email)
     else
-      listname = 'cs_c_sousvide'
-      if Rails.env.production?
-        uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
-        response = Net::HTTP.post_form(uri,
-                                        { "email" => email,
-                                          "listname" => listname,
-                                          "meta_adtracking" => "site_top_form"})
-      else
-        logger.debug 'Newsletter Signup'
-      end
+      aweber_signup
       @user = User.new
       @user.email = email
     end
@@ -53,16 +40,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
     self.resource.assign_from_facebook(fb_data) if fb_data
   end
 
-  def aweber_signup
-    if params[:ok_to_email] && Rails.env.production?
+  def aweber_signup(listname='cs_c_sousvide', meta_adtracking='site_top_form')
+    if Rails.env.production?
       uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
       response = Net::HTTP.post_form(uri,
-                                      { "email" => params[:user][:email],
-                                        "name" => params[:user][:name],
-                                        "listname" => "cs_c_sousvide",
-                                        "meta_adtracking" => "cs_new_site_user"})
+                                      { "email" => email,
+                                        "listname" => listname,
+                                        "meta_adtracking" => meta_adtracking})
     else
-      puts 'AWEBER SIGNUP'
+      logger.debug 'Newsletter Signup'
     end
   end
 
