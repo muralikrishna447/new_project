@@ -11,11 +11,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         redirect_to sign_in_url(email: email)
       end
     else
-      if params[:source] == 'popup'
-        listname = 'popup'
-      else
-        listname = 'cs_c_sousvide'
-      end
+      listname = 'cs_c_sousvide'
       if Rails.env.production?
         uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
         response = Net::HTTP.post_form(uri,
