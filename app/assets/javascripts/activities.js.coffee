@@ -81,6 +81,15 @@ clickInClass = (event, klass) ->
 
 # Wysiwyg mode stuff
 
+submitActiveEdit = ->
+  $('.wysiwyg-active').each ->
+    $(this).removeClass('wysiwyg-active')
+    form = $(this).find('form')
+    findOrCreateHiddenInput(form, "partial_name", $(this).data("wysiwyg"))
+    findOrCreateHiddenInput(form, "edit_id", $(this).attr("data-edit_id"))
+    form.submit()
+
+
 $ ->
 
   # Don't show edit switch until page is fully loaded
@@ -89,13 +98,18 @@ $ ->
   # Start/stop editing
   $('#edit-mode').click ->
     $('#edit-mode').addClass('active')
-    $('.hide-when-editing').hide('fast')
-    $('.show-when-editing').show('fast')
+    $('.hide-when-editing').hide('slow')
+    $('.show-when-editing').show('slow')
 
   $('#edit-save').click ->
+    submitActiveEdit()
     $('#edit-mode').removeClass('active')
-    $('.hide-when-editing').show('fast')
-    $('.show-when-editing').hide('fast')
+    $('.hide-when-editing').show('slow')
+    $('.show-when-editing').hide('slow')
+    window.csLivePublicActivityVersion = window.csLastEditActivityVersion
+
+  $('#edit-really-cancel').click ->
+    window.location = csRevertToVersionActivityPath + "?version=" + csLivePublicActivityVersion
 
 
   $(document).on 'mouseenter', '*[data-wysiwyg]:not(.wysiwyg-active)', ->
@@ -111,13 +125,8 @@ $ ->
 
       # Close out and submit any existing edit (as long as we clicked somewhere outside of any existing edit)
       if ! clickInClass(event, '.wysiwyg-active')
-        $('.wysiwyg-active').each ->
-          $(this).removeClass('wysiwyg-active')
-          form = $(this).find('form')
-          findOrCreateHiddenInput(form, "partial_name", $(this).data("wysiwyg"))
-          findOrCreateHiddenInput(form, "edit_id", $(this).attr("data-edit_id"))
-          form.submit()
-          event.stopPropagation()
+        submitActiveEdit()
+        event.stopPropagation()
 
       # Start a new edit?
       if $(this).hasClass('edit-target')
@@ -128,7 +137,7 @@ $ ->
           # Don't use data(), it won't be findable later b/c not stored in dom.
           $(new_edit).addClass('wysiwyg-active')
           new_edit.attr("data-edit_id", edit_id)
-          $.ajax($('#wysiwyg-link').attr('href'), {
+          $.ajax(csGetEditPartialActivityPath, {
             data:
               partial_name: $(new_edit).data("wysiwyg")
               edit_id: edit_id
@@ -144,7 +153,7 @@ $ ->
         event.stopPropagation()
         $('.wysiwyg-active').each ->
           $(this).removeClass('wysiwyg-active')
-          $.ajax($('#wysiwyg-cancel-link').attr('href'), {
+          $.ajax(csGetShowPartialActivityPath, {
           data:
             partial_name: $(this).data("wysiwyg")
             edit_id: $(this).attr("data-edit_id")
@@ -241,8 +250,6 @@ window.wysiwygActivatedCallback = (elem) ->
 window.wysiwygDeactivatedCallback = (elem) ->
   prepareForScaling()
   adjustActivityLayout()
-  $('.hide-when-editing').hide()
-
 
 $ ->
   # User Registration popup shows up after viewing 3 activities

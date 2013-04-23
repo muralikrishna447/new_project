@@ -45,8 +45,9 @@
             %i.icon-resize-full#show-all-icon
           .btn-circle{onclick: 'window.print()'}
             %i.icon-print
-        .pull-right
-          = render :partial => 'edit_toolbar'
+        -if admin_user_signed_in?
+          .pull-right
+            = render :partial => 'edit_toolbar'
 
         .pull-right.display-inline-fix.hide-when-editing
           = render 'layouts/social_buttons', media_object: @activity
@@ -134,6 +135,5 @@
                   %i.icon-remove
 
 // This isn't for clicking just providing the right link from the helper over to activities.js.coffee. Nicer way?
-= link_to "nothing", get_edit_partial_activity_path(@activity), method: :get, remote: true, id: 'wysiwyg-link', style:"display: none;"
-= link_to "nothing", get_show_partial_activity_path(@activity), method: :get, remote: true, id: 'wysiwyg-cancel-link', style:"display: none;"
+= render "js_vars"
 

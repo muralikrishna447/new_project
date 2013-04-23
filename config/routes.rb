@@ -69,6 +69,7 @@ Delve::Application.routes.draw do
       get 'get_edit_partial' => 'activities#get_edit_partial'
       get 'get_show_partial' => 'activities#get_show_partial'
       post 'update_edit_partial' => 'activities#update_edit_partial'
+      get 'revert_to_version' => 'activities#revert_to_version'
     end
   end
   resources :techniques, only: [:index, :show]
