@@ -22,7 +22,7 @@
   .row.printable
 
     .span6.relative
-      .edit-pair#edit-pair-title(ng-switch="" on="activeEdit=='edit-pair-title'")
+      .edit-pair#edit-pair-title(ng-switch="" on="activeEdit=='edit-pair-title'" ng-mouseover="offerEdit()")
         .edit-pair-show(ng-switch-when="false")
           %h1.activity-title{itemprop: 'name'}
             {{activity.title}}
@@ -110,4 +110,6 @@
 
 // This isn't for clicking just providing the right link from the helper over to activities.js.coffee. Nicer way?
 = render "js_vars"
+
+#editTarget.hide(ng-mouseout="unofferEdit()" ng-click="startEdit()")
 

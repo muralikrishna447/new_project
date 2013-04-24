@@ -32,7 +32,7 @@
       %button#edit-save.btn.btn-primary(type='button' ng-click="editMode=false" ng-show="editMode")
         Save
     .btn-group
-      %button#edit-cancel.btn.btn-link{type: 'button', data: {toggle: 'modal', target: '#cancel-modal'}}
+      %button#edit-cancel.btn.btn-link(ng-click="window.alert('yo')"){type: 'button', zzzdata: {toggle: 'modal', target: '#cancel-modal'}}
         Cancel
 
 #cancel-modal.modal.hide.fast{tabindex: '-1', role: 'dialog'}

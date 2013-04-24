@@ -25,7 +25,7 @@
     = javascript_include_tag 'angular-resource'
     = javascript_include_tag 'chefstepsAngularInit'
 
-  %body(ng-app="ChefStepsApp" ng-controller = "ActivityController")
+  %body(ng-app="ChefStepsApp" ng-controller="ActivityController" ng-click="bodyClick()")
     = render 'layouts/navigation', external: false
 
     = yield :hero

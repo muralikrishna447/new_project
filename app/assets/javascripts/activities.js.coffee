@@ -76,17 +76,6 @@ $ ->
 
 $ ->
 
-
-  $('#edit-really-cancel').click ->
-    alert("Cancel stub")
-
-  $(document).on 'mouseenter', '*[data-wysiwyg]:not(.wysiwyg-active)', ->
-    if $('#edit-mode').hasClass('active')
-      $(this).prepend("<div class='edit-target'></div>")
-
-  $(document).on 'mouseleave', '*[data-wysiwyg]', ->
-    $('.edit-target').remove()
-
   $(document).on 'click', '*', (event) ->
 
     if $('#edit-mode').hasClass('active')
@@ -94,22 +83,6 @@ $ ->
       # Close out and submit any existing edit (as long as we clicked somewhere outside of any existing edit)
       if ! clickInClass(event, '.wysiwyg-active')
         submitActiveEdit()
-        event.stopPropagation()
-
-      # Start a new edit?
-      if $(this).hasClass('edit-target')
-        new_edit = $(this).parent()
-        if ! new_edit.hasClass('wysiwyg-active')
-          edit_id = "edit_" + new Date().getTime().toString()
-          # This makes sure our whole round trip happens on the right div with no race conditions.
-          # Don't use data(), it won't be findable later b/c not stored in dom.
-          $(new_edit).addClass('wysiwyg-active')
-          new_edit.attr("data-edit_id", edit_id)
-          $.ajax(csGetEditPartialActivityPath, {
-            data:
-              partial_name: $(new_edit).data("wysiwyg")
-              edit_id: edit_id
-          })
         event.stopPropagation()
 
 
