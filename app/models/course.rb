@@ -61,4 +61,19 @@ class Course < ActiveRecord::Base
   def activity_modules
     inclusions.select{|i| i.nesting_level == 0}.map{|i| i.activity}
   end
+
+  def parent_module(activity)
+    # Returns the module the current activity belongs to
+    current_inclusion = inclusions.includes(:activity).select{|i| i.activity.id == activity.id}.first
+    current_inclusion_index = inclusions.index(current_inclusion)
+    current_parent_module = nil
+    i = current_inclusion_index
+    until current_parent_module
+      i-=1
+      if inclusions[i].nesting_level == 0
+        current_parent_module = inclusions[i]
+      end
+    end
+    return current_parent_module
+  end
 end
