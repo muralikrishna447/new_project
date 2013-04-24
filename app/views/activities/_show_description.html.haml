@@ -2,5 +2,5 @@
   :markdown
     #{apply_shortcodes(@activity.description)}
   .activity-description-overlay
-.text-center.hide-when-editing
+.text-center(ng-hide="editMode")
   = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'

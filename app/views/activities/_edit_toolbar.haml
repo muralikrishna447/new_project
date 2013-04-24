@@ -1,7 +1,7 @@
 #edit-group
-  %button#edit-mode.btn.btn-primary.hide-when-editing{type: 'button'}
+  %button#edit-mode.btn.btn-primary(type='button' ng-click="editMode=true" ng-hide="editMode")
     Edit
-  .btn-toolbar.show-when-editing
+  .btn-toolbar(ng-show="editMode")
     .btn-group
       -#%button.btn.dropdown-toggle{data: {toggle: 'dropdown'}, href: '#'}
       -#  %i.icon-plus
@@ -29,7 +29,7 @@
       %button#edit-redo.btn.btn{type: 'button'}
         %i.icon-repeat
     .btn-group
-      %button#edit-save.btn.btn-primary{type: 'button'}
+      %button#edit-save.btn.btn-primary(type='button' ng-click="editMode=false" ng-show="editMode")
         Save
     .btn-group
       %button#edit-cancel.btn.btn-link{type: 'button', data: {toggle: 'modal', target: '#cancel-modal'}}

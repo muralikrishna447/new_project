@@ -27,7 +27,7 @@
         %h4 Optional Equipment
         = render 'equipment_list', equipment: activity.optional_equipment
     - if activity.used_in_activities.published.any?
-      .section.hide-when-editing
+      .section(ng-hide="editMode")
         %h4 Used In
         %ul
           - activity.used_in_activities.published.each do |activity|

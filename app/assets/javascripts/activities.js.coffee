@@ -73,47 +73,12 @@ $ ->
 # Wysiwyg mode stuff
 
 
-findOrCreateHiddenInput = (parent, name, value) ->
-  inp = parent.find("input[name='" + name + "']")
-  if inp.length == 0
-    inp = $("<input type='hidden'>").appendTo(parent)
-    inp.attr("name", name)
-  inp.attr("value", value)
-
-clickInClass = (event, klass) ->
-  $(event.target).closest(klass).is(klass)
-
-
-submitActiveEdit = ->
-  $('.wysiwyg-active').each ->
-    $(this).removeClass('wysiwyg-active')
-    form = $(this).find('form')
-    findOrCreateHiddenInput(form, "partial_name", $(this).data("wysiwyg"))
-    findOrCreateHiddenInput(form, "edit_id", $(this).attr("data-edit_id"))
-    form.submit()
-
 
 $ ->
 
-  # Don't show edit switch until page is fully loaded
-  $('#edit-group').show('fast')
-
-  # Start/stop editing
-  $('#edit-mode').click ->
-    $('#edit-mode').addClass('active')
-    $('.hide-when-editing').hide('slow')
-    $('.show-when-editing').show('slow')
-
-  $('#edit-save').click ->
-    submitActiveEdit()
-    $('#edit-mode').removeClass('active')
-    $('.hide-when-editing').show('slow')
-    $('.show-when-editing').hide('slow')
-    window.csLivePublicActivityVersion = window.csLastEditActivityVersion
 
   $('#edit-really-cancel').click ->
-    window.location = csRevertToVersionActivityPath + "?version=" + csLivePublicActivityVersion
-
+    alert("Cancel stub")
 
   $(document).on 'mouseenter', '*[data-wysiwyg]:not(.wysiwyg-active)', ->
     if $('#edit-mode').hasClass('active')
