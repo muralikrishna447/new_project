@@ -17,7 +17,7 @@
   :javascript
     paramScaling = #{params[:scaling]};
 
-.recipe_schema{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), :'data-ng-app' => "ChefStepsApp"}
+#activity-body.recipe_schema{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'ng-app' => "ChefStepsApp", :'activity-id' => "#{@activity.id}" }}
 
   .row.printable
 

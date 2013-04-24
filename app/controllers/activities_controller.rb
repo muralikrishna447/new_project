@@ -64,9 +64,8 @@ class ActivitiesController < ApplicationController
         cookies[:viewed_activities] = @viewed_activities.to_json
       end
 
-      format.json do
-        respond_with @activity
-      end
+      format.json {  render :json => @activity }
+
     end
   end
 

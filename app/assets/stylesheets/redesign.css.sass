@@ -1025,7 +1025,7 @@ h1, h2, h3, h4
   z-index: 999
   background-color: rgba(158, 202, 237, 0.2)
 
-*[data-wysiwyg]
+#activity-body
   form, textarea
     width: 100%
     max-width: 100%
@@ -1036,11 +1036,10 @@ h1, h2, h3, h4
     vertical-align: top
 
 // Making this match h1. I tried @including h1 but that was a no go.
-*[data-wysiwyg=title]
-  #activity_title
-    font-size: 38.5px
-    line-height: 40px
-    width: 100%
+*[data-ng-model='activity.title']
+  font-size: 38.5px
+  line-height: 40px
+  width: 100%
 
 #edit-mode.active
   background: #0088cc
