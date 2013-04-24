@@ -1,29 +1,39 @@
 - content_for :title, course.title
 - content_for :description, course.short_description
 
-.row
-  .span12
-    %h1= course.title
+.container#main-container
+  .row
+    .span6
+      %h1= course.title
+      %p= course.description
+      .well
+        %ul
+          %li Lorem ipsum dolor sit amet
+          %li Consectetur adipiscing elit
+          %li Pellentesque nisi libero
+          %li Lorem ipsum dolor sit amet
+          %li Consectetur adipiscing elit
+          %li Pellentesque nisi libero
+    .span6.well
+      - if current_user && current_user.course_ids.include?(@course.id)
+        You are enrolled into this course.
+        = link_to 'First activity', course_activity_path(@course, @course.first_published_activity), class: 'btn btn-primary btn-large pull-right'
+      - else
+        = form_tag enroll_course_path(@course) do
+          = submit_tag 'Enroll', class: 'btn btn-primary btn-large pull-right'
+  .row
+    .span12
+      %hr
+  .row.section
+    .span12
+      .row
+        .span4.well
+          %h3 Good
+        .span4.well
+          %h3 Better
+        .span4.well
+          %h3 Best
 
-    .well
-      %h2 Intro Video
-
-    - if current_user && current_user.course_ids.include?(@course.id)
-      You are enrolled into this course.
-      = link_to 'First activity', course_activity_path(@course, @course.first_published_activity), class: 'btn btn-primary btn-large pull-right'
-    - else
-      = form_tag enroll_course_path(@course) do
-        = submit_tag 'Enroll', class: 'btn btn-primary btn-large pull-right'
-.row.section
-  .span12
-    .row
-      .span4.well
-        %h3 Good
-      .span4.well
-        %h3 Better
-      .span4.well
-        %h3 Best
-
-.section
-  = render 'layouts/disqus_comments', disqus_id: "course-#{course.id}", disqus_title:course.title, disqus_url: course_url
+  .section
+    = render 'layouts/disqus_comments', disqus_id: "course-#{course.id}", disqus_title:course.title, disqus_url: course_url
 
