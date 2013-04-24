@@ -25,19 +25,30 @@
       - else
         = form_tag enroll_course_path(@course) do
           = submit_tag 'Enroll', class: 'btn btn-primary btn-large pull-right'
-.container-fluid.well-gradient
-  .row-fluid
-    %hr
-    .container
-      .row.section
-        .span12
-          .row
-            .span4.well
-              %h3 Good
-            .span4.well
-              %h3 Better
-            .span4.well
-              %h3 Best
+%hr
+- ['good','better','best'].each do |kit_title|
+  .container-fluid.well-gradient
+    .row-fluid
+      .container
+        .row.section
+          .span4
+            = image_tag 'http://placehold.it/570x320'
+          .span8
+            %h4= "The #{kit_title.titleize} kit takes you through these lessons"
+            %ul
+              %li Sphere Baths
+              %li Direct Spherification
+              %li Reverse Spherification
+              %li Chocolate Spheres
+              %li Pine Spheres
+        .row.section
+          .span6
+            %p
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nisi libero, commodo in aliquet et, pellentesque at tellus. Mauris et quam ut nulla pellentesque eleifend. In hac habitasse platea dictumst. Pellentesque ut arcu id libero vestibulum commodo. Phasellus sagittis leo eget nulla laoreet feugiat. Fusce ac tellus elit. Etiam elementum tempor neque, eu elementum lacus egestas id.
+          .span6.well
+            %h4.text-center= "The #{kit_title.titleize} Kit $39"
+            .btn.btn-primary.btn-large
+              Buy Now
 
 .container-fluid
   .row-fluid
