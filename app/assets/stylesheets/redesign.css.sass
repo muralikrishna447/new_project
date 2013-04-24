@@ -119,9 +119,14 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     opacity: .6
 
 .well
-  border: 1px solid #ccc
+  //border: 1px solid #ccc
+  border: 0px
   border-radius: 0px
   background-color: $offwhite
+  -moz-box-shadow: none
+  -webkit-box-shadow: none
+  -o-box-shadow: none
+  box-shadow: none
   @include boxsizing
 
 .well-opaque
@@ -437,6 +442,8 @@ h1, h2, h3, h4
 
 .step-ingredients-source
   //display: none
+  thead
+    display: none
 
 #main-content
   position: relative
