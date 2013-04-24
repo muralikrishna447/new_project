@@ -15,6 +15,10 @@
       - @courses.each do |course|
         .span4
           = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image
+    .span4
+      .media-box-2
+        More to come...
+        = image_tag '/assets/missing.png'
 
   .row.section
     .span6.offset3
@@ -49,7 +53,7 @@
           = render 'shared/horizontal_slider', items: @techniques, direction: 'left'
         .span6
           %p.lead
-            %strong Pefect a New Technique
+            %strong Perfect a New Technique
             %br
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
 
@@ -62,7 +66,7 @@
         .span6
           = render 'shared/horizontal_slider', items: @sciences, direction: 'right'
 
-- if @new_user
+- if @new_visitor
   .container
     .row.section
       %span12
