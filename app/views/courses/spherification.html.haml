@@ -1,12 +1,16 @@
 - content_for :title, course.title
 - content_for :description, course.short_description
 
-.container#main-container
-  .row
+.container.top-container
+  .row.section
     .span6
       %h1= course.title
       %p= course.description
-      .well
+      %h4.text-center
+        %i.icon-comment-alt
+        Comments or Questions?
+        = link_to 'Visit the Forum', 'http://forum.chefsteps.com'
+      .section.well
         %ul
           %li Lorem ipsum dolor sit amet
           %li Consectetur adipiscing elit
@@ -21,19 +25,23 @@
       - else
         = form_tag enroll_course_path(@course) do
           = submit_tag 'Enroll', class: 'btn btn-primary btn-large pull-right'
-  .row
-    .span12
-      %hr
-  .row.section
-    .span12
-      .row
-        .span4.well
-          %h3 Good
-        .span4.well
-          %h3 Better
-        .span4.well
-          %h3 Best
+.container-fluid.well-gradient
+  .row-fluid
+    %hr
+    .container
+      .row.section
+        .span12
+          .row
+            .span4.well
+              %h3 Good
+            .span4.well
+              %h3 Better
+            .span4.well
+              %h3 Best
 
-  .section
-    = render 'layouts/disqus_comments', disqus_id: "course-#{course.id}", disqus_title:course.title, disqus_url: course_url
+.container-fluid
+  .row-fluid
+    .container
+      .row.section
+        = render 'layouts/disqus_comments', disqus_id: "course-#{course.id}", disqus_title:course.title, disqus_url: course_url
 
