@@ -33,6 +33,7 @@ class ActivitiesController < ApplicationController
 
     if params[:course_id]
       @course = Course.find(params[:course_id])
+      render 'course_activity'
     end
 
     if @activity.has_quizzes?

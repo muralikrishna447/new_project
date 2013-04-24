@@ -57,4 +57,8 @@ class Course < ActiveRecord::Base
   def prev_published_activity(activity)
     next_published_activity(activity, inclusions.reverse)
   end
+
+  def activity_modules
+    inclusions.select{|i| i.nesting_level == 0}.map{|i| i.activity}
+  end
 end
