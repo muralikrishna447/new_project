@@ -1,14 +1,7 @@
 - content_for :title, course.title
 - content_for :description, course.short_description
-
-/ .hero-unit.course-title
-/   .container
-/     .row
-/       .span8
-/         %h3= course.title
-
-%h2= course.title
-.container
+.container#main-container
+  %h2= course.title
   .row.top-video
     .span12
 
@@ -40,5 +33,5 @@
           .row
             .span8.horizontal-divider
 
-= render 'layouts/disqus_comments', disqus_id: 'course-1', disqus_title:course.title, disqus_url: course_url
+  = render 'layouts/disqus_comments', disqus_id: 'course-1', disqus_title:course.title, disqus_url: course_url
 

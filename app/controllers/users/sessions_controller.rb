@@ -10,4 +10,9 @@ class Users::SessionsController < Devise::SessionsController
     respond_with(resource, serialize_options(resource))
   end
 
+  def create
+    cookies[:returning_visitor] = true
+    super
+  end
+
 end

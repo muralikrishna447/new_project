@@ -1,0 +1,5 @@
+.media-box-2
+  = link_to url do
+    = truncate(title, length: 38)
+    - if image
+      = image_tag filepicker_gallery_image(image)
