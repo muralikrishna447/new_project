@@ -15,6 +15,10 @@
       - @courses.each do |course|
         .span4
           = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image
+    .span4
+      .media-box-2
+        More to come...
+        = image_tag '/assets/missing.png'
 
   .row.section
     .span6.offset3
