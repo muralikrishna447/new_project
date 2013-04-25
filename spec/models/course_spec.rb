@@ -61,7 +61,7 @@ describe Course do
     parent = activity1
     a = activity4
     c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
-    c.parent_module(a).activity.should == parent
+    c.parent_module(a).should == parent
   end
 
   it 'returns the activities within a module' do

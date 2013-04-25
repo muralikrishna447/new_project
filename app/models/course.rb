@@ -71,7 +71,7 @@ class Course < ActiveRecord::Base
     until current_parent_module
       i-=1
       if inclusions[i].nesting_level == 0
-        current_parent_module = inclusions[i]
+        current_parent_module = inclusions[i].activity
       end
     end
     return current_parent_module
@@ -83,9 +83,9 @@ class Course < ActiveRecord::Base
     activities_collected = false
     i = current_inclusion_index
     results = []
-    until activities_collected
+    until activities_collected || i == inclusions.count - 1
       i+=1
-      if inclusions[i].nesting_level == 0
+      if inclusions[i] && inclusions[i].nesting_level == 0
         activities_collected = true
       else
         results << inclusions[i].activity
