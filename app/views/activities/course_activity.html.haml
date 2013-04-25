@@ -1,0 +1,53 @@
+.container.top-container
+  .row
+    .span12
+      %h1= @course.title + ' Course'
+  .row
+    .span12
+      %ul.nav.nav-pills
+        - @course.activity_modules.each_with_index do |activity_module, index|
+          %li{class: activity_module == @current_module ? 'active' : ''}
+            = link_to [@course, @course.next_published_activity(activity_module)] do
+              = "#{index + 1}."
+              = activity_module.title
+                
+.container
+  .row
+    .span2
+      %ul.nav.nav-tabs.nav-stacked
+        - @activities_within_module.each do |activity|
+          %li{class: activity == @activity ? 'active' : ''}
+            - if activity.published
+              = link_to [@course, activity] do
+                = activity.title
+            - else
+              = link_to '#' do
+                = activity.title
+                %span.label.label-info
+                  Soon
+    .span10
+      .container-fluid
+        .row-fluid
+          %h2= @activity.title
+        .row-fluid
+          = render 'main_activity_content', activity: @activity
+
+- content_for :popup_bottom do
+  .container-fluid.popup-bottom
+    .row-fluid
+      .span12
+        .course-nav-bottom
+          - prev_activity = @course.prev_published_activity(@activity)
+          - next_activity = @course.next_published_activity(@activity)
+          - if prev_activity
+            .course-nav-bottom-left
+              = link_to [@course, prev_activity], class: 'btn btn-primary' do
+                %i.icon-chevron-left
+                = 'Previous: ' + prev_activity.title
+          .course-nav-bottom-center
+            %h3= @activity.title
+          - if next_activity
+            .course-nav-bottom-right
+              = link_to [@course, next_activity], class: 'btn btn-primary' do
+                = 'Next: ' + next_activity.title
+                %i.icon-chevron-right

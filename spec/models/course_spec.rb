@@ -55,4 +55,20 @@ describe Course do
     c.activities.find { |x| x.title == "Cool Activity Dude"}.should_not == nil
     c.activities.find { |x| x.title == "Fork Me"}.should == nil
   end
+
+  it 'returns the parent module for an activity' do
+    c = course_first
+    parent = activity1
+    a = activity4
+    c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
+    c.parent_module(a).should == parent
+  end
+
+  it 'returns the activities within a module' do
+    c = course_first
+    parent = activity1
+    activity_ids = [200,300,400]
+    c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
+    c.activities_within_module(parent).map{|a| a.id}.should == activity_ids
+  end
 end

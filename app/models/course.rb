@@ -13,6 +13,8 @@ class Course < ActiveRecord::Base
 
   has_many :inclusions, :dependent => :destroy, :order => 'activity_order ASC'
   has_many :activities, :through => :inclusions, :order => 'inclusions.activity_order ASC'
+  has_many :enrollments
+  has_many :users, through: :enrollments
 
   def update_activities(activity_hierarchy)
     activities.delete_all
@@ -54,5 +56,41 @@ class Course < ActiveRecord::Base
 
   def prev_published_activity(activity)
     next_published_activity(activity, inclusions.reverse)
+  end
+
+  def activity_modules
+    inclusions.select{|i| i.nesting_level == 0}.map{|i| i.activity}
+  end
+
+  def parent_module(activity)
+    # Returns the module the current activity belongs to
+    current_inclusion = inclusions.includes(:activity).select{|i| i.activity.id == activity.id}.first
+    current_inclusion_index = inclusions.index(current_inclusion)
+    current_parent_module = nil
+    i = current_inclusion_index
+    until current_parent_module
+      i-=1
+      if inclusions[i].nesting_level == 0
+        current_parent_module = inclusions[i].activity
+      end
+    end
+    return current_parent_module
+  end
+
+  def activities_within_module(module_activity)
+    current_inclusion = inclusions.includes(:activity).select{|i| i.activity.id == module_activity.id}.first
+    current_inclusion_index = inclusions.index(current_inclusion)
+    activities_collected = false
+    i = current_inclusion_index
+    results = []
+    until activities_collected || i == inclusions.count - 1
+      i+=1
+      if inclusions[i] && inclusions[i].nesting_level == 0
+        activities_collected = true
+      else
+        results << inclusions[i].activity
+      end
+    end
+    return results
   end
 end

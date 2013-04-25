@@ -1,9 +1,28 @@
 class CoursesController < ApplicationController
-
+  before_filter :authenticate_user!, only: [:enroll]
   expose(:activities) { Activity.ordered.published.all }
   expose(:activity) { Activity.find_published(params[:id], params[:token])}
   expose(:course) { Course.find(params[:id]) }
   expose(:bio_chris) { Copy.find_by_location('instructor-chris') }
   expose(:bio_grant) { Copy.find_by_location('instructor-grant') }
+
+  def index
+    @courses = Course.published.page(params[:page]).per(12)
+  end
+
+  def show
+    @course = Course.find(params[:id])
+    if @course.title == 'Spherification'
+      render 'spherification'
+    end
+  end
+
+  def enroll
+    @course = Course.find(params[:id])
+    @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
+    if @enrollment.save
+      redirect_to course_path(@course), notice: "You are now enrolled!"
+    end
+  end
 end
 
