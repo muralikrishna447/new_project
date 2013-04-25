@@ -63,4 +63,12 @@ describe Course do
     c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
     c.parent_module(a).activity.should == parent
   end
+
+  it 'returns the activities within a module' do
+    c = course_first
+    parent = activity1
+    activity_ids = [200,300,400]
+    c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
+    c.activities_within_module(parent).map{|a| a.id}.should == activity_ids
+  end
 end

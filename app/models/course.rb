@@ -76,4 +76,21 @@ class Course < ActiveRecord::Base
     end
     return current_parent_module
   end
+
+  def activities_within_module(module_activity)
+    current_inclusion = inclusions.includes(:activity).select{|i| i.activity.id == module_activity.id}.first
+    current_inclusion_index = inclusions.index(current_inclusion)
+    activities_collected = false
+    i = current_inclusion_index
+    results = []
+    until activities_collected
+      i+=1
+      if inclusions[i].nesting_level == 0
+        activities_collected = true
+      else
+        results << inclusions[i].activity
+      end
+    end
+    return results
+  end
 end
