@@ -14,7 +14,15 @@
 .container
   .row
     .span3
-      = @course.parent_inclusion(@activity).activity.inspect
+      %ul.nav.nav-tabs.nav-stacked
+        - @course.tree_from_activity(@current_inclusion.activity).each do |nested_1|
+          %li{class: nested_1[:activity] == @activity ? 'active' : ''}
+            = link_to nested_1[:activity].title, [@course, nested_1[:activity]]
+          - @course.tree_from_activity(1, nested_1[:activity]).each do |nested_2|
+            %li{class: nested_2[:activity] == @activity ? 'active' : ''}
+              = link_to [@course, nested_2[:activity]] do
+                .indent-1
+                  = nested_2[:activity].title
       %ul.nav.nav-tabs.nav-stacked
         - @inclusions_within_module.each do |inclusion|
           - inclusion_activity = inclusion.activity
