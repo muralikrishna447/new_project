@@ -15,16 +15,14 @@
   .row
     .span3
       %ul.nav.nav-tabs.nav-stacked
-        - @activities_within_module.each do |activity|
-          %li{class: activity == @activity ? 'active' : ''}
-            - if activity.published
-              = link_to [@course, activity] do
-                = activity.title
+        - @inclusions_within_module.each do |inclusion|
+          %li{class: inclusion.activity == @activity ? 'active' : ''}
+            - if inclusion.activity.published
+              = link_to [@course, inclusion.activity] do
+                = inclusion.activity.title
             - else
               = link_to '#' do
-                = activity.title
-                %span.label.label-info
-                  Soon
+                = inclusion.activity.title
     .span9
       .container-fluid.course_activity_content
         .row-fluid

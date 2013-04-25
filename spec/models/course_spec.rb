@@ -61,14 +61,14 @@ describe Course do
     parent = activity1
     a = activity4
     c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
-    c.parent_module(a).should == parent
+    c.parent_module(a).activity.should == parent
   end
 
   it 'returns the activities within a module' do
     c = course_first
-    parent = activity1
     activity_ids = [200,300,400]
     c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
-    c.activities_within_module(parent).map{|a| a.id}.should == activity_ids
+    parent = c.inclusions.select{|i| i.activity.id == activity1.id}.first
+    c.inclusions_within_module(parent).map{|i| i.activity.id}.should == activity_ids
   end
 end
