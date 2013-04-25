@@ -36,7 +36,7 @@ class ActivitiesController < ApplicationController
     elsif params[:course_id]
       @course = Course.find(params[:course_id])
       @current_module = @course.parent_module(@activity)
-      @activities_within_module = @course.activities_within_module(@current_module)
+      @inclusions_within_module = @course.inclusions_within_module(@current_module)
       render 'course_activity'
     end
 
