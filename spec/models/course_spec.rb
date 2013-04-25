@@ -56,12 +56,12 @@ describe Course do
     c.activities.find { |x| x.title == "Fork Me"}.should == nil
   end
 
-  it 'returns the parent module for an activity' do
+  it 'returns the parent inclusion for an activity' do
     c = course_first
     parent = activity1
     a = activity4
     c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
-    c.parent_module(a).activity.should == parent
+    c.parent_inclusion(a).activity.should == parent
   end
 
   it 'returns the activities within a module' do

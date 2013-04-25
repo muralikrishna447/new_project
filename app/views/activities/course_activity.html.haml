@@ -6,7 +6,7 @@
     .span12
       %ul.nav.nav-pills
         - @course.activity_modules.each_with_index do |activity_module, index|
-          %li{class: activity_module == @current_module ? 'active' : ''}
+          %li{class: activity_module == @current_inclusion.activity ? 'active' : ''}
             = link_to [@course, @course.next_published_activity(activity_module)] do
               = "#{index + 1}."
               = activity_module.title
@@ -14,15 +14,24 @@
 .container
   .row
     .span3
+      = @course.parent_inclusion(@activity).activity.inspect
       %ul.nav.nav-tabs.nav-stacked
         - @inclusions_within_module.each do |inclusion|
-          %li{class: inclusion.activity == @activity ? 'active' : ''}
-            - if inclusion.activity.published
-              = link_to [@course, inclusion.activity] do
-                = inclusion.activity.title
-            - else
-              = link_to '#' do
-                = inclusion.activity.title
+          - inclusion_activity = inclusion.activity
+          %li{class: inclusion_activity == @activity ? 'active' : ''}
+            - if inclusion.nesting_level == 1
+              - if inclusion_activity.published
+                = link_to inclusion_activity.title, [@course, inclusion_activity]
+              - else
+                = link_to inclusion_activity.title, '#'
+            - elsif inclusion.nesting_level == 2
+              - if inclusion_activity.published
+                = link_to [@course, inclusion_activity] do
+                  .indent-1
+                    = inclusion_activity.title
+              - else
+                = link_to inclusion_activity.title, '#', class: 'nested-1'
+
     .span9
       .container-fluid.course_activity_content
         .row-fluid

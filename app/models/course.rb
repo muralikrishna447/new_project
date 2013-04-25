@@ -62,7 +62,7 @@ class Course < ActiveRecord::Base
     inclusions.select{|i| i.nesting_level == 0}.map{|i| i.activity}
   end
 
-  def parent_module(activity)
+  def parent_inclusion(activity)
     # Returns the module the current activity belongs to
     current_inclusion = inclusions.includes(:activity).select{|i| i.activity.id == activity.id}.first
     current_inclusion_index = inclusions.index(current_inclusion)
@@ -92,5 +92,27 @@ class Course < ActiveRecord::Base
       end
     end
     return results
+  end
+
+  def tree
+    current_nesting_level = nil
+    current_parent_0 = nil
+    current_parent_1 = nil
+    results = []
+    inclusions.each do |inclusion|
+      h = Hash.new
+      h[:inclusion] = inclusion
+      h[:children] = []
+      if inclusion.nesting_level == 0
+        results << h
+        current_parent_0 = h
+      elsif inclusion.nesting_level == 1
+        current_parent_0[:children] << h
+        current_parent_1 = h
+      elsif inclusion.nesting_level ==2
+        current_parent_1[:children] << h
+      end
+    end
+    results
   end
 end
