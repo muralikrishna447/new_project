@@ -5,16 +5,18 @@
   .row
     .span12
       %ul.nav.nav-pills
-        - @course.activity_modules.each do |activity_module|
-          %li
-            = link_to activity_module.title, '#'
+        - @course.activity_modules.each_with_index do |activity_module, index|
+          %li{class: activity_module == @current_module ? 'active' : ''}
+            = link_to [@course, @course.next_published_activity(activity_module)] do
+              = "#{index + 1}."
+              = activity_module.title
                 
 .container
   .row
     .span2
-      %ul
+      %ul.nav.nav-tabs.nav-stacked
         - @activities_within_module.each do |activity|
-          %li
+          %li{class: activity == @activity ? 'active' : ''}
             = link_to [@course, activity] do
               = activity.title
     .span10
