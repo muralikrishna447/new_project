@@ -94,25 +94,29 @@ class Course < ActiveRecord::Base
     return results
   end
 
-  def tree
+  def tree(from_nesting_level = 0)
     current_nesting_level = nil
     current_parent_0 = nil
     current_parent_1 = nil
     results = []
     inclusions.each do |inclusion|
       h = Hash.new
-      h[:inclusion] = inclusion
+      h[:activity] = inclusion.activity
       h[:children] = []
-      if inclusion.nesting_level == 0
+      if inclusion.nesting_level == from_nesting_level
         results << h
         current_parent_0 = h
-      elsif inclusion.nesting_level == 1
+      elsif inclusion.nesting_level == from_nesting_level + 1
         current_parent_0[:children] << h
         current_parent_1 = h
-      elsif inclusion.nesting_level ==2
+      elsif inclusion.nesting_level == from_nesting_level + 2
         current_parent_1[:children] << h
       end
     end
     results
+  end
+
+  def tree_from_activity(from_nesting_level = 0, activity)
+    tree(from_nesting_level).select{|a| a[:activity] == activity}.first[:children]
   end
 end
