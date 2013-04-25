@@ -35,8 +35,8 @@ class ActivitiesController < ApplicationController
       render template: 'activities/quizzes'
     elsif params[:course_id]
       @course = Course.find(params[:course_id])
-      @current_module = @course.parent_module(@activity)
-      @inclusions_within_module = @course.inclusions_within_module(@current_module)
+      @current_inclusion = @course.parent_inclusion(@activity)
+      @inclusions_within_module = @course.inclusions_within_module(@current_inclusion)
       render 'course_activity'
     end
 
