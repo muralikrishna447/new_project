@@ -13,7 +13,7 @@
                 
 .container
   .row
-    .span2
+    .span3
       %ul.nav.nav-tabs.nav-stacked
         - @activities_within_module.each do |activity|
           %li{class: activity == @activity ? 'active' : ''}
@@ -25,8 +25,8 @@
                 = activity.title
                 %span.label.label-info
                   Soon
-    .span10
-      .container-fluid
+    .span9
+      .container-fluid.course_activity_content
         .row-fluid
           %h2= @activity.title
         .row-fluid
