@@ -1,18 +1,18 @@
 .span6.section#video-ingredient-unit
-  .video-container{data: {wysiwyg: "hero_visual"}, :itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+  .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
     = render 'show_hero_visual', activity: activity
   - cache [activity, 'ingredients'] do
     - if activity.description?
-      .edit-pair#edit-pair-description(ng-switch="" on="activeEdit=='edit-pair-description'" ng-mouseover="offerEdit()")
+      .edit-pair.section#edit-pair-description(ng-switch="" on="activeEdit=='edit-pair-description'" ng-mouseover="offerEdit()")
         .edit-pair-show(ng-switch-when="false")
-          .section.activity-description-wrapper
+          .activity-description-wrapper
             .activity-description#activity-description
               {{activity.description}}
               .activity-description-overlay
             .text-center(ng-hide="editMode")
               = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
         .edit-pair-form(ng-switch-when="true")
-          = text_area_tag :title, "hi", {data: {:'ng-model' => "activity.description"}}
+          = text_area_tag :title, "", {rows: "15", data: {:'ng-model' => "activity.description"}}
 
     - if activity.ingredients.any?
       .section

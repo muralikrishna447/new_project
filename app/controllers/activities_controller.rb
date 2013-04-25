@@ -100,14 +100,6 @@ class ActivitiesController < ApplicationController
     redirect_to "http://feeds.feedburner.com/ChefSteps"
   end
 
-  # Return a form for editing some part of an activity
-  def get_edit_partial
-    @activity = Activity.find(params[:id])
-    respond_to do |format|
-      format.js { render 'get_edit_partial', locals: {partial_name: params[:partial_name], edit_id: params[:edit_id]}}
-    end
-  end
-
   # Submit a form updating some part of an activity; record it in the revision database
   def update_edit_partial
     @activity = Activity.find(params[:id])
