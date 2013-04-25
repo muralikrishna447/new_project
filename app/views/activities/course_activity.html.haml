@@ -17,8 +17,14 @@
       %ul.nav.nav-tabs.nav-stacked
         - @activities_within_module.each do |activity|
           %li{class: activity == @activity ? 'active' : ''}
-            = link_to [@course, activity] do
-              = activity.title
+            - if activity.published
+              = link_to [@course, activity] do
+                = activity.title
+            - else
+              = link_to '#' do
+                = activity.title
+                %span.label.label-info
+                  Soon
     .span10
       .container-fluid
         .row-fluid

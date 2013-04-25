@@ -31,15 +31,13 @@ class ActivitiesController < ApplicationController
     @techniques = Activity.published.techniques.includes(:steps).last(6)
     @recipes = Activity.published.recipes.includes(:steps).last(6)
 
-    if params[:course_id]
+    if @activity.has_quizzes?
+      render template: 'activities/quizzes'
+    elsif params[:course_id]
       @course = Course.find(params[:course_id])
       @current_module = @course.parent_module(@activity)
       @activities_within_module = @course.activities_within_module(@current_module)
       render 'course_activity'
-    end
-
-    if @activity.has_quizzes?
-      render template: 'activities/quizzes'
     end
 
     @minimal = false
