@@ -21,6 +21,7 @@
 .container
   .row
     .span3.course-nav-side
+      .course-nav-side-marker
       %ul.nav.nav-tabs.nav-stacked
         - @course.child_inclusions(@current_module).each do |inclusion_1|
           %li{class: inclusion_1 == @current_inclusion ? 'active' : ''}
