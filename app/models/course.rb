@@ -77,49 +77,6 @@ class Course < ActiveRecord::Base
     return current_parent_module
   end
 
-  # def inclusions_within_module(module_inclusion)
-  #   current_inclusion = inclusions.includes(:activity).select{|i| i.id == module_inclusion.id}.first
-  #   current_inclusion_index = inclusions.index(current_inclusion)
-  #   inclusions_collected = false
-  #   i = current_inclusion_index
-  #   results = []
-  #   until inclusions_collected || i == inclusions.count - 1
-  #     i+=1
-  #     if inclusions[i] && inclusions[i].nesting_level == 0
-  #       inclusions_collected = true
-  #     else
-  #       results << inclusions[i]
-  #     end
-  #   end
-  #   return results
-  # end
-
-  # def tree(from_nesting_level = 0)
-  #   current_nesting_level = nil
-  #   current_parent_0 = nil
-  #   current_parent_1 = nil
-  #   results = []
-  #   inclusions.each do |inclusion|
-  #     h = Hash.new
-  #     h[:activity] = inclusion.activity
-  #     h[:children] = []
-  #     if inclusion.nesting_level == from_nesting_level
-  #       results << h
-  #       current_parent_0 = h
-  #     elsif inclusion.nesting_level == from_nesting_level + 1
-  #       current_parent_0[:children] << h
-  #       current_parent_1 = h
-  #     elsif inclusion.nesting_level == from_nesting_level + 2
-  #       current_parent_1[:children] << h
-  #     end
-  #   end
-  #   results
-  # end
-
-  # def tree_from_activity(from_nesting_level = 0, activity)
-  #   tree(from_nesting_level).select{|a| a[:activity] == activity}.first[:children]
-  # end
-
   def parent_inclusion(inclusion)
     current_nesting_level = inclusion.nesting_level
     parent_nesting_level = current_nesting_level == 0 ? nil : current_nesting_level - 1
