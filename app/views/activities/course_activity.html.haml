@@ -15,9 +15,15 @@
   .row
     .span3
       %ul.nav.nav-tabs.nav-stacked
-        - @course.child_inclusions(@current_module).each do |inclusion|
+        - @course.child_inclusions(@current_module).each do |inclusion_1|
           %li
-            = inclusion.activity.title
+            = link_to inclusion_1.activity.title, [@course, inclusion_1.activity]
+          - if inclusion_1 == @course.parent_inclusion(@current_inclusion) || inclusion_1 == @current_inclusion
+            - @course.child_inclusions(inclusion_1).each do |inclusion_2|
+              %li
+                = link_to [@course, inclusion_2.activity] do
+                  .indent-1
+                    = inclusion_2.activity.title
       / %ul.nav.nav-tabs.nav-stacked
       /   - @course.tree_from_activity(@current_inclusion.activity).each do |nested_1|
       /     %li{class: nested_1[:activity] == @activity ? 'active' : ''}
