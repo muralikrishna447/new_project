@@ -42,26 +42,25 @@
                       = inclusion_2.activity.title.html_safe
     .span9
       .container-fluid.course_activity_content
-        .row-fluid
-          %h3= @activity.title.html_safe
-        .row-fluid
-          = render 'main_activity_content', activity: @activity
+        = render 'main_course_activity_content', course: @course, activity: @activity
 
 .container-fluid.well-gray.section
   .row-fluid
-    .span12
-      .course-nav-bottom
-        - prev_activity = @course.prev_published_activity(@activity)
-        - next_activity = @course.next_published_activity(@activity)
-        - if prev_activity
-          .course-nav-bottom-left
-            = link_to [@course, prev_activity], class: 'btn btn-primary' do
-              %i.icon-chevron-left
-              = 'Previous: ' + prev_activity.title.html_safe
-        .course-nav-bottom-center
-          %h3= @activity.title
-        - if next_activity
-          .course-nav-bottom-right
-            = link_to [@course, next_activity], class: 'btn btn-primary' do
-              = 'Next: ' + next_activity.title.html_safe
-              %i.icon-chevron-right
+    .container
+      .row
+        .span12
+          .course-nav-bottom
+            - prev_activity = @course.prev_published_activity(@activity)
+            - next_activity = @course.next_published_activity(@activity)
+            - if prev_activity
+              .course-nav-bottom-left
+                = link_to [@course, prev_activity], class: 'btn btn-primary' do
+                  %i.icon-chevron-left
+                  = 'Previous'
+            .course-nav-bottom-center
+              %h3= @activity.title
+            - if next_activity
+              .course-nav-bottom-right
+                = link_to [@course, next_activity], class: 'btn btn-primary' do
+                  = 'Next'
+                  %i.icon-chevron-right

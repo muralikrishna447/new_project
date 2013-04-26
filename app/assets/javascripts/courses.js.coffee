@@ -1,4 +1,7 @@
 $ ->
+  if $('.course_activity_content').is('*')
+    expandSteps()
+
   i = 0
   $('.course-nav-top-prev').click ->
     navbar = $('#course-navbar-top')
