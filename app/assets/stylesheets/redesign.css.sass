@@ -12,6 +12,9 @@
     .row
       margin-left: inherit
 
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+  width: 1170px
+
 #slider-container
   background: $offwhite
   .row
@@ -1032,6 +1035,9 @@ h1, h2, h3, h4
     height: 100px
 
 @media (max-width: 1200px)
+  .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+    width: 940px
+
   .media-centered-medium
     height: 168px
 
@@ -1051,6 +1057,9 @@ h1, h2, h3, h4
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
+  .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+    width: 724px
+
   #hero-container
     #hero-carousel
       .media-heading
@@ -1084,6 +1093,9 @@ h1, h2, h3, h4
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
+  .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+    width: auto
+
   #hero-container
     width: 100%
     left: 0px
