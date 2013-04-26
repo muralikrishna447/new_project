@@ -4,8 +4,10 @@
       %h2= @course.title
   .row
     .span12.course-nav-top
-      .course-nav-top-prev.btn.btn-gray.btn-circle
-        %i.icon-chevron-left
+      - if @prev_module
+        = link_to [@course, @course.next_published_activity(@prev_module.activity)] do
+          .course-nav-top-prev.btn.btn-gray.btn-circle
+            %i.icon-chevron-left
       %ul.nav.nav-pills#course-navbar-top
         - hide_nav_item = true
         - @course.activity_modules.each_with_index do |activity_module, index|
@@ -60,17 +62,15 @@
       .row
         .span12
           .course-nav-bottom
-            - prev_activity = @course.prev_published_activity(@activity)
-            - next_activity = @course.next_published_activity(@activity)
-            - if prev_activity
+            - if @prev_activity
               .course-nav-bottom-left
-                = link_to [@course, prev_activity], class: 'btn btn-primary' do
+                = link_to [@course, @prev_activity], class: 'btn btn-primary' do
                   %i.icon-chevron-left
                   = 'Previous'
             .course-nav-bottom-center
               %h3= @activity.title
-            - if next_activity
+            - if @next_activity
               .course-nav-bottom-right
-                = link_to [@course, next_activity], class: 'btn btn-primary' do
+                = link_to [@course, @next_activity], class: 'btn btn-primary' do
                   = 'Next'
                   %i.icon-chevron-right

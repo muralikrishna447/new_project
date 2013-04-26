@@ -36,9 +36,12 @@ class ActivitiesController < ApplicationController
     elsif params[:course_id]
       @course = Course.find(params[:course_id])
       @current_module = @course.current_module(@activity)
-      # @current_inclusion = @course.parent_inclusion(@activity)
-      # @inclusions_within_module = @course.inclusions_within_module(@current_inclusion)
       @current_inclusion = @course.inclusions.where(activity_id: @activity.id).first
+      @prev_activity = @course.prev_published_activity(@activity)
+      @next_activity = @course.next_published_activity(@activity)
+      if @prev_activity
+        @prev_module = @course.current_module(@prev_activity)
+      end
       render 'course_activity'
     end
 
