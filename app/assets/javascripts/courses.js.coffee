@@ -2,6 +2,11 @@ $ ->
   if $('.course_activity_content').is('*')
     expandSteps()
 
+  $('.nav-expand-link').click ->
+    parent_id = $(this).parent('li').data('inclusion-id')
+    $("[data-parent='inclusion-id-" + parent_id + "']").each ->
+      $(this).toggle()
+
   i = 0
   $('.course-nav-top-prev').click ->
     navbar = $('#course-navbar-top')
