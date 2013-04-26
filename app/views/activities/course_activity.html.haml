@@ -13,8 +13,8 @@
                 
 .container
   .row
-    .span3
-      %ul.nav.nav-tabs.nav-stacked.course-nav-side
+    .span3.course-nav-side
+      %ul.nav.nav-tabs.nav-stacked
         - @course.child_inclusions(@current_module).each do |inclusion_1|
           %li{class: inclusion_1 == @current_inclusion ? 'active' : ''}
             - if inclusion_1.activity.published?
