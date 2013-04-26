@@ -4,6 +4,8 @@
       %h2= @course.title
   .row
     .span12.course-nav-top
+      .course-nav-top-prev.btn.btn-gray.btn-circle
+        %i.icon-chevron-left
       %ul.nav.nav-pills
         - hide_nav_item = true
         - @course.activity_modules.each_with_index do |activity_module, index|
