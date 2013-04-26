@@ -3,7 +3,7 @@
     .span12.section
       %h2= @course.title
   .row
-    .span12
+    .span12.course-nav-top
       %ul.nav.nav-pills
         - @course.activity_modules.each_with_index do |activity_module, index|
           %li{class: activity_module == @current_module.activity ? 'active' : ''}
