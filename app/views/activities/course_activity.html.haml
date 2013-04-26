@@ -4,8 +4,10 @@
       %h2= @course.title
   .row
     .span12.course-nav-top
-      .course-nav-top-prev.btn.btn-gray.btn-circle
-        %i.icon-chevron-left
+      - if @prev_module
+        = link_to [@course, @course.next_published_activity(@prev_module.activity)] do
+          .course-nav-top-prev.btn.btn-gray.btn-circle
+            %i.icon-chevron-left
       %ul.nav.nav-pills#course-navbar-top
         - hide_nav_item = true
         - @course.activity_modules.each_with_index do |activity_module, index|
@@ -24,22 +26,32 @@
       .course-nav-side-marker
       %ul.nav.nav-tabs.nav-stacked
         - @course.child_inclusions(@current_module).each do |inclusion_1|
-          %li{class: inclusion_1 == @current_inclusion ? 'active' : ''}
-            - if inclusion_1.activity.published?
+          - inclusion_1_active = inclusion_1 == @current_inclusion ? true : false
+          - inclusion_1_published = inclusion_1.activity.published
+          - if inclusion_1_active
+            %li{class: 'active', data: {:'inclusion-id' => inclusion_1.id}}
               = link_to inclusion_1.activity.title.html_safe, [@course, inclusion_1.activity]
-            - else
-              = link_to inclusion_1.activity.title.html_safe, '#'
-          - if inclusion_1 == @course.parent_inclusion(@current_inclusion) || inclusion_1 == @current_inclusion
-            - @course.child_inclusions(inclusion_1).each do |inclusion_2|
-              %li{class: inclusion_2 == @current_inclusion ? 'active' : ''}
-                - if inclusion_2.activity.published?
-                  = link_to [@course, inclusion_2.activity] do
-                    .indent-1
-                      = inclusion_2.activity.title.html_safe
-                - else
-                  = link_to '#' do
-                    .indent-1
-                      = inclusion_2.activity.title.html_safe
+          - elsif !inclusion_1_active && inclusion_1_published
+            %li{data: {:'inclusion-id' => inclusion_1.id}}
+              = link_to inclusion_1.activity.title.html_safe, [@course, inclusion_1.activity]
+          - elsif !inclusion_1_published && @course.child_inclusions(inclusion_1).any?
+            %li{data: {:'inclusion-id' => inclusion_1.id}}
+              = link_to inclusion_1.activity.title.html_safe, '#', class: 'nav-expand-link'
+          - @course.child_inclusions(inclusion_1).each do |inclusion_2|
+            - sibling_active = inclusion_1 == @course.parent_inclusion(@current_inclusion)
+            - if inclusion_1_active || sibling_active
+              - show_inclusion_2 = true
+            - active_class = inclusion_2 == @current_inclusion ? 'active' : ''
+            - show_class = show_inclusion_2 ? '' : 'hide'
+            %li{class: "#{active_class} #{show_class}", data: {parent: "inclusion-id-#{inclusion_1.id}"}}
+              - if inclusion_2.activity.published?
+                = link_to [@course, inclusion_2.activity] do
+                  .indent-1
+                    = inclusion_2.activity.title.html_safe
+              - else
+                = link_to '#' do
+                  .indent-1
+                    = inclusion_2.activity.title.html_safe
     .span9
       .container-fluid.course_activity_content
         = render 'main_course_activity_content', course: @course, activity: @activity
@@ -50,17 +62,15 @@
       .row
         .span12
           .course-nav-bottom
-            - prev_activity = @course.prev_published_activity(@activity)
-            - next_activity = @course.next_published_activity(@activity)
-            - if prev_activity
+            - if @prev_activity
               .course-nav-bottom-left
-                = link_to [@course, prev_activity], class: 'btn btn-primary' do
+                = link_to [@course, @prev_activity], class: 'btn btn-primary' do
                   %i.icon-chevron-left
                   = 'Previous'
             .course-nav-bottom-center
               %h3= @activity.title
-            - if next_activity
+            - if @next_activity
               .course-nav-bottom-right
-                = link_to [@course, next_activity], class: 'btn btn-primary' do
+                = link_to [@course, @next_activity], class: 'btn btn-primary' do
                   = 'Next'
                   %i.icon-chevron-right

@@ -1,5 +1,5 @@
 .row-fluid
-  %h3= @activity.title.html_safe
+  %h2.course-activity-header= @activity.title.html_safe
 
 .row-fluid
   .span12.section
@@ -16,7 +16,7 @@
         = image_tag filepicker_activity_hero_image(activity.featured_image_id), alt: activity.title, title: activity.title, itemprop: 'image'
 
 .row-fluid
-  .span6
+  .span12
     - if activity.description?
       .section
         :markdown
@@ -48,7 +48,8 @@
         %ul
           - activity.used_in_activities.published.each do |activity|
             %li= link_to activity.title.html_safe, activity
-  .span6.section
+.row-fluid
+  .span12.section
     .ordered-steps{:itemprop => "recipeInstructions"}
       - step_number = 0
       - activity.steps.each_with_index do |step,index|
