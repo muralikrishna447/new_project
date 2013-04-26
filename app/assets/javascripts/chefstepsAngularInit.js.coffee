@@ -3,12 +3,13 @@
 deepCopy = (obj) ->
   jQuery.extend(true, {}, obj)
 
-angular.module('ChefStepsApp', ["ngResource"]).controller 'ActivityController', ($scope, $resource) ->
-  Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")})
+angular.module('ChefStepsApp', ["ngResource", "ui"]).controller 'ActivityController', ($scope, $resource) ->
+  Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
   $scope.activity = Activity.get()
   $scope.undoStack = []
   $scope.undoIndex = -1
 
+  # Overall edit mode
   $scope.startEditMode = ->
     $scope.editMode = true
     $scope.undoStack = [deepCopy $scope.activity]
@@ -17,12 +18,15 @@ angular.module('ChefStepsApp', ["ngResource"]).controller 'ActivityController', 
   $scope.endEditMode = ->
     $scope.endEdit()
     $scope.editMode = false
+    $scope.activity.$update()
 
   $scope.cancelEditMode = ->
-    $scope.endEditMode()
+    $scope.endEdit()
+    $scope.editMode = false
     if $scope.undoAvailable
       $scope.activity = deepCopy $scope.undoStack[0]
 
+  # Undo/redo
   $scope.undo = ->
     if $scope.undoAvailable
       $scope.undoIndex -= 1
@@ -48,7 +52,9 @@ angular.module('ChefStepsApp', ["ngResource"]).controller 'ActivityController', 
   $scope.unofferEdit = ->
     $('#editTarget').hide().prependTo($('body'))
 
+  # Edit one group
   $scope.startEdit = ->
+    $scope.endEdit() # end previous
     pair = $('#editTarget').parent()
     $scope.activeEdit = pair.attr('id')
     $scope.unofferEdit()
@@ -84,6 +90,7 @@ angular.module('ChefStepsApp', ["ngResource"]).controller 'ActivityController', 
     false
 
   $scope.bodyClick = ->
-    if ! $scope.editActiveInElement(event.target)
-      $scope.endEdit()
+    if $scope.editMode && $scope.activeEdit
+      if $(event.target).is('body') || $(event.target).is('html')
+        $scope.endEdit()
 

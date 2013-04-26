@@ -21,7 +21,8 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  before_filter :require_admin, only: [:get_edit_partial, :update_edit_partial, :revert_to_version]
+
+  before_filter :require_admin, only: [:update]
   def require_admin
     unless admin_user_signed_in?
       flash[:error] = "You must be logged in as an administrator to do this"
@@ -70,8 +71,18 @@ class ActivitiesController < ApplicationController
   end
 
   def update
+    @activity = Activity.find(params[:id])
     respond_to do |format|
-      format.json { respond_with Activity.update(params[:id], params[:activity]) }
+      format.json do
+
+        @activity.store_revision do
+          @activity.last_edited_by = current_admin_user
+          @activity.attributes = params[:activity]
+          @activity.save!
+        end
+
+        render :json => @activity
+      end
     end
   end
 
@@ -110,30 +121,9 @@ class ActivitiesController < ApplicationController
         @activity.save!
       end
     end
-    @partial_name = params[:partial_name]
-    @edit_id = params[:edit_id]
-    @last_edit_version = (@activity.last_revision().revision + 1) rescue 1
     respond_to do |format|
       format.js { render 'get_show_partial'}
     end
-  end
-
-  # Get the non-edit show view for part of an activity; used when we cancel an edit from get_edit_partial
-  def get_show_partial
-    @activity = Activity.find(params[:id])
-    @partial_name = params[:partial_name]
-    @edit_id = params[:edit_id]
-    respond_to do |format|
-      format.js { render 'get_show_partial'}
-    end
-  end
-
-  # Back out of (one or more) committed edits
-  def revert_to_version
-    @activity = Activity.find(params[:id])
-    @activity.restore_revision!(params[:version])
-    puts  "Version #{params[:version]} has been restored and is the new version #{@activity.last_revision().revision + 1}"
-    redirect_to activity_path(@activity)
   end
 end
 

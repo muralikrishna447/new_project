@@ -45,6 +45,7 @@ GEM
     acts_as_revisionable (1.2.2)
       activerecord (>= 2.3.9)
     addressable (2.3.2)
+    angular-ui-rails (0.4.0.2)
     angularjs-rails (1.0.6)
     arbre (1.0.1)
       activesupport (>= 3.0.0)
@@ -403,6 +404,7 @@ DEPENDENCIES
   activeadmin
   acts-as-taggable-on
   acts_as_revisionable
+  angular-ui-rails
   angularjs-rails
   asset_sync
   better_errors

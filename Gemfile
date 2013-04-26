@@ -63,6 +63,7 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
   gem 'angularjs-rails'
+  gem 'angular-ui-rails'
 end
 
 group :development, :test do

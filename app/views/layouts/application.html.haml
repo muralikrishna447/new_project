@@ -23,9 +23,10 @@
     = render 'layouts/google_analytics' if Rails.env.production?
     = javascript_include_tag 'angular'
     = javascript_include_tag 'angular-resource'
+    = javascript_include_tag 'angular-ui'
     = javascript_include_tag 'chefstepsAngularInit'
 
-  %body(ng-app="ChefStepsApp" ng-controller="ActivityController" ng-click="bodyClick()")
+  %body(ng-app="ChefStepsApp" ng-controller="ActivityController" ng-click="bodyClick()" ui-keypress="{90:'alert(0)'}")
     = render 'layouts/navigation', external: false
 
     = yield :hero

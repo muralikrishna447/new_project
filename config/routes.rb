@@ -64,14 +64,7 @@ Delve::Application.routes.draw do
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
-  resources :activities, only: [:show] do
-    member do
-      get 'get_edit_partial' => 'activities#get_edit_partial'
-      get 'get_show_partial' => 'activities#get_show_partial'
-      post 'update_edit_partial' => 'activities#update_edit_partial'
-      get 'revert_to_version' => 'activities#revert_to_version'
-    end
-  end
+  resources :activities, only: [:show, :update]
   resources :techniques, only: [:index, :show]
   resources :sciences, only: [:index, :show]
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
