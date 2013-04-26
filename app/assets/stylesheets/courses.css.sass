@@ -7,6 +7,8 @@
 .course-nav-top
   font-family: 'Raleway', sans-serif
   position: relative
+  height: 34px
+  margin-bottom: 10px
   .course-nav-top-prev
     float: left
     margin: 0px
@@ -20,12 +22,18 @@
     &:hover
       background: gray
       color: white
+  .nav-pills > .active > a, .nav-pills > .active
+    background: white
+    color: $orange
+    font-weight: bold
   ul
     float: left
     li
       height: 34px
       overflow: hidden
       white-space: nowrap
+      .active
+        background-color: white
     .hide-course-navbar-item
       width: 0px
     .show-course-navbar-item
@@ -33,14 +41,32 @@
 
 .course-nav-side
   font-family: 'Raleway', sans-serif
+  position: relative
   border: 1px solid $orange
   border-radius: 5px
-  padding: 5px 0px
+  padding: 10px 5px
   @include boxsizing
   ul
     margin-bottom: 0px
   .nav-tabs.nav-stacked > li > a
     border: 0px
+  .nav-tabs.nav-stacked
+    .active
+      font-weight: bold
+  .course-nav-side-marker
+    position: absolute
+    top: -7px
+    left: 80px
+    width: 12px
+    height: 12px
+    border: 1px solid $orange
+    border-right: 0px
+    border-bottom: 0px
+    background: white
+    -moz-transform: rotate(45deg)
+    -webkit-transform: rotate(45deg)
+    -o-transform: rotate(45deg)
+    transform: rotate(45deg)
 
 .course-nav-bottom
   font-family: 'Raleway', sans-serif
