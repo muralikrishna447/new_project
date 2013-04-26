@@ -1,7 +1,7 @@
 .container.top-container
   .row
     .span12
-      %h1= @course.title + ' Course'
+      %h1= @course.title
   .row
     .span12
       %ul.nav.nav-pills
@@ -9,7 +9,7 @@
           %li{class: activity_module == @current_module.activity ? 'active' : ''}
             = link_to [@course, @course.next_published_activity(activity_module)] do
               = "#{index + 1}."
-              = activity_module.title
+              = activity_module.title.html_safe
                 
 .container
   .row
@@ -17,17 +17,25 @@
       %ul.nav.nav-tabs.nav-stacked
         - @course.child_inclusions(@current_module).each do |inclusion_1|
           %li{class: inclusion_1 == @current_inclusion ? 'active' : ''}
-            = link_to inclusion_1.activity.title, [@course, inclusion_1.activity]
+            - if inclusion_1.activity.published?
+              = link_to inclusion_1.activity.title.html_safe, [@course, inclusion_1.activity]
+            - else
+              = link_to inclusion_1.activity.title.html_safe, '#'
           - if inclusion_1 == @course.parent_inclusion(@current_inclusion) || inclusion_1 == @current_inclusion
             - @course.child_inclusions(inclusion_1).each do |inclusion_2|
               %li{class: inclusion_2 == @current_inclusion ? 'active' : ''}
-                = link_to [@course, inclusion_2.activity] do
-                  .indent-1
-                    = inclusion_2.activity.title
+                - if inclusion_2.activity.published?
+                  = link_to [@course, inclusion_2.activity] do
+                    .indent-1
+                      = inclusion_2.activity.title.html_safe
+                - else
+                  = link_to '#' do
+                    .indent-1
+                      = inclusion_2.activity.title.html_safe
     .span9
       .container-fluid.course_activity_content
         .row-fluid
-          %h2= @activity.title
+          %h2= @activity.title.html_safe
         .row-fluid
           = render 'main_activity_content', activity: @activity
 
@@ -41,11 +49,11 @@
           .course-nav-bottom-left
             = link_to [@course, prev_activity], class: 'btn btn-primary' do
               %i.icon-chevron-left
-              = 'Previous: ' + prev_activity.title
+              = 'Previous: ' + prev_activity.title.html_safe
         .course-nav-bottom-center
           %h3= @activity.title
         - if next_activity
           .course-nav-bottom-right
             = link_to [@course, next_activity], class: 'btn btn-primary' do
-              = 'Next: ' + next_activity.title
+              = 'Next: ' + next_activity.title.html_safe
               %i.icon-chevron-right
