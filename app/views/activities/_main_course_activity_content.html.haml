@@ -1,16 +1,22 @@
-.span6.section#video-ingredient-unit
-  .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-    - if activity.youtube_id?
-      .noprint
-        - if params[:autoplay]
-          %iframe{src: youtube_url(activity.youtube_id, 1)}
-        - else
-          %iframe{src: youtube_url(activity.youtube_id)}
-    - elsif activity.image_id?
-      = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title, itemprop: 'image'
-    - elsif activity.featured_image_id?
-      = image_tag filepicker_activity_hero_image(activity.featured_image_id), alt: activity.title, title: activity.title, itemprop: 'image'
-  - cache [activity, 'ingredients'] do
+.row-fluid
+  %h3= @activity.title.html_safe
+
+.row-fluid
+  .span12.section
+    .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+      - if activity.youtube_id?
+        .noprint
+          - if params[:autoplay]
+            %iframe{src: youtube_url(activity.youtube_id, 1)}
+          - else
+            %iframe{src: youtube_url(activity.youtube_id)}
+      - elsif activity.image_id?
+        = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title, itemprop: 'image'
+      - elsif activity.featured_image_id?
+        = image_tag filepicker_activity_hero_image(activity.featured_image_id), alt: activity.title, title: activity.title, itemprop: 'image'
+
+.row-fluid
+  .span6
     - if activity.description?
       .section
         :markdown
@@ -42,7 +48,6 @@
         %ul
           - activity.used_in_activities.published.each do |activity|
             %li= link_to activity.title.html_safe, activity
-- cache [course, activity, 'steps'] do
   .span6.section
     .ordered-steps{:itemprop => "recipeInstructions"}
       - step_number = 0

@@ -20,7 +20,7 @@
                 
 .container
   .row
-    .span2.course-nav-side
+    .span3.course-nav-side
       .course-nav-side-marker
       %ul.nav.nav-tabs.nav-stacked
         - @course.child_inclusions(@current_module).each do |inclusion_1|
@@ -40,12 +40,9 @@
                   = link_to '#' do
                     .indent-1
                       = inclusion_2.activity.title.html_safe
-    .span10
+    .span9
       .container-fluid.course_activity_content
-        .row-fluid
-          %h3= @activity.title.html_safe
-        .row-fluid
-          = render 'main_course_activity_content', course: @course, activity: @activity
+        = render 'main_course_activity_content', course: @course, activity: @activity
 
 .container-fluid.well-gray.section
   .row-fluid
