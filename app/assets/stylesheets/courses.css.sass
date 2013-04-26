@@ -44,7 +44,8 @@
   position: relative
   border: 1px solid $orange
   border-radius: 5px
-  padding: 10px 5px
+  padding: 10px 8px
+  font-size: 13px
   @include boxsizing
   ul
     margin-bottom: 0px
@@ -53,6 +54,10 @@
   .nav-tabs.nav-stacked
     .active
       font-weight: bold
+  .nav-tabs > li > a
+    padding: 5px
+  .nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a
+    border-radius: 0px
   .course-nav-side-marker
     position: absolute
     top: -7px
