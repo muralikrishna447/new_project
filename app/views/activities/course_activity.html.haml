@@ -5,8 +5,13 @@
   .row
     .span12.course-nav-top
       %ul.nav.nav-pills
+        - hide_nav_item = true
         - @course.activity_modules.each_with_index do |activity_module, index|
-          %li{class: activity_module == @current_module.activity ? 'active' : ''}
+          - active = activity_module == @current_module.activity ? 'active' : nil
+          - if active == 'active' && hide_nav_item
+            - hide_nav_item = false
+          - hide = hide_nav_item ? 'hide' : nil
+          %li{class: "#{active} #{hide}"}
             = link_to [@course, @course.next_published_activity(activity_module)] do
               = "#{index + 1}."
               = activity_module.title.html_safe
