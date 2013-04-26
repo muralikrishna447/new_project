@@ -13,8 +13,8 @@
                 
 .container
   .row
-    .span3.affix-parent
-      %ul.nav.nav-tabs.nav-stacked.course-nav-side{data: {spy: 'affix', :'offset-top' => '100'}}
+    .span3
+      %ul.nav.nav-tabs.nav-stacked.course-nav-side
         - @course.child_inclusions(@current_module).each do |inclusion_1|
           %li{class: inclusion_1 == @current_inclusion ? 'active' : ''}
             - if inclusion_1.activity.published?
@@ -32,7 +32,7 @@
                   = link_to '#' do
                     .indent-1
                       = inclusion_2.activity.title.html_safe
-    .span9.affix-parent
+    .span9
       .container-fluid.course_activity_content
         .row-fluid
           %h3= @activity.title.html_safe
