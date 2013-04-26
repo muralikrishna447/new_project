@@ -24,33 +24,6 @@
                 = link_to [@course, inclusion_2.activity] do
                   .indent-1
                     = inclusion_2.activity.title
-      / %ul.nav.nav-tabs.nav-stacked
-      /   - @course.tree_from_activity(@current_inclusion.activity).each do |nested_1|
-      /     %li{class: nested_1[:activity] == @activity ? 'active' : ''}
-      /       = link_to nested_1[:activity].title, [@course, nested_1[:activity]]
-      /     - @course.tree_from_activity(1, nested_1[:activity]).each do |nested_2|
-      /       %li{class: nested_2[:activity] == @activity ? 'active' : ''}
-      /         = link_to [@course, nested_2[:activity]] do
-      /           .indent-1
-      /             = nested_2[:activity].title
-
-      / %ul.nav.nav-tabs.nav-stacked
-      /   - @inclusions_within_module.each do |inclusion|
-      /     - inclusion_activity = inclusion.activity
-      /     %li{class: inclusion_activity == @activity ? 'active' : ''}
-      /       - if inclusion.nesting_level == 1
-      /         - if inclusion_activity.published
-      /           = link_to inclusion_activity.title, [@course, inclusion_activity]
-      /         - else
-      /           = link_to inclusion_activity.title, '#'
-      /       - elsif inclusion.nesting_level == 2
-      /         - if inclusion_activity.published
-      /           = link_to [@course, inclusion_activity] do
-      /             .indent-1
-      /               = inclusion_activity.title
-      /         - else
-      /           = link_to inclusion_activity.title, '#', class: 'nested-1'
-
     .span9
       .container-fluid.course_activity_content
         .row-fluid

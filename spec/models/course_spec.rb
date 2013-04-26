@@ -56,19 +56,19 @@ describe Course do
     c.activities.find { |x| x.title == "Fork Me"}.should == nil
   end
 
-  it 'returns the parent inclusion for an activity' do
+  it 'returns the parent inclusion for an inclusion' do
     c = course_first
     parent = activity1
-    a = activity4
     c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
+    a = c.inclusions.where(activity_id: activity4.id).first
     c.parent_inclusion(a).activity.should == parent
   end
 
-  it 'returns the activities within a module' do
+  it 'returns the child inclusions for an inclusion' do
     c = course_first
     activity_ids = [200,300,400]
     c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
     parent = c.inclusions.select{|i| i.activity.id == activity1.id}.first
-    c.inclusions_within_module(parent).map{|i| i.activity.id}.should == activity_ids
+    c.child_inclusions(parent).map{|i| i.activity.id}.should == activity_ids
   end
 end
