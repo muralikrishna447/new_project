@@ -1,0 +1,17 @@
+.row-fluid
+  .span12
+    %h1= @activity.title
+    %h4= @activity.description
+
+    #quizzes.hero-well.noprint
+      .container
+        - @activity.quizzes.each_slice(3) do |quizzes|
+          .row
+            - quizzes.each do |quiz|
+              .span4
+                = link_to [@course, quiz] do
+                  .image-with-caption
+                    - if quiz.has_image?
+                      = image_tag quiz.image.url, class: 'img-polaroid'
+                    .image-caption
+                      .image-caption-text= quiz.title
