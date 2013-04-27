@@ -9,7 +9,7 @@
           .row
             - quizzes.each do |quiz|
               .span4
-                = link_to [@course, quiz] do
+                = link_to quiz do
                   .image-with-caption
                     - if quiz.has_image?
                       = image_tag quiz.image.url, class: 'img-polaroid'
