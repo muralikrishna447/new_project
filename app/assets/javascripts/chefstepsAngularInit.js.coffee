@@ -3,7 +3,9 @@
 deepCopy = (obj) ->
   jQuery.extend(true, {}, obj)
 
-angular.module('ChefStepsApp', ["ngResource", "ui"]).controller 'ActivityController', ($scope, $resource) ->
+csApp = angular.module('ChefStepsApp', ["ngResource", "ui"])
+
+csApp.controller 'ActivityController', ($scope, $resource) ->
   Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
   $scope.activity = Activity.get()
   $scope.undoStack = []
@@ -93,4 +95,12 @@ angular.module('ChefStepsApp', ["ngResource", "ui"]).controller 'ActivityControl
     if $scope.editMode && $scope.activeEdit
       if $(event.target).is('body') || $(event.target).is('html')
         $scope.endEdit()
+
+csApp.directive 'cseditpair', ->
+  restrict: 'E',
+  transclude: true,
+  replace: true,
+  template: '<div class="edit-pair" ng-switch="" on="activeEdit==\'edit-pair-title2\'" ng-mouseover="offerEdit()" ng-transclude ></div>'
+
+
 

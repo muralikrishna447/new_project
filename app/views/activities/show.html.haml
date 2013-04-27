@@ -23,10 +23,18 @@
 
     .span6.relative
       .edit-pair#edit-pair-title(ng-switch="" on="activeEdit=='edit-pair-title'" ng-mouseover="offerEdit()")
-        .edit-pair-show(ng-switch-when="false")
+        %div(ng-switch-when="false")
           %h1.activity-title{itemprop: 'name'}
             {{activity.title}}
-        .edit-pair-form(ng-switch-when="true")
+        %div(ng-switch-when="true")
+          = text_area_tag :title, "hi", {class: "nohtml", rows: "2", data: {:'ng-model' => "activity.title"}}
+
+    .span6.relative
+      %csEditPair#edit-pair-title2
+        %div(ng-switch-when="false")
+          %h1.activity-title{itemprop: 'name'}
+            {{activity.title}}
+        %div(ng-switch-when="true")
           = text_area_tag :title, "hi", {class: "nohtml", rows: "2", data: {:'ng-model' => "activity.title"}}
 
     .span6.noprint
