@@ -17,17 +17,9 @@
   :javascript
     paramScaling = #{params[:scaling]};
 
-#activity-body.recipe_schema(ng-cloak){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
+#activity-body.recipe_schema(ng-cloak="" cseditgroup=""){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
 
   .row.printable
-
-    .span6.relative
-      .edit-pair#edit-pair-title(ng-switch="" on="activeEdit=='edit-pair-title'" ng-mouseover="offerEdit()")
-        %div(ng-switch-when="false")
-          %h1.activity-title{itemprop: 'name'}
-            {{activity.title}}
-        %div(ng-switch-when="true")
-          = text_area_tag :title, "hi", {class: "nohtml", rows: "2", data: {:'ng-model' => "activity.title"}}
 
     .span6.relative
       %csEditPair#edit-pair-title2
@@ -35,7 +27,7 @@
           %h1.activity-title{itemprop: 'name'}
             {{activity.title}}
         %div(ng-switch-when="true")
-          = text_area_tag :title, "hi", {class: "nohtml", rows: "2", data: {:'ng-model' => "activity.title"}}
+          = text_area_tag :title, "", {class: "nohtml", rows: "2", data: {:'ng-model' => "activity.title"}}
 
     .span6.noprint
 
@@ -115,6 +107,4 @@
                     = submit_tag 'Sign Up Now', class: 'btn btn-primary', id: 'subscribe-email'
                 .popup-bottom-close
                   %i.icon-remove
-
-#editTarget.hide(ng-mouseout="unofferEdit()" ng-click="startEdit()")
 

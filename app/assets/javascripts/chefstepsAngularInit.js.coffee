@@ -18,12 +18,12 @@ csApp.controller 'ActivityController', ($scope, $resource) ->
     $scope.undoIndex = 0
 
   $scope.endEditMode = ->
-    $scope.endEdit()
+    $scope.$broadcast('end_all_edits')
     $scope.editMode = false
     $scope.activity.$update()
 
   $scope.cancelEditMode = ->
-    $scope.endEdit()
+    $scope.$broadcast('end_all_edits')
     $scope.editMode = false
     if $scope.undoAvailable
       $scope.activity = deepCopy $scope.undoStack[0]
@@ -47,23 +47,7 @@ csApp.controller 'ActivityController', ($scope, $resource) ->
   $scope.redoAvailable = ->
     $scope.undoIndex < ($scope.undoStack.length - 1)
 
-  $scope.offerEdit = ->
-    if $scope.editMode && ! $scope.editActiveInElement(event.currentTarget)
-      $('#editTarget').prependTo($(event.currentTarget)).show()
-
-  $scope.unofferEdit = ->
-    $('#editTarget').hide().prependTo($('body'))
-
-  # Edit one group
-  $scope.startEdit = ->
-    $scope.endEdit() # end previous
-    pair = $('#editTarget').parent()
-    $scope.activeEdit = pair.attr('id')
-    $scope.unofferEdit()
-    event.stopPropagation()
-    window.wysiwygActivatedCallback(pair)
-
-  $scope.endEdit = ->
+  $scope.addUndo = ->
     # Get rid of any redos past the current spot and put the new state on the stack (unless no change)
     newUndo = deepCopy($scope.activity)
     if ! _.isEqual(newUndo, $scope.undoStack[$scope.undoIndex])
@@ -71,10 +55,6 @@ csApp.controller 'ActivityController', ($scope, $resource) ->
       $scope.undoStack.push newUndo
       $scope.undoIndex = $scope.undoStack.length - 1
       $scope.d("After Push")
-
-    if $scope.activeEdit
-      $scope.activeEdit = null
-      window.wysiwygDeactivatedCallback()
 
   $scope.d = (msg) ->
     console.log "------" + msg
@@ -84,23 +64,66 @@ csApp.controller 'ActivityController', ($scope, $resource) ->
       console.log idx.toString() + ": " + x.title
       idx += 1
 
-  $scope.editActiveInElement = (element) ->
-    if $scope.editMode && $scope.activeEdit
-      target_pair = $(element).closest('.edit-pair')
-      if (target_pair.length == 1) && (target_pair.attr('id') == $scope.activeEdit)
-        return true
-    false
-
   $scope.bodyClick = ->
-    if $scope.editMode && $scope.activeEdit
+    if $scope.editMode
       if $(event.target).is('body') || $(event.target).is('html')
-        $scope.endEdit()
+        $scope.$broadcast('end_all_edits')
+
+
+
+csApp.directive 'cseditgroup', ->
+  scope: true,
+  controller: ($scope, $element) ->
+
+    $scope.pairs = []
+
+    $scope.deactivateAll = ->
+      any_active = false
+      angular.forEach $scope.pairs, (pair) ->
+        if pair.active
+          pair.active = false
+          any_active = true
+      if any_active
+        $scope.addUndo()
+        window.wysiwygActivatedCallback($element)
+
+    $scope.$on 'end_all_edits', ->
+      $scope.deactivateAll()
+
+    $scope.activate = (pair) ->
+      $scope.deactivateAll()
+      pair.active = true
+
+    $scope.addPair = (pair) ->
+      pair.active = false
+      $scope.pairs.push(pair)
+
 
 csApp.directive 'cseditpair', ->
   restrict: 'E',
+  require: '^cseditgroup',
   transclude: true,
   replace: true,
-  template: '<div class="edit-pair" ng-switch="" on="activeEdit==\'edit-pair-title2\'" ng-mouseover="offerEdit()" ng-transclude ></div>'
+  scope: true,
+
+  link: (scope, element, attrs, groupControl) ->
+    scope.addPair(scope)
+
+  controller: ($scope, $element) ->
+    $scope.offerEdit = ->
+      if $scope.editMode && ! $scope.active
+        $($element).find('.edit-target').show()
+
+    $scope.unofferEdit = ->
+      $($element).find('.edit-target').hide()
+
+    # Edit one group
+    $scope.startEdit = ->
+      $scope.unofferEdit()
+      $scope.activate($scope)
+      event.stopPropagation()
+
+  template: '<div class="edit-pair" ng-switch="" on="active" ng-mouseover="offerEdit()"><div class="edit-target hide" ng-mouseout="unofferEdit()" ng-click="startEdit()"></div><div ng-transclude></div></div>'
 
 
 
