@@ -286,7 +286,7 @@ updateLengthUnits =  ->
 
 # Setup click handler for length toggles
 $ ->
-  $(".length-group").click ->
+  $(document).on 'click', ".length-group", ->
     csLengthUnits = if csLengthUnits == "cm" then "in" else "cm"
     # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
     updateLengthUnits(true)
