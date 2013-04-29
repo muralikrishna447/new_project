@@ -54,7 +54,10 @@
                     = inclusion_2.activity.title.html_safe
     .span9
       .container-fluid.course_activity_content
-        = render 'main_course_activity_content', course: @course, activity: @activity
+        - if @activity.has_quizzes?
+          = render 'quiz_content'
+        - else
+          = render 'main_course_activity_content', course: @course, activity: @activity
 
 .container-fluid.well-gray.section
   .row-fluid
