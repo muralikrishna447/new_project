@@ -99,6 +99,10 @@ csApp.directive 'cseditgroup', ->
       $scope.pairs.push(pair)
 
 
+# This guys is responsible for showing a highlight on hover that indicates it can
+# be edited, and switching between the show and edit children when activated. It
+# delegates to the cseditgroup to manage the radio-like behavior so that only one
+# pair is activated at a time, and to the app for the undo/redo.
 csApp.directive 'cseditpair', ->
   restrict: 'E',
   require: '^cseditgroup',
@@ -125,5 +129,12 @@ csApp.directive 'cseditpair', ->
 
   template: '<div class="edit-pair" ng-switch="" on="active" ng-mouseover="offerEdit()"><div class="edit-target hide" ng-mouseout="unofferEdit()" ng-click="startEdit()"></div><div ng-transclude></div></div>'
 
+csApp.directive 'cseditpairedit', ->
+  restrict: 'E',
+  transclude: true,
+  template: '<div ng-switch-when="true" ng-transclude></div>'
 
-
+csApp.directive 'cseditpairshow', ->
+  restrict: 'E',
+  transclude: true,
+  template: '<div ng-switch-when="false" ng-transclude></div>'

@@ -4,14 +4,14 @@
   - cache [activity, 'ingredients'] do
     - if activity.description?
       %csEditPair
-        %div(ng-switch-when="false")
+        %csEditPairShow
           .activity-description-wrapper
             .activity-description#activity-description
               {{activity.description}}
               .activity-description-overlay
             .text-center(ng-hide="editMode")
               = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
-        %div(ng-switch-when="true")
+        %csEditPairEdit
           = text_area_tag :title, "", {rows: "15", data: {:'ng-model' => "activity.description"}}
 
     - if activity.ingredients.any?
@@ -22,7 +22,13 @@
     - if activity.yield.present?
       .section
         %h4 Yield
-        %span{:itemprop => "recipeYield"}= activity.yield
+        %csEditPair
+          %csEditPairShow
+            %span{:itemprop => "recipeYield"}
+              {{activity.yield}}
+          %csEditPairEdit
+            = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
+
     - if activity.timing.present?
       .section
         %h4 Timing

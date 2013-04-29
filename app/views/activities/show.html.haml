@@ -22,11 +22,11 @@
   .row.printable
 
     .span6.relative
-      %csEditPair#edit-pair-title2
-        %div(ng-switch-when="false")
+      %csEditPair
+        %csEditPairShow
           %h1.activity-title{itemprop: 'name'}
             {{activity.title}}
-        %div(ng-switch-when="true")
+        %csEditPairEdit
           = text_area_tag :title, "", {class: "nohtml", rows: "2", data: {:'ng-model' => "activity.title"}}
 
     .span6.noprint
