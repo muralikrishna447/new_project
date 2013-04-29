@@ -7,7 +7,7 @@
         %csEditPairShow
           .activity-description-wrapper
             .activity-description#activity-description
-              {{activity.description}}
+              %div(ng-bind-html-unsafe="activity.description | markdown")
               .activity-description-overlay
             .text-center(ng-hide="editMode")
               = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
@@ -24,8 +24,8 @@
         %h4 Yield
         %csEditPair
           %csEditPairShow
-            %span{:itemprop => "recipeYield"}
-              {{activity.yield}}
+            %span(itemprop="recipeYield" ng-bind="{{activity.yield}}")
+
           %csEditPairEdit
             = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
 

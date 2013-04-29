@@ -64,6 +64,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'angularjs-rails'
   gem 'angular-ui-rails'
+  gem 'pagedown-rails', '~> 1.1.3'
 end
 
 group :development, :test do

@@ -3,6 +3,8 @@
 deepCopy = (obj) ->
   jQuery.extend(true, {}, obj)
 
+window.markdownConverter = Markdown.getSanitizingConverter()
+
 csApp = angular.module('ChefStepsApp', ["ngResource", "ui"])
 
 csApp.controller 'ActivityController', ($scope, $resource) ->
@@ -138,3 +140,26 @@ csApp.directive 'cseditpairshow', ->
   restrict: 'E',
   transclude: true,
   template: '<div ng-switch-when="false" ng-transclude></div>'
+
+###
+csApp.directive 'markdown', ->
+  priority: 1000
+  restrict: "A"
+  link: (scope, element, attrs) ->
+    htmlText = converter.makeHtml(element.text())
+    element.html htmlText###
+
+
+#csApp.filter 'markdown', (input, scope) ->
+#  input + "YEAAAAH!"
+
+#myApp = angular.module("myApp", [])
+csApp.filter "markdown", ->
+  (input) ->
+    if input && markdownConverter
+      #alert(markdownConverter.makeHTML(input))
+      result = markdownConverter.makeHtml(input)
+      result
+    else
+      ""
+
