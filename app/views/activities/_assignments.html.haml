@@ -22,7 +22,7 @@
       .upload-wrapper
         = image_tag '/assets/missing.png', class: "upload-photo-preview"
         = link_to '+', '#', class: 'upload-photo-btn'
-        %p= f.text_field :image_id, class: 'input-block-level upload-photo-field', required: true
+        %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
     .span8
       %h4 Recipe Name
       %p= f.text_field :recipe_name, class: 'input-block-level', required: true
