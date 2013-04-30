@@ -5,8 +5,9 @@ deepCopy = (obj) ->
 
 window.markdownConverter = Markdown.getSanitizingConverter()
 
-csApp = angular.module 'ChefStepsApp', ["ngResource", "ui"], ($locationProvider) ->
+csApp = angular.module 'ChefStepsApp', ["ngResource", "ui"], ["$locationProvider", ($locationProvider) ->
   $locationProvider.html5Mode(true)
+]
 
 csApp.$inject = ['$locationProvider']
 
