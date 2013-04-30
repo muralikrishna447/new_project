@@ -60,7 +60,6 @@ Delve::Application.routes.draw do
 
   resources :courses, only: [:index, :show] do
     resources :activities, only: [:show], path: ''
-    resources :assignments, only: [:show], path: ''
     member do
       post 'enroll' => 'courses#enroll'
     end

@@ -56,7 +56,7 @@
       .container-fluid.course_activity_content
         - if @activity.has_quizzes?
           = render 'quiz_content'
-        - elsif @activity.type == 'Assignment'
+        - elsif @activity.assignment_recipes?
           = render 'assignment'
         - else
           = render 'main_course_activity_content', course: @course, activity: @activity
