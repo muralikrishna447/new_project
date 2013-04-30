@@ -7,4 +7,6 @@
     .span3
       = render 'shared/media_box_2', size: 'medium', url: '#', title: assignment.child_activity.title, image: assignment.child_activity.featured_image
       .text-center
-        = link_to 'See the recipe', assignment.activity
+        = link_to 'See the recipe', assignment.child_activity
+  .span3
+    = render 'shared/media_box_2', size: 'medium', url: '#', title: 'Your own recipe', image: nil
