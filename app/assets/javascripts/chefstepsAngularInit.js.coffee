@@ -8,6 +8,8 @@ window.markdownConverter = Markdown.getSanitizingConverter()
 csApp = angular.module 'ChefStepsApp', ["ngResource", "ui"], ($locationProvider) ->
   $locationProvider.html5Mode(true)
 
+csApp.$inject = ['$locationProvider']
+
 csActivityController = csApp.controller 'ActivityController', ($scope, $resource, $location) ->
   Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
 #  extraParams = {}
