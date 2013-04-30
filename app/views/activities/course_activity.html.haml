@@ -57,7 +57,7 @@
         - if @activity.has_quizzes?
           = render 'quiz_content'
         - elsif @activity.assignments.any?
-          = render 'assignment'
+          = render 'assignments'
         - else
           = render 'main_course_activity_content', course: @course, activity: @activity
 

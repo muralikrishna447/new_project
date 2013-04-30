@@ -1,0 +1,10 @@
+.row-fluid
+  .span12
+    %h2= @activity.title
+    %p= @activity.description
+.row-fluid
+  - @activity.assignments.each do |assignment|
+    .span3
+      = render 'shared/media_box_2', size: 'medium', url: '#', title: assignment.child_activity.title, image: assignment.child_activity.featured_image
+      .text-center
+        = link_to 'See the recipe', assignment.activity
