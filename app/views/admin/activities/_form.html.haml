@@ -29,7 +29,7 @@
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
     = f.input :yield
-    = f.input :assignment_recipes, as: :select, collection: Activity.published.recipes, multiple: true
+    = f.input :child_activities, as: :select, collection: Activity.published.recipes, multiple: true
 
   = section("Ingredients", f) do
     .ingredient-table-div

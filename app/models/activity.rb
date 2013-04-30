@@ -22,6 +22,9 @@ class Activity < ActiveRecord::Base
   has_many :user_activities
   has_many :users, through: :user_activities
 
+  has_many :assignments
+  has_many :child_activities, through: :assignments
+
   belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
 
   scope :with_video, where("youtube_id <> ''")
@@ -33,7 +36,7 @@ class Activity < ActiveRecord::Base
 
   serialize :activity_type, Array
   serialize :assignment_recipes, Array
-  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :assignment_recipes
+  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
@@ -200,10 +203,6 @@ class Activity < ActiveRecord::Base
     else
       step_images.last
     end
-  end
-
-  def assignments
-    Activity.where('id IN (?)', assignment_recipes)
   end
 
   private

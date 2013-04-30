@@ -1,2 +1,2 @@
 $ ->
-  $('#activity_assignment_recipes').select2()
+  $('#activity_child_activity_ids').select2()

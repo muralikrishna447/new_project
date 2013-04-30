@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130430004200) do
+ActiveRecord::Schema.define(:version => 20130430020837) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -108,6 +108,15 @@ ActiveRecord::Schema.define(:version => 20130430004200) do
   end
 
   add_index "answers", ["question_id", "user_id"], :name => "index_answers_on_question_id_and_user_id", :unique => true
+
+  create_table "assignments", :force => true do |t|
+    t.integer  "activity_id"
+    t.integer  "child_activity_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "assignments", ["activity_id", "child_activity_id"], :name => "index_assignments_on_activity_id_and_child_activity_id"
 
   create_table "box_sort_images", :force => true do |t|
     t.integer  "question_id",                        :null => false

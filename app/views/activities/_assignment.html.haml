@@ -6,4 +6,4 @@
 .row-fluid
   - @activity.assignments.each do |assignment|
     .span4
-      = render 'shared/media_box_2', size: 'medium', url: activity_path(assignment), title: assignment.title, image: assignment.featured_image
+      = render 'shared/media_box_2', size: 'medium', url: activity_path(assignment.child_activity), title: assignment.child_activity.title, image: assignment.child_activity.featured_image
