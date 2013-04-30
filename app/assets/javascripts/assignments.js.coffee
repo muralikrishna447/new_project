@@ -1,4 +1,8 @@
 $ ->
   $('.assignment').click ->
-    activity_id = $(this).find('.media-box-2').data('object').split('-')[1]
+    box = $(this).find('.media-box-2')
+    activity_id = box.data('object').split('-')[1]
+    activity_title = $.trim(box.text())
+
     $('#upload_activity_id').val(activity_id)
+    $('#upload_recipe_name').val(activity_title)
