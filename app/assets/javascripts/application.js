@@ -13,3 +13,4 @@
 //= require horizontal_slider
 //= require courses
 //= require uploads
+//= require assignments
