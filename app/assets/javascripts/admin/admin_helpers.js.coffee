@@ -204,6 +204,8 @@ updateDiff = ->
   )
 
 
+
+
 $ ->
 
   $('.preview-group select').on "change", (event) ->
