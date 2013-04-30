@@ -21,8 +21,9 @@
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
     = render 'layouts/google_analytics' if Rails.env.production?
+    = javascript_include_tag 'application_head'
 
-  %body
+  %body(ng-app="ChefStepsApp" ng-controller="ActivityController" ng-click="bodyClick()" ui-keypress="{90:'alert(0)'}")
     = render 'layouts/navigation', external: false
 
     .container

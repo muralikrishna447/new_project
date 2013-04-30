@@ -23,4 +23,7 @@
  *= require media_objects
  *= require horizontal_slider
  *= require courses
+ *= require bootstrap-wysihtml5
+ *= require angular-ui
+ *= require markdown
  */

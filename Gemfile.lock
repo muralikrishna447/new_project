@@ -45,6 +45,8 @@ GEM
     acts_as_revisionable (1.2.2)
       activerecord (>= 2.3.9)
     addressable (2.3.2)
+    angular-ui-rails (0.4.0.2)
+    angularjs-rails (1.0.6)
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (3.0.2)
@@ -59,6 +61,8 @@ GEM
     bootstrap-sass-rails (2.3.0.0)
       railties (>= 3.1.0)
       sass-rails (>= 3.1.0)
+    bootstrap-wysihtml5-rails (0.3.1.19)
+      railties (>= 3.0)
     bourbon (3.1.1)
       sass (>= 3.2.0)
       thor
@@ -78,7 +82,14 @@ GEM
       ffi (~> 1.0, >= 1.0.6)
     choice (0.1.6)
     chunky_png (1.2.6)
+    client_side_validations (3.2.5)
+    client_side_validations-formtastic (2.2.1)
+      client_side_validations (~> 3.2.0)
+      formtastic (~> 2.2.0)
     coderay (1.0.8)
+    coffee-filter (0.1.3)
+      coffee-script (>= 2.2.0)
+      haml (< 4.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -256,6 +267,8 @@ GEM
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
     orm_adapter (0.4.0)
+    pagedown-rails (1.1.3)
+      railties (> 3.1)
     pg (0.14.1)
     pg_search (0.5.7)
       activerecord (>= 3)
@@ -393,13 +406,19 @@ DEPENDENCIES
   activeadmin
   acts-as-taggable-on
   acts_as_revisionable
+  angular-ui-rails
+  angularjs-rails
   asset_sync
   better_errors
   binding_of_caller
   bootstrap-sass-rails
+  bootstrap-wysihtml5-rails
   bullet
   cache_digests
   capybara
+  client_side_validations
+  client_side_validations-formtastic
+  coffee-filter
   coffee-rails (~> 3.2.1)
   comma
   compass-rails
@@ -437,6 +456,7 @@ DEPENDENCIES
   oauth2
   omniauth
   omniauth-facebook
+  pagedown-rails (~> 1.1.3)
   pg
   pg_search
   poltergeist
