@@ -1,3 +1,9 @@
-.span12
-  %h2= @activity.title
-  %p= @activity.description
+.row-fluid
+  .span12
+    %h2= @activity.title
+    %p= @activity.description
+
+.row-fluid
+  - @activity.assignments.each do |assignment|
+    .span4
+      = render 'shared/media_box_2', size: 'medium', url: activity_path(assignment), title: assignment.title, image: assignment.featured_image

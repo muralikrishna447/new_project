@@ -202,6 +202,10 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  def assignments
+    Activity.where('id IN (?)', assignment_recipes)
+  end
+
   private
 
   def reject_invalid_equipment(equipment_attrs)
