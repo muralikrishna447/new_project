@@ -10,7 +10,7 @@ csApp = angular.module 'ChefStepsApp', ["ngResource", "ui"], ($locationProvider)
 
 csApp.$inject = ['$locationProvider']
 
-csActivityController = csApp.controller 'ActivityController', ($scope, $resource, $location) ->
+csApp.controller 'ActivityController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
   Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
 #  extraParams = {}
 #  extraParams["version"] = $location.search().version if $location.search().version?
@@ -77,9 +77,8 @@ csActivityController = csApp.controller 'ActivityController', ($scope, $resource
     if $scope.editMode
       if $(event.target).is('body') || $(event.target).is('html')
         $scope.$broadcast('end_all_edits')
+]
 
-
-csActivityController.$inject = ['$scope', '$resource', '$location']
 
 csApp.directive 'cseditgroup', ->
   scope: true,
