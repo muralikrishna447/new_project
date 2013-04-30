@@ -10,3 +10,38 @@
         = link_to 'See the recipe', assignment.child_activity
   .span3
     = render 'shared/media_box_2', size: 'medium', url: '#', title: 'Your own recipe', image: nil
+
+.row-fluid
+  %hr
+
+= form_for @upload do |f|
+  = f.text_field :activity_id
+  .row-fluid
+    .span4
+      %h4 Upload a Photo
+      .upload-wrapper
+        = image_tag '/assets/missing.png', class: "upload-photo-preview"
+        = link_to '+', '#', class: 'upload-photo-btn'
+        %p= f.text_field :image_id, class: 'input-block-level upload-photo-field', required: true
+    .span8
+      %h4 Recipe Name
+      %p= f.text_field :recipe_name, class: 'input-block-level', required: true
+      %h4 Notes
+      %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
+      = f.submit 'Finish The Course!', class: 'btn btn-primary btn-large'
+
+  / .row-fluid
+  /   .filepicker-group
+  /     -if defined? label_text
+  /       = label_tag '', label_text, class: "label"
+  /     = f.hidden_field :image_id, class: "filepicker-real-file"
+  /     .filepicker-preview-group
+  /       = image_tag '/assets/missing.png', class: "filepicker-preview"
+  /       .btn-small.remove-filepicker-image
+  /         %i.icon-remove
+  /     .filepicker-subgroup
+  /       .filepicker-pick-button.btn-small.btn-warning
+  /         Pick file
+  /       .filepicker-drop-pane.btn-small.btn-warning
+  /         Or drop file here
+

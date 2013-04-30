@@ -12,3 +12,4 @@
 //= require scroll_shadow
 //= require horizontal_slider
 //= require courses
+//= require uploads

@@ -42,6 +42,10 @@ class ActivitiesController < ApplicationController
       if @prev_activity
         @prev_module = @course.current_module(@prev_activity)
       end
+      if @activity.assignments.any?
+        @upload = Upload.new
+        session[:return_to] = request.fullpath
+      end
       render 'course_activity'
     end
 
