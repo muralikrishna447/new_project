@@ -204,6 +204,13 @@ updateDiff = ->
   )
 
 
+
+# Delay a little so angular can load. Tacky.
+scheduleDiff = ->
+  setTimeout (-> updateDiff()), 1000
+
+
+
 $ ->
 
   $('.preview-group select').on "change", (event) ->
@@ -221,14 +228,14 @@ $ ->
     cw = $(this).get(0).contentWindow
     cw.expandSteps()
     #$(this).height(cw.document.body.scrollHeight)
-    updateDiff()
+    scheduleDiff()
     $('#loading-left').fadeOut()
 
   $('#preview-right').load ->
     cw = $(this).get(0).contentWindow
     cw.expandSteps()
     #$(this).height(cw.document.body.scrollHeight)
-    updateDiff()
+    scheduleDiff()
     $('#loading-right').fadeOut()
 
 

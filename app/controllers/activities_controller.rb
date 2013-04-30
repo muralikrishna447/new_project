@@ -32,12 +32,12 @@ class ActivitiesController < ApplicationController
 
   def show
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+    if params[:version] && params[:version].to_i <= @activity.last_revision().revision
+      @activity = @activity.restore_revision(params[:version])
+    end
 
     respond_to do |format|
       format.html do
-        if params[:version] && params[:version].to_i <= @activity.last_revision().revision
-          @activity = @activity.restore_revision(params[:version])
-        end
 
         @techniques = Activity.published.techniques.includes(:steps).last(6)
         @recipes = Activity.published.recipes.includes(:steps).last(6)
