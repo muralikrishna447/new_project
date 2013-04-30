@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130430020837) do
+ActiveRecord::Schema.define(:version => 20130430064220) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -333,6 +333,16 @@ ActiveRecord::Schema.define(:version => 20130430020837) do
 
   create_table "tags", :force => true do |t|
     t.string "name"
+  end
+
+  create_table "uploads", :force => true do |t|
+    t.integer  "activity_id"
+    t.integer  "user_id"
+    t.string   "recipe_name"
+    t.text     "image_id"
+    t.text     "notes"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "user_activities", :force => true do |t|

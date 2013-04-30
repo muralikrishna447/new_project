@@ -25,6 +25,9 @@ class Activity < ActiveRecord::Base
   has_many :assignments
   has_many :child_activities, through: :assignments
 
+  has_many :uploads
+  has_many :upload_users, through: :uploads, source: :user
+
   belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
 
   scope :with_video, where("youtube_id <> ''")
