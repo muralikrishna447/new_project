@@ -38,7 +38,6 @@ class Activity < ActiveRecord::Base
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
   serialize :activity_type, Array
-  serialize :assignment_recipes, Array
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
