@@ -155,7 +155,6 @@ window.wysiwygActivatedCallback = (elem) ->
           "</li>"###
 
 window.wysiwygDeactivatedCallback = (elem) ->
-  prepareForScaling()
   adjustActivityLayout()
 
 $ ->

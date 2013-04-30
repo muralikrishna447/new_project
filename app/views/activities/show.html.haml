@@ -69,17 +69,17 @@
       .span12
         %h3 Techniques
         #technique-carousel
-          //= render 'shared/horizontal_scroller', items: @techniques
+          = render 'shared/horizontal_scroller', items: @techniques
         %h3 Recipes
         #related-carousel
-          //= render 'shared/horizontal_scroller', items: @recipes
+          = render 'shared/horizontal_scroller', items: @recipes
 
     .row(ng-hide="editMode")
       .span12
         %h3 Discussion
         .section
           - disqus_id = "activity-#{@activity.id}"
-          //= render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
+          = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
 
 - if @course
   .modal.hide.fade#syllabus-modal

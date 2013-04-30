@@ -28,7 +28,6 @@ prepareForScaling = ->
     if ! $(element).data("origValue")
 
       origValue = Number($(element).text())
-      console.log("Got one: " + origValue)
       cell = $(element).parent()
       row = cell.parent()
       unit_cell = row.children('.unit')
@@ -36,26 +35,25 @@ prepareForScaling = ->
       if unit_cell.text() == "kg"
         origValue *= 1000
         unit_cell.text("g")
+
       if unit_cell.text() == "a/n" || unit_cell.text() == ""
         $(element).parent().children().hide()
-
-      $(element).data("origValue", origValue)
+      else
+        if origValue == 60
+          debugger
+        console.log("Got one: " + origValue)
+        $(element).data("origValue", origValue)
 
   $('.yield').each (i, element) =>
     if ! $(element).data("origValue")
       origValue = Number($(element).text())
       $(element).data("origValue", origValue)
 
-  # Update to preferred units stored in the cookie
-  # This cookie code works but we decided that we want to encourage metric, so not using now,
-  # forces user to click to ounces every time if they are that stubborn.
-  # csUnits = $.cookie csUnitsCookieName
-  updateUnits(false)
-
-window.prepareForScaling = prepareForScaling
 
 $ ->
-  prepareForScaling()
+  updateUnits(false)
+
+
 
 # Setup click handler for units toggle
 $ ->
@@ -191,6 +189,7 @@ updateOneRowUnits = ->
 
 # Update all rows
 updateUnits = (animate) ->
+  prepareForScaling()
   if (animate)
     # animate all the values and units down ...
     $('.qtyfade').fadeOut "fast"
