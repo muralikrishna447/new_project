@@ -9,8 +9,8 @@ expandSteps = ->
   $('.ordered-steps').height 'inherit'
   $('.step-image').each ->
     $(this).show 'blind', {direction: 'vertical'}, 500
-  $('.step-ingredients-source').each ->
-    $(this).show 'blind', {direction: 'vertical'}, 500
+  # $('.step-ingredients-source').each ->
+  #   $(this).show 'blind', {direction: 'vertical'}, 500
   $('.step-video').each ->
     $(this).show 'blind', {direction: 'vertical'}, 500
   $('.step-actions').each ->
@@ -23,8 +23,8 @@ collapseSteps = (height) ->
   $('.ordered-steps').height height
   $('.step-image').each ->
     $(this).hide 'blind', {direction: 'vertical'}, 500
-  $('.step-ingredients-source').each ->
-    $(this).hide 'blind', {direction: 'vertical'}, 500
+  # $('.step-ingredients-source').each ->
+  #   $(this).hide 'blind', {direction: 'vertical'}, 500
   $('.step-video').each ->
     $(this).hide 'blind', {direction: 'vertical'}, 500
   $('.step-actions').each ->
