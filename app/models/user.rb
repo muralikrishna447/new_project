@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
   has_many :enrollments
   has_many :courses, through: :enrollments
 
+  has_many :uploads
+  has_many :activities, through: :uploads
+
   serialize :viewed_activities, Array
 
   gravtastic

@@ -13,6 +13,34 @@
         .span10
           %h1= @user.name
 
+.container
+  .row
+    .span2.well
+      %h4 Badges
+    .span6
+      %h4 Bio
+      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
+      %ul.nav.nav-tabs
+        %li.active
+          = link_to 'Recipes', '#recipes', data: {toggle: 'tab'}
+        %li
+          = link_to 'Courses', '#courses', data: {toggle: 'tab'}
+      .tab-content
+        .tab-pane.active#recipes
+          - @user.uploads.each do |upload|
+            .row.section
+              .span3
+                - if upload.image_id?
+                  = image_tag filepicker_gallery_image(upload.image_id)
+              .span3
+                %h4= upload.recipe_name
+                %p= upload.notes
+        .tab-pane#courses
+          - @user.courses.each do |course|
+            = render 'shared/media_box', size: 'medium', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image
+    .span4
+      %h4 Timeline
+
 
 / .container#main-container
 /   .row.section

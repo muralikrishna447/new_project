@@ -2,4 +2,5 @@
   = link_to url do
     - if image
       = image_tag filepicker_gallery_image(image)
+    - if title
       = truncate(title, length: 35)
