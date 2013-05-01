@@ -15,7 +15,7 @@
 
 .container
   .row
-    .span2.well
+    .span2.well.profile-badges
       %h4 Badges
     .span6
       %h4 Bio
@@ -40,6 +40,9 @@
             = render 'shared/media_box', size: 'medium', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image
     .span4
       %h4 Timeline
+
+= content_for :footer do
+  = render 'layouts/footer'
 
 
 / .container#main-container
