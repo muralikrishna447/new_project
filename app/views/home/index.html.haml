@@ -13,14 +13,14 @@
   .row.section
     - if @courses.any?
       - @courses.each do |course|
-        .span4.offset1
+        .span4
           = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image, object: course
-        .span7
-          %p.lead 
-            %br
-            %strong With award-winning Chefs to Help You Succeed
-            %br
-            The James Beard award-winning culinary team at ChefSteps, along with its active global community of both novice and experienced cooks, will help you become more confident and creative in the kitchen.
+      .span4
+        %p.lead 
+          %br
+          %strong With award-winning Chefs to Help You Succeed
+          %br
+          The James Beard award-winning culinary team at ChefSteps, along with its active global community of both novice and experienced cooks, will help you become more confident and creative in the kitchen.
 
     /.span4
     /  .media-box-2
