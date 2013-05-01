@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   has_many :uploads
   has_many :activities, through: :uploads
 
+  has_many :events
+
   serialize :viewed_activities, Array
 
   gravtastic

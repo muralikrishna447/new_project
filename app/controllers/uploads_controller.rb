@@ -6,7 +6,7 @@ class UploadsController < ApplicationController
     if @upload.save
       redirect_to session[:return_to], notice: 'Your photo has been upload!'
       session[:return_to] = nil
-    else
     end
+    track_event @upload
   end
 end

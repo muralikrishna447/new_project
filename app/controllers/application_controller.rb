@@ -18,5 +18,13 @@ class ApplicationController < ActionController::Base
     user_profile_path(user)
   end
 
+private
+  
+  def track_event(trackable, action = params[:action])
+    if current_user
+      current_user.events.create! action: action, trackable: trackable
+    end
+  end
+
 end
 

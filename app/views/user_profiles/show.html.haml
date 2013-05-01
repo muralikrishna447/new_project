@@ -40,6 +40,9 @@
             = render 'shared/media_box', size: 'medium', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image
     .span4
       %h4 Timeline
+      - @user.events.timeline.each do |event|
+        = div_for event do
+          = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event
 
 = content_for :footer do
   = render 'layouts/footer'

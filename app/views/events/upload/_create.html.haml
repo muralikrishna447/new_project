@@ -1,0 +1,4 @@
+%div
+  = image_tag filepicker_gallery_image(event.trackable.image_id)
+%div= "you uploaded a photo for #{link_to event.trackable.activity.title, event.trackable.activity}".html_safe
+%div= time_ago_in_words(event.created_at) + ' ago'
