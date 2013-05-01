@@ -38,6 +38,8 @@
         .tab-pane#courses
           - @user.courses.each do |course|
             = render 'shared/media_box', size: 'medium', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image
+            = @user.events.where(:trackable_type => 'Inclusion').map(&:trackable_id).uniq.count
+            = course.inclusions.where('nesting_level <> ?', 0).count
     .span4
       %h4 Timeline
       - @user.events.timeline.each do |event|

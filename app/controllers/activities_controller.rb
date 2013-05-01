@@ -47,6 +47,9 @@ class ActivitiesController < ApplicationController
         session[:return_to] = request.fullpath
       end
       render 'course_activity'
+      track_event @current_inclusion
+    else
+      track_event @activity
     end
 
     @minimal = false
@@ -60,8 +63,6 @@ class ActivitiesController < ApplicationController
     @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
     @viewed_activities << [@activity.id, DateTime.now]
     cookies[:viewed_activities] = @viewed_activities.to_json
-
-    track_event @activity
   end
 
   # This is the base feed that we tell feedburner about. Users should never see this.
