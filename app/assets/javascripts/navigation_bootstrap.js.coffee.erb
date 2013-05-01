@@ -12,9 +12,6 @@ class ChefSteps.NavigationBootstrap
       type: "GET"
       success: @loadHeader
 
-  # loadCSS: =>
-  #   jQuery(@cssLink).prependTo('head')
-
   loadHeader: (response) =>
     jQuery(@headerTarget).html(response)
 
@@ -23,7 +20,6 @@ class ChefSteps.NavigationBootstrap
       top.location = $(this).attr('href')
 
   bootstrap: =>
-    # @loadCSS()
     @getHeader()
     @fixNavLinks()
 
