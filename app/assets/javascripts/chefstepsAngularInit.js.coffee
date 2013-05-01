@@ -5,16 +5,13 @@ deepCopy = (obj) ->
 
 window.markdownConverter = Markdown.getSanitizingConverter()
 
-csApp = angular.module 'ChefStepsApp', ["ngResource", "ui"]
-#, ["$locationProvider", ($locationProvider) ->
-#  $locationProvider.html5Mode(true)
-#]
-
-csApp.$inject = ['$locationProvider']
+csApp = angular.module 'ChefStepsApp', ["ngResource", "ui"], ["$locationProvider", ($locationProvider) ->
+  $locationProvider.html5Mode(true)
+]
 
 csApp.controller 'ActivityController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
   Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
-  #$scope.activity = Activity.get($location.search())
+  $scope.activity = Activity.get($location.search())
   $scope.activity = Activity.get()
   $scope.undoStack = []
   $scope.undoIndex = -1
