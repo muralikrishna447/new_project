@@ -39,8 +39,6 @@ class ActivitiesController < ApplicationController
     respond_to do |format|
       format.html do
 
-        @live_public_version = (@activity.last_revision().revision + 1) rescue 1
-
         @techniques = Activity.published.techniques.includes(:steps).last(6)
         @recipes = Activity.published.recipes.includes(:steps).last(6)
 
@@ -63,6 +61,11 @@ class ActivitiesController < ApplicationController
         @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
         @viewed_activities << [@activity.id, DateTime.now]
         cookies[:viewed_activities] = @viewed_activities.to_json
+
+        # If this is a crawler, render a basic HTML page for SEO that doesn't depend on Angular
+        if params.has_key?(:'_escaped_fragment_')
+          render template: 'activities/static_html'
+        end
       end
 
       format.json {  render :json => @activity }

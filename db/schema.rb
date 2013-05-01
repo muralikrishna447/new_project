@@ -45,8 +45,6 @@ ActiveRecord::Schema.define(:version => 20130423001211) do
     t.text     "image_id"
     t.text     "featured_image_id"
     t.string   "activity_type"
-    t.integer  "discussion_id"
-    t.string   "discussion_url"
     t.integer  "last_edited_by_id"
   end
 

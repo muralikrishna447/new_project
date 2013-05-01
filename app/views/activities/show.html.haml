@@ -12,6 +12,12 @@
     %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.image_id)}
   - elsif @activity.featured_image_id?
     %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.featured_image_id)}
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()"}
+
+
+// This is how the crawler knows to request the _escaped_fragment_ page
+- content_for :ajax_seo do
+  %meta{name: "fragment", content: "!"}
 
 -if params[:scaling]
   :javascript
@@ -24,8 +30,7 @@
     .span6.relative
       %csEditPair
         %csEditPairShow
-          %h1.activity-title{itemprop: 'name'}
-            {{activity.title}}
+          %h1.activity-title(ng-bind-html-unsafe="activity.title"){itemprop: 'name'}
         %csEditPairEdit
           = text_area_tag :title, "", {class: "nohtml", rows: "2", data: {:'ng-model' => "activity.title"}}
 
