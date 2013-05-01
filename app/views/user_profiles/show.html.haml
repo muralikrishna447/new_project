@@ -22,11 +22,16 @@
       %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
       %ul.nav.nav-tabs
         %li.active
-          = link_to 'Recipes', '#recipes', data: {toggle: 'tab'}
-        %li
           = link_to 'Courses', '#courses', data: {toggle: 'tab'}
+        %li
+          = link_to 'Recipes', '#recipes', data: {toggle: 'tab'}
       .tab-content
-        .tab-pane.active#recipes
+        .tab-pane.active#courses
+          - @user.courses.each do |course|
+            = render 'shared/media_box', size: 'medium', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image
+            = @user.events.scoped_by('Inclusion', 'show').where(inclusions: {course_id: 8}).map(&:trackable).uniq.count
+            = course.inclusions.where('nesting_level <> ?', 0).count
+        .tab-pane#recipes
           - @user.uploads.each do |upload|
             .row.section
               .span3
@@ -35,11 +40,6 @@
               .span3
                 %h4= upload.recipe_name
                 %p= upload.notes
-        .tab-pane#courses
-          - @user.courses.each do |course|
-            = render 'shared/media_box', size: 'medium', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image
-            = @user.events.where(:trackable_type => 'Inclusion').map(&:trackable_id).uniq.count
-            = course.inclusions.where('nesting_level <> ?', 0).count
     .span4
       %h4 Timeline
       - @user.events.timeline.each do |event|
