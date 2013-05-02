@@ -71,4 +71,12 @@ describe Course do
     parent = c.inclusions.select{|i| i.activity.id == activity1.id}.first
     c.child_inclusions(parent).map{|i| i.activity.id}.should == activity_ids
   end
+
+  it 'returns the next inclusion for an inclusion' do
+    c = course_first
+    activity_ids = [200,300,400]
+    c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
+    inclusion = c.inclusions.first
+    c.next_inclusion(inclusion).activity.id.should == 100
+  end
 end
