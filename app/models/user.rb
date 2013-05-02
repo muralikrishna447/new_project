@@ -41,5 +41,9 @@ class User < ActiveRecord::Base
     chef_type.present?
   end
 
+  def viewed_activites_in_course(course)
+    events.scoped_by('Inclusion', 'show').where(inclusions: {course_id: 8}).map(&:trackable).uniq
+  end
+
 end
 
