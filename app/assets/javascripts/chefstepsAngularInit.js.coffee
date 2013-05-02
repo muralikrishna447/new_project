@@ -96,7 +96,7 @@ csApp.directive 'cseditgroup', ->
           any_active = true
       if any_active
         $scope.addUndo()
-        window.wysiwygActivatedCallback($element)
+        window.wysiwygDeactivatedCallback($element)
 
     $scope.$on 'end_all_edits', ->
       $scope.deactivateAll()
