@@ -1,24 +1,19 @@
 .span6.section#video-ingredient-unit
   .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-    - if activity.youtube_id?
-      .noprint
-        - if params[:autoplay]
-          %iframe{src: youtube_url(activity.youtube_id, 1)}
-        - else
-          %iframe{src: youtube_url(activity.youtube_id)}
-    - elsif activity.image_id?
-      = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title, itemprop: 'image'
-    - elsif activity.featured_image_id?
-      = image_tag filepicker_activity_hero_image(activity.featured_image_id), alt: activity.title, title: activity.title, itemprop: 'image'
+    = render 'show_hero_visual', activity: activity
   - cache [activity, 'ingredients'] do
     - if activity.description?
-      .section.activity-description-wrapper
-        .activity-description#activity-description
-          :markdown
-            #{apply_shortcodes(activity.description)}
-          .activity-description-overlay
-        .text-center
-          = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
+      %csEditPair
+        %csEditPairShow
+          .activity-description-wrapper
+            .activity-description#activity-description
+              %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
+              .activity-description-overlay(ng-hide="activity.description.length < 455")
+            .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
+              = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
+        %csEditPairEdit
+          = text_area_tag :title, "", {rows: "15", data: {:'ng-model' => "activity.description"}}
+
     - if activity.ingredients.any?
       .section
         .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
@@ -27,7 +22,13 @@
     - if activity.yield.present?
       .section
         %h4 Yield
-        %span{:itemprop => "recipeYield"}= activity.yield
+        %csEditPair
+          %csEditPairShow
+            %span(itemprop="recipeYield" ng-bind="{{activity.yield}}")
+
+          %csEditPairEdit
+            = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
+
     - if activity.timing.present?
       .section
         %h4 Timing
@@ -41,7 +42,7 @@
         %h4 Optional Equipment
         = render 'equipment_list', equipment: activity.optional_equipment
     - if activity.used_in_activities.published.any?
-      .section
+      .section(ng-hide="editMode")
         %h4 Used In
         %ul
           - activity.used_in_activities.published.each do |activity|

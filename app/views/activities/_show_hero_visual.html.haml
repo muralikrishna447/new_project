@@ -1,0 +1,8 @@
+- if @activity.youtube_id?
+  .noprint
+    - if params[:autoplay]
+      %iframe{src: youtube_url(@activity.youtube_id, 1)}
+    - else
+      %iframe{src: youtube_url(@activity.youtube_id)}
+- elsif @activity.image_id?
+  = image_tag filepicker_activity_hero_image(@activity.image_id), alt: @activity.title, title: @activity.title, itemprop: 'image'

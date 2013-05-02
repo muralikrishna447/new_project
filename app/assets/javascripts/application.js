@@ -14,3 +14,7 @@
 //= require courses
 //= require uploads
 //= require assignments
+//= require bootstrap-wysihtml5
+//= require bootstrap-wysihtml5/locales
+//= require rails.validations
+//= require rails.validations.formtastic
