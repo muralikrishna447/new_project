@@ -15,7 +15,6 @@ class Event < ActiveRecord::Base
     # example 2: current_user.events.scoped_by('Upload', 'create') returns events where the current user uploaded a photo
     symbolized_trackable_type = trackable_type.downcase.pluralize.to_sym
     results = joins("INNER JOIN #{symbolized_trackable_type} ON #{symbolized_trackable_type}.id = events.trackable_id").where(trackable_type: trackable_type).where(action: action)
-    puts results.inspect
     results
   end
 end
