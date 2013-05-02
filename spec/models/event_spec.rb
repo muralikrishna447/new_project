@@ -12,8 +12,7 @@ describe Event do
   end
 
   it 'returns events scoped by a trackable type and action' do
-
-    # expect(Event.scoped_by('Activity', 'show').count).to eq(2)
     Event.scoped_by('Activity', 'show').count.should == 2
+    Event.scoped_by('Quiz', 'show').count.should == 1
   end
 end
