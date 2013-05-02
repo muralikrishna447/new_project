@@ -1,11 +1,10 @@
-.row
-  .span12
-    %h2 Courses
-    = paginate @courses
-    .row.gallery
-      - @courses.each do |course|
-        .span4
-          = link_to course_path(course) do
-            = course.title
-            / = render 'shared/media_centered', media: course, size: 'medium'
-    = paginate @courses
+.container.top-container
+  .row
+    .span12
+      %h2 Courses
+      = paginate @courses
+      .row
+        - @courses.each do |course|
+          .span4
+            = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image, object: course
+      = paginate @courses

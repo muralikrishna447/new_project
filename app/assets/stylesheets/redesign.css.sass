@@ -21,13 +21,14 @@
     margin-left: 0px
 
 .popup-bottom
+  color: white
   position: fixed
   padding: 10px 0px
   bottom: -200px
   width: 100%
   @include boxsizing
   z-index: 9999
-  background: $offwhite
+  background: $orange
   @include shadow
   .row
     margin-left: 0px
@@ -86,6 +87,17 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     top: 0px
     z-index: -1
     opacity: .6
+
+.alert-container
+  position: relative
+
+.alert
+  position: absolute
+  width: 100%
+  text-align: center
+  margin-top: 100px
+  z-index: 9999
+  @include boxsizing
 
 .well
   //border: 1px solid #ccc
@@ -708,12 +720,27 @@ h1, h2, h3, h4
 .btn-primary
   background: $orange
   border: 0px
+  -webkit-box-shadow: 0 3px 0px -1px $dark-orange
+  -moz-box-shadow: 0 3px 0px -1px $dark-orange
+  box-shadow: 0 3px 0px -1px $dark-orange  
   border-radius: 0px
   position: relative
   @include boxsizing
   @include transition(all 100ms)
   &:hover
     background: $darker_orange
+    @include transition(all 100ms)
+
+.btn-secondary
+  background: $offwhite
+  border: 0px
+  -webkit-box-shadow: 0 3px 0px -1px #999
+  -moz-box-shadow: 0 3px 0px -1px #999
+  box-shadow: 0 3px 0px -1px #999999
+  border-radius: 0px
+  @include transition(all 100ms)
+  &:hover
+    background: gray
     @include transition(all 100ms)
 
 .btn-gray

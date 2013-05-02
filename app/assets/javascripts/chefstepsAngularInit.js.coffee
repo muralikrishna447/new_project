@@ -5,17 +5,20 @@ deepCopy = (obj) ->
 
 window.markdownConverter = Markdown.getSanitizingConverter()
 
-csApp = angular.module 'ChefStepsApp', ["ngResource", "ui"]
-#, ["$locationProvider", ($locationProvider) ->
-#  $locationProvider.html5Mode(true)
-#]
-
-csApp.$inject = ['$locationProvider']
+csApp = angular.module 'ChefStepsApp', ["ngResource", "ui"], ["$locationProvider", ($locationProvider) ->
+  # Don't make this true!! It will break every link on the page that isn't to
+  # an angular known url. The addr bar changes but content doesn't load.
+  # See https://groups.google.com/forum/#!topic/angular/cUjy9PEDeWE .
+  # True was nice b/c it makes $location.search() provide what we want for activity.get(),
+  # but it was easier to workaround as below
+  $locationProvider.html5Mode(false)
+]
 
 csApp.controller 'ActivityController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
   Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
-  #$scope.activity = Activity.get($location.search())
-  $scope.activity = Activity.get()
+  url_params = {}
+  url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
+  $scope.activity = Activity.get(url_params)
   $scope.undoStack = []
   $scope.undoIndex = -1
 
@@ -72,7 +75,7 @@ csApp.controller 'ActivityController', ["$scope", "$resource", "$location", ($sc
       console.log idx.toString() + ": " + x.title
       idx += 1
 
-  $scope.bodyClick = ->
+   $scope.bodyClick = ->
     if $scope.editMode
       if $(event.target).is('body') || $(event.target).is('html')
         $scope.$broadcast('end_all_edits')

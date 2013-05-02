@@ -38,7 +38,6 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-
         @techniques = Activity.published.techniques.includes(:steps).last(6)
         @recipes = Activity.published.recipes.includes(:steps).last(6)
 
@@ -51,14 +50,15 @@ class ActivitiesController < ApplicationController
           if @prev_activity
             @prev_module = @course.current_module(@prev_activity)
           end
+          if @activity.assignments.any?
+            @upload = Upload.new
+            session[:return_to] = request.fullpath
+          end
           render 'course_activity'
+          track_event @current_inclusion
+        else
+          track_event @activity
         end
-
-=begin
-        if @activity.has_quizzes?
-          render template: 'activities/quizzes'
-        end
-=end
 
         @minimal = false
         if params[:minimal]
@@ -71,10 +71,14 @@ class ActivitiesController < ApplicationController
         @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
         @viewed_activities << [@activity.id, DateTime.now]
         cookies[:viewed_activities] = @viewed_activities.to_json
+
+        # If this is a crawler, render a basic HTML page for SEO that doesn't depend on Angular
+        if params.has_key?(:'_escaped_fragment_')
+          render template: 'activities/static_html'
+        end
       end
 
       format.json {  render :json => @activity }
-
     end
   end
 

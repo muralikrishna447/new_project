@@ -1,69 +1,116 @@
-- content_for :title, "#{@user.name}'s Profile"
+- content_for :title, "Profile - #{@user.name}"
+.hide
+  / Automatically logs in user into forum
+  %iframe{src:'http://forum.chefsteps.com/entry/jsconnect?client_id=1924714588&Target=%2F'}
 
-.container#main-container
-  .row.section
-    .span4.well
-      %h1= "#{@user.name}'s Profile"
-      .section
-        - if is_current_user?(@user)
-          = link_to edit_registration_path(@user), class: 'btn btn-primary' do
-            %i.icon-cogs
-            Settings
-          = link_to sign_out_path, class: 'btn btn-primary' do
-            %i.icon-signout
-            Sign out
-    .span8
-      / %h3 Activities
-      / - @user.user_activities.each do |user_activity|
-      /   %div
-      /     = @user.name + ' cooked ' + user_activity.activity.title + ' ' + time_ago_in_words(user_activity.created_at) + ' ago'
-      %h3 Cook a Recipe
-      = render 'shared/horizontal_scroller', items: @recipes
+.container-fluid.top-container.profile-cover{style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
+  .row-fluid
+    .container
+      .row
+        .span2
+          .profile-image
+            = image_tag 'http://placehold.it/200x200', class: 'img-circle'
+        .span10
+          %h1= @user.name
 
-      %h3 Learn a Technique
-      = render 'shared/horizontal_scroller', items: @techniques
+.container
+  .row
+    .span2.well.profile-badges
+      %h4 Badges
+    .span6
+      %h4 Bio
+      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
+      %ul.nav.nav-tabs
+        %li.active
+          = link_to 'Courses', '#courses', data: {toggle: 'tab'}
+        %li
+          = link_to 'Recipes', '#recipes', data: {toggle: 'tab'}
+      .tab-content
+        .tab-pane.active#courses
+          - @user.courses.each do |course|
+            = render 'shared/media_box', size: 'medium', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image
+            = @user.viewed_activites_in_course(course).count
+            = course.viewable_activities.count
+        .tab-pane#recipes
+          - @user.uploads.each do |upload|
+            .row.section
+              .span3
+                - if upload.image_id?
+                  = image_tag filepicker_gallery_image(upload.image_id)
+              .span3
+                %h4= upload.recipe_name
+                %p= upload.notes
+    .span4
+      %h4 Timeline
+      - @user.events.timeline.each do |event|
+        = div_for event do
+          = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event
 
-      %h3 Join a Discussion
-      - @discussions.each do |discussion|
-        / = discussion.inspect
-        - discussion_link = discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
-        %h4
-          = discussion[:name]
-          %i.icon-comments
-          %small= discussion[:count_comments]
-        = link_to discussion_link do
-          %blockquote.word-wrap
-            %p= truncate(strip_tags(discussion[:body]), length: 300, separator: ' ')
-            %small
-              %cite
-                = discussion[:first_name]
+= content_for :footer do
+  = render 'layouts/footer'
 
-  - content_for :bottom do
-    .row.section
-      .span12
-        %h2 Quizzes
-        - if completed_quizzes.any?
-          = render partial: 'profile_quiz_info', user: @user
-        - else
-          You haven't completed any quizzes
 
-  .hide
-    %iframe{src:'http://forum.chefsteps.com/entry/jsconnect?client_id=1924714588&Target=%2F'}
+/ .container#main-container
+/   .row.section
+/     .span4.well
+/       %h1= "#{@user.name}'s Profile"
+/       .section
+/         - if is_current_user?(@user)
+/           = link_to edit_registration_path(@user), class: 'btn btn-primary' do
+/             %i.icon-cogs
+/             Settings
+/           = link_to sign_out_path, class: 'btn btn-primary' do
+/             %i.icon-signout
+/             Sign out
+/     .span8
+/       / %h3 Activities
+/       / - @user.user_activities.each do |user_activity|
+/       /   %div
+/       /     = @user.name + ' cooked ' + user_activity.activity.title + ' ' + time_ago_in_words(user_activity.created_at) + ' ago'
+/       %h3 Cook a Recipe
+/       = render 'shared/horizontal_scroller', items: @recipes
 
-  / .hero-unit
-  /   .container
-  /     .row
-  /       .span12
-  /         - profile_title = is_current_user?(user) ? "My Profile" : "#{user.name}'s Profile"
-  /         %h3=profile_title
+/       %h3 Learn a Technique
+/       = render 'shared/horizontal_scroller', items: @techniques
 
-  / .container.user-profile
-  /   .row
-  /     .span4.pull-right.horizontal-divider
-  /       = render partial: 'profile_bio', user: user
-  /     - if is_current_user?(user)
-  /       .span8.pull-left.user-profile-intro
-  /         = render partial: 'profile_intro', user: user
-  /     .span8.pull-left.user-profile-info
-  /       = render partial: 'profile_quiz_info', user: user
+/       %h3 Join a Discussion
+/       - @discussions.each do |discussion|
+/         / = discussion.inspect
+/         - discussion_link = discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
+/         %h4
+/           = discussion[:name]
+/           %i.icon-comments
+/           %small= discussion[:count_comments]
+/         = link_to discussion_link do
+/           %blockquote.word-wrap
+/             %p= truncate(strip_tags(discussion[:body]), length: 300, separator: ' ')
+/             %small
+/               %cite
+/                 = discussion[:first_name]
+
+/   - content_for :bottom do
+/     .row.section
+/       .span12
+/         %h2 Quizzes
+/         - if completed_quizzes.any?
+/           = render partial: 'profile_quiz_info', user: @user
+/         - else
+/           You haven't completed any quizzes
+
+/ .hero-unit
+/   .container
+/     .row
+/       .span12
+/         - profile_title = is_current_user?(user) ? "My Profile" : "#{user.name}'s Profile"
+/         %h3=profile_title
+
+/ .container.user-profile
+/   .row
+/     .span4.pull-right.horizontal-divider
+/       = render partial: 'profile_bio', user: user
+/     - if is_current_user?(user)
+/       .span8.pull-left.user-profile-intro
+/         = render partial: 'profile_intro', user: user
+/     .span8.pull-left.user-profile-info
+/       = render partial: 'profile_quiz_info', user: user
 

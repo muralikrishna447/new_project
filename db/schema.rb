@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423001211) do
+ActiveRecord::Schema.define(:version => 20130501080659) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -30,24 +30,23 @@ ActiveRecord::Schema.define(:version => 20130423001211) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.string   "youtube_id"
     t.string   "difficulty"
-    t.integer  "cooked_this",       :default => 0
+    t.integer  "cooked_this",        :default => 0
     t.string   "yield"
     t.text     "timing"
     t.text     "description"
     t.integer  "activity_order"
-    t.boolean  "published",         :default => false
+    t.boolean  "published",          :default => false
     t.string   "slug"
     t.text     "transcript"
     t.text     "image_id"
     t.text     "featured_image_id"
     t.string   "activity_type"
-    t.integer  "discussion_id"
-    t.string   "discussion_url"
     t.integer  "last_edited_by_id"
+    t.text     "assignment_recipes"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -110,6 +109,15 @@ ActiveRecord::Schema.define(:version => 20130423001211) do
 
   add_index "answers", ["question_id", "user_id"], :name => "index_answers_on_question_id_and_user_id", :unique => true
 
+  create_table "assignments", :force => true do |t|
+    t.integer  "activity_id"
+    t.integer  "child_activity_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "assignments", ["activity_id", "child_activity_id"], :name => "index_assignments_on_activity_id_and_child_activity_id"
+
   create_table "box_sort_images", :force => true do |t|
     t.integer  "question_id",                        :null => false
     t.boolean  "key_image",       :default => false
@@ -142,11 +150,27 @@ ActiveRecord::Schema.define(:version => 20130423001211) do
     t.string   "short_description"
   end
 
+  create_table "enrollments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "course_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "equipment", :force => true do |t|
     t.string   "title"
     t.string   "product_url"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "events", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "action"
+    t.integer  "trackable_id"
+    t.string   "trackable_type"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "friendly_id_slugs", :force => true do |t|
@@ -318,6 +342,16 @@ ActiveRecord::Schema.define(:version => 20130423001211) do
 
   create_table "tags", :force => true do |t|
     t.string "name"
+  end
+
+  create_table "uploads", :force => true do |t|
+    t.integer  "activity_id"
+    t.integer  "user_id"
+    t.string   "recipe_name"
+    t.text     "image_id"
+    t.text     "notes"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "user_activities", :force => true do |t|

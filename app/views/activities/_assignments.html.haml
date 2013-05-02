@@ -1,0 +1,35 @@
+.row-fluid
+  .span12
+    %h2= @activity.title
+    %p= @activity.description
+.row-fluid
+  - @activity.assignments.each do |assignment|
+    .span3
+      .assignment
+        = render 'shared/media_box_2', size: 'medium', url: '#', title: assignment.child_activity.title, image: assignment.child_activity.featured_image, object: assignment.child_activity
+      .text-center
+        = link_to 'See the recipe', assignment.child_activity
+  .span3
+    = render 'shared/media_box_2', size: 'medium', url: '#', title: 'Your own recipe', image: nil, object: nil
+
+.row-fluid
+  %hr
+
+= form_for @upload do |f|
+  = f.hidden_field :activity_id
+  .row-fluid
+    .span4
+      %h4 Upload a Photo
+      .upload-wrapper
+        = image_tag '/assets/missing.png', class: "upload-photo-preview"
+        = link_to '+', '#', class: 'upload-photo-btn'
+        %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
+    .span8
+      %h4 Recipe Name
+      %p= f.text_field :recipe_name, class: 'input-block-level', required: true
+      %h4 Notes
+      %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
+      = f.submit 'Finish The Course!', class: 'btn btn-primary btn-large'
+
+= render 'layouts/filepicker'
+

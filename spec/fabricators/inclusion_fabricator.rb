@@ -1,0 +1,2 @@
+Fabricator :inclusion do
+end
