@@ -72,11 +72,19 @@ describe Course do
     c.child_inclusions(parent).map{|i| i.activity.id}.should == activity_ids
   end
 
-  it 'returns the next inclusion for an inclusion' do
+  it 'returns the next inclusion for an inclusion within a course' do
     c = course_first
     activity_ids = [200,300,400]
     c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
     inclusion = c.inclusions.first
     c.next_inclusion(inclusion).activity.id.should == 100
+  end
+
+  it 'returns the viewable activites for a course' do
+    c = course_first
+    activity_ids = [200,300,400]
+    c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
+    c.viewable_activities.map(&:id).should == [300,400]
+    # Note viewable activites are ones where inclusion nesting values are not equal to 0 and the activity is published.
   end
 end
