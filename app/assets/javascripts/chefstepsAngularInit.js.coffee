@@ -146,7 +146,6 @@ csApp.directive 'cseditpairedit', ->
   transclude: true,
   template: '<div ng-switch-when="true" ng-transclude></div>'
 
-
 csApp.directive 'cseditpairshow', ->
   restrict: 'E',
   transclude: true,

@@ -12,7 +12,7 @@
             .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
               = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
         %csEditPairEdit
-          = text_area_tag :title, "", {rows: "15", data: {:'ng-model' => "activity.description"}}
+          = text_area_tag :title, "", {rows: "15", data: {:'ng-model' => "activity.description"}, autofocus: 'autofocus'}
 
     - if activity.ingredients.any?
       .section
