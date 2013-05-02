@@ -28,6 +28,8 @@ class Activity < ActiveRecord::Base
   has_many :uploads
   has_many :upload_users, through: :uploads, source: :user
 
+  has_many :events, as: :trackable
+
   belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
 
   scope :with_video, where("youtube_id <> ''")

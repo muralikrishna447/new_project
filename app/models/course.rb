@@ -114,7 +114,7 @@ class Course < ActiveRecord::Base
 
   def viewable_activities
     # inclusions.where('nesting_level <> ?', 0).joins(:activity).where('inclusions.activity.published = ?', true)
-    activities - activity_modules
+    activities.published - activity_modules
   end
 
 end
