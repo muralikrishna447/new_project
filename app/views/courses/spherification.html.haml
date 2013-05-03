@@ -5,19 +5,13 @@
   .row.section
     .span6
       %h1= course.title
+      =image_tag 'http://placehold.it/570x320'
       %p= course.description
       %h4.text-center
         %i.icon-comment-alt
         Comments or Questions?
         = link_to 'Visit the Forum', 'http://forum.chefsteps.com'
-      .section.well
-        %ul
-          %li Lorem ipsum dolor sit amet
-          %li Consectetur adipiscing elit
-          %li Pellentesque nisi libero
-          %li Lorem ipsum dolor sit amet
-          %li Consectetur adipiscing elit
-          %li Pellentesque nisi libero
+      
     .span6.well
       - if current_user && current_user.course_ids.include?(@course.id)
         You are enrolled into this course.
@@ -25,15 +19,49 @@
       - else
         = form_tag enroll_course_path(@course) do
           = submit_tag 'Enroll', class: 'btn btn-primary btn-large pull-right'
+
+  .row.section
+    .span12
+      %h2.text-center
+        Be more creative in the kitchen
+  .row
+    .span4
+      =image_tag 'http://placehold.it/570x320'
+      %h4.text-center Reverse Spheres
+    .span4
+      =image_tag 'http://placehold.it/570x320'
+      %h4.text-center Frozen Reverse Spheres
+    .span4
+      =image_tag 'http://placehold.it/570x320'
+      %h4.text-center Direct Spheres
+  .row.section
+    .span12
+      %h2.text-center
+        Buy a kit to help you get started or <a href="#">browse the course now</a>.
+
 %hr
 - ['good','better','best'].each do |kit_title|
   .container-fluid.well-gradient
     .row-fluid
       .container
         .row.section
-          .span4
+          .span11.offset1
+            %h3.orange= "The #{kit_title.titleize}"
+        .row.section
+          .span5.offset1
             = image_tag 'http://placehold.it/570x320'
-          .span8
+            %h4= "The #{kit_title.titleize} kit includes"
+            %ul
+              %li Syringe for direct spherification
+              %li Stainless steel dosing spoon for reverse spherification
+              %li Stainless steel straining spoon
+              %li 25 g Sphere Magic
+              %li 25 g Sodium Citrate
+              %li 50 g Calcium Lactate Gluconate
+              %li 50 g Calcium Chloride
+              %li 50 g Xanthan Gum
+          .span5.offset1
+            = image_tag 'http://placehold.it/570x320'
             %h4= "The #{kit_title.titleize} kit takes you through these lessons"
             %ul
               %li Sphere Baths
@@ -42,12 +70,9 @@
               %li Chocolate Spheres
               %li Pine Spheres
         .row.section
-          .span6
-            %p
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nisi libero, commodo in aliquet et, pellentesque at tellus. Mauris et quam ut nulla pellentesque eleifend. In hac habitasse platea dictumst. Pellentesque ut arcu id libero vestibulum commodo. Phasellus sagittis leo eget nulla laoreet feugiat. Fusce ac tellus elit. Etiam elementum tempor neque, eu elementum lacus egestas id.
-          .span6.well
+          .span4.offset4.well
             %h4.text-center= "The #{kit_title.titleize} Kit $39"
-            .btn.btn-primary.btn-large
+            .btn.btn-primary.btn-large.text-center
               Buy Now
 
 .container-fluid
