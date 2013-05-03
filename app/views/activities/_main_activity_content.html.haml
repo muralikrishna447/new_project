@@ -24,7 +24,7 @@
         %h4 Yield
         %csEditPair
           %csEditPairShow
-            %span(itemprop="recipeYield" ng-bind="{{activity.yield}}")
+            %span(itemprop="recipeYield" ng-bind="activity.yield")
 
           %csEditPairEdit
             = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
