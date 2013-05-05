@@ -136,7 +136,7 @@ csApp.directive 'cseditgroup', ->
 csApp.directive 'csfilepicker', ->
   restrict: 'C',
   replace: true,
-  template: '<div><button class="filepicker-pick-button btn-small btn-warning" ng-click="pickFile()">Pick File</button><button class="btn-small btn-warning remove-filepicker-image" ng-click="removeFile()">Remove File</button></div>',
+  template: '<div class="btn-toolbar"><button class="filepicker-pick-button btn btn-small btn-warning" ng-click="pickFile()">Upload Image</button><button class="btn btn-small btn-warning remove-filepicker-image" ng-click="removeFile()" ng-hide="activity.image_id.length == 0">Remove Image</button></div>',
   controller: ['$scope', '$element', ($scope, $element) ->
 
     $scope.pickFile = ->
