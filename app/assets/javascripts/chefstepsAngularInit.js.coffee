@@ -16,9 +16,9 @@ csApp = angular.module 'ChefStepsApp', ["ngResource", "ui"], ["$locationProvider
 
 csApp.controller 'ActivityController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
   Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
-  url_params = {}
-  url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  $scope.activity = Activity.get(url_params)
+  $scope.url_params = {}
+  $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
+  $scope.activity = Activity.get($scope.url_params)
   $scope.undoStack = []
   $scope.undoIndex = -1
 
@@ -75,10 +75,33 @@ csApp.controller 'ActivityController', ["$scope", "$resource", "$location", ($sc
       console.log idx.toString() + ": " + x.title
       idx += 1
 
-   $scope.bodyClick = ->
+  $scope.bodyClick = ->
     if $scope.editMode
       if $(event.target).is('body') || $(event.target).is('html')
         $scope.$broadcast('end_all_edits')
+
+  $scope.showHeroVideo = ->
+    $scope.activity.youtube_id? && $scope.activity.youtube_id
+
+  $scope.showHeroImage = ->
+    $scope.activity.image_id? && $scope.activity.image_id
+
+  $scope.heroVideoURL = ->
+    if $scope.showHeroVideo()
+      autoplay = if $scope.url_params.autoplay then "1" else "0"
+      "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
+    else
+      ""
+
+  $scope.heroImageURL = (width) ->
+    if $scope.showHeroImage()
+      console.log $scope.activity.image_id
+      url = JSON.parse($scope.activity.image_id).url
+      url + "/convert?fit=max&w=#{width}&cache=true"
+    else
+      ""
+
+
 ]
 
 
@@ -109,6 +132,27 @@ csApp.directive 'cseditgroup', ->
       pair.active = false
       $scope.pairs.push(pair)
   ]
+
+csApp.directive 'csfilepicker', ->
+  restrict: 'C',
+  replace: true,
+  template: '<div><button class="filepicker-pick-button btn-small btn-warning" ng-click="pickFile()">Pick File</button><button class="btn-small btn-warning remove-filepicker-image" ng-click="removeFile()">Remove File</button></div>',
+  controller: ['$scope', '$element', ($scope, $element) ->
+
+    $scope.pickFile = ->
+      filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"},
+        ((fpfiles) =>
+          $scope.activity.image_id = JSON.stringify(fpfiles[0])),
+        ((errorCode) =>
+          console.log("FILEPICKER ERROR CODE: " + errorCode))
+
+    $scope.removeFile = ->
+      $scope.activity.image_id = ""
+
+  ]
+
+
+
 
 # This guys is responsible for showing a highlight on hover that indicates it can
 # be edited, and switching between the show and edit children when activated. It
