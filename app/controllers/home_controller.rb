@@ -5,6 +5,7 @@ class HomeController < ApplicationController
     @recipes = Activity.published.recipes.includes(:steps).last(6) - @heroes
     @techniques = Activity.published.techniques.includes(:steps).last(6) - @heroes
     @sciences = Activity.published.sciences.includes(:steps).last(6) - @heroes
+    @cta_message = ab_test('homepage_cta', 'Join The Community!', 'Become a Better Cook!')
     
 
     # @discussion = Forum.discussions.first

@@ -13,7 +13,7 @@ describe "Activities" do
       p1.should eq "/activities/slug-a-bug"
     end
 
-    it "remembers history of slugs, redirects old ones" do
+    it "remembers history of slugs, redirects old ones", pending: true do
 
       visit activity_path(@activity)
       p1 = current_path

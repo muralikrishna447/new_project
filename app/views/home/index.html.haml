@@ -79,13 +79,14 @@
               %h3 Latest Tweet:
               = @status.html_safe
               = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
-      .span4.signup-box
-        .well
-          %h3 Join The Community!
-          = form_tag sign_up_url, :method => :get, class: 'form-inline' do
-            = hidden_field_tag :signed_up_from, 'homepage_cta'
-            %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
-            %p= submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
+      - unless current_user
+        .span4.signup-box
+          .well
+            %h3= @cta_message
+            = form_tag sign_up_url, :method => :get, class: 'form-inline' do
+              = hidden_field_tag :signed_up_from, 'homepage_cta'
+              %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
+              %p= submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
 
 = content_for :footer do
   = render 'layouts/footer'
