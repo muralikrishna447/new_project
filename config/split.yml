@@ -1,0 +1,4 @@
+development: localhost:6379
+test: localhost:6379
+# staging: redis1.example.com:6379
+production: redis://redistogo:db5812f365393a0baf573eaa726f5bb9@barreleye.redistogo.com:10416/
