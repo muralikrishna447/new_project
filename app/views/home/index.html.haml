@@ -81,9 +81,8 @@
 
 - else
   .container
-    .row
-      .span6
-      .span6#discussion
+    .row.section
+      .span8#discussion
         %h3 Latest From Our Forums:
         %h4.discussion-name
         %blockquote.word-wrap
@@ -109,6 +108,6 @@
               = hidden_field_tag :signed_up_from, 'homepage_cta'
               %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
               %p= submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
-              
+
 = content_for :footer do
   = render 'layouts/footer'
