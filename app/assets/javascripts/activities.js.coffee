@@ -63,60 +63,6 @@ $ ->
     else
       $(this).text 'more'
 
-# Filepicker (for wysiwyg). This is duplicated in admin, should remove from there or share.
-
-
-filepickerPreviewUpdateOne = (preview, fpfile) ->
-  if fpfile
-    admin_width = 200
-    url = JSON.parse(fpfile).url
-    preview.attr('src', [url , "/convert?fit=max&w=", admin_width, "&h=", Math.floor(admin_width * 9.0 / 16.0)].join(""))
-    preview.parent().show()
-  else
-    preview.parent().hide()
-    preview.attr('src', '')
-
-
-filepickerPreviewUpdateAll = ->
-  $('.filepicker-real-file').each ->
-    preview = $(this).parent().find('.filepicker-preview')
-    val = $(this).attr('value')
-    filepickerPreviewUpdateOne(preview, val)
-
-$ ->
-  filepickerPreviewUpdateAll()
-
-$ ->
-  $(document).on "click", ".filepicker-pick-button", (event) ->
-    event.preventDefault()
-    filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"}, (fpfiles) =>
-      $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(JSON.stringify(fpfiles[0]))
-      filepickerPreviewUpdateAll()
-
-  $(document).on "click", ".remove-filepicker-image", (event) ->
-    $(this).parents('.filepicker-group').find('.filepicker-real-file').val('')
-    filepickerPreviewUpdateAll()
-
-setupFilepickerDropPanes = ->
-  $('.filepicker-drop-pane').each ->
-    filepicker.makeDropPane $(this),
-      dragEnter: =>
-        $(this).html("Drop to upload").css("border-style", "inset")
-      dragLeave: =>
-        $(this).html("Or drop file here").css("border-style", "outset")
-      onSuccess: (fpfiles) =>
-        $(_this).parents('.filepicker-group').find('.filepicker-real-file').val(JSON.stringify(fpfiles[0]))
-        filepickerPreviewUpdateAll()
-        $(this).html("Or drop file here").css("border-style", "outset")
-      onProgress: (percentage) =>
-        $(this).text("Uploading ("+percentage+"%)")
-
-$ ->
-  setupFilepickerDropPanes()
-  $(document).on "click", (event) ->
-    setupFilepickerDropPanes()
-
-window.setupFilepickerDropPanes = setupFilepickerDropPanes
 window.expandSteps = expandSteps
 
 # This clearly needs some refactoring out to a separate file!

@@ -1,4 +1,0 @@
-= semantic_form_for [@activity], url: update_edit_partial_activity_path, :html => {:method => :post}, remote: true do |f|
-  = f.input :youtube_id
-  .hero-image-group.inline-group
-    = render 'admin/activities/filepicker_group', label_text: "Hero Image", param: "activity[image_id]", value: @activity.image_id

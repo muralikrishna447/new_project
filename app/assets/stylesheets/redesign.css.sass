@@ -290,13 +290,8 @@ h1, h2, h3, h4
 
 .video-container
   position: relative
-  padding-bottom: 56.25%
-  height: 0
-  iframe, object, embed
-    position: absolute
-    top: 0
-    left: 0
-    height: 100%
+  width: 100%
+  iframe, object, embed, .edit-pair, .edit-pair-show, .edit-pair-edit
     width: 100%
     border: none
   #image-viewer
@@ -1065,30 +1060,6 @@ h1, h2, h3, h4
   color: red
   text-transform: uppercase
 
-// Note this is duplicated over in admin CSS - should remove from there
-.filepicker-group
-  margin-bottom: 5px
-
-  .filepicker-preview-group
-
-    .remove-filepicker-image
-      padding-left: 2px
-      display: inline-block
-      vertical-align: bottom
-      cursor: pointer
-
-  .filepicker-preview
-    margin-bottom: 5px
-    max-width: 200px
-
-  .filepicker-subgroup
-    .btn-small
-      box-sizing: border-box
-      padding: 3px 8px
-      border: 2px outset buttonface
-      margin-top: 2px
-      display: inline-block
-      cursor: pointer
 
 // BELOW ARE RESPONSIVE STYLES //
 
@@ -1125,6 +1096,7 @@ h1, h2, h3, h4
 
   .activity-description
     height: 140px
+
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
@@ -1209,7 +1181,8 @@ h1, h2, h3, h4
 
   .nav-item-border
     display: none
- 
+
+
 /* Landscape phones and down */
 @media (max-width: 480px)
   #hero-container
@@ -1237,3 +1210,4 @@ h1, h2, h3, h4
         width: 15%
       .step-content
         width: 85%
+

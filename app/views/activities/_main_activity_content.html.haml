@@ -1,6 +1,6 @@
 .span6.section#video-ingredient-unit
   .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-    = render 'show_hero_visual', activity: activity
+    = render 'hero_visual', activity: activity
   - cache [activity, 'ingredients'] do
     - if activity.description?
       %csEditPair
@@ -12,7 +12,7 @@
             .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
               = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
         %csEditPairEdit
-          = text_area_tag :title, "", {rows: "15", data: {:'ng-model' => "activity.description"}}
+          = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}, autofocus: 'autofocus'}
 
     - if activity.ingredients.any?
       .section
