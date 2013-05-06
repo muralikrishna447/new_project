@@ -64,7 +64,7 @@ Delve::Application.routes.draw do
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
-  resources :activities, only: [:show]
+  resources :activities, only: [:show, :update]
   resources :techniques, only: [:index, :show]
   resources :sciences, only: [:index, :show]
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
@@ -87,6 +87,7 @@ Delve::Application.routes.draw do
   resources :user_activities, only: [:create]
 
   resources :sitemaps, :only => :show
+  mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
 
 end

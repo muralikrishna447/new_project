@@ -38,6 +38,12 @@ gem 'gravatar_image_tag'
 gem 'httparty'
 gem 'rest-client'
 gem 'acts_as_revisionable'
+gem 'coffee-filter'
+gem 'bootstrap-wysihtml5-rails'
+gem 'client_side_validations'
+gem 'client_side_validations-formtastic'
+gem 'split', require: 'split/dashboard'
+gem 'redis'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -57,6 +63,9 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+  gem 'angularjs-rails'
+  gem 'angular-ui-rails'
+  gem 'pagedown-rails', '~> 1.1.3'
 end
 
 group :development, :test do

@@ -11,3 +11,7 @@
 //= require community
 //= require scroll_shadow
 //= require horizontal_slider
+//= require bootstrap-wysihtml5
+//= require bootstrap-wysihtml5/locales
+//= require rails.validations
+//= require rails.validations.formtastic

@@ -60,5 +60,6 @@ Delve::Application.configure do
     Bullet.rails_logger = true
     Bullet.airbrake = false
   end
+  ENV["REDISTOGO_URL"] = 'redis://localhost:6379'
 end
 

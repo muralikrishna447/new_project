@@ -3,6 +3,7 @@ csTempUnits = "c"
 csLengthUnits = "cm"
 csUnitsCookieName = "chefsteps_units"
 
+
 # NOTE WELL there are some places where we are using children(), not find() here very on purpose, because it is
 # possible to have a quantity row nested in a quantity row, specifically when shortcodes like [ea 5] are used
 # in the ingredient notes field.
@@ -20,32 +21,39 @@ $ ->
 
 # On page load, store off the initial amounts of each ingredient and
 # setup click handlers.
-$ ->
+prepareForScaling = ->
   # Store off base value into an attribute for use in future calcs
   # Weights are normally in grams; if we see kg just convert it - will redisplay as kg if above 5 later.
   $('.main-qty').each (i, element) =>
-    origValue = Number($(element).text())
-    cell = $(element).parent()
-    row = cell.parent()
-    unit_cell = row.children('.unit')
+    if ! $(element).data("origValue")
 
-    if unit_cell.text() == "kg"
-      origValue *= 1000
-      unit_cell.text("g")
-    if unit_cell.text() == "a/n" || unit_cell.text() == ""
-      $(element).parent().children().hide()
+      origValue = Number($(element).text())
+      cell = $(element).parent()
+      row = cell.parent()
+      unit_cell = row.children('.unit')
 
-    $(element).data("origValue", origValue)
+      if unit_cell.text() == "kg"
+        origValue *= 1000
+        unit_cell.text("g")
+
+      if unit_cell.text() == "a/n" || unit_cell.text() == ""
+        $(element).parent().children().hide()
+      else
+        if origValue == 60
+          debugger
+        console.log("Got one: " + origValue)
+        $(element).data("origValue", origValue)
 
   $('.yield').each (i, element) =>
-    origValue = Number($(element).text())
-    $(element).data("origValue", origValue)
+    if ! $(element).data("origValue")
+      origValue = Number($(element).text())
+      $(element).data("origValue", origValue)
 
-  # Update to preferred units stored in the cookie
-  # This cookie code works but we decided that we want to encourage metric, so not using now,
-  # forces user to click to ounces every time if they are that stubborn.
-  # csUnits = $.cookie csUnitsCookieName
+
+$ ->
   updateUnits(false)
+
+
 
 # Setup click handler for units toggle
 $ ->
@@ -138,6 +146,9 @@ setRow = (row, qtyLbs, qty, units) ->
 
 # Compute the new ingredient quantities and units for a row
 updateOneRowUnits = ->
+  if ! $(this).children('.quantity-group').find('.main-qty').data("origValue")
+    return
+
   origValue = Number($(this).children('.quantity-group').find('.main-qty').data("origValue")) * csScaling
   existingUnits = $(this).children('.unit').text()
 
@@ -178,6 +189,7 @@ updateOneRowUnits = ->
 
 # Update all rows
 updateUnits = (animate) ->
+  prepareForScaling()
   if (animate)
     # animate all the values and units down ...
     $('.qtyfade').fadeOut "fast"
@@ -273,7 +285,7 @@ updateLengthUnits =  ->
 
 # Setup click handler for length toggles
 $ ->
-  $(".length-group").click ->
+  $(document).on 'click', ".length-group", ->
     csLengthUnits = if csLengthUnits == "cm" then "in" else "cm"
     # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
     updateLengthUnits(true)

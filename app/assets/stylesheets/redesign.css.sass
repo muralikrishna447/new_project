@@ -86,9 +86,14 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     opacity: .6
 
 .well
-  border: 1px solid #ccc
+  //border: 1px solid #ccc
+  border: 0px
   border-radius: 0px
   background-color: $offwhite
+  -moz-box-shadow: none
+  -webkit-box-shadow: none
+  -o-box-shadow: none
+  box-shadow: none
   @include boxsizing
 
 .well-opaque
@@ -280,13 +285,8 @@ h1, h2, h3, h4
 
 .video-container
   position: relative
-  padding-bottom: 56.25%
-  height: 0
-  iframe, object, embed
-    position: absolute
-    top: 0
-    left: 0
-    height: 100%
+  width: 100%
+  iframe, object, embed, .edit-pair, .edit-pair-show, .edit-pair-edit
     width: 100%
     border: none
   #image-viewer
@@ -316,13 +316,13 @@ h1, h2, h3, h4
       background: -o-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 60%,rgba(255,255,255,1) 100%)
       background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 60%,rgba(255,255,255,1) 100%)
       background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 60%,rgba(255,255,255,1) 100%)
+      pointer-events: none
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 )
 
   .maximize-description
     height: inherit
 
 #activity-description-maximize
-  display: none
   width: 100%
 
 .ordered-steps
@@ -437,7 +437,9 @@ h1, h2, h3, h4
     font-weight: 40
 
 .step-ingredients-source
-  display: none
+  //display: none
+  thead
+    display: none
 
 #main-content
   position: relative
@@ -1008,6 +1010,68 @@ h1, h2, h3, h4
     bottom: -10px
     background: white
 
+// WYSIWYG EDITING
+
+.edit-pair
+  position: relative
+
+#edit-group
+  margin-left: 20px
+  margin-top: 11px
+
+  i
+    font-size: 18px
+  .btn
+    height: 28px
+
+.edit-target
+  @include boxsizing
+  position: absolute
+  top: -1%
+  left: -1%
+  width:  102%
+  height:  102%
+  font-size:  15px
+  border: 2px solid #9ecaed
+  border-radius: 7px
+  z-index: 999
+  background-color: rgba(158, 202, 237, 0.2)
+
+#activity-body
+  form, textarea
+    width: 100%
+    max-width: 100%
+    li
+      list-style-type: none
+  label
+    margin-right: 8px
+    vertical-align: top
+
+// Making this match h1. I tried @including h1 but that was a no go.
+*[data-ng-model='activity.title']
+  font-size: 38.5px
+  line-height: 40px
+  width: 100%
+
+#edit-mode.active
+  background: #0088cc
+
+
+.inline-group
+  display: inline-block
+
+.video-container
+  .filepicker-group
+    margin-top: 30px
+  .featured-image-group
+    margin-left: 40px
+
+.inline-errors
+  font-size: 14px
+  color: red
+  text-transform: uppercase
+
+
 // BELOW ARE RESPONSIVE STYLES //
 
 /* Large desktop */
@@ -1043,6 +1107,7 @@ h1, h2, h3, h4
 
   .activity-description
     height: 140px
+
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)

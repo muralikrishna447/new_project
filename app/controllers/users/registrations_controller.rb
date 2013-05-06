@@ -9,6 +9,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to sign_in_url(name: name, email: email)
     else
       aweber_signup(email)
+      finished('homepage_cta', reset: false)
       @user = User.new
       @user.name = name
       @user.email = email

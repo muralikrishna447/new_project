@@ -21,35 +21,72 @@ class ActivitiesController < ApplicationController
     end
   end
 
+
+  before_filter :require_admin, only: [:update]
+  def require_admin
+    unless admin_user_signed_in?
+      flash[:error] = "You must be logged in as an administrator to do this"
+      redirect_to new_admin_user_session_path
+    end
+  end
+
   def show
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
-
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
-        @activity = @activity.restore_revision(params[:version])
+      @activity = @activity.restore_revision(params[:version])
     end
 
-    @techniques = Activity.published.techniques.includes(:steps).last(6)
-    @recipes = Activity.published.recipes.includes(:steps).last(6)
+    respond_to do |format|
+      format.html do
 
-    if params[:course_id]
-      @course = Course.find(params[:course_id])
+        @techniques = Activity.published.techniques.includes(:steps).last(6)
+        @recipes = Activity.published.recipes.includes(:steps).last(6)
+
+        if params[:course_id]
+          @course = Course.find(params[:course_id])
+        end
+
+        if @activity.has_quizzes?
+          render template: 'activities/quizzes'
+        end
+
+        @minimal = false
+        if params[:minimal]
+          @minimal = true
+        end
+
+        @user_activity = UserActivity.new
+
+        # cookies.delete(:viewed_activities)
+        @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
+        @viewed_activities << [@activity.id, DateTime.now]
+        cookies[:viewed_activities] = @viewed_activities.to_json
+
+        # If this is a crawler, render a basic HTML page for SEO that doesn't depend on Angular
+        if params.has_key?(:'_escaped_fragment_')
+          render template: 'activities/static_html'
+        end
+      end
+
+      format.json {  render :json => @activity }
+
     end
+  end
 
-    if @activity.has_quizzes?
-      render template: 'activities/quizzes'
+  def update
+    @activity = Activity.find(params[:id])
+    respond_to do |format|
+      format.json do
+
+        @activity.store_revision do
+          @activity.last_edited_by = current_admin_user
+          @activity.attributes = params[:activity]
+          @activity.save!
+        end
+
+        render :json => @activity
+      end
     end
-
-    @minimal = false
-    if params[:minimal]
-      @minimal = true
-    end
-
-    @user_activity = UserActivity.new
-
-    # cookies.delete(:viewed_activities)
-    @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
-    @viewed_activities << [@activity.id, DateTime.now]
-    cookies[:viewed_activities] = @viewed_activities.to_json
   end
 
   # This is the base feed that we tell feedburner about. Users should never see this.
@@ -77,5 +114,19 @@ class ActivitiesController < ApplicationController
     redirect_to "http://feeds.feedburner.com/ChefSteps"
   end
 
+  # Submit a form updating some part of an activity; record it in the revision database
+  def update_edit_partial
+    @activity = Activity.find(params[:id])
+    @activity.attributes=(params[:activity])
+    if @activity.changed?
+      @activity.store_revision do
+        @activity.last_edited_by = current_admin_user
+        @activity.save!
+      end
+    end
+    respond_to do |format|
+      format.js { render 'get_show_partial'}
+    end
+  end
 end
 

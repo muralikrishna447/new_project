@@ -59,11 +59,11 @@ ActiveAdmin.register Activity do
 
     def update
       @activity = Activity.find(params[:id])
+
       @activity.store_revision do
         @activity.update_equipment(separate_equipment)
         @activity.update_steps(separate_steps)
         @activity.update_ingredients(separate_ingredients)
-        @activity.last_edited_by = current_admin_user
         update!
       end
     end
