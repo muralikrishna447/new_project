@@ -1,6 +1,6 @@
 %csEditPair
   %csEditPairShow
-    %iframe.noprint(ng-show="showHeroVideo()" ng-src="{{heroVideoURL()}}" )
+    %iframe.noprint(ng-show="showHeroVideo()" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect)
     %img(ng-show="(! showHeroVideo()) && showHeroImage()" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
   %csEditPairEdit
     .row
