@@ -485,6 +485,7 @@ DEPENDENCIES
   ranked-model
   rb-fsevent
   rdiscount
+  redis
   rest-client
   rspec-rails
   sass-rails (~> 3.2.3)
