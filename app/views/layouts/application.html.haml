@@ -32,7 +32,9 @@
       - flash.each do |name, msg|
         %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
           %button.close{type: 'button', data: {dismiss: 'alert'}} x
-          = msg
+          %h4.alert-message= msg
+          .lblock
+          
     = yield
 
     .container-fluid#slider-container
