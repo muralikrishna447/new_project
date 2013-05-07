@@ -4,7 +4,7 @@
 # pair is activated at a time, and to the app for the undo/redo.
 angular.module('ChefStepsApp').directive 'cseditpair', ->
   restrict: 'E',
-  require: '^cseditgroup',
+  require: '^cseditrecord',
   transclude: true,
   replace: true,
   scope: true,

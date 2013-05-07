@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').directive 'cseditgroup', ->
+angular.module('ChefStepsApp').directive 'cseditrecord', ->
   scope: true,
   controller: ['$scope', '$element', ($scope, $element) ->
 

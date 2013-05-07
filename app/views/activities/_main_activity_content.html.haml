@@ -2,31 +2,36 @@
   .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
     = render 'hero_visual', activity: activity
   - cache [activity, 'ingredients'] do
-    - if activity.description?
-      %csEditPair
-        %csEditPairShow
-          .activity-description-wrapper
-            .activity-description#activity-description
-              %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
-              .activity-description-overlay(ng-hide="activity.description.length < 455")
-            .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
-              = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
-        %csEditPairEdit
-          = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}, autofocus: 'autofocus'}
+
+    %csEditPair
+      %csEditPairShow
+        .activity-description-wrapper(ng-show="!!activity.description")
+          .activity-description#activity-description
+            %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
+            .activity-description-overlay(ng-hide="activity.description.length < 455")
+          .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
+            = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
+        %button.btn.btn-large.add-section(ng-show="editMode && (!activity.description)")
+          Add Description
+      %csEditPairEdit
+        = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}, autofocus: 'autofocus'}
 
     - if activity.ingredients.any?
       .section
         .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
           .well
             = render 'ingredients_list', ingredients: activity.ingredients
-    - if activity.yield.present?
       .section
-        %h4 Yield
         %csEditPair
           %csEditPairShow
-            %span(itemprop="recipeYield" ng-bind="activity.yield")
+            %div(ng-show="!!activity.yield")
+              %h4 Yield
+              %span(itemprop="recipeYield" ng-bind="activity.yield")
+            %button.btn.btn-large.add-section(ng-show="editMode && (!activity.yield)")
+              Add Yield
 
           %csEditPairEdit
+            %h5 Yield
             = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
 
     - if activity.timing.present?
@@ -37,21 +42,13 @@
     .section
       %ul.equipment
         %li(ng-repeat="item in activity.equipment | filter:requiredEquipment")
-          %csEditPair
-            %csEditPairShow
-              %div(ng-switch="" on="!!item.equipment.product_url")
-                %span(ng-switch-when="true")
-                  %a(ng-href='{{item.equipment.product_url}}' target='_blank')
-                    {{item.equipment.title}}
-                %span(ng-switch-when="false")
-                  {{item.equipment.title}}
-            %csEditPairEdit
-              Coming Soon
+          %csEquipmentEditPair
+
     %h4 Optional Equipment and Materials
     .section
       %ul.equipment
         %li(ng-repeat="item in activity.equipment | filter:optionalEquipment")
-          {{item.equipment.title}}
+          %csEquipmentEditPair
     - if activity.used_in_activities.published.any?
       .section(ng-hide="editMode")
         %h4 Used In
