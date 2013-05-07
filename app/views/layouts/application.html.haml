@@ -28,11 +28,14 @@
   %body{@body_tag_attributes || {}}
     = render 'layouts/navigation', external: false
 
-    .container.alert-container
+    .container.top-container
       - flash.each do |name, msg|
-        %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
-          %button.close{type: 'button', data: {dismiss: 'alert'}} x
-          = msg
+        / %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
+        /   %button.close{type: 'button', data: {dismiss: 'alert'}} x
+        /   = msg
+      .alert.alert-success
+        %button.close{type: 'button', data: {dismiss: 'alert'}} x
+        Hello
     = yield
 
     .container-fluid#slider-container
