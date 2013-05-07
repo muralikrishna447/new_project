@@ -14,6 +14,10 @@ angular.module('ChefStepsApp').directive 'cseditrecord', ->
         $scope.addUndo()
         window.wysiwygDeactivatedCallback($element)
 
+    $scope.unofferAll = ->
+      angular.forEach $scope.pairs, (pair) ->
+        pair.editOffered = false
+
     $scope.$on 'end_all_edits', ->
       $scope.deactivateAll()
 

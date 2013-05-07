@@ -15,10 +15,11 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
   controller: ['$scope', '$element', ($scope, $element) ->
     $scope.offerEdit = ->
       if $scope.editMode && ! $scope.active
-        $($element).find('.edit-target').show()
+        $scope.editOffered = true
 
     $scope.unofferEdit = ->
-      $($element).find('.edit-target').hide()
+      $scope.editOffered = false
+      $scope.unofferAll()
 
     # Edit one group
     $scope.startEdit = ->
@@ -27,7 +28,10 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
       event.stopPropagation()
   ]
 
-  template: '<div class="edit-pair" ng-switch="" on="active" ng-mouseover="offerEdit()"><div class="edit-target hide" ng-mouseout="unofferEdit()" ng-click="startEdit()"></div><div ng-transclude></div></div>'
+  template: '<div class="edit-pair" ng-switch="" on="active" ng-mouseover="offerEdit()">' +
+              '<div class="edit-target" ng-mouseout="unofferEdit()" ng-click="startEdit()" ng-show="editOffered"></div>' +
+              '<div ng-transclude></div>' +
+            '</div>'
 
 angular.module('ChefStepsApp').directive 'cseditpairedit', ->
   restrict: 'E',
