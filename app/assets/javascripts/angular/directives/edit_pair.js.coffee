@@ -9,17 +9,17 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
   replace: true,
   scope: true,
 
-  link: (scope, element, attrs, groupControl) ->
+  link: (scope, element, attrs, recordControl) ->
     scope.addPair(scope)
 
   controller: ['$scope', '$element', ($scope, $element) ->
     $scope.offerEdit = ->
+      $scope.unofferAll()
       if $scope.editMode && ! $scope.active
         $scope.editOffered = true
 
     $scope.unofferEdit = ->
       $scope.editOffered = false
-      $scope.unofferAll()
 
     # Edit one group
     $scope.startEdit = ->

@@ -1,14 +1,12 @@
 angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
   restrict: 'E',
   scope: true,
+  require: '^cseditrecord',
 
-  link: (scope, element, attrs, groupControl) ->
+  link: (scope, element, attrs, recordControl) ->
     scope.addPair(scope)
 
-  controller: ['$scope', '$element', ($scope, $element) ->
-
-  ]
-
+  # TODO: Move this to a partial file
   template: '<csEditPair>'+
               '<csEditPairShow>' +
                 '<div ng-switch="" on="!!item.equipment.product_url">' +
