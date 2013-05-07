@@ -142,5 +142,16 @@ module ApplicationHelper
     end
   end
 
+  def where_user_left_off_in_course(course, user)
+    viewed = user.viewed_activites_in_course(course)
+    if viewed.count == 0
+      first_activity = course.first_published_activity
+      link_to 'Start the Course', first_activity, class: 'btn btn-primary'
+    else
+      current_activity = viewed.last
+      link_to 'Continue Course', current_activity, class: 'btn-primary'
+    end
+  end
+
 end
 
