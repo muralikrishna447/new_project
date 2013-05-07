@@ -15,8 +15,12 @@
 
 .container
   .row
-    .span2.well.profile-badges
-      %h4 Badges
+    .span2
+      .well.profile-badges
+        %h4 Badges
+      - if current_user == @user
+        = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-primary btn-block'
+        = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'
     .span6
       %h4 Bio
       %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
