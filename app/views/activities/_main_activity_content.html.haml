@@ -33,14 +33,25 @@
       .section
         %h4 Timing
         = activity.timing
-    - if activity.required_equipment.any?
-      .section
-        %h4 Equipment and Materials
-        = render 'equipment_list', equipment: activity.required_equipment
-    - if activity.optional_equipment.any?
-      .section
-        %h4 Optional Equipment
-        = render 'equipment_list', equipment: activity.optional_equipment
+    %h4 Equipment and Materials
+    .section
+      %ul.equipment
+        %li(ng-repeat="item in activity.equipment | filter:requiredEquipment")
+          %csEditPair
+            %csEditPairShow
+              %div(ng-switch="" on="!!item.equipment.product_url")
+                %span(ng-switch-when="true")
+                  %a(ng-href='{{item.equipment.product_url}}' target='_blank')
+                    {{item.equipment.title}}
+                %span(ng-switch-when="false")
+                  {{item.equipment.title}}
+            %csEditPairEdit
+              Coming Soon
+    %h4 Optional Equipment and Materials
+    .section
+      %ul.equipment
+        %li(ng-repeat="item in activity.equipment | filter:optionalEquipment")
+          {{item.equipment.title}}
     - if activity.used_in_activities.published.any?
       .section(ng-hide="editMode")
         %h4 Used In

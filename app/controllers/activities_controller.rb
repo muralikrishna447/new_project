@@ -68,7 +68,7 @@ class ActivitiesController < ApplicationController
         end
       end
 
-      format.json {  render :json => @activity }
+      format.json {  render :json => @activity.to_json(:include => { :equipment => { :include => :equipment }}) }
 
     end
   end

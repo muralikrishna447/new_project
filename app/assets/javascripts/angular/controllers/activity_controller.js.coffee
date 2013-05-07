@@ -87,5 +87,12 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       url + "/convert?fit=max&w=#{width}&cache=true"
     else
       ""
+
+  $scope.optionalEquipment = (item) ->
+    item.optional
+
+  $scope.requiredEquipment = (item) ->
+    ! $scope.optionalEquipment(item)
+
 ]
 
