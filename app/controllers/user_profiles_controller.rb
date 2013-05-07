@@ -20,17 +20,27 @@ class UserProfilesController < ApplicationController
     @techniques = Activity.published.techniques.last(6)
   end
 
+  def edit
+    @user = User.find(params[:id])
+  end
+
   def update
-    render_unauthorized unless current_user == user
-    if user.present?
-      if user.update_whitelist_attributes(params[:user_profile])
-        render json: user_presenter.present
-      else
-        render_errors(user)
-      end
+    @user = User.find(params[:id])
+    render_unauthorized unless current_user == @user
+    if @user.update_attributes(params[:user])
+      redirect_to user_profile_path(@user), notice: 'User profile updated!'
     else
-      render_resource_not_found
+      render 'edit'
     end
+    # if user.present?
+    #   if user.update_whitelist_attributes(params[:user_profile])
+    #     render json: user_presenter.present
+    #   else
+    #     render_errors(user)
+    #   end
+    # else
+    #   render_resource_not_found
+    # end
   end
 end
 

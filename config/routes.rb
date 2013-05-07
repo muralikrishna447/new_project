@@ -56,7 +56,7 @@ Delve::Application.routes.draw do
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
-  resources :user_profiles, only: [:show, :update], path: 'profiles'
+  resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
   resources :courses, only: [:index, :show] do
     resources :activities, only: [:show], path: ''
