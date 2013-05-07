@@ -13,6 +13,13 @@ class CoursesController < ApplicationController
   def show
     @course = Course.find(params[:id])
     if @course.title == 'Spherification'
+      @frozen_reverse_spheres = Activity.find([259,311])
+      @beet_spheres = Activity.find([239])
+      @easier_direct_spheres = Activity.find([309])
+      @low_ph_spheres = Activity.find([299])
+      @creative = @course.viewable_activities - @frozen_reverse_spheres - @beet_spheres - @easier_direct_spheres - @low_ph_spheres
+      @enthusiast = @course.viewable_activities - @easier_direct_spheres - @low_ph_spheres
+      @professional = @course.viewable_activities
       render 'spherification'
     end
   end
