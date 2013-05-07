@@ -15,7 +15,7 @@
     .span6.well
       - if current_user && current_user.course_ids.include?(@course.id)
         You are enrolled into this course.
-        = link_to 'First activity', course_activity_path(@course, @course.first_published_activity), class: 'btn btn-primary btn-large pull-right'
+        = link_to @course.first_published_activity.title, course_activity_path(@course, @course.first_published_activity), class: 'btn btn-primary btn-large pull-right'
       - else
         = form_tag enroll_course_path(@course) do
           = submit_tag 'Enroll', class: 'btn btn-primary btn-large pull-right'
@@ -37,10 +37,11 @@
   .row.section
     .span12
       %h2.text-center
-        Buy a kit to help you get started or <a href="#">browse the course now</a>.
+        Buy a kit to help you get started or 
+        = link_to 'browse the course now.', course_activity_path(@course, @course.first_published_activity)
 
 %hr
-.container-fluid.well-gradient
+.container-fluid
   .row-fluid
     .container
       .row.section
@@ -70,7 +71,9 @@
           %h4.text-center= "The Creative Kit $39"
           .btn.btn-primary.btn-large.text-center.btn-block
             Buy Now
-.container-fluid.well-gradient
+
+%hr
+.container-fluid
   .row-fluid
     .container
       .row.section
@@ -100,7 +103,9 @@
           %h4.text-center= "The Enthusiast Kit $70"
           .btn.btn-primary.btn-large.text-center.btn-block
             Buy Now
-.container-fluid.well-gradient
+
+%hr
+.container-fluid
   .row-fluid
     .container
       .row.section
