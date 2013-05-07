@@ -40,40 +40,131 @@
         Buy a kit to help you get started or <a href="#">browse the course now</a>.
 
 %hr
-- ['creative','enthusiast','professional'].each do |kit_title|
-  .container-fluid.well-gradient
-    .row-fluid
-      .container
-        .row.section
-          .span11.offset1
-            %h3.orange= "The #{kit_title.titleize}"
-        .row.section
-          .span5.offset1
-            = image_tag 'http://placehold.it/570x320'
-            %h4= "The #{kit_title.titleize} kit includes"
-            %ul
-              %li Syringe for direct spherification
-              %li Stainless steel dosing spoon for reverse spherification
-              %li Stainless steel straining spoon
-              %li 25 g Sphere Magic
-              %li 25 g Sodium Citrate
-              %li 50 g Calcium Lactate Gluconate
-              %li 50 g Calcium Chloride
-              %li 50 g Xanthan Gum
-          .span5.offset1
-            = image_tag 'http://placehold.it/570x320'
-            %h4= "The #{kit_title.titleize} kit takes you through these lessons"
-            %ul
-              %li Sphere Baths
-              %li Direct Spherification
-              %li Reverse Spherification
-              %li Chocolate Spheres
-              %li Pine Spheres
-        .row.section
-          .span4.offset4.well
-            %h4.text-center= "The #{kit_title.titleize} Kit $39"
-            .btn.btn-primary.btn-large.text-center
-              Buy Now
+.container-fluid.well-gradient
+  .row-fluid
+    .container
+      .row.section
+        .span11.offset1
+          %h3.orange= "The Creative Kit"
+      .row.section
+        .span5.offset1
+          = image_tag 'http://placehold.it/570x320'
+          %h4= "The Creative Kit includes"
+          %ul
+            %li Syringe for direct spherification
+            %li Stainless steel dosing spoon for reverse spherification
+            %li Stainless steel straining spoon
+            %li 25 g Sphere Magic
+            %li 25 g Sodium Citrate
+            %li 50 g Calcium Lactate Gluconate
+            %li 50 g Calcium Chloride
+            %li 50 g Xanthan Gum
+        .span5
+          = image_tag 'http://placehold.it/570x320'
+          %h4= "The Creative Kit takes you through these lessons"
+          %ul
+            - @creative.each do |activity|
+              %li= activity.title
+      .row.section
+        .span4.offset4.well
+          %h4.text-center= "The Creative Kit $39"
+          .btn.btn-primary.btn-large.text-center.btn-block
+            Buy Now
+.container-fluid.well-gradient
+  .row-fluid
+    .container
+      .row.section
+        .span11.offset1
+          %h3.orange= "The Enthusiast Kit"
+      .row.section
+        .span5.offset1
+          = image_tag 'http://placehold.it/570x320'
+          %h4= "The Enthusiast Kit includes"
+          %ul
+            %li Syringe for direct spherification
+            %li Stainless steel dosing spoon for reverse spherification
+            %li Stainless steel straining spoon
+            %li 25 g Sphere Magic
+            %li 25 g Sodium Citrate
+            %li 50 g Calcium Lactate Gluconate
+            %li 50 g Calcium Chloride
+            %li 50 g Xanthan Gum
+        .span5
+          = image_tag 'http://placehold.it/570x320'
+          %h4= "The Enthusiast Kit takes you through these lessons"
+          %ul
+            - @enthusiast.each do |activity|
+              %li= activity.title
+      .row.section
+        .span4.offset4.well
+          %h4.text-center= "The Enthusiast Kit $70"
+          .btn.btn-primary.btn-large.text-center.btn-block
+            Buy Now
+.container-fluid.well-gradient
+  .row-fluid
+    .container
+      .row.section
+        .span11.offset1
+          %h3.orange= "The Professional Kit"
+      .row.section
+        .span5.offset1
+          = image_tag 'http://placehold.it/570x320'
+          %h4= "The Professional Kit includes"
+          %ul
+            %li Syringe for direct spherification
+            %li Stainless steel dosing spoon for reverse spherification
+            %li Stainless steel straining spoon
+            %li 25 g Sphere Magic
+            %li 25 g Sodium Citrate
+            %li 50 g Calcium Lactate Gluconate
+            %li 50 g Calcium Chloride
+            %li 50 g Xanthan Gum
+        .span5
+          = image_tag 'http://placehold.it/570x320'
+          %h4= "The Professional Kit takes you through these lessons"
+          %ul
+            - @professional.each do |activity|
+              %li= activity.title
+      .row.section
+        .span4.offset4.well
+          %h4.text-center= "The Professional Kit $119"
+          .btn.btn-primary.btn-large.text-center.btn-block
+            Buy Now
+/ - ['creative','enthusiast','professional'].each do |kit_title|
+/   .container-fluid.well-gradient
+/     .row-fluid
+/       .container
+/         .row.section
+/           .span11.offset1
+/             %h3.orange= "The #{kit_title.titleize}"
+/         .row.section
+/           .span5.offset1
+/             = image_tag 'http://placehold.it/570x320'
+/             %h4= "The #{kit_title.titleize} kit includes"
+/             %ul
+/               %li Syringe for direct spherification
+/               %li Stainless steel dosing spoon for reverse spherification
+/               %li Stainless steel straining spoon
+/               %li 25 g Sphere Magic
+/               %li 25 g Sodium Citrate
+/               %li 50 g Calcium Lactate Gluconate
+/               %li 50 g Calcium Chloride
+/               %li 50 g Xanthan Gum
+/           .span5
+/             = image_tag 'http://placehold.it/570x320'
+/             %h4= "The #{kit_title.titleize} kit takes you through these lessons"
+/             %ul
+/               %li Sphere Baths
+/               %li Direct Spherification
+/               %li Reverse Spherification
+/               %li Chocolate Spheres
+/               %li Pine Spheres
+/         .row.section
+/           .span4.offset4.well
+/             %h4.text-center= "The #{kit_title.titleize} Kit $39"
+/             .btn.btn-primary.btn-large.text-center.btn-block
+/               Buy Now
+
 
 .container-fluid
   .row-fluid
