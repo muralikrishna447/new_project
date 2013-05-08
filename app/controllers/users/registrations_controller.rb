@@ -2,6 +2,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # append_after_filter :aweber_signup, :only => :create
 
   def welcome
+    name = params[:name]
+    email = params[:email]
+    @user = User.where(email: email).first
+    if @user
+      redirect_to sign_in_url(name: name, email: email)
+    else
+      aweber_signup(email)
+      finished('homepage_design', reset: false)
+    end
   end
 
   def new
