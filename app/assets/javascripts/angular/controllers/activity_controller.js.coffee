@@ -16,12 +16,12 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.undoIndex = 0
 
   $scope.endEditMode = ->
-    $scope.$broadcast('end_all_edits')
+    $scope.$broadcast('stop_edits')
     $scope.editMode = false
     $scope.activity.$update()
 
   $scope.cancelEditMode = ->
-    $scope.$broadcast('end_all_edits')
+    $scope.$broadcast('stop_edits')
     $scope.editMode = false
     if $scope.undoAvailable
       $scope.activity = deepCopy $scope.undoStack[0]
@@ -29,7 +29,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.bodyClick = ->
     if $scope.editMode
       if $(event.target).is('body') || $(event.target).is('html')
-        $scope.$broadcast('end_all_edits')
+        $scope.$broadcast('stop_edits')
 
   # Undo/redo TODO: could be a service I think
   $scope.undo = ->
@@ -55,6 +55,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.undoStack = $scope.undoStack[0..$scope.undoIndex]
       $scope.undoStack.push newUndo
       $scope.undoIndex = $scope.undoStack.length - 1
+
+  $scope.$on 'maybe_save_undo', ->
+    $scope.addUndo()
 
   # Hero video/image stuff
   $scope.showHeroVideo = ->

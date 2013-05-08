@@ -4,19 +4,19 @@
 # pair is activated at a time, and to the app for the undo/redo.
 angular.module('ChefStepsApp').directive 'cseditpair', ->
   restrict: 'E',
-  require: '^cseditrecord',
   transclude: true,
   replace: true,
   scope: true,
 
-  link: (scope, element, attrs, recordControl) ->
-    scope.addPair(scope)
-
-  controller: ['$scope', '$element', ($scope, $element) ->
+  controller: ['$rootScope', '$scope', '$element', ($rootScope, $scope, $element) ->
     $scope.offerEdit = ->
-      $scope.unofferAll()
+      # Radio behavior
+      $rootScope.$broadcast('stop_offering_edits')
       if $scope.editMode && ! $scope.active
         $scope.editOffered = true
+
+    $scope.$on 'stop_offering_edits', ->
+      $scope.unofferEdit()
 
     $scope.unofferEdit = ->
       $scope.editOffered = false
@@ -24,12 +24,21 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     # Edit one group
     $scope.startEdit = ->
       $scope.unofferEdit()
-      $scope.activate($scope)
+      # Radio behavior
+      $rootScope.$broadcast('stop_edits')
+      $scope.active = true
       event.stopPropagation()
 
+    $scope.$on 'stop_edits', ->
+      if $scope.active
+        $scope.active = false
+        $scope.$emit('maybe_save_undo')
+
+    # Not used yet
     $scope.removeAllowed = ->
       true
 
+    # Not used yet
     $scope.removeItem = ->
       $scope.$emit("remove_item")
   ]
@@ -49,4 +58,4 @@ angular.module('ChefStepsApp').directive 'cseditpairedit', ->
 angular.module('ChefStepsApp').directive 'cseditpairshow', ->
   restrict: 'E',
   transclude: true,
-  template: '<div ng-switch-when="false" ng-transclude></div>'
+  template: '<div ng-switch-default="" ng-transclude></div>'

@@ -52,7 +52,7 @@
       %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
       %ul.equipment
         %li(ng-repeat="item in activity.equipment | filter:requiredEquipment")
-          %csEquipmentEditPair
+          %csEquipmentEditPair(csItem='{{item}}')
       %button.btn.btn-small.add-section(ng-show="editMode && ! hasRequiredEquipment()" ng-click="addEquipment(false)")
         Add Required Equipment
       %button.btn.btn-small.add-item(ng-show="editMode && hasRequiredEquipment()" ng-click="addEquipment(false)")
@@ -62,7 +62,7 @@
       %h4(ng-show="hasOptionalEquipment()") Optional Equipment and Materials
       %ul.equipment
         %li(ng-repeat="item in activity.equipment | filter:optionalEquipment")
-          %csEquipmentEditPair
+          %csEquipmentEditPair(csItem='{{item}}')
       %button.btn.btn-small.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")
         Add Optional Equipment
       %button.btn.btn-small.add-item(ng-show="editMode && hasOptionalEquipment()" ng-click="addEquipment(true)")
