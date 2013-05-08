@@ -1,31 +1,52 @@
-.container
-
+.container.top-container
   .row
-    .span12.pull-left
-      %h3 From Creators of <i>Modernist Cuisine: The Art and Science of Cooking</i>
-      %ul.unstyled
-        %li.instructor#instructor-chris
-          .row
-            .span2
-              = image_tag('chris-large.jpg', title: 'Chris Young', class: 'img-profile')
-            .span8
-              :markdown
-                #{@chris.copy.to_s}
-          .row
-            .span10.horizontal-divider
-        %li.instructor#instructor-grant
-          .row
-            .span2
-              = image_tag('grant-large.jpg', title: 'Chris Young', class: 'img-profile')
-            .span8
-              :markdown
-                #{@grant.copy.to_s}
-          .row
-            .span10.horizontal-divider
-        %li.instructor#instructor-ryan
-          .row
-            .span2
-              = image_tag('ryan.jpg', title: 'Ryan Matthew Smith', class: 'img-profile')
-            .span8
-              :markdown
-                #{@ryan.copy.to_s}
+    %br
+    .span6
+      = image_tag('http://placehold.it/500x300')
+    .span6
+      %h2 Cook. Forward.
+      %p ChefSteps is absolutely free to learn. How are we going to make money? By selling products to you that help you succeed in the kitchen. We're starting off with small stuff like spatulas, scales, and some big stuff, too, like immersion circulators and water ovens. In the end, our community will be the ones that will allow us to succeed, so join us and help yourself kick ass in the kitchen! 
+
+  .row.section
+    .span12  
+      %h2.text-center Founded by
+  .row
+    .span4.text-center
+      = image_tag('http://placehold.it/150x150', title: 'Chris Young', class: 'img-circle')
+      %h3 Chris Young
+      %p Nullam id dolor id nibh ultricies vehicula ut id elit. Donec id elit non mi porta gravida at eget metus.
+    .span4.text-center
+      = image_tag('http://placehold.it/150x150', title: 'Grant Lee Crilly', class: 'img-circle')
+      %h3 Grant Lee Crilly
+      %p Nullam id dolor id nibh ultricies vehicula ut id elit. Donec id elit non mi porta gravida at eget metus.
+    .span4.text-center
+      = image_tag('http://placehold.it/150x150', title: 'Ryan Matthew Smith', class: 'img-circle')
+      %h3 Ryan Matthew Smith
+      %p Nullam id dolor id nibh ultricies vehicula ut id elit. Donec id elit non mi porta gravida at eget metus.
+  %hr
+  .row.section
+    .span12
+    %h2.text-center The Team
+    - team = {'ben' => 'development chef', 'nick' => 'development chef', 'michael' => 'CTO', 'huy' => 'web developer', 'hans' => 'director of audio', ' lorraine' => 'director of social media', 'kristina' => 'photo/visuals', 'trissa' => 'kitchen staff', 'ed' => 'director of business operations', 'tim' => 'designer' }.sort.each do |bio_name, position|
+      .span3.text-center
+        = image_tag('http://placehold.it/100x100',  title: 'title', class: 'img-circle')
+        %h4= "#{bio_name}"
+        %h5= "#{position}"
+        %p Nullam id dolor id nibh ultricies vehicula   ut id elit. Nullam quis risus eget urna mollis.  
+  %hr
+  .row.section
+    .span4
+      .row
+        %h4 Want to Join Us?
+        %p We're looking for Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Maecenas sed diam eget risus varius blandit sit amet non magna.
+      .row
+        %h4 Visit the blog and see what we're up to.
+
+    .span8
+      %h4 Contact Us
+      = email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
+      = email_field_tag 'note', nil, {class: 'input-signup-email', placeholder: 'Your message here', required: true}      
+      = submit_tag 'Sign Up Now', class: 'btn btn-secondary', id: 'subscribe-email'
+
+= content_for :footer do
+  = render 'layouts/footer'
