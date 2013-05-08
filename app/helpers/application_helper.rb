@@ -142,5 +142,21 @@ module ApplicationHelper
     end
   end
 
+  def link_to_web_email(email)
+    email_service = /\@(.*)/.match(email).to_s
+    case email_service
+    when '@gmail.com'
+      email_service_name = 'Gmail'
+      email_service_url = 'http://www.gmail.com'
+    when '@hotmail.com'
+      email_service_name = 'Hotmail'
+      email_service_url = 'http://www.hotmail.com'
+    when '@yahoo.com'
+      email_service_name = 'Yahoo Mail'
+      email_service_url = 'http://mail.yahoo.com'
+    end
+    link_to "Go to #{email_service_name}", email_service_url, class: 'btn btn-primary btn-large', target: '_blank'
+  end
+
 end
 
