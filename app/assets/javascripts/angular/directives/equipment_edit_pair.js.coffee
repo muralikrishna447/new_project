@@ -1,6 +1,5 @@
 angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
   restrict: 'E',
-  scope: true,
   require: '^cseditrecord',
 
   link: (scope, element, attrs, recordControl) ->
@@ -14,9 +13,11 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
                     "<a ng-href='{{item.equipment.product_url}}' target='_blank'>{{item.equipment.title}}</a>" +
                   '</span>' +
                   '<span ng-switch-when="false">{{item.equipment.title}}</span>' +
+                  '--<b>{{item.equipment}}</b>' +
                 '</div>' +
               '</csEditPairShow>'+
               '<csEditPairEdit>' +
-                'Coming Soon' +
+                '<input type="text" placeholder="New equipment" typeahead-editable="true" autofocus="autofocus" autocomplete="off" class="equipment-typeahead" ng-model="item.equipment" typeahead="e as e.title for e in all_equipment | filter:{title: $viewValue}"/>' +
+                '{{item.equipment}}' +
               '</csEditPairEdit>' +
             '</csEditPair>'

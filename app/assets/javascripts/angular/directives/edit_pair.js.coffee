@@ -26,10 +26,18 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
       $scope.unofferEdit()
       $scope.activate($scope)
       event.stopPropagation()
+
+    $scope.removeAllowed = ->
+      true
+
+    $scope.removeItem = ->
+      $scope.$emit("remove_item")
   ]
 
   template: '<div class="edit-pair" ng-switch="" on="active" ng-mouseover="offerEdit()">' +
-              '<div class="edit-target" ng-mouseout="unofferEdit()" ng-click="startEdit()" ng-show="editOffered"></div>' +
+              '<div class="edit-target" ng-mouseout="unofferEdit()" ng-click="startEdit()" ng-show="editOffered">' +
+                '<div class="remove-target" ng-show="removeAllowed()" ng-click="removeItem()">' +
+              '</div>' +
               '<div ng-transclude></div>' +
             '</div>'
 

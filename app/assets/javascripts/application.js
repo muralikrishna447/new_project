@@ -1,4 +1,3 @@
-//= require jquery
 //= require jquery-ui
 //= require mobile_detect
 //= require twitter/bootstrap

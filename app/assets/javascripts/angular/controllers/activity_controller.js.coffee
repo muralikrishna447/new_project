@@ -98,11 +98,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     ! $scope.optionalEquipment(item)
 
   $scope.addEquipment = (optional) ->
-    equip = {title: "New Piece of Equipment"}
+    equip = {}
     item = {equipment: equip, optional: optional}
     $scope.activity.equipment.push(item)
     $scope.addUndo()
 
+  $scope.all_equipment =
+    [{id:1, title: "Saucepan"}, {id:2, title: "Widgit", product_url: "http//widgit.com"}, {id: 3, title: "Sauce strainer"}]
 
 ]
 

@@ -1020,11 +1020,24 @@ h1, h2, h3, h4
   left: -1%
   width:  102%
   height:  102%
+  min-height: 10px
+  min-width: 10px
   font-size:  15px
   border: 2px solid #9ecaed
   border-radius: 7px
   z-index: 999
   background-color: rgba(158, 202, 237, 0.2)
+
+// Not ready for prime time
+.remove-target
+  display: none
+  border: 2px solid red
+  width: 10%
+  height:  10%
+  position:  absolute
+  top: 5%
+  left:  5%
+  font-size: 15px
 
 #activity-body
   form, textarea
@@ -1035,6 +1048,14 @@ h1, h2, h3, h4
   label
     margin-right: 8px
     vertical-align: top
+
+input.equipment-typeahead
+  @include boxsizing
+  padding: 0px 2px 0px 2px
+  margin-left: -2px
+  margin-top: 0px
+  margin-bottom: 0px
+
 
 // Making this match h1. I tried @including h1 but that was a no go.
 *[data-ng-model='activity.title']
