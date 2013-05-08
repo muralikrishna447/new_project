@@ -91,6 +91,7 @@ Delve::Application.routes.draw do
   resources :uploads
 
   resources :sitemaps, :only => :show
+  mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
 
 end
