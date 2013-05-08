@@ -1,6 +1,9 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # append_after_filter :aweber_signup, :only => :create
 
+  def welcome
+  end
+
   def new
     name = params[:name]
     email = params[:email]
