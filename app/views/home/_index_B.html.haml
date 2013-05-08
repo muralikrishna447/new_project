@@ -1,7 +1,7 @@
-- if @new_visitor
-  = render 'madlib'
-- else
+- if @returning_visitor || current_user
   = render 'hero_carousel'
+- else
+  = render 'madlib'
 
 .container
   .row.section
