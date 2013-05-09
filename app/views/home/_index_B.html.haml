@@ -6,7 +6,7 @@
 .container
   .row.section
     .span12
-      %h2.text-orange Check out our first course with more to come&nbsp;...
+      %h2.text-orange Check out our first free course with more to come&nbsp;...
   .row.section
     - if @courses.any?
       - @courses.each do |course|
@@ -65,11 +65,12 @@
   .container
     .row.section
       .span12
-        %h2.text-orange Did we mention its free?
+        %h2.text-orange Did we mention it's free?
     .row.section
       .span6
         %p.lead
-          Yes, ChefSteps is entirely free-to-learn. Our goal is to collaborate with the global community of curious cooks to create original recipes, invent new techniques, and help us all become better cooks. Skeptical? Read more here about how we plan to keep ChefSteps going without compromise.
+          Yes, ChefSteps is entirely free-to-learn. Our goal is to collaborate with the global community of curious cooks to create original recipes, invent new techniques, and help us all become better cooks. 
+          / Skeptical? Read more here about how we plan to keep ChefSteps going without compromise.
       .span5.offset1
         %p.lead Keep up to date with the latest from ChefSteps.
         = form_tag sign_up_url, :method => :get, class: 'form-inline' do
@@ -101,7 +102,7 @@
         .span4.signup-box
           .well
             %h3 Join the community!
-            = form_tag sign_up_url, :method => :get, class: 'form-inline' do
+            = form_tag welcome_url, :method => :get, class: 'form-inline' do
               = hidden_field_tag :signed_up_from, 'homepage_cta'
               %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
               %p= submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'

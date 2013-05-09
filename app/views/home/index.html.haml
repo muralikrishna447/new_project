@@ -1,8 +1,10 @@
 - content_for :title, "ChefSteps - Learn how to be a more creative cook."
 - content_for :description, "Free online cooking school from key members of the Modernist Cuisine team. Our first course will teach you everything you need to know about sous vide cooking."
 
-- ab_test('homepage_design', {'homepage_A' => 4}, {'homepage_B' => 1}) do |homepage|
-  - if homepage == 'homepage_A'
-    = render 'index_A'
-  - elsif homepage == 'homepage_B'
-    = render 'index_B'
+= render 'index_B'
+
+/ - ab_test('homepage_design', {'homepage_A' => 1}, {'homepage_B' => 1}) do |homepage|
+/   - if homepage == 'homepage_A'
+/     = render 'index_A'
+/   - elsif homepage == 'homepage_B'
+/     = render 'index_B'
