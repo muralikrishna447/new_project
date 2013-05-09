@@ -117,6 +117,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $http.get("/equipment.json?q=" + equip_name).then (response) ->
       limitToFilter(response.data, 15)
 
-
+  $scope.equipmentSortOptions = {
+    axis: 'y',
+    containment: 'parent',
+    cursor: 'move',
+    handle: '.drag-handle'
+  }
 ]
 

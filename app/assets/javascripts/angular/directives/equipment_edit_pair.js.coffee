@@ -60,6 +60,7 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
   template: '<csEditPair>'+
               '<csEditPairShow>' +
                 '<div ng-switch="" on="!!item.equipment.product_url">' +
+                  '<span class="drag-handle" ng-show="editMode"><i class="icon-sort"></i></span>' +
                   '<span ng-switch-when="true">' +
                     "<a ng-href='{{item.equipment.product_url}}' target='_blank'>{{item.equipment.title || item.equipment}}&nbsp;</a>" +
                   '</span>' +

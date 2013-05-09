@@ -1058,9 +1058,18 @@ input.equipment-typeahead
   max-width: 280px
 
 csequipmenteditpair
+  position: relative
+
   .remove-button
     display: inline-block
     margin-left: -20px
+
+  .drag-handle
+    z-index: 2000
+    margin-left: -40px
+    position: absolute
+    left: 19px
+    top: 3px
 
 
 // Making this match h1. I tried @including h1 but that was a no go.

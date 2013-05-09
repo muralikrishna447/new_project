@@ -14,3 +14,4 @@
 //= require rails.validations
 //= require rails.validations.formtastic
 
+

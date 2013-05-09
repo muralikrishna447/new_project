@@ -50,7 +50,7 @@
 
     .section(csmonitorinputactivity="")
       %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
-      %ul.equipment
+      %ul.equipment(ui-sortable="equipmentSortOptions")
         %li(ng-repeat="item in activity.equipment | filter:requiredEquipment")
           %csEquipmentEditPair(csOptional="false")
       .nav
@@ -63,15 +63,16 @@
 
     .section(csmonitorinputactivity="")
       %h4(ng-show="hasOptionalEquipment()") Optional Equipment and Materials
-      %ul.equipment
+      %ul.equipment(ui-sortable="equipmentSortOptions")
         %li(ng-repeat="item in activity.equipment | filter:optionalEquipment")
           %csEquipmentEditPair(csOptional="true")
-      %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")
-        Add Optional Equipment
-      %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasOptionalEquipment()" ng-click="addEquipment(true)")
-        +
-      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
-        Done
+      .nav
+        %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")
+          Add Optional Equipment
+        %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasOptionalEquipment()" ng-click="addEquipment(true)")
+          +
+        %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
+          Done
 
     - if activity.used_in_activities.published.any?
       .section(ng-hide="editMode")
