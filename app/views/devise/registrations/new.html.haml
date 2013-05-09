@@ -34,6 +34,6 @@
                   = check_box_tag :terms_registration, true, true, required: true
                 = "By tapping Sign up above, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path, class: 'black-link'}</b>.".html_safe
 
-        %hr
-        .registration.facebook
-          = render 'devise/shared/facebook_login', text: 'Sign up with <b>Facebook</b>'
+        / %hr
+        / .registration.facebook
+        /   = render 'devise/shared/facebook_login', text: 'Sign up with <b>Facebook</b>'

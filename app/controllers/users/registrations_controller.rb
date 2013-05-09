@@ -24,7 +24,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @user = User.new
       @user.name = name
       @user.email = email
-      @user.signed_up_from = params[:signed_up_from]
+      @user.signed_up_from = params[:'custom signed_up_from']
     end
   end
 
@@ -57,16 +57,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def aweber_signup(email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
-    if Rails.env.production?
-      uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
-      response = Net::HTTP.post_form(uri,
-                                      { "email" => email,
-                                        "listname" => listname,
-                                        "meta_adtracking" => meta_adtracking,
-                                        "signed_up_from" => signed_up_from})
-    else
-      logger.debug 'Newsletter Signup'
-    end
+    uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
+    response = Net::HTTP.post_form(uri,
+                                    { "email" => email,
+                                      "listname" => listname,
+                                      "meta_adtracking" => meta_adtracking,
+                                      "custom signed_up_from" => signed_up_from})
+    # if Rails.env.production?
+    #   uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
+    #   response = Net::HTTP.post_form(uri,
+    #                                   { "email" => email,
+    #                                     "listname" => listname,
+    #                                     "meta_adtracking" => meta_adtracking,
+    #                                     "signed_up_from" => signed_up_from})
+    # else
+    #   logger.debug 'Newsletter Signup'
+    # end
+
   end
 
   def after_sign_up_path_for(resource)
