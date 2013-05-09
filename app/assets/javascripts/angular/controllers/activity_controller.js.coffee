@@ -1,4 +1,4 @@
-deepCopy = (obj) ->
+window.deepCopy = (obj) ->
   jQuery.extend(true, {}, obj)
 
 angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", ($scope, $resource, $location, $http, limitToFilter) ->
@@ -107,7 +107,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     ! $scope.optionalEquipment(item)
 
   $scope.addEquipment = (optional) ->
-    equip = {id: -1, title: ""}
+    # *don't* use equip = {title: ...} here, it will screw up display if an empty one gets in the list
+    equip = ""
     item = {equipment: equip, optional: optional}
     $scope.activity.equipment.push(item)
     $scope.addUndo()
@@ -116,7 +117,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $http.get("/equipment.json?q=" + equip_name).then (response) ->
       limitToFilter(response.data, 15)
 
-  $scope.heyboy = ->
-    alert("heyboy!")
+
 ]
 
