@@ -154,8 +154,15 @@ module ApplicationHelper
     when '@yahoo.com'
       email_service_name = 'Yahoo Mail'
       email_service_url = 'http://mail.yahoo.com'
+    else
+      email_service_name = nil
+      email_service_url = nil
     end
-    link_to "Go to #{email_service_name}", email_service_url, class: 'btn btn-primary btn-large', target: '_blank'
+    if email_service_name && email_service_url
+      link_to "Go to #{email_service_name}", email_service_url, class: 'btn btn-primary btn-large', target: '_blank'
+    else
+      nil
+    end
   end
 
 end

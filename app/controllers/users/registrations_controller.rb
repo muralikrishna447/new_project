@@ -10,7 +10,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to sign_in_url(name: name, email: email)
     else
       aweber_signup(email, signed_up_from)
-      finished('homepage_design', reset: false)
+      finished('madlib_content_1', reset: false)
     end
   end
 
@@ -57,23 +57,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def aweber_signup(email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
-    uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
-    response = Net::HTTP.post_form(uri,
-                                    { "email" => email,
-                                      "listname" => listname,
-                                      "meta_adtracking" => meta_adtracking,
-                                      "custom signed_up_from" => signed_up_from})
-    # if Rails.env.production?
-    #   uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
-    #   response = Net::HTTP.post_form(uri,
-    #                                   { "email" => email,
-    #                                     "listname" => listname,
-    #                                     "meta_adtracking" => meta_adtracking,
-    #                                     "signed_up_from" => signed_up_from})
-    # else
-    #   logger.debug 'Newsletter Signup'
-    # end
-
+    if Rails.env.production?
+      uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
+      response = Net::HTTP.post_form(uri,
+                                      { "email" => email,
+                                        "listname" => listname,
+                                        "meta_adtracking" => meta_adtracking,
+                                        "custom signed_up_from" => signed_up_from})
+    else
+      logger.debug 'Newsletter Signup'
+    end
   end
 
   def after_sign_up_path_for(resource)
