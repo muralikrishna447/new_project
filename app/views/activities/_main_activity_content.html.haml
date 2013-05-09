@@ -48,25 +48,30 @@
             %h4 Timing
             = text_field_tag :timing, "", {data: {:'ng-model' => "activity.timing"}}
 
-    .section
+    .section(csmonitorinputactivity="")
       %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
       %ul.equipment
         %li(ng-repeat="item in activity.equipment | filter:requiredEquipment")
           %csEquipmentEditPair(csOptional="false")
-      %button.btn.btn-small.add-section(ng-show="editMode && ! hasRequiredEquipment()" ng-click="addEquipment(false)")
-        Add Required Equipment
-      %button.btn.btn-small.add-item(ng-show="editMode && hasRequiredEquipment()" ng-click="addEquipment(false)")
-        +
+      .nav
+        %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasRequiredEquipment()" ng-click="addEquipment(false)")
+          Add Required Equipment
+        %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasRequiredEquipment()" ng-click="addEquipment(false)")
+          +
+        %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
+          Done
 
-    .section
+    .section(csmonitorinputactivity="")
       %h4(ng-show="hasOptionalEquipment()") Optional Equipment and Materials
       %ul.equipment
         %li(ng-repeat="item in activity.equipment | filter:optionalEquipment")
           %csEquipmentEditPair(csOptional="true")
-      %button.btn.btn-small.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")
+      %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")
         Add Optional Equipment
-      %button.btn.btn-small.add-item(ng-show="editMode && hasOptionalEquipment()" ng-click="addEquipment(true)")
+      %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasOptionalEquipment()" ng-click="addEquipment(true)")
         +
+      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
+        Done
 
     - if activity.used_in_activities.published.any?
       .section(ng-hide="editMode")
@@ -74,6 +79,7 @@
         %ul
           - activity.used_in_activities.published.each do |activity|
             %li= link_to activity.title.html_safe, activity
+
 - cache [activity, 'steps'] do
   .span6.section.scroll-shadow-wrapper
     .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}

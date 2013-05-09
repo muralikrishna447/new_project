@@ -33,14 +33,6 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
       if $scope.active
         $scope.active = false
         $scope.$emit('maybe_save_undo')
-
-    # Not used yet
-    $scope.removeAllowed = ->
-      true
-
-    # Not used yet
-    $scope.removeItem = ->
-      $scope.$emit("remove_item")
   ]
 
   template: '<div class="edit-pair" ng-switch="" on="active" ng-mouseover="offerEdit()">' +

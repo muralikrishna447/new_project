@@ -49,6 +49,11 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
 
     scope.csoptional = attrs.csoptional
 
+  controller: ['$scope', '$element', ($scope, $element) ->
+    $scope.removeItem = ->
+      $scope.activity.equipment.splice($scope.activity.equipment.indexOf($scope.item), 1)
+  ]
+
 
   # TODO: Move this to a partial file
   # Note the &nbsp; below is to keep the whole thing from being empty so that you can't get an edit-target on it
@@ -63,5 +68,6 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
               '</csEditPairShow>'+
               '<csEditPairEdit>' +
                 '<input csinputmonkey="" type="text" placeholder="New equipment" typeahead-editable="true" autofocus="autofocus" autocomplete="off" class="equipment-typeahead" ng-model="item.equipment" typeahead="e as e.title for e in all_equipment($viewValue)"/>' +
+                '<div class="remove-button" ng-click="removeItem()"><i class="icon-remove"></i></div>' +
               '</csEditPairEdit>' +
             '</csEditPair>'

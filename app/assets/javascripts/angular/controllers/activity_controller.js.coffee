@@ -111,7 +111,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     equip = ""
     item = {equipment: equip, optional: optional}
     $scope.activity.equipment.push(item)
-    $scope.addUndo()
+    #$scope.addUndo()
 
   $scope.all_equipment = (equip_name) ->
     $http.get("/equipment.json?q=" + equip_name).then (response) ->
