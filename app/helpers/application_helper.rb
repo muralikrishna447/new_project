@@ -150,6 +150,7 @@ module ApplicationHelper
     else
       current_activity = viewed.last
       link_to 'Continue Course', current_activity, class: 'btn-primary'
+    end
   end
 
   def link_to_web_email(email)
