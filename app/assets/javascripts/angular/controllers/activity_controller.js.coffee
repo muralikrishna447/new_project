@@ -115,5 +115,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.all_equipment = (equip_name) ->
     $http.get("/equipment.json?q=" + equip_name).then (response) ->
       limitToFilter(response.data, 15)
+
+  $scope.heyboy = ->
+    alert("heyboy!")
 ]
 

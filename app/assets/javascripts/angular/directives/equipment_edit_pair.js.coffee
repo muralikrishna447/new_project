@@ -1,3 +1,14 @@
+angular.module('ChefStepsApp').directive 'csinputmonkey', ->
+  restrict: 'A',
+  link: (scope, element, attrs) ->
+    $(element).on 'focus', ->
+      console.log($(element).val())
+      if $(element).val() == "[object Object]"
+        $(element).val("")
+
+
+
+
 angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
   restrict: 'E',
 
@@ -9,7 +20,6 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
     if scope.editMode
       scope.$emit('end_active_edits_from_below')
       scope.active = true
-
 
   # TODO: Move this to a partial file
   # Note the &nbsp; below is to keep the whole thing from being empty so that you can't get an edit-target on it
@@ -23,6 +33,6 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
                 '</div>' +
               '</csEditPairShow>'+
               '<csEditPairEdit>' +
-                '<input type="text" placeholder="New equipment" typeahead-editable="true" autofocus="autofocus" autocomplete="off" class="equipment-typeahead" ng-model="item.equipment" typeahead="e as e.title for e in all_equipment($viewValue)"/>' +
+                '<input csinputmonkey="" ng-focus="heyboy()" type="text" placeholder="New equipment" typeahead-editable="true" autofocus="autofocus" autocomplete="off" class="equipment-typeahead" ng-model="item.equipment" typeahead="e as e.title for e in all_equipment($viewValue)"/>' +
               '</csEditPairEdit>' +
             '</csEditPair>'
