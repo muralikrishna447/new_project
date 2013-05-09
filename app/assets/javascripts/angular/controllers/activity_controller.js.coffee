@@ -1,7 +1,7 @@
 deepCopy = (obj) ->
   jQuery.extend(true, {}, obj)
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", ($scope, $resource, $location, $http, limitToFilter) ->
   Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
@@ -16,20 +16,26 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.undoIndex = 0
 
   $scope.endEditMode = ->
-    $scope.$broadcast('stop_edits')
+    $scope.endActiveEdits()
     $scope.editMode = false
     $scope.activity.$update()
 
   $scope.cancelEditMode = ->
-    $scope.$broadcast('stop_edits')
+    $scope.endActiveEdits()
     $scope.editMode = false
     if $scope.undoAvailable
       $scope.activity = deepCopy $scope.undoStack[0]
 
+  $scope.endActiveEdits = ->
+    $scope.$broadcast('stop_edits')
+
+  $scope.$on 'end_active_edits_from_below', ->
+    $scope.endActiveEdits()
+
   $scope.bodyClick = ->
     if $scope.editMode
       if $(event.target).is('body') || $(event.target).is('html')
-        $scope.$broadcast('stop_edits')
+        $scope.endActiveEdits()
 
   # Undo/redo TODO: could be a service I think
   $scope.undo = ->
@@ -101,13 +107,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     ! $scope.optionalEquipment(item)
 
   $scope.addEquipment = (optional) ->
-    equip = {}
+    equip = {id: -1, title: ""}
     item = {equipment: equip, optional: optional}
     $scope.activity.equipment.push(item)
     $scope.addUndo()
 
-  $scope.all_equipment =
-    [{id:1, title: "Saucepan"}, {id:2, title: "Widgit", product_url: "http//widgit.com"}, {id: 3, title: "Sauce strainer"}]
-
+  $scope.all_equipment = (equip_name) ->
+    $http.get("/equipment.json?q=" + equip_name).then (response) ->
+      limitToFilter(response.data, 15)
 ]
 
