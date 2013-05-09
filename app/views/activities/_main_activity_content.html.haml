@@ -3,7 +3,7 @@
     = render 'hero_visual', activity: activity
   - cache [activity, 'ingredients'] do
     - if activity.description?
-      %csEditPair
+      %csEditPair.section
         %csEditPairShow
           .activity-description-wrapper
             .activity-description#activity-description
