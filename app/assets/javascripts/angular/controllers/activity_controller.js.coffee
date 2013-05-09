@@ -123,5 +123,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     cursor: 'move',
     handle: '.drag-handle'
   }
+
+
 ]
 

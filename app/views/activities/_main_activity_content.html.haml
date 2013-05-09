@@ -51,7 +51,7 @@
     .section(csmonitorinputactivity="")
       %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
       %ul.equipment(ui-sortable="equipmentSortOptions")
-        %li(ng-repeat="item in activity.equipment | filter:requiredEquipment")
+        %li(ng-repeat="item in activity.equipment | filter:requiredEquipment" ng-class="equipmentBulletStyle()")
           %csEquipmentEditPair(csOptional="false")
       .nav
         %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasRequiredEquipment()" ng-click="addEquipment(false)")
@@ -64,7 +64,7 @@
     .section(csmonitorinputactivity="")
       %h4(ng-show="hasOptionalEquipment()") Optional Equipment and Materials
       %ul.equipment(ui-sortable="equipmentSortOptions")
-        %li(ng-repeat="item in activity.equipment | filter:optionalEquipment")
+        %li(ng-repeat="item in activity.equipment | filter:optionalEquipment" ng-class="equipmentBulletStyle()")
           %csEquipmentEditPair(csOptional="true")
       .nav
         %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")

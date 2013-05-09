@@ -52,6 +52,9 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
   controller: ['$scope', '$element', ($scope, $element) ->
     $scope.removeItem = ->
       $scope.activity.equipment.splice($scope.activity.equipment.indexOf($scope.item), 1)
+
+    $scope.equipmentBulletStyle = ->
+      "no-bullet" if $element.find('.edit-target').is(":visible")
   ]
 
 
@@ -60,7 +63,7 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
   template: '<csEditPair>'+
               '<csEditPairShow>' +
                 '<div ng-switch="" on="!!item.equipment.product_url">' +
-                  '<span class="drag-handle" ng-show="editMode"><i class="icon-sort"></i></span>' +
+                  '<span class="drag-handle" ng-show="editOffered"><i class="icon-sort"></i></span>' +
                   '<span ng-switch-when="true">' +
                     "<a ng-href='{{item.equipment.product_url}}' target='_blank'>{{item.equipment.title || item.equipment}}&nbsp;</a>" +
                   '</span>' +
