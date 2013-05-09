@@ -2,55 +2,28 @@
   .row.section
     .span5.offset1.section
       .lead
-        %h3 Awesome! Thanks for confirming.
-        %p If you like, you can create a profile to:
+        - if params[:email]
+          %h3 Awesome! Thanks for confirming.
+          %p If you like, you can create a profile to:
+        - else
+          %h3 Join the Community!
         %ul
           %li Participate in the forums
           %li Get your questions answered about cooking answered
-    .span3.offset1.section.registration
+    .span5.section.registration
       = form_for @user, url: registration_path(@user) do |f|
         = render 'shared/error_messages', target: f
         = f.hidden_field :signed_up_from
-        = f.text_field :name, placeholder: 'Name'
-        = f.text_field :email, placeholder: 'Email'
-        = f.password_field :password, placeholder: 'Password'
-        = f.password_field :password_confirmation, placeholder: 'Confirmation'
-        = f.submit 'Sign up', class: 'btn btn-primary btn-large btn-block'
+        %div= f.text_field :name, placeholder: 'Name', class: 'input-block-level'
+        %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level'
+        %div= f.password_field :password, placeholder: 'Password', class: 'input-block-level'
+        %div= f.password_field :password_confirmation, placeholder: 'Confirmation', class: 'input-block-level'
+        %div= f.submit 'Sign up', class: 'btn btn-primary btn-large'
         .section
           = label_tag :terms_registration do
             .hide
               = check_box_tag :terms_registration, true, true, required: true
-            = "By tapping Sign up above, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path}</b>.".html_safe
-      / .registration.standard
-      /   = form_for @user, url: registration_path(@user), html: {class: 'form-horizontal'} do |f|
-      /     = render 'shared/error_messages', target: f
-      /     = f.hidden_field :signed_up_from
-      /     .control-group
-      /       .control-label= f.label :name
-      /       .controls= f.text_field :name
-
-      /     .control-group
-      /       .control-label= f.label :email
-      /       .controls= f.text_field :email
-
-      /     .control-group
-      /       .control-label= f.label :password
-      /       .controls= f.password_field :password
-
-      /     .control-group
-      /       .control-label= f.label :password_confirmation, 'Confirmation'
-      /       .controls= f.password_field :password_confirmation
-
-      /     .control-group
-      /       .controls.controls-small
-      /         = f.submit 'Sign up', class: 'btn btn-primary btn-large'
-
-      /     .control-group
-      /       .controls.controls-small
-      /         = label_tag :terms_registration do
-      /           .hide
-      /             = check_box_tag :terms_registration, true, true, required: true
-      /           = "By tapping Sign up above, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path, class: 'black-link'}</b>.".html_safe
+            = "By signing up, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path}</b>.".html_safe
 
       / %hr
       / .registration.facebook
