@@ -23,10 +23,10 @@ describe User, '#profile_complete?' do
     inclusion_4 = Fabricate :inclusion, course_id: course.id, activity_id: activity_4.id
     event_1 = Fabricate :event, trackable: inclusion_1, action: 'show', user: user
     event_2 = Fabricate :event, trackable: inclusion_2, action: 'show', user: user
-    user.viewed_activites_in_course(course).count.should == 2
-    user.viewed_activites_in_course(course).should include(activity_1)
-    user.viewed_activites_in_course(course).should include(activity_2)
-    user.viewed_activites_in_course(course).should_not include(activity_3)
-    user.viewed_activites_in_course(course).should_not include(activity_4)
+    user.viewed_activities_in_course(course).count.should == 2
+    user.viewed_activities_in_course(course).should include(activity_1)
+    user.viewed_activities_in_course(course).should include(activity_2)
+    user.viewed_activities_in_course(course).should_not include(activity_3)
+    user.viewed_activities_in_course(course).should_not include(activity_4)
   end
 end
