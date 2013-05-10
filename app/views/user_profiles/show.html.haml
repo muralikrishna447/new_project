@@ -38,10 +38,10 @@
               .span3
                 %h4
                   Lesson
-                  = @user.viewed_activites_in_course(course).count
+                  = @user.viewed_activities_in_course(course).count
                   of
                   = course.viewable_activities.count
-                = where_user_left_off_in_course(course, @user)
+                = where_user_left_off_in_course(course, @user, 'btn btn-primary')
         .tab-pane#recipes
           - @user.uploads.each do |upload|
             .row.section
