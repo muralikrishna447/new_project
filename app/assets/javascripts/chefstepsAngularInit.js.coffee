@@ -16,9 +16,9 @@ csApp = angular.module 'ChefStepsApp', ["ngResource", "ui"], ["$locationProvider
 
 csApp.controller 'ActivityController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
   Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
-  url_params = {}
-  url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  $scope.activity = Activity.get(url_params)
+  $scope.url_params = {}
+  $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
+  $scope.activity = Activity.get($scope.url_params)
   $scope.undoStack = []
   $scope.undoIndex = -1
 
@@ -75,10 +75,33 @@ csApp.controller 'ActivityController', ["$scope", "$resource", "$location", ($sc
       console.log idx.toString() + ": " + x.title
       idx += 1
 
-   $scope.bodyClick = ->
+  $scope.bodyClick = ->
     if $scope.editMode
       if $(event.target).is('body') || $(event.target).is('html')
         $scope.$broadcast('end_all_edits')
+
+  $scope.showHeroVideo = ->
+    $scope.activity.youtube_id? && $scope.activity.youtube_id
+
+  $scope.showHeroImage = ->
+    $scope.activity.image_id? && $scope.activity.image_id
+
+  $scope.heroVideoURL = ->
+    if $scope.showHeroVideo()
+      autoplay = if $scope.url_params.autoplay then "1" else "0"
+      "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
+    else
+      ""
+
+  $scope.heroImageURL = (width) ->
+    if $scope.showHeroImage()
+      console.log $scope.activity.image_id
+      url = JSON.parse($scope.activity.image_id).url
+      url + "/convert?fit=max&w=#{width}&cache=true"
+    else
+      ""
+
+
 ]
 
 
@@ -96,7 +119,7 @@ csApp.directive 'cseditgroup', ->
           any_active = true
       if any_active
         $scope.addUndo()
-        window.wysiwygActivatedCallback($element)
+        window.wysiwygDeactivatedCallback($element)
 
     $scope.$on 'end_all_edits', ->
       $scope.deactivateAll()
@@ -109,6 +132,34 @@ csApp.directive 'cseditgroup', ->
       pair.active = false
       $scope.pairs.push(pair)
   ]
+
+csApp.directive 'csfilepicker', ->
+  restrict: 'C',
+  replace: true,
+  require: '?ngModel',
+  template: '<div class="btn-toolbar"><button class="filepicker-pick-button btn btn-small btn-warning" ng-click="pickFile()">Upload Image</button><button class="btn btn-small btn-warning remove-filepicker-image" ng-click="removeFile()" ng-hide="activity.image_id.length == 0">Remove Image</button></div>',
+
+  link: (scope, element, attrs, ngModel) ->
+    scope.ngModel = ngModel
+
+
+
+  controller: ['$scope', '$element', ($scope, $element) ->
+
+    $scope.pickFile = ->
+      filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"},
+        ((fpfiles) =>
+          $scope.ngModel.$setViewValue(JSON.stringify(fpfiles[0])))
+        ((errorCode) =>
+          console.log("FILEPICKER ERROR CODE: " + errorCode))
+
+    $scope.removeFile = ->
+      $scope.activity.image_id = ""
+
+  ]
+
+
+
 
 # This guys is responsible for showing a highlight on hover that indicates it can
 # be edited, and switching between the show and edit children when activated. It
@@ -145,7 +196,6 @@ csApp.directive 'cseditpairedit', ->
   restrict: 'E',
   transclude: true,
   template: '<div ng-switch-when="true" ng-transclude></div>'
-
 
 csApp.directive 'cseditpairshow', ->
   restrict: 'E',
@@ -191,3 +241,19 @@ csApp.filter "shortcode", ->
           else orig
     else
       ""
+
+csApp.directive "csenforceaspect", ["$window", ($window) ->
+  (scope, element) ->
+
+    scope.getWidth = ->
+      $(element).width()
+
+    scope.$watch scope.getWidth, ((newValue, oldValue) ->
+      scope.width = newValue
+      scope.setHeight = ->
+        height: (newValue * 9.0 / 16.0) + "px"
+    ), true
+
+    angular.element($window).bind "resize", ->
+      scope.$apply()
+]

@@ -14,8 +14,7 @@
       
     .span6.well
       - if current_user && current_user.course_ids.include?(@course.id)
-        You are enrolled into this course. 
-        = link_to @course.first_published_activity.title, course_activity_path(@course, @course.first_published_activity), class: 'btn btn-primary btn-large pull-right'
+        = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
       - else
         = form_tag enroll_course_path(@course) do
           = submit_tag 'Enroll', class: 'btn btn-primary btn-large pull-right'

@@ -1,0 +1,4 @@
+%div
+  = "You enrolled into the #{link_to event.trackable.title, event.trackable} course.".html_safe
+%div
+  = time_ago_in_words(event.created_at) + ' ago'

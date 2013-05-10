@@ -1,6 +1,19 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # append_after_filter :aweber_signup, :only => :create
 
+  def welcome
+    name = params[:name]
+    email = params[:email]
+    signed_up_from = params[:signed_up_from]
+    @user = User.where(email: email).first
+    if @user
+      redirect_to sign_in_url(name: name, email: email)
+    else
+      aweber_signup(email, signed_up_from)
+      finished('madlib_content_1', reset: false)
+    end
+  end
+
   def new
     name = params[:name]
     email = params[:email]
@@ -8,11 +21,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user
       redirect_to sign_in_url(name: name, email: email)
     else
-      aweber_signup(email)
       @user = User.new
       @user.name = name
       @user.email = email
-      @user.signed_up_from = params[:signed_up_from]
+      @user.signed_up_from = params[:'custom signed_up_from']
     end
   end
 
@@ -44,13 +56,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
     self.resource.assign_from_facebook(fb_data) if fb_data
   end
 
-  def aweber_signup(email, listname='cs_c_sousvide', meta_adtracking='site_top_form')
+  def aweber_signup(email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
     if Rails.env.production?
       uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
       response = Net::HTTP.post_form(uri,
                                       { "email" => email,
                                         "listname" => listname,
-                                        "meta_adtracking" => meta_adtracking})
+                                        "meta_adtracking" => meta_adtracking,
+                                        "custom signed_up_from" => signed_up_from})
     else
       logger.debug 'Newsletter Signup'
     end

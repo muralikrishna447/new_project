@@ -142,14 +142,37 @@ module ApplicationHelper
     end
   end
 
-  def where_user_left_off_in_course(course, user)
-    viewed = user.viewed_activites_in_course(course)
+  def where_user_left_off_in_course(course, user, btn_class = nil)
+    viewed = user.viewed_activities_in_course(course)
     if viewed.count == 0
       first_activity = course.first_published_activity
-      link_to 'Start the Course', first_activity, class: 'btn btn-primary'
+      link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}", [course, first_activity], class: btn_class
     else
       current_activity = viewed.last
-      link_to 'Continue Course', current_activity, class: 'btn-primary'
+      link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, current_activity], class: btn_class
+    end
+  end
+
+  def link_to_web_email(email)
+    email_service = /\@(.*)/.match(email).to_s
+    case email_service
+    when '@gmail.com'
+      email_service_name = 'Gmail'
+      email_service_url = 'http://www.gmail.com'
+    when '@hotmail.com'
+      email_service_name = 'Hotmail'
+      email_service_url = 'http://www.hotmail.com'
+    when '@yahoo.com'
+      email_service_name = 'Yahoo Mail'
+      email_service_url = 'http://mail.yahoo.com'
+    else
+      email_service_name = nil
+      email_service_url = nil
+    end
+    if email_service_name && email_service_url
+      link_to "Go to #{email_service_name}", email_service_url, class: 'btn btn-primary btn-large', target: '_blank'
+    else
+      nil
     end
   end
 

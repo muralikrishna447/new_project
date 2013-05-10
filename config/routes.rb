@@ -35,6 +35,7 @@ Delve::Application.routes.draw do
     get "sign_up", to: 'users/registrations#new'
     get "sign_out", to: 'users/sessions#destroy'
     get "complete_registration", to: 'users/registrations#complete_registration'
+    get 'welcome', to: 'users/registrations#welcome'
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
@@ -91,6 +92,7 @@ Delve::Application.routes.draw do
   resources :uploads
 
   resources :sitemaps, :only => :show
+  mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
 
 end
