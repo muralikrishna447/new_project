@@ -32,6 +32,7 @@ class CoursesController < ApplicationController
     @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
     if @enrollment.save
       redirect_to course_path(@course), notice: "You are now enrolled!"
+      track_event @course
     end
   end
 end
