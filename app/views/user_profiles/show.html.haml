@@ -36,6 +36,7 @@
               .span3
                 = image_tag filepicker_gallery_image(course.image_id)
               .span3
+                %h3= course.title
                 %h4
                   Lesson
                   = @user.viewed_activities_in_course(course).count
