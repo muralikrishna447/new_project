@@ -6,5 +6,5 @@
       .row
         - @courses.each do |course|
           .span4
-            = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image, object: course
+            = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.featured_image, object: course
       = paginate @courses

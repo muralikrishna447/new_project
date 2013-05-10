@@ -146,10 +146,10 @@ module ApplicationHelper
     viewed = user.viewed_activites_in_course(course)
     if viewed.count == 0
       first_activity = course.first_published_activity
-      link_to 'Start the Course', first_activity, class: 'btn btn-primary'
+      link_to 'Start the Course', [course, first_activity], class: 'btn btn-primary'
     else
       current_activity = viewed.last
-      link_to 'Continue Course', current_activity, class: 'btn-primary'
+      link_to 'Continue Course', [course, current_activity], class: 'btn btn-primary'
     end
   end
 

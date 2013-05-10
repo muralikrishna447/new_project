@@ -117,4 +117,8 @@ class Course < ActiveRecord::Base
     activities.published - activity_modules
   end
 
+  def featured_image
+    self.image_id || self.first_published_activity.featured_image
+  end
+
 end

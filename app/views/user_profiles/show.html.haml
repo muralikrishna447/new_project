@@ -32,12 +32,16 @@
       .tab-content
         .tab-pane.active#courses
           - @user.courses.each do |course|
-            = render 'shared/media_box', size: 'medium', url: course_path(course), title: course.title, image: course.image_id
-            Lesson
-            = @user.viewed_activites_in_course(course).count
-            of
-            = course.viewable_activities.count
-            = where_user_left_off_in_course(course, @user)
+            .row
+              .span3
+                = image_tag filepicker_gallery_image(course.image_id)
+              .span3
+                %h4
+                  Lesson
+                  = @user.viewed_activites_in_course(course).count
+                  of
+                  = course.viewable_activities.count
+                = where_user_left_off_in_course(course, @user)
         .tab-pane#recipes
           - @user.uploads.each do |upload|
             .row.section
