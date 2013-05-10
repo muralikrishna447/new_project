@@ -134,7 +134,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.normalizeModel = () ->
     angular.forEach $scope.activity.equipment, (item) ->
       if _.isString(item["equipment"])
-        item["equipment"] = {equipment: item.equipment}
+        item["equipment"] = {title: item["equipment"]}
 
 
 
