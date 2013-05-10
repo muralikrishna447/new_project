@@ -9,7 +9,7 @@
       .row
         .span2
           .profile-image
-            = image_tag 'http://placehold.it/200x200', class: 'img-circle'
+            = image_tag filepicker_user_profile_image(@user.image_id), class: 'img-circle'
         .span10
           %h1= @user.name
 
@@ -23,7 +23,7 @@
         = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'
     .span6
       %h4 Bio
-      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
+      %p= @user.bio
       %ul.nav.nav-tabs
         %li.active
           = link_to 'Courses', '#courses', data: {toggle: 'tab'}

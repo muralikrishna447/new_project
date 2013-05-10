@@ -52,6 +52,11 @@ module ApplicationHelper
     end
   end
 
+  def filepicker_user_profile_image(fpfile)
+    url = ActiveSupport::JSON.decode(fpfile)["url"]
+    url + "/convert?fit=crop&w=400&h=400&cache=true"
+  end
+
   def s3_audio_url(audio_clip)
     "<audio controls><source src='http://d2eud0b65jr0pw.cloudfront.net/#{audio_clip}''></source></audio>".html_safe
   end
