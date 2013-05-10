@@ -48,5 +48,18 @@
       = email_field_tag 'note', nil, {class: 'input-signup-email', placeholder: 'Your message here', required: true}      
       = submit_tag 'Sign Up Now', class: 'btn btn-secondary', id: 'subscribe-email'
 
+  .row.section
+    .span12
+      %h2.text-center Press
+    .row
+      .span3
+        = image_tag ('http://placehold.it/100x100')
+      .span3
+        = image_tag ('http://placehold.it/100x100')
+      .span3
+        = image_tag ('http://placehold.it/100x100')
+      .span3
+        = image_tag ('http://placehold.it/100x100')
+
 = content_for :footer do
   = render 'layouts/footer'
