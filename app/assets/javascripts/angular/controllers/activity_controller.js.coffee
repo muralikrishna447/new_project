@@ -2,7 +2,7 @@ window.deepCopy = (obj) ->
   jQuery.extend(true, {}, obj)
 
 angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", ($scope, $resource, $location, $http, limitToFilter) ->
-  Activity = $resource("/activities/:id", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
+  Activity = $resource("/activities/:id/as_json", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
   $scope.activity = Activity.get($scope.url_params)
@@ -18,6 +18,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.endEditMode = ->
     $scope.endActiveEdits()
     $scope.editMode = false
+    $scope.normalizeModel()
     $scope.activity.$update()
 
   $scope.cancelEditMode = ->
@@ -115,7 +116,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.all_equipment = (equip_name) ->
     $http.get("/equipment.json?q=" + equip_name).then (response) ->
-      limitToFilter(response.data, 15)
+      # always include current search text as an option
+      r = limitToFilter(response.data, 15)
+      r.unshift({title: equip_name})
+      r
 
   $scope.equipmentSortOptions = {
     axis: 'y',
@@ -123,6 +127,15 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     cursor: 'move',
     handle: '.drag-handle'
   }
+
+  # Use this to fix up anything that might be screwed up by our angular editing. E.g.
+  # for the equipment edit, when typing in a new string, if it hasn't gone through the
+  # autocomplete (unshift in all_equipment), it will be missing a nesting level in the model.
+  $scope.normalizeModel = () ->
+    angular.forEach $scope.activity.equipment, (item) ->
+      if _.isString(item["equipment"])
+        item["equipment"] = {equipment: item.equipment}
+
 
 
 ]
