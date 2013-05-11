@@ -64,6 +64,89 @@ describe Activity do
     end
   end
 
+  describe "#update_equipment_json" do
+    let(:equipment1) { {optional: true, equipment: {id: 1, title: 'Blender'}} }
+    let(:equipment2) { {optional: false, equipment: {id: 2, title: 'Spoon'}}  }
+    let(:equipment_attrs) {[ equipment1, equipment2 ] }
+    let(:equipment3) { {optional: false, equipment: {title: 'Fork'}}  }
+    let(:replacement_attrs) {[ equipment3 ] }
+
+    describe "create" do
+      before do
+        activity.update_equipment_json(equipment_attrs)
+        activity.reload
+        activity.equipment.reload
+      end
+
+      it "creates unique equipment for each non-empty attribute set" do
+        activity.equipment.should have(2).equipment
+      end
+
+      it "creates equipment with specified attributes" do
+        activity.equipment.first.title.should == 'Blender'
+        activity.equipment.first.optional.should == true
+      end
+
+      it "creates new equipment when id isn't specified" do
+        activity.update_equipment_json(replacement_attrs)
+        activity.reload
+        activity.equipment.reload
+        activity.equipment.should have(1).equipment
+        activity.equipment.first.title.should == 'Fork'
+        activity.equipment.first.id.should_not == 1
+        activity.equipment.first.id.should_not == 2
+      end
+    end
+
+    describe "update" do
+
+      before do
+        puts equipment_attrs
+        activity.update_equipment_json(equipment_attrs)
+        activity.reload
+        equipment_attrs[0] = {optional: false, equipment: {id: 1, title: 'Blender'}}
+        puts equipment_attrs
+        activity.update_equipment_json(equipment_attrs)
+        activity.equipment.reload
+      end
+
+      it "updates existing equipment" do
+        puts activity.equipment.inspect()
+        activity.equipment.should have(2).equipment
+        activity.equipment.first.title.should == 'Blender'
+        activity.equipment.first.optional.should == false
+      end
+    end
+
+    describe "destroy" do
+      before do
+        activity.update_equipment_json(equipment_attrs)
+        activity.equipment.reload
+        activity.update_equipment_json(equipment_attrs[1..-1])
+        activity.equipment.reload
+      end
+
+      it "deletes equipment not included in attribute set" do
+        activity.equipment.should have(1).equipment
+        activity.equipment.first.title.should == 'Spoon'
+        activity.equipment.first.optional.should == false
+      end
+    end
+
+    describe "re-ordering" do
+      before do
+        activity.update_equipment_json(equipment_attrs)
+        activity.equipment.reload
+      end
+
+      it "updates ordering" do
+        activity.update_equipment_json([equipment2, equipment1])
+        activity.equipment.reload
+        activity.equipment.ordered.first.title.should == 'Spoon'
+      end
+    end
+  end
+
   describe "#update_ingredients" do
     let(:soup) { {title: 'Soup', note: 'hot', display_quantity: '2', unit: 'g'}  }
     let(:pepper) { {title: 'Pepper', note: 'black', display_quantity: '1', unit: 'kg'}  }

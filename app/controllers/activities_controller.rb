@@ -67,24 +67,48 @@ class ActivitiesController < ApplicationController
           render template: 'activities/static_html'
         end
       end
+   end
+  end
 
-      format.json {  render :json => @activity }
+  def get_as_json
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+    if params[:version] && params[:version].to_i <= @activity.last_revision().revision
+      @activity = @activity.restore_revision(params[:version])
+    end
 
+    # For the relations, sending only the fields that are visible in the UI; makes it a lot
+    # clearer what to do on update.
+    respond_to do |format|
+      format.json {
+        render :json => @activity.to_json(
+          include: {
+              equipment: {
+                only: :optional,
+                include: {
+                  equipment: {
+                    only: [:title, :id, :product_url]
+                  }
+                }
+              }
+          }
+        )
+      }
     end
   end
 
-  def update
+  def update_as_json
     @activity = Activity.find(params[:id])
     respond_to do |format|
       format.json do
 
         @activity.store_revision do
           @activity.last_edited_by = current_admin_user
+          @activity.update_equipment_json(params[:activity].delete(:equipment))
           @activity.attributes = params[:activity]
           @activity.save!
         end
 
-        render :json => @activity
+        head :no_content
       end
     end
   end
@@ -114,19 +138,5 @@ class ActivitiesController < ApplicationController
     redirect_to "http://feeds.feedburner.com/ChefSteps"
   end
 
-  # Submit a form updating some part of an activity; record it in the revision database
-  def update_edit_partial
-    @activity = Activity.find(params[:id])
-    @activity.attributes=(params[:activity])
-    if @activity.changed?
-      @activity.store_revision do
-        @activity.last_edited_by = current_admin_user
-        @activity.save!
-      end
-    end
-    respond_to do |format|
-      format.js { render 'get_show_partial'}
-    end
-  end
 end
 

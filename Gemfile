@@ -65,6 +65,8 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'angularjs-rails'
   gem 'angular-ui-rails'
+  # This was out of date so I put the one I needed in vendor
+  #gem 'angular-ui-bootstrap-rails'
   gem 'pagedown-rails', '~> 1.1.3'
 end
 

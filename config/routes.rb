@@ -65,7 +65,14 @@ Delve::Application.routes.draw do
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
-  resources :activities, only: [:show, :update]
+  resources :activities, only: [:show] do
+    member do
+      # Kind of ugly but explicit - since we still get the show view as HTML,
+      # and requesting it as JSON too was screwing up browser history
+      get 'as_json' => 'activities#get_as_json'
+      put 'as_json' => 'activities#update_as_json'
+    end
+  end
   resources :techniques, only: [:index, :show]
   resources :sciences, only: [:index, :show]
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
@@ -83,6 +90,7 @@ Delve::Application.routes.draw do
     end
   end
 
+  resources :equipment, only: [:index]
   resources :search, only: [:index]
   resources :recipe_gallery, only: [:index], path: 'recipe-gallery'
   resources :user_activities, only: [:create]

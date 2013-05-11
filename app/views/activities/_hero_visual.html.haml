@@ -1,7 +1,11 @@
 %csEditPair
   %csEditPairShow
-    %iframe.noprint(ng-show="showHeroVideo()" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect)
-    %img(ng-show="(! showHeroVideo()) && showHeroImage()" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
+    %div(ng-show="showHeroVideo() || showHeroImage()")
+      %iframe.noprint(ng-show="showHeroVideo()" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect)
+      %img(ng-show="(! showHeroVideo()) && showHeroImage()" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
+    %button.btn.btn-small.add-section(ng-show="editMode && (! (showHeroVideo() || showHeroImage()))")
+      Add Hero Video or Image
+
   %csEditPairEdit
     .row
       .span6
