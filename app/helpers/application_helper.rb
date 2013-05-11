@@ -53,8 +53,12 @@ module ApplicationHelper
   end
 
   def filepicker_user_profile_image(fpfile)
-    url = ActiveSupport::JSON.decode(fpfile)["url"]
-    url + "/convert?fit=crop&w=400&h=400&cache=true"
+    if fpfile
+      url = ActiveSupport::JSON.decode(fpfile)["url"]
+      url + "/convert?fit=crop&w=400&h=400&cache=true"
+    else
+      'http://www.placehold.it/300x300'
+    end
   end
 
   def s3_audio_url(audio_clip)
