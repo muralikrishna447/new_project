@@ -34,7 +34,7 @@
           - @user.courses.each do |course|
             .row
               .span3
-                = image_tag filepicker_gallery_image(course.image_id)
+                = image_tag filepicker_gallery_image(course.featured_image)
               .span3
                 %h3= course.title
                 %h4
