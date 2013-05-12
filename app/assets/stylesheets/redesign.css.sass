@@ -340,6 +340,7 @@ h1, h2, h3, h4
 
 .ordered-steps
   overflow: auto
+  border: 1px solid $offwhite
   -webkit-overflow-scrolling: touch
   //background: -webkit-linear-gradient(white 30%, hsla(0,0%,100%,0)), -webkit-linear-gradient(hsla(0,0%,100%,0), white 70%) bottom, -webkit-radial-gradient(50% 0, rgba(0,0,0,.2), transparent 70%), -webkit-radial-gradient(50% 100%, rgba(0,0,0,.2), transparent 70%) bottom
   //background-repeat: no-repeat
@@ -349,8 +350,7 @@ h1, h2, h3, h4
     width: 100%
     float: left
     padding: 0px
-    border: 1px solid $offwhite
-    border-bottom: 1px solid $light-gray
+    margin-bottom: 1em
     @include boxsizing
     .step-element
       float: left
@@ -1161,6 +1161,10 @@ h1, h2, h3, h4
   .top-container
     margin-top: 0px
 
+  .container-fluid
+    margin-left: -20px
+    margin-right: -20px
+
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
@@ -1230,6 +1234,10 @@ h1, h2, h3, h4
 
   .top-container
     margin-top: 0px
+
+  .container-fluid
+    margin-left: -20px
+    margin-right: -20px
  
 /* Landscape phones and down */
 @media (max-width: 480px)
@@ -1264,6 +1272,12 @@ h1, h2, h3, h4
     font-weight: normal
     &:hover
       color: #fff
+
+  .madlib, .madlib input
+    font-size: 20px
+    input[type='text'], input[type='email']
+      width: 80%
+      font-size: 20px
 
   .top-container
     margin-top: 0px
