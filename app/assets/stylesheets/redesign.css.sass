@@ -315,6 +315,7 @@ h1, h2, h3, h4
         cursor: pointer
 
 .activity-description-wrapper
+  margin-top: 10px
   position: relative
   .activity-description
     overflow: hidden
@@ -732,6 +733,16 @@ h1, h2, h3, h4
     background: gray
     @include transition(all 100ms)
 
+.btn-basic
+  background: $offwhite
+  border: 0px
+  border-radius: 0px
+  @include boxsizing
+  @include transition(all 100ms)
+  &:hover
+    background: $darker_orange
+    @include transition(all 100ms)
+
 .btn-play-image
   position: relative
   background: image-url('play-button.png') no-repeat
@@ -1044,6 +1055,8 @@ h1, h2, h3, h4
   left: -1%
   width:  102%
   height:  102%
+  min-height: 10px
+  min-width: 10px
   font-size:  15px
   border: 2px solid #9ecaed
   border-radius: 7px
@@ -1059,6 +1072,33 @@ h1, h2, h3, h4
   label
     margin-right: 8px
     vertical-align: top
+
+input.equipment-typeahead
+  @include boxsizing
+  padding: 0px 2px 0px 2px
+  margin-left: -2px
+  margin-top: 0px
+  margin-bottom: 0px
+  width: 100%
+  max-width: 280px
+
+csequipmenteditpair
+  position: relative
+
+  .remove-button
+    display: inline-block
+    margin-left: -20px
+
+  .drag-handle
+    z-index: 2000
+    margin-left: -40px
+    position: absolute
+    left: 18px
+    top: 4px
+
+.no-bullet
+  list-style-type: none
+
 
 // Making this match h1. I tried @including h1 but that was a no go.
 *[data-ng-model='activity.title']
@@ -1084,6 +1124,12 @@ h1, h2, h3, h4
   color: red
   text-transform: uppercase
 
+.add-section
+  margin-top: 10px
+  margin-bottom: 10px
+
+.add-item, .done
+  margin-top: -5px
 
 // BELOW ARE RESPONSIVE STYLES //
 

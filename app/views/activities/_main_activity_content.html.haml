@@ -2,51 +2,85 @@
   .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
     = render 'hero_visual', activity: activity
   - cache [activity, 'ingredients'] do
-    - if activity.description?
-      %csEditPair.section
-        %csEditPairShow
-          .activity-description-wrapper
-            .activity-description#activity-description
-              %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
-              .activity-description-overlay(ng-hide="activity.description.length < 455")
-            .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
-              = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
-        %csEditPairEdit
-          = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}, autofocus: 'autofocus'}
+
+    %csEditPair.section
+      %csEditPairShow
+        .activity-description-wrapper(ng-show="!!activity.description")
+          .activity-description#activity-description
+            %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
+            .activity-description-overlay(ng-hide="activity.description.length < 455")
+          .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
+            = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
+        %button.btn.btn-small.add-section(ng-show="editMode && (!activity.description)")
+          Add Description
+      %csEditPairEdit
+        = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}, autofocus: 'autofocus'}
 
     - if activity.ingredients.any?
       .section
         .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
           .well
             = render 'ingredients_list', ingredients: activity.ingredients
-    - if activity.yield.present?
+
       .section
-        %h4 Yield
         %csEditPair
           %csEditPairShow
-            %span(itemprop="recipeYield" ng-bind="activity.yield")
+            %div(ng-show="!!activity.yield")
+              %h4 Yield
+              %span(itemprop="recipeYield" ng-bind="activity.yield")
+            %button.btn.btn-small.add-section(ng-show="editMode && (!activity.yield)")
+              Add Yield
 
           %csEditPairEdit
+            %h4 Yield
             = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
 
-    - if activity.timing.present?
       .section
-        %h4 Timing
-        = activity.timing
-    - if activity.required_equipment.any?
-      .section
-        %h4 Equipment and Materials
-        = render 'equipment_list', equipment: activity.required_equipment
-    - if activity.optional_equipment.any?
-      .section
-        %h4 Optional Equipment
-        = render 'equipment_list', equipment: activity.optional_equipment
+        %csEditPair
+          %csEditPairShow
+            %div(ng-show="!!activity.timing")
+              %h4 Timing
+              %span(ng-bind="activity.timing")
+            %button.btn.btn-small.add-section(ng-show="editMode && (!activity.timing)")
+              Add Timing
+
+          %csEditPairEdit
+            %h4 Timing
+            = text_field_tag :timing, "", {data: {:'ng-model' => "activity.timing"}}
+
+    .section(csmonitorinputactivity="")
+      %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
+      %ul.equipment(ui-sortable="equipmentSortOptions" ng-model="activity.equipment")
+        %li(ng-repeat="item in activity.equipment | filter:requiredEquipment" ng-class="equipmentBulletStyle()")
+          %csEquipmentEditPair(csOptional="false")
+      .nav
+        %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasRequiredEquipment()" ng-click="addEquipment(false)")
+          Add Required Equipment
+        %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasRequiredEquipment()" ng-click="addEquipment(false)")
+          +
+        %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
+          Done
+
+    .section(csmonitorinputactivity="")
+      %h4(ng-show="hasOptionalEquipment()") Optional Equipment and Materials
+      %ul.equipment(ui-sortable="equipmentSortOptions" ng-model="activity.equipment")
+        %li(ng-repeat="item in activity.equipment | filter:optionalEquipment" ng-class="equipmentBulletStyle()")
+          %csEquipmentEditPair(csOptional="true")
+      .nav
+        %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")
+          Add Optional Equipment
+        %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasOptionalEquipment()" ng-click="addEquipment(true)")
+          +
+        %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
+          Done
+
     - if activity.used_in_activities.published.any?
       .section(ng-hide="editMode")
         %h4 Used In
         %ul
           - activity.used_in_activities.published.each do |activity|
             %li= link_to activity.title.html_safe, activity
+
 - cache [activity, 'steps'] do
   .span6.section.scroll-shadow-wrapper
     .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
@@ -88,3 +122,4 @@
 
     .scroll-overlay-top
     .scroll-overlay-bottom
+
