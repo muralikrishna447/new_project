@@ -16,37 +16,36 @@
       %csEditPairEdit
         = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}, autofocus: 'autofocus'}
 
-    - if activity.ingredients.any?
-      .section
-        .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
-          .well
-            = render 'ingredients_list', ingredients: activity.ingredients
+    .section(csmonitorinputactivity="")
+      .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
+        .well
+          = render 'ingredients_list', ingredients: activity.ingredients
 
-      .section
-        %csEditPair
-          %csEditPairShow
-            %div(ng-show="!!activity.yield")
-              %h4 Yield
-              %span(itemprop="recipeYield" ng-bind="activity.yield")
-            %button.btn.btn-small.add-section(ng-show="editMode && (!activity.yield)")
-              Add Yield
-
-          %csEditPairEdit
+    .section
+      %csEditPair
+        %csEditPairShow
+          %div(ng-show="!!activity.yield")
             %h4 Yield
-            = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
+            %span(itemprop="recipeYield" ng-bind="activity.yield")
+          %button.btn.btn-small.add-section(ng-show="editMode && (!activity.yield)")
+            Add Yield
 
-      .section
-        %csEditPair
-          %csEditPairShow
-            %div(ng-show="!!activity.timing")
-              %h4 Timing
-              %span(ng-bind="activity.timing")
-            %button.btn.btn-small.add-section(ng-show="editMode && (!activity.timing)")
-              Add Timing
+        %csEditPairEdit
+          %h4 Yield
+          = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
 
-          %csEditPairEdit
+    .section
+      %csEditPair
+        %csEditPairShow
+          %div(ng-show="!!activity.timing")
             %h4 Timing
-            = text_field_tag :timing, "", {data: {:'ng-model' => "activity.timing"}}
+            %span(ng-bind="activity.timing")
+          %button.btn.btn-small.add-section(ng-show="editMode && (!activity.timing)")
+            Add Timing
+
+        %csEditPairEdit
+          %h4 Timing
+          = text_field_tag :timing, "", {data: {:'ng-model' => "activity.timing"}}
 
     .section(csmonitorinputactivity="")
       %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
