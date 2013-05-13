@@ -6,7 +6,8 @@
     .span6
       %h1= course.title
       =image_tag 'http://placehold.it/570x320'
-      %p= course.description
+      .section
+        %p= course.description
       %h4.text-center
         %i.icon-comment-alt
         Comments or Questions?
@@ -14,6 +15,11 @@
       
     .span6.well
       - if current_user && current_user.course_ids.include?(@course.id)
+        %h2
+          Lesson
+          = current_user.viewed_activities_in_course(course).count
+          of
+          = course.viewable_activities.count
         = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
       - else
         = form_tag enroll_course_path(@course) do
