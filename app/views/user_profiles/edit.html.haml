@@ -6,7 +6,7 @@
         .upload-wrapper
           = image_tag '/assets/missing.png', class: "upload-photo-preview"
           = link_to '+', '#', class: 'upload-photo-btn'
-          %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
+          %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field'
         %div
           = f.label :name
           = f.text_field :name, class: 'input-block-level'
