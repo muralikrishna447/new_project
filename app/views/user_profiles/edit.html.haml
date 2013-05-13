@@ -5,7 +5,7 @@
       = form_for @user, url: user_profile_path(@user), method: :put do |f|
         .upload-wrapper
           = image_tag '/assets/missing.png', class: "upload-photo-preview"
-          = link_to '+', '#', class: 'upload-photo-btn'
+          = link_to '+', '#', class: 'profile-photo-btn'
           %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field'
         %div
           = f.label :name
