@@ -1,5 +1,5 @@
 $ ->
-  $(document).on 'click', '.upload-photo-btn', (event) ->
+  $(document).on 'click', '.profile-photo-btn', (event) ->
     button = $(this)
     event.preventDefault()
     wrapper = $(this).closest('.upload-wrapper')
