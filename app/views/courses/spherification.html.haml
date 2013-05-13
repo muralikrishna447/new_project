@@ -68,8 +68,7 @@
       .row.section
         .span4.offset4.well
           %h4.text-center= "The Creative Kit $39"
-          .btn.btn-primary.btn-large.text-center.btn-block
-            Buy Now
+          = link_to 'Buy Now', 'http://store.chefsteps.com/cart/add', onclick: "var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; var v = document.createElement('input'); v.setAttribute('type', 'hidden'); v.setAttribute('name', 'id'); v.setAttribute('value', '230692472'); f.appendChild(v); var r = document.createElement('input'); r.setAttribute('type', 'hidden'); r.setAttribute('name', 'return_to'); r.setAttribute('value', 'http://store.chefsteps.com/checkout'); f.appendChild(r); f.submit(); return false;", class: 'btn btn-primary btn-large btn-block'
 
 %hr
 .container-fluid
