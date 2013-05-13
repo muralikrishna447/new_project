@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130503055031) do
+ActiveRecord::Schema.define(:version => 20130510075258) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -387,6 +387,8 @@ ActiveRecord::Schema.define(:version => 20130503055031) do
     t.boolean  "from_aweber"
     t.text     "viewed_activities"
     t.string   "signed_up_from"
+    t.text     "image_id"
+    t.text     "bio"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

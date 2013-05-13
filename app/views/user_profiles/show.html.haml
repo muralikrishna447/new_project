@@ -9,7 +9,7 @@
       .row
         .span2
           .profile-image
-            = image_tag 'http://placehold.it/200x200', class: 'img-circle'
+            = image_tag filepicker_user_profile_image(@user.image_id), class: 'img-circle'
         .span10
           %h1= @user.name
 
@@ -21,9 +21,9 @@
       - if current_user == @user
         = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-primary btn-block'
         = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'
-    .span6
+    .span5
       %h4 Bio
-      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium elit nec tortor ultrices rhoncus. Vestibulum malesuada lacus eu nibh fringilla convallis. Maecenas quis dui nisi, id lobortis nulla. Phasellus fringilla sem in dolor ornare tempus. Curabitur nec bibendum urna.
+      %p= @user.bio
       %ul.nav.nav-tabs
         %li.active
           = link_to 'Courses', '#courses', data: {toggle: 'tab'}
@@ -34,8 +34,8 @@
           - @user.courses.each do |course|
             .row
               .span3
-                = image_tag filepicker_gallery_image(course.image_id)
-              .span3
+                = image_tag filepicker_gallery_image(course.featured_image)
+              .span2
                 %h3= course.title
                 %h4
                   Lesson
@@ -52,7 +52,7 @@
               .span3
                 %h4= upload.recipe_name
                 %p= upload.notes
-    .span4
+    .span5
       %h4 Timeline
       - @user.events.timeline.each do |event|
         = div_for event do

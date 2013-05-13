@@ -315,6 +315,7 @@ h1, h2, h3, h4
         cursor: pointer
 
 .activity-description-wrapper
+  margin-top: 10px
   position: relative
   .activity-description
     overflow: hidden
@@ -340,6 +341,7 @@ h1, h2, h3, h4
 
 .ordered-steps
   overflow: auto
+  border: 1px solid $offwhite
   -webkit-overflow-scrolling: touch
   //background: -webkit-linear-gradient(white 30%, hsla(0,0%,100%,0)), -webkit-linear-gradient(hsla(0,0%,100%,0), white 70%) bottom, -webkit-radial-gradient(50% 0, rgba(0,0,0,.2), transparent 70%), -webkit-radial-gradient(50% 100%, rgba(0,0,0,.2), transparent 70%) bottom
   //background-repeat: no-repeat
@@ -349,8 +351,7 @@ h1, h2, h3, h4
     width: 100%
     float: left
     padding: 0px
-    border: 1px solid $offwhite
-    border-bottom: 1px solid $light-gray
+    margin-bottom: 1em
     @include boxsizing
     .step-element
       float: left
@@ -735,6 +736,16 @@ h1, h2, h3, h4
     background: gray
     @include transition(all 100ms)
 
+.btn-basic
+  background: $offwhite
+  border: 0px
+  border-radius: 0px
+  @include boxsizing
+  @include transition(all 100ms)
+  &:hover
+    background: $darker_orange
+    @include transition(all 100ms)
+
 .btn-play-image
   position: relative
   background: image-url('play-button.png') no-repeat
@@ -1047,6 +1058,8 @@ h1, h2, h3, h4
   left: -1%
   width:  102%
   height:  102%
+  min-height: 10px
+  min-width: 10px
   font-size:  15px
   border: 2px solid #9ecaed
   border-radius: 7px
@@ -1062,6 +1075,33 @@ h1, h2, h3, h4
   label
     margin-right: 8px
     vertical-align: top
+
+input.equipment-typeahead
+  @include boxsizing
+  padding: 0px 2px 0px 2px
+  margin-left: -2px
+  margin-top: 0px
+  margin-bottom: 0px
+  width: 100%
+  max-width: 280px
+
+csequipmenteditpair
+  position: relative
+
+  .remove-button
+    display: inline-block
+    margin-left: -20px
+
+  .drag-handle
+    z-index: 2000
+    margin-left: -40px
+    position: absolute
+    left: 18px
+    top: 4px
+
+.no-bullet
+  list-style-type: none
+
 
 // Making this match h1. I tried @including h1 but that was a no go.
 *[data-ng-model='activity.title']
@@ -1087,6 +1127,12 @@ h1, h2, h3, h4
   color: red
   text-transform: uppercase
 
+.add-section
+  margin-top: 10px
+  margin-bottom: 10px
+
+.add-item, .done
+  margin-top: -5px
 
 // BELOW ARE RESPONSIVE STYLES //
 
@@ -1165,6 +1211,10 @@ h1, h2, h3, h4
   .top-container
     margin-top: 0px
 
+  .container-fluid
+    margin-left: -20px
+    margin-right: -20px
+
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
@@ -1234,6 +1284,10 @@ h1, h2, h3, h4
 
   .top-container
     margin-top: 0px
+
+  .container-fluid
+    margin-left: -20px
+    margin-right: -20px
  
 /* Landscape phones and down */
 @media (max-width: 480px)
@@ -1268,6 +1322,12 @@ h1, h2, h3, h4
     font-weight: normal
     &:hover
       color: #fff
+
+  .madlib, .madlib input
+    font-size: 20px
+    input[type='text'], input[type='email']
+      width: 80%
+      font-size: 20px
 
   .top-container
     margin-top: 0px

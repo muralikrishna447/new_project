@@ -9,7 +9,7 @@ describe 'ActivityController', ->
   beforeEach(module('ChefStepsApp'))
 
   beforeEach inject(($httpBackend) ->
-    $httpBackend.whenGET('/activities/1').respond({"title" : "original"})
+    $httpBackend.whenGET('/activities/1/as_json').respond({"title" : "original"})
   )
 
   beforeEach inject ($rootScope, $controller) ->
@@ -27,7 +27,7 @@ describe 'ActivityController', ->
     it "end edit mode with change committed", inject ($rootScope, $controller, $httpBackend) ->
       scope.startEditMode()
       scope.activity.title = "foobar"
-      $httpBackend.expectPUT('/activities/1').respond(201, '')
+      $httpBackend.expectPUT('/activities/1/as_json').respond(201, '')
       scope.endEditMode()
       expect(scope.activity.title).toEqual("foobar")
       expect(scope.editMode).toBeFalsy()

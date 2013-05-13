@@ -118,7 +118,7 @@ class Course < ActiveRecord::Base
   end
 
   def featured_image
-    self.image_id || self.first_published_activity.featured_image
+    self.image_id || self.first_published_activity.featured_image || 'http://www.placehold.it/320x180/f2f2f2/f2f2f2'
   end
 
 end

@@ -1,4 +1,3 @@
-//= require jquery
 //= require jquery-ui
 //= require mobile_detect
 //= require twitter/bootstrap
@@ -21,4 +20,4 @@
 //= require bootstrap-wysihtml5
 //= require bootstrap-wysihtml5/locales
 //= require rails.validations
-//= require rails.validations.formtastic
+//= require user_profiles

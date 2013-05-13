@@ -15,6 +15,16 @@
 .row-fluid
   %hr
 
+- if current_user
+  - ids = @activity.assignments.map(&:child_activity_id)
+  - current_user.uploads.where(:uploads => {:activity_id => ids}).each do |upload|
+    .row-fluid
+      .span4
+        = image_tag filepicker_gallery_image(upload.image_id)
+      .span8
+        %h4= upload.recipe_name
+        %p= upload.notes
+
 = form_for @upload do |f|
   = f.hidden_field :activity_id
   .row-fluid

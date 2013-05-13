@@ -7,7 +7,11 @@ module ApplicationHelper
     if ! fpfile.start_with?('{')
       # Legacy naked S3 image id. Still used for a few images that don't
       # have UI to set.
-      s3_image_url(fpfile)
+      if /placehold/.match(fpfile)
+        fpfile
+      else
+        s3_image_url(fpfile)
+      end
     else
       url = ActiveSupport::JSON.decode(fpfile)["url"]
       url + "/convert?fit=max&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
@@ -49,6 +53,15 @@ module ApplicationHelper
         # have UI to set.
         fpfile
       end
+    end
+  end
+
+  def filepicker_user_profile_image(fpfile)
+    if fpfile
+      url = ActiveSupport::JSON.decode(fpfile)["url"]
+      url + "/convert?fit=crop&w=400&h=400&cache=true"
+    else
+      'http://www.placehold.it/300x300&text=ChefSteps'
     end
   end
 
@@ -146,7 +159,7 @@ module ApplicationHelper
     viewed = user.viewed_activities_in_course(course)
     if viewed.count == 0
       first_activity = course.first_published_activity
-      link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}", [course, first_activity], class: btn_class
+      link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
     else
       current_activity = viewed.last
       link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, current_activity], class: btn_class

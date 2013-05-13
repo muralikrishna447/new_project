@@ -121,6 +121,28 @@ class Activity < ActiveRecord::Base
     self
   end
 
+  def update_equipment_json(equipment_attrs)
+    # Easiest just to be rid of all of the old join records, we'll make them from scratch
+    equipment.destroy_all()
+    equipment.reload()
+    if equipment_attrs
+      equipment_attrs.each do |e|
+        title = e[:equipment][:title]
+        unless title.nil? || title.blank?
+          title.strip!
+          equipment_item = Equipment.where(id: e[:equipment][:id]).first_or_create(title: title)
+          activity_equipment = ActivityEquipment.create({
+              activity_id: self.id,
+              equipment_id: equipment_item.id,
+              optional: e[:optional] || false,
+              equipment_order_position: :last
+          })
+         end
+      end
+    end
+    self
+  end
+
   def update_steps(step_attrs)
     if step_attrs
       reject_invalid_steps(step_attrs)
