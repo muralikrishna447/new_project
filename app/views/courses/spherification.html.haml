@@ -13,17 +13,24 @@
         Comments or Questions?
         = link_to 'Visit the Forum', 'http://forum.chefsteps.com'
       
-    .span6.well
-      - if current_user && current_user.course_ids.include?(@course.id)
-        %h2
-          Lesson
-          = current_user.viewed_activities_in_course(course).count
-          of
-          = course.viewable_activities.count
-        = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
-      - else
-        = form_tag enroll_course_path(@course) do
-          = submit_tag 'Enroll', class: 'btn btn-primary btn-large pull-right'
+    .span6
+      .well
+        - if current_user && current_user.course_ids.include?(@course.id)
+          %h2
+            Lesson
+            = current_user.viewed_activities_in_course(course).count
+            of
+            = course.viewable_activities.count
+          = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
+        - else
+          = form_tag enroll_course_path(@course) do
+            = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
+      .well   
+        - if @course.users.count > 1
+          %h4= "#{@course.users.count} people have enrolled."
+        %h4 Here's what people have accomplished with the course:
+        - @course.uploads.each do |upload|
+          = image_tag filepicker_gallery_image(upload.image_id)
 
   .row.section
     .span12

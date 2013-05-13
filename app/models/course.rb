@@ -121,4 +121,12 @@ class Course < ActiveRecord::Base
     self.image_id || self.first_published_activity.featured_image || 'http://www.placehold.it/320x180/f2f2f2/f2f2f2'
   end
 
+  def assignment_activities
+    activities.joins(:assignments).map(&:child_activities).flatten.uniq
+  end
+
+  def uploads
+    assignment_activities.map(&:uploads).flatten
+  end
+
 end
