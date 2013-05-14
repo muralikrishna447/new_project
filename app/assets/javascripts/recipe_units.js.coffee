@@ -19,28 +19,6 @@ $ ->
   $('.recipetip').tooltip({trigger: "hover"}).click ->
     return false
 
-# On page load, store off the initial amounts of each ingredient and
-# setup click handlers.
-prepareForScaling = ->
-  # Store off base value into an attribute for use in future calcs
-  # Weights are normally in grams; if we see kg just convert it - will redisplay as kg if above 5 later.
-  $('.main-qty').each (i, element) =>
-    if ! $(element).attr("data-orig-value")
-
-      origValue = Number($(element).text())
-      cell = $(element).parent()
-      row = cell.parent()
-      unit_cell = row.children('.unit')
-
-      if unit_cell.text() == "kg"
-        origValue *= 1000
-        unit_cell.text("g")
-
-      if unit_cell.text() == "a/n" || unit_cell.text() == ""
-        $(element).parent().children().hide()
-      else
-        $(element).attr("data-orig-value", origValue)
-
 # Delay here for angular to render; this can go away once scaling is all angular
 $ ->
   setTimeout ( ->
