@@ -21,5 +21,6 @@
                 Please set my password to
                 %span.input-underlined
                   = password_field_tag 'password', nil, {placeholder: 'password', required: true, id: 'madlib-password'}
+                  = link_to 'Show', 'javascript:void(0);', class: 'btn', id: 'show-madlib-password'
                 &#46;
             = submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'

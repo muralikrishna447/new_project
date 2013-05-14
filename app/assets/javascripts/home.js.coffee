@@ -78,3 +78,11 @@ $ ->
 
   $('#madlib-email').keyup ->
     toggleMadlibPassword($('#madlib-name'), $(this))
+
+  show_password_index = 0
+  $('#show-madlib-password').click ->
+    madlibe_password_field = $('#madlib-password')
+    if ++show_password_index % 2
+      madlibe_password_field.attr 'type', 'text'
+    else
+      madlibe_password_field.attr 'type', 'password'
