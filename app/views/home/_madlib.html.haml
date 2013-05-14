@@ -5,7 +5,6 @@
         .span8.offset2
           - ab_test('homepage_madlib_password', 'without_password', 'with_password') do |test|
             - if test == 'without_password'
-              %h1 Without
               = form_tag welcome_url, :method => :get, class: 'form-inline' do
                 .madlib
                   %p.text-orange
@@ -22,7 +21,6 @@
                     I want to learn how to be a better cook.
                 = submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
             - else
-              %h1 With
               = form_for @user, url: registration_path(@user), class: 'form-inline' do |f|
                 .madlib
                   %p.text-orange
@@ -41,7 +39,6 @@
                     Please set my password to
                     %span.input-underlined
                       = f.password_field :password, {placeholder: 'password', required: true, id: 'madlib-password'}
-                      / = f.password_field :password_confirmation, {placeholder: 'password', required: true, id: 'madlib-password'}
                       = link_to 'Show', 'javascript:void(0);', class: 'btn', id: 'show-madlib-password'
                     &#46;
                   = f.submit 'Sign Up Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
