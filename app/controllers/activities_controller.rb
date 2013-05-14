@@ -57,6 +57,9 @@ class ActivitiesController < ApplicationController
           render 'course_activity'
           track_event @current_inclusion
         else
+          if @activity.courses.any?
+            flash[:notice] = "This is part of the #{view_context.link_to @activity.courses.first.title, @activity.courses.first}."
+          end
           track_event @activity
         end
 

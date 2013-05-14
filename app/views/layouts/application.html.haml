@@ -32,7 +32,7 @@
       - flash.each do |name, msg|
         %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
           %button.close{type: 'button', data: {dismiss: 'alert'}} x
-          %h4.alert-message= msg
+          %h4.alert-message= msg.html_safe
           .lblock
           
     = yield
