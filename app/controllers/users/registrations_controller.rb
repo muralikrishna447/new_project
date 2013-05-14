@@ -36,7 +36,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save
       sign_in @user
       aweber_signup(@user.email)
-      redirect_to user_profile_path(@user), notice: "Welcome to ChefSteps! Please check your email to confirm your registration."
+      redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
       cookies.delete(:viewed_activities)
     else
       render :new
