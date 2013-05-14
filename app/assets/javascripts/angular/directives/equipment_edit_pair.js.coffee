@@ -58,20 +58,4 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
   ]
 
 
-  # TODO: Move this to a partial file
-  # Note the &nbsp; below is to keep the whole thing from being empty so that you can't get an edit-target on it
-  template: '<csEditPair>'+
-              '<csEditPairShow>' +
-                '<div ng-switch="" on="!!item.equipment.product_url">' +
-                  '<span class="drag-handle" ng-show="editOffered"><i class="icon-sort"></i></span>' +
-                  '<span ng-switch-when="true">' +
-                    "<a ng-href='{{item.equipment.product_url}}' target='_blank'>{{item.equipment.title || item.equipment}}&nbsp;</a>" +
-                  '</span>' +
-                  '<span ng-switch-when="false">{{item.equipment.title || item.equipment}}&nbsp;</span>' +
-                '</div>' +
-              '</csEditPairShow>'+
-              '<csEditPairEdit>' +
-                '<input csinputmonkey="" type="text" placeholder="New equipment" typeahead-editable="true" autofocus="autofocus" autocomplete="off" class="equipment-typeahead" ng-model="item.equipment" typeahead="e as e.title for e in all_equipment($viewValue)"/>' +
-                '<div class="remove-button" ng-click="removeItem()"><i class="icon-remove"></i></div>' +
-              '</csEditPairEdit>' +
-            '</csEditPair>'
+  templateUrl: '/assets/angular/templates/_equipment_edit_pair.html.haml'

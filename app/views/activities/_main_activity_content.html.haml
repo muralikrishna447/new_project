@@ -16,7 +16,7 @@
       %csEditPairEdit
         = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}, autofocus: 'autofocus'}
 
-    .section(csmonitorinputactivity="")
+    .section(ng-show="activity.ingredients.length" csmonitorinputactivity="")
       .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
         .well
           = render 'ingredients_list', ingredients: activity.ingredients
