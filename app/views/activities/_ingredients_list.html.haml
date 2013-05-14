@@ -9,26 +9,19 @@
           %i.icon-question-sign
 
   %tbody
-    %tr.ingredient-item(ng-repeat="item in activity.equipment | filter:requiredEquipment" ng-class="equipmentBulletStyle()"){data: {:'ingredient-id' => ingredient.ingredient.id}}
+    %tr.ingredient-item(ng-repeat="ai in activity.ingredients" ng-class="equipmentBulletStyle()"){data: {:'ingredient-id' => "{{ai.ingredient.id}}"}}
       %td.ingredient-title
-      .pull-left
-        - if ingredient.product_url?
-          =link_to ingredient.title.html_safe, ingredient.product_url, { class: ('for-sale-after' if ingredient.for_sale), target: "_blank"}
-        - elsif ingredient.sub_activity_id != nil
-          -subact = Activity.find_by_id(ingredient.sub_activity_id)
-          =link_to subact.title.html_safe, activity_path(subact), { target: "_blank", onclick: "addScalingToLink(this);"}
-        - else
-          / - if ingredient.note?
-          /   = "#{ingredient.title.html_safe}, #{apply_shortcodes(ingredient.note).html_safe}"
-          / - else
-          = ingredient.title.html_safe
-      - if ingredient.note?
-        .pull-left
-          = ", #{apply_shortcodes(ingredient.note).html_safe}"
+        .pull-left(ng-switch on="ingredient_display_type(ai)")
+          %div(ng-switch-when="basic" ng-bind-html-unsafe="ai.ingredient.title")
+          %a(ng-switch-when="product" ng-href="{{ai.ingredient.product_url}}" target='_blank' ng-bind-html-unsafe="ai.ingredient.title")
+          %a(ng-switch-when="subrecipe" ng-href="{{'/activities/' + ai.ingredient.sub_activity_id}}" ng-bind-html-unsafe="ai.ingredient.title" target="_blank"){onclick: "addScalingToLink(this);"}
+        .pull-left(ng-show="!!ai.note" ng-bind-html-unsafe="', ' + (ai.note | shortcode)")
+
       %td
         .prependable
       %td.quantity-group.qtyfade
-        .lbs-qty
+        .lbs-qty(csscalingeditable){style: "display: none;"}
         .lbs-label
-        .main-qty= ingredient.display_quantity
-      %td.unit.qtyfade= ingredient.unit
+        .main-qty(csscalingeditable ng-bind="ai.display_quantity"){data: {:"orig-value" => "{{ai.display_quantity * unitMultiplier(ai.unit)}}"}}
+
+      %td.unit.qtyfade(ng-bind="ai.unit")

@@ -128,6 +128,12 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     handle: '.drag-handle'
   }
 
+  $scope.ingredient_display_type = (ai) ->
+    result = "basic"
+    result = "product" if !! ai.ingredient.product_url
+    result = "subrecipe" if !! ai.ingredient.sub_activity_id
+    result
+
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
   # autocomplete (unshift in all_equipment), it will be missing a nesting level in the model.
@@ -136,6 +142,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       if _.isString(item["equipment"])
         item["equipment"] = {title: item["equipment"]}
 
+  $scope.unitMultiplier = (unit_name) ->
+    result = 1
+    result = 1000 if unit_name == "kg"
+    result
 
 
 ]

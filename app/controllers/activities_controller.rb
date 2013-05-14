@@ -17,6 +17,7 @@ class ActivitiesController < ApplicationController
       redir_params[:version] = params[:version] if defined? params[:version]
       redir_params[:minimal] = params[:minimal] if defined? params[:minimal]
       redir_params[:token] = params[:token] if defined? params[:token]
+      redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
   end
@@ -86,7 +87,15 @@ class ActivitiesController < ApplicationController
                 only: :optional,
                 include: {
                   equipment: {
-                    only: [:title, :id, :product_url]
+                    only: [:id, :title, :product_url]
+                  }
+                }
+              },
+              ingredients: {
+                only: [:note, :display_quantity, :quantity, :unit],
+                include: {
+                  ingredient: {
+                    only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
                   }
                 }
               }

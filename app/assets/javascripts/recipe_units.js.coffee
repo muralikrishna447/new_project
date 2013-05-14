@@ -25,7 +25,7 @@ prepareForScaling = ->
   # Store off base value into an attribute for use in future calcs
   # Weights are normally in grams; if we see kg just convert it - will redisplay as kg if above 5 later.
   $('.main-qty').each (i, element) =>
-    if ! $(element).data("origValue")
+    if ! $(element).attr("data-orig-value")
 
       origValue = Number($(element).text())
       cell = $(element).parent()
@@ -39,20 +39,13 @@ prepareForScaling = ->
       if unit_cell.text() == "a/n" || unit_cell.text() == ""
         $(element).parent().children().hide()
       else
-        if origValue == 60
-          debugger
-        console.log("Got one: " + origValue)
-        $(element).data("origValue", origValue)
+        $(element).attr("data-orig-value", origValue)
 
-  $('.yield').each (i, element) =>
-    if ! $(element).data("origValue")
-      origValue = Number($(element).text())
-      $(element).data("origValue", origValue)
-
-
+# Delay here for angular to render; this can go away once scaling is all angular
 $ ->
-  updateUnits(false)
-
+  setTimeout ( ->
+    updateUnits(false)
+  ), 1000
 
 
 # Setup click handler for units toggle
@@ -68,9 +61,8 @@ $ ->
         window.showStepIngredients(step)
       ), 1000
 
-# make all the ingredient amounts editable
-$ ->
-  $(".quantity-group .main-qty, .quantity-group .lbs-qty").editable ((value, settings) ->
+window.makeEditable = (elements) ->
+  elements.not(["data-marked-editable"]).editable ((value, settings) ->
     item = $(this)
     old_val = Number(@revert)
     new_val = Number(value)
@@ -107,12 +99,13 @@ $ ->
     width: "10px"
     onblur: "cancel"
     cssclass: 'quantity-edit'
-    #onedit: (settings, inp) ->
-      #settings.width = $(inp).width() + 20
-      #true
     callback: ->
       updateUnits(false)
   }
+  # Editable freaks if called twice on same element
+  elements.attr("data-marked-editable", "true")
+  updateUnits(false)
+
 
 # Make the unit labels edit the units
 $ ->
@@ -146,10 +139,10 @@ setRow = (row, qtyLbs, qty, units) ->
 
 # Compute the new ingredient quantities and units for a row
 updateOneRowUnits = ->
-  if ! $(this).children('.quantity-group').find('.main-qty').data("origValue")
+  if ! $(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")
     return
 
-  origValue = Number($(this).children('.quantity-group').find('.main-qty').data("origValue")) * csScaling
+  origValue = Number($(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")) * csScaling
   existingUnits = $(this).children('.unit').text()
 
   # "a/n" means as needed, don't do anything. ditto if blank - formerly used
@@ -189,7 +182,6 @@ updateOneRowUnits = ->
 
 # Update all rows
 updateUnits = (animate) ->
-  prepareForScaling()
   if (animate)
     # animate all the values and units down ...
     $('.qtyfade').fadeOut "fast"

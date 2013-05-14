@@ -26,7 +26,7 @@
         %csEditPairShow
           %div(ng-show="!!activity.yield")
             %h4 Yield
-            %span(itemprop="recipeYield" ng-bind="activity.yield")
+            %span(itemprop="recipeYield" ng-bind="activity.yield"){data: {:"orig-value" => "{{activity.yield}}"}}
           %button.btn.btn-small.add-section(ng-show="editMode && (!activity.yield)")
             Add Yield
 
