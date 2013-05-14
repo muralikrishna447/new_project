@@ -1,3 +1,12 @@
+toggleMadlibPassword = (name_field, email_field) ->
+    valid_name = name_field[0].validity.valid
+    valid_email = email_field[0].validity.valid
+
+    if valid_name && valid_email
+      $('#madlib-password-wrapper').show()
+    else
+      $('#madlib-password-wrapper').hide()
+
 $ ->
   # Hero Swiper
   window.heroSwipe = Swipe(document.getElementById('hero-swiper'),{
@@ -65,3 +74,6 @@ $ ->
 
   $('#nav-search-toggle').click ->
     $(this).closest('.nav-search').toggleClass('nav-search-show', 300)
+
+  $('#madlib-email').keyup ->
+    toggleMadlibPassword($('#madlib-name'), $(this))
