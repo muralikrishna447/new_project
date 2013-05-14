@@ -37,7 +37,7 @@
 - if current_user
   - ids = @activity.assignments.map(&:child_activity_id)
   - current_user.uploads.where(:uploads => {:activity_id => ids}).each do |upload|
-    .row-fluid
+    .row-fluid.section
       .span4
         = image_tag filepicker_gallery_image(upload.image_id)
       .span8
