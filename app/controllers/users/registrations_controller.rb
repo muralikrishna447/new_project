@@ -10,7 +10,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to sign_in_url(name: name, email: email)
     else
       aweber_signup(email, signed_up_from)
-      finished('madlib_content_1', reset: false)
+      finished('bottom_popup_copy_1', reset: false)
     end
   end
 
