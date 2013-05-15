@@ -1,0 +1,20 @@
+%csEditPair
+  %csEditPairShow
+    .ingredient-title
+      %span(ng-switch="" on="ingredient_display_type(ai)")>
+        %span(ng-switch-default="" ng-bind-html-unsafe="ai.ingredient.title")
+        %a(ng-switch-when="product" ng-href="{{ai.ingredient.product_url}}" target='_blank' ng-bind-html-unsafe="ai.ingredient.title")
+        %a(ng-switch-when="subrecipe" ng-href="{{'/activities/' + ai.ingredient.sub_activity_id}}" ng-bind-html-unsafe="ai.ingredient.title" target="_blank"){onclick: "addScalingToLink(this);"}
+      %span(ng-show="!!ai.note" ng-bind-html-unsafe="', ' + (ai.note | shortcode)")>
+
+    .quantity-group.qtyfade
+      %span.lbs-qty(csscalingeditable){style: "display: none;"}
+      %span.lbs-label
+      %span.main-qty(csscalingeditable="" ng-bind="ai.display_quantity"){data: {:"orig-value" => "{{ai.display_quantity * unitMultiplier(ai.unit)}}"}}
+
+    .unit.qtyfade(ng-bind="ai.unit")
+
+  %csEditPairEdit
+    %input(csinputmonkeyingredient="" type="text" placeholder="New ingredient" typeahead-editable="true" autofocus="autofocus" autocomplete="off" class="ingredient-typeahead" ng-model="ai.ingredient" typeahead="i as i.ingredient for i in all_ingredients($viewValue)")
+    .remove-button(ng-click="remove_ingredient()")
+      %i.icon-remove

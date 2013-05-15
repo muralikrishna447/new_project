@@ -76,8 +76,6 @@
                             - if ingredient.note?
                               .pull-left
                                 = ", #{apply_shortcodes(ingredient.note).html_safe}"
-                          %td
-                            .prependable
                           %td.quantity-group
                             .main-qty= ingredient.display_quantity
                           %td.unit= ingredient.unit

@@ -1,14 +1,11 @@
-angular.module('ChefStepsApp').directive 'csinputmonkey', ->
+angular.module('ChefStepsApp').directive 'csinputmonkeyequipment', ->
   restrict: 'A',
   link: (scope, element, attrs) ->
 
     elt = $(element)
     start_val = ""
 
-    # Hack for the empty state we get when first creating
     elt.on 'focus', ->
-      if elt.val() == "[object Object]"
-        elt.val("")
       start_val = elt.val()
 
     # Throw out empties
@@ -40,9 +37,6 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
 
   link: (scope, element, attrs) ->
 
-    # Not sure if this is completely reliable, but the idea is to make sure that a newly added
-    # piece of equipment starts out in edit mode. This seems to work, but do we know each new one will get
-    # link called just once?
     if scope.editMode
       scope.$emit('end_active_edits_from_below')
       scope.active = true
@@ -57,5 +51,4 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
       "no-bullet" if $element.find('.edit-target').is(":visible")
   ]
 
-
-  templateUrl: '/assets/angular/templates/_equipment_edit_pair.html.haml'
+  templateUrl: '/assets/angular/templates/_equipment_edit_pair'

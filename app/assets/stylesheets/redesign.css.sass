@@ -382,30 +382,43 @@ h1, h2, h3, h4
     .step-video
       display: none
 
-/* Emphasizes the content being hovered */
-// .ordered-steps:hover > .ordered-step-item
-//   opacity: .3
-//   @include transition(opacity 200ms)
-// .ordered-steps:hover > .ordered-step-item:hover
-//   opacity: 1
-//   @include transition(opacity 200ms)
 
-.prependable
-  text-align: right
-  width: 100%
-  padding-right: 2px
-
-.activity-ingredients-list, .step-ingredients-source
+.ingredients
   position: relative
-  table
+  font-size: 14px
+  width: 100%
+
+  div
+    display: inline-block
+    width:  100%
+
+  .ingredient-title
+    width: 61%
+  .quantity-group
+    width: 29%
+  .unit
+    width: 4%
+
+  .ingredient-table-head
     width: 100%
-  thead
     line-height: 30px
     font-size: 17.5px
     border-bottom: 1px solid black
-  th#ingredient
+    display: block
+    font-weight: bold
+    .quantity-group
+      width: 32%
+    .unit
+      width: 0%
+
+  .ingredient-table-body
+    width: 100%
+    display: block
+
+  #ingredient
     text-align: left
-  th#quantity
+
+  #quantity
     text-align: right
     .recipetip
       margin-left: -11px
@@ -413,34 +426,29 @@ h1, h2, h3, h4
       position: absolute
       margin-left: 15px
       margin-top: 5px
-  td
-    font-size: 14px
-    div
-      display: inline-block
-      form
-        margin: 0px
-        input
-          width: 60px
-  td.quantity-group
+
+  form
+    margin: 0px
+    display: inline
+    input
+      width: 60px
+      text-align: right
+
+  .quantity-group
     text-align: right
-    padding-right: 5px
-  .ingredient-item
-    height: 20px
-    @include transition(opacity 500ms)
-    .ingredient-title, .prependable
-      font-weight: 400
+    padding-right: 0px
+
+  .ingredient-table-body
+    .ingredient-table-row
+      width: 100%
+      display: block
+      height: 20px
       @include transition(opacity 500ms)
-    .quantity-group, .unit
-      @include transition(opacity 500ms)
-  .ingredient-highlighted
-    .ingredient-title, .prependable
-      font-weight: 700
-      opacity: 1
-    .quantity-group, .unit
-      opacity: .2
-  .ingredient-unhighlighted
-    opacity: .2
-    font-weight: 40
+      .ingredient-title
+        font-weight: 400
+        @include transition(opacity 500ms)
+      .quantity-group, .unit
+        @include transition(opacity 500ms)
 
 .step-ingredients-source
   //display: none

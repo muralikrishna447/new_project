@@ -9,6 +9,6 @@
       %span(ng-switch-default="")
         {{item.equipment.title || item.equipment}}&nbsp;
   %csEditPairEdit
-    %input(csinputmonkey="" type="text" placeholder="New equipment" typeahead-editable="true" autofocus="autofocus" autocomplete="off" class="equipment-typeahead" ng-model="item.equipment" typeahead="e as e.title for e in all_equipment($viewValue)")
+    %input(csinputmonkeyequipment="" type="text" placeholder="New equipment" typeahead-editable="true" autofocus="autofocus" autocomplete="off" class="equipment-typeahead" ng-model="item.equipment" typeahead="e as e.title for e in all_equipment($viewValue)")
     .remove-button(ng-click="removeItem()")
       %i.icon-remove
