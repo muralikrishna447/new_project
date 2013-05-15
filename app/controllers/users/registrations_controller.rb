@@ -58,7 +58,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def aweber_signup(email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
     finished('homepage_madlib_password', reset: false)
-    if Rails.env.production?
+    if Rails.env.production? || Rails.env.staging?
       uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
       response = Net::HTTP.post_form(uri,
                                       { "email" => email,
