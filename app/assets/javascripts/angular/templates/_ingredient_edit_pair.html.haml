@@ -1,5 +1,5 @@
 %csEditPair
-  %csEditPairShow
+  %csEditPairShow.show-group
     .ingredient-title
       %span(ng-switch="" on="ingredient_display_type(ai)")>
         %span(ng-switch-default="" ng-bind-html-unsafe="ai.ingredient.title")
@@ -16,5 +16,5 @@
 
   %csEditPairEdit
     %input(csinputmonkeyingredient="" type="text" placeholder="New ingredient" typeahead-editable="true" autofocus="autofocus" autocomplete="off" class="ingredient-typeahead" ng-model="ai.ingredient" typeahead="i as i.ingredient for i in all_ingredients($viewValue)")
-    .remove-button(ng-click="remove_ingredient()")
+    .remove-button(ng-click="removeIngredient()")
       %i.icon-remove

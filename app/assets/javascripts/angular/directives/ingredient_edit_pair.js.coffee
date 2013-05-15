@@ -29,7 +29,7 @@ angular.module('ChefStepsApp').directive 'csinputmonkeyingredient', ->
       # I had tried setting value back to start_val, and/or resetting model but always got overwritten.
       if event.which == 27
         if (start_val == "")
-          scope.activity.ingredient.splice(scope.activity.ingredient.indexOf(ai), 1)
+          scope.activity.ingredients.splice(scope.activity.ingredients.indexOf(ai), 1)
         scope.$apply()
 
 
@@ -44,7 +44,8 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
 
   controller: ['$scope', '$element', ($scope, $element) ->
     $scope.removeIngredient = ->
-      $scope.activity.ingredient.splice($scope.activity.ingredient.indexOf($scope.ai), 1)
+      $scope.activity.ingredients.splice($scope.activity.ingredients.indexOf($scope.ai), 1)
+      $scope.addUndo()
 
   ]
 

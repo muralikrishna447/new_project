@@ -384,14 +384,16 @@ h1, h2, h3, h4
 
 
 .ingredients
+
   position: relative
   font-size: 14px
   width: 100%
 
   div
     display: inline-block
-    width:  100%
 
+  .ingredient-table-row
+    width: 100%
   .ingredient-title
     width: 61%
   .quantity-group
@@ -1023,6 +1025,9 @@ h1, h2, h3, h4
 .edit-pair
   position: relative
 
+.edit-pair, .edit-pair-show, .edit-pair-edit
+  width: 100%
+
 #edit-group
   margin-left: 20px
   margin-top: 11px
@@ -1066,12 +1071,11 @@ input.equipment-typeahead
   width: 100%
   max-width: 280px
 
-csequipmenteditpair
+csequipmenteditpair, csingredienteditpair
   position: relative
 
   .remove-button
     display: inline-block
-    margin-left: -20px
 
   .drag-handle
     z-index: 2000
@@ -1079,6 +1083,23 @@ csequipmenteditpair
     position: absolute
     left: 18px
     top: 4px
+
+  input
+    display: inline-block
+
+csequipmenteditpair
+  .remove-button
+    margin-left: -20px
+
+csingredienteditpair
+  .remove-button
+    position: absolute
+    right: 1px
+    top: 3px
+
+
+
+
 
 .no-bullet
   list-style-type: none

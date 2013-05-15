@@ -88,7 +88,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     else
       ""
 
-  # Equipment stuff TODO: nicer using underscore _map?
+  # Equipment stuff TODO: make a controller just for equipment
+
+  # TODO: nicer using underscore _map?
   $scope.hasRequiredEquipment = ->
     has = false
     angular.forEach $scope.activity.equipment, (item) ->
@@ -128,10 +130,17 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     handle: '.drag-handle'
   }
 
+  # Ingredient stuff TODO: make a controller just for ingredients
+
   $scope.ingredient_display_type = (ai) ->
     result = "basic"
     result = "product" if !! ai.ingredient.product_url
     result = "subrecipe" if !! ai.ingredient.sub_activity_id
+    result
+
+  $scope.unitMultiplier = (unit_name) ->
+    result = 1
+    result = 1000 if unit_name == "kg"
     result
 
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
@@ -141,12 +150,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     angular.forEach $scope.activity.equipment, (item) ->
       if _.isString(item["equipment"])
         item["equipment"] = {title: item["equipment"]}
-
-  $scope.unitMultiplier = (unit_name) ->
-    result = 1
-    result = 1000 if unit_name == "kg"
-    result
-
 
 ]
 

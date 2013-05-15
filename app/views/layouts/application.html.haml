@@ -23,6 +23,8 @@
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
     = render 'layouts/google_analytics' if Rails.env.production?
+    %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
+    %script{src: "https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"}
     = javascript_include_tag 'application_head'
 
   %body{@body_tag_attributes || {}}
