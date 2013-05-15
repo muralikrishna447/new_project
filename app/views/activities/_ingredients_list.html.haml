@@ -8,6 +8,6 @@
         %a.recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}
           %i.icon-question-sign
 
-  .ingredient-table-body
+  .ingredient-table-body(ui-sortable="sortOptions" ng-model="activity.ingredients")
     .ingredient-table-row(ng-repeat="ai in activity.ingredients")
       %csIngredientEditPair

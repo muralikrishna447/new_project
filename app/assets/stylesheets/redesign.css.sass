@@ -457,6 +457,11 @@ h1, h2, h3, h4
   thead
     display: none
 
+ul.equipment
+  margin-left: 0px
+  li
+    list-style-type: none
+
 #main-content
   position: relative
   overflow: hidden
@@ -1062,14 +1067,8 @@ h1, h2, h3, h4
     margin-right: 8px
     vertical-align: top
 
-input.equipment-typeahead
-  @include boxsizing
-  padding: 0px 2px 0px 2px
-  margin-left: -2px
-  margin-top: 0px
-  margin-bottom: 0px
-  width: 100%
-  max-width: 280px
+
+
 
 csequipmenteditpair, csingredienteditpair
   position: relative
@@ -1084,8 +1083,19 @@ csequipmenteditpair, csingredienteditpair
     left: 18px
     top: 4px
 
-  input
-    display: inline-block
+  .edit-pair-edit
+    input, select
+      display: inline-block
+      @include boxsizing
+      padding: 0px 2px 0px 2px
+      margin-left: -2px
+      margin-top: 0px
+      margin-bottom: 0px
+      width: 100%
+      max-width: 280px
+
+    select
+      height: 22px
 
 csequipmenteditpair
   .remove-button
@@ -1094,12 +1104,24 @@ csequipmenteditpair
 csingredienteditpair
   .remove-button
     position: absolute
-    right: 1px
-    top: 3px
+    left: -40px
+    top: 4px
 
 
+  .edit-pair-edit
 
+    .ingredient-title
+      width: 80%
+      input:first-child
+        width: 55%
+      input:last-child
+        width: 44%
 
+    .quantity-group
+      width: 11%
+
+    .unit
+      width: 8%
 
 .no-bullet
   list-style-type: none

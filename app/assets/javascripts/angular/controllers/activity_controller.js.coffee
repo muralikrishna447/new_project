@@ -88,6 +88,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     else
       ""
 
+  $scope.sortOptions = {
+    axis: 'y',
+    containment: 'parent',
+    cursor: 'move',
+    handle: '.drag-handle'
+  }
+
   # Equipment stuff TODO: make a controller just for equipment
 
   # TODO: nicer using underscore _map?
@@ -123,13 +130,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       r.unshift({title: equip_name})
       r
 
-  $scope.equipmentSortOptions = {
-    axis: 'y',
-    containment: 'parent',
-    cursor: 'move',
-    handle: '.drag-handle'
-  }
-
   # Ingredient stuff TODO: make a controller just for ingredients
 
   $scope.ingredient_display_type = (ai) ->
@@ -142,6 +142,21 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     result = 1
     result = 1000 if unit_name == "kg"
     result
+
+  $scope.addIngredient = (optional) ->
+    # *don't* use equip = {title: ...} here, it will screw up display if an empty one gets in the list
+    equip = ""
+    item = {equipment: equip, optional: optional}
+    $scope.activity.equipment.push(item)
+  #$scope.addUndo()
+
+  $scope.all_ingredients = (ingredient_name) ->
+    $http.get("/ingredients.json?q=" + ingredient_name).then (response) ->
+      # always include current search text as an option
+      r = limitToFilter(response.data, 15)
+      r.unshift({title: ingredient_name})
+      r
+
 
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
   # for the equipment edit, when typing in a new string, if it hasn't gone through the

@@ -47,9 +47,6 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
     $scope.removeItem = ->
       $scope.activity.equipment.splice($scope.activity.equipment.indexOf($scope.item), 1)
       $scope.addUndo()
-
-    $scope.equipmentBulletStyle = ->
-      "no-bullet" if $($element).find('.edit-target').is(":visible")
   ]
 
   templateUrl: '/assets/angular/templates/_equipment_edit_pair'

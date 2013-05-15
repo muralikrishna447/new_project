@@ -90,6 +90,7 @@ Delve::Application.routes.draw do
   end
 
   resources :equipment, only: [:index]
+  resources :ingredients, only: [:index]
   resources :search, only: [:index]
   resources :recipe_gallery, only: [:index], path: 'recipe-gallery'
   resources :user_activities, only: [:create]
