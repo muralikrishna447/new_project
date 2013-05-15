@@ -63,10 +63,6 @@ class ActivitiesController < ApplicationController
           track_event @activity
         end
 
-        if @activity.has_quizzes?
-          render template: 'activities/quizzes'
-        end
-
         @minimal = false
         if params[:minimal]
           @minimal = true
