@@ -3,7 +3,7 @@ toggleMadlibPassword = (name_field, email_field) ->
     valid_email = email_field[0].validity.valid
 
     if valid_name && valid_email
-      $('#madlib-password-wrapper').show()
+      $('#madlib-password-wrapper').delay(1000).fadeIn()
 
 $ ->
   # Hero Swiper
