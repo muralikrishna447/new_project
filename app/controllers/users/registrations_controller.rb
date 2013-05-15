@@ -10,7 +10,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to sign_in_url(name: name, email: email)
     else
       aweber_signup(email, signed_up_from)
-      finished('madlib_content_1', reset: false)
+      finished('bottom_popup_copy_1', reset: false)
     end
   end
 
@@ -36,7 +36,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save
       sign_in @user
       aweber_signup(@user.email)
-      redirect_to user_profile_path(@user), notice: "Welcome to ChefSteps! Please check your email to confirm your registration."
+      redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
       cookies.delete(:viewed_activities)
     else
       render :new
@@ -57,6 +57,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def aweber_signup(email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
+    finished('homepage_madlib_password', reset: false)
     if Rails.env.production?
       uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
       response = Net::HTTP.post_form(uri,

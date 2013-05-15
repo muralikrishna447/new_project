@@ -117,7 +117,7 @@
                   = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip, :itemprop => 'image'
               - if step.youtube_id?
                 .step-video{id: "step-video-#{index}"}
-                  .video-container
+                  .video-container(csenforceaspect)
                     %iframe{src: youtube_url(step.youtube_id)}
 
     .scroll-overlay-top

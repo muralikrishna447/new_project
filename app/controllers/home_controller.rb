@@ -13,6 +13,7 @@ class HomeController < ApplicationController
     
     # @discussion = Forum.discussions.first
     #@status = Twitter.status_embed
+    @user = User.new
   end
 
   def about
