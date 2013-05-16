@@ -97,7 +97,7 @@
                 %h4= step.title
               - if step.ingredients.any?
                 .step-ingredients-source.well
-                  = render 'ingredients_list'
+                  = render 'ingredients_list', ingredients: step.ingredients
               :markdown
                 #{apply_shortcodes(step.directions)}
               .step-actions.btn-group
