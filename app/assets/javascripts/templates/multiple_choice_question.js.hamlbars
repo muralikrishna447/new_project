@@ -27,5 +27,5 @@
                 %img.img-polaroid{ src: hb('image.url') }
               = hb('answer')
 
-    %a.btn.btn-primary.btn-next{href: '#'}
+    %a.btn.btn-primary.btn-next.hide{href: '#'}
       %i.icon-double-angle-right
