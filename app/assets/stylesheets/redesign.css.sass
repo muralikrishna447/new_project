@@ -464,8 +464,9 @@ ul.equipment
 
 #main-content
   position: relative
-  overflow: hidden
 
+.scroll-shadow-wrapper
+  overflow: hidden
 
 .alwayshidden
   display: none !important
@@ -1067,21 +1068,17 @@ ul.equipment
     margin-right: 8px
     vertical-align: top
 
-
-
-
 csequipmenteditpair, csingredienteditpair
   position: relative
 
-  .remove-button
-    display: inline-block
-
-  .drag-handle
-    z-index: 2000
-    margin-left: -40px
+  .action-button-group
     position: absolute
-    left: 18px
-    top: 4px
+    left: -58px
+    top:  0px
+    font-size:  18px
+
+    i
+      width: auto
 
   .edit-pair-edit
     input, select
@@ -1097,16 +1094,7 @@ csequipmenteditpair, csingredienteditpair
     select
       height: 22px
 
-csequipmenteditpair
-  .remove-button
-    margin-left: -20px
-
 csingredienteditpair
-  .remove-button
-    position: absolute
-    left: -40px
-    top: 4px
-
 
   .edit-pair-edit
 

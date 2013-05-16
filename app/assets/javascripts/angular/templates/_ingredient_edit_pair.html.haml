@@ -15,8 +15,9 @@
     .unit.qtyfade(ng-bind="ai.unit")
 
   %csEditPairEdit
-    .remove-button(ng-click="removeIngredient()")
-      %i.icon-remove
+    .action-button-group
+      %i.drag-handle.icon-sort
+      %i.remove-button.icon-remove(ng-click="removeIngredient()")
     .ingredient-title
       %input(csselectonfocus="" csinputmonkeyingredient="" type="text" placeholder="New ingredient" typeahead-editable="true" autofocus="autofocus" autocomplete="off" class="ingredient-typeahead" ng-model="ai.ingredient" typeahead="i as i.title for i in all_ingredients($viewValue)")
       %input(csselectonfocus="" type="text" placeholder="note" autocomplete="off" ng-model="ai.note")
