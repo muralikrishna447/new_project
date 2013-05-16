@@ -1,21 +1,21 @@
-.container
+.container-fluid.no-margin-padding
   .row
     .span8
       .instructions= hb!('instructions')
 
-  .hero-unit.span8.offset2
+  .span12.well.relative
     = hb('if image') do
       .row
         .span6.question-image
           %img.img-polaroid{ src: hb('image.url') }
     .row
-      .span8
+      .span11
         .question-label QUESTION:
     .row
-      .span8
+      .span11
         .question-text= hb('question')
     .row
-      .span8
+      .span11
         .question-label YOUR ANSWER:
     .row
       = hb 'each_with_index options' do
