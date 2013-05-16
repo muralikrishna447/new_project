@@ -1,19 +1,19 @@
-.container.order-sort
-  .row
-    .span8
+.container-fluid.no-margin-padding.order-sort
+  .row-fluid
+    .span12
       .question-label QUESTION:
 
-  .row
-    .span8
+  .row-fluid
+    .span12
       .question-text= hb('question')
 
-  .row
-    .span8
+  .row-fluid
+    .span12
       .instructions= hb!('instructions')
 
-  .row
-    .span12
-      .grid-container.well
+  .row-fluid
+    .span12.well
+      .grid-container
         .step-marker.grid-item
           .in-progress
             .step-text Drag and drop step
