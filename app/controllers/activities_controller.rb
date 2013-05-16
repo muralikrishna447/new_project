@@ -98,9 +98,6 @@ class ActivitiesController < ApplicationController
                     only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
                   }
                 }
-              },
-              steps: {
-                only: [ ]
               }
           }
         )
