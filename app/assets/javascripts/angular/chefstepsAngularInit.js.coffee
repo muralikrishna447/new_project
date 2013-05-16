@@ -8,3 +8,9 @@ angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap"], ["$location
   # but it was easier to workaround as below
   $locationProvider.html5Mode(false)
 ]
+
+# Thank god for Stack Overflow!
+# http://stackoverflow.com/questions/14210218/http-get-to-a-rails-applicationcontroller-gives-http-error-406-not-acceptable
+angular.module('ChefStepsApp').config ["$httpProvider", ($httpProvider) ->
+  $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"
+]

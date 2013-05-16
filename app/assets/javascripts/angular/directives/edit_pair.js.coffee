@@ -9,6 +9,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     # We should be active (edit view visible) if either the mouse is over us or
     # a child within us has focus.
     $scope.active = ->
+      #$element.height($element.find('.edit-pair-show').height())
       if ! $scope.editMode
         return false
       $scope.mouseCurrentlyOver || ($(document.activeElement).closest('.edit-pair').scope() == $scope)
@@ -26,14 +27,15 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
   ]
 
   link:  (scope, element, attrs) ->
+
     # If we get freshly added while in edit mode, make us active by focusing first input. Like when a + button is hit.
     if scope.editMode
       scope.setMouseOver(true)
       # Can't give it focus until it has a chance to become visible
       setTimeout (-> scope.$apply($(element).find('input').focus())), 0
 
-  template: '<div class="edit-pair" ng-switch="" on="active()" ng-mouseenter="setMouseOver(true)" ng-mouseleave="setMouseOver(false)">' +
-              '<div ng-transclude></div>' +
+  template: '<div ng-switch="" on="active()" class="edit-pair" ng-mouseenter="setMouseOver(true)" ng-mouseleave="setMouseOver(false)">' +
+              '<div ng-transclude class="edit-pair-transclude"></div>' +
             '</div>'
 
 angular.module('ChefStepsApp').directive 'cseditpairedit', ->

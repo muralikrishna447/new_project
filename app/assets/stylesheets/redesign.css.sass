@@ -1028,10 +1028,11 @@ ul.equipment
 
 // WYSIWYG EDITING
 
-.edit-pair
-  position: relative
 
 .edit-pair, .edit-pair-show, .edit-pair-edit
+  width: 100%
+
+.edit-pair-transclude
   width: 100%
 
 #edit-group
@@ -1099,6 +1100,26 @@ csingredienteditpair
 
 .no-bullet
   list-style-type: none
+
+.basicfade-enter-setup, .basicfade-leave-setup, .basicfade-move-setup
+  -webkit-transition: .25s linear all
+  -moz-transition: .25s linear all
+  -o-transition: .25s linear all
+  transition: .25s linear all
+
+.basicfade-enter-setup
+  opacity: 0
+
+.basicfade-enter-start
+  opacity: 1
+
+.basicfade-leave-setup
+  opacity: 1
+
+.basicfade-leave-start
+  opacity: 0
+
+
 
 
 // Making this match h1. I tried @including h1 but that was a no go.
