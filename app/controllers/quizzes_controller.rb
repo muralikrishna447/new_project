@@ -1,4 +1,5 @@
 class QuizzesController < ApplicationController
+  layout 'plain'
   before_filter :authenticate_user!
   before_filter :redirect_to_results, only: :show
   before_filter :redirect_to_show, only: :results
