@@ -1,44 +1,38 @@
-# This guy is responsible for showing a highlight on hover that indicates it can
-# be edited, and switching between the show and edit children when activated. It
-# delegates to the cseditgroup to manage the radio-like behavior so that only one
-# pair is activated at a time, and to the app for the undo/redo.
 angular.module('ChefStepsApp').directive 'cseditpair', ->
   restrict: 'E',
   transclude: true,
   replace: true,
   scope: true,
 
-  controller: ['$rootScope', '$scope', '$element', ($rootScope, $scope, $element) ->
-    $scope.offerEdit = ->
-      # Radio behavior
-      $rootScope.$broadcast('stop_offering_edits')
-      if $scope.editMode && ! $scope.active
-        $scope.editOffered = true
+  controller: ['$rootScope', '$scope', '$element', '$window', ($rootScope, $scope, $element, $window) ->
 
-    $scope.$on 'stop_offering_edits', ->
-      $scope.unofferEdit()
+    # We should be active (edit view visible) if either the mouse is over us or
+    # a child within us has focus.
+    $scope.active = ->
+      if ! $scope.editMode
+        return false
+      $scope.mouseCurrentlyOver || ($(document.activeElement).closest('.edit-pair').scope() == $scope)
 
-    $scope.unofferEdit = ->
-      $scope.editOffered = false
+    $scope.setMouseOver = (over) ->
+      if over
+        $rootScope.$broadcast("setMouseNotOver")
+      $scope.mouseCurrentlyOver = over
 
-    # Edit one group
-    $scope.startEdit = ->
-      $scope.unofferEdit()
-      # Radio behavior
-      $rootScope.$broadcast('stop_edits')
-      $scope.active = true
-      event.stopPropagation()
+    # Without this we are getting some cases where we don't get the mouseleave, maybe because of DOM changes?
+    # so you end up with "mouse droppings" of pairs left in the edit state
+    $scope.$on "setMouseNotOver", ->
+      $scope.setMouseOver(false)
 
-    $scope.$on 'stop_edits', ->
-      if $scope.active
-        $scope.active = false
-        $scope.$emit('maybe_save_undo')
   ]
 
-  template: '<div class="edit-pair" ng-switch="" on="active" ng-mouseover="offerEdit()">' +
-              '<div class="edit-target" ng-mouseout="unofferEdit()" ng-click="startEdit()" ng-show="editOffered">' +
-                '<div class="remove-target" ng-show="removeAllowed()" ng-click="removeItem()">' +
-              '</div>' +
+  link:  (scope, element, attrs) ->
+    # If we get freshly added while in edit mode, make us active by focusing first input. Like when a + button is hit.
+    if scope.editMode
+      scope.setMouseOver(true)
+      # Can't give it focus until it has a chance to become visible
+      setTimeout (-> scope.$apply($(element).find('input').focus())), 0
+
+  template: '<div class="edit-pair" ng-switch="" on="active()" ng-mouseenter="setMouseOver(true)" ng-mouseleave="setMouseOver(false)">' +
               '<div ng-transclude></div>' +
             '</div>'
 

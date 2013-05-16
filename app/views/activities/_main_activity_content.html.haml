@@ -14,7 +14,7 @@
         %button.btn.btn-small.add-section(ng-show="editMode && (!activity.description)")
           Add Description
       %csEditPairEdit
-        = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}, autofocus: 'autofocus'}
+        = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}}
 
     .section(ng-show="activity.ingredients.length" csmonitorinputactivity="")
       .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
@@ -47,7 +47,7 @@
           %h4 Timing
           = text_field_tag :timing, "", {data: {:'ng-model' => "activity.timing"}}
 
-    .section(csmonitorinputactivity="")
+    .section.csmonitorinputactivity
       %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
       %ul.equipment(ui-sortable="sortOptions" ng-model="activity.equipment")
         %li(ng-repeat="item in activity.equipment | filter:requiredEquipment")
@@ -60,7 +60,7 @@
         %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
           Done
 
-    .section(csmonitorinputactivity="")
+    .section.csmonitorinputactivity
       %h4(ng-show="hasOptionalEquipment()") Optional Equipment and Materials
       %ul.equipment(ui-sortable="sortOptions" ng-model="activity.equipment")
         %li(ng-repeat="item in activity.equipment | filter:optionalEquipment")

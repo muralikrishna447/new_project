@@ -7,16 +7,17 @@
       Add Hero Video or Image
 
   %csEditPairEdit
-    .row
-      .span6
-        %h5
-          Youtube ID
-        = text_field_tag :youtube_id, "", {data: {:'ng-model' => "activity.youtube_id"}, autofocus: 'autofocus'}
-    .row
-      .span6
-        %h5
-          &hellip; or Hero Image
-        %img(ng-show="showHeroImage()" ng-src="{{heroImageURL(300)}}")
-    .row
-      .csfilepicker.span6(ng-model="activity.image_id")
+    %div(style="width: 100%;" ng-style="setHeight()" csenforceaspect)
+      .row
+        .span6
+          %h5
+            Youtube ID
+          = text_field_tag :youtube_id, "", {data: {:'ng-model' => "activity.youtube_id"}}
+      .row
+        .span6
+          %h5
+            &hellip; or Hero Image
+          %img(ng-show="showHeroImage()" ng-src="{{heroImageURL(300)}}")
+      .row
+        .csfilepicker.span6(ng-model="activity.image_id")
 
