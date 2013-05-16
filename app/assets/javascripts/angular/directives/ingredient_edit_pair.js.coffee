@@ -39,7 +39,6 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
   link: (scope, element, attrs) ->
 
     if scope.editMode
-      scope.$emit('end_active_edits_from_below')
       scope.active = true
 
   controller: ['$scope', '$element', ($scope, $element) ->

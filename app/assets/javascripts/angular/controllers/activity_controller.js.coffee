@@ -1,7 +1,7 @@
 window.deepCopy = (obj) ->
   jQuery.extend(true, {}, obj)
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", ($scope, $resource, $location, $http, limitToFilter) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", "$timeout", ($scope, $resource, $location, $http, limitToFilter, $timeout) ->
   Activity = $resource("/activities/:id/as_json", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
@@ -14,17 +14,22 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.editMode = true
     $scope.undoStack = [deepCopy $scope.activity]
     $scope.undoIndex = 0
+    $timeout ->
+      window.csScaling = 1
+      window.updateUnits(false)
+
+  $scope.postEndEditMode = ->
+    $scope.editMode = false
 
   $scope.endEditMode = ->
-    $scope.editMode = false
     $scope.normalizeModel()
     $scope.activity.$update()
+    $scope.postEndEditMode()
 
   $scope.cancelEditMode = ->
-    $scope.editMode = false
     if $scope.undoAvailable
       $scope.activity = deepCopy $scope.undoStack[0]
-    $scope.$broadcast('stop_edits')
+    $scope.postEndEditMode()
 
   # Undo/redo TODO: could be a service I think
   $scope.undo = ->
@@ -131,12 +136,12 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     result = 1000 if unit_name == "kg"
     result
 
-  $scope.addIngredient = (optional) ->
-    # *don't* use equip = {title: ...} here, it will screw up display if an empty one gets in the list
-    equip = ""
-    item = {equipment: equip, optional: optional}
-    $scope.activity.equipment.push(item)
-  #$scope.addUndo()
+  $scope.addIngredient =  ->
+    # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
+    ingred = ""
+    item = {ingredient: ingred}
+    $scope.activity.ingredients.push(item)
+    #$scope.addUndo()
 
   $scope.all_ingredients = (ingredient_name) ->
     $http.get("/ingredients.json?q=" + ingredient_name).then (response) ->

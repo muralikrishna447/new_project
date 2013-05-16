@@ -38,7 +38,6 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
   link: (scope, element, attrs) ->
 
     if scope.editMode
-      scope.$emit('end_active_edits_from_below')
       scope.active = true
 
     scope.csoptional = attrs.csoptional

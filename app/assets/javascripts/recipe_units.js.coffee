@@ -10,9 +10,9 @@ csUnitsCookieName = "chefsteps_units"
 
 
 unless paramScaling?
-  csScaling = 1.0
+  window.csScaling = 1.0
 else
-  csScaling = paramScaling
+  window.csScaling = paramScaling
 
 # Set up bootstrap tooltips (should be moved to a more general place)
 $ ->
@@ -63,11 +63,11 @@ window.makeEditable = (elements) ->
           new_total = (old_lbs * 16) + new_val
 
         old_total = (old_lbs * 16) + old_ozs
-        csScaling = csScaling * new_total / old_total
+        window.csScaling = window.csScaling * new_total / old_total
 
       else
         # Any other unit (including ounces with no pounds)
-        csScaling = csScaling * new_val / old_val
+        window.csScaling = window.csScaling * new_val / old_val
     else
       value = old_val
 
@@ -120,7 +120,7 @@ updateOneRowUnits = ->
   if ! $(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")
     return
 
-  origValue = Number($(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")) * csScaling
+  origValue = Number($(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")) * window.csScaling
   existingUnits = $(this).children('.unit').text()
 
   # "a/n" means as needed, don't do anything. ditto if blank - formerly used
@@ -159,7 +159,7 @@ updateOneRowUnits = ->
 
 
 # Update all rows
-updateUnits = (animate) ->
+window.updateUnits = (animate) ->
   if (animate)
     # animate all the values and units down ...
     $('.qtyfade').fadeOut "fast"
