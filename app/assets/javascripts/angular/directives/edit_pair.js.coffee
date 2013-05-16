@@ -6,18 +6,26 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
 
   controller: ['$rootScope', '$scope', '$element', '$window', ($rootScope, $scope, $element, $window) ->
 
+    $scope.focusedInside = ->
+      $(document.activeElement).closest('.edit-pair').scope() == $scope
+
     # We should be active (edit view visible) if either the mouse is over us or
     # a child within us has focus.
     $scope.active = ->
       #$element.height($element.find('.edit-pair-show').height())
       if ! $scope.editMode
         return false
-      $scope.mouseCurrentlyOver || ($(document.activeElement).closest('.edit-pair').scope() == $scope)
+      $scope.mouseCurrentlyOver || $scope.focusedInside()
 
     $scope.setMouseOver = (over) ->
       if over
         $rootScope.$broadcast("setMouseNotOver")
       $scope.mouseCurrentlyOver = over
+
+
+    $scope.$watch $scope.focusedInside, ((newValue, oldValue) ->
+      $scope.addUndo() if ! newValue
+    )
 
     # Without this we are getting some cases where we don't get the mouseleave, maybe because of DOM changes?
     # so you end up with "mouse droppings" of pairs left in the edit state

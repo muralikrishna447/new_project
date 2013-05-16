@@ -19,7 +19,7 @@
     .section(ng-show="activity.ingredients.length" csmonitorinputactivity="")
       .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
         .well
-          = render 'ingredients_list', ingredients: activity.ingredients
+          = render 'ingredients_list'
 
     .section
       %csEditPair
@@ -50,27 +50,27 @@
     .section.csmonitorinputactivity
       %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
       %ul.equipment(ui-sortable="sortOptions" ng-model="activity.equipment")
-        %li(ng-repeat="item in activity.equipment | filter:requiredEquipment")
+        %li.relative(ng-repeat="item in activity.equipment | filter:requiredEquipment")
           %csEquipmentEditPair(csOptional="false")
       .nav
         %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasRequiredEquipment()" ng-click="addEquipment(false)")
           Add Required Equipment
         %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasRequiredEquipment()" ng-click="addEquipment(false)")
           +
-        %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
+        %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
           Done
 
     .section.csmonitorinputactivity
       %h4(ng-show="hasOptionalEquipment()") Optional Equipment and Materials
       %ul.equipment(ui-sortable="sortOptions" ng-model="activity.equipment")
-        %li(ng-repeat="item in activity.equipment | filter:optionalEquipment")
+        %li.relative(ng-repeat="item in activity.equipment | filter:optionalEquipment")
           %csEquipmentEditPair(csOptional="true")
       .nav
         %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")
           Add Optional Equipment
         %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasOptionalEquipment()" ng-click="addEquipment(true)")
           +
-        %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
+        %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
           Done
 
     - if activity.used_in_activities.published.any?
@@ -97,7 +97,7 @@
                 %h4= step.title
               - if step.ingredients.any?
                 .step-ingredients-source.well
-                  = render 'ingredients_list', ingredients: step.ingredients
+                  = render 'ingredients_list'
               :markdown
                 #{apply_shortcodes(step.directions)}
               .step-actions.btn-group

@@ -16,27 +16,15 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.undoIndex = 0
 
   $scope.endEditMode = ->
-    $scope.endActiveEdits()
     $scope.editMode = false
     $scope.normalizeModel()
     $scope.activity.$update()
 
   $scope.cancelEditMode = ->
-    $scope.endActiveEdits()
     $scope.editMode = false
     if $scope.undoAvailable
       $scope.activity = deepCopy $scope.undoStack[0]
-
-  $scope.endActiveEdits = ->
     $scope.$broadcast('stop_edits')
-
-  $scope.$on 'end_active_edits_from_below', ->
-    $scope.endActiveEdits()
-
-  $scope.bodyClick = ->
-    if $scope.editMode
-      if $(event.target).is('body') || $(event.target).is('html')
-        $scope.endActiveEdits()
 
   # Undo/redo TODO: could be a service I think
   $scope.undo = ->

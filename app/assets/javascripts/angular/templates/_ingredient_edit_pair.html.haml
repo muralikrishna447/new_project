@@ -15,7 +15,7 @@
     .unit.qtyfade(ng-bind="ai.unit")
 
   %csEditPairEdit
-    .action-button-group
+    .action-button-group(ng-show="focusedInside()")
       %i.drag-handle.icon-sort
       %i.remove-button.icon-remove(ng-click="removeIngredient()")
     .ingredient-title
