@@ -1,5 +1,6 @@
 @import compass/css3/transition
 @import bootstrap_config
+@import 'mixins'
 
 .question
   margin-left: 110%
@@ -121,7 +122,8 @@
 .box-sort
   .images
     margin-bottom: 25px
-    height: 350px
+    //height: 350px
+    min-height: 250px
     [class*='span']
       margin: 0 auto 10px
       float: none
@@ -137,13 +139,19 @@
     float: none
     line-height: 22px
 
+  .box-sort-target
+    width: 29%
+    float: left
+    margin: 2%
+
   .sort-option
     //+border-radius(3px)
     //+box-shadow(inset 0px 1px 2px 0px rgba(0, 0, 0, 0.5))
     z-index: 1
-    height: 170px
+    height: 17%
     background: gray
     position: relative
+    padding: 22px
     &:before
       border-radius: 3px
       display: none
@@ -161,13 +169,15 @@
       &:before
         border-color: $white
       img
-        position: absolute !important
-        left: 22px !important
-        top: 22px !important
-        bottom: 23px !important
-        right: 23px !important
-        width: 217px
-        height: 115px
+        //position: absolute !important
+        //left: 22px !important
+        //top: 22px !important
+        //bottom: 23px !important
+        //right: 23px !important
+        //width: 217px
+        // height: 115px
+        width: 100%
+        @include boxsizing
 
   label
     font-weight: bold
@@ -190,7 +200,7 @@
 
     img
       width: 570px
-      height: 322px
+      //height: 322px
       cursor: pointer
       position: absolute
       padding: 6px

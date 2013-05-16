@@ -14,7 +14,7 @@
         = hb('first_caption images')
     .row
       = hb 'each options' do
-        .span3
+        .box-sort-target
           .sort-option{ data: {uid: hb('uid')} }
           %label= hb('text')
 
