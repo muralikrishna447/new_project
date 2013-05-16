@@ -19,6 +19,6 @@
             .sort-option{ data: {uid: hb('uid')} }
             %label= hb('text')
 
-      %a.btn.btn-primary.btn-next.hide{href: '#'}
+      %a.btn.btn-primary.btn-next.hide{href: 'javascript:void(0);'}
         %i.icon-double-angle-right
 
