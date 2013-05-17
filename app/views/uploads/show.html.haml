@@ -9,5 +9,14 @@
       = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.recipe_name} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary btn-large' do
         %i.icon-twitter
         %span Twitter
+      = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
+      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'btn btn-primary btn-large' do
+        %i.icon-google-plus
+        %span Google
+      = link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{filepicker_hero_image(@upload.image_id)}", onclick: "javascript:window.open(this.href,
+        '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary btn-large' do
+        %i.icon-pinterest
+        %span Pinterest
+
     .span6.well
       = @upload.notes

@@ -34,17 +34,25 @@
 .row-fluid      
   %hr
 
-- if current_user
-  - ids = @activity.assignments.map(&:child_activity_id)
-  - current_user.uploads.where(:uploads => {:activity_id => ids}).each do |upload|
-    .row-fluid.section
-      .span4
-        = image_tag filepicker_gallery_image(upload.image_id)
-      .span8
-        %h4= upload.recipe_name
-        %p= upload.notes
-        = link_to 'Share', 'javascript:void(0);', class: 'btn btn-primary btn-large'
-        = link_to 'Page', [current_user, upload]
+  .horizontal-slider{data: {direction: 'right'}}
+    .horizontal-slider-wrap
+      - @course.uploads.each do |upload|
+        = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+    %div{class: "horizontal-slider-btn-right btn btn-circle"}
+      %i{class: "icon-chevron-right"}
+    %div{class: "horizontal-slider-shadow-overlay-right"}
+
+/ - if current_user
+/   - ids = @activity.assignments.map(&:child_activity_id)
+/   - current_user.uploads.where(:uploads => {:activity_id => ids}).each do |upload|
+/     .row-fluid.section
+/       .span4
+/         = image_tag filepicker_gallery_image(upload.image_id)
+/       .span8
+/         %h4= upload.recipe_name
+/         %p= upload.notes
+/         = link_to 'Share', 'javascript:void(0);', class: 'btn btn-primary btn-large'
+/         = link_to 'Page', [current_user, upload]
 
 = render 'layouts/filepicker'
 
