@@ -126,8 +126,4 @@ class Course < ActiveRecord::Base
     activities.joins(:assignments).map(&:child_activities).flatten.uniq
   end
 
-  def uploads
-    assignment_activities.map(&:uploads).flatten
-  end
-
 end
