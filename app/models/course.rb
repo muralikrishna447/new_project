@@ -15,6 +15,7 @@ class Course < ActiveRecord::Base
   has_many :activities, :through => :inclusions, :order => 'inclusions.activity_order ASC'
   has_many :enrollments
   has_many :users, through: :enrollments
+  has_many :uploads
 
   def update_activities(activity_hierarchy)
     activities.delete_all
