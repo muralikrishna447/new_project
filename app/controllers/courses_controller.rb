@@ -23,6 +23,7 @@ class CoursesController < ApplicationController
       @creative = @course.viewable_activities - @frozen_reverse_spheres - @beet_spheres - @easier_direct_spheres - @low_ph_spheres - @quiz - @final - @badge
       @enthusiast = @course.viewable_activities - @easier_direct_spheres - @low_ph_spheres - @quiz - @final - @badge
       @professional = @course.viewable_activities - @quiz - @final - @badge
+      @new_user = User.new
       render 'spherification'
     end
   end

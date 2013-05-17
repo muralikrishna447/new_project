@@ -15,16 +15,26 @@
       
     .span6
       .well
-        - if current_user && current_user.course_ids.include?(@course.id)
-          %h2
-            Lesson
-            = current_user.viewed_activities_in_course(course).count
-            of
-            = course.viewable_activities.count
-          = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
+        - if current_user
+          - if current_user.course_ids.include?(@course.id)
+            / %h2
+            /   Lesson
+            /   = current_user.viewed_activities_in_course(course).count
+            /   of
+            /   = course.viewable_activities.count
+            / = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
+            = link_to 'Continue Course', [@course, @course.first_published_activity], class: 'btn, btn-primary btn-large'
+          - else
+            = form_tag enroll_course_path(@course) do
+              = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
         - else
-          = form_tag enroll_course_path(@course) do
-            = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
+          = form_for @new_user, url: registration_path(@new_user), class: 'form-inline' do |f|
+            = f.text_field :name, {placeholder: 'name', required: true, id: 'madlib-name'}
+            = f.email_field :email, {placeholder: 'email', required: true, id: 'madlib-email'}
+            .input-append
+              = f.password_field :password, {placeholder: 'password', required: true, id: 'madlib-password'}
+              = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'show-madlib-password'
+            = f.submit 'Enroll Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
       .well   
         - if @course.users.count > 1
           %h4= "#{@course.users.count} people have enrolled."
