@@ -43,6 +43,8 @@
       .span8
         %h4= upload.recipe_name
         %p= upload.notes
+        = link_to 'Share', 'javascript:void(0);', class: 'btn btn-primary btn-large'
+        = link_to 'Page', [current_user, upload]
 
 = render 'layouts/filepicker'
 

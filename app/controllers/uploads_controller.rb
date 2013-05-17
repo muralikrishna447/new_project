@@ -1,5 +1,9 @@
 class UploadsController < ApplicationController
   before_filter :authenticate_user!
+
+  def show
+  end
+  
   def create
     @upload = Upload.new(params[:upload])
     @upload.user_id = current_user.id
