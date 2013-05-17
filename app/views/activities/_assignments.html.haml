@@ -17,6 +17,7 @@
 
 = form_for @upload do |f|
   = f.hidden_field :activity_id
+  = f.hidden_field :course_id, value: @course.id
   .row-fluid
     .span4
       %h4 Upload a Photo
