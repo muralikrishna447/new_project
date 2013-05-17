@@ -15,6 +15,7 @@ class Course < ActiveRecord::Base
   has_many :activities, :through => :inclusions, :order => 'inclusions.activity_order ASC'
   has_many :enrollments
   has_many :users, through: :enrollments
+  has_many :uploads
 
   def update_activities(activity_hierarchy)
     activities.delete_all
@@ -119,6 +120,10 @@ class Course < ActiveRecord::Base
 
   def featured_image
     self.image_id || self.first_published_activity.featured_image || 'http://www.placehold.it/320x180/f2f2f2/f2f2f2'
+  end
+
+  def assignment_activities
+    activities.joins(:assignments).map(&:child_activities).flatten.uniq
   end
 
 end

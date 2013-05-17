@@ -98,6 +98,9 @@ Delve::Application.routes.draw do
   resources :recipe_gallery, only: [:index], path: 'recipe-gallery'
   resources :user_activities, only: [:create]
   resources :uploads
+  resources :users do
+    resources :uploads
+  end
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'

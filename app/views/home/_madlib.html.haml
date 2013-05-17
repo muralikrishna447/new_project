@@ -2,14 +2,14 @@
   .row-fluid
     .container
       .row
-        .span8.offset2
-          = form_tag welcome_url, :method => :get, class: 'form-inline' do
-            .madlib
-              %p.text-orange
-                Hi ChefSteps,
-              - ab_test('madlib_content_1', 'with_name', 'without_name') do |madlib|
-                - if madlib == 'with_name'
-                  %p
+        .span10.offset1
+          - ab_test('homepage_madlib_password', 'without_password', 'with_password') do |test|
+            - if test == 'without_password'
+              = form_tag welcome_url, :method => :get, class: 'form-inline' do
+                .madlib
+                  .madlib-item.text-orange
+                    Hi ChefSteps,
+                  .madlib-item
                     I am
                     %span.input-underlined
                       = text_field_tag 'name', nil, {placeholder: 'name', required: true}
@@ -17,14 +17,28 @@
                     %span.input-underlined
                       = email_field_tag 'email', nil, {placeholder: 'email', required: true}
                     &#46;&nbsp;&nbsp;
-                  %p
+                  .madlib-item
                     I want to learn how to be a better cook.
-                - else
-                  %p
-                    My email is
+                = submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+            - else
+              = form_for @user, url: registration_path(@user), class: 'form-inline' do |f|
+                .madlib
+                  .madlib-item.text-orange
+                    Hi ChefSteps,
+                  .madlib-item
+                    I am
                     %span.input-underlined
-                      = email_field_tag 'email', nil, {placeholder: 'email', required: true}
+                      = f.text_field :name, {placeholder: 'name', required: true, id: 'madlib-name'}
+                    and my email is
+                    %span.input-underlined
+                      = f.email_field :email, {placeholder: 'email', required: true, id: 'madlib-email'}
                     &#46;&nbsp;&nbsp;
-                  %p
+                  .madlib-item
                     I want to learn how to be a better cook.
-            = submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+                  .madlib-item.hide#madlib-password-wrapper
+                    Please set my password to
+                    %span.input-underlined.input-append
+                      = f.password_field :password, {placeholder: 'password', required: true, id: 'madlib-password'}
+                      = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'show-madlib-password'
+                  = f.submit 'Sign Up Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+            

@@ -1,16 +1,14 @@
-.row.multiple-choice-results
-  .span7
-    .row
-      .span7
-        %span.type Question
-        %span.count #{result[:order]} -
-        %span.student-average
-          #{result[:average_correct]}% of students answered correctly
+.row-fluid.multiple-choice-results
+  .span12
+    %span.type Question
+    %span.count #{result[:order]} -
+    %span.student-average
+      #{result[:average_correct]}% of students answered correctly
 
-    .row
-      .span7
+    .row-fluid
+      .span12
         %h4= result[:question]
-        %ol
+        %ol.indent-1
           - result[:options].each_with_index do |option, idx|
             - c = option[:status].to_s
             - c += " has-image" if option[:image] && option[:image][:url]

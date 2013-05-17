@@ -12,8 +12,15 @@
     .row
       margin-left: inherit
 
+.no-margin-padding
+  padding: 0px
+  margin: 0px
+
 .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
   width: 1170px
+
+.relative
+  position: relative
 
 #slider-container
   background: $offwhite
@@ -145,6 +152,33 @@ h1, h2, h3, h4
 .indent-2
   padding-left: 40px
 
+.indent-3
+  padding-left: 60px
+
+.flat-form
+  form
+    input
+      border-radius: 0px
+      font-size: 16px
+      line-height: 20px
+      font-family: 'Raleway', sans-serif
+      padding: 10px
+      box-shadow: none
+      display: block
+    .input-block-level-password
+      width: 100%
+      float: left
+      #user_password
+        width: 80%
+        float: left
+      #user_password_show
+        font-family: 'Raleway', sans-serif
+        width: 19%
+        float: right
+        height: 40px
+        padding: 10px
+        @include boxsizing
+
 ////////////////////////////////////////
 
 /* Media Objects */
@@ -162,20 +196,20 @@ h1, h2, h3, h4
   font-size: 30px
   font-weight: 500
   -webkit-font-smoothing: antialiased
-  line-height: 40px
+  line-height: 50px
   input
     font-size: 24px
     line-height: 26px
 
 .input-underlined
-  input[type=text], input[type=email]
+  input[type=text], input[type=email], input[type=password]
     border: none
     box-shadow: none 
     border-bottom: 1px dashed gray
     text-align: center
     padding: 0px
-  input[type=text], input[type=email]
-    width: 300px
+  input[type=text], input[type=email], input[type=password]
+    width: 260px
 
 .gallery
   .media-centered
@@ -313,6 +347,19 @@ h1, h2, h3, h4
       color: $orange
       &:hover
         cursor: pointer
+
+// temporary until steps are moved over to csenforceaspect
+.ordered-step-item
+  .video-container
+    padding-bottom: 56.25%
+    height: 0
+    iframe, object, embed
+      position: absolute
+      top: 0
+      left: 0
+      height: 100%
+      width: 100%
+
 
 .activity-description-wrapper
   margin-top: 10px
@@ -725,6 +772,7 @@ h1, h2, h3, h4
   @include transition(all 100ms)
   &:hover
     background: gray
+    color: white
     @include transition(all 100ms)
 
 .btn-gray
@@ -816,6 +864,9 @@ h1, h2, h3, h4
 
 /* Quiz button */
 .btn-next, .btn-prev
+  position: absolute
+  bottom: 0px
+  right: 0px
   height: 67px
   width: 32px
   padding: 0
@@ -1215,6 +1266,10 @@ csequipmenteditpair
     margin-left: -20px
     margin-right: -20px
 
+  .no-margin-padding
+    padding: 0px
+    margin: 0px
+
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
@@ -1288,6 +1343,10 @@ csequipmenteditpair
   .container-fluid
     margin-left: -20px
     margin-right: -20px
+
+  .no-margin-padding
+    padding: 0px
+    margin: 0px
  
 /* Landscape phones and down */
 @media (max-width: 480px)
@@ -1325,6 +1384,7 @@ csequipmenteditpair
 
   .madlib, .madlib input
     font-size: 20px
+    line-height: 30px
     input[type='text'], input[type='email']
       width: 80%
       font-size: 20px

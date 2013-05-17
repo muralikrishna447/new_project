@@ -21,3 +21,4 @@
 //= require bootstrap-wysihtml5/locales
 //= require rails.validations
 //= require user_profiles
+//= require iframe_height

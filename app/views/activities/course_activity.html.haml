@@ -1,4 +1,6 @@
-.container
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+
+.container{data: {:'activity-id' => @activity.id}}
   .row
     .span12.section
       %h2= link_to @course.title, @course
