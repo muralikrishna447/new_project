@@ -41,8 +41,13 @@
         - if @course.users.count > 1
           %h4= "#{@course.users.count} people have enrolled."
         %h4 Here's what people have accomplished with the course:
-        - @course.uploads.each do |upload|
-          = image_tag filepicker_gallery_image(upload.image_id)
+        .horizontal-slider{data: {direction: 'right'}}
+          .horizontal-slider-wrap
+            - @course.uploads.each do |upload|
+              = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+          %div{class: "horizontal-slider-btn-right btn btn-circle"}
+            %i{class: "icon-chevron-right"}
+          %div{class: "horizontal-slider-shadow-overlay-right"}
 
   .row.section
     .span12

@@ -1,8 +1,12 @@
 .container
   .row
-    .span8.offset2
-      %h3= "#{@user.name} uploaded a photo for #{@upload.activity.title}"
+    .span12
+      %h3= "#{link_to @user.name, user_profile_path(@user)} uploaded a photo for #{link_to @upload.activity.title, @upload.activity}".html_safe
+  .row
+    .span6
       = image_tag filepicker_hero_image(@upload.image_id)
       = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.recipe_name} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary btn-large' do
         %i.icon-twitter
         %span Twitter
+    .span6.well
+      = @upload.notes
