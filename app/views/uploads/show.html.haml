@@ -1,5 +1,5 @@
 .container
   .row
     .span8.offset2
-      %h3 Uploads
-      
+      %h3= "#{@user.name} uploaded a photo for #{@upload.activity.title}"
+      = image_tag filepicker_hero_image(@upload.image_id)
