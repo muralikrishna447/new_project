@@ -28,13 +28,15 @@
             = form_tag enroll_course_path(@course) do
               = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
         - else
-          = form_for @new_user, url: registration_path(@new_user), class: 'form-inline' do |f|
-            = f.text_field :name, {placeholder: 'name', required: true, id: 'madlib-name'}
-            = f.email_field :email, {placeholder: 'email', required: true, id: 'madlib-email'}
-            .input-append
-              = f.password_field :password, {placeholder: 'password', required: true, id: 'madlib-password'}
-              = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'show-madlib-password'
-            = f.submit 'Enroll Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+          .flat-form
+            %h2 Sign Up To Enroll
+            = form_for @new_user, url: registration_path(@new_user), class: 'form-inline' do |f|
+              = f.text_field :name, {placeholder: 'name', required: true, class: 'input-block-level'}
+              = f.email_field :email, {placeholder: 'email', required: true, class: 'input-block-level'}
+              .input-block-level-password
+                = f.password_field :password, {placeholder: 'password', required: true, class: 'input-block-level'}
+                = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'user_password_show'
+              = f.submit 'Enroll Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
       .well   
         - if @course.users.count > 1
           %h4= "#{@course.users.count} people have enrolled."
