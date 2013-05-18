@@ -56,7 +56,7 @@ module ApplicationHelper
     end
   end
 
-  def filepicker_user_profile_image(fpfile)
+  def filepicker_circle_image(fpfile)
     if fpfile && !fpfile.blank?
       url = ActiveSupport::JSON.decode(fpfile)["url"]
       url + "/convert?fit=crop&w=400&h=400&cache=true"

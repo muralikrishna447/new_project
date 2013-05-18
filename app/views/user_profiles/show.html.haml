@@ -9,7 +9,7 @@
       .row
         .span2
           .profile-image
-            = image_tag filepicker_user_profile_image(@user.image_id), class: 'img-circle'
+            = image_tag filepicker_circle_image(@user.image_id), class: 'img-circle'
         .span10
           %h1= @user.name
 
@@ -48,8 +48,8 @@
 
     .span5
       %h4 Timeline
-      - @user.events.timeline.each do |event|
-        = div_for event do
+      .timeline
+        - @user.events.timeline.each do |event|
           = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event
 
 = content_for :footer do
