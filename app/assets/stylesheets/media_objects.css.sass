@@ -104,13 +104,19 @@
 .media-list-item
   float: left
   width: 100%
+  padding: 3%
   clear: both
+  @include boxsizing
+  @include transition(all 200ms)
   .media-list-item-image
-    width: 30%
+    width: 40%
     float: left
   .media-list-item-text
-    width: 65%
+    width: 55%
     margin-left: 5%
     float: left
     .media-list-item-title
+      h4
+        padding: 0px
+        margin: 0px
     .media-list-item-details
