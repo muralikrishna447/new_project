@@ -9,5 +9,5 @@ class Inclusion < ActiveRecord::Base
 
   has_many :events, as: :trackable
 
-  attr_accessible :course, :activity, :activity_order, :nesting_level
+  attr_accessible :course, :activity, :activity_order, :nesting_level, :title
 end
