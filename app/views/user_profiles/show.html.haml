@@ -32,28 +32,20 @@
       .tab-content
         .tab-pane.active#courses
           - @user.courses.each do |course|
-            = render 'shared/media_list_item', image: course.featured_image, title: course.title, text: 'Lesson'
-            .row
-              .span2
-                = image_tag filepicker_gallery_image(course.featured_image)
-              .span2
-                %h3= link_to course.title, course_path(course)
-                %h4
-                  Lesson
-                  = @user.viewed_activities_in_course(course).count
-                  of
-                  = course.viewable_activities.count
-                = where_user_left_off_in_course(course, @user, 'btn btn-primary')
+            - course_text = capture do
+              %h4
+                Lesson
+                = @user.viewed_activities_in_course(course).count
+                of
+                = course.viewable_activities.count
+              = where_user_left_off_in_course(course, @user, 'btn btn-primary')
+            = render 'shared/media_list_item', image: course.featured_image, title: course.title, text: course_text
         .tab-pane#uploads
           - @user.uploads.each do |upload|
-            .row
-              = link_to user_upload_path(@user, upload) do
-                .span2
-                  - if upload.image_id?
-                    = image_tag filepicker_gallery_image(upload.image_id)
-                .span2
-                  %h4= upload.recipe_name
-                  %p= upload.notes
+            - upload_title = capture do
+              = link_to upload.recipe_name, user_upload_path(@user, upload)
+            = render 'shared/media_list_item', image: upload.image_id, title: upload_title, text: upload.notes
+
     .span5
       %h4 Timeline
       - @user.events.timeline.each do |event|
