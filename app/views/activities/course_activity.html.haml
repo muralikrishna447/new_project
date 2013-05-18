@@ -32,13 +32,13 @@
           - inclusion_1_published = inclusion_1.activity.published
           - if inclusion_1_active
             %li{class: 'active', data: {:'inclusion-id' => inclusion_1.id}}
-              = link_to inclusion_1.activity.title.html_safe, [@course, inclusion_1.activity]
+              = link_to inclusion_1.syllabus_title.html_safe, [@course, inclusion_1.activity]
           - elsif !inclusion_1_active && inclusion_1_published
             %li{data: {:'inclusion-id' => inclusion_1.id}}
-              = link_to inclusion_1.activity.title.html_safe, [@course, inclusion_1.activity]
+              = link_to inclusion_1.syllabus_title.html_safe, [@course, inclusion_1.activity]
           - elsif !inclusion_1_published && @course.child_inclusions(inclusion_1).any?
             %li{data: {:'inclusion-id' => inclusion_1.id}}
-              = link_to inclusion_1.activity.title.html_safe, '#', class: 'nav-expand-link'
+              = link_to inclusion_1.syllabus_title.html_safe, '#', class: 'nav-expand-link'
           - @course.child_inclusions(inclusion_1).each do |inclusion_2|
             - sibling_active = inclusion_1 == @course.parent_inclusion(@current_inclusion)
             - if inclusion_1_active || sibling_active
@@ -49,11 +49,11 @@
               - if inclusion_2.activity.published?
                 = link_to [@course, inclusion_2.activity] do
                   .indent-1
-                    = inclusion_2.activity.title.html_safe
+                    = inclusion_2.syllabus_title.html_safe
               - else
                 = link_to '#' do
                   .indent-1
-                    = inclusion_2.activity.title.html_safe
+                    = inclusion_2.syllabus_title.html_safe
     .span9
       .container-fluid.course_activity_content
         - if @activity.has_quizzes?

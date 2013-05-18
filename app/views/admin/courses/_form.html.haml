@@ -56,7 +56,9 @@
       =render layout: 'shared/nested_activities', :locals => {:for_form => true, course: @course} do |incl|
         %span.disclose
           %span
-        %span.activity-title= raw incl.activity.title.strip
+        / %span.activity-title= raw incl.activity.title.strip
+        %span.activity-title= incl.title.blank? ? incl.activity.title.strip : incl.title
+        = link_to 'edit syllabus title', edit_admin_inclusion_path(incl)
         = remove_button 'li'
       -if @course.inclusions.count == 0
         %ol#activity_list.sortable.allow-nested
