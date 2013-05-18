@@ -32,6 +32,7 @@
       .tab-content
         .tab-pane.active#courses
           - @user.courses.each do |course|
+            = render 'shared/media_list_item', image: course.featured_image, title: course.title, text: 'Lesson'
             .row
               .span2
                 = image_tag filepicker_gallery_image(course.featured_image)
