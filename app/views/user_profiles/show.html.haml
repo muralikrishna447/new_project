@@ -28,7 +28,7 @@
         %li.active
           = link_to 'Courses', '#courses', data: {toggle: 'tab'}
         %li
-          = link_to 'Recipes', '#recipes', data: {toggle: 'tab'}
+          = link_to 'Uploads', '#uploads', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#courses
           - @user.courses.each do |course|
@@ -36,22 +36,23 @@
               .span3
                 = image_tag filepicker_gallery_image(course.featured_image)
               .span2
-                %h3= course.title
+                %h3= link_to course.title, course_path(course)
                 %h4
                   Lesson
                   = @user.viewed_activities_in_course(course).count
                   of
                   = course.viewable_activities.count
                 = where_user_left_off_in_course(course, @user, 'btn btn-primary')
-        .tab-pane#recipes
+        .tab-pane#uploads
           - @user.uploads.each do |upload|
-            .row.section
-              .span3
-                - if upload.image_id?
-                  = image_tag filepicker_gallery_image(upload.image_id)
-              .span3
-                %h4= upload.recipe_name
-                %p= upload.notes
+            .row
+              = link_to user_upload_path(@user, upload) do
+                .span3
+                  - if upload.image_id?
+                    = image_tag filepicker_gallery_image(upload.image_id)
+                .span2
+                  %h4= upload.recipe_name
+                  %p= upload.notes
     .span5
       %h4 Timeline
       - @user.events.timeline.each do |event|

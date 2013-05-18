@@ -140,6 +140,24 @@ h1, h2, h3, h4
   font-weight: 500
   -webkit-font-smoothing: antialiased
 
+.nav-tabs
+  border: none
+  li
+    a
+      &:hover
+        background: $orange
+        color: white
+        border-radius: 0px
+  li.active
+    a
+      border: none
+      &:hover
+        border: none
+
+.tab-content
+  .tab-pane
+    overflow: hidden
+
 .word-wrap
   word-wrap: break-word
 
