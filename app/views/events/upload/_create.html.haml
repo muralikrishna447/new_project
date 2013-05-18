@@ -3,7 +3,7 @@
   .event-object
     .event-circle
       = image_tag filepicker_circle_image(event.trackable.image_id), class: 'img-circle'
-    .event-line
-  .event-text.text-center
-    %div You uploaded a photo
-    %div= time_ago_in_words(event.created_at) + ' ago'
+    .event-text.text-center
+      %div You uploaded a photo
+      %div= time_ago_in_words(event.created_at) + ' ago'
+  .event-line
