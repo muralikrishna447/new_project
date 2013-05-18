@@ -33,7 +33,7 @@
         .tab-pane.active#courses
           - @user.courses.each do |course|
             .row
-              .span3
+              .span2
                 = image_tag filepicker_gallery_image(course.featured_image)
               .span2
                 %h3= link_to course.title, course_path(course)
@@ -47,7 +47,7 @@
           - @user.uploads.each do |upload|
             .row
               = link_to user_upload_path(@user, upload) do
-                .span3
+                .span2
                   - if upload.image_id?
                     = image_tag filepicker_gallery_image(upload.image_id)
                 .span2
