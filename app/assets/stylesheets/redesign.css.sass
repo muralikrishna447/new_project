@@ -140,41 +140,42 @@ h1, h2, h3, h4
   font-weight: 500
   -webkit-font-smoothing: antialiased
 
-.nav-tabs
-  border: none
-  li
-    a
-      &:hover
-        background: $orange
-        color: white
-        border-radius: 0px
-  li.active
-    position: relative
-    a
-      border: none
-      &:hover
+.nav-tabs-gray
+  .nav-tabs
+    border: none
+    li
+      a
+        &:hover
+          background: $orange
+          color: white
+          border-radius: 0px
+    li.active
+      position: relative
+      a
         border: none
-    &:after
-      content: ''
-      width: 15px
-      height: 15px
-      background: white
-      position: absolute
-      bottom: -29px
-      left: 40%
-      border: 1px solid $light-gray
-      border-right: 0px
-      border-bottom: 0px
-      -moz-transform: rotate(45deg)
-      -webkit-transform: rotate(45deg)
-      -o-transform: rotate(45deg)
-      transform: rotate(45deg)
+        &:hover
+          border: none
+      &:after
+        content: ''
+        width: 15px
+        height: 15px
+        background: white
+        position: absolute
+        bottom: -29px
+        left: 40%
+        border: 1px solid $light-gray
+        border-right: 0px
+        border-bottom: 0px
+        -moz-transform: rotate(45deg)
+        -webkit-transform: rotate(45deg)
+        -o-transform: rotate(45deg)
+        transform: rotate(45deg)
 
-.tab-content
-  border: 1px solid $light-gray
-  @include boxsizing
-  .tab-pane
-    overflow: hidden
+  .tab-content
+    border: 1px solid $light-gray
+    @include boxsizing
+    .tab-pane
+      overflow: hidden
 
 .word-wrap
   word-wrap: break-word

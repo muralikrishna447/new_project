@@ -21,7 +21,7 @@
       - if current_user == @user
         = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-primary btn-block'
         = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'
-    .span5
+    .span5.nav-tabs-gray
       %h4 Bio
       %p= @user.bio
       %ul.nav.nav-tabs
