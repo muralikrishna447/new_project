@@ -16,45 +16,62 @@
     width: 50%
     float: right
     padding-top: 30%
-  .timeline-circle[data-direction='left']
-    padding-right: 20%
-    .timeline-circle-img
-      position: relative
+
+// TIMELINE CIRCLE //
+.timeline-circle[data-direction='left']
+  padding-right: 20%
+  .timeline-circle-img
+    position: relative
+    width: 100%
+    img
       width: 100%
-      img
-        width: 100%
-        border: 2px solid $orange
-        @include boxsizing
-      &:after
-        content: ''
-        position: absolute
-        width: 20%
-        top: 50%
-        right: -25%
-        border-top: 1px solid gray
-        border-bottom: 1px solid gray
-    .timeline-circle-text
+      border: 2px solid $orange
+      @include boxsizing
+    &:after
+      content: ''
+      position: absolute
+      width: 20%
+      top: 50%
+      right: -25%
+      border-top: 1px solid gray
+      border-bottom: 1px solid gray
+  .timeline-circle-text
+    width: 100%
+    height: 10%
+    margin-top: 5%
+.timeline-circle[data-direction='right']
+  padding-left: 20%
+  .timeline-circle-img
+    position: relative
+    width: 100%
+    img
       width: 100%
-      height: 10%
-      margin-top: 5%
-  .timeline-circle[data-direction='right']
-    padding-left: 20%
-    .timeline-circle-img
-      position: relative
-      width: 100%
-      img
-        width: 100%
-        border: 2px solid $orange
-        @include boxsizing
-      &:after
-        content: ''
-        position: absolute
-        width: 20%
-        top: 50%
-        left: -25%
-        border-top: 1px solid gray
-        border-bottom: 1px solid gray
-    .timeline-circle-text
-      width: 100%
-      height: 10%
-      margin-top: 5%
+      border: 2px solid $orange
+      @include boxsizing
+    &:after
+      content: ''
+      position: absolute
+      width: 20%
+      top: 50%
+      left: -25%
+      border-top: 1px solid gray
+      border-bottom: 1px solid gray
+  .timeline-circle-text
+    width: 100%
+    height: 10%
+    margin-top: 5%
+
+// TIMELINE TEXT ONLY //
+.timeline-text-only[data-direction='right']
+  padding-left: 20%
+  .timeline-text-only-text
+    width: 100%
+    position: relative
+    &:after
+      content: ''
+      position: absolute
+      width: 20%
+      top: 30%
+      left: -25%
+      border-top: 1px solid gray
+      border-bottom: 1px solid gray

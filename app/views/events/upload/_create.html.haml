@@ -1,7 +1,7 @@
 - direction = direction || 'left'
 .timeline-circle{data: {direction: direction}}
   .timeline-circle-img
-    = link_to event.trackable do
+    = link_to user_upload_path(event.trackable.user, event.trackable) do
       = image_tag filepicker_circle_image(event.trackable.image_id), class: 'img-circle'
   .timeline-circle-text.text-center
     %div You uploaded a photo
