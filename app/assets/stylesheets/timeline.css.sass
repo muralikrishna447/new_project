@@ -1,21 +1,24 @@
 @import 'mixins'
 
 .timeline
-  position: relative
-  float: left
-  .timeline-line
-    position: absolute
-    border-left: 1px solid gray
-    border-right: 1px solid gray
-    left: 50%
-    height: 100%
-  .timeline-left
-    width: 50%
+  .timeline-media
+    position: relative
+    margin: 10px 0px
     float: left
-  .timeline-right
-    width: 50%
-    float: right
-    padding-top: 30%
+    @include boxsizing
+    .timeline-line
+      position: absolute
+      border-left: 1px solid gray
+      border-right: 1px solid gray
+      left: 50%
+      height: 100%
+    .timeline-left
+      width: 50%
+      float: left
+    .timeline-right
+      width: 50%
+      float: right
+      padding-top: 30%
 
 // TIMELINE CIRCLE //
 .timeline-circle[data-direction='left']

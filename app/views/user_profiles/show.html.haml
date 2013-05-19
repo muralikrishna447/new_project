@@ -49,13 +49,19 @@
     .span5
       %h4 Timeline
       .timeline
-        .timeline-line
-        .timeline-left
-          - @user.events.timeline.in_groups_of(2).map(&:first).each do |event|
-            = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
-        .timeline-right
-          - @user.events.timeline.in_groups_of(2).map(&:last).each do |event|
-            = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
+        .text-center
+          %h4 Today
+        .timeline-media
+          .timeline-line
+          .timeline-left
+            - @user.events.timeline.in_groups_of(2).map(&:first).each do |event|
+              = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
+          .timeline-right
+            - @user.events.timeline.in_groups_of(2).map(&:last).each do |event|
+              = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
+        .text-center
+          %h4= "You joined ChefSteps on"
+          %h4= "#{@user.created_at.strftime('%B %-d, %Y')}."
 
         / - @user.events.timeline.each_with_index do |event, index|
         /   - direction = index.even? ? 'left' : 'right'
