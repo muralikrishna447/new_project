@@ -13,11 +13,11 @@ class UserProfilesController < ApplicationController
   expose(:quiz_count) { started_quizzes.count + completed_quizzes.count }
 
   def show
-    @categories = Forum.categories
-    @discussions = Forum.discussions.take(4)
+    # @categories = Forum.categories
+    # @discussions = Forum.discussions.take(4)
     @user = User.find(params[:id])
-    @recipes = Activity.published.recipes.last(6)
-    @techniques = Activity.published.techniques.last(6)
+    # @recipes = Activity.published.recipes.last(6)
+    # @techniques = Activity.published.techniques.last(6)
   end
 
   def edit

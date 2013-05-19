@@ -53,6 +53,8 @@
           %h4 Today
         .timeline-media
           .timeline-line
+          .timeline-start
+          .timeline-end
           .timeline-left
             - @user.events.timeline.in_groups_of(2).map(&:first).each do |event|
               = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
