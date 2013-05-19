@@ -1,6 +1,21 @@
 @import 'mixins'
 
 .timeline
+  position: relative
+  float: left
+  .timeline-line
+    position: absolute
+    border-left: 1px solid gray
+    border-right: 1px solid gray
+    left: 50%
+    height: 100%
+  .timeline-left
+    width: 50%
+    float: left
+  .timeline-right
+    width: 50%
+    float: right
+    padding-top: 30%
   .timeline-circle[data-direction='left']
     padding-right: 20%
     .timeline-circle-img
@@ -21,7 +36,7 @@
     .timeline-circle-text
       width: 100%
       height: 10%
-      margin-top: 10px
+      margin-top: 5%
   .timeline-circle[data-direction='right']
     padding-left: 20%
     .timeline-circle-img
@@ -42,4 +57,4 @@
     .timeline-circle-text
       width: 100%
       height: 10%
-      margin-top: 10px
+      margin-top: 5%

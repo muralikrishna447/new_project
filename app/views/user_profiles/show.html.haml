@@ -49,9 +49,17 @@
     .span5
       %h4 Timeline
       .timeline
-        - @user.events.timeline.each_with_index do |event, index|
-          - direction = index.even? ? 'left' : 'right'
-          = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: direction
+        .timeline-line
+        .timeline-left
+          - @user.events.timeline.in_groups_of(2).map(&:first).each do |event|
+            = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
+        .timeline-right
+          - @user.events.timeline.in_groups_of(2).map(&:last).each do |event|
+            = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
+
+        / - @user.events.timeline.each_with_index do |event, index|
+        /   - direction = index.even? ? 'left' : 'right'
+        /   = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: direction
 
 = content_for :footer do
   = render 'layouts/footer'
