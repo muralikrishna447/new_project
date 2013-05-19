@@ -1,9 +1,7 @@
 - direction = 'left' || direction
-.event{data: {direction: direction}}
-  .event-object
-    .event-circle
-      = image_tag filepicker_circle_image(event.trackable.image_id), class: 'img-circle'
-    .event-text.text-center
-      %div You uploaded a photo
-      %div= time_ago_in_words(event.created_at) + ' ago'
-  .event-line
+.timeline-circle{data: {direction: direction}}
+  .timeline-circle-img
+    = image_tag filepicker_circle_image(event.trackable.image_id), class: 'img-circle'
+  .timeline-circle-text.text-center
+    %div You uploaded a photo
+    %div= time_ago_in_words(event.created_at) + ' ago'
