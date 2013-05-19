@@ -85,6 +85,19 @@
     margin-top: 5%
 
 // TIMELINE TEXT ONLY //
+.timeline-text-only[data-direction='left']
+  padding-right: 20%
+  .timeline-text-only-text
+    width: 100%
+    position: relative
+    &:after
+      content: ''
+      position: absolute
+      width: 20%
+      top: 30%
+      right: -25%
+      border-top: 1px solid gray
+      border-bottom: 1px solid gray
 .timeline-text-only[data-direction='right']
   padding-left: 20%
   .timeline-text-only-text

@@ -56,10 +56,10 @@
           .timeline-start
           .timeline-end
           .timeline-left
-            - @user.events.timeline.in_groups_of(2).map(&:first).each do |event|
+            - @user.events.timeline.in_groups_of(2).map(&:first).compact.each do |event|
               = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
           .timeline-right
-            - @user.events.timeline.in_groups_of(2).map(&:last).each do |event|
+            - @user.events.timeline.in_groups_of(2).map(&:last).compact.each do |event|
               = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
         .text-center
           %h4= "You joined ChefSteps on"
