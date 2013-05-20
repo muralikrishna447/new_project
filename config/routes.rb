@@ -54,6 +54,7 @@ Delve::Application.routes.draw do
   get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
   get 'discussion' => 'forum#discussion', as: 'discussion'
+  get 'dashboard' => 'dashboard#index', as: 'dashboard'
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
