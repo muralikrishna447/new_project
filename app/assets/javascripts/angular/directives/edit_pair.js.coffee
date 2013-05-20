@@ -40,7 +40,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     if scope.editMode
       scope.setMouseOver(true)
       # Can't give it focus until it has a chance to become visible
-      setTimeout (-> scope.$apply($(element).find('input').focus())), 0
+      setTimeout (-> scope.$apply($(element).find('input')[0].focus())), 0
 
   template: '<div ng-switch="" on="active()" class="edit-pair" ng-mouseenter="setMouseOver(true)" ng-mouseleave="setMouseOver(false)">' +
               '<div ng-transclude class="edit-pair-transclude"></div>' +

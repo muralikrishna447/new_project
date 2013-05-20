@@ -14,7 +14,7 @@
         %button.btn.btn-small.add-section(ng-show="editMode && (!activity.description)")
           Add Description
       %csEditPairEdit
-        = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}}
+        %textarea(ng-model="activity.description" rows="5")
 
     .section.csmonitorinputactivity
       .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}

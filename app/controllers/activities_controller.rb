@@ -113,6 +113,7 @@ class ActivitiesController < ApplicationController
         @activity.store_revision do
           @activity.last_edited_by = current_admin_user
           @activity.update_equipment_json(params[:activity].delete(:equipment))
+          @activity.update_ingredients_json(params[:activity].delete(:ingredients))
           @activity.attributes = params[:activity]
           @activity.save!
         end

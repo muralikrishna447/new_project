@@ -13,16 +13,18 @@ angular.module('ChefStepsApp').directive 'csinputmonkeyingredient', ->
     element.bind 'blur', ->
       ai = scope.ai
       if (_.isString(ai.ingredient) && (ai.ingredient == "")) || (ai.ingredient.title == "")
-        scope.activity.ingredient.splice(scope.activity.ingredient.indexOf(ai), 1)
+        scope.activity.ingredients.splice(scope.activity.ingredients.indexOf(ai), 1)
 
     element.bind 'keydown', (event) ->
       ai = scope.ai
 
-      # On return (in input, not the popup), commit this ingredient and start a new one
+      # On return (in input, not the popup), commit this ingredient and start a new one - iff
+      # the ingredient is satisfactorily filled out
       if event.which == 13 && elt.val().length > 0
-        scope.$emit('end_active_edits_from_below')
-        scope.addIngredient()
-        scope.$apply()
+        ai = scope.ai
+        if ai.unit? && ((ai.quantity? ) || (ai.unit? == "a/n"))
+          scope.addIngredient()
+          scope.$apply()
 
       # On escape, cancel this edit.
       # TODO: got this to work well for deleting ones that start blank, but not reverting changes to an existing ingredient
