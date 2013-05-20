@@ -1,11 +1,13 @@
 - content_for :title, course.title
 - content_for :description, course.short_description
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
 .container
   .row.section
     .span6
       %h1= course.title
-      =image_tag 'http://placehold.it/570x320'
+      .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
+        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('ArXEEexWHPA')}
       .section
         %p= course.description
       %h4.text-center
