@@ -17,12 +17,6 @@
       .well
         - if current_user
           - if current_user.course_ids.include?(@course.id)
-            / %h2
-            /   Lesson
-            /   = current_user.viewed_activities_in_course(course).count
-            /   of
-            /   = course.viewable_activities.count
-            / = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
             = link_to 'Continue Course', [@course, @course.first_published_activity], class: 'btn, btn-primary btn-large'
           - else
             = form_tag enroll_course_path(@course) do
@@ -63,6 +57,11 @@
     .span4
       =image_tag 'https://www.filepicker.io/api/file/PFUrsvzWReCkVxlMGXBG'
       %h4.text-center Direct Spheres
+
+  .row.section
+    .span6.offset3
+      %p In this short-course, you will learn all three techniques, starting with reverse spherification, which is surprisingly easy. The course then teaches you the helpful refinement of this technique, called frozen-reverse spherification. Finally, you'll master the more challenging technique of direct spherification. At the end of the course, you will have the opportunity to demonstrate your proficiency with these techniques and also prove your understanding of why spherification works to certify that you've mastered this popular modernist technique.
+
   .row.section
     .span12
       %h2.text-center
@@ -73,22 +72,9 @@
 .container-fluid
   .row-fluid
     .container
-      .row.section
-        .span11.offset1
-          %h3.orange= "The Creative Kit"
-      .row.section
+      .row
         .span5.offset1
           = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
-          /= image_tag 'https://www.filepicker.io/api/file/5wKEDSXZQgCgtA5W7JxI'
-          %h4= "The Creative Kit includes"
-          %ul
-            %li Syringe 
-            %li Stainless-steel straining spoon
-            %li 25 g Sphere Magic
-            %li 25 g Sodium Citrate
-            %li 50 g Calcium Lactate Gluconate
-            %li 50 g Calcium Chloride
-            %li 50 g Xanthan Gum
           / .annotated-object
           /   / = check_box_tag :'creative-annotation-toggle', nil, false, class: 'annotation-toggle'
           /   = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
@@ -100,18 +86,18 @@
           /     .annotation 50 g Calcium Lactate Gluconate
           /     .annotation 50 g Calcium Chloride
           /     .annotation 50 g Xanthan Gum
+          .row
+            .span6
+              = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
+            .span6
+              = image_tag 'https://www.filepicker.io/api/file/ZZk2FdB3TcXndhp2tihA'
+        .span5.offset1
+          %h2 The Creative Kit
+          The Creative Kit includes the technical ingredients you'll need to complete our reverse and direct spherification modules. It has most of the tools as well, except for a high-accuracy scale and the mold needed for frozen-reverse spherification.
+          .well.section
+            %h4.text-center= "The Creative Kit $39"
+            = buy_now(311070543)
 
-        .span5
-          = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
-          /= image_tag 'https://www.filepicker.io/api/file/ZZk2FdB3TcXndhp2tihA
-          %h4= "The Creative Kit takes you through these lessons"
-          %ul
-            / - @creative.each do |activity|
-            /   %li= activity.title
-      .row.section
-        .span4.offset4.well
-          %h4.text-center= "The Creative Kit $39"
-          = buy_now(311070543)
 
 %hr
 .container-fluid
@@ -179,40 +165,6 @@
         .span4.offset4.well
           %h4.text-center= "The Professional Kit $119"
           = buy_now(311979875)
-/ - ['creative','enthusiast','professional'].each do |kit_title|
-/   .container-fluid.well-gradient
-/     .row-fluid
-/       .container
-/         .row.section
-/           .span11.offset1
-/             %h3.orange= "The #{kit_title.titleize}"
-/         .row.section
-/           .span5.offset1
-/             = image_tag 'http://placehold.it/570x320'
-/             %h4= "The #{kit_title.titleize} kit includes"
-/             %ul
-/               %li Syringe for direct spherification
-/               %li Stainless steel dosing spoon for reverse spherification
-/               %li Stainless steel straining spoon
-/               %li 25 g Sphere Magic
-/               %li 25 g Sodium Citrate
-/               %li 50 g Calcium Lactate Gluconate
-/               %li 50 g Calcium Chloride
-/               %li 50 g Xanthan Gum
-/           .span5
-/             = image_tag 'http://placehold.it/570x320'
-/             %h4= "The #{kit_title.titleize} kit takes you through these lessons"
-/             %ul
-/               %li Sphere Baths
-/               %li Direct Spherification
-/               %li Reverse Spherification
-/               %li Chocolate Spheres
-/               %li Pine Spheres
-/         .row.section
-/           .span4.offset4.well
-/             %h4.text-center= "The #{kit_title.titleize} Kit $39"
-/             .btn.btn-primary.btn-large.text-center.btn-block
-/               Buy Now
 
 .container-fluid
   .row-fluid
