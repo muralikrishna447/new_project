@@ -48,6 +48,7 @@
   / = render 'layouts/youtube'
   
   %script{src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"}
+  %script{src: 'http://d3js.org/d3.v3.min.js'}
   = javascript_include_tag 'application'
   = render 'layouts/app_init'
   = yield(:custom_js)
