@@ -16,6 +16,7 @@ class UserProfilesController < ApplicationController
     # @categories = Forum.categories
     # @discussions = Forum.discussions.take(4)
     @user = User.find(params[:id])
+    @courses = Course.published
     # @recipes = Activity.published.recipes.last(6)
     # @techniques = Activity.published.techniques.last(6)
   end
