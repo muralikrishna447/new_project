@@ -35,7 +35,7 @@
               = f.email_field :email, {placeholder: 'email', required: true, class: 'input-block-level'}
               .input-block-level-password
                 = f.password_field :password, {placeholder: 'password', required: true, class: 'input-block-level'}
-                = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'user_password_show'
+                = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'user-password-show'
               = f.submit 'Enroll Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
       .well   
         - if @course.users.count > 1
