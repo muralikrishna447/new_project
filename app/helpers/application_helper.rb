@@ -56,7 +56,7 @@ module ApplicationHelper
     end
   end
 
-  def filepicker_user_profile_image(fpfile)
+  def filepicker_circle_image(fpfile)
     if fpfile && !fpfile.blank?
       url = ActiveSupport::JSON.decode(fpfile)["url"]
       url + "/convert?fit=crop&w=400&h=400&cache=true"
@@ -187,6 +187,10 @@ module ApplicationHelper
     else
       nil
     end
+  end
+
+  def buy_now(variant_id)
+    link_to 'Buy Now', 'http://store.chefsteps.com/cart/add', onclick: "var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; var v = document.createElement('input'); v.setAttribute('type', 'hidden'); v.setAttribute('name', 'id'); v.setAttribute('value', '#{variant_id}'); f.appendChild(v); var r = document.createElement('input'); r.setAttribute('type', 'hidden'); r.setAttribute('name', 'return_to'); r.setAttribute('value', 'http://store.chefsteps.com/checkout'); f.appendChild(r); f.submit(); return false;", class: 'btn btn-primary btn-large btn-block'
   end
 
 end

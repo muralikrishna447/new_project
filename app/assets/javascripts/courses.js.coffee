@@ -7,6 +7,14 @@ $ ->
     $("[data-parent='inclusion-id-" + parent_id + "']").each ->
       $(this).toggle()
 
+  show_password_index = 0
+  $('#user-password-show').click ->
+    user_password_field = $('#user_password')
+    if ++show_password_index % 2
+      user_password_field.attr 'type', 'text'
+    else
+      user_password_field.attr 'type', 'password'
+
   # i = 0
   # $('.course-nav-top-prev').click ->
   #   navbar = $('#course-navbar-top')

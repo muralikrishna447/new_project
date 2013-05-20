@@ -1,7 +1,7 @@
 .container
   .row
     .span12
-      %h3= "#{link_to @user.name, user_profile_path(@user)} uploaded a photo for #{link_to @upload.activity.title, @upload.activity}".html_safe
+      %h3= "#{link_to @upload.user.name, user_profile_path(@upload.user)} uploaded a photo for #{link_to @upload.activity.title, @upload.activity}".html_safe
       %h4= "Part of the #{link_to @upload.course.title, @upload.course} course.".html_safe
   .row
     .span6
