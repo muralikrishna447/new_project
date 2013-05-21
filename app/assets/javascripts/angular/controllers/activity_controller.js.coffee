@@ -90,6 +90,12 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   # Equipment stuff TODO: make a controller just for equipment
 
+  $scope.equipmentDisplayType = (item) ->
+    result = "basic"
+    result = "product" if !! item.equipment.product_url
+    result = "fake_link" if $scope.editMode && (result == "product")
+    result
+
   # TODO: nicer using underscore _map?
   $scope.hasRequiredEquipment = ->
     has = false
@@ -129,6 +135,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     result = "basic"
     result = "product" if !! ai.ingredient.product_url
     result = "subrecipe" if !! ai.ingredient.sub_activity_id
+    result = "fake_link" if $scope.editMode && (result == "product" || result == "subrecipe")
     result
 
   $scope.unitMultiplier = (unit_name) ->
