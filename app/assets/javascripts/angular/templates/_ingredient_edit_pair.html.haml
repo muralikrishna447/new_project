@@ -1,0 +1,26 @@
+%csEditPair
+  %csEditPairShow.show-group
+    .ingredient-title
+      %span(ng-switch="" on="ingredient_display_type(ai)")>
+        %span(ng-switch-default="" ng-bind-html-unsafe="ai.ingredient.title")>
+        %a(ng-switch-when="product" ng-href="{{ai.ingredient.product_url}}" target='_blank' ng-bind-html-unsafe="ai.ingredient.title")>
+        %a(ng-switch-when="subrecipe" ng-href="{{'/activities/' + ai.ingredient.sub_activity_id}}" ng-bind-html-unsafe="ai.ingredient.title" target="_blank")>{onclick: "addScalingToLink(this);"}
+        %span.fake-link(ng-switch-when="fake_link" ng-bind-html-unsafe="ai.ingredient.title")>
+      %span(ng-show="!!ai.note" ng-bind-html-unsafe="', ' + (ai.note | shortcode)")>
+
+    .quantity-group.qtyfade
+      %span.lbs-qty(csscalingeditable){style: "display: none;"}
+      %span.lbs-label
+      %span.main-qty(csscalingeditable="" ng-bind="ai.display_quantity"){data: {:"orig-value" => "{{ai.display_quantity * unitMultiplier(ai.unit)}}"}}
+
+    .unit.qtyfade(ng-bind="ai.unit")
+
+  %csEditPairEdit
+    .action-button-group(ng-show="focusedInside()")
+      %i.drag-handle.icon-sort
+      %i.remove-button.icon-remove(ng-click="removeIngredient()")
+    .ingredient-title
+      %input(csselectonfocus="" csinputmonkeyingredient="" type="text" placeholder="New ingredient" typeahead-editable="true" autocomplete="off" class="ingredient-typeahead" ng-model="ai.ingredient" typeahead="i as i.title for i in all_ingredients($viewValue)")
+      %input(csselectonfocus="" type="text" placeholder="note" autocomplete="off" ng-model="ai.note")
+    %input.quantity-group(csselectonfocus="" type="text" placeholder="qty" autocomplete="off" ng-model="ai.display_quantity")
+    %input.unit(csselectonfocus="" type="text" ng-model="ai.unit" required="true" typeahead="u for u in ['g', 'kg', 'ea', 'a/n', 'recipe']")

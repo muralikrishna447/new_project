@@ -17,12 +17,13 @@ class ActivitiesController < ApplicationController
       redir_params[:version] = params[:version] if defined? params[:version]
       redir_params[:minimal] = params[:minimal] if defined? params[:minimal]
       redir_params[:token] = params[:token] if defined? params[:token]
+      redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
   end
 
 
-  before_filter :require_admin, only: [:update]
+  before_filter :require_admin, only: [:update, :update_as_json]
   def require_admin
     unless admin_user_signed_in?
       flash[:error] = "You must be logged in as an administrator to do this"
@@ -86,7 +87,15 @@ class ActivitiesController < ApplicationController
                 only: :optional,
                 include: {
                   equipment: {
-                    only: [:title, :id, :product_url]
+                    only: [:id, :title, :product_url]
+                  }
+                }
+              },
+              ingredients: {
+                only: [:note, :display_quantity, :quantity, :unit],
+                include: {
+                  ingredient: {
+                    only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
                   }
                 }
               }
@@ -104,6 +113,7 @@ class ActivitiesController < ApplicationController
         @activity.store_revision do
           @activity.last_edited_by = current_admin_user
           @activity.update_equipment_json(params[:activity].delete(:equipment))
+          @activity.update_ingredients_json(params[:activity].delete(:ingredients))
           @activity.attributes = params[:activity]
           @activity.save!
         end

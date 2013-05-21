@@ -393,30 +393,45 @@ h1, h2, h3, h4
     .step-video
       display: none
 
-/* Emphasizes the content being hovered */
-// .ordered-steps:hover > .ordered-step-item
-//   opacity: .3
-//   @include transition(opacity 200ms)
-// .ordered-steps:hover > .ordered-step-item:hover
-//   opacity: 1
-//   @include transition(opacity 200ms)
 
-.prependable
-  text-align: right
-  width: 100%
-  padding-right: 2px
+.ingredients
 
-.activity-ingredients-list, .step-ingredients-source
   position: relative
-  table
+  font-size: 14px
+  width: 100%
+
+  div
+    display: inline-block
+
+  .ingredient-table-row
     width: 100%
-  thead
+  .ingredient-title
+    width: 61%
+  .quantity-group
+    width: 29%
+  .unit
+    width: 4%
+
+  .ingredient-table-head
+    width: 100%
     line-height: 30px
     font-size: 17.5px
     border-bottom: 1px solid black
-  th#ingredient
+    display: block
+    font-weight: bold
+    .quantity-group
+      width: 32%
+    .unit
+      width: 0%
+
+  .ingredient-table-body
+    width: 100%
+    display: block
+
+  #ingredient
     text-align: left
-  th#quantity
+
+  #quantity
     text-align: right
     .recipetip
       margin-left: -11px
@@ -424,44 +439,45 @@ h1, h2, h3, h4
       position: absolute
       margin-left: 15px
       margin-top: 5px
-  td
-    font-size: 14px
-    div
-      display: inline-block
-      form
-        margin: 0px
-        input
-          width: 60px
-  td.quantity-group
+
+  form
+    margin: 0px
+    display: inline
+    input
+      width: 60px
+      text-align: right
+
+  .quantity-group
     text-align: right
-    padding-right: 5px
-  .ingredient-item
-    height: 20px
-    @include transition(opacity 500ms)
-    .ingredient-title, .prependable
-      font-weight: 400
+    padding-right: 0px
+
+  .ingredient-table-body
+    .ingredient-table-row
+      width: 100%
+      display: block
+      height: 20px
       @include transition(opacity 500ms)
-    .quantity-group, .unit
-      @include transition(opacity 500ms)
-  .ingredient-highlighted
-    .ingredient-title, .prependable
-      font-weight: 700
-      opacity: 1
-    .quantity-group, .unit
-      opacity: .2
-  .ingredient-unhighlighted
-    opacity: .2
-    font-weight: 40
+      .ingredient-title
+        font-weight: 400
+        @include transition(opacity 500ms)
+      .quantity-group, .unit
+        @include transition(opacity 500ms)
 
 .step-ingredients-source
   //display: none
   thead
     display: none
 
+ul.equipment
+  margin-left: 0px
+  li
+    list-style-type: none
+
 #main-content
   position: relative
-  overflow: hidden
 
+.scroll-shadow-wrapper
+  overflow: hidden
 
 .alwayshidden
   display: none !important
@@ -1039,8 +1055,18 @@ h1, h2, h3, h4
 
 // WYSIWYG EDITING
 
-.edit-pair
-  position: relative
+
+.edit-pair, .edit-pair-show, .edit-pair-edit
+  width: 100%
+
+.edit-pair-transclude
+  width: 100%
+
+.transparent-target
+  position: absolute
+  width: 100%
+  height:  100%
+  z-index: 1000
 
 #edit-group
   margin-left: 20px
@@ -1050,21 +1076,6 @@ h1, h2, h3, h4
     font-size: 18px
   .btn
     height: 28px
-
-.edit-target
-  @include boxsizing
-  position: absolute
-  top: -1%
-  left: -1%
-  width:  102%
-  height:  102%
-  min-height: 10px
-  min-width: 10px
-  font-size:  15px
-  border: 2px solid #9ecaed
-  border-radius: 7px
-  z-index: 999
-  background-color: rgba(158, 202, 237, 0.2)
 
 #activity-body
   form, textarea
@@ -1076,31 +1087,72 @@ h1, h2, h3, h4
     margin-right: 8px
     vertical-align: top
 
-input.equipment-typeahead
-  @include boxsizing
-  padding: 0px 2px 0px 2px
-  margin-left: -2px
-  margin-top: 0px
-  margin-bottom: 0px
-  width: 100%
-  max-width: 280px
 
-csequipmenteditpair
+csequipmenteditpair, csingredienteditpair
   position: relative
 
-  .remove-button
-    display: inline-block
-    margin-left: -20px
-
-  .drag-handle
-    z-index: 2000
-    margin-left: -40px
+  .action-button-group
     position: absolute
-    left: 18px
-    top: 4px
+    left: -58px
+    top:  0px
+    font-size:  18px
+
+    i
+      width: auto
+
+  .edit-pair-edit
+    input, select
+      display: inline-block
+      @include boxsizing
+      padding: 0px 2px 0px 2px
+      margin-left: -2px
+      margin-top: 0px
+      margin-bottom: 0px
+      width: 100%
+      max-width: 280px
+
+    select
+      height: 22px
+
+csingredienteditpair
+
+  .edit-pair-edit
+
+    .ingredient-title
+      width: 80%
+      input:first-child
+        width: 55%
+      input:last-child
+        width: 44%
+
+    .quantity-group
+      width: 11%
+
+    .unit
+      width: 8%
 
 .no-bullet
   list-style-type: none
+
+.basicfade-enter-setup, .basicfade-leave-setup, .basicfade-move-setup
+  -webkit-transition: .25s linear all
+  -moz-transition: .25s linear all
+  -o-transition: .25s linear all
+  transition: .25s linear all
+
+.basicfade-enter-setup
+  opacity: 0
+
+.basicfade-enter-start
+  opacity: 1
+
+.basicfade-leave-setup
+  opacity: 1
+
+.basicfade-leave-start
+  opacity: 0
+
+
 
 
 // Making this match h1. I tried @including h1 but that was a no go.
@@ -1109,8 +1161,9 @@ csequipmenteditpair
   line-height: 40px
   width: 100%
 
-#edit-mode.active
-  background: #0088cc
+
+.fake-link
+  color: #0088cc
 
 
 .inline-group

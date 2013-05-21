@@ -1,7 +1,7 @@
 window.deepCopy = (obj) ->
   jQuery.extend(true, {}, obj)
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", ($scope, $resource, $location, $http, limitToFilter) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", "$timeout", ($scope, $resource, $location, $http, limitToFilter, $timeout) ->
   Activity = $resource("/activities/:id/as_json", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
@@ -14,29 +14,22 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.editMode = true
     $scope.undoStack = [deepCopy $scope.activity]
     $scope.undoIndex = 0
+    $timeout ->
+      window.csScaling = 1
+      window.updateUnits(false)
+
+  $scope.postEndEditMode = ->
+    $scope.editMode = false
 
   $scope.endEditMode = ->
-    $scope.endActiveEdits()
-    $scope.editMode = false
     $scope.normalizeModel()
     $scope.activity.$update()
+    $scope.postEndEditMode()
 
   $scope.cancelEditMode = ->
-    $scope.endActiveEdits()
-    $scope.editMode = false
     if $scope.undoAvailable
       $scope.activity = deepCopy $scope.undoStack[0]
-
-  $scope.endActiveEdits = ->
-    $scope.$broadcast('stop_edits')
-
-  $scope.$on 'end_active_edits_from_below', ->
-    $scope.endActiveEdits()
-
-  $scope.bodyClick = ->
-    if $scope.editMode
-      if $(event.target).is('body') || $(event.target).is('html')
-        $scope.endActiveEdits()
+    $scope.postEndEditMode()
 
   # Undo/redo TODO: could be a service I think
   $scope.undo = ->
@@ -67,28 +60,45 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.addUndo()
 
   # Hero video/image stuff
-  $scope.showHeroVideo = ->
+  $scope.hasHeroVideo = ->
     $scope.activity.youtube_id? && $scope.activity.youtube_id
 
-  $scope.showHeroImage = ->
+  $scope.hasHeroImage = ->
     $scope.activity.image_id? && $scope.activity.image_id
 
   $scope.heroVideoURL = ->
-    if $scope.showHeroVideo()
-      autoplay = if $scope.url_params.autoplay then "1" else "0"
-      "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
-    else
-      ""
+    autoplay = if $scope.url_params.autoplay then "1" else "0"
+    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
+
+  $scope.heroVideoStillURL = ->
+    "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
 
   $scope.heroImageURL = (width) ->
-    if $scope.showHeroImage()
-      console.log $scope.activity.image_id
-      url = JSON.parse($scope.activity.image_id).url
-      url + "/convert?fit=max&w=#{width}&cache=true"
-    else
-      ""
+    console.log $scope.activity.image_id
+    url = JSON.parse($scope.activity.image_id).url
+    url + "/convert?fit=max&w=#{width}&cache=true"
 
-  # Equipment stuff TODO: nicer using underscore _map?
+  $scope.heroDisplayType = ->
+    return "video" if $scope.hasHeroVideo()
+    return "image" if $scope.hasHeroImage()
+    return "add_button" if $scope.editMode
+
+  $scope.sortOptions = {
+    axis: 'y',
+    containment: 'parent',
+    cursor: 'move',
+    handle: '.drag-handle'
+  }
+
+  # Equipment stuff TODO: make a controller just for equipment
+
+  $scope.equipmentDisplayType = (item) ->
+    result = "basic"
+    result = "product" if !! item.equipment.product_url
+    result = "fake_link" if $scope.editMode && (result == "product")
+    result
+
+  # TODO: nicer using underscore _map?
   $scope.hasRequiredEquipment = ->
     has = false
     angular.forEach $scope.activity.equipment, (item) ->
@@ -121,12 +131,34 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       r.unshift({title: equip_name})
       r
 
-  $scope.equipmentSortOptions = {
-    axis: 'y',
-    containment: 'parent',
-    cursor: 'move',
-    handle: '.drag-handle'
-  }
+  # Ingredient stuff TODO: make a controller just for ingredients
+
+  $scope.ingredient_display_type = (ai) ->
+    result = "basic"
+    result = "product" if !! ai.ingredient.product_url
+    result = "subrecipe" if !! ai.ingredient.sub_activity_id
+    result = "fake_link" if $scope.editMode && (result == "product" || result == "subrecipe")
+    result
+
+  $scope.unitMultiplier = (unit_name) ->
+    result = 1
+    result = 1000 if unit_name == "kg"
+    result
+
+  $scope.addIngredient =  ->
+    # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
+    ingred = ""
+    item = {ingredient: ingred}
+    $scope.activity.ingredients.push(item)
+    #$scope.addUndo()
+
+  $scope.all_ingredients = (ingredient_name) ->
+    $http.get("/ingredients.json?q=" + ingredient_name).then (response) ->
+      # always include current search text as an option
+      r = limitToFilter(response.data, 15)
+      r.unshift({title: ingredient_name})
+      r
+
 
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
@@ -136,7 +168,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       if _.isString(item["equipment"])
         item["equipment"] = {title: item["equipment"]}
 
-
+    angular.forEach $scope.activity.ingredients, (item) ->
+      if _.isString(item["ingredient"])
+        item["ingredient"] = {title: item["ingredient"]}
 
 ]
 
