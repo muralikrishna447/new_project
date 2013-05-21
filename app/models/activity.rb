@@ -142,10 +142,8 @@ class Activity < ActiveRecord::Base
     puts ingredients_attrs
     if ingredients_attrs
       ingredients_attrs.each do |i|
-        puts "OK: " + i.inspect()
         title = i[:ingredient][:title]
-        puts "TITLE: "  + title
-        unless title.nil? || title.blank?
+         unless title.nil? || title.blank?
           title.strip!
           ingredient_foo = Ingredient.where(id: i[:ingredient][:id]).first_or_create(title: title)
           activity_ingredient = ActivityIngredient.create({

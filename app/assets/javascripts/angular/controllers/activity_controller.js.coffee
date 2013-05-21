@@ -159,5 +159,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       if _.isString(item["equipment"])
         item["equipment"] = {title: item["equipment"]}
 
+    angular.forEach $scope.activity.ingredients, (item) ->
+      if _.isString(item["ingredient"])
+        item["ingredient"] = {title: item["ingredient"]}
+
 ]
 

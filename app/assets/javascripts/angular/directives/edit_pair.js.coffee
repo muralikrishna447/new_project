@@ -9,23 +9,26 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     $scope.focusedInside = ->
       $(document.activeElement).closest('.edit-pair').scope() == $scope
 
-    # We should be active (edit view visible) if either the mouse is over us or
-    # a child within us has focus.
+    $scope.anyEditPairFocused = ->
+      $(document.activeElement).closest('.edit-pair').length > 0
+
+    # We should be active (edit half showing) if we have focus, or if hovered and nothing else has focus
     $scope.active = ->
-      #$element.height($element.find('.edit-pair-show').height())
-      if ! $scope.editMode
-        return false
-      $scope.mouseCurrentlyOver || $scope.focusedInside()
+      return false if ! $scope.editMode
+      return true if $scope.focusedInside()
+      ($scope.mouseCurrentlyOver && (! $scope.anyEditPairFocused()))
 
     $scope.setMouseOver = (over) ->
       if over
         $rootScope.$broadcast("setMouseNotOver")
       $scope.mouseCurrentlyOver = over
 
-
     $scope.$watch $scope.focusedInside, ((newValue, oldValue) ->
       $scope.addUndo() if ! newValue
     )
+
+    $element.on 'click', ->
+      setTimeout (-> $scope.$apply($($element).find('input, textarea')[0].focus())), 0
 
     # Without this we are getting some cases where we don't get the mouseleave, maybe because of DOM changes?
     # so you end up with "mouse droppings" of pairs left in the edit state
@@ -38,9 +41,10 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
 
     # If we get freshly added while in edit mode, make us active by focusing first input. Like when a + button is hit.
     if scope.editMode
+      document.activeElement.blur() if document.activeElement
       scope.setMouseOver(true)
       # Can't give it focus until it has a chance to become visible
-      setTimeout (-> scope.$apply($(element).find('input')[0].focus())), 0
+      setTimeout (-> scope.$apply($(element).find('input, textarea')[0].focus())), 0
 
   template: '<div ng-switch="" on="active()" class="edit-pair" ng-mouseenter="setMouseOver(true)" ng-mouseleave="setMouseOver(false)">' +
               '<div ng-transclude class="edit-pair-transclude"></div>' +
