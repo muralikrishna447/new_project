@@ -36,5 +36,6 @@ class CoursesController < ApplicationController
       track_event @course
     end
   end
+
 end
 

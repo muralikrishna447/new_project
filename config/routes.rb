@@ -36,6 +36,7 @@ Delve::Application.routes.draw do
     get "sign_out", to: 'users/sessions#destroy'
     get "complete_registration", to: 'users/registrations#complete_registration'
     get 'welcome', to: 'users/registrations#welcome'
+    post 'signup_and_enroll', to: 'users/registrations#signup_and_enroll'
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'

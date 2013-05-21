@@ -36,7 +36,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save
       sign_in @user
       aweber_signup(@user.email)
-      redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
+      if params[:return_to]
+        redirect_to params[:return_to], notice: "Thanks for signing up! Please check your email now to confirm your registration."
+      else
+        redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
+      end
       cookies.delete(:viewed_activities)
     else
       render :new
@@ -45,6 +49,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def complete_registration
     @user = User.new
+  end
+
+  def signup_and_enroll
+    @user = User.new(params[:user])
+    @course = Course.find(params[:course_id])
+    if cookies[:viewed_activities]
+      @user.viewed_activities = JSON.parse(cookies[:viewed_activities])
+    end
+    if @user.save
+      sign_in @user
+      aweber_signup(@user.email)
+      cookies.delete(:viewed_activities)
+      @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
+      if @enrollment.save
+        redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
+      end
+    else
+      redirect_to course_url(@course), notice: "Sorry, there was a problem with the information provided.  Please try again."
+    end
   end
 
   protected

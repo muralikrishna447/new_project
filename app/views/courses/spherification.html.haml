@@ -19,14 +19,16 @@
       .well
         - if current_user
           - if current_user.course_ids.include?(@course.id)
-            = link_to 'Continue Course', [@course, @course.first_published_activity], class: 'btn, btn-primary btn-large'
+            - course_button_message = current_user.viewed_activities_in_course(@course).count > 0 ? 'Continue Course' : 'Start the Course!'
+            = link_to course_button_message, [@course, @course.first_published_activity], class: 'btn, btn-primary btn-large'
           - else
             = form_tag enroll_course_path(@course) do
               = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
         - else
           .flat-form
             %h2 Sign Up To Enroll
-            = form_for @new_user, url: registration_path(@new_user), class: 'form-inline' do |f|
+            = form_for @new_user, url: signup_and_enroll_path, method: :post, class: 'form-inline' do |f|
+              = hidden_field_tag :course_id, @course.id
               = f.text_field :name, {placeholder: 'name', required: true, class: 'input-block-level'}
               = f.email_field :email, {placeholder: 'email', required: true, class: 'input-block-level'}
               .input-block-level-password
@@ -35,15 +37,16 @@
               = f.submit 'Enroll Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
       .well   
         - if @course.users.count > 1
-          %h4= "#{@course.users.count} people have enrolled."
-        %h4 Here's what people have accomplished with the course:
-        .horizontal-slider{data: {direction: 'right'}}
-          .horizontal-slider-wrap
-            - @course.uploads.each do |upload|
-              = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
-          %div{class: "horizontal-slider-btn-right btn btn-circle"}
-            %i{class: "icon-chevron-right"}
-          %div{class: "horizontal-slider-shadow-overlay-right"}
+          %h4= "Current enrollment: #{@course.users.count}"
+        - if @course.uploads.count > 3
+          %h4 Here are some things students have accomplished so far:
+          .horizontal-slider{data: {direction: 'right'}}
+            .horizontal-slider-wrap
+              - @course.uploads.each do |upload|
+                = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+            %div{class: "horizontal-slider-btn-right btn btn-circle"}
+              %i{class: "icon-chevron-right"}
+            %div{class: "horizontal-slider-shadow-overlay-right"}
 
   .row.section
     .span12
@@ -52,19 +55,22 @@
   .row
     .span4
       =image_tag 'https://www.filepicker.io/api/file/RY0MPYKRRkOLpCNqGZpN'
+      .small Pine Needle Sphere with Lemon Granita
       .text-center
         %h4 Reverse Spherification
-        Pine Needle Sphere with Lemon Granita
+        
     .span4
       =image_tag 'https://www.filepicker.io/api/file/BwIi8kdRFGLEIWaWcXPI'
+      .small Beet Sphere with Shaved Goat Cheese
       .text-center
         %h4 Frozen Reverse Spherification
-        Beet Sphere with Shaved Goat Cheese
+        
     .span4
       =image_tag 'https://www.filepicker.io/api/file/PFUrsvzWReCkVxlMGXBG'
+      .small Chocolate Caviar with Almond Custard and Mint Gelée
       .text-center
         %h4 Direct Spherification
-        Chocolate Caviar with Almond Custard and Mint Gelée
+        
 
   .row.section
     .span6.offset3
@@ -73,8 +79,7 @@
   .row.section
     .span12
       %h2.text-center
-        Buy a kit to help you get started or 
-        = link_to 'browse the course now.', course_activity_path(@course, @course.first_published_activity)
+        Buy a kit to help you get started
 
 %hr
 .container

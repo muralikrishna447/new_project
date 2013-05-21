@@ -7,7 +7,7 @@ task :setup_spherification => :environment do
     puts course.inspect
   end
 
-  course.activities.each do |activity|
+  (course.activities - course.activity_modules).each do |activity|
     activity.published = true
     if activity.save
       puts 'Published Activity'
