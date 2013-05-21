@@ -100,5 +100,7 @@ Delve::Application.routes.draw do
   mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
 
+  resources :client_views, only: [:show]
+
 end
 

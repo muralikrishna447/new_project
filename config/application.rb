@@ -77,10 +77,6 @@ module Delve
     config.assets.version = '7'
     config.assets.initialize_on_precompile = false
 
-    # HTML Assets
-    config.assets.paths << Rails.root.join('app/assets/angular/templates')
-    config.assets.register_mime_type('text/html', '.html')
-
     # Caching intended for test, staging, and production environments
     unless Rails.env.development?
       config.cache_store = :dalli_store
