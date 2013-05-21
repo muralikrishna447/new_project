@@ -80,18 +80,18 @@
 .container
   .row.section
     .span5.offset1
-      = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
-      / .annotated-object
-      /   / = check_box_tag :'creative-annotation-toggle', nil, false, class: 'annotation-toggle'
-      /   = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
-      /   .annotations
-      /     .annotation Syringe 
-      /     .annotation Stainless-steel straining spoon
-      /     .annotation 25 g Sphere Magic
-      /     .annotation 25 g Sodium Citrate
-      /     .annotation 50 g Calcium Lactate Gluconate
-      /     .annotation 50 g Calcium Chloride
-      /     .annotation 50 g Xanthan Gum
+      / = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
+      .annotated.annotated-creation
+        / = check_box_tag :'annotation-toggle-creative', nil, false, class: 'annotation-toggle'
+        = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
+        .annotations
+          .annotation Syringe 
+          .annotation Stainless-steel straining spoon
+          .annotation 25 g Sphere Magic
+          .annotation 25 g Sodium Citrate
+          .annotation 50 g Calcium Lactate Gluconate
+          .annotation 50 g Calcium Chloride
+          .annotation 50 g Xanthan Gum
       .row-fluid
         .span6
           = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
