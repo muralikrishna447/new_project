@@ -79,7 +79,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     url + "/convert?fit=max&w=#{width}&cache=true"
 
   $scope.heroDisplayType = ->
-    return "video_still" if $scope.editMode && $scope.hasHeroVideo()
     return "video" if $scope.hasHeroVideo()
     return "image" if $scope.hasHeroImage()
     return "add_button" if $scope.editMode

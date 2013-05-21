@@ -63,7 +63,6 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
-  gem 'angularjs-rails'
   gem 'angular-ui-rails'
   # This was out of date so I put the one I needed in vendor
   #gem 'angular-ui-bootstrap-rails'

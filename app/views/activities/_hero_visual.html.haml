@@ -1,9 +1,9 @@
 %csEditPair
   %csEditPairShow
-    %div(ng-switch="" on="heroDisplayType()")
-      %iframe.noprint(ng-switch-when="video" ng-style="setHeight()" ng-src="{{heroVideoURL()}}" csenforceaspect)
+    %div(ng-switch="" on="heroDisplayType()" )
+      .transparent-target(ng-show="editMode")
+      %iframe.noprint(ng-switch-when="video" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect)
       %img(ng-switch-when="image" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
-      %img(ng-switch-when="video_still" ng-src="{{heroVideoStillURL()}}")
       %button.btn.btn-small.add-section(ng-switch-when="add_button")
         Add Hero Video or Image
 

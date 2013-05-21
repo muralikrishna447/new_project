@@ -101,17 +101,14 @@ describe Activity do
     describe "update" do
 
       before do
-        puts equipment_attrs
         activity.update_equipment_json(equipment_attrs)
         activity.reload
         equipment_attrs[0] = {optional: false, equipment: {id: 1, title: 'Blender'}}
-        puts equipment_attrs
         activity.update_equipment_json(equipment_attrs)
         activity.equipment.reload
       end
 
       it "updates existing equipment" do
-        puts activity.equipment.inspect()
         activity.equipment.should have(2).equipment
         activity.equipment.first.title.should == 'Blender'
         activity.equipment.first.optional.should == false
@@ -210,6 +207,86 @@ describe Activity do
       it "updates ordering" do
         activity.update_ingredients([pepper, soup])
         activity.ingredients.ordered.first.title.should == 'Pepper'
+      end
+    end
+  end
+
+  describe "#update_ingredients_json" do
+    let(:ingredient1) { {display_quantity: 10, ingredient: {id: 1, title: 'Parsley'}} }
+    let(:ingredient2) { {display_quantity: 20, ingredient: {id: 2, title: 'Tofu'}}  }
+    let(:ingredient_attrs) {[ ingredient1, ingredient2 ] }
+    let(:ingredient3) { {display_quantity: 30, ingredient: {title: 'Pepper'}}  }
+    let(:replacement_attrs) {[ ingredient3 ] }
+
+    describe "create" do
+      before do
+        activity.update_ingredients_json(ingredient_attrs)
+        activity.reload
+        activity.ingredients.reload
+      end
+
+      it "creates unique ingredient for each non-empty attribute set" do
+        activity.ingredients.should have(2).ingredient
+      end
+
+      it "creates ingredient with specified attributes" do
+        activity.ingredients.first.title.should == 'Parsley'
+        activity.ingredients.first.display_quantity.should == "10"
+      end
+
+      it "creates new ingredient when id isn't specified" do
+        activity.update_ingredients_json(replacement_attrs)
+        activity.reload
+        activity.ingredients.reload
+        activity.ingredients.should have(1).ingredient
+        activity.ingredients.first.title.should == 'Pepper'
+        activity.ingredients.first.id.should_not == 1
+        activity.ingredients.first.id.should_not == 2
+      end
+    end
+
+    describe "update" do
+
+      before do
+        activity.update_ingredients_json(ingredient_attrs)
+        activity.reload
+        ingredient_attrs[0] = {display_quantity: 11, ingredient: {id: 1, title: 'Parsley'}}
+        activity.update_ingredients_json(ingredient_attrs)
+        activity.ingredients.reload
+      end
+
+      it "updates existing ingredient" do
+        activity.ingredients.should have(2).ingredient
+        activity.ingredients.first.title.should == 'Parsley'
+        activity.ingredients.first.display_quantity.should == "11"
+      end
+    end
+
+    describe "destroy" do
+      before do
+        activity.update_ingredients_json(ingredient_attrs)
+        activity.ingredients.reload
+        activity.update_ingredients_json(ingredient_attrs[1..-1])
+        activity.ingredients.reload
+      end
+
+      it "deletes ingredient not included in attribute set" do
+        activity.ingredients.should have(1).ingredient
+        activity.ingredients.first.title.should == 'Tofu'
+        activity.ingredients.first.display_quantity.should == "20"
+      end
+    end
+
+    describe "re-ordering" do
+      before do
+        activity.update_ingredients_json(ingredient_attrs)
+        activity.ingredients.reload
+      end
+
+      it "updates ordering" do
+        activity.update_ingredients_json([ingredient2, ingredient1])
+        activity.ingredients.reload
+        activity.ingredients.ordered.first.title.should == 'Tofu'
       end
     end
   end
