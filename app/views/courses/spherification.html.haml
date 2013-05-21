@@ -19,7 +19,8 @@
       .well
         - if current_user
           - if current_user.course_ids.include?(@course.id)
-            = link_to 'Continue Course', [@course, @course.first_published_activity], class: 'btn, btn-primary btn-large'
+            - course_button_message = current_user.viewed_activities_in_course(@course).count > 0 ? 'Continue Course' : 'Start the Course!'
+            = link_to course_button_message, [@course, @course.first_published_activity], class: 'btn, btn-primary btn-large'
           - else
             = form_tag enroll_course_path(@course) do
               = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
