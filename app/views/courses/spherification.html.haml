@@ -6,7 +6,7 @@
   .row.section
     .span6
       %h1= "#{course.title} Course"
-      .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
+      .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
         %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('ArXEEexWHPA')}
       .section
         %p= course.description
@@ -14,7 +14,7 @@
         %i.icon-comment-alt
         Comments or Questions?
         = link_to 'Visit the Forum', 'http://forum.chefsteps.com'
-      
+     
     .span6
       .well
         - if current_user
@@ -25,8 +25,8 @@
             = form_tag enroll_course_path(@course) do
               = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
         - else
-          .flat-form
-            %h2 Sign Up To Enroll
+          .flat-form.section
+            %h2 Enroll for free now
             = form_for @new_user, url: signup_and_enroll_path, method: :post, class: 'form-inline' do |f|
               = hidden_field_tag :course_id, @course.id
               = f.text_field :name, {placeholder: 'name', required: true, class: 'input-block-level'}
@@ -34,7 +34,7 @@
               .input-block-level-password
                 = f.password_field :password, {placeholder: 'password', required: true, class: 'input-block-level'}
                 = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'user-password-show'
-              = f.submit 'Enroll Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
+              = f.submit 'Enroll', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
       .well   
         - if @course.users.count > 1
           %h4= "Current enrollment: #{@course.users.count}"
@@ -48,40 +48,39 @@
               %i{class: "icon-chevron-right"}
             %div{class: "horizontal-slider-shadow-overlay-right"}
 
+%hr
+
+.container
   .row.section
-    .span12
-      %h2.text-center
-        Be more creative in your kitchen
-  .row
+    .span8.offset2
+      %h2 Be more creative in your kitchen
+      %p In this short-course, you will learn all three techniques, starting with reverse spherification, which is surprisingly easy. The course then teaches you the helpful refinement of this technique, called frozen-reverse spherification. Finally, you'll master the more challenging technique of direct spherification. At the end of the course, you will have the opportunity to demonstrate your proficiency with these techniques and also prove your understanding of why spherification works to certify that you've mastered this popular modernist technique.
+  .row.section
     .span4
       =image_tag 'https://www.filepicker.io/api/file/RY0MPYKRRkOLpCNqGZpN'
-      .small Pine Needle Sphere with Lemon Granita
+      Pine Needle Sphere with Lemon Granita
       .text-center
         %h4 Reverse Spherification
         
     .span4
       =image_tag 'https://www.filepicker.io/api/file/BwIi8kdRFGLEIWaWcXPI'
-      .small Beet Sphere with Shaved Goat Cheese
+      Beet Sphere with Shaved Goat Cheese
       .text-center
         %h4 Frozen Reverse Spherification
         
     .span4
       =image_tag 'https://www.filepicker.io/api/file/PFUrsvzWReCkVxlMGXBG'
-      .small Chocolate Caviar with Almond Custard and Mint Gelée
+      Chocolate Caviar with Almond Custard and Mint Gelée
       .text-center
         %h4 Direct Spherification
-        
-
-  .row.section
-    .span6.offset3
-      %p In this short-course, you will learn all three techniques, starting with reverse spherification, which is surprisingly easy. The course then teaches you the helpful refinement of this technique, called frozen-reverse spherification. Finally, you'll master the more challenging technique of direct spherification. At the end of the course, you will have the opportunity to demonstrate your proficiency with these techniques and also prove your understanding of why spherification works to certify that you've mastered this popular modernist technique.
-
-  .row.section
-    .span12
-      %h2.text-center
-        Buy a kit to help you get started
 
 %hr
+
+  .row.section
+    .span8.offset2
+      %h2
+        Buy a kit to help you get started
+
 .container
   .row.section
     .span6

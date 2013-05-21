@@ -22,3 +22,4 @@
 //= require rails.validations
 //= require user_profiles
 //= require iframe_height
+//= require annotations
