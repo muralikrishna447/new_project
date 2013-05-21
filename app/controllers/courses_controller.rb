@@ -37,7 +37,5 @@ class CoursesController < ApplicationController
     end
   end
 
-  def signup_and_enroll
-  end
 end
 

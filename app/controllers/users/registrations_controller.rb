@@ -51,6 +51,22 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user = User.new
   end
 
+  def signup_and_enroll
+    @user = User.new(params[:user])
+    @course = Course.find(params[:course_id])
+    if cookies[:viewed_activities]
+      @user.viewed_activities = JSON.parse(cookies[:viewed_activities])
+    end
+    if @user.save
+      sign_in @user
+      aweber_signup(@user.email)
+      redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
+      cookies.delete(:viewed_activities)
+    else
+      redirect_to course_url(@course), notice: "Sorry, there was a problem with the information provided.  Please try again."
+    end
+  end
+
   protected
   def build_resource(hash=nil)
     hash ||= resource_params || {}
