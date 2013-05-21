@@ -60,8 +60,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save
       sign_in @user
       aweber_signup(@user.email)
-      redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
       cookies.delete(:viewed_activities)
+      @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
+      if @enrollment.save
+        redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
+      end
     else
       redirect_to course_url(@course), notice: "Sorry, there was a problem with the information provided.  Please try again."
     end
