@@ -44,4 +44,4 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
 
   ]
 
-  templateUrl: '/assets/angular/templates/_ingredient_edit_pair'
+  templateUrl: '/assets/angular/templates/_ingredient_edit_pair.html.haml'
