@@ -60,26 +60,29 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.addUndo()
 
   # Hero video/image stuff
-  $scope.showHeroVideo = ->
+  $scope.hasHeroVideo = ->
     $scope.activity.youtube_id? && $scope.activity.youtube_id
 
-  $scope.showHeroImage = ->
+  $scope.hasHeroImage = ->
     $scope.activity.image_id? && $scope.activity.image_id
 
   $scope.heroVideoURL = ->
-    if $scope.showHeroVideo()
-      autoplay = if $scope.url_params.autoplay then "1" else "0"
-      "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
-    else
-      ""
+    autoplay = if $scope.url_params.autoplay then "1" else "0"
+    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
+
+  $scope.heroVideoStillURL = ->
+    "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
 
   $scope.heroImageURL = (width) ->
-    if $scope.showHeroImage()
-      console.log $scope.activity.image_id
-      url = JSON.parse($scope.activity.image_id).url
-      url + "/convert?fit=max&w=#{width}&cache=true"
-    else
-      ""
+    console.log $scope.activity.image_id
+    url = JSON.parse($scope.activity.image_id).url
+    url + "/convert?fit=max&w=#{width}&cache=true"
+
+  $scope.heroDisplayType = ->
+    return "video_still" if $scope.editMode && $scope.hasHeroVideo()
+    return "video" if $scope.hasHeroVideo()
+    return "image" if $scope.hasHeroImage()
+    return "add_button" if $scope.editMode
 
   $scope.sortOptions = {
     axis: 'y',

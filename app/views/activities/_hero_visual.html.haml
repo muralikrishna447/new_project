@@ -1,10 +1,11 @@
 %csEditPair
   %csEditPairShow
-    %div(ng-show="showHeroVideo() || showHeroImage()")
-      %iframe.noprint(ng-show="showHeroVideo()" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect)
-      %img(ng-show="(! showHeroVideo()) && showHeroImage()" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
-    %button.btn.btn-small.add-section(ng-show="editMode && (! (showHeroVideo() || showHeroImage()))")
-      Add Hero Video or Image
+    %div(ng-switch="" on="heroDisplayType()")
+      %iframe.noprint(ng-switch-when="video" ng-style="setHeight()" ng-src="{{heroVideoURL()}}" csenforceaspect)
+      %img(ng-switch-when="image" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
+      %img(ng-switch-when="video_still" ng-src="{{heroVideoStillURL()}}")
+      %button.btn.btn-small.add-section(ng-switch-when="add_button")
+        Add Hero Video or Image
 
   %csEditPairEdit
     %div(style="width: 100%;" ng-style="setHeight()" csenforceaspect)
@@ -17,7 +18,7 @@
         .span6
           %h5
             &hellip; or Hero Image
-          %img(ng-show="showHeroImage()" ng-src="{{heroImageURL(300)}}")
+          %img(ng-show="hasHeroImage()" ng-src="{{heroImageURL(300)}}")
       .row
         .csfilepicker.span6(ng-model="activity.image_id")
 
