@@ -36,5 +36,8 @@ class CoursesController < ApplicationController
       track_event @course
     end
   end
+
+  def signup_and_enroll
+  end
 end
 

@@ -36,7 +36,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save
       sign_in @user
       aweber_signup(@user.email)
-      redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
+      if params[:return_to]
+        redirect_to params[:return_to], notice: "Thanks for signing up! Please check your email now to confirm your registration."
+      else
+        redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
+      end
       cookies.delete(:viewed_activities)
     else
       render :new

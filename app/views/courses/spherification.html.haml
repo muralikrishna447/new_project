@@ -27,6 +27,7 @@
           .flat-form
             %h2 Sign Up To Enroll
             = form_for @new_user, url: registration_path(@new_user), class: 'form-inline' do |f|
+              = hidden_field_tag :return_to, "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
               = f.text_field :name, {placeholder: 'name', required: true, class: 'input-block-level'}
               = f.email_field :email, {placeholder: 'email', required: true, class: 'input-block-level'}
               .input-block-level-password
