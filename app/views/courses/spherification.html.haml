@@ -82,7 +82,6 @@
     .span6
       / = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
       .annotated.annotated-creation
-        / = check_box_tag :'annotation-toggle-creative', nil, false, class: 'annotation-toggle'
         = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
         .annotations
           .annotation Syringe 
@@ -108,8 +107,20 @@
 %hr
 .container
   .row.section
-    .span5.offset1
-      = image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
+    .span6
+      / = image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
+      .annotated.annotated-enthusiast
+        = image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
+        .annotations
+          .annotation Syringe 
+          .annotation Stainless-steel straining spoon
+          .annotation 25 g Sphere Magic
+          .annotation 25 g Sodium Citrate
+          .annotation 50 g Calcium Lactate Gluconate
+          .annotation 50 g Calcium Chloride
+          .annotation 50 g Xanthan Gum
+          .annotation High-Accuracy Scale
+          .annotation Silicon Mold
       .row-fluid
         .span6
           = image_tag 'https://www.filepicker.io/api/file/10jMQrfrTYazji1Sc4XA'
