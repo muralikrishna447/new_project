@@ -5,7 +5,7 @@
 .container
   .row.section
     .span6
-      %h1= course.title
+      %h1= "#{course.title} Course"
       .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
         %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('ArXEEexWHPA')}
       .section
@@ -48,17 +48,23 @@
   .row.section
     .span12
       %h2.text-center
-        Be more creative in the kitchen
+        Be more creative in your kitchen
   .row
     .span4
       =image_tag 'https://www.filepicker.io/api/file/RY0MPYKRRkOLpCNqGZpN'
-      %h4.text-center Reverse Spheres
+      .text-center
+        %h4 Reverse Spherification
+        Pine Needle Sphere with Lemon Granita
     .span4
       =image_tag 'https://www.filepicker.io/api/file/BwIi8kdRFGLEIWaWcXPI'
-      %h4.text-center Frozen Reverse Spheres
+      .text-center
+        %h4 Frozen Reverse Spherification
+        Beet Sphere with Shaved Goat Cheese
     .span4
       =image_tag 'https://www.filepicker.io/api/file/PFUrsvzWReCkVxlMGXBG'
-      %h4.text-center Direct Spheres
+      .text-center
+        %h4 Direct Spherification
+        Chocolate Caviar with Almond Custard and Mint Gelée
 
   .row.section
     .span6.offset3
@@ -91,7 +97,7 @@
           = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
         .span6
           = image_tag 'https://www.filepicker.io/api/file/ZZk2FdB3TcXndhp2tihA'
-    .span5.offset1
+    .span5.offset1.lead
       %h2 The Creative Kit
       The Creative Kit includes the technical ingredients you'll need to complete our reverse and direct spherification modules. It has most of the tools as well, except for a high-accuracy scale and the mold needed for frozen-reverse spherification.
       .well.section
@@ -109,7 +115,7 @@
           = image_tag 'https://www.filepicker.io/api/file/10jMQrfrTYazji1Sc4XA'
         .span6
           = image_tag 'https://www.filepicker.io/api/file/NiJGuT9RkOOY9RUqDpyQ'
-    .span5.offset1
+    .span5.offset1.lead
       %h2 The Enthusiast Kit
       The Enthusiasts Kit includes all of the technical ingredients and tools you'll need to complete our entire course. It adds a high-accuracy scale (capable of weighing 1/100th of a gram) and a high-quality silicon mold used for frozen-reverse spherification.
       .well.section
@@ -126,7 +132,7 @@
           = image_tag 'https://www.filepicker.io/api/file/FBnDnqcUQRetfBswxNzq'
         .span6
           = image_tag 'https://www.filepicker.io/api/file/KLRyOQ6fTB2K2y2rc2Gq'
-    .span5.offset1
+    .span5.offset1.lead
       %h2 The Professional Kit
       The Professional Kit includes everything in our Enthusiast Kit, plus a professional caviar dosing tray used for direct spherification. This hard to find tool makes it easy to quickly turn any liquid into small spheres bursting with flavor
       .well.section
