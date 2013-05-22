@@ -1,22 +1,21 @@
 .container
   .row
-    .span12
-      %h3= "#{link_to @upload.user.name, user_profile_path(@upload.user)} uploaded a photo for #{link_to @upload.activity.title, @upload.activity}".html_safe
-      %h4= "Part of the #{link_to @upload.course.title, @upload.course} course.".html_safe
-  .row
     .span6
+      %h2= @upload.recipe_name
       = image_tag filepicker_hero_image(@upload.image_id)
-      = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.recipe_name} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary btn-large' do
+      .lead
+        = @upload.notes
+    .span6.section
+      %p= "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this creation when they completed the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'www.chefsteps.com'}.".html_safe
+      %p= "#{time_ago_in_words(@upload.created_at)} ago."
+      = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.recipe_name} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
         %i.icon-twitter
         %span Twitter
       = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
-      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'btn btn-primary btn-large' do
+      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'btn btn-primary' do
         %i.icon-google-plus
         %span Google
       = link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{filepicker_hero_image(@upload.image_id)}", onclick: "javascript:window.open(this.href,
-        '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary btn-large' do
+        '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary' do
         %i.icon-pinterest
         %span Pinterest
-
-    .span6.well
-      = @upload.notes
