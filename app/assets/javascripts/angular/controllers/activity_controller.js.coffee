@@ -159,6 +159,27 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       r.unshift({title: ingredient_name})
       r
 
+  $scope.ingredientSelect2 =
+    ajax:
+      url: "/ingredients.json?q=a",
+      data: (term, page) ->
+        return {
+          q: term
+        }
+
+      results: (data, page) ->
+        return {results: data}
+
+    formatResult: (ingredient) ->
+      ingredient.title
+
+    formatSelection: (ingredient) ->
+      ingredient.title
+
+    initSelection: (element, callback) ->
+      callback(angular.element(element).scope().ai.ingredient)
+
+    width: "element"
 
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
