@@ -98,7 +98,7 @@
 
 - content_for :popup_bottom do
   - if ! ENV["CS_NO_POPUP"]
-    - if @viewed_activities && @viewed_activities.count > 2 && current_user.nil?
+    - if @viewed_activities && @viewed_activities.count > 1 && current_user.nil?
       .container-fluid.popup-bottom(ng-hide="editMode")
         .row-fluid
           .container
@@ -106,7 +106,7 @@
               .span12
                 .row
                   .span5.offset1
-                    %h3= ab_test 'bottom_popup_copy_1', 'Join the Community', 'Cook Better Than You Ever Thought Possible', 'Learn How to Be a Better Cook'
+                    %h3 Cook Better Than You Ever Thought Possible
                     = form_tag welcome_url, :method => :get do
                       = email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
                       = hidden_field_tag :signed_up_from, 'bottom_popup_cta'
