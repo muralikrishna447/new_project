@@ -3,9 +3,9 @@ ActiveAdmin.register Setting, as: 'Site Settings' do
 
   form do |f|
     f.inputs "Setting" do
-      f.input :featured_activity_1_id, as: :select, collection: Activity.published.recipes, input_html: {class: 'featured-activity-select', style: 'width: 200px'}
-      f.input :featured_activity_2_id, as: :select, collection: Activity.published.techniques, input_html: {class: 'featured-activity-select', style: 'width: 200px'}
-      f.input :featured_activity_3_id, as: :select, collection: Activity.published.sciences, input_html: {class: 'featured-activity-select', style: 'width: 200px'}
+      f.input :featured_activity_1_id, as: :select, collection: Activity.published.order('title ASC'), input_html: {class: 'featured-activity-select', style: 'width: 200px'}
+      f.input :featured_activity_2_id, as: :select, collection: Activity.published.order('title ASC'), input_html: {class: 'featured-activity-select', style: 'width: 200px'}
+      f.input :featured_activity_3_id, as: :select, collection: Activity.published.order('title ASC'), input_html: {class: 'featured-activity-select', style: 'width: 200px'}
       f.input :footer_image
     end
 
