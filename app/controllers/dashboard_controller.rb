@@ -2,7 +2,10 @@ class DashboardController < ApplicationController
   before_filter :require_admin
 
   def index
-    @user_signups = User.order('created_at ASC').map(&:created_at).group_by(&:end_of_day).map{|k,v| [k.to_date, v.count]}
+    # @user_signups = User.order('created_at ASC').map(&:created_at).group_by(&:end_of_day).map{|k,v| [k.to_date, v.count]}
+    @users_count = User.count
+    @enrollments_count = Enrollment.count
+    @uploads_count = User.joins(:uploads).distinct.count
   end
 
 private
