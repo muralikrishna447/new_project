@@ -4,8 +4,9 @@ class DashboardController < ApplicationController
   def index
     # @user_signups = User.order('created_at ASC').map(&:created_at).group_by(&:end_of_day).map{|k,v| [k.to_date, v.count]}
     @users_count = User.count
+    @users_ten_views_count = User.joins(:events).select('events.user_id').group('events.user_id').having('count(events.id) >=10').count
     @enrollments_count = Enrollment.count
-    @uploads_count = User.joins(:uploads).distinct.count
+    @uploads_count = User.joins(:uploads).select('uploads.user_id').group('uploads.user_id').count
   end
 
 private
