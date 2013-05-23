@@ -36,29 +36,41 @@
 
     .span6.noprint
 
-      - if ! @minimal
-        .pull-left.display-inline-fix(ng-hide="editMode")
-          - if @course
-            .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
-              %i.icon-file-alt
-            - prev_activity = @course.prev_published_activity(@activity)
-            - next_activity = @course.next_published_activity(@activity)
-            - if prev_activity
-              = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
-                %i.icon-chevron-left
-            - if next_activity
-              = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
-                %i.icon-chevron-right
-          .btn-circle#show-all
-            %i.icon-resize-full#show-all-icon
-          .btn-circle{onclick: 'window.print()'}
-            %i.icon-print
-        -if admin_user_signed_in?
-          .pull-right
-            = render :partial => 'edit_toolbar'
+      %div(collapse="editMode")
+        - if ! @minimal
+          .pull-left.display-inline-fix
+            - if @course
+              .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
+                %i.icon-file-alt
+              - prev_activity = @course.prev_published_activity(@activity)
+              - next_activity = @course.next_published_activity(@activity)
+              - if prev_activity
+                = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
+                  %i.icon-chevron-left
+              - if next_activity
+                = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
+                  %i.icon-chevron-right
+            .btn-circle#show-all
+              %i.icon-resize-full#show-all-icon
+            .btn-circle{onclick: 'window.print()'}
+              %i.icon-print
+          -if admin_user_signed_in?
+            .pull-right
+              %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()")
+                Edit
 
-        .pull-right.display-inline-fix(ng-hide="editMode")
-          = render 'layouts/social_buttons', media_object: @activity
+          .pull-right.display-inline-fix
+            = render 'layouts/social_buttons', media_object: @activity
+      %div.pull-right(collapse="!editMode")
+        .btn-toolbar
+          .btn-group
+            %button#edit-undo.btn.btn-secondary(ng-click="undo()" ng-disabled="! undoAvailable()"){type: 'button'}
+              %i.icon-undo
+              Undo
+            %button#edit-redo.btn.btn-secondary(ng-click="redo()" ng-disabled="! redoAvailable()"){type: 'button'}
+              Redo
+              %i.icon-repeat
+
 
   .row.printable.printable-column
     .span12
@@ -118,4 +130,17 @@
                       %li Keep up to date with our latest recipes
                   .popup-bottom-close
                     %i.icon-remove
+
+#cancel-modal.modal.hide.fast{tabindex: '-1', role: 'dialog', style: "z-index: 2000"}
+  .modal-header
+    %button.close{type: 'button', data: {dismiss: 'modal'}}
+      x
+    .modal-body
+      Do you really want to abandon all of your changes?
+    .modal-footer
+      %button.btn.btn-success{data: {dismiss: 'modal'}}
+        No !!
+      %button.btn.btn-danger(ng-click="cancelEditMode()"){data: {dismiss: 'modal'}}
+        Yes
+
 

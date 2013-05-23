@@ -119,12 +119,16 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
 
   $scope.heroImageURL = (width) ->
-    url = JSON.parse($scope.activity.image_id).url
-    url + "/convert?fit=max&w=#{width}&cache=true"
+    url = ""
+    if $scope.hasHeroImage()
+      url = JSON.parse($scope.activity.image_id).url
+      url + "/convert?fit=max&w=#{width}&cache=true"
 
   $scope.featuredImageURL = (width) ->
-    url = JSON.parse($scope.activity.featured_image_id).url
-    url + "/convert?fit=max&w=#{width}&cache=true"
+    url = ""
+    if $scope.hasFeaturedImage()
+      url = JSON.parse($scope.activity.featured_image_id).url
+      url + "/convert?fit=max&w=#{width}&cache=true"
 
   $scope.heroDisplayType = ->
     return "video" if $scope.hasHeroVideo()

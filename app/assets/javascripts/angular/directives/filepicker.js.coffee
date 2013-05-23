@@ -24,7 +24,7 @@ angular.module('ChefStepsApp').directive 'csfilepicker', ->
         console.log("FILEPICKER ERROR CODE: " + errorCode))
 
     $scope.hasFile = ->
-      $scope.ngModel.$modelValue.length > 0
+      $scope.ngModel.$modelValue? && ($scope.ngModel.$modelValue.length > 0)
 
     $scope.removeFile = ->
       $scope.ngModel.$setViewValue("")

@@ -1,35 +1,17 @@
-#edit-group
-  %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()" ng-hide="editMode")
-    Edit
-  .btn-toolbar(ng-show="editMode")
+#edit-group.pull-right(ng-cloak="")
+  .btn-toolbar
     .btn-group(data-toggle="buttons-radio")
       %button.btn(type="button" ng-click="activity.published='false'" ng-class="{active: activity.published == false}")
         Private
       %button.btn(type="button" ng-click="activity.published='true'" ng-class="{active: activity.published == true}")
         Published
     .btn-group
-      %button#edit-meta.btn.btn-primary(type="button" ng-model="editMeta" btn-checkbox="")
-        Meta
-    .btn-group
-      %button#edit-undo.btn.btn-secondary(ng-click="undo()" ng-disabled="! undoAvailable()"){type: 'button'}
-        %i.icon-undo
-      %button#edit-redo.btn.btn-secondary(ng-click="redo()" ng-disabled="! redoAvailable()"){type: 'button'}
-        %i.icon-repeat
-    .btn-group
-      %button#edit-save.btn.btn-primary(type='button' ng-click="endEditMode()" ng-show="editMode")
-        Save
+      %button#edit-meta.btn.btn-link(type="button" ng-model="editMeta" btn-checkbox="")
+        Options ...
     .btn-group
       %button#edit-cancel.btn.btn-link{type: 'button', data: {toggle: 'modal', target: '#cancel-modal'}}
         Cancel
+    .btn-group
+      %button#edit-save.btn.btn-primary(type='button' ng-click="endEditMode()" ng-show="editMode")
+        Save
 
-#cancel-modal.modal.hide.fast{tabindex: '-1', role: 'dialog'}
-  .modal-header
-    %button.close{type: 'button', data: {dismiss: 'modal'}}
-      x
-    .modal-body
-      Do you really want to abandon all of your changes?
-    .modal-footer
-      %button.btn.btn-success{data: {dismiss: 'modal'}}
-        No !!
-      %button.btn.btn-danger(ng-click="cancelEditMode()"){data: {dismiss: 'modal'}}
-        Yes
