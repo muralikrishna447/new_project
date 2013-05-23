@@ -1,5 +1,8 @@
 .span6.section#video-ingredient-unit
 
+  %div(collapse="! (editMode && editMeta)")
+    = render 'metadata'
+
   .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
     = render 'hero_visual', activity: activity
 
@@ -88,9 +91,6 @@
           %li= link_to activity.title.html_safe, activity
 
 .span6
-  %div(collapse="! (editMode && editMeta)")
-    = render 'metadata'
-
   .section.scroll-shadow-wrapper
     .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
       .scroll-shadow-content.pull-left
