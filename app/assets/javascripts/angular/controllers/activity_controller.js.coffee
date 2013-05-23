@@ -60,12 +60,15 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.$on 'maybe_save_undo', ->
     $scope.addUndo()
 
-  # Hero video/image stuff
+  # Video/image stuff
   $scope.hasHeroVideo = ->
     $scope.activity.youtube_id? && $scope.activity.youtube_id
 
   $scope.hasHeroImage = ->
     $scope.activity.image_id? && $scope.activity.image_id
+
+  $scope.hasFeaturedImage = ->
+    $scope.activity.featured_image_id? && $scope.activity.featured_image_id
 
   $scope.heroVideoURL = ->
     autoplay = if $scope.url_params.autoplay then "1" else "0"
@@ -75,8 +78,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
 
   $scope.heroImageURL = (width) ->
-    console.log $scope.activity.image_id
     url = JSON.parse($scope.activity.image_id).url
+    url + "/convert?fit=max&w=#{width}&cache=true"
+
+  $scope.featuredImageURL = (width) ->
+    url = JSON.parse($scope.activity.featured_image_id).url
     url + "/convert?fit=max&w=#{width}&cache=true"
 
   $scope.heroDisplayType = ->
