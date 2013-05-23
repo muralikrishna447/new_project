@@ -1,7 +1,7 @@
 @import 'mixins'
 
 .top-container
-  margin-top: 56px
+  margin-top: 76px
 
 #main-container
   margin-top: 70px
@@ -744,6 +744,11 @@ ul.equipment
     background: gray
     @include transition(all 100ms)
 
+.btn-secondary[disabled]
+  -webkit-box-shadow: 0 3px 0px -1px #999
+  -moz-box-shadow: 0 3px 0px -1px #999
+  box-shadow: 0 3px 0px -1px #999999
+
 .btn-gray
   background: $light-gray
   border: none
@@ -843,6 +848,10 @@ ul.equipment
 
 /* Navbar */
 .navbar-fixed-top
+  /* http://stackoverflow.com/questions/11926028/bootstrap-dropdown-in-collapse */
+  #editMode
+    height: auto
+    overflow:  visible
   .navbar-inner
     box-shadow: none
     background-image: none
@@ -1055,6 +1064,9 @@ ul.equipment
 
 // WYSIWYG EDITING
 
+#edit-mode
+  margin-top: 10px
+  margin-left: 10px
 
 .edit-pair, .edit-pair-show, .edit-pair-edit
   width: 100%
@@ -1069,8 +1081,6 @@ ul.equipment
   z-index: 1000
 
 #edit-group
-  margin-left: 20px
-  margin-top: 11px
 
   i
     font-size: 18px
@@ -1120,9 +1130,9 @@ csingredienteditpair
 
     .ingredient-title
       width: 80%
-      input:first-child
+      select
         width: 55%
-      input:last-child
+      input
         width: 44%
 
     .quantity-group
@@ -1134,25 +1144,30 @@ csingredienteditpair
 .no-bullet
   list-style-type: none
 
-.basicfade-enter-setup, .basicfade-leave-setup, .basicfade-move-setup
-  -webkit-transition: .25s linear all
-  -moz-transition: .25s linear all
-  -o-transition: .25s linear all
-  transition: .25s linear all
+.meta-edit
+  border: 1px solid $offwhite
+  padding:  10px
+  margin-bottom: 15px
 
-.basicfade-enter-setup
-  opacity: 0
+.editbar-enter-setup, .editbar-leave-setup
+  -webkit-transition: all linear 0.5s
+  -moz-transition: all linear 0.5s
+  -o-transition: all linear 0.5s
+  transition: all linear 0.5s
 
-.basicfade-enter-start
-  opacity: 1
+.editbar-enter-setup
+  position: absolute
+  left: 100%
 
-.basicfade-leave-setup
-  opacity: 1
+.editbar-enter-start
+  left: 0
 
-.basicfade-leave-start
-  opacity: 0
+.editbar-leave-setup
+  position: absolute
+  left: 0
 
-
+.editbar-leave-start
+  left: -100%
 
 
 // Making this match h1. I tried @including h1 but that was a no go.

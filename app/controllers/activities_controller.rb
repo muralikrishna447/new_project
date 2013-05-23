@@ -32,7 +32,7 @@ class ActivitiesController < ApplicationController
   end
 
   def show
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -72,7 +72,7 @@ class ActivitiesController < ApplicationController
   end
 
   def get_as_json
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -83,6 +83,7 @@ class ActivitiesController < ApplicationController
       format.json {
         render :json => @activity.to_json(
           include: {
+              tags: {},
               equipment: {
                 only: :optional,
                 include: {
@@ -111,15 +112,27 @@ class ActivitiesController < ApplicationController
       format.json do
 
         @activity.store_revision do
+          puts JSON.pretty_generate(params)
           @activity.last_edited_by = current_admin_user
           @activity.update_equipment_json(params[:activity].delete(:equipment))
           @activity.update_ingredients_json(params[:activity].delete(:ingredients))
+          # Why on earth is tags the only thing not root wrapped??
+          @activity.tag_list = params.delete(:tags).map { |t| t[:name]}
           @activity.attributes = params[:activity]
           @activity.save!
         end
 
         head :no_content
       end
+    end
+  end
+
+  def get_all_tags
+    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + params[:q] + '%').all
+    respond_to do |format|
+      format.json {
+        render :json => result.to_json()
+      }
     end
   end
 

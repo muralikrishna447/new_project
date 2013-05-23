@@ -9,7 +9,6 @@ angular.module('ChefStepsApp').directive 'csmonitorinputactivity', ->
 
     $scope.$watch $scope.hasFocus, ((newValue, oldValue) ->
       $scope.hasActiveInputs = (newValue > 0)
-      console.log newValue
     ), true
 
   ]

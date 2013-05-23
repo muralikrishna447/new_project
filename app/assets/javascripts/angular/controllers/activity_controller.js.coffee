@@ -8,6 +8,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.activity = Activity.get($scope.url_params)
   $scope.undoStack = []
   $scope.undoIndex = -1
+  $scope.editMeta = false
 
   # Overall edit mode
   $scope.startEditMode = ->
@@ -30,6 +31,12 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     if $scope.undoAvailable
       $scope.activity = deepCopy $scope.undoStack[0]
     $scope.postEndEditMode()
+
+  # Tweak to let dropdowns leak out of collapse when not collapsed
+  $scope.toolbarBonusStyle = ->
+    s = {}
+    s = {overflow: "visible"} if ! $scope.editMode
+    s
 
   # Undo/redo TODO: could be a service I think
   $scope.undo = ->
@@ -59,12 +66,56 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.$on 'maybe_save_undo', ->
     $scope.addUndo()
 
-  # Hero video/image stuff
+  # Activity types
+  $scope.activityTypes = ["Recipe", "Science", "Technique"]
+
+  $scope.hasActivityType = (t) ->
+    _.contains($scope.activity.activity_type, t)
+
+  $scope.toggleActivityType = (t) ->
+    if $scope.hasActivityType(t)
+      $scope.activity.activity_type = _.without($scope.activity.activity_type, t)
+    else
+      $scope.activity.activity_type = _.union($scope.activity.activity_type, [t])
+
+
+  # Tags
+  $scope.tagsSelect2 =
+
+    placeholder: "Add some tags"
+    tags: true
+    multiple: true
+    width: "100%"
+
+    ajax:
+      url: "/activities/all_tags.json",
+      data: (term, page) ->
+        return {
+          q: term
+        }
+
+      results: (data, page) ->
+        return {results: data}
+
+    formatResult: (tag) ->
+      tag.name
+
+    formatSelection: (tag) ->
+      tag.name
+
+    createSearchChoice: (term, data) ->
+      id: term
+      name: term
+
+  # Video/image stuff
   $scope.hasHeroVideo = ->
     $scope.activity.youtube_id? && $scope.activity.youtube_id
 
   $scope.hasHeroImage = ->
     $scope.activity.image_id? && $scope.activity.image_id
+
+  $scope.hasFeaturedImage = ->
+    $scope.activity.featured_image_id? && $scope.activity.featured_image_id
 
   $scope.heroVideoURL = ->
     autoplay = if $scope.url_params.autoplay then "1" else "0"
@@ -74,9 +125,16 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
 
   $scope.heroImageURL = (width) ->
-    console.log $scope.activity.image_id
-    url = JSON.parse($scope.activity.image_id).url
-    url + "/convert?fit=max&w=#{width}&cache=true"
+    url = ""
+    if $scope.hasHeroImage()
+      url = JSON.parse($scope.activity.image_id).url
+      url + "/convert?fit=max&w=#{width}&cache=true"
+
+  $scope.featuredImageURL = (width) ->
+    url = ""
+    if $scope.hasFeaturedImage()
+      url = JSON.parse($scope.activity.featured_image_id).url
+      url + "/convert?fit=max&w=#{width}&cache=true"
 
   $scope.heroDisplayType = ->
     return "video" if $scope.hasHeroVideo()
@@ -159,6 +217,28 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       r.unshift({title: ingredient_name})
       r
 
+  # Not currently used - maybe come back to it
+  $scope.ingredientSelect2 =
+    ajax:
+      url: "/ingredients.json?q=a",
+      data: (term, page) ->
+        return {
+          q: term
+        }
+
+      results: (data, page) ->
+        return {results: data}
+
+    formatResult: (ingredient) ->
+      ingredient.title
+
+    formatSelection: (ingredient) ->
+      ingredient.title
+
+    initSelection: (element, callback) ->
+      callback(angular.element(element).scope().ai.ingredient)
+
+    width: "element"
 
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
