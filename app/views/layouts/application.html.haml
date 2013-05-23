@@ -10,6 +10,7 @@
     %meta{name: 'keywords', content: yield(:keywords)}
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1'}
     = yield :facebook_og
+    = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
     / YouTube Iframe API can't be loaded async so we have to load it directly

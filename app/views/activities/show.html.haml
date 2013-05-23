@@ -12,6 +12,15 @@
     %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.image_id)}
   - elsif @activity.featured_image_id?
     %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.featured_image_id)}
+- content_for :twitter_cards do
+  %meta{property: 'twitter:card', content: 'summary_large_image'}
+  %meta{property: 'twitter:site', content: '@chefsteps'}
+  %meta{property: 'twitter:title', content: @activity.title.html_safe }
+  %meta{property: 'twitter:description', content: @activity.description}
+  - if @activity.image_id?
+    %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.image_id)}
+  - elsif @activity.featured_image_id?
+    %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.featured_image_id)}
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()"}
 
 
