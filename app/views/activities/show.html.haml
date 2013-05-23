@@ -13,7 +13,6 @@
   - elsif @activity.featured_image_id?
     %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.featured_image_id)}
 - content_for :twitter_cards do
-  %meta{property: 'twitter:card', content: 'summary_large_image'}
   %meta{property: 'twitter:site', content: '@chefsteps'}
   %meta{property: 'twitter:title', content: @activity.title.html_safe }
   %meta{property: 'twitter:description', content: @activity.description}
@@ -21,6 +20,13 @@
     %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.image_id)}
   - elsif @activity.featured_image_id?
     %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.featured_image_id)}
+  - if @activity.youtube_id?
+    %meta{property: 'twitter:card', content: 'player'}
+    %meta{property: 'twitter:player', content: "https://www.youtube.com/embed/#{@activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720"}
+    %meta{property: 'twitter:player:height', content: '270'}
+    %meta{property: 'twitter:player:width', content: '480'}
+  - else
+    %meta{property: 'twitter:card', content: 'summary_large_image'}
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()"}
 
 
