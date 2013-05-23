@@ -6,6 +6,15 @@
       .lead
         = @upload.notes
     .span6.section
+      %div
+        = form_for Like.new do |f|
+          = f.hidden_field :likeable_id, value: @upload.id
+          = f.hidden_field :likeable_type, value: @upload.class
+          / = f.submit @upload.likes.count
+          = link_to 'javascript:void(0);', onclick: "$('#new_like').submit()", class: 'btn btn-primary' do
+            %i.icon-star
+            = @upload.likes.count
+
       %p= "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this creation when they completed the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'www.chefsteps.com'}.".html_safe
       %p= "#{time_ago_in_words(@upload.created_at)} ago."
       = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.recipe_name} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do

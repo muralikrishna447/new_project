@@ -3,4 +3,6 @@ class Upload < ActiveRecord::Base
   belongs_to :course
   belongs_to :activity
   belongs_to :user
+
+  has_many :likes, as: :likeable
 end

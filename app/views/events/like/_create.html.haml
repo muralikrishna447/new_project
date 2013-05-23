@@ -1,0 +1,7 @@
+- direction = direction || 'left'
+.timeline-text-only{data: {direction: direction}}
+  .timeline-text-only-text.text-center
+    %div
+      = "You liked the #{link_to event.trackable.likeable.class, event.trackable.likeable}.".html_safe
+    %div
+      = time_ago_in_words(event.created_at) + ' ago'
