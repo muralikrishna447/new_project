@@ -66,6 +66,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.$on 'maybe_save_undo', ->
     $scope.addUndo()
 
+  # Gray out a section if the contents are empty
+  $scope.disableIf = (condition) ->
+    if condition then "disabled-section" else ""
+
   # Activity types
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
 

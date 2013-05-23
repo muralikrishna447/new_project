@@ -30,9 +30,9 @@
     .span6.relative
       %csEditPair
         %csEditPairShow
-          %h1.activity-title(ng-bind-html-unsafe="activity.title"){itemprop: 'name'}
+          %h1.activity-title(ng-bind-html-unsafe="activity.title || 'Add title...'" itemprop='name' ng-class="disableIf(! activity.title.length)")
         %csEditPairEdit
-          = text_area_tag :title, "", {class: "nohtml", rows: "2", data: {:'ng-model' => "activity.title"}}
+          %textarea.nohtml(name="title" rows=2 data-ng-model="activity.title" placeholder="Add title...")
 
     .span6.noprint
 

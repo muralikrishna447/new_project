@@ -1149,26 +1149,8 @@ csingredienteditpair
   padding:  10px
   margin-bottom: 15px
 
-.editbar-enter-setup, .editbar-leave-setup
-  -webkit-transition: all linear 0.5s
-  -moz-transition: all linear 0.5s
-  -o-transition: all linear 0.5s
-  transition: all linear 0.5s
-
-.editbar-enter-setup
-  position: absolute
-  left: 100%
-
-.editbar-enter-start
-  left: 0
-
-.editbar-leave-setup
-  position: absolute
-  left: 0
-
-.editbar-leave-start
-  left: -100%
-
+.disabled-section
+  color: $light-gray
 
 // Making this match h1. I tried @including h1 but that was a no go.
 *[data-ng-model='activity.title']

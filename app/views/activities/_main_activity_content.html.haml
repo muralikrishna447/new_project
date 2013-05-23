@@ -14,10 +14,10 @@
           .activity-description-overlay(ng-hide="activity.description.length < 455")
         .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
           = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
-      %button.btn.btn-small.add-section(ng-show="editMode && (!activity.description)")
-        Add Description
+      %div.disabled-section(ng-show="editMode && (!activity.description)")
+        Add description...
     %csEditPairEdit
-      %textarea(ng-model="activity.description" rows="5")
+      %textarea(ng-model="activity.description" rows="5" placeholder="Add description...")
 
   .section.csmonitorinputactivity
     .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
@@ -34,51 +34,43 @@
   .section
     %csEditPair
       %csEditPairShow
-        %div(ng-show="!!activity.yield")
+        %div(ng-show="!!activity.yield  || editMode" ng-class="disableIf(! activity.yield)")
           %h4 Yield
-          %span(itemprop="recipeYield" ng-bind="activity.yield"){data: {:"orig-value" => "{{activity.yield}}"}}
-        %button.btn.btn-small.add-section(ng-show="editMode && (!activity.yield)")
-          Add Yield
+          %span(itemprop="recipeYield" ng-bind="activity.yield || 'Add yield info...' "){data: {:"orig-value" => "{{activity.yield}}"}}
 
       %csEditPairEdit
         %h4 Yield
-        = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
+        %input(type="text" ng-model="activity.yield" placeholder="Add yield info..." )
 
   .section
     %csEditPair
       %csEditPairShow
-        %div(ng-show="!!activity.timing")
+        %div(ng-show="!!activity.timing || editMode" ng-class="disableIf(! activity.timing)")
           %h4 Timing
-          %span(ng-bind="activity.timing")
-        %button.btn.btn-small.add-section(ng-show="editMode && (!activity.timing)")
-          Add Timing
+          %span(ng-bind="activity.timing || 'Add timing info...' ")
 
       %csEditPairEdit
         %h4 Timing
-        = text_field_tag :timing, "", {data: {:'ng-model' => "activity.timing"}}
+        %input(type="text" ng-model="activity.timing" placeholder="Add timing info..." )
 
   .section.csmonitorinputactivity
-    %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
+    %h4(ng-show="hasRequiredEquipment() || editMode" ng-class="disableIf(! hasRequiredEquipment())") Equipment and Materials
     %ul.equipment(ui-sortable="sortOptions" ng-model="activity.equipment")
       %li.relative(ng-repeat="item in activity.equipment | filter:requiredEquipment")
         %csEquipmentEditPair(csOptional="false")
-    .nav
-      %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasRequiredEquipment()" ng-click="addEquipment(false)")
-        Add Required Equipment
-      %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasRequiredEquipment()" ng-click="addEquipment(false)")
+    .nav(ng-show="editMode")
+      %button.btn.btn-small.btn-basic.add-item(ng-click="addEquipment(false)")
         +
       %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
         Done
 
   .section.csmonitorinputactivity
-    %h4(ng-show="hasOptionalEquipment()") Optional Equipment and Materials
+    %h4(ng-show="hasOptionalEquipment() || editMode" ng-class="disableIf(! hasOptionalEquipment())") Optional Equipment and Materials
     %ul.equipment(ui-sortable="sortOptions" ng-model="activity.equipment")
       %li.relative(ng-repeat="item in activity.equipment | filter:optionalEquipment")
         %csEquipmentEditPair(csOptional="true")
-    .nav
-      %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")
-        Add Optional Equipment
-      %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasOptionalEquipment()" ng-click="addEquipment(true)")
+    .nav(ng-show="editMode")
+      %button.btn.btn-small.btn-basic.add-item(ng-click="addEquipment(true)")
         +
       %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
         Done
