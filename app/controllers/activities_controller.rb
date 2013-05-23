@@ -112,9 +112,12 @@ class ActivitiesController < ApplicationController
       format.json do
 
         @activity.store_revision do
+          puts JSON.pretty_generate(params)
           @activity.last_edited_by = current_admin_user
           @activity.update_equipment_json(params[:activity].delete(:equipment))
           @activity.update_ingredients_json(params[:activity].delete(:ingredients))
+          # Why on earth is tags the only thing not root wrapped??
+          @activity.tag_list = params.delete(:tags).map { |t| t[:name]}
           @activity.attributes = params[:activity]
           @activity.save!
         end

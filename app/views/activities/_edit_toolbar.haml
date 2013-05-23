@@ -2,6 +2,11 @@
   %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()" ng-hide="editMode")
     Edit
   .btn-toolbar(ng-show="editMode")
+    .btn-group(data-toggle="buttons-radio")
+      %button.btn(type="button" ng-click="activity.published='false'" ng-class="{active: activity.published == false}")
+        Private
+      %button.btn(type="button" ng-click="activity.published='true'" ng-class="{active: activity.published == true}")
+        Published
     .btn-group
       %button#edit-meta.btn.btn-primary(type="button" ng-model="editMeta" btn-checkbox="")
         Meta
