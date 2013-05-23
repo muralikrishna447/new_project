@@ -1,14 +1,19 @@
 .meta-edit
-  %h4 Metadata
+
+  %h6 Status
   .btn-group(data-toggle="buttons-radio")
     %button.btn(type="button" ng-click="activity.published='false'" ng-class="{active: activity.published == false}")
       Private
     %button.btn(type="button" ng-click="activity.published='true'" ng-class="{active: activity.published == true}")
       Published
+
   %h6 Activity Type
   .btn-toolbar
     %button.btn(ng-repeat="actType in activityTypes" type="button" ng-click="toggleActivityType(actType)" ng-class="{active: hasActivityType(actType)}")
       {{actType}}
+
+  %h6 Tags
+  %input(type="text" ng-model="tags" ng-model="activity.tags" ui-select2="tagsSelect2")
 
   %h6 Featured Image (For Thumbnails)
   %img(ng-show="hasFeaturedImage()" ng-src="{{featuredImageURL(200)}}")

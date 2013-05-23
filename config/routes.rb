@@ -72,6 +72,9 @@ Delve::Application.routes.draw do
       get 'as_json' => 'activities#get_as_json'
       put 'as_json' => 'activities#update_as_json'
     end
+    collection do
+      get 'all_tags' => 'activities#get_all_tags'
+    end
   end
   resources :techniques, only: [:index, :show]
   resources :sciences, only: [:index, :show]

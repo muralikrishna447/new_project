@@ -73,6 +73,34 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.activity.activity_type = _.union($scope.activity.activity_type, [t])
 
 
+  # Tags
+  $scope.tagsSelect2 =
+
+    placeholder: "Add some tags"
+    tags: true
+    multiple: true
+    width: "100%"
+
+    ajax:
+      url: "/activities/all_tags.json",
+      data: (term, page) ->
+        return {
+          q: term
+        }
+
+      results: (data, page) ->
+        return {results: data}
+
+    formatResult: (tag) ->
+      tag.name
+
+    formatSelection: (tag) ->
+      tag.name
+
+    createSearchChoice: (term, data) ->
+      id: term
+      name: term
+
   # Video/image stuff
   $scope.hasHeroVideo = ->
     $scope.activity.youtube_id? && $scope.activity.youtube_id

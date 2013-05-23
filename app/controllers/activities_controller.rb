@@ -124,6 +124,15 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def get_all_tags
+    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + params[:q] + '%').all
+    respond_to do |format|
+      format.json {
+        render :json => result.to_json()
+      }
+    end
+  end
+
   # This is the base feed that we tell feedburner about. Users should never see this.
   # See note in next method.
   def base_feed
