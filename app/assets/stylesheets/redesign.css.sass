@@ -1134,23 +1134,27 @@ csingredienteditpair
 .no-bullet
   list-style-type: none
 
-.basicfade-enter-setup, .basicfade-leave-setup, .basicfade-move-setup
-  -webkit-transition: .25s linear all
-  -moz-transition: .25s linear all
-  -o-transition: .25s linear all
-  transition: .25s linear all
+.basicfade-enter-setup, .basicfade-leave-setup, .basicfade-move-setup, .basicfade-show-setup, .basicfade-hide-setup
+  -webkit-transition: .25s ease-in-out all
+  -moz-transition: .25s ease-in-out all
+  -o-transition: .25s ease-in-out all
+  transition: .25s ease-in-out all
 
-.basicfade-enter-setup
+.basicfade-enter-setup, .basicfade-show-setup
   opacity: 0
 
-.basicfade-enter-start
+.basicfade-enter-start, .basicfade-show-start
   opacity: 1
 
-.basicfade-leave-setup
+.basicfade-leave-setup, .basicfade-hide-setup
   opacity: 1
 
-.basicfade-leave-start
+.basicfade-leave-start, .basicfade-hide-start
   opacity: 0
+
+.meta-edit
+  border: 1px solid $offwhite
+  padding:  10px
 
 
 

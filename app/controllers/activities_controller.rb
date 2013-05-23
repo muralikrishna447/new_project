@@ -32,7 +32,7 @@ class ActivitiesController < ApplicationController
   end
 
   def show
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -72,7 +72,7 @@ class ActivitiesController < ApplicationController
   end
 
   def get_as_json
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end

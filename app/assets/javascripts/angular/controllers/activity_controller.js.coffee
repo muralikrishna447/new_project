@@ -8,6 +8,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.activity = Activity.get($scope.url_params)
   $scope.undoStack = []
   $scope.undoIndex = -1
+  $scope.editMeta = false
 
   # Overall edit mode
   $scope.startEditMode = ->
@@ -159,6 +160,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       r.unshift({title: ingredient_name})
       r
 
+  # Not currently used - maybe come back to it
   $scope.ingredientSelect2 =
     ajax:
       url: "/ingredients.json?q=a",

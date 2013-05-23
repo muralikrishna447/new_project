@@ -87,8 +87,11 @@
         - activity.used_in_activities.published.each do |activity|
           %li= link_to activity.title.html_safe, activity
 
-- cache [activity, 'steps'] do
-  .span6.section.scroll-shadow-wrapper
+.span6
+  %div(collapse="! (editMode && editMeta)")
+    = render 'metadata'
+
+  .section.scroll-shadow-wrapper
     .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
       .scroll-shadow-content.pull-left
         - step_number = 0
@@ -126,6 +129,6 @@
                   .video-container(csenforceaspect)
                     %iframe{src: youtube_url(step.youtube_id)}
 
-    .scroll-overlay-top
-    .scroll-overlay-bottom
+      .scroll-overlay-top
+      .scroll-overlay-bottom
 
