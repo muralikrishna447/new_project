@@ -16,12 +16,12 @@
         %div
           #nav-edit-toolbar(collapse="!editMode")
             = render 'activities/edit_toolbar'
-          %div(collapse="editMode")
+          %div(collapse="editMode" ng-style="toolbarBonusStyle()")
             .nav-collapse.pull-right(collapse="toolbarCollapsed")
               %ul.nav
                 %li.dropdown
                   .nav-item-border
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                  %a.dropdown-toggle
                     Cooking
                     %i.icon-angle-down
                   %ul.dropdown-menu
@@ -30,7 +30,7 @@
                     %li= link_to 'Techniques', techniques_url
                 %li.dropdown
                   .nav-item-border
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                  %a.dropdown-toggle
                     Learning
                     %i.icon-angle-down
                   %ul.dropdown-menu

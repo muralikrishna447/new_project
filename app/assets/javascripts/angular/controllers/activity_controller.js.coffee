@@ -32,6 +32,12 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.activity = deepCopy $scope.undoStack[0]
     $scope.postEndEditMode()
 
+  # Tweak to let dropdowns leak out of collapse when not collapsed
+  $scope.toolbarBonusStyle = ->
+    s = {}
+    s = {overflow: "visible"} if ! $scope.editMode
+    s
+
   # Undo/redo TODO: could be a service I think
   $scope.undo = ->
     if $scope.undoAvailable
