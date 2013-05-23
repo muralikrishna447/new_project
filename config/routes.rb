@@ -103,6 +103,7 @@ Delve::Application.routes.draw do
   resources :users do
     resources :uploads
   end
+  resources :likes, only: [:create]
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'

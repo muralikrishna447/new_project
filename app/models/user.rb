@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :activities, through: :uploads
 
   has_many :events
+  has_many :likes
 
   serialize :viewed_activities, Array
 
