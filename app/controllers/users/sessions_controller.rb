@@ -16,12 +16,14 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def signin_and_enroll
-    @user = User.find(params[:user_id])
-    @course = Course.find(params[:course_id])
-    sign_in @user
-    @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
-    if @enrollment.save
-      redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Course!"
+    @user = User.find_for_authentication(email: params[:email])
+    if @user.valid_password?(params[:password])
+      @course = Course.find(params[:course_id])
+      sign_in @user
+      @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
+      if @enrollment.save
+        redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Course!"
+      end
     end
   end
 
