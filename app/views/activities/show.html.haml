@@ -69,7 +69,7 @@
               %i.icon-resize-full#show-all-icon
             .btn-circle{onclick: 'window.print()'}
               %i.icon-print
-          -if admin_user_signed_in?
+          -if admin_user_signed_in? && @include_edit_toolbar
             .pull-right
               %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()")
                 Edit

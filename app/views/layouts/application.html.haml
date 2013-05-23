@@ -26,7 +26,7 @@
     = render 'layouts/google_analytics' if Rails.env.production?
     = javascript_include_tag 'application_head'
 
-  %body{@body_tag_attributes || {}}
+  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}}
     = render 'layouts/navigation', external: false
 
     .container
