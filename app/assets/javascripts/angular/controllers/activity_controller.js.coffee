@@ -60,6 +60,19 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.$on 'maybe_save_undo', ->
     $scope.addUndo()
 
+  # Activity types
+  $scope.activityTypes = ["Recipe", "Science", "Technique"]
+
+  $scope.hasActivityType = (t) ->
+    _.contains($scope.activity.activity_type, t)
+
+  $scope.toggleActivityType = (t) ->
+    if $scope.hasActivityType(t)
+      $scope.activity.activity_type = _.without($scope.activity.activity_type, t)
+    else
+      $scope.activity.activity_type = _.union($scope.activity.activity_type, [t])
+
+
   # Video/image stuff
   $scope.hasHeroVideo = ->
     $scope.activity.youtube_id? && $scope.activity.youtube_id

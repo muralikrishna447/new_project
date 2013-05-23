@@ -83,6 +83,7 @@ class ActivitiesController < ApplicationController
       format.json {
         render :json => @activity.to_json(
           include: {
+              tags: {},
               equipment: {
                 only: :optional,
                 include: {
