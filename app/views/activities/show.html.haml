@@ -12,6 +12,21 @@
     %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.image_id)}
   - elsif @activity.featured_image_id?
     %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.featured_image_id)}
+- content_for :twitter_cards do
+  %meta{property: 'twitter:site', content: '@chefsteps'}
+  %meta{property: 'twitter:title', content: @activity.title.html_safe }
+  %meta{property: 'twitter:description', content: @activity.description}
+  - if @activity.image_id?
+    %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.image_id)}
+  - elsif @activity.featured_image_id?
+    %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.featured_image_id)}
+  - if @activity.youtube_id?
+    %meta{property: 'twitter:card', content: 'player'}
+    %meta{property: 'twitter:player', content: "https://www.youtube.com/embed/#{@activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720"}
+    %meta{property: 'twitter:player:height', content: '270'}
+    %meta{property: 'twitter:player:width', content: '480'}
+  - else
+    %meta{property: 'twitter:card', content: 'summary_large_image'}
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()"}
 
 
@@ -54,7 +69,7 @@
               %i.icon-resize-full#show-all-icon
             .btn-circle{onclick: 'window.print()'}
               %i.icon-print
-          -if admin_user_signed_in?
+          -if admin_user_signed_in? && @include_edit_toolbar
             .pull-right
               %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()")
                 Edit
@@ -110,7 +125,7 @@
 
 - content_for :popup_bottom do
   - if ! ENV["CS_NO_POPUP"]
-    - if @viewed_activities && @viewed_activities.count > 2 && current_user.nil?
+    - if @viewed_activities && @viewed_activities.count > 1 && current_user.nil?
       .container-fluid.popup-bottom(ng-hide="editMode")
         .row-fluid
           .container
@@ -118,8 +133,8 @@
               .span12
                 .row
                   .span5.offset1
-                    %h3= ab_test 'bottom_popup_copy_1', 'Join the Community', 'Cook Better Than You Ever Thought Possible', 'Learn How to Be a Better Cook'
-                    = form_tag welcome_url, :method => :get do
+                    %h3 Cook Better Than You Ever Thought Possible
+                    = form_tag new_user_registration_url, :method => :get do
                       = email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
                       = hidden_field_tag :signed_up_from, 'bottom_popup_cta'
                       = submit_tag 'Sign Up Now', class: 'btn btn-secondary', id: 'subscribe-email'

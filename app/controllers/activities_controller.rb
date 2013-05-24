@@ -63,6 +63,10 @@ class ActivitiesController < ApplicationController
         @viewed_activities << [@activity.id, DateTime.now]
         cookies[:viewed_activities] = @viewed_activities.to_json
 
+        if ! @course
+          @include_edit_toolbar = true
+        end
+
         # If this is a crawler, render a basic HTML page for SEO that doesn't depend on Angular
         if params.has_key?(:'_escaped_fragment_')
           render template: 'activities/static_html'
@@ -117,7 +121,8 @@ class ActivitiesController < ApplicationController
           @activity.update_equipment_json(params[:activity].delete(:equipment))
           @activity.update_ingredients_json(params[:activity].delete(:ingredients))
           # Why on earth is tags the only thing not root wrapped??
-          @activity.tag_list = params.delete(:tags).map { |t| t[:name]}
+          tags = params.delete(:tags)
+          @activity.tag_list = tags.map { |t| t[:name]} if tags
           @activity.attributes = params[:activity]
           @activity.save!
         end

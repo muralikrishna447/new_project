@@ -104,10 +104,10 @@ window.wysiwygDeactivatedCallback = (elem) ->
   adjustActivityLayout()
 
 $ ->
-  # User Registration popup shows up after viewing 3 activities
+  # User Registration popup shows up after viewing 2 activities
   popup_bottom = $('.popup-bottom')
   if popup_bottom.is('*')
-    popup_bottom.addClass 'popup-bottom-show', 1000
+    popup_bottom.delay(5000).addClass 'popup-bottom-show', 1000
 
     $('.popup-bottom-close').click ->
       popup_bottom.removeClass 'popup-bottom-show', 500

@@ -9,19 +9,20 @@
           /   .logo-block
           /     .logo-text ChefSteps
           /     .logo-subtext cook connected
-        %button.btn.btn-navbar(ng-click="toolbarCollapsed = ! toolbarCollapsed"){style: 'float: right;'}
+        %button.btn.btn-navbar{style: 'float: right', data: {toggle: 'collapse', target: '.nav-collapse'}}
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
         %div
-          #nav-edit-toolbar(collapse="!editMode")
-            = render 'activities/edit_toolbar'
-          %div(collapse="editMode" ng-style="toolbarBonusStyle()")
-            .nav-collapse.pull-right(collapse="toolbarCollapsed")
+          -if @include_edit_toolbar
+            #nav-edit-toolbar(collapse="!editMode")
+              = render 'activities/edit_toolbar'
+          %div(ng-style="toolbarBonusStyle()"){collapse: ("editMode" if @include_edit_toolbar)}
+            .nav-collapse.collapse.pull-right
               %ul.nav
                 %li.dropdown
                   .nav-item-border
-                  %a.dropdown-toggle
+                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
                     Cooking
                     %i.icon-angle-down
                   %ul.dropdown-menu
@@ -30,7 +31,7 @@
                     %li= link_to 'Techniques', techniques_url
                 %li.dropdown
                   .nav-item-border
-                  %a.dropdown-toggle
+                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
                     Learning
                     %i.icon-angle-down
                   %ul.dropdown-menu

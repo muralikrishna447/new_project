@@ -8,6 +8,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.activity = Activity.get($scope.url_params)
   $scope.undoStack = []
   $scope.undoIndex = -1
+  $scope.editMode = false
+  $scope.editMeta = false
 
   # Overall edit mode
   $scope.startEditMode = ->
@@ -34,6 +36,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.postEndEditMode()
 
   # Tweak to let dropdowns leak out of collapse when not collapsed
+  # http://stackoverflow.com/questions/11926028/bootstrap-dropdown-in-collapse
   $scope.toolbarBonusStyle = ->
     s = {}
     s = {overflow: "visible"} if ! $scope.editMode
