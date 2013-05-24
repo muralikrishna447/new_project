@@ -31,3 +31,20 @@ $ ->
   #     last_hidden.removeClass 'hide-course-navbar-item'
   #   if hidden_items.length == 1
   #     toggle_button.find('i').attr 'class', 'icon-chevron-right'
+
+  enroll_section = $('#enroll-section')
+  signup_or_signin_section = $('#signup-or-signin-section')
+  signup_and_enroll_section = $('#signup-and-enroll-section')
+  signin_and_enroll_section = $('#signin-and-enroll-section')
+  $('#enroll-section-btn').click ->
+    enroll_section.hide()
+    signup_or_signin_section.show()
+
+    $('#signup-and-enroll-btn').click ->
+      signup_or_signin_section.hide()
+      signup_and_enroll_section.show()
+
+    $('#signin-and-enroll-btn').click ->
+      signup_or_signin_section.hide()
+      signin_and_enroll_section.show()
+

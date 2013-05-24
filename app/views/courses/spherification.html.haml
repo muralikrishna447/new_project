@@ -27,9 +27,15 @@
         - else
           .flat-form.section
             %h2 Enroll for free now
-            .section
-              = link_to 'Enroll', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block'
-            .section.hide#signup-and-enroll
+            .section#enroll-section
+              = link_to 'Enroll', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block', id: 'enroll-section-btn'
+            .section.hide#signup-or-signin-section
+              .row-fluid
+                .span6
+                  = link_to 'Create an Account', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block', id: 'signup-and-enroll-btn'
+                .span6
+                  = link_to 'Sign In', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block', id: 'signin-and-enroll-btn'
+            .section.hide#signup-and-enroll-section
               = form_for @new_user, url: signup_and_enroll_path, method: :post, class: 'form-inline' do |f|
                 = hidden_field_tag :course_id, @course.id
                 = f.text_field :name, {placeholder: 'name', required: true, class: 'input-block-level'}
@@ -38,7 +44,7 @@
                   = f.password_field :password, {placeholder: 'password', required: true, class: 'input-block-level'}
                   = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'user-password-show'
                 = f.submit 'Create Account and Enroll', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
-            .section.hide#signin-and-enroll
+            .section.hide#signin-and-enroll-section
               = form_tag signin_and_enroll_path, method: :post do
                 = hidden_field_tag :course_id, @course.id
                 = text_field_tag :email, nil, placeholder: 'email', class: 'input-block-level'
