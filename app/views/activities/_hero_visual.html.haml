@@ -1,24 +1,24 @@
-%csEditPair
-  %csEditPairShow
-    %div(ng-switch="" on="heroDisplayType()" )
-      .transparent-target(ng-show="editMode")
-      %iframe.noprint(ng-switch-when="video" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect)
-      %img(ng-switch-when="image" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
-      %button.btn.btn-small.add-section(ng-switch-when="add_button")
-        Add Hero Video or Image
 
-  %csEditPairEdit
-    %div(style="width: 100%;" ng-style="setHeight()" csenforceaspect)
-      .row
-        .span6
-          %h5
-            Youtube ID
-          = text_field_tag :youtube_id, "", {data: {:'ng-model' => "activity.youtube_id"}}
-      .row
-        .span6
-          %h5
-            &hellip; or Hero Image
-          %img(ng-show="hasHeroImage()" ng-src="{{heroImageURL(300)}}")
-      .row
-        .csfilepicker.span6(ng-model="activity.image_id")
+
+.hero-visual
+  %iframe.noprint(ng-show="heroDisplayType() == 'video'" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect)
+  %img(ng-show="heroDisplayType() == 'image'" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
+
+  %div.disabled-section(ng-show="(heroDisplayType() == 'none')" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
+    Add main video or image ...
+  .btn.btn-secondary.edit-hint(ng-show="editMode && (heroDisplayType() != 'none')" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
+    %i.icon-edit
+    Edit
+    %i.icon-chevron-up(ng-show="showHeroVisualEdit")
+    %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
+
+%div(collapse="! showHeroVisualEdit")
+  %div
+    .row
+      .span3
+        %h5 Youtube ID
+        = text_field_tag :youtube_id, "", {data: {:'ng-model' => "activity.youtube_id"}}
+      .span3
+        %h5 &hellip; or  Image
+        .csfilepicker(ng-model="activity.image_id")
 

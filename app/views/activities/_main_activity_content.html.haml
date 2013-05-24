@@ -23,10 +23,9 @@
     .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
       .well(ng-show="activity.ingredients.length" )
         = render 'ingredients_list'
-    .nav
-      %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! activity.ingredients.length" ng-click="addIngredient()")
-        Add Ingredient
-      %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && activity.ingredients.length" ng-click="addIngredient()")
+    .nav(ng-show="editMode")
+      %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
+      %button.btn.btn-small.btn-basic.add-item(ng-click="addIngredient()")
         +
       %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
         Done

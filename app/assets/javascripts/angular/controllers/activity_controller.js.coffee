@@ -8,11 +8,12 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.activity = Activity.get($scope.url_params)
   $scope.undoStack = []
   $scope.undoIndex = -1
-  $scope.editMeta = false
 
   # Overall edit mode
   $scope.startEditMode = ->
     $scope.editMode = true
+    $scope.editMeta = false
+    $scope.showHeroVisualEdit = false
     $scope.undoStack = [deepCopy $scope.activity]
     $scope.undoIndex = 0
     $timeout ->
@@ -143,7 +144,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.heroDisplayType = ->
     return "video" if $scope.hasHeroVideo()
     return "image" if $scope.hasHeroImage()
-    return "add_button" if $scope.editMode
+    return "none"
 
   $scope.sortOptions = {
     axis: 'y',
