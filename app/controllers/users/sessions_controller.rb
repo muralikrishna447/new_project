@@ -17,13 +17,17 @@ class Users::SessionsController < Devise::SessionsController
 
   def signin_and_enroll
     @user = User.find_for_authentication(email: params[:email])
+    @course = Course.find(params[:course_id])
     if @user.valid_password?(params[:password])
-      @course = Course.find(params[:course_id])
       sign_in @user
       @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
       if @enrollment.save
         redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Course!"
+      else
+        redirect_to course_url(@course), notice: "Sign in successful!"
       end
+    else
+      redirect_to course_url(@course), notice: 'Incorrect password.'
     end
   end
 
