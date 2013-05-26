@@ -1,12 +1,15 @@
 .container
   .row
-    .span6
+    .span12
       %h2= @upload.recipe_name
+  .row
+    .span6
       = image_tag filepicker_hero_image(@upload.image_id)
-      .lead
+      .lead.section
         = @upload.notes
-    .span6.section
-      %p= "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this creation when they completed the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'www.chefsteps.com'}.".html_safe
+    .span6
+      .lead
+        = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this creation when they completed the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'www.chefsteps.com'}.".html_safe
       %p= "#{time_ago_in_words(@upload.created_at)} ago."
       %hr
       - if current_user.likes.map(&:likeable).include?(@upload)
