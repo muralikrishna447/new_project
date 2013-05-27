@@ -27,14 +27,17 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
       ! ((_.isString(ai.ingredient) && (ai.ingredient == "")) || (ai.ingredient.title == ""))
 
     element.bind 'keydown', (event) ->
-      ai = scope.ai
+      if $scope.editMode
+        ai = scope.ai
 
-      # On return (in input, not the popup), commit this ingredient and start a new one - iff
-      # the ingredient is satisfactorily filled out
-      if event.which == 13
-        if scope.hasIngredientTitle() && ai.unit? && ((ai.display_quantity? ) || (ai.unit? == "a/n"))
-          scope.addIngredient()
-          scope.$apply()
+        # On return (in input, not the popup), commit this ingredient and start a new one - iff
+        # the ingredient is satisfactorily filled out
+        if event.which == 13
+          if scope.hasIngredientTitle() && ai.unit? && ((ai.display_quantity? ) || (ai.unit? == "a/n"))
+            scope.addIngredient()
+            scope.$apply()
+      else
+        return true
 
 
   controller: ['$scope', '$element', ($scope, $element) ->
