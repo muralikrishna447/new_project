@@ -65,7 +65,7 @@ Delve::Application.routes.draw do
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
-  resources :activities, only: [:show] do
+  resources :activities, only: [:show, :new] do
     member do
       # Kind of ugly but explicit - since we still get the show view as HTML,
       # and requesting it as JSON too was screwing up browser history

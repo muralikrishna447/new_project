@@ -23,7 +23,7 @@ class ActivitiesController < ApplicationController
   end
 
 
-  before_filter :require_admin, only: [:update, :update_as_json]
+  before_filter :require_admin, only: [:new, :update_as_json]
   def require_admin
     unless admin_user_signed_in?
       flash[:error] = "You must be logged in as an administrator to do this"
@@ -32,6 +32,7 @@ class ActivitiesController < ApplicationController
   end
 
   def show
+
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
@@ -75,10 +76,20 @@ class ActivitiesController < ApplicationController
    end
   end
 
+  def new
+    @activity = Activity.new()
+    #@activity.title ||= ""
+    render 'show'
+  end
+
   def get_as_json
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
-    if params[:version] && params[:version].to_i <= @activity.last_revision().revision
-      @activity = @activity.restore_revision(params[:version])
+    if params[:id] == nil
+      @activity = Activity.new()
+    else
+      @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
+      if params[:version] && params[:version].to_i <= @activity.last_revision().revision
+        @activity = @activity.restore_revision(params[:version])
+      end
     end
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
