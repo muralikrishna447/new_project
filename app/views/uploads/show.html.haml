@@ -19,9 +19,9 @@
         = form_for Like.new do |f|
           = f.hidden_field :likeable_id, value: @upload.id
           = f.hidden_field :likeable_type, value: @upload.class
-          = link_to 'javascript:void(0);', onclick: "$('#new_like').submit()", class: 'btn btn-primary' do
-            %i.icon-star-empty
-            = @upload.likes.count
+        = link_to 'javascript:void(0);', onclick: "$('#new_like').submit()", class: 'btn btn-primary' do
+          %i.icon-star-empty
+          = @upload.likes.count
       = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.recipe_name} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
         %i.icon-twitter
         %span Twitter
@@ -33,3 +33,7 @@
         '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary' do
         %i.icon-pinterest
         %span Pinterest
+
+      %hr
+        - disqus_id = "upload-#{@upload.id}"
+        = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.recipe_name, disqus_url: upload_url(@upload)
