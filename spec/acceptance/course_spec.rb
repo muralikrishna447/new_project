@@ -31,11 +31,9 @@ feature 'courses', :js => true do
   #   page should have_content('Activity 3')
   # end
 
-  scenario 'shows options to create or sign in when user is not logged in' do
-    # spherification = Fabricate :course, title: 'spherification', published: true
-    course = Course.where(title: 'Spherification').first
-    visit course_path(course)
-    # page should render_template 'spherification'
-    find_link('Enroll').visible?
-  end
+  # scenario 'shows options to create or sign in when user is not logged in' do
+  #   course = Course.where(title: 'Spherification').first
+  #   visit course_path(course)
+  #   find_link('Enroll').visible?
+  # end
 end
