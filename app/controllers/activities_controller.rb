@@ -148,8 +148,11 @@ class ActivitiesController < ApplicationController
           @activity.attributes = params[:activity]
           @activity.save!
         end
-
-        head :no_content
+        if params[:first_save]
+          render :json => {redirect_to: activity_path}
+        else
+          head :no_content
+        end
       end
     end
   end

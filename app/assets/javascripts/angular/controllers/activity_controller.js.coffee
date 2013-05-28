@@ -7,8 +7,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
   $scope.activity = Activity.get($scope.url_params, ->
     if $scope.activity.title == ""
-      $scope.activity.title = ""
       $scope.startEditMode()
+      $scope.activity.first_save = true
       setTimeout (->
         title_elem = $('#title-edit-pair')
         angular.element(title_elem).scope().setMouseOver(true)
@@ -22,6 +22,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   # Overall edit mode
   $scope.startEditMode = ->
+    $scope.activity.first_save = false
     $scope.editMode = true
     $scope.editMeta = false
     $scope.showHeroVisualEdit = false
@@ -36,7 +37,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.endEditMode = ->
     $scope.normalizeModel()
-    $scope.activity.$update()
+    $scope.activity.$update({}, (response) ->
+      window.location = response.redirect_to if response.redirect_to
+    )
     $scope.postEndEditMode()
 
   $scope.cancelEditMode = ->
