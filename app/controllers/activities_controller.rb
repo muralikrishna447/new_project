@@ -137,8 +137,9 @@ class ActivitiesController < ApplicationController
     respond_to do |format|
       format.json do
 
+        old_slug = @activity.slug
+
         @activity.store_revision do
-          puts JSON.pretty_generate(params)
           @activity.last_edited_by = current_admin_user
           @activity.update_equipment_json(params[:activity].delete(:equipment))
           @activity.update_ingredients_json(params[:activity].delete(:ingredients))
@@ -148,7 +149,9 @@ class ActivitiesController < ApplicationController
           @activity.attributes = params[:activity]
           @activity.save!
         end
-        if params[:first_save]
+
+        # This would be better handled by history state / routing in frontend, but ok for now
+        if @activity.slug != old_slug
           render :json => {redirect_to: activity_path}
         else
           head :no_content

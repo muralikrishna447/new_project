@@ -8,7 +8,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.activity = Activity.get($scope.url_params, ->
     if $scope.activity.title == ""
       $scope.startEditMode()
-      $scope.activity.first_save = true
       setTimeout (->
         title_elem = $('#title-edit-pair')
         angular.element(title_elem).scope().setMouseOver(true)
@@ -22,7 +21,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   # Overall edit mode
   $scope.startEditMode = ->
-    $scope.activity.first_save = false
     $scope.editMode = true
     $scope.editMeta = false
     $scope.showHeroVisualEdit = false
@@ -38,6 +36,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.endEditMode = ->
     $scope.normalizeModel()
     $scope.activity.$update({}, (response) ->
+      # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
       window.location = response.redirect_to if response.redirect_to
     )
     $scope.postEndEditMode()
