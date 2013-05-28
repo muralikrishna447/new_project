@@ -2,7 +2,10 @@ window.deepCopy = (obj) ->
   jQuery.extend(true, {}, obj)
 
 angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", "$timeout", ($scope, $resource, $location, $http, limitToFilter, $timeout) ->
-  Activity = $resource("/activities/:id/as_json", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
+  Activity = $resource( "/activities/:id/as_json",
+                        {id:  $('#activity-body').data("activity-id")},
+                        {update: {method: "PUT"}}
+                      )
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
   $scope.activity = Activity.get($scope.url_params, ->
@@ -19,6 +22,12 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.editMode = false
   $scope.editMeta = false
 
+  $scope.fork = ->
+    $scope.activity.$update({fork: true},
+    ((response) ->
+      # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
+      window.location = response.redirect_to if response.redirect_to),
+    )
   # Overall edit mode
   $scope.startEditMode = ->
     $scope.editMode = true
@@ -35,9 +44,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.endEditMode = ->
     $scope.normalizeModel()
-    $scope.activity.$update({}, (response) ->
-      # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
-      window.location = response.redirect_to if response.redirect_to
+    $scope.activity.$update({},
+      ((response) ->
+        # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
+       window.location = response.redirect_to if response.redirect_to),
     )
     $scope.postEndEditMode()
 
@@ -99,7 +109,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   # Keep <title> tag in sync
   $scope.$watch 'activity.title', ->
-    $(document).attr("title", "ChefSteps " + $scope.activity.title)
+    $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))
 
   # Tags
   $scope.tagsSelect2 =

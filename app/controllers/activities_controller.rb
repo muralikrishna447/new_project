@@ -89,19 +89,25 @@ class ActivitiesController < ApplicationController
     render 'show'
   end
 
+  def fork
+    old_activity = Activity.find(params[:id])
+    @activity = Activity.new()
+    user_name =
+    @activity.title = "#{current_user ? current_user.name : current_admin_user.email.split('@')[0]}'s Version Of #{old_activity.title}"
+    @activity.description = "Fork test"
+    @activity.save!
+    render :json => {redirect_to: activity_path(@activity)}
+  end
+
   def get_as_json
-    if params[:id] == nil
-      @activity = Activity.new()
-    else
-      @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
-      if params[:version] && params[:version].to_i <= @activity.last_revision().revision
-        @activity = @activity.restore_revision(params[:version])
-      end
+
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
+    if params[:version] && params[:version].to_i <= @activity.last_revision().revision
+      @activity = @activity.restore_revision(params[:version])
     end
 
     # Can't save with this, but want it to be blank in show view
     @activity.title = "" if @activity.title == DUMMY_NEW_ACTIVITY_NAME
-
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
@@ -133,28 +139,33 @@ class ActivitiesController < ApplicationController
   end
 
   def update_as_json
-    @activity = Activity.find(params[:id])
-    respond_to do |format|
-      format.json do
+    if params[:fork]
+      # Can't seem to get custom verb & URL to work in angular, so tacking it onto this one
+      fork()
+    else
+      @activity = Activity.find(params[:id])
+      respond_to do |format|
+        format.json do
 
-        old_slug = @activity.slug
+          old_slug = @activity.slug
 
-        @activity.store_revision do
-          @activity.last_edited_by = current_admin_user
-          @activity.update_equipment_json(params[:activity].delete(:equipment))
-          @activity.update_ingredients_json(params[:activity].delete(:ingredients))
-          # Why on earth is tags the only thing not root wrapped??
-          tags = params.delete(:tags)
-          @activity.tag_list = tags.map { |t| t[:name]} if tags
-          @activity.attributes = params[:activity]
-          @activity.save!
-        end
+          @activity.store_revision do
+            @activity.last_edited_by = current_admin_user
+            @activity.update_equipment_json(params[:activity].delete(:equipment))
+            @activity.update_ingredients_json(params[:activity].delete(:ingredients))
+            # Why on earth is tags the only thing not root wrapped??
+            tags = params.delete(:tags)
+            @activity.tag_list = tags.map { |t| t[:name]} if tags
+            @activity.attributes = params[:activity]
+            @activity.save!
+          end
 
-        # This would be better handled by history state / routing in frontend, but ok for now
-        if @activity.slug != old_slug
-          render :json => {redirect_to: activity_path}
-        else
-          head :no_content
+          # This would be better handled by history state / routing in frontend, but ok for now
+          if @activity.slug != old_slug
+            render :json => {redirect_to: activity_path}
+          else
+            head :no_content
+          end
         end
       end
     end

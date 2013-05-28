@@ -39,61 +39,64 @@
   :javascript
     paramScaling = #{params[:scaling]};
 
-.container.top-container#activity-body.recipe_schema(ng-cloak=""){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
+%form(name="myform")
+  .container.top-container#activity-body.recipe_schema(ng-cloak=""){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
 
-  .row.printable
+    .row.printable
 
-    .span6.relative
-      %csEditPair#title-edit-pair
-        %csEditPairShow
-          %h1.activity-title(ng-bind-html-unsafe="activity.title || 'Add title...'" itemprop='name' ng-class="disableIf(! activity.title.length)")
-        %csEditPairEdit
-          %textarea.nohtml(name="title" rows=2 data-ng-model="activity.title" placeholder="Add title...")
+      .span6.relative
+        %csEditPair#title-edit-pair
+          %csEditPairShow
+            %h1.activity-title(ng-bind-html-unsafe="activity.title || 'Add title...'" itemprop='name' ng-class="disableIf(! activity.title.length)")
+          %csEditPairEdit
+            %textarea.nohtml(name="title" rows=2 data-ng-model="activity.title" placeholder="Add title...")
 
-    .span6.noprint
+      .span6.noprint
 
-      %div(collapse="editMode")
-        - if ! @minimal
-          .pull-left.display-inline-fix
-            - if @course
-              .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
-                %i.icon-file-alt
-              - prev_activity = @course.prev_published_activity(@activity)
-              - next_activity = @course.next_published_activity(@activity)
-              - if prev_activity
-                = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
-                  %i.icon-chevron-left
-              - if next_activity
-                = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
-                  %i.icon-chevron-right
-            .btn-circle#show-all
-              %i.icon-resize-full#show-all-icon
-            .btn-circle{onclick: 'window.print()'}
-              %i.icon-print
-          -if admin_user_signed_in? && @include_edit_toolbar
-            .pull-right
-              %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()")
-                Edit
+        %div(collapse="editMode")
+          - if ! @minimal
+            .pull-left.display-inline-fix
+              - if @course
+                .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
+                  %i.icon-file-alt
+                - prev_activity = @course.prev_published_activity(@activity)
+                - next_activity = @course.next_published_activity(@activity)
+                - if prev_activity
+                  = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
+                    %i.icon-chevron-left
+                - if next_activity
+                  = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
+                    %i.icon-chevron-right
+              .btn-circle#show-all
+                %i.icon-resize-full#show-all-icon
+              .btn-circle{onclick: 'window.print()'}
+                %i.icon-print
+            -if admin_user_signed_in? && @include_edit_toolbar
+              .pull-right(style="margin-left: 20px;")
+                %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()")
+                  Edit
+                %button#edit-mode.btn.btn-primary(type='button' ng-click="fork()")
+                  Fork
 
-          .pull-right.display-inline-fix
-            = render 'layouts/social_buttons', media_object: @activity
-      %div.pull-right(collapse="!editMode")
-        .btn-toolbar
-          .btn-group
-            %button#edit-undo.btn.btn-secondary(ng-click="undo()" ng-disabled="! undoAvailable()"){type: 'button'}
-              %i.icon-undo
-              Undo
-            %button#edit-redo.btn.btn-secondary(ng-click="redo()" ng-disabled="! redoAvailable()"){type: 'button'}
-              Redo
-              %i.icon-repeat
+            .pull-right.display-inline-fix
+              = render 'layouts/social_buttons', media_object: @activity
+        %div.pull-right(collapse="!editMode")
+          .btn-toolbar
+            .btn-group
+              %button#edit-undo.btn.btn-secondary(ng-click="undo()" ng-disabled="! undoAvailable()"){type: 'button'}
+                %i.icon-undo
+                Undo
+              %button#edit-redo.btn.btn-secondary(ng-click="redo()" ng-disabled="! redoAvailable()"){type: 'button'}
+                Redo
+                %i.icon-repeat
 
 
-  .row.printable.printable-column
-    .span12
-      .row#main-content
-        = render 'main_activity_content', activity: @activity
-        - if ! @minimal
-          = render 'community_tab_fake'
+    .row.printable.printable-column
+      .span12
+        .row#main-content
+          = render 'main_activity_content', activity: @activity
+          - if ! @minimal
+            = render 'community_tab_fake'
 
 - content_for :bottom do
   - if ! @minimal

@@ -71,6 +71,7 @@ Delve::Application.routes.draw do
       # and requesting it as JSON too was screwing up browser history
       get 'as_json' => 'activities#get_as_json'
       put 'as_json' => 'activities#update_as_json'
+      get 'fork' => 'activities#fork'
     end
     collection do
       get 'all_tags' => 'activities#get_all_tags'
