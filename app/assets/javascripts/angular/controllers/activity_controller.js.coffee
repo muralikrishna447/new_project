@@ -5,7 +5,16 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   Activity = $resource("/activities/:id/as_json", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  $scope.activity = Activity.get($scope.url_params)
+  $scope.activity = Activity.get($scope.url_params, ->
+    if $scope.activity.title == "DUMMY"
+      $scope.activity.title = ""
+      $scope.startEditMode()
+      setTimeout (->
+        title_elem = $('#title-edit-pair')
+        angular.element(title_elem).scope().setMouseOver(true)
+        title_elem.click()
+      ), 0
+  )
   $scope.undoStack = []
   $scope.undoIndex = -1
   $scope.editMode = false

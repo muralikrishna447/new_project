@@ -46,14 +46,6 @@ class Activity < ActiveRecord::Base
 
   TYPES = %w[Recipe Technique Science]
 
-  after_initialize :set_defaults
-  def set_defaults
-    puts "*********************************************"
-    return if !new_record?
-    self.title ||= ""
-    self.description = @description || ""
-  end
-
   before_save :strip_title
   def strip_title
     self.title = self.title.strip if self.title?

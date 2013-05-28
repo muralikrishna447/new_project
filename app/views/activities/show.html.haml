@@ -44,7 +44,7 @@
   .row.printable
 
     .span6.relative
-      %csEditPair
+      %csEditPair#title-edit-pair
         %csEditPairShow
           %h1.activity-title(ng-bind-html-unsafe="activity.title || 'Add title...'" itemprop='name' ng-class="disableIf(! activity.title.length)")
         %csEditPairEdit

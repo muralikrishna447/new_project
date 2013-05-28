@@ -78,7 +78,11 @@ class ActivitiesController < ApplicationController
 
   def new
     @activity = Activity.new()
-    #@activity.title ||= ""
+    @activity.title = "DUMMY"
+    @activity.description = ""
+    # Have to save because we edit in our show view, and that view really needs an id
+    @activity.save!
+    @include_edit_toolbar = true
     render 'show'
   end
 
