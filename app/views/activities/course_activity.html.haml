@@ -57,7 +57,13 @@
     .span9
       .container-fluid.course_activity_content#activity-body.recipe_schema(ng-cloak="" cseditgroup=""){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
         - if @activity.has_quizzes?
-          = render 'quiz_content'
+          - if current_user
+            = render 'quiz_content'
+          - else
+            %h2 Create an Account or Sign In to take the Quiz
+            = link_to 'Create Account', new_user_registration_path, class: 'btn btn-primary btn-large'
+            or
+            = link_to 'Sign In', sign_in_path, class: 'btn btn-primary btn-large'
         - elsif @activity.assignments.any?
           = render 'assignments'
         - else
