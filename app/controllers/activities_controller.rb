@@ -5,6 +5,8 @@ class ActivitiesController < ApplicationController
 
   before_filter :find_activity, only: :show
 
+  DUMMY_NEW_ACTIVITY_NAME = "DUMMY NEW ACTIVITY"
+
   def find_activity
     @activity = Activity.find params[:id]
 
@@ -78,10 +80,11 @@ class ActivitiesController < ApplicationController
 
   def new
     @activity = Activity.new()
-    @activity.title = "DUMMY"
+    @activity.title = DUMMY_NEW_ACTIVITY_NAME
     @activity.description = ""
     # Have to save because we edit in our show view, and that view really needs an id
     @activity.save!
+    @activity.title = ""
     @include_edit_toolbar = true
     render 'show'
   end
@@ -95,6 +98,10 @@ class ActivitiesController < ApplicationController
         @activity = @activity.restore_revision(params[:version])
       end
     end
+
+    # Can't save with this, but want it to be blank in show view
+    @activity.title = "" if @activity.title == DUMMY_NEW_ACTIVITY_NAME
+
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.

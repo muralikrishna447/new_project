@@ -6,7 +6,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
   $scope.activity = Activity.get($scope.url_params, ->
-    if $scope.activity.title == "DUMMY"
+    if $scope.activity.title == ""
       $scope.activity.title = ""
       $scope.startEditMode()
       setTimeout (->
@@ -95,6 +95,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     else
       $scope.activity.activity_type = _.union($scope.activity.activity_type, [t])
 
+  # Keep <title> tag in sync
+  $scope.$watch 'activity.title', ->
+    $(document).attr("title", "ChefSteps " + $scope.activity.title)
 
   # Tags
   $scope.tagsSelect2 =
