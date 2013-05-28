@@ -78,6 +78,9 @@ Delve::Application.routes.draw do
       get 'as_json' => 'activities#get_as_json'
       put 'as_json' => 'activities#update_as_json'
     end
+    collection do
+      get 'all_tags' => 'activities#get_all_tags'
+    end
   end
   resources :techniques, only: [:index, :show]
   resources :sciences, only: [:index, :show]
@@ -97,6 +100,7 @@ Delve::Application.routes.draw do
   end
 
   resources :equipment, only: [:index]
+  resources :ingredients, only: [:index]
   resources :search, only: [:index]
   resources :recipe_gallery, only: [:index], path: 'recipe-gallery'
   resources :user_activities, only: [:create]
@@ -105,10 +109,13 @@ Delve::Application.routes.draw do
     resources :uploads
   end
   resources :likes, only: [:create]
+  resources :pages, only: [:show]
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
+
+  resources :client_views, only: [:show]
 
 end
 

@@ -43,7 +43,9 @@ class Activity < ActiveRecord::Base
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
   serialize :activity_type, Array
-  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
+
+  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
+
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
@@ -143,6 +145,32 @@ class Activity < ActiveRecord::Base
     end
     self
   end
+
+  def update_ingredients_json(ingredients_attrs)
+    # Easiest just to be rid of all of the old join records, we'll make them from scratch
+    ingredients.destroy_all()
+    ingredients.reload()
+    puts ingredients_attrs
+    if ingredients_attrs
+      ingredients_attrs.each do |i|
+        title = i[:ingredient][:title]
+         unless title.nil? || title.blank?
+          title.strip!
+          ingredient_foo = Ingredient.where(id: i[:ingredient][:id]).first_or_create(title: title)
+          activity_ingredient = ActivityIngredient.create({
+                                                            activity_id: self.id,
+                                                            ingredient_id: ingredient_foo.id,
+                                                            note: i[:note],
+                                                            display_quantity: i[:display_quantity],
+                                                            unit: i[:unit],
+                                                            ingredient_order_position: :last
+                                                        })
+        end
+      end
+    end
+    self
+  end
+
 
   def update_steps(step_attrs)
     if step_attrs

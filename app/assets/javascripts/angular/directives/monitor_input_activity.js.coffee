@@ -1,14 +1,13 @@
 angular.module('ChefStepsApp').directive 'csmonitorinputactivity', ->
-  restrict: 'A',
+  restrict: 'C',
   scope: true,
 
   controller: ['$rootScope', '$scope', '$element', ($rootScope, $scope, $element) ->
 
-    $scope.inputCount = ->
-      $element.find('input').length
+    $scope.hasFocus = ->
+      ($(document.activeElement).closest('.csmonitorinputactivity').scope() == $scope)
 
-    $scope.$watch $scope.inputCount, ((newValue, oldValue) ->
-      console.log("INPUTS: " + newValue)
+    $scope.$watch $scope.hasFocus, ((newValue, oldValue) ->
       $scope.hasActiveInputs = (newValue > 0)
     ), true
 

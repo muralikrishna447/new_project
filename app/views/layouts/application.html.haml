@@ -10,6 +10,7 @@
     %meta{name: 'keywords', content: yield(:keywords)}
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1'}
     = yield :facebook_og
+    = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
     / YouTube Iframe API can't be loaded async so we have to load it directly
@@ -25,7 +26,7 @@
     = render 'layouts/google_analytics' if Rails.env.production?
     = javascript_include_tag 'application_head'
 
-  %body{@body_tag_attributes || {}}
+  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}}
     = render 'layouts/navigation', external: false
 
     .container.alert-container

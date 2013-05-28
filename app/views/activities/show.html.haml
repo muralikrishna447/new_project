@@ -12,6 +12,21 @@
     %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.image_id)}
   - elsif @activity.featured_image_id?
     %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.featured_image_id)}
+- content_for :twitter_cards do
+  %meta{property: 'twitter:site', content: '@chefsteps'}
+  %meta{property: 'twitter:title', content: @activity.title.html_safe }
+  %meta{property: 'twitter:description', content: @activity.description}
+  - if @activity.image_id?
+    %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.image_id)}
+  - elsif @activity.featured_image_id?
+    %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.featured_image_id)}
+  - if @activity.youtube_id?
+    %meta{property: 'twitter:card', content: 'player'}
+    %meta{property: 'twitter:player', content: "https://www.youtube.com/embed/#{@activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720"}
+    %meta{property: 'twitter:player:height', content: '270'}
+    %meta{property: 'twitter:player:width', content: '480'}
+  - else
+    %meta{property: 'twitter:card', content: 'summary_large_image'}
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()"}
 
 
@@ -32,33 +47,45 @@
         %csEditPairShow
           %h1.activity-title(ng-bind-html-unsafe="activity.title"){itemprop: 'name'}
         %csEditPairEdit
-          = text_area_tag :title, "", {class: "nohtml", rows: "2", data: {:'ng-model' => "activity.title"}, autofocus: 'autofocus'}
+          = text_area_tag :title, "", {class: "nohtml", rows: "2", data: {:'ng-model' => "activity.title"}}
 
     .span6.noprint
 
-      - if ! @minimal
-        .pull-left.display-inline-fix(ng-hide="editMode")
-          - if @course
-            .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
-              %i.icon-file-alt
-            - prev_activity = @course.prev_published_activity(@activity)
-            - next_activity = @course.next_published_activity(@activity)
-            - if prev_activity
-              = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
-                %i.icon-chevron-left
-            - if next_activity
-              = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
-                %i.icon-chevron-right
-          .btn-circle#show-all
-            %i.icon-resize-full#show-all-icon
-          .btn-circle{onclick: 'window.print()'}
-            %i.icon-print
-        -if admin_user_signed_in?
-          .pull-right
-            = render :partial => 'edit_toolbar'
+      %div(collapse="editMode")
+        - if ! @minimal
+          .pull-left.display-inline-fix
+            - if @course
+              .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
+                %i.icon-file-alt
+              - prev_activity = @course.prev_published_activity(@activity)
+              - next_activity = @course.next_published_activity(@activity)
+              - if prev_activity
+                = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
+                  %i.icon-chevron-left
+              - if next_activity
+                = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
+                  %i.icon-chevron-right
+            .btn-circle#show-all
+              %i.icon-resize-full#show-all-icon
+            .btn-circle{onclick: 'window.print()'}
+              %i.icon-print
+          -if admin_user_signed_in? && @include_edit_toolbar
+            .pull-right
+              %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()")
+                Edit
 
-        .pull-right.display-inline-fix(ng-hide="editMode")
-          = render 'layouts/social_buttons', media_object: @activity
+          .pull-right.display-inline-fix
+            = render 'layouts/social_buttons', media_object: @activity
+      %div.pull-right(collapse="!editMode")
+        .btn-toolbar
+          .btn-group
+            %button#edit-undo.btn.btn-secondary(ng-click="undo()" ng-disabled="! undoAvailable()"){type: 'button'}
+              %i.icon-undo
+              Undo
+            %button#edit-redo.btn.btn-secondary(ng-click="redo()" ng-disabled="! redoAvailable()"){type: 'button'}
+              Redo
+              %i.icon-repeat
+
 
   .row.printable.printable-column
     .span12
@@ -70,21 +97,23 @@
 - content_for :bottom do
   - if ! @minimal
 
-    .row(ng-hide="editMode")
-      .span12
-        %h3 Techniques
-        #technique-carousel
-          = render 'shared/horizontal_scroller', items: @techniques
-        %h3 Recipes
-        #related-carousel
-          = render 'shared/horizontal_scroller', items: @recipes
+    - if ! ENV["CS_NO_SUGGESTED_ACTIVITIES"]
+      .row(ng-hide="editMode")
+        .span12
+          %h3 Techniques
+          #technique-carousel
+            = render 'shared/horizontal_scroller', items: @techniques
+          %h3 Recipes
+          #related-carousel
+            = render 'shared/horizontal_scroller', items: @recipes
 
-    .row(ng-hide="editMode")
-      .span12
-        %h3 Discussion
-        .section
-          - disqus_id = "activity-#{@activity.id}"
-          = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
+    - if ! ENV["CS_NO_DISQUS"]
+      .row(ng-hide="editMode")
+        .span12
+          %h3 Discussion
+          .section
+            - disqus_id = "activity-#{@activity.id}"
+            = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
 
 - if @course
   .modal.hide.fade#syllabus-modal
@@ -95,24 +124,38 @@
       = course_syllabus(@course)
 
 - content_for :popup_bottom do
-  - if @viewed_activities && @viewed_activities.count > 2 && current_user.nil?
-    .container-fluid.popup-bottom(ng-hide="editMode")
-      .row-fluid
-        .container
-          .row
-            .span12
-              .row
-                .span5.offset1
-                  %h3= ab_test 'bottom_popup_copy_1', 'Join the Community', 'Cook Better Than You Ever Thought Possible', 'Learn How to Be a Better Cook'
-                  = form_tag welcome_url, :method => :get do
-                    = email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
-                    = hidden_field_tag :signed_up_from, 'bottom_popup_cta'
-                    = submit_tag 'Sign Up Now', class: 'btn btn-secondary', id: 'subscribe-email'
-                .span6
-                  %h3 Benefits Include
-                  %ul
-                    %li Ask questions of some of the world's best chefs
-                    %li Keep up to date with our latest recipes
-                .popup-bottom-close
-                  %i.icon-remove
+  - if ! ENV["CS_NO_POPUP"]
+    - if @viewed_activities && @viewed_activities.count > 1 && current_user.nil?
+      .container-fluid.popup-bottom(ng-hide="editMode")
+        .row-fluid
+          .container
+            .row
+              .span12
+                .row
+                  .span5.offset1
+                    %h3 Cook Better Than You Ever Thought Possible
+                    = form_tag new_user_registration_url, :method => :get do
+                      = email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
+                      = hidden_field_tag :signed_up_from, 'bottom_popup_cta'
+                      = submit_tag 'Sign Up Now', class: 'btn btn-secondary', id: 'subscribe-email'
+                  .span6
+                    %h3 Benefits Include
+                    %ul
+                      %li Ask questions of some of the world's best chefs
+                      %li Keep up to date with our latest recipes
+                  .popup-bottom-close
+                    %i.icon-remove
+
+#cancel-modal.modal.hide.fast{tabindex: '-1', role: 'dialog', style: "z-index: 2000"}
+  .modal-header
+    %button.close{type: 'button', data: {dismiss: 'modal'}}
+      x
+    .modal-body
+      Do you really want to abandon all of your changes?
+    .modal-footer
+      %button.btn.btn-success{data: {dismiss: 'modal'}}
+        No !!
+      %button.btn.btn-danger(ng-click="cancelEditMode()"){data: {dismiss: 'modal'}}
+        Yes
+
 

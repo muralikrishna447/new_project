@@ -17,12 +17,13 @@ class ActivitiesController < ApplicationController
       redir_params[:version] = params[:version] if defined? params[:version]
       redir_params[:minimal] = params[:minimal] if defined? params[:minimal]
       redir_params[:token] = params[:token] if defined? params[:token]
+      redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
   end
 
 
-  before_filter :require_admin, only: [:update]
+  before_filter :require_admin, only: [:update, :update_as_json]
   def require_admin
     unless admin_user_signed_in?
       flash[:error] = "You must be logged in as an administrator to do this"
@@ -31,7 +32,7 @@ class ActivitiesController < ApplicationController
   end
 
   def show
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -75,6 +76,10 @@ class ActivitiesController < ApplicationController
         @viewed_activities << [@activity.id, DateTime.now]
         cookies[:viewed_activities] = @viewed_activities.to_json
 
+        if ! @course
+          @include_edit_toolbar = true
+        end
+
         # If this is a crawler, render a basic HTML page for SEO that doesn't depend on Angular
         if params.has_key?(:'_escaped_fragment_')
           render template: 'activities/static_html'
@@ -84,7 +89,7 @@ class ActivitiesController < ApplicationController
   end
 
   def get_as_json
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -95,11 +100,20 @@ class ActivitiesController < ApplicationController
       format.json {
         render :json => @activity.to_json(
           include: {
+              tags: {},
               equipment: {
                 only: :optional,
                 include: {
                   equipment: {
-                    only: [:title, :id, :product_url]
+                    only: [:id, :title, :product_url]
+                  }
+                }
+              },
+              ingredients: {
+                only: [:note, :display_quantity, :quantity, :unit],
+                include: {
+                  ingredient: {
+                    only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
                   }
                 }
               }
@@ -115,14 +129,28 @@ class ActivitiesController < ApplicationController
       format.json do
 
         @activity.store_revision do
+          puts JSON.pretty_generate(params)
           @activity.last_edited_by = current_admin_user
           @activity.update_equipment_json(params[:activity].delete(:equipment))
+          @activity.update_ingredients_json(params[:activity].delete(:ingredients))
+          # Why on earth is tags the only thing not root wrapped??
+          tags = params.delete(:tags)
+          @activity.tag_list = tags.map { |t| t[:name]} if tags
           @activity.attributes = params[:activity]
           @activity.save!
         end
 
         head :no_content
       end
+    end
+  end
+
+  def get_all_tags
+    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + params[:q] + '%').all
+    respond_to do |format|
+      format.json {
+        render :json => result.to_json()
+      }
     end
   end
 
