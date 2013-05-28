@@ -257,6 +257,20 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  # Played around with using amoeba gem but it was causing some validation problems and I got
+  # too scared to mess with the (possibly wrong) inverse associations on ActivityIngredient and Activity Equipment.
+  # So just opted for the most explicit solution. Could also be done by going through JSON.
+  def deep_copy
+    new_activity = self.dup
+
+    self.ingredients.each { |ai| new_activity.ingredients << ai.dup }
+    self.equipment.each { |ae| new_activity.equipment << ae.dup }
+    self.steps.each { |as| new_activity.steps << as.dup }
+
+    new_activity.save!
+    new_activity
+  end
+
   private
 
   def reject_invalid_equipment(equipment_attrs)

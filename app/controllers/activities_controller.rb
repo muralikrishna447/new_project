@@ -91,12 +91,10 @@ class ActivitiesController < ApplicationController
 
   def fork
     old_activity = Activity.find(params[:id])
-    @activity = Activity.new()
-    user_name =
+    @activity = old_activity.deep_copy
     @activity.title = "#{current_user ? current_user.name : current_admin_user.email.split('@')[0]}'s Version Of #{old_activity.title}"
-    @activity.description = "Fork test"
     @activity.save!
-    render :json => {redirect_to: activity_path(@activity)}
+    render :json => {redirect_to: activity_path(@activity, {start_in_edit: true})}
   end
 
   def get_as_json

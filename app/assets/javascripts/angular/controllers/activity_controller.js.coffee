@@ -9,7 +9,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
   $scope.activity = Activity.get($scope.url_params, ->
-    if $scope.activity.title == ""
+    if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
       $scope.startEditMode()
       setTimeout (->
         title_elem = $('#title-edit-pair')
