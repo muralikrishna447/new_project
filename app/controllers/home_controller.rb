@@ -9,8 +9,6 @@ class HomeController < ApplicationController
     # cookies.delete(:returning_visitor)
     @returning_visitor = cookies[:returning_visitor]
     @new_visitor = params[:new_visitor] || !@returning_visitor
-    # @cta_message = ab_test('homepage_cta', 'Join The Community!', 'Become a Better Cook!')
-    
     # @discussion = Forum.discussions.first
     #@status = Twitter.status_embed
     @user = User.new

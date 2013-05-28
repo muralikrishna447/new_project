@@ -26,40 +26,45 @@
       .row.section
         .span12
           %h2.text-orange Or just take in smaller bits...
-      .row.section
+      .row.section-large
         .span6
-          %p.lead
-            %strong Learn a New Recipe
-            %br
-            ChefSteps is loaded with reliable original recipes, developed by our culinary team. Unlike other online recipes, ours are demonstrated through beautiful videos and pictures with clearly written explanations.
+          = link_to recipe_gallery_index_url do
+            .lead
+              %strong Learn a New Recipe
+              .lead.black-link
+                ChefSteps is loaded with reliable original recipes, developed by our culinary team. Unlike other online recipes, ours are demonstrated through beautiful videos and pictures with clearly written explanations.
 
         .span6
           = render 'shared/horizontal_slider', items: @recipes, direction: 'right'
 
-      .row.section
+      .row.section-large
         .span6
           = render 'shared/horizontal_slider', items: @techniques, direction: 'left'
         .span6
-          %p.lead
-            %strong Perfect a New Technique
-            %br
-            Until now, learning cutting-edge modernist cooking techniques— as well as many classic techniques—has been a haphazard process. ChefSteps offers step-by-step demonstrations that will enable you to create your own original recipes, improvise amazing meals for family and friends, or simply cook and eat better food every day.
+          = link_to sciences_url do
+            .lead
+              %strong Perfect a New Technique
+              .lead.black-link
+                Until now, learning cutting-edge modernist cooking techniques— as well as many classic techniques—has been a haphazard process. ChefSteps offers step-by-step demonstrations that will enable you to create your own original recipes, improvise amazing meals for family and friends, or simply cook and eat better food every day.
 
-      .row.section
+      .row.section-large
         .span6
-          %p.lead
-            %strong Absorb the Science
-            %br
-            ChefSteps is the place to turn to learn the why behind the how. Our recipes and techniques are supported by explanations of the underlying science of cooking. Our goal is to inform your intuition for how cooking really works, so that you become a more confident, resourceful, and creative cook.
+          = link_to sciences_url do 
+            .lead
+              %strong Absorb the Science
+              .lead.black-link
+                ChefSteps is the place to turn to learn the why behind the how. Our recipes and techniques a  re supported by explanations of the underlying science of cooking. Our goal is to inform your intuition for how cooking really works, so that you become a more confident, resourceful, and creative cook.
         .span6
           = render 'shared/horizontal_slider', items: @sciences, direction: 'right'
 
-      .row.section
+      .row.section-large
         .span8.offset2
-          %p.lead
-            %strong Get Involved With a Passionate Community
-            %br
-            Our forum is an incredibly active and friendly community of both novice and experienced cooks, as well as many professional chefs, including the award-winning creative team behind Modernist Cuisine. Sign up and get your questions about cooking answered, often within minutes.
+          .lead
+            = link_to 'http://forum.chefsteps.com' do 
+              .lead
+              %strong Get Involved with a Passionate Community
+              .lead.black-link
+                Our forum is an incredibly active and friendly community of both novice and experienced cooks, as well as many professional chefs, including the award-winning creative team behind Modernist Cuisine. Sign up and get your questions about cooking answered, often within minutes.
 
 - if @new_visitor
   .container

@@ -2,16 +2,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # append_after_filter :aweber_signup, :only => :create
 
   def welcome
-    name = params[:name]
-    email = params[:email]
-    signed_up_from = params[:signed_up_from]
-    @user = User.where(email: email).first
-    if @user
-      redirect_to sign_in_url(name: name, email: email)
-    else
-      aweber_signup(email, signed_up_from)
-      finished('bottom_popup_copy_1', reset: false)
-    end
+    # name = params[:name]
+    # email = params[:email]
+    # signed_up_from = params[:signed_up_from]
+    # @user = User.where(email: email).first
+    # if @user
+    #   redirect_to sign_in_url(name: name, email: email)
+    # else
+    #   aweber_signup(email, signed_up_from)
+    # end
   end
 
   def new
@@ -36,12 +35,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save
       sign_in @user
       aweber_signup(@user.email)
-      if params[:return_to]
-        redirect_to params[:return_to], notice: "Thanks for signing up! Please check your email now to confirm your registration."
-      else
-        redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
-      end
+      # redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
+      redirect_to welcome_url(email: @user.email)
       cookies.delete(:viewed_activities)
+      cookies[:returning_visitor] = true
     else
       render :new
     end
@@ -80,7 +77,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def aweber_signup(email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
-    finished('homepage_madlib_password', reset: false)
     if Rails.env.production?
       uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
       response = Net::HTTP.post_form(uri,

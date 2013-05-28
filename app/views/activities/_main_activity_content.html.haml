@@ -1,125 +1,135 @@
 .span6.section#video-ingredient-unit
+
+  %div(collapse="! (editMode && editMeta)")
+    = render 'metadata'
+
   .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
     = render 'hero_visual', activity: activity
-  - cache [activity, 'ingredients'] do
 
-    %csEditPair.section
+  %csEditPair.section
+    %csEditPairShow
+      .activity-description-wrapper(ng-show="!!activity.description")
+        .activity-description#activity-description
+          %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
+          .activity-description-overlay(ng-hide="activity.description.length < 455")
+        .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
+          = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
+      %button.btn.btn-small.add-section(ng-show="editMode && (!activity.description)")
+        Add Description
+    %csEditPairEdit
+      %textarea(ng-model="activity.description" rows="5")
+
+  .section.csmonitorinputactivity
+    .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
+      .well(ng-show="activity.ingredients.length" )
+        = render 'ingredients_list'
+    .nav
+      %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! activity.ingredients.length" ng-click="addIngredient()")
+        Add Ingredient
+      %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && activity.ingredients.length" ng-click="addIngredient()")
+        +
+      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
+        Done
+
+  .section
+    %csEditPair
       %csEditPairShow
-        .activity-description-wrapper(ng-show="!!activity.description")
-          .activity-description#activity-description
-            %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
-            .activity-description-overlay(ng-hide="activity.description.length < 455")
-          .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
-            = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
-        %button.btn.btn-small.add-section(ng-show="editMode && (!activity.description)")
-          Add Description
+        %div(ng-show="!!activity.yield")
+          %h4 Yield
+          %span(itemprop="recipeYield" ng-bind="activity.yield"){data: {:"orig-value" => "{{activity.yield}}"}}
+        %button.btn.btn-small.add-section(ng-show="editMode && (!activity.yield)")
+          Add Yield
+
       %csEditPairEdit
-        = text_area_tag :description, "", {rows: "15", data: {:'ng-model' => "activity.description"}, autofocus: 'autofocus'}
+        %h4 Yield
+        = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
 
-    - if activity.ingredients.any?
-      .section
-        .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
-          .well
-            = render 'ingredients_list', ingredients: activity.ingredients
+  .section
+    %csEditPair
+      %csEditPairShow
+        %div(ng-show="!!activity.timing")
+          %h4 Timing
+          %span(ng-bind="activity.timing")
+        %button.btn.btn-small.add-section(ng-show="editMode && (!activity.timing)")
+          Add Timing
 
-      .section
-        %csEditPair
-          %csEditPairShow
-            %div(ng-show="!!activity.yield")
-              %h4 Yield
-              %span(itemprop="recipeYield" ng-bind="activity.yield")
-            %button.btn.btn-small.add-section(ng-show="editMode && (!activity.yield)")
-              Add Yield
+      %csEditPairEdit
+        %h4 Timing
+        = text_field_tag :timing, "", {data: {:'ng-model' => "activity.timing"}}
 
-          %csEditPairEdit
-            %h4 Yield
-            = text_field_tag :yield, "", {data: {:'ng-model' => "activity.yield"}}
+  .section.csmonitorinputactivity
+    %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
+    %ul.equipment(ui-sortable="sortOptions" ng-model="activity.equipment")
+      %li.relative(ng-repeat="item in activity.equipment | filter:requiredEquipment")
+        %csEquipmentEditPair(csOptional="false")
+    .nav
+      %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasRequiredEquipment()" ng-click="addEquipment(false)")
+        Add Required Equipment
+      %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasRequiredEquipment()" ng-click="addEquipment(false)")
+        +
+      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
+        Done
 
-      .section
-        %csEditPair
-          %csEditPairShow
-            %div(ng-show="!!activity.timing")
-              %h4 Timing
-              %span(ng-bind="activity.timing")
-            %button.btn.btn-small.add-section(ng-show="editMode && (!activity.timing)")
-              Add Timing
+  .section.csmonitorinputactivity
+    %h4(ng-show="hasOptionalEquipment()") Optional Equipment and Materials
+    %ul.equipment(ui-sortable="sortOptions" ng-model="activity.equipment")
+      %li.relative(ng-repeat="item in activity.equipment | filter:optionalEquipment")
+        %csEquipmentEditPair(csOptional="true")
+    .nav
+      %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")
+        Add Optional Equipment
+      %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasOptionalEquipment()" ng-click="addEquipment(true)")
+        +
+      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
+        Done
 
-          %csEditPairEdit
-            %h4 Timing
-            = text_field_tag :timing, "", {data: {:'ng-model' => "activity.timing"}}
+  - if activity.used_in_activities.published.any?
+    .section(ng-hide="editMode")
+      %h4 Used In
+      %ul
+        - activity.used_in_activities.published.each do |activity|
+          %li= link_to activity.title.html_safe, activity
 
-    .section(csmonitorinputactivity="")
-      %h4(ng-show="hasRequiredEquipment()") Equipment and Materials
-      %ul.equipment(ui-sortable="equipmentSortOptions" ng-model="activity.equipment")
-        %li(ng-repeat="item in activity.equipment | filter:requiredEquipment" ng-class="equipmentBulletStyle()")
-          %csEquipmentEditPair(csOptional="false")
-      .nav
-        %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasRequiredEquipment()" ng-click="addEquipment(false)")
-          Add Required Equipment
-        %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasRequiredEquipment()" ng-click="addEquipment(false)")
-          +
-        %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
-          Done
-
-    .section(csmonitorinputactivity="")
-      %h4(ng-show="hasOptionalEquipment()") Optional Equipment and Materials
-      %ul.equipment(ui-sortable="equipmentSortOptions" ng-model="activity.equipment")
-        %li(ng-repeat="item in activity.equipment | filter:optionalEquipment" ng-class="equipmentBulletStyle()")
-          %csEquipmentEditPair(csOptional="true")
-      .nav
-        %button.btn.btn-small.btn-basic.add-section(ng-show="editMode && ! hasOptionalEquipment()" ng-click="addEquipment(true)")
-          Add Optional Equipment
-        %button.btn.btn-small.btn-basic.add-item(ng-show="editMode && hasOptionalEquipment()" ng-click="addEquipment(true)")
-          +
-        %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" ng-click="endActiveEdits()")
-          Done
-
-    - if activity.used_in_activities.published.any?
-      .section(ng-hide="editMode")
-        %h4 Used In
-        %ul
-          - activity.used_in_activities.published.each do |activity|
-            %li= link_to activity.title.html_safe, activity
-
-- cache [activity, 'steps'] do
-  .span6.section.scroll-shadow-wrapper
-    .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
-      .scroll-shadow-content.pull-left
-        - step_number = 0
-        - activity.steps.each_with_index do |step,index|
-          .ordered-step-item{id: "order-step-item-#{index}"}
-            .step-element.step-number
-              - if step.hide_number?
-                - step_number
-              - else
-                = step_number+=1
-            .step-element.step-content
-              - if step.title?
-                %h4= step.title
-              - if step.ingredients.any?
-                .step-ingredients-source.well
-                  = render 'ingredients_list', ingredients: step.ingredients
-              :markdown
-                #{apply_shortcodes(step.directions)}
-              .step-actions.btn-group
-                / -if step.ingredients.any?
-                /   .btn.step-action-item.step-ingredients.btn-primary
-                /     %i.icon-th-list
+- if activity.steps.any?
+  .span6
+    .section.scroll-shadow-wrapper
+      .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
+        .scroll-shadow-content.pull-left
+          - step_number = 0
+          - activity.steps.each_with_index do |step,index|
+            .ordered-step-item{id: "order-step-item-#{index}"}
+              .step-element.step-number
+                - if step.hide_number?
+                  - step_number
+                - else
+                  = step_number+=1
+              .step-element.step-content
+                - if step.title?
+                  %h4= step.title
+                - if step.ingredients.any?
+                  .step-ingredients-source.well
+                    = render 'old_ingredients_list', ingredients: step.ingredients
+                :markdown
+                  #{apply_shortcodes(step.directions)}
+                .step-actions.btn-group
+                  / -if step.ingredients.any?
+                  /   .btn.step-action-item.step-ingredients.btn-primary
+                  /     %i.icon-th-list
+                  - if step.image_id?
+                    .btn.step-action-item.step-image-btn.btn-primary
+                      %i.icon-picture
+                  - if step.youtube_id?
+                    .btn.step-action-item.step-video-btn.btn-primary
+                      %i.icon-facetime-video
                 - if step.image_id?
-                  .btn.step-action-item.step-image-btn.btn-primary
-                    %i.icon-picture
+                  .step-image{id: "step-image-#{index}"}
+                    -descrip = filepicker_image_description(step.image_id, step.image_description)
+                    = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip, :itemprop => 'image'
                 - if step.youtube_id?
-                  .btn.step-action-item.step-video-btn.btn-primary
-                    %i.icon-facetime-video
-              - if step.image_id?
-                .step-image{id: "step-image-#{index}"}
-                  -descrip = filepicker_image_description(step.image_id, step.image_description)
-                  = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip, :itemprop => 'image'
-              - if step.youtube_id?
-                .step-video{id: "step-video-#{index}"}
-                  .video-container(csenforceaspect)
-                    %iframe{src: youtube_url(step.youtube_id)}
+                  .step-video{id: "step-video-#{index}"}
+                    .video-container(csenforceaspect)
+                      %iframe{src: youtube_url(step.youtube_id)}
 
-    .scroll-overlay-top
-    .scroll-overlay-bottom
+        .scroll-overlay-top
+        .scroll-overlay-bottom
 

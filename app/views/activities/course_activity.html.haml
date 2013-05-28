@@ -1,4 +1,4 @@
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()"}
 
 .container{data: {:'activity-id' => @activity.id}}
   .row
@@ -55,7 +55,7 @@
                   .indent-1
                     = inclusion_2.syllabus_title.html_safe
     .span9
-      .container-fluid.course_activity_content
+      .container-fluid.course_activity_content#activity-body.recipe_schema(ng-cloak="" cseditgroup=""){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
         - if @activity.has_quizzes?
           = render 'quiz_content'
         - elsif @activity.assignments.any?
