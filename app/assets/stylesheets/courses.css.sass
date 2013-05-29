@@ -42,12 +42,26 @@
     .show-course-navbar-item
       width: auto
 
+.course-nav-modules
+  font-family: 'Raleway', sans-serif
+  width: 100%
+  border: 0px
+  li
+    width: 100%
+    .course-nav-module-link
+      border: 0px
+      &:hover
+        border: 0px
+    .active-module
+      font-weight: bold
+
 .course-nav-side
   font-family: 'Raleway', sans-serif
   position: relative
   border: 1px solid $orange
   border-radius: 5px
   padding: 10px 8px
+  margin-top: 5px
   font-size: 13px
   @include boxsizing
   ul

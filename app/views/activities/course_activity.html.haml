@@ -4,56 +4,29 @@
   .row
     .span12.section
       %h2= link_to @course.title, @course
-  .row
-    .span12.course-nav-top
-      - if @prev_module
-        = link_to [@course, @course.next_published_activity(@prev_module.activity)] do
-          .course-nav-top-prev.btn.btn-gray.btn-circle
-            %i.icon-chevron-left
-      %ul.nav.nav-pills#course-navbar-top
-        - hide_nav_item = true
-        - @course.activity_modules.each_with_index do |activity_module, index|
-          - active = activity_module == @current_module.activity ? 'active' : nil
-          - if active == 'active' && hide_nav_item
-            - hide_nav_item = false
-          - hide = hide_nav_item ? 'hide-course-navbar-item' : nil
-          %li{class: "#{active} #{hide}"}
-            = link_to [@course, @course.next_published_activity(activity_module)] do
-              = "#{index + 1}."
-              = activity_module.title.html_safe
+      %hr
+  / .row
+  /   .span12.course-nav-top
+  /     - if @prev_module
+  /       = link_to [@course, @course.next_published_activity(@prev_module.activity)] do
+  /         .course-nav-top-prev.btn.btn-gray.btn-circle
+  /           %i.icon-chevron-left
+  /     %ul.nav.nav-pills#course-navbar-top
+  /       - hide_nav_item = true
+  /       - @course.activity_modules.each_with_index do |activity_module, index|
+  /         - active = activity_module == @current_module.activity ? 'active' : nil
+  /         - if active == 'active' && hide_nav_item
+  /           - hide_nav_item = false
+  /         - hide = hide_nav_item ? 'hide-course-navbar-item' : nil
+  /         %li{class: "#{active} #{hide}"}
+  /           = link_to [@course, @course.next_published_activity(activity_module)] do
+  /             = "#{index + 1}."
+  /             = activity_module.title.html_safe
                 
 .container
   .row
-    .span3.course-nav-side
-      .course-nav-side-marker
-      %ul.nav.nav-tabs.nav-stacked
-        - @course.child_inclusions(@current_module).each do |inclusion_1|
-          - inclusion_1_active = inclusion_1 == @current_inclusion ? true : false
-          - inclusion_1_published = inclusion_1.activity.published
-          - if inclusion_1_active
-            %li{class: 'active', data: {:'inclusion-id' => inclusion_1.id}}
-              = link_to inclusion_1.syllabus_title.html_safe, [@course, inclusion_1.activity]
-          - elsif !inclusion_1_active && inclusion_1_published
-            %li{data: {:'inclusion-id' => inclusion_1.id}}
-              = link_to inclusion_1.syllabus_title.html_safe, [@course, inclusion_1.activity]
-          - elsif !inclusion_1_published && @course.child_inclusions(inclusion_1).any?
-            %li{data: {:'inclusion-id' => inclusion_1.id}}
-              = link_to inclusion_1.syllabus_title.html_safe, '#', class: 'nav-expand-link'
-          - @course.child_inclusions(inclusion_1).each do |inclusion_2|
-            - sibling_active = inclusion_1 == @course.parent_inclusion(@current_inclusion)
-            - if inclusion_1_active || sibling_active
-              - show_inclusion_2 = true
-            - active_class = inclusion_2 == @current_inclusion ? 'active' : ''
-            - show_class = show_inclusion_2 ? '' : 'hide'
-            %li{class: "#{active_class} #{show_class}", data: {parent: "inclusion-id-#{inclusion_1.id}"}}
-              - if inclusion_2.activity.published?
-                = link_to [@course, inclusion_2.activity] do
-                  .indent-1
-                    = inclusion_2.syllabus_title.html_safe
-              - else
-                = link_to '#' do
-                  .indent-1
-                    = inclusion_2.syllabus_title.html_safe
+    .span3
+      = render 'course_activity_navigation'
     .span9
       .container-fluid.course_activity_content#activity-body.recipe_schema(ng-cloak="" cseditgroup=""){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
         - if @activity.has_quizzes?
