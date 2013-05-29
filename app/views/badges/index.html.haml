@@ -3,12 +3,14 @@
     .span12
       %h1 Badges
 - @badges.each do |badge|
-  - if badge.image
-    .container
-      .row{id: "badge-#{badge.id}"}
-        .span3
+  .container
+    .row.section{id: "badge-#{badge.id}"}
+      .span3
+        - if badge.image
           = image_tag badge.image
-        .span9
-          .lead
-            %h2= badge.name.titleize
-            = badge.description
+        - else
+          = image_tag 'http://www.placehold.it/300x300&text=Coming%20Soon'
+      .span9
+        .lead
+          %h2= badge.name.titleize
+          = badge.description
