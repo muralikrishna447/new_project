@@ -111,9 +111,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.sourceActivityTypes = [
     {id: 0, name: "Adapted from"},
     {id: 1, name: "Inspired by"},
-    {id: 2, name: "Vegetarian version of"},
-    {id: 3, name: "Vegan version Of"},
-    {id: 4, name: "Gluten free version of"}
   ]
 
   $scope.sourceActivityTypeString = ->
