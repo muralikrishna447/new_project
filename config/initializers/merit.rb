@@ -32,5 +32,6 @@ Merit::Badge.create!({
 Merit::Badge.create!({
   id: 2,
   name: 'spherification',
-  description: 'Completed the Spherification Course'
+  description: 'Completed the Spherification Course',
+  image: 'https://www.filepicker.io/api/file/6at0Z9vS6edni43glYDg'
 })
