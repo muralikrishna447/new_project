@@ -20,7 +20,8 @@
         %h4 Badges
         - @user.badges.each do |badge|
           - if badge.image
-            = image_tag badge.image
+            = link_to badges_path, anchor: "badge-#{badge.id}" do
+              = image_tag badge.image
       - if current_user == @user
         = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-primary btn-block'
         = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'

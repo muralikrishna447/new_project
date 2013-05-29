@@ -1,0 +1,14 @@
+.container
+  .row
+    .span12
+      %h1 Badges
+- @badges.each do |badge|
+  - if badge.image
+    .container
+      .row{id: "badge-#{badge.id}"}
+        .span3
+          = image_tag badge.image
+        .span9
+          .lead
+            %h2= badge.name.titleize
+            = badge.description

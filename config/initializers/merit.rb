@@ -26,12 +26,12 @@ end
 Merit::Badge.create!({
   id: 1,
   name: 'new-student',
-  description: 'Enrolled into a Course'
+  description: 'Enroll into a Course'
 })
 
 Merit::Badge.create!({
   id: 2,
   name: 'spherification',
-  description: 'Completed the Spherification Course',
+  description: 'Complete the Spherification Course',
   image: 'https://www.filepicker.io/api/file/6at0Z9vS6edni43glYDg'
 })
