@@ -18,3 +18,7 @@
               = option[:answer]
               -if option[:image] && option[:image][:url]
                 %img.img-polaroid{ src: option[:image][:url] }
+        -if ! result[:correct] && result[:explanation]
+          %h5
+          Explanation:
+          #{result[:explanation].html_safe}

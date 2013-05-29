@@ -57,7 +57,7 @@ class MultipleChoiceQuestionContents < OpenStruct
   end
 
   def attribute_keys
-    [:id, :question, :instructions, :options]
+    [:id, :question, :instructions, :options, :explanation]
   end
 end
 

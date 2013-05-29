@@ -12,6 +12,8 @@
   %input#instructions{name: 'instructions', placeholder: "Please enter instructions", value: hb('instructions') }
   %label Options
   %ul.options
+  %label{ for: 'explanation'} Explanation
+  %input#explanation{name: 'explanation', placeholder: "Please explain the answer here", value: hb('explanation'), type: "text" }
 
 .form-actions.actions
   %button.add-option.admin-button{type: 'button'} Add Option
