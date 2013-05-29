@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130523070642) do
+ActiveRecord::Schema.define(:version => 20130529005122) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -118,6 +118,17 @@ ActiveRecord::Schema.define(:version => 20130523070642) do
 
   add_index "assignments", ["activity_id", "child_activity_id"], :name => "index_assignments_on_activity_id_and_child_activity_id"
 
+  create_table "badges_sashes", :force => true do |t|
+    t.integer  "badge_id"
+    t.integer  "sash_id"
+    t.boolean  "notified_user", :default => false
+    t.datetime "created_at"
+  end
+
+  add_index "badges_sashes", ["badge_id", "sash_id"], :name => "index_badges_sashes_on_badge_id_and_sash_id"
+  add_index "badges_sashes", ["badge_id"], :name => "index_badges_sashes_on_badge_id"
+  add_index "badges_sashes", ["sash_id"], :name => "index_badges_sashes_on_sash_id"
+
   create_table "box_sort_images", :force => true do |t|
     t.integer  "question_id",                        :null => false
     t.boolean  "key_image",       :default => false
@@ -223,6 +234,38 @@ ActiveRecord::Schema.define(:version => 20130523070642) do
     t.datetime "updated_at",    :null => false
   end
 
+  create_table "merit_actions", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "action_method"
+    t.integer  "action_value"
+    t.boolean  "had_errors",    :default => false
+    t.string   "target_model"
+    t.integer  "target_id"
+    t.boolean  "processed",     :default => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+  end
+
+  create_table "merit_activity_logs", :force => true do |t|
+    t.integer  "action_id"
+    t.string   "related_change_type"
+    t.integer  "related_change_id"
+    t.string   "description"
+    t.datetime "created_at"
+  end
+
+  create_table "merit_score_points", :force => true do |t|
+    t.integer  "score_id"
+    t.integer  "num_points", :default => 0
+    t.string   "log"
+    t.datetime "created_at"
+  end
+
+  create_table "merit_scores", :force => true do |t|
+    t.integer "sash_id"
+    t.string  "category", :default => "default"
+  end
+
   create_table "order_sort_images", :force => true do |t|
     t.integer  "question_id"
     t.datetime "created_at",  :null => false
@@ -292,6 +335,11 @@ ActiveRecord::Schema.define(:version => 20130523070642) do
 
   add_index "revision_records", ["revisionable_id"], :name => "revision_records_id"
   add_index "revision_records", ["revisionable_type", "created_at", "trash"], :name => "revision_records_type_and_created_at"
+
+  create_table "sashes", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "settings", :force => true do |t|
     t.string   "footer_image"
@@ -399,6 +447,8 @@ ActiveRecord::Schema.define(:version => 20130523070642) do
     t.string   "signed_up_from"
     t.text     "image_id"
     t.text     "bio"
+    t.integer  "sash_id"
+    t.integer  "level",                  :default => 0
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

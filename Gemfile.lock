@@ -45,6 +45,7 @@ GEM
     acts_as_revisionable (1.2.2)
       activerecord (>= 2.3.9)
     addressable (2.3.2)
+    ambry (0.3.1)
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (3.0.2)
@@ -230,6 +231,8 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     memcachier (0.0.1)
+    merit (1.6.1)
+      ambry (~> 0.3.0)
     meta_request (0.2.1)
       rack-contrib
       rails
@@ -462,6 +465,7 @@ DEPENDENCIES
   launchy
   listen (= 0.4.7)
   memcachier
+  merit
   meta_request
   meta_search
   newrelic_rpm
