@@ -22,3 +22,9 @@ end
 #   name: 'best-unicorn',
 #   custom_fields: { category: 'fantasy' }
 # })
+
+Merit::Badge.create!({
+  id: 1,
+  name: 'new-student',
+  description: 'Enrolled into a Course'
+})

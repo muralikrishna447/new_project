@@ -39,6 +39,8 @@ module Merit
       # grant_on 'registrations#update', :badge => 'autobiographer', :temporary => true, :model_name => 'User' do |user|
       #   user.name.length > 4
       # end
+
+      grant_on 'courses#enroll', :badge => 'new-student'
     end
   end
 end
