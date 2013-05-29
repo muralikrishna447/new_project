@@ -126,6 +126,17 @@ h1, h2, h3, h4
   font-weight: 500
   -webkit-font-smoothing: antialiased
 
+
+h4
+  margin-bottom: 0px
+  line-height: 25px
+
+// Did this to help out Equipment etc sections for now; may want it everywhere but we weren't
+// sure what other h4's might be negatively affected
+#activity-body
+  h4
+    font-weight: 700
+
 .word-wrap
   word-wrap: break-word
 
@@ -468,7 +479,7 @@ h1, h2, h3, h4
   thead
     display: none
 
-ul.equipment
+.no-bullet
   margin-left: 0px
   li
     list-style-type: none
@@ -1148,9 +1159,6 @@ csingredienteditpair
 
     .unit
       width: 8%
-
-.no-bullet
-  list-style-type: none
 
 .meta-edit
   border: 1px solid $offwhite

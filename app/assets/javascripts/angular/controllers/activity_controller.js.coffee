@@ -107,6 +107,18 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     else
       $scope.activity.activity_type = _.union($scope.activity.activity_type, [t])
 
+  # These IDs are stored in the database, don't go changing them!!
+  $scope.sourceActivityTypes = [
+    {id: 0, name: "Adapted from"},
+    {id: 1, name: "Inspired by"},
+    {id: 2, name: "Vegetarian version of"},
+    {id: 3, name: "Vegan version Of"},
+    {id: 4, name: "Gluten free version of"}
+  ]
+
+  $scope.sourceActivityTypeString = ->
+    _.where($scope.sourceActivityTypes, {id: $scope.activity.source_type})[0].name
+
   # Keep <title> tag in sync
   $scope.$watch 'activity.title', ->
     $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))

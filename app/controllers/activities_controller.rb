@@ -70,6 +70,8 @@ class ActivitiesController < ApplicationController
           @include_edit_toolbar = true
         end
 
+        @source_activity = @activity.source_activity
+
         # If this is a crawler, render a basic HTML page for SEO that doesn't depend on Angular
         if params.has_key?(:'_escaped_fragment_')
           render template: 'activities/static_html'
@@ -111,27 +113,7 @@ class ActivitiesController < ApplicationController
     # clearer what to do on update.
     respond_to do |format|
       format.json {
-        render :json => @activity.to_json(
-          include: {
-              tags: {},
-              equipment: {
-                only: :optional,
-                include: {
-                  equipment: {
-                    only: [:id, :title, :product_url]
-                  }
-                }
-              },
-              ingredients: {
-                only: [:note, :display_quantity, :quantity, :unit],
-                include: {
-                  ingredient: {
-                    only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
-                  }
-                }
-              }
-          }
-        )
+        render :json => @activity.my_json
       }
     end
   end

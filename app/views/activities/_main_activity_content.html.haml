@@ -54,7 +54,7 @@
 
   .section.csmonitorinputactivity
     %h4(ng-show="hasRequiredEquipment() || editMode" ng-class="disableIf(! hasRequiredEquipment())") Equipment and Materials
-    %ul.equipment(ui-sortable="sortOptions" ng-model="activity.equipment")
+    %ul.no-bullet(ui-sortable="sortOptions" ng-model="activity.equipment")
       %li.relative(ng-repeat="item in activity.equipment | filter:requiredEquipment")
         %csEquipmentEditPair(csOptional="false")
     .nav(ng-show="editMode")
@@ -65,7 +65,7 @@
 
   .section.csmonitorinputactivity
     %h4(ng-show="hasOptionalEquipment() || editMode" ng-class="disableIf(! hasOptionalEquipment())") Optional Equipment and Materials
-    %ul.equipment(ui-sortable="sortOptions" ng-model="activity.equipment")
+    %ul.no-bullet(ui-sortable="sortOptions" ng-model="activity.equipment")
       %li.relative(ng-repeat="item in activity.equipment | filter:optionalEquipment")
         %csEquipmentEditPair(csOptional="true")
     .nav(ng-show="editMode")
@@ -77,8 +77,15 @@
   - if activity.used_in_activities.published.any?
     .section(ng-hide="editMode")
       %h4 Used In
-      %ul
+      %ul.no-bullet
         - activity.used_in_activities.published.each do |activity|
+          %li= link_to activity.title.html_safe, activity
+
+  - if activity.published_variations.any?
+    .section(ng-hide="editMode")
+      %h4 Variations
+      %ul.no-bullet
+        - activity.published_variations.each do |activity|
           %li= link_to activity.title.html_safe, activity
 
 .span6
