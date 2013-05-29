@@ -2,18 +2,37 @@ window.deepCopy = (obj) ->
   jQuery.extend(true, {}, obj)
 
 angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", "$timeout", ($scope, $resource, $location, $http, limitToFilter, $timeout) ->
-  Activity = $resource("/activities/:id/as_json", {id:  $('#activity-body').data("activity-id")}, {update: {method: "PUT"}})
+  Activity = $resource( "/activities/:id/as_json",
+                        {id:  $('#activity-body').data("activity-id")},
+                        {update: {method: "PUT"}}
+                      )
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  $scope.activity = Activity.get($scope.url_params)
+  $scope.activity = Activity.get($scope.url_params, ->
+    if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
+      $scope.startEditMode()
+      setTimeout (->
+        title_elem = $('#title-edit-pair')
+        angular.element(title_elem).scope().setMouseOver(true)
+        title_elem.click()
+      ), 0
+  )
   $scope.undoStack = []
   $scope.undoIndex = -1
   $scope.editMode = false
   $scope.editMeta = false
 
+  $scope.fork = ->
+    $scope.activity.$update({fork: true},
+    ((response) ->
+      # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
+      window.location = response.redirect_to if response.redirect_to),
+    )
   # Overall edit mode
   $scope.startEditMode = ->
     $scope.editMode = true
+    $scope.editMeta = false
+    $scope.showHeroVisualEdit = false
     $scope.undoStack = [deepCopy $scope.activity]
     $scope.undoIndex = 0
     $timeout ->
@@ -25,7 +44,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.endEditMode = ->
     $scope.normalizeModel()
-    $scope.activity.$update()
+    $scope.activity.$update({},
+      ((response) ->
+        # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
+       window.location = response.redirect_to if response.redirect_to),
+    )
     $scope.postEndEditMode()
 
   $scope.cancelEditMode = ->
@@ -68,6 +91,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.$on 'maybe_save_undo', ->
     $scope.addUndo()
 
+  # Gray out a section if the contents are empty
+  $scope.disableIf = (condition) ->
+    if condition then "disabled-section" else ""
+
   # Activity types
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
 
@@ -80,6 +107,21 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     else
       $scope.activity.activity_type = _.union($scope.activity.activity_type, [t])
 
+  # These IDs are stored in the database, don't go changing them!!
+  $scope.sourceActivityTypes = [
+    {id: 0, name: "Adapted from"},
+    {id: 1, name: "Inspired by"},
+    {id: 2, name: "Vegetarian version of"},
+    {id: 3, name: "Vegan version Of"},
+    {id: 4, name: "Gluten free version of"}
+  ]
+
+  $scope.sourceActivityTypeString = ->
+    _.where($scope.sourceActivityTypes, {id: $scope.activity.source_type})[0].name
+
+  # Keep <title> tag in sync
+  $scope.$watch 'activity.title', ->
+    $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))
 
   # Tags
   $scope.tagsSelect2 =
@@ -141,7 +183,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.heroDisplayType = ->
     return "video" if $scope.hasHeroVideo()
     return "image" if $scope.hasHeroImage()
-    return "add_button" if $scope.editMode
+    return "none"
 
   $scope.sortOptions = {
     axis: 'y',

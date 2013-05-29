@@ -10,6 +10,7 @@ class Activity < ActiveRecord::Base
   # The as_ingredient relationship returns the ingredient version of the activity
   has_one :as_ingredient, class_name: Ingredient, foreign_key: 'sub_activity_id'
   has_many :used_in_activities, source: :activities, through: :as_ingredient
+  belongs_to :source_activity, class_name: Activity, foreign_key: 'source_activity_id'
 
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
@@ -35,6 +36,7 @@ class Activity < ActiveRecord::Base
 
   serialize :activity_type, Array
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id,  :steps_attributes
+  attr_accessible :source_activity, :source_activity_id, :source_type
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
@@ -45,6 +47,12 @@ class Activity < ActiveRecord::Base
   #   associated_against: {steps: [:title, :directions], recipes: :title}
 
   TYPES = %w[Recipe Technique Science]
+
+  class SourceType
+    # This is the default. Others are actually defined in activity_controller.js.coffee. Would
+    # like to find a convenient way to dry this up.
+    ADAPTED_FROM = 0
+  end
 
   before_save :strip_title
   def strip_title
@@ -102,6 +110,10 @@ class Activity < ActiveRecord::Base
 
   def step_by_step?
     steps.count > 0
+  end
+
+  def published_variations
+    Activity.published.where(source_activity_id: self.id)
   end
 
   def update_equipment(equipment_attrs)
@@ -255,6 +267,49 @@ class Activity < ActiveRecord::Base
     else
       step_images.last
     end
+  end
+
+  def my_json
+    self.to_json(
+        include: {
+            tags: {},
+            equipment: {
+                only: :optional,
+                include: {
+                    equipment: {
+                        only: [:id, :title, :product_url]
+                    }
+                }
+            },
+            ingredients: {
+                only: [:note, :display_quantity, :quantity, :unit],
+                include: {
+                    ingredient: {
+                        only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
+                    }
+                }
+            }
+        }
+    )
+  end
+
+  # Played around with using amoeba gem but it was causing some validation problems and I got
+  # too scared to mess with the (possibly wrong) inverse associations on ActivityIngredient and Activity Equipment.
+  # So just opted for the most explicit solution. Could also be done by going through JSON.
+  def deep_copy
+    new_activity = self.dup
+
+    new_activity.source_activity = self
+    new_activity.source_type = SourceType::ADAPTED_FROM
+    new_activity.published = false
+
+    self.ingredients.each { |ai| new_activity.ingredients << ai.dup }
+    self.equipment.each { |ae| new_activity.equipment << ae.dup }
+    self.steps.each { |as| new_activity.steps << as.dup }
+
+
+    new_activity.save!
+    new_activity
   end
 
   private
