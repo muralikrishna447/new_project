@@ -41,6 +41,14 @@ module Merit
       # end
 
       grant_on 'courses#enroll', :badge => 'new-student'
+      grant_on 'registrations#signup_and_enroll', :badge => 'new-student'
+      grant_on 'sessions#signin_and_enroll', :badge => 'new-student'
+
+      grant_on 'uploads#create', :badge => 'spherification' do |upload|
+        course = upload.course
+        user = upload.user
+        course.title == 'Spherification' && user.viewed_activities_in_course(course).count > 1
+      end
     end
   end
 end

@@ -28,3 +28,9 @@ Merit::Badge.create!({
   name: 'new-student',
   description: 'Enrolled into a Course'
 })
+
+Merit::Badge.create!({
+  id: 2,
+  name: 'spherification',
+  description: 'Completed the Spherification Course'
+})
