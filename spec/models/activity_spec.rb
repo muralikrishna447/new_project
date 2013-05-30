@@ -367,3 +367,41 @@ describe Activity, 'has_quizzes?' do
     activity.should have_quizzes
   end
 end
+
+describe Activity, 'deep_copy' do
+  let(:activity) { Fabricate.build(:activity) }
+  let(:equipment1) { {title: 'Blender', optional: "true"}  }
+  let(:equipment_attrs) {[ equipment1] }
+  let(:soup) { {title: 'Soup', note: 'hot', display_quantity: '2', unit: 'g'}  }
+  let(:pepper) { {title: 'Pepper', note: 'black', display_quantity: '1', unit: 'kg'}  }
+  let(:ingredient_attrs) {[ soup]}
+  let(:step1) { {title: 'Blend', directions: 'blend it'} }
+  let(:step_attrs) {[ step1] }
+
+  before do
+    activity.save!
+    activity.update_equipment(equipment_attrs)
+    activity.update_ingredients(ingredient_attrs)
+    activity.update_steps(step_attrs)
+    activity.save!
+    activity.reload
+    activity.ingredients.reload
+  end
+
+  it 'makes a copy with expected differences' do
+    puts activity.equipment.to_json
+    a2 = activity.deep_copy
+    a2.source_activity.should == activity
+    a2.source_type.should == Activity::SourceType::ADAPTED_FROM
+    a2.published.should == false
+    a2.ingredients.should have(1).ingredients
+    a2.equipment.should have(1).equipment
+    a2.steps.should have(1).steps
+    a2.ingredients.first.id.should_not == activity.ingredients.first.id
+    a2.ingredients.first.ingredient_id.should == activity.ingredients.first.ingredient_id
+    a2.equipment.first.id.should_not == activity.equipment.first.id
+    a2.equipment.first.equipment_id.should == activity.equipment.first.equipment_id
+    a2.steps.first.id.should_not == activity.steps.first.id
+  end
+
+end

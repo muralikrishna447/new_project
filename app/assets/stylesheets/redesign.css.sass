@@ -182,6 +182,16 @@ h1, h2, h3, h4
         h3
           margin: 0px
 
+h4
+  margin-bottom: 0px
+  line-height: 25px
+
+// Did this to help out Equipment etc sections for now; may want it everywhere but we weren't
+// sure what other h4's might be negatively affected
+#activity-body
+  h4
+    font-weight: 700
+
 .word-wrap
   word-wrap: break-word
 
@@ -557,7 +567,7 @@ h1, h2, h3, h4
   thead
     display: none
 
-ul.equipment
+.no-bullet
   margin-left: 0px
   li
     list-style-type: none
@@ -822,6 +832,9 @@ ul.equipment
   &:hover
     background: $darker_orange
     @include transition(all 100ms)
+  &:disabled
+    background: #696969
+    color:  #d3d3d3
 
 .btn-secondary
   background: $offwhite
@@ -1168,14 +1181,21 @@ ul.equipment
 .edit-pair-transclude
   width: 100%
 
-.transparent-target
+.edit-hint
   position: absolute
-  width: 100%
-  height:  100%
+  bottom: 10px
+  left:  10px
   z-index: 1000
 
-#edit-group
+.video-container
+  .csfilepicker
+    .btn-toolbar
+      margin-top: 0px
 
+.hero-visual
+  position: relative
+
+#edit-group
   i
     font-size: 18px
   .btn
@@ -1235,34 +1255,13 @@ csingredienteditpair
     .unit
       width: 8%
 
-.no-bullet
-  list-style-type: none
-
 .meta-edit
   border: 1px solid $offwhite
   padding:  10px
   margin-bottom: 15px
 
-.editbar-enter-setup, .editbar-leave-setup
-  -webkit-transition: all linear 0.5s
-  -moz-transition: all linear 0.5s
-  -o-transition: all linear 0.5s
-  transition: all linear 0.5s
-
-.editbar-enter-setup
-  position: absolute
-  left: 100%
-
-.editbar-enter-start
-  left: 0
-
-.editbar-leave-setup
-  position: absolute
-  left: 0
-
-.editbar-leave-start
-  left: -100%
-
+.disabled-section
+  color: $light-gray
 
 // Making this match h1. I tried @including h1 but that was a no go.
 *[data-ng-model='activity.title']
