@@ -95,7 +95,13 @@
 
         .ordered-step-item(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}")
           .step-element.step-number
-            %span(ng-hide="step.hide_number" ng-bind="stepNumber($index)")
+            %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
+            %div(ng-show="editMode")
+              %button.btn.btn-secondary.edit-hide-step-number(type="button" btn-checkbox="" ng-model="step.hide_number" )
+                %div(collapse="step.hide_number")
+                  %i.icon-ban-circle
+                %div(collapse="! step.hide_number")
+                  \#
 
           .step-element.step-content
             %h4(ng-show="step.title" ng-bind="step.title")

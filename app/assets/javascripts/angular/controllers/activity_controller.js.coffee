@@ -38,9 +38,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $timeout ->
       window.csScaling = 1
       window.updateUnits(false)
+      window.expandSteps()
 
   $scope.postEndEditMode = ->
     $scope.editMode = false
+    window.collapseSteps()
 
   $scope.endEditMode = ->
     $scope.normalizeModel()

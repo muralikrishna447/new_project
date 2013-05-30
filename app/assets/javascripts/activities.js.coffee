@@ -64,6 +64,7 @@ $ ->
       $(this).text 'more'
 
 window.expandSteps = expandSteps
+window.collapseSteps = collapseSteps
 
 
 $ ->
