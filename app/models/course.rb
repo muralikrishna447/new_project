@@ -130,7 +130,8 @@ class Course < ActiveRecord::Base
   SPHERIFICATION_CREATIVE = {
     copy: "The Modernist Pantry Creative Sphere Magic Kit includes the technical ingredients you'll need to complete the ChefSteps reverse and direct spherification modules. It has most of the tools as well, except for a high-accuracy scale and the mold needed for frozen-reverse spherification.",
     price: '39',
-    variant_id: 311070543
+    variant_id: 311070543,
+    equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g Sodium Citrate', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum']
   }
 
 end

@@ -63,13 +63,9 @@
       .annotated.annotated-creative
         = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
         .annotations
-          .annotation Syringe 
-          .annotation Spherification Straining Spoon
-          .annotation 25 g Sphere Magic
-          .annotation 50 g Sodium Citrate
-          .annotation 50 g Calcium Gluconate
-          .annotation 50 g Calcium Chloride
-          .annotation 50 g Xanthan Gum
+          - Course::SPHERIFICATION_CREATIVE[:equipment].each do |equipment|
+            .annotation
+              = equipment
       .row-fluid
         .span6
           = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
