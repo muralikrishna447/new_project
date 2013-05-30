@@ -9,6 +9,8 @@ feature 'courses' do
     inclusion_1 = Fabricate :inclusion, course_id: course.id, activity_id: activity_1.id
     inclusion_1 = Fabricate :inclusion, course_id: course.id, activity_id: activity_2.id
     inclusion_1 = Fabricate :inclusion, course_id: course.id, activity_id: activity_3.id
+    bio_chris = Fabricate :copy, location: 'instructor-chris', copy: 'chris'
+    bio_grant = Fabricate :copy, location: 'instructor-grant', copy: 'grant'
   end
   # scenario 'renders spherification template for spherification course' do
   #   spherification = Fabricate :course, title: 'spherification', published: true
@@ -33,7 +35,7 @@ feature 'courses' do
 
   scenario 'shows options to create or sign in when user is not logged in' do
     course = Course.where(title: 'Spherification').first
-    visit course_path(course)
+    visit course_path(course, spherification: 'spheres_c')
     find_link('Enroll').visible?
 
   end
