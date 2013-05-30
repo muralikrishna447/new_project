@@ -33,7 +33,7 @@ feature 'courses' do
 
   scenario 'shows options to create or sign in when user is not logged in' do
     course = Course.where(title: 'Spherification').first
-    visit course_path(course)
+    visit course_path(course, spherification: 'spheres_b')
     find_link('Enroll').visible?
 
   end
