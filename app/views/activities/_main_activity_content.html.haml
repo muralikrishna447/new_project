@@ -20,9 +20,9 @@
       %textarea(ng-model="activity.description" rows="5" placeholder="Add description...")
 
   .section.csmonitorinputactivity
-    .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
+    .activity-ingredients-list#full-ingredients-list.section
       .well(ng-show="activity.ingredients.length" )
-        = render 'ingredients_list'
+        = render 'ingredients_list', source: "activity"
     .nav(ng-show="editMode")
       %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
       %button.btn.btn-small.btn-basic.add-item(ng-click="addIngredient()")
@@ -94,13 +94,14 @@
       .scroll-shadow-content.pull-left
 
         .ordered-step-item(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}")
-          .step-element.step-number(ng-hide="step.hide_number" ng-bind="stepNumber($index)")
+          .step-element.step-number
+            %span(ng-hide="step.hide_number" ng-bind="stepNumber($index)")
 
           .step-element.step-content
             %h4(ng-show="step.title" ng-bind="step.title")
 
-            //.step-ingredients-source.well(ng-show="step.ingredients.length > 0")
-            //  = render 'old_ingredients_list', ingredients: step.ingredients
+            .step-ingredients-source.well(ng-show="step.ingredients.length > 0")
+              = render 'ingredients_list', source: "step"
 
             %div(ng-bind-html-unsafe="step.directions | markdown | shortcode")
             .step-actions.btn-group
