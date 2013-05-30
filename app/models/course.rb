@@ -134,4 +134,11 @@ class Course < ActiveRecord::Base
     equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g Sodium Citrate', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum']
   }
 
+  SPHERIFICATION_ENTHUSIAST = {
+    copy: "The Modernist Pantry Enthusiast Sphere Magic Kit includes all of the technical ingredients and tools you'll need to complete the entire ChefSteps spherification course. It adds a high-accuracy scale (capable of weighing 1/10th of a gram) and a high-quality silicon mold used for frozen-reverse spherification.",
+    price: '79',
+    variant_id: 311979727,
+    equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g Sodium Citrate', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum', 'High-Precision Scale', 'Frozen Reverse Spherification Mold']
+  }
+
 end

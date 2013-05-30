@@ -87,15 +87,9 @@
       .annotated.annotated-enthusiast
         = image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
         .annotations
-          .annotation Syringe 
-          .annotation Spherification Straining Spoon
-          .annotation 25 g Sphere Magic
-          .annotation 50 g Sodium Citrate
-          .annotation 50 g Calcium Gluconate
-          .annotation 50 g Calcium Chloride
-          .annotation 50 g Xanthan Gum
-          .annotation High-Precision Scale
-          .annotation Frozen Reverse Spherification Mold
+          - Course::SPHERIFICATION_ENTHUSIAST[:equipment].each do |equipment|
+            .annotation
+              = equipment
       .row-fluid
         .span6
           = image_tag 'https://www.filepicker.io/api/file/10jMQrfrTYazji1Sc4XA'
@@ -103,10 +97,10 @@
           = image_tag 'https://www.filepicker.io/api/file/NiJGuT9RkOOY9RUqDpyQ'
     .span5.offset1.lead
       %h2 The Enthusiast Kit
-      The Modernist Pantry Enthusiast Sphere Magic Kit includes all of the technical ingredients and tools you'll need to complete the entire ChefSteps spherification course. It adds a high-accuracy scale (capable of weighing 1/10th of a gram) and a high-quality silicon mold used for frozen-reverse spherification.
+      = Course::SPHERIFICATION_ENTHUSIAST[:copy]
       .well.section
-        %h4.text-center= "The Enthusiast Kit $79"
-        = buy_now(311979727)
+        %h4.text-center= "The Enthusiast Kit $#{Course::SPHERIFICATION_ENTHUSIAST[:price]}"
+        = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id])
 
 %hr
 .container
