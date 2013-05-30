@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  has_merit
+
   include User::Facebook
   include Gravtastic
   include UpdateWhitelistAttributes
