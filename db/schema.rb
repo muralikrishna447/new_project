@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(:version => 20130529005122) do
     t.string   "activity_type"
     t.integer  "last_edited_by_id"
     t.text     "assignment_recipes"
+    t.integer  "source_activity_id"
+    t.integer  "source_type",        :default => 0
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"

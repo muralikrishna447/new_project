@@ -12,10 +12,15 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     $scope.anyEditPairFocused = ->
       $(document.activeElement).closest('.edit-pair').length > 0
 
+    $scope.hasErrors = ->
+      $element.find('.ng-invalid').length > 0
+
     # We should be active (edit half showing) if we have focus, or if hovered and nothing else has focus
+    # or if we have an form fields with errors
     $scope.active = ->
       return false if ! $scope.editMode
       return true if $scope.focusedInside()
+      return true if $scope.hasErrors()
       ($scope.mouseCurrentlyOver && (! $scope.anyEditPairFocused()))
 
     $scope.setMouseOver = (over) ->

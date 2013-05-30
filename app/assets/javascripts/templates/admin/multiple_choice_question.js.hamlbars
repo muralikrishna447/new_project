@@ -12,3 +12,8 @@
     = hb 'each options' do
       = hb '> templates.admin.question_option'
 
+  = hb 'if explanation' do
+    %h4 Answer explanation:
+    %h4= hb('explanation')
+
+
