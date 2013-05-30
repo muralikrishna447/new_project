@@ -26,7 +26,8 @@ end
 Merit::Badge.create!({
   id: 1,
   name: 'new-student',
-  description: 'Enroll into a Course'
+  description: 'Enroll into a Course',
+  image: 'https://www.filepicker.io/api/file/Oenx2nuGRlmtiq2pXokx'
 })
 
 Merit::Badge.create!({
