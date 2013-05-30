@@ -126,4 +126,26 @@ class Course < ActiveRecord::Base
     activities.joins(:assignments).map(&:child_activities).flatten.uniq
   end
 
+  #### Spherification Course ####
+  SPHERIFICATION_CREATIVE = {
+    copy: "The Modernist Pantry Creative Sphere Magic Kit includes the technical ingredients you'll need to complete the ChefSteps reverse and direct spherification modules. It has most of the tools as well, except for a high-accuracy scale and the mold needed for frozen-reverse spherification.",
+    price: '39',
+    variant_id: 311070543,
+    equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g Sodium Citrate', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum']
+  }
+
+  SPHERIFICATION_ENTHUSIAST = {
+    copy: "The Modernist Pantry Enthusiast Sphere Magic Kit includes all of the technical ingredients and tools you'll need to complete the entire ChefSteps spherification course. It adds a high-accuracy scale (capable of weighing 1/10th of a gram) and a high-quality silicon mold used for frozen-reverse spherification.",
+    price: '79',
+    variant_id: 311979727,
+    equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g Sodium Citrate', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum', 'High-Precision Scale', 'Frozen Reverse Spherification Mold']
+  }
+
+  SPHERIFICATION_PROFESSIONAL = {
+    copy: "The Modernist Pantry Professional Sphere Magic Kit includes everything in the Enthusiast Kit, plus a professional caviar dosing tray used for direct spherification. This hard to find tool makes it easy to quickly turn any liquid into small spheres bursting with flavor. This kit includes all of the tools featured in ChefSteps spherification course.",
+    price: '119',
+    variant_id: 311979875,
+    equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g SHMP', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum', 'High-Precision Scale', 'Frozen Reverse Spherification Mold', 'Rapid Caviar Maker']
+  }
+
 end

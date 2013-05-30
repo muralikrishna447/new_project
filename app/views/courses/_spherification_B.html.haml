@@ -1,54 +1,59 @@
-- content_for :title, course.title
-- content_for :description, course.short_description
-
-.container.top-container
+.container
   .row.section
     .span6
-      %h1= course.title
-      %p= course.description
+      %h1= "#{course.title} Course"
+      .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
+        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('5Jdq-wmQaPA')}
+      .section
+        %p= course.description
       %h4.text-center
         %i.icon-comment-alt
         Comments or Questions?
         = link_to 'Visit the Forum', 'http://forum.chefsteps.com'
-      .section.well
-        %ul
-          %li Lorem ipsum dolor sit amet
-          %li Consectetur adipiscing elit
-          %li Pellentesque nisi libero
-          %li Lorem ipsum dolor sit amet
-          %li Consectetur adipiscing elit
-          %li Pellentesque nisi libero
-    .span6.well
-      - if current_user && current_user.course_ids.include?(@course.id)
-        You are enrolled into this course.
-        = link_to 'First activity', course_activity_path(@course, @course.first_published_activity), class: 'btn btn-primary btn-large pull-right'
-      - else
-        = form_tag enroll_course_path(@course) do
-          = submit_tag 'Enroll', class: 'btn btn-primary btn-large pull-right'
+     
+    .span6
+      .well
+        = render 'course_enrollment_box'
+      - if @course.users.count > 1 && @course.uploads.count > 3
+        .well   
+          %h4= "Current enrollment: #{@course.users.count}"
+          %h4 Here are some things students have accomplished so far:
+          .horizontal-slider{data: {direction: 'right'}}
+            .horizontal-slider-wrap
+              - @course.uploads.each do |upload|
+                = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+            %div{class: "horizontal-slider-btn-right btn btn-circle"}
+              %i{class: "icon-chevron-right"}
+            %div{class: "horizontal-slider-shadow-overlay-right"}
+
 %hr
-- ['good','better','best'].each do |kit_title|
-  .container-fluid.well-gradient
-    .row-fluid
-      .container
-        .row.section
-          .span4
-            = image_tag 'http://placehold.it/570x320'
-          .span8
-            %h4= "The #{kit_title.titleize} kit takes you through these lessons"
-            %ul
-              %li Sphere Baths
-              %li Direct Spherification
-              %li Reverse Spherification
-              %li Chocolate Spheres
-              %li Pine Spheres
-        .row.section
-          .span6
-            %p
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nisi libero, commodo in aliquet et, pellentesque at tellus. Mauris et quam ut nulla pellentesque eleifend. In hac habitasse platea dictumst. Pellentesque ut arcu id libero vestibulum commodo. Phasellus sagittis leo eget nulla laoreet feugiat. Fusce ac tellus elit. Etiam elementum tempor neque, eu elementum lacus egestas id.
-          .span6.well
-            %h4.text-center= "The #{kit_title.titleize} Kit $39"
-            .btn.btn-primary.btn-large
-              Buy Now
+
+.container-fluid#creative
+  .row-fluid
+    .container
+      .row.section
+        .span4
+          /= image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
+          = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
+          %h3= "The Creative Kit for $#{Course::SPHERIFICATION_CREATIVE[:price]}"
+          = Course::SPHERIFICATION_CREATIVE[:copy]
+          .well.section
+            = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id])
+        .span4
+          /= image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
+          = image_tag 'https://www.filepicker.io/api/file/5wKEDSXZQgCgtA5W7JxI'
+          %h3="The Enthusiast Kit for $#{Course::SPHERIFICATION_ENTHUSIAST[:price]}"
+          = Course::SPHERIFICATION_ENTHUSIAST[:copy]
+          .well.section
+            = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id])
+
+        .span4
+          /= image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
+          = image_tag 'https://www.filepicker.io/api/file/FBnDnqcUQRetfBswxNzq'          
+          %h3="The Professional Kit for $#{Course::SPHERIFICATION_PROFESSIONAL[:price]}"
+          = Course::SPHERIFICATION_PROFESSIONAL[:copy]
+          .well.section
+            = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id])
 
 .container-fluid
   .row-fluid
@@ -74,3 +79,4 @@
     .container
       .row.section
         = render 'layouts/disqus_comments', disqus_id: "course-#{course.id}", disqus_title:course.title, disqus_url: course_url
+
