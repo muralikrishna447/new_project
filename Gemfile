@@ -44,6 +44,7 @@ gem 'client_side_validations'
 gem 'client_side_validations-formtastic'
 gem 'split', require: 'split/dashboard'
 gem 'redis'
+gem 'merit'
 
 # Gems used only for assets and not required
 # in production environments by default.
