@@ -113,7 +113,7 @@ class ActivitiesController < ApplicationController
     # clearer what to do on update.
     respond_to do |format|
       format.json {
-        render :json => @activity.my_json
+        render :json => @activity.to_json
       }
     end
   end

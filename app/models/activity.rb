@@ -269,18 +269,29 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def my_json
-    self.to_json(
-        include: {
-            tags: {},
-            equipment: {
-                only: :optional,
-                include: {
-                    equipment: {
-                        only: [:id, :title, :product_url]
-                    }
+  def to_json
+    super(
+      include: {
+        tags: {},
+        equipment: {
+            only: :optional,
+            include: {
+                equipment: {
+                    only: [:id, :title, :product_url]
                 }
-            },
+            }
+        },
+        ingredients: {
+            only: [:note, :display_quantity, :quantity, :unit],
+            include: {
+                ingredient: {
+                    only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
+                }
+            }
+        },
+        steps: {
+          include: {
+
             ingredients: {
                 only: [:note, :display_quantity, :quantity, :unit],
                 include: {
@@ -289,7 +300,9 @@ class Activity < ActiveRecord::Base
                     }
                 }
             }
+          }
         }
+      }
     )
   end
 

@@ -88,46 +88,37 @@
         - activity.published_variations.each do |activity|
           %li= link_to activity.title.html_safe, activity
 
-- if activity.steps.any?
-  .span6
-    .section.scroll-shadow-wrapper
-      .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
-        .scroll-shadow-content.pull-left
-          - step_number = 0
-          - activity.steps.each_with_index do |step,index|
-            .ordered-step-item{id: "order-step-item-#{index}"}
-              .step-element.step-number
-                - if step.hide_number?
-                  - step_number
-                - else
-                  = step_number+=1
-              .step-element.step-content
-                - if step.title?
-                  %h4= step.title
-                - if step.ingredients.any?
-                  .step-ingredients-source.well
-                    = render 'old_ingredients_list', ingredients: step.ingredients
-                :markdown
-                  #{apply_shortcodes(step.directions)}
-                .step-actions.btn-group
-                  / -if step.ingredients.any?
-                  /   .btn.step-action-item.step-ingredients.btn-primary
-                  /     %i.icon-th-list
-                  - if step.image_id?
-                    .btn.step-action-item.step-image-btn.btn-primary
-                      %i.icon-picture
-                  - if step.youtube_id?
-                    .btn.step-action-item.step-video-btn.btn-primary
-                      %i.icon-facetime-video
-                - if step.image_id?
-                  .step-image{id: "step-image-#{index}"}
-                    -descrip = filepicker_image_description(step.image_id, step.image_description)
-                    = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip, :itemprop => 'image'
-                - if step.youtube_id?
-                  .step-video{id: "step-video-#{index}"}
-                    .video-container(csenforceaspect)
-                      %iframe{src: youtube_url(step.youtube_id)}
+.span6(ng-show="activity.steps.length > 0" ng-controller="StepsController")
+  .section.csmonitorinputactivity
+    .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
+      .scroll-shadow-content.pull-left
 
-        .scroll-overlay-top
-        .scroll-overlay-bottom
+        .ordered-step-item(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}")
+          .step-element.step-number(ng-hide="step.hide_number" ng-bind="stepNumber($index)")
+
+          .step-element.step-content
+            %h4(ng-show="step.title" ng-bind="step.title")
+
+            //.step-ingredients-source.well(ng-show="step.ingredients.length > 0")
+            //  = render 'old_ingredients_list', ingredients: step.ingredients
+
+            %div(ng-bind-html-unsafe="step.directions | markdown | shortcode")
+            .step-actions.btn-group
+
+              .btn.step-action-item.step-image-btn.btn-primary(ng-show="step.image_id")
+                %i.icon-picture
+              .btn.step-action-item.step-video-btn.btn-primary(ng-show="step.youtube_id")
+                %i.icon-facetime-video
+
+            .step-image-outer(ng-show="!! step.image_id")
+              .step-image(id="{{'step-image-' + $index}}")
+                %img(ng-src="{{stepImageURL(step, 480)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+
+            .step-video-outer(ng-show="!! step.youtube_id")
+              .step-video(id="{{'step-video-' + $index}}")
+                .video-container(csenforceaspect)
+                  %iframe(ng-src="{{'http://www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+
+      .scroll-overlay-top
+      .scroll-overlay-bottom
 
