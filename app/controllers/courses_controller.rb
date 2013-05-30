@@ -34,6 +34,7 @@ class CoursesController < ApplicationController
     if @enrollment.save
       redirect_to course_path(@course), notice: "You are now enrolled!"
       track_event @course
+      finished('spherification', :reset => false)
     end
   end
 
