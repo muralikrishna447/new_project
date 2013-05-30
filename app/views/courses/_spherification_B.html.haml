@@ -35,65 +35,25 @@
         .span4
           /= image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
           = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
-          %h3= "The Creative Kit for $39"
-          The Creative Kit includes the technical ingredients you'll need to complete our reverse and direct spherification modules. It has most of the tools as well, except for a high-accuracy scale and the mold needed for frozen-reverse spherification.
-          /= image_tag 'https://www.filepicker.io/api/file/ZZk2FdB3TcXndhp2tihA'
-          /%h4= "The Creative Kit takes you through these lessons"
-          /%ul
-          /  - @creative.each do |activity|
-          /    %li= activity.title
+          %h3= "The Creative Kit for $#{Course::SPHERIFICATION_CREATIVE[:price]}"
+          = Course::SPHERIFICATION_CREATIVE[:copy]
           .well.section
-            = buy_now(311070543)
+            = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id])
         .span4
           /= image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
           = image_tag 'https://www.filepicker.io/api/file/5wKEDSXZQgCgtA5W7JxI'
-          %h3="The Enthusiast Kit for $69"
-          The Enthusiasts Kit includes all of the technical ingredients and tools you'll need to complete our entire course. It adds a high-accuracy scale (capable of weighing 1/100th of a gram) and a high-quality silicon mold used for frozen-reverse spherification.
-
-          /%h4= "The Enthusiast Kit includes"
-          /%ul
-          /  %li Pocket Scale
-          /  %li Stainless-steel straining spoon
-          /  %li Syringe
-          /  %li Modernist Ravioli Mold
-          /  %li 25 g Sphere Magic
-          /  %li 25 g SHMP
-          /  %li 50 g Calcium Lactate Gluconate
-          /  %li 50 g Calcium Chloride
-          /  %li 50 g Xanthan Gum
-          /= image_tag 'https://www.filepicker./io/api/file/10jMQrfrTYazji1Sc4XA'
-          /= image_tag 'https://www.filepicker./io/api/file/NiJGuT9RkOOY9RUqDpyQ'
-          /%h4= "The Enthusiast Kit takes you through these lessons"
-          /%ul
-          /  - @enthusiast.each do |activity|
-          /    %li= activity.title
+          %h3="The Enthusiast Kit for $#{Course::SPHERIFICATION_ENTHUSIAST[:price]}"
+          = Course::SPHERIFICATION_ENTHUSIAST[:copy]
           .well.section
-            = buy_now(311979727)
+            = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id])
 
         .span4
           /= image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
           = image_tag 'https://www.filepicker.io/api/file/FBnDnqcUQRetfBswxNzq'          
-          %h3="The Professional Kit for $119"
-          The Professional Kit includes everything in our Enthusiast Kit, plus a professional caviar dosing tray used for direct spherification. This hard to find tool makes it easy to quickly turn any liquid into small spheres bursting with flavor
-          /%h4= "The Professional Kit includes"
-          /%ul
-          /  %li Pocket Scale (100 g to .01 g)
-          /  %li Stainless steel straining spoon
-          /  %li Syringe
-          /  %li Rapid Caviar Dropper
-          /  %li Modernist Ravioli Mold
-          /  %li 25 g Sphere Magic
-          /  %li 25 g Sodium Citrate
-          /  %li 50 g Calcium Lactate Gluconate
-          /  %li 50 g Calcium Chloride
-          /  %li 50 g Xanthan Gum
-          /= image_tag 'https://www.filepicker.io/api/file/KLRyOQ6fTB2K2y2rc2Gq'
-          /%h4= "The Professional Kit takes you through these lessons"
-          /%ul
-          /  - @professional.each do |activity|
-          /    %li= activity.title
+          %h3="The Professional Kit for $#{Course::SPHERIFICATION_PROFESSIONAL[:price]}"
+          = Course::SPHERIFICATION_PROFESSIONAL[:copy]
           .well.section
-            = buy_now(311979875)
+            = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id])
 
 .container-fluid
   .row-fluid
