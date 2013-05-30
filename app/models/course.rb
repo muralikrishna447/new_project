@@ -126,4 +126,11 @@ class Course < ActiveRecord::Base
     activities.joins(:assignments).map(&:child_activities).flatten.uniq
   end
 
+  #### Spherification Course ####
+  SPHERIFICATION_CREATIVE = {
+    copy: "The Modernist Pantry Creative Sphere Magic Kit includes the technical ingredients you'll need to complete the ChefSteps reverse and direct spherification modules. It has most of the tools as well, except for a high-accuracy scale and the mold needed for frozen-reverse spherification.",
+    price: '39',
+    variant_id: 311070543
+  }
+
 end

@@ -2,45 +2,32 @@
   .row.section
     .span6
       %h1= "#{course.title} Course"
-      .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
-        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('ArXEEexWHPA')}
+      .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
+        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('5Jdq-wmQaPA')}
       .section
         %p= course.description
       %h4.text-center
         %i.icon-comment-alt
         Comments or Questions?
         = link_to 'Visit the Forum', 'http://forum.chefsteps.com'
-      
+     
     .span6
       .well
-        - if current_user
-          - if current_user.course_ids.include?(@course.id)
-            = link_to 'Continue Course', [@course, @course.first_published_activity], class: 'btn, btn-primary btn-large'
-          - else
-            = form_tag enroll_course_path(@course) do
-              = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
-        - else
-          .flat-form
-            %h2 Sign Up To Enroll
-            = form_for @new_user, url: registration_path(@new_user), class: 'form-inline' do |f|
-              = f.text_field :name, {placeholder: 'name', required: true, class: 'input-block-level'}
-              = f.email_field :email, {placeholder: 'email', required: true, class: 'input-block-level'}
-              .input-block-level-password
-                = f.password_field :password, {placeholder: 'password', required: true, class: 'input-block-level'}
-                = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'user-password-show'
-              = f.submit 'Enroll Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
-      .well   
-        - if @course.users.count > 1
-          %h4= "#{@course.users.count} people have enrolled."
-        %h4 Here's what people have accomplished with the course:
-        .horizontal-slider{data: {direction: 'right'}}
-          .horizontal-slider-wrap
-            - @course.uploads.each do |upload|
-              = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
-          %div{class: "horizontal-slider-btn-right btn btn-circle"}
-            %i{class: "icon-chevron-right"}
-          %div{class: "horizontal-slider-shadow-overlay-right"}
+        = render 'course_enrollment_box'
+      - if @course.users.count > 1 && @course.uploads.count > 3
+        .well   
+          %h4= "Current enrollment: #{@course.users.count}"
+          %h4 Here are some things students have accomplished so far:
+          .horizontal-slider{data: {direction: 'right'}}
+            .horizontal-slider-wrap
+              - @course.uploads.each do |upload|
+                = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+            %div{class: "horizontal-slider-btn-right btn btn-circle"}
+              %i{class: "icon-chevron-right"}
+            %div{class: "horizontal-slider-shadow-overlay-right"}
+
 %hr
+
 .container-fluid#creative
   .row-fluid
     .container
