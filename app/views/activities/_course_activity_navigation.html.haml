@@ -1,4 +1,4 @@
-%ul.nav.nav-tabs.course-nav-modules
+%ul.nav.nav-tabs.course-nav-modules{data: {spy: 'affix', :'offset-top' => '100'}}
   - @course.activity_modules.each_with_index do |activity_module, index|
     - active = activity_module == @current_module.activity ? 'active' : nil
     %li{class: "#{active}"}
