@@ -93,6 +93,7 @@ group :development, :test do
   gem 'rails-erd'
   gem 'bullet'
   gem 'launchy'
+  gem 'childprocess', '0.3.6'
 end
 
 group :guard do

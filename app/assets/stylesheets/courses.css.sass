@@ -55,6 +55,9 @@
     .active-module
       font-weight: bold
 
+.course-nav-modules.affix
+  top: 60px
+
 .course-nav-side
   font-family: 'Raleway', sans-serif
   position: relative
@@ -105,7 +108,25 @@
     top: 10px
     right: 10px
 
+@media (min-width: 1200px)
+  .course-nav-modules
+    width: 270px
+
 @media (max-width: 1200px)
   .course_activity_content
     padding-left: 20px
     padding-right: 20px
+
+  .course-nav-modules
+    width: 220px
+
+@media (min-width: 768px) and (max-width: 979px)
+  .course-nav-modules
+    width: 166px
+
+@media (max-width: 767px)
+  .course-nav-modules.affix
+    position: inherit
+
+  .course-nav-modules
+    width: 100%
