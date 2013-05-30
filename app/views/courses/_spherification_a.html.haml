@@ -110,16 +110,9 @@
       .annotated.annotated-professional
         = image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
         .annotations
-          .annotation Syringe 
-          .annotation Spherification Straining Spoon
-          .annotation 25 g Sphere Magic
-          .annotation 50 g SHMP
-          .annotation 50 g Calcium Gluconate
-          .annotation 50 g Calcium Chloride
-          .annotation 50 g Xanthan Gum
-          .annotation High-Precision Scale
-          .annotation Frozen Reverse Spherification Mold
-          .annotation Rapid Caviar Maker
+          - Course::SPHERIFICATION_PROFESSIONAL[:equipment].each do |equipment|
+            .annotation
+              = equipment
       .row-fluid
         .span6
           = image_tag 'https://www.filepicker.io/api/file/FBnDnqcUQRetfBswxNzq'
@@ -127,10 +120,10 @@
           = image_tag 'https://www.filepicker.io/api/file/KLRyOQ6fTB2K2y2rc2Gq'
     .span5.offset1.lead
       %h2 The Professional Kit
-      The Modernist Pantry Professional Sphere Magic Kit includes everything in the Enthusiast Kit, plus a professional caviar dosing tray used for direct spherification. This hard to find tool makes it easy to quickly turn any liquid into small spheres bursting with flavor. This kit includes all of the tools featured in ChefSteps spherification course.
+      = Course::SPHERIFICATION_PROFESSIONAL[:copy]
       .well.section
-        %h4.text-center= "The Professional Kit $119"
-        = buy_now(311979875)
+        %h4.text-center= "The Professional Kit $#{Course::SPHERIFICATION_PROFESSIONAL[:price]}"
+        = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id])
 
 - if bio_chris && bio_grant
   .container

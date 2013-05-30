@@ -141,4 +141,11 @@ class Course < ActiveRecord::Base
     equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g Sodium Citrate', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum', 'High-Precision Scale', 'Frozen Reverse Spherification Mold']
   }
 
+  SPHERIFICATION_PROFESSIONAL = {
+    copy: "The Modernist Pantry Professional Sphere Magic Kit includes everything in the Enthusiast Kit, plus a professional caviar dosing tray used for direct spherification. This hard to find tool makes it easy to quickly turn any liquid into small spheres bursting with flavor. This kit includes all of the tools featured in ChefSteps spherification course.",
+    price: '119',
+    variant_id: 311979875,
+    equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g SHMP', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum', 'High-Precision Scale', 'Frozen Reverse Spherification Mold', 'Rapid Caviar Maker']
+  }
+
 end
