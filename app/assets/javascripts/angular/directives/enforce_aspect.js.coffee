@@ -1,5 +1,6 @@
 angular.module('ChefStepsApp').directive "csenforceaspect", ["$window", ($window) ->
-  (scope, element) ->
+  scope: true
+  link: (scope, element) ->
 
     scope.getWidth = ->
       $(element).width()
