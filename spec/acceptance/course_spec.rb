@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'courses', :js => true do
+feature 'courses' do
   before :each do
     activity_1 = Fabricate :activity, title: 'Activity 1', published: true
     activity_2 = Fabricate :activity, title: 'Activity 2', published: true
@@ -31,9 +31,10 @@ feature 'courses', :js => true do
   #   page should have_content('Activity 3')
   # end
 
-  # scenario 'shows options to create or sign in when user is not logged in' do
-  #   course = Course.where(title: 'Spherification').first
-  #   visit course_path(course)
-  #   find_link('Enroll').visible?
-  # end
+  scenario 'shows options to create or sign in when user is not logged in' do
+    course = Course.where(title: 'Spherification').first
+    visit course_path(course)
+    find_link('Enroll').visible?
+
+  end
 end

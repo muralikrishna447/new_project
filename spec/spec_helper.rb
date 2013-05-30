@@ -32,6 +32,7 @@ Spork.prefork do
 
     config.include Devise::TestHelpers, type: :controller
     config.extend ControllerMacros, type: :controller
+    config.include Capybara::DSL
 
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction
