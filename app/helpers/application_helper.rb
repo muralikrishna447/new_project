@@ -160,13 +160,12 @@ module ApplicationHelper
   end
 
   def where_user_left_off_in_course(course, user, btn_class = nil)
-    viewed = user.viewed_activities_in_course(course)
-    if viewed.count == 0
+    last_viewed_activity = user.last_viewed_activity_in_course(course)
+    if last_viewed_activity
+      link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
+    else
       first_activity = course.first_published_activity
       link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
-    else
-      current_activity = viewed.last
-      link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, current_activity], class: btn_class
     end
   end
 
