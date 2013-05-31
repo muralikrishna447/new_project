@@ -19,5 +19,10 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", ($scope)
     t = $scope.activity.steps[idx]
     $scope.activity.steps[idx] = $scope.activity.steps[idx + direction]
     $scope.activity.steps[idx + direction] = t
+    $scope.addUndo()
+
+  $scope.removeStep = (idx) ->
+    $scope.activity.steps.splice(idx, 1)
+    $scope.addUndo()
 
 ]

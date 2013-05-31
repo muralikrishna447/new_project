@@ -108,6 +108,10 @@
                   %i.icon-arrow-up
                 %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)")
                   %i.icon-arrow-down
+              .btn-group.btn-group-vertical
+                %button.btn.btn-secondary(ng-click="removeStep($index)")
+                  %i.remove-button.icon-remove
+
 
           .step-element.step-content
 
@@ -115,27 +119,57 @@
               %csEditPairShow
                 %h4(ng-bind-html-unsafe="step.title || (editMode && 'Optional title...')" ng-class="disableIf(! step.title.length)")
               %csEditPairEdit
-                %input.nohtml.step-title-input(type="text" name="title" ng-model="step.title" placeholder="Optional title...")
+                %input.nohtml.step-title-input(type="text" ng-model="step.title" placeholder="Optional title...")
 
             .step-ingredients-source.well(ng-show="step.ingredients.length > 0")
               = render 'ingredients_list', source: "step"
 
-            %div(ng-bind-html-unsafe="step.directions | markdown | shortcode")
-            .step-actions.btn-group
+            %csEditPair.section
+              %csEditPairShow
+                .activity-description-wrapper(ng-show="!!step.directions")
+                  %div(ng-bind-html-unsafe="step.directions | markdown | shortcode")
+              %csEditPairEdit
+                %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
 
-              .btn.step-action-item.step-image-btn.btn-primary(ng-show="step.image_id")
-                %i.icon-picture
-              .btn.step-action-item.step-video-btn.btn-primary(ng-show="step.youtube_id")
-                %i.icon-facetime-video
+            %div(ng-show="! editMode")
+              .step-actions.btn-group
+                .btn.step-action-item.step-image-btn.btn-primary(ng-show="step.image_id")
+                  %i.icon-picture
+                .btn.step-action-item.step-video-btn.btn-primary(ng-show="step.youtube_id")
+                  %i.icon-facetime-video
 
-            .step-image-outer(ng-show="!! step.image_id")
-              .step-image(id="{{'step-image-' + $index}}")
-                %img(ng-src="{{stepImageURL(step, 480)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+              .step-video-outer(ng-show="!! step.youtube_id")
+                .step-video(id="{{'step-video-' + $index}}")
+                  .video-container(csenforceaspect)
+                    %iframe(ng-src="{{'http://www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
 
-            .step-video-outer(ng-show="!! step.youtube_id")
-              .step-video(id="{{'step-video-' + $index}}")
+              .step-image-outer(ng-show="!! step.image_id")
+                .step-image(id="{{'step-image-' + $index}}")
+                  %img(ng-src="{{stepImageURL(step, 480)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+
+
+            .section.clearfix(ng-show="editMode")
+              .span2(ng-show="!! step.youtube_id" )
                 .video-container(csenforceaspect)
-                  %iframe(ng-src="{{'http://www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+                  %iframe(ng-src="{{'http://www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=small'}}")
+              .span2(ng-show="!! step.image_id")
+                %img(ng-src="{{stepImageURL(step, 240)}}")
+
+            .section.clearfix(ng-show="editMode")
+              .btn.btn-secondary(ng-click="showMediaEdit = ! showMediaEdit")
+                %i.icon-edit
+                Media
+                %i.icon-chevron-up(ng-show="showMediaEdit")
+                %i.icon-chevron-down(ng-show="! showMediaEdit")
+              %div(collapse="! showMediaEdit")
+                .well
+                  %h4 Video
+                  %input.nohtml(type="text" ng-model="step.youtube_id" placeholder="Youtube ID" style="width: 100%;")
+                  %h4 Image
+                  .csfilepicker(ng-model="step.image_id")
+                  %input.nohtml(ng-show="!!step.image_id" type="text" ng-model="step.image_description" placeholder="Image description" style="width: 100%;")
+
+
 
       .scroll-overlay-top
       .scroll-overlay-bottom
