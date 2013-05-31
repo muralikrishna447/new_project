@@ -50,7 +50,10 @@ class User < ActiveRecord::Base
   end
 
   def last_viewed_activity_in_course(course)
-    events.scoped_by('Inclusion', 'show').map(&:trackable).select{|i| i.course_id = course.id}.first.activity
+    last_viewed = events.scoped_by('Inclusion', 'show').map(&:trackable).select{|i| i.course_id = course.id}.first
+    if last_viewed
+      last_viewed.activity
+    end
   end
 
 end
