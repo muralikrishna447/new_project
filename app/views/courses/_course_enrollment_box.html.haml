@@ -3,8 +3,12 @@
     - course_button_message = current_user.viewed_activities_in_course(@course).count > 0 ? 'Continue Course' : 'Start the Course!'
     = link_to course_button_message, [@course, @course.first_published_activity], class: 'btn, btn-primary btn-large'
   - else
+    %h4 Enroll now for free
     = form_tag enroll_course_path(@course) do
       = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
+    %p
+      = link_to [@course, @course.first_published_activity]
+
 - else
   .flat-form.section
     %h2 Enroll for free now

@@ -1,7 +1,9 @@
 .container
+  .row
+    .span12.section
+      %h1= "#{course.title} Course"      
   .row.section
     .span6
-      %h1= "#{course.title} Course"
       .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
         %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('5Jdq-wmQaPA')}
       .section
@@ -75,7 +77,6 @@
       %h2 The Creative Kit
       = Course::SPHERIFICATION_CREATIVE[:copy]
       .well.section
-        %h4.text-center= "The Creative Kit $#{Course::SPHERIFICATION_CREATIVE[:price]}"
         = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id])
 
 
@@ -99,7 +100,6 @@
       %h2 The Enthusiast Kit
       = Course::SPHERIFICATION_ENTHUSIAST[:copy]
       .well.section
-        %h4.text-center= "The Enthusiast Kit $#{Course::SPHERIFICATION_ENTHUSIAST[:price]}"
         = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id])
 
 %hr
@@ -122,7 +122,6 @@
       %h2 The Professional Kit
       = Course::SPHERIFICATION_PROFESSIONAL[:copy]
       .well.section
-        %h4.text-center= "The Professional Kit $#{Course::SPHERIFICATION_PROFESSIONAL[:price]}"
         = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id])
 
 - if bio_chris && bio_grant
