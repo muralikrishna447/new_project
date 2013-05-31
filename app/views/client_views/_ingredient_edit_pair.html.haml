@@ -18,7 +18,7 @@
   %csEditPairEdit
     .action-button-group(ng-show="focusedInside()")
       %i.drag-handle.icon-sort
-      %i.remove-button.icon-remove(ng-click="removeIngredient()")
+      %i.remove-button.icon-remove(ng-click="removeIngredient($index)")
     .ingredient-title
       %input(csselectonfocus="" csinputmonkeyingredient="" type="text" placeholder="New ingredient" typeahead-editable="true" autocomplete="off" class="ingredient-typeahead" ng-model="ai.ingredient" typeahead="i as i.title for i in all_ingredients($viewValue)")
       %input(csselectonfocus="" type="text" placeholder="note" autocomplete="off" ng-model="ai.note")

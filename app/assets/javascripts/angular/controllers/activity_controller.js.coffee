@@ -253,6 +253,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.activity.ingredients.push(item)
     #$scope.addUndo()
 
+  $scope.removeIngredient = (index) ->
+    $scope.activity.ingredients.splice(index, 1)
+    $scope.addUndo()
+
   $scope.all_ingredients = (ingredient_name) ->
     $http.get("/ingredients.json?q=" + ingredient_name).then (response) ->
       # always include current search text as an option

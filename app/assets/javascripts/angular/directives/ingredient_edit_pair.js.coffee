@@ -27,7 +27,7 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
       ! ((_.isString(ai.ingredient) && (ai.ingredient == "")) || (ai.ingredient.title == ""))
 
     element.bind 'keydown', (event) ->
-      if $scope.editMode
+      if scope.editMode
         ai = scope.ai
 
         # On return (in input, not the popup), commit this ingredient and start a new one - iff
@@ -39,12 +39,5 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
       else
         return true
 
-
-  controller: ['$scope', '$element', ($scope, $element) ->
-    $scope.removeIngredient = ->
-      $scope.activity.ingredients.splice($scope.activity.ingredients.indexOf($scope.ai), 1)
-      $scope.addUndo()
-
-  ]
 
   templateUrl: '/client_views/_ingredient_edit_pair'
