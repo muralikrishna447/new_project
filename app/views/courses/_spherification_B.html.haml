@@ -26,6 +26,19 @@
               %i{class: "icon-chevron-right"}
             %div{class: "horizontal-slider-shadow-overlay-right"}
 
+#creative-kit.modal.hide.fade
+  .modal-header
+    %h3 The Creative Kit
+    = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
+
+  .modal-body
+    %ul
+      %li Blah
+      %li Blah 
+  .modal-footer
+    %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
+
+
 %hr
 
 .container-fluid#creative
@@ -37,13 +50,16 @@
           = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
           %h3= "The Creative Kit for $#{Course::SPHERIFICATION_CREATIVE[:price]}"
           = Course::SPHERIFICATION_CREATIVE[:copy]
+          %a(href='#creative-kit' data-target='#creative-kit' data-toggle='modal') See Kit Details
           .well.section
             = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id])
+
         .span4
           /= image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
           = image_tag 'https://www.filepicker.io/api/file/5wKEDSXZQgCgtA5W7JxI'
           %h3="The Enthusiast Kit for $#{Course::SPHERIFICATION_ENTHUSIAST[:price]}"
           = Course::SPHERIFICATION_ENTHUSIAST[:copy]
+          %a(href='#creative-kit' data-target='#creative-kit' data-toggle='modal') See Kit Details
           .well.section
             = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id])
 
@@ -52,6 +68,8 @@
           = image_tag 'https://www.filepicker.io/api/file/FBnDnqcUQRetfBswxNzq'          
           %h3="The Professional Kit for $#{Course::SPHERIFICATION_PROFESSIONAL[:price]}"
           = Course::SPHERIFICATION_PROFESSIONAL[:copy]
+          %a(href='#creative-kit' data-target='#creative-kit' data-toggle='modal') See Kit Details
+
           .well.section
             = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id])
 
