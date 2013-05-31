@@ -45,7 +45,9 @@
                 est. min. remaining
       .row-fluid
         .span12
-          %p.pull-left= quiz.start_copy
+          %p.pull-left
+            :markdown
+              #{quiz.start_copy}
           .pull-right
             #start-quiz.btn.btn-primary.btn-large
               = quiz.started_by?(current_user) ? "Return to Quiz" : "Start Quiz"
