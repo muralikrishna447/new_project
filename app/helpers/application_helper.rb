@@ -3,7 +3,7 @@ module ApplicationHelper
     "http://d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end
 
-  def filepicker_arbitrary_image(fpfile, width)
+  def filepicker_arbitrary_image(fpfile, width, fit='max')
     if ! fpfile.start_with?('{')
       # Legacy naked S3 image id. Still used for a few images that don't
       # have UI to set.
@@ -14,7 +14,7 @@ module ApplicationHelper
       end
     else
       url = ActiveSupport::JSON.decode(fpfile)["url"]
-      url + "/convert?fit=max&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
+      url + "/convert?fit=#{fit}&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
     end
   end
 
@@ -63,6 +63,10 @@ module ApplicationHelper
     else
       'http://www.placehold.it/300x300&text=ChefSteps'
     end
+  end
+
+  def filepicker_media_box_image(fpfile)
+    filepicker_arbitrary_image(fpfile, 278, 'crop')
   end
 
   def s3_audio_url(audio_clip)
