@@ -14,4 +14,10 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", ($scope)
     if ((! desc) || (desc.length == 0)) && step.image_id
       desc = JSON.parse(step.image_id).filename
     desc
+
+  $scope.reorderStep = (idx, direction) ->
+    t = $scope.activity.steps[idx]
+    $scope.activity.steps[idx] = $scope.activity.steps[idx + direction]
+    $scope.activity.steps[idx + direction] = t
+
 ]

@@ -93,38 +93,50 @@
     .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
       .scroll-shadow-content.pull-left
 
-        .ordered-step-item(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}")
-          .step-element.step-number
-            %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
-            %div(ng-show="editMode")
-              %button.btn.btn-secondary.edit-hide-step-number(type="button" btn-checkbox="" ng-model="step.hide_number" )
-                %div(collapse="step.hide_number")
-                  %i.icon-ban-circle
-                %div(collapse="! step.hide_number")
-                  \#
+        .ordered-step-item(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" data-ng-animate="'custom'")
+          .step-group(csstephovered="" ng-mouseenter="setMouseOverStep(true)" ng-mouseleave="setMouseOverStep(false)")
+            .step-element.step-number
+              %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
+              .btn-toolbar.step-edit-buttons(ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
+                .btn-group
+                  %button.btn.btn-secondary(type="button" btn-checkbox="" ng-model="step.hide_number" )
+                    %div(collapse="step.hide_number")
+                      %i.icon-ban-circle
+                    %div(collapse="! step.hide_number")
+                      \#
+                .btn-group.btn-group-vertical
+                  %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)")
+                    %i.icon-arrow-up
+                  %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)")
+                    %i.icon-arrow-down
 
-          .step-element.step-content
-            %h4(ng-show="step.title" ng-bind="step.title")
+            .step-element.step-content
 
-            .step-ingredients-source.well(ng-show="step.ingredients.length > 0")
-              = render 'ingredients_list', source: "step"
+              %csEditPair
+                %csEditPairShow
+                  %h4(ng-bind-html-unsafe="step.title || (editMode && 'Optional title...')" ng-class="disableIf(! step.title.length)")
+                %csEditPairEdit
+                  %textarea.nohtml(name="title" rows=1 ng-model="step.title" placeholder="Optional title...")
 
-            %div(ng-bind-html-unsafe="step.directions | markdown | shortcode")
-            .step-actions.btn-group
+              .step-ingredients-source.well(ng-show="step.ingredients.length > 0")
+                = render 'ingredients_list', source: "step"
 
-              .btn.step-action-item.step-image-btn.btn-primary(ng-show="step.image_id")
-                %i.icon-picture
-              .btn.step-action-item.step-video-btn.btn-primary(ng-show="step.youtube_id")
-                %i.icon-facetime-video
+              %div(ng-bind-html-unsafe="step.directions | markdown | shortcode")
+              .step-actions.btn-group
 
-            .step-image-outer(ng-show="!! step.image_id")
-              .step-image(id="{{'step-image-' + $index}}")
-                %img(ng-src="{{stepImageURL(step, 480)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+                .btn.step-action-item.step-image-btn.btn-primary(ng-show="step.image_id")
+                  %i.icon-picture
+                .btn.step-action-item.step-video-btn.btn-primary(ng-show="step.youtube_id")
+                  %i.icon-facetime-video
 
-            .step-video-outer(ng-show="!! step.youtube_id")
-              .step-video(id="{{'step-video-' + $index}}")
-                .video-container(csenforceaspect)
-                  %iframe(ng-src="{{'http://www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+              .step-image-outer(ng-show="!! step.image_id")
+                .step-image(id="{{'step-image-' + $index}}")
+                  %img(ng-src="{{stepImageURL(step, 480)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+
+              .step-video-outer(ng-show="!! step.youtube_id")
+                .step-video(id="{{'step-video-' + $index}}")
+                  .video-container(csenforceaspect)
+                    %iframe(ng-src="{{'http://www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
 
       .scroll-overlay-top
       .scroll-overlay-bottom

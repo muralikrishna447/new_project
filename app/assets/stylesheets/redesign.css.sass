@@ -1201,11 +1201,56 @@ csingredienteditpair
 .add-item, .done
   margin-top: -5px
 
-.edit-hide-step-number
-  margin-top: 4px
-  line-height: 16px
-  font-size: 14px
-  padding: 2px 6px
+.step-edit-buttons
+  button
+    margin-top: 4px
+    line-height: 16px
+    font-size: 14px
+    padding: 2px 6px
+  .btn-group-vertical
+    margin-left: 0px
+
+.fade-hide, .fade-show
+  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s
+  -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s
+  -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s
+  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s
+
+.fade-hide
+  opacity: 1
+  &.fade-hide-active
+    opacity: 0
+
+.fade-show
+  opacity: 0
+  &.fade-show-active
+    opacity: 1
+
+.custom-enter, .custom-leave, .custom-move
+  -webkit-transition: 1s linear all
+  -moz-transition: 1s linear all
+  -o-transition: 1s linear all
+  transition: 1s linear all
+  position: relative
+
+.custom-enter
+  left: -10px
+  opacity: 0
+  &.custom-enter-active
+    left: 0
+    opacity: 1
+
+.custom-leave
+  left: 0
+  opacity: 1
+  &.custom-leave-active
+    left: -10px
+    opacity: 0
+
+.custom-move
+  opacity: 0
+  &.custom-move-active
+    opacity: 1
 
 // BELOW ARE RESPONSIVE STYLES //
 
