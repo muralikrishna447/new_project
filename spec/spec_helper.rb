@@ -62,7 +62,6 @@ Spork.prefork do
     # Set debug: true to debug poltergeist
   end
   Capybara.javascript_driver = :poltergeist
-  Capybara.default_wait_time = 5
 
 end
 
