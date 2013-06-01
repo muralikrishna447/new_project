@@ -49,7 +49,7 @@
         = Course::SPHERIFICATION_CREATIVE[:copy]
   .row.section
     .span4.offset4.well
-      = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id])
+      = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id], Course::SPHERIFICATION_CREATIVE[:price])
 
 %hr
 .container
@@ -70,7 +70,7 @@
         = Course::SPHERIFICATION_ENTHUSIAST[:copy]
   .row.section
     .span4.offset4.well
-      = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id])
+      = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id], Course::SPHERIFICATION_ENTHUSIAST[:price])
 
 
 %hr
@@ -92,7 +92,7 @@
         = Course::SPHERIFICATION_PROFESSIONAL[:copy]
   .row.section
     .span4.offset4.well
-      = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id])
+      = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id], Course::SPHERIFICATION_PROFESSIONAL[:price])
 
 .container-fluid
   .row-fluid

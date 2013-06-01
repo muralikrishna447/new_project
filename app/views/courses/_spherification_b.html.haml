@@ -77,7 +77,7 @@
             = Course::SPHERIFICATION_CREATIVE[:copy]
             %a(href='#creative-kit' data-target='#creative-kit' data-toggle='modal') See Kit Details
           .well.section
-            = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id])
+            = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id], Course::SPHERIFICATION_CREATIVE[:price])
 
         .span4.align-bottom
           /= image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
@@ -87,7 +87,7 @@
             = Course::SPHERIFICATION_ENTHUSIAST[:copy]
             %a(href='#enthusiast-kit' data-target='#enthusiast-kit' data-toggle='modal') See Kit Details
           .well.section
-            = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id])
+            = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id], Course::SPHERIFICATION_ENTHUSIAST[:price])
 
         .span4.align-bottom
           /= image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
@@ -97,7 +97,7 @@
             = Course::SPHERIFICATION_PROFESSIONAL[:copy]
             %a(href='#professional-kit' data-target='#professional-kit' data-toggle='modal') See Kit Details
           .well.section
-            = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id])
+            = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id], Course::SPHERIFICATION_PROFESSIONAL[:price])
 
 .container-fluid
   .row-fluid
