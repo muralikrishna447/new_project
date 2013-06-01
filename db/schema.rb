@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130529005122) do
+ActiveRecord::Schema.define(:version => 20130531231424) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -274,14 +274,6 @@ ActiveRecord::Schema.define(:version => 20130529005122) do
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "pages", :force => true do |t|
-    t.string   "title"
-    t.text     "content"
-    t.string   "slug"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "pg_search_documents", :force => true do |t|
     t.text     "content"
     t.integer  "searchable_id"
@@ -326,8 +318,8 @@ ActiveRecord::Schema.define(:version => 20130529005122) do
     t.datetime "updated_at",                     :null => false
     t.integer  "activity_id"
     t.string   "slug"
-    t.string   "start_copy"
-    t.string   "end_copy"
+    t.text     "start_copy"
+    t.text     "end_copy"
     t.boolean  "published",   :default => false
   end
 
