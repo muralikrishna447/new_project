@@ -1,7 +1,9 @@
 .container
   .row.section
-    .span6
+    .span12
       %h1= "#{course.title} Course"
+  .row.section
+    .span6
       .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
         %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('5Jdq-wmQaPA')}
       .section
@@ -47,7 +49,6 @@
         = Course::SPHERIFICATION_CREATIVE[:copy]
   .row.section
     .span4.offset4.well
-      %h4.text-center= "The Creative Kit $#{Course::SPHERIFICATION_CREATIVE[:price]}"
       = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id])
 
 %hr
@@ -63,13 +64,12 @@
         - Course::SPHERIFICATION_ENTHUSIAST[:equipment].each do |equipment|
           %li= equipment
     .span5
-      = image_tag 'https://www.filepicker.io/api/file/10jMQrfrTYazji1Sc4XA'
+      = image_tag 'https://www.filepicker.io/api/file/5wKEDSXZQgCgtA5W7JxI'
       /= image_tag 'https://www.filepicker.io/api/file/NiJGuT9RkOOY9RUqDpyQ'
       .lead.section
         = Course::SPHERIFICATION_ENTHUSIAST[:copy]
   .row.section
     .span4.offset4.well
-      %h4.text-center= "The Enthusiast Kit $#{Course::SPHERIFICATION_ENTHUSIAST[:price]}"
       = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id])
 
 
@@ -92,7 +92,6 @@
         = Course::SPHERIFICATION_PROFESSIONAL[:copy]
   .row.section
     .span4.offset4.well
-      %h4.text-center= "The Professional Kit $#{Course::SPHERIFICATION_PROFESSIONAL[:price]}"
       = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id])
 
 .container-fluid

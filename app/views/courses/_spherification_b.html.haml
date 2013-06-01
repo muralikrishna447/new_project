@@ -1,7 +1,9 @@
 .container
   .row.section
-    .span6
+    .span12
       %h1= "#{course.title} Course"
+  .row.section
+    .span6
       .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
         %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('5Jdq-wmQaPA')}
       .section
@@ -31,7 +33,7 @@
     %h3 The Creative Kit
   .modal-body
     = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
-    %ul
+    %ul.section{style: "-webkit-column-count: 2"}
       - Course::SPHERIFICATION_CREATIVE[:equipment].each do |equipment|
         %li= equipment
   .modal-footer.section
@@ -43,7 +45,7 @@
     %h3 The Enthusiast Kit
   .modal-body
     = image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
-    %ul
+    %ul.section{style: "-webkit-column-count: 2"}
       - Course::SPHERIFICATION_ENTHUSIAST[:equipment].each do |equipment|
         %li= equipment    
   .modal-footer.section
@@ -55,7 +57,7 @@
     %h3 The Professional Kit
   .modal-body
     = image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
-    %ul
+    %ul.section{style: "-webkit-column-count: 2"}
       - Course::SPHERIFICATION_PROFESSIONAL[:equipment].each do |equipment|
         %li= equipment
   .modal-footer.section
@@ -67,30 +69,33 @@
   .row-fluid
     .container
       .row.section
-        .span4
+        .span4.align-bottom
           /= image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
           = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
-          %h3= "The Creative Kit for $#{Course::SPHERIFICATION_CREATIVE[:price]}"
-          = Course::SPHERIFICATION_CREATIVE[:copy]
-          %a(href='#creative-kit' data-target='#creative-kit' data-toggle='modal') See Kit Details
+          %h3= "The Creative Kit"
+          .static-height
+            = Course::SPHERIFICATION_CREATIVE[:copy]
+            %a(href='#creative-kit' data-target='#creative-kit' data-toggle='modal') See Kit Details
           .well.section
             = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id])
 
-        .span4
+        .span4.align-bottom
           /= image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
           = image_tag 'https://www.filepicker.io/api/file/5wKEDSXZQgCgtA5W7JxI'
-          %h3="The Enthusiast Kit for $#{Course::SPHERIFICATION_ENTHUSIAST[:price]}"
-          = Course::SPHERIFICATION_ENTHUSIAST[:copy]
-          %a(href='#enthusiast-kit' data-target='#enthusiast-kit' data-toggle='modal') See Kit Details
+          %h3="The Enthusiast Kit"
+          .static-height
+            = Course::SPHERIFICATION_ENTHUSIAST[:copy]
+            %a(href='#enthusiast-kit' data-target='#enthusiast-kit' data-toggle='modal') See Kit Details
           .well.section
             = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id])
 
-        .span4
+        .span4.align-bottom
           /= image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
           = image_tag 'https://www.filepicker.io/api/file/FBnDnqcUQRetfBswxNzq'          
-          %h3="The Professional Kit for $#{Course::SPHERIFICATION_PROFESSIONAL[:price]}"
-          = Course::SPHERIFICATION_PROFESSIONAL[:copy]
-          %a(href='#professional-kit' data-target='#professional-kit' data-toggle='modal') See Kit Details
+          %h3="The Professional Kit"
+          .static-height
+            = Course::SPHERIFICATION_PROFESSIONAL[:copy]
+            %a(href='#professional-kit' data-target='#professional-kit' data-toggle='modal') See Kit Details
           .well.section
             = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id])
 

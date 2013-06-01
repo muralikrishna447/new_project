@@ -108,9 +108,20 @@
     top: 10px
     right: 10px
 
+/* Spherification Styles */
+
+.static-height
+  height: 150px
+
+.align-bottom
+  bottom: 0
+
 @media (min-width: 1200px)
   .course-nav-modules
     width: 270px
+
+  .static-height
+    height: 150px
 
 @media (max-width: 1200px)
   .course_activity_content
@@ -120,9 +131,15 @@
   .course-nav-modules
     width: 220px
 
+  .static-height
+    height: 170px    
+
 @media (min-width: 768px) and (max-width: 979px)
   .course-nav-modules
     width: 166px
+
+  .static-height
+    height: 220px    
 
 @media (max-width: 767px)
   .course-nav-modules.affix
@@ -130,3 +147,12 @@
 
   .course-nav-modules
     width: 100%
+
+  .static-height
+    height: 140px
+
+@media (max-width: 480px)
+  .static-height
+    inherit
+
+
