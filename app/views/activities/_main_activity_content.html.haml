@@ -89,29 +89,26 @@
           %li= link_to activity.title.html_safe, activity
 
 .span6(ng-show="activity.steps.length > 0" ng-controller="StepsController")
-  .section.csmonitorinputactivity
+  .section
     .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
       .scroll-shadow-content.pull-left
 
-        .ordered-step-item(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep(true)" ng-mouseleave="setMouseOverStep(false)")
+        .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep(true)" ng-mouseleave="setMouseOverStep(false)")
+          .btn-toolbar.step-edit-buttons(ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
+            %button.btn.btn-secondary(type="button" btn-checkbox="" ng-model="step.hide_number" )
+              %div(collapse="step.hide_number")
+                %i.icon-ban-circle
+              %div(collapse="! step.hide_number")
+                \#
+              %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)")
+                %i.icon-arrow-up
+              %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)")
+                %i.icon-arrow-down
+            %button.btn.btn-secondary(type="button" ng-click="removeStep($index)")
+              %i.icon-remove-sign
+
           .step-element.step-number
             %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
-            .btn-toolbar.step-edit-buttons(ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
-              .btn-group
-                %button.btn.btn-secondary(type="button" btn-checkbox="" ng-model="step.hide_number" )
-                  %div(collapse="step.hide_number")
-                    %i.icon-ban-circle
-                  %div(collapse="! step.hide_number")
-                    \#
-              .btn-group.btn-group-vertical
-                %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)")
-                  %i.icon-arrow-up
-                %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)")
-                  %i.icon-arrow-down
-              .btn-group.btn-group-vertical
-                %button.btn.btn-secondary(ng-click="removeStep($index)")
-                  %i.remove-button.icon-remove
-
 
           .step-element.step-content
 
@@ -121,14 +118,15 @@
               %csEditPairEdit
                 %input.nohtml.step-title-input(type="text" ng-model="step.title" placeholder="Optional title...")
 
-            .step-ingredients-source.well(csmonitorinputactivity="" ng-show="step.ingredients.length > 0")
-              = render 'ingredients_list', source: "step"
-            .nav(ng-show="editMode")
-              %h4(ng-show="! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Ingredients
-              %button.btn.btn-small.btn-basic.add-item(ng-click="addIngredient($index)")
-                +
-              %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
-                Done
+            %div.csmonitorinputactivity
+              .step-ingredients-source.well(ng-show="step.ingredients.length > 0")
+                = render 'ingredients_list', source: "step"
+              .nav(ng-show="editMode")
+                %h4(ng-show="! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Ingredients
+                %button.btn.btn-small.btn-basic.add-item(ng-click="addIngredient($index)")
+                  +
+                %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
+                  Done
 
             %csEditPair.section
               %csEditPairShow

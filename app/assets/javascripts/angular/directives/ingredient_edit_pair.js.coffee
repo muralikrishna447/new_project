@@ -36,8 +36,9 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
           if scope.hasIngredientTitle() && ai.unit? && ((ai.display_quantity? ) || (ai.unit? == "a/n"))
             scope.addIngredient()
             scope.$apply()
-      else
-        return true
+          return false
+
+      return true
 
 
   templateUrl: '/client_views/_ingredient_edit_pair'

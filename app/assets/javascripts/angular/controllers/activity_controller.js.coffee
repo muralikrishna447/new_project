@@ -97,6 +97,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.disableIf = (condition) ->
     if condition then "disabled-section" else ""
 
+  $scope.addEditModeClass = ->
+    if $scope.editMode then "edit-mode" else ""
+
   # Activity types
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
 
