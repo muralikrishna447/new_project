@@ -40,7 +40,7 @@
     paramScaling = #{params[:scaling]};
 
 %form(name="myform")
-  .container.top-container#activity-body.recipe_schema(ng-cloak="" ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
+  .container#activity-body.recipe_schema(ng-cloak="" ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
 
     .row.printable
 

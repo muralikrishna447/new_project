@@ -1,0 +1,12 @@
+- content_for :title, course.title
+- content_for :description, course.short_description
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+
+- ab_test('spherification', {'spheres_a' => 1}, {'spheres_b' => 1}, {'spheres_c' => 1}) do |spherification|
+  - if spherification == 'spheres_a'
+    = render 'spherification_a'
+  - elsif spherification == 'spheres_b'
+    = render 'spherification_b'
+  - elsif spherification == 'spheres_c'
+    = render 'spherification_c'
+

@@ -1,69 +1,86 @@
-- content_for :title, "#{@user.name}'s Profile"
+- content_for :title, "Profile - #{@user.name}"
+.hide
+  / Automatically logs in user into forum
+  %iframe{src:'http://forum.chefsteps.com/entry/jsconnect?client_id=1924714588&Target=%2F'}
 
-.container#main-container
-  .row.section
-    .span4.well
-      %h1= "#{@user.name}'s Profile"
-      .section
-        - if is_current_user?(@user)
-          = link_to edit_registration_path(@user), class: 'btn btn-primary' do
-            %i.icon-cogs
-            Settings
-          = link_to sign_out_path, class: 'btn btn-primary' do
-            %i.icon-signout
-            Sign out
-    .span8
-      / %h3 Activities
-      / - @user.user_activities.each do |user_activity|
-      /   %div
-      /     = @user.name + ' cooked ' + user_activity.activity.title + ' ' + time_ago_in_words(user_activity.created_at) + ' ago'
-      %h3 Cook a Recipe
-      = render 'shared/horizontal_scroller', items: @recipes
+.container-fluid.profile-cover{style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
+  .row-fluid
+    .container
+      .row
+        .span2
+          .profile-image
+            = image_tag filepicker_circle_image(@user.image_id), class: 'img-circle'
+        .span10
+          %h1= @user.name
 
-      %h3 Learn a Technique
-      = render 'shared/horizontal_scroller', items: @techniques
+.container
+  .row
+    .span2
+      .well.profile-badges
+        %h4 Badges
+        - @user.badges.each do |badge|
+          - if badge.image
+            = link_to badges_path, anchor: "badge-#{badge.id}" do
+              = image_tag badge.image
+      - if current_user == @user
+        = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-primary btn-block'
+        = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'
+    .span5.nav-tabs-gray
+      %h4 Bio
+      %p= @user.bio
+      %ul.nav.nav-tabs
+        %li.active
+          = link_to 'Courses', '#courses', data: {toggle: 'tab'}
+        %li
+          = link_to 'Uploads', '#uploads', data: {toggle: 'tab'}
+      .tab-content
+        .tab-pane.active#courses
+          - if @user.courses.any?
+            - @user.courses.each do |course|
+              - course_text = capture do
+                %h4
+                  Lesson
+                  = @user.viewed_activities_in_course(course).count
+                  of
+                  = course.viewable_activities.count
+                = where_user_left_off_in_course(course, @user, 'btn btn-primary')
+              = render 'shared/media_list_item', image: course.featured_image, title: course.title, text: course_text
+          - else
+            .tab-pane-header
+              %h3 Enroll into your first course today!
+            - @courses.each do |course|
+              - unless course.id == 1
+                - course_title = capture do
+                  = link_to "#{course.title} Course", course
+                = render 'shared/media_list_item', image: course.featured_image, title: course_title, text: ''
+        .tab-pane#uploads
+          - @user.uploads.each do |upload|
+            - upload_title = capture do
+              = link_to upload.recipe_name, user_upload_path(@user, upload)
+            = render 'shared/media_list_item', image: upload.image_id, title: upload_title, text: upload.notes
 
-      %h3 Join a Discussion
-      - @discussions.each do |discussion|
-        / = discussion.inspect
-        - discussion_link = discussion[:url].gsub('https://chefsteps.vanillaforums.com','http://forum.chefsteps.com')
-        %h4
-          = discussion[:name]
-          %i.icon-comments
-          %small= discussion[:count_comments]
-        = link_to discussion_link do
-          %blockquote.word-wrap
-            %p= truncate(strip_tags(discussion[:body]), length: 300, separator: ' ')
-            %small
-              %cite
-                = discussion[:first_name]
+    .span5
+      %h4 Timeline
+      .timeline
+        .text-center
+          %h4 Today
+        .timeline-media
+          .timeline-line
+          .timeline-start
+          .timeline-end
+          .timeline-left
+            - @user.events.timeline.in_groups_of(2).map(&:first).compact.each do |event|
+              = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
+          .timeline-right
+            - @user.events.timeline.in_groups_of(2).map(&:last).compact.each do |event|
+              = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
+        .text-center
+          %h4= "You joined ChefSteps on"
+          %h4= "#{@user.created_at.strftime('%B %-d, %Y')}."
 
-  - content_for :bottom do
-    .row.section
-      .span12
-        %h2 Quizzes
-        - if completed_quizzes.any?
-          = render partial: 'profile_quiz_info', user: @user
-        - else
-          You haven't completed any quizzes
+        / - @user.events.timeline.each_with_index do |event, index|
+        /   - direction = index.even? ? 'left' : 'right'
+        /   = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: direction
 
-  .hide
-    %iframe{src:'http://forum.chefsteps.com/entry/jsconnect?client_id=1924714588&Target=%2F'}
-
-  / .hero-unit
-  /   .container
-  /     .row
-  /       .span12
-  /         - profile_title = is_current_user?(user) ? "My Profile" : "#{user.name}'s Profile"
-  /         %h3=profile_title
-
-  / .container.user-profile
-  /   .row
-  /     .span4.pull-right.horizontal-divider
-  /       = render partial: 'profile_bio', user: user
-  /     - if is_current_user?(user)
-  /       .span8.pull-left.user-profile-intro
-  /         = render partial: 'profile_intro', user: user
-  /     .span8.pull-left.user-profile-info
-  /       = render partial: 'profile_quiz_info', user: user
-
+= content_for :footer do
+  = render 'layouts/footer'

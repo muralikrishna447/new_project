@@ -18,6 +18,13 @@ class ApplicationController < ActionController::Base
     user_profile_path(user)
   end
 
+private
+  
+  def track_event(trackable, action = params[:action])
+    if current_user
+      current_user.events.create! action: action, trackable: trackable
+    end
+  end
 
   # See http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on
   after_filter  :set_csrf_cookie_for_ng

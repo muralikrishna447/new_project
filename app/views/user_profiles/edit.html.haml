@@ -1,0 +1,26 @@
+.container
+  .row
+    .span6
+      %h2 Edit Profile
+      = form_for @user, url: user_profile_path(@user), method: :put do |f|
+        .upload-wrapper
+          = image_tag '/assets/missing.png', class: "upload-photo-preview"
+          = link_to '+', '#', class: 'profile-photo-btn'
+          %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field'
+        %div
+          = f.label :name
+          = f.text_field :name, class: 'input-block-level'
+        %div
+          = f.label :email
+          = f.text_field :email, class: 'input-block-level'
+        %div
+          = f.label :website
+          = f.text_field :website, class: 'input-block-level'
+        %div
+          = f.label :bio
+          = f.text_area :bio, class: 'input-block-level'
+        %div
+          = f.submit 'Save Changes', class: 'btn btn-primary'
+          = link_to 'Cancel', user_profile_path(@user), class: 'btn btn-primary'
+
+= render 'layouts/filepicker'

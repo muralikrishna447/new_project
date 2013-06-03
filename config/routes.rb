@@ -36,6 +36,8 @@ Delve::Application.routes.draw do
     get "sign_out", to: 'users/sessions#destroy'
     get "complete_registration", to: 'users/registrations#complete_registration'
     get 'welcome', to: 'users/registrations#welcome'
+    post 'signup_and_enroll', to: 'users/registrations#signup_and_enroll'
+    post 'signin_and_enroll', to: 'users/sessions#signin_and_enroll'
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
@@ -54,13 +56,17 @@ Delve::Application.routes.draw do
   get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
   get 'discussion' => 'forum#discussion', as: 'discussion'
+  get 'dashboard' => 'dashboard#index', as: 'dashboard'
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
-  resources :user_profiles, only: [:show, :update], path: 'profiles'
+  resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
-  resources :courses, only: [:show] do
+  resources :courses, only: [:index, :show] do
     resources :activities, only: [:show], path: ''
+    member do
+      post 'enroll' => 'courses#enroll'
+    end
   end
 
   # Allow top level access to an activity even if it isn't in a course
@@ -99,7 +105,13 @@ Delve::Application.routes.draw do
   resources :search, only: [:index]
   resources :recipe_gallery, only: [:index], path: 'recipe-gallery'
   resources :user_activities, only: [:create]
+  resources :uploads
+  resources :users do
+    resources :uploads
+  end
+  resources :likes, only: [:create]
   resources :pages, only: [:show]
+  resources :badges, only: [:index]
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'

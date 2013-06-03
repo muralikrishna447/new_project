@@ -55,4 +55,36 @@ describe Course do
     c.activities.find { |x| x.title == "Cool Activity Dude"}.should_not == nil
     c.activities.find { |x| x.title == "Fork Me"}.should == nil
   end
+
+  it 'returns the parent inclusion for an inclusion' do
+    c = course_first
+    parent = activity1
+    c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
+    a = c.inclusions.where(activity_id: activity4.id).first
+    c.parent_inclusion(a).activity.should == parent
+  end
+
+  it 'returns the child inclusions for an inclusion' do
+    c = course_first
+    activity_ids = [200,300,400]
+    c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
+    parent = c.inclusions.select{|i| i.activity.id == activity1.id}.first
+    c.child_inclusions(parent).map{|i| i.activity.id}.should == activity_ids
+  end
+
+  it 'returns the next inclusion for an inclusion within a course' do
+    c = course_first
+    activity_ids = [200,300,400]
+    c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
+    inclusion = c.inclusions.first
+    c.next_inclusion(inclusion).activity.id.should == 100
+  end
+
+  it 'returns the viewable activites for a course' do
+    c = course_first
+    activity_ids = [200,300,400]
+    c.update_activities([[99, 0, ''], [100, 0, ''], [200, 1, ''], [300, 1, ''], [400, 1, ''], [500, 0, '']])
+    c.viewable_activities.map(&:id).should == [300,400]
+    # Note viewable activites are ones where inclusion nesting values are not equal to 0 and the activity is published.
+  end
 end

@@ -1,0 +1,14 @@
+.container
+  .row
+    .span3
+      %h3 Users
+      %h3= @users_count
+    .span3
+      %h3 Users with > 10 views
+      %h3= @users_ten_views_count.count
+    .span3
+      %h3 Enrollments
+      %h3= @enrollments_count
+    .span3
+      %h3 Users that Uploaded
+      %h3= @uploads_count.count

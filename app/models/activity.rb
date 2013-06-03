@@ -23,6 +23,15 @@ class Activity < ActiveRecord::Base
   has_many :user_activities
   has_many :users, through: :user_activities
 
+  has_many :assignments
+  has_many :child_activities, through: :assignments
+
+  has_many :uploads
+  has_many :upload_users, through: :uploads, source: :user
+
+  has_many :events, as: :trackable
+  has_many :likes, as: :likeable
+
   belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
 
   validates :title, presence: true
@@ -35,8 +44,10 @@ class Activity < ActiveRecord::Base
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
   serialize :activity_type, Array
-  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id,  :steps_attributes
+
+  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   attr_accessible :source_activity, :source_activity_id, :source_type
+
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published

@@ -12,6 +12,16 @@
     .row
       margin-left: inherit
 
+.no-margin-padding
+  padding: 0px
+  margin: 0px
+
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+  width: 1170px
+
+.relative
+  position: relative
+
 #slider-container
   background: $offwhite
   .row
@@ -111,6 +121,10 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 )
 
+.well-gray
+  padding: 20px
+  background: $offwhite
+
 .hero-unit
   background: none
   border-radius: 0px
@@ -127,10 +141,50 @@ h1, h2, h3, h4
   font-weight: 500
   -webkit-font-smoothing: antialiased
 
+.nav-tabs-gray
+  .nav-tabs
+    border: none
+    li
+      a
+        &:hover
+          background: $orange
+          color: white
+          border-radius: 0px
+    li.active
+      position: relative
+      a
+        border: none
+        &:hover
+          border: none
+      &:after
+        content: ''
+        width: 15px
+        height: 15px
+        background: white
+        position: absolute
+        bottom: -29px
+        left: 40%
+        border: 1px solid $light-gray
+        border-right: 0px
+        border-bottom: 0px
+        -moz-transform: rotate(45deg)
+        -webkit-transform: rotate(45deg)
+        -o-transform: rotate(45deg)
+        transform: rotate(45deg)
+
+  .tab-content
+    border: 1px solid $light-gray
+    @include boxsizing
+    .tab-pane
+      overflow: hidden
+      .tab-pane-header
+        padding: 3% 3% 0
+        h3
+          margin: 0px
 
 h4
   margin-bottom: 0px
-  line-height: 25px
+  line-height: 24px
 
 // Did this to help out Equipment etc sections for now; may want it everywhere but we weren't
 // sure what other h4's might be negatively affected
@@ -143,6 +197,39 @@ h4
 
 .display-inline-fix
   word-spacing : -4px
+
+.indent-1
+  padding-left: 20px
+
+.indent-2
+  padding-left: 40px
+
+.indent-3
+  padding-left: 60px
+
+.flat-form
+  form
+    input
+      border-radius: 0px
+      font-size: 16px
+      line-height: 20px
+      font-family: 'Raleway', sans-serif
+      padding: 10px
+      box-shadow: none
+      display: block
+    .input-block-level-password
+      width: 100%
+      float: left
+      #user_password
+        width: 80%
+        float: left
+      #user-password-show
+        font-family: 'Raleway', sans-serif
+        width: 19%
+        float: right
+        height: 40px
+        padding: 10px
+        @include boxsizing
 
 ////////////////////////////////////////
 
@@ -653,7 +740,6 @@ h4
 
 
 #hero-container
-  margin-top: 56px
   padding: 0px
   //max-height: 586px
   z-index: 999
@@ -762,6 +848,7 @@ h4
   @include transition(all 100ms)
   &:hover
     background: gray
+    color: white
     @include transition(all 100ms)
 
 .btn-secondary[disabled]
@@ -770,7 +857,7 @@ h4
   box-shadow: 0 3px 0px -1px #999999
 
 .btn-gray
-  background: $light-gray
+  background: $offwhite
   border: none
   border-radius: 0px
   @include transition(all 100ms)
@@ -831,13 +918,13 @@ h4
     top: 50%
 
 .btn-circle
-  height: 20px
-  width: 20px
+  height: 40px
+  width: 40px
   padding: 10px
   margin: 5px 2px
   border-radius: 50%
-  background: $orange
   background-image: none
+  background: $orange
   color: white
   font-size: 20px
   text-shadow: none
@@ -847,6 +934,7 @@ h4
   -moz-transition: background 200ms
   -o-transition: background 200ms
   display: inline-block
+  @include boxsizing
   i
     line-height: 22px
   &:hover
@@ -857,6 +945,9 @@ h4
 
 /* Quiz button */
 .btn-next, .btn-prev
+  position: absolute
+  bottom: 0px
+  right: 0px
   height: 67px
   width: 32px
   padding: 0
@@ -1315,6 +1406,9 @@ csingredienteditpair
     height: 100px
 
 @media (max-width: 1200px)
+  .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+    width: 940px
+
   .media-centered-medium
     height: 168px
 
@@ -1335,6 +1429,9 @@ csingredienteditpair
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
+  .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+    width: 724px
+
   #hero-container
     #hero-carousel
       .media-heading
@@ -1370,8 +1467,15 @@ csingredienteditpair
     margin-left: -20px
     margin-right: -20px
 
+  .no-margin-padding
+    padding: 0px
+    margin: 0px
+
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
+  .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+    width: auto
+
   #hero-container
     width: 100%
     left: 0px
@@ -1440,6 +1544,10 @@ csingredienteditpair
   .container-fluid
     margin-left: -20px
     margin-right: -20px
+
+  .no-margin-padding
+    padding: 0px
+    margin: 0px
  
 /* Landscape phones and down */
 @media (max-width: 480px)
@@ -1488,6 +1596,9 @@ csingredienteditpair
   .popup-bottom
     h3
       font-size: 16px
+
+  .static-height
+    height: 10px
 
 @media (max-width: 320px)
   .popup-bottom

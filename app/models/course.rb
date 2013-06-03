@@ -9,10 +9,13 @@ class Course < ActiveRecord::Base
 
   scope :ordered, rank(:course_order)
 
-  attr_accessible :description, :title, :short_description, :slug, :course_order
+  attr_accessible :description, :title, :short_description, :slug, :course_order, :image_id
 
   has_many :inclusions, :dependent => :destroy, :order => 'activity_order ASC'
   has_many :activities, :through => :inclusions, :order => 'inclusions.activity_order ASC'
+  has_many :enrollments
+  has_many :users, through: :enrollments
+  has_many :uploads
 
   def update_activities(activity_hierarchy)
     activities.delete_all
@@ -55,4 +58,94 @@ class Course < ActiveRecord::Base
   def prev_published_activity(activity)
     next_published_activity(activity, inclusions.reverse)
   end
+
+  def activity_modules
+    inclusions.select{|i| i.nesting_level == 0}.map{|i| i.activity}
+  end
+
+  def current_module(activity)
+    # Returns the module the current activity belongs to
+    current_inclusion = inclusions.includes(:activity).select{|i| i.activity.id == activity.id}.first
+    current_inclusion_index = inclusions.index(current_inclusion)
+    current_parent_module = nil
+    i = current_inclusion_index
+    until current_parent_module
+      i-=1
+      if inclusions[i].nesting_level == 0
+        current_parent_module = inclusions[i]
+      end
+    end
+    return current_parent_module
+  end
+
+  def parent_inclusion(inclusion)
+    current_nesting_level = inclusion.nesting_level
+    parent_nesting_level = current_nesting_level == 0 ? nil : current_nesting_level - 1
+    index = inclusions.index(inclusion)
+    parent = nil
+    if parent_nesting_level
+      until parent
+        index -=1
+        parent = inclusions[index].nesting_level == parent_nesting_level ? inclusions[index] : nil
+      end
+    end
+    parent
+  end
+
+  def child_inclusions(inclusion)
+    current_nesting_level = inclusion.nesting_level
+    child_nesting_level = current_nesting_level + 1
+    index = inclusions.index(inclusion)
+    children = []
+    next_object = next_inclusion(inclusion)
+    while next_object && next_object.nesting_level > current_nesting_level
+      index +=1
+      if next_object.nesting_level == child_nesting_level
+        children << next_object
+      end
+      next_object = next_inclusion(next_object)
+    end
+    children
+  end
+
+  def next_inclusion(inclusion)
+    index = inclusions.index(inclusion)
+    inclusions[index + 1]
+  end
+
+  def viewable_activities
+    # inclusions.where('nesting_level <> ?', 0).joins(:activity).where('inclusions.activity.published = ?', true)
+    activities.published - activity_modules
+  end
+
+  def featured_image
+    self.image_id || self.first_published_activity.featured_image || 'http://www.placehold.it/320x180/f2f2f2/f2f2f2'
+  end
+
+  def assignment_activities
+    activities.joins(:assignments).map(&:child_activities).flatten.uniq
+  end
+
+  #### Spherification Course ####
+  SPHERIFICATION_CREATIVE = {
+    copy: "The Modernist Pantry Creative Sphere Magic Kit includes the technical ingredients you'll need to complete the ChefSteps reverse and direct spherification modules. It has most of the tools as well, except for a high-accuracy scale and the mold needed for frozen-reverse spherification.",
+    price: '39',
+    variant_id: 311070543,
+    equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g Sodium Citrate', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum']
+  }
+
+  SPHERIFICATION_ENTHUSIAST = {
+    copy: "The Modernist Pantry Enthusiast Sphere Magic Kit includes all of the technical ingredients and tools you'll need to complete the entire ChefSteps spherification course. It adds a high-accuracy scale (capable of weighing 1/10th of a gram) and a high-quality silicon mold used for frozen-reverse spherification.",
+    price: '79',
+    variant_id: 311979727,
+    equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g Sodium Citrate', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum', 'High-Precision Scale', 'Frozen Reverse Spherification Mold']
+  }
+
+  SPHERIFICATION_PROFESSIONAL = {
+    copy: "The Modernist Pantry Professional Sphere Magic Kit includes everything in the Enthusiast Kit, plus a professional caviar dosing tray used for direct spherification. This hard to find tool makes it easy to quickly turn any liquid into small spheres bursting with flavor. This kit includes all of the tools featured in ChefSteps spherification course.",
+    price: '119',
+    variant_id: 311979875,
+    equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g SHMP', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum', 'High-Precision Scale', 'Frozen Reverse Spherification Mold', 'Rapid Caviar Maker']
+  }
+
 end

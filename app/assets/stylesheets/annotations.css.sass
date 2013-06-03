@@ -1,0 +1,172 @@
+@import 'mixins'
+
+.annotated
+  position: relative
+  img
+    width: 100%
+    @include transition(all 300ms ease-in-out)
+  .annotations
+    position: absolute
+    top: 0px
+    left: 0px
+    width: 100%
+    height: 100%
+    opacity: 0
+    @include transition(all 300ms ease-in-out)
+    .annotation
+      background: white
+      float: left
+      position: absolute
+      padding: 5px 8px
+      font-family: 'Raleway', sans-serif
+      font-size: 16px
+      border: 1px solid $orange
+  &:hover
+    cursor: pointer
+    img
+      transform: scale(0.8)
+      -webkit-transform: scale(0.8)
+      -moz-transform: scale(0.8)
+      -o-transform: scale(0.8)
+    .annotations
+      width: 115%
+      opacity: 1
+      transform: scale(0.8)
+      -webkit-transform: scale(0.8)
+      -moz-transform: scale(0.8)
+      -o-transform: scale(0.8)
+
+.annotations-show
+  cursor: pointer
+  img
+    transform: scale(0.8)
+    -webkit-transform: scale(0.8)
+    -moz-transform: scale(0.8)
+    -o-transform: scale(0.8)
+  .annotations
+    width: 115%
+    opacity: 1
+    transform: scale(0.8)
+    -webkit-transform: scale(0.8)
+    -moz-transform: scale(0.8)
+    -o-transform: scale(0.8)
+
+.annotated.annotated-creative
+  .annotations
+    .annotation
+      // Syringe
+      &:nth-child(1)
+        top: 20%
+        left: 60%
+      // Spoon
+      &:nth-child(2)
+        top: 10%
+        left: -14%
+      // Sphere Magic
+      &:nth-child(3)
+        top: 50%
+        left: -14%
+      // Sodium Citrate
+      &:nth-child(4)
+        top: 70%
+        left: 0%
+      // Calcium Gluconate
+      &:nth-child(5)
+        top: 90%
+        left: 25%
+      // Calcium Chloride
+      &:nth-child(6)
+        top: 70%
+        left: 60%
+      // Xanthan Gum
+      &:nth-child(7)
+        top: 50%
+        left: 65%
+
+.annotated.annotated-enthusiast
+  .annotations
+    .annotation
+      // Syringe
+      &:nth-child(1)
+        top: 20%
+        left: 40%
+      // Spoon
+      &:nth-child(2)
+        top: -5%
+        left: -10%
+      // Sphere Magic
+      &:nth-child(3)
+        top: 50%
+        left: -14%
+      // Sodium Citrate
+      &:nth-child(4)
+        top: 70%
+        left: 0%
+      // Calcium Gluconate
+      &:nth-child(5)
+        top: 90%
+        left: 25%
+      // Calcium Chloride
+      &:nth-child(6)
+        top: 70%
+        left: 60%
+      // Xanthan Gum
+      &:nth-child(7)
+        top: 50%
+        left: 65%
+      // High-Accuracy Scale
+      &:nth-child(8)
+        font-weight: 600
+        top: 10%
+        left: -14%
+      // Silicon Mold
+      &:nth-child(9)
+        font-weight: 600
+        top: 20%
+        left: 60%
+
+.annotated.annotated-professional
+  .annotations
+    .annotation
+      // Syringe
+      &:nth-child(1)
+        top: -5%
+        left: 30%
+      // Spoon
+      &:nth-child(2)
+        top: -5%
+        left: -10%
+      // Sphere Magic
+      &:nth-child(3)
+        top: 50%
+        left: -14%
+      // SHMP
+      &:nth-child(4)
+        font-weight: 600
+        top: 70%
+        left: 10%
+      // Calcium Gluconate
+      &:nth-child(5)
+        top: 90%
+        left: 25%
+      // Calcium Chloride
+      &:nth-child(6)
+        top: 70%
+        left: 60%
+      // Xanthan Gum
+      &:nth-child(7)
+        top: 50%
+        left: 65%
+      // High-Accuracy Scale
+      &:nth-child(8)
+        top: 10%
+        left: -14%
+      // Silicon Mold
+      &:nth-child(9)
+        top: 20%
+        left: 60%
+      // Caviar Dosing Tray
+      &:nth-child(10)
+        font-weight: 600
+        top: 5%
+        left: 55%

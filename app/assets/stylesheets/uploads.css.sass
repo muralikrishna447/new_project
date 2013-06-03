@@ -1,0 +1,21 @@
+@import 'mixins'
+
+.upload-wrapper
+  background: gray
+  width: 100%
+  height: 155px
+  position: relative
+  .upload-photo-btn
+    color: black
+    position: absolute
+    top: 60px
+    left: 50%
+    margin-left: -25px
+    font-size: 100px
+    font-weight: bold
+    @include transition(all 100ms)
+    &:hover
+      text-decoration: none
+      color: $orange
+  img
+    display: none

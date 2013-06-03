@@ -3,14 +3,18 @@ module ApplicationHelper
     "http://d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end
 
-  def filepicker_arbitrary_image(fpfile, width)
+  def filepicker_arbitrary_image(fpfile, width, fit='max')
     if ! fpfile.start_with?('{')
       # Legacy naked S3 image id. Still used for a few images that don't
       # have UI to set.
-      s3_image_url(fpfile)
+      if /placehold/.match(fpfile)
+        fpfile
+      else
+        s3_image_url(fpfile)
+      end
     else
       url = ActiveSupport::JSON.decode(fpfile)["url"]
-      url + "/convert?fit=max&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
+      url + "/convert?fit=#{fit}&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
     end
   end
 
@@ -50,6 +54,19 @@ module ApplicationHelper
         fpfile
       end
     end
+  end
+
+  def filepicker_circle_image(fpfile)
+    if fpfile && !fpfile.blank?
+      url = ActiveSupport::JSON.decode(fpfile)["url"]
+      url + "/convert?fit=crop&w=400&h=400&cache=true"
+    else
+      'http://www.placehold.it/300x300&text=ChefSteps'
+    end
+  end
+
+  def filepicker_media_box_image(fpfile)
+    filepicker_arbitrary_image(fpfile, 278, 'crop')
   end
 
   def s3_audio_url(audio_clip)
@@ -142,6 +159,16 @@ module ApplicationHelper
     end
   end
 
+  def where_user_left_off_in_course(course, user, btn_class = nil)
+    last_viewed_activity = user.last_viewed_activity_in_course(course)
+    if last_viewed_activity
+      link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
+    else
+      first_activity = course.first_published_activity
+      link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
+    end
+  end
+
   def link_to_web_email(email)
     email_service = /\@(.*)/.match(email).to_s
     case email_service
@@ -163,6 +190,10 @@ module ApplicationHelper
     else
       nil
     end
+  end
+
+  def buy_now(variant_id, price)
+    link_to "$#{price} Buy Now", 'http://store.chefsteps.com/cart/add', onclick: "var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; var v = document.createElement('input'); v.setAttribute('type', 'hidden'); v.setAttribute('name', 'id'); v.setAttribute('value', '#{variant_id}'); f.appendChild(v); var r = document.createElement('input'); r.setAttribute('type', 'hidden'); r.setAttribute('name', 'return_to'); r.setAttribute('value', 'http://store.chefsteps.com/checkout'); f.appendChild(r); f.submit(); return false;", class: 'btn btn-primary btn-large btn-block'
   end
 
 end
