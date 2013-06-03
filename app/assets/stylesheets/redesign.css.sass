@@ -1219,19 +1219,41 @@ csingredienteditpair
 .add-item, .done
   margin-top: -5px
 
-.step-edit-buttons
+.step-edit-buttons, .step-add-button-group, .step-add-button-end-group
   position: absolute
-  width: 50px
-  top: 6px
-  left:  -24px
+  left:  -16px
   button
     width: 24px
+    margin-left: 0px !important
     margin-top: 4px
     line-height: 16px
     font-size: 14px
     padding: 2px 6px
   .btn-group-vertical
-    margin-left: 0px
+    margin-left: 0px !important
+
+.step-edit-buttons
+  top: 45px
+  width: 30px
+
+.step-add-button-group
+  top: -10px
+
+.step-add-button-end-group
+  bottom: -10px
+
+.step-add-button-line
+  position: absolute
+  top: 12px
+  border-top:  1px dotted #d3d3d3
+  width: 600px
+  z-index: -1
+
+.step-add-button-end-group
+  .step-add-button-line
+    position:
+      bottom: -22px
+
 
 
 .fade-hide, .fade-show

@@ -94,12 +94,21 @@
       .scroll-shadow-content.pull-left
 
         .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep(true)" ng-mouseleave="setMouseOverStep(false)")
+          .step-add-button-group(ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
+            .step-add-button-line
+            %button.btn-secondary(type="button" ng-click="addStepAtIndex($index)")
+              %i.icon-plus
+          .step-add-button-end-group(ng-show="editMode && mouseCurrentlyOverStep && $last" data-ng-animate="'fade'")
+            .step-add-button-line
+            %button.btn-secondary(type="button" ng-click="addStepAtIndex($index+1)")
+              %i.icon-plus
           .btn-toolbar.step-edit-buttons(ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
             %button.btn.btn-secondary(type="button" btn-checkbox="" ng-model="step.hide_number" )
               %div(collapse="step.hide_number")
                 %i.icon-ban-circle
               %div(collapse="! step.hide_number")
                 \#
+            .btn-group.btn-group-vertical
               %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)")
                 %i.icon-arrow-up
               %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)")
@@ -114,7 +123,7 @@
 
             %csEditPair
               %csEditPairShow
-                %h4(ng-bind-html-unsafe="step.title || (editMode && 'Optional title...')" ng-class="disableIf(! step.title.length)")
+                %h4(ng-show="step.title) || editMode" ng-bind-html-unsafe="step.title || (editMode && 'Optional title...')" ng-class="disableIf(! step.title.length)")
               %csEditPairEdit
                 %input.nohtml.step-title-input(type="text" ng-model="step.title" placeholder="Optional title...")
 
@@ -128,10 +137,9 @@
                 %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
                   Done
 
-            %csEditPair.section
+            %csEditPair
               %csEditPairShow
-                .activity-description-wrapper(ng-show="!!step.directions")
-                  %div(ng-bind-html-unsafe="step.directions | markdown | shortcode")
+                %div(ng-show="!!step.directions" ng-bind-html-unsafe="step.directions | markdown | shortcode")
               %csEditPairEdit
                 %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
 
