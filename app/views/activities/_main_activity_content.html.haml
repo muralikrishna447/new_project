@@ -25,8 +25,8 @@
         = render 'ingredients_list', source: "activity"
     .nav(ng-show="editMode")
       %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
-      %button.btn.btn-small.btn-basic.add-item(ng-click="addIngredient()")
-        +
+      %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient()")
+        %i.icon-plus
       %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
         Done
 
@@ -123,17 +123,24 @@
 
             %csEditPair
               %csEditPairShow
-                %h4(ng-show="step.title) || editMode" ng-bind-html-unsafe="step.title || (editMode && 'Optional title...')" ng-class="disableIf(! step.title.length)")
+                %h4(ng-show="step.title || editMode" ng-bind-html-unsafe="step.title || (editMode && 'Optional title...')" ng-class="disableIf(! step.title.length)")
               %csEditPairEdit
                 %input.nohtml.step-title-input(type="text" ng-model="step.title" placeholder="Optional title...")
 
             %div.csmonitorinputactivity
-              .step-ingredients-source.well(ng-show="step.ingredients.length > 0")
+              .step-ingredients-source.well(ng-hide="(step.ingredients.length == 0) || (editMode && masterSelect)")
                 = render 'ingredients_list', source: "step"
+              .select-from-master.well(ng-hide="! (editMode && masterSelect)")
+                = render 'select_ingredients_from_master'
               .nav(ng-show="editMode")
                 %h4(ng-show="! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Ingredients
-                %button.btn.btn-small.btn-basic.add-item(ng-click="addIngredient($index)")
-                  +
+
+                %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="toggleSelectFromMaster()")
+                  %i.icon-magic
+                %button.btn.btn-small.btn-primary.done(ng-show="masterSelect" ng-click="toggleSelectFromMaster()")
+                  Done
+                %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient($index)" ng-show="!masterSelect" )
+                  %i.icon-plus
                 %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
                   Done
 
@@ -185,4 +192,5 @@
 
       .scroll-overlay-top
       .scroll-overlay-bottom
+
 

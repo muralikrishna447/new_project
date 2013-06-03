@@ -1,0 +1,11 @@
+.ingredients{:itemprop => "ingredients"}
+
+  %h4 Select ingredients
+  .ingredient-table-body
+    .ingredient-table-row(ng-repeat="ai in possible_ingredients")
+
+      %input.select-ingredient-checkbox(type="checkbox" ng-model="ai.included")
+      %div(ng-class="{'unselected-ingredient': !ai.included}")
+        %span(ng-bind-html-unsafe="ai.ingredient.title")>
+        %span(ng-show="!!ai.note" ng-bind-html-unsafe="', ' + (ai.note | shortcode)")>
+

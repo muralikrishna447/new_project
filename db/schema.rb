@@ -46,9 +46,9 @@ ActiveRecord::Schema.define(:version => 20130603054950) do
     t.text     "featured_image_id"
     t.string   "activity_type"
     t.integer  "last_edited_by_id"
-    t.text     "assignment_recipes"
     t.integer  "source_activity_id"
     t.integer  "source_type",        :default => 0
+    t.text     "assignment_recipes"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -272,6 +272,14 @@ ActiveRecord::Schema.define(:version => 20130603054950) do
     t.integer  "question_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "pages", :force => true do |t|
+    t.string   "title"
+    t.text     "content"
+    t.string   "slug"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "pg_search_documents", :force => true do |t|

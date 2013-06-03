@@ -1,5 +1,8 @@
 window.deepCopy = (obj) ->
-  jQuery.extend(true, {}, obj)
+  if _.isArray(obj)
+    jQuery.extend(true, [], obj)
+  else
+    jQuery.extend(true, {}, obj)
 
 angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", "$timeout", ($scope, $resource, $location, $http, limitToFilter, $timeout) ->
   Activity = $resource( "/activities/:id/as_json",
