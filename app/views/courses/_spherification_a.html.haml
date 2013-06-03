@@ -16,13 +16,13 @@
     .span6
       .well
         = render 'course_enrollment_box'
-      - if @course.users.count > 1 && @course.uploads.count > 3
+      - if @course.users.count > 1 && @course.uploads.approved.count > 3
         .well   
           %h4= "Current enrollment: #{@course.users.count}"
           %h4 Here are some things students have accomplished so far:
           .horizontal-slider{data: {direction: 'right'}}
             .horizontal-slider-wrap
-              - @course.uploads.order('created_at DESC').each do |upload|
+              - @course.uploads.approved.order('created_at DESC').each do |upload|
                 = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
             %div{class: "horizontal-slider-btn-right btn btn-circle"}
               %i{class: "icon-chevron-right"}
