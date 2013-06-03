@@ -7,5 +7,5 @@ class Upload < ActiveRecord::Base
   has_many :likes, as: :likeable
 
   scope :approved, where(approved: true)
-  scope :unnapproved, where(approved: false)
+  scope :unapproved, where(approved: false)
 end
