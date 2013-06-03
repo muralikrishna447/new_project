@@ -5,7 +5,7 @@
   .row.section
     .span6
       .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
-        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('5Jdq-wmQaPA')}
+        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('QPdO4I3WLHg')}
       .section
         %p= course.description
       %h4.text-center
@@ -22,7 +22,7 @@
           %h4 Here are some things students have accomplished so far:
           .horizontal-slider{data: {direction: 'right'}}
             .horizontal-slider-wrap
-              - @course.uploads.approved.order('created_at DESC').each do |upload|
+              - @course.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
                 = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
             %div{class: "horizontal-slider-btn-right btn btn-circle"}
               %i{class: "icon-chevron-right"}
