@@ -493,9 +493,17 @@ h4
       display: none
 
 .edit-mode
+  .edit-pair-show
+    cursor: pointer
+
   .ordered-steps
     overflow: visible
     border: none
+
+  .scroll-shadow-wrapper
+    overflow: visible
+
+
 
 
 .ingredients
@@ -1255,10 +1263,23 @@ csingredienteditpair
         width: 44%
 
     .quantity-group
-      width: 11%
+      width: 10%
 
     .unit
-      width: 8%
+      cursor: pointer
+      width: 7%
+      position: relative
+      overflow:  visible
+      select
+        margin: 0
+        width: 100%
+        border:  none
+        opacity: 0
+      .select-readout
+        position: absolute
+        width:  200%
+        height:  100%
+        z-index: 0
 
 .meta-edit
   border: 1px solid $offwhite
@@ -1267,6 +1288,7 @@ csingredienteditpair
 
 .disabled-section
   color: $light-gray
+
 
 // Making this match h1. I tried @including h1 but that was a no go.
 // Not sure how I feel about this approach of basic the style on the model. Semantic or gross?
@@ -1288,7 +1310,7 @@ csingredienteditpair
 
 
 
-.fake-link
+.fake-link, .fakefocus
   color: #0088cc
 
 

@@ -20,7 +20,6 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     $scope.active = ->
       return false if ! $scope.editMode
       return true if $scope.focusedInside()
-      return true if $scope.fakeFocus
       return true if $scope.hasErrors()
       ($scope.mouseCurrentlyOver && (! $scope.anyEditPairFocused()))
 

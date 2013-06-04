@@ -89,7 +89,7 @@
           %li= link_to activity.title.html_safe, activity
 
 .span6(ng-controller="StepsController")
-  .section
+  .section.scroll-shadow-wrapper
     %div.disabled-section
       %h4(ng-show="editMode && (activity.steps.length == 0)" data-ng-animate="'fade'" ng-click="addStepAtIndex(0)")
         Add first step...
@@ -190,8 +190,6 @@
                   %h4 Image
                   .csfilepicker(ng-model="step.image_id")
                   %input.nohtml(ng-show="!!step.image_id" type="text" ng-model="step.image_description" placeholder="Image description" style="width: 100%;")
-
-
 
       .scroll-overlay-top
       .scroll-overlay-bottom
