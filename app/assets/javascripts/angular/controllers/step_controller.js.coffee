@@ -5,7 +5,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", ($scope) 
   $scope.addIngredient =  ->
     # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
     ingred = ""
-    item = {ingredient: ingred}
+    item = {ingredient: ingred, unit: "g"}
     $scope.step.ingredients.push(item)
     #$scope.addUndo()
 

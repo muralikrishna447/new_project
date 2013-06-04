@@ -33,7 +33,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     )
 
     $element.on 'click', ->
-      if $scope.editMode
+      if $scope.editMode && (! $scope.focusedInside) || (! $document.activeElement.is('input,textarea,select'))
         setTimeout (-> $scope.$apply($($element).find('input, textarea')[0].focus())), 0
 
     # Without this we are getting some cases where we don't get the mouseleave, maybe because of DOM changes?

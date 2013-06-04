@@ -40,12 +40,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.undoIndex = 0
     $timeout ->
       window.csScaling = 1
+      window.csUnits = "grams"
       window.updateUnits(false)
       window.expandSteps()
 
   $scope.postEndEditMode = ->
     $scope.editMode = false
-    window.collapseSteps()
+    setTimeout (-> window.collapseSteps()), 0.5
 
   $scope.endEditMode = ->
     $scope.normalizeModel()
@@ -255,7 +256,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.addIngredient =  ->
     # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
     ingred = ""
-    item = {ingredient: ingred}
+    item = {ingredient: ingred, unit: "g"}
     $scope.activity.ingredients.push(item)
     #$scope.addUndo()
 

@@ -109,7 +109,7 @@
 - content_for :bottom do
   - if ! @minimal
 
-    - if ! ENV["CS_NO_SUGGESTED_ACTIVITIES"]
+    - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @techniques && @recipes
       .row(ng-hide="editMode")
         .span12
           %h3 Techniques
