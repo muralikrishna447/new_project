@@ -44,5 +44,6 @@
               %tbody
                 - trend[1].each do |user_trend|
                   %tr
-                    %td= user_trend[0]
+                    %td
+                      = link_to user_trend[0], user_profile_path(user_trend[0])
                     %td= user_trend[1]
