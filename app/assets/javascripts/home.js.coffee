@@ -10,7 +10,7 @@ $ ->
   window.heroSwipe = Swipe(document.getElementById('hero-swiper'),{
     stopPropagation: false,
     continuous: true,
-    auto: 5000,
+    auto: 15000,
     speed: 600,
     transitionEnd: (index, elem) ->
       $('.hero-indicator-btn').removeClass 'indicator-active'
