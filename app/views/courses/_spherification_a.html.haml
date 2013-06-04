@@ -5,7 +5,7 @@
   .row.section
     .span6
       .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
-        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('5Jdq-wmQaPA')}
+        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('QPdO4I3WLHg')}
       .section
         %p= course.description
       %h4.text-center
@@ -16,13 +16,13 @@
     .span6
       .well
         = render 'course_enrollment_box'
-      - if @course.users.count > 1 && @course.uploads.count > 3
+      - if @course.users.count > 1 && @course.uploads.approved.count > 3
         .well   
           %h4= "Current enrollment: #{@course.users.count}"
           %h4 Here are some things students have accomplished so far:
           .horizontal-slider{data: {direction: 'right'}}
             .horizontal-slider-wrap
-              - @course.uploads.each do |upload|
+              - @course.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
                 = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
             %div{class: "horizontal-slider-btn-right btn btn-circle"}
               %i{class: "icon-chevron-right"}
@@ -77,7 +77,7 @@
       %h2 The Creative Kit
       = Course::SPHERIFICATION_CREATIVE[:copy]
       .well.section
-        = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id])
+        = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id], Course::SPHERIFICATION_CREATIVE[:price])
 
 
 %hr
@@ -100,7 +100,7 @@
       %h2 The Enthusiast Kit
       = Course::SPHERIFICATION_ENTHUSIAST[:copy]
       .well.section
-        = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id])
+        = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id], Course::SPHERIFICATION_ENTHUSIAST[:price])
 
 %hr
 .container
@@ -122,7 +122,7 @@
       %h2 The Professional Kit
       = Course::SPHERIFICATION_PROFESSIONAL[:copy]
       .well.section
-        = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id])
+        = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id], Course::SPHERIFICATION_PROFESSIONAL[:price])
 
 - if bio_chris && bio_grant
   .container

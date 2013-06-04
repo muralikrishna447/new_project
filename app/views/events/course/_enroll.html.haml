@@ -1,7 +1,8 @@
 - direction = direction || 'left'
+- user_noun = current_user == event.user ? 'You' : event.user.name
 .timeline-text-only{data: {direction: direction}}
   .timeline-text-only-text.text-center
     %div
-      = "You enrolled into the #{link_to event.trackable.title, event.trackable} course.".html_safe
+      = "#{user_noun} enrolled into the #{link_to event.trackable.title, event.trackable} course.".html_safe
     %div
       = time_ago_in_words(event.created_at) + ' ago'

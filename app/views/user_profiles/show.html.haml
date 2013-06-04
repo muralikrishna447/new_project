@@ -37,14 +37,17 @@
         .tab-pane.active#courses
           - if @user.courses.any?
             - @user.courses.each do |course|
+              - course_title = capture do
+                = link_to course.title, course
               - course_text = capture do
-                %h4
-                  Lesson
-                  = @user.viewed_activities_in_course(course).count
-                  of
-                  = course.viewable_activities.count
-                = where_user_left_off_in_course(course, @user, 'btn btn-primary')
-              = render 'shared/media_list_item', image: course.featured_image, title: course.title, text: course_text
+                - if current_user == @user
+                  %h4
+                    Lesson
+                    = @user.viewed_activities_in_course(course).count
+                    of
+                    = course.viewable_activities.count
+                  = where_user_left_off_in_course(course, @user, 'btn btn-primary')
+              = render 'shared/media_list_item', image: course.featured_image, title: course_title, text: course_text
           - else
             .tab-pane-header
               %h3 Enroll into your first course today!
@@ -75,7 +78,10 @@
             - @user.events.timeline.in_groups_of(2).map(&:last).compact.each do |event|
               = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
         .text-center
-          %h4= "You joined ChefSteps on"
+          - if current_user == @user
+            %h4= "You joined ChefSteps on"
+          - else
+            %h4= "#{@user.name} joined ChefSteps on"
           %h4= "#{@user.created_at.strftime('%B %-d, %Y')}."
 
         / - @user.events.timeline.each_with_index do |event, index|

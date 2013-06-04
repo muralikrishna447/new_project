@@ -62,7 +62,7 @@ class ActivitiesController < ApplicationController
           track_event @current_inclusion
         else
           if @activity.courses.any?
-            flash[:notice] = "This is part of the #{view_context.link_to @activity.courses.first.title, @activity.courses.first}."
+            flash[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
           end
           track_event @activity
         end

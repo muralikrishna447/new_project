@@ -9,7 +9,7 @@
         = @upload.notes
     .span6
       .lead
-        = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this creation when they completed the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'www.chefsteps.com'}.".html_safe
+        = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this creation when they completed the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
       %p= "#{time_ago_in_words(@upload.created_at)} ago."
       - if current_user && current_user.likes.map(&:likeable).include?(@upload)
         = link_to 'javascript:void(0);', class: 'btn btn-primary' do

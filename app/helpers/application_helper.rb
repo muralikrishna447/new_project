@@ -3,7 +3,7 @@ module ApplicationHelper
     "http://d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end
 
-  def filepicker_arbitrary_image(fpfile, width)
+  def filepicker_arbitrary_image(fpfile, width, fit='max')
     if ! fpfile.start_with?('{')
       # Legacy naked S3 image id. Still used for a few images that don't
       # have UI to set.
@@ -14,7 +14,7 @@ module ApplicationHelper
       end
     else
       url = ActiveSupport::JSON.decode(fpfile)["url"]
-      url + "/convert?fit=max&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
+      url + "/convert?fit=#{fit}&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
     end
   end
 
@@ -63,6 +63,10 @@ module ApplicationHelper
     else
       'http://www.placehold.it/300x300&text=ChefSteps'
     end
+  end
+
+  def filepicker_media_box_image(fpfile)
+    filepicker_arbitrary_image(fpfile, 278, 'crop')
   end
 
   def s3_audio_url(audio_clip)
@@ -156,13 +160,12 @@ module ApplicationHelper
   end
 
   def where_user_left_off_in_course(course, user, btn_class = nil)
-    viewed = user.viewed_activities_in_course(course)
-    if viewed.count == 0
+    last_viewed_activity = user.last_viewed_activity_in_course(course)
+    if last_viewed_activity
+      link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
+    else
       first_activity = course.first_published_activity
       link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
-    else
-      current_activity = viewed.last
-      link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, current_activity], class: btn_class
     end
   end
 
@@ -189,8 +192,8 @@ module ApplicationHelper
     end
   end
 
-  def buy_now(variant_id)
-    link_to 'Buy Now', 'http://store.chefsteps.com/cart/add', onclick: "var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; var v = document.createElement('input'); v.setAttribute('type', 'hidden'); v.setAttribute('name', 'id'); v.setAttribute('value', '#{variant_id}'); f.appendChild(v); var r = document.createElement('input'); r.setAttribute('type', 'hidden'); r.setAttribute('name', 'return_to'); r.setAttribute('value', 'http://store.chefsteps.com/checkout'); f.appendChild(r); f.submit(); return false;", class: 'btn btn-primary btn-large btn-block'
+  def buy_now(variant_id, price)
+    link_to "Buy Now for $#{price}", 'http://store.chefsteps.com/cart/add', onclick: "var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; var v = document.createElement('input'); v.setAttribute('type', 'hidden'); v.setAttribute('name', 'id'); v.setAttribute('value', '#{variant_id}'); f.appendChild(v); var r = document.createElement('input'); r.setAttribute('type', 'hidden'); r.setAttribute('name', 'return_to'); r.setAttribute('value', 'http://store.chefsteps.com/checkout'); f.appendChild(r); f.submit(); return false;", class: 'btn btn-primary btn-large btn-block'
   end
 
 end

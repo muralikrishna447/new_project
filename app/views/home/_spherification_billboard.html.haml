@@ -1,0 +1,17 @@
+#billboard-spherification
+  .foreground
+    .text-content
+      .billboard-heading.heading1
+        Learn All About
+      .billboard-heading.heading2
+        Spherification
+      .billboard-heading.heading3
+        from some of the
+      .billboard-heading.heading4
+        best chefs in the world
+      .billboard-heading.heading5.section
+        = link_to 'START NOW', 'courses/spherification', class: 'btn btn-primary btn-large'
+
+  .background
+    %video{loop: 'loop', autoplay: 'autoplay'}
+      %source{src: 'assets/spheres-loop-2.mp4'}

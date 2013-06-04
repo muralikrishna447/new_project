@@ -36,10 +36,12 @@ $ ->
   signup_or_signin_section = $('#signup-or-signin-section')
   signup_and_enroll_section = $('#signup-and-enroll-section')
   signin_and_enroll_section = $('#signin-and-enroll-section')
+  browse_section = $('#browse-section')
   enroll_section.show()
   $('#enroll-section-btn').click ->
     enroll_section.hide()
     signup_or_signin_section.show()
+    browse_section.hide()
 
     $('#signup-and-enroll-btn').click ->
       signup_or_signin_section.hide()

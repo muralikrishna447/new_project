@@ -1,6 +1,6 @@
 %div{class: "media-box media-box-#{size} pull-left"}
   = link_to url do
     - if image
-      = image_tag filepicker_gallery_image(image)
+      = image_tag filepicker_media_box_image(image)
     - if title
       = truncate(title, length: 35)

@@ -1,26 +1,24 @@
 - if current_user
   - if current_user.course_ids.include?(@course.id)
-    - course_button_message = current_user.viewed_activities_in_course(@course).count > 0 ? 'Continue Course' : 'Start the Course!'
-    = link_to course_button_message, [@course, @course.first_published_activity], class: 'btn, btn-primary btn-large'
-    %p.text-center.section Or
-    .text-center
-      = link_to 'Browse the course', [@course, @course.first_published_activity]
+    = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
   - else
-    %h4 Enroll now for free
+    %h2 Enroll now for free
     = form_tag enroll_course_path(@course) do
-      = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
-    %p.text-center.section Or
-    .text-center
-      = link_to 'Browse the course', [@course, @course.first_published_activity]
+      = submit_tag 'Enroll', class: 'btn btn-primary btn-large btn-block'
+    .section#browse-section
+      %p.text-center Or
+      .text-center
+        = link_to 'Browse the course', [@course, @course.first_published_activity]
 
 - else
   .flat-form.section
     %h2 Enroll for free now
     .section.hide#enroll-section
       = link_to 'Enroll', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block', id: 'enroll-section-btn'
-    %p.text-center.section Or
-    .text-center
-      = link_to 'Browse the course', [@course, @course.first_published_activity]
+    .section#browse-section
+      %p.text-center Or
+      .text-center
+        = link_to 'Browse the course', [@course, @course.first_published_activity]
     .section.hide#signup-or-signin-section
       .row-fluid
         .span6

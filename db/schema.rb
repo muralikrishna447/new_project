@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130531231424) do
+ActiveRecord::Schema.define(:version => 20130603054950) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -410,9 +410,10 @@ ActiveRecord::Schema.define(:version => 20130531231424) do
     t.string   "recipe_name"
     t.text     "image_id"
     t.text     "notes"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "course_id"
+    t.boolean  "approved",    :default => false
   end
 
   create_table "user_activities", :force => true do |t|

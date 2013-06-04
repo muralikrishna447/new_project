@@ -1,0 +1,131 @@
+@import 'mixins'
+
+#billboard-spherification
+  position: relative
+  .foreground
+    position: absolute
+    top: 0px
+    left: 0px
+    width: 100%
+    z-index: 2
+    .text-content
+      width: 40%
+      margin: 13% 30%
+      font-size: 36px
+      line-height: 36px
+      .heading1
+        font-weight: 300
+        text-transform: uppercase
+        letter-spacing: 10px
+        opacity: 0
+        @include animation(showheading 1s 3s 1 forwards)
+      .heading2
+        font-weight: 700
+        text-transform: uppercase
+        font-size: 43px
+        letter-spacing: 7px
+        opacity: 0
+        @include animation(showheading 1s 4s 1 forwards)
+      .heading3
+        font-weight: 200
+        font-size: 35px
+        letter-spacing: 13px
+        opacity: 0
+        @include animation(showheading 1s 6s 1 forwards)
+      .heading4
+        font-weight: 500
+        font-size: 35px
+        letter-spacing: 4px
+        opacity: 0
+        @include animation(showheading 1s 6s 1 forwards)
+      .heading5
+        font-weight: 500
+        text-align: center
+        opacity: 0
+        @include animation(showheading 2s 7s 1 forwards)
+
+  .background
+    height: 541px
+    video
+      width: 100%
+      margin-top: -116px
+      opacity: 0
+      z-index: 1
+      @include animation(showheading 4s 3s 1 forwards)
+
+@keyframes showheading
+  0%
+    opacity: 0
+  100%
+    opacity: 1
+
+@-moz-keyframes showheading
+  0%
+    opacity: 0
+  100%
+    opacity: 1
+
+@-webkit-keyframes showheading
+  0%
+    opacity: 0
+  100%
+    opacity: 1
+
+@-o-keyframes showheading
+  0%
+    opacity: 0
+  100%
+    opacity: 1
+
+// RESPONSIVE //
+@media (min-width: 1200px)
+
+@media (max-width: 1200px)
+  #billboard-spherification
+    .foreground
+      .text-content
+        width: 50%
+        margin: 15% 25%
+    .background
+      height: 529px
+      video
+        margin-top: 0px
+
+@media (min-width: 768px) and (max-width: 979px)
+  #billboard-spherification
+    .foreground
+      .text-content
+        width: 66%
+        margin: 15% 17%
+    .background
+      height: 407px
+      video
+        margin-top: 0px
+
+@media (max-width: 767px)
+  #billboard-spherification
+    .foreground
+      .text-content
+        width: 100%
+        margin: 5% 0px
+        font-size: 16px
+        line-height: 18px
+        letter-spacing: 1px
+        text-align: center
+        .heading1
+          font-size: 16px
+          letter-spacing: 1px
+        .heading2
+          font-size: 16px
+          letter-spacing: 1px
+        .heading3
+          font-size: 16px
+          letter-spacing: 1px
+        .heading4
+          font-size: 16px
+          letter-spacing: 1px
+    .background
+      height: inherit
+      video
+        margin-top: 0px
+
