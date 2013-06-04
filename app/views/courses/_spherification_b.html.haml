@@ -64,6 +64,13 @@
     %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
 
 %hr
+.container
+  .row.section
+    .span12
+      %h2.text-center
+        Buy a kit to help you get started or
+        = link_to 'browse the course now', [@course, @course.first_published_activity]            
+
 
 .container-fluid
   .row-fluid
