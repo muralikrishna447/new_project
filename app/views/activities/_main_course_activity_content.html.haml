@@ -25,7 +25,7 @@
       .section
         .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
           .well(ng-show="activity.ingredients.length" )
-            = render 'ingredients_list', ingredients: activity.ingredients
+            = render 'ingredients_list', ingredients: activity.ingredients, source: "activity"
     - if activity.yield.present?
       .section
         %h4 Yield
