@@ -72,11 +72,11 @@
         = link_to 'browse the course now', [@course, @course.first_published_activity]            
 
 
-.container-fluid#creative
+.container-fluid
   .row-fluid
     .container
       .row.section
-        .span4.align-bottom
+        .span4.align-bottom#creative
           /= image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
           = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
           %h3= "The Creative Kit"
@@ -86,7 +86,7 @@
           .well.section
             = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id], Course::SPHERIFICATION_CREATIVE[:price])
 
-        .span4.align-bottom
+        .span4.align-bottom#enthusiast
           /= image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
           = image_tag 'https://www.filepicker.io/api/file/5wKEDSXZQgCgtA5W7JxI'
           %h3="The Enthusiast Kit"
@@ -96,7 +96,7 @@
           .well.section
             = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id], Course::SPHERIFICATION_ENTHUSIAST[:price])
 
-        .span4.align-bottom
+        .span4.align-bottom#professional
           /= image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
           = image_tag 'https://www.filepicker.io/api/file/FBnDnqcUQRetfBswxNzq'          
           %h3="The Professional Kit"
