@@ -2,9 +2,9 @@
   - if current_user.course_ids.include?(@course.id)
     = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
   - else
-    %h4 Enroll now for free
+    %h2 Enroll now for free
     = form_tag enroll_course_path(@course) do
-      = submit_tag 'Enroll', class: 'btn btn-primary btn-large'
+      = submit_tag 'Enroll', class: 'btn btn-primary btn-large btn-block'
     .section#browse-section
       %p.text-center Or
       .text-center

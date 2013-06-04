@@ -51,3 +51,10 @@ $ ->
       signup_or_signin_section.hide()
       signin_and_enroll_section.show()
 
+  #### HACK FOR ANCHOR TAGS ####
+  current_url = document.URL
+  pattern = /#/g
+  if pattern.test(current_url)
+    string1 = String(current_url.match(/#\/.+/))
+    string2 = string1.replace('/', '')
+    $('html, body').animate({scrollTop:$(string2).position().top - 130}, 'slow')
