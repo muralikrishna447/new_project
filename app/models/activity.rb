@@ -187,19 +187,22 @@ class Activity < ActiveRecord::Base
     steps.destroy_all()
     steps.reload()
     if steps_attrs
-      step_attrs.each do |step_attr|
-        step = steps.find_or_create_by_id(step_attr[:id])
+      puts "********"
+      puts steps_attrs
+      steps_attrs.each do |step_attr|
+        step = steps.create()
         step.update_attributes(
-            title: step_attr[:title].strip,
-            directions: step_attr[:directions].strip,
+            title: step_attr[:title],
+            directions: step_attr[:directions],
             youtube_id: step_attr[:youtube_id],
             image_id: step_attr[:image_id],
-            image_description: step_attr[:image_description].strip,
+            image_description: step_attr[:image_description],
             audio_clip: step_attr[:audio_clip],
             audio_title: step_attr[:audio_title],
             step_order_position: :last,
             hide_number: step_attr[:hide_number]
         )
+        step.update_ingredients_json(step_attr[:ingredients])
       end
     end
     self
@@ -351,7 +354,11 @@ class Activity < ActiveRecord::Base
 
     self.ingredients.each { |ai| new_activity.ingredients << ai.dup }
     self.equipment.each { |ae| new_activity.equipment << ae.dup }
-    self.steps.each { |as| new_activity.steps << as.dup }
+    self.steps.each do |as|
+      new_step = as.dup
+      new_activity.steps << new_step
+      as.ingredients.each { |si| new_step.ingredients << si.dup }
+    end
 
     new_activity.save!
     new_activity
