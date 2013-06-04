@@ -146,6 +146,7 @@ class ActivitiesController < ApplicationController
             @activity.last_edited_by = current_admin_user
             @activity.update_equipment_json(params[:activity].delete(:equipment))
             @activity.update_ingredients_json(params[:activity].delete(:ingredients))
+            @activity.update_steps_json(params[:activity].delete(:steps))
             # Why on earth is tags the only thing not root wrapped??
             tags = params.delete(:tags)
             @activity.tag_list = tags.map { |t| t[:name]} if tags

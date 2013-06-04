@@ -27,7 +27,10 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", ($scope)
 
   $scope.addStepAtIndex = (idx) ->
     step = {}
-    $scope.activity.steps.splice(idx, 0, step)
+    if $scope.activity.steps.length == 0
+      $scope.activity.steps.push(step)
+    else
+      $scope.activity.steps.splice(idx, 0, step)
     $scope.addUndo()
 
 

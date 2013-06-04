@@ -88,9 +88,12 @@
         - activity.published_variations.each do |activity|
           %li= link_to activity.title.html_safe, activity
 
-.span6(ng-show="activity.steps.length > 0" ng-controller="StepsController")
+.span6(ng-controller="StepsController")
   .section
-    .ordered-steps.scroll-shadow{:itemprop => "recipeInstructions"}
+    %div.disabled-section
+      %h4(ng-show="editMode && (activity.steps.length == 0)" data-ng-animate="'fade'" ng-click="addStepAtIndex(0)")
+        Add first step...
+    .ordered-steps.scroll-shadow(ng-show="activity.steps.length > 0"){:itemprop => "recipeInstructions"}
       .scroll-shadow-content.pull-left
 
         .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep(true)" ng-mouseleave="setMouseOverStep(false)")
@@ -146,7 +149,7 @@
 
             %csEditPair
               %csEditPairShow
-                %div(ng-show="!!step.directions" ng-bind-html-unsafe="step.directions | markdown | shortcode")
+                %div(ng-show="step.directions || editMode" ng-bind-html-unsafe="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
               %csEditPairEdit
                 %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
 

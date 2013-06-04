@@ -20,6 +20,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     $scope.active = ->
       return false if ! $scope.editMode
       return true if $scope.focusedInside()
+      return true if $scope.fakeFocus
       return true if $scope.hasErrors()
       ($scope.mouseCurrentlyOver && (! $scope.anyEditPairFocused()))
 
@@ -32,9 +33,20 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
       $scope.addUndo() if ! newValue
     )
 
-    $element.on 'click', ->
-      if $scope.editMode && (! $scope.focusedInside) || (! $document.activeElement.is('input,textarea,select'))
-        setTimeout (-> $scope.$apply($($element).find('input, textarea')[0].focus())), 0
+    # Madness. On a click, first fake focus so we become active and our inputs show.
+    # Then, try to focus the element the user clicked on, or if we can't figure that out,
+    # the first input inside the edit pair.
+    $element.on 'click', (event)->
+      if $scope.editMode
+        if (! $scope.focusedInside())
+          $scope.fakeFocus = true
+          setTimeout (->
+            elem = document.elementFromPoint(event.clientX, event.clientY)
+            if (! elem) || (! $(elem).is('input,textarea,select'))
+              elem =  $($element).find('input, textarea')[0]
+            $scope.$apply(elem.focus())
+            $scope.fakeFocus = false
+          ), 0
 
     # Without this we are getting some cases where we don't get the mouseleave, maybe because of DOM changes?
     # so you end up with "mouse droppings" of pairs left in the edit state

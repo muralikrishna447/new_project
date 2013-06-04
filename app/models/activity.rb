@@ -162,7 +162,6 @@ class Activity < ActiveRecord::Base
     # Easiest just to be rid of all of the old join records, we'll make them from scratch
     ingredients.destroy_all()
     ingredients.reload()
-    puts ingredients_attrs
     if ingredients_attrs
       ingredients_attrs.each do |i|
         title = i[:ingredient][:title]
@@ -178,6 +177,29 @@ class Activity < ActiveRecord::Base
                                                             ingredient_order_position: :last
                                                         })
         end
+      end
+    end
+    self
+  end
+
+  def update_steps_json(steps_attrs)
+    # Easiest just to be rid of all of the old steps, we'll make them from scratch
+    steps.destroy_all()
+    steps.reload()
+    if steps_attrs
+      step_attrs.each do |step_attr|
+        step = steps.find_or_create_by_id(step_attr[:id])
+        step.update_attributes(
+            title: step_attr[:title].strip,
+            directions: step_attr[:directions].strip,
+            youtube_id: step_attr[:youtube_id],
+            image_id: step_attr[:image_id],
+            image_description: step_attr[:image_description].strip,
+            audio_clip: step_attr[:audio_clip],
+            audio_title: step_attr[:audio_title],
+            step_order_position: :last,
+            hide_number: step_attr[:hide_number]
+        )
       end
     end
     self
@@ -330,7 +352,6 @@ class Activity < ActiveRecord::Base
     self.ingredients.each { |ai| new_activity.ingredients << ai.dup }
     self.equipment.each { |ae| new_activity.equipment << ae.dup }
     self.steps.each { |as| new_activity.steps << as.dup }
-
 
     new_activity.save!
     new_activity
