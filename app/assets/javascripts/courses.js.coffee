@@ -57,4 +57,4 @@ $ ->
   if pattern.test(current_url)
     string1 = String(current_url.match(/#\/.+/))
     string2 = string1.replace('/', '')
-    $('html, body').animate({scrollTop:$(string2).position().top - 100}, 'slow')
+    $('html, body').animate({scrollTop:$(string2).position().top - 130}, 'slow')
