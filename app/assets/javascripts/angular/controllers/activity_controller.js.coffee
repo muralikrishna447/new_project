@@ -1,5 +1,8 @@
 window.deepCopy = (obj) ->
-  jQuery.extend(true, {}, obj)
+  if _.isArray(obj)
+    jQuery.extend(true, [], obj)
+  else
+    jQuery.extend(true, {}, obj)
 
 angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", "$timeout", ($scope, $resource, $location, $http, limitToFilter, $timeout) ->
   Activity = $resource( "/activities/:id/as_json",
@@ -26,7 +29,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.activity.$update({fork: true},
     ((response) ->
       # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
-      window.location = response.redirect_to if response.redirect_to),
+      window.location = response.redirect_to if response.redirect_to)
     )
   # Overall edit mode
   $scope.startEditMode = ->
@@ -37,10 +40,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.undoIndex = 0
     $timeout ->
       window.csScaling = 1
+      window.csUnits = "grams"
       window.updateUnits(false)
+      window.expandSteps()
 
   $scope.postEndEditMode = ->
     $scope.editMode = false
+    setTimeout (-> window.collapseSteps()), 0.5
 
   $scope.endEditMode = ->
     $scope.normalizeModel()
@@ -94,6 +100,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   # Gray out a section if the contents are empty
   $scope.disableIf = (condition) ->
     if condition then "disabled-section" else ""
+
+  $scope.addEditModeClass = ->
+    if $scope.editMode then "edit-mode" else ""
 
   # Activity types
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
@@ -247,9 +256,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.addIngredient =  ->
     # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
     ingred = ""
-    item = {ingredient: ingred}
+    item = {ingredient: ingred, unit: "g"}
     $scope.activity.ingredients.push(item)
     #$scope.addUndo()
+
+  $scope.removeIngredient = (index) ->
+    $scope.activity.ingredients.splice(index, 1)
+    $scope.addUndo()
 
   $scope.all_ingredients = (ingredient_name) ->
     $http.get("/ingredients.json?q=" + ingredient_name).then (response) ->
