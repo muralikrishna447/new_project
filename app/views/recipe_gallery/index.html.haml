@@ -8,6 +8,7 @@
       /     .span4
       /       = link_to activity_path(recipe) do
       /         = render 'shared/media_centered', media: recipe, size: 'medium'
-      - @recipes.each do |recipe|
-        = render 'shared/media_box_3', url: activity_path(recipe), title: recipe.title, image: recipe.featured_image, object: recipe
+      %div{style: 'float: left; width: 100%;'}
+        - @recipes.each do |recipe|
+          = render 'shared/media_box_3', url: activity_path(recipe), title: recipe.title, image: recipe.featured_image, object: recipe
       = paginate @recipes
