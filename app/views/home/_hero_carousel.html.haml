@@ -12,8 +12,12 @@
         /     .swipe-indicator-btn.hero-indicator-btn{class: "#{'indicator-active' if index == 0}", id: "hero-swipe-indicator-#{index}", data: {target: '#swiper', :'slide-to-index' => index}}
         .swipe#hero-swiper
           .swipe-wrap
-            .item.active#hero-first
-              = render 'spherification_billboard'
+            .item.active#hero-first       
+              - ab_test('spheres_billboards', {'sb_a' => 1}, {'sb_b' => 1}) do |spheres_billboards|
+                - if spheres_billboards == 'sb_a'
+                  = render 'spherification_billboard_a'
+                - elsif spheres_billboards == 'sb_b'
+                  = render 'spherification_billboard_b'
             - @heroes.each_with_index do |hero, index|
               .item
                 = render 'shared/media_hero', main_title: hero.activity_type? ? hero.activity_type : 'Recipe', media_object: hero
