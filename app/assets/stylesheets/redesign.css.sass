@@ -1377,44 +1377,46 @@ csingredienteditpair
 .unselected-ingredient
   color: #a9a9a9
 
-.fade-hide, .fade-show
+// See https://github.com/angular/angular.js/commit/11f712bc - these class
+// names have to change when we go to angular >= 1.1.5
+.fade-hide-setup, .fade-show-setup
   -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
 
-.fade-hide
+.fade-hide-setup
   opacity: 1
-  &.fade-hide-active
+  &.fade-hide-start
     opacity: 0
 
-.fade-show
+.fade-show-setup
   opacity: 0
-  &.fade-show-active
+  &.fade-show-start
     opacity: 1
 
-.custom-enter, .custom-leave, .custom-move
+.custom-enter-setup, .custom-leave-setup, .custom-move-setup
   -webkit-transition: 0.5s linear all
   -moz-transition: 0.5s linear all
   -o-transition: 0.5s linear all
   transition: 0.5s linear all
   position: relative
 
-.custom-enter
+.custom-enter-setup
   opacity: 0
-  &.custom-enter-active
+  &.custom-enter-start
     left: 0
     opacity: 1
 
-.custom-leave
+.custom-leave-setup
   left: 0
   opacity: 1
-  &.custom-leave-active
+  &.custom-leave-start
     opacity: 0
 
-.custom-move
+.custom-move-setup
   opacity: 0
-  &.custom-move-active
+  &.custom-move-start
     opacity: 1
 
 // BELOW ARE RESPONSIVE STYLES //

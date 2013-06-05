@@ -15,3 +15,13 @@ angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap"], ["$location
 angular.module('ChefStepsApp').config ["$httpProvider", ($httpProvider) ->
   $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"
 ]
+
+@$$parse = (url) ->
+  matchUrl url, this
+  withoutBaseUrl = beginsWith(appBase, url) or beginsWith(appBaseNoFile, url)
+  throw new Error("Invalid url \"" + url + "\", does not start with \"" + appBase + "\".")  unless isString(withoutBaseUrl)
+  withoutHashUrl = (if withoutBaseUrl.charAt(0) is "#" then beginsWith(hashPrefix, withoutBaseUrl) else withoutBaseUrl)
+  throw new Error("Invalid url \"" + url + "\", missing hash prefix \"" + hashPrefix + "\".")  unless isString(withoutHashUrl)
+  matchAppUrl withoutHashUrl, this
+  @$$compose()
+
