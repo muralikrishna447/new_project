@@ -123,7 +123,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   ]
 
   $scope.sourceActivityTypeString = ->
-    _.where($scope.sourceActivityTypes, {id: $scope.activity.source_type})[0].name
+    act_type = _.where($scope.sourceActivityTypes, {id: $scope.activity.source_type})[0]
+    act_type =  $scope.sourceActivityTypes[0] if ! act_type
+    act_type.name
 
   # Keep <title> tag in sync
   $scope.$watch 'activity.title', ->

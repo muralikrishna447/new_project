@@ -107,9 +107,9 @@
               %i.icon-plus
           .btn-toolbar.step-edit-buttons(ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
             %button.btn.btn-secondary(type="button" btn-checkbox="" ng-model="step.hide_number" )
-              %div(collapse="step.hide_number")
+              %div(ng-show="! step.hide_number")
                 %i.icon-ban-circle
-              %div(collapse="! step.hide_number")
+              %div(ng-show="step.hide_number")
                 \#
             .btn-group.btn-group-vertical
               %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)")
@@ -120,7 +120,7 @@
               %i.icon-remove-sign
 
           .step-element.step-number
-            %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
+            %div(ng-hide="step.hide_number" ng-bind="stepNumber($index)")
 
           .step-element.step-content
 
@@ -183,7 +183,7 @@
                 Media
                 %i.icon-chevron-up(ng-show="showMediaEdit")
                 %i.icon-chevron-down(ng-show="! showMediaEdit")
-              %div(collapse="! showMediaEdit")
+              %div(ng-hide="! showMediaEdit")
                 .well
                   %h4 Video
                   %input.nohtml(type="text" ng-model="step.youtube_id" placeholder="Youtube ID" style="width: 100%;")
