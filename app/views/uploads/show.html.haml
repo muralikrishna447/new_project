@@ -9,12 +9,11 @@
         = @upload.notes
     .span6
       .lead
-        = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this creation when they completed the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
+        = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this while completing the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
       %p= "#{time_ago_in_words(@upload.created_at)} ago."
       - if current_user && current_user.likes.map(&:likeable).include?(@upload)
         = link_to 'javascript:void(0);', class: 'btn btn-primary' do
           %i.icon-star
-          = @upload.likes.count
       - else
         = form_for Like.new do |f|
           = f.hidden_field :likeable_id, value: @upload.id
@@ -36,16 +35,22 @@
 
       .section
         - if @upload.likes.any?
-          %h4 People that have liked this upload:
+          %h4 
+          = @upload.likes.count 
+          people liked this creation:
           %ul
             - @upload.likes.each do |like|
               .section
-                = link_to user_profile_url(like.user.id) do
+                - if current_user == like.user
                   = image_tag filepicker_circle_image(like.user.image_id), class: "img-circle", width: "30"
-                  = like.user.name
-                liked this
-                = "#{time_ago_in_words(like.created_at)}"
-                ago
+                  = "You liked this #{time_ago_in_words(like.created_at)} ago."
+                - else
+                  = link_to user_profile_url(like.user.id) do
+                    = image_tag filepicker_circle_image(like.user.image_id), class: "img-circle", width: "30"
+                    = like.user.name
+                  liked this
+                  = "#{time_ago_in_words(like.created_at)}"
+                  ago
     
 
 
