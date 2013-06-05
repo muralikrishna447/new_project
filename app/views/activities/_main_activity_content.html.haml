@@ -91,21 +91,22 @@
 .span6.ng-cloak(ng-controller="StepsController")
   .section.scroll-shadow-wrapper
     %div.disabled-section
-      %h4(ng-show="editMode && (activity.steps.length == 0)" data-ng-animate="'fade'" ng-click="addStepAtIndex(0)")
+      -# display:none is a hack to keep from fading out at start. has to be inline style.
+      %h4(style="display: none;" ng-show="editMode && (activity.steps.length == 0)" data-ng-animate="'fade'" ng-click="addStepAtIndex(0)")
         Add first step...
     .ordered-steps.scroll-shadow(ng-show="activity.steps.length > 0"){:itemprop => "recipeInstructions"}
       .scroll-shadow-content.pull-left
 
         .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep(true)" ng-mouseleave="setMouseOverStep(false)")
-          .step-add-button-group(ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
+          .step-add-button-group(style="display: none;" ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
             .step-add-button-line
             %button.btn-secondary(type="button" ng-click="addStepAtIndex($index)")
               %i.icon-plus
-          .step-add-button-end-group(ng-show="editMode && mouseCurrentlyOverStep && $last" data-ng-animate="'fade'")
+          .step-add-button-end-group(style="display: none;" ng-show="editMode && mouseCurrentlyOverStep && $last" data-ng-animate="'fade'")
             .step-add-button-line
             %button.btn-secondary(type="button" ng-click="addStepAtIndex($index+1)")
               %i.icon-plus
-          .btn-toolbar.step-edit-buttons(ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
+          .btn-toolbar.step-edit-buttons(style="display: none;" ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
             %button.btn.btn-secondary(type="button" btn-checkbox="" ng-model="step.hide_number" )
               %div(collapse="step.hide_number")
                 %i.icon-ban-circle
