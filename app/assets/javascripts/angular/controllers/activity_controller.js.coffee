@@ -119,10 +119,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     act_type =  $scope.sourceActivityTypes[0] if ! act_type
     act_type.name
 
-  # Keep <title> tag in sync
-  $scope.$watch 'activity.title', ->
-    $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))
-
   # Tags
   $scope.tagsSelect2 =
 
@@ -308,13 +304,18 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   if preloaded_activity
     $scope.activity = new Activity(JSON.parse(preloaded_activity))
 
-  if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
-    $scope.startEditMode()
-    setTimeout (->
-      title_elem = $('#title-edit-pair')
-      angular.element(title_elem).scope().setMouseOver(true)
-      title_elem.click()
-    ), 0
+    if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
+      $scope.startEditMode()
+      setTimeout (->
+        title_elem = $('#title-edit-pair')
+        angular.element(title_elem).scope().setMouseOver(true)
+        title_elem.click()
+      ), 0
+
+    # Keep <title> tag in sync
+    $scope.$watch 'activity.title', ->
+      $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))
+
 
 ]
 
