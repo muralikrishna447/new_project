@@ -9,9 +9,19 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
                         {id:  $('#activity-body').data("activity-id")},
                         {update: {method: "PUT"}}
                       )
+
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  $scope.activity = Activity.get($scope.url_params, ->
+  $scope.undoStack = []
+  $scope.undoIndex = -1
+  $scope.editMode = false
+  $scope.editMeta = false
+
+  # prestoring the JSON in the HTML on initial load for speed
+  #$scope.activity = Activity.get($scope.url_params, ->
+  preloaded_activity = $("#preloaded-activity-json").text()
+  if preloaded_activity
+    $scope.activity = new Activity(JSON.parse(preloaded_activity))
     if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
       $scope.startEditMode()
       setTimeout (->
@@ -19,11 +29,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
         angular.element(title_elem).scope().setMouseOver(true)
         title_elem.click()
       ), 0
-  )
-  $scope.undoStack = []
-  $scope.undoIndex = -1
-  $scope.editMode = false
-  $scope.editMeta = false
+    #)
+
+
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
