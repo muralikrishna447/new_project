@@ -3,9 +3,11 @@
     .span12#recipe-gallery
       %h2 Recipes
       = paginate @recipes
-      .row.gallery
-        - @recipes.each do |recipe|
-          .span4
-            = link_to activity_path(recipe) do
-              = render 'shared/media_centered', media: recipe, size: 'medium'
+      / .row.gallery
+      /   - @recipes.each do |recipe|
+      /     .span4
+      /       = link_to activity_path(recipe) do
+      /         = render 'shared/media_centered', media: recipe, size: 'medium'
+      - @recipes.each do |recipe|
+        = render 'shared/media_box_3', url: activity_path(recipe), title: recipe.title, image: recipe.featured_image, object: recipe
       = paginate @recipes
