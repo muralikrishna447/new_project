@@ -1,4 +1,4 @@
-.span6.section#video-ingredient-unit
+.span6.section.ng-cloak#video-ingredient-unit
 
   %div(collapse="! (editMode && editMeta)")
     = render 'metadata'
@@ -88,7 +88,7 @@
         - activity.published_variations.each do |activity|
           %li= link_to activity.title.html_safe, activity
 
-.span6(ng-controller="StepsController")
+.span6.ng-cloak(ng-controller="StepsController")
   .section.scroll-shadow-wrapper
     %div.disabled-section
       %h4(ng-show="editMode && (activity.steps.length == 0)" data-ng-animate="'fade'" ng-click="addStepAtIndex(0)")
@@ -107,9 +107,9 @@
               %i.icon-plus
           .btn-toolbar.step-edit-buttons(ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
             %button.btn.btn-secondary(type="button" btn-checkbox="" ng-model="step.hide_number" )
-              %div(ng-show="! step.hide_number")
+              %div(collapse="step.hide_number")
                 %i.icon-ban-circle
-              %div(ng-show="step.hide_number")
+              %div(collapse="! step.hide_number")
                 \#
             .btn-group.btn-group-vertical
               %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)")
@@ -120,7 +120,7 @@
               %i.icon-remove-sign
 
           .step-element.step-number
-            %div(ng-hide="step.hide_number" ng-bind="stepNumber($index)")
+            %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
 
           .step-element.step-content
 
@@ -183,7 +183,7 @@
                 Media
                 %i.icon-chevron-up(ng-show="showMediaEdit")
                 %i.icon-chevron-down(ng-show="! showMediaEdit")
-              %div(ng-hide="! showMediaEdit")
+              %div(collapse="! showMediaEdit")
                 .well
                   %h4 Video
                   %input.nohtml(type="text" ng-model="step.youtube_id" placeholder="Youtube ID" style="width: 100%;")
