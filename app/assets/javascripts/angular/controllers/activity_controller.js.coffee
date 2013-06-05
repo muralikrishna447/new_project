@@ -17,22 +17,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.editMode = false
   $scope.editMeta = false
 
-  # prestoring the JSON in the HTML on initial load for speed
-  #$scope.activity = Activity.get($scope.url_params, ->
-  preloaded_activity = $("#preloaded-activity-json").text()
-  if preloaded_activity
-    $scope.activity = new Activity(JSON.parse(preloaded_activity))
-    if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
-      $scope.startEditMode()
-      setTimeout (->
-        title_elem = $('#title-edit-pair')
-        angular.element(title_elem).scope().setMouseOver(true)
-        title_elem.click()
-      ), 0
-    #)
-
-
-
   $scope.fork = ->
     $scope.activity.$update({fork: true},
     ((response) ->
@@ -315,6 +299,22 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     angular.forEach $scope.activity.ingredients, (item) ->
       if _.isString(item["ingredient"])
         item["ingredient"] = {title: item["ingredient"]}
+
+
+
+  # prestoring the JSON in the HTML on initial load for speed
+  #$scope.activity = Activity.get($scope.url_params, ->
+  preloaded_activity = $("#preloaded-activity-json").text()
+  if preloaded_activity
+    $scope.activity = new Activity(JSON.parse(preloaded_activity))
+
+  if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
+    $scope.startEditMode()
+    setTimeout (->
+      title_elem = $('#title-edit-pair')
+      angular.element(title_elem).scope().setMouseOver(true)
+      title_elem.click()
+    ), 0
 
 ]
 
