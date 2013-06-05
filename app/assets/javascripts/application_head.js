@@ -1,7 +1,7 @@
 //=require markdown.converter
 //=require markdown.sanitizer
 //=require jquery
-//=require angular.min
+//=require angular
 //=require angular-resource.min
 //=require angular-ui
 //=require select2

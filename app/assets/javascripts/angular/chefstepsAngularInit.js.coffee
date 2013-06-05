@@ -5,8 +5,9 @@ angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap"], ["$location
   # an angular known url. The addr bar changes but content doesn't load.
   # See https://groups.google.com/forum/#!topic/angular/cUjy9PEDeWE .
   # True was nice b/c it makes $location.search() provide what we want for activity.get(),
-  # but it was easier to workaround as below
+  # but it was easier to workaround as seen in ActivityController
   $locationProvider.html5Mode(false)
+  $locationProvider.hashPrefix()
 ]
 
 # Thank god for Stack Overflow!

@@ -19,17 +19,8 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
 
   link: (scope, element, attrs) ->
 
-    scope.ingredientSelectHasFocus = false
-
     if scope.editMode
       scope.active = true
-
-    scope.checkIngredientSelectHasFocus = ->
-      $(document.activeElement).is $(element).find('select')
-
-    scope.$watch scope.checkIngredientSelectHasFocus, ((newValue, oldValue) ->
-      scope.ingredientSelectHasFocus = newValue
-    )
 
     scope.hasIngredientTitle = ->
       ai = scope.ai

@@ -29,7 +29,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.activity.$update({fork: true},
     ((response) ->
       # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
-      window.location = response.redirect_to if response.redirect_to),
+      window.location = response.redirect_to if response.redirect_to)
     )
   # Overall edit mode
   $scope.startEditMode = ->

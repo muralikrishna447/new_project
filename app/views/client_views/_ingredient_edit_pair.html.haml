@@ -26,7 +26,7 @@
     %input.quantity-group(csselectonfocus="" type="text" placeholder="qty" autocomplete="off" ng-model="ai.display_quantity")
     .unit
       -# http://stackoverflow.com/questions/5912791/how-to-remove-the-arrow-from-a-select-tag-in-firefox - my favorite answer (not the accepted one)
-      .select-readout(ng-class="{fakefocus: ingredientSelectHasFocus}")
+      .select-readout(ng-class="{fakefocus: unitSelectHasFocus}")
         {{ai.unit}}
         %i.icon-caret-down
-      %select(type="text" ng-model="ai.unit" required="true" ng-options="u for u in ['g', 'kg', 'ea', 'a/n', 'recipe']")
+      %select(type="text" ng-model="ai.unit" required="true" ng-options="u for u in ['g', 'kg', 'ea', 'a/n', 'recipe']" ui-event='{focus : "unitSelectHasFocus = true", blur: "unitSelectHasFocus = false"}')
