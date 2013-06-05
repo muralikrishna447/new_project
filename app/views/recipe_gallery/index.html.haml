@@ -2,6 +2,9 @@
   .row
     .span12#recipe-gallery
       %h2 Recipes
+      = link_to 'Easy', recipe_gallery_index_path(difficulty: 'easy')
+      = link_to 'Intermediate', recipe_gallery_index_path(difficulty: 'intermediate')
+      = link_to 'Advanced', recipe_gallery_index_path(difficulty: 'advanced')
       = paginate @recipes
       / .row.gallery
       /   - @recipes.each do |recipe|
