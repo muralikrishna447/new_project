@@ -83,7 +83,11 @@ Delve::Application.routes.draw do
       get 'all_tags' => 'activities#get_all_tags'
     end
   end
-  resources :techniques, only: [:index, :show]
+  resources :techniques, only: [:index, :show] do
+    collection do
+      get 'index_as_json' => 'techniques#index_as_json'
+    end
+  end
   resources :sciences, only: [:index, :show]
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
   match '/feed' => 'activities#feedburner_feed', as: :feed
