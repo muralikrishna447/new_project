@@ -3,40 +3,41 @@
     .span12#recipe-gallery
       %h2 Recipes
 
-      .gallery-filter
-        .dropdown
-          = link_to 'javascript:void;', class: 'dropdown-toggle' do
-            %div 
-              - if params[:by_order].blank?
-                Most Recent
-              - else
-                = params[:by_order] == 'desc' ? 'Most Recent' : 'Oldest'
-              %i.icon-angle-down
-          %ul.dropdown-menu
-            %li= link_to 'Most Recent', params.merge(by_order: 'desc', page: '')
-            %li= link_to 'Oldest', params.merge(by_order: 'asc', page: '')
+      / .gallery-filter
+      /   .dropdown
+      /     = link_to 'javascript:void;', class: 'dropdown-toggle' do
+      /       %div 
+      /         - if params[:by_order].blank?
+      /           Most Recent
+      /         - else
+      /           = params[:by_order] == 'desc' ? 'Most Recent' : 'Oldest'
+      /         %i.icon-angle-down
+      /     %ul.dropdown-menu
+      /       %li= link_to 'Most Recent', params.merge(by_order: 'desc', page: '')
+      /       %li= link_to 'Oldest', params.merge(by_order: 'asc', page: '')
+      /   .dropdown
+      /     = link_to 'javascript:void;', class: 'dropdown-toggle' do
+      /       %div 
+      /         = params[:difficulty].blank? ? 'Difficulty' : params[:difficulty].titleize
+      /         %i.icon-angle-down
+      /     %ul.dropdown-menu
+      /       %li= link_to 'Easy', params.merge(difficulty: 'easy', page: '')
+      /       %li= link_to 'Intermediate', params.merge(difficulty: 'intermediate', page: '')
+      /       %li= link_to 'Advanced', params.merge(difficulty: 'advanced', page: '')
+      /   .dropdown
+      /     = link_to recipe_gallery_index_path do
+      /       %div 
+      /         Clear x
 
-        .dropdown
-          = link_to 'javascript:void;', class: 'dropdown-toggle' do
-            %div 
-              = params[:difficulty].blank? ? 'Difficulty' : params[:difficulty].titleize
-              %i.icon-angle-down
-          %ul.dropdown-menu
-            %li= link_to 'Easy', params.merge(difficulty: 'easy', page: '')
-            %li= link_to 'Intermediate', params.merge(difficulty: 'intermediate', page: '')
-            %li= link_to 'Advanced', params.merge(difficulty: 'advanced', page: '')
-        .dropdown
-          = link_to recipe_gallery_index_path do
-            %div 
-              Clear x
-
-      = paginate @recipes
-      / .row.gallery
+      / = paginate @recipes
+      / %div{style: 'float: left; width: 100%;'}
       /   - @recipes.each do |recipe|
-      /     .span4
-      /       = link_to activity_path(recipe) do
-      /         = render 'shared/media_centered', media: recipe, size: 'medium'
-      %div{style: 'float: left; width: 100%;'}
-        - @recipes.each do |recipe|
-          = render 'shared/media_box_3', url: activity_path(recipe), title: recipe.title, image: recipe.featured_image, object: recipe
-      = paginate @recipes
+      /     = render 'shared/media_box_3', url: activity_path(recipe), title: recipe.title, image: recipe.featured_image, object: recipe
+      / = paginate @recipes
+
+.container
+  .row
+    .span12
+      %div(ng-controller='GalleryController')
+        %h1
+          {{data.message}}
