@@ -1,8 +1,7 @@
 @import 'mixins'
 
 .gallery-filter
-  font-family: 'Raleway', sans-serif
-  font-weight: 500
+  @include raleway
   font-size: 16px
   .dropdown
     display: inline-block
@@ -17,3 +16,12 @@
         a
           &:hover
             background: $orange
+    a
+      color: black
+      @include raleway
+      font-size: 16px
+      text-transform: uppercase
+
+.pagination
+  @include raleway
+  font-size: 20px

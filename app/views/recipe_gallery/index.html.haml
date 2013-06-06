@@ -25,7 +25,10 @@
             %li= link_to 'Easy', params.merge(difficulty: 'easy', page: '')
             %li= link_to 'Intermediate', params.merge(difficulty: 'intermediate', page: '')
             %li= link_to 'Advanced', params.merge(difficulty: 'advanced', page: '')
-            %li= link_to 'Clear', params.merge(difficulty: '', page: '')
+        .dropdown
+          = link_to recipe_gallery_index_path do
+            %div 
+              Clear x
 
       = paginate @recipes
       / .row.gallery
