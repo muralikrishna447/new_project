@@ -1,7 +1,7 @@
-csUnits = "grams"
+window.csUnits = "grams"
 csTempUnits = "c"
 csLengthUnits = "cm"
-csUnitsCookieName = "chefsteps_units"
+window.csUnitsCookieName = "chefsteps_units"
 
 
 # NOTE WELL there are some places where we are using children(), not find() here very on purpose, because it is
@@ -29,8 +29,8 @@ $ ->
 # Setup click handler for units toggle
 $ ->
   $(".change_units").click ->
-    csUnits = if csUnits == "ounces" then "grams" else "ounces"
-    # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
+    window.csUnits = if window.csUnits == "ounces" then "grams" else "ounces"
+    # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
     updateUnits(true)
     step_id = $('#full-ingredients-list').data('target')
     if step_id.length > 0
@@ -136,7 +136,7 @@ updateOneRowUnits = ->
     setRow $(this), "", origValue, if origValue <= 1 then "recipe" else "recipes"
 
   # grams or kilograms
-  else if csUnits == "grams"
+  else if window.csUnits == "grams"
     if origValue < 5000
       setRow $(this), "", origValue, "g"
 
@@ -144,7 +144,7 @@ updateOneRowUnits = ->
       setRow $(this), "", origValue / 1000, "kg"
 
   # ounces or pounds and ounces
-  else if csUnits == "ounces"
+  else if window.csUnits == "ounces"
     ounces = origValue * 0.035274
     pounds = Math.floor(ounces / 16)
     ounces = ounces - (pounds * 16)
@@ -185,19 +185,19 @@ window.addScalingToLink = addScalingToLink
 fractionForSixteenths = (numerator) ->
   sixteenths = ["",
     "<sup>1</sup>&frasl;<sub>16</sub>",
-    "&#x215B;",
+    "<sup>1</sup>&frasl;<sub>8</sub>",
     "<sup>3</sup>&frasl;<sub>16</sub>",
-    "&frac14;",
+    "<sup>1</sup>&frasl;<sub>4</sub>",
     "<sup>5</sup>&frasl;<sub>16</sub>",
-    "&#x215C;",
+    "<sup>3</sup>&frasl;<sub>8</sub>",
     "<sup>7</sup>&frasl;<sub>16</sub>",
-    "&frac12;",
+    "<sup>1</sup>&frasl;<sub>2</sub>",
     "<sup>9</sup>&frasl;<sub>16</sub>",
-    "&#x215D;",
+    "<sup>5</sup>&frasl;<sub>8</sub>",
     "<sup>11</sup>&frasl;<sub>16</sub>",
-    "&frac34;",
+    "<sup>3</sup>&frasl;<sub>4</sub>",
     "<sup>13</sup>&frasl;<sub>16</sub>",
-    "&#x215E;",
+    "<sup>7</sup>&frasl;<sub>8</sub>",
     "<sup>15</sup>&frasl;<sub>16</sub>"
   ]
 
@@ -257,7 +257,7 @@ updateLengthUnits =  ->
 $ ->
   $(document).on 'click', ".length-group", ->
     csLengthUnits = if csLengthUnits == "cm" then "in" else "cm"
-    # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
+    # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
     updateLengthUnits(true)
 
 

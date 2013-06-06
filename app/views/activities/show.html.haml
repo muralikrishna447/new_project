@@ -40,14 +40,14 @@
     paramScaling = #{params[:scaling]};
 
 %form(name="myform")
-  .container#activity-body.recipe_schema(ng-cloak=""){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
+  .container#activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
 
     .row.printable
 
-      .span6.relative
+      .span6.relative.ng-cloak
         %csEditPair#title-edit-pair
           %csEditPairShow
-            %h1.activity-title(ng-bind-html-unsafe="activity.title || 'Add title...'" itemprop='name' ng-class="disableIf(! activity.title.length)")
+            %h1.activity-title(ng-bind-html-unsafe="activity.title || (editMode && 'Add title...')" itemprop='name' ng-class="disableIf(! activity.title.length)")
             -if @activity.source_activity_id
               %h5(style="font-weight: normal;")
                 {{sourceActivityTypeString()}}
@@ -59,7 +59,7 @@
                 %select.unit(type="text" ng-model="activity.source_type" required="true" ng-options="s.id as s.name for s in sourceActivityTypes")
                 = link_to @activity.source_activity.title, activity_path(@activity.source_activity)
 
-      .span6.noprint
+      .span6.noprint.ng-cloak
 
         %div(collapse="editMode")
           - if ! @minimal
@@ -109,7 +109,7 @@
 - content_for :bottom do
   - if ! @minimal
 
-    - if ! ENV["CS_NO_SUGGESTED_ACTIVITIES"]
+    - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @techniques && @recipes
       .row(ng-hide="editMode")
         .span12
           %h3 Techniques
@@ -170,4 +170,6 @@
       %button.btn.btn-danger(ng-click="cancelEditMode()"){data: {dismiss: 'modal'}}
         Yes
 
+#preloaded-activity-json.hide
+  = @activity.to_json
 

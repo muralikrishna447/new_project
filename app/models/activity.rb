@@ -40,6 +40,8 @@ class Activity < ActiveRecord::Base
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
+  scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
+  scope :by_order, -> by_order { order('updated_at ' + by_order) }
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
@@ -162,7 +164,6 @@ class Activity < ActiveRecord::Base
     # Easiest just to be rid of all of the old join records, we'll make them from scratch
     ingredients.destroy_all()
     ingredients.reload()
-    puts ingredients_attrs
     if ingredients_attrs
       ingredients_attrs.each do |i|
         title = i[:ingredient][:title]
@@ -178,6 +179,32 @@ class Activity < ActiveRecord::Base
                                                             ingredient_order_position: :last
                                                         })
         end
+      end
+    end
+    self
+  end
+
+  def update_steps_json(steps_attrs)
+    # Easiest just to be rid of all of the old steps, we'll make them from scratch
+    steps.destroy_all()
+    steps.reload()
+    if steps_attrs
+      puts "********"
+      puts steps_attrs
+      steps_attrs.each do |step_attr|
+        step = steps.create()
+        step.update_attributes(
+            title: step_attr[:title],
+            directions: step_attr[:directions],
+            youtube_id: step_attr[:youtube_id],
+            image_id: step_attr[:image_id],
+            image_description: step_attr[:image_description],
+            audio_clip: step_attr[:audio_clip],
+            audio_title: step_attr[:audio_title],
+            step_order_position: :last,
+            hide_number: step_attr[:hide_number]
+        )
+        step.update_ingredients_json(step_attr[:ingredients])
       end
     end
     self
@@ -280,18 +307,29 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def my_json
-    self.to_json(
-        include: {
-            tags: {},
-            equipment: {
-                only: :optional,
-                include: {
-                    equipment: {
-                        only: [:id, :title, :product_url]
-                    }
+  def to_json
+    super(
+      include: {
+        tags: {},
+        equipment: {
+            only: :optional,
+            include: {
+                equipment: {
+                    only: [:id, :title, :product_url]
                 }
-            },
+            }
+        },
+        ingredients: {
+            only: [:note, :display_quantity, :quantity, :unit],
+            include: {
+                ingredient: {
+                    only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
+                }
+            }
+        },
+        steps: {
+          include: {
+
             ingredients: {
                 only: [:note, :display_quantity, :quantity, :unit],
                 include: {
@@ -300,7 +338,9 @@ class Activity < ActiveRecord::Base
                     }
                 }
             }
+          }
         }
+      }
     )
   end
 
@@ -316,8 +356,11 @@ class Activity < ActiveRecord::Base
 
     self.ingredients.each { |ai| new_activity.ingredients << ai.dup }
     self.equipment.each { |ae| new_activity.equipment << ae.dup }
-    self.steps.each { |as| new_activity.steps << as.dup }
-
+    self.steps.each do |as|
+      new_step = as.dup
+      new_activity.steps << new_step
+      as.ingredients.each { |si| new_step.ingredients << si.dup }
+    end
 
     new_activity.save!
     new_activity

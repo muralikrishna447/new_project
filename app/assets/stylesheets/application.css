@@ -27,11 +27,11 @@
  *= require profiles
  *= require bootstrap-wysihtml5
  *= require angular-ui
- *= require markdown
  *= require alert
  *= require registration
  *= require timeline
  *= require annotations
  *= require select2
  *= require billboard
+ *= require gallery
  */

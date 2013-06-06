@@ -1,22 +1,17 @@
 window.deepCopy = (obj) ->
-  jQuery.extend(true, {}, obj)
+  if _.isArray(obj)
+    jQuery.extend(true, [], obj)
+  else
+    jQuery.extend(true, {}, obj)
 
 angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", "$timeout", ($scope, $resource, $location, $http, limitToFilter, $timeout) ->
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id")},
                         {update: {method: "PUT"}}
                       )
+
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  $scope.activity = Activity.get($scope.url_params, ->
-    if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
-      $scope.startEditMode()
-      setTimeout (->
-        title_elem = $('#title-edit-pair')
-        angular.element(title_elem).scope().setMouseOver(true)
-        title_elem.click()
-      ), 0
-  )
   $scope.undoStack = []
   $scope.undoIndex = -1
   $scope.editMode = false
@@ -26,7 +21,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.activity.$update({fork: true},
     ((response) ->
       # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
-      window.location = response.redirect_to if response.redirect_to),
+      window.location = response.redirect_to if response.redirect_to)
     )
   # Overall edit mode
   $scope.startEditMode = ->
@@ -37,10 +32,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.undoIndex = 0
     $timeout ->
       window.csScaling = 1
+      window.csUnits = "grams"
       window.updateUnits(false)
+      window.expandSteps()
 
   $scope.postEndEditMode = ->
     $scope.editMode = false
+    setTimeout (-> window.collapseSteps()), 0.5
 
   $scope.endEditMode = ->
     $scope.normalizeModel()
@@ -95,6 +93,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.disableIf = (condition) ->
     if condition then "disabled-section" else ""
 
+  $scope.addEditModeClass = ->
+    if $scope.editMode then "edit-mode" else ""
+
   # Activity types
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
 
@@ -114,11 +115,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   ]
 
   $scope.sourceActivityTypeString = ->
-    _.where($scope.sourceActivityTypes, {id: $scope.activity.source_type})[0].name
-
-  # Keep <title> tag in sync
-  $scope.$watch 'activity.title', ->
-    $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))
+    act_type = _.where($scope.sourceActivityTypes, {id: $scope.activity.source_type})[0]
+    act_type =  $scope.sourceActivityTypes[0] if ! act_type
+    act_type.name
 
   # Tags
   $scope.tagsSelect2 =
@@ -247,9 +246,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.addIngredient =  ->
     # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
     ingred = ""
-    item = {ingredient: ingred}
+    item = {ingredient: ingred, unit: "g"}
     $scope.activity.ingredients.push(item)
     #$scope.addUndo()
+
+  $scope.removeIngredient = (index) ->
+    $scope.activity.ingredients.splice(index, 1)
+    $scope.addUndo()
 
   $scope.all_ingredients = (ingredient_name) ->
     $http.get("/ingredients.json?q=" + ingredient_name).then (response) ->
@@ -292,6 +295,32 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     angular.forEach $scope.activity.ingredients, (item) ->
       if _.isString(item["ingredient"])
         item["ingredient"] = {title: item["ingredient"]}
+
+    angular.forEach $scope.activity.steps, (step) ->
+      angular.forEach step.ingredients, (item) ->
+        if _.isString(item["ingredient"])
+          item["ingredient"] = {title: item["ingredient"]}
+
+
+
+  # prestoring the JSON in the HTML on initial load for speed
+  #$scope.activity = Activity.get($scope.url_params, ->
+  preloaded_activity = $("#preloaded-activity-json").text()
+  if preloaded_activity
+    $scope.activity = new Activity(JSON.parse(preloaded_activity))
+
+    if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
+      $scope.startEditMode()
+      setTimeout (->
+        title_elem = $('#title-edit-pair')
+        angular.element(title_elem).scope().setMouseOver(true)
+        title_elem.click()
+      ), 0
+
+    # Keep <title> tag in sync
+    $scope.$watch 'activity.title', ->
+      $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))
+
 
 ]
 

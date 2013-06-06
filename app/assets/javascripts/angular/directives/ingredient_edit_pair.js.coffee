@@ -11,7 +11,8 @@ angular.module('ChefStepsApp').directive 'csinputmonkeyingredient', ->
 
     # Throw out empties
     element.bind 'blur', ->
-      scope.activity.ingredients.splice(scope.activity.ingredients.indexOf(scope.ai ), 1) if ! scope.hasIngredientTitle()
+      scope.removeIngredient(scope.$parent.$index) if ! scope.hasIngredientTitle()
+      scope.normalizeModel()
 
 
 angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
@@ -27,7 +28,7 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
       ! ((_.isString(ai.ingredient) && (ai.ingredient == "")) || (ai.ingredient.title == ""))
 
     element.bind 'keydown', (event) ->
-      if $scope.editMode
+      if scope.editMode
         ai = scope.ai
 
         # On return (in input, not the popup), commit this ingredient and start a new one - iff
@@ -36,15 +37,9 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
           if scope.hasIngredientTitle() && ai.unit? && ((ai.display_quantity? ) || (ai.unit? == "a/n"))
             scope.addIngredient()
             scope.$apply()
-      else
-        return true
+          return false
 
+      return true
 
-  controller: ['$scope', '$element', ($scope, $element) ->
-    $scope.removeIngredient = ->
-      $scope.activity.ingredients.splice($scope.activity.ingredients.indexOf($scope.ai), 1)
-      $scope.addUndo()
-
-  ]
 
   templateUrl: '/client_views/_ingredient_edit_pair'

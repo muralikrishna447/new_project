@@ -19,5 +19,5 @@
   %td.quantity-group.qtyfade
     .lbs-qty
     .lbs-label
-    .main-qty{data: {:"orig-value" => ingredient.display_quantity}}= ingredient.display_quantity
+    .main-qty{data: {:"orig-value" => ingredient.display_quantity.to_f * ((ingredient.unit == "kg") ? 1000 : 1)}}= ingredient.display_quantity
   %td.unit.qtyfade= ingredient.unit

@@ -20,20 +20,24 @@ setOverlayHorizontal = (scrollable, left_hidden, right_hidden) ->
   else
     scrollable.closest('.scroll-shadow-wrapper').find('.scroll-overlay-right').hide()
 
+updateVerticalScrollShadows = (scrollable) ->
+  total_height = scrollable.find('.scroll-shadow-content').height()
+  window_height = scrollable.height()
+  top_hidden = scrollable.scrollTop() # Height of the hidden content at the top of the scrollable element
+  bottom_hidden = total_height - window_height - top_hidden # Height of the hidden content at the bottom of the scrollable element
+  setOverlay(scrollable, top_hidden, bottom_hidden)
+
+# Sets the overlay when the page loads and whenever scrolled. Timeout to allow angular to setup first.
+# Directive would be better.
 $ ->
-  $('.scroll-shadow').each ->
-    scrollable = $(this)
-    total_height = scrollable.find('.scroll-shadow-content').height()
-    window_height = $(this).height()
-    top_hidden = $(this).scrollTop() # Height of the hidden content at the top of the scrollable element
-    bottom_hidden = total_height - window_height - top_hidden # Height of the hidden content at the bottom of the scrollable element
-    setOverlay(scrollable, top_hidden, bottom_hidden) # Sets the overlay when the page loads
+  setTimeout ( ->
+    $('.scroll-shadow').each ->
+      updateVerticalScrollShadows($(this))
+      $(this).scroll ->
+        updateVerticalScrollShadows($(this))
+  ), 1000
 
-    scrollable.scroll ->
-      top_hidden = $(this).scrollTop()
-      bottom_hidden = total_height - window_height - top_hidden
-      setOverlay(scrollable, top_hidden, bottom_hidden)
-
+$ ->
   $('.scroll-shadow-horizontal').each ->
     scrollable = $(this)
     total_width = scrollable.find('.scroll-shadow-content').width()
