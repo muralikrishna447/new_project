@@ -14,6 +14,7 @@
       - if current_user && current_user.likes.map(&:likeable).include?(@upload)
         = link_to 'javascript:void(0);', class: 'btn btn-primary' do
           %i.icon-star
+          = @upload.likes.count
       - else
         = form_for Like.new do |f|
           = f.hidden_field :likeable_id, value: @upload.id
@@ -36,21 +37,24 @@
       .section
         - if @upload.likes.any?
           %h4 
-          = @upload.likes.count 
-          people liked this creation:
-          %ul
-            - @upload.likes.each do |like|
-              .section
-                - if current_user == like.user
+            = @upload.likes.count
+            - if @upload.likes.count > 1
+              = "person".pluralize
+            - else
+              = person
+            like this:
+          - @upload.likes.each do |like|
+            .section
+              - if current_user == like.user
+                = image_tag filepicker_circle_image(like.user.image_id), class: "img-circle", width: "30"
+                = "You liked this #{time_ago_in_words(like.created_at)} ago."
+              - else
+                = link_to user_profile_url(like.user.id) do
                   = image_tag filepicker_circle_image(like.user.image_id), class: "img-circle", width: "30"
-                  = "You liked this #{time_ago_in_words(like.created_at)} ago."
-                - else
-                  = link_to user_profile_url(like.user.id) do
-                    = image_tag filepicker_circle_image(like.user.image_id), class: "img-circle", width: "30"
-                    = like.user.name
-                  liked this
-                  = "#{time_ago_in_words(like.created_at)}"
-                  ago
+                  = like.user.name
+                liked this
+                = "#{time_ago_in_words(like.created_at)}"
+                ago
     
 
 
