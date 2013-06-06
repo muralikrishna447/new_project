@@ -1,13 +1,13 @@
 angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", ($scope, $resource) ->
-  Recipe = $resource('/recipe-gallery/index_as_json')
-  $scope.recipes = Recipe.query()
+  Activity = $resource('/recipe-gallery/index_as_json')
+  $scope.activities = Activity.query()
 
-  $scope.recipeImageURL = (recipe, width) ->
+  $scope.activityImageURL = (activity, width) ->
     url = ""
-    if recipe.featured_image_id
-      url = JSON.parse(recipe.featured_image_id).url
+    if activity.featured_image_id
+      url = JSON.parse(activity.featured_image_id).url
       url + "/convert?fit=max&w=#{width}&cache=true"
     else
-      url = JSON.parse(recipe.image_id).url
+      url = JSON.parse(activity.image_id).url
       url + "/convert?fit=max&w=#{width}&cache=true"
 ]
