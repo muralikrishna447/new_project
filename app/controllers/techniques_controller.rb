@@ -6,7 +6,7 @@ class TechniquesController < ApplicationController
   def index_as_json
     @techniques = Activity.techniques.published.order('created_at DESC')
     respond_to do |format|
-      format.json { render :json => @techniques.to_json(only: [:title, :image_id, :featured_image_id, :difficulty, :updated_at, :slug]) }
+      format.json { render :json => @techniques.to_json(only: [:title, :image_id, :featured_image_id, :difficulty, :updated_at, :slug], :include => :steps) }
     end
   end
 
