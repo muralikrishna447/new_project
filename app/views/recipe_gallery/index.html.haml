@@ -8,10 +8,10 @@
             = params[:difficulty].blank? ? 'Difficulty' : params[:difficulty].titleize
             %i.icon-angle-down
         %ul.dropdown-menu
-          %li= link_to 'Easy', params.merge(difficulty: 'easy')
-          %li= link_to 'Intermediate', params.merge(difficulty: 'intermediate')
-          %li= link_to 'Advanced', params.merge(difficulty: 'advanced')
-          %li= link_to 'Clear', params.merge(difficulty: '')
+          %li= link_to 'Easy', params.merge(difficulty: 'easy', page: '')
+          %li= link_to 'Intermediate', params.merge(difficulty: 'intermediate', page: '')
+          %li= link_to 'Advanced', params.merge(difficulty: 'advanced', page: '')
+          %li= link_to 'Clear', params.merge(difficulty: '', page: '')
 
       = paginate @recipes
       / .row.gallery

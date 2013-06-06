@@ -3,7 +3,7 @@
 .media-box-3{data: {object: object_data}}
   = link_to url do
     .media-box-3-title
-      = title
+      = title.html_safe
     - if image
       = image_tag filepicker_gallery_image(image)
     .media-box-3-footer
