@@ -185,19 +185,19 @@ window.addScalingToLink = addScalingToLink
 fractionForSixteenths = (numerator) ->
   sixteenths = ["",
     "<sup>1</sup>&frasl;<sub>16</sub>",
-    "&#x215B;",
+    "<sup>1</sup>&frasl;<sub>8</sub>",
     "<sup>3</sup>&frasl;<sub>16</sub>",
-    "&frac14;",
+    "<sup>1</sup>&frasl;<sub>4</sub>",
     "<sup>5</sup>&frasl;<sub>16</sub>",
-    "&#x215C;",
+    "<sup>3</sup>&frasl;<sub>8</sub>",
     "<sup>7</sup>&frasl;<sub>16</sub>",
-    "&frac12;",
+    "<sup>1</sup>&frasl;<sub>2</sub>",
     "<sup>9</sup>&frasl;<sub>16</sub>",
-    "&#x215D;",
+    "<sup>5</sup>&frasl;<sub>8</sub>",
     "<sup>11</sup>&frasl;<sub>16</sub>",
-    "&frac34;",
+    "<sup>3</sup>&frasl;<sub>4</sub>",
     "<sup>13</sup>&frasl;<sub>16</sub>",
-    "&#x215E;",
+    "<sup>7</sup>&frasl;<sub>8</sub>",
     "<sup>15</sup>&frasl;<sub>16</sub>"
   ]
 
