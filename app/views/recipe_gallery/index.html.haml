@@ -5,12 +5,14 @@
       .dropdown
         = link_to 'javascript:void;', class: 'dropdown-toggle' do
           %div 
-            Difficulty
+            = params[:difficulty].blank? ? 'Difficulty' : params[:difficulty].titleize
             %i.icon-angle-down
         %ul.dropdown-menu
-          %li= link_to 'Easy', recipe_gallery_index_path(difficulty: 'easy')
-          %li= link_to 'Intermediate', recipe_gallery_index_path(difficulty: 'intermediate')
-          %li= link_to 'Advanced', recipe_gallery_index_path(difficulty: 'advanced')
+          %li= link_to 'Easy', params.merge(difficulty: 'easy')
+          %li= link_to 'Intermediate', params.merge(difficulty: 'intermediate')
+          %li= link_to 'Advanced', params.merge(difficulty: 'advanced')
+          %li= link_to 'Clear', params.merge(difficulty: '')
+
       = paginate @recipes
       / .row.gallery
       /   - @recipes.each do |recipe|
