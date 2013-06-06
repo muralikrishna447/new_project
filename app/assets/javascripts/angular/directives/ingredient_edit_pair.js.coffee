@@ -7,12 +7,13 @@ angular.module('ChefStepsApp').directive 'csinputmonkeyingredient', ->
     start_val = ""
 
     elt.on 'focus', ->
+      scope.normalizeModel()
       start_val = elt.val()
 
     # Throw out empties
     element.bind 'blur', ->
-      scope.removeIngredient(scope.$parent.$index) if ! scope.hasIngredientTitle()
       scope.normalizeModel()
+      scope.removeIngredient(scope.$parent.$index) if ! scope.hasIngredientTitle()
 
 
 angular.module('ChefStepsApp').directive 'csingredienteditpair', ->

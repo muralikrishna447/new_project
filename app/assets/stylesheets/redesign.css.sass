@@ -1354,9 +1354,11 @@ csingredienteditpair
   margin-top: -5px
   height:  20px
 
-.step-edit-buttons, .step-add-button-group, .step-add-button-end-group
+
+.step-sidebar-group
   position: absolute
   left:  -16px
+  height:  100%
   button
     width: 24px
     margin-left: 0px !important
@@ -1372,22 +1374,23 @@ csingredienteditpair
   width: 30px
 
 .step-add-button-group
+  position: absolute
   top: -10px
+  .step-add-button-line
+    top: 12px
 
 .step-add-button-end-group
+  position: absolute
   bottom: -10px
+  .step-add-button-line
+    bottom: 8px
+
 
 .step-add-button-line
   position: absolute
-  top: 10px
   border-top:  1px dotted #d3d3d3
   width: 600px
   z-index: -1
-
-.step-add-button-end-group
-  .step-add-button-line
-    position:
-      bottom: -22px
 
 .select-ingredient-checkbox
   margin-top: -2px !important

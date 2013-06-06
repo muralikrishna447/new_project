@@ -98,26 +98,28 @@
       .scroll-shadow-content.pull-left
 
         .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep(true)" ng-mouseleave="setMouseOverStep(false)")
-          .step-add-button-group(style="display: none;" ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
-            .step-add-button-line
-            %button.btn-secondary(type="button" ng-click="addStepAtIndex($index)" tooltip="Add step..." tooltip-placement="left")
-              %i.icon-plus
-          .step-add-button-end-group(style="display: none;" ng-show="editMode && mouseCurrentlyOverStep && $last" data-ng-animate="'fade'")
-            .step-add-button-line
-            %button.btn-secondary(type="button" ng-click="addStepAtIndex($index+1)" tooltip="Add step..." tooltip-placement="left")
-              %i.icon-plus
-          .btn-toolbar.step-edit-buttons(style="display: none;" ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
-            .btn-group.btn-group-vertical
-              %button.btn.btn-secondary(ng-show="! step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Hide step number" tooltip-placement="left")
-                %i.icon-ban-circle
-              %button.btn.btn-secondary(ng-show="step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Show step number" tooltip-placement="left")
-                \#
-              %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)" tooltip="Move step up" tooltip-placement="left")
-                %i.icon-arrow-up
-              %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)" tooltip="Move step down" tooltip-placement="left")
-                %i.icon-arrow-down
-              %button.btn.btn-secondary(type="button" ng-click="removeStep($index)" tooltip="Remove step" tooltip-placement="left")
-                %i.icon-remove-sign
+          .step-sidebar-group(ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'" style="display: none;"  )
+            .step-add-button-group(xtooltip="Add step..." tooltip-placement="left")
+              .step-add-button-line
+              %button.btn-secondary(type="button" ng-click="addStepAtIndex($index)")
+                %i.icon-plus
+            .btn-toolbar.step-edit-buttons
+              .btn-group.btn-group-vertical
+                %button.btn.btn-secondary(ng-show="! step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Hide step number" tooltip-placement="left")
+                  %i.icon-ban-circle
+                %button.btn.btn-secondary(ng-show="step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Show step number" tooltip-placement="left")
+                  \#
+                %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)" tooltip="Move step up" tooltip-placement="left")
+                  %i.icon-arrow-up
+                %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)" tooltip="Move step down" tooltip-placement="left")
+                  %i.icon-arrow-down
+                %button.btn.btn-secondary(type="button" ng-click="removeStep($index)" tooltip="Remove step" tooltip-placement="left")
+                  %i.icon-remove-sign
+            .step-add-button-end-group(ng-show="$last" data-ng-animate="'fade'"  xtooltip="Add step..." tooltip-placement="left")
+              .step-add-button-line
+              %button.btn-secondary(type="button" ng-click="addStepAtIndex($index+1)")
+                %i.icon-plus
+
 
           .step-element.step-number
             %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
@@ -195,9 +197,9 @@
       .scroll-overlay-bottom
 
 -# Turn this on if you want to see the whole data structure for debugging
-  .row
-    .span12
-      %pre
-        {{activity | json}}
+.row
+  .span12
+    %pre
+      {{activity | json}}
 
 

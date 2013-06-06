@@ -4,7 +4,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
   replace: true,
   scope: true,
 
-  controller: ['$rootScope', '$scope', '$element', '$window', ($rootScope, $scope, $element, $window) ->
+  controller: ['$rootScope', '$scope', '$element', '$window', '$timeout', ($rootScope, $scope, $element, $window, $timeout) ->
 
     $scope.focusedInside = ->
       $(document.activeElement).closest('.edit-pair').scope() == $scope
@@ -38,21 +38,26 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     # the first input inside the edit pair.
     $element.on 'click', (event)->
       if $scope.editMode
+        $rootScope.$broadcast("setEditNotPending")
         $scope.editPending = true
         if (! $scope.focusedInside())
-          setTimeout (->
+          $timeout (->
             elem = document.elementFromPoint(event.clientX, event.clientY)
             if (! elem) || (! $(elem).is('input,textarea,select'))
               elem =  $($element).find('input, textarea')[0]
             $scope.editPending = false
             if elem
               $scope.$apply(elem.focus())
-          ), 0
+          ), 100
 
     # Without this we are getting some cases where we don't get the mouseleave, maybe because of DOM changes?
     # so you end up with "mouse droppings" of pairs left in the edit state
     $scope.$on "setMouseNotOver", ->
       $scope.setMouseOver(false)
+
+    $scope.$on "setEditNotPending", ->
+      $scope.editPending = false
+
 
   ]
 
@@ -61,13 +66,14 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     # If we get freshly added while in edit mode, make us active by focusing first input. Like when a + button is hit.
     if scope.editMode
       document.activeElement.blur() if document.activeElement
-      scope.setMouseOver(true)
+      scope.editPending = true
       # Can't give it focus until it has a chance to become visible
       setTimeout (
         ->
           e = $(element).find('input, textarea')[0]
           scope.$apply(e.focus()) if e
-      ), 0
+          scope.editPending = false
+      ), 100
 
   template: '<div ng-switch="" on="active()" class="edit-pair" ng-mouseenter="setMouseOver(true)" ng-mouseleave="setMouseOver(false)" ng-class="{edithover: mouseCurrentlyOver && ! active()}">' +
               '<div ng-transclude class="edit-pair-transclude"></div>' +

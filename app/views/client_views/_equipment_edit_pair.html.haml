@@ -11,6 +11,6 @@
 
   %csEditPairEdit
     .action-button-group(ng-show="focusedInside()")
-      %i.drag-handle.icon-sort
-      %i.remove-button.icon-remove(ng-click="removeItem()")
+      %i.drag-handle.icon-sort(tooltip="Drag to reorder")
+      %i.remove-button.icon-remove(ng-click="removeItem()" tooltip="Remove equipment")
     %input(csselectonfocus="" csinputmonkeyequipment="" type="text" placeholder="New equipment" typeahead-editable="true" autocomplete="off" class="equipment-typeahead" ng-model="item.equipment" typeahead="e as e.title for e in all_equipment($viewValue)")
