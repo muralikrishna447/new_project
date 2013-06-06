@@ -103,7 +103,11 @@ Delve::Application.routes.draw do
   resources :equipment, only: [:index]
   resources :ingredients, only: [:index]
   resources :search, only: [:index]
-  resources :recipe_gallery, only: [:index], path: 'recipe-gallery'
+  resources :recipe_gallery, only: [:index], path: 'recipe-gallery' do
+    collection do
+      get 'index_as_json' => 'recipe_gallery#index_as_json'
+    end
+  end
   resources :user_activities, only: [:create]
   resources :uploads
   resources :users do

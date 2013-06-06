@@ -7,8 +7,13 @@ class RecipeGalleryController < ApplicationController
     # @recipes = Activity.published.recipes.order('created_at DESC').uniq.page(params[:page]).per(12)
     # @recipes = apply_scopes(Activity).published.recipes.order('created_at DESC').uniq.page(params[:page]).per(12)
     @recipes = apply_scopes(Activity).published.recipes.order('created_at DESC')
+  end
+
+  def index_as_json
+    # @recipes = Activity.published.recipes.order('created_at DESC').uniq.page(params[:page]).per(12)
+    # @recipes = apply_scopes(Activity).published.recipes.order('created_at DESC').uniq.page(params[:page]).per(12)
+    @recipes = apply_scopes(Activity).published.recipes.order('created_at DESC')
     respond_to do |format|
-      format.html { render :html => @recipes }
       format.json { render :json => @recipes.to_json }
     end
   end
