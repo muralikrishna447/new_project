@@ -1,0 +1,27 @@
+@import 'mixins'
+
+.gallery-filter
+  @include raleway
+  font-size: 16px
+  .dropdown
+    display: inline-block
+    margin-right: 10px
+    .dropdown-toggle
+      color: black
+      text-transform: uppercase
+    .dropdown-menu
+      border-radius: 0px
+      text-transform: uppercase
+      li
+        a
+          &:hover
+            background: $orange
+    a
+      color: black
+      @include raleway
+      font-size: 16px
+      text-transform: uppercase
+
+.pagination
+  @include raleway
+  font-size: 20px

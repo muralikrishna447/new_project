@@ -447,6 +447,7 @@ DEPENDENCIES
   guard-spork
   haml
   hamlbars
+  has_scope
   heroku
   heroku_san
   httparty

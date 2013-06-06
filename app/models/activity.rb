@@ -40,6 +40,8 @@ class Activity < ActiveRecord::Base
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
+  scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
+  scope :by_order, -> by_order { order('updated_at ' + by_order) }
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
