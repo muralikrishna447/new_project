@@ -2,28 +2,30 @@
   .row
     .span12#recipe-gallery
       %h2 Recipes
-      .dropdown
-        = link_to 'javascript:void;', class: 'dropdown-toggle' do
-          %div 
-            - if params[:by_order].blank?
-              Most Recent
-            - else
-              = params[:by_order] == 'desc' ? 'Most Recent' : 'Oldest'
-            %i.icon-angle-down
-        %ul.dropdown-menu
-          %li= link_to 'Most Recent', params.merge(by_order: 'desc', page: '')
-          %li= link_to 'Oldest', params.merge(by_order: 'asc', page: '')
 
-      .dropdown
-        = link_to 'javascript:void;', class: 'dropdown-toggle' do
-          %div 
-            = params[:difficulty].blank? ? 'Difficulty' : params[:difficulty].titleize
-            %i.icon-angle-down
-        %ul.dropdown-menu
-          %li= link_to 'Easy', params.merge(difficulty: 'easy', page: '')
-          %li= link_to 'Intermediate', params.merge(difficulty: 'intermediate', page: '')
-          %li= link_to 'Advanced', params.merge(difficulty: 'advanced', page: '')
-          %li= link_to 'Clear', params.merge(difficulty: '', page: '')
+      .gallery-filter
+        .dropdown
+          = link_to 'javascript:void;', class: 'dropdown-toggle' do
+            %div 
+              - if params[:by_order].blank?
+                Most Recent
+              - else
+                = params[:by_order] == 'desc' ? 'Most Recent' : 'Oldest'
+              %i.icon-angle-down
+          %ul.dropdown-menu
+            %li= link_to 'Most Recent', params.merge(by_order: 'desc', page: '')
+            %li= link_to 'Oldest', params.merge(by_order: 'asc', page: '')
+
+        .dropdown
+          = link_to 'javascript:void;', class: 'dropdown-toggle' do
+            %div 
+              = params[:difficulty].blank? ? 'Difficulty' : params[:difficulty].titleize
+              %i.icon-angle-down
+          %ul.dropdown-menu
+            %li= link_to 'Easy', params.merge(difficulty: 'easy', page: '')
+            %li= link_to 'Intermediate', params.merge(difficulty: 'intermediate', page: '')
+            %li= link_to 'Advanced', params.merge(difficulty: 'advanced', page: '')
+            %li= link_to 'Clear', params.merge(difficulty: '', page: '')
 
       = paginate @recipes
       / .row.gallery
