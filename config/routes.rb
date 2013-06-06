@@ -57,6 +57,7 @@ Delve::Application.routes.draw do
   get 'about' => 'home#about', as: 'about'
   get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  match '/mp', to: redirect('/courses/spherification')
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
