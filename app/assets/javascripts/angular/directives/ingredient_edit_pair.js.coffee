@@ -12,6 +12,7 @@ angular.module('ChefStepsApp').directive 'csinputmonkeyingredient', ->
     # Throw out empties
     element.bind 'blur', ->
       scope.removeIngredient(scope.$parent.$index) if ! scope.hasIngredientTitle()
+      scope.normalizeModel()
 
 
 angular.module('ChefStepsApp').directive 'csingredienteditpair', ->

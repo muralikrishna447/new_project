@@ -296,6 +296,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       if _.isString(item["ingredient"])
         item["ingredient"] = {title: item["ingredient"]}
 
+    angular.forEach $scope.activity.steps, (step) ->
+      angular.forEach step.ingredients, (item) ->
+        if _.isString(item["ingredient"])
+          item["ingredient"] = {title: item["ingredient"]}
+
 
 
   # prestoring the JSON in the HTML on initial load for speed
