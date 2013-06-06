@@ -88,7 +88,11 @@ Delve::Application.routes.draw do
       get 'index_as_json' => 'techniques#index_as_json'
     end
   end
-  resources :sciences, only: [:index, :show]
+  resources :sciences, only: [:index, :show] do
+    collection do
+      get 'index_as_json' => 'sciences#index_as_json'
+    end
+  end
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
   match '/feed' => 'activities#feedburner_feed', as: :feed
 
