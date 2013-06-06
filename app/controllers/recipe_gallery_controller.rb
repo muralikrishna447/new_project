@@ -1,6 +1,6 @@
 class RecipeGalleryController < ApplicationController
 
-  has_scope :most_recent, :type => :boolean
+  has_scope :by_order
   has_scope :difficulty
 
   def index

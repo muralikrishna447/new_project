@@ -5,6 +5,18 @@
       .dropdown
         = link_to 'javascript:void;', class: 'dropdown-toggle' do
           %div 
+            - if params[:by_order].blank?
+              Most Recent
+            - else
+              = params[:by_order] == 'desc' ? 'Most Recent' : 'Oldest'
+            %i.icon-angle-down
+        %ul.dropdown-menu
+          %li= link_to 'Most Recent', params.merge(by_order: 'desc', page: '')
+          %li= link_to 'Oldest', params.merge(by_order: 'asc', page: '')
+
+      .dropdown
+        = link_to 'javascript:void;', class: 'dropdown-toggle' do
+          %div 
             = params[:difficulty].blank? ? 'Difficulty' : params[:difficulty].titleize
             %i.icon-angle-down
         %ul.dropdown-menu
