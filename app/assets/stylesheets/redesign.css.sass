@@ -492,6 +492,19 @@ h4
     .step-video
       display: none
 
+.edit-mode
+  .edit-pair-show
+    cursor: pointer
+
+  .ordered-steps
+    overflow: visible
+    border: none
+
+  .scroll-shadow-wrapper
+    overflow: visible
+
+
+
 
 .ingredients
 
@@ -1037,6 +1050,9 @@ h4
 .scroll-shadow-wrapper
   position: relative
 
+.scroll-shadow-content
+  width: 100%
+
 .scroll-shadow-horizontal
   height: 180px
   overflow-x: auto
@@ -1247,10 +1263,23 @@ csingredienteditpair
         width: 44%
 
     .quantity-group
-      width: 11%
+      width: 10%
 
     .unit
-      width: 8%
+      cursor: pointer
+      width: 7%
+      position: relative
+      overflow:  visible
+      select
+        margin: 0
+        width: 100%
+        border:  none
+        opacity: 0
+      .select-readout
+        position: absolute
+        width:  200%
+        height:  100%
+        z-index: 0
 
 .meta-edit
   border: 1px solid $offwhite
@@ -1260,14 +1289,28 @@ csingredienteditpair
 .disabled-section
   color: $light-gray
 
+
 // Making this match h1. I tried @including h1 but that was a no go.
+// Not sure how I feel about this approach of basic the style on the model. Semantic or gross?
 *[data-ng-model='activity.title']
   font-size: 38.5px
   line-height: 40px
   width: 100%
+  font-family: 'Raleway', sans-serif
+  font-weight: bold
+  -webkit-font-smoothing: antialiased
+
+.step-title-input
+  font-size: 18px !important
+  line-height: 25px
+  width: 100%
+  font-family: 'Raleway', sans-serif
+  font-weight: bold
+  -webkit-font-smoothing: antialiased
 
 
-.fake-link
+
+.fake-link, .fakefocus
   color: #0088cc
 
 
@@ -1289,8 +1332,92 @@ csingredienteditpair
   margin-top: 10px
   margin-bottom: 10px
 
-.add-item, .done
+.add-item, .add-from-master, .done
   margin-top: -5px
+  height:  20px
+
+.step-edit-buttons, .step-add-button-group, .step-add-button-end-group
+  position: absolute
+  left:  -16px
+  button
+    width: 24px
+    margin-left: 0px !important
+    margin-top: 4px
+    line-height: 16px
+    font-size: 14px
+    padding: 2px 6px
+  .btn-group-vertical
+    margin-left: 0px !important
+
+.step-edit-buttons
+  top: 45px
+  width: 30px
+
+.step-add-button-group
+  top: -10px
+
+.step-add-button-end-group
+  bottom: -10px
+
+.step-add-button-line
+  position: absolute
+  top: 10px
+  border-top:  1px dotted #d3d3d3
+  width: 600px
+  z-index: -1
+
+.step-add-button-end-group
+  .step-add-button-line
+    position:
+      bottom: -22px
+
+.select-ingredient-checkbox
+  margin-top: -2px !important
+
+.unselected-ingredient
+  color: #a9a9a9
+
+// See https://github.com/angular/angular.js/commit/11f712bc - these class
+// names have to change when we go to angular >= 1.1.5
+.fade-hide-setup, .fade-show-setup
+  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+  -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+  -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+
+.fade-hide-setup
+  opacity: 1
+  &.fade-hide-start
+    opacity: 0
+
+.fade-show-setup
+  opacity: 0
+  &.fade-show-start
+    opacity: 1
+
+.custom-enter-setup, .custom-leave-setup, .custom-move-setup
+  -webkit-transition: 0.5s linear all
+  -moz-transition: 0.5s linear all
+  -o-transition: 0.5s linear all
+  transition: 0.5s linear all
+  position: relative
+
+.custom-enter-setup
+  opacity: 0
+  &.custom-enter-start
+    left: 0
+    opacity: 1
+
+.custom-leave-setup
+  left: 0
+  opacity: 1
+  &.custom-leave-start
+    opacity: 0
+
+.custom-move-setup
+  opacity: 0
+  &.custom-move-start
+    opacity: 1
 
 // BELOW ARE RESPONSIVE STYLES //
 

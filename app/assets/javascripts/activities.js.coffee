@@ -64,44 +64,8 @@ $ ->
       $(this).text 'more'
 
 window.expandSteps = expandSteps
+window.collapseSteps = collapseSteps
 
-# This clearly needs some refactoring out to a separate file!
-window.wysiwygActivatedCallback = (elem) ->
-  setupFilepickerDropPanes()
-  filepickerPreviewUpdateAll()
-
-  $(elem).find('form').enableClientSideValidations();
-
-
-###$ ->
-  $(document).on 'click', ".edit-pair textarea:not(.nohtml)", (event) ->
-
-    $(this).wysihtml5
-      image: false,
-      html: true
-      customTemplates:
-        emphasis: (locale, options) ->
-          size = " btn-small"
-          "<li>" + "<div class='btn-group'>" +
-            "<a class='btn" + size + "' data-wysihtml5-command='bold' title='CTRL+B' tabindex='-1'>" + "B" + "</a>" +
-            "<a class='btn" + size + "' data-wysihtml5-command='italic' title='CTRL+I' tabindex='-1'>" + "I" + "</a>" +
-            "<a class='btn" + size + "' data-wysihtml5-command='underline' title='CTRL+U' tabindex='-1'>" + "U" + "</a>" +
-          "</div>" + "</li>"
-
-        "font-styles": (locale, options) ->
-          size = " btn-small"
-          "<li class='dropdown'>" +
-            "<a class='btn dropdown-toggle" + size + "' data-toggle='dropdown' href='#'>" + "<i class='icon-font'></i>&nbsp;<span class='current-font'>" + "Normal" + "</span>&nbsp;<b class='caret'></b>" + "</a>" +
-            "<ul class='dropdown-menu'>" +
-              "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='div' tabindex='-1'>" + "Normal" + "</a></li>" +
-              "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='h4' tabindex='-1'>" + "H4" + "</a></li>" +
-              "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='h5' tabindex='-1'>" + "H5" + "</a></li>" +
-              "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='h6' tabindex='-1'>" + "H6" + "</a></li>" +
-            "</ul>" +
-          "</li>"###
-
-window.wysiwygDeactivatedCallback = (elem) ->
-  adjustActivityLayout()
 
 $ ->
   # User Registration popup shows up after viewing 2 activities
