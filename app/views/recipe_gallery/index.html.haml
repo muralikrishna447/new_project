@@ -68,7 +68,7 @@
             %div(ng-click="filters = {}")
               = link_to 'Clear x', 'javascript:void(0);'
         %div
-          .media-box-3(ng-repeat='activity in activities | filter:search | filter:filters | orderBy:date')
+          .media-box-3(ng-cloak='' ng-repeat='activity in activities | filter:search | filter:filters | orderBy:date')
             %a(href= 'activities/{{activity.slug}}')
               .media-box-3-title
                 {{activity.title}}
