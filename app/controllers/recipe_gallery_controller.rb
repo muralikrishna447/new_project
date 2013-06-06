@@ -5,16 +5,13 @@ class RecipeGalleryController < ApplicationController
 
   def index
     # @recipes = Activity.published.recipes.order('created_at DESC').uniq.page(params[:page]).per(12)
-    # @recipes = apply_scopes(Activity).published.recipes.order('created_at DESC').uniq.page(params[:page]).per(12)
-    @recipes = apply_scopes(Activity).published.recipes.order('created_at DESC')
+    @recipes = apply_scopes(Activity).published.recipes.order('created_at DESC').uniq.page(params[:page]).per(12)
   end
 
   def index_as_json
-    # @recipes = Activity.published.recipes.order('created_at DESC').uniq.page(params[:page]).per(12)
-    # @recipes = apply_scopes(Activity).published.recipes.order('created_at DESC').uniq.page(params[:page]).per(12)
     @recipes = apply_scopes(Activity).published.recipes.order('created_at DESC')
     respond_to do |format|
-      format.json { render :json => @recipes.to_json }
+      format.json { render :json => @recipes.to_json(only: [:title, :image_id, :featured_image_id, :difficulty, :updated_at, :slug]) }
     end
   end
 end
