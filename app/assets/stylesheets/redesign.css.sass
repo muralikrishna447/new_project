@@ -503,6 +503,24 @@ h4
   .scroll-shadow-wrapper
     overflow: visible
 
+  .edithover:not(.cseditpairedit)
+    position:  relative !important
+    cursor: pointer
+    &:before
+      content: ""
+      position: absolute
+      top:  -2
+      right:  -4
+      left:  -4
+      bottom:  -2
+      background: rgba(0, 128, 220, .2) !important
+      border-radius:  5px
+
+  .btn
+    &:hover
+      background: rgba(0, 128, 220, .2) !important
+
+
 
 
 
@@ -1379,11 +1397,12 @@ csingredienteditpair
 
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
 // names have to change when we go to angular >= 1.1.5
-.fade-hide-setup, .fade-show-setup
+.fade-show-setup, .fade-hide-setup
   -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+
 
 .fade-hide-setup
   opacity: 1

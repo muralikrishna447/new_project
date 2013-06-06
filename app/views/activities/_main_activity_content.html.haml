@@ -25,9 +25,9 @@
         = render 'ingredients_list', source: "activity"
     .nav(ng-show="editMode")
       %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
-      %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient()")
+      %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient()" tooltip="Add ingredient")
         %i.icon-plus
-      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
+      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients")
         Done
 
   .section
@@ -58,9 +58,9 @@
       %li.relative(ng-repeat="item in activity.equipment | filter:requiredEquipment")
         %csEquipmentEditPair(csOptional="false")
     .nav(ng-show="editMode")
-      %button.btn.btn-small.btn-basic.add-item(ng-click="addEquipment(false)")
+      %button.btn.btn-small.btn-basic.add-item(ng-click="addEquipment(false)" tooltip="Add required equipment item...")
         +
-      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
+      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding required equipment")
         Done
 
   .section.csmonitorinputactivity
@@ -69,9 +69,9 @@
       %li.relative(ng-repeat="item in activity.equipment | filter:optionalEquipment")
         %csEquipmentEditPair(csOptional="true")
     .nav(ng-show="editMode")
-      %button.btn.btn-small.btn-basic.add-item(ng-click="addEquipment(true)")
+      %button.btn.btn-small.btn-basic.add-item(ng-click="addEquipment(true)" tooltip="Add optional equipment item....")
         +
-      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
+      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding optional equipment")
         Done
 
   - if activity.used_in_activities.published.any?
@@ -100,24 +100,23 @@
         .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep(true)" ng-mouseleave="setMouseOverStep(false)")
           .step-add-button-group(style="display: none;" ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
             .step-add-button-line
-            %button.btn-secondary(type="button" ng-click="addStepAtIndex($index)")
+            %button.btn-secondary(type="button" ng-click="addStepAtIndex($index)" tooltip="Add step..." tooltip-placement="left")
               %i.icon-plus
           .step-add-button-end-group(style="display: none;" ng-show="editMode && mouseCurrentlyOverStep && $last" data-ng-animate="'fade'")
             .step-add-button-line
-            %button.btn-secondary(type="button" ng-click="addStepAtIndex($index+1)")
+            %button.btn-secondary(type="button" ng-click="addStepAtIndex($index+1)" tooltip="Add step..." tooltip-placement="left")
               %i.icon-plus
           .btn-toolbar.step-edit-buttons(style="display: none;" ng-show="editMode && mouseCurrentlyOverStep" data-ng-animate="'fade'")
-            %button.btn.btn-secondary(type="button" btn-checkbox="" ng-model="step.hide_number" )
-              %div(collapse="step.hide_number")
-                %i.icon-ban-circle
-              %div(collapse="! step.hide_number")
-                \#
+            %button.btn.btn-secondary(ng-show="! step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Hide step number" tooltip-placement="left")
+              %i.icon-ban-circle
+            %button.btn.btn-secondary(ng-show="step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Show step number" tooltip-placement="left")
+              \#
             .btn-group.btn-group-vertical
-              %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)")
+              %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)" tooltip="Move step up" tooltip-placement="left")
                 %i.icon-arrow-up
-              %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)")
+              %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)" tooltip="Move step down" tooltip-placement="left")
                 %i.icon-arrow-down
-            %button.btn.btn-secondary(type="button" ng-click="removeStep($index)")
+            %button.btn.btn-secondary(type="button" ng-click="removeStep($index)" tooltip="Remove step" tooltip-placement="left")
               %i.icon-remove-sign
 
           .step-element.step-number
@@ -139,13 +138,13 @@
               .nav(ng-show="editMode")
                 %h4(ng-show="! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Ingredients
 
-                %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="toggleSelectFromMaster()")
+                %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Quick add from main ingredient list...")
                   %i.icon-magic
-                %button.btn.btn-small.btn-primary.done(ng-show="masterSelect" ng-click="toggleSelectFromMaster()")
+                %button.btn.btn-small.btn-primary.done(ng-show="masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Finish adding ingredients")
                   Done
-                %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient($index)" ng-show="!masterSelect" )
+                %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient($index)" ng-show="!masterSelect" tooltip="Add ingredient...")
                   %i.icon-plus
-                %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs")
+                %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients")
                   Done
 
             %csEditPair

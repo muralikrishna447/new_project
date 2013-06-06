@@ -81,9 +81,9 @@
                 %i.icon-print
             -if admin_user_signed_in? && @include_edit_toolbar
               .pull-right(style="margin-left: 20px;")
-                %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()")
+                %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()" tooltip="Edit this recipe")
                   Edit
-                %button#edit-mode.btn.btn-primary(type='button' ng-click="fork()")
+                %button#edit-mode.btn.btn-primary(type='button' ng-click="fork()" tooltip="Make a copy of this recipe")
                   Fork
 
             .pull-right.display-inline-fix

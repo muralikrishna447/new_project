@@ -21,7 +21,8 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
       return false if ! $scope.editMode
       return true if $scope.focusedInside()
       return true if $scope.hasErrors()
-      ($scope.mouseCurrentlyOver && (! $scope.anyEditPairFocused()))
+      return true if $scope.editPending
+      false
 
     $scope.setMouseOver = (over) ->
       if over
@@ -37,12 +38,15 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     # the first input inside the edit pair.
     $element.on 'click', (event)->
       if $scope.editMode
+        $scope.editPending = true
         if (! $scope.focusedInside())
           setTimeout (->
             elem = document.elementFromPoint(event.clientX, event.clientY)
             if (! elem) || (! $(elem).is('input,textarea,select'))
               elem =  $($element).find('input, textarea')[0]
-            $scope.$apply(elem.focus())
+            $scope.editPending = false
+            if elem
+              $scope.$apply(elem.focus())
           ), 0
 
     # Without this we are getting some cases where we don't get the mouseleave, maybe because of DOM changes?
@@ -65,7 +69,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
           scope.$apply(e.focus()) if e
       ), 0
 
-  template: '<div ng-switch="" on="active()" class="edit-pair" ng-mouseenter="setMouseOver(true)" ng-mouseleave="setMouseOver(false)">' +
+  template: '<div ng-switch="" on="active()" class="edit-pair" ng-mouseenter="setMouseOver(true)" ng-mouseleave="setMouseOver(false)" ng-class="{edithover: mouseCurrentlyOver && ! active()}">' +
               '<div ng-transclude class="edit-pair-transclude"></div>' +
             '</div>'
 
