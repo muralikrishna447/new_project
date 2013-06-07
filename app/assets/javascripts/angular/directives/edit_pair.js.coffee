@@ -64,7 +64,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
   link:  (scope, element, attrs) ->
 
     # If we get freshly added while in edit mode, make us active by focusing first input. Like when a + button is hit.
-    if scope.editMode
+    if scope.editMode  && ! scope.preventAutoFocus
       document.activeElement.blur() if document.activeElement
       scope.editPending = true
       # Can't give it focus until it has a chance to become visible

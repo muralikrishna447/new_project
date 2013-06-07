@@ -25,6 +25,8 @@
         = render 'ingredients_list', source: "activity"
     .nav(ng-show="editMode")
       %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
+      %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="fillMasterIngredientsFromSteps()" tooltip="Rebuild master ingredients from step ingredients...")
+        %i.icon-magic
       %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient()" tooltip="Add ingredient")
         %i.icon-plus
       %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients")

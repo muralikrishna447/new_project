@@ -9,6 +9,6 @@
           %i.fakelink.icon-question-sign
 
   .ingredient-table-body(ui-sortable="sortOptions" ng-model="#{source}.ingredients")
-    .ingredient-table-row(ng-repeat="ai in #{source}.ingredients")
+    .ingredient-table-row(ng-repeat="ai in #{source}.ingredients" data-ng-animate="'custom'")
       %csIngredientEditPair
 
