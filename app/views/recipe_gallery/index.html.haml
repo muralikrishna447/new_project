@@ -43,7 +43,7 @@
         / .flat-form
         /   %form
         /     %input(ng-model='search' placeholder='Enter Name')
-        .gallery-filter
+        .gallery-filter(ng-cloak='' )
           .dropdown
             = link_to 'javascript:void(0);', class: 'dropdown-toggle' do
               {{date_type || 'Date'}}
