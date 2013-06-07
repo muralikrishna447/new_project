@@ -4,6 +4,7 @@
 
   %div.noprint.disabled-section(ng-show="(heroDisplayType() == 'none') && editMode" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
     Add main video or image ...
+
   .btn.btn-secondary.edit-hint.noprint(ng-show="editMode && (heroDisplayType() != 'none')" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
     %i.icon-edit
     Edit

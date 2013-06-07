@@ -7,25 +7,13 @@ angular.module('ChefStepsApp').directive 'csinputmonkeyingredient', ->
     start_val = ""
 
     elt.on 'focus', ->
+      scope.normalizeModel()
       start_val = elt.val()
 
     # Throw out empties
     element.bind 'blur', ->
-      scope.removeIngredient(scope.$parent.$index) if ! scope.hasIngredientTitle()
       scope.normalizeModel()
-
-
-angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
-  restrict: 'E',
-
-  link: (scope, element, attrs) ->
-
-    if scope.editMode
-      scope.active = true
-
-    scope.hasIngredientTitle = ->
-      ai = scope.ai
-      ! ((_.isString(ai.ingredient) && (ai.ingredient == "")) || (ai.ingredient.title == ""))
+      scope.removeIngredient(scope.$parent.$index) if ! scope.hasIngredientTitle()
 
     element.bind 'keydown', (event) ->
       if scope.editMode
@@ -40,6 +28,20 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
           return false
 
       return true
+
+
+angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
+  restrict: 'E',
+
+  link: (scope, element, attrs) ->
+
+    if scope.editMode
+      scope.active = true
+
+    scope.hasIngredientTitle = ->
+      ai = scope.ai
+      ! ((_.isString(ai.ingredient) && (ai.ingredient == "")) || (ai.ingredient.title == ""))
+
 
 
   templateUrl: '/client_views/_ingredient_edit_pair'
