@@ -67,6 +67,8 @@ class Activity < ActiveRecord::Base
     ADAPTED_FROM = 0
   end
 
+  before_save :check_published
+
   before_save :strip_title
   def strip_title
     self.title = self.title.strip if self.title?
@@ -367,6 +369,12 @@ class Activity < ActiveRecord::Base
   end
 
   private
+
+  def check_published
+    if self.published && self.published_at.blank?
+      self.published_at = DateTime.now
+    end
+  end
 
   def reject_invalid_equipment(equipment_attrs)
     equipment_attrs.select! do |equipment_attr|
