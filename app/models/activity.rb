@@ -41,7 +41,7 @@ class Activity < ActiveRecord::Base
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
   scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
-  scope :by_order, -> by_order { order('updated_at ' + by_order) }
+  scope :randomize, order('random()')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
