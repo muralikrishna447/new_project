@@ -15,4 +15,19 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       image_url = images[images.length - 1]
       url = JSON.parse(image_url).url
       url + "/convert?fit=max&w=#{width}&cache=true"
+
+  $scope.load_data = ->
+    console.log('loaded')
 ]
+
+angular.module('ChefStepsApp').directive 'galleryscroll', ($window) ->
+  (scope, element, attr) ->
+    window_element = angular.element($window)
+    raw = element[0]
+    window_element.scroll ->
+      # console.log(window_element.scrollTop())
+      # console.log(element.height())
+      # console.log(window.innerHeight)
+      console.log(element.height() - window.innerHeight)
+      console.log(window_element.scrollTop())
+      scope.$apply(attr.galleryscroll)
