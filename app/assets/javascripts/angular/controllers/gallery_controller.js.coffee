@@ -30,4 +30,5 @@ angular.module('ChefStepsApp').directive 'galleryscroll', ($window) ->
       # console.log(window.innerHeight)
       console.log(element.height() - window.innerHeight)
       console.log(window_element.scrollTop())
-      scope.$apply(attr.galleryscroll)
+      if window_element.scrollTop() >= (element.height() - window.innerHeight)
+        scope.$apply(attr.galleryscroll)
