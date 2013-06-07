@@ -27,12 +27,11 @@
   .row.section
     .span12
     %h2.text-center The Team
-    - team = {'ben' => 'development chef', 'nick' => 'development chef', 'michael' => 'CTO', 'huy' => 'web developer', 'hans' => 'director of audio', ' lorraine' => 'director of social media', 'kristina' => 'photo/visuals', 'trissa' => 'kitchen staff', 'ed' => 'director of business operations', 'tim' => 'designer' }.sort.each do |bio_name, position|
+    - team = {'ben' => 'development chef', 'nick' => 'development chef', 'michael' => 'CTO', 'huy' => 'web developer', 'hans' => 'director of audio', ' lorraine' => 'social media', 'kristina' => 'photo/visuals', 'ed' => 'director of business operations', 'tim' => 'designer' }.sort.each do |bio_name, position|
       .span3.text-center
         = image_tag('http://placehold.it/100x100',  title: 'title', class: 'img-circle')
         %h4= "#{bio_name}"
         %h5= "#{position}"
-        %p Nullam id dolor id nibh ultricies vehicula   ut id elit. Nullam quis risus eget urna mollis.  
   %hr
   .row.section
     .span4
