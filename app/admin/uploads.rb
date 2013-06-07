@@ -12,7 +12,7 @@ end
 
 member_action :unapprove, :method => :get do
   upload = Upload.find(params[:id])
-  upload.approved = true
+  upload.approved = false
   upload.save
   redirect_to admin_uploads_path, notice: 'Unapproved.'
 end

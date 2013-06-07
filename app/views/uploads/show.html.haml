@@ -39,10 +39,9 @@
           %h4 
             = @upload.likes.count
             - if @upload.likes.count > 1
-              = "person".pluralize
+              people like this:
             - else
-              = person
-            like this:
+              person likes this:
           - @upload.likes.each do |like|
             .section
               - if current_user == like.user
