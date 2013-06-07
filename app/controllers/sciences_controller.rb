@@ -6,7 +6,7 @@ class SciencesController < ApplicationController
   def index_as_json
     @techniques = Activity.sciences.published.randomize
     respond_to do |format|
-      format.json { render :json => @techniques.to_json(only: [:title, :image_id, :featured_image_id, :difficulty, :updated_at, :slug], :include => :steps) }
+      format.json { render :json => @techniques.to_json(only: [:title, :image_id, :featured_image_id, :difficulty, :published_at, :slug], :include => :steps) }
     end
   end
 
