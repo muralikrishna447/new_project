@@ -1,9 +1,9 @@
-%div
-  = image_tag filepicker_gallery_image(event.trackable.image_id)
-- if event.trackable.activity
-  %div
-    = "you uploaded a photo for #{link_to event.trackable.activity.title, event.trackable.activity}".html_safe
-- else
-  %div
-    = "you uploaded a photo for #{event.trackable.recipe_name}".html_safe
-%div= time_ago_in_words(event.created_at) + ' ago'
+- direction = direction || 'left'
+- user_noun = current_user == event.user ? 'You' : event.user.name
+.timeline-circle{data: {direction: direction}}
+  .timeline-circle-img
+    = link_to user_upload_path(event.trackable.user, event.trackable) do
+      = image_tag filepicker_circle_image(event.trackable.image_id), class: 'img-circle'
+  .timeline-circle-text.text-center
+    %div= "#{user_noun} uploaded a photo"
+    %div= time_ago_in_words(event.created_at) + ' ago'

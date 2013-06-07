@@ -32,6 +32,7 @@ class QuizResultsPresenter
       results[question_type] << {
         question: contents.question,
         instructions: contents.instructions,
+        explanation: contents.explanation,
         question_type: question_type,
         order: index + 1,
         options: options,

@@ -1,23 +1,17 @@
 .container#main-container
   .row
-    .span6.offset3.well
-      %h2 Sign into Chefsteps
-      %hr
+    .span5.offset1
+    .span5.registration
+      %h3 Sign into Chefsteps
       = form_for @user, url: session_path(@user) do |f|
         - if @signin_message
           %h2= @signin_message
           %hr
-        %p= f.text_field :email, placeholder: 'email'
-        %p= f.password_field :password, placeholder: 'password'
-        %p= f.submit 'Sign in', class: 'btn btn-primary btn-large'
-        %hr
+        %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level'
+        %div= f.password_field :password, placeholder: 'Password', class: 'input-block-level'
+        %div= f.submit 'Sign in', class: 'btn btn-primary btn-large'
+        %h3 or
         = render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
-
-  .row
-    .span6.offset3
-      .pull-left
-        %p.pull-left Need an Account? 
-        %p= link_to 'Sign up for Chefsteps', new_user_registration_path, class: 'pull-left'
-      .pull-right
-        %p.right Forgot your password?
-        = link_to 'Reset password', new_user_password_path, class: 'pull-right'
+        %hr
+        %div= "Don't have an account? #{link_to 'Sign up', new_user_registration_path}".html_safe
+        %div= "Forgot your password? #{link_to 'Reset password', new_user_password_path}".html_safe

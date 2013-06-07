@@ -5,6 +5,8 @@ class ActivitiesController < ApplicationController
 
   before_filter :find_activity, only: :show
 
+  DUMMY_NEW_ACTIVITY_NAME = "DUMMY NEW ACTIVITY"
+
   def find_activity
     @activity = Activity.find params[:id]
 
@@ -17,12 +19,13 @@ class ActivitiesController < ApplicationController
       redir_params[:version] = params[:version] if defined? params[:version]
       redir_params[:minimal] = params[:minimal] if defined? params[:minimal]
       redir_params[:token] = params[:token] if defined? params[:token]
+      redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
   end
 
 
-  before_filter :require_admin, only: [:update]
+  before_filter :require_admin, only: [:new, :update_as_json]
   def require_admin
     unless admin_user_signed_in?
       flash[:error] = "You must be logged in as an administrator to do this"
@@ -31,7 +34,8 @@ class ActivitiesController < ApplicationController
   end
 
   def show
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token])
+
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -57,11 +61,10 @@ class ActivitiesController < ApplicationController
           render 'course_activity'
           track_event @current_inclusion
         else
+          if @activity.courses.any?
+            flash[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
+          end
           track_event @activity
-        end
-
-        if @activity.has_quizzes?
-          render template: 'activities/quizzes'
         end
 
         @minimal = false
@@ -76,29 +79,97 @@ class ActivitiesController < ApplicationController
         @viewed_activities << [@activity.id, DateTime.now]
         cookies[:viewed_activities] = @viewed_activities.to_json
 
+        if ! @course
+          @include_edit_toolbar = true
+        end
+
+        @source_activity = @activity.source_activity
+
         # If this is a crawler, render a basic HTML page for SEO that doesn't depend on Angular
         if params.has_key?(:'_escaped_fragment_')
           render template: 'activities/static_html'
         end
       end
+   end
+  end
 
-      format.json {  render :json => @activity }
+  def new
+    @activity = Activity.new()
+    @activity.title = DUMMY_NEW_ACTIVITY_NAME
+    @activity.description = ""
+    # Have to save because we edit in our show view, and that view really needs an id
+    @activity.save!
+    @activity.title = ""
+    @include_edit_toolbar = true
+    render 'show'
+  end
+
+  def fork
+    old_activity = Activity.find(params[:id])
+    @activity = old_activity.deep_copy
+    @activity.title = "#{current_user ? current_user.name : current_admin_user.email.split('@')[0]}'s Version Of #{old_activity.title}"
+    @activity.save!
+    render :json => {redirect_to: activity_path(@activity, {start_in_edit: true})}
+  end
+
+  def get_as_json
+
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
+    if params[:version] && params[:version].to_i <= @activity.last_revision().revision
+      @activity = @activity.restore_revision(params[:version])
+    end
+
+    # Can't save with this, but want it to be blank in show view
+    @activity.title = "" if @activity.title == DUMMY_NEW_ACTIVITY_NAME
+
+    # For the relations, sending only the fields that are visible in the UI; makes it a lot
+    # clearer what to do on update.
+    respond_to do |format|
+      format.json {
+        render :json => @activity.my_json
+      }
     end
   end
 
-  def update
-    @activity = Activity.find(params[:id])
-    respond_to do |format|
-      format.json do
+  def update_as_json
+    if params[:fork]
+      # Can't seem to get custom verb & URL to work in angular, so tacking it onto this one
+      fork()
+    else
+      @activity = Activity.find(params[:id])
+      respond_to do |format|
+        format.json do
 
-        @activity.store_revision do
-          @activity.last_edited_by = current_admin_user
-          @activity.attributes = params[:activity]
-          @activity.save!
+          old_slug = @activity.slug
+
+          @activity.store_revision do
+            @activity.last_edited_by = current_admin_user
+            @activity.update_equipment_json(params[:activity].delete(:equipment))
+            @activity.update_ingredients_json(params[:activity].delete(:ingredients))
+            # Why on earth is tags the only thing not root wrapped??
+            tags = params.delete(:tags)
+            @activity.tag_list = tags.map { |t| t[:name]} if tags
+            @activity.attributes = params[:activity]
+            @activity.save!
+          end
+
+          # This would be better handled by history state / routing in frontend, but ok for now
+          if @activity.slug != old_slug
+            render :json => {redirect_to: activity_path}
+          else
+            head :no_content
+          end
         end
-
-        render :json => @activity
       end
+    end
+  end
+
+  def get_all_tags
+    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + params[:q] + '%').all
+    respond_to do |format|
+      format.json {
+        render :json => result.to_json()
+      }
     end
   end
 
@@ -127,19 +198,5 @@ class ActivitiesController < ApplicationController
     redirect_to "http://feeds.feedburner.com/ChefSteps"
   end
 
-  # Submit a form updating some part of an activity; record it in the revision database
-  def update_edit_partial
-    @activity = Activity.find(params[:id])
-    @activity.attributes=(params[:activity])
-    if @activity.changed?
-      @activity.store_revision do
-        @activity.last_edited_by = current_admin_user
-        @activity.save!
-      end
-    end
-    respond_to do |format|
-      format.js { render 'get_show_partial'}
-    end
-  end
 end
 

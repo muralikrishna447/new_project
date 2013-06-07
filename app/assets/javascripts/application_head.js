@@ -1,6 +1,10 @@
 //=require markdown.converter
 //=require markdown.sanitizer
-//=require angular
-//=require angular-resource
+//=require jquery
+//=require angular.min
+//=require angular-resource.min
 //=require angular-ui
-//=require chefstepsAngularInit
+//=require select2
+//=require ui-bootstrap-tpls-0.3.0
+//=require angular/chefstepsAngularInit
+//=require_tree  ./angular

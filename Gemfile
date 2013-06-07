@@ -42,7 +42,9 @@ gem 'coffee-filter'
 gem 'bootstrap-wysihtml5-rails'
 gem 'client_side_validations'
 gem 'client_side_validations-formtastic'
-
+gem 'split', require: 'split/dashboard'
+gem 'redis'
+gem 'merit'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -61,10 +63,15 @@ group :assets do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
 
+  # NOTE not using gems for angular, angular-resource b/c needed minified version for perfomance
+  # in develop, and for angular-ui because of https://github.com/angular-ui/angular-ui/issues/530
+  # - had to hand patch file.
+
   gem 'uglifier', '>= 1.0.3'
-  gem 'angularjs-rails'
-  gem 'angular-ui-rails'
+  # This was out of date so I put the one I needed in vendor
+  #gem 'angular-ui-bootstrap-rails'
   gem 'pagedown-rails', '~> 1.1.3'
+
 end
 
 group :development, :test do
@@ -86,6 +93,7 @@ group :development, :test do
   gem 'rails-erd'
   gem 'bullet'
   gem 'launchy'
+  gem 'childprocess', '0.3.6'
 end
 
 group :guard do

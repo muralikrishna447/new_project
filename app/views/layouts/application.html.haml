@@ -10,6 +10,7 @@
     %meta{name: 'keywords', content: yield(:keywords)}
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1'}
     = yield :facebook_og
+    = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
     / YouTube Iframe API can't be loaded async so we have to load it directly
@@ -25,14 +26,16 @@
     = render 'layouts/google_analytics' if Rails.env.production?
     = javascript_include_tag 'application_head'
 
-  %body{@body_tag_attributes || {}}
+  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}}
     = render 'layouts/navigation', external: false
 
     .container.alert-container
       - flash.each do |name, msg|
         %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
           %button.close{type: 'button', data: {dismiss: 'alert'}} x
-          = msg
+          %h4.alert-message= msg.html_safe
+          .lblock
+          
     = yield
 
     .container-fluid#slider-container
@@ -46,6 +49,7 @@
   / = render 'layouts/youtube'
   
   %script{src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"}
+  %script{src: 'http://d3js.org/d3.v3.min.js'}
   = javascript_include_tag 'application'
   = render 'layouts/app_init'
   = yield(:custom_js)

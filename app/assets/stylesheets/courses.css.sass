@@ -42,12 +42,29 @@
     .show-course-navbar-item
       width: auto
 
+.course-nav-modules
+  font-family: 'Raleway', sans-serif
+  width: 100%
+  border: 0px
+  li
+    width: 100%
+    .course-nav-module-link
+      border: 0px
+      &:hover
+        border: 0px
+    .active-module
+      font-weight: bold
+
+.course-side-bar.affix
+  top: 60px
+
 .course-nav-side
   font-family: 'Raleway', sans-serif
   position: relative
   border: 1px solid $orange
   border-radius: 5px
   padding: 10px 8px
+  margin-top: 5px
   font-size: 13px
   @include boxsizing
   ul
@@ -90,3 +107,52 @@
     position: absolute
     top: 10px
     right: 10px
+
+/* Spherification Styles */
+
+.static-height
+  height: 150px
+
+.align-bottom
+  bottom: 0
+
+@media (min-width: 1200px)
+  .course-side-bar
+    width: 270px
+
+  .static-height
+    height: 150px
+
+@media (max-width: 1200px)
+  .course_activity_content
+    padding-left: 20px
+    padding-right: 20px
+
+  .course-side-bar
+    width: 220px
+
+  .static-height
+    height: 170px    
+
+@media (min-width: 768px) and (max-width: 979px)
+  .course-side-bar
+    width: 166px
+
+  .static-height
+    height: 220px    
+
+@media (max-width: 767px)
+  .course-side-bar.affix
+    position: inherit
+
+  .course-side-bar
+    width: 100%
+
+  .static-height
+    height: 140px
+
+@media (max-width: 480px)
+  .static-height
+    inherit
+
+

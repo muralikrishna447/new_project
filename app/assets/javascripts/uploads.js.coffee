@@ -1,4 +1,4 @@
-uploadPhotoPreview = (preview, file) ->
+window.uploadPhotoPreview = (preview, file) ->
   if file
     width = 300
     url = JSON.parse(file).url
@@ -8,7 +8,7 @@ uploadPhotoPreview = (preview, file) ->
     preview.parent().hide()
     preview.attr('src', '')
 
-changeButton = (button) ->
+window.changeButton = (button) ->
   button.text('Change Photo')
   button.css 'font-size', '14px'
   button.css 'top', '10px'

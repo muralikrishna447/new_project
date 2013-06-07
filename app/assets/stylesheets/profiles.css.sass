@@ -4,7 +4,6 @@
   height: 200px
   background-size: 100%
   background-position: center
-  border-bottom: 2px solid $orange
   .profile-image
     margin-top: 115px
     img
@@ -19,6 +18,19 @@
 
 .profile-badges
   margin-top: 100px
+
+.profile-photo-btn
+  color: black
+  position: absolute
+  top: 60px
+  left: 50%
+  margin-left: -25px
+  font-size: 100px
+  font-weight: bold
+  @include transition(all 100ms)
+  &:hover
+    text-decoration: none
+    color: $orange
 
 @media (max-width: 1200px)
   .profile-cover

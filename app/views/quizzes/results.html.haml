@@ -1,12 +1,11 @@
 - content_for :title, "#{quiz.title.html_safe} Results"
 
-.quiz-title
-  .container
-    .row
-      .span12
-        %h2 Your Results for #{quiz.title}
+.container-fluid.no-margin-padding
+  .row-fluid
+    .span12
+      %h2 Your Results for #{quiz.title}
 
-#quiz-results.container
+#quiz-results.container-fluid.no-margin-padding
   = render 'quizzes/multiple_choice_question_results', results: quiz_results[:multiple_choice]
   = render 'quizzes/box_sort_question_results', results: quiz_results[:box_sort]
   = render 'quizzes/order_sort_question_results', results: quiz_results[:order_sort]

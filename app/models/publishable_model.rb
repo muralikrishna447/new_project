@@ -8,8 +8,8 @@ module PublishableModel
 
 
   module ClassMethods
-    def find_published(id, token=nil)
-      scope = PrivateToken.valid?(token) ? scoped : published
+    def find_published(id, token=nil, admin=false)
+      scope = (PrivateToken.valid?(token) || admin) ? scoped : published
       scope.find(id)
     end
   end
