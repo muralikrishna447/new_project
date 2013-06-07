@@ -513,7 +513,7 @@ h4
       right:  -4
       left:  -4
       bottom:  -2
-      background: rgba(0, 128, 220, .2) !important
+      background: rgba(0, 128, 220, .1) !important
       border-radius:  5px
 
   .btn
@@ -1248,9 +1248,17 @@ csequipmenteditpair, csingredienteditpair
 
   .action-button-group
     position: absolute
-    left: -58px
+    left: -56px
     top:  0px
     font-size:  18px
+    margin-top: -2px
+    .btn
+      padding: 4px 6px
+      border-shadow: none
+      -webkit-box-shadow: none
+
+      &:last
+        padding-right: 12px
 
     i
       width: auto
@@ -1268,6 +1276,10 @@ csequipmenteditpair, csingredienteditpair
 
     select
       height: 22px
+
+csequipmenteditpair
+  .action-button-group
+    top: 2px
 
 csingredienteditpair
 

@@ -39,8 +39,8 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     $element.on 'click', (event)->
       if $scope.editMode
         $rootScope.$broadcast("setEditNotPending")
-        $scope.editPending = true
         if (! $scope.focusedInside())
+          $scope.editPending = true
           $timeout (->
             elem = document.elementFromPoint(event.clientX, event.clientY)
             if (! elem) || (! $(elem).is('input,textarea,select'))
@@ -49,6 +49,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
             if elem
               $scope.$apply(elem.focus())
           ), 100
+      true
 
     # Without this we are getting some cases where we don't get the mouseleave, maybe because of DOM changes?
     # so you end up with "mouse droppings" of pairs left in the edit state
