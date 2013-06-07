@@ -246,8 +246,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.addIngredient =  ->
     # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
-    ingred = {title: ""}
-    item = {ingredient: ingred, display_quantity: 20, unit: "g"}
+    ingred = {}
+    item = {ingredient: ingred, unit: "g"}
     $scope.activity.ingredients.push(item)
     #$scope.addUndo()
 
