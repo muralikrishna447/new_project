@@ -41,7 +41,7 @@ class Activity < ActiveRecord::Base
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
   scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
-  scope :by_order, -> by_order { order('updated_at ' + by_order) }
+  scope :randomize, order('random()')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
@@ -66,6 +66,8 @@ class Activity < ActiveRecord::Base
     # like to find a convenient way to dry this up.
     ADAPTED_FROM = 0
   end
+
+  before_save :check_published
 
   before_save :strip_title
   def strip_title
@@ -367,6 +369,12 @@ class Activity < ActiveRecord::Base
   end
 
   private
+
+  def check_published
+    if self.published && self.published_at.blank?
+      self.published_at = DateTime.now
+    end
+  end
 
   def reject_invalid_equipment(equipment_attrs)
     equipment_attrs.select! do |equipment_attr|
