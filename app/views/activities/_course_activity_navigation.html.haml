@@ -45,5 +45,5 @@
 
   - if @course.title == 'Spherification'
     %div{style: 'padding: 30px;'}
-      = link_to @course do
+      = link_to course_path(@course, anchor: 'enthusiast') do
         = image_tag 'https://www.filepicker.io/api/file/AE4undUwRLqq9l69DVIV'
