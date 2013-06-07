@@ -40,6 +40,8 @@
     paramScaling = #{params[:scaling]};
 
 %form(name="myform")
+  -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
+  %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
   .container#activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
 
     .row.printable
