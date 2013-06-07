@@ -25,3 +25,25 @@
 .pagination
   @include raleway
   font-size: 20px
+
+.gallery-animation-enter-setup, .gallery-animation-leave-setup, .gallery-animation-move-setup
+  @include transition(300ms linear all)
+
+.gallery-animation-enter-setup
+  opacity: 0
+
+.gallery-animation-enter-setup.gallery-animation-enter-start
+  opacity: 1
+
+.gallery-animation-leave-setup
+  opacity: 1
+  
+.gallery-animation-leave-setup.gallery-animation-leave-start
+  opacity: 0
+  
+.gallery-animation-move-setup
+  opacity: 1
+
+.gallery-animation-move-setup.gallery-animation-move-start
+  opacity: 1
+  
