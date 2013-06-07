@@ -279,7 +279,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
           if ing.unit != "a/n"
             ing.display_quantity = parseFloat(ing.display_quantity) + parseFloat(si.display_quantity)
         else
-          $scope.activity.ingredients.push(si)
+          $scope.activity.ingredients.push(deepCopy(si))
 
     # We don't want the behavior of freshly added ingredients getting focus. Not the prettiest solution, but
     # whatayagonnado.
