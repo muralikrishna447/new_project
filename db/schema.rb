@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130603054950) do
+ActiveRecord::Schema.define(:version => 20130607095439) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20130603054950) do
     t.integer  "source_activity_id"
     t.integer  "source_type",        :default => 0
     t.text     "assignment_recipes"
+    t.datetime "published_at"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
