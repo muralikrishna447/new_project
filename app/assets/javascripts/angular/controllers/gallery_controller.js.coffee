@@ -18,6 +18,8 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.load_data = ->
     console.log('loaded')
+    more_activities = $resource(document.location.pathname + '/index_as_json.json?page=2').query()
+    $scope.activities.push(more_activities)
 ]
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ($window) ->
