@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", ($scope, $resource) ->
+angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$http", ($scope, $resource, $http) ->
   Activity = $resource(document.location.pathname + '/index_as_json')
   $scope.activities = Activity.query()
 
@@ -11,15 +11,20 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       url = JSON.parse(activity.image_id).url
       url + "/convert?fit=max&w=#{width}&cache=true"
     else
-      images = activity.steps.map (step) -> step.image_id
-      image_url = images[images.length - 1]
-      url = JSON.parse(image_url).url
-      url + "/convert?fit=max&w=#{width}&cache=true"
+      if (typeof(activity.steps) != "undefined")
+        images = activity.steps.map (step) -> step.image_id
+        image_url = images[images.length - 1]
+        url = JSON.parse(image_url).url
+        url + "/convert?fit=max&w=#{width}&cache=true"
 
   $scope.load_data = ->
     console.log('loaded')
-    more_activities = $resource(document.location.pathname + '/index_as_json.json?page=2').query()
-    $scope.activities.push(more_activities)
+    more_activities = Activity.query()
+    console.log(more_activities)
+    $scope.activities = more_activities
+    # $http.get(document.location.pathname + '/index_as_json.json?page=3').success (data) ->
+    #   $scope.activities = data
+    #   console.log($scope.activities)
 ]
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ($window) ->
