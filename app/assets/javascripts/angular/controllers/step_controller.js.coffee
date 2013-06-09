@@ -3,9 +3,9 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
   $scope.masterSelect = false
 
   $scope.addIngredient =  ->
-    # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
-    ingred = {}
-    item = {ingredient: ingred, unit: "g"}
+    # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
+    # but an ugly [object Object]
+    item = {unit: "g"}
     $scope.step.ingredients.push(item)
     #$scope.addUndo()
 

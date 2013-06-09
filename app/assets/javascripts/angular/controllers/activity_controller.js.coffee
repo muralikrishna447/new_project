@@ -245,9 +245,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     result
 
   $scope.addIngredient =  ->
-    # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
-    ingred = {}
-    item = {ingredient: ingred, unit: "g"}
+    # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
+    # but an ugly [object Object]
+    item = {unit: "g"}
     $scope.activity.ingredients.push(item)
     #$scope.addUndo()
 
@@ -257,8 +257,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.all_ingredients = (ingredient_name) ->
     $http.get("/ingredients.json?q=" + ingredient_name).then (response) ->
-      # always include current search text as an option
       r = limitToFilter(response.data, 15)
+      # always include current search text as an option
       r.unshift({title: ingredient_name})
       r
 
