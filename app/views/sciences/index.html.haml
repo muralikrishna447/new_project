@@ -12,42 +12,10 @@
 
 .container
   .row
-    .span12
-      %div(ng-controller='SciencesController')
+    .span12#gallery-count{:'gallery-count' => "#{@sciences_count}"}
+      %div(ng-controller='GalleryController')
         %h1
         / .flat-form
         /   %form
         /     %input(ng-model='search' placeholder='Enter Name')
-        .gallery-filter(ng-cloak='' )
-          .dropdown
-            = link_to 'javascript:void(0);', class: 'dropdown-toggle' do
-              {{date_type || 'Date'}}
-              %i.icon-angle-down
-            %ul.dropdown-menu
-              %li(ng-click="date = '-published_at' ; date_type = 'Most Recent'")
-                = link_to 'Most Recent', 'javascript:void(0);'
-              %li(ng-click="date = 'published_at' ; date_type = 'Oldest'")
-                = link_to 'Oldest', 'javascript:void(0);'
-          .dropdown
-            = link_to 'javascript:void(0);', class: 'dropdown-toggle' do
-              {{filters.difficulty || 'Difficulty'}}
-              %i.icon-angle-down
-            %ul.dropdown-menu
-              %li(ng-click="filters.difficulty = 'easy'")
-                = link_to 'Easy', 'javascript:void(0);'
-              %li(ng-click="filters.difficulty = 'intermediate'")
-                = link_to 'Intermediate', 'javascript:void(0);'
-              %li(ng-click="filters.difficulty = 'advanced'")
-                = link_to 'Advanced', 'javascript:void(0);'
-          .dropdown
-            %div(ng-show="filters.difficulty || date_type" ng-click="filters = {} ; date_type = null; date = '-updated_at'")
-              = link_to 'Clear x', 'javascript:void(0);'
-        %div
-          .media-box-3(ng-cloak='' ng-repeat='activity in activities | filter:search | filter:filters | orderBy:date' ng-animate="'gallery-animation'")
-            %a(href= 'activities/{{activity.slug}}')
-              .media-box-3-title
-                {{activity.title}}
-              %img(ng-src="{{activityImageURL(activity, 400)}}")
-              .media-box-3-footer
-                .footer-left
-                  {{activity.difficulty}}
+        = render 'shared/gallery'
