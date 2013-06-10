@@ -109,6 +109,15 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     else
       $scope.activity.activity_type = _.union($scope.activity.activity_type, [t])
 
+  # Activity difficulties
+  $scope.activityDifficulties = ["Easy", "Intermediate", "Advanced"]
+
+  $scope.hasActivityDifficulty = (t) ->
+    ($scope.activity.difficulty || "").toUpperCase() == t.toUpperCase()
+
+  $scope.setActivityDifficulty = (t) ->
+    $scope.activity.difficulty = t.toLowerCase()
+
   # These IDs are stored in the database, don't go changing them!!
   $scope.sourceActivityTypes = [
     {id: 0, name: "Adapted from"},

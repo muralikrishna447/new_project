@@ -48,7 +48,7 @@ class Activity < ActiveRecord::Base
   serialize :activity_type, Array
 
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
-  attr_accessible :source_activity, :source_activity_id, :source_type
+  attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
