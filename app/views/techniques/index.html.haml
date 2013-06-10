@@ -12,7 +12,7 @@
 
 .container
   .row
-    .span12
+    .span12#gallery-count{:'gallery-count' => "#{@techniques_count}"}
       %div(ng-controller='GalleryController')
         %h1
         / .flat-form
