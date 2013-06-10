@@ -19,7 +19,7 @@
     %csEditPairEdit
       %textarea(ng-model="activity.description" rows="5" placeholder="Add description...")
 
-  .section.csmonitorinputactivity
+  .section.csmonitorinputactivity(ng-controller="IngredientsController")
     .activity-ingredients-list#full-ingredients-list.section
       .well(ng-show="activity.ingredients.length" )
         = render 'ingredients_list', source: "activity"
@@ -134,7 +134,7 @@
               %csEditPairEdit
                 %input.nohtml.step-title-input(type="text" ng-model="step.title" placeholder="Optional title...")
 
-            %div.csmonitorinputactivity
+            %div.csmonitorinputactivity(ng-controller="IngredientsController")
               .step-ingredients-source.well(ng-hide="(step.ingredients.length == 0) || (editMode && masterSelect)")
                 = render 'ingredients_list', source: "step"
               .select-from-master.well(ng-hide="! (editMode && masterSelect)")
