@@ -30,9 +30,15 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     $http.get("/ingredients.json?q=" + s["ingredient"]).then (response) ->
       r = limitToFilter(response.data, 15)
       # always include current search text as an option
-      r.unshift({title: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
+      #r.unshift({title: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
+      r.unshift(term)
       r
 
+  $scope.typeaheadFormat = (ingredient) ->
+    ingredient.title
+      #r = ingredient.title
+      #r += " [RECIPE]" if ingredient.sub_activity_id?
+      #r
 
   $scope.matchableIngredients = (i1, i2) ->
     # Use title, not id b/c new ingredients not saved yet don't have an id

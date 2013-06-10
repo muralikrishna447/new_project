@@ -25,11 +25,11 @@
         = render 'ingredients_list', source: "activity"
     .nav(ng-show="editMode")
       %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
-      %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="fillMasterIngredientsFromSteps()" tooltip="Rebuild master ingredients from step ingredients...")
+      %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="fillMasterIngredientsFromSteps()" tooltip="Rebuild master ingredients from step ingredients..." tooltip-placement="bottom")
         %i.icon-magic
-      %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient()" tooltip="Add ingredient")
+      %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient()" tooltip="Add ingredient"  tooltip-placement="bottom")
         %i.icon-plus
-      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients")
+      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients" tooltip-placement="bottom")
         Done
 
   .section
@@ -142,13 +142,13 @@
               .nav(ng-show="editMode")
                 %h4(ng-show="! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Ingredients
 
-                %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Quick add from main ingredient list...")
+                %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Quick add from main ingredient list..." tooltip-placement="bottom")
                   %i.icon-magic
-                %button.btn.btn-small.btn-primary.done(ng-show="masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Finish adding ingredients")
+                %button.btn.btn-small.btn-primary.done(ng-show="masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Finish adding ingredients" tooltip-placement="bottom")
                   Done
-                %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient($index)" ng-show="!masterSelect" tooltip="Add ingredient...")
+                %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient($index)" ng-show="!masterSelect" tooltip="Add ingredient..." tooltip-placement="bottom")
                   %i.icon-plus
-                %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients")
+                %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients" tooltip-placement="bottom")
                   Done
 
             %csEditPair
