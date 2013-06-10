@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$http", ($scope, $resource, $http) ->
+angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", ($scope, $resource) ->
   Activity = $resource(document.location.pathname + '/index_as_json')
   $scope.activities = Activity.query()
 
@@ -18,27 +18,38 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
           url = JSON.parse(image_url).url
           url + "/convert?fit=max&w=#{width}&cache=true"
 
+  # Total gallery items
+  $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')
+
+  # Number of gallery items as they're being added
+  $scope.$watch 'activities', (newValue) ->
+    if angular.isArray(newValue)
+      $scope.activities_count = newValue.length
+
+  page = 2
+  currently_loading = false
   $scope.load_data = ->
-    console.log('loaded')
-    console.log($scope.activities)
-    more_activities = $resource(document.location.pathname + '/index_as_json.json?page=2').query()
-    console.log(more_activities)
-    $scope.activities.push(more_activities[0])
-    console.log($scope.activities)
-    # $http.get(document.location.pathname + '/index_as_json.json?page=3').success (data) ->
-    #   $scope.activities = data
-    #   console.log($scope.activities)
+    # console.log('loaded')
+    # console.log($scope.activities)
+    if $scope.activities_count < $scope.gallery_count && !currently_loading
+      currently_loading = true
+      more_activities = $resource(document.location.pathname + '/index_as_json.json?page=' + page).query ->
+        console.log(more_activities)
+        $scope.activities = $scope.activities.concat(more_activities)
+        console.log($scope.activities)
+        currently_loading = false
+        # console.log(page)
+      page+=1
 ]
+
+
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ($window) ->
   (scope, element, attr) ->
     window_element = angular.element($window)
     raw = element[0]
     window_element.scroll ->
+      # console.log(element.height() - window.innerHeight)
       # console.log(window_element.scrollTop())
-      # console.log(element.height())
-      # console.log(window.innerHeight)
-      console.log(element.height() - window.innerHeight)
-      console.log(window_element.scrollTop())
       if window_element.scrollTop() >= (element.height() - window.innerHeight)
         scope.$apply(attr.galleryscroll)
