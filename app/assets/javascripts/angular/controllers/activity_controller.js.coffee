@@ -1,32 +1,28 @@
 window.deepCopy = (obj) ->
-  jQuery.extend(true, {}, obj)
+  if _.isArray(obj)
+    jQuery.extend(true, [], obj)
+  else
+    jQuery.extend(true, {}, obj)
 
 angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", "$timeout", ($scope, $resource, $location, $http, limitToFilter, $timeout) ->
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id")},
                         {update: {method: "PUT"}}
                       )
+
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  $scope.activity = Activity.get($scope.url_params, ->
-    if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
-      $scope.startEditMode()
-      setTimeout (->
-        title_elem = $('#title-edit-pair')
-        angular.element(title_elem).scope().setMouseOver(true)
-        title_elem.click()
-      ), 0
-  )
   $scope.undoStack = []
   $scope.undoIndex = -1
   $scope.editMode = false
   $scope.editMeta = false
+  $scope.preventAutoFocus = false
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
     ((response) ->
       # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
-      window.location = response.redirect_to if response.redirect_to),
+      window.location = response.redirect_to if response.redirect_to)
     )
   # Overall edit mode
   $scope.startEditMode = ->
@@ -37,10 +33,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.undoIndex = 0
     $timeout ->
       window.csScaling = 1
+      window.csUnits = "grams"
       window.updateUnits(false)
+      window.expandSteps()
 
   $scope.postEndEditMode = ->
     $scope.editMode = false
+    setTimeout (-> window.collapseSteps()), 0.5
 
   $scope.endEditMode = ->
     $scope.normalizeModel()
@@ -95,6 +94,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.disableIf = (condition) ->
     if condition then "disabled-section" else ""
 
+  $scope.addEditModeClass = ->
+    if $scope.editMode then "edit-mode" else ""
+
   # Activity types
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
 
@@ -107,6 +109,15 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     else
       $scope.activity.activity_type = _.union($scope.activity.activity_type, [t])
 
+  # Activity difficulties
+  $scope.activityDifficulties = ["Easy", "Intermediate", "Advanced"]
+
+  $scope.hasActivityDifficulty = (t) ->
+    ($scope.activity.difficulty || "").toUpperCase() == t.toUpperCase()
+
+  $scope.setActivityDifficulty = (t) ->
+    $scope.activity.difficulty = t.toLowerCase()
+
   # These IDs are stored in the database, don't go changing them!!
   $scope.sourceActivityTypes = [
     {id: 0, name: "Adapted from"},
@@ -114,11 +125,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   ]
 
   $scope.sourceActivityTypeString = ->
-    _.where($scope.sourceActivityTypes, {id: $scope.activity.source_type})[0].name
-
-  # Keep <title> tag in sync
-  $scope.$watch 'activity.title', ->
-    $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))
+    act_type = _.where($scope.sourceActivityTypes, {id: $scope.activity.source_type})[0]
+    act_type =  $scope.sourceActivityTypes[0] if ! act_type
+    act_type.name
 
   # Tags
   $scope.tagsSelect2 =
@@ -245,18 +254,50 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     result
 
   $scope.addIngredient =  ->
-    # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
-    ingred = ""
-    item = {ingredient: ingred}
+    # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
+    # but an ugly [object Object]
+    item = {unit: "g"}
     $scope.activity.ingredients.push(item)
     #$scope.addUndo()
 
+  $scope.removeIngredient = (index) ->
+    $scope.activity.ingredients.splice(index, 1)
+    $scope.addUndo()
+
   $scope.all_ingredients = (ingredient_name) ->
     $http.get("/ingredients.json?q=" + ingredient_name).then (response) ->
-      # always include current search text as an option
       r = limitToFilter(response.data, 15)
+      # always include current search text as an option
       r.unshift({title: ingredient_name})
       r
+
+  $scope.matchableIngredients = (i1, i2) ->
+    # Use title, not id b/c new ingredients not saved yet don't have an id
+    (i1.ingredient.title == i2.ingredient.title) &&
+    ((i1.note || "") == (i2.note || "")) &&
+    (i1.unit == i2.unit)
+
+  $scope.fillMasterIngredientsFromSteps = ->
+    old_ingredients = $scope.activity.ingredients
+    $scope.activity.ingredients = []
+
+    for step in $scope.activity.steps
+      for si in step.ingredients
+        ing = _.find($scope.activity.ingredients, (ai) -> $scope.matchableIngredients(ai, si))
+        if ing?
+          if ing.unit != "a/n"
+            ing.display_quantity = parseFloat(ing.display_quantity) + parseFloat(si.display_quantity)
+        else
+          $scope.activity.ingredients.push(deepCopy(si))
+
+    # We don't want the behavior of freshly added ingredients getting focus. Not the prettiest solution, but
+    # whatayagonnado.
+    $scope.preventAutoFocus = true
+    $timeout ( ->
+      $scope.preventAutoFocus = false
+    ), 100
+
+
 
   # Not currently used - maybe come back to it
   $scope.ingredientSelect2 =
@@ -292,6 +333,32 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     angular.forEach $scope.activity.ingredients, (item) ->
       if _.isString(item["ingredient"])
         item["ingredient"] = {title: item["ingredient"]}
+
+    angular.forEach $scope.activity.steps, (step) ->
+      angular.forEach step.ingredients, (item) ->
+        if _.isString(item["ingredient"])
+          item["ingredient"] = {title: item["ingredient"]}
+
+
+
+  # prestoring the JSON in the HTML on initial load for speed
+  #$scope.activity = Activity.get($scope.url_params, ->
+  preloaded_activity = $("#preloaded-activity-json").text()
+  if preloaded_activity
+    $scope.activity = new Activity(JSON.parse(preloaded_activity))
+
+    if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
+      $scope.startEditMode()
+      setTimeout (->
+        title_elem = $('#title-edit-pair')
+        angular.element(title_elem).scope().setMouseOver(true)
+        title_elem.click()
+      ), 0
+
+    # Keep <title> tag in sync
+    $scope.$watch 'activity.title', ->
+      $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))
+
 
 ]
 

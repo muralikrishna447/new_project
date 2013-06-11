@@ -49,5 +49,12 @@ class User < ActiveRecord::Base
     course.inclusions.joins(:events).where('events.user_id = ?', self.id).map(&:activity).select{|a| a.published=true}.uniq
   end
 
+  def last_viewed_activity_in_course(course)
+    last_viewed = events.scoped_by('Inclusion', 'show').map(&:trackable).select{|i| i.course_id == course.id}.first
+    if last_viewed
+      last_viewed.activity
+    end
+  end
+
 end
 

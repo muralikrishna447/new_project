@@ -40,14 +40,16 @@
     paramScaling = #{params[:scaling]};
 
 %form(name="myform")
-  .container.top-container#activity-body.recipe_schema(ng-cloak=""){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
+  -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
+  %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
+  .container#activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
 
     .row.printable
 
-      .span6.relative
+      .span6.relative.ng-cloak
         %csEditPair#title-edit-pair
           %csEditPairShow
-            %h1.activity-title(ng-bind-html-unsafe="activity.title || 'Add title...'" itemprop='name' ng-class="disableIf(! activity.title.length)")
+            %h1.activity-title(ng-bind-html-unsafe="activity.title || (editMode && 'Add title...')" itemprop='name' ng-class="disableIf(! activity.title.length)")
             -if @activity.source_activity_id
               %h5(style="font-weight: normal;")
                 {{sourceActivityTypeString()}}
@@ -59,7 +61,7 @@
                 %select.unit(type="text" ng-model="activity.source_type" required="true" ng-options="s.id as s.name for s in sourceActivityTypes")
                 = link_to @activity.source_activity.title, activity_path(@activity.source_activity)
 
-      .span6.noprint
+      .span6.noprint.ng-cloak
 
         %div(collapse="editMode")
           - if ! @minimal
@@ -81,9 +83,10 @@
                 %i.icon-print
             -if admin_user_signed_in? && @include_edit_toolbar
               .pull-right(style="margin-left: 20px;")
-                %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()")
+
+                %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()" tooltip="Edit this recipe" tooltip-placement="left")
                   Edit
-                %button#edit-mode.btn.btn-primary(type='button' ng-click="fork()")
+                %button#edit-mode.btn.btn-primary(type='button' ng-click="fork()" tooltip="Edit a copy of this recipe" tooltip-placement="left")
                   Fork
 
             .pull-right.display-inline-fix
@@ -109,7 +112,7 @@
 - content_for :bottom do
   - if ! @minimal
 
-    - if ! ENV["CS_NO_SUGGESTED_ACTIVITIES"]
+    - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @techniques && @recipes
       .row(ng-hide="editMode")
         .span12
           %h3 Techniques
@@ -170,4 +173,6 @@
       %button.btn.btn-danger(ng-click="cancelEditMode()"){data: {dismiss: 'modal'}}
         Yes
 
+#preloaded-activity-json.hide
+  = @activity.to_json
 

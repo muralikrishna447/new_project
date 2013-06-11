@@ -57,6 +57,7 @@ Delve::Application.routes.draw do
   get 'about' => 'home#about', as: 'about'
   get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  match '/mp', to: redirect('/courses/spherification')
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
@@ -83,8 +84,16 @@ Delve::Application.routes.draw do
       get 'all_tags' => 'activities#get_all_tags'
     end
   end
-  resources :techniques, only: [:index, :show]
-  resources :sciences, only: [:index, :show]
+  resources :techniques, only: [:index, :show] do
+    collection do
+      get 'index_as_json' => 'techniques#index_as_json'
+    end
+  end
+  resources :sciences, only: [:index, :show] do
+    collection do
+      get 'index_as_json' => 'sciences#index_as_json'
+    end
+  end
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
   match '/feed' => 'activities#feedburner_feed', as: :feed
 
@@ -103,7 +112,11 @@ Delve::Application.routes.draw do
   resources :equipment, only: [:index]
   resources :ingredients, only: [:index]
   resources :search, only: [:index]
-  resources :recipe_gallery, only: [:index], path: 'recipe-gallery'
+  resources :recipe_gallery, only: [:index], path: 'recipe-gallery' do
+    collection do
+      get 'index_as_json' => 'recipe_gallery#index_as_json'
+    end
+  end
   resources :user_activities, only: [:create]
   resources :uploads
   resources :users do

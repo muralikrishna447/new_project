@@ -1,14 +1,49 @@
 .container
-  .row
-    .span3
+  .row.well
+    .span2
       %h3 Users
-      %h3= @users_count
+      %h4= @users_count
     .span3
       %h3 Users with > 10 views
-      %h3= @users_ten_views_count.count
-    .span3
+      %h4= @users_ten_views_count
+    .span2
       %h3 Enrollments
-      %h3= @enrollments_count
+      %h4= @enrollments_count
     .span3
       %h3 Users that Uploaded
-      %h3= @uploads_count.count
+      %h4= @uploads_count.count
+
+.container
+  .row
+    .span12
+      %h2= "Users: #{@users_count}"
+      %table.table-striped.table-bordered
+        %thead
+          %tr
+            %th Date
+            %th Users
+        %tbody
+          - @users_trend.reverse.each do |date_trend|
+            %tr
+              %td= date_trend[0]
+              %td= date_trend[1]
+
+.container
+  .row
+    .span12
+      %h2= "Users with > 10 Views: #{@users_ten_views_count}"
+      .row
+        - @users_ten_views_trend.each do |trend|
+          .span3.section
+            %h3= "#{trend[0]}: #{trend[1].count}"
+            %table.table-striped.table-bordered
+              %thead
+                %tr
+                  %th User
+                  %th # Views
+              %tbody
+                - trend[1].each do |user_trend|
+                  %tr
+                    %td
+                      = link_to user_trend[0], user_profile_path(user_trend[0])
+                    %td= user_trend[1]

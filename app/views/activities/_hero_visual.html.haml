@@ -1,18 +1,17 @@
-
-
 .hero-visual
   %iframe.noprint(ng-show="heroDisplayType() == 'video'" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect)
   %img(ng-show="heroDisplayType() == 'image'" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
 
-  %div.disabled-section(ng-show="(heroDisplayType() == 'none') && editMode" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
+  %div.noprint.disabled-section(ng-show="(heroDisplayType() == 'none') && editMode" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
     Add main video or image ...
-  .btn.btn-secondary.edit-hint(ng-show="editMode && (heroDisplayType() != 'none')" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
+
+  .btn.btn-secondary.edit-hint.noprint(ng-show="editMode && (heroDisplayType() != 'none')" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
     %i.icon-edit
     Edit
     %i.icon-chevron-up(ng-show="showHeroVisualEdit")
     %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
 
-%div(collapse="(! showHeroVisualEdit) || (! editMode)")
+%div.noprint(collapse="(! showHeroVisualEdit) || (! editMode)")
   %div
     .row
       .span3

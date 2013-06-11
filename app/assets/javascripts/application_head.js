@@ -1,5 +1,4 @@
-//=require markdown.converter
-//=require markdown.sanitizer
+//=require showdown
 //=require jquery
 //=require angular.min
 //=require angular-resource.min

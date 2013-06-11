@@ -36,10 +36,12 @@ $ ->
   signup_or_signin_section = $('#signup-or-signin-section')
   signup_and_enroll_section = $('#signup-and-enroll-section')
   signin_and_enroll_section = $('#signin-and-enroll-section')
+  browse_section = $('#browse-section')
   enroll_section.show()
   $('#enroll-section-btn').click ->
     enroll_section.hide()
     signup_or_signin_section.show()
+    browse_section.hide()
 
     $('#signup-and-enroll-btn').click ->
       signup_or_signin_section.hide()
@@ -49,3 +51,10 @@ $ ->
       signup_or_signin_section.hide()
       signin_and_enroll_section.show()
 
+  #### HACK FOR ANCHOR TAGS ####
+  current_url = document.URL
+  pattern = /#/g
+  if pattern.test(current_url)
+    string1 = String(current_url.match(/#\/.+/))
+    string2 = string1.replace('/', '')
+    $('html, body').animate({scrollTop:$(string2).position().top - 130}, 'slow')

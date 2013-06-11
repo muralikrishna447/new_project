@@ -1,5 +1,6 @@
 @import 'mixins'
 
+/// MEDIA BOX ///
 .media-box
   @include boxsizing
   position: relative
@@ -8,6 +9,7 @@
   padding: 10px
   background: white
   text-align: center
+  text-overflow: ellipsis
   font-weight: bold
   margin-bottom: 20px
   color: black
@@ -61,6 +63,8 @@
   //margin-right: 10px
   margin: 20px
 
+/// MEDIA BOX 2 ///
+
 .media-box-2
   @include boxsizing
   position: relative
@@ -85,11 +89,70 @@
     -moz-transition: color 200ms
     -o-transition: color 200ms
     transition: color 200ms
+    .media-box-2-title
+      height: 20px
+      text-overflow: ellipsis
+      white-space: nowrap
+      overflow: hidden
   &:hover
     border-color: $orange
     cursor: pointer
     a
       text-decoration: none
+
+/// MEDIA BOX 3 ///
+
+.media-box-3
+  font-family: 'Raleway', sans-serif
+  font-weight: 500
+  @include boxsizing
+  position: relative
+  width: 360px
+  height: 272px
+  border: 1px solid $light-gray
+  padding: 10px
+  margin: 10px
+  background: white
+  font-weight: bold
+  color: black
+  float: left
+  @include transition(all 300ms)
+  img
+    width: 100%
+    margin: 10px 0px
+  a
+    color: black
+    @include transition(all 300ms)
+    .media-box-3-title
+      font-weight: 500
+      font-size: 14px
+      text-transform: uppercase
+      height: 20px
+      text-overflow: ellipsis
+      white-space: nowrap
+      overflow: hidden
+    .media-box-3-footer
+      font-weight: 500
+      .footer-left
+        text-transform: uppercase
+  &:hover
+    border-color: $orange
+    cursor: pointer
+    a
+      text-decoration: none
+
+@media (max-width: 1200px)
+  .media-box-3
+    width: 280px
+    height: 227px
+
+@media (max-width: 480px)
+  .media-box-3
+    width: 100%
+    height: inherit
+    margin: 10px 0px
+
+/// MEDIA LIST ITEM ///
 
 .media-list-item
   float: left
