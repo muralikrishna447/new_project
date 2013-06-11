@@ -23,7 +23,7 @@
     %div(ng-show="filters.difficulty || date_type" ng-click="filters = {} ; date_type = null; date = '-updated_at'")
       = link_to 'Clear x', 'javascript:void(0);'
 %div.pull-left(galleryscroll='load_data()')
-  .media-box-3(ng-cloak='' ng-repeat='activity in activities | filter:search | filter:filters | orderBy:date' ng-animate="'gallery-animation'")
+  .media-box-3(ng-cloak='' ng-repeat='activity in filtered = (activities | filter:search | filter:filters | orderBy:date)' ng-animate="'gallery-animation'")
     %a(href= 'activities/{{activity.slug}}')
       .media-box-3-title
         {{activity.title}}

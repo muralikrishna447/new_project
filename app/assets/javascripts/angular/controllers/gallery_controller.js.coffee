@@ -28,6 +28,14 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       if $scope.activities_count < 9
         $scope.load_data()
 
+  $scope.$watch 'filtered', ((newValue) ->
+    if angular.isArray(newValue)
+      $scope.filtered_count = newValue.length
+      console.log $scope.filtered_count
+      if $scope.filtered_count < 10
+        $scope.load_data()
+  ), true
+
   page = 2
   currently_loading = false
   $scope.load_data = ->
