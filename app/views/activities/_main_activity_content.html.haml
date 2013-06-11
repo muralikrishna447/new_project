@@ -134,7 +134,7 @@
               %csEditPairEdit
                 %input.nohtml.step-title-input(type="text" ng-model="step.title" placeholder="Optional title...")
 
-            %div.csmonitorinputactivity(ng-controller="IngredientsController")
+            %div.csmonitorinputactivity.ng-form(ng-controller="IngredientsController"  name="ingredientform")
               .step-ingredients-source.well(ng-hide="(step.ingredients.length == 0) || (editMode && masterSelect)")
                 = render 'ingredients_list', source: "step"
               .select-from-master.well(ng-hide="! (editMode && masterSelect)")

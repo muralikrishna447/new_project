@@ -12,6 +12,11 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     result = 1000 if unit_name == "kg"
     result
 
+  $scope.validateQuantity = (value) ->
+    result = (value? && (value > 0)) || $scope.unit == "a/n"
+    console.log result
+    result
+
   $scope.addIngredient =  ->
     # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
     # but an ugly [object Object]
@@ -24,21 +29,14 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     $scope.addUndo()
 
   $scope.all_ingredients = (term) ->
-    console.log("-" + term + "-")
     s = ChefSteps.splitIngredient(term)
-    console.log("-" + term + "-")
     $http.get("/ingredients.json?q=" + s["ingredient"]).then (response) ->
       r = limitToFilter(response.data, 15)
+      for i in r
+        i.title += " [RECIPE]" if i.sub_activity_id?
       # always include current search text as an option
-      #r.unshift({title: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
-      r.unshift(term)
+      r.unshift({title: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
       r
-
-  $scope.typeaheadFormat = (ingredient) ->
-    ingredient.title
-      #r = ingredient.title
-      #r += " [RECIPE]" if ingredient.sub_activity_id?
-      #r
 
   $scope.matchableIngredients = (i1, i2) ->
     # Use title, not id b/c new ingredients not saved yet don't have an id
