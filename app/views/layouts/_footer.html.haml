@@ -26,10 +26,13 @@
                 = link_to 'Blog', 'http://blog.chefsteps.com'
               %p
                 General:
-                = mail_to 'info@chefsteps.com'
+                %ul
+                  %li= mail_to 'info@chefsteps.com'
               %p
                 Press:
-                = mail_to 'press@chefsteps.com'
+                %ul
+                  %li= mail_to 'press@chefsteps.com'
+                  %li= link_to 'Press Kit', 'http://chefsteps.com/pages/press-kit'
 
             .span2
               %h3 Other Stuff

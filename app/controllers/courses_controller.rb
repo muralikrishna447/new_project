@@ -25,6 +25,7 @@ class CoursesController < ApplicationController
       # @professional = @course.viewable_activities - @quiz - @final - @badge
       @new_user = User.new
       render 'spherification'
+      finished('spheres_billboards', reset: false)
     end
   end
 
