@@ -30,17 +30,18 @@
           %h4 Private Notes
           %textarea(ng-model="activity.author_notes" placeholder="Add private notes..." rows="3")
 
-  .section.csmonitorinputactivity
+  .section.csmonitorinputactivity(ng-controller="IngredientsController")
+
     .activity-ingredients-list#full-ingredients-list.section
       .well(ng-show="activity.ingredients.length" )
         = render 'ingredients_list', source: "activity"
     .nav(ng-show="editMode")
       %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
-      %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="fillMasterIngredientsFromSteps()" tooltip="Rebuild master ingredients from step ingredients...")
+      %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="fillMasterIngredientsFromSteps()" tooltip="Rebuild master ingredients from step ingredients..." tooltip-placement="bottom")
         %i.icon-magic
-      %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient()" tooltip="Add ingredient")
+      %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient()" tooltip="Add ingredient"  tooltip-placement="bottom")
         %i.icon-plus
-      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients")
+      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients" tooltip-placement="bottom")
         Done
 
   .section
@@ -145,7 +146,7 @@
               %csEditPairEdit
                 %input.nohtml.step-title-input(type="text" ng-model="step.title" placeholder="Optional title...")
 
-            %div.csmonitorinputactivity
+            %div.csmonitorinputactivity.ng-form(ng-controller="IngredientsController"  name="ingredientform")
               .step-ingredients-source.well(ng-hide="(step.ingredients.length == 0) || (editMode && masterSelect)")
                 = render 'ingredients_list', source: "step"
               .select-from-master.well(ng-hide="! (editMode && masterSelect)")
@@ -153,13 +154,13 @@
               .nav(ng-show="editMode")
                 %h4(ng-show="! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Ingredients
 
-                %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Quick add from main ingredient list...")
+                %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Quick add from main ingredient list..." tooltip-placement="bottom")
                   %i.icon-magic
-                %button.btn.btn-small.btn-primary.done(ng-show="masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Finish adding ingredients")
+                %button.btn.btn-small.btn-primary.done(ng-show="masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Finish adding ingredients" tooltip-placement="bottom")
                   Done
-                %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient($index)" ng-show="!masterSelect" tooltip="Add ingredient...")
+                %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient($index)" ng-show="!masterSelect" tooltip="Add ingredient..." tooltip-placement="bottom")
                   %i.icon-plus
-                %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients")
+                %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients" tooltip-placement="bottom")
                   Done
 
             %csEditPair

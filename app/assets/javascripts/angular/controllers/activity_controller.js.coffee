@@ -4,7 +4,8 @@ window.deepCopy = (obj) ->
   else
     jQuery.extend(true, {}, obj)
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", "$timeout", ($scope, $resource, $location, $http, limitToFilter, $timeout) ->
+
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "$timeout", ($scope, $resource, $location, $http, $timeout) ->
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id")},
                         {update: {method: "PUT"}}
@@ -239,89 +240,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       r.unshift({title: equip_name})
       r
 
-  # Ingredient stuff TODO: make a controller just for ingredients
-
-  $scope.ingredient_display_type = (ai) ->
-    result = "basic"
-    result = "product" if !! ai.ingredient.product_url
-    result = "subrecipe" if !! ai.ingredient.sub_activity_id
-    result = "fake_link" if $scope.editMode && (result == "product" || result == "subrecipe")
-    result
-
-  $scope.unitMultiplier = (unit_name) ->
-    result = 1
-    result = 1000 if unit_name == "kg"
-    result
-
-  $scope.addIngredient =  ->
-    # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
-    # but an ugly [object Object]
-    item = {unit: "g"}
-    $scope.activity.ingredients.push(item)
-    #$scope.addUndo()
-
-  $scope.removeIngredient = (index) ->
-    $scope.activity.ingredients.splice(index, 1)
-    $scope.addUndo()
-
-  $scope.all_ingredients = (ingredient_name) ->
-    $http.get("/ingredients.json?q=" + ingredient_name).then (response) ->
-      r = limitToFilter(response.data, 15)
-      # always include current search text as an option
-      r.unshift({title: ingredient_name})
-      r
-
-  $scope.matchableIngredients = (i1, i2) ->
-    # Use title, not id b/c new ingredients not saved yet don't have an id
-    (i1.ingredient.title == i2.ingredient.title) &&
-    ((i1.note || "") == (i2.note || "")) &&
-    (i1.unit == i2.unit)
-
-  $scope.fillMasterIngredientsFromSteps = ->
-    old_ingredients = $scope.activity.ingredients
-    $scope.activity.ingredients = []
-
-    for step in $scope.activity.steps
-      for si in step.ingredients
-        ing = _.find($scope.activity.ingredients, (ai) -> $scope.matchableIngredients(ai, si))
-        if ing?
-          if ing.unit != "a/n"
-            ing.display_quantity = parseFloat(ing.display_quantity) + parseFloat(si.display_quantity)
-        else
-          $scope.activity.ingredients.push(deepCopy(si))
-
-    # We don't want the behavior of freshly added ingredients getting focus. Not the prettiest solution, but
-    # whatayagonnado.
-    $scope.preventAutoFocus = true
-    $timeout ( ->
-      $scope.preventAutoFocus = false
-    ), 100
-
-
-
-  # Not currently used - maybe come back to it
-  $scope.ingredientSelect2 =
-    ajax:
-      url: "/ingredients.json?q=a",
-      data: (term, page) ->
-        return {
-          q: term
-        }
-
-      results: (data, page) ->
-        return {results: data}
-
-    formatResult: (ingredient) ->
-      ingredient.title
-
-    formatSelection: (ingredient) ->
-      ingredient.title
-
-    initSelection: (element, callback) ->
-      callback(angular.element(element).scope().ai.ingredient)
-
-    width: "element"
-
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
   # autocomplete (unshift in all_equipment), it will be missing a nesting level in the model.
@@ -346,6 +264,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   preloaded_activity = $("#preloaded-activity-json").text()
   if preloaded_activity
     $scope.activity = new Activity(JSON.parse(preloaded_activity))
+    $scope.ingredients = $scope.activity.ingredients
 
     if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
       $scope.startEditMode()

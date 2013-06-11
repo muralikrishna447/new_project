@@ -1,17 +1,7 @@
 angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout", ($scope, $timeout) ->
 
   $scope.masterSelect = false
-
-  $scope.addIngredient =  ->
-    # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
-    # but an ugly [object Object]
-    item = {unit: "g"}
-    $scope.step.ingredients.push(item)
-    #$scope.addUndo()
-
-  $scope.removeIngredient = (index) ->
-    $scope.step.ingredients.splice(index, 1)
-    $scope.addUndo()
+  $scope.ingredients = $scope.step.ingredients
 
   $scope.setupPossibleIngredients = ->
     $scope.possible_ingredients = deepCopy($scope.activity.ingredients)
