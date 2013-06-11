@@ -25,6 +25,8 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.$watch 'activities', (newValue) ->
     if angular.isArray(newValue)
       $scope.activities_count = newValue.length
+      if $scope.activities_count < 9
+        $scope.load_data()
 
   page = 2
   currently_loading = false
@@ -41,8 +43,6 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
         # console.log(page)
       page+=1
 ]
-
-
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) ->
   (scope, element, attr) ->
