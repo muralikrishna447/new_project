@@ -43,11 +43,13 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     # console.log($scope.activities)
     if $scope.activities_count < $scope.gallery_count && !currently_loading
       currently_loading = true
+      $scope.spinner = true
       more_activities = $resource(document.location.pathname + '/index_as_json.json?page=' + page).query ->
         console.log(more_activities)
         $scope.activities = $scope.activities.concat(more_activities)
         console.log($scope.activities)
         currently_loading = false
+        $scope.spinner = false
         # console.log(page)
       page+=1
 ]
