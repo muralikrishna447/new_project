@@ -12,20 +12,15 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     result = 1000 if unit_name == "kg"
     result
 
-  $scope.validateQuantity = (value) ->
-    result = (value? && (value > 0)) || $scope.unit == "a/n"
-    console.log result
-    result
-
   $scope.addIngredient =  ->
     # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
     # but an ugly [object Object]
     item = {unit: "g"}
-    $scope.activity.ingredients.push(item)
-  #$scope.addUndo()
+    $scope.ingredients.push(item)
+    #$scope.addUndo()
 
   $scope.removeIngredient = (index) ->
-    $scope.activity.ingredients.splice(index, 1)
+    $scope.ingredients.splice(index, 1)
     $scope.addUndo()
 
   $scope.all_ingredients = (term) ->

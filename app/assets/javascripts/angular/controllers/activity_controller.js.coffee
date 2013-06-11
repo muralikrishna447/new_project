@@ -255,6 +255,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   preloaded_activity = $("#preloaded-activity-json").text()
   if preloaded_activity
     $scope.activity = new Activity(JSON.parse(preloaded_activity))
+    $scope.ingredients = $scope.activity.ingredients
 
     if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
       $scope.startEditMode()
