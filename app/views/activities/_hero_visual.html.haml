@@ -14,10 +14,10 @@
 %div.noprint(collapse="(! showHeroVisualEdit) || (! editMode)")
   %div
     .row
-      .span3
+      .span2
         %h5 Youtube ID
         = text_field_tag :youtube_id, "", {data: {:'ng-model' => "activity.youtube_id"}}
-      .span3
+      .span3.offset1
         %h5 &hellip; or  Image
         .csfilepicker(ng-model="activity.image_id")
 
