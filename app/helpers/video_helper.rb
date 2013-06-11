@@ -6,9 +6,5 @@ module VideoHelper
   def youtube_image(youtube_id,thumbnail=0)
   	"http://img.youtube.com/vi/#{youtube_id}/#{thumbnail}.jpg"
   end
-
-  def youtube_js_url(youtube_id)
-    "http://www.youtube.com/v/#{youtube_id}?version=3&enablejsapi=1"
-  end
 end
 
