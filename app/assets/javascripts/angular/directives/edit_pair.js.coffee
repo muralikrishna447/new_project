@@ -15,8 +15,9 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     $scope.hasErrors = ->
       $element.find('.ng-invalid').length > 0
 
-    # We should be active (edit half showing) if we have focus, or if hovered and nothing else has focus
-    # or if we have an form fields with errors
+    # We should be active (edit half showing) if we have focus,
+    # or if we have an form fields with errors, or if someone is forcing us to take focus (used
+    # for newly added fields)
     $scope.active = ->
       return false if ! $scope.editMode
       return true if $scope.focusedInside()

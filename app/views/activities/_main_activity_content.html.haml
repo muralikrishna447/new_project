@@ -1,92 +1,13 @@
 .section.ng-cloak#video-ingredient-unit(ng-class="primaryColumnClass()")
 
-  %div(collapse="! (editMode && editMeta)")
-    = render 'metadata'
-
-  .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-    = render 'hero_visual', activity: activity
-
-  %csEditPair.section
-    %csEditPairShow
-      .activity-description-wrapper(ng-show="!!activity.description")
-        .activity-description#activity-description
-          %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
-          .activity-description-overlay(ng-hide="activity.description.length < 455")
-        .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
-          = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
-      %div.disabled-section(ng-show="editMode && (!activity.description)")
-        Add description...
-    %csEditPairEdit
-      %textarea(ng-model="activity.description" rows="5" placeholder="Add description...")
-
-  -if admin_user_signed_in?
-    .section
-      %csEditPair
-        %csEditPairShow
-          %div(ng-show="!!activity.author_notes  || editMode" ng-class="disableIf(! activity.author_notes)")
-            %h4 Private Notes
-            %span(ng-bind="activity.author_notes || 'Add private notes...' ")
-        %csEditPairEdit
-          %h4 Private Notes
-          %textarea(ng-model="activity.author_notes" placeholder="Add private notes..." rows="3")
-
-  .section.csmonitorinputactivity(ng-controller="IngredientsController")
-
-    .activity-ingredients-list#full-ingredients-list.section
-      .well(ng-show="activity.ingredients.length" )
-        = render 'ingredients_list', source: "activity"
-    .nav(ng-show="editMode")
-      %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
-      %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="fillMasterIngredientsFromSteps()" tooltip="Rebuild master ingredients from step ingredients..." tooltip-placement="bottom")
-        %i.icon-magic
-      %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient()" tooltip="Add ingredient"  tooltip-placement="bottom")
-        %i.icon-plus
-      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients" tooltip-placement="bottom")
-        Done
-
-  .section
-    %csEditPair
-      %csEditPairShow
-        %div(ng-show="!!activity.yield  || editMode" ng-class="disableIf(! activity.yield)")
-          %h4 Yield
-          %span(itemprop="recipeYield" ng-bind="activity.yield || 'Add yield info...' "){data: {:"orig-value" => "{{activity.yield}}"}}
-
-      %csEditPairEdit
-        %h4 Yield
-        %input(type="text" ng-model="activity.yield" placeholder="Add yield info..." )
-
-  .section
-    %csEditPair
-      %csEditPairShow
-        %div(ng-show="!!activity.timing || editMode" ng-class="disableIf(! activity.timing)")
-          %h4 Timing
-          %span(ng-bind="activity.timing || 'Add timing info...' ")
-
-      %csEditPairEdit
-        %h4 Timing
-        %input(type="text" ng-model="activity.timing" placeholder="Add timing info..." )
-
-  .section.csmonitorinputactivity
-    %h4(ng-show="hasRequiredEquipment() || editMode" ng-class="disableIf(! hasRequiredEquipment())") Equipment and Materials
-    %ul.no-bullet(ui-sortable="sortOptions" ng-model="activity.equipment")
-      %li.relative(ng-repeat="item in activity.equipment | filter:requiredEquipment")
-        %csEquipmentEditPair(csOptional="false")
-    .nav(ng-show="editMode")
-      %button.btn.btn-small.btn-basic.add-item(ng-click="addEquipment(false)" tooltip="Add required equipment item...")
-        +
-      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding required equipment")
-        Done
-
-  .section.csmonitorinputactivity
-    %h4(ng-show="hasOptionalEquipment() || editMode" ng-class="disableIf(! hasOptionalEquipment())") Optional Equipment and Materials
-    %ul.no-bullet(ui-sortable="sortOptions" ng-model="activity.equipment")
-      %li.relative(ng-repeat="item in activity.equipment | filter:optionalEquipment")
-        %csEquipmentEditPair(csOptional="true")
-    .nav(ng-show="editMode")
-      %button.btn.btn-small.btn-basic.add-item(ng-click="addEquipment(true)" tooltip="Add optional equipment item....")
-        +
-      %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding optional equipment")
-        Done
+  = render 'metadata'
+  = render 'hero_visual', activity: activity
+  = render 'description'
+  = render 'main_ingredients'
+  = render 'basic_edit_pair', model: "activity.yield", name: "Yield", add_text: "Add yield info...", itemprop: "recipeYield"
+  = render 'basic_edit_pair', model: "activity.timing", name: "Timing", add_text: "Add timing info..."
+  = render 'new_equipment_list', model: "activity.equipment", name: "Equipment and Materials", test_method: "hasRequiredEquipment", required_string: "required", required: true
+  = render 'new_equipment_list', model: "activity.equipment", name: "Optional Equipment and Materials", test_method: "hasOptionalEquipment", required_string: "optional", required: false
 
   - if activity.used_in_activities.published.any?
     .section(ng-hide="editMode")
