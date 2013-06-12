@@ -22,17 +22,16 @@
 
             .span4.offset1
               %h3 Contact
-              %p
-                = link_to 'Blog', 'http://blog.chefsteps.com'
-              %p
-                General:
-                %ul
-                  %li= mail_to 'info@chefsteps.com'
-              %p
-                Press:
-                %ul
-                  %li= mail_to 'press@chefsteps.com'
-                  %li= link_to 'Press Kit', 'http://chefsteps.com/pages/press-kit'
+              %ul.unstyled
+                %li= link_to 'Blog', 'http://blog.chefsteps.com'
+                %li= link_to 'RSS Feed', 'http://feeds.feedburner.com/ChefSteps'
+                %li 
+                  General Info:
+                  = mail_to 'info@chefsteps.com'
+                %li 
+                  Press inquiries:
+                  = mail_to 'press@chefsteps.com'
+                %li= link_to 'Press Kit', 'http://chefsteps.com/pages/press-kit'
 
             .span2
               %h3 Other Stuff
