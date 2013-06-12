@@ -1,36 +1,67 @@
 .container
   .row.section
-    .span6
+    .span12
       %h1= "#{course.title} Course"
+  .row.section
+    .span6
       .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
         %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('QPdO4I3WLHg')}
-      .row.section
-        %ul
-          %li
-            %h4 Beautiful step-by-step demonstrations
-          %li 
-            %h4 Use our reliable recipes as a starting point
-          %li 
-            %h4 Support from our friendly community of experience cooks and world-class chefs
-        %hr
-        %h3.text-center
-          = link_to 'Buy a kit to get started', '#creative'
-       
-
-
-    .span6.well
-      = render 'course_enrollment_box'
       .section
-        %h4= "Current enrollment: #{@course.users.count}"
-        %h3 Some user creations:
-        .horizontal-slider{data: {direction: 'right'}}
-          .horizontal-slider-wrap
-            - @course.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
-              = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
-          %div{class: "horizontal-slider-btn-right btn btn-circle"}
-            %i{class: "icon-chevron-right"}
-          %div{class: "horizontal-slider-shadow-overlay-right"}
+        %p= course.description
+      %h4.text-center
+        %i.icon-comment-alt
+        Comments or Questions?
+        = link_to 'Visit the Forum', 'http://forum.chefsteps.com'
+     
+    .span6
+      .well#enroll
+        - if current_user
+          - if current_user.course_ids.include?(@course.id)
+            = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
+          - else
+            %h2 Enroll now for free
+            = form_tag enroll_course_path(@course) do
+              = submit_tag 'Enroll', class: 'btn btn-primary btn-large btn-block'
+        
+        - else
+          .flat-form.section
+            %h2 Enroll for free now
+            .section.hide#enroll-section
+              = link_to 'Enroll', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block', id: 'enroll-section-btn'
+            .section.hide#signup-or-signin-section
+              .row-fluid
+                .span6
+                  = link_to 'Create an Account', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block', id: 'signup-and-enroll-btn'
+                .span6
+                  = link_to 'Sign In', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block', id: 'signin-and-enroll-btn'
+            .section.hide#signup-and-enroll-section
+              = form_for @new_user, url: signup_and_enroll_path, method: :post, class: 'form-inline' do |f|
+                = hidden_field_tag :course_id, @course.id
+                = f.text_field :name, {placeholder: 'name', required: true, class: 'input-block-level'}
+                = f.email_field :email, {placeholder: 'email', required: true, class: 'input-block-level'}
+                .input-block-level-password
+                  = f.password_field :password, {placeholder: 'password', required: true, class: 'input-block-level'}
+                  = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'user-password-show'
+                = f.submit 'Create Account and Enroll', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
+            .section.hide#signin-and-enroll-section
+              = form_tag signin_and_enroll_path, method: :post do
+                = hidden_field_tag :course_id, @course.id
+                = text_field_tag :email, nil, placeholder: 'email', class: 'input-block-level', required: true
+                = password_field_tag :password, nil, placeholder: 'password', class: 'input-block-level', required: true
+                = submit_tag 'Sign In and Enroll', class: 'btn btn-primary btn-large btn-block'
 
+
+      - if @course.users.count > 1 && @course.uploads.approved.count > 3
+        .well   
+          %h4= "Current enrollment: #{@course.users.count}"
+          %h3 Some user creations:
+          .horizontal-slider{data: {direction: 'right'}}
+            .horizontal-slider-wrap
+              - @course.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
+                = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+            %div{class: "horizontal-slider-btn-right btn btn-circle"}
+              %i{class: "icon-chevron-right"}
+            %div{class: "horizontal-slider-shadow-overlay-right"}
 
 #creative-kit.modal.hide.fade
   .modal-header
@@ -67,13 +98,11 @@
   .modal-footer.section
     %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
 
-%hr            
-
-.container-fluid#creative
+.container-fluid
   .row-fluid
     .container
       .row.section
-        .span4.align-bottom
+        .span4.align-bottom#creative
           /= image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
           = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
           %h3= "The Creative Kit"
@@ -83,7 +112,7 @@
           .well.section
             = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id], Course::SPHERIFICATION_CREATIVE[:price])
 
-        .span4.align-bottom
+        .span4.align-bottom#enthusiast
           /= image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
           = image_tag 'https://www.filepicker.io/api/file/5wKEDSXZQgCgtA5W7JxI'
           %h3="The Enthusiast Kit"
@@ -93,7 +122,7 @@
           .well.section
             = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id], Course::SPHERIFICATION_ENTHUSIAST[:price])
 
-        .span4.align-bottom
+        .span4.align-bottom#professional
           /= image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
           = image_tag 'https://www.filepicker.io/api/file/FBnDnqcUQRetfBswxNzq'          
           %h3="The Professional Kit"
@@ -128,7 +157,15 @@
 
 %hr
 
-.container-fluid
+.container
+  .row.section
+    .flat-form
+      %h2.text-center
+        = link_to 'Enroll for free now', '#enroll' 
+
+%hr
+
+.container-fluid.section
   .row-fluid
     .container
       .row.section
@@ -145,10 +182,3 @@
           :markdown
             #{bio_grant.copy.to_s}
 
-%hr
-
-.container-fluid
-  .row-fluid
-    .container
-      .row.section
-        = render 'layouts/disqus_comments', disqus_id: "course-#{course.id}", disqus_title:course.title, disqus_url: course_url

@@ -48,7 +48,7 @@
 
       = render 'title'
 
-      .span6.noprint.ng-cloak
+      .noprint.ng-cloak(ng-class="primaryColumnClass()")
 
         %div(collapse="editMode")
           - if ! @minimal

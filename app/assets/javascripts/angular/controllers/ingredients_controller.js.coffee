@@ -16,11 +16,11 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
     # but an ugly [object Object]
     item = {unit: "g"}
-    $scope.ingredients.push(item)
+    $scope.getIngredientsList().push(item)
     #$scope.addUndo()
 
   $scope.removeIngredient = (index) ->
-    $scope.ingredients.splice(index, 1)
+    $scope.getIngredientsList().splice(index, 1)
     $scope.addUndo()
 
   $scope.all_ingredients = (term) ->

@@ -14,7 +14,7 @@
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
     / YouTube Iframe API can't be loaded async so we have to load it directly
-    %script{src:'http://www.youtube.com/iframe_api'}
+
     = auto_discovery_link_tag :atom, feed_path
     = auto_discovery_link_tag :rss, feed_path
     %link{href: "/favicon.ico", rel: "shortcut icon"}
@@ -23,6 +23,7 @@
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
+    = render 'layouts/qbaka' if Rails.env.production?
     = render 'layouts/google_analytics' if Rails.env.production?
     = javascript_include_tag 'application_head'
 
@@ -46,6 +47,8 @@
     = yield :popup_bottom
 
     = yield :footer
+    %script{src:'http://www.youtube.com/iframe_api'}
+    %script{src:'/assets/youtube.js'}
   / = render 'layouts/youtube'
   
   %script{src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"}

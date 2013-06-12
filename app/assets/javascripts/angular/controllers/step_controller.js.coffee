@@ -1,7 +1,9 @@
 angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout", ($scope, $timeout) ->
 
   $scope.masterSelect = false
-  $scope.ingredients = $scope.step.ingredients
+
+  $scope.getIngredientsList = ->
+    $scope.step.ingredients
 
   $scope.setupPossibleIngredients = ->
     $scope.possible_ingredients = deepCopy($scope.activity.ingredients)
@@ -34,9 +36,11 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
 
     # We don't want the behavior of freshly added ingredients getting focus. Not the prettiest solution, but
     # whatayagonnado.
+    $scope.preventAutoFocus = true
     $timeout ( ->
-      document.activeElement.blur() if document.activeElement
+      $scope.preventAutoFocus = false
     ), 100
+
 
   $scope.toggleSelectFromMaster = ->
     $scope.masterSelect = ! $scope.masterSelect

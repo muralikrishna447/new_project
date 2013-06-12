@@ -41,6 +41,9 @@ class Activity < ActiveRecord::Base
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
   scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
+  scope :newest, order('published_at DESC')
+  scope :oldest, order('published_at ASC')
+  scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
   scope :randomize, order('random()')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
@@ -48,7 +51,7 @@ class Activity < ActiveRecord::Base
   serialize :activity_type, Array
 
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
-  attr_accessible :source_activity, :source_activity_id, :source_type
+  attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
