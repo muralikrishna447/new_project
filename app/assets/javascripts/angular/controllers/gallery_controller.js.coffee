@@ -42,7 +42,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   #       $scope.load_data()
   # ), true
 
-  page = 2
+  $scope.page = 2
   currently_loading = false
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.gallery_index_params = {}
@@ -51,7 +51,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     if !currently_loading
       currently_loading = true
       $scope.spinner = true
-      $scope.gallery_index_params['page'] = page
+      $scope.gallery_index_params['page'] = $scope.page
       more_activities = $resource($scope.gallery_index + '?' + $scope.serialize($scope.gallery_index_params)).query ->
         console.log $scope.gallery_index + '?' + $scope.serialize($scope.gallery_index_params)
         if Object.keys($scope.activities).length == 0
@@ -60,23 +60,23 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
           $scope.activities = $scope.activities.concat(more_activities)
         currently_loading = false
         $scope.spinner = false
-      page+=1
+      $scope.page+=1
 
   $scope.$watch 'filters.difficulty', (newValue) ->
     console.log newValue
     if (typeof(newValue) != "undefined")
       $scope.gallery_index_params['difficulty'] = newValue
       $scope.activities = {}
+      $scope.page = 1
       $scope.load_data()
-      page = 1
 
   $scope.$watch 'filters.by_published_at', (newValue) ->
     console.log newValue
     if (typeof(newValue) != "undefined")
       $scope.gallery_index_params['by_published_at'] = newValue
       $scope.activities = {}
+      $scope.page = 1
       $scope.load_data()
-      page = 1
 
   $scope.$watch 'filters.clear', (newValue) ->
     console.log newValue
@@ -85,8 +85,8 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       $scope.filters.clear = false
       $scope.filters = {}
       $scope.activities = {}
+      $scope.page = 1
       $scope.load_data()
-      page = 1
 ]
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) ->
