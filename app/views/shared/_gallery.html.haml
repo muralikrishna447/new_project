@@ -40,9 +40,9 @@
       {{date_type || 'Date'}}
       %i.icon-angle-down
     %ul.dropdown-menu
-      %li(ng-click="date = '-published_at' ; date_type = 'Most Recent'")
+      %li(ng-click="filters.by_published_at = 'desc' ; date_type = 'Most Recent'")
         = link_to 'Most Recent', 'javascript:void(0);'
-      %li(ng-click="date = 'published_at' ; date_type = 'Oldest'")
+      %li(ng-click="filters.by_published_at = 'asc' ; date_type = 'Oldest'")
         = link_to 'Oldest', 'javascript:void(0);'
   .dropdown
     = link_to 'javascript:void(0);', class: 'dropdown-toggle' do

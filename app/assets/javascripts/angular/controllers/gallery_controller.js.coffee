@@ -47,29 +47,33 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.gallery_index_params = {}
   $scope.load_data = ->
-    console.log('loaded')
     # console.log($scope.activities)
     if !currently_loading
       currently_loading = true
       $scope.spinner = true
       $scope.gallery_index_params['page'] = page
       more_activities = $resource($scope.gallery_index + '?' + $scope.serialize($scope.gallery_index_params)).query ->
-        console.log(more_activities)
-        console.log $scope.activities
+        console.log $scope.gallery_index + '?' + $scope.serialize($scope.gallery_index_params)
         if Object.keys($scope.activities).length == 0
           $scope.activities = more_activities
         else
           $scope.activities = $scope.activities.concat(more_activities)
-        console.log($scope.activities)
         currently_loading = false
         $scope.spinner = false
-        console.log(page)
       page+=1
 
   $scope.$watch 'filters.difficulty', (newValue) ->
     console.log newValue
     if (typeof(newValue) != "undefined")
       $scope.gallery_index_params['difficulty'] = newValue
+      page = 1
+      $scope.activities = {}
+      $scope.load_data()
+
+  $scope.$watch 'filters.by_published_at', (newValue) ->
+    console.log newValue
+    if (typeof(newValue) != "undefined")
+      $scope.gallery_index_params['by_published_at'] = newValue
       page = 1
       $scope.activities = {}
       $scope.load_data()
@@ -83,6 +87,5 @@ angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) 
       # console.log(element.height() - window.innerHeight)
       # console.log(window_element.scrollTop())
       if window_element.scrollTop() >= (element.height() - window.innerHeight)
-        console.log('hit bottom')
         scope.$apply(attr.galleryscroll)
 ]
