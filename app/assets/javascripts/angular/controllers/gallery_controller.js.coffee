@@ -55,12 +55,24 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       $scope.gallery_index_params['page'] = page
       more_activities = $resource($scope.gallery_index + '?' + $scope.serialize($scope.gallery_index_params)).query ->
         console.log(more_activities)
-        $scope.activities = $scope.activities.concat(more_activities)
+        console.log $scope.activities
+        if Object.keys($scope.activities).length == 0
+          $scope.activities = more_activities
+        else
+          $scope.activities = $scope.activities.concat(more_activities)
         console.log($scope.activities)
         currently_loading = false
         $scope.spinner = false
         console.log(page)
       page+=1
+
+  $scope.$watch 'filters.difficulty', (newValue) ->
+    console.log newValue
+    if (typeof(newValue) != "undefined")
+      $scope.gallery_index_params['difficulty'] = newValue
+      page = 1
+      $scope.activities = {}
+      $scope.load_data()
 ]
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) ->
