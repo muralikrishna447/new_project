@@ -5,7 +5,7 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "$timeout", ($scope, $resource, $location, $http, $timeout) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "$timeout", "limitToFilter", ($scope, $resource, $location, $http, $timeout, limitToFilter) ->
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id")},
                         {update: {method: "PUT"}}
@@ -97,6 +97,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.addEditModeClass = ->
     if $scope.editMode then "edit-mode" else ""
+
+  $scope.primaryColumnClass = ->
+    if ($scope.activity.steps.length > 0) then 'span6' else 'no-steps span8 offset2'
 
   # Activity types
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
@@ -258,13 +261,14 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
           item["ingredient"] = {title: item["ingredient"]}
 
 
+  $scope.getIngredientsList = ->
+    $scope.activity.ingredients
 
   # prestoring the JSON in the HTML on initial load for speed
   #$scope.activity = Activity.get($scope.url_params, ->
   preloaded_activity = $("#preloaded-activity-json").text()
   if preloaded_activity
     $scope.activity = new Activity(JSON.parse(preloaded_activity))
-    $scope.ingredients = $scope.activity.ingredients
 
     if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
       $scope.startEditMode()

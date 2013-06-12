@@ -12,6 +12,6 @@
       %button#edit-cancel.btn.btn-link{type: 'button', data: {toggle: 'modal', target: '#cancel-modal'}}
         Cancel
     .btn-group
-      %button#edit-save.btn.btn-primary(type='button' ng-click="endEditMode()" ng-show="editMode" ng-disabled="!myform.$valid")
+      %button#edit-save.btn.btn-primary(type='button' ng-click="endEditMode()" ng-show="editMode" ng-disabled="!activityForm.$valid")
         Save
 

@@ -1,4 +1,4 @@
-.section.ng-cloak#video-ingredient-unit{class: "#{activity.steps.any? ? 'span6' : 'no-steps span8 offset2'}"}
+.section.ng-cloak#video-ingredient-unit(ng-class="primaryColumnClass()")
 
   %div(collapse="! (editMode && editMeta)")
     = render 'metadata'
