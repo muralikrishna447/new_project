@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", ($scope, $resource) ->
+angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
   Activity = $resource(document.location.pathname + '/index_as_json')
   $scope.activities = Activity.query()
 
@@ -18,39 +18,48 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
           url = JSON.parse(image_url).url
           url + "/convert?fit=max&w=#{width}&cache=true"
 
+  $scope.serialize = (obj) ->
+    str = []
+    for p of obj
+      str.push encodeURIComponent(p) + "=" + encodeURIComponent(obj[p])
+    str.join "&"
+
   # Total gallery items
   $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')
 
   # Number of gallery items as they're being added
-  $scope.$watch 'activities', (newValue) ->
-    if angular.isArray(newValue)
-      $scope.activities_count = newValue.length
-      if $scope.activities_count < 9
-        $scope.load_data()
+  # $scope.$watch 'activities', (newValue) ->
+  #   if angular.isArray(newValue)
+  #     $scope.activities_count = newValue.length
+  #     if $scope.activities_count < 9
+  #       $scope.load_data()
 
-  $scope.$watch 'filtered', ((newValue) ->
-    if angular.isArray(newValue)
-      $scope.filtered_count = newValue.length
-      console.log $scope.filtered_count
-      if $scope.filtered_count < 10
-        $scope.load_data()
-  ), true
+  # $scope.$watch 'filtered', ((newValue) ->
+  #   if angular.isArray(newValue)
+  #     $scope.filtered_count = newValue.length
+  #     console.log $scope.filtered_count
+  #     if $scope.filtered_count < 10
+  #       $scope.load_data()
+  # ), true
 
   page = 2
   currently_loading = false
+  $scope.gallery_index = document.location.pathname + '/index_as_json.json'
+  $scope.gallery_index_params = {}
   $scope.load_data = ->
-    # console.log('loaded')
+    console.log('loaded')
     # console.log($scope.activities)
-    if $scope.activities_count < $scope.gallery_count && !currently_loading
+    if !currently_loading
       currently_loading = true
       $scope.spinner = true
-      more_activities = $resource(document.location.pathname + '/index_as_json.json?page=' + page).query ->
+      $scope.gallery_index_params['page'] = page
+      more_activities = $resource($scope.gallery_index + '?' + $scope.serialize($scope.gallery_index_params)).query ->
         console.log(more_activities)
         $scope.activities = $scope.activities.concat(more_activities)
         console.log($scope.activities)
         currently_loading = false
         $scope.spinner = false
-        # console.log(page)
+        console.log(page)
       page+=1
 ]
 
@@ -62,5 +71,6 @@ angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) 
       # console.log(element.height() - window.innerHeight)
       # console.log(window_element.scrollTop())
       if window_element.scrollTop() >= (element.height() - window.innerHeight)
+        console.log('hit bottom')
         scope.$apply(attr.galleryscroll)
 ]
