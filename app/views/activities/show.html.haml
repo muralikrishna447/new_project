@@ -1,5 +1,4 @@
 = render 'layouts/filepicker'
-
 - content_for :title, @activity.title.html_safe
 - content_for :description, @activity.description != "" ? @activity.description.html_safe : @activity.title.html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
@@ -28,10 +27,9 @@
       %meta{property: 'twitter:player:width', content: '480'}
     - else
       %meta{property: 'twitter:card', content: 'summary_large_image'}
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()"}
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController"}
 
-
-// This is how the crawler knows to request the _escaped_fragment_ page
+-# This is how the crawler knows to request the _escaped_fragment_ page
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
@@ -39,62 +37,33 @@
   :javascript
     paramScaling = #{params[:scaling]};
 
+-#----------------------------------------------------------------------------------------
+-#
+-# PRIMARY CONTENT
+-#
+-#----------------------------------------------------------------------------------------
+
 %form(name="activityForm")
   -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
+
   %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
   .container#activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
 
+    -# Row with title and buttons
     .row.printable
 
-      = render 'title'
+      .relative.ng-cloak(ng-class="primaryColumnClass()")
+        = render 'title'
 
       .noprint.ng-cloak(ng-class="primaryColumnClass()")
+        = render 'top_buttons'
 
-        %div(collapse="editMode")
-          - if ! @minimal
-            .pull-left.display-inline-fix
-              - if @course
-                .btn-circle{data: {toggle: 'modal', target: '#syllabus-modal'}}
-                  %i.icon-file-alt
-                - prev_activity = @course.prev_published_activity(@activity)
-                - next_activity = @course.next_published_activity(@activity)
-                - if prev_activity
-                  = link_to course_activity_path(@course, prev_activity), class: 'btn-circle' do
-                    %i.icon-chevron-left
-                - if next_activity
-                  = link_to course_activity_path(@course, next_activity), class: 'btn-circle' do
-                    %i.icon-chevron-right
-              .btn-circle#show-all
-                %i.icon-resize-full#show-all-icon
-              .btn-circle{onclick: 'window.print()'}
-                %i.icon-print
-            -if admin_user_signed_in? && @include_edit_toolbar
-              .pull-right(style="margin-left: 20px;")
-
-                %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()" tooltip="Edit this recipe" tooltip-placement="left")
-                  Edit
-                %button#edit-mode.btn.btn-primary(type='button' ng-click="fork()" tooltip="Edit a copy of this recipe" tooltip-placement="left")
-                  Fork
-
-            .pull-right.display-inline-fix
-              = render 'layouts/social_buttons', media_object: @activity
-        %div.pull-right(collapse="!editMode")
-          .btn-toolbar
-            .btn-group
-              %button#edit-undo.btn.btn-secondary(ng-click="undo()" ng-disabled="! undoAvailable()"){type: 'button'}
-                %i.icon-undo
-                Undo
-              %button#edit-redo.btn.btn-secondary(ng-click="redo()" ng-disabled="! redoAvailable()"){type: 'button'}
-                Redo
-                %i.icon-repeat
-
-
+    -# Main content row
     .row.printable.printable-column
       .span12
+        -# This seems a little weird, why do we have a row inside a span12?
         .row#main-content
           = render 'main_activity_content', activity: @activity
-          - if ! @minimal
-            = render 'community_tab_fake'
 
 - content_for :bottom do
   - if ! @minimal
@@ -150,18 +119,7 @@
                   .popup-bottom-close
                     %i.icon-remove
 
-#cancel-modal.modal.hide.fast{tabindex: '-1', role: 'dialog', style: "z-index: 2000"}
-  .modal-header
-    %button.close{type: 'button', data: {dismiss: 'modal'}}
-      x
-    .modal-body
-      Do you really want to abandon all of your changes?
-    .modal-footer
-      %button.btn.btn-success{data: {dismiss: 'modal'}}
-        No !!
-      %button.btn.btn-danger(ng-click="cancelEditMode()"){data: {dismiss: 'modal'}}
-        Yes
+= render 'cancel_edit_modal'
 
 #preloaded-activity-json.hide
   = @activity.to_json
-

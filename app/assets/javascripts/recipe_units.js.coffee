@@ -32,12 +32,7 @@ $ ->
     window.csUnits = if window.csUnits == "ounces" then "grams" else "ounces"
     # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
     updateUnits(true)
-    step_id = $('#full-ingredients-list').data('target')
-    if step_id.length > 0
-      step = $('#' + step_id)
-      setTimeout (->
-        window.showStepIngredients(step)
-      ), 1000
+
 
 window.makeEditable = (elements) ->
   elements.not(["data-marked-editable"]).editable ((value, settings) ->
