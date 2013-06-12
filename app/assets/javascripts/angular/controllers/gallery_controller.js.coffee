@@ -42,7 +42,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   #       $scope.load_data()
   # ), true
 
-  $scope.page = 2
+  $scope.page = 1
   currently_loading = false
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.gallery_index_params = {}
