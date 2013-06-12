@@ -113,9 +113,17 @@
   background: blue
   position: absolute
   width: 100%
-  top: 600px
+  top: 100%
   bottom: 0px
+  left: 0px
+  right: 0px
   z-index: 9999
+  opacity: 0
+  @include transition(2s linear all)
+
+.course-end-action-show
+  top: 0px
+  opacity: 1
 
 /* Spherification Styles */
 
