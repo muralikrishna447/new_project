@@ -20,6 +20,10 @@ function onSpherificationPlayerStateChange(event) {
     console.log('ended');
     $(document).ready(function(){
       $('.course-end-action').addClass('course-end-action-show');
+
+      $('.course-end-action-close').click(function(){
+        $(this).closest('.course-end-action').removeClass('course-end-action-show');
+      });
     });
   }
 }

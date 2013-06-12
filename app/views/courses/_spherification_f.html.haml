@@ -148,6 +148,8 @@
     = render 'layouts/disqus_comments', disqus_id: "course-#{course.id}", disqus_title:course.title, disqus_url: course_url
 
 .course-end-action
+  .course-end-action-close
+    %i.icon-remove
   .container
     .row.section
       .span12.text-center
