@@ -66,17 +66,27 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     console.log newValue
     if (typeof(newValue) != "undefined")
       $scope.gallery_index_params['difficulty'] = newValue
-      page = 1
       $scope.activities = {}
       $scope.load_data()
+      page = 1
 
   $scope.$watch 'filters.by_published_at', (newValue) ->
     console.log newValue
     if (typeof(newValue) != "undefined")
       $scope.gallery_index_params['by_published_at'] = newValue
-      page = 1
       $scope.activities = {}
       $scope.load_data()
+      page = 1
+
+  $scope.$watch 'filters.clear', (newValue) ->
+    console.log newValue
+    if (typeof(newValue) != "undefined") && newValue
+      $scope.gallery_index_params = {}
+      $scope.filters.clear = false
+      $scope.filters = {}
+      $scope.activities = {}
+      $scope.load_data()
+      page = 1
 ]
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) ->
