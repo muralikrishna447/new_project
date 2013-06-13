@@ -23,8 +23,10 @@
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
-    = render 'layouts/qbaka' if Rails.env.production?
-    = render 'layouts/google_analytics' if Rails.env.production?
+    - if Rails.env.production?
+      = render 'layouts/qbaka'
+      = render 'layouts/google_analytics'
+      = render 'layouts/mixpanel'
     = javascript_include_tag 'application_head'
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}}
