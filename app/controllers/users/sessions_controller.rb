@@ -23,7 +23,13 @@ class Users::SessionsController < Devise::SessionsController
       @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
       if @enrollment.save
         redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Course!"
+        track_event @course, 'enroll'
         finished('spherification', :reset => false)
+
+        mixpanel.track 'Course Enrolled', {
+          course: @course.title,
+          enrollment_method: 'Sign In and Enroll'
+        }
       else
         redirect_to course_url(@course), notice: "Sign in successful!"
       end

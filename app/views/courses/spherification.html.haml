@@ -15,3 +15,6 @@
     = render 'spherification_e'
   - elsif spherification == 'spheres_f'
     = render 'spherification_f'
+
+:javascript
+  mixpanel.track('Course Viewed', {'course title' : document.title, 'url' : window.location.pathname});

@@ -61,7 +61,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
       if @enrollment.save
         redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
+        track_event @course, 'enroll'
         finished('spherification', :reset => false)
+
+        mixpanel.track 'Course Enrolled', {
+          course: @course.title,
+          enrollment_method: 'Sign Up and Enroll'
+        }
       end
     else
       redirect_to course_url(@course), notice: "Sorry, there was a problem with the information provided.  Please try again."
