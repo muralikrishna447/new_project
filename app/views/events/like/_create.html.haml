@@ -5,6 +5,6 @@
     %div
       - case event.trackable.likeable.class.to_s
       - when 'Upload'
-        = "#{user_noun} liked the #{link_to 'photo', event.trackable.likeable}.".html_safe
+        = "#{user_noun} liked a #{link_to 'photo', event.trackable.likeable}.".html_safe
     %div
       = time_ago_in_words(event.created_at) + ' ago'
