@@ -38,7 +38,8 @@ class CoursesController < ApplicationController
       finished('spherification', :reset => false)
 
       mixpanel.track 'Course Enrolled', {
-        course: @course.title
+        course: @course.title,
+        enrollment_method: 'Standard'
       }
     end
   end
