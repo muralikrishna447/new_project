@@ -36,6 +36,10 @@ class CoursesController < ApplicationController
       redirect_to course_path(@course), notice: "You are now enrolled!"
       track_event @course
       finished('spherification', :reset => false)
+
+      mixpanel.track 'Course Enrolled', {
+        course: @course.title
+      }
     end
   end
 
