@@ -65,8 +65,8 @@
                       = f.password_field :current_password
                   %li
                     = f.submit "Update", class: "btn btn-primary"
-          .row
-            .span6
-              = link_to "Cancel My Account", registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete, class: "uppercase-link brick"
+          / .row
+          /   .span6
+          /     = link_to "Cancel My Account", registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete, class: "uppercase-link brick"
 
 = render 'layouts/filepicker'
