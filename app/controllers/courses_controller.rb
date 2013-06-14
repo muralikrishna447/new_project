@@ -26,7 +26,11 @@ class CoursesController < ApplicationController
       @new_user = User.new
       render 'spherification'
       finished('spheres_billboards', reset: false)
+    elsif @course.title == 'Science of Poutine'
+      @new_user = User.new
+      render 'poutine'
     end
+
   end
 
   def enroll
