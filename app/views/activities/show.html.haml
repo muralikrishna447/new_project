@@ -74,22 +74,11 @@
         .span12
           %h3 Techniques
           #technique-carousel
-            .horizontal-slider{data: {direction: 'right'}}
-              .horizontal-slider-wrap
-                - @techniques.each do |technique|
-                  = render 'shared/media_box', size: 'medium', url: technique, title: technique.title, image: technique.featured_image_id
-              %div{class: "horizontal-slider-btn-right btn btn-circle"}
-                %i{class: "icon-chevron-right"}
-              %div{class: "horizontal-slider-shadow-overlay-right"}
+            = render 'shared/horizontal_slider', items: @techniques, direction: 'right'
+
           %h3 Recipes
           #related-carousel
-            .horizontal-slider{data: {direction: 'right'}}
-              .horizontal-slider-wrap
-                - @recipes.each do |recipe|
-                  = render 'shared/media_box', size: 'medium', url: recipe, title: recipe.title, image: recipe.featured_image_id
-              %div{class: "horizontal-slider-btn-right btn btn-circle"}
-                %i{class: "icon-chevron-right"}
-              %div{class: "horizontal-slider-shadow-overlay-right"}
+            = render 'shared/horizontal_slider', items: @recipes, direction: 'right'
     - if ! ENV["CS_NO_DISQUS"]
       .row(ng-hide="editMode")
         .span12
