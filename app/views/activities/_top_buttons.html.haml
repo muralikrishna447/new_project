@@ -24,9 +24,6 @@
         %button#edit-mode.btn.btn-primary(type='button' ng-click="fork()" tooltip="Edit a copy of this recipe" tooltip-placement="left")
           Fork
 
-    .pull-right.display-inline-fix
-      = render 'layouts/social_buttons', media_object: @activity
-
 %div.pull-right(collapse="!editMode")
   .btn-toolbar
     .btn-group
