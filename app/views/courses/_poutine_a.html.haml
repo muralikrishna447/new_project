@@ -1,0 +1,94 @@
+.container
+  .row.section
+    .span12
+      %h1= "#{course.title} Course"
+  .row.section
+    .span6
+      .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
+        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('ywv2KIRCOJE')}
+      .section
+        %p= course.description
+      %h4.text-center
+        %i.icon-comment-alt
+        Comments or Questions?
+        = link_to 'Visit the Forum', 'http://forum.chefsteps.com'
+     
+    .span6
+      .well
+        Enroll Now; we'll keep track of your course progress and you can earn badges and upload your creations on the way.
+        = render 'course_enrollment_box'
+      - if @course.users.count > 1 && @course.uploads.approved.count > 3
+        .well   
+          %h4= "Current enrollment: #{@course.users.count}"
+          %h3 Some user creations:
+          .horizontal-slider{data: {direction: 'right'}}
+            .horizontal-slider-wrap
+              - @course.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
+                = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+            %div{class: "horizontal-slider-btn-right btn btn-circle"}
+              %i{class: "icon-chevron-right"}
+            %div{class: "horizontal-slider-shadow-overlay-right"}
+
+#creative-kit.modal.hide.fade
+  .modal-header
+    %h3 Sous Vide Supreme Demi
+  .modal-body
+    = image_tag 'http://placehold.it/500x250/333333/dddddd&text'
+    %ul.section{style: "-webkit-column-count: 2"}
+      - Course::SPHERIFICATION_CREATIVE[:equipment].each do |equipment|
+        %li= equipment
+  .modal-footer.section
+    %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
+
+
+#enthusiast-kit.modal.hide.fade
+  .modal-header
+    %h3 Sous Vide Supreme
+  .modal-body
+    = image_tag 'http://placehold.it/500x250/333333/dddddd&text'
+    %ul.section{style: "-webkit-column-count: 2"}
+      - Course::SPHERIFICATION_ENTHUSIAST[:equipment].each do |equipment|
+        %li= equipment    
+  .modal-footer.section
+    %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
+
+%hr
+
+.container-fluid
+  .row-fluid
+    .container
+      .row.section
+        .span6.align-bottom#creative
+          = image_tag 'http://placehold.it/500x250/333333/dddddd&text'
+          %h3= "Sous Vide Supreme Demi"
+          .static-height
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+          .well.section
+            = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id], Course::SPHERIFICATION_CREATIVE[:price])
+
+        .span6.align-bottom#enthusiast
+          = image_tag 'http://placehold.it/500x250/333333/dddddd&text'
+          %h3="Sous Vide Supreme"
+          .static-height
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          .well.section
+            = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id], Course::SPHERIFICATION_ENTHUSIAST[:price])
+
+%hr
+
+.container-fluid
+  .row-fluid
+    .container
+      .row.section
+        %h2.text-orange Instructors
+      .row.section
+        .span2
+          = image_tag('chris-large.jpg', title: 'Chris Young', class: 'img-profile')
+        .span4
+          :markdown
+            #{bio_chris.copy.to_s}
+        .span2
+          = image_tag('grant-large.jpg', title: 'Chris Young', class: 'img-profile')
+        .span4
+          :markdown
+            #{bio_grant.copy.to_s}
