@@ -1,6 +1,7 @@
 # TODO some of this can be dried up wrt ingredient_edit_pair
 angular.module('ChefStepsApp').directive 'csinputmonkeyingredient', ->
   restrict: 'A',
+
   link: (scope, element, attrs) ->
 
     elt = $(element)
@@ -29,6 +30,15 @@ angular.module('ChefStepsApp').directive 'csinputmonkeyingredient', ->
       scope.ai.unit = "recipe" if scope.ai.ingredient? && scope.ai.ingredient.sub_activity_id?
       return true
 
+angular.module('ChefStepsApp').directive 'cslimitquantity', ->
+  restrict: 'A',
+  link: (scope, element, attrs) ->
+
+    element.bind 'blur', (event) ->
+      if scope.editMode
+        scope.ai.display_quantity = window.roundSensible(scope.ai.display_quantity)
+      return true
+
 angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
   restrict: 'E',
 
@@ -54,6 +64,5 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
           return false
 
       return true
-
 
   templateUrl: '/client_views/_ingredient_edit_pair'

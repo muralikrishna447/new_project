@@ -37,10 +37,7 @@ class CoursesController < ApplicationController
       track_event @course
       finished('spherification', :reset => false)
 
-      mixpanel.track 'Course Enrolled', {
-        course: @course.title,
-        enrollment_method: 'Standard'
-      }
+      mixpanel.track 'Course Enrolled', { distinct_id: @enrollment.user.id, course: @course.title, enrollment_method: 'Standard' }
     end
   end
 

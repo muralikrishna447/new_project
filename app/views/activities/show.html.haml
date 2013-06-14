@@ -74,11 +74,11 @@
         .span12
           %h3 Techniques
           #technique-carousel
-            = render 'shared/horizontal_scroller', items: @techniques
+            = render 'shared/horizontal_slider', items: @techniques, direction: 'right'
+
           %h3 Recipes
           #related-carousel
-            = render 'shared/horizontal_scroller', items: @recipes
-
+            = render 'shared/horizontal_slider', items: @recipes, direction: 'right'
     - if ! ENV["CS_NO_DISQUS"]
       .row(ng-hide="editMode")
         .span12

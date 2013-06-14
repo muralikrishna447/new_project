@@ -89,4 +89,4 @@ angular.module('ChefStepsApp').directive 'cseditpairedit', ->
 angular.module('ChefStepsApp').directive 'cseditpairshow', ->
   restrict: 'E',
   transclude: true,
-  template: '<div ng-switch-default="" ng-transclude class="edit-pair-show"></div>'
+  template: '<div ng-switch-default="" ng-transclude  class="edit-pair-show"></div>'
