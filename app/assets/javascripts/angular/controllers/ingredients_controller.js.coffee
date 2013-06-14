@@ -52,11 +52,5 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
         else
           $scope.activity.ingredients.push(deepCopy(si))
 
-    # We don't want the behavior of freshly added ingredients getting focus. Not the prettiest solution, but
-    # whatayagonnado.
-    $scope.preventAutoFocus = true
-    $timeout ( ->
-      $scope.preventAutoFocus = false
-    ), 100
-
+    $scope.temporaryNoAutofocus();
 ]

@@ -31,7 +31,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
       $scope.mouseCurrentlyOver = over
 
     $scope.$watch $scope.focusedInside, ((newValue, oldValue) ->
-      $scope.addUndo() if ! newValue
+      $scope.addUndo() if oldValue && ! newValue
     )
 
     # Madness. On a click, wait for our edit half to show.
