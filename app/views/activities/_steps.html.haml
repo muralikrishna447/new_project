@@ -5,7 +5,7 @@
     %h4(style="display: none;" ng-show="editMode && (activity.steps.length == 0)" data-ng-animate="'fade'" ng-click="addStepAtIndex(0)")
       Add first step...
 
-  .ordered-steps.scroll-shadow(ng-show="activity.steps.length > 0"){:itemprop => "recipeInstructions"}
+  .ordered-steps(ng-show="activity.steps.length > 0" ng-class="{'scroll-shadow': !editMode}"){:itemprop => "recipeInstructions"}
     .scroll-shadow-content.pull-left
       .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()")
         = render 'step'
