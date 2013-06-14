@@ -73,11 +73,11 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       $scope.page = 1
       $scope.load_data()
 
-  $scope.fill_screen = ->
-    if ($("body").height() < window.innerHeight)
-      $scope.load_data()
+  # $scope.fill_screen = ->
+  #   if ($("body").height() < window.innerHeight)
+  #     $scope.load_data()
 
-  $scope.fill_screen()
+  # $scope.fill_screen()
 ]
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) ->
