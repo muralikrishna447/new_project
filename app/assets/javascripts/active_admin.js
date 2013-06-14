@@ -39,4 +39,6 @@
 //= require difflib
 //= require diffview
 
+//= require ingredient_parser
+
 

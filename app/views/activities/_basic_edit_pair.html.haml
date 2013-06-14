@@ -1,0 +1,11 @@
+.section
+  %csEditPair
+
+    %csEditPairShow
+      %div(ng-show="!!#{model}|| editMode" ng-class="disableIf(! #{model})")
+        %h4= name
+        %span(ng-bind="#{model} || '#{add_text}' "){itemprop: (defined? itemprop) ? itemprop : nil}
+
+    %csEditPairEdit
+      %h4= name
+      %input(type="text" ng-model="#{model}" placeholder="#{add_text}" )

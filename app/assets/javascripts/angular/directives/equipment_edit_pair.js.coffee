@@ -19,7 +19,6 @@ angular.module('ChefStepsApp').directive 'csinputmonkeyequipment', ->
 
       # On return (in input, not the popup), commit this equipment and start a new one
       if event.which == 13 && elt.val().length > 0
-        scope.$emit('end_active_edits_from_below')
         scope.addEquipment(scope.csoptional == "true")
         scope.$apply()
 
