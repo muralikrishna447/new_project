@@ -27,28 +27,13 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   # Total gallery items
   $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')
 
-  # Number of gallery items as they're being added
-  # $scope.$watch 'activities', (newValue) ->
-  #   if angular.isArray(newValue)
-  #     $scope.activities_count = newValue.length
-  #     if $scope.activities_count < 9
-  #       $scope.load_data()
-
-  # $scope.$watch 'filtered', ((newValue) ->
-  #   if angular.isArray(newValue)
-  #     $scope.filtered_count = newValue.length
-  #     console.log $scope.filtered_count
-  #     if $scope.filtered_count < 10
-  #       $scope.load_data()
-  # ), true
-
   $scope.page = 1
   currently_loading = false
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.gallery_index_params = {}
   $scope.load_data = ->
-    # console.log($scope.activities)
-    if !currently_loading
+    # $scope.page < $scope.gallery_count/12 + 1 stops attempting to load more pages when all the activities are loaded
+    if !currently_loading && $scope.page < $scope.gallery_count/12 + 1
       currently_loading = true
       $scope.spinner = true
       $scope.gallery_index_params['page'] = $scope.page
