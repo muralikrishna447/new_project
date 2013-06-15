@@ -3,6 +3,19 @@
 / = link_to 'javascript:void(0);', class: 'btn btn-primary' do
 /   %i.icon-phone
 .section-small
+  / = render 'shared/like_button', likeable_object: @activity
+  - if current_user && current_user.likes.map(&:likeable).include?(@activity)
+    = link_to 'javascript:void(0);', class: 'btn btn-primary' do
+      %i.icon-star
+      = @activity.likes.count
+  - else
+    = form_for Like.new do |f|
+      = f.hidden_field :likeable_id, value: @activity.id
+      = f.hidden_field :likeable_type, value: @activity.class
+    = link_to 'javascript:void(0);', onclick: "$('#new_like').submit()", class: 'btn btn-primary' do
+      %i.icon-star-empty
+      = @activity.likes.count
+      
   = link_to 'javascript:void(0);', class: 'btn btn-primary btn-social social-action', data: {toggle: 'popover', placement: 'bottom', content: fb_like(current_url(request)), html: true} do
     %i.icon-facebook
   = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
