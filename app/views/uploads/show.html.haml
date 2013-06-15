@@ -11,17 +11,7 @@
       .lead
         = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this while completing the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
       %p= "#{time_ago_in_words(@upload.created_at)} ago."
-      - if current_user && current_user.likes.map(&:likeable).include?(@upload)
-        = link_to 'javascript:void(0);', class: 'btn btn-primary' do
-          %i.icon-star
-          = @upload.likes.count
-      - else
-        = form_for Like.new do |f|
-          = f.hidden_field :likeable_id, value: @upload.id
-          = f.hidden_field :likeable_type, value: @upload.class
-        = link_to 'javascript:void(0);', onclick: "$('#new_like').submit()", class: 'btn btn-primary' do
-          %i.icon-star-empty
-          = @upload.likes.count
+      = render 'shared/like_button', likeable_object: @upload
       = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.recipe_name} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
         %i.icon-twitter
         %span Twitter
