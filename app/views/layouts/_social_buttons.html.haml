@@ -1,15 +1,16 @@
-/ = link_to 'javascript:void(0);', class: 'btn btn-primary' do
+/ = link_to 'javascript:void(0);', class: 'btn btn-primary btn-social' do
 /   %i.icon-envelope-alt
 / = link_to 'javascript:void(0);', class: 'btn btn-primary' do
 /   %i.icon-phone
-= link_to 'javascript:void(0);', class: 'btn btn-primary social-action', data: {toggle: 'popover', placement: 'bottom', content: fb_like(current_url(request)), html: true} do
-  %i.icon-facebook
-= link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
-'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'btn btn-primary' do
-  %i.icon-google-plus
-= link_to "https://twitter.com/intent/tweet?text=I love this: #{media_object.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
-  %i.icon-twitter
-- if media_object.featured_image
-  = link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{filepicker_hero_image(media_object.featured_image)}", onclick: "javascript:window.open(this.href,
-  '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary' do
-    %i.icon-pinterest
+.section-small
+  = link_to 'javascript:void(0);', class: 'btn btn-primary btn-social social-action', data: {toggle: 'popover', placement: 'bottom', content: fb_like(current_url(request)), html: true} do
+    %i.icon-facebook
+  = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
+  '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'btn btn-primary btn-social' do
+    %i.icon-google-plus
+  = link_to "https://twitter.com/intent/tweet?text=I love this: #{media_object.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary btn-social' do
+    %i.icon-twitter
+  - if media_object.featured_image
+    = link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{filepicker_hero_image(media_object.featured_image)}", onclick: "javascript:window.open(this.href,
+    '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary btn-social' do
+      %i.icon-pinterest
