@@ -1710,3 +1710,21 @@ csingredienteditpair
       line-height: 16px
     .input-signup-email
       width: 50%
+
+body
+  &.development
+    &:after
+      position: fixed
+      content: 'development'
+      background-color: hsl(240,100%, 50%)
+      white-space: nowrap
+      top: 26px
+      left: -50px
+      width: 200px
+      padding: 10px 0
+      text-align: center
+      color: $offwhite
+      font-size: 14px
+      z-index: 1000
+      -webkit-transform: rotate(-45deg)
+

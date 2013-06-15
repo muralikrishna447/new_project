@@ -27,7 +27,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   # Total gallery items
   $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')
 
-  $scope.page = 1
+  $scope.page = 2
   currently_loading = false
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.gallery_index_params = {}
@@ -73,11 +73,11 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       $scope.page = 1
       $scope.load_data()
 
-  $scope.fill_screen = ->
-    if ($("body").height() < window.innerHeight)
-      $scope.load_data()
+  # $scope.fill_screen = ->
+  #   if ($("body").height() < window.innerHeight)
+  #     $scope.load_data()
 
-  $scope.fill_screen()
+  # $scope.fill_screen()
 ]
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) ->
