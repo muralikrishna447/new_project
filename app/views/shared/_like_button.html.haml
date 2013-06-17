@@ -14,7 +14,7 @@
       = link_to 'javascript:void(0);', class: 'btn btn-primary' do
         %i.icon-star
         = likeable_object.likes_count
-    %psan(ng-switch-when='false')
+    %span(ng-switch-when='false')
       = link_to likes_path(like: {likeable_id: likeable_object.id, likeable_type: likeable_object.class}), method: :post, class: 'btn btn-primary' do
         %i.icon-star-empty
         = likeable_object.likes_count
