@@ -117,6 +117,7 @@ GEM
       addressable (>= 2.1.1)
       eventmachine (>= 0.12.9)
     erubis (2.7.0)
+    escape (0.0.4)
     eventmachine (1.0.3)
     excon (0.16.2)
     execjs (1.4.0)
@@ -242,6 +243,10 @@ GEM
       polyamorous (~> 0.5.0)
     method_source (0.8.1)
     mime-types (1.23)
+    mixpanel (4.0.2)
+      escape
+      json
+      rack
     multi_json (1.7.5)
     multi_xml (0.5.1)
     multipart-post (1.1.5)
@@ -461,6 +466,7 @@ DEPENDENCIES
   merit
   meta_request
   meta_search
+  mixpanel
   newrelic_rpm
   oauth2
   omniauth

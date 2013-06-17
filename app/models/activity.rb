@@ -41,14 +41,17 @@ class Activity < ActiveRecord::Base
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
   scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
-  scope :by_order, -> by_order { order('updated_at ' + by_order) }
+  scope :newest, order('published_at DESC')
+  scope :oldest, order('published_at ASC')
+  scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
+  scope :randomize, order('random()')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
   serialize :activity_type, Array
 
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
-  attr_accessible :source_activity, :source_activity_id, :source_type
+  attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -66,6 +69,8 @@ class Activity < ActiveRecord::Base
     # like to find a convenient way to dry this up.
     ADAPTED_FROM = 0
   end
+
+  before_save :check_published
 
   before_save :strip_title
   def strip_title
@@ -169,10 +174,17 @@ class Activity < ActiveRecord::Base
         title = i[:ingredient][:title]
          unless title.nil? || title.blank?
           title.strip!
-          ingredient_foo = Ingredient.where(id: i[:ingredient][:id]).first_or_create(title: title)
+
+          # Try first by id
+          the_ingredient = Ingredient.find_by_id(i[:ingredient][:id])
+
+          # Otherwise, try by title because it is possible for a user to type fast and not get
+          # an autocompleted ingredient with an id filled it, but it is still in the database
+          the_ingredient = Ingredient.where(title: title).first_or_create()  if ! the_ingredient
+
           activity_ingredient = ActivityIngredient.create({
                                                             activity_id: self.id,
-                                                            ingredient_id: ingredient_foo.id,
+                                                            ingredient_id: the_ingredient.id,
                                                             note: i[:note],
                                                             display_quantity: i[:display_quantity],
                                                             unit: i[:unit],
@@ -367,6 +379,12 @@ class Activity < ActiveRecord::Base
   end
 
   private
+
+  def check_published
+    if self.published && self.published_at.blank?
+      self.published_at = DateTime.now
+    end
+  end
 
   def reject_invalid_equipment(equipment_attrs)
     equipment_attrs.select! do |equipment_attr|

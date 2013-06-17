@@ -4,7 +4,8 @@ window.deepCopy = (obj) ->
   else
     jQuery.extend(true, {}, obj)
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "limitToFilter", "$timeout", ($scope, $resource, $location, $http, limitToFilter, $timeout) ->
+
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "$timeout", "limitToFilter", ($scope, $resource, $location, $http, $timeout, limitToFilter) ->
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id")},
                         {update: {method: "PUT"}}
@@ -16,6 +17,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.undoIndex = -1
   $scope.editMode = false
   $scope.editMeta = false
+  $scope.preventAutoFocus = false
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -38,7 +40,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.postEndEditMode = ->
     $scope.editMode = false
-    setTimeout (-> window.collapseSteps()), 0.5
+    $timeout (->
+      window.updateUnits(false)
+      window.collapseSteps()
+    ), 0.5
 
   $scope.endEditMode = ->
     $scope.normalizeModel()
@@ -96,6 +101,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.addEditModeClass = ->
     if $scope.editMode then "edit-mode" else ""
 
+  $scope.primaryColumnClass = ->
+    if ($scope.activity.steps.length > 0) then 'span6' else 'no-steps span8 offset2'
+
   # Activity types
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
 
@@ -107,6 +115,15 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.activity.activity_type = _.without($scope.activity.activity_type, t)
     else
       $scope.activity.activity_type = _.union($scope.activity.activity_type, [t])
+
+  # Activity difficulties
+  $scope.activityDifficulties = ["Easy", "Intermediate", "Advanced"]
+
+  $scope.hasActivityDifficulty = (t) ->
+    ($scope.activity.difficulty || "").toUpperCase() == t.toUpperCase()
+
+  $scope.setActivityDifficulty = (t) ->
+    $scope.activity.difficulty = t.toLowerCase()
 
   # These IDs are stored in the database, don't go changing them!!
   $scope.sourceActivityTypes = [
@@ -229,61 +246,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       r.unshift({title: equip_name})
       r
 
-  # Ingredient stuff TODO: make a controller just for ingredients
-
-  $scope.ingredient_display_type = (ai) ->
-    result = "basic"
-    result = "product" if !! ai.ingredient.product_url
-    result = "subrecipe" if !! ai.ingredient.sub_activity_id
-    result = "fake_link" if $scope.editMode && (result == "product" || result == "subrecipe")
-    result
-
-  $scope.unitMultiplier = (unit_name) ->
-    result = 1
-    result = 1000 if unit_name == "kg"
-    result
-
-  $scope.addIngredient =  ->
-    # *don't* use ingred = {title: ...} here, it will screw up display if an empty one gets in the list
-    ingred = ""
-    item = {ingredient: ingred, unit: "g"}
-    $scope.activity.ingredients.push(item)
-    #$scope.addUndo()
-
-  $scope.removeIngredient = (index) ->
-    $scope.activity.ingredients.splice(index, 1)
-    $scope.addUndo()
-
-  $scope.all_ingredients = (ingredient_name) ->
-    $http.get("/ingredients.json?q=" + ingredient_name).then (response) ->
-      # always include current search text as an option
-      r = limitToFilter(response.data, 15)
-      r.unshift({title: ingredient_name})
-      r
-
-  # Not currently used - maybe come back to it
-  $scope.ingredientSelect2 =
-    ajax:
-      url: "/ingredients.json?q=a",
-      data: (term, page) ->
-        return {
-          q: term
-        }
-
-      results: (data, page) ->
-        return {results: data}
-
-    formatResult: (ingredient) ->
-      ingredient.title
-
-    formatSelection: (ingredient) ->
-      ingredient.title
-
-    initSelection: (element, callback) ->
-      callback(angular.element(element).scope().ai.ingredient)
-
-    width: "element"
-
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
   # autocomplete (unshift in all_equipment), it will be missing a nesting level in the model.
@@ -302,6 +264,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
           item["ingredient"] = {title: item["ingredient"]}
 
 
+  $scope.getIngredientsList = ->
+    $scope.activity.ingredients
 
   # prestoring the JSON in the HTML on initial load for speed
   #$scope.activity = Activity.get($scope.url_params, ->

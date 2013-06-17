@@ -46,6 +46,7 @@ gem 'split', require: 'split/dashboard'
 gem 'redis'
 gem 'merit'
 gem 'has_scope'
+gem 'mixpanel'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -95,6 +96,7 @@ group :development, :test do
   gem 'bullet'
   gem 'launchy'
   gem 'childprocess', '0.3.6'
+  gem 'xray-rails'
 end
 
 group :guard do

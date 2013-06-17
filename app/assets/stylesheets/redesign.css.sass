@@ -1,5 +1,8 @@
 @import 'mixins'
 
+body
+  position: relative
+
 .top-container
   margin-top: 76px
 
@@ -232,6 +235,16 @@ h4
         @include boxsizing
 
 ////////////////////////////////////////
+
+/* No Step Activities */
+.no-steps
+  .hero-visual
+    img
+      width: 100%
+  .activity-description
+    height: inherit
+  #activity-description-maximize
+    display: none
 
 /* Media Objects */
 
@@ -502,6 +515,24 @@ h4
 
   .scroll-shadow-wrapper
     overflow: visible
+
+  .edithover:not(.cseditpairedit)
+    position:  relative !important
+    cursor: pointer
+    &:before
+      content: ""
+      position: absolute
+      top:  -2
+      right:  -4
+      left:  -4
+      bottom:  -2
+      background: rgba(0, 128, 220, .1) !important
+      border-radius:  5px
+
+  .btn
+    &:hover
+      background: rgba(0, 128, 220, .2) !important
+
 
 
 
@@ -932,8 +963,8 @@ h4
   margin: 5px 2px
   border-radius: 50%
   background-image: none
-  background: $orange
-  color: white
+  background: $white-opaque
+  color: $orange
   font-size: 20px
   text-shadow: none
   text-align: center
@@ -1230,9 +1261,17 @@ csequipmenteditpair, csingredienteditpair
 
   .action-button-group
     position: absolute
-    left: -58px
+    left: -56px
     top:  0px
     font-size:  18px
+    margin-top: -2px
+    .btn
+      padding: 4px 6px
+      border-shadow: none
+      -webkit-box-shadow: none
+
+      &:last
+        padding-right: 12px
 
     i
       width: auto
@@ -1250,6 +1289,10 @@ csequipmenteditpair, csingredienteditpair
 
     select
       height: 22px
+
+csequipmenteditpair
+  .action-button-group
+    top: 2px
 
 csingredienteditpair
 
@@ -1336,9 +1379,12 @@ csingredienteditpair
   margin-top: -5px
   height:  20px
 
-.step-edit-buttons, .step-add-button-group, .step-add-button-end-group
+
+.step-sidebar-group
   position: absolute
   left:  -16px
+  height:  100%
+
   button
     width: 24px
     margin-left: 0px !important
@@ -1350,26 +1396,28 @@ csingredienteditpair
     margin-left: 0px !important
 
 .step-edit-buttons
+  position: absolute
   top: 45px
   width: 30px
 
 .step-add-button-group
+  position: absolute
   top: -10px
+  .step-add-button-line
+    top: 12px
 
 .step-add-button-end-group
+  position: absolute
   bottom: -10px
+  .step-add-button-line
+    bottom: 8px
+
 
 .step-add-button-line
   position: absolute
-  top: 10px
   border-top:  1px dotted #d3d3d3
   width: 600px
   z-index: -1
-
-.step-add-button-end-group
-  .step-add-button-line
-    position:
-      bottom: -22px
 
 .select-ingredient-checkbox
   margin-top: -2px !important
@@ -1377,13 +1425,35 @@ csingredienteditpair
 .unselected-ingredient
   color: #a9a9a9
 
+.csfilepicker
+  .btn-toolbar
+    margin-top: 0px
+
+  .drop-target
+    width: 60px
+
+    .upload-progress
+      width: 60px
+      position:  absolute
+      left:  0
+      right:  0
+      bottom:  -22px
+
+    .progress
+      width: 100%
+      height:  10px
+
+.no-bold
+  font-weight: normal
+
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
 // names have to change when we go to angular >= 1.1.5
-.fade-hide-setup, .fade-show-setup
+.fade-show-setup, .fade-hide-setup
   -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+
 
 .fade-hide-setup
   opacity: 1
@@ -1640,3 +1710,21 @@ csingredienteditpair
       line-height: 16px
     .input-signup-email
       width: 50%
+
+body
+  &.development
+    &:after
+      position: fixed
+      content: 'development'
+      background-color: hsl(240,100%, 50%)
+      white-space: nowrap
+      top: 26px
+      left: -50px
+      width: 200px
+      padding: 10px 0
+      text-align: center
+      color: $offwhite
+      font-size: 14px
+      z-index: 1000
+      -webkit-transform: rotate(-45deg)
+

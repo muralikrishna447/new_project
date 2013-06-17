@@ -1,0 +1,23 @@
+=render 'step_side_edit_buttons'
+
+.step-element.step-number
+  %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
+
+.step-element.step-content
+
+  %csEditPair
+    %csEditPairShow
+      %h4(ng-show="step.title || editMode" ng-bind-html-unsafe="step.title || (editMode && 'Optional title...')" ng-class="disableIf(! step.title.length)")
+    %csEditPairEdit
+      %input.nohtml.step-title-input(type="text" ng-model="step.title" placeholder="Optional title...")
+
+  =render 'step_ingredients'
+
+  %csEditPair
+    %csEditPairShow
+      %div(ng-show="step.directions || editMode" ng-bind-html-unsafe="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
+    %csEditPairEdit
+      %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
+
+  =render 'step_show_images'
+  =render 'step_edit_images'
