@@ -1,14 +1,20 @@
-- if current_user && current_user.likes.map(&:likeable).include?(likeable_object)
-  = link_to 'javascript:void(0);', class: 'btn btn-primary' do
-    %i.icon-star
-    = likeable_object.likes_count
-- else
-  / = form_for Like.new do |f|
-  /   = f.hidden_field :likeable_id, value: likeable_object.id
-  /   = f.hidden_field :likeable_type, value: likeable_object.class
-  / = link_to 'javascript:void(0);', onclick: "$('#new_like').submit()", class: 'btn btn-primary' do
-  /   %i.icon-star-empty
-  /   = likeable_object.likes.count
-  = link_to likes_path(like: {likeable_id: likeable_object.id, likeable_type: likeable_object.class}), method: :post, class: 'btn btn-primary' do
-    %i.icon-star-empty
-    = likeable_object.likes_count
+/ - if current_user && current_user.likes.map(&:likeable).include?(likeable_object)
+/   = link_to 'javascript:void(0);', class: 'btn btn-primary' do
+/     %i.icon-star
+/     = likeable_object.likes_count
+/ - else
+/   = link_to likes_path(like: {likeable_id: likeable_object.id, likeable_type: likeable_object.class}), method: :post, class: 'btn btn-primary' do
+/     %i.icon-star-empty
+/     = likeable_object.likes_count
+
+%span(ng-controller='LikesController')
+  %span(ng-model="current_user_likes" ng-init="current_user_likes=#{current_user && current_user.likes.map(&:likeable).include?(likeable_object)}")
+  %span(ng-switch on="current_user_likes")
+    %span(ng-switch-when='true')
+      = link_to 'javascript:void(0);', class: 'btn btn-primary' do
+        %i.icon-star
+        = likeable_object.likes_count
+    %psan(ng-switch-when='false')
+      = link_to likes_path(like: {likeable_id: likeable_object.id, likeable_type: likeable_object.class}), method: :post, class: 'btn btn-primary' do
+        %i.icon-star-empty
+        = likeable_object.likes_count
