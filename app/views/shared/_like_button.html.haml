@@ -1,7 +1,7 @@
 - if current_user && current_user.likes.map(&:likeable).include?(likeable_object)
   = link_to 'javascript:void(0);', class: 'btn btn-primary' do
     %i.icon-star
-    = likeable_object.likes.count
+    = likeable_object.likes_count
 - else
   / = form_for Like.new do |f|
   /   = f.hidden_field :likeable_id, value: likeable_object.id
@@ -11,4 +11,4 @@
   /   = likeable_object.likes.count
   = link_to likes_path(like: {likeable_id: likeable_object.id, likeable_type: likeable_object.class}), method: :post, class: 'btn btn-primary' do
     %i.icon-star-empty
-    = likeable_object.likes.count
+    = likeable_object.likes_count
