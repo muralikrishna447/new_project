@@ -280,6 +280,9 @@ h4
   .media-centered
     margin-bottom: 20px
 
+.section-small
+  margin-top: 10px
+
 .section
   margin-top: 20px
 
@@ -860,6 +863,11 @@ h4
 
 /* Buttons */
 
+.btn
+  @include raleway
+  i
+    line-height: 20px
+
 .btn-primary
   background: $orange
   border: 0px
@@ -888,6 +896,7 @@ h4
   &:hover
     background: gray
     color: white
+    text-shadow: none
     @include transition(all 100ms)
 
 .btn-secondary[disabled]
@@ -981,6 +990,9 @@ h4
     text-decoration: none
     color: white
     cursor: pointer
+
+.btn-social
+  width: 40px
 
 /* Quiz button */
 .btn-next, .btn-prev
