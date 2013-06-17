@@ -3,9 +3,12 @@
     %i.icon-star
     = likeable_object.likes.count
 - else
-  = form_for Like.new do |f|
-    = f.hidden_field :likeable_id, value: likeable_object.id
-    = f.hidden_field :likeable_type, value: likeable_object.class
-  = link_to 'javascript:void(0);', onclick: "$('#new_like').submit()", class: 'btn btn-primary' do
+  / = form_for Like.new do |f|
+  /   = f.hidden_field :likeable_id, value: likeable_object.id
+  /   = f.hidden_field :likeable_type, value: likeable_object.class
+  / = link_to 'javascript:void(0);', onclick: "$('#new_like').submit()", class: 'btn btn-primary' do
+  /   %i.icon-star-empty
+  /   = likeable_object.likes.count
+  = link_to likes_path(like: {likeable_id: likeable_object.id, likeable_type: likeable_object.class}), method: :post, class: 'btn btn-primary' do
     %i.icon-star-empty
     = likeable_object.likes.count
