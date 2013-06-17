@@ -27,8 +27,8 @@
       .section
         - if @upload.likes.any?
           %h4 
-            = @upload.likes.count
-            - if @upload.likes.count > 1
+            = @upload.likes_count
+            - if @upload.likes_count > 1
               people like this:
             - else
               person likes this:
