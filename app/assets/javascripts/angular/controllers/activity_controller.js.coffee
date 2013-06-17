@@ -9,7 +9,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id")},
-                        {update: {method: "PUT"}}
+                        {
+                          update: {method: "PUT"},
+                          startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
+                          endedit: {method: "PUT", url: "/activities/:id/notify_end_edit"}
+                        }
                       )
 
   $scope.url_params = {}
@@ -20,6 +24,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.editMeta = false
   $scope.preventAutoFocus = false
   $scope.shouldShowRestoreAutosaveModal = false
+  $scope.shouldShowAlreadyEditingModal = false
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -27,6 +32,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
       window.location = response.redirect_to if response.redirect_to)
     )
+
   # Overall edit mode
   $scope.startEditMode = ->
     if ! $scope.editMode
@@ -35,11 +41,18 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.showHeroVisualEdit = false
       $scope.undoStack = [deepCopy $scope.activity]
       $scope.undoIndex = 0
+      $scope.activity.$startedit()
       $timeout ->
         window.csScaling = 1
         window.csUnits = "grams"
         window.updateUnits(false)
         window.expandSteps()
+
+  $scope.maybeStartEditMode = ->
+    if $scope.activity.currently_editing_user
+      $scope.shouldShowAlreadyEditingModal = true
+    else
+      $scope.startEditMode()
 
   $scope.postEndEditMode = ->
     $scope.editMode = false
@@ -49,6 +62,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     ), 0.5
     $scope.clearLocalStorage()
     $scope.saveBaseToLocalStorage()
+    $scope.activity.$endedit()
 
   $scope.endEditMode = ->
     $scope.normalizeModel()

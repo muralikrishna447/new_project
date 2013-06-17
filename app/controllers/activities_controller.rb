@@ -131,6 +131,21 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def notify_start_edit
+    @activity = Activity.find(params[:id], params[:token], admin_user_signed_in?).first
+    @activity.currently_editing_user = current_admin_user
+    @activity.save!
+    head :no_content
+  end
+
+  def notify_end_edit
+    @activity = Activity.find(params[:id], params[:token], admin_user_signed_in?).first
+    @activity.currently_editing_user = nil
+    @activity.save!
+    head :no_content
+  end
+
+
   def update_as_json
     if params[:fork]
       # Can't seem to get custom verb & URL to work in angular, so tacking it onto this one

@@ -33,6 +33,7 @@ class Activity < ActiveRecord::Base
   has_many :likes, as: :likeable
 
   belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
+  belongs_to :currently_editing_user, class_name: AdminUser, foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
 
@@ -51,7 +52,7 @@ class Activity < ActiveRecord::Base
   serialize :activity_type, Array
 
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
-  attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes
+  attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],

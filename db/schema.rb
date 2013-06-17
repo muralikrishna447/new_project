@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130617082814) do
+ActiveRecord::Schema.define(:version => 20130617183832) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -30,16 +30,16 @@ ActiveRecord::Schema.define(:version => 20130617082814) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "youtube_id"
     t.string   "difficulty"
-    t.integer  "cooked_this",        :default => 0
+    t.integer  "cooked_this",            :default => 0
     t.string   "yield"
     t.text     "timing"
     t.text     "description"
     t.integer  "activity_order"
-    t.boolean  "published",          :default => false
+    t.boolean  "published",              :default => false
     t.string   "slug"
     t.text     "transcript"
     t.text     "image_id"
@@ -47,11 +47,12 @@ ActiveRecord::Schema.define(:version => 20130617082814) do
     t.string   "activity_type"
     t.integer  "last_edited_by_id"
     t.integer  "source_activity_id"
-    t.integer  "source_type",        :default => 0
+    t.integer  "source_type",            :default => 0
     t.text     "assignment_recipes"
     t.datetime "published_at"
     t.string   "author_notes"
     t.integer  "likes_count"
+    t.integer  "currently_editing_user"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
