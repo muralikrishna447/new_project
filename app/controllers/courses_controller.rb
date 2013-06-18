@@ -11,7 +11,6 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course = Course.find(params[:id])
     @course = Course.find_published(params[:id], params[:token], admin_user_signed_in?)
     if @course.title == 'Spherification'
       # @frozen_reverse_spheres = Activity.find([259,311])
