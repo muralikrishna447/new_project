@@ -6,15 +6,21 @@
 /   = link_to likes_path(like: {likeable_id: likeable_object.id, likeable_type: likeable_object.class}), method: :post, class: 'btn btn-primary' do
 /     %i.icon-star-empty
 /     = likeable_object.likes_count
-
+- current_user_likes = current_user && current_user.likes.map(&:likeable).include?(likeable_object) ? 'true' : 'false'
 %span(ng-controller='LikesController')
-  %span(ng-model="current_user_likes" ng-init="current_user_likes=#{current_user && current_user.likes.map(&:likeable).include?(likeable_object)}")
+  %span(ng-model="current_user_likes" ng-init="current_user_likes=#{current_user_likes}")
   %span(ng-switch on="current_user_likes")
     %span(ng-switch-when='true')
-      = link_to 'javascript:void(0);', class: 'btn btn-primary' do
+      / = link_to 'javascript:void(0);', class: 'btn btn-primary' do
+      /   %i.icon-star
+      /   = likeable_object.likes_count
+      .btn.btn-primary(ng-click="likeObject()")
         %i.icon-star
         = likeable_object.likes_count
     %span(ng-switch-when='false')
-      = link_to likes_path(like: {likeable_id: likeable_object.id, likeable_type: likeable_object.class}), method: :post, class: 'btn btn-primary' do
+      / = link_to likes_path(like: {likeable_id: likeable_object.id, likeable_type: likeable_object.class}), method: :post, class: 'btn btn-primary' do
+      /   %i.icon-star-empty
+      /   = likeable_object.likes_count
+      .btn.btn-primary(ng-click="likeObject('#{likeable_object.class.to_s}', '#{likeable_object.id}')")
         %i.icon-star-empty
         = likeable_object.likes_count
