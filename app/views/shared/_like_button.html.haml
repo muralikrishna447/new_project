@@ -25,4 +25,5 @@
       /   = likeable_object.likes_count
       .btn.btn-primary(ng-click="likeObject('#{likeable_object.class.to_s}', '#{likeable_object.id}')")
         %i.icon-star-empty
-        {{likes_count}}
+        %span(ng-show="likes_count > 0")
+          {{likes_count}}
