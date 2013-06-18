@@ -5,7 +5,7 @@ feature 'courses' do
     activity_1 = Fabricate :activity, title: 'Activity 1', published: true
     activity_2 = Fabricate :activity, title: 'Activity 2', published: true
     activity_3 = Fabricate :activity, title: 'Activity 3', published: true
-    course = Fabricate :course, title: 'Spherification'
+    course = Fabricate :course, title: 'Spherification', published: true
     inclusion_1 = Fabricate :inclusion, course_id: course.id, activity_id: activity_1.id
     inclusion_1 = Fabricate :inclusion, course_id: course.id, activity_id: activity_2.id
     inclusion_1 = Fabricate :inclusion, course_id: course.id, activity_id: activity_3.id

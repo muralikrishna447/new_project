@@ -11,7 +11,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course = Course.find(params[:id])
+    @course = Course.find_published(params[:id], params[:token], admin_user_signed_in?)
     if @course.title == 'Spherification'
       # @frozen_reverse_spheres = Activity.find([259,311])
       # @beet_spheres = Activity.find([239])
@@ -26,7 +26,11 @@ class CoursesController < ApplicationController
       @new_user = User.new
       render 'spherification'
       finished('spheres_billboards', reset: false)
+    elsif @course.title == 'Science of Poutine'
+      @new_user = User.new
+      render 'poutine'
     end
+
   end
 
   def enroll
