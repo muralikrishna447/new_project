@@ -49,16 +49,18 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
         window.expandSteps()
 
   $scope.maybeStartEditMode = ->
-    # Must reload activity before checking currently_editing_user
+    # Must reload activity before checking currently_editing_user - want to get any changes that have
+    # been made since we loaded the original page *and* want to know if anyone started editing.
     $scope.preventAutoFocus = true
 
     temp_activity = Activity.get($scope.url_params, ->
       $scope.temporaryNoAutofocus()
 
-      if ! _.isEqual(temp_activity, $scope.activity)
+      if temp_activity.updated_at != $scope.activity.updated_at
         $scope.activity = temp_activity
 
-      if $scope.activity.currently_editing_user
+      if temp_activity.currently_editing_user
+        $scope.activity.currently_editing_user = temp_activity.currently_editing_user
         $scope.shouldShowAlreadyEditingModal = true
       else
         $scope.startEditMode()
@@ -73,16 +75,17 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     $scope.clearLocalStorage()
     $scope.saveBaseToLocalStorage()
     $scope.activity.$endedit()
+    true
 
   $scope.endEditMode = ->
     $scope.normalizeModel()
-    $scope.activity.is_new = false
     $scope.activity.$update({},
       ((response) ->
         # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
        window.location = response.redirect_to if response.redirect_to),
     )
     $scope.postEndEditMode()
+    $scope.activity.is_new = false
 
   $scope.cancelEditMode = ->
     if $scope.undoAvailable
@@ -134,7 +137,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     if $scope.editMode then "edit-mode" else ""
 
   $scope.primaryColumnClass = ->
-    if ($scope.activity && $scope.activity.steps && ($scope.activity.steps.length > 0)) then 'span6' else 'no-steps span8 offset2'
+    if ($scope.editMode || ($scope.activity && $scope.activity.steps && ($scope.activity.steps.length > 0))) then 'span6' else 'no-steps span8 offset2'
 
   $scope.temporaryNoAutofocus = ->
     # Pretty ugly, but I don't see a cleaner solution
@@ -245,6 +248,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     createSearchChoice: (term, data) ->
       id: term
       name: term
+
+    initSelection: (element, callback) ->
+      callback($scope.activity.tags)
 
   # Video/image stuff
   $scope.hasHeroVideo = ->
@@ -373,6 +379,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
         $scope.startEditMode()
+        $scope.editMeta = true
         setTimeout (->
           title_elem = $('#title-edit-pair')
           angular.element(title_elem).scope().setMouseOver(true)

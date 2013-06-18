@@ -65,4 +65,4 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
 
       return true
 
-  templateUrl: '/client_views/_ingredient_edit_pair'
+  templateUrl: '_ingredient_edit_pair.html'
