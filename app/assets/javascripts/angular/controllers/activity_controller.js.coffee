@@ -49,10 +49,20 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
         window.expandSteps()
 
   $scope.maybeStartEditMode = ->
-    if $scope.activity.currently_editing_user
-      $scope.shouldShowAlreadyEditingModal = true
-    else
-      $scope.startEditMode()
+    # Must reload activity before checking currently_editing_user
+    $scope.preventAutoFocus = true
+
+    temp_activity = Activity.get($scope.url_params, ->
+      $scope.temporaryNoAutofocus()
+
+      if ! _.isEqual(temp_activity, $scope.activity)
+        $scope.activity = temp_activity
+
+      if $scope.activity.currently_editing_user
+        $scope.shouldShowAlreadyEditingModal = true
+      else
+        $scope.startEditMode()
+    )
 
   $scope.postEndEditMode = ->
     $scope.editMode = false
@@ -124,7 +134,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     if $scope.editMode then "edit-mode" else ""
 
   $scope.primaryColumnClass = ->
-    if ($scope.activity.steps.length > 0) then 'span6' else 'no-steps span8 offset2'
+    if ($scope.activity && $scope.activity.steps && ($scope.activity.steps.length > 0)) then 'span6' else 'no-steps span8 offset2'
 
   $scope.temporaryNoAutofocus = ->
     # Pretty ugly, but I don't see a cleaner solution

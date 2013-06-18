@@ -132,14 +132,14 @@ class ActivitiesController < ApplicationController
   end
 
   def notify_start_edit
-    @activity = Activity.find(params[:id], params[:token], admin_user_signed_in?).first
+    @activity = Activity.find(params[:id])
     @activity.currently_editing_user = current_admin_user
     @activity.save!
     head :no_content
   end
 
   def notify_end_edit
-    @activity = Activity.find(params[:id], params[:token], admin_user_signed_in?).first
+    @activity = Activity.find(params[:id])
     @activity.currently_editing_user = nil
     @activity.save!
     head :no_content
