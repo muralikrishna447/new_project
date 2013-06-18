@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130610214426) do
+ActiveRecord::Schema.define(:version => 20130617082814) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20130610214426) do
     t.text     "assignment_recipes"
     t.datetime "published_at"
     t.string   "author_notes"
+    t.integer  "likes_count"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -424,6 +425,7 @@ ActiveRecord::Schema.define(:version => 20130610214426) do
     t.datetime "updated_at",                     :null => false
     t.integer  "course_id"
     t.boolean  "approved",    :default => false
+    t.integer  "likes_count"
   end
 
   create_table "user_activities", :force => true do |t|

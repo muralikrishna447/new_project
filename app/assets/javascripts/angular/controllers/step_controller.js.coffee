@@ -34,12 +34,8 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
 
     $scope.step.ingredients = result
 
-    # We don't want the behavior of freshly added ingredients getting focus. Not the prettiest solution, but
-    # whatayagonnado.
-    $scope.preventAutoFocus = true
-    $timeout ( ->
-      $scope.preventAutoFocus = false
-    ), 100
+    $scope.temporaryNoAutofocus();
+
 
 
   $scope.toggleSelectFromMaster = ->
