@@ -7,5 +7,6 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
       url: url
     ).success((data, status, headers, config) ->
       $scope.current_user_likes = true
+      $scope.likes_count += 1
     )
 ]
