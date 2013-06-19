@@ -1,0 +1,9 @@
+.container-fluid.profile-cover{style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
+  .row-fluid
+    .container
+      .row
+        .span2
+          .profile-image
+            = image_tag filepicker_circle_image(@user.image_id), class: 'img-circle'
+        .span10
+          %h1= @user.name

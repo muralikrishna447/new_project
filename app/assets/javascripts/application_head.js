@@ -3,6 +3,7 @@
 //=require angular.min
 //=require angular-resource.min
 //=require angular-ui
+//=require localStorageModule
 //=require select2
 //=require ui-bootstrap-tpls-0.3.0
 //=require angular/chefstepsAngularInit

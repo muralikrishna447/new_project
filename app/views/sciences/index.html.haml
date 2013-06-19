@@ -10,7 +10,7 @@
       /         = render 'shared/media_centered', media: science, size: 'medium'
       / = paginate @sciences
 
-.container
+.container.gallery-wrapper
   .row
     .span12#gallery-count{:'gallery-count' => "#{@sciences_count}"}
       %div(ng-controller='GalleryController')

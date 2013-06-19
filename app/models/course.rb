@@ -148,4 +148,20 @@ class Course < ActiveRecord::Base
     equipment: ['Syringe', 'Spherification Straining Spoon', '25 g Sphere Magic', '50 g SHMP', '50 g Calcium Gluconate', '50 g Calcium Chloride', '50 g Xanthan Gum', 'High-Precision Scale', 'Frozen Reverse Spherification Mold', 'Rapid Caviar Maker']
   }
 
+
+#### Science of Poutine Course ####
+
+  SVS_DEMI = {
+    copy: "A compact version of the original SousVide Supreme that features all of the benefits of the original appliance in a smaller footprint. This unit has a 2.3 gallon / 8.7 liter capacity sealed reservoir with a nonstick coating for easier cleaning. Available in red or black finish.",
+    price: '329',
+    variant_id: 291719279
+  }
+
+  SVS = {
+    copy: "The original SousVide supreme appliance has a 3 gallon / 11.3 liter capacity sealer reservoir that is easily cleaned. The appliance is insulated for fast preheating and energy efficiency. The controls are simple and intuitive to use. This appliance comes with a stainless steel rack that efficiently organizes individual cooking bags to speed cooking. Available in  a brushed stainless steel finish.",
+    price: '429',
+    variant_id: 286923754
+  }
+
 end
+
