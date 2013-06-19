@@ -1,7 +1,7 @@
-- content_for :title, course.title
+- content_for :title, "#{course.title}"
 - content_for :description, course.short_description
 .container
-  %h2= course.title
+  %h1= course.title
   .row.top-video
     .span12
 
