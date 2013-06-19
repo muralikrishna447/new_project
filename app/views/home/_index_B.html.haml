@@ -12,7 +12,7 @@
       - @courses.each do |course|
         .span4.offset1
           = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image, object: course
-      .span7
+      .span12.text-center
         %p.lead 
           %br
           %strong With Award-Winning Chefs to Help You Succeed
