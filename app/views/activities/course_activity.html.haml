@@ -1,4 +1,10 @@
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()"}
+- content_for :title, "#{@course.title} Course - #{@activity.activity_type.first} - #{@activity.title.html_safe}"
+- content_for :description, @activity.description != "" ? @activity.description.html_safe : @activity.title.html_safe
+- content_for :canonical_link, activity_url(@activity) if @activity.id
+- content_for :keywords, @activity.tag_list.join(',')
+%div(ng-model="activity.title" ng-init="activity.title = '#{@activity.title}'")
+%div(ng-model="activity.activity_type" ng-init="activity.activity_type = '#{@course.title} Course - #{@activity.activity_type.first}'")
 
 .container{data: {:'activity-id' => @activity.id}}
   .row
