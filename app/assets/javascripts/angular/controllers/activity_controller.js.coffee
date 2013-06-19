@@ -369,7 +369,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   # Keep <title> tag in sync
   $scope.$watch 'activity.title', ->
-    $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))
+    $(document).attr("title", "ChefSteps - " + $scope.activity_type[0] + " - " + ($scope.activity.title || "New Recipe"))
 
   # One time stuff
   if $scope.parsePreloaded()
