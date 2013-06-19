@@ -22,3 +22,6 @@
 - else
   :javascript
     mixpanel.track('Course Viewed', {'course title' : document.title, 'url' : window.location.pathname});
+
+- if course.additional_script
+  = course.additional_script.html_safe
