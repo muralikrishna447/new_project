@@ -1,7 +1,7 @@
 .container
   .row
     .span12
-      %h2= @upload.recipe_name
+      %h2= @upload.title
   .row
     .span6
       = image_tag filepicker_hero_image(@upload.image_id)
@@ -12,7 +12,7 @@
         = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this while completing the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
       %p= "#{time_ago_in_words(@upload.created_at)} ago."
       = render 'shared/like_button', likeable_object: @upload
-      = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.recipe_name} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
+      = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
         %i.icon-twitter
         %span Twitter
       = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
@@ -50,4 +50,4 @@
 
       %hr
         - disqus_id = "upload-#{@upload.id}"
-        = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.recipe_name, disqus_url: upload_url(@upload)
+        = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.title, disqus_url: upload_url(@upload)
