@@ -1,0 +1,2 @@
+Fabricator(:copy) do
+end

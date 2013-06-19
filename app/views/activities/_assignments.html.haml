@@ -10,13 +10,14 @@
       .text-center
         = link_to 'See the recipe', assignment.child_activity
   .span3
-    = render 'shared/media_box_2', size: 'medium', url: '#', title: 'Your own recipe', image: nil, object: nil
+    = render 'shared/media_box_2', size: 'medium', url: '#', title: 'Your own recipe', image: '{ "url": "http://www.filepicker.io/api/file/Hm4LABVkQnyOt93RTOm5"} ', object: nil
 
 .row-fluid
   %hr
 
 = form_for @upload do |f|
   = f.hidden_field :activity_id
+  = f.hidden_field :course_id, value: @course.id
   .row-fluid
     .span4
       %h4 Upload a Photo
@@ -29,7 +30,30 @@
       %p= f.text_field :recipe_name, class: 'input-block-level', required: true
       %h4 Notes
       %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
-      = f.submit 'Finish The Course!', class: 'btn btn-primary btn-large'
+      = f.submit 'Upload', class: 'btn btn-primary btn-large'
+
+.row-fluid      
+  %hr
+
+  .horizontal-slider{data: {direction: 'right'}}
+    .horizontal-slider-wrap
+      - @course.uploads.each do |upload|
+        = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+    %div{class: "horizontal-slider-btn-right btn btn-circle"}
+      %i{class: "icon-chevron-right"}
+    %div{class: "horizontal-slider-shadow-overlay-right"}
+
+/ - if current_user
+/   - ids = @activity.assignments.map(&:child_activity_id)
+/   - current_user.uploads.where(:uploads => {:activity_id => ids}).each do |upload|
+/     .row-fluid.section
+/       .span4
+/         = image_tag filepicker_gallery_image(upload.image_id)
+/       .span8
+/         %h4= upload.recipe_name
+/         %p= upload.notes
+/         = link_to 'Share', 'javascript:void(0);', class: 'btn btn-primary btn-large'
+/         = link_to 'Page', [current_user, upload]
 
 = render 'layouts/filepicker'
 

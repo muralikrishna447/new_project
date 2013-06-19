@@ -49,7 +49,7 @@ class ChefSteps.Views.OrderSortQuestion extends ChefSteps.Views.Question
       if view.$el.closest('body').length > 0
         view.setupShapeshift()
       else
-        setTimeout(checkRender, 100)
+        setTimeout(checkRender, 500)
 
     checkRender()
 

@@ -25,4 +25,13 @@
  *= require courses
  *= require uploads
  *= require profiles
+ *= require bootstrap-wysihtml5
+ *= require angular-ui
+ *= require alert
+ *= require registration
+ *= require timeline
+ *= require annotations
+ *= require select2
+ *= require billboard
+ *= require gallery
  */

@@ -26,5 +26,22 @@ private
     end
   end
 
+  def mixpanel
+    @mixpanel ||= Mixpanel::Tracker.new '84272cf32ff65b70b86639dacd53c0e0', { :env => request.env }
+  end
+
+  # See http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on
+  after_filter  :set_csrf_cookie_for_ng
+
+  def set_csrf_cookie_for_ng
+    cookies['XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
+  end
+
+  protected
+
+  def verified_request?
+    super || form_authenticity_token == request.headers['X_XSRF_TOKEN']
+  end
+
 end
 

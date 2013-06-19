@@ -10,6 +10,7 @@ class Activity < ActiveRecord::Base
   # The as_ingredient relationship returns the ingredient version of the activity
   has_one :as_ingredient, class_name: Ingredient, foreign_key: 'sub_activity_id'
   has_many :used_in_activities, source: :activities, through: :as_ingredient
+  belongs_to :source_activity, class_name: Activity, foreign_key: 'source_activity_id'
 
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
@@ -28,17 +29,30 @@ class Activity < ActiveRecord::Base
   has_many :uploads
   has_many :upload_users, through: :uploads, source: :user
 
+  has_many :events, as: :trackable
+  has_many :likes, as: :likeable
+
   belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
+
+  validates :title, presence: true
 
   scope :with_video, where("youtube_id <> ''")
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
+  scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
+  scope :newest, order('published_at DESC')
+  scope :oldest, order('published_at ASC')
+  scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
+  scope :randomize, order('random()')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
   serialize :activity_type, Array
-  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
+
+  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
+  attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes
+
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
@@ -49,6 +63,14 @@ class Activity < ActiveRecord::Base
   #   associated_against: {steps: [:title, :directions], recipes: :title}
 
   TYPES = %w[Recipe Technique Science]
+
+  class SourceType
+    # This is the default. Others are actually defined in activity_controller.js.coffee. Would
+    # like to find a convenient way to dry this up.
+    ADAPTED_FROM = 0
+  end
+
+  before_save :check_published
 
   before_save :strip_title
   def strip_title
@@ -108,25 +130,115 @@ class Activity < ActiveRecord::Base
     steps.count > 0
   end
 
+  def published_variations
+    Activity.published.where(source_activity_id: self.id)
+  end
+
   def update_equipment(equipment_attrs)
-    reject_invalid_equipment(equipment_attrs)
-    update_and_create_equipment(equipment_attrs)
-    delete_old_equipment(equipment_attrs)
+    if equipment_attrs
+      reject_invalid_equipment(equipment_attrs)
+      update_and_create_equipment(equipment_attrs)
+      delete_old_equipment(equipment_attrs)
+    end
     self
   end
 
+  def update_equipment_json(equipment_attrs)
+    # Easiest just to be rid of all of the old join records, we'll make them from scratch
+    equipment.destroy_all()
+    equipment.reload()
+    if equipment_attrs
+      equipment_attrs.each do |e|
+        title = e[:equipment][:title]
+        unless title.nil? || title.blank?
+          title.strip!
+          equipment_item = Equipment.where(id: e[:equipment][:id]).first_or_create(title: title)
+          activity_equipment = ActivityEquipment.create({
+              activity_id: self.id,
+              equipment_id: equipment_item.id,
+              optional: e[:optional] || false,
+              equipment_order_position: :last
+          })
+         end
+      end
+    end
+    self
+  end
+
+  def update_ingredients_json(ingredients_attrs)
+    # Easiest just to be rid of all of the old join records, we'll make them from scratch
+    ingredients.destroy_all()
+    ingredients.reload()
+    if ingredients_attrs
+      ingredients_attrs.each do |i|
+        title = i[:ingredient][:title]
+         unless title.nil? || title.blank?
+          title.strip!
+
+          # Try first by id
+          the_ingredient = Ingredient.find_by_id(i[:ingredient][:id])
+
+          # Otherwise, try by title because it is possible for a user to type fast and not get
+          # an autocompleted ingredient with an id filled it, but it is still in the database
+          the_ingredient = Ingredient.where(title: title).first_or_create()  if ! the_ingredient
+
+          activity_ingredient = ActivityIngredient.create({
+                                                            activity_id: self.id,
+                                                            ingredient_id: the_ingredient.id,
+                                                            note: i[:note],
+                                                            display_quantity: i[:display_quantity],
+                                                            unit: i[:unit],
+                                                            ingredient_order_position: :last
+                                                        })
+        end
+      end
+    end
+    self
+  end
+
+  def update_steps_json(steps_attrs)
+    # Easiest just to be rid of all of the old steps, we'll make them from scratch
+    steps.destroy_all()
+    steps.reload()
+    if steps_attrs
+      puts "********"
+      puts steps_attrs
+      steps_attrs.each do |step_attr|
+        step = steps.create()
+        step.update_attributes(
+            title: step_attr[:title],
+            directions: step_attr[:directions],
+            youtube_id: step_attr[:youtube_id],
+            image_id: step_attr[:image_id],
+            image_description: step_attr[:image_description],
+            audio_clip: step_attr[:audio_clip],
+            audio_title: step_attr[:audio_title],
+            step_order_position: :last,
+            hide_number: step_attr[:hide_number]
+        )
+        step.update_ingredients_json(step_attr[:ingredients])
+      end
+    end
+    self
+  end
+
+
   def update_steps(step_attrs)
-    reject_invalid_steps(step_attrs)
-    update_and_create_steps(step_attrs)
-    delete_old_steps(step_attrs)
+    if step_attrs
+      reject_invalid_steps(step_attrs)
+      update_and_create_steps(step_attrs)
+      delete_old_steps(step_attrs)
+    end
     self
   end
 
 
   def update_ingredients(ingredient_attrs)
-    reject_invalid_ingredients(ingredient_attrs)
-    update_and_create_ingredients(ingredient_attrs)
-    delete_old_ingredients(ingredient_attrs)
+    if ingredient_attrs
+      reject_invalid_ingredients(ingredient_attrs)
+      update_and_create_ingredients(ingredient_attrs)
+      delete_old_ingredients(ingredient_attrs)
+    end
     self
   end
 
@@ -207,7 +319,72 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  def to_json
+    super(
+      include: {
+        tags: {},
+        equipment: {
+            only: :optional,
+            include: {
+                equipment: {
+                    only: [:id, :title, :product_url]
+                }
+            }
+        },
+        ingredients: {
+            only: [:note, :display_quantity, :quantity, :unit],
+            include: {
+                ingredient: {
+                    only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
+                }
+            }
+        },
+        steps: {
+          include: {
+
+            ingredients: {
+                only: [:note, :display_quantity, :quantity, :unit],
+                include: {
+                    ingredient: {
+                        only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
+                    }
+                }
+            }
+          }
+        }
+      }
+    )
+  end
+
+  # Played around with using amoeba gem but it was causing some validation problems and I got
+  # too scared to mess with the (possibly wrong) inverse associations on ActivityIngredient and Activity Equipment.
+  # So just opted for the most explicit solution. Could also be done by going through JSON.
+  def deep_copy
+    new_activity = self.dup
+
+    new_activity.source_activity = self
+    new_activity.source_type = SourceType::ADAPTED_FROM
+    new_activity.published = false
+
+    self.ingredients.each { |ai| new_activity.ingredients << ai.dup }
+    self.equipment.each { |ae| new_activity.equipment << ae.dup }
+    self.steps.each do |as|
+      new_step = as.dup
+      new_activity.steps << new_step
+      as.ingredients.each { |si| new_step.ingredients << si.dup }
+    end
+
+    new_activity.save!
+    new_activity
+  end
+
   private
+
+  def check_published
+    if self.published && self.published_at.blank?
+      self.published_at = DateTime.now
+    end
+  end
 
   def reject_invalid_equipment(equipment_attrs)
     equipment_attrs.select! do |equipment_attr|

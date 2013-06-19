@@ -7,10 +7,6 @@ describe "Navigation Bootstrap", ->
     it "sets the header target", ->
       expect(@bootstrap.headerTarget).toEqual(@fake_target)
 
-  describe "#loadCSS", ->
-    it "links to global_navigation.css", ->
-      expect(@bootstrap.cssLink).toEqual("<link rel=stylesheet type='text/css' href='http://delve.dev/assets/global_navigation.css' />")
-
   describe "#getHeader", ->
     beforeEach ->
       spyOn($, "ajax").andCallFake (options) ->
@@ -26,12 +22,8 @@ describe "Navigation Bootstrap", ->
 
   describe "#bootstrap", ->
     beforeEach ->
-      spyOn(@bootstrap, 'loadCSS')
       spyOn(@bootstrap, 'getHeader')
       @bootstrap.bootstrap()
-
-    it "loads the global navigation css", ->
-      expect(@bootstrap.loadCSS).toHaveBeenCalled()
 
     it "gets the header html", ->
       expect(@bootstrap.getHeader).toHaveBeenCalled()

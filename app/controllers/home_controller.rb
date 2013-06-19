@@ -9,6 +9,9 @@ class HomeController < ApplicationController
     # cookies.delete(:returning_visitor)
     @returning_visitor = cookies[:returning_visitor]
     @new_visitor = params[:new_visitor] || !@returning_visitor
+    # @discussion = Forum.discussions.first
+    #@status = Twitter.status_embed
+    @user = User.new
   end
 
   def about

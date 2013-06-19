@@ -1,0 +1,10 @@
+- direction = direction || 'left'
+- user_noun = current_user == event.user ? 'You' : event.user.name
+.timeline-text-only{data: {direction: direction}}
+  .timeline-text-only-text.text-center
+    %div
+      - case event.trackable.likeable.class.to_s
+      - when 'Upload'
+        = "#{user_noun} liked the #{link_to 'photo', event.trackable.likeable}.".html_safe
+    %div
+      = time_ago_in_words(event.created_at) + ' ago'

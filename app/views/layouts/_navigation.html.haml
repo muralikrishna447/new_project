@@ -13,44 +13,51 @@
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        .nav-collapse.collapse.pull-right
-          %ul.nav
-            %li.dropdown
-              .nav-item-border
-              = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                Cooking
-                %i.icon-angle-down
-              %ul.dropdown-menu
-                .dropdown-background
-                %li= link_to 'Recipes', recipe_gallery_index_url
-                %li= link_to 'Techniques', techniques_url
-            %li.dropdown
-              .nav-item-border
-              = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                Learning
-                %i.icon-angle-down
-              %ul.dropdown-menu
-                .dropdown-background
-                / %li= link_to 'Sous Vide Course', course_url('accelerated-sous-vide-cooking-course')
-                %li= link_to 'Courses', courses_path
-                %li= link_to 'Culinary Knowledge', sciences_url
-            %li
-              .nav-item-border
-              = link_to 'Community', 'http://forum.chefsteps.com'
-            %li
-              .nav-item-border
-              = link_to 'Shop', 'http://store.chefsteps.com'
-            %li
-              .nav-item-border
-              - if current_user
-                = link_to 'Profile', user_profile_url(current_user)
-              - else
-                = link_to 'Sign in', sign_in_url
-            - unless external
-              %li
-                .nav-item-border
-                .nav-search
-                  = link_to 'javascript:void(0);', id: 'nav-search-toggle' do
-                    %i.icon-search.icon-large
-                  = form_tag search_index_url, :method => :get, class: 'navbar-form form-search nav-search-form' do
-                    = text_field_tag :q, nil, :placeholder => 'search', class: 'search-query'
+        %div
+          -if @include_edit_toolbar
+            #nav-edit-toolbar(collapse="!editMode")
+              = render 'activities/edit_toolbar'
+          %div(ng-style="toolbarBonusStyle()"){collapse: ("editMode" if @include_edit_toolbar)}
+            .nav-collapse.collapse.pull-right
+              %ul.nav
+                %li.dropdown
+                  .nav-item-border
+                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                    Cooking
+                    %i.icon-angle-down
+                  %ul.dropdown-menu
+                    .dropdown-background
+                    %li= link_to 'Recipes', recipe_gallery_index_url
+                    %li= link_to 'Techniques', techniques_url
+                    -if admin_user_signed_in?
+                      %li= link_to 'New Recipe', new_activity_url
+                %li.dropdown
+                  .nav-item-border
+                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                    Learning
+                    %i.icon-angle-down
+                  %ul.dropdown-menu
+                    .dropdown-background
+                    / %li= link_to 'Sous Vide Course', course_url('accelerated-sous-vide-cooking-course')
+                    %li= link_to 'Courses', courses_url
+                    %li= link_to 'Culinary Knowledge', sciences_url
+                %li
+                  .nav-item-border
+                  = link_to 'Community', 'http://forum.chefsteps.com'
+                %li
+                  .nav-item-border
+                  = link_to 'Shop', 'http://store.chefsteps.com'
+                %li
+                  .nav-item-border
+                  - if current_user
+                    = link_to 'Profile', user_profile_url(current_user)
+                  - else
+                    = link_to 'Sign in', sign_in_url
+                - unless external
+                  %li
+                    .nav-item-border
+                    .nav-search
+                      = link_to 'javascript:void(0);', id: 'nav-search-toggle' do
+                        %i.icon-search.icon-large
+                      = form_tag search_index_url, :method => :get, class: 'navbar-form form-search nav-search-form' do
+                        = text_field_tag :q, nil, :placeholder => 'search', class: 'search-query'

@@ -1,0 +1,7 @@
+.container.top-container
+  .row
+    .span12.well.section
+      %h1.text-orange Thanks for Signing Up!
+      %h2 Please check your email now to confirm your registration.
+      - if params[:email]
+        = link_to_web_email(params[:email])

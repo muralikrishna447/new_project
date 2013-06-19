@@ -31,12 +31,17 @@ collapseSteps = (height) ->
     $(this).show 'blind', {direction: 'vertical'}, 500
   # $('.scroll-overlay-bottom').show()
 
-$ ->
+window.adjustActivityLayout = ->
   height = $('#video-ingredient-unit').height()
   adjustStepHeight()
 
+
+$ ->
+  adjustActivityLayout()
+
   i = 0
   $('#show-all').click ->
+    height = $('#video-ingredient-unit').height()
     if ++i % 2
       expandSteps()
     else
@@ -50,13 +55,7 @@ $ ->
   $('.syllabus-popover').each ->
     $(this).popover()
 
-  activity_description = $('#activity-description')
-  if activity_description.text().length > 455
-    $('#activity-description-maximize').show()
-  else
-    activity_description.find('.activity-description-overlay').hide()
-
-  $('#activity-description-maximize').click ->
+  $(document).on 'click', '#activity-description-maximize', ->
     overlay = $(this).closest('.activity-description-wrapper').find('.activity-description-overlay')
     $('.activity-description').toggleClass 'maximize-description', 300, 'easeInCubic'
     if ($(this).text() == 'more')
@@ -64,13 +63,16 @@ $ ->
     else
       $(this).text 'more'
 
-  # User Registration popup shows up after viewing 3 activities
+window.expandSteps = expandSteps
+window.collapseSteps = collapseSteps
+
+
+$ ->
+  # User Registration popup shows up after viewing 2 activities
   popup_bottom = $('.popup-bottom')
   if popup_bottom.is('*')
-    popup_bottom.addClass 'popup-bottom-show', 1000
+    popup_bottom.delay(5000).addClass 'popup-bottom-show', 1000
 
     $('.popup-bottom-close').click ->
       popup_bottom.removeClass 'popup-bottom-show', 500
 
-
-window.expandSteps = expandSteps

@@ -7,5 +7,11 @@ class Inclusion < ActiveRecord::Base
   belongs_to :course
   belongs_to :activity
 
-  attr_accessible :course, :activity, :activity_order, :nesting_level
+  has_many :events, as: :trackable
+
+  attr_accessible :course, :activity, :activity_order, :nesting_level, :title
+
+  def syllabus_title
+    title || activity.title
+  end
 end

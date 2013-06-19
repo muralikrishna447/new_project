@@ -1,4 +1,4 @@
-.row
+.row-fluid
   .span12
     %span.type Question
     %span.count #{result[:order]}
@@ -22,4 +22,5 @@
         .caption
           .num.show
             = index + 1
-          = image[:caption]
+          .caption-text
+            = image[:caption]

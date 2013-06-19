@@ -1,10 +1,21 @@
-.row
-  .span12
-    %h2 Culinary Knowledge and Stuff We Like
-    = paginate @sciences
-    .row.gallery
-      - @sciences.each do |science|
-        .span4
-          = link_to science do
-            = render 'shared/media_centered', media: science, size: 'medium'
-    = paginate @sciences
+.container
+  .row
+    .span12
+      %h2 Culinary Knowledge and Stuff We Like
+      / = paginate @sciences
+      / .row.gallery
+      /   - @sciences.each do |science|
+      /     .span4
+      /       = link_to science do
+      /         = render 'shared/media_centered', media: science, size: 'medium'
+      / = paginate @sciences
+
+.container
+  .row
+    .span12#gallery-count{:'gallery-count' => "#{@sciences_count}"}
+      %div(ng-controller='GalleryController')
+        %h1
+        / .flat-form
+        /   %form
+        /     %input(ng-model='search' placeholder='Enter Name')
+        = render 'shared/gallery'

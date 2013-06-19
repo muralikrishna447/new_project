@@ -184,6 +184,7 @@ end
   build_user(admin)
 end
 
+=begin
 @seed_data[:activities].each do |activity_data|
   build_activity(activity_data)
 end
@@ -191,6 +192,7 @@ end
 @seed_data[:courses].each do |course_data|
   build_course(course_data)
 end
+=end
 
 CopyCreator.create
 

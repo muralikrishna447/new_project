@@ -1,0 +1,11 @@
+#cancel-modal.modal.hide.fast(tabindex='-1' role='dialog' style="z-index: 2000")
+  .modal-header
+    %button.close(type='button' data-dismiss='modal')
+      x
+    .modal-body
+      Do you really want to abandon all of your changes?
+    .modal-footer
+      %button.btn.btn-success(data-dismiss='modal')
+        No !!
+      %button.btn.btn-danger(ng-click="cancelEditMode()" data-dismiss='modal')
+        Yes

@@ -1,0 +1,58 @@
+@import 'mixins'
+
+.gallery-filter
+  @include raleway
+  font-size: 16px
+  .dropdown
+    display: inline-block
+    margin-right: 10px
+    .dropdown-toggle
+      color: black
+      text-transform: uppercase
+    .dropdown-menu
+      border-radius: 0px
+      text-transform: uppercase
+      li
+        a
+          &:hover
+            background: $orange
+    a
+      color: black
+      @include raleway
+      font-size: 16px
+      text-transform: uppercase
+
+.pagination
+  @include raleway
+  font-size: 20px
+
+.gallery-animation-enter-setup, .gallery-animation-leave-setup, .gallery-animation-move-setup
+  @include transition(200ms linear all)
+
+.gallery-animation-enter-setup
+  opacity: 0
+
+.gallery-animation-enter-setup.gallery-animation-enter-start
+  opacity: 1
+
+.gallery-animation-leave-setup
+  opacity: 1
+  
+.gallery-animation-leave-setup.gallery-animation-leave-start
+  opacity: 0
+  
+.gallery-animation-move-setup
+  opacity: 1
+
+.gallery-animation-move-setup.gallery-animation-move-start
+  opacity: 1
+
+.gallery-spinner
+  position: fixed
+  left: 50%
+  top: 50%
+  margin-left: -24px
+  margin-top: -50px
+  color: $orange
+  font-size: 40px
+  

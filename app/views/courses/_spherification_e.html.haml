@@ -1,0 +1,184 @@
+.container
+  .row.section
+    .span12
+      %h1= "#{course.title} Course"
+  .row.section
+    .span6
+      .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
+        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('QPdO4I3WLHg')}
+      .section
+        %p= course.description
+      %h4.text-center
+        %i.icon-comment-alt
+        Comments or Questions?
+        = link_to 'Visit the Forum', 'http://forum.chefsteps.com'
+     
+    .span6
+      .well#enroll
+        - if current_user
+          - if current_user.course_ids.include?(@course.id)
+            = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
+          - else
+            %h2 Enroll now for free
+            = form_tag enroll_course_path(@course) do
+              = submit_tag 'Enroll', class: 'btn btn-primary btn-large btn-block'
+        
+        - else
+          .flat-form.section
+            %h2 Enroll for free now
+            .section.hide#enroll-section
+              = link_to 'Enroll', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block', id: 'enroll-section-btn'
+            .section.hide#signup-or-signin-section
+              .row-fluid
+                .span6
+                  = link_to 'Create an Account', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block', id: 'signup-and-enroll-btn'
+                .span6
+                  = link_to 'Sign In', 'javascript:void(0);', class: 'btn btn-primary btn-large btn-block', id: 'signin-and-enroll-btn'
+            .section.hide#signup-and-enroll-section
+              = form_for @new_user, url: signup_and_enroll_path, method: :post, class: 'form-inline' do |f|
+                = hidden_field_tag :course_id, @course.id
+                = f.text_field :name, {placeholder: 'name', required: true, class: 'input-block-level'}
+                = f.email_field :email, {placeholder: 'email', required: true, class: 'input-block-level'}
+                .input-block-level-password
+                  = f.password_field :password, {placeholder: 'password', required: true, class: 'input-block-level'}
+                  = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'user-password-show'
+                = f.submit 'Create Account and Enroll', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
+            .section.hide#signin-and-enroll-section
+              = form_tag signin_and_enroll_path, method: :post do
+                = hidden_field_tag :course_id, @course.id
+                = text_field_tag :email, nil, placeholder: 'email', class: 'input-block-level', required: true
+                = password_field_tag :password, nil, placeholder: 'password', class: 'input-block-level', required: true
+                = submit_tag 'Sign In and Enroll', class: 'btn btn-primary btn-large btn-block'
+
+
+      - if @course.users.count > 1 && @course.uploads.approved.count > 3
+        .well   
+          %h4= "Current enrollment: #{@course.users.count}"
+          %h3 Some user creations:
+          .horizontal-slider{data: {direction: 'right'}}
+            .horizontal-slider-wrap
+              - @course.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
+                = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+            %div{class: "horizontal-slider-btn-right btn btn-circle"}
+              %i{class: "icon-chevron-right"}
+            %div{class: "horizontal-slider-shadow-overlay-right"}
+
+#creative-kit.modal.hide.fade
+  .modal-header
+    %h3 The Creative Kit
+  .modal-body
+    = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
+    %ul.section{style: "-webkit-column-count: 2"}
+      - Course::SPHERIFICATION_CREATIVE[:equipment].each do |equipment|
+        %li= equipment
+  .modal-footer.section
+    %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
+
+
+#enthusiast-kit.modal.hide.fade
+  .modal-header
+    %h3 The Enthusiast Kit
+  .modal-body
+    = image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
+    %ul.section{style: "-webkit-column-count: 2"}
+      - Course::SPHERIFICATION_ENTHUSIAST[:equipment].each do |equipment|
+        %li= equipment    
+  .modal-footer.section
+    %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
+
+
+#professional-kit.modal.hide.fade
+  .modal-header
+    %h3 The Professional Kit
+  .modal-body
+    = image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
+    %ul.section{style: "-webkit-column-count: 2"}
+      - Course::SPHERIFICATION_PROFESSIONAL[:equipment].each do |equipment|
+        %li= equipment
+  .modal-footer.section
+    %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
+
+.container-fluid
+  .row-fluid
+    .container
+      .row.section
+        .span4.align-bottom#creative
+          /= image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
+          = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
+          %h3= "The Creative Kit"
+          .static-height
+            = Course::SPHERIFICATION_CREATIVE[:copy]
+            %a(href='#creative-kit' data-target='#creative-kit' data-toggle='modal') See Kit Details
+          .well.section
+            = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id], Course::SPHERIFICATION_CREATIVE[:price])
+
+        .span4.align-bottom#enthusiast
+          /= image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
+          = image_tag 'https://www.filepicker.io/api/file/5wKEDSXZQgCgtA5W7JxI'
+          %h3="The Enthusiast Kit"
+          .static-height
+            = Course::SPHERIFICATION_ENTHUSIAST[:copy]
+            %a(href='#enthusiast-kit' data-target='#enthusiast-kit' data-toggle='modal') See Kit Details
+          .well.section
+            = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id], Course::SPHERIFICATION_ENTHUSIAST[:price])
+
+        .span4.align-bottom#professional
+          /= image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
+          = image_tag 'https://www.filepicker.io/api/file/FBnDnqcUQRetfBswxNzq'          
+          %h3="The Professional Kit"
+          .static-height
+            = Course::SPHERIFICATION_PROFESSIONAL[:copy]
+            %a(href='#professional-kit' data-target='#professional-kit' data-toggle='modal') See Kit Details
+          .well.section
+            = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id], Course::SPHERIFICATION_PROFESSIONAL[:price])
+
+%hr
+
+.container
+  .row.section
+    .span8.offset2
+      %h2 Be more creative in your kitchen
+      %p In this short-course, you will learn all three techniques, starting with reverse spherification, which is surprisingly easy. The course then teaches you the helpful refinement of this technique, called frozen-reverse spherification. Finally, you'll master the more challenging technique of direct spherification. At the end of the course, you will have the opportunity to demonstrate your proficiency with these techniques and also prove your understanding of why spherification works to certify that you've mastered this popular modernist technique.
+  .row.section
+    .span4
+      =image_tag 'https://www.filepicker.io/api/file/RY0MPYKRRkOLpCNqGZpN'
+      .text-center
+        %h4 Reverse Spherification
+        
+    .span4
+      =image_tag 'https://www.filepicker.io/api/file/BwIi8kdRFGLEIWaWcXPI'
+      .text-center
+        %h4 Frozen Reverse Spherification
+        
+    .span4
+      =image_tag 'https://www.filepicker.io/api/file/PFUrsvzWReCkVxlMGXBG'
+      .text-center
+        %h4 Direct Spherification
+
+%hr
+
+.container
+  .row.section
+    .flat-form
+      %h2.text-center
+        = link_to 'Enroll for free now', '#enroll' 
+
+%hr
+
+.container-fluid.section
+  .row-fluid
+    .container
+      .row.section
+        %h2.text-orange Instructors
+      .row.section
+        .span2
+          = image_tag('chris-large.jpg', title: 'Chris Young', class: 'img-profile')
+        .span4
+          :markdown
+            #{bio_chris.copy.to_s}
+        .span2
+          = image_tag('grant-large.jpg', title: 'Chris Young', class: 'img-profile')
+        .span4
+          :markdown
+            #{bio_grant.copy.to_s}
+

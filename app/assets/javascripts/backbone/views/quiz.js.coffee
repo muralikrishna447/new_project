@@ -14,11 +14,11 @@ class ChefSteps.Views.Quiz extends Backbone.View
     @loadNextQuestion(@collection.first())
 
   loadNextQuestion: (model)->
-    @$('>').fadeOut 'slow', =>
+    @$('>').fadeOut 500, =>
       return @quizComplete() unless model
       question = @newQuestionView(model)
       @$el.html(question.render().$el)
-      question.$el.animate({marginLeft: 0, opacity: 1}, 1000)
+      question.$el.animate({marginLeft: 0, opacity: 1}, 500)
 
   quizComplete: =>
     $.ajax "#{@quizId}/finish",
