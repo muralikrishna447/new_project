@@ -73,6 +73,15 @@
         %h3 User Creations
         %button.btn.btn-primary{data: {toggle: 'modal', target: '#upload-user-creation'}}
           UPLOAD YOUR OWN
+        #user-creations-carousel
+          - if @activity.uploads.any?
+            .horizontal-slider{data: {direction: 'right'}}
+              .horizontal-slider-wrap
+                - @activity.uploads.includes(:user).order('created_at DESC').each do |upload|
+                  = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.title, image: upload.image_id
+              %div{class: "horizontal-slider-btn-right btn btn-circle"}
+                %i{class: "icon-chevron-right"}
+              %div{class: "horizontal-slider-shadow-overlay-right"}
 
     - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @techniques && @recipes
       .row(ng-hide="editMode")
@@ -127,6 +136,7 @@
                   .popup-bottom-close
                     %i.icon-remove
 
+//////// UPLOAD MODAL /////////
 .modal.hide.fade#upload-user-creation
   .modal-header
     %h3= "Share your #{@activity.title} creation"
