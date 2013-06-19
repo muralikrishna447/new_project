@@ -68,6 +68,11 @@
 
 - content_for :bottom do
   - if ! @minimal
+    .row(ng-hide="editMode")
+      .span12
+        %h3 User Creations
+        %button.btn.btn-primary{data: {toggle: 'modal', target: '#upload-user-creation'}}
+          UPLOAD YOUR OWN
 
     - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @techniques && @recipes
       .row(ng-hide="editMode")
@@ -121,6 +126,10 @@
                       %li Like other student creations
                   .popup-bottom-close
                     %i.icon-remove
+
+.modal.hide.fade#upload-user-creation
+  .modal-header
+    %h3 Hello
 
 = render 'cancel_edit_modal'
 = render 'restore_autosave.html.haml'
