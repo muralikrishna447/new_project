@@ -47,7 +47,11 @@ module Merit
       grant_on 'uploads#create', :badge => 'spherification' do |upload|
         course = upload.course
         user = upload.user
-        course && course.title == 'Spherification' && user.viewed_activities_in_course(course).count >= course.viewable_activities.count
+        if course.present?
+          course.title == 'Spherification' && user.viewed_activities_in_course(course).count >= course.viewable_activities.count
+        else
+          false
+        end
       end
     end
   end
