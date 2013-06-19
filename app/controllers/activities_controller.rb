@@ -158,6 +158,8 @@ class ActivitiesController < ApplicationController
 
           old_slug = @activity.slug
 
+          @activity.create_or_update_as_ingredient
+
           @activity.store_revision do
             @activity.last_edited_by = current_admin_user
             @activity.update_equipment_json(params[:activity].delete(:equipment))

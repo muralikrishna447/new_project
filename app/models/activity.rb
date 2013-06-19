@@ -79,9 +79,10 @@ class Activity < ActiveRecord::Base
     true
   end
 
-  after_commit :create_as_ingredient
-  def create_as_ingredient
-     Ingredient.find_or_create_by_sub_activity_id(self.id)
+  after_commit :create_or_update_as_ingredient
+  def create_or_update_as_ingredient
+    i = Ingredient.find_or_create_by_sub_activity_id(self.id)
+    i.update_attribute(:title, self.title)
   end
 
   before_destroy :destroy_as_ingredient
@@ -202,8 +203,6 @@ class Activity < ActiveRecord::Base
     steps.destroy_all()
     steps.reload()
     if steps_attrs
-      puts "********"
-      puts steps_attrs
       steps_attrs.each do |step_attr|
         step = steps.create()
         step.update_attributes(
