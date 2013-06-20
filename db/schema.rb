@@ -11,6 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+
 ActiveRecord::Schema.define(:version => 20130620003117) do
 
   create_table "active_admin_comments", :force => true do |t|
@@ -420,7 +421,7 @@ ActiveRecord::Schema.define(:version => 20130620003117) do
   create_table "uploads", :force => true do |t|
     t.integer  "activity_id"
     t.integer  "user_id"
-    t.string   "recipe_name"
+    t.string   "title"
     t.text     "image_id"
     t.text     "notes"
     t.datetime "created_at",                     :null => false

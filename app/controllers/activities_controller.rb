@@ -36,6 +36,7 @@ class ActivitiesController < ApplicationController
   def show
 
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
+    @upload = Upload.new
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end

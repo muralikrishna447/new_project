@@ -24,7 +24,7 @@
           .horizontal-slider{data: {direction: 'right'}}
             .horizontal-slider-wrap
               - @course.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
-                = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+                = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.title, image: upload.image_id
             %div{class: "horizontal-slider-btn-right btn btn-circle"}
               %i{class: "icon-chevron-right"}
             %div{class: "horizontal-slider-shadow-overlay-right"}
@@ -35,7 +35,7 @@
   .row.section
     .span8.offset2.text-center
       %h2 The ideal tool for this course
-      %p.section Many of the recipes in our poutine course, including the squeaky cheese curd, make use of a SousVide Supreme water bath. This helpful tool affords accurate temperature control essential for sous vide cooking, but useful in many other unexpected ways in the kitchen.
+      %p.section Many of the recipes in our poutine course, including the squeaky cheese curd, make use of a SousVide Supreme water bath. This helpful tool affords accurate temperature control essential for sous vide cooking, but is useful in many other unexpected ways in the kitchen.
 
 %hr
 
@@ -43,7 +43,7 @@
   .row.section
     .span5
       = image_tag 'https://www.filepicker.io/api/file/lgyi1qx3RVyEKG3lxdRp'
-    .span7
+    .span6.offset1
       %h2 SousVide Supreme
       = Course::SVS[:copy]
       .well.section
@@ -55,7 +55,7 @@
   .row.section
     .span5
       = image_tag 'https://www.filepicker.io/api/file/XKjDWnY0So2bEaB9OdVx'
-    .span7
+    .span6.offset1
       %h2 SousVide Supreme Demi
       = Course::SVS_DEMI[:copy]
       .well.section
