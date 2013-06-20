@@ -1,4 +1,4 @@
-# TODO some of this can be dried up wrt ingredient_edit_pair
+# TODO some of this can be dried up wrt equipment_edit_pair
 angular.module('ChefStepsApp').directive 'csinputmonkeyingredient', ->
   restrict: 'A',
 
@@ -65,4 +65,4 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
 
       return true
 
-  templateUrl: '/client_views/_ingredient_edit_pair'
+  templateUrl: '_ingredient_edit_pair.html'

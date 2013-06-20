@@ -6,6 +6,7 @@
 //=require localStorageModule
 //=require select2
 //=require ui-bootstrap-tpls-0.3.0
+//=require angular/templates
 //=require angular/chefstepsAngularInit
 //=require ingredient_parser
 //=require_tree  ./angular

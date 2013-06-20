@@ -36,6 +36,7 @@ class ActivitiesController < ApplicationController
   def show
 
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
+    @upload = Upload.new
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -60,6 +61,7 @@ class ActivitiesController < ApplicationController
           end
           render 'course_activity'
           track_event @current_inclusion
+          return
         else
           if @activity.courses.any? && @activity.courses.first.published?
             flash[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
@@ -88,6 +90,7 @@ class ActivitiesController < ApplicationController
         # If this is a crawler, render a basic HTML page for SEO that doesn't depend on Angular
         if params.has_key?(:'_escaped_fragment_')
           render template: 'activities/static_html'
+          return
         end
       end
    end
@@ -131,6 +134,20 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def notify_start_edit
+    # Done this way to avoid touching the updated_at field as that is used to know whether to replace the model on
+    # the angular side.
+    # http://stackoverflow.com/questions/11766037/update-attribute-without-altering-the-updated-at-field
+    Activity.where(id: params[:id]).update_all(currently_editing_user: current_admin_user)
+    head :no_content
+  end
+
+  def notify_end_edit
+    Activity.where(id: params[:id]).update_all(currently_editing_user: nil)
+    head :no_content
+  end
+
+
   def update_as_json
     if params[:fork]
       # Can't seem to get custom verb & URL to work in angular, so tacking it onto this one
@@ -141,6 +158,8 @@ class ActivitiesController < ApplicationController
         format.json do
 
           old_slug = @activity.slug
+
+          @activity.create_or_update_as_ingredient
 
           @activity.store_revision do
             @activity.last_edited_by = current_admin_user

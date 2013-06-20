@@ -9,7 +9,7 @@
     -if admin_user_signed_in? && @include_edit_toolbar
       .pull-right(style="margin-left: 20px;")
 
-        %button#edit-mode.btn.btn-primary(type='button' ng-click="startEditMode()" tooltip="Edit this recipe" tooltip-placement="left")
+        %button#edit-mode.btn.btn-primary(type='button' ng-click="maybeStartEditMode()" tooltip="Edit this recipe" tooltip-placement="left")
           Edit
         %button#edit-mode.btn.btn-primary(type='button' ng-click="fork()" tooltip="Edit a copy of this recipe" tooltip-placement="left")
           Fork
