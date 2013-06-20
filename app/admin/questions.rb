@@ -28,7 +28,7 @@ ActiveAdmin.register Question do
     private
 
     def respond_to_box_sort_create(question)
-      redirect_to edit_admin_question_path(question)
+      redirect_to edit_admin_quiz_question_path(question)
     end
 
     def respond_to_multiple_choice_create(question)
@@ -36,7 +36,7 @@ ActiveAdmin.register Question do
     end
 
     def respond_to_box_sort_update(question)
-      redirect_to manage_questions_admin_quiz_path(question.quiz)
+      redirect_to manage_admin_quiz_questions_path(question.quiz)
     end
 
     def respond_to_multiple_choice_update(question)
