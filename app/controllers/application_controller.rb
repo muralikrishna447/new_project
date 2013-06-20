@@ -15,11 +15,16 @@ class ApplicationController < ActionController::Base
   # On sign in, if profile isn't complete, nudge them to finish it now
   def after_sign_in_path_for(user)
     return super(user) if user.admin? || user.profile_complete?
+    super(user)
     user_profile_path(user)
   end
 
-  def current_ability
-    @current_ability ||= Ability.new(current_user, current_admin_user)
+  def authenticate_active_admin_user!
+    authenticate_user!
+    unless current_user.role?(:admin)
+      flash[:alert] = "Unauthorized Access!"
+      redirect_to root_path
+    end
   end
 
 private

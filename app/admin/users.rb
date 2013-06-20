@@ -38,6 +38,13 @@ ActiveAdmin.register User do
       f.input :website
       f.input :quote
     end
+    if f.object.encrypted_password.blank?
+      f.inputs "Password (Required!)" do
+        f.input :password
+        f.input :password_confirmation
+      end
+    end
+
     f.actions
   end
 end

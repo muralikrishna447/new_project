@@ -29,7 +29,7 @@
                     .dropdown-background
                     %li= link_to 'Recipes', recipe_gallery_index_url
                     %li= link_to 'Techniques', techniques_url
-                    -if admin_user_signed_in?
+                    -if can? :update, Activity
                       %li= link_to 'New Recipe', new_activity_url
                 %li.dropdown
                   .nav-item-border

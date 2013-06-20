@@ -6,7 +6,7 @@
       .btn.btn-secondary#show-all
         Show All
         %i.icon-picture#show-all-icon
-    -if can? :update, @activity && @include_edit_toolbar
+    -if can?(:update, Activity) && @include_edit_toolbar
       .pull-right(style="margin-left: 20px;")
 
         %button#edit-mode.btn.btn-primary(type='button' ng-click="maybeStartEditMode()" tooltip="Edit this recipe" tooltip-placement="left")

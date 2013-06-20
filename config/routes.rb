@@ -1,4 +1,6 @@
 Delve::Application.routes.draw do
+  root to: "home#index"
+
   ActiveAdmin.routes(self)
 
   # Redirects
@@ -17,7 +19,6 @@ Delve::Application.routes.draw do
   match '/activities/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
     to: redirect('/activities/sous-vide-pork-cheek-celery-root-pickled-apples')
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
 
   get "styleguide" => "styleguide#index"
 
@@ -41,8 +42,6 @@ Delve::Application.routes.draw do
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
-
-  root to: "home#index"
 
   get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
 
