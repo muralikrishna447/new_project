@@ -71,8 +71,7 @@
     .row(ng-hide="editMode")
       .span12
         %h3 User Creations
-        %button.btn.btn-primary{data: {toggle: 'modal', target: '#upload-user-creation'}}
-          UPLOAD YOUR OWN
+        = link_to 'UPLOAD YOUR OWN', 'javascript:void(0);', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}
         #user-creations-carousel
           - if @activity.uploads.any?
             .horizontal-slider{data: {direction: 'right'}}
