@@ -73,10 +73,10 @@
         %h3 User Creations
         = link_to 'UPLOAD YOUR OWN', 'javascript:void(0);', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}
         #user-creations-carousel
-          - if @activity.uploads.any?
+          - if @activity.uploads.approved.any?
             .horizontal-slider{data: {direction: 'right'}}
               .horizontal-slider-wrap
-                - @activity.uploads.includes(:user).order('created_at DESC').each do |upload|
+                - @activity.uploads.approved.includes(:user).order('created_at DESC').each do |upload|
                   = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.title, image: upload.image_id
               %div{class: "horizontal-slider-btn-right btn btn-circle"}
                 %i{class: "icon-chevron-right"}
