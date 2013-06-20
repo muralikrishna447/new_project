@@ -30,14 +30,25 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :role
 
   validates_presence_of :name
 
   validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
 
+  ROLES = %w[admin moderator user banned]
+
+  def role?(base_role)
+    ROLES.index(base_role.to_s) >= ROLES.index(role)
+  end
+
+  def role
+    read_attribute(:role) || "user"
+  end
+
+
   def admin?
-    false
+    self.role == "admin"
   end
 
   def profile_complete?

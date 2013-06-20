@@ -48,6 +48,7 @@ gem 'redis'
 gem 'merit'
 gem 'has_scope'
 gem 'mixpanel'
+gem 'cancan'
 
 # Gems used only for assets and not required
 # in production environments by default.

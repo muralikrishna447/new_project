@@ -27,7 +27,7 @@ class ActivitiesController < ApplicationController
 
   before_filter :require_admin, only: [:new, :update_as_json]
   def require_admin
-    unless admin_user_signed_in?
+    unless can? :update, @activity
       flash[:error] = "You must be logged in as an administrator to do this"
       redirect_to new_admin_user_session_path
     end

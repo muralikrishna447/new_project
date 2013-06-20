@@ -18,6 +18,10 @@ class ApplicationController < ActionController::Base
     user_profile_path(user)
   end
 
+  def current_ability
+    @current_ability ||= Ability.new(current_user, current_admin_user)
+  end
+
 private
   
   def track_event(trackable, action = params[:action])
