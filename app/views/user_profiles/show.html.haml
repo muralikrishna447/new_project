@@ -60,7 +60,7 @@
         .tab-pane#uploads
           - @user.uploads.each do |upload|
             - upload_title = capture do
-              = link_to upload.recipe_name, user_upload_path(@user, upload)
+              = link_to upload.title, user_upload_path(@user, upload)
             = render 'shared/media_list_item', image: upload.image_id, title: upload_title, text: upload.notes
 
     .span5

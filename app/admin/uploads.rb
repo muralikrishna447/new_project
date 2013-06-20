@@ -24,6 +24,16 @@ index do
   column :user do |upload|
     link_to upload.user.email, admin_user_path(upload.user)
   end
+  column :course do |upload|
+    if upload.course
+      link_to upload.course.title, course_path(upload.course)
+    end
+  end
+  column :activity do |upload|
+    if upload.activity
+      link_to upload.activity.title, activity_path(upload.activity)
+    end
+  end
   column :action, sortable: :approved do |upload|
     if upload.approved?
       link_to 'Unapprove This', unapprove_admin_upload_path(upload)
