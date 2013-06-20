@@ -31,6 +31,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   currently_loading = false
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.gallery_index_params = {}
+
   $scope.load_data = ->
     # $scope.page < $scope.gallery_count/12 + 1 stops attempting to load more pages when all the activities are loaded
     if !currently_loading && $scope.page < $scope.gallery_count/12 + 1
@@ -47,21 +48,28 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
         $scope.spinner = false
       $scope.page+=1
 
+  $scope.clear_and_load = ->
+    $scope.activities = {}
+    $scope.page = 1
+    $scope.load_data()
+
   $scope.$watch 'filters.difficulty', (newValue) ->
     console.log newValue
     if (typeof(newValue) != "undefined")
       $scope.gallery_index_params['difficulty'] = newValue
-      $scope.activities = {}
-      $scope.page = 1
-      $scope.load_data()
+      $scope.clear_and_load()
 
   $scope.$watch 'filters.by_published_at', (newValue) ->
     console.log newValue
     if (typeof(newValue) != "undefined")
       $scope.gallery_index_params['by_published_at'] = newValue
-      $scope.activities = {}
-      $scope.page = 1
-      $scope.load_data()
+    $scope.clear_and_load()
+
+  $scope.$watch 'filters.published_status', (newValue) ->
+    console.log newValue
+    if (typeof(newValue) != "undefined")
+      $scope.gallery_index_params['published_status'] = newValue
+      $scope.clear_and_load()
 
   $scope.$watch 'filters.clear', (newValue) ->
     console.log newValue
@@ -69,9 +77,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       $scope.gallery_index_params = {}
       $scope.filters.clear = false
       $scope.filters = {}
-      $scope.activities = {}
-      $scope.page = 1
-      $scope.load_data()
+      $scope.clear_and_load()
 
   # $scope.fill_screen = ->
   #   if ($("body").height() < window.innerHeight)
