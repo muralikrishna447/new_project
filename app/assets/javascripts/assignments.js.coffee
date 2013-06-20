@@ -5,4 +5,4 @@ $ ->
     activity_title = $.trim(box.text())
 
     $('#upload_activity_id').val(activity_id)
-    $('#upload_recipe_name').val(activity_title)
+    $('#upload_title').val(activity_title)

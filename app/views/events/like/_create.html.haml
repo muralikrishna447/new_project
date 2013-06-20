@@ -10,7 +10,7 @@
         = image_tag filepicker_circle_image(likeable_object.image_id), class: 'img-circle'
     .timeline-circle-text.text-center
       %strong
-        = likeable_object.recipe_name
+        = likeable_object.title
       %div
         = "#{user_noun} liked #{link_to likeable_object.user.name, user_profile_path(likeable_object.user)}'s #{link_to 'photo', likeable_object}.".html_safe
       %div
