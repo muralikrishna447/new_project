@@ -85,4 +85,5 @@ $ ->
       e.stopPropagation()
       e.preventDefault()
       dt = e.originalEvent.dataTransfer
-      dt.effectAllowed = dt.dropEffect = "none"
+      if dt
+        dt.effectAllowed = dt.dropEffect = "none"
