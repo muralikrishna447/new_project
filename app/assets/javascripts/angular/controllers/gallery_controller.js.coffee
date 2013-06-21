@@ -1,6 +1,10 @@
 angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
   Activity = $resource(document.location.pathname + '/index_as_json')
   $scope.activities = Activity.query()
+  $scope.defaultFilters = {published_status: "Published"}
+  $scope.filters = angular.extend({}, $scope.defaultFilters)
+
+  $scope.placeHolderImage = "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
 
   $scope.activityImageFpfile = (activity) ->
     if activity?
@@ -12,13 +16,13 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
         if activity.steps?
           images = activity.steps.map (step) -> step.image_id
           image_fpfile = images[images.length - 1]
-          return JSON.parse(image_fpfile) if image_fpfile?
-    nil
+          return JSON.parse(image_fpfile) if (image_fpfile? && (image_fpfile != ""))
+    ""
 
   $scope.activityImageURL = (activity, width) ->
     fpfile = $scope.activityImageFpfile(activity)
-    return JSON.parse(fpfile).url + "/convert?fit=max&w=#{width}&cache=true" if fpfile
-    ""
+    return (fpfile.url + "/convert?fit=max&w=#{width}&cache=true") if (fpfile? && fpfile.url?)
+    $scope.placeHolderImage
 
   $scope.serialize = (obj) ->
     str = []
@@ -37,17 +41,26 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.load_data = ->
     # $scope.page < $scope.gallery_count/12 + 1 stops attempting to load more pages when all the activities are loaded
     if !currently_loading && $scope.page < $scope.gallery_count/12 + 1
+
       currently_loading = true
       $scope.spinner = true
       $scope.gallery_index_params['page'] = $scope.page
-      more_activities = $resource($scope.gallery_index + '?' + $scope.serialize($scope.gallery_index_params)).query ->
-        console.log $scope.gallery_index + '?' + $scope.serialize($scope.gallery_index_params)
+      temp_params = angular.extend({}, $scope.gallery_index_params)
+
+      # For unpublished, if sorting by date use updated instead of pubbed date
+      if temp_params.published_status == "Unpublished" && temp_params.by_published_at?
+        temp_params.by_updated_at = temp_params.by_published_at
+        delete temp_params.by_published_at
+
+      more_activities = $resource($scope.gallery_index + '?' + $scope.serialize(temp_params)).query ->
+        console.log $scope.gallery_index + '?' + $scope.serialize(temp_params)
         if Object.keys($scope.activities).length == 0
           $scope.activities = more_activities
         else
           $scope.activities = $scope.activities.concat(more_activities)
         currently_loading = false
         $scope.spinner = false
+
       $scope.page+=1
 
   $scope.clear_and_load = ->
@@ -73,13 +86,14 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       $scope.gallery_index_params['published_status'] = newValue
       $scope.clear_and_load()
 
-  $scope.$watch 'filters.clear', (newValue) ->
-    console.log newValue
-    if (typeof(newValue) != "undefined") && newValue
-      $scope.gallery_index_params = {}
-      $scope.filters.clear = false
-      $scope.filters = {}
-      $scope.clear_and_load()
+  $scope.clearFilters = ->
+    $scope.gallery_index_params = {}
+    $scope.filters.clear = false
+    $scope.filters = angular.extend({}, $scope.defaultFilters)
+    $scope.clear_and_load()
+
+  $scope.nonDefaultFilters = ->
+    ! _.isEqual($scope.filters, $scope.defaultFilters)
 
   # $scope.fill_screen = ->
   #   if ($("body").height() < window.innerHeight)

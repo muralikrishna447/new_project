@@ -41,8 +41,6 @@
 
     .span12#gallery-count{:'gallery-count' => "#{@recipes_count}"}
       %div(ng-controller='GalleryController')
-        %pre
-          {{gallery_index_params | json }}
         / .flat-form
         /   %form
         /     %input(ng-model='search' placeholder='Enter Name')

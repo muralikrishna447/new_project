@@ -45,7 +45,7 @@ class Activity < ActiveRecord::Base
   scope :newest, order('published_at DESC')
   scope :oldest, order('published_at ASC')
   scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
-  scope :published_status, -> status { status == 'Published' ? where(published: true) : (status == 'Unpublished' ? where(published: false) : scoped)}
+  scope :by_updated_at, -> direction { direction == 'desc' ? order('updated_at DESC') : order('updated_at ASC')}
   scope :randomize, order('random()')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
