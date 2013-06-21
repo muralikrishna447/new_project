@@ -11,7 +11,12 @@ class RecipeGalleryController < ApplicationController
   end
 
   def index_as_json
-    @recipes = apply_scopes(Activity).recipes.includes(:steps).page(params[:page]).per(12)
+    if ["Unpublished", "All"].find(params[:published_status]) then
+      @recipes = apply_scopes(Activity).recipes.page(params[:page]).per(12)
+    else
+      @recipes = apply_scopes(Activity).recipes.includes(:steps).page(params[:page]).per(12)
+    end
+
     respond_to do |format|
       format.json { render :json => @recipes.to_json(only: [:title, :image_id, :featured_image_id, :difficulty, :published_at, :slug], :include => :steps) }
     end

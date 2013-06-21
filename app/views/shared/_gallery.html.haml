@@ -60,19 +60,21 @@
       .dropdown-toggle
         {{filters.published || 'Publish Status'}}
         %i.icon-angle-down
-      %ul.dropdown-menu(ng-init="publishedChoices=['All', 'Published', 'Unpublished']")
-        %li(ng-repeat="choice in publishedChoices")
+      %ul.dropdown-menu
+        %li(ng-repeat="choice in ['All', 'Published', 'Unpublished']")
           %a(ng-click="filters.published_status = choice")
             {{choice}}
   .dropdown
     %div(ng-show="filters.difficulty || filters.by_published_at" ng-click="filters.clear = 'true'")
       = link_to 'Clear x', 'javascript:void(0);'
+
 %div.pull-left(galleryscroll='load_data()')
   .media-box-3(ng-cloak='' ng-repeat='activity in activities' ng-animate="'gallery-animation'")
     %a(href= 'activities/{{activity.slug}}')
       .media-box-3-title
         {{activity.title}}
-      %img(ng-src="{{activityImageURL(activity, 400)}}")
+      %div(ng-if="activityImageURL(activity, 400)")
+        %img(ng-src="{{activityImageURL(activity, 400)}}")
       .media-box-3-footer
         .footer-left
           {{activity.difficulty}}

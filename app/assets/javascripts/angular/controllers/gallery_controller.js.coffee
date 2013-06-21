@@ -2,21 +2,23 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   Activity = $resource(document.location.pathname + '/index_as_json')
   $scope.activities = Activity.query()
 
-  $scope.activityImageURL = (activity, width) ->
-    url = ""
-    if (typeof(activity) != "undefined")
+  $scope.activityImageFpfile = (activity) ->
+    if activity?
       if activity.featured_image_id
-        url = JSON.parse(activity.featured_image_id).url
-        url + "/convert?fit=max&w=#{width}&cache=true"
+        return JSON.parse(activity.featured_image_id)
       else if activity.image_id
-        url = JSON.parse(activity.image_id).url
-        url + "/convert?fit=max&w=#{width}&cache=true"
+        return JSON.parse(activity.image_id)
       else
-        if (typeof(activity.steps) != "undefined")
+        if activity.steps?
           images = activity.steps.map (step) -> step.image_id
-          image_url = images[images.length - 1]
-          url = JSON.parse(image_url).url
-          url + "/convert?fit=max&w=#{width}&cache=true"
+          image_fpfile = images[images.length - 1]
+          return JSON.parse(image_fpfile) if image_fpfile?
+    nil
+
+  $scope.activityImageURL = (activity, width) ->
+    fpfile = $scope.activityImageFpfile(activity)
+    return JSON.parse(fpfile).url + "/convert?fit=max&w=#{width}&cache=true" if fpfile
+    ""
 
   $scope.serialize = (obj) ->
     str = []
