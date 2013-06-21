@@ -1,7 +1,27 @@
 angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
   Activity = $resource(document.location.pathname + '/index_as_json')
   $scope.activities = Activity.query()
-  $scope.defaultFilters = {published_status: "Published"}
+
+  $scope.publishedAtChoices = [
+    {name: "Newest", value: "desc"},
+    {name: "Oldest", value: "asc"}
+  ]
+
+  $scope.difficultyChoices = [
+    {name: "Easy", value: "easy"},
+    {name: "Intermediate", value: "intermediate"}
+    {name: "Advanced", value: "advanced"}
+  ]
+
+  $scope.publishedStatusChoices = [
+    {name: "Published", value: "Published"},
+    {name: "Unpublished", value: "Unpublished"}
+  ]
+
+  $scope.defaultFilters = {
+    by_published_at: $scope.publishedAtChoices[0],
+    published_status: $scope.publishedStatusChoices[0]
+  }
   $scope.filters = angular.extend({}, $scope.defaultFilters)
 
   $scope.placeHolderImage = "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
@@ -35,8 +55,19 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.page = 2
   currently_loading = false
+
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
-  $scope.gallery_index_params = {}
+
+  $scope.galleryIndexParams = ->
+    r = {page: $scope.page}
+    for filter, pair of $scope.filters
+      r[filter] = pair.value
+
+    # For unpublished, sort by updated date instead of published date
+    if r.published_status == "Unpublished" && r.by_published_at?
+      r.by_updated_at = r.by_published_at
+      delete r.by_published_at
+    r
 
   $scope.load_data = ->
     # $scope.page < $scope.gallery_count/12 + 1 stops attempting to load more pages when all the activities are loaded
@@ -44,16 +75,10 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
       currently_loading = true
       $scope.spinner = true
-      $scope.gallery_index_params['page'] = $scope.page
-      temp_params = angular.extend({}, $scope.gallery_index_params)
+      gip = $scope.galleryIndexParams()
 
-      # For unpublished, if sorting by date use updated instead of pubbed date
-      if temp_params.published_status == "Unpublished" && temp_params.by_published_at?
-        temp_params.by_updated_at = temp_params.by_published_at
-        delete temp_params.by_published_at
-
-      more_activities = $resource($scope.gallery_index + '?' + $scope.serialize(temp_params)).query ->
-        console.log $scope.gallery_index + '?' + $scope.serialize(temp_params)
+      more_activities = $resource($scope.gallery_index + '?' + $scope.serialize(gip)).query ->
+        console.log $scope.gallery_index + '?' + $scope.serialize(gip)
         if Object.keys($scope.activities).length == 0
           $scope.activities = more_activities
         else
@@ -70,25 +95,17 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.$watch 'filters.difficulty', (newValue) ->
     console.log newValue
-    if (typeof(newValue) != "undefined")
-      $scope.gallery_index_params['difficulty'] = newValue
-      $scope.clear_and_load()
+    $scope.clear_and_load() if newValue
 
   $scope.$watch 'filters.by_published_at', (newValue) ->
     console.log newValue
-    if (typeof(newValue) != "undefined")
-      $scope.gallery_index_params['by_published_at'] = newValue
-    $scope.clear_and_load()
+    $scope.clear_and_load() if newValue
 
   $scope.$watch 'filters.published_status', (newValue) ->
     console.log newValue
-    if (typeof(newValue) != "undefined")
-      $scope.gallery_index_params['published_status'] = newValue
-      $scope.clear_and_load()
+    $scope.clear_and_load() if newValue
 
   $scope.clearFilters = ->
-    $scope.gallery_index_params = {}
-    $scope.filters.clear = false
     $scope.filters = angular.extend({}, $scope.defaultFilters)
     $scope.clear_and_load()
 
