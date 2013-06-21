@@ -159,7 +159,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     'ChefSteps Activity Base' + $scope.localStorageKeyId()
 
   $scope.saveToLocalStorage = ->
-    localStorageService.add($scope.localStorageKey(), JSON.stringify($scope.activity))
+    if $scope.editMode
+      localStorageService.add($scope.localStorageKey(), JSON.stringify($scope.activity))
 
   $scope.saveBaseToLocalStorage = ->
     localStorageService.add($scope.localStorageBaseKey(), JSON.stringify($scope.activity))

@@ -64,7 +64,7 @@ class ActivitiesController < ApplicationController
           return
         else
           if @activity.courses.any? && @activity.courses.first.published?
-            flash[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
+            flash.now[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
           end
           track_event @activity
         end
