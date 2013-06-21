@@ -8,9 +8,10 @@
       .lead.section
         = @upload.notes
         - if @upload.course && @upload.course.title == 'Spherification'
-          .section.text-center{:style => "padding: 20px; border: 1px solid #e25f25;"}
-            = link_to course_path('spherification', anchor: 'enthusiast') do
-              = image_tag 'https://www.filepicker.io/api/file/AE4undUwRLqq9l69DVIV'
+          .row
+            .span3.offset1.section.text-center{:style => "padding: 20px; border: 1px solid  #e25f25;"}
+              = link_to course_path('spherification', anchor: 'enthusiast') do
+                = image_tag 'https://www.filepicker.io/api/file/AE4undUwRLqq9l69DVIV'
     .span6
       .lead
         - if @upload.course
