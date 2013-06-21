@@ -1,6 +1,7 @@
 angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
   Activity = $resource(document.location.pathname + '/index_as_json')
   $scope.activities = Activity.query()
+  $scope.maybe_clear = false
 
   $scope.publishedAtChoices = [
     {name: "Newest", value: "desc"},
@@ -60,8 +61,11 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.galleryIndexParams = ->
     r = {page: $scope.page}
-    for filter, pair of $scope.filters
-      r[filter] = pair.value
+    for filter, x of $scope.filters
+      if _.isObject(x)
+        r[filter] = x.value
+      else
+        r[filter] = x
 
     # For unpublished, sort by updated date instead of published date
     if r.published_status == "Unpublished" && r.by_published_at?
@@ -79,17 +83,22 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
       more_activities = $resource($scope.gallery_index + '?' + $scope.serialize(gip)).query ->
         console.log $scope.gallery_index + '?' + $scope.serialize(gip)
-        if Object.keys($scope.activities).length == 0
-          $scope.activities = more_activities
-        else
-          $scope.activities = $scope.activities.concat(more_activities)
+        if more_activities
+          if $scope.maybe_clear
+            if ! _.isEqual(_.pluck($scope.activities, 'slug'), _.pluck(more_activities, 'slug'))
+              $scope.activities = more_activities
+          else if Object.keys($scope.activities).length == 0
+            $scope.activities = more_activities
+          else
+            $scope.activities = $scope.activities.concat(more_activities)
         currently_loading = false
+        $scope.maybe_clear = false
         $scope.spinner = false
 
       $scope.page+=1
 
   $scope.clear_and_load = ->
-    $scope.activities = {}
+    $scope.maybe_clear = true
     $scope.page = 1
     $scope.load_data()
 
@@ -104,6 +113,10 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.$watch 'filters.published_status', (newValue) ->
     console.log newValue
     $scope.clear_and_load() if newValue
+
+  $scope.$watch 'filters.search_all', (newValue) ->
+    console.log newValue
+    $scope.clear_and_load()
 
   $scope.clearFilters = ->
     $scope.filters = angular.extend({}, $scope.defaultFilters)

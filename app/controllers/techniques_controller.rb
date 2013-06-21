@@ -6,6 +6,9 @@ class TechniquesController < ApplicationController
   has_scope :published_status, default: "Published" do |controller, scope, value|
     value == "Published" ? scope.published.techniques.includes(:steps) : scope.unpublished.techniques.where("title != 'DUMMY NEW ACTIVITY'")
   end
+  has_scope :search do |controller, scope, value|
+
+  end
 
   def index
     @techniques = apply_scopes(Activity).techniques.order('published_at DESC').uniq.page(params[:page]).per(12)
