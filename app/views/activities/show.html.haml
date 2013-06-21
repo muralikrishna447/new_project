@@ -68,7 +68,7 @@
 
 - content_for :bottom do
   - if ! @minimal
-    .row(ng-hide="editMode")
+    .row(ng-hide="editMode" ng-cloak)
       .span12
         %h3 User Creations
         = link_to 'UPLOAD YOUR OWN', 'javascript:void(0);', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}
