@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
+angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", ($scope, $resource, $location, $timeout) ->
   Activity = $resource(document.location.pathname + '/index_as_json')
   $scope.activities = Activity.query()
   $scope.maybe_clear = false
@@ -116,7 +116,9 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.$watch 'filters.search_all', (newValue) ->
     console.log newValue
-    $scope.clear_and_load()
+    $timeout (->
+      $scope.clear_and_load()
+    ), 250
 
   $scope.clearFilters = ->
     $scope.filters = angular.extend({}, $scope.defaultFilters)
