@@ -3,3 +3,10 @@
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
 = render 'poutine_a'
+
+- if current_user
+  :javascript
+    mixpanel.track('Course Viewed', {'distinct_id' : "#{current_user.id}", 'course' : "#{course.title}", 'url' : window.location.pathname});
+- else
+  :javascript
+    mixpanel.track('Course Viewed', {'course title' : "#{course.title}", 'url' : window.location.pathname});
