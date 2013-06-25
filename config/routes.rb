@@ -127,6 +127,7 @@ Delve::Application.routes.draw do
   resources :likes, only: [:create]
   resources :pages, only: [:show]
   resources :badges, only: [:index]
+  resources :polls
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
