@@ -2,7 +2,11 @@
 - content_for :description, course.short_description
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
-= render 'poutine_a'
+- ab_test('poutine', {'poutine_a' => 1}, {'poutine_b' => 1}) do |poutine|
+  - if poutine == 'poutine_a'
+    = render 'poutine_a'
+  - elsif poutine == 'poutine_b'
+    = render 'poutine_b'
 
 - if current_user
   :javascript
