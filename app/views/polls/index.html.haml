@@ -1,11 +1,18 @@
 .container
   .row
     .span12
-      %h1 Polls
+      %h2 Polls
+      = paginate @polls
 
-/ .container.gallery-wrapper
-/   .row
-/     .span12#gallery-count{:'gallery-count' => "#{@recipes_count}"}
-/       %div(ng-controller='GalleryController')
-/         %span(ng-model="admin_signed_in" ng-init="admin_signed_in='#{admin_user_signed_in?}'")
-/         = render 'shared/gallery'
+- @polls.each do |poll|
+  .container
+    .row.section
+      .span4
+        = render 'shared/media_box_2', url: poll_path(poll), title: poll.title, image: 'http://placehold.it/350x150', object: poll
+      .span8
+        %h2= poll.title
+        %p= poll.description
+.container
+  .row
+    .span12
+      = paginate @polls
