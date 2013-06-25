@@ -103,7 +103,8 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.$watch 'filters.published_status', (newValue) ->
     console.log newValue
-    $scope.clear_and_load() if newValue
+    $scope.clear_and_load() if newValue && $scope.admin_signed_in
+    $scope.page+=1
 
   $scope.clearFilters = ->
     $scope.filters = angular.extend({}, $scope.defaultFilters)
