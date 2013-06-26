@@ -33,6 +33,7 @@ class Activity < ActiveRecord::Base
   has_many :likes, as: :likeable
 
   belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
+  belongs_to :currently_editing_user, class_name: AdminUser, foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
 
@@ -41,6 +42,10 @@ class Activity < ActiveRecord::Base
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
   scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
+  scope :newest, order('published_at DESC')
+  scope :oldest, order('published_at ASC')
+  scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
+  scope :by_updated_at, -> direction { direction == 'desc' ? order('updated_at DESC') : order('updated_at ASC')}
   scope :randomize, order('random()')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
@@ -48,7 +53,7 @@ class Activity < ActiveRecord::Base
   serialize :activity_type, Array
 
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
-  attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes
+  attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -75,9 +80,10 @@ class Activity < ActiveRecord::Base
     true
   end
 
-  after_commit :create_as_ingredient
-  def create_as_ingredient
-     Ingredient.find_or_create_by_sub_activity_id(self.id)
+  after_commit :create_or_update_as_ingredient
+  def create_or_update_as_ingredient
+    i = Ingredient.find_or_create_by_sub_activity_id(self.id)
+    i.update_attribute(:title, self.title)
   end
 
   before_destroy :destroy_as_ingredient
@@ -171,10 +177,17 @@ class Activity < ActiveRecord::Base
         title = i[:ingredient][:title]
          unless title.nil? || title.blank?
           title.strip!
-          ingredient_foo = Ingredient.where(id: i[:ingredient][:id]).first_or_create(title: title)
+
+          # Try first by id
+          the_ingredient = Ingredient.find_by_id(i[:ingredient][:id])
+
+          # Otherwise, try by title because it is possible for a user to type fast and not get
+          # an autocompleted ingredient with an id filled it, but it is still in the database
+          the_ingredient = Ingredient.where(title: title).first_or_create()  if ! the_ingredient
+
           activity_ingredient = ActivityIngredient.create({
                                                             activity_id: self.id,
-                                                            ingredient_id: ingredient_foo.id,
+                                                            ingredient_id: the_ingredient.id,
                                                             note: i[:note],
                                                             display_quantity: i[:display_quantity],
                                                             unit: i[:unit],
@@ -191,8 +204,6 @@ class Activity < ActiveRecord::Base
     steps.destroy_all()
     steps.reload()
     if steps_attrs
-      puts "********"
-      puts steps_attrs
       steps_attrs.each do |step_attr|
         step = steps.create()
         step.update_attributes(

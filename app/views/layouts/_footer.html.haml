@@ -22,17 +22,16 @@
 
             .span4.offset1
               %h3 Contact
-              %p
-                = link_to 'Blog', 'http://blog.chefsteps.com'
-              %p
-                General:
-                %ul
-                  %li= mail_to 'info@chefsteps.com'
-              %p
-                Press:
-                %ul
-                  %li= mail_to 'press@chefsteps.com'
-                  %li= link_to 'Press Kit', 'http://chefsteps.com/pages/press-kit'
+              %ul.unstyled
+                %li= link_to 'Blog', 'http://blog.chefsteps.com'
+                %li= link_to 'RSS Feed', 'http://feeds.feedburner.com/ChefSteps'
+                %li 
+                  General Info:
+                  = mail_to 'info@chefsteps.com'
+                %li 
+                  Press inquiries:
+                  = mail_to 'press@chefsteps.com'
+                %li= link_to 'Press Kit', 'http://chefsteps.com/pages/presskit'
 
             .span2
               %h3 Other Stuff
@@ -41,6 +40,9 @@
               %p.creative-commons
                 %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
                   = image_tag 'by-nc-sa.png'
+              %p
+                %a{href: 'https://mixpanel.com/f/partner'}
+                  %img{src: '//cdn.mxpnl.com/site_media/images/partner/badge_blue.png', alt: 'Mobile Analytics'}
 
             .span12
               .section.text-center 

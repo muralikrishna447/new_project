@@ -1,48 +1,125 @@
-angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", ($scope, $resource) ->
+angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$location", ($scope, $resource, $location) ->
   Activity = $resource(document.location.pathname + '/index_as_json')
   $scope.activities = Activity.query()
 
-  $scope.activityImageURL = (activity, width) ->
-    url = ""
-    if (typeof(activity) != "undefined")
+  $scope.publishedAtChoices = [
+    {name: "Newest", value: "desc"},
+    {name: "Oldest", value: "asc"}
+  ]
+
+  $scope.difficultyChoices = [
+    {name: "Easy", value: "easy"},
+    {name: "Intermediate", value: "intermediate"}
+    {name: "Advanced", value: "advanced"}
+  ]
+
+  $scope.publishedStatusChoices = [
+    {name: "Published", value: "Published"},
+    {name: "Unpublished", value: "Unpublished"}
+  ]
+
+  $scope.defaultFilters = {
+    by_published_at: $scope.publishedAtChoices[0],
+    published_status: $scope.publishedStatusChoices[0]
+  }
+  $scope.filters = angular.extend({}, $scope.defaultFilters)
+
+  $scope.placeHolderImage = "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
+
+  $scope.activityImageFpfile = (activity) ->
+    if activity?
       if activity.featured_image_id
-        url = JSON.parse(activity.featured_image_id).url
-        url + "/convert?fit=max&w=#{width}&cache=true"
+        return JSON.parse(activity.featured_image_id)
       else if activity.image_id
-        url = JSON.parse(activity.image_id).url
-        url + "/convert?fit=max&w=#{width}&cache=true"
+        return JSON.parse(activity.image_id)
       else
-        if (typeof(activity.steps) != "undefined")
+        if activity.steps?
           images = activity.steps.map (step) -> step.image_id
-          image_url = images[images.length - 1]
-          url = JSON.parse(image_url).url
-          url + "/convert?fit=max&w=#{width}&cache=true"
+          image_fpfile = images[images.length - 1]
+          return JSON.parse(image_fpfile) if (image_fpfile? && (image_fpfile != ""))
+    ""
+
+  $scope.activityImageURL = (activity, width) ->
+    fpfile = $scope.activityImageFpfile(activity)
+    return (fpfile.url + "/convert?fit=max&w=#{width}&cache=true") if (fpfile? && fpfile.url?)
+    $scope.placeHolderImage
+
+  $scope.serialize = (obj) ->
+    str = []
+    for p of obj
+      str.push encodeURIComponent(p) + "=" + encodeURIComponent(obj[p])
+    str.join "&"
 
   # Total gallery items
   $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')
 
-  # Number of gallery items as they're being added
-  $scope.$watch 'activities', (newValue) ->
-    if angular.isArray(newValue)
-      $scope.activities_count = newValue.length
-
-  page = 2
+  $scope.page = 2
   currently_loading = false
+
+  $scope.gallery_index = document.location.pathname + '/index_as_json.json'
+
+  $scope.galleryIndexParams = ->
+    r = {page: $scope.page}
+    for filter, pair of $scope.filters
+      r[filter] = pair.value
+
+    # For unpublished, sort by updated date instead of published date
+    if r.published_status == "Unpublished" && r.by_published_at?
+      r.by_updated_at = r.by_published_at
+      delete r.by_published_at
+    r
+
   $scope.load_data = ->
-    # console.log('loaded')
-    # console.log($scope.activities)
-    if $scope.activities_count < $scope.gallery_count && !currently_loading
+    # $scope.page < $scope.gallery_count/12 + 1 stops attempting to load more pages when all the activities are loaded
+    if !currently_loading && $scope.page < $scope.gallery_count/12 + 1
+
       currently_loading = true
-      more_activities = $resource(document.location.pathname + '/index_as_json.json?page=' + page).query ->
-        console.log(more_activities)
-        $scope.activities = $scope.activities.concat(more_activities)
-        console.log($scope.activities)
+      $scope.spinner = true
+      gip = $scope.galleryIndexParams()
+
+      more_activities = $resource($scope.gallery_index + '?' + $scope.serialize(gip)).query ->
+        console.log $scope.gallery_index + '?' + $scope.serialize(gip)
+        if Object.keys($scope.activities).length == 0
+          $scope.activities = more_activities
+        else
+          $scope.activities = $scope.activities.concat(more_activities)
         currently_loading = false
-        # console.log(page)
-      page+=1
+        $scope.spinner = false
+
+      $scope.page+=1
+
+  $scope.clear_and_load = ->
+    $scope.activities = {}
+    $scope.page = 1
+    $scope.load_data()
+
+  $scope.$watch 'filters.difficulty', (newValue) ->
+    console.log newValue
+    $scope.clear_and_load() if newValue
+
+  $scope.$watch 'filters.by_published_at', (newValue) ->
+    console.log newValue
+    $scope.clear_and_load() if newValue
+
+  $scope.$watch 'filters.published_status', (newValue) ->
+    console.log newValue
+    # $scope.admin_signed_in and $scope.page+=1 fixes the bug where the first 12 items would show up twice
+    $scope.clear_and_load() if newValue && $scope.admin_signed_in
+    $scope.page+=1
+
+  $scope.clearFilters = ->
+    $scope.filters = angular.extend({}, $scope.defaultFilters)
+    $scope.clear_and_load()
+
+  $scope.nonDefaultFilters = ->
+    ! _.isEqual($scope.filters, $scope.defaultFilters)
+
+  # $scope.fill_screen = ->
+  #   if ($("body").height() < window.innerHeight)
+  #     $scope.load_data()
+
+  # $scope.fill_screen()
 ]
-
-
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) ->
   (scope, element, attr) ->

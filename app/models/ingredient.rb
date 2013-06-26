@@ -11,7 +11,7 @@ class Ingredient < ActiveRecord::Base
   # This is for activities that are used as an ingredient in higher level recipes.
   # Note the potential for confusion: the has_many activities is for activities
   # that use this ingredient. The sub_activity_id is for ingredients that *are*
-  # a (nested) activity - which will also typically be used in some activity.
+  # a (nested) activity - which may in turn be used in some activity.
   attr_accessible :sub_activity_id
 
   before_save :fix_title

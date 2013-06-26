@@ -79,6 +79,8 @@ Delve::Application.routes.draw do
       get 'as_json' => 'activities#get_as_json'
       put 'as_json' => 'activities#update_as_json'
       get 'fork' => 'activities#fork'
+      put 'notify_start_edit' => 'activities#notify_start_edit'
+      put 'notify_end_edit' => 'activities#notify_end_edit'
     end
     collection do
       get 'all_tags' => 'activities#get_all_tags'

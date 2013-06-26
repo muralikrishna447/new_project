@@ -32,12 +32,7 @@ $ ->
     window.csUnits = if window.csUnits == "ounces" then "grams" else "ounces"
     # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
     updateUnits(true)
-    step_id = $('#full-ingredients-list').data('target')
-    if step_id.length > 0
-      step = $('#' + step_id)
-      setTimeout (->
-        window.showStepIngredients(step)
-      ), 1000
+
 
 window.makeEditable = (elements) ->
   elements.not(["data-marked-editable"]).editable ((value, settings) ->
@@ -92,17 +87,22 @@ $ ->
   $('.unit').click ->
     $(this).parent().children('.main-qty').click()
 
+window.roundSensible = (qty) ->
+  if qty
+    # Round to a sensible number of digits after the decimal
+    decDigits = 2
+    decDigits = 1 if qty > 1
+    decDigits = 0 if qty > 50
+    mult = Math.pow(10, decDigits)
+    qty = Math.round(qty * mult) / mult
+  qty
+
 # Replace the ingredient quantities and units for a row
 setRow = (row, qtyLbs, qty, units) ->
   cell = row.children('.quantity-group').find('.main-qty')
   row.children('.unit').text(units)
 
-  # Round to a sensible number of digits after the decimal
-  decDigits = 2
-  decDigits = 1 if qty > 1
-  decDigits = 0 if qty > 50
-  mult = Math.pow(10, decDigits)
-  qty = Math.round(qty * mult) / mult
+  qty = window.roundSensible(qty)
 
   # Special formatting for pounds. Tried having an extra set of columns
   # for pounds but that creates spacing problems.

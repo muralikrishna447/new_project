@@ -2,16 +2,8 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
 
   $scope.masterSelect = false
 
-  $scope.addIngredient =  ->
-    # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
-    # but an ugly [object Object]
-    item = {unit: "g"}
-    $scope.step.ingredients.push(item)
-    #$scope.addUndo()
-
-  $scope.removeIngredient = (index) ->
-    $scope.step.ingredients.splice(index, 1)
-    $scope.addUndo()
+  $scope.getIngredientsList = ->
+    $scope.step.ingredients
 
   $scope.setupPossibleIngredients = ->
     $scope.possible_ingredients = deepCopy($scope.activity.ingredients)
@@ -42,11 +34,9 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
 
     $scope.step.ingredients = result
 
-    # We don't want the behavior of freshly added ingredients getting focus. Not the prettiest solution, but
-    # whatayagonnado.
-    $timeout ( ->
-      document.activeElement.blur() if document.activeElement
-    ), 100
+    $scope.temporaryNoAutofocus();
+
+
 
   $scope.toggleSelectFromMaster = ->
     $scope.masterSelect = ! $scope.masterSelect

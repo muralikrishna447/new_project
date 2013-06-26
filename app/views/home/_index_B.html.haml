@@ -6,13 +6,13 @@
 .container
   .row.section
     .span12
-      %h2.text-orange Check out our free courses
+      %h1.text-orange Check out our free courses
   .row.section
     - if @courses.any?
       - @courses.each do |course|
         .span4.offset1
-          = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image, object: course
-      .span7
+          = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.featured_image, object: course
+      .span12.text-center
         %p.lead 
           %br
           %strong With Award-Winning Chefs to Help You Succeed

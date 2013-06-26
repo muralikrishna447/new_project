@@ -32,24 +32,28 @@ $ ->
   #   if hidden_items.length == 1
   #     toggle_button.find('i').attr 'class', 'icon-chevron-right'
 
-  enroll_section = $('#enroll-section')
-  signup_or_signin_section = $('#signup-or-signin-section')
-  signup_and_enroll_section = $('#signup-and-enroll-section')
-  signin_and_enroll_section = $('#signin-and-enroll-section')
-  browse_section = $('#browse-section')
-  enroll_section.show()
-  $('#enroll-section-btn').click ->
-    enroll_section.hide()
-    signup_or_signin_section.show()
-    browse_section.hide()
+  $('.enrollment-wizard').each ->
+    enroll_section = $(this).find('.enroll-section')
+    signup_or_signin_section = $(this).find('.signup-or-signin-section')
+    signup_and_enroll_section = $(this).find('.signup-and-enroll-section')
+    signin_and_enroll_section = $(this).find('.signin-and-enroll-section')
+    browse_section = $(this).find('.browse-section')
+    enroll_section.show()
+    enroll_section_btn = enroll_section.find('.enroll-section-btn')
+    signup_and_enroll_btn = signup_or_signin_section.find('.signup-and-enroll-btn')
+    signin_and_enroll_btn = signup_or_signin_section.find('.signin-and-enroll-btn')
+    enroll_section_btn.click ->
+      enroll_section.hide()
+      signup_or_signin_section.show()
+      browse_section.hide()
 
-    $('#signup-and-enroll-btn').click ->
-      signup_or_signin_section.hide()
-      signup_and_enroll_section.show()
+      signup_and_enroll_btn.click ->
+        signup_or_signin_section.hide()
+        signup_and_enroll_section.show()
 
-    $('#signin-and-enroll-btn').click ->
-      signup_or_signin_section.hide()
-      signin_and_enroll_section.show()
+      signin_and_enroll_btn.click ->
+        signup_or_signin_section.hide()
+        signin_and_enroll_section.show()
 
   #### HACK FOR ANCHOR TAGS ####
   current_url = document.URL

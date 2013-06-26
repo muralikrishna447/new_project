@@ -1,7 +1,7 @@
-- content_for :title, course.title
+- content_for :title, "#{course.title}"
 - content_for :description, course.short_description
 .container
-  %h2= course.title
+  %h1= course.title
   .row.top-video
     .span12
 
@@ -35,3 +35,5 @@
 
   = render 'layouts/disqus_comments', disqus_id: 'course-1', disqus_title:course.title, disqus_url: course_url
 
+- if course.additional_script
+  = course.additional_script.html_safe

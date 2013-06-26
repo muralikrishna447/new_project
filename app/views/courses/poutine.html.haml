@@ -1,0 +1,16 @@
+- content_for :title, course.title
+- content_for :description, course.short_description
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+
+- ab_test('poutine', {'poutine_a' => 1}, {'poutine_b' => 1}) do |poutine|
+  - if poutine == 'poutine_a'
+    = render 'poutine_a'
+  - elsif poutine == 'poutine_b'
+    = render 'poutine_b'
+
+- if current_user
+  :javascript
+    mixpanel.track('Course Viewed', {'distinct_id' : "#{current_user.id}", 'course' : "#{course.title}", 'url' : window.location.pathname});
+- else
+  :javascript
+    mixpanel.track('Course Viewed', {'course title' : "#{course.title}", 'url' : window.location.pathname});

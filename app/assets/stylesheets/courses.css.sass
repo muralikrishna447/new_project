@@ -108,6 +108,31 @@
     top: 10px
     right: 10px
 
+/* Course End Action */
+.course-end-action
+  background: white
+  position: absolute
+  width: 100%
+  top: 100%
+  bottom: 0px
+  left: 0px
+  right: 0px
+  z-index: 9999
+  opacity: 0
+  @include transition(2s linear all)
+  .course-end-action-close
+    position: absolute
+    top: 30px
+    right: 30px
+    font-size: 30px
+    color: $orange
+    &:hover
+      cursor: pointer
+
+.course-end-action-show
+  top: 0px
+  opacity: 1
+
 /* Spherification Styles */
 
 .static-height

@@ -27,12 +27,12 @@ Merit::Badge.create!({
   id: 1,
   name: 'new-student',
   description: 'Enroll into a Course',
-  image: 'https://www.filepicker.io/api/file/Oenx2nuGRlmtiq2pXokx'
+  image: 'https://www.filepicker.io/api/file/fgMJa4WES7aLgt43DyE1?cache=true'
 })
 
 Merit::Badge.create!({
   id: 2,
   name: 'spherification',
   description: 'Complete the Spherification Course',
-  image: 'https://www.filepicker.io/api/file/6at0Z9vS6edni43glYDg'
+  image: 'https://www.filepicker.io/api/file/RlxkQDKT5OwktQ8YEaIg?cache=true'
 })

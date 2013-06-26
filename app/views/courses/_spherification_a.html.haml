@@ -4,15 +4,14 @@
       %h1= "#{course.title} Course"      
   .row.section
     .span6
-      .video-container#spherification-player(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
-        / %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('QPdO4I3WLHg')}
-        
+      .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
+        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('QPdO4I3WLHg')}
       .section
         %p= course.description
       %h4.text-center
         %i.icon-comment-alt
         Comments or Questions?
-        = link_to 'Visit the Forum', 'http://forum.chefsteps.com'
+        = link_to 'Visit the Forum', @course.forum_link
      
     .span6
       .well
@@ -24,7 +23,7 @@
           .horizontal-slider{data: {direction: 'right'}}
             .horizontal-slider-wrap
               - @course.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
-                = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.recipe_name, image: upload.image_id
+                = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.title, image: upload.image_id
             %div{class: "horizontal-slider-btn-right btn btn-circle"}
               %i{class: "icon-chevron-right"}
             %div{class: "horizontal-slider-shadow-overlay-right"}
