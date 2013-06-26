@@ -6,4 +6,13 @@ class PollsController < ApplicationController
   def show
     @poll = Poll.find(params[:id])
   end
+
+  def show_as_json
+    @poll = Poll.find(params[:id])
+
+    respond_to do |format|
+      puts @poll
+      format.json { render :json => @poll.to_json }
+    end
+  end
 end
