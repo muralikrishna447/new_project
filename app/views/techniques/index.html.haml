@@ -1,7 +1,11 @@
+- content_for :title, "Techniques Gallery"
+- content_for :description, "Become a better by cook by learning from these amazing technique videos."
+- content_for :keywords, @techniques.map(&:title).to_sentence
+
 .container
   .row
     .span12
-      %h2 Techniques
+      %h1 Techniques
       / = paginate @techniques
       / .row.gallery
       /   - @techniques.each do |technique|

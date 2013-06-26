@@ -1,7 +1,11 @@
+- content_for :title, "Recipe Gallery"
+- content_for :description, "Become a better by cook by learning from these amazing recipe videos."
+- content_for :keywords, @recipes.map(&:title).to_sentence
+
 .container
   .row
     .span12#recipe-gallery
-      %h2 Recipes
+      %h1 Recipes
 
       / .gallery-filter
       /   .dropdown

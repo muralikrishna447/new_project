@@ -1,7 +1,11 @@
+- content_for :title, "Culinary Knowledge and Stuff We Like"
+- content_for :description, "Become a better by cook by learning from these amazing culinary knowledge videos."
+- content_for :keywords, @sciences.map(&:title).to_sentence
+
 .container
   .row
     .span12
-      %h2 Culinary Knowledge and Stuff We Like
+      %h1 Culinary Knowledge and Stuff We Like
       / = paginate @sciences
       / .row.gallery
       /   - @sciences.each do |science|
