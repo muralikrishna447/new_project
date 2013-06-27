@@ -5,7 +5,7 @@
 
 .container
   .row
-    .span12(ng-controller='VotingController')
+    .span12
       - @poll.poll_items.order('votes_count asc').each do |poll_item|
         = content_tag_for :div, poll_item do
           .poll-item-vote-up
