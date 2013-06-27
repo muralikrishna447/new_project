@@ -6,16 +6,16 @@
 .container
   .row
     .span12(ng-controller='VotingController')
-      - @poll.votables.each do |votable|
-        = content_tag_for :div, votable do
-          .votable-vote-up
-            %a.votable-btn
+      - @poll.poll_items.each do |poll_item|
+        = content_tag_for :div, poll_item do
+          .poll-item-vote-up
+            %a.poll-item-btn
               %i.icon-chevron-up
-          .votable-text
-            %h2= votable.title
-          .votable-sharing
-            %a.votable-btn
+          .poll-item-text
+            %h2= poll_item.title
+          .poll-item-sharing
+            %a.poll-item-btn
               %i.icon-share-alt
-          .votable-comments
-            %a.votable-btn
+          .poll-item-comments
+            %a.poll-item-btn
               %i.icon-comment-alt
