@@ -300,6 +300,7 @@ ActiveRecord::Schema.define(:version => 20130625222351) do
     t.text     "description"
     t.string   "status"
     t.integer  "poll_id"
+    t.integer  "votes_count"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end

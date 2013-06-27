@@ -5,6 +5,7 @@ class CreatePollItems < ActiveRecord::Migration
       t.text :description
       t.string :status
       t.integer :poll_id
+      t.integer :votes_count
 
       t.timestamps
     end
