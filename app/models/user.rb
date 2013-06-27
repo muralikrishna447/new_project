@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
 
   has_many :events
   has_many :likes
+  has_many :votes
 
   serialize :viewed_activities, Array
 

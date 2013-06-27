@@ -9,8 +9,8 @@ class VotesController < ApplicationController
         track_event @vote
       end
     end
-    # render nothing: true
-    redirect_to request.referrer
+    render nothing: true
+    # redirect_to request.referrer
   end
 
 end
