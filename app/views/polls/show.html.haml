@@ -6,4 +6,12 @@
 .container
   .row
     .span12(ng-controller='VotingController')
-      {{poll.title}}
+      - @poll.votables.each do |votable|
+        = content_tag_for :div, votable do
+          .votable-vote-up
+            %a.btn
+              %i.icon-chevron-up
+          .votable-text
+            %h2= votable.title
+          .votable-sharing
+          .votable-comments
