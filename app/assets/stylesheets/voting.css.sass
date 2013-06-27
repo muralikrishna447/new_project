@@ -1,20 +1,31 @@
+@import 'mixins'
+
 .votable
   width: 100%
   height: 100px
-  float: left
+  position: relative
   .votable-vote-up
-    width: 10%
+    width: 100px
     float: left
     background: green
-  .votable-text
-    width: 70%
-    float: left
-    background: orange
+  .votable-text-wrapper
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    padding-left: 100px
+    padding-right: 200px
+    @include boxsizing
+    .votable-text
+      width: 100%
+      background: orange
+      h2
+        margin: 0px
   .votable-sharing
-    width: 10%
-    float: left
+    width: 100px
+    float: right
     background: blue
   .votable-comments
-    width: 10%
-    float: left
+    width: 100px
+    float: right
     background: red
