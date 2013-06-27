@@ -9,12 +9,13 @@
       - @poll.votables.each do |votable|
         = content_tag_for :div, votable do
           .votable-vote-up
-            %a.btn
+            %a.votable-btn
               %i.icon-chevron-up
-          .votable-text-wrapper
-            .votable-text
-              %h2= votable.title
+          .votable-text
+            %h2= votable.title
           .votable-sharing
-            sharing
+            %a.votable-btn
+              %i.icon-share-alt
           .votable-comments
-            comments
+            %a.votable-btn
+              %i.icon-comment-alt
