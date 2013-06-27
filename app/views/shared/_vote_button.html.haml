@@ -5,11 +5,11 @@
   %span(ng-model="votes_count" ng-init="votes_count=#{votes_count}")
   %span(ng-switch on="current_user_votes")
     %span(ng-switch-when='true')
-      .btn.btn-primary
-        %i.icon-star
-        {{votes_count}}
+      .poll-item-btn.poll-item-btn-voted
+        %i.icon-chevron-up
+        / {{votes_count}}
     %span(ng-switch-when='false')
-      .btn.btn-primary(ng-click="voteObject('#{votable_object.class.to_s}', '#{votable_object.id}')")
-        %i.icon-star-empty
+      .poll-item-btn(ng-click="voteObject('#{votable_object.class.to_s}', '#{votable_object.id}')")
+        %i.icon-chevron-up
         %span(ng-show="votes_count > 0")
-          {{votes_count}}
+          / {{votes_count}}

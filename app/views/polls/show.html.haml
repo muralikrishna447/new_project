@@ -6,16 +6,13 @@
 .container
   .row
     .span12
-      - @poll.poll_items.order('votes_count asc').each do |poll_item|
+      - @poll.poll_items.order('votes_count DESC').each do |poll_item|
         = content_tag_for :div, poll_item do
           .poll-item-vote-up
-            / = link_to votes_path(votable_type: poll_item.class, votable_id: poll_item.id), method: :post do
-            /   .poll-item-btn
-            /     %i.icon-chevron-up
             = render 'shared/vote_button', votable_object: poll_item
           .poll-item-text
             %h2= poll_item.title
-            %p= "#{poll_item.votes_count} Votes"
+            %span= "#{poll_item.votes_count} Votes"
           .poll-item-sharing
             %a.poll-item-btn
               %i.icon-share-alt

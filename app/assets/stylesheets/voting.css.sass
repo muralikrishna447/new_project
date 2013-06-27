@@ -2,6 +2,8 @@
 
 .poll_item
   width: 100%
+  height: 100px
+  margin: 10px 0px
   float: left
   .poll-item-vote-up
     width: 4%
@@ -23,6 +25,7 @@
   display: inline-block
   text-align: center
   width: 100%
+  height: 100%
   padding: 10px
   font-size: 30px
   color: $light-gray
@@ -34,3 +37,11 @@
     cursor: pointer
     background: $light-gray
     color: gray
+
+.poll-item-btn-voted
+  background: $orange
+  color: white
+  &:hover
+    cursor: pointer
+    background: $orange
+    color: white
