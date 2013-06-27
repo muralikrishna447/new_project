@@ -9,10 +9,12 @@
       - @poll.poll_items.each do |poll_item|
         = content_tag_for :div, poll_item do
           .poll-item-vote-up
-            %a.poll-item-btn
-              %i.icon-chevron-up
+            = link_to votes_path(votable_type: poll_item.class, votable_id: poll_item.id), method: :post do
+              .poll-item-btn
+                %i.icon-chevron-up
           .poll-item-text
             %h2= poll_item.title
+            %p= "#{poll_item.votes_count} Votes"
           .poll-item-sharing
             %a.poll-item-btn
               %i.icon-share-alt

@@ -132,6 +132,7 @@ Delve::Application.routes.draw do
       get 'show_as_json' => 'polls#show_as_json'
     end
   end
+  resources :votes, only: [:create]
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
