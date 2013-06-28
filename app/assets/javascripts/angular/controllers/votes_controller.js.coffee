@@ -40,9 +40,31 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
   #     $('.alert-container').append("<div class='alert alert-error'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'><a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to vote this.</h4><div class='lblock'></div></div>")
   #   )
 
-  $scope.voteObject = (votable) ->
-    console.log $scope
+  $scope.voteObject = (votable,index) ->
+    # console.log $scope
+    votable_object = {}
+    # console.log votable
+    # console.log index
     # console.log $scope.poll['poll_items']
+    angular.forEach $scope.poll['poll_items'], (poll_item,index) ->
+      if poll_item.id == votable.id
+        votable_object = $scope.poll['poll_items'][index]
+
+    url = '/votes?votable_type=' + 'PollItem' + '&votable_id=' + votable.id
+    $http(
+      method: 'POST'
+      url: url
+    ).success((data, status, headers, config) ->
+      votable_object.votes_count +=1
+      console.log votable_object.voted_on
+      votable_object.voted_on = true
+      console.log votable_object.voted_on
+      $scope.current_user_voted_for_this(votable)
+      # TODO will eventually need to angularize the alert notification system
+      $('.alert-container').append("<div class='alert alert-success'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'>You voted for this!</h4><div class='lblock'></div></div>")
+    ).error((data, status, headers, config) ->
+      $('.alert-container').append("<div class='alert alert-error'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'><a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to vote this.</h4><div class='lblock'></div></div>")
+    )
 
   $scope.current_user_voted_for_this = (votable) ->
     # console.log $scope.current_user_votes

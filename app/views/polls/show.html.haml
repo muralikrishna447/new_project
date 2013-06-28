@@ -30,13 +30,13 @@
       %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak)
         .poll-item
           .poll-item-vote-up
-            %span(ng-switch on="current_user_voted_for_this({{poll_item}})")
+            %span(ng-switch on="poll_item.voted_on = current_user_voted_for_this({{poll_item}})")
               %span(ng-switch-when='true')
                 .poll-item-btn.poll-item-btn-voted
                   %i.icon-chevron-up
                   / {{votes_count}}
               %span(ng-switch-when='false')
-                .poll-item-btn(ng-click="voteObject(poll_item)")
+                .poll-item-btn(ng-click="voteObject(poll_item,$index)")
                   %i.icon-chevron-up
                   %span(ng-show="votes_count > 0")
                     / {{votes_count}}
