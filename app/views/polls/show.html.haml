@@ -34,12 +34,12 @@
             %span(ng-switch on="current_user_voted_for_this(poll_item)")
               %span(ng-switch-when='true')
                 .poll-item-btn.poll-item-btn-voted
-                  %i.icon-chevron-up
+                  %i.icon-angle-up
                   .poll-item-vote-count
                     {{poll_item.votes_count}}
               %span(ng-switch-when='false')
                 .poll-item-btn(ng-click="voteObject(poll_item,$index)")
-                  %i.icon-chevron-up
+                  %i.icon-angle-up
                   .poll-item-vote-count(ng-show="poll_item.votes_count > 0")
                     {{poll_item.votes_count}}
           .poll-item-text
