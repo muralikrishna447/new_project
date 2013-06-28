@@ -20,14 +20,18 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
   $scope.poll = Poll.get()
   console.log $scope.poll
 
-  $scope.voteObject = (votable_type, votable_id) ->
+  $scope.voteObject = (votable_type, votable_id, votable) ->
     url = '/votes?votable_type=' + votable_type + '&votable_id=' + votable_id
     $http(
       method: 'POST'
       url: url
     ).success((data, status, headers, config) ->
-      $scope.current_user_votes = true
-      $scope.votes_count += 1
+      # $scope.current_user_votes = true
+      # $scope.votes_count += 1
+      votable.votes_count +=1
+      console.log votable
+      console.log votable.votes_count
+      $scope.current_user_voted_for_this(votable_id)
       # TODO will eventually need to angularize the alert notification system
       $('.alert-container').append("<div class='alert alert-success'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'>You voted for this!</h4><div class='lblock'></div></div>")
     ).error((data, status, headers, config) ->
