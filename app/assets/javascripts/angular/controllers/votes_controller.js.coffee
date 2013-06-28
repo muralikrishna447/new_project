@@ -33,4 +33,12 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
     ).error((data, status, headers, config) ->
       $('.alert-container').append("<div class='alert alert-error'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'><a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to vote this.</h4><div class='lblock'></div></div>")
     )
+
+  $scope.current_user_voted_for_this = (poll_item_id) ->
+    console.log $scope.current_user_votes
+    console.log $.inArray(poll_item_id, $scope.current_user_votes)
+    if $.inArray(poll_item_id, $scope.current_user_votes) == -1
+      false
+    else
+      true
 ]

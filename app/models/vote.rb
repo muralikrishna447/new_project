@@ -5,4 +5,8 @@ class Vote < ActiveRecord::Base
   belongs_to :votable, polymorphic: true, counter_cache: true
 
   validates :user_id, uniqueness: {scope: [:votable_id, :votable_type], message: 'can only vote on an item once.'}
+
+  def self.scoped_by_type(type)
+    self.where('votable_type = ?', type)
+  end
 end

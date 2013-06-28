@@ -23,14 +23,14 @@
 .container#poll{data: {:'poll-id' => "#{@poll.id}"}}
   .row
     .span12(ng-controller='VotesController')
+      = current_user_votes = current_user.votes.scoped_by_type('PollItem').map(&:votable_id)
+      %span(ng-model="current_user_votes" ng-init="current_user_votes=#{current_user_votes}")
       %h1
         {{poll.title}}
       %div(ng-repeat='poll_item in poll.poll_items' ng-cloak)
         .poll-item
           .poll-item-vote-up
-            - current_user_votes = 'false'
-            %span(ng-model="current_user_votes" ng-init="current_user_votes=#{current_user_votes}")
-            %span(ng-switch on="current_user_votes")
+            %span(ng-switch on="current_user_voted_for_this({{poll_item.id}})")
               %span(ng-switch-when='true')
                 .poll-item-btn.poll-item-btn-voted
                   %i.icon-chevron-up
