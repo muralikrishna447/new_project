@@ -1,4 +1,4 @@
-Fabricator(:votable) do
+Fabricator(:poll_item) do
   title       "MyString"
   description "MyText"
   status      "MyString"
