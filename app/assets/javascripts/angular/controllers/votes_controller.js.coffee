@@ -58,9 +58,9 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
       votable_object.votes_count +=1
       $scope.current_user_votes.push(votable.id)
       # TODO will eventually need to angularize the alert notification system
-      $('.alert-container').append("<div class='alert alert-success'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'>You voted for this!</h4><div class='lblock'></div></div>")
+      # $('.alert-container').append("<div class='alert alert-success'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'>You voted for this!</h4><div class='lblock'></div></div>")
     ).error((data, status, headers, config) ->
-      $('.alert-container').append("<div class='alert alert-error'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'><a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to vote this.</h4><div class='lblock'></div></div>")
+      # $('.alert-container').append("<div class='alert alert-error'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'><a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to vote this.</h4><div class='lblock'></div></div>")
     )
 
   $scope.current_user_voted_for_this = (votable) ->

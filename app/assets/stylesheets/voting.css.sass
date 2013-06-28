@@ -6,11 +6,11 @@
   margin: 10px 0px
   float: left
   .poll-item-vote-up
-    width: 4%
+    width: 7%
     margin-right: 1%
     float: left
   .poll-item-text
-    width: 75%
+    width: 72%
     float: left
   .poll-item-sharing
     width: 9%
@@ -22,6 +22,8 @@
     float: left
 
 .poll-item-btn
+  @include raleway
+  font-weight: bold
   display: inline-block
   text-align: center
   width: 100%
@@ -37,6 +39,9 @@
     cursor: pointer
     background: $light-gray
     color: gray
+
+.poll-item-vote-count
+  margin-top: 10px
 
 .poll-item-btn-voted
   background: $orange
