@@ -1,18 +1,38 @@
-.container
-  .row
-    .span12
-      %h1= @poll.title
+/ .container
+/   .row
+/     .span12
+/       %h1= @poll.title
 
-.container
+/ .container
+/   .row
+/     .span12
+/       - @poll.poll_items.order('votes_count DESC').each do |poll_item|
+/         = content_tag_for :div, poll_item do
+/           .poll-item-vote-up
+/             = render 'shared/vote_button', votable_object: poll_item
+/           .poll-item-text
+/             %h2= poll_item.title
+/             %span= "#{poll_item.votes_count} Votes"
+/           .poll-item-sharing
+/             %a.poll-item-btn
+/               %i.icon-share-alt
+/           .poll-item-comments
+/             %a.poll-item-btn
+/               %i.icon-comment-alt
+
+.container#poll{data: {:'poll-id' => "#{@poll.id}"}}
   .row
-    .span12
-      - @poll.poll_items.order('votes_count DESC').each do |poll_item|
-        = content_tag_for :div, poll_item do
+    .span12(ng-controller='VotesController')
+      %h1
+        {{poll.title}}
+      %div(ng-repeat='poll_item in poll.poll_items')
+        .poll-item
           .poll-item-vote-up
-            = render 'shared/vote_button', votable_object: poll_item
           .poll-item-text
-            %h2= poll_item.title
-            %span= "#{poll_item.votes_count} Votes"
+            %h2
+              {{poll_item.title}}
+            %span
+              {{poll_item.votes_count}} Votes
           .poll-item-sharing
             %a.poll-item-btn
               %i.icon-share-alt
