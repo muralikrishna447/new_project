@@ -86,6 +86,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
         console.log $scope.gallery_index + '?' + $scope.serialize(gip)
         if more_activities
           if $scope.maybe_clear
+            # this is to avoid a flashy animation if nothing is actually changing
             if ! _.isEqual(_.pluck($scope.activities, 'slug'), _.pluck(more_activities, 'slug'))
               $scope.activities = more_activities
           else if Object.keys($scope.activities).length == 0

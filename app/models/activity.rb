@@ -61,7 +61,12 @@ class Activity < ActiveRecord::Base
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
-  pg_search_scope :search_all, :against => [:title, :description], using: {tsearch: {prefix: true}}, associated_against: {terminal_equipment: [:title], terminal_ingredients: [:title], tags: [:name]}
+
+  # Letters are the weighting
+  pg_search_scope :search_all,
+                  using: {tsearch: {prefix: true}},
+                  against: [[:title, 'A'], [:description, 'C']],
+                  associated_against: {terminal_equipment: [[:title, 'D']], terminal_ingredients: [[:title, 'D']], tags: [[:name, 'B']]}
 
   TYPES = %w[Recipe Technique Science]
 
