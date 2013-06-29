@@ -1,7 +1,17 @@
 class RecipeGalleryController < ApplicationController
 
-  has_scope :by_published_at
-  has_scope :by_updated_at
+  has_scope :sort do |controller, scope, value|
+    pub = true
+    case value
+      when "oldest"
+        pub ? scope.by_published_at("asc") : scope.by_updated_at("asc")
+      when "newest"
+        pub ? scope.by_published_at("desc") : scope.by_updated_at("desc")
+      else
+        # Relevance is the default sort for pg_search so don't need to do anything
+        scope
+    end
+  end
   has_scope :difficulty
   has_scope :published_status, default: "Published" do |controller, scope, value|
     value == "Published" ? scope.published.recipes.includes(:steps) : scope.unpublished.where("title != 'DUMMY NEW ACTIVITY'")

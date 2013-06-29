@@ -7,6 +7,8 @@ class Activity < ActiveRecord::Base
   friendly_id :title, use: [:slugged, :history]
 
   has_many :ingredients, dependent: :destroy, class_name: ActivityIngredient, inverse_of: :activity
+  has_many :terminal_ingredients, class_name: Ingredient, through: :ingredients, source: :ingredient
+
   # The as_ingredient relationship returns the ingredient version of the activity
   has_one :as_ingredient, class_name: Ingredient, foreign_key: 'sub_activity_id'
   has_many :used_in_activities, source: :activities, through: :as_ingredient
@@ -14,6 +16,7 @@ class Activity < ActiveRecord::Base
 
   has_many :steps, inverse_of: :activity, dependent: :destroy
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
+  has_many :terminal_equipment, class_name: Equipment, through: :equipment, source: :equipment
 
   has_many :quizzes
 
@@ -58,7 +61,7 @@ class Activity < ActiveRecord::Base
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
-  pg_search_scope :search_all, :against => [:title, :description], using: {tsearch: {prefix: true}}
+  pg_search_scope :search_all, :against => [:title, :description], using: {tsearch: {prefix: true}}, associated_against: {terminal_equipment: [:title], terminal_ingredients: [:title], tags: [:name]}
 
   TYPES = %w[Recipe Technique Science]
 

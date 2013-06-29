@@ -3,9 +3,10 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.activities = Activity.query()
   $scope.maybe_clear = false
 
-  $scope.publishedAtChoices = [
-    {name: "Newest", value: "desc"},
-    {name: "Oldest", value: "asc"}
+  $scope.sortChoices = [
+    {name: "Newest", value: "newest"},
+    {name: "Oldest", value: "oldest"},
+    {name: "Most Relevant", value: "relevance"}
   ]
 
   $scope.difficultyChoices = [
@@ -20,7 +21,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   ]
 
   $scope.defaultFilters = {
-    by_published_at: $scope.publishedAtChoices[0],
+    sort: $scope.sortChoices[0],
     published_status: $scope.publishedStatusChoices[0]
   }
   $scope.filters = angular.extend({}, $scope.defaultFilters)
@@ -106,7 +107,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     console.log newValue
     $scope.clear_and_load() if newValue
 
-  $scope.$watch 'filters.by_published_at', (newValue) ->
+  $scope.$watch 'filters.sort', (newValue) ->
     console.log newValue
     $scope.clear_and_load() if newValue
 
@@ -116,6 +117,8 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.$watch 'filters.search_all', (newValue) ->
     console.log newValue
+    $scope.filters.sort = $scope.sortChoices[2] if newValue? && (newValue.length == 1)
+    $scope.filters.sort = $scope.sortChoices[0] if (! newValue?)  || newValue.length == 0
     $timeout (->
       $scope.clear_and_load()
     ), 250
