@@ -15,6 +15,7 @@ class Activity < ActiveRecord::Base
   belongs_to :source_activity, class_name: Activity, foreign_key: 'source_activity_id'
 
   has_many :steps, inverse_of: :activity, dependent: :destroy
+
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
   has_many :terminal_equipment, class_name: Equipment, through: :equipment, source: :equipment
 
@@ -66,7 +67,7 @@ class Activity < ActiveRecord::Base
   pg_search_scope :search_all,
                   using: {tsearch: {prefix: true}},
                   against: [[:title, 'A'], [:description, 'C']],
-                  associated_against: {terminal_equipment: [[:title, 'D']], terminal_ingredients: [[:title, 'D']], tags: [[:name, 'B']]}
+                  associated_against: {terminal_equipment: [[:title, 'D']], terminal_ingredients: [[:title, 'D']], tags: [[:name, 'B']], steps: [[:title, 'C'], [:directions, 'C']]}
 
   TYPES = %w[Recipe Technique Science]
 

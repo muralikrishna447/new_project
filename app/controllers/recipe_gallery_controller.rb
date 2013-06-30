@@ -1,5 +1,6 @@
 class RecipeGalleryController < ApplicationController
 
+
   has_scope :sort do |controller, scope, value|
     pub = true
     case value
@@ -13,9 +14,11 @@ class RecipeGalleryController < ApplicationController
     end
   end
   has_scope :difficulty
+=begin
   has_scope :published_status, default: "Published" do |controller, scope, value|
     value == "Published" ? scope.published.recipes.includes(:steps) : scope.unpublished.where("title != 'DUMMY NEW ACTIVITY'")
   end
+=end
   has_scope :search_all
 
   def index

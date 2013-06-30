@@ -30,7 +30,7 @@
   font-size: 20px
 
 .gallery-animation-enter-setup, .gallery-animation-leave-setup, .gallery-animation-move-setup
-  @include transition(200ms linear all)
+  @include transition(200ms ease all)
 
 .gallery-animation-enter-setup
   opacity: 0
@@ -45,7 +45,7 @@
   opacity: 0
   
 .gallery-animation-move-setup
-  opacity: 1
+  opacity: 0
 
 .gallery-animation-move-setup.gallery-animation-move-start
   opacity: 1

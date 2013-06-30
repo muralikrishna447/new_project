@@ -56,7 +56,6 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')
 
   $scope.page = 2
-  currently_loading = false
 
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
 
@@ -76,24 +75,24 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.load_data = ->
     # $scope.page < $scope.gallery_count/12 + 1 stops attempting to load more pages when all the activities are loaded
-    if !currently_loading && $scope.page < $scope.gallery_count/12 + 1
+    if $scope.page < $scope.gallery_count/12 + 1
 
-      currently_loading = true
       $scope.spinner = true
       gip = $scope.galleryIndexParams()
 
       more_activities = $resource($scope.gallery_index + '?' + $scope.serialize(gip)).query ->
         console.log $scope.gallery_index + '?' + $scope.serialize(gip)
+        console.log "GOT BACK " + more_activities.length
         if more_activities
-          if $scope.maybe_clear
-            # this is to avoid a flashy animation if nothing is actually changing
-            if ! _.isEqual(_.pluck($scope.activities, 'slug'), _.pluck(more_activities, 'slug'))
-              $scope.activities = more_activities
-          else if Object.keys($scope.activities).length == 0
+          save_activities = $scope.activities
+          if $scope.maybe_clear || (Object.keys($scope.activities).length == 0)
             $scope.activities = more_activities
           else
             $scope.activities = $scope.activities.concat(more_activities)
-        currently_loading = false
+          if save_activities
+            for i in [0...$scope.activities.length]
+              a = _.find(save_activities, (x) -> x.slug == $scope.activities[i].slug)
+              $scope.activities[i] = a if a?
         $scope.maybe_clear = false
         $scope.spinner = false
 
