@@ -27,6 +27,9 @@
                 {{poll_item.title}}
             .poll-item-details(ng-show='poll_item.show_details')
               %p {{poll_item.description}}
+              %ul(ng-repeat='user in poll_item.users')
+                %li
+                  {{user.name}}
           .poll-item-sharing
             %a.poll-item-btn
               %i.icon-share-alt

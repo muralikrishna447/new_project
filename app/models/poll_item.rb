@@ -4,4 +4,5 @@ class PollItem < ActiveRecord::Base
   belongs_to :poll
 
   has_many :votes, as: :votable
+  has_many :users, through: :votes
 end
