@@ -1,10 +1,17 @@
 
-var player;
+var player, activityPlayer;
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('spherification-player', {
     events: {
       'onReady': onSpherificationPlayerReady,
-      'onStateChange': onSpherificationPlayerStateChange
+      'onStateChange': onSpherificationPlayerStateChange,
+    }
+  });
+
+  activityPlayer = new YT.Player('activityPlayer', {
+    events: {
+      'onReady': onActivityPlayerReady,
+      'onStateChange': onActivityPlayerStateChange,
     }
   });
 }
@@ -18,6 +25,9 @@ function onSpherificationPlayerReady(event) {
 function onSpherificationPlayerStateChange(event) {
   if (event.data == YT.PlayerState.ENDED) {
     console.log('ended');
+    var timeNow = new Date().getTime();
+    mixpanel.track("Video Ended", {"id": "spherification", "timeNow": timeNow});
+
     $(document).ready(function(){
       $('.course-end-action').addClass('course-end-action-show');
 
@@ -25,5 +35,18 @@ function onSpherificationPlayerStateChange(event) {
         $(this).closest('.course-end-action').removeClass('course-end-action-show');
       });
     });
+  }
+}
+
+// For all activities
+function onActivityPlayerReady(event) {
+  event.target.playVideo();
+}
+
+// The API calls this function when the player's state changes.
+function onActivityPlayerStateChange(event) {
+  if (event.data == YT.PlayerState.PLAYED) {
+    console.log('played');
+    mixpanel.track("Video Playing", {"url": document.location});
   }
 }
