@@ -102,6 +102,10 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
       $scope.page+=1
 
+  $scope.load_no_results_data = ->
+    $scope.no_results_activities = $resource($scope.gallery_index + '?activity_type=Recipe&page=3&sort=newest').query ->
+      console.log "loaded backups"
+
   $scope.clear_and_load = ->
     $scope.maybe_clear = true
     $scope.page = 1
@@ -140,6 +144,9 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.nonDefaultFilters = ->
     ! _.isEqual($scope.filters, $scope.defaultFilters)
 
+  $scope.getActivities = ->
+    return $scope.no_results_activities if (! $scope.activities?) || (! $scope.activities.length)
+    $scope.activities
 
   # Initialization
   Activity = $resource(document.location.pathname + '/index_as_json')
@@ -151,6 +158,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.filters.activity_type = _.find($scope.typeChoices, (x) -> x.value == $scope.url_params.activity_type) if $scope.url_params.activity_type
   $scope.maybe_clear = false
   $scope.clear_and_load()
+  $scope.load_no_results_data()
 
   # $scope.fill_screen = ->
   #   if ($("body").height() < window.innerHeight)
