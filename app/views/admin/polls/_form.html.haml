@@ -1,0 +1,5 @@
+= semantic_form_for @poll do |f|
+  = f.inputs :title, :description
+  = f.inputs :status
+  = f.inputs :title, :description, :for => :poll_items
+  = f.actions
