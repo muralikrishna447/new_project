@@ -1,6 +1,6 @@
 %html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#" }
   %head
-    %title= "Chefsteps #{yield :title}"
+    %title= "ChefSteps - #{yield :title}"
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
     = csrf_meta_tags
@@ -17,7 +17,11 @@
 
     = auto_discovery_link_tag :atom, feed_path
     = auto_discovery_link_tag :rss, feed_path
-    %link{href: "/favicon.ico", rel: "shortcut icon"}
+    - if Rails.env.development?
+      %link{href: "/favicon-dev.png"}
+    - else
+      %link{href: "/favicon.ico", rel: "shortcut icon"}
+    %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
     %link{href: "http://fonts.googleapis.com/css?family=Raleway:200,400,500,600,700", rel: "stylesheet", type: "text/css"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
@@ -29,7 +33,7 @@
     = render 'layouts/mixpanel'
     = javascript_include_tag 'application_head'
 
-  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}}
+  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => Rails.env}
     = render 'layouts/navigation', external: false
 
     .container.alert-container
@@ -54,7 +58,7 @@
   / = render 'layouts/youtube'
   
   %script{src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"}
-  %script{src: 'http://d3js.org/d3.v3.min.js'}
+  / %script{src: 'http://d3js.org/d3.v3.min.js'}
   = javascript_include_tag 'application'
   = render 'layouts/app_init'
   = yield(:custom_js)

@@ -33,7 +33,9 @@
         %li.active
           = link_to 'Courses', '#courses', data: {toggle: 'tab'}
         %li
-          = link_to 'Uploads', '#uploads', data: {toggle: 'tab'}
+          = link_to 'Favorites', '#favorites', data: {toggle: 'tab'}
+        %li
+          = link_to 'Photos', '#photos', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#courses
           - if @user.courses.any?
@@ -57,10 +59,15 @@
                 - course_title = capture do
                   = link_to "#{course.title} Course", course
                 = render 'shared/media_list_item', image: course.featured_image, title: course_title, text: ''
-        .tab-pane#uploads
+        .tab-pane#favorites
+          - @user.likes.scoped_by_type('Activity').order('created_at DESC').each do |like|
+            - likeable_title = capture do
+              = link_to like.likeable.title, like.likeable
+            = render 'shared/media_list_item', image: like.likeable.featured_image, title: likeable_title, text: ''
+        .tab-pane#photos
           - @user.uploads.each do |upload|
             - upload_title = capture do
-              = link_to upload.recipe_name, user_upload_path(@user, upload)
+              = link_to upload.title, user_upload_path(@user, upload)
             = render 'shared/media_list_item', image: upload.image_id, title: upload_title, text: upload.notes
 
     .span5

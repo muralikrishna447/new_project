@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby "1.9.3"
 
 gem 'rails', '3.2.11'
 gem 'railties', '3.2.11'
@@ -96,6 +97,7 @@ group :development, :test do
   gem 'bullet'
   gem 'launchy'
   gem 'childprocess', '0.3.6'
+  gem 'xray-rails'
 end
 
 group :guard do

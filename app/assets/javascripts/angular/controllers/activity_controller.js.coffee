@@ -5,10 +5,15 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "$timeout", "limitToFilter", ($scope, $resource, $location, $http, $timeout, limitToFilter) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", ($scope, $resource, $location, $http, $timeout, limitToFilter, localStorageService) ->
+
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id")},
-                        {update: {method: "PUT"}}
+                        {
+                          update: {method: "PUT"},
+                          startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
+                          endedit: {method: "PUT", url: "/activities/:id/notify_end_edit"}
+                        }
                       )
 
   $scope.url_params = {}
@@ -18,6 +23,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.editMode = false
   $scope.editMeta = false
   $scope.preventAutoFocus = false
+  $scope.shouldShowRestoreAutosaveModal = false
+  $scope.shouldShowAlreadyEditingModal = false
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -25,22 +32,50 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
       window.location = response.redirect_to if response.redirect_to)
     )
+
   # Overall edit mode
   $scope.startEditMode = ->
-    $scope.editMode = true
-    $scope.editMeta = false
-    $scope.showHeroVisualEdit = false
-    $scope.undoStack = [deepCopy $scope.activity]
-    $scope.undoIndex = 0
-    $timeout ->
-      window.csScaling = 1
-      window.csUnits = "grams"
-      window.updateUnits(false)
-      window.expandSteps()
+    if ! $scope.editMode
+      $scope.editMode = true
+      $scope.editMeta = false
+      $scope.showHeroVisualEdit = false
+      $scope.undoStack = [deepCopy $scope.activity]
+      $scope.undoIndex = 0
+      $scope.activity.$startedit()
+      $timeout ->
+        window.csScaling = 1
+        window.csUnits = "grams"
+        window.updateUnits(false)
+        window.expandSteps()
+
+  $scope.maybeStartEditMode = ->
+    # Must reload activity before checking currently_editing_user - want to get any changes that have
+    # been made since we loaded the original page *and* want to know if anyone started editing.
+    $scope.preventAutoFocus = true
+
+    temp_activity = Activity.get($scope.url_params, ->
+      $scope.temporaryNoAutofocus()
+
+      if temp_activity.updated_at != $scope.activity.updated_at
+        $scope.activity = temp_activity
+
+      if temp_activity.currently_editing_user
+        $scope.activity.currently_editing_user = temp_activity.currently_editing_user
+        $scope.shouldShowAlreadyEditingModal = true
+      else
+        $scope.startEditMode()
+    )
 
   $scope.postEndEditMode = ->
     $scope.editMode = false
-    setTimeout (-> window.collapseSteps()), 0.5
+    $timeout (->
+      window.updateUnits(false)
+      window.collapseSteps()
+    ), 0.5
+    $scope.clearLocalStorage()
+    $scope.saveBaseToLocalStorage()
+    $scope.activity.$endedit()
+    true
 
   $scope.endEditMode = ->
     $scope.normalizeModel()
@@ -50,6 +85,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
        window.location = response.redirect_to if response.redirect_to),
     )
     $scope.postEndEditMode()
+    $scope.activity.is_new = false
 
   $scope.cancelEditMode = ->
     if $scope.undoAvailable
@@ -68,11 +104,15 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     if $scope.undoAvailable
       $scope.undoIndex -= 1
       $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex ]
+      $scope.saveToLocalStorage()
+      $scope.temporaryNoAutofocus();
 
   $scope.redo = ->
     if $scope.redoAvailable
       $scope.undoIndex += 1
       $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex]
+      $scope.saveToLocalStorage()
+      $scope.temporaryNoAutofocus();
 
   $scope.undoAvailable = ->
     $scope.undoIndex > 0
@@ -87,9 +127,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.undoStack = $scope.undoStack[0..$scope.undoIndex]
       $scope.undoStack.push newUndo
       $scope.undoIndex = $scope.undoStack.length - 1
-
-  $scope.$on 'maybe_save_undo', ->
-    $scope.addUndo()
+      $scope.saveToLocalStorage()
 
   # Gray out a section if the contents are empty
   $scope.disableIf = (condition) ->
@@ -99,7 +137,58 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     if $scope.editMode then "edit-mode" else ""
 
   $scope.primaryColumnClass = ->
-    if ($scope.activity.steps.length > 0) then 'span6' else 'no-steps span8 offset2'
+    if ($scope.editMode || ($scope.activity && $scope.activity.steps && ($scope.activity.steps.length > 0))) then 'span6' else 'no-steps span8 offset2'
+
+  $scope.temporaryNoAutofocus = ->
+    # Pretty ugly, but I don't see a cleaner solution
+    $scope.preventAutoFocus = true
+    $timeout ( ->
+      $scope.preventAutoFocus = false
+    ), 1000
+
+  $scope.localStorageKeyId = ->
+    # Use "New" for activity that was never saved before b/c they actually have unique ids
+    # but the local storage won't find them.
+    if $scope.activity.is_new then "New" else $('#activity-body').data("activity-id")
+
+  # Local storage (to prevent data loss on tab close etc.)
+  $scope.localStorageKey = ->
+    'ChefSteps Activity ' + $scope.localStorageKeyId()
+
+  $scope.localStorageBaseKey = ->
+    'ChefSteps Activity Base' + $scope.localStorageKeyId()
+
+  $scope.saveToLocalStorage = ->
+    if $scope.editMode
+      localStorageService.add($scope.localStorageKey(), JSON.stringify($scope.activity))
+
+  $scope.saveBaseToLocalStorage = ->
+    localStorageService.add($scope.localStorageBaseKey(), JSON.stringify($scope.activity))
+
+  $scope.maybeRestoreFromLocalStorage = ->
+    restored = localStorageService.get($scope.localStorageKey())
+    if restored
+      $scope.activity = new Activity(JSON.parse(restored))
+
+      $scope.temporaryNoAutofocus();
+      $scope.startEditMode()
+
+      # Coming back from local storage, our undo stack will be the [original, restored]
+      orig = localStorageService.get($scope.localStorageBaseKey())
+      if orig
+        $scope.undoStack = [new Activity(JSON.parse(orig)), $scope.undoStack[0]]
+        $scope.undoIndex = 1
+
+      $timeout ( ->
+        $scope.shouldShowRestoreAutosaveModal = true
+      ), 1000
+
+      return true
+    else
+      false
+
+  $scope.clearLocalStorage = ->
+    localStorageService.remove($scope.localStorageKey())
 
   # Activity types
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
@@ -161,6 +250,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       id: term
       name: term
 
+    initSelection: (element, callback) ->
+      callback($scope.activity.tags)
+
   # Video/image stuff
   $scope.hasHeroVideo = ->
     $scope.activity.youtube_id? && $scope.activity.youtube_id
@@ -173,7 +265,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.heroVideoURL = ->
     autoplay = if $scope.url_params.autoplay then "1" else "0"
-    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
+    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}\&html5=1"
 
   $scope.heroVideoStillURL = ->
     "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
@@ -264,23 +356,41 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.getIngredientsList = ->
     $scope.activity.ingredients
 
-  # prestoring the JSON in the HTML on initial load for speed
-  #$scope.activity = Activity.get($scope.url_params, ->
-  preloaded_activity = $("#preloaded-activity-json").text()
-  if preloaded_activity
-    $scope.activity = new Activity(JSON.parse(preloaded_activity))
+  $scope.parsePreloaded = ->
+    # prestoring the JSON in the HTML on initial load for speed
+    #$scope.activity = Activity.get($scope.url_params, ->
+    preloaded_activity = $("#preloaded-activity-json").text()
 
-    if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
-      $scope.startEditMode()
-      setTimeout (->
-        title_elem = $('#title-edit-pair')
-        angular.element(title_elem).scope().setMouseOver(true)
-        title_elem.click()
-      ), 0
+    if preloaded_activity
+      $scope.activity = new Activity(JSON.parse(preloaded_activity))
+      $scope.activity.is_new = ($scope.activity.title.length == 0)
+      true
+    else
+      false
 
-    # Keep <title> tag in sync
-    $scope.$watch 'activity.title', ->
-      $(document).attr("title", "ChefSteps " + ($scope.activity.title || "New Recipe"))
+  # Keep <title> tag in sync
+  $scope.$watch 'activity.title', ->
+    if $scope.activity.activity_type instanceof Array
+      activity_type_title = $scope.activity.activity_type[0]
+    else
+      activity_type_title = $scope.activity.activity_type
+    $(document).attr("title", "ChefSteps - " + (activity_type_title || '') + " - " + ($scope.activity.title || "New Recipe"))
+
+  # One time stuff
+  if $scope.parsePreloaded()
+
+    if ! $scope.maybeRestoreFromLocalStorage()
+      $scope.saveBaseToLocalStorage()
+
+      if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
+        $scope.startEditMode()
+        $scope.editMeta = true
+        setTimeout (->
+          title_elem = $('#title-edit-pair')
+          angular.element(title_elem).scope().setMouseOver(true)
+          title_elem.click()
+        ), 0
+
 
 
 ]

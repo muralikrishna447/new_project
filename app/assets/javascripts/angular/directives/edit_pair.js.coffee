@@ -31,7 +31,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
       $scope.mouseCurrentlyOver = over
 
     $scope.$watch $scope.focusedInside, ((newValue, oldValue) ->
-      $scope.addUndo() if ! newValue
+      $scope.addUndo() if oldValue && ! newValue
     )
 
     # Madness. On a click, wait for our edit half to show.
@@ -89,4 +89,4 @@ angular.module('ChefStepsApp').directive 'cseditpairedit', ->
 angular.module('ChefStepsApp').directive 'cseditpairshow', ->
   restrict: 'E',
   transclude: true,
-  template: '<div ng-switch-default="" ng-transclude class="edit-pair-show"></div>'
+  template: '<div ng-switch-default="" ng-transclude  class="edit-pair-show"></div>'

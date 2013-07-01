@@ -41,7 +41,7 @@
   %h4.text-center
     %i.icon-comment-alt
     Comments or Questions?
-    = link_to 'Visit the Forum', 'http://forum.chefsteps.com/categories/spherification-course-questions'
+    = link_to 'Visit the Forum', @course.forum_link
 
   - if @course.title == 'Spherification'
     %div{style: 'padding: 30px;'}

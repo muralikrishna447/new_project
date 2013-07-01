@@ -79,21 +79,14 @@ Delve::Application.routes.draw do
       get 'as_json' => 'activities#get_as_json'
       put 'as_json' => 'activities#update_as_json'
       get 'fork' => 'activities#fork'
+      put 'notify_start_edit' => 'activities#notify_start_edit'
+      put 'notify_end_edit' => 'activities#notify_end_edit'
     end
     collection do
       get 'all_tags' => 'activities#get_all_tags'
     end
   end
-  resources :techniques, only: [:index, :show] do
-    collection do
-      get 'index_as_json' => 'techniques#index_as_json'
-    end
-  end
-  resources :sciences, only: [:index, :show] do
-    collection do
-      get 'index_as_json' => 'sciences#index_as_json'
-    end
-  end
+
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
   match '/feed' => 'activities#feedburner_feed', as: :feed
 
@@ -111,10 +104,10 @@ Delve::Application.routes.draw do
 
   resources :equipment, only: [:index]
   resources :ingredients, only: [:index]
-  resources :search, only: [:index]
-  resources :recipe_gallery, only: [:index], path: 'recipe-gallery' do
+
+  resources :gallery, only: [:index], path: 'gallery' do
     collection do
-      get 'index_as_json' => 'recipe_gallery#index_as_json'
+      get 'index_as_json' => 'gallery#index_as_json'
     end
   end
   resources :user_activities, only: [:create]

@@ -47,4 +47,4 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
       $scope.addUndo()
   ]
 
-  templateUrl: '/client_views/_equipment_edit_pair'
+  templateUrl: '_equipment_edit_pair.html'
