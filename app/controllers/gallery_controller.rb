@@ -1,4 +1,4 @@
-class RecipeGalleryController < ApplicationController
+class GalleryController < ApplicationController
 
 
   has_scope :sort do |controller, scope, value|

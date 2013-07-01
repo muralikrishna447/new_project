@@ -1,12 +1,14 @@
 .gallery-filter(ng-cloak='')
 
+  %input.search-query(placeholder="Search..." ng-model="filters.search_all")
+
   .dropdown
     .dropdown-toggle
-      {{filters.sort.name}}
+      {{filters.activity_type.name || 'Type'}}
       %i.icon-angle-down
     %ul.dropdown-menu
-      %li(ng-repeat="choice in sortChoices")
-        %a(ng-click="filters.sort = choice")
+      %li(ng-repeat="choice in typeChoices")
+        %a(ng-click="filters.activity_type = choice")
           {{choice.name}}
 
   .dropdown
@@ -16,15 +18,6 @@
     %ul.dropdown-menu
       %li(ng-repeat="choice in difficultyChoices")
         %a(ng-click="filters.difficulty = choice")
-          {{choice.name}}
-
-  .dropdown
-    .dropdown-toggle
-      {{filters.type.name || 'Type'}}
-      %i.icon-angle-down
-    %ul.dropdown-menu
-      %li(ng-repeat="choice in typeChoices")
-        %a(ng-click="filters.activity_type = choice")
           {{choice.name}}
 
   -if admin_user_signed_in?
@@ -42,7 +35,14 @@
       = link_to 'Clear x', 'javascript:void(0);'
 
   .pull-right
-    %input.search-query(placeholder="Search..." ng-model="filters.search_all")
+    .dropdown.sort
+      .dropdown-toggle
+        {{filters.sort.name}}
+        %i.icon-angle-down
+      %ul.dropdown-menu
+        %li(ng-repeat="choice in sortChoices")
+          %a(ng-click="filters.sort = choice")
+            {{choice.name}}
 
 %div.pull-left(galleryscroll='load_data()')
   .media-box-3(ng-cloak='' ng-repeat='activity in activities' ng-animate="'gallery-animation'")

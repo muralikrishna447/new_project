@@ -2,11 +2,19 @@
 
 .gallery-wrapper
   min-height: 2400px
+  margin-top: 30px
+
+.gallery-filter
+  input
+    margin-top: -4px
+    margin-right: 20px !important
 
 .gallery-filter
   @include raleway
   font-size: 16px
+  margin-bottom: 14px
   .dropdown
+    cursor: pointer
     display: inline-block
     margin-right: 10px
     .dropdown-toggle
@@ -24,6 +32,8 @@
       @include raleway
       font-size: 16px
       text-transform: uppercase
+  .dropdown.sort
+    margin-right: 20px
 
 .pagination
   @include raleway
