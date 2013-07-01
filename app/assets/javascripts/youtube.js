@@ -10,7 +10,6 @@ function onYouTubeIframeAPIReady() {
 
   activityPlayer = new YT.Player('activityPlayer', {
     events: {
-      'onReady': onActivityPlayerReady,
       'onStateChange': onActivityPlayerStateChange,
     }
   });
@@ -39,14 +38,10 @@ function onSpherificationPlayerStateChange(event) {
 }
 
 // For all activities
-function onActivityPlayerReady(event) {
-  event.target.playVideo();
-}
-
 // The API calls this function when the player's state changes.
 function onActivityPlayerStateChange(event) {
-  if (event.data == YT.PlayerState.PLAYED) {
-    console.log('played');
-    mixpanel.track("Video Playing", {"url": document.location});
+  if (event.data == YT.PlayerState.PLAYING) {
+    mixpanel.track("Video Played", {"url": document.URL, "user": currentUserName});
+    console.log('playing');
   }
 }
