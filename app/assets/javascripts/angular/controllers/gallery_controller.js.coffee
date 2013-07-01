@@ -150,9 +150,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     $scope.activities
 
   # Initialization
-  Activity = $resource(document.location.pathname + '/index_as_json')
-  # Total gallery items
-  $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')
+  $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')       # Total gallery items
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.page = 1
   $scope.spinner = 0
@@ -162,7 +160,11 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.filters.search_all = $scope.url_params.search_all if $scope.url_params.search_all
   $scope.filters.activity_type = _.find($scope.typeChoices, (x) -> x.value == $scope.url_params.activity_type) if $scope.url_params.activity_type
   $scope.clear_and_load()
-  $scope.load_no_results_data()
+
+  # Load up some activities to use if we need to suggest alternatives for an empty result
+  $timeout (->
+    $scope.load_no_results_data()
+  ), 1000
 
   # $scope.fill_screen = ->
   #   if ($("body").height() < window.innerHeight)
