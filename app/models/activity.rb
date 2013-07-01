@@ -45,7 +45,7 @@ class Activity < ActiveRecord::Base
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
-  scope :activity_type, -> activity_type { where("activity_type iLIKE '%#{activity_type}%'") }
+  scope :activity_type, -> activity_type { where("activity_type iLIKE ?", '%' + activity_type + '%') }
   scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
   scope :newest, order('published_at DESC')
   scope :oldest, order('published_at ASC')
