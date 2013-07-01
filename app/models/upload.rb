@@ -8,4 +8,8 @@ class Upload < ActiveRecord::Base
 
   scope :approved, where(approved: true)
   scope :unapproved, where(approved: false)
+
+  def featured_image
+    image_id
+  end
 end

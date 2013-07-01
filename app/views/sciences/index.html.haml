@@ -1,7 +1,11 @@
+- content_for :title, "Culinary Knowledge and Stuff We Like"
+- content_for :description, "Become a better by cook by learning from these amazing culinary knowledge videos."
+- content_for :keywords, @sciences.map(&:title).to_sentence
+
 .container
   .row
     .span12
-      %h2 Culinary Knowledge and Stuff We Like
+      %h1 Culinary Knowledge and Stuff We Like
       / = paginate @sciences
       / .row.gallery
       /   - @sciences.each do |science|
@@ -14,7 +18,7 @@
   .row
     .span12#gallery-count{:'gallery-count' => "#{@sciences_count}"}
       %div(ng-controller='GalleryController')
-        %h1
+        %span(ng-model="admin_signed_in" ng-init="admin_signed_in='#{admin_user_signed_in?}'")
         / .flat-form
         /   %form
         /     %input(ng-model='search' placeholder='Enter Name')

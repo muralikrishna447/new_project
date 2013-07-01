@@ -1,7 +1,11 @@
+- content_for :title, "Recipe Gallery"
+- content_for :description, "Become a better by cook by learning from these amazing recipe videos."
+- content_for :keywords, @recipes.map(&:title).to_sentence
+
 .container
   .row
     .span12#recipe-gallery
-      %h2 Recipes
+      %h1 Recipes
 
       / .gallery-filter
       /   .dropdown
@@ -41,6 +45,7 @@
 
     .span12#gallery-count{:'gallery-count' => "#{@recipes_count}"}
       %div(ng-controller='GalleryController')
+        %span(ng-model="admin_signed_in" ng-init="admin_signed_in='#{admin_user_signed_in?}'")
         / .flat-form
         /   %form
         /     %input(ng-model='search' placeholder='Enter Name')

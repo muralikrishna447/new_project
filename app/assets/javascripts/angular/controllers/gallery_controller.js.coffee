@@ -122,7 +122,9 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.$watch 'filters.published_status', (newValue) ->
     console.log newValue
-    $scope.clear_and_load() if newValue
+    # $scope.admin_signed_in and $scope.page+=1 fixes the bug where the first 12 items would show up twice
+    $scope.clear_and_load() if newValue && $scope.admin_signed_in
+    $scope.page+=1
 
   $scope.$watch 'filters.activity_type', (newValue) ->
     console.log newValue
