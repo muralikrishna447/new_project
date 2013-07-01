@@ -25,4 +25,11 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
     else
       true
 
+  $scope.pollItemDetails = (current_poll_item) ->
+    # current_poll_item.show_details = true
+    angular.forEach $scope.poll['poll_items'], (poll_item) ->
+      if current_poll_item.id == poll_item.id
+        poll_item.show_details = true
+      else
+        poll_item.show_details = false
 ]

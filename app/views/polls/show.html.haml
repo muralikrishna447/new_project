@@ -22,8 +22,11 @@
                   .poll-item-vote-count(ng-show="poll_item.votes_count > 0")
                     {{poll_item.votes_count}}
           .poll-item-text
-            %h2
-              {{poll_item.title}}
+            %a.poll-item-details-btn(ng-click='pollItemDetails(poll_item)')
+              %h2
+                {{poll_item.title}}
+            .poll-item-details(ng-show='poll_item.show_details')
+              %p {{poll_item.description}}
           .poll-item-sharing
             %a.poll-item-btn
               %i.icon-share-alt
