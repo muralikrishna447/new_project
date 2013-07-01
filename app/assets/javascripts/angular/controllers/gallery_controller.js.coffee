@@ -1,6 +1,9 @@
 angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", ($scope, $resource, $location, $timeout) ->
   Activity = $resource(document.location.pathname + '/index_as_json')
-  $scope.activities = Activity.query()
+  $scope.url_params = {}
+  $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
+  $scope.filters = {}
+  $scope.filters.search_all = $scope.url_params.search_all if $scope.url_params.search_all
   $scope.maybe_clear = false
 
   $scope.sortChoices = [
@@ -20,11 +23,17 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     {name: "Unpublished", value: "Unpublished"}
   ]
 
+  $scope.typeChoices = [
+    {name: "Recipes", value: "Recipe"},
+    {name: "Techniques", value: "Technique"},
+    {name: "Science", value: "Science"}
+  ]
+
   $scope.defaultFilters = {
     sort: $scope.sortChoices[0],
     published_status: $scope.publishedStatusChoices[0]
   }
-  $scope.filters = angular.extend({}, $scope.defaultFilters)
+  $scope.filters = angular.extend($scope.filters, $scope.defaultFilters)
 
   $scope.placeHolderImage = "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
 
@@ -115,6 +124,10 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     console.log newValue
     $scope.clear_and_load() if newValue
 
+  $scope.$watch 'filters.activity_type', (newValue) ->
+    console.log newValue
+    $scope.clear_and_load() if newValue
+
   $scope.$watch 'filters.search_all', (newValue) ->
     console.log newValue
     $scope.filters.sort = $scope.sortChoices[2] if newValue? && (newValue.length == 1)
@@ -129,6 +142,8 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.nonDefaultFilters = ->
     ! _.isEqual($scope.filters, $scope.defaultFilters)
+
+  $scope.clear_and_load()
 
   # $scope.fill_screen = ->
   #   if ($("body").height() < window.innerHeight)

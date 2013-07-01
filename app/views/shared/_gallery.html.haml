@@ -18,6 +18,15 @@
         %a(ng-click="filters.difficulty = choice")
           {{choice.name}}
 
+  .dropdown
+    .dropdown-toggle
+      {{filters.type.name || 'Type'}}
+      %i.icon-angle-down
+    %ul.dropdown-menu
+      %li(ng-repeat="choice in typeChoices")
+        %a(ng-click="filters.activity_type = choice")
+          {{choice.name}}
+
   -if admin_user_signed_in?
     .dropdown
       .dropdown-toggle

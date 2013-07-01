@@ -13,13 +13,14 @@ class RecipeGalleryController < ApplicationController
         scope
     end
   end
-  has_scope :difficulty
-=begin
-  has_scope :published_status, default: "Published" do |controller, scope, value|
-    value == "Published" ? scope.published.recipes.includes(:steps) : scope.unpublished.where("title != 'DUMMY NEW ACTIVITY'")
-  end
-=end
+
   has_scope :search_all
+  has_scope :difficulty
+  has_scope :activity_type
+
+  has_scope :published_status, default: "Published" do |controller, scope, value|
+    value == "Published" ? scope.published : scope.unpublished.where("title != 'DUMMY NEW ACTIVITY'")
+  end
 
   def index
     @recipes = apply_scopes(Activity).recipes.order('published_at DESC').uniq.page(params[:page]).per(12)
