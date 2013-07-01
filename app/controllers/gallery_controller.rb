@@ -2,12 +2,11 @@ class GalleryController < ApplicationController
 
 
   has_scope :sort do |controller, scope, value|
-    pub = true
     case value
       when "oldest"
-        pub ? scope.by_published_at("asc") : scope.by_updated_at("asc")
+        controller.showing_published? ? scope.by_published_at("asc") : scope.by_updated_at("asc")
       when "newest"
-        pub ? scope.by_published_at("desc") : scope.by_updated_at("desc")
+        controller.showing_published? ? scope.by_published_at("desc") : scope.by_updated_at("desc")
       else
         # Relevance is the default sort for pg_search so don't need to do anything
         scope
@@ -27,7 +26,12 @@ class GalleryController < ApplicationController
     @recipes_count = Activity.published.recipes.count
   end
 
+  def showing_published?
+    @pub
+  end
+
   def index_as_json
+    @pub = params[:published_status] || "Published"
     @recipes = apply_scopes(Activity).page(params[:page]).per(12)
 
     respond_to do |format|

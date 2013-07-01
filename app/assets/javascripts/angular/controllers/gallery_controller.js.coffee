@@ -56,13 +56,6 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       str.push encodeURIComponent(p) + "=" + encodeURIComponent(obj[p])
     str.join "&"
 
-  # Total gallery items
-  $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')
-
-  $scope.page = 2
-
-  $scope.gallery_index = document.location.pathname + '/index_as_json.json'
-
   $scope.galleryIndexParams = ->
     r = {page: $scope.page}
     for filter, x of $scope.filters
@@ -81,33 +74,43 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     # $scope.page < $scope.gallery_count/12 + 1 stops attempting to load more pages when all the activities are loaded
     if $scope.page < $scope.gallery_count/12 + 1
 
-      $scope.spinner = true
+      $scope.spinner += 1
+
       gip = $scope.galleryIndexParams()
-
+      query_filters = angular.extend({}, $scope.filters)
       more_activities = $resource($scope.gallery_index + '?' + $scope.serialize(gip)).query ->
-        console.log $scope.gallery_index + '?' + $scope.serialize(gip)
-        console.log "GOT BACK " + more_activities.length
-        if more_activities
-          save_activities = $scope.activities
-          if $scope.maybe_clear || (Object.keys($scope.activities).length == 0)
-            $scope.activities = more_activities
-          else
-            $scope.activities = $scope.activities.concat(more_activities)
-          if save_activities
-            for i in [0...$scope.activities.length]
-              a = _.find(save_activities, (x) -> x.slug == $scope.activities[i].slug)
-              $scope.activities[i] = a if a?
-        $scope.maybe_clear = false
-        $scope.spinner = false
 
-      $scope.page+=1
+        console.log "GOT BACK " + more_activities.length + " FOR PAGE " + gip.page
+
+        # Ignore any results that come back that don't match the current filters
+        if _.isEqual(query_filters, $scope.filters)
+
+          if more_activities
+            # Copy over any old activitites that the repeater has already added properties to
+            # and use them instead of the ones we just got back. Cuts down on flashing.
+            for i in [0...more_activities.length]
+              a = _.find($scope.activities, (x) -> x.slug == more_activities[i].slug)
+              more_activities[i] = a if a?
+
+            if (gip.page == 1) || (Object.keys($scope.activities).length == 0)
+              $scope.activities = []
+            base = (gip.page - 1) * 12
+            $scope.activities[base..base + 12] = more_activities
+          $scope.page = gip.page + 1
+
+        else
+          console.log ".... FROM OLD PARAMS, IGNORING "
+          console.log "old: " + query_filters.search_all
+          console.log "new: " + $scope.filters.search_all
+
+        $scope.spinner -= 1
+
 
   $scope.load_no_results_data = ->
     $scope.no_results_activities = $resource($scope.gallery_index + '?activity_type=Recipe&page=3&sort=newest').query ->
       console.log "loaded backups"
 
   $scope.clear_and_load = ->
-    $scope.maybe_clear = true
     $scope.page = 1
     $scope.load_data()
 
@@ -121,9 +124,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.$watch 'filters.published_status', (newValue) ->
     console.log newValue
-    # $scope.admin_signed_in and $scope.page+=1 fixes the bug where the first 12 items would show up twice
     $scope.clear_and_load() if newValue && $scope.admin_signed_in
-    $scope.page+=1
 
   $scope.$watch 'filters.activity_type', (newValue) ->
     console.log newValue
@@ -150,13 +151,16 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   # Initialization
   Activity = $resource(document.location.pathname + '/index_as_json')
+  # Total gallery items
+  $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')
+  $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.page = 1
+  $scope.spinner = 0
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
   $scope.filters = angular.extend({}, $scope.defaultFilters)
   $scope.filters.search_all = $scope.url_params.search_all if $scope.url_params.search_all
   $scope.filters.activity_type = _.find($scope.typeChoices, (x) -> x.value == $scope.url_params.activity_type) if $scope.url_params.activity_type
-  $scope.maybe_clear = false
   $scope.clear_and_load()
   $scope.load_no_results_data()
 
