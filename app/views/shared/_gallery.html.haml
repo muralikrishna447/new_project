@@ -1,4 +1,4 @@
-.gallery-filter(ng-cloak='')
+.gallery-filter.navbar(ng-cloak='')
 
   %input.search-query(placeholder="Search..." ng-model="filters.search_all")
 
@@ -34,15 +34,18 @@
     %div(ng-show="nonDefaultFilters()" ng-click="clearFilters()")
       = link_to 'Clear x', 'javascript:void(0);'
 
-  .pull-right
-    .dropdown.sort
-      .dropdown-toggle
-        {{filters.sort.name}}
-        %i.icon-angle-down
-      %ul.dropdown-menu
-        %li(ng-repeat="choice in sortChoices")
-          %a(ng-click="filters.sort = choice")
-            {{choice.name}}
+  .dropdown.sort.pull-right.inline-group
+    .dropdown-toggle
+      {{filters.sort.name}}
+      %i.icon-angle-down
+    %ul.dropdown-menu(ng-hide="(filters.search_all || '') == ''")
+      %li(ng-repeat="choice in sortChoices")
+        %a(ng-click="filters.sort = choice")
+          {{choice.name}}
+    %ul.dropdown-menu(ng-show="(filters.search_all || '') == ''")
+      %li(ng-repeat="choice in sortChoicesWhenNoSearch")
+        %a(ng-click="filters.sort = choice")
+          {{choice.name}}
 
 %div.pull-left(galleryscroll='load_data()')
   .media-box-3(ng-cloak='' ng-repeat='activity in activities' ng-animate="'gallery-animation'")

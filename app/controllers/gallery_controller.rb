@@ -23,7 +23,7 @@ class GalleryController < ApplicationController
   end
 
   def index
-    @recipes = apply_scopes(Activity).recipes.order('published_at DESC').uniq.page(params[:page]).per(12)
+    @recipes = []
     @recipes_count = Activity.published.recipes.count
   end
 

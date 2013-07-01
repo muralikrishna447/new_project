@@ -6,6 +6,8 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     {name: "Most Relevant", value: "relevance"}
   ]
 
+  $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x.value == "relevance")
+
   $scope.difficultyChoices = [
     {name: "Easy", value: "easy"},
     {name: "Intermediate", value: "intermediate"}
