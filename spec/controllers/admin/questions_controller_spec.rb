@@ -37,19 +37,23 @@ describe Admin::QuestionsController, 'create' do
     end
 
     it 'redirects to question edit question action' do
-      controller.should_receive(:edit_admin_question_path) { 'path' }
+      controller.should_receive(:edit_admin_quiz_question_path) { 'path' }
       post :create, quiz_id: quiz.id, question_type: 'box_sort'
       response.should redirect_to 'path'
     end
   end
 end
 
+
+
 describe Admin::QuestionsController, 'update' do
   login_admin
 
-  let(:question) { stub('question', id: 456, contents: OpenStruct.new({foo: 'bar'}), quiz: nil) }
+  let(:quiz) { Fabricate.build(:quiz, id: 123) }
+  let(:question) { stub('question', id: 456, contents: OpenStruct.new({foo: 'bar'}), quiz: quiz) }
 
   before do
+    Quiz.stub(:find).with('123') { quiz }
     Question.stub(:find).with('456') { question }
     question.stub(:symbolize_question_type) { :multiple_choice }
     question.stub(:update_from_params)
@@ -57,7 +61,7 @@ describe Admin::QuestionsController, 'update' do
 
   it 'updates question' do
     question.should_receive(:update_from_params)
-    put :update, id: 456
+    put :update, id: 456, quiz_id: quiz.id
   end
 
   it 'returns 200 if type is multiple choice' do

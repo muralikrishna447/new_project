@@ -7,7 +7,7 @@
 %h2 Box Sort Question for "#{@question.quiz.title}"
 
 
-= semantic_form_for [:admin, @question], url: admin_question_path(@question) do |f|
+= semantic_form_for [:admin, @question], url: admin_quiz_question_path(@question) do |f|
   = f.inputs name: "Question Details" do
     = f.input :instructions, input_html: {value: @question.instructions}
     = f.semantic_fields_for :options do |options|

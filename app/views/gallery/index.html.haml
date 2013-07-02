@@ -6,7 +6,6 @@
   .row
     .span12#gallery-count{:'gallery-count' => "#{@recipes_count}"}
       %div(ng-controller='GalleryController')
-        %span(ng-model="admin_signed_in" ng-init="admin_signed_in='#{admin_user_signed_in?}'")
         / .flat-form
         /   %form
         /     %input(ng-model='search' placeholder='Enter Name')

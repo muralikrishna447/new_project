@@ -20,7 +20,7 @@
         %a(ng-click="filters.difficulty = choice")
           {{choice.name}}
 
-  -if admin_user_signed_in?
+  -if can? :update, Activity
     .dropdown
       .dropdown-toggle
         {{filters.published_status.name}}

@@ -36,8 +36,8 @@ class Activity < ActiveRecord::Base
   has_many :events, as: :trackable
   has_many :likes, as: :likeable
 
-  belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
-  belongs_to :currently_editing_user, class_name: AdminUser, foreign_key: 'currently_editing_user'
+  belongs_to :last_edited_by, class_name: User, foreign_key: 'last_edited_by_id'
+  belongs_to :currently_editing_user, class_name: User, foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
 
