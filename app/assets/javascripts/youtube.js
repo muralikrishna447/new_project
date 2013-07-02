@@ -41,7 +41,7 @@ function onSpherificationPlayerStateChange(event) {
 // The API calls this function when the player's state changes.
 function onActivityPlayerStateChange(event) {
   if (event.data == YT.PlayerState.PLAYING) {
-    mixpanel.track("Video Played", {"url": document.URL, "user": currentUserName});
+    mixpanel.track("Video Played", {"url": document.URL, "user_id": mixpanel.get_distinct_id()});
     console.log('playing');
   }
 }
