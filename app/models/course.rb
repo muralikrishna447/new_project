@@ -163,5 +163,16 @@ class Course < ActiveRecord::Base
     variant_id: 286923754
   }
 
+  def forum_link
+    case self.id
+    when 8
+      forum_link = 'http://forum.chefsteps.com/categories/spherification-course-questions'
+    when 10
+      forum_link = 'http://forum.chefsteps.com/categories/science-of-poutine-course-questions'
+    else
+      forum_link = 'http://forum.chefsteps.com/discussions'
+    end
+  end
+
 end
 

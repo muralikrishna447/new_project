@@ -9,7 +9,7 @@
         .span6
           .image-pile
             = hb 'each images' do
-              %img.img-polaroid{ src: hb('url'), data: {'image-id' => hb('id'), caption: hb('caption')} }
+              %img.img-polaroid{ src: hb('url') + "/convert?fit=max&w=900&cache=true", data: {'image-id' => hb('id'), caption: hb('caption')} }
       .row
         .span4.image-caption
           = hb('first_caption images')

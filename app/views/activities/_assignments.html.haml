@@ -10,7 +10,7 @@
       .text-center
         = link_to 'See the recipe', assignment.child_activity
   .span3
-    = render 'shared/media_box_2', size: 'medium', url: '#', title: 'Your own recipe', image: '{ "url": "http://www.filepicker.io/api/file/Hm4LABVkQnyOt93RTOm5"} ', object: nil
+    = render 'shared/media_box_2', size: 'medium', url: '#', title: 'Your own recipe', image: @course.featured_image, object: nil
 
 .row-fluid
   %hr

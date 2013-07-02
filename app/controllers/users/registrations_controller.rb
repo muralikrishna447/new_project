@@ -39,7 +39,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to welcome_url(email: @user.email)
       cookies.delete(:viewed_activities)
       cookies[:returning_visitor] = true
-      mixpanel.alias @user.id
       mixpanel.track 'Signed Up', { distinct_id: @user.id, time: @user.created_at }
     else
       render :new
@@ -60,13 +59,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_in @user
       aweber_signup(@user.email)
       cookies.delete(:viewed_activities)
-      mixpanel.alias @user.id
       mixpanel.track 'Signed Up', { distinct_id: @user.id, time: @user.created_at }
       @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
       if @enrollment.save
         redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
         track_event @course, 'enroll'
         finished('spherification', :reset => false)
+        finished('poutine', :reset => false)
         mixpanel.track 'Course Enrolled', { distinct_id: @user.id, course: @course.title, enrollment_method: 'Sign Up and Enroll' }
       end
     else

@@ -159,7 +159,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     'ChefSteps Activity Base' + $scope.localStorageKeyId()
 
   $scope.saveToLocalStorage = ->
-    localStorageService.add($scope.localStorageKey(), JSON.stringify($scope.activity))
+    if $scope.editMode
+      localStorageService.add($scope.localStorageKey(), JSON.stringify($scope.activity))
 
   $scope.saveBaseToLocalStorage = ->
     localStorageService.add($scope.localStorageBaseKey(), JSON.stringify($scope.activity))
@@ -264,7 +265,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.heroVideoURL = ->
     autoplay = if $scope.url_params.autoplay then "1" else "0"
-    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
+    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}\&html5=1\&enablejsapi=1\&fs=1"
 
   $scope.heroVideoStillURL = ->
     "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"

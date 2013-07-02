@@ -7,13 +7,17 @@ class Activity < ActiveRecord::Base
   friendly_id :title, use: [:slugged, :history]
 
   has_many :ingredients, dependent: :destroy, class_name: ActivityIngredient, inverse_of: :activity
+  has_many :terminal_ingredients, class_name: Ingredient, through: :ingredients, source: :ingredient
+
   # The as_ingredient relationship returns the ingredient version of the activity
   has_one :as_ingredient, class_name: Ingredient, foreign_key: 'sub_activity_id'
   has_many :used_in_activities, source: :activities, through: :as_ingredient
   belongs_to :source_activity, class_name: Activity, foreign_key: 'source_activity_id'
 
   has_many :steps, inverse_of: :activity, dependent: :destroy
+
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
+  has_many :terminal_equipment, class_name: Equipment, through: :equipment, source: :equipment
 
   has_many :quizzes
 
@@ -41,10 +45,12 @@ class Activity < ActiveRecord::Base
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
+  scope :activity_type, -> activity_type { where("activity_type iLIKE ?", '%' + activity_type + '%') }
   scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
   scope :newest, order('published_at DESC')
   scope :oldest, order('published_at ASC')
   scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
+  scope :by_updated_at, -> direction { direction == 'desc' ? order('updated_at DESC') : order('updated_at ASC')}
   scope :randomize, order('random()')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
@@ -57,11 +63,12 @@ class Activity < ActiveRecord::Base
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
-  # multisearchable :against => [:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'],
-  #   :if => :published
-  # pg_search_scope :search, against: {:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'},
-  #   using: {tsearch: {dictionary: "english", any_word: true}},
-  #   associated_against: {steps: [:title, :directions], recipes: :title}
+
+  # Letters are the weighting
+  pg_search_scope :search_all,
+                  using: {tsearch: {prefix: true}},
+                  against: [[:title, 'A'], [:description, 'C']],
+                  associated_against: {terminal_equipment: [[:title, 'D']], terminal_ingredients: [[:title, 'D']], tags: [[:name, 'B']], steps: [[:title, 'C'], [:directions, 'C']]}
 
   TYPES = %w[Recipe Technique Science]
 

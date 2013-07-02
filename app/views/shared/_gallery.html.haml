@@ -1,65 +1,57 @@
-/ .gallery-filter(ng-cloak='')
-/   .dropdown
-/     = link_to 'javascript:void(0);', class: 'dropdown-toggle' do
-/       {{date_type || 'Date'}}
-/       %i.icon-angle-down
-/     %ul.dropdown-menu
-/       %li(ng-click="date = '-published_at' ; date_type = 'Most Recent'")
-/         = link_to 'Most Recent', 'javascript:void(0);'
-/       %li(ng-click="date = 'published_at' ; date_type = 'Oldest'")
-/         = link_to 'Oldest', 'javascript:void(0);'
-/   .dropdown
-/     = link_to 'javascript:void(0);', class: 'dropdown-toggle' do
-/       {{filters.difficulty || 'Difficulty'}}
-/       %i.icon-angle-down
-/     %ul.dropdown-menu
-/       %li(ng-click="filters.difficulty = 'easy'")
-/         = link_to 'Easy', 'javascript:void(0);'
-/       %li(ng-click="filters.difficulty = 'intermediate'")
-/         = link_to 'Intermediate', 'javascript:void(0);'
-/       %li(ng-click="filters.difficulty = 'advanced'")
-/         = link_to 'Advanced', 'javascript:void(0);'
-/   .dropdown
-/     %div(ng-show="filters.difficulty || date_type" ng-click="filters = {} ; date_type = null; date = '-updated_at'")
-/       = link_to 'Clear x', 'javascript:void(0);'
-/ %div.pull-left(galleryscroll='load_data()')
-/   .media-box-3(ng-cloak='' ng-repeat='activity in filtered = (activities | filter:search | filter:filters | orderBy:date)' ng-animate="'gallery-animation'")
-/     %a(href= 'activities/{{activity.slug}}')
-/       .media-box-3-title
-/         {{activity.title}}
-/       %img(ng-src="{{activityImageURL(activity, 400)}}")
-/       .media-box-3-footer
-/         .footer-left
-/           {{activity.difficulty}}
-/ .gallery-spinner(ng-show='spinner')
-/   %i.icon-spinner.icon-spin.icon-large
+.gallery-filter.navbar(ng-cloak='')
 
-.gallery-filter(ng-cloak='')
+  %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all")
+
   .dropdown
-    = link_to 'javascript:void(0);', class: 'dropdown-toggle' do
-      {{date_type || 'Date'}}
+    .dropdown-toggle
+      {{filters.activity_type.name || 'Type'}}
       %i.icon-angle-down
     %ul.dropdown-menu
-      %li(ng-click="filters.by_published_at = 'desc' ; date_type = 'Most Recent'")
-        = link_to 'Most Recent', 'javascript:void(0);'
-      %li(ng-click="filters.by_published_at = 'asc' ; date_type = 'Oldest'")
-        = link_to 'Oldest', 'javascript:void(0);'
+      %li(ng-repeat="choice in typeChoices")
+        %a(ng-click="filters.activity_type = choice")
+          {{choice.name}}
+
   .dropdown
-    = link_to 'javascript:void(0);', class: 'dropdown-toggle' do
-      {{filters.difficulty || 'Difficulty'}}
+    .dropdown-toggle
+      {{filters.difficulty.name || 'Difficulty'}}
       %i.icon-angle-down
     %ul.dropdown-menu
-      %li(ng-click="filters.difficulty = 'easy'")
-        = link_to 'Easy', 'javascript:void(0);'
-      %li(ng-click="filters.difficulty = 'intermediate'")
-        = link_to 'Intermediate', 'javascript:void(0);'
-      %li(ng-click="filters.difficulty = 'advanced'")
-        = link_to 'Advanced', 'javascript:void(0);'
+      %li(ng-repeat="choice in difficultyChoices")
+        %a(ng-click="filters.difficulty = choice")
+          {{choice.name}}
+
+  -if admin_user_signed_in?
+    .dropdown
+      .dropdown-toggle
+        {{filters.published_status.name}}
+        %i.icon-angle-down
+      %ul.dropdown-menu
+        %li(ng-repeat="choice in publishedStatusChoices")
+          %a(ng-click="filters.published_status = choice")
+            {{choice.name}}
+
   .dropdown
-    %div(ng-show="filters.difficulty || filters.by_published_at" ng-click="filters.clear = 'true'")
+    %div(ng-show="nonDefaultFilters()" ng-click="clearFilters()")
       = link_to 'Clear x', 'javascript:void(0);'
+
+  .dropdown.sort.pull-right.inline-group
+    .dropdown-toggle
+      {{filters.sort.name}}
+      %i.icon-angle-down
+    %ul.dropdown-menu(ng-hide="(filters.search_all || '') == ''")
+      %li(ng-repeat="choice in sortChoices")
+        %a(ng-click="filters.sort = choice")
+          {{choice.name}}
+    %ul.dropdown-menu(ng-show="(filters.search_all || '') == ''")
+      %li(ng-repeat="choice in sortChoicesWhenNoSearch")
+        %a(ng-click="filters.sort = choice")
+          {{choice.name}}
+
+%h3(ng-show="activities.length == 0" ng-cloak)
+  No results found, but perhaps you'd enjoy these recipes?
+
 %div.pull-left(galleryscroll='load_data()')
-  .media-box-3(ng-cloak='' ng-repeat='activity in activities' ng-animate="'gallery-animation'")
+  .media-box-3(ng-cloak='' ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
     %a(href= 'activities/{{activity.slug}}')
       .media-box-3-title
         {{activity.title}}
@@ -67,5 +59,6 @@
       .media-box-3-footer
         .footer-left
           {{activity.difficulty}}
-.gallery-spinner(ng-show='spinner')
+
+.gallery-spinner(ng-show='spinner > 0')
   %i.icon-spinner.icon-spin.icon-large

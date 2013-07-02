@@ -20,6 +20,7 @@ class DashboardController < ApplicationController
 
     @enrollments_count = Enrollment.count
     @uploads_count = User.joins(:uploads).select('uploads.user_id').group('uploads.user_id').count
-  end
+    @courses = Course.published
+    end
 
 end
