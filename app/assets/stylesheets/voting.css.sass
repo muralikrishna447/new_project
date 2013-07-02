@@ -13,6 +13,8 @@
   .poll-item-text
     width: 72%
     float: left
+    h2
+      margin: 20px 0px
     .poll-item-details-btn
       &:hover
         cursor: pointer
@@ -20,6 +22,15 @@
     width: 9%
     margin-left: 1%
     float: left
+    position: relative
+    .poll-item-sharing-social-buttons
+      position: absolute
+      width: 100%
+      z-index: 2
+      background: white
+      @include shadow
+      padding: 10px
+      @include boxsizing
   .poll-item-comments
     width: 9%
     margin-left: 1%
@@ -45,6 +56,9 @@
     cursor: pointer
     background: $light-gray
     color: gray
+
+.poll-item-btn-social
+  padding: 25px
 
 .poll-item-vote-count
   margin-top: 0px
