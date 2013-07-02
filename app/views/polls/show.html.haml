@@ -29,12 +29,14 @@
             %a.poll-item-btn.poll-item-btn-social(ng-click='pollItemShare(poll_item)')
               %i.icon-share-alt
             .poll-item-sharing-social-buttons(ng-show='poll_item.show_sharing')
+              %a.poll-item-btn.poll-item-btn-social(onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=#{current_url(request)}','facebook-share-dialog','width=626,height=436');return false;")
+                %i.icon-facebook
               = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
               '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'poll-item-btn poll-item-btn-social' do
                 %i.icon-google-plus
               %a.poll-item-btn.poll-item-btn-social(href="https://twitter.com/intent/tweet?text=I voted for {{poll_item.title}} on @ChefSteps!&url=#{ url_encode(current_url(request))}")
                 %i.icon-twitter
-          .poll-item-comments
+          .poll-item-comments(ng-click='pollItemDetails(poll_item)')
             %a.poll-item-btn.poll-item-btn-social
               %i.icon-comment-alt
         .poll-item-details(ng-show='poll_item.show_details')
