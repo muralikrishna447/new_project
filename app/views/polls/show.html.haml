@@ -21,15 +21,18 @@
                   %i.icon-angle-up
                   .poll-item-vote-count(ng-show="poll_item.votes_count > 0")
                     {{poll_item.votes_count}}
-          .poll-item-text(ng-click='pollItemDetails(poll_item)')
-            %a.poll-item-details-btn
-              %h2
-                {{poll_item.title}}
+          / .poll-item-text(ng-click='pollItemDetails(poll_item)')
+          /   %a.poll-item-details-btn
+          /     %h2
+          /       {{poll_item.title}}
+          .poll-item-text
+            %h2
+              {{poll_item.title}}
           .poll-item-sharing
             %a.poll-item-btn
               %i.icon-share-alt
           .poll-item-comments
             %a.poll-item-btn
               %i.icon-comment-alt
-        .poll-item-details(ng-show='poll_item.show_details')
-          %p {{poll_item.description}}
+        / .poll-item-details(ng-show='poll_item.show_details')
+        /   %p {{poll_item.description}}
