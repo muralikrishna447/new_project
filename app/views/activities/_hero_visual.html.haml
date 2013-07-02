@@ -1,7 +1,7 @@
 .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
 
   .hero-visual
-    %iframe.noprint#activityPlayer(ng-show="heroDisplayType() == 'video'" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect)
+    %iframe.noprint#activityPlayer(ng-show="heroDisplayType() == 'video'" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect webkitallowfullscreen mozallowfullscreen)
     %img(ng-show="heroDisplayType() == 'image'" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
 
     %div.noprint.disabled-section(ng-show="(heroDisplayType() == 'none') && editMode" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
