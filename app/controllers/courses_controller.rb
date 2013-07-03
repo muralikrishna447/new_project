@@ -15,7 +15,6 @@ class CoursesController < ApplicationController
     if @course.title == 'Spherification'
       @new_user = User.new
       render 'spherification'
-      finished('spheres_billboards', reset: false)
     elsif @course.title == 'Science of Poutine'
       @new_user = User.new
       render 'poutine'
@@ -31,7 +30,6 @@ class CoursesController < ApplicationController
       track_event @course
       finished('poutine', :reset => false)
       mixpanel.track 'Course Enrolled', { distinct_id: @enrollment.user.id, course: @course.title, enrollment_method: 'Standard' }
-   
     end
   end
 
