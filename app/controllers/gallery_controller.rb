@@ -23,8 +23,7 @@ class GalleryController < ApplicationController
 
   def index
     @recipes = []
-    @recipes_count = Activity.published.recipes.count
-  end
+   end
 
   def showing_published?
     @pub

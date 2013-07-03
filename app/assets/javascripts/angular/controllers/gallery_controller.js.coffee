@@ -1,5 +1,7 @@
 angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", ($scope, $resource, $location, $timeout) ->
 
+  PAGINATION_COUNT = 12
+
   $scope.sortChoices = [
     {name: "Newest", value: "newest"},
     {name: "Oldest", value: "oldest"},
@@ -71,8 +73,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     r
 
   $scope.load_data = ->
-    # $scope.page < $scope.gallery_count/12 + 1 stops attempting to load more pages when all the activities are loaded
-    if $scope.page < $scope.gallery_count/12 + 1
+    if ! $scope.all_loaded
 
       $scope.spinner += 1
 
@@ -94,9 +95,11 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
             if (gip.page == 1) || (Object.keys($scope.activities).length == 0)
               $scope.activities = []
-            base = (gip.page - 1) * 12
-            $scope.activities[base..base + 12] = more_activities
+            base = (gip.page - 1) * PAGINATION_COUNT
+            $scope.activities[base..base + PAGINATION_COUNT] = more_activities
+
           $scope.page = gip.page + 1
+          $scope.all_loaded = true if (! more_activities) || (more_activities.length < PAGINATION_COUNT)
 
         else
           console.log ".... FROM OLD PARAMS, IGNORING "
@@ -112,6 +115,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.clear_and_load = ->
     $scope.page = 1
+    $scope.all_loaded = false
     $scope.load_data()
 
   $scope.$watch 'filters.difficulty', (newValue) ->
@@ -150,7 +154,6 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     $scope.activities
 
   # Initialization
-  $scope.gallery_count = document.getElementById('gallery-count').getAttribute('gallery-count')       # Total gallery items
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.page = 1
   $scope.spinner = 0
