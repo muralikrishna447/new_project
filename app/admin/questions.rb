@@ -10,18 +10,16 @@ ActiveAdmin.register Question do
 
       type = params[:question_type] || 'multiple_choice'
       question = @quiz.add_question("#{type}_question".to_sym)
-      send("respond_to_#{type}_create".to_sym, @quiz, question)
+      send("respond_to_#{type}_create".to_sym, question)
     end
 
     def update
-      @quiz = Quiz.find(params[:quiz_id])
       question = Question.find(params[:id])
       question.update_from_params(params)
-      send("respond_to_#{question.symbolize_question_type}_update", @quiz, question)
+      send("respond_to_#{question.symbolize_question_type}_update", question)
     end
 
     def edit
-      @quiz = Quiz.find(params[:quiz_id])
       @question = Question.find(params[:id])
       @question_images = ImagePresenter.present_collection(@question.ordered_images)
       edit!
@@ -29,19 +27,19 @@ ActiveAdmin.register Question do
 
     private
 
-    def respond_to_box_sort_create(quiz, question)
-      redirect_to edit_admin_quiz_question_path(quiz, question)
+    def respond_to_box_sort_create(question)
+      redirect_to edit_admin_question_path(question)
     end
 
-    def respond_to_multiple_choice_create(quiz, question)
+    def respond_to_multiple_choice_create(question)
       render json: QuestionPresenter.new(question, true).present
     end
 
-    def respond_to_box_sort_update(quiz, question)
-      redirect_to manage_admin_quiz_questions_path(quiz, question)
+    def respond_to_box_sort_update(question)
+      redirect_to manage_questions_admin_quiz_path(question.quiz)
     end
 
-    def respond_to_multiple_choice_update(quiz, question)
+    def respond_to_multiple_choice_update(question)
       head :ok
     end
   end

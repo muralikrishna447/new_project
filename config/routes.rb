@@ -93,6 +93,12 @@ Delve::Application.routes.draw do
     resources :answers, only: [:create]
   end
 
+  # This is to work around a bug in ActiveAdmin 0.6.0 where the :shallow designator in questions.rb
+  # stopped working
+  namespace :admin do
+    resources :questions
+  end
+
   resources :quizzes, only: [:show] do
     member do
       post 'start' => 'quizzes#start'
