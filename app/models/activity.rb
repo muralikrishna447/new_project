@@ -7,13 +7,17 @@ class Activity < ActiveRecord::Base
   friendly_id :title, use: [:slugged, :history]
 
   has_many :ingredients, dependent: :destroy, class_name: ActivityIngredient, inverse_of: :activity
+  has_many :terminal_ingredients, class_name: Ingredient, through: :ingredients, source: :ingredient
+
   # The as_ingredient relationship returns the ingredient version of the activity
   has_one :as_ingredient, class_name: Ingredient, foreign_key: 'sub_activity_id'
   has_many :used_in_activities, source: :activities, through: :as_ingredient
   belongs_to :source_activity, class_name: Activity, foreign_key: 'source_activity_id'
 
   has_many :steps, inverse_of: :activity, dependent: :destroy
+
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
+  has_many :terminal_equipment, class_name: Equipment, through: :equipment, source: :equipment
 
   has_many :quizzes
 
@@ -32,7 +36,8 @@ class Activity < ActiveRecord::Base
   has_many :events, as: :trackable
   has_many :likes, as: :likeable
 
-  belongs_to :last_edited_by, class_name: AdminUser, foreign_key: 'last_edited_by_id'
+  belongs_to :last_edited_by, class_name: User, foreign_key: 'last_edited_by_id'
+  belongs_to :currently_editing_user, class_name: User, foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
 
@@ -40,22 +45,30 @@ class Activity < ActiveRecord::Base
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
+  scope :activity_type, -> activity_type { where("activity_type iLIKE ?", '%' + activity_type + '%') }
+  scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
+  scope :newest, order('published_at DESC')
+  scope :oldest, order('published_at ASC')
+  scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
+  scope :by_updated_at, -> direction { direction == 'desc' ? order('updated_at DESC') : order('updated_at ASC')}
+  scope :randomize, order('random()')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
   serialize :activity_type, Array
 
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
-  attr_accessible :source_activity, :source_activity_id, :source_type
+  attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
-  # multisearchable :against => [:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'],
-  #   :if => :published
-  # pg_search_scope :search, against: {:attached_classes => 'A', :title => 'B', :tag_list => 'C', :description => 'D'},
-  #   using: {tsearch: {dictionary: "english", any_word: true}},
-  #   associated_against: {steps: [:title, :directions], recipes: :title}
+
+  # Letters are the weighting
+  pg_search_scope :search_all,
+                  using: {tsearch: {prefix: true}},
+                  against: [[:title, 'A'], [:description, 'C']],
+                  associated_against: {terminal_equipment: [[:title, 'D']], terminal_ingredients: [[:title, 'D']], tags: [[:name, 'B']], steps: [[:title, 'C'], [:directions, 'C']]}
 
   TYPES = %w[Recipe Technique Science]
 
@@ -65,15 +78,18 @@ class Activity < ActiveRecord::Base
     ADAPTED_FROM = 0
   end
 
+  before_save :check_published
+
   before_save :strip_title
   def strip_title
     self.title = self.title.strip if self.title?
     true
   end
 
-  after_commit :create_as_ingredient
-  def create_as_ingredient
-     Ingredient.find_or_create_by_sub_activity_id(self.id)
+  after_commit :create_or_update_as_ingredient
+  def create_or_update_as_ingredient
+    i = Ingredient.find_or_create_by_sub_activity_id(self.id)
+    i.update_attribute(:title, self.title)
   end
 
   before_destroy :destroy_as_ingredient
@@ -162,22 +178,52 @@ class Activity < ActiveRecord::Base
     # Easiest just to be rid of all of the old join records, we'll make them from scratch
     ingredients.destroy_all()
     ingredients.reload()
-    puts ingredients_attrs
     if ingredients_attrs
       ingredients_attrs.each do |i|
         title = i[:ingredient][:title]
          unless title.nil? || title.blank?
           title.strip!
-          ingredient_foo = Ingredient.where(id: i[:ingredient][:id]).first_or_create(title: title)
+
+          # Try first by id
+          the_ingredient = Ingredient.find_by_id(i[:ingredient][:id])
+
+          # Otherwise, try by title because it is possible for a user to type fast and not get
+          # an autocompleted ingredient with an id filled it, but it is still in the database
+          the_ingredient = Ingredient.where(title: title).first_or_create()  if ! the_ingredient
+
           activity_ingredient = ActivityIngredient.create({
                                                             activity_id: self.id,
-                                                            ingredient_id: ingredient_foo.id,
+                                                            ingredient_id: the_ingredient.id,
                                                             note: i[:note],
                                                             display_quantity: i[:display_quantity],
                                                             unit: i[:unit],
                                                             ingredient_order_position: :last
                                                         })
         end
+      end
+    end
+    self
+  end
+
+  def update_steps_json(steps_attrs)
+    # Easiest just to be rid of all of the old steps, we'll make them from scratch
+    steps.destroy_all()
+    steps.reload()
+    if steps_attrs
+      steps_attrs.each do |step_attr|
+        step = steps.create()
+        step.update_attributes(
+            title: step_attr[:title],
+            directions: step_attr[:directions],
+            youtube_id: step_attr[:youtube_id],
+            image_id: step_attr[:image_id],
+            image_description: step_attr[:image_description],
+            audio_clip: step_attr[:audio_clip],
+            audio_title: step_attr[:audio_title],
+            step_order_position: :last,
+            hide_number: step_attr[:hide_number]
+        )
+        step.update_ingredients_json(step_attr[:ingredients])
       end
     end
     self
@@ -280,18 +326,29 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def my_json
-    self.to_json(
-        include: {
-            tags: {},
-            equipment: {
-                only: :optional,
-                include: {
-                    equipment: {
-                        only: [:id, :title, :product_url]
-                    }
+  def to_json
+    super(
+      include: {
+        tags: {},
+        equipment: {
+            only: :optional,
+            include: {
+                equipment: {
+                    only: [:id, :title, :product_url]
                 }
-            },
+            }
+        },
+        ingredients: {
+            only: [:note, :display_quantity, :quantity, :unit],
+            include: {
+                ingredient: {
+                    only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
+                }
+            }
+        },
+        steps: {
+          include: {
+
             ingredients: {
                 only: [:note, :display_quantity, :quantity, :unit],
                 include: {
@@ -300,7 +357,9 @@ class Activity < ActiveRecord::Base
                     }
                 }
             }
+          }
         }
+      }
     )
   end
 
@@ -316,14 +375,23 @@ class Activity < ActiveRecord::Base
 
     self.ingredients.each { |ai| new_activity.ingredients << ai.dup }
     self.equipment.each { |ae| new_activity.equipment << ae.dup }
-    self.steps.each { |as| new_activity.steps << as.dup }
-
+    self.steps.each do |as|
+      new_step = as.dup
+      new_activity.steps << new_step
+      as.ingredients.each { |si| new_step.ingredients << si.dup }
+    end
 
     new_activity.save!
     new_activity
   end
 
   private
+
+  def check_published
+    if self.published && self.published_at.blank?
+      self.published_at = DateTime.now
+    end
+  end
 
   def reject_invalid_equipment(equipment_attrs)
     equipment_attrs.select! do |equipment_attr|

@@ -12,7 +12,7 @@ end
 
 member_action :unapprove, :method => :get do
   upload = Upload.find(params[:id])
-  upload.approved = true
+  upload.approved = false
   upload.save
   redirect_to admin_uploads_path, notice: 'Unapproved.'
 end
@@ -23,6 +23,16 @@ index do
   end
   column :user do |upload|
     link_to upload.user.email, admin_user_path(upload.user)
+  end
+  column :course do |upload|
+    if upload.course
+      link_to upload.course.title, course_path(upload.course)
+    end
+  end
+  column :activity do |upload|
+    if upload.activity
+      link_to upload.activity.title, activity_path(upload.activity)
+    end
   end
   column :action, sortable: :approved do |upload|
     if upload.approved?

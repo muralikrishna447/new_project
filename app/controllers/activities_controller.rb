@@ -27,15 +27,16 @@ class ActivitiesController < ApplicationController
 
   before_filter :require_admin, only: [:new, :update_as_json]
   def require_admin
-    unless admin_user_signed_in?
+    unless can? :update, Activity
       flash[:error] = "You must be logged in as an administrator to do this"
-      redirect_to new_admin_user_session_path
+      redirect_to new_user_session_path
     end
   end
 
   def show
 
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
+    @upload = Upload.new
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -60,9 +61,10 @@ class ActivitiesController < ApplicationController
           end
           render 'course_activity'
           track_event @current_inclusion
+          return
         else
-          if @activity.courses.any?
-            flash[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
+          if @activity.courses.any? && @activity.courses.first.published?
+            flash.now[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
           end
           track_event @activity
         end
@@ -88,6 +90,7 @@ class ActivitiesController < ApplicationController
         # If this is a crawler, render a basic HTML page for SEO that doesn't depend on Angular
         if params.has_key?(:'_escaped_fragment_')
           render template: 'activities/static_html'
+          return
         end
       end
    end
@@ -107,14 +110,14 @@ class ActivitiesController < ApplicationController
   def fork
     old_activity = Activity.find(params[:id])
     @activity = old_activity.deep_copy
-    @activity.title = "#{current_user ? current_user.name : current_admin_user.email.split('@')[0]}'s Version Of #{old_activity.title}"
+    @activity.title = "#{current_user.name}'s Version Of #{old_activity.title}"
     @activity.save!
     render :json => {redirect_to: activity_path(@activity, {start_in_edit: true})}
   end
 
   def get_as_json
 
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -126,10 +129,24 @@ class ActivitiesController < ApplicationController
     # clearer what to do on update.
     respond_to do |format|
       format.json {
-        render :json => @activity.my_json
+        render :json => @activity.to_json
       }
     end
   end
+
+  def notify_start_edit
+    # Done this way to avoid touching the updated_at field as that is used to know whether to replace the model on
+    # the angular side.
+    # http://stackoverflow.com/questions/11766037/update-attribute-without-altering-the-updated-at-field
+    Activity.where(id: params[:id]).update_all(currently_editing_user: current_user)
+    head :no_content
+  end
+
+  def notify_end_edit
+    Activity.where(id: params[:id]).update_all(currently_editing_user: nil)
+    head :no_content
+  end
+
 
   def update_as_json
     if params[:fork]
@@ -142,11 +159,15 @@ class ActivitiesController < ApplicationController
 
           old_slug = @activity.slug
 
+          @activity.create_or_update_as_ingredient
+
           @activity.store_revision do
-            @activity.last_edited_by = current_admin_user
+            @activity.last_edited_by = current_user
             @activity.update_equipment_json(params[:activity].delete(:equipment))
             @activity.update_ingredients_json(params[:activity].delete(:ingredients))
-            # Why on earth is tags the only thing not root wrapped??
+            @activity.update_steps_json(params.delete(:steps))
+            # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
+            # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
             tags = params.delete(:tags)
             @activity.tag_list = tags.map { |t| t[:name]} if tags
             @activity.attributes = params[:activity]

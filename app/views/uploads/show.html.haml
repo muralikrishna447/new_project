@@ -1,28 +1,26 @@
 .container
   .row
     .span12
-      %h2= @upload.recipe_name
+      %h2= @upload.title
   .row
     .span6
       = image_tag filepicker_hero_image(@upload.image_id)
       .lead.section
         = @upload.notes
+        - if @upload.course && @upload.course.title == 'Spherification'
+          .row
+            .span3.offset1.section.text-center{:style => "padding: 20px; border: 1px solid  #e25f25;"}
+              = link_to course_path('spherification', anchor: 'enthusiast') do
+                = image_tag 'https://www.filepicker.io/api/file/AE4undUwRLqq9l69DVIV'
     .span6
       .lead
-        = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this while completing the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
+        - if @upload.course
+          = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this while completing the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
+        - else
+          = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this #{link_to @upload.activity.title, @upload.activity} photo on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
       %p= "#{time_ago_in_words(@upload.created_at)} ago."
-      - if current_user && current_user.likes.map(&:likeable).include?(@upload)
-        = link_to 'javascript:void(0);', class: 'btn btn-primary' do
-          %i.icon-star
-          = @upload.likes.count
-      - else
-        = form_for Like.new do |f|
-          = f.hidden_field :likeable_id, value: @upload.id
-          = f.hidden_field :likeable_type, value: @upload.class
-        = link_to 'javascript:void(0);', onclick: "$('#new_like').submit()", class: 'btn btn-primary' do
-          %i.icon-star-empty
-          = @upload.likes.count
-      = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.recipe_name} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
+      = render 'shared/like_button', likeable_object: @upload
+      = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
         %i.icon-twitter
         %span Twitter
       = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
@@ -37,12 +35,11 @@
       .section
         - if @upload.likes.any?
           %h4 
-            = @upload.likes.count
-            - if @upload.likes.count > 1
-              = "person".pluralize
+            = @upload.likes_count
+            - if @upload.likes_count > 1
+              people like this:
             - else
-              = person
-            like this:
+              person likes this:
           - @upload.likes.each do |like|
             .section
               - if current_user == like.user
@@ -61,4 +58,4 @@
 
       %hr
         - disqus_id = "upload-#{@upload.id}"
-        = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.recipe_name, disqus_url: upload_url(@upload)
+        = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.title, disqus_url: upload_url(@upload)

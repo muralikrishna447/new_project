@@ -1,4 +1,6 @@
 Delve::Application.routes.draw do
+  root to: "home#index"
+
   ActiveAdmin.routes(self)
 
   # Redirects
@@ -17,7 +19,6 @@ Delve::Application.routes.draw do
   match '/activities/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
     to: redirect('/activities/sous-vide-pork-cheek-celery-root-pickled-apples')
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
 
   get "styleguide" => "styleguide#index"
 
@@ -41,8 +42,6 @@ Delve::Application.routes.draw do
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
-
-  root to: "home#index"
 
   get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
 
@@ -79,18 +78,25 @@ Delve::Application.routes.draw do
       get 'as_json' => 'activities#get_as_json'
       put 'as_json' => 'activities#update_as_json'
       get 'fork' => 'activities#fork'
+      put 'notify_start_edit' => 'activities#notify_start_edit'
+      put 'notify_end_edit' => 'activities#notify_end_edit'
     end
     collection do
       get 'all_tags' => 'activities#get_all_tags'
     end
   end
-  resources :techniques, only: [:index, :show]
-  resources :sciences, only: [:index, :show]
+
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
   match '/feed' => 'activities#feedburner_feed', as: :feed
 
   resources :questions, only: [] do
     resources :answers, only: [:create]
+  end
+
+  # This is to work around a bug in ActiveAdmin 0.6.0 where the :shallow designator in questions.rb
+  # stopped working
+  namespace :admin do
+    resources :questions
   end
 
   resources :quizzes, only: [:show] do
@@ -103,8 +109,12 @@ Delve::Application.routes.draw do
 
   resources :equipment, only: [:index]
   resources :ingredients, only: [:index]
-  resources :search, only: [:index]
-  resources :recipe_gallery, only: [:index], path: 'recipe-gallery'
+
+  resources :gallery, only: [:index], path: 'gallery' do
+    collection do
+      get 'index_as_json' => 'gallery#index_as_json'
+    end
+  end
   resources :user_activities, only: [:create]
   resources :uploads
   resources :users do
@@ -113,6 +123,12 @@ Delve::Application.routes.draw do
   resources :likes, only: [:create]
   resources :pages, only: [:show]
   resources :badges, only: [:index]
+  resources :polls do
+    member do
+      get 'show_as_json' => 'polls#show_as_json'
+    end
+  end
+  resources :votes, only: [:create]
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'

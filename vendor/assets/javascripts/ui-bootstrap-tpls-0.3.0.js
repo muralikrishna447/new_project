@@ -1200,6 +1200,7 @@ angular.module( 'ui.bootstrap.tooltip', [ 'ui.bootstrap.position' ] )
     placement: 'top',
     animation: true,
     popupDelay: 0
+
   };
 
   // Default hide triggers for each show trigger

@@ -6,13 +6,13 @@
 .container
   .row.section
     .span12
-      %h2.text-orange Check out our free courses
+      %h1.text-orange Check out our free courses
   .row.section
     - if @courses.any?
       - @courses.each do |course|
         .span4.offset1
-          = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.first_published_activity.featured_image, object: course
-      .span7
+          = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.featured_image, object: course
+      .span12.text-center
         %p.lead 
           %br
           %strong With Award-Winning Chefs to Help You Succeed
@@ -28,7 +28,7 @@
           %h2.text-orange Or just take in smaller bits...
       .row.section-large
         .span6
-          = link_to recipe_gallery_index_url do
+          = link_to gallery_index_url(activity_type: "Recipe") do
             .lead
               %strong Learn a New Recipe
               .lead.black-link
@@ -41,7 +41,7 @@
         .span6
           = render 'shared/horizontal_slider', items: @techniques, direction: 'left'
         .span6
-          = link_to sciences_url do
+          = link_to gallery_index_url(activity_type: "Technique") do
             .lead
               %strong Perfect a New Technique
               .lead.black-link
@@ -49,7 +49,7 @@
 
       .row.section-large
         .span6
-          = link_to sciences_url do 
+          = link_to gallery_index_url(activity_type: "Science") do
             .lead
               %strong Absorb the Science
               .lead.black-link

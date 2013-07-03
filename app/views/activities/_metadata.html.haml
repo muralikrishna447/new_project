@@ -1,14 +1,24 @@
-.meta-edit.well
+.btn.btn-secondary.noprint.edit-meta-button(ng-show="editMode" ng-click="editMeta = ! editMeta")
+  %i.icon-edit
+  Details ...
+  %i.icon-chevron-up(ng-show="showHeroVisualEdit")
+  %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
 
+%div(collapse="! (editMode && editMeta)")
+  .meta-edit.well.noprint
+    %h6 Activity Type
+    .btn-toolbar
+      %button.btn(ng-repeat="actType in activityTypes" type="button" ng-click="toggleActivityType(actType)" ng-class="{active: hasActivityType(actType)}")
+        {{actType}}
 
-  %h6 Activity Type
-  .btn-toolbar
-    %button.btn(ng-repeat="actType in activityTypes" type="button" ng-click="toggleActivityType(actType)" ng-class="{active: hasActivityType(actType)}")
-      {{actType}}
+    %h6 Tags
+    %input(type="text" ng-model="tags" ng-model="activity.tags" ui-select2="tagsSelect2")
 
-  %h6 Tags
-  %input(type="text" ng-model="tags" ng-model="activity.tags" ui-select2="tagsSelect2")
+    %h6 Difficulty
+    .btn-toolbar
+      %button.btn(ng-repeat="actDifficulty in activityDifficulties" type="button" ng-click="setActivityDifficulty(actDifficulty)" ng-class="{active: hasActivityDifficulty(actDifficulty)}")
+        {{actDifficulty}}
 
-  %h6 Featured Image (For Thumbnails)
-  %img(ng-show="hasFeaturedImage()" ng-src="{{featuredImageURL(200)}}")
-  .csfilepicker(ng-model="activity.featured_image_id")
+    %h6 Featured Image (For Thumbnails)
+    %img(ng-show="hasFeaturedImage()" ng-src="{{featuredImageURL(200)}}")
+    .csfilepicker(ng-model="activity.featured_image_id")

@@ -1,0 +1,124 @@
+@import 'mixins'
+
+.poll-item
+  width: 100%
+  //height: 80px
+  padding: 5px 0px 
+  border-top: 1px solid gray
+  float: left
+.poll-item-vote-up
+  width: 7%
+  margin-right: 1%
+  float: left
+.poll-item-text
+  width: 72%
+  float: left
+  h2
+    margin: 25px 0px 5px
+    line-height: 32px
+  .poll-item-details-btn
+    &:hover
+      cursor: pointer
+.poll-item-sharing
+  width: 9%
+  margin-left: 1%
+  float: left
+  position: relative
+
+.poll-item-comments
+  width: 9%
+  margin-left: 1%
+  float: left
+
+.poll-item-btn
+  @include raleway
+  display: inline-block
+  text-align: center
+  width: 100%
+  height: 80px
+  padding: 5px
+  font-size: 30px
+  color: $light-gray
+  background: $offwhite
+  border: 0px
+  @include boxsizing
+  @include transition(all 200ms)
+  &:hover
+    cursor: pointer
+    background: $light-gray
+    color: gray
+
+.poll-item-btn-social
+  padding: 25px
+
+.poll-item-vote-count
+  margin-top: 0px
+
+.poll-item-btn-voted
+  background: $orange
+  color: white
+  &:hover
+    cursor: pointer
+    background: $orange
+    color: white
+
+@media (min-width: 481px) and (max-width: 979px)
+  .poll-item
+    font-size: 16px
+
+  .poll-item-vote-up
+
+  .poll-item-text
+    h2
+      font-size: 20px
+      margin: 10px 0px 5px
+    p
+      font-size: 16px
+
+  .poll-item-sharing
+
+  .poll-item-comments
+
+  .poll-item-btn
+    height: 50px
+    font-size: 20px
+
+  .poll-item-btn-social
+    padding: 15px
+
+@media (max-width: 480px)
+  .poll-item
+    font-size: 16px
+
+  .poll-item-vote-up
+    width: 15%
+    margin-right: 1%
+    float: left
+  .poll-item-text
+    width: 54%
+    float: left
+    h2
+      font-size: 16px
+      margin: 10px 0px 5px
+    p
+      font-size: 16px
+    .poll-item-details-btn
+      &:hover
+        cursor: pointer
+  .poll-item-sharing
+    width: 14%
+    margin-left: 1%
+    float: left
+    position: relative
+
+  .poll-item-comments
+    width: 14%
+    margin-left: 1%
+    float: left
+
+  .poll-item-btn
+    height: 50px
+    font-size: 20px
+
+  .poll-item-btn-social
+    padding: 15px 0px

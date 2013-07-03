@@ -1,4 +1,4 @@
-window.markdownConverter = Markdown.getSanitizingConverter()
+window.markdownConverter = new Showdown.converter()
 
 angular.module('ChefStepsApp').filter "markdown", ->
   (input) ->

@@ -41,9 +41,9 @@
   %h4.text-center
     %i.icon-comment-alt
     Comments or Questions?
-    = link_to 'Visit the Forum', 'http://forum.chefsteps.com/categories/spherification-course-questions'
+    = link_to 'Visit the Forum', @course.forum_link
 
   - if @course.title == 'Spherification'
     %div{style: 'padding: 30px;'}
-      = link_to @course do
+      = link_to course_path(@course, anchor: 'enthusiast') do
         = image_tag 'https://www.filepicker.io/api/file/AE4undUwRLqq9l69DVIV'

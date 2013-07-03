@@ -17,7 +17,7 @@ ActiveAdmin.register User do
     id_column
     column :email
     column :name
-    column :location
+    column :role
     column :current_sign_in_at
     column :last_sign_in_at
     column :sign_in_count
@@ -33,14 +33,18 @@ ActiveAdmin.register User do
     f.inputs "User Details" do
       f.input :email
       f.input :name
+      f.input :role, collection: User::ROLES, as: :select
       f.input :location
       f.input :website
       f.input :quote
     end
-    f.inputs "Password" do
-      f.input :password
-      f.input :password_confirmation
+    if f.object.encrypted_password.blank?
+      f.inputs "Password (Required!)" do
+        f.input :password
+        f.input :password_confirmation
+      end
     end
+
     f.actions
   end
 end

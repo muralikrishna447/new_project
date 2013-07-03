@@ -8,7 +8,9 @@
       %h4= @users_ten_views_count
     .span2
       %h3 Enrollments
-      %h4= @enrollments_count
+      %ul
+        - @courses.each do |course|
+          %li= "#{course.title}: #{course.enrollments.count}"
     .span3
       %h3 Users that Uploaded
       %h4= @uploads_count.count

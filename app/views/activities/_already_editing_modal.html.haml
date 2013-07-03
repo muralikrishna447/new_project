@@ -1,0 +1,13 @@
+%div(ng-cloak modal="shouldShowAlreadyEditingModal" close="shouldShowAlreadyEditingModal = false")
+  .modal-header
+    %button.close(type='button' ng-click='shouldShowAlreadyEditingModal = false')
+      x
+  .modal-body
+    This recipe is currently being edited by "{{activity.currently_editing_user.email}}".
+    Any edits you make may cause you, or them, to lose work, so it is recommended that you
+    not continue unless you are certain they won't save their work.
+  .modal-footer
+    %button.btn.btn-success(ng-click="shouldShowAlreadyEditingModal = false")
+      Cancel
+    %button.btn.btn-danger(ng-click="startEditMode() && (shouldShowAlreadyEditingModal = false)")
+      Keep Editing

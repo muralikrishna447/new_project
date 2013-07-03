@@ -27,6 +27,31 @@ class Step < ActiveRecord::Base
     self
   end
 
+  def update_ingredients_json(ingredients_attrs)
+    # Easiest just to be rid of all of the old join records, we'll make them from scratch
+    ingredients.destroy_all()
+    ingredients.reload()
+    if ingredients_attrs
+      ingredients_attrs.each do |i|
+        title = i[:ingredient][:title]
+        unless title.nil? || title.blank?
+          title.strip!
+          ingredient_foo = Ingredient.where(id: i[:ingredient][:id]).first_or_create(title: title)
+          activity_ingredient = StepIngredient.create({
+                                                              step_id: self.id,
+                                                              ingredient_id: ingredient_foo.id,
+                                                              note: i[:note],
+                                                              display_quantity: i[:display_quantity],
+                                                              unit: i[:unit],
+                                                              ingredient_order_position: :last
+                                                          })
+        end
+      end
+    end
+    self
+  end
+
+
   private
 
   def reject_invalid_ingredients(ingredient_attrs)

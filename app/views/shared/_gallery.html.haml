@@ -1,0 +1,64 @@
+.gallery-filter.navbar(ng-cloak='')
+
+  %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all")
+
+  .dropdown
+    .dropdown-toggle
+      {{filters.activity_type.name || 'Type'}}
+      %i.icon-angle-down
+    %ul.dropdown-menu
+      %li(ng-repeat="choice in typeChoices")
+        %a(ng-click="filters.activity_type = choice")
+          {{choice.name}}
+
+  .dropdown
+    .dropdown-toggle
+      {{filters.difficulty.name || 'Difficulty'}}
+      %i.icon-angle-down
+    %ul.dropdown-menu
+      %li(ng-repeat="choice in difficultyChoices")
+        %a(ng-click="filters.difficulty = choice")
+          {{choice.name}}
+
+  -if can? :update, Activity
+    .dropdown
+      .dropdown-toggle
+        {{filters.published_status.name}}
+        %i.icon-angle-down
+      %ul.dropdown-menu
+        %li(ng-repeat="choice in publishedStatusChoices")
+          %a(ng-click="filters.published_status = choice")
+            {{choice.name}}
+
+  .dropdown
+    %div(ng-show="nonDefaultFilters()" ng-click="clearFilters()")
+      = link_to 'Clear x', 'javascript:void(0);'
+
+  .dropdown.sort.pull-right.inline-group
+    .dropdown-toggle
+      {{filters.sort.name}}
+      %i.icon-angle-down
+    %ul.dropdown-menu(ng-hide="(filters.search_all || '') == ''")
+      %li(ng-repeat="choice in sortChoices")
+        %a(ng-click="filters.sort = choice")
+          {{choice.name}}
+    %ul.dropdown-menu(ng-show="(filters.search_all || '') == ''")
+      %li(ng-repeat="choice in sortChoicesWhenNoSearch")
+        %a(ng-click="filters.sort = choice")
+          {{choice.name}}
+
+%h3(ng-show="activities.length == 0" ng-cloak)
+  No results found, but perhaps you'd enjoy these recipes?
+
+%div.pull-left(galleryscroll='load_data()')
+  .media-box-3(ng-cloak='' ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
+    %a(href= 'activities/{{activity.slug}}')
+      .media-box-3-title
+        {{activity.title}}
+      %img(ng-src="{{activityImageURL(activity, 400)}}")
+      .media-box-3-footer
+        .footer-left
+          {{activity.difficulty}}
+
+.gallery-spinner(ng-show='spinner > 0')
+  %i.icon-spinner.icon-spin.icon-large

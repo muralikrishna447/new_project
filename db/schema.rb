@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130603054950) do
+ActiveRecord::Schema.define(:version => 20130627182731) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -30,25 +30,29 @@ ActiveRecord::Schema.define(:version => 20130603054950) do
 
   create_table "activities", :force => true do |t|
     t.string   "title"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "youtube_id"
     t.string   "difficulty"
-    t.integer  "cooked_this",        :default => 0
+    t.integer  "cooked_this",            :default => 0
     t.string   "yield"
     t.text     "timing"
     t.text     "description"
     t.integer  "activity_order"
-    t.boolean  "published",          :default => false
+    t.boolean  "published",              :default => false
     t.string   "slug"
     t.text     "transcript"
     t.text     "image_id"
     t.text     "featured_image_id"
     t.string   "activity_type"
     t.integer  "last_edited_by_id"
-    t.text     "assignment_recipes"
     t.integer  "source_activity_id"
-    t.integer  "source_type",        :default => 0
+    t.integer  "source_type",            :default => 0
+    t.text     "assignment_recipes"
+    t.datetime "published_at"
+    t.string   "author_notes"
+    t.integer  "likes_count"
+    t.integer  "currently_editing_user"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -162,6 +166,7 @@ ActiveRecord::Schema.define(:version => 20130603054950) do
     t.datetime "updated_at",                           :null => false
     t.string   "short_description"
     t.text     "image_id"
+    t.text     "additional_script"
   end
 
   create_table "enrollments", :force => true do |t|
@@ -274,12 +279,39 @@ ActiveRecord::Schema.define(:version => 20130603054950) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "pages", :force => true do |t|
+    t.string   "title"
+    t.text     "content"
+    t.string   "slug"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "pg_search_documents", :force => true do |t|
     t.text     "content"
     t.integer  "searchable_id"
     t.string   "searchable_type"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+  end
+
+  create_table "poll_items", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "status"
+    t.integer  "poll_id"
+    t.integer  "votes_count"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "polls", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "slug"
+    t.string   "status"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "private_tokens", :force => true do |t|
@@ -407,13 +439,14 @@ ActiveRecord::Schema.define(:version => 20130603054950) do
   create_table "uploads", :force => true do |t|
     t.integer  "activity_id"
     t.integer  "user_id"
-    t.string   "recipe_name"
+    t.string   "title"
     t.text     "image_id"
     t.text     "notes"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
     t.integer  "course_id"
     t.boolean  "approved",    :default => false
+    t.integer  "likes_count"
   end
 
   create_table "user_activities", :force => true do |t|
@@ -452,6 +485,7 @@ ActiveRecord::Schema.define(:version => 20130603054950) do
     t.text     "bio"
     t.integer  "sash_id"
     t.integer  "level",                  :default => 0
+    t.string   "role"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -474,6 +508,14 @@ ActiveRecord::Schema.define(:version => 20130603054950) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.text     "image_id"
+  end
+
+  create_table "votes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "votable_id"
+    t.string   "votable_type"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
 end

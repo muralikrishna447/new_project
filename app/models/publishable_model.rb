@@ -3,6 +3,7 @@ module PublishableModel
 
   included do
     scope :published, where(published: true)
+    scope :unpublished, where(published: false)
     attr_accessible :published
   end
 

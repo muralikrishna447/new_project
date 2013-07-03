@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby "1.9.3"
 
 gem 'rails', '3.2.11'
 gem 'railties', '3.2.11'
@@ -45,6 +46,9 @@ gem 'client_side_validations-formtastic'
 gem 'split', require: 'split/dashboard'
 gem 'redis'
 gem 'merit'
+gem 'has_scope'
+gem 'mixpanel'
+gem 'cancan'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -70,7 +74,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   # This was out of date so I put the one I needed in vendor
   #gem 'angular-ui-bootstrap-rails'
-  gem 'pagedown-rails', '~> 1.1.3'
+  gem 'showdown-rails'
 
 end
 
@@ -94,6 +98,7 @@ group :development, :test do
   gem 'bullet'
   gem 'launchy'
   gem 'childprocess', '0.3.6'
+  gem 'xray-rails'
 end
 
 group :guard do

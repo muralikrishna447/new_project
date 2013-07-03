@@ -53,7 +53,7 @@ ActiveAdmin.register Activity do
       @activity.update_equipment(equipment_attrs)
       @activity.update_steps(step_attrs)
       @activity.update_ingredients(ingredient_attrs)
-      @activity.last_edited_by = current_admin_user
+      @activity.last_edited_by = current_user
       create!
     end
 
@@ -111,7 +111,7 @@ ActiveAdmin.register Activity do
       params[:step_ingredients].each do |id, ingredients|
         Step.find(id).update_ingredients(ingredients)
       end
-      @activity.last_edited_by = current_admin_user
+      @activity.last_edited_by = current_user
       @activity.save!
     end
     redirect_to({action: :show}, notice: "Step's ingredients updated")
