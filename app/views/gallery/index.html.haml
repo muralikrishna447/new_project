@@ -2,11 +2,16 @@
 - content_for :description, "Become a better by cook by learning from these amazing recipe videos."
 - content_for :keywords, @recipes.map(&:title).to_sentence
 
-.container.gallery-wrapper
+.container.gallery-wrapper(ng-controller='GalleryController')
   .row
     .span12
-      %div(ng-controller='GalleryController')
+      %div
         / .flat-form
         /   %form
         /     %input(ng-model='search' placeholder='Enter Name')
         = render 'shared/gallery'
+
+  .row
+    .span2.offset5
+      .gallery-spinner(ng-show='spinner > 0')
+        %i.icon-spinner.icon-spin.icon-large

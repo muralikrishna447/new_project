@@ -52,7 +52,7 @@ class Activity < ActiveRecord::Base
   scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
   scope :by_updated_at, -> direction { direction == 'desc' ? order('updated_at DESC') : order('updated_at ASC')}
   scope :randomize, order('random()')
-  scope :has_featurable_image, joins(:steps).where("(\"activities\".\"image_id\" <> '') OR (\"activities\".\"featured_image_id\" <> '') OR (\"steps\".\"image_id\" <> '')")
+  scope :has_featurable_image, where("(\"activities\".\"image_id\" <> '') OR (\"activities\".\"featured_image_id\" <> '')")
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
   serialize :activity_type, Array
