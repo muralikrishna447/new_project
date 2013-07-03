@@ -1,42 +1,50 @@
-.container-fluid.ng-cloak#footer{style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
+.container-fluid#footer{style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
   .row-fluid
     .span12
       .row
         .container#footer-body
           .span12.well.well-opaque
-            .span4
+            .span3
               %h3 About
               %ul.unstyled
                 %li= link_to 'About ChefSteps', '/about'
                 %li= link_to 'Blog', 'http://blog.chefsteps.com'
+                %li= link_to 'Jobs', '/jobs'
                 %li= link_to 'Press Kit', 'http://chefsteps.com/pages/presskit'
 
-
-            .span4.offset1
-              %h3 Contact
+            .span3
+              %h3 Learn 
               %ul.unstyled
-                %li= link_to 'RSS Feed', 'http://feeds.feedburner.com/ChefSteps'
-                %li 
-                  General Info:
+                %li Recipes
+                %li Techniques
+                %li Courses
+                %li Science
+
+            .span6.section.text-center
+              = image_tag 'logo-minimal.png'
+              %h5 ChefSteps is here to help you become a better cook.
+              %p Handmade at Pike Place Market in Seattle, WA
+          
+            .row
+              .span12
+                %hr
+                %small 
                   = mail_to 'info@chefsteps.com'
-                %li 
-                  Press inquiries:
-                  = mail_to 'press@chefsteps.com'
+                  &middot; 
+                  %a{href: 'http://feeds.feedburner.com/ChefSteps'} 
+                    %i.icon-rss
+                      Subscribe to RSS
+                  &middot; 
+                  =link_to 'Legal', legal_url
 
-            .span2
-              %h3 Other Stuff
-              %p
-                = link_to 'Legal', legal_url
-              %p.creative-commons
-                %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
-                  = image_tag 'by-nc-sa.png'
-              %p
-                %a{href: 'https://mixpanel.com/f/partner'}
-                  %img{src: '//cdn.mxpnl.com/site_media/images/partner/badge_blue.png', alt: 'Mobile Analytics'}
-
-            .span12
-              .section.text-center 
-                %h3 Handmade in Pike Place, Seattle WA
+        .row
+          .span12.section.text-center
+            %p.creative-commons
+              %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', ta: '_blank' }
+                = image_tag 'by-nc-sa.png'
+              %a{href: 'https://mixpanel.com/f/partner'}
+                %img{src: '//cdn.mxpnl.com/site_media/images/partner/badge_blue.png', alt: 'Mobile Analytics'}
+  
           / .span2
           /   = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
           /     %div.footer-social
