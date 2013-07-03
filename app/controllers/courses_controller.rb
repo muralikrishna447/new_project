@@ -13,19 +13,8 @@ class CoursesController < ApplicationController
   def show
     @course = Course.find_published(params[:id], params[:token], can?(:update, @activity))
     if @course.title == 'Spherification'
-      # @frozen_reverse_spheres = Activity.find([259,311])
-      # @beet_spheres = Activity.find([239])
-      # @easier_direct_spheres = Activity.find([309])
-      # @low_ph_spheres = Activity.find([299])
-      # @quiz = Activity.find([301])
-      # @final = Activity.find([260])
-      # @badge = Activity.find([302])
-      # @creative = @course.viewable_activities - @frozen_reverse_spheres - @beet_spheres - @easier_direct_spheres - @low_ph_spheres - @quiz - @final - @badge
-      # @enthusiast = @course.viewable_activities - @easier_direct_spheres - @low_ph_spheres - @quiz - @final - @badge
-      # @professional = @course.viewable_activities - @quiz - @final - @badge
       @new_user = User.new
       render 'spherification'
-      finished('spheres_billboards', reset: false)
     elsif @course.title == 'Science of Poutine'
       @new_user = User.new
       render 'poutine'
@@ -39,10 +28,8 @@ class CoursesController < ApplicationController
     if @enrollment.save
       redirect_to course_path(@course), notice: "You are now enrolled!"
       track_event @course
-      finished('spherification', :reset => false)
       finished('poutine', :reset => false)
       mixpanel.track 'Course Enrolled', { distinct_id: @enrollment.user.id, course: @course.title, enrollment_method: 'Standard' }
-   
     end
   end
 
