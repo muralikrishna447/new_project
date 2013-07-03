@@ -39,7 +39,6 @@ class CoursesController < ApplicationController
     if @enrollment.save
       redirect_to course_path(@course), notice: "You are now enrolled!"
       track_event @course
-      finished('spherification', :reset => false)
       finished('poutine', :reset => false)
       mixpanel.track 'Course Enrolled', { distinct_id: @enrollment.user.id, course: @course.title, enrollment_method: 'Standard' }
    
