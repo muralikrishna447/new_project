@@ -18,7 +18,7 @@ class GalleryController < ApplicationController
   has_scope :activity_type
 
   has_scope :published_status, default: "Published" do |controller, scope, value|
-    value == "Published" ? scope.published : scope.unpublished.where("title != 'DUMMY NEW ACTIVITY'")
+    value == "Published" ? scope.published.has_featurable_image : scope.unpublished.where("title != 'DUMMY NEW ACTIVITY'")
   end
 
   def index
@@ -26,15 +26,15 @@ class GalleryController < ApplicationController
    end
 
   def showing_published?
-    @pub
+    @pub == "Published"
   end
 
   def index_as_json
     @pub = params[:published_status] || "Published"
-    @recipes = apply_scopes(Activity).page(params[:page]).per(12)
+    @recipes = apply_scopes(Activity).uniq().page(params[:page]).per(12)
 
     respond_to do |format|
-      format.json { render :json => @recipes.to_json(only: [:title, :image_id, :featured_image_id, :difficulty, :published_at, :slug], :include => :steps) }
+      format.json { render :json => @recipes.to_json(only: [:id, :title, :image_id, :featured_image_id, :difficulty, :published_at, :slug], :include => :steps) }
     end
   end
 end

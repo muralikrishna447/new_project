@@ -51,7 +51,7 @@
   No results found, but perhaps you'd enjoy these recipes?
 
 %div.pull-left(galleryscroll='load_data()')
-  .media-box-3(ng-cloak='' ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
+  .media-box-3(ng-cloak='' ng-repeat='activity in getActivities() track by $index' ng-animate="'gallery-animation'")
     %a(href= 'activities/{{activity.slug}}')
       .media-box-3-title
         {{activity.title}}
