@@ -123,6 +123,12 @@ Delve::Application.routes.draw do
   resources :likes, only: [:create]
   resources :pages, only: [:show]
   resources :badges, only: [:index]
+  resources :polls do
+    member do
+      get 'show_as_json' => 'polls#show_as_json'
+    end
+  end
+  resources :votes, only: [:create]
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'

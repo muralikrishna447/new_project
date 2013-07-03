@@ -41,4 +41,4 @@
 
 //= require ingredient_parser
 
-
+//= require nested_forms
