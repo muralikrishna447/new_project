@@ -1,29 +1,20 @@
-.container-fluid#footer{style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
+.container-fluid.ng-cloak#footer{style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
   .row-fluid
     .span12
       .row
         .container#footer-body
           .span12.well.well-opaque
             .span4
-              %h3 About ChefSteps
-              %p
-                ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
-              %p
-                Taught by a world-renowned team, you will master techniques of traditional and modernist cooking through practical, hands-on demonstrations with detailed step-by-step explanations. Unlike at other culinary schools, you will also learn the why's behind the how's from experts who bring the science of cooking to life in a compelling and practical way.
-              .section
-                = link_to about_path do
-                  = image_tag 'chris.jpg', class:'img-circle'
+              %h3 About
+              %ul.unstyled
+                %li= link_to 'About ChefSteps', '/about'
+                %li= link_to 'Blog', 'http://blog.chefsteps.com'
+                %li= link_to 'Press Kit', 'http://chefsteps.com/pages/presskit'
 
-                = link_to about_path do
-                  = image_tag 'grant.jpg', class:'img-circle'
-
-                = link_to about_path do
-                  = image_tag 'ryan.jpg', class:'img-circle'
 
             .span4.offset1
               %h3 Contact
               %ul.unstyled
-                %li= link_to 'Blog', 'http://blog.chefsteps.com'
                 %li= link_to 'RSS Feed', 'http://feeds.feedburner.com/ChefSteps'
                 %li 
                   General Info:
@@ -31,7 +22,6 @@
                 %li 
                   Press inquiries:
                   = mail_to 'press@chefsteps.com'
-                %li= link_to 'Press Kit', 'http://chefsteps.com/pages/presskit'
 
             .span2
               %h3 Other Stuff
