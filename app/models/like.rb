@@ -9,4 +9,8 @@ class Like < ActiveRecord::Base
   def self.scoped_by_type(type)
     self.where('likeable_type = ?', type)
   end
+
+  def receiver
+    likeable.user if likeable.class.method_defined?(:user)
+  end
 end
