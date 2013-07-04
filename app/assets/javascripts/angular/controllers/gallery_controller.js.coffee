@@ -154,6 +154,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     $scope.activities
 
   # Initialization
+  $scope.collapse_filters = true
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.page = 1
   $scope.spinner = 0
