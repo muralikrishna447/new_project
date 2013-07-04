@@ -3,9 +3,9 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   PAGINATION_COUNT = 12
 
   $scope.sortChoices = [
-    {name: "Newest", value: "newest"},
-    {name: "Oldest", value: "oldest"},
-    {name: "Most Relevant", value: "relevance"}
+    {name: "RELEVANCE", value: "relevance"}
+    {name: "NEWEST", value: "newest"},
+    {name: "OLDEST", value: "oldest"},
   ]
 
   $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x.value == "relevance")
@@ -28,7 +28,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   ]
 
   $scope.defaultFilters = {
-    sort: $scope.sortChoices[0],
+    sort: $scope.sortChoices[1],
     published_status: $scope.publishedStatusChoices[0]
   }
 
@@ -136,8 +136,8 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.$watch 'filters.search_all', (newValue) ->
     console.log newValue
-    $scope.filters.sort = $scope.sortChoices[2] if newValue? && (newValue.length == 1)
-    $scope.filters.sort = $scope.sortChoices[0] if (! newValue?)  || newValue.length == 0
+    $scope.filters.sort = $scope.sortChoices[0] if newValue? && (newValue.length == 1)
+    $scope.filters.sort = $scope.sortChoices[1] if (! newValue?)  || newValue.length == 0
     $timeout (->
       $scope.clear_and_load()
     ), 250

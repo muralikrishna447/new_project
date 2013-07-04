@@ -17,23 +17,51 @@
     cursor: pointer
     display: inline-block
     margin-right: 10px
-    .dropdown-toggle
-      color: black
-      text-transform: uppercase
+    background:  white  !important
+
     .dropdown-menu
+      box-shadow: none
+      background: white !important
       border-radius: 0px
-      text-transform: uppercase
-      li
-        a
-          &:hover
-            background: $orange
+      li > a
+        &:hover
+          background: $orange
+        color: black !important
+
     a
       color: black
       @include raleway
       font-size: 16px
-      text-transform: uppercase
-  .dropdown.sort
-    margin-right: 20px
+  li > a
+    padding: 0 0 2px 0 !important
+    margin-left: 18px
+
+  .browse-group
+    padding-right: 30px
+    .browse-by
+      font-size: 95%
+    a.active
+      border-bottom: 3px solid $orange
+
+  .dropdown-menu
+    a
+      margin-left: 30px
+    a.active
+      &:before
+        content: "\2713"
+        position:  absolute
+        left:  10px
+        font-size:  80%
+        color:  $orange
+
+  .clear-search
+    position: absolute
+    right:  30px
+    bottom:  4px
+
+
+  .search-query
+    margin-top: -8px
 
 .pagination
   @include raleway
@@ -65,6 +93,7 @@
   font-size: 40px
   margin-top: 40px
   margin-left: 20px
+
 
 @media (max-width: 970px)
   .gallery-filter, .gallery-filter .dropdown a
