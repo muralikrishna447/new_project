@@ -2,7 +2,10 @@
 
 .gallery-wrapper
   min-height: 2400px
-  margin-top: 30px
+  margin-top: 20px
+
+.gallery-contents
+  margin-top: 10px
 
 .gallery-filter
   input
@@ -35,6 +38,7 @@
   li > a
     padding: 0 0 2px 0 !important
     margin-left: 18px
+    cursor: pointer
 
   .browse-group
     padding-right: 30px
@@ -63,12 +67,15 @@
   .search-query
     margin-top: -9px
 
+.filter-collapser
+  cursor: pointer
+
 .filters-group
   width: 300px
   position: absolute
   top:  90%
   z-index: 1000
-  padding: 10px 20px 20px 40px
+  padding: 10px 30px 20px 30px
   background-color: rgba(255, 255, 255, .8)
   border-bottom-left-radius: 5px
   border-bottom-right-radius: 5px
@@ -78,6 +85,9 @@
     margin-left: 0px
   @include bottom-only-annotation-shadow
   overflow:  hidden
+
+.current-filters
+  font-size: 90%
 
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
 // names have to change when we go to angular >= 1.1.5
@@ -100,8 +110,6 @@
   &.filters-show-start
     opacity: 1
     max-height: 150px
-
-
 
 .pagination
   @include raleway
@@ -135,14 +143,17 @@
   margin-left: 20px
 
 
-@media (max-width: 970px)
-  .gallery-filter, .gallery-filter .dropdown a
-    font-size: 14px !important
-
-    .search-query
-      display: block
-      margin-bottom: 15px
-
-
+@media (max-width: 980px)
+  .left-group
+    width: 100%
+  .browse-group
+    padding-top: 10px
+    font-size: 85%
+    li > a
+      margin-left: 10px
+  .filters-group
+    right: -10px
+  .current-filters
+    display: none
   
   
