@@ -2,7 +2,10 @@
 
 .gallery-wrapper
   min-height: 2400px
-  margin-top: 30px
+  margin-top: 20px
+
+.gallery-contents
+  margin-top: 10px
 
 .gallery-filter
   input
@@ -17,23 +20,96 @@
     cursor: pointer
     display: inline-block
     margin-right: 10px
-    .dropdown-toggle
-      color: black
-      text-transform: uppercase
+    background:  white  !important
+
     .dropdown-menu
+      box-shadow: none
+      background: white !important
       border-radius: 0px
-      text-transform: uppercase
-      li
-        a
-          &:hover
-            background: $orange
+      li > a
+        &:hover
+          background: $orange
+        color: black !important
+
     a
       color: black
       @include raleway
       font-size: 16px
-      text-transform: uppercase
-  .dropdown.sort
-    margin-right: 20px
+  li > a
+    padding: 0 0 2px 0 !important
+    margin-left: 18px
+    cursor: pointer
+
+  .browse-group
+    padding-right: 30px
+    .browse-by
+      font-size: 95%
+    a.active
+      border-bottom: 3px solid $orange
+
+  .dropdown-menu
+    a
+      margin-left: 30px
+    a.active
+      &:before
+        content: "\2713"
+        position:  absolute
+        left:  10px
+        font-size:  80%
+        color:  $orange
+
+  .clear-search
+    position: absolute
+    right:  25px
+    bottom:  4px
+    color:  #a9a9a9
+
+  .search-query
+    margin-top: -9px
+
+.filter-collapser
+  cursor: pointer
+
+.filters-group
+  width: 300px
+  position: absolute
+  top:  90%
+  z-index: 1000
+  padding: 10px 30px 20px 30px
+  background-color: rgba(255, 255, 255, .8)
+  border-bottom-left-radius: 5px
+  border-bottom-right-radius: 5px
+  border-top-right-radius: 5px
+  .btn-group
+    margin-top: 10px
+    margin-left: 0px
+  @include bottom-only-annotation-shadow
+  overflow:  hidden
+
+.current-filters
+  font-size: 90%
+
+// See https://github.com/angular/angular.js/commit/11f712bc - these class
+// names have to change when we go to angular >= 1.1.5
+.filters-show-setup, .filters-hide-setup
+  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+  -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+  -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+
+.filters-hide-setup
+  opacity: 1
+  max-height: 150px
+  &.filters-hide-start
+    opacity: 0
+    max-height: 0px
+
+.filters-show-setup
+  opacity: 0
+  max-height: 0px
+  &.filters-show-start
+    opacity: 1
+    max-height: 150px
 
 .pagination
   @include raleway
@@ -66,14 +142,18 @@
   margin-top: 40px
   margin-left: 20px
 
-@media (max-width: 970px)
-  .gallery-filter, .gallery-filter .dropdown a
-    font-size: 14px !important
 
-    .search-query
-      display: block
-      margin-bottom: 15px
-
-
+@media (max-width: 980px)
+  .left-group
+    width: 100%
+  .browse-group
+    padding-top: 10px
+    font-size: 85%
+    li > a
+      margin-left: 10px
+  .filters-group
+    right: -10px
+  .current-filters
+    display: none
   
   

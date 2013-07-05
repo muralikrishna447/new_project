@@ -3,9 +3,9 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   PAGINATION_COUNT = 12
 
   $scope.sortChoices = [
-    {name: "Newest", value: "newest"},
-    {name: "Oldest", value: "oldest"},
-    {name: "Most Relevant", value: "relevance"}
+    {name: "RELEVANCE", value: "relevance"}
+    {name: "NEWEST", value: "newest"},
+    {name: "OLDEST", value: "oldest"},
   ]
 
   $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x.value == "relevance")
@@ -14,6 +14,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     {name: "Easy", value: "easy"},
     {name: "Intermediate", value: "intermediate"}
     {name: "Advanced", value: "advanced"}
+    {name: "Any", value: "any"}
   ]
 
   $scope.publishedStatusChoices = [
@@ -25,15 +26,19 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     {name: "Recipes", value: "Recipe"},
     {name: "Techniques", value: "Technique"},
     {name: "Science", value: "Science"}
+    {name: "Any", value: "any"}
   ]
 
   $scope.defaultFilters = {
-    sort: $scope.sortChoices[0],
+    sort: $scope.sortChoices[1],
     published_status: $scope.publishedStatusChoices[0]
+    activity_type: $scope.typeChoices[3]
+    difficulty: $scope.difficultyChoices[3]
   }
 
   $scope.placeHolderImage = "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
 
+  # Must match logic in has_Activity#featurable_image !!
   $scope.activityImageFpfile = (activity) ->
     if activity?
       if activity.featured_image_id
@@ -62,7 +67,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     r = {page: $scope.page}
     for filter, x of $scope.filters
       if _.isObject(x)
-        r[filter] = x.value
+        r[filter] = x.value if x.value != "any"
       else
         r[filter] = x
 
@@ -70,6 +75,16 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     if r.published_status == "Unpublished" && r.by_published_at?
       r.by_updated_at = r.by_published_at
       delete r.by_published_at
+    r
+
+  $scope.getFilterText = ->
+    r = []
+    if $scope.filters.activity_type? && $scope.filters.activity_type.value != "any"
+      r.push($scope.filters.activity_type.name)
+    if $scope.filters.difficulty? && $scope.filters.difficulty.value != "any"
+      r.push($scope.filters.difficulty.name)
+    if $scope.filters.published_status? && $scope.filters.published_status.value != "Published"
+      r.push($scope.filters.published_status.name)
     r
 
   $scope.load_data = ->
@@ -136,8 +151,8 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.$watch 'filters.search_all', (newValue) ->
     console.log newValue
-    $scope.filters.sort = $scope.sortChoices[2] if newValue? && (newValue.length == 1)
-    $scope.filters.sort = $scope.sortChoices[0] if (! newValue?)  || newValue.length == 0
+    $scope.filters.sort = $scope.sortChoices[0] if newValue? && (newValue.length == 1)
+    $scope.filters.sort = $scope.sortChoices[1] if (! newValue?)  || newValue.length == 0
     $timeout (->
       $scope.clear_and_load()
     ), 250
@@ -154,6 +169,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     $scope.activities
 
   # Initialization
+  $scope.collapse_filters = true
   $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.page = 1
   $scope.spinner = 0

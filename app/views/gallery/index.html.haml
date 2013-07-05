@@ -2,14 +2,69 @@
 - content_for :description, "Become a better by cook by learning from these amazing recipe videos."
 - content_for :keywords, @recipes.map(&:title).to_sentence
 
-.container.gallery-wrapper(ng-controller='GalleryController')
+.container.gallery-wrapper.relative(ng-controller='GalleryController' ng-cloak)
   .row
     .span12
       %div
         / .flat-form
         /   %form
         /     %input(ng-model='search' placeholder='Enter Name')
-        = render 'shared/gallery'
+        .gallery-filter.navbar
+          %ul.nav.left-group
+
+            %form.navbar-search.relative(ng-click="collapse_filters = true")
+              %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all")
+              %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
+                %i.icon-remove-circle
+
+            %li.relative
+              %div.filter-collapser(ng-click="collapse_filters = ! collapse_filters")
+                FILTER
+                %span.current-filters(ng-repeat="f in getFilterText()")
+                  %span(ng-show="$first")> (
+                  %span(ng-bind-html-unsafe="f")>
+                  %span(ng-show="! $last")>
+                    |
+                  %span(ng-show="$last")> )
+
+                %i.icon-angle-down(ng-show="collapse_filters")
+                %i.icon-angle-up(ng-hide="collapse_filters")
+              .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'")
+                .btn-group
+                  %button.btn.btn-checkbox(ng-repeat="choice in typeChoices" ng-model="filters.activity_type" btn-radio="{{choice}}")
+                    {{choice.name}}
+                .btn-group
+                  %button.btn.btn-checkbox(ng-repeat="choice in difficultyChoices" ng-model="filters.difficulty" btn-radio="{{choice}}")
+                    {{choice.name}}
+                -if can? :update, Activity
+                  .btn-group
+                    %button.btn.btn-checkbox(ng-repeat="choice in publishedStatusChoices" ng-model="filters.published_status" btn-radio="{{choice}}")
+                      {{choice.name}}
+
+          %ul.nav.browse-group.pull-right(ng-click="collapse_filters = true")
+            %li.browse-by Browse By
+            %li(ng-repeat="choice in sortChoices" ng-hide="(filters.search_all || '') == ''")
+              %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
+                {{choice.name}}
+            %li(ng-repeat="choice in sortChoicesWhenNoSearch" ng-show="(filters.search_all || '') == ''")
+              %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
+                {{choice.name}}
+
+  .row(ng-show="activities.length == 0" ng-click="collapse_filters = true")
+    .span12
+      %h3 No results found, but perhaps you'd enjoy these recipes?
+
+  .row.gallery-contents(ng-click="collapse_filters = true")
+    .span12
+      %div.pull-left(galleryscroll='load_data()')
+        .media-box-3(ng-cloak='' ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
+          %a(href= 'activities/{{activity.slug}}')
+            .media-box-3-title
+              {{activity.title}}
+            %img(ng-src="{{activityImageURL(activity, 400)}}")
+            .media-box-3-footer
+              .footer-left
+                {{activity.difficulty}}
 
   .row
     .span2.offset5
