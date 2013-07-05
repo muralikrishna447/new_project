@@ -23,6 +23,8 @@ class User < ActiveRecord::Base
   has_many :likes
   has_many :votes
 
+  has_many :created_activities, class_name: 'Activity', foreign_key: 'creator'
+
   serialize :viewed_activities, Array
 
   gravtastic

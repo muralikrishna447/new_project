@@ -100,7 +100,8 @@ class ActivitiesController < ApplicationController
     @activity = Activity.new()
     @activity.title = DUMMY_NEW_ACTIVITY_NAME
     @activity.description = ""
-    # Have to save because we edit in our show view, and that view really needs an id
+    @activity.creator = current_user unless current_user.admin?
+    # Have to save because we edit in our show view, and that view really needs an id - this should be fixed!
     @activity.save!
     @activity.title = ""
     @include_edit_toolbar = true
@@ -111,13 +112,14 @@ class ActivitiesController < ApplicationController
     old_activity = Activity.find(params[:id])
     @activity = old_activity.deep_copy
     @activity.title = "#{current_user.name}'s Version Of #{old_activity.title}"
+    @activity.creator = current_user.admin? ? 0 : current_user
     @activity.save!
     render :json => {redirect_to: activity_path(@activity, {start_in_edit: true})}
   end
 
   def get_as_json
 
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, Activity))
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -163,6 +165,7 @@ class ActivitiesController < ApplicationController
 
           @activity.store_revision do
             @activity.last_edited_by = current_user
+            params[:activity].delete(:creator)
             @activity.update_equipment_json(params[:activity].delete(:equipment))
             @activity.update_ingredients_json(params[:activity].delete(:ingredients))
             @activity.update_steps_json(params.delete(:steps))

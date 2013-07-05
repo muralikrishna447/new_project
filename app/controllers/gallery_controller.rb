@@ -32,7 +32,7 @@ class GalleryController < ApplicationController
 
   def index_as_json
     @pub = params[:published_status] || "Published"
-    @recipes = apply_scopes(Activity).uniq().page(params[:page]).per(12)
+    @recipes = apply_scopes(Activity).chefsteps_generated.uniq().page(params[:page]).per(12)
 
     respond_to do |format|
       format.json { render :json => @recipes.to_json(only: [:id, :title, :image_id, :featured_image_id, :difficulty, :published_at, :slug], :include => :steps) }
