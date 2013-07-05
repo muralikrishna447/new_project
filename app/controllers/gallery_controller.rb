@@ -16,9 +16,10 @@ class GalleryController < ApplicationController
   has_scope :search_all
   has_scope :difficulty
   has_scope :activity_type
+  has_scope :include_in_gallery
 
   has_scope :published_status, default: "Published" do |controller, scope, value|
-    value == "Published" ? scope.published.has_featurable_image : scope.unpublished.where("title != 'DUMMY NEW ACTIVITY'")
+    value == "Published" ? scope.published.include_in_gallery : scope.unpublished.where("title != 'DUMMY NEW ACTIVITY'")
   end
 
   def index
