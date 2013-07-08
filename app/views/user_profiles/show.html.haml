@@ -36,8 +36,9 @@
           = link_to 'Favorites', '#favorites', data: {toggle: 'tab'}
         %li
           = link_to 'Photos', '#photos', data: {toggle: 'tab'}
-        %li
-          = link_to 'Recipes', '#recipes', data: {toggle: 'tab'}
+        -if @show_recipes_tab
+          %li
+            = link_to @is_current_user ? 'My Recipes' : @user.name + '\'s Recipes', '#recipes', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#courses
           - if @user.courses.any?
@@ -71,13 +72,20 @@
             - upload_title = capture do
               = link_to upload.title, user_upload_path(@user, upload)
             = render 'shared/media_list_item', image: upload.image_id, title: upload_title, text: upload.notes
-        .tab-pane#recipes
-          - @user_activities = @user.created_activities.published
-          - @user_activities.each do |activity|
-            - activity_title = capture do
-              = link_to activity.title, activity_path(activity)
-            = render 'shared/media_list_item', image: activity.featured_image, title: activity_title, text: truncate(activity.description, length: 140, separator: ' ')
-
+        -if @show_recipes_tab
+          .tab-pane#recipes
+            - @user_pubbed_recipes.each do |activity|
+              - activity_title = capture do
+                = link_to activity.title, activity_path(activity)
+              = render 'shared/media_list_item', image: activity.featured_image, title: activity_title, text: truncate(activity.description, length: 140, separator: ' ')
+            -if @user_unpubbed_recipes.count > 0
+              - @user_unpubbed_recipes.each do |activity|
+                - activity_title = capture do
+                  = link_to activity.title, activity_path(activity)
+                = render 'shared/media_list_item', image: activity.featured_image, title: activity_title, text: truncate(activity.description, length: 140, separator: ' ') + " [Unpublished]"
+            -if @can_add_recipes
+              .media-list-item
+                = link_to 'Create a new recipe', new_activity_url, class: 'btn btn-primary'
 
     .span5
       %h4 Timeline

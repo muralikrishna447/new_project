@@ -19,6 +19,12 @@ class UserProfilesController < ApplicationController
     @courses = Course.published
     # @recipes = Activity.published.recipes.last(6)
     # @techniques = Activity.published.techniques.last(6)
+    @is_current_user =  (@user == current_user)
+    @user_pubbed_recipes = @user.created_activities.published
+    @user_unpubbed_recipes = ((current_user && current_user.admin?) || @is_current_user) ? @user.created_activities.unpublished : []
+    @total_recipes = @user_pubbed_recipes.count + @user_unpubbed_recipes.count
+    @can_add_recipes = (can? :create, Activity) && @is_current_user
+    @show_recipes_tab = (@total_recipes > 0) || (@can_add_recipes)
   end
 
   def edit

@@ -3,11 +3,9 @@ class ActivitiesController < ApplicationController
   expose(:cache_show) { params[:token].blank? }
   expose(:version) { Version.current }
 
-  before_filter :find_activity, only: :show
+  before_filter :maybe_redirect_activity, only: :show
 
-  DUMMY_NEW_ACTIVITY_NAME = "DUMMY NEW ACTIVITY"
-
-  def find_activity
+  def maybe_redirect_activity
     @activity = Activity.find params[:id]
 
     # If an old id or a numeric id was used to find the record, then
@@ -22,6 +20,8 @@ class ActivitiesController < ApplicationController
       redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
+  rescue
+    # Not a problem
   end
 
 
@@ -98,11 +98,9 @@ class ActivitiesController < ApplicationController
 
   def new
     @activity = Activity.new()
-    @activity.title = DUMMY_NEW_ACTIVITY_NAME
+    @activity.title = ""
     @activity.description = ""
-    @activity.creator = current_user unless current_user.admin?
-    # Have to save because we edit in our show view, and that view really needs an id - this should be fixed!
-    @activity.save!
+    @activity.id = -1
     @activity.title = ""
     @include_edit_toolbar = true
     render 'show'
@@ -123,9 +121,6 @@ class ActivitiesController < ApplicationController
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
-
-    # Can't save with this, but want it to be blank in show view
-    @activity.title = "" if @activity.title == DUMMY_NEW_ACTIVITY_NAME
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
@@ -155,7 +150,14 @@ class ActivitiesController < ApplicationController
       # Can't seem to get custom verb & URL to work in angular, so tacking it onto this one
       fork()
     else
-      @activity = Activity.find(params[:id])
+
+      if params[:id] == '-1'
+        @activity = Activity.create()
+        @activity.creator = current_user unless current_user.admin?
+      else
+        @activity = Activity.find(params[:id])
+      end
+
       respond_to do |format|
         format.json do
 
@@ -166,20 +168,25 @@ class ActivitiesController < ApplicationController
           @activity.store_revision do
             @activity.last_edited_by = current_user
             params[:activity].delete(:creator)
-            @activity.update_equipment_json(params[:activity].delete(:equipment))
-            @activity.update_ingredients_json(params[:activity].delete(:ingredients))
-            @activity.update_steps_json(params.delete(:steps))
+            equip = params[:activity].delete(:equipment)
+            ingredients = params[:activity].delete(:ingredients)
+            steps = params.delete(:steps)
             # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
             # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
             tags = params.delete(:tags)
             @activity.tag_list = tags.map { |t| t[:name]} if tags
             @activity.attributes = params[:activity]
             @activity.save!
+            track_event(@activity, 'create') if (params[:id] == '-1') && (! current_user.admin?)
+
+            @activity.update_equipment_json(equip)
+            @activity.update_ingredients_json(ingredients)
+            @activity.update_steps_json(steps)
           end
 
           # This would be better handled by history state / routing in frontend, but ok for now
           if @activity.slug != old_slug
-            render :json => {redirect_to: activity_path}
+            render :json => {redirect_to: activity_path(@activity)}
           else
             head :no_content
           end
