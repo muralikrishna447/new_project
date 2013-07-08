@@ -7,6 +7,13 @@ end
 ActiveAdmin.register Activity do
   config.sort_order = 'activity_order_asc'
 
+  filter :title
+  filter :created_at
+  filter :updated_at
+  filter :published
+  filter :published_at
+  filter :description
+
   menu priority: 2
 
   action_item only: [:show, :edit] do
