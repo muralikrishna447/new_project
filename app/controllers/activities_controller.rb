@@ -189,7 +189,7 @@ class ActivitiesController < ApplicationController
 
               # This would be better handled by history state / routing in frontend, but ok for now
               if @activity.slug != old_slug
-                render json: {redirect_to: activity_path}
+                render json: {redirect_to: activity_path(@activity)}
               else
                 head :no_content
               end
