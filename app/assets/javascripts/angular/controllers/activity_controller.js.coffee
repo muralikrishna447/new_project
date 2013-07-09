@@ -25,6 +25,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.preventAutoFocus = false
   $scope.shouldShowRestoreAutosaveModal = false
   $scope.shouldShowAlreadyEditingModal = false
+  $scope.alerts = []
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -78,14 +79,21 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     true
 
   $scope.endEditMode = ->
+
     $scope.normalizeModel()
-    $scope.activity.$update({},
+    $scope.activity.$update(
+      {},
       ((response) ->
+        console.log "ACTIVITY SAVE WIN"
         # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
-       window.location = response.redirect_to if response.redirect_to),
+        window.location = response.redirect_to if response.redirect_to
+        $scope.postEndEditMode()
+        $scope.activity.is_new = false),
+
+      ((error) ->
+        console.log "ACTIVITY SAVE ERRORS: " + JSON.stringify(error)
+        _.each(error.data.errors, (e) -> $scope.addAlert({message: e})))
     )
-    $scope.postEndEditMode()
-    $scope.activity.is_new = false
 
   $scope.cancelEditMode = ->
     if $scope.undoAvailable
@@ -367,6 +375,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       true
     else
       false
+
+  $scope.addAlert = (alert) ->
+    $scope.alerts.push(alert)
+
+  $scope.closeAlert = (index) ->
+    $scope.alerts.splice(index, 1)
+
 
   # Keep <title> tag in sync
   $scope.$watch 'activity.title', ->

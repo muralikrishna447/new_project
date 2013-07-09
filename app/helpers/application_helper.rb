@@ -205,5 +205,9 @@ module ApplicationHelper
     link_to(name, '#', class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
   end
 
+  def parse_feed(url)
+    doc = SimpleRSS.parse open(url)
+  end
+
 end
 

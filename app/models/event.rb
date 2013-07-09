@@ -15,4 +15,8 @@ class Event < ActiveRecord::Base
     results = joins("INNER JOIN #{symbolized_trackable_type} ON #{symbolized_trackable_type}.id = events.trackable_id").where(trackable_type: trackable_type).where(action: action)
     results
   end
+
+  def receiver
+    trackable.receiver if trackable.class.method_defined?(:receiver)
+  end
 end

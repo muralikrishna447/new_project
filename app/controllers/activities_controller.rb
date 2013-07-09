@@ -166,29 +166,39 @@ class ActivitiesController < ApplicationController
           @activity.create_or_update_as_ingredient
 
           @activity.store_revision do
-            @activity.last_edited_by = current_user
-            params[:activity].delete(:creator)
-            equip = params[:activity].delete(:equipment)
-            ingredients = params[:activity].delete(:ingredients)
-            steps = params.delete(:steps)
-            # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
-            # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
-            tags = params.delete(:tags)
-            @activity.tag_list = tags.map { |t| t[:name]} if tags
-            @activity.attributes = params[:activity]
-            @activity.save!
-            track_event(@activity, 'create') if (params[:id] == '-1') && (! current_user.admin?)
 
-            @activity.update_equipment_json(equip)
-            @activity.update_ingredients_json(ingredients)
-            @activity.update_steps_json(steps)
-          end
+            begin
+              @activity.last_edited_by = current_user
+              # This will get handled in notify_end_edit; don't want to touch here
+              params[:activity].delete(:currently_editing_user)
+              params[:activity].delete(:creator)
+              equip = params[:activity].delete(:equipment)
+              ingredients = params[:activity].delete(:ingredients)
+              steps = params.delete(:steps)
+              # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
+              # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
+              tags = params.delete(:tags)
+              @activity.tag_list = tags.map { |t| t[:name]} if tags
+              @activity.attributes = params[:activity]
+              @activity.save!
+              track_event(@activity, 'create') if (params[:id] == '-1') && (! current_user.admin?)
 
-          # This would be better handled by history state / routing in frontend, but ok for now
-          if @activity.slug != old_slug
-            render :json => {redirect_to: activity_path(@activity)}
-          else
-            head :no_content
+              @activity.update_equipment_json(equip)
+              @activity.update_ingredients_json(ingredients)
+              @activity.update_steps_json(steps)
+
+              # This would be better handled by history state / routing in frontend, but ok for now
+              if @activity.slug != old_slug
+                render json: {redirect_to: activity_path}
+              else
+                head :no_content
+              end
+
+            rescue Exception => e
+              messages = [] || @activity.errors.full_messages
+              messages.push(e.message)
+              render json: { errors: messages}, status: 422
+            end
           end
         end
       end

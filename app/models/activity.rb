@@ -33,8 +33,8 @@ class Activity < ActiveRecord::Base
   has_many :uploads
   has_many :upload_users, through: :uploads, source: :user
 
-  has_many :events, as: :trackable
-  has_many :likes, as: :likeable
+  has_many :events, as: :trackable, dependent: :destroy
+  has_many :likes, as: :likeable, dependent: :destroy
 
   belongs_to :creator, class_name: User, foreign_key: 'creator'
   belongs_to :last_edited_by, class_name: User, foreign_key: 'last_edited_by_id'
@@ -96,7 +96,7 @@ class Activity < ActiveRecord::Base
     true
   end
 
-  after_commit :create_or_update_as_ingredient
+  after_commit :create_or_update_as_ingredient, :if => :persisted?
   def create_or_update_as_ingredient
     i = Ingredient.find_or_create_by_sub_activity_id(self.id)
     i.update_attribute(:title, self.title)

@@ -1,98 +1,46 @@
-.container-fluid#footer{style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
+.container-fluid#footer(ng-cloak ng-hide="editMode"){style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
   .row-fluid
     .span12
       .row
         .container#footer-body
           .span12.well.well-opaque
-            .span4
-              %h3 About ChefSteps
-              %p
-                ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
-              %p
-                Taught by a world-renowned team, you will master techniques of traditional and modernist cooking through practical, hands-on demonstrations with detailed step-by-step explanations. Unlike at other culinary schools, you will also learn the why's behind the how's from experts who bring the science of cooking to life in a compelling and practical way.
-              .section
-                = link_to about_path do
-                  = image_tag chris_image_url, class:'img-circle'
-
-                = link_to about_path do
-                  = image_tag grant_image_url, class:'img-circle'
-
-                = link_to about_path do
-                  = image_tag ryan_image_url, class:'img-circle'
-
-            .span4.offset1
-              %h3 Contact
+            .span3
+              %h3 About
               %ul.unstyled
+                %li= link_to 'About ChefSteps', '/about'
                 %li= link_to 'Blog', 'http://blog.chefsteps.com'
-                %li= link_to 'RSS Feed', 'http://feeds.feedburner.com/ChefSteps'
-                %li 
-                  General Info:
-                  = mail_to 'info@chefsteps.com'
-                %li 
-                  Press inquiries:
-                  = mail_to 'press@chefsteps.com'
+                %li= link_to 'Jobs', '/jobs'
                 %li= link_to 'Press Kit', 'http://chefsteps.com/pages/presskit'
 
-            .span2
-              %h3 Other Stuff
-              %p
-                = link_to 'Legal', legal_url
-              %p.creative-commons
-                %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
-                  = image_tag by_nc_sa_image_url
-              %p
-                %a{href: 'https://mixpanel.com/f/partner'}
-                  %img{src: '//cdn.mxpnl.com/site_media/images/partner/badge_blue.png', alt: 'Mobile Analytics'}
+            .span3
+              %h3 Learn 
+              %ul.unstyled
+                %li= link_to 'Recipes', gallery_index_url(activity_type: "Recipe")
+                %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
+                %li= link_to 'Courses', courses_url
+                %li= link_to 'Science', gallery_index_url(activity_type: "Science")
 
-            .span12
-              .section.text-center 
-                %h3 Handmade in Pike Place, Seattle WA
-          / .span2
-          /   = link_to 'https://www.facebook.com/Chefsteps', target: 'blank' do
-          /     %div.footer-social
-          /       .btn-circle
-          /         %i.icon-facebook
-          /       Facebook
-          /   = link_to 'http://twitter.com/@chefsteps', target: 'blank' do
-          /     %div.footer-social
-          /       .btn-circle
-          /         %i.icon-twitter
-          /       Twitter
-          /   = link_to 'http://pinterest.com/chefsteps/', target: 'blank' do
-          /     %div.footer-social
-          /       .btn-circle
-          /         %i.icon-pinterest
-          /       Pinterest
-          /   = link_to 'https://plus.google.com/106370441183974123730/posts', target: 'blank' do
-          /     %div.footer-social
-          /       .btn-circle
-          /         %i.icon-google-plus
-          /       Google+
+            .span6.section.text-center
+              = image_tag 'logo-minimal.png'
+              %h5 ChefSteps is here to help you become a better cook.
+              %p Handmade at Pike Place Market in Seattle, WA
+          
+            .row
+              .span12
+                %hr
+                %small 
+                  = mail_to 'info@chefsteps.com'
+                  &middot; 
+                  %a{href: 'http://feeds.feedburner.com/ChefSteps'} 
+                    %i.icon-rss
+                      Subscribe to RSS
+                  &middot; 
+                  =link_to 'Legal', legal_url
 
-= #TODO Delete old code below
-/ #footer.hero-unit.footer.noprint
-/   .container
-/     .row
-/       .span8
-/         %p
-/           General inquiries:
-/           = mail_to 'info@chefsteps.com'
-/         %p
-/           Press inquiries:
-/           = mail_to 'press@chefsteps.com'
-/         %p.creative-commons
-/           %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', target: '_blank' }
-/             All Content is Creative Commons Attribution-NonCommercial-ShareAlike
-/       .span2.pull-right
-/         %p
-/           %a.icon-facebook{ href: "https://www.facebook.com/Chefsteps" }
-/             Facebook
-/         %p
-/           %a.icon-twitter{ href: "http://twitter.com/@chefsteps" }
-/             Twitter
-/         %p
-/           %a.icon-pinterest{ href: "http://pinterest.com/chefsteps/" }
-/             Pinterest
-/         %p
-/           %a.icon-legal{ href: legal_url }
-/             Legal
+        .row
+          .span12.section.text-center
+            %p.creative-commons
+              %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', ta: '_blank' }
+                = image_tag 'by-nc-sa.png'
+              %a{href: 'https://mixpanel.com/f/partner'}
+                %img{src: '//cdn.mxpnl.com/site_media/images/partner/badge_blue.png', alt: 'Mobile Analytics'}

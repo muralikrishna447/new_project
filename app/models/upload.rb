@@ -4,7 +4,8 @@ class Upload < ActiveRecord::Base
   belongs_to :activity
   belongs_to :user
 
-  has_many :likes, as: :likeable
+  has_many :likes, as: :likeable, dependent: :destroy
+  has_many :events, as: :trackable, dependent: :destroy
 
   scope :approved, where(approved: true)
   scope :unapproved, where(approved: false)
