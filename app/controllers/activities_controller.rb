@@ -162,23 +162,31 @@ class ActivitiesController < ApplicationController
           @activity.create_or_update_as_ingredient
 
           @activity.store_revision do
-            @activity.last_edited_by = current_user
-            @activity.update_equipment_json(params[:activity].delete(:equipment))
-            @activity.update_ingredients_json(params[:activity].delete(:ingredients))
-            @activity.update_steps_json(params.delete(:steps))
-            # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
-            # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
-            tags = params.delete(:tags)
-            @activity.tag_list = tags.map { |t| t[:name]} if tags
-            @activity.attributes = params[:activity]
-            @activity.save!
-          end
+            begin
+              @activity.last_edited_by = current_user
+              # This will get handled in notify_end_edit; don't want to touch here
+              params[:activity].delete(:currently_editing_user)
+              @activity.update_equipment_json(params[:activity].delete(:equipment))
+              @activity.update_ingredients_json(params[:activity].delete(:ingredients))
+              @activity.update_steps_json(params.delete(:steps))
+              # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
+              # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
+              tags = params.delete(:tags)
+              @activity.tag_list = tags.map { |t| t[:name]} if tags
+              @activity.attributes = params[:activity]
+              @activity.save!
+              # This would be better handled by history state / routing in frontend, but ok for now
+              if @activity.slug != old_slug
+                render json: {redirect_to: activity_path}
+              else
+                head :no_content
+              end
 
-          # This would be better handled by history state / routing in frontend, but ok for now
-          if @activity.slug != old_slug
-            render :json => {redirect_to: activity_path}
-          else
-            head :no_content
+            rescue Exception => e
+              messages = [] || @activity.errors.full_messages
+              messages.push(e.message)
+              render json: { errors: messages}, status: 422
+            end
           end
         end
       end
