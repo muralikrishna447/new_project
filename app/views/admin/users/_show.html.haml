@@ -24,7 +24,8 @@
       %dd
         %ol
           - user.viewed_activities.each do |activity|
-            - activity_object = Activity.find(activity[0])
+          - activity_object = Activity.find(activity[0]) rescue nil
+          -if activity_object
             %li
               = link_to activity_object.title, activity_object
               = activity[1]
