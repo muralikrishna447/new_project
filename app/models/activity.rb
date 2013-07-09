@@ -33,8 +33,8 @@ class Activity < ActiveRecord::Base
   has_many :uploads
   has_many :upload_users, through: :uploads, source: :user
 
-  has_many :events, as: :trackable
-  has_many :likes, as: :likeable
+  has_many :events, as: :trackable, dependent: :destroy
+  has_many :likes, as: :likeable, dependent: :destroy
 
   belongs_to :last_edited_by, class_name: User, foreign_key: 'last_edited_by_id'
   belongs_to :currently_editing_user, class_name: User, foreign_key: 'currently_editing_user'
