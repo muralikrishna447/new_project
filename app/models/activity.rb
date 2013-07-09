@@ -86,7 +86,7 @@ class Activity < ActiveRecord::Base
     true
   end
 
-  after_commit :create_or_update_as_ingredient
+  after_commit :create_or_update_as_ingredient, :if => :persisted?
   def create_or_update_as_ingredient
     i = Ingredient.find_or_create_by_sub_activity_id(self.id)
     i.update_attribute(:title, self.title)
