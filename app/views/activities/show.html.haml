@@ -106,6 +106,9 @@
             - disqus_id = "activity-#{@activity.id}"
             = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
 
+= render 'layouts/footer'
+
+
 -################################ MODALS  ################################
 
 - if @course
@@ -174,3 +177,5 @@
 
 #preloaded-activity-json.hide
   = @activity.to_json
+
+
