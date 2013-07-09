@@ -49,16 +49,18 @@
   .timeline-circle-img
     position: relative
     width: 100%
+    border: 2px solid $orange
+    border-radius: 50%
+    @include boxsizing
     img
       width: 100%
-      border: 2px solid $orange
       @include boxsizing
     &:after
       content: ''
       position: absolute
       width: 20%
       top: 50%
-      right: -25%
+      right: -26%
       border-top: 1px solid gray
       border-bottom: 1px solid gray
   .timeline-circle-text
@@ -70,16 +72,18 @@
   .timeline-circle-img
     position: relative
     width: 100%
+    border: 2px solid $orange
+    border-radius: 50%
+    @include boxsizing
     img
       width: 100%
-      border: 2px solid $orange
       @include boxsizing
     &:after
       content: ''
       position: absolute
       width: 20%
       top: 50%
-      left: -25%
+      left: -26%
       border-top: 1px solid gray
       border-bottom: 1px solid gray
   .timeline-circle-text

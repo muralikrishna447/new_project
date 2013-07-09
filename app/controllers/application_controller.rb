@@ -35,6 +35,14 @@ private
     end
   end
 
+  def track_receiver_event(trackable, action = params[:action])
+    puts trackable.receiver.inspect
+    if trackable.receiver
+      new_event = trackable.receiver.events.create! action: "received_#{action}", trackable: trackable
+      puts new_event.inspect
+    end
+  end
+
   def mixpanel
     @mixpanel ||= Mixpanel::Tracker.new '84272cf32ff65b70b86639dacd53c0e0', { :env => request.env }
   end

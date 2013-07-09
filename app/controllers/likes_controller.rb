@@ -7,6 +7,7 @@ class LikesController < ApplicationController
       @like.user_id = current_user.id
       if @like.save
         track_event @like
+        track_receiver_event @like
       end
     end
     render nothing: true
