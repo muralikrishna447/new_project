@@ -24,11 +24,11 @@
   .row.section
     .span12
     %h2.text-center The Team
-    - team = {'ben' => 'development chef', 'nick' => 'development chef', 'michael' => 'CTO', 'huy' => 'web developer', 'hans' => 'director of audio', ' lorraine' => 'social media', 'kristina' => 'multimedia pm', 'ed' => 'director of business operations', 'tim' => 'product design' }.sort.each do |bio_name, position|
-      .span3.text-center.section
-        = image_tag('http://placehold.it/100x100&text=ChefSteps',  title: 'title', class: 'img-circle')
-        %h4= "#{bio_name}"
-        %h5= "#{position}"
+    - @team.each do |t|
+      .span2.text-center.section
+        = image_tag filepicker_circle_image(t.image_id), class: 'img-circle clearfix'
+        %h4= "#{t.name}"
+
   %hr
   .row.section
     .span6
