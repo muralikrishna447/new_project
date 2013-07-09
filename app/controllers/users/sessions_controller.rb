@@ -8,6 +8,7 @@ class Users::SessionsController < Devise::SessionsController
       self.resource.email = params[:email]
     end
     respond_with(resource, serialize_options(resource))
+    session[:user_return_to] ||= request.referer 
   end
 
   def create
