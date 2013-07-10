@@ -129,6 +129,7 @@ Delve::Application.routes.draw do
     end
   end
   resources :votes, only: [:create]
+  resources :comments
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
