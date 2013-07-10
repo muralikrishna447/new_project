@@ -2,4 +2,11 @@
 .comments
   - @comments.each do |comment|
     .comment
-      = comment.content
+      .comment-user
+        = link_to comment.user do
+          = image_tag filepicker_circle_image(comment.user.image_id), width: "30"
+          = comment.user.name
+      .comment-content
+        = comment.content
+      .comment-created-at
+        %small= "#{time_ago_in_words(comment.created_at)} ago."
