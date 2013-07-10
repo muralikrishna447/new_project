@@ -34,7 +34,5 @@
       %dd
         %ol
           - user.created_activities.each do |activity|
-            - activity_object = Activity.find(activity[0])
             %li
-              = link_to activity_object.title, activity_object
-              = activity[1]
+              = link_to  activity.title, activity_path(activity)
