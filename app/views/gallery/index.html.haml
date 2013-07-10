@@ -30,10 +30,10 @@
                 %i.icon-angle-down(ng-show="collapse_filters")
                 %i.icon-angle-up(ng-hide="collapse_filters")
               .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'")
-                .btn-group
+                .btn-group.first-separate
                   %button.btn.btn-checkbox(ng-repeat="choice in typeChoices" ng-model="filters.activity_type" btn-radio="{{choice}}")
                     {{choice.name}}
-                .btn-group
+                .btn-group.first-separate
                   %button.btn.btn-checkbox(ng-repeat="choice in difficultyChoices" ng-model="filters.difficulty" btn-radio="{{choice}}")
                     {{choice.name}}
                 -if can? :update, Activity

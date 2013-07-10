@@ -10,11 +10,19 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x.value == "relevance")
 
+
+  $scope.typeChoices = [
+    {name: "Any", value: "any"}
+    {name: "Recipes", value: "Recipe"},
+    {name: "Techniques", value: "Technique"},
+    {name: "Science", value: "Science"}
+  ]
+
   $scope.difficultyChoices = [
-    {name: "Easy", value: "easy"},
+    {name: "Any", value: "any"}
+    {name: "Beginner", value: "easy"},
     {name: "Intermediate", value: "intermediate"}
     {name: "Advanced", value: "advanced"}
-    {name: "Any", value: "any"}
   ]
 
   $scope.publishedStatusChoices = [
@@ -22,18 +30,12 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     {name: "Unpublished", value: "Unpublished"}
   ]
 
-  $scope.typeChoices = [
-    {name: "Recipes", value: "Recipe"},
-    {name: "Techniques", value: "Technique"},
-    {name: "Science", value: "Science"}
-    {name: "Any", value: "any"}
-  ]
 
   $scope.defaultFilters = {
     sort: $scope.sortChoices[1],
     published_status: $scope.publishedStatusChoices[0]
-    activity_type: $scope.typeChoices[3]
-    difficulty: $scope.difficultyChoices[3]
+    activity_type: $scope.typeChoices[0]
+    difficulty: $scope.difficultyChoices[0]
   }
 
   $scope.placeHolderImage = "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
