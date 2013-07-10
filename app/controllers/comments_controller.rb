@@ -7,7 +7,8 @@ class CommentsController < ApplicationController
     @comment = @commentable.comments.new(params[:comment])
     @comment.user_id = current_user.id
     if @comment.save
-      redirect_to @commentable
+      # redirect_to @commentable
+      redirect_to request.referer
     else
       render :new
     end
