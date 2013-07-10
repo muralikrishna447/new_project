@@ -54,7 +54,6 @@
                 ago
     
       %hr
-        = render 'comments/comments'
-        = render 'comments/form'
+        = render 'comments/comments', commentable: @upload
         / - disqus_id = "upload-#{@upload.id}"
         / = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.title, disqus_url: upload_url(@upload)
