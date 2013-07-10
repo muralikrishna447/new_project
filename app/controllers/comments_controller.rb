@@ -1,7 +1,12 @@
 class CommentsController < ApplicationController
   
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, only: [:create]
   before_filter :load_commentable
+
+  def index
+    @comments = @commentable.comments
+    render nothing: true
+  end
 
   def create
     @comment = @commentable.comments.new(params[:comment])
@@ -19,6 +24,8 @@ private
   def load_commentable
     resource, id = request.path.split('/')[1, 2]
     @commentable = resource.singularize.classify.constantize.find(id)
+    puts '---------------'
+    puts resource
   end
 
 end
