@@ -6,6 +6,7 @@ class Upload < ActiveRecord::Base
 
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :events, as: :trackable, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
 
   scope :approved, where(approved: true)
   scope :unapproved, where(approved: false)

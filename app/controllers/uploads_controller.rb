@@ -3,6 +3,9 @@ class UploadsController < ApplicationController
 
   def show
     @upload = Upload.find(params[:id])
+    @commentable = @upload
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   def create

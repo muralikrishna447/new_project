@@ -116,7 +116,9 @@ Delve::Application.routes.draw do
     end
   end
   resources :user_activities, only: [:create]
-  resources :uploads
+  resources :uploads do
+    resources :comments
+  end
   resources :users do
     resources :uploads
   end
