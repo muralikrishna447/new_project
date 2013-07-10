@@ -6,5 +6,6 @@
       - if params[:email]
         = link_to_web_email(params[:email])
 
-:javascript
-  mixpanel.alias("#{current_user.id}")
+- if current_user
+  :javascript
+    mixpanel.alias("#{current_user.id}")
