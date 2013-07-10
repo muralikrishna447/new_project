@@ -12,11 +12,14 @@ class CommentsController < ApplicationController
     @comment = @commentable.comments.new(params[:comment])
     @comment.user_id = current_user.id
     if @comment.save
-      # redirect_to @commentable
-      redirect_to request.referer
-    else
-      render :new
+      render :json => @comment.to_json(:include => :user)
     end
+    # if @comment.save
+    #   # redirect_to @commentable
+    #   redirect_to request.referer
+    # else
+    #   render :new
+    # end
   end
 
 private
