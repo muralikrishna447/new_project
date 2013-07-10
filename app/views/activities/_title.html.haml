@@ -2,8 +2,15 @@
 
   %csEditPairShow
     %h1.activity-title(ng-bind-html-unsafe="activity.title || (editMode && 'Add title...')" itemprop='name' ng-class="disableIf(! activity.title.length)")
-    -if @activity.source_activity_id
+    -if @activity.creator || @activity.source_activity_id
       %h5.no-bold
+      -if @activity.creator
+        By
+        = link_to @activity.creator.name, user_profile_path(@activity.creator)
+
+      -if @activity.source_activity_id
+        -if @activity.creator
+          &middot;
         {{sourceActivityTypeString()}}
         = link_to @activity.source_activity.title, activity_path(@activity.source_activity)
 
