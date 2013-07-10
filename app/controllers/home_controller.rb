@@ -18,7 +18,9 @@ class HomeController < ApplicationController
     @chris = Copy.find_by_location('creator-chris')
     @grant = Copy.find_by_location('creator-grant')
     @ryan = Copy.find_by_location('creator-ryan')
-    t = ["hanstwite@gmail.com", "ben@chefsteps.com", "lorraine@chefsteps.com", "kristina@chefsteps.com", "tim.salazar@gmail.com", "hueezer@gmail.com", "michaelnatkin@gmail.com", "edward@chefsteps.com", "nicholasgav@hotmail.com" ]
-    @team = User.where(email: t.each { |x| x })
+    t = %w[hanstwite@gmail.com ben@chefsteps.com lorraine@chefsteps.com kristina@chefsteps.com tim.salazar@gmail.com hueezer@gmail.com michaelnatkin@gmail.com edward@chefsteps.com nicholasgav@hotmail.com]
+    @team = User.where(email: t)
+    f = %w[chris@chefsteps.com desunaito@gmail.com glcrilly@hotmail.com]
+    @founders = User.where(email: f)
   end
 end

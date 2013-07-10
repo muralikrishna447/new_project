@@ -11,15 +11,12 @@
     .span12  
       %h2.text-center Founded by
   .row
-    .span4.text-center
-      = image_tag('https://www.filepicker.io/api/file/CgGfV60UTwKQpFqBkmX4?cache=true', title: 'Chris Young', class: 'img-circle')
-      %h3 Chris Young
-    .span4.text-center
-      = image_tag('https://www.filepicker.io/api/file/eRfg2GubR3y9F22cFDLM?cache=true', title: 'Grant Lee Crilly', class: 'img-circle')
-      %h3 Grant Lee Crilly
-    .span4.text-center
-      = image_tag('http://d1w42w8pbelamn.cloudfront.net/assets/ryan-84d486f3332c411371d25d143d80db64.jpg', title: 'Ryan Matthew Smith', class: 'img-circle')
-      %h3 Ryan Matthew Smith
+    .span10.offset1
+      - @founders.each do |f|
+        .span3.text-center
+          = image_tag filepicker_circle_image(f.image_id), class: 'img-circle clearfix'
+          %h4= "#{f.name}"
+
   %hr
   .row.section
     .span12
