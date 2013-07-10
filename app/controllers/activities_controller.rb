@@ -110,7 +110,7 @@ class ActivitiesController < ApplicationController
     old_activity = Activity.find(params[:id])
     @activity = old_activity.deep_copy
     @activity.title = "#{current_user.name}'s Version Of #{old_activity.title}"
-    @activity.creator = current_user.admin? ? 0 : current_user
+    @activity.creator = current_user.admin? ? nil : current_user
     @activity.save!
     render :json => {redirect_to: activity_path(@activity, {start_in_edit: true})}
   end
@@ -146,6 +146,10 @@ class ActivitiesController < ApplicationController
 
 
   def update_as_json
+    # This will get handled in notify_end_edit; don't want to touch here
+    params[:activity].delete(:currently_editing_user)
+    params[:activity].delete(:creator)
+
     if params[:fork]
       # Can't seem to get custom verb & URL to work in angular, so tacking it onto this one
       fork()
@@ -169,9 +173,6 @@ class ActivitiesController < ApplicationController
 
             begin
               @activity.last_edited_by = current_user
-              # This will get handled in notify_end_edit; don't want to touch here
-              params[:activity].delete(:currently_editing_user)
-              params[:activity].delete(:creator)
               equip = params[:activity].delete(:equipment)
               ingredients = params[:activity].delete(:ingredients)
               steps = params.delete(:steps)
