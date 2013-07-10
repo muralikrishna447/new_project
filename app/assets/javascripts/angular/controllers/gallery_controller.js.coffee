@@ -176,7 +176,9 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
   $scope.filters = angular.extend({}, $scope.defaultFilters)
-  $scope.filters.search_all = $scope.url_params.search_all if $scope.url_params.search_all
+  if $scope.url_params.search_all
+    $scope.filters.search_all = $scope.url_params.search_all
+    $scope.filters.sort = $scope.sortChoices[0]
   $scope.filters.activity_type = _.find($scope.typeChoices, (x) -> x.value == $scope.url_params.activity_type) if $scope.url_params.activity_type
   $scope.clear_and_load()
 

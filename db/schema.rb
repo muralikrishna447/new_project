@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130705201256) do
+ActiveRecord::Schema.define(:version => 20130705213430) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(:version => 20130705201256) do
     t.integer  "likes_count"
     t.integer  "currently_editing_user"
     t.boolean  "include_in_gallery",     :default => true
+    t.integer  "creator",                :default => 0
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
