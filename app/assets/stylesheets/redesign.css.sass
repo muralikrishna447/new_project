@@ -1728,7 +1728,7 @@ csingredienteditpair
   .static-height
     height: 10px
 
-@media (max-width: 320px)
+@media (max- width: 320px)
   .popup-bottom
     font-size: 12px
     h3
@@ -1737,21 +1737,13 @@ csingredienteditpair
     .input-signup-email
       width: 50%
 
+/* Global on-select highlighting */
 
-body
-  &.development
-    &:after
-      position: fixed
-      content: 'development'
-      background-color: hsl(240,100%, 50%)
-      white-space: nowrap
-      top: 26px
-      left: -50px
-      width: 200px
-      padding: 10px 0
-      text-align: center
-      color: $offwhite
-      font-size: 14px
-      z-index: 1000
-      -webkit-transform: rotate(-45deg)
+::-moz-selection 
+  background-color: $orange
+  color: #ffffff
+
+::selection 
+  background-color: $orange
+  color: #ffffff
 
