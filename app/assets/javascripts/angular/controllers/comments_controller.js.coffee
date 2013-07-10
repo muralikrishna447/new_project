@@ -3,6 +3,12 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
   # $scope.poll = Poll.get()
 
   # Comments = $resource('/comments?commentable_type=:type&commentable_id=:id')
-  Comments = $resource(document.URL + '/comments')
-  $scope.comments = Comments.get()
+  # alert window.location.pathname
+  Comment = $resource(window.location.pathname + '/comments/:id')
+  $scope.comments = Comment.query()
+
+  $scope.userImageUrl = (image_id) ->
+    image = JSON.parse(image_id)
+    console.log image
+    image.url + '/convert?fit=crop&w=30&h=30&cache=true'
 ]

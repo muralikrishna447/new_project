@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
 
   def index
     @comments = @commentable.comments
-    render nothing: true
+    render :json => @comments.to_json(:include => :user)
   end
 
   def create
