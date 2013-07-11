@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130710021704) do
+ActiveRecord::Schema.define(:version => 20130711190428) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -459,6 +459,7 @@ ActiveRecord::Schema.define(:version => 20130710021704) do
     t.integer  "course_id"
     t.boolean  "approved",    :default => false
     t.integer  "likes_count"
+    t.string   "slug"
   end
 
   create_table "user_activities", :force => true do |t|

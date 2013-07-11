@@ -1,4 +1,6 @@
 class Upload < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :title, use: [:slugged, :history]
   attr_accessible :activity_id, :image_id, :notes, :title, :user_id, :course_id, :approved
   belongs_to :course
   belongs_to :activity
