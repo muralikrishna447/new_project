@@ -9,7 +9,6 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
 
   $scope.userImageUrl = (image_id) ->
     image = JSON.parse(image_id)
-    console.log image
     image.url + '/convert?fit=crop&w=30&h=30&cache=true'
 
   $scope.addComment = ->
