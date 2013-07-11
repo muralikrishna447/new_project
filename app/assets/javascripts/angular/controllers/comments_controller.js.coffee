@@ -13,9 +13,16 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
     comment = Comment.save($scope.newComment, ->
       $scope.comments.push(comment)
       $scope.newComment = {}
+      $scope.comments_count = $scope.comments.length
     )
 
   $scope.commentLimit = -6
+
+  $scope.commentsToggle = ->
+    if $scope.comments.length > 6
+      true
+    else
+      false
 
   $scope.showAllComments = ->
     $scope.commentLimit = $scope.comments_count

@@ -1,7 +1,7 @@
 %div(ng-controller='CommentsController' ng-cloak)
   %h3
     {{comments_count}} Comments
-    %span(ng-show='comments_count > 6')
+    %span(ng-show='commentsToggle()')
       %span(ng-switch on='commentLimit')
         %span(ng-switch-when="-6")
           .btn.btn-link(ng-click='showAllComments()')
