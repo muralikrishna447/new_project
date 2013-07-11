@@ -50,10 +50,17 @@ $ ->
       signup_and_enroll_btn.click ->
         signup_or_signin_section.hide()
         signup_and_enroll_section.show()
+        mixpanel.track "Course Enrolled",
+        'course': $('#course-title').data('course')
+        enrollment_method: 'New User'
 
       signin_and_enroll_btn.click ->
         signup_or_signin_section.hide()
         signin_and_enroll_section.show()
+        mixpanel.track "Course Enrolled",
+       'course': $('#course-title').data('course')
+        enrollment_method: 'Standard'
+
 
   #### HACK FOR ANCHOR TAGS ####
   current_url = document.URL
