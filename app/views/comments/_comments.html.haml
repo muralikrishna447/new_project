@@ -1,6 +1,15 @@
-%div(ng-controller='CommentsController')
-  %h3= "#{commentable.comments.count} Comments"
-  .comments(ng-repeat='comment in comments')
+%div(ng-controller='CommentsController' ng-cloak)
+  %h3
+    {{comments_count}} Comments
+    %span(ng-show='comments_count > 6')
+      %span(ng-switch on='commentLimit')
+        %span(ng-switch-when="-6")
+          .btn.btn-link(ng-click='showAllComments()')
+            Show All
+        %span(ng-switch-default)
+          .btn.btn-link(ng-click='hideComments()')
+            Hide
+  .comments(ng-repeat='comment in comments|limitTo:commentLimit')
     .comment
       .comment-user
         %a(href="/profiles/{{comment.user.slug}}")
