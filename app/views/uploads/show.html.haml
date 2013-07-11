@@ -53,9 +53,7 @@
                 = "#{time_ago_in_words(like.created_at)}"
                 ago
     
-
-
-
       %hr
-        - disqus_id = "upload-#{@upload.id}"
-        = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.title, disqus_url: upload_url(@upload)
+        = render 'comments/comments', commentable: @upload
+        / - disqus_id = "upload-#{@upload.id}"
+        / = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.title, disqus_url: upload_url(@upload)
