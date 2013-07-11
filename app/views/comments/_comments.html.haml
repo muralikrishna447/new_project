@@ -21,7 +21,7 @@
         {{comment.content}}
       .comment-created-at
         %small
-          {{comment.created_at}}
+          {{comment.created_at|date:'medium'}}
 
   .flat-form
     %form(ng-submit="addComment()")
