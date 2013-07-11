@@ -13,6 +13,8 @@ class CommentsController < ApplicationController
     @comment.user_id = current_user.id
     if @comment.save
       render :json => @comment.to_json(:include => :user)
+      track_event @comment
+      track_receiver_event @comment
     end
     # if @comment.save
     #   # redirect_to @commentable
