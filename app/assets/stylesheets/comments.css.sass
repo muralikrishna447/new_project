@@ -3,8 +3,16 @@
 .comments
   .comment
     margin: 10px 0px
-    .lead
-      margin: 0px
-      font-size: 18px
+    @include raleway
+    font-size: 18px
+    position: relative
+    .comment-user
+      position: absolute
+      top: 0px
+      left: 0px
+    .comment-content
+      font-weight: 500
+      padding-left: 35px
     .comment-created-at
-      margin-left: 36px
+      padding-left: 35px
+      color: gray

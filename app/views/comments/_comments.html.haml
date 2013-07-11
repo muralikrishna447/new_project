@@ -1,34 +1,19 @@
 %div(ng-controller='CommentsController')
   %h3= "#{commentable.comments.count} Comments"
-  / .comments
-  /   - commentable.comments.each do |comment|
-  /     .comment
-  /       %span.comment-user.lead
-  /         = link_to user_profile_path(comment.user) do
-  /           = image_tag filepicker_circle_image(comment.user.image_id), width: "30"
-  /           = comment.user.name
-  /       %span.comment-content.lead
-  /         = comment.content
-  /       .comment-created-at
-  /         %small= "#{time_ago_in_words(comment.created_at)} ago."
   .comments(ng-repeat='comment in comments')
     .comment
-      %span.comment-user.lead
+      .comment-user
         %a(href="/profiles/{{comment.user.slug}}")
           %img(ng-src="{{userImageUrl(comment.user.image_id)}}")
+      .comment-content
+        %a(href="/profiles/{{comment.user.slug}}")
           {{comment.user.name}}
-      %span.comment-content.lead
         {{comment.content}}
       .comment-created-at
         %small
-          {{comment.created_at|date:'medium'}}
+          {{comment.created_at|date:'MMM d, yyyy @ h:mma'}}
 
   .flat-form
     %form(ng-submit="addComment()")
       %textarea.input-block-level(ng-model="newComment.content" placeholder='Write a comment...')
       %input.btn.btn-primary.pull-right(type='submit' value='Add Comment')
-
-  / .flat-form
-  /   = form_for [commentable, commentable.comments.new] do |f|
-  /     = f.text_area :content, class: 'input-block-level', rows: 3, placeholder: 'Write a comment...'
-  /     = f.submit 'Add Comment', class: 'btn btn-primary pull-right'
