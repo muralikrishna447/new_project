@@ -1,4 +1,6 @@
-%div(ng-controller='CommentsController' ng-cloak)
+%div(ng-controller='CommentsController' ng-init="init('#{commentable.class.to_s.downcase.pluralize}','#{commentable.id}')" ng-cloak)
+  / %span(ng-model="commentable_type" ng-init="commentable_type='#{commentable.class}'")
+  / %span(ng-model="commentable_id" ng-init="commentable_id='#{commentable.id}'")
   %h4
     {{comments_count}} Comments
     %span(ng-show='commentsToggle()')

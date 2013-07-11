@@ -1,9 +1,12 @@
 angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$resource", "$http", "$filter", ($scope, $resource, $http, $filter) ->
 
-  Comment = $resource(window.location.pathname + '/comments/:id')
-  $scope.comments = Comment.query(->
-    $scope.comments_count = $scope.comments.length
-  ) 
+  $scope.init = (commentable_type, commentable_id) ->
+    $scope.commentable_type = commentable_type
+    $scope.commentable_id = commentable_id
+    Comment = $resource('/' + $scope.commentable_type + '/' + $scope.commentable_id + '/comments')
+    $scope.comments = Comment.query(->
+      $scope.comments_count = $scope.comments.length
+    ) 
 
   $scope.userImageUrl = (image_id) ->
     if image_id
