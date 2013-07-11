@@ -1,5 +1,5 @@
 %div(ng-controller='CommentsController' ng-cloak)
-  %h3
+  %h4
     {{comments_count}} Comments
     %span(ng-show='commentsToggle()')
       %span(ng-switch on='commentLimit')
@@ -22,7 +22,17 @@
         %small
           {{comment.created_at|date:'MMM d, yyyy @ h:mma'}}
 
-  .flat-form
-    %form(ng-submit="addComment()")
-      %textarea.input-block-level(ng-model="newComment.content" placeholder='Write a comment...')
-      %input.btn.btn-primary.pull-right(type='submit' value='Add Comment')
+  - if current_user
+    .flat-form
+      %form(ng-submit="addComment()")
+        %textarea.input-block-level(ng-model="newComment.content" placeholder='Write a comment...')
+        %input.btn.btn-primary.pull-right(type='submit' value='Add Comment')
+  - else
+    %hr
+    %h4
+      = link_to sign_in_path, class: 'btn btn-secondary' do
+        Sign In
+      or
+      = link_to sign_up_path, class: 'btn btn-secondary' do
+        Create an Account
+      to add a comment.
