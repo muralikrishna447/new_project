@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-  attr_accessible :action, :user_id, :trackable
+  attr_accessible :action, :user_id, :trackable, :viewed
 
   belongs_to :user
   belongs_to :trackable, polymorphic: true

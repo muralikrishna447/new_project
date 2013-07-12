@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
   has_merit
-  acts_as_reader
 
   include User::Facebook
   include Gravtastic

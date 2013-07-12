@@ -15,7 +15,7 @@
         = "#{link_to event.trackable.user.name, user_profile_path(event.trackable.user)} liked #{user_noun} #{link_to 'photo', likeable_object}.".html_safe
       %div
         = time_ago_in_words(event.created_at) + ' ago'
-        - if event.user == current_user && event.unread?(event.user)
+        - if event.user == current_user && !event.viewed
           .label new
 
 - when 'Activity'
@@ -28,5 +28,5 @@
         = "#{user_noun} liked #{link_to likeable_object.title, likeable_object}.".html_safe
       %div
         = time_ago_in_words(event.created_at) + ' ago'
-        - if event.user == current_user && event.unread?(event.user)
+        - if event.user == current_user && !event.viewed
           .label new
