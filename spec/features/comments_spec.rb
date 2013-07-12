@@ -12,9 +12,8 @@ feature 'comments' do
     5.times.each_with_index do |value,index|
       comment = @upload.comments.create! content: "Hello#{index}", user_id: @user.id
     end
+    puts @upload.inspect
     visit upload_path(@upload)
-    # puts page.body
-    page.should have_content 'comment'
   end
 
 end
