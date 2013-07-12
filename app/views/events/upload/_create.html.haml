@@ -7,3 +7,6 @@
   .timeline-circle-text.text-center
     %div= "#{user_noun} uploaded a photo"
     %div= time_ago_in_words(event.created_at) + ' ago'
+  .timeline-label
+    - if event.user == current_user && event.unread?(event.user)
+      .label new
