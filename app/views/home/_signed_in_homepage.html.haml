@@ -6,11 +6,15 @@
       .row
         .container-fluid
           .row-fluid
-            - current_user.events.timeline.first(4).each do |event|
-              - trackable = event.trackable
-              .span3
-                - case trackable.class.to_s
-                - when 'Comment'
-                  = link_to trackable.commentable do
-                    = trackable.commentable.title
-                    = image_tag filepicker_gallery_image(trackable.commentable.featured_image)
+            / - current_user.events.timeline.each do |event|
+            /   .event
+            /     = event.trackable_type
+            /     = event.action
+            /     = event.created_at
+            / - current_user.events.timeline.group_by{|e| [e.trackable.commentable || e.trackable.likeable || e.trackable, e.trackable_type, e.action] rescue true}.each do |event_group|
+            /   = event_group
+            /   %hr
+            - current_user.events.timeline.each do |event|
+              .event
+                = event.group_name
+                %hr

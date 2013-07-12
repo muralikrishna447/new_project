@@ -20,4 +20,12 @@ class Event < ActiveRecord::Base
   def receiver
     trackable.receiver if trackable.class.method_defined?(:receiver)
   end
+
+  def group_name
+    case [trackable_type, action]
+    when ['Comment','create']
+      [trackable_type, trackable_id, action, trackable.commentable_type, trackable.commentable_id].join('_')
+      # "Comment_#{trackable_id}_created_for_#{trackable.commentable_type}_#{trackable.commentable_id}"
+    end
+  end
 end
