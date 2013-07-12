@@ -15,6 +15,5 @@
         = "#{link_to event.trackable.user.name, user_profile_path(event.trackable.user)} comment on #{user_noun} #{link_to 'photo', commentable_object}.".html_safe
       %div
         = time_ago_in_words(event.created_at) + ' ago'
-    .timeline-label
-      - if event.user == current_user && event.unread?(event.user)
-        .label new
+        - if event.user == current_user && event.unread?(event.user)
+          .label new

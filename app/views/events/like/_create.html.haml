@@ -15,9 +15,8 @@
         = "#{user_noun} liked #{link_to likeable_object.user.name, user_profile_path(likeable_object.user)}'s #{link_to 'photo', likeable_object}.".html_safe
       %div
         = time_ago_in_words(event.created_at) + ' ago'
-    .timeline-label
-      - if event.user == current_user && event.unread?(event.user)
-        .label new
+        - if event.user == current_user && event.unread?(event.user)
+          .label new
 
 - when 'Activity'
   .timeline-circle{data: {direction: direction}}
@@ -29,6 +28,5 @@
         = "#{user_noun} liked #{link_to likeable_object.title, likeable_object}.".html_safe
       %div
         = time_ago_in_words(event.created_at) + ' ago'
-    .timeline-label
-      - if event.user == current_user && event.unread?(event.user)
-        .label new
+        - if event.user == current_user && event.unread?(event.user)
+          .label new
