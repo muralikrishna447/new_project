@@ -15,3 +15,6 @@
         = "#{user_noun} commented on #{link_to commentable_object.user.name, user_profile_path(commentable_object.user)}'s #{link_to 'photo', commentable_object}.".html_safe
       %div
         = time_ago_in_words(event.created_at) + ' ago'
+    .timeline-label
+      - if event.user == current_user && event.unread?(event.user)
+        .label new

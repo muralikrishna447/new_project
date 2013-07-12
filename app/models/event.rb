@@ -1,6 +1,8 @@
 class Event < ActiveRecord::Base
   attr_accessible :action, :user_id, :trackable
 
+  acts_as_readable :on => :created_at
+
   belongs_to :user
   belongs_to :trackable, polymorphic: true
 
