@@ -21,6 +21,11 @@ class UserProfilesController < ApplicationController
     @can_add_recipes = (can? :create, Activity) && @is_current_user
     @show_recipes_tab = (@total_recipes > 0) || (@can_add_recipes)
     @timeline_events =  @user.events.timeline.find_all { |e| e.trackable.published rescue true }
+
+    @user.events.timeline.unviewed.each do |event|
+      event.viewed = true
+      event.save
+    end
   end
 
   def edit

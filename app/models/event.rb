@@ -6,6 +6,7 @@ class Event < ActiveRecord::Base
 
   default_scope order('created_at DESC')
   scope :timeline, where('action <> ?', 'show')
+  scope :unviewed, where(viewed: false)
 
   def self.scoped_by(trackable_type, action)
     # Returns a set of events by trackable type and action
