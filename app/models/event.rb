@@ -22,10 +22,23 @@ class Event < ActiveRecord::Base
   end
 
   def group_name
+    # This generates the group name for the event to group similar items for the activity stream
     case [trackable_type, action]
     when ['Comment','create']
       [trackable_type, trackable_id, action, trackable.commentable_type, trackable.commentable_id].join('_')
       # "Comment_#{trackable_id}_created_for_#{trackable.commentable_type}_#{trackable.commentable_id}"
+    when ['Comment','received_create']
+      [trackable_type, trackable_id, action, trackable.commentable_type, trackable.commentable_id].join('_')
+    when ['Course','enroll']
+      [trackable_type, trackable_id, action].join('_')
+    when ['Like','create']
+      [trackable_type, action, trackable.likeable_type, trackable.likeable_id].join('_')
+    when ['Like','received_create']
+      [trackable_type, action, trackable.likeable_type, trackable.likeable_id].join('_')
+    when ['Upload', 'create']
+      [trackable_type, trackable_id, action].join('_')
+    else
+      self.inspect
     end
   end
 end

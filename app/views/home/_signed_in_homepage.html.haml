@@ -14,7 +14,7 @@
             / - current_user.events.timeline.group_by{|e| [e.trackable.commentable || e.trackable.likeable || e.trackable, e.trackable_type, e.action] rescue true}.each do |event_group|
             /   = event_group
             /   %hr
-            - current_user.events.timeline.each do |event|
-              .event
-                = event.group_name
-                %hr
+            - current_user.events.timeline.group_by{|e| e.group_name}.each do |event_group|
+              %div= event_group[0]
+              %div= event_group[1]
+              %hr
