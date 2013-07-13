@@ -14,7 +14,16 @@
             / - current_user.events.timeline.group_by{|e| [e.trackable.commentable || e.trackable.likeable || e.trackable, e.trackable_type, e.action] rescue true}.each do |event_group|
             /   = event_group
             /   %hr
-            - current_user.events.timeline.group_by{|e| e.group_name}.each do |event_group|
-              %div= event_group[0]
-              %div= event_group[1]
+            - current_user.events.timeline.group_by{|e| e.group_name}.take(4).each do |group|
+              - group_type = group[0][0]
+              - group_name = group[0][1]
+              - group_events = group[1]
+              - case group_type
+              - when ['Like','received_create']
+                - media_object = group_events.first.trackable.likeable
+                .span3.text-center
+                  %h4= media_object.class.to_s
+                  %p= media_object.title
+                  = image_tag filepicker_gallery_image(media_object.image_id)
+                  %p= "#{media_object.likes_count} people liked this."
               %hr
