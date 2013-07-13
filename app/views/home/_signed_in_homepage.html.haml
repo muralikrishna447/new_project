@@ -16,9 +16,11 @@
                   - media_object = group_events.first.trackable.commentable
                   .stream-item
                     .stream-item-top
-                      %h4 Comment
-                      %p= media_object.title
-                      = image_tag filepicker_gallery_image(media_object.image_id)
+                      .stream-item-title
+                        %h4 Comment
+                      .stream-item-subtitle
+                        = media_object.title
+                      = image_tag filepicker_media_box_image(media_object.image_id)
                     .stream-item-bottom
                       %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
 
@@ -26,9 +28,11 @@
                   - media_object = group_events.first.trackable.commentable
                   .stream-item
                     .stream-item-top
-                      %h4 Comment
-                      %p= media_object.title
-                      = image_tag filepicker_gallery_image(media_object.image_id)
+                      .stream-item-title
+                        %h4 Comment
+                      .stream-item-subtitle
+                        = media_object.title
+                      = image_tag filepicker_media_box_image(media_object.image_id)
                     .stream-item-bottom
                       %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
 
@@ -36,9 +40,11 @@
                   - media_object = group_events.first.trackable
                   .stream-item
                     .stream-item-top
-                      %h4 Course Enrollment
-                      %p= media_object.title
-                      = image_tag filepicker_gallery_image(media_object.featured_image)
+                      .stream-item-title
+                        %h4 Course Enrollment
+                      .stream-item-subtitle
+                        = media_object.title
+                      = image_tag filepicker_media_box_image(media_object.featured_image)
                     .stream-item-bottom
                       %p= "#{group_events.first.user.name} enrolled into the #{media_object.title} Course"
 
@@ -46,9 +52,11 @@
                   - media_object = group_events.first.trackable.likeable
                   .stream-item
                     .stream-item-top
-                      %h4= media_object.class.to_s
-                      %p= media_object.title
-                      = image_tag filepicker_gallery_image(media_object.featured_image)
+                      .stream-item-title
+                        %h4= media_object.class.to_s
+                      .stream-item-subtitle
+                        = media_object.title
+                      = image_tag filepicker_media_box_image(media_object.featured_image)
                     .stream-item-bottom
                       %p= "#{group_events.first.user.name} liked this."
 
@@ -56,9 +64,11 @@
                   - media_object = group_events.first.trackable.likeable
                   .stream-item
                     .stream-item-top
-                      %h4= media_object.class.to_s
-                      %p= media_object.title
-                      = image_tag filepicker_gallery_image(media_object.image_id)
+                      .stream-item-title
+                        %h4= media_object.class.to_s
+                      .stream-item-subtitle
+                        = media_object.title
+                      = image_tag filepicker_media_box_image(media_object.image_id)
                     .stream-item-bottom
                       %p= "#{media_object.likes_count} people liked this."
 
@@ -66,8 +76,10 @@
                   - media_object = group_events.first.trackable
                   .stream-item
                     .stream-item-top
-                      %h4= media_object.class.to_s
-                      %p= media_object.title
-                      = image_tag filepicker_gallery_image(media_object.image_id)
+                      .stream-item-title
+                        %h4= media_object.class.to_s
+                      .stream-item-subtitle
+                        = media_object.title
+                      = image_tag filepicker_media_box_image(media_object.image_id)
                     .stream-item-bottom
                       %p= "#{group_events.first.user.name} uploaded this photo."

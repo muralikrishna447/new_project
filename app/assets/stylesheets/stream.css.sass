@@ -12,8 +12,17 @@
     .stream-item-top
       border: 1px solid gray
       padding: 10px
-      height: 300px
       @include boxsizing
+      .stream-item-title
+        h4
+          margin: 0px
+          overflow: hidden
+          text-overflow: ellipsis
+          white-space: nowrap
+      .stream-item-subtitle
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
     .stream-item-bottom
       height: 200px
       @include boxsizing
