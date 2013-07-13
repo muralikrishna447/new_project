@@ -26,9 +26,31 @@
                   %p= media_object.title
                   = image_tag filepicker_gallery_image(media_object.image_id)
                   %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
+
               - when ['Comment','received_create']
+                - media_object = group_events.first.trackable.commentable
+                .span3.text-center
+                  %h4 Comment
+                  %p= media_object.title
+                  = image_tag filepicker_gallery_image(media_object.image_id)
+                  %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
+
               - when ['Course','enroll']
+                - media_object = group_events.first.trackable
+                .span3.text-center
+                  %h4 Course Enrollment
+                  %p= media_object.title
+                  = image_tag filepicker_gallery_image(media_object.featured_image)
+                  %p= "#{group_events.first.user.name} enrolled into the #{media_object.title} Course"
+
               - when ['Like','create']
+                - media_object = group_events.first.trackable.likeable
+                .span3.text-center
+                  %h4= media_object.class.to_s
+                  %p= media_object.title
+                  = image_tag filepicker_gallery_image(media_object.featured_image)
+                  %p= "#{group_events.first.user.name} liked this."
+
               - when ['Like','received_create']
                 - media_object = group_events.first.trackable.likeable
                 .span3.text-center
@@ -36,4 +58,5 @@
                   %p= media_object.title
                   = image_tag filepicker_gallery_image(media_object.image_id)
                   %p= "#{media_object.likes_count} people liked this."
+
               - when ['Upload', 'create']
