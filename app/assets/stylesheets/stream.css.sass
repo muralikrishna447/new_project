@@ -1,0 +1,19 @@
+@import 'mixins'
+
+.stream
+  width: 100%
+  float: left
+  .stream-item
+    float: left
+    width: 25%
+    padding: 10px
+    text-align: center
+    @include boxsizing
+    .stream-item-top
+      border: 1px solid gray
+      padding: 10px
+      height: 300px
+      @include boxsizing
+    .stream-item-bottom
+      height: 200px
+      @include boxsizing

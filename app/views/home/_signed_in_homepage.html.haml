@@ -6,63 +6,68 @@
       .row
         .container-fluid
           .row-fluid
-            / - current_user.events.timeline.each do |event|
-            /   .event
-            /     = event.trackable_type
-            /     = event.action
-            /     = event.created_at
-            / - current_user.events.timeline.group_by{|e| [e.trackable.commentable || e.trackable.likeable || e.trackable, e.trackable_type, e.action] rescue true}.each do |event_group|
-            /   = event_group
-            /   %hr
-            - current_user.events.timeline.group_by{|e| e.group_name}.each do |group|
-              - group_type = group[0][0]
-              - group_name = group[0][1]
-              - group_events = group[1]
-              - case group_type
-              - when ['Comment','create']
-                - media_object = group_events.first.trackable.commentable
-                .span3.text-center
-                  %h4 Comment
-                  %p= media_object.title
-                  = image_tag filepicker_gallery_image(media_object.image_id)
-                  %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
+            .stream
+              - current_user.events.timeline.group_by{|e| e.group_name}.each do |group|
+                - group_type = group[0][0]
+                - group_name = group[0][1]
+                - group_events = group[1]
+                - case group_type
+                - when ['Comment','create']
+                  - media_object = group_events.first.trackable.commentable
+                  .stream-item
+                    .stream-item-top
+                      %h4 Comment
+                      %p= media_object.title
+                      = image_tag filepicker_gallery_image(media_object.image_id)
+                    .stream-item-bottom
+                      %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
 
-              - when ['Comment','received_create']
-                - media_object = group_events.first.trackable.commentable
-                .span3.text-center
-                  %h4 Comment
-                  %p= media_object.title
-                  = image_tag filepicker_gallery_image(media_object.image_id)
-                  %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
+                - when ['Comment','received_create']
+                  - media_object = group_events.first.trackable.commentable
+                  .stream-item
+                    .stream-item-top
+                      %h4 Comment
+                      %p= media_object.title
+                      = image_tag filepicker_gallery_image(media_object.image_id)
+                    .stream-item-bottom
+                      %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
 
-              - when ['Course','enroll']
-                - media_object = group_events.first.trackable
-                .span3.text-center
-                  %h4 Course Enrollment
-                  %p= media_object.title
-                  = image_tag filepicker_gallery_image(media_object.featured_image)
-                  %p= "#{group_events.first.user.name} enrolled into the #{media_object.title} Course"
+                - when ['Course','enroll']
+                  - media_object = group_events.first.trackable
+                  .stream-item
+                    .stream-item-top
+                      %h4 Course Enrollment
+                      %p= media_object.title
+                      = image_tag filepicker_gallery_image(media_object.featured_image)
+                    .stream-item-bottom
+                      %p= "#{group_events.first.user.name} enrolled into the #{media_object.title} Course"
 
-              - when ['Like','create']
-                - media_object = group_events.first.trackable.likeable
-                .span3.text-center
-                  %h4= media_object.class.to_s
-                  %p= media_object.title
-                  = image_tag filepicker_gallery_image(media_object.featured_image)
-                  %p= "#{group_events.first.user.name} liked this."
+                - when ['Like','create']
+                  - media_object = group_events.first.trackable.likeable
+                  .stream-item
+                    .stream-item-top
+                      %h4= media_object.class.to_s
+                      %p= media_object.title
+                      = image_tag filepicker_gallery_image(media_object.featured_image)
+                    .stream-item-bottom
+                      %p= "#{group_events.first.user.name} liked this."
 
-              - when ['Like','received_create']
-                - media_object = group_events.first.trackable.likeable
-                .span3.text-center
-                  %h4= media_object.class.to_s
-                  %p= media_object.title
-                  = image_tag filepicker_gallery_image(media_object.image_id)
-                  %p= "#{media_object.likes_count} people liked this."
+                - when ['Like','received_create']
+                  - media_object = group_events.first.trackable.likeable
+                  .stream-item
+                    .stream-item-top
+                      %h4= media_object.class.to_s
+                      %p= media_object.title
+                      = image_tag filepicker_gallery_image(media_object.image_id)
+                    .stream-item-bottom
+                      %p= "#{media_object.likes_count} people liked this."
 
-              - when ['Upload', 'create']
-                - media_object = group_events.first.trackable
-                .span3.text-center
-                  %h4= media_object.class.to_s
-                  %p= media_object.title
-                  = image_tag filepicker_gallery_image(media_object.image_id)
-                  %p= "#{group_events.first.user.name} uploaded this photo."
+                - when ['Upload', 'create']
+                  - media_object = group_events.first.trackable
+                  .stream-item
+                    .stream-item-top
+                      %h4= media_object.class.to_s
+                      %p= media_object.title
+                      = image_tag filepicker_gallery_image(media_object.image_id)
+                    .stream-item-bottom
+                      %p= "#{group_events.first.user.name} uploaded this photo."
