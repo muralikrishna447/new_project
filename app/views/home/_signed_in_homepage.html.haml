@@ -60,3 +60,9 @@
                   %p= "#{media_object.likes_count} people liked this."
 
               - when ['Upload', 'create']
+                - media_object = group_events.first.trackable
+                .span3.text-center
+                  %h4= media_object.class.to_s
+                  %p= media_object.title
+                  = image_tag filepicker_gallery_image(media_object.image_id)
+                  %p= "#{group_events.first.user.name} uploaded this photo."
