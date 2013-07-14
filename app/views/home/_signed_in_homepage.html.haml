@@ -86,13 +86,32 @@
               .stream-item-marker
               .stream-item-bottom
                 %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
-                .stream-item-media1
-                  .stream-item-media1-user
-                    = link_to user_profile_path(group_events.first.user) do
-                      = image_tag filepicker_circle_image(group_events.first.user.image_id)
-                  .stream-item-media1-content
-                    = link_to group_events.first.user.name, user_profile_path(group_events.first.user)
-                    = "liked this."
+                - if media_object.likes_count == 1
+                  .stream-item-media1
+                    .stream-item-media1-user
+                      = link_to user_profile_path(group_events.first.user) do
+                        = image_tag filepicker_circle_image(group_events.first.user.image_id)
+                    .stream-item-media1-content
+                      = link_to group_events.first.user.name, user_profile_path(group_events.first.user)
+                      = "liked your #{media_object.class.to_s.downcase}."
+                - else
+                  .stream-item-media2
+                    .stream-item-media2-users
+                      - media_object.likes.reverse.each do |like|
+                        = link_to user_profile_path(like.user) do
+                          = image_tag filepicker_circle_image(like.user.image_id)
+                    .stream-item-media2-content
+                      - case media_object.likes_count
+                      - when 2
+                        = link_to media_object.likes.reverse.first.user.name, user_profile_path(media_object.likes.reverse.first.user)
+                        = "and"
+                        = link_to media_object.likes.reverse.second.user.name, user_profile_path(media_object.likes.reverse.second.user)
+                        = "liked your #{media_object.class.to_s.downcase}."
+                      - else
+                        = link_to media_object.likes.reverse.first.user.name, user_profile_path(media_object.likes.reverse.first.user)
+                        = "and"
+                        = link_to media_object.likes.reverse.second.user.name, user_profile_path(media_object.likes.reverse.second.user)
+                        = "and #{media_object.likes_count - 2} more liked your #{media_object.class.to_s.downcase}."
 
           - when ['Like','received_create']
             - media_object = group_events.first.trackable.likeable
