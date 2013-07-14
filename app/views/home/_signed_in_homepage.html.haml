@@ -24,7 +24,11 @@
                         = image_tag filepicker_media_box_image(media_object.image_id)
                     .stream-item-bottom
                       %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
-                      %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
+                      .stream-item-comment
+                        .stream-item-comment-user
+                          = image_tag filepicker_circle_image(group_events.first.trackable.user.image_id)
+                        .stream-item-comment-content
+                          = "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
 
                 - when ['Comment','received_create']
                   - media_object = group_events.first.trackable.commentable
@@ -38,7 +42,11 @@
                         = image_tag filepicker_media_box_image(media_object.image_id)
                     .stream-item-bottom
                       %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
-                      %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
+                      .stream-item-comment
+                        .stream-item-comment-user
+                          = image_tag filepicker_circle_image(group_events.first.trackable.user.image_id)
+                        .stream-item-comment-content
+                          = "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
 
                 - when ['Course','enroll']
                   - media_object = group_events.first.trackable
