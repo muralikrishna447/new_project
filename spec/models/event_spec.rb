@@ -17,12 +17,26 @@ describe Event do
     Event.scoped_by('Quiz', 'show').count.should == 1
   end
 
-  context 'stream' do
+  context 'group_name' do
 
-    it 'returns a comment stream group item when a user comments' do
+    it 'returns a comment create item when a user comments' do
       @comment = Fabricate :comment, content: 'Comment 1 content', commentable: @upload, user: @user
       @comment_event = Fabricate :event, trackable: @comment, action: 'create', user: @user
       @user.events.stream.keys.first[1].should == "Comment_#{@comment.id}_create_Upload_#{@upload.id}"
     end
+
+    it 'returns a comment received item when a user comments' do
+      @user2 = Fabricate :user, name: 'Tester 2'
+      @comment = Fabricate :comment, content: 'Comment 1 content', commentable: @upload, user: @user2
+      @comment_event = Fabricate :event, trackable: @comment, action: 'received_create', user: @user
+      @user.events.stream.keys.first[1].should == "Comment_#{@comment.id}_received_create_Upload_#{@upload.id}"
+    end
+
+    it 'returns a course enrolled item when a user enrolls into a course' do
+      @course = Fabricate :course, title: 'Test Course', description: 'Course description'
+      @course_event = Fabricate :event, trackable: @course, action: 'enroll', user: @user
+      @user.events.stream.keys.first[1].should == "Course_#{@course.id}_enroll"
+    end
+
   end
 end
