@@ -14,72 +14,84 @@
                 - case group_type
                 - when ['Comment','create']
                   - media_object = group_events.first.trackable.commentable
-                  .stream-item
+                  .stream-item  
                     .stream-item-top
-                      .stream-item-title
-                        %h4 Comment
-                      .stream-item-subtitle
-                        = media_object.title
-                      = image_tag filepicker_media_box_image(media_object.image_id)
+                      = link_to media_object do
+                        .stream-item-title
+                          %h4 Comment
+                        .stream-item-subtitle
+                          = media_object.title
+                        = image_tag filepicker_media_box_image(media_object.image_id)
                     .stream-item-bottom
+                      %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
 
                 - when ['Comment','received_create']
                   - media_object = group_events.first.trackable.commentable
-                  .stream-item
+                  .stream-item  
                     .stream-item-top
-                      .stream-item-title
-                        %h4 Comment
-                      .stream-item-subtitle
-                        = media_object.title
-                      = image_tag filepicker_media_box_image(media_object.image_id)
+                      = link_to media_object do
+                        .stream-item-title
+                          %h4 Comment
+                        .stream-item-subtitle
+                          = media_object.title
+                        = image_tag filepicker_media_box_image(media_object.image_id)
                     .stream-item-bottom
+                      %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       %p= "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
 
                 - when ['Course','enroll']
                   - media_object = group_events.first.trackable
-                  .stream-item
+                  .stream-item  
                     .stream-item-top
-                      .stream-item-title
-                        %h4 Course Enrollment
-                      .stream-item-subtitle
-                        = media_object.title
-                      = image_tag filepicker_media_box_image(media_object.featured_image)
+                      = link_to media_object do
+                        .stream-item-title
+                          %h4 Course Enrollment
+                        .stream-item-subtitle
+                          = media_object.title
+                        = image_tag filepicker_media_box_image(media_object.featured_image)
                     .stream-item-bottom
+                      %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       %p= "#{group_events.first.user.name} enrolled into the #{media_object.title} Course"
 
                 - when ['Like','create']
                   - media_object = group_events.first.trackable.likeable
-                  .stream-item
+                  .stream-item  
                     .stream-item-top
-                      .stream-item-title
-                        %h4= media_object.class.to_s
-                      .stream-item-subtitle
-                        = media_object.title
-                      = image_tag filepicker_media_box_image(media_object.featured_image)
+                      = link_to media_object do
+                        .stream-item-title
+                          %h4= media_object.class.to_s
+                        .stream-item-subtitle
+                          = media_object.title
+                        = image_tag filepicker_media_box_image(media_object.featured_image)
                     .stream-item-bottom
+                      %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       %p= "#{group_events.first.user.name} liked this."
 
                 - when ['Like','received_create']
                   - media_object = group_events.first.trackable.likeable
-                  .stream-item
+                  .stream-item  
                     .stream-item-top
-                      .stream-item-title
-                        %h4= media_object.class.to_s
-                      .stream-item-subtitle
-                        = media_object.title
-                      = image_tag filepicker_media_box_image(media_object.image_id)
+                      = link_to media_object do
+                        .stream-item-title
+                          %h4= media_object.class.to_s
+                        .stream-item-subtitle
+                          = media_object.title
+                        = image_tag filepicker_media_box_image(media_object.image_id)
                     .stream-item-bottom
+                      %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       %p= "#{media_object.likes_count} people liked this."
 
                 - when ['Upload', 'create']
                   - media_object = group_events.first.trackable
-                  .stream-item
+                  .stream-item  
                     .stream-item-top
-                      .stream-item-title
-                        %h4= media_object.class.to_s
-                      .stream-item-subtitle
-                        = media_object.title
-                      = image_tag filepicker_media_box_image(media_object.image_id)
+                      = link_to media_object do
+                        .stream-item-title
+                          %h4= media_object.class.to_s
+                        .stream-item-subtitle
+                          = media_object.title
+                        = image_tag filepicker_media_box_image(media_object.image_id)
                     .stream-item-bottom
+                      %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       %p= "#{group_events.first.user.name} uploaded this photo."
