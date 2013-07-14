@@ -44,5 +44,16 @@ describe Event do
       @user.events.stream.keys.first[1].should == "Like_create_Upload_#{@upload.id}"
     end
 
+    it 'returns a like received item when a user receives a like an object' do
+      @user2 = Fabricate :user, name: 'Tester 2'
+      @like = Fabricate :like, likeable: @upload, user: @user2
+      @like_event = Fabricate :event, trackable: @like, action: 'received_create', user: @user
+      @user.events.stream.keys.first[1].should == "Like_received_create_Upload_#{@upload.id}"
+    end
+
+    it 'returns an upload create item when a user uploads a photo' do
+      @upload_event = Fabricate :event, trackable: @upload, action: 'create', user: @user
+      @user.events.stream.keys.first[1].should == "Upload_#{@upload.id}_create"
+    end
   end
 end
