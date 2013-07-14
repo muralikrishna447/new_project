@@ -97,20 +97,20 @@
                 - else
                   .stream-item-media2
                     .stream-item-media2-users
-                      - media_object.likes.reverse.each do |like|
+                      - media_object.likes.each do |like|
                         = link_to user_profile_path(like.user) do
                           = image_tag filepicker_circle_image(like.user.image_id)
                     .stream-item-media2-content
                       - case media_object.likes_count
                       - when 2
-                        = link_to media_object.likes.reverse.first.user.name, user_profile_path(media_object.likes.reverse.first.user)
+                        = link_to media_object.likes.first.user.name, user_profile_path(media_object.likes.first.user)
                         = "and"
-                        = link_to media_object.likes.reverse.second.user.name, user_profile_path(media_object.likes.reverse.second.user)
+                        = link_to media_object.likes.second.user.name, user_profile_path(media_object.likes.second.user)
                         = "liked your #{media_object.class.to_s.downcase}."
                       - else
-                        = link_to media_object.likes.reverse.first.user.name, user_profile_path(media_object.likes.reverse.first.user)
+                        = link_to media_object.likes.first.user.name, user_profile_path(media_object.likes.first.user)
                         = "and"
-                        = link_to media_object.likes.reverse.second.user.name, user_profile_path(media_object.likes.reverse.second.user)
+                        = link_to media_object.likes.second.user.name, user_profile_path(media_object.likes.second.user)
                         = "and #{media_object.likes_count - 2} more liked your #{media_object.class.to_s.downcase}."
 
           - when ['Like','received_create']
