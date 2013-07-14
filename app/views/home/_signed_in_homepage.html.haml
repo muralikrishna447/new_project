@@ -29,7 +29,8 @@
                           = link_to user_profile_path(group_events.first.trackable.user) do
                             = image_tag filepicker_circle_image(group_events.first.trackable.user.image_id)
                         .stream-item-media1-content
-                          = "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
+                          = link_to group_events.first.trackable.user.name, user_profile_path(group_events.first.trackable.user)
+                          = "said, '#{group_events.first.trackable.content}'"
 
                 - when ['Comment','received_create']
                   - media_object = group_events.first.trackable.commentable
@@ -48,7 +49,8 @@
                           = link_to user_profile_path(group_events.first.trackable.user) do
                             = image_tag filepicker_circle_image(group_events.first.trackable.user.image_id)
                         .stream-item-media1-content
-                          = "#{group_events.first.trackable.user.name} said, '#{group_events.first.trackable.content}'"
+                          = link_to group_events.first.trackable.user.name, user_profile_path(group_events.first.trackable.user)
+                          = "said, '#{group_events.first.trackable.content}'"
 
                 - when ['Course','enroll']
                   - media_object = group_events.first.trackable
@@ -109,4 +111,5 @@
                           = link_to user_profile_path(group_events.first.user) do
                             = image_tag filepicker_circle_image(group_events.first.user.image_id)
                         .stream-item-media1-content
-                          = "#{group_events.first.user.name} uploaded this photo."
+                          = link_to group_events.first.user.name, user_profile_path(group_events.first.user)
+                          = "uploaded this photo."
