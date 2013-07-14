@@ -23,6 +23,7 @@
                         .stream-item-subtitle
                           = media_object.title
                         = image_tag filepicker_media_box_image(media_object.image_id)
+                    .stream-item-marker
                     .stream-item-bottom
                       %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       .stream-item-media1
@@ -43,6 +44,7 @@
                         .stream-item-subtitle
                           = media_object.title
                         = image_tag filepicker_media_box_image(media_object.image_id)
+                    .stream-item-marker
                     .stream-item-bottom
                       %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       .stream-item-media1
@@ -63,6 +65,7 @@
                         .stream-item-subtitle
                           = media_object.title
                         = image_tag filepicker_media_box_image(media_object.featured_image)
+                    .stream-item-marker
                     .stream-item-bottom
                       %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       .stream-item-media1
@@ -83,6 +86,7 @@
                         .stream-item-subtitle
                           = media_object.title
                         = image_tag filepicker_media_box_image(media_object.featured_image)
+                    .stream-item-marker
                     .stream-item-bottom
                       %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       .stream-item-media1
@@ -103,6 +107,7 @@
                         .stream-item-subtitle
                           = media_object.title
                         = image_tag filepicker_media_box_image(media_object.image_id)
+                    .stream-item-marker
                     .stream-item-bottom
                       %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       - if media_object.likes_count == 1
@@ -142,6 +147,7 @@
                         .stream-item-subtitle
                           = media_object.title
                         = image_tag filepicker_media_box_image(media_object.image_id)
+                    .stream-item-marker
                     .stream-item-bottom
                       %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
                       .stream-item-media1

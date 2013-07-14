@@ -14,8 +14,9 @@
     border-bottom: 0px
     @include boxsizing
     position: absolute
-    top: 215px
+    top: 210px
     left: 0px
+    z-index: -1
 
   .stream-item
     float: left
@@ -23,14 +24,17 @@
     padding: 10px
     text-align: center
     @include boxsizing
+    &:hover
+      .stream-item-top
+        border: 1px solid $orange
+      .stream-item-marker
+        background: $orange
     .stream-item-top
       border: 1px solid $light-gray
       padding: 10px
-      margin-bottom: 50px
+      margin-bottom: 15px
       @include boxsizing
       @include transition(all 200ms)
-      &:hover
-        border: 1px solid $orange
       .stream-item-title
         h4
           margin: 0px
@@ -43,8 +47,15 @@
         text-overflow: ellipsis
         white-space: nowrap
         color: black
+    .stream-item-marker
+      height: 16px
+      width: 16px
+      background: $light-gray
+      margin: 0 auto
+      border-radius: 8px
+      @include transition(all 200ms)
     .stream-item-bottom
-      margin-top: 50px
+      margin-top: 15px
       height: 100px
       @include boxsizing
 
