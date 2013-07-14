@@ -43,4 +43,8 @@ class Event < ActiveRecord::Base
     end
     [type,name]
   end
+
+  def self.stream
+    timeline.group_by{|e| e.group_name}
+  end
 end
