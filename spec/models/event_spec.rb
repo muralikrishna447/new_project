@@ -19,10 +19,10 @@ describe Event do
 
   context 'stream' do
 
-    it 'returns a comment stream item when a user comments' do
+    it 'returns a comment stream group item when a user comments' do
       @comment = Fabricate :comment, content: 'Comment 1 content', commentable: @upload, user: @user
       @comment_event = Fabricate :event, trackable: @comment, action: 'create', user: @user
-      @user.events.timeline.stream[0][1].group_name.should == "Comment_#{@comment.id}_create_Upload_#{@upload.id}"
+      @user.events.stream.keys.first[1].should == "Comment_#{@comment.id}_create_Upload_#{@upload.id}"
     end
   end
 end
