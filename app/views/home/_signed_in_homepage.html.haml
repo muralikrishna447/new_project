@@ -64,7 +64,13 @@
                         = image_tag filepicker_media_box_image(media_object.featured_image)
                     .stream-item-bottom
                       %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
-                      %p= "#{group_events.first.user.name} enrolled into the #{media_object.title} Course"
+                      .stream-item-media1
+                        .stream-item-media1-user
+                          = link_to user_profile_path(group_events.first.user) do
+                            = image_tag filepicker_circle_image(group_events.first.user.image_id)
+                        .stream-item-media1-content
+                          = link_to group_events.first.user.name, user_profile_path(group_events.first.user)
+                          = "enrolled into the #{media_object.title} Course"
 
                 - when ['Like','create']
                   - media_object = group_events.first.trackable.likeable
@@ -78,7 +84,13 @@
                         = image_tag filepicker_media_box_image(media_object.featured_image)
                     .stream-item-bottom
                       %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
-                      %p= "#{group_events.first.user.name} liked this."
+                      .stream-item-media1
+                        .stream-item-media1-user
+                          = link_to user_profile_path(group_events.first.user) do
+                            = image_tag filepicker_circle_image(group_events.first.user.image_id)
+                        .stream-item-media1-content
+                          = link_to group_events.first.user.name, user_profile_path(group_events.first.user)
+                          = "liked this."
 
                 - when ['Like','received_create']
                   - media_object = group_events.first.trackable.likeable
