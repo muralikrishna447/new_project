@@ -38,5 +38,11 @@ describe Event do
       @user.events.stream.keys.first[1].should == "Course_#{@course.id}_enroll"
     end
 
+    it 'returns a like create item when a user likes an object' do
+      @like = Fabricate :like, likeable: @upload, user: @user
+      @like_event = Fabricate :event, trackable: @like, action: 'create', user: @user
+      @user.events.stream.keys.first[1].should == "Like_create_Upload_#{@upload.id}"
+    end
+
   end
 end
