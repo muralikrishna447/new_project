@@ -11,6 +11,7 @@ class HomeController < ApplicationController
     @new_visitor = params[:new_visitor] || !@returning_visitor
     # @discussion = Forum.discussions.first
     #@status = Twitter.status_embed
+    @latest = Activity.published.chefsteps_generated.include_in_gallery.last(6)
     @user = User.new
   end
 

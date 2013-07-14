@@ -157,3 +157,10 @@
                         .stream-item-media1-content
                           = link_to group_events.first.user.name, user_profile_path(group_events.first.user)
                           = "uploaded this photo."
+
+.container
+  .row
+    .span12
+      %h2 Latest from ChefSteps
+    .span10
+      = render 'shared/horizontal_slider', items: @latest, direction: 'right'
