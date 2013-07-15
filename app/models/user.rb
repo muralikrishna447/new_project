@@ -70,5 +70,9 @@ class User < ActiveRecord::Base
     end
   end
 
+  def likes_object?(likeable_object)
+    Like.where('user_id = ? AND likeable_type = ? AND likeable_id = ?', self.id, likeable_object.class.to_s, likeable_object.id)
+  end
+
 end
 
