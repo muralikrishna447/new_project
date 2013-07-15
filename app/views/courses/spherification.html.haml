@@ -9,7 +9,9 @@
     mixpanel.track('Course Viewed', {'distinct_id' : "#{current_user.id}", 'course' : "#{course.title}", 'url' : window.location.pathname});
 - else
   :javascript
-    mixpanel.track('Course Viewed', {'course title' : "#{course.title}", 'url' : window.location.pathname});
+    mixpanel.track('Course Viewed', {'course' : "#{course.title}", 'url' : window.location.pathname});
 
 - if course.additional_script
   = course.additional_script.html_safe
+
+#course-title(data-course="#{course.title}")

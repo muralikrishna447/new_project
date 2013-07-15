@@ -50,7 +50,13 @@
                 %li
                   .nav-item-border
                   - if current_user
-                    = link_to 'Profile', user_profile_url(current_user)
+                    - unviewed_events_count = current_user.events.timeline.unviewed.count
+                    = link_to user_profile_url(current_user) do
+                      %span
+                        Profile
+                        - if unviewed_events_count > 0
+                          .label
+                            = "#{unviewed_events_count} New"
                   - else
                     = link_to 'Sign in', sign_in_url
                 - unless external

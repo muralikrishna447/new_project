@@ -1,5 +1,5 @@
 ActiveAdmin.register Upload do
-
+menu parent: 'Engagement'
 scope :approved
 scope :unapproved
 

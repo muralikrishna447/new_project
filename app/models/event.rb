@@ -1,11 +1,12 @@
 class Event < ActiveRecord::Base
-  attr_accessible :action, :user_id, :trackable
+  attr_accessible :action, :user_id, :trackable, :viewed
 
   belongs_to :user
   belongs_to :trackable, polymorphic: true
 
   default_scope order('created_at DESC')
   scope :timeline, where('action <> ?', 'show')
+  scope :unviewed, where(viewed: false)
 
   def self.scoped_by(trackable_type, action)
     # Returns a set of events by trackable type and action

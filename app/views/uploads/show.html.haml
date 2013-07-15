@@ -46,16 +46,14 @@
                 = image_tag filepicker_circle_image(like.user.image_id), class: "img-circle", width: "30"
                 = "You liked this #{time_ago_in_words(like.created_at)} ago."
               - else
-                = link_to user_profile_url(like.user.id) do
+                = link_to user_profile_url(like.user) do
                   = image_tag filepicker_circle_image(like.user.image_id), class: "img-circle", width: "30"
                   = like.user.name
                 liked this
                 = "#{time_ago_in_words(like.created_at)}"
                 ago
     
-
-
-
       %hr
-        - disqus_id = "upload-#{@upload.id}"
-        = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.title, disqus_url: upload_url(@upload)
+        = render 'comments/comments', commentable: @upload
+        / - disqus_id = "upload-#{@upload.id}"
+        / = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.title, disqus_url: upload_url(@upload)

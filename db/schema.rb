@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130705213430) do
+ActiveRecord::Schema.define(:version => 20130712092924) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -149,6 +149,17 @@ ActiveRecord::Schema.define(:version => 20130705213430) do
   add_index "box_sort_images", ["image_order"], :name => "index_box_sort_images_on_image_order"
   add_index "box_sort_images", ["question_id"], :name => "index_box_sort_images_on_question_id"
 
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.text     "content"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
+
   create_table "copies", :force => true do |t|
     t.string   "location"
     t.text     "copy"
@@ -190,8 +201,9 @@ ActiveRecord::Schema.define(:version => 20130705213430) do
     t.string   "action"
     t.integer  "trackable_id"
     t.string   "trackable_type"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.boolean  "viewed",         :default => false
   end
 
   create_table "friendly_id_slugs", :force => true do |t|
@@ -449,6 +461,7 @@ ActiveRecord::Schema.define(:version => 20130705213430) do
     t.integer  "course_id"
     t.boolean  "approved",    :default => false
     t.integer  "likes_count"
+    t.string   "slug"
   end
 
   create_table "user_activities", :force => true do |t|

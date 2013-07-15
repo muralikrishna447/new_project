@@ -11,7 +11,7 @@ class UploadsController < ApplicationController
     if @upload.save
       # redirect_to session[:return_to], notice: 'Your photo has been uploaded!'
       # session[:return_to] = nil
-      redirect_to user_upload_path(@upload.user, @upload), notice: 'Your photo has been uploaded!'
+      redirect_to @upload, notice: 'Your photo has been uploaded!'
       track_event @upload
       mixpanel.track 'Photo Uploaded', { distinct_id: @upload.user.id, course: @upload.course ? @upload.course.title : 'none', activity: @upload.activity ? @upload.activity.title : "Custom Recipe" }
     end
