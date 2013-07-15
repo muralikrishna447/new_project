@@ -20,5 +20,20 @@
  *= require application/_checkboxes
  *= require mobile
  *= require diffview
+ *= require media_objects
+ *= require horizontal_slider
+ *= require courses
+ *= require uploads
+ *= require profiles
  *= require bootstrap-wysihtml5
+ *= require angular-ui
+ *= require alert
+ *= require registration
+ *= require timeline
+ *= require annotations
+ *= require select2
+ *= require billboard
+ *= require gallery
+ *= require voting
+ *= require comments
  */

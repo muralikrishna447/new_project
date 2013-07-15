@@ -1,0 +1,126 @@
+@import 'mixins'
+
+.timeline
+  .timeline-media
+    position: relative
+    width: 100%
+    margin: 10px 0px
+    float: left
+    @include boxsizing
+    .timeline-line
+      position: absolute
+      border-left: 1px solid gray
+      border-right: 1px solid gray
+      margin-left: -1px
+      left: 50%
+      height: 100%
+    .timeline-left
+      width: 50%
+      min-height: 50px
+      float: left
+    .timeline-right
+      width: 50%
+      min-height: 50px
+      float: right
+      padding-top: 30%
+    .timeline-start
+      position: absolute
+      width: 14px
+      height: 14px
+      left: 50%
+      background: $orange
+      margin-left: -7px
+      margin-top: -7px
+      border-radius: 7px
+    .timeline-end
+      position: absolute
+      width: 14px
+      height: 14px
+      left: 50%
+      bottom: 0px
+      background: $orange
+      margin-left: -7px
+      margin-top: -7px
+      border-radius: 7px
+
+// TIMELINE CIRCLE //
+.timeline-circle[data-direction='left']
+  padding-right: 20%
+  position: relative
+  .timeline-circle-img
+    position: relative
+    width: 100%
+    border: 2px solid $orange
+    border-radius: 50%
+    @include boxsizing
+    img
+      width: 100%
+      @include boxsizing
+    &:after
+      content: ''
+      position: absolute
+      width: 20%
+      top: 50%
+      right: -26%
+      border-top: 1px solid gray
+      border-bottom: 1px solid gray
+  .timeline-circle-text
+    width: 100%
+    margin-top: 5%
+    margin-bottom: 10%
+.timeline-circle[data-direction='right']
+  padding-left: 20%
+  position: relative
+  .timeline-circle-img
+    position: relative
+    width: 100%
+    border: 2px solid $orange
+    border-radius: 50%
+    @include boxsizing
+    img
+      width: 100%
+      @include boxsizing
+    &:after
+      content: ''
+      position: absolute
+      width: 20%
+      top: 50%
+      left: -26%
+      border-top: 1px solid gray
+      border-bottom: 1px solid gray
+  .timeline-circle-text
+    width: 100%
+    margin-top: 5%
+    margin-bottom: 10%
+
+// TIMELINE TEXT ONLY //
+.timeline-text-only[data-direction='left']
+  padding-right: 20%
+  padding-top: 10px
+  padding-bottom: 10px
+  .timeline-text-only-text
+    width: 100%
+    position: relative
+    &:after
+      content: ''
+      position: absolute
+      width: 20%
+      top: 30%
+      right: -25%
+      border-top: 1px solid gray
+      border-bottom: 1px solid gray
+.timeline-text-only[data-direction='right']
+  padding-left: 20%
+  padding-top: 10px
+  padding-bottom: 10px
+  .timeline-text-only-text
+    width: 100%
+    position: relative
+    &:after
+      content: ''
+      position: absolute
+      width: 20%
+      top: 30%
+      left: -25%
+      border-top: 1px solid gray
+      border-bottom: 1px solid gray

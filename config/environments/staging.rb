@@ -50,7 +50,7 @@ Delve::Application.configure do
   config.action_controller.asset_host = "https://d2t0ubu4aw4rxn.cloudfront.net"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( print.css styleguide.css global_navigation.css forum_nav.css active_admin.css active_admin/print.css navigation_bootstrap.js active_admin.js  jquery.mjs.nestedSortable.js)
+  config.assets.precompile += %w( print.css styleguide.css global_navigation.css forum_nav.css active_admin.css active_admin/print.css navigation_bootstrap.js active_admin.js  jquery.mjs.nestedSortable.js application_head.js youtube.js)
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
@@ -83,7 +83,7 @@ Delve::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
-    [u, p] == ['delve', 'howtochef22'] || [u, p] == ['guest', 'boiling19']
+    [u, p] == ['delve', 'howtochef22'] || [u, p] == ['guest', 'sphere']
   end
 
   DISQUS_SHORTNAME = "delvestaging"

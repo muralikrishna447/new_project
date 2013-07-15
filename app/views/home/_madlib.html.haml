@@ -1,0 +1,25 @@
+.container-fluid.well-gradient
+  .row-fluid
+    .container
+      .row
+        .span10.offset1
+          = form_for @user, url: registration_path(@user), class: 'form-inline' do |f|
+            .madlib
+              .madlib-item.text-orange
+                Hi ChefSteps,
+              .madlib-item
+                I am
+                %span.input-underlined
+                  = f.text_field :name, {placeholder: 'name', required: true, id: 'madlib-name'}
+                and my email is
+                %span.input-underlined
+                  = f.email_field :email, {placeholder: 'email', required: true, id: 'madlib-email'}
+                &#46;&nbsp;&nbsp;
+              .madlib-item
+                I want to learn how to be a better cook.
+              .madlib-item.hide#madlib-password-wrapper
+                Please set my password to
+                %span.input-underlined.input-append
+                  = f.password_field :password, {placeholder: 'password', required: true, id: 'madlib-password'}
+                  = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'show-madlib-password'
+              = f.submit 'Sign Up Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'

@@ -1,0 +1,69 @@
+@import 'mixins'
+
+.alert-container
+  margin-top: 56px
+
+.alert
+  position: relative
+  margin-top: 15px
+  margin-bottom: 0px
+  padding: 0px
+  width: 100%
+  text-align: center
+  @include boxsizing
+  .alert-message
+    width: 100%
+    padding-bottom: 5px
+    -webkit-animation-duration: .4s
+    -webkit-animation-iteration-count: 1
+    -webkit-animation-timing-function: ease-in-out
+    -webkit-animation-fill-mode: forwards
+    -webkit-animation-name: notification
+    -webkit-animation-delay: 1s
+    opacity: 0
+    transition: opacity 1s linear
+  .close
+    position: absolute
+    top: 0px
+    right: 0px
+    z-index: 1
+
+.alert-success
+  background: none
+  border: none
+  color: black
+  h4
+    color: black
+
+.lblock
+  background: transparent
+  bottom: 0
+  left: 0
+  width: 100%
+  height: 2px
+  margin-bottom: 15px
+  -webkit-animation-name: lblock
+  -webkit-animation-delay: .2s
+  -webkit-animation-duration: .5s
+  -webkit-animation-delay: 1s
+  -webkit-animation-iteration-count: 1
+  -webkit-animation-timing-function: ease-in-out
+  -webkit-animation-fill-mode: forwards
+
+@-webkit-keyframes lblock
+  0%    
+    width: 0
+    background: #df4b23
+  100%
+    width: 100%
+    background: #e25f25
+
+@-webkit-keyframes notification
+  0%    
+    display: none
+  100%
+    opacity: 1
+
+@media (max-width: 979px)
+  .alert-container
+    margin-top: -20px

@@ -1,0 +1,15 @@
+- current_user_likes = current_user && current_user.likes_object?(likeable_object) ? 'true' : 'false'
+- likes_count = likeable_object.likes_count ? likeable_object.likes_count : 0
+%span(ng-controller='LikesController' ng-cloak)
+  %span(ng-model="current_user_likes" ng-init="current_user_likes=#{current_user_likes}")
+  %span(ng-model="likes_count" ng-init="likes_count=#{likes_count}")
+  %span(ng-switch on="current_user_likes")
+    %span(ng-switch-when='true')
+      .btn.btn-primary
+        %i.icon-star
+        {{likes_count}}
+    %span(ng-switch-when='false')
+      .btn.btn-primary(ng-click="likeObject('#{likeable_object.class.to_s}', '#{likeable_object.id}')")
+        %i.icon-star-empty
+        %span(ng-show="likes_count > 0")
+          {{likes_count}}

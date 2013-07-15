@@ -1,0 +1,23 @@
+-##################################################################################
+-# IMPORTANT IF YOU ARE EDITING THIS FILE SEE NOTE IN templates.js.erb !!!!!!
+-##################################################################################
+
+%csEditPair
+  %csEditPairShow
+    %div(ng-switch="" on="equipmentDisplayType(item)")
+      %span(ng-switch-when="product")
+        %a(ng-href='{{item.equipment.product_url}}' target='_blank')
+          {{item.equipment.title || item.equipment}}&nbsp;
+      %span.fake-link(ng-switch-when="fake_link")
+        {{item.equipment.title || item.equipment}}&nbsp;
+      %span(ng-switch-default="")
+        {{item.equipment.title || item.equipment}}&nbsp;
+
+  %csEditPairEdit
+    .btn-toolbar.action-button-group(ng-show="focusedInside()")
+      .btn-group
+        .btn.drag-handle.btn-small.btn-secondary(tooltip="Drag to reorder")
+          %i.icon-sort
+        .btn.remove-button.btn-small.btn-secondary(tooltip="Drag to reorder" tooltip="Remove equipment item" ng-click="removeItem()")
+          %i.icon-remove
+    %input(csselectonfocus="" csinputmonkeyequipment="" type="text" placeholder="New equipment item" typeahead-editable="true" autocomplete="off" class="equipment-typeahead" ng-model="item.equipment" typeahead="e as e.title for e in all_equipment($viewValue)")

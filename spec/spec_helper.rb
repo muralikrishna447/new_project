@@ -32,6 +32,7 @@ Spork.prefork do
 
     config.include Devise::TestHelpers, type: :controller
     config.extend ControllerMacros, type: :controller
+    config.include Capybara::DSL
 
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction
@@ -61,6 +62,7 @@ Spork.prefork do
     # Set debug: true to debug poltergeist
   end
   Capybara.javascript_driver = :poltergeist
+  Capybara.default_wait_time = 5
 
 end
 

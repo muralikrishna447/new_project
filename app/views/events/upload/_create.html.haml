@@ -1,0 +1,12 @@
+- direction = direction || 'left'
+- user_noun = current_user == event.user ? 'You' : event.user.name
+.timeline-circle{data: {direction: direction}}
+  .timeline-circle-img
+    = link_to upload_path(event.trackable) do
+      = image_tag filepicker_circle_image(event.trackable.image_id), class: 'img-circle'
+  .timeline-circle-text.text-center
+    %div= "#{user_noun} uploaded a photo"
+    %div
+      = time_ago_in_words(event.created_at) + ' ago'
+      - if event.user == current_user && !event.viewed
+        .label new

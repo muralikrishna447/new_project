@@ -18,5 +18,5 @@ class ChefSteps.Views.OrderSortImage extends ChefSteps.Views.TemplatedView
   extendTemplateJSON: (json) ->
     json['image_id'] = @image.id
     json['image_caption'] = @image.caption
-    json['image_url'] = @image.url
+    json['image_url'] = @image.url + "/convert?fit=max&w=400&cache=true"
     json

@@ -1,0 +1,17 @@
+%div(ng-cloak modal="shouldShowRestoreAutosaveModal" close="shouldShowRestoreAutosaveModal = false")
+  .modal-header
+    %button.close(type='button' data-dismiss='shouldShowRestoreAutosaveModal = false')
+      x
+  .modal-body(ng-show="! activity.is_new")
+    You had some unsaved changes to this recipe. Do you want to restore
+    them and continue editing or revert to the saved version?
+  .modal-body(ng-show="activity.is_new")
+    You were in the middle of creating a new recipe. Do you want to restore
+    that recipe and continue editing or abandon it and start fresh?
+  .modal-footer
+    %button.btn.btn-success(ng-click="shouldShowRestoreAutosaveModal = false")
+      Continue Editing
+    %button.btn.btn-danger(ng-show="! activity.is_new" ng-click="cancelEditMode() && (shouldShowRestoreAutosaveModal = false)")
+      Revert to Saved
+    %button.btn.btn-danger(ng-show="activity.is_new" ng-click="parsePreloaded() && (shouldShowRestoreAutosaveModal = false)")
+      Start Fresh

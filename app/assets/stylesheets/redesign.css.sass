@@ -1,56 +1,29 @@
-// Mixins
-=boxsizing
-  box-sizing: border-box
-  -moz-box-sizing: border-box
-  -webkit-box-sizing: border-box
-  -o-box-sizing: border-box
+@import 'mixins'
 
-=shadow
-  box-shadow: 0px 0px 5px #888888
-  -moz-box-shadow: 0px 0px 5px #888888
-  -webkit-box-shadow: 0px 0px 5px #888888
-  -o-box-shadow: 0px 0px 5px #888888
+body
+  position: relative
 
-=dark-shadow
-  box-shadow: 0px 0px 5px black
-  -moz-box-box-shadow: 0px 0px 5px black
-  -webkit-box-shadow: 0px 0px 5px black
-  -o-box-shadow: 0px 0px 5px black
-
-=radius($value)
-  border-radius: $value
-  -moz-border-radius: $value
-  -webkit-border-radius: $value
-  -o-box-border-radius: $value
-
-=transition($value)
-  transition: $value
-  -moz-transition: $value
-  -webkit-transition: $value
-  -o-transition: $value
-
-=rotate($rotation)
-  -webkit-transform: rotate(#{$rotation})
-  -o-transform: rotate(#{$rotation})
-  -moz-transform: rotate(#{$rotation})
-
-
-/* Colors */
-$orange: #DB7354
-$dark-orange: #D25029
-$darker-orange: #B84724
-$blue: #006DCC
-$blue-opaque: rgba(0,109,204,.8)
-$red: #DA4f49
-$red-opaque: rgba(218,79,73,.8)
-$light-gray: #ccc
-$offwhite: #F2F2F2
-
-////////////////////////////////////////
+.top-container
+  margin-top: 76px
 
 #main-container
   margin-top: 70px
   margin-bottom: 60px
+
+.container-fluid
+  .container
+    .row
+      margin-left: inherit
+
+.no-margin-padding
+  padding: 0px
+  margin: 0px
+
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+  width: 1170px
+
+.relative
+  position: relative
 
 #slider-container
   background: $offwhite
@@ -58,13 +31,15 @@ $offwhite: #F2F2F2
     margin-left: 0px
 
 .popup-bottom
+  color: white
   position: fixed
   padding: 10px 0px
+  max-height: 200px
   bottom: -200px
   width: 100%
   @include boxsizing
   z-index: 9999
-  background: $offwhite
+  background: $orange
   @include shadow
   .row
     margin-left: 0px
@@ -92,6 +67,17 @@ $offwhite: #F2F2F2
     &:after
       background: $offwhite
 
+.activity-loading-spinner
+  font-size: 150px
+  color: $dark-orange
+  position:  absolute
+  top: 150px
+  left:  50%
+  margin-left: -75px
+
+.activity-top-buttons
+  margin-top: 20px
+
 /* Bootstrap Overrides */
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
   height: inherit
@@ -107,31 +93,55 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   margin: 0px
   li
     a
-      color: white
+      color: #333
       padding: 3px 10px
       &:hover
         background: $orange
+        color: white
   &:after
     content: normal
   &:before
     content: normal
   .dropdown-background
-    background: black
+    background: $offwhite
     position: absolute
     width: 100%
     height: 100%
     top: 0px
     z-index: -1
-    opacity: .6
+    opacity: .9
+
+ul.nav li.dropdown:hover > ul.dropdown-menu
+  display: block
 
 .well
-  border: 1px solid #ccc
+  //border: 1px solid #ccc
+  border: 0px
   border-radius: 0px
   background-color: $offwhite
+  -moz-box-shadow: none
+  -webkit-box-shadow: none
+  -o-box-shadow: none
+  box-shadow: none
   @include boxsizing
 
 .well-opaque
   background-color: rgba(255,255,255,.8)
+
+.well-gradient
+  padding: 20px
+  background: rgb(255,255,255)
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(242,242,242,1) 100%)
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(242,242,242,1)))
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
+  background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
+  background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 )
+
+.well-gray
+  padding: 20px
+  background: $offwhite
 
 .hero-unit
   background: none
@@ -149,27 +159,153 @@ h1, h2, h3, h4
   font-weight: 500
   -webkit-font-smoothing: antialiased
 
+.nav-tabs-gray
+  .nav-tabs
+    border: none
+    li
+      a
+        &:hover
+          background: $orange
+          color: white
+          border-radius: 0px
+    li.active
+      position: relative
+      a
+        border: none
+        &:hover
+          border: none
+      &:after
+        content: ''
+        width: 15px
+        height: 15px
+        background: white
+        position: absolute
+        bottom: -29px
+        left: 40%
+        border: 1px solid $light-gray
+        border-right: 0px
+        border-bottom: 0px
+        -moz-transform: rotate(45deg)
+        -webkit-transform: rotate(45deg)
+        -o-transform: rotate(45deg)
+        transform: rotate(45deg)
+
+  .tab-content
+    border: 1px solid $light-gray
+    @include boxsizing
+    .tab-pane
+      overflow: hidden
+      .tab-pane-header
+        padding: 3% 3% 0
+        h3
+          margin: 0px
+
+h4
+  margin-bottom: 0px
+  line-height: 24px
+
+// Did this to help out Equipment etc sections for now; may want it everywhere but we weren't
+// sure what other h4's might be negatively affected
+#activity-body
+  h4
+    font-weight: 700
+
 .word-wrap
   word-wrap: break-word
 
 .display-inline-fix
   word-spacing : -4px
 
+.indent-1
+  padding-left: 20px
+
+.indent-2
+  padding-left: 40px
+
+.indent-3
+  padding-left: 60px
+
+.flat-form
+  form
+    input, textarea
+      border-radius: 0px
+      font-size: 16px
+      line-height: 20px
+      font-family: 'Raleway', sans-serif
+      padding: 10px
+      box-shadow: none
+      display: block
+    .input-block-level-password
+      width: 100%
+      float: left
+      #user_password
+        width: 80%
+        float: left
+      #user-password-show
+        font-family: 'Raleway', sans-serif
+        width: 19%
+        float: right
+        height: 40px
+        padding: 10px
+        @include boxsizing
+
 ////////////////////////////////////////
 
+/* No Step Activities */
+.no-steps
+  .hero-visual
+    img
+      width: 100%
+  .activity-description
+    height: inherit
+  #activity-description-maximize
+    display: none
+
 /* Media Objects */
+
+.text-orange
+  color: $orange
 
 .black-link
   color: black
   &:hover
     color: black
 
+a:hover
+  text-decoration: none
+
+.madlib, .madlib input
+  font-family: "Raleway", san-serif
+  font-size: 30px
+  font-weight: 500
+  -webkit-font-smoothing: antialiased
+  line-height: 50px
+  input
+    font-size: 24px
+    line-height: 26px
+
+.input-underlined
+  input[type=text], input[type=email], input[type=password]
+    border: none
+    box-shadow: none 
+    border-bottom: 1px dashed gray
+    text-align: center
+    padding: 0px
+  input[type=text], input[type=email], input[type=password]
+    width: 260px
+
 .gallery
   .media-centered
     margin-bottom: 20px
 
+.section-small
+  margin-top: 10px
+
 .section
   margin-top: 20px
+
+.section-large
+  margin-bottom: 5em
 
 .relative
   position: relative
@@ -285,13 +421,8 @@ h1, h2, h3, h4
 
 .video-container
   position: relative
-  padding-bottom: 56.25%
-  height: 0
-  iframe, object, embed
-    position: absolute
-    top: 0
-    left: 0
-    height: 100%
+  width: 100%
+  iframe, object, embed, .edit-pair, .edit-pair-show, .edit-pair-edit
     width: 100%
     border: none
   #image-viewer
@@ -306,7 +437,21 @@ h1, h2, h3, h4
       &:hover
         cursor: pointer
 
+// temporary until steps are moved over to csenforceaspect
+.ordered-step-item
+  .video-container
+    padding-bottom: 56.25%
+    height: 0
+    iframe, object, embed
+      position: absolute
+      top: 0
+      left: 0
+      height: 100%
+      width: 100%
+
+
 .activity-description-wrapper
+  margin-top: 10px
   position: relative
   .activity-description
     overflow: hidden
@@ -321,17 +466,18 @@ h1, h2, h3, h4
       background: -o-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 60%,rgba(255,255,255,1) 100%)
       background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 60%,rgba(255,255,255,1) 100%)
       background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 60%,rgba(255,255,255,1) 100%)
+      pointer-events: none
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 )
 
   .maximize-description
     height: inherit
 
 #activity-description-maximize
-  display: none
   width: 100%
 
 .ordered-steps
   overflow: auto
+  border: 1px solid $offwhite
   -webkit-overflow-scrolling: touch
   //background: -webkit-linear-gradient(white 30%, hsla(0,0%,100%,0)), -webkit-linear-gradient(hsla(0,0%,100%,0), white 70%) bottom, -webkit-radial-gradient(50% 0, rgba(0,0,0,.2), transparent 70%), -webkit-radial-gradient(50% 100%, rgba(0,0,0,.2), transparent 70%) bottom
   //background-repeat: no-repeat
@@ -341,8 +487,7 @@ h1, h2, h3, h4
     width: 100%
     float: left
     padding: 0px
-    border: 1px solid $offwhite
-    border-bottom: 1px solid $light-gray
+    margin-bottom: 1em
     @include boxsizing
     .step-element
       float: left
@@ -381,73 +526,119 @@ h1, h2, h3, h4
     .step-video
       display: none
 
-/* Emphasizes the content being hovered */
-// .ordered-steps:hover > .ordered-step-item
-//   opacity: .3
-//   @include transition(opacity 200ms)
-// .ordered-steps:hover > .ordered-step-item:hover
-//   opacity: 1
-//   @include transition(opacity 200ms)
+.edit-mode
+  .edit-pair-show
+    cursor: pointer
 
-.prependable
-  text-align: right
-  width: 100%
-  padding-right: 2px
+  .ordered-steps
+    overflow: visible
+    border: none
 
-.activity-ingredients-list, .step-ingredients-source
+  .scroll-shadow-wrapper
+    overflow: visible
+
+  .edithover:not(.cseditpairedit)
+    position:  relative !important
+    cursor: pointer
+    &:before
+      content: ""
+      position: absolute
+      top:  -2
+      right:  -4
+      left:  -4
+      bottom:  -2
+      background: rgba(0, 128, 220, .1) !important
+      border-radius:  5px
+
+  .btn
+    &:hover
+      background: rgba(0, 128, 220, .2) !important
+
+
+
+
+
+.ingredients
+
   position: relative
-  table
+  font-size: 14px
+  width: 100%
+
+  div
+    display: inline-block
+
+  .ingredient-table-row
     width: 100%
-  thead
+    line-height: 20px
+  .ingredient-title
+    width: 61%
+  .quantity-group
+    width: 29%
+  .unit
+    width: 4%
+
+  .ingredient-table-head
+    width: 100%
     line-height: 30px
     font-size: 17.5px
-    border-bottom: 1px solid black
-  th#ingredient
+    margin-bottom: 6px
+    display: block
+    font-weight: bold
+    .quantity-group
+      width: 32%
+    .unit
+      width: 0%
+
+  .ingredient-table-body
+    width: 100%
+    display: block
+
+  #ingredient
     text-align: left
-  th#quantity
+
+  #quantity
     text-align: right
+    margin-left: 22px
     .recipetip
       margin-left: -11px
-    .icon-question-sign
-      position: absolute
-      margin-left: 15px
-      margin-top: 5px
-  td
-    font-size: 14px
-    div
-      display: inline-block
-      form
-        margin: 0px
-        input
-          width: 60px
-  td.quantity-group
+
+  form
+    margin: 0px
+    display: inline
+    input
+      width: 60px
+      text-align: right
+
+  .quantity-group
     text-align: right
-    padding-right: 5px
-  .ingredient-item
-    height: 20px
-    @include transition(opacity 500ms)
-    .ingredient-title, .prependable
-      font-weight: 400
+    padding-right: 0px
+
+  .ingredient-table-body
+    .ingredient-table-row
+      width: 100%
+      display: block
       @include transition(opacity 500ms)
-    .quantity-group, .unit
-      @include transition(opacity 500ms)
-  .ingredient-highlighted
-    .ingredient-title, .prependable
-      font-weight: 700
-      opacity: 1
-    .quantity-group, .unit
-      opacity: .2
-  .ingredient-unhighlighted
-    opacity: .2
-    font-weight: 40
+      .ingredient-title
+        font-weight: 400
+        @include transition(opacity 500ms)
+      .quantity-group, .unit
+        @include transition(opacity 500ms)
 
 .step-ingredients-source
-  display: none
+  //display: none
+  thead
+    display: none
+
+.no-bullet
+  margin-left: 0px
+  li
+    list-style-type: none
 
 #main-content
   position: relative
-  overflow: hidden
 
+.scroll-shadow-wrapper
+  overflow: hidden
 
 .alwayshidden
   display: none !important
@@ -518,18 +709,17 @@ h1, h2, h3, h4
 .swipe-indicators
   margin: 10px auto
 .swipe-indicator-btn
-  background: white
-  height: 20px
-  width: 20px
+  background: $light-gray
+  height: 15px
+  width: 15px
   display: inline-block
   text-align: center
   margin: 0 auto
   border-radius: 10px
-  border: 1px solid $orange
-  @include boxsizing
+  cursor: pointer
+
 .indicator-active
-  border: 2px solid $dark_orange
-  background: white
+  background: $dark-orange
 
 .swipe-wrap
   overflow: hidden
@@ -541,7 +731,7 @@ h1, h2, h3, h4
   position: relative
 
 #hero-indicators
-  width: 68px
+  width: 95px
 
 .hero-swiper-next
   bottom: 0
@@ -606,7 +796,6 @@ h1, h2, h3, h4
 
 
 #hero-container
-  margin-top: -23px
   padding: 0px
   //max-height: 586px
   z-index: 999
@@ -673,6 +862,11 @@ h1, h2, h3, h4
       text-decoration: none
 
 /* Labels */
+.label
+  background: $orange
+  color: white
+  @include raleway
+  font-weight: bold
 
 .label-large
   font-size: 20px
@@ -688,8 +882,61 @@ h1, h2, h3, h4
 
 /* Buttons */
 
+.btn
+  @include raleway
+  i
+    line-height: 20px
+
+.btn-group > .btn:first-child
+  border-radius: 0px    
+
 .btn-primary
   background: $orange
+  border: 0px
+  border-bottom: 1px $dark-orange solid
+  border-radius: 0px
+  position: relative
+  @include boxsizing
+  @include transition(all .25s)
+  &:hover
+    background: $darker_orange
+    @include transition(all .25s)
+    border-bottom: 1px $orange solid
+  &:disabled
+    background: #696969
+    color:  #d3d3d3
+  &:focus
+    background: $orange
+    outline: none
+
+.btn-secondary
+  background: $offwhite
+  border: 0px
+  border-bottom: 1px #ccc solid
+  border-radius: 0px
+  @include transition(all 100ms)
+  &:hover
+    background: gray
+    color: white
+    text-shadow: none
+    @include transition(all 100ms)
+
+.btn-secondary[disabled]
+  -webkit-box-shadow: 0 3px 0px -1px #999
+  -moz-box-shadow: 0 3px 0px -1px #999
+  box-shadow: 0 3px 0px -1px #999999
+
+.btn-gray
+  background: $offwhite
+  border: none
+  border-radius: 0px
+  @include transition(all 100ms)
+  &:hover
+    background: gray
+    @include transition(all 100ms)
+
+.btn-basic
+  background: $offwhite
   border: 0px
   border-radius: 0px
   @include boxsizing
@@ -698,18 +945,9 @@ h1, h2, h3, h4
     background: $darker_orange
     @include transition(all 100ms)
 
-.btn-gray
-  background: $light-gray
-  border: none
-  border-radius: 0px
-  @include transition(all 100ms)
-  &:hover
-    background: gray
-    @include transition(all 100ms)
-
 .btn-play-image
   position: relative
-  background: image-url('play-button.png') no-repeat
+  background: image-url('https://www.filepicker.io/api/file/IOjE35SKSmCjut9x1FBg?cache=true') no-repeat
   width: 34px
   height: 34px
   margin: 33px 10px 20px 33px
@@ -750,15 +988,16 @@ h1, h2, h3, h4
     top: 50%
 
 .btn-circle
-  height: 20px
-  width: 20px
-  padding: 10px
+  height: 40px
+  width: 40px
+  padding: 10px 15px
   margin: 5px 2px
   border-radius: 50%
-  background: $orange
+  border: none
   background-image: none
+  background: $orange
   color: white
-  font-size: 20px
+  font-size: 17px
   text-shadow: none
   text-align: center
   transition: background 200ms
@@ -766,6 +1005,7 @@ h1, h2, h3, h4
   -moz-transition: background 200ms
   -o-transition: background 200ms
   display: inline-block
+  @include boxsizing
   i
     line-height: 22px
   &:hover
@@ -774,8 +1014,15 @@ h1, h2, h3, h4
     color: white
     cursor: pointer
 
+.btn-social
+  width: 40px
+  margin: 0 2px
+
 /* Quiz button */
 .btn-next, .btn-prev
+  position: absolute
+  bottom: 0px
+  right: 0px
   height: 67px
   width: 32px
   padding: 0
@@ -785,8 +1032,10 @@ h1, h2, h3, h4
     line-height: 67px
     color: white
 
+
 /* Navbar */
 .navbar-fixed-top
+
   .navbar-inner
     box-shadow: none
     background-image: none
@@ -813,11 +1062,11 @@ h1, h2, h3, h4
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#00ffffff',GradientType=0 )
   .nav > li > a
     text-shadow: none
-    color: black
+    color: #333
     line-height: 34px
     font-size: 16px
     font-weight: 200
-    @include transition(background 300ms)
+    @include transition(background .25s)
     &:hover
       background: $orange
       color: white
@@ -867,6 +1116,9 @@ h1, h2, h3, h4
 /* Scroll Shadow */
 .scroll-shadow-wrapper
   position: relative
+
+.scroll-shadow-content
+  width: 100%
 
 .scroll-shadow-horizontal
   height: 180px
@@ -999,33 +1251,33 @@ h1, h2, h3, h4
 
 // WYSIWYG EDITING
 
-#edit-group
-  margin-left: 20px
-  margin-top: 11px
-  display: none
+.edit-pair, .edit-pair-show, .edit-pair-edit
+  width: 100%
 
+.edit-pair-transclude
+  width: 100%
+
+.edit-hint
+  position: absolute
+  bottom: 10px
+  left:  10px
+  z-index: 1000
+
+.video-container
+  .csfilepicker
+    .btn-toolbar
+      margin-top: 0px
+
+.hero-visual
+  position: relative
+
+#edit-group
   i
     font-size: 18px
   .btn
     height: 28px
 
-.show-when-editing
-  display: none
-
-.edit-target
-  @include boxsizing
-  position: absolute
-  top: -1%
-  left: -1%
-  width:  102%
-  height:  102%
-  font-size:  15px
-  border: 2px solid #9ecaed
-  border-radius: 7px
-  z-index: 999
-  background-color: rgba(158, 202, 237, 0.2)
-
-*[data-wysiwyg]
+#activity-body
   form, textarea
     width: 100%
     max-width: 100%
@@ -1035,15 +1287,106 @@ h1, h2, h3, h4
     margin-right: 8px
     vertical-align: top
 
-// Making this match h1. I tried @including h1 but that was a no go.
-*[data-wysiwyg=title]
-  #activity_title
-    font-size: 38.5px
-    line-height: 40px
-    width: 100%
 
-#edit-mode.active
-  background: #0088cc
+csequipmenteditpair, csingredienteditpair
+  position: relative
+
+  .action-button-group
+    position: absolute
+    left: -56px
+    top:  0px
+    font-size:  18px
+    margin-top: -2px
+    .btn
+      padding: 4px 6px
+      border-shadow: none
+      -webkit-box-shadow: none
+
+      &:last
+        padding-right: 12px
+
+    i
+      width: auto
+
+  .edit-pair-edit
+    input, select
+      display: inline-block
+      @include boxsizing
+      padding: 0px 2px 0px 2px
+      margin-left: -2px
+      margin-top: 0px
+      margin-bottom: 0px
+      width: 100%
+      max-width: 280px
+
+    select
+      height: 22px
+
+csequipmenteditpair
+  .action-button-group
+    top: 2px
+
+csingredienteditpair
+
+  .edit-pair-edit
+
+    .ingredient-title
+      width: 80%
+      select
+        width: 55%
+      input
+        width: 44%
+
+    .quantity-group
+      width: 10%
+
+    .unit
+      cursor: pointer
+      width: 7%
+      position: relative
+      overflow:  visible
+      select
+        margin: 0
+        width: 100%
+        border:  none
+        opacity: 0
+      .select-readout
+        position: absolute
+        width:  200%
+        height:  100%
+        z-index: 0
+
+.meta-edit
+  border: 1px solid $offwhite
+  padding:  10px
+  margin-bottom: 15px
+
+.disabled-section
+  color: $light-gray
+
+
+// Making this match h1. I tried @including h1 but that was a no go.
+// Not sure how I feel about this approach of basic the style on the model. Semantic or gross?
+*[data-ng-model='activity.title']
+  font-size: 38.5px
+  line-height: 40px
+  width: 100%
+  font-family: 'Raleway', sans-serif
+  font-weight: bold
+  -webkit-font-smoothing: antialiased
+
+.step-title-input
+  font-size: 18px !important
+  line-height: 25px
+  width: 100%
+  font-family: 'Raleway', sans-serif
+  font-weight: bold
+  -webkit-font-smoothing: antialiased
+
+
+
+.fake-link, .fakefocus
+  color: #0088cc
 
 
 .inline-group
@@ -1060,30 +1403,126 @@ h1, h2, h3, h4
   color: red
   text-transform: uppercase
 
-// Note this is duplicated over in admin CSS - should remove from there
-.filepicker-group
-  margin-bottom: 5px
+.add-section
+  margin-top: 10px
+  margin-bottom: 10px
 
-  .filepicker-preview-group
+.add-item, .add-from-master, .done
+  margin-top: -5px
+  height:  20px
 
-    .remove-filepicker-image
-      padding-left: 2px
-      display: inline-block
-      vertical-align: bottom
-      cursor: pointer
 
-  .filepicker-preview
-    margin-bottom: 5px
-    max-width: 200px
+.step-sidebar-group
+  position: absolute
+  left:  -16px
+  height:  100%
 
-  .filepicker-subgroup
-    .btn-small
-      box-sizing: border-box
-      padding: 3px 8px
-      border: 2px outset buttonface
-      margin-top: 2px
-      display: inline-block
-      cursor: pointer
+  button
+    width: 24px
+    margin-left: 0px !important
+    margin-top: 4px
+    line-height: 16px
+    font-size: 14px
+    padding: 2px 6px
+  .btn-group-vertical
+    margin-left: 0px !important
+
+.step-edit-buttons
+  position: absolute
+  top: 45px
+  width: 30px
+
+.step-add-button-group
+  position: absolute
+  top: -10px
+  .step-add-button-line
+    top: 12px
+
+.step-add-button-end-group
+  position: absolute
+  bottom: -10px
+  .step-add-button-line
+    bottom: 8px
+
+
+.step-add-button-line
+  position: absolute
+  border-top:  1px dotted #d3d3d3
+  width: 600px
+  z-index: -1
+
+.select-ingredient-checkbox
+  margin-top: -2px !important
+
+.unselected-ingredient
+  color: #a9a9a9
+
+.csfilepicker
+  .btn-toolbar
+    margin-top: 0px
+
+  .drop-target
+    width: 60px
+
+    .upload-progress
+      width: 60px
+      position:  absolute
+      left:  0
+      right:  0
+      bottom:  -22px
+
+    .progress
+      width: 100%
+      height:  10px
+
+.no-bold
+  font-weight: normal
+
+.edit-meta-button
+  margin-bottom: 8px
+
+// See https://github.com/angular/angular.js/commit/11f712bc - these class
+// names have to change when we go to angular >= 1.1.5
+.fade-show-setup, .fade-hide-setup
+  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+  -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+  -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+
+
+.fade-hide-setup
+  opacity: 1
+  &.fade-hide-start
+    opacity: 0
+
+.fade-show-setup
+  opacity: 0
+  &.fade-show-start
+    opacity: 1
+
+.custom-enter-setup, .custom-leave-setup, .custom-move-setup
+  -webkit-transition: 0.5s linear all
+  -moz-transition: 0.5s linear all
+  -o-transition: 0.5s linear all
+  transition: 0.5s linear all
+  position: relative
+
+.custom-enter-setup
+  opacity: 0
+  &.custom-enter-start
+    left: 0
+    opacity: 1
+
+.custom-leave-setup
+  left: 0
+  opacity: 1
+  &.custom-leave-start
+    opacity: 0
+
+.custom-move-setup
+  opacity: 0
+  &.custom-move-start
+    opacity: 1
 
 // BELOW ARE RESPONSIVE STYLES //
 
@@ -1104,6 +1543,9 @@ h1, h2, h3, h4
     height: 100px
 
 @media (max-width: 1200px)
+  .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+    width: 940px
+
   .media-centered-medium
     height: 168px
 
@@ -1121,8 +1563,12 @@ h1, h2, h3, h4
   .activity-description
     height: 140px
 
+
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
+  .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+    width: 724px
+
   #hero-container
     #hero-carousel
       .media-heading
@@ -1146,8 +1592,27 @@ h1, h2, h3, h4
   .activity-description
     height: 160px
 
+  .navbar .nav > li > .dropdown-menu li a 
+    color: #333
+    &:hover
+      color: #fff
+
+  .top-container
+    margin-top: 0px
+
+  .container-fluid
+    margin-left: -20px
+    margin-right: -20px
+
+  .no-margin-padding
+    padding: 0px
+    margin: 0px
+
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
+  .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
+    width: auto
+
   #hero-container
     width: 100%
     left: 0px
@@ -1204,6 +1669,22 @@ h1, h2, h3, h4
 
   .nav-item-border
     display: none
+
+  .navbar .nav > li > .dropdown-menu li a 
+    color: #333
+    &:hover
+      color: #fff
+
+  .top-container
+    margin-top: 0px
+
+  .container-fluid
+    margin-left: -20px
+    margin-right: -20px
+
+  .no-margin-padding
+    padding: 0px
+    margin: 0px
  
 /* Landscape phones and down */
 @media (max-width: 480px)
@@ -1232,3 +1713,46 @@ h1, h2, h3, h4
         width: 15%
       .step-content
         width: 85%
+
+  .navbar .nav > li > .dropdown-menu li a 
+    color: white
+    font-weight: normal
+    &:hover
+      color: #fff
+
+  .madlib, .madlib input
+    font-size: 20px
+    line-height: 30px
+    input[type='text'], input[type='email']
+      width: 80%
+      font-size: 20px
+
+  .top-container
+    margin-top: 0px
+
+  .popup-bottom
+    h3
+      font-size: 16px
+
+  .static-height
+    height: 10px
+
+@media (max-width: 320px)
+  .popup-bottom
+    font-size: 12px
+    h3
+      font-size: 14px
+      line-height: 16px
+    .input-signup-email
+      width: 50%
+
+/* Global on-select highlighting */
+
+::-moz-selection 
+  background-color: $orange
+  color: #ffffff
+
+::selection 
+  background-color: $orange
+  color: #ffffff
+

@@ -1,7 +1,6 @@
 / Defaults to size medium
 - cache [media, size] do
   %div{class: "media-centered media-centered-#{size}"}
-    .media-centered-overlay
     - if media.featured_image
       -if size == 'small'
         = image_tag filepicker_slider_image(media.featured_image), alt: media.title, title: media.title

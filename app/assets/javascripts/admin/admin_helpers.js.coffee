@@ -204,6 +204,9 @@ updateDiff = ->
   )
 
 
+# Delay a little so angular can load. Tacky.
+scheduleDiff = ->
+  setTimeout (-> updateDiff()), 1000
 
 
 $ ->
@@ -223,15 +226,18 @@ $ ->
     cw = $(this).get(0).contentWindow
     cw.expandSteps()
     #$(this).height(cw.document.body.scrollHeight)
-    updateDiff()
+    scheduleDiff()
     $('#loading-left').fadeOut()
 
   $('#preview-right').load ->
     cw = $(this).get(0).contentWindow
     cw.expandSteps()
     #$(this).height(cw.document.body.scrollHeight)
-    updateDiff()
+    scheduleDiff()
     $('#loading-right').fadeOut()
+
+$ ->
+  $('#quiz_activity_id').select2({width: "300px"})
 
 
 

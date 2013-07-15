@@ -1,4 +1,3 @@
-//= require jquery
 //= require jquery-ui
 //= require mobile_detect
 //= require twitter/bootstrap
@@ -10,7 +9,13 @@
 //= require step_ingredients
 //= require community
 //= require scroll_shadow
+//= require horizontal_slider
+//= require courses
+//= require uploads
+//= require assignments
 //= require bootstrap-wysihtml5
 //= require bootstrap-wysihtml5/locales
 //= require rails.validations
-//= require rails.validations.formtastic
+//= require user_profiles
+//= require iframe_height
+//= require annotations

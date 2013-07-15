@@ -141,6 +141,7 @@ $offwhite: #F2F2F2
 .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle
   background: $dark_orange
   color: white
+  @include transition(background .25s)
 
 .navbar .nav > li > .dropdown-menu
   // min-width: 400px
@@ -164,7 +165,7 @@ $offwhite: #F2F2F2
     height: 100%
     top: 0px
     z-index: -1
-    opacity: .6
+    opacity: .1
 
 h1, h2, h3, h4
   font-family: 'Raleway', sans-serif

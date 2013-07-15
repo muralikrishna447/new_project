@@ -1,3 +1,4 @@
+= render 'layouts/filepicker'
 :ruby
 
 = semantic_form_for [:admin, @course] do |f|
@@ -6,6 +7,20 @@
     = f.input :title
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :short_description, label: "Short description, for SERPs"
+    = f.input :additional_script, label: "Add any additional scripts"
+    %li
+      .filepicker-group
+        = f.label :image_id, 'Image', class: 'label'
+        = f.hidden_field :image_id, class: 'filepicker-real-file'
+        .filepicker-preview-group
+          = image_tag '/assets/missing.png', class: "filepicker-preview"
+          .btn-small.remove-filepicker-image
+            %i.icon-remove
+        .filepicker-subgroup
+          .filepicker-pick-button.btn-small.btn-warning
+            Pick file
+          .filepicker-drop-pane.btn-small.btn-warning
+            Or drop file here
 
   = section("Activities", f) do
     = hidden_field_tag "activity_hierarchy"
@@ -42,7 +57,9 @@
       =render layout: 'shared/nested_activities', :locals => {:for_form => true, course: @course} do |incl|
         %span.disclose
           %span
-        %span.activity-title= raw incl.activity.title.strip
+        / %span.activity-title= raw incl.activity.title.strip
+        %span.activity-title= incl.title.blank? ? incl.activity.title.strip : incl.title
+        = link_to 'edit syllabus title', edit_admin_inclusion_path(incl)
         = remove_button 'li'
       -if @course.inclusions.count == 0
         %ol#activity_list.sortable.allow-nested

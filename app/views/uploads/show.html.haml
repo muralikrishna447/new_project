@@ -1,0 +1,59 @@
+.container
+  .row
+    .span12
+      %h2= @upload.title
+  .row
+    .span6
+      = image_tag filepicker_hero_image(@upload.image_id)
+      .lead.section
+        = @upload.notes
+        - if @upload.course && @upload.course.title == 'Spherification'
+          .row
+            .span3.offset1.section.text-center{:style => "padding: 20px; border: 1px solid  #e25f25;"}
+              = link_to course_path('spherification', anchor: 'enthusiast') do
+                = image_tag 'https://www.filepicker.io/api/file/AE4undUwRLqq9l69DVIV'
+    .span6
+      .lead
+        - if @upload.course
+          = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this while completing the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
+        - else
+          = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this #{link_to @upload.activity.title, @upload.activity} photo on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
+      %p= "#{time_ago_in_words(@upload.created_at)} ago."
+      = render 'shared/like_button', likeable_object: @upload
+      = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
+        %i.icon-twitter
+        %span Twitter
+      = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
+      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'btn btn-primary' do
+        %i.icon-google-plus
+        %span Google
+      = link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{filepicker_hero_image(@upload.image_id)}", onclick: "javascript:window.open(this.href,
+        '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary' do
+        %i.icon-pinterest
+        %span Pinterest
+
+      .section
+        - if @upload.likes.any?
+          %h4 
+            = @upload.likes_count
+            - if @upload.likes_count > 1
+              people like this:
+            - else
+              person likes this:
+          - @upload.likes.each do |like|
+            .section
+              - if current_user == like.user
+                = image_tag filepicker_circle_image(like.user.image_id), class: "img-circle", width: "30"
+                = "You liked this #{time_ago_in_words(like.created_at)} ago."
+              - else
+                = link_to user_profile_url(like.user) do
+                  = image_tag filepicker_circle_image(like.user.image_id), class: "img-circle", width: "30"
+                  = like.user.name
+                liked this
+                = "#{time_ago_in_words(like.created_at)}"
+                ago
+    
+      %hr
+        = render 'comments/comments', commentable: @upload
+        / - disqus_id = "upload-#{@upload.id}"
+        / = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.title, disqus_url: upload_url(@upload)

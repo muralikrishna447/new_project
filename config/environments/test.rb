@@ -39,5 +39,8 @@ Delve::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
   DISQUS_SHORTNAME = "chefstepstesting"
+  ENV["REDISTOGO_URL"] = 'redis://localhost:6379'
+
+  config.filepicker_rails.api_key = "ANAsscmHGSKqZCHObvuK6z"
 end
 

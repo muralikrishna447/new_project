@@ -5,6 +5,13 @@
 :ruby
   field_name_prefix = "activity[steps][]"
 
+.well
+  %h1(style="color: red;") Wait Just A Second There, Buddy
+  %h3
+    You can still create or edit the recipe here, but if at all possible please use
+    =link_to "front-end edit mode", @activity.id ? activity_path(@activity) : '/activities/new'
+    instead. Grab Michael if you need any assistance or find bugs.
+
 / The Update Warning class will prompt the user to save the recipe before leaving the page
 .update-warning
 = semantic_form_for [:admin, @activity], validate: true do |f|
@@ -29,6 +36,7 @@
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum
     = f.input :yield
+    = f.input :child_activities, as: :select, collection: Activity.published.recipes, multiple: true
 
   = section("Ingredients", f) do
     .ingredient-table-div

@@ -1,7 +1,7 @@
-csUnits = "grams"
+window.csUnits = "grams"
 csTempUnits = "c"
 csLengthUnits = "cm"
-csUnitsCookieName = "chefsteps_units"
+window.csUnitsCookieName = "chefsteps_units"
 
 
 # NOTE WELL there are some places where we are using children(), not find() here very on purpose, because it is
@@ -10,69 +10,32 @@ csUnitsCookieName = "chefsteps_units"
 
 
 unless paramScaling?
-  csScaling = 1.0
+  window.csScaling = 1.0
 else
-  csScaling = paramScaling
+  window.csScaling = paramScaling
 
 # Set up bootstrap tooltips (should be moved to a more general place)
 $ ->
   $('.recipetip').tooltip({trigger: "hover"}).click ->
     return false
 
-# On page load, store off the initial amounts of each ingredient and
-# setup click handlers.
-prepareForScaling = ->
-  # Store off base value into an attribute for use in future calcs
-  # Weights are normally in grams; if we see kg just convert it - will redisplay as kg if above 5 later.
-  $('.main-qty').each (i, element) =>
-    if ! $(element).data("origValue")
-
-      origValue = Number($(element).text())
-      console.log("Got one: " + origValue)
-      cell = $(element).parent()
-      row = cell.parent()
-      unit_cell = row.children('.unit')
-
-      if unit_cell.text() == "kg"
-        origValue *= 1000
-        unit_cell.text("g")
-      if unit_cell.text() == "a/n" || unit_cell.text() == ""
-        $(element).parent().children().hide()
-
-      $(element).data("origValue", origValue)
-
-  $('.yield').each (i, element) =>
-    if ! $(element).data("origValue")
-      origValue = Number($(element).text())
-      $(element).data("origValue", origValue)
-
-  # Update to preferred units stored in the cookie
-  # This cookie code works but we decided that we want to encourage metric, so not using now,
-  # forces user to click to ounces every time if they are that stubborn.
-  # csUnits = $.cookie csUnitsCookieName
-  updateUnits(false)
-
-window.prepareForScaling = prepareForScaling
-
+# Delay here for angular to render; this can go away once scaling is all angular
 $ ->
-  prepareForScaling()
+  setTimeout ( ->
+    updateUnits(false)
+  ), 1000
+
 
 # Setup click handler for units toggle
 $ ->
   $(".change_units").click ->
-    csUnits = if csUnits == "ounces" then "grams" else "ounces"
-    # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
+    window.csUnits = if window.csUnits == "ounces" then "grams" else "ounces"
+    # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
     updateUnits(true)
-    step_id = $('#full-ingredients-list').data('target')
-    if step_id.length > 0
-      step = $('#' + step_id)
-      setTimeout (->
-        window.showStepIngredients(step)
-      ), 1000
 
-# make all the ingredient amounts editable
-$ ->
-  $(".quantity-group .main-qty, .quantity-group .lbs-qty").editable ((value, settings) ->
+
+window.makeEditable = (elements) ->
+  elements.not(["data-marked-editable"]).editable ((value, settings) ->
     item = $(this)
     old_val = Number(@revert)
     new_val = Number(value)
@@ -95,11 +58,11 @@ $ ->
           new_total = (old_lbs * 16) + new_val
 
         old_total = (old_lbs * 16) + old_ozs
-        csScaling = csScaling * new_total / old_total
+        window.csScaling = window.csScaling * new_total / old_total
 
       else
         # Any other unit (including ounces with no pounds)
-        csScaling = csScaling * new_val / old_val
+        window.csScaling = window.csScaling * new_val / old_val
     else
       value = old_val
 
@@ -109,12 +72,13 @@ $ ->
     width: "10px"
     onblur: "cancel"
     cssclass: 'quantity-edit'
-    #onedit: (settings, inp) ->
-      #settings.width = $(inp).width() + 20
-      #true
     callback: ->
       updateUnits(false)
   }
+  # Editable freaks if called twice on same element
+  elements.attr("data-marked-editable", "true")
+  updateUnits(false)
+
 
 # Make the unit labels edit the units
 $ ->
@@ -123,17 +87,22 @@ $ ->
   $('.unit').click ->
     $(this).parent().children('.main-qty').click()
 
+window.roundSensible = (qty) ->
+  if qty
+    # Round to a sensible number of digits after the decimal
+    decDigits = 2
+    decDigits = 1 if qty > 1
+    decDigits = 0 if qty > 50
+    mult = Math.pow(10, decDigits)
+    qty = Math.round(qty * mult) / mult
+  qty
+
 # Replace the ingredient quantities and units for a row
 setRow = (row, qtyLbs, qty, units) ->
   cell = row.children('.quantity-group').find('.main-qty')
   row.children('.unit').text(units)
 
-  # Round to a sensible number of digits after the decimal
-  decDigits = 2
-  decDigits = 1 if qty > 1
-  decDigits = 0 if qty > 50
-  mult = Math.pow(10, decDigits)
-  qty = Math.round(qty * mult) / mult
+  qty = window.roundSensible(qty)
 
   # Special formatting for pounds. Tried having an extra set of columns
   # for pounds but that creates spacing problems.
@@ -148,10 +117,10 @@ setRow = (row, qtyLbs, qty, units) ->
 
 # Compute the new ingredient quantities and units for a row
 updateOneRowUnits = ->
-  if ! $(this).children('.quantity-group').find('.main-qty').data("origValue")
+  if ! $(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")
     return
 
-  origValue = Number($(this).children('.quantity-group').find('.main-qty').data("origValue")) * csScaling
+  origValue = Number($(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")) * window.csScaling
   existingUnits = $(this).children('.unit').text()
 
   # "a/n" means as needed, don't do anything. ditto if blank - formerly used
@@ -167,7 +136,7 @@ updateOneRowUnits = ->
     setRow $(this), "", origValue, if origValue <= 1 then "recipe" else "recipes"
 
   # grams or kilograms
-  else if csUnits == "grams"
+  else if window.csUnits == "grams"
     if origValue < 5000
       setRow $(this), "", origValue, "g"
 
@@ -175,7 +144,7 @@ updateOneRowUnits = ->
       setRow $(this), "", origValue / 1000, "kg"
 
   # ounces or pounds and ounces
-  else if csUnits == "ounces"
+  else if window.csUnits == "ounces"
     ounces = origValue * 0.035274
     pounds = Math.floor(ounces / 16)
     ounces = ounces - (pounds * 16)
@@ -190,7 +159,7 @@ updateOneRowUnits = ->
 
 
 # Update all rows
-updateUnits = (animate) ->
+window.updateUnits = (animate) ->
   if (animate)
     # animate all the values and units down ...
     $('.qtyfade').fadeOut "fast"
@@ -216,19 +185,19 @@ window.addScalingToLink = addScalingToLink
 fractionForSixteenths = (numerator) ->
   sixteenths = ["",
     "<sup>1</sup>&frasl;<sub>16</sub>",
-    "&#x215B;",
+    "<sup>1</sup>&frasl;<sub>8</sub>",
     "<sup>3</sup>&frasl;<sub>16</sub>",
-    "&frac14;",
+    "<sup>1</sup>&frasl;<sub>4</sub>",
     "<sup>5</sup>&frasl;<sub>16</sub>",
-    "&#x215C;",
+    "<sup>3</sup>&frasl;<sub>8</sub>",
     "<sup>7</sup>&frasl;<sub>16</sub>",
-    "&frac12;",
+    "<sup>1</sup>&frasl;<sub>2</sub>",
     "<sup>9</sup>&frasl;<sub>16</sub>",
-    "&#x215D;",
+    "<sup>5</sup>&frasl;<sub>8</sub>",
     "<sup>11</sup>&frasl;<sub>16</sub>",
-    "&frac34;",
+    "<sup>3</sup>&frasl;<sub>4</sub>",
     "<sup>13</sup>&frasl;<sub>16</sub>",
-    "&#x215E;",
+    "<sup>7</sup>&frasl;<sub>8</sub>",
     "<sup>15</sup>&frasl;<sub>16</sub>"
   ]
 
@@ -286,9 +255,9 @@ updateLengthUnits =  ->
 
 # Setup click handler for length toggles
 $ ->
-  $(".length-group").click ->
+  $(document).on 'click', ".length-group", ->
     csLengthUnits = if csLengthUnits == "cm" then "in" else "cm"
-    # $.cookie(csUnitsCookieName, csUnits, { expires: 1000,  path: '/' })
+    # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
     updateLengthUnits(true)
 
 

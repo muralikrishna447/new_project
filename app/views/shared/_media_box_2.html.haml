@@ -1,0 +1,8 @@
+- object_data = object ? "#{object.class}-#{object.id}" : nil
+
+.media-box-2{data: {object: object_data}}
+  = link_to url do
+    .media-box-2-title
+      = title
+    - if image
+      = image_tag filepicker_gallery_image(image)

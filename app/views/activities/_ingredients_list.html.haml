@@ -1,14 +1,16 @@
-%table.ingredients{:itemprop => "ingredients"}
+.ingredients{:itemprop => "ingredients"}
 
-  %thead
-    %tr
-      %th#ingredient Ingredient
-      %th#quantity{colspan: 2}
-        %a.change_units{title: "Click to change units"} Quantity
-        %a.recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}
-          %i.icon-question-sign
+  -if source != "step"
+    .ingredient-table-head
+      .ingredient-table-row
+        #ingredient.ingredient-title Ingredient
+        #quantity.quantity-group(ng-hide="editMode" tooltip="Click on quantity column header to change units, or any value to scale the recipe.")
+          %a.change_units Quantity
+          %i.fake-link.icon-question-sign
+        .quantity-group(ng-show="editMode")
+          Quantity
 
-  %tbody
+  .ingredient-table-body(ui-sortable="sortOptions" ng-model="#{source}.ingredients")
+    .ingredient-table-row(ng-repeat="ai in #{source}.ingredients" ng-animate="'custom'")
+      %csIngredientEditPair
 
-    - ingredients.each do |ingredient|
-      = render 'ingredient_row', ingredient: ingredient

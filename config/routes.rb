@@ -1,4 +1,6 @@
 Delve::Application.routes.draw do
+  root to: "home#index"
+
   ActiveAdmin.routes(self)
 
   # Redirects
@@ -17,7 +19,6 @@ Delve::Application.routes.draw do
   match '/activities/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
     to: redirect('/activities/sous-vide-pork-cheek-celery-root-pickled-apples')
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
 
   get "styleguide" => "styleguide#index"
 
@@ -35,11 +36,12 @@ Delve::Application.routes.draw do
     get "sign_up", to: 'users/registrations#new'
     get "sign_out", to: 'users/sessions#destroy'
     get "complete_registration", to: 'users/registrations#complete_registration'
+    get 'welcome', to: 'users/registrations#welcome'
+    post 'signup_and_enroll', to: 'users/registrations#signup_and_enroll'
+    post 'signin_and_enroll', to: 'users/sessions#signin_and_enroll'
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
-
-  root to: "home#index"
 
   get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
 
@@ -53,32 +55,48 @@ Delve::Application.routes.draw do
   get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
   get 'discussion' => 'forum#discussion', as: 'discussion'
+  get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  match '/mp', to: redirect('/courses/spherification')
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
-  resources :user_profiles, only: [:show, :update], path: 'profiles'
+  resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
-  resources :courses, only: [:show] do
+  resources :courses, only: [:index, :show] do
     resources :activities, only: [:show], path: ''
+    member do
+      post 'enroll' => 'courses#enroll'
+    end
   end
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
-  resources :activities, only: [:show] do
+  resources :activities, only: [:show, :new] do
     member do
-      get 'get_edit_partial' => 'activities#get_edit_partial'
-      get 'get_show_partial' => 'activities#get_show_partial'
-      post 'update_edit_partial' => 'activities#update_edit_partial'
-      get 'revert_to_version' => 'activities#revert_to_version'
+      # Kind of ugly but explicit - since we still get the show view as HTML,
+      # and requesting it as JSON too was screwing up browser history
+      get 'as_json' => 'activities#get_as_json'
+      put 'as_json' => 'activities#update_as_json'
+      get 'fork' => 'activities#fork'
+      put 'notify_start_edit' => 'activities#notify_start_edit'
+      put 'notify_end_edit' => 'activities#notify_end_edit'
+    end
+    collection do
+      get 'all_tags' => 'activities#get_all_tags'
     end
   end
-  resources :techniques, only: [:index, :show]
-  resources :sciences, only: [:index, :show]
+
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
   match '/feed' => 'activities#feedburner_feed', as: :feed
 
   resources :questions, only: [] do
     resources :answers, only: [:create]
+  end
+
+  # This is to work around a bug in ActiveAdmin 0.6.0 where the :shallow designator in questions.rb
+  # stopped working
+  namespace :admin do
+    resources :questions
   end
 
   resources :quizzes, only: [:show] do
@@ -89,12 +107,37 @@ Delve::Application.routes.draw do
     end
   end
 
-  resources :search, only: [:index]
-  resources :recipe_gallery, only: [:index], path: 'recipe-gallery'
+  resources :equipment, only: [:index]
+  resources :ingredients, only: [:index]
+
+  resources :gallery, only: [:index], path: 'gallery' do
+    collection do
+      get 'index_as_json' => 'gallery#index_as_json'
+    end
+  end
   resources :user_activities, only: [:create]
+  resources :uploads do
+    resources :comments
+  end
+  resources :users do
+    resources :uploads
+  end
+  resources :likes, only: [:create]
+  resources :pages, only: [:show]
+  resources :badges, only: [:index]
+  resources :polls do
+    member do
+      get 'show_as_json' => 'polls#show_as_json'
+    end
+  end
+  resources :votes, only: [:create]
+  resources :comments
 
   resources :sitemaps, :only => :show
+  mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
+
+  resources :client_views, only: [:show]
 
 end
 

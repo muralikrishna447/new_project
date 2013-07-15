@@ -1,0 +1,72 @@
+.container-fluid.profile-cover{style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
+  .row-fluid
+    .container
+      .row
+        .span12
+          %h1= @user.name
+
+.container.profile-edit
+  .row
+    .span12.flat-form
+      %h2 Account Profile
+      %ul.nav.nav-tabs
+        %li.active
+          = link_to 'Profile', '#profile', data: {toggle: 'tab'}
+        %li
+          = link_to 'Passwords', '#passwords', data: {toggle: 'tab'}
+      .tab-content
+        .tab-pane.active#profile
+          = form_for @user, url: user_profile_path(@user), method: :put do |f|
+            .row
+              .span12
+                .upload-wrapper.profile-edit-image
+                  = image_tag '/assets/missing.png', class: "upload-photo-preview"
+                  = link_to '+', '#', class: 'profile-photo-btn'
+                  %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field'
+            .row
+              .span6
+                %div.section
+                  = f.label :name
+                  = f.text_field :name, class: 'input-block-level'
+                %div
+                  = f.label :email
+                  = f.text_field :email, class: 'input-block-level'
+                %div
+                  = f.label :website
+                  = f.text_field :website, class: 'input-block-level'
+                %div
+                  = f.label :bio
+                  = f.text_area :bio, class: 'input-block-level'
+                %div
+                  = f.submit 'Save Changes', class: 'btn btn-primary'
+                  = link_to 'Cancel', user_profile_path(@user), class: 'btn btn-primary'
+        .tab-pane#passwords
+          / = link_to edit_registration_path(@user), class: 'btn btn-primary' do
+          /   %i.icon-cogs
+          /   Settings
+          .row
+            .span6
+              = form_for(@user, url: registration_path(@user), html: { method: :put }) do |f|
+                %ul.unstyled
+                  %li
+                    = f.label :email, "Email address:"
+                    = f.email_field :email
+                  %li
+                    = f.label :password, "New password:"
+                    %p (Leave blank if you don't want to change it)
+                    = f.password_field :password, autocomplete: "off"
+                  %li
+                    = f.label :password_confirmation, "Confirm password:"
+                    = f.password_field :password_confirmation
+                  %li
+                    .well
+                      = f.label :current_password, "Current password:"
+                      %p (We need your current password to confirm your changes)
+                      = f.password_field :current_password
+                  %li
+                    = f.submit "Update", class: "btn btn-primary"
+          / .row
+          /   .span6
+          /     = link_to "Cancel My Account", registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete, class: "uppercase-link brick"
+
+= render 'layouts/filepicker'

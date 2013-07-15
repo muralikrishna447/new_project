@@ -1,0 +1,19 @@
+- direction = direction || 'left'
+- user_noun = current_user == event.user ? 'You' : event.user.name
+- commentable_object = event.trackable.commentable
+
+- case commentable_object.class.to_s
+- when 'Upload'
+  .timeline-circle{data: {direction: direction}}
+    .timeline-circle-img
+      = link_to upload_path(commentable_object) do
+        = image_tag filepicker_circle_image(commentable_object.image_id), class: 'img-circle'
+    .timeline-circle-text.text-center
+      %strong
+        = commentable_object.title
+      %div
+        = "#{user_noun} commented on #{link_to commentable_object.user.name, user_profile_path(commentable_object.user)}'s #{link_to 'photo', commentable_object}.".html_safe
+      %div
+        = time_ago_in_words(event.created_at) + ' ago'
+        - if event.user == current_user && !event.viewed
+          .label new

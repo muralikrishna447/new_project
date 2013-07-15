@@ -1,0 +1,183 @@
+@import 'mixins'
+
+.course_activity_content
+  padding: 0px
+  .course-activity-header
+    margin: 0px
+
+.course-nav-top
+  font-family: 'Raleway', sans-serif
+  position: relative
+  height: 34px
+  margin-bottom: 10px
+  .course-nav-top-prev
+    float: left
+    margin: 0px
+    margin-right: 5px
+    height: 34px
+    width: 34px
+    padding: 5px
+    font-size: 16px
+    border: 2px solid $light-gray
+    color: $light-gray
+    a
+      color: $light-gray
+    &:hover
+      background: gray
+      color: white
+  .nav-pills > .active > a, .nav-pills > .active
+    background: white
+    color: $orange
+    font-weight: bold
+  ul
+    float: left
+    li
+      height: 34px
+      overflow: hidden
+      white-space: nowrap
+      .active
+        background-color: white
+    .hide-course-navbar-item
+      width: 0px
+    .show-course-navbar-item
+      width: auto
+
+.course-nav-modules
+  font-family: 'Raleway', sans-serif
+  width: 100%
+  border: 0px
+  li
+    width: 100%
+    .course-nav-module-link
+      border: 0px
+      &:hover
+        border: 0px
+    .active-module
+      font-weight: bold
+
+.course-side-bar.affix
+  top: 60px
+
+.course-nav-side
+  font-family: 'Raleway', sans-serif
+  position: relative
+  border: 1px solid $orange
+  border-radius: 5px
+  padding: 10px 8px
+  margin-top: 5px
+  font-size: 13px
+  @include boxsizing
+  ul
+    margin-bottom: 0px
+  .nav-tabs.nav-stacked > li > a
+    border: 0px
+  .nav-tabs.nav-stacked
+    .active
+      font-weight: bold
+  .nav-tabs > li > a
+    padding: 5px
+  .nav-tabs.nav-stacked > li:first-child > a, .nav-tabs.nav-stacked > li:last-child > a
+    border-radius: 0px
+  .course-nav-side-marker
+    position: absolute
+    top: -7px
+    left: 80px
+    width: 12px
+    height: 12px
+    border: 1px solid $orange
+    border-right: 0px
+    border-bottom: 0px
+    background: white
+    -moz-transform: rotate(45deg)
+    -webkit-transform: rotate(45deg)
+    -o-transform: rotate(45deg)
+    transform: rotate(45deg)
+
+.course-nav-bottom
+  font-family: 'Raleway', sans-serif
+  position: relative
+  .course-nav-bottom-left
+    position: absolute
+    top: 10px
+    left: 10px
+  .course-nav-bottom-center
+    width: 100%
+    text-align: center
+  .course-nav-bottom-right
+    position: absolute
+    top: 10px
+    right: 10px
+
+/* Course End Action */
+.course-end-action
+  background: white
+  position: absolute
+  width: 100%
+  top: 100%
+  bottom: 0px
+  left: 0px
+  right: 0px
+  z-index: 9999
+  opacity: 0
+  @include transition(2s linear all)
+  .course-end-action-close
+    position: absolute
+    top: 30px
+    right: 30px
+    font-size: 30px
+    color: $orange
+    &:hover
+      cursor: pointer
+
+.course-end-action-show
+  top: 0px
+  opacity: 1
+
+/* Spherification Styles */
+
+.static-height
+  height: 150px
+
+.align-bottom
+  bottom: 0
+
+@media (min-width: 1200px)
+  .course-side-bar
+    width: 270px
+
+  .static-height
+    height: 150px
+
+@media (max-width: 1200px)
+  .course_activity_content
+    padding-left: 20px
+    padding-right: 20px
+
+  .course-side-bar
+    width: 220px
+
+  .static-height
+    height: 170px    
+
+@media (min-width: 768px) and (max-width: 979px)
+  .course-side-bar
+    width: 166px
+
+  .static-height
+    height: 220px    
+
+@media (max-width: 767px)
+  .course-side-bar.affix
+    position: inherit
+
+  .course-side-bar
+    width: 100%
+
+  .static-height
+    height: 140px
+
+@media (max-width: 480px)
+  .static-height
+    inherit
+
+
