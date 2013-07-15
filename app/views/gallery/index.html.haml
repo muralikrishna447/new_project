@@ -18,17 +18,14 @@
                 %i.icon-remove-circle
 
             %li.relative
-              %div.filter-collapser(ng-click="collapse_filters = ! collapse_filters")
+              .filter-collapser(ng-click="collapse_filters = ! collapse_filters")
                 FILTER
-                %span.current-filters(ng-repeat="f in getFilterText()")
-                  %span(ng-show="$first")> (
-                  %span(ng-bind-html-unsafe="f")>
-                  %span(ng-show="! $last")>
-                    |
-                  %span(ng-show="$last")> )
-
                 %i.icon-angle-down(ng-show="collapse_filters")
                 %i.icon-angle-up(ng-hide="collapse_filters")
+              .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
+                {{f.name}}
+                %span.reset-filter(ng-click="resetFilter(k)")
+                  %i.icon-remove-circle
               .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'")
                 .btn-group.first-separate
                   %button.btn.btn-checkbox(ng-repeat="choice in typeChoices" ng-model="filters.activity_type" btn-radio="{{choice}}")
@@ -39,6 +36,9 @@
                 -if can? :update, Activity
                   .btn-group
                     %button.btn.btn-checkbox(ng-repeat="choice in publishedStatusChoices" ng-model="filters.published_status" btn-radio="{{choice}}")
+                      {{choice.name}}
+                  .btn-group
+                    %button.btn.btn-checkbox(ng-repeat="choice in generatorChoices" ng-model="filters.generator" btn-radio="{{choice}}")
                       {{choice.name}}
 
           %ul.nav.browse-group.pull-right(ng-click="collapse_filters = true")

@@ -106,9 +106,19 @@
     color: inherit
     text-shadow: none
 
+.filter-collapser
+  display: inline-block
 
-.current-filters
-  font-size: 90%
+.current-filter
+  font-size: 70%
+  display: inline-block
+  color: $orange
+  border: 1px solid $orange
+  border-radius: 20px
+  margin-left: 8px
+  position:  relative
+  top: -2px
+  padding: 0px 8px
 
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
 // names have to change when we go to angular >= 1.1.5
@@ -176,7 +186,7 @@
       margin-left: 10px
   .filters-group
     right: -140px
-  .current-filters
+  .current-filter
     display: none
   .gallery-contents
     margin-top: 4px

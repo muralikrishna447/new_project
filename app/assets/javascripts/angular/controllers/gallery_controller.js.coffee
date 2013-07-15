@@ -20,7 +20,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   $scope.difficultyChoices = [
     {name: "Any", value: "any"}
-    {name: "Beginner", value: "easy"},
+    {name: "Easy", value: "easy"},
     {name: "Intermediate", value: "intermediate"}
     {name: "Advanced", value: "advanced"}
   ]
@@ -30,12 +30,17 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     {name: "Unpublished", value: "Unpublished"}
   ]
 
+  $scope.generatorChoices = [
+    {name: "ChefSteps", value: "chefsteps"},
+    {name: "Community", value: "community"}
+  ]
 
   $scope.defaultFilters = {
     sort: $scope.sortChoices[1],
     published_status: $scope.publishedStatusChoices[0]
     activity_type: $scope.typeChoices[0]
     difficulty: $scope.difficultyChoices[0]
+    generator: $scope.generatorChoices[0]
   }
 
   $scope.placeHolderImage = "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
@@ -79,15 +84,22 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
       delete r.by_published_at
     r
 
-  $scope.getFilterText = ->
-    r = []
-    if $scope.filters.activity_type? && $scope.filters.activity_type.value != "any"
-      r.push($scope.filters.activity_type.name)
-    if $scope.filters.difficulty? && $scope.filters.difficulty.value != "any"
-      r.push($scope.filters.difficulty.name)
-    if $scope.filters.published_status? && $scope.filters.published_status.value != "Published"
-      r.push($scope.filters.published_status.name)
+  $scope.nonDefaultFilters = ->
+    r = _.reduce(
+      angular.extend({}, $scope.filters),
+      (mem, value, key) ->
+        if $scope.defaultFilters[key]?.value != value.value
+          mem[key] = value
+        mem
+      {}
+    )
+    delete r.search_all
+    delete r.sort
     r
+
+  $scope.resetFilter = (key) ->
+    $scope.filters[key] = $scope.defaultFilters[key]
+
 
   $scope.load_data = ->
     if ! $scope.all_loaded
@@ -151,6 +163,10 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     console.log newValue
     $scope.clear_and_load() if newValue
 
+  $scope.$watch 'filters.generator', (newValue) ->
+    console.log newValue
+    $scope.clear_and_load() if newValue
+
   $scope.$watch 'filters.search_all', (newValue) ->
     console.log newValue
     $scope.filters.sort = $scope.sortChoices[0] if newValue? && (newValue.length == 1)
@@ -162,9 +178,6 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.clearFilters = ->
     $scope.filters = angular.extend({}, $scope.defaultFilters)
     $scope.clear_and_load()
-
-  $scope.nonDefaultFilters = ->
-    ! _.isEqual($scope.filters, $scope.defaultFilters)
 
   $scope.getActivities = ->
     return $scope.no_results_activities if (! $scope.activities?) || (! $scope.activities.length)
@@ -206,3 +219,4 @@ angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) 
       if window_element.scrollTop() >= (element.height() - window.innerHeight)
         scope.$apply(attr.galleryscroll)
 ]
+
