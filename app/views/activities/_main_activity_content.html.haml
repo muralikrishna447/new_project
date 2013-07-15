@@ -3,7 +3,7 @@
   = render 'metadata'
   = render 'hero_visual', activity: activity
   %div(ng-show="! editMode")
-    = render 'layouts/social_buttons', media_object: activity
+    = render 'layouts/social_buttons', likeable_object: activity, media_object: activity
   = render 'description'
   = render 'main_ingredients'
   = render 'basic_edit_pair', model: "activity.yield", name: "Yield", add_text: "Add yield info...", itemprop: "recipeYield"
