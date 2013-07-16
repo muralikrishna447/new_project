@@ -100,10 +100,10 @@ class ActivitiesController < ApplicationController
     @activity = Activity.new()
     @activity.title = ""
     @activity.description = ""
-    @activity.id = -1
     @activity.title = ""
     @include_edit_toolbar = true
-    render 'show'
+    @activity.save({validate: false})
+    redirect_to activity_path(@activity, {start_in_edit: true})
   end
 
   def fork

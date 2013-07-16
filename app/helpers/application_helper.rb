@@ -125,10 +125,10 @@ module ApplicationHelper
   def apply_shortcode(orig, shortcode, contents)
     case shortcode
       when 'c'
-        "<span class='temperature'>#{(contents.to_f * 1.8).round + 32} &deg;F / #{contents} &deg;C</span>"
+        "<span class='temperature'>#{(contents.to_f * 1.8).round + 32}&nbsp;&deg;F / #{contents}&nbsp;&deg;C</span>"
 
       when 'f'
-        "<span class='temperature'>#{contents} &deg;F / #{((contents.to_f - 32) / 1.8).round} &deg;C</span>"
+        "<span class='temperature'>#{contents}&nbsp;&deg;F / #{((contents.to_f - 32) / 1.8).round}&nbsp;&deg;C</span>"
 
       when 'cm'
         "<a class='length-group'><span class='length' data-orig-value='#{contents}'>#{contents} cm</span></a>"
