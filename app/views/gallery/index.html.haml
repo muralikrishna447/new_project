@@ -17,8 +17,8 @@
               %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
                 %i.icon-remove-circle
 
-            %li.relative
-              .filter-collapser(ng-click="collapse_filters = ! collapse_filters" ng-mouseenter="collapse_filters = false")
+            %li.relative(ng-mouseenter="collapse_filters = false" ng-mouseleave="collapse_filters = true")
+              .filter-collapser(ng-click="collapse_filters = ! collapse_filters")
                 FILTER
                 %i.icon-angle-down(ng-show="collapse_filters")
                 %i.icon-angle-up(ng-hide="collapse_filters")
@@ -26,7 +26,7 @@
                 {{f.name}}
                 %span.reset-filter(ng-click="resetFilter(k)")
                   %i.icon-remove-circle
-              .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" ng-mouseleave="collapse_filters = true")
+              .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" )
                 .btn-group.first-separate
                   %button.btn.btn-checkbox(ng-repeat="choice in typeChoices" ng-model="filters.activity_type" btn-radio="{{choice}}")
                     {{choice.name}}
