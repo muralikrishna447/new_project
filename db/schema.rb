@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130712092924) do
+ActiveRecord::Schema.define(:version => 20130716181605) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -315,8 +315,9 @@ ActiveRecord::Schema.define(:version => 20130712092924) do
     t.string   "status"
     t.integer  "poll_id"
     t.integer  "votes_count"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "comments_count"
   end
 
   create_table "polls", :force => true do |t|
@@ -456,12 +457,13 @@ ActiveRecord::Schema.define(:version => 20130712092924) do
     t.string   "title"
     t.text     "image_id"
     t.text     "notes"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.integer  "course_id"
-    t.boolean  "approved",    :default => false
+    t.boolean  "approved",       :default => false
     t.integer  "likes_count"
     t.string   "slug"
+    t.integer  "comments_count"
   end
 
   create_table "user_activities", :force => true do |t|

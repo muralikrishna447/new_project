@@ -35,6 +35,7 @@
           .poll-item-comments(ng-click='pollItemDetails(poll_item)')
             %a.poll-item-btn.poll-item-btn-social
               %i.icon-comment-alt
+                {{poll_item.comments_count}}
 
           .poll-item-sharing(ng-click='pollItemDetails(poll_item)')
             %a.poll-item-btn.poll-item-btn-social
