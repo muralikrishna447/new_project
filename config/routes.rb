@@ -130,6 +130,9 @@ Delve::Application.routes.draw do
       get 'show_as_json' => 'polls#show_as_json'
     end
   end
+  resources :poll_items do
+    resources :comments
+  end
   resources :votes, only: [:create]
   resources :comments
 

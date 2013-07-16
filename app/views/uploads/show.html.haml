@@ -54,6 +54,7 @@
                 ago
     
       %hr
-        = render 'comments/comments', commentable: @upload
+        %div(ng-controller='CommentsController' ng-init="init('uploads','#{@upload.id}')" ng-cloak)
+          = render 'comments/comments'
         / - disqus_id = "upload-#{@upload.id}"
         / = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @upload.title, disqus_url: upload_url(@upload)
