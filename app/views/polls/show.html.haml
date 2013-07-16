@@ -1,6 +1,6 @@
 .container#poll{data: {:'poll-id' => "#{@poll.id}"}}
   .row
-    .span12(ng-controller='VotesController')
+    .span12(ng-controller='VotesController' ng-cloak)
       - current_user_votes = current_user.votes.scoped_by_type('PollItem').map(&:votable_id)
       %span(ng-model="current_user_votes" ng-init="current_user_votes=#{current_user_votes}")
       %h1
@@ -28,7 +28,7 @@
                 {{poll_item.title}}
             %div(ng-show='poll_item.show_details')
               %p.lead {{poll_item.description}}
-              %div(ng-controller='CommentsController' ng-init="init('poll_items','{{poll_item.id}}')" ng-cloak)
+              %div(ng-controller='CommentsController' ng-init="init('poll_items',poll_item.id)" ng-cloak)
                 = render 'comments/comments', commentable: nil
               / = render 'comments/comments', commentable: @poll
 
