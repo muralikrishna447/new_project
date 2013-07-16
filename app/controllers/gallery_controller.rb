@@ -23,7 +23,7 @@ class GalleryController < ApplicationController
   end
 
   has_scope :published_status, default: "Published" do |controller, scope, value|
-    value == "Published" ? scope.published.include_in_gallery : scope.unpublished
+    value == "Published" ? scope.published.include_in_gallery : scope.unpublished.where("title != ''")
   end
 
   def index

@@ -158,9 +158,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     ), 1000
 
   $scope.localStorageKeyId = ->
-    # Use "New" for activity that was never saved before b/c they actually have unique ids
-    # but the local storage won't find them.
-    if $scope.activity.is_new then "New" else $('#activity-body').data("activity-id")
+    $('#activity-body').data("activity-id")
 
   # Local storage (to prevent data loss on tab close etc.)
   $scope.localStorageKey = ->
