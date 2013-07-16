@@ -11,6 +11,7 @@ class ActivityIngredient < ActiveRecord::Base
 
   validates :ingredient, presence: true
   validates :activity, presence: true
+  validates_uniqueness_of :ingredient_id, scope: :activity_id, message: "may only be used once in a recipe. If you need to use an ingredient in more than one step, include the total amount in the master ingredient list, then split it up in the step ingredient lists."
 
   attr_accessible :activity_id, :ingredient_id, :quantity, :unit, :ingredient_order_position, :note
 

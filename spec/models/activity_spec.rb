@@ -389,7 +389,6 @@ describe Activity, 'deep_copy' do
   end
 
   it 'makes a copy with expected differences' do
-    puts activity.equipment.to_json
     a2 = activity.deep_copy
     a2.source_activity.should == activity
     a2.source_type.should == Activity::SourceType::ADAPTED_FROM

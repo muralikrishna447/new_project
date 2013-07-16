@@ -37,7 +37,7 @@ class Step < ActiveRecord::Base
         unless title.nil? || title.blank?
           title.strip!
           ingredient_foo = Ingredient.where(id: i[:ingredient][:id]).first_or_create(title: title)
-          activity_ingredient = StepIngredient.create({
+          activity_ingredient = StepIngredient.create!({
                                                               step_id: self.id,
                                                               ingredient_id: ingredient_foo.id,
                                                               note: i[:note],

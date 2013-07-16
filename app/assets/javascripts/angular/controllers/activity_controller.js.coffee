@@ -80,6 +80,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.endEditMode = ->
 
+    $scope.alerts = []
     $scope.normalizeModel()
     $scope.activity.$update(
       {},
@@ -114,6 +115,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex ]
       $scope.saveToLocalStorage()
       $scope.temporaryNoAutofocus();
+    true
 
   $scope.redo = ->
     if $scope.redoAvailable
@@ -121,6 +123,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex]
       $scope.saveToLocalStorage()
       $scope.temporaryNoAutofocus();
+    true
 
   $scope.undoAvailable = ->
     $scope.undoIndex > 0
@@ -378,6 +381,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.addAlert = (alert) ->
     $scope.alerts.push(alert)
+    $timeout ->
+      $("html, body").animate({ scrollTop: -500 }, "slow")
 
   $scope.closeAlert = (index) ->
     $scope.alerts.splice(index, 1)

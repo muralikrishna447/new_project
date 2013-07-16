@@ -174,7 +174,7 @@ class Activity < ActiveRecord::Base
         unless title.nil? || title.blank?
           title.strip!
           equipment_item = Equipment.where(id: e[:equipment][:id]).first_or_create(title: title)
-          activity_equipment = ActivityEquipment.create({
+          activity_equipment = ActivityEquipment.create!({
               activity_id: self.id,
               equipment_id: equipment_item.id,
               optional: e[:optional] || false,
@@ -203,7 +203,7 @@ class Activity < ActiveRecord::Base
           # an autocompleted ingredient with an id filled it, but it is still in the database
           the_ingredient = Ingredient.where(title: title).first_or_create()  if ! the_ingredient
 
-          activity_ingredient = ActivityIngredient.create({
+          activity_ingredient = ActivityIngredient.create!({
                                                             activity_id: self.id,
                                                             ingredient_id: the_ingredient.id,
                                                             note: i[:note],
@@ -224,7 +224,7 @@ class Activity < ActiveRecord::Base
     if steps_attrs
       steps_attrs.each do |step_attr|
         step = steps.create()
-        step.update_attributes(
+        step.update_attributes!(
             title: step_attr[:title],
             directions: step_attr[:directions],
             youtube_id: step_attr[:youtube_id],
@@ -380,17 +380,36 @@ class Activity < ActiveRecord::Base
   # So just opted for the most explicit solution. Could also be done by going through JSON.
   def deep_copy
     new_activity = self.dup
+    new_activity.save!
 
     new_activity.source_activity = self
     new_activity.source_type = SourceType::ADAPTED_FROM
     new_activity.published = false
 
-    self.ingredients.each { |ai| new_activity.ingredients << ai.dup }
-    self.equipment.each { |ae| new_activity.equipment << ae.dup }
+    self.ingredients.each do |ai|
+      new_ai = ai.dup
+      new_ai.activity = new_activity
+      new_activity.ingredients << new_ai
+    end
+
+    self.equipment.each do |ae|
+      new_ae = ae.dup
+      new_ae.activity = new_activity
+      new_activity.equipment << new_ae
+    end
+
     self.steps.each do |as|
       new_step = as.dup
+      new_step.activity = new_activity
       new_activity.steps << new_step
-      as.ingredients.each { |si| new_step.ingredients << si.dup }
+
+      new_step.save!
+
+      as.ingredients.each do |si|
+        new_si = si.dup
+        new_si.step = new_step
+        new_step.ingredients << new_si
+      end
     end
 
     new_activity.save!
