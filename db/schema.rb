@@ -317,7 +317,7 @@ ActiveRecord::Schema.define(:version => 20130716195202) do
     t.integer  "votes_count",    :default => 0
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
-    t.integer  "comments_count"
+    t.integer  "comments_count", :default => 0
   end
 
   create_table "polls", :force => true do |t|
@@ -463,7 +463,7 @@ ActiveRecord::Schema.define(:version => 20130716195202) do
     t.boolean  "approved",       :default => false
     t.integer  "likes_count"
     t.string   "slug"
-    t.integer  "comments_count"
+    t.integer  "comments_count", :default => 0
   end
 
   create_table "user_activities", :force => true do |t|
