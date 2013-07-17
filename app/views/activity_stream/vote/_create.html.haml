@@ -1,1 +1,38 @@
-HELLO!!!
+- media_object = group_events.first.trackable.votable
+.stream-item  
+  .stream-item-top
+    = link_to media_object do
+      .stream-item-title
+        %h4= media_object.class.to_s
+      .stream-item-subtitle
+        = media_object.title
+      = image_tag 'http://placehold.it/160x90/cccccc/cccccc&text=ChefSteps'
+  .stream-item-marker
+  .stream-item-bottom
+    %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
+    - if media_object.votes_count == 1
+      .stream-item-media1
+        .stream-item-media1-user
+          = link_to user_profile_path(group_events.first.user) do
+            = image_tag filepicker_circle_image(group_events.first.user.image_id)
+        .stream-item-media1-content
+          = link_to group_events.first.user.name, user_profile_path(group_events.first.user)
+          = "voted for #{media_object.title}."
+    - else
+      .stream-item-media2
+        .stream-item-media2-users
+          - media_object.votes.each do |vote|
+            = link_to user_profile_path(vote.user) do
+              = image_tag filepicker_circle_image(vote.user.image_id)
+        .stream-item-media2-content
+          - case media_object.votes_count
+          - when 2
+            = link_to media_object.votes.first.user.name, user_profile_path(media_object.votes.first.user)
+            = "and"
+            = link_to media_object.votes.second.user.name, user_profile_path(media_object.votes.second.user)
+            = "voted for #{media_object.title}."
+          - else
+            = link_to media_object.votes.first.user.name, user_profile_path(media_object.votes.first.user)
+            = "and"
+            = link_to media_object.votes.second.user.name, user_profile_path(media_object.votes.second.user)
+            = "and #{media_object.votes_count - 2} more voted for #{media_object.title}."
