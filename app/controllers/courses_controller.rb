@@ -18,6 +18,9 @@ class CoursesController < ApplicationController
     elsif @course.title == 'Science of Poutine'
       @new_user = User.new
       render 'poutine'
+    elsif @course.title == 'Knife Skills'
+      @new_users = User.new
+      render 'knife-skills'
     end
 
   end
