@@ -101,6 +101,7 @@ class ActivitiesController < ApplicationController
     @activity.title = ""
     @activity.description = ""
     @activity.title = ""
+    @activity.creator = current_user unless current_user.admin?
     @include_edit_toolbar = true
     @activity.save({validate: false})
     redirect_to activity_path(@activity, {start_in_edit: true})
@@ -155,12 +156,7 @@ class ActivitiesController < ApplicationController
       fork()
     else
 
-      if params[:id] == '-1'
-        @activity = Activity.create()
-        @activity.creator = current_user unless current_user.admin?
-      else
-        @activity = Activity.find(params[:id])
-      end
+      @activity = Activity.find(params[:id])
 
       respond_to do |format|
         format.json do
