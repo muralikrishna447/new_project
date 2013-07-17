@@ -3,7 +3,7 @@
   .stream-item-top
     = link_to media_object do
       .stream-item-title
-        %h4= media_object.class.to_s
+        %h4= media_object.poll.title
       .stream-item-subtitle
         = media_object.title
       = image_tag 'http://placehold.it/160x90/cccccc/cccccc&text=ChefSteps'

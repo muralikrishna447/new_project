@@ -1,9 +1,15 @@
 - media_object = group_events.first.trackable.likeable
+- case media_object.class.to_s
+- when 'Activity'
+  - media_object_title = media_object.activity_type.first
+- when 'Upload'
+  - media_object_title = 'Photo'
+
 .stream-item  
   .stream-item-top
     = link_to media_object do
       .stream-item-title
-        %h4= media_object.class.to_s
+        %h4= media_object_title
       .stream-item-subtitle
         = media_object.title
       = image_tag filepicker_media_box_image(media_object.featured_image)
@@ -17,7 +23,9 @@
             = image_tag filepicker_circle_image(group_events.first.user.image_id)
         .stream-item-media1-content
           = link_to group_events.first.user.name, user_profile_path(group_events.first.user)
-          = "liked #{media_object.title}."
+          = "liked"
+          = link_to media_object.title, media_object
+          = "."
     - else
       .stream-item-media2
         .stream-item-media2-users
@@ -35,4 +43,6 @@
             = link_to media_object.likes.first.user.name, user_profile_path(media_object.likes.first.user)
             = "and"
             = link_to media_object.likes.second.user.name, user_profile_path(media_object.likes.second.user)
-            = "and #{media_object.likes_count - 2} more liked your #{media_object.title}."
+            = "and #{media_object.likes_count - 2} more liked"
+            = link_to media_object.title, media_object
+            = "."
