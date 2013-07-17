@@ -1,0 +1,104 @@
+.container
+  .row.section
+    .span12
+      %h1= "#{course.title} Course"
+  .row.section
+    .span6
+      .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
+        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('mtAU51AEzho')}
+      .section
+        :markdown
+          #{course.description}
+      %h4.text-center
+        %i.icon-comment-alt
+        Comments or Questions?
+        = link_to 'Visit the Forum', @course.forum_link
+     
+    .span6
+      .well
+        = render 'course_enrollment_box'
+      - if @course.users.count > 1 && @course.uploads.approved.count > 3
+        .well   
+          %h4= "Current enrollment: #{@course.users.count}"
+          %h3 Some user creations:
+          .horizontal-slider{data: {direction: 'right'}}
+            .horizontal-slider-wrap
+              - @course.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
+                = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+            %div{class: "horizontal-slider-btn-right btn btn-circle"}
+              %i{class: "icon-chevron-right"}
+            %div{class: "horizontal-slider-shadow-overlay-right"}
+
+%hr
+
+.container
+  .row.section
+    .span8.offset2.text-center
+      %h2 Knives
+      %p.section There are many knives like it, but this one is mine. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+%hr
+
+.container#enthusiast
+  .row.section
+    .span5
+      = image_tag 'http://placehold.it/350x215/cccccc/dddddd&text=A Badass Knife'
+    .span6.offset1
+      %h2 Badass Knife
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+      .well.section
+        = buy_now(Course::SVS[:variant_id], Course::SVS[:price])
+
+%hr
+
+.container#creative
+  .row.section
+    .span5
+      = image_tag 'http://placehold.it/350x215/cccccc/dddddd&text=Another Badass Knife'
+    .span6.offset1
+      %h2 Another Badass Knife
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      .well.section
+        = buy_now(Course::SVS_DEMI[:variant_id], Course::SVS_DEMI[:price])
+
+%hr
+
+.container
+  .row.section
+    .span12
+      %h2.text-center What you'll learn
+    .span6
+      =image_tag 'http://placehold.it/350x215/cccccc/dddddd&text=' 
+    .span6
+      %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+      %p Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+
+%hr
+
+.container
+  .span6.offset3
+    = render 'course_enrollment_box'
+
+%hr
+
+.container-fluid
+  .row-fluid
+    .container
+      .row.section
+        %h2.text-orange Instructors
+      .row.section
+        .span2
+          = image_tag('chris-large.jpg', title: 'Chris Young', class: 'img-rofile')
+        .span4
+          :markdown
+            #{bio_chris.copy.to_s}
+        .span2
+          = image_tag('grant-large.jpg', title: 'Chris Young', class: 'img-rofile')
+        .span4
+          :markdown
+            #{bio_grant.copy.to_s}
+
+
+= render '/layouts/footer'
+

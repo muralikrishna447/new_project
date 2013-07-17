@@ -1,0 +1,14 @@
+- content_for :title, course.title
+- content_for :description, course.short_description
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+
+= render 'knife-skills_a'
+
+- if current_user
+  :javascript
+    mixpanel.track('Course Viewed', {'distinct_id' : "#{current_user.id}", 'course' : "#{course.title}", 'url' : window.location.pathname});
+- else
+  :javascript
+    mixpanel.track('Course Viewed', {'course' : "#{course.title}", 'url' : window.location.pathname});
+
+#course-title(data-course="#{course.title}")
