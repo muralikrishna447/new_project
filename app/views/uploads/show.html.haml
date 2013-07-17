@@ -19,18 +19,20 @@
         - else
           = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this #{link_to @upload.activity.title, @upload.activity} photo on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
       %p= "#{time_ago_in_words(@upload.created_at)} ago."
-      = render 'shared/like_button', likeable_object: @upload
-      = link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
-        %i.icon-twitter
-        %span Twitter
-      = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
-      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'btn btn-primary' do
-        %i.icon-google-plus
-        %span Google
-      = link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{filepicker_hero_image(@upload.image_id)}", onclick: "javascript:window.open(this.href,
-        '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary' do
-        %i.icon-pinterest
-        %span Pinterest
+      = render 'layouts/social_buttons', media_object: @upload
+
+      /= render 'shared/like_button', likeable_object: @upload
+      /= link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
+      /  %i.icon-twitter
+      /  %span Twitter
+      /= link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
+      /'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'btn btn-primary' do
+      /  %i.icon-google-plus
+      /  %span Google
+      /= link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{filepicker_hero_image(@upload.image_id)}", onclick: "javascript:window.open(this.href,
+      /  '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary' do
+      /  %i.icon-pinterest
+      /  %span Pinterest
 
       .section
         - if @upload.likes.any?
