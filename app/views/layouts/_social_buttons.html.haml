@@ -3,7 +3,7 @@
 / = link_to 'javascript:void(0);', class: 'btn btn-primary' do
 /   %i.icon-phone
 .section-small
-  = render 'shared/like_button', likeable_object: likeable_object
+  = render 'shared/like_button', likeable_object: media_object
       
   = link_to 'javascript:void(0);', class: 'btn btn-primary btn-social social-action', data: {toggle: 'popover', placement: 'bottom', content: fb_like(current_url(request)), html: true} do
     %i.icon-facebook
@@ -16,9 +16,5 @@
     = link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{filepicker_hero_image(media_object.featured_image)}", onclick: "javascript:window.open(this.href,
     '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary btn-social' do
       %i.icon-pinterest
-  - if @activity 
-    %a{href: "mailto:?subject=#{@activity.title.html_safe}%20from%20ChefSteps.com&body=I%20thought%20you%20might%20like%20this:%20#{ url_encode(current_url(request))}", target: "_blank", id: "email-share",class: "btn btn-primary btn-social"}  
-      %i.icon-envelope    
-  - else @upload
-    %a{href: "mailto:?subject=#{@upload.title.html_safe}%20from%20ChefSteps.com&body=I%20thought%20you%20might%20like%20this:%20#{ url_encode(current_url(request))}", target: "_blank", id: "email-share",class: "btn btn-primary btn-social"}      
-      %i.icon-envelope  
+  %a{href: "mailto:?subject=#{media_object.title.html_safe}%20from%20ChefSteps.com&body=I%20thought%20you%20might%20like%20this:%20#{ url_encode(current_url(request))}", target: "_blank", id: "email-share",class: "btn btn-primary btn-social"}      
+    %i.icon-envelope  
