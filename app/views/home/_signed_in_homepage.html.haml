@@ -93,7 +93,7 @@
                         = image_tag filepicker_circle_image(group_events.first.user.image_id)
                     .stream-item-media1-content
                       = link_to group_events.first.user.name, user_profile_path(group_events.first.user)
-                      = "liked your #{media_object.class.to_s.downcase}."
+                      = "liked #{media_object.title}."
                 - else
                   .stream-item-media2
                     .stream-item-media2-users
@@ -106,12 +106,12 @@
                         = link_to media_object.likes.first.user.name, user_profile_path(media_object.likes.first.user)
                         = "and"
                         = link_to media_object.likes.second.user.name, user_profile_path(media_object.likes.second.user)
-                        = "liked your #{media_object.class.to_s.downcase}."
+                        = "liked #{media_object.title}."
                       - else
                         = link_to media_object.likes.first.user.name, user_profile_path(media_object.likes.first.user)
                         = "and"
                         = link_to media_object.likes.second.user.name, user_profile_path(media_object.likes.second.user)
-                        = "and #{media_object.likes_count - 2} more liked your #{media_object.class.to_s.downcase}."
+                        = "and #{media_object.likes_count - 2} more liked your #{media_object.title}."
 
           - when ['Like','received_create']
             - media_object = group_events.first.trackable.likeable
@@ -129,10 +129,10 @@
                 - if media_object.likes_count == 1
                   .stream-item-media1
                     .stream-item-media1-user
-                      = link_to user_profile_path(group_events.first.user) do
-                        = image_tag filepicker_circle_image(group_events.first.user.image_id)
+                      = link_to user_profile_path(group_events.first.trackable.user) do
+                        = image_tag filepicker_circle_image(group_events.first.trackable.user.image_id)
                     .stream-item-media1-content
-                      = link_to group_events.first.user.name, user_profile_path(group_events.first.user)
+                      = link_to group_events.first.trackable.user.name, user_profile_path(group_events.first.trackable.user)
                       = "liked your #{media_object.class.to_s.downcase}."
                 - else
                   .stream-item-media2

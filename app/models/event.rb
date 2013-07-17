@@ -45,6 +45,6 @@ class Event < ActiveRecord::Base
   end
 
   def self.stream
-    timeline.group_by{|e| e.group_name}
+    timeline.where(action: 'received_create').group_by{|e| e.group_name}
   end
 end
