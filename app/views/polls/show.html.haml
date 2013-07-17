@@ -35,6 +35,8 @@
               .poll-item-voter
                 %a(href="/profiles/{{voter.slug}}")
                   %img(ng-src="{{userImageUrl(voter.image_id)}}")
+                .poll-item-voter-tooltip
+                  {{voter.name}}
             %div(ng-show='poll_item.show_details')
               %p.lead {{poll_item.description}}
               %div(ng-controller='CommentsController' ng-init="init('poll_items',poll_item.id)" ng-cloak)
