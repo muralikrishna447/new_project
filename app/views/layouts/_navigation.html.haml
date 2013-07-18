@@ -22,24 +22,26 @@
               %ul.nav
                 %li.dropdown
                   .nav-item-border
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Cooking
-                    %i.icon-angle-down
-                  %ul.dropdown-menu
-                    .dropdown-background
-                    %li= link_to 'Recipes', gallery_index_url(activity_type: "Recipe")
-                    %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
-                    -if can? :update, Activity
+                  -if can? :update, Activity
+                    = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                      Recipes
+                      %i.icon-angle-down
+                    %ul.dropdown-menu
+                      .dropdown-background
+                      %li= link_to 'Recipe Gallery', gallery_index_url(activity_type: "Recipe")
                       %li= link_to 'New Recipe', new_activity_url
+                  -else
+                    = link_to 'Recipes', gallery_index_url(activity_type: 'Recipe')
                 %li.dropdown
                   .nav-item-border
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Learning
+                    Learn
                     %i.icon-angle-down
                   %ul.dropdown-menu
                     .dropdown-background
                     / %li= link_to 'Sous Vide Course', course_url('accelerated-sous-vide-cooking-course')
                     %li= link_to 'Courses', courses_url
+                    %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
                     %li= link_to 'Science', gallery_index_url(activity_type: "Science")
                 %li
                   .nav-item-border
