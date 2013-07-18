@@ -107,5 +107,9 @@ class User < ActiveRecord::Base
     Followership.find_by_user_id_and_follower_id(user.id,self.id).destroy
   end
 
+  def follows?(user)
+    followings.include?(user)
+  end
+
 end
 
