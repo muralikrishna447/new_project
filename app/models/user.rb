@@ -10,6 +10,11 @@ class User < ActiveRecord::Base
 
   CHEF_TYPES = %w[professional_chef culinary_student home_cook novice other]
 
+  has_many :followerships
+  has_many :followers, through: :followerships
+  has_many :inverse_followerships, class_name: 'Followership', foreign_key: 'follower_id'
+  has_many :followings, through: :inverse_followerships, source: :user
+
   has_many :quizzes, class_name: QuizSession, dependent: :destroy, inverse_of: :user
   has_many :user_activities
   has_many :activities, through: :user_activities
