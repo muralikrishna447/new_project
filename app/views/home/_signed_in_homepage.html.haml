@@ -1,7 +1,9 @@
 .container
   .row
     .span10
-      %h2 Activity Stream
+      .stream-header-section
+        %h2 Activity Stream
+        = link_to 'See More', user_profile_path(current_user), class: 'btn btn-large'
     .span10.stream-wrapper
       .stream
         .stream-line
@@ -11,7 +13,9 @@
           - group_events = group[1]
           = render "/activity_stream/#{group_type[0].downcase}/#{group_type[1]}", group_events: group_events
 
-      %h2 Latest from ChefSteps
+      .stream-header-section
+        %h2 Latest from ChefSteps
+        = link_to 'See More', gallery_index_path, class: 'btn btn-large'
       = render 'shared/horizontal_slider', items: @latest, direction: 'right'
 
     .span2
