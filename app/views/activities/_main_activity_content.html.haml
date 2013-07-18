@@ -11,6 +11,8 @@
   = render 'new_equipment_list', model: "activity.equipment", name: "Equipment and Materials", test_method: "hasRequiredEquipment", required_string: "required", required: true
   = render 'new_equipment_list', model: "activity.equipment", name: "Optional Equipment and Materials", test_method: "hasOptionalEquipment", required_string: "optional", required: false
   = render 'activity_relationships', activity: activity
+  -if activity.creator
+    = render 'shared/mini_profile', user: activity.creator
 
 .span6.ng-cloak(ng-controller="StepsController")
   = render 'steps'
