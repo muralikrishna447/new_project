@@ -56,12 +56,21 @@ module ApplicationHelper
     end
   end
 
-  def filepicker_circle_image(fpfile)
+  def filepicker_circle_image(fpfile, width=400)
     if fpfile && !fpfile.blank?
       url = ActiveSupport::JSON.decode(fpfile)["url"]
-      url + "/convert?fit=crop&w=400&h=400&cache=true"
+      url + "/convert?fit=crop&w=#{width}&h=#{width}&cache=true"
     else
-      'http://www.placehold.it/300x300&text=ChefSteps'
+      "http://www.placehold.it/#{width}x#{width}&text=ChefSteps"
+    end
+  end
+
+  def filepicker_square_image(fpfile, width=400)
+    if fpfile && !fpfile.blank?
+      url = ActiveSupport::JSON.decode(fpfile)["url"]
+      url + "/convert?fit=crop&w=#{width}&h=#{width}&cache=true"
+    else
+      "http://www.placehold.it/#{width}x#{width}&text=ChefSteps"
     end
   end
 

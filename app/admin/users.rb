@@ -36,6 +36,7 @@ ActiveAdmin.register User do
       f.input :role, collection: User::ROLES, as: :select
       f.input :location
       f.input :website
+      f.input :bio
       f.input :quote
     end
     if f.object.encrypted_password.blank?
