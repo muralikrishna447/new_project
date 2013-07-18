@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   end
 
   def created_stream
-    events.timeline.where('action != ?', 'received_create').group_by{|e| e.group_name}
+    events.includes(:trackable).timeline.where('action != ?', 'received_create').group_by{|e| e.group_name}
     # timeline.group_by{|e| e.group_name}
   end
 
