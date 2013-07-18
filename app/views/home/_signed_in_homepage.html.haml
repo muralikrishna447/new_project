@@ -9,7 +9,7 @@
     .span10.stream-wrapper
       .stream
         .stream-line
-        - current_user.events.stream.take(4).each do |group|
+        - @stream.each do |group|
           - group_type = group[0][0]
           - group_name = group[0][1]
           - group_events = group[1]
