@@ -3,7 +3,9 @@
     .span10
       .stream-header-section
         %h2 Activity Stream
-        = link_to 'See More', user_profile_path(current_user), class: 'btn btn-large'
+        = link_to user_profile_path(current_user), class: 'btn btn-large btn-outline-blue-large' do
+          See More
+          %i.icon-angle-right
     .span10.stream-wrapper
       .stream
         .stream-line
@@ -15,7 +17,7 @@
 
       .stream-header-section
         %h2 Latest from ChefSteps
-        = link_to 'See More', gallery_index_path, class: 'btn btn-large'
+        = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
       = render 'shared/horizontal_slider', items: @latest, direction: 'right'
 
     .span2
