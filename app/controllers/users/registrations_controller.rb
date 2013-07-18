@@ -40,6 +40,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       cookies.delete(:viewed_activities)
       cookies[:returning_visitor] = true
       mixpanel.track 'Signed Up', { distinct_id: @user.id, time: @user.created_at }
+      finished('counter_split', :reset => false)
     else
       render :new
     end
