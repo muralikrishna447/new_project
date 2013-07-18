@@ -8,7 +8,7 @@
       %span(ng-model="current_user_votes" ng-init="current_user_votes=#{current_user_votes}")
       %h1
         {{poll.title}}
-      %h3
+      %p
         {{poll.description}}
       %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak)
         .poll-item
@@ -59,3 +59,5 @@
                 %i.icon-google-plus
               %a.poll-item-btn.poll-item-btn-social(href="https://twitter.com/intent/tweet?text=I voted for {{poll_item.title}} on @ChefSteps!&url=#{ url_encode(current_url(request))}")
                 %i.icon-twitter
+
+= render 'layouts/footer'                
