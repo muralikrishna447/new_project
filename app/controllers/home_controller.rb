@@ -1,8 +1,8 @@
 class HomeController < ApplicationController
 
   def index
-    if current_user && current_user.events.stream.length > 3
-      @stream = current_user.events.stream.take(4)
+    if current_user && current_user.received_stream.length > 3
+      @stream = current_user.received_stream.take(4)
     else
       @heroes = Setting.featured_activities
       @recipes = Activity.published.recipes.includes(:steps).last(6) - @heroes

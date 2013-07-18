@@ -79,5 +79,25 @@ class User < ActiveRecord::Base
     Like.where('user_id = ? AND likeable_type = ? AND likeable_id = ?', self.id, likeable_object.class.to_s, likeable_object.id).any?
   end
 
+  def received_stream
+    events.timeline.where(action: 'received_create').group_by{|e| e.group_name}
+    # timeline.group_by{|e| e.group_name}
+  end
+
+  def created_stream
+    events.timeline.where('action != ?', 'received_create').group_by{|e| e.group_name}
+    # timeline.group_by{|e| e.group_name}
+  end
+
+  def stream
+    stream = []
+    followings.each do |following|
+      following.created_stream.each do |group|
+        stream << group
+      end
+    end
+    stream.sort_by{|group| group[1].first.created_at}.reverse
+  end
+
 end
 

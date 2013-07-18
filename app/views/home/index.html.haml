@@ -1,7 +1,7 @@
 - content_for :title, "Learn how to be a better cook."
 - content_for :description, "Free online cooking school from key members of the Modernist Cuisine team. Our first course will teach you everything you need to know about sous vide cooking."
 
-- if current_user && current_user.events.stream.length > 3
+- if current_user && current_user.received_stream.length > 3
   = render 'signed_in_homepage'
 - else
   = render 'standard_homepage'
