@@ -90,13 +90,20 @@ class User < ActiveRecord::Base
   end
 
   def stream
-    stream = []
+    # stream = []
+    # followings.each do |following|
+    #   following.created_stream.each do |group|
+    #     stream << group
+    #   end
+    # end
+    # stream.sort_by{|group| group[1].first.created_at}.reverse
+    stream_events = []
     followings.each do |following|
-      following.created_stream.each do |group|
-        stream << group
+      following.events.includes(:trackable).timeline.where('action != ?', 'received_create').each do |event|
+        stream_events << event
       end
     end
-    stream.sort_by{|group| group[1].first.created_at}.reverse
+    stream_events.group_by{|e| e.group_name}.sort_by{|group| group[1].first.created_at}.reverse
   end
 
   def follow(user)
