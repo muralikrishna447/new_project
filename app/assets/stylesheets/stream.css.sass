@@ -73,7 +73,7 @@
       @include transition(all 200ms)
     .stream-item-bottom
       margin-top: 15px
-      height: 200px
+      height: 160px
       @include boxsizing
 
 .stream-item-media1
@@ -121,10 +121,14 @@
         display: none
 
 @media (max-width: 480px)
-  .stream
-    .stream-line
-      display: none
-    .stream-item
-      width: 100%
-      .stream-item-marker
+  .stream-wrapper
+    border: 0px
+    .stream
+      .stream-line
         display: none
+      .stream-item
+        width: 100%
+        .stream-item-marker
+          display: none
+        .stream-item-bottom
+          height: inherit
