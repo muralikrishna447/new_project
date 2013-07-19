@@ -80,12 +80,12 @@ class User < ActiveRecord::Base
   end
 
   def received_stream
-    events.timeline.where(action: 'received_create').group_by{|e| e.group_name}
+    events.timeline.where(action: 'received_create').group_by{|e| [e.group_type, e.group_name]}
     # timeline.group_by{|e| e.group_name}
   end
 
   def created_stream
-    events.includes(:trackable).timeline.where('action != ?', 'received_create').group_by{|e| e.group_name}
+    events.includes(:trackable).timeline.where('action != ?', 'received_create').group_by{|e| [e.group_type, e.group_name]}
     # timeline.group_by{|e| e.group_name}
   end
 
@@ -103,7 +103,7 @@ class User < ActiveRecord::Base
         stream_events << event
       end
     end
-    stream_events.group_by{|e| e.group_name}.sort_by{|group| group[1].first.created_at}.reverse
+    stream_events.group_by{|e| [e.group_type, e.group_name]}.sort_by{|group| group[1].first.created_at}.reverse
   end
 
   def follow(user)

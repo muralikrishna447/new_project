@@ -21,10 +21,14 @@ class Event < ActiveRecord::Base
     trackable.receiver if trackable.class.method_defined?(:receiver)
   end
 
+  def group_type
+    [trackable_type, action]
+  end
+
   def group_name
     # This generates the group name for the event to group similar items for the activity stream
-    type = [trackable_type, action]
-    case type
+    # type = [trackable_type, action]
+    case group_type
     when ['Comment','create']
       name = [trackable_type, trackable_id, action, trackable.commentable_type, trackable.commentable_id].join('_')
       # "Comment_#{trackable_id}_created_for_#{trackable.commentable_type}_#{trackable.commentable_id}"
@@ -41,7 +45,7 @@ class Event < ActiveRecord::Base
     else
       self.inspect
     end
-    [type,name]
+    # [type,name]
   end
 
 end
