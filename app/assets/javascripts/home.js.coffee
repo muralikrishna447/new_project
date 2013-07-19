@@ -70,8 +70,9 @@ $ ->
       target.find('.discussion-author').text(author)
       target.find('.discussion-link').attr('href', link)
 
-  $('#nav-search-toggle').click ->
+  $('.nav-search-toggle').hover ->
     $(this).closest('.nav-search').toggleClass('nav-search-show', 300)
+    $('#nav-search-field').focus()
 
   $('#madlib-name').keyup ->
     toggleMadlibPassword($(this), $('#madlib-email'))

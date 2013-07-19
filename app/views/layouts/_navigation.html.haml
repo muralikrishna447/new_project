@@ -64,8 +64,7 @@
                 - unless external
                   %li
                     .nav-item-border
-                    .nav-search
-                      = link_to 'javascript:void(0);', id: 'nav-search-toggle' do
-                        %i.icon-search.icon-large
+                    .nav-search.nav-search-toggle
+                      %i.icon-search.icon-large
                       = form_tag gallery_index_url, :method => :get, class: 'navbar-form form-search nav-search-form' do
-                        = text_field_tag :search_all, nil, :placeholder => 'search', class: 'search-query'
+                        = text_field_tag :search_all, nil, :placeholder => 'search', class: 'search-query', id: 'nav-search-field'
