@@ -1,21 +1,18 @@
 class HomeController < ApplicationController
 
   def index
-    if current_user && current_user.received_stream.length > 3
-      @stream = current_user.received_stream.take(4)
-    else
-      @heroes = Setting.featured_activities
-      @recipes = Activity.published.recipes.includes(:steps).last(6) - @heroes
-      @techniques = Activity.published.techniques.includes(:steps).last(6) - @heroes
-      @sciences = Activity.published.sciences.includes(:steps).last(6) - @heroes
-      @courses = Course.published.last(3)
-      # cookies.delete(:returning_visitor)
-      @returning_visitor = cookies[:returning_visitor]
-      @new_visitor = params[:new_visitor] || !@returning_visitor
-      # @discussion = Forum.discussions.first
-      #@status = Twitter.status_embed
-      @user = User.new
-    end
+    # @stream = current_user.received_stream.take(4)
+    @heroes = Setting.featured_activities
+    @recipes = Activity.published.recipes.includes(:steps).last(6) - @heroes
+    @techniques = Activity.published.techniques.includes(:steps).last(6) - @heroes
+    @sciences = Activity.published.sciences.includes(:steps).last(6) - @heroes
+    @courses = Course.published.last(3)
+    # cookies.delete(:returning_visitor)
+    @returning_visitor = cookies[:returning_visitor]
+    @new_visitor = params[:new_visitor] || !@returning_visitor
+    # @discussion = Forum.discussions.first
+    #@status = Twitter.status_embed
+    @user = User.new
     @latest = Activity.published.chefsteps_generated.include_in_gallery.last(6)
   end
 
