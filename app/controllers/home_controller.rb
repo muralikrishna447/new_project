@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
 
   def index
+    # @stream = current_user.received_stream.take(4)
     @heroes = Setting.featured_activities
     @recipes = Activity.published.recipes.includes(:steps).last(6) - @heroes
     @techniques = Activity.published.techniques.includes(:steps).last(6) - @heroes
@@ -12,6 +13,7 @@ class HomeController < ApplicationController
     # @discussion = Forum.discussions.first
     #@status = Twitter.status_embed
     @user = User.new
+    @latest = Activity.published.chefsteps_generated.include_in_gallery.last(6)
   end
 
   def about

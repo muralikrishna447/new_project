@@ -1,0 +1,19 @@
+- media_object = group_events.first.trackable.commentable
+.stream-item  
+  .stream-item-top
+    = link_to media_object do
+      .stream-item-title
+        %h4 Comment
+      .stream-item-subtitle
+        = media_object.title
+      = image_tag filepicker_media_box_image(media_object.image_id)
+  .stream-item-marker
+  .stream-item-bottom
+    %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
+    .stream-item-media1
+      .stream-item-media1-user
+        = link_to user_profile_path(group_events.first.trackable.user) do
+          = image_tag filepicker_circle_image(group_events.first.trackable.user.image_id)
+      .stream-item-media1-content
+        = link_to group_events.first.trackable.user.name, user_profile_path(group_events.first.trackable.user)
+        = "said, '#{group_events.first.trackable.content}'"

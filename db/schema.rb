@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130716195202) do
+ActiveRecord::Schema.define(:version => 20130718175414) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -205,6 +205,16 @@ ActiveRecord::Schema.define(:version => 20130716195202) do
     t.datetime "updated_at",                        :null => false
     t.boolean  "viewed",         :default => false
   end
+
+  create_table "followerships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "follower_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "followerships", ["follower_id"], :name => "index_followerships_on_follower_id"
+  add_index "followerships", ["user_id"], :name => "index_followerships_on_user_id"
 
   create_table "friendly_id_slugs", :force => true do |t|
     t.string   "slug",                         :null => false
