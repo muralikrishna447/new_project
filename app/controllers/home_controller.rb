@@ -3,9 +3,9 @@ class HomeController < ApplicationController
   def index
     # @stream = current_user.received_stream.take(4)
     @heroes = Setting.featured_activities
-    @recipes = Activity.published.recipes.includes(:steps).last(6) - @heroes
-    @techniques = Activity.published.techniques.includes(:steps).last(6) - @heroes
-    @sciences = Activity.published.sciences.includes(:steps).last(6) - @heroes
+    @recipes = Activity.published.chefsteps_generated.recipes.includes(:steps).last(6) - @heroes
+    @techniques = Activity.published.chefsteps_generated.techniques.includes(:steps).last(6) - @heroes
+    @sciences = Activity.published.chefsteps_generated.sciences.includes(:steps).last(6) - @heroes
     @courses = Course.published.last(3)
     # cookies.delete(:returning_visitor)
     @returning_visitor = cookies[:returning_visitor]
