@@ -43,6 +43,15 @@
                     %li= link_to 'Courses', courses_url
                     %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
                     %li= link_to 'Science', gallery_index_url(activity_type: "Science")
+                %li.dropdown
+                  .nav-item-border
+                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                    Community
+                    %i.icon-angle-down
+                  %ul.dropdown-menu
+                    .dropdown-background
+                    %li= link_to 'Forum', 'http://forum.chefsteps.com'
+                    %li= link_to 'Vote For New Content', poll_url(1)
                 %li
                   .nav-item-border
                   = link_to 'Community', 'http://forum.chefsteps.com'
