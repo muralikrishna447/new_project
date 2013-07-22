@@ -66,6 +66,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
         track_event @course, 'enroll'
         finished('poutine', :reset => false)
+        finished('free or not', :reset => false)
         mixpanel.track 'Course Enrolled', { distinct_id: @user.id, course: @course.title, enrollment_method: 'Sign Up and Enroll' }
       end
     else
