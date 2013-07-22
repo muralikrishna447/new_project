@@ -1,4 +1,4 @@
-- content_for :title, course.title
+- content_for :title, "#{course.title} Course"
 - content_for :description, course.short_description
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
@@ -10,5 +10,8 @@
 - else
   :javascript
     mixpanel.track('Course Viewed', {'course' : "#{course.title}", 'url' : window.location.pathname});
+
+- if course.additional_script
+  = course.additional_script.html_safe
 
 #course-title(data-course="#{course.title}")

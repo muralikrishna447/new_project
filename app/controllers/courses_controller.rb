@@ -19,7 +19,7 @@ class CoursesController < ApplicationController
       @new_user = User.new
       render 'poutine'
     elsif @course.title == 'Knife Sharpening'
-      @new_users = User.new
+      @new_user = User.new
       render 'knife-sharpening'
     end
 
@@ -32,6 +32,7 @@ class CoursesController < ApplicationController
       redirect_to course_path(@course), notice: "You are now enrolled!"
       track_event @course
       finished('poutine', :reset => false)
+      finished('free or not', :reset => false)
     end
   end
 
