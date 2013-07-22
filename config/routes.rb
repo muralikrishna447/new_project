@@ -136,6 +136,7 @@ Delve::Application.routes.draw do
   resources :votes, only: [:create]
   resources :comments
   resources :followerships, only: [:update]
+  resources :assemblies, only: [:index, :show]
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
