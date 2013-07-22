@@ -68,3 +68,5 @@
                       %i.icon-search.icon-large
                       = form_tag gallery_index_url, :method => :get, class: 'navbar-form form-search nav-search-form' do
                         = text_field_tag :search_all, nil, :placeholder => 'search', class: 'search-query', id: 'nav-search-field'
+                      .nav-search-hide
+                        %i.icon-remove
