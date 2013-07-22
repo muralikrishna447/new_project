@@ -29,8 +29,7 @@
                     .dropdown-background
                     %li= link_to 'Recipes', gallery_index_url(activity_type: "Recipe")
                     %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
-                    -if can? :update, Activity
-                      %li= link_to 'New Recipe', new_activity_url
+                    %li= link_to 'Add A Recipe', new_activity_url
                 %li.dropdown
                   .nav-item-border
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
