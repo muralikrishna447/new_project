@@ -8,6 +8,8 @@ class Like < ActiveRecord::Base
 
   validates :user_id, uniqueness: {scope: [:likeable_id, :likeable_type], message: 'can only like an item once.'}
 
+  default_scope includes(:user).order('created_at DESC')
+
   def self.scoped_by_type(type)
     self.where('likeable_type = ?', type)
   end

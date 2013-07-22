@@ -43,8 +43,8 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @techniques = Activity.published.techniques.includes(:steps).last(6)
-        @recipes = Activity.published.recipes.includes(:steps).last(6)
+        @techniques = Activity.published.chefsteps_generated.techniques.includes(:steps).last(6)
+        @recipes = Activity.published.chefsteps_generated.recipes.includes(:steps).last(6)
 
         if params[:course_id]
           @course = Course.find(params[:course_id])
@@ -101,9 +101,10 @@ class ActivitiesController < ApplicationController
     @activity.title = ""
     @activity.description = ""
     @activity.title = ""
-    @activity.creator = current_user unless current_user.admin?
+    @activity.creator = current_user.admin? ? nil : current_user
     @include_edit_toolbar = true
     @activity.save({validate: false})
+    track_event(@activity, 'create') unless current_user.admin?
     redirect_to activity_path(@activity, {start_in_edit: true})
   end
 
@@ -113,6 +114,7 @@ class ActivitiesController < ApplicationController
     @activity.title = "#{current_user.name}'s Version Of #{old_activity.title}"
     @activity.creator = current_user.admin? ? nil : current_user
     @activity.save!
+    track_event(@activity, 'create') unless current_user.admin?
     render :json => {redirect_to: activity_path(@activity, {start_in_edit: true})}
   end
 
@@ -178,7 +180,6 @@ class ActivitiesController < ApplicationController
               @activity.tag_list = tags.map { |t| t[:name]} if tags
               @activity.attributes = params[:activity]
               @activity.save!
-              track_event(@activity, 'create') if (params[:id] == '-1') && (! current_user.admin?)
 
               @activity.update_equipment_json(equip)
               @activity.update_ingredients_json(ingredients)

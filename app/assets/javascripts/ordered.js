@@ -2,7 +2,6 @@
 //= require array_remove
 //= require click_toggle
 //= require container_height
-//= require location_autocomplete
 //= require namespace
 //= require factory
 //= require base_router

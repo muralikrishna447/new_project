@@ -400,6 +400,24 @@ a:hover
       vertical-align: middle
       height: 100px
 
+#title-edit-pair
+  .profile-image
+    display: inline-block
+
+.mini-profile
+  border: 1px solid #ccc
+  border-radius: 5px
+  padding:  40px
+
+  .profile-image
+    border: 2px solid $orange
+    border-radius: 50%
+    img
+      @include boxsizing
+
+  .profile-body
+    font-size:  90%
+
 // .activity-title
 //   margin-right: 90px
 
@@ -1018,6 +1036,18 @@ a:hover
   width: 40px
   margin: 0 2px
 
+.btn-outline-blue-large
+  background: white
+  height: 44px
+  border: 1px solid $light-blue
+  border-radius: 22px
+  font-weight: 400
+  @include boxsizing
+  @include transition(all 200ms)
+  &:hover
+    background: white
+    border: 1px solid $orange
+
 /* Quiz button */
 .btn-next, .btn-prev
   position: absolute
@@ -1091,14 +1121,17 @@ a:hover
     width: 40px
     overflow: hidden
     @include transition(background 300ms)
+    input[type='text']:focus
+      border-color: $orange
+      box-shadow: none
     &:hover
-      background: $orange
       cursor: pointer
-      #nav-search-toggle
-        color: white
-        text-decoration: none
-    #nav-search-toggle
+    .icon-search
       margin: 21px 10px 22px
+      color: black
+      float: left
+    .icon-remove
+      margin: 20px 5px
       color: black
       float: left
     .nav-search-form
@@ -1111,7 +1144,7 @@ a:hover
       input
         width: 160px
   .nav-search-show
-    width: 210px
+    width: 230px
 
 /* Scroll Shadow */
 .scroll-shadow-wrapper

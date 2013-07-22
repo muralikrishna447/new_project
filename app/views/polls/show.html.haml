@@ -31,12 +31,13 @@
                 {{poll_item.title}}
             .poll-item-user-voted(ng-show='current_user_voted_for_this(poll_item)')
               You voted for this!
-            .poll-item-voters(ng-repeat='voter in poll_item.users')
-              .poll-item-voter
-                %a(href="/profiles/{{voter.slug}}")
-                  %img(ng-src="{{userImageUrl(voter.image_id)}}")
-                .poll-item-voter-tooltip
-                  {{voter.name}}
+            .poll-item-voters
+              %div(ng-repeat='voter in poll_item.users')
+                .poll-item-voter
+                  %a(href="/profiles/{{voter.slug}}")
+                    %img(ng-src="{{userImageUrl(voter.image_id)}}")
+                  .poll-item-voter-tooltip
+                    {{voter.name}}
             %div(ng-show='poll_item.show_details')
               %p.lead {{poll_item.description}}
               %div(ng-controller='CommentsController' ng-init="init('poll_items',poll_item.id)" ng-cloak)

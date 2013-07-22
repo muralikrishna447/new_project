@@ -26,6 +26,9 @@
       - if current_user == @user
         = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-primary btn-block'
         = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'
+      / - else
+      /   = link_to followership_path(@user), method: :put, class: 'btn btn-primary btn-block' do
+      /     = current_user.follows?(@user) ? 'Unfollow' : 'Follow'
     .span5.nav-tabs-gray
       %h4 Bio
       %p= @user.bio
