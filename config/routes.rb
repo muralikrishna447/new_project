@@ -137,6 +137,7 @@ Delve::Application.routes.draw do
   resources :comments
   resources :followerships, only: [:update]
   resources :assemblies, only: [:index, :show]
+  resources :projects, controller: :assemblies
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
