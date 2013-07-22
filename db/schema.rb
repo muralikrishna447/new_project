@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(:version => 20130722224407) do
   create_table "assembly_inclusions", :force => true do |t|
     t.string   "includable_type"
     t.integer  "includable_id"
+    t.integer  "assembly_id"
     t.integer  "position"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
