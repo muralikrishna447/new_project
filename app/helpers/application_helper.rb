@@ -218,5 +218,14 @@ module ApplicationHelper
     doc = SimpleRSS.parse open(url)
   end
 
+  def assembly_type_path(assembly)
+    if assembly.assembly_type?
+      assembly_type_path = assembly.assembly_type.downcase.pluralize
+      assembly_path(assembly).gsub('/assemblies', "/#{assembly_type_path}")
+    else
+      assembly_path(assembly)
+    end
+  end
+
 end
 
