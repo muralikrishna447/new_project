@@ -6,13 +6,21 @@
       - else
         - current_user_votes = false
       %span(ng-model="current_user_votes" ng-init="current_user_votes=#{current_user_votes}")
-      %h1
-        {{poll.title}}
-      %p
-        {{poll.description}}
-      %h3
-        Votes
-        {{poll.total_votes_count}}
+      .poll-header-block
+        .poll-header
+          %h1
+            {{poll.title}}
+          %p
+            {{poll.description}}
+        .poll-header-votes
+          .poll-header-votes-border
+            .poll-header-votes-count
+              = @poll.poll_items.map(&:votes_count).inject(:+)
+            .poll-header-votes-text
+              Votes
+              .poll-header-votes-subtext
+                and counting...
+
       %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak)
         .poll-item
           .poll-item-vote-up

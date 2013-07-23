@@ -1,5 +1,31 @@
 @import 'mixins'
 
+.poll-header-block
+  @include raleway
+  .poll-header
+    width: 70%
+    float: left
+  .poll-header-votes
+    width: 30%
+    float: left
+    .poll-header-votes-border
+      border: 1px solid black
+      border-radius: 5px
+      float: right
+      padding: 4%
+      height: 40px
+      .poll-header-votes-count
+        font-size: 60px
+        line-height: 40px
+        float: left
+      .poll-header-votes-text
+        float: right
+        font-size: 24px
+        line-height: 20px
+        padding-top: 5px
+        .poll-header-votes-subtext
+          font-size: 10px
+
 .poll-item
   width: 100%
   //height: 80px
@@ -133,6 +159,32 @@
     padding: 15px
 
 @media (max-width: 480px)
+  .poll-header-block
+    .poll-header
+      width: 100%
+      h1
+        font-size: 26px
+    .poll-header-votes
+      width: 50%
+      margin-bottom: 20px
+      .poll-header-votes-border
+        width: 100%
+        @include boxsizing
+        height: 40px
+        .poll-header-votes-count
+          font-size: 40px
+          line-height: inherit
+        .poll-header-votes-text
+          margin-left: 3%
+          float: left
+          font-size: 18px
+          line-height: 18px
+          padding: 0px
+          height: 18px
+          .poll-header-votes-subtext
+            float: left
+            line-height: 5px
+
   .poll-item
     font-size: 16px
 

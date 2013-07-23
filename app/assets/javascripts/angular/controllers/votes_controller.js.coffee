@@ -43,4 +43,5 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
       image.url + '/convert?fit=crop&w=30&h=30&cache=true'
     else
       'http://www.placehold.it/30x30/cccccc/cccccc&text=ChefSteps'
+
 ]
