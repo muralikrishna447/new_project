@@ -6,6 +6,14 @@ class Assembly < ActiveRecord::Base
   has_many :includables, through: :assembly_inclusions
 
   def ingredients
-    assembly_inclusions.map(&:includable).map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}
+    assembly_inclusions.map(&:includable).map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}.reject{|i| i.unit == 'recipe'}
+  end
+
+  def grouped_ingredients
+    self.ingredients.group_by{|assembly_ingredient| [assembly_ingredient.ingredient, assembly_ingredient.note, assembly_ingredient.unit]}
+  end
+
+  def combined_ingredients
+    self.grouped_ingredients.map{ |ingredient_group| [ingredient_group[0], ingredient_group[1].map(&:quantity).inject(:+), ingredient_group[1][0].unit] }
   end
 end
