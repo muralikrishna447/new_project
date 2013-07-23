@@ -122,9 +122,10 @@ ActiveRecord::Schema.define(:version => 20130722224407) do
     t.text     "description"
     t.text     "image_id"
     t.string   "youtube_id"
-    t.string   "assembly_type"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.string   "type",        :default => "Assembly"
+    t.string   "slug"
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
   end
 
   create_table "assembly_inclusions", :force => true do |t|
@@ -135,6 +136,9 @@ ActiveRecord::Schema.define(:version => 20130722224407) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
+
+  add_index "assembly_inclusions", ["assembly_id"], :name => "index_assembly_inclusions_on_assembly_id"
+  add_index "assembly_inclusions", ["includable_id", "includable_type"], :name => "index_assembly_inclusions_on_includable_id_and_includable_type"
 
   create_table "assignments", :force => true do |t|
     t.integer  "activity_id"

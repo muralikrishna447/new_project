@@ -5,7 +5,8 @@ class CreateAssemblies < ActiveRecord::Migration
       t.text :description
       t.text :image_id
       t.string :youtube_id
-      t.string :assembly_type
+      t.string :type, default: 'Assembly'
+      t.string :slug
 
       t.timestamps
     end

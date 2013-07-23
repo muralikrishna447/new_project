@@ -8,5 +8,7 @@ class CreateAssemblyInclusions < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :assembly_inclusions, [:includable_id, :includable_type]
+    add_index :assembly_inclusions, [:assembly_id]
   end
 end

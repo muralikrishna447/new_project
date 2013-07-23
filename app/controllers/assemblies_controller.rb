@@ -9,5 +9,6 @@ class AssembliesController < ApplicationController
   end
 
   def show
+    @assembly = Assembly.find(params[:id])
   end
 end
