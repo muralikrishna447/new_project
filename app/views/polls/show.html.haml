@@ -1,4 +1,4 @@
-.container#poll{data: {:'poll-id' => "#{@poll.id}"}}
+.container.section#poll{data: {:'poll-id' => "#{@poll.id}"}}
   .row
     .span12(ng-controller='VotesController' ng-cloak)
       - if current_user
@@ -27,8 +27,7 @@
 
           .poll-item-text
             %a.poll-item-details-btn(ng-click='pollItemDetails(poll_item)')
-              %h2
-                {{poll_item.title}}
+              %h3 {{poll_item.title}}
             .poll-item-user-voted(ng-show='current_user_voted_for_this(poll_item)')
               You voted for this!
             .poll-item-voters
