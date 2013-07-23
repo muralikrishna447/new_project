@@ -29,6 +29,11 @@
             .span3
               %h4 All Ingredients
               = link_to 'Text me this list', '#', class: 'btn btn-secondary'
+              %ul.unstyled
+                - @project.ingredients.each do |includable_ingredient|
+                  %li
+                    = "#{includable_ingredient.quantity}#{includable_ingredient.unit}"
+                    = includable_ingredient.ingredient.title
         - @project.assembly_inclusions.each do |assembly_inclusion|
           .tab-pane{id: "project-#{assembly_inclusion.id}"}
             = render '/shared/activity', activity: assembly_inclusion.includable
