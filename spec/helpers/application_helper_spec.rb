@@ -50,3 +50,9 @@ describe ApplicationHelper, "body data" do
     helper.body_data.should == {}
   end
 end
+
+describe ApplicationHelper do
+  it 'returns correct path for projects' do
+    # helper.aassembly_type_path.should == 'assemblies/1'
+  end
+end
