@@ -9,6 +9,7 @@ class AssembliesController < ApplicationController
   end
 
   def show
-    @assembly = Assembly.find(params[:id])
+    assembly = Assembly.find(params[:id])
+    instance_variable_set("@#{assembly.assembly_type.underscore}", assembly)
   end
 end
