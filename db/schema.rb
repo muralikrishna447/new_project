@@ -122,10 +122,10 @@ ActiveRecord::Schema.define(:version => 20130722224407) do
     t.text     "description"
     t.text     "image_id"
     t.string   "youtube_id"
-    t.string   "type",        :default => "Assembly"
+    t.string   "assembly_type", :default => "Assembly"
     t.string   "slug"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
   end
 
   create_table "assembly_inclusions", :force => true do |t|
