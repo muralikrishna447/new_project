@@ -2,7 +2,7 @@
   .span6
     .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
       - if activity.youtube_id?
-        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url(activity.youtube_id)}
+        %iframe.force-aspect{src: youtube_url(activity.youtube_id)}
       - elsif activity.image_id?
         = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title, itemprop: 'image'
       - elsif activity.featured_image_id?
