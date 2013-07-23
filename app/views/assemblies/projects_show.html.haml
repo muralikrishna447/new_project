@@ -1,1 +1,34 @@
-= @project.inspect
+.container
+  %h1= @project.title
+  .row
+    .span12
+      %ul.nav.nav-pills
+        %li.active
+          = link_to 'Introduction', '#introduction', data: {toggle: 'tab'}
+        - @project.assembly_inclusions.each do |assembly_inclusion|
+          %li
+            = link_to assembly_inclusion.includable.title, "#project-#{assembly_inclusion.id}", data: {toggle: 'tab'}
+      .tab-content
+        .tab-pane.active#introduction
+          .row
+            .span9
+              .row
+                .container-fluid
+                  .row-fluid
+                    .span6
+                      .section
+                        %ul
+                          - @project.assembly_inclusions.each do |assembly_inclusion|
+                            %li
+                              = link_to assembly_inclusion.includable.title, assembly_inclusion.includable
+                      .section
+                        = link_to 'Get Started', '#', class: 'btn btn-large btn-primary input-block-level'
+                    .span6
+                      .lead
+                        = @project.description
+            .span3
+              %h4 All Ingredients
+              = link_to 'Text me this list', '#', class: 'btn btn-secondary'
+        - @project.assembly_inclusions.each do |assembly_inclusion|
+          .tab-pane{id: "project-#{assembly_inclusion.id}"}
+            = render '/shared/activity', activity: assembly_inclusion.includable
