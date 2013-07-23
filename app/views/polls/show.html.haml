@@ -53,7 +53,7 @@
               %p.black-link {{poll_item.description}}
             .poll-item-user-voted(ng-show='current_user_voted_for_this(poll_item)')
               You voted for this!
-            .poll-item-voters(ng-show='current_user_voted_for_this(poll_item)')
+            .poll-item-voters(ng-show='current_user_voted()')
               %div(ng-repeat='voter in poll_item.users')
                 .poll-item-voter
                   %a(href="/profiles/{{voter.slug}}")
