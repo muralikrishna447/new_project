@@ -1,3 +1,14 @@
+- content_for :title, "Poll - #{@poll.title.html_safe}"
+- content_for :description, @poll.description != "" ? @poll.description.html_safe : @poll.title.html_safe
+- content_for :canonical_link, poll_url(@poll) if @poll.id
+- content_for :keywords, @poll.poll_items.map(&:title).join(',')
+
+- content_for :facebook_og do
+  %meta{property: 'og:url', content: poll_url(@poll)}
+  %meta{property: 'og:title', content: @poll.title.html_safe}
+  %meta{property: 'og:description', content: @poll.description != "" ? @poll.description.html_safe : @poll.title.html_safe}
+  %meta{property: 'og:image', content: s3_image_url(Setting.footer_image)}
+
 .container.section#poll{data: {:'poll-id' => "#{@poll.id}"}}
   .row
     .span12(ng-controller='VotesController' ng-cloak)
@@ -33,6 +44,8 @@
               %span(ng-switch-when='false')
                 .poll-item-btn(ng-click="voteObject(poll_item,$index)")
                   %i.icon-angle-up
+                  .poll-item-vote-count(ng-show='current_user_voted()')
+                    {{poll_item.votes_count}}
 
           .poll-item-text
             %a.poll-item-details-btn(ng-click='pollItemDetails(poll_item)')
