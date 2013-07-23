@@ -12,7 +12,7 @@
         :markdown
           #{apply_shortcodes(activity.description)}
     - if activity.ingredients.any?
-      .activity-ingredients-list#full-ingredients-list{data: {target: ''}}
+      .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
         .well
           %table.ingredients{:itemprop => "ingredients"}
             %thead
@@ -63,32 +63,21 @@
             - if step.ingredients.any?
               .step-ingredients-source.well
                 .activity-ingredients-list#full-ingredients-list{data: {target: ''}}
-                  .well
-                    %table.ingredients{:itemprop => "ingredients"}
-                      %thead
-                        %tr
-                          %th#ingredient Ingredient
-                          %th#quantity{colspan: 2}
-                            %a.change_units{title: "Click to change units"} Quantity
-                            %a.recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}
-                              %i.icon-question-sign
-                      %tbody
-                        - activity.ingredients.each do |ingredient|
-                          = render '/activities/old_ingredient_row', ingredient: ingredient
+                  %table.ingredients{:itemprop => "ingredients"}
+                    %thead
+                      %tr
+                        %th#ingredient Ingredient
+                        %th#quantity{colspan: 2}
+                          %a.change_units{title: "Click to change units"} Quantity
+                          %a.recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}
+                            %i.icon-question-sign
+                    %tbody
+                      - activity.ingredients.each do |ingredient|
+                        = render '/activities/old_ingredient_row', ingredient: ingredient
             :markdown
               #{apply_shortcodes(step.directions)}
-            .step-actions.btn-group
-              - if step.image_id?
-                .btn.step-action-item.step-image-btn.btn-primary
-                  %i.icon-picture
-              - if step.youtube_id?
-                .btn.step-action-item.step-video-btn.btn-primary
-                  %i.icon-facetime-video
             - if step.image_id?
-              .step-image{id: "step-image-#{index}"}
-                -descrip = filepicker_image_description(step.image_id, step.image_description)
-                = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip, :itemprop => 'image'
+              -descrip = filepicker_image_description(step.image_id, step.image_description)
+              = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip, :itemprop => 'image'
             - if step.youtube_id?
-              .step-video{id: "step-video-#{index}"}
-                .video-container
-                  %iframe{src: youtube_url(step.youtube_id)}
+              %iframe{src: youtube_url(step.youtube_id)}
