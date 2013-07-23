@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130718175414) do
+ActiveRecord::Schema.define(:version => 20130722224407) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -116,6 +116,29 @@ ActiveRecord::Schema.define(:version => 20130718175414) do
   end
 
   add_index "answers", ["question_id", "user_id"], :name => "index_answers_on_question_id_and_user_id", :unique => true
+
+  create_table "assemblies", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.text     "image_id"
+    t.string   "youtube_id"
+    t.string   "assembly_type", :default => "Assembly"
+    t.string   "slug"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+  end
+
+  create_table "assembly_inclusions", :force => true do |t|
+    t.string   "includable_type"
+    t.integer  "includable_id"
+    t.integer  "assembly_id"
+    t.integer  "position"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "assembly_inclusions", ["assembly_id"], :name => "index_assembly_inclusions_on_assembly_id"
+  add_index "assembly_inclusions", ["includable_id", "includable_type"], :name => "index_assembly_inclusions_on_includable_id_and_includable_type"
 
   create_table "assignments", :force => true do |t|
     t.integer  "activity_id"
