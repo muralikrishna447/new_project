@@ -10,6 +10,9 @@
         {{poll.title}}
       %p
         {{poll.description}}
+      %h3
+        Votes
+        {{poll.total_votes_count}}
       %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak)
         .poll-item
           .poll-item-vote-up
@@ -22,15 +25,14 @@
               %span(ng-switch-when='false')
                 .poll-item-btn(ng-click="voteObject(poll_item,$index)")
                   %i.icon-angle-up
-                  .poll-item-vote-count(ng-show="poll_item.votes_count > 0")
-                    {{poll_item.votes_count}}
 
           .poll-item-text
             %a.poll-item-details-btn(ng-click='pollItemDetails(poll_item)')
               %h3 {{poll_item.title}}
+              %p.black-link {{poll_item.description}}
             .poll-item-user-voted(ng-show='current_user_voted_for_this(poll_item)')
               You voted for this!
-            .poll-item-voters
+            .poll-item-voters(ng-show='current_user_voted_for_this(poll_item)')
               %div(ng-repeat='voter in poll_item.users')
                 .poll-item-voter
                   %a(href="/profiles/{{voter.slug}}")
@@ -38,7 +40,6 @@
                   .poll-item-voter-tooltip
                     {{voter.name}}
             %div(ng-show='poll_item.show_details')
-              %p.lead {{poll_item.description}}
               %div(ng-controller='CommentsController' ng-init="init('poll_items',poll_item.id)" ng-cloak)
                 = render 'comments/comments', commentable: nil
               / = render 'comments/comments', commentable: @poll
