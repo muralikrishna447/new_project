@@ -37,4 +37,4 @@
       .select-readout(ng-class="{fakefocus: unitSelectHasFocus}")
         {{ai.unit}}
         %i.icon-caret-down
-      %select(type="text" ng-model="ai.unit" required="true" ng-options="u for u in allUnitNames()" ui-event='{focus : "unitSelectHasFocus = true", blur: "unitSelectHasFocus = false"}')
+      %select(type="text" ng-model="ai.unit" required="true" ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()" ui-event='{focus : "unitSelectHasFocus = true", blur: "unitSelectHasFocus = false"}')

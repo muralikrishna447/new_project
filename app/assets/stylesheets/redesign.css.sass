@@ -586,26 +586,46 @@ a:hover
     display: inline-block
 
   .ingredient-table-row
+    position: relative
     width: 100%
     line-height: 20px
+
   .ingredient-title
-    width: 61%
+    width: auto
+    height:  auto
+    margin-right: 100px
+
   .quantity-group
-    width: 28%
+    position:  absolute
+    right:  44px
+    width:  50px
+    text-align:  right
+    bottom:  -2px
+
+  .quantity-edit
+    position: relative
+    bottom: -4px
+    left:  -8px
+
   .unit
-    width: 9%
+    position: absolute
+    right: 0px
+    bottom:  -2px
+    width:  40px
+    text-align:  left
 
   .ingredient-table-head
+    position: relative
     width: 100%
     line-height: 30px
     font-size: 17.5px
     margin-bottom: 6px
     display: block
     font-weight: bold
+
     .quantity-group
-      width: 32%
-    .unit
-      width: 0%
+      right:  0px
+      width:  120px
 
   .ingredient-table-body
     width: 100%
@@ -1361,19 +1381,18 @@ csingredienteditpair
   .edit-pair-edit
 
     .ingredient-title
-      width: 80%
-      select
-        width: 55%
+      overflow: hidden
       input
-        width: 44%
+        &:first-child
+          width: 65%
+        &:last-child
+          width: 34%
 
     .quantity-group
-      width: 10%
+      bottom: -4px
 
     .unit
       cursor: pointer
-      width: 7%
-      position: relative
       overflow:  visible
       select
         margin: 0

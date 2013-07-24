@@ -4,26 +4,26 @@ csLengthUnits = "cm"
 window.csUnitsCookieName = "chefsteps_units"
 
 window.allUnits = [
-  {measures: "generic", name: "ea", menuName: "each"},
-  {measures: "generic", name: "recipe", plural: "recipes"},
-  {measures: "generic", name: "a/n", menuName: "as needed"},
-  {measures: "generic", name: "piece", plural: "pieces"},
+  {measures: "Weight", name: "g", menuName: "gram"},
+  {measures: "Weight", name: "kg", menuName: "kilogram"},
+  {measures: "Weight", name: "lb", plural: "lbs", menuName: "pound"},
+  {measures: "Weight", name: "oz", plural: "ozs", menuName: "ounces"},
 
-  {measures: "weight", name: "g"},
-  {measures: "weight", name: "kg"},
-  {measures: "weight", name: "lb", plural: "lbs", menuName: "pound"},
-  {measures: "weight", name: "oz", plural: "ozs", menuName: "ounces (weight)"},
+  {measures: "Volume", name: "ml", menuName: "milliliter"},
+  {measures: "Volume", name: "l", menuName: "liter"}
+  {measures: "Volume", name: "drop", plural: "drops"},
+  {measures: "Volume", name: "fl. oz.", plural: "fl. ozs.", menuName: "fluid ounce"},
+  {measures: "Volume", name: "tsp.", menuName: "teaspoon", plural: "teaspoons"},
+  {measures: "Volume", name: "Tbsp.", menuName: "tablespoon", plural: "tablespoons"},
+  {measures: "Volume", name: "cup", plural: "cups"},
+  {measures: "Volume", name: "pint", plural: "pints"},
+  {measures: "Volume", name: "quart", plural: "quarts"},
+  {measures: "Volume", name: "gallon", plural: "gallons"},
 
-  {measures: "volume", name: "drop", plural: "drops"},
-  {measures: "volume", name: "fl. oz.", plural: "fl. ozs.", menuName: "fluid ounce"},
-  {measures: "volume", name: "teaspoon", plural: "teaspoons"},
-  {measures: "volume", name: "tablespoon", plural: "tablespoons"},
-  {measures: "volume", name: "cup", plural: "cups"},
-  {measures: "volume", name: "pint", plural: "pints"},
-  {measures: "volume", name: "quart", plural: "quarts"},
-  {measures: "volume", name: "gallon", plural: "gallons"},
-  {measures: "volume", name: "ml"},
-  {measures: "volume", name: "l"}
+  {measures: "Miscellanea", name: "ea", menuName: "each"},
+  {measures: "Miscellanea", name: "recipe", plural: "recipes"},
+  {measures: "Miscellanea", name: "a/n", menuName: "as needed"},
+  {measures: "Miscellanea", name: "piece", plural: "pieces"}
 ]
 
 # Normalize unit names
@@ -36,7 +36,7 @@ unitByName = (unitName) ->
   _.find(window.allUnits, (u) -> (u.name == unitName) || (u.plural == unitName))
 
 isWeightUnit = (unitName) ->
-  unitByName(unitName).measures == "weight"
+  unitByName(unitName)?.measures == "Weight"
 
 
 # NOTE WELL there are some places where we are using children(), not find() here very on purpose, because it is
@@ -160,7 +160,11 @@ updateOneRowUnits = ->
 
   # "ea" means each, just round up to nearest integer
   if existingUnits == "ea"
-    setRow $(this), "", Math.ceil(origValue), "ea"
+    setRow $(this), "", Math.ceil(origValue), existingUnits
+
+  # a/n means "as needed" - quantity always blank
+  else if existingUnits == "a/n"
+    setRow $(this), "", "", existingUnits
 
   else if isWeightUnit(existingUnits)
 
@@ -186,9 +190,11 @@ updateOneRowUnits = ->
         ounces = 0.01 if ounces < 0.01
         setRow $(this), "", ounces.toString(), "oz"
 
-  # Any other unit, we just want to leave alone except for pluralizing / shortening
+  # Any other unit, we just want to leave alone except for pluralization
   else
-    setRow $(this), "", origValue, existingUnits
+    unitText = existingUnits
+    unitText = unitByName(existingUnits).plural if origValue > 1.001
+    setRow $(this), "", origValue, unitText
 
 
 

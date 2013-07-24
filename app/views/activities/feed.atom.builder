@@ -2,7 +2,7 @@ atom_feed :language => 'en-US' do |feed|
   feed.title @title
   feed.updated @updated
 
-  @activities.each do |activity|
+  @activities.chefsteps_generated.each do |activity|
     next if activity.updated_at.blank?
     next if ! activity.published?
 
