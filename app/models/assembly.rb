@@ -16,4 +16,8 @@ class Assembly < ActiveRecord::Base
   def combined_ingredients
     self.grouped_ingredients.map{ |ingredient_group| [ingredient_group[0], ingredient_group[1].map(&:quantity).inject(:+), ingredient_group[1][0].unit] }
   end
+
+  def equipment
+    assembly_inclusions.map(&:includable).map(&:equipment).flatten
+  end
 end
