@@ -1,5 +1,5 @@
 = f.inputs do
-  = f.input :includable_type
+  = f.input :includable_type, as: :select, collection: Assembly::INCLUDABLE_TYPE_SELECTION
   = f.input :includable_id
   = f.input :position
   = f.hidden_field :_destroy

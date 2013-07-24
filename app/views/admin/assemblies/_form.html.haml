@@ -1,5 +1,6 @@
 = semantic_form_for [:admin, @assembly] do |f|
   = f.inputs do
+    = f.input :assembly_type, as: :select, collection: Assembly::ASSEMBLY_TYPE_SELECTION
     = f.input :title
     = f.input :description
     = f.input :image_id
