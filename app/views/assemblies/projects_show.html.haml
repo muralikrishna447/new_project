@@ -11,7 +11,7 @@
       .tab-content
         .tab-pane.active#introduction
           .row
-            .span9.force-aspect-wrapper
+            .span8.force-aspect-wrapper
               .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
                 - if @project.youtube_id?
                   %iframe.force-aspect{src: youtube_url(@project.youtube_id)}
@@ -26,10 +26,10 @@
                           = link_to assembly_inclusion.includable.title, assembly_inclusion.includable
                   .section
                     = link_to 'Get Started', '#', class: 'btn btn-large btn-primary input-block-level'
-                .span5
+                .span4
                   .lead
                     = @project.description
-            .span3
+            .span4
               %h4 All Ingredients
               = link_to 'Text me this list', '#', class: 'btn btn-secondary'
               %ul.unstyled
