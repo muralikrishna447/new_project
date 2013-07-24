@@ -13,19 +13,17 @@
           .row
             .span9
               .row
-                .container-fluid
-                  .row-fluid
-                    .span6
-                      .section
-                        %ul
-                          - @project.assembly_inclusions.each do |assembly_inclusion|
-                            %li
-                              = link_to assembly_inclusion.includable.title, assembly_inclusion.includable
-                      .section
-                        = link_to 'Get Started', '#', class: 'btn btn-large btn-primary input-block-level'
-                    .span6
-                      .lead
-                        = @project.description
+                .span4
+                  .section
+                    %ul.unstyled
+                      - @project.assembly_inclusions.each do |assembly_inclusion|
+                        %li
+                          = link_to assembly_inclusion.includable.title, assembly_inclusion.includable
+                  .section
+                    = link_to 'Get Started', '#', class: 'btn btn-large btn-primary input-block-level'
+                .span5
+                  .lead
+                    = @project.description
             .span3
               %h4 All Ingredients
               = link_to 'Text me this list', '#', class: 'btn btn-secondary'
@@ -39,7 +37,7 @@
               %ul.unstyled
                 - @project.equipment.each do |equipment_item|
                   %li
-                    = equipment_item.equipment.title
+                    = equipment_item.title
                        
         - @project.assembly_inclusions.each do |assembly_inclusion|
           .tab-pane{id: "project-#{assembly_inclusion.id}"}

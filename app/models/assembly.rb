@@ -18,6 +18,6 @@ class Assembly < ActiveRecord::Base
   end
 
   def equipment
-    assembly_inclusions.map(&:includable).map(&:equipment).flatten
+    assembly_inclusions.map(&:includable).map(&:terminal_equipment).flatten.uniq.sort_by{ |e| e.title }
   end
 end
