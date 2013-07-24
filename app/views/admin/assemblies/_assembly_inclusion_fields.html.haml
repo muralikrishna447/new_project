@@ -1,0 +1,6 @@
+= f.inputs do
+  = f.input :includable_type
+  = f.input :includable_id
+  = f.input :position
+  = f.hidden_field :_destroy
+  = link_to 'remove', '#', class: 'remove_fields'
