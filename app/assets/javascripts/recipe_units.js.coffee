@@ -13,8 +13,8 @@ window.allUnits = [
   {measures: "Volume", name: "l", menuName: "liter"}
   {measures: "Volume", name: "drop", plural: "drops"},
   {measures: "Volume", name: "fl. oz.", plural: "fl. ozs.", menuName: "fluid ounce"},
-  {measures: "Volume", name: "tsp.", menuName: "teaspoon", plural: "teaspoons"},
-  {measures: "Volume", name: "Tbsp.", menuName: "tablespoon", plural: "tablespoons"},
+  {measures: "Volume", name: "tsp.", menuName: "teaspoon", plural: "tsps."},
+  {measures: "Volume", name: "Tbsp.", menuName: "tablespoon", plural: "Tbsps."},
   {measures: "Volume", name: "cup", plural: "cups"},
   {measures: "Volume", name: "pint", plural: "pints"},
   {measures: "Volume", name: "quart", plural: "quarts"},

@@ -161,7 +161,7 @@ module ApplicationHelper
   end
 
   def apply_shortcodes(text)
-    text.gsub(/\[(\w+)\s+([^\]]*)\]/) do |orig|
+    (text || '').gsub(/\[(\w+)\s+([^\]]*)\]/) do |orig|
       shortcode = $1
       contents = $2
       apply_shortcode(orig, shortcode, contents).html_safe
