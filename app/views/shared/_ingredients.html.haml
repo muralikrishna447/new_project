@@ -1,0 +1,12 @@
+.activity-ingredients-list#full-ingredients-list{data: {target: ''}}
+  %table.ingredients{:itemprop => "ingredients"}
+    / %thead
+    /   %tr
+    /     %th#ingredient Ingredient
+    /     %th#quantity{colspan: 2}
+    /       %a.change_units{title: "Click to change units"} Quantity
+    /       %a.recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}
+    /         %i.icon-question-sign
+    %tbody
+      - ingredients.each do |ingredient|
+        = render '/activities/old_ingredient_row', ingredient: ingredient

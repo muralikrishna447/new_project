@@ -12,19 +12,8 @@
         :markdown
           #{apply_shortcodes(activity.description)}
     - if activity.ingredients.any?
-      .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
-        .well
-          %table.ingredients{:itemprop => "ingredients"}
-            %thead
-              %tr
-                %th#ingredient Ingredient
-                %th#quantity{colspan: 2}
-                  %a.change_units{title: "Click to change units"} Quantity
-                  %a.recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}
-                    %i.icon-question-sign
-            %tbody
-              - activity.ingredients.each do |ingredient|
-                = render '/activities/old_ingredient_row', ingredient: ingredient
+      .section.well
+        = render '/shared/ingredients', ingredients: activity.ingredients
     - if activity.yield.present?
       .section
         %h4 Yield
@@ -61,19 +50,8 @@
             - if step.title?
               %h4= step.title
             - if step.ingredients.any?
-              .step-ingredients-source.well
-                .activity-ingredients-list#full-ingredients-list{data: {target: ''}}
-                  %table.ingredients{:itemprop => "ingredients"}
-                    %thead
-                      %tr
-                        %th#ingredient Ingredient
-                        %th#quantity{colspan: 2}
-                          %a.change_units{title: "Click to change units"} Quantity
-                          %a.recipetip{href: "#", rel: "infotip", "data-original-title" => "Click on quantity column header to change units, or any value to scale the recipe."}
-                            %i.icon-question-sign
-                    %tbody
-                      - activity.ingredients.each do |ingredient|
-                        = render '/activities/old_ingredient_row', ingredient: ingredient
+              .well
+                = render '/shared/ingredients', ingredients: step.ingredients
             :markdown
               #{apply_shortcodes(step.directions)}
             - if step.image_id?
