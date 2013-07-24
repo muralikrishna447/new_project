@@ -1,5 +1,5 @@
 .row
-  .span6
+  .span6.force-aspect-wrapper
     .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
       - if activity.youtube_id?
         %iframe.force-aspect{src: youtube_url(activity.youtube_id)}
