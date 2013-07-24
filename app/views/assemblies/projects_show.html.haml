@@ -12,9 +12,9 @@
         .tab-pane.active#introduction
           .row
             .span8.force-aspect-wrapper
-              .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+              .embed-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
                 - if @project.youtube_id?
-                  %iframe.force-aspect{src: youtube_url(@project.youtube_id)}
+                  %iframe(frameborder='0' allowfullscreen){src: youtube_url(@project.youtube_id)}
                 - elsif @project.image_id?
                   = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title, itemprop: 'image'
               .row
