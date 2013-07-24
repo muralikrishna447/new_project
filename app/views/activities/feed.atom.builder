@@ -2,16 +2,11 @@ atom_feed :language => 'en-US' do |feed|
   feed.title @title
   feed.updated @updated
 
-  @activities.by_published_at('desc').chefsteps_generated.each do |activity|
-    next if activity.updated_at.blank?
-    next if ! activity.published?
+  @activities.each do |activity|
 
     feed.entry( activity ) do |entry|
       entry.url activity_path(activity)
       entry.title activity.title
-      # the strftime is needed to work with Google Reader.
-      entry.updated(activity.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ"))
-
       entry.content :type => 'xhtml' do |xhtml|
         if activity.has_description?
           xhtml.p activity.description
