@@ -1138,14 +1138,17 @@ a:hover
     width: 40px
     overflow: hidden
     @include transition(background 300ms)
+    input[type='text']:focus
+      border-color: $orange
+      box-shadow: none
     &:hover
-      background: $orange
       cursor: pointer
-      #nav-search-toggle
-        color: white
-        text-decoration: none
-    #nav-search-toggle
+    .icon-search
       margin: 21px 10px 22px
+      color: black
+      float: left
+    .icon-remove
+      margin: 20px 5px
       color: black
       float: left
     .nav-search-form
@@ -1158,7 +1161,7 @@ a:hover
       input
         width: 160px
   .nav-search-show
-    width: 210px
+    width: 230px
 
 /* Scroll Shadow */
 .scroll-shadow-wrapper

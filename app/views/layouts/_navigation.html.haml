@@ -22,27 +22,34 @@
               %ul.nav
                 %li.dropdown
                   .nav-item-border
+
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Cooking
+                    Recipes
                     %i.icon-angle-down
                   %ul.dropdown-menu
                     .dropdown-background
-                    %li= link_to 'Recipes', gallery_index_url(activity_type: "Recipe")
-                    %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
+                    %li= link_to 'Recipe Gallery', gallery_index_url(activity_type: "Recipe")
                     %li= link_to 'Add Recipe', new_activity_url
                 %li.dropdown
                   .nav-item-border
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Learning
+                    Learn
                     %i.icon-angle-down
                   %ul.dropdown-menu
                     .dropdown-background
                     / %li= link_to 'Sous Vide Course', course_url('accelerated-sous-vide-cooking-course')
                     %li= link_to 'Courses', courses_url
+                    %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
                     %li= link_to 'Science', gallery_index_url(activity_type: "Science")
-                %li
+                %li.dropdown
                   .nav-item-border
-                  = link_to 'Community', 'http://forum.chefsteps.com'
+                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                    Community
+                    %i.icon-angle-down
+                  %ul.dropdown-menu
+                    .dropdown-background
+                    %li= link_to 'Forum', 'http://forum.chefsteps.com'
+                    %li= link_to 'Vote For New Content', poll_url('vote-for-new-content')
                 %li
                   .nav-item-border
                   = link_to 'Shop', 'http://store.chefsteps.com'
@@ -61,8 +68,9 @@
                 - unless external
                   %li
                     .nav-item-border
-                    .nav-search
-                      = link_to 'javascript:void(0);', id: 'nav-search-toggle' do
-                        %i.icon-search.icon-large
+                    .nav-search.nav-search-toggle
+                      %i.icon-search.icon-large
                       = form_tag gallery_index_url, :method => :get, class: 'navbar-form form-search nav-search-form' do
-                        = text_field_tag :search_all, nil, :placeholder => 'search', class: 'search-query'
+                        = text_field_tag :search_all, nil, :placeholder => 'search', class: 'search-query', id: 'nav-search-field'
+                      .nav-search-hide
+                        %i.icon-remove
