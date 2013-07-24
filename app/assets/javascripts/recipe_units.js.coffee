@@ -7,7 +7,7 @@ window.allUnits = [
   {measures: "Weight", name: "g", menuName: "gram"},
   {measures: "Weight", name: "kg", menuName: "kilogram"},
   {measures: "Weight", name: "lb", plural: "lbs", menuName: "pound"},
-  {measures: "Weight", name: "oz", plural: "ozs", menuName: "ounces"},
+  {measures: "Weight", name: "oz", plural: "ozs", menuName: "ounce"},
 
   {measures: "Volume", name: "ml", menuName: "milliliter"},
   {measures: "Volume", name: "l", menuName: "liter"}
@@ -112,7 +112,6 @@ window.makeEditable = (elements) ->
   }
   # Editable freaks if called twice on same element
   elements.attr("data-marked-editable", "true")
-  updateUnits(false)
 
 
 # Make the unit labels edit the units
