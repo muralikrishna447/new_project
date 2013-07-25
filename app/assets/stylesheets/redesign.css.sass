@@ -572,10 +572,6 @@ a:hover
     &:hover
       background: rgba(0, 128, 220, .2) !important
 
-
-
-
-
 .ingredients
 
   position: relative
@@ -586,26 +582,47 @@ a:hover
     display: inline-block
 
   .ingredient-table-row
+    position: relative
     width: 100%
     line-height: 20px
+
   .ingredient-title
-    width: 61%
+    width: auto
+    height:  auto
+    margin-right: 120px
+
   .quantity-group
-    width: 29%
+    position:  absolute
+    right:  52px
+    width:  70px
+    text-align:  right
+    bottom:  -2px
+    overflow: visible
+
+  .quantity-edit
+    position: relative
+    bottom: -4px
+    left:  -8px
+
   .unit
-    width: 4%
+    position: absolute
+    right: 0px
+    bottom:  -2px
+    width:  45px
+    text-align:  left
 
   .ingredient-table-head
+    position: relative
     width: 100%
     line-height: 30px
     font-size: 17.5px
     margin-bottom: 6px
     display: block
     font-weight: bold
+
     .quantity-group
-      width: 32%
-    .unit
-      width: 0%
+      right:  0px
+      width:  120px
 
   .ingredient-table-body
     width: 100%
@@ -1342,6 +1359,7 @@ csequipmenteditpair, csingredienteditpair
       width: auto
 
   .edit-pair-edit
+
     input, select
       display: inline-block
       @include boxsizing
@@ -1352,8 +1370,8 @@ csequipmenteditpair, csingredienteditpair
       width: 100%
       max-width: 280px
 
-    select
-      height: 22px
+    .unit
+      margin-bottom: -10px
 
 csequipmenteditpair
   .action-button-group
@@ -1364,19 +1382,18 @@ csingredienteditpair
   .edit-pair-edit
 
     .ingredient-title
-      width: 80%
-      select
-        width: 55%
+      overflow: hidden
       input
-        width: 44%
+        &:first-child
+          width: 65%
+        &:last-child
+          width: 34%
 
     .quantity-group
-      width: 10%
+      bottom: -4px
 
     .unit
       cursor: pointer
-      width: 7%
-      position: relative
       overflow:  visible
       select
         margin: 0
@@ -1395,7 +1412,7 @@ csingredienteditpair
   margin-bottom: 15px
 
 .disabled-section
-  color: $light-gray
+  color: #aaa
 
 
 // Making this match h1. I tried @including h1 but that was a no go.
@@ -1415,8 +1432,6 @@ csingredienteditpair
   font-family: 'Raleway', sans-serif
   font-weight: bold
   -webkit-font-smoothing: antialiased
-
-
 
 .fake-link, .fakefocus
   color: #0088cc

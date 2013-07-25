@@ -25,10 +25,10 @@ class ActivitiesController < ApplicationController
   end
 
 
-  before_filter :require_admin, only: [:new, :update_as_json]
-  def require_admin
-    unless can? :update, Activity
-      flash[:error] = "You must be logged in as an administrator to do this"
+  before_filter :require_login, only: [:new, :fork, :update_as_json]
+  def require_login
+    unless current_user
+      flash[:error] = "You must be logged in to do this"
       redirect_to new_user_session_path
     end
   end
@@ -101,10 +101,10 @@ class ActivitiesController < ApplicationController
     @activity.title = ""
     @activity.description = ""
     @activity.title = ""
-    @activity.creator = current_user.admin? ? nil : current_user
+    @activity.creator = current_user unless current_admin?
     @include_edit_toolbar = true
     @activity.save({validate: false})
-    track_event(@activity, 'create') unless current_user.admin?
+    track_event(@activity, 'create') unless current_admin?
     redirect_to activity_path(@activity, {start_in_edit: true})
   end
 
@@ -112,9 +112,9 @@ class ActivitiesController < ApplicationController
     old_activity = Activity.find(params[:id])
     @activity = old_activity.deep_copy
     @activity.title = "#{current_user.name}'s Version Of #{old_activity.title}"
-    @activity.creator = current_user.admin? ? nil : current_user
+    @activity.creator = current_user unless current_admin?
     @activity.save!
-    track_event(@activity, 'create') unless current_user.admin?
+    track_event(@activity, 'create') unless current_admin?
     render :json => {redirect_to: activity_path(@activity, {start_in_edit: true})}
   end
 
@@ -219,10 +219,10 @@ class ActivitiesController < ApplicationController
     @title = "ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine"
 
     # the news items
-    @activities = Activity.published.order("updated_at desc")
+    @activities = Activity.published.by_published_at('desc').chefsteps_generated
 
     # this will be our Feed's update timestamp
-    @updated = @activities.published.first.updated_at unless @activities.empty?
+    @updated = @activities.published.first.published_at unless @activities.empty?
 
     respond_to do |format|
       format.atom { render 'feed',  :layout => false }

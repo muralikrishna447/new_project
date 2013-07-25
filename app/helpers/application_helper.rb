@@ -161,7 +161,7 @@ module ApplicationHelper
   end
 
   def apply_shortcodes(text)
-    text.gsub(/\[(\w+)\s+([^\]]*)\]/) do |orig|
+    (text || '').gsub(/\[(\w+)\s+([^\]]*)\]/) do |orig|
       shortcode = $1
       contents = $2
       apply_shortcode(orig, shortcode, contents).html_safe
@@ -225,6 +225,10 @@ module ApplicationHelper
     else
       assembly_path(assembly)
     end
+  end
+
+  def current_admin?
+    (current_user && current_user.admin?)
   end
 
 end

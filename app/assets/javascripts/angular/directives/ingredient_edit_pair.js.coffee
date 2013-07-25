@@ -44,6 +44,7 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
 
   link: (scope, element, attrs) ->
 
+    # If I get created while editMode is already alive, make me active
     if scope.editMode
       scope.active = true
 
@@ -64,5 +65,7 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
           return false
 
       return true
+
+
 
   templateUrl: '_ingredient_edit_pair.html'

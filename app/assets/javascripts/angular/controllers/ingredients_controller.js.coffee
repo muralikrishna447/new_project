@@ -2,6 +2,9 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.shouldShowMasterIngredientsRemovedModal = false
 
+  $scope.getAllUnits = ->
+    window.allUnits
+
   $scope.ingredient_display_type = (ai) ->
     result = "basic"
     result = "product" if !! ai.ingredient.product_url

@@ -82,6 +82,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
     $scope.alerts = []
     $scope.normalizeModel()
+    $scope.normalizeWeightUnits()
     $scope.activity.$update(
       {},
       ((response) ->
@@ -360,6 +361,15 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       angular.forEach step.ingredients, (item) ->
         if _.isString(item["ingredient"])
           item["ingredient"] = {title: item["ingredient"]}
+
+  $scope.normalizeWeightUnits = () ->
+    angular.forEach $scope.activity.ingredients, (item) ->
+      if item.unit == "lb"
+        item.display_quantity = item.display_quantity * 453.592
+        item.unit = "g"
+      else if item.unit == "oz"
+        item.display_quantity = item.display_quantity * 28.3495
+        item.unit = "g"
 
 
   $scope.getIngredientsList = ->
