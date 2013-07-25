@@ -12,18 +12,16 @@ generate_options = (collection, selected) ->
     options.push(option_markup)
   options.join('')
 
+append_options = (fieldset) ->
+  includable_id = fieldset.find('.assembly_includable_id')
+  includable_id_selected = includable_id.data('selected')
+  includable_id.append(activities_selection_data(includable_id_selected))
+
 $ ->
   $('.assembly_includable_type').change ->
-    assembly_inclusion = $(this).closest('.inputs')
-    # console.log assembly_inclusion.html()
-    # console.log assembly_inclusion.find('.assembly_includable_id').html()
-    # assembly_inclusion.find('.assembly_includable_id').append('<option value="foo" selected="selected">Foo</option>')
-    includable_id = assembly_inclusion.find('.assembly_includable_id')
-    includable_id_selected = includable_id.data('selected')
-    includable_id.append(activities_selection_data(includable_id_selected))
+    fieldset = $(this).closest('.inputs')
+    append_options(fieldset)
   
   $('.inputs').each ->
-    assembly_inclusion = $(this)
-    includable_id = assembly_inclusion.find('.assembly_includable_id')
-    includable_id_selected = includable_id.data('selected')
-    includable_id.append(activities_selection_data(includable_id_selected))
+    fieldset = $(this)
+    append_options(fieldset)
