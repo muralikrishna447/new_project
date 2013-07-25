@@ -96,14 +96,12 @@ class ActivitiesController < ApplicationController
    end
   end
 
-
-
   def new
     @activity = Activity.new()
     @activity.title = ""
     @activity.description = ""
     @activity.title = ""
-    @activity.creator = current_admin? ? nil : current_user
+    @activity.creator = current_user unless current_admin?
     @include_edit_toolbar = true
     @activity.save({validate: false})
     track_event(@activity, 'create') unless current_admin?
@@ -114,7 +112,7 @@ class ActivitiesController < ApplicationController
     old_activity = Activity.find(params[:id])
     @activity = old_activity.deep_copy
     @activity.title = "#{current_user.name}'s Version Of #{old_activity.title}"
-    @activity.creator = current_admin? ? nil : current_user
+    @activity.creator = current_user unless current_admin?
     @activity.save!
     track_event(@activity, 'create') unless current_admin?
     render :json => {redirect_to: activity_path(@activity, {start_in_edit: true})}
