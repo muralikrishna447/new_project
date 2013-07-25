@@ -395,15 +395,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.closeAlert = (index) ->
     $scope.alerts.splice(index, 1)
 
-
-  # Keep <title> tag in sync
-  $scope.$watch 'activity.title', ->
-    if $scope.activity.activity_type instanceof Array
-      activity_type_title = $scope.activity.activity_type[0]
-    else
-      activity_type_title = $scope.activity.activity_type
-    $(document).attr("title", "ChefSteps - " + (activity_type_title || '') + " - " + ($scope.activity.title || "New Recipe"))
-
   # One time stuff
   if $scope.parsePreloaded()
 

@@ -14,7 +14,7 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
       image = JSON.parse(image_id)
       image.url + '/convert?fit=crop&w=30&h=30&cache=true'
     else
-      'http://www.placehold.it/30x30/cccccc/cccccc&text=ChefSteps'
+      'https://www.filepicker.io/api/file/yklhkH0iRV6biUOcXKSw/convert?fit=crop&w=30&h=30&cache=true'
 
   $scope.addComment = ->
     comment = $scope.Comment.save($scope.newComment, ->

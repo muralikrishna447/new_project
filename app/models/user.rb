@@ -118,5 +118,9 @@ class User < ActiveRecord::Base
     followings.include?(user)
   end
 
+  def profile_image_id
+    self.image_id ||= '{"url":"https://www.filepicker.io/api/file/U2RccgsARPyMmzJ5Ao0c","filename":"default-avatar@2x.png","mimetype":"image/png","size":6356,"key":"users_uploads/FhbcOZpQYKJU8nHeJg1j_default-avatar@2x.png","isWriteable":true}'
+  end
+
 end
 
