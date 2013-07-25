@@ -5,7 +5,7 @@ class Assembly < ActiveRecord::Base
   has_many :assembly_inclusions
   has_many :includables, through: :assembly_inclusions
 
-  accepts_nested_attributes_for :assembly_inclusions
+  accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
   ASSEMBLY_TYPE_SELECTION = ['Project']
   INCLUDABLE_TYPE_SELECTION = ['Activity']

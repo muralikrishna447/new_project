@@ -23,7 +23,11 @@ append_options = (fieldset) ->
     includable_id.html('<option value></option>')
 
 $ ->
-  $('.assembly_includable_type').change ->
+  # $('.assembly_includable_type').on 'change', ->
+  #   fieldset = $(this).closest('.inputs')
+  #   append_options(fieldset)
+
+  $(document).on 'change', '.assembly_includable_type', ->
     fieldset = $(this).closest('.inputs')
     append_options(fieldset)
   
