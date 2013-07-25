@@ -5,7 +5,7 @@ ActiveAdmin.register Comment do
     column :id
     column :user
     column :commentable do |comment|
-      link_to comment.commentable.title, send("#{comment.commentable.class.to_s.underscore}_path", comment.commentable.friendly_id)
+      link_to comment.commentable.title, send("#{comment.commentable.class.to_s.underscore}_path", comment.commentable.id)
     end
     column :content
     column :created_at do |comment|

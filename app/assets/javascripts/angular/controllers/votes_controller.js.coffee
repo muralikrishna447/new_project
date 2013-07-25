@@ -26,6 +26,13 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
     else
       true
 
+  $scope.current_user_voted = ->
+    voted = false
+    angular.forEach $scope.poll['poll_items'], (poll_item,index) ->
+      if $scope.current_user_voted_for_this(poll_item)
+        voted = true
+    return voted
+
   $scope.pollItemDetails = (current_poll_item) ->
     # current_poll_item.show_details = true
     angular.forEach $scope.poll['poll_items'], (poll_item) ->
@@ -43,4 +50,5 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
       image.url + '/convert?fit=crop&w=30&h=30&cache=true'
     else
       'http://www.placehold.it/30x30/cccccc/cccccc&text=ChefSteps'
+
 ]
