@@ -5,7 +5,7 @@
       %ul.nav.nav-pills
         %li.active
           = link_to 'Introduction', '#introduction', data: {toggle: 'tab'}
-        - @project.assembly_inclusions.each do |assembly_inclusion|
+        - @project.assembly_inclusions.order('assembly_inclusions.position asc').each do |assembly_inclusion|
           %li
             = link_to assembly_inclusion.includable.title, "#project-#{assembly_inclusion.id}", data: {toggle: 'tab'}
       .tab-content

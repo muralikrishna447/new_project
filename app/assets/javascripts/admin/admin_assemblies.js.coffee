@@ -22,6 +22,9 @@ append_options = (fieldset) ->
   else
     includable_id.html('<option value></option>')
 
+set_position = (fieldset, position) ->
+  fieldset.find('.includable_position').val(position)
+
 $ ->
   # $('.assembly_includable_type').on 'change', ->
   #   fieldset = $(this).closest('.inputs')
@@ -31,6 +34,7 @@ $ ->
     fieldset = $(this).closest('.inputs')
     append_options(fieldset)
   
-  $('.inputs').each ->
+  $('.inputs').each (index) ->
     fieldset = $(this)
     append_options(fieldset)
+    set_position(fieldset, index)
