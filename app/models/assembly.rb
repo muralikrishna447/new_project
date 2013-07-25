@@ -8,7 +8,7 @@ class Assembly < ActiveRecord::Base
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
   ASSEMBLY_TYPE_SELECTION = ['Project']
-  INCLUDABLE_TYPE_SELECTION = ['Activity']
+  INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz']
 
   def ingredients
     assembly_inclusions.map(&:includable).map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}.reject{|i| i.unit == 'recipe'}

@@ -1,9 +1,9 @@
 selection_data = (includable_type, selected) ->
-  data = $('#' + includable_type + '_selection_data').data('activity-selection')
+  data = $('#' + includable_type + '_selection_data').data(includable_type + '-selection')
   generate_options(data, selected)
 
 generate_options = (collection, selected) ->
-  options = []
+  options = ['<option value></option>']
   $.each collection, (index, value) ->
     if selected == value['id']
       option_markup = "<option value=" + value['id'] + " selected='selected'>" + value['title'] + "</option>"
@@ -18,7 +18,7 @@ append_options = (fieldset) ->
   if includable_type.is('*') && includable_type.val().length
     includable_type_lowercase = includable_type.val().toLowerCase()
     selected = includable_id.data('selected')
-    includable_id.append(selection_data(includable_type_lowercase, selected))
+    includable_id.html(selection_data(includable_type_lowercase, selected))
   else
     includable_id.html('<option value></option>')
 
