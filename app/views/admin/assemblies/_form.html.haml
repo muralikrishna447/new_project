@@ -11,3 +11,6 @@
   = f.semantic_fields_for :assembly_inclusions do |builder|
     = render 'assembly_inclusion_fields', f: builder
   = f.actions
+
+#assembly_selection_data
+  #activities_selection_data{data: {:'activities-selection' =>Activity.where("title <> ''").order(:title).select('id, title').to_json}}
