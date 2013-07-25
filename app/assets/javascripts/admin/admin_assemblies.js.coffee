@@ -1,5 +1,5 @@
-activities_selection_data = (selected) ->
-  data = $('#activities_selection_data').data('activities-selection')
+selection_data = (includable_type, selected) ->
+  data = $('#' + includable_type + '_selection_data').data('activity-selection')
   generate_options(data, selected)
 
 generate_options = (collection, selected) ->
@@ -13,9 +13,14 @@ generate_options = (collection, selected) ->
   options.join('')
 
 append_options = (fieldset) ->
+  includable_type = fieldset.find('.assembly_includable_type')
   includable_id = fieldset.find('.assembly_includable_id')
-  includable_id_selected = includable_id.data('selected')
-  includable_id.append(activities_selection_data(includable_id_selected))
+  if includable_type.is('*') && includable_type.val().length
+    includable_type_lowercase = includable_type.val().toLowerCase()
+    selected = includable_id.data('selected')
+    includable_id.append(selection_data(includable_type_lowercase, selected))
+  else
+    includable_id.html('<option value></option>')
 
 $ ->
   $('.assembly_includable_type').change ->
