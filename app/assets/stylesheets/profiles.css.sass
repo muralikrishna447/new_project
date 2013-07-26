@@ -4,12 +4,16 @@
   height: 200px
   background-size: 100%
   background-position: center
-  .profile-image
-    margin-top: 115px
-    border: 2px solid $orange
-    border-radius: 50%
-    img
-      @include boxsizing
+  .profile-image-wrapper
+    position: relative
+    .profile-image
+      position: absolute
+      width: 100%
+      margin-top: 115px
+      border: 2px solid $orange
+      border-radius: 50%
+      img
+        @include boxsizing
   h1
     font-weight: 700
     font-size: 50px
@@ -52,12 +56,13 @@
 @media (max-width: 767px)
   .profile-cover
     margin: -20px -20px 0px
-    .profile-image
-      margin-top: 140px
-      margin-left: 10px
-      width: 120px
-      img
+    .profile-image-wrapper
+      .profile-image
+        margin-top: 140px
+        margin-left: 10px
         width: 120px
+        img
+          width: 120px
     h1
       margin-top: -120px
       text-align: center
@@ -65,6 +70,13 @@
 @media (max-width: 480px)
   .profile-cover
     margin: -20px -20px 0px
+    .profile-image-wrapper
+      .profile-image
+        margin-top: 140px
+        margin-left: 10px
+        width: 120px
+        img
+          width: 120px
     h1
       font-size: 30px
       margin-top: -180px
