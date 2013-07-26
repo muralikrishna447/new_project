@@ -38,3 +38,10 @@ $ ->
     fieldset = $(this)
     append_options(fieldset)
     set_position(fieldset, index)
+
+  $("#assembly_inclusions").sortable(
+    stop: (event, ui) ->
+      $('.inputs').each (index) ->
+        fieldset = $(this)
+        set_position(fieldset, index)
+  )
