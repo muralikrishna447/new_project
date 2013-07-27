@@ -3,7 +3,8 @@
     = f.input :assembly_type, as: :select, collection: Assembly::ASSEMBLY_TYPE_SELECTION
     = f.input :title
     = f.input :description
-    = f.input :image_id
+    = render '/shared/filepicker_group', label_text: "Image", param: "activity[image_id]", value: @assembly.image_id
+    / = f.input :image_id
     = f.input :youtube_id
 
   %h2 Assembly Inclusions
