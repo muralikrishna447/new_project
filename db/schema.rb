@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(:version => 20130722224407) do
     t.string   "youtube_id"
     t.string   "assembly_type", :default => "Assembly"
     t.string   "slug"
+    t.integer  "likes_count"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
   end

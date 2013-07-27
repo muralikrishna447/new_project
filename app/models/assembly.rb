@@ -5,6 +5,8 @@ class Assembly < ActiveRecord::Base
   has_many :assembly_inclusions
   has_many :includables, through: :assembly_inclusions
 
+  has_many :likes, as: :likeable, dependent: :destroy
+
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
   ASSEMBLY_TYPE_SELECTION = ['Project']
@@ -24,5 +26,9 @@ class Assembly < ActiveRecord::Base
 
   def equipment
     assembly_inclusions.map(&:includable).map(&:terminal_equipment).flatten.uniq.sort_by{ |e| e.title }
+  end
+
+  def featured_image
+    image_id
   end
 end

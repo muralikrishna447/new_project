@@ -7,6 +7,7 @@ class CreateAssemblies < ActiveRecord::Migration
       t.string :youtube_id
       t.string :assembly_type, default: 'Assembly'
       t.string :slug
+      t.integer :likes_count
 
       t.timestamps
     end
