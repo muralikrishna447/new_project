@@ -1,4 +1,4 @@
-.row
+.row(ng-controller='ActivityProjectsController' ng-init="init('#{activity.id}')")
   .span6.force-aspect-wrapper
     .embed-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
       - if activity.youtube_id?
@@ -12,8 +12,13 @@
         :markdown
           #{apply_shortcodes(activity.description)}
     - if activity.ingredients.any?
-      .section.well
-        = render '/shared/ingredients', ingredients: activity.ingredients
+      / .section.well
+      /   = render '/shared/ingredients', ingredients: activity.ingredients
+      .section.csmonitorinputactivity(ng-controller="IngredientsController")
+
+        .activity-ingredients-list#full-ingredients-list.section
+          .well(ng-show="activity.ingredients.length" )
+            = render '/shared/ingredients_list', source: "activity"
     - if activity.yield.present?
       .section
         %h4 Yield
