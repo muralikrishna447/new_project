@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'ActivityProjectsController', ["$scope", "$resource", ($scope, $resource) ->
+angular.module('ChefStepsApp').controller 'SharedActivityController', ["$scope", "$resource", ($scope, $resource) ->
 
   $scope.init = (activity_id) ->
     $scope.activity_id = activity_id

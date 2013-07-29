@@ -1,4 +1,4 @@
-.row(ng-controller='ActivityProjectsController' ng-init="init('#{activity.id}')")
+.row(ng-controller='SharedActivityController' ng-init="init('#{activity.id}')")
   .span6.force-aspect-wrapper
     .embed-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
       - if activity.youtube_id?
