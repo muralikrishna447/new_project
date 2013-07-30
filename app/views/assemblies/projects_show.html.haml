@@ -53,8 +53,7 @@
         .tab-pane#upload
           .flat-form
             = form_for @upload do |f|
-              = f.hidden_field :activity_id
-              = f.hidden_field :course_id, value: @project.id
+              = f.hidden_field :assembly_id, value: @project.id
               .row-fluid
                 .span4
                   %h4 Upload a Photo
@@ -68,6 +67,7 @@
                   %h4 Notes
                   %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
                   = f.submit 'Upload', class: 'btn btn-primary btn-large'
+          = @project.uploads.inspect
 
 = render 'layouts/filepicker'
 

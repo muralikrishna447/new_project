@@ -7,6 +7,8 @@ class Assembly < ActiveRecord::Base
 
   has_many :likes, as: :likeable, dependent: :destroy
 
+  has_many :uploads
+
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
   ASSEMBLY_TYPE_SELECTION = ['Project']
