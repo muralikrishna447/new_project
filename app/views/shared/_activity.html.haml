@@ -15,7 +15,6 @@
       / .section.well
       /   = render '/shared/ingredients', ingredients: activity.ingredients
       .section.csmonitorinputactivity(ng-controller="IngredientsController")
-
         .activity-ingredients-list#full-ingredients-list.section
           .well(ng-show="activity.ingredients.length" )
             = render '/shared/ingredients_list', source: "activity"
