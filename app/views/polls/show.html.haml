@@ -66,12 +66,12 @@
               / = render 'comments/comments', commentable: @poll
 
           .poll-item-comments(ng-click='pollItemDetails(poll_item)')
-            %a.poll-item-btn.poll-item-btn-social
+            %a.poll-item-btn.poll-item-btn-social{onclick: "mixpanel.track('Poll View Comments');"}
               %i.icon-comment-alt
                 {{poll_item.comments_count}}
 
           .poll-item-sharing(ng-click='pollItemDetails(poll_item)')
-            %a.poll-item-btn.poll-item-btn-social
+            %a.poll-item-btn.poll-item-btn-social{onclick: "mixpanel.track('Poll Share Intent');"}
               %i.icon-share-alt
             %div(ng-show='poll_item.show_details')
               %a.poll-item-btn.poll-item-btn-social(onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=#{current_url(request)}','facebook-share-dialog','width=626,height=436');return false;")
@@ -82,4 +82,7 @@
               %a.poll-item-btn.poll-item-btn-social(href="https://twitter.com/intent/tweet?text=I voted for {{poll_item.title}} on @ChefSteps!&url=#{ url_encode(current_url(request))}")
                 %i.icon-twitter
 
-= render 'layouts/footer'                
+= render 'layouts/footer'
+
+:javascript
+  mixpanel.track('Poll Viewed', {'poll' : "#{@poll.title}", 'url' : window.location.pathname});                
