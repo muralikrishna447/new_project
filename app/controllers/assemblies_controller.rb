@@ -11,6 +11,7 @@ class AssembliesController < ApplicationController
   def show
     assembly = Assembly.find(params[:id])
     instance_variable_set("@#{assembly.assembly_type.underscore}", assembly)
+    @upload = Upload.new
     render "#{assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
   end
 end

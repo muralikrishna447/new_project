@@ -8,6 +8,8 @@
         - @project.assembly_inclusions.order('assembly_inclusions.position asc').each do |assembly_inclusion|
           %li
             = link_to assembly_inclusion.includable.title, "#project-#{assembly_inclusion.id}", data: {toggle: 'tab'}
+        %li
+          = link_to 'Upload a Photo', '#upload', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#introduction
           .row
@@ -48,3 +50,24 @@
         - @project.assembly_inclusions.each do |assembly_inclusion|
           .tab-pane{id: "project-#{assembly_inclusion.id}"}
             = render '/shared/activity', activity: assembly_inclusion.includable
+        .tab-pane#upload
+          .flat-form
+            = form_for @upload do |f|
+              = f.hidden_field :activity_id
+              = f.hidden_field :course_id, value: @project.id
+              .row-fluid
+                .span4
+                  %h4 Upload a Photo
+                  .upload-wrapper
+                    = image_tag '/assets/missing.png', class: "upload-photo-preview"
+                    = link_to '+', '#', class: 'upload-photo-btn'
+                    %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
+                .span8
+                  %h4 Title
+                  %p= f.text_field :title, class: 'input-block-level', required: true
+                  %h4 Notes
+                  %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
+                  = f.submit 'Upload', class: 'btn btn-primary btn-large'
+
+= render 'layouts/filepicker'
+
