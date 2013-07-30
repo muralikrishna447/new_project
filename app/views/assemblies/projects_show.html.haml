@@ -67,7 +67,8 @@
                   %h4 Notes
                   %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
                   = f.submit 'Upload', class: 'btn btn-primary btn-large'
-          = @project.uploads.inspect
+          - @project.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
+            = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
 
 = render 'layouts/filepicker'
 
