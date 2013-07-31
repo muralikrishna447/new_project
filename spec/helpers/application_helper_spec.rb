@@ -56,10 +56,10 @@ describe ApplicationHelper do
   project = Fabricate :assembly, title: 'Test', description: 'Test Description', assembly_type: 'Project'
 
   it 'returns correct path for assemblies' do
-    helper.assembly_type_path(assembly).should == '/assemblies/1'
+    helper.assembly_type_path(assembly).split('/')[1].should == 'assemblies'
   end
 
   it 'returns correct path for projects' do
-    helper.assembly_type_path(project).should == '/projects/2'
+    helper.assembly_type_path(project).split('/')[1].should == 'projects'
   end
 end
