@@ -8,6 +8,7 @@ class CreateAssemblies < ActiveRecord::Migration
       t.string :assembly_type, default: 'Assembly'
       t.string :slug
       t.integer :likes_count
+      t.integer :comments_count
 
       t.timestamps
     end

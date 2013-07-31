@@ -136,7 +136,9 @@ Delve::Application.routes.draw do
   resources :votes, only: [:create]
   resources :comments
   resources :followerships, only: [:update]
-  resources :assemblies, only: [:index, :show]
+  resources :assemblies, only: [:index, :show] do
+    resources :comments
+  end
   resources :projects, controller: :assemblies
 
   resources :sitemaps, :only => :show

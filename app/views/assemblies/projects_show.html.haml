@@ -32,6 +32,11 @@
                 .span4
                   .section
                     = @project.description
+
+              %div(ng-controller='CommentsController' ng-init="init('assemblies','#{@project.id}')" ng-cloak)
+                %h3 Comments
+                = render 'comments/comments'
+
             .span4
               %h3 All Ingredients
               / = link_to 'Text me this list', '#', class: 'btn btn-secondary'

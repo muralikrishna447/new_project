@@ -6,6 +6,7 @@ class Assembly < ActiveRecord::Base
   has_many :includables, through: :assembly_inclusions
 
   has_many :likes, as: :likeable, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
 
   has_many :uploads
 

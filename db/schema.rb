@@ -122,11 +122,12 @@ ActiveRecord::Schema.define(:version => 20130730221542) do
     t.text     "description"
     t.text     "image_id"
     t.string   "youtube_id"
-    t.string   "assembly_type", :default => "Assembly"
+    t.string   "assembly_type",  :default => "Assembly"
     t.string   "slug"
     t.integer  "likes_count"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.integer  "comments_count"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
   create_table "assembly_inclusions", :force => true do |t|
