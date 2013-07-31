@@ -67,8 +67,13 @@
                   %h4 Notes
                   %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
                   = f.submit 'Upload', class: 'btn btn-primary btn-large'
-          - @project.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
-            = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+          .horizontal-slider{data: {direction: 'right'}}
+            .horizontal-slider-wrap
+              - @project.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
+                = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+            %div{class: "horizontal-slider-btn-right btn btn-circle"}
+              %i{class: "icon-chevron-right"}
+            %div{class: "horizontal-slider-shadow-overlay-right"}
 
 = render 'layouts/filepicker'
 
