@@ -33,15 +33,15 @@
                   .section
                     = @project.description
             .span4
-              %h4 All Ingredients
-              = link_to 'Text me this list', '#', class: 'btn btn-secondary'
+              %h3 All Ingredients
+              / = link_to 'Text me this list', '#', class: 'btn btn-secondary'
               %ul.unstyled
                 - @project.combined_ingredients.each do |combined_ingredient|
                   %li
                     = combined_ingredient[0][0].title
                     = combined_ingredient[1]
                     = combined_ingredient[2]
-              %h4 Equipment
+              %h3 Equipment
               %ul.unstyled
                 - @project.equipment.each do |equipment_item|
                   %li
