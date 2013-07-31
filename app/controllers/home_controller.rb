@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    # @stream = current_user.received_stream.take(4)
+    @stream = current_user.received_stream.take(4)
     @heroes = Setting.featured_activities
     @recipes = Activity.published.chefsteps_generated.recipes.includes(:steps).last(6) - @heroes
     @techniques = Activity.published.chefsteps_generated.techniques.includes(:steps).last(6) - @heroes
