@@ -35,12 +35,20 @@
             .span4
               %h3 All Ingredients
               / = link_to 'Text me this list', '#', class: 'btn btn-secondary'
-              %ul.unstyled
-                - @project.combined_ingredients.each do |combined_ingredient|
-                  %li
-                    = combined_ingredient[0][0].title
-                    = combined_ingredient[1]
-                    = combined_ingredient[2]
+              .activity-ingredients-list
+                .ingredients{:itemprop => "ingredients"}
+                  .ingredient-table-body
+                    - @project.combined_ingredients.each do |combined_ingredient|
+                      .ingredient-table-row
+                        .ingredient-title
+                          = combined_ingredient[0][0].title
+                        .quantity-group.qtyfade
+                          .lbs-qty
+                          .lbs-label
+                          .main-qty
+                            = combined_ingredient[1]
+                        .unit.qtyfade
+                          = combined_ingredient[2]
               %h3 Equipment
               %ul.unstyled
                 - @project.equipment.each do |equipment_item|
