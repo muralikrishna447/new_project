@@ -2,12 +2,12 @@
   %h1= @project.title
   .row
     .span12
-      %ul.nav.nav-pills
+      %ul.nav.nav-pills#project-tabs
         %li.active
           = link_to 'Introduction', '#introduction', data: {toggle: 'tab'}
-        - @project.assembly_inclusions.order('assembly_inclusions.position asc').each do |assembly_inclusion|
+        - @project.assembly_inclusions.order('assembly_inclusions.position asc').each_with_index do |assembly_inclusion,index|
           %li
-            = link_to assembly_inclusion.includable.title, "#project-#{assembly_inclusion.id}", data: {toggle: 'tab'}
+            = link_to assembly_inclusion.includable.title, "#project-#{index}", data: {toggle: 'tab'}
         %li
           = link_to 'Upload a Photo', '#upload', data: {toggle: 'tab'}
       .tab-content
@@ -28,7 +28,7 @@
                         %li
                           = link_to assembly_inclusion.includable.title, assembly_inclusion.includable
                   .section
-                    = link_to 'Get Started', '#', class: 'btn btn-large btn-primary input-block-level'
+                    = link_to 'Get Started', '#start', class: 'btn btn-large btn-primary input-block-level', id: 'start-project'
                 .span4
                   .section
                     = @project.description
@@ -55,8 +55,8 @@
                   %li
                     = equipment_item.title
                        
-        - @project.assembly_inclusions.each do |assembly_inclusion|
-          .tab-pane{id: "project-#{assembly_inclusion.id}"}
+        - @project.assembly_inclusions.each_with_index do |assembly_inclusion, index|
+          .tab-pane{id: "project-#{index}"}
             = render '/shared/activity', activity: assembly_inclusion.includable
         .tab-pane#upload
           .flat-form
