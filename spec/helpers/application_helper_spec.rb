@@ -50,3 +50,16 @@ describe ApplicationHelper, "body data" do
     helper.body_data.should == {}
   end
 end
+
+describe ApplicationHelper do
+  assembly = Fabricate :assembly, title: 'Test', description: 'Test Description'
+  project = Fabricate :assembly, title: 'Test', description: 'Test Description', assembly_type: 'Project'
+
+  it 'returns correct path for assemblies' do
+    helper.assembly_type_path(assembly).should == '/assemblies/1'
+  end
+
+  it 'returns correct path for projects' do
+    helper.assembly_type_path(project).should == '/projects/2'
+  end
+end
