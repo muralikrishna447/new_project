@@ -3,12 +3,7 @@
   = render '/activity_stream/shared/stream_item_header', media_object: media_object
   .stream-item-top
     = link_to media_object do
-      .stream-item-title
-        %h4 Comment
-      .stream-item-subtitle
-        = media_object.title
       = image_tag filepicker_media_box_image(media_object.image_id)
-  .stream-item-marker
   .stream-item-bottom
     %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
     .stream-item-media1

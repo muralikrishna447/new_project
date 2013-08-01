@@ -19,11 +19,6 @@
   .stream-item
     margin-bottom: 40px
     @include boxsizing
-    &:hover
-      .stream-item-top
-        border: 1px solid $orange
-      .stream-item-marker
-        background: $orange
     .stream-item-header
       margin-bottom: 10px
       float: left
@@ -45,32 +40,11 @@
     .stream-item-top
       float: left
       width: 100%
-      border: 1px solid $light-gray
-      padding: 10px
       margin-bottom: 15px
       @include boxsizing
       @include transition(all 200ms)
       img
         width: 100%
-      .stream-item-title
-        h4
-          margin: 0px
-          overflow: hidden
-          text-overflow: ellipsis
-          white-space: nowrap
-          color: black
-      .stream-item-subtitle
-        overflow: hidden
-        text-overflow: ellipsis
-        white-space: nowrap
-        color: black
-    .stream-item-marker
-      height: 16px
-      width: 16px
-      background: $light-gray
-      margin: 0 auto
-      border-radius: 8px
-      @include transition(all 200ms)
     .stream-item-bottom
       margin-top: 15px
       @include boxsizing

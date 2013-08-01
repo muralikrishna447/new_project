@@ -3,12 +3,7 @@
   = render '/activity_stream/shared/stream_item_header', media_object: media_object
   .stream-item-top
     = link_to media_object do
-      .stream-item-title
-        %h4= media_object.poll.title
-      .stream-item-subtitle
-        = media_object.title
       = image_tag 'http://placehold.it/160x90/cccccc/cccccc&text=ChefSteps'
-  .stream-item-marker
   .stream-item-bottom
     %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
     - if media_object.votes_count == 1
