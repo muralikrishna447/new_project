@@ -15,11 +15,17 @@
 
     .span8.offset2
       .stream
-        - current_user.followings_stream.each do |group|
-          - group_events = group[1]
-          - path_array = group[0][0].downcase.split('_')
+        / - current_user.followings_stream.each do |group|
+        /   - group_events = group[1]
+        /   - path_array = group[0][0].downcase.split('_')
+        /   - folder = path_array.first
+        /   - file = (path_array - [folder]).join('_')
+        /   = render "/activity_stream/#{folder}/#{file}", group_events: group_events
+        - current_user.followings_stream.each do |event|
+          - path_array = event.group_type.downcase.split('_')
           - folder = path_array.first
           - file = (path_array - [folder]).join('_')
-          = render "/activity_stream/#{folder}/#{file}", group_events: group_events
+          = render "/activity_stream/#{folder}/#{file}", event: event
+          %hr
 
     .span2
