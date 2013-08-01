@@ -16,6 +16,8 @@
       .lead
         - if @upload.course
           = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this while completing the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
+        - elsif @upload.assembly
+          = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this #{link_to @upload.assembly.title, assembly_type_path(@upload.assembly)} photo on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
         - else
           = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this #{link_to @upload.activity.title, @upload.activity} photo on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
       %p= "#{time_ago_in_words(@upload.created_at)} ago."

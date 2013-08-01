@@ -1,0 +1,92 @@
+.container
+  %h1= @project.title
+  .row
+    .span12
+      %ul.nav.nav-pills#project-tabs
+        %li.active
+          = link_to 'Introduction', '#introduction', data: {toggle: 'tab'}
+        - @project.assembly_inclusions.order('assembly_inclusions.position asc').each_with_index do |assembly_inclusion,index|
+          %li
+            = link_to assembly_inclusion.includable.title, "#project-#{index}", data: {toggle: 'tab'}
+        %li
+          = link_to 'Upload a Photo', '#upload', data: {toggle: 'tab'}
+      .tab-content
+        .tab-pane.active#introduction
+          .row
+            .span8.force-aspect-wrapper
+              .embed-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+                - if @project.youtube_id?
+                  %iframe(frameborder='0' allowfullscreen){src: youtube_url(@project.youtube_id)}
+                - elsif @project.image_id?
+                  = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title, itemprop: 'image'
+              = render 'layouts/social_buttons', media_object: @project
+              .row
+                .span4
+                  .section
+                    %ul.unstyled
+                      - @project.assembly_inclusions.each do |assembly_inclusion|
+                        %li
+                          = link_to assembly_inclusion.includable.title, assembly_inclusion.includable
+                  .section
+                    = link_to 'Get Started', '#start', class: 'btn btn-large btn-primary input-block-level', id: 'start-project'
+                .span4
+                  .section
+                    = @project.description
+
+              %div(ng-controller='CommentsController' ng-init="init('assemblies','#{@project.id}')" ng-cloak)
+                %h3 Comments
+                = render 'comments/comments'
+
+            .span4
+              %h3 All Ingredients
+              / = link_to 'Text me this list', '#', class: 'btn btn-secondary'
+              .activity-ingredients-list
+                .ingredients{:itemprop => "ingredients"}
+                  .ingredient-table-body
+                    - @project.combined_ingredients.each do |combined_ingredient|
+                      .ingredient-table-row
+                        .ingredient-title
+                          = combined_ingredient[0][0].title
+                        .quantity-group.qtyfade
+                          .lbs-qty
+                          .lbs-label
+                          .main-qty
+                            = combined_ingredient[1]
+                        .unit.qtyfade
+                          = combined_ingredient[2]
+              %h3 Equipment
+              %ul.unstyled
+                - @project.equipment.each do |equipment_item|
+                  %li
+                    = equipment_item.title
+                       
+        - @project.assembly_inclusions.each_with_index do |assembly_inclusion, index|
+          .tab-pane{id: "project-#{index}"}
+            = render '/shared/activity', activity: assembly_inclusion.includable
+        .tab-pane#upload
+          .flat-form
+            = form_for @upload do |f|
+              = f.hidden_field :assembly_id, value: @project.id
+              .row-fluid
+                .span4
+                  %h4 Upload a Photo
+                  .upload-wrapper
+                    = image_tag '/assets/missing.png', class: "upload-photo-preview"
+                    = link_to '+', '#', class: 'upload-photo-btn'
+                    %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
+                .span8
+                  %h4 Title
+                  %p= f.text_field :title, class: 'input-block-level', required: true
+                  %h4 Notes
+                  %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
+                  = f.submit 'Upload', class: 'btn btn-primary btn-large'
+          .horizontal-slider{data: {direction: 'right'}}
+            .horizontal-slider-wrap
+              - @project.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
+                = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+            %div{class: "horizontal-slider-btn-right btn btn-circle"}
+              %i{class: "icon-chevron-right"}
+            %div{class: "horizontal-slider-shadow-overlay-right"}
+
+= render 'layouts/filepicker'
+
