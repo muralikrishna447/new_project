@@ -22,7 +22,7 @@
     /       - group_events = group[1]
     /       = render "/activity_stream/#{group_type[0].downcase}/#{group_type[1]}", group_events: group_events
 
-    .span12
+    .span8.offset2
       .stream
         - current_user.stream.each do |group|
           - group_type = group[0][0]

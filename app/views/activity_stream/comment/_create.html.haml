@@ -1,5 +1,13 @@
 - media_object = group_events.first.trackable.commentable
-.stream-item  
+.stream-item
+  .stream-item-header
+    .stream-item-header-user
+      - if media_object.user
+        = link_to user_profile_path(media_object.user) do
+          = image_tag filepicker_circle_image(media_object.user.image_id)
+          %h4= media_object.user.name
+    .stream-item-header-title
+      %h3= media_object.title
   .stream-item-top
     = link_to media_object do
       .stream-item-title

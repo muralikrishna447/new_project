@@ -1,8 +1,5 @@
 @import 'mixins'
 
-.stream-wrapper
-  border-right: 1px solid $light-gray
-
 .stream-header-section
   margin: 10px 0px
   h2
@@ -17,33 +14,32 @@
 
 .stream
   width: 100%
-  float: left
   @include raleway
   position: relative
-  .stream-line
-    margin-left: 12%
-    width: 88%
-    border: 1px solid $light-gray
-    border-left: 0px
-    border-right: 0px
-    border-bottom: 0px
-    @include boxsizing
-    position: absolute
-    top: 210px
-    left: 0px
-    z-index: -1
-
   .stream-item
-    float: left
-    width: 25%
     padding: 10px
-    text-align: center
     @include boxsizing
     &:hover
       .stream-item-top
         border: 1px solid $orange
       .stream-item-marker
         background: $orange
+    .stream-item-header
+      height: 50px
+      margin-bottom: 10px
+      .stream-item-header-user
+        width: 50%
+        float: left
+        img
+          width: 50px
+          margin-right: 10px
+          float: left
+      .stream-item-header-title
+        width: 50%
+        float: left
+        text-align: right
+        h3
+          margin: 0px
     .stream-item-top
       border: 1px solid $light-gray
       padding: 10px
@@ -73,7 +69,6 @@
       @include transition(all 200ms)
     .stream-item-bottom
       margin-top: 15px
-      height: 160px
       @include boxsizing
 
 .stream-item-media1
@@ -97,38 +92,4 @@
       margin-bottom: 3px
   .stream-item-media2-content
 
-@media (max-width: 1200px)
-  .stream
-    .stream-line
-      top: 182px
 
-@media (min-width: 768px) and (max-width: 979px)
-  .stream
-    .stream-line
-      display: none
-    .stream-item
-      width: 50%
-      .stream-item-marker
-        display: none
-
-@media (max-width: 767px)
-  .stream
-    .stream-line
-      display: none
-    .stream-item
-      width: 50%
-      .stream-item-marker
-        display: none
-
-@media (max-width: 480px)
-  .stream-wrapper
-    border: 0px
-    .stream
-      .stream-line
-        display: none
-      .stream-item
-        width: 100%
-        .stream-item-marker
-          display: none
-        .stream-item-bottom
-          height: inherit
