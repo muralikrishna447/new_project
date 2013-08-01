@@ -17,7 +17,7 @@
   @include raleway
   position: relative
   .stream-item
-    padding: 10px
+    margin-bottom: 40px
     @include boxsizing
     &:hover
       .stream-item-top
@@ -25,10 +25,11 @@
       .stream-item-marker
         background: $orange
     .stream-item-header
-      height: 40px
       margin-bottom: 10px
+      float: left
+      width: 100%
       .stream-item-header-user
-        width: 50%
+        width: 40%
         float: left
         height: 40px
         img
@@ -36,12 +37,14 @@
           margin-right: 10px
           float: left
       .stream-item-header-title
-        width: 50%
+        width: 60%
         float: left
         text-align: right
         h3
           margin: 0px
     .stream-item-top
+      float: left
+      width: 100%
       border: 1px solid $light-gray
       padding: 10px
       margin-bottom: 15px
