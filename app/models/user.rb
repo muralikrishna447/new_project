@@ -106,6 +106,11 @@ class User < ActiveRecord::Base
     stream_events.group_by{|e| [e.group_type, e.group_name]}.sort_by{|group| group[1].first.created_at}.reverse
   end
 
+  def followings_stream
+    stream_events = Event.includes(:trackable).timeline.where(user_id: self.following_ids).where('action != ?', 'received_create')
+    stream_events.group_by{|e| [e.group_type, e.group_name]}.sort_by{|group| group[1].first.created_at}.reverse
+  end
+
   def follow(user)
     followership = Followership.find_by_user_id_and_follower_id(user.id,self.id) || Followership.create(user_id: user.id, follower_id: self.id)
   end

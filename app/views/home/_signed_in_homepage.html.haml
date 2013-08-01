@@ -30,6 +30,12 @@
           - group_events = group[1]
           = render "/activity_stream/#{group_type[0].downcase}/#{group_type[1]}", group_events: group_events
 
+        / - current_user.followings_stream.each do |group|
+        /   - group_type = group[0][0]
+        /   - group_name = group[0][1]
+        /   - group_events = group[1]
+        /   = render "/activity_stream/#{group_type[0].downcase}/#{group_type[1]}", group_events: group_events
+
     / .span10.stream-wrapper
     /   .stream
     /     .stream-line
