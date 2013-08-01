@@ -1,5 +1,6 @@
 - media_object = group_events.first.trackable.votable
-.stream-item  
+.stream-item
+  = render '/activity_stream/shared/stream_item_header', media_object: media_object
   .stream-item-top
     = link_to media_object do
       .stream-item-title
