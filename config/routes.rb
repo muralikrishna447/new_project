@@ -140,6 +140,7 @@ Delve::Application.routes.draw do
     resources :comments
   end
   resources :projects, controller: :assemblies
+  resources :streams, only: [:index]
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
