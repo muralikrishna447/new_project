@@ -3,7 +3,7 @@
   = render '/activity_stream/shared/stream_item_header', media_object: media_object  
   .stream-item-top
     = link_to media_object do
-      = image_tag filepicker_media_box_image(media_object.featured_image)
+      = image_tag filepicker_stream_image(media_object.featured_image)
   .stream-item-bottom
     %p= "#{time_ago_in_words(event.created_at)} ago"
     .stream-item-media1
