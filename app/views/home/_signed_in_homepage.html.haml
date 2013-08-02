@@ -14,13 +14,18 @@
           %i.icon-angle-right
 
     .span8.offset2
-      .stream
-        - @followings_stream.each do |event|
-          - path_array = event.group_type.downcase.split('_')
-          - folder = path_array.first
-          - file = (path_array - [folder]).join('_')
-          = render "/activity_stream/#{folder}/#{file}", event: event
-          %hr
-      = paginate @followings_stream
+      / .stream
+      /   - @followings_stream.each do |event|
+      /     - path_array = event.group_type.downcase.split('_')
+      /     - folder = path_array.first
+      /     - file = (path_array - [folder]).join('_')
+      /     = render "/activity_stream/#{folder}/#{file}", event: event
+      /     %hr
+      / = paginate @followings_stream
+      .stream(ng-controller='StreamsController' ng-init="init()" ng-cloak)
+        %div(ng-repeat='stream in streams')
+          {{stream.trackable_type}}
+          {{stream.action}}
+          / = render "/activity_stream/{{stream.trackable_type}}/{{stream.action}}"
 
     .span2
