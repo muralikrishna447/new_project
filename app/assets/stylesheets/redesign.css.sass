@@ -1079,6 +1079,47 @@ a:hover
     line-height: 67px
     color: white
 
+/* Social popover */
+
+.social-popover
+  position: absolute
+  right: 0px
+  z-index: 1000
+
+.bubble
+  position: relative
+  width: 495px
+  height: 70px
+  padding: 0px
+  background: #FFFFFF
+  border: #7F7F7F solid 2px
+  -webkit-border-radius: 6px
+  -moz-border-radius: 6px
+  border-radius: 6px
+  &:after
+    content: ""
+    position: absolute
+    top: 11px
+    left: -16px
+    border-style: solid
+    border-width: 13px 16px 13px 0
+    border-color: transparent #FFFFFF
+    display: block
+    width: 0
+    z-index: 1001
+  &:before
+    content: ""
+    position: absolute
+    top: 10px
+    left: -19px
+    border-style: solid
+    border-width: 14px 17px 14px 0
+    border-color: transparent #7F7F7F
+    display: block
+    width: 0
+    z-index: 1000
+
+
 
 /* Navbar */
 .navbar-fixed-top

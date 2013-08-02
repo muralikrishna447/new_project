@@ -5,7 +5,7 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", ($scope, $resource, $location, $http, $timeout, limitToFilter, localStorageService) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService) ->
 
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id")},
@@ -395,8 +395,28 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.closeAlert = (index) ->
     $scope.alerts.splice(index, 1)
 
+  # We've had bad luck getting the youtube iframe player API state change event to work reliably, so instead
+  # we're asking youtube for the video duration and making the assumption that the video is done playing after
+  # that time period.
+  $scope.schedulePostPlayEvent = ->
+    $scope.heroVideoDuration = -1
+    if $scope.activity && $scope.hasHeroVideo()
+      $http.jsonp("http://gdata.youtube.com/feeds/api/videos/" + $scope.activity.youtube_id + "?v=2&callback=JSON_CALLBACK").then (response) ->
+        # Good god, parsing XML that contains namespaces in the elements using jquery is a compatibility disaster!
+        # See http://stackoverflow.com/questions/853740/jquery-xml-parsing-with-namespaces
+        # So for now I'm doing a fugly regexp parse. At least it works.
+        duration = response.data.match(/yt:duration seconds=.([\d]*)/)[1]
+        if duration > 1
+          $scope.heroVideoDuration = duration
+          $timeout (->
+            $scope.videoDurationExceeded = true
+            $rootScope.$broadcast('expandSocialButtons')
+          ), duration * 1000
+
   # One time stuff
   if $scope.parsePreloaded()
+
+    $scope.schedulePostPlayEvent()
 
     if ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()
