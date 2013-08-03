@@ -24,8 +24,9 @@
       / = paginate @followings_stream
       .stream(ng-controller='StreamsController' ng-init="init()" ng-cloak)
         %div(ng-repeat='stream in streams')
-          {{stream.trackable_type}}
-          {{stream.action}}
+          {{stream.group_type}}
+          %div(ng-switch on='stream.group_type')
+          %div(ng-switch when='Comment_create')
           / = render "/activity_stream/{{stream.trackable_type}}/{{stream.action}}"
 
     .span2

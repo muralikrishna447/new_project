@@ -3,8 +3,18 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
   $scope.init = () ->
 
     $scope.Stream = $resource('/streams/:id')
-    $scope.streams = $scope.Stream.query()
-    console.log $scope.streams 
+    $scope.streams = $scope.Stream.query(->
+      angular.forEach $scope.streams, (stream, index) ->
+        $http(
+          method: 'GET'
+          url: '/streams/' + stream.id
+        ).success((data, status, headers, config) ->
+          stream.templateUrl = 'activity_stream/' + angular.lowercase(stream.trackable_type) + '/' + stream.action
+          console.log stream.templateUrl
+        ).error((data, status, headers, config) ->
+          console.log 'boo'
+        )
+    )
 
   # $scope.userImageUrl = (image_id) ->
   #   if image_id
