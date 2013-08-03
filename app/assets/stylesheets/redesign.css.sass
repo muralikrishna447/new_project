@@ -1050,8 +1050,35 @@ a:hover
     cursor: pointer
 
 .btn-social
-  width: 40px
   margin: 0 2px
+  background-color: white
+  border-radius: 2px
+  padding: 0px 4px 2px 0px
+  overflow: hidden
+
+  i
+    color: white
+
+
+=btn-social-base($c)
+  color: $c
+  border:  1px solid $c
+
+  i
+    border: 5px solid $c
+    background-color: $c
+
+.btn-social-twitter
+  @include btn-social-base(#4099FF)
+.btn-social-facebook
+  @include btn-social-base(#3B5998)
+.btn-social-gplus
+  @include btn-social-base(#D34836)
+.btn-social-pinterest
+  @include btn-social-base(#C92228)
+.btn-social-email
+  @include btn-social-base(black)
+
 
 .btn-outline-blue-large
   background: white
@@ -1083,10 +1110,19 @@ a:hover
 
 .social-popover
   position: absolute
-  margin-left: 10px
+  margin-left: 6px
   left: 100%
   top:  0px
   z-index: 1000
+  color:  black
+  text-shadow: none
+  text-align: left
+
+  .contents
+    padding: 6px 0px 6px 10px
+  .share-text
+    margin-bottom: 8px
+
 
 .bubble
   position: absolute
@@ -1098,13 +1134,16 @@ a:hover
   -webkit-border-radius: 2px
   -moz-border-radius: 2px
   border-radius: 2px
+  @include big-shadow
+  white-space: nowrap
+  overflow: hidden
   &:after
     content: ""
     position: absolute
     top: 7px
-    left: -8px
+    left: -6px
     border-style: solid
-    border-width: 7px 8px 7px 0
+    border-width: 6px 6px 6px 0
     border-color: transparent #FFFFFF
     display: block
     width: 0
@@ -1112,10 +1151,10 @@ a:hover
   &:before
     content: ""
     position: absolute
-    top: 7px
+    top: 6px
     left: -9px
     border-style: solid
-    border-width: 7px 8px 7px 0
+    border-width: 7px 7px 7px 0
     border-color: transparent $light-gray
     display: block
     width: 0
@@ -1598,6 +1637,19 @@ csingredienteditpair
   opacity: 0
   &.fade-show-start
     opacity: 1
+
+
+.spe-hide-setup
+  width: 472px
+  transition: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275) all
+  &.spe-hide-start
+    width: 0
+
+.spe-show-setup
+  width: 0
+  transition: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275) all
+  &.spe-show-start
+    width: 472px
 
 .custom-enter-setup, .custom-leave-setup, .custom-move-setup
   -webkit-transition: 0.5s linear all
