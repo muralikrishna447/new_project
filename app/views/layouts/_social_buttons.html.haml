@@ -7,14 +7,15 @@
   .btn.btn-primary.relative(ng-click="expandSocial=!expandSocial")
     .icon-share
     Share
-    .social-popover.bubble(ng-show="expandSocial" ng-animate="'spe'")
+    .social-popover-triangle(ng-show="expandSocial" ng-animate="'spe'" )
+    .social-popover(ng-show="expandSocial" ng-animate="'spe'" style="display: none;")
       .contents
         .share-text
           Share this with your friends!
         = link_to "https://twitter.com/intent/tweet?text=I love this: #{media_object.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-secondary btn-social btn-social-twitter', onclick: "mixpanel.track('Share Intent Twitter');" do
           %i.icon-twitter
           Twitter
-        = link_to 'javascript:void(0);', class: 'btn btn-secondary btn-social btn-social-facebook social-action', data: {toggle: 'popover', placement: 'bottom', content: fb_like(current_url(request)), html: true}, onclick: "mixpanel.track('Share Intent Facebook');" do
+        = link_to 'javascript:void(0);', class: 'btn btn-secondary btn-social btn-social-facebook social-action', onclick: "mixpanel.track('Share Intent Facebook');  window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),  'facebook-share-dialog', 'width=626,height=436,top=100,left=100'); return false;" do
           %i.icon-facebook
           Facebook
         = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "mixpanel.track('Share Intent Google Plus'); javascript:window.open(this.href,

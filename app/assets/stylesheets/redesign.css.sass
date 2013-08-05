@@ -1117,15 +1117,6 @@ a:hover
   color:  black
   text-shadow: none
   text-align: left
-
-  .contents
-    padding: 6px 0px 6px 10px
-  .share-text
-    margin-bottom: 8px
-
-
-.bubble
-  position: absolute
   width: 475px
   height: 70px
   padding: 0px
@@ -1137,6 +1128,18 @@ a:hover
   @include big-shadow
   white-space: nowrap
   overflow: hidden
+
+  .contents
+    padding: 6px 0px 6px 10px
+  .share-text
+    margin-bottom: 8px
+
+.social-popover-triangle
+  position: absolute
+  left: 100%
+  top:  0px
+  margin-left: 8px
+
   &:after
     content: ""
     position: absolute
@@ -1641,7 +1644,7 @@ csingredienteditpair
 
 .spe-hide-setup
   width: 472px
-  transition: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275) all
+  transition: 200ms ease all
   &.spe-hide-start
     width: 0
 
