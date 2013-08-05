@@ -34,6 +34,13 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
     else
       'https://www.filepicker.io/api/file/yklhkH0iRV6biUOcXKSw/convert?fit=crop&w=30&h=30&cache=true'
 
+  $scope.mediaObjectImageUrl = (image_id) ->
+    if image_id
+      image = JSON.parse(image_id)
+      image.url + '/convert?fit=crop&w=770&h=433&cache=true'
+    else
+      ''
+
   # $scope.addComment = ->
   #   comment = $scope.Comment.save($scope.newComment, ->
   #     $scope.comments.push(comment)
