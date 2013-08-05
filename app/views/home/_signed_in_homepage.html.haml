@@ -28,8 +28,9 @@
           / %div(ng-include src='stream.templateUrl')
           %div(ng-switch="stream.group_type")
             %div(ng-switch-when='Comment_create')
-              %h2 Comment Create!!
               %div(ng-include src="'stream_views/comment_create.html'")
+            %div(ng-switch-when='Course_enroll')
+              %div(ng-include src="'stream_views/course_enroll.html'")
           / = render "/activity_stream/{{stream.trackable_type}}/{{stream.action}}"
 
     .span2
