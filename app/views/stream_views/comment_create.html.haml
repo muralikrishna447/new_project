@@ -8,6 +8,11 @@
       /   = link_to user_profile_path(media_object.user) do
       /     = image_tag filepicker_circle_image(media_object.user.image_id)
       /     %h4= media_object.user.name
+      %div(ng-show="stream.trackable.comment.commentable.user")
+        %a(ng-href="/profiles/{{stream.trackable.comment.commentable.user}}")
+          %img(ng-src="{{userImageUrl(stream.trackable.comment.commentable.user.image_id)}}")
+          %h4
+            {{stream.trackable.comment.commentable.user.name}}
     .stream-item-header-title
       %h3
         {{stream.trackable.comment.commentable.title}}
