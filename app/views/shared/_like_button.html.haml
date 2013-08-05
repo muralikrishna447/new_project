@@ -10,6 +10,6 @@
         {{likes_count}}
     %span(ng-switch-when='false')
       .btn.btn-primary(ng-click="likeObject('#{likeable_object.class.to_s}', '#{likeable_object.id}')")
-        %i.icon-star-empty
+        %i.icon-star-empty{onclick: "mixpanel.track('Liked', { 'Activity': #{@activity.title} }); mixpanel.people.set('liked': #{@activity.title});" }
         %span(ng-show="likes_count > 0")
           {{likes_count}}

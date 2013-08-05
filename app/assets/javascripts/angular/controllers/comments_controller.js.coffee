@@ -21,6 +21,7 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
       $scope.comments.push(comment)
       $scope.newComment = {}
       $scope.comments_count = $scope.comments.length
+      mixpanel.track('Commented', {'Commentable': $scope.commentable_type + "_" + $scope.commentable_id })
     )
 
   $scope.commentLimit = -6

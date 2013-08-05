@@ -6,7 +6,7 @@
     We'll keep track of your course progress and you can earn badges and upload your creations as you learn.
     .section 
       = form_tag enroll_course_path(@course) do
-        = submit_tag 'Enroll', class: 'btn btn-primary btn-large btn-block'
+        = submit_tag 'Enroll', class: 'btn btn-primary btn-large btn-block', onclick: "mixpanel.people.set({ 'course enrolled': $('#course-title').data('course'), 'enrollment method': 'Standard' }); mixpanel.track('Course Enrolled', {'course': $('#course-title').data('course'), 'enrollment method': 'Standard'});"
       .section#browse-section
         %p.text-center Or
         .text-center
@@ -36,10 +36,11 @@
         .input-block-level-password
           = f.password_field :password, {placeholder: 'password', required: true, class: 'input-block-level'}
           = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'user-password-show'
-        = f.submit 'Create Account and Enroll', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
+        = f.submit 'Create Account and Enroll', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email', onclick: "mixpanel.people.set({'course enrolled': $('#course-title').data('course'), 'enrollment method':'New User'}); mixpanel.track('Course Enrolled', {'course': $('#course-title').data('course'), 'enrollment method': 'New User'});"
+  
     .section.hide.signin-and-enroll-section
       = form_tag signin_and_enroll_path, method: :post do
         = hidden_field_tag :course_id, @course.id
         = text_field_tag :email, nil, placeholder: 'email', class: 'input-block-level', required: true
         = password_field_tag :password, nil, placeholder: 'password', class: 'input-block-level', required: true
-        = submit_tag 'Sign In and Enroll', class: 'btn btn-primary btn-large btn-block'
+        = submit_tag 'Sign In and Enroll', class: 'btn btn-primary btn-large btn-block', onclick: "mixpanel.people.set({'course enrolled': $('#course-title').data('course')}); mixpanel.track('Course Enrolled', {'course': $('#course-title').data('course'), 'enrollment method': 'Standard'});"
