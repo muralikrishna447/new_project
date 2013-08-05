@@ -147,6 +147,7 @@ Delve::Application.routes.draw do
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
 
   resources :client_views, only: [:show]
+  resources :stream_views, only: [:show]
 
 end
 
