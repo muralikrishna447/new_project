@@ -1,13 +1,6 @@
-%h3 Rendered Comment Create Partial
-{{stream.trackable}}
-/ - media_object = event.trackable.commentable
 .stream-item
   .stream-item-header
     .stream-item-header-user
-      / - if media_object.respond_to?(:user) && media_object.user
-      /   = link_to user_profile_path(media_object.user) do
-      /     = image_tag filepicker_circle_image(media_object.user.image_id)
-      /     %h4= media_object.user.name
       %div(ng-show="stream.trackable.comment.commentable.user")
         %a(ng-href="/profiles/{{stream.trackable.comment.commentable.user}}")
           %img(ng-src="{{userImageUrl(stream.trackable.comment.commentable.user.image_id)}}")
@@ -17,13 +10,11 @@
       %h3
         {{stream.trackable.comment.commentable.title}}
   .stream-item-top
-    / - if media_object.respond_to?(:image_id)
-    /   = link_to media_object do
-    /     = image_tag filepicker_stream_image(media_object.image_id)
     %a(ng-href="/profiles/{{stream.trackable.comment.user.slug}}")
       %img(ng-src="{{mediaObjectImageUrl(stream.trackable.comment.commentable.image_id)}}")
   .stream-item-bottom
-    / %p= "#{time_ago_in_words(event.created_at)} ago"
+    %p
+      {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
     .stream-item-media1
       .stream-item-media1-user
         %a(ng-href="/profiles/{{tream.trackable.comment.user.slug}}")
