@@ -11,6 +11,8 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
         ).success((data, status, headers, config) ->
           stream.templateUrl = 'activity_stream/' + angular.lowercase(stream.trackable_type) + '/' + stream.action
           console.log stream.templateUrl
+          stream.stream_with_trackable = data
+          console.log stream.stream_with_trackable
         ).error((data, status, headers, config) ->
           console.log 'boo'
         )
