@@ -9,7 +9,7 @@
       /     %h4= media_object.user.name
     .stream-item-header-title
       %h3
-        {{stream.trackable}}
+        {{stream.trackable.comment.commentable.title}}
   .stream-item-top
     / - if media_object.respond_to?(:image_id)
     /   = link_to media_object do
@@ -20,6 +20,8 @@
       .stream-item-media1-user
         / = link_to user_profile_path(event.trackable.user) do
         /   = image_tag filepicker_circle_image(event.trackable.user.image_id)
+        %a(ng-href="/profiles/{{tream.trackable.comment.user.slug}}")
+          %img(ng-src="{{userImageUrl(tream.trackable.comment.user.image_id)}}")
       .stream-item-media1-content
         %a(ng-href="/profiles/{{stream.trackable.comment.user.slug}}")
           {{stream.trackable.comment.user.name}}
