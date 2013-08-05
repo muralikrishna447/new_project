@@ -12,7 +12,7 @@
       {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
     .stream-item-media1
       .stream-item-media1-user
-        %a(ng-href="/profiles/{{tream.user.slug}}")
+        %a(ng-href="/profiles/{{stream.user.slug}}")
           %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
       .stream-item-media1-content
         %a(ng-href="/profiles/{{stream.user.slug}}")
