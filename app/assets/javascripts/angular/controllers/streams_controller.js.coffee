@@ -16,16 +16,16 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
       #   )
     )
 
-  $scope.getTrackable = (stream) ->
-    $http(
-      method: 'GET'
-      url: '/streams/' + stream.id
-    ).success((data, status, headers, config) ->
-      # stream.templateUrl = 'activity_stream/' + angular.lowercase(stream.trackable_type) + '/' + stream.action
-      stream.stream_with_trackable = data
-    ).error((data, status, headers, config) ->
+  # $scope.getTrackable = (stream) ->
+  #   $http(
+  #     method: 'GET'
+  #     url: '/streams/' + stream.id
+  #   ).success((data, status, headers, config) ->
+  #     # stream.templateUrl = 'activity_stream/' + angular.lowercase(stream.trackable_type) + '/' + stream.action
+  #     stream.stream_with_trackable = data
+  #   ).error((data, status, headers, config) ->
 
-    )
+  #   )
 
   # $scope.userImageUrl = (image_id) ->
   #   if image_id

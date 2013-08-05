@@ -3,8 +3,8 @@ class StreamsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @streams = Stream.followings(current_user).first
-    render :json => @streams
+    @streams = Stream.followings(current_user)
+    render :json => @streams, root: false
   end
 
   def show

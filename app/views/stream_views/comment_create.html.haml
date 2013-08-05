@@ -1,3 +1,4 @@
+%h3 Rendered Comment Create Partial
 / - media_object = event.trackable.commentable
 .stream-item
   .stream-item-header
@@ -8,7 +9,7 @@
       /     %h4= media_object.user.name
     .stream-item-header-title
       %h3
-        {{stream.stream_with_trackable.trackable}}
+        {{stream.trackable}}
   .stream-item-top
     / - if media_object.respond_to?(:image_id)
     /   = link_to media_object do
@@ -20,5 +21,6 @@
         / = link_to user_profile_path(event.trackable.user) do
         /   = image_tag filepicker_circle_image(event.trackable.user.image_id)
       .stream-item-media1-content
-        / = link_to event.trackable.user.name, user_profile_path(event.trackable.user)
-        / = "said, '#{event.trackable.content}'"
+        %a(ng-href="/profiles/{{stream.trackable.comment.user.slug}}")
+          {{stream.trackable.comment.user.name}}
+        said, {{stream.trackable.comment.content}}
