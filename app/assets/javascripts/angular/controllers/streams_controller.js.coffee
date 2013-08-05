@@ -2,20 +2,29 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
 
   $scope.init = () ->
 
-    $scope.Stream = $resource('/streams/:id')
-    $scope.streams = $scope.Stream.query(->
-      angular.forEach $scope.streams, (stream, index) ->
-        $http(
-          method: 'GET'
-          url: '/streams/' + stream.id
-        ).success((data, status, headers, config) ->
-          stream.templateUrl = 'activity_stream/' + angular.lowercase(stream.trackable_type) + '/' + stream.action
-          console.log stream.templateUrl
-          stream.stream_with_trackable = data
-          console.log stream.stream_with_trackable
-        ).error((data, status, headers, config) ->
-          console.log 'boo'
-        )
+    $scope.stream = $resource('/streams/:id')
+    $scope.streams = $scope.stream.query(->
+      # angular.forEach $scope.streams, (stream, index) ->
+      #   $http(
+      #     method: 'GET'
+      #     url: '/streams/' + stream.id
+      #   ).success((data, status, headers, config) ->
+      #     # stream.templateUrl = 'activity_stream/' + angular.lowercase(stream.trackable_type) + '/' + stream.action
+      #     stream.stream_with_trackable = data
+      #   ).error((data, status, headers, config) ->
+
+      #   )
+    )
+
+  $scope.getTrackable = (stream) ->
+    $http(
+      method: 'GET'
+      url: '/streams/' + stream.id
+    ).success((data, status, headers, config) ->
+      # stream.templateUrl = 'activity_stream/' + angular.lowercase(stream.trackable_type) + '/' + stream.action
+      stream.stream_with_trackable = data
+    ).error((data, status, headers, config) ->
+
     )
 
   # $scope.userImageUrl = (image_id) ->
