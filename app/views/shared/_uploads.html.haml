@@ -16,4 +16,6 @@
         %p= f.text_field :title, class: 'input-block-level', required: true
         %h4 Notes
         %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
-        .btn.btn-primary.btn-large#upload-submit Upload
+        = f.submit 'Upload', class: 'btn btn-primary btn-large pull-left'
+        %btn.btn.btn-large.btn-link{data: {dismiss: 'modal'}}
+          Cancel
