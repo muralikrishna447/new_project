@@ -1,6 +1,14 @@
-/ - media_object = event.trackable.votable
+{{stream.trackable.vote}}
 .stream-item
-  / = render '/activity_stream/shared/stream_item_header', media_object: media_object
+  .stream-item-header
+    .stream-item-header-user
+      %a(ng-href="{{stream.trackable.vote.user}}")
+        %img(ng-src="{{userImageUrl(stream.trackable.vote.user.image_id)}}")
+        %h4
+          {{stream.trackable.vote.user.name}}
+    .stream-item-header-title
+      %h3
+        {{stream.trackable.vote.votable.title}}
   .stream-item-top
     / = link_to media_object do
     /   = image_tag 'http://placehold.it/160x90/cccccc/cccccc&text=ChefSteps'
