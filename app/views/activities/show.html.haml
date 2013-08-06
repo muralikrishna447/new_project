@@ -42,6 +42,7 @@
 
 -################################ PRIMARY CONTENT ################################
 
+#activity-title(data-activity="#{@activity.title}")
 %form(name="activityForm")
   -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
   %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
@@ -87,7 +88,7 @@
     .row(ng-hide="editMode" ng-cloak)
       .span12
         %h3 User Creations
-        = link_to 'UPLOAD YOUR OWN', 'javascript:void(0);', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}
+        = link_to 'UPLOAD YOUR OWN', '#', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}, onclick: "mixpanel.people.set({ 'photo upload intent': '#{@activity.title}' }); mixpanel.track('Photo Upload Intent', { 'photo upload intent': '#{@activity.title}' });"
         #user-creations-carousel
           - if @activity.uploads.approved.any?
             .horizontal-slider{data: {direction: 'right'}}
@@ -159,25 +160,8 @@
     .modal-header
       %h3= "Share your #{@activity.title} creation"
     .modal-body
-      .flat-form
-        = form_for @upload do |f|
-          = f.hidden_field :activity_id, value: @activity.id
-          .row-fluid
-            .span4
-              %h4 Upload a Photo
-              .upload-wrapper
-                = image_tag '/assets/missing.png', class: "upload-photo-preview"
-                = link_to '+', '#', class: 'upload-photo-btn'
-                %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
-            .span8
-              %h4 Recipe Name
-              %p= f.text_field :title, class: 'input-block-level', required: true
-              %h4 Notes
-              %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
-              = f.submit 'Upload', class: 'btn btn-primary btn-large pull-left'
-              %btn.btn.btn-large.btn-link{data: {dismiss: 'modal'}}
-                Cancel
-
+      = render 'shared/uploads'
+  
 = render 'cancel_edit_modal'
 = render 'restore_autosave.html.haml'
 = render 'already_editing_modal.html.haml'

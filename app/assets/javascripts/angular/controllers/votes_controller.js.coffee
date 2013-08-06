@@ -33,6 +33,7 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
         voted = true
     return voted
 
+
   $scope.pollItemDetails = (current_poll_item) ->
     # current_poll_item.show_details = true
     angular.forEach $scope.poll['poll_items'], (poll_item) ->
