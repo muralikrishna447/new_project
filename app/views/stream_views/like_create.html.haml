@@ -10,7 +10,7 @@
       %h3
         {{stream.trackable.like.likeable.title}}  
   .stream-item-top
-    %a(ng-href="/profiles/{{stream.trackable.like.likeable.slug}}")
+    %a(ng-href="{{stream.trackable.like.likeable.path}}")
       %img(ng-src="{{mediaObjectImageUrl(stream.trackable.like.likeable.featured_image)}}")
   .stream-item-bottom
     %p

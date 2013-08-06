@@ -1,5 +1,5 @@
 class UploadSerializer < ActiveModel::Serializer
-  attributes :id, :title, :notes, :featured_image, :likes_count, :like_users
+  attributes :id, :title, :notes, :featured_image, :likes_count, :like_users, :path
   has_one :user
 
   def featured_image
@@ -10,4 +10,7 @@ class UploadSerializer < ActiveModel::Serializer
     object.likes.map(&:user)
   end
 
+  def path
+    upload_path(object)
+  end
 end
