@@ -33,6 +33,8 @@
               %div(ng-include src="'stream_views/course_enroll.html'")
             %div(ng-switch-when='Like_create')
               %div(ng-include src="'stream_views/like_create.html'")
+            %div(ng-switch-when='Upload_create')
+              %div(ng-include src="'stream_views/upload_create.html'")              
           / = render "/activity_stream/{{stream.trackable_type}}/{{stream.action}}"
 
     .span2

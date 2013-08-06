@@ -1,0 +1,37 @@
+/ - media_object = event.trackable
+.stream-item
+  .stream-item-header
+    .stream-item-header-user
+      %a(ng-href="{{stream.trackable.upload.user}}")
+        %img(ng-src="{{userImageUrl(stream.trackable.upload.user.image_id)}}")
+        %h4
+          {{stream.trackable.upload.user.name}}
+    .stream-item-header-title
+      %h3
+        {{stream.trackable.upload.title}}
+  .stream-item-top
+    %a(ng-href="{{stream.trackable.upload.path}}")
+      %img(ng-src="{{mediaObjectImageUrl(stream.trackable.upload.featured_image)}}")
+  .stream-item-bottom
+    %p
+      {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+    / .stream-item-media1
+    /   .stream-item-media1-user
+    /     = link_to user_profile_path(event.user) do
+    /       = image_tag filepicker_circle_image(event.user.image_id)
+    /   .stream-item-media1-content
+    /     = link_to event.user.name, user_profile_path(event.user)
+    /     = "uploaded this photo."
+    .stream-item-media2
+      .stream-item-media2-content
+        {{stream.trackable.upload}}
+        %div(ng-switch="stream.trackable.upload.likes_count")
+          %div(ng-switch-when='null')
+          %div(ng-switch-when='1')
+            1 Like
+          %div(ng-switch-default)
+            {{stream.trackable.upload.likes_count}} Likes
+      .stream-item-media2-users
+        %span(ng-repeat="user in stream.trackable.upload.like_users")
+          %a(ng-href="/profiles/{{user.slug}}")
+            %img(ng-src="{{userImageUrl(user.image_id)}}")
