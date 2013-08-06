@@ -3,8 +3,8 @@ class HomeController < ApplicationController
   def index
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_gallery.last(6)
-      @followings_stream = Kaminari::paginate_array(current_user.followings_stream).page(params[:page]).per(6)
-      @stream = current_user.received_stream.take(4)
+      # @followings_stream = Kaminari::paginate_array(current_user.followings_stream).page(params[:page]).per(6)
+      # @stream = current_user.received_stream.take(4)
     else
       @heroes = Setting.featured_activities
       @recipes = Activity.published.chefsteps_generated.recipes.includes(:steps).last(6) - @heroes
