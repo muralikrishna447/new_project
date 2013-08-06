@@ -5,7 +5,7 @@
       %h3
         {{stream.trackable.course.title}}  
   .stream-item-top
-    %a(ng-href="/courses/{{stream.trackable.course.slug}}")
+    %a(ng-href="{{stream.trackable.course.path}}")
       %img(ng-src="{{mediaObjectImageUrl(stream.trackable.course.featured_image)}}")
   .stream-item-bottom
     %p

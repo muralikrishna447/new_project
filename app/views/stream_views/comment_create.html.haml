@@ -10,7 +10,7 @@
       %h3
         {{stream.trackable.comment.commentable.title}}
   .stream-item-top
-    %a(ng-href="/profiles/{{stream.trackable.comment.user.slug}}")
+    %a(ng-href{{stream.trackable.comment.commentable.path}}")
       %img(ng-src="{{mediaObjectImageUrl(stream.trackable.comment.commentable.image_id)}}")
   .stream-item-bottom
     %p
