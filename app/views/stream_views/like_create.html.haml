@@ -34,5 +34,6 @@
         / - media_object.likes.each do |like|
         /   = link_to user_profile_path(like.user) do
         /     = image_tag filepicker_circle_image(like.user.image_id)
-        %a(ng-href="/profiles/{{stream.trackable.like.user.slug}}")
-          {{stream.trackable.like.likeable}}
+        %span(ng-repeat="user in stream.trackable.like.likeable.like_users")
+          %a(ng-href="/profiles/{{user.slug}}")
+            %img(ng-src="{{userImageUrl(user.image_id)}}")
