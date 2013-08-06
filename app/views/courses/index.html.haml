@@ -15,6 +15,7 @@
         = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.featured_image, object: course
       .span8
         %h2= course.title
+        %p.lead= course.short_description
         %h4= "#{course.viewable_activities.count} Lessons"
         = link_to 'View the Course', course, class: 'btn btn-primary btn-large'
 .container
