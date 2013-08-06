@@ -35,4 +35,7 @@
               %div(ng-include src="'stream_views/upload_create.html'")
             %div(ng-switch-when='Vote_create')
               %div(ng-include src="'stream_views/vote_create.html'")
+
+        %a.btn.btn-primary(ng-click="loadMore()")
+          Load More
     .span2

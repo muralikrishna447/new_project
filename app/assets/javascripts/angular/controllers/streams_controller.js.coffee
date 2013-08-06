@@ -2,6 +2,7 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
 
   $scope.init = () ->
 
+    $scope.page = 1
     $scope.stream = $resource('/streams/:id')
     $scope.streams = $scope.stream.query(->
       # angular.forEach $scope.streams, (stream, index) ->
@@ -40,6 +41,18 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
       image.url + '/convert?fit=crop&w=770&h=433&cache=true'
     else
       ''
+
+  $scope.loadMore = () ->
+    $scope.page+=1
+    $http(
+      method: 'GET'
+      url: '/streams?page=' + $scope.page
+    ).success((data, status, headers, config) ->
+      angular.forEach data, (data_item, index) ->
+        $scope.streams.push(data_item)
+    ).error((data, status, headers, config) ->
+
+    )
 
   # $scope.addComment = ->
   #   comment = $scope.Comment.save($scope.newComment, ->
