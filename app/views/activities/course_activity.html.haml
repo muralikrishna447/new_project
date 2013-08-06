@@ -7,6 +7,7 @@
 %div(ng-model="activity.title" ng-init="activity.title = '#{@activity.title}'")
 %div(ng-model="activity.activity_type" ng-init="activity.activity_type = '#{@course.title} Course - #{@activity.activity_type.first}'")
 
+#activity-title(data-activity="#{@activity.title}")
 .container{data: {:'activity-id' => @activity.id}}
   .row
     .span12.section
