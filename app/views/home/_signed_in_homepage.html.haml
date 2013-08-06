@@ -24,8 +24,6 @@
       / = paginate @followings_stream
       .stream(ng-controller='StreamsController' ng-init="init()")
         %div(ng-repeat='stream in streams')
-          {{stream.group_type}}
-          / %div(ng-include src='stream.templateUrl')
           %div(ng-switch="stream.group_type")
             %div(ng-switch-when='Comment_create')
               %div(ng-include src="'stream_views/comment_create.html'")
@@ -36,7 +34,5 @@
             %div(ng-switch-when='Upload_create')
               %div(ng-include src="'stream_views/upload_create.html'")
             %div(ng-switch-when='Vote_create')
-              %div(ng-include src="'stream_views/vote_create.html'")                            
-          / = render "/activity_stream/{{stream.trackable_type}}/{{stream.action}}"
-
+              %div(ng-include src="'stream_views/vote_create.html'")
     .span2
