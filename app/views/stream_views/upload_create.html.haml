@@ -15,16 +15,8 @@
   .stream-item-bottom
     %p
       {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
-    / .stream-item-media1
-    /   .stream-item-media1-user
-    /     = link_to user_profile_path(event.user) do
-    /       = image_tag filepicker_circle_image(event.user.image_id)
-    /   .stream-item-media1-content
-    /     = link_to event.user.name, user_profile_path(event.user)
-    /     = "uploaded this photo."
     .stream-item-media2
       .stream-item-media2-content
-        {{stream.trackable.upload}}
         %div(ng-switch="stream.trackable.upload.likes_count")
           %div(ng-switch-when='null')
           %div(ng-switch-when='1')

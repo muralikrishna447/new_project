@@ -11,7 +11,7 @@
         {{stream.trackable.comment.commentable.title}}
   .stream-item-top
     %a(ng-href="{{stream.trackable.comment.commentable.path}}")
-      %img(ng-src="{{mediaObjectImageUrl(stream.trackable.comment.commentable.image_id)}}")
+      %img(ng-src="{{mediaObjectImageUrl(stream.trackable.comment.commentable.featured_image)}}")
   .stream-item-bottom
     %p
       {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
