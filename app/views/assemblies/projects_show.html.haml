@@ -54,11 +54,21 @@
                             = combined_ingredient[1]
                         .unit.qtyfade
                           = combined_ingredient[2]
-              %h4 Equipment
+              %h4 Required Equipment
               %ul.unstyled.well
-                - @project.equipment.each do |equipment_item|
-                  %li
-                    = equipment_item.title
+                - @project.required_equipment.each do |equipment_item|
+                  - if equipment_item.product_url?
+                    %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
+                  - else
+                    %li= equipment_item.title
+
+              %h4 Optional Equipment
+              %ul.unstyled.well
+                - @project.optional_equipment.each do |equipment_item|
+                  - if equipment_item.product_url?
+                    %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
+                  - else
+                    %li= equipment_item.title
                        
         - @project.assembly_inclusions.each_with_index do |assembly_inclusion, index|
           .tab-pane{id: "project-#{index}"}
