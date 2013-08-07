@@ -1,8 +1,8 @@
--ab_test("social_share", "old", "new") do |name|
+-ab_test("social_share", "old", "newNoPostPlay", "newWithPostPlay") do |name|
   -if name == "old"
     = render "layouts/old_social_buttons", media_object: media_object
   -else
-    .section-small.social-group(ng-controller="SocialButtonsController")
+    .section-small.social-group(ng-controller="SocialButtonsController" ng-init="split=\'#{name}\'")
       = render 'shared/like_button', likeable_object: media_object
       .btn.btn-primary.relative
         .btn-share(ng-click="expandSocial=!expandSocial")
@@ -22,6 +22,6 @@
             - if media_object.featured_image
               .btn.btn-secondary.btn-social.btn-social-pinterest(ng-click="sharePinterest(\'#{url}\', \'#{filepicker_hero_image(media_object.featured_image)}\')")
                 = render 'layouts/social_button', icon: "pinterest", networkFriendlyName: "Pinterest"
-            %a{href: "mailto:?subject=#{media_object.title.html_safe}%20from%20ChefSteps.com&body=I%20thought%20you%20might%20like%20this:%20#{ url_encode(current_url(request))}", target: "_blank", id: "email-share",class: "btn btn-social btn-social-email", onclick: "mixpanel.track('Share', { 'Network': 'Email'});"}
+            .btn.btn-secondary.btn-social.btn-social-email(ng-click="shareEmail(\'#{media_object.title}\', \'#{url}\')")
               = render 'layouts/social_button', icon: "envelope", networkFriendlyName: "Email"
 

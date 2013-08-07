@@ -411,7 +411,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
           $timeout (->
             $scope.videoDurationExceeded = true
             $rootScope.$broadcast('expandSocialButtons')
-          ), duration * 1000
+          ), duration * 1000 + 5000
 
   # One time stuff
   if $scope.parsePreloaded()
