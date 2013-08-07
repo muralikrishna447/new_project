@@ -20,9 +20,9 @@
                 - elsif @project.image_id?
                   = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title, itemprop: 'image'
               = render 'layouts/social_buttons', media_object: @project
-              .row
+              .row.section
                 .span4
-                  .section
+                  .section.text-right
                     %ul.unstyled
                       - @project.assembly_inclusions.each do |assembly_inclusion|
                         %li
@@ -30,17 +30,17 @@
                   .section
                     = link_to 'Get Started', '#start', class: 'btn btn-large btn-primary input-block-level', id: 'start-project'
                 .span4
-                  .section
+                  .section.project-description
                     = @project.description
 
-              %div(ng-controller='CommentsController' ng-init="init('assemblies','#{@project.id}')" ng-cloak)
-                %h3 Comments
-                = render 'comments/comments'
+              / %div(ng-controller='CommentsController' ng-init="init('assemblies','#{@project.id}')" ng-cloak)
+              /   %h3 Comments
+              /   = render 'comments/comments'
 
             .span4
-              %h3 All Ingredients
+              %h4 All Ingredients
               / = link_to 'Text me this list', '#', class: 'btn btn-secondary'
-              .activity-ingredients-list
+              .activity-ingredients-list.well
                 .ingredients{:itemprop => "ingredients"}
                   .ingredient-table-body
                     - @project.combined_ingredients.each do |combined_ingredient|
@@ -54,8 +54,8 @@
                             = combined_ingredient[1]
                         .unit.qtyfade
                           = combined_ingredient[2]
-              %h3 Equipment
-              %ul.unstyled
+              %h4 Equipment
+              %ul.unstyled.well
                 - @project.equipment.each do |equipment_item|
                   %li
                     = equipment_item.title
@@ -90,3 +90,5 @@
 
 = render 'layouts/filepicker'
 
+= content_for :footer do
+  = render 'layouts/footer'
