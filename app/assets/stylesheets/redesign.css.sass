@@ -1655,13 +1655,13 @@ csingredienteditpair
 
 .spe-hide-setup
   width: 497px
-  transition: 200ms ease all
+  @include transition(200ms ease all)
   &.spe-hide-start
     width: 0
 
 .spe-show-setup
   width: 0
-  transition: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275) all
+  @include transition(500ms cubic-bezier(0.175, 0.885, 0.32, 1.275) all)
   &.spe-show-start
     width: 497px
 
@@ -1877,7 +1877,7 @@ csingredienteditpair
     .spe-hide-setup
       height: 42px
       width:  auto
-      transition: 200ms ease all
+      @include transition(200ms ease all)
       &.spe-hide-start
         width:  auto
         height: 0
@@ -1885,7 +1885,7 @@ csingredienteditpair
     .spe-show-setup
       width:  auto
       height: 0
-      transition: 350ms cubic-bezier(0.175, 0.885, 0.32, 1.275) all
+      @include transition(350ms cubic-bezier(0.175, 0.885, 0.32, 1.275) all)
       &.spe-show-start
         width:  auto
         height: 42px
