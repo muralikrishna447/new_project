@@ -1,4 +1,4 @@
-class SplitController < ApplicationController
+class SplittyController < ApplicationController
   def finish_split
     finished(params[:experiment], reset: false)
     puts "FININSHING #{params[:experiment]}"

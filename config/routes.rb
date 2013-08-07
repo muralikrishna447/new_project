@@ -144,7 +144,7 @@ Delve::Application.routes.draw do
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
-  match "/split/finished", :controller => "split", :action => "finish_split"
+  match "/splitty/finished", :controller => "splitty", :action => "finish_split"
 
   resources :client_views, only: [:show]
 

@@ -8,7 +8,7 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
   $scope.openSocialWindow = (url, spec) ->
     $scope.expandSocial = false
     window.open(url, "_blank", spec || "width=500, height=300, top=100, left=100")
-    $http.put('/split/finished?experiment=social_share')
+    $http.put('/splitty/finished?experiment=social_share')
 
   $scope.shareTwitter = (title, url) ->
     $scope.openSocialWindow "https://twitter.com/intent/tweet?text=I love this: " + title + " from @ChefSteps!&url=" + window.escape(url)
