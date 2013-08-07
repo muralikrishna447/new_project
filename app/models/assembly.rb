@@ -1,5 +1,6 @@
 class Assembly < ActiveRecord::Base
   extend FriendlyId
+  include PublishableModel
   friendly_id :title, use: [:slugged, :history]
   attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes
   has_many :assembly_inclusions
@@ -9,6 +10,8 @@ class Assembly < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
 
   has_many :uploads
+
+  scope :published, where(published: true)
 
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
