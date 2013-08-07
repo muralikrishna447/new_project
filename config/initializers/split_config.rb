@@ -9,7 +9,3 @@ Split.configure do |config|
   config.db_failover_on_db_error = proc{|error| Rails.logger.error(error.message) }
   config.allow_multiple_experiments = true
 end
-
-Split::Dashboard.use Rack::Auth::Basic do |username, password|
-  username == 'delve' && password == 'howtochef22'
-end

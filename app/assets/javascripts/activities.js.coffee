@@ -65,7 +65,7 @@ $ ->
 
 
 window.oldSocialFinishExperiment = ->
-  $.ajax '/split/finished?experiment=social_share',
+  $.ajax '/splitty/finished?experiment=social_share',
     type: 'PUT'
 
 window.expandSteps = expandSteps
