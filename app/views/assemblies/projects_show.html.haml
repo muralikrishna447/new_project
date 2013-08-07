@@ -19,7 +19,7 @@
                   %iframe(frameborder='0' allowfullscreen){src: youtube_url(@project.youtube_id)}
                 - elsif @project.image_id?
                   = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title, itemprop: 'image'
-              = render 'layouts/social_buttons', media_object: @project
+              = render 'layouts/social_buttons', media_object: @project, url: project_url(@project)
               .row
                 .span4
                   .section
