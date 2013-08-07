@@ -1,15 +1,15 @@
-.container
+.container.project
   %h1= @project.title
   .row
     .span12
       %ul.nav.nav-pills#project-tabs
         %li.active
-          = link_to 'Introduction', '#introduction', data: {toggle: 'tab'}
+          = link_to '0. Introduction', '#introduction', data: {toggle: 'tab'}
         - @project.assembly_inclusions.order('assembly_inclusions.position asc').each_with_index do |assembly_inclusion,index|
           %li
-            = link_to assembly_inclusion.includable.title, "#project-#{index}", data: {toggle: 'tab'}
+            = link_to "#{index + 1}. #{assembly_inclusion.includable.title}", "#project-#{index}", data: {toggle: 'tab'}
         %li
-          = link_to 'Upload a Photo', '#upload', data: {toggle: 'tab'}
+          = link_to "#{@project.assembly_inclusions.count + 1}. Finish the Project", '#upload', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#introduction
           .row
