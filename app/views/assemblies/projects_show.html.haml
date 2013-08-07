@@ -1,15 +1,15 @@
-.container
+.container.project
   %h1= @project.title
   .row
     .span12
       %ul.nav.nav-pills#project-tabs
         %li.active
-          = link_to 'Introduction', '#introduction', data: {toggle: 'tab'}
+          = link_to '0. Introduction', '#introduction', data: {toggle: 'tab'}
         - @project.assembly_inclusions.order('assembly_inclusions.position asc').each_with_index do |assembly_inclusion,index|
           %li
-            = link_to assembly_inclusion.includable.title, "#project-#{index}", data: {toggle: 'tab'}
+            = link_to "#{index + 1}. #{assembly_inclusion.includable.title}", "#project-#{index}", data: {toggle: 'tab'}
         %li
-          = link_to 'Upload a Photo', '#upload', data: {toggle: 'tab'}
+          = link_to "#{@project.assembly_inclusions.count + 1}. Finish the Project", '#upload', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#introduction
           .row
@@ -19,10 +19,11 @@
                   %iframe(frameborder='0' allowfullscreen){src: youtube_url(@project.youtube_id)}
                 - elsif @project.image_id?
                   = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title, itemprop: 'image'
+
               = render 'layouts/social_buttons', media_object: @project, url: project_url(@project)
-              .row
+              .row.section
                 .span4
-                  .section
+                  .section.text-right
                     %ul.unstyled
                       - @project.assembly_inclusions.each do |assembly_inclusion|
                         %li
@@ -30,17 +31,17 @@
                   .section
                     = link_to 'Get Started', '#start', class: 'btn btn-large btn-primary input-block-level', id: 'start-project'
                 .span4
-                  .section
+                  .section.project-description
                     = @project.description
 
-              %div(ng-controller='CommentsController' ng-init="init('assemblies','#{@project.id}')" ng-cloak)
-                %h3 Comments
-                = render 'comments/comments'
+              / %div(ng-controller='CommentsController' ng-init="init('assemblies','#{@project.id}')" ng-cloak)
+              /   %h3 Comments
+              /   = render 'comments/comments'
 
             .span4
-              %h3 All Ingredients
+              %h4 All Ingredients
               / = link_to 'Text me this list', '#', class: 'btn btn-secondary'
-              .activity-ingredients-list
+              .activity-ingredients-list.well
                 .ingredients{:itemprop => "ingredients"}
                   .ingredient-table-body
                     - @project.combined_ingredients.each do |combined_ingredient|
@@ -54,11 +55,21 @@
                             = combined_ingredient[1]
                         .unit.qtyfade
                           = combined_ingredient[2]
-              %h3 Equipment
-              %ul.unstyled
-                - @project.equipment.each do |equipment_item|
-                  %li
-                    = equipment_item.title
+              %h4 Required Equipment
+              %ul.unstyled.well
+                - @project.required_equipment.each do |equipment_item|
+                  - if equipment_item.product_url?
+                    %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
+                  - else
+                    %li= equipment_item.title
+
+              %h4 Optional Equipment
+              %ul.unstyled.well
+                - @project.optional_equipment.each do |equipment_item|
+                  - if equipment_item.product_url?
+                    %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
+                  - else
+                    %li= equipment_item.title
                        
         - @project.assembly_inclusions.each_with_index do |assembly_inclusion, index|
           .tab-pane{id: "project-#{index}"}
@@ -90,3 +101,5 @@
 
 = render 'layouts/filepicker'
 
+= content_for :footer do
+  = render 'layouts/footer'
