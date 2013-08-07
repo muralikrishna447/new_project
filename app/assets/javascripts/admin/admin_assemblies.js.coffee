@@ -45,3 +45,9 @@ $ ->
         fieldset = $(this)
         set_position(fieldset, index)
   )
+
+  $('.assembly_includable_id').each ->
+    $(this).select2()
+
+  $('.assembly_includable_type').each ->
+    $(this).select2()
