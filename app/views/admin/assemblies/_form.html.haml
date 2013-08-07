@@ -10,7 +10,7 @@
   %h2 Assembly Inclusions
   = link_to_add_fields "Add Assembly Inclusion", f, :assembly_inclusions
   #assembly_inclusions
-    = f.semantic_fields_for :assembly_inclusions do |builder|
+    = f.semantic_fields_for :assembly_inclusions, @assembly.assembly_inclusions.order('assembly_inclusions.position asc') do |builder|
       = render 'assembly_inclusion_fields', f: builder
   = f.actions
 

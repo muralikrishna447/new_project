@@ -11,6 +11,7 @@ task :create_project_salmon_104 => :environment do
   assembly.title = 'Salmon 104'
   assembly.description = 'Our first advanced recipe at ChefSteps.'
   assembly.assembly_type = 'Project'
+  assembly.youtube_id = '2ZJ45YC1Oak'
   assembly.save
 
   puts 'Saved:'
