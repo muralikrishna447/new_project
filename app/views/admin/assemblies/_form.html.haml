@@ -15,7 +15,7 @@
   = f.actions
 
 #assembly_selection_data
-  #activity_selection_data{data: {:'activity-selection' => Activity.where("title <> ''").order(:title).select('id, title').to_json}}
+  #activity_selection_data{data: {:'activity-selection' => Activity.chefsteps_generated.where("title <> ''").order(:title).select('id, title').to_json}}
   #quiz_selection_data{data: {:'quiz-selection' => Quiz.where("title <> ''").order(:title).select('id, title').to_json}}
 
 = render 'layouts/filepicker'
