@@ -81,7 +81,7 @@
           .tab-pane{id: "project-#{index}"}
             = render '/shared/activity', activity: assembly_inclusion.includable
         .tab-pane#upload
-          %p.lead You're done! Show your progress or final dish, plating or you and your friends enjoying the dish, and share it proudly. Let us know if you had difficulty made tweaks, how it tasted, or more generally what your experience cooking this dish were like!
+          %p.lead You're done! Show your progress or final dish, plating or you and your friends enjoying the dish, and share it proudly. Let us know if you had difficulty, made tweaks, how it tasted, or more generally what your experience cooking this dish were like. You'll get the Salmon 104 badge, too!
           .flat-form
             = form_for @upload do |f|
               = f.hidden_field :assembly_id, value: @project.id
