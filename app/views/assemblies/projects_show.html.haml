@@ -29,15 +29,16 @@
               .row.section
                 .span4
                   .section.text-right
+                    %h2 #{@project.title}:
                     %ul.unstyled
                       - @project.assembly_inclusions.each do |assembly_inclusion|
                         %li
                           = link_to assembly_inclusion.includable.title, assembly_inclusion.includable
-                  .section
-                    = link_to 'Get Started', '#start', class: 'btn btn-large btn-primary input-block-level', id: 'start-project'
                 .span4
                   .section.project-description
                     = @project.description
+                  .section
+                    = link_to 'Get Started', '#start', class: 'btn btn-large btn-primary input-block-level', id: 'start-project'
 
               / %div(ng-controller='CommentsController' ng-init="init('assemblies','#{@project.id}')" ng-cloak)
               /   %h3 Comments
@@ -80,6 +81,7 @@
           .tab-pane{id: "project-#{index}"}
             = render '/shared/activity', activity: assembly_inclusion.includable
         .tab-pane#upload
+          %p.lead You're done! Show your progress or final dish, plating or you and your friends enjoying the dish, and share it proudly. Let us know if you had difficulty made tweaks, how it tasted, or more generally what your experience cooking this dish were like!
           .flat-form
             = form_for @upload do |f|
               = f.hidden_field :assembly_id, value: @project.id
