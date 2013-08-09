@@ -14,6 +14,7 @@ class UploadsController < ApplicationController
       redirect_to @upload, notice: 'Your photo has been uploaded!'
       track_event @upload
       mixpanel.track 'Photo Uploaded', { distinct_id: @upload.user.id, course: @upload.course ? @upload.course.title : 'none', activity: @upload.activity ? @upload.activity.title : "Custom Recipe" }
+      mixpanel.set({ :distinct_id => @upload.user.id}, { course: @upload.course ? @upload.course.title : 'none', activity: @upload.activity ? @upload.activity.title : "Custom Recipe", :email => @upload.user.email })
     end
   end
 end

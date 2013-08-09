@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130801200151) do
+ActiveRecord::Schema.define(:version => 20130807230858) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(:version => 20130801200151) do
     t.integer  "source_type",            :default => 0
     t.text     "assignment_recipes"
     t.datetime "published_at"
-    t.string   "author_notes"
+    t.text     "author_notes"
     t.integer  "likes_count"
     t.integer  "currently_editing_user"
     t.boolean  "include_in_gallery",     :default => true
@@ -128,6 +128,8 @@ ActiveRecord::Schema.define(:version => 20130801200151) do
     t.integer  "comments_count"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.boolean  "published"
+    t.datetime "published_at"
   end
 
   create_table "assembly_inclusions", :force => true do |t|

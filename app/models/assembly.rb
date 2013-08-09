@@ -1,5 +1,6 @@
 class Assembly < ActiveRecord::Base
   extend FriendlyId
+  include PublishableModel
   friendly_id :title, use: [:slugged, :history]
   attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes
   has_many :assembly_inclusions
@@ -9,6 +10,8 @@ class Assembly < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
 
   has_many :uploads
+
+  scope :published, where(published: true)
 
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
@@ -27,8 +30,12 @@ class Assembly < ActiveRecord::Base
     self.grouped_ingredients.map{ |ingredient_group| [ingredient_group[0], ingredient_group[1].map(&:quantity).inject(:+), ingredient_group[1][0].unit] }
   end
 
-  def equipment
-    assembly_inclusions.map(&:includable).map(&:terminal_equipment).flatten.uniq.sort_by{ |e| e.title }
+  def required_equipment
+    assembly_inclusions.map(&:includable).map(&:required_equipment).flatten.uniq.sort_by{ |e| e.title }
+  end
+
+  def optional_equipment
+    assembly_inclusions.map(&:includable).map(&:optional_equipment).flatten.uniq.sort_by{ |e| e.title }
   end
 
   def featured_image
