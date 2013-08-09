@@ -83,46 +83,52 @@
             .span4.text-center
               %h3 Introduction
             .span4.text-right
-              = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary', onclick: "jumpToProjectTab(1)"
+              = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(1)"
                        
         - project_inclusions.each_with_index do |assembly_inclusion, index|
           .tab-pane{id: "project-#{index}"}
             = render '/shared/activity', activity: assembly_inclusion.includable
             .row-fluid.well.section
               .span4.text-left
-                = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary', onclick: "jumpToProjectTab(#{index})"
+                = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{index})"
               .span4.text-center
                 %h3= assembly_inclusion.includable.title
               .span4.text-right
-                = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary', onclick: "jumpToProjectTab(#{index + 2})"
+                = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{index + 2})"
         .tab-pane#upload
-          %p.lead You're done! Show your progress or final dish, plating or you and your friends enjoying the dish, and share it proudly. Let us know if you had difficulty, made tweaks, how it tasted, or more generally what your experience cooking this dish were like. You'll get the Salmon 104 badge, too!
-          .flat-form
-            = form_for @upload do |f|
-              = f.hidden_field :assembly_id, value: @project.id
-              .row-fluid
-                .span4
-                  %h4 Upload a Photo
-                  .upload-wrapper
-                    = image_tag '/assets/missing.png', class: "upload-photo-preview"
-                    = link_to '+', '#', class: 'upload-photo-btn'
-                    %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
-                .span8
-                  %h4 Title
-                  %p= f.text_field :title, class: 'input-block-level', required: true
-                  %h4 Notes
-                  %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
-                  = f.submit 'Upload', class: 'btn btn-primary btn-large'
-          .horizontal-slider{data: {direction: 'right'}}
-            .horizontal-slider-wrap
-              - @project.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
-                = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
-            %div{class: "horizontal-slider-btn-right btn btn-circle"}
-              %i{class: "icon-chevron-right"}
-            %div{class: "horizontal-slider-shadow-overlay-right"}
+          .row
+            .span6
+              %p.lead You're done! Show your progress or final dish, plating or you and your friends enjoying the dish, and share it proudly. Let us know if you had difficulty, made tweaks, how it tasted, or more generally what your experience cooking this dish were like. You'll get the Salmon 104 badge, too!
+            .span6
+              .flat-form
+                = form_for @upload do |f|
+                  = f.hidden_field :assembly_id, value: @project.id
+                  .row-fluid
+                    .span4
+                      %h4 Upload a Photo
+                      .upload-wrapper
+                        = image_tag '/assets/missing.png', class: "upload-photo-preview"
+                        = link_to '+', '#', class: 'upload-photo-btn'
+                        %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
+                    .span8
+                      %h4 Title
+                      %p= f.text_field :title, class: 'input-block-level', required: true
+                      %h4 Notes
+                      %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
+                      = f.submit 'Upload', class: 'btn btn-primary btn-large'
+          .row
+            .span12
+              - if @project.uploads.any?
+                .horizontal-slider{data: {direction: 'right'}}
+                  .horizontal-slider-wrap
+                    - @project.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
+                      = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+                  %div{class: "horizontal-slider-btn-right btn btn-circle"}
+                    %i{class: "icon-chevron-right"}
+                  %div{class: "horizontal-slider-shadow-overlay-right"}
           .row-fluid.well.section
             .span4.text-left
-              = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary', onclick: "jumpToProjectTab(#{project_inclusions.count})"
+              = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{project_inclusions.count})"
             .span4.text-center
               %h3 Finish the Project
             .span4.text-right
