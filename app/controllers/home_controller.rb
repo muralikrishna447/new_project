@@ -1,8 +1,10 @@
 class HomeController < ApplicationController
 
   def index
+    @courses = Course.published.last(3)
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_gallery.last(6)
+      @projects = Assembly.projects.last(3)
       # @followings_stream = Kaminari::paginate_array(current_user.followings_stream).page(params[:page]).per(6)
       # @stream = current_user.received_stream.take(4)
     else
@@ -10,7 +12,6 @@ class HomeController < ApplicationController
       @recipes = Activity.published.chefsteps_generated.recipes.includes(:steps).last(6) - @heroes
       @techniques = Activity.published.chefsteps_generated.techniques.includes(:steps).last(6) - @heroes
       @sciences = Activity.published.chefsteps_generated.sciences.includes(:steps).last(6) - @heroes
-      @courses = Course.published.last(3)
       # cookies.delete(:returning_visitor)
       @returning_visitor = cookies[:returning_visitor]
       @new_visitor = params[:new_visitor] || !@returning_visitor

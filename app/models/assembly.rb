@@ -12,6 +12,7 @@ class Assembly < ActiveRecord::Base
   has_many :uploads
 
   scope :published, where(published: true)
+  scope :projects, where(assembly_type: 'Project')
 
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
