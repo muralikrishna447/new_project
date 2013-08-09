@@ -1,19 +1,17 @@
 .container
   .row
-    .span10
-      .stream-header-section
-        %h2 Latest from ChefSteps
-        = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
+    .span12
+      .row.section
+        .span10
+          %h2 Latest from ChefSteps
+        .span2.text-right
+          = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
       = render 'shared/horizontal_slider', items: @latest, direction: 'right'
 
-    .span10
-      .stream-header-section
-        %h2 Activity Stream
-        = link_to user_profile_path(current_user), class: 'btn btn-large btn-outline-blue-large' do
-          See More
-          %i.icon-angle-right
-
-    .span8.offset2
+  .row
+    .span8
+    .span4
+      %h2 Activity Stream
       / .stream
       /   - @followings_stream.each do |event|
       /     - path_array = event.group_type.downcase.split('_')
