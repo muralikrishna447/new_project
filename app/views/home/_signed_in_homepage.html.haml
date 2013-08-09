@@ -15,14 +15,14 @@
         - if index == 0
           %h3= course.title
           = image_tag filepicker_stream_image(course.featured_image)
-          = course.description
+          = course.short_description
         -else
           .row
             .span4
               = image_tag filepicker_stream_image(course.featured_image)
             .span4
               %h4= course.title
-              = course.description
+              = course.short_description
       %h2 Projects
       %h3 Start a new Project
       - @projects.each.with_index do |project, index|
