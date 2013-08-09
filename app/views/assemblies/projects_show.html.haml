@@ -3,6 +3,8 @@
 - content_for :canonical_link, project_url(@project) if @project.id
 - content_for :keywords, @project.assembly_inclusions.map(&:includable).map(&:title).join(',')
 
+- project_inclusions = @project.assembly_inclusions.order('assembly_inclusions.position asc')
+
 .container.project
   %h1= @project.title
   .row
@@ -10,7 +12,7 @@
       %ul.nav.nav-pills#project-tabs
         %li.active
           = link_to '0. Introduction', '#introduction', data: {toggle: 'tab'}
-        - @project.assembly_inclusions.order('assembly_inclusions.position asc').each_with_index do |assembly_inclusion,index|
+        - project_inclusions.each_with_index do |assembly_inclusion,index|
           %li
             = link_to "#{index + 1}. #{assembly_inclusion.includable.title}", "#project-#{index}", data: {toggle: 'tab'}
         %li
@@ -31,7 +33,7 @@
                   .section.text-right
                     %h2 #{@project.title}:
                     %ul.unstyled
-                      - @project.assembly_inclusions.order('assembly_inclusions.position asc').each_with_index do |assembly_inclusion,index|
+                      - project_inclusions.each_with_index do |assembly_inclusion,index|
                         %li
                           = link_to assembly_inclusion.includable.title, "javascript:void(0);", onclick: "jumpToProjectTab(#{index + 1})"
                 .span4
@@ -76,17 +78,23 @@
                     %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
                   - else
                     %li= equipment_item.title
-          .row-fluid.well
+          .row-fluid.well.section
             .span4.text-left
-              = link_to 'Previous', '#', class: 'btn btn-primary'
             .span4.text-center
               %h3 Introduction
             .span4.text-right
-              = link_to 'Next', '#', class: 'btn btn-primary'
+              = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary', onclick: "jumpToProjectTab(1)"
                        
-        - @project.assembly_inclusions.each_with_index do |assembly_inclusion, index|
+        - project_inclusions.each_with_index do |assembly_inclusion, index|
           .tab-pane{id: "project-#{index}"}
             = render '/shared/activity', activity: assembly_inclusion.includable
+            .row-fluid.well.section
+              .span4.text-left
+                = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary', onclick: "jumpToProjectTab(#{index})"
+              .span4.text-center
+                %h3= assembly_inclusion.includable.title
+              .span4.text-right
+                = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary', onclick: "jumpToProjectTab(#{index + 2})"
         .tab-pane#upload
           %p.lead You're done! Show your progress or final dish, plating or you and your friends enjoying the dish, and share it proudly. Let us know if you had difficulty, made tweaks, how it tasted, or more generally what your experience cooking this dish were like. You'll get the Salmon 104 badge, too!
           .flat-form
@@ -112,6 +120,12 @@
             %div{class: "horizontal-slider-btn-right btn btn-circle"}
               %i{class: "icon-chevron-right"}
             %div{class: "horizontal-slider-shadow-overlay-right"}
+          .row-fluid.well.section
+            .span4.text-left
+              = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary', onclick: "jumpToProjectTab(#{project_inclusions.count})"
+            .span4.text-center
+              %h3 Finish the Project
+            .span4.text-right
 
 = render 'layouts/filepicker'
 
