@@ -31,9 +31,9 @@
                   .section.text-right
                     %h2 #{@project.title}:
                     %ul.unstyled
-                      - @project.assembly_inclusions.each do |assembly_inclusion|
+                      - @project.assembly_inclusions.order('assembly_inclusions.position asc').each_with_index do |assembly_inclusion,index|
                         %li
-                          = link_to assembly_inclusion.includable.title, assembly_inclusion.includable
+                          = link_to assembly_inclusion.includable.title, "javascript:void(0);", onclick: "jumpToProjectTab(#{index + 1})"
                 .span4
                   .section.project-description
                     = @project.description

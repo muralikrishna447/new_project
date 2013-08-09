@@ -1,3 +1,6 @@
+window.jumpToProjectTab = (index) ->
+  $('#project-tabs li:eq(' + index + ') a').tab('show')
+
 $ ->
   $('#start-project').click (e) ->
     e.preventDefault()
