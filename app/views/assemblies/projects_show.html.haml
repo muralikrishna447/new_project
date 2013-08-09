@@ -76,6 +76,13 @@
                     %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
                   - else
                     %li= equipment_item.title
+          .row-fluid.well
+            .span4.text-left
+              = link_to 'Previous', '#', class: 'btn btn-primary'
+            .span4.text-center
+              %h3 Introduction
+            .span4.text-right
+              = link_to 'Next', '#', class: 'btn btn-primary'
                        
         - @project.assembly_inclusions.each_with_index do |assembly_inclusion, index|
           .tab-pane{id: "project-#{index}"}
