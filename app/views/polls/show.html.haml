@@ -81,7 +81,8 @@
                 %i.icon-google-plus
               %a.poll-item-btn.poll-item-btn-social(href="https://twitter.com/intent/tweet?text=I voted for {{poll_item.title}} on @ChefSteps!&url=#{ url_encode(current_url(request))}")
                 %i.icon-twitter
-
+      %div.voting-spinner(ng-hide="hideSpinner")
+        %i.icon-spinner.icon-spin.icon-large
 = render 'layouts/footer'
 
 :javascript
