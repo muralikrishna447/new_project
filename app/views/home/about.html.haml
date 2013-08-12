@@ -1,31 +1,56 @@
-.container
-
+.container.top-container
   .row
-    .span12.pull-left
-      %h3 From Creators of <i>Modernist Cuisine: The Art and Science of Cooking</i>
-      %ul.unstyled
-        %li.instructor#instructor-chris
-          .row
-            .span2
-              = image_tag('chris-large.jpg', title: 'Chris Young', class: 'img-profile')
-            .span8
-              :markdown
-                #{@chris.copy.to_s}
-          .row
-            .span10.horizontal-divider
-        %li.instructor#instructor-grant
-          .row
-            .span2
-              = image_tag('grant-large.jpg', title: 'Chris Young', class: 'img-profile')
-            .span8
-              :markdown
-                #{@grant.copy.to_s}
-          .row
-            .span10.horizontal-divider
-        %li.instructor#instructor-ryan
-          .row
-            .span2
-              = image_tag('ryan.jpg', title: 'Ryan Matthew Smith', class: 'img-profile')
-            .span8
-              :markdown
-                #{@ryan.copy.to_s}
+    %br
+    .span6
+      = image_tag('https://www.filepicker.io/api/file/dFzpH7W3TkyA6XtngZFc')
+    .span6
+      %h2 Cook. Forward.
+      %p ChefSteps is a totally new approach to learning the art and science of cooking. Whether you are a professional chef, a culinary student, or a cooking enthusiast, if you are also a curious cook then ChefSteps is for you.
+
+  .row.section
+    .span12  
+      %h2.text-center Founded by
+  .row
+    .span10.offset1
+      - @founders.each do |f|
+        .span3.text-center
+          = image_tag filepicker_circle_image(f.image_id), class: 'img-circle clearfix'
+          %h4= "#{f.name}"
+
+  %hr
+  .row.section
+    .span12
+    %h2.text-center The Team
+    - @team.each do |t|
+      .span2.text-center.section
+        = image_tag filepicker_circle_image(t.image_id), class: 'img-circle clearfix'
+        %h4= "#{t.name}"
+
+  %hr
+  .row.section
+    .span6
+      .row
+        %h4 Want to Join Us?
+        %p We're looking for some folks to help us define the future of online cooking school and recipes. 
+        = link_to "Check out our open positions.", "/jobs"
+    .span6
+      - blog = parse_feed("http://blog.chefsteps.com/feed/")
+      %h4 Blog
+      %h5= link_to blog.items.first.title.html_safe, "#{blog.items.first.link}"
+      %p #{blog.items.first.description.html_safe}
+
+  /.row.section
+  /  .span12
+  /    %h2.text-center Press
+  /  .row
+  /    .span3
+  /      = image_tag ('http://placehold.it/100x100')
+  /    .span3
+  /      = image_tag ('http://placehold.it/100x100')
+  /    .span3
+  /      = image_tag ('http://placehold.it/100x100')
+  /    .span3
+  /      = image_tag ('http://placehold.it/100x100')
+
+= content_for :footer do
+  = render 'layouts/footer'

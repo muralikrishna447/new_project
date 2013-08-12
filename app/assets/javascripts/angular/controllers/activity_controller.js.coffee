@@ -5,7 +5,7 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", ($scope, $resource, $location, $http, $timeout, limitToFilter, localStorageService) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService) ->
 
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id")},
@@ -25,6 +25,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.preventAutoFocus = false
   $scope.shouldShowRestoreAutosaveModal = false
   $scope.shouldShowAlreadyEditingModal = false
+  $scope.alerts = []
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -78,14 +79,23 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     true
 
   $scope.endEditMode = ->
+
+    $scope.alerts = []
     $scope.normalizeModel()
-    $scope.activity.$update({},
+    $scope.normalizeWeightUnits()
+    $scope.activity.$update(
+      {},
       ((response) ->
+        console.log "ACTIVITY SAVE WIN"
         # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
-       window.location = response.redirect_to if response.redirect_to),
+        window.location = response.redirect_to if response.redirect_to
+        $scope.postEndEditMode()
+        $scope.activity.is_new = false),
+
+      ((error) ->
+        console.log "ACTIVITY SAVE ERRORS: " + JSON.stringify(error)
+        _.each(error.data.errors, (e) -> $scope.addAlert({message: e})))
     )
-    $scope.postEndEditMode()
-    $scope.activity.is_new = false
 
   $scope.cancelEditMode = ->
     if $scope.undoAvailable
@@ -106,6 +116,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex ]
       $scope.saveToLocalStorage()
       $scope.temporaryNoAutofocus();
+    true
 
   $scope.redo = ->
     if $scope.redoAvailable
@@ -113,6 +124,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex]
       $scope.saveToLocalStorage()
       $scope.temporaryNoAutofocus();
+    true
 
   $scope.undoAvailable = ->
     $scope.undoIndex > 0
@@ -147,9 +159,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     ), 1000
 
   $scope.localStorageKeyId = ->
-    # Use "New" for activity that was never saved before b/c they actually have unique ids
-    # but the local storage won't find them.
-    if $scope.activity.is_new then "New" else $('#activity-body').data("activity-id")
+    $('#activity-body').data("activity-id")
 
   # Local storage (to prevent data loss on tab close etc.)
   $scope.localStorageKey = ->
@@ -265,7 +275,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.heroVideoURL = ->
     autoplay = if $scope.url_params.autoplay then "1" else "0"
-    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}\&html5=1"
+    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
 
   $scope.heroVideoStillURL = ->
     "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
@@ -352,6 +362,15 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
         if _.isString(item["ingredient"])
           item["ingredient"] = {title: item["ingredient"]}
 
+  $scope.normalizeWeightUnits = () ->
+    angular.forEach $scope.activity.ingredients, (item) ->
+      if item.unit == "lb"
+        item.display_quantity = item.display_quantity * 453.592
+        item.unit = "g"
+      else if item.unit == "oz"
+        item.display_quantity = item.display_quantity * 28.3495
+        item.unit = "g"
+
 
   $scope.getIngredientsList = ->
     $scope.activity.ingredients
@@ -368,16 +387,36 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     else
       false
 
-  # Keep <title> tag in sync
-  $scope.$watch 'activity.title', ->
-    if $scope.activity.activity_type instanceof Array
-      activity_type_title = $scope.activity.activity_type[0]
-    else
-      activity_type_title = $scope.activity.activity_type
-    $(document).attr("title", "ChefSteps - " + (activity_type_title || '') + " - " + ($scope.activity.title || "New Recipe"))
+  $scope.addAlert = (alert) ->
+    $scope.alerts.push(alert)
+    $timeout ->
+      $("html, body").animate({ scrollTop: -500 }, "slow")
+
+  $scope.closeAlert = (index) ->
+    $scope.alerts.splice(index, 1)
+
+  # We've had bad luck getting the youtube iframe player API state change event to work reliably, so instead
+  # we're asking youtube for the video duration and making the assumption that the video is done playing after
+  # that time period.
+  $scope.schedulePostPlayEvent = ->
+    $scope.heroVideoDuration = -1
+    if $scope.activity && $scope.hasHeroVideo()
+      $http.jsonp("http://gdata.youtube.com/feeds/api/videos/" + $scope.activity.youtube_id + "?v=2&callback=JSON_CALLBACK").then (response) ->
+        # Good god, parsing XML that contains namespaces in the elements using jquery is a compatibility disaster!
+        # See http://stackoverflow.com/questions/853740/jquery-xml-parsing-with-namespaces
+        # So for now I'm doing a fugly regexp parse. At least it works.
+        duration = response.data.match(/yt:duration seconds=.([\d]*)/)[1]
+        if duration > 1
+          $scope.heroVideoDuration = duration
+          $timeout (->
+            $scope.videoDurationExceeded = true
+            $rootScope.$broadcast('expandSocialButtons')
+          ), duration * 1000 + 5000
 
   # One time stuff
   if $scope.parsePreloaded()
+
+    $scope.schedulePostPlayEvent()
 
     if ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()

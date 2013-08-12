@@ -5,11 +5,20 @@
   -webkit-box-sizing: border-box
   -o-box-sizing: border-box
 
+=any_shadow($c)
+  box-shadow: $c
+  -moz-box-shadow: $c
+  -webkit-box-shadow: $c
+  -o-box-shadow: $c
+
 =shadow
-  box-shadow: 0px 0px 5px #888888
-  -moz-box-shadow: 0px 0px 5px #888888
-  -webkit-box-shadow: 0px 0px 5px #888888
-  -o-box-shadow: 0px 0px 5px #888888
+  box-shadow: 0px 0px 2px #888888
+  -moz-box-shadow: 0px 0px 2px #888888
+  -webkit-box-shadow: 0px 0px 2px #888888
+  -o-box-shadow: 0px 0px 2px #888888
+
+=big-shadow
+  @include any_shadow(5px 5px 15px #888888)
 
 =dark-shadow
   box-shadow: 0px 0px 5px black
@@ -23,6 +32,12 @@
   -webkit-box-shadow: 0px 1px 4px rgba(0,0,0,0.2)
   -o-box-shadow: 0px 1px 4px rgba(0,0,0,0.2)
 
+=bottom-only-annotation-shadow
+  box-shadow: 2px 4px 4px rgba(0,0,0,0.2)
+  -moz-box-box-shadow: 2px 4px 4px rgba(0,0,0,0.2)
+  -webkit-box-shadow: 2px 4px 4px rgba(0,0,0,0.2)
+  -o-box-shadow: 2px 4px 4px rgba(0,0,0,0.2)
+
 =radius($value)
   border-radius: $value
   -moz-border-radius: $value
@@ -34,6 +49,12 @@
   -moz-transition: $value
   -webkit-transition: $value
   -o-transition: $value
+
+=transform($value)
+  transform: $value
+  -moz-transform: $value
+  -webkit-transform: $value
+  -o-transform: $value
 
 =animation($value)
   animation: $value
@@ -51,6 +72,7 @@ $orange: #e25f25
 //$orange: #DB7354
 $dark-orange: #D25029
 $darker-orange: #B84724
+$light-blue: #0088CC
 $blue: #006DCC
 $blue-opaque: rgba(0,109,204,.8)
 $red: #DA4f49

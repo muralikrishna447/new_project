@@ -10,5 +10,5 @@
       .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()")
         = render 'step'
 
-    .scroll-overlay-top
-    .scroll-overlay-bottom
+    .scroll-overlay-top.noprint
+    .scroll-overlay-bottom.noprint

@@ -1,5 +1,10 @@
 angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$timeout", "$http", "limitToFilter", ($scope, $timeout, $http, limitToFilter) ->
 
+  $scope.shouldShowMasterIngredientsRemovedModal = false
+
+  $scope.getAllUnits = ->
+    window.allUnits
+
   $scope.ingredient_display_type = (ai) ->
     result = "basic"
     result = "product" if !! ai.ingredient.product_url
@@ -39,8 +44,13 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     ((i1.note || "") == (i2.note || "")) &&
     (i1.unit == i2.unit)
 
+  $scope.hasAnyStepIngredients = ->
+    for step in $scope.activity.steps
+      return true if step.ingredients.length > 0
+    false
+
   $scope.fillMasterIngredientsFromSteps = ->
-    old_ingredients = $scope.activity.ingredients
+    old_count = $scope.activity.ingredients.length
     $scope.activity.ingredients = []
 
     for step in $scope.activity.steps
@@ -51,6 +61,8 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
             ing.display_quantity = parseFloat(ing.display_quantity) + parseFloat(si.display_quantity)
         else
           $scope.activity.ingredients.push(deepCopy(si))
-
-    $scope.temporaryNoAutofocus();
+    $scope.addUndo()
+    $scope.temporaryNoAutofocus()
+    if $scope.activity.ingredients.length < old_count
+      $scope.shouldShowMasterIngredientsRemovedModal = true
 ]

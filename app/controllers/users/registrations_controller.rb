@@ -34,13 +34,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
     if @user.save
       sign_in @user
-      aweber_signup(@user.email)
+      aweber_signup(@user.name, @user.email)
       # redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
       redirect_to welcome_url(email: @user.email)
       cookies.delete(:viewed_activities)
       cookies[:returning_visitor] = true
-      mixpanel.alias @user.id
       mixpanel.track 'Signed Up', { distinct_id: @user.id, time: @user.created_at }
+      finished('counter_split', :reset => false)
     else
       render :new
     end
@@ -58,16 +58,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
     if @user.save
       sign_in @user
-      aweber_signup(@user.email)
+      aweber_signup(@user.name, @user.email)
       cookies.delete(:viewed_activities)
-      mixpanel.alias @user.id
       mixpanel.track 'Signed Up', { distinct_id: @user.id, time: @user.created_at }
       @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
       if @enrollment.save
         redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
         track_event @course, 'enroll'
-        finished('spherification', :reset => false)
         finished('poutine', :reset => false)
+        finished('free or not', :reset => false)
         mixpanel.track 'Course Enrolled', { distinct_id: @user.id, course: @course.title, enrollment_method: 'Sign Up and Enroll' }
       end
     else
@@ -84,11 +83,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     self.resource.assign_from_facebook(fb_data) if fb_data
   end
 
-  def aweber_signup(email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
+  def aweber_signup(name, email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
     if Rails.env.production?
       uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
       response = Net::HTTP.post_form(uri,
-                                      { "email" => email,
+                                      { "name" => name,
+                                        "email" => email,
                                         "listname" => listname,
                                         "meta_adtracking" => meta_adtracking,
                                         "custom signed_up_from" => signed_up_from})

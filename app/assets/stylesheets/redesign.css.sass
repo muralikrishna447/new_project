@@ -67,6 +67,17 @@ body
     &:after
       background: $offwhite
 
+.activity-loading-spinner
+  font-size: 150px
+  color: $dark-orange
+  position:  absolute
+  top: 150px
+  left:  50%
+  margin-left: -75px
+
+.activity-top-buttons
+  margin-top: 20px
+
 /* Bootstrap Overrides */
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
   height: inherit
@@ -82,22 +93,26 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   margin: 0px
   li
     a
-      color: white
+      color: #333
       padding: 3px 10px
       &:hover
         background: $orange
+        color: white
   &:after
     content: normal
   &:before
     content: normal
   .dropdown-background
-    background: black
+    background: $offwhite
     position: absolute
     width: 100%
     height: 100%
     top: 0px
     z-index: -1
-    opacity: .6
+    opacity: .9
+
+ul.nav li.dropdown:hover > ul.dropdown-menu
+  display: block
 
 .well
   //border: 1px solid #ccc
@@ -385,6 +400,24 @@ a:hover
       vertical-align: middle
       height: 100px
 
+#title-edit-pair
+  .profile-image
+    display: inline-block
+
+.mini-profile
+  border: 1px solid #ccc
+  border-radius: 5px
+  padding:  40px
+
+  .profile-image
+    border: 2px solid $orange
+    border-radius: 50%
+    img
+      @include boxsizing
+
+  .profile-body
+    font-size:  90%
+
 // .activity-title
 //   margin-right: 90px
 
@@ -539,10 +572,6 @@ a:hover
     &:hover
       background: rgba(0, 128, 220, .2) !important
 
-
-
-
-
 .ingredients
 
   position: relative
@@ -553,25 +582,47 @@ a:hover
     display: inline-block
 
   .ingredient-table-row
+    position: relative
     width: 100%
+    line-height: 20px
+
   .ingredient-title
-    width: 61%
+    width: auto
+    height:  auto
+    margin-right: 120px
+
   .quantity-group
-    width: 29%
+    position:  absolute
+    right:  52px
+    width:  70px
+    text-align:  right
+    bottom:  -2px
+    overflow: visible
+
+  .quantity-edit
+    position: relative
+    bottom: -4px
+    left:  -8px
+
   .unit
-    width: 4%
+    position: absolute
+    right: 0px
+    bottom:  -2px
+    width:  45px
+    text-align:  left
 
   .ingredient-table-head
+    position: relative
     width: 100%
     line-height: 30px
     font-size: 17.5px
-    border-bottom: 1px solid black
+    margin-bottom: 6px
     display: block
     font-weight: bold
+
     .quantity-group
-      width: 32%
-    .unit
-      width: 0%
+      right:  0px
+      width:  120px
 
   .ingredient-table-body
     width: 100%
@@ -582,12 +633,9 @@ a:hover
 
   #quantity
     text-align: right
+    margin-left: 22px
     .recipetip
       margin-left: -11px
-    .icon-question-sign
-      position: absolute
-      margin-left: 15px
-      margin-top: 5px
 
   form
     margin: 0px
@@ -604,7 +652,6 @@ a:hover
     .ingredient-table-row
       width: 100%
       display: block
-      height: 20px
       @include transition(opacity 500ms)
       .ingredient-title
         font-weight: 400
@@ -852,6 +899,11 @@ a:hover
       text-decoration: none
 
 /* Labels */
+.label
+  background: $orange
+  color: white
+  @include raleway
+  font-weight: bold
 
 .label-large
   font-size: 20px
@@ -872,19 +924,21 @@ a:hover
   i
     line-height: 20px
 
+.btn-group > .btn:first-child
+  border-radius: 0px    
+
 .btn-primary
   background: $orange
   border: 0px
-  -webkit-box-shadow: 0 3px 0px -1px $dark-orange
-  -moz-box-shadow: 0 3px 0px -1px $dark-orange
-  box-shadow: 0 3px 0px -1px $dark-orange  
+  border-bottom: 1px $dark-orange solid
   border-radius: 0px
   position: relative
   @include boxsizing
-  @include transition(all 100ms)
+  @include transition(all .25s)
   &:hover
     background: $darker_orange
-    @include transition(all 100ms)
+    @include transition(all .25s)
+    border-bottom: 1px $orange solid
   &:disabled
     background: #696969
     color:  #d3d3d3
@@ -895,9 +949,7 @@ a:hover
 .btn-secondary
   background: $offwhite
   border: 0px
-  -webkit-box-shadow: 0 3px 0px -1px #999
-  -moz-box-shadow: 0 3px 0px -1px #999
-  box-shadow: 0 3px 0px -1px #999999
+  border-bottom: 1px #ccc solid
   border-radius: 0px
   @include transition(all 100ms)
   &:hover
@@ -932,7 +984,7 @@ a:hover
 
 .btn-play-image
   position: relative
-  background: image-url('play-button.png') no-repeat
+  background: image-url('https://www.filepicker.io/api/file/IOjE35SKSmCjut9x1FBg?cache=true') no-repeat
   width: 34px
   height: 34px
   margin: 33px 10px 20px 33px
@@ -975,13 +1027,14 @@ a:hover
 .btn-circle
   height: 40px
   width: 40px
-  padding: 10px
+  padding: 10px 15px
   margin: 5px 2px
   border-radius: 50%
+  border: none
   background-image: none
-  background: $white-opaque
-  color: $orange
-  font-size: 20px
+  background: $orange
+  color: white
+  font-size: 17px
   text-shadow: none
   text-align: center
   transition: background 200ms
@@ -998,9 +1051,59 @@ a:hover
     color: white
     cursor: pointer
 
-.btn-social
+.btn-social-old
   width: 40px
   margin: 0 2px
+
+.btn-social
+  margin: 0 2px
+  background-color: white
+  border-radius: 2px
+  padding: 0px 4px 0px 0px
+
+  i
+    color: white
+
+  .social-button-contents
+    display: inline-block
+
+  .social-icon-group
+    display: inline-block
+    width: 26px
+
+=btn-social-base($c)
+  color: $c
+  border:  1px solid $c
+
+  .social-button-contents
+    display: inline-box
+
+  .social-icon-group
+    background-color: $c
+
+.btn-social-twitter
+  @include btn-social-base(#4099FF)
+.btn-social-facebook
+  @include btn-social-base(#3B5998)
+.btn-social-gplus
+  @include btn-social-base(#D34836)
+.btn-social-pinterest
+  @include btn-social-base(#C92228)
+.btn-social-email
+  @include btn-social-base(black)
+
+
+.btn-outline-blue-large
+  background: white
+  height: 44px
+  border: 1px solid $light-blue
+  border-radius: 22px
+  font-weight: 400
+  @include boxsizing
+  @include transition(all 200ms)
+  &:hover
+    background: white
+    border: 1px solid $orange
 
 /* Quiz button */
 .btn-next, .btn-prev
@@ -1015,6 +1118,64 @@ a:hover
   [class^="icon-"]
     line-height: 67px
     color: white
+
+/* Social popover */
+
+.social-popover
+  position: absolute
+  margin-left: 6px
+  left: 100%
+  top:  0px
+  z-index: 1000
+  color:  black
+  text-shadow: none
+  text-align: left
+  width: auto
+  height: 70px
+  padding: 0
+  background: #FFFFFF
+  border: $light-gray solid 2px
+  -webkit-border-radius: 2px
+  -moz-border-radius: 2px
+  border-radius: 2px
+  @include big-shadow
+  white-space: nowrap
+  overflow: hidden
+
+  .contents
+    padding: 6px 10px 6px 10px
+  .share-text
+    margin-bottom: 8px
+
+.social-popover-triangle
+  position: absolute
+  left: 100%
+  top:  0px
+  margin-left: 8px
+
+  &:after
+    content: ""
+    position: absolute
+    top: 7px
+    left: -6px
+    border-style: solid
+    border-width: 6px 6px 6px 0
+    border-color: transparent #FFFFFF
+    display: block
+    width: 0
+    z-index: 1001
+  &:before
+    content: ""
+    position: absolute
+    top: 6px
+    left: -9px
+    border-style: solid
+    border-width: 7px 7px 7px 0
+    border-color: transparent $light-gray
+    display: block
+    width: 0
+    z-index: 1000
+
 
 
 /* Navbar */
@@ -1046,11 +1207,11 @@ a:hover
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#00ffffff',GradientType=0 )
   .nav > li > a
     text-shadow: none
-    color: black
+    color: #333
     line-height: 34px
     font-size: 16px
     font-weight: 200
-    @include transition(background 300ms)
+    @include transition(background .25s)
     &:hover
       background: $orange
       color: white
@@ -1075,14 +1236,17 @@ a:hover
     width: 40px
     overflow: hidden
     @include transition(background 300ms)
+    input[type='text']:focus
+      border-color: $orange
+      box-shadow: none
     &:hover
-      background: $orange
       cursor: pointer
-      #nav-search-toggle
-        color: white
-        text-decoration: none
-    #nav-search-toggle
+    .icon-search
       margin: 21px 10px 22px
+      color: black
+      float: left
+    .icon-remove
+      margin: 20px 5px
       color: black
       float: left
     .nav-search-form
@@ -1095,7 +1259,7 @@ a:hover
       input
         width: 160px
   .nav-search-show
-    width: 210px
+    width: 230px
 
 /* Scroll Shadow */
 .scroll-shadow-wrapper
@@ -1235,10 +1399,6 @@ a:hover
 
 // WYSIWYG EDITING
 
-#edit-mode
-  margin-top: 10px
-  margin-left: 10px
-
 .edit-pair, .edit-pair-show, .edit-pair-edit
   width: 100%
 
@@ -1297,6 +1457,7 @@ csequipmenteditpair, csingredienteditpair
       width: auto
 
   .edit-pair-edit
+
     input, select
       display: inline-block
       @include boxsizing
@@ -1307,8 +1468,8 @@ csequipmenteditpair, csingredienteditpair
       width: 100%
       max-width: 280px
 
-    select
-      height: 22px
+    .unit
+      margin-bottom: -10px
 
 csequipmenteditpair
   .action-button-group
@@ -1319,19 +1480,18 @@ csingredienteditpair
   .edit-pair-edit
 
     .ingredient-title
-      width: 80%
-      select
-        width: 55%
+      overflow: hidden
       input
-        width: 44%
+        &:first-child
+          width: 65%
+        &:last-child
+          width: 34%
 
     .quantity-group
-      width: 10%
+      bottom: -4px
 
     .unit
       cursor: pointer
-      width: 7%
-      position: relative
       overflow:  visible
       select
         margin: 0
@@ -1350,7 +1510,7 @@ csingredienteditpair
   margin-bottom: 15px
 
 .disabled-section
-  color: $light-gray
+  color: #aaa
 
 
 // Making this match h1. I tried @including h1 but that was a no go.
@@ -1370,8 +1530,6 @@ csingredienteditpair
   font-family: 'Raleway', sans-serif
   font-weight: bold
   -webkit-font-smoothing: antialiased
-
-
 
 .fake-link, .fakefocus
   color: #0088cc
@@ -1469,6 +1627,14 @@ csingredienteditpair
 .edit-meta-button
   margin-bottom: 8px
 
+.alert.edit-alert
+  text-align: left
+  padding: 0px 20px 20px 20px
+
+  .close
+    top: 10px
+    right: 10px
+
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
 // names have to change when we go to angular >= 1.1.5
 .fade-show-setup, .fade-hide-setup
@@ -1487,6 +1653,19 @@ csingredienteditpair
   opacity: 0
   &.fade-show-start
     opacity: 1
+
+
+.spe-hide-setup
+  width: 497px
+  @include transition(200ms ease all)
+  &.spe-hide-start
+    width: 0
+
+.spe-show-setup
+  width: 0
+  @include transition(500ms cubic-bezier(0.175, 0.885, 0.32, 1.275) all)
+  &.spe-show-start
+    width: 497px
 
 .custom-enter-setup, .custom-leave-setup, .custom-move-setup
   -webkit-transition: 0.5s linear all
@@ -1667,14 +1846,84 @@ csingredienteditpair
   .top-container
     margin-top: 0px
 
-  .container-fluid
-    margin-left: -20px
-    margin-right: -20px
-
   .no-margin-padding
     padding: 0px
     margin: 0px
- 
+
+  .social-group
+    white-space: nowrap
+    overflow: visible
+    .btn-primary
+      width: 49%
+      margin-right: 0px
+
+      &:first-child
+        margin-right: 4px
+
+    .social-popover-triangle
+      display: none
+    .social-popover
+      @include boxsizing
+      .share-text
+        display: none
+      left:  auto
+      right: -2px
+      top: 40px
+      bottom: auto
+      height: auto
+      .btn
+        i
+          border-width: 10px
+          font-size:  100%
+        font-size:  80%
+
+    .spe-hide-setup
+      height: 42px
+      width:  auto
+      @include transition(200ms ease all)
+      &.spe-hide-start
+        width:  auto
+        height: 0
+
+    .spe-show-setup
+      width:  auto
+      height: 0
+      @include transition(350ms cubic-bezier(0.175, 0.885, 0.32, 1.275) all)
+      &.spe-show-start
+        width:  auto
+        height: 42px
+
+@media(max-width: 512px)
+  .social-group
+
+    .social-popover
+      top: 34px
+      bottom: auto
+      padding-right: 0px
+      .btn
+        width: 32px
+        height:  32px
+        padding:  0
+        .social-button-contents
+          width: 100%
+          height:  100%
+          .social-icon-group
+            width: 100%
+            height:  100%
+            font-size: 20px
+            i
+              position: relative
+              top: 6px
+          span
+            display: none
+    .spe-hide-setup
+      height: 50px
+
+    .spe-show-setup
+      &.spe-show-start
+        width:  auto
+        height: 50px
+
 /* Landscape phones and down */
 @media (max-width: 480px)
   #hero-container
@@ -1704,7 +1953,7 @@ csingredienteditpair
         width: 85%
 
   .navbar .nav > li > .dropdown-menu li a 
-    color: white
+    color: #333
     font-weight: normal
     &:hover
       color: #fff
@@ -1735,20 +1984,15 @@ csingredienteditpair
     .input-signup-email
       width: 50%
 
-body
-  &.development
-    &:after
-      position: fixed
-      content: 'development'
-      background-color: hsl(240,100%, 50%)
-      white-space: nowrap
-      top: 26px
-      left: -50px
-      width: 200px
-      padding: 10px 0
-      text-align: center
-      color: $offwhite
-      font-size: 14px
-      z-index: 1000
-      -webkit-transform: rotate(-45deg)
+
+
+/* Global on-select highlighting */
+
+::-moz-selection 
+  background-color: $orange
+  color: #ffffff
+
+::selection 
+  background-color: $orange
+  color: #ffffff
 

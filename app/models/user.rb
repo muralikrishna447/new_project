@@ -10,6 +10,11 @@ class User < ActiveRecord::Base
 
   CHEF_TYPES = %w[professional_chef culinary_student home_cook novice other]
 
+  has_many :followerships
+  has_many :followers, through: :followerships
+  has_many :inverse_followerships, class_name: 'Followership', foreign_key: 'follower_id'
+  has_many :followings, through: :inverse_followerships, source: :user
+
   has_many :quizzes, class_name: QuizSession, dependent: :destroy, inverse_of: :user
   has_many :user_activities
   has_many :activities, through: :user_activities
@@ -21,6 +26,9 @@ class User < ActiveRecord::Base
 
   has_many :events
   has_many :likes
+  has_many :votes
+
+  has_many :created_activities, class_name: 'Activity', foreign_key: 'creator'
 
   serialize :viewed_activities, Array
 
@@ -30,14 +38,25 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :role
 
   validates_presence_of :name
 
   validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
 
+  ROLES = %w[admin moderator user banned]
+
+  def role?(base_role)
+    ROLES.index(base_role.to_s) >= ROLES.index(role)
+  end
+
+  def role
+    read_attribute(:role) || "user"
+  end
+
+
   def admin?
-    false
+    self.role == "admin"
   end
 
   def profile_complete?
@@ -54,6 +73,53 @@ class User < ActiveRecord::Base
     if last_viewed
       last_viewed.activity
     end
+  end
+
+  def likes_object?(likeable_object)
+    Like.where('user_id = ? AND likeable_type = ? AND likeable_id = ?', self.id, likeable_object.class.to_s, likeable_object.id).any?
+  end
+
+  def received_stream
+    events.timeline.where(action: 'received_create').group_by{|e| [e.group_type, e.group_name]}
+    # timeline.group_by{|e| e.group_name}
+  end
+
+  def created_stream
+    events.includes(:trackable).timeline.where('action != ?', 'received_create').group_by{|e| [e.group_type, e.group_name]}
+    # timeline.group_by{|e| e.group_name}
+  end
+
+  def stream
+    # stream = []
+    # followings.each do |following|
+    #   following.created_stream.each do |group|
+    #     stream << group
+    #   end
+    # end
+    # stream.sort_by{|group| group[1].first.created_at}.reverse
+    stream_events = []
+    followings.each do |following|
+      following.events.includes(:trackable).timeline.where('action != ?', 'received_create').each do |event|
+        stream_events << event
+      end
+    end
+    stream_events.group_by{|e| [e.group_type, e.group_name]}.sort_by{|group| group[1].first.created_at}.reverse
+  end
+
+  def follow(user)
+    followership = Followership.find_by_user_id_and_follower_id(user.id,self.id) || Followership.create(user_id: user.id, follower_id: self.id)
+  end
+
+  def unfollow(user)
+    Followership.find_by_user_id_and_follower_id(user.id,self.id).destroy
+  end
+
+  def follows?(user)
+    followings.include?(user)
+  end
+
+  def profile_image_id
+    self.image_id ||= '{"url":"https://www.filepicker.io/api/file/U2RccgsARPyMmzJ5Ao0c","filename":"default-avatar@2x.png","mimetype":"image/png","size":6356,"key":"users_uploads/FhbcOZpQYKJU8nHeJg1j_default-avatar@2x.png","isWriteable":true}'
   end
 
 end

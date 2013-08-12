@@ -3,11 +3,9 @@ class ActivitiesController < ApplicationController
   expose(:cache_show) { params[:token].blank? }
   expose(:version) { Version.current }
 
-  before_filter :find_activity, only: :show
+  before_filter :maybe_redirect_activity, only: :show
 
-  DUMMY_NEW_ACTIVITY_NAME = "DUMMY NEW ACTIVITY"
-
-  def find_activity
+  def maybe_redirect_activity
     @activity = Activity.find params[:id]
 
     # If an old id or a numeric id was used to find the record, then
@@ -22,20 +20,22 @@ class ActivitiesController < ApplicationController
       redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
+  rescue
+    # Not a problem
   end
 
 
-  before_filter :require_admin, only: [:new, :update_as_json]
-  def require_admin
-    unless admin_user_signed_in?
-      flash[:error] = "You must be logged in as an administrator to do this"
-      redirect_to new_admin_user_session_path
+  before_filter :require_login, only: [:new, :fork, :update_as_json]
+  def require_login
+    unless current_user
+      flash[:error] = "You must be logged in to do this"
+      redirect_to new_user_session_path
     end
   end
 
   def show
 
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
     @upload = Upload.new
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
@@ -43,8 +43,8 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @techniques = Activity.published.techniques.includes(:steps).last(6)
-        @recipes = Activity.published.recipes.includes(:steps).last(6)
+        @techniques = Activity.published.chefsteps_generated.techniques.includes(:steps).last(6)
+        @recipes = Activity.published.chefsteps_generated.recipes.includes(:steps).last(6)
 
         if params[:course_id]
           @course = Course.find(params[:course_id])
@@ -98,32 +98,32 @@ class ActivitiesController < ApplicationController
 
   def new
     @activity = Activity.new()
-    @activity.title = DUMMY_NEW_ACTIVITY_NAME
-    @activity.description = ""
-    # Have to save because we edit in our show view, and that view really needs an id
-    @activity.save!
     @activity.title = ""
+    @activity.description = ""
+    @activity.title = ""
+    @activity.creator = current_user unless current_admin?
     @include_edit_toolbar = true
-    render 'show'
+    @activity.save({validate: false})
+    track_event(@activity, 'create') unless current_admin?
+    redirect_to activity_path(@activity, {start_in_edit: true})
   end
 
   def fork
     old_activity = Activity.find(params[:id])
     @activity = old_activity.deep_copy
-    @activity.title = "#{current_user ? current_user.name : current_admin_user.email.split('@')[0]}'s Version Of #{old_activity.title}"
+    @activity.title = "#{current_user.name}'s Version Of #{old_activity.title}"
+    @activity.creator = current_user unless current_admin?
     @activity.save!
+    track_event(@activity, 'create') unless current_admin?
     render :json => {redirect_to: activity_path(@activity, {start_in_edit: true})}
   end
 
   def get_as_json
 
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], admin_user_signed_in?)
+    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, Activity))
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
-
-    # Can't save with this, but want it to be blank in show view
-    @activity.title = "" if @activity.title == DUMMY_NEW_ACTIVITY_NAME
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
@@ -138,7 +138,7 @@ class ActivitiesController < ApplicationController
     # Done this way to avoid touching the updated_at field as that is used to know whether to replace the model on
     # the angular side.
     # http://stackoverflow.com/questions/11766037/update-attribute-without-altering-the-updated-at-field
-    Activity.where(id: params[:id]).update_all(currently_editing_user: current_admin_user)
+    Activity.where(id: params[:id]).update_all(currently_editing_user: current_user)
     head :no_content
   end
 
@@ -149,11 +149,17 @@ class ActivitiesController < ApplicationController
 
 
   def update_as_json
+    # This will get handled in notify_end_edit; don't want to touch here
+    params[:activity].delete(:currently_editing_user)
+    params[:activity].delete(:creator)
+
     if params[:fork]
       # Can't seem to get custom verb & URL to work in angular, so tacking it onto this one
       fork()
     else
+
       @activity = Activity.find(params[:id])
+
       respond_to do |format|
         format.json do
 
@@ -162,23 +168,35 @@ class ActivitiesController < ApplicationController
           @activity.create_or_update_as_ingredient
 
           @activity.store_revision do
-            @activity.last_edited_by = current_admin_user
-            @activity.update_equipment_json(params[:activity].delete(:equipment))
-            @activity.update_ingredients_json(params[:activity].delete(:ingredients))
-            @activity.update_steps_json(params.delete(:steps))
-            # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
-            # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
-            tags = params.delete(:tags)
-            @activity.tag_list = tags.map { |t| t[:name]} if tags
-            @activity.attributes = params[:activity]
-            @activity.save!
-          end
 
-          # This would be better handled by history state / routing in frontend, but ok for now
-          if @activity.slug != old_slug
-            render :json => {redirect_to: activity_path}
-          else
-            head :no_content
+            begin
+              @activity.last_edited_by = current_user
+              equip = params[:activity].delete(:equipment)
+              ingredients = params[:activity].delete(:ingredients)
+              steps = params.delete(:steps)
+              # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
+              # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
+              tags = params.delete(:tags)
+              @activity.tag_list = tags.map { |t| t[:name]} if tags
+              @activity.attributes = params[:activity]
+              @activity.save!
+
+              @activity.update_equipment_json(equip)
+              @activity.update_ingredients_json(ingredients)
+              @activity.update_steps_json(steps)
+
+              # This would be better handled by history state / routing in frontend, but ok for now
+              if @activity.slug != old_slug
+                render json: {redirect_to: activity_path(@activity)}
+              else
+                head :no_content
+              end
+
+            rescue Exception => e
+              messages = [] || @activity.errors.full_messages
+              messages.push(e.message)
+              render json: { errors: messages}, status: 422
+            end
           end
         end
       end
@@ -201,10 +219,10 @@ class ActivitiesController < ApplicationController
     @title = "ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine"
 
     # the news items
-    @activities = Activity.published.order("updated_at desc")
+    @activities = Activity.published.by_published_at('desc').chefsteps_generated
 
     # this will be our Feed's update timestamp
-    @updated = @activities.published.first.updated_at unless @activities.empty?
+    @updated = @activities.published.first.published_at unless @activities.empty?
 
     respond_to do |format|
       format.atom { render 'feed',  :layout => false }

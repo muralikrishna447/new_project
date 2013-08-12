@@ -1,10 +1,11 @@
 - content_for :title, "Learn how to be a better cook."
 - content_for :description, "Free online cooking school from key members of the Modernist Cuisine team. Our first course will teach you everything you need to know about sous vide cooking."
 
-= render 'index_B'
+= render 'standard_homepage'
+/ - if current_user && current_user.received_stream.length > 3
+/   = render 'signed_in_homepage'
+/ - else
+/   = render 'standard_homepage'
 
-/ - ab_test('homepage_design', {'homepage_A' => 1}, {'homepage_B' => 1}) do |homepage|
-/   - if homepage == 'homepage_A'
-/     = render 'index_A'
-/   - elsif homepage == 'homepage_B'
-/     = render 'index_B'
+= content_for :footer do
+  = render 'layouts/footer'

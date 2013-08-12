@@ -56,12 +56,21 @@ module ApplicationHelper
     end
   end
 
-  def filepicker_circle_image(fpfile)
+  def filepicker_circle_image(fpfile, width=400)
     if fpfile && !fpfile.blank?
       url = ActiveSupport::JSON.decode(fpfile)["url"]
-      url + "/convert?fit=crop&w=400&h=400&cache=true"
+      url + "/convert?fit=crop&w=#{width}&h=#{width}&cache=true"
     else
-      'http://www.placehold.it/300x300&text=ChefSteps'
+      "http://www.placehold.it/#{width}x#{width}&text=ChefSteps"
+    end
+  end
+
+  def filepicker_square_image(fpfile, width=400)
+    if fpfile && !fpfile.blank?
+      url = ActiveSupport::JSON.decode(fpfile)["url"]
+      url + "/convert?fit=crop&w=#{width}&h=#{width}&cache=true"
+    else
+      "http://www.placehold.it/#{width}x#{width}&text=ChefSteps"
     end
   end
 
@@ -125,10 +134,10 @@ module ApplicationHelper
   def apply_shortcode(orig, shortcode, contents)
     case shortcode
       when 'c'
-        "<span class='temperature'>#{(contents.to_f * 1.8).round + 32} &deg;F / #{contents} &deg;C</span>"
+        "<span class='temperature'>#{(contents.to_f * 1.8).round + 32}&nbsp;&deg;F / #{contents}&nbsp;&deg;C</span>"
 
       when 'f'
-        "<span class='temperature'>#{contents} &deg;F / #{((contents.to_f - 32) / 1.8).round} &deg;C</span>"
+        "<span class='temperature'>#{contents}&nbsp;&deg;F / #{((contents.to_f - 32) / 1.8).round}&nbsp;&deg;C</span>"
 
       when 'cm'
         "<a class='length-group'><span class='length' data-orig-value='#{contents}'>#{contents} cm</span></a>"
@@ -152,7 +161,7 @@ module ApplicationHelper
   end
 
   def apply_shortcodes(text)
-    text.gsub(/\[(\w+)\s+([^\]]*)\]/) do |orig|
+    (text || '').gsub(/\[(\w+)\s+([^\]]*)\]/) do |orig|
       shortcode = $1
       contents = $2
       apply_shortcode(orig, shortcode, contents).html_safe
@@ -194,6 +203,32 @@ module ApplicationHelper
 
   def buy_now(variant_id, price)
     link_to "Buy Now for $#{price}", 'http://store.chefsteps.com/cart/add', onclick: "var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; var v = document.createElement('input'); v.setAttribute('type', 'hidden'); v.setAttribute('name', 'id'); v.setAttribute('value', '#{variant_id}'); f.appendChild(v); var r = document.createElement('input'); r.setAttribute('type', 'hidden'); r.setAttribute('name', 'return_to'); r.setAttribute('value', 'http://store.chefsteps.com/checkout'); f.appendChild(r); f.submit(); return false;", class: 'btn btn-primary btn-large btn-block'
+  end
+
+  def link_to_add_fields(name, f, association)
+    new_object = f.object.send(association).klass.new
+    id = new_object.object_id
+    fields = f.fields_for(association, new_object, child_index: id) do |builder|
+      render(association.to_s.singularize + "_fields", f: builder)
+    end
+    link_to(name, '#', class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
+  end
+
+  def parse_feed(url)
+    doc = SimpleRSS.parse open(url)
+  end
+
+  def assembly_type_path(assembly)
+    if assembly.assembly_type?
+      assembly_type_path = assembly.assembly_type.downcase.pluralize
+      assembly_path(assembly).gsub('/assemblies', "/#{assembly_type_path}")
+    else
+      assembly_path(assembly)
+    end
+  end
+
+  def current_admin?
+    (current_user && current_user.admin?)
   end
 
 end

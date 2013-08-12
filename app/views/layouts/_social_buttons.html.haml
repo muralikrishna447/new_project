@@ -1,18 +1,27 @@
-/ = link_to 'javascript:void(0);', class: 'btn btn-primary btn-social' do
-/   %i.icon-envelope-alt
-/ = link_to 'javascript:void(0);', class: 'btn btn-primary' do
-/   %i.icon-phone
-.section-small
-  = render 'shared/like_button', likeable_object: @activity
-      
-  = link_to 'javascript:void(0);', class: 'btn btn-primary btn-social social-action', data: {toggle: 'popover', placement: 'bottom', content: fb_like(current_url(request)), html: true} do
-    %i.icon-facebook
-  = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
-  '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'btn btn-primary btn-social' do
-    %i.icon-google-plus
-  = link_to "https://twitter.com/intent/tweet?text=I love this: #{media_object.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary btn-social' do
-    %i.icon-twitter
-  - if media_object.featured_image
-    = link_to "http://pinterest.com/pin/create/button/?url=#{current_url(request)}&media=#{filepicker_hero_image(media_object.featured_image)}", onclick: "javascript:window.open(this.href,
-    '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;", class: 'btn btn-primary btn-social' do
-      %i.icon-pinterest
+-ab_test("social_share", "old", "newNoPostPlay", "newWithPostPlay") do |name|
+  -if name == "old"
+    = render "layouts/old_social_buttons", media_object: media_object
+  -else
+    .section-small.social-group(ng-controller="SocialButtonsController" ng-init="split=\'#{name}\'")
+      = render 'shared/like_button', likeable_object: media_object
+      .btn.btn-primary.relative
+        .btn-share(ng-click="expandSocial=!expandSocial")
+          .icon-share
+          Share
+        .social-popover-triangle(ng-show="expandSocial" ng-animate="'spe'" )
+        .social-popover(ng-show="expandSocial" ng-animate="'spe'" style="display: none;")
+          .contents
+            .share-text
+              Share this with your friends!
+            .btn.btn-secondary.btn-social.btn-social-twitter(ng-click="shareTwitter(\'#{media_object.title}\', \'#{url}\')")
+              = render 'layouts/social_button', icon: "twitter", networkFriendlyName: "Twitter"
+            .btn.btn-secondary.btn-social.btn-social-facebook(ng-click="shareFacebook(\'#{url}\')")
+              = render 'layouts/social_button', icon: "facebook", networkFriendlyName: "Facebook"
+            .btn.btn-secondary.btn-social.btn-social-gplus(ng-click="shareGooglePlus(\'#{url}\')")
+              = render 'layouts/social_button', icon: "google-plus", networkFriendlyName: "Google+"
+            - if media_object.featured_image
+              .btn.btn-secondary.btn-social.btn-social-pinterest(ng-click="sharePinterest(\'#{url}\', \'#{filepicker_hero_image(media_object.featured_image)}\')")
+                = render 'layouts/social_button', icon: "pinterest", networkFriendlyName: "Pinterest"
+            .btn.btn-secondary.btn-social.btn-social-email(ng-click="shareEmail(\'#{media_object.title}\', \'#{url}\')")
+              = render 'layouts/social_button', icon: "envelope", networkFriendlyName: "Email"
+

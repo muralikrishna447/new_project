@@ -18,7 +18,7 @@ angular.module('ChefStepsApp').directive 'csinputmonkeyingredient', ->
         scope.removeIngredient(scope.$parent.$index)
       else
         # any final cleanup if they typed too fast, or if [RECIPE] is left
-        s = window.ChefSteps.splitIngredient(scope.ai.ingredient.title)
+        s = window.ChefSteps.splitIngredient(scope.ai.ingredient.title, false)
         scope.ai.ingredient.title = s.ingredient
 
     element.bind 'keyup', (event) ->
@@ -44,6 +44,7 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
 
   link: (scope, element, attrs) ->
 
+    # If I get created while editMode is already alive, make me active
     if scope.editMode
       scope.active = true
 
@@ -64,5 +65,7 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
           return false
 
       return true
+
+
 
   templateUrl: '_ingredient_edit_pair.html'

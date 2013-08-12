@@ -34,4 +34,9 @@
  *= require select2
  *= require billboard
  *= require gallery
+ *= require voting
+ *= require comments
+ *= require stream
+ *= require embed
+ *= require projects
  */

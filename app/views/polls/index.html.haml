@@ -1,0 +1,18 @@
+.container
+  .row
+    .span12
+      %h1 Polls
+      = paginate @polls
+
+- @polls.each do |poll|
+  .container
+    .row.section
+      .span4
+        = render 'shared/media_box_2', url: poll_path(poll), title: poll.title, image: 'http://placehold.it/350x150', object: poll
+      .span8
+        %h2= poll.title
+        %p= poll.description
+.container
+  .row
+    .span12
+      = paginate @polls

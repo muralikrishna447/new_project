@@ -5,3 +5,7 @@
       %h2 Please check your email now to confirm your registration.
       - if params[:email]
         = link_to_web_email(params[:email])
+
+- if current_user
+  :javascript
+    mixpanel.alias("#{current_user.id}")

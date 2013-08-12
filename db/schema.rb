@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130619181831) do
+ActiveRecord::Schema.define(:version => 20130807230858) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -50,9 +50,11 @@ ActiveRecord::Schema.define(:version => 20130619181831) do
     t.integer  "source_type",            :default => 0
     t.text     "assignment_recipes"
     t.datetime "published_at"
-    t.string   "author_notes"
+    t.text     "author_notes"
     t.integer  "likes_count"
     t.integer  "currently_editing_user"
+    t.boolean  "include_in_gallery",     :default => true
+    t.integer  "creator",                :default => 0
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -115,6 +117,33 @@ ActiveRecord::Schema.define(:version => 20130619181831) do
 
   add_index "answers", ["question_id", "user_id"], :name => "index_answers_on_question_id_and_user_id", :unique => true
 
+  create_table "assemblies", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.text     "image_id"
+    t.string   "youtube_id"
+    t.string   "assembly_type",  :default => "Assembly"
+    t.string   "slug"
+    t.integer  "likes_count"
+    t.integer  "comments_count"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.boolean  "published"
+    t.datetime "published_at"
+  end
+
+  create_table "assembly_inclusions", :force => true do |t|
+    t.string   "includable_type"
+    t.integer  "includable_id"
+    t.integer  "assembly_id"
+    t.integer  "position"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "assembly_inclusions", ["assembly_id"], :name => "index_assembly_inclusions_on_assembly_id"
+  add_index "assembly_inclusions", ["includable_id", "includable_type"], :name => "index_assembly_inclusions_on_includable_id_and_includable_type"
+
   create_table "assignments", :force => true do |t|
     t.integer  "activity_id"
     t.integer  "child_activity_id"
@@ -146,6 +175,17 @@ ActiveRecord::Schema.define(:version => 20130619181831) do
 
   add_index "box_sort_images", ["image_order"], :name => "index_box_sort_images_on_image_order"
   add_index "box_sort_images", ["question_id"], :name => "index_box_sort_images_on_question_id"
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.text     "content"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
 
   create_table "copies", :force => true do |t|
     t.string   "location"
@@ -188,9 +228,20 @@ ActiveRecord::Schema.define(:version => 20130619181831) do
     t.string   "action"
     t.integer  "trackable_id"
     t.string   "trackable_type"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.boolean  "viewed",         :default => false
   end
+
+  create_table "followerships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "follower_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "followerships", ["follower_id"], :name => "index_followerships_on_follower_id"
+  add_index "followerships", ["user_id"], :name => "index_followerships_on_user_id"
 
   create_table "friendly_id_slugs", :force => true do |t|
     t.string   "slug",                         :null => false
@@ -293,6 +344,26 @@ ActiveRecord::Schema.define(:version => 20130619181831) do
     t.string   "searchable_type"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+  end
+
+  create_table "poll_items", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "status"
+    t.integer  "poll_id"
+    t.integer  "votes_count",    :default => 0
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.integer  "comments_count", :default => 0
+  end
+
+  create_table "polls", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "slug"
+    t.string   "status"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "private_tokens", :force => true do |t|
@@ -423,11 +494,14 @@ ActiveRecord::Schema.define(:version => 20130619181831) do
     t.string   "title"
     t.text     "image_id"
     t.text     "notes"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.integer  "course_id"
-    t.boolean  "approved",    :default => false
+    t.boolean  "approved",       :default => false
     t.integer  "likes_count"
+    t.string   "slug"
+    t.integer  "comments_count", :default => 0
+    t.integer  "assembly_id"
   end
 
   create_table "user_activities", :force => true do |t|
@@ -466,6 +540,7 @@ ActiveRecord::Schema.define(:version => 20130619181831) do
     t.text     "bio"
     t.integer  "sash_id"
     t.integer  "level",                  :default => 0
+    t.string   "role"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -488,6 +563,14 @@ ActiveRecord::Schema.define(:version => 20130619181831) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.text     "image_id"
+  end
+
+  create_table "votes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "votable_id"
+    t.string   "votable_type"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
 end

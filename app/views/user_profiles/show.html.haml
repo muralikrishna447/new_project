@@ -7,16 +7,20 @@
   .row-fluid
     .container
       .row
-        .span2
+        .span2.profile-image-wrapper
           .profile-image
-            = image_tag filepicker_circle_image(@user.image_id), class: 'img-circle'
+            = image_tag filepicker_circle_image(@user.profile_image_id), class: 'img-circle'
+
         .span10
           %h1= @user.name
+          -if can? :manage, User
+            =link_to @user.email, "mailto:" + @user.email, { target: "_blank", class: "profile-email-addr"}
 
 .container
   .row
     .span2
       .well.profile-badges
+
         - if @user.badges.any?
           %h4 Badges
           - @user.badges.each do |badge|
@@ -26,8 +30,12 @@
       - if current_user == @user
         = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-primary btn-block'
         = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'
+      / - else
+      /   = link_to followership_path(@user), method: :put, class: 'btn btn-primary btn-block' do
+      /     = current_user.follows?(@user) ? 'Unfollow' : 'Follow'
     .span5.nav-tabs-gray
       %h4 Bio
+
       %p= @user.bio
       %ul.nav.nav-tabs
         %li.active
@@ -36,6 +44,9 @@
           = link_to 'Favorites', '#favorites', data: {toggle: 'tab'}
         %li
           = link_to 'Photos', '#photos', data: {toggle: 'tab'}
+        -if @show_recipes_tab
+          %li
+            = link_to @is_current_user ? 'My Recipes' : @user.name + '\'s Recipes', '#recipes', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#courses
           - if @user.courses.any?
@@ -67,8 +78,22 @@
         .tab-pane#photos
           - @user.uploads.each do |upload|
             - upload_title = capture do
-              = link_to upload.title, user_upload_path(@user, upload)
+              = link_to upload.title, upload_path(upload)
             = render 'shared/media_list_item', image: upload.image_id, title: upload_title, text: upload.notes
+        -if @show_recipes_tab
+          .tab-pane#recipes
+            - @user_pubbed_recipes.each do |activity|
+              - activity_title = capture do
+                = link_to activity.title, activity_path(activity)
+              = render 'shared/media_list_item', image: activity.featured_image, title: activity_title, text: truncate(activity.description, length: 140, separator: ' ')
+            -if @user_unpubbed_recipes.count > 0
+              - @user_unpubbed_recipes.each do |activity|
+                - activity_title = capture do
+                  = link_to activity.title, activity_path(activity)
+                = render 'shared/media_list_item', image: activity.featured_image, title: activity_title, text: truncate(activity.description, length: 140, separator: ' ') + " [Unpublished]"
+            -if @can_add_recipes
+              .media-list-item
+                = link_to 'Create a new recipe', new_activity_url, class: 'btn btn-primary'
 
     .span5
       %h4 Timeline
@@ -80,10 +105,10 @@
           .timeline-start
           .timeline-end
           .timeline-left
-            - @user.events.timeline.in_groups_of(2).map(&:first).compact.each do |event|
+            - @timeline_events.in_groups_of(2).map(&:first).compact.each do |event|
               = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
           .timeline-right
-            - @user.events.timeline.in_groups_of(2).map(&:last).compact.each do |event|
+            - @timeline_events.in_groups_of(2).map(&:last).compact.each do |event|
               = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
         .text-center
           - if current_user == @user

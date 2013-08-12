@@ -1,4 +1,6 @@
 Delve::Application.routes.draw do
+  root to: "home#index"
+
   ActiveAdmin.routes(self)
 
   # Redirects
@@ -17,7 +19,6 @@ Delve::Application.routes.draw do
   match '/activities/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
     to: redirect('/activities/sous-vide-pork-cheek-celery-root-pickled-apples')
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
 
   get "styleguide" => "styleguide#index"
 
@@ -41,8 +42,6 @@ Delve::Application.routes.draw do
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
-
-  root to: "home#index"
 
   get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
 
@@ -86,21 +85,18 @@ Delve::Application.routes.draw do
       get 'all_tags' => 'activities#get_all_tags'
     end
   end
-  resources :techniques, only: [:index, :show] do
-    collection do
-      get 'index_as_json' => 'techniques#index_as_json'
-    end
-  end
-  resources :sciences, only: [:index, :show] do
-    collection do
-      get 'index_as_json' => 'sciences#index_as_json'
-    end
-  end
+
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
   match '/feed' => 'activities#feedburner_feed', as: :feed
 
   resources :questions, only: [] do
     resources :answers, only: [:create]
+  end
+
+  # This is to work around a bug in ActiveAdmin 0.6.0 where the :shallow designator in questions.rb
+  # stopped working
+  namespace :admin do
+    resources :questions
   end
 
   resources :quizzes, only: [:show] do
@@ -113,24 +109,42 @@ Delve::Application.routes.draw do
 
   resources :equipment, only: [:index]
   resources :ingredients, only: [:index]
-  resources :search, only: [:index]
-  resources :recipe_gallery, only: [:index], path: 'recipe-gallery' do
+
+  resources :gallery, only: [:index], path: 'gallery' do
     collection do
-      get 'index_as_json' => 'recipe_gallery#index_as_json'
+      get 'index_as_json' => 'gallery#index_as_json'
     end
   end
   resources :user_activities, only: [:create]
-  resources :uploads
+  resources :uploads do
+    resources :comments
+  end
   resources :users do
     resources :uploads
   end
   resources :likes, only: [:create]
   resources :pages, only: [:show]
   resources :badges, only: [:index]
+  resources :polls do
+    member do
+      get 'show_as_json' => 'polls#show_as_json'
+    end
+  end
+  resources :poll_items do
+    resources :comments
+  end
+  resources :votes, only: [:create]
+  resources :comments
+  resources :followerships, only: [:update]
+  resources :assemblies, only: [:index, :show] do
+    resources :comments
+  end
+  resources :projects, controller: :assemblies
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
+  match "/splitty/finished", :controller => "splitty", :action => "finish_split"
 
   resources :client_views, only: [:show]
 

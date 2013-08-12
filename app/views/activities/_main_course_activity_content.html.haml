@@ -1,5 +1,5 @@
 .row-fluid
-  %h2.course-activity-header= @activity.title.html_safe
+  %h2.course-activity-header= activity.title.html_safe
 
 .row-fluid
   .span12.section
@@ -14,6 +14,7 @@
         = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title, itemprop: 'image'
       - elsif activity.featured_image_id?
         = image_tag filepicker_activity_hero_image(activity.featured_image_id), alt: activity.title, title: activity.title, itemprop: 'image'
+    = render 'layouts/social_buttons', media_object: activity, url: activity_url(activity)
 
 .row-fluid
   .span12
@@ -22,14 +23,7 @@
         :markdown
           #{apply_shortcodes(activity.description)}
     - if activity.ingredients.any?
-      / .section
-      /   .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
-      /     .well(ng-show="activity.ingredients.length" )
-      /       = render 'ingredients_list', ingredients: activity.ingredients, source: "activity"
-      .section
-        .activity-ingredients-list#full-ingredients-list.section{data: {target: ''}}
-          .well
-            = render 'old_ingredients_list', ingredients: activity.ingredients, source: "activity"
+      = render 'main_ingredients'
     - if activity.yield.present?
       .section
         %h4 Yield
@@ -53,40 +47,9 @@
           - activity.used_in_activities.published.each do |activity|
             %li= link_to activity.title.html_safe, activity
 .row-fluid
-  .span12.section
-    .ordered-steps{:itemprop => "recipeInstructions"}
-      - step_number = 0
-      - activity.steps.each_with_index do |step,index|
-        .ordered-step-item{id: "order-step-item-#{index}"}
-          .step-element.step-number
-            - if step.hide_number?
-              - step_number
-            - else
-              = step_number+=1
-          .step-element.step-content
-            - if step.title?
-              %h4= step.title
-            - if step.ingredients.any?
-              .step-ingredients-source.well
-                / = render 'ingredients_list', ingredients: step.ingredients
-                = render 'old_ingredients_list', ingredients: step.ingredients, source: 'step'
-            :markdown
-              #{apply_shortcodes(step.directions)}
-            .step-actions.btn-group
-              / -if step.ingredients.any?
-              /   .btn.step-action-item.step-ingredients.btn-primary
-              /     %i.icon-th-list
-              - if step.image_id?
-                .btn.step-action-item.step-image-btn.btn-primary
-                  %i.icon-picture
-              - if step.youtube_id?
-                .btn.step-action-item.step-video-btn.btn-primary
-                  %i.icon-facetime-video
-            - if step.image_id?
-              .step-image{id: "step-image-#{index}"}
-                -descrip = filepicker_image_description(step.image_id, step.image_description)
-                = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip, :itemprop => 'image'
-            - if step.youtube_id?
-              .step-video{id: "step-video-#{index}"}
-                .video-container
-                  %iframe{src: youtube_url(step.youtube_id)}
+  .span12.section(ng-controller="StepsController")
+    = render 'steps'
+
+
+#preloaded-activity-json.hide
+  = @activity.to_json

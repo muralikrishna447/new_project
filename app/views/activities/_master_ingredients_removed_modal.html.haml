@@ -1,0 +1,11 @@
+%div(ng-cloak modal="shouldShowMasterIngredientsRemovedModal" close="shouldShowMasterIngredientsRemovedModal = false")
+  .modal-header
+    %button.close(type='button' ng-click='shouldShowMasterIngredientsRemovedModal = false')
+      x
+  .modal-body
+    Some master ingredients were removed because they aren't used in any steps. Are you sure you wanted to do that?
+  .modal-footer
+    %button.btn(ng-click="(shouldShowMasterIngredientsRemovedModal = false)")
+      Yes
+    %button.btn(ng-click="undo() && (shouldShowMasterIngredientsRemovedModal = false)")
+      No

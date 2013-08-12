@@ -13,7 +13,7 @@
 
     .preview-group#right-group
       .controls
-        =select_tag "left", options_for_select(@versions, @versions[0]), id: 'select-right'
+        =select_tag "right", options_for_select(@versions, @versions[0]), id: 'select-right'
         =link_to "Make Live", '#', class: "admin-button", id: "make-live-right"
         .loading-indicator#loading-right.pull-right
           %i.icon-spinner.icon-spin.icon-2x

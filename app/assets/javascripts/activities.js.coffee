@@ -63,6 +63,11 @@ $ ->
     else
       $(this).text 'more'
 
+
+window.oldSocialFinishExperiment = ->
+  $.ajax '/splitty/finished?experiment=social_share',
+    type: 'PUT'
+
 window.expandSteps = expandSteps
 window.collapseSteps = collapseSteps
 
