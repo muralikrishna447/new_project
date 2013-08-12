@@ -1,7 +1,7 @@
 .stream-item
   .stream-item-header
     .stream-item-header-user
-      %a(ng-href="{{stream.trackable.vote.user}}")
+      %a(ng-href="/profiles/{{stream.trackable.vote.user.slug}}")
         %img(ng-src="{{userImageUrl(stream.trackable.vote.user.image_id)}}")
         %h4
           {{stream.trackable.vote.user.name}}
