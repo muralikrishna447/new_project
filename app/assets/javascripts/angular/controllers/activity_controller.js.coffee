@@ -425,7 +425,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     null
 
   $scope.tweetMessage = ->
-    "I love this"
+    "I love this: "
 
   $scope.emailSubject = ->
     "I thought you might like " + $scope.socialTitle()

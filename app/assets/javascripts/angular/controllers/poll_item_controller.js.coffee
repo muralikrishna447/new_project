@@ -1,6 +1,6 @@
 angular.module('ChefStepsApp').controller 'PollItemController', ["$scope", "$timeout", ($scope, $timeout) ->
 
-  $scope.expandSocial = ->
+  $scope.expandSocial =  ->
     $timeout (->
       $scope.videoDurationExceeded = true
       $scope.$broadcast('expandSocialButtons')
