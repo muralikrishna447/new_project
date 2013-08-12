@@ -1,6 +1,8 @@
 angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resource", "$http", ($scope, $resource, $http) ->
   Poll = $resource('/polls/:id/show_as_json', {id:  $('#poll').data("poll-id")})
-  $scope.poll = Poll.get()
+  $scope.poll = Poll.get(->
+    $scope.hideSpinner = true
+  )
 
   $scope.voteObject = (votable,index) ->
     votable_object = {}
