@@ -1,25 +1,39 @@
 .stream-item
-  .stream-item-header
-    .stream-item-header-user
-      %div(ng-show="stream.trackable.comment.commentable.user")
-        %a(ng-href="/profiles/{{stream.trackable.comment.commentable.user.slug}}")
-          %img(ng-src="{{userImageUrl(stream.trackable.comment.commentable.user.image_id)}}")
-          %h4
-            {{stream.trackable.comment.commentable.user.name}}
-    .stream-item-header-title
-      %h3
-        {{stream.trackable.comment.commentable.title}}
-  .stream-item-top
+  .stream-item-dialogue
+    %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
+    %h4
+      %a(ng-href="/profiles/{{stream.user.slug}}")
+        {{stream.user.name}}
+      commented on
+      %a(ng-href="{{stream.trackable.comment.commentable.path}}")
+        {{stream.trackable.comment.commentable.title}}:
+      "{{stream.trackable.comment.content}}"
+      %small
+        {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  .stream-item-image
     %a(ng-href="{{stream.trackable.comment.commentable.path}}")
       %img(ng-src="{{mediaObjectImageUrl(stream.trackable.comment.commentable.featured_image)}}")
-  .stream-item-bottom
-    %p
-      {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
-    .stream-item-media1
-      .stream-item-media1-user
-        %a(ng-href="/profiles/{{stream.trackable.comment.user.slug}}")
-          %img(ng-src="{{userImageUrl(stream.trackable.comment.user.image_id)}}")
-      .stream-item-media1-content
-        %a(ng-href="/profiles/{{stream.trackable.comment.user.slug}}")
-          {{stream.trackable.comment.user.name}}
-        said, {{stream.trackable.comment.content}}
+  / .stream-item-header
+  /   .stream-item-header-user
+  /     %div(ng-show="stream.trackable.comment.commentable.user")
+  /       %a(ng-href="/profiles/{{stream.trackable.comment.commentable.user.slug}}")
+  /         %img(ng-src="{{userImageUrl(stream.trackable.comment.commentable.user.image_id)}}")
+  /         %h4
+  /           {{stream.trackable.comment.commentable.user.name}}
+  /   .stream-item-header-title
+  /     %h3
+  /       {{stream.trackable.comment.commentable.title}}
+  / .stream-item-top
+  /   %a(ng-href="{{stream.trackable.comment.commentable.path}}")
+  /     %img(ng-src="{{mediaObjectImageUrl(stream.trackable.comment.commentable.featured_image)}}")
+  / .stream-item-bottom
+  /   %p
+  /     {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  /   .stream-item-media1
+  /     .stream-item-media1-user
+  /       %a(ng-href="/profiles/{{stream.trackable.comment.user.slug}}")
+  /         %img(ng-src="{{userImageUrl(stream.trackable.comment.user.image_id)}}")
+  /     .stream-item-media1-content
+  /       %a(ng-href="/profiles/{{stream.trackable.comment.user.slug}}")
+  /         {{stream.trackable.comment.user.name}}
+  /       said, {{stream.trackable.comment.content}}
