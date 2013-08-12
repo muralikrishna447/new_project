@@ -1,16 +1,16 @@
-.container
+.container.home-signed-in
   .row
     .span12
       .row.section
         .span10
-          %h2 Latest from ChefSteps
+          %h2.home-header Latest from ChefSteps
         .span2.text-right
           = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
       = render 'shared/horizontal_slider', items: @latest, direction: 'right'
 
   .row
     .span8
-      %h2 Courses
+      %h2.home-header Courses
       - @courses.each.with_index do |course, index|
         - if index == 0
           %h3= course.title
@@ -23,7 +23,7 @@
             .span4
               %h4= course.title
               = course.short_description
-      %h2 Projects
+      %h2.home-header Projects
       %h3 Start a new Project
       - @projects.each.with_index do |project, index|
         .row
@@ -33,7 +33,7 @@
             %h4= project.title
             = project.description
     .span4
-      %h2 Activity Stream
+      %h2.home-header Activity Stream
       / .stream
       /   - @followings_stream.each do |event|
       /     - path_array = event.group_type.downcase.split('_')
