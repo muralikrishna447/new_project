@@ -1,4 +1,20 @@
-angular.module('ChefStepsApp').controller 'PollItemController', ["$scope", "$timeout", ($scope, $timeout) ->
+angular.module('ChefStepsApp').controller 'PollItemController', ["$scope", "$timeout", "$http", ($scope, $timeout, $http) ->
+
+  $scope.voteObject = ->
+    votable_object = $scope.poll_item
+
+    url = '/votes?votable_type=' + 'PollItem' + '&votable_id=' + votable_object.id
+    $http(
+      method: 'POST'
+      url: url
+    ).success((data, status, headers, config) ->
+      votable_object.votes_count +=1
+      $scope.current_user_votes.push(votable_object.id)
+      $scope.expandSocial()
+    ).error((data, status, headers, config) ->
+      if $('#voterwarning').length == 0
+        $('.alert-container').append("<div class='alert alert-error' id='voterwarning'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'><a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to vote for this.</h4><div class='lblock'></div></div>")
+    )
 
   $scope.expandSocial =  ->
     $timeout (->

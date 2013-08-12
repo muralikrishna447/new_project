@@ -22,25 +22,6 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
         voted = true
     return voted
 
-
-  $scope.voteObject = (votable,index) ->
-    votable_object = {}
-    angular.forEach $scope.poll['poll_items'], (poll_item,index) ->
-      if poll_item.id == votable.id
-        votable_object = $scope.poll['poll_items'][index]
-
-    url = '/votes?votable_type=' + 'PollItem' + '&votable_id=' + votable.id
-    $http(
-      method: 'POST'
-      url: url
-    ).success((data, status, headers, config) ->
-      votable_object.votes_count +=1
-      $scope.current_user_votes.push(votable.id)
-    ).error((data, status, headers, config) ->
-      if $('#voterwarning').length == 0
-        $('.alert-container').append("<div class='alert alert-error' id='voterwarning'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'><a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to vote for this.</h4><div class='lblock'></div></div>")
-    )
-
   $scope.current_user_voted_for_this = (votable) ->
     if $.inArray(votable.id, $scope.current_user_votes) == -1
       false
