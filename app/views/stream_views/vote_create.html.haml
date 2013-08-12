@@ -1,27 +1,38 @@
 .stream-item
-  .stream-item-header
-    .stream-item-header-user
-      %a(ng-href="/profiles/{{stream.trackable.vote.user.slug}}")
-        %img(ng-src="{{userImageUrl(stream.trackable.vote.user.image_id)}}")
-        %h4
-          {{stream.trackable.vote.user.name}}
-    .stream-item-header-title
-      %h3
-        {{stream.trackable.vote.votable.title}}
-  .stream-item-top
-    / = link_to media_object do
-    /   = image_tag 'http://placehold.it/160x90/cccccc/cccccc&text=ChefSteps'
-  .stream-item-bottom
-    %p
-      {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
-    .stream-item-media2
-      .stream-item-media2-content
-        %div(ng-switch="stream.trackable.vote.votable.votes_count")
-          %div(ng-switch-when='1')
-            1 Vote
-          %div(ng-switch-default)
-            {{stream.trackable.vote.votable.votes_count}} Votes
-      .stream-item-media2-users
-        / %span(ng-repeat="user in stream.trackable.vote.votable.vote_users")
-        /   %a(ng-href="/profiles/{{user.slug}}")
-        /     %img(ng-src="{{userImageUrl(user.image_id)}}")
+  .stream-item-dialogue
+    %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
+    %h4
+      %a(ng-href="/profiles/{{stream.user.slug}}")
+        {{stream.user.name}}
+      voted for
+      {{stream.trackable.vote.votable.title}} in the poll:
+      %a(ng-href="{{stream.trackable.vote.votable.poll.path}}")
+        {{stream.trackable.vote.votable.poll.title}}
+      %small
+        {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  / .stream-item-header
+  /   .stream-item-header-user
+  /     %a(ng-href="/profiles/{{stream.trackable.vote.user.slug}}")
+  /       %img(ng-src="{{userImageUrl(stream.trackable.vote.user.image_id)}}")
+  /       %h4
+  /         {{stream.trackable.vote.user.name}}
+  /   .stream-item-header-title
+  /     %h3
+  /       {{stream.trackable.vote.votable.title}}
+  / .stream-item-top
+  /   / = link_to media_object do
+  /   /   = image_tag 'http://placehold.it/160x90/cccccc/cccccc&text=ChefSteps'
+  / .stream-item-bottom
+  /   %p
+  /     {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  /   .stream-item-media2
+  /     .stream-item-media2-content
+  /       %div(ng-switch="stream.trackable.vote.votable.votes_count")
+  /         %div(ng-switch-when='1')
+  /           1 Vote
+  /         %div(ng-switch-default)
+  /           {{stream.trackable.vote.votable.votes_count}} Votes
+  /     .stream-item-media2-users
+  /       / %span(ng-repeat="user in stream.trackable.vote.votable.vote_users")
+  /       /   %a(ng-href="/profiles/{{user.slug}}")
+  /       /     %img(ng-src="{{userImageUrl(user.image_id)}}")
