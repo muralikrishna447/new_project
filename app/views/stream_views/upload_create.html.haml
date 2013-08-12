@@ -13,31 +13,3 @@
   .stream-item-image
     %a(ng-href="{{stream.trackable.upload.path}}")
       %img(ng-src="{{mediaObjectImageUrl(stream.trackable.upload.featured_image)}}")
-
-  / .stream-item-header
-  /   .stream-item-header-user
-  /     %a(ng-href="/profiles/{{stream.trackable.upload.user.slug}}")
-  /       %img(ng-src="{{userImageUrl(stream.trackable.upload.user.image_id)}}")
-  /       %h4
-  /         {{stream.trackable.upload.user.name}}
-  /   .stream-item-header-title
-  /     %h3
-  /       {{stream.trackable.upload.title}}
-  / .stream-item-top
-  /   %a(ng-href="{{stream.trackable.upload.path}}")
-  /     %img(ng-src="{{mediaObjectImageUrl(stream.trackable.upload.featured_image)}}")
-  / .stream-item-bottom
-  /   %p
-  /     {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
-  /   .stream-item-media2
-  /     .stream-item-media2-content
-  /       %div(ng-switch="stream.trackable.upload.likes_count")
-  /         %div(ng-switch-when='null')
-  /         %div(ng-switch-when='1')
-  /           1 Like
-  /         %div(ng-switch-default)
-  /           {{stream.trackable.upload.likes_count}} Likes
-  /     .stream-item-media2-users
-  /       %span(ng-repeat="user in stream.trackable.upload.like_users")
-  /         %a(ng-href="/profiles/{{user.slug}}")
-  /           %img(ng-src="{{userImageUrl(user.image_id)}}")
