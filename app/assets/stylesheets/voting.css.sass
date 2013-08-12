@@ -52,6 +52,8 @@
   .social-group
     > .btn
       margin-top: 10px
+    white-space: normal !important
+
 
 .poll-item-sharing
   margin-top: 15px
@@ -150,6 +152,12 @@
     font-size: 60px
     color: $orange
     margin: 100px 0px 2000px
+
+@media (max-width: 767px)
+  .social-group
+    .btn-primary
+      width: 48%
+
 
 @media (min-width: 481px) and (max-width: 979px)
   .poll-item
