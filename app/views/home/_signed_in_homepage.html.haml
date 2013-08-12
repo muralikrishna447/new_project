@@ -15,16 +15,19 @@
         - @courses.each.with_index do |course, index|
           - if index == 0
             .home-featured-item
-              %h3= course.title
-              = image_tag filepicker_stream_image(course.featured_image)
+              = link_to course do
+                %h3= course.title
+                = image_tag filepicker_stream_image(course.featured_image)
               .section
                 = course.short_description
           -else
             .home-standard-item
               .home-standard-item-image
-                = image_tag filepicker_stream_image(course.featured_image)
+                = link_to course do
+                  = image_tag filepicker_stream_image(course.featured_image)
               .home-standard-item-text
-                %h4= course.title
+                = link_to course do
+                  %h3= course.title
                 = course.short_description
       .home-section
         %hr
@@ -33,9 +36,11 @@
         - @projects.each.with_index do |project, index|
           .home-standard-item
             .home-standard-item-image
-              = image_tag filepicker_stream_image(project.featured_image)
+              = link_to project_path(project) do
+                = image_tag filepicker_stream_image(project.featured_image)
             .home-standard-item-text
-              %h4= project.title
+              = link_to project_path(project) do
+                %h3= project.title
               = project.description
     .span4
       %h2.home-header Activity Stream
