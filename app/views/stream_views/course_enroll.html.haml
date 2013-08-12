@@ -1,20 +1,34 @@
 .stream-item
-  .stream-item-header
-    .stream-item-header-user
-    .stream-item-header-title
-      %h3
-        {{stream.trackable.course.title}}  
-  .stream-item-top
+  .stream-item-dialogue
+    %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
+    %h4
+      %a(ng-href="/profiles/{{stream.user.slug}}")
+        {{stream.user.name}}
+      enrolled into the
+      %a(ng-href="/profiles/{{stream.trackable.course.path}}")
+        {{stream.trackable.course.title}}
+      Course.
+      %small
+        {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  .stream-item-image
     %a(ng-href="{{stream.trackable.course.path}}")
       %img(ng-src="{{mediaObjectImageUrl(stream.trackable.course.featured_image)}}")
-  .stream-item-bottom
-    %p
-      {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
-    .stream-item-media1
-      .stream-item-media1-user
-        %a(ng-href="/profiles/{{stream.user.slug}}")
-          %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
-      .stream-item-media1-content
-        %a(ng-href="/profiles/{{stream.user.slug}}")
-          {{stream.user.name}}
-        enrolled into the {{stream.trackable.course.title}} Course.
+  / .stream-item-header
+  /   .stream-item-header-user
+  /   .stream-item-header-title
+  /     %h3
+  /       {{stream.trackable.course.title}}  
+  / .stream-item-top
+  /   %a(ng-href="{{stream.trackable.course.path}}")
+  /     %img(ng-src="{{mediaObjectImageUrl(stream.trackable.course.featured_image)}}")
+  / .stream-item-bottom
+  /   %p
+  /     {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  /   .stream-item-media1
+  /     .stream-item-media1-user
+  /       %a(ng-href="/profiles/{{stream.user.slug}}")
+  /         %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
+  /     .stream-item-media1-content
+  /       %a(ng-href="/profiles/{{stream.user.slug}}")
+  /         {{stream.user.name}}
+  /       enrolled into the {{stream.trackable.course.title}} Course.
