@@ -1,6 +1,25 @@
-angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resource", "$http", ($scope, $resource, $http) ->
+angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resource", "$http", "$timeout", ($scope, $resource, $http, $timeout) ->
   Poll = $resource('/polls/:id/show_as_json', {id:  $('#poll').data("poll-id")})
   $scope.poll = Poll.get()
+
+
+  $scope.socialURL = ->
+    "http://chefsteps.com/polls/" + $scope.poll.slug
+
+  $scope.userImageUrl = (image_id) ->
+    if image_id
+      image = JSON.parse(image_id)
+      image.url + '/convert?fit=crop&w=30&h=30&cache=true'
+    else
+      'https://www.filepicker.io/api/file/yklhkH0iRV6biUOcXKSw/convert?fit=crop&w=30&h=30&cache=true'
+
+  $scope.current_user_voted = ->
+    voted = false
+    angular.forEach $scope.poll['poll_items'], (poll_item,index) ->
+      if $scope.current_user_voted_for_this(poll_item)
+        voted = true
+    return voted
+
 
   $scope.voteObject = (votable,index) ->
     votable_object = {}
@@ -26,14 +45,6 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
     else
       true
 
-  $scope.current_user_voted = ->
-    voted = false
-    angular.forEach $scope.poll['poll_items'], (poll_item,index) ->
-      if $scope.current_user_voted_for_this(poll_item)
-        voted = true
-    return voted
-
-
   $scope.pollItemDetails = (current_poll_item) ->
     # current_poll_item.show_details = true
     angular.forEach $scope.poll['poll_items'], (poll_item) ->
@@ -45,11 +56,5 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
       else
         poll_item.show_details = false
 
-  $scope.userImageUrl = (image_id) ->
-    if image_id
-      image = JSON.parse(image_id)
-      image.url + '/convert?fit=crop&w=30&h=30&cache=true'
-    else
-      'https://www.filepicker.io/api/file/yklhkH0iRV6biUOcXKSw/convert?fit=crop&w=30&h=30&cache=true'
 
 ]
