@@ -53,6 +53,15 @@ describe Event do
       Stream.all_events.first.should == @event
     end
 
+    # Events that should not show up in the stream
+
+    it 'does not return a like create item if activity is unpublished' do
+      @unpublished = Fabricate :activity, title: 'Unpublished Activity', description: 'An unpublished activity', published: false
+      @like = Fabricate :like, likeable: @unpublished, user: @user
+      @event = Fabricate :event, trackable: @like, action: 'create', user: @user
+      Stream.all_events.length.should == 0
+    end
+
     # it 'returns a comment received item when a user comments' do
     #   @user2 = Fabricate :user, name: 'Tester 2'
     #   @comment = Fabricate :comment, content: 'Comment 1 content', commentable: @upload, user: @user2
