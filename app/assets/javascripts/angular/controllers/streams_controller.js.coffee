@@ -1,12 +1,10 @@
 angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$resource", "$http", "$filter", ($scope, $resource, $http, $filter) ->
 
   $scope.init = () ->
-    console.log 'init'
+
     $scope.page = 1
     $scope.stream = $resource('/streams/:id')
     $scope.streams = $scope.stream.query(->
-      console.log 'queried'
-      console.log $scope.streams
       # angular.forEach $scope.streams, (stream, index) ->
       #   $http(
       #     method: 'GET'
@@ -55,6 +53,9 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
     ).error((data, status, headers, config) ->
 
     )
+
+  $scope.streamViewTemplate = (stream) ->
+    'stream_views/' + stream.event_type + '.html'
 
   # $scope.addComment = ->
   #   comment = $scope.Comment.save($scope.newComment, ->

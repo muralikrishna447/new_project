@@ -8,7 +8,7 @@ class Event < ActiveRecord::Base
   scope :timeline, where('action <> ?', 'show')
   scope :unviewed, where(viewed: false)
 
-  after_create :save_group_type_and_group_name
+  # after_create :save_group_type_and_group_name
 
   def self.scoped_by(trackable_type, action)
     # Returns a set of events by trackable type and action
@@ -21,6 +21,10 @@ class Event < ActiveRecord::Base
 
   def receiver
     trackable.receiver if trackable.class.method_defined?(:receiver)
+  end
+
+  def event_type
+    [trackable_type, action].join('_').downcase
   end
 
   def determine_group_type

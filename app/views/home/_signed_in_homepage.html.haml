@@ -54,19 +54,18 @@
       / = paginate @followings_stream
       .stream(ng-controller='StreamsController' ng-init="init()")
         %div(ng-repeat='stream in streams')
-          {{stream}}
-          work please
-          %div(ng-switch="stream.group_type")
-            %div(ng-switch-when='Comment_create')
-              %div(ng-include src="'stream_views/comment_create.html'")
-            %div(ng-switch-when='Course_enroll')
-              %div(ng-include src="'stream_views/course_enroll.html'")
-            %div(ng-switch-when='Like_create')
-              %div(ng-include src="'stream_views/like_create.html'")
-            %div(ng-switch-when='Upload_create')
-              %div(ng-include src="'stream_views/upload_create.html'")
-            %div(ng-switch-when='Vote_create')
-              %div(ng-include src="'stream_views/vote_create.html'")
+          %div(ng-include src="streamViewTemplate(stream)")
+          / %div(ng-switch="stream.group_type")
+          /   %div(ng-switch-when='Comment_create')
+          /     %div(ng-include src="'stream_views/comment_create.html'")
+          /   %div(ng-switch-when='Course_enroll')
+          /     %div(ng-include src="'stream_views/course_enroll.html'")
+          /   %div(ng-switch-when='Like_create')
+          /     %div(ng-include src="'stream_views/like_create.html'")
+          /   %div(ng-switch-when='Upload_create')
+          /     %div(ng-include src="'stream_views/upload_create.html'")
+          /   %div(ng-switch-when='Vote_create')
+          /     %div(ng-include src="'stream_views/vote_create.html'")
 
         %a.btn.btn-outline-blue-large(ng-click="loadMore()")
           See More
