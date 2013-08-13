@@ -1,32 +1,18 @@
-angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resource", "$http", ($scope, $resource, $http) ->
+angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resource", "$http", "$timeout", ($scope, $resource, $http, $timeout) ->
   Poll = $resource('/polls/:id/show_as_json', {id:  $('#poll').data("poll-id")})
   $scope.poll = Poll.get(->
     $scope.hideSpinner = true
   )
 
-  $scope.voteObject = (votable,index) ->
-    votable_object = {}
-    angular.forEach $scope.poll['poll_items'], (poll_item,index) ->
-      if poll_item.id == votable.id
-        votable_object = $scope.poll['poll_items'][index]
+  $scope.socialURL = ->
+    "http://chefsteps.com/polls/" + $scope.poll.slug
 
-    url = '/votes?votable_type=' + 'PollItem' + '&votable_id=' + votable.id
-    $http(
-      method: 'POST'
-      url: url
-    ).success((data, status, headers, config) ->
-      votable_object.votes_count +=1
-      $scope.current_user_votes.push(votable.id)
-    ).error((data, status, headers, config) ->
-      if $('#voterwarning').length == 0
-        $('.alert-container').append("<div class='alert alert-error' id='voterwarning'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'><a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to vote for this.</h4><div class='lblock'></div></div>")
-    )
-
-  $scope.current_user_voted_for_this = (votable) ->
-    if $.inArray(votable.id, $scope.current_user_votes) == -1
-      false
+  $scope.userImageUrl = (image_id) ->
+    if image_id
+      image = JSON.parse(image_id)
+      image.url + '/convert?fit=crop&w=30&h=30&cache=true'
     else
-      true
+      'https://www.filepicker.io/api/file/yklhkH0iRV6biUOcXKSw/convert?fit=crop&w=30&h=30&cache=true'
 
   $scope.current_user_voted = ->
     voted = false
@@ -35,6 +21,11 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
         voted = true
     return voted
 
+  $scope.current_user_voted_for_this = (votable) ->
+    if $.inArray(votable.id, $scope.current_user_votes) == -1
+      false
+    else
+      true
 
   $scope.pollItemDetails = (current_poll_item) ->
     # current_poll_item.show_details = true
@@ -47,11 +38,5 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
       else
         poll_item.show_details = false
 
-  $scope.userImageUrl = (image_id) ->
-    if image_id
-      image = JSON.parse(image_id)
-      image.url + '/convert?fit=crop&w=30&h=30&cache=true'
-    else
-      'https://www.filepicker.io/api/file/yklhkH0iRV6biUOcXKSw/convert?fit=crop&w=30&h=30&cache=true'
 
 ]
