@@ -3,7 +3,12 @@ class StreamsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @streams = Kaminari::paginate_array(Stream.followings(current_user)).page(params[:page]).per(6)
+    if current_user.followings.any?
+      streams_data = Stream.followings(current_user)
+    else
+      streams_data = Stream.all_events
+    end
+    @streams = Kaminari::paginate_array(streams_data).page(params[:page]).per(6)
     render :json => @streams, root: false
   end
 
