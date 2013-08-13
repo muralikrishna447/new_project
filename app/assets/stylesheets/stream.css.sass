@@ -1,134 +1,20 @@
 @import 'mixins'
 
-.stream-wrapper
-  border-right: 1px solid $light-gray
-
-.stream-header-section
-  margin: 10px 0px
-  h2
-    float: left
-    background: $offwhite
-    padding: 10px 16px
-    margin: 0px
-    font-weight: 200
-  .btn
-    float: right
-    margin-right: 10px
-
 .stream
   width: 100%
-  float: left
   @include raleway
   position: relative
-  .stream-line
-    margin-left: 12%
-    width: 88%
-    border: 1px solid $light-gray
-    border-left: 0px
-    border-right: 0px
-    border-bottom: 0px
-    @include boxsizing
-    position: absolute
-    top: 210px
-    left: 0px
-    z-index: -1
-
   .stream-item
+    margin-bottom: 20px
     float: left
-    width: 25%
+    width: 100%
+    border: 1px solid $light-gray
     padding: 10px
-    text-align: center
     @include boxsizing
-    &:hover
-      .stream-item-top
-        border: 1px solid $orange
-      .stream-item-marker
-        background: $orange
-    .stream-item-top
-      border: 1px solid $light-gray
-      padding: 10px
-      margin-bottom: 15px
-      @include boxsizing
-      @include transition(all 200ms)
+    .stream-item-dialogue
       img
-        width: 100%
-      .stream-item-title
-        h4
-          margin: 0px
-          overflow: hidden
-          text-overflow: ellipsis
-          white-space: nowrap
-          color: black
-      .stream-item-subtitle
-        overflow: hidden
-        text-overflow: ellipsis
-        white-space: nowrap
-        color: black
-    .stream-item-marker
-      height: 16px
-      width: 16px
-      background: $light-gray
-      margin: 0 auto
-      border-radius: 8px
-      @include transition(all 200ms)
-    .stream-item-bottom
-      margin-top: 15px
-      height: 160px
-      @include boxsizing
-
-.stream-item-media1
-  position: relative
-  .stream-item-media1-user
-    position: absolute
-    top: 0px
-    left: 0px
-    img
-      width: 30px
-  .stream-item-media1-content
-    text-align: left
-    padding-left: 40px
-
-.stream-item-media2
-
-  .stream-item-media2-users
-    text-align: left
-    img
-      width: 30px
-      margin-bottom: 3px
-  .stream-item-media2-content
-
-@media (max-width: 1200px)
-  .stream
-    .stream-line
-      top: 182px
-
-@media (min-width: 768px) and (max-width: 979px)
-  .stream
-    .stream-line
-      display: none
-    .stream-item
-      width: 50%
-      .stream-item-marker
-        display: none
-
-@media (max-width: 767px)
-  .stream
-    .stream-line
-      display: none
-    .stream-item
-      width: 50%
-      .stream-item-marker
-        display: none
-
-@media (max-width: 480px)
-  .stream-wrapper
-    border: 0px
-    .stream
-      .stream-line
-        display: none
-      .stream-item
-        width: 100%
-        .stream-item-marker
-          display: none
-        .stream-item-bottom
-          height: inherit
+        float: left
+      h4
+        margin-left: 35px
+        margin-top: 0px
+        margin-bottom: 5px

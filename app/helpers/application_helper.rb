@@ -78,6 +78,10 @@ module ApplicationHelper
     filepicker_arbitrary_image(fpfile, 278, 'crop')
   end
 
+  def filepicker_stream_image(fpfile)
+    filepicker_arbitrary_image(fpfile, 770, 'crop')
+  end
+
   def s3_audio_url(audio_clip)
     "<audio controls><source src='http://d2eud0b65jr0pw.cloudfront.net/#{audio_clip}''></source></audio>".html_safe
   end

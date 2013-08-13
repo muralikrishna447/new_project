@@ -50,6 +50,7 @@ gem 'has_scope'
 gem 'mixpanel'
 gem 'cancan'
 gem 'simple-rss'
+gem 'active_model_serializers'
 
 # Gems used only for assets and not required
 # in production environments by default.

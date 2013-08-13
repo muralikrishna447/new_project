@@ -1,0 +1,15 @@
+.stream-item
+  .stream-item-dialogue
+    %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
+    %h4
+      %a(ng-href="/profiles/{{stream.user.slug}}")
+        {{stream.user.name}}
+      commented on
+      %a(ng-href="{{stream.trackable.comment.commentable.path}}")
+        {{stream.trackable.comment.commentable.title}}:
+      "{{stream.trackable.comment.content}}"
+      %small
+        {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  .stream-item-image
+    %a(ng-href="{{stream.trackable.comment.commentable.path}}")
+      %img(ng-src="{{mediaObjectImageUrl(stream.trackable.comment.commentable.featured_image)}}")

@@ -1,0 +1,24 @@
+.stream-item
+  .stream-item-dialogue
+    %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
+    %h4
+      %div(ng-switch="stream.trackable.like.likeable_type")
+        %div(ng-switch-when='Upload')
+          %a(ng-href="/profiles/{{stream.user.slug}}")
+            {{stream.user.name}}
+          liked
+          %a(ng-href="/profiles/{{stream.trackable.like.likeable.user.slug}}")
+            {{stream.trackable.like.likeable.user.name}}'s
+          {{stream.trackable.like.likeable.title}}
+          photo.
+        %div(ng-switch-when='Activity')
+          %a(ng-href="/profiles/{{stream.user.slug}}")
+            {{stream.user.name}}
+          liked
+          %a(ng-href="{{stream.trackable.like.likeable.path}}")
+            {{stream.trackable.like.likeable.title}}.
+      %small
+        {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  .stream-item-image
+    %a(ng-href="{{stream.trackable.like.likeable.path}}")
+      %img(ng-src="{{mediaObjectImageUrl(stream.trackable.like.likeable.featured_image)}}")

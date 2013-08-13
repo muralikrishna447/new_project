@@ -231,6 +231,8 @@ ActiveRecord::Schema.define(:version => 20130807230858) do
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
     t.boolean  "viewed",         :default => false
+    t.string   "group_type"
+    t.text     "group_name"
   end
 
   create_table "followerships", :force => true do |t|
