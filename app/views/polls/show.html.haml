@@ -33,17 +33,17 @@
               .poll-header-votes-subtext
                 and counting...
 
-      %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak ng-controller="PollItemController")
+      %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak ng-controller="PollItemController" ng-animate="'custom'")
         .poll-item
           .poll-item-vote-up{onclick: "mixpanel.track('Poll Voted', {'Poll Item': {{poll_item.id}} });"}
             %span(ng-switch on="current_user_voted_for_this(poll_item)")
               %span(ng-switch-when='true')
-                .poll-item-btn.poll-item-btn-voted
+                .poll-item-btn.poll-item-btn-voted(ng-click="unvoteObject()")
                   %i.icon-angle-up
                   .poll-item-vote-count
                     {{poll_item.votes_count}}
               %span(ng-switch-when='false')
-                .poll-item-btn(ng-click="voteObject()")
+                .poll-item-btn(ng-click="voteObject()" tooltip="Vote for this")
                   %i.icon-angle-up
                   .poll-item-vote-count(ng-show='current_user_voted()')
                     {{poll_item.votes_count}}
@@ -63,7 +63,7 @@
                     {{voter.name}}
             .section.social-group
               %a.btn.btn-primary.btn-poll-comments(ng-click='mixpanel.track("Poll View Comments"); pollItemDetails(poll_item)')
-                %ng-pluralize(count="poll_item.comments_count" when="{'0': 'Be the first to comment.', 'one': '1 comment', 'other': '{} comments'}")
+                %ng-pluralize(count="poll_item.comments_count" when="{'0': 'Be the first to comment', 'one': '1 comment', 'other': '{} comments'}")
               = render 'layouts/share_button', split_name: '', shareSuggestText: "Ask your friends to vote!"
             %div(collapse='!poll_item.show_details')
               %div(ng-controller='CommentsController' ng-init="init('poll_items',poll_item.id)" ng-cloak)

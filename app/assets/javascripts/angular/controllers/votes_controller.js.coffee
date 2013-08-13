@@ -4,7 +4,6 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
     $scope.hideSpinner = true
   )
 
-
   $scope.socialURL = ->
     "http://chefsteps.com/polls/" + $scope.poll.slug
 
