@@ -54,6 +54,9 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
 
     )
 
+  $scope.streamViewTemplate = (stream) ->
+    'stream_views/' + stream.event_type + '.html'
+
   # $scope.addComment = ->
   #   comment = $scope.Comment.save($scope.newComment, ->
   #     $scope.comments.push(comment)
