@@ -54,8 +54,6 @@
       / = paginate @followings_stream
       .stream(ng-controller='StreamsController' ng-init="init()")
         %div(ng-repeat='stream in streams')
-          {{stream}}
-          work please
           %div(ng-switch="stream.group_type")
             %div(ng-switch-when='Comment_create')
               %div(ng-include src="'stream_views/comment_create.html'")
