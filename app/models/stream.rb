@@ -12,4 +12,8 @@ class Stream
     # TODO find out why uniq and uniq! sometimes works
     # stream_events.uniq{|e| e.group_name}
   end
+
+  def self.all_events
+    Event.timeline.where('action != ?', 'received_create').order('created_at desc')
+  end
 end
