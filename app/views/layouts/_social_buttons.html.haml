@@ -1,7 +1,4 @@
--ab_test("social_share", "old", "newNoPostPlay", "newWithPostPlay") do |split_name|
-  -if split_name == "old"
-    = render "layouts/old_social_buttons", media_object: media_object
-  -else
-    .section-small.social-group
-      = render 'shared/like_button', likeable_object: media_object
-      = render 'layouts/share_button', shareSuggestText: shareSuggestText, split_name: split_name
+.section-small.social-group
+  = render 'shared/like_button', likeable_object: media_object
+  -ab_test("social_share_cta", "with_cta", "no_cta") do |split_name|
+    = render 'layouts/share_button', shareSuggestText: shareSuggestText, split_name: split_name
