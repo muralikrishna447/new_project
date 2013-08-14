@@ -51,6 +51,8 @@ feature 'timeline' do
 
   scenario 'enrolling into a published course shows up in timeline' do
     @published = Fabricate :course, title: 'Published Course', published: true
+    @course_activity = Fabricate :activity, title: 'First activity', published: true
+    @inclusion = Fabricate :inclusion, course_id: @published.id, activity_id: @course_activity.id
     @event = Fabricate :event, trackable: @published, action: 'enroll', user: @user
     visit user_profile_path(@user)
     expect(page).to have_content 'enrolled into the Published Course'
