@@ -3,7 +3,7 @@
     .icon-share
     Share
   .social-popover-triangle(ng-show="expandSocial" ng-animate="'spe'" )
-  .social-popover(ng-show="expandSocial" ng-animate="'spe'" style="display: none;")
+  .social-popover(ng-show="expandSocial" ng-animate="'spe'" style="display: none;" ng-class='split')
     .contents
       .share-text
         = shareSuggestText || "Share this with your friends!"

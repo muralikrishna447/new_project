@@ -2,13 +2,12 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
   $scope.expandSocial = false;
 
   $scope.$on 'expandSocialButtons', ->
-    if $scope.split != "newNoPostPlay"
-      $scope.expandSocial = true
+    $scope.expandSocial = true
 
   $scope.openSocialWindow = (mixpanel_name, url, spec) ->
     $scope.expandSocial = false
     window.open(url, "_blank", spec || "width=500, height=300, top=100, left=100")
-    $http.put('/splitty/finished?experiment=social_share')
+    $http.put('/splitty/finished?experiment=social_share_cta')
     share_cat = $scope.socialURL().split("/")[3]
     mixpanel.track('Share', { 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat})
 
