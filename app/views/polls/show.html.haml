@@ -44,10 +44,16 @@
                   .poll-item-vote-count
                     {{poll_item.votes_count}}
               %span(ng-switch-when='false')
-                .poll-item-btn(ng-click="voteObject()" tooltip="Vote for this")
-                  %i.icon-angle-up
-                  .poll-item-vote-count(ng-show='current_user_voted()')
-                    {{poll_item.votes_count}}
+                %div(ng-if="#{@poll.status=='Closed'}")
+                  .poll-item-btn-disabled(tooltip="Voting is now closed.")
+                    %i.icon-angle-up
+                    .poll-item-vote-count(ng-show='current_user_voted()')
+                      {{poll_item.votes_count}}
+                %div(ng-show="#{@poll.status!='Closed'}")
+                  .poll-item-btn(ng-click="voteObject()" tooltip="Vote for this!")
+                    %i.icon-angle-up
+                    .poll-item-vote-count(ng-show='current_user_voted()')
+                      {{poll_item.votes_count}}
 
           .poll-item-text
             %a.poll-item-details-btn(ng-click='pollItemDetails(poll_item)')
