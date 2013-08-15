@@ -3,3 +3,6 @@
     %i{class: "icon-#{icon}"}
   %span
     = networkFriendlyName
+  -if defined? counter
+    %span
+      {{#{counter}}}

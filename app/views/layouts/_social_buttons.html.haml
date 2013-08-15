@@ -1,4 +1,4 @@
 .section-small.social-group
   = render 'shared/like_button', likeable_object: media_object
-  -ab_test("social_share_cta", "with_cta", "no_cta") do |split_name|
-    = render 'layouts/share_button', shareSuggestText: shareSuggestText, split_name: split_name
+  -ab_test("social_share3", "no_counters", "counters", "flat_counters", "flat_counters_postplay") do |split_name|
+    = render 'layouts/share_button', split_name: split_name
