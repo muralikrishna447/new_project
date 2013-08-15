@@ -2,6 +2,7 @@ class Comment < ActiveRecord::Base
   attr_accessible :commentable_id, :commentable_type, :content, :user_id
   belongs_to :user
   belongs_to :commentable, polymorphic: true, counter_cache: true
+  has_many :events, as: :trackable, dependent: :destroy
 
   validates :commentable_id, :commentable_type, :content, :user_id, presence: true
 

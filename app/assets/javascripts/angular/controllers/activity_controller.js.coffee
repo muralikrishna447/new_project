@@ -413,6 +413,26 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
             $rootScope.$broadcast('expandSocialButtons')
           ), duration * 1000 + 5000
 
+  # Social share callbacks
+  $scope.socialURL = ->
+    "http://chefsteps.com/activities/" + $scope.activity.slug
+
+  $scope.socialTitle = ->
+    $scope.activity.title
+
+  $scope.socialMediaItem = ->
+    return $scope.featuredImageURL(800) if $scope.hasFeaturedImage()
+    null
+
+  $scope.tweetMessage = ->
+    "I love this:"
+
+  $scope.emailSubject = ->
+    "I thought you might like " + $scope.socialTitle()
+
+  $scope.emailBody = ->
+    "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
+
   # One time stuff
   if $scope.parsePreloaded()
 

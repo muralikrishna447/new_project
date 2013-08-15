@@ -1053,6 +1053,9 @@ a:hover
   width: 40px
   margin: 0 2px
 
+.btn-poll-comments
+  width: 200px
+
 .btn-social
   margin: 0 2px
   background-color: white
@@ -1144,6 +1147,13 @@ a:hover
     padding: 6px 10px 6px 10px
   .share-text
     margin-bottom: 8px
+
+.social-popover.no_cta
+  .share-text
+    display: none !important
+  .contents
+    margin-top: 3px
+  height: 40px
 
 .social-popover-triangle
   position: absolute
@@ -1859,6 +1869,7 @@ csingredienteditpair
 
     .social-popover-triangle
       display: none
+
     .social-popover
       @include boxsizing
       .share-text

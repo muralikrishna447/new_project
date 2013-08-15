@@ -1,0 +1,19 @@
+.btn.btn-primary.relative(ng-controller="SocialButtonsController" ng-init="split=\'#{split_name}\'" ng-click="expandSocial=!expandSocial")
+  .btn-share
+    .icon-share
+    Share
+  .social-popover-triangle(ng-show="expandSocial" ng-animate="'spe'" )
+  .social-popover(ng-show="expandSocial" ng-animate="'spe'" style="display: none;" ng-class='split')
+    .contents
+      .share-text
+        = shareSuggestText || "Share this with your friends!"
+      .btn.btn-secondary.btn-social.btn-social-twitter(ng-click="shareTwitter()")
+        = render 'layouts/social_button', icon: "twitter", networkFriendlyName: "Twitter"
+      .btn.btn-secondary.btn-social.btn-social-facebook(ng-click="shareFacebook()")
+        = render 'layouts/social_button', icon: "facebook", networkFriendlyName: "Facebook"
+      .btn.btn-secondary.btn-social.btn-social-gplus(ng-click="shareGooglePlus()")
+        = render 'layouts/social_button', icon: "google-plus", networkFriendlyName: "Google+"
+      .btn.btn-secondary.btn-social.btn-social-pinterest(ng-show="socialMediaItem()" ng-click="sharePinterest()")
+        = render 'layouts/social_button', icon: "pinterest", networkFriendlyName: "Pinterest"
+      .btn.btn-secondary.btn-social.btn-social-email(ng-click="shareEmail()")
+        = render 'layouts/social_button', icon: "envelope", networkFriendlyName: "Email"

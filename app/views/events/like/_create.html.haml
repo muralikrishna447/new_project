@@ -19,14 +19,15 @@
           .label new
 
 - when 'Activity'
-  .timeline-circle{data: {direction: direction}}
-    .timeline-circle-img
-      = link_to likeable_object do
-        = image_tag filepicker_circle_image(likeable_object.featured_image), class: 'img-circle'
-    .timeline-circle-text.text-center
-      %div
-        = "#{user_noun} liked #{link_to likeable_object.title, likeable_object}.".html_safe
-      %div
-        = time_ago_in_words(event.created_at) + ' ago'
-        - if event.user == current_user && !event.viewed
-          .label new
+  - if likeable_object.published
+    .timeline-circle{data: {direction: direction}}
+      .timeline-circle-img
+        = link_to likeable_object do
+          = image_tag filepicker_circle_image(likeable_object.featured_image), class: 'img-circle'
+      .timeline-circle-text.text-center
+        %div
+          = "#{user_noun} liked #{link_to likeable_object.title, likeable_object}.".html_safe
+        %div
+          = time_ago_in_words(event.created_at) + ' ago'
+          - if event.user == current_user && !event.viewed
+            .label new

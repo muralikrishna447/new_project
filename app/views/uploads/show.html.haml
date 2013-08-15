@@ -26,7 +26,8 @@
         - else
           = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this #{link_to @upload.activity.title, @upload.activity} photo on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
       %p= "#{time_ago_in_words(@upload.created_at)} ago."
-      = render 'layouts/social_buttons', media_object: @upload, url: upload_url(@upload)
+      %div(ng-controller="NonAngularSocialController" ng-init="title='#{@upload.title}'; url='#{project_url(@upload)}'; media='#{filepicker_hero_image(@upload.featured_image)}'")
+        = render 'layouts/social_buttons', media_object: @upload, url: upload_url(@upload), shareSuggestText: "Check this out"
 
       /= render 'shared/like_button', likeable_object: @upload
       /= link_to "https://twitter.com/intent/tweet?text=I love this: #{@upload.title} from @ChefSteps!&url=#{ url_encode(current_url(request))}", class: 'btn btn-primary' do
