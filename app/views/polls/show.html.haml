@@ -22,6 +22,8 @@
         .poll-header
           %h1
             {{poll.title}}
+            .label.label-large(ng-show="#{@poll.status=='Closed'}")
+              Closed
           %p
             {{poll.description}}
         .poll-header-votes
@@ -44,7 +46,7 @@
                   .poll-item-vote-count
                     {{poll_item.votes_count}}
               %span(ng-switch-when='false')
-                %div(ng-if="#{@poll.status=='Closed'}")
+                %div(ng-show="#{@poll.status=='Closed'}")
                   .poll-item-btn-disabled(tooltip="Voting is now closed.")
                     %i.icon-angle-up
                     .poll-item-vote-count(ng-show='current_user_voted()')
