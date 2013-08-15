@@ -14,9 +14,10 @@
       .span4
         .poll-index-item
           = render 'shared/media_box_2', url: poll_path(poll), title: poll.title, image: poll.image_id, object: poll
-          - if poll.status == 'Completed'
+          - if poll.status == 'Closed'
             .poll-index-item-winner
-              %h5 Closed
+              %h5
+                = "Closed on: #{poll.closed_at.strftime('%B %e, %Y')}"
               %h5.text-orange
                 = "Winner: #{poll.winner.first.title}"
       .span8

@@ -24,11 +24,11 @@ angular.module('ChefStepsApp').controller 'PollItemController', ["$scope", "$tim
     )
 
   $scope.voteObject = ->
-    unless $scope.poll_status == 'Completed'
+    unless $scope.poll_status == 'Closed'
       $scope.voteObjectGuts(1)
 
   $scope.unvoteObject = ->
-    unless $scope.poll_status == 'Completed'
+    unless $scope.poll_status == 'Closed'
       $scope.voteObjectGuts(-1)
 
 
