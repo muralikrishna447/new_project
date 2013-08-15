@@ -18,7 +18,7 @@
             .poll-index-item-winner
               %h5 Closed
               %h5.text-orange
-                = "Winner: #{poll.poll_items.first.title}"
+                = "Winner: #{poll.winner.first.title}"
       .span8
         = link_to poll do
           %h2= poll.title

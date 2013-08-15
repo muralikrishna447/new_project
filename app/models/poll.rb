@@ -6,4 +6,8 @@ class Poll < ActiveRecord::Base
   has_many :poll_items
 
   accepts_nested_attributes_for :poll_items
+
+  def winner
+    poll_items.order('poll_items.votes_count desc')
+  end
 end
