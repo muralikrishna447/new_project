@@ -16,13 +16,17 @@ feature 'stream' do
       click_link('Sign in')
       current_path.should == sign_in_path
 
-      fill_in 'user_email', with: 'Test User'
+      fill_in 'user_email', with: 'test@test.com'
       fill_in 'user_password', with: 'password'
       click_button 'Sign in'
     end
 
     scenario 'when user comments' do
-      
+
+      @comment = Fabricate :comment, commentable: @upload, user: @user
+      visit '/streams'
+      # puts page.body
+      # expect(page).to have_content 'Comment'
     end
   end
 
