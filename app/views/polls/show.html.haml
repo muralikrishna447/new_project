@@ -32,8 +32,9 @@
               Votes
               .poll-header-votes-subtext
                 and counting...
+      = link_to 'See Previous Polls', polls_path, class: 'btn btn-secondary pull-right section'
 
-      %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak ng-controller="PollItemController" ng-animate="'custom'")
+      %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak ng-controller="PollItemController" ng-animate="'custom'" ng-init="init('#{@poll.status}')")
         .poll-item
           .poll-item-vote-up{onclick: "mixpanel.track('Poll Voted', {'Poll Item': {{poll_item.id}} });"}
             %span(ng-switch on="current_user_voted_for_this(poll_item)")
@@ -50,7 +51,10 @@
 
           .poll-item-text
             %a.poll-item-details-btn(ng-click='pollItemDetails(poll_item)')
-              %h3 {{poll_item.title}}
+              %h3 
+                {{poll_item.title}}
+                .label(ng-show="#{@poll.status == 'Completed'} && $index == 0")
+                  Winner!
               %p.black-link {{poll_item.description}}
             .poll-item-user-voted(ng-show='current_user_voted_for_this(poll_item)')
               You voted for this!
