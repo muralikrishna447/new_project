@@ -8,9 +8,10 @@
   .container
     .row.section
       .span4
-        = render 'shared/media_box_2', url: poll_path(poll), title: poll.title, image: 'http://placehold.it/350x150', object: poll
+        = render 'shared/media_box_2', url: poll_path(poll), title: poll.title, image: poll.image_id, object: poll
       .span8
-        %h2= poll.title
+        = link_to poll do
+          %h2= poll.title
         %p= poll.description
 .container
   .row
