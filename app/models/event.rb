@@ -8,7 +8,7 @@ class Event < ActiveRecord::Base
   scope :timeline, where('action <> ?', 'show')
   scope :unviewed, where(viewed: false)
 
-  # after_create :save_group_type_and_group_name
+  after_create :save_group_type_and_group_name
 
   def self.scoped_by(trackable_type, action)
     # Returns a set of events by trackable type and action
@@ -28,7 +28,7 @@ class Event < ActiveRecord::Base
   end
 
   def determine_group_type
-    [trackable_type, action].join('_')
+    [trackable_type, action].join('_').downcase
   end
 
   def determine_group_name
@@ -36,24 +36,30 @@ class Event < ActiveRecord::Base
     # type = [trackable_type, action]
     case [trackable_type, action]
     when ['Activity', 'show']
-      name = [trackable_type, trackable_id, action].join('_')
+      [trackable_type, trackable_id, action].join('_').downcase
     when ['Comment','create']
-      name = [trackable_type, trackable_id, action, trackable.commentable_type, trackable.commentable_id].join('_')
+      [trackable_type, trackable_id, action, trackable.commentable_type, trackable.commentable_id, "user_#{user_id}"].join('_').downcase
       # "Comment_#{trackable_id}_created_for_#{trackable.commentable_type}_#{trackable.commentable_id}"
     when ['Comment','received_create']
-      name = [trackable_type, trackable_id, action, trackable.commentable_type, trackable.commentable_id].join('_')
+      [trackable_type, trackable_id, action, trackable.commentable_type, trackable.commentable_id, "user_#{user_id}"].join('_').downcase
     when ['Course','enroll']
-      name = [trackable_type, trackable_id, action].join('_')
+      [trackable_type, trackable_id, action, created_at.end_of_day.to_s(:number)].join('_').downcase
     when ['Inclusion', 'show']
-      name = trackable ? [trackable_type, trackable_id, action, 'Course', trackable.course_id].join('_') : nil
+      trackable ? [trackable_type, trackable_id, action].join('_').downcase : nil
     when ['Like','create']
-      name = [trackable_type, action, trackable.likeable_type, trackable.likeable_id].join('_')
+      [trackable_type, trackable_id, action, trackable.likeable_type, trackable.likeable_id, "user_#{user_id}"].join('_').downcase
     when ['Like','received_create']
-      name = [trackable_type, action, trackable.likeable_type, trackable.likeable_id].join('_')
+      [trackable_type, trackable_id, action, trackable.likeable_type, trackable.likeable_id, "user_#{user_id}"].join('_').downcase
     when ['Upload', 'create']
-      name = [trackable_type, trackable_id, action].join('_')
+      [trackable_type, trackable_id, action].join('_').downcase
+    when ['Vote', 'create']
+      if trackable
+        [trackable_type, trackable_id, action, trackable.votable_type, trackable.votable_id, "poll_#{trackable.votable.poll.id}", created_at.end_of_day.to_s(:number)].join('_').downcase
+      else
+        nil
+      end
     else
-      self.inspect
+      nil
     end
     # [type,name]
   end

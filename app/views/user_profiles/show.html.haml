@@ -27,12 +27,13 @@
             - if badge.image
               = link_to badges_path, anchor: "badge-#{badge.id}" do
                 = image_tag badge.image
-      - if current_user == @user
-        = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-primary btn-block'
-        = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'
-      - else
-        = link_to followership_path(@user), method: :put, class: 'btn btn-primary btn-block' do
-          = current_user.follows?(@user) ? 'Unfollow' : 'Follow'
+      - if current_user
+        - if current_user == @user
+          = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-primary btn-block'
+          = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'
+        - else
+          = link_to followership_path(@user), method: :put, class: 'btn btn-primary btn-block' do
+            = current_user.follows?(@user) ? 'Unfollow' : 'Follow'
     .span5.nav-tabs-gray
       %h4 Bio
 
@@ -106,10 +107,12 @@
           .timeline-end
           .timeline-left
             - @timeline_events.in_groups_of(2).map(&:first).compact.each do |event|
-              = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
+              - if event.trackable
+                = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
           .timeline-right
             - @timeline_events.in_groups_of(2).map(&:last).compact.each do |event|
-              = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
+              - if event.trackable
+                = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
         .text-center
           - if current_user == @user
             %h4= "You joined ChefSteps on"
