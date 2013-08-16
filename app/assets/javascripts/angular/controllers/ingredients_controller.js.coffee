@@ -34,7 +34,8 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
       r = limitToFilter(response.data, 15)
       for i in r
         i.title += " [RECIPE]" if i.sub_activity_id?
-      # always include current search text as an option
+      # always include current search text as an option, first!
+      r = _.sortBy(r, (i) -> i.title != s["ingredient"])
       r.unshift({title: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
       r
 
