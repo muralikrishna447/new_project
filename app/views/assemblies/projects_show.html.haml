@@ -27,7 +27,7 @@
                 - elsif @project.image_id?
                   = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title, itemprop: 'image'
               .project-social(ng-controller="NonAngularSocialController" ng-init="title='#{@project.title}'; url='#{project_url(@project)}'; media='#{filepicker_hero_image(@project.featured_image)}'")
-                = render 'layouts/social_buttons', media_object: @project, url: project_url(@project), shareSuggestText: "Share this with your friends!"
+                = render 'layouts/social_buttons', media_object: @project, url: project_url(@project)
               .row.section
                 .span4
                   .section.text-right

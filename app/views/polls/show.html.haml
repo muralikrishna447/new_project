@@ -76,7 +76,8 @@
             .section.social-group
               %a.btn.btn-primary.btn-poll-comments(ng-click='mixpanel.track("Poll View Comments"); pollItemDetails(poll_item)')
                 %ng-pluralize(count="poll_item.comments_count" when="{'0': 'Be the first to comment', 'one': '1 comment', 'other': '{} comments'}")
-              = render 'layouts/share_button', split_name: '', shareSuggestText: "Ask your friends to vote!"
+              -ab_test("social_share3", "no_counters", "counters", "flat_counters", "flat_counters_postplay") do |split_name|
+                = render 'layouts/share_button', split_name: split_name
             %div(collapse='!poll_item.show_details')
               %div(ng-controller='CommentsController' ng-init="init('poll_items',poll_item.id)" ng-cloak)
                 = render 'comments/comments', commentable: nil
