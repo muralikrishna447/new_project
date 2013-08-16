@@ -56,7 +56,7 @@
       cursor: pointer
 
   .social-group
-    > .btn
+    > .btn, .social-flat > .btn
       margin-top: 10px
     white-space: normal !important
 
@@ -92,6 +92,21 @@
     cursor: pointer
     background: $light-gray
     color: gray
+
+.poll-item-btn-disabled
+  @include raleway
+  display: inline-block
+  text-align: center
+  width: 100%
+  height: 80px
+  padding: 5px
+  font-size: 30px
+  color: $light-gray
+  background: $offwhite
+  border: 0px
+  @include boxsizing
+  @include transition(all 200ms)
+  border-radius: 3px
 
 .poll-item-btn-social
   padding: 25px 0px
@@ -159,6 +174,19 @@
     color: $orange
     margin: 100px 0px 2000px
 
+.poll-index-item
+  position: relative
+  .poll-index-item-winner
+    position: absolute
+    top: 50px
+    left: -10px
+    width: 100%
+    text-align: center
+    background: white
+    border: 1px solid $orange
+    padding: 0px 10px
+    text-transform: uppercase
+    @include raleway
 
 @media (max-width: 767px)
   .social-group

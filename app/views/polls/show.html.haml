@@ -22,6 +22,8 @@
         .poll-header
           %h1
             {{poll.title}}
+            .label.label-large(ng-show="#{@poll.status=='Closed'}")
+              Closed
           %p
             {{poll.description}}
         .poll-header-votes
@@ -32,8 +34,9 @@
               Votes
               .poll-header-votes-subtext
                 and counting...
+      = link_to 'See Previous Polls', polls_path, class: 'btn btn-secondary pull-right section'
 
-      %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak ng-controller="PollItemController" ng-animate="'custom'")
+      %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak ng-controller="PollItemController" ng-animate="'custom'" ng-init="init('#{@poll.status}')")
         .poll-item
           .poll-item-vote-up{onclick: "mixpanel.track('Poll Voted', {'Poll Item': {{poll_item.id}} });"}
             %span(ng-switch on="current_user_voted_for_this(poll_item)")
@@ -43,14 +46,23 @@
                   .poll-item-vote-count
                     {{poll_item.votes_count}}
               %span(ng-switch-when='false')
-                .poll-item-btn(ng-click="voteObject()" tooltip="Vote for this")
-                  %i.icon-angle-up
-                  .poll-item-vote-count(ng-show='current_user_voted()')
-                    {{poll_item.votes_count}}
+                %div(ng-show="#{@poll.status=='Closed'}")
+                  .poll-item-btn-disabled(tooltip="Voting is now closed.")
+                    %i.icon-angle-up
+                    .poll-item-vote-count(ng-show='current_user_voted()')
+                      {{poll_item.votes_count}}
+                %div(ng-show="#{@poll.status!='Closed'}")
+                  .poll-item-btn(ng-click="voteObject()" tooltip="Vote for this!")
+                    %i.icon-angle-up
+                    .poll-item-vote-count(ng-show='current_user_voted()')
+                      {{poll_item.votes_count}}
 
           .poll-item-text
             %a.poll-item-details-btn(ng-click='pollItemDetails(poll_item)')
-              %h3 {{poll_item.title}}
+              %h3 
+                {{poll_item.title}}
+                .label(ng-show="#{@poll.status == 'Completed'} && $index == 0")
+                  Winner!
               %p.black-link {{poll_item.description}}
             .poll-item-user-voted(ng-show='current_user_voted_for_this(poll_item)')
               You voted for this!
@@ -64,7 +76,8 @@
             .section.social-group
               %a.btn.btn-primary.btn-poll-comments(ng-click='mixpanel.track("Poll View Comments"); pollItemDetails(poll_item)')
                 %ng-pluralize(count="poll_item.comments_count" when="{'0': 'Be the first to comment', 'one': '1 comment', 'other': '{} comments'}")
-              = render 'layouts/share_button', split_name: '', shareSuggestText: "Ask your friends to vote!"
+              -ab_test("social_share3", "no_counters", "counters", "flat_counters", "flat_counters_postplay") do |split_name|
+                = render 'layouts/share_button', split_name: split_name
             %div(collapse='!poll_item.show_details')
               %div(ng-controller='CommentsController' ng-init="init('poll_items',poll_item.id)" ng-cloak)
                 = render 'comments/comments', commentable: nil
