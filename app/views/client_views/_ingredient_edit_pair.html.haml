@@ -25,7 +25,7 @@
       .btn-group
         .btn.drag-handle.btn-small.btn-secondary(tooltip="Drag to reorder")
           %i.icon-sort
-        .btn.remove-button.btn-small.btn-secondary(tooltip="Drag to reorder" tooltip="Remove ingredient" ng-click="removeIngredient($index)")
+        .btn.remove-button.btn-small.btn-secondary(tooltip="Remove ingredient" ng-click="removeIngredient($index)")
           %i.icon-remove
     .ingredient-title
       %input(csselectonfocus="" csinputmonkeyingredient="" type="text" placeholder="New ingredient" typeahead-editable="true" autocomplete="off" class="ingredient-typeahead" ng-model="ai.ingredient" typeahead="i as i.title for i in all_ingredients($viewValue)")

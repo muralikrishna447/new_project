@@ -1,4 +1,5 @@
 @import 'mixins'
+@import 'circle_highlight_anim'
 
 body
   position: relative
@@ -1053,14 +1054,19 @@ a:hover
   width: 40px
   margin: 0 2px
 
+.btn-poll-comments
+  width: 200px
+
 .btn-social
   margin: 0 2px
   background-color: white
   border-radius: 2px
   padding: 0px 4px 0px 0px
+  @include transition(all 250ms ease-in-out 2 alternate)
 
   i
     color: white
+
 
   .social-button-contents
     display: inline-block
@@ -1069,6 +1075,32 @@ a:hover
     display: inline-block
     width: 26px
 
+.flat_counters, .flat_counters_postplay
+  .btn-social
+    span
+      position: relative
+      bottom:  -4px
+
+
+.counters, .flat_counters, .flat_counters_postplay
+  .btn-social
+    padding-right: 0px
+
+  &.spe-hide-setup
+    width: 298px
+
+  &.spe-show-setup
+    &.spe-show-start
+      width: 298px
+
+.flat_counters, .flat_counters_postplay
+  .btn-social
+    height: 27px
+    margin-bottom: 0px
+    .social-icon-group
+      height: 100%
+    border-radius:  0
+
 =btn-social-base($c)
   color: $c
   border:  1px solid $c
@@ -1076,9 +1108,14 @@ a:hover
   .social-button-contents
     display: inline-box
 
+  &:hover
+    background-color: $c
+
   .social-icon-group
     background-color: $c
 
+.btn-social-like
+  @include btn-social-base($orange)
 .btn-social-twitter
   @include btn-social-base(#4099FF)
 .btn-social-facebook
@@ -1129,7 +1166,7 @@ a:hover
   text-shadow: none
   text-align: left
   width: auto
-  height: 70px
+  height: 35px
   padding: 0
   background: #FFFFFF
   border: $light-gray solid 2px
@@ -1144,6 +1181,16 @@ a:hover
     padding: 6px 10px 6px 10px
   .share-text
     margin-bottom: 8px
+
+.social-counter, .social-icon-group
+  display: inline-block
+.social-counter
+  margin-left: -3px
+  width: 30px
+
+.social-flat
+  display: inline-block
+  margin-left: -2px
 
 .social-popover-triangle
   position: absolute
@@ -1859,6 +1906,7 @@ csingredienteditpair
 
     .social-popover-triangle
       display: none
+
     .social-popover
       @include boxsizing
       .share-text
@@ -1911,7 +1959,7 @@ csingredienteditpair
             i
               position: relative
               top: 6px
-          span
+          .network-name
             display: none
     .spe-hide-setup
       height: 50px
@@ -1920,6 +1968,10 @@ csingredienteditpair
       &.spe-show-start
         width:  auto
         height: 50px
+
+    .new-line
+      margin-top: 10px
+      display: block
 
 /* Landscape phones and down */
 @media (max-width: 480px)
