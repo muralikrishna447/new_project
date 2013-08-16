@@ -6,7 +6,7 @@
         {{stream.user.name}}
       voted for
       {{stream.trackable.vote.votable.title}} in the poll:
-      %a(ng-href="{{stream.trackable.vote.votable.poll.path}}")
+      %a(ng-href="{{stream.trackable.vote.votable.poll.path}}" onclick='track_viewed_item_through_stream();')
         {{stream.trackable.vote.votable.poll.title}}
       %small
         {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
