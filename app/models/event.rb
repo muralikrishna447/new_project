@@ -35,6 +35,8 @@ class Event < ActiveRecord::Base
     # This generates the group name for the event to group similar items for the activity stream
     # Should run rake generate_group_name_and_type to update past events if this code changes
     case [trackable_type, action]
+    when ['Activity', 'create']
+      [trackable_type, trackable_id, action, "user_#{user_id}"].join('_').downcase
     when ['Activity', 'show']
       [trackable_type, trackable_id, action].join('_').downcase
     when ['Comment','create']
