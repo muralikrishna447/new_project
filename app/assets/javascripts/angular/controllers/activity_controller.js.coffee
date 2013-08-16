@@ -433,6 +433,14 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.emailBody = ->
     "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
 
+  $scope.maximizeDescription = false
+  $scope.toggleMaximizeDescription = ->
+    $scope.maximizeDescription = ! $scope.maximizeDescription
+    # Fugly!
+    window.setMaximizeDescription($scope.maximizeDescription)
+    if $scope.maximizeDescription
+     mixpanel.track('Activity Description Maximized', {'slug' : $scope.activity.slug});
+
   # One time stuff
   if $scope.parsePreloaded()
 
