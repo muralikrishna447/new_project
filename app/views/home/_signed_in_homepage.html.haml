@@ -3,7 +3,8 @@
     .span12
       .row.section
         .span10
-          %h2.home-header Latest from ChefSteps
+          %h2
+            = link_to 'Latest from ChefSteps', gallery_index_path, class: 'orange-link'
         .span2.text-right
           = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
       = render 'shared/horizontal_slider', items: @latest, direction: 'right'
@@ -11,7 +12,8 @@
   .row
     .span8
       .home-section
-        %h2.home-header Courses
+        %h2
+          = link_to 'Courses', courses_path, class: 'orange-link'
         - @courses.each.with_index do |course, index|
           - if index == 0
             .home-featured-item
@@ -34,7 +36,8 @@
       .home-section
         %hr
       .home-section
-        %h2.home-header Projects
+        %h2
+          = link_to 'Projects', projects_path, class: 'orange-link'
         - @projects.each.with_index do |project, index|
           .home-standard-item
             .home-standard-item-image
@@ -45,7 +48,8 @@
                 %h3= project.title
               = project.description
     .span4
-      %h2.home-header Activity Stream
+      %h2 
+        = link_to 'Community Activity', community_activity_path, class: 'orange-link'
       / .stream
       /   - @followings_stream.each do |event|
       /     - path_array = event.group_type.downcase.split('_')
@@ -69,6 +73,8 @@
           /   %div(ng-switch-when='Vote_create')
           /     %div(ng-include src="'stream_views/vote_create.html'")
 
-        %a.btn.btn-large.btn-outline-blue-large(ng-click="loadMore()")
-          See More
+        .stream-more
+          / %a.btn.btn-large.btn-block.btn-outline-blue-large(ng-click="loadMore()")
+          /   See More
+          = link_to 'See More', community_activity_path, class: 'btn btn-large btn-block btn-outline-blue-large'
     .span2
