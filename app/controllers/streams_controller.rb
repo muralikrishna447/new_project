@@ -17,4 +17,8 @@ class StreamsController < ApplicationController
     render :json => @stream.to_json(:include => [:user, :trackable])
   end
 
+  def feed
+
+  end
+
 end

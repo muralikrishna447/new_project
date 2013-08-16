@@ -141,6 +141,7 @@ Delve::Application.routes.draw do
   end
   resources :projects, controller: :assemblies
   resources :streams, only: [:index, :show]
+  get 'community-activity' => 'streams#feed', as: 'community_activity'
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'

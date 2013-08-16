@@ -1,0 +1,11 @@
+.container
+  .row.section
+    .span6.offset3
+      %h1 Community Activity
+      .stream(ng-controller='StreamsController' ng-init="init()")
+        %div(ng-repeat='stream in streams')
+          %div(ng-include src="streamViewTemplate(stream)")
+
+        .stream-more
+          %a.btn.btn-large.btn-block.btn-outline-blue-large(ng-click="loadMore()")
+            See More
