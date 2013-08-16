@@ -33,7 +33,7 @@ class Event < ActiveRecord::Base
 
   def determine_group_name
     # This generates the group name for the event to group similar items for the activity stream
-    # type = [trackable_type, action]
+    # Should run rake generate_group_name_and_type to update past events if this code changes
     case [trackable_type, action]
     when ['Activity', 'show']
       [trackable_type, trackable_id, action].join('_').downcase
@@ -54,7 +54,7 @@ class Event < ActiveRecord::Base
       [trackable_type, trackable_id, action].join('_').downcase
     when ['Vote', 'create']
       if trackable
-        [trackable_type, trackable_id, action, trackable.votable_type, trackable.votable_id, "poll_#{trackable.votable.poll.id}", created_at.end_of_day.to_s(:number)].join('_').downcase
+        [trackable_type, action, trackable.votable_type, trackable.votable_id, "poll_#{trackable.votable.poll.id}", created_at.end_of_day.to_s(:number)].join('_').downcase
       else
         nil
       end
