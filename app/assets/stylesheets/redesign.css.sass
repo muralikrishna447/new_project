@@ -1061,6 +1061,7 @@ a:hover
   background-color: white
   border-radius: 2px
   padding: 0px 4px 0px 0px
+  @include transition(all 250ms ease-in-out 2 alternate)
 
   i
     color: white
@@ -1072,6 +1073,31 @@ a:hover
     display: inline-block
     width: 26px
 
+.pulse-anim
+  font-size: 125%
+
+.counters, .flat_counters, .flat_counters_postplay
+  .btn-social
+    padding-right: 0px
+
+  &.spe-hide-setup
+    width: 298px
+
+  &.spe-show-setup
+    &.spe-show-start
+      width: 298px
+
+.flat_counters, .flat_counters_postplay
+  .btn-social
+    height: 27px
+    xfont-size: 18px
+    margin-bottom: 0px
+    overflow: hidden
+    .social-icon-group
+      padding-top: 4px
+      height: 100%
+    border-radius:  0
+
 =btn-social-base($c)
   color: $c
   border:  1px solid $c
@@ -1082,6 +1108,8 @@ a:hover
   .social-icon-group
     background-color: $c
 
+.btn-social-like
+  @include btn-social-base($orange)
 .btn-social-twitter
   @include btn-social-base(#4099FF)
 .btn-social-facebook
@@ -1132,7 +1160,7 @@ a:hover
   text-shadow: none
   text-align: left
   width: auto
-  height: 70px
+  height: 35px
   padding: 0
   background: #FFFFFF
   border: $light-gray solid 2px
@@ -1148,12 +1176,15 @@ a:hover
   .share-text
     margin-bottom: 8px
 
-.social-popover.no_cta
-  .share-text
-    display: none !important
-  .contents
-    margin-top: 3px
-  height: 40px
+.social-counter, .social-icon-group
+  display: inline-block
+.social-counter
+  margin-left: -3px
+  width: 30px
+
+.social-flat
+  display: inline-block
+  margin-left: -2px
 
 .social-popover-triangle
   position: absolute

@@ -4,7 +4,9 @@ module ApplicationHelper
   end
 
   def filepicker_arbitrary_image(fpfile, width, fit='max')
-    if ! fpfile.start_with?('{')
+    if ! fpfile
+      ""
+    elsif ! fpfile.start_with?('{')
       # Legacy naked S3 image id. Still used for a few images that don't
       # have UI to set.
       if /placehold/.match(fpfile)

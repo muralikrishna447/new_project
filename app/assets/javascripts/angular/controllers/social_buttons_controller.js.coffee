@@ -1,8 +1,11 @@
-angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope",  "$timeout", "$http", ($scope,  $timeout, $http) ->
+angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope",  "$timeout", "$http", "$element", ($scope,  $timeout, $http, $element) ->
   $scope.expandSocial = false;
 
   $scope.$on 'expandSocialButtons', ->
-    $scope.expandSocial = true
+    if ($scope.split == "flat_counters") || ($scope.split == "flat_counters_postplay")
+      $element.find('.btn-social').addClass('pulse-anim')
+    else
+      $scope.expandSocial = true
 
   $scope.openSocialWindow = (mixpanel_name, url, spec) ->
     $scope.expandSocial = false
@@ -52,26 +55,30 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     # This is super hacky. Google doesn't have an API for this yet.
     # Many pages, but here is one ref: https://gist.github.com/jonathanmoore/2640302
     # It doesn't work on localhost, I'm *hoping* it works in production.
-    gplus_api_key = 'AIzaSyD2wo1XzKk1anYQm95yBqklTLEPCy90srk'
-    gplus_url = 'https://clients6.google.com/rpc?key=' + gplus_api_key
-    $http.post(gplus_url,
-    [{
-      "method":"pos.plusones.get",
-      "id":"p",
-      "params":{
-        "nolog":true,
-        "id": www_url,
-        "source":"widget",
-        "userId":"@viewer",
-        "groupId":"@self"
-      },
-      "jsonrpc":"2.0",
-      "key":"p",
-      "apiVersion":"v1"
-    }]
-    ).success((data) ->
-      $scope.gplusCount = data.result.metadata.globalCounts.count
-    )
+    # Crap, doesn't look like it is going to, at least not using chefsteps.dev. Just
+    # commenting this bs out for now. Next fix would be to add an ajax API in one of our
+    # controllers to get the gplus count, to avoid CORS.
+    if false
+      gplus_api_key = 'AIzaSyD2wo1XzKk1anYQm95yBqklTLEPCy90srk'
+      gplus_url = 'https://clients6.google.com/rpc?key=' + gplus_api_key
+      $http.post(gplus_url,
+      [{
+        "method":"pos.plusones.get",
+        "id":"p",
+        "params":{
+          "nolog":true,
+          "id": www_url,
+          "source":"widget",
+          "userId":"@viewer",
+          "groupId":"@self"
+        },
+        "jsonrpc":"2.0",
+        "key":"p",
+        "apiVersion":"v1"
+      }]
+      ).success((data) ->
+        $scope.gplusCount = data.result.metadata.globalCounts.count
+      )
 
 
   $scope.getSocialCounts()
