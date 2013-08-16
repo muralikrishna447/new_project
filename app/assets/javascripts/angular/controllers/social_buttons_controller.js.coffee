@@ -2,8 +2,13 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
   $scope.expandSocial = false;
 
   $scope.$on 'expandSocialButtons', ->
-    if ($scope.split == "flat_counters") || ($scope.split == "flat_counters_postplay")
-      $element.find('.btn-social').addClass('pulse-anim')
+    if ($scope.split == "flat_counters_postplay")
+      # Hella ugly, this can be done with pure animation no timer, and with a directive, but
+      # good enough for testing.
+      $element.find('.pulse-anim-before').addClass('pulse-anim')
+      $timeout ( ->
+        $element.find('.pulse-anim-before').removeClass('pulse-anim')
+      ), 400
     else
       $scope.expandSocial = true
 
@@ -39,7 +44,7 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
 
     fb_url = "https://graph.facebook.com/fql?q=SELECT%20total_count%20FROM%20link_stat%20WHERE%20url='" + www_url + "'"
     $http.get(fb_url).success((data) ->
-      $scope.facebookCount = data.data[0].total_count
+      $scope.facebookCount = data.data[0]?.total_count || 0
     )
 
     twitter_url = "http://urls.api.twitter.com/1/urls/count.json?callback=JSON_CALLBACK&url=" + www_url

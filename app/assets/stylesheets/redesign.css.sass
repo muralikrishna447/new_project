@@ -1,4 +1,5 @@
 @import 'mixins'
+@import 'circle_highlight_anim'
 
 body
   position: relative
@@ -1066,6 +1067,7 @@ a:hover
   i
     color: white
 
+
   .social-button-contents
     display: inline-block
 
@@ -1073,8 +1075,12 @@ a:hover
     display: inline-block
     width: 26px
 
-.pulse-anim
-  font-size: 125%
+.flat_counters, .flat_counters_postplay
+  .btn-social
+    span
+      position: relative
+      bottom:  -4px
+
 
 .counters, .flat_counters, .flat_counters_postplay
   .btn-social
@@ -1090,11 +1096,8 @@ a:hover
 .flat_counters, .flat_counters_postplay
   .btn-social
     height: 27px
-    xfont-size: 18px
     margin-bottom: 0px
-    overflow: hidden
     .social-icon-group
-      padding-top: 4px
       height: 100%
     border-radius:  0
 
@@ -1953,7 +1956,7 @@ csingredienteditpair
             i
               position: relative
               top: 6px
-          span
+          .network-name
             display: none
     .spe-hide-setup
       height: 50px
@@ -1962,6 +1965,10 @@ csingredienteditpair
       &.spe-show-start
         width:  auto
         height: 50px
+
+    .new-line
+      margin-top: 10px
+      display: block
 
 /* Landscape phones and down */
 @media (max-width: 480px)
