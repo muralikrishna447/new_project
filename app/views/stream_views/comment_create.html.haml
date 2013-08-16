@@ -2,7 +2,7 @@
   .stream-item-dialogue
     %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
     %h4
-      %a(ng-href="/profiles/{{stream.user.slug}}")
+      %a(ng-href="/profiles/{{stream.user.slug}}" onclick='track_viewed_profile_through_stream();')
         {{stream.user.name}}
       commented on
       %a(ng-href="{{stream.trackable.comment.commentable.path}}")

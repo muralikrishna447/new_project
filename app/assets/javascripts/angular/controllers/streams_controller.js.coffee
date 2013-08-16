@@ -78,3 +78,6 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
   # $scope.hideComments = ->
   #   $scope.commentLimit = -6
 ]
+
+window.track_viewed_profile_through_stream = ->
+  mixpanel.track('Viewed User Profile through Stream', {'url' : window.location.pathname});
