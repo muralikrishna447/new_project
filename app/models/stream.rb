@@ -15,6 +15,6 @@ class Stream
 
   def self.all_events
     stream_events = Event.published.timeline.where('action != ?', 'received_create').order('created_at desc')
-    stream_events.uniq{|e| e.group_name}
+    unique_events = stream_events.to_a.uniq{|e| e.group_name}
   end
 end

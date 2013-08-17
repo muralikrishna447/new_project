@@ -24,7 +24,8 @@ describe Event do
     it 'returns a comment create item' do
       @user2 = Fabricate :user, name: 'Tester 2'
       @comment = Fabricate :comment, content: 'Comment 1 content', commentable: @upload, user: @user2
-      @event = Fabricate :event, trackable: @comment, action: 'create', user: @user2, published: true
+      @event = Fabricate :event, trackable: @comment, action: 'create', user: @user2
+      @event.save_group_type_and_group_name
       Stream.all_events.first.should == @event
     end
 
