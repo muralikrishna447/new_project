@@ -84,3 +84,6 @@ window.track_viewed_profile_through_stream = ->
 
 window.track_viewed_item_through_stream = ->
   mixpanel.track('Viewed Item through Stream', {'url' : window.location.pathname});
+
+window.track_viewed_course_through_signed_in_homepage = ->
+  mixpanel.track('Viewed Course Through Signed In Homepage', {'url' : window.location.pathname});  
