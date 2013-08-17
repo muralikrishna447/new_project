@@ -7,6 +7,7 @@ class Event < ActiveRecord::Base
   # default_scope includes(:user).order('created_at DESC')
   scope :timeline, where('action <> ?', 'show')
   scope :unviewed, where(viewed: false)
+  scope :published, where(published: true)
 
   after_create :save_group_type_and_group_name
 
@@ -35,6 +36,8 @@ class Event < ActiveRecord::Base
     # This generates the group name for the event to group similar items for the activity stream
     # Should run rake generate_group_name_and_type to update past events if this code changes
     case [trackable_type, action]
+    when ['Activity', 'create']
+      [trackable_type, trackable_id, action, "user_#{user_id}"].join('_').downcase
     when ['Activity', 'show']
       [trackable_type, trackable_id, action].join('_').downcase
     when ['Comment','create']
@@ -64,10 +67,27 @@ class Event < ActiveRecord::Base
     # [type,name]
   end
 
-  private
+  def determine_published
+    case [trackable_type, action]
+    when ['Activity', 'create']
+      trackable.published ? true : false
+    when ['Course', 'enroll']
+      trackable.published ? true : false
+    when ['Like', 'create']
+      if trackable.likeable_type == 'Activity'
+        trackable.likeable.published ? true : false
+      else
+        true
+      end
+    else
+      true
+    end
+  end
+
   def save_group_type_and_group_name
     self.group_type = self.determine_group_type
     self.group_name = self.determine_group_name
+    self.published = self.determine_published
     self.save
   end
 

@@ -50,14 +50,6 @@
     .span4
       %h2 
         = link_to 'Community Activity', community_activity_path, class: 'orange-link'
-      / .stream
-      /   - @followings_stream.each do |event|
-      /     - path_array = event.group_type.downcase.split('_')
-      /     - folder = path_array.first
-      /     - file = (path_array - [folder]).join('_')
-      /     = render "/activity_stream/#{folder}/#{file}", event: event
-      /     %hr
-      / = paginate @followings_stream
       .stream(ng-controller='StreamsController' ng-init="init()")
         %div(ng-repeat='stream in streams')
           %div(ng-include src="streamViewTemplate(stream)")
@@ -78,3 +70,6 @@
           /   See More
           = link_to 'See More', community_activity_path, class: 'btn btn-large btn-block btn-outline-blue-large'
     .span2
+
+:javascript
+  mixpanel.track('Signed In Hompage Viewed', {'url' : window.location.pathname});
