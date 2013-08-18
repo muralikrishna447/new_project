@@ -8,6 +8,7 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", ($scope)
     if step.image_id
       url = JSON.parse(step.image_id).url
       url + "/convert?fit=max&w=#{width}&cache=true"
+    window.cdnURL(url)
 
   $scope.stepImageDescription = (step) ->
     desc = step.image_description

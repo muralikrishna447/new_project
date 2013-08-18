@@ -86,3 +86,7 @@ $ ->
       dt = e.originalEvent.dataTransfer
       if dt
         dt.effectAllowed = dt.dropEffect = "none"
+
+window.cdnURL = (url) ->
+  url.replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+

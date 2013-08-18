@@ -62,7 +62,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   $scope.activityImageURL = (activity, width) ->
     fpfile = $scope.activityImageFpfile(activity)
     height = width * 9.0 / 16.0
-    return (fpfile.url + "/convert?fit=crop&w=#{width}&h=#{height}&cache=true") if (fpfile? && fpfile.url?)
+    return (window.cdnURL(fpfile.url) + "/convert?fit=crop&w=#{width}&h=#{height}&cache=true") if (fpfile? && fpfile.url?)
     $scope.placeHolderImage
 
   $scope.serialize = (obj) ->
