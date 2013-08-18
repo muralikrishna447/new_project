@@ -291,7 +291,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     url = ""
     if $scope.hasFeaturedImage()
       url = JSON.parse($scope.activity.featured_image_id).url
-      url + "/convert?fit=max&w=#{width}&cache=true"
+      url = url + "/convert?fit=max&w=#{width}&cache=true"
     window.cdnURL(url)
 
   $scope.heroDisplayType = ->
