@@ -1,9 +1,8 @@
-.social-button-contents.relative
-  .pulse-anim-before
-    .social-icon-group
-      %span
-        %i{class: "icon-#{icon}"}
-    -if (defined? counter)
-      .social-counter
-        %span.text-center
-          {{#{counter}}}
+.social-button-contents
+  .social-icon-group
+    %span
+      %i{class: "icon-#{icon}"}
+  -if (defined? counter)
+    .social-counter
+      %span.text-center
+        {{#{counter}}}
