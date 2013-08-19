@@ -33,6 +33,7 @@
       = render 'layouts/google_analytics'
     = render 'layouts/mixpanel'
     = javascript_include_tag 'application_head'
+    = render 'layouts/inspectlet'
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => Rails.env}
     = render 'layouts/navigation', external: false
