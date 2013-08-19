@@ -78,7 +78,8 @@
                     %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
                   - else
                     %li= equipment_item.title
-          .row-fluid.well.section
+          %hr
+          .row-fluid.section
             .span4.text-left
             .span4.text-center
               %h3 Introduction
@@ -88,7 +89,8 @@
         - project_inclusions.each_with_index do |assembly_inclusion, index|
           .tab-pane{id: "project-#{index}"}
             = render '/shared/activity', activity: assembly_inclusion.includable
-            .row-fluid.well.section
+            %hr
+            .row-fluid.section
               .span4.text-left
                 = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{index})"
               .span4.text-center
@@ -126,7 +128,8 @@
                   %div{class: "horizontal-slider-btn-right btn btn-circle"}
                     %i{class: "icon-chevron-right"}
                   %div{class: "horizontal-slider-shadow-overlay-right"}
-          .row-fluid.well.section
+          %hr
+          .row-fluid.section
             .span4.text-left
               = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{project_inclusions.count})"
             .span4.text-center
