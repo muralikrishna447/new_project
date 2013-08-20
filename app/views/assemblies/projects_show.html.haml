@@ -48,6 +48,9 @@
               /   = render 'comments/comments'
 
             .span4
+              .btn.btn-secondary{onclick: 'window.print()'}
+                %i.icon-print
+                print
               %h4 All Ingredients
               / = link_to 'Text me this list', '#', class: 'btn btn-secondary'
               .activity-ingredients-list.well#full-ingredients-list{data: {target: ''}}
