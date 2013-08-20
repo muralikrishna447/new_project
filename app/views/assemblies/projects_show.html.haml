@@ -49,20 +49,20 @@
             .span4
               %h4 All Ingredients
               / = link_to 'Text me this list', '#', class: 'btn btn-secondary'
-              .activity-ingredients-list.well
+              .activity-ingredients-list.well#full-ingredients-list{data: {target: ''}}
                 .ingredients{:itemprop => "ingredients"}
                   .ingredient-table-body
-                    - @project.combined_ingredients.each do |combined_ingredient|
-                      .ingredient-table-row
+                    - @project.combined_ingredients.sort_by{|i|i[1]}.reverse.each do |combined_ingredient|
+                      .ingredient-table-row{data: {:'ingredient-id' => combined_ingredient[0][0].id}}
                         .ingredient-title
-                          = combined_ingredient[0][0].title
+                          .pull-left
+                            = combined_ingredient[0][0].title
                         .quantity-group.qtyfade
                           .lbs-qty
                           .lbs-label
-                          .main-qty
+                          .main-qty{data: {:"orig-value" => combined_ingredient[1] * ((combined_ingredient[2] == "kg") ? 1000 : 1)}}
                             = combined_ingredient[1]
-                        .unit.qtyfade
-                          = combined_ingredient[2]
+                        .unit.qtyfade= combined_ingredient[2]
               %h4 Required Equipment
               %ul.unstyled.well
                 - @project.required_equipment.each do |equipment_item|
