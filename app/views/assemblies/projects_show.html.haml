@@ -56,7 +56,7 @@
               .activity-ingredients-list.well#full-ingredients-list{data: {target: ''}}
                 .ingredients{:itemprop => "ingredients"}
                   .ingredient-table-body
-                    - @project.combined_ingredients.sort_by{|i|i[1]}.reverse.each do |combined_ingredient|
+                    - @project.combined_ingredients.sort_by{|i|i[1]}.sort_by{|i|i[2]}.reverse.each do |combined_ingredient|
                       .ingredient-table-row{data: {:'ingredient-id' => combined_ingredient[0][0].id}}
                         .ingredient-title
                           .pull-left
