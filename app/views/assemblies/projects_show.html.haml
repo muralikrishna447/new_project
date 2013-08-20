@@ -56,7 +56,7 @@
               .activity-ingredients-list.well#full-ingredients-list{data: {target: ''}}
                 .ingredients{:itemprop => "ingredients"}
                   .ingredient-table-body
-                    - @project.combined_ingredients.sort_by{|i|i[1]}.reverse.each do |combined_ingredient|
+                    - @project.combined_ingredients.sort_by{|i|i[1]}.sort_by{|i|i[2]}.reverse.each do |combined_ingredient|
                       .ingredient-table-row{data: {:'ingredient-id' => combined_ingredient[0][0].id}}
                         .ingredient-title
                           .pull-left
@@ -65,7 +65,7 @@
                           .lbs-qty
                           .lbs-label
                           .main-qty{data: {:"orig-value" => combined_ingredient[1] * ((combined_ingredient[2] == "kg") ? 1000 : 1)}}
-                            = combined_ingredient[1]
+                            = '%g' % combined_ingredient[1]
                         .unit.qtyfade= combined_ingredient[2]
               %h4 Required Equipment
               %ul.unstyled.well
