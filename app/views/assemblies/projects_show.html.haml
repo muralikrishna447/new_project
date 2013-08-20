@@ -38,7 +38,8 @@
                           = link_to assembly_inclusion.includable.title, "javascript:void(0);", onclick: "jumpToProjectTab(#{index + 1})"
                 .span4
                   .section.project-description
-                    = @project.description
+                    :markdown
+                      #{apply_shortcodes(@project.description)}
                   .section
                     = link_to 'Get Started', '#start', class: 'btn btn-large btn-primary input-block-level', id: 'start-project'
 
