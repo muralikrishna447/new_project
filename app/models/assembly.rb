@@ -43,7 +43,7 @@ class Assembly < ActiveRecord::Base
         displayable << equipment
       end
     end
-    displayable
+    displayable.uniq{|e| e.title}
   end
 
   def featured_image
