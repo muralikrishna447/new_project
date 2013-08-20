@@ -65,7 +65,7 @@
                           .lbs-qty
                           .lbs-label
                           .main-qty{data: {:"orig-value" => combined_ingredient[1] * ((combined_ingredient[2] == "kg") ? 1000 : 1)}}
-                            = combined_ingredient[1]
+                            = '%g' % combined_ingredient[1]
                         .unit.qtyfade= combined_ingredient[2]
               %h4 Required Equipment
               %ul.unstyled.well
