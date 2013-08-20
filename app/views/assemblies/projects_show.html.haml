@@ -5,11 +5,11 @@
 
 - project_inclusions = @project.assembly_inclusions.order('assembly_inclusions.position asc')
 
-.container.project
+.container.project.printable.printable-column
   %h1= @project.title
   .row
     .span12
-      %ul.nav.nav-pills#project-tabs
+      %ul.nav.nav-pills#project-tabs.noprint
         %li.active
           = link_to '0. Introduction', '#introduction', data: {toggle: 'tab'}
         - project_inclusions.each_with_index do |assembly_inclusion,index|
@@ -21,23 +21,23 @@
         .tab-pane.active#introduction
           .row
             .span8.force-aspect-wrapper
-              .embed-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+              .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
                 - if @project.youtube_id?
                   %iframe(frameborder='0' allowfullscreen){src: youtube_url(@project.youtube_id)}
                 - elsif @project.image_id?
                   = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title, itemprop: 'image'
-              .project-social(ng-controller="NonAngularSocialController" ng-init="title='#{@project.title}'; url='#{project_url(@project)}'; media='#{filepicker_hero_image(@project.featured_image)}'")
+              .project-social.noprint(ng-controller="NonAngularSocialController" ng-init="title='#{@project.title}'; url='#{project_url(@project)}'; media='#{filepicker_hero_image(@project.featured_image)}'")
                 = render 'layouts/social_buttons', media_object: @project, url: project_url(@project)
               .row.section
                 .span4
-                  .section.text-right
+                  .section.text-right.noprint
                     %h2 #{@project.title}:
                     %ul.unstyled
                       - project_inclusions.each_with_index do |assembly_inclusion,index|
                         %li
                           = link_to assembly_inclusion.includable.title, "javascript:void(0);", onclick: "jumpToProjectTab(#{index + 1})"
                 .span4
-                  .section.project-description
+                  .section.project-description.noprint
                     :markdown
                       #{apply_shortcodes(@project.description)}
                   .section
@@ -80,7 +80,7 @@
                   - else
                     %li= equipment_item.title
           %hr
-          .row-fluid.section
+          .row-fluid.section.noprint
             .span4.text-left
             .span4.text-center
               %h3 Introduction
@@ -89,16 +89,18 @@
                        
         - project_inclusions.each_with_index do |assembly_inclusion, index|
           .tab-pane{id: "project-#{index}"}
+            %h2.printonly
+              = assembly_inclusion.includable.title
             = render '/shared/activity', activity: assembly_inclusion.includable
             %hr
-            .row-fluid.section
+            .row-fluid.section.noprint
               .span4.text-left
                 = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{index})"
               .span4.text-center
                 %h3= assembly_inclusion.includable.title
               .span4.text-right
                 = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{index + 2})"
-        .tab-pane#upload
+        .tab-pane#upload.noprint
           .row
             .span6
               %p.lead You're done! Show your progress or final dish, plating or you and your friends enjoying the dish, and share it proudly. Let us know if you had difficulty, made tweaks, how it tasted, or more generally what your experience cooking this dish were like. You'll get the Salmon 104 badge, too!
