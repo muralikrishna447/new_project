@@ -1,6 +1,6 @@
 .row(ng-controller='SharedActivityController' ng-init="init('#{activity.id}')")
   .span6.force-aspect-wrapper
-    .embed-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+    .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
       - if activity.youtube_id?
         %iframe(frameborder='0' allowfullscreen){src: youtube_url(activity.youtube_id)}
       - elsif activity.image_id?
@@ -8,7 +8,7 @@
       - elsif activity.featured_image_id?
         = image_tag filepicker_activity_hero_image(activity.featured_image_id), alt: activity.title, title: activity.title, itemprop: 'image'
     - if activity.description?
-      .section
+      .section.noprint
         :markdown
           #{apply_shortcodes(activity.description)}
     - if activity.ingredients.any?
