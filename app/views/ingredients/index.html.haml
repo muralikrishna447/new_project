@@ -10,10 +10,11 @@
   .row
     %table.table.ingredient-index-table(ng-table="tableParams")
       %tr(ng-repeat="ingredient in displayIngredients")
-        %td(data-title="Name" data-sortable="title")
+        %td(data-title="Name" data-title-text="Name" sortable="title")
           {{ingredient.title}}
-        %td(data-title="URL")
-          {{ingredient.product_url}}
+        %td(data-title="Product" sortable="product_url")
+          %a(ng-href="{{ingredient.product_url}}" ng-show="ingredient.product_url" target="_blank")
+            Link
 
     .span12
       {{ingredient.title}}

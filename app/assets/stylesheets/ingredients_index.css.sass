@@ -1,2 +1,15 @@
 .ingredient-index-table
   border: 1px solid black
+
+  .sortable
+    cursor: pointer
+
+  .sort-desc
+    div
+      &:after
+        content: '\25BC'
+
+  .sort-asc
+    div
+      &:after
+        content: '\25B2'

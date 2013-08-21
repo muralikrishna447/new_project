@@ -20,4 +20,4 @@
 //= require iframe_height
 //= require annotations
 //= require projects
-//= require ng-table
+//= require ng-table-src
