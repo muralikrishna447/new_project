@@ -1,50 +1,77 @@
-.container
+.container.home-signed-in
   .row
-    .span10
-      .stream-header-section
-        %h2 Activity Stream
-        = link_to user_profile_path(current_user), class: 'btn btn-large btn-outline-blue-large' do
-          See More
-          %i.icon-angle-right
-    .span10.stream-wrapper
-      .stream
-        .stream-line
-        - @stream.each do |group|
-          - group_type = group[0][0]
-          - group_name = group[0][1]
-          - group_events = group[1]
-          = render "/activity_stream/#{group_type[0].downcase}/#{group_type[1]}", group_events: group_events
-
-      .stream-header-section
-        %h2 Latest from ChefSteps
-        = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
+    .span12
+      .row.section
+        .span10
+          %h2
+            = link_to 'Latest from ChefSteps', gallery_index_path, class: 'orange-link'
+        .span2.text-right
+          = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
       = render 'shared/horizontal_slider', items: @latest, direction: 'right'
 
-    .span10.stream-wrapper
-      .stream
-        .stream-line
-        - current_user.stream.each do |group|
-          - group_type = group[0][0]
-          - group_name = group[0][1]
-          - group_events = group[1]
-          = render "/activity_stream/#{group_type[0].downcase}/#{group_type[1]}", group_events: group_events
-
-    / .span10.stream-wrapper
-    /   .stream
-    /     .stream-line
-    /     - current_user.followings.first.created_stream.each do |group|
-    /       - group_type = group[0][0]
-    /       - group_name = group[0][1]
-    /       - group_events = group[1]
-    /       = render "/activity_stream/#{group_type[0].downcase}/#{group_type[1]}", group_events: group_events
-
-    / .span10.stream-wrapper
-    /   .stream
-    /     .stream-line
-    /     - current_user.followings[1].created_stream.each do |group|
-    /       - group_type = group[0][0]
-    /       - group_name = group[0][1]
-    /       - group_events = group[1]
-    /       = render "/activity_stream/#{group_type[0].downcase}/#{group_type[1]}", group_events: group_events
-
+  .row
+    .span8
+      .home-section
+        %h2
+          = link_to 'Courses', courses_path, class: 'orange-link'
+        - @courses.each.with_index do |course, index|
+          - if index == 0
+            .home-featured-item
+              = link_to course do
+                %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= course.title
+                = image_tag filepicker_stream_image(course.featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
+                .section.pull-right(onclick= 'track_viewed_course_through_signed_in_homepage();')
+                  = where_user_left_off_in_course(course, current_user, 'btn btn-primary btn-large')
+              .section
+                = course.short_description
+          -else
+            .home-standard-item
+              .home-standard-item-image
+                = link_to course do
+                  = image_tag filepicker_stream_image(course.featured_image)
+              .home-standard-item-text
+                = link_to course do
+                  %h3= course.title
+                = course.short_description
+      .home-section
+        %hr
+      - if @projects.any?
+        .home-section
+          %h2
+            = link_to 'Projects', projects_path, class: 'orange-link'
+          - @projects.each.with_index do |project, index|
+            .home-standard-item
+              .home-standard-item-image
+                = link_to project_path(project) do
+                  = image_tag filepicker_stream_image(project.featured_image)
+              .home-standard-item-text
+                = link_to project_path(project) do
+                  %h3= project.title
+                = project.description
+    .span4
+      %h2 
+        = link_to 'Community Activity', community_activity_path, class: 'orange-link'
+      .stream(ng-controller='StreamsController' ng-init="init()")
+        %div(ng-repeat='stream in streams')
+          %div(ng-include src="streamViewTemplate(stream)")
+          / %div(ng-switch="stream.group_type")
+          /   %div(ng-switch-when='Comment_create')
+          /     %div(ng-include src="'stream_views/comment_create.html'")
+          /   %div(ng-switch-when='Course_enroll')
+          /     %div(ng-include src="'stream_views/course_enroll.html'")
+          /   %div(ng-switch-when='Like_create')
+          /     %div(ng-include src="'stream_views/like_create.html'")
+          /   %div(ng-switch-when='Upload_create')
+          /     %div(ng-include src="'stream_views/upload_create.html'")
+          /   %div(ng-switch-when='Vote_create')
+          /     %div(ng-include src="'stream_views/vote_create.html'")
+        %div.stream-spinner(ng-hide="hideSpinner")
+          %i.icon-spinner.icon-spin.icon-large
+        .stream-more(ng-show="showMoreButton" ng-cloak)
+          / %a.btn.btn-large.btn-block.btn-outline-blue-large(ng-click="loadMore()")
+          /   See More
+          = link_to 'See More', community_activity_path, class: 'btn btn-large btn-block btn-outline-blue-large'
     .span2
+
+:javascript
+  mixpanel.track('Viewed Signed in Homepage', {'url' : window.location.pathname});

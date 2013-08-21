@@ -140,6 +140,8 @@ Delve::Application.routes.draw do
     resources :comments
   end
   resources :projects, controller: :assemblies
+  resources :streams, only: [:index, :show]
+  get 'community-activity' => 'streams#feed', as: 'community_activity'
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
@@ -147,6 +149,7 @@ Delve::Application.routes.draw do
   match "/splitty/finished", :controller => "splitty", :action => "finish_split"
 
   resources :client_views, only: [:show]
+  resources :stream_views, only: [:show]
 
 end
 

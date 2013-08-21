@@ -1,28 +1,24 @@
-- media_object = group_events.first.trackable.likeable
+- media_object = event.trackable.likeable
 - case media_object.class.to_s
 - when 'Activity'
   - media_object_title = media_object.activity_type.first
 - when 'Upload'
   - media_object_title = 'Photo'
 
-.stream-item  
+.stream-item
+  = render '/activity_stream/shared/stream_item_header', media_object: media_object  
   .stream-item-top
     = link_to media_object do
-      .stream-item-title
-        %h4= media_object_title
-      .stream-item-subtitle
-        = media_object.title
-      = image_tag filepicker_media_box_image(media_object.image_id)
-  .stream-item-marker
+      = image_tag filepicker_stream_image(media_object.image_id)
   .stream-item-bottom
-    %p= "#{time_ago_in_words(group_events.first.created_at)} ago"
+    %p= "#{time_ago_in_words(event.created_at)} ago"
     - if media_object.likes_count == 1
       .stream-item-media1
         .stream-item-media1-user
-          = link_to user_profile_path(group_events.first.trackable.user) do
-            = image_tag filepicker_circle_image(group_events.first.trackable.user.image_id)
+          = link_to user_profile_path(event.trackable.user) do
+            = image_tag filepicker_circle_image(event.trackable.user.image_id)
         .stream-item-media1-content
-          = link_to group_events.first.trackable.user.name, user_profile_path(group_events.first.trackable.user)
+          = link_to event.trackable.user.name, user_profile_path(event.trackable.user)
           = "liked your #{media_object_title.downcase}."
     - else
       .stream-item-media2
