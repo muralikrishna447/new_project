@@ -29,15 +29,4 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.$watch 'includeRecipes', ->
     $scope.updateFilter()
 
-
-#  # watch for changes of parameters
-#  $scope.$watch "tableParams", ((params) ->
-#
-#    # use build-in angular filter
-#    $scope.displayIngredients = (if params.sorting then $filter("orderBy")($scope.ingredients, params.orderBy()) else $scope.ingredients)
-#
-#  ), true
-
-
-
 ]
