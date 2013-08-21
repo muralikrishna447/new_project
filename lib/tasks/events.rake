@@ -1,4 +1,4 @@
-task :generate_group_name_and_type => :environment do
+task :setup_stream => :environment do
   Event.find_each do |event|
     # event.group_type = event.determine_group_type
     # event.group_name = event.determine_group_name
