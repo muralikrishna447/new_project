@@ -4,7 +4,7 @@ class HomeController < ApplicationController
     @courses = Course.published.last(3)
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_gallery.last(6)
-      @projects = Assembly.projects.last(3)
+      @projects = Assembly.published.projects.last(3)
       # @followings_stream = Kaminari::paginate_array(current_user.followings_stream).page(params[:page]).per(6)
       # @stream = current_user.received_stream.take(4)
     else

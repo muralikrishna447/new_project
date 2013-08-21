@@ -35,18 +35,19 @@
                 = course.short_description
       .home-section
         %hr
-      .home-section
-        %h2
-          = link_to 'Projects', projects_path, class: 'orange-link'
-        - @projects.each.with_index do |project, index|
-          .home-standard-item
-            .home-standard-item-image
-              = link_to project_path(project) do
-                = image_tag filepicker_stream_image(project.featured_image)
-            .home-standard-item-text
-              = link_to project_path(project) do
-                %h3= project.title
-              = project.description
+      - if @projects.any?
+        .home-section
+          %h2
+            = link_to 'Projects', projects_path, class: 'orange-link'
+          - @projects.each.with_index do |project, index|
+            .home-standard-item
+              .home-standard-item-image
+                = link_to project_path(project) do
+                  = image_tag filepicker_stream_image(project.featured_image)
+              .home-standard-item-text
+                = link_to project_path(project) do
+                  %h3= project.title
+                = project.description
     .span4
       %h2 
         = link_to 'Community Activity', community_activity_path, class: 'orange-link'
@@ -64,12 +65,13 @@
           /     %div(ng-include src="'stream_views/upload_create.html'")
           /   %div(ng-switch-when='Vote_create')
           /     %div(ng-include src="'stream_views/vote_create.html'")
-
-        .stream-more
+        %div.stream-spinner(ng-hide="hideSpinner")
+          %i.icon-spinner.icon-spin.icon-large
+        .stream-more(ng-show="showMoreButton" ng-cloak)
           / %a.btn.btn-large.btn-block.btn-outline-blue-large(ng-click="loadMore()")
           /   See More
           = link_to 'See More', community_activity_path, class: 'btn btn-large btn-block btn-outline-blue-large'
     .span2
 
 :javascript
-  mixpanel.track('Signed In Hompage Viewed', {'url' : window.location.pathname});
+  mixpanel.track('Viewed Signed in Homepage', {'url' : window.location.pathname});
