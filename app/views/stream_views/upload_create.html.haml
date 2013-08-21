@@ -1,5 +1,4 @@
-/ - media_object = event.trackable
-.stream-item
+.stream-item(ng-show="stream.trackable.upload.approved")
   .stream-item-dialogue
     %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
     %h4
