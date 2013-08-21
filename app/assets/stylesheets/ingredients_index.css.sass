@@ -1,15 +1,51 @@
-.ingredient-index-table
-  border: 1px solid black
+@import mixins
 
-  .sortable
-    cursor: pointer
+.ingredient-index-container
+  .controls
+    form
+      *
+        margin-right: 20px
 
-  .sort-desc
-    div
-      &:after
-        content: '\25BC'
+  .ingredient-index
+    border:  1px solid #eee
 
-  .sort-asc
-    div
-      &:after
-        content: '\25B2'
+    .cell
+      display: inline-block
+      padding: 6px 10px
+      border-left:  1px solid #eee
+      margin:  0 !important
+
+      .recipe-indicator
+        display: inline-block
+        margin-left: 10px
+
+    .header
+      font-weight: bold
+
+      .cell
+        cursor: pointer
+
+    .title
+      width: 30%
+      padding-left: 10px + 8px
+      text-indent: -8px
+
+    .product-url
+      width: 20%
+
+    .sortable
+      cursor: pointer
+
+    .sort-desc
+      div
+        &:after
+          content: '\25BC'
+
+    .sort-asc
+      div
+        &:after
+          content: '\25B2'
+
+    .body
+      &:nth-child(2n)
+        background-color: #eee

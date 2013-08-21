@@ -1,21 +1,30 @@
 - content_for :title, "Ingredients"
 - content_for :description, "Batch edit ingredients"
 
-.container.section(ng-controller="IngredientsIndexController" ng-cloak)
-  %pre
-    {{tableParams}}
-  .row
-    .span6
-      %input(type="search" placeholder="Search..." ng-model="searchString")
-  .row
-    %table.table.ingredient-index-table(ng-table="tableParams")
-      %tr(ng-repeat="ingredient in displayIngredients")
-        %td(data-title="Name" data-title-text="Name" sortable="title")
-          {{ingredient.title}}
-        %td(data-title="Product" sortable="product_url")
-          %a(ng-href="{{ingredient.product_url}}" ng-show="ingredient.product_url" target="_blank")
-            Link
+.ingredient-index-container.container.section(ng-controller="IngredientsIndexController" ng-cloak)
 
+  .row.section.controls
     .span12
-      {{ingredient.title}}
+      %form.form-inline
+        %input.input-medium.search-query(type="search" placeholder="Ingredient name..." ng-model="searchString")
+        %label.checkbox
+          %input(ng-model="includeRecipes" type="checkbox")
+            Include Recipes
+  .row.section-small
+    .ingredient-index.span12
+      .header
+        .title.cell
+          Ingredient
+        .product-url.cell
+          Affiliate Link
 
+      .body(ng-repeat="ingredient in displayIngredients")
+        .title.cell
+          {{ingredient.title}}
+          .recipe-indicator(ng-show="ingredient.sub_activity_id")
+            [RECIPE]
+        .product-url.cell
+          %a(ng-href="{{ingredient.product_url}}" ng-show="ingredient.product_url" target="_blank")
+            {{urlAsNiceText(ingredient.product_url)}}
+          %div(ng-show="! ingredient.product_url")
+            \-
