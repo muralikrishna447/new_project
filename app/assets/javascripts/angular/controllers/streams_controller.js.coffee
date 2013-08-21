@@ -5,28 +5,9 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
     $scope.page = 1
     $scope.stream = $resource('/streams/:id')
     $scope.streams = $scope.stream.query(->
-      # angular.forEach $scope.streams, (stream, index) ->
-      #   $http(
-      #     method: 'GET'
-      #     url: '/streams/' + stream.id
-      #   ).success((data, status, headers, config) ->
-      #     # stream.templateUrl = 'activity_stream/' + angular.lowercase(stream.trackable_type) + '/' + stream.action
-      #     stream.stream_with_trackable = data
-      #   ).error((data, status, headers, config) ->
-
-      #   )
+      $scope.hideSpinner = true
+      $scope.showMoreButton = true
     )
-
-  # $scope.getTrackable = (stream) ->
-  #   $http(
-  #     method: 'GET'
-  #     url: '/streams/' + stream.id
-  #   ).success((data, status, headers, config) ->
-  #     # stream.templateUrl = 'activity_stream/' + angular.lowercase(stream.trackable_type) + '/' + stream.action
-  #     stream.stream_with_trackable = data
-  #   ).error((data, status, headers, config) ->
-
-  #   )
 
   $scope.userImageUrl = (image_id) ->
     if image_id
@@ -57,26 +38,6 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
   $scope.streamViewTemplate = (stream) ->
     'stream_views/' + stream.event_type + '.html'
 
-  # $scope.addComment = ->
-  #   comment = $scope.Comment.save($scope.newComment, ->
-  #     $scope.comments.push(comment)
-  #     $scope.newComment = {}
-  #     $scope.comments_count = $scope.comments.length
-  #   )
-
-  # $scope.commentLimit = -6
-
-  # $scope.commentsToggle = ->
-  #   if $scope.comments.length > 6
-  #     true
-  #   else
-  #     false
-
-  # $scope.showAllComments = ->
-  #   $scope.commentLimit = $scope.comments_count
-
-  # $scope.hideComments = ->
-  #   $scope.commentLimit = -6
 ]
 
 window.track_viewed_profile_through_stream = ->
