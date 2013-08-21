@@ -1,15 +1,49 @@
-angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$timeout", "$http", "$filter", "limitToFilter",  ($scope, $timeout, $http, $filter, limitToFilter) ->
+angular.module('ChefStepsApp').filter "shortcode", ->
+  (input) ->
 
+angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$timeout", "$http", "$filter", "limitToFilter",  ($scope, $timeout, $http, $filter, limitToFilter) ->
   $scope.searchString = ""
 
   $scope.urlAsNiceText = (url) ->
-    result = "Link"
-    return "amazon.com" if url.indexOf("amzn") != -1
-    matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
-    if matches && matches[1]
-      result = matches[1]
-      result = result.replace('www.', '')
-    result
+    if url
+      result = "Link"
+      return "amazon.com" if url.indexOf("amzn") != -1
+      matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+      if matches && matches[1]
+        result = matches[1]
+        result = result.replace('www.', '')
+      result
+    else
+      ""
+
+  $scope.sortByNiceURL = (a, b) ->
+    na = $scope.urlAsNiceText(a)
+    nb = $scope.urlAsNiceText(b)
+    return 0 if na == nb
+    return 1 if na > nb
+    -1
+
+  $scope.gridOptions =
+    data: 'displayIngredients'
+    showSelectionCheckbox: true
+    showColumnMenu: true
+    columnDefs: [
+      {
+        field: "title"
+        displayName: "Ingredient"
+        width: "***"
+        enableCellEdit: true
+        cellTemplate: '<div class="ngCellText colt{{$index}}">{{row.getProperty(col.field)}}{{row.getProperty("sub_activity_id") && " [RECIPE]"}}</div>'
+      },
+      {
+        field: "product_url"
+        displayName: "Affiliate Link"
+        width: "**"
+        enableCellEdit: true
+        sortFn: $scope.sortByNiceURL,
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a href="{{row.getProperty(col.field)}}" target="_blank" ng-show="row.getProperty(col.field)"><i class="icon-external-link"></i></a>{{urlAsNiceText(row.getProperty(col.field))}}</div>'
+      }
+    ]
 
   $scope.updateFilter = ->
     $scope.displayIngredients = $filter("orderBy")($scope.ingredients, "title")

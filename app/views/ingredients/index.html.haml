@@ -11,20 +11,4 @@
           %input(ng-model="includeRecipes" type="checkbox")
             Include Recipes
   .row.section-small
-    .ingredient-index.span12
-      .header
-        .title.cell
-          Ingredient
-        .product-url.cell
-          Affiliate Link
-
-      .body(ng-repeat="ingredient in displayIngredients")
-        .title.cell
-          {{ingredient.title}}
-          .recipe-indicator(ng-show="ingredient.sub_activity_id")
-            [RECIPE]
-        .product-url.cell
-          %a(ng-href="{{ingredient.product_url}}" ng-show="ingredient.product_url" target="_blank")
-            {{urlAsNiceText(ingredient.product_url)}}
-          %div(ng-show="! ingredient.product_url")
-            \-
+    .ingredient-index.span12(ng-grid="gridOptions")
