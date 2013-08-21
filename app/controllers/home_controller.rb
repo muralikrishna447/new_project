@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   def index
     @courses = Course.published.order('updated_at desc')
     if current_user
-      @latest = Activity.published.chefsteps_generated.include_in_gallery.last(6)
+      @latest = Activity.published.chefsteps_generated.include_in_gallery.order('published_at asc').last(6)
       @projects = Assembly.published.projects.last(3)
       # @followings_stream = Kaminari::paginate_array(current_user.followings_stream).page(params[:page]).per(6)
       # @stream = current_user.received_stream.take(4)
