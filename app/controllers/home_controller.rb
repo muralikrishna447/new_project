@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    @courses = Course.published.order('updated_at desc')
+    @courses = Course.published.order('updated_at desc').last(3)
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_gallery.order('published_at asc').last(6)
       @projects = Assembly.published.projects.last(3)
