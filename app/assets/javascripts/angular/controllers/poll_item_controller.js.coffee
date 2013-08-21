@@ -1,5 +1,8 @@
 angular.module('ChefStepsApp').controller 'PollItemController', ["$scope", "$timeout", "$http", ($scope, $timeout, $http) ->
 
+  $scope.init = (poll_status) ->
+    $scope.poll_status = poll_status
+
   $scope.voteObjectGuts = (dir) ->
     votable_object = $scope.poll_item
 
@@ -21,10 +24,12 @@ angular.module('ChefStepsApp').controller 'PollItemController', ["$scope", "$tim
     )
 
   $scope.voteObject = ->
-    $scope.voteObjectGuts(1)
+    unless $scope.poll_status == 'Closed'
+      $scope.voteObjectGuts(1)
 
   $scope.unvoteObject = ->
-    $scope.voteObjectGuts(-1)
+    unless $scope.poll_status == 'Closed'
+      $scope.voteObjectGuts(-1)
 
 
   $scope.expandSocial =  ->

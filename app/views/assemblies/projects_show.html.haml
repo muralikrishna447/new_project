@@ -5,11 +5,11 @@
 
 - project_inclusions = @project.assembly_inclusions.order('assembly_inclusions.position asc')
 
-.container.project
+.container.project.printable.printable-column
   %h1= @project.title
   .row
     .span12
-      %ul.nav.nav-pills#project-tabs
+      %ul.nav.nav-pills#project-tabs.noprint
         %li.active
           = link_to '0. Introduction', '#introduction', data: {toggle: 'tab'}
         - project_inclusions.each_with_index do |assembly_inclusion,index|
@@ -21,24 +21,25 @@
         .tab-pane.active#introduction
           .row
             .span8.force-aspect-wrapper
-              .embed-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+              .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
                 - if @project.youtube_id?
                   %iframe(frameborder='0' allowfullscreen){src: youtube_url(@project.youtube_id)}
                 - elsif @project.image_id?
                   = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title, itemprop: 'image'
-              .project-social(ng-controller="NonAngularSocialController" ng-init="title='#{@project.title}'; url='#{project_url(@project)}'; media='#{filepicker_hero_image(@project.featured_image)}'")
-                = render 'layouts/social_buttons', media_object: @project, url: project_url(@project), shareSuggestText: "Share this with your friends!"
+              .project-social.noprint(ng-controller="NonAngularSocialController" ng-init="title='#{@project.title}'; url='#{project_url(@project)}'; media='#{filepicker_hero_image(@project.featured_image)}'")
+                = render 'layouts/social_buttons', media_object: @project, url: project_url(@project)
               .row.section
                 .span4
-                  .section.text-right
+                  .section.text-right.noprint
                     %h2 #{@project.title}:
                     %ul.unstyled
                       - project_inclusions.each_with_index do |assembly_inclusion,index|
                         %li
                           = link_to assembly_inclusion.includable.title, "javascript:void(0);", onclick: "jumpToProjectTab(#{index + 1})"
                 .span4
-                  .section.project-description
-                    = @project.description
+                  .section.project-description.noprint
+                    :markdown
+                      #{apply_shortcodes(@project.description)}
                   .section
                     = link_to 'Get Started', '#start', class: 'btn btn-large btn-primary input-block-level', id: 'start-project'
 
@@ -47,22 +48,25 @@
               /   = render 'comments/comments'
 
             .span4
+              .btn.btn-secondary{onclick: 'window.print()'}
+                %i.icon-print
+                print
               %h4 All Ingredients
               / = link_to 'Text me this list', '#', class: 'btn btn-secondary'
-              .activity-ingredients-list.well
+              .activity-ingredients-list.well#full-ingredients-list{data: {target: ''}}
                 .ingredients{:itemprop => "ingredients"}
                   .ingredient-table-body
-                    - @project.combined_ingredients.each do |combined_ingredient|
-                      .ingredient-table-row
+                    - @project.combined_ingredients.sort_by{|i|i[1]}.sort_by{|i|i[2]}.reverse.each do |combined_ingredient|
+                      .ingredient-table-row{data: {:'ingredient-id' => combined_ingredient[0][0].id}}
                         .ingredient-title
-                          = combined_ingredient[0][0].title
+                          .pull-left
+                            = combined_ingredient[0][0].title
                         .quantity-group.qtyfade
                           .lbs-qty
                           .lbs-label
-                          .main-qty
-                            = combined_ingredient[1]
-                        .unit.qtyfade
-                          = combined_ingredient[2]
+                          .main-qty{data: {:"orig-value" => combined_ingredient[1] * ((combined_ingredient[2] == "kg") ? 1000 : 1)}}
+                            = '%g' % combined_ingredient[1]
+                        .unit.qtyfade= combined_ingredient[2]
               %h4 Required Equipment
               %ul.unstyled.well
                 - @project.required_equipment.each do |equipment_item|
@@ -78,7 +82,8 @@
                     %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
                   - else
                     %li= equipment_item.title
-          .row-fluid.well.section
+          %hr
+          .row-fluid.section.noprint
             .span4.text-left
             .span4.text-center
               %h3 Introduction
@@ -87,15 +92,18 @@
                        
         - project_inclusions.each_with_index do |assembly_inclusion, index|
           .tab-pane{id: "project-#{index}"}
+            %h2.printonly
+              = assembly_inclusion.includable.title
             = render '/shared/activity', activity: assembly_inclusion.includable
-            .row-fluid.well.section
+            %hr
+            .row-fluid.section.noprint
               .span4.text-left
                 = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{index})"
               .span4.text-center
                 %h3= assembly_inclusion.includable.title
               .span4.text-right
                 = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{index + 2})"
-        .tab-pane#upload
+        .tab-pane#upload.noprint
           .row
             .span6
               %p.lead You're done! Show your progress or final dish, plating or you and your friends enjoying the dish, and share it proudly. Let us know if you had difficulty, made tweaks, how it tasted, or more generally what your experience cooking this dish were like. You'll get the Salmon 104 badge, too!
@@ -126,7 +134,8 @@
                   %div{class: "horizontal-slider-btn-right btn btn-circle"}
                     %i{class: "icon-chevron-right"}
                   %div{class: "horizontal-slider-shadow-overlay-right"}
-          .row-fluid.well.section
+          %hr
+          .row-fluid.section
             .span4.text-left
               = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{project_inclusions.count})"
             .span4.text-center

@@ -1,3 +1,7 @@
+- content_for :title, 'Polls'
+- content_for :description, "Here's your chance to vote on new content on recipes and courses the ChefSteps kitchen works on."
+- content_for :keywords, @polls.map(&:title).to_sentence
+
 .container
   .row
     .span12
@@ -8,9 +12,17 @@
   .container
     .row.section
       .span4
-        = render 'shared/media_box_2', url: poll_path(poll), title: poll.title, image: 'http://placehold.it/350x150', object: poll
+        .poll-index-item
+          = render 'shared/media_box_2', url: poll_path(poll), title: poll.title, image: poll.image_id, object: poll
+          - if poll.status == 'Closed'
+            .poll-index-item-winner
+              %h5
+                = "Closed on: #{poll.closed_at.strftime('%B %e, %Y')}"
+              %h5.text-orange
+                = "Winner: #{poll.winner.first.title}"
       .span8
-        %h2= poll.title
+        = link_to poll do
+          %h2= poll.title
         %p= poll.description
 .container
   .row

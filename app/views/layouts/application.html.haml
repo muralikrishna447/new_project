@@ -33,6 +33,7 @@
       = render 'layouts/google_analytics'
     = render 'layouts/mixpanel'
     = javascript_include_tag 'application_head'
+    = render 'layouts/inspectlet'
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => Rails.env}
     = render 'layouts/navigation', external: false
@@ -60,3 +61,9 @@
   = javascript_include_tag 'application'
   = render 'layouts/app_init'
   = yield(:custom_js)
+
+
+-# This load on every page, so a convenient place to make sure mixpanel identity is known
+- if current_user
+  :javascript
+    mixpanel.identify("#{current_user.id}")

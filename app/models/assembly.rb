@@ -32,11 +32,19 @@ class Assembly < ActiveRecord::Base
   end
 
   def required_equipment
-    assembly_inclusions.map(&:includable).map(&:required_equipment).flatten.uniq.sort_by{ |e| e.title }
+    assembly_inclusions.map(&:includable).map(&:required_equipment).flatten.uniq{|e| e.title}.sort_by{ |e| e.title }
   end
 
   def optional_equipment
-    assembly_inclusions.map(&:includable).map(&:optional_equipment).flatten.uniq.sort_by{ |e| e.title }
+    optional = assembly_inclusions.map(&:includable).map(&:optional_equipment).flatten
+    required_titles = assembly_inclusions.map(&:includable).map(&:required_equipment).flatten.map(&:title).map(&:downcase)
+    displayable = []
+    optional.each do |equipment|
+      unless required_titles.include?(equipment.title.downcase)
+        displayable << equipment
+      end
+    end
+    displayable.uniq{|e| e.title}
   end
 
   def featured_image

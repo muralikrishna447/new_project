@@ -102,6 +102,7 @@ class ActivitiesController < ApplicationController
     @activity.description = ""
     @activity.title = ""
     @activity.creator = current_user unless current_admin?
+    @activity.activity_type << 'Recipe'
     @include_edit_toolbar = true
     @activity.save({validate: false})
     track_event(@activity, 'create') unless current_admin?

@@ -4,7 +4,9 @@ module ApplicationHelper
   end
 
   def filepicker_arbitrary_image(fpfile, width, fit='max')
-    if ! fpfile.start_with?('{')
+    if ! fpfile
+      ""
+    elsif ! fpfile.start_with?('{')
       # Legacy naked S3 image id. Still used for a few images that don't
       # have UI to set.
       if /placehold/.match(fpfile)
@@ -14,7 +16,9 @@ module ApplicationHelper
       end
     else
       url = ActiveSupport::JSON.decode(fpfile)["url"]
-      url + "/convert?fit=#{fit}&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
+      url = url + "/convert?fit=#{fit}&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
+      # Route through CDN
+      url.gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
     end
   end
 

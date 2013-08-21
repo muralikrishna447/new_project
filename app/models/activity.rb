@@ -202,7 +202,7 @@ class Activity < ActiveRecord::Base
 
           # Otherwise, try by title because it is possible for a user to type fast and not get
           # an autocompleted ingredient with an id filled it, but it is still in the database
-          the_ingredient = Ingredient.where(title: title).first_or_create()  if ! the_ingredient
+          the_ingredient = Ingredient.find_or_create_by_title(title)  if ! the_ingredient
 
           activity_ingredient = ActivityIngredient.create!({
                                                             activity_id: self.id,

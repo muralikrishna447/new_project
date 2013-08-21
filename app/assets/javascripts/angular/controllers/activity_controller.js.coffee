@@ -285,12 +285,14 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     if $scope.hasHeroImage()
       url = JSON.parse($scope.activity.image_id).url
       url + "/convert?fit=max&w=#{width}&cache=true"
+    window.cdnURL(url)
 
   $scope.featuredImageURL = (width) ->
     url = ""
     if $scope.hasFeaturedImage()
       url = JSON.parse($scope.activity.featured_image_id).url
-      url + "/convert?fit=max&w=#{width}&cache=true"
+      url = url + "/convert?fit=max&w=#{width}&cache=true"
+    window.cdnURL(url)
 
   $scope.heroDisplayType = ->
     return "video" if $scope.hasHeroVideo()
@@ -432,6 +434,14 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.emailBody = ->
     "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
+
+  $scope.maximizeDescription = false
+  $scope.toggleMaximizeDescription = ->
+    $scope.maximizeDescription = ! $scope.maximizeDescription
+    # Fugly!
+    window.setMaximizeDescription($scope.maximizeDescription)
+    if $scope.maximizeDescription
+     mixpanel.track('Activity Description Maximized', {'slug' : $scope.activity.slug});
 
   # One time stuff
   if $scope.parsePreloaded()

@@ -55,13 +55,12 @@ $ ->
   $('.syllabus-popover').each ->
     $(this).popover()
 
-  $(document).on 'click', '#activity-description-maximize', ->
-    overlay = $(this).closest('.activity-description-wrapper').find('.activity-description-overlay')
-    $('.activity-description').toggleClass 'maximize-description', 300, 'easeInCubic'
-    if ($(this).text() == 'more')
-      $(this).text 'less'
-    else
-      $(this).text 'more'
+window.setMaximizeDescription = (maximize) ->
+  $('.activity-description').toggleClass 'maximize-description', maximize, 300, 'easeInCubic'
+  if maximize
+    $('#activity-description-maximize').text 'less'
+  else
+    $('#activity-description-maximize').text 'more'
 
 window.expandSteps = expandSteps
 window.collapseSteps = collapseSteps
@@ -87,3 +86,7 @@ $ ->
       dt = e.originalEvent.dataTransfer
       if dt
         dt.effectAllowed = dt.dropEffect = "none"
+
+window.cdnURL = (url) ->
+  url.replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+
