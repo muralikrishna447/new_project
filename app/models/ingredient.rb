@@ -24,12 +24,14 @@ class Ingredient < ActiveRecord::Base
   end
 
   def title
+=begin
     if sub_activity_id?
       act = Activity.find_by_id(sub_activity_id)
       if act != nil
         return act.title
       end
     end
+=end
     read_attribute(:title)
   end
 

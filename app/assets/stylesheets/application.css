@@ -18,6 +18,7 @@
  *= require application/quizzes/_results
  *= require application/_dials
  *= require application/_checkboxes
+ *= require ingredients_index
  *= require mobile
  *= require diffview
  *= require media_objects

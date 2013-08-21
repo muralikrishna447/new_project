@@ -1,0 +1,20 @@
+- content_for :title, "Ingredients"
+- content_for :description, "Batch edit ingredients"
+
+.container.section(ng-controller="IngredientsIndexController" ng-cloak)
+  %pre
+    {{tableParams}}
+  .row
+    .span6
+      %input(type="search" placeholder="Search..." ng-model="searchString")
+  .row
+    %table.table.ingredient-index-table(ng-table="tableParams")
+      %tr(ng-repeat="ingredient in displayIngredients")
+        %td(data-title="Name" data-sortable="title")
+          {{ingredient.title}}
+        %td(data-title="URL")
+          {{ingredient.product_url}}
+
+    .span12
+      {{ingredient.title}}
+
