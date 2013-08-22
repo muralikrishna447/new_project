@@ -37,7 +37,11 @@
   a:hover  
     color: $dark-orange
 
-
+  #asai-main
+    -webkit-transition-duration: 0.55s
+    -moz-transition-duration: 0.5s
+    -o-transition-duration: 0.5s
+    transition-duration: 0.5s    
 
   #asai-1
     position: absolute
@@ -101,3 +105,12 @@
     width: 50px
     padding: 0px  
     top: 69%
+
+@media (max-width: 767px)
+  .knife.first
+    margin-top: 350px
+
+@media (max-width: 480px)
+  .knife.first
+    margin-top: 450px
+

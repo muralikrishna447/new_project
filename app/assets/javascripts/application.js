@@ -20,3 +20,4 @@
 //= require iframe_height
 //= require annotations
 //= require projects
+//= require knife_collection

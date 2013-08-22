@@ -1,13 +1,16 @@
 $ ->
-  # if $('.annotated').is('*')
-  #   $(window).scroll ->
-  #     window_position = $(window).scrollTop()
-  #     $('.annotated').each ->
-  #       annotated = $(this)
-  #       position = $(this).position()
-  #       if position.top - 300 <= window_position < position.top - 50
-  #         annotated.addClass 'annotations-show'
-  #       else
-  #         annotated.removeClass 'annotations-show'
+  $('.modal a').click (e) ->
+    e.preventDefault()
+    $imgURL = $(this).attr("href")
+    $('.main-image').fadeOut(400, -> 
+      $('.main-image').attr 'src', $imgURL
+    ).fadeIn 400
 
-  
+ $ -> 
+  $(window).scroll ->
+    if $(window).scrollTop() <= 50
+      $('#intro').fadeIn 'fast', 'easeInOutQuad'
+      $('.knife').removeClass 'alt'
+    else 
+      $('#intro').fadeOut 'fast','easeInOutQuad' 
+      $('.knife').addClass 'alt'
