@@ -10,5 +10,6 @@
         %label.checkbox
           %input(ng-model="includeRecipes" type="checkbox")
             Include Recipes
+        %i.icon-spinner.icon-spin(ng-show="dataLoading")
   .row.section-small
     .ingredient-index.span12(ng-grid="gridOptions")

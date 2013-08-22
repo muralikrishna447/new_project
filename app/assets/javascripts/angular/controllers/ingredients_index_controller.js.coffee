@@ -1,8 +1,6 @@
-angular.module('ChefStepsApp').filter "shortcode", ->
-  (input) ->
-
 angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$timeout", "$http", "$filter", "limitToFilter",  ($scope, $timeout, $http, $filter, limitToFilter) ->
   $scope.searchString = ""
+  $scope.dataLoading = 0
 
   $scope.urlAsNiceText = (url) ->
     if url
@@ -51,7 +49,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       $scope.displayIngredients = _.reject($scope.displayIngredients, (x) -> x.sub_activity_id?)
 
   $scope.findIngredients = (term) ->
+    $scope.dataLoading = $scope.dataLoading + 1
     $http.get("/ingredients.json?q=" + encodeURIComponent(term || "")).then (response) ->
+      $scope.dataLoading = $scope.dataLoading - 1
       # Avoid race condition with results coming in out of order
       if term == $scope.searchString
         $scope.ingredients = _.reject(response.data, (x) -> x.title == "")
