@@ -173,7 +173,7 @@
 
 
 :javascript
-  mixpanel.track('Activity Viewed', {'distinct_id' : "#{current_user ? current_user.id : nil}", 'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
+  mixpanel.track('Activity Viewed', {'distinct_id' : "#{current_user ? current_user.email : nil}", 'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
 
 
 
