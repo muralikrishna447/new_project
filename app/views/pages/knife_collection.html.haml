@@ -1,38 +1,42 @@
 .container
   .row.section#intro
-    .span3.offset1
-      = image_tag ('http://placehold.it/250x200')
-    .span8
-      %h1 ChefSteps Knife Collection
-      %p An exceptional set of knives should be the cornerstone of a cook’s arsenal. They become extensions of his own hands; the tools with which he creates art and brings refinement to the table. A beautiful, high-quality set will follow a cook anywhere and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice; all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best.
+    .span10.offset1.media
+      .pull-left
+        = image_tag ('http://placehold.it/250x200'), :class => "media-object"
+      .media-body
+        %h1 ChefSteps Knife Collection
+        %p An exceptional knife should be the cornerstone of a cook's arsenal. It becomes an extension of your own hands; the tool with which you will create art and bring refinement to the table. A beautiful, high-quality knife will follow you to every kitchen and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice—all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best.
+
+/__________ START MODALS _____________/
 
 #asai-ao-1.modal.hide.fade
   .modal-header
     %button(class="close" data-dismiss="modal" aria-hidden="true") &times;
     %h3 Asai Chef's Knife
   .modal-body
-    = image_tag 'https://www.filepicker.io/api/file/xgPYrtt9ROuDw4Qxany3', :class => "main-image"
-    .row.section
-      .span2
-        %a(href="https://www.filepicker.io/api/file/RlVj5HwlRJgi431Kcqsw")
-          = image_tag 'https://www.filepicker.io/api/file/RlVj5HwlRJgi431Kcqsw', :id => 'asai-second'
-      .span2
-        %a(href="https://www.filepicker.io/api/file/xgPYrtt9ROuDw4Qxany3")
-          = image_tag 'https://www.filepicker.io/api/file/xgPYrtt9ROuDw4Qxany3', :id => 'asai-second'
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=550', :class => "main-image"
+    .section
+      %ul.inline
+        %li
+          %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3")
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=100', :id => 'asai-second'
+        %li
+          %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw")
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=100', :id => 'asai-second'
     %p.section This high performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. A brushed stainless steel blade seems understated at first look (at least for Asai, whose knives usually feature highly stylized blades), but there’s intrigue here: after a few weeks of use, the carbon steel core gives way to a remarkable blue patina that need not be removed.
 
   .modal-footer
-    = buy_now(345915979,123)
+    = buy_now(345915979,299)
 
 #asai-ao-2.modal.hide.fade
   .modal-header
     %button(class="close" data-dismiss="modal" aria-hidden="true") &times;
     %h3 Asai Utility Knife
   .modal-body
-    = image_tag 'https://www.filepicker.io/api/file/uAG5HZMRxCmnSpb5a7mA', :class => "main-image"
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/uAG5HZMRxCmnSpb5a7mA', :class => "main-image"
     %p.section This high performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. A brushed stainless steel blade seems understated at first look (at least for Asai, whose knives usually feature highly stylized blades), but there’s intrigue here: after a few weeks of use, the carbon steel core gives way to a remarkable blue patina that need not be removed.
   .modal-footer.section
-    = buy_now(151280121,20)
+    = buy_now(350067813,139)
 
 
 #ohishi-hammer-1.modal.hide.fade
@@ -40,10 +44,10 @@
     %button(class="close" data-dismiss="modal" aria-hidden="true") &times;
     %h3 Ohishi Chef's Knife
   .modal-body
-    = image_tag 'https://www.filepicker.io/api/file/LNrdE7aRRLSaKt8gKtNM'
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/LNrdE7aRRLSaKt8gKtNM'
     %p.section With its thin blade geometry, solid pakkawood handle, and hammer finish, this knife is both beautiful and versatile. The blade has a VG10 super-steel core surrounded by 15 layers of stainless damascus for exceptional edge holding. The elegant tsuchime finish (meaning “hammered” in Japanese) forces food to fall away from the blade for enhanced efficiency.  
   .modal-footer.section
-    = buy_now(151280121,20)
+    = buy_now(345914261,129)
 
 
 
@@ -52,20 +56,20 @@
     %button(class="close" data-dismiss="modal" aria-hidden="true") &times;
     %h3 Ohishi Utility Knife
   .modal-body
-    = image_tag 'https://www.filepicker.io/api/file/naTWQB6ySXOVZR1V4plT'
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/naTWQB6ySXOVZR1V4plT/convert?fit=max&w=500'
     %p.section Perfect as a general purpose kitchen knife, this long, slender utility blade has a VG10 super-steel core for clean cutting and a balanced pakkawood handle that’s durable and moisture-resistant. The elegant tsuchime finish (meaning “hammered” in Japanese) forces food to fall away from the blade for enhanced efficiency.
   .modal-footer.section
-    = buy_now(151280121,20)
+    = buy_now(345912499,84)
 
 #yoshikane-sld-1.modal.hide.fade
   .modal-header
     %button(class="close" data-dismiss="modal" aria-hidden="true") &times;
     %h3 Yoshikane Chef's Knife
   .modal-body
-    = image_tag 'https://www.filepicker.io/api/file/7dQWY7MVTWGFEuE3wUAi'
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/7dQWY7MVTWGFEuE3wUAi/convert?fit=max&w=500'
     %p.section This elegant all-purpose chef’s knife features a long, slim blade perfect for sawing meat and vegetables, with a subtly uneven surface that prevents food from sticking. It features extremely rare blond buffalo horn ferrules, an ambidextrous enju wood handle, and a slim two-tone blade for a perfectly balanced, exceptionally handsome knife.
   .modal-footer.section
-    = buy_now(151280121,20)
+    = buy_now(345920775,464)
 
 #yoshikane-sld-2.modal.hide.fade
   .modal-header
@@ -73,89 +77,108 @@
     %h3 Yoshikane Utility Knife
   .modal-body.media
     .pagination-centered
-      = image_tag 'https://www.filepicker.io/api/file/zxxRDkwzTDqesXVpJrle/convert?fit=max&h=355'
+      = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/zxxRDkwzTDqesXVpJrle/convert?fit=max&h=355'
     .media-body
-      %p.section Best for detail slicing (think tomatoes and garlic), this utility knife by Yoshikane has a smooth, slender blade comprised of SLD stainless steel (core) and stainless steel damascus (surface) that slides easily through food. The blade’s undulating pattern together with its light enju wood handle (the same wood used for making Shinto shrines) makes it a perfect balance of artistry and performance.
+      %p.section Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade comprised of SLD stainless steel (core) and stainless steel damascus (surface) that slides easily through food. The blade’s suminagashi pattern (meaning "floating ink" in Japanese) together with its light enju wood handle (the same wood used for making Shinto shrines) makes it a perfect balance of artistry and performance.
+
   .modal-footer.section
-    = buy_now(151280121,20)
+    = buy_now(345920201,339)
+
+#sharpening-1.modal.hide.fade
+  .modal-header
+    %button(class="close" data-dismiss="modal" aria-hidden="true") &times;
+    %h3 Sharpening Stone Kit
+  .modal-body.media
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xZBHFGfRByCEXftfgE2Q/convert?fit=max&w=500', :class => "main-image"
+    .section
+      %ul.inline
+        %li
+          %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/xZBHFGfRByCEXftfgE2Q")
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xZBHFGfRByCEXftfgE2Q/convert?fit=max&w=100'
+        %li
+          %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/1hfmZ0YOQsC3DGZkCwXb")
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/1hfmZ0YOQsC3DGZkCwXb/convert?fit=max&w=100'
+        %li
+          %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/Uf9mCymiRjqGtRw7y8id")
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/Uf9mCymiRjqGtRw7y8id/convert?fit=max&w=100'
+        %li
+          %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/73gcpvPeSTCeCMGHMeDr")
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/73gcpvPeSTCeCMGHMeDr/convert?fit=max&w=100'
+
+    .media-body
+      %p.section Sharpening copy
+  .modal-footer.section
+    = buy_now(151280121,154)
+
+/____________ START KNIFE PRODUCTS_____________ / 
 
 .knife.first
   .row.section
-    .span10.offset2.media
-      .pull-left
-        = image_tag 'http://placehold.it/100x100', :class => "media-object"
-      .media-body
-        %h4.media-heading Asai AO
-        High in the Japanese Alps, in the small town of Takefu in the Fukui Prefecture, fifth-generation blacksmith Masami Asai forges some of the most distinctive handmade kitchen knives in the world. 
+    .span10.offset2
+      %h4.media-heading Asai
+      High in the Japanese Alps, in the small town of Takefu in the Fukui Prefecture, fifth-generation blacksmith Masami Asai forges some of the most distinctive handmade kitchen knives in the world. 
 
 .container-fluid
   .container
     .row.section
       .span12.section.button-container
-        #asai-1
+        .add-button#asai-1
           %a(href='#asai-ao-1' data-target='#asai-ao-1' data-toggle='modal') +
-        #asai-2
+        .add-button#asai-2
           %a(href='#asai-ao-2' data-target='#asai-ao-2' data-toggle='modal') +
-        = image_tag ('https://www.filepicker.io/api/file/qzxRQ0rPS2j4tFZKutmg')
+        = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/qzxRQ0rPS2j4tFZKutmg')
 
 
 .knife.section
   .row.section
-    .span10.offset2.media
-      .media-body
-        %h4.media-heading Ohishi Hammer
-        Ohishi produces some of the finest-quality factory knives in the world, with stylized, ultra-thin blades that surpass most German and American handmade knives in both performance and beauty.
-
-
+    .span10.offset2
+      %h4.media-heading Ohishi Hammer
+      Ohishi produces some of the finest-quality factory knives in the world, with stylized, ultra-thin blades that surpass most German and American handmade knives in both performance and beauty.
 
 .container-fluid
   .container
     .row.section
       .span12.section.button-container
-        #ohishi-1
+        .add-button#ohishi-1
           %a(href='#ohishi-hammer-1' data-target='#ohishi-hammer-1' data-toggle='modal') +
-        #ohishi-2
-          %a(href='#asai-hammer-2' data-target='#ohishi-hammer-2' data-toggle='modal') +
-        = image_tag ('https://www.filepicker.io/api/file/XPuEItyPTOaL2iO5r79j')
+        .add-button#ohishi-2
+          %a(href='#ohishi-hammer-2' data-target='#ohishi-hammer-2' data-toggle='modal') +
+        = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/XPuEItyPTOaL2iO5r79j')
 
 .knife.section
   .row.section
-    .span10.offset2.media
-      .pull-left
-        = image_tag 'http://placehold.it/100x100', :class => "media-object"
-      .media-body
-        %h4.media-heading Yoshikane 
-        Widely regarded as one of the most influential knifemakers in Japan, Tsuneo Yoshida handcrafts each Yoshikane knife with unmatched precision and artistry in his shop in Sanjo City.  Every Yoshikane knife is a work of art, each completely unique in its handmade construction, with a beauty matched only by performance—these blades are considered among the highest-quality available, with exceptional edge holding and comfortable feel.
+    .span10.offset2
+      %h4.media-heading Yoshikane 
+      Widely regarded as one of the most influential knifemakers in Japan, Tsuneo Yoshida handcrafts each Yoshikane knife with unmatched precision and artistry in his shop in Sanjo City.  Every Yoshikane knife is a work of art, each completely unique in its handmade construction, with a beauty matched only by performance—these blades are considered among the highest-quality available, with exceptional edge holding and comfortable feel.
 
 
 .container-fluid
   .container
     .row.section
       .span12.section.button-container
-        #yoshikane-1
+        .add-button#yoshikane-1
           %a(href='#yoshikane-sld-1' data-target='#yoshikane-sld-1' data-toggle='modal') +
-        #yoshikane-2
+        .add-button#yoshikane-2
           %a(href='#yoshikane-sld-2' data-target='#yoshikane-sld-2' data-toggle='modal') +
 
-        = image_tag ('https://www.filepicker.io/api/file/MfWzTk4YRGm7SOQf2iUT')
-
-
+        = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/MfWzTk4YRGm7SOQf2iUT')
 
 .knife.section
   .row.section
-    .span10.offset2.media
-      .pull-left
-        = image_tag 'http://placehold.it/100x100', :class => "media-object"
-      .media-body
-        %h4.media-heading Sharpening Stones Kit
-        Cras mattis consectetur purus sit amet fermentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+    .span10.offset2
+      %h4.media-heading 
+        Sharpening Stones Kit
+      :markdown 
+        A collection of high-quality knives requires a collection of high-quality waterstones to match. These professional-grade stones, designed specifically to sharpen high-quality steel, will keep your knives in superb condition for years to come. (Lower grade stones are often fragmented in their particle composition, making sharpening difficult and inconsistent.) Fix a broken tip, repair a damaged edge, polish your blade, or hone to razor sharp: This kit has everything you need to care for your finest knives. And [here’s how](http://www.chefsteps.com/activities/how-to-sharpen-a-knifecourse).
 
 
 .container-fluid
   .container
     .row.section
-      .span12.section
-        = image_tag ('https://www.filepicker.io/api/file/t3l7VdjR1qjMMWTNufwJ')
+      .span12.section.button-container
+        .add-button#sharpening
+          %a(href='#sharpening-1' data-target='#sharpening-1' data-toggle='modal') +
+        = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/t3l7VdjR1qjMMWTNufwJ')
 
 
 = render 'layouts/footer'

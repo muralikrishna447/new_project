@@ -2,8 +2,9 @@ $ ->
   $('.modal a').click (e) ->
     e.preventDefault()
     $imgURL = $(this).attr("href")
-    $('.main-image').fadeOut(400, -> 
-      $('.main-image').attr 'src', $imgURL
+    img = $(this).closest('.modal').find('.main-image')
+    img.fadeOut(200, -> 
+      img.attr 'src', $imgURL
     ).fadeIn 400
 
  $ -> 
