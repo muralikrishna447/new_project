@@ -1,5 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
-
+  include Devise::Controllers::Rememberable
   def new
     self.resource = build_resource(nil, :unsafe => true)
     clean_up_passwords(resource)
@@ -14,10 +14,10 @@ class Users::SessionsController < Devise::SessionsController
   def create
     cookies[:returning_visitor] = true
     super
+    remember_me(current_user)
     mixpanel.track 'Signed In', { distinct_id: current_user.email }
     mixpanel.append_identify current_user.email
     mixpanel.increment 'Signed In Count'
-
   end
 
   def signin_and_enroll
