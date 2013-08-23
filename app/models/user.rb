@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
   validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
 
-  ROLES = %w[admin moderator user banned]
+  ROLES = %w[admin moderator user banned contractor]
 
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
