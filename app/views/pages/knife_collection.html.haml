@@ -1,11 +1,11 @@
 .container
   .row.section#intro
-    .span10.offset1.media
+    .span5
       .pull-left
-        = image_tag ('http://placehold.it/250x200'), :class => "media-object"
-      .media-body
-        %h1 ChefSteps Knife Collection
-        %p An exceptional knife should be the cornerstone of a cook's arsenal. It becomes an extension of your own hands; the tool with which you will create art and bring refinement to the table. A beautiful, high-quality knife will follow you to every kitchen and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice—all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best.
+        = image_tag ('https://www.filepicker.io/api/file/Ya5vpVc1RzysqAPC5ZIJ/convert?fit=max&w=550')
+    .span7
+      %h1 ChefSteps Knife Collection
+      %p An exceptional knife should be the cornerstone of a cook's arsenal. It becomes an extension of your own hands; the tool with which you will create art and bring refinement to the table. A beautiful, high-quality knife will follow you to every kitchen and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice—all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best.
 
 /__________ START MODALS _____________/
 
@@ -14,29 +14,31 @@
     %button(class="close" data-dismiss="modal" aria-hidden="true") &times;
     %h3 Asai Chef's Knife
   .modal-body
+    /= image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=550', :class => "main-image"
     = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=550', :class => "main-image"
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=550', :class => "main-image hidden"
     .section
       %ul.inline
         %li
           %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3")
-            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=100', :id => 'asai-second'
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=75'
         %li
           %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw")
-            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=100', :id => 'asai-second'
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=75'
     %p.section This high performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. A brushed stainless steel blade seems understated at first look (at least for Asai, whose knives usually feature highly stylized blades), but there’s intrigue here: after a few weeks of use, the carbon steel core gives way to a remarkable blue patina that need not be removed.
 
   .modal-footer
-    = buy_now(345915979,299)
+    = buy_now(345915979,325)
 
 #asai-ao-2.modal.hide.fade
   .modal-header
     %button(class="close" data-dismiss="modal" aria-hidden="true") &times;
-    %h3 Asai Utility Knife
+    %h3 Asai Petty Knife
   .modal-body
     = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/uAG5HZMRxCmnSpb5a7mA', :class => "main-image"
     %p.section This high performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. A brushed stainless steel blade seems understated at first look (at least for Asai, whose knives usually feature highly stylized blades), but there’s intrigue here: after a few weeks of use, the carbon steel core gives way to a remarkable blue patina that need not be removed.
   .modal-footer.section
-    = buy_now(350067813,139)
+    = buy_now(350067813,169)
 
 
 #ohishi-hammer-1.modal.hide.fade
@@ -54,10 +56,10 @@
 #ohishi-hammer-2.modal.hide.fade
   .modal-header
     %button(class="close" data-dismiss="modal" aria-hidden="true") &times;
-    %h3 Ohishi Utility Knife
+    %h3 Ohishi Petty Knife
   .modal-body
     = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/naTWQB6ySXOVZR1V4plT/convert?fit=max&w=500'
-    %p.section Perfect as a general purpose kitchen knife, this long, slender utility blade has a VG10 super-steel core for clean cutting and a balanced pakkawood handle that’s durable and moisture-resistant. The elegant tsuchime finish (meaning “hammered” in Japanese) forces food to fall away from the blade for enhanced efficiency.
+    %p.section Perfect as a general purpose kitchen knife, this long, slender Petty blade has a VG10 super-steel core for clean cutting and a balanced pakkawood handle that’s durable and moisture-resistant. The elegant tsuchime finish (meaning “hammered” in Japanese) forces food to fall away from the blade for enhanced efficiency.
   .modal-footer.section
     = buy_now(345912499,84)
 
@@ -74,7 +76,7 @@
 #yoshikane-sld-2.modal.hide.fade
   .modal-header
     %button(class="close" data-dismiss="modal" aria-hidden="true") &times;
-    %h3 Yoshikane Utility Knife
+    %h3 Yoshikane Petty Knife
   .modal-body.media
     .pagination-centered
       = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/zxxRDkwzTDqesXVpJrle/convert?fit=max&h=355'
@@ -90,6 +92,9 @@
     %h3 Sharpening Stone Kit
   .modal-body.media
     = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xZBHFGfRByCEXftfgE2Q/convert?fit=max&w=500', :class => "main-image"
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/1hfmZ0YOQsC3DGZkCwXb/convert?fit=max&w=500', :class => "main-image hidden"
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/Uf9mCymiRjqGtRw7y8id/convert?fit=max&w=500', :class => "main-image hidden"
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/73gcpvPeSTCeCMGHMeDr/convert?fit=max&w=500', :class => "main-image hidden"
     .section
       %ul.inline
         %li
@@ -108,7 +113,7 @@
     .media-body
       %p.section Sharpening copy
   .modal-footer.section
-    = buy_now(151280121,154)
+    = buy_now(350238365,154)
 
 /____________ START KNIFE PRODUCTS_____________ / 
 

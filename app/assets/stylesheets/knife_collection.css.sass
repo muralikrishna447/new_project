@@ -14,11 +14,13 @@
   -o-transition-duration: 0.5s
   transition-duration: 0.5s
 
-.modal-body 
-  max-height: 800px
+.hidden
+  display: none
+  position: absolute
+  top: 0
 
 .knife.alt
-  background: #f1f1f1
+  background: $offwhite
   border-bottom: 2px solid $orange
   padding: 20px 40px 30px 40px
   position: relative
@@ -35,10 +37,11 @@
   left: 50%
   border-style: solid
   border-width: 20px 20px 0
-  border-color: #e25f25 transparent
+  border-color: $orange transparent
   display: block
   width: 0
   z-index: 1
+
 
 .button-container
   position: relative
@@ -114,17 +117,21 @@
     left: 50%
     top: 69%
 
+@media (min-width: 1160px)
+  .knife.first
+    margin-top: 350px
+
 @media (max-width: 1080px)
   .knife.first
     margin-top: 250px
 
-@media (max-width: 800px)
+@media (max-width: 980px)
   .knife.first
-    margin-top: 250px
+    margin-top: 320px
 
 @media (max-width: 767px)
   .knife.first
-    margin-top: 350px
+    margin-top: 550px
 
   .button-container
     a
@@ -142,5 +149,5 @@
 
 @media (max-width: 480px)
   .knife.first
-    margin-top: 550px
+    margin-top: 600px
 
