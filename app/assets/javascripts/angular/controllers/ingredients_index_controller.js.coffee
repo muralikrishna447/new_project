@@ -1,6 +1,20 @@
-angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$timeout", "$http", "$filter", "limitToFilter",  ($scope, $timeout, $http, $filter, limitToFilter) ->
+angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", ($scope, $resource, $http, $filter) ->
   $scope.searchString = ""
   $scope.dataLoading = 0
+  $scope.cellValue = ""
+
+  $scope.$watch 'cellValue', (v) ->
+    console.log v
+
+  cellEditableTemplate = "<input style=\"width: 90%\" ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ui-event=\'{blur: \"updateEntity(col, row, cellValue)\"}\' ng-model='cellValue'/>";
+
+  Ingredient = $resource( "/ingredients/:id",
+    {},
+    {
+      update: {method: "PUT"},
+    }
+  )
+
 
   $scope.urlAsNiceText = (url) ->
     if url
@@ -24,7 +38,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.gridOptions =
     data: 'displayIngredients'
     showSelectionCheckbox: true
+    selectWithCheckboxOnly: true
     showColumnMenu: true
+    enableCellEditOnFocus: true
     columnDefs: [
       {
         field: "title"
@@ -32,6 +48,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         width: "***"
         enableCellEdit: true
         cellTemplate: '<div class="ngCellText colt{{$index}}">{{row.getProperty(col.field)}}{{row.getProperty("sub_activity_id") && " [RECIPE]"}}</div>'
+        editableCellTemplate: cellEditableTemplate
       },
       {
         field: "product_url"
@@ -40,8 +57,14 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         enableCellEdit: true
         sortFn: $scope.sortByNiceURL,
         cellTemplate: '<div class="ngCellText colt{{$index}}"><a href="{{row.getProperty(col.field)}}" target="_blank" ng-show="row.getProperty(col.field)"><i class="icon-external-link"></i></a>{{urlAsNiceText(row.getProperty(col.field))}}</div>'
+        editableCellTemplate: cellEditableTemplate
       }
     ]
+
+  $scope.updateEntity =  (column, row, cellValue) ->
+    console.log(row.entity)
+    console.log(column.field)
+    row.entity[column.field] = cellValue
 
   $scope.updateFilter = ->
     $scope.displayIngredients = $filter("orderBy")($scope.ingredients, "title")
@@ -50,12 +73,16 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.findIngredients = (term) ->
     $scope.dataLoading = $scope.dataLoading + 1
-    $http.get("/ingredients.json?q=" + encodeURIComponent(term || "")).then (response) ->
+    Ingredient.query({q: (term || "")},
+    (response) ->
       $scope.dataLoading = $scope.dataLoading - 1
       # Avoid race condition with results coming in out of order
       if term == $scope.searchString
-        $scope.ingredients = _.reject(response.data, (x) -> x.title == "")
+        $scope.ingredients = _.reject(response, (x) -> x.title == "")
         $scope.updateFilter()
+    , (err) ->
+      alert(err)
+    )
 
   $scope.$watch 'searchString', (newValue) ->
     $scope.findIngredients(newValue)
