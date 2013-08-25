@@ -8,6 +8,8 @@ class Ability
       can :manage, :all
     elsif (user.role? :moderator)
       can :manage, Activity
+    elsif (user.role? :contractor)
+      can :read, :all
     else
       can :manage, Activity, creator: user
       can :create, Activity

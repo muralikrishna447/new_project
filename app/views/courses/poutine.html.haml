@@ -10,9 +10,12 @@
 
 - if current_user
   :javascript
-    mixpanel.track('Course Viewed', {'distinct_id' : "#{current_user.id}", 'course' : "#{course.title}", 'url' : window.location.pathname});
+    mixpanel.track('Course Viewed', {'distinct_id' : "#{current_user.email}", 'course' : "#{course.title}", 'url' : window.location.pathname});
+    mixpanel.people.increment('Course Viewed Count')
+
 - else
   :javascript
     mixpanel.track('Course Viewed', {'course' : "#{course.title}", 'url' : window.location.pathname});
+    mixpanel.people.increment('Course Viewed Count')
 
 #course-title(data-course="#{course.title}")

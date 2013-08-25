@@ -6,7 +6,7 @@ feature 'timeline' do
     @activity = Fabricate :activity, title: 'A recipe'
     @upload = Fabricate :upload, title: 'My awesome Lamb Burger', notes: 'This is a story of the greatest lamb burger ever.', activity_id: @activity.id
     @poll = Fabricate :poll, title: 'Test Poll', description: 'Test Poll description'
-    @poll_item = Fabricate :poll_item, title: 'Test Poll Item', description: 'Test Poll Item description'
+    @poll_item = Fabricate :poll_item, title: 'Test Poll Item', description: 'Test Poll Item description', poll: @poll
     @user = Fabricate :user, name: 'Test User', email: 'test@test.com'
   end
 

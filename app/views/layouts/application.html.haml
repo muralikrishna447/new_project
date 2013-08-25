@@ -66,4 +66,4 @@
 -# This load on every page, so a convenient place to make sure mixpanel identity is known
 - if current_user
   :javascript
-    mixpanel.identify("#{current_user.id}")
+    mixpanel.identify("#{current_user.email}")
