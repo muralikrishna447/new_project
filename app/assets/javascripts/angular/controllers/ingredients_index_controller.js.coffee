@@ -7,6 +7,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     console.log v
 
   cellEditableTemplate = "<input style=\"width: 90%\" ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ui-event=\'{blur: \"updateEntity(col, row, cellValue)\"}\' ng-model='cellValue'/>";
+  cellEditableTemplate = "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ng-change=\"updateEntity2(row.entity)\"/>"
 
   Ingredient = $resource( "/ingredients/:id",
     {},
@@ -26,7 +27,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         result = result.replace('www.', '')
       result
     else
-      ""
+      "&nbsp;"
 
   $scope.sortByNiceURL = (a, b) ->
     na = $scope.urlAsNiceText(a)
@@ -39,8 +40,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     data: 'displayIngredients'
     showSelectionCheckbox: true
     selectWithCheckboxOnly: true
-    showColumnMenu: true
     enableCellEditOnFocus: true
+    enableColumnReordering: true
+    groupable: false
     columnDefs: [
       {
         field: "title"
@@ -52,11 +54,20 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       },
       {
         field: "product_url"
+        displayName: ""
+        width: 24
+        maxWidth: 24
+        enableCellEdit: false
+        sortFn: $scope.sortByNiceURL,
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a href="{{row.getProperty(col.field)}}" target="_blank"  ng-show="row.getProperty(col.field)" ><i class="icon-external-link"></i></a></div>'
+      }
+      {
+        field: "product_url"
         displayName: "Affiliate Link"
         width: "**"
         enableCellEdit: true
         sortFn: $scope.sortByNiceURL,
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><a href="{{row.getProperty(col.field)}}" target="_blank" ng-show="row.getProperty(col.field)"><i class="icon-external-link"></i></a>{{urlAsNiceText(row.getProperty(col.field))}}</div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><span ng-bind-html-unsafe=\"urlAsNiceText(row.getProperty(col.field))\"/></div>'
         editableCellTemplate: cellEditableTemplate
       }
     ]
@@ -65,6 +76,10 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     console.log(row.entity)
     console.log(column.field)
     row.entity[column.field] = cellValue
+
+  $scope.updateEntity2 =  (entity) ->
+    console.log(entity)
+    Ingredient.update({id: entity.id}, entity)
 
   $scope.updateFilter = ->
     $scope.displayIngredients = $filter("orderBy")($scope.ingredients, "title")
