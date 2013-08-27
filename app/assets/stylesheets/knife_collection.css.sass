@@ -120,6 +120,50 @@
     left: 50%
     top: 69%
 
+.knife-modal
+  position: fixed
+  top: 0px
+  right: 0px
+  bottom: 0px
+  left: 50%
+  margin: 5%
+  margin-top: 20px
+  margin-bottom: 40px
+  margin-left: -250px
+  padding: 10px
+  width: 90%
+  @include boxsizing
+  max-height: inherit
+  max-width: 500px
+  .knife-modal-header
+    position: absolute
+    top: 0px
+    left: 0px
+    right: 0px
+    padding: 10px
+    background: white
+    z-index: 2
+    h3
+      padding: 0px
+      margin: 0px
+      text-align: center
+  .knife-modal-body
+    position: absolute
+    margin-top: 60px
+    margin-bottom: 53px
+    top: 0px
+    bottom: 10px
+    left: 10px
+    right: 10px
+    overflow-y: auto
+    img
+      width: 100%
+  .knife-modal-footer
+    position: absolute
+    bottom: 10px
+    left: 10px
+    right: 10px
+
 @media (min-width: 1160px)
   .knife.first
     margin-top: 350px
@@ -149,6 +193,10 @@
       height: 32px
       width: 32px
       padding: 0px 0px
+
+  .knife-modal
+    left: 0px
+    margin-left: 5%
 
 @media (max-width: 480px)
   .knife.first
