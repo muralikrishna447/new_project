@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
   belongs_to :trackable, polymorphic: true
 
   # default_scope includes(:user).order('created_at DESC')
-  scope :timeline, where('action <> ?', 'show')
+  scope :timeline, where('action <> ?', 'show').order('created_at DESC')
   scope :unviewed, where(viewed: false)
   scope :published, where(published: true)
 
