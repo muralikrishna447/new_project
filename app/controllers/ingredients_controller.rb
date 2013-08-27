@@ -4,9 +4,10 @@ class IngredientsController < ApplicationController
   def index
     respond_to do |format|
       format.json do
-        result = Ingredient.where('title iLIKE ?', '%' + params[:q] + '%').all
+        result = Ingredient.where('title iLIKE ?', '%' + params[:q] + '%').order(:title).offset(params[:offset]).limit(params[:limit])
         #result = result.select { |i| (! i.sub_activity_id) || Activity.find(i.sub_activity_id).published || (Activity.find(i.sub_activity_id).creator == nil) }
-        render :json => result.to_json(include: [activities: {only: :id}, steps: {only: :id}])
+        render :json => result.to_json(include: [activities: {only: :id}, steps: {include: :title}])
+        #render :json => result.to_json
       end
 
       format.html do

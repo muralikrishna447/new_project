@@ -2,6 +2,8 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.searchString = ""
   $scope.dataLoading = 0
   $scope.cellValue = ""
+  $scope.perPage = 20
+  $scope.sortInfo = {fields: ["title"], directions: ["desc"]}
 
   $scope.$watch 'cellValue', (v) ->
     console.log v
@@ -15,7 +17,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       update: {method: "PUT"},
     }
   )
-
 
   $scope.urlAsNiceText = (url) ->
     if url
@@ -43,6 +44,8 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     enableCellEditOnFocus: true
     enableColumnReordering: true
     groupable: false
+    useExternalSorting: true
+    sortInfo: $scope.sortInfo
     columnDefs: [
       {
         field: "title"
@@ -70,6 +73,12 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         cellTemplate: '<div class="ngCellText colt{{$index}}"><span ng-bind-html-unsafe=\"urlAsNiceText(row.getProperty(col.field))\"/></div>'
         editableCellTemplate: cellEditableTemplate
       }
+      {
+        field: "use_count"
+        displayName: "Uses"
+        width: "*"
+        enableCellEdit: false
+      }
     ]
 
   $scope.updateEntity =  (column, row, cellValue) ->
@@ -82,27 +91,42 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     Ingredient.update({id: entity.id}, entity)
 
   $scope.updateFilter = ->
-    $scope.displayIngredients = $filter("orderBy")($scope.ingredients, "title")
+    $scope.displayIngredients = _.reject($scope.ingredients, (x) -> x.title == "")
     if ! $scope.includeRecipes
       $scope.displayIngredients = _.reject($scope.displayIngredients, (x) -> x.sub_activity_id?)
 
-  $scope.findIngredients = (term) ->
+  $scope.computeUseCount = (item) ->
+    step_activities =_.map(item.steps, (s) -> s.activity)
+    act = _.union(item.activities, step_activities)
+    item.use_count = act.length
+
+  $scope.loadIngredients =  ->
     $scope.dataLoading = $scope.dataLoading + 1
-    Ingredient.query({q: (term || "")},
+    searchWas = $scope.searchString
+    Ingredient.query({q: ($scope.searchString || ""), sort: $scope.sortInfo.fields[0], dir: $scope.sortInfo.directions[0], offset: $scope.ingredients.length, limit: $scope.perPage},
     (response) ->
       $scope.dataLoading = $scope.dataLoading - 1
       # Avoid race condition with results coming in out of order
-      if term == $scope.searchString
-        $scope.ingredients = _.reject(response, (x) -> x.title == "")
+      if searchWas == $scope.searchString
+        _.each(response, (item) -> $scope.computeUseCount(item))
+        $scope.ingredients = _.flatten([$scope.ingredients, response])
         $scope.updateFilter()
     , (err) ->
       alert(err)
     )
 
-  $scope.$watch 'searchString', (newValue) ->
-    $scope.findIngredients(newValue)
+  $scope.resetIngredients = ->
+    $scope.ingredients = []
+    $scope.displayIngredients = []
+    $scope.loadIngredients()
+
+  $scope.$watch 'searchString',  ->
+    $scope.resetIngredients()
+
+  $scope.$watch 'gridOptions.sortInfo', ->
+    $scope.resetIngredients()
 
   $scope.$watch 'includeRecipes', ->
-    $scope.updateFilter()
+    $scope.resetIngredients()
 
 ]
