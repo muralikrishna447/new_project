@@ -1,5 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
-
+  include Devise::Controllers::Rememberable
   def new
     self.resource = build_resource(nil, :unsafe => true)
     clean_up_passwords(resource)
@@ -14,7 +14,10 @@ class Users::SessionsController < Devise::SessionsController
   def create
     cookies[:returning_visitor] = true
     super
-    mixpanel.track 'Signed In', { distinct_id: current_user.id }
+    remember_me(current_user)
+    mixpanel.track 'Signed In', { distinct_id: current_user.email }
+    mixpanel.append_identify current_user.email
+    mixpanel.increment 'Signed In Count'
   end
 
   def signin_and_enroll
@@ -22,7 +25,8 @@ class Users::SessionsController < Devise::SessionsController
     @course = Course.find(params[:course_id])
     if @user.valid_password?(params[:password])
       sign_in @user
-      mixpanel.track 'Signed In', { distinct_id: @user.id }
+      mixpanel.track 'Signed In', { distinct_id: @user.email }
+      mixpanel.append_identify @user.email
       @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
       if @enrollment.save
         redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Course!"

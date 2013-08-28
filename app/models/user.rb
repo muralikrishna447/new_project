@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
   validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
 
-  ROLES = %w[admin moderator user banned]
+  ROLES = %w[admin contractor moderator user banned]
 
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
@@ -104,6 +104,12 @@ class User < ActiveRecord::Base
       end
     end
     stream_events.group_by{|e| [e.group_type, e.group_name]}.sort_by{|group| group[1].first.created_at}.reverse
+  end
+
+  def followings_stream
+    stream_events = Event.includes(:trackable).timeline.where(user_id: self.following_ids).where('action != ?', 'received_create')
+    # stream_events.group_by{|e| [e.group_type, e.group_name]}.sort_by{|group| group[1].first.created_at}.reverse
+    stream_events.uniq!{|e| e.group_name}
   end
 
   def follow(user)

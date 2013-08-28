@@ -56,6 +56,7 @@ Delve::Application.routes.draw do
   get 'about' => 'home#about', as: 'about'
   get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
   match '/mp', to: redirect('/courses/spherification')
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
@@ -140,6 +141,8 @@ Delve::Application.routes.draw do
     resources :comments
   end
   resources :projects, controller: :assemblies
+  resources :streams, only: [:index, :show]
+  get 'community-activity' => 'streams#feed', as: 'community_activity'
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
@@ -147,6 +150,7 @@ Delve::Application.routes.draw do
   match "/splitty/finished", :controller => "splitty", :action => "finish_split"
 
   resources :client_views, only: [:show]
+  resources :stream_views, only: [:show]
 
 end
 

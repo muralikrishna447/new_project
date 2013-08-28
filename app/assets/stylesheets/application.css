@@ -41,4 +41,6 @@
  *= require stream
  *= require embed
  *= require projects
+ *= require home
+ *= require knife_collection
  */

@@ -7,7 +7,7 @@ class CoursesController < ApplicationController
   expose(:bio_grant) { Copy.find_by_location('instructor-grant') }
 
   def index
-    @courses = Course.published.page(params[:page]).per(12)
+    @courses = Course.published.order('updated_at desc').page(params[:page]).per(12)
   end
 
   def show
