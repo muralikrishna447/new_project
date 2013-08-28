@@ -19,12 +19,14 @@ class IngredientsController < ApplicationController
       end
 
       format.html do
+        authorize! :update, Ingredient
         render
       end
     end
   end
 
   def update
+    authorize! :update, Ingredient
     respond_to do |format|
       format.json do
         @ingredient = Ingredient.find(params[:id])
