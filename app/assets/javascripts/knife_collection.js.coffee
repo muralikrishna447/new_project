@@ -22,3 +22,25 @@ $ ->
     $(this).closest('.modal-body').children('img').hide()
     idx = $(this).parent().index()
     $($(this).closest('.modal-body').children('img')[idx]).removeClass('hidden').fadeIn()
+
+
+# Annotation Sliders #
+
+$ ->
+  $('.annotation-slider-container').each ->
+    slider = $(this).find('.annotation-slider')
+    slider.find('.annotation-slider-btn').each ->
+      button = $(this)
+      button.click ->
+        direction = button.data('annotation-slider-reveal')
+        console.log 'CLICKED' + direction
+        if direction == 'left'
+          slider.css 'left', '30%'
+          # slider.removeClass('annotation-reveal-right')
+          # slider.addClass('annotation-reveal-left')
+        else
+          slider.css 'left', '-30%'
+          # slider.removeClass('annotation-reveal-left')
+          # slider.addClass('annotation-reveal-right')
+    slider.find('.annotation-slider-close').click ->
+      slider.css 'left', '0'

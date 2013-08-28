@@ -203,3 +203,52 @@
   .knife.first
     margin-top: 600px
 
+// Annotation Slider //
+
+.annotation-slider-container
+  overflow: hidden
+  .annotation-reveal-left
+    left: 300px
+  .annotation-reveal-right
+    right: 300px
+  .annotation-slider
+    position: relative
+    -webkit-backface-visibility: hidden
+    -webkit-transform-style: preserve-3d
+    @include transition(all 300ms)
+    .annotation-slider-image
+    .annotation-slider-note
+      position: absolute
+      top: 0px
+      bottom: 0px
+      width: 28%
+      padding: 10px
+      margin: 0px 1%
+      border: 1px solid $light-gray
+      @include boxsizing
+    .note-left
+      left: -30%
+      top: 0px
+    .note-right
+      right: -30%
+      top: 0px
+
+    .annotation-buttons
+      .annotation-slider-btn
+        background: $orange
+        color: white
+        position: absolute
+        font-size: 40px
+        text-align: center
+        border-radius: 25px
+        padding: 10px
+        width: 44px
+        height: 44px
+        @include boxsizing
+      #asai-1
+        left: 25%
+        top: 65%
+      
+      #asai-2
+        left: 73%
+        top: 54%

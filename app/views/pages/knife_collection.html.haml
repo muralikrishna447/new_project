@@ -170,15 +170,51 @@
       %h4.media-heading Asai
       High in the Japanese Alps, in the small town of Takefu in the Fukui Prefecture, fifth-generation blacksmith Masami Asai forges some of the most distinctive handmade kitchen knives in the world. 
 
-.container-fluid
-  .container
-    .row.section
-      .span12.section.button-container
-        .add-button#asai-1
-          %a(href='#asai-ao-1' data-target='#asai-ao-1' data-toggle='modal') +
-        .add-button#asai-2
-          %a(href='#asai-ao-2' data-target='#asai-ao-2' data-toggle='modal') +
-        = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/qzxRQ0rPS2j4tFZKutmg')
+/ .container-fluid
+/   .container
+/     .row.section
+/       .span12.section.button-container
+/         .add-button#asai-1
+/           %a(href='#asai-ao-1' data-target='#asai-ao-1' data-toggle='modal') +
+/         .add-button#asai-2
+/           %a(href='#asai-ao-2' data-target='#asai-ao-2' data-toggle='modal') +
+/         = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/qzxRQ0rPS2j4tFZKutmg')
+
+.container
+  .row.section
+    .span12.section
+      .annotation-slider-container
+        .annotation-slider
+          .annotation-buttons
+            %a.annotation-slider-btn#asai-1(data-annotation-slider-reveal='left')
+              +
+            %a.annotation-slider-btn#asai-2(data-annotation-slider-reveal='right')
+              +
+          .annotation-slider-note.note-left
+            %a.annotation-slider-close
+              x
+            %h3 Asai Chef's Knife
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=550', :class => "main-image"
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=550', :class => "main-image hidden"
+            .section
+              %ul.inline
+                %li
+                  %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3")
+                    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=75'
+                %li
+                  %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw")
+                    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=75'
+            %p.section This high performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. A brushed stainless steel blade seems understated at first look (at least for Asai, whose knives usually feature highly stylized blades), but there’s intrigue here: after a few weeks of use, the carbon steel core gives way to a remarkable blue patina that need not be removed.
+            = buy_now(350234061,325)
+          .annotation-slider-image
+            = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/qzxRQ0rPS2j4tFZKutmg')
+          .annotation-slider-note.note-right
+            %a.annotation-slider-close
+              x
+            %h3 Asai Petty Knife
+            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/uAG5HZMRxCmnSpb5a7mA', :class => "main-image"
+            %p.section This high performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. A brushed stainless steel blade seems understated at first look (at least for Asai, whose knives usually feature highly stylized blades), but there’s intrigue here: after a few weeks of use, the carbon steel core gives way to a remarkable blue patina that need not be removed.
+            = buy_now(350067813,169)
 
 
 .knife.section
