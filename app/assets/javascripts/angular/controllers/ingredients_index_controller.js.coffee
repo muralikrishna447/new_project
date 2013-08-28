@@ -61,7 +61,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         width: 24
         maxWidth: 24
         enableCellEdit: false
-        sortFn: $scope.sortByNiceURL,
+        sortable: false,
         cellTemplate: '<div class="ngCellText colt{{$index}}"><a href="{{row.getProperty(col.field)}}" target="_blank"  ng-show="row.getProperty(col.field)" ><i class="icon-external-link"></i></a></div>'
       }
       {
@@ -78,6 +78,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         displayName: "Uses"
         width: "*"
         enableCellEdit: false
+        sortable: false
       }
     ]
 
@@ -132,6 +133,12 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.$watch 'gridOptions.sortInfo', ->
     $scope.resetIngredients()
+
+  prevSortInfo = {}
+  $scope.$on 'ngGridEventSorted', (event, sortInfo) ->
+    if ! _.isEqual(sortInfo, prevSortInfo)
+      prevSortInfo = jQuery.extend(true, {}, sortInfo)
+      $scope.resetIngredients()
 
   $scope.$watch 'includeRecipes', ->
     $scope.resetIngredients()
