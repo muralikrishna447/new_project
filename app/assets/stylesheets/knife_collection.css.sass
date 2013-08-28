@@ -216,6 +216,14 @@
     -webkit-backface-visibility: hidden
     -webkit-transform-style: preserve-3d
     @include transition(all 300ms)
+    .annotation-close-overlay
+      position: absolute
+      top: 0px
+      bottom: 0px
+      left: 0px
+      right: 0px
+      z-index: 9999
+      display: none
     .annotation-slider-image
     .annotation-slider-note
       position: absolute
@@ -240,11 +248,16 @@
         position: absolute
         font-size: 40px
         text-align: center
-        border-radius: 25px
-        padding: 10px
+        border-radius: 22px
+        padding: 9px
         width: 44px
         height: 44px
         @include boxsizing
+        @include transition(all 200ms)
+        &:hover
+          cursor: pointer
+          color: $offwhite
+          background: $darker-orange
       #asai-1
         left: 25%
         top: 65%
