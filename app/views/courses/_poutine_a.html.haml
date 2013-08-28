@@ -5,7 +5,7 @@
   .row.section
     .span6
       .video-container(ng-cloak=""){:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject", :csenforceaspect => true}
-        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url('ywv2KIRCOJE')}
+        %iframe(ng-style="setHeight()" csenforceaspect){src: youtube_url(course.youtube_id)}
       .section
         :markdown
           #{course.description}
