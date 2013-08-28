@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", ($scope, $resource, $http, $filter) ->
+angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", ($scope, $resource, $http, $filter, $timeout) ->
   $scope.searchString = ""
   $scope.dataLoading = 0
   $scope.cellValue = ""
@@ -95,9 +95,12 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     $scope.displayIngredients = $scope.ingredients
 
   $scope.computeUseCount = (item) ->
-    step_activities =_.map(item.steps, (s) -> s.activity)
-    act = _.union(item.activities, step_activities)
-    item.use_count = act.length
+    activity_ids = _.map(item.activities, (a) -> a.id)
+    step_ids = _.map(item.steps, (s) -> s.activity.id)
+    # Normally an ingredient shouldn't be in a step without being in the corresponding recipe, but
+    # it can happen.
+    u = _.union(activity_ids, step_ids)
+    item.use_count = u.length
 
   $scope.loadIngredients =  ->
     $scope.dataLoading = $scope.dataLoading + 1
@@ -128,12 +131,17 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     $scope.displayIngredients = []
     $scope.loadIngredients()
 
-  $scope.$watch 'searchString',  ->
-    $scope.resetIngredients()
+  $scope.$watch 'searchString',  (new_val) ->
+    # Don't search til the string has been stable for a bit, to avoid bogging down
+    $timeout ( ->
+      if new_val == $scope.searchString
+        $scope.resetIngredients()
+    ), 250
 
   $scope.$watch 'gridOptions.sortInfo', ->
     $scope.resetIngredients()
 
+  # Doc says to just watch sortInfo but not so much
   prevSortInfo = {}
   $scope.$on 'ngGridEventSorted', (event, sortInfo) ->
     if ! _.isEqual(sortInfo, prevSortInfo)
