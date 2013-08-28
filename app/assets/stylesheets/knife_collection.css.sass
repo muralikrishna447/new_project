@@ -213,6 +213,11 @@
     -webkit-backface-visibility: hidden
     -webkit-transform-style: preserve-3d
     @include transition(all 300ms ease-in-out)
+    .annotation-close-btn
+      position: absolute
+      top: 10px
+      right: 10px
+      color: $red
     .annotation-close-overlay
       position: absolute
       top: 0px
@@ -230,6 +235,8 @@
       margin: 0px 10px
       border: 1px solid $light-gray
       @include boxsizing
+      h3
+        margin: 0px
     .note-left
       left: -300px
       top: 0px
@@ -261,3 +268,7 @@
       #asai-2
         left: 73%
         top: 54%
+
+@media (max-width: 480px)
+  .annotation-slider-note
+    width: 100%
