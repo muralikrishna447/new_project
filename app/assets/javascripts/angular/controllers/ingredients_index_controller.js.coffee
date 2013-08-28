@@ -8,8 +8,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.$watch 'cellValue', (v) ->
     console.log v
 
-  cellEditableTemplate = "<input style=\"width: 90%\" ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ui-event=\'{blur: \"updateEntity(col, row, cellValue)\"}\' ng-model='cellValue'/>";
-  cellEditableTemplate = "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ng-change=\"updateEntity2(row.entity)\"/>"
+  cellEditableTemplate = "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ng-change=\"updateEntity(row.entity)\"/>"
 
   Ingredient = $resource( "/ingredients/:id",
     { detailed: true},
@@ -82,14 +81,19 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       }
     ]
 
-  $scope.updateEntity =  (column, row, cellValue) ->
-    console.log(row.entity)
-    console.log(column.field)
-    row.entity[column.field] = cellValue
-
-  $scope.updateEntity2 =  (entity) ->
+   $scope.updateEntity =  (entity) ->
     console.log(entity)
-    Ingredient.update({id: entity.id}, entity)
+    $scope.dataLoading = $scope.dataLoading + 1
+    entity.$update({id: entity.id},
+    (->
+      console.log("INGREDIENT SAVE WIN")
+      $scope.dataLoading = $scope.dataLoading - 1
+    ),
+    ((err) ->
+      console.log("INGREDIENT SAVE FAIL")
+      alert(err.data.errors)
+      $scope.dataLoading = $scope.dataLoading - 1
+    ))
 
   $scope.updateFilter = ->
     $scope.displayIngredients = $scope.ingredients
@@ -138,9 +142,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       if new_val == $scope.searchString
         $scope.resetIngredients()
     ), 250
-
-  $scope.$watch 'gridOptions.sortInfo', ->
-    $scope.resetIngredients()
 
   # Doc says to just watch sortInfo but not so much
   prevSortInfo = {}

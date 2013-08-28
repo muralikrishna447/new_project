@@ -30,8 +30,12 @@ class IngredientsController < ApplicationController
     respond_to do |format|
       format.json do
         @ingredient = Ingredient.find(params[:id])
-        @ingredient.update_attributes(params[:ingredient])
-        head :no_content
+        if @ingredient.sub_activity_id && params[:ingredient][:title] != @ingredient.title
+          render json: { errors: "Can't change name of ingredient that is a recipe"}, status: 422
+        else
+          @ingredient.update_attributes(params[:ingredient])
+          head :no_content
+        end
       end
     end
   end
