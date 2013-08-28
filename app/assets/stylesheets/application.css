@@ -29,6 +29,7 @@
  *= require bootstrap-wysihtml5
  *= require angular-ui
  *= require ng-grid.min
+
  *= require alert
  *= require registration
  *= require timeline

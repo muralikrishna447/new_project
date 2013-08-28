@@ -152,4 +152,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.$watch 'includeRecipes', ->
     $scope.resetIngredients()
 
+  $scope.$on 'ngGridEventScroll', ->
+    $scope.loadIngredients()
+
 ]
