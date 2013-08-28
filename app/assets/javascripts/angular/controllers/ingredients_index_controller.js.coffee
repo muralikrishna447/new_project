@@ -3,7 +3,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.dataLoading = 0
   $scope.cellValue = ""
   $scope.perPage = 20
-  $scope.sortInfo = {fields: ["title"], directions: ["desc"]}
+  $scope.sortInfo = {fields: ["title"], directions: ["asc"]}
 
   $scope.$watch 'cellValue', (v) ->
     console.log v
@@ -91,9 +91,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     Ingredient.update({id: entity.id}, entity)
 
   $scope.updateFilter = ->
-    $scope.displayIngredients = _.reject($scope.ingredients, (x) -> x.title == "")
-    if ! $scope.includeRecipes
-      $scope.displayIngredients = _.reject($scope.displayIngredients, (x) -> x.sub_activity_id?)
+    $scope.displayIngredients = $scope.ingredients
 
   $scope.computeUseCount = (item) ->
     step_activities =_.map(item.steps, (s) -> s.activity)
@@ -103,7 +101,15 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.loadIngredients =  ->
     $scope.dataLoading = $scope.dataLoading + 1
     searchWas = $scope.searchString
-    Ingredient.query({q: ($scope.searchString || ""), sort: $scope.sortInfo.fields[0], dir: $scope.sortInfo.directions[0], offset: $scope.ingredients.length, limit: $scope.perPage},
+
+    Ingredient.query(
+      search_title: ($scope.searchString || "")
+      include_sub_activities: $scope.includeRecipes
+      sort: $scope.sortInfo.fields[0]
+      dir: $scope.sortInfo.directions[0]
+      offset: $scope.ingredients.length
+      limit: $scope.perPage,
+
     (response) ->
       $scope.dataLoading = $scope.dataLoading - 1
       # Avoid race condition with results coming in out of order
@@ -111,6 +117,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         _.each(response, (item) -> $scope.computeUseCount(item))
         $scope.ingredients = _.flatten([$scope.ingredients, response])
         $scope.updateFilter()
+
     , (err) ->
       alert(err)
     )

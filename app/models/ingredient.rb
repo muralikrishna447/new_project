@@ -14,6 +14,9 @@ class Ingredient < ActiveRecord::Base
   # a (nested) activity - which may in turn be used in some activity.
   attr_accessible :sub_activity_id
 
+  scope :search_title, -> title { where('title iLIKE ?', '%' + title + '%') }
+  scope :no_sub_activities, where('sub_activity_id IS NULL')
+
   before_save :fix_title
   def fix_title
     if self.sub_activity_id?
