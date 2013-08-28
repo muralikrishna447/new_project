@@ -207,15 +207,12 @@
 
 .annotation-slider-container
   overflow: hidden
-  .annotation-reveal-left
-    left: 300px
-  .annotation-reveal-right
-    right: 300px
+  @include transition(all 300ms ease-in-out)
   .annotation-slider
     position: relative
     -webkit-backface-visibility: hidden
     -webkit-transform-style: preserve-3d
-    @include transition(all 300ms)
+    @include transition(all 300ms ease-in-out)
     .annotation-close-overlay
       position: absolute
       top: 0px
@@ -228,17 +225,16 @@
     .annotation-slider-note
       position: absolute
       top: 0px
-      bottom: 0px
-      width: 28%
+      width: 280px
       padding: 10px
-      margin: 0px 1%
+      margin: 0px 10px
       border: 1px solid $light-gray
       @include boxsizing
     .note-left
-      left: -30%
+      left: -300px
       top: 0px
     .note-right
-      right: -30%
+      right: -300px
       top: 0px
 
     .annotation-buttons

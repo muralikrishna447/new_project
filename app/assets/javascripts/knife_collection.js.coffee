@@ -27,18 +27,30 @@ $ ->
 # Annotation Sliders #
 
 annotationSlide = (slider, direction) ->
+  slider_parent = slider.closest('.annotation-slider-container')
+  notes = slider.find('.annotation-slider-note')
+  note_width = slider.find('.annotation-slider-note').outerWidth() + 20
+
+  heights = []
+  notes.each ->
+    heights.push($(this).outerHeight())
+
+  note_height = Math.max.apply(Math,heights)
+  console.log note_height
+
   if direction == 'left'
-    slider.css 'left', '30%'
-    # slider.removeClass('annotation-reveal-right')
-    # slider.addClass('annotation-reveal-left')
+    slider.css 'left', note_width
   else
-    slider.css 'left', '-30%'
-    # slider.removeClass('annotation-reveal-left')
-    # slider.addClass('annotation-reveal-right')
+    slider.css 'left', '-' + note_width
+
+  slider_parent.css 'height', note_height
   slider.find('.annotation-close-overlay').show()
 
 annotationClose = (slider) ->
+  slider_parent = slider.closest('.annotation-slider-container')
+  slider_height = slider.outerHeight()
   slider.css 'left', '0'
+  slider_parent.css 'height', slider_height
 
 $ ->
   $('.annotation-slider-container').each ->
