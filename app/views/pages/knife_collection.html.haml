@@ -164,11 +164,11 @@
 
 /____________ START KNIFE PRODUCTS_____________ / 
 
-.knife.first
-  .row.section
-    .span10.offset2
-      %h4.media-heading Asai
-      High in the Japanese Alps, in the small town of Takefu in the Fukui Prefecture, fifth-generation blacksmith Masami Asai forges some of the most distinctive handmade kitchen knives in the world. 
+/ .knife.first
+/   .row.section
+/     .span10.offset2
+/       %h4.media-heading Asai
+/       High in the Japanese Alps, in the small town of Takefu in the Fukui Prefecture, fifth-generation blacksmith Masami Asai forges some of the most distinctive handmade kitchen knives in the world. 
 
 / .container-fluid
 /   .container
@@ -179,6 +179,63 @@
 /         .add-button#asai-2
 /           %a(href='#asai-ao-2' data-target='#asai-ao-2' data-toggle='modal') +
 /         = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/qzxRQ0rPS2j4tFZKutmg')
+
+/ .knife.section
+/   .row.section
+/     .span10.offset2
+/       %h4.media-heading Ohishi Hammer
+/       Ohishi produces some of the finest-quality factory knives in the world, with stylized, ultra-thin blades that surpass most German and American handmade knives in both performance and beauty.
+
+/ .container-fluid
+/   .container
+/     .row.section
+/       .span12.section.button-container
+/         .add-button#ohishi-1
+/           %a(href='#ohishi-hammer-1' data-target='#ohishi-hammer-1' data-toggle='modal') +
+/         .add-button#ohishi-2
+/           %a(href='#ohishi-hammer-2' data-target='#ohishi-hammer-2' data-toggle='modal') +
+/         = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/XPuEItyPTOaL2iO5r79j')
+
+/ .knife.section
+/   .row.section
+/     .span10.offset2
+/       %h4.media-heading Yoshikane 
+/       Widely regarded as one of the most influential knifemakers in Japan, Tsuneo Yoshida handcrafts each Yoshikane knife with unmatched precision and artistry in his shop in Sanjo City.  Every Yoshikane knife is a work of art, each completely unique in its handmade construction, with a beauty matched only by performance—these blades are considered among the highest-quality available, with exceptional edge holding and comfortable feel.
+
+
+/ .container-fluid
+/   .container
+/     .row.section
+/       .span12.section.button-container
+/         .add-button#yoshikane-1
+/           %a(href='#yoshikane-sld-1' data-target='#yoshikane-sld-1' data-toggle='modal') +
+/         .add-button#yoshikane-2
+/           %a(href='#yoshikane-sld-2' data-target='#yoshikane-sld-2' data-toggle='modal') +
+
+/         = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/MfWzTk4YRGm7SOQf2iUT')
+
+/ .knife.section
+/   .row.section
+/     .span10.offset2
+/       %h4.media-heading 
+/         Sharpening Stones Kit
+/       :markdown 
+/         A collection of high-quality knives requires a collection of high-quality waterstones to match. These professional-grade stones, designed specifically to sharpen high-quality steel, will keep your knives in superb condition for years to come. (Lower grade stones are often fragmented in their particle composition, making sharpening difficult and inconsistent.) Fix a broken tip, repair a damaged edge, polish your blade, or hone to razor sharp: This kit has everything you need to care for your finest knives. And [here’s how](http://www.chefsteps.com/activities/how-to-sharpen-a-knifecourse).
+
+
+/ .container-fluid
+/   .container
+/     .row.section
+/       .span12.section.button-container
+/         .add-button#sharpening
+/           %a(href='#sharpening-1' data-target='#sharpening-1' data-toggle='modal') +
+/         = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/t3l7VdjR1qjMMWTNufwJ')
+
+.knife.first
+  .row.section
+    .span10.offset2
+      %h4.media-heading Asai
+      High in the Japanese Alps, in the small town of Takefu in the Fukui Prefecture, fifth-generation blacksmith Masami Asai forges some of the most distinctive handmade kitchen knives in the world. 
 
 .container
   .row.section
@@ -195,16 +252,27 @@
             %a.annotation-close-btn
               %i.icon-remove
             %h3 Asai Chef's Knife
-            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=550', :class => "main-image"
-            = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=550', :class => "main-image hidden"
-            .section
-              %ul.inline
-                %li
-                  %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3")
-                    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=75'
-                %li
-                  %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw")
-                    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=75'
+            .annotation-slider-note-gallery
+              .annotation-slider-note-gallery-images
+                .annotation-slider-note-gallery-image
+                  = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=550'
+                .annotation-slider-note-gallery-image
+                  = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=550'
+              .annotation-slider-note-gallery-thumbnails
+                .annotation-slider-note-gallery-thumbnail
+                  = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=75'
+                .annotation-slider-note-gallery-thumbnail
+                  = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=75'
+            / = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=550', :class => "main-image"
+            / = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=550', :class => "main-image hidden"
+            / .section
+            /   %ul.inline
+            /     %li
+            /       %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3")
+            /         = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=75'
+            /     %li
+            /       %a(href="https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw")
+            /         = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=75'
             %p.section This high performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. A brushed stainless steel blade seems understated at first look (at least for Asai, whose knives usually feature highly stylized blades), but there’s intrigue here: after a few weeks of use, the carbon steel core gives way to a remarkable blue patina that need not be removed.
             = buy_now(350234061,325)
           .annotation-slider-image
@@ -216,59 +284,6 @@
             = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/uAG5HZMRxCmnSpb5a7mA', :class => "main-image"
             %p.section This high performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. A brushed stainless steel blade seems understated at first look (at least for Asai, whose knives usually feature highly stylized blades), but there’s intrigue here: after a few weeks of use, the carbon steel core gives way to a remarkable blue patina that need not be removed.
             = buy_now(350067813,169)
-
-
-.knife.section
-  .row.section
-    .span10.offset2
-      %h4.media-heading Ohishi Hammer
-      Ohishi produces some of the finest-quality factory knives in the world, with stylized, ultra-thin blades that surpass most German and American handmade knives in both performance and beauty.
-
-.container-fluid
-  .container
-    .row.section
-      .span12.section.button-container
-        .add-button#ohishi-1
-          %a(href='#ohishi-hammer-1' data-target='#ohishi-hammer-1' data-toggle='modal') +
-        .add-button#ohishi-2
-          %a(href='#ohishi-hammer-2' data-target='#ohishi-hammer-2' data-toggle='modal') +
-        = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/XPuEItyPTOaL2iO5r79j')
-
-.knife.section
-  .row.section
-    .span10.offset2
-      %h4.media-heading Yoshikane 
-      Widely regarded as one of the most influential knifemakers in Japan, Tsuneo Yoshida handcrafts each Yoshikane knife with unmatched precision and artistry in his shop in Sanjo City.  Every Yoshikane knife is a work of art, each completely unique in its handmade construction, with a beauty matched only by performance—these blades are considered among the highest-quality available, with exceptional edge holding and comfortable feel.
-
-
-.container-fluid
-  .container
-    .row.section
-      .span12.section.button-container
-        .add-button#yoshikane-1
-          %a(href='#yoshikane-sld-1' data-target='#yoshikane-sld-1' data-toggle='modal') +
-        .add-button#yoshikane-2
-          %a(href='#yoshikane-sld-2' data-target='#yoshikane-sld-2' data-toggle='modal') +
-
-        = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/MfWzTk4YRGm7SOQf2iUT')
-
-.knife.section
-  .row.section
-    .span10.offset2
-      %h4.media-heading 
-        Sharpening Stones Kit
-      :markdown 
-        A collection of high-quality knives requires a collection of high-quality waterstones to match. These professional-grade stones, designed specifically to sharpen high-quality steel, will keep your knives in superb condition for years to come. (Lower grade stones are often fragmented in their particle composition, making sharpening difficult and inconsistent.) Fix a broken tip, repair a damaged edge, polish your blade, or hone to razor sharp: This kit has everything you need to care for your finest knives. And [here’s how](http://www.chefsteps.com/activities/how-to-sharpen-a-knifecourse).
-
-
-.container-fluid
-  .container
-    .row.section
-      .span12.section.button-container
-        .add-button#sharpening
-          %a(href='#sharpening-1' data-target='#sharpening-1' data-toggle='modal') +
-        = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/t3l7VdjR1qjMMWTNufwJ')
-
 
 = render 'layouts/footer'
 

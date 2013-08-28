@@ -37,7 +37,6 @@ annotationSlide = (slider, direction) ->
     heights.push($(this).outerHeight())
 
   note_height = Math.max.apply(Math,heights)
-  console.log note_height
 
   if direction == 'left'
     slider.css 'left', note_width
@@ -84,3 +83,20 @@ $ ->
     overlay.click ->
       annotationClose(slider)
       overlay.hide()
+
+  $('.annotation-slider-note-gallery').each ->
+    gallery = $(this)
+    images = gallery.find('.annotation-slider-note-gallery-images')
+    thumbnails = gallery.find('.annotation-slider-note-gallery-thumbnail')
+    thumbnails.each (thumbnail_index) ->
+      thumbnail = $(this)
+      thumbnail.click ->
+        console.log thumbnail_index
+        console.log images[0]
+        images.find('.annotation-slider-note-gallery-image').each (image_index) ->
+          if thumbnail_index == image_index
+            console.log 'show ' + image_index
+            $(this).css 'opacity', 1
+          else
+            console.log 'hide ' + image_index
+            $(this).css 'opacity', 0
