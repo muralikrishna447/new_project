@@ -10,9 +10,11 @@
         %label.checkbox
           %input(ng-model="includeRecipes" type="checkbox")
             Include Recipes
-        %button.btn.btn-primary(ng-click="loadIngredients()")
-          More
         %i.icon-spinner.icon-spin(ng-show="dataLoading")
 
   .row.section-small
     .ingredient-index.span12(ng-grid="gridOptions")
+
+  .row.section-small
+    %button.btn.btn-primary(ng-click="loadIngredients()")
+      Load more...

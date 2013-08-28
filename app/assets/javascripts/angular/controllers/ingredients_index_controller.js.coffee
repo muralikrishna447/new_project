@@ -2,7 +2,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.searchString = ""
   $scope.dataLoading = 0
   $scope.cellValue = ""
-  $scope.perPage = 20
+  $scope.perPage = 16
   $scope.sortInfo = {fields: ["title"], directions: ["asc"]}
 
   $scope.$watch 'cellValue', (v) ->
@@ -12,7 +12,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   cellEditableTemplate = "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ng-change=\"updateEntity2(row.entity)\"/>"
 
   Ingredient = $resource( "/ingredients/:id",
-    {},
+    { detailed: true},
     {
       update: {method: "PUT"},
     }
@@ -105,13 +105,14 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.loadIngredients =  ->
     $scope.dataLoading = $scope.dataLoading + 1
     searchWas = $scope.searchString
+    offset = $scope.ingredients.length
 
     Ingredient.query(
       search_title: ($scope.searchString || "")
       include_sub_activities: $scope.includeRecipes
       sort: $scope.sortInfo.fields[0]
       dir: $scope.sortInfo.directions[0]
-      offset: $scope.ingredients.length
+      offset: offset
       limit: $scope.perPage,
 
     (response) ->
@@ -119,7 +120,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       # Avoid race condition with results coming in out of order
       if searchWas == $scope.searchString
         _.each(response, (item) -> $scope.computeUseCount(item))
-        $scope.ingredients = _.flatten([$scope.ingredients, response])
+        $scope.ingredients[offset..offset + $scope.perPage] = response
         $scope.updateFilter()
 
     , (err) ->
