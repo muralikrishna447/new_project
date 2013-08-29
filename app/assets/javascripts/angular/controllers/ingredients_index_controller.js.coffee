@@ -5,6 +5,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.perPage = 16
   $scope.sortInfo = {fields: ["title"], directions: ["asc"]}
   $scope.alerts = []
+  $scope.toCommit = []
 
   $scope.$watch 'cellValue', (v) ->
     console.log v
@@ -83,19 +84,25 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     ]
 
    $scope.ingredientChanged =  (ingredient) ->
-     fix
-    console.log(ingredient)
-    $scope.dataLoading = $scope.dataLoading + 1
-    ingredient.$update({id: ingredient.id},
-    ( ->
-      console.log("INGREDIENT SAVE WIN")
-      $scope.dataLoading = $scope.dataLoading - 1
-    ),
-    ((err) ->
-      console.log("INGREDIENT SAVE FAIL")
-      _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
-      $scope.dataLoading = $scope.dataLoading - 1
-    ))
+    $scope.toCommit = _.union($scope.toCommit, ingredient)
+
+  $scope.$on 'ngGridEventEndCellEdit', ->
+    _.each($scope.toCommit, (ingredient) ->
+      console.log(ingredient)
+      $scope.dataLoading = $scope.dataLoading + 1
+      ingredient.$update({id: ingredient.id},
+      ( ->
+        console.log("INGREDIENT SAVE WIN")
+        $scope.dataLoading = $scope.dataLoading - 1
+      ),
+      ((err) ->
+        console.log("INGREDIENT SAVE FAIL")
+        _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
+        $scope.dataLoading = $scope.dataLoading - 1
+        $scope.resetIngredients()
+      ))
+    )
+    $scope.toCommit = []
 
   $scope.updateFilter = ->
     $scope.displayIngredients = $scope.ingredients

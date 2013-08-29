@@ -16,7 +16,7 @@
 
   .row.noprint(ng-cloak ng-show="alerts.length > 0")
     .span8.offset2
-      %alert.edit-alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="closeAlert($index)" ng-animate="'custom'")
+      %alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="closeAlert($index)" ng-animate="'custom'")
         {{alert.message}}
 
   .row.grid
