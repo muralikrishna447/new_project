@@ -26,7 +26,7 @@ $ ->
 
 # Annotation Sliders #
 
-annotationSlide = (slider, direction) ->
+annotationSlide = (slider, button, direction) ->
   slider_parent = slider.closest('.annotation-slider-container')
   slider_height = slider.outerHeight()
   notes = slider.find('.annotation-slider-note')
@@ -45,13 +45,14 @@ annotationSlide = (slider, direction) ->
 
   if note_height > slider_height
     slider_parent.css 'height', note_height
-
+  button.addClass('annotation-slider-btn-close')
   slider.find('.annotation-close-overlay').show()
 
 annotationClose = (slider) ->
   slider_parent = slider.closest('.annotation-slider-container')
   slider_height = slider.outerHeight()
   notes = slider.find('.annotation-slider-note')
+  slider_buttons = slider.find('.annotation-slider-btn')
   heights = []
   notes.each ->
     heights.push($(this).outerHeight())
@@ -62,6 +63,7 @@ annotationClose = (slider) ->
     slider_parent.css 'height', slider_height
 
   slider.css 'left', '0'
+  slider_buttons.removeClass('annotation-slider-btn-close')
 
 
 $ ->
@@ -72,7 +74,7 @@ $ ->
       button = $(this)
       button.click ->
         direction = button.data('annotation-slider-reveal')
-        annotationSlide(slider, direction)
+        annotationSlide(slider, button, direction)
 
     slider.find('.annotation-close-btn').each ->
       close_button = $(this)

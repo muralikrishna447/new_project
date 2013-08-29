@@ -226,6 +226,10 @@
       right: 0px
       z-index: 9999
       display: none
+      @include transition(all 200ms ease-in-out)
+      &:hover
+        background: rgba(0,0,0,.1)
+        cursor: pointer
     .annotation-slider-image
     .annotation-slider-note
       position: absolute
@@ -282,6 +286,11 @@
           cursor: pointer
           color: $offwhite
           background: $darker-orange
+
+      .annotation-slider-btn-close
+        background: $red
+        @include transform(rotate(45deg))
+
       #asai-1
         left: 25%
         top: 65%
