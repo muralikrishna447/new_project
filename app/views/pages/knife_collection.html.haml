@@ -249,12 +249,36 @@
 
               %h5 Honing Rod
               %p Ceramic honing rods keep your knife in excellent condition between sharpening. A high-quality ceramic rod removes minimal material, maintaining a razor sharp edge without reshaping or scratching the blade.
-              
+
             = buy_now(350238365,154)
           .annotation-slider-image
             = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/t3l7VdjR1qjMMWTNufwJ')
 
 // End Sharpening Stones //
+
+// Start Honing Rod //
+
+.container
+  .row.section
+    .span12.section
+      .annotation-slider-container
+        .annotation-slider
+          .annotation-close-overlay
+          .annotation-buttons
+            %a.annotation-slider-btn#honing(data-annotation-slider-reveal='right')
+              +
+          .annotation-slider-image
+            = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/hmePwJWDRpqFOpXzWQTV')
+          .annotation-slider-note.note-right
+            %a.annotation-close-btn
+              %i.icon-remove
+            %h3 Honing Rod
+            %p Ceramic honing rods keep your knife in excellent condition between sharpening. A high-quality ceramic rod removes minimal material, maintaining a razor sharp edge without reshaping or scratching the blade.
+            %small The honing rod is part of the Stone Sharpening Kit, but can also be purchased seperately in the store.
+
+// End Honing Rod //
+.section
+
 = render 'layouts/footer'
 
 

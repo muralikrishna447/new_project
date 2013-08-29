@@ -226,9 +226,7 @@
       right: 0px
       z-index: 9999
       display: none
-      @include transition(all 200ms ease-in-out)
       &:hover
-        background: rgba(0,0,0,.1)
         cursor: pointer
     .annotation-slider-image
     .annotation-slider-note
@@ -289,6 +287,8 @@
 
       .annotation-slider-btn-close
         background: $red
+        border: 3px solid white
+        padding: 6px
         @include transform(rotate(45deg))
 
       #asai-1
@@ -318,6 +318,10 @@
       #sharpening
         left: 40%
         top: 75%
+
+      #honing
+        left: 80%
+        top: 35%
 
 @media (max-width: 480px)
   .annotation-slider-note
