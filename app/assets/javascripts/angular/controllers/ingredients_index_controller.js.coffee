@@ -4,11 +4,12 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.cellValue = ""
   $scope.perPage = 16
   $scope.sortInfo = {fields: ["title"], directions: ["asc"]}
+  $scope.alerts = []
 
   $scope.$watch 'cellValue', (v) ->
     console.log v
 
-  cellEditableTemplate = "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ng-change=\"updateEntity(row.entity)\"/>"
+  cellEditableTemplate = "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ng-change=\"ingredientChanged(row.entity)\"/>"
 
   Ingredient = $resource( "/ingredients/:id",
     { detailed: true},
@@ -81,17 +82,18 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       }
     ]
 
-   $scope.updateEntity =  (entity) ->
-    console.log(entity)
+   $scope.ingredientChanged =  (ingredient) ->
+     fix
+    console.log(ingredient)
     $scope.dataLoading = $scope.dataLoading + 1
-    entity.$update({id: entity.id},
-    (->
+    ingredient.$update({id: ingredient.id},
+    ( ->
       console.log("INGREDIENT SAVE WIN")
       $scope.dataLoading = $scope.dataLoading - 1
     ),
     ((err) ->
       console.log("INGREDIENT SAVE FAIL")
-      alert(err.data.errors)
+      _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
       $scope.dataLoading = $scope.dataLoading - 1
     ))
 
@@ -155,5 +157,14 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.$on 'ngGridEventScroll', ->
     $scope.loadIngredients()
+
+  # DRY up with activity controller. Make a service or something.
+  $scope.addAlert = (alert) ->
+    $scope.alerts.push(alert)
+    $timeout ->
+      $("html, body").animate({ scrollTop: -500 }, "slow")
+
+  $scope.closeAlert = (index) ->
+    $scope.alerts.splice(index, 1)
 
 ]
