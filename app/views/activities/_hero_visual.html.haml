@@ -1,5 +1,6 @@
 .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-
+  %meta(itemprop='thumbnailUrl' content="{{featuredImageURL(400)}}")
+  %meta(itemprop='embedUrl' content="{{heroVideoURL()}}")
   .hero-visual
     %div(ng-switch="heroDisplayType()")
       %iframe.noprint#activityPlayer(ng-switch-when="video" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect webkitallowfullscreen mozallowfullscreen)
