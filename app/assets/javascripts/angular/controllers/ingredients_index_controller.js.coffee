@@ -86,8 +86,31 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
    $scope.ingredientChanged =  (ingredient) ->
     $scope.toCommit = _.union($scope.toCommit, ingredient)
 
+  # From http://stackoverflow.com/questions/5999118/add-or-update-query-string-parameter
+  updateQueryStringParameter = (uri, key, value) ->
+    re = new RegExp("([?|&])" + key + "=.*?(&|$)", "i")
+    separator = (if uri.indexOf("?") isnt -1 then "&" else "?")
+    if uri.match(re)
+      uri.replace re, "$1" + key + "=" + value + "$2"
+    else
+      uri + separator + key + "=" + value
+
+  fixAmazonLink = (i) ->
+    tag_value = "delvkitc-20"
+    tag = "tag=" + tag_value
+    url = i.product_url
+    if url
+      if url.match(/^[\w\d]{10}$/)
+        i.product_url = "http://www.amazon.com/gp/product/" + url + "/?" + tag
+      else if url.indexOf('amazon.com') != -1
+        if url.indexOf(tag) == -1
+          i.product_url = updateQueryStringParameter(url, "tag", tag_value)
+
+
+
   $scope.$on 'ngGridEventEndCellEdit', ->
     _.each($scope.toCommit, (ingredient) ->
+      fixAmazonLink(ingredient)
       console.log(ingredient)
       $scope.dataLoading = $scope.dataLoading + 1
       ingredient.$update({id: ingredient.id},
