@@ -11,6 +11,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     console.log v
 
   cellEditableTemplate = "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ng-change=\"ingredientChanged(row.entity)\"/>"
+  cellTitleEditableTemplate = "<input ng-readonly=\"row.getProperty('sub_activity_id')\"  ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ng-change=\"ingredientChanged(row.entity)\"/>"
 
   Ingredient = $resource( "/ingredients/:id",
     { detailed: true},
@@ -54,7 +55,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         width: "***"
         enableCellEdit: true
         cellTemplate: '<div class="ngCellText colt{{$index}}">{{row.getProperty(col.field)}}{{row.getProperty("sub_activity_id") && " [RECIPE]"}}</div>'
-        editableCellTemplate: cellEditableTemplate
+        editableCellTemplate: cellTitleEditableTemplate
       },
       {
         field: "product_url"
