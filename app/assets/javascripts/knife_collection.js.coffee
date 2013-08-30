@@ -7,13 +7,17 @@
 #       img.attr 'src', $imgURL
 #     ).fadeIn 100
 
-$ -> 
+$ ->
+  window_width = window.outerWidth
+  console.log window_width 
   $(window).scroll ->
-    if $(window).scrollTop() <= 50
-      $('#intro').fadeIn 'fast', 'easeInOutQuad'
+    if $(window).scrollTop() <= 60
+      if window_width > 767
+        $('#knife-intro').fadeIn 'fast', 'easeInOutQuad'
       $('.knife').removeClass 'alt'
-    else 
-      $('#intro').fadeOut 'fast','easeInOutQuad' 
+    else
+      if window_width > 767 
+        $('#knife-intro').fadeOut 'fast','easeInOutQuad' 
       $('.knife').addClass 'alt'
 
 $ -> 
