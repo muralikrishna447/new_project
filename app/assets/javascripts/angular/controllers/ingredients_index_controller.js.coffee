@@ -133,9 +133,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (val.use_count == 0) && (! val.sub_activity_id)), true)
 
   $scope.deleteSelected = ->
-    selected = $scope.gridOptions.selectedItems
-    $scope.gridOptions.selectedItems = []
-    _.each selected, (ingredient) ->
+    _.each $scope.gridOptions.selectedItems, (ingredient) ->
       $scope.dataLoading = $scope.dataLoading + 1
       ingredient.$delete({id: ingredient.id},
       ( ->
