@@ -6,4 +6,6 @@ class Page < ActiveRecord::Base
 
   validates :title, presence: true
   validates :content, presence: true
+
+  has_many :likes, as: :likeable, dependent: :destroy
 end
