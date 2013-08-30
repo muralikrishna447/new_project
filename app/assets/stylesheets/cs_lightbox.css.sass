@@ -32,6 +32,16 @@
     -o-box-shadow: 0px 0px 100px black
     img
       width: 100%
+  .cs-lightbox-close
+    position: fixed
+    top: 10px
+    right: 10px
+    color: white
+    font-size: 30px
+    @include transition(all 200ms ease-in-out)
+    &:hover
+      text-shadow: -2px 2px 10px black
+      cursor: pointer
 
 .show-cs-lightbox
   display: block

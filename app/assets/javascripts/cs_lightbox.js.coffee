@@ -31,3 +31,6 @@ $ ->
 
   $('.cs-lightbox-overlay').click ->
     closeLightbox(lightbox)
+
+  $('.cs-lightbox-close').click ->
+    closeLightbox(lightbox)
