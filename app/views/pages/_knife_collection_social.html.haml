@@ -1,0 +1,3 @@
+%div(ng-controller="NonAngularSocialController" ng-init="title='#{title}'; url='http://www.chefsteps.com/knife-collection'; media='#{image}?cache=true'")
+  -ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
+    = render '/layouts/share_button', split_name: split_name
