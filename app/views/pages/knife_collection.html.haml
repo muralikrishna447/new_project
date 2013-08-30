@@ -7,9 +7,7 @@
       = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/Ya5vpVc1RzysqAPC5ZIJ?cache=true')
     .span7
       %h1 ChefSteps Knife Collection
-      %div(ng-controller="NonAngularSocialController" ng-init="title='ChefSteps Knife Collection'; url='http://www.chefsteps.com/knife-collection'; media='https://d3awvtnmmsvyot.cloudfront.net/api/file/Ya5vpVc1RzysqAPC5ZIJ?cache=true'")
-        -ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
-          = render 'layouts/share_button', split_name: split_name
+      = render 'knife_collection_social', title: 'Chefsteps Knife Collection', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/Ya5vpVc1RzysqAPC5ZIJ'
       %p.section-small An exceptional knife should be the cornerstone of a cook's arsenal. It becomes an extension of your own hands; the tool with which you will create art and bring refinement to the table. A beautiful, high-quality knife will follow you to every kitchen and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice—all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best.
 
 // Start ASAI //
@@ -48,6 +46,7 @@
                   = render '/shared/open_lightbox', image_url: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw', thumbnail_width: '124'
                 .annotation-click-image
                   %small click images to enlarge
+            = render 'knife_collection_social', title: 'Asai Chef Knife', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3'
             %p.section Modeled after the French chef’s blade but with all the grace and beauty of a Japanese handmade knife, this Gyuto is exceptionally versatile as a general chef’s knife. The core is made of the finest Japanese carbon steel for unparalleled edge holding, and the blade’s distal tapering provides optimal balance and weight. A Makassar ebony handle and Pakkawood ferrules further classify this knife as a work of art.
             = buy_now(350234061,325)
           .annotation-slider-image
@@ -59,6 +58,7 @@
             = render '/shared/open_lightbox', image_url: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/uAG5HZMRxCmnSpb5a7mA', thumbnail_width: '258'
             .annotation-click-image
               %small click image to enlarge
+            = render 'knife_collection_social', title: 'Asai Petty Knife', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/uAG5HZMRxCmnSpb5a7mA'
             %p.section This high performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. A brushed stainless steel blade seems understated at first look (at least for Asai, whose knives usually feature highly stylized blades), but there’s intrigue here: after a few weeks of use, the carbon steel core gives way to a remarkable blue patina that need not be removed.
             = buy_now(350067813,169)
 
@@ -103,6 +103,7 @@
                   = render '/shared/open_lightbox', image_url: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/THxjO9E1TEqCyWaeytT7', thumbnail_width: '124'
                 .annotation-click-image
                   %small click images to enlarge
+            = render 'knife_collection_social', title: 'Ohishi Chef Knife', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/JuAyLXdSMSLoIyuVAqA4'
             %p.section With its thin blade geometry, solid pakkawood handle, and hammer finish, this knife is both beautiful and versatile. The blade has a VG10 super-steel core surrounded by 15 layers of stainless damascus for exceptional edge holding. The elegant tsuchime finish (meaning “hammered” in Japanese) forces food to fall away from the blade for enhanced efficiency.
             = buy_now(345914261,129)
           .annotation-slider-image
@@ -124,6 +125,7 @@
                   = render '/shared/open_lightbox', image_url: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/naTWQB6ySXOVZR1V4plT', thumbnail_width: '124'
                 .annotation-click-image
                   %small click images to enlarge
+            = render 'knife_collection_social', title: 'Ohishi Petty Knife', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/4VfViqxwSIO1O2kxWt5G'
             %p.section Perfect as a general purpose kitchen knife, this long, slender petty blade has a VG10 super-steel core for clean cutting, and a balanced pakkawood handle that’s durable and moisture-resistant. The elegant tsuchime finish (meaning “hammered” in Japanese) forces food to fall away from the blade for enhanced efficiency.
             = buy_now(345912499,84)
 
@@ -174,6 +176,7 @@
                   = render '/shared/open_lightbox', image_url: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/bU8eukytRrmpN16RiOKi', thumbnail_width: '124'
                 .annotation-click-image
                   %small click images to enlarge
+            = render 'knife_collection_social', title: 'Yoshikane Chef Knife', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/byaPReR5RPauvhY1Ze0t'
             %p.section This elegant all-purpose chef’s knife features a long, slim blade perfect for sawing meat and vegetables, with a subtly uneven surface that prevents food from sticking. It features extremely rare blond buffalo horn ferrules, an ambidextrous enju wood handle, and a slim two-tone blade for a perfectly balanced, exceptionally handsome knife.
             = buy_now(345920775,464)
           .annotation-slider-image
@@ -195,6 +198,7 @@
                   = render '/shared/open_lightbox', image_url: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/bU8eukytRrmpN16RiOKi', thumbnail_width: '124'
                 .annotation-click-image
                   %small click images to enlarge
+            = render 'knife_collection_social', title: 'Yoshikane Petty Knife', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/zxxRDkwzTDqesXVpJrle'
             %p.section Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade comprised of SLD stainless steel (core) and stainless steel damascus (surface) that slides easily through food. The blade’s suminagashi pattern (meaning "floating ink" in Japanese) together with its light enju wood handle (the same wood used for making Shinto shrines) makes it a perfect balance of artistry and performance.
             = buy_now(345920201,339)
 
@@ -242,6 +246,7 @@
                   = render '/shared/open_lightbox', image_url: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/73gcpvPeSTCeCMGHMeDr', thumbnail_width: '124'
                 .annotation-click-image
                   %small click images to enlarge
+            = render 'knife_collection_social', title: 'Sharpening Stone Kit', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/t3l7VdjR1qjMMWTNufwJ'
             %p.section
               Includes the following stones. For more details, see the shop page.
 
@@ -275,6 +280,7 @@
             %a.annotation-close-btn
               %i.icon-remove
             %h3 Honing Rod
+            = render 'knife_collection_social', title: 'Honing Rod', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/hmePwJWDRpqFOpXzWQTV'
             %p Ceramic honing rods keep your knife in excellent condition between sharpening. A high-quality ceramic rod removes minimal material, maintaining a razor sharp edge without reshaping or scratching the blade.
             = buy_now(345926695,29)
 
