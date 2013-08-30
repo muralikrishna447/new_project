@@ -45,4 +45,28 @@ class IngredientsController < ApplicationController
       end
     end
   end
+
+  def destroy
+    authorize! :update, Ingredient
+    @ingredient = Ingredient.find(params[:id])
+    respond_to do |format|
+      format.json do
+        begin
+          if @ingredient.sub_activity_id
+            raise "Can't delete ingredient that is a recipe"
+          elsif (@ingredient.activities.count) > 0 || (@ingredient.steps.count > 0)
+            raise "Can't delete an ingredient that is in use"
+          else
+            @ingredient.destroy
+            head :no_content
+          end
+        rescue Exception => e
+          messages = [] || @ingredient.errors.full_messages
+          messages.push(e.message)
+          render json: { errors: messages}, status: 422
+        end
+      end
+    end
+  end
+
 end

@@ -40,7 +40,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     -1
 
   $scope.gridOptions =
-    data: 'displayIngredients'
+    data: 'ingredients'
     showSelectionCheckbox: true
     selectWithCheckboxOnly: true
     enableCellEditOnFocus: true
@@ -48,6 +48,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     groupable: false
     useExternalSorting: true
     sortInfo: $scope.sortInfo
+    selectedItems: []
     columnDefs: [
       {
         field: "title"
@@ -107,8 +108,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         if url.indexOf(tag) == -1
           i.product_url = updateQueryStringParameter(url, "tag", tag_value)
 
-
-
   $scope.$on 'ngGridEventEndCellEdit', ->
     _.each($scope.toCommit, (ingredient) ->
       fixAmazonLink(ingredient)
@@ -128,8 +127,30 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     )
     $scope.toCommit = []
 
-  $scope.updateFilter = ->
-    $scope.displayIngredients = $scope.ingredients
+  $scope.canDelete = ->
+    return false if $scope.gridOptions.selectedItems.length == 0
+    _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (val.use_count == 0) && (! val.sub_activity_id)), true)
+
+  $scope.deleteSelected = ->
+    selected = $scope.gridOptions.selectedItems
+    $scope.gridOptions.selectedItems = []
+    _.each selected, (ingredient) ->
+      $scope.dataLoading = $scope.dataLoading + 1
+      ingredient.$delete({id: ingredient.id},
+      ( ->
+        console.log("INGREDIENT DELETE WIN")
+        $scope.dataLoading = $scope.dataLoading - 1
+        index = $scope.ingredients.indexOf(ingredient)
+        $scope.gridOptions.selectItem(index, false)
+        $scope.ingredients.splice(index, 1)
+        $scope.$apply() if ! $scope.$$phase
+      ),
+      ((err) ->
+        console.log("INGREDIENT DELETE FAIL")
+        _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
+        $scope.dataLoading = $scope.dataLoading - 1
+      ))
+
 
   $scope.computeUseCount = (item) ->
     activity_ids = _.map(item.activities, (a) -> a.id)
@@ -139,10 +160,11 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     u = _.union(activity_ids, step_ids)
     item.use_count = u.length
 
-  $scope.loadIngredients =  ->
+  $scope.loadIngredients =  (num) ->
     $scope.dataLoading = $scope.dataLoading + 1
     searchWas = $scope.searchString
     offset = $scope.ingredients.length
+    num = num || $scope.perPage
 
     Ingredient.query(
       search_title: ($scope.searchString || "")
@@ -150,14 +172,14 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       sort: $scope.sortInfo.fields[0]
       dir: $scope.sortInfo.directions[0]
       offset: offset
-      limit: $scope.perPage,
+      limit: num,
 
     (response) ->
       $scope.dataLoading = $scope.dataLoading - 1
       # Avoid race condition with results coming in out of order
       if searchWas == $scope.searchString
         _.each(response, (item) -> $scope.computeUseCount(item))
-        $scope.ingredients[offset..offset + $scope.perPage] = response
+        $scope.ingredients[offset..offset + num] = response
         $scope.updateFilter()
 
     , (err) ->
@@ -166,8 +188,13 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.resetIngredients = ->
     $scope.ingredients = []
-    $scope.displayIngredients = []
     $scope.loadIngredients()
+
+  $scope.refreshIngredients = ->
+    num = $scope.ingredients.length
+    $scope.ingredients = []
+    $scope.loadIngredients(num)
+
 
   $scope.$watch 'searchString',  (new_val) ->
     # Don't search til the string has been stable for a bit, to avoid bogging down

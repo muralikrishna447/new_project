@@ -12,6 +12,10 @@
             %label.checkbox
               %input(ng-model="includeRecipes" type="checkbox")
                 Include Recipes
+            .btn.btn-secondary(ng-click="refreshIngredients()")
+              %i.icon-refresh
+            .btn.btn-secondary(ng-disabled="! canDelete()" ng-click="deleteSelected()")
+              %i.icon-trash
             %i.icon-spinner.icon-spin.icon-large(ng-show="dataLoading")
 
   .row.noprint(ng-cloak ng-show="alerts.length > 0")
