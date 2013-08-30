@@ -24,6 +24,7 @@ closeLightbox = (lightbox) ->
 $ ->
   lightbox = $('.cs-lightbox')
   $('.open-lightbox').click ->
+    console.log 'clicked'
     trigger = $(this)
     url = trigger.data('url')
     openLightbox(lightbox, url)
