@@ -41,7 +41,8 @@
                   = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=550'
               .annotation-slider-note-gallery-thumbnails
                 .annotation-slider-note-gallery-thumbnail
-                  = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=75'
+                  .open-lightbox(data-url="https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=550")
+                    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xgPYrtt9ROuDw4Qxany3/convert?fit=max&w=75'
                 .annotation-slider-note-gallery-thumbnail
                   = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RlVj5HwlRJgi431Kcqsw/convert?fit=max&w=75'
             %p.section Modeled after the French chef’s blade but with all the grace and beauty of a Japanese handmade knife, this Gyuto is exceptionally versatile as a general chef’s knife. The core is made of the finest Japanese carbon steel for unparalleled edge holding, and the blade’s distal tapering provides optimal balance and weight. A Makassar ebony handle and Pakkawood ferrules further classify this knife as a work of art.
@@ -280,6 +281,13 @@
 .section
 
 = render 'layouts/footer'
+
+// Lightbox //
+
+.cs-lightbox
+  .cs-lightbox-overlay
+  .cs-lightbox-image
+
 
 
 
