@@ -4,10 +4,13 @@
 .container
   .row.section#knife-intro
     .span5
-      = image_tag ('https://www.filepicker.io/api/file/Ya5vpVc1RzysqAPC5ZIJ/convert?fit=max&w=550&cache=true')
+      = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/Ya5vpVc1RzysqAPC5ZIJ?cache=true')
     .span7
       %h1 ChefSteps Knife Collection
-      %p An exceptional knife should be the cornerstone of a cook's arsenal. It becomes an extension of your own hands; the tool with which you will create art and bring refinement to the table. A beautiful, high-quality knife will follow you to every kitchen and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice—all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best.
+      %div(ng-controller="NonAngularSocialController" ng-init="title='ChefSteps Knife Collection'; url='http://www.chefsteps.com/knife-collection'; media='https://d3awvtnmmsvyot.cloudfront.net/api/file/Ya5vpVc1RzysqAPC5ZIJ?cache=true'")
+        -ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
+          = render 'layouts/share_button', split_name: split_name
+      %p.section-small An exceptional knife should be the cornerstone of a cook's arsenal. It becomes an extension of your own hands; the tool with which you will create art and bring refinement to the table. A beautiful, high-quality knife will follow you to every kitchen and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice—all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best.
 
 // Start ASAI //
 
