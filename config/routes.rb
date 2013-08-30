@@ -109,7 +109,7 @@ Delve::Application.routes.draw do
   end
 
   resources :equipment, only: [:index]
-  resources :ingredients, only: [:index]
+  resources :ingredients, only: [:index, :update, :destroy]
 
   resources :gallery, only: [:index], path: 'gallery' do
     collection do

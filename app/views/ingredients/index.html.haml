@@ -1,0 +1,27 @@
+- content_for :title, "Ingredients"
+- content_for :description, "Batch edit ingredients"
+
+.ingredient-index-container.container.relative(ng-controller="IngredientsIndexController" infinite-scroll="loadIngredients()" infinite-scroll-distance="3")
+
+  .navbar.navbar-fixed-top
+    .navbar-inner
+      .container
+        .nav
+          %form.form-inline.navbar-form
+            %input.input-medium.search-query(type="search" placeholder="Ingredient name..." ng-model="searchString")
+            %label.checkbox
+              %input(ng-model="includeRecipes" type="checkbox")
+                Include Recipes
+            .btn.btn-secondary(ng-click="refreshIngredients()")
+              %i.icon-refresh
+            .btn.btn-secondary(ng-disabled="! canDelete()" ng-click="deleteSelected()")
+              %i.icon-trash
+            %i.icon-spinner.icon-spin.icon-large(ng-show="dataLoading")
+
+  .row.noprint(ng-cloak ng-show="alerts.length > 0")
+    .span8.offset2
+      %alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="closeAlert($index)" ng-animate="'custom'")
+        {{alert.message}}
+
+  .row.grid
+    .ingredient-index.span12(ng-grid="gridOptions")

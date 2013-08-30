@@ -1,6 +1,6 @@
 @import 'mixins'
 
-#intro
+#knife-intro
   position: fixed
   z-index: -100
 
@@ -179,7 +179,7 @@
 
 @media (max-width: 767px)
   .knife.first
-    margin-top: 550px
+    margin-top: 10px
 
   .button-container
     a
@@ -199,9 +199,15 @@
     left: 0px
     margin-left: 5%
 
+  #knife-intro
+    position: inherit
+
 @media (max-width: 480px)
   .knife.first
-    margin-top: 600px
+    margin-top: 10px
+
+  .knife.alt
+    padding: 10px
 
 // Annotation Slider //
 
@@ -226,6 +232,8 @@
       right: 0px
       z-index: 9999
       display: none
+      &:hover
+        cursor: pointer
     .annotation-slider-image
     .annotation-slider-note
       position: absolute
@@ -237,6 +245,8 @@
       @include boxsizing
       h3
         margin: 0px
+      h5
+        margin-bottom: 0px
       .annotation-slider-note-gallery
         .annotation-slider-note-gallery-images
           position: relative
@@ -280,6 +290,13 @@
           cursor: pointer
           color: $offwhite
           background: $darker-orange
+
+      .annotation-slider-btn-close
+        background: $red
+        border: 3px solid white
+        padding: 6px
+        @include transform(rotate(45deg))
+
       #asai-1
         left: 25%
         top: 65%
@@ -307,6 +324,10 @@
       #sharpening
         left: 40%
         top: 75%
+
+      #honing
+        left: 80%
+        top: 35%
 
 @media (max-width: 480px)
   .annotation-slider-note
