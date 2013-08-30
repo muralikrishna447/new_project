@@ -81,6 +81,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         displayName: "Uses"
         width: "*"
         enableCellEdit: false
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"openUses(row.entity)\"><span ng-bind-html-unsafe=\"row.getProperty(col.field)\"/></a></div>'
         sortable: false
       }
     ]
@@ -151,14 +152,19 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         $scope.dataLoading = $scope.dataLoading - 1
       ))
 
-
-  $scope.computeUseCount = (item) ->
-    activity_ids = _.map(item.activities, (a) -> a.id)
-    step_ids = _.map(item.steps, (s) -> s.activity.id)
+  $scope.uses = (ingredient) ->
+    activity_ids = _.map(ingredient.activities, (a) -> a.id)
+    step_ids = _.map(ingredient.steps, (s) -> s.activity.id)
     # Normally an ingredient shouldn't be in a step without being in the corresponding recipe, but
     # it can happen.
-    u = _.union(activity_ids, step_ids)
-    item.use_count = u.length
+    _.union(activity_ids, step_ids)
+
+
+  $scope.openUses = (ingredient) ->
+    _.each($scope.uses(ingredient), (id) -> window.open('/activities/' + id))
+
+  $scope.computeUseCount = (ingredient) ->
+    ingredient.use_count = $scope.uses(ingredient).length
 
   $scope.loadIngredients =  (num) ->
     $scope.dataLoading = $scope.dataLoading + 1
@@ -180,7 +186,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       if searchWas == $scope.searchString
         _.each(response, (item) -> $scope.computeUseCount(item))
         $scope.ingredients[offset..offset + num] = response
-        $scope.updateFilter()
 
     , (err) ->
       alert(err)
