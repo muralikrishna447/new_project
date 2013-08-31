@@ -1,0 +1,10 @@
+= semantic_form_for [:admin, @page] do |f|
+  = f.inputs do
+    = f.input :title
+    = f.input :content
+    = f.input :primary_path
+    = render '/shared/filepicker_group', label_text: "Image", param: "page[image_id]", value: @page.image_id
+
+  = f.actions
+
+= render 'layouts/filepicker'

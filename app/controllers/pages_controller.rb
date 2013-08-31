@@ -4,8 +4,8 @@ class PagesController < ApplicationController
     @page = Page.find(params[:id])
   end
 
-  def knives_collection
-
+  def knife_collection
+    @knife_page = Page.find 'knife-collection'
   end
 
 end
