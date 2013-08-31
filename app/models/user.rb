@@ -71,10 +71,10 @@ class User < ActiveRecord::Base
 
   def last_viewed_activity_in_course(course)
     # last_viewed = events.scoped_by('Inclusion', 'show').map(&:trackable).select{|i| i.course_id == course.id}.first
-    # if last_viewed
-    #   last_viewed.activity
-    # end
-    events.scoped_by('Activity', 'show').order('created_at asc').where(trackable_id: course.activity_ids).last.trackable
+    last_viewed = events.scoped_by('Activity', 'show').order('created_at asc').where(trackable_id: course.activity_ids).last
+    if last_viewed
+      last_viewed.trackable
+    end
   end
 
   def likes_object?(likeable_object)
