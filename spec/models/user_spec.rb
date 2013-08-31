@@ -21,8 +21,8 @@ describe User, '#profile_complete?' do
     inclusion_2 = Fabricate :inclusion, course_id: course.id, activity_id: activity_2.id
     inclusion_3 = Fabricate :inclusion, course_id: course.id, activity_id: activity_3.id
     inclusion_4 = Fabricate :inclusion, course_id: course.id, activity_id: activity_4.id
-    event_1 = Fabricate :event, trackable: inclusion_1, action: 'show', user: user
-    event_2 = Fabricate :event, trackable: inclusion_2, action: 'show', user: user
+    event_1 = Fabricate :event, trackable: activity_1, action: 'show', user: user
+    event_2 = Fabricate :event, trackable: activity_2, action: 'show', user: user
     user.viewed_activities_in_course(course).count.should == 2
     user.viewed_activities_in_course(course).should include(activity_1)
     user.viewed_activities_in_course(course).should include(activity_2)
