@@ -151,15 +151,16 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       ))
 
   $scope.uses = (ingredient) ->
-    activity_ids = _.map(ingredient.activities, (a) -> a.id)
-    step_ids = _.map(ingredient.steps, (s) -> s.activity.id)
-    # Normally an ingredient shouldn't be in a step without being in the corresponding recipe, but
-    # it can happen.
-    _.union(activity_ids, step_ids)
-
+    result = ingredient.activities
+    _.each ingredient.steps, (step) ->
+      entry = _.find(result, (activity) -> activity.id == step.activity.id)
+      result.push(step.activity) if ! entry
+    result
 
   $scope.openUses = (ingredient) ->
-    _.each($scope.uses(ingredient), (id) -> window.open('/activities/' + id))
+    $scope.usesForModalIngredient = ingredient
+    $scope.usesForModal = $scope.uses(ingredient)
+    $scope.usesModalOpen = true
 
   $scope.computeUseCount = (ingredient) ->
     ingredient.use_count = $scope.uses(ingredient).length
