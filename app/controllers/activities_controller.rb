@@ -60,7 +60,7 @@ class ActivitiesController < ApplicationController
             session[:return_to] = request.fullpath
           end
           render 'course_activity'
-          track_event @current_inclusion
+          track_event @activity
           return
         else
           if @activity.courses.any? && @activity.courses.first.published?
