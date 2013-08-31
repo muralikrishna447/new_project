@@ -25,3 +25,15 @@
 
   .row.grid
     .ingredient-index.span12(ng-grid="gridOptions")
+
+  %div
+    %div(close="usesModalOpen = false" modal="usesModalOpen" options="usesModalOptions")
+      .modal-header
+        %h3(ng-bind-html-unsafe="usesForModalIngredient.title")
+      .modal-body
+        %h2 Used In
+        %ul
+          %li(ng-repeat="activity in usesForModal")
+            %a(ng-href="/activities/{{activity.id}}" target="_blank" ng-bind-html-unsafe="activity.title")
+      .modal-footer
+        %button.btn.btn-warning.cancel(ng-click="usesModalOpen = false") Close
