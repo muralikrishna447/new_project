@@ -51,6 +51,21 @@ class Ingredient < ActiveRecord::Base
     find_or_create_by_title(title)
   end
 
+  def self.maybe_move_title_to_note(oi, title)
+    old_title = oi.ingredient.title
+    new_title, new_note = old_title.split(',')
+    if new_note
+      new_title.strip!
+      new_note.strip!
+
+      if (new_title.downcase == title.downcase) && (! new_note.blank?)
+        oi.note = new_note
+        oi.save
+        oi.reload
+      end
+    end
+  end
+
   # Replace all uses (in both activities and steps) of every ingredient in group with the self ingredient
   def merge(group)
     # Just to be sure
@@ -59,11 +74,13 @@ class Ingredient < ActiveRecord::Base
     group.each do |ingredient|
 
       ActivityIngredient.where(ingredient_id: ingredient.id).each do |ai|
+        Ingredient.maybe_move_title_to_note(ai, self.title)
         ai.ingredient = self
         ai.save
       end
 
       StepIngredient.where(ingredient_id: ingredient.id).each do |si|
+        Ingredient.maybe_move_title_to_note(si, self.title)
         si.ingredient = self
         si.save
       end
@@ -75,6 +92,8 @@ class Ingredient < ActiveRecord::Base
         raise "Unexpected dependencies remain for #{ingredient.title} (id: #{ingredient.id})... not deleting"
       end
     end
+
+    self.reload
 
   end
 

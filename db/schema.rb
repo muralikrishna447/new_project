@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130831000252) do
+ActiveRecord::Schema.define(:version => 20130902180017) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -85,7 +85,8 @@ ActiveRecord::Schema.define(:version => 20130831000252) do
     t.string   "note"
   end
 
-  add_index "activity_ingredients", ["activity_id", "ingredient_id"], :name => "index_activity_ingredients_on_activity_id_and_ingredient_id", :unique => true
+  add_index "activity_ingredients", ["activity_id"], :name => "index_activity_ingredients_on_activity_id"
+  add_index "activity_ingredients", ["ingredient_id"], :name => "index_activity_ingredients_on_ingredient_id"
   add_index "activity_ingredients", ["ingredient_order"], :name => "index_activity_ingredients_on_ingredient_order"
 
   create_table "admin_users", :force => true do |t|
@@ -458,8 +459,9 @@ ActiveRecord::Schema.define(:version => 20130831000252) do
     t.string   "note"
   end
 
+  add_index "step_ingredients", ["ingredient_id"], :name => "index_step_ingredients_on_ingredient_id"
   add_index "step_ingredients", ["ingredient_order"], :name => "index_step_ingredients_on_ingredient_order"
-  add_index "step_ingredients", ["step_id", "ingredient_id"], :name => "index_step_ingredients_on_step_id_and_ingredient_id", :unique => true
+  add_index "step_ingredients", ["step_id"], :name => "index_step_ingredients_on_step_id"
 
   create_table "steps", :force => true do |t|
     t.string   "title"
