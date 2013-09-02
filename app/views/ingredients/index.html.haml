@@ -27,7 +27,7 @@
     .ingredient-index.span12(ng-grid="gridOptions")
 
   %div
-    %div(close="usesModalOpen = false" modal="usesModalOpen" options="usesModalOptions")
+    %div(close="usesModalOpen = false" modal="usesModalOpen" options="{backdropFade: true, dialogFade:true}")
       .modal-header
         %h3(ng-bind-html-unsafe="usesForModalIngredient.title")
       .modal-body
