@@ -65,13 +65,15 @@ class User < ActiveRecord::Base
 
   def viewed_activities_in_course(course)
     # events.scoped_by('Inclusion', 'show').where(inclusions: {course_id: 8}).map(&:trackable).select{|a| a.published=true}.uniq
-    course.inclusions.joins(:events).where('events.user_id = ?', self.id).map(&:activity).select{|a| a.published=true}.uniq
+    # course.inclusions.joins(:events).where('events.user_id = ?', self.id).map(&:activity).select{|a| a.published=true}.uniq
+    course.activities.joins(:events).where('events.user_id = ?', self.id).select{|a| a.published=true}.uniq
   end
 
   def last_viewed_activity_in_course(course)
-    last_viewed = events.scoped_by('Inclusion', 'show').map(&:trackable).select{|i| i.course_id == course.id}.first
+    # last_viewed = events.scoped_by('Inclusion', 'show').map(&:trackable).select{|i| i.course_id == course.id}.first
+    last_viewed = events.scoped_by('Activity', 'show').order('created_at asc').where(trackable_id: course.activity_ids).last
     if last_viewed
-      last_viewed.activity
+      last_viewed.trackable
     end
   end
 

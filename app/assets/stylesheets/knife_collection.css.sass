@@ -2,7 +2,8 @@
 
 #knife-intro
   position: fixed
-  z-index: -100
+  h1
+    margin-bottom: 0px
 
 .knife.first
   margin-top: 250px
@@ -13,6 +14,9 @@
   -moz-transition-duration: 0.5s
   -o-transition-duration: 0.5s
   transition-duration: 0.5s
+  .knife-content
+    width: 900px
+    margin: 0 auto
 
 .modal
   max-height: 500px
@@ -177,6 +181,10 @@
   .knife.first
     margin-top: 320px
 
+  .knife
+    .knife-content
+      width: 100%
+
 @media (max-width: 767px)
   .knife.first
     margin-top: 10px
@@ -248,17 +256,6 @@
       h5
         margin-bottom: 0px
       .annotation-slider-note-gallery
-        .annotation-slider-note-gallery-images
-          position: relative
-          height: 172px
-          .annotation-slider-note-gallery-image
-            position: absolute
-            top: 0px
-            opacity: 0
-            img
-              width: 100%
-          .annotation-slider-note-gallery-image:nth-of-type(1)
-            opacity: 1
         .annotation-slider-note-gallery-thumbnails
           float: left
           width: 100%
@@ -266,6 +263,11 @@
           .annotation-slider-note-gallery-thumbnail
             float: left
             margin-right: 5px
+            margin-bottom: 5px
+      .social-flat
+        .btn-holder
+          .btn-social
+            margin: 0px
     .note-left
       left: -300px
       top: 0px
@@ -297,38 +299,54 @@
         padding: 6px
         @include transform(rotate(45deg))
 
-      #asai-1
-        left: 25%
-        top: 65%
-      
-      #asai-2
-        left: 73%
-        top: 54%
+#asai-1
+  left: 25%
+  top: 65%
 
-      #ohishi-1
-        left: 23%
-        top: 55%
-      
-      #ohishi-2
-        left: 83%
-        top: 54%
+#asai-2
+  left: 73%
+  top: 54%
 
-      #yoshikane-1
-        left: 27%
-        top: 15%
-      
-      #yoshikane-2
-        left: 83%
-        top: 69%
+#ohishi-1
+  left: 23%
+  top: 55%
 
-      #sharpening
-        left: 40%
-        top: 75%
+#ohishi-2
+  left: 83%
+  top: 54%
 
-      #honing
-        left: 80%
-        top: 35%
+#yoshikane-1
+  left: 27%
+  top: 15%
+
+#yoshikane-2
+  left: 83%
+  top: 69%
+
+#sharpening
+  left: 40%
+  top: 75%
+
+#honing
+  left: 80%
+  top: 35%
+
+.annotation-click-image
+  float: left
+  width: 100%
 
 @media (max-width: 480px)
   .annotation-slider-note
     width: 100%
+
+  #ohishi-1
+    left: 13%
+    top: 45%
+
+  #sharpening
+    left: 50%
+    top: 55%
+
+  #honing
+    left: 75%
+    top: 20%
