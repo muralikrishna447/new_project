@@ -50,5 +50,33 @@ class Ingredient < ActiveRecord::Base
     end
     find_or_create_by_title(title)
   end
+
+  # Replace all uses (in both activities and steps) of every ingredient in group with the self ingredient
+  def merge(group)
+    # Just to be sure
+    group.delete(self)
+
+    group.each do |ingredient|
+
+      ActivityIngredient.where(ingredient_id: ingredient.id).each do |ai|
+        ai.ingredient = self
+        ai.save
+      end
+
+      StepIngredient.where(ingredient_id: ingredient.id).each do |si|
+        si.ingredient = self
+        si.save
+      end
+
+      ingredient.reload
+      if (ingredient.activities.count == 0) && (ingredient.steps.count == 0)
+        ingredient.destroy
+      else
+        raise "Unexpected dependencies remain for #{ingredient.title} (id: #{ingredient.id})... not deleting"
+      end
+    end
+
+  end
+
 end
 

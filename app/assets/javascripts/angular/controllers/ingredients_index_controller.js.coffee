@@ -2,10 +2,11 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.searchString = ""
   $scope.dataLoading = 0
   $scope.cellValue = ""
-  $scope.perPage = 16
+  $scope.perPage = 24
   $scope.sortInfo = {fields: ["title"], directions: ["asc"]}
   $scope.alerts = []
   $scope.toCommit = []
+  $scope.includeRecipes = false
 
   $scope.$watch 'cellValue', (v) ->
     console.log v

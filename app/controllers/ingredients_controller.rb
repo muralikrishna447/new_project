@@ -69,4 +69,17 @@ class IngredientsController < ApplicationController
     end
   end
 
+  def merge
+    authorize! :update, Ingredient
+    @result_ingredient = Ingredient.find(params[:id])
+    @ingredients = Ingredient.find(params[:merge].split(','))
+    puts "Merging " + @ingredients.inspect
+    puts "Into " + @result_ingredient.inspect
+    respond_to do |format|
+      format.json do
+        head :no_content
+      end
+    end
+  end
+
 end

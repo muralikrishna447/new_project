@@ -1,22 +1,28 @@
 - content_for :title, "Ingredients"
 - content_for :description, "Batch edit ingredients"
 
-.ingredient-index-container.container.relative(ng-controller="IngredientsIndexController" infinite-scroll="loadIngredients()" infinite-scroll-distance="3")
+.ingredient-index-container.container.relative(ng-controller="IngredientsIndexController" infinite-scroll="loadIngredients()" infinite-scroll-distance="3" ng-cloak)
 
   .navbar.navbar-fixed-top
     .navbar-inner
       .container
-        .nav
-          %form.form-inline.navbar-form
-            %input.input-medium.search-query(type="search" placeholder="Ingredient name..." ng-model="searchString")
-            %label.checkbox
-              %input(ng-model="includeRecipes" type="checkbox")
-                Include Recipes
-            .btn.btn-secondary(ng-click="refreshIngredients()")
-              %i.icon-refresh
-            .btn.btn-secondary(ng-disabled="! canDelete()" ng-click="deleteSelected()")
-              %i.icon-trash
-            %i.icon-spinner.icon-spin.icon-large(ng-show="dataLoading")
+        .form-horizontal
+          %input.search-query(type="search" placeholder="Ingredient name..." ng-model="searchString")
+          .btn-toolbar
+            .btn-group
+              %button.btn(ng-model="includeRecipes" btn-checkbox type="button")
+                %i.icon-th-list(tooltip="Include recipes" )
+              %button.btn(ng-click="refreshIngredients()")
+                %i.icon-refresh(tooltip="Refresh list (use when you make changes in another window)")
+            .btn-group
+              %button.btn(ng-disabled="! canMerge()" ng-click="mergeSelected()" )
+                .icon-pair(tooltip="Merge selected ingredients (No Undo!)")
+                  %i.icon-arrow-right
+                  %i.icon-arrow-left
+              %button.btn(ng-disabled="! canDelete()" ng-click="deleteSelected()" )
+                %i.icon-trash(tooltipe="Delete selected ingredients (No Undo!)")
+          %i.loading-spinner.icon-spinner.icon-spin.pull-right(ng-show="dataLoading")
+
 
   .row.noprint(ng-cloak ng-show="alerts.length > 0")
     .span8.offset2
