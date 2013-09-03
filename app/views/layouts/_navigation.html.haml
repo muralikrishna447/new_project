@@ -54,9 +54,15 @@
                     .dropdown-background
                     %li= link_to 'Forum', 'http://forum.chefsteps.com'
                     %li= link_to 'Vote For New Courses', poll_url('vote-for-new-courses')
-                %li
+                %li.dropdown
                   .nav-item-border
-                  = link_to 'Shop', 'http://store.chefsteps.com'
+                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                    Shop
+                    %i.icon-angle-down
+                  %ul.dropdown-menu
+                    .dropdown-background
+                    %li= link_to 'Store', 'http://store.chefsteps.com'
+                    %li= link_to 'Knife Collection', knife_collection_path
                 %li
                   .nav-item-border
                   - if current_user

@@ -51,6 +51,18 @@ class Ingredient < ActiveRecord::Base
     find_or_create_by_title(title)
   end
 
+  def self.find_or_create_by_id_or_subactivity_or_ingredient_title(id, title)
+    # Try first by id
+    the_ingredient = Ingredient.find_by_id(id)
+
+    # Otherwise, try by title because it is possible for a user to type fast and not get
+    # an autocompleted ingredient with an id filled it, but it is still in the database
+    the_ingredient = Ingredient.find_or_create_by_subactivity_or_ingredient_title(title) if ! the_ingredient
+
+    the_ingredient
+  end
+
+
   def self.maybe_move_title_to_note(oi, title)
     old_title = oi.ingredient.title
     new_title, new_note = old_title.split(',')
