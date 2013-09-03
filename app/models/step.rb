@@ -36,15 +36,17 @@ class Step < ActiveRecord::Base
         title = i[:ingredient][:title]
         unless title.nil? || title.blank?
           title.strip!
-          ingredient_foo = Ingredient.where(id: i[:ingredient][:id]).first_or_create(title: title)
-          activity_ingredient = StepIngredient.create!({
-                                                              step_id: self.id,
-                                                              ingredient_id: ingredient_foo.id,
-                                                              note: i[:note],
-                                                              display_quantity: i[:display_quantity],
-                                                              unit: i[:unit],
-                                                              ingredient_order_position: :last
-                                                          })
+
+          the_ingredient = Ingredient.find_or_create_by_id_or_subactivity_or_ingredient_title(i[:ingredient][:id], title)
+ 
+          StepIngredient.create!({
+                                    step_id: self.id,
+                                    ingredient_id: the_ingredient.id,
+                                    note: i[:note],
+                                    display_quantity: i[:display_quantity],
+                                    unit: i[:unit],
+                                    ingredient_order_position: :last
+                                })
         end
       end
     end

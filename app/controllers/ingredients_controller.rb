@@ -63,6 +63,7 @@ class IngredientsController < ApplicationController
         rescue Exception => e
           messages = [] || @ingredient.errors.full_messages
           messages.push(e.message)
+          puts $@
           render json: { errors: messages}, status: 422
         end
       end

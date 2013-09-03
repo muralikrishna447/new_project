@@ -194,6 +194,9 @@ class ActivitiesController < ApplicationController
               end
 
             rescue Exception => e
+              puts "--------- EXCEPTION -----------"
+              puts $@
+
               messages = [] || @activity.errors.full_messages
               messages.push(e.message)
               render json: { errors: messages}, status: 422
