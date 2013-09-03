@@ -365,7 +365,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
           item["ingredient"] = {title: item["ingredient"]}
 
   $scope.normalizeWeightUnits = () ->
-    angular.forEach $scope.activity.ingredients, (item) ->
+    angular.forEach _.flatten([$scope.activity.ingredients, _.map($scope.activity.steps, (s) -> s.ingredients)]), (item) ->
       if item.unit == "lb"
         item.display_quantity = item.display_quantity * 453.592
         item.unit = "g"

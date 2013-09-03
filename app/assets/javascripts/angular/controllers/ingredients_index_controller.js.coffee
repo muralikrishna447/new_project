@@ -2,10 +2,13 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.searchString = ""
   $scope.dataLoading = 0
   $scope.cellValue = ""
-  $scope.perPage = 16
+  $scope.perPage = 24
   $scope.sortInfo = {fields: ["title"], directions: ["asc"]}
   $scope.alerts = []
   $scope.toCommit = []
+  $scope.includeRecipes = false
+  $scope.mergeKeeper = null
+  $scope.confirmAction = null
 
   $scope.$watch 'cellValue', (v) ->
     console.log v
@@ -17,6 +20,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     { detailed: true},
     {
       update: {method: "PUT"},
+      merge: {url: "/ingredients/:id/merge", method: "POST"}
     }
   )
 
@@ -86,7 +90,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       }
     ]
 
-   $scope.ingredientChanged =  (ingredient) ->
+  $scope.modalOptions = {backdropFade: true, dialogFade:true}
+
+  $scope.ingredientChanged =  (ingredient) ->
     $scope.toCommit = _.union($scope.toCommit, ingredient)
 
   # From http://stackoverflow.com/questions/5999118/add-or-update-query-string-parameter
@@ -128,6 +134,10 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     )
     $scope.toCommit = []
 
+  $scope.canMerge = ->
+    return false if $scope.gridOptions.selectedItems.length < 2
+    _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (! val.sub_activity_id)), true)
+
   $scope.canDelete = ->
     return false if $scope.gridOptions.selectedItems.length == 0
     _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (val.use_count == 0) && (! val.sub_activity_id)), true)
@@ -149,6 +159,21 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
         $scope.dataLoading = $scope.dataLoading - 1
       ))
+
+  $scope.mergeSelected = (keeper) ->
+    $scope.mergeModalOpen = false
+    $scope.dataLoading = $scope.dataLoading + 1
+    keeper.$merge({id: keeper.id, merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')},
+    ( ->
+      console.log("INGREDIENT MERGE WIN")
+      $scope.dataLoading = $scope.dataLoading - 1
+      #$scope.refreshIngredients()
+    ),
+    ((err) ->
+      console.log("INGREDIENT MERGE FAIL")
+      _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
+      $scope.dataLoading = $scope.dataLoading - 1
+    ))
 
   $scope.uses = (ingredient) ->
     result = ingredient.activities
@@ -196,9 +221,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.refreshIngredients = ->
     num = $scope.ingredients.length
-    $scope.ingredients = []
+    $scope.ingredients.length = 0
+    $scope.gridOptions.selectedItems.length = 0
     $scope.loadIngredients(num)
-
 
   $scope.$watch 'searchString',  (new_val) ->
     # Don't search til the string has been stable for a bit, to avoid bogging down
@@ -229,4 +254,19 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.closeAlert = (index) ->
     $scope.alerts.splice(index, 1)
 
+  $scope.setMergeKeeper = (ingredient) ->
+    $scope.mergeKeeper = ingredient
+
+  $scope.splitNote = (ingredient) ->
+    idx = ingredient.title.indexOf(",")
+    return null if idx < 0
+    $.trim(ingredient.title.substring(idx + 1))
+
+  $scope.confirmNo = ->
+    $scope.confirmAction = null
+
+  $scope.confirmYes = ->
+    act = $scope.confirmAction
+    $scope.confirmAction = null
+    eval("$scope." + act)
 ]

@@ -69,4 +69,24 @@ class IngredientsController < ApplicationController
     end
   end
 
+  def merge
+    authorize! :update, Ingredient
+    puts "Merging " + @ingredients.inspect
+    puts "Into " + @result_ingredient.inspect
+    respond_to do |format|
+      format.json do
+        begin
+          @result_ingredient = Ingredient.find(params[:id])
+          @ingredients = Ingredient.find(params[:merge].split(','))
+          @result_ingredient.merge(@ingredients)
+          head :no_content
+        rescue Exception => e
+          messages = [] || @ingredient.errors.full_messages
+          messages.push(e.message)
+          render json: { errors: messages}, status: 422
+        end
+      end
+    end
+  end
+
 end
