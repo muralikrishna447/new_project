@@ -108,4 +108,4 @@ $ ->
             $(this).css 'opacity', 0
 
 window.finishKnifeSplit = ->
-  console.log 'hello I finished the knife split'
+  $.post '/splitty/finished?experiment=knife_collection'
