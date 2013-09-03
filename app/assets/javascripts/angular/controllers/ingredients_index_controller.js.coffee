@@ -18,6 +18,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     { detailed: true},
     {
       update: {method: "PUT"},
+      merge: {url: "/ingredients/:id/merge", method: "POST"}
     }
   )
 
@@ -87,7 +88,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       }
     ]
 
-   $scope.ingredientChanged =  (ingredient) ->
+  $scope.modalOptions = {backdropFade: true, dialogFade:true}
+
+  $scope.ingredientChanged =  (ingredient) ->
     $scope.toCommit = _.union($scope.toCommit, ingredient)
 
   # From http://stackoverflow.com/questions/5999118/add-or-update-query-string-parameter
@@ -129,6 +132,10 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     )
     $scope.toCommit = []
 
+  $scope.canMerge = ->
+    return false if $scope.gridOptions.selectedItems.length < 2
+    _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (! val.sub_activity_id)), true)
+
   $scope.canDelete = ->
     return false if $scope.gridOptions.selectedItems.length == 0
     _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (val.use_count == 0) && (! val.sub_activity_id)), true)
@@ -150,6 +157,26 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
         $scope.dataLoading = $scope.dataLoading - 1
       ))
+
+  $scope.mergeSelected = (keeper) ->
+    $scope.dataLoading = $scope.dataLoading + 1
+    keeper.$merge({id: keeper.id, merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')},
+    ( ->
+      console.log("INGREDIENT MERGE WIN")
+      $scope.dataLoading = $scope.dataLoading - 1
+      $scope.refreshIngredients()
+      $timeout ( ->
+        $scope.gridOptions.selectedItems = [keeper]
+      ), 1000
+    ),
+    ((err) ->
+      console.log("INGREDIENT MERGE FAIL")
+      _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
+      $scope.dataLoading = $scope.dataLoading - 1
+    ))
+    $scope.mergeModalOpen = false
+
+
 
   $scope.uses = (ingredient) ->
     result = ingredient.activities
@@ -197,7 +224,8 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.refreshIngredients = ->
     num = $scope.ingredients.length
-    $scope.ingredients = []
+    $scope.ingredients.length = 0
+    $scope.gridOptions.selectedItems.length = 0
     $scope.loadIngredients(num)
 
 

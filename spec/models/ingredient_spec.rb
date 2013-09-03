@@ -14,7 +14,7 @@ describe Ingredient do
   let(:activity_ingredient2a) { Fabricate(:activity_ingredient, activity: activity2, ingredient: ingredient2, display_quantity: '2', unit: 'things') }
   let(:activity_ingredient2b) { Fabricate(:activity_ingredient, activity: activity2, ingredient: ingredient2, display_quantity: '2.5', unit: 'things') }
   let(:activity_ingredient3) { Fabricate(:activity_ingredient, activity: activity3, ingredient: ingredient3, display_quantity: '3', unit: 'things') }
-  let(:step_ingredient3) { Fabricate(:step_ingredient, ingredient: ingredient3, display_quantity: '2', unit: 'things')}
+  let(:step_ingredient3) { Fabricate(:step_ingredient, ingredient: ingredient3, display_quantity: '2', unit: 'things', note: "pebbly")}
 
   it "capitalizes the first letter of the word when ingredient is created" do
     ingredient.title.should == 'Black Pepper'
@@ -73,11 +73,9 @@ describe Ingredient do
     activity_ingredient3.reload
     activity_ingredient3.note.should == "whole"
     step_ingredient3.reload
-    step_ingredient3.note.should == "whole"
+    step_ingredient3.note.should == "whole, pebbly"
     Ingredient.exists?(ingredient).should == true
     Ingredient.exists?(ingredient2).should == false
     Ingredient.exists?(ingredient3).should == false
   end
-
-
 end

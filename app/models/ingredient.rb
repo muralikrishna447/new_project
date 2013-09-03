@@ -59,7 +59,11 @@ class Ingredient < ActiveRecord::Base
       new_note.strip!
 
       if (new_title.downcase == title.downcase) && (! new_note.blank?)
-        oi.note = new_note
+        if oi.note.blank?
+          oi.note = new_note
+        else
+          oi.note = new_note + ", " + oi.note
+        end
         oi.save
         oi.reload
       end

@@ -15,7 +15,7 @@
               %button.btn(ng-click="refreshIngredients()")
                 %i.icon-refresh(tooltip="Refresh list (use when you make changes in another window)")
             .btn-group
-              %button.btn(ng-disabled="! canMerge()" ng-click="mergeSelected()" )
+              %button.btn(ng-disabled="! canMerge()" ng-click="mergeModalOpen = true" )
                 .icon-pair(tooltip="Merge selected ingredients (No Undo!)")
                   %i.icon-arrow-right
                   %i.icon-arrow-left
@@ -32,14 +32,37 @@
   .row.grid
     .ingredient-index.span12(ng-grid="gridOptions")
 
-  %div
-    %div(close="usesModalOpen = false" modal="usesModalOpen" options="{backdropFade: true, dialogFade:true}")
-      .modal-header
-        %h3(ng-bind-html-unsafe="usesForModalIngredient.title")
-      .modal-body
-        %h2 Used In
-        %ul
-          %li(ng-repeat="activity in usesForModal")
-            %a(ng-href="/activities/{{activity.id}}" target="_blank" ng-bind-html-unsafe="activity.title")
-      .modal-footer
-        %button.btn.btn-warning.cancel(ng-click="usesModalOpen = false") Close
+  -# This modal and the next one would be a good use for ui-router, but I'm annoyed that they don't have a
+  -# released build for 0.0.2 yet so I'm doing it the old fashioned way for now.
+  %div.uses-modal(close="usesModalOpen = false" modal="usesModalOpen" options="modalOptions")
+    .modal-header
+      %h2(ng-bind-html-unsafe="usesForModalIngredient.title")
+    .modal-body
+      %h3 Used In
+      %ul
+        %li(ng-repeat="activity in usesForModal")
+          %a(ng-href="/activities/{{activity.id}}" target="_blank" ng-bind-html-unsafe="activity.title")
+    .modal-footer
+      %button.btn.btn-warning.cancel(ng-click="usesModalOpen = false") Close
+
+  -# See comment above
+  %div.uses-modal(close="mergeModalOpen = false" modal="mergeModalOpen" options="modalOptions")
+    .modal-header
+      %h2 Merge Ingredients
+      .warning
+        %i
+          Please read and be very careful. There is no undo!
+      Click on the ingredient that you want to keep. All uses of the remaining ingredients will be changed
+      to use the chosen ingredient, and the other ingredients will be deleted. If the other ingredients included
+      a comma-separated phrase, like "Schnozzleberries, whole", the "whole" part will be moved into the notes
+      field in any activity that used it.
+    .modal-body
+      %ul
+        %li(ng-repeat="ingredient in gridOptions.selectedItems | orderBy:'useCount':true")
+          %a(ng-bind-html-unsafe="ingredient.title" ng-click="mergeSelected(ingredient)")
+          %span
+            (Uses: {{ingredient.use_count}})
+          %span(ng-show="ingredient.product_url")
+            ({{urlAsNiceText(ingredient.product_url)}})
+    .modal-footer
+      %button.btn.btn-warning.cancel(ng-click="mergeModalOpen = false") Close
