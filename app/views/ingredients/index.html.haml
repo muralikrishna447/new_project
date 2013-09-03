@@ -20,7 +20,7 @@
                   %i.icon-arrow-right
                   %i.icon-arrow-left
               %button.btn(ng-disabled="! canDelete()" ng-click="deleteSelected()" )
-                %i.icon-trash(tooltipe="Delete selected ingredients (No Undo!)")
+                %i.icon-trash(tooltip="Delete selected ingredients (No Undo!)")
           %i.loading-spinner.icon-spinner.icon-spin.pull-right(ng-show="dataLoading")
 
 
@@ -73,5 +73,16 @@
             ("{{splitNote(ingredient)}}" will be moved to note)
 
     .modal-footer
-      %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" ng-show="mergeKeeper") Merge (No Undo!)
+      %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" xng-click="confirmAction='mergeSelected($scope.mergeKeeper)'"ng-show="mergeKeeper") Merge (No Undo!)
       %button.btn.cancel(ng-click="mergeModalOpen = false") Cancel
+
+  -# This modal and the next one would be a good use for ui-router, but I'm annoyed that they don't have a
+  -# released build for 0.0.2 yet so I'm doing it the old fashioned way for now.
+  %div.confirm-modal(close="confirmAction = null" modal="confirmAction" options="modalOptions")
+    .modal-header
+      %h2 Are you absolutely sure?
+      .warning
+        There is no undo.
+    .modal-footer
+      %button.btn.ok(ng-click="confirmYes()") Do It Already
+      %button.btn.cancel(ng-click="confirmNo()") Close

@@ -8,6 +8,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.toCommit = []
   $scope.includeRecipes = false
   $scope.mergeKeeper = null
+  $scope.confirmAction = null
 
   $scope.$watch 'cellValue', (v) ->
     console.log v
@@ -160,21 +161,19 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       ))
 
   $scope.mergeSelected = (keeper) ->
+    $scope.mergeModalOpen = false
     $scope.dataLoading = $scope.dataLoading + 1
     keeper.$merge({id: keeper.id, merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')},
     ( ->
       console.log("INGREDIENT MERGE WIN")
       $scope.dataLoading = $scope.dataLoading - 1
-      $scope.refreshIngredients()
+      #$scope.refreshIngredients()
     ),
     ((err) ->
       console.log("INGREDIENT MERGE FAIL")
       _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
       $scope.dataLoading = $scope.dataLoading - 1
     ))
-    $scope.mergeModalOpen = false
-
-
 
   $scope.uses = (ingredient) ->
     result = ingredient.activities
@@ -226,7 +225,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     $scope.gridOptions.selectedItems.length = 0
     $scope.loadIngredients(num)
 
-
   $scope.$watch 'searchString',  (new_val) ->
     # Don't search til the string has been stable for a bit, to avoid bogging down
     $timeout ( ->
@@ -264,4 +262,11 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     return null if idx < 0
     $.trim(ingredient.title.substring(idx + 1))
 
+  $scope.confirmNo = ->
+    $scope.confirmAction = null
+
+  $scope.confirmYes = ->
+    act = $scope.confirmAction
+    $scope.confirmAction = null
+    eval("$scope." + act)
 ]
