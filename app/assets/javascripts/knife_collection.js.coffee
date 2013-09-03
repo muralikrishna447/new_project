@@ -106,3 +106,6 @@ $ ->
           else
             console.log 'hide ' + image_index
             $(this).css 'opacity', 0
+
+window.finishKnifeSplit = ->
+  $.post '/splitty/finished?experiment=knife_collection'

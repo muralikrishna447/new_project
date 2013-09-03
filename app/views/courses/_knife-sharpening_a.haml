@@ -33,8 +33,12 @@
 
 .container
   .row.section
+    - ab_test 'knife ads large', 'https://d3awvtnmmsvyot.cloudfront.net/api/file/sddgrD4AQzqGvIiZ9f1G?v=line', 'https://d3awvtnmmsvyot.cloudfront.net/api/file/PNWHEjOpT9SbPmQAEAtq?v=photo' do |knife_ad_large|
+      = link_to image_tag(knife_ad_large), knife_collection_path
+  %hr
+  .row.section
     .span6
-      =image_tag 'https://www.filepicker.io/api/file/NcFevaslSnmYJUlJfvXP/convert?fit=max&w=600&cache=true' 
+      =image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/NcFevaslSnmYJUlJfvXP/convert?fit=max&w=600&cache=true' 
     .span6
       %h2 What you'll learn
       %ul 
