@@ -15,7 +15,7 @@
               %button.btn(ng-click="refreshIngredients()")
                 %i.icon-refresh(tooltip="Refresh list (use when you make changes in another window)")
             .btn-group
-              %button.btn(ng-disabled="! canMerge()" ng-click="mergeModalOpen = true" )
+              %button.btn(ng-disabled="! canMerge()" ng-click="setMergeKeeper(null); mergeModalOpen = true" )
                 .icon-pair(tooltip="Merge selected ingredients (No Undo!)")
                   %i.icon-arrow-right
                   %i.icon-arrow-left
@@ -49,20 +49,29 @@
   %div.uses-modal(close="mergeModalOpen = false" modal="mergeModalOpen" options="modalOptions")
     .modal-header
       %h2 Merge Ingredients
-      .warning
-        %i
-          Please read and be very careful. There is no undo!
-      Click on the ingredient that you want to keep. All uses of the remaining ingredients will be changed
-      to use the chosen ingredient, and the other ingredients will be deleted. If the other ingredients included
-      a comma-separated phrase, like "Schnozzleberries, whole", the "whole" part will be moved into the notes
-      field in any activity that used it.
+      Click on the ingredient that you want to keep to see a preview of your merge.
     .modal-body
+      %div(ng-show="mergeKeeper")
+        %h3 Will Be Kept
+        %ul
+          %li(ng-bind-html-unsafe="mergeKeeper.title")
+            %a(ng-bind-html-unsafe="mergeKeeper.title" ng-click="setMergeKeeper(ingredient)")
+            %span
+              \- Uses: {{mergeKeeper.use_count}}
+            %span(ng-show="ingredient.product_url")
+              \- Link: {{urlAsNiceText(mergeKeeper.product_url)}}
+
+      %h3(ng-show="mergeKeeper" ng-animate="'fade'") Will Be Merged and Deleted
       %ul
-        %li(ng-repeat="ingredient in gridOptions.selectedItems | orderBy:'useCount':true")
-          %a(ng-bind-html-unsafe="ingredient.title" ng-click="mergeSelected(ingredient)")
+        %li(ng-repeat="ingredient in gridOptions.selectedItems | orderBy:'useCount':true" ng-show="ingredient.id != mergeKeeper.id" ng-animate="'custom'")
+          %a(ng-bind-html-unsafe="ingredient.title" ng-click="setMergeKeeper(ingredient)")
           %span
-            (Uses: {{ingredient.use_count}})
+            \- Uses: {{ingredient.use_count}}
           %span(ng-show="ingredient.product_url")
-            ({{urlAsNiceText(ingredient.product_url)}})
+            \- Link: {{urlAsNiceText(ingredient.product_url)}}
+          %span(ng-show="mergeKeeper && splitNote(ingredient)")
+            ("{{splitNote(ingredient)}}" will be moved to note)
+
     .modal-footer
-      %button.btn.btn-warning.cancel(ng-click="mergeModalOpen = false") Close
+      %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" ng-show="mergeKeeper") Merge (No Undo!)
+      %button.btn.cancel(ng-click="mergeModalOpen = false") Cancel

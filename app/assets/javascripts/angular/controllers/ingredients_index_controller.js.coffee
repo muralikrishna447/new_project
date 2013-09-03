@@ -7,6 +7,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.alerts = []
   $scope.toCommit = []
   $scope.includeRecipes = false
+  $scope.mergeKeeper = null
 
   $scope.$watch 'cellValue', (v) ->
     console.log v
@@ -165,9 +166,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       console.log("INGREDIENT MERGE WIN")
       $scope.dataLoading = $scope.dataLoading - 1
       $scope.refreshIngredients()
-      $timeout ( ->
-        $scope.gridOptions.selectedItems = [keeper]
-      ), 1000
     ),
     ((err) ->
       console.log("INGREDIENT MERGE FAIL")
@@ -257,5 +255,13 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.closeAlert = (index) ->
     $scope.alerts.splice(index, 1)
+
+  $scope.setMergeKeeper = (ingredient) ->
+    $scope.mergeKeeper = ingredient
+
+  $scope.splitNote = (ingredient) ->
+    idx = ingredient.title.indexOf(",")
+    return null if idx < 0
+    $.trim(ingredient.title.substring(idx + 1))
 
 ]
