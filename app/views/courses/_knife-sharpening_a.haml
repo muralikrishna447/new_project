@@ -34,7 +34,7 @@
 .container
   .row.section
     - ab_test 'knife ads large', 'https://d3awvtnmmsvyot.cloudfront.net/api/file/sddgrD4AQzqGvIiZ9f1G?v=line', 'https://d3awvtnmmsvyot.cloudfront.net/api/file/PNWHEjOpT9SbPmQAEAtq?v=photo' do |knife_ad_large|
-      = link_to image_tag(knife_ad_large), knife_collection_path
+      = link_to image_tag(knife_ad_large), knife_collection_path, onclick: "mixpanel.track('Clicked Knife Ad', {'url' : window.location.pathname});"
   %hr
   .row.section
     .span6
