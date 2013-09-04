@@ -32,7 +32,7 @@
   .row.grid
     .ingredient-index.span12(ng-grid="gridOptions")
 
-  -# This modal and the next one would be a good use for ui-router, but I'm annoyed that they don't have a
+  -# This modal and the following ones would be a good use for ui-router, but I'm annoyed that they don't have a
   -# released build for 0.0.2 yet so I'm doing it the old fashioned way for now.
   %div.uses-modal(close="usesModalOpen = false" modal="usesModalOpen" options="modalOptions")
     .modal-header
@@ -46,7 +46,7 @@
       %button.btn.btn-warning.cancel(ng-click="usesModalOpen = false") Close
 
   -# See comment above
-  %div.uses-modal(close="mergeModalOpen = false" modal="mergeModalOpen" options="modalOptions")
+  %div.merge-modal(close="mergeModalOpen = false" modal="mergeModalOpen" options="modalOptions")
     .modal-header
       %h2 Merge Ingredients
       Click on the ingredient that you want to keep to see a preview of your merge.
@@ -75,6 +75,24 @@
     .modal-footer
       %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" xng-click="confirmAction='mergeSelected($scope.mergeKeeper)'"ng-show="mergeKeeper") Merge (No Undo!)
       %button.btn.cancel(ng-click="mergeModalOpen = false") Cancel
+
+  %div.density-modal(close="densityIngredient = null" modal="densityIngredient" options="modalOptions")
+    .modal-header
+      %h2(ng-bind-html-unsafe="densityIngredient.title")
+    .modal-body
+      .density-row(ng-repeat="du in densityUnits")
+        %div(ng-switch ng-init="showEdit=false")
+          .density-value.inline(ng-click="showEdit=true")
+            {{(densityIngredient.density || 0) / du.perL}}
+          .density-input.inline(ng-show="showEdit")
+            %input(type="text" ng-model="newDensityValue"  ng-change="densityIngredient.density = newDensityValue * du.perL" ui-event='{blur: "showEdit=false"}')      
+          .density-unit.inline
+            {{du.name}}
+
+
+
+    .modal-footer
+      %button.btn(ng-click="densityIngredient = null") Done
 
   -# This modal and the next one would be a good use for ui-router, but I'm annoyed that they don't have a
   -# released build for 0.0.2 yet so I'm doing it the old fashioned way for now.

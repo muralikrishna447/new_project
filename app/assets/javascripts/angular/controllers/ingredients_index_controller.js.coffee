@@ -9,6 +9,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.includeRecipes = false
   $scope.mergeKeeper = null
   $scope.confirmAction = null
+  $scope.densityIngredient = null
+  $scope.densityUnits = 
+    [{name: 'tsp', perL: 202.884}, {name: 'L',  perL: 1}]
 
   $scope.$watch 'cellValue', (v) ->
     console.log v
@@ -57,7 +60,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       {
         field: "title"
         displayName: "Ingredient"
-        width: "***"
+        width: "****"
         enableCellEdit: true
         cellTemplate: '<div class="ngCellText colt{{$index}}">{{row.getProperty(col.field)}}{{row.getProperty("sub_activity_id") && " [RECIPE]"}}</div>'
         editableCellTemplate: cellTitleEditableTemplate
@@ -74,11 +77,19 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       {
         field: "product_url"
         displayName: "Affiliate Link"
-        width: "**"
+        width: "***"
         enableCellEdit: true
         sortFn: $scope.sortByNiceURL,
         cellTemplate: '<div class="ngCellText colt{{$index}}"><span ng-bind-html-unsafe=\"urlAsNiceText(row.getProperty(col.field))\"/></div>'
         editableCellTemplate: cellEditableTemplate
+      }
+      {
+        field: "density"
+        displayName: "Density g/L"
+        width: "*"
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"editDensity(row.entity)\"><span ng-bind-html-unsafe=\"row.getProperty(col.field) || \'Set...\'\"/></a></div>'
+        enableCellEdit: false
+        sortable: true
       }
       {
         field: "use_count"
@@ -186,6 +197,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     $scope.usesForModalIngredient = ingredient
     $scope.usesForModal = $scope.uses(ingredient)
     $scope.usesModalOpen = true
+
+  $scope.editDensity = (ingredient) ->
+    $scope.densityIngredient = ingredient
 
   $scope.computeUseCount = (ingredient) ->
     ingredient.use_count = $scope.uses(ingredient).length
