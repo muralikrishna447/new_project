@@ -5,15 +5,17 @@ ActiveAdmin.register_page 'Mixpanel' do
   config = {api_key: 'ccf6e1e8a37992e4119e42a14557b4a2', api_secret: 'a2f59ee56f798fde108708277bddd4f7'}
   client = Mixpanel::Client.new(config)
 
+  all_data = []
   data = client.request('engage', {
 
   })
-  puts data['page']
+  all_data << data['results']
 
   while data['results'].length >= data['page'] do
     next_page_number = data['page'] + 1
     data = client.request('engage', { session_id: data['session_id'], page: next_page_number})
     puts data['page']
+    all_data << data['results']
   end
 
   page_action :get_csv, method: :get do
