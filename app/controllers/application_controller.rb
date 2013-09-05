@@ -20,10 +20,19 @@ class ApplicationController < ActionController::Base
   # end
 
   def after_sign_in_path_for(resource)
+    # if request.referer == sign_in_url
+    #   super
+    # else
+    #   stored_location_for(resource) || request.referer || user_profile_path(resource)
+    # end
     if request.referer == sign_in_url
       super
     else
-      stored_location_for(resource) || request.referer || user_profile_path(resource)
+      if request.referer && URI(request.referer).host == URI(root_url).host
+        stored_location_for(resource) || request.referer || user_profile_path(resource)
+      else
+        root_url
+      end
     end
   end
 

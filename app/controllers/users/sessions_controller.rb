@@ -8,11 +8,16 @@ class Users::SessionsController < Devise::SessionsController
       self.resource.email = params[:email]
     end
     respond_with(resource, serialize_options(resource))
+    logger.debug '+++++++++++++++++++'
+    logger.debug "Request Referer: #{request.referer}"
+    logger.debug "Root Url: #{root_url}"
+    logger.debug '+++++++++++++++++++'
     if request.referer && URI(request.referer).host == URI(root_url).host
       session[:user_return_to] = request.referer
     else
       session[:user_return_to] = root_url
     end
+    logger.debug "Session Return To: #{session[:user_return_to]}"
   end
 
   def create
