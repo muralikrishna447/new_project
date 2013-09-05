@@ -9,32 +9,35 @@ ActiveAdmin.register_page 'Mixpanel' do
   data = client.request('engage', {
 
   })
-  all_data << data['results']
+  data['results'].each do |item|
+    all_data << item
+  end
 
   while data['results'].length >= data['page'] do
     next_page_number = data['page'] + 1
     data = client.request('engage', { session_id: data['session_id'], page: next_page_number})
-    puts data['page']
-    all_data << data['results']
+    data['results'].each do |item|
+      all_data << item
+    end
   end
 
   page_action :get_csv, method: :get do
     csv_string = CSV.generate do |csv| 
       # data.to_a.each {|elem| csv << elem}
-      column_names = [:distinct_id, :browser, :city, :country_code, :created, :email, :first_name, :initial_referer, :initial_referring_domain, :os, :region, :last_seen]
-      csv << column_names
-      data['results'].each do |hash|
+      # column_names = [:distinct_id, :browser, :city, :country_code, :created, :email, :first_name, :initial_referer, :initial_referring_domain, :os, :region, :last_seen]
+      # csv << column_names
+      all_data.each do |hash|
+        keys = []
         values = []
-        hash.keys.each do |key|
-          case key
-          when '$distinct_id'
-            values << hash[key]
-          when '$properties'
-            hash['$properties'].values.each do |value|
-              values << value
-            end
-          end
+
+        hash['$properties'].keys.each do |key|
+          keys << key
         end
+        hash['$properties'].values.each do |value|
+          values << value
+        end
+
+        csv << keys
         csv << values
       end
     end
@@ -46,7 +49,7 @@ ActiveAdmin.register_page 'Mixpanel' do
   end
 
   content do
-    data
+    all_data
   end
 
 end
