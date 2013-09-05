@@ -9,7 +9,9 @@
   %h1= @project.title
   .row
     .span12
-      %ul.nav.nav-pills#project-tabs.noprint
+      %a.btn.btn-secondary.project-menu-expand{data: {toggle: 'collapse', target: '#project-tabs'}}
+        Project Menu
+      %ul.nav.nav-pills#project-tabs.noprint.nav-collapse.collapse
         %li.active
           = link_to '0. Introduction', '#introduction', data: {toggle: 'tab'}
         - project_inclusions.each_with_index do |assembly_inclusion,index|

@@ -5,3 +5,30 @@
     &:first-line
       font-size: 24px
       line-height: 30px
+
+  .project-menu-expand
+    display: none
+    border
+    @include raleway
+
+  .nav-pills
+    li
+      a
+        color: black
+        @include raleway
+    li.active
+      a
+        color: black
+        background: white
+
+@media (max-width: 979px)
+  .project
+    .project-menu-expand
+      display: block
+    .nav-pills
+      li
+        clear: both
+      li.active
+        a
+          color: white
+          background: $orange
