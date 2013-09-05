@@ -41,7 +41,7 @@ ActiveAdmin.register_page 'Mixpanel' do
   end
 
   content do
-    link_to 'Download Data', admin_mixpanel_get_csv_path, method: :get
+    link_to 'Download Mixpanel People Data', admin_mixpanel_get_csv_path, method: :get
   end
 
 end
