@@ -23,6 +23,7 @@
         &:hover
           .project-tab-title
             display: inline-block
+
     li.active
       a
         color: black
@@ -45,6 +46,11 @@
           -webkit-transform: rotate(45deg)
           -o-transform: rotate(45deg)
           transform: rotate(45deg)
+
+    li.active + li
+      a
+        .project-tab-title
+          display: inline-block
 
 @media (max-width: 979px)
   .project
