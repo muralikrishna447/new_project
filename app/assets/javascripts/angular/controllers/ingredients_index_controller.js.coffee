@@ -10,8 +10,29 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.mergeKeeper = null
   $scope.confirmAction = null
   $scope.densityIngredient = null
+  $scope.editMode = true
+  $scope.preventAutoFocus = true
+  $scope.addUndo = ->
+    true
   $scope.densityUnits = 
-    [{name: 'tsp', perL: 202.884}, {name: 'L',  perL: 1}]
+    [
+      {name: 'Tablespoon', perL: 67.628}, 
+      {name: 'Cup', perL: 4.22675}, 
+      {name: 'Liter',  perL: 1}
+    ]
+
+  $scope.displayDensity = (x) ->
+    if x && _.isNumber(x)
+      window.roundSensible(x)
+    else
+      "Set..."
+
+  $scope.displayDensityNoSet = (x) ->
+    if x && _.isNumber(x)
+      window.roundSensible(x)
+    else
+      ""
+
 
   $scope.$watch 'cellValue', (v) ->
     console.log v
@@ -87,7 +108,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         field: "density"
         displayName: "Density g/L"
         width: "*"
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"editDensity(row.entity)\"><span ng-bind-html-unsafe=\"row.getProperty(col.field) || \'Set...\'\"/></a></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"editDensity(row.entity)\"><span ng-bind-html-unsafe=\"displayDensity(row.getProperty(col.field))\"/></a></div>'
         enableCellEdit: false
         sortable: true
       }

@@ -73,34 +73,30 @@
             ("{{splitNote(ingredient)}}" will be moved to note)
 
     .modal-footer
-      %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" xng-click="confirmAction='mergeSelected($scope.mergeKeeper)'"ng-show="mergeKeeper") Merge (No Undo!)
+      %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" ng-show="mergeKeeper") Merge (No Undo!)
       %button.btn.cancel(ng-click="mergeModalOpen = false") Cancel
 
   %div.density-modal(close="densityIngredient = null" modal="densityIngredient" options="modalOptions")
     .modal-header
-      %h2(ng-bind-html-unsafe="densityIngredient.title")
+      %h2
+        Density:
+        %span(ng-bind-html-unsafe="densityIngredient.title")
     .modal-body
+      .density-row.header
+        .density-unit
+          Unit
+        .density-value
+          Grams
       .density-row(ng-repeat="du in densityUnits")
-        %div(ng-switch ng-init="showEdit=false")
-          .density-value.inline(ng-click="showEdit=true")
-            {{(densityIngredient.density || 0) / du.perL}}
-          .density-input.inline(ng-show="showEdit")
-            %input(type="text" ng-model="newDensityValue"  ng-change="densityIngredient.density = newDensityValue * du.perL" ui-event='{blur: "showEdit=false"}')      
-          .density-unit.inline
-            {{du.name}}
-
-
+        .density-unit
+          {{du.name}}
+        .density-value
+          %csEditPair
+            %csEditPairShow
+              %a
+                {{displayDensity(densityIngredient.density / du.perL)}}
+            %csEditPairEdit
+              %input(type="text" ng-model="newDensityValue"  ng-change="densityIngredient.density = newDensityValue * du.perL" ui-event='{blur: "showEdit=false", focus: "newDensityValue = displayDensityNoSet(densityIngredient.density / du.perL)"}')      
 
     .modal-footer
       %button.btn(ng-click="densityIngredient = null") Done
-
-  -# This modal and the next one would be a good use for ui-router, but I'm annoyed that they don't have a
-  -# released build for 0.0.2 yet so I'm doing it the old fashioned way for now.
-  %div.confirm-modal(close="confirmAction = null" modal="confirmAction" options="modalOptions")
-    .modal-header
-      %h2 Are you absolutely sure?
-      .warning
-        There is no undo.
-    .modal-footer
-      %button.btn.ok(ng-click="confirmYes()") Do It Already
-      %button.btn.cancel(ng-click="confirmNo()") Close
