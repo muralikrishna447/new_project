@@ -1,4 +1,5 @@
 ActiveAdmin.register User do
+  actions :all, except: [:edit, :destroy]
   menu parent: 'More'
 
   action_item only: [:show] do
@@ -22,7 +23,6 @@ ActiveAdmin.register User do
     column :last_sign_in_at
     column :sign_in_count
     column :created_at
-    default_actions
   end
 
   show do |user|
