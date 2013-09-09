@@ -6,7 +6,7 @@ class Ingredient < ActiveRecord::Base
   has_many :activities, through: :activity_ingredients, inverse_of: :ingredients
   has_many :steps, through: :step_ingredients, inverse_of: :ingredients
 
-  attr_accessible :title, :product_url, :for_sale
+  attr_accessible :title, :product_url, :for_sale, :density
 
   # This is for activities that are used as an ingredient in higher level recipes.
   # Note the potential for confusion: the has_many activities is for activities

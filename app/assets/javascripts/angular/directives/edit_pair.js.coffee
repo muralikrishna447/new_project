@@ -5,6 +5,9 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
   scope: true,
 
   controller: ['$rootScope', '$scope', '$element', '$window', '$timeout', ($rootScope, $scope, $element, $window, $timeout) ->
+    # Sometimes a useful place to set breakpoints
+    setEditPending = (scope, val) ->
+      scope.editPending = val
 
     $scope.focusedInside = ->
       $(document.activeElement).closest('.edit-pair').scope() == $scope
@@ -41,12 +44,14 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
       if $scope.editMode
         $rootScope.$broadcast("setEditNotPending")
         if (! $scope.focusedInside())
-          $scope.editPending = true
+          setEditPending($scope, true)
+          $scope.$apply() if ! $scope.$$phase
           $timeout (->
             elem = document.elementFromPoint(event.clientX, event.clientY)
             if (! elem) || (! $(elem).is('input,textarea,select'))
               elem =  $($element).find('input, textarea')[0]
-            $scope.editPending = false
+              setEditPending($scope, false)
+
             if elem
               $scope.$apply(elem.focus())
           ), 100
@@ -58,7 +63,8 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
       $scope.setMouseOver(false)
 
     $scope.$on "setEditNotPending", ->
-      $scope.editPending = false
+      setEditPending($scope, false)
+
 
 
   ]

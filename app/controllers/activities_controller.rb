@@ -93,7 +93,7 @@ class ActivitiesController < ApplicationController
           return
         end
       end
-   end
+    end
   end
 
   def new
@@ -242,4 +242,3 @@ class ActivitiesController < ApplicationController
   end
 
 end
-
