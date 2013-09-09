@@ -47,9 +47,38 @@
     i
       margin-right: 6px
 
+.inline
+  display: inline-block
+
 .modal
   .warning
     margin-top: 8px
     margin-bottom: 8px
     color: red
     font-size:  140%
+
+  .density-row
+    height: 30px
+    margin-left: 100px
+ 
+    &.header
+      font-weight: bold
+
+  .density-unit
+    display: inline-block
+    text-align: right
+    width: 80px
+    margin-right: 16px
+    vertical-align: center
+
+  .density-value
+    display: inline-block
+    width: 80px
+    margin-right: 4px
+    vertical-align: center
+    input
+      width: 80px
+      height: 28px
+      @include boxsizing
+      margin-bottom: 0
+      vertical-align: center

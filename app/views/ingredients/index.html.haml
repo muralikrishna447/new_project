@@ -32,7 +32,8 @@
   .row.grid
     .ingredient-index.span12(ng-grid="gridOptions")
 
-  -# This modal and the next one would be a good use for ui-router, but I'm annoyed that they don't have a
+
+  -# This modal and the following ones would be a good use for ui-router, but I'm annoyed that they don't have a
   -# released build for 0.0.2 yet so I'm doing it the old fashioned way for now.
   %div.uses-modal(close="usesModalOpen = false" modal="usesModalOpen" options="modalOptions")
     .modal-header
@@ -46,7 +47,7 @@
       %button.btn.btn-warning.cancel(ng-click="usesModalOpen = false") Close
 
   -# See comment above
-  %div.uses-modal(close="mergeModalOpen = false" modal="mergeModalOpen" options="modalOptions")
+  %div.merge-modal(close="mergeModalOpen = false" modal="mergeModalOpen" options="modalOptions")
     .modal-header
       %h2 Merge Ingredients
       Click on the ingredient that you want to keep to see a preview of your merge.
@@ -73,16 +74,30 @@
             ("{{splitNote(ingredient)}}" will be moved to note)
 
     .modal-footer
-      %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" xng-click="confirmAction='mergeSelected($scope.mergeKeeper)'"ng-show="mergeKeeper") Merge (No Undo!)
+      %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" ng-show="mergeKeeper") Merge (No Undo!)
       %button.btn.cancel(ng-click="mergeModalOpen = false") Cancel
 
-  -# This modal and the next one would be a good use for ui-router, but I'm annoyed that they don't have a
-  -# released build for 0.0.2 yet so I'm doing it the old fashioned way for now.
-  %div.confirm-modal(close="confirmAction = null" modal="confirmAction" options="modalOptions")
+  %div.density-modal(close="densityIngredient = null" modal="densityIngredient" options="modalOptions")
     .modal-header
-      %h2 Are you absolutely sure?
-      .warning
-        There is no undo.
+      %h2
+        Density:
+        %span(ng-bind-html-unsafe="densityIngredient.title")
+    .modal-body
+      .density-row.header
+        .density-unit
+          Unit
+        .density-value
+          Grams
+      .density-row(ng-repeat="du in densityUnits")
+        .density-unit
+          {{du.name}}
+        .density-value
+          %csEditPair
+            %csEditPairShow
+              %a
+                {{displayDensity(densityIngredient.density / du.perL)}}
+            %csEditPairEdit
+              %input(type="text" ng-model="newDensityValue"  ng-change="densityIngredient.density = newDensityValue * du.perL" ui-keypress='{13: "finishDensityChange(densityIngredient)"}' ui-event='{blur: "ingredientChanged(densityIngredient)", focus: "newDensityValue = displayDensityNoSet(densityIngredient.density / du.perL)"}')      
+
     .modal-footer
-      %button.btn.ok(ng-click="confirmYes()") Do It Already
-      %button.btn.cancel(ng-click="confirmNo()") Close
+      %button.btn(ng-click="finishDensityChange(densityIngredient)") Done
