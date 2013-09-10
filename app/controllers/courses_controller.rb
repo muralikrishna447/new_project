@@ -24,7 +24,6 @@ class CoursesController < ApplicationController
       finished('knife ads', :reset => false)
       finished('knife ads large', :reset => false)      
     end
-
   end
 
   def enroll
