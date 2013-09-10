@@ -58,6 +58,7 @@ Delve::Application.routes.draw do
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
   match '/mp', to: redirect('/courses/spherification')
+  match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
