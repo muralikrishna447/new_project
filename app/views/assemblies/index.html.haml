@@ -15,7 +15,7 @@
         = render 'shared/media_box_2', url: assembly_path(assembly), title: assembly.title, image: assembly.featured_image, object: assembly
       .span8
         %h2= assembly.title
-        = link_to "View the #{@assembly_type}", assembly, class: 'btn btn-primary btn-large'
+        = link_to "View the #{assembly.assembly_type}", assembly, class: 'btn btn-primary btn-large'
 .container
   .row
     .span12
