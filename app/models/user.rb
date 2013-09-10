@@ -20,7 +20,6 @@ class User < ActiveRecord::Base
   has_many :activities, through: :user_activities
   has_many :enrollments
   has_many :enrollables, through: :enrollments
-  has_many :courses, through: :enrollments
 
   has_many :uploads
   has_many :activities, through: :uploads
