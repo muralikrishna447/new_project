@@ -63,7 +63,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       cookies.delete(:viewed_activities)
       mixpanel.append_identify @user.email
       mixpanel.track 'Signed Up', { distinct_id: @user.email, time: @user.created_at }
-      @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
+      # @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
+      @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
       if @enrollment.save
         redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
         track_event @course, 'enroll'
