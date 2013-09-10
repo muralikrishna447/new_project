@@ -1,5 +1,5 @@
 - if current_user
-  - if current_user.course_ids.include?(@course.id)
+  - if current_user.enrollments.where(enrollable_type: 'Course').map(&:enrollable_id).include?(@course.id)
     = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
   - else
     %h2= ab_test "free or not", "Enroll now", "Enroll now for free"
