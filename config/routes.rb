@@ -57,6 +57,7 @@ Delve::Application.routes.draw do
   get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
+  get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   match '/mp', to: redirect('/courses/spherification')
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
@@ -155,6 +156,8 @@ Delve::Application.routes.draw do
 
   resources :client_views, only: [:show]
   resources :stream_views, only: [:show]
+
+  resources :charges, only: [:create]
 
 end
 
