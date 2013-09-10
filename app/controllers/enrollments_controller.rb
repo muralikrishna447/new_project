@@ -2,7 +2,7 @@ class EnrollmentsController < ApplicationController
   respond_to :json
 
   before_filter :authenticate_user!, only: [:create]
-  before_filter :load_commentable
+  before_filter :load_enrollable
 
   def index
     @enrollments = @enrollable.enrollments

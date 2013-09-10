@@ -143,6 +143,7 @@ Delve::Application.routes.draw do
   resources :followerships, only: [:update]
   resources :assemblies, only: [:index, :show] do
     resources :comments
+    resources :enrollments
   end
   resources :projects, controller: :assemblies
   resources :streams, only: [:index, :show]
