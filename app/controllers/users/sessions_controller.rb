@@ -36,7 +36,8 @@ class Users::SessionsController < Devise::SessionsController
       sign_in @user
       mixpanel.track 'Signed In', { distinct_id: @user.email }
       mixpanel.append_identify @user.email
-      @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
+      # @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
+      @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
       if @enrollment.save
         redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Course!"
         track_event @course, 'enroll'
