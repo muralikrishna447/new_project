@@ -10,6 +10,7 @@ class Assembly < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
 
   has_many :uploads
+  has_many :enrollments, as: :enrollable
 
   scope :published, where(published: true)
   scope :projects, where(assembly_type: 'Project')

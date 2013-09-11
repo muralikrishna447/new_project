@@ -13,7 +13,8 @@ class Course < ActiveRecord::Base
 
   has_many :inclusions, :dependent => :destroy, :order => 'activity_order ASC'
   has_many :activities, :through => :inclusions, :order => 'inclusions.activity_order ASC'
-  has_many :enrollments
+  # has_many :enrollments
+  has_many :enrollments, as: :enrollable
   has_many :users, through: :enrollments
   has_many :uploads
 

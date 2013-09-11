@@ -31,6 +31,7 @@
     - if Rails.env.production?
       = render 'layouts/qbaka'
       = render 'layouts/google_analytics'
+    = render 'layouts/stripe'
     = render 'layouts/mixpanel'
     = javascript_include_tag 'application_head'
     = render 'layouts/inspectlet'

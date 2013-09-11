@@ -18,7 +18,41 @@
       %p
         Chambray typewriter Odd Future, cliche Wes Anderson High Life Banksy cred bespoke Intelligentsia ethnic. YOLO gluten-free blog kale chips. Cliche Shoreditch church-key direct trade banjo ugh, forage pug meh typewriter yr chillwave wayfarers small batch. Trust fund Carles forage disrupt photo booth. Truffaut lo-fi Schlitz, Blue Bottle hoodie synth Thundercats. Actually cliche put a bird on it kitsch, ethical Thundercats synth drinking vinegar gluten-free lomo try-hard direct trade. Chambray viral you probably haven't heard of them salvia, ugh Pitchfork Terry Richardson selvage master cleanse.
 
-    .span4
-      %h3 So Give Us Your Money
-      = form_tag charges_path do
-        %script.stripe-button{"data-amount" => "750", "data-description" => "Macaron course (test)", "data-key" => Rails.configuration.stripe[:publishable_key], :src => "https://checkout.stripe.com/v2/checkout.js"}
+    .span4(ng-controller="StripeController")
+      -if @enrolled
+        %h3 You Are Already Enrolled
+        .btn.btn-large
+          %a(href="#{assembly_path(@assembly)}")
+            Continue Course
+      -else
+        %h3 So Give Us Your Money
+        %p
+          You'll be making macarons this lovely in no time!
+        .section
+          .btn.btn-primary.btn-buy(ng-click="buyModalOpen=true")
+            Buy Now For Just $79.99!
+
+        %div.buy-modal(close="buyModalOpen = false" modal="buyModalOpen" options="modalOptions" ng-cloak)
+          .modal-header
+            %h2
+              Purchase #{@assembly.title}
+          .modal-body
+            %form{"stripe-form" => "handleStripe"}
+              .span3
+                %label{:for => ""} Card number
+                %input.input-block-level{"ng-model" => "number", "payments-format" => "card", "payments-validate" => "card", :type => "text"}/
+              .span1
+                %label{:for => ""} Expiry
+                %input.input-block-level{"ng-model" => "expiry", "payments-format" => "expiry", "payments-validate" => "expiry", :type => "text"}/
+              .span3
+                %label{:for => ""} Name on card
+                %input.input-block-level{:type => "text"}/
+              .span1
+                %label{:for => ""} CVC
+                %input.input-block-level{"ng-model" => "cvc", "payments-format" => "cvc", "payments-validate" => "cvc", :type => "text"}/
+              .span4
+                %button.btn.btn-primary.btn-large{:type => "submit"} Submit          
+                %button.btn.btn-warning.cancel(ng-click="buyModalOpen = false") Cancel
+
+
+          
