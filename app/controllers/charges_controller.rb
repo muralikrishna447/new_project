@@ -4,7 +4,7 @@ class ChargesController < ApplicationController
 
   def create
     # Amount in cents
-    @amount = 500
+    assembly = Assembly.find(params[:assembly_id])
 
     customer = Stripe::Customer.create(
       email: current_user.email,
@@ -13,8 +13,8 @@ class ChargesController < ApplicationController
 
     charge = Stripe::Charge.create(
       customer: customer.id,
-      amount: @amount,
-      description: 'Rails Stripe customer',
+      amount: (assembly.price * 100).to_i,
+      description: assembly.title,
       currency: 'usd'
     )
 

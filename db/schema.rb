@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130909223358) do
+ActiveRecord::Schema.define(:version => 20130911162405) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -124,14 +124,15 @@ ActiveRecord::Schema.define(:version => 20130909223358) do
     t.text     "description"
     t.text     "image_id"
     t.string   "youtube_id"
-    t.string   "assembly_type",  :default => "Assembly"
+    t.string   "assembly_type",                                :default => "Assembly"
     t.string   "slug"
     t.integer  "likes_count"
     t.integer  "comments_count"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                                           :null => false
+    t.datetime "updated_at",                                                           :null => false
     t.boolean  "published"
     t.datetime "published_at"
+    t.decimal  "price",          :precision => 8, :scale => 2
   end
 
   create_table "assembly_inclusions", :force => true do |t|

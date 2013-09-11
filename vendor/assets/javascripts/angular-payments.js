@@ -690,6 +690,11 @@ angular.module('angularPayments', []);angular.module('angularPayments')
 
           });
 
+        } else {
+          scope.$apply(function() {
+            scope[attr.stripeForm].apply(scope, [400, {error: 'Invalid form submitted'}]);
+          });
+          button.prop('disabled', false);
         }
 
         scope.expiryMonth = expMonthUsed ? scope.expMonth : null;
