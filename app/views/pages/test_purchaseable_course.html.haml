@@ -38,7 +38,12 @@
               Purchase #{@assembly.title} for #{number_to_currency(@assembly.price, unit: "$")}
           .modal-body
             .row-fluid
-              %form.form-horizontal(stripe-form="handleStripe" name="chargeForm") 
+              %form.form-horizontal.charge-form(stripe-form="handleStripe" name="chargeForm") 
+                .control-group(ng-show="errorText")
+                  .controls.error-text
+                    {{errorText}}
+                    Please fix errors and try again.
+                                   
                 .control-group
                   %label.control-label(for="name")
                     Card Holder's Name
@@ -67,9 +72,7 @@
                   .controls
                     %i.icon-spinner.icon-2x.icon-spin
                     Processing your card
-                .control-group(ng-show="errorText")
-                  .error-text
-                    {{errorText}}
+
 
 
 
