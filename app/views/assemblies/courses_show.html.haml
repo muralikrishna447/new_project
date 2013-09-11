@@ -1,10 +1,9 @@
 .container
   .row
-    %h1= @course.title
+    .span12
+      %h1= @course.title
 
-    - if current_user && current_user.enrolled?(@course)
-      - current_user_enrolled = true
-    - else
-      - current_user_enrolled = false
-    %div(ng-controller='EnrollmentsController' ng-init="init('assemblies','#{@course.id}', '#{current_user ? true: false}', '#{current_user_enrolled}')" ng-cloak)
-      = render 'enrollments/enrollment'
+      - if current_user
+        = render 'enrollments/enrollment', enrollable: @course
+      - else
+        = link_to 'Sign In', signin_url, class: 'btn btn-primary btn-large'
