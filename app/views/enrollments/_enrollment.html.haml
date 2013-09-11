@@ -1,2 +1,10 @@
-%div(ng-repeat="enrollment in enrollments")
-  {{enrollment}}
+%div(ng-switch on="current_user_present")
+  %div(ng-switch-when="true")
+    %div(ng-switch on="current_user_enrolled")
+      %div(ng-switch-when="true")
+        %h3 You're enrolled!
+      %div(ng-switch-when="false")
+        %a.btn.btn-primary.btn-large(ng-click="enroll()")
+          Enroll
+  %div(ng-switch-when="false")
+    Current user not present
