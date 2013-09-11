@@ -31,6 +31,7 @@ ActiveAdmin.register_page 'Mixpanel' do
         hash['$properties'].keys.each do |key|
           unless /\A\$/.match(key)
             to_insert << key
+            to_insert << hash['$properties'][key]
           end
         end
         csv << to_insert
