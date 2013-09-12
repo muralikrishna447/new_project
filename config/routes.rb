@@ -146,6 +146,7 @@ Delve::Application.routes.draw do
     resources :enrollments
   end
   resources :projects, controller: :assemblies
+  # resources :courses, controller: :assemblies
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'
 
@@ -157,5 +158,27 @@ Delve::Application.routes.draw do
   resources :client_views, only: [:show]
   resources :stream_views, only: [:show]
 
+  # get "/courses/:id" => 'courses#show', constraints: lambda {|r| Course.find(r.params[:id]).present?}
+  # get "/courses/:id" => 'assemblies#show', constraints: lambda {|r| Assembly.find(r.params[:id]).present?}
+  # resources :courses, constraints: lambda { |r|
+  #   if Course.find_by_id(r.params[:id])
+  #     resources :courses, controller: 'courses' do
+  #       resources :activities, only: [:show], path: ''
+  #       member do
+  #         post 'enroll' => 'courses#enroll'
+  #       end
+  #     end
+  #   else
+  #     resources :courses, controller: 'assemblies'
+  #   end
+  # }
+
+  # get "/courses", to: "courses#index", as: "courses"
+  # get "/courses/accelerated-sous-vide-cooking-course", to: "courses#show", as: "course", id: "accelerated-sous-vide-cooking-course"
+  # get "/courses/accelerated-sous-vide-cooking-course/:id", to: "courses#show", as: "course_activity", course_id: "accelerated-sous-vide-cooking-course"
+  # get "/courses/spherification", to: "courses#show", as: "course", id: "spherification"
+  # get "/courses/spherification/:id", to: "courses#show", as: "course_activity", course_id: "spherification"
+
+  # resources :courses, controller: :assemblies
 end
 
