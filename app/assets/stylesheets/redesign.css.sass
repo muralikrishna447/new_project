@@ -1901,8 +1901,6 @@ csingredienteditpair
     .input-signup-email
       width: 50%
 
-
-
 /* Global on-select highlighting */
 
 ::-moz-selection 
@@ -1912,4 +1910,20 @@ csingredienteditpair
 ::selection 
   background-color: $orange
   color: #ffffff
+
+/* Global tab changes */
+
+.nav-tabs
+  border: 0
+  .active, 
+    border-bottom: 4px solid $orange
+    a, a:hover, a:focus
+      border-left: 0
+      border-right: 0
+.buy-box
+  border-style: double
+  border-width: 4px
+  border-color: $orange
+  box-sizing: border-box
+  padding: 10px
 
