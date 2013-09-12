@@ -182,7 +182,7 @@ Delve::Application.routes.draw do
 
   # resources :courses, controller: :assemblies
 
-  constraints CourseConstraint do
+  constraints lambda {|request| ['/courses','/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path) } do
     resources :courses, only: [:index, :show] do
       resources :activities, only: [:show], path: ''
       member do
@@ -191,7 +191,7 @@ Delve::Application.routes.draw do
     end
   end
 
-  constraints AssemblyConstraint do
+  constraints lambda {|request| !['/courses','/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path) } do
     resources :courses, controller: :assemblies
   end
 

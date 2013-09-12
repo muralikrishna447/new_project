@@ -14,29 +14,29 @@ feature 'courses' do
     @bio_grant = Fabricate :copy, location: 'instructor-grant', copy: 'grant'
   end
 
-  # context 'user not signed in' do
+  context 'user not signed in' do
 
-  #   scenario 'can sign in and enroll' do
-  #     visit course_path(@course)
-  #     within('.signin-and-enroll-section') do
-  #       fill_in 'email', with: @user.email
-  #       fill_in 'password', with: @user.password
-  #       click_button('Sign In and Enroll')
-  #     end
-  #     expect(@user.enrollments.first.enrollable.title).to eq('Spherification')
-  #   end
+    scenario 'can sign in and enroll' do
+      visit course_path(@course)
+      within('.signin-and-enroll-section') do
+        fill_in 'email', with: @user.email
+        fill_in 'password', with: @user.password
+        click_button('Sign In and Enroll')
+      end
+      expect(@user.enrollments.first.enrollable.title).to eq('Spherification')
+    end
 
-  #   scenario 'can create account and enroll' do
-  #     visit course_path(@course)
-  #     within('.signup-and-enroll-section') do
-  #       fill_in 'name', with: 'test1'
-  #       fill_in 'email', with: 'test1@test1.com'
-  #       fill_in 'password', with: 'password1'
-  #       click_button('Create Account and Enroll')
-  #     end
-  #     user = User.last
-  #     expect(user.email).to eq('test1@test1.com')
-  #     expect(user.enrollments.first.enrollable.title).to eq('Spherification')
-  #   end
-  # end
+    scenario 'can create account and enroll' do
+      visit course_path(@course)
+      within('.signup-and-enroll-section') do
+        fill_in 'name', with: 'test1'
+        fill_in 'email', with: 'test1@test1.com'
+        fill_in 'password', with: 'password1'
+        click_button('Create Account and Enroll')
+      end
+      user = User.last
+      expect(user.email).to eq('test1@test1.com')
+      expect(user.enrollments.first.enrollable.title).to eq('Spherification')
+    end
+  end
 end
