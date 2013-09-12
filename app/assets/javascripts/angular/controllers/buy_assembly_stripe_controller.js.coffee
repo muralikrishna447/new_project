@@ -1,4 +1,7 @@
-angular.module('ChefStepsApp').controller 'StripeController', ["$scope", "$http", ($scope, $http) ->
+# This mixes the concerns of managing a general purpose modal for charging stripe with
+# the special case of buying an assembly. Would be better to separate.
+
+angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", ($scope, $http) ->
 
   $scope.state = "charge"
 
