@@ -4,13 +4,14 @@
 angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", ($scope, $http) ->
 
   $scope.state = "charge"
+  $scope.buyModalOpen = false
 
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
 
     if response.error
       console.log "STRIPE TOKEN FAIL: " + response.error
-      $scope.errorText = response.error
+      $scope.errorText = response.error.message || response.error
       $scope.processing = false
 
     else    
@@ -30,7 +31,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
       ).error((data, status, headers, config) ->
         console.log "STRIPE CHARGE FAIL" + data
-        $scope.errorText = data.errors[0]
+        $scope.errorText = data.errors[0].message || data.errors[0]
         $scope.processing = false
       )
 
@@ -38,6 +39,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     if form?.$valid
       $scope.processing = true
       $scope.errorText = false
+
+  $scope.closeModal = ->
+    $scope.buyModalOpen = false
 
 
 ]
