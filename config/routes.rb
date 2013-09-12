@@ -63,12 +63,12 @@ Delve::Application.routes.draw do
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
-  resources :courses, only: [:index, :show] do
-    resources :activities, only: [:show], path: ''
-    member do
-      post 'enroll' => 'courses#enroll'
-    end
-  end
+  # resources :courses, only: [:index, :show] do
+  #   resources :activities, only: [:show], path: ''
+  #   member do
+  #     post 'enroll' => 'courses#enroll'
+  #   end
+  # end
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
@@ -147,6 +147,7 @@ Delve::Application.routes.draw do
   end
   resources :projects, controller: :assemblies
   # resources :courses, controller: :assemblies
+  # resources :classes, controller: :assemblies
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'
 
@@ -180,5 +181,19 @@ Delve::Application.routes.draw do
   # get "/courses/spherification/:id", to: "courses#show", as: "course_activity", course_id: "spherification"
 
   # resources :courses, controller: :assemblies
+
+  constraints CourseConstraint do
+    resources :courses, only: [:index, :show] do
+      resources :activities, only: [:show], path: ''
+      member do
+        post 'enroll' => 'courses#enroll'
+      end
+    end
+  end
+
+  constraints AssemblyConstraint do
+    resources :courses, controller: :assemblies
+  end
+
 end
 
