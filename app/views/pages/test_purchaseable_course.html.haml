@@ -18,25 +18,27 @@
       %p
         Chambray typewriter Odd Future, cliche Wes Anderson High Life Banksy cred bespoke Intelligentsia ethnic. YOLO gluten-free blog kale chips. Cliche Shoreditch church-key direct trade banjo ugh, forage pug meh typewriter yr chillwave wayfarers small batch. Trust fund Carles forage disrupt photo booth. Truffaut lo-fi Schlitz, Blue Bottle hoodie synth Thundercats. Actually cliche put a bird on it kitsch, ethical Thundercats synth drinking vinegar gluten-free lomo try-hard direct trade. Chambray viral you probably haven't heard of them salvia, ugh Pitchfork Terry Richardson selvage master cleanse.
 
-    .span4(ng-controller="StripeController" ng-init="assembly_id=#{@assembly.id}")
-      %h3 You Are Already Enrolled
-      .btn.btn-primary
-        %a(href="#{assembly_path(@assembly)}")
-          Continue Course
-      -if @assembly.price
+    .span4(ng-controller="StripeController" ng-init='assembly=#{@assembly.to_json}; enrolled=#{@enrolled ? true : false}; assemblyPath="#{assembly_path(@assembly)}"' ng-cloak)
+      %div(ng-show="enrolled")
+        %h3 You Are Already Enrolled
+        .btn.btn-primary.btn-large
+          %a(ng-href="{{assemblyPath}}")
+            Continue Course
+      %div(ng-show="(! enrolled) && assembly.price")
         %h3 So Give Us Your Money
         %p
           You'll be making macarons this lovely in no time!
         .section
-          .btn.btn-primary(ng-click="buyModalOpen=true")
-            Buy Now For Just #{number_to_currency(@assembly.price, unit: "$")}
+          .btn.btn-primary.btn-large(ng-click="buyModalOpen=true")
+            Buy Now For Just {{assembly.price | currency}}
 
-        %div.buy-modal(close="buyModalOpen = false" modal="buyModalOpen" options="modalOptions" ng-cloak)
+        %div.buy-modal(close="buyModalOpen = false" modal="buyModalOpen" ng-cloak)
+
           .modal-header
             %h2
-              Purchase #{@assembly.title} for #{number_to_currency(@assembly.price, unit: "$")}
-          .modal-body
-            .row-fluid
+              Purchase {{assembly.title}} for {{assembly.price | currency}}
+          .modal-body(ng-switch on="state")
+            .row-fluid(ng-switch-when="charge" ng-animate="'slide'")
               %form.form-horizontal.charge-form(stripe-form="handleStripe" name="chargeForm") 
                 .control-group(ng-show="errorText")
                   .controls.error-text
@@ -65,12 +67,18 @@
                     %input.input-small(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" required)
                 .control-group(ng-hide="processing")
                   .controls                    
-                    %button.btn.btn-primary.btn-large(ng-click="maybeStartProcessing()") Buy Now     
+                    %button.btn.btn-primary.btn-large(ng-click="maybeStartProcessing(chargeForm)") Buy Now     
                     %button.btn.btn-link.cancel(ng-click="buyModalOpen = false"  type="button") Cancel
                 .control-group(ng-show="processing")
                   .controls
                     %i.icon-spinner.icon-2x.icon-spin
                     Processing your card
+            .row-fluid(ng-switch-when="thanks")
+              %h3 Thank you for your purchase!
+              .section         
+                .btn.btn-large.btn-primary     
+                  %a(ng-href="{{assemblyPath}}")
+                    Get Started
 
 
 
