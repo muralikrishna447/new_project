@@ -19,17 +19,16 @@
         Chambray typewriter Odd Future, cliche Wes Anderson High Life Banksy cred bespoke Intelligentsia ethnic. YOLO gluten-free blog kale chips. Cliche Shoreditch church-key direct trade banjo ugh, forage pug meh typewriter yr chillwave wayfarers small batch. Trust fund Carles forage disrupt photo booth. Truffaut lo-fi Schlitz, Blue Bottle hoodie synth Thundercats. Actually cliche put a bird on it kitsch, ethical Thundercats synth drinking vinegar gluten-free lomo try-hard direct trade. Chambray viral you probably haven't heard of them salvia, ugh Pitchfork Terry Richardson selvage master cleanse.
 
     .span4(ng-controller="StripeController" ng-init="assembly_id=#{@assembly.id}")
-      -if @enrolled
-        %h3 You Are Already Enrolled
-        .btn.btn-large
-          %a(href="#{assembly_path(@assembly)}")
-            Continue Course
-      -elsif @assembly.price
+      %h3 You Are Already Enrolled
+      .btn.btn-primary
+        %a(href="#{assembly_path(@assembly)}")
+          Continue Course
+      -if @assembly.price
         %h3 So Give Us Your Money
         %p
           You'll be making macarons this lovely in no time!
         .section
-          .btn.btn-primary.btn-buy(ng-click="buyModalOpen=true")
+          .btn.btn-primary(ng-click="buyModalOpen=true")
             Buy Now For Just #{number_to_currency(@assembly.price, unit: "$")}
 
         %div.buy-modal(close="buyModalOpen = false" modal="buyModalOpen" options="modalOptions" ng-cloak)
@@ -46,7 +45,7 @@
                                    
                 .control-group
                   %label.control-label(for="name")
-                    Card Holder's Name
+                    Cardholder's Name
                   .controls
                     %input.input-xlarge(type="text" ng-model="name" required)
                 .control-group
