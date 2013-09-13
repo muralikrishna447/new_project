@@ -15,7 +15,7 @@
     .quantity-group.qtyfade
       %span.lbs-qty(csscalingeditable){style: "display: none;"}
       %span.lbs-label
-      %span.main-qty(ng-show="!editMode" csscalingeditable="" ng-bind="ai.display_quantity"){data: {:"orig-value" => "{{ai.display_quantity * unitMultiplier(ai.unit)}}"}}
+      %span.main-qty(ng-show="!editMode" csscalingeditable="" ng-bind="ai.display_quantity")
       %span.main-qty(ng-show="editMode" ng-bind="ai.display_quantity")
 
     .unit.qtyfade(ng-bind="ai.unit")

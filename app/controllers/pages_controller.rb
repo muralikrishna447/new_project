@@ -11,6 +11,6 @@ class PagesController < ApplicationController
   def test_purchaseable_course
     @page = Page.find 'test-purchaseable-course'
     @assembly = Assembly.find('test-purchaseable-course')
-    @enrolled = Enrollment.where(user_id: current_user.id, enrollable_id: @assembly.id, enrollable_type: 'Assembly').first
+    @enrolled = current_user ? Enrollment.where(user_id: current_user.id, enrollable_id: @assembly.id, enrollable_type: 'Assembly').first : false
   end
 end
