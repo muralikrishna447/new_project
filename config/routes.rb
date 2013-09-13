@@ -161,7 +161,9 @@ Delve::Application.routes.draw do
 
   resources :charges, only: [:create]
 
-  constraints lambda {|request| ['/courses','/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path) } do
+  resources :courses, only: [:index], controller: :courses
+
+  constraints lambda {|request| ['/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path.split('/').reject! { |r| r.empty? }.take(2).join('/').prepend('/')) } do
     resources :courses, only: [:index, :show] do
       resources :activities, only: [:show], path: ''
       member do
@@ -170,7 +172,7 @@ Delve::Application.routes.draw do
     end
   end
 
-  constraints lambda {|request| !['/courses','/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path) } do
+  constraints lambda {|request| !['/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path.split('/').reject! { |r| r.empty? }.take(2).join('/').prepend('/')) } do
     resources :courses, controller: :assemblies
   end
 
