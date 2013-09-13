@@ -151,11 +151,18 @@ setRow = (row, qtyLbs, qty, units) ->
 
 # Compute the new ingredient quantities and units for a row
 updateOneRowUnits = ->
-  if ! $(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")
-    return
-
-  origValue = Number($(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")) * window.csScaling
+  main_qty = $(this).children('.quantity-group').find('.main-qty')
+  base_orig_value = main_qty.attr("data-orig-value")
   existingUnits = $(this).children('.unit').text()
+
+  # Lazily store off the original value in grams
+  if ! base_orig_value || base_orig_value == "null"
+    base_orig_value = Number($(main_qty[0]).text())
+    main_qty.attr("data-orig-value", base_orig_value)
+    if existingUnits == "kg"
+      base_orig_value = base_orig_value * 1000
+      
+  origValue = Number(base_orig_value) * window.csScaling
 
   # "ea" means each, just round up to nearest integer
   if existingUnits == "ea"
