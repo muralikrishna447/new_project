@@ -5,7 +5,7 @@
 .container
   .row
     .span12
-      = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/Ya5vpVc1RzysqAPC5ZIJ/convert?fit=712cache=true')
+      = image_tag ('http://placehold.it/1280x380')
   .row
     .span9
       %ul.nav.nav-tabs
@@ -24,26 +24,34 @@
     .span3
       .buy-box.section
         = buy_now(350234061,19)
-        .row.text-center.section
-          2000+ Enrolled
-        .row
+        .row.item-small
+          .text-center.section
+            %h4 2000+ Enrolled
           %h5 Course Includes:
           %ul
             %li Full Access
             %li 14 HD Videos
             %li 7 Lessons
             %li Q&A with the chefs
-          %h3 100% satisfaction guaranteed or your money back
-
+          %h4 100% satisfaction guaranteed or your money back
+      .row.section.item-small
+        %p.lead.section "Maecenas faucibus mollis interdum."
+        %h5.pull-right - George Jetson
   .row
-    .span9
-      = image_tag ('http://placehold.it/340x175')
-      = image_tag ('http://placehold.it/340x175')    
-      = image_tag ('http://placehold.it/340x175')
-      = image_tag ('http://placehold.it/340x175')    
-      = image_tag ('http://placehold.it/340x175')
-      = image_tag ('http://placehold.it/340x175')    
+    .span5
+      %h3 Equipment you'll need
+      = image_tag ('http://placehold.it/345x340')
+      = image_tag ('http://placehold.it/345x340')
+      = image_tag ('http://placehold.it/345x340')
+      = image_tag ('http://placehold.it/345x340')
 
+
+    .span5
+      %h3 Ingredients you'll need
+      = image_tag ('http://placehold.it/345x340')
+      = image_tag ('http://placehold.it/345x340')
+      = image_tag ('http://placehold.it/345x340')
+      = image_tag ('http://placehold.it/345x340')
 
 
 = render 'layouts/footer'
