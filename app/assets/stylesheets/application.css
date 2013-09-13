@@ -18,6 +18,7 @@
  *= require application/quizzes/_results
  *= require application/_dials
  *= require application/_checkboxes
+ *= require ingredients_index
  *= require mobile
  *= require diffview
  *= require media_objects
@@ -27,6 +28,8 @@
  *= require profiles
  *= require bootstrap-wysihtml5
  *= require angular-ui
+ *= require ng-grid.min
+
  *= require alert
  *= require registration
  *= require timeline
@@ -40,4 +43,7 @@
  *= require embed
  *= require projects
  *= require home
+ *= require knife_collection
+ *= require cs_lightbox
+ *= require charge_form
  */

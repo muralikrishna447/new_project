@@ -39,7 +39,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to welcome_url(email: @user.email)
       cookies.delete(:viewed_activities)
       cookies[:returning_visitor] = true
-      mixpanel.track 'Signed Up', { distinct_id: @user.id, time: @user.created_at }
+      mixpanel.append_identify @user.email
+      mixpanel.track 'Signed Up', { distinct_id: @user.email, time: @user.created_at }
       finished('counter_split', :reset => false)
     else
       render :new
@@ -60,14 +61,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_in @user
       aweber_signup(@user.name, @user.email)
       cookies.delete(:viewed_activities)
-      mixpanel.track 'Signed Up', { distinct_id: @user.id, time: @user.created_at }
-      @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
+      mixpanel.append_identify @user.email
+      mixpanel.track 'Signed Up', { distinct_id: @user.email, time: @user.created_at }
+      # @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
+      @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
       if @enrollment.save
         redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
         track_event @course, 'enroll'
         finished('poutine', :reset => false)
         finished('free or not', :reset => false)
-        mixpanel.track 'Course Enrolled', { distinct_id: @user.id, course: @course.title, enrollment_method: 'Sign Up and Enroll' }
+        mixpanel.track 'Course Enrolled', { distinct_id: @user.email, course: @course.title, enrollment_method: 'Sign Up and Enroll' }
+        mixpanel.increment 'Course Enrolled Count'
+
       end
     else
       redirect_to course_url(@course), notice: "Sorry, there was a problem with the information provided.  Please try again."

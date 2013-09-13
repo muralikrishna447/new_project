@@ -9,7 +9,7 @@ class StreamsController < ApplicationController
       streams_data = Stream.all_events
     end
     if streams_data
-      @streams = Kaminari::paginate_array(streams_data).page(params[:page]).per(10)
+      @streams = Kaminari::paginate_array(streams_data).page(params[:page]).per(5)
     end
     render :json => @streams, root: false
   end

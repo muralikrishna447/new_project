@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130816231547) do
+ActiveRecord::Schema.define(:version => 20130911231701) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20130816231547) do
     t.integer  "currently_editing_user"
     t.boolean  "include_in_gallery",     :default => true
     t.integer  "creator",                :default => 0
+    t.string   "layout_name"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -84,7 +85,8 @@ ActiveRecord::Schema.define(:version => 20130816231547) do
     t.string   "note"
   end
 
-  add_index "activity_ingredients", ["activity_id", "ingredient_id"], :name => "index_activity_ingredients_on_activity_id_and_ingredient_id", :unique => true
+  add_index "activity_ingredients", ["activity_id"], :name => "index_activity_ingredients_on_activity_id"
+  add_index "activity_ingredients", ["ingredient_id"], :name => "index_activity_ingredients_on_ingredient_id"
   add_index "activity_ingredients", ["ingredient_order"], :name => "index_activity_ingredients_on_ingredient_order"
 
   create_table "admin_users", :force => true do |t|
@@ -122,14 +124,15 @@ ActiveRecord::Schema.define(:version => 20130816231547) do
     t.text     "description"
     t.text     "image_id"
     t.string   "youtube_id"
-    t.string   "assembly_type",  :default => "Assembly"
+    t.string   "assembly_type",                                :default => "Assembly"
     t.string   "slug"
     t.integer  "likes_count"
     t.integer  "comments_count"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                                           :null => false
+    t.datetime "updated_at",                                                           :null => false
     t.boolean  "published"
     t.datetime "published_at"
+    t.decimal  "price",          :precision => 8, :scale => 2
   end
 
   create_table "assembly_inclusions", :force => true do |t|
@@ -207,13 +210,16 @@ ActiveRecord::Schema.define(:version => 20130816231547) do
     t.string   "short_description"
     t.text     "image_id"
     t.text     "additional_script"
+    t.string   "youtube_id"
   end
 
   create_table "enrollments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "course_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "enrollable_id"
+    t.string   "enrollable_type"
   end
 
   create_table "equipment", :force => true do |t|
@@ -285,6 +291,7 @@ ActiveRecord::Schema.define(:version => 20130816231547) do
     t.datetime "updated_at",                         :null => false
     t.boolean  "for_sale",        :default => false
     t.integer  "sub_activity_id"
+    t.decimal  "density"
   end
 
   create_table "likes", :force => true do |t|
@@ -337,8 +344,11 @@ ActiveRecord::Schema.define(:version => 20130816231547) do
     t.string   "title"
     t.text     "content"
     t.string   "slug"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "likes_count"
+    t.text     "image_id"
+    t.string   "primary_path"
   end
 
   create_table "pg_search_documents", :force => true do |t|
@@ -453,11 +463,12 @@ ActiveRecord::Schema.define(:version => 20130816231547) do
     t.string   "note"
   end
 
+  add_index "step_ingredients", ["ingredient_id"], :name => "index_step_ingredients_on_ingredient_id"
   add_index "step_ingredients", ["ingredient_order"], :name => "index_step_ingredients_on_ingredient_order"
-  add_index "step_ingredients", ["step_id", "ingredient_id"], :name => "index_step_ingredients_on_step_id_and_ingredient_id", :unique => true
+  add_index "step_ingredients", ["step_id"], :name => "index_step_ingredients_on_step_id"
 
   create_table "steps", :force => true do |t|
-    t.string   "title"
+    t.text     "title"
     t.integer  "activity_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
@@ -546,6 +557,7 @@ ActiveRecord::Schema.define(:version => 20130816231547) do
     t.integer  "sash_id"
     t.integer  "level",                  :default => 0
     t.string   "role"
+    t.string   "stripe_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

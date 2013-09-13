@@ -1,6 +1,8 @@
 @import 'mixins'
 @import 'circle_highlight_anim'
 
+
+
 body
   position: relative
 
@@ -601,6 +603,12 @@ a:hover
     height:  auto
     margin-right: 120px
 
+  .edit-pair-show
+    .ingredient-title
+      margin-left: 1.2em
+      text-indent: -1.2em
+
+
   .quantity-group
     position:  absolute
     right:  52px
@@ -955,6 +963,8 @@ a:hover
   &:focus
     background: $orange
     outline: none
+  a
+    color: inherit
 
 .btn-secondary
   background: $offwhite
@@ -1857,10 +1867,14 @@ csingredienteditpair
 
   .ordered-steps
     .ordered-step-item
+      margin: 0px
       .step-number
-        width: 15%
+        width: 20%
+        font-size: 24px
+        padding-top: 10px
       .step-content
-        width: 85%
+        width: 80%
+        padding-top: 10px
 
   .navbar .nav > li > .dropdown-menu li a 
     color: #333
@@ -1894,8 +1908,6 @@ csingredienteditpair
     .input-signup-email
       width: 50%
 
-
-
 /* Global on-select highlighting */
 
 ::-moz-selection 
@@ -1905,4 +1917,20 @@ csingredienteditpair
 ::selection 
   background-color: $orange
   color: #ffffff
+
+/* Global tab changes */
+
+.nav-tabs
+  border: 0
+  .active, 
+    border-bottom: 4px solid $orange
+    a, a:hover, a:focus
+      border-left: 0
+      border-right: 0
+.buy-box
+  border-style: double
+  border-width: 4px
+  border-color: $orange
+  box-sizing: border-box
+  padding: 10px
 

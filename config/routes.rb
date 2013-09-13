@@ -56,7 +56,10 @@ Delve::Application.routes.draw do
   get 'about' => 'home#about', as: 'about'
   get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
+  get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   match '/mp', to: redirect('/courses/spherification')
+  match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
@@ -108,7 +111,11 @@ Delve::Application.routes.draw do
   end
 
   resources :equipment, only: [:index]
-  resources :ingredients, only: [:index]
+  resources :ingredients, only: [:index, :update, :destroy] do
+    member do
+      post 'merge' => 'ingredients#merge'
+    end
+  end
 
   resources :gallery, only: [:index], path: 'gallery' do
     collection do
@@ -150,6 +157,8 @@ Delve::Application.routes.draw do
 
   resources :client_views, only: [:show]
   resources :stream_views, only: [:show]
+
+  resources :charges, only: [:create]
 
 end
 

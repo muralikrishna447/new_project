@@ -60,7 +60,7 @@ class ActivitiesController < ApplicationController
             session[:return_to] = request.fullpath
           end
           render 'course_activity'
-          track_event @current_inclusion
+          track_event @activity
           return
         else
           if @activity.courses.any? && @activity.courses.first.published?
@@ -93,7 +93,7 @@ class ActivitiesController < ApplicationController
           return
         end
       end
-   end
+    end
   end
 
   def new
@@ -194,6 +194,9 @@ class ActivitiesController < ApplicationController
               end
 
             rescue Exception => e
+              puts "--------- EXCEPTION -----------"
+              puts $@
+
               messages = [] || @activity.errors.full_messages
               messages.push(e.message)
               render json: { errors: messages}, status: 422
@@ -239,4 +242,3 @@ class ActivitiesController < ApplicationController
   end
 
 end
-

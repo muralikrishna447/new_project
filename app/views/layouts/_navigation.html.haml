@@ -28,8 +28,12 @@
                     %i.icon-angle-down
                   %ul.dropdown-menu
                     .dropdown-background
-                    %li= link_to 'Recipe Gallery', gallery_index_url(activity_type: "Recipe")
+                    %li= link_to 'ChefSteps Recipes', gallery_index_url(activity_type: "Recipe")
+                    %li= link_to 'Community Recipes', gallery_index_url(source: "community")
                     %li= link_to 'Add Recipe', new_activity_url
+                    -if can? :update, Ingredient
+                      %li= link_to 'Manage Ingredients', ingredients_path
+
                 %li.dropdown
                   .nav-item-border
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
@@ -50,9 +54,15 @@
                     .dropdown-background
                     %li= link_to 'Forum', 'http://forum.chefsteps.com'
                     %li= link_to 'Vote For New Courses', poll_url('vote-for-new-courses')
-                %li
+                %li.dropdown
                   .nav-item-border
-                  = link_to 'Shop', 'http://store.chefsteps.com'
+                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                    Shop
+                    %i.icon-angle-down
+                  %ul.dropdown-menu
+                    .dropdown-background
+                    %li= link_to 'Store', 'http://store.chefsteps.com'
+                    %li= link_to 'Knife Collection', knife_collection_url
                 %li
                   .nav-item-border
                   - if current_user

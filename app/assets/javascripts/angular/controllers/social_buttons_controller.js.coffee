@@ -23,6 +23,7 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     $http.put('/splitty/finished?experiment=social_share4')
     share_cat = $scope.socialURL().split("/")[3]
     mixpanel.track('Share', { 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat})
+    mixpanel.people.increment('Share Count')
 
   $scope.shareTwitter = ->
     $scope.twitterCount = if $scope.twitterCount? then $scope.twitterCount + 1 else 1

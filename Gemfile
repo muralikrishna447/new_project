@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 ruby "1.9.3"
 
-gem 'rails', '3.2.11'
-gem 'railties', '3.2.11'
+gem 'rails', '3.2.14'
+gem 'railties', '3.2.14'
 gem 'pg'
 
 gem 'unicorn'
@@ -51,6 +51,8 @@ gem 'mixpanel'
 gem 'cancan'
 gem 'simple-rss'
 gem 'active_model_serializers'
+gem 'mixpanel_client'
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 # Gems used only for assets and not required
 # in production environments by default.

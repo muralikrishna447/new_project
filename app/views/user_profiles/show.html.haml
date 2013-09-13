@@ -50,19 +50,19 @@
             = link_to @is_current_user ? 'My Recipes' : @user.name + '\'s Recipes', '#recipes', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#courses
-          - if @user.courses.any?
-            - @user.courses.each do |course|
+          - if @user.enrollments.any?
+            - @user.enrollments.each do |enrollment|
               - course_title = capture do
-                = link_to course.title, course
+                = link_to enrollment.enrollable.title, enrollment.enrollable
               - course_text = capture do
                 - if current_user == @user
                   %h4
                     Lesson
-                    = @user.viewed_activities_in_course(course).count
+                    = @user.viewed_activities_in_course(enrollment.enrollable).count
                     of
-                    = course.viewable_activities.count
-                  = where_user_left_off_in_course(course, @user, 'btn btn-primary')
-              = render 'shared/media_list_item', image: course.featured_image, title: course_title, text: course_text
+                    = enrollment.enrollable.viewable_activities.count
+                  = where_user_left_off_in_course(enrollment.enrollable, @user, 'btn btn-primary')
+              = render 'shared/media_list_item', image: enrollment.enrollable.featured_image, title: course_title, text: course_text
           - else
             .tab-pane-header
               %h3 Enroll into your first course today!

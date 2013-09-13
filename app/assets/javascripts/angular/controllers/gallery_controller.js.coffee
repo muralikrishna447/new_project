@@ -195,6 +195,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   if $scope.url_params.search_all
     $scope.filters.search_all = $scope.url_params.search_all
     $scope.filters.sort = $scope.sortChoices[0]
+  $scope.filters.generator = _.find($scope.generatorChoices, (x) -> x.value == $scope.url_params.source) if $scope.url_params.source
   $scope.filters.activity_type = _.find($scope.typeChoices, (x) -> x.value == $scope.url_params.activity_type) if $scope.url_params.activity_type
   $scope.clear_and_load()
 

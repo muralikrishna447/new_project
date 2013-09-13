@@ -68,7 +68,7 @@ class Activity < ActiveRecord::Base
 
   serialize :activity_type, Array
 
-  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
+  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids, :layout_name
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
 
   include PgSearch
@@ -82,6 +82,8 @@ class Activity < ActiveRecord::Base
                   associated_against: {terminal_equipment: [[:title, 'D']], terminal_ingredients: [[:title, 'D']], tags: [[:name, 'B']], steps: [[:title, 'C'], [:directions, 'C']]}
 
   TYPES = %w[Recipe Technique Science]
+
+  LAYOUT_NAMES = ['list']
 
   class SourceType
     # This is the default. Others are actually defined in activity_controller.js.coffee. Would
@@ -194,24 +196,19 @@ class Activity < ActiveRecord::Base
     if ingredients_attrs
       ingredients_attrs.each do |i|
         title = i[:ingredient][:title]
-         unless title.nil? || title.blank?
+        unless title.nil? || title.blank?
           title.strip!
 
-          # Try first by id
-          the_ingredient = Ingredient.find_by_id(i[:ingredient][:id])
+          the_ingredient = Ingredient.find_or_create_by_id_or_subactivity_or_ingredient_title(i[:ingredient][:id], title)
 
-          # Otherwise, try by title because it is possible for a user to type fast and not get
-          # an autocompleted ingredient with an id filled it, but it is still in the database
-          the_ingredient = Ingredient.find_or_create_by_title(title)  if ! the_ingredient
-
-          activity_ingredient = ActivityIngredient.create!({
-                                                            activity_id: self.id,
-                                                            ingredient_id: the_ingredient.id,
-                                                            note: i[:note],
-                                                            display_quantity: i[:display_quantity],
-                                                            unit: i[:unit],
-                                                            ingredient_order_position: :last
-                                                        })
+          ActivityIngredient.create!({
+              activity_id: self.id,
+              ingredient_id: the_ingredient.id,
+              note: i[:note],
+              display_quantity: i[:display_quantity],
+              unit: i[:unit],
+              ingredient_order_position: :last
+          })
         end
       end
     end

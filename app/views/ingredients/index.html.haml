@@ -1,0 +1,103 @@
+- content_for :title, "Ingredients"
+- content_for :description, "Batch edit ingredients"
+
+.ingredient-index-container.container.relative(ng-controller="IngredientsIndexController" infinite-scroll="loadIngredients()" infinite-scroll-distance="3" ng-cloak)
+
+  .navbar.navbar-fixed-top
+    .navbar-inner
+      .container
+        .form-horizontal
+          %input.search-query(type="search" placeholder="Ingredient name..." ng-model="searchString")
+          .btn-toolbar
+            .btn-group
+              %button.btn(ng-model="includeRecipes" btn-checkbox type="button")
+                %i.icon-th-list(tooltip="Include recipes" )
+              %button.btn(ng-click="refreshIngredients()")
+                %i.icon-refresh(tooltip="Refresh list (use when you make changes in another window)")
+            .btn-group
+              %button.btn(ng-disabled="! canMerge()" ng-click="setMergeKeeper(null); mergeModalOpen = true" )
+                .icon-pair(tooltip="Merge selected ingredients (No Undo!)")
+                  %i.icon-arrow-right
+                  %i.icon-arrow-left
+              %button.btn(ng-disabled="! canDelete()" ng-click="deleteSelected()" )
+                %i.icon-trash(tooltip="Delete selected ingredients (No Undo!)")
+          %i.loading-spinner.icon-spinner.icon-spin.pull-right(ng-show="dataLoading")
+
+
+  .row.noprint(ng-cloak ng-show="alerts.length > 0")
+    .span8.offset2
+      %alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="closeAlert($index)" ng-animate="'custom'")
+        {{alert.message}}
+
+  .row.grid
+    .ingredient-index.span12(ng-grid="gridOptions")
+
+
+  -# This modal and the following ones would be a good use for ui-router, but I'm annoyed that they don't have a
+  -# released build for 0.0.2 yet so I'm doing it the old fashioned way for now.
+  %div.uses-modal(close="usesModalOpen = false" modal="usesModalOpen" options="modalOptions")
+    .modal-header
+      %h2(ng-bind-html-unsafe="usesForModalIngredient.title")
+    .modal-body
+      %h3 Used In
+      %ul
+        %li(ng-repeat="activity in usesForModal")
+          %a(ng-href="/activities/{{activity.id}}" target="_blank" ng-bind-html-unsafe="activity.title")
+    .modal-footer
+      %button.btn.btn-warning.cancel(ng-click="usesModalOpen = false") Close
+
+  -# See comment above
+  %div.merge-modal(close="mergeModalOpen = false" modal="mergeModalOpen" options="modalOptions")
+    .modal-header
+      %h2 Merge Ingredients
+      Click on the ingredient that you want to keep to see a preview of your merge.
+    .modal-body
+      %div(ng-show="mergeKeeper")
+        %h3 Will Be Kept
+        %ul
+          %li(ng-bind-html-unsafe="mergeKeeper.title")
+            %a(ng-bind-html-unsafe="mergeKeeper.title" ng-click="setMergeKeeper(ingredient)")
+            %span
+              \- Uses: {{mergeKeeper.use_count}}
+            %span(ng-show="ingredient.product_url")
+              \- Link: {{urlAsNiceText(mergeKeeper.product_url)}}
+
+      %h3(ng-show="mergeKeeper" ng-animate="'fade'") Will Be Merged and Deleted
+      %ul
+        %li(ng-repeat="ingredient in gridOptions.selectedItems | orderBy:'useCount':true" ng-show="ingredient.id != mergeKeeper.id" ng-animate="'custom'")
+          %a(ng-bind-html-unsafe="ingredient.title" ng-click="setMergeKeeper(ingredient)")
+          %span
+            \- Uses: {{ingredient.use_count}}
+          %span(ng-show="ingredient.product_url")
+            \- Link: {{urlAsNiceText(ingredient.product_url)}}
+          %span(ng-show="mergeKeeper && splitNote(ingredient)")
+            ("{{splitNote(ingredient)}}" will be moved to note)
+
+    .modal-footer
+      %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" ng-show="mergeKeeper") Merge (No Undo!)
+      %button.btn.cancel(ng-click="mergeModalOpen = false") Cancel
+
+  %div.density-modal(close="densityIngredient = null" modal="densityIngredient" options="modalOptions")
+    .modal-header
+      %h2
+        Density:
+        %span(ng-bind-html-unsafe="densityIngredient.title")
+    .modal-body
+      .density-row.header
+        .density-unit
+          Unit
+        .density-value
+          Grams
+      .density-row(ng-repeat="du in densityUnits")
+        .density-unit
+          {{du.name}}
+        .density-value
+          %csEditPair
+            %csEditPairShow
+              %a
+                {{displayDensity(densityIngredient.density / du.perL)}}
+            %csEditPairEdit
+              %input(type="text" ng-model="newDensityValue"  ng-change="densityIngredient.density = newDensityValue * du.perL" ui-keypress='{13: "finishDensityChange(densityIngredient)"}' ui-event='{blur: "ingredientChanged(densityIngredient)", focus: "newDensityValue = displayDensityNoSet(densityIngredient.density / du.perL)"}')      
+
+    .modal-footer
+      %button.btn(ng-click="finishDensityChange(densityIngredient)") Done

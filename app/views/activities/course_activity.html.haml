@@ -70,4 +70,5 @@
                   %i.icon-chevron-right
 
 :javascript
-  mixpanel.track('Activity Viewed', {'distinct_id' : "#{current_user ? current_user.id : nil}", 'context' : 'course', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
+  mixpanel.track('Activity Viewed', {'distinct_id' : "#{current_user ? current_user.email : nil}", 'context' : 'course', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
+  mixpanel.people.increment('Activity Viewed Count')

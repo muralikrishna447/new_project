@@ -22,4 +22,6 @@
 //= require jquery.mjs.nestedSortable
 //= require jquery.jeditable
 //= require responsiveslides
+//= require ng-grid-2.0.7.debug
+//= require ng-infinite-scroll
 

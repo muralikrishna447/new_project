@@ -9,14 +9,31 @@
   %h1= @project.title
   .row
     .span12
-      %ul.nav.nav-pills#project-tabs.noprint
+      %a.btn.btn-secondary.project-menu-expand{data: {toggle: 'collapse', target: '#project-tabs'}}
+        Project Menu
+      %ul.nav.nav-pills#project-tabs.noprint.nav-collapse.collapse
         %li.active
-          = link_to '0. Introduction', '#introduction', data: {toggle: 'tab'}
+          = link_to '#introduction', data: {toggle: 'tab'} do
+            %span.project-tab-number
+              0.
+            %span.project-tab-title
+              Introduction
+            .project-tab-marker
         - project_inclusions.each_with_index do |assembly_inclusion,index|
           %li
-            = link_to "#{index + 1}. #{assembly_inclusion.includable.title}", "#project-#{index}", data: {toggle: 'tab'}
+            = link_to "#project-#{index}", data: {toggle: 'tab'} do
+              %span.project-tab-number
+                = "#{index + 1}."
+              %span.project-tab-title
+                = assembly_inclusion.includable.title
+              .project-tab-marker
         %li
-          = link_to "#{@project.assembly_inclusions.count + 1}. Finish the Project", '#upload', data: {toggle: 'tab'}
+          = link_to '#upload', data: {toggle: 'tab'} do
+            %span.project-tab-number
+              = "#{@project.assembly_inclusions.count + 1}."
+            %span.project-tab-title
+              = 'Finish the Project'
+            .project-tab-marker
       .tab-content
         .tab-pane.active#introduction
           .row
@@ -94,7 +111,10 @@
           .tab-pane{id: "project-#{index}"}
             %h2.printonly
               = assembly_inclusion.includable.title
-            = render '/shared/activity', activity: assembly_inclusion.includable
+            - if assembly_inclusion.includable.layout_name
+              = render "/shared/activity_layouts/#{assembly_inclusion.includable.layout_name}", activity: assembly_inclusion.includable
+            - else
+              = render '/shared/activity', activity: assembly_inclusion.includable
             %hr
             .row-fluid.section.noprint
               .span4.text-left
