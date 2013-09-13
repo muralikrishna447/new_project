@@ -3,7 +3,6 @@
 
 angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", ($scope, $http) ->
 
-  $scope.state = "charge"
   $scope.buyModalOpen = false
 
   $scope.handleStripe = (status, response) ->
@@ -39,6 +38,13 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     if form?.$valid
       $scope.processing = true
       $scope.errorText = false
+
+  $scope.openModal = ->
+    $scope.state = "charge" 
+    if ! $scope.logged_in
+      window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before purchasing a course.")
+    else
+      $scope.buyModalOpen = true
 
   $scope.closeModal = ->
     $scope.buyModalOpen = false
