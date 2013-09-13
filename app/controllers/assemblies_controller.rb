@@ -15,4 +15,8 @@ class AssembliesController < ApplicationController
     @upload = Upload.new
     render "#{assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
   end
+
+  def landing
+    @assembly = Assembly.find(params[:id])
+  end
 end

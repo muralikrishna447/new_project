@@ -173,7 +173,11 @@ Delve::Application.routes.draw do
   end
 
   constraints lambda {|request| !['/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path.split('/').reject! { |r| r.empty? }.take(2).join('/').prepend('/')) } do
-    resources :courses, controller: :assemblies
+    resources :courses, controller: :assemblies do
+      member do
+        get 'landing' => 'assemblies#landing'
+      end
+    end
   end
 
 end
