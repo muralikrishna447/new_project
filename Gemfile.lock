@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/stripe/stripe-ruby
+  revision: 06c860aeeac012f251807322e49eb5eeb0380a58
+  specs:
+    stripe (1.8.6)
+      multi_json (>= 1.0.4, < 2)
+      rest-client (~> 1.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -509,6 +517,7 @@ DEPENDENCIES
   simple-rss
   split
   spork-rails
+  stripe!
   thin
   turbo-sprockets-rails3
   uglifier (>= 1.0.3)

@@ -25,16 +25,25 @@ ActiveAdmin.register_page 'Mixpanel' do
       all_data.each do |hash|
         keys = []
         values = []
+        to_insert = []
 
+        to_insert << hash['$properties']['$email']
         hash['$properties'].keys.each do |key|
-          keys << key
+          unless /\A\$/.match(key)
+            to_insert << key
+            to_insert << hash['$properties'][key]
+          end
         end
-        hash['$properties'].values.each do |value|
-          values << value
-        end
+        csv << to_insert
+        # hash['$properties'].keys.each do |key|
+        #   keys << key
+        # end
+        # hash['$properties'].values.each do |value|
+        #   values << value
+        # end
 
-        csv << keys
-        csv << values
+        # csv << keys
+        # csv << values
       end
     end
     send_data csv_string, filename: 'mixpanel_engage.csv'

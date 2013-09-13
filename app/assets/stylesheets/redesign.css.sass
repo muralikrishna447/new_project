@@ -1,6 +1,8 @@
 @import 'mixins'
 @import 'circle_highlight_anim'
 
+
+
 body
   position: relative
 
@@ -502,6 +504,10 @@ a:hover
 #activity-description-maximize
   width: 100%
   cursor: pointer
+  //font-weight: bold
+  font-size: 120% !important
+  //&:after
+  //  content: "..."
 
 .ordered-steps
   overflow: auto
@@ -959,6 +965,8 @@ a:hover
   &:focus
     background: $orange
     outline: none
+  a
+    color: inherit
 
 .btn-secondary
   background: $offwhite
