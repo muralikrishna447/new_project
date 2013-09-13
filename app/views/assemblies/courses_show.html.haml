@@ -1,0 +1,9 @@
+.container
+  .row
+    .span12
+      %h1= @course.title
+
+      - if current_user
+        = render 'enrollments/enrollment', enrollable: @course
+      - else
+        = link_to 'Sign In', sign_in_url, class: 'btn btn-primary btn-large'

@@ -28,8 +28,6 @@ class CoursesController < ApplicationController
       render 'macarons'
     end
 
-
-
   end
 
   def enroll

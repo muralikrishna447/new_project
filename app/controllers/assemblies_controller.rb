@@ -1,6 +1,7 @@
 class AssembliesController < ApplicationController
   def index
     if request.path == '/assemblies'
+      @assembly_type = 'Assembly'
       @assemblies = Assembly.published.order('created_at asc').page(params[:page]).per(12)
     else
       @assembly_type = request.path.gsub(/^\//, "").singularize.titleize
