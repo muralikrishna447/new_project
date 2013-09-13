@@ -21,6 +21,6 @@ class AssembliesController < ApplicationController
   end
 
   def landing
-    @course = Assembly.find(params[:id])
+    @assembly = Assembly.find(params[:id])
   end
 end
