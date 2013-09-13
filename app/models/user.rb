@@ -132,7 +132,7 @@ class User < ActiveRecord::Base
 
   def enrolled?(enrollable)
     enrollment = Enrollment.where(user_id: self.id, enrollable_type: enrollable.class.to_s, enrollable_id: enrollable.id)
-    enrollment.blank? ? false : true
+    enrollment.blank? ? false : enrollment
   end
 end
 
