@@ -19,8 +19,6 @@
         %h2
           Purchase {{assembly.title}} for {{assembly.price | currency}}
       .modal-body(ng-switch on="state")
-        .row-fluid(ng-switch-when="logged_out")
-          You must be logged in first!
         .row-fluid(ng-switch-when="charge" )
           %form.form-horizontal.charge-form(stripe-form="handleStripe" name="chargeForm") 
             .control-group(ng-show="errorText")

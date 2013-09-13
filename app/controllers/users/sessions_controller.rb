@@ -1,6 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
   include Devise::Controllers::Rememberable
   def new
+    flash[:notice] = params[:notice] if params[:notice]
     self.resource = build_resource(nil, :unsafe => true)
     clean_up_passwords(resource)
     if params[:email]

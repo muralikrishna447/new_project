@@ -40,8 +40,11 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.errorText = false
 
   $scope.openModal = ->
-    $scope.state = if $scope.logged_in then "charge" else "logged_out"
-    $scope.buyModalOpen = true
+    $scope.state = "charge" 
+    if ! $scope.logged_in
+      window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before purchasing a course.")
+    else
+      $scope.buyModalOpen = true
 
   $scope.closeModal = ->
     $scope.buyModalOpen = false
