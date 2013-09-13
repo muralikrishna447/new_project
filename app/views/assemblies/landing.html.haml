@@ -4,7 +4,7 @@
       = image_tag ('http://placehold.it/1280x380')
   .row
     .span9
-      %ul.nav.nav-tabs
+      %ul.nav.nav-tabs.underline
         %li.active
           = link_to 'Overview', '#overview', data: {toggle: 'tab'}
         %li
@@ -34,20 +34,72 @@
         %p.lead.section "Maecenas faucibus mollis interdum."
         %h5.pull-right - George Jetson
   .row
-    .span5
+    .span6
       %h3 Equipment you'll need
-      = image_tag ('http://placehold.it/345x340')
-      = image_tag ('http://placehold.it/345x340')
-      = image_tag ('http://placehold.it/345x340')
-      = image_tag ('http://placehold.it/345x340')
+      %ul.grid
+        %li
+          %figure
+            %div
+              = image_tag ('http://placehold.it/450x375')
+            %figcaption
+              %h2 Egestas Mattis
+              Maecenas sed diam eget risus varius blandit sit amet non magna.
+        %li
+          %figure
+            %div
+              = image_tag ('http://placehold.it/450x375')
+            %figcaption
+              %h2 Egestas Mattis
+              Maecenas sed diam eget risus varius blandit sit amet non magna.
+        %li
+          %figure
+            %div
+              = image_tag ('http://placehold.it/450x375')
+            %figcaption
+              %h2 Egestas Mattis
+              Maecenas sed diam eget risus varius blandit sit amet non magna.
+        %li
+          %figure
+            %div
+              = image_tag ('http://placehold.it/450x375')
+            %figcaption
+              %h2 Egestas Mattis
+              Maecenas sed diam eget risus varius blandit sit amet non magna.
+
+                       
 
 
-    .span5
+    .span6
       %h3 Ingredients you'll need
-      = image_tag ('http://placehold.it/345x340')
-      = image_tag ('http://placehold.it/345x340')
-      = image_tag ('http://placehold.it/345x340')
-      = image_tag ('http://placehold.it/345x340')
-
+      %ul.grid
+        %li
+          %figure
+            %div
+              = image_tag ('http://placehold.it/450x375')
+            %figcaption
+              %h2 Egestas Mattis
+              Maecenas sed diam eget risus varius blandit sit amet non magna.
+        %li
+          %figure
+            %div
+              = image_tag ('http://placehold.it/450x375')
+            %figcaption
+              %h2 Egestas Mattis
+              Maecenas sed diam eget risus varius blandit sit amet non magna.
+        %li
+          %figure
+            %div
+              = image_tag ('http://placehold.it/450x375')
+            %figcaption
+              %h2 Egestas Mattis
+              Maecenas sed diam eget risus varius blandit sit amet non magna.
+        %li
+          %figure
+            %div
+              = image_tag ('http://placehold.it/450x375')
+            %figcaption
+              %h2 Egestas Mattis
+              Maecenas sed diam eget risus varius blandit sit amet non magna.
+    
 
 = render 'layouts/footer'
