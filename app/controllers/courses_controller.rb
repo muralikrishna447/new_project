@@ -28,13 +28,10 @@ class CoursesController < ApplicationController
       render 'macarons'
     end
 
-
-
   end
 
   def enroll
     @course = Course.find(params[:id])
-    # @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
     @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
     if @enrollment.save
       redirect_to course_path(@course), notice: "You are now enrolled!"

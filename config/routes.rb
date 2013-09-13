@@ -65,12 +65,12 @@ Delve::Application.routes.draw do
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
-  resources :courses, only: [:index, :show] do
-    resources :activities, only: [:show], path: ''
-    member do
-      post 'enroll' => 'courses#enroll'
-    end
-  end
+  # resources :courses, only: [:index, :show] do
+  #   resources :activities, only: [:show], path: ''
+  #   member do
+  #     post 'enroll' => 'courses#enroll'
+  #   end
+  # end
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
@@ -145,6 +145,7 @@ Delve::Application.routes.draw do
   resources :followerships, only: [:update]
   resources :assemblies, only: [:index, :show] do
     resources :comments
+    resources :enrollments
   end
   resources :projects, controller: :assemblies
   resources :streams, only: [:index, :show]
@@ -159,6 +160,25 @@ Delve::Application.routes.draw do
   resources :stream_views, only: [:show]
 
   resources :charges, only: [:create]
+
+  resources :courses, only: [:index], controller: :courses
+
+  constraints lambda {|request| ['/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path.split('/').reject! { |r| r.empty? }.take(2).join('/').prepend('/')) } do
+    resources :courses, only: [:index, :show] do
+      resources :activities, only: [:show], path: ''
+      member do
+        post 'enroll' => 'courses#enroll'
+      end
+    end
+  end
+
+  constraints lambda {|request| !['/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path.split('/').reject! { |r| r.empty? }.take(2).join('/').prepend('/')) } do
+    resources :courses, controller: :assemblies do
+      member do
+        get 'landing' => 'assemblies#landing'
+      end
+    end
+  end
 
 end
 
