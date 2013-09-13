@@ -1,4 +1,4 @@
-%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_path(assembly)}"' ng-cloak)
+%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_path(assembly)}"' ng-cloak)
   %div(ng-show="enrolled")
     %h3 You Are Already Enrolled
     .btn.btn-primary.btn-large
@@ -7,19 +7,21 @@
 
   %div(ng-show="(! enrolled) && assembly.price")
     %h3 So Give Us Your Money
+
     %p
       You'll be making macarons this lovely in no time!
     .section
-      .btn.btn-primary.btn-large(ng-click="buyModalOpen=true")
+      .btn.btn-primary.btn-large(ng-click="openModal()")
         Buy Now For Just {{assembly.price | currency}}
 
-    %div.buy-modal(close="buyModalOpen = false" modal="buyModalOpen" ng-cloak)
-
+    %div.buy-modal(close="closeModal()" modal="buyModalOpen" ng-cloak)
       .modal-header
         %h2
           Purchase {{assembly.title}} for {{assembly.price | currency}}
       .modal-body(ng-switch on="state")
-        .row-fluid(ng-switch-when="charge" ng-animate="'slide'")
+        .row-fluid(ng-switch-when="logged_out")
+          You must be logged in first!
+        .row-fluid(ng-switch-when="charge" )
           %form.form-horizontal.charge-form(stripe-form="handleStripe" name="chargeForm") 
             .control-group(ng-show="errorText")
               .controls.error-text
