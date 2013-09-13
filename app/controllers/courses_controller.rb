@@ -23,7 +23,12 @@ class CoursesController < ApplicationController
       render 'knife-sharpening'
       finished('knife ads', :reset => false)
       finished('knife ads large', :reset => false)      
+    elsif @course.title == 'French Macarons'
+      @new_user = User.new
+      render 'macarons'
     end
+
+
 
   end
 
