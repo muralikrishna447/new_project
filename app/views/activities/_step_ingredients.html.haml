@@ -1,7 +1,7 @@
 %div.csmonitorinputactivity.ng-form(ng-controller="IngredientsController"  name="ingredientform")
 
   .step-ingredients-source.well(ng-hide="(step.ingredients.length == 0) || (editMode && masterSelect)")
-    = render 'ingredients_list', source: "step"
+    = render 'shared/ingredients_list', source: "step"
 
   .select-from-master.well(ng-hide="! (editMode && masterSelect)")
     = render 'select_ingredients_from_master'
