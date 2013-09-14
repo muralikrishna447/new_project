@@ -13,10 +13,15 @@ class AssembliesController < ApplicationController
     assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
     instance_variable_set("@#{assembly.assembly_type.underscore}", assembly)
     @upload = Upload.new
-    if current_user && current_user.enrolled?(assembly)
-      render "#{assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
+    case assembly.assembly_type
+    when 'Course'
+      if current_user && current_user.enrolled?(assembly)
+        render "#{assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
+      else
+        redirect_to landing_course_url(assembly)
+      end
     else
-      redirect_to landing_course_url(assembly)
+      render "#{assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
     end
   end
 

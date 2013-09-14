@@ -44,6 +44,7 @@ Staging2 ChefSteps
 Deploying to Staging2
 -
 git checkout develop2  
+merge paid-courses (or whatever you are working on) into develop2 
 git push staging2 develop2:master
 
 Run migrations on Staging2
