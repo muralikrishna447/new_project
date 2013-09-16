@@ -49,7 +49,7 @@
             .control-group(ng-hide="processing")
               .controls                    
                 %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") Buy Now     
-                %button.btn.btn-link.cancel(ng-click="closeModal()"  type="button") Cancel
+                %button.btn.btn-link.cancel#cancel-buy(ng-click="closeModal()"  type="button") Cancel
             .control-group(ng-show="processing")
               .controls
                 %i.icon-spinner.icon-2x.icon-spin
