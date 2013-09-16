@@ -11,7 +11,7 @@
     %p
       You'll be making macarons this lovely in no time!
     .section
-      .btn.btn-primary.btn-large(ng-click="openModal()")
+      .btn.btn-primary.btn-large#buy-button(ng-click="openModal()")
         Buy Now For Just {{assembly.price | currency}}
 
     %div.buy-modal(close="closeModal()" modal="buyModalOpen" ng-cloak)
@@ -30,25 +30,25 @@
               %label.control-label(for="name")
                 Cardholder's Name
               .controls
-                %input.input-xlarge(type="text" ng-model="name" required)
+                %input.input-xlarge(type="text" ng-model="name" required name="cardholder_name")
             .control-group
               %label.control-label(for="")
                 Card Number
               .controls
-                %input.input-xlarge(ng-model="number" payments-format="card" payments-validate="card" type="text" required)
+                %input.input-xlarge(ng-model="number" payments-format="card" payments-validate="card" type="text" required  name="card_number")
             .control-group
               %label.control-label(for="")
                 Expiration Date
               .controls
-                %input.input-small(ng-model="expiry" payments-format="expiry" payments-validate="expiry" type="text" required)
+                %input.input-small(ng-model="expiry" payments-format="expiry" payments-validate="expiry" type="text" required  name="expiry")
             .control-group
               %label.control-label(for="")
                 Security Code (CVC)
               .controls
-                %input.input-small(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" required)
+                %input.input-small(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" required  name="cvc")
             .control-group(ng-hide="processing")
               .controls                    
-                %button.btn.btn-primary.btn-large(ng-click="maybeStartProcessing(chargeForm)") Buy Now     
+                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") Buy Now     
                 %button.btn.btn-link.cancel(ng-click="closeModal()"  type="button") Cancel
             .control-group(ng-show="processing")
               .controls
