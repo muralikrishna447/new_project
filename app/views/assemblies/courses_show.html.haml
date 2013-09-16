@@ -1,9 +1,23 @@
 .container
   .row
     .span12
-      %h1= @course.title
+      %h1
+        = link_to @course.title, landing_course_path(@course)
 
-      - if current_user
-        = render 'enrollments/enrollment', enrollable: @course
-      - else
-        = link_to 'Sign In', sign_in_url, class: 'btn btn-primary btn-large'
+      / - if current_user
+      /   = render 'enrollments/enrollment', enrollable: @course
+      / - else
+      /   = link_to 'Sign In', sign_in_url, class: 'btn btn-primary btn-large'
+
+.container
+  .row
+    .span3
+      %ul.nav.nav-tabs.nav-stacked
+        - @course.assembly_inclusions.each_with_index do |inclusion,index|
+          %li
+            = link_to inclusion.includable.title, "#assembly-inclusion-#{index}", data: {toggle: 'tab'}
+    .span9
+      .tab-content
+        - @course.assembly_inclusions.each_with_index do |inclusion,index|
+          .tab-pane{id: "assembly-inclusion-#{index}", class: "#{index == 0 ? 'active':''}"}
+            = render 'shared/activity', activity: inclusion.includable
