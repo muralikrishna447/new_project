@@ -17,14 +17,19 @@ feature 'charge for courses', :js => true do
     scenario "Should get a chance to sign in with nice message" do
       current_path.should == '/sign_in'
       page.should have_content('before purchasing a course')
+    end 
+
+    scenario "Should redirect back to course after signin" do
+      current_path.should == '/sign_in'
+      page.should have_content('before purchasing a course')
       Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password')
       fill_in 'user_email', with: 'bob@bob.com'
       fill_in 'user_password', with: 'password'
       click_button 'Sign in'      
       current_path.should == '/courses/clummy/landing'
-      save_and_open_page
     end 
-   
+
+    # TODO should also test redirect after sign up
   end
 
   describe "With a logged in user" do
@@ -45,6 +50,7 @@ feature 'charge for courses', :js => true do
 
     def enrollment_should_win
       page.find('#complete-buy').click
+      page.should_not have_content('processing your card')
       page.should have_content('Thank you for your purchase!')
       e = Enrollment.where(enrollable_type: "Assembly", enrollable_id: assembly.id, user_id: current_user.id)
       e.count.should == 1
@@ -94,9 +100,14 @@ feature 'charge for courses', :js => true do
       page.should have_content('Continue Course') 
     end
   end
+
+  scenario "Paywall should work" do
+    login_user
+    visit '/courses/clummy'
+    current_path.should == '/courses/clummy/landing'
+  end
 end
 
-# To test
+
 # Redirect to buy from assembly if not signed in or not enrolled
-# Sign in workflow
-# Sign up workflow
+
