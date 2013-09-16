@@ -9,6 +9,8 @@ class Event < ActiveRecord::Base
   scope :unviewed, where(viewed: false)
   scope :published, where(published: true)
 
+  validates_presence_of :trackable_id, :trackable_type, :action
+
   after_create :save_group_type_and_group_name
 
   def self.scoped_by(trackable_type, action)
