@@ -30,7 +30,7 @@ class ChargesController < ApplicationController
 
     # Kinda unclear what we should do here if we succesfully charged their card but 
     # then saving the enrollment fails
-    @enrollment = Enrollment.new(user_id: current_user.id, enrollable: assembly)
+    @enrollment = Enrollment.new(user_id: current_user.id, enrollable: assembly, price: assembly.price)
     @enrollment.save!
 
     head :no_content
