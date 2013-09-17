@@ -180,5 +180,7 @@ Delve::Application.routes.draw do
     end
   end
 
+  resources :events, only: [:create]
+
 end
 

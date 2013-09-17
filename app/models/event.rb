@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-  attr_accessible :action, :user_id, :trackable, :viewed
+  attr_accessible :action, :user_id, :trackable, :trackable_id, :trackable_type, :viewed
 
   belongs_to :user
   belongs_to :trackable, polymorphic: true
@@ -8,6 +8,8 @@ class Event < ActiveRecord::Base
   scope :timeline, where('action <> ?', 'show').order('created_at DESC')
   scope :unviewed, where(viewed: false)
   scope :published, where(published: true)
+
+  validates_presence_of :trackable_id, :trackable_type, :action
 
   after_create :save_group_type_and_group_name
 
