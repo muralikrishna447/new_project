@@ -104,6 +104,7 @@ feature 'charge for courses', :js => true do
   scenario "Paywall should work" do
     login_user
     visit '/courses/clummy'
+    page.should have_content('147.47')
     current_path.should == '/courses/clummy/landing'
   end
 end
