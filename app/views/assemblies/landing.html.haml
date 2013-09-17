@@ -2,7 +2,9 @@
   .container
     .row
       .span12
-        = image_tag ('http://placehold.it/1280x380')
+        .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+          %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+
 .container
   .row
     .span8

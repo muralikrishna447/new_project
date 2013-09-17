@@ -1,4 +1,7 @@
 class AssembliesController < ApplicationController
+
+  before_filter :load_assembly
+
   def index
     if request.path == '/assemblies'
       @assembly_type = 'Assembly'
@@ -10,22 +13,26 @@ class AssembliesController < ApplicationController
   end
 
   def show
-    assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
-    instance_variable_set("@#{assembly.assembly_type.underscore}", assembly)
     @upload = Upload.new
-    case assembly.assembly_type
+    case @assembly.assembly_type
     when 'Course'
-      if current_user && current_user.enrolled?(assembly)
+      if current_user && current_user.enrolled?(@assembly)
         render "#{assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
       else
-        redirect_to landing_course_url(assembly)
+        redirect_to landing_course_url(@assembly)
       end
     else
-      render "#{assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
+      render "#{@assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
     end
   end
 
   def landing
-    @assembly = Assembly.find(params[:id])
+  end
+
+private
+
+  def load_assembly
+    @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
+    instance_variable_set("@#{@assembly.assembly_type.underscore}", @assembly)
   end
 end
