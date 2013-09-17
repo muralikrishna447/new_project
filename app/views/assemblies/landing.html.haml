@@ -1,9 +1,11 @@
+.full-stripe
+  .container
+    .row
+      .span12
+        = image_tag ('http://placehold.it/1280x380')
 .container
   .row
-    .span12
-      = image_tag ('http://placehold.it/1280x380')
-  .row
-    .span9
+    .span8
       %ul.nav.nav-tabs.underline
         %li.active
           = link_to 'Overview', '#overview', data: {toggle: 'tab'}
@@ -13,11 +15,41 @@
           = link_to 'Student Uploads', '#student-uploads', data: {toggle: 'tab'}
         %li
           = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
+        %li
+          = link_to 'Preview Course', '#preview', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#overview
-          %p.two-columns Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-          %p.two-columns Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
-    .span3
+          .two-columns
+            %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+            %p Donec sed odio dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue. Maecenas faucibus mollis interdum.
+            %p Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Maecenas faucibus mollis interdum. Curabitur blandit tempus porttitor. Etiam porta sem malesuada magna mollis euismod.    
+        .tab-pane#faq
+          %h4 Condimentum Ornare Fringilla
+          %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+          %h4 Condimentum Ornare Fringilla
+          %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+          %h4 Condimentum Ornare Fringilla
+          %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+          %h4 Condimentum Ornare Fringilla
+          %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.              
+        .tab-pane#student-uploads
+          = image_tag ('http://placehold.it/75x75')
+          = image_tag ('http://placehold.it/75x75')
+          = image_tag ('http://placehold.it/75x75')
+          = image_tag ('http://placehold.it/75x75')
+          = image_tag ('http://placehold.it/75x75')
+          = image_tag ('http://placehold.it/75x75') 
+        .tab-pane#testimonials
+          %h3 "Aenean lacinia bibendum nulla sed consectetur. Sed posuere consectetur est at lobortis."
+          .pull-right @johnjohn
+
+          %h3 "Aenean lacinia bibendum nulla sed consectetur. Sed posuere consectetur est at lobortis."
+          .pull-right @tomtom
+        .tab-pane#preview
+          %p Here's what the course content looks like:
+          = image_tag ('http://placehold.it/500x300')
+
+    .span3.offset1
       .buy-box.section
         = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user.enrolled?(@assembly)
         .row.item-small
@@ -34,72 +66,105 @@
         %p.lead.section "Maecenas faucibus mollis interdum."
         %h5.pull-right - George Jetson
   .row
-    .span6
-      %h3 Equipment you'll need
-      %ul.grid
-        %li
-          %figure
-            %div
-              = image_tag ('http://placehold.it/450x375')
-            %figcaption
-              %h2 Egestas Mattis
-              Maecenas sed diam eget risus varius blandit sit amet non magna.
-        %li
-          %figure
-            %div
-              = image_tag ('http://placehold.it/450x375')
-            %figcaption
-              %h2 Egestas Mattis
-              Maecenas sed diam eget risus varius blandit sit amet non magna.
-        %li
-          %figure
-            %div
-              = image_tag ('http://placehold.it/450x375')
-            %figcaption
-              %h2 Egestas Mattis
-              Maecenas sed diam eget risus varius blandit sit amet non magna.
-        %li
-          %figure
-            %div
-              = image_tag ('http://placehold.it/450x375')
-            %figcaption
-              %h2 Egestas Mattis
-              Maecenas sed diam eget risus varius blandit sit amet non magna.
+    .span4
+      %h3.inline Equipment you'll need
+      .pull-right.section
+        %ul.nav.nav-pills
+          %li.active
+            = link_to '#equip-pics', data: {toggle: 'tab'} do
+              .icon.icon-picture
+          %li
+            = link_to '#equip-list', data: {toggle: 'tab'} do
+              .icon.icon-list-ul
+      .tab-content.overflow-visible
+        .tab-pane.active#equip-pics
+          %ul.grid
+            %li
+              %figure
+                %div
+                  = image_tag ('http://placehold.it/450x375')
+                %figcaption
+                  %h2 Egestas Mattis
+                  Maecenas sed diam eget risus varius blandit sit amet non magna.
+            %li
+              %figure
+                %div
+                  = image_tag ('http://placehold.it/450x375')
+                %figcaption
+                  %h2 Egestas Mattis
+                  Maecenas sed diam eget risus varius blandit sit amet non magna.
+            %li
+              %figure
+                %div
+                  = image_tag ('http://placehold.it/450x375')
+                %figcaption
+                  %h2 Egestas Mattis
+                  Maecenas sed diam eget risus varius blandit sit amet non magna.
+            %li
+              %figure
+                %div
+                  = image_tag ('http://placehold.it/450x375')
+                %figcaption
+                  %h2 Egestas Mattis
+                  Maecenas sed diam eget risus varius blandit sit amet non magna.
+  
+        .tab-pane#equip-list
+          %ul
+            %li Tellus Amet
+            %li Malesuada Tristique
+            %li Tellus Nibh Venenatis
+            %li Cursus Fusce        
 
                        
 
 
-    .span6
-      %h3 Ingredients you'll need
-      %ul.grid
-        %li
-          %figure
-            %div
-              = image_tag ('http://placehold.it/450x375')
-            %figcaption
-              %h2 Egestas Mattis
-              Maecenas sed diam eget risus varius blandit sit amet non magna.
-        %li
-          %figure
-            %div
-              = image_tag ('http://placehold.it/450x375')
-            %figcaption
-              %h2 Egestas Mattis
-              Maecenas sed diam eget risus varius blandit sit amet non magna.
-        %li
-          %figure
-            %div
-              = image_tag ('http://placehold.it/450x375')
-            %figcaption
-              %h2 Egestas Mattis
-              Maecenas sed diam eget risus varius blandit sit amet non magna.
-        %li
-          %figure
-            %div
-              = image_tag ('http://placehold.it/450x375')
-            %figcaption
-              %h2 Egestas Mattis
-              Maecenas sed diam eget risus varius blandit sit amet non magna.
-    
+    .span4
+      %h3.inline Ingredients you'll need
+      .pull-right.section
+        %ul.nav.nav-pills
+          %li.active
+            = link_to '#ingred-pics', data: {toggle: 'tab'} do
+              .icon.icon-picture
+          %li
+            = link_to '#ingred-list', data: {toggle: 'tab'} do
+              .icon.icon-list-ul
+      .tab-content.overflow-visible
+        .tab-pane.active#ingred-pics
+          %ul.grid
+            %li
+              %figure
+                %div
+                  = image_tag ('http://placehold.it/450x375')
+                %figcaption
+                  %h2 Egestas Mattis
+                  Maecenas sed diam eget risus varius blandit sit amet non magna.
+            %li
+              %figure
+                %div
+                  = image_tag ('http://placehold.it/450x375')
+                %figcaption
+                  %h2 Egestas Mattis
+                  Maecenas sed diam eget risus varius blandit sit amet non magna.
+            %li
+              %figure
+                %div
+                  = image_tag ('http://placehold.it/450x375')
+                %figcaption
+                  %h2 Egestas Mattis
+                  Maecenas sed diam eget risus varius blandit sit amet non magna.
+            %li
+              %figure
+                %div
+                  = image_tag ('http://placehold.it/450x375')
+                %figcaption
+                  %h2 Egestas Mattis
+                  Maecenas sed diam eget risus varius blandit sit amet non magna.
+  
+        .tab-pane#ingred-list
+          %ul
+            %li Tellus Amet
+            %li Malesuada Tristique
+            %li Tellus Nibh Venenatis
+            %li Cursus Fusce       
 
 = render 'layouts/footer'
