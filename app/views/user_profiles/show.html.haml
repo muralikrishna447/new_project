@@ -52,16 +52,25 @@
         .tab-pane.active#courses
           - if @user.enrollments.any?
             - @user.enrollments.each do |enrollment|
-              - course_title = capture do
-                = link_to enrollment.enrollable.title, enrollment.enrollable
-              - course_text = capture do
-                - if current_user == @user
-                  %h4
-                    Lesson
-                    = @user.viewed_activities_in_course(enrollment.enrollable).count
-                    of
-                    = enrollment.enrollable.viewable_activities.count
-                  = where_user_left_off_in_course(enrollment.enrollable, @user, 'btn btn-primary')
+              - case enrollment.enrollable_type
+              - when 'Course'
+                - course_title = capture do
+                  = link_to enrollment.enrollable.title, enrollment.enrollable
+                - course_text = capture do
+                  - if current_user == @user
+                    %h4
+                      Lesson
+                      = @user.viewed_activities_in_course(enrollment.enrollable).count
+                      of
+                      = enrollment.enrollable.viewable_activities.count
+                    = where_user_left_off_in_course(enrollment.enrollable, @user, 'btn btn-primary')
+              - when 'Assembly'
+                - course_title = capture do
+                  = link_to enrollment.enrollable.title, enrollment.enrollable
+                - course_text = capture do
+                  - if current_user == @user
+                    %h4
+                      Lesson
               = render 'shared/media_list_item', image: enrollment.enrollable.featured_image, title: course_title, text: course_text
           - else
             .tab-pane-header
