@@ -51,7 +51,7 @@
 
     .span3.offset1
       .buy-box.section
-        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user.enrolled?(@assembly)
+        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly)
         .row.item-small
           .text-center.section
             %h4 2000+ Enrolled
