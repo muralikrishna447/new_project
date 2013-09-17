@@ -20,6 +20,7 @@ describe ChargesController, "#create" do
     # This is no good, it is hitting the server. Need to mock the Stripe apis, and not super
     # sure how to go about that. Seems like I should be able to use the ones in stripe_ruby or possibly
     # rspec_stripe but not finding any examples.
+    # Using integration tests instead, see charged_courses_spec.rb.
 =begin
     it 'errors appropriately on bad stripe token' do    
       Assembly.stub(:find).with(37).and_return(assembly)

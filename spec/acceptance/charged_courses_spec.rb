@@ -1,9 +1,9 @@
 require 'spec_helper'
 include AcceptanceMacros
-Capybara.default_wait_time = 5
+Capybara.default_wait_time = 10
 
 feature 'charge for courses', :js => true do
-  let!(:assembly) { Fabricate(:assembly, title: "Clummy", assembly_type: :course, price: 147.47, published: true ) }
+  let!(:assembly) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 147.47, published: true ) }
   let!(:landing_page) { Fabricate(:page, title: "Clummy LP", content: "You so clummy", primary_path: "/courses/clummy") }
   let(:current_user) { User.find(1) }
 
@@ -102,9 +102,10 @@ feature 'charge for courses', :js => true do
   end
 
   scenario "Paywall should work" do
+    visit '/courses/clummy'
+    current_path.should == '/courses/clummy/landing'
     login_user
     visit '/courses/clummy'
-    page.should have_content('147.47')
     current_path.should == '/courses/clummy/landing'
   end
 end
