@@ -5,7 +5,7 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event) ->
 
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id") || 1},
@@ -390,21 +390,44 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     else
       false
 
+  $scope.fetchActivity = (id, callback) ->
+    if _.isNumber(id) && ! $scope.activities[id] 
+      console.log "Loading activity " + id   
+      $scope.activities[id] = Activity.get({id: id}, ->
+       console.log "Loaded activity " + id   
+       callback() if callback
+      )
+
+  $scope.makeActivityActive = (id) ->
+    $scope.activity = $scope.activities[id] 
+    cs_event.track(id, 'Activity', 'show')
+    mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
+
   $scope.loadActivity = (id) ->
     return if id == $scope.activity?.id
+
     $scope.loading = true
     if $scope.activities[id]
       # Even if we have it cached, use a slight delay and dissolve to
       # make it feel smooth and let youtube load
-      $scope.activity = $scope.activities[id]
+      $scope.makeActivityActive(id)
       $timeout (->
         $scope.loading = false
       ), 500
-    else 
-      $scope.activities[id] = Activity.get({id: id}, ->
-        $scope.activity = $scope.activities[id]
+    else
+      $scope.fetchActivity(id, -> 
+        $scope.makeActivityActive(id)
         $scope.loading = false
       )
+
+  $scope.startViewActivity = (id, prefetch_id) ->
+    $scope.loadActivity(id)
+
+    # If there is a prefetch request, do it a little later
+    if prefetch_id
+      $timeout (->
+       $scope.fetchActivity(prefetch_id)
+      ), 3000
 
   $scope.addAlert = (alert) ->
     $scope.alerts.push(alert)
