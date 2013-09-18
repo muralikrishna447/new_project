@@ -56,4 +56,9 @@ class Assembly < ActiveRecord::Base
     title = self.slug + '-faq'
     Activity.find_by_slug(title)
   end
+
+  def testimonials
+    title = self.slug + '-testimonial'
+    Page.find_by_slug(title)
+  end
 end

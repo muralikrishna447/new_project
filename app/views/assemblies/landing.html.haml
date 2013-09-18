@@ -11,35 +11,35 @@
       %ul.nav.nav-tabs.underline
         %li.active
           = link_to 'Overview', '#overview', data: {toggle: 'tab'}
-        %li
-          = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
+        - if @course.faq
+          %li
+            = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
         %li
           = link_to 'Student Uploads', '#student-uploads', data: {toggle: 'tab'}
-        %li
-          = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
+        - if @course.testimonials
+          %li
+            = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
         %li
           = link_to 'Preview Course', '#preview', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#overview
           .two-columns
-            = @course.description    
-        .tab-pane#faq
-          - @course.faq.steps.each do |step|
-            %h5= step.title
-            %p= step.directions              
+            = @course.description
+        - if @course.faq    
+          .tab-pane#faq
+            - @course.faq.steps.each do |step|
+              %h5= step.title
+              %p= step.directions              
         .tab-pane#student-uploads
           = image_tag ('http://placehold.it/75x75')
           = image_tag ('http://placehold.it/75x75')
           = image_tag ('http://placehold.it/75x75')
           = image_tag ('http://placehold.it/75x75')
           = image_tag ('http://placehold.it/75x75')
-          = image_tag ('http://placehold.it/75x75') 
-        .tab-pane#testimonials
-          %h3 "Aenean lacinia bibendum nulla sed consectetur. Sed posuere consectetur est at lobortis."
-          .pull-right @johnjohn
-
-          %h3 "Aenean lacinia bibendum nulla sed consectetur. Sed posuere consectetur est at lobortis."
-          .pull-right @tomtom
+          = image_tag ('http://placehold.it/75x75')
+        - if @course.testimonials 
+          .tab-pane#testimonials
+            = @course.testimonials.content
         .tab-pane#preview
           %p Here's what the course content looks like:
           = image_tag ('http://placehold.it/500x300')
