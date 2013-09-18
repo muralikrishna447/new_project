@@ -1,25 +1,32 @@
-.container
+= render 'layouts/filepicker'
+- content_for :title, "#{@course.title.html_safe} - Course"
+- content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController"}
+
+.container.section(ng-cloak)
+
   .row
     .span12
       %h1
-        = link_to @course.title, landing_course_path(@course)
+        {{activity.title}}
 
-      / - if current_user
-      /   = render 'enrollments/enrollment', enrollable: @course
-      / - else
-      /   = link_to 'Sign In', sign_in_url, class: 'btn btn-primary btn-large'
-
-.container(ng-controller='CoursesController')
-
-.container
-  .row
+  .row(ng-cloak)
     .span3
-      %ul.nav.nav-tabs.nav-stacked
+      %ul.nav.nav-tabs.nav-stacked.section
         - @course.assembly_inclusions.each_with_index do |inclusion,index|
-          %li
-            = link_to inclusion.includable.title, "#assembly-inclusion-#{index}", data: {toggle: 'tab'}
+          - act_id = @course.assembly_inclusions[index].includable.id
+          - next_act_id = @course.assembly_inclusions[index+1] ? @course.assembly_inclusions[index+1].includable.id : [] 
+          %li(ng-class="{active: #{act_id} == activity.id}")
+            %a(ng-click="startViewActivity(#{act_id}, #{next_act_id});")
+              #{inclusion.includable.title}
     .span9
-      .tab-content
-        - @course.assembly_inclusions.each_with_index do |inclusion,index|
-          .tab-pane{id: "assembly-inclusion-#{index}", class: "#{index == 0 ? 'active':''}"}
-            = render 'shared/activity', activity: inclusion.includable
+      .tab-content(ng-init="loadActivity(#{@course.assembly_inclusions[0].includable.id})")
+        = render 'activities/main_activity_content', activity: @course.assembly_inclusions[0].includable
+
+-# By not cloaking this, it will be on while the page is first loading before angular takes charge
+.assembly-loading-background(ng-show="loading" ng-animate="'fade'")
+  .activity-loading-spinner
+    .span12
+      %i.icon-spinner.icon-spin
+
+             

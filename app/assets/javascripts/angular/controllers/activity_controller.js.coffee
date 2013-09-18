@@ -5,10 +5,10 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event) ->
 
   Activity = $resource( "/activities/:id/as_json",
-                        {id:  $('#activity-body').data("activity-id")},
+                        {id:  $('#activity-body').data("activity-id") || 1},
                         {
                           update: {method: "PUT"},
                           startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
@@ -26,6 +26,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowRestoreAutosaveModal = false
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
+  $scope.loading = false
+  $scope.activities = {}
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -204,7 +206,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
 
   $scope.hasActivityType = (t) ->
-    _.contains($scope.activity.activity_type, t)
+    _.contains($scope.activity?.activity_type, t)
 
   $scope.toggleActivityType = (t) ->
     if $scope.hasActivityType(t)
@@ -216,7 +218,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.activityDifficulties = ["Easy", "Intermediate", "Advanced"]
 
   $scope.hasActivityDifficulty = (t) ->
-    ($scope.activity.difficulty || "").toUpperCase() == t.toUpperCase()
+    ($scope.activity?.difficulty || "").toUpperCase() == t.toUpperCase()
 
   $scope.setActivityDifficulty = (t) ->
     $scope.activity.difficulty = t.toLowerCase()
@@ -265,13 +267,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   # Video/image stuff
   $scope.hasHeroVideo = ->
-    $scope.activity.youtube_id? && $scope.activity.youtube_id
+    $scope.activity?.youtube_id? && $scope.activity.youtube_id
 
   $scope.hasHeroImage = ->
-    $scope.activity.image_id? && $scope.activity.image_id
+    $scope.activity?.image_id? && $scope.activity.image_id
 
   $scope.hasFeaturedImage = ->
-    $scope.activity.featured_image_id? && $scope.activity.featured_image_id
+    $scope.activity?.featured_image_id? && $scope.activity.featured_image_id
 
   $scope.heroVideoURL = ->
     autoplay = if $scope.url_params.autoplay then "1" else "0"
@@ -317,13 +319,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   # TODO: nicer using underscore _map?
   $scope.hasRequiredEquipment = ->
     has = false
-    angular.forEach $scope.activity.equipment, (item) ->
+    angular.forEach $scope.activity?.equipment, (item) ->
       has = has || (! item.optional)
     return has
 
   $scope.hasOptionalEquipment = ->
     has = false
-    angular.forEach $scope.activity.equipment, (item) ->
+    angular.forEach $scope.activity?.equipment, (item) ->
       has = has || (item.optional)
     return has
 
@@ -379,7 +381,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.parsePreloaded = ->
     # prestoring the JSON in the HTML on initial load for speed
-    #$scope.activity = Activity.get($scope.url_params, ->
     preloaded_activity = $("#preloaded-activity-json").text()
 
     if preloaded_activity
@@ -388,6 +389,45 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       true
     else
       false
+
+  $scope.fetchActivity = (id, callback) ->
+    if _.isNumber(id) && ! $scope.activities[id] 
+      console.log "Loading activity " + id   
+      $scope.activities[id] = Activity.get({id: id}, ->
+       console.log "Loaded activity " + id   
+       callback() if callback
+      )
+
+  $scope.makeActivityActive = (id) ->
+    $scope.activity = $scope.activities[id] 
+    cs_event.track(id, 'Activity', 'show')
+    mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
+
+  $scope.loadActivity = (id) ->
+    return if id == $scope.activity?.id
+
+    $scope.loading = true
+    if $scope.activities[id]
+      # Even if we have it cached, use a slight delay and dissolve to
+      # make it feel smooth and let youtube load
+      $scope.makeActivityActive(id)
+      $timeout (->
+        $scope.loading = false
+      ), 500
+    else
+      $scope.fetchActivity(id, -> 
+        $scope.makeActivityActive(id)
+        $scope.loading = false
+      )
+
+  $scope.startViewActivity = (id, prefetch_id) ->
+    $scope.loadActivity(id)
+
+    # If there is a prefetch request, do it a little later
+    if prefetch_id
+      $timeout (->
+       $scope.fetchActivity(prefetch_id)
+      ), 3000
 
   $scope.addAlert = (alert) ->
     $scope.alerts.push(alert)
@@ -417,7 +457,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   # Social share callbacks
   $scope.socialURL = ->
-    "http://chefsteps.com/activities/" + $scope.activity.slug
+    "http://chefsteps.com/activities/" + $scope.activity?.slug
 
   $scope.socialTitle = ->
     $scope.activity.title

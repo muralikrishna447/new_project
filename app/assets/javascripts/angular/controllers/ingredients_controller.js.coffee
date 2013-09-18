@@ -46,8 +46,9 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     (i1.unit == i2.unit)
 
   $scope.hasAnyStepIngredients = ->
-    for step in $scope.activity.steps
-      return true if step.ingredients.length > 0
+    if $scope.activity?.steps
+      for step in $scope.activity.steps
+        return true if step.ingredients.length > 0
     false
 
   $scope.fillMasterIngredientsFromSteps = ->

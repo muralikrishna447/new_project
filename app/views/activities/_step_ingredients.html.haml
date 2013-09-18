@@ -4,7 +4,7 @@
     = render 'shared/ingredients_list', source: "step"
 
   .select-from-master.well(ng-hide="! (editMode && masterSelect)")
-    = render 'select_ingredients_from_master'
+    = render 'activities/select_ingredients_from_master'
 
   .nav(ng-show="editMode")
     %h4(ng-show="! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Ingredients
