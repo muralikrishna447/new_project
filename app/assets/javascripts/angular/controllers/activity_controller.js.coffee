@@ -27,6 +27,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
   $scope.loading = false
+  $scope.activities = {}
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -390,11 +391,20 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       false
 
   $scope.loadActivity = (id) ->
+    return if id == $scope.activity?.id
     $scope.loading = true
-    new_activity = Activity.get({id: id}, ->
-      $scope.activity = new_activity;
-      $scope.loading = false
-    )
+    if $scope.activities[id]
+      # Even if we have it cached, use a slight delay and dissolve to
+      # make it feel smooth and let youtube load
+      $scope.activity = $scope.activities[id]
+      $timeout (->
+        $scope.loading = false
+      ), 500
+    else 
+      $scope.activities[id] = Activity.get({id: id}, ->
+        $scope.activity = $scope.activities[id]
+        $scope.loading = false
+      )
 
   $scope.addAlert = (alert) ->
     $scope.alerts.push(alert)
