@@ -24,14 +24,9 @@
           .two-columns
             = @course.description    
         .tab-pane#faq
-          %h4 Condimentum Ornare Fringilla
-          %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          %h4 Condimentum Ornare Fringilla
-          %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          %h4 Condimentum Ornare Fringilla
-          %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          %h4 Condimentum Ornare Fringilla
-          %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.              
+          - @course.faq.steps.each do |step|
+            %h5= step.title
+            %p= step.directions              
         .tab-pane#student-uploads
           = image_tag ('http://placehold.it/75x75')
           = image_tag ('http://placehold.it/75x75')

@@ -51,4 +51,9 @@ class Assembly < ActiveRecord::Base
   def featured_image
     image_id
   end
+
+  def faq
+    title = self.slug + '-faq'
+    Activity.find_by_slug(title)
+  end
 end
