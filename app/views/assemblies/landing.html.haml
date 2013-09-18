@@ -47,16 +47,15 @@
     .span4
       .buy-box
         = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly)
-        .row.item-small
-          .text-center.section
-            %h4 2000+ Enrolled
-          %h5 Course Includes:
-          %ul
-            %li Full Access
-            %li 14 HD Videos
-            %li 7 Lessons
-            %li Q&A with the chefs
-          %h4 100% satisfaction guaranteed or your money back
+        .text-center.section
+          %h4= "#{@course.enrollments.count} Enrolled"
+        %h5 Course Includes:
+        %ul
+          %li Full Access
+          %li= "#{@course.video_count} HD Videos"
+          %li 7 Lessons
+          %li Q&A with the chefs
+        %h4 100% satisfaction guaranteed or your money back
 
   .row
     .span4
