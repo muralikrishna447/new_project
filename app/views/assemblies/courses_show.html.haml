@@ -1,4 +1,6 @@
 = render 'layouts/filepicker'
+- content_for :title, "#{@course.title.html_safe} - Course"
+- content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 
 .container
   .row
