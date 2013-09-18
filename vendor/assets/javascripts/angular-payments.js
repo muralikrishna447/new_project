@@ -666,8 +666,9 @@ angular.module('angularPayments', []);angular.module('angularPayments')
 
       form.bind('submit', function() {
 
-        expMonthUsed = scope.expiryMonth ? true : false;
-        expYearUsed = scope.expiryYear ? true : false;
+        // Fixed expiryMonth, expiryYear -> expMonth, expYear - michael@chefsteps.com
+        expMonthUsed = scope.expMonth ? true : false;
+        expYearUsed = scope.expYear ? true : false;
 
         if(!(expMonthUsed && expYearUsed)){
           exp = Common.parseExpiry(scope.expiry)
