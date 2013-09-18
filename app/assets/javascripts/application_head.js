@@ -1,7 +1,7 @@
 //=require showdown
 //=require jquery
-//=require angular.min
-//=require angular-resource.min
+//=require angular
+//=require angular-resource
 //=require angular-ui
 //=require localStorageModule
 //=require select2

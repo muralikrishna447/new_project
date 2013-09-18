@@ -8,7 +8,7 @@ window.deepCopy = (obj) ->
 angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService) ->
 
   Activity = $resource( "/activities/:id/as_json",
-                        {id:  $('#activity-body').data("activity-id")},
+                        {id:  $('#activity-body').data("activity-id") || 1},
                         {
                           update: {method: "PUT"},
                           startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
@@ -379,7 +379,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.parsePreloaded = ->
     # prestoring the JSON in the HTML on initial load for speed
-    #$scope.activity = Activity.get($scope.url_params, ->
     preloaded_activity = $("#preloaded-activity-json").text()
 
     if preloaded_activity
@@ -388,6 +387,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       true
     else
       false
+
+  $scope.loadActivity = (id) ->
+    $scope.activity = Activity.get({id: id}, ->
+      $scope.temporaryNoAutofocus()
+    )
 
   $scope.addAlert = (alert) ->
     $scope.alerts.push(alert)
