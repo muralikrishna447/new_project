@@ -17,7 +17,7 @@ class AssembliesController < ApplicationController
     case @assembly.assembly_type
     when 'Course'
       if current_user && current_user.enrolled?(@assembly)
-        render "#{assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
+        render "#{@assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
       else
         redirect_to landing_course_url(@assembly)
       end
