@@ -6,7 +6,7 @@
           %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
 
 .container.assembly-course-landing
-  .row
+  .row.section
     .span8
       %ul.nav.nav-tabs.underline
         %li.active
@@ -22,9 +22,7 @@
       .tab-content
         .tab-pane.active#overview
           .two-columns
-            %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-            %p Donec sed odio dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue. Maecenas faucibus mollis interdum.
-            %p Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Maecenas faucibus mollis interdum. Curabitur blandit tempus porttitor. Etiam porta sem malesuada magna mollis euismod.    
+            = @course.description    
         .tab-pane#faq
           %h4 Condimentum Ornare Fringilla
           %p Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
@@ -51,8 +49,8 @@
           %p Here's what the course content looks like:
           = image_tag ('http://placehold.it/500x300')
 
-    .span3.offset1
-      .buy-box.section
+    .span4
+      .buy-box
         = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly)
         .row.item-small
           .text-center.section
@@ -64,9 +62,7 @@
             %li 7 Lessons
             %li Q&A with the chefs
           %h4 100% satisfaction guaranteed or your money back
-      .row.section.item-small
-        %p.lead.section "Maecenas faucibus mollis interdum."
-        %h5.pull-right - George Jetson
+
   .row
     .span4
       %h3.inline Equipment you'll need
@@ -167,6 +163,9 @@
             %li Tellus Amet
             %li Malesuada Tristique
             %li Tellus Nibh Venenatis
-            %li Cursus Fusce       
+            %li Cursus Fusce
+    .span4
+      %p.lead.section "Maecenas faucibus mollis interdum."
+      %h5.pull-right - George Jetson      
 
 = render 'layouts/footer'
