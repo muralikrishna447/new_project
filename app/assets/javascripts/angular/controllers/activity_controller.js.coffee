@@ -26,6 +26,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowRestoreAutosaveModal = false
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
+  $scope.loading = false
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -204,7 +205,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
 
   $scope.hasActivityType = (t) ->
-    _.contains($scope.activity.activity_type, t)
+    _.contains($scope.activity?.activity_type, t)
 
   $scope.toggleActivityType = (t) ->
     if $scope.hasActivityType(t)
@@ -216,7 +217,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.activityDifficulties = ["Easy", "Intermediate", "Advanced"]
 
   $scope.hasActivityDifficulty = (t) ->
-    ($scope.activity.difficulty || "").toUpperCase() == t.toUpperCase()
+    ($scope.activity?.difficulty || "").toUpperCase() == t.toUpperCase()
 
   $scope.setActivityDifficulty = (t) ->
     $scope.activity.difficulty = t.toLowerCase()
@@ -265,13 +266,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   # Video/image stuff
   $scope.hasHeroVideo = ->
-    $scope.activity.youtube_id? && $scope.activity.youtube_id
+    $scope.activity?.youtube_id? && $scope.activity.youtube_id
 
   $scope.hasHeroImage = ->
-    $scope.activity.image_id? && $scope.activity.image_id
+    $scope.activity?.image_id? && $scope.activity.image_id
 
   $scope.hasFeaturedImage = ->
-    $scope.activity.featured_image_id? && $scope.activity.featured_image_id
+    $scope.activity?.featured_image_id? && $scope.activity.featured_image_id
 
   $scope.heroVideoURL = ->
     autoplay = if $scope.url_params.autoplay then "1" else "0"
@@ -317,13 +318,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   # TODO: nicer using underscore _map?
   $scope.hasRequiredEquipment = ->
     has = false
-    angular.forEach $scope.activity.equipment, (item) ->
+    angular.forEach $scope.activity?.equipment, (item) ->
       has = has || (! item.optional)
     return has
 
   $scope.hasOptionalEquipment = ->
     has = false
-    angular.forEach $scope.activity.equipment, (item) ->
+    angular.forEach $scope.activity?.equipment, (item) ->
       has = has || (item.optional)
     return has
 
@@ -389,8 +390,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       false
 
   $scope.loadActivity = (id) ->
-    $scope.activity = Activity.get({id: id}, ->
-      $scope.temporaryNoAutofocus()
+    $scope.loading = true
+    new_activity = Activity.get({id: id}, ->
+      $scope.activity = new_activity;
+      $scope.loading = false
     )
 
   $scope.addAlert = (alert) ->
@@ -421,7 +424,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   # Social share callbacks
   $scope.socialURL = ->
-    "http://chefsteps.com/activities/" + $scope.activity.slug
+    "http://chefsteps.com/activities/" + $scope.activity?.slug
 
   $scope.socialTitle = ->
     $scope.activity.title

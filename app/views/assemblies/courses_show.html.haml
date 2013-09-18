@@ -8,15 +8,9 @@
       %h1
         = link_to @course.title, landing_course_path(@course)
 
-      / - if current_user
-      /   = render 'enrollments/enrollment', enrollable: @course
-      / - else
-      /   = link_to 'Sign In', sign_in_url, class: 'btn btn-primary btn-large'
-
-
 .container(ng-controller='ActivityController' ng-init="loadActivity(10)")
 
-  .row
+  .row(ng-cloak)
     .span3
       %ul.nav.nav-tabs.nav-stacked
         - @course.assembly_inclusions.each_with_index do |inclusion,index|
@@ -25,4 +19,11 @@
     .span9
       .tab-content
         = render 'activities/main_activity_content', activity: @course.assembly_inclusions[0].includable
+
+  -# By not cloaking this, it will be on while the page is first loading before angular takes charge
+  .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
+    .activity-loading-spinner
+      .span12
+        %i.icon-spinner.icon-spin
+
              
