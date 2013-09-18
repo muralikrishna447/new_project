@@ -48,5 +48,16 @@ ActiveAdmin.register User do
 
     f.actions
   end
+
+  controller do
+    def max_csv_records                                                          
+      30_000                                                                    
+    end
+  end
+
+  csv do
+    column :name
+    column :email
+  end
 end
 
