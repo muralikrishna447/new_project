@@ -181,109 +181,117 @@
     inherit
 
 /* Macaron Styles */
-
-.full-stripe
-  width: 100%
-  background: $offwhite
-
-
-/* tabs */
-
-.underline.nav-tabs
-  border: 0
-  .active, 
-    border-bottom: 4px solid $orange
-    a, a:hover, a:focus
-      border-left: 0
-      border-right: 0
-
-.buy-box
-  border-style: double
-  border-width: 4px
-  border-color: $orange
-  box-sizing: border-box
-  padding: 10px 5px
+.assembly-course-landing
+  .full-stripe
+    width: 100%
+    background: $offwhite
 
 
-/* Caption Overlay */
+  /* tabs */
 
-.grid
-  list-style: none
-  text-align: center
+  .underline.nav-tabs
+    border: none
+    li
+      a
+        border: none
+        border-bottom: 4px solid white
+        @include transition(all 200ms ease-in-out)
+        &:hover
+          border-radius: 0px
+          border-bottom: 4px solid $light-gray
+    li.active
+      a
+        border-bottom: 4px solid $orange
 
-ul.grid
-  padding: 0
-  margin: 0
 
-.grid li
-  display: inline-block  
-  margin: 0
-  padding: 10px 0
-  text-align: left
-  position: relative
+  .buy-box
+    border-style: double
+    border-width: 4px
+    border-color: $orange
+    box-sizing: border-box
+    padding: 20px
 
-  perspective: 1700px
-  -webkit-perspective: 1700px
-  -webkit-perspective-origin: 0 50%
-  perspective-origin: 0 50%
 
-.grid figure
-  -webkit-transform-style: preserve-3d
-  -moz-transform-style: preserve-3d
-  transform-style: preserve-3d
-  margin: 0
+  /* Caption Overlay */
 
-.grid figure > div
-  overflow: hidden
+  .grid
+    list-style: none
+    text-align: center
 
-.grid figure img
-  max-width: 100%
-  display: block
-  position: relative
+  ul.grid
+    padding: 0
+    margin: 0
 
-  transition: 0.4s
-  -webkit-transition: -webkit-transform 0.4s
+  .grid li
+    display: inline-block  
+    margin: 0
+    padding: 10px 0
+    text-align: left
+    position: relative
 
-figure:hover img, figure.cs-hover img
-  -webkit-transform: translateX(25%)
-  -moz-transform: translateX(25%)
-  -ms-transform: translateX(25%)
-  transform: translateX(25%)
+    perspective: 1700px
+    -webkit-perspective: 1700px
+    -webkit-perspective-origin: 0 50%
+    perspective-origin: 0 50%
 
-.grid figcaption
-  position: absolute
-  top: 0
-  left: 0
-  padding: 20px 
-  background: $blue-opaque
-  color: white
-  @include boxsizing
+  .grid figure
+    -webkit-transform-style: preserve-3d
+    -moz-transform-style: preserve-3d
+    transform-style: preserve-3d
+    margin: 0
 
-figcaption
-  height: 100%
-  width: 50%
-  opacity: 0
-  -webkit-backface-visibility: hidden
-  -moz-backface-visibility: hidden
-  backface-visibility: hidden
-  -webkit-transform-origin: 0 0
-  -moz-transform-origin: 0 0
-  transform-origin: 0 0
-  -webkit-transform: rotateY(-90deg)
-  -moz-transform: rotateY(-90deg)
-  transform: rotateY(-90deg)
-  -webkit-transition: -webkit-transform 0.4s, opacity 0.1s 0.3s
-  -moz-transition: -moz-transform 0.4s, opacity 0.1s 0.3s
-  transition: transform 0.4s, opacity 0.1s 0.3s
+  .grid figure > div
+    overflow: hidden
+    width: 100%
 
-figure:hover figcaption, figure.cs-hover figcaption
-  opacity: 1
-  -webkit-transform: rotateY(0deg)
-  -moz-transform: rotateY(0deg)
-  transform: rotateY(0deg)
-  -webkit-transition: -webkit-transform 0.4s, opacity 0.1s
-  -moz-transition: -moz-transform 0.4s, opacity 0.1s
-  transition: transform 0.4s, opacity 0.1s 
+  .grid figure img
+    max-width: 100%
+    display: block
+    position: relative
 
-.tab-content.overflow-visible
-  overflow: visible
+    transition: 0.4s
+    -webkit-transition: -webkit-transform 0.4s
+
+  figure:hover img, figure.cs-hover img
+    -webkit-transform: translateX(25%)
+    -moz-transform: translateX(25%)
+    -ms-transform: translateX(25%)
+    transform: translateX(25%)
+
+  .grid figcaption
+    position: absolute
+    top: 0
+    left: 0
+    padding: 20px 
+    background: $blue-opaque
+    color: white
+    @include boxsizing
+
+  figcaption
+    height: 100%
+    width: 50%
+    opacity: 0
+    -webkit-backface-visibility: hidden
+    -moz-backface-visibility: hidden
+    backface-visibility: hidden
+    -webkit-transform-origin: 0 0
+    -moz-transform-origin: 0 0
+    transform-origin: 0 0
+    -webkit-transform: rotateY(-90deg)
+    -moz-transform: rotateY(-90deg)
+    transform: rotateY(-90deg)
+    -webkit-transition: -webkit-transform 0.4s, opacity 0.1s 0.3s
+    -moz-transition: -moz-transform 0.4s, opacity 0.1s 0.3s
+    transition: transform 0.4s, opacity 0.1s 0.3s
+
+  figure:hover figcaption, figure.cs-hover figcaption
+    opacity: 1
+    -webkit-transform: rotateY(0deg)
+    -moz-transform: rotateY(0deg)
+    transform: rotateY(0deg)
+    -webkit-transition: -webkit-transform 0.4s, opacity 0.1s
+    -moz-transition: -moz-transform 0.4s, opacity 0.1s
+    transition: transform 0.4s, opacity 0.1s 
+
+  .tab-content.overflow-visible
+    overflow: visible

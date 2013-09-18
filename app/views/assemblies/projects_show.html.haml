@@ -111,7 +111,7 @@
           .tab-pane{id: "project-#{index}"}
             %h2.printonly
               = assembly_inclusion.includable.title
-            - if assembly_inclusion.includable.layout_name
+            - if assembly_inclusion.includable.layout_name && ! assembly_inclusion.includable.layout_name.blank?
               = render "/shared/activity_layouts/#{assembly_inclusion.includable.layout_name}", activity: assembly_inclusion.includable
             - else
               = render '/shared/activity', activity: assembly_inclusion.includable
