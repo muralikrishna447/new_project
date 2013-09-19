@@ -42,7 +42,7 @@
           %p Here's what the course content looks like:
           = image_tag ('http://placehold.it/500x300')
 
-    .span4
+    .span3.offset1
       .buy-box
         = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly)
         .text-center.section
