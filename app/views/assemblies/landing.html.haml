@@ -68,13 +68,13 @@
       .tab-content.overflow-visible
         .tab-pane.active#equip-pics
           %ul.grid
-            - @course.required_equipment.each do |equipment|
+            - 3.times do
               %li
                 %figure
                   %div
                     = image_tag ('http://placehold.it/450x375')
                   %figcaption
-                    %h3= equipment.title
+                    %h3 Equipment
   
         .tab-pane#equip-list
           %h4 Required Equipment
@@ -104,13 +104,13 @@
       .tab-content.overflow-visible
         .tab-pane.active#ingredients-pics
           %ul.grid
-            - @course.combined_ingredients.each do |combined_ingredient|
+            - 3.times do
               %li
                 %figure
                   %div
                     = image_tag ('http://placehold.it/450x375')
                   %figcaption
-                    %h3= combined_ingredient[0][0].title
+                    %h3 Ingredients
   
         .tab-pane#ingredients-list
           %h4 Ingredients
