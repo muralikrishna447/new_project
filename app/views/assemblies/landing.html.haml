@@ -31,12 +31,9 @@
               %h5= step.title
               %p= step.directions              
         .tab-pane#student-uploads
-          = image_tag ('http://placehold.it/75x75')
-          = image_tag ('http://placehold.it/75x75')
-          = image_tag ('http://placehold.it/75x75')
-          = image_tag ('http://placehold.it/75x75')
-          = image_tag ('http://placehold.it/75x75')
-          = image_tag ('http://placehold.it/75x75')
+          .pull-left.full-width
+            - @course.uploads.each do |upload|
+              = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
         - if @course.testimonials 
           .tab-pane#testimonials
             = @course.testimonials.content
@@ -162,4 +159,5 @@
       %p.lead.section "Maecenas faucibus mollis interdum."
       %h5.pull-right - George Jetson      
 
+= render 'layouts/filepicker'
 = render 'layouts/footer'
