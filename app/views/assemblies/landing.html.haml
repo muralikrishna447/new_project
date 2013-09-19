@@ -57,15 +57,14 @@
 
   .row
     .span4
-      %h3.inline Equipment you'll need
-      .pull-right.section
-        %ul.nav.nav-pills
-          %li.active
-            = link_to '#equip-pics', data: {toggle: 'tab'} do
-              .icon.icon-picture
-          %li
-            = link_to '#equip-list', data: {toggle: 'tab'} do
-              .icon.icon-list-ul
+      %h4 Equipment you'll need
+      %ul.nav.nav-pills
+        %li.active
+          = link_to '#equip-pics', data: {toggle: 'tab'} do
+            .icon.icon-picture
+        %li
+          = link_to '#equip-list', data: {toggle: 'tab'} do
+            .icon.icon-list-ul
       .tab-content.overflow-visible
         .tab-pane.active#equip-pics
           %ul.grid
@@ -94,15 +93,14 @@
                 %li= equipment_item.title
 
     .span4
-      %h3.inline Ingredients you'll need
-      .pull-right.section
-        %ul.nav.nav-pills
-          %li.active
-            = link_to '#ingredients-pics', data: {toggle: 'tab'} do
-              .icon.icon-picture
-          %li
-            = link_to '#ingredients-list', data: {toggle: 'tab'} do
-              .icon.icon-list-ul
+      %h4 Ingredients you'll need
+      %ul.nav.nav-pills
+        %li.active
+          = link_to '#ingredients-pics', data: {toggle: 'tab'} do
+            .icon.icon-picture
+        %li
+          = link_to '#ingredients-list', data: {toggle: 'tab'} do
+            .icon.icon-list-ul
       .tab-content.overflow-visible
         .tab-pane.active#ingredients-pics
           %ul.grid
