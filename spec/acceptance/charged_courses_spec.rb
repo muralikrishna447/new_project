@@ -1,6 +1,6 @@
 require 'spec_helper'
 include AcceptanceMacros
-Capybara.default_wait_time = 10
+Capybara.default_wait_time = 15
 
 feature 'charge for courses', :js => true do
   let!(:assembly) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 147.47, published: true ) }
@@ -41,8 +41,22 @@ feature 'charge for courses', :js => true do
       page.find('#buy-button').click
     end
 
+    # Madness from http://artsy.github.io/blog/2012/02/03/reliably-testing-asynchronous-ui-w-slash-rspec-and-capybara/
+    # But it does seem to help.
+    def wait_for_dom(timeout = Capybara.default_wait_time)
+      uuid = 'X' + SecureRandom.uuid.split('-')[0]
+      page.find("body")
+      page.evaluate_script <<-EOS
+        _.defer(function() {
+          $('body').append("<div id='#{uuid}'></div>");
+        });
+      EOS
+      page.find("##{uuid}")
+    end
+
     def enrollment_should_fail(extra_msg = nil) 
       page.find('#complete-buy').click
+      wait_for_dom()
       page.should have_content('Please fix errors')
       page.should have_content(extra_msg) if extra_msg
       Enrollment.where(enrollable_type: "Assembly", enrollable_id: assembly.id, user_id: current_user.id).count.should == 0
@@ -50,8 +64,10 @@ feature 'charge for courses', :js => true do
 
     def enrollment_should_win
       page.find('#complete-buy').click
+      wait_for_dom()
       page.should_not have_content('processing your card')
-      page.should have_content('Thank you for your purchase!')
+      wait_for_dom()
+      page.should have_content('Thank you for your purchase')
       e = Enrollment.where(enrollable_type: "Assembly", enrollable_id: assembly.id, user_id: current_user.id)
       e.count.should == 1
       e.first.price.should == assembly.price
@@ -59,7 +75,8 @@ feature 'charge for courses', :js => true do
     end
 
     scenario "Cancel button should get rid of charge modal" do
-      page.find('#cancel-buy').click
+      page.find('#cancel-charge').click
+      wait_for_dom()
       page.should_not have_content('CVC')
     end
      
@@ -68,15 +85,17 @@ feature 'charge for courses', :js => true do
 
       fill_in 'cardholder_name', with: "Fancy Pants"
       fill_in 'card_number', with: "4242424242424241"
-      fill_in 'expiry', with: "07/20"
+      fill_in 'expMonth', with: "07"
+      fill_in 'expYear', with: "20"
       fill_in 'cvc', with: "777"
       enrollment_should_fail
 
       fill_in 'card_number', with: "4242424242424242"
-      fill_in 'expiry', with: "07"
+      fill_in 'expYear', with: ""
       enrollment_should_fail
 
-      fill_in 'expiry', with: "07/15"
+      fill_in 'expMonth', with: "07"
+      fill_in 'expYear', with: "20"
       fill_in 'cvc', with: ""
       enrollment_should_fail
 
@@ -91,7 +110,8 @@ feature 'charge for courses', :js => true do
     scenario "Logged in user can buy course and continue course" do
       fill_in 'cardholder_name', with: "Fancy Pants"
       fill_in 'card_number', with: "4242424242424242"
-      fill_in 'expiry', with: "07/20"
+      fill_in 'expMonth', with: "07"
+      fill_in 'expYear', with: "20"
       fill_in 'cvc', with: "777"
       enrollment_should_win
 

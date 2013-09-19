@@ -5,6 +5,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.buyModalOpen = false
 
+  $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
+
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
 
@@ -32,7 +34,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         console.log "STRIPE CHARGE FAIL" + data
         $scope.errorText = data.errors[0].message || data.errors[0]
         $scope.processing = false
-      )
+      ) 
 
   $scope.maybeStartProcessing = (form) ->
     if form?.$valid

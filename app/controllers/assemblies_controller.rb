@@ -27,6 +27,7 @@ class AssembliesController < ApplicationController
   end
 
   def landing
+    @upload = Upload.new
   end
 
 private
