@@ -41,9 +41,19 @@
                   %input.input-mini(ng-model="expYear" type="text" pattern="[0-9]{1,4}" required  name="expYear" )             
               .cvc-group.inline
                 %label.control-label(for="")
-                  Security Code (CVC)
+                  Security Code 
+                  %span.tiny-note
+                    (CVC)
                 .controls
                   %input.input-mini(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" required  name="cvc")
+              .zip-group.inline
+                %label.control-label(for="")
+                  Zip Code
+                  %span.tiny-note
+                    (US Only)
+                .controls
+                  %input.input-mini(ng-model="privateZip" type="text" pattern="[0-9]*"   name="zip")
+
             .divider
             .control-group.text-center(ng-hide="processing")
               .controls                    
