@@ -61,4 +61,11 @@ class Assembly < ActiveRecord::Base
     title = self.slug + '-testimonial'
     Page.find_by_slug(title)
   end
+
+  def video_count
+    assembly_activities = self.assembly_inclusions.map(&:includable).select{|a| a.class.to_s == 'Activity'}
+    activity_videos_count = assembly_activities.select{|a| a.youtube_id? }.count
+    activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.count
+    activity_videos_count + activity_step_videos_count
+  end
 end
