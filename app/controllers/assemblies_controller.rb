@@ -1,6 +1,6 @@
 class AssembliesController < ApplicationController
 
-  before_filter :load_assembly
+  before_filter :load_assembly, except: [:index]
 
   def index
     if request.path == '/assemblies'
