@@ -7,16 +7,14 @@ class ChargesController < ApplicationController
     assembly = Assembly.find(params[:assembly_id])
 
     if Enrollment.where(user_id: current_user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
-      raise "You are already enrolled, we don't want your money again!"
+      raise "You are already enrolled, we don't want to take your money again!"
     end
 
-    puts current_user.inspect
     if ! current_user.stripe_id
       customer = Stripe::Customer.create(
         email: current_user.email,
         card: params[:stripeToken]
       )
-      puts customer.inspect
       current_user.stripe_id = customer.id
       current_user.save!
     end
@@ -28,8 +26,10 @@ class ChargesController < ApplicationController
       currency: 'usd'
     )
 
+    puts charge.inspect
+
     # Kinda unclear what we should do here if we succesfully charged their card but 
-    # then saving the enrollment fails
+    # then saving the enrollment fails. Shouldn't happen though... famous last words.
     @enrollment = Enrollment.new(user_id: current_user.id, enrollable: assembly, price: assembly.price)
     @enrollment.save!
 
