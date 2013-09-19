@@ -1,9 +1,10 @@
-.full-stripe
-  .container
-    .row
-      .span12
-        .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-          %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+.assembly-course-landing
+  .full-stripe
+    .container
+      .row
+        .span12
+          .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+            %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
 
 .container.assembly-course-landing
   .row.section
@@ -120,5 +121,4 @@
     .span4
       = @course.testimonials      
 
-= render 'layouts/filepicker'
 = render 'layouts/footer'
