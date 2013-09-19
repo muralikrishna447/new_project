@@ -17,6 +17,7 @@ describe ChargesController, "#create" do
       JSON.parse(response.body)["errors"][0].should include("Assembly")
     end
 
+ 
     # This is no good, it is hitting the server. Need to mock the Stripe apis, and not super
     # sure how to go about that. Seems like I should be able to use the ones in stripe_ruby or possibly
     # rspec_stripe but not finding any examples.
@@ -31,7 +32,18 @@ describe ChargesController, "#create" do
       JSON.parse(response.body)["errors"][0].should include("Invalid token")
     end
 =end
-
-
   end
+
+  context 'sales tax' do   
+    it 'computes correct tax for various IP addresses' do
+      @controller = ChargesController.new
+      # localhost
+      expect(@controller.instance_eval{adjust_for_included_tax(100, "127.0.0.1")}).to eq([100,0])
+      # new jersey
+      expect(@controller.instance_eval{adjust_for_included_tax(100, "199.231.185.97")}).to eq([100, 0])
+      # richland
+      expect(@controller.instance_eval{adjust_for_included_tax(100, "216.186.5.154")}).to eq([91.32, 8.68])
+    end
+  end
+
 end
