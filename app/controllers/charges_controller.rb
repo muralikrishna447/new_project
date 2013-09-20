@@ -50,7 +50,7 @@ class ChargesController < ApplicationController
     head :no_content
   end
 
-  rescue_from 'xException' do |e|
+  rescue_from 'Exception' do |e|
     puts e.message
     messages = []
     messages.push(e.message)
