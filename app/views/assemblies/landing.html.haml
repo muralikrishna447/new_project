@@ -17,13 +17,9 @@
             = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
         %li
           = link_to 'Equipment / Ingredients', '#equipment-ingredients', data: {toggle: 'tab'}
-        %li
-          = link_to 'Student Uploads', '#student-uploads', data: {toggle: 'tab'}
         - if @course.testimonials
           %li
             = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
-        %li
-          = link_to 'Preview Course', '#preview', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#overview
           .two-columns
@@ -55,16 +51,9 @@
                         = image_tag ('http://placehold.it/450x375')
                       %figcaption
                         %h3 Ingredients
-        .tab-pane#student-uploads
-          .pull-left.full-width
-            - @course.uploads.each do |upload|
-              = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
         - if @course.testimonials 
           .tab-pane#testimonials
             = @course.testimonials.content
-        .tab-pane#preview
-          %p Here's what the course content looks like:
-          = image_tag ('http://placehold.it/500x300')
 
     .span3.offset1
       .buy-box
@@ -79,7 +68,29 @@
           %li Q&A from the chefs
         %h4 100% satisfaction guaranteed or your money back
 
-    .span4
+  .row
+    .span8
+      %h4 Course Preview
+      .row
+        .span4
+          = image_tag ('http://placehold.it/450x600')
+          %ul
+            %li Some feature
+            %li Some feature
+            %li Some feature
+        .span4
+          = image_tag ('http://placehold.it/450x600')
+          %ul
+            %li Some feature
+            %li Some feature
+            %li Some feature
+    .span3.offset1
       = @course.testimonials.content if @course.testimonials
+  .row
+    .span12
+      %h4 Student Projects
+      - @course.uploads.each do |upload|
+        = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+
 
 = render 'layouts/footer'
