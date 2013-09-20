@@ -34,6 +34,7 @@ describe ChargesController, "#create", focus: true do
       end
 
       it 'stores correct price and tax in enrollment in a taxed situation' do
+        # This IP is in Richland, WA
         request.stub(:remote_ip).and_return("216.186.5.154")
         Enrollment.should_receive(:new).with(hash_including({price: 10.04, sales_tax: 0.95})).and_return(@double_enrollment)
         Stripe::Charge.should_receive(:create).with(hash_including({description: "Cooking For the Hirsute (including $0.95 WA state sales tax)"}))

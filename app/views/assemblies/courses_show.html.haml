@@ -4,24 +4,19 @@
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController"}
 
 .container.section(ng-cloak)
-
-  .row
-    .span12
-      %h1
-        {{activity.title}}
+  .course-nav
+    %ul.nav.nav-tabs.nav-stacked.section
+      - @course.assembly_inclusions.each_with_index do |inclusion,index|
+        - act_id = @course.assembly_inclusions[index].includable.id
+        - next_act_id = @course.assembly_inclusions[index+1] ? @course.assembly_inclusions[index+1].includable.id : [] 
+        %li(ng-class="{active: #{act_id} == activity.id}")
+          %a(ng-click="startViewActivity(#{act_id}, #{next_act_id});")
+            #{inclusion.includable.title}
 
   .row(ng-cloak)
-    .span3
-      %ul.nav.nav-tabs.nav-stacked.section
-        - @course.assembly_inclusions.each_with_index do |inclusion,index|
-          - act_id = @course.assembly_inclusions[index].includable.id
-          - next_act_id = @course.assembly_inclusions[index+1] ? @course.assembly_inclusions[index+1].includable.id : [] 
-          %li(ng-class="{active: #{act_id} == activity.id}")
-            %a(ng-click="startViewActivity(#{act_id}, #{next_act_id});")
-              #{inclusion.includable.title}
-    .span9
+    .span12
       .tab-content(ng-init="loadActivity(#{@course.assembly_inclusions[0].includable.id})")
-        = render 'activities/main_activity_content', activity: @course.assembly_inclusions[0].includable
+        = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
 
 -# By not cloaking this, it will be on while the page is first loading before angular takes charge
 .assembly-loading-background(ng-show="loading" ng-animate="'fade'")

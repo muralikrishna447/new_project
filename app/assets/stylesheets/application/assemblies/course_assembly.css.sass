@@ -1,0 +1,50 @@
+@import 'mixins'
+
+.course-nav
+  position: fixed
+  width: 100px
+  top: 100px
+  left: 40px
+
+.assembly-activity
+  .ordered-steps-new
+    .ordered-step-item
+      width: 100%
+      float: left
+      padding: 0px
+      margin-top: 30px
+      @include boxsizing
+      .step-number
+        @include gotham-bold
+        font-size: 50px
+        line-height: 50px
+        padding-bottom: 10px
+      .step-optional-stuff
+        float: right
+        width: 50%
+        margin-left: 24px
+        > div
+          margin-bottom: 20px
+          width: 100%
+      .step-content
+        h4
+          margin-top: 0px
+          margin-bottom: 0px
+          padding-bottom: 2px
+        ul, li
+          list-style: none
+          padding: 0px 0px 10px 0px
+          margin: 0px
+        ul
+          padding: 0px
+      .step-actions
+        margin-bottom: 10px
+        .step-action-item
+          display: inline-block
+        .step-ingredients
+          .step-ingredients-source
+            display: none
+      .step-image
+        display: none
+      .step-video
+        display: none
