@@ -16,6 +16,8 @@
           %li
             = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
         %li
+          = link_to 'Equipment / Ingredients', '#equipment-ingredients', data: {toggle: 'tab'}
+        %li
           = link_to 'Student Uploads', '#student-uploads', data: {toggle: 'tab'}
         - if @course.testimonials
           %li
@@ -30,7 +32,29 @@
           .tab-pane#faq
             - @course.faq.steps.each do |step|
               %h5= step.title
-              %p= step.directions              
+              %p= step.directions
+        .tab-pane#equipment-ingredients
+          .row
+            .span4
+              %h4 Equipment you'll need
+              %ul.grid
+                - 3.times do
+                  %li
+                    %figure
+                      %div
+                        = image_tag ('http://placehold.it/450x375')
+                      %figcaption
+                        %h3 Equipment
+            .span4
+              %h4 Ingredients you'll need
+              %ul.grid
+                - 3.times do
+                  %li
+                    %figure
+                      %div
+                        = image_tag ('http://placehold.it/450x375')
+                      %figcaption
+                        %h3 Ingredients
         .tab-pane#student-uploads
           .pull-left.full-width
             - @course.uploads.each do |upload|
@@ -55,68 +79,6 @@
           %li Q&A from the chefs
         %h4 100% satisfaction guaranteed or your money back
 
-  .row
-    .span4
-      %h4 Equipment you'll need
-      %ul.nav.nav-tabs.underline
-        %li.active
-          = link_to '#equip-pics', data: {toggle: 'tab'} do
-            .icon.icon-picture
-        %li
-          = link_to '#equip-list', data: {toggle: 'tab'} do
-            .icon.icon-list-ul
-      .tab-content.overflow-visible
-        .tab-pane.active#equip-pics
-          %ul.grid
-            - 3.times do
-              %li
-                %figure
-                  %div
-                    = image_tag ('http://placehold.it/450x375')
-                  %figcaption
-                    %h3 Equipment
-  
-        .tab-pane#equip-list
-          %h4 Required Equipment
-          %ul.unstyled
-            - (@course.required_equipment).each do |equipment_item|
-              - if equipment_item.product_url?
-                %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
-              - else
-                %li= equipment_item.title
-          %h4 Optional Equipment
-          %ul.unstyled
-            - (@course.optional_equipment).each do |equipment_item|
-              - if equipment_item.product_url?
-                %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
-              - else
-                %li= equipment_item.title
-
-    .span4
-      %h4 Ingredients you'll need
-      %ul.nav.nav-tabs.underline
-        %li.active
-          = link_to '#ingredients-pics', data: {toggle: 'tab'} do
-            .icon.icon-picture
-        %li
-          = link_to '#ingredients-list', data: {toggle: 'tab'} do
-            .icon.icon-list-ul
-      .tab-content.overflow-visible
-        .tab-pane.active#ingredients-pics
-          %ul.grid
-            - 3.times do
-              %li
-                %figure
-                  %div
-                    = image_tag ('http://placehold.it/450x375')
-                  %figcaption
-                    %h3 Ingredients
-  
-        .tab-pane#ingredients-list
-          %h4 Ingredients
-          %ul.unstyled
-            - @course.combined_ingredients.each do |combined_ingredient|
-              %li= combined_ingredient[0][0].title
     .span4
       = @course.testimonials.content if @course.testimonials
 
