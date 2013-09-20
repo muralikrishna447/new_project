@@ -92,5 +92,6 @@
       - @course.uploads.each do |upload|
         = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
 
+%div(ng-controller='CoursesController' ng-init="init(#{@course.id})")
 
 = render 'layouts/footer'
