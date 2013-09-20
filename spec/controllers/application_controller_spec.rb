@@ -39,7 +39,7 @@ describe ApplicationController do
     end
 
     it 'does not create an event if user is not signed in' do
-      controller.send :track_event, @like
+      controller.send :track_event, @like, 'show'
       Event.all.length.should == 0
     end
 

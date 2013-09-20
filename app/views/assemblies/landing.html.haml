@@ -42,7 +42,7 @@
           %p Here's what the course content looks like:
           = image_tag ('http://placehold.it/500x300')
 
-    .span4
+    .span3.offset1
       .buy-box
         = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly)
         .text-center.section
@@ -57,36 +57,35 @@
 
   .row
     .span4
-      %h3.inline Equipment you'll need
-      .pull-right.section
-        %ul.nav.nav-pills
-          %li.active
-            = link_to '#equip-pics', data: {toggle: 'tab'} do
-              .icon.icon-picture
-          %li
-            = link_to '#equip-list', data: {toggle: 'tab'} do
-              .icon.icon-list-ul
+      %h4 Equipment you'll need
+      %ul.nav.nav-tabs.underline
+        %li.active
+          = link_to '#equip-pics', data: {toggle: 'tab'} do
+            .icon.icon-picture
+        %li
+          = link_to '#equip-list', data: {toggle: 'tab'} do
+            .icon.icon-list-ul
       .tab-content.overflow-visible
         .tab-pane.active#equip-pics
           %ul.grid
-            - @course.required_equipment.each do |equipment|
+            - 3.times do
               %li
                 %figure
                   %div
                     = image_tag ('http://placehold.it/450x375')
                   %figcaption
-                    %h3= equipment.title
+                    %h3 Equipment
   
         .tab-pane#equip-list
           %h4 Required Equipment
-          %ul
+          %ul.unstyled
             - (@course.required_equipment).each do |equipment_item|
               - if equipment_item.product_url?
                 %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
               - else
                 %li= equipment_item.title
           %h4 Optional Equipment
-          %ul
+          %ul.unstyled
             - (@course.optional_equipment).each do |equipment_item|
               - if equipment_item.product_url?
                 %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
@@ -94,31 +93,31 @@
                 %li= equipment_item.title
 
     .span4
-      %h3.inline Ingredients you'll need
-      .pull-right.section
-        %ul.nav.nav-pills
-          %li.active
-            = link_to '#ingredients-pics', data: {toggle: 'tab'} do
-              .icon.icon-picture
-          %li
-            = link_to '#ingredients-list', data: {toggle: 'tab'} do
-              .icon.icon-list-ul
+      %h4 Ingredients you'll need
+      %ul.nav.nav-tabs.underline
+        %li.active
+          = link_to '#ingredients-pics', data: {toggle: 'tab'} do
+            .icon.icon-picture
+        %li
+          = link_to '#ingredients-list', data: {toggle: 'tab'} do
+            .icon.icon-list-ul
       .tab-content.overflow-visible
         .tab-pane.active#ingredients-pics
           %ul.grid
-            - @course.combined_ingredients.each do |combined_ingredient|
+            - 3.times do
               %li
                 %figure
                   %div
                     = image_tag ('http://placehold.it/450x375')
                   %figcaption
-                    %h3= combined_ingredient[0][0].title
+                    %h3 Ingredients
   
         .tab-pane#ingredients-list
-          %ul
+          %h4 Ingredients
+          %ul.unstyled
             - @course.combined_ingredients.each do |combined_ingredient|
               %li= combined_ingredient[0][0].title
     .span4
-      = @course.testimonials      
+      = @course.testimonials.content if @course.testimonials
 
 = render 'layouts/footer'
