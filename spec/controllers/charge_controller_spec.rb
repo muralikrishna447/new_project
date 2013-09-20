@@ -16,7 +16,7 @@ describe ChargesController, "#create" do
       JSON.parse(response.body)["errors"][0].should include("Assembly")
     end
 
-    context 'ip based tax calculations', focus: true do
+    context 'ip based tax calculations' do
 
       before do
         Assembly.stub(:find).and_return(assembly)
