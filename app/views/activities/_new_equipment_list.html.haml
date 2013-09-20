@@ -2,7 +2,9 @@
   %h4(ng-show="#{test_method}() || editMode" ng-class="disableIf(! #{test_method}())")= name
   %ul.no-bullet(ui-sortable="sortOptions" ng-model="#{model}")
     %li.relative(ng-repeat="item in #{model} | filter:#{required_string}Equipment")
-      %csEquipmentEditPair(csOptional="#{! required}")
+      %csEquipmentEditPair.inline(csOptional="#{! required}")
+      .inline(ng-show='item.optional && ("#{required_string}" == "any")')
+        (optional)
   .nav(ng-show="editMode")
     %button.btn.btn-small.btn-basic.add-item(ng-click="addEquipment(! #{required})" tooltip="Add #{required_string} equipment item...")
       +
