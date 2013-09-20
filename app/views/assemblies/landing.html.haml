@@ -16,12 +16,10 @@
           %li
             = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
         %li
-          = link_to 'Student Uploads', '#student-uploads', data: {toggle: 'tab'}
+          = link_to 'Equipment / Ingredients', '#equipment-ingredients', data: {toggle: 'tab'}
         - if @course.testimonials
           %li
             = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
-        %li
-          = link_to 'Preview Course', '#preview', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#overview
           .two-columns
@@ -30,17 +28,32 @@
           .tab-pane#faq
             - @course.faq.steps.each do |step|
               %h5= step.title
-              %p= step.directions              
-        .tab-pane#student-uploads
-          .pull-left.full-width
-            - @course.uploads.each do |upload|
-              = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+              %p= step.directions
+        .tab-pane#equipment-ingredients
+          .row
+            .span4
+              %h4 Equipment you'll need
+              %ul.grid
+                - 3.times do
+                  %li
+                    %figure
+                      %div
+                        = image_tag ('http://placehold.it/450x375')
+                      %figcaption
+                        %h3 Equipment
+            .span4
+              %h4 Ingredients you'll need
+              %ul.grid
+                - 3.times do
+                  %li
+                    %figure
+                      %div
+                        = image_tag ('http://placehold.it/450x375')
+                      %figcaption
+                        %h3 Ingredients
         - if @course.testimonials 
           .tab-pane#testimonials
             = @course.testimonials.content
-        .tab-pane#preview
-          %p Here's what the course content looks like:
-          = image_tag ('http://placehold.it/500x300')
 
     .span3.offset1
       .buy-box
@@ -56,68 +69,28 @@
         %h4 100% satisfaction guaranteed or your money back
 
   .row
-    .span4
-      %h4 Equipment you'll need
-      %ul.nav.nav-tabs.underline
-        %li.active
-          = link_to '#equip-pics', data: {toggle: 'tab'} do
-            .icon.icon-picture
-        %li
-          = link_to '#equip-list', data: {toggle: 'tab'} do
-            .icon.icon-list-ul
-      .tab-content.overflow-visible
-        .tab-pane.active#equip-pics
-          %ul.grid
-            - 3.times do
-              %li
-                %figure
-                  %div
-                    = image_tag ('http://placehold.it/450x375')
-                  %figcaption
-                    %h3 Equipment
-  
-        .tab-pane#equip-list
-          %h4 Required Equipment
-          %ul.unstyled
-            - (@course.required_equipment).each do |equipment_item|
-              - if equipment_item.product_url?
-                %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
-              - else
-                %li= equipment_item.title
-          %h4 Optional Equipment
-          %ul.unstyled
-            - (@course.optional_equipment).each do |equipment_item|
-              - if equipment_item.product_url?
-                %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
-              - else
-                %li= equipment_item.title
-
-    .span4
-      %h4 Ingredients you'll need
-      %ul.nav.nav-tabs.underline
-        %li.active
-          = link_to '#ingredients-pics', data: {toggle: 'tab'} do
-            .icon.icon-picture
-        %li
-          = link_to '#ingredients-list', data: {toggle: 'tab'} do
-            .icon.icon-list-ul
-      .tab-content.overflow-visible
-        .tab-pane.active#ingredients-pics
-          %ul.grid
-            - 3.times do
-              %li
-                %figure
-                  %div
-                    = image_tag ('http://placehold.it/450x375')
-                  %figcaption
-                    %h3 Ingredients
-  
-        .tab-pane#ingredients-list
-          %h4 Ingredients
-          %ul.unstyled
-            - @course.combined_ingredients.each do |combined_ingredient|
-              %li= combined_ingredient[0][0].title
-    .span4
+    .span8
+      %h4 Course Preview
+      .row.section
+        .span4
+          = image_tag ('http://placehold.it/450x600'), class: 'image-shadow'
+          %ul.section
+            %li Some feature
+            %li Some feature
+            %li Some feature
+        .span4
+          = image_tag ('http://placehold.it/450x600'), class: 'image-shadow'
+          %ul.section
+            %li Some feature
+            %li Some feature
+            %li Some feature
+    .span3.offset1
       = @course.testimonials.content if @course.testimonials
+  .row
+    .span12
+      %h4 Student Projects
+      - @course.uploads.each do |upload|
+        = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+
 
 = render 'layouts/footer'
