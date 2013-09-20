@@ -9,7 +9,7 @@ class ChargesController < ApplicationController
       tax_rate = 0.095
       tax = (price - (price / (1 + tax_rate))).round(2)
     end
-    [price - tax, tax]
+    [(price - tax).round(2), tax]
   end
 
   def create
@@ -50,7 +50,7 @@ class ChargesController < ApplicationController
     head :no_content
   end
 
-  rescue_from 'Exception' do |e|
+  rescue_from 'xException' do |e|
     puts e.message
     messages = []
     messages.push(e.message)
