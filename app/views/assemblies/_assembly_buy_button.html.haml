@@ -47,7 +47,10 @@
             .divider
             .control-group.text-center(ng-hide="processing")
               .controls                    
-                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") Buy Now ({{assembly.price | currency}})    
+                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") Buy Now {{assembly.price | currency}} 
+                %p
+                  .tiny-note
+                    All Taxes Included   
             .control-group.text-center(ng-show="processing")
               .controls
                 %i.icon-spinner.icon-2x.icon-spin

@@ -2,7 +2,7 @@ require 'spec_helper'
 include AcceptanceMacros
 Capybara.default_wait_time = 15
 
-feature 'charge for courses', :js => true do
+feature 'charge for courses', pending: true, :js => true do
   let!(:assembly) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 147.47, published: true ) }
   let!(:landing_page) { Fabricate(:page, title: "Clummy LP", content: "You so clummy", primary_path: "/courses/clummy") }
   let(:current_user) { User.find(1) }

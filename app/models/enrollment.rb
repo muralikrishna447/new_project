@@ -1,5 +1,5 @@
 class Enrollment < ActiveRecord::Base
-  attr_accessible :course_id, :user_id, :enrollable, :price
+  attr_accessible :course_id, :user_id, :enrollable, :price, :sales_tax
   belongs_to :user
   # belongs_to :course
   belongs_to :enrollable, polymorphic: true

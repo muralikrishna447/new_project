@@ -193,15 +193,19 @@
     border: none
     li
       a
+        color: $light-gray
         border: none
-        border-bottom: 4px solid white
+        border-bottom: 3px solid white
         @include transition(all 200ms ease-in-out)
         &:hover
+          color: gray
+          background: white
           border-radius: 0px
-          border-bottom: 4px solid $light-gray
+          border-bottom: 3px solid $light-gray
     li.active
       a
-        border-bottom: 4px solid $orange
+        color: black
+        border-bottom: 3px solid $orange
 
 
   .buy-box
