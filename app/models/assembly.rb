@@ -4,7 +4,8 @@ class Assembly < ActiveRecord::Base
   friendly_id :title, use: [:slugged, :history]
   attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price
   has_many :assembly_inclusions
-  has_many :includables, through: :assembly_inclusions
+  has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
+  has_many :quizzes, through: :assembly_inclusions, source: :includable, source_type: 'Quiz'
 
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
@@ -21,7 +22,7 @@ class Assembly < ActiveRecord::Base
   INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz']
 
   def ingredients
-    assembly_inclusions.map(&:includable).map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}.reject{|i| i.unit == 'recipe'}
+    activities.map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}.reject{|i| i.unit == 'recipe'}
   end
 
   def grouped_ingredients
@@ -33,12 +34,12 @@ class Assembly < ActiveRecord::Base
   end
 
   def required_equipment
-    assembly_inclusions.map(&:includable).map(&:required_equipment).flatten.uniq{|e| e.title}.sort_by{ |e| e.title }
+    activities.map(&:required_equipment).flatten.uniq{|e| e.title}.sort_by{ |e| e.title }
   end
 
   def optional_equipment
-    optional = assembly_inclusions.map(&:includable).map(&:optional_equipment).flatten
-    required_titles = assembly_inclusions.map(&:includable).map(&:required_equipment).flatten.map(&:title).map(&:downcase)
+    optional = activities.map(&:optional_equipment).flatten
+    required_titles = activities.map(&:required_equipment).flatten.map(&:title).map(&:downcase)
     displayable = []
     optional.each do |equipment|
       unless required_titles.include?(equipment.title.downcase)
@@ -63,7 +64,7 @@ class Assembly < ActiveRecord::Base
   end
 
   def video_count
-    assembly_activities = self.assembly_inclusions.map(&:includable).select{|a| a.class.to_s == 'Activity'}
+    assembly_activities = self.activities.select{|a| a.class.to_s == 'Activity'}
     activity_videos_count = assembly_activities.select{|a| a.youtube_id? }.count
     activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.count
     activity_videos_count + activity_step_videos_count
