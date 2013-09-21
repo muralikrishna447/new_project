@@ -1,8 +1,19 @@
-angular.module('ChefStepsApp').controller 'CoursesController', ['$scope', '$resource', 'cs_event', ($scope, $resource, cs_event) ->
+angular.module('ChefStepsApp').controller 'CoursesController', ['$scope', '$resource', '$http', 'cs_event', ($scope, $resource, $http, cs_event) ->
   
+  $scope.view_inclusion = {}
+
   $scope.init = (course_id) ->
-    $scope.course = $resource('/courses/:id/show_as_json', {'id': course_id})
-    $scope.course_inclusions = $scope.course.query(->
-      console.log $scope.course_inclusions
-    )
+    $http.get('/courses/' + course_id + '/show_as_json').success (data, status) ->
+      $scope.course = data
+      console.log $scope.course.assembly_inclusions
+
+  $scope.load_inclusion = (includable_type, includable_id) ->
+    # console.log "switching to " + includable_type + 'with id ' + includable_id
+    # $scope.view_inclusion.type = includable_type
+    # $scope.view_inclusion.id = includable_id
+    if includable_id
+      $scope.view_inclusion = [includable_type, includable_id].join('_')
+      $scope.view_inclusion_id = includable_id
+    else
+      $scope.view_inclusion = includable_type
 ]

@@ -4,7 +4,7 @@
 /     %h4= @activity.description
 .row-fluid
   .span12
-    - quiz = @activity.quizzes.first
+    - quiz = course_quiz || @activity.quizzes.first
     %iframe{src: quiz_path(quiz), style: 'width: 100%; border: none; min-height: 1000px; overflow: hidden;', id: 'course-quiz', onload: "window.adjust_iframe_height(this);"}
 
     / #quizzes.hero-well.noprint
