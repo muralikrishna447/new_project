@@ -176,6 +176,7 @@ Delve::Application.routes.draw do
     resources :courses, controller: :assemblies do
       member do
         get 'landing' => 'assemblies#landing'
+        get 'show_as_json' => 'assemblies#show_as_json'
       end
     end
   end

@@ -30,6 +30,10 @@ class AssembliesController < ApplicationController
     @upload = Upload.new
   end
 
+  def show_as_json
+    render :json => @assembly
+  end
+
 private
 
   def load_assembly

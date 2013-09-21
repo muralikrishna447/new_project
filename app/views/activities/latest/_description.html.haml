@@ -1,0 +1,26 @@
+%csEditPair.section
+
+  %csEditPairShow
+    .activity-description-wrapper(ng-show="!!activity.description")
+      .activity-description.maximize-description#activity-description
+        %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
+ 
+    %div.disabled-section(ng-show="editMode && (!activity.description)")
+      Add description...
+
+  %csEditPairEdit
+    %textarea(ng-model="activity.description" rows="5" placeholder="Add description...")
+
+
+-if can? :update, @activity
+  .section
+    %csEditPair
+
+      %csEditPairShow
+        %div(ng-show="!!activity.author_notes  || editMode" ng-class="disableIf(! activity.author_notes)")
+          %h4 Private Notes
+          %span(ng-bind="activity.author_notes || 'Add private notes...' ")
+
+      %csEditPairEdit
+        %h4 Private Notes
+        %textarea(ng-model="activity.author_notes" placeholder="Add private notes..." rows="3")

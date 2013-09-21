@@ -329,11 +329,17 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       has = has || (item.optional)
     return has
 
+  $scope.hasAnyEquipment = ->
+    $scope.activity?.equipment.length > 0
+
   $scope.optionalEquipment = (item) ->
     item.optional
 
   $scope.requiredEquipment = (item) ->
     ! $scope.optionalEquipment(item)
+
+  $scope.anyEquipment = (item) ->
+    true
 
   $scope.addEquipment = (optional) ->
     # *don't* use equip = {title: ...} here, it will screw up display if an empty one gets in the list
