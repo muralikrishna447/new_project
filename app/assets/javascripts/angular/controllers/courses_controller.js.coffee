@@ -6,6 +6,9 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$scope', '$reso
     $http.get('/courses/' + course_id + '/show_as_json').success (data, status) ->
       $scope.course = data
       console.log $scope.course.assembly_inclusions
+      console.log $scope.course.assembly_inclusions[0].includable_id
+      $scope.view_inclusion = 'Activity_' + $scope.course.assembly_inclusions[0].includable_id
+      $scope.view_inclusion_id = $scope.course.assembly_inclusions[0].includable_id
 
   $scope.load_inclusion = (includable_type, includable_id) ->
     # console.log "switching to " + includable_type + 'with id ' + includable_id
