@@ -16,15 +16,16 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ($window) ->
       scope.updateSpies()
 
     scope.updateSpies = ->
+      return
       for spy in scope.spies
         unless scope.spyElems[spy.id]?
           scope.spyElems[spy.id] = elem.find('#'+spy.id)
 
     $($window).scroll ->
-      scope.updateSpies() if scope.spyElems.length == 0
       highlightSpy = null
       for spy in scope.spies
         spy.out()
+        scope.spyElems[spy.id] = elem.find('#'+spy.id) unless scope.spyElems[spy.id]?
         if (pos = scope.spyElems[spy.id].offset().top) - $window.scrollY <= (attrs.offset || 0)
           spy.pos = pos
           highlightSpy ?= spy

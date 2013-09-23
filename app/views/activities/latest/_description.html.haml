@@ -2,7 +2,7 @@
 
   %csEditPairShow
     .activity-description-wrapper(ng-show="!!activity.description")
-      .activity-description.maximize-description#fnargle
+      .activity-description.maximize-description#activity-description
         %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
  
     %div.disabled-section(ng-show="editMode && (!activity.description)")
