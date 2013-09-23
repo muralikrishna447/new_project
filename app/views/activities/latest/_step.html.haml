@@ -3,24 +3,16 @@
 .step-number
   %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
 
+%csEditPair
+  %csEditPairShow
+    %h4(ng-show="step.title || editMode" ng-bind-html-unsafe="step.title || (editMode && 'Optional title...') | markdown | shortcode" ng-class="disableIf(! step.title.length)")
+  %csEditPairEdit
+    %textarea.step-title-input(ng-model="step.title" rows="5" placeholder="Optional title...")
+
 .row
-  .span6
 
-    .step-content
 
-      %csEditPair
-        %csEditPairShow
-          %h4(ng-show="step.title || editMode" ng-bind-html-unsafe="step.title || (editMode && 'Optional title...') | markdown | shortcode" ng-class="disableIf(! step.title.length)")
-        %csEditPairEdit
-          %textarea.step-title-input(ng-model="step.title" rows="5" placeholder="Optional title...")
-
-      %csEditPair
-        %csEditPairShow
-          %div(ng-show="step.directions || editMode" ng-bind-html-unsafe="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
-        %csEditPairEdit
-          %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
-
-  .span6
+  .span6(ng-show='(!! step.youtube_id) || (!! step.image_id) || (step.ingredients.length > 0)')
     .step-optional-stuff
       =render 'activities/step_ingredients'
 
@@ -32,4 +24,12 @@
       .step-image-outer(ng-show="!! step.image_id")
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(ng-src="{{stepImageURL(step, 600)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+
+  .span6
+    .step-content
+      %csEditPair
+        %csEditPairShow
+          %div(ng-show="step.directions || editMode" ng-bind-html-unsafe="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
+        %csEditPairEdit
+          %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
 

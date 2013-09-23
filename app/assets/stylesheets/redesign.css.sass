@@ -1191,6 +1191,9 @@ a:hover
 
 /* Navbar */
 .navbar-fixed-top
+  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+  -webkit-transform: translateZ(0)
+
 
   .navbar-inner
     box-shadow: none

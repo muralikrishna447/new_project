@@ -1,7 +1,19 @@
-angular.module('ChefStepsApp').controller 'StepsController', ["$scope", ($scope) ->
+angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$location", "$anchorScroll", ($scope, $location, $anchorScroll) ->
 
   $scope.stepNumber = (index) ->
     _.filter($scope.activity.steps[0...index], (step) -> (! step.hide_number)).length + 1
+
+  $scope.scrollToStep = (index) ->
+    step_num = $scope.stepNumber(index)
+    $location.hash('numbered-step-' + step_num)
+    $anchorScroll()
+
+  $scope.scrollToTop =  ->
+    $location.hash('top')
+    $anchorScroll()
+
+  $scope.showStepDot = (index) ->
+    ! $scope.activity.steps[index].hide_number
 
   $scope.stepImageURL = (step, width) ->
     url = ""

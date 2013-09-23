@@ -1,12 +1,58 @@
 @import 'mixins'
 
+.hero-video
+  position: fixed
+  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+  -webkit-transform: translateZ(0)
+  top: 100px
+  z-index: -1000
+  width: 1170px
+  height: 658px
+
+.main-content-container
+  //margin-top: 658px
+
+.main-content-container, .step-container
+  background-color: white
+
 .course-nav
   position: fixed
-  width: 100px
-  top: 100px
-  left: 40px
+  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+  -webkit-transform: translateZ(0)
+  top: 80px
+  margin-left: 50%
+  left: -800px
+ 
+.step-dots
+  position: fixed
+  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+  -webkit-transform: translateZ(0)
+  width: 15px
+  top: 720px
+  margin-left: 50%
+  left: -600px
+
+  .step-dot
+    margin-bottom: 8px
+    color: lighten($orange, 15%)
+    font-size: 14px
+
+  .step-dot.active
+    color: $orange
+   
+  .step-dot.intro
+    color: $light-gray
+
+  .step-dot.intro.active
+    color: darkgray
+
+  .step-dot.more
+    font-size: 80%
 
 .assembly-activity
+  .activity-description
+    padding: 0 20px
+
   .ordered-steps-new
     .ordered-step-item
       width: 100%
