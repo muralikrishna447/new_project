@@ -5,6 +5,7 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     _.filter($scope.activity.steps[0...index], (step) -> (! step.hide_number)).length + 1
 
   $scope.numberedSteps = ->
+    return [] if ! $scope.activity?.steps?
     _.filter($scope.activity.steps, (step) -> (! step.hide_number))
 
   $scope.showStepDot = (index) ->

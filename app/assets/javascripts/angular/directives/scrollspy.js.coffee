@@ -1,17 +1,46 @@
-angular.module('ChefStepsApp').directive "scrollSpy", ($timeout) ->
-  restrict: "A"
-  link: (scope, elem, attr) ->
-    offset = parseInt(attr.scrollOffset, 10)
-    offset = 10  unless offset
-    console.log "offset:  " + offset
-    elem.scrollspy offset: offset
-    scope.$watch attr.scrollSpy, ((value) ->
-      $timeout (->
-        elem.scrollspy "refresh",
-          offset: offset
+angular.module('ChefStepsApp').directive 'scrollSpy', ($window) ->
+  restrict: 'A'
+  controller: ($scope) ->
+    $scope.spies = []
+    # a spyObj has an id, a function to call when it's section is in view,
+    # and a function to call when it's out of sight.
+    # This is created in the second directive
+    @addSpy = (spyObj) ->
+      $scope.spies.push spyObj
+      console.log $scope.spies
 
-      ), 1
-    ), true
+  link: (scope, elem, attrs) ->
+    scope.spyElems = []
+
+    scope.$watch 'spies', (spies) ->
+      scope.updateSpies()
+
+    scope.updateSpies = ->
+      for spy in scope.spies
+        unless scope.spyElems[spy.id]?
+          scope.spyElems[spy.id] = elem.find('#'+spy.id)
+
+    $($window).scroll ->
+      scope.updateSpies() if scope.spyElems.length == 0
+      highlightSpy = null
+      for spy in scope.spies
+        spy.out()
+        if (pos = scope.spyElems[spy.id].offset().top) - $window.scrollY <= (attrs.offset || 0)
+          spy.pos = pos
+          highlightSpy ?= spy
+          if highlightSpy.pos < spy.pos
+            highlightSpy = spy
+
+      highlightSpy?.in()
+
+angular.module('ChefStepsApp').directive 'spy', ->
+  restrict: "A"
+  require: "^scrollSpy"
+  link: (scope, elem, attrs, affix) ->
+    affix.addSpy
+      id: attrs.spy
+      in: -> elem.addClass 'active',
+      out: -> elem.removeClass 'active'
 
 angular.module('ChefStepsApp').directive "preventDefault", ->
   (scope, element, attrs) ->

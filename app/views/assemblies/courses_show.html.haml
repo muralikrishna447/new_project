@@ -1,34 +1,34 @@
 = render 'layouts/filepicker'
 - content_for :title, "#{@course.title.html_safe} - Course"
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'data-spy' => "scroll", :'data-target' => "#step-dots"}
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController"}
 
 .container(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak)
-  .scroll-spier(scroll-spy) 
-    .course-nav
-      %ul.nav.nav-tabs.nav-stacked.section(ng-cloak)
-        %li(ng-repeat='inclusion in course.assembly_inclusions')
-          %a(ng-click='load_inclusion(inclusion.includable_type, inclusion.includable_id)')
-            {{inclusion.includable_title}}
-        %li
-          %a(ng-click="load_inclusion('Upload')")
-            Upload Your Own
-            
-    .row
-      .span12
-        .tab-content(ng-switch on='view_inclusion')
-          - @course.assembly_inclusions.each do |inclusion|
-            - case inclusion.includable_type
-            - when 'Activity'
-              %div(ng-switch-when="Activity_#{inclusion.includable_id}")
-                %div(ng-controller='ActivityController')
-                  %div(ng-init="loadActivity(view_inclusion_id)")
-                    = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
-            - when 'Quiz'
-              %div(ng-switch-when="Quiz_#{inclusion.includable_id}")
-                = render 'activities/quiz_content', course_quiz: inclusion.includable
-          %div(ng-switch-when='Upload')
-            Viewing Upload
+
+  .course-nav
+    %ul.nav.nav-tabs.nav-stacked.section(ng-cloak)
+      %li(ng-repeat='inclusion in course.assembly_inclusions')
+        %a(ng-click='load_inclusion(inclusion.includable_type, inclusion.includable_id)')
+          {{inclusion.includable_title}}
+      %li
+        %a(ng-click="load_inclusion('Upload')")
+          Upload Your Own
+          
+  .row
+    .span12
+      .tab-content(ng-switch on='view_inclusion')
+        - @course.assembly_inclusions.each do |inclusion|
+          - case inclusion.includable_type
+          - when 'Activity'
+            %div(ng-switch-when="Activity_#{inclusion.includable_id}")
+              %div(ng-controller='ActivityController')
+                %div(ng-init="loadActivity(view_inclusion_id)")
+                  = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
+          - when 'Quiz'
+            %div(ng-switch-when="Quiz_#{inclusion.includable_id}")
+              = render 'activities/quiz_content', course_quiz: inclusion.includable
+        %div(ng-switch-when='Upload')
+          Viewing Upload
 
 
   .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
