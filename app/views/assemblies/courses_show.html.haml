@@ -3,42 +3,6 @@
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController"}
 
-<<<<<<< HEAD
-.container.section.relative(ng-cloak id="top")
-  .course-nav
-    %ul.nav.nav-tabs.nav-stacked.section
-      - @course.assembly_inclusions.each_with_index do |inclusion,index|
-        - act_id = @course.assembly_inclusions[index].includable.id
-        - next_act_id = @course.assembly_inclusions[index+1] ? @course.assembly_inclusions[index+1].includable.id : [] 
-        %li(ng-class="{active: #{act_id} == activity.id}")
-          %a(ng-click="startViewActivity(#{act_id}, #{next_act_id});")
-            #{inclusion.includable.title}
-
-  .span12
-    .assembly-content(ng-init="loadActivity(#{@course.assembly_inclusions[0].includable.id})")
-      = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
-=======
-/ .container.section(ng-cloak)
-/   .course-nav
-/     %ul.nav.nav-tabs.nav-stacked.section
-/       - @course.assembly_inclusions.each_with_index do |inclusion,index|
-/         - act_id = @course.assembly_inclusions[index].includable.id
-/         - next_act_id = @course.assembly_inclusions[index+1] ? @course.assembly_inclusions[index+1].includable.id : [] 
-/         %li(ng-class="{active: #{act_id} == activity.id}")
-/           %a(ng-click="startViewActivity(#{act_id}, #{next_act_id});")
-/             #{inclusion.includable.title}
-
-/   .row(ng-cloak)
-/     .span12
-/       .tab-content(ng-init="loadActivity(#{@course.assembly_inclusions[0].includable.id})")
-/         = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
-
-/ -# By not cloaking this, it will be on while the page is first loading before angular takes charge
-/ .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
-/   .activity-loading-spinner
-/     .span12
-/       %i.icon-spinner.icon-spin
-
 .container(ng-controller='CoursesController' ng-init="init(#{@course.id})")
   .course-nav
     %ul.nav.nav-tabs.nav-stacked.section(ng-cloak)
@@ -48,8 +12,7 @@
       %li
         %a(ng-click="load_inclusion('Upload')")
           Upload Your Own
->>>>>>> 2e9ca799cc6061620bd1f2fefed423d27e09608f
-
+          
   .row
     .span12
       .tab-content(ng-switch on='view_inclusion')
@@ -66,14 +29,12 @@
         %div(ng-switch-when='Upload')
           Viewing Upload
 
-<<<<<<< HEAD
-= content_for :footer do
-  = render 'layouts/footer'
 
-=======
   .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
     .activity-loading-spinner
       .span12
         %i.icon-spinner.icon-spin
->>>>>>> 2e9ca799cc6061620bd1f2fefed423d27e09608f
+
+= content_for :footer do
+  = render 'layouts/footer'
              
