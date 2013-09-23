@@ -1,49 +1,37 @@
 @import 'mixins'
 
-.hero-video
-  top: 100px
-  z-index: -1000
-  width: 1170px
-  height: 658px
-
-.main-content-container
-  //margin-top: 658px
-
-.main-content-container, .step-container
-  background-color: white
-
 .course-nav
   position: fixed
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
   top: 80px
   margin-left: 50%
-  left: -800px
+  left: -820px
  
-.step-dots
+#step-dots
   position: fixed
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
   width: 15px
-  top: 720px
+  top: 320px
   margin-left: 50%
-  left: -600px
+  left: -620px
 
-  .step-dot
+  li a
     margin-bottom: 8px
     color: lighten($orange, 15%)
     font-size: 14px
 
-  .step-dot.active
+  li.active a
     color: $orange
    
-  .step-dot.intro
+  li.intro a
     color: $light-gray
 
-  .step-dot.intro.active
+  li.intro.active a
     color: darkgray
 
-  .step-dot.more
+  li.more a
     font-size: 80%
 
 .assembly-activity
