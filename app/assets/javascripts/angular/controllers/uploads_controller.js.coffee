@@ -3,6 +3,7 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
   $scope.upload = {}
   $scope.upload.image_src = {}
   $scope.upload.assembly_id = {}
+  $scope.upload.status = 'new'
 
   $scope.init = (assembly_id) ->
     $scope.upload.assembly_id = assembly_id
@@ -15,11 +16,14 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
       $scope.$apply()
 
   $scope.submit = () ->
-    console.log this.upload
-    $http.post('/uploads', this.upload).success(
-      console.log 'YYAY IT WORKEd'
+    $http({
+      url: '/uploads',
+      method: 'POST',
+      data: this.upload, 
+      headers: {'Content-Type': 'application/json'}
+    }).success((data, status) ->
+      $scope.upload.status = 'show'
     )
-
 
   $scope.photoPreview = (file) ->
     width = 300
