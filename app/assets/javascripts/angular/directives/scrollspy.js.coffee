@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').directive 'scrollSpy', ($window) ->
+angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($window, $timeout) ->
   restrict: 'A'
   controller: ($scope) ->
     $scope.spies = []
@@ -12,18 +12,29 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ($window) ->
   link: (scope, elem, attrs) ->
     scope.spyElems = []
 
-    $($window).scroll ->
+    scope.updateSpies = ->
       highlightSpy = scope.spies[0]
       for spy in scope.spies
-        scope.spyElems[spy.id] = elem.find('#'+spy.id) unless scope.spyElems[spy.id]?
+        scope.spyElems[spy.id] = elem.find('#'+spy.id) unless (scope.spyElems[spy.id]?.length > 0)
         spy.out()
       for spy in scope.spies
-        if (pos = scope.spyElems[spy.id].offset().top) - $window.scrollY <= (attrs.offset || 0)
-          spy.pos = pos
-          if highlightSpy.pos < spy.pos
-            highlightSpy = spy
+        if (scope.spyElems[spy.id]?.length > 0)
+          if (pos = scope.spyElems[spy.id].offset().top) - $window.scrollY <= (attrs.offset || 0)
+            spy.pos = pos
+            if highlightSpy.pos < spy.pos
+              highlightSpy = spy
 
       highlightSpy?.in()
+
+    scope.$watch 'spies', ->
+      $timeout (-> 
+       scope.updateSpies()
+      ), 1000
+
+    $($window).scroll ->
+      scope.updateSpies()
+]
+
 
 angular.module('ChefStepsApp').directive 'spy', ->
   restrict: "A"
