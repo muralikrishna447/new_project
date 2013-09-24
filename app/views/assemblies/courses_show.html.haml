@@ -36,7 +36,7 @@
               = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
 
         %div(ng-switch-when='Upload')
-          Viewing Upload
+          = render 'assembly_upload', assembly: @course
 
 
   .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
