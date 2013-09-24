@@ -3,11 +3,7 @@
     = f.hidden_field :assembly_id, value: assembly.id
     .row-fluid
       .span6
-        / %h4 Upload a Photo
-        / .upload-wrapper
-        /   = image_tag '/assets/missing.png', class: "upload-photo-preview"
-        /   = link_to '+', '#', class: 'upload-photo-btn'
-        /   %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
+        %h4 Upload a Photo
 
         %h2 Title
         %p Name your creation.
@@ -17,5 +13,10 @@
         %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
         %h2 Upload a Photo
         %p Drop a photo on the target below or click the button to show a picture along with your creation.
-        = link_to 'Upload a Photo', 'javascript:void(0);', class: 'upload-photo-btn btn btn-secondary'
+        
+        .upload-wrapper
+          = image_tag '/assets/missing.png', class: "upload-photo-preview"
+          = link_to '+', 'javascript:void(0);', class: 'upload-photo-btn'
+          %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
+          
         = f.submit 'Upload', class: 'btn btn-primary btn-large'
