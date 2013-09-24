@@ -26,14 +26,15 @@
       .tab-content(ng-switch on='view_inclusion')
         - @course.assembly_inclusions.each do |inclusion|
           - case inclusion.includable_type
-          - when 'Activity'
-            %div(ng-switch-when="Activity_#{inclusion.includable_id}")
-              %div(ng-controller='ActivityController')
-                %div(ng-init="loadActivity(view_inclusion_id)")
-                  = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
           - when 'Quiz'
             %div(ng-switch-when="Quiz_#{inclusion.includable_id}")
               = render 'activities/quiz_content', course_quiz: inclusion.includable
+
+        %div(ng-switch-when="Activity")
+          %div(ng-controller='ActivityController')
+            %div
+              = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
+
         %div(ng-switch-when='Upload')
           Viewing Upload
 
