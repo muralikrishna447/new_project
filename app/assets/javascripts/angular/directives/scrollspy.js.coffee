@@ -12,24 +12,14 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ($window) ->
   link: (scope, elem, attrs) ->
     scope.spyElems = []
 
-    scope.$watch 'spies', (spies) ->
-      scope.updateSpies()
-
-    scope.updateSpies = ->
-      return
-      for spy in scope.spies
-        unless scope.spyElems[spy.id]?
-          scope.spyElems[spy.id] = elem.find('#'+spy.id)
-
     $($window).scroll ->
-      highlightSpy = null
+      highlightSpy = scope.spies[0]
       for spy in scope.spies
         scope.spyElems[spy.id] = elem.find('#'+spy.id) unless scope.spyElems[spy.id]?
         spy.out()
       for spy in scope.spies
         if (pos = scope.spyElems[spy.id].offset().top) - $window.scrollY <= (attrs.offset || 0)
           spy.pos = pos
-          highlightSpy ?= spy
           if highlightSpy.pos < spy.pos
             highlightSpy = spy
 
@@ -41,6 +31,7 @@ angular.module('ChefStepsApp').directive 'spy', ->
   link: (scope, elem, attrs, affix) ->
     affix.addSpy
       id: attrs.spy
+
       in: -> 
         elem.addClass('active')
         elem.parent().next().find('a').addClass('active-neighbor')
