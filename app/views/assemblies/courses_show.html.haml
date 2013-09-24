@@ -5,19 +5,24 @@
 
 .container(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak)
 
-  .course-nav
-    .course-nav-hamburger(ng-click="showCourseMenu = ! showCourseMenu")
-      %i.icon-align-justify
-    %ul.nav.nav-tabs.nav-stacked.section(ng-show="showCourseMenu")
-      %li(ng-repeat='inclusion in course.assembly_inclusions')
-        %a(ng-click='load_inclusion(inclusion.includable_type, inclusion.includable_id)')
-          {{inclusion.includable_title}}
-      %li
-        %a(ng-click="load_inclusion('Upload')")
-          Upload Your Own
+  .course-nav-hamburger(ng-click="showCourseMenu = ! showCourseMenu")
+    %i.icon-align-justify
           
   .row
-    .span12
+    .course-nav-slideout
+      %h4.lessons-heading
+        Lessons
+      %ul.section.no-bullet
+        %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='load_inclusion(inclusion.includable_type, inclusion.includable_id)' ng-class="{'active': inclusion.includable_id == view_inclusion_id}")
+          {{inclusion.includable_title}}
+        %li(ng-click="load_inclusion('Upload')")
+          Upload Your Own
+        %li.forum
+          %a(href="http://forum.chefsteps.com/categories/#{@course.slug}-course-questions" target="_blank")
+            %i.icon-large.icon-question-sign
+            Visit The Forum
+
+    .span12.relative.course-content(ng-class="{'menu-showing': showCourseMenu}")
       .tab-content(ng-switch on='view_inclusion')
         - @course.assembly_inclusions.each do |inclusion|
           - case inclusion.includable_type

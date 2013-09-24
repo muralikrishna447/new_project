@@ -5,7 +5,7 @@
     Add first step...
 
 
-%ul#step-dots.nav
+%ul#step-dots.nav(ng-class="{'menu-showing': showCourseMenu}")
   %li.step-dot.intro
     %a(href="activity-description" prevent-default scroll-to="activity-description" spy="activity-description" )
       %i.icon-circle

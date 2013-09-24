@@ -19,4 +19,5 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$scope', '$reso
       $scope.view_inclusion_id = includable_id
     else
       $scope.view_inclusion = includable_type
+    $scope.showCourseMenu = false
 ]
