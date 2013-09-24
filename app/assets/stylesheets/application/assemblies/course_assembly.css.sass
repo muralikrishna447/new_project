@@ -4,35 +4,50 @@
   position: fixed
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
-  top: 80px
+  top: 75px
   margin-left: 50%
-  left: -820px
+  left: -630px
+  font-size: 24px
+  color: $orange
+
  
 #step-dots
   position: fixed
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
   width: 15px
-  top: 320px
+  top: 115px
   margin-left: 50%
-  left: -620px
+  left: -628px
 
   li a
     margin-bottom: 8px
-    color: lighten($orange, 15%)
-    font-size: 14px
+    font-size: 15px
+    display: none
 
   li a.active
     color: $orange
+    display: block
+
+  li a.active-neighbor
+    color: lighten($orange, 25%)
+    display: block
+
+  li a.active-more
+    color: lighten($orange, 25%)
+    margin-left: 3px 
+    font-size: 10px
+    display: block
    
   li.intro a
+    font-size: 15px
+    margin-left: 0px
     color: $light-gray
+    display: block
 
   li.intro a.active
     color: darkgray
-
-  li.more a
-    font-size: 80%
+    display: block
 
 .assembly-activity
   .activity-description

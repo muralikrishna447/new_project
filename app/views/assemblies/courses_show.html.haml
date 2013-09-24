@@ -6,7 +6,9 @@
 .container(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak)
 
   .course-nav
-    %ul.nav.nav-tabs.nav-stacked.section(ng-cloak)
+    .course-nav-hamburger(ng-click="showCourseMenu = ! showCourseMenu")
+      %i.icon-align-justify
+    %ul.nav.nav-tabs.nav-stacked.section(ng-show="showCourseMenu")
       %li(ng-repeat='inclusion in course.assembly_inclusions')
         %a(ng-click='load_inclusion(inclusion.includable_type, inclusion.includable_id)')
           {{inclusion.includable_title}}
