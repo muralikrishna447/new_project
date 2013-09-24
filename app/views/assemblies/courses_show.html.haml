@@ -35,7 +35,7 @@
             %div(ng-switch-when="Quiz_#{inclusion.includable_id}")
               = render 'activities/quiz_content', course_quiz: inclusion.includable
         %div(ng-switch-when='Upload')
-          Viewing Upload
+          = render 'assembly_upload', assembly: @course
 
 
   .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
