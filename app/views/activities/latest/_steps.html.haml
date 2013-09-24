@@ -11,10 +11,10 @@
       %i.icon-circle
 
   %li.step-dot(ng-repeat="step in numberedSteps()")
-    %a(href="{{'numbered-step-' + ($index + 1)}}" prevent-default scroll-to="{{'numbered-step-' + ($index + 1)}}" spy="{{'numbered-step-' + ($index + 1)}}")
+    %a(href="{{'numbered-step-' + step.id}}" prevent-default scroll-to="{{'numbered-step-' + step.id}}" spy="{{'numbered-step-' + step.id}}")
       %i.icon-circle
 
 .ordered-steps-new(ng-show="activity.steps.length > 0"){:itemprop => "recipeInstructions"}
-  .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'numbered-step-' + stepNumber($index)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()")
+  .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()")
     = render 'activities/latest/step'
 

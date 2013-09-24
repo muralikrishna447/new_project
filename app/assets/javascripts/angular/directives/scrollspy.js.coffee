@@ -7,8 +7,7 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
     # This is created in the second directive
     @addSpy = (spyObj) ->
       $scope.spies.push spyObj
-      console.log $scope.spies
-
+ 
   link: (scope, elem, attrs) ->
     scope.spyElems = []
 
@@ -18,7 +17,7 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
         scope.spyElems[spy.id] = elem.find('#'+spy.id) unless (scope.spyElems[spy.id]?.length > 0)
         spy.out()
       for spy in scope.spies
-        if (scope.spyElems[spy.id]?.length > 0)
+        if (scope.spyElems[spy.id]?.length > 0) && (scope.spyElems[spy.id].closest('html'))
           if (pos = scope.spyElems[spy.id].offset().top) - $window.scrollY <= (attrs.offset || 0)
             spy.pos = pos
             if highlightSpy.pos < spy.pos
