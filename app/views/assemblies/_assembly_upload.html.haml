@@ -20,12 +20,11 @@
           
 /         = f.submit 'Upload', class: 'btn btn-primary btn-large'
 
-.flat-form(ng-controller='UploadsController' )
+.flat-form(ng-controller='UploadsController' ng-init="init(#{assembly.id})" )
   %form(ng-submit='submit()')
     %h2 Upload a Photo
 
     %h3 Title
-    {{upload.title}}
     %p Name your creation
     %input.input-block-level(type='text' ng-model='upload.title' required=true)
 
