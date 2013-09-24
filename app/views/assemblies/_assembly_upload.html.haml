@@ -2,15 +2,17 @@
   = form_for @upload do |f|
     = f.hidden_field :assembly_id, value: assembly.id
     .row-fluid
-      .span4
-        %h4 Upload a Photo
-        .upload-wrapper
-          = image_tag '/assets/missing.png', class: "upload-photo-preview"
-          = link_to '+', '#', class: 'upload-photo-btn'
-          %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
-      .span8
-        %h4 Title
+      .span12
+        / %h4 Upload a Photo
+        / .upload-wrapper
+        /   = image_tag '/assets/missing.png', class: "upload-photo-preview"
+        /   = link_to '+', '#', class: 'upload-photo-btn'
+        /   %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
+
+        %h2 Title
+        %p Name your creation.
         %p= f.text_field :title, class: 'input-block-level', required: true
-        %h4 Notes
+        %h2 Story
+        %p Tell us a story about your success, failures, variations and creations.  What worked and what didn't work?  What did you change to suit your palate or your dietary restrictions?
         %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
         = f.submit 'Upload', class: 'btn btn-primary btn-large'
