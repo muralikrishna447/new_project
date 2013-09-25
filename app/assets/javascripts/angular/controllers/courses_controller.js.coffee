@@ -1,7 +1,7 @@
 angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', 'cs_event', ($rootScope, $scope, $resource, $http, cs_event) ->
   
   $scope.view_inclusion = {}
-
+ 
   $scope.init = (course_id) ->
     $http.get('/courses/' + course_id + '/show_as_json').success (data, status) ->
       $scope.course = data

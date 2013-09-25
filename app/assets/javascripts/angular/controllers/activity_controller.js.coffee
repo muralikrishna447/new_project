@@ -26,7 +26,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowRestoreAutosaveModal = false
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
-  $scope.loading = false
   $scope.activities = {}
 
 
@@ -412,20 +411,21 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.loadActivity = (id) ->
     return if id == $scope.activity?.id
- 
-    $scope.loading = true
+
+    $rootScope.loading = true
     if $scope.activities[id]
       # Even if we have it cached, use a slight delay and dissolve to
       # make it feel smooth and let youtube load
       $scope.makeActivityActive(id)
       $timeout (->
-        $scope.loading = false
+        $rootScope.loading = false
       ), 500
     else
       $scope.fetchActivity(id, -> 
         $scope.makeActivityActive(id)
-        $scope.loading = false
+        $rootScope.loading = false
       )
+
   $scope.$on 'loadActivityEvent', (event, activity_id) ->
     $scope.loadActivity(activity_id)
 
