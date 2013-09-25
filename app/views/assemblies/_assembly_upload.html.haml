@@ -23,14 +23,17 @@
             Change Photo
       %p
         %input.btn.btn-primary(type='submit')
+        = link_to 'your profile.', user_profile_path(current_user)
     .modal#upload-modal
       .modal-header
         %h4= "Congratulations, you've completed the #{@course.title} Course!"
       .modal-body
-        body
+        %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
+        = link_to 'your profile.', user_profile_path(current_user)
       .modal-footer
         .btn.btn-primary.btn-large{data: {dismiss: 'modal', target: '#upload-modal'}}
           Done
+        = link_to 'your profile.', user_profile_path(current_user)
   %div(ng-show="upload.status == 'show'")
     %h2 Upload Successful!
     %h3
