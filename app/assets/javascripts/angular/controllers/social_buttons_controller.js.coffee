@@ -93,4 +93,9 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
 
 
   $scope.getSocialCounts()
+
+  $scope.$on 'socialURLUpdated', (event, url) ->
+    console.log url
+    $scope.socialURL = () ->
+      url
 ]

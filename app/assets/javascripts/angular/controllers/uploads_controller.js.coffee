@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$resource", "$http", ($scope, $resource, $http) ->
+angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$resource", "$http", "$rootScope", ($scope, $resource, $http, $rootScope) ->
 
   $scope.upload = {}
   $scope.upload.image_src = {}
@@ -17,14 +17,13 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
 
   $scope.submit = () ->
     $http({
-      url: '/uploads',
+      url: '/uploads.js',
       method: 'POST',
-      data: this.upload, 
-      headers: {'Content-Type': 'application/json'}
+      data: this.upload
     }).success((data, status) ->
       $scope.upload.status = 'show'
       console.log data
-      console.log 'wtf'
+      $rootScope.$broadcast('socialURLUpdated', 'http://www.chefsteps.com' + data.path)
     )
 
   $scope.photoPreview = (file) ->
@@ -32,4 +31,5 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
     url = JSON.parse(file).url
     src = [url , "/convert?fit=max&w=", width, "&h=", Math.floor(width * 16.0 / 9.0)].join("")
     $scope.upload.image_src = src
+  
 ]
