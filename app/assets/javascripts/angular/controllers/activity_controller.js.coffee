@@ -412,7 +412,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.loadActivity = (id) ->
     return if id == $scope.activity?.id
-
+ 
     $scope.loading = true
     if $scope.activities[id]
       # Even if we have it cached, use a slight delay and dissolve to
@@ -426,8 +426,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
         $scope.makeActivityActive(id)
         $scope.loading = false
       )
-  $scope.$on 'loadActivityEvent', (id) ->
-    $scope.loadActivity(id)
+  $scope.$on 'loadActivityEvent', (event, activity_id) ->
+    $scope.loadActivity(activity_id)
 
   $scope.startViewActivity = (id, prefetch_id) ->
     $scope.loadActivity(id)

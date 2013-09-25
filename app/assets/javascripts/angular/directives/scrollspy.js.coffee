@@ -7,6 +7,9 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
     # This is created in the second directive
     @addSpy = (spyObj) ->
       $scope.spies.push spyObj
+
+    $scope.$on 'loadActivityEvent',  ->
+      $scope.spyElems = []
  
   link: (scope, elem, attrs) ->
     scope.spyElems = []

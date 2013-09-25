@@ -9,11 +9,11 @@
     %i.icon-align-justify
           
   .row
-    .course-nav-slideout
+    .course-nav-slideout(ng-show="showCourseMenu")
       %h4.lessons-heading
         Lessons
       %ul.section.no-bullet
-        %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='load_inclusion(inclusion.includable_type, inclusion.includable_id)' ng-class="{'active': inclusion.includable_id == view_inclusion_id}")
+        %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='load_inclusion(inclusion.includable_type, inclusion.includable_id)' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}")
           {{inclusion.includable_title}}
         %li(ng-click="load_inclusion('Upload')")
           Upload Your Own
