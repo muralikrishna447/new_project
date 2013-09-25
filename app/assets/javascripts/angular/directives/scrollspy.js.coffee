@@ -10,17 +10,20 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
 
     $scope.$on 'loadActivityEvent',  ->
       $scope.spyElems = []
+      $scope.spies = []
  
   link: (scope, elem, attrs) ->
     scope.spyElems = []
 
     scope.updateSpies = ->
       highlightSpy = scope.spies[0]
+      console.log '-------------------------------------------------------- ScrollY: ' + $window.scrollY
       for spy in scope.spies
         scope.spyElems[spy.id] = elem.find('#'+spy.id) unless (scope.spyElems[spy.id]?.length > 0)
         spy.out()
       for spy in scope.spies
         if (scope.spyElems[spy.id]?.length > 0) && (scope.spyElems[spy.id].closest('html'))
+          console.log "ID: " + spy.id + " TOP: " + scope.spyElems[spy.id].offset().top
           if (pos = scope.spyElems[spy.id].offset().top) - $window.scrollY <= (attrs.offset || 0)
             spy.pos = pos
             if highlightSpy.pos < spy.pos
