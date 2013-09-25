@@ -15,5 +15,5 @@
       Done
     %button.btn.btn-small.btn-secondary.add-item(ng-click="addIngredient($index)" ng-show="!masterSelect" tooltip="Add ingredient..." tooltip-placement="bottom")
       %i.icon-plus
-    %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients" tooltip-placement="bottom")
+    %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs && (! masterSelect)" tooltip="Finish adding ingredients" tooltip-placement="bottom")
       Done
