@@ -70,11 +70,13 @@ angular.module('ChefStepsApp').directive 'spy', ->
         elem.parent().next().next().find('a').addClass('active-neighbor')
         elem.parent().next().next().next().find('a').addClass('active-more')
         elem.parent().prev().find('a').addClass('active-more')
+        elem.removeClass('basic')
 
       out: -> 
         elem.removeClass 'active'
         elem.removeClass 'active-neighbor'
         elem.removeClass 'active-more'
+        elem.addClass 'basic'
 
 angular.module('ChefStepsApp').directive "preventDefault", ->
   (scope, element, attrs) ->
@@ -92,7 +94,7 @@ angular.module('ChefStepsApp').directive "scrollTo", ["$window", ($window) ->
       el = document.getElementById(elementId)
       #el.scrollIntoView() if el
       $("html, body").animate
-        scrollTop: $(el).offset().top - 80
+        scrollTop: $(el).offset().top - 238
       , 500
     (scope, element, attr) ->
       element.bind "click", (event) ->

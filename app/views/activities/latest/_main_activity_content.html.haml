@@ -1,10 +1,9 @@
-.row.relative
-  .section.span12.ng-cloak.assembly-activity#video-ingredient-unit
-    .hero-video(ng-show="heroDisplayType() == 'video'")
-      = render 'activities/hero_visual', activity: activity
-      
-.spier(scroll-spy offset="100")
-
+.spier(scroll-spy offset="240")
+  .row.relative
+    .section.span12.ng-cloak.assembly-activity#video-ingredient-unit
+      .hero-video(ng-show="heroDisplayType() == 'video'")
+        = render 'activities/hero_visual', activity: activity
+        
   .row.main-content-container
     .span6
       = render 'activities/latest/description'
