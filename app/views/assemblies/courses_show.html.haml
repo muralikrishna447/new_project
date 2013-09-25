@@ -1,7 +1,7 @@
 = render 'layouts/filepicker'
 - content_for :title, "#{@course.title.html_safe} - Course"
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController"}
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
 .container(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak)
 
@@ -31,7 +31,7 @@
               = render 'activities/quiz_content', course_quiz: inclusion.includable
 
         %div(ng-switch-when="Activity")
-          %div(ng-controller='ActivityController')
+          %div(ng-controller='ActivityController' ng-init="load_inclusion(course.assembly_inclusions[0].includable_type, course.assembly_inclusions[0].includable_id)")
             %div
               = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
 

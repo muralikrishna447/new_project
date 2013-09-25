@@ -6,25 +6,37 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
     # and a function to call when it's out of sight.
     # This is created in the second directive
     @addSpy = (spyObj) ->
+      #console.log "Add spy " + spyObj.spyScopeID + " spying on: " + spyObj.id 
       $scope.spies.push spyObj
 
+    @removeSpy = (spyScopeID) ->
+      spyObj = _.find($scope.spies, (spyObj) -> spyObj.spyScopeID == spyScopeID)
+      #console.log "Remove spy " + spyObj.spyScopeID + " spying on: " + spyObj.id 
+
+      $scope.spies = _.filter($scope.spies, (spy) -> spy["spyScopeID"] != spyScopeID)
+      #console.log "Spy count " + $scope.spies.length
+
     $scope.$on 'loadActivityEvent',  ->
+      # Clear cache
       $scope.spyElems = []
-      $scope.spies = []
  
   link: (scope, elem, attrs) ->
     scope.spyElems = []
 
     scope.updateSpies = ->
+      spy.out() for spy in scope.spies
       highlightSpy = scope.spies[0]
-      console.log '-------------------------------------------------------- ScrollY: ' + $window.scrollY
+      offset = parseInt(attrs.offset || "0")
+
       for spy in scope.spies
+        # Find the targets and put them in the cache
         scope.spyElems[spy.id] = elem.find('#'+spy.id) unless (scope.spyElems[spy.id]?.length > 0)
-        spy.out()
+
       for spy in scope.spies
+        # Ignore any spies whose target isn't currently in the DOM - but it might come back
         if (scope.spyElems[spy.id]?.length > 0) && (scope.spyElems[spy.id].closest('html'))
-          console.log "ID: " + spy.id + " TOP: " + scope.spyElems[spy.id].offset().top
-          if (pos = scope.spyElems[spy.id].offset().top) - $window.scrollY <= (attrs.offset || 0)
+          #console.log "Spy " + spy.id + " Delta " + (scope.spyElems[spy.id].offset().top - ($window.scrollY + offset))
+          if (pos = scope.spyElems[spy.id].offset().top) - $window.scrollY <= offset
             spy.pos = pos
             if highlightSpy.pos < spy.pos
               highlightSpy = spy
@@ -45,7 +57,11 @@ angular.module('ChefStepsApp').directive 'spy', ->
   restrict: "A"
   require: "^scrollSpy"
   link: (scope, elem, attrs, affix) ->
+    scope.$on "$destroy", ->
+      affix.removeSpy(scope.$id)
+
     affix.addSpy
+      spyScopeID: scope.$id
       id: attrs.spy
 
       in: -> 

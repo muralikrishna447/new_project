@@ -6,8 +6,8 @@
 
 
 %ul#step-dots.nav(ng-class="{'menu-showing': showCourseMenu}")
-  %li.step-dot.intro
-    %a(href="activity-description" prevent-default scroll-to="activity-description" spy="activity-description" )
+  %li.step-dot.intro(ng-switch="!! activity.description")
+    %a(ng-switch-when="true" href="activity-description" prevent-default scroll-to="activity-description" spy="activity-description" )
       %i.icon-circle
 
   %li.step-dot(ng-repeat="step in numberedSteps()")

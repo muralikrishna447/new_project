@@ -10,7 +10,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $scope.load_inclusion($scope.course.assembly_inclusions[0].includable_type, $scope.course.assembly_inclusions[0].includable_id)
 
   $scope.load_inclusion = (includable_type, includable_id) ->
-    # console.log "switching to " + includable_type + 'with id ' + includable_id
+    console.log "switching to " + includable_type + 'with id ' + includable_id
     # $scope.view_inclusion.type = includable_type
     # $scope.view_inclusion.id = includable_id
     if includable_type == "Quiz"
