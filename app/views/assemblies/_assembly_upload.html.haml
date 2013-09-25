@@ -38,6 +38,7 @@
       {{upload.notes}}
     %img(ng-src="{{upload.image_src}}")
 
+  %div(ng-show='shareModalShow')
     .modal#upload-modal
       .modal-body
         %h4= "Congratulations, you've completed the #{@course.title} Course!"
@@ -47,5 +48,5 @@
           = render 'layouts/share_button', split_name: split_name
         %p= "Would you like to share your recipe of this on ChefSteps? #{link_to 'Start Here', new_activity_path}".html_safe
       .modal-footer
-        .btn.btn-primary.btn-large{data: {dismiss: 'modal', target: '#upload-modal'}}
+        .btn.btn-primary.btn-large(ng-click='hideShareModal()')
           Done

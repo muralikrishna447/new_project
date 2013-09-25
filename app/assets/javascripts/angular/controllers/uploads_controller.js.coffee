@@ -22,6 +22,7 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
       data: this.upload
     }).success((data, status) ->
       $scope.upload.status = 'show'
+      $scope.shareModalShow = 'true'
       console.log data
       $rootScope.$broadcast('socialURLUpdated', 'http://www.chefsteps.com' + data.path)
     )
@@ -31,5 +32,8 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
     url = JSON.parse(file).url
     src = [url , "/convert?fit=max&w=", width, "&h=", Math.floor(width * 16.0 / 9.0)].join("")
     $scope.upload.image_src = src
+
+  $scope.hideShareModal = () ->
+    $scope.shareModalShow = false
   
 ]
