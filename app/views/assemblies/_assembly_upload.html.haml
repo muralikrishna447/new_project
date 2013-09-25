@@ -21,7 +21,7 @@
 /         = f.submit 'Upload', class: 'btn btn-primary btn-large'
 
 .flat-form(ng-controller='UploadsController' ng-init="init(#{assembly.id})" )
-  %div(ng-show="upload.status == 'new'")
+  .span6(ng-show="upload.status == 'new'")
     %form(ng-submit='submit()')
       %h2 Upload a Photo
 
@@ -45,6 +45,14 @@
             Change Photo
       %p
         %input.btn.btn-primary(type='submit')
+    .modal#upload-modal
+      .modal-header
+        %h4= "Congratulations, you've completed the #{@course.title} Course!"
+      .modal-body
+        body
+      .modal-footer
+        .btn.btn-primary.btn-large{data: {dismiss: 'modal', target: '#upload-modal'}}
+          Done
   %div(ng-show="upload.status == 'show'")
     %h2 Upload Successful!
     %h3
