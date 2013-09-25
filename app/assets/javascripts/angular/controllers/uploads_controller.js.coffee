@@ -23,6 +23,8 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
       headers: {'Content-Type': 'application/json'}
     }).success((data, status) ->
       $scope.upload.status = 'show'
+      console.log data
+      console.log 'wtf'
     )
 
   $scope.photoPreview = (file) ->

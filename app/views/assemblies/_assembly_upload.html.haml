@@ -14,26 +14,17 @@
       %h3 Add a photo
       %p Click the button below to show a picture along with your creation.
       %p
-        %img(ng-src="{{upload.image_src}}" ng-show='upload.image_src.length > 0')
+        %div(ng-show='upload.image_src.length > 0')
+          %img(ng-src="{{upload.image_src}}")
         %input(type='hidden' ng-model='upload.image_id')
         .btn.btn-secondary(ng-click='addPhoto()')
-          %span(ng-show="typeof(upload.image_id) == 'undefined'")
+          %span(ng-hide="upload.image_id")
             Upload Photo
-          %span(ng-show="typeof(upload.image_id) != 'undefined'")
+          %span(ng-show="upload.image_id")
             Change Photo
       %p
         %input.btn.btn-primary(type='submit')
-        = link_to 'your profile.', user_profile_path(current_user)
-    .modal#upload-modal
-      .modal-header
-        %h4= "Congratulations, you've completed the #{@course.title} Course!"
-      .modal-body
-        %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
-        = link_to 'your profile.', user_profile_path(current_user)
-      .modal-footer
-        .btn.btn-primary.btn-large{data: {dismiss: 'modal', target: '#upload-modal'}}
-          Done
-        = link_to 'your profile.', user_profile_path(current_user)
+
   %div(ng-show="upload.status == 'show'")
     %h2 Upload Successful!
     %h3
@@ -41,3 +32,15 @@
     %p
       {{upload.notes}}
     %img(ng-src="{{upload.image_src}}")
+
+    .modal#upload-modal
+      .modal-body
+        %h4= "Congratulations, you've completed the #{@course.title} Course!"
+        %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
+        %h4 Share this on:
+        - ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
+          = render 'layouts/share_button', split_name: split_name
+        %p= "Would you like to share your recipe of this on ChefSteps? #{link_to 'Start Here', new_activity_path}".html_safe
+      .modal-footer
+        .btn.btn-primary.btn-large{data: {dismiss: 'modal', target: '#upload-modal'}}
+          Done
