@@ -7,9 +7,10 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.ingredient_display_type = (ai) ->
     result = "basic"
-    result = "product" if !! ai.ingredient.product_url
-    result = "subrecipe" if !! ai.ingredient.sub_activity_id
-    result = "fake_link" if $scope.editMode && (result == "product" || result == "subrecipe")
+    if ai?.ingredient?
+      result = "product" if !! ai.ingredient.product_url
+      result = "subrecipe" if !! ai.ingredient.sub_activity_id
+      result = "fake_link" if $scope.editMode && (result == "product" || result == "subrecipe")
     result
 
   $scope.unitMultiplier = (unit_name) ->
@@ -20,7 +21,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
   $scope.addIngredient =  ->
     # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
     # but an ugly [object Object]
-    item = {unit: "g"}
+    item = {unit: "g", quantity: "0"}
     $scope.getIngredientsList().push(item)
     #$scope.addUndo()
 

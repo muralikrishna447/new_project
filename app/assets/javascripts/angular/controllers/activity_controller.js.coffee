@@ -351,15 +351,19 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
   # autocomplete (unshift in all_equipment), it will be missing a nesting level in the model.
   $scope.normalizeModel = () ->
+    $scope.activity.equipment = _.compact($scope.activity.equipment)
     angular.forEach $scope.activity.equipment, (item) ->
       if _.isString(item["equipment"])
         item["equipment"] = {title: item["equipment"]}
 
+    $scope.activity.ingredients = _.compact($scope.activity.ingredients)
     angular.forEach $scope.activity.ingredients, (item) ->
       if _.isString(item["ingredient"])
         item["ingredient"] = {title: item["ingredient"]}
 
+    $scope.activity.steps = _.compact($scope.activity.steps)
     angular.forEach $scope.activity.steps, (step) ->
+      step.ingredients = _.compact(step.ingredients)
       angular.forEach step.ingredients, (item) ->
         if _.isString(item["ingredient"])
           item["ingredient"] = {title: item["ingredient"]}
