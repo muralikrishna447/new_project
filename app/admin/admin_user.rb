@@ -19,4 +19,5 @@ ActiveAdmin.register AdminUser do
     end
     f.buttons
   end
+  
 end
