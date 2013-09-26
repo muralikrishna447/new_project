@@ -23,11 +23,11 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
       method: 'POST',
       data: this.upload
     }).success((data, status) ->
-      $scope.upload.status = 'show'
-      $scope.shareModalShow = true
       $scope.upload.path = data.path
       console.log data
       $rootScope.$broadcast('socialURLUpdated', 'http://www.chefsteps.com' + data.path)
+      $scope.upload.status = 'show'
+      $scope.shareModalShow = true
     )
 
   $scope.photoPreview = (file) ->
@@ -38,5 +38,8 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
 
   $scope.hideShareModal = () ->
     $scope.shareModalShow = false
+
+  $scope.socialURL = ->
+    'http://www.chefsteps.com' + $scope.upload.path
   
 ]
