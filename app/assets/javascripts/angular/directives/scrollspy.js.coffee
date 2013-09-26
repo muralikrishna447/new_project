@@ -1,3 +1,7 @@
+# NOTE WELL THIS ISN'T A FULLY GENERIC SCROLLSPY READY FOR REUSE
+# It has been hacked upa bit to work in our specific use case for step dots - could easily be made
+# generic though.
+
 angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($window, $timeout) ->
   restrict: 'A'
   controller: ($scope) ->

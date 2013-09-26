@@ -14,8 +14,16 @@
         Lessons
       %ul.section.no-bullet
         %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='load_inclusion(inclusion.includable_type, inclusion.includable_id)' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}")
-          %a
-            {{inclusion.includable_title}}
+          %div(ng-switch="inclusion.includable_type")
+            %a(ng-switch-default)
+              {{inclusion.includable_title}}
+            %div.nested(ng-switch-when="Assembly")
+              {{inclusion.includable_title}}
+              %ul.no-bullet
+                %li(ng-repeat='sub_inclusion in inclusion.includable.assembly_inclusions' ng-click='load_inclusion(sub_inclusion.includable_type, sub_inclusion.includable_id)' ng-class="{'active': (sub_inclusion.includable_type == view_inclusion) && (sub_inclusion.includable_id == view_inclusion_id)}")
+                  %a
+                    {{sub_inclusion.includable_title}}
+         
         %li(ng-click="load_inclusion('Upload')")
           %a
             Upload Your Own
