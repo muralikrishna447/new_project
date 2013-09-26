@@ -43,7 +43,8 @@
     .modal
       .modal-body
         %h4= "Congratulations, you've completed the #{@course.title} Course!"
-        %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
+        - if current_user
+          %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
         %h4 Share this on:
         - ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
           = render 'layouts/share_button', split_name: split_name
