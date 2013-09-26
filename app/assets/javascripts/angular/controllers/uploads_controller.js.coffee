@@ -4,6 +4,7 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
   $scope.upload.image_src = {}
   $scope.upload.assembly_id = {}
   $scope.upload.status = 'new'
+  $scope.upload.path = {}
 
   $scope.init = (assembly_id) ->
     $scope.upload.assembly_id = assembly_id
@@ -23,6 +24,7 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
     }).success((data, status) ->
       $scope.upload.status = 'show'
       $scope.shareModalShow = 'true'
+      $scope.upload.path = data.path
       console.log data
       $rootScope.$broadcast('socialURLUpdated', 'http://www.chefsteps.com' + data.path)
     )

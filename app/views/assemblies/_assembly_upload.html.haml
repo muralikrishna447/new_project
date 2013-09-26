@@ -50,5 +50,5 @@
           = render 'layouts/share_button', split_name: split_name
         %p= "Would you like to share your recipe of this on ChefSteps? #{link_to 'Start Here', new_activity_path}".html_safe
       .modal-footer
-        .btn.btn-primary.btn-large(ng-click='hideShareModal()')
+        %a.btn.btn-primary.btn-large(ng-href='{{upload.path}}')
           Done
