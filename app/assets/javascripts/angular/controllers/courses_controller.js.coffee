@@ -16,6 +16,8 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     if includable_type == "Quiz"
       $scope.view_inclusion = [includable_type, includable_id].join('_')
       $scope.view_inclusion_id = includable_id
+    else if includable_type == 'Upload'
+      $scope.view_inclusion = 'Upload'
     else
       $scope.view_inclusion = includable_type
       $scope.view_inclusion_id = includable_id

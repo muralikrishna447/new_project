@@ -8,6 +8,7 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
 
   $scope.init = (assembly_id) ->
     $scope.upload.assembly_id = assembly_id
+    $scope.shareModalShow = false
 
   $scope.addPhoto = (upload) ->
     filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3", path: '/users_uploads/'}, (fpfiles) =>
@@ -23,7 +24,7 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
       data: this.upload
     }).success((data, status) ->
       $scope.upload.status = 'show'
-      $scope.shareModalShow = 'true'
+      $scope.shareModalShow = true
       $scope.upload.path = data.path
       console.log data
       $rootScope.$broadcast('socialURLUpdated', 'http://www.chefsteps.com' + data.path)
