@@ -6,7 +6,7 @@ feature 'uploads' do
     @assembly = Fabricate :assembly, title: 'Test Course', description: 'Test course description', published: true, assembly_type: 'Course'
   end
 
-  context 'courses' do
+  context 'courses', pending: true do
     describe 'upload page' do
       it 'displays a form' do
         login_user

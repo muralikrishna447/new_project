@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ChargesController, "#create", focus: true do
+describe ChargesController, "#create" do
 
   context 'user is authenticated' do
     let(:user) { Fabricate(:user, id: 29) }
