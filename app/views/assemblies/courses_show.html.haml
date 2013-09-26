@@ -14,9 +14,11 @@
         Lessons
       %ul.section.no-bullet
         %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='load_inclusion(inclusion.includable_type, inclusion.includable_id)' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}")
-          {{inclusion.includable_title}}
+          %a
+            {{inclusion.includable_title}}
         %li(ng-click="load_inclusion('Upload')")
-          Upload Your Own
+          %a
+            Upload Your Own
         %li.forum
           %a(href="http://forum.chefsteps.com/categories/#{@course.slug}-course-questions" target="_blank")
             %i.icon-large.icon-question-sign
