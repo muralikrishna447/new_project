@@ -1,6 +1,7 @@
 angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', 'cs_event', ($rootScope, $scope, $resource, $http, cs_event) ->
   
   $scope.view_inclusion = {}
+  $scope.collapsed = {}
  
   $scope.init = (course_id) ->
     $http.get('/courses/' + course_id + '/show_as_json').success (data, status) ->
@@ -27,4 +28,12 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     $scope.showCourseMenu = false
     # So sue me
     window.scrollTo(0, 0)
+
+  $scope.toggleCollapse = (includable_id) ->
+    $scope.collapsed[includable_id] ?= false
+    $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id] 
+
+  $scope.isCollapsed = (includable_id) ->
+    $scope.collapsed[includable_id]
+
 ]

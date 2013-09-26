@@ -18,8 +18,10 @@
             %a(ng-switch-default)
               {{inclusion.includable_title}}
             %div.nested(ng-switch-when="Assembly")
-              {{inclusion.includable_title}}
-              %ul.no-bullet
+              .hit-box(ng-click="toggleCollapse(inclusion.includable_id)")
+                %a
+                  {{inclusion.includable_title}}&hellip;
+              %ul.no-bullet(ddng-hide="isCollapsed(inclusion.includable_id)" ng-class="{'collapsed' : isCollapsed(inclusion.includable_id)}")
                 %li(ng-repeat='sub_inclusion in inclusion.includable.assembly_inclusions' ng-click='load_inclusion(sub_inclusion.includable_type, sub_inclusion.includable_id)' ng-class="{'active': (sub_inclusion.includable_type == view_inclusion) && (sub_inclusion.includable_id == view_inclusion_id)}")
                   %a
                     {{sub_inclusion.includable_title}}
