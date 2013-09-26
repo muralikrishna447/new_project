@@ -12,6 +12,7 @@ class Assembly < ActiveRecord::Base
 
   has_many :uploads
   has_many :enrollments, as: :enrollable
+  belongs_to :badge, class_name: 'Merit::Badge'
 
   scope :published, where(published: true)
   scope :projects, where(assembly_type: 'Project')
