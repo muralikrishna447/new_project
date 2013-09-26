@@ -48,6 +48,9 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
   $scope.hasAV = -> 
     (!! $scope.step.youtube_id) || (!! $scope.step.image_id)
 
+  $scope.hasIngredients = ->
+    $scope.step.ingredients?.length    
+
   $scope.ingredientSpanClass = ->
     return "span5" if $scope.hasAV()
     "span7"
@@ -55,5 +58,10 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
   $scope.directionsSpanClass = ->
     return "span12" if $scope.step.directions?.length > 700
     "span7"
+
+  $scope.dividerSpanClass = ->
+    return "span12" if ($scope.hasAV()) && ($scope.hasIngredients())
+    return "span7" if ($scope.hasAV()) || ($scope.hasIngredients())
+    return "hidden"
 
 ]

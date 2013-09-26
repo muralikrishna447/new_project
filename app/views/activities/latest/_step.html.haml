@@ -20,10 +20,13 @@
     -# Image only if there is no video
     .step-image-outer(ng-show="(! step.youtube_id) && (!! step.image_id)")
       .new-step-image(id="{{'step-image-' + $index}}")
-        %img(ng-src="{{stepImageURL(step, 600)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+        %img(ng-src="{{stepImageURL(step, 670)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
 
   %div(ng-class="ingredientSpanClass()")
     =render 'activities/step_ingredients'
+
+.row
+  .divider(ng-class="dividerSpanClass()")
 
 .row
   .span(ng-class="directionsSpanClass()")
