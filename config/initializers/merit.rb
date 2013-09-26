@@ -36,3 +36,10 @@ Merit::Badge.create!({
   description: 'Complete the Spherification Course',
   image: 'https://www.filepicker.io/api/file/RlxkQDKT5OwktQ8YEaIg?cache=true'
 })
+
+Merit::Badge.create!({
+  id: 3,
+  name: 'macaron',
+  description: 'Complete the Macaron Course',
+  image: 'https://www.filepicker.io/api/file/jXbARI0RQJaAJwcH9hQH?cache=true'
+})
