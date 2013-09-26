@@ -10,8 +10,6 @@
     %textarea.step-title-input(ng-model="step.title" rows="5" placeholder="Optional title...")
 
 .row
-
-
   .span6(ng-show='(!! step.youtube_id) || (!! step.image_id) || (step.ingredients.length > 0)')
     .step-optional-stuff
       =render 'activities/step_ingredients'
@@ -25,6 +23,7 @@
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(ng-src="{{stepImageURL(step, 600)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
 
+.row
   .span6
     .step-content
       %csEditPair
