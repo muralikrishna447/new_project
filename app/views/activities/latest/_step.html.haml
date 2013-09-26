@@ -9,22 +9,24 @@
   %csEditPairEdit
     %textarea.step-title-input(ng-model="step.title" rows="5" placeholder="Optional title...")
 
+.row.step-first-row(ng-show='(!! step.youtube_id) || (!! step.image_id) || (step.ingredients.length > 0)')
+ 
+  .span7(ng-show='hasAV()')
+    .step-video-outer(ng-show="!! step.youtube_id")
+      .new-step-video(id="{{'step-video-' + $index}}")
+        .video-container(csenforceaspect)
+          %iframe(ng-src="{{'http://www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+
+    -# Image only if there is no video
+    .step-image-outer(ng-show="(! step.youtube_id) && (!! step.image_id)")
+      .new-step-image(id="{{'step-image-' + $index}}")
+        %img(ng-src="{{stepImageURL(step, 600)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+
+  %div(ng-class="ingredientSpanClass()")
+    =render 'activities/step_ingredients'
+
 .row
-  .span6(ng-show='(!! step.youtube_id) || (!! step.image_id) || (step.ingredients.length > 0)')
-    .step-optional-stuff
-      =render 'activities/step_ingredients'
-
-      .step-video-outer(ng-show="!! step.youtube_id")
-        .new-step-video(id="{{'step-video-' + $index}}")
-          .video-container(csenforceaspect)
-            %iframe(ng-src="{{'http://www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
-
-      .step-image-outer(ng-show="!! step.image_id")
-        .new-step-image(id="{{'step-image-' + $index}}")
-          %img(ng-src="{{stepImageURL(step, 600)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
-
-.row
-  .span6
+  .span(ng-class="directionsSpanClass()")
     .step-content
       %csEditPair
         %csEditPairShow

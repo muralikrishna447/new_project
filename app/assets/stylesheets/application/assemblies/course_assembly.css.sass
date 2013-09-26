@@ -141,10 +141,6 @@
         font-size: 50px
         line-height: 50px
         padding-bottom: 10px
-      .step-optional-stuff
-        > div
-          margin-bottom: 20px
-          width: 100%
       .step-content
         h4
           margin-top: 0px
@@ -167,5 +163,11 @@
         display: none
       .step-video
         display: none
-
+        padding-bottom: 10px
+      .step-first-row 
+        margin-bottom: 0px
+      .span12
+        .step-content
+          @include columncount(2)
+          @include columngap(40)
 
