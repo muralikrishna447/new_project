@@ -1,50 +1,35 @@
-/ .flat-form
-/   = form_for @upload do |f|
-/     = f.hidden_field :assembly_id, value: assembly.id
-/     .row-fluid
-/       .span6
-/         %h4 Upload a Photo
-
-/         %h2 Title
-/         %p Name your creation.
-/         %p= f.text_field :title, class: 'input-block-level', required: true
-/         %h2 Story
-/         %p Tell us a story about your success, failures, variations and creations.  What worked and what didn't work?  What did you change to suit your palate or your dietary restrictions?
-/         %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
-/         %h2 Upload a Photo
-/         %p Drop a photo on the target below or click the button to show a picture along with your creation.
-/         .upload-wrapper
-/           = image_tag '/assets/missing.png', class: "upload-photo-preview"
-/           = link_to '+', 'javascript:void(0);', class: 'upload-photo-btn'
-/           %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
-          
-/         = f.submit 'Upload', class: 'btn btn-primary btn-large'
-
 .flat-form(ng-controller='UploadsController' ng-init="init(#{assembly.id})" )
-  %div(ng-show="upload.status == 'new'")
-    %form(ng-submit='submit()')
+  .span6(ng-show="upload.status == 'new'")
+    %form(name='UploadForm' ng-submit='submit()')
       %h2 Upload a Photo
 
       %h3 Title
       %p Name your creation
-      %input.input-block-level(type='text' ng-model='upload.title' required=true)
+      %input.input-block-level(type='text' ng-model='upload.title' required)
 
       %h3 Story
       %p Tell us a story about your success, failures, variations and creations.  What worked and what didn't work?  What did you change to suit your palate or your dietary restrictions?
-      %textarea.input-block-level(ng-model='upload.notes' required=true)
+      %textarea.input-block-level(ng-model='upload.notes' required)
 
       %h3 Add a photo
       %p Click the button below to show a picture along with your creation.
       %p
-        %img(ng-src="{{upload.image_src}}" ng-show='upload.image_src.length > 0')
-        %input(type='hidden' ng-model='upload.image_id')
+        %div(ng-show='upload.image_src.length > 0')
+          %img(ng-src="{{upload.image_src}}")
+        %input(type='hidden' ng-model='upload.image_id' required)
         .btn.btn-secondary(ng-click='addPhoto()')
-          %span(ng-show="typeof(upload.image_id) == 'undefined'")
+          %span(ng-hide="upload.image_id")
             Upload Photo
-          %span(ng-show="typeof(upload.image_id) != 'undefined'")
+          %span(ng-show="upload.image_id")
             Change Photo
       %p
-        %input.btn.btn-primary(type='submit')
+        %div(ng-show='UploadForm.$valid')
+          .btn.btn-primary.btn-large(ng-click='submit()')
+            Save
+        %div(ng-hide='UploadForm.$valid')
+          .btn.btn-primary.btn-large.disabled
+            Save
+
   %div(ng-show="upload.status == 'show'")
     %h2 Upload Successful!
     %h3
@@ -52,3 +37,18 @@
     %p
       {{upload.notes}}
     %img(ng-src="{{upload.image_src}}")
+
+  %div(ng-show='shareModalShow')
+    .modal-backdrop(fade in)
+    .modal
+      .modal-body
+        %h4= "Congratulations, you've completed the #{@course.title} Course!"
+        - if current_user
+          %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
+        %h4 Share this on:
+        - ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
+          = render 'layouts/share_button', split_name: split_name
+        %p= "Would you like to share your recipe of this on ChefSteps? #{link_to 'Start Here', new_activity_path}".html_safe
+      .modal-footer
+        %a.btn.btn-primary.btn-large(ng-href='{{upload.path}}')
+          Done

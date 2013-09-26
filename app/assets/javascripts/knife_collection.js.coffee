@@ -21,11 +21,12 @@ $ ->
       $('.knife').addClass 'alt'
 
 $ -> 
-  $('.modal a').click (e) ->
-    e.preventDefault()
-    $(this).closest('.modal-body').children('img').hide()
-    idx = $(this).parent().index()
-    $($(this).closest('.modal-body').children('img')[idx]).removeClass('hidden').fadeIn()
+  if $('.knife').is('*')
+    $('.modal a').click (e) ->
+      e.preventDefault()
+      $(this).closest('.modal-body').children('img').hide()
+      idx = $(this).parent().index()
+      $($(this).closest('.modal-body').children('img')[idx]).removeClass('hidden').fadeIn()
 
 
 # Annotation Sliders #
