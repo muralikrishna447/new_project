@@ -15,16 +15,18 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     console.log "switching to " + includable_type + 'with id ' + includable_id
     # $scope.view_inclusion.type = includable_type
     # $scope.view_inclusion.id = includable_id
-    if includable_type == "Quiz"
-      $scope.view_inclusion = [includable_type, includable_id].join('_')
-      $scope.view_inclusion_id = includable_id
-    else if includable_type == 'Upload'
-      $scope.view_inclusion = 'Upload'
-    else
-      $scope.view_inclusion = includable_type
-      $scope.view_inclusion_id = includable_id
-      if includable_type == "Activity"
-        $rootScope.$broadcast("loadActivityEvent", includable_id)
+    switch includable_type
+      when 'Quiz'
+        $scope.view_inclusion = [includable_type, includable_id].join('_')
+        $scope.view_inclusion_id = includable_id
+      when 'Upload'
+        $scope.view_inclusion = 'Upload'
+      else
+        $scope.view_inclusion = includable_type
+        $scope.view_inclusion_id = includable_id
+        if includable_type == "Activity"
+          console.log 'Broadcasting'
+          $rootScope.$broadcast("loadActivityEvent", includable_id)
     $scope.showCourseMenu = false
     # So sue me
     window.scrollTo(0, 0)
