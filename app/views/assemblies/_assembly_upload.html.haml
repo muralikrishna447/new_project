@@ -39,7 +39,7 @@
           - if current_user
             %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
             .modal-image
-              = image_tag Merit::Badge.last.image
+              = image_tag assembly.badge.image
           %h4 Share this on:
           - ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
             = render 'layouts/share_button', split_name: split_name

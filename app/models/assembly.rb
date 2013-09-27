@@ -12,7 +12,6 @@ class Assembly < ActiveRecord::Base
 
   has_many :uploads
   has_many :enrollments, as: :enrollable
-  belongs_to :badge, class_name: 'Merit::Badge'
 
   scope :published, where(published: true)
   scope :projects, where(assembly_type: 'Project')
@@ -69,5 +68,14 @@ class Assembly < ActiveRecord::Base
     activity_videos_count = assembly_activities.select{|a| a.youtube_id? }.count
     activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.count
     activity_videos_count + activity_step_videos_count
+  end
+
+  def badge
+    b = Merit::Badge.find(self.badge_id)
+    if self.badge_id && b
+      b
+    else
+      nil
+    end
   end
 end
