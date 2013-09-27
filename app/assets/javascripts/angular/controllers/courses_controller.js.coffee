@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', 'cs_event', ($rootScope, $scope, $resource, $http, cs_event) ->
+angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', ($rootScope, $scope, $resource, $http) ->
   
   $scope.view_inclusion = {}
   $scope.collapsed = {}
@@ -27,6 +27,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         if includable_type == "Activity"
           console.log 'Broadcasting'
           $rootScope.$broadcast("loadActivityEvent", includable_id)
+          console.log 'Done Broadcasting'
     $scope.showCourseMenu = false
     # So sue me
     window.scrollTo(0, 0)
