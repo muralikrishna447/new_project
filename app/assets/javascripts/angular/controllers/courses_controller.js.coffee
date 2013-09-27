@@ -26,7 +26,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         $scope.view_inclusion_id = includable_id
         if includable_type == "Activity"
           console.log 'Broadcasting'
-          $rootScope.$broadcast("loadActivityEvent", includable_id)
+          # $rootScope.$broadcast("loadActivityEvent", includable_id)
           console.log 'Done Broadcasting'
     $scope.showCourseMenu = false
     # So sue me
