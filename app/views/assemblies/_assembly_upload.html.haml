@@ -36,7 +36,7 @@
       .modal.assembly-upload-modal
         .modal-body
           %h4= "Congratulations, you've completed the #{@course.title} Course!"
-          - if current_user
+          - if current_user && assembly.badge
             %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
             .modal-image
               = image_tag assembly.badge.image
