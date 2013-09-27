@@ -134,5 +134,9 @@ class User < ActiveRecord::Base
     enrollment = Enrollment.where(user_id: self.id, enrollable_type: enrollable.class.to_s, enrollable_id: enrollable.id)
     enrollment.blank? ? false : enrollment
   end
+
+  def completed_course?(course)
+    self.badges.include?(course.badge)
+  end
 end
 
