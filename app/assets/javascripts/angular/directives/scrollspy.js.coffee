@@ -4,7 +4,7 @@
 
 angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($window, $timeout) ->
   restrict: 'A'
-  controller: ($scope) ->
+  controller: ['$scope', ($scope) ->
     $scope.spies = []
     # a spyObj has an id, a function to call when it's section is in view,
     # and a function to call when it's out of sight.
@@ -23,7 +23,8 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
     $scope.$on 'loadActivityEvent',  ->
       # Clear cache
       $scope.spyElems = []
- 
+  ]
+
   link: (scope, elem, attrs) ->
     scope.spyElems = []
 
