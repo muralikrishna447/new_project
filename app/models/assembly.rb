@@ -70,4 +70,12 @@ class Assembly < ActiveRecord::Base
     activity_videos_count + activity_step_videos_count
   end
 
+  def badge
+    b = Merit::Badge.find(self.badge_id)
+    if self.badge_id && b
+      b
+    else
+      nil
+    end
+  end
 end

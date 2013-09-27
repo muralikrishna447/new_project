@@ -1,5 +1,5 @@
 .flat-form(ng-controller='UploadsController' ng-init="init(#{assembly.id})" )
-  .span6(ng-show="upload.status == 'new'")
+  .span6
     %form(name='UploadForm' ng-submit='submit()')
       %h2 Upload a Photo
 
@@ -30,23 +30,16 @@
           .btn.btn-primary.btn-large.disabled
             Save
 
-  %div(ng-show="upload.status == 'show'")
-    %h2 Upload Successful!
-    %h3
-      {{upload.title}}
-    %p
-      {{upload.notes}}
-    %img(ng-src="{{upload.image_src}}")
-
-  / %div(ng-show='shareModalShow')
   %div(ng-switch on='shareModalShow')
     %div(ng-switch-when='true')
       .modal-backdrop
-      .modal
+      .modal.assembly-upload-modal
         .modal-body
           %h4= "Congratulations, you've completed the #{@course.title} Course!"
-          - if current_user
+          - if current_user && assembly.badge
             %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
+            .modal-image
+              = image_tag assembly.badge.image
           %h4 Share this on:
           - ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
             = render 'layouts/share_button', split_name: split_name
