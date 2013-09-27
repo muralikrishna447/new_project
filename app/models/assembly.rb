@@ -3,7 +3,7 @@ class Assembly < ActiveRecord::Base
   include PublishableModel
   friendly_id :title, use: [:slugged, :history]
   attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price
-  has_many :assembly_inclusions
+  has_many :assembly_inclusions, dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :quizzes, through: :assembly_inclusions, source: :includable, source_type: 'Quiz'
 
@@ -18,8 +18,8 @@ class Assembly < ActiveRecord::Base
 
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
-  ASSEMBLY_TYPE_SELECTION = ['Course', 'Project']
-  INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz']
+  ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group']
+  INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz', 'Assembly']
 
   def ingredients
     activities.map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}.reject{|i| i.unit == 'recipe'}
@@ -68,5 +68,14 @@ class Assembly < ActiveRecord::Base
     activity_videos_count = assembly_activities.select{|a| a.youtube_id? }.count
     activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.count
     activity_videos_count + activity_step_videos_count
+  end
+
+  def badge
+    b = Merit::Badge.find(self.badge_id)
+    if self.badge_id && b
+      b
+    else
+      nil
+    end
   end
 end

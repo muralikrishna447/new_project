@@ -1,7 +1,10 @@
-.section.span12.ng-cloak.assembly-activity#video-ingredient-unit
-
-  = render 'activities/hero_visual', activity: activity
-  .row
+.spier(scroll-spy offset="240")
+  .row.relative
+    .section.span12.ng-cloak.assembly-activity#video-ingredient-unit
+      .hero-video(ng-show="heroDisplayType() == 'video'")
+        = render 'activities/hero_visual', activity: activity
+        
+  .row.main-content-container
     .span6
       = render 'activities/latest/description'
     .span6
@@ -14,6 +17,7 @@
           = render 'activities/basic_edit_pair', model: "activity.timing", name: "Timing", add_text: "Add timing info..."
           = render 'activities/activity_relationships', activity: activity
 
-.span12.ng-cloak.assembly-activity(ng-controller="StepsController")
-  = render 'activities/latest/steps'
+  .row.step-container
+    .span12.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
+      = render 'activities/latest/steps'
 

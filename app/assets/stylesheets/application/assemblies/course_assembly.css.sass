@@ -1,12 +1,160 @@
 @import 'mixins'
+@import 'application/custom_mixins'
 
-.course-nav
+.course-nav-hamburger
   position: fixed
-  width: 100px
-  top: 100px
-  left: 40px
+  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+  -webkit-transform: translateZ(0)
+  top: 75px
+  margin-left: 50%
+  left: -636px
+  font-size: 24px
+  color: $orange
+
+.course-nav-slideout
+  position: fixed
+  height: 100%
+  width: 320px
+  top: 0
+  padding-top: 66px
+  margin-left: 50%
+  left: -585px
+  background-color: white
+  border-right: 1px solid $light-gray
+
+  h4
+    padding-left: 10px
+    text-transform: uppercase
+
+  ul
+    margin-top: 10px
+    border-bottom: 1px solid $light-gray
+    width: 100%
+    @include boxsizing
+
+    li
+      @include boxsizing
+      width: 100%
+      border-top: 1px solid $light-gray
+      cursor: pointer
+      color: darkgray
+
+      a
+        line-height: 36px
+        margin-left: 10px
+        color: inherit
+
+    li:hover
+      color: #333
+      background-color: $offwhite
+
+    li.forum
+      a
+        color: $orange
+        text-transform: uppercase
+
+    li.active
+      color: #333
+      background-color: $light-gray
+
+    .nested
+      border-top: none
+      ul
+        margin-left: 20px
+        margin-top: 0px
+        border-bottom: none
+        overflow: hidden
+        @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+        max-height: 300px
+
+        li
+          border-top: none
+
+        li.active, li:hover
+          color: #333
+          font-weight: bold
+          background-color: inherit
+
+        .hitbox:hover
+          color: #333
+
+      ul.collapsed
+        max-height: 0
+
+
+
+
+.course-content
+  z-index: 1
+  background-color: white
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
+.course-content.menu-showing
+  left: 360px
+
+.lessons-heading
+  color: $orange
+  text-transform: uppercase
+ 
+#step-dots
+  position: fixed
+
+  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+  -webkit-transform: translateZ(0)
+  width: 15px
+  top: 115px
+  margin-left: 50%
+  left: -634px
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
+  li
+    height: 20px
+
+  li a
+    color: lighten($orange, 25%)
+    font-size: 10px
+    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+    padding-left: 3px
+    padding-top: 2px
+
+  li a.active
+    color: $orange
+    font-size: 15px
+    padding-left: 0px
+    padding-top: 0px
+
+  // This was from a previous iteration where we wanted just a couple of different
+  // sized dots right next to the active one
+  //li a.active-neighbor
+    //color: lighten($orange, 25%)
+    //display: block
+
+  // li a.active-more, li a.basic, li a.active-neighbor
+  //   color: lighten($orange, 25%)
+  //   margin-left: 3px 
+  //   font-size: 10px
+  //   display: block
+   
+  li.intro a
+    font-size: 15px
+    color: $light-gray
+    padding-left: 0px
+    padding-top: 0px
+
+  li.intro a.active
+    color: #555
+    display: block
+
+  a:hover
+    background-color: inherit
+
+#step-dots.menu-showing
+  opacity: 0
 
 .assembly-activity
+  .activity-description
+    padding: 0 20px
+
   .ordered-steps-new
     .ordered-step-item
       width: 100%
@@ -19,10 +167,6 @@
         font-size: 50px
         line-height: 50px
         padding-bottom: 10px
-      .step-optional-stuff
-        > div
-          margin-bottom: 20px
-          width: 100%
       .step-content
         h4
           margin-top: 0px
@@ -45,3 +189,22 @@
         display: none
       .step-video
         display: none
+        margin-bottom: 10px
+      .divider
+        height: 1px
+        border-bottom: 1px solid $light-gray
+        margin-top: 14px
+        margin-bottom: 14px
+      .span12
+        .step-content
+          @include columncount(2)
+          @include columngap(40)
+
+.hidden
+  display: none
+
+.assembly-upload-modal
+  .modal-body
+    .modal-image
+      width: 200px
+      margin: 0 auto

@@ -78,6 +78,7 @@ body
 
 .assembly-loading-background
   position: absolute
+  z-index: 9999
   background: rgba(255, 255, 255, .9)
   height: 100%
   width: 100%
@@ -507,6 +508,10 @@ a:hover
 #activity-description-maximize
   width: 100%
   cursor: pointer
+  //font-weight: bold
+  font-size: 110% !important
+  &:after
+    content: "..."
 
 .ordered-steps
   overflow: auto
@@ -600,6 +605,7 @@ a:hover
     position: relative
     width: 100%
     line-height: 20px
+    min-height: 20px
 
   .ingredient-title
     width: auto
@@ -608,8 +614,8 @@ a:hover
 
   .edit-pair-show
     .ingredient-title
-      margin-left: 1.2em
-      text-indent: -1.2em
+      margin-left: .8em
+      text-indent: -.8em
 
 
   .quantity-group
@@ -956,7 +962,7 @@ a:hover
   .btn:last-child
     border-radius: 0px
 
-.btn-primary
+.btn-primary, .btn-primary.disabled
   background: $orange
   border: 0px
   border-bottom: 1px $dark-orange solid
@@ -1191,6 +1197,9 @@ a:hover
 
 /* Navbar */
 .navbar-fixed-top
+  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+  -webkit-transform: translateZ(0)
+
 
   .navbar-inner
     box-shadow: none
@@ -1453,7 +1462,7 @@ csequipmenteditpair, csingredienteditpair
   .action-button-group
     position: absolute
     left: -56px
-    top:  -3px
+    top:  -11px
     font-size:  18px
     margin-top: -2px
     .btn
@@ -1484,7 +1493,7 @@ csequipmenteditpair, csingredienteditpair
 
 csequipmenteditpair
   .action-button-group
-    top: 2px
+    top: -10px
 
 csingredienteditpair
 
@@ -1499,7 +1508,7 @@ csingredienteditpair
           width: 34%
 
     .quantity-group
-      bottom: -4px
+      bottom: 2px
 
     .unit
       cursor: pointer
@@ -1514,6 +1523,7 @@ csingredienteditpair
         width:  200%
         height:  100%
         z-index: 0
+        top: -7px
 
 .meta-edit
   border: 1px solid $offwhite

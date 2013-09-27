@@ -5,7 +5,7 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll) ->
 
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id") || 1},
@@ -26,8 +26,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowRestoreAutosaveModal = false
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
-  $scope.loading = false
   $scope.activities = {}
+
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -359,15 +359,19 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
   # autocomplete (unshift in all_equipment), it will be missing a nesting level in the model.
   $scope.normalizeModel = () ->
+    $scope.activity.equipment = _.compact($scope.activity.equipment)
     angular.forEach $scope.activity.equipment, (item) ->
       if _.isString(item["equipment"])
         item["equipment"] = {title: item["equipment"]}
 
+    $scope.activity.ingredients = _.compact($scope.activity.ingredients)
     angular.forEach $scope.activity.ingredients, (item) ->
       if _.isString(item["ingredient"])
         item["ingredient"] = {title: item["ingredient"]}
 
+    $scope.activity.steps = _.compact($scope.activity.steps)
     angular.forEach $scope.activity.steps, (step) ->
+      step.ingredients = _.compact(step.ingredients)
       angular.forEach step.ingredients, (item) ->
         if _.isString(item["ingredient"])
           item["ingredient"] = {title: item["ingredient"]}
@@ -405,6 +409,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       )
 
   $scope.makeActivityActive = (id) ->
+    return if id == $scope.activity?.id
     $scope.activity = $scope.activities[id] 
     cs_event.track(id, 'Activity', 'show')
     mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
@@ -412,19 +417,22 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.loadActivity = (id) ->
     return if id == $scope.activity?.id
 
-    $scope.loading = true
+    $rootScope.loading = true
     if $scope.activities[id]
       # Even if we have it cached, use a slight delay and dissolve to
       # make it feel smooth and let youtube load
       $scope.makeActivityActive(id)
       $timeout (->
-        $scope.loading = false
+        $rootScope.loading = false
       ), 500
     else
       $scope.fetchActivity(id, -> 
         $scope.makeActivityActive(id)
-        $scope.loading = false
+        $rootScope.loading = false
       )
+
+  $scope.$on 'loadActivityEvent', (event, activity_id) ->
+    $scope.loadActivity(activity_id)
 
   $scope.startViewActivity = (id, prefetch_id) ->
     $scope.loadActivity(id)

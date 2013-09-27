@@ -1,7 +1,7 @@
 -################################ HEADER / LAYOUT STUFF ################################
 
 = render 'layouts/filepicker'
-- content_for :title, "#{@activity.title.html_safe} - #{@activity.activity_type.first}"
+- content_for :title, "#{@activity.title} - #{@activity.activity_type.first}".html_safe
 - content_for :description, @activity.description != "" ? @activity.description.html_safe : @activity.title.html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
 - content_for :keywords, @activity.tag_list.join(',')

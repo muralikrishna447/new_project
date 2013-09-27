@@ -4,7 +4,17 @@
   %h4(style="display: none;" ng-show="editMode && (activity.steps.length == 0)" data-ng-animate="'fade'" ng-click="addStepAtIndex(0)")
     Add first step...
 
+
+%ul#step-dots.nav(ng-class="{'menu-showing': showCourseMenu}")
+  %li.step-dot.intro
+    %a(href="video-ingredient-unit" prevent-default scroll-to="video-ingredient-unit" spy="video-ingredient-unit" )
+      %i.icon-circle
+
+  %li.step-dot(ng-repeat="step in numberedSteps()")
+    %a(href="{{'numbered-step-' + step.id}}" prevent-default scroll-to="{{'numbered-step-' + step.id}}" spy="{{'numbered-step-' + step.id}}")
+      %i.icon-circle
+
 .ordered-steps-new(ng-show="activity.steps.length > 0"){:itemprop => "recipeInstructions"}
-  .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()")
+  .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()")
     = render 'activities/latest/step'
 
