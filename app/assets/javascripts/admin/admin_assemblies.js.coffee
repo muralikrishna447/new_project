@@ -51,3 +51,9 @@ $ ->
 
   $('.assembly_includable_type').each ->
     $(this).select2()
+
+  $(document).on 'click', '.add_fields', ->
+    $('select.assembly_includable_id').each ->
+      $(this).select2()
+    $('select.assembly_includable_type').each ->
+      $(this).select2()
