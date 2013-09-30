@@ -97,7 +97,7 @@
               %a
                 {{displayDensity(densityIngredient.density / du.perL)}}
             %csEditPairEdit
-              %input(type="text" ng-model="newDensityValue"  ng-change="densityIngredient.density = newDensityValue * du.perL" ui-keypress='{13: "finishDensityChange(densityIngredient)"}' ui-event='{blur: "ingredientChanged(densityIngredient)", focus: "newDensityValue = displayDensityNoSet(densityIngredient.density / du.perL)"}')      
+              %input(type="text" ng-model="newDensityValue"  ng-change="densityIngredient.density = newDensityValue * du.perL" ui-keypress='{13: "finishDensityChange(densityIngredient)"}' ui-event='{blur: "ingredientChanged(densityIngredient)", focus: "newDensityValue = displayDensityNoSet(densityIngredient.density / du.perL)"}')
 
     .modal-footer
       %button.btn(ng-click="finishDensityChange(densityIngredient)") Done
