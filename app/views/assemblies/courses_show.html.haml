@@ -3,59 +3,76 @@
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
-.container(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak)
+.controller(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak)
+  .container
 
-  .course-nav-hamburger(ng-click="showCourseMenu = ! showCourseMenu")
-    %i.icon-align-justify
-       
-  .row
-    .course-nav-slideout(ng-show="showCourseMenu")
-      %h4.lessons-heading
-        Lessons
-      %ul.section.no-bullet
-        %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='load_inclusion(inclusion.includable_type, inclusion.includable_id)' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}")
-          %div(ng-switch="inclusion.includable_type")
-            %a(ng-switch-default)
-              {{inclusion.includable_title}}
-            %div.nested(ng-switch-when="Assembly")
-              .hit-box(ng-click="toggleCollapse(inclusion.includable_id)")
-                %a
-                  {{inclusion.includable_title}}&hellip;
-              %ul.no-bullet(ddng-hide="isCollapsed(inclusion.includable_id)" ng-class="{'collapsed' : isCollapsed(inclusion.includable_id)}")
-                %li(ng-repeat='sub_inclusion in inclusion.includable.assembly_inclusions' ng-click='load_inclusion(sub_inclusion.includable_type, sub_inclusion.includable_id)' ng-class="{'active': (sub_inclusion.includable_type == view_inclusion) && (sub_inclusion.includable_id == view_inclusion_id)}")
-                  %a
-                    {{sub_inclusion.includable_title}}
+    .course-nav-hamburger(ng-click="showCourseMenu = ! showCourseMenu")
+      %i.icon-align-justify
          
-        %li(ng-click="load_inclusion('Upload')")
-          %a
-            Upload Your Own
-        %li.forum
-          %a(href="http://forum.chefsteps.com/categories/#{@course.slug}-course-questions" target="_blank")
-            %i.icon-large.icon-question-sign
-            Visit The Forum
+    .row
+      .course-nav-slideout(ng-show="showCourseMenu")
+        %h4.lessons-heading
+          Lessons
+        %ul.section.no-bullet
+          %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='loadInclusion(inclusion.includable_id)' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}")
+            %div(ng-switch="inclusion.includable_type")
+              %a(ng-switch-default)
+                {{inclusion.includable_title}}
+              %div.nested(ng-switch-when="Assembly")
+                .hit-box(ng-click="toggleCollapse(inclusion.includable_id)")
+                  %a
+                    {{inclusion.includable_title}}&hellip;
+                %ul.no-bullet(ng-class="{'collapsed' : isCollapsed(inclusion.includable_id)}")
+                  %li(ng-repeat='sub_inclusion in inclusion.includable.assembly_inclusions' ng-click='loadInclusion(sub_inclusion.includable_id); $event.stopPropagation()' ng-class="{'active': (sub_inclusion.includable_type == view_inclusion) && (sub_inclusion.includable_id == view_inclusion_id)}")
+                    %a
+                      {{sub_inclusion.includable_title}}
+                      
+          %li.forum
+            %a(href="http://forum.chefsteps.com/categories/#{@course.slug}-course-questions" target="_blank")
+              %i.icon-large.icon-question-sign
+              Visit The Forum
 
-    .span12.relative.course-content(ng-class="{'menu-showing': showCourseMenu}")
-      .tab-content(ng-switch on='view_inclusion')
-        - @course.assembly_inclusions.each do |inclusion|
-          - case inclusion.includable_type
-          - when 'Quiz'
-            %div(ng-switch-when="Quiz_#{inclusion.includable_id}")
-              = render 'activities/quiz_content', course_quiz: inclusion.includable
+      .span12.relative.course-content(ng-class="{'menu-showing': showCourseMenu}")
+        .tab-content(ng-switch on='view_inclusion')
+          - @course.assembly_inclusions.each do |inclusion|
+            - case inclusion.includable_type
+            - when 'Quiz'
+              %div(ng-switch-when="Quiz_#{inclusion.includable_id}")
+                = render 'activities/quiz_content', course_quiz: inclusion.includable
 
-        %div(ng-switch-when="Activity")
-          %div(ng-controller='ActivityController' ng-init="load_inclusion(course.assembly_inclusions[0].includable_type, course.assembly_inclusions[0].includable_id)")
-            %div
-              = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
+          %div(ng-switch-when="Activity")
+            %div(ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
+              %div
+                = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
 
-        %div(ng-switch-when='Upload')
-          = render 'assembly_upload', assembly: @course
+          %div(ng-switch-when='Upload')
+            = render 'assembly_upload', assembly: @course
 
 
-  .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
-    .activity-loading-spinner
-      .span12
-        %i.icon-spinner.icon-spin
+    .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
+      .activity-loading-spinner
+        .span12
+          %i.icon-spinner.icon-spin
+
+  .prev-next-group.container-fluid.well-gray.section
+    .row-fluid
+      .container
+        .row
+          .span12
+            .course-nav-bottom
+              .course-nav-bottom-left
+                .btn.btn-primary(ng-show="prevInclusion()" ng-click="loadPrevInclusion()")
+                  %i.icon-chevron-left
+                  'Previous'
+              .course-nav-bottom-center
+                %h3(ng-bind-html-unsafe="currentIncludable.includable_title")
+
+              .course-nav-bottom-right
+                .btn.btn-primary(ng-show="nextInclusion()" ng-click="loadNextInclusion()")
+                  'Next'
+                  %i.icon-chevron-right
 
 = content_for :footer do
   = render 'layouts/footer'
+
              
