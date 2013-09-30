@@ -3,4 +3,6 @@
     - if image
       = image_tag filepicker_media_box_image(image)
     - if title
-      = truncate(title, length: 35)
+      / = truncate(title, length: 35)
+      .media-box-title
+        = title
