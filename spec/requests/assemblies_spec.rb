@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'AssembliesController' do
+describe 'AssembliesController', pending: true do
   before :each do
     @assembly = Fabricate :assembly, title: 'Test Assembly', published: true
     @project = Fabricate :assembly, title: 'Test Project', published: true, assembly_type: 'Project'
