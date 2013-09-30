@@ -62,15 +62,15 @@
             .course-nav-bottom
               .course-nav-bottom-left
                 .btn.btn-primary(ng-show="prevInclusion()" ng-click="loadPrevInclusion()")
-                  %i.icon-chevron-left
-                  'Previous'
+                  PREVIOUS
+
               .course-nav-bottom-center
                 %h3(ng-bind-html-unsafe="currentIncludable.includable_title")
+                %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
 
               .course-nav-bottom-right
                 .btn.btn-primary(ng-show="nextInclusion()" ng-click="loadNextInclusion()")
-                  'Next'
-                  %i.icon-chevron-right
+                  NEXT
 
 = content_for :footer do
   = render 'layouts/footer'
