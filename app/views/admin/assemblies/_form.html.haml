@@ -11,10 +11,10 @@
     = f.input :youtube_id
 
   %h2 Assembly Inclusions
-  = link_to_add_fields "Add Assembly Inclusion", f, :assembly_inclusions
   #assembly_inclusions
     = f.semantic_fields_for :assembly_inclusions, @assembly.assembly_inclusions.order('assembly_inclusions.position asc') do |builder|
       = render 'assembly_inclusion_fields', f: builder
+      = link_to_add_fields "Add Assembly Inclusion", f, :assembly_inclusions
   = f.actions
 
 #all_assembly_selection_data

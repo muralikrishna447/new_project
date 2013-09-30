@@ -9,23 +9,21 @@
   padding: 10px
   background: white
   text-align: center
-  text-overflow: ellipsis
   font-weight: bold
   margin-bottom: 20px
   color: black
-  -webkit-transition: background 200ms, border-color 200ms
-  -moz-transition: background 200ms, border-color 200ms
-  -o-transition: background 200ms, border-color 200ms
-  transition: background 200ms, border-color 200ms
+  @include transition(all 200ms)
   img
     width: 100%
     margin-bottom: 10px
   a
     color: black
-    -webkit-transition: color 200ms
-    -moz-transition: color 200ms
-    -o-transition: color 200ms
-    transition: color 200ms
+    @include transition(all 200ms)
+    .media-box-title
+      text-overflow: ellipsis
+      white-space: nowrap
+      width: 100%
+      overflow: hidden
 
   // &:before, &:after
   //   content: ""

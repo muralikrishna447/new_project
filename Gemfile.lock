@@ -160,7 +160,7 @@ GEM
       actionpack (>= 3.0)
     friendly_id (4.0.9)
     fssm (0.2.9)
-    geokit (1.6.6)
+    geokit (1.6.7)
       multi_json (>= 1.3.2)
     geokit-rails (2.0.0)
       geokit (~> 1.5)
@@ -267,7 +267,7 @@ GEM
       rack
     mixpanel_client (3.1.2)
       typhoeus (~> 0.5.4)
-    multi_json (1.7.9)
+    multi_json (1.8.0)
     multi_xml (0.5.1)
     multipart-post (1.1.5)
     net-scp (1.0.4)
