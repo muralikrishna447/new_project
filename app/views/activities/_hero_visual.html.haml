@@ -1,6 +1,7 @@
 .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-  %meta{itemprop: 'thumbnailUrl', content: "#{filepicker_gallery_image(activity.featured_image)}"}
-  %meta{itemprop: 'embedUrl', content: "www.youtube.com/embed/#{activity.youtube_id}"}
+  -if defined? activity
+    %meta{itemprop: 'thumbnailUrl', content: "#{filepicker_gallery_image(activity.featured_image)}"}
+    %meta{itemprop: 'embedUrl', content: "www.youtube.com/embed/#{activity.youtube_id}"}
   .hero-visual
     %div(ng-switch="heroDisplayType()")
       %iframe.noprint#activityPlayer(ng-switch-when="video" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect webkitallowfullscreen mozallowfullscreen)

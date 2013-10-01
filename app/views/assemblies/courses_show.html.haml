@@ -43,7 +43,7 @@
           %div(ng-switch-when="Activity")
             %div(ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
               %div
-                = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
+                = render 'activities/latest/main_activity_content'
 
           %div(ng-switch-when='Upload')
             = render 'assembly_upload', assembly: @course
