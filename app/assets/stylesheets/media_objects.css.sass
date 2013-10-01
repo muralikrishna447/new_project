@@ -9,23 +9,21 @@
   padding: 10px
   background: white
   text-align: center
-  text-overflow: ellipsis
   font-weight: bold
   margin-bottom: 20px
   color: black
-  -webkit-transition: background 200ms, border-color 200ms
-  -moz-transition: background 200ms, border-color 200ms
-  -o-transition: background 200ms, border-color 200ms
-  transition: background 200ms, border-color 200ms
+  @include transition(color 200ms)
   img
     width: 100%
     margin-bottom: 10px
   a
     color: black
-    -webkit-transition: color 200ms
-    -moz-transition: color 200ms
-    -o-transition: color 200ms
-    transition: color 200ms
+    @include transition(color 200ms)
+    .media-box-title
+      text-overflow: ellipsis
+      white-space: nowrap
+      width: 100%
+      overflow: hidden
 
   // &:before, &:after
   //   content: ""
@@ -104,8 +102,6 @@
 /// MEDIA BOX 3 ///
 
 .media-box-3
-  font-family: 'Raleway', sans-serif
-  font-weight: 500
   @include boxsizing
   position: relative
   width: 360px
@@ -114,26 +110,23 @@
   padding: 10px
   margin: 10px
   background: white
-  font-weight: bold
-  color: black
   float: left
   @include transition(all 300ms)
   img
     width: 100%
     margin: 10px 0px
   a
-    color: black
+    color: #333333
     @include transition(all 300ms)
     .media-box-3-title
-      font-weight: 500
-      font-size: 14px
+      @include gotham-bold
+      font-size: 15px
       text-transform: uppercase
       height: 20px
       text-overflow: ellipsis
       white-space: nowrap
       overflow: hidden
     .media-box-3-footer
-      font-weight: 500
       .footer-left
         float: left
         text-transform: uppercase

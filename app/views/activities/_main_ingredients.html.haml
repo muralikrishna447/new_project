@@ -2,7 +2,7 @@
 
   .activity-ingredients-list#full-ingredients-list.section
     .well(ng-show="activity.ingredients.length" )
-      = render 'ingredients_list', source: "activity"
+      = render 'shared/ingredients_list', source: "activity", include_header: (defined? include_header) ? include_header : true
 
   .nav(ng-show="editMode")
     %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
@@ -13,4 +13,4 @@
     %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients" tooltip-placement="bottom")
       Done
 
-  = render 'master_ingredients_removed_modal.html.haml'
+  = render 'activities/master_ingredients_removed_modal.html.haml'

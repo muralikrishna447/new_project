@@ -28,6 +28,9 @@ body
 .relative
   position: relative
 
+.full-width
+  width: 100%
+
 #slider-container
   background: $offwhite
   .row
@@ -72,6 +75,15 @@ body
   .scroll-overlay-left, .scroll-overlay-right
     &:after
       background: $offwhite
+
+.assembly-loading-background
+  position: absolute
+  z-index: 9999
+  background: rgba(255, 255, 255, .9)
+  height: 100%
+  width: 100%
+  top: 0
+  left: 0
 
 .activity-loading-spinner
   font-size: 150px
@@ -160,11 +172,6 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
 .input-block-level
   width: 100%
 
-h1, h2, h3, h4
-  font-family: 'Raleway', sans-serif
-  font-weight: 500
-  -webkit-font-smoothing: antialiased
-
 .nav-tabs-gray
   .nav-tabs
     border: none
@@ -212,9 +219,6 @@ h4
 
 // Did this to help out Equipment etc sections for now; may want it everywhere but we weren't
 // sure what other h4's might be negatively affected
-#activity-body
-  h4
-    font-weight: 700
 
 .word-wrap
   word-wrap: break-word
@@ -364,7 +368,7 @@ a:hover
   width: 100%
   //margin-bottom: 20px
   //height: 208px
-
+ 
 .media-hero
   position: relative
   //max-height: 586px
@@ -759,13 +763,18 @@ a:hover
   width: 370px
   margin: 0px 10px
 
+.item-small
+  margin: 0px 10px
+
 /* Swipe */
 .swipe
   overflow: hidden
   visibility: hidden
   position: relative
+
 .swipe-indicators
   margin: 10px auto
+
 .swipe-indicator-btn
   background: $light-gray
   height: 15px
@@ -903,6 +912,8 @@ a:hover
   background-position: center top
   background-repeat: no-repeat
   //background-size: 100%
+  margin-left: 0px
+  margin-right: 0px
   .footer-image
     max-height: 600px
     overflow: hidden
@@ -945,10 +956,13 @@ a:hover
   i
     line-height: 20px
 
-.btn-group > .btn:first-child
-  border-radius: 0px    
+.btn-group
+  .btn:first-child
+    border-radius: 0px
+  .btn:last-child
+    border-radius: 0px
 
-.btn-primary
+.btn-primary, .btn-primary.disabled
   background: $orange
   border: 0px
   border-bottom: 1px $dark-orange solid
@@ -1183,6 +1197,9 @@ a:hover
 
 /* Navbar */
 .navbar-fixed-top
+  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+  -webkit-transform: translateZ(0)
+
 
   .navbar-inner
     box-shadow: none
@@ -1687,6 +1704,7 @@ csingredienteditpair
 /* Large desktop */
 @media (min-width: 1200px)
   .media-hero
+    height: 586px
     img
       margin-top: -5%
       margin-bottom: -5%
@@ -1911,8 +1929,6 @@ csingredienteditpair
     .input-signup-email
       width: 50%
 
-
-
 /* Global on-select highlighting */
 
 ::-moz-selection 
@@ -1922,4 +1938,27 @@ csingredienteditpair
 ::selection 
   background-color: $orange
   color: #ffffff
+
+
+/* Global Typography Overrides */
+
+h1, h2, h3, h4
+  @include gotham
+  color: inherit
+  letter-spacing: -1px
+
+.nav
+  @include gotham
+  letter-spacing: -1px
+
+body
+  @include gotham-light
+  color: #333333
+
+p
+  line-height: 1.6
+
+.image-shadow
+  @include any_shadow(0px 2px 5px #888888)
+
 

@@ -13,8 +13,8 @@ generate_options = (collection, selected) ->
   options.join('')
 
 append_options = (fieldset) ->
-  includable_type = fieldset.find('.assembly_includable_type')
-  includable_id = fieldset.find('.assembly_includable_id')
+  includable_type = fieldset.find('select.assembly_includable_type')
+  includable_id = fieldset.find('select.assembly_includable_id')
   if includable_type.is('*') && includable_type.val().length
     includable_type_lowercase = includable_type.val().toLowerCase()
     selected = includable_id.data('selected')

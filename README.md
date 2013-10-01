@@ -37,3 +37,22 @@ This file is precompiled, then synced with the cdn as navigation_bootstrap.js
 To get vanilla to use this file, it is included in the Forum > Dashboard > Customize Theme
 
 Make sure to use the latest uploaded version of navigation_bootstrap.js.  You may need to go to CloudFront account to find this.
+
+Staging2 ChefSteps
+=
+
+Deploying to Staging2
+-
+git checkout develop2  
+merge paid-courses (or whatever you are working on) into develop2 
+git push staging2 develop2:master
+
+Run migrations on Staging2
+-
+heroku run rake db:migrate --app staging2-chefsteps
+
+Copy Production Database to Staging2
+-
+1. heroku pgbackups:restore HEROKU_POSTGRESQL_CHARCOAL 'heroku pgbackups:url --app production-chefsteps' --app staging2-chefsteps
+
+2. This will give a warning asking you to type in 'staging2-chefsteps' to confirm the destructive action.  **Make sure it says staging2.**

@@ -1,6 +1,6 @@
 = f.inputs do
   = f.input :includable_type, as: :select, collection: Assembly::INCLUDABLE_TYPE_SELECTION, input_html: { class: 'assembly_includable_type', style: 'width: 400px'}
-  = f.input :includable_id, as: :select, collection: [], input_html: { class: 'assembly_includable_id', data: {selected: f.object.id}, style: 'width: 400px'}
+  = f.input :includable_id, as: :select, collection: [], input_html: { class: 'assembly_includable_id', data: {selected: f.object.includable.blank? ? f.object : f.object.includable.id}, style: 'width: 400px'}
   / = f.input :includable_id, as: :select, collection: Activity.all, input_html: { class: 'assembly_includable_id'}
   = f.input :position, as: :hidden, input_html: { class: 'includable_position'}
   = f.hidden_field :_destroy

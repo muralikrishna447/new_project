@@ -53,6 +53,16 @@ module Merit
           false
         end
       end
+
+      grant_on 'uploads#create', :badge => 'macaron' do |upload|
+        assembly = upload.assembly
+        user = upload.user
+        if assembly.present?
+          assembly.title == 'French Macarons'
+        else
+          false
+        end
+      end
     end
   end
 end

@@ -1,62 +1,70 @@
-%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_path(assembly)}"' ng-cloak)
+%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{course_path(assembly)}"; completed=#{completed ? true : false}' ng-cloak)
   %div(ng-show="enrolled")
-    %h3 You Are Already Enrolled
-    .btn.btn-primary.btn-large
-      %a(ng-href="{{assemblyPath}}")
-        Continue Course
+    .btn.btn-primary.btn-large.input-block-level
+      %div(ng-hide='completed')
+        %a(ng-href="{{assemblyPath}}")
+          Continue Course
+      %div(ng-show='completed')
+        %a(ng-href="{{assemblyPath}}")
+          Completed Course!
 
   %div(ng-show="(! enrolled) && assembly.price")
-    %h3 So Give Us Your Money
-    %p
-      You'll be making macarons this lovely in no time!
     .section
-      .btn.btn-primary.btn-large(ng-click="buyModalOpen=true")
+      .btn.btn-primary.btn-large#buy-button(ng-click="openModal()")
         Buy Now For Just {{assembly.price | currency}}
 
-    %div.buy-modal(close="buyModalOpen = false" modal="buyModalOpen" ng-cloak)
+    %div(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
+      .modal-body.buy-modal(ng-switch on="state")
+        .row-fluid(ng-switch-when="charge" )
+          .close-x.pull-right#cancel-charge(ng-click="closeModal()")
+            %i.icon-remove
 
-      .modal-header
-        %h2
-          Purchase {{assembly.title}} for {{assembly.price | currency}}
-      .modal-body(ng-switch on="state")
-        .row-fluid(ng-switch-when="charge" ng-animate="'slide'")
-          %form.form-horizontal.charge-form(stripe-form="handleStripe" name="chargeForm") 
+          %form.charge-form(stripe-form="handleStripe" name="chargeForm") 
             .control-group(ng-show="errorText")
               .controls.error-text
                 {{errorText}}
                 Please fix errors and try again.
                                
             .control-group
+              %label.control-label(for="")
+                Credit Card Number
+              .controls
+                %input.input-full(ng-model="number" payments-format="card" payments-validate="card" type="text" required  name="card_number")
               %label.control-label(for="name")
-                Cardholder's Name
+                Name
               .controls
-                %input.input-xlarge(type="text" ng-model="name" required)
-            .control-group
-              %label.control-label(for="")
-                Card Number
-              .controls
-                %input.input-xlarge(ng-model="number" payments-format="card" payments-validate="card" type="text" required)
-            .control-group
-              %label.control-label(for="")
-                Expiration Date
-              .controls
-                %input.input-small(ng-model="expiry" payments-format="expiry" payments-validate="expiry" type="text" required)
-            .control-group
-              %label.control-label(for="")
-                Security Code (CVC)
-              .controls
-                %input.input-small(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" required)
-            .control-group(ng-hide="processing")
+                %input.input-full(type="text" ng-model="name" required name="cardholder_name")
+              .expdate-group.inline
+                %label.control-label(for="")
+                  Expiration Date
+                .controls
+                  %input.input-mini(ng-model="expMonth" type="text" pattern="[0-9]{1,2}" required  name="expMonth")
+                  .date-slash.inline
+                    \/
+                  %input.input-mini(ng-model="expYear" type="text" pattern="[0-9]{1,4}" required  name="expYear" )             
+              .cvc-group.inline
+                %label.control-label(for="")
+                  Security Code (CVC)
+                .controls
+                  %input.input-mini(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" required  name="cvc")
+            .divider
+            .control-group.text-center(ng-hide="processing")
               .controls                    
-                %button.btn.btn-primary.btn-large(ng-click="maybeStartProcessing(chargeForm)") Buy Now     
-                %button.btn.btn-link.cancel(ng-click="closeModal()"  type="button") Cancel
-            .control-group(ng-show="processing")
+                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") Buy Now {{assembly.price | currency}} 
+                %p
+                  .tiny-note
+                    All Taxes Included   
+            .control-group.text-center(ng-show="processing")
               .controls
                 %i.icon-spinner.icon-2x.icon-spin
                 Processing your card
         .row-fluid(ng-switch-when="thanks")
-          %h3 Thank you for your purchase!
-          .section         
+          Thank you for your purchase of our {{assembly.title}} course. We're grateful to have you as a member
+          of member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you
+          at&nbsp; 
+          %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
+          \.
+          .section.text-center         
             .btn.btn-large.btn-primary     
               %a(ng-href="{{assemblyPath}}")
-                Get Started
+                Start The Course

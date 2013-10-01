@@ -1,0 +1,23 @@
+.spier(scroll-spy offset="240")
+  .row.relative
+    .section.span12.ng-cloak.assembly-activity#video-ingredient-unit
+      .hero-video(ng-show="heroDisplayType() == 'video'")
+        = render 'activities/hero_visual', activity: activity
+        
+  .row.main-content-container
+    .span6
+      = render 'activities/latest/description'
+    .span6
+      = render 'activities/main_ingredients', include_header: false
+      .row
+        .span3
+          = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/Materials", test_method: "hasAnyEquipment", required_string: "any", required: "any"
+        .span3
+          = render 'activities/basic_edit_pair', model: "activity.yield", name: "Yield", add_text: "Add yield info...", itemprop: "recipeYield"
+          = render 'activities/basic_edit_pair', model: "activity.timing", name: "Timing", add_text: "Add timing info..."
+          = render 'activities/activity_relationships', activity: activity
+
+  .row.step-container
+    .span12.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
+      = render 'activities/latest/steps'
+

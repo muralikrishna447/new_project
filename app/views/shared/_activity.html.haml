@@ -17,7 +17,7 @@
       .section.csmonitorinputactivity(ng-controller="IngredientsController" ng-cloak)
         .activity-ingredients-list#full-ingredients-list.section
           .well(ng-show="activity.ingredients.length" )
-            = render '/shared/ingredients_list', source: "activity"
+            = render '/shared/ingredients_list', source: "activity", include_header: true
     - if activity.yield.present?
       .section
         %h4 Yield
@@ -55,7 +55,7 @@
               %h4= step.title
             - if step.ingredients.any?
               .well
-                = render '/shared/ingredients', ingredients: step.ingredients
+                = render '/shared/ingredients_list', source: "activity.steps[#{index}]"
             :markdown
               #{apply_shortcodes(step.directions)}
             - if step.image_id?
