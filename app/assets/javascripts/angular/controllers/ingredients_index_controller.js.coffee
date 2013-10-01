@@ -138,7 +138,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     $scope.dataLoading += 1
     keeper.$merge  # Want to try to move this into the ingredient factory
       id: keeper.id
-      merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')}
+      merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')
       ->
         console.log("INGREDIENT MERGE WIN")
         $scope.dataLoading -= 1
