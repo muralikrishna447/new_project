@@ -36,7 +36,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_in @user
       aweber_signup(@user.name, @user.email)
       # redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
-      puts "Return path " + session[:user_return_to]
       if session[:user_return_to] && (session[:user_return_to] != root_url)
         redirect_to session[:user_return_to], notice: "Thanks for signing up! Please check your email now to confirm your registration."
       else
