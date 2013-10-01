@@ -10,8 +10,8 @@
             %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
 
 .container.assembly-course-landing
-  .row.section
-    .span8
+  .row
+    .span8.section
       %ul.nav.nav-tabs.underline
         %li.active
           = link_to 'Overview', '#overview', data: {toggle: 'tab'}
@@ -58,7 +58,7 @@
           .tab-pane#testimonials
             = @course.testimonials.content
 
-    .span3.offset1
+    .span3.offset1.section
       .buy-box
         = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), completed: current_user && current_user.completed_course?(@assembly)
         .text-center.section

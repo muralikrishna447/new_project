@@ -9,9 +9,8 @@
           Completed Course!
 
   %div(ng-show="(! enrolled) && assembly.price")
-    .section
-      .btn.btn-primary.btn-large#buy-button(ng-click="openModal()")
-        Buy Now For Just {{assembly.price | currency}}
+    .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal()")
+      Buy Now For Just {{assembly.price | currency}}
 
     %div(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
       .modal-body.buy-modal(ng-switch on="state")
