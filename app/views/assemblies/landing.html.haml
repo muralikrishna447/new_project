@@ -1,3 +1,6 @@
+- content_for :title, "#{@course.title.html_safe} - Course"
+- content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
+
 .assembly-course-landing
   .full-stripe
     .container
@@ -88,8 +91,9 @@
       = @course.testimonials.content if @course.testimonials
   .row
     .span12
-      %h4 Student Projects
-      - @course.uploads.each do |upload|
-        = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+      - if @course.uploads.any?
+        %h4 Student Projects
+        - @course.uploads.each do |upload|
+          = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
 
 = render 'layouts/footer'
