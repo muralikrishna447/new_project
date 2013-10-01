@@ -36,24 +36,17 @@
           .row
             .span4
               %h4 Equipment you'll need
-              %ul.grid
-                - 3.times do
-                  %li
-                    %figure
-                      %div
-                        = image_tag ('http://placehold.it/450x375')
-                      %figcaption
-                        %h3 Equipment
+              %ul.unstyled
+                - @course.required_equipment.each do |equipment_item|
+                  - if equipment_item.product_url?
+                    %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
+                  - else
+                    %li= equipment_item.title
             .span4
               %h4 Ingredients you'll need
-              %ul.grid
-                - 3.times do
-                  %li
-                    %figure
-                      %div
-                        = image_tag ('http://placehold.it/450x375')
-                      %figcaption
-                        %h3 Ingredients
+              %ul.unstyled
+                - @course.combined_ingredients.each do |ingredient_item|
+                  %li= ingredient_item[0][0].title
         - if @course.testimonials 
           .tab-pane#testimonials
             = @course.testimonials.content
