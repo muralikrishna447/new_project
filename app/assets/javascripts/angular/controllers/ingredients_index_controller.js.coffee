@@ -26,12 +26,12 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.displayDensityNoSet = (x) ->
     if x && _.isNumber(x) then window.roundSensible(x) else ""
 
+  $scope.modalOptions =
+    backdropFade: true
+    dialogFade: true
+
   $scope.$watch 'cellValue', (v) ->
     console.log v
-
-  #Call the service for this to condense the code, but add it to the controller so it can be used in the view
-  $scope.urlAsNiceText = (url) ->
-    urlService.urlAsNiceText(url)
 
   # These are the Angular-UI options
   # http://angular-ui.github.io/ng-grid/
@@ -90,14 +90,10 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       }
     ]
 
-  $scope.modalOptions =
-    backdropFade: true
-    dialogFade: true
-
   $scope.ingredientChanged =  (ingredient) ->
     urlService.fixAmazonLink(ingredient)
     $scope.dataLoading += 1
-    ingredient.$update
+    ingredient.$update  # Want to try to move this into the ingredient factory
       id: ingredient.id
       ->
         console.log("INGREDIENT SAVE WIN")
@@ -108,18 +104,22 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         $scope.dataLoading -= 1
         $scope.resetIngredients()
 
+  #Call the service for this to condense the code, but add it to the controller so it can be used in the view
+  $scope.urlAsNiceText = (url) ->
+    urlService.urlAsNiceText(url)
+
   $scope.canMerge = ->
     return false if $scope.gridOptions.selectedItems.length < 2
-    _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo and not val.sub_activity_id), true)
+    _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (! val.sub_activity_id)), true)
 
   $scope.canDelete = ->
     return false if $scope.gridOptions.selectedItems.length == 0
-    _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo and val.use_count == 0 and not val.sub_activity_id), true)
+    _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && val.use_count == 0 and (! val.sub_activity_id)), true)
 
   $scope.deleteSelected = ->
     _.each $scope.gridOptions.selectedItems, (ingredient) ->
       $scope.dataLoading += 1
-      ingredient.$delete
+      ingredient.$delete # Want to try to move this into the ingredient factory
         id: ingredient.id
         ->
           console.log("INGREDIENT DELETE WIN")
@@ -136,17 +136,17 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.mergeSelected = (keeper) ->
     $scope.mergeModalOpen = false
     $scope.dataLoading += 1
-    keeper.$merge({id: keeper.id, merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')},
-    ( ->
-      console.log("INGREDIENT MERGE WIN")
-      $scope.dataLoading -= 1
-      #$scope.refreshIngredients()
-    ),
-    ((err) ->
-      console.log("INGREDIENT MERGE FAIL")
-      _.each(err.data.errors, (e) -> alertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
-      $scope.dataLoading -= 1
-    ))
+    keeper.$merge  # Want to try to move this into the ingredient factory
+      id: keeper.id
+      merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')}
+      ->
+        console.log("INGREDIENT MERGE WIN")
+        $scope.dataLoading -= 1
+        #$scope.refreshIngredients()
+      (err) ->
+        console.log("INGREDIENT MERGE FAIL")
+        _.each(err.data.errors, (e) -> alertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
+        $scope.dataLoading -= 1
 
   $scope.uses = (ingredient) ->
     result = ingredient.activities
@@ -176,7 +176,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     offset = $scope.ingredients.length
     num ||= $scope.perPage
 
-    Ingredient.query
+    Ingredient.query  # Want to try to move this into the ingredient factory
       search_title: ($scope.searchString || "")
       include_sub_activities: $scope.includeRecipes
       sort: $scope.sortInfo.fields[0]
@@ -204,10 +204,10 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.$watch 'searchString',  (new_val) ->
     # Don't search til the string has been stable for a bit, to avoid bogging down
-    $timeout ( ->
+    $timeout ->
       if new_val == $scope.searchString
         $scope.resetIngredients()
-    ), 250
+    , 250
 
   # Doc says to just watch sortInfo but not so much
   prevSortInfo = {}
@@ -238,15 +238,5 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     idx = ingredient.title.indexOf(",")
     return null if idx < 0
     $.trim(ingredient.title.substring(idx + 1))
-
-  $scope.confirmNo = ->
-    $scope.confirmAction = null
-
-  $scope.confirmYes = ->
-    act = $scope.confirmAction
-    $scope.confirmAction = null
-    console.log("ConfirmYes")
-    console.dir(act)
-    eval("$scope." + act)
 ]
 
