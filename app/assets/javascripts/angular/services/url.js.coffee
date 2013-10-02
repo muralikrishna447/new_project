@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').service 'urlService', ->
+angular.module('ChefStepsApp').service 'csUrlService', ->
   # From http://stackoverflow.com/questions/5999118/add-or-update-query-string-parameter
   this.updateQueryStringParameter = (uri, key, value) ->
     re = new RegExp("([?|&])" + key + "=.*?(&|$)", "i")

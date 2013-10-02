@@ -37,3 +37,22 @@ This file is precompiled, then synced with the cdn as navigation_bootstrap.js
 To get vanilla to use this file, it is included in the Forum > Dashboard > Customize Theme
 
 Make sure to use the latest uploaded version of navigation_bootstrap.js.  You may need to go to CloudFront account to find this.
+
+
+
+# Dan's Notes on E2E testing
+
+To perform E2E testing on angular you need to have node.js installed if you don't already.  You will also need the Karma test runner installed, as well as the ng-scenario and coffee-preprocessor plugins for karma.  You can install them with the following commands:
+```bash
+brew install nodejs
+npm install karma
+npm install karma-ng-scenario
+npm install karma-coffee-preprocessor
+```
+
+Once they are installed you can run the command:
+```bash
+karma start config/karma.js
+```
+
+This will start the server.  It will automatically watch all files in the spec/javascripts/e2e folder and run the tests when you save a file.

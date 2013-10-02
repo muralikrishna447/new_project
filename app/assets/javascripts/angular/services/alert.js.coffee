@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').service 'alertService',  ->
+angular.module('ChefStepsApp').service 'csAlertService',  ->
   this.addAlert = (alert, $scope, $timeout) ->
     $scope.alerts.push(alert)
     $timeout ->

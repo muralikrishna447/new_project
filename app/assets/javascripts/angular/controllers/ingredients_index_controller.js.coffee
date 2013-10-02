@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "alertService", "Ingredient", "urlService", ($scope, $resource, $http, $filter, $timeout, alertService, Ingredient, urlService) ->
+angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Ingredient", "csUrlService", ($scope, $resource, $http, $filter, $timeout, csAlertService, Ingredient, csUrlService) ->
   $scope.searchString = ""
   $scope.dataLoading = 0
   $scope.cellValue = ""
@@ -68,7 +68,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         displayName: "Affiliate Link"
         width: "***"
         enableCellEdit: true
-        sortFn: urlService.sortByNiceURL
+        sortFn: csUrlService.sortByNiceURL
         cellTemplate: '<div class="ngCellText colt{{$index}}"><span ng-bind-html-unsafe=\"urlAsNiceText(row.getProperty(col.field))\"/></div>'
         editableCellTemplate: "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
       }
@@ -91,7 +91,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     ]
 
   $scope.ingredientChanged =  (ingredient) ->
-    urlService.fixAmazonLink(ingredient)
+    csUrlService.fixAmazonLink(ingredient)
     $scope.dataLoading += 1
     ingredient.$update  # Want to try to move this into the ingredient factory
       id: ingredient.id
@@ -100,13 +100,13 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         $scope.dataLoading -= 1
       (err) ->
         console.log("INGREDIENT SAVE FAIL")
-        _.each(err.data.errors, (e) -> alertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
+        _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
         $scope.dataLoading -= 1
         $scope.resetIngredients()
 
   #Call the service for this to condense the code, but add it to the controller so it can be used in the view
   $scope.urlAsNiceText = (url) ->
-    urlService.urlAsNiceText(url)
+    csUrlService.urlAsNiceText(url)
 
   $scope.canMerge = ->
     return false if $scope.gridOptions.selectedItems.length < 2
@@ -114,7 +114,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.canDelete = ->
     return false if $scope.gridOptions.selectedItems.length == 0
-    _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && val.use_count == 0 and (! val.sub_activity_id)), true)
+    _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (val.use_count == 0) && (! val.sub_activity_id)), true)
 
   $scope.deleteSelected = ->
     _.each $scope.gridOptions.selectedItems, (ingredient) ->
@@ -130,7 +130,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
           $scope.$apply() if ! $scope.$$phase
         (err) ->
           console.log("INGREDIENT DELETE FAIL")
-          _.each(err.data.errors, (e) -> alertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
+          _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
           $scope.dataLoading -= 1
 
   $scope.mergeSelected = (keeper) ->
@@ -145,7 +145,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         #$scope.refreshIngredients()
       (err) ->
         console.log("INGREDIENT MERGE FAIL")
-        _.each(err.data.errors, (e) -> alertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
+        _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
         $scope.dataLoading -= 1
 
   $scope.uses = (ingredient) ->
@@ -222,14 +222,8 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.$on 'ngGridEventScroll', ->
     $scope.loadIngredients()
 
-  # DRY up with activity controller. Make a service or something.
-  # $scope.addAlert = (alert) ->
-  #   $scope.alerts.push(alert)
-  #   $timeout ->
-  #     $("html, body").animate({ scrollTop: -500 }, "slow")
-
   $scope.closeAlert = (index) ->
-    alertService.closeAlert(index, $scope)
+    csAlertService.closeAlert(index, $scope)
 
   $scope.setMergeKeeper = (ingredient) ->
     $scope.mergeKeeper = ingredient
