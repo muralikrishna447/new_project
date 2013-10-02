@@ -49,16 +49,7 @@
               %div(ng-switch-when='Upload')
                 = render 'assembly_upload', assembly: @course
 
-
-    .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
-      .activity-loading-spinner
-        .span12
-          %i.icon-spinner.icon-spin
-
-  .prev-next-group.container-fluid.well-gray.section
-    .row-fluid
-      .container
-        .row
+        .row-fluid.section
           .span12
             .course-nav-bottom
               .course-nav-bottom-left
@@ -72,6 +63,13 @@
               .course-nav-bottom-right
                 .btn.btn-primary(ng-show="nextInclusion()" ng-click="loadNextInclusion()")
                   NEXT
+
+    .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
+      .activity-loading-spinner
+        .span12
+          %i.icon-spinner.icon-spin
+
+
 
 = content_for :footer do
   = render 'layouts/footer'
