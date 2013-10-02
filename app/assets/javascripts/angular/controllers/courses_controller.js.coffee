@@ -8,8 +8,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $scope.course = data
       console.log $scope.course.assembly_inclusions
       console.log $scope.course.assembly_inclusions[0].includable_id
-      # Special treatment for upload
-      $scope.course.assembly_inclusions.push({"includable_id" : "Upload", "includable_type" : "Upload", "includable_title" : "Upload Your Own"})
+      addUploadToEnd()
       $scope.flatInclusions = $scope.computeflatVisibleInclusions($scope.course.assembly_inclusions)
       $scope.loadInclusion($scope.flatInclusions[0].includable_id)
 
@@ -22,7 +21,6 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     return if includable_type == "Assembly"
 
     console.log "switching to " + includable_type + 'with id ' + includable_id
-
     switch includable_type
       when 'Upload'
         $scope.view_inclusion = 'Upload'
@@ -71,4 +69,12 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.isCollapsed = (includable_id) ->
     $scope.collapsed[includable_id]
 
+  addUploadToEnd = ->
+    # Special treatment for upload - put it at end of syllabus or end of last group
+    dummy_upload = {"includable_id" : "Upload", "includable_type" : "Upload", "includable_title" : "Upload Your Own"}
+    last_inclusion = $scope.course.assembly_inclusions[$scope.course.assembly_inclusions.length - 1]
+    if last_inclusion.includable_type == "Assembly"
+      last_inclusion.includable.assembly_inclusions.push(dummy_upload)
+    else
+      $scope.course.assembly_inclusions.push()
 ]
