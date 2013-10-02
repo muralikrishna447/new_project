@@ -24,9 +24,6 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     console.log "switching to " + includable_type + 'with id ' + includable_id
 
     switch includable_type
-      when 'Quiz'
-        $scope.view_inclusion = [includable_type, includable_id].join('_')
-        $scope.view_inclusion_id = includable_id
       when 'Upload'
         $scope.view_inclusion = 'Upload'
       else
