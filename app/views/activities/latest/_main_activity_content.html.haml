@@ -1,10 +1,10 @@
 .spier(scroll-spy offset="240")
-  .row.relative
+  .row.relative(ng-hide="heroDisplayType() == 'none'")
     .section.span12.ng-cloak.assembly-activity#video-ingredient-unit
-      .hero-video(ng-show="heroDisplayType() == 'video'")
+      .hero-video
         = render 'activities/hero_visual'
         
-  .row.main-content-container
+  .row.main-content-container(ng-show="!!activity.description")
     .span6
       = render 'activities/latest/description'
     .span6
