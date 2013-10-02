@@ -14,8 +14,9 @@
       %h3 Add a photo
       %p Click the button below to show a picture along with your creation.
       %p
-        %div(ng-show='upload.image_src.length > 0')
-          %img(ng-src="{{upload.image_src}}")
+        %div(ng-switch='upload.image_src.length > 0')
+          %div(ng-switch-when="true")
+            %img(ng-src="{{upload.image_src}}")
         %input(type='hidden' ng-model='upload.image_id' required)
         .btn.btn-secondary(ng-click='addPhoto()')
           %span(ng-hide="upload.image_id")

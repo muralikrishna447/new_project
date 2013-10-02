@@ -1,3 +1,6 @@
+- content_for :title, "#{@course.title.html_safe} - Course"
+- content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
+
 .assembly-course-landing
   .full-stripe
     .container
@@ -7,8 +10,8 @@
             %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
 
 .container.assembly-course-landing
-  .row.section
-    .span8
+  .row
+    .span8.section
       %ul.nav.nav-tabs.underline
         %li.active
           = link_to 'Overview', '#overview', data: {toggle: 'tab'}
@@ -33,29 +36,22 @@
           .row
             .span4
               %h4 Equipment you'll need
-              %ul.grid
-                - 3.times do
-                  %li
-                    %figure
-                      %div
-                        = image_tag ('http://placehold.it/450x375')
-                      %figcaption
-                        %h3 Equipment
+              %ul.unstyled
+                - @course.required_equipment.each do |equipment_item|
+                  - if equipment_item.product_url?
+                    %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
+                  - else
+                    %li= equipment_item.title
             .span4
               %h4 Ingredients you'll need
-              %ul.grid
-                - 3.times do
-                  %li
-                    %figure
-                      %div
-                        = image_tag ('http://placehold.it/450x375')
-                      %figcaption
-                        %h3 Ingredients
+              %ul.unstyled
+                - @course.combined_ingredients.each do |ingredient_item|
+                  %li= ingredient_item[0][0].title
         - if @course.testimonials 
           .tab-pane#testimonials
             = @course.testimonials.content
 
-    .span3.offset1
+    .span3.offset1.section
       .buy-box
         = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), completed: current_user && current_user.completed_course?(@assembly)
         .text-center.section
@@ -88,8 +84,9 @@
       = @course.testimonials.content if @course.testimonials
   .row
     .span12
-      %h4 Student Projects
-      - @course.uploads.each do |upload|
-        = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+      - if @course.uploads.any?
+        %h4 Student Projects
+        - @course.uploads.each do |upload|
+          = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
 
 = render 'layouts/footer'

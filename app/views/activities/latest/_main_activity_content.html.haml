@@ -2,7 +2,7 @@
   .row.relative
     .section.span12.ng-cloak.assembly-activity#video-ingredient-unit
       .hero-video(ng-show="heroDisplayType() == 'video'")
-        = render 'activities/hero_visual', activity: activity
+        = render 'activities/hero_visual'
         
   .row.main-content-container
     .span6
@@ -15,7 +15,7 @@
         .span3
           = render 'activities/basic_edit_pair', model: "activity.yield", name: "Yield", add_text: "Add yield info...", itemprop: "recipeYield"
           = render 'activities/basic_edit_pair', model: "activity.timing", name: "Timing", add_text: "Add timing info..."
-          = render 'activities/activity_relationships', activity: activity
+          = render 'activities/activity_relationships'
 
   .row.step-container
     .span12.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
