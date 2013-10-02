@@ -34,16 +34,15 @@
 
       .span12.relative.course-content(ng-class="{'menu-showing': showCourseMenu}")
         .tab-content(ng-switch on='view_inclusion')
-          - @course.assembly_inclusions.each do |inclusion|
-            - case inclusion.includable_type
-            - when 'Quiz'
-              %div(ng-switch-when="Quiz_#{inclusion.includable_id}")
-                = render 'activities/quiz_content', course_quiz: inclusion.includable
+          %div(ng-switch-when="Quiz")
+            .row-fluid
+              .span12
+                %iframe#course-quiz(ng-src="{{'/quizzes/' + currentIncludable.includable_id}}" style='width: 100%; border: none; min-height: 1000px; overflow: hidden;' onload= "window.adjust_iframe_height(this);")
 
           %div(ng-switch-when="Activity")
             %div(ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
               %div
-                = render 'activities/latest/main_activity_content', activity: @course.assembly_inclusions[0].includable
+                = render 'activities/latest/main_activity_content'
 
           %div(ng-switch-when='Upload')
             = render 'assembly_upload', assembly: @course
