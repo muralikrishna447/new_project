@@ -49,20 +49,21 @@
               %div(ng-switch-when='Upload')
                 = render 'assembly_upload', assembly: @course
 
-        .row-fluid.section
-          .span12
-            .course-nav-bottom
-              .course-nav-bottom-left
-                .btn.btn-primary(ng-show="prevInclusion()" ng-click="loadPrevInclusion()")
-                  PREVIOUS
+        .prev-next-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
+          .row-fluid.section
+            .span12
+              .course-nav-bottom
+                .course-nav-bottom-left
+                  .btn.btn-primary(ng-show="prevInclusion()" ng-click="loadPrevInclusion()")
+                    PREVIOUS
 
-              .course-nav-bottom-center
-                %h3(ng-bind-html-unsafe="currentIncludable.includable_title")
-                %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
+                .course-nav-bottom-center
+                  %h3(ng-bind-html-unsafe="currentIncludable.includable_title")
+                  %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
 
-              .course-nav-bottom-right
-                .btn.btn-primary(ng-show="nextInclusion()" ng-click="loadNextInclusion()")
-                  NEXT
+                .course-nav-bottom-right
+                  .btn.btn-primary(ng-show="nextInclusion()" ng-click="loadNextInclusion()")
+                    NEXT
 
     .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
       .activity-loading-spinner
@@ -71,7 +72,8 @@
 
 
 
-= content_for :footer do
-  = render 'layouts/footer'
+
+  .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
+    = render 'layouts/footer'
 
              
