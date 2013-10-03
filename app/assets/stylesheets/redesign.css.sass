@@ -1200,7 +1200,10 @@ a:hover
 .navbar-fixed-top
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
-
+  position: fixed
+  margin-left: 0px
+  margin-right: 0px
+  @include transition(all 300ms)
 
   .navbar-inner
     box-shadow: none
