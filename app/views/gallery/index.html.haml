@@ -56,7 +56,7 @@
 
   .row.gallery-contents(ng-click="collapse_filters = true")
     .span12
-      %div.pull-left(galleryscroll='load_data()')
+      %div(galleryscroll='load_data()')
         .media-box-3(ng-cloak='' ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
           %a(href= 'activities/{{activity.slug}}')
             .media-box-3-title
