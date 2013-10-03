@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path, that will be used to resolve files and exclude
-    basePath: '..',
+    basePath: '../..',
 
 
     // frameworks to use
@@ -69,8 +69,8 @@ module.exports = function(config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: [
-      'PhantomJS',
-      // "Chrome"
+      // 'PhantomJS',
+      "Chrome"
     ],
 
 

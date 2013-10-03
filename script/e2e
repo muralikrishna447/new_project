@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+if ! type "node" > /dev/null; then
+  echo "You need to have Node.js installed"
+  echo
+  echo "On OSX you can do this by typing"
+  echo "$ brew install nodejs"
+  echo
+  echo "On Ubuntu you can do this by typing"
+  echo "$ sudo apt-get install nodejs"
+  exit 1
+fi
+
+if [ ! -d node_modules ]; then
+  echo "You don't have the node modules installed.  Beginning installation:"
+  echo
+  echo "Installing karma"
+  npm install -g karma
+
+  echo "Installing karma-ng-scenario"
+  npm install -g karma-ng-scenario
+
+  echo "Installing karma-coffee-preprocessor"
+  npm install -g karma-coffee-preprocessor
+fi
+
+
