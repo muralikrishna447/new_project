@@ -1,0 +1,21 @@
+- content_for :title, "#{@course.title.html_safe} - Course"
+- content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
+
+.container.pre-registration
+  .row.section
+    .span6.offset3.text-center
+      .well
+        %h2 Coming Soon: #{@course.title}
+        If you'd like to be notified when this course is available for registration, enter your email below.
+        %form.form-horizontal{action: "http://www.aweber.com/scripts/addlead.pl ", method: "post"}
+          %fieldset
+            %input{name: "listname", type: "hidden", value: @list_name}/
+            %input{name: "redirect", type: "hidden", value: "http://www.chefsteps.com/pages/thank-you-preregister"}/
+            %input{name: "meta_adtracking", type: "hidden", value: "prereg page"}/
+            %input{name: "meta_message", type: "hidden", value: "1"}/
+            %input{name: "meta_required", type: "hidden", value: "email"}/
+            %input{name: "meta_forward_vars", type: "hidden", value: "1"}/
+            %input.input-large{name: "email", type: "text", value: "", placeholder: "Enter your email address"}/
+            %input.btn.btn-primary{name: "submit", type: "submit", value: "Notify Me"}/
+
+ 

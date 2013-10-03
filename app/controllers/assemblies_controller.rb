@@ -36,10 +36,26 @@ class AssembliesController < ApplicationController
     render :json => @assembly
   end
 
+
 private
 
   def load_assembly
-    @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
+
+    begin
+      @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
+
+    rescue
+      # If they are looking for a course that isn't yet published, take them to a page where
+      # they can get on an email list to be notified when it is available.
+      @course = Assembly.find(params[:id])
+      if @course && @course.assembly_type == "Course" && (! @course.published?)
+        @list_name = ("csp-" + @course.slug)[0...15]
+        render "pre_registration"
+        return false
+      end
+      raise
+    end
+
     instance_variable_set("@#{@assembly.assembly_type.underscore}", @assembly)
   end
 end
