@@ -6,7 +6,7 @@
 .controller(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak)
   .container.course-assembly-container
 
-    .course-nav-wrapper
+    .course-nav-wrapper(data-spy='affix' data-offset-top='56')
       .course-nav-hamburger(ng-click="showCourseMenu = ! showCourseMenu")
         %i.icon-align-justify
            
