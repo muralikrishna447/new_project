@@ -4,7 +4,7 @@
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
 .controller(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak)
-  .container
+  .container.course-assembly-container
 
     .course-nav-wrapper
       .course-nav-hamburger(ng-click="showCourseMenu = ! showCourseMenu")
