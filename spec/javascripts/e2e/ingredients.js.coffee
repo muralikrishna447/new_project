@@ -21,7 +21,7 @@ describe "IngredientIndexController", ->
     sleep 0.25
     expect(element(".modal").count()).toBe(0)
 
-  iit "should bring up a modal when you click on density", ->
+  it "should bring up a modal when you click on density", ->
     input("searchString").enter("Achiote paste")
     el = ".ngRow:first"
     element(el + " a[ng-click='editDensity(row.entity)']").click()
@@ -30,4 +30,9 @@ describe "IngredientIndexController", ->
     element(".modal cseditpairshow:first a").click()
     expect(element(".modal cseditpairshow:first a").count()).toBe(0)
     expect(element(".modal cseditpairedit:first input").count()).toBe(1)
+    input("newDensityValue").enter("1")
+    element(".modal-footer button").click()
+    sleep 0.25
+    expect(element(".modal").count()).toBe(0)
+    expect(element(el + " a[ng-click='editDensity(row.entity)']").html()).toContain("68")
 
