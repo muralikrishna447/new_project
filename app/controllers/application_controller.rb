@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     if request.referer == sign_in_url
       super
     else
-      if request.referer && URI(request.referer).host == URI(root_url).host
+      if request.referer && URI(request.referer).host == URI(root_url).host && request.referer != sign_in_url && request.referer != new_user_session_url
         stored_location_for(resource) || request.referer || user_profile_path(resource)
       else
         root_url
