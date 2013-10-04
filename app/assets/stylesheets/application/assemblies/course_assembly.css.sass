@@ -7,12 +7,12 @@
   height: 100%
   width: 320px
   margin-left: -24px
-  //padding-top: 57px
   @include boxsizing
   .course-nav-hamburger
     //position: fixed
     // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
     -webkit-transform: translateZ(0)
+    -webkit-backface-visibility: hidden
     //top: 75px
     //margin-left: 50%
     //left: -636px
@@ -151,7 +151,7 @@
  
 #step-dots
   position: fixed
-
+  -webkit-backface-visibility: hidden
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
   width: 15px
@@ -306,7 +306,6 @@
       padding-left: 10px
       left: 0px
       width: 100%
-      top: 0px
       .course-nav-slideout
         width: 320px
     .course-content-wrapper
@@ -324,7 +323,6 @@
       padding-left: 10px
       left: 0px
       width: 100%
-      top: 0px
       .course-nav-slideout
         width: 320px
     .course-content-wrapper
