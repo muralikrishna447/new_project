@@ -953,7 +953,7 @@ a:hover
 /* Buttons */
 
 .btn
-  @include raleway
+  @include gotham
   i
     line-height: 20px
 
@@ -1955,6 +1955,11 @@ h1, h2, h3, h4
   @include gotham
   color: inherit
   letter-spacing: -1px
+
+body 
+  input, .btn, ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, input:-moz-placeholder
+    @include gotham
+
 
 .nav
   @include gotham
