@@ -1,12 +1,22 @@
 affixElement = ->
   affix = $('.cs-affix')
   affix_offset = affix.data('offset-top')
-  if $(window).scrollTop() >= affix_offset
-    affix.css('position', 'fixed')
-    affix.css('top', '0px')
+  window_width = $(window).width()
+  console.log window_width
+  if window_width < 979
+    if $(window).scrollTop() >= affix_offset
+      affix.css('position', 'fixed')
+      affix.css('top', '0px')
+    else
+      affix.css('position', 'absolute')
+      affix.css('top', '56px')
   else
-    affix.css('position', 'absolute')
-    affix.css('top', '56px')
+    if $(window).scrollTop() >= affix_offset
+      affix.css('position', 'fixed')
+      affix.css('top', '56px')
+    else
+      affix.css('position', 'fixed')
+      affix.css('top', '56px')
     
 $ ->
   $(window).hammer({drag_min_distance: 1}).on 'drag', (e) ->
@@ -18,6 +28,9 @@ $ ->
     e.preventDefault()
 
   $(window).hammer().on 'scroll', (e) ->
+    affixElement()
+
+  $(window).resize ->
     affixElement()
 
   $('#cs-navigation').on 'show', ->
