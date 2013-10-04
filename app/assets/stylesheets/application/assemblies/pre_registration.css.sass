@@ -1,5 +1,6 @@
 .pre-registration
   margin-top: 20px
+  text-align: center
   form
     margin-top: 20px
     input, .btn
@@ -12,3 +13,22 @@
     margin-top: -40px
     z-index: -1
     pointer-events: none
+
+  @media (max-width: 768px)
+    form
+      input
+        width: 60%
+        display: block
+        margin-left: auto
+        margin-right: auto
+        margin-bottom: 10px
+      .btn
+        width: 25%
+
+  @media (max-width: 480px)
+    form
+      .btn
+        width: 40%
+    .background
+      margin-top: -10px
+
