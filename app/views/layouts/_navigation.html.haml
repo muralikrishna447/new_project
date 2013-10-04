@@ -18,7 +18,7 @@
             #nav-edit-toolbar(collapse="!editMode")
               = render 'activities/edit_toolbar'
           %div(ng-style="toolbarBonusStyle()"){collapse: ("editMode" if @include_edit_toolbar)}
-            .nav-collapse.collapse.pull-right
+            .nav-collapse.collapse.pull-right#cs-navigation
               %ul.nav
                 %li.dropdown
                   .nav-item-border
