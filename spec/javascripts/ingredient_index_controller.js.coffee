@@ -43,7 +43,7 @@ describe "IngredientsIndexController", ->
       $scope: scope
       # alertService: alertService
       # Ingredient: Ingredient
-      urlService: urlService
+      csUrlService: urlService
   ));
 
   describe "#displayDensity", ->

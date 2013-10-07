@@ -31,8 +31,8 @@ angular.module('ChefStepsApp').service 'csUrlService', ->
       "&nbsp;"
 
   this.sortByNiceURL = (a, b) ->
-    na = urlAsNiceText(a)
-    nb = urlAsNiceText(b)
+    na = this.urlAsNiceText(a)
+    nb = this.urlAsNiceText(b)
     return 0 if na == nb
     return 1 if na > nb
     -1

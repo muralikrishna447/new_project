@@ -18,10 +18,10 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'http://localhost:3000/assets/angular.js',
+      'http://localhost:3001/assets/angular.js',
       // 'http://localhost:3000/assets/angular-scenario.js',
       "http://code.jquery.com/jquery-1.10.1.min.js",
-      'http://localhost:3000/assets/application.js',
+      'http://localhost:3001/assets/application.js',
       'spec/javascripts/e2e/**/*.js.coffee',
       { pattern: 'app/assets/javascripts/*.js',
         watched: true,
@@ -86,7 +86,7 @@ module.exports = function(config) {
 
 
     proxies: {
-      '/': 'http://localhost:3000/'
+      '/': 'http://localhost:3001/'
     }
 
   });

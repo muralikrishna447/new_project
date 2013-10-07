@@ -52,7 +52,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         width: "****"
         enableCellEdit: true
         cellTemplate: '<div class="ngCellText colt{{$index}}">{{row.getProperty(col.field)}}{{row.getProperty("sub_activity_id") && " [RECIPE]"}}</div>'
-        editableCellTemplate: "<input ng-readonly=\"row.getProperty('sub_activity_id')\"  ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
+        editableCellTemplate: "<input class='ingredient-edit-inpput' ng-readonly=\"row.getProperty('sub_activity_id')\"  ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
       }
       {
         field: "product_url"
@@ -70,6 +70,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         enableCellEdit: true
         sortFn: csUrlService.sortByNiceURL
         cellTemplate: '<div class="ngCellText colt{{$index}}"><span ng-bind-html-unsafe=\"urlAsNiceText(row.getProperty(col.field))\"/></div>'
+        # cellTemplate: "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
         editableCellTemplate: "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
       }
       {
