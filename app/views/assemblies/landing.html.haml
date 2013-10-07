@@ -58,9 +58,10 @@
           %h4= "#{@course.enrollments.count} Enrolled"
         %h5 Course Includes:
         %ul
-          %li Full Access
+          %li Unlimited Access
           %li= "#{@course.video_count} HD Videos"
-          %li= "#{@course.assembly_inclusions.count} Lessons"
+          -# Pulling this because it lessons doesn't sound right when some parts are recipes etc.
+          -# %li= "#{@course.assembly_inclusions.count} Lessons"
           %li Q&A from the chefs
         %h4 100% satisfaction guaranteed or your money back
 
