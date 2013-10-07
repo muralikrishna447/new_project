@@ -5,6 +5,10 @@
 
 body
   position: relative
+  overflow-x: hidden
+
+a
+  cursor: pointer
 
 .top-container
   margin-top: 76px
@@ -952,7 +956,7 @@ a:hover
 /* Buttons */
 
 .btn
-  @include raleway
+  @include gotham
   i
     line-height: 20px
 
@@ -1199,7 +1203,12 @@ a:hover
 .navbar-fixed-top
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
-
+  margin-bottom: 0px
+  //position: fixed
+  //margin-left: 0px
+  //margin-right: 0px
+  //-webkit-backface-visibility: hidden
+  @include transition(all 300ms)
 
   .navbar-inner
     box-shadow: none
@@ -1949,6 +1958,11 @@ h1, h2, h3, h4
   @include gotham
   color: inherit
   letter-spacing: -1px
+
+body 
+  input, .btn, ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, input:-moz-placeholder
+    @include gotham
+
 
 .nav
   @include gotham

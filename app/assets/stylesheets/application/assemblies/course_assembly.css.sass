@@ -1,112 +1,162 @@
 @import 'mixins'
 @import 'application/custom_mixins'
 
-.course-nav-hamburger
-  //position: fixed
-  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
-  -webkit-transform: translateZ(0)
-  //top: 75px
-  //margin-left: 50%
-  //left: -636px
-  //font-size: 24px
-  //color: $orange
+.course-nav-wrapper
   position: fixed
-  color: $orange
-  font-size: 24px
-  margin-top: 10px
-  z-index: 9999
-
-.course-nav-slideout
-  // position: fixed
-  // height: 100%
-  // width: 320px
-  // top: 0
-  // padding-top: 66px
-  // margin-left: 50%
-  // left: -585px
-  // background-color: white
-  // border-right: 1px solid $light-gray
-  position: fixed
-  width: 320px
-  margin-left: 40px
-  border-right: 1px solid $light-gray
+  top: 56px
   height: 100%
+  width: 320px
+  margin-left: -28px
+  @include boxsizing
+  .course-nav-hamburger
+    //position: fixed
+    // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+    -webkit-transform: translateZ(0)
+    -webkit-backface-visibility: hidden
+    //top: 75px
+    //margin-left: 50%
+    //left: -636px
+    //font-size: 24px
+    //color: $orange
+    //position: fixed
+    float: left
+    z-index: 9999
+    margin: 10px 0px 10px
+    color: $orange
+    background: white
+    font-size: 24px
+    width: 25px
+    height: 22px
+    @include boxsizing
+    .hamburger-bar
+      width: 28px
+      height: 5px
+      border-radius: 1px
+      margin-bottom: 4px
+      background: $orange
+    &:hover
+      cursor: pointer
+      .hamburger-bar
+        background: $dark-orange
 
-  h4
-    padding-left: 10px
-    text-transform: uppercase
-
-  ul
-    margin-top: 10px
-    border-bottom: 1px solid $light-gray
-    width: 100%
+  .course-nav-slideout
+    // position: fixed
+    // height: 100%
+    // width: 320px
+    // top: 0
+    // padding-top: 66px
+    // margin-left: 50%
+    // left: -585px
+    // background-color: white
+    // border-right: 1px solid $light-gray
+    float: left
+    position: absolute
+    top: 0px
+    width: 295px
+    height: 100%
+    border-right: 1px solid $light-gray
+    overflow-y: auto
+    overflow-x: hidden
+    -webkit-overflow-scrolling: touch
+    opacity: 0
+    margin-left: -345px
+    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
     @include boxsizing
 
-    li
-      @include boxsizing
+    h4
+      margin: 0px
+      padding: 10px 0px 0px 10px
+      text-transform: uppercase
+
+    ul
+      margin-top: 10px
+      border-bottom: 1px solid $light-gray
       width: 100%
-      border-top: 1px solid $light-gray
-      cursor: pointer
-      color: darkgray
+      @include boxsizing
 
-      a
-        line-height: 36px
-        margin-left: 10px
-        color: inherit
+      li
+        @include boxsizing
+        width: 100%
+        border-top: 1px solid $light-gray
+        cursor: pointer
+        color: darkgray
 
-    li:hover
-      color: #333
-      background-color: $offwhite
+        a
+          line-height: 36px
+          margin-left: 10px
+          color: inherit
 
-    li.forum
-      a
-        color: $orange
-        text-transform: uppercase
+      li:hover
+        color: #333
+        background-color: $offwhite
 
-    li.active
-      color: #333
-      background-color: $light-gray
+      li.forum
+        a
+          color: $orange
+          text-transform: uppercase
 
-    .nested
-      border-top: none
-      ul
-        margin-left: 20px
-        margin-top: 0px
-        border-bottom: none
-        overflow: hidden
-        @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-        max-height: 300px
+      li.active
+        color: #333
+        background-color: $light-gray
 
-        li
-          border-top: none
+      .nested
+        border-top: none
+        ul
+          margin-left: 20px
+          margin-top: 0px
+          border-bottom: none
+          overflow: hidden
+          @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+          max-height: 300px
 
-        li.active, li:hover
-          color: #333
-          font-weight: bold
-          background-color: inherit
+          li
+            border-top: none
 
-        .hitbox:hover
-          color: #333
+          li.active, li:hover
+            color: #333
+            font-weight: bold
+            background-color: inherit
 
-      ul.collapsed
-        max-height: 0
+          .hitbox:hover
+            color: #333
 
+        ul.collapsed
+          max-height: 0
 
+.course-nav-wrapper.affix
+  position: fixed
+  top: 56px
 
 .course-content-wrapper
-  padding-left: 20px
   .container-fluid
     margin-left: 0px
     margin-right: 0px
+    .row-fluid [class*="span"]
+      min-height: 0px
     .course-content
-      // z-index: 1
-      background-color: white
+      z-index: 1
+      //background-color: white
       @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
       .row
         margin-left: 0px
+      .span7
+        margin-left: 0px
+      .main-content-container
+        .row
+          .span3
+            width: 100%
+            margin-left: 0px
+      .step-ingredients-source
+        margin-bottom: 0px
+      #video-ingredient-unit
+        min-height: 0px
 
 .course-content.menu-showing
-  left: 340px
+  left: 320px
+
+.course-nav-slideout.menu-slideout
+  opacity: 1
+  margin-left: 28px
 
 .lessons-heading
   color: $orange
@@ -114,58 +164,44 @@
  
 #step-dots
   position: fixed
-
+  -webkit-backface-visibility: hidden
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
   width: 15px
   top: 115px
   //margin-left: 50%
   //left: -634px
-  margin-left: -38px
+  margin-left: -39px
   @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
 
+
   li
-    height: 20px
+    height: 21px
 
-  li a
-    color: lighten($orange, 25%)
-    font-size: 10px
+  li a .step-dot-circle
+    background-color: lighten($orange, 25%)
     @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-    padding-left: 3px
-    padding-top: 2px
+    width: 11px
+    height: 11px
+    border-radius: 50%
 
-  li a.active
-    color: $orange
-    font-size: 15px
-    padding-left: 0px
-    padding-top: 0px
-
-  // This was from a previous iteration where we wanted just a couple of different
-  // sized dots right next to the active one
-  //li a.active-neighbor
-    //color: lighten($orange, 25%)
-    //display: block
-
-  // li a.active-more, li a.basic, li a.active-neighbor
-  //   color: lighten($orange, 25%)
-  //   margin-left: 3px 
-  //   font-size: 10px
-  //   display: block
+  li a.active .step-dot-circle
+    background-color: $orange
+    -webkit-transform: translateZ(0)
+    @include transform(scale(1.36))
    
-  li.intro a
+  li.intro a .step-dot-circle
     font-size: 15px
-    color: $light-gray
-    padding-left: 0px
-    padding-top: 0px
+    background-color: $light-gray
+    @include transform(scale(1.36))
 
-  li.intro a.active
-    color: #555
-    display: block
-
+  li.intro a.active .step-dot-circle
+    background-color: #555
+ 
   a:hover
     background-color: inherit
 
-#step-dots.menu-showing
+.hide-when-menu-showing
   opacity: 0
 
 .assembly-activity
@@ -226,7 +262,11 @@
       width: 200px
       margin: 0 auto
 
+.footer-group
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
 .prev-next-group
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
   padding-top: 50px
   padding-bottom: 76px
   margin-top: 65px
@@ -239,29 +279,71 @@
     font-size: 120%
     padding: 12px 12px
 
+  .course-nav-bottom-left
+    left: 0
+  .course-nav-bottom-right
+    right: 0
+
+@media (max-width: 1225px)
+  .course-nav-wrapper
+    margin-left: 0px
+
+  .course-content-wrapper
+    margin-left: 25px
+
 @media (min-width: 1200px)
   .course-content-wrapper
     .course-content
       .row
         margin-left: 0px
 
+@media (max-width: 979px)
+  .navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner
+    padding: 0px
+
+  .course-nav-wrapper
+    position: absolute
+
+  .course-nav-wrapper.affix
+    position: fixed
+    top: 0px
+
 @media (max-width: 979px) and (min-width: 768px)
-  .course-content-wrapper
-    .container-fluid
+  .course-assembly-container
+    width: 100%
+    padding-left: 35px
+    @include boxsizing
+    .course-nav-wrapper
+      padding-left: 10px
+      left: 0px
+      width: 100%
+      .course-nav-slideout
+        width: 320px
+    .course-content-wrapper
       margin-left: 0px
-      margin-right: 0px
+      .container-fluid
+        margin-left: 0px
+        margin-right: 0px
+        .row-fluid [class*="span"]
+          min-height: 0px
 
 @media (max-width: 767px)
-  .course-nav-slideout
+  .course-assembly-container
     width: 100%
-  .course-content-wrapper
-    padding-left: 40px
-    margin-top: 30px
-    .container-fluid
+    padding-left: 35px
+    @include boxsizing
+    .course-nav-wrapper
+      padding-left: 10px
+      left: 0px
+      width: 100%
+      .course-nav-slideout
+        width: 320px
+    .course-content-wrapper
       margin-left: 0px
-      margin-right: 0px
-      .course-content.menu-showing
-        left: 100%
-        margin-left: 20px
+      .container-fluid
+        margin-left: 0px
+        margin-right: 0px
+        .row-fluid [class*="span"]
+          min-height: 0px
       #video-ingredient-unit
         min-height: 0px

@@ -1,5 +1,17 @@
-%ul.unstyled
-  - activity.steps.each_with_index do |step, index|
-    %li
-      %h3= step.title
-      %p= step.directions
+/ %ul.unstyled
+/   - activity.steps.each_with_index do |step, index|
+/     %li
+/       %h3= step.title
+/       %p= step.directions
+
+%h1
+  {{activity.title}}
+
+.row
+  .span7
+    %ul.unstyled(ng-repeat="step in activity.steps")
+      %li
+        %h3
+          {{step.title}}
+        %p
+          {{step.directions}}
