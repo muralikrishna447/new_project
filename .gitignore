@@ -21,3 +21,5 @@ db/schema.rb.*
 # Ignore node_modules
 # http://stackoverflow.com/questions/18128863/should-node-modules-folder-be-included-in-the-git-repository
 node_modules
+
+.DS_Store

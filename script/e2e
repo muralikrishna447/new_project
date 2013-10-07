@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+cleanup() {
+    echo "Shutting down rails server"
+    kill -TERM `cat tmp/pids/angular.pid`
+}
+
+trap 'cleanup' SIGINT
+
 if ! type "node" > /dev/null; then
   echo "You need to have Node.js installed"
   echo
@@ -25,4 +32,24 @@ if [ ! -d node_modules ]; then
   npm install -g karma-coffee-preprocessor
 fi
 
+RAILS_ENV=angular bundle exec rake db:reset
+RAILS_ENV=angular bundle exec rake db:test:prepare
+RAILS_ENV=angular bundle exec rails runner -e angular "require Rails.root.join('db', 'seeds')
+ingredient_1 = Ingredient.create(title: 'Salt, Seasalt')
+ingredient_2 = Ingredient.create(title: 'Salt, Kosher')
+activity_1 = Activity.create(title: 'Salt encrusted fish', description: 'Salt dome fish')
+activity_1.update_ingredients([{display_quantity: '10kg', quantity: 10, unit: 'kg', title: 'Salt, Seasalt'}, {display_quantity: '20g', quantity: 20, unit: 'g', title: 'Salt, Kosher'}])
+activity_2 = Activity.create(title: 'Steak', description: 'Super steak')
+activity_2.update_ingredients([{display_quantity: '10kg', quantity: 30, unit: 'g', title: 'Salt, Seasalt'}])
+activity_3 = Activity.create(title: 'Great Recipe', description: 'great recipe')
+ingredient_3 = Ingredient.create(title: 'Recipe', sub_activity_id: activity_3.id)
+ingredient_4 = Ingredient.create(title: 'Salt, Safe to Delete')
+"
+bundle exec thin start -p 3001 -e angular -P tmp/pids/angular.pid -d
+
+echo "Waiting for rails server to startup before karma"
+sleep 30
+
+echo "Starting up Karma"
+karma start spec/javascripts/karma_e2e_config.js
 
