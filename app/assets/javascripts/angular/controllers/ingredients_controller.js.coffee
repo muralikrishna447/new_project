@@ -68,4 +68,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     $scope.temporaryNoAutofocus()
     if $scope.activity.ingredients.length < old_count
       $scope.shouldShowMasterIngredientsRemovedModal = true
+
+  $scope.loadSubrecipe = (id) ->
+    window.location.href = '/activities/' + id unless $scope.overrideLoadActivity?(id) 
 ]

@@ -36,6 +36,12 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     # So sue me
     window.scrollTo(0, 0)
 
+  $scope.overrideLoadActivity = (id) ->
+    if _.find($scope.flatInclusions, (incl) -> incl.includable_id == id)
+      $scope.loadInclusion(id) 
+      return true
+    false
+
   currentIncludableIndex = ->
     return 0 if ! $scope.flatInclusions?
     for incl, idx in $scope.flatInclusions
