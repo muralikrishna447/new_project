@@ -6,7 +6,7 @@
   top: 56px
   height: 100%
   width: 320px
-  margin-left: -24px
+  margin-left: -28px
   @include boxsizing
   .course-nav-hamburger
     //position: fixed
@@ -28,9 +28,16 @@
     width: 25px
     height: 22px
     @include boxsizing
+    .hamburger-bar
+      width: 28px
+      height: 5px
+      border-radius: 1px
+      margin-bottom: 4px
+      background: $orange
     &:hover
       cursor: pointer
-      color: $dark-orange
+      .hamburger-bar
+        background: $dark-orange
 
   .course-nav-slideout
     // position: fixed
@@ -124,6 +131,8 @@
   .container-fluid
     margin-left: 0px
     margin-right: 0px
+    .row-fluid [class*="span"]
+      min-height: 0px
     .course-content
       z-index: 1
       //background-color: white
@@ -137,13 +146,17 @@
           .span3
             width: 100%
             margin-left: 0px
+      .step-ingredients-source
+        margin-bottom: 0px
+      #video-ingredient-unit
+        min-height: 0px
 
 .course-content.menu-showing
   left: 320px
 
 .course-nav-slideout.menu-slideout
   opacity: 1
-  margin-left: 25px
+  margin-left: 28px
 
 .lessons-heading
   color: $orange
@@ -311,6 +324,8 @@
       .container-fluid
         margin-left: 0px
         margin-right: 0px
+        .row-fluid [class*="span"]
+          min-height: 0px
 
 @media (max-width: 767px)
   .course-assembly-container
@@ -328,5 +343,7 @@
       .container-fluid
         margin-left: 0px
         margin-right: 0px
+        .row-fluid [class*="span"]
+          min-height: 0px
       #video-ingredient-unit
         min-height: 0px
