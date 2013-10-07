@@ -2,7 +2,7 @@ class Assembly < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   friendly_id :title, use: [:slugged, :history]
-  attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id
+  attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description
   has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :quizzes, through: :assembly_inclusions, source: :includable, source_type: 'Quiz'
@@ -15,6 +15,8 @@ class Assembly < ActiveRecord::Base
 
   scope :published, where(published: true)
   scope :projects, where(assembly_type: 'Project')
+  scope :pubbed_courses, where(assembly_type: 'Course', published: true)
+  scope :prereg_courses, where(assembly_type: 'Course', published: false, show_prereg_page_in_index: true)
 
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
@@ -63,11 +65,24 @@ class Assembly < ActiveRecord::Base
     Page.find_by_slug(title)
   end
 
+  def leaf_activities 
+    inclusions = assembly_inclusions.to_a
+    3.times do
+      inclusions.map! { |incl| incl.includable_type == "Assembly" ? incl.includable.assembly_inclusions : incl }
+      inclusions.flatten!   
+   end
+   inclusions.select { |incl| incl.includable_type == "Activity" }.map(&:includable)
+  end
+
   def video_count
-    assembly_activities = self.activities.select{|a| a.class.to_s == 'Activity'}
+    assembly_activities = leaf_activities
     activity_videos_count = assembly_activities.select{|a| a.youtube_id? }.count
     activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.count
     activity_videos_count + activity_step_videos_count
+  end
+
+  def leaf_activity_count
+    leaf_activities.count
   end
 
   def badge
