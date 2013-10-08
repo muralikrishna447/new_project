@@ -2,10 +2,10 @@
 @import 'circle_highlight_anim'
 
 
-
 body
   position: relative
   overflow-x: hidden
+  @include primary-font
 
 a
   cursor: pointer
@@ -245,7 +245,6 @@ h4
       border-radius: 0px
       font-size: 16px
       line-height: 20px
-      font-family: 'Raleway', sans-serif
       padding: 10px
       box-shadow: none
       display: block
@@ -256,7 +255,6 @@ h4
         width: 80%
         float: left
       #user-password-show
-        font-family: 'Raleway', sans-serif
         width: 19%
         float: right
         height: 40px
@@ -294,7 +292,6 @@ a:hover
   text-decoration: none
 
 .madlib, .madlib input
-  font-family: "Raleway", san-serif
   font-size: 30px
   font-weight: 500
   -webkit-font-smoothing: antialiased
@@ -837,35 +834,6 @@ a:hover
     width: 100%
     @include boxsizing
   
-.logo-wrapper
-  $width: 7px
-  $height: 10px
-  $spacing: 2px
-  height: 4*$height + 3*$spacing
-  .logo-window
-    box-shadow: $width + $spacing 0px 0px 0px $dark_orange, 2*($width + $spacing) 0px 0px 0px $dark_orange, 0px $height + $spacing 0px 0px $dark_orange, $width + $spacing $height + $spacing 0px 0px $dark_orange, 2*($width + $spacing) $height + $spacing 0px 0px $dark_orange, 0px 2*($height + $spacing) 0px 0px $dark_orange, $width + $spacing 2*($height + $spacing) 0px 0px $dark_orange, 2*($width + $spacing) 2*($height + $spacing) 0px 0px $dark_orange, 0px 3*($height + $spacing) 0px 0px $dark_orange, $width + $spacing 3*($height + $spacing) 0px 0px $dark_orange, 2*($width + $spacing) 3*($height + $spacing) 0px 0px $dark_orange
-    background: $dark_orange
-    width: $width
-    height: $height
-    overflow: hidden
-    float: left
-  .logo-block
-    float: left
-    margin-left: 22px
-    .logo-text
-      font-size: 30px
-      line-height: 29px
-      font-weight: 500
-      font-family: 'Raleway', sans-serif
-      margin-top: 3px
-    .logo-subtext
-      font-size: 14px
-      margin-top: -5px
-      margin-left: 3px
-      font-weight: 400
-      margin-bottom: -1px
-
-
 #hero-container
   padding: 0px
   //max-height: 586px
@@ -938,7 +906,7 @@ a:hover
 .label
   background: $orange
   color: white
-  @include raleway
+  @include primary-font
   font-weight: bold
 
 .label-large
@@ -956,7 +924,7 @@ a:hover
 /* Buttons */
 
 .btn
-  @include gotham
+  @include primary-font
   i
     line-height: 20px
 
@@ -1549,7 +1517,6 @@ csingredienteditpair
   font-size: 38.5px
   line-height: 40px
   width: 100%
-  font-family: 'Raleway', sans-serif
   font-weight: bold
   -webkit-font-smoothing: antialiased
 
@@ -1557,7 +1524,6 @@ csingredienteditpair
   font-size: 18px !important
   line-height: 25px
   width: 100%
-  font-family: 'Raleway', sans-serif
   font-weight: bold
   -webkit-font-smoothing: antialiased
 
@@ -1955,21 +1921,22 @@ csingredienteditpair
 /* Global Typography Overrides */
 
 h1, h2, h3, h4
-  @include gotham
+  @include primary-font
   color: inherit
-  letter-spacing: -1px
+
+h1
 
 body 
   input, .btn, ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, input:-moz-placeholder
-    @include gotham
+    @include primary-font
 
 
 .nav
-  @include gotham
+  @include primary-font
   letter-spacing: -1px
 
 body
-  @include gotham-light
+  @include primary-font-light
   color: #333333
 
 p
