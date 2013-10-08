@@ -31,6 +31,16 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
           console.log 'Broadcasting'
           $rootScope.$broadcast("loadActivityEvent", includable_id)
           console.log 'Done Broadcasting'
+          # I couldn't get this to work, so for now if you set "include_disqus" on more than one activity in a
+          # course, they will all share the same comments. Sucks, but ok for our current use case. 
+          # Maybe disqus is looking at window.location, not
+          # the @page.url I'm passing it, in which case it will work once deep linking is really there.
+          if $scope.currentIncludable.include_disqus
+            DISQUS.reset
+              reload: true
+              config: ->
+                @page.identifier = "course-activity-" + includable_id
+                @page.url = "http://chefsteps.com/courses/#{$scope.course.id}#!/#{$scope.currentIncludable.includable_id}"
     $scope.showCourseMenu = false
 
     # So sue me

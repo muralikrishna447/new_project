@@ -2,7 +2,8 @@ affixElement = ->
   affix = $('.cs-affix')
   affix_offset = affix.data('offset-top')
   window_width = window.innerWidth
-  console.log window_width
+  #console.log window_width
+
   if window_width < 979
     if $(window).scrollTop() >= affix_offset
       affix.css('position', 'fixed')
