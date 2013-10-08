@@ -434,6 +434,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.$on 'loadActivityEvent', (event, activity_id) ->
     $scope.loadActivity(activity_id)
 
+
   $scope.startViewActivity = (id, prefetch_id) ->
     $scope.loadActivity(id)
 
