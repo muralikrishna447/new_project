@@ -42,7 +42,10 @@ private
   def load_assembly
 
     begin
+      session[:coupon] = params[:coupon] || session[:coupon]
       @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
+      @discounted_price = @assembly.price
+      @discounted_price = @assembly.price / 2 if session[:coupon]
 
     rescue
       # If they are looking for a course that isn't yet published, take them to a page where
@@ -58,4 +61,5 @@ private
 
     instance_variable_set("@#{@assembly.assembly_type.underscore}", @assembly)
   end
+
 end
