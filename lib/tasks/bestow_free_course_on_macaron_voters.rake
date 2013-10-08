@@ -1,6 +1,6 @@
 task :bestow_free_course_on_macaron_voters => :environment do
   users = Vote.where(votable_type: "PollItem", votable_id: 3).map { |v| v.user ? v.user.id : 0}.uniq
-  enrollable = Assembly.find('i-have-a-faq')
+  enrollable = Assembly.find('french-macarons')
   puts "Bestowing free course on #{users.count} users."
   users.each do |u|
     puts u

@@ -3,10 +3,10 @@
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
-.controller(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak)
+.controller(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak )
   .container.course-assembly-container
 
-    .course-nav-wrapper.cs-affix(data-spy='affix' data-offset-top='56')
+    .course-nav-wrapper.cs-affix(data-spy='affix' data-offset-top='56' )
       .course-nav-hamburger(ng-click="showCourseMenu = ! showCourseMenu")
         / %i.icon-align-justify
         .hamburger-bar
@@ -52,9 +52,16 @@
                     = render 'shared/activity_layouts/list'
                   %div(ng-switch-default)
                     = render 'activities/latest/main_activity_content'
-
+ 
               %div(ng-switch-when='Upload')
                 = render 'assembly_upload', assembly: @course
+
+        .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
+          .span12
+            -# Starts with a disqus id for course but for activities will get replaced using DISQUS.reset
+						-# Just kidding, couldn't get DISQUS.reset to work :(
+            = render 'layouts/disqus_comments', disqus_id: "assembly-course-#{@course.id}", disqus_title:@course.title, disqus_url: course_url(@course)
+
 
         .prev-next-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .row-fluid.section
