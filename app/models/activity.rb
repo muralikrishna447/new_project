@@ -418,7 +418,8 @@ class Activity < ActiveRecord::Base
   def containing_course
     # This only walks up one chain of parents, but an activity or assembly can really
     # be in more than one parent. Will have to be fixed as soon as we are reusing an activity
-    # in more than one course.
+    # in more than one course. This is also a very expensive way to do this, but
+    # we don't expect it to be a very common request.
     parent = AssemblyInclusion.where(includable_type: "Activity", includable_id: self.id).first.assembly
    
     begin
