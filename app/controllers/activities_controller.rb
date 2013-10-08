@@ -20,6 +20,12 @@ class ActivitiesController < ApplicationController
       redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
+
+    # If this activity should only be shown in paid courses, and the user isn't an admin, send
+    # them to the course landing page.
+    if @activity.show_only_in_course && ! (current_user && current_user.admin?)
+      redirect_to course_path(@activity.containing_course), :status => :moved_permanently
+    end
   rescue
     # Not a problem
   end
