@@ -8,7 +8,7 @@ defaults: &defaults
   existing_remote_files: delete
   # To delete existing remote files.
   # existing_remote_files: delete 
-  always_upload: ['navigation_bootstrap.js', 'global_navigation.css', 'jquery.mjs.nestedSortable.js']
+  always_upload: ['navigation_bootstrap.js', 'global_navigation.css', 'jquery.mjs.nestedSortable.js', 'fonts/73961/*.css']
   gzip_compression: true
   # Fail silently.  Useful for environments such as Heroku
   # fail_silently = true
