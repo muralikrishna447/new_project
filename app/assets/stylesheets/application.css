@@ -48,5 +48,5 @@
  *= require cs_lightbox
  *= require charge_form
  *= require application/assemblies/pre_registration
- *= require_tree ./fonts/76603
+ *= require_directory ../fonts/76603
  */
