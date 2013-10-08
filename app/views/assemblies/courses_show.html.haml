@@ -59,7 +59,7 @@
         .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .span12
             -# Starts with a disqus id for course but for activities will get replaced using DISQUS.reset
-						-# Just kidding, couldn't get DISQUS.reset to work :(
+            -# Just kidding, couldn't get DISQUS.reset to work :(
             = render 'layouts/disqus_comments', disqus_id: "assembly-course-#{@course.id}", disqus_title:@course.title, disqus_url: course_url(@course)
 
 
