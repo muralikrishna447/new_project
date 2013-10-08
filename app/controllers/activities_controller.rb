@@ -5,6 +5,8 @@ class ActivitiesController < ApplicationController
 
   before_filter :maybe_redirect_activity, only: :show
 
+
+
   def maybe_redirect_activity
     @activity = Activity.find params[:id]
 
@@ -23,9 +25,13 @@ class ActivitiesController < ApplicationController
 
     # If this activity should only be shown in paid courses, and the user isn't an admin, send
     # them to the course landing page.
-    if @activity.show_only_in_course && ! (current_user && current_user.admin?)
+    referer = http_referer_uri
+    is_google = request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (referer && referer.host.index('google'))
+    if @activity.show_only_in_course && (! current_admin?) && (! is_google)
       redirect_to course_path(@activity.containing_course), :status => :moved_permanently
     end
+
+
   rescue
     # Not a problem
   end

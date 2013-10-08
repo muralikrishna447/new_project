@@ -241,5 +241,9 @@ module ApplicationHelper
     (current_user && current_user.admin?)
   end
 
+  def http_referer_uri
+    request.env["HTTP_REFERER"] && URI.parse(request.env["HTTP_REFERER"])
+  end
+
 end
 
