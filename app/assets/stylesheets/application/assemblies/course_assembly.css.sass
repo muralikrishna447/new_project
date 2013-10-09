@@ -32,7 +32,7 @@
 .course-nav-slideout
   position: fixed
   top: 0px
-  margin-top: 56px
+  padding-top: 56px
   width: 295px
   height: 100%
   border-right: 1px solid $light-gray
@@ -276,6 +276,30 @@
 
 #course-quiz
   margin-top: 5px
+
+// Affixable Styles //
+
+@media (max-width: 979px)
+  .course-nav-hamburger
+    position: absolute
+
+  .course-nav-hamburger.affixable-fixed
+    position: fixed
+    top: 0px
+    margin-top: 10px
+
+  .course-nav-slideout
+    position: absolute
+    top: 56px
+    margin-top: 0px
+    padding: 0px
+
+  .course-nav-slideout.affixable-fixed
+    position: fixed
+    top: 0px
+    margin-top: 0px
+
+// Responsive Styles //
 
 @media (max-width: 1225px)
   .course-assembly-container
