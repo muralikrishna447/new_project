@@ -41,6 +41,7 @@ private
   # This is obviously a very short term solution to price testing!
   # We'll need to make some sort of admin for this or use an off the shelf solution.
   def discounted_price(price, coupon)
+    return 0 if ! price
     pct = 1
     case coupon
     when 'a1b71d389a50'
