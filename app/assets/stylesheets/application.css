@@ -19,6 +19,7 @@
  *= require application/_dials
  *= require application/_checkboxes
  *= require ingredients_index
+ *= require equipment
  *= require mobile
  *= require diffview
  *= require media_objects
