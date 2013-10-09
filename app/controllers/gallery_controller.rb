@@ -16,14 +16,14 @@ class GalleryController < ApplicationController
   has_scope :search_all
   has_scope :difficulty
   has_scope :activity_type
-  has_scope :include_in_gallery
+  has_scope :really_include_in_gallery
 
   has_scope :generator, default: "chefsteps" do |controller, scope, value|
     value == "chefsteps" ? scope.chefsteps_generated : scope.any_user_generated
   end
 
   has_scope :published_status, default: "Published" do |controller, scope, value|
-    value == "Published" ? scope.published.include_in_gallery : scope.unpublished.where("title != ''")
+    value == "Published" ? scope.published.really_include_in_gallery : scope.unpublished.where("title != ''")
   end
 
   def index
