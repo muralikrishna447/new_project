@@ -17,7 +17,7 @@
         %span(ng-switch-when="false")
           %del
             {{assembly.price | currency}}
-          {{discounted_price | currency}}
+          &nbsp;{{discounted_price | currency}}
 
     %div(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
       .modal-body.buy-modal(ng-switch on="state")
@@ -62,7 +62,7 @@
                   %span(ng-switch-when="false")
                     %del
                       {{assembly.price | currency}}
-                    {{discounted_price | currency}}
+                    &nbsp;{{discounted_price | currency}}
                 %p
                   .tiny-note
                     All Taxes Included   
