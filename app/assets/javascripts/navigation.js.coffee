@@ -10,7 +10,7 @@ affixElement = ->
       affix.css('top', '0px')
       affix.css('margin-top', '0px')
     else
-      affix.css('position', 'absolute')
+      affix.css('position', 'fixed')
       affix.css('top', affix_offset)
   else
     if $(window).scrollTop() >= affix_offset

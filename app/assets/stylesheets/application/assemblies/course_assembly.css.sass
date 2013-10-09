@@ -36,9 +36,9 @@
   width: 295px
   height: 100%
   border-right: 1px solid $light-gray
-  overflow-y: auto
+  overflow-y: hidden
   overflow-x: hidden
-  z-index: -1
+  z-index: 0
   opacity: 0
   -webkit-overflow-scrolling: touch
   @include transition(opacity 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
@@ -142,6 +142,8 @@
   opacity: 1
   // margin-left: 28px
   z-index: 100
+  overflow-y: auto
+  overflow-x: hidden
 
 .lessons-heading
   color: $orange
