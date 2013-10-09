@@ -12,7 +12,7 @@ module.exports = function(config) {
     frameworks: ['ng-scenario'],
 
     preprocessors: {
-      'spec/javascripts/e2e/**/*.coffee': ['coffee'],
+      'spec/angular/**/*.coffee': ['coffee'],
     },
 
 
@@ -22,7 +22,7 @@ module.exports = function(config) {
       // 'http://localhost:3000/assets/angular-scenario.js',
       "http://code.jquery.com/jquery-1.10.1.min.js",
       'http://localhost:3001/assets/application.js',
-      'spec/javascripts/e2e/**/*.js.coffee',
+      'spec/angular/**/*.js.coffee',
       { pattern: 'app/assets/javascripts/*.js',
         watched: true,
         included: false,
@@ -70,7 +70,9 @@ module.exports = function(config) {
     // - IE (only Windows)
     browsers: [
       // 'PhantomJS',
-      "Chrome"
+      "Chrome",
+      // "Safari",
+      // "Firefox"
     ],
 
 

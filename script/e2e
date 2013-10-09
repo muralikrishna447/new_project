@@ -44,6 +44,11 @@ activity_2.update_ingredients([{display_quantity: '10kg', quantity: 30, unit: 'g
 activity_3 = Activity.create(title: 'Great Recipe', description: 'great recipe')
 ingredient_3 = Ingredient.create(title: 'Recipe', sub_activity_id: activity_3.id)
 ingredient_4 = Ingredient.create(title: 'Salt, Safe to Delete')
+equipment_1 = Equipment.create(title: 'Chef Knife, Shun Edo 6-1/2 Blade')
+equipment_2 = Equipment.create(title: 'Shun Edo Santoku Knife')
+equipment_3 = Equipment.create(title: 'Rusty Knife')
+activity_1.update_equipment([{title: 'Shun Edo Santoku Knife', optional: true}, {title: 'Chef Knife, Shun Edo 6-1/2 Blade', optional: false}])
+activity_2.update_equipment([{title: 'Chef Knife, Shun Edo 6-1/2 Blade'}])
 "
 bundle exec thin start -p 3001 -e angular -P tmp/pids/angular.pid -d
 
@@ -51,5 +56,5 @@ echo "Waiting for rails server to startup before karma"
 sleep 30
 
 echo "Starting up Karma"
-karma start spec/javascripts/karma_e2e_config.js
+karma start spec/angular/karma_e2e_config.js
 
