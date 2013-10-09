@@ -74,8 +74,6 @@ module Delve
     config.assets.enabled = true
     config.assets.paths << "#{Rails.root}/app/assets/videos"
     config.assets.paths << "#{Rails.root}/app/assets/maps"
-    config.assets.paths << "#{Rails.root}/app/assets/fonts"
-    config.assets.paths << "#{Rails.root}/app/assets/fonts/73961"
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '7'
