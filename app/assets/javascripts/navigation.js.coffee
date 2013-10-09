@@ -8,16 +8,17 @@ affixElement = ->
     if $(window).scrollTop() >= affix_offset
       affix.css('position', 'fixed')
       affix.css('top', '0px')
+      affix.css('margin-top', '0px')
     else
       affix.css('position', 'absolute')
-      affix.css('top', '56px')
+      affix.css('top', affix_offset)
   else
     if $(window).scrollTop() >= affix_offset
       affix.css('position', 'fixed')
-      affix.css('top', '56px')
+      affix.css('top', affix_offset)
     else
       affix.css('position', 'fixed')
-      affix.css('top', '56px')
+      affix.css('top', affix_offset)
     
 $ ->
   $(window).hammer({drag_min_distance: 1}).on 'drag', (e) ->

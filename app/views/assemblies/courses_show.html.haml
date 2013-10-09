@@ -6,34 +6,33 @@
 .controller(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak )
   .container.course-assembly-container
 
-    .course-nav-wrapper.cs-affix(data-spy='affix' data-offset-top='56' )
-      .course-nav-hamburger(ng-click="showCourseMenu = ! showCourseMenu")
-        / %i.icon-align-justify
-        .hamburger-bar
-        .hamburger-bar
-        .hamburger-bar
-           
-      .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}")
-        %h4.lessons-heading
-          Lessons
-        %ul.section.no-bullet
-          %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='loadInclusion(inclusion.includable_id)' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}")
-            %div(ng-switch="inclusion.includable_type")
-              %a(ng-switch-default)
-                {{inclusion.includable_title}}
-              %div.nested(ng-switch-when="Assembly")
-                .hit-box(ng-click="toggleCollapse(inclusion.includable_id)")
+    .course-nav-hamburger.cs-affix(ng-click="showCourseMenu = ! showCourseMenu" data-spy='affix' data-offset-top='56')
+      / %i.icon-align-justify
+      .hamburger-bar
+      .hamburger-bar
+      .hamburger-bar
+         
+    .course-nav-slideout.cs-affix(ng-class="{'menu-slideout': showCourseMenu}" data-spy='affix' data-offset-top='0')
+      %h4.lessons-heading
+        Lessons
+      %ul.section.no-bullet
+        %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='loadInclusion(inclusion.includable_id)' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}")
+          %div(ng-switch="inclusion.includable_type")
+            %a(ng-switch-default)
+              {{inclusion.includable_title}}
+            %div.nested(ng-switch-when="Assembly")
+              .hit-box(ng-click="toggleCollapse(inclusion.includable_id)")
+                %a
+                  {{inclusion.includable_title}}&hellip;
+              %ul.no-bullet(ng-class="{'collapsed' : isCollapsed(inclusion.includable_id)}")
+                %li(ng-repeat='sub_inclusion in inclusion.includable.assembly_inclusions' ng-click='loadInclusion(sub_inclusion.includable_id); $event.stopPropagation()' ng-class="{'active': (sub_inclusion.includable_type == view_inclusion) && (sub_inclusion.includable_id == view_inclusion_id)}")
                   %a
-                    {{inclusion.includable_title}}&hellip;
-                %ul.no-bullet(ng-class="{'collapsed' : isCollapsed(inclusion.includable_id)}")
-                  %li(ng-repeat='sub_inclusion in inclusion.includable.assembly_inclusions' ng-click='loadInclusion(sub_inclusion.includable_id); $event.stopPropagation()' ng-class="{'active': (sub_inclusion.includable_type == view_inclusion) && (sub_inclusion.includable_id == view_inclusion_id)}")
-                    %a
-                      {{sub_inclusion.includable_title}}
-                      
-          %li.forum
-            %a(href="http://forum.chefsteps.com/categories/#{@course.slug}-course-questions" target="_blank")
-              %i.icon-large.icon-question-sign
-              Visit The Forum
+                    {{sub_inclusion.includable_title}}
+                    
+        %li.forum
+          %a(href="http://forum.chefsteps.com/categories/#{@course.slug}-course-questions" target="_blank")
+            %i.icon-large.icon-question-sign
+            Visit The Forum
 
     .course-content-wrapper
       .container-fluid
