@@ -6,13 +6,13 @@
 .controller(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak )
   .container.course-assembly-container
 
-    .course-nav-hamburger.cs-affix(ng-click="showCourseMenu = ! showCourseMenu" data-spy='affix' data-offset-top='56')
+    .course-nav-hamburger.cs-affix(ng-click="showCourseMenu = ! showCourseMenu" data-offset-top='56')
       / %i.icon-align-justify
       .hamburger-bar
       .hamburger-bar
       .hamburger-bar
          
-    .course-nav-slideout.cs-affix(ng-class="{'menu-slideout': showCourseMenu}" data-spy='affix' data-offset-top='0')
+    .course-nav-slideout.cs-affix(ng-class="{'menu-slideout': showCourseMenu}" data-offset-top='0')
       %h4.lessons-heading
         Lessons
       %ul.section.no-bullet
