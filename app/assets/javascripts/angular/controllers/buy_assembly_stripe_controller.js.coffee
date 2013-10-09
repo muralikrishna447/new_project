@@ -22,6 +22,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         params: 
           stripeToken: response.id
           assembly_id: $scope.assembly.id
+          discounted_price: $scope.discounted_price
 
         url: '/charges'
       ).success((data, status, headers, config) ->

@@ -4,7 +4,7 @@ describe ChargesController, "#create" do
 
   context 'user is authenticated' do
     let(:user) { Fabricate(:user, id: 29) }
-    let(:assembly) { stub('assembly', id: 37, price: 10.99, title: "Cooking For the Hirsute")}
+    let(:assembly) { stub('assembly', id: 37, price: 39, title: "Cooking For the Hirsute")}
     before do
       sign_in user
     end
@@ -28,35 +28,19 @@ describe ChargesController, "#create" do
       end        
 
       it 'stores correct price and tax in enrollment in a no tax situation' do
-        Enrollment.should_receive(:new).with(hash_including({price: 10.99, sales_tax: 0})).and_return(@double_enrollment)
+        Enrollment.should_receive(:new).with(hash_including({price: 39, sales_tax: 0})).and_return(@double_enrollment)
         Stripe::Charge.should_receive(:create).with(hash_including({description: "Cooking For the Hirsute"}))
-        post :create, assembly_id: 37
+        post :create, assembly_id: 37, discounted_price: 39
       end
 
       it 'stores correct price and tax in enrollment in a taxed situation' do
         # This IP is in Richland, WA
         request.stub(:remote_ip).and_return("216.186.5.154")
-        Enrollment.should_receive(:new).with(hash_including({price: 10.04, sales_tax: 0.95})).and_return(@double_enrollment)
-        Stripe::Charge.should_receive(:create).with(hash_including({description: "Cooking For the Hirsute (including $0.95 WA state sales tax)"}))
-        post :create, assembly_id: 37
+        Enrollment.should_receive(:new).with(hash_including({price: 35.62, sales_tax: 3.38})).and_return(@double_enrollment)
+        Stripe::Charge.should_receive(:create).with(hash_including({description: "Cooking For the Hirsute (including $3.38 WA state sales tax)"}))
+        post :create, assembly_id: 37, discounted_price: 39
       end
-   end
-
- 
-    # This is no good, it is hitting the server. Need to mock the Stripe apis, and not super
-    # sure how to go about that. Seems like I should be able to use the ones in stripe_ruby or possibly
-    # rspec_stripe but not finding any examples.
-    # Using integration tests instead, see charged_courses_spec.rb.
-=begin
-    it 'errors appropriately on bad stripe token' do    
-      Assembly.stub(:find).with(37).and_return(assembly)
-      controller.stub(:params) { {stripeToken: 'tok_1SvcpNfP8fC0f6', assembly_id: assembly.id}  }
-       post :create
-      puts response.body
-      expect(response.status).to eq(422)
-      JSON.parse(response.body)["errors"][0].should include("Invalid token")
     end
-=end
   end
 
   context 'basic sales tax computation' do   

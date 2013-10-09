@@ -55,7 +55,8 @@
 
     .span3.offset1.section
       .buy-box
-        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), completed: current_user && current_user.completed_course?(@assembly)
+        
+        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: @discounted_price, completed: current_user && current_user.completed_course?(@assembly)
         .text-center.section
           %h4= "#{@course.enrollments.count} Enrolled"
         %h5 Course Includes:
