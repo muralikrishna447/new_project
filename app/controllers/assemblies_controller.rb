@@ -64,7 +64,6 @@ private
       @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = discounted_price(@assembly.price, session[:coupon])
-      puts "Price #{@assembly.price} #{@discounted_price}"
  
     rescue
       # If they are looking for a course that isn't yet published, take them to a page where
