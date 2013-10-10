@@ -8,7 +8,7 @@
   .step-video-outer(ng-switch="!! step.youtube_id")
     .step-video(id="{{'step-video-' + $index}}" ng-switch-when="true" )
       .video-container(csenforceaspect)
-        %iframe(ng-src="{{'http://www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+        %iframe(ng-src="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
 
   .step-image-outer(ng-switch="!! step.image_id")
     .step-image(id="{{'step-image-' + $index}}" ng-switch-when="true")
