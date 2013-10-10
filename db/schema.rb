@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131007205245) do
+ActiveRecord::Schema.define(:version => 20131008180254) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20131007205245) do
     t.boolean  "include_in_gallery",     :default => true
     t.integer  "creator",                :default => 0
     t.string   "layout_name"
+    t.boolean  "show_only_in_course",    :default => false
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -143,8 +144,9 @@ ActiveRecord::Schema.define(:version => 20131007205245) do
     t.integer  "includable_id"
     t.integer  "assembly_id"
     t.integer  "position"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.boolean  "include_disqus",  :default => false
   end
 
   add_index "assembly_inclusions", ["assembly_id"], :name => "index_assembly_inclusions_on_assembly_id"

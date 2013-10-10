@@ -1,4 +1,5 @@
-%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{course_path(assembly)}"; completed=#{completed ? true : false}' ng-cloak)
+-# Note! Really important to use course_url, not course path, so we get off SSL after purchase.
+%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{course_url(assembly)}"; completed=#{completed ? true : false}' ng-cloak)
   %div(ng-show="enrolled")
     .btn.btn-primary.btn-large.input-block-level
       %div(ng-hide='completed')
@@ -10,7 +11,14 @@
 
   %div(ng-show="(! enrolled) && assembly.price")
     .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal()")
-      Buy Now For Just {{assembly.price | currency}}
+      Buy Now 
+      %div(ng-switch="assembly.price == discounted_price")
+        %span(ng-switch-when="true")
+          {{assembly.price | currency}}
+        %span(ng-switch-when="false")
+          %del
+            {{assembly.price | currency}}
+          &nbsp;{{discounted_price | currency}}
 
     %div(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
       .modal-body.buy-modal(ng-switch on="state")
@@ -48,7 +56,14 @@
             .divider
             .control-group.text-center(ng-hide="processing")
               .controls                    
-                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") Buy Now {{assembly.price | currency}} 
+                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") Buy Now 
+                %div(ng-switch="assembly.price == #{discounted_price}")
+                  %span(ng-switch-when="true")
+                    {{assembly.price | currency}}
+                  %span(ng-switch-when="false")
+                    %del
+                      {{assembly.price | currency}}
+                    &nbsp;{{discounted_price | currency}}
                 %p
                   .tiny-note
                     All Taxes Included   

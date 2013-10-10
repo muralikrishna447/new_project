@@ -12,6 +12,20 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $scope.flatInclusions = $scope.computeflatVisibleInclusions($scope.course.assembly_inclusions)
       $scope.loadInclusion($scope.flatInclusions[0].includable_id)
 
+  $scope.toggleShowCourseMenu = ->
+    $scope.showCourseMenu = ! $scope.showCourseMenu
+
+    # Collapse all groups ... but 
+    $scope.collapsed = {} if $scope.showCourseMenu
+
+    # ... make sure the group containing the currently active leaf is open
+    # TODO: This actually needs to be recursive, but can get away with this for macarons.
+    if $scope.currentIncludable
+      for top_incl in $scope.course.assembly_inclusions
+        if top_incl.includable_type == "Assembly"
+          if _.where(top_incl.includable.assembly_inclusions, {includable_id: $scope.currentIncludable.includable_id}).length
+            $scope.collapsed[top_incl.includable_id] = false
+
   $scope.loadInclusion = (includable_id) ->
     $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_id == includable_id)
     if ! $scope.currentIncludable?
@@ -31,6 +45,16 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
           console.log 'Broadcasting'
           $rootScope.$broadcast("loadActivityEvent", includable_id)
           console.log 'Done Broadcasting'
+          # I couldn't get this to work, so for now if you set "include_disqus" on more than one activity in a
+          # course, they will all share the same comments. Sucks, but ok for our current use case. 
+          # Maybe disqus is looking at window.location, not
+          # the @page.url I'm passing it, in which case it will work once deep linking is really there.
+          if $scope.currentIncludable.include_disqus
+            DISQUS.reset
+              reload: true
+              config: ->
+                @page.identifier = "course-activity-" + includable_id
+                @page.url = "http://chefsteps.com/courses/#{$scope.course.id}#!/#{$scope.currentIncludable.includable_id}"
     $scope.showCourseMenu = false
 
     # So sue me
@@ -69,11 +93,14 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     result
 
   $scope.toggleCollapse = (includable_id) ->
-    $scope.collapsed[includable_id] ?= false
+    $scope.collapsed[includable_id] ?= true
     $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id] 
 
   $scope.isCollapsed = (includable_id) ->
-    $scope.collapsed[includable_id]
+    if $scope.collapsed[includable_id]? 
+      return $scope.collapsed[includable_id] 
+    else 
+      true
 
   addUploadToEnd = ->
     # Special treatment for upload - put it at end of syllabus or end of last group

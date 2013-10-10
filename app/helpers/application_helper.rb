@@ -1,6 +1,6 @@
 module ApplicationHelper
   def s3_image_url(image_id)
-    "http://d2eud0b65jr0pw.cloudfront.net/#{image_id}"
+    "//d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end
 
   def filepicker_arbitrary_image(fpfile, width, fit='max')
@@ -65,7 +65,7 @@ module ApplicationHelper
       url = ActiveSupport::JSON.decode(fpfile)["url"]
       url + "/convert?fit=crop&w=#{width}&h=#{width}&cache=true"
     else
-      "http://www.placehold.it/#{width}x#{width}&text=ChefSteps"
+      "//www.placehold.it/#{width}x#{width}&text=ChefSteps"
     end
   end
 
@@ -74,7 +74,7 @@ module ApplicationHelper
       url = ActiveSupport::JSON.decode(fpfile)["url"]
       url + "/convert?fit=crop&w=#{width}&h=#{width}&cache=true"
     else
-      "http://www.placehold.it/#{width}x#{width}&text=ChefSteps"
+      "//www.placehold.it/#{width}x#{width}&text=ChefSteps"
     end
   end
 
@@ -239,6 +239,10 @@ module ApplicationHelper
 
   def current_admin?
     (current_user && current_user.admin?)
+  end
+
+  def http_referer_uri
+    request.env["HTTP_REFERER"] && URI.parse(request.env["HTTP_REFERER"])
   end
 
 end

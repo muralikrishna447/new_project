@@ -36,8 +36,10 @@ feature 'charge for courses', pending: true, :js => true do
 
     before(:each) do 
       login_user
+      #session[:coupon] = "'a1b71d389a50'"
       visit '/courses/clummy/landing'
       page.should have_content('147.47')
+      page.should_have_content('71.84')
       page.find('#buy-button').click
     end
 

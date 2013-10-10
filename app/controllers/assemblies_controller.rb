@@ -36,14 +36,35 @@ class AssembliesController < ApplicationController
     render :json => @assembly
   end
 
-
 private
+
+  # This is obviously a very short term solution to price testing!
+  # We'll need to make some sort of admin for this or use an off the shelf solution.
+  def discounted_price(price, coupon)
+    return 0 if ! price
+    pct = 1
+    case coupon
+    when 'a1b71d389a50'
+      pct = 29.0/39
+    when 'be11c664ce1a'
+      pct = 24.0/39
+    when 'cc448c11505a'
+      pct = 20.0/39
+    when 'd035c58a0a8c'
+      pct = 19.0/39
+    when 'e8c479fa9279'
+      pct = 14.0/39
+    end
+    (price * pct).round(2)
+  end
 
   def load_assembly
 
     begin
       @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
-
+      session[:coupon] = params[:coupon] || session[:coupon]
+      @discounted_price = discounted_price(@assembly.price, session[:coupon])
+ 
     rescue
       # If they are looking for a course that isn't yet published, take them to a page where
       # they can get on an email list to be notified when it is available.
@@ -58,4 +79,5 @@ private
 
     instance_variable_set("@#{@assembly.assembly_type.underscore}", @assembly)
   end
+
 end

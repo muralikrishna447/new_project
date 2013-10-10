@@ -13,7 +13,7 @@
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
     / YouTube Iframe API can't be loaded async so we have to load it directly
-    %script{src:'http://www.youtube.com/iframe_api'}
+    %script{src:'//www.youtube.com/iframe_api'}
     = auto_discovery_link_tag :atom, feed_path
     = auto_discovery_link_tag :rss, feed_path
     %link{href: "/favicon.ico", rel: "shortcut icon"}

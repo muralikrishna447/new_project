@@ -54,7 +54,7 @@ class Activity < ActiveRecord::Base
   scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
   scope :by_updated_at, -> direction { direction == 'desc' ? order('updated_at DESC') : order('updated_at ASC')}
   scope :randomize, order('random()')
-  scope :include_in_gallery, where(include_in_gallery: true)
+  scope :really_include_in_gallery, where(include_in_gallery: true, show_only_in_course: false)
   scope :chefsteps_generated, where('creator = ?', 0)
   scope :any_user_generated, where('creator != ?', 0)
   scope :user_generated, -> user { where('creator = ?', user) }
@@ -70,6 +70,7 @@ class Activity < ActiveRecord::Base
 
   attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids, :layout_name
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
+  attr_accessible :show_only_in_course
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -414,6 +415,21 @@ class Activity < ActiveRecord::Base
     new_activity
   end
 
+  def containing_course
+    # This only walks up one chain of parents, but an activity or assembly can really
+    # be in more than one parent. Will have to be fixed as soon as we are reusing an activity
+    # in more than one course. This is also a very expensive way to do this, but
+    # we don't expect it to be a very common request.
+    parent = AssemblyInclusion.where(includable_type: "Activity", includable_id: self.id).first.assembly
+   
+    begin
+      puts "XXXXXXX Up to #{parent.title}"
+      return parent if parent.assembly_type == "Course"
+      parent = AssemblyInclusion.where(includable_type: "Assembly", includable_id: parent.id).first.assembly
+    end until ! parent
+    nil
+  end
+
   private
 
   def check_published
@@ -505,6 +521,8 @@ class Activity < ActiveRecord::Base
       end
     end
   end
+
+
 
 end
 

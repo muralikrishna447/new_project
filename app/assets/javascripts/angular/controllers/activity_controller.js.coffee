@@ -277,10 +277,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.heroVideoURL = ->
     autoplay = if $scope.url_params.autoplay then "1" else "0"
-    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
+    "//www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
 
   $scope.heroVideoStillURL = ->
-    "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
+    "//img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
 
   $scope.heroImageURL = (width) ->
     url = ""
@@ -434,6 +434,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.$on 'loadActivityEvent', (event, activity_id) ->
     $scope.loadActivity(activity_id)
 
+
   $scope.startViewActivity = (id, prefetch_id) ->
     $scope.loadActivity(id)
 
@@ -457,7 +458,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.schedulePostPlayEvent = ->
     $scope.heroVideoDuration = -1
     if $scope.activity && $scope.hasHeroVideo()
-      $http.jsonp("http://gdata.youtube.com/feeds/api/videos/" + $scope.activity.youtube_id + "?v=2&callback=JSON_CALLBACK").then (response) ->
+      $http.jsonp("//gdata.youtube.com/feeds/api/videos/" + $scope.activity.youtube_id + "?v=2&callback=JSON_CALLBACK").then (response) ->
         # Good god, parsing XML that contains namespaces in the elements using jquery is a compatibility disaster!
         # See http://stackoverflow.com/questions/853740/jquery-xml-parsing-with-namespaces
         # So for now I'm doing a fugly regexp parse. At least it works.

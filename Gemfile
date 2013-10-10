@@ -54,6 +54,7 @@ gem 'active_model_serializers'
 gem 'mixpanel_client'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'geokit-rails'
+gem 'rack-ssl-enforcer'
 
 # Gems used only for assets and not required
 # in production environments by default.
