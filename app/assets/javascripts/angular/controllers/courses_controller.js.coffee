@@ -1,7 +1,7 @@
 angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', ($rootScope, $scope, $resource, $http) ->
   
   $scope.view_inclusion = {}
-  $scope.collapsed = []
+  $scope.collapsed = {}
  
   $scope.init = (course_id) ->
     $http.get('/courses/' + course_id + '/show_as_json').success (data, status) ->
@@ -14,8 +14,17 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
 
   $scope.toggleShowCourseMenu = ->
     $scope.showCourseMenu = ! $scope.showCourseMenu
-    $scope.collapsed = [] if $scope.showCourseMenu
 
+    # Collapse all groups ... but 
+    $scope.collapsed = {} if $scope.showCourseMenu
+
+    # ... make sure the group containing the currently active leaf is open
+    # TODO: This actually needs to be recursive, but can get away with this for macarons.
+    if $scope.currentIncludable
+      for top_incl in $scope.course.assembly_inclusions
+        if top_incl.includable_type == "Assembly"
+          if _.where(top_incl.includable.assembly_inclusions, {includable_id: $scope.currentIncludable.includable_id}).length
+            $scope.collapsed[top_incl.includable_id] = false
 
   $scope.loadInclusion = (includable_id) ->
     $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_id == includable_id)
@@ -84,7 +93,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     result
 
   $scope.toggleCollapse = (includable_id) ->
-    $scope.collapsed[includable_id] ?= false
+    $scope.collapsed[includable_id] ?= true
     $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id] 
 
   $scope.isCollapsed = (includable_id) ->

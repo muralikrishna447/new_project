@@ -23,7 +23,7 @@
             %a(ng-switch-default)
               {{inclusion.includable_title}}
             %div.nested(ng-switch-when="Assembly")
-              .hit-box(ng-click="toggleCollapse(inclusion.includable_id)")
+              .hit-box(ng-click="toggleCollapse(inclusion.includable_id); $event.stopPropagation()")
                 %a
                   {{inclusion.includable_title}}&hellip;
               %ul.no-bullet(ng-class="{'collapsed' : isCollapsed(inclusion.includable_id)}")
