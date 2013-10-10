@@ -1,7 +1,7 @@
 angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', ($rootScope, $scope, $resource, $http) ->
   
   $scope.view_inclusion = {}
-  $scope.collapsed = {}
+  $scope.collapsed = []
  
   $scope.init = (course_id) ->
     $http.get('/courses/' + course_id + '/show_as_json').success (data, status) ->
@@ -11,6 +11,11 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       addUploadToEnd()
       $scope.flatInclusions = $scope.computeflatVisibleInclusions($scope.course.assembly_inclusions)
       $scope.loadInclusion($scope.flatInclusions[0].includable_id)
+
+  $scope.toggleShowCourseMenu = ->
+    $scope.showCourseMenu = ! $scope.showCourseMenu
+    $scope.collapsed = [] if $scope.showCourseMenu
+
 
   $scope.loadInclusion = (includable_id) ->
     $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_id == includable_id)
@@ -83,7 +88,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id] 
 
   $scope.isCollapsed = (includable_id) ->
-    $scope.collapsed[includable_id]
+    if $scope.collapsed[includable_id]? 
+      return $scope.collapsed[includable_id] 
+    else 
+      true
 
   addUploadToEnd = ->
     # Special treatment for upload - put it at end of syllabus or end of last group
