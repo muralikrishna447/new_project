@@ -206,33 +206,24 @@
 
 .assembly-activity
   .activity-description
-    padding: 0 10px
 
   .ordered-steps-new
     .ordered-step-item
       width: 100%
       float: left
       padding: 0px
-      margin-top: 30px
       @include boxsizing
       .step-number
         @include primary-font-bold
-        font-size: 50px
-        line-height: 50px
-        padding-bottom: 10px
       .step-content
-        h4
-          margin-top: 0px
-          margin-bottom: 0px
-          padding-bottom: 2px
         ul, li
           list-style: none
           padding: 0px 0px 10px 0px
-          margin: 0px
+          margin-bottom: $baseline
         ul
           padding: 0px
       .step-actions
-        margin-bottom: 10px
+        margin-bottom: $baseline
         .step-action-item
           display: inline-block
         .step-ingredients
@@ -242,12 +233,12 @@
         display: none
       .step-video
         display: none
-        margin-bottom: 10px
+        margin-bottom: $baseline * 2
       .divider
         height: 1px
         border-bottom: 1px solid $light-gray
-        margin-top: 14px
-        margin-bottom: 14px
+        padding: $baseline 0px
+        margin-bottom: $baseline *2
       .span12
         .step-content
           @include columncount(2)
