@@ -44,7 +44,7 @@
               %div(ng-switch-when="Quiz")
                 .row-fluid
                   .span12
-                    %iframe#course-quiz(ng-src="{{'/quizzes/' + currentIncludable.includable_id}}" style='width: 100%; border: none; min-height: 1000px; overflow: hidden;' onload= "window.adjust_iframe_height(this);")
+                    %iframe#course-quiz(ng-src="{{'/quizzes/' + currentIncludable.includable_id}}" style='width: 100%; border: none; min-height: 1000px; overflow: hidden;' cssetiframeheight)
 
 
               %div(ng-switch-when="Activity")
