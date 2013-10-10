@@ -36,7 +36,7 @@
   width: 295px
   height: 100%
   border-right: 1px solid $light-gray
-  overflow-y: hidden
+  overflow-y: auto
   overflow-x: hidden
   z-index: 0
   opacity: 0
@@ -142,10 +142,6 @@
 
 .course-nav-slideout.menu-slideout
   opacity: 1
-  // margin-left: 28px
-  z-index: 100
-  overflow-y: auto
-  overflow-x: hidden
 
 .lessons-heading
   color: $orange
@@ -359,3 +355,9 @@
         min-height: 0px
     .course-nav-bottom-center
       padding-top: 50px
+
+  // Fix for really weird ios bug where you can't scroll content when menu is hidden
+  .course-nav-slideout
+    display: none
+  .course-nav-slideout.menu-slideout
+    display: block
