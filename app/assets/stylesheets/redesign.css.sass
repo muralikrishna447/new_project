@@ -1,15 +1,10 @@
 @import 'mixins'
 @import 'circle_highlight_anim'
 
-html 
-  font-size: 14px
 
 body
-  background-image: url(http://basehold.it/i/22)
   position: relative
   overflow-x: hidden
-  font-size: 100%
-  line-height: $baseline * 2
 
 a
   cursor: pointer
@@ -149,8 +144,8 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
   -o-box-shadow: none
   box-shadow: none
   @include boxsizing
-  margin-bottom: $baseline
-  padding: ($baseline*2) 10px
+  margin-bottom: $baseline * 2
+  padding: ($baseline * 2) 7px
 
 .well-opaque
   background-color: rgba(255,255,255,.8)
@@ -1918,33 +1913,6 @@ csingredienteditpair
   color: #ffffff
 
 
-/* Global Typography */
-
-h1, h2, h3, h4, h5
-  @include primary-font
-  color: inherit
-  margin: 0
-  padding: 0
-
-h1
-  font-size: 3.161em
-  line-height: $baseline * 5
-
-h2
-  font-size: 2.568em
-  line-height: $baseline * 4
-
-h3
-  font-size: 1.778em
-  line-height: $baseline * 3
-
-h4
-  font-size: 1.445em
-  line-height: $baseline * 2
-
-h5
-  font-size: 1em
-
 body 
   input, .btn, ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, input:-moz-placeholder
     @include primary-font
@@ -1954,21 +1922,7 @@ body
   @include primary-font
   letter-spacing: -1px
 
-body
-  @include primary-font-light
-  color: #333333
 
-p
-  font-size: 1em
-  line-height: $baseline * 2
-  margin-bottom: $baseline * 2
-
-ul, ol
-  margin-bottom: $baseline
-  -webkit-margin-before: 0
-
-li
-  line-height: $baseline * 2
 
 
 .image-shadow
