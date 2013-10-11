@@ -1,5 +1,5 @@
 -# Note! Really important to use course_url, not course path, so we get off SSL after purchase.
-%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{course_url(assembly)}"; completed=#{completed ? true : false}' ng-cloak)
+%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{course_url(assembly, protocol: "https")}"; completed=#{completed ? true : false}' ng-cloak)
   %div(ng-show="enrolled")
     .btn.btn-primary.btn-large.input-block-level
       %div(ng-hide='completed')
