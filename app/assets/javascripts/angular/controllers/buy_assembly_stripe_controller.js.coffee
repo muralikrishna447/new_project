@@ -30,7 +30,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         $scope.enrolled = true
         $scope.state = "thanks"
         mixpanel.people.track_charge($scope.assembly.price)
-        console.log response
         mixpanel.track('Course Purchased', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'payment_type': response.type, 'card_type': response.card.type})
 
       ).error((data, status, headers, config) ->
@@ -50,9 +49,11 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before purchasing a course.")
     else
       $scope.buyModalOpen = true
+      mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
 
   $scope.closeModal = ->
     $scope.buyModalOpen = false
+    mixpanel.track('Course Buy Box Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
 
 
 ]
