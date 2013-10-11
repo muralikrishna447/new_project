@@ -23,7 +23,7 @@
                 .section.pull-right(onclick= 'track_viewed_course_through_signed_in_homepage();')
                   = where_user_left_off_in_course(course, current_user, 'btn btn-primary btn-large')
               .section
-                = course.short_description
+                %p= course.short_description
           -else
             .home-standard-item
               .home-standard-item-image
@@ -32,7 +32,7 @@
               .home-standard-item-text
                 = link_to course do
                   %h3= course.title
-                = course.short_description
+                %p= course.short_description
       .home-section
         %hr
       - if @projects.any?
@@ -47,10 +47,10 @@
               .home-standard-item-text
                 = link_to project_path(project) do
                   %h3= project.title
-                = project.description
+                %p= project.description
     .span4
       %h2 
-        = link_to 'Community Activity', community_activity_path, class: 'orange-link'
+        = link_to 'Activity Stream', community_activity_path, class: 'orange-link'
       .stream(ng-controller='StreamsController' ng-init="init()")
         %div(ng-repeat='stream in streams')
           %div(ng-include src="streamViewTemplate(stream)")
