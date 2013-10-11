@@ -10,16 +10,9 @@
           Completed Course!
 
   %div(ng-show="(! enrolled) && assembly.price")
+    = render 'activities/latest/assembly_price'
     .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal()")
-      Buy Now 
-      %div(ng-switch="assembly.price == discounted_price")
-        %span(ng-switch-when="true")
-          {{assembly.price | currency}}
-        %span(ng-switch-when="false")
-          %del
-            {{assembly.price | currency}}
-          &nbsp;{{discounted_price | currency}}
-
+      BUY NOW
     %div(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
       .modal-body.buy-modal(ng-switch on="state")
         .row-fluid(ng-switch-when="charge" )
@@ -56,14 +49,9 @@
             .divider
             .control-group.text-center(ng-hide="processing")
               .controls                    
-                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") Buy Now 
-                %div(ng-switch="assembly.price == #{discounted_price}")
-                  %span(ng-switch-when="true")
-                    {{assembly.price | currency}}
-                  %span(ng-switch-when="false")
-                    %del
-                      {{assembly.price | currency}}
-                    &nbsp;{{discounted_price | currency}}
+                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") BUY NOW 
+                = render 'activities/latest/assembly_price'
+
                 %p
                   .tiny-note
                     All Taxes Included   
