@@ -48,7 +48,7 @@ Delve::Application.configure do
   # config.cache_store = :mem_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  config.action_controller.asset_host = "http://d1w42w8pbelamn.cloudfront.net"
+  config.action_controller.asset_host = "https://d1w42w8pbelamn.cloudfront.net"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w( print.css styleguide.css global_navigation.css forum_nav.css active_admin.css active_admin/print.css navigation_bootstrap.js active_admin.js jquery.mjs.nestedSortable.js application_head.js youtube.js)
