@@ -15,6 +15,7 @@ class ChargesController < ApplicationController
   def create
     
     assembly = Assembly.find(params[:assembly_id])
+    discounted_price = params[:discounted_price].to_f
 
     if Enrollment.where(user_id: current_user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
       raise "You are already enrolled, we don't want to take your money again!"
@@ -30,14 +31,14 @@ class ChargesController < ApplicationController
     end
 
     extra_descrip = ""
-    gross_price, tax = adjust_for_included_tax(assembly.price, request.remote_ip)
+    gross_price, tax = adjust_for_included_tax(discounted_price, request.remote_ip)
     if tax > 0
       extra_descrip = " (including #{ActionController::Base.helpers.number_to_currency(tax)} WA state sales tax)"
     end
 
     charge = Stripe::Charge.create(
       customer: current_user.stripe_id,
-      amount: (assembly.price * 100).to_i,
+      amount: (discounted_price * 100).to_i,
       description: assembly.title + extra_descrip,
       currency: 'usd'
     )
