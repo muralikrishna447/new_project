@@ -295,8 +295,11 @@ a:hover
 .madlib, .madlib input
   -webkit-font-smoothing: antialiased
   input
-    font-size: 24px
-    line-height: 26px
+    font-size: 2.2rem
+    line-height: $baseline * 2
+
+.madlib-item
+  margin-bottom: $baseline
 
 .input-underlined
   input[type=text], input[type=email], input[type=password]
@@ -921,6 +924,7 @@ a:hover
 
 .btn
   @include primary-font
+  line-height: $baseline*2
   i
     line-height: $baseline*2
 
@@ -1923,6 +1927,9 @@ body
 .nav
   @include primary-font
   letter-spacing: -1px
+
+.input-append
+  margin: 0
 
 
 
