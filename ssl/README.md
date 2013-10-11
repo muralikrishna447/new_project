@@ -4,6 +4,7 @@ For rails integration, we use https://github.com/tobmatth/rack-ssl-enforcer
 
 All of the certificate files are in this directory, but just for archiving purposes - they have been uploaded to heroku for
 actual use. Order details here: https://www.digicert.com/custsupport/order-details.php?order_id=00442970 . It will need to be renewed in 1 year.
+Username michaelnatkin, password our usual style but first letter D is capitalized, and ! at end.
 
 The commands I used for provisioning the certificates were:
 
