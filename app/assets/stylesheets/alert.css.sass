@@ -37,22 +37,9 @@
   width: 100%
   height: 2px
   margin-bottom: 15px
-  -webkit-animation-name: lblock
-  -webkit-animation-delay: .2s
-  -webkit-animation-duration: .5s
-  -webkit-animation-delay: 1s
-  -webkit-animation-iteration-count: 1
-  -webkit-animation-timing-function: ease-in-out
-  -webkit-animation-fill-mode: forwards
-  -moz-animation-name: lblock
-  -moz-animation-delay: .2s
-  -moz-animation-duration: .5s
-  -moz-animation-delay: 1s
-  -moz-animation-iteration-count: 1
-  -moz-animation-timing-function: ease-in-out
-  -moz-animation-fill-mode: forwards
+  @include animation(lblock .2s ease-in-out 1s 1 forwards)
 
-@-webkit-keyframes lblock
++keyframes(lblock)
   0%    
     width: 0
     background: #df4b23
@@ -60,21 +47,7 @@
     width: 100%
     background: #e25f25
 
-@-webkit-keyframes notification
-  0%    
-    display: none
-  100%
-    opacity: 1
-
-@-moz-keyframes lblock
-  0%    
-    width: 0
-    background: #df4b23
-  100%
-    width: 100%
-    background: #e25f25
-
-@-moz-keyframes notification
++keyframes(notification)
   0%    
     display: none
   100%
