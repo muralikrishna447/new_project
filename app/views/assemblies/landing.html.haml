@@ -94,3 +94,6 @@
           = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
 
 = render 'layouts/footer'
+
+:javascript
+  mixpanel.track('Course Landing Viewed', {'context' : 'course', 'title' : "#{@course.title}", 'slug' : "#{@course.slug}"});
