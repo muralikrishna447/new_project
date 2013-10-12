@@ -28,7 +28,7 @@ class ActivitiesController < ApplicationController
     referer = http_referer_uri
     is_google = request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (referer && referer.host.index('google'))
     if @activity.show_only_in_course && (! current_admin?) && (! is_google)
-      redirect_to course_path(@activity.containing_course), :status => :moved_permanently
+      redirect_to class_path(@activity.containing_course), :status => :moved_permanently
     end
 
 

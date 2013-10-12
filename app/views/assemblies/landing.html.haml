@@ -31,9 +31,8 @@
 
         - if @course.faq    
           .tab-pane#faq
-            - @course.faq.steps.each do |step|
-              %h5= step.title
-              %p= step.directions
+            = @course.faq.content
+
         .tab-pane#equipment-ingredients
           .row
             .span4
@@ -84,8 +83,6 @@
             %li Some feature
             %li Some feature
             %li Some feature
-    .span3.offset1
-      = @course.testimonials.content if @course.testimonials
   .row
     .span12
       - if @course.uploads.any?

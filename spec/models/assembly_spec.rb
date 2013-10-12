@@ -8,8 +8,8 @@ describe Assembly do
 
   context 'faq' do
     it 'returns an faq' do
-      faq = Fabricate :activity, title: 'Test Assembly FAQ', description: 'This is the test assembly faq.'
-      expect(@assembly.faq).to be_an_instance_of(Activity)
+      faq = Fabricate :page, title: 'Test Assembly FAQ', content: 'This is the test assembly faq.'
+      expect(@assembly.faq).to be_an_instance_of(Page)
       expect(@assembly.faq.slug).to eq('test-assembly-faq')
     end
   end

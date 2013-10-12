@@ -57,13 +57,13 @@ describe 'AssembliesController', pending: true do
       # end
 
       it 'assigns @course' do
-        get course_path(@course)
+        get class_path(@course)
         expect(assigns(:course)).to eq(@course)
       end
 
       it 'redirects to the course landing page when user not enrolled' do
         get course_path(@course)
-        expect(response).to redirect_to(landing_course_url(@course))
+        expect(response).to redirect_to(landing_class_url(@course))
       end
 
       it 'renders courses_show when user is enrolled' do
@@ -71,7 +71,7 @@ describe 'AssembliesController', pending: true do
         enrollment = Fabricate :enrollment, user: user, enrollable: @course
         # NOTE A way to get current_user auth in request specs
         post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
-        get course_path(@course)
+        get class_path(@course)
         expect(response).to render_template("courses_show")
       end
     end

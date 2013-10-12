@@ -172,12 +172,14 @@ Delve::Application.routes.draw do
     end
   end
 
-  constraints lambda {|request| !['/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path.split('/').reject! { |r| r.empty? }.take(2).join('/').prepend('/')) } do
-    resources :courses, controller: :assemblies do
-      member do
-        get 'landing' => 'assemblies#landing'
-        get 'show_as_json' => 'assemblies#show_as_json'
-      end
+  # Legacy needed b/c the courses version of this URL was public in a few places
+  get '/courses/french-macarons', to: redirect('/classes/french-macarons')
+  get '/courses/french-macarons/landing', to: redirect('/classes/french-macarons/landing')
+
+  resources :classes, controller: :assemblies do
+    member do
+      get 'landing', to: 'assemblies#landing'
+      get 'show_as_json', to: 'assemblies#show_as_json'
     end
   end
 
