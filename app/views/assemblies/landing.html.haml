@@ -31,9 +31,8 @@
 
         - if @course.faq    
           .tab-pane#faq
-            - @course.faq.steps.each do |step|
-              %h5= step.title
-              %p= step.directions
+            = @course.faq.content
+
         .tab-pane#equipment-ingredients
           .row
             .span4
@@ -84,8 +83,6 @@
             %li Some feature
             %li Some feature
             %li Some feature
-    .span3.offset1
-      = @course.testimonials.content if @course.testimonials
   .row
     .span12
       - if @course.uploads.any?
@@ -94,6 +91,3 @@
           = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
 
 = render 'layouts/footer'
-
-:javascript
-  mixpanel.track('Course Landing Viewed', {'context' : 'course', 'title' : "#{@course.title}", 'slug' : "#{@course.slug}"});
