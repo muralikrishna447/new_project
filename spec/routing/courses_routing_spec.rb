@@ -26,12 +26,12 @@ describe 'routes for Courses' do
     expect(get: "/courses/accelerated-sous-vide-cooking-course").to route_to(action: 'show', controller: 'courses', id: 'accelerated-sous-vide-cooking-course')
   end
 
-  it 'routes /courses/test to the assemblies controller' do
-    expect(get: "/courses/test").to route_to(action: 'show', controller: 'assemblies', id: 'test')
+  it 'routes /classes/test to the assemblies controller' do
+    expect(get: "/classes/test").to route_to(action: 'show', controller: 'assemblies', id: 'test')
   end
 
-  it 'routes /course/landing to the assemblies controller' do
-    expect(get: "/courses/test/landing").to route_to(action: 'landing', controller: 'assemblies', id: 'test')
+  it 'routes /classes/test/landing to the assemblies controller' do
+    expect(get: "/classes/test/landing").to route_to(action: 'landing', controller: 'assemblies', id: 'test')
   end
 
 end

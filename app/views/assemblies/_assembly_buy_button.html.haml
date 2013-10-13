@@ -1,5 +1,5 @@
--# Note! Really important to use course_url, not course path, so we get off SSL after purchase.
-%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{course_url(assembly, protocol: "http")}"; completed=#{completed ? true : false}' ng-cloak)
+-# Note! Really important to use class_url, not class_path, so we get off SSL after purchase.
+%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{class_url(assembly, protocol: "http")}"; completed=#{completed ? true : false}' ng-cloak)
   %div(ng-show="enrolled")
     .btn.btn-primary.btn-large.input-block-level
       %div(ng-hide='completed')
@@ -60,7 +60,7 @@
                 %i.icon-spinner.icon-2x.icon-spin
                 Processing your card
         .row-fluid(ng-switch-when="thanks")
-          Thank you for your purchase of our {{assembly.title}} course. We're grateful to have you as a member
+          Thank you for your purchase of our {{assembly.title}} class. We're grateful to have you as a member
           of member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you
           at&nbsp; 
           %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
