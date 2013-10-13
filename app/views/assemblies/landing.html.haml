@@ -52,25 +52,27 @@
           .tab-pane#testimonials
             = @course.testimonials.content
 
-    .span3.offset1.section(ng-show="assembly.price")
-      .buy-box
-        
-        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: @discounted_price, completed: current_user && current_user.completed_course?(@assembly)
-        .text-center.section
-          %h4= "#{@course.enrollments.count} Enrolled"
-        %h5 Course Includes:
-        %ul
-          %li Unlimited Access
-          %li= "#{@course.video_count} HD Videos"
-          -# Pulling this because it lessons doesn't sound right when some parts are recipes etc.
-          -# %li= "#{@course.assembly_inclusions.count} Lessons"
-          %li Q&A from the chefs
-        %h4 100% satisfaction guaranteed or your money back
+    -if @course.price
+      .span3.offset1.section
+        .buy-box
+          
+          = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: @discounted_price, completed: current_user && current_user.completed_course?(@assembly)
+          .text-center.section
+            %h4= "#{@course.enrollments.count} Enrolled"
+          %h5 Course Includes:
+          %ul
+            %li Unlimited Access
+            %li= "#{@course.video_count} HD Videos"
+            -# Pulling this because it lessons doesn't sound right when some parts are recipes etc.
+            -# %li= "#{@course.assembly_inclusions.count} Lessons"
+            %li Q&A from the chefs
+          %h4 100% satisfaction guaranteed or your money back
 
-    .span3.offset1.section(ng-show="! assembly.price")
-      .btn.btn-primary.btn-large.input-block-level
-        %a(ng-href="{{assemblyPath}}")
-          START CLASS
+    -else
+      .span3.offset1.section
+        .btn.btn-primary.btn-large.input-block-level
+          %a(ng-href="#{class_url(@assembly, protocol: "http")}")
+            START CLASS
 
   .row
     .span12

@@ -18,7 +18,8 @@ class AssembliesController < ApplicationController
     @upload = Upload.new
     case @assembly.assembly_type
     when 'Course'
-      if current_user && current_user.enrolled?(@assembly)
+      # Currently not requiring enrollment for free assembly-based course. This will probably want to change?
+      if (current_user && current_user.enrolled?(@assembly)) || (! @assembly.price)
         render "#{@assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
       else
         redirect_to landing_class_url(@assembly)
