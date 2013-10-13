@@ -52,7 +52,7 @@
           .tab-pane#testimonials
             = @course.testimonials.content
 
-    .span3.offset1.section
+    .span3.offset1.section(ng-show="assembly.price")
       .buy-box
         
         = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: @discounted_price, completed: current_user && current_user.completed_course?(@assembly)
@@ -67,22 +67,11 @@
           %li Q&A from the chefs
         %h4 100% satisfaction guaranteed or your money back
 
-  .row
-    .span8
-      %h4 Course Preview
-      .row.section
-        .span4
-          = image_tag ('http://placehold.it/450x600'), class: 'image-shadow'
-          %ul.section
-            %li Some feature
-            %li Some feature
-            %li Some feature
-        .span4
-          = image_tag ('http://placehold.it/450x600'), class: 'image-shadow'
-          %ul.section
-            %li Some feature
-            %li Some feature
-            %li Some feature
+    .span3.offset1.section(ng-show="! assembly.price")
+      .btn.btn-primary.btn-large.input-block-level
+        %a(ng-href="{{assemblyPath}}")
+          START CLASS
+
   .row
     .span12
       - if @course.uploads.any?
