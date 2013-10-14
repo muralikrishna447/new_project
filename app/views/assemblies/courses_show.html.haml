@@ -48,11 +48,12 @@
 
 
               %div(ng-switch-when="Activity")
-                %div(ng-switch on="activity.layout_name")
-                  %div(ng-switch-when='list')
-                    = render 'shared/activity_layouts/list'
-                  %div(ng-switch-default)
-                    = render 'activities/latest/main_activity_content'
+                %div(csFixNakedLinks="")
+                  %div(ng-switch on="activity.layout_name")
+                    %div(ng-switch-when='list')
+                      = render 'shared/activity_layouts/list'
+                    %div(ng-switch-default)
+                      = render 'activities/latest/main_activity_content'
  
               %div(ng-switch-when='Upload')
                 = render 'assembly_upload', assembly: @course
