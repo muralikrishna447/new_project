@@ -65,6 +65,10 @@ class Assembly < ActiveRecord::Base
     Page.find_by_slug(title)
   end
 
+  def landing_bottom
+    Page.find_by_slug(self.slug + '-landing-bottom')
+  end
+
   def leaf_activities 
     inclusions = assembly_inclusions.to_a
     3.times do
