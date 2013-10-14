@@ -28,6 +28,13 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
       $rootScope.$broadcast('socialURLUpdated', 'http://www.chefsteps.com' + data.path)
       $scope.upload.status = 'show'
       $scope.shareModalShow = true
+      if data.assembly.title.length > 0
+        photo_uploaded_for = 'Assembly - ' + data.assembly.title
+      else if data.course.title.length > 0
+        photo_uploaded_for = 'Course - ' + data.course.title
+      else if data.activity.title.length > 0
+        photo_uploaded_for = 'Activity - ' + data.activity.title
+      mixpanel.people.set('Uploaded Photo For' : photo_uploaded_for)
     )
 
   $scope.photoPreview = (file) ->
