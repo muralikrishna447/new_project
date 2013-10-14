@@ -31,6 +31,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         $scope.state = "thanks"
         mixpanel.people.track_charge($scope.assembly.price)
         mixpanel.track('Course Purchased', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'payment_type': response.type, 'card_type': response.card.type})
+        mixpanel.people.set('Paid Course Abandoned' : false)
 
       ).error((data, status, headers, config) ->
         console.log "STRIPE CHARGE FAIL" + data
@@ -54,6 +55,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.closeModal = ->
     $scope.buyModalOpen = false
     mixpanel.track('Course Buy Box Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
+    mixpanel.people.set('Paid Course Abandoned' : $scope.assembly.title)
 
 
 ]
