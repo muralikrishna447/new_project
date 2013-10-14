@@ -7,7 +7,11 @@
       .row
         .span12
           .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-            %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+            - if @course.slug == 'french-macarons'
+              - ab_test 'macaron_landing_video', 'tg8xqq9hz-k', 'dmvhmQTCDfY' do |video_id|
+                %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
+            - else
+              %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
 
 .container.assembly-course-landing
   .row

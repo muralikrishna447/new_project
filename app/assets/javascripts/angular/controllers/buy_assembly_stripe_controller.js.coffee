@@ -32,6 +32,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         mixpanel.people.track_charge($scope.assembly.price)
         mixpanel.track('Course Purchased', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'payment_type': response.type, 'card_type': response.card.type})
         mixpanel.people.set('Paid Course Abandoned' : false)
+        $http.put('/splitty/finished?experiment=macaron_landing_video')
 
       ).error((data, status, headers, config) ->
         console.log "STRIPE CHARGE FAIL" + data
