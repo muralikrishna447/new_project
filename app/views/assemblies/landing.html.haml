@@ -16,6 +16,8 @@
 .container.assembly-course-landing
   .row
     .span8.section
+      %div(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak )
+        = render 'layouts/social_buttons', media_object: @course
       %ul.nav.nav-tabs.underline
         %li.active
           = link_to 'Overview', '#overview', data: {toggle: 'tab'}

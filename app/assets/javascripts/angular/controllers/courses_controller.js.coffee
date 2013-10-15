@@ -117,4 +117,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       last_inclusion.includable.assembly_inclusions.push(dummy_upload)
     else
       $scope.course.assembly_inclusions.push()
+
+  $scope.socialURL = ->
+    "http://chefsteps.com/classes/" + $scope.course?.slug + "/landing"
 ]
