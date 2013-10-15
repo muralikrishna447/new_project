@@ -119,7 +119,7 @@ feature 'charge for courses', pending: true, :js => true do
 
       visit '/courses/clummy/landing'
       page.should_not have_content('Buy Now')
-      page.should have_content('Continue Course') 
+      page.should have_content('Continue Class') 
     end
   end
 

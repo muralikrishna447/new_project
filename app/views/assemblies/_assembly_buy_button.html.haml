@@ -4,10 +4,10 @@
     .btn.btn-primary.btn-large.input-block-level
       %div(ng-hide='completed')
         %a(ng-href="{{assemblyPath}}")
-          Continue Course
+          Continue Class
       %div(ng-show='completed')
         %a(ng-href="{{assemblyPath}}")
-          Completed Course!
+          Completed Class!
 
   %div(ng-show="(! enrolled) && assembly.price")
     = render 'activities/latest/assembly_price'
