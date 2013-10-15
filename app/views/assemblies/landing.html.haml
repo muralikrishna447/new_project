@@ -26,8 +26,9 @@
         - if @course.faq
           %li
             = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
-        %li
-          = link_to 'Equipment / Ingredients', '#equipment-ingredients', data: {toggle: 'tab'}
+        - if @course.ingredients_equipment
+          %li
+            = link_to 'Ingredients / Equipment', '#ingredients-equipment', data: {toggle: 'tab'}
         - if @course.testimonials
           %li
             = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
@@ -39,26 +40,18 @@
 
         - if @course.faq    
           .tab-pane#faq
-            = @course.faq.content
+            :markdown
+              #{apply_shortcodes(@course.faq.content)}
 
-        .tab-pane#equipment-ingredients
-          .row
-            .span4
-              %h4 Equipment you'll need
-              %ul.unstyled
-                - @course.required_equipment.each do |equipment_item|
-                  - if equipment_item.product_url?
-                    %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
-                  - else
-                    %li= equipment_item.title
-            .span4
-              %h4 Ingredients you'll need
-              %ul.unstyled
-                - @course.combined_ingredients.each do |ingredient_item|
-                  %li= ingredient_item[0][0].title
+        - if @course.ingredients_equipment    
+          .tab-pane#ingredients-equipment
+            :markdown
+              #{apply_shortcodes(@course.ingredients_equipment.content)}
+
         - if @course.testimonials 
           .tab-pane#testimonials
-            = @course.testimonials.content
+            :markdown
+              #{apply_shortcodes(@course.testimonials.content)}
 
     -if @course.price
       .span3.offset1.section
