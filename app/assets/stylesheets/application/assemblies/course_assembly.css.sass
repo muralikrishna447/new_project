@@ -152,33 +152,45 @@
   -webkit-backface-visibility: hidden
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
-  width: 15px
+  width: 14px
   top: 115px
   //margin-left: 50%
   //left: -634px
-  margin-left: -39px
+  margin-left: -41px
   @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
 
 
   li
-    height: 21px
+    height: 20px
+    width: 14px
 
-  li a .step-dot-circle
-    background-color: lighten($orange, 25%)
-    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-    width: 11px
-    height: 11px
-    border-radius: 50%
+  li 
+    a
+      padding: 5px 2px
+      .step-dot-circle
+        -webkit-backface-visibility: hidden
+        background-color: lighten($orange, 25%)
+        width: 10px
+        height: 10px
+        border-radius: 50%
+        @include boxsizing
 
-  li a.active .step-dot-circle
-    background-color: $orange
-    -webkit-transform: translateZ(0)
-    @include transform(scale(1.36))
+  li 
+    a.active
+      padding: 3px 0px
+      .step-dot-circle
+        background-color: $orange
+        width: 14px
+        height: 14px
    
-  li.intro a .step-dot-circle
-    font-size: 15px
-    background-color: $light-gray
-    @include transform(scale(1.36))
+  li.intro 
+    a
+      padding: 3px 0px
+      .step-dot-circle
+        font-size: 15px
+        background-color: $light-gray
+        width: 14px
+        height: 14px
 
   li.intro a.active .step-dot-circle
     background-color: #555
