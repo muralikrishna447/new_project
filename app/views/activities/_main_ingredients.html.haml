@@ -1,6 +1,7 @@
 .section.csmonitorinputactivity(ng-controller="IngredientsController")
 
   .activity-ingredients-list#full-ingredients-list.section
+    %h4.ingredients-title Ingredients
     .well(ng-show="activity.ingredients.length" )
       = render 'shared/ingredients_list', source: "activity", include_header: (defined? include_header) ? include_header : true
 

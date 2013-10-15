@@ -296,6 +296,9 @@
     margin-bottom: 0px
     margin-top: 11px
 
+.ingredients-title
+  display: none
+
 
 
 
@@ -346,6 +349,20 @@
   .course-nav-wrapper.affix
     position: fixed
     top: 0px
+
+@media (max-width: 480px)
+  .activity-ingredients-list .well, .ordered-step-item .step-ingredients-source.well  
+    background-color: transparent
+    padding: 0
+
+  .ingredients-title
+    display: block
+
+  .ingredients 
+    .edit-pair-show
+      .ingredient-title
+        margin-left: 0
+        text-indent: 0
 
 @media (max-width: 979px) and (min-width: 768px)
   .course-assembly-container
