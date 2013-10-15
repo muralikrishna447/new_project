@@ -18,8 +18,8 @@
     .span8.section
       / %div(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak )
       /   = render 'layouts/social_buttons', media_object: @course
-      %div(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
-        = render 'layouts/social_buttons', media_object: @course, url: "www.chefsteps.com/classes/#{@course.slug}/landing"
+      %div(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+        = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
       %ul.nav.nav-tabs.underline
         %li.active
           = link_to 'Overview', '#overview', data: {toggle: 'tab'}

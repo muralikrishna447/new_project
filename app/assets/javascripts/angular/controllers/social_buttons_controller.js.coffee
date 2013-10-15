@@ -39,7 +39,7 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
 
   $scope.sharePinterest = ->
     $scope.pinterestCount = if $scope.pinterestCount? then $scope.pinterestCount + 1 else 1
-    $scope.openSocialWindow 'Pinterest', "http://pinterest.com/pin/create/button/?url=" + encodeURIComponent($scope.socialURL()) + "&media=" + encodeURIComponent($scope.socialMediaItem()) + "&description=" + encodeURIComponent($scope.socialTitle()), 'width=300,height=600,top=100,left=100'
+    $scope.openSocialWindow 'Pinterest', "https://pinterest.com/pin/create/button/?url=" + encodeURIComponent($scope.socialURL()) + "&media=" + encodeURIComponent($scope.socialMediaItem()) + "&description=" + encodeURIComponent($scope.socialTitle()), 'width=300,height=600,top=100,left=100'
 
   $scope.shareEmail = ->
     $scope.openSocialWindow 'Email', "mailto:?subject="+ encodeURIComponent($scope.emailSubject()) + "&body=" + encodeURIComponent($scope.emailBody())
