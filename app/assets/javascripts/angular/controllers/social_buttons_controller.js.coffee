@@ -53,12 +53,13 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
       $scope.facebookCount = data.data[0]?.total_count || 0
     )
 
-    twitter_url = "http://urls.api.twitter.com/1/urls/count.json?callback=JSON_CALLBACK&url=" + www_url
+    twitter_url = "https://urls.api.twitter.com/1/urls/count.json?callback=JSON_CALLBACK&url=" + www_url
     $http.jsonp(twitter_url).success((data) ->
       $scope.twitterCount = data.count
     )
 
-    pinterest_url = "http://api.pinterest.com/v1/urls/count.json?callback=JSON_CALLBACK&url=" + www_url
+    pinterest_url = "https://api.pinterest.com/v1/urls/count.json?callback=JSON_CALLBACK&url=" + www_url
+    console.log pinterest_url
     $http.jsonp(pinterest_url).success((data) ->
       $scope.pinterestCount = data.count
     )
