@@ -2,6 +2,10 @@ class HomeController < ApplicationController
 
   def index
     @courses = Course.published.order('updated_at desc').last(3)
+    prereg_assembly_classes = Assembly.prereg_courses.order('updated_at desc').limit(1)
+    pubbed_assembly_classes = Assembly.pubbed_courses.order('updated_at desc').limit(1)
+    @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
+
     if current_user
       @latest = Activity.published.chefsteps_generated.really_include_in_gallery.order('published_at desc').first(6)
       @projects = Assembly.published.projects.last(3)
