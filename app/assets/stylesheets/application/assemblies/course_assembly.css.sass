@@ -43,6 +43,7 @@
   -webkit-overflow-scrolling: touch
   -webkit-transform: translateZ(0)
   -webkit-backface-visibility: hidden
+  pointer-events: none
   @include transition(opacity 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
   @include boxsizing
 
@@ -142,6 +143,7 @@
 
 .course-nav-slideout.menu-slideout
   opacity: 1
+  pointer-events: inherit
 
 .lessons-heading
   color: $orange
