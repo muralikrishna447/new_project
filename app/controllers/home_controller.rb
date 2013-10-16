@@ -47,5 +47,19 @@ class HomeController < ApplicationController
       { name: 'Karen Quinn', title: '', image: 'http://placehold.it/400x400', bio: '' },
       { name: 'Cloud', title: '', image: 'http://placehold.it/400x400', bio: '' }
     ]
+
+    @about_left = Copy.find_by_location('about-left')
+    @about_right = Copy.find_by_location('about-right')
+    @about_story = Copy.find_by_location('about-story')
+    @about_kitchen = Copy.find_by_location('about-kitchen')
+
+    @about_tips = [
+      { image: '', copy: Copy.find_by_location('about-tip-weight') },
+      { image: '', copy: Copy.find_by_location('about-tip-ingredients') },
+      { image: '', copy: Copy.find_by_location('about-tip-heat') },
+      { image: '', copy: Copy.find_by_location('about-tip-community') },
+      { image: '', copy: Copy.find_by_location('about-tip-equipment') },
+      { image: '', copy: Copy.find_by_location('about-tip-tools') }
+    ]
   end
 end

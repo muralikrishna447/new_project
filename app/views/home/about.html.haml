@@ -12,13 +12,11 @@
     %h1 About ChefSteps
     .row
       .span6
-        %p
-          %strong ChefSteps exists to inspire creativity and encourage expertise in the kitchen.
-          Drawing on our years of combined culinary experience, we offer hands-on online classes about food and cooking that are both informative and entertaining. We don’t tell you how to sharpen your knife, break down a halibut, or make macarons from scratch, we show you. In addition, we’re building a living, breathing gallery of free-to-learn techniques, recipes, tools, and ideas developed by our award-winning culinary team. Whether you’re a home cook, a professional chef, or just love watching cooks work, there’s something here to discover.
+        :markdown
+          #{@about_left}
       .span6
-        %p
-          %strong Cooking is an ancient art and science, an accumulated body of knowledge passed down through generations, which we modify every day.
-          At ChefSteps, we’re recording that evolution in real time: Our classes, recipes, techniques, and videos give you the foundational knowledge and inspiration you need to build on the traditions and discoveries of others, and to begin to break the rules to create your own recipes and techniques. Here, we will all grow and learn from each other’s triumphs and failures, as we shape new culinary traditions for the next generation of cooks.
+        :markdown
+          #{@about_right}
 
 .container.about-tabs
   .span12
@@ -42,68 +40,24 @@
               %h2 How to use this site
               %p Frankly, we think you should use this site in any way you please, but here are some things you might want to know:
               .overview-items
-                .span4
-                  .overview-item
-                    .text-center
-                      = image_tag 'http://placehold.it/80x80', class: 'img-circle'
-                    %p.section
-                      %strong All of our recipes are measured in weight,
-                      rather than volume. We very firmly believe that weighing ingredients makes cooking easier, faster, and more fun, and we encourage you to try it. (Seriously, it will change your life!) But until you’re ready to invest in a scale ([they’re only $20]), we built a conversion tool for you [here].
-                  .overview-item
-                    .text-center
-                      = image_tag 'http://placehold.it/80x80', class: 'img-circle'
-                    %p.section
-                      %strong Some of our recipes call for unfamiliar ingredients.
-                      We come from professional cooking backgrounds, so we’re used to adding a little guar gum, xanthan, and soy lecithin to our recipes from time to time. (And though these ingredients may sound like chemicals, they're actually all derived from natural sources.) Part of our mission here at ChefSteps is to make the unfamiliar familiar. Thus, we’ll show you where to buy anything you can’t find at your local grocery store, and we'll also explain how and why different ingredients work. And if you need help finding solutions or substitutions, just ask!
-                .span4
-                  .overview-item
-                    .text-center
-                      = image_tag 'http://placehold.it/80x80', class: 'img-circle'
-                    %p.section
-                      %strong We believe that heat is an ingredient,
-                      and can be added to recipes in a measured amounts to ensure perfect results every time. Understanding how heat flows in the kitchen will sharpen your culinary intuition, preparing you to handle any culinary challenge. Thus, we encourage you to invest in a [quality thermometer] (they’re only $20, too), as most of our recipes and activities rely on accurate temperature measurement. This way, the result in your kitchen will be as close as possible to the result we enjoyed in ours.
-                  .overview-item
-                    .text-center
-                      = image_tag 'http://placehold.it/80x80', class: 'img-circle'
-                    %p.section
-                      %strong We believe that cooking is inherently communal.
-                      That’s why we maintain a lively forum on the site that’s dedicated to the exchange of ideas. We visit the forum regularly to answer your questions and marvel at your creations. If you have a question about any recipe or video, you can ask it right there on the bottom of the recipe page, and receive a response within minutes. Most importantly, we create much of our content based on your suggestions, interests, and feedback, so please keep in touch, and we’ll do the same.
-                .span4
-                  .overview-item
-                    .text-center
-                      = image_tag 'http://placehold.it/80x80', class: 'img-circle'
-                    %p.section
-                      %strong We use some high-tech equipment that’s not available to every cook. But that doesn’t mean this site is not for you.
-                      Whenever possible, we show you where to buy the stuff you may not have, but you don’t need to spend a fortune to try new things. We’ve devised some home cooking methods that achieve great results without all the equipment, and you may find that the tools in your own kitchen are more versatile than you thought. 
-                      %strong The bottom line is: Just because you don’t have the exact equipment listed in our recipes, doesn’t mean you can’t do it.
-                      We challenge ourselves to think creatively about how to get around limitations in price, space, and availability, and we hope you will, too.
-                  .overview-item
-                    .text-center
-                      = image_tag 'http://placehold.it/80x80', class: 'img-circle'
-                    %p.section
-                      %strong Great cooks need great tools and great resources to succeed.
-                      We sell a curated collection of our favorite kitchen tools in our online shop, and we provide links to other resources you might find helpful. If you love old fashioned cookbooks—we do too!—we sell a selection of the very best.
+                - @about_tips.each_slice(2) do |slice|
+                  .span4
+                    - slice.each do |tip|
+                      .overview-item
+                        .text-center
+                          = image_tag 'http://placehold.it/80x80', class: 'img-circle'
+                        %p.section
+                          :markdown
+                            #{tip[:copy].copy}
 
             .tab-pane#about-our-story
               .section
-                %p
-                  It all started at the Cooking Lab, an experimental kitchen in Bellevue, WA founded by former Microsoft CTO Nathan Myrhvold, where we collaborated on the acclaimed six-volume cooking opus Modernist Cuisine.  We spent TK years developing the recipes, science, and art that would eventually become the definitive guide to contemporary cooking.  But after the monumental achievement of Modernist Cuisine, we wondered: What’s next?
-                %p
-                  We wanted to preserve all of the elements that made Modernist Cuisine a success—a brilliant team, a collaborative process, a focus on experimentation—so we decided to build our own experimental kitchen where we could keep doing what we love: exploring what’s possible when the art and science of cooking come together.
-                %p
-                  We built a workshop, Delve Kitchen, located in Seattle’s historic Pike Place Market—just steps from the farm stands, butchers, fishmongers, and local artisans that make this the heart of Seattle’s food scene. Our space is filled with all the usual stuff you’d expect in a well-equipped kitchen, plus a number of exotic tools, technologies, and toys found only in research labs and machine shops. It’s also filled with tons of natural light and comfortable, organic materials, much unlike the stark warehouse space in which we developed Modernist Cuisine. The light, open space we created here at Delve was an inspiration for how we wanted our next venture to look and feel.
-                %p
-                  Many people assume that we’d get straight to work on a new book. And though we love big, beautiful cookbooks (and we’re always excited when new ones arrive at our kitchen), this time we wanted to do something different. Something more interactive, more flexible, more versatile; something that reflected the evolutionary nature of cooking.
-                %p
-                  So we created an online culinary workshop where we could share our ever-expanding knowledge and experience with curious cooks who want to learn the hows and whys of cooking. We built a site in the image of our kitchen: dedicated to experimentation, innovation, and research, and filled with light and color. With ChefSteps, we wanted to make the art and science of cooking accessible to anyone, novice and professional cooks alike.
-                %p
-                  Our team of 14 employees—chefs, photographers, writers, musicians, designers, and software engineers—are dedicated to making our vision a reality for you.
+                :markdown
+                  #{@about_story}
             .tab-pane#about-our-kitchen
               .section
-                %p
-                  ChefSteps is located in 4,000 square feet of industrial space underneath Pike Place Market. Just about any food product we might want is within a few hundred yards. When you walk in the front door, you are in a kitchen, but not like any you have ever seen before. Sure, there is a stove, but there are also centrifuges, rotor-stator homogenizers, immersion circulators by the case lot, and cabinets full of every imaginable hydrocolloid.
-                %p 
-                  A typical day around here is amazing. At any given time, Ben may be working on a novel vegan egg replacer while Grant is preparing an 18 course tasting menu for six and advising Nick on a packaged food project. Ryan and Kristina are shooting and editing incredible video and photos for the site. Chris is leading a session for future blender products with a team from Waring; oh and Neal Stephenson happens to be part of the group doing the brainstorming. On day 2, blenders are disassembled, Nathan Pegram quickly fabricates dangerous new prototype accessories in the machine shop, and then everything is welded back together and quickly torture tested in the kitchen.
+                :markdown
+                  #{@about_kitchen}
             .tab-pane#about-our-team
               .row.section
                 .span4.text-center.founder
