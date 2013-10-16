@@ -50,7 +50,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     return if includable_type == "Assembly"
 
     # Title tag
-    document.title = $scope.currentIncludable.includable_title + ' - ' + $scope.course.title + ' Class - ' + ' - ChefSteps'
+    document.title = $scope.currentIncludable.includable_title + ' - ' + $scope.course.title + ' Class - ChefSteps'
 
     # Keep route sync'ed up if changing not from an anchor
     newPath = "/" + $scope.currentIncludable.includable_slug
