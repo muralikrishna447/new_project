@@ -1,4 +1,13 @@
-angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', ($rootScope, $scope, $resource, $http) ->
+
+
+angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', '$route', '$routeParams', '$location', ($rootScope, $scope, $resource, $http, $route, $routeParams, $location) ->
+
+
+  $scope.routeParams = $routeParams
+  $scope.route = $route
+
+  $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
+    $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
   
   $scope.view_inclusion = {}
   $scope.collapsed = {}
@@ -10,7 +19,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       console.log $scope.course.assembly_inclusions[0].includable_id
       addUploadToEnd()
       $scope.flatInclusions = $scope.computeflatVisibleInclusions($scope.course.assembly_inclusions)
-      $scope.loadInclusion($scope.flatInclusions[0].includable_id)
+      if $scope.routeParams.slug
+        $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
+      else
+        $scope.loadInclusion($scope.flatInclusions[0].includable_id)
 
   $scope.toggleShowCourseMenu = ->
     $scope.showCourseMenu = ! $scope.showCourseMenu
@@ -27,12 +39,23 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
             $scope.collapsed[top_incl.includable_id] = false
 
   $scope.loadInclusion = (includable_id) ->
+    return if $scope.currentIncludable?.includable_id == includable_id
     $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_id == includable_id)
     if ! $scope.currentIncludable?
       console.log "Couldn't find id " + includable_id
       return
     includable_type = $scope.currentIncludable.includable_type
+
+    # Shouldn't happen
     return if includable_type == "Assembly"
+
+    # Title tag
+    document.title = $scope.currentIncludable.includable_title + ' - ' + $scope.course.title + ' Class - ' + ' - ChefSteps'
+
+    # Keep route sync'ed up if changing not from an anchor
+    newPath = "/" + $scope.currentIncludable.includable_slug
+    $location.path(newPath) if $location.path() != newPath
+
 
     console.log "switching to " + includable_type + 'with id ' + includable_id
     switch includable_type
@@ -45,6 +68,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
           console.log 'Broadcasting'
           $rootScope.$broadcast("loadActivityEvent", includable_id)
           console.log 'Done Broadcasting'
+
           # I couldn't get this to work, so for now if you set "include_disqus" on more than one activity in a
           # course, they will all share the same comments. Sucks, but ok for our current use case. 
           # Maybe disqus is looking at window.location, not
@@ -111,7 +135,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
 
   addUploadToEnd = ->
     # Special treatment for upload - put it at end of syllabus or end of last group
-    dummy_upload = {"includable_id" : "Upload", "includable_type" : "Upload", "includable_title" : "Upload Your Own"}
+    dummy_upload = {"includable_id" : "Upload", "includable_type" : "Upload", "includable_title" : "Upload Your Own", "includable_slug" : "upload"}
     last_inclusion = $scope.course.assembly_inclusions[$scope.course.assembly_inclusions.length - 1]
     if last_inclusion.includable_type == "Assembly"
       last_inclusion.includable.assembly_inclusions.push(dummy_upload)

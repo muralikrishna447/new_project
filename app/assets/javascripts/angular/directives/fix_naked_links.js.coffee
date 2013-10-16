@@ -5,7 +5,7 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", ($window
 
   link:  (scope, element, attrs) ->
     $(element).on 'click', 'a', (event)->
-      slug = event.currentTarget.href?.match('/activities/([^/]*)')[1] 
+      slug = event.currentTarget.href?.match('/activities/([^/]*)')?[1] 
       event.preventDefault() if slug && scope.overrideLoadActivityBySlug(slug)
       scope.$apply() if ! scope.$$phase
 ]
