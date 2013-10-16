@@ -4,7 +4,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.collapsed = {}
  
   $scope.init = (course_id) ->
-    $http.get('/courses/' + course_id + '/show_as_json').success (data, status) ->
+    $http.get('/classes/' + course_id + '/show_as_json').success (data, status) ->
       $scope.course = data
       console.log $scope.course.assembly_inclusions
       console.log $scope.course.assembly_inclusions[0].includable_id
@@ -63,6 +63,13 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.overrideLoadActivity = (id) ->
     if _.find($scope.flatInclusions, (incl) -> incl.includable_id == id)
       $scope.loadInclusion(id) 
+      return true
+    false
+
+  $scope.overrideLoadActivityBySlug = (slug) ->
+    incl = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == slug)
+    if incl
+      $scope.loadInclusion(incl.includable_id) 
       return true
     false
 

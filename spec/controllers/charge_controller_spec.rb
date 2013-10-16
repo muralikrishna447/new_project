@@ -25,34 +25,23 @@ describe ChargesController, "#create" do
         Stripe::Customer.should_receive(:create)
         @double_enrollment = double(Enrollment)
         @double_enrollment.stub(:save!)
+        @double_loc = double(Object)
       end        
 
       it 'stores correct price and tax in enrollment in a no tax situation' do
-        Enrollment.should_receive(:new).with(hash_including({price: 39, sales_tax: 0})).and_return(@double_enrollment)
+        @double_loc.stub(:state).and_return("NJ")
+        Geokit::Geocoders::IpGeocoder.should_receive(:geocode).and_return(@double_loc)
         Stripe::Charge.should_receive(:create).with(hash_including({description: "Cooking For the Hirsute"}))
         post :create, assembly_id: 37, discounted_price: 39
       end
 
-      it 'stores correct price and tax in enrollment in a taxed situation' do
-        # This IP is in Richland, WA
-        request.stub(:remote_ip).and_return("216.186.5.154")
+      it 'stores correct price and tax in enrollment in a taxed situation' do        
+        @double_loc.stub(:state).and_return("WA")
+        Geokit::Geocoders::IpGeocoder.should_receive(:geocode).and_return(@double_loc)
         Enrollment.should_receive(:new).with(hash_including({price: 35.62, sales_tax: 3.38})).and_return(@double_enrollment)
         Stripe::Charge.should_receive(:create).with(hash_including({description: "Cooking For the Hirsute (including $3.38 WA state sales tax)"}))
         post :create, assembly_id: 37, discounted_price: 39
       end
     end
   end
-
-  context 'basic sales tax computation' do   
-    it 'computes correct tax for various IP addresses' do
-      @controller = ChargesController.new
-      # localhost
-      expect(@controller.instance_eval{adjust_for_included_tax(100, "127.0.0.1")}).to eq([100,0])
-      # new jersey
-      expect(@controller.instance_eval{adjust_for_included_tax(100, "199.231.185.97")}).to eq([100, 0])
-      # richland, WA
-      expect(@controller.instance_eval{adjust_for_included_tax(100, "216.186.5.154")}).to eq([91.32, 8.68])
-    end
-  end
-
 end

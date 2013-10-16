@@ -2,7 +2,7 @@ class Assembly < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   friendly_id :title, use: [:slugged, :history]
-  attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description
+  attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy
   has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :quizzes, through: :assembly_inclusions, source: :includable, source_type: 'Quiz'
@@ -57,12 +57,20 @@ class Assembly < ActiveRecord::Base
 
   def faq
     title = self.slug + '-faq'
-    Activity.find_by_slug(title)
+    Page.find_by_slug(title)
   end
 
   def testimonials
     title = self.slug + '-testimonial'
     Page.find_by_slug(title)
+  end
+
+  def landing_bottom
+    Page.find_by_slug(self.slug + '-landing-bottom')
+  end
+
+  def ingredients_equipment
+    Page.find_by_slug(self.slug + '-ingredients-equipment')
   end
 
   def leaf_activities 

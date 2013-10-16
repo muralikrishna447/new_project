@@ -5,7 +5,7 @@ describe AssembliesController, "#get" do
   context 'user is not logged in' do
     let!(:user) { Fabricate(:user, id: 29) }
     let!(:assembly) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 39.00, published: true ) }
-    let!(:landing_page) { Fabricate(:page, title: "Clummy LP", content: "You so clummy", primary_path: "/courses/clummy") }
+    let!(:landing_page) { Fabricate(:page, title: "Clummy LP", content: "You so clummy", primary_path: "/classes/clummy") }
 
 =begin
    before do

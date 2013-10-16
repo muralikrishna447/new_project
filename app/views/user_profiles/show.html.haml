@@ -72,7 +72,7 @@
                     - if @user.completed_course?(enrollment.enrollable)
                       = "Complete!"
                     - else
-                      = link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, course_path(enrollment.enrollable), class: 'btn btn-primary'
+                      = link_to "Continue Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, class_path(enrollment.enrollable), class: 'btn btn-primary'
               = render 'shared/media_list_item', image: enrollment.enrollable.featured_image, title: course_title, text: course_text
           - else
             .tab-pane-header

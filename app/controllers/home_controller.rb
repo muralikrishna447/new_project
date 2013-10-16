@@ -2,6 +2,10 @@ class HomeController < ApplicationController
 
   def index
     @courses = Course.published.order('updated_at desc').last(3)
+    prereg_assembly_classes = Assembly.prereg_courses.order('updated_at desc').limit(1)
+    pubbed_assembly_classes = Assembly.pubbed_courses.order('updated_at desc').limit(1)
+    @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
+
     if current_user
       @latest = Activity.published.chefsteps_generated.really_include_in_gallery.order('published_at desc').first(6)
       @projects = Assembly.published.projects.last(3)
@@ -22,12 +26,26 @@ class HomeController < ApplicationController
   end
 
   def about
-    @chris = Copy.find_by_location('creator-chris')
-    @grant = Copy.find_by_location('creator-grant')
-    @ryan = Copy.find_by_location('creator-ryan')
-    t = %w[hans@chefsteps.com ben@chefsteps.com lorraine@chefsteps.com kristina@chefsteps.com tim.salazar@gmail.com hueezer@gmail.com michaelnatkin@gmail.com edward@chefsteps.com nick@chefsteps.com]
-    @team = User.where(email: t)
-    f = %w[chris@chefsteps.com desunaito@gmail.com grant@chefsteps.com]
-    @founders = User.where(email: f)
+    # @chris = Copy.find_by_location('creator-chris')
+    # @grant = Copy.find_by_location('creator-grant')
+    # @ryan = Copy.find_by_location('creator-ryan')
+    # t = %w[hans@chefsteps.com ben@chefsteps.com lorraine@chefsteps.com kristina@chefsteps.com tim.salazar@gmail.com hueezer@gmail.com michaelnatkin@gmail.com edward@chefsteps.com nick@chefsteps.com]
+    # @team = User.where(email: t)
+    # f = %w[chris@chefsteps.com desunaito@gmail.com grant@chefsteps.com]
+    # @founders = User.where(email: f)
+
+    @team = [
+      { name: 'Edward Starbird', title: 'CFO', image: 'https://www.filepicker.io/api/file/5Iq86WtrSAe9xC0HCMre/convert?fit=crop&w=400&h=400&cache=true', bio: "Edward spent 8 years in operations as an engineer, a production manager, and a supply chain manager. Seeking a smaller company, he has completely changed gears at ChefSteps and now wears many hats that keep the doors open, the lights on, and the development team innovating." },
+      { name: 'Michael Natkin', title: 'CTO', image: 'https://www.filepicker.io/api/file/QcbYsv41Toea8zfUkLun/convert?fit=crop&w=400&h=400&cache=true', bio: "Michael helped bring dinosaurs and Terminators to the big screen at Industrial Light and Magic, and he spent 13 years as a senior software engineer on Adobe After Effects. His cookbook, Herbivoracious, was a finalist for a 2013 James Beard Foundation award." },
+      { name: 'Huy Nguyen', title: 'Developer', image: 'https://www.filepicker.io/api/file/1pmrhQDVT9uTjBIKN6na/convert?fit=crop&w=400&h=400&cache=true', bio: "Huy is a software developer who loves to build web experiences for people who love food. He studied mechanical engineering and worked for 9 years in the aerospace industry, learning to code in his free time before quitting his job to become a full-time software developer. Huy enjoys being an unofficial taste-tester for the ChefSteps kitchen, and he sees many important similarities between software development and recipe development." },
+      { name: 'Nicholas Gavin', title: 'Development Chef', image: 'https://www.filepicker.io/api/file/fr5GtDkNQfuEr9ju3vVZ/convert?fit=crop&w=400&h=400&cache=true', bio: "Nick got his first restaurant job at age 17, washing dishes in Walla Walla, WA. He got thrown onto the line for the first time when a cook didn't show up for work. He quickly fell in love with the intensity and structure of the kitchen. After attending culinary school in Oregon, Nick took on a portfolio of challenges, cooking at Seattle fine dining staple Rover's, and later at Modernist Cuisine private events. He also worked on the development team for three months at the famed two-Michelin-starred restaurant Mugaritz, in Spain." },
+      { name: 'A.L. Esterling', title: 'Director of Social Media', image: 'https://www.filepicker.io/api/file/rLXAD1pHSpKB8ShcV6jo/convert?fit=crop&w=400&h=400&cache=true', bio: "Lorraine's multi-faceted background includes a mid-70s conceptual art school education, a decade of restaurant work, and a twenty-year real-life Mad Men stint in advertising. She now works as our social media guru, TKTK. Other skills include expert toddler wrangling, nerdy cookbook perusal, and the ability to both create and spot typos instantly." },
+      { name: 'Tim Salazar', title: 'Product Designer', image: 'https://www.filepicker.io/api/file/pNwZ7VmQVGcdFAz8NSLg/convert?fit=crop&w=400&h=400&cache=true', bio: "Tim has done design work for a huge bank, a huge telecommunications company, and a huge e-tailer. Of course, the natural progression was to go to a small startup with only one designer. He grew up eating adobo and chili dogs." },
+      { name: 'Benjamin Johnson', title: 'Development Chef', image: 'https://www.filepicker.io/api/file/TRmjlTfYTBeHT6MjCs2t/convert?fit=crop&w=400&h=400&cache=true', bio: "Ben graduated from Washington State University with a degree in Mechanical Engineering, but it was his extracurricular activities at WSU that led him to ChefSteps: Throughout his college career, Ben cooked for a sorority house to help pay the bills. After school, he cooked at a fine dining restaurant  in Walla Walla, WA, and spent a summer fishing in Alaska. Two years later, he was working as Sous Chef at Spur Gastropub in Seattle, when we found him and claimed him as our own." },
+      { name: 'Hans Twite', title: 'Director of Audio', image: 'https://www.filepicker.io/api/file/A3Crl8glRyqbQjgu54mM/convert?fit=crop&w=400&h=400&cache=true', bio: "Hans is a multi instrumentalist, composer, and producer. Primarily working in soundtrack design and production consulting, he also continues to create and perform in local Seattle groups. Hans also happens to be an experienced bartender, which we take full advantage of here at ChefSteps." },
+      { name: 'Kristina Krug', title: 'Multimedia Project Manager', image: 'https://www.filepicker.io/api/file/qWzHicwzQaqGAnPSthgW/convert?fit=crop&w=400&h=400&cache=true', bio: "Kristina is a multi-talented multimedia expert. A native Oklahoman, Kristina graduated from UW with a degree in communications, and has since tackled a variety of projects for large corporations, art museums, start-up companies, and more. When she's not filming food, she creates legacy films for the elderly, and often corrals the ChefSteps team as its unofficial HR Lady." },
+      { name: 'Karen Quinn', title: '', image: '', bio: '' },
+      { name: 'Cloud', title: '', image: '', bio: '' }
+    ]
   end
 end
