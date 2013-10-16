@@ -1,7 +1,7 @@
 .container.home-signed-in
   .row
     .span12
-      .row
+      .row.section
         .span10
           %h2
             = link_to 'Latest from ChefSteps', gallery_index_path, class: 'orange-link'
@@ -30,26 +30,16 @@
             .home-standard-item-text
               = link_to landing_class_path(course) do
                 %h3= course.title
-              = course.short_description
+              %p= course.short_description
         - @courses.from(1).each.with_index do |course, index|
           .home-standard-item
             .home-standard-item-image
               = link_to course do
-                %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= course.title
-                = image_tag filepicker_stream_image(course.featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
-                .section.pull-right(onclick= 'track_viewed_course_through_signed_in_homepage();')
-                  = where_user_left_off_in_course(course, current_user, 'btn btn-primary btn-large')
-              .section
-                %p= course.short_description
-          -else
-            .home-standard-item
-              .home-standard-item-image
-                = link_to course do
-                  = image_tag filepicker_stream_image(course.featured_image)
-              .home-standard-item-text
-                = link_to course do
-                  %h3= course.title
-                %p= course.short_description
+                = image_tag filepicker_stream_image(course.featured_image)
+            .home-standard-item-text
+              = link_to course do
+                %h3= course.title
+              %p= course.short_description
       .home-section
         %hr
       - if @projects.any?
