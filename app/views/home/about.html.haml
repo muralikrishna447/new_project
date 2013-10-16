@@ -1,4 +1,4 @@
-.container
+.container.about-quote
   .span8.offset2
     .lead.section
       %blockquote
@@ -7,7 +7,7 @@
         %p.pull-right
           &#8211 Harold McGee
 
-.container
+.container.about-mission
   .span12
     %h1 About ChefSteps
     .row
@@ -20,7 +20,7 @@
           %strong Cooking is an ancient art and science, an accumulated body of knowledge passed down through generations, which we modify every day.
           At ChefSteps, we’re recording that evolution in real time: Our classes, recipes, techniques, and videos give you the foundational knowledge and inspiration you need to build on the traditions and discoveries of others, and to begin to break the rules to create your own recipes and techniques. Here, we will all grow and learn from each other’s triumphs and failures, as we shape new culinary traditions for the next generation of cooks.
 
-.container
+.container.about-tabs
   .span12
     %ul.nav.nav-tabs
       %li.active
@@ -101,3 +101,5 @@
                 %p= member[:name]
                 %p= member[:title]
                 %p= member[:bio]
+
+= render 'layouts/footer'
