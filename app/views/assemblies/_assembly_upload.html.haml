@@ -1,9 +1,12 @@
 .flat-form(ng-controller='UploadsController' ng-init="init(#{assembly.id})" )
   %form(name='UploadForm' ng-submit='submit()')
+    .row.section
+      .span6
+        %div(ng-bind-html-unsafe="assembly.upload_copy | markdown")
+      .span2
+        %img(ng-src="{{assembly.badge_image}}")
     .row
       .span6
-        %h2 Upload a Photo
-
         %h3 Title
         %p Name your creation
         %input.input-block-level(type='text' ng-model='upload.title' required)

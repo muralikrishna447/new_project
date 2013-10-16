@@ -9,6 +9,9 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
   $scope.init = (assembly_id) ->
     $scope.upload.assembly_id = assembly_id
     $scope.shareModalShow = false
+    $http.get(assembly_id + '/show_as_json.json').success (data,status) ->
+      $scope.assembly = data
+      console.log $scope.assembly
 
   $scope.addPhoto = (upload) ->
     filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3", path: '/users_uploads/'}, (fpfiles) =>
