@@ -38,6 +38,18 @@
             :markdown
               #{apply_shortcodes(@course.description)}
 
+          - if @course.landing_bottom
+            .section
+              :markdown
+                #{@course.landing_bottom.content}
+
+          - if @course.uploads.approved.any?
+            .section
+              %h4 Student Projects
+              - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
+                = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+
+
         - if @course.faq    
           .tab-pane#faq
             :markdown
@@ -74,19 +86,6 @@
         .btn.btn-primary.btn-large.input-block-level
           %a(ng-href="#{class_url(@assembly, protocol: "http")}")
             START CLASS
-
-  - if @course.landing_bottom
-    .row
-      .span8
-        :markdown
-          #{@course.landing_bottom.content}
-
-  .row
-    .span12
-      - if @course.uploads.any?
-        %h4 Student Projects
-        - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
-          = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
 
 = render 'layouts/footer'
 
