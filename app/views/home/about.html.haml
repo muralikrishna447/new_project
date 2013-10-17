@@ -1,34 +1,37 @@
 .container.about-quote
-  .span8.offset2
-    .lead.section
-      %blockquote
-        %p
-          Whenever we cook we become practical chemists, drawing on the accumulated knowledge of generations, and transforming what the Earth offers us into more concentrated forms of pleasure and nourishment.
-        %p.pull-right
-          &#8211 Harold McGee
+  .row
+    .span8.offset2
+      .lead.section
+        %blockquote
+          %p
+            Whenever we cook we become practical chemists, drawing on the accumulated knowledge of generations, and transforming what the Earth offers us into more concentrated forms of pleasure and nourishment.
+          %p.pull-right
+            &#8211 Harold McGee
 
 .container.about-mission
-  .span12
-    %h1 About ChefSteps
-    .row
-      .span6
-        :markdown
-          #{@about_left}
-      .span6
-        :markdown
-          #{@about_right}
+  .row
+    .span12
+      %h1 About ChefSteps
+      .row
+        .span6
+          :markdown
+            #{@about_left}
+        .span6
+          :markdown
+            #{@about_right}
 
 .container.about-tabs
-  .span12
-    %ul.nav.nav-tabs
-      %li.active
-        %a(href='#about-overview' data-toggle='tab')Overview
-      %li
-        %a(href='#about-our-story' data-toggle='tab')Our Story
-      %li
-        %a(href='#about-our-kitchen' data-toggle='tab')Our Kitchen
-      %li
-        %a(href='#about-our-team' data-toggle='tab')Our Team
+  .row
+    .span12
+      %ul.nav.nav-tabs
+        %li.active
+          %a(href='#about-overview' data-toggle='tab')Overview
+        %li
+          %a(href='#about-our-story' data-toggle='tab')Our Story
+        %li
+          %a(href='#about-our-kitchen' data-toggle='tab')Our Kitchen
+        %li
+          %a(href='#about-our-team' data-toggle='tab')Our Team
 
 .container-fluid.about-tab-content
   .row-fluid
