@@ -1,0 +1,10 @@
+- enrollable_type = enrollable.class.to_s.pluralize.downcase
+- enrollable_id = enrollable.id
+- current_user_enrolled = current_user.enrolled?(enrollable)
+%div(ng-controller='EnrollmentsController' ng-init="init('#{enrollable_type}','#{enrollable_id}', '#{current_user_enrolled}')" ng-cloak)
+  %div(ng-switch on="current_user_enrolled")
+    %div(ng-switch-when="true")
+      %h3 You're enrolled!
+    %div(ng-switch-when="false")
+      %a.btn.btn-primary.btn-large(ng-click="enroll()")
+        Enroll

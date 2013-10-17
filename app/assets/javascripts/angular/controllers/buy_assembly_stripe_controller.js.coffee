@@ -3,8 +3,9 @@
 
 angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", ($scope, $http) ->
 
-  $scope.state = "charge"
   $scope.buyModalOpen = false
+
+  $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
 
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
@@ -33,12 +34,19 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         console.log "STRIPE CHARGE FAIL" + data
         $scope.errorText = data.errors[0].message || data.errors[0]
         $scope.processing = false
-      )
+      ) 
 
   $scope.maybeStartProcessing = (form) ->
     if form?.$valid
       $scope.processing = true
       $scope.errorText = false
+
+  $scope.openModal = ->
+    $scope.state = "charge" 
+    if ! $scope.logged_in
+      window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before purchasing a course.")
+    else
+      $scope.buyModalOpen = true
 
   $scope.closeModal = ->
     $scope.buyModalOpen = false

@@ -1,10 +1,58 @@
+@import 'mixins'
+
 input:not(:focus):not(.ng-pristine).ng-invalid
   border: 1px solid red
 
+.modal
+  border: 2px solid $dark-orange
+  @include radius(1px)
+
+.modal-body
+  overflow: hidden
+
+.buy-modal
+  .close-x
+    color: #ccc
+    font-size: 22px
+
 .charge-form
+  margin-top: 30px
+  margin-bottom: 0px
   min-height: 200px
+  margin-left: 20px
+  margin-right: 20px
   .error-text
     color: orange
+  label
+    text-transform: uppercase
+    margin-bottom: 0px
+    margin-top: 5px
+  input
+    border: 2px solid #ccc
+    @include radius(1px)
+    background-color: #eee
+
+  .input-full
+    width: 100%
+
+  .expdate-group
+    margin-right: 40px
+    .date-slash
+      position: relative
+      top: -4px
+
+  .tiny-note
+    font-size: 11px
+    color: #aaa
+
+  .divider
+    border: 1px solid #ccc
+    margin-top: 22px
+    margin-bottom: 20px
+    width: 200%
+
+    position: relative
+    left: -40px
 
 .slide-enter-setup, .slide-leave-setup, .slide-move-setup
   -webksit-transition: 0.5s linear all

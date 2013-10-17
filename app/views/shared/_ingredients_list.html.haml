@@ -1,6 +1,6 @@
 .ingredients{:itemprop => "ingredients"}
 
-  -if source != "step"
+  -if (defined? include_header) && include_header
     .ingredient-table-head
       .ingredient-table-row
         #ingredient.ingredient-title Ingredient

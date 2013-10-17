@@ -33,13 +33,13 @@ describe ApplicationController do
 
     it 'creates an event if user signed in' do
       sign_in @user
-      controller.send :track_event, @like
+      controller.send :track_event, @like, 'show'
       Event.first.trackable_id.should == @like.id
       Event.first.trackable_type.should == 'Like'
     end
 
     it 'does not create an event if user is not signed in' do
-      controller.send :track_event, @like
+      controller.send :track_event, @like, 'show'
       Event.all.length.should == 0
     end
 

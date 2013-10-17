@@ -1,6 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
   include Devise::Controllers::Rememberable
   def new
+    flash[:notice] = params[:notice] if params[:notice]
     self.resource = build_resource(nil, :unsafe => true)
     clean_up_passwords(resource)
     if params[:email]
@@ -36,7 +37,6 @@ class Users::SessionsController < Devise::SessionsController
       sign_in @user
       mixpanel.track 'Signed In', { distinct_id: @user.email }
       mixpanel.append_identify @user.email
-      # @enrollment = Enrollment.new(user_id: current_user.id, course_id: @course.id)
       @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
       if @enrollment.save
         redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Course!"

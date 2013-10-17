@@ -130,5 +130,13 @@ class User < ActiveRecord::Base
     self.image_id ||= '{"url":"https://www.filepicker.io/api/file/U2RccgsARPyMmzJ5Ao0c","filename":"default-avatar@2x.png","mimetype":"image/png","size":6356,"key":"users_uploads/FhbcOZpQYKJU8nHeJg1j_default-avatar@2x.png","isWriteable":true}'
   end
 
+  def enrolled?(enrollable)
+    enrollment = Enrollment.where(user_id: self.id, enrollable_type: enrollable.class.to_s, enrollable_id: enrollable.id)
+    enrollment.blank? ? false : enrollment
+  end
+
+  def completed_course?(course)
+    self.badges.include?(course.badge)
+  end
 end
 
