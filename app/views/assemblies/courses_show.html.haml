@@ -39,7 +39,7 @@
     .course-content-wrapper
       .container-fluid
         .row-fluid
-          .span12.relative.course-content(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
+          .span12.relative.course-content.printable(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
             %div(ng-switch on='view_inclusion')
               %div(ng-switch-when="Quiz")
                 .row-fluid
