@@ -65,7 +65,6 @@ class EquipmentController < ApplicationController
         rescue Exception => e
           messages = [] || @equipment.errors.full_messages
           messages.push(e.message)
-          puts $@
           render json: { errors: messages}, status: 422
         end
       end
@@ -83,10 +82,14 @@ class EquipmentController < ApplicationController
           puts "Into " + @result_equipment.inspect
           @result_equipment.merge(@equipment) unless Rails.env.angular?
           head :no_content
+        rescue ActiveRecord::RecordNotUnique => e
+          messages = [] || @equipment.errors.full_messages
+          messages.push("You cannot merge equipment that is used on the same activity")
+          render json: { errors: messages}, status: 422
         rescue Exception => e
           messages = [] || @equipment.errors.full_messages
           messages.push(e.message)
-          messages.push(e.backtrace)
+          # messages.push(e.backtrace) # For debuggin only
           render json: { errors: messages}, status: 422
         end
       end

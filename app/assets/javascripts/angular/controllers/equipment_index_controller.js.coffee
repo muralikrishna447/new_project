@@ -125,6 +125,7 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
         console.log("Equipment MERGE FAIL")
         _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
         $scope.dataLoading -= 1
+        $scope.gridOptions.selectedItems.length = 0
 
   $scope.uses = (equipment) ->
     result = equipment.activities
