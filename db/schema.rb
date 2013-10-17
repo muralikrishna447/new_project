@@ -90,6 +90,28 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
   add_index "activity_ingredients", ["ingredient_id"], :name => "index_activity_ingredients_on_ingredient_id"
   add_index "activity_ingredients", ["ingredient_order"], :name => "index_activity_ingredients_on_ingredient_order"
 
+  create_table "activity_recipe_steps", :force => true do |t|
+    t.integer  "activity_id", :null => false
+    t.integer  "step_id",     :null => false
+    t.integer  "step_order"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "activity_recipe_steps", ["activity_id", "step_id"], :name => "index_activity_recipe_steps_on_activity_id_and_step_id", :unique => true
+  add_index "activity_recipe_steps", ["step_order"], :name => "index_activity_recipe_steps_on_step_order"
+
+  create_table "activity_recipes", :force => true do |t|
+    t.integer  "activity_id",  :null => false
+    t.integer  "recipe_id",    :null => false
+    t.integer  "recipe_order"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "activity_recipes", ["activity_id", "recipe_id"], :name => "index_activity_recipes_on_activity_id_and_recipe_id", :unique => true
+  add_index "activity_recipes", ["recipe_order"], :name => "index_activity_recipes_on_recipe_order"
+
   create_table "admin_users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
@@ -432,6 +454,27 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
 
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
+
+  create_table "recipe_ingredients", :force => true do |t|
+    t.integer  "recipe_id",        :null => false
+    t.integer  "ingredient_id",    :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "unit"
+    t.decimal  "quantity"
+    t.integer  "ingredient_order"
+    t.string   "display_quantity"
+  end
+
+  add_index "recipe_ingredients", ["ingredient_order"], :name => "index_recipe_ingredients_on_ingredient_order"
+  add_index "recipe_ingredients", ["recipe_id", "ingredient_id"], :name => "index_recipe_ingredients_on_recipe_id_and_ingredient_id", :unique => true
+
+  create_table "recipes", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "yield"
+  end
 
   create_table "revision_records", :force => true do |t|
     t.string   "revisionable_type", :limit => 100,                    :null => false
