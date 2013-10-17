@@ -49,9 +49,10 @@
                       .overview-item
                         .text-center
                           = image_tag tip[:image], class: 'img-circle'
-                        %p.section
-                          :markdown
-                            #{tip[:copy].copy}
+                        - if tip[:copy]
+                          %p.section
+                            :markdown
+                              #{tip[:copy].copy}
 
             .tab-pane#about-our-story
               .section
