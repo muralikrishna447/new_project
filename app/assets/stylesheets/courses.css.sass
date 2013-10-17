@@ -129,6 +129,12 @@
   top: 0px
   opacity: 1
 
+.landing-tab-dropdown
+  display: none
+
+.assembly-course-landing
+  margin-bottom: 22px
+
 /* Spherification Styles */
 
 .static-height
@@ -154,6 +160,16 @@
 
   .static-height
     height: 170px    
+
+@media (max-width: 979px)
+  .landing-tab-dropdown
+    display: block
+
+    .dropdown-toggle .caret
+      border-top-color: #0088cc !important
+
+  .nav.landing-tab-menu
+    display: none
 
 @media (min-width: 768px) and (max-width: 979px)
   .course-side-bar
@@ -214,9 +230,10 @@
 
   .social-group
     margin-top: 0px
-    margin-bottom: 20px
+    margin-bottom: 10px
     .btn-social
       margin-top: 0px
+      margin-bottom: 10px
 
 @media (max-width: 767px)
   .assembly-course-landing
@@ -230,3 +247,19 @@
       -o-column-count: 1
       -o-column-gap: 30px
       min-height: auto
+
+@media (max-width: 320px)
+  .enroll-count
+    display: none
+  .main-cta
+    background-color: $offwhite
+    border-top: 1px solid $light-gray
+    position: fixed
+    left: 0
+    right: 0
+    bottom: 0
+    width: 100%
+    text-align: center
+    .btn
+      width: 80%
+      margin: 11px auto

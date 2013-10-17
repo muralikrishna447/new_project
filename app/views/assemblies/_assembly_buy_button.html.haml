@@ -1,18 +1,21 @@
 -# Note! Really important to use class_url, not class_path, so we get off SSL after purchase.
 %div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{class_url(assembly, protocol: "http")}"; completed=#{completed ? true : false}' ng-cloak)
   %div(ng-show="enrolled")
-    .btn.btn-primary.btn-large.input-block-level
-      %div(ng-hide='completed')
-        %a(ng-href="{{assemblyPath}}")
-          Continue Class
-      %div(ng-show='completed')
-        %a(ng-href="{{assemblyPath}}")
-          Completed Class!
+    .main-cta
+      .btn.btn-primary.btn-large.input-block-level
+        %div(ng-hide='completed')
+          %a(ng-href="{{assemblyPath}}")
+            Continue Class
+        %div(ng-show='completed')
+          %a(ng-href="{{assemblyPath}}")
+            View Class
 
   %div(ng-show="(! enrolled) && assembly.price")
-    = render 'activities/latest/assembly_price'
-    .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal()")
-      BUY NOW
+    .main-cta
+      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal()")
+        BUY NOW
+        = render 'activities/latest/assembly_price'
+
     %div(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
       .modal-body.buy-modal(ng-switch on="state")
         .row-fluid(ng-switch-when="charge" )
@@ -49,8 +52,9 @@
             .divider
             .control-group.text-center(ng-hide="processing")
               .controls                    
-                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") BUY NOW 
-                = render 'activities/latest/assembly_price'
+                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") 
+                  BUY NOW 
+                  = render 'activities/latest/assembly_price'
 
                 %p
                   .tiny-note
