@@ -1,5 +1,5 @@
 = render 'layouts/filepicker'
-- content_for :title, "#{@course.title.html_safe} - Course"
+- content_for :title, "#{@course.title.html_safe} - Class"
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
