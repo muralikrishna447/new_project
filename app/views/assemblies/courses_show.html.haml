@@ -71,10 +71,10 @@
               .course-nav-bottom
                 .course-nav-bottom-center
                   %h3
-                    .course-nav-item.btn.btn-primary(ng-show="prevInclusion()" ng-click="loadPrevInclusion()")
+                    .course-nav-item.btn.btn-primary(ng-class="{disabled: ! prevInclusion()}" ng-click="loadPrevInclusion()")
                       PREVIOUS
                     .course-nav-item(ng-bind-html-unsafe="currentIncludable.includable_title")
-                    .course-nav-item.btn.btn-primary(ng-show="nextInclusion()" ng-click="loadNextInclusion()")
+                    .course-nav-item.btn.btn-primary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
                       NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
 
