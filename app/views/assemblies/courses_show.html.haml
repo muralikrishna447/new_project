@@ -18,17 +18,17 @@
       %h4.lessons-heading
         Lessons
       %ul.section.no-bullet
-        %li(ng-repeat='inclusion in course.assembly_inclusions' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}")
+        %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='loadInclusion(inclusion.includable_id)' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}")
           %div(ng-switch="inclusion.includable_type")
-            %a(ng-switch-default ng-href='#/{{includable.includable_slug}}')
+            %a(ng-switch-default)
               {{inclusion.includable_title}}
             %div.nested(ng-switch-when="Assembly")
               .hit-box(ng-click="toggleCollapse(inclusion.includable_id); $event.stopPropagation()")
                 %a
                   {{inclusion.includable_title}}&hellip;
               %ul.no-bullet(ng-class="{'collapsed' : isCollapsed(inclusion.includable_id)}")
-                %li(ng-repeat='sub_inclusion in inclusion.includable.assembly_inclusions'  ng-class="{'active': (sub_inclusion.includable_type == view_inclusion) && (sub_inclusion.includable_id == view_inclusion_id)}")
-                  %a(ng-href='#/{{sub_inclusion.includable_slug}}')
+                %li(ng-repeat='sub_inclusion in inclusion.includable.assembly_inclusions' ng-click='loadInclusion(sub_inclusion.includable_id); $event.stopPropagation()' ng-class="{'active': (sub_inclusion.includable_type == view_inclusion) && (sub_inclusion.includable_id == view_inclusion_id)}")
+                  %a
                     {{sub_inclusion.includable_title}}
                     
         %li.forum
