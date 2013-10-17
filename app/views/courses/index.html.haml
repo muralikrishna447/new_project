@@ -1,12 +1,22 @@
-- content_for :title, "Courses"
+- content_for :title, "Classes"
 - content_for :description, "Become a better by cook by learning from these amazing courses."
 - content_for :keywords, @courses.map(&:title).to_sentence
 
 .container
   .row
     .span12
-      %h1 Courses
-      = paginate @courses
+      %h1 Classes
+
+- @assembly_courses.each do |course|
+  .container
+    .row.section
+      .span4
+        = render 'shared/media_box_2', url: landing_class_path(course), title: course.title, image: course.image_id, object: course
+      .span8
+        %h2= course.title
+        %p.lead= course.short_description
+        %h4= "#{course.video_count} HD Videos"
+        = link_to 'View the Class', landing_class_path(course), class: 'btn btn-primary btn-large'
 
 - @courses.each do |course|
   .container
@@ -17,8 +27,4 @@
         %h2= course.title
         %p.lead= course.short_description
         %h4= "#{course.viewable_activities.count} Lessons"
-        = link_to 'View the Course', course, class: 'btn btn-primary btn-large'
-.container
-  .row
-    .span12
-      = paginate @courses
+        = link_to 'View the Class', course, class: 'btn btn-primary btn-large'

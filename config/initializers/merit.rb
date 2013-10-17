@@ -27,12 +27,19 @@ Merit::Badge.create!({
   id: 1,
   name: 'new-student',
   description: 'Enroll into a Course',
-  image: 'https://www.filepicker.io/api/file/fgMJa4WES7aLgt43DyE1?cache=true'
+  image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/jA2Oiu8ySQKZNLSTqlvq?cache=true'
 })
 
 Merit::Badge.create!({
   id: 2,
   name: 'spherification',
   description: 'Complete the Spherification Course',
-  image: 'https://www.filepicker.io/api/file/RlxkQDKT5OwktQ8YEaIg?cache=true'
+  image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/UyGR5gjaQKupcq6qJSR4?cache=true'
+})
+
+Merit::Badge.create!({
+  id: 3,
+  name: 'macaron',
+  description: 'Complete the Macaron Course',
+  image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/04qCLrJ9Q9CEAacAVisg?cache=true'
 })

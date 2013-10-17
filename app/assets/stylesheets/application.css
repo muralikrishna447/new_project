@@ -16,6 +16,7 @@
  *= require application/quizzes/_overview
  *= require application/quizzes/_question
  *= require application/quizzes/_results
+ *= require application/assemblies/course_assembly
  *= require application/_dials
  *= require application/_checkboxes
  *= require ingredients_index
@@ -47,4 +48,6 @@
  *= require knife_collection
  *= require cs_lightbox
  *= require charge_form
+ *= require application/assemblies/pre_registration
+ *= require about
  */

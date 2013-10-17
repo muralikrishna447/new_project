@@ -79,6 +79,7 @@ module Delve
     config.assets.version = '7'
     config.assets.initialize_on_precompile = false
 
+
     # Caching intended for test, staging, and production environments
     unless Rails.env.development?
       config.cache_store = :dalli_store
@@ -101,5 +102,8 @@ module Delve
 
     # Primarily to allow fontawesome access from blog/shop/forum in Firefox
     config.middleware.insert_before 'ActionDispatch::Static', 'Rack::AccessControlHeaders', /assets/
+
+    # SSL
+    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: %r{/landing$}, only_environments: ['production', 'staging'], force_secure_cookies: false
   end
 end

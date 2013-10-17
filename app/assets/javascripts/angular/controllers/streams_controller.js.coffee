@@ -12,14 +12,14 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
   $scope.userImageUrl = (image_id) ->
     if image_id
       image = JSON.parse(image_id)
-      image.url + '/convert?fit=crop&w=30&h=30&cache=true'
+      image.url.replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net") + '/convert?fit=max&w=30&h=30&cache=true'
     else
-      'https://www.filepicker.io/api/file/yklhkH0iRV6biUOcXKSw/convert?fit=crop&w=30&h=30&cache=true'
+      'https://d3awvtnmmsvyot.cloudfront.net/api/file/yklhkH0iRV6biUOcXKSw/convert?fit=max&w=30&h=30&cache=true'
 
   $scope.mediaObjectImageUrl = (image_id) ->
     if image_id
       image = JSON.parse(image_id)
-      image.url + '/convert?fit=crop&w=770&h=433&cache=true'
+      image.url.replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net") + '/convert?fit=max&w=770&h=433&cache=true'
     else
       ''
 

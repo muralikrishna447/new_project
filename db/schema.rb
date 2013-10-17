@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130919231657) do
+ActiveRecord::Schema.define(:version => 20131016205052) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20130919231657) do
     t.boolean  "include_in_gallery",     :default => true
     t.integer  "creator",                :default => 0
     t.string   "layout_name"
+    t.boolean  "show_only_in_course",    :default => false
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -146,15 +147,19 @@ ActiveRecord::Schema.define(:version => 20130919231657) do
     t.text     "description"
     t.text     "image_id"
     t.string   "youtube_id"
-    t.string   "assembly_type",                                :default => "Assembly"
+    t.string   "assembly_type",                                           :default => "Assembly"
     t.string   "slug"
     t.integer  "likes_count"
     t.integer  "comments_count"
-    t.datetime "created_at",                                                           :null => false
-    t.datetime "updated_at",                                                           :null => false
+    t.datetime "created_at",                                                                      :null => false
+    t.datetime "updated_at",                                                                      :null => false
     t.boolean  "published"
     t.datetime "published_at"
-    t.decimal  "price",          :precision => 8, :scale => 2
+    t.decimal  "price",                     :precision => 8, :scale => 2
+    t.integer  "badge_id"
+    t.boolean  "show_prereg_page_in_index",                               :default => false
+    t.text     "short_description"
+    t.text     "upload_copy"
   end
 
   create_table "assembly_inclusions", :force => true do |t|
@@ -162,8 +167,9 @@ ActiveRecord::Schema.define(:version => 20130919231657) do
     t.integer  "includable_id"
     t.integer  "assembly_id"
     t.integer  "position"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.boolean  "include_disqus",  :default => false
   end
 
   add_index "assembly_inclusions", ["assembly_id"], :name => "index_assembly_inclusions_on_assembly_id"

@@ -5,6 +5,10 @@
 
 body
   position: relative
+  overflow-x: hidden
+
+a
+  cursor: pointer
 
 .top-container
   margin-top: 76px
@@ -27,6 +31,9 @@ body
 
 .relative
   position: relative
+
+.full-width
+  width: 100%
 
 #slider-container
   background: $offwhite
@@ -72,6 +79,15 @@ body
   .scroll-overlay-left, .scroll-overlay-right
     &:after
       background: $offwhite
+
+.assembly-loading-background
+  position: absolute
+  z-index: 9999
+  background: rgba(255, 255, 255, .9)
+  height: 100%
+  width: 100%
+  top: 0
+  left: 0
 
 .activity-loading-spinner
   font-size: 150px
@@ -160,11 +176,6 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
 .input-block-level
   width: 100%
 
-h1, h2, h3, h4
-  font-family: 'Raleway', sans-serif
-  font-weight: 500
-  -webkit-font-smoothing: antialiased
-
 .nav-tabs-gray
   .nav-tabs
     border: none
@@ -212,9 +223,6 @@ h4
 
 // Did this to help out Equipment etc sections for now; may want it everywhere but we weren't
 // sure what other h4's might be negatively affected
-#activity-body
-  h4
-    font-weight: 700
 
 .word-wrap
   word-wrap: break-word
@@ -364,7 +372,7 @@ a:hover
   width: 100%
   //margin-bottom: 20px
   //height: 208px
-
+ 
 .media-hero
   position: relative
   //max-height: 586px
@@ -759,13 +767,18 @@ a:hover
   width: 370px
   margin: 0px 10px
 
+.item-small
+  margin: 0px 10px
+
 /* Swipe */
 .swipe
   overflow: hidden
   visibility: hidden
   position: relative
+
 .swipe-indicators
   margin: 10px auto
+
 .swipe-indicator-btn
   background: $light-gray
   height: 15px
@@ -898,11 +911,13 @@ a:hover
     box-shadow: none !important
 
 #footer
-  margin-top: 50px
+  padding-top: 50px
   //background-image: url('http://d2eud0b65jr0pw.cloudfront.net/final_dish_IMG_5402.jpg')
   background-position: center top
   background-repeat: no-repeat
   //background-size: 100%
+  margin-left: 0px
+  margin-right: 0px
   .footer-image
     max-height: 600px
     overflow: hidden
@@ -941,14 +956,17 @@ a:hover
 /* Buttons */
 
 .btn
-  @include raleway
+  @include gotham
   i
     line-height: 20px
 
-.btn-group > .btn:first-child
-  border-radius: 0px    
+.btn-group
+  .btn:first-child
+    border-radius: 0px
+  .btn:last-child
+    border-radius: 0px
 
-.btn-primary
+.btn-primary, .btn-primary.disabled
   background: $orange
   border: 0px
   border-bottom: 1px $dark-orange solid
@@ -1183,6 +1201,14 @@ a:hover
 
 /* Navbar */
 .navbar-fixed-top
+  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+  -webkit-transform: translateZ(0)
+  margin-bottom: 5px
+  //position: fixed
+  //margin-left: 0px
+  //margin-right: 0px
+  //-webkit-backface-visibility: hidden
+  @include transition(all 300ms)
 
   .navbar-inner
     box-shadow: none
@@ -1687,6 +1713,7 @@ csingredienteditpair
 /* Large desktop */
 @media (min-width: 1200px)
   .media-hero
+    height: 586px
     img
       margin-top: -5%
       margin-bottom: -5%
@@ -1698,7 +1725,7 @@ csingredienteditpair
     width: 468px
 
   .activity-description
-    height: 100px
+    height: 120px
 
 @media (max-width: 1200px)
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
@@ -1720,6 +1747,14 @@ csingredienteditpair
 
   .activity-description
     height: 140px
+
+  .navbar
+    .navbar-inner
+      .container
+        width: 100%
+        .brand
+          margin-left: 0px
+          padding: 4px 5px
 
 
 /* Portrait tablet to landscape and desktop */
@@ -1748,7 +1783,7 @@ csingredienteditpair
     display: none
 
   .activity-description
-    height: 160px
+    height: 180px
 
   .navbar .nav > li > .dropdown-menu li a 
     color: #333
@@ -1765,6 +1800,11 @@ csingredienteditpair
   .no-margin-padding
     padding: 0px
     margin: 0px
+
+  .navbar
+    .navbar-inner
+      .container
+        width: 100%
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
@@ -1902,6 +1942,9 @@ csingredienteditpair
   .static-height
     height: 10px
 
+  .activity-description
+    height: inherit
+
 @media (max-width: 320px)
   .popup-bottom
     font-size: 12px
@@ -1910,8 +1953,6 @@ csingredienteditpair
       line-height: 16px
     .input-signup-email
       width: 50%
-
-
 
 /* Global on-select highlighting */
 
@@ -1922,4 +1963,32 @@ csingredienteditpair
 ::selection 
   background-color: $orange
   color: #ffffff
+
+
+/* Global Typography Overrides */
+
+h1, h2, h3, h4
+  @include gotham
+  color: inherit
+  letter-spacing: -1px
+
+body 
+  input, .btn, ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, input:-moz-placeholder
+    @include gotham
+
+
+.nav
+  @include gotham
+  letter-spacing: -1px
+
+body
+  @include gotham-light
+  color: #333333
+
+p
+  line-height: 1.6
+
+.image-shadow
+  @include any_shadow(0px 2px 5px #888888)
+
 

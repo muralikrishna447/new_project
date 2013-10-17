@@ -33,7 +33,7 @@ Spork.prefork do
     config.include Devise::TestHelpers, type: :controller
     config.extend ControllerMacros, type: :controller
     config.include Capybara::DSL
-
+ 
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.clean_with(:truncation)
@@ -57,6 +57,7 @@ Spork.prefork do
   end
 
   require 'capybara/poltergeist'
+  require 'capybara/rspec'
   Capybara.register_driver :poltergeist do |app|
     Capybara::Poltergeist::Driver.new(app, {js_errors: false})
     # Set debug: true to debug poltergeist
@@ -73,4 +74,5 @@ end
 def current_path_info
   current_url.sub(%r{.*?://},'')[%r{[/\?\#].*}] || '/'
 end
+
 

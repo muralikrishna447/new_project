@@ -180,4 +180,56 @@
   .static-height
     inherit
 
+/* Macaron Styles */
+.assembly-course-landing
+  .full-stripe
+    width: 100%
+    background: $offwhite
 
+
+  /* tabs */
+
+  .underline.nav-tabs
+    border: none
+    li
+      a
+        color: $light-gray
+        border: none
+        border-bottom: 3px solid white
+        @include transition(all 200ms ease-in-out)
+        &:hover
+          color: gray
+          background: white
+          border-radius: 0px
+          border-bottom: 3px solid $light-gray
+    li.active
+      a
+        color: black
+        border-bottom: 3px solid $orange
+
+
+  .buy-box
+    border-style: double
+    border-width: 4px
+    border-color: $orange
+    box-sizing: border-box
+    padding: 20px
+
+  .social-group
+    margin-top: 0px
+    margin-bottom: 20px
+    .btn-social
+      margin-top: 0px
+
+@media (max-width: 767px)
+  .assembly-course-landing
+    .two-columns
+      column-count: 1
+      column-gap: 30px
+      -webkit-column-count: 1
+      -webkit-column-gap: 30px
+      -moz-column-count: 1
+      -moz-column-gap: 30px
+      -o-column-count: 1
+      -o-column-gap: 30px
+      min-height: auto
