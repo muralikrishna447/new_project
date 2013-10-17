@@ -136,6 +136,9 @@
 .landing-tab-dropdown
   display: none
 
+.assembly-course-landing
+  margin-bottom: 22px
+
 /* Spherification Styles */
 
 .static-height
@@ -247,3 +250,19 @@
       -o-column-count: 1
       -o-column-gap: 30px
       min-height: auto
+
+@media (max-width: 320px)
+  .enroll-count
+    display: none
+  .main-cta
+    background-color: $offwhite
+    border-top: 1px solid $light-gray
+    position: fixed
+    left: 0
+    right: 0
+    bottom: 0
+    width: 100%
+    text-align: center
+    .btn
+      width: 80%
+      margin: 11px auto

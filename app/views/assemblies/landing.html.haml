@@ -86,11 +86,11 @@
               #{apply_shortcodes(@course.testimonials.content)}
 
     -if @course.price
-      .span3.offset1.section
+      .span4.section
         .buy-box
           
           = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: @discounted_price, completed: current_user && current_user.completed_course?(@assembly)
-          .text-center.section
+          .text-center.enroll-count.section
             %h4= "#{@course.enrollments.count} Enrolled"
           %h5 Course Includes:
           %ul
@@ -102,7 +102,7 @@
           %h4 100% satisfaction guaranteed or your money back
 
     -else
-      .span3.offset1.section
+      .span4.section
         .btn.btn-primary.btn-large.input-block-level
           %a(ng-href="#{class_url(@assembly, protocol: "http")}")
             START CLASS
