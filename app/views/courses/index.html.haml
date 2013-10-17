@@ -15,7 +15,6 @@
       .span8
         %h2= course.title
         %p.lead= course.short_description
-        %h4= "#{course.video_count} HD Videos"
         = link_to 'View the Class', landing_class_path(course), class: 'btn btn-primary btn-large'
 
 - @courses.each do |course|
@@ -26,5 +25,4 @@
       .span8
         %h2= course.title
         %p.lead= course.short_description
-        %h4= "#{course.viewable_activities.count} Lessons"
         = link_to 'View the Class', course, class: 'btn btn-primary btn-large'
