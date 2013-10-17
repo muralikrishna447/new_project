@@ -1,0 +1,60 @@
+#!/bin/bash
+set -e
+
+cleanup() {
+    echo "Shutting down rails server"
+    kill -TERM `cat tmp/pids/angular.pid`
+}
+
+trap 'cleanup' SIGINT
+
+if ! type "node" > /dev/null; then
+  echo "You need to have Node.js installed"
+  echo
+  echo "On OSX you can do this by typing"
+  echo "$ brew install nodejs"
+  echo
+  echo "On Ubuntu you can do this by typing"
+  echo "$ sudo apt-get install nodejs"
+  exit 1
+fi
+
+if [ ! -d node_modules ]; then
+  echo "You don't have the node modules installed.  Beginning installation:"
+  echo
+  echo "Installing karma"
+  npm install -g karma
+
+  echo "Installing karma-ng-scenario"
+  npm install -g karma-ng-scenario
+
+  echo "Installing karma-coffee-preprocessor"
+  npm install -g karma-coffee-preprocessor
+fi
+
+RAILS_ENV=angular bundle exec rake db:reset
+RAILS_ENV=angular bundle exec rake db:test:prepare
+RAILS_ENV=angular bundle exec rails runner -e angular "require Rails.root.join('db', 'seeds')
+ingredient_1 = Ingredient.create(title: 'Salt, Seasalt')
+ingredient_2 = Ingredient.create(title: 'Salt, Kosher')
+activity_1 = Activity.create(title: 'Salt encrusted fish', description: 'Salt dome fish')
+activity_1.update_ingredients([{display_quantity: '10kg', quantity: 10, unit: 'kg', title: 'Salt, Seasalt'}, {display_quantity: '20g', quantity: 20, unit: 'g', title: 'Salt, Kosher'}])
+activity_2 = Activity.create(title: 'Steak', description: 'Super steak')
+activity_2.update_ingredients([{display_quantity: '10kg', quantity: 30, unit: 'g', title: 'Salt, Seasalt'}])
+activity_3 = Activity.create(title: 'Great Recipe', description: 'great recipe')
+ingredient_3 = Ingredient.create(title: 'Recipe', sub_activity_id: activity_3.id)
+ingredient_4 = Ingredient.create(title: 'Salt, Safe to Delete')
+equipment_1 = Equipment.create(title: 'Chef Knife, Shun Edo 6-1/2 Blade')
+equipment_2 = Equipment.create(title: 'Shun Edo Santoku Knife')
+equipment_3 = Equipment.create(title: 'Rusty Knife')
+activity_1.update_equipment([{title: 'Shun Edo Santoku Knife', optional: true}, {title: 'Chef Knife, Shun Edo 6-1/2 Blade', optional: false}])
+activity_2.update_equipment([{title: 'Chef Knife, Shun Edo 6-1/2 Blade'}])
+"
+bundle exec thin start -p 3001 -e angular -P tmp/pids/angular.pid -d
+
+echo "Waiting for rails server to startup before karma"
+sleep 30
+
+echo "Starting up Karma"
+karma start spec/angular/karma_e2e_config.js
+
