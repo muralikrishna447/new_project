@@ -54,12 +54,12 @@ class HomeController < ApplicationController
     @about_kitchen = Copy.find_by_location('about-kitchen')
 
     @about_tips = [
-      { image: '', copy: Copy.find_by_location('about-tip-weight') },
-      { image: '', copy: Copy.find_by_location('about-tip-ingredients') },
-      { image: '', copy: Copy.find_by_location('about-tip-heat') },
-      { image: '', copy: Copy.find_by_location('about-tip-community') },
-      { image: '', copy: Copy.find_by_location('about-tip-equipment') },
-      { image: '', copy: Copy.find_by_location('about-tip-tools') }
+      { image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/enLJ0PSqRpPdsI5k2Apg/convert?fit=crop&w=100&h=100&cache=true', copy: Copy.find_by_location('about-tip-weight') },
+      { image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/n30SnaXGQGWt0KcW1bfz/convert?fit=crop&w=100&h=100&cache=true', copy: Copy.find_by_location('about-tip-ingredients') },
+      { image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/CofctCnTwWvm7A2b8ShV/convert?fit=crop&w=100&h=100&cache=true', copy: Copy.find_by_location('about-tip-heat') },
+      { image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/lR9PT51iSuKJjmluszsa/convert?fit=crop&w=100&h=100&cache=true', copy: Copy.find_by_location('about-tip-community') },
+      { image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/weHQHUSTBqKRI1bk2bMw/convert?fit=crop&w=100&h=100&cache=true', copy: Copy.find_by_location('about-tip-equipment') },
+      { image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/a7vIXo8R4WeuesRE2J41/convert?fit=crop&w=100&h=100&cache=true', copy: Copy.find_by_location('about-tip-tools') }
     ]
   end
 end

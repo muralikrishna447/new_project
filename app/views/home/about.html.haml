@@ -45,12 +45,14 @@
                     - slice.each do |tip|
                       .overview-item
                         .text-center
-                          = image_tag 'http://placehold.it/80x80', class: 'img-circle'
+                          = image_tag tip[:image], class: 'img-circle'
                         %p.section
                           :markdown
                             #{tip[:copy].copy}
 
             .tab-pane#about-our-story
+              .section
+                = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/bpKlBmBXRBmUPSZUSLXW/convert?fit=max&w=1200&cache=true'
               .section
                 :markdown
                   #{@about_story}
