@@ -15,11 +15,7 @@
 
 .container.assembly-course-landing
   .row
-    .span8.section
-      / %div(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak )
-      /   = render 'layouts/social_buttons', media_object: @course
-      %div(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
-        = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
+    .span8
 
       %ul.nav.nav-tabs.underline.landing-tab-menu
         %li.active
@@ -100,6 +96,9 @@
             -# %li= "#{@course.assembly_inclusions.count} Lessons"
             %li Q&A from the chefs
           %h4 100% satisfaction guaranteed or your money back
+
+        .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+          = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
 
     -else
       .span4.section
