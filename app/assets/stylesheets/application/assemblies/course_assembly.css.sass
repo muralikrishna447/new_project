@@ -11,8 +11,8 @@
   -webkit-backface-visibility: hidden
   position: fixed
   //z-index: 9999
-  margin-top: 10px
-  margin-left: -28px
+  margin-top: 20px
+  margin-left: -48px
   color: $orange
   font-size: 24px
   width: 28px
@@ -43,6 +43,7 @@
   -webkit-overflow-scrolling: touch
   -webkit-transform: translateZ(0)
   -webkit-backface-visibility: hidden
+  pointer-events: none
   @include transition(opacity 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
   @include boxsizing
 
@@ -120,8 +121,8 @@
     .course-content
       z-index: 1000
       background-color: white
-      padding-left: 20px
-      padding-right: 20px
+      padding-left: 0px
+      padding-right: 0px
       @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
       .row
         margin-left: 0px
@@ -142,6 +143,7 @@
 
 .course-nav-slideout.menu-slideout
   opacity: 1
+  pointer-events: inherit
 
 .lessons-heading
   color: $orange
@@ -152,33 +154,45 @@
   -webkit-backface-visibility: hidden
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
-  width: 15px
+  width: 14px
   top: 115px
   //margin-left: 50%
   //left: -634px
-  margin-left: -39px
+  margin-left: -41px
   @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
 
 
   li
-    height: 21px
+    height: 20px
+    width: 14px
 
-  li a .step-dot-circle
-    background-color: lighten($orange, 25%)
-    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-    width: 11px
-    height: 11px
-    border-radius: 50%
+  li 
+    a
+      padding: 5px 2px
+      .step-dot-circle
+        -webkit-backface-visibility: hidden
+        background-color: lighten($orange, 25%)
+        width: 10px
+        height: 10px
+        border-radius: 50%
+        @include boxsizing
 
-  li a.active .step-dot-circle
-    background-color: $orange
-    -webkit-transform: translateZ(0)
-    @include transform(scale(1.36))
+  li 
+    a.active
+      padding: 3px 0px
+      .step-dot-circle
+        background-color: $orange
+        width: 14px
+        height: 14px
    
-  li.intro a .step-dot-circle
-    font-size: 15px
-    background-color: $light-gray
-    @include transform(scale(1.36))
+  li.intro 
+    a
+      padding: 3px 0px
+      .step-dot-circle
+        font-size: 15px
+        background-color: $light-gray
+        width: 14px
+        height: 14px
 
   li.intro a.active .step-dot-circle
     background-color: #555
@@ -276,25 +290,15 @@
   margin-top: 5px
 
 .price
-  font-size: 22px
-  text-align: center
-  display: inline-box
-  margin-bottom: 11px
+  display: inline-block
   .full-price
     display: inline
-    font-size: 80%
-    color: gray
     .strike
       position: absolute
       left: 0
       right: 0
       top: 7px
-      border: 3px solid rgba(226, 95, 37, 0.7)
-
-.charge-form
-  .price
-    margin-bottom: 0px
-    margin-top: 11px
+      border: 2px solid rgba(255, 255, 255, .9)
 
 .ingredients-title
   display: none
@@ -326,18 +330,25 @@
 
 // Responsive Styles //
 
-@media (max-width: 1225px)
+@media (max-width: 1280px)
   .course-assembly-container
     margin: 0px
     width: 100%
     padding-left: 18px
   .course-nav-hamburger
     left: 10px
+    margin-top: 10px
     margin-left: 0px
   .course-nav-slideout
     left: 38px
   .course-content-wrapper
     padding-left: 18px
+
+  .course-content-wrapper
+    .container-fluid
+      .course-content
+        padding-left: 20px
+        padding-right: 20px
 
 @media (max-width: 979px)
   .navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner

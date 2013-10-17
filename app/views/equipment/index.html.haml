@@ -1,0 +1,76 @@
+- content_for :title, "Equipment"
+- content_for :description, "Batch edit equipment"
+
+.equipment-index-container.container.relative(ng-controller="EquipmentIndexController" infinite-scroll="loadEquipment()" infinite-scroll-distance="3" ng-cloak)
+
+  .navbar.navbar-fixed-top
+    .navbar-inner
+      .container
+        .form-horizontal
+          %input.search-query(type="search" placeholder="Equipment name..." ng-model="searchString")
+          .btn-toolbar
+            .btn-group
+              %button.btn#refresh-button(ng-click="refreshEquipment()")
+                %i.icon-refresh(tooltip="Refresh list (use when you make changes in another window)")
+            .btn-group
+              %button.btn#merge-button(ng-disabled="! canMerge()" ng-click="setMergeKeeper(null); mergeModalOpen = true" )
+                .icon-pair(tooltip="Merge selected equipment (No Undo!)")
+                  %i.icon-arrow-right
+                  %i.icon-arrow-left
+              %button.btn#delete-button(ng-disabled="! canDelete()" ng-click="deleteSelected()" )
+                %i.icon-trash(tooltip="Delete selected equipment (No Undo!)")
+          %i.loading-spinner.icon-spinner.icon-spin.pull-right(ng-show="dataLoading")
+
+
+  .row.noprint(ng-cloak ng-show="alerts.length > 0")
+    .span8.offset2
+      %alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="closeAlert($index)" ng-animate="'custom'")
+        {{alert.message}}
+
+  .row.grid
+    .equipment-index.span12(ng-grid="gridOptions")
+
+
+  / -# This modal and the following ones would be a good use for ui-router, but I'm annoyed that they don't have a
+  / -# released build for 0.0.2 yet so I'm doing it the old fashioned way for now.
+  %div.uses-modal(close="usesModalOpen = false" modal="usesModalOpen" options="modalOptions")
+    .modal-header
+      %h2(ng-bind-html-unsafe="usesForModalEquipment.title")
+    .modal-body
+      %h3 Used In
+      %ul
+        %li(ng-repeat="activity in usesForModal")
+          %a(ng-href="/activities/{{activity.id}}" target="_blank" ng-bind-html-unsafe="activity.title")
+    .modal-footer
+      %button.btn.btn-warning.cancel(ng-click="usesModalOpen = false") Close
+
+  / -# See comment above
+  %div.merge-modal(close="mergeModalOpen = false" modal="mergeModalOpen" options="modalOptions")
+    .modal-header
+      %h2 Merge Equipment
+      Click on the equipment that you want to keep to see a preview of your merge.
+    .modal-body
+      %div(ng-show="mergeKeeper")
+        %h3 Will Be Kept
+        %ul.to-keep
+          %li(ng-bind-html-unsafe="mergeKeeper.title")
+            %a(ng-bind-html-unsafe="mergeKeeper.title" ng-click="setMergeKeeper(equipment)")
+            %span
+              \- Uses: {{mergeKeeper.use_count}}
+            %span(ng-show="equipment.product_url")
+              \- Link: {{urlAsNiceText(mergeKeeper.product_url)}}
+
+      %h3(ng-show="mergeKeeper" ng-animate="'fade'") Will Be Merged and Deleted
+      %ul.to-delete
+        %li(ng-repeat="equipment in gridOptions.selectedItems | orderBy:'useCount':true" ng-show="equipment.id != mergeKeeper.id" ng-animate="'custom'")
+          %a.merge-link(ng-bind-html-unsafe="equipment.title" ng-click="setMergeKeeper(equipment)")
+          %span
+            \- Uses: {{equipment.use_count}}
+          %span(ng-show="equipment.product_url")
+            \- Link: {{urlAsNiceText(equipment.product_url)}}
+          %span(ng-show="mergeKeeper && splitNote(equipment)")
+            ("{{splitNote(equipment)}}" will be moved to note)
+
+    .modal-footer
+      %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" ng-show="mergeKeeper") Merge (No Undo!)
+      %button.btn.cancel(ng-click="mergeModalOpen = false") Cancel

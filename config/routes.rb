@@ -110,7 +110,12 @@ Delve::Application.routes.draw do
     end
   end
 
-  resources :equipment, only: [:index]
+  resources :equipment, only: [:index, :update, :destroy] do
+    member do
+      post 'merge' => 'equipment#merge'
+    end
+  end
+
   resources :ingredients, only: [:index, :update, :destroy] do
     member do
       post 'merge' => 'ingredients#merge'
