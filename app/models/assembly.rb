@@ -85,7 +85,7 @@ class Assembly < ActiveRecord::Base
   def video_count
     assembly_activities = leaf_activities
     activity_videos_count = assembly_activities.select{|a| a.youtube_id? }.count
-    activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.count
+    activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.map(&:youtube_id).uniq.count
     activity_videos_count + activity_step_videos_count
   end
 
