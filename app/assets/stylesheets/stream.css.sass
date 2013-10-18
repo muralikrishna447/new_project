@@ -2,26 +2,29 @@
 
 .stream
   width: 100%
-  @include raleway
+  @include primary-font
   position: relative
   .stream-item
-    margin-bottom: 20px
+    margin-bottom: ($baseline + .3rem)
     float: left
     width: 100%
     border: 1px solid $light-gray
-    padding: 10px
+    padding: 8px 10px 0px 10px
     @include boxsizing
     .stream-item-dialogue
       img
         float: left
-      h4
-        margin-left: 35px
+      h5
+        margin-left: 40px
         margin-top: 0px
-        margin-bottom: 5px
+      margin-bottom: $baseline
   .stream-more
     float: left
     width: 100%
-    margin-bottom: 20px
+    margin-bottom: $baseline * 2
+  .stream-item-image
+    margin-bottom: $baseline 
+
 
 .stream-spinner
   color: $orange

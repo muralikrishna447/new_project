@@ -10,9 +10,8 @@
   -webkit-transform: translateZ(0)
   -webkit-backface-visibility: hidden
   position: fixed
-  //z-index: 9999
-  margin-top: 20px
-  margin-left: -48px
+  z-index: 9999
+  margin-left: -28px
   color: $orange
   font-size: 24px
   width: 28px
@@ -31,8 +30,8 @@
 
 .course-nav-slideout
   position: fixed
+  padding-top: $baseline * 5
   top: 0px
-  padding-top: 56px
   width: 295px
   height: 100%
   border-right: 1px solid $light-gray
@@ -49,7 +48,7 @@
 
   h4
     margin: 0px
-    padding: 10px 0px 0px 10px
+    padding: $baseline
     text-transform: uppercase
 
   ul
@@ -121,8 +120,8 @@
     .course-content
       z-index: 1000
       background-color: white
-      padding-left: 0px
-      padding-right: 0px
+      padding-left: 20px
+      padding-right: 20px
       @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
       .row
         margin-left: 0px
@@ -205,33 +204,24 @@
 
 .assembly-activity
   .activity-description
-    padding: 0 10px
 
   .ordered-steps-new
     .ordered-step-item
       width: 100%
       float: left
       padding: 0px
-      margin-top: 30px
       @include boxsizing
       .step-number
-        @include gotham-bold
-        font-size: 50px
-        line-height: 50px
-        padding-bottom: 10px
+        @include primary-font-bold
       .step-content
-        h4
-          margin-top: 0px
-          margin-bottom: 0px
-          padding-bottom: 2px
         ul, li
           list-style: none
           padding: 0px 0px 10px 0px
-          margin: 0px
+          margin-bottom: $baseline
         ul
           padding: 0px
       .step-actions
-        margin-bottom: 10px
+        margin-bottom: $baseline
         .step-action-item
           display: inline-block
         .step-ingredients
@@ -241,12 +231,12 @@
         display: none
       .step-video
         display: none
-        margin-bottom: 10px
+        margin-bottom: $baseline * 2
       .divider
         height: 1px
         border-bottom: 1px solid $light-gray
-        margin-top: 14px
-        margin-bottom: 14px
+        padding: $baseline 0px
+        margin-bottom: $baseline *2
       .span12
         .step-content
           @include columncount(2)
