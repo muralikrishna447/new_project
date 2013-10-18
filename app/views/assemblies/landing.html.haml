@@ -15,11 +15,7 @@
 
 .container.assembly-course-landing
   .row
-    .span8.section
-      / %div(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak )
-      /   = render 'layouts/social_buttons', media_object: @course
-      %div(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
-        = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
+    .span8
 
       %ul.nav.nav-tabs.underline.landing-tab-menu
         %li.active
@@ -60,6 +56,7 @@
 
           - if @course.landing_bottom
             .section
+              %h4 Course Preview
               :markdown
                 #{@course.landing_bottom.content}
 
@@ -101,11 +98,21 @@
             %li Q&A from the chefs
           %h4 100% satisfaction guaranteed or your money back
 
+        .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+          = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
+
     -else
       .span4.section
         .btn.btn-primary.btn-large.input-block-level
           %a(ng-href="#{class_url(@assembly, protocol: "http")}")
             START CLASS
+
+  .row
+    .span12
+      - if @course.uploads.approved.any?
+        %h4 Student Projects
+        - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
+          = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
 
 = render 'layouts/footer'
 

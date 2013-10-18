@@ -2,7 +2,6 @@
 @import 'circle_highlight_anim'
 
 
-
 body
   position: relative
   overflow-x: hidden
@@ -11,11 +10,10 @@ a
   cursor: pointer
 
 .top-container
-  margin-top: 76px
+  margin-top: $baseline * 7
 
 #main-container
-  margin-top: 70px
-  margin-bottom: 60px
+  margin-bottom: $baseline * 7
 
 .container-fluid
   .container
@@ -146,12 +144,14 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
   -o-box-shadow: none
   box-shadow: none
   @include boxsizing
+  margin-bottom: $baseline * 2
+  padding: ($baseline * 2) 
 
 .well-opaque
   background-color: rgba(255,255,255,.8)
 
 .well-gradient
-  padding: 20px
+  padding: $baseline * 2
   background: rgb(255,255,255)
   background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(242,242,242,1) 100%)
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(242,242,242,1)))
@@ -160,6 +160,7 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
   background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
   background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%)
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 )
+  margin-bottom: $baseline * 2
 
 .well-gray
   padding: 20px
@@ -218,8 +219,8 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
           margin: 0px
 
 h4
-  margin-bottom: 0px
-  line-height: 24px
+  margin-bottom: $baseline
+  line-height: $baseline
 
 // Did this to help out Equipment etc sections for now; may want it everywhere but we weren't
 // sure what other h4's might be negatively affected
@@ -245,7 +246,6 @@ h4
       border-radius: 0px
       font-size: 16px
       line-height: 20px
-      font-family: 'Raleway', sans-serif
       padding: 10px
       box-shadow: none
       display: block
@@ -256,7 +256,6 @@ h4
         width: 80%
         float: left
       #user-password-show
-        font-family: 'Raleway', sans-serif
         width: 19%
         float: right
         height: 40px
@@ -294,14 +293,13 @@ a:hover
   text-decoration: none
 
 .madlib, .madlib input
-  font-family: "Raleway", san-serif
-  font-size: 30px
-  font-weight: 500
   -webkit-font-smoothing: antialiased
-  line-height: 50px
   input
-    font-size: 24px
-    line-height: 26px
+    font-size: 2.2rem
+    line-height: $baseline * 2
+
+.madlib-item
+  margin-bottom: $baseline
 
 .input-underlined
   input[type=text], input[type=email], input[type=password]
@@ -315,16 +313,16 @@ a:hover
 
 .gallery
   .media-centered
-    margin-bottom: 20px
+    margin-bottom: $baseline * 2
 
 .section-small
-  margin-top: 10px
+  margin-bottom: $baseline * 2
 
 .section
-  margin-top: 20px
+  margin-bottom: $baseline * 2
 
 .section-large
-  margin-bottom: 5em
+  margin-bottom: $baseline * 5
 
 .relative
   position: relative
@@ -454,9 +452,10 @@ a:hover
 //       font-size: 12px
 
 #video-ingredient-unit
-  min-height: 600px
+  min-height: $baseline * 60
 
 .video-container
+  margin-bottom: $baseline
   position: relative
   width: 100%
   iframe, object, embed, .edit-pair, .edit-pair-show, .edit-pair-edit
@@ -477,8 +476,7 @@ a:hover
 // temporary until steps are moved over to csenforceaspect
 .ordered-step-item
   .video-container
-    padding-bottom: 56.25%
-    height: 0
+    padding-bottom: 58%
     iframe, object, embed
       position: absolute
       top: 0
@@ -488,7 +486,6 @@ a:hover
 
 
 .activity-description-wrapper
-  margin-top: 10px
   position: relative
   .activity-description
     overflow: hidden
@@ -529,7 +526,7 @@ a:hover
     width: 100%
     float: left
     padding: 0px
-    margin-bottom: 1em
+    margin-bottom: $baseline
     @include boxsizing
     .step-element
       float: left
@@ -552,12 +549,11 @@ a:hover
         padding-bottom: 5px
       ul, li
         list-style: none
-        padding: 0px 0px 10px 0px
-        margin: 0px
+        margin: 0px 0px $baseline 0px 
       ul
         padding: 0px
     .step-actions
-      margin-bottom: 10px
+      margin-bottom: $baseline
       .step-action-item
         display: inline-block
       .step-ingredients
@@ -608,8 +604,8 @@ a:hover
   .ingredient-table-row
     position: relative
     width: 100%
-    line-height: 20px
-    min-height: 20px
+    line-height: $baseline * 2
+    min-height: $baseline * 2
 
   .ingredient-title
     width: auto
@@ -647,7 +643,7 @@ a:hover
     width: 100%
     line-height: 30px
     font-size: 17.5px
-    margin-bottom: 6px
+    margin-bottom: $baseline/2
     display: block
     font-weight: bold
 
@@ -756,7 +752,7 @@ a:hover
   .carousel-scroll-inner
     height: 180px
     .item
-      margin: 10px
+      margin: $baseline
       width: 285px
       float: left
 
@@ -777,7 +773,7 @@ a:hover
   position: relative
 
 .swipe-indicators
-  margin: 10px auto
+  margin: $baseline auto
 
 .swipe-indicator-btn
   background: $light-gray
@@ -837,35 +833,6 @@ a:hover
     width: 100%
     @include boxsizing
   
-.logo-wrapper
-  $width: 7px
-  $height: 10px
-  $spacing: 2px
-  height: 4*$height + 3*$spacing
-  .logo-window
-    box-shadow: $width + $spacing 0px 0px 0px $dark_orange, 2*($width + $spacing) 0px 0px 0px $dark_orange, 0px $height + $spacing 0px 0px $dark_orange, $width + $spacing $height + $spacing 0px 0px $dark_orange, 2*($width + $spacing) $height + $spacing 0px 0px $dark_orange, 0px 2*($height + $spacing) 0px 0px $dark_orange, $width + $spacing 2*($height + $spacing) 0px 0px $dark_orange, 2*($width + $spacing) 2*($height + $spacing) 0px 0px $dark_orange, 0px 3*($height + $spacing) 0px 0px $dark_orange, $width + $spacing 3*($height + $spacing) 0px 0px $dark_orange, 2*($width + $spacing) 3*($height + $spacing) 0px 0px $dark_orange
-    background: $dark_orange
-    width: $width
-    height: $height
-    overflow: hidden
-    float: left
-  .logo-block
-    float: left
-    margin-left: 22px
-    .logo-text
-      font-size: 30px
-      line-height: 29px
-      font-weight: 500
-      font-family: 'Raleway', sans-serif
-      margin-top: 3px
-    .logo-subtext
-      font-size: 14px
-      margin-top: -5px
-      margin-left: 3px
-      font-weight: 400
-      margin-bottom: -1px
-
-
 #hero-container
   padding: 0px
   //max-height: 586px
@@ -880,7 +847,7 @@ a:hover
       li
         width: 20px
         height: 20px
-        margin: 20px 2px
+        margin: ($baseline*2) 2px
         border-radius: 10px
         background: gray
         &:hover
@@ -918,6 +885,7 @@ a:hover
   //background-size: 100%
   margin-left: 0px
   margin-right: 0px
+  margin-top: 60px
   .footer-image
     max-height: 600px
     overflow: hidden
@@ -938,7 +906,7 @@ a:hover
 .label
   background: $orange
   color: white
-  @include raleway
+  @include primary-font
   font-weight: bold
 
 .label-large
@@ -956,10 +924,13 @@ a:hover
 /* Buttons */
 
 .btn
-  @include gotham
+  @include primary-font
+  line-height: $baseline*2
   i
-    line-height: 20px
+    line-height: $baseline*2
 
+.btn-large
+  padding: 12px 19px 11px 19px
 .btn-group
   .btn:first-child
     border-radius: 0px
@@ -971,6 +942,7 @@ a:hover
   border: 0px
   border-bottom: 1px $dark-orange solid
   border-radius: 0px
+  margin-bottom: $baseline
   position: relative
   @include boxsizing
   @include transition(all .25s)
@@ -1027,8 +999,8 @@ a:hover
   position: relative
   background: image-url('https://www.filepicker.io/api/file/IOjE35SKSmCjut9x1FBg?cache=true') no-repeat
   width: 34px
-  height: 34px
-  margin: 33px 10px 20px 33px
+  height: 33px
+  margin: 33px 10px 22px 33px
   @include boxsizing
 
 .btn-hero-next
@@ -1105,11 +1077,11 @@ a:hover
   display: inline-block
 
 .btn-social
-  margin: 10px 2px 0px 2px
+  margin: 0px 2px 4px 2px
   background-color: white
   border-radius: 2px
   padding: 0px 0px 0px 0px
-  height:  27px
+  height:  29px
   @include transition(all 250ms ease-in-out 2 alternate)
 
   i
@@ -1127,7 +1099,7 @@ a:hover
     position: relative
     bottom:  -4px
     padding-right: 0px
-    height: 27px
+    height: 33px
     margin-bottom: 0px
     .social-icon-group
       height: 100%
@@ -1163,10 +1135,10 @@ a:hover
 
 .btn-outline-blue-large
   background: white
-  height: 44px
   border: 1px solid $light-blue
-  border-radius: 22px
+  border-radius: 55px
   font-weight: 400
+  padding: 11px 22px
   @include boxsizing
   @include transition(all 200ms)
   &:hover
@@ -1178,13 +1150,13 @@ a:hover
   position: absolute
   bottom: 0px
   right: 0px
-  height: 67px
+  height: 66px
   width: 32px
   padding: 0
   text-decoration: none
   border-color: transparent
   [class^="icon-"]
-    line-height: 67px
+    line-height: 66px
     color: white
 
 .social-counter, .social-icon-group
@@ -1237,7 +1209,7 @@ a:hover
   .nav > li > a
     text-shadow: none
     color: #333
-    line-height: 34px
+    line-height: 33px
     font-size: 16px
     font-weight: 200
     @include transition(background .25s)
@@ -1261,7 +1233,7 @@ a:hover
       background-color: $dark-orange
       float: left
   .nav-search
-    height: 54px
+    height: 55px
     width: 40px
     overflow: hidden
     @include transition(background 300ms)
@@ -1298,13 +1270,13 @@ a:hover
   width: 100%
 
 .scroll-shadow-horizontal
-  height: 180px
+  height: 187px
   overflow-x: auto
   overflow-y: hidden
 
 .scroll-overlay-top
   pointer-events: none
-  height: 20px
+  height: 22px
   margin-top: -20px
   width: 100%
   position: absolute
@@ -1340,7 +1312,7 @@ a:hover
 
 .scroll-overlay-bottom
   pointer-events: none
-  height: 20px
+  height: 22px
   margin-bottom: -20px
   width: 100%
   position: absolute
@@ -1452,7 +1424,7 @@ a:hover
   i
     font-size: 18px
   .btn
-    height: 28px
+    height: 33px
 
 #activity-body
   form, textarea
@@ -1537,7 +1509,7 @@ csingredienteditpair
 .meta-edit
   border: 1px solid $offwhite
   padding:  10px
-  margin-bottom: 15px
+  margin-bottom: $baseline * 2
 
 .disabled-section
   color: #aaa
@@ -1547,17 +1519,15 @@ csingredienteditpair
 // Not sure how I feel about this approach of basic the style on the model. Semantic or gross?
 *[data-ng-model='activity.title']
   font-size: 38.5px
-  line-height: 40px
+  line-height: 44px
   width: 100%
-  font-family: 'Raleway', sans-serif
   font-weight: bold
   -webkit-font-smoothing: antialiased
 
 .step-title-input
   font-size: 18px !important
-  line-height: 25px
+  line-height: 33px
   width: 100%
-  font-family: 'Raleway', sans-serif
   font-weight: bold
   -webkit-font-smoothing: antialiased
 
@@ -1581,11 +1551,11 @@ csingredienteditpair
 
 .add-section
   margin-top: 10px
-  margin-bottom: 10px
+  margin-bottom: $baseline
 
 .add-item, .add-from-master, .done
   margin-top: -5px
-  height:  20px
+  height:  22px
 
 
 .step-sidebar-group
@@ -1596,9 +1566,7 @@ csingredienteditpair
   button
     width: 24px
     margin-left: 0px !important
-    margin-top: 4px
-    line-height: 16px
-    font-size: 14px
+    line-height: 20px
     padding: 2px 6px
   .btn-group-vertical
     margin-left: 0px !important
@@ -1649,13 +1617,13 @@ csingredienteditpair
 
     .progress
       width: 100%
-      height:  10px
+      height:  11px
 
 .no-bold
   font-weight: normal
 
 .edit-meta-button
-  margin-bottom: 8px
+  margin-bottom: $baseline
 
 .alert.edit-alert
   text-align: left
@@ -1713,7 +1681,7 @@ csingredienteditpair
 /* Large desktop */
 @media (min-width: 1200px)
   .media-hero
-    height: 586px
+    height: 583px
     img
       margin-top: -5%
       margin-bottom: -5%
@@ -1725,14 +1693,14 @@ csingredienteditpair
     width: 468px
 
   .activity-description
-    height: 120px
+    height: 121px
 
 @media (max-width: 1200px)
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
     width: 940px
 
   .media-centered-medium
-    height: 168px
+    height: 165px
 
   .item-medium
     width: 285px
@@ -1743,10 +1711,10 @@ csingredienteditpair
 
   .vertical-slider-2
     width: 300px
-    height: 336px
+    height: 341px
 
   .activity-description
-    height: 140px
+    height: 143px
 
   .navbar
     .navbar-inner
@@ -1770,20 +1738,20 @@ csingredienteditpair
           font-size: 20px
 
   .media-centered-medium
-    height: 128px
+    height: 132px
 
   .media-header-content
     width: 289px
 
   .vertical-slider-2
     width: 228px
-    height: 246px
+    height: 253px
 
   .nav-item-border
     display: none
 
   .activity-description
-    height: 180px
+    height: 187px
 
   .navbar .nav > li > .dropdown-menu li a 
     color: #333
@@ -1817,18 +1785,18 @@ csingredienteditpair
     #hero-carousel
       h2
         font-size: 16px
-        line-height: 16px
+        line-height: $baseline * 2
       h3
         font-size: 12px
-        line-height: 12px
+        line-height: $baseline
       .btn-play
         width: 50px
-        height: 50px
+        height: 55px
         margin-left: 10px
       .pull-left 
         float: left
       .media-header-background
-        height: 70px
+        height: 77px
       .media-heading
         margin-bottom: 0px
         width: 65%
@@ -1965,28 +1933,20 @@ csingredienteditpair
   color: #ffffff
 
 
-/* Global Typography Overrides */
-
-h1, h2, h3, h4
-  @include gotham
-  color: inherit
-  letter-spacing: -1px
-
 body 
   input, .btn, ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, input:-moz-placeholder
-    @include gotham
+    @include primary-font
 
 
 .nav
-  @include gotham
+  @include primary-font
   letter-spacing: -1px
 
-body
-  @include gotham-light
-  color: #333333
+.input-append
+  margin: 0
 
-p
-  line-height: 1.6
+
+
 
 .image-shadow
   @include any_shadow(0px 2px 5px #888888)

@@ -10,23 +10,26 @@
 
   .home-featured-item
     border: 1px solid $light-gray
-    padding: 10px
-    margin-bottom: 10px
+    padding: $baseline
+    margin-bottom: $baseline * 2
     @include boxsizing
-    @include raleway
+    @include primary-font
     h3
       margin: 0px
+    img
+      margin-bottom: $baseline
 
   .home-standard-item
-    margin: 10px 0px
+    margin-bottom: $baseline
     float: left
     width: 100%
     @include boxsizing
-    @include raleway
+    @include primary-font
     .home-standard-item-image
       width: 50%
       float: left
       display: block
+      margin-bottom: $baseline
     .home-standard-item-text
       width: 50%
       float: left

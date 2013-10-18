@@ -34,7 +34,7 @@
     .course-content-wrapper
       .container-fluid
         .row-fluid
-          .span12.relative.course-content(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
+          .span12.relative.course-content.printable(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
             %div(ng-switch on='view_inclusion')
               %div(ng-switch-when="Quiz")
                 .row-fluid
@@ -64,17 +64,14 @@
           .row-fluid.section
             .span12
               .course-nav-bottom
-                .course-nav-bottom-left
-                  .btn.btn-primary(ng-show="prevInclusion()" ng-click="loadPrevInclusion()")
-                    PREVIOUS
-
                 .course-nav-bottom-center
-                  %h3(ng-bind-html-unsafe="currentIncludable.includable_title")
+                  %h3
+                    .course-nav-item.btn.btn-primary(ng-class="{disabled: ! prevInclusion()}" ng-click="loadPrevInclusion()")
+                      PREVIOUS
+                    .course-nav-item(ng-bind-html-unsafe="currentIncludable.includable_title")
+                    .course-nav-item.btn.btn-primary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
+                      NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
-
-                .course-nav-bottom-right
-                  .btn.btn-primary(ng-show="nextInclusion()" ng-click="loadNextInclusion()")
-                    NEXT
 
     .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
       .activity-loading-spinner
