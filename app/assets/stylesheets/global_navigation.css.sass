@@ -21,7 +21,9 @@
 //.container
 //  margin-left: 24px
 
+
 // Mixins
+// TODO: the shared stuff oughta be refactored so these aren't duplicated here and in _mixins.css.sass
 =boxsizing
   box-sizing: border-box
   -moz-box-sizing: border-box
@@ -51,6 +53,11 @@
   -moz-transition: $value
   -webkit-transition: $value
   -o-transition: $value
+
+=primary-font
+  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
+  font-weight: 400
+  font-style: normal
 
 /* Colors */
 $orange: #DB7354
