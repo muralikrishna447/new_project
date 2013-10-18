@@ -423,7 +423,6 @@ class Activity < ActiveRecord::Base
     parent = AssemblyInclusion.where(includable_type: "Activity", includable_id: self.id).first.assembly
    
     begin
-      puts "XXXXXXX Up to #{parent.title}"
       return parent if parent.assembly_type == "Course"
       parent = AssemblyInclusion.where(includable_type: "Assembly", includable_id: parent.id).first.assembly
     end until ! parent
