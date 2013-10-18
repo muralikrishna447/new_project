@@ -56,6 +56,7 @@
 
           - if @course.landing_bottom
             .section
+              %h4 Course Preview
               :markdown
                 #{@course.landing_bottom.content}
 
@@ -105,13 +106,6 @@
         .btn.btn-primary.btn-large.input-block-level
           %a(ng-href="#{class_url(@assembly, protocol: "http")}")
             START CLASS
-
-  - if @course.landing_bottom
-    .row
-      .span8
-        %h4 Course Preview
-        :markdown
-          #{@course.landing_bottom.content}
 
   .row
     .span12
