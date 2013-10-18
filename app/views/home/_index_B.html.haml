@@ -6,7 +6,7 @@
 .container
   .row.section
     .span12
-      %h1.text-orange Check out our free courses with more to come
+      %h1.text-orange Check out our courses with more to come
   .row.section
     - if @courses.any?
       - @courses.each do |course|
@@ -66,51 +66,49 @@
               .lead.black-link
                 Our forum is an incredibly active and friendly community of both novice and experienced cooks, as well as many professional chefs, including the award-winning creative team behind Modernist Cuisine. Sign up and get your questions about cooking answered, often within minutes.
 
-- if @new_visitor
-  .container
-    .row.section
-      .span12
-        %h2.text-orange Did we mention it's free?
-    .row.section
-      .span6
-        %p.lead
-          Yes, ChefSteps is entirely free-to-learn. Our goal is to collaborate with the global community of curious cooks to create original recipes, invent new techniques, and help us all become better cooks. 
-          / Skeptical? Read more here about how we plan to keep ChefSteps going without compromise.
-      .span5.offset1
-        %p.lead Keep up to date with the latest from ChefSteps.
-        = form_tag sign_up_url, :method => :get, class: 'form-inline' do
-          %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Email Address', required: true}
-          %p= submit_tag 'Subscribe Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+/- if @new_visitor
+/  .container
+/    .row.section
+/      .span12
+/        %h2.text-orange Did we mention it's free?
+/    .row.section
+/      .span6
+/        %p.lead
+/          Yes, ChefSteps is entirely free-to-learn. Our goal is to collaborate with the global community of curious cooks to create original recipes, invent new techniques, and help us all become better cooks. 
+/          / Skeptical? Read more here about how we plan to keep ChefSteps going without compromise.
+/      .span5.offset1
+/        %p.lead Keep up to date with the latest from ChefSteps.
+/        = form_tag sign_up_url, :method => :get, class: 'form-inline' do
+/          %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Email Address', required: true}
+/          %p= submit_tag 'Subscribe Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
 
-- else
-  .container
-    .row.section
-      .span8#discussion
-        %h3 Latest From Our Forums:
-        %h4.discussion-name
-        %blockquote.word-wrap
-          %p.discussion-body
-          %small
-            %cite
-              .discussion-author
-        = link_to 'Join the Discussion', '#', class: 'btn btn-primary discussion-link'
-
-        %hr
-
-        - if @status
-          - cache @status, expires: 10.minutes do
-            #twitter-status
-              %h3 Latest Tweet:
-              = @status.html_safe
-              = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
-      - unless current_user
-        .span4.signup-box
-          .well
-            %h3 Join the community!
-            = form_tag welcome_url, :method => :get, class: 'form-inline' do
-              = hidden_field_tag :signed_up_from, 'homepage_cta'
-              %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
-              %p= submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
+/- else
+.container
+  .row.section
+    .span8#discussion
+      %h3 Latest From Our Forums:
+      %h4.discussion-name
+      %blockquote.word-wrap
+        %p.discussion-body
+        %small
+          %cite
+            .discussion-author
+      = link_to 'Join the Discussion', '#', class: 'btn btn-primary discussion-link'
+      %hr
+      - if @status
+        - cache @status, expires: 10.minutes do
+          #twitter-status
+            %h3 Latest Tweet:
+            = @status.html_safe
+            = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
+    - unless current_user
+      .span4.signup-box
+        .well
+          %h3 Join the community!
+          = form_tag welcome_url, :method => :get, class: 'form-inline' do
+            = hidden_field_tag :signed_up_from, 'homepage_cta'
+            %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
+            %p= submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
 
 = content_for :footer do
   = render 'layouts/footer'
