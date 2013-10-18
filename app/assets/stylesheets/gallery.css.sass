@@ -13,7 +13,7 @@
     margin-right: 20px !important
 
 .gallery-filter
-  @include raleway
+  @include primary-font
   font-size: 16px
   margin-bottom: 14px
   .dropdown
@@ -33,7 +33,7 @@
 
     a
       color: black
-      @include raleway
+      @include primary-font
       font-size: 16px
   li > a
     padding: 0 0 2px 0 !important
@@ -71,23 +71,54 @@
   cursor: pointer
 
 .filters-group
-  width: 300px
+  width: auto
   position: absolute
   top:  90%
   z-index: 1000
   padding: 10px 30px 20px 30px
-  background-color: rgba(255, 255, 255, .8)
+  background-color: rgba(255, 255, 255, .9)
   border-bottom-left-radius: 5px
   border-bottom-right-radius: 5px
   border-top-right-radius: 5px
   .btn-group
-    margin-top: 10px
+    margin-top: 15px
     margin-left: 0px
   @include bottom-only-annotation-shadow
   overflow:  hidden
 
-.current-filters
-  font-size: 90%
+  .btn-group.first-separate
+    .btn:first-child
+      margin-right: 12px
+      width:  auto
+
+  .btn
+    background-image: none
+    background-color: #f1f1f1
+    border-color:  #ccc
+    color: #666
+    border-radius:  2px !important
+    -webkit-border-radius:  1px
+    width:  120px
+    text-align:  center
+
+  .btn.active
+    background-color: #ddd !important
+    color: inherit
+    text-shadow: none
+
+.filter-collapser
+  display: inline-block
+
+.current-filter
+  font-size: 70%
+  display: inline-block
+  color: $orange
+  border: 1px solid $orange
+  border-radius: 20px
+  margin-left: 8px
+  position:  relative
+  top: -2px
+  padding: 0px 8px
 
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
 // names have to change when we go to angular >= 1.1.5
@@ -112,7 +143,7 @@
     max-height: 150px
 
 .pagination
-  @include raleway
+  @include primary-font
   font-size: 20px
 
 .gallery-animation-enter-setup, .gallery-animation-leave-setup, .gallery-animation-move-setup
@@ -154,8 +185,8 @@
     li > a
       margin-left: 10px
   .filters-group
-    right: -10px
-  .current-filters
+    right: -140px
+  .current-filter
     display: none
   .gallery-contents
     margin-top: 4px
@@ -169,3 +200,7 @@
     right: -90px
     button
       font-size: 10px !important
+
+    .btn
+      width:  80px
+      text-align:  center

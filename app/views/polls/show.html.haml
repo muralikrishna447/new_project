@@ -1,46 +1,92 @@
-.container#poll{data: {:'poll-id' => "#{@poll.id}"}}
+- content_for :title, "Poll - #{@poll.title.html_safe}"
+- content_for :description, @poll.description != "" ? @poll.description.html_safe : @poll.title.html_safe
+- content_for :canonical_link, poll_url(@poll) if @poll.id
+- content_for :keywords, @poll.poll_items.map(&:title).join(',')
+
+- content_for :facebook_og do
+  %meta{property: 'og:url', content: poll_url(@poll)}
+  %meta{property: 'og:title', content: @poll.title.html_safe}
+  %meta{property: 'og:description', content: @poll.description != "" ? @poll.description.html_safe : @poll.title.html_safe}
+  %meta{property: 'og:image', content: s3_image_url(Setting.footer_image)}
+- require 'ostruct'
+
+.container.section#poll{data: {:'poll-id' => "#{@poll.id}"}}
   .row
-    .span12(ng-controller='VotesController')
-      - current_user_votes = current_user.votes.scoped_by_type('PollItem').map(&:votable_id)
+    .span12(ng-controller='VotesController' ng-cloak)
+      - if current_user
+        - current_user_votes = current_user.votes.scoped_by_type('PollItem').map(&:votable_id)
+      - else
+        - current_user_votes = false
       %span(ng-model="current_user_votes" ng-init="current_user_votes=#{current_user_votes}")
-      %h1
-        {{poll.title}}
-      %h3
-        {{poll.description}}
-      %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak)
+      .poll-header-block
+        .poll-header
+          %h1
+            {{poll.title}}
+            .label.label-large(ng-show="#{@poll.status=='Closed'}")
+              Closed
+          %p
+            {{poll.description}}
+        .poll-header-votes
+          .poll-header-votes-border
+            .poll-header-votes-count
+              = @poll.poll_items.map(&:votes_count).inject(:+)
+            .poll-header-votes-text
+              Votes
+              .poll-header-votes-subtext
+                and counting...
+      = link_to 'See Previous Polls', polls_path, class: 'btn btn-secondary pull-right section'
+
+      %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak ng-controller="PollItemController" ng-animate="'custom'" ng-init="init('#{@poll.status}')")
         .poll-item
-          .poll-item-vote-up
+          .poll-item-vote-up{onclick: "mixpanel.track('Poll Voted', {'Poll Item': {{poll_item.id}} });"}
             %span(ng-switch on="current_user_voted_for_this(poll_item)")
               %span(ng-switch-when='true')
-                .poll-item-btn.poll-item-btn-voted
+                .poll-item-btn.poll-item-btn-voted(ng-click="unvoteObject()")
                   %i.icon-angle-up
                   .poll-item-vote-count
                     {{poll_item.votes_count}}
               %span(ng-switch-when='false')
-                .poll-item-btn(ng-click="voteObject(poll_item,$index)")
-                  %i.icon-angle-up
-                  .poll-item-vote-count(ng-show="poll_item.votes_count > 0")
-                    {{poll_item.votes_count}}
+                %div(ng-show="#{@poll.status=='Closed'}")
+                  .poll-item-btn-disabled(tooltip="Voting is now closed.")
+                    %i.icon-angle-up
+                    .poll-item-vote-count(ng-show='current_user_voted()')
+                      {{poll_item.votes_count}}
+                %div(ng-show="#{@poll.status!='Closed'}")
+                  .poll-item-btn(ng-click="voteObject()" tooltip="Vote for this!")
+                    %i.icon-angle-up
+                    .poll-item-vote-count(ng-show='current_user_voted()')
+                      {{poll_item.votes_count}}
 
-          .poll-item-text(ng-click='pollItemDetails(poll_item)')
-            %a.poll-item-details-btn
-              %h2
+          .poll-item-text
+            %a.poll-item-details-btn(ng-click='pollItemDetails(poll_item)')
+              %h3 
                 {{poll_item.title}}
-            %div(ng-show='poll_item.show_details')
-              %p.lead {{poll_item.description}}
+                .label(ng-show="#{@poll.status == 'Completed'} && $index == 0")
+                  Winner!
+              %p.black-link {{poll_item.description}}
+            .poll-item-user-voted(ng-show='current_user_voted_for_this(poll_item)')
+              You voted for this!
+            .poll-item-voters(ng-show='current_user_voted()')
+              %div(ng-repeat='voter in poll_item.users')
+                .poll-item-voter
+                  %a(href="/profiles/{{voter.slug}}")
+                    %img(ng-src="{{userImageUrl(voter.image_id)}}")
+                  .poll-item-voter-tooltip
+                    {{voter.name}}
+            .section.social-group
+              %a.btn.btn-primary.btn-poll-comments(ng-click='mixpanel.track("Poll View Comments"); pollItemDetails(poll_item)')
+                %ng-pluralize(count="poll_item.comments_count" when="{'0': 'Be the first to comment', 'one': '1 comment', 'other': '{} comments'}")
+              -ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
+                = render 'layouts/share_button', split_name: split_name
+            %div(collapse='!poll_item.show_details')
+              %div(ng-controller='CommentsController' ng-init="init('poll_items',poll_item.id)" ng-cloak)
+                = render 'comments/comments', commentable: nil
+              / = render 'comments/comments', commentable: @poll
 
-          .poll-item-comments(ng-click='pollItemDetails(poll_item)')
-            %a.poll-item-btn.poll-item-btn-social
-              %i.icon-comment-alt
+      %div.voting-spinner(ng-hide="hideSpinner")
+        %i.icon-spinner.icon-spin.icon-large
 
-          .poll-item-sharing(ng-click='pollItemDetails(poll_item)')
-            %a.poll-item-btn.poll-item-btn-social
-              %i.icon-share-alt
-            %div(ng-show='poll_item.show_details')
-              %a.poll-item-btn.poll-item-btn-social(onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=#{current_url(request)}','facebook-share-dialog','width=626,height=436');return false;")
-                %i.icon-facebook
-              = link_to "https://plus.google.com/share?url=#{current_url(request)}", onclick: "javascript:window.open(this.href,
-              '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;", class: 'poll-item-btn poll-item-btn-social' do
-                %i.icon-google-plus
-              %a.poll-item-btn.poll-item-btn-social(href="https://twitter.com/intent/tweet?text=I voted for {{poll_item.title}} on @ChefSteps!&url=#{ url_encode(current_url(request))}")
-                %i.icon-twitter
+= render 'layouts/footer'
+
+:javascript
+  mixpanel.track('Poll Viewed', {'poll' : "#{@poll.title}", 'url' : window.location.pathname});                

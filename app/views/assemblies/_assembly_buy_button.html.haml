@@ -1,0 +1,75 @@
+-# Note! Really important to use class_url, not class_path, so we get off SSL after purchase.
+%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{class_url(assembly, protocol: "http")}"; completed=#{completed ? true : false}' ng-cloak)
+  %div(ng-show="enrolled")
+    .main-cta
+      .btn.btn-primary.btn-large.input-block-level
+        %div(ng-hide='completed')
+          %a(ng-href="{{assemblyPath}}")
+            Continue Class
+        %div(ng-show='completed')
+          %a(ng-href="{{assemblyPath}}")
+            View Class
+
+  %div(ng-show="(! enrolled) && assembly.price")
+    .main-cta
+      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal()")
+        BUY NOW
+        = render 'activities/latest/assembly_price'
+
+    %div(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
+      .modal-body.buy-modal(ng-switch on="state")
+        .row-fluid(ng-switch-when="charge" )
+          .close-x.pull-right#cancel-charge(ng-click="closeModal()")
+            %i.icon-remove
+
+          %form.charge-form(stripe-form="handleStripe" name="chargeForm") 
+            .control-group(ng-show="errorText")
+              .controls.error-text
+                {{errorText}}
+                                
+            .control-group
+              %label.control-label(for="")
+                Credit Card Number
+              .controls
+                %input.input-full(ng-model="number" payments-format="card" payments-validate="card" type="text" required  name="card_number")
+              %label.control-label(for="name")
+                Name
+              .controls
+                %input.input-full(type="text" ng-model="name" required name="cardholder_name")
+              .expdate-group.inline
+                %label.control-label(for="")
+                  Expiration Date
+                .controls
+                  %input.input-mini(ng-model="expMonth" type="text" pattern="[0-9]{1,2}" required  name="expMonth")
+                  .date-slash.inline
+                    \/
+                  %input.input-mini(ng-model="expYear" type="text" pattern="[0-9]{1,4}" required  name="expYear" )             
+              .cvc-group.inline
+                %label.control-label(for="")
+                  Security Code (CVC)
+                .controls
+                  %input.input-mini(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" required  name="cvc")
+            .divider
+            .control-group.text-center(ng-hide="processing")
+              .controls                    
+                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") 
+                  BUY NOW 
+                  = render 'activities/latest/assembly_price'
+
+                %p
+                  .tiny-note
+                    All Taxes Included   
+            .control-group.text-center(ng-show="processing")
+              .controls
+                %i.icon-spinner.icon-2x.icon-spin
+                Processing your card
+        .row-fluid(ng-switch-when="thanks")
+          Thank you for your purchase of our {{assembly.title}} class. We're grateful to have you as a member
+          of member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you
+          at&nbsp; 
+          %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
+          \.
+          .section.text-center         
+            .btn.btn-large.btn-primary     
+              %a(ng-href="{{assemblyPath}}")
+                Start The Class

@@ -3,6 +3,7 @@ class Vote < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :votable, polymorphic: true, counter_cache: true
+  has_many :events, as: :trackable, dependent: :destroy
 
   validates :user_id, uniqueness: {scope: [:votable_id, :votable_type], message: 'can only vote on an item once.'}
 

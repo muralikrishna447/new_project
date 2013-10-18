@@ -1,0 +1,40 @@
+- media_object = event.trackable.likeable
+- case media_object.class.to_s
+- when 'Activity'
+  - media_object_title = media_object.activity_type.first
+- when 'Upload'
+  - media_object_title = 'Photo'
+
+.stream-item
+  = render '/activity_stream/shared/stream_item_header', media_object: media_object  
+  .stream-item-top
+    = link_to media_object do
+      = image_tag filepicker_stream_image(media_object.image_id)
+  .stream-item-bottom
+    %p= "#{time_ago_in_words(event.created_at)} ago"
+    - if media_object.likes_count == 1
+      .stream-item-media1
+        .stream-item-media1-user
+          = link_to user_profile_path(event.trackable.user) do
+            = image_tag filepicker_circle_image(event.trackable.user.image_id)
+        .stream-item-media1-content
+          = link_to event.trackable.user.name, user_profile_path(event.trackable.user)
+          = "liked your #{media_object_title.downcase}."
+    - else
+      .stream-item-media2
+        .stream-item-media2-users
+          - media_object.likes.each do |like|
+            = link_to user_profile_path(like.user) do
+              = image_tag filepicker_circle_image(like.user.image_id)
+        .stream-item-media2-content
+          - case media_object.likes_count
+          - when 2
+            = link_to media_object.likes.first.user.name, user_profile_path(media_object.likes.first.user)
+            = "and"
+            = link_to media_object.likes.second.user.name, user_profile_path(media_object.likes.second.user)
+            = "liked your #{media_object_title.downcase}."
+          - else
+            = link_to media_object.likes.first.user.name, user_profile_path(media_object.likes.first.user)
+            = "and"
+            = link_to media_object.likes.second.user.name, user_profile_path(media_object.likes.second.user)
+            = "and #{media_object.likes_count - 2} more liked your #{media_object_title.downcase}."

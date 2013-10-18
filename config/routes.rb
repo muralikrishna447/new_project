@@ -56,18 +56,21 @@ Delve::Application.routes.draw do
   get 'about' => 'home#about', as: 'about'
   get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
+  get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   match '/mp', to: redirect('/courses/spherification')
+  match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
-  resources :courses, only: [:index, :show] do
-    resources :activities, only: [:show], path: ''
-    member do
-      post 'enroll' => 'courses#enroll'
-    end
-  end
+  # resources :courses, only: [:index, :show] do
+  #   resources :activities, only: [:show], path: ''
+  #   member do
+  #     post 'enroll' => 'courses#enroll'
+  #   end
+  # end
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
@@ -107,8 +110,17 @@ Delve::Application.routes.draw do
     end
   end
 
-  resources :equipment, only: [:index]
-  resources :ingredients, only: [:index]
+  resources :equipment, only: [:index, :update, :destroy] do
+    member do
+      post 'merge' => 'equipment#merge'
+    end
+  end
+
+  resources :ingredients, only: [:index, :update, :destroy] do
+    member do
+      post 'merge' => 'ingredients#merge'
+    end
+  end
 
   resources :gallery, only: [:index], path: 'gallery' do
     collection do
@@ -116,7 +128,9 @@ Delve::Application.routes.draw do
     end
   end
   resources :user_activities, only: [:create]
-  resources :uploads
+  resources :uploads do
+    resources :comments
+  end
   resources :users do
     resources :uploads
   end
@@ -128,13 +142,53 @@ Delve::Application.routes.draw do
       get 'show_as_json' => 'polls#show_as_json'
     end
   end
+  resources :poll_items do
+    resources :comments
+  end
   resources :votes, only: [:create]
+  resources :comments
+  resources :followerships, only: [:update]
+  resources :assemblies, only: [:index, :show] do
+    resources :comments
+    resources :enrollments
+  end
+  resources :projects, controller: :assemblies
+  resources :streams, only: [:index, :show]
+  get 'community-activity' => 'streams#feed', as: 'community_activity'
 
   resources :sitemaps, :only => :show
   mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
+  match "/splitty/finished", :controller => "splitty", :action => "finish_split"
 
   resources :client_views, only: [:show]
+  resources :stream_views, only: [:show]
+
+  resources :charges, only: [:create]
+
+  resources :courses, only: [:index], controller: :courses
+
+  constraints lambda {|request| ['/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path.split('/').reject! { |r| r.empty? }.take(2).join('/').prepend('/')) } do
+    resources :courses, only: [:index, :show] do
+      resources :activities, only: [:show], path: ''
+      member do
+        post 'enroll' => 'courses#enroll'
+      end
+    end
+  end
+
+  # Legacy needed b/c the courses version of this URL was public in a few places
+  get '/courses/french-macarons', to: redirect('/classes/french-macarons')
+  get '/courses/french-macarons/landing', to: redirect('/classes/french-macarons/landing')
+
+  resources :classes, controller: :assemblies do
+    member do
+      get 'landing', to: 'assemblies#landing'
+      get 'show_as_json', to: 'assemblies#show_as_json'
+    end
+  end
+
+  resources :events, only: [:create]
 
 end
 

@@ -1,4 +1,5 @@
 ActiveAdmin.register User do
+  actions :all, except: [:edit, :destroy]
   menu parent: 'More'
 
   action_item only: [:show] do
@@ -22,7 +23,6 @@ ActiveAdmin.register User do
     column :last_sign_in_at
     column :sign_in_count
     column :created_at
-    default_actions
   end
 
   show do |user|
@@ -36,6 +36,7 @@ ActiveAdmin.register User do
       f.input :role, collection: User::ROLES, as: :select
       f.input :location
       f.input :website
+      f.input :bio
       f.input :quote
     end
     if f.object.encrypted_password.blank?
@@ -46,6 +47,17 @@ ActiveAdmin.register User do
     end
 
     f.actions
+  end
+
+  controller do
+    def max_csv_records                                                          
+      30_000                                                                    
+    end
+  end
+
+  csv do
+    column :name
+    column :email
   end
 end
 

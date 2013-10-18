@@ -16,7 +16,9 @@
   %td= text_field_tag "#{field_name_prefix}[title]", title, {:'data-provide' => "typeahead",  :'autocomplete' => 'off', :"class" => "ingredient"}
   %td= text_field_tag "#{field_name_prefix}[note]", note, class: "note"
   %td= text_field_tag "#{field_name_prefix}[display_quantity]", display_quantity, class: "quantity"
-  %td= select_tag "#{field_name_prefix}[unit]", options_for_select(%w[g kg ea a/n recipe], unit), class: "unit"
+
+  -# This must match the menuNames from window.allUnits!
+  %td= select_tag "#{field_name_prefix}[unit]", options_for_select(%w[g kg ea a/n recipe piece lb oz drop fl.\ oz. teaspoon tablespoon cup pint quart gallon ml l], unit), class: "unit"
   %td
     = remove_button 'tr'
     = reorder_icon

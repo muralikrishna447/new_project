@@ -3,6 +3,41 @@ csTempUnits = "c"
 csLengthUnits = "cm"
 window.csUnitsCookieName = "chefsteps_units"
 
+window.allUnits = [
+  {measures: "Weight", name: "g", menuName: "gram"},
+  {measures: "Weight", name: "kg", menuName: "kilogram"},
+  {measures: "Weight", name: "lb", plural: "lbs", menuName: "pound"},
+  {measures: "Weight", name: "oz", plural: "ozs", menuName: "ounce"},
+
+  {measures: "Volume", name: "ml", menuName: "milliliter"},
+  {measures: "Volume", name: "l", menuName: "liter"}
+  {measures: "Volume", name: "drop", plural: "drops"},
+  {measures: "Volume", name: "fl. oz.", plural: "fl. ozs.", menuName: "fluid ounce"},
+  {measures: "Volume", name: "tsp.", menuName: "teaspoon", plural: "tsps."},
+  {measures: "Volume", name: "Tbsp.", menuName: "tablespoon", plural: "Tbsps."},
+  {measures: "Volume", name: "cup", plural: "cups"},
+  {measures: "Volume", name: "pint", plural: "pints"},
+  {measures: "Volume", name: "quart", plural: "quarts"},
+  {measures: "Volume", name: "gallon", plural: "gallons"},
+
+  {measures: "Miscellanea", name: "ea", menuName: "each"},
+  {measures: "Miscellanea", name: "recipe", plural: "recipes"},
+  {measures: "Miscellanea", name: "a/n", menuName: "as needed"},
+  {measures: "Miscellanea", name: "piece", plural: "pieces"}
+]
+
+# Normalize unit names
+_.each(window.allUnits, ((u) ->
+  u.plural = u.plural || u.name
+  u.menuName = u.menuName || u.name
+))
+
+unitByName = (unitName) ->
+  _.find(window.allUnits, (u) -> (u.name == unitName) || (u.plural == unitName))
+
+isWeightUnit = (unitName) ->
+  unitByName(unitName)?.measures == "Weight"
+
 
 # NOTE WELL there are some places where we are using children(), not find() here very on purpose, because it is
 # possible to have a quantity row nested in a quantity row, specifically when shortcodes like [ea 5] are used
@@ -77,7 +112,6 @@ window.makeEditable = (elements) ->
   }
   # Editable freaks if called twice on same element
   elements.attr("data-marked-editable", "true")
-  updateUnits(false)
 
 
 # Make the unit labels edit the units
@@ -117,45 +151,57 @@ setRow = (row, qtyLbs, qty, units) ->
 
 # Compute the new ingredient quantities and units for a row
 updateOneRowUnits = ->
-  if ! $(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")
-    return
-
-  origValue = Number($(this).children('.quantity-group').find('.main-qty').attr("data-orig-value")) * window.csScaling
+  main_qty = $(this).children('.quantity-group').find('.main-qty')
+  base_orig_value = main_qty.attr("data-orig-value")
   existingUnits = $(this).children('.unit').text()
 
-  # "a/n" means as needed, don't do anything. ditto if blank - formerly used
-  # in cases where we mean "all of a subrecipe from above"
-  if existingUnits == "a/n" || existingUnits == ""
-    # ok
+  # Lazily store off the original value in grams
+  if ! base_orig_value || base_orig_value == "null"
+    base_orig_value = Number($(main_qty[0]).text())
+    main_qty.attr("data-orig-value", base_orig_value)
+    if existingUnits == "kg"
+      base_orig_value = base_orig_value * 1000
+      
+  origValue = Number(base_orig_value) * window.csScaling
 
   # "ea" means each, just round up to nearest integer
-  else if existingUnits == "ea"
-    setRow $(this), "", Math.ceil(origValue), "ea"
+  if existingUnits == "ea"
+    setRow $(this), "", Math.ceil(origValue), existingUnits
 
-  else if existingUnits == "recipe" || existingUnits == "recipes"
-    setRow $(this), "", origValue, if origValue <= 1 then "recipe" else "recipes"
+  # a/n means "as needed" - quantity always blank
+  else if existingUnits == "a/n"
+    setRow $(this), "", "", existingUnits
 
-  # grams or kilograms
-  else if window.csUnits == "grams"
-    if origValue < 5000
-      setRow $(this), "", origValue, "g"
+  else if isWeightUnit(existingUnits)
 
-    else
-      setRow $(this), "", origValue / 1000, "kg"
+    # grams or kilograms
+    if window.csUnits == "grams"
+      if origValue < 5000
+        setRow $(this), "", origValue, "g"
 
-  # ounces or pounds and ounces
-  else if window.csUnits == "ounces"
-    ounces = origValue * 0.035274
-    pounds = Math.floor(ounces / 16)
-    ounces = ounces - (pounds * 16)
+      else
+        setRow $(this), "", origValue / 1000, "kg"
 
-    if pounds > 0
-      ounces = Math.round(ounces)
-      setRow $(this), pounds, ounces, "oz"
+    # ounces or pounds and ounces
+    else if window.csUnits == "ounces"
+      ounces = origValue * 0.035274
+      pounds = Math.floor(ounces / 16)
+      ounces = ounces - (pounds * 16)
 
-    else
-      ounces = 0.01 if ounces < 0.01
-      setRow $(this), "", ounces.toString(), "oz"
+      if pounds > 0
+        ounces = Math.round(ounces)
+        setRow $(this), pounds, ounces, "oz"
+
+      else
+        ounces = 0.01 if ounces < 0.01
+        setRow $(this), "", ounces.toString(), "oz"
+
+  # Any other unit, we just want to leave alone except for pluralization
+  else
+    unitText = existingUnits
+    unitText = unitByName(existingUnits).plural if origValue > 1.001
+    setRow $(this), "", origValue, unitText
+
 
 
 # Update all rows

@@ -5,10 +5,10 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", ($scope, $resource, $location, $http, $timeout, limitToFilter, localStorageService) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll) ->
 
   Activity = $resource( "/activities/:id/as_json",
-                        {id:  $('#activity-body').data("activity-id")},
+                        {id:  $('#activity-body').data("activity-id") || 1},
                         {
                           update: {method: "PUT"},
                           startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
@@ -25,6 +25,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.preventAutoFocus = false
   $scope.shouldShowRestoreAutosaveModal = false
   $scope.shouldShowAlreadyEditingModal = false
+  $scope.alerts = []
+  $scope.activities = {}
+
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -78,14 +81,23 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     true
 
   $scope.endEditMode = ->
+
+    $scope.alerts = []
     $scope.normalizeModel()
-    $scope.activity.$update({},
+    $scope.normalizeWeightUnits()
+    $scope.activity.$update(
+      {},
       ((response) ->
+        console.log "ACTIVITY SAVE WIN"
         # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
-       window.location = response.redirect_to if response.redirect_to),
+        window.location = response.redirect_to if response.redirect_to
+        $scope.postEndEditMode()
+        $scope.activity.is_new = false),
+
+      ((error) ->
+        console.log "ACTIVITY SAVE ERRORS: " + JSON.stringify(error)
+        _.each(error.data.errors, (e) -> $scope.addAlert({message: e})))
     )
-    $scope.postEndEditMode()
-    $scope.activity.is_new = false
 
   $scope.cancelEditMode = ->
     if $scope.undoAvailable
@@ -106,6 +118,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex ]
       $scope.saveToLocalStorage()
       $scope.temporaryNoAutofocus();
+    true
 
   $scope.redo = ->
     if $scope.redoAvailable
@@ -113,6 +126,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
       $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex]
       $scope.saveToLocalStorage()
       $scope.temporaryNoAutofocus();
+    true
 
   $scope.undoAvailable = ->
     $scope.undoIndex > 0
@@ -147,9 +161,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     ), 1000
 
   $scope.localStorageKeyId = ->
-    # Use "New" for activity that was never saved before b/c they actually have unique ids
-    # but the local storage won't find them.
-    if $scope.activity.is_new then "New" else $('#activity-body').data("activity-id")
+    $('#activity-body').data("activity-id")
 
   # Local storage (to prevent data loss on tab close etc.)
   $scope.localStorageKey = ->
@@ -194,7 +206,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.activityTypes = ["Recipe", "Science", "Technique"]
 
   $scope.hasActivityType = (t) ->
-    _.contains($scope.activity.activity_type, t)
+    _.contains($scope.activity?.activity_type, t)
 
   $scope.toggleActivityType = (t) ->
     if $scope.hasActivityType(t)
@@ -206,7 +218,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   $scope.activityDifficulties = ["Easy", "Intermediate", "Advanced"]
 
   $scope.hasActivityDifficulty = (t) ->
-    ($scope.activity.difficulty || "").toUpperCase() == t.toUpperCase()
+    ($scope.activity?.difficulty || "").toUpperCase() == t.toUpperCase()
 
   $scope.setActivityDifficulty = (t) ->
     $scope.activity.difficulty = t.toLowerCase()
@@ -255,32 +267,34 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   # Video/image stuff
   $scope.hasHeroVideo = ->
-    $scope.activity.youtube_id? && $scope.activity.youtube_id
+    $scope.activity?.youtube_id? && $scope.activity.youtube_id
 
   $scope.hasHeroImage = ->
-    $scope.activity.image_id? && $scope.activity.image_id
+    $scope.activity?.image_id? && $scope.activity.image_id
 
   $scope.hasFeaturedImage = ->
-    $scope.activity.featured_image_id? && $scope.activity.featured_image_id
+    $scope.activity?.featured_image_id? && $scope.activity.featured_image_id
 
   $scope.heroVideoURL = ->
     autoplay = if $scope.url_params.autoplay then "1" else "0"
-    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}\&html5=1\&enablejsapi=1\&fs=1"
+    "//www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
 
   $scope.heroVideoStillURL = ->
-    "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
+    "//img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
 
   $scope.heroImageURL = (width) ->
     url = ""
     if $scope.hasHeroImage()
       url = JSON.parse($scope.activity.image_id).url
       url + "/convert?fit=max&w=#{width}&cache=true"
+    window.cdnURL(url)
 
   $scope.featuredImageURL = (width) ->
     url = ""
     if $scope.hasFeaturedImage()
       url = JSON.parse($scope.activity.featured_image_id).url
-      url + "/convert?fit=max&w=#{width}&cache=true"
+      url = url + "/convert?fit=max&w=#{width}&cache=true"
+    window.cdnURL(url)
 
   $scope.heroDisplayType = ->
     return "video" if $scope.hasHeroVideo()
@@ -305,21 +319,27 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   # TODO: nicer using underscore _map?
   $scope.hasRequiredEquipment = ->
     has = false
-    angular.forEach $scope.activity.equipment, (item) ->
+    angular.forEach $scope.activity?.equipment, (item) ->
       has = has || (! item.optional)
     return has
 
   $scope.hasOptionalEquipment = ->
     has = false
-    angular.forEach $scope.activity.equipment, (item) ->
+    angular.forEach $scope.activity?.equipment, (item) ->
       has = has || (item.optional)
     return has
+
+  $scope.hasAnyEquipment = ->
+    $scope.activity?.equipment.length > 0
 
   $scope.optionalEquipment = (item) ->
     item.optional
 
   $scope.requiredEquipment = (item) ->
     ! $scope.optionalEquipment(item)
+
+  $scope.anyEquipment = (item) ->
+    true
 
   $scope.addEquipment = (optional) ->
     # *don't* use equip = {title: ...} here, it will screw up display if an empty one gets in the list
@@ -339,18 +359,31 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
   # autocomplete (unshift in all_equipment), it will be missing a nesting level in the model.
   $scope.normalizeModel = () ->
+    $scope.activity.equipment = _.compact($scope.activity.equipment)
     angular.forEach $scope.activity.equipment, (item) ->
       if _.isString(item["equipment"])
         item["equipment"] = {title: item["equipment"]}
 
+    $scope.activity.ingredients = _.compact($scope.activity.ingredients)
     angular.forEach $scope.activity.ingredients, (item) ->
       if _.isString(item["ingredient"])
         item["ingredient"] = {title: item["ingredient"]}
 
+    $scope.activity.steps = _.compact($scope.activity.steps)
     angular.forEach $scope.activity.steps, (step) ->
+      step.ingredients = _.compact(step.ingredients)
       angular.forEach step.ingredients, (item) ->
         if _.isString(item["ingredient"])
           item["ingredient"] = {title: item["ingredient"]}
+
+  $scope.normalizeWeightUnits = () ->
+    angular.forEach _.flatten([$scope.activity.ingredients, _.map($scope.activity.steps, (s) -> s.ingredients)]), (item) ->
+      if item.unit == "lb"
+        item.display_quantity = item.display_quantity * 453.592
+        item.unit = "g"
+      else if item.unit == "oz"
+        item.display_quantity = item.display_quantity * 28.3495
+        item.unit = "g"
 
 
   $scope.getIngredientsList = ->
@@ -358,7 +391,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
 
   $scope.parsePreloaded = ->
     # prestoring the JSON in the HTML on initial load for speed
-    #$scope.activity = Activity.get($scope.url_params, ->
     preloaded_activity = $("#preloaded-activity-json").text()
 
     if preloaded_activity
@@ -368,16 +400,110 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$res
     else
       false
 
-  # Keep <title> tag in sync
-  $scope.$watch 'activity.title', ->
-    if $scope.activity.activity_type instanceof Array
-      activity_type_title = $scope.activity.activity_type[0]
+  $scope.fetchActivity = (id, callback) ->
+    if _.isNumber(id) && ! $scope.activities[id] 
+      console.log "Loading activity " + id   
+      $scope.activities[id] = Activity.get({id: id}, ->
+       console.log "Loaded activity " + id   
+       callback() if callback
+      )
+
+  $scope.makeActivityActive = (id) ->
+    return if id == $scope.activity?.id
+    $scope.activity = $scope.activities[id] 
+    cs_event.track(id, 'Activity', 'show')
+    mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
+
+  $scope.loadActivity = (id) ->
+    return if id == $scope.activity?.id
+
+    $rootScope.loading = true
+    if $scope.activities[id]
+      # Even if we have it cached, use a slight delay and dissolve to
+      # make it feel smooth and let youtube load
+      $scope.makeActivityActive(id)
+      $timeout (->
+        $rootScope.loading = false
+      ), 500
     else
-      activity_type_title = $scope.activity.activity_type
-    $(document).attr("title", "ChefSteps - " + (activity_type_title || '') + " - " + ($scope.activity.title || "New Recipe"))
+      $scope.fetchActivity(id, -> 
+        $scope.makeActivityActive(id)
+        $rootScope.loading = false
+      )
+
+  $scope.$on 'loadActivityEvent', (event, activity_id) ->
+    $scope.loadActivity(activity_id)
+
+
+  $scope.startViewActivity = (id, prefetch_id) ->
+    $scope.loadActivity(id)
+
+    # If there is a prefetch request, do it a little later
+    if prefetch_id
+      $timeout (->
+       $scope.fetchActivity(prefetch_id)
+      ), 3000
+
+  $scope.addAlert = (alert) ->
+    $scope.alerts.push(alert)
+    $timeout ->
+      $("html, body").animate({ scrollTop: -500 }, "slow")
+
+  $scope.closeAlert = (index) ->
+    $scope.alerts.splice(index, 1)
+
+  # We've had bad luck getting the youtube iframe player API state change event to work reliably, so instead
+  # we're asking youtube for the video duration and making the assumption that the video is done playing after
+  # that time period.
+  $scope.schedulePostPlayEvent = ->
+    $scope.heroVideoDuration = -1
+    if $scope.activity && $scope.hasHeroVideo()
+      $http.jsonp("//gdata.youtube.com/feeds/api/videos/" + $scope.activity.youtube_id + "?v=2&callback=JSON_CALLBACK").then (response) ->
+        # Good god, parsing XML that contains namespaces in the elements using jquery is a compatibility disaster!
+        # See http://stackoverflow.com/questions/853740/jquery-xml-parsing-with-namespaces
+        # So for now I'm doing a fugly regexp parse. At least it works.
+        duration = response.data.match(/yt:duration seconds=.([\d]*)/)[1]
+        if duration > 1
+          $scope.heroVideoDuration = duration
+          $timeout (->
+            $scope.videoDurationExceeded = true
+            $rootScope.$broadcast('expandSocialButtons')
+          ), duration * 1000 + 5000
+
+  # Social share callbacks
+  $scope.socialURL = ->
+    "http://chefsteps.com/activities/" + $scope.activity?.slug
+
+  $scope.socialTitle = ->
+    $scope.activity.title
+
+  $scope.socialMediaItem = ->
+    return $scope.featuredImageURL(800) if $scope.hasFeaturedImage()
+    null
+
+  $scope.tweetMessage = ->
+    "I love this:"
+
+  $scope.emailSubject = ->
+    "I thought you might like " + $scope.socialTitle()
+
+  $scope.emailBody = ->
+    "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
+
+  $scope.maximizeDescription = false
+  $scope.toggleMaximizeDescription = ->
+    $scope.maximizeDescription = ! $scope.maximizeDescription
+    # Fugly!
+    window.setMaximizeDescription($scope.maximizeDescription)
+    if $scope.maximizeDescription
+     mixpanel.track('Activity Description Maximized', {'slug' : $scope.activity.slug});
+     mixpanel.people.increment('Activity Description Maximized Count')
+
 
   # One time stuff
   if $scope.parsePreloaded()
+
+    $scope.schedulePostPlayEvent()
 
     if ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()

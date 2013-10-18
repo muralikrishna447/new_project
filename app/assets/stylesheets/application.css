@@ -16,8 +16,11 @@
  *= require application/quizzes/_overview
  *= require application/quizzes/_question
  *= require application/quizzes/_results
+ *= require application/assemblies/course_assembly
  *= require application/_dials
  *= require application/_checkboxes
+ *= require ingredients_index
+ *= require equipment
  *= require mobile
  *= require diffview
  *= require media_objects
@@ -27,6 +30,8 @@
  *= require profiles
  *= require bootstrap-wysihtml5
  *= require angular-ui
+ *= require ng-grid.min
+
  *= require alert
  *= require registration
  *= require timeline
@@ -35,4 +40,16 @@
  *= require billboard
  *= require gallery
  *= require voting
+ *= require comments
+ *= require stream
+ *= require embed
+ *= require projects
+ *= require home
+ *= require knife_collection
+ *= require cs_lightbox
+ *= require charge_form
+ *= require application/assemblies/pre_registration
+ *= require typography
+ *= require about
+
  */

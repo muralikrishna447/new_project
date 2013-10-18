@@ -1,0 +1,350 @@
+@import 'mixins'
+
+#knife-intro
+  position: fixed
+
+.knife.first
+  margin-top: 350px
+
+.knife
+  padding: 40px
+  -webkit-transition-duration: 0.55s
+  -moz-transition-duration: 0.5s
+  -o-transition-duration: 0.5s
+  transition-duration: 0.5s
+  .knife-content
+    width: 900px
+    margin: 0 auto
+
+.modal
+  max-height: 500px
+
+.hidden
+  display: none
+  position: absolute
+  top: 0
+
+.knife.alt
+  background: $offwhite
+  border-bottom: 2px solid $orange
+  padding: 20px 40px 30px 40px
+  position: relative
+  background: $offwhite
+  -webkit-border-radius: 0px
+  -moz-border-radius: 0px
+  border-radius: 0px
+
+.knife.alt:after
+  content: ""
+  position: absolute
+  bottom: -20px
+  margin-left: -20px
+  left: 50%
+  border-style: solid
+  border-width: 20px 20px 0
+  border-color: $orange transparent
+  display: block
+  width: 0
+  z-index: 1
+
+
+.button-container
+  position: relative
+
+  a
+    font-size: 4em
+    color: #fff
+    line-height: .7em
+    padding: 0px 9px
+
+  a:focus
+    text-decoration: none
+    outline: thin dotted #333333
+    outline: 5px auto -webkit-focus-ring-color
+    outline-offset: px
+
+  a:visited
+    text-decoration: none
+
+  a:active
+    text-decoration: none
+
+  a:hover  
+    color: $dark-orange
+
+
+  .add-button
+    background: $orange
+    border: 1px solid #e25f25
+    border-radius: 50px
+    height: 51px
+    width: 51px
+    padding: 0px 0px
+
+  #asai-main
+    -webkit-transition-duration: 0.55s
+    -moz-transition-duration: 0.5s
+    -o-transition-duration: 0.5s
+    transition-duration: 0.5s    
+  
+  #asai-1
+    position: absolute
+    left: 25%
+    top: 65%
+  
+  #asai-2
+    position: absolute
+    left: 73%
+    top: 54%
+  
+  #ohishi-1
+    position: absolute
+    left: 23%
+    top: 55%
+  
+  #ohishi-2
+    position: absolute
+    left: 83%
+    top: 54%
+  
+  #yoshikane-1
+    position: absolute
+    left: 27%
+    top: 15%
+  
+  #yoshikane-2
+    position: absolute
+    left: 83%
+    top: 69%
+  
+  #sharpening
+    position: absolute
+    left: 50%
+    top: 69%
+
+.knife-modal
+  position: fixed
+  top: 0px
+  right: 0px
+  bottom: 0px
+  left: 50%
+  margin: 5%
+  margin-top: 20px
+  margin-bottom: 40px
+  margin-left: -250px
+  padding: 10px
+  width: 90%
+  @include boxsizing
+  max-height: inherit
+  max-width: 500px
+  .knife-modal-header
+    position: absolute
+    top: 0px
+    left: 0px
+    right: 0px
+    padding: 10px
+    background: white
+    z-index: 2
+    h3
+      padding: 0px
+      margin: 0px
+      text-align: center
+  .knife-modal-body
+    position: absolute
+    margin-top: 60px
+    margin-bottom: 53px
+    top: 0px
+    bottom: 10px
+    left: 10px
+    right: 10px
+    overflow-y: auto
+    -webkit-overflow-scrolling: touch
+    img
+      width: 100%
+  .knife-modal-footer
+    position: absolute
+    bottom: 10px
+    left: 10px
+    right: 10px
+
+@media (min-width: 1160px)
+  .knife.first
+    margin-top: 350px
+
+@media (max-width: 1080px)
+  .knife.first
+    margin-top: 352px
+
+@media (max-width: 980px)
+  .knife.first
+    margin-top: 451px
+
+  .knife
+    .knife-content
+      width: 100%
+
+@media (max-width: 767px)
+  .knife.first
+    margin-top: 10px
+
+  .button-container
+    a
+      font-size: 2.3em
+      padding: 0px 7px
+      line-height: .8em
+
+    .add-button
+      background: $orange
+      border: 1px solid #e25f25
+      border-radius: 32px
+      height: 32px
+      width: 32px
+      padding: 0px 0px
+
+  .knife-modal
+    left: 0px
+    margin-left: 5%
+
+  #knife-intro
+    position: inherit
+
+@media (max-width: 480px)
+  .knife.first
+    margin-top: 10px
+
+  .knife.alt
+    padding: 10px
+
+// Annotation Slider //
+
+.annotation-slider-container
+  overflow: hidden
+  @include transition(all 300ms ease-in-out)
+  .annotation-slider
+    position: relative
+    -webkit-backface-visibility: hidden
+    -webkit-transform-style: preserve-3d
+    @include transition(all 300ms ease-in-out)
+    .annotation-close-btn
+      position: absolute
+      top: 10px
+      right: 10px
+      color: $red
+    .annotation-close-overlay
+      position: absolute
+      top: 0px
+      bottom: 0px
+      left: 0px
+      right: 0px
+      z-index: 9999
+      display: none
+      &:hover
+        cursor: pointer
+    .annotation-slider-image
+    .annotation-slider-note
+      position: absolute
+      top: 0px
+      width: 280px
+      padding: 10px
+      margin: 0px 10px
+      border: 1px solid $light-gray
+      @include boxsizing
+      h3
+        margin: 0px
+      h5
+        margin-bottom: 0px
+      .annotation-slider-note-gallery
+        .annotation-slider-note-gallery-thumbnails
+          float: left
+          width: 100%
+          margin: 10px 0px
+          .annotation-slider-note-gallery-thumbnail
+            float: left
+            margin-right: 5px
+            margin-bottom: 5px
+      .social-flat
+        .btn-holder
+          .btn-social
+            margin: 0px
+    .note-left
+      left: -300px
+      top: 0px
+    .note-right
+      right: -300px
+      top: 0px
+
+    .annotation-buttons
+      .annotation-slider-btn
+        background: $orange
+        color: white
+        position: absolute
+        font-size: 40px
+        text-align: center
+        border-radius: 22px
+        padding: 13px 9px
+        width: 44px
+        height: 44px
+        @include boxsizing
+        @include transition(all 200ms)
+        &:hover
+          cursor: pointer
+          color: $offwhite
+          background: $darker-orange
+
+      .annotation-slider-btn-close
+        background: $red
+        border: 3px solid white
+        padding: 9px 0px
+        @include transform(rotate(45deg))
+
+#asai-1
+  left: 25%
+  top: 65%
+
+#asai-2
+  left: 73%
+  top: 54%
+
+#ohishi-1
+  left: 23%
+  top: 55%
+
+#ohishi-2
+  left: 83%
+  top: 54%
+
+#yoshikane-1
+  left: 27%
+  top: 15%
+
+#yoshikane-2
+  left: 83%
+  top: 69%
+
+#sharpening
+  left: 40%
+  top: 75%
+
+#honing
+  left: 80%
+  top: 35%
+
+.annotation-click-image
+  float: left
+  width: 100%
+
+@media (max-width: 480px)
+  .annotation-slider-note
+    width: 100%
+
+  #ohishi-1
+    left: 13%
+    top: 45%
+
+  #sharpening
+    left: 50%
+    top: 55%
+
+  #honing
+    left: 75%
+    top: 20%

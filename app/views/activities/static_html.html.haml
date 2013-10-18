@@ -7,7 +7,7 @@
 // model elements that show up on the real activity page get displayed in some form here too. It doesn't need to be beautiful.
 
 = render 'layouts/filepicker'
-- content_for :title, "#{@activity.activity_type.first} - #{@activity.title.html_safe}"
+- content_for :title, "#{@activity.title.html_safe} - #{@activity.activity_type.first}"
 - content_for :description, @activity.description != "" ? @activity.description.html_safe : @activity.title.html_safe
 - content_for :canonical_link, activity_url(@activity)
 - content_for :keywords, @activity.tag_list.join(',')

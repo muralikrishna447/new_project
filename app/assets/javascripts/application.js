@@ -11,6 +11,10 @@
 //= require scroll_shadow
 //= require horizontal_slider
 //= require courses
+//= require bootstrap-wysihtml5
+//= require bootstrap-wysihtml5/locales
+//= require rails.validations
+//= require rails.validations.formtastic
 //= require uploads
 //= require assignments
 //= require bootstrap-wysihtml5
@@ -19,3 +23,10 @@
 //= require user_profiles
 //= require iframe_height
 //= require annotations
+//= require projects
+//= require knife_collection
+//= require cs_lightbox
+//= require angular-payments
+//= require hammer
+//= require navigation
+//= require course_landing

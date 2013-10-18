@@ -1,0 +1,65 @@
+.row(ng-controller='SharedActivityController' ng-init="init('#{activity.id}')")
+  .span6.force-aspect-wrapper
+    .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+      - if activity.youtube_id?
+        %iframe(frameborder='0' allowfullscreen){src: youtube_url(activity.youtube_id)}
+      - elsif activity.image_id?
+        = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title, itemprop: 'image'
+      - elsif activity.featured_image_id?
+        = image_tag filepicker_activity_hero_image(activity.featured_image_id), alt: activity.title, title: activity.title, itemprop: 'image'
+    - if activity.description?
+      .section.noprint
+        :markdown
+          #{apply_shortcodes(activity.description)}
+    - if activity.ingredients.any?
+      / .section.well
+      /   = render '/shared/ingredients', ingredients: activity.ingredients
+      .section.csmonitorinputactivity(ng-controller="IngredientsController" ng-cloak)
+        .activity-ingredients-list#full-ingredients-list.section
+          .well(ng-show="activity.ingredients.length" )
+            = render '/shared/ingredients_list', source: "activity", include_header: true
+    - if activity.yield.present?
+      .section
+        %h4 Yield
+        %span{:itemprop => "recipeYield"}= activity.yield
+    - if activity.timing.present?
+      .section
+        %h4 Timing
+        = activity.timing
+    - if activity.required_equipment.any?
+      .section
+        %h4 Equipment and Materials
+        = render '/activities/equipment_list', equipment: activity.required_equipment
+    - if activity.optional_equipment.any?
+      .section
+        %h4 Optional Equipment
+        = render '/activities/equipment_list', equipment: activity.optional_equipment
+    - if activity.used_in_activities.published.any?
+      .section
+        %h4 Used In
+        %ul
+          - activity.used_in_activities.published.each do |activity|
+            %li= link_to activity.title.html_safe, activity
+  .span6
+    .ordered-steps{:itemprop => "recipeInstructions"}
+      - step_number = 0
+      - activity.steps.each_with_index do |step,index|
+        .ordered-step-item{id: "order-step-item-#{index}"}
+          .step-element.step-number
+            - if step.hide_number?
+              - step_number
+            - else
+              = step_number+=1
+          .step-element.step-content
+            - if step.title?
+              %h4= step.title
+            - if step.ingredients.any?
+              .well
+                = render '/shared/ingredients_list', source: "activity.steps[#{index}]"
+            :markdown
+              #{apply_shortcodes(step.directions)}
+            - if step.image_id?
+              -descrip = filepicker_image_description(step.image_id, step.image_description)
+              = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip, :itemprop => 'image'
+            - if step.youtube_id?
+              %iframe{src: youtube_url(step.youtube_id)}

@@ -18,46 +18,68 @@
             #nav-edit-toolbar(collapse="!editMode")
               = render 'activities/edit_toolbar'
           %div(ng-style="toolbarBonusStyle()"){collapse: ("editMode" if @include_edit_toolbar)}
-            .nav-collapse.collapse.pull-right
+            .nav-collapse.collapse.pull-right#cs-navigation
               %ul.nav
                 %li.dropdown
                   .nav-item-border
+
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Cooking
+                    Recipes
                     %i.icon-angle-down
                   %ul.dropdown-menu
                     .dropdown-background
-                    %li= link_to 'Recipes', gallery_index_url(activity_type: "Recipe")
-                    %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
-                    -if can? :update, Activity
-                      %li= link_to 'New Recipe', new_activity_url
+                    %li= link_to 'ChefSteps Recipes', gallery_index_url(activity_type: "Recipe")
+                    %li= link_to 'Community Recipes', gallery_index_url(source: "community")
+                    %li= link_to 'Add Recipe', new_activity_url
+                    -if can? :update, Ingredient
+                      %li= link_to 'Manage Ingredients', ingredients_path
+
                 %li.dropdown
                   .nav-item-border
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Learning
+                    Learn
                     %i.icon-angle-down
                   %ul.dropdown-menu
                     .dropdown-background
-                    / %li= link_to 'Sous Vide Course', course_url('accelerated-sous-vide-cooking-course')
-                    %li= link_to 'Courses', courses_url
+                    %li= link_to 'Classes', courses_url
+                    %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
                     %li= link_to 'Science', gallery_index_url(activity_type: "Science")
-                %li
+                %li.dropdown
                   .nav-item-border
-                  = link_to 'Community', 'http://forum.chefsteps.com'
-                %li
+                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                    Community
+                    %i.icon-angle-down
+                  %ul.dropdown-menu
+                    .dropdown-background
+                    %li= link_to 'Forum', 'http://forum.chefsteps.com'
+                    %li= link_to 'Vote For New Courses', poll_url('vote-for-new-courses')
+                %li.dropdown
                   .nav-item-border
-                  = link_to 'Shop', 'http://store.chefsteps.com'
+                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                    Shop
+                    %i.icon-angle-down
+                  %ul.dropdown-menu
+                    .dropdown-background
+                    %li= link_to 'Store', 'http://store.chefsteps.com'
+                    %li= link_to 'Knife Collection', knife_collection_url
                 %li
                   .nav-item-border
                   - if current_user
-                    = link_to 'Profile', user_profile_url(current_user)
+                    - unviewed_events_count = current_user.events.timeline.unviewed.count
+                    = link_to user_profile_url(current_user) do
+                      %span
+                        Profile
+                        - if unviewed_events_count > 0
+                          .label
+                            = "#{unviewed_events_count} New"
                   - else
                     = link_to 'Sign in', sign_in_url
                 - unless external
                   %li
                     .nav-item-border
-                    .nav-search
-                      = link_to 'javascript:void(0);', id: 'nav-search-toggle' do
-                        %i.icon-search.icon-large
+                    .nav-search.nav-search-toggle
+                      %i.icon-search.icon-large
                       = form_tag gallery_index_url, :method => :get, class: 'navbar-form form-search nav-search-form' do
-                        = text_field_tag :search_all, nil, :placeholder => 'search', class: 'search-query'
+                        = text_field_tag :search_all, nil, :placeholder => 'search', class: 'search-query', id: 'nav-search-field'
+                      .nav-search-hide
+                        %i.icon-remove

@@ -1,0 +1,120 @@
+- content_for :title, "#{@course.title.html_safe} - Course"
+- content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
+
+.assembly-course-landing
+  .full-stripe
+    .container
+      .row
+        .span12
+          .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+            - if @course.slug == 'french-macarons'
+              - ab_test 'macaron_landing_video', 'tg8xqq9hz-k', 'dmvhmQTCDfY' do |video_id|
+                %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
+            - else
+              %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+
+.container.assembly-course-landing
+  .row
+    .span8
+
+      %ul.nav.nav-tabs.underline.landing-tab-menu
+        %li.active
+          = link_to 'Overview', '#overview', data: {toggle: 'tab'}
+        - if @course.faq
+          %li
+            = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
+        - if @course.ingredients_equipment
+          %li
+            = link_to 'Ingredients / Equipment', '#ingredients-equipment', data: {toggle: 'tab'}
+        - if @course.testimonials
+          %li
+            = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
+
+      %ul.nav
+        %li.dropdown.landing-tab-dropdown
+          %a.dropdown-toggle#landingTabLabel(role="button" data-toggle="dropdown" href="#")
+            %span#landingTabLabelText Overview
+            %b.caret
+          %ul.dropdown-menu(role="menu" aria-labelledby="landingTabLabel")
+            %li.active
+              = link_to 'Overview', '#overview', data: {toggle: 'tab'}
+            - if @course.faq
+              %li
+                = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
+            - if @course.ingredients_equipment
+              %li
+                = link_to 'Ingredients / Equipment', '#ingredients-equipment', data: {toggle: 'tab'}
+            - if @course.testimonials
+              %li
+                = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
+
+      .tab-content
+        .tab-pane.active#overview
+          .two-columns
+            :markdown
+              #{apply_shortcodes(@course.description)}
+
+          - if @course.landing_bottom
+            .section
+              %h4 Course Preview
+              :markdown
+                #{@course.landing_bottom.content}
+
+          - if @course.uploads.approved.any?
+            .section
+              %h4 Student Projects
+              - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
+                = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+
+
+        - if @course.faq    
+          .tab-pane#faq
+            :markdown
+              #{apply_shortcodes(@course.faq.content)}
+
+        - if @course.ingredients_equipment    
+          .tab-pane#ingredients-equipment
+            :markdown
+              #{apply_shortcodes(@course.ingredients_equipment.content)}
+
+        - if @course.testimonials 
+          .tab-pane#testimonials
+            :markdown
+              #{apply_shortcodes(@course.testimonials.content)}
+
+    -if @course.price
+      .span4.section
+        .buy-box
+          
+          = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: @discounted_price, completed: current_user && current_user.completed_course?(@assembly)
+          .text-center.enroll-count.section
+            %h4= "#{@course.enrollments.count} Enrolled"
+          %h5 Course Includes:
+          %ul
+            %li Unlimited Access
+            %li= "#{@course.video_count} HD Videos"
+            -# Pulling this because it lessons doesn't sound right when some parts are recipes etc.
+            -# %li= "#{@course.assembly_inclusions.count} Lessons"
+            %li Q&A from the chefs
+          %h4 100% satisfaction guaranteed or your money back
+
+        .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+          = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
+
+    -else
+      .span4.section
+        .btn.btn-primary.btn-large.input-block-level
+          %a(ng-href="#{class_url(@assembly, protocol: "http")}")
+            START CLASS
+
+  .row
+    .span12
+      - if @course.uploads.approved.any?
+        %h4 Student Projects
+        - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
+          = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+
+= render 'layouts/footer'
+
+:javascript
+  mixpanel.track('Course Landing Viewed', {'context' : 'course', 'title' : "#{@course.title}", 'slug' : "#{@course.slug}"});

@@ -34,7 +34,7 @@
         %a{data: {toggle: :pill, target: "#media-tabs-#{id} .audio-tab"}} Audio
     .tab-content.media-tabs{id: "media-tabs-#{id}"}
       .tab-pane.active.image-tab
-        = render 'filepicker_group', param: "#{field_name_prefix}[image_id]", value: image_id
+        = render '/shared/filepicker_group', param: "#{field_name_prefix}[image_id]", value: image_id
         = text_area_tag "#{field_name_prefix}[image_description]", image_description, rows: 3, placeholder: "Image description"
       .tab-pane.video-tab
         = text_field_tag "#{field_name_prefix}[youtube_id]", youtube_id, placeholder: 'YouTube ID'

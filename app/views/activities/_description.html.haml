@@ -2,11 +2,15 @@
 
   %csEditPairShow
     .activity-description-wrapper(ng-show="!!activity.description")
-      .activity-description#activity-description
+      .activity-description#activity-description(ng-class="{'maximize-description': maximizeDescription}")
         %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
         .activity-description-overlay(ng-hide="activity.description.length < 455")
-      .text-center(ng-hide="false || editMode || (activity.description.length < 455)")
-        = link_to 'more', 'javascript:void(0);', id: 'activity-description-maximize'
+      .text-center(ng-hide="false || editMode || (activity.description.length < 455)" )
+        %a#activity-description-maximize(ng-click="toggleMaximizeDescription()")
+          %span(ng-show="! maximizeDescription")
+            more
+          %span(ng-show="maximizeDescription")
+            less
     %div.disabled-section(ng-show="editMode && (!activity.description)")
       Add description...
 
@@ -14,7 +18,7 @@
     %textarea(ng-model="activity.description" rows="5" placeholder="Add description...")
 
 
--if can? :update, Activity
+-if can? :update, @activity
   .section
     %csEditPair
 

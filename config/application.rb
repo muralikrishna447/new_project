@@ -73,10 +73,12 @@ module Delve
     # Enable the asset pipeline
     config.assets.enabled = true
     config.assets.paths << "#{Rails.root}/app/assets/videos"
+    config.assets.paths << "#{Rails.root}/app/assets/maps"
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '7'
+    config.assets.version = '8'
     config.assets.initialize_on_precompile = false
+
 
     # Caching intended for test, staging, and production environments
     unless Rails.env.development?
@@ -100,5 +102,8 @@ module Delve
 
     # Primarily to allow fontawesome access from blog/shop/forum in Firefox
     config.middleware.insert_before 'ActionDispatch::Static', 'Rack::AccessControlHeaders', /assets/
+
+    # SSL
+    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: %r{/landing$}, only_environments: ['production', 'staging'], force_secure_cookies: false
   end
 end

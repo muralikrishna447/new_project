@@ -1,6 +1,6 @@
 %html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#" }
   %head
-    %title= "ChefSteps - #{yield :title}"
+    %title= "#{yield :title} - ChefSteps"
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
     = csrf_meta_tags
@@ -9,6 +9,7 @@
     %meta{name: 'description', content: yield(:description)}
     %meta{name: 'keywords', content: yield(:keywords)}
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1'}
+    %meta(http-equiv="Content-Language" content="en")
     = yield :facebook_og
     = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
@@ -22,7 +23,7 @@
     - else
       %link{href: "/favicon.ico", rel: "shortcut icon"}
     %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
-    %link{href: "http://fonts.googleapis.com/css?family=Raleway:200,400,500,600,700", rel: "stylesheet", type: "text/css"}
+    %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
     - unless yield(:canonical_link).blank?
@@ -30,9 +31,11 @@
     - if Rails.env.production?
       = render 'layouts/qbaka'
       = render 'layouts/google_analytics'
+    = render 'layouts/stripe'
     = render 'layouts/mixpanel'
     = javascript_include_tag 'application_head'
-
+    = render 'layouts/inspectlet'
+    = render 'layouts/crazyegg'
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => Rails.env}
     = render 'layouts/navigation', external: false
 
@@ -53,12 +56,15 @@
     = yield :popup_bottom
 
     = yield :footer
-    %script{src:'http://www.youtube.com/iframe_api'}
-    %script{src:'/assets/youtube.js'}
+    / %script{src:'http://www.youtube.com/iframe_api'}
+    / %script{src:'/assets/youtube.js'}
   / = render 'layouts/youtube'
-  
-  %script{src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"}
-  / %script{src: 'http://d3js.org/d3.v3.min.js'}
   = javascript_include_tag 'application'
   = render 'layouts/app_init'
   = yield(:custom_js)
+
+
+-# This load on every page, so a convenient place to make sure mixpanel identity is known
+- if current_user
+  :javascript
+    mixpanel.identify("#{current_user.email}")

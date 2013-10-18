@@ -1,0 +1,8 @@
+.social-button-contents
+  .social-icon-group
+    %span
+      %i{class: "icon-#{icon}"}
+  -if (defined? counter)
+    .social-counter
+      %span.text-center
+        {{#{counter}}}

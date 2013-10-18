@@ -1,7 +1,20 @@
 require 'spec_helper'
 
-describe Ingredient, "capitalize title" do
+describe Ingredient do
   let(:ingredient) { Fabricate(:ingredient, title: 'black Pepper') }
+  let(:ingredient2) { Fabricate(:ingredient, title: 'Black peepper') }
+  let(:ingredient3) { Fabricate(:ingredient, title: 'Black pepper, whole') }
+  let(:activity) { Fabricate(:activity, title: 'foo1') }
+  let(:activity2) { Fabricate(:activity, title: 'foo2') }
+  let(:activity3) { Fabricate(:activity, title: 'foo3') }
+  let(:step3) { Fabricate(:step) }
+
+
+  let(:activity_ingredient1) { Fabricate(:activity_ingredient, activity: activity, ingredient: ingredient, display_quantity: '1', unit: 'things') }
+  let(:activity_ingredient2a) { Fabricate(:activity_ingredient, activity: activity2, ingredient: ingredient2, display_quantity: '2', unit: 'things') }
+  let(:activity_ingredient2b) { Fabricate(:activity_ingredient, activity: activity2, ingredient: ingredient2, display_quantity: '2.5', unit: 'things') }
+  let(:activity_ingredient3) { Fabricate(:activity_ingredient, activity: activity3, ingredient: ingredient3, display_quantity: '3', unit: 'things') }
+  let(:step_ingredient3) { Fabricate(:step_ingredient, ingredient: ingredient3, display_quantity: '2', unit: 'things', note: "pebbly")}
 
   it "capitalizes the first letter of the word when ingredient is created" do
     ingredient.title.should == 'Black Pepper'
@@ -41,5 +54,28 @@ describe Ingredient, "capitalize title" do
     its(:quantity) { should == 1.0 }
   end
 
+  it "can merge manually marked duplicates" do
+    activity_ingredient1.save
+    activity_ingredient2a.save
+    activity_ingredient2b.save
+    activity_ingredient3.save
+    step_ingredient3.save
+    puts ingredient.inspect
+    ingredient.activities.should have(1).activity
+    ingredient.steps.should have(0).step
+    ingredient2.activities.should have(2).activity
 
+    ingredient.merge([ingredient2, ingredient3])
+    ingredient.save
+
+    ingredient.activities.should have(4).activity
+    ingredient.steps.should have(1).step
+    activity_ingredient3.reload
+    activity_ingredient3.note.should == "whole"
+    step_ingredient3.reload
+    step_ingredient3.note.should == "whole, pebbly"
+    Ingredient.exists?(ingredient).should == true
+    Ingredient.exists?(ingredient2).should == false
+    Ingredient.exists?(ingredient3).should == false
+  end
 end

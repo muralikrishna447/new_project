@@ -4,7 +4,7 @@
       .row
         .span10.offset1
           = form_for @user, url: registration_path(@user), class: 'form-inline' do |f|
-            .madlib
+            %h2.madlib
               .madlib-item.text-orange
                 Hi ChefSteps,
               .madlib-item
@@ -14,9 +14,11 @@
                 and my email is
                 %span.input-underlined
                   = f.email_field :email, {placeholder: 'email', required: true, id: 'madlib-email'}
-                &#46;&nbsp;&nbsp;
+                &#46;
               .madlib-item
-                I want to learn how to be a better cook.
+                I want to 
+                = ab_test "counter_split", "learn", "join more than 10,000 others and learn", "join 12,477 others and learn"
+                how to be a better cook.
               .madlib-item.hide#madlib-password-wrapper
                 Please set my password to
                 %span.input-underlined.input-append

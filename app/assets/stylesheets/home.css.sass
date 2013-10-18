@@ -1,0 +1,40 @@
+@import 'mixins'
+
+.home-signed-in
+  .home-section
+    float: left
+    width: 100%
+
+  .home-header
+    color: $orange
+
+  .home-featured-item
+    border: 1px solid $light-gray
+    padding: $baseline
+    margin-bottom: $baseline * 2
+    @include boxsizing
+    @include primary-font
+    h3
+      margin: 0px
+    img
+      margin-bottom: $baseline
+
+  .home-standard-item
+    margin-bottom: $baseline
+    float: left
+    width: 100%
+    @include boxsizing
+    @include primary-font
+    .home-standard-item-image
+      width: 50%
+      float: left
+      display: block
+      margin-bottom: $baseline
+    .home-standard-item-text
+      width: 50%
+      float: left
+      display: block
+      padding-left: 10px
+      @include boxsizing
+      h3
+        margin: 0px

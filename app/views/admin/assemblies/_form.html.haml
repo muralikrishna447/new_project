@@ -1,0 +1,28 @@
+= semantic_form_for [:admin, @assembly] do |f|
+  = f.inputs do
+    = f.input :assembly_type, as: :select, collection: Assembly::ASSEMBLY_TYPE_SELECTION
+    = f.input :published, as: :boolean  
+    = f.input :show_prereg_page_in_index, label: "Show pre-reg in index (only if a course and currently unpublished). Turn on once you are ready for preregistrations to happen and the appropriate aweber list has been created."
+    = f.input :title
+    = f.input :description
+    = f.input :short_description, hint: "Used for course index"
+    = f.input :badge_id, as: :select, collection: Merit::Badge
+    = f.input :price, hint: "Leave blank for free project/course"
+    = render '/shared/filepicker_group', label_text: "Image", param: "assembly[image_id]", value: @assembly.image_id
+    / = f.input :image_id
+    = f.input :youtube_id
+    = f.input :upload_copy, hint: 'This text will appear on the top portion of the upload page.'
+
+  %h2 Assembly Inclusions
+  
+  #assembly_inclusions
+    = f.semantic_fields_for :assembly_inclusions, @assembly.assembly_inclusions.order('assembly_inclusions.position asc'), id: 'assembly-inclusions' do |builder|
+      = render 'assembly_inclusion_fields', f: builder
+  = link_to_add_fields "Add Assembly Inclusion", f, :assembly_inclusions
+  = f.actions
+
+#all_assembly_selection_data
+  #activity_selection_data{data: {:'activity-selection' => Activity.chefsteps_generated.where("title <> ''").order(:title).select('id, title').to_json}}
+  #quiz_selection_data{data: {:'quiz-selection' => Quiz.where("title <> ''").order(:title).select('id, title').to_json}}
+  #assembly_selection_data{data: {:'assembly-selection' => Assembly.where(assembly_type: 'Group').order(:title).select('id, title').to_json}}
+= render 'layouts/filepicker'

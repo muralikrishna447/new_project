@@ -5,11 +5,11 @@
     .btn.step-action-item.step-video-btn.btn-primary(ng-show="step.youtube_id")
       %i.icon-facetime-video
 
-  .step-video-outer(ng-show="!! step.youtube_id")
-    .step-video(id="{{'step-video-' + $index}}")
+  .step-video-outer(ng-switch="!! step.youtube_id")
+    .step-video(id="{{'step-video-' + $index}}" ng-switch-when="true" )
       .video-container(csenforceaspect)
-        %iframe(ng-src="{{'http://www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+        %iframe(ng-src="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
 
-  .step-image-outer(ng-show="!! step.image_id")
-    .step-image(id="{{'step-image-' + $index}}")
+  .step-image-outer(ng-switch="!! step.image_id")
+    .step-image(id="{{'step-image-' + $index}}" ng-switch-when="true")
       %img(ng-src="{{stepImageURL(step, 480)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")

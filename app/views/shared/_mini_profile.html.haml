@@ -1,0 +1,11 @@
+-if user.bio?
+  .section(ng-hide="editMode")
+    .mini-profile.media
+      .profile-image.pull-left
+        = image_tag filepicker_circle_image(user.image_id, 80), class: 'img-circle media-object'
+      .profile-body.media-body
+        %h4.media-heading
+          Recipe Submitted By
+          = link_to user.name, user_profile_path(user)
+        %p
+          = user.bio

@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 ruby "1.9.3"
 
-gem 'rails', '3.2.11'
-gem 'railties', '3.2.11'
+gem 'rails', '3.2.14'
+gem 'railties', '3.2.14'
 gem 'pg'
 
 gem 'unicorn'
@@ -50,10 +50,15 @@ gem 'has_scope'
 gem 'mixpanel'
 gem 'cancan'
 gem 'simple-rss'
+gem 'active_model_serializers'
+gem 'mixpanel_client'
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+gem 'geokit-rails'
+gem 'rack-ssl-enforcer'
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
+group :assets, :angular do
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
   gem 'sass-rails',   '~> 3.2.3'
@@ -79,7 +84,7 @@ group :assets do
 
 end
 
-group :development, :test do
+group :development, :test, :angular do
   gem 'heroku'
   gem 'heroku_san'
   gem 'rspec-rails'

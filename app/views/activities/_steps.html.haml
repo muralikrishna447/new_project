@@ -8,7 +8,7 @@
   .ordered-steps(ng-show="activity.steps.length > 0" ng-class="{'scroll-shadow': !editMode}"){:itemprop => "recipeInstructions"}
     .scroll-shadow-content.pull-left
       .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'order-step-item-' + ($index + 1)}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()")
-        = render 'step'
+        = render 'activities/step'
 
     .scroll-overlay-top.noprint
     .scroll-overlay-bottom.noprint

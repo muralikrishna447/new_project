@@ -20,16 +20,25 @@ class ApplicationController < ActionController::Base
   # end
 
   def after_sign_in_path_for(resource)
+    # if request.referer == sign_in_url
+    #   super
+    # else
+    #   stored_location_for(resource) || request.referer || user_profile_path(resource)
+    # end
     if request.referer == sign_in_url
       super
     else
-      stored_location_for(resource) || request.referer || user_profile_path(resource)
+      if request.referer && URI(request.referer).host == URI(root_url).host && request.referer != sign_in_url && request.referer != new_user_session_url
+        stored_location_for(resource) || request.referer || user_profile_path(resource)
+      else
+        root_url
+      end
     end
   end
 
   def authenticate_active_admin_user!
     authenticate_user!
-    unless current_user.role?(:admin)
+    unless current_user.role?(:contractor)
       flash[:alert] = "Unauthorized Access!"
       redirect_to root_path
     end
@@ -52,7 +61,11 @@ private
   end
 
   def mixpanel
-    @mixpanel ||= Mixpanel::Tracker.new '84272cf32ff65b70b86639dacd53c0e0', { :env => request.env }
+    if Rails.env.development?
+      @mixpanel ||= Mixpanel::Tracker.new 'd6d82f805f7d8a138228a52f17d6aaec', { :env => request.env }
+    else
+      @mixpanel ||= Mixpanel::Tracker.new '84272cf32ff65b70b86639dacd53c0e0', { :env => request.env }
+    end
   end
 
   # See http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on

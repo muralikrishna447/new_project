@@ -1,0 +1,14 @@
+.stream-item(ng-show="stream.trackable.activity.published")
+  .stream-item-dialogue
+    %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
+    %h5
+      %a(ng-href="/profiles/{{stream.user.slug}}" onclick='track_viewed_profile_through_stream();')
+        {{stream.user.name}}
+      created a new {{stream.trackable.activity.activity_type[0]}}:
+      %a(ng-href="/activities/{{stream.trackable.activity.slug}}" onclick='track_viewed_item_through_stream();')
+        {{stream.trackable.activity.title}}
+      %small
+        {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  .stream-item-image
+    %a(ng-href="/activities/{{stream.trackable.activity.slug}}" onclick='track_viewed_item_through_stream();')
+      %img(ng-src="{{mediaObjectImageUrl(stream.trackable.activity.featured_image_id)}}")

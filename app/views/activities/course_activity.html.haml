@@ -1,11 +1,13 @@
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()"}
-- content_for :title, "#{@course.title} Course - #{@activity.activity_type.first} - #{@activity.title.html_safe}"
+- content_for :title, "#{@activity.title.html_safe} - #{@activity.activity_type.first} - #{@course.title} Course"
 - content_for :description, @activity.description != "" ? @activity.description.html_safe : @activity.title.html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
 - content_for :keywords, @activity.tag_list.join(',')
+= render 'layouts/filepicker'
 %div(ng-model="activity.title" ng-init="activity.title = '#{@activity.title}'")
 %div(ng-model="activity.activity_type" ng-init="activity.activity_type = '#{@course.title} Course - #{@activity.activity_type.first}'")
 
+#activity-title(data-activity="#{@activity.title}")
 .container{data: {:'activity-id' => @activity.id}}
   .row
     .span12.section
@@ -66,3 +68,7 @@
                 = link_to [@course, @next_activity], class: 'btn btn-primary' do
                   = 'Next'
                   %i.icon-chevron-right
+
+:javascript
+  mixpanel.track('Activity Viewed', {'distinct_id' : "#{current_user ? current_user.email : nil}", 'context' : 'course', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
+  mixpanel.people.increment('Activity Viewed Count')

@@ -1,0 +1,60 @@
+.flat-form(ng-controller='UploadsController' ng-init="init(#{assembly.id})" )
+  %form(name='UploadForm' ng-submit='submit()')
+    .row.section
+      .span6
+        %div(ng-bind-html-unsafe="assembly.upload_copy | markdown")
+      .span2
+        %img(ng-src="{{assembly.badge_image}}")
+    .row
+      .span6
+        %h3 Title
+        %p Name your creation
+        %input.input-block-level(type='text' ng-model='upload.title' required)
+
+        %h3 Story
+        %p Tell us a story about your success, failures, variations and creations.  What worked and what didn't work?  What did you change to suit your palate or your dietary restrictions?
+        %textarea.input-block-level(ng-model='upload.notes' required)
+
+        %h3 Add a photo
+        %p Click the button below to show a picture along with your creation.
+        %p
+          %div(ng-switch='upload.image_src.length > 0')
+            %div(ng-switch-when="true")
+              %img(ng-src="{{upload.image_src}}")
+          %input(type='hidden' ng-model='upload.image_id' required)
+          .btn.btn-secondary(ng-click='addPhoto()')
+            %span(ng-hide="upload.image_id")
+              Upload Photo
+            %span(ng-show="upload.image_id")
+              Change Photo
+    .row
+      .span12.well
+        .row
+          .span3.offset9
+            %div(ng-show='UploadForm.$valid')
+              .btn.btn-primary.btn-large.input-block-level(ng-click='submit()')
+                Finish the Course
+            %div(ng-hide='UploadForm.$valid')
+              .btn.btn-primary.btn-large.input-block-level.disabled
+                Finish the Course
+
+  %div(ng-switch on='shareModalShow')
+    %div(ng-switch-when='true')
+      .modal-backdrop
+      .modal.assembly-upload-modal
+        .modal-body
+          %h4= "Congratulations, you've completed the #{@course.title} Course!"
+          - if current_user && assembly.badge
+            %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
+            .modal-image
+              = image_tag assembly.badge.image
+          %h4 Share this on:
+          - ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
+            = render 'layouts/share_button', split_name: split_name
+          %p= "Would you like to share your recipe of this on ChefSteps? #{link_to 'Start Here', new_activity_path}".html_safe
+        .modal-footer
+          %a.btn.btn-primary.btn-large(ng-href='{{upload.path}}')
+            Done
+
+:javascript
+  mixpanel.track('Assembly Upload Page Viewed', {'context' : 'course', 'title' : "#{assembly.title}", 'slug' : "#{assembly.slug}"});

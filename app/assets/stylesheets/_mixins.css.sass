@@ -5,11 +5,20 @@
   -webkit-box-sizing: border-box
   -o-box-sizing: border-box
 
+=any_shadow($c)
+  box-shadow: $c
+  -moz-box-shadow: $c
+  -webkit-box-shadow: $c
+  -o-box-shadow: $c
+
 =shadow
-  box-shadow: 0px 0px 5px #888888
-  -moz-box-shadow: 0px 0px 5px #888888
-  -webkit-box-shadow: 0px 0px 5px #888888
-  -o-box-shadow: 0px 0px 5px #888888
+  box-shadow: 0px 0px 2px #888888
+  -moz-box-shadow: 0px 0px 2px #888888
+  -webkit-box-shadow: 0px 0px 2px #888888
+  -o-box-shadow: 0px 0px 2px #888888
+
+=big-shadow
+  @include any_shadow(5px 5px 15px #888888)
 
 =dark-shadow
   box-shadow: 0px 0px 5px black
@@ -41,22 +50,74 @@
   -webkit-transition: $value
   -o-transition: $value
 
+=transform($value)
+  transform: $value
+  -moz-transform: $value
+  -webkit-transform: $value
+  -o-transform: $value
+
 =animation($value)
   animation: $value
   -moz-animation: $value
   -webkit-animation: $value
   -o-animation: $value
 
-=raleway
-  font-family: 'Raleway', sans-serif
-  font-weight: 500
-  -webkit-font-smoothing: antialiased
+=keyframes($name)
+  @-webkit-keyframes #{$name}
+    @content
+  @-moz-keyframes #{$name}
+    @content
+  @-ms-keyframes #{$name}
+    @content
+  @keyframes #{$name}
+    @content
+
+=columncount($value)
+  column-count: $value
+  -moz-column-count: $value
+  -webkit-column-count: $value
+  -o-column-count: $value
+
+=columngap($value)
+  column-gap: $value
+  -moz-column-gap: $value
+  -webkit-column-gap: $value
+  -o-column-gap: $value
+
+
+/* Typography */
+
+$baseline: 1.1rem /* = 11px/14px */
+
+=gotham-narrow
+  font-family: 'Gotham Narrow SSm A', 'Gotham Narrow SSm B', 'Helvetica Neue'
+  font-weight: 400
+  font-style: normal
+
+=primary-font
+  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
+  font-weight: 400
+  font-style: normal
+
+=primary-font-light
+  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
+  font-weight: 300
+  font-style: normal 
+
+=primary-font-bold
+  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
+  font-weight: 700
+  font-style: normal 
+
+
+
 
 /* Colors */
 $orange: #e25f25
 //$orange: #DB7354
 $dark-orange: #D25029
 $darker-orange: #B84724
+$light-blue: #0088CC
 $blue: #006DCC
 $blue-opaque: rgba(0,109,204,.8)
 $red: #DA4f49

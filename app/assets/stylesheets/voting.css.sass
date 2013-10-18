@@ -1,25 +1,68 @@
 @import 'mixins'
 
+.poll-header-block
+  @include primary-font
+  .poll-header
+    width: 70%
+    float: left
+  .poll-header-votes
+    width: 30%
+    float: left
+    .poll-header-votes-border
+      border: 1px solid black
+      border-radius: 5px
+      float: right
+      padding: 3% 5% 5%
+      height: 40px
+      .poll-header-votes-count
+        font-size: 60px
+        line-height: 40px
+        float: left
+      .poll-header-votes-text
+        float: right
+        font-size: 24px
+        line-height: 20px
+        padding-top: 5px
+        margin-left: 5px
+        .poll-header-votes-subtext
+          font-size: 10px
+
 .poll-item
   width: 100%
   //height: 80px
-  padding: 5px 0px 
-  border-top: 1px solid gray
+  padding: 0px 0px 20px 0px 
+  border-top: 1px solid #ccc
   float: left
+
+  // No pinterest. Would like a cleaner solution that knew how many buttons. maybe ng-class.
+  .spe-show-setup
+    &.spe-show-start
+      width: 400px
+
 .poll-item-vote-up
-  width: 7%
+  width: 7% 
   margin-right: 1%
+  margin-top: 15px
   float: left
+
 .poll-item-text
   width: 72%
   float: left
-  h2
+  h3
     margin: 25px 0px 5px
-    line-height: 32px
+    line-height: 20px
   .poll-item-details-btn
     &:hover
       cursor: pointer
+
+  .social-group
+    > .btn, .social-flat > .btn
+      margin-top: 10px
+    white-space: normal !important
+
+
 .poll-item-sharing
+  margin-top: 15px
   width: 9%
   margin-left: 1%
   float: left
@@ -29,9 +72,10 @@
   width: 9%
   margin-left: 1%
   float: left
+  margin-top: 15px
 
 .poll-item-btn
-  @include raleway
+  @include primary-font
   display: inline-block
   text-align: center
   width: 100%
@@ -43,16 +87,37 @@
   border: 0px
   @include boxsizing
   @include transition(all 200ms)
+  border-radius: 3px
   &:hover
     cursor: pointer
     background: $light-gray
     color: gray
 
+.poll-item-btn-disabled
+  @include primary-font
+  display: inline-block
+  text-align: center
+  width: 100%
+  height: 80px
+  padding: 5px
+  font-size: 30px
+  color: $light-gray
+  background: $offwhite
+  border: 0px
+  @include boxsizing
+  @include transition(all 200ms)
+  border-radius: 3px
+
 .poll-item-btn-social
-  padding: 25px
+  padding: 25px 0px
+  h4
+    margin: 0px
 
 .poll-item-vote-count
   margin-top: 0px
+
+.poll-item-vote-label
+  font-size: 10px
 
 .poll-item-btn-voted
   background: $orange
@@ -61,6 +126,73 @@
     cursor: pointer
     background: $orange
     color: white
+
+.poll-item-user-voted
+  @include primary-font
+
+.poll-item-voters
+  float: left
+  width: 100%
+  margin-top: 10px
+  clear: both
+  .poll-item-voter
+    position: relative
+    float: left
+    margin: 2px
+    &:hover
+      .poll-item-voter-tooltip
+        display: block
+    .poll-item-voter-tooltip
+      display: none
+      @include primary-font
+      background: $orange
+      color: white
+      padding: 5px 8px
+      position: absolute
+      @include boxsizing
+      height: 30px
+      top: -35px
+      z-index: 2
+      white-space: nowrap
+      &:after
+        content: ''
+        position: absolute
+        @include transform(rotate(45deg))
+        background: $orange
+        border-top: 0px
+        border-left: 0px
+        top: 24px
+        left: 10px
+        width: 9px
+        height: 9px
+
+.voting-spinner
+  i
+    width: 100%
+    text-align: center
+    font-size: 60px
+    color: $orange
+    margin: 100px 0px 2000px
+
+.poll-index-item
+  position: relative
+  .poll-index-item-winner
+    position: absolute
+    top: 50px
+    left: -10px
+    width: 100%
+    text-align: center
+    background: white
+    border: 1px solid $orange
+    padding: 0px 10px
+    text-transform: uppercase
+    @include primary-font
+
+@media (max-width: 767px)
+  .social-group
+    .btn-primary
+      width: 48%
+
 
 @media (min-width: 481px) and (max-width: 979px)
   .poll-item
@@ -87,15 +219,42 @@
     padding: 15px
 
 @media (max-width: 480px)
+  .poll-header-block
+    .poll-header
+      width: 100%
+      h1
+        font-size: 26px
+    .poll-header-votes
+      width: 100%
+      margin-bottom: 20px
+      .poll-header-votes-border
+        width: 100%
+        @include boxsizing
+        height: inherit
+        .poll-header-votes-count
+          font-size: 32px
+          line-height: inherit
+        .poll-header-votes-text
+          margin-left: 3%
+          float: left
+          font-size: 16px
+          line-height: 16px
+          padding: 0px
+          height: 16px
+          width: 65%
+          .poll-header-votes-subtext
+            float: left
+            line-height: 5px
+
   .poll-item
     font-size: 16px
 
   .poll-item-vote-up
-    width: 15%
-    margin-right: 1%
+    width: 16%
+    margin-right: 4%
     float: left
   .poll-item-text
-    width: 54%
+    width: 80%
     float: left
     h2
       font-size: 16px
@@ -106,14 +265,15 @@
       &:hover
         cursor: pointer
   .poll-item-sharing
-    width: 14%
+    width: 49%%
     margin-left: 1%
     float: left
     position: relative
 
   .poll-item-comments
-    width: 14%
-    margin-left: 1%
+    width: 49%
+    margin-left: 0%
+    margin-right: 1%
     float: left
 
   .poll-item-btn

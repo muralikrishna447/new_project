@@ -1,8 +1,11 @@
 .video-container{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-
+  -if defined? activity
+    %meta{itemprop: 'thumbnailUrl', content: "#{filepicker_gallery_image(activity.featured_image)}"}
+    %meta{itemprop: 'embedUrl', content: "www.youtube.com/embed/#{activity.youtube_id}"}
   .hero-visual
-    %iframe.noprint#activityPlayer(ng-show="heroDisplayType() == 'video'" ng-src="{{heroVideoURL()}}" ng-style="setHeight()" csenforceaspect webkitallowfullscreen mozallowfullscreen)
-    %img(ng-show="heroDisplayType() == 'image'" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
+    .embed-container(ng-switch="heroDisplayType()")
+      %iframe.noprint#activityPlayer(ng-switch-when="video" cssrcreplacer="{{heroVideoURL()}}" webkitallowfullscreen mozallowfullscreen)
+      %img(ng-switch-when="image" ng-src="{{heroImageURL(570)}}" alt="{{activity.title}}" title="{{activity.title}}" itemprop="image")
 
     %div.noprint.disabled-section(ng-show="(heroDisplayType() == 'none') && editMode" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
       Add main video or image ...

@@ -1,0 +1,41 @@
+
+/ %span(ng-model="commentable_type" ng-init="commentable_type='#{commentable.class}'")
+/ %span(ng-model="commentable_id" ng-init="commentable_id='#{commentable.id}'")
+%h4.comments-header
+  %span(ng-pluralize count='comments_count' when="{'0':'0 Comments', '1':'1 Comment', 'other':'{{comments_count}} Comments'}")
+    / {{comments_count}} Comments
+  %span(ng-show='commentsToggle()')
+    %span(ng-switch on='commentLimit')
+      %span(ng-switch-when="-6")
+        .btn.btn-link(ng-click='showAllComments()')
+          Show All
+      %span(ng-switch-default)
+        .btn.btn-link(ng-click='hideComments()')
+          Hide
+.comments(ng-repeat='comment in comments|limitTo:commentLimit')
+  .comment
+    .comment-user
+      %a(href="/profiles/{{comment.user.slug}}")
+        %img(ng-src="{{userImageUrl(comment.user.image_id)}}")
+    .comment-content
+      %a(href="/profiles/{{comment.user.slug}}")
+        {{comment.user.name}}
+      {{comment.content}}
+    .comment-created-at
+      %small
+        {{comment.created_at|date:'MMM d, yyyy @ h:mma'}}
+
+- if current_user
+  .flat-form
+    %form(ng-submit="addComment()")
+      %textarea.input-block-level(ng-model="newComment.content" placeholder='Write a comment...')
+      %input.btn.btn-primary.pull-right(type='submit' value='Add Comment')
+- else
+  %hr
+  %h4
+    = link_to sign_in_path, class: 'btn btn-secondary' do
+      Sign In
+    or
+    = link_to sign_up_path, class: 'btn btn-secondary' do
+      Create an Account
+    to add a comment.

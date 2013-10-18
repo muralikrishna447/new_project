@@ -14,6 +14,18 @@ class UserProfilesController < ApplicationController
   def show
     @user = User.find(params[:id])
     @courses = Course.published
+    @is_current_user =  (@user == current_user)
+    @user_pubbed_recipes = @user.created_activities.published
+    @user_unpubbed_recipes = ((current_user && current_user.admin?) || @is_current_user) ? @user.created_activities.unpublished : []
+    @total_recipes = @user_pubbed_recipes.count + @user_unpubbed_recipes.count
+    @can_add_recipes = (can? :create, Activity) && @is_current_user
+    @show_recipes_tab = (@total_recipes > 0) || (@can_add_recipes)
+    @timeline_events =  @user.events.timeline.find_all { |e| e.trackable.published rescue true }
+
+    @user.events.timeline.unviewed.each do |event|
+      event.viewed = true
+      event.save
+    end
   end
 
   def edit

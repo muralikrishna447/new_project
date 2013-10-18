@@ -1,7 +1,7 @@
 -################################ HEADER / LAYOUT STUFF ################################
 
 = render 'layouts/filepicker'
-- content_for :title, "#{@activity.activity_type.first} - #{@activity.title.html_safe}"
+- content_for :title, "#{@activity.title} - #{@activity.activity_type.first}".html_safe
 - content_for :description, @activity.description != "" ? @activity.description.html_safe : @activity.title.html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
 - content_for :keywords, @activity.tag_list.join(',')
@@ -42,11 +42,22 @@
 
 -################################ PRIMARY CONTENT ################################
 
+#activity-title(data-activity="#{@activity.title}")
 %form(name="activityForm")
   -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
-
   %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
+
   .container#activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
+    .row.noprint(ng-cloak ng-show="editMode && alerts.length > 0")
+      .span8.offset2
+        %alert.edit-alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="closeAlert($index)" ng-animate="'custom'")
+          %h3 Save Failed!
+          {{alert.message}}
+          .section
+            If you can't resolve the issue, please
+            %a(ng-href="mailto:michael@chefsteps.com?subject=Error%20Message&body=Error: {{alert.message}}. Please add any info about what caused this problem." target="_blank")>
+              send this error text to ChefSteps
+            \.
 
     -# Row with title and buttons
     .row.printable
@@ -77,13 +88,13 @@
     .row(ng-hide="editMode" ng-cloak)
       .span12
         %h3 User Creations
-        = link_to 'UPLOAD YOUR OWN', 'javascript:void(0);', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}
+        = link_to 'UPLOAD YOUR OWN', '#', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}, onclick: "mixpanel.people.set({ 'photo upload intent': '#{@activity.title}' }); mixpanel.track('Photo Upload Intent', { 'photo upload intent': '#{@activity.title}' });"
         #user-creations-carousel
           - if @activity.uploads.approved.any?
             .horizontal-slider{data: {direction: 'right'}}
               .horizontal-slider-wrap
                 - @activity.uploads.approved.includes(:user).order('created_at DESC').each do |upload|
-                  = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.title, image: upload.image_id
+                  = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
               %div{class: "horizontal-slider-btn-right btn btn-circle"}
                 %i{class: "icon-chevron-right"}
               %div{class: "horizontal-slider-shadow-overlay-right"}
@@ -149,25 +160,8 @@
     .modal-header
       %h3= "Share your #{@activity.title} creation"
     .modal-body
-      .flat-form
-        = form_for @upload do |f|
-          = f.hidden_field :activity_id, value: @activity.id
-          .row-fluid
-            .span4
-              %h4 Upload a Photo
-              .upload-wrapper
-                = image_tag '/assets/missing.png', class: "upload-photo-preview"
-                = link_to '+', '#', class: 'upload-photo-btn'
-                %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
-            .span8
-              %h4 Recipe Name
-              %p= f.text_field :title, class: 'input-block-level', required: true
-              %h4 Notes
-              %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
-              = f.submit 'Upload', class: 'btn btn-primary btn-large pull-left'
-              %btn.btn.btn-large.btn-link{data: {dismiss: 'modal'}}
-                Cancel
-
+      = render 'shared/uploads'
+  
 = render 'cancel_edit_modal'
 = render 'restore_autosave.html.haml'
 = render 'already_editing_modal.html.haml'
@@ -176,5 +170,10 @@
 
 #preloaded-activity-json.hide
   = @activity.to_json
+
+
+:javascript
+  mixpanel.track('Activity Viewed', {'distinct_id' : "#{current_user ? current_user.email : nil}", 'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
+
 
 

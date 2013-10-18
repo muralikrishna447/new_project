@@ -1,0 +1,37 @@
+.stream-item
+  .stream-item-dialogue
+    %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
+    %h5
+      %div(ng-switch="stream.trackable.like.likeable_type")
+        %div(ng-switch-when='Assembly')
+          %a(ng-href="/profiles/{{stream.user.slug}}" onclick='track_viewed_profile_through_stream();')
+            {{stream.user.name}}
+          liked the
+          %a(ng-href="{{stream.trackable.like.likeable.path}}" onclick='track_viewed_item_through_stream();')
+            {{stream.trackable.like.likeable.title}}
+          {{stream.trackable.like.likeable.assembly_type}}.
+        %div(ng-switch-when='Upload')
+          %a(ng-href="/profiles/{{stream.user.slug}}" onclick='track_viewed_profile_through_stream();')
+            {{stream.user.name}}
+          liked
+          %a(ng-href="/profiles/{{stream.trackable.like.likeable.user.slug}}" onclick='track_viewed_item_through_stream();')
+            {{stream.trackable.like.likeable.user.name}}'s
+          {{stream.trackable.like.likeable.title}}
+          photo.
+        %div(ng-switch-when='Activity')
+          %a(ng-href="/profiles/{{stream.user.slug}}" onclick='track_viewed_profile_through_stream();')
+            {{stream.user.name}}
+          liked
+          %a(ng-href="{{stream.trackable.like.likeable.path}}" onclick='track_viewed_item_through_stream();')
+            {{stream.trackable.like.likeable.title}}.
+        %div(ng-switch-when='Page')
+          %a(ng-href="/profiles/{{stream.user.slug}}" onclick='track_viewed_profile_through_stream();')
+            {{stream.user.name}}
+          liked the page
+          %a(ng-href="{{stream.trackable.like.likeable.path}}" onclick='track_viewed_item_through_stream();')
+            {{stream.trackable.like.likeable.title}}.
+      %small
+        {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  .stream-item-image
+    %a(ng-href="{{stream.trackable.like.likeable.path}}" onclick='track_viewed_item_through_stream();')
+      %img(ng-src="{{mediaObjectImageUrl(stream.trackable.like.likeable.featured_image)}}")

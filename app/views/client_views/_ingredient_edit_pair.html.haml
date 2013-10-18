@@ -8,14 +8,14 @@
       %span(ng-switch="" on="ingredient_display_type(ai)")>
         %span(ng-switch-default="" ng-bind-html-unsafe="ai.ingredient.title")>
         %a(ng-switch-when="product" ng-href="{{ai.ingredient.product_url}}" target='_blank' ng-bind-html-unsafe="ai.ingredient.title")>
-        %a(ng-switch-when="subrecipe" ng-href="{{'/activities/' + ai.ingredient.sub_activity_id}}" ng-bind-html-unsafe="ai.ingredient.title" target="_blank")>{onclick: "addScalingToLink(this);"}
+        %a(ng-switch-when="subrecipe" ng-click="loadSubrecipe(ai.ingredient.sub_activity_id)" ng-bind-html-unsafe="ai.ingredient.title" target="_blank")>
         %span.fake-link(ng-switch-when="fake_link" ng-bind-html-unsafe="ai.ingredient.title")>
       %span(ng-show="!!ai.note" ng-bind-html-unsafe="', ' + (ai.note | shortcode)")>
 
     .quantity-group.qtyfade
       %span.lbs-qty(csscalingeditable){style: "display: none;"}
       %span.lbs-label
-      %span.main-qty(ng-show="!editMode" csscalingeditable="" ng-bind="ai.display_quantity"){data: {:"orig-value" => "{{ai.display_quantity * unitMultiplier(ai.unit)}}"}}
+      %span.main-qty(ng-show="!editMode" csscalingeditable="" ng-bind="ai.display_quantity")
       %span.main-qty(ng-show="editMode" ng-bind="ai.display_quantity")
 
     .unit.qtyfade(ng-bind="ai.unit")
@@ -25,7 +25,7 @@
       .btn-group
         .btn.drag-handle.btn-small.btn-secondary(tooltip="Drag to reorder")
           %i.icon-sort
-        .btn.remove-button.btn-small.btn-secondary(tooltip="Drag to reorder" tooltip="Remove ingredient" ng-click="removeIngredient($index)")
+        .btn.remove-button.btn-small.btn-secondary(tooltip="Remove ingredient" ng-click="removeIngredient($index)")
           %i.icon-remove
     .ingredient-title
       %input(csselectonfocus="" csinputmonkeyingredient="" type="text" placeholder="New ingredient" typeahead-editable="true" autocomplete="off" class="ingredient-typeahead" ng-model="ai.ingredient" typeahead="i as i.title for i in all_ingredients($viewValue)")
@@ -37,4 +37,4 @@
       .select-readout(ng-class="{fakefocus: unitSelectHasFocus}")
         {{ai.unit}}
         %i.icon-caret-down
-      %select(type="text" ng-model="ai.unit" required="true" ng-options="u for u in ['g', 'kg', 'ea', 'a/n', 'recipe']" ui-event='{focus : "unitSelectHasFocus = true", blur: "unitSelectHasFocus = false"}')
+      %select(type="text" ng-model="ai.unit" required="true" ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()" ui-event='{focus : "unitSelectHasFocus = true", blur: "unitSelectHasFocus = false"}')

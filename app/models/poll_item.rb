@@ -5,4 +5,6 @@ class PollItem < ActiveRecord::Base
 
   has_many :votes, as: :votable
   has_many :users, through: :votes
+  has_many :comments, as: :commentable, dependent: :destroy
 end
+

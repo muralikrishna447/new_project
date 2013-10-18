@@ -1,0 +1,33 @@
+@import 'mixins'
+
+.stream
+  width: 100%
+  @include primary-font
+  position: relative
+  .stream-item
+    margin-bottom: ($baseline + .3rem)
+    float: left
+    width: 100%
+    border: 1px solid $light-gray
+    padding: 8px 10px 0px 10px
+    @include boxsizing
+    .stream-item-dialogue
+      img
+        float: left
+      h5
+        margin-left: 40px
+        margin-top: 0px
+      margin-bottom: $baseline
+  .stream-more
+    float: left
+    width: 100%
+    margin-bottom: $baseline * 2
+  .stream-item-image
+    margin-bottom: $baseline 
+
+
+.stream-spinner
+  color: $orange
+  font-size: 40px
+  text-align: center
+  margin: 30px 0px

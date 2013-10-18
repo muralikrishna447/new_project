@@ -6,7 +6,6 @@
     margin: 0px
 
 .course-nav-top
-  font-family: 'Raleway', sans-serif
   position: relative
   height: 34px
   margin-bottom: 10px
@@ -43,7 +42,6 @@
       width: auto
 
 .course-nav-modules
-  font-family: 'Raleway', sans-serif
   width: 100%
   border: 0px
   li
@@ -59,7 +57,6 @@
   top: 60px
 
 .course-nav-side
-  font-family: 'Raleway', sans-serif
   position: relative
   border: 1px solid $orange
   border-radius: 5px
@@ -94,7 +91,6 @@
     transform: rotate(45deg)
 
 .course-nav-bottom
-  font-family: 'Raleway', sans-serif
   position: relative
   .course-nav-bottom-left
     position: absolute
@@ -103,6 +99,13 @@
   .course-nav-bottom-center
     width: 100%
     text-align: center
+    .course-nav-item
+      display: inline-block
+    .btn
+      font-size: 20px
+      margin: 0 20px
+    h3
+      margin-left: -40px
   .course-nav-bottom-right
     position: absolute
     top: 10px
@@ -133,6 +136,12 @@
   top: 0px
   opacity: 1
 
+.landing-tab-dropdown
+  display: none
+
+.assembly-course-landing
+  margin-bottom: 22px
+
 /* Spherification Styles */
 
 .static-height
@@ -159,6 +168,16 @@
   .static-height
     height: 170px    
 
+@media (max-width: 979px)
+  .landing-tab-dropdown
+    display: block
+
+    .dropdown-toggle .caret
+      border-top-color: #0088cc !important
+
+  .nav.landing-tab-menu
+    display: none
+
 @media (min-width: 768px) and (max-width: 979px)
   .course-side-bar
     width: 166px
@@ -180,4 +199,74 @@
   .static-height
     inherit
 
+/* Macaron Styles */
+.assembly-course-landing
+  .full-stripe
+    width: 100%
+    background: $offwhite
+    margin-bottom: $baseline
 
+
+  /* tabs */
+
+  .underline.nav-tabs
+    border: none
+    li
+      a
+        color: $light-gray
+        border: none
+        border-bottom: 3px solid white
+        @include transition(all 200ms ease-in-out)
+        &:hover
+          color: gray
+          background: white
+          border-radius: 0px
+          border-bottom: 3px solid $light-gray
+    li.active
+      a
+        color: black
+        border-bottom: 3px solid $orange
+
+
+  .buy-box
+    border-style: double
+    border-width: 4px
+    border-color: $orange
+    box-sizing: border-box
+    padding: 20px
+
+  .social-group
+    margin-top: 0px
+    margin-bottom: 10px
+    .btn-social
+      margin-top: 0px
+      margin-bottom: 10px
+
+@media (max-width: 767px)
+  .assembly-course-landing
+    .two-columns
+      column-count: 1
+      column-gap: 30px
+      -webkit-column-count: 1
+      -webkit-column-gap: 30px
+      -moz-column-count: 1
+      -moz-column-gap: 30px
+      -o-column-count: 1
+      -o-column-gap: 30px
+      min-height: auto
+
+@media (max-width: 780px)
+  .enroll-count
+    display: none
+  .main-cta
+    background-color: $offwhite
+    border-top: 1px solid $light-gray
+    position: fixed
+    left: 0
+    right: 0
+    bottom: 0
+    width: 100%
+    text-align: center
+    .btn
+      width: 80%
+      margin: 11px auto

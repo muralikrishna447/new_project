@@ -9,47 +9,45 @@
   padding: 10px
   background: white
   text-align: center
-  text-overflow: ellipsis
   font-weight: bold
   margin-bottom: 20px
   color: black
-  -webkit-transition: background 200ms, border-color 200ms
-  -moz-transition: background 200ms, border-color 200ms
-  -o-transition: background 200ms, border-color 200ms
-  transition: background 200ms, border-color 200ms
+  @include transition(color 200ms)
   img
     width: 100%
-    margin-bottom: 10px
+    margin-bottom: $baseline
   a
     color: black
-    -webkit-transition: color 200ms
-    -moz-transition: color 200ms
-    -o-transition: color 200ms
-    transition: color 200ms
+    @include transition(color 200ms)
+    .media-box-title
+      text-overflow: ellipsis
+      white-space: nowrap
+      width: 100%
+      overflow: hidden
 
-  &:before, &:after
-    content: ""
-    position: absolute
-    z-index: -1
-    bottom: 15px
-    left: 2%
-    width: 96%
-    height: 20%
-    -webkit-box-shadow: 0 15px 10px gray
-    -moz-box-shadow: 0 15px 10px gray
-    box-shadow: 0 15px 10px gray
-  &:after
-    -webkit-transform: rotate(2deg)
-    -moz-transform: rotate(2deg)
-    -ms-transform: rotate(2deg)
-    -o-transform: rotate(2deg)
-    transform: rotate(2deg)
-  &:before
-    -webkit-transform: rotate(-2deg)
-    -moz-transform: rotate(-2deg)
-    -ms-transform: rotate(-2deg)
-    -o-transform: rotate(-2deg)
-    transform: rotate(-2deg)
+  // &:before, &:after
+  //   content: ""
+  //   position: absolute
+  //   z-index: -1
+  //   bottom: 15px
+  //   left: 2%
+  //   width: 96%
+  //   height: 20%
+  //   -webkit-box-shadow: 0 15px 10px gray
+  //   -moz-box-shadow: 0 15px 10px gray
+  //   box-shadow: 0 15px 10px gray
+  // &:after
+  //   -webkit-transform: rotate(2deg)
+  //   -moz-transform: rotate(2deg)
+  //   -ms-transform: rotate(2deg)
+  //   -o-transform: rotate(2deg)
+  //   transform: rotate(2deg)
+  // &:before
+  //   -webkit-transform: rotate(-2deg)
+  //   -moz-transform: rotate(-2deg)
+  //   -ms-transform: rotate(-2deg)
+  //   -o-transform: rotate(-2deg)
+  //   transform: rotate(-2deg)
   &:hover
     border-color: $orange
     cursor: pointer
@@ -58,10 +56,11 @@
 
 .media-box-medium
   width: 300px
-  height: 208px
+  height: $baseline * 19
   //margin-left: 10px
   //margin-right: 10px
-  margin: 20px
+  // margin: 20px
+  margin: 10px 20px 10px 0px
 
 /// MEDIA BOX 2 ///
 
@@ -74,7 +73,7 @@
   background: white
   text-align: center
   font-weight: bold
-  margin-bottom: 20px
+  margin-bottom: $baseline * 2
   color: black
   -webkit-transition: background 200ms, border-color 200ms
   -moz-transition: background 200ms, border-color 200ms
@@ -103,8 +102,6 @@
 /// MEDIA BOX 3 ///
 
 .media-box-3
-  font-family: 'Raleway', sans-serif
-  font-weight: 500
   @include boxsizing
   position: relative
   width: 360px
@@ -113,28 +110,28 @@
   padding: 10px
   margin: 10px
   background: white
-  font-weight: bold
-  color: black
   float: left
   @include transition(all 300ms)
   img
     width: 100%
     margin: 10px 0px
   a
-    color: black
+    color: #333333
     @include transition(all 300ms)
     .media-box-3-title
-      font-weight: 500
-      font-size: 14px
+      @include primary-font-bold
+      font-size: 15px
       text-transform: uppercase
       height: 20px
       text-overflow: ellipsis
       white-space: nowrap
       overflow: hidden
     .media-box-3-footer
-      font-weight: 500
       .footer-left
+        float: left
         text-transform: uppercase
+      .footer-right
+        float: right
   &:hover
     border-color: $orange
     cursor: pointer

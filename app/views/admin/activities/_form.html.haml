@@ -16,6 +16,9 @@
 .update-warning
 = semantic_form_for [:admin, @activity], validate: true do |f|
   = f.inputs name: "Activity Details" do
+    = f.input :layout_name, as: :select, collection: Activity::LAYOUT_NAMES
+    = f.input :include_in_gallery, as: :boolean
+    = f.input :show_only_in_course, label: "Show only in course. (Implies don't show in gallery too.)"
     = f.input :published
     = f.input :title
     %li
@@ -29,9 +32,9 @@
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
     %li
-      = render 'filepicker_group', label_text: "Hero Image", param: "activity[image_id]", value: @activity.image_id
+      = render '/shared/filepicker_group', label_text: "Hero Image", param: "activity[image_id]", value: @activity.image_id
     %li
-      = render 'filepicker_group', label_text: "Featured Image", param: "activity[featured_image_id]", value: @activity.featured_image_id
+      = render '/shared/filepicker_group', label_text: "Featured Image", param: "activity[featured_image_id]", value: @activity.featured_image_id
     = f.input :transcript
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum

@@ -1,14 +1,17 @@
 .section.csmonitorinputactivity(ng-controller="IngredientsController")
 
   .activity-ingredients-list#full-ingredients-list.section
+    %h4.ingredients-title Ingredients
     .well(ng-show="activity.ingredients.length" )
-      = render 'ingredients_list', source: "activity"
+      = render 'shared/ingredients_list', source: "activity", include_header: (defined? include_header) ? include_header : true
 
   .nav(ng-show="editMode")
     %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
-    %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="fillMasterIngredientsFromSteps()" tooltip="Rebuild master ingredients from step ingredients..." tooltip-placement="bottom")
-      %i.icon-magic
-    %button.btn.btn-small.btn-secondary.btn-basic.add-item(ng-click="addIngredient()" tooltip="Add ingredient"  tooltip-placement="bottom")
+    %button.btn.btn-small.btn-secondary.add-from-master(ng-show="hasAnyStepIngredients()" ng-click="fillMasterIngredientsFromSteps()" tooltip="Replace master ingredients with step ingredients..." tooltip-placement="bottom")
+      %i.icon-chevron-left
+    %button.btn.btn-small.btn-secondary.add-item(ng-click="addIngredient()" tooltip="Add ingredient"  tooltip-placement="bottom")
       %i.icon-plus
     %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients" tooltip-placement="bottom")
       Done
+
+  = render 'activities/master_ingredients_removed_modal.html.haml'

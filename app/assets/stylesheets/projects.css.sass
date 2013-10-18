@@ -1,0 +1,68 @@
+@import 'mixins'
+
+.project
+  .project-description
+    &:first-line
+      font-size: 24px
+      line-height: 30px
+
+  .project-menu-expand
+    display: none
+    border
+    @include primary-font
+
+  .nav-pills
+    border-bottom: 1px solid $orange
+    li
+      a
+        color: black
+        @include primary-font
+        @include transition(all 300ms ease-in-out)
+        .project-tab-title
+          display: none
+        &:hover
+          .project-tab-title
+            display: inline-block
+
+    li.active
+      a
+        color: black
+        background: white
+        width: inherit
+        position: relative
+        .project-tab-title
+          display: inline-block
+        .project-tab-marker
+          position: absolute
+          top: 27px
+          left: 50%
+          width: 10px
+          height: 10px
+          border: 1px solid $orange
+          border-right: 0px
+          border-bottom: 0px
+          background: white
+          -moz-transform: rotate(45deg)
+          -webkit-transform: rotate(45deg)
+          -o-transform: rotate(45deg)
+          transform: rotate(45deg)
+
+    li.active + li
+      a
+        .project-tab-title
+          display: inline-block
+
+@media (max-width: 979px)
+  .project
+    .project-menu-expand
+      display: block
+    .nav-pills
+      border: 0px
+      li
+        clear: both
+      li.active
+        a
+          color: white
+          background: $orange
+          .project-tab-marker
+            display: none

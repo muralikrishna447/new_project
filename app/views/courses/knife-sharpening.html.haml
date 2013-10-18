@@ -1,0 +1,20 @@
+- content_for :title, "#{course.title} Course"
+- content_for :description, course.short_description
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+
+= render 'knife-sharpening_a'
+
+- if current_user
+  :javascript
+    mixpanel.track('Course Viewed', {'distinct_id' : "#{current_user.email}", 'course' : "#{course.title}", 'url' : window.location.pathname});
+    mixpanel.people.increment('Course Viewed Count')
+
+- else
+  :javascript
+    mixpanel.track('Course Viewed', {'course' : "#{course.title}", 'url' : window.location.pathname});
+    mixpanel.people.increment('Course Viewed Count')
+
+- if course.additional_script
+  = course.additional_script.html_safe
+
+#course-title(data-course="#{course.title}")

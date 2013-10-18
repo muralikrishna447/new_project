@@ -15,23 +15,7 @@
 .row-fluid
   %hr
 
-.flat-form
-  = form_for @upload do |f|
-    = f.hidden_field :activity_id
-    = f.hidden_field :course_id, value: @course.id
-    .row-fluid
-      .span4
-        %h4 Upload a Photo
-        .upload-wrapper
-          = image_tag '/assets/missing.png', class: "upload-photo-preview"
-          = link_to '+', '#', class: 'upload-photo-btn'
-          %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
-      .span8
-        %h4 Title
-        %p= f.text_field :title, class: 'input-block-level', required: true
-        %h4 Notes
-        %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
-        = f.submit 'Upload', class: 'btn btn-primary btn-large'
+= render 'shared/uploads'
 
 .row-fluid      
   %hr
@@ -39,10 +23,7 @@
   .horizontal-slider{data: {direction: 'right'}}
     .horizontal-slider-wrap
       - @course.uploads.each do |upload|
-        = render 'shared/media_box', size: 'medium', url: user_upload_path(upload.user, upload), title: upload.title, image: upload.image_id
+        = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
     %div{class: "horizontal-slider-btn-right btn btn-circle"}
       %i{class: "icon-chevron-right"}
     %div{class: "horizontal-slider-shadow-overlay-right"}
-
-= render 'layouts/filepicker'
-

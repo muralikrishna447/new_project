@@ -6,7 +6,7 @@
 - when 'Upload'
   .timeline-circle{data: {direction: direction}}
     .timeline-circle-img
-      = link_to user_upload_path(likeable_object.user, likeable_object) do
+      = link_to upload_path(likeable_object) do
         = image_tag filepicker_circle_image(likeable_object.image_id), class: 'img-circle'
     .timeline-circle-text.text-center
       %strong
@@ -15,22 +15,19 @@
         = "#{user_noun} liked #{link_to likeable_object.user.name, user_profile_path(likeable_object.user)}'s #{link_to 'photo', likeable_object}.".html_safe
       %div
         = time_ago_in_words(event.created_at) + ' ago'
+        - if event.user == current_user && !event.viewed
+          .label new
 
 - when 'Activity'
-  .timeline-circle{data: {direction: direction}}
-    .timeline-circle-img
-      = link_to likeable_object do
-        = image_tag filepicker_circle_image(likeable_object.featured_image), class: 'img-circle'
-    .timeline-circle-text.text-center
-      %div
-        = "#{user_noun} liked #{link_to likeable_object.title, likeable_object}.".html_safe
-      %div
-        = time_ago_in_words(event.created_at) + ' ago'
-
-/ .timeline-circle{data: {direction: direction}}
-/   .timeline-circle-img
-/     = link_to user_upload_path(event.trackable.user, event.trackable) do
-/       = image_tag filepicker_circle_image(event.trackable.image_id), class: 'img-circle'
-/   .timeline-circle-text.text-center
-/     %div= "#{user_noun} uploaded a photo"
-/     %div= time_ago_in_words(event.created_at) + ' ago'
+  - if likeable_object.published
+    .timeline-circle{data: {direction: direction}}
+      .timeline-circle-img
+        = link_to likeable_object do
+          = image_tag filepicker_circle_image(likeable_object.featured_image), class: 'img-circle'
+      .timeline-circle-text.text-center
+        %div
+          = "#{user_noun} liked #{link_to likeable_object.title, likeable_object}.".html_safe
+        %div
+          = time_ago_in_words(event.created_at) + ' ago'
+          - if event.user == current_user && !event.viewed
+            .label new

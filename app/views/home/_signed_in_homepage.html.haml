@@ -1,0 +1,84 @@
+.container.home-signed-in
+  .row
+    .span12
+      .row.section
+        .span10
+          %h2
+            = link_to 'Latest from ChefSteps', gallery_index_path, class: 'orange-link'
+        .span2.text-right
+          = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
+      = render 'shared/horizontal_slider', items: @latest, direction: 'right'
+
+  .row
+    .span8
+      .home-section
+        %h2
+          = link_to 'Courses', courses_path, class: 'orange-link'
+        .home-featured-item
+          = link_to @courses[0] do
+            %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= @courses[0].title
+            = image_tag filepicker_stream_image(@courses[0].featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
+            .section.pull-right(onclick= 'track_viewed_course_through_signed_in_homepage();')
+              = where_user_left_off_in_course(@courses[0], current_user, 'btn btn-primary btn-large')
+          .section
+            = @courses[0].short_description
+        - @assembly_classes.each.with_index do |course, index|
+          .home-standard-item
+            .home-standard-item-image
+              = link_to landing_class_path(course) do
+                = image_tag filepicker_stream_image(course.image_id)
+            .home-standard-item-text
+              = link_to landing_class_path(course) do
+                %h3= course.title
+              %p= course.short_description
+        - @courses.from(1).each.with_index do |course, index|
+          .home-standard-item
+            .home-standard-item-image
+              = link_to course do
+                = image_tag filepicker_stream_image(course.featured_image)
+            .home-standard-item-text
+              = link_to course do
+                %h3= course.title
+              %p= course.short_description
+      .home-section
+        %hr
+      - if @projects.any?
+        .home-section
+          %h2
+            = link_to 'Projects', projects_path, class: 'orange-link'
+          - @projects.each.with_index do |project, index|
+            .home-standard-item
+              .home-standard-item-image
+                = link_to project_path(project) do
+                  = image_tag filepicker_stream_image(project.featured_image)
+              .home-standard-item-text
+                = link_to project_path(project) do
+                  %h3= project.title
+                %p= project.description
+    .span4
+      %h2 
+        = link_to 'Activity Stream', community_activity_path, class: 'orange-link'
+      .stream(ng-controller='StreamsController' ng-init="init()")
+        %div(ng-repeat='stream in streams')
+          %div(ng-include src="streamViewTemplate(stream)")
+          / %div(ng-switch="stream.group_type")
+          /   %div(ng-switch-when='Comment_create')
+          /     %div(ng-include src="'stream_views/comment_create.html'")
+          /   %div(ng-switch-when='Course_enroll')
+          /     %div(ng-include src="'stream_views/course_enroll.html'")
+          /   %div(ng-switch-when='Like_create')
+          /     %div(ng-include src="'stream_views/like_create.html'")
+          /   %div(ng-switch-when='Upload_create')
+          /     %div(ng-include src="'stream_views/upload_create.html'")
+          /   %div(ng-switch-when='Vote_create')
+          /     %div(ng-include src="'stream_views/vote_create.html'")
+        %div.stream-spinner(ng-hide="hideSpinner")
+          %i.icon-spinner.icon-spin.icon-large
+        .stream-more(ng-show="showMoreButton" ng-cloak)
+          / %a.btn.btn-large.btn-block.btn-outline-blue-large(ng-click="loadMore()")
+          /   See More
+          = link_to 'See More', community_activity_path, class: 'btn btn-large btn-block btn-outline-blue-large'
+    .span2
+
+:javascript
+  mixpanel.track('Viewed Signed in Homepage', {'url' : window.location.pathname});

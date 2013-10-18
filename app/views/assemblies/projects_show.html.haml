@@ -1,0 +1,168 @@
+- content_for :title, "#{@project.title.html_safe} - Recipe Project"
+- content_for :description, @project.description != "" ? @project.description.html_safe : @project.title.html_safe
+- content_for :canonical_link, project_url(@project) if @project.id
+- content_for :keywords, @project.assembly_inclusions.map(&:includable).map(&:title).join(',')
+
+- project_inclusions = @project.assembly_inclusions.order('assembly_inclusions.position asc')
+
+.container.project.printable.printable-column
+  %h1= @project.title
+  .row
+    .span12
+      %a.btn.btn-secondary.project-menu-expand{data: {toggle: 'collapse', target: '#project-tabs'}}
+        Project Menu
+      %ul.nav.nav-pills#project-tabs.noprint.nav-collapse.collapse
+        %li.active
+          = link_to '#introduction', data: {toggle: 'tab'} do
+            %span.project-tab-number
+              0.
+            %span.project-tab-title
+              Introduction
+            .project-tab-marker
+        - project_inclusions.each_with_index do |assembly_inclusion,index|
+          %li
+            = link_to "#project-#{index}", data: {toggle: 'tab'} do
+              %span.project-tab-number
+                = "#{index + 1}."
+              %span.project-tab-title
+                = assembly_inclusion.includable.title
+              .project-tab-marker
+        %li
+          = link_to '#upload', data: {toggle: 'tab'} do
+            %span.project-tab-number
+              = "#{@project.assembly_inclusions.count + 1}."
+            %span.project-tab-title
+              = 'Finish the Project'
+            .project-tab-marker
+      .tab-content
+        .tab-pane.active#introduction
+          .row
+            .span8.force-aspect-wrapper
+              .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+                - if @project.youtube_id?
+                  %iframe(frameborder='0' allowfullscreen){src: youtube_url(@project.youtube_id)}
+                - elsif @project.image_id?
+                  = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title, itemprop: 'image'
+              .project-social.noprint(ng-controller="NonAngularSocialController" ng-init="title='#{@project.title}'; url='#{project_url(@project)}'; media='#{filepicker_hero_image(@project.featured_image)}'")
+                = render 'layouts/social_buttons', media_object: @project, url: project_url(@project)
+              .row.section
+                .span4
+                  .section.text-right.noprint
+                    %h2 #{@project.title}:
+                    %ul.unstyled
+                      - project_inclusions.each_with_index do |assembly_inclusion,index|
+                        %li
+                          = link_to assembly_inclusion.includable.title, "javascript:void(0);", onclick: "jumpToProjectTab(#{index + 1})"
+                .span4
+                  .section.project-description.noprint
+                    :markdown
+                      #{apply_shortcodes(@project.description)}
+                  .section
+                    = link_to 'Get Started', '#start', class: 'btn btn-large btn-primary input-block-level', id: 'start-project'
+
+              / %div(ng-controller='CommentsController' ng-init="init('assemblies','#{@project.id}')" ng-cloak)
+              /   %h3 Comments
+              /   = render 'comments/comments'
+
+            .span4
+              .btn.btn-secondary{onclick: 'window.print()'}
+                %i.icon-print
+                print
+              %h4 All Ingredients
+              / = link_to 'Text me this list', '#', class: 'btn btn-secondary'
+              .activity-ingredients-list.well#full-ingredients-list{data: {target: ''}}
+                .ingredients{:itemprop => "ingredients"}
+                  .ingredient-table-body
+                    - @project.combined_ingredients.sort_by{|i|i[1]}.sort_by{|i|i[2]}.reverse.each do |combined_ingredient|
+                      .ingredient-table-row{data: {:'ingredient-id' => combined_ingredient[0][0].id}}
+                        .ingredient-title
+                          .pull-left
+                            = combined_ingredient[0][0].title
+                        .quantity-group.qtyfade
+                          .lbs-qty
+                          .lbs-label
+                          .main-qty{data: {:"orig-value" => combined_ingredient[1] * ((combined_ingredient[2] == "kg") ? 1000 : 1)}}
+                            = '%g' % combined_ingredient[1]
+                        .unit.qtyfade= combined_ingredient[2]
+              %h4 Required Equipment
+              %ul.unstyled.well
+                - @project.required_equipment.each do |equipment_item|
+                  - if equipment_item.product_url?
+                    %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
+                  - else
+                    %li= equipment_item.title
+
+              %h4 Optional Equipment
+              %ul.unstyled.well
+                - @project.optional_equipment.each do |equipment_item|
+                  - if equipment_item.product_url?
+                    %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
+                  - else
+                    %li= equipment_item.title
+          %hr
+          .row-fluid.section.noprint
+            .span4.text-left
+            .span4.text-center
+              %h3 Introduction
+            .span4.text-right
+              = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(1)"
+                       
+        - project_inclusions.each_with_index do |assembly_inclusion, index|
+          .tab-pane{id: "project-#{index}"}
+            %h2.printonly
+              = assembly_inclusion.includable.title
+            - if assembly_inclusion.includable.layout_name && ! assembly_inclusion.includable.layout_name.blank?
+              = render "/shared/activity_layouts/#{assembly_inclusion.includable.layout_name}", activity: assembly_inclusion.includable
+            - else
+              = render '/shared/activity', activity: assembly_inclusion.includable
+            %hr
+            .row-fluid.section.noprint
+              .span4.text-left
+                = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{index})"
+              .span4.text-center
+                %h3= assembly_inclusion.includable.title
+              .span4.text-right
+                = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{index + 2})"
+        .tab-pane#upload.noprint
+          .row
+            .span6
+              %p.lead You're done! Show your progress or final dish, plating or you and your friends enjoying the dish, and share it proudly. Let us know if you had difficulty, made tweaks, how it tasted, or more generally what your experience cooking this dish were like. You'll get the Salmon 104 badge, too!
+            .span6
+              .flat-form
+                = form_for @upload do |f|
+                  = f.hidden_field :assembly_id, value: @project.id
+                  .row-fluid
+                    .span4
+                      %h4 Upload a Photo
+                      .upload-wrapper
+                        = image_tag '/assets/missing.png', class: "upload-photo-preview"
+                        = link_to '+', '#', class: 'upload-photo-btn'
+                        %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
+                    .span8
+                      %h4 Title
+                      %p= f.text_field :title, class: 'input-block-level', required: true
+                      %h4 Notes
+                      %p= f.text_area :notes, rows: 3, class: 'input-block-level', required: true
+                      = f.submit 'Upload', class: 'btn btn-primary btn-large'
+          .row
+            .span12
+              - if @project.uploads.any?
+                .horizontal-slider{data: {direction: 'right'}}
+                  .horizontal-slider-wrap
+                    - @project.uploads.includes(:user).approved.order('created_at DESC').each do |upload|
+                      = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+                  %div{class: "horizontal-slider-btn-right btn btn-circle"}
+                    %i{class: "icon-chevron-right"}
+                  %div{class: "horizontal-slider-shadow-overlay-right"}
+          %hr
+          .row-fluid.section
+            .span4.text-left
+              = link_to 'Previous', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(#{project_inclusions.count})"
+            .span4.text-center
+              %h3 Finish the Project
+            .span4.text-right
+
+= render 'layouts/filepicker'
+
+= content_for :footer do
+  = render 'layouts/footer'

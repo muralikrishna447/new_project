@@ -9,11 +9,12 @@ class Course < ActiveRecord::Base
 
   scope :ordered, rank(:course_order)
 
-  attr_accessible :description, :title, :short_description, :slug, :course_order, :image_id, :additional_script
+  attr_accessible :description, :title, :short_description, :slug, :course_order, :image_id, :additional_script, :youtube_id
 
   has_many :inclusions, :dependent => :destroy, :order => 'activity_order ASC'
   has_many :activities, :through => :inclusions, :order => 'inclusions.activity_order ASC'
-  has_many :enrollments
+  # has_many :enrollments
+  has_many :enrollments, as: :enrollable
   has_many :users, through: :enrollments
   has_many :uploads
 

@@ -1,18 +1,21 @@
 %div(collapse="editMode")
   - if ! @minimal
-    .pull-left
-      .btn.btn-secondary{onclick: 'window.print()'}
-        Print
-      .btn.btn-secondary#show-all
-        Show All
-        %i.icon-picture#show-all-icon
-    -if can?(:update, Activity) && @include_edit_toolbar
+    .activity-top-buttons
+      .pull-left
+        .btn.btn-secondary{onclick: 'window.print()'}
+          Print
+        .btn.btn-secondary#show-all
+          Show All
+          %i.icon-picture#show-all-icon
       .pull-right(style="margin-left: 20px;")
 
-        %button#edit-mode.btn.btn-primary(type='button' ng-click="maybeStartEditMode()" tooltip="Edit this recipe" tooltip-placement="left")
-          Edit
-        %button#edit-mode.btn.btn-primary(type='button' ng-click="fork()" tooltip="Edit a copy of this recipe" tooltip-placement="left")
-          Fork
+        -if can?(:update, @activity) && @include_edit_toolbar
+          .btn.btn-secondary(ng-click="maybeStartEditMode()" tooltip="Edit this recipe" tooltip-placement="left")
+            Edit
+
+        -if can?(:update, Activity) && @include_edit_toolbar
+          .btn.btn-secondary(ng-click="fork()" tooltip="Edit a copy of this recipe" tooltip-placement="left")
+            Fork
 
 %div.pull-right(collapse="!editMode")
   .btn-toolbar

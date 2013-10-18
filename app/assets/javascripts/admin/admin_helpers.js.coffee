@@ -204,11 +204,9 @@ updateDiff = ->
   )
 
 
-
 # Delay a little so angular can load. Tacky.
 scheduleDiff = ->
   setTimeout (-> updateDiff()), 1000
-
 
 
 $ ->

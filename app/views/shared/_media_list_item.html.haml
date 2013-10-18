@@ -1,6 +1,10 @@
 .media-list-item
   .media-list-item-image
-    = image_tag filepicker_gallery_image(image)
+    -if image
+      = image_tag filepicker_gallery_image(image)
+    -else
+      = image_tag "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
+
   .media-list-item-text
     .media-list-item-title
       %h4= title
