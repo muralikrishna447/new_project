@@ -15,7 +15,7 @@
   @include transition(color 200ms)
   img
     width: 100%
-    margin-bottom: 10px
+    margin-bottom: $baseline
   a
     color: black
     @include transition(color 200ms)
@@ -56,7 +56,7 @@
 
 .media-box-medium
   width: 300px
-  height: 208px
+  height: $baseline * 19
   //margin-left: 10px
   //margin-right: 10px
   // margin: 20px
@@ -73,7 +73,7 @@
   background: white
   text-align: center
   font-weight: bold
-  margin-bottom: 20px
+  margin-bottom: $baseline * 2
   color: black
   -webkit-transition: background 200ms, border-color 200ms
   -moz-transition: background 200ms, border-color 200ms
@@ -119,7 +119,7 @@
     color: #333333
     @include transition(all 300ms)
     .media-box-3-title
-      @include gotham-bold
+      @include primary-font-bold
       font-size: 15px
       text-transform: uppercase
       height: 20px

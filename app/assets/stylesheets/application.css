@@ -48,5 +48,7 @@
  *= require cs_lightbox
  *= require charge_form
  *= require application/assemblies/pre_registration
+ *= require typography
  *= require about
+
  */

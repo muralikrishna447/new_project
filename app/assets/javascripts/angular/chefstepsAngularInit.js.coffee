@@ -1,6 +1,6 @@
 # Angular.js stuff. This can't wait til after page load, it needs to happen in the <head>
 
-angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments"], ["$locationProvider", ($locationProvider) ->
+angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
   # Don't make this true!! It will break every link on the page that isn't to
   # an angular known url. The addr bar changes but content doesn't load.
   # See https://groups.google.com/forum/#!topic/angular/cUjy9PEDeWE .
@@ -8,6 +8,14 @@ angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorag
   # but it was easier to workaround as seen in ActivityController
   $locationProvider.html5Mode(false)
   $locationProvider.hashPrefix()
+
+  $routeProvider.when(
+    "/:slug",
+    {
+        action: "slugChange"
+    }
+  )
+  
 ]
 
 # Thank god for Stack Overflow!

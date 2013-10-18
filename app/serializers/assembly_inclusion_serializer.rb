@@ -10,9 +10,10 @@ class AssemblyInclusionSerializer < ActiveModel::Serializer
     object.includable.slug
   end
 
-  # This picks up the recursive tree of associations
+  # This picks up the recursive tree of associations, and also page controller content.
+  # Might not be a bad idea at all to just send activities too, it isn't like it is a lot of data.
   def include_associations!
-    include! :includable if object.includable_type == "Assembly"
+    include! :includable if ["Assembly", "Page"].include?(object.includable_type)
   end
 
 end
