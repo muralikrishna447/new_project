@@ -136,7 +136,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   addUploadToEnd = ->
     # Special treatment for upload - put it at end of syllabus or end of last group
     dummy_upload = {"includable_id" : "Upload", "includable_type" : "Upload", "includable_title" : "Upload Your Own", "includable_slug" : "upload"}
-    last_inclusion = $scope.course.assembly_inclusions[$scope.course.assembly_inclusions.length - 1]
+    last_inclusion = $scope.course.assembly_inclusions[$scope.course.assembly_inclusions.length - 2]
     if last_inclusion.includable_type == "Assembly"
       last_inclusion.includable.assembly_inclusions.push(dummy_upload)
     else
