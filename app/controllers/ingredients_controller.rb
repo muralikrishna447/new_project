@@ -4,7 +4,10 @@ class IngredientsController < ApplicationController
   has_scope :include_sub_activities, default: "false" do |controller, scope, value|
     value == "false" ? scope.no_sub_activities : scope
   end
-  has_scope :search_title
+
+  has_scope :search_title do |controller, scope, value|
+    controller.params[:exact_match] == "true" ? scope.exact_search(value) : scope.search_title(value)
+  end
 
   def index
     respond_to do |format|

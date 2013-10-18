@@ -1,13 +1,15 @@
 - content_for :title, "Ingredients"
 - content_for :description, "Batch edit ingredients"
 
-.ingredient-index-container.container.relative(ng-controller="IngredientsIndexController" infinite-scroll="loadIngredients()" infinite-scroll-distance="3" ng-cloak)
+.admin-table.container.relative(ng-controller="IngredientsIndexController" infinite-scroll="loadIngredients()" infinite-scroll-distance="3" ng-cloak)
 
   .navbar.navbar-fixed-top
     .navbar-inner
       .container
         .form-horizontal
           %input.search-query(type="search" placeholder="Ingredient name..." ng-model="searchString")
+          %button.btn#exact-match(btn-checkbox type="button" ng-model="exactMatch" ng-click="refreshIngredients()")
+            %i.icon-asterisk(tooltip="Exact Match Only")
           .btn-toolbar
             .btn-group
               %button.btn(ng-model="includeRecipes" btn-checkbox type="button")
@@ -30,7 +32,7 @@
         {{alert.message}}
 
   .row.grid
-    .ingredient-index.span12(ng-grid="gridOptions")
+    .table-index.span12(ng-grid="gridOptions")
 
 
   -# This modal and the following ones would be a good use for ui-router, but I'm annoyed that they don't have a

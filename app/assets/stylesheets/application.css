@@ -19,8 +19,7 @@
  *= require application/assemblies/course_assembly
  *= require application/_dials
  *= require application/_checkboxes
- *= require ingredients_index
- *= require equipment
+ *= require admin_table
  *= require mobile
  *= require diffview
  *= require media_objects
