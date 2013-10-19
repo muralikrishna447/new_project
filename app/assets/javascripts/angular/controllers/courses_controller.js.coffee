@@ -49,15 +49,14 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     # Shouldn't happen
     return if includable_type == "Assembly"
 
-    # Title tag
-    document.title = $scope.currentIncludable.includable_title + ' - ' + $scope.course.title + ' Class - ChefSteps'
-
     # Keep route sync'ed up if changing not from an anchor
     newPath = "/" + $scope.currentIncludable.includable_slug
     $location.path(newPath) if $location.path() != newPath
 
+    # Title tag
+    document.title = $scope.currentIncludable.includable_title + ' - ' + $scope.course.title + ' Class - ChefSteps'
 
-    console.log "switching to " + includable_type + 'with id ' + includable_id
+    console.log "switching to " + includable_type + ' with id ' + includable_id
     switch includable_type
       when 'Upload'
         $scope.view_inclusion = 'Upload'
@@ -65,20 +64,15 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         $scope.view_inclusion = includable_type
         $scope.view_inclusion_id = includable_id
         if includable_type == "Activity"
-          console.log 'Broadcasting'
           $rootScope.$broadcast("loadActivityEvent", includable_id)
-          console.log 'Done Broadcasting'
 
-          # I couldn't get this to work, so for now if you set "include_disqus" on more than one activity in a
-          # course, they will all share the same comments. Sucks, but ok for our current use case. 
-          # Maybe disqus is looking at window.location, not
-          # the @page.url I'm passing it, in which case it will work once deep linking is really there.
+          # Update to correct disqus view
           if $scope.currentIncludable.include_disqus
             DISQUS.reset
               reload: true
               config: ->
-                @page.identifier = "course-activity-" + includable_id
-                @page.url = "http://chefsteps.com/courses/#{$scope.course.id}#!/#{$scope.currentIncludable.includable_id}"
+                @page.identifier = "class-activity-" + includable_type + "-" + includable_id
+                @page.url = "http://chefsteps.com/classes/#{$scope.course.id}#!/#{$scope.currentIncludable.includable_slug}"
     $scope.showCourseMenu = false
 
     # So sue me
@@ -134,11 +128,9 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       true
 
   addUploadToEnd = ->
-    # Special treatment for upload - put it at end of syllabus or end of last group
+    # Special treatment for upload - put it at end of last group
     dummy_upload = {"includable_id" : "Upload", "includable_type" : "Upload", "includable_title" : "Upload Your Own", "includable_slug" : "upload"}
-    last_inclusion = $scope.course.assembly_inclusions[$scope.course.assembly_inclusions.length - 1]
-    if last_inclusion.includable_type == "Assembly"
-      last_inclusion.includable.assembly_inclusions.push(dummy_upload)
-    else
-      $scope.course.assembly_inclusions.push()
+    last_group = _.last(_.where($scope.course.assembly_inclusions, {includable_type: "Assembly"}))
+    last_group.includable.assembly_inclusions.push(dummy_upload)
+
 ]

@@ -34,6 +34,7 @@
     .course-content-wrapper
       .container-fluid
         .row-fluid
+
           .span12.relative.course-content.printable(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
             %div(ng-switch on='view_inclusion')
               %div(ng-switch-when="Quiz")
@@ -52,6 +53,9 @@
  
               %div(ng-switch-when='Upload')
                 = render 'assembly_upload', assembly: @course
+
+              %div(ng-switch-when='Page')
+                = render 'assembly_page'
 
         .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .span12
