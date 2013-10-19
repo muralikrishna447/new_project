@@ -93,7 +93,8 @@
             %li= "#{@course.video_count} HD Videos"
             -# Pulling this because it lessons doesn't sound right when some parts are recipes etc.
             -# %li= "#{@course.assembly_inclusions.count} Lessons"
-            %li Q&A from the chefs
+            %li Three Fundamental Fillings Explained
+            %li Q&A Support
           %h4 100% satisfaction guaranteed or your money back
 
         .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
