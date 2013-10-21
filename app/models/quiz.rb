@@ -62,7 +62,6 @@ class Quiz < ActiveRecord::Base
   def destroy_answers_for(user)
     questions.each do |question|
       answer = question.answer_for(user)
-      puts "Destroying: " + answer.inspect
       answer.destroy
     end
   end
