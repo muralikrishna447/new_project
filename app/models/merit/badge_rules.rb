@@ -57,8 +57,9 @@ module Merit
       grant_on 'uploads#create', :badge => 'macaron' do |upload|
         assembly = upload.assembly
         user = upload.user
+        quiz = Quiz.find(16)
         if assembly.present?
-          assembly.title == 'French Macarons'
+          assembly.title == 'French Macarons' && user.completed_quiz(quiz)
         else
           false
         end

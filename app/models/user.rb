@@ -138,5 +138,9 @@ class User < ActiveRecord::Base
   def completed_course?(course)
     self.badges.include?(course.badge)
   end
+
+  def completed_quiz(quiz)
+    self.quizzes.completed.where(quiz_id: quiz.id).any?
+  end
 end
 
