@@ -1,6 +1,6 @@
 
 
-angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', '$route', '$routeParams', '$location', ($rootScope, $scope, $resource, $http, $route, $routeParams, $location) ->
+angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', '$route', '$routeParams', '$location', "$timeout", ($rootScope, $scope, $resource, $http, $route, $routeParams, $location, $timeout) ->
 
 
   $scope.routeParams = $routeParams
@@ -77,6 +77,16 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
 
     # So sue me
     window.scrollTo(0, 0)
+
+    # Absolutely insane fix to https://www.pivotaltracker.com/story/show/59025778
+    # Vaguely inspired by http://mir.aculo.us/2009/01/11/little-javascript-hints-episode-3-force-redraw/, though
+    # the actualy fix there didn't work for me. This bug was manifesting only on mobile webkit, and was clearly a redraw
+    # issue because you could inspect the DOM and see the right content. It was only showing up doing prev/next into
+    # or out of a quiz, so it probably has something to do with the iframe on those pages. Anyhow this seems to fix it.
+    $timeout ->
+      $('.prev-next-group').hide()
+      $timeout ->
+        $('.prev-next-group').show()
 
   $scope.overrideLoadActivity = (id) ->
     if _.find($scope.flatInclusions, (incl) -> incl.includable_id == id)
