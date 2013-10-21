@@ -142,5 +142,13 @@ class User < ActiveRecord::Base
   def completed_quiz(quiz)
     self.quizzes.completed.where(quiz_id: quiz.id).any?
   end
+
+  def last_viewed_activity_in_assembly(assembly)
+    child_ids = assembly.leaf_activities.map(&:id)
+    last_activity = self.events.where(group_type: 'activity_show').where(trackable_id: child_ids).last
+    if last_activity
+      last_activity.trackable
+    end
+  end
 end
 
