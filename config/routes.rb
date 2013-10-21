@@ -107,6 +107,7 @@ Delve::Application.routes.draw do
       post 'start' => 'quizzes#start'
       post 'finish' => 'quizzes#finish'
       get 'results' => 'quizzes#results'
+      get 'retake' => 'quizzes#retake'
     end
   end
 
