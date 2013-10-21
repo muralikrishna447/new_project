@@ -245,5 +245,11 @@ module ApplicationHelper
     request.env["HTTP_REFERER"] && URI.parse(request.env["HTTP_REFERER"])
   end
 
+  def class_activity_path(assembly, activity)
+    if assembly && activity
+      "/classes/#{assembly.slug}/##{activity.slug}"
+    end
+  end
+
 end
 
