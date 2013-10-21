@@ -3,7 +3,7 @@
   %div(ng-show="enrolled")
     .main-cta
       %div(ng-hide='completed')
-        %a.btn.btn-primary.btn-large.input-block-level(ng-href="{{lastViewedActivity}}")
+        %a.btn.btn-primary.btn-large.input-block-level(ng-href="{{lastViewedActivity || assemblyPath}}")
           %span Continue Class
 
       %div(ng-show='completed')
