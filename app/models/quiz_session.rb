@@ -4,5 +4,7 @@ class QuizSession < ActiveRecord::Base
 
   attr_accessible :quiz_id, :user_id, :completed
 
+  scope :completed, where(completed: true)
+
 end
 
