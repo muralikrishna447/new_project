@@ -10,7 +10,7 @@
   -webkit-transform: translateZ(0)
   -webkit-backface-visibility: hidden
   position: fixed
-  z-index: 9999
+  z-index: 1000
   margin-left: -28px
   color: $orange
   font-size: 24px
@@ -405,3 +405,19 @@
     display: none
   .course-nav-slideout.menu-slideout
     display: block
+
+@media (max-width: 480px)
+  .assembly-upload-modal
+    position: absolute
+    top: 0px
+    left: 0px
+    margin: -20px
+    @include boxsizing
+    .modal-body
+      max-height: none
+      @include boxsizing
+    .modal-footer
+      width: 100%
+      bottom: 0px
+      border-radius: 0px
+      @include boxsizing

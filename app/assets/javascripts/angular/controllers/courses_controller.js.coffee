@@ -132,5 +132,4 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     dummy_upload = {"includable_id" : "Upload", "includable_type" : "Upload", "includable_title" : "Upload Your Own", "includable_slug" : "upload"}
     last_group = _.last(_.where($scope.course.assembly_inclusions, {includable_type: "Assembly"}))
     last_group.includable.assembly_inclusions.push(dummy_upload)
-
 ]
