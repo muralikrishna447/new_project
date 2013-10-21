@@ -12,11 +12,10 @@
         %input.input-block-level(type='text' ng-model='upload.title' required)
 
         %h3 Story
-        %p Tell us a story about your success, failures, variations and creations.  What worked and what didn't work?  What did you change to suit your palate or your dietary restrictions?
+        %p Tell us a story about your successes, failures, variations, and creations. What worked and didn't work? What did you change?
         %textarea.input-block-level(ng-model='upload.notes' required)
 
         %h3 Add a photo
-        %p Click the button below to show a picture along with your creation.
         %p
           %div(ng-switch='upload.image_src.length > 0')
             %div(ng-switch-when="true")

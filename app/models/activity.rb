@@ -419,7 +419,7 @@ class Activity < ActiveRecord::Base
     # This only walks up one chain of parents, but an activity or assembly can really
     # be in more than one parent. Will have to be fixed as soon as we are reusing an activity
     # in more than one course. This is also a very expensive way to do this, but
-    # we don't expect it to be a very common request.
+    # we don't expect it to be a very common request. At least there is an index.
     parent = AssemblyInclusion.where(includable_type: "Activity", includable_id: self.id).first.assembly
    
     begin

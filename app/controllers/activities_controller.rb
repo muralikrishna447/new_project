@@ -75,8 +75,14 @@ class ActivitiesController < ApplicationController
           track_event @activity
           return
         else
+          # Old school course
           if @activity.courses.any? && @activity.courses.first.published?
             flash.now[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
+          end
+          # New school class
+          containing_class = @activity.containing_course
+          if containing_class && containing_class.published?
+            flash.now[:notice] = "This is part of the #{view_context.link_to containing_class.title, landing_class_path(containing_class)} class."
           end
           track_event @activity
         end
