@@ -29,4 +29,3 @@
 //= require angular-payments
 //= require hammer
 //= require navigation
-//= require course_landing

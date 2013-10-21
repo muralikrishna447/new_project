@@ -12,43 +12,21 @@
           - else
             %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
 
-.container.assembly-course-landing
+.container.assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
   .row
     .span8
-
       %ul.nav.nav-tabs.underline.landing-tab-menu
-        %li.active
-          = link_to 'Overview', '#overview', data: {toggle: 'tab'}
-        - if @course.faq
-          %li
-            = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
-        - if @course.ingredients_equipment
-          %li
-            = link_to 'Ingredients / Equipment', '#ingredients-equipment', data: {toggle: 'tab'}
-        - if @course.testimonials
-          %li
-            = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
-
+        = render 'landing_page_tab_links'
       %ul.nav
         %li.dropdown.landing-tab-dropdown
-          %a.dropdown-toggle#landingTabLabel(role="button" data-toggle="dropdown" href="#")
-            %span#landingTabLabelText Overview
+          %a.dropdown-toggle(ng-click="showDropdown = ! showDropdown")
+            %span {{tabTitle}}
             %b.caret
-          %ul.dropdown-menu(role="menu" aria-labelledby="landingTabLabel")
-            %li.active
-              = link_to 'Overview', '#overview', data: {toggle: 'tab'}
-            - if @course.faq
-              %li
-                = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
-            - if @course.ingredients_equipment
-              %li
-                = link_to 'Ingredients / Equipment', '#ingredients-equipment', data: {toggle: 'tab'}
-            - if @course.testimonials
-              %li
-                = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
+          %ul.dropdown-menu(ng-show="showDropdown")
+            = render 'landing_page_tab_links'
 
       .tab-content
-        .tab-pane.active#overview
+        %div(ng-show="tab=='default'")
           .two-columns
             :markdown
               #{apply_shortcodes(@course.description)}
@@ -66,17 +44,17 @@
 
 
         - if @course.faq    
-          .tab-pane#faq
+          %div(ng-show="tab=='faq'")
             :markdown
               #{apply_shortcodes(@course.faq.content)}
 
         - if @course.ingredients_equipment    
-          .tab-pane#ingredients-equipment
+          %div(ng-show="tab=='ingredients-equipment'")
             :markdown
               #{apply_shortcodes(@course.ingredients_equipment.content)}
 
         - if @course.testimonials 
-          .tab-pane#testimonials
+          %div(ng-show="tab=='testimonials'")
             :markdown
               #{apply_shortcodes(@course.testimonials.content)}
 
