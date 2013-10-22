@@ -11,5 +11,5 @@
       %small
         {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
   .stream-item-image
-    %a(ng-href="{{stream.trackable.enrollment.enrollable.featured_image}}" onclick='track_viewed_item_through_stream();')
+    %a(ng-href="{{stream.trackable.enrollment.enrollable.path}}" onclick='track_viewed_item_through_stream();')
       %img(ng-src="{{mediaObjectImageUrl(stream.trackable.enrollment.enrollable.featured_image)}}")
