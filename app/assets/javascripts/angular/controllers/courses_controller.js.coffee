@@ -92,11 +92,11 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       return
 
     # Update to correct disqus view
-    if $scope.current_includable?.include_disqus
+    if $scope.currentIncludable?.include_disqus
       DISQUS.reset
         reload: true
         config: ->
-          @page.identifier = "class-activity-" + $scope.current_includable.includable_type + "-" + $scope.current_includable.includable_id
+          @page.identifier = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
           @page.url = "http://chefsteps.com/classes/#{$scope.course.id}#!/#{$scope.currentIncludable.includable_slug}"
 
   $scope.overrideLoadActivity = (id) ->
