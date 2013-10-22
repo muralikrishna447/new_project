@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  actions :all, except: [:edit, :destroy]
+  actions :all, except: [:destroy]
   menu parent: 'More'
 
   action_item only: [:show] do
