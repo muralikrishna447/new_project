@@ -36,3 +36,9 @@
           - user.created_activities.each do |activity|
             %li
               = link_to  activity.title, activity_path(activity)
+      %dt Enrolled Classes 
+      %dd
+        %ol
+          - user.enrollments.each do |course|
+            %li
+              = course.enrollable.title
