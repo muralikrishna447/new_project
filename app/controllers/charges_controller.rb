@@ -46,7 +46,9 @@ class ChargesController < ApplicationController
     # Kinda unclear what we should do here if we succesfully charged their card but 
     # then saving the enrollment fails. Shouldn't happen though... famous last words.
     @enrollment = Enrollment.new(user_id: current_user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
-    @enrollment.save!
+    if @enrollment.save!
+      track_event @enrollment
+    end
 
     head :no_content
   end
