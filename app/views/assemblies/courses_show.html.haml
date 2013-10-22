@@ -12,7 +12,7 @@
       .hamburger-bar
       .hamburger-bar
       .hamburger-bar
-         
+
     / .course-nav-slideout.cs-affix(ng-class="{'menu-slideout': showCourseMenu}" data-offset-top='56' data-margin-top='0')
     .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}" affixable="56")
       %h4.lessons-heading
@@ -60,7 +60,6 @@
         .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .span12
             -# Starts with a disqus id for course but for activities will get replaced using DISQUS.reset
-            -# Just kidding, couldn't get DISQUS.reset to work :(
             = render 'layouts/disqus_comments', disqus_id: "assembly-course-#{@course.id}", disqus_title:@course.title, disqus_url: course_url(@course)
 
 

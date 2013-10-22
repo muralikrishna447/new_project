@@ -65,14 +65,8 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         $scope.view_inclusion_id = includable_id
         if includable_type == "Activity"
           $rootScope.$broadcast("loadActivityEvent", includable_id)
+          $scope.updateDisqus()
 
-          # Update to correct disqus view
-          if $scope.currentIncludable.include_disqus
-            DISQUS.reset
-              reload: true
-              config: ->
-                @page.identifier = "class-activity-" + includable_type + "-" + includable_id
-                @page.url = "http://chefsteps.com/classes/#{$scope.course.id}#!/#{$scope.currentIncludable.includable_slug}"
     $scope.showCourseMenu = false
 
     # So sue me
@@ -87,6 +81,23 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $('.prev-next-group').hide()
       $timeout ->
         $('.prev-next-group').show()
+
+  $scope.updateDisqus = ->
+    # Super gross. Was running into an issue where this could get called before DISQUS was loaded, fail, and
+    # leave the user commenting on a bogus thread.
+    if ! DISQUS?
+      $timeout (->
+        $scope.updateDisqus()
+      ), 500
+      return
+
+    # Update to correct disqus view
+    if $scope.currentIncludable.include_disqus
+      DISQUS.reset
+        reload: true
+        config: ->
+          @page.identifier = "class-activity-" + $scope.current_includable.includable_type + "-" + $scope.current_includable.includable_id
+          @page.url = "http://chefsteps.com/classes/#{$scope.course.id}#!/#{$scope.currentIncludable.includable_slug}"
 
   $scope.overrideLoadActivity = (id) ->
     if _.find($scope.flatInclusions, (incl) -> incl.includable_id == id)
