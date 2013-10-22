@@ -55,8 +55,8 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @techniques = Activity.published.chefsteps_generated.techniques.includes(:steps).last(6)
-        @recipes = Activity.published.chefsteps_generated.recipes.includes(:steps).last(6)
+        @techniques = Activity.published.chefsteps_generated.really_include_in_gallery.techniques.includes(:steps).last(6)
+        @recipes = Activity.published.chefsteps_generated.really_include_in_gallery.recipes.includes(:steps).last(6)
 
         if params[:course_id]
           @course = Course.find(params[:course_id])
