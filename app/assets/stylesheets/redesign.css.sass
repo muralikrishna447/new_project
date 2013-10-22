@@ -342,6 +342,12 @@ a:hover
   -o-column-gap: 30px
   min-height: auto
   margin-bottom: $baseline * 2
+  p
+    display: inline-block
+    -webkit-column-break-inside: avoid
+    -moz-column-break-inside: avoid
+    -o-column-break-inside: avoid
+    column-break-inside: avoid
 
 .media-centered
   position: relative
