@@ -92,7 +92,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       return
 
     # Update to correct disqus view
-    if $scope.currentIncludable.include_disqus
+    if $scope.current_includable?.include_disqus
       DISQUS.reset
         reload: true
         config: ->
