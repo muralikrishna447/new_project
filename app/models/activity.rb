@@ -421,14 +421,16 @@ class Activity < ActiveRecord::Base
     # in more than one course. This is also a very expensive way to do this, but
     # we don't expect it to be a very common request. At least there is an index.
     ai = AssemblyInclusion.where(includable_type: "Activity", includable_id: self.id).first
-    return nil if ! ai
-    
     parent = ai.assembly
    
     begin
       return parent if parent.assembly_type == "Course"
-      parent = AssemblyInclusion.where(includable_type: "Assembly", includable_id: parent.id).first.assembly
+      ai = AssemblyInclusion.where(includable_type: "Assembly", includable_id: parent.id).first
+      parent = ai.assembly
     end until ! parent
+    nil
+  rescue
+    # Rather than a lot of null checks.
     nil
   end
 
