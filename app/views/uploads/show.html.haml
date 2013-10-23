@@ -9,22 +9,24 @@
       %h2= @upload.title
   .row
     .span6
-      = image_tag filepicker_hero_image(@upload.image_id)
+      .section
+        = image_tag filepicker_hero_image(@upload.image_id)
       .lead.section
-        = @upload.notes
-        %hr
+        %p= @upload.notes
         - if @upload.course && @upload.course.title == 'Spherification'
+          %hr
           .row
             .span3.offset1.section.text-center{:style => "padding: 20px; border: 1px solid  #e25f25;"}
               = link_to course_path('spherification', anchor: 'enthusiast') do
                 = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/AE4undUwRLqq9l69DVIV'
         - if @upload.course && @upload.course.title == 'Knife Sharpening'
+          
           .row
             .span6
               - ab_test('knife ads', 'https://d3awvtnmmsvyot.cloudfront.net/api/file/4Koc6GmGSRCLx3PC2GQs?v=photo', 'https://d3awvtnmmsvyot.cloudfront.net/api/file/pqG9DbiQTwyNYXuSl45U?v=line') do |knife_ad|
                 = link_to image_tag(knife_ad), knife_collection_path
     .span6
-      .lead
+      %p.lead
         - if @upload.course
           = "#{link_to @upload.user.name, user_profile_path(@upload.user)} shared this while completing the #{link_to @upload.course.title, @upload.course} Course on #{link_to 'ChefSteps', 'http://www.chefsteps.com'}.".html_safe
         - elsif @upload.assembly
