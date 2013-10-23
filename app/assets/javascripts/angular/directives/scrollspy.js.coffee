@@ -55,9 +55,6 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
 
     $($window).scroll ->
       scope.updateSpies()
-
-    $($window).hammer().on 'drag', (e) ->
-      scope.updateSpies()
 ]
 
 
