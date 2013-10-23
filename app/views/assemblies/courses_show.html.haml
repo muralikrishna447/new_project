@@ -3,8 +3,8 @@
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
-.controller(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak )
-  .container.course-assembly-container
+.controller(ng-controller='CoursesController' ng-init="init(#{@course.id})")
+  .container.course-assembly-container(ng-cloak)
 
     / .course-nav-hamburger.cs-affix(ng-click="showCourseMenu = ! showCourseMenu" data-offset-top='56' data-margin-top='10')
     .course-nav-hamburger(ng-click="toggleShowCourseMenu()" affixable="56")
@@ -76,10 +76,11 @@
                       NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
 
-    .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
-      .activity-loading-spinner
-        .span12
-          %i.icon-spinner.icon-spin
+  .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
+    .activity-loading-spinner
+      .span12
+        / %i.icon-spinner.icon-spin
+        = image_tag 'page-load.gif'
 
   .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
     = render 'layouts/footer'
