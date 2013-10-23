@@ -8,10 +8,11 @@
     .span12
       %h1.text-orange Check out our courses with more to come
   .row.section
-    - if @courses.any?
-      - @courses.each do |course|
+    - if @classes.any?
+      - @classes.each do |assembly_class|
+        - url = assembly_class.class.to_s == 'Assembly' ? landing_class_path(assembly_class) : course_path(assembly_class)
         .span4
-          = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.featured_image, object: course
+          = render 'shared/media_box_2', url: url, title: assembly_class.title, image: assembly_class.featured_image, object: assembly_class
       .span12.text-center
         %p.lead 
           %br
