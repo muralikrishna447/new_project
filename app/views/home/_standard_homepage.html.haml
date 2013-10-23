@@ -12,12 +12,11 @@
       - @courses.each do |course|
         .span4
           = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.featured_image, object: course
-      .span12.text-center
+      .span10.offset1
         %p.lead 
           %br
-          %strong With Award-Winning Chefs to Help You Succeed
-          %br
-          The James Beard award-winning culinary team at ChefSteps, along with its active global community of both novice and experienced cooks, will help you become more confident and creative in the kitchen.
+          %h4 With Award-Winning Chefs to Help You Succeed
+          %p.lead The James Beard award-winning culinary team at ChefSteps, along with its active global community of both novice and experienced cooks, will help you become more confident and creative in the kitchen.
 
 .container-fluid.well-gradient
   .row-fluid
@@ -29,10 +28,9 @@
       .row.section-large
         .span6
           = link_to gallery_index_url(activity_type: "Recipe") do
-            .lead
-              %strong Learn a New Recipe
-              .lead.black-link
-                ChefSteps is loaded with reliable original recipes, developed by our culinary team. Unlike other online recipes, ours are demonstrated through beautiful videos and pictures with clearly written explanations.
+            %h4 Learn a New Recipe
+            %p.lead.black-link
+              ChefSteps is loaded with reliable original recipes, developed by our culinary team. Unlike other online recipes, ours are demonstrated through beautiful videos and pictures with clearly written explanations.
 
         .span6
           = render 'shared/horizontal_slider', items: @recipes, direction: 'right'
@@ -43,16 +41,16 @@
         .span6
           = link_to gallery_index_url(activity_type: "Technique") do
             .lead
-              %strong Perfect a New Technique
-              .lead.black-link
+              %h4 Perfect a New Technique
+              %p.lead.black-link
                 Until now, learning cutting-edge modernist cooking techniques— as well as many classic techniques—has been a haphazard process. ChefSteps offers step-by-step demonstrations that will enable you to create your own original recipes, improvise amazing meals for family and friends, or simply cook and eat better food every day.
 
       .row.section-large
         .span6
           = link_to gallery_index_url(activity_type: "Science") do
             .lead
-              %strong Absorb the Science
-              .lead.black-link
+              %h4 Absorb the Science
+              %p.lead.black-link
                 ChefSteps is the place to turn to learn the why behind the how. Our recipes and techniques are supported by explanations of the underlying science of cooking. Our goal is to inform your intuition for how cooking really works, so that you become a more confident, resourceful, and creative cook.
         .span6
           = render 'shared/horizontal_slider', items: @sciences, direction: 'right'
@@ -62,8 +60,8 @@
           .lead
             = link_to 'http://forum.chefsteps.com' do 
               .lead
-              %strong Get Involved with a Passionate Community
-              .lead.black-link
+              %h4 Get Involved with a Passionate Community
+              %p.lead.black-link
                 Our forum is an incredibly active and friendly community of both novice and experienced cooks, as well as many professional chefs, including the award-winning creative team behind Modernist Cuisine. Sign up and get your questions about cooking answered, often within minutes.
 
 /- if @new_visitor
