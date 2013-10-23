@@ -1,5 +1,5 @@
-- content_for :title, "#{@course.title.html_safe} - Course"
-- content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
+- content_for :title, "#{@course.title.html_safe} - Class"
+- content_for :description, @course.description != "" ? strip_tags(markdown(@course.description)) : @course.title.html_safe
 
 .assembly-course-landing
   .container

@@ -251,5 +251,12 @@ module ApplicationHelper
     end
   end
 
+  def markdown(text)
+    # options = [:hard_wrap, :filter_html, :autolink, :no_intraemphasis, :fenced_code, :gh_blockcode]
+    # syntax_highlighter(Redcarpet.new(text, *options).to_html).html_safe
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true)
+    markdown.render(text)
+  end
+
 end
 
