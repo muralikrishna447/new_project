@@ -10,6 +10,15 @@ describe "EquipmentController", ->
     input("searchString").enter("knife")
     expect(element(".ngRow").count()).toBe(3)
 
+  it "should perform an exact match", ->
+    element("#exact-match").click()
+    input("searchString").enter("Chef Knife, Shun Edo 6-1/2 Blade")
+    expect(element(".ngRow").count()).toBe(1)
+    input("searchString").enter("Knife")
+    expect(element(".ngRow").count()).toBe(0)
+    element("#exact-match").click()
+    expect(element(".ngRow").count()).toBe(3)
+
   it "should bring up a modal when you click on uses and close when you click close", ->
     el = ".ngRow:first"
     expect(element(el).html()).toContain("2")

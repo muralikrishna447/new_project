@@ -2,16 +2,15 @@
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 
 .assembly-course-landing
-  .full-stripe
-    .container
-      .row
-        .span12
-          .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-            - if @course.slug == 'french-macarons'
-              - ab_test 'macaron_landing_video', 'FA7XWOmcptU', '5adpHW6fqa0' do |video_id|
-                %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
-            - else
-              %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+  .container
+    .row
+      .span12
+        .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+          - if @course.slug == 'french-macarons'
+            - ab_test 'macaron_landing_video', 'FA7XWOmcptU', '5adpHW6fqa0' do |video_id|
+              %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
+          - else
+            %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
 
 .container.assembly-course-landing
   .row
@@ -56,7 +55,6 @@
 
           - if @course.landing_bottom
             .section
-              %h4 Course Preview
               :markdown
                 #{@course.landing_bottom.content}
 
@@ -95,7 +93,8 @@
             %li= "#{@course.video_count} HD Videos"
             -# Pulling this because it lessons doesn't sound right when some parts are recipes etc.
             -# %li= "#{@course.assembly_inclusions.count} Lessons"
-            %li Q&A from the chefs
+            %li Three Fundamental Fillings Explained
+            %li Q&A Support
           %h4 100% satisfaction guaranteed or your money back
 
         .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")

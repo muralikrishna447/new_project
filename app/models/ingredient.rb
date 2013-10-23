@@ -15,6 +15,7 @@ class Ingredient < ActiveRecord::Base
   attr_accessible :sub_activity_id
 
   scope :search_title, -> title { where('title iLIKE ?', '%' + title + '%') }
+  scope :exact_search , -> title { where(title: title) }
   scope :no_sub_activities, where('sub_activity_id IS NULL')
 
   before_save :fix_title

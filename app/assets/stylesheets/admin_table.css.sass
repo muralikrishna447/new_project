@@ -1,6 +1,6 @@
 @import mixins
 
-.ingredient-index-container
+.admin-table
   margin-top: 92px
 
   .alert-block
@@ -40,7 +40,7 @@
       margin-top: 8px
       font-size:  300%
 
-  .ingredient-index
+  .table-index
     height: 560px
 
   .ngCellText
@@ -51,6 +51,10 @@
   display: inline-block
 
 .modal
+  .modal-body
+    overflow-y: auto
+    padding-bottom: 0
+
   .warning
     margin-top: 8px
     margin-bottom: 8px
@@ -60,7 +64,7 @@
   .density-row
     height: 30px
     margin-left: 100px
- 
+
     &.header
       font-weight: bold
 
