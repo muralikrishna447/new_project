@@ -53,7 +53,7 @@
             .lead
               %strong Absorb the Science
               .lead.black-link
-                ChefSteps is the place to turn to learn the why behind the how. Our recipes and techniques are supported by explanations of the underlying science of cooking. Our goal is to inform your intuition for how cooking really works, so that you become a more confident, resourceful, and creative cook.
+                ChefSteps is the place to turn to learn the why behind the how. Our recipes and techniques a  re supported by explanations of the underlying science of cooking. Our goal is to inform your intuition for how cooking really works, so that you become a more confident, resourceful, and creative cook.
         .span6
           = render 'shared/horizontal_slider', items: @sciences, direction: 'right'
 
@@ -110,5 +110,5 @@
             %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
             %p= submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
 
-:javascript
-  mixpanel.track('Viewed Standard Homepage', {'url' : window.location.pathname});
+= content_for :footer do
+  = render 'layouts/footer'
