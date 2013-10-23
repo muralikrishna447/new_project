@@ -1,5 +1,11 @@
-- content_for :title, "#{@course.title.html_safe} - Course"
-- content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
+- content_for :title, "#{@course.title.html_safe} - Class"
+- content_for :description, @course.description != "" ? strip_tags(markdown(@course.description)) : @course.title.html_safe
+- content_for :keywords, @course.leaf_activities.map(&:title).join(',')
+- content_for :facebook_og do
+  %meta{property: 'og:url', content: landing_class_url(@course)}
+  %meta{property: 'og:title', content: "#{@course.title.html_safe} - Class"}
+  %meta{property: 'og:description', content: @course.description != "" ? strip_tags(markdown(@course.description)) : @course.title.html_safe}
+  %meta{property: 'og:image', content: filepicker_hero_image(@course.image_id)}
 
 .assembly-course-landing
   .container
@@ -83,13 +89,6 @@
         .btn.btn-primary.btn-large.input-block-level
           %a(ng-href="#{class_url(@assembly, protocol: "http")}")
             START CLASS
-
-  .row
-    .span12
-      - if @course.uploads.approved.any?
-        %h4 Student Projects
-        - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
-          = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
 
 = render 'layouts/footer'
 
