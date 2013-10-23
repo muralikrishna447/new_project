@@ -84,13 +84,6 @@
           %a(ng-href="#{class_url(@assembly, protocol: "http")}")
             START CLASS
 
-  .row
-    .span12
-      - if @course.uploads.approved.any?
-        %h4 Student Projects
-        - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
-          = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
-
 = render 'layouts/footer'
 
 :javascript
