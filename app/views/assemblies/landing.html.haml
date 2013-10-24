@@ -86,9 +86,10 @@
 
     -else
       .span4.section
-        .btn.btn-primary.btn-large.input-block-level
-          %a(ng-href="#{class_url(@assembly, protocol: "http")}")
-            START CLASS
+        = render 'enrollments/enrollment', enrollable: @assembly
+        / .btn.btn-primary.btn-large.input-block-level
+        /   %a(ng-href="#{class_url(@assembly, protocol: "http")}")
+        /     START CLASS
 
 = render 'layouts/footer'
 
