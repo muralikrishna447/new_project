@@ -54,7 +54,6 @@ describe ChargesController, "#create" do
       before do
         Stripe::Customer.stub(:create).and_return(Stripe::Customer.new)
         Stripe::Customer.any_instance.stub(:id).and_return('BARGLE')
-        ApplicationController.any_instance.stub(:track_event)
         assembly.save!
         @double_loc = double(Object)
         @double_loc.stub(:state).and_return("NJ")
@@ -65,6 +64,7 @@ describe ChargesController, "#create" do
         Stripe::Charge.should_receive(:create)
         post :create, assembly_id: 37, discounted_price: 39
         expect(Enrollment.count).to eq(1)
+        expect(Event.count).to eq(1)
         expect(response.status).to eq(204)
       end
 
@@ -72,6 +72,7 @@ describe ChargesController, "#create" do
         Stripe::Charge.should_receive(:create).and_raise(Stripe::StripeError)
         post :create, assembly_id: 37, discounted_price: 39
         expect(Enrollment.count).to eq(0)
+        expect(Event.count).to eq(0)
         expect(response.status).to eq(422)
       end
     end
