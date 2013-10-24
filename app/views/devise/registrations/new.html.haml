@@ -11,7 +11,7 @@
         = render 'shared/error_messages', target: f
         = f.hidden_field :signed_up_from
         %div= f.text_field :name, placeholder: 'Name', class: 'input-block-level'
-        %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level'
+        %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level', type: 'email'
         %div= f.password_field :password, placeholder: 'Password', class: 'input-block-level'
         %div= f.password_field :password_confirmation, placeholder: 'Confirmation', class: 'input-block-level'
         %div= f.submit 'Sign up', class: 'btn btn-primary btn-large'
