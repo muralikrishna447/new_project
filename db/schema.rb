@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131016205052) do
+ActiveRecord::Schema.define(:version => 20131024191215) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -270,6 +270,20 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], :name => "index_friendly_id_slugs_on_slug_and_sluggable_type", :unique => true
   add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
+
+  create_table "gift_certificates", :force => true do |t|
+    t.integer  "purchaser_id"
+    t.string   "recipient_email",                               :default => "",  :null => false
+    t.integer  "assembly_id"
+    t.decimal  "price",           :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",       :precision => 8, :scale => 2, :default => 0.0
+    t.string   "token"
+    t.boolean  "redeemed"
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
+  end
+
+  add_index "gift_certificates", ["token"], :name => "index_gift_certificates_on_token"
 
   create_table "images", :force => true do |t|
     t.string   "filename"

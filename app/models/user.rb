@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
   has_many :votes
 
   has_many :created_activities, class_name: 'Activity', foreign_key: 'creator'
+  has_many :gift_certificates, inverse_of: :purchaser
 
   serialize :viewed_activities, Array
 
