@@ -88,19 +88,20 @@ a
   background: rgba(255, 255, 255, .9)
   height: 100%
   width: 100%
-  top: 0
+  top: 58px
   left: 0
+  text-align: center
 
 .activity-loading-spinner
-  font-size: 150px
-  color: $dark-orange
-  position:  absolute
-  top: 150px
-  left:  50%
-  margin-left: -75px
+  margin-top: 150px
+  text-align: center
 
 .activity-top-buttons
   margin-top: 20px
+
+.icon-page-load
+  &:before
+    content: url('page-load.gif')
 
 /* Bootstrap Overrides */
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input

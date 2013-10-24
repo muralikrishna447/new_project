@@ -177,12 +177,22 @@ module ApplicationHelper
   end
 
   def where_user_left_off_in_course(course, user, btn_class = nil)
-    last_viewed_activity = user.last_viewed_activity_in_course(course)
-    if last_viewed_activity
-      link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
+    # TODO needs refactoring when we move over old courses
+    if course.class.to_s == 'Assembly'
+      last_viewed_activity = user.last_viewed_activity_in_assembly(course)
+      if last_viewed_activity
+        link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, class_activity_path(course, last_viewed_activity), class: btn_class
+      else
+        link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, landing_class_path(course), class: btn_class
+      end
     else
-      first_activity = course.first_published_activity
-      link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
+      last_viewed_activity = user.last_viewed_activity_in_course(course)
+      if last_viewed_activity
+        link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
+      else
+        first_activity = course.first_published_activity
+        link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
+      end
     end
   end
 
