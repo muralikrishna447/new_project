@@ -21,42 +21,60 @@ class ChargesController < ApplicationController
       raise "You are already enrolled, we don't want to take your money again!"
     end
 
+    # Compute any tax adjustments
+    gross_price, tax = adjust_for_included_tax(discounted_price, request.remote_ip)
+    extra_descrip = get_tax_description(tax) 
+
+    # We create the enrollment first, but wrap this whole block in a transaction, so if the stripe chage then fails,
+    # the enrollment is rolled back. The exception will then be re-raised and end up in the rescue below.
+    Enrollment.transaction do 
+
+      @enrollment = Enrollment.new(user_id: current_user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
+      @enrollment.save!
+      track_event @enrollment
+
+      # Take their money
+      set_stripe_id_on_user(params[:stripeToken])
+      charge = Stripe::Charge.create(
+        customer: current_user.stripe_id,
+        amount: (discounted_price * 100).to_i,
+        description: assembly.title + extra_descrip,
+        currency: 'usd'
+      )
+
+      head :no_content
+    end
+
+  # If anything goes wrong and we weren't able to complete the charge & enrollment, tell the frontend
+  rescue Exception => e
+    msg = (e.message || "(blank)")
+    logger.debug "Enrollment failed with error: " + msg
+    logger.debug "Backtrace: "
+    logger.debug e.backtrace
+    render json: { errors: [msg]}, status: 422
+  end
+
+
+  private
+
+  def set_stripe_id_on_user(stripeToken)
+    # Create the stripe user if not already known
     if ! current_user.stripe_id
       customer = Stripe::Customer.create(
         email: current_user.email,
-        card: params[:stripeToken]
+        card: stripeToken
       )
       current_user.stripe_id = customer.id
       current_user.save!
     end
+  end
 
-    extra_descrip = ""
-    gross_price, tax = adjust_for_included_tax(discounted_price, request.remote_ip)
+  def get_tax_description(tax)
     if tax > 0
-      extra_descrip = " (including #{ActionController::Base.helpers.number_to_currency(tax)} WA state sales tax)"
+      " (including #{ActionController::Base.helpers.number_to_currency(tax)} WA state sales tax)" 
+    else
+      ""
     end
-
-    charge = Stripe::Charge.create(
-      customer: current_user.stripe_id,
-      amount: (discounted_price * 100).to_i,
-      description: assembly.title + extra_descrip,
-      currency: 'usd'
-    )
-
-    # Kinda unclear what we should do here if we succesfully charged their card but 
-    # then saving the enrollment fails. Shouldn't happen though... famous last words.
-    @enrollment = Enrollment.new(user_id: current_user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
-    if @enrollment.save!
-      track_event @enrollment
-    end
-
-    head :no_content
   end
 
-  rescue_from 'Exception' do |e|
-    puts e.message
-    messages = []
-    messages.push(e.message)
-    render json: { errors: messages}, status: 422
-  end
 end
