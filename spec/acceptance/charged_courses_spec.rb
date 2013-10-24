@@ -2,14 +2,14 @@ require 'spec_helper'
 include AcceptanceMacros
 Capybara.default_wait_time = 15
 
-feature 'charge for courses', pending: true, :js => true do
+feature 'charge for classes', pending: true, :js => true do
   let!(:assembly) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 147.47, published: true ) }
-  let!(:landing_page) { Fabricate(:page, title: "Clummy LP", content: "You so clummy", primary_path: "/courses/clummy") }
+  let!(:landing_page) { Fabricate(:page, title: "Clummy LP", content: "You so clummy", primary_path: "/classes/clummy") }
   let(:current_user) { User.find(1) }
 
   describe "With a logged out user" do
     before(:each) do 
-      visit '/courses/clummy/landing'
+      visit '/classes/clummy/landing'
       page.should have_content('147.47')
       page.find('#buy-button').click
     end
@@ -26,7 +26,7 @@ feature 'charge for courses', pending: true, :js => true do
       fill_in 'user_email', with: 'bob@bob.com'
       fill_in 'user_password', with: 'password'
       click_button 'Sign in'      
-      current_path.should == '/courses/clummy/landing'
+      current_path.should == '/classes/clummy/landing'
     end 
 
     # TODO should also test redirect after sign up
@@ -37,9 +37,9 @@ feature 'charge for courses', pending: true, :js => true do
     before(:each) do 
       login_user
       #session[:coupon] = "'a1b71d389a50'"
-      visit '/courses/clummy/landing'
+      visit '/classes/clummy/landing'
       page.should have_content('147.47')
-      page.should_have_content('71.84')
+      #page.should_have_content('71.84')
       page.find('#buy-button').click
     end
 
@@ -59,7 +59,8 @@ feature 'charge for courses', pending: true, :js => true do
     def enrollment_should_fail(extra_msg = nil) 
       page.find('#complete-buy').click
       wait_for_dom()
-      page.should have_content('Please fix errors')
+      page.should_not have_content('processing your card')
+      page.should_not have_content('Thank you for your purchase')
       page.should have_content(extra_msg) if extra_msg
       Enrollment.where(enrollable_type: "Assembly", enrollable_id: assembly.id, user_id: current_user.id).count.should == 0
     end
@@ -82,7 +83,7 @@ feature 'charge for courses', pending: true, :js => true do
       page.should_not have_content('CVC')
     end
      
-    scenario "Logged in user gets error when making various errors on card form" do
+    scenario "Logged in  user gets error when making various errors on card form" do
       enrollment_should_fail
 
       fill_in 'cardholder_name', with: "Fancy Pants"
@@ -109,7 +110,7 @@ feature 'charge for courses', pending: true, :js => true do
       enrollment_should_fail("Your card was declined")
     end
 
-    scenario "Logged in user can buy course and continue course" do
+    scenario "Logged in user can  buy course and continue course" do
       fill_in 'cardholder_name', with: "Fancy Pants"
       fill_in 'card_number', with: "4242424242424242"
       fill_in 'expMonth', with: "07"
@@ -117,18 +118,18 @@ feature 'charge for courses', pending: true, :js => true do
       fill_in 'cvc', with: "777"
       enrollment_should_win
 
-      visit '/courses/clummy/landing'
+      visit '/classes/clummy/landing'
       page.should_not have_content('Buy Now')
       page.should have_content('Continue Class') 
     end
   end
 
   scenario "Paywall should work" do
-    visit '/courses/clummy'
-    current_path.should == '/courses/clummy/landing'
+    visit '/classes/clummy'
+    current_path.should == '/classes/clummy/landing'
     login_user
-    visit '/courses/clummy'
-    current_path.should == '/courses/clummy/landing'
+    visit '/classes/clummy'
+    current_path.should == '/classes/clummy/landing'
   end
 end
 
