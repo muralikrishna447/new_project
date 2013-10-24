@@ -22,8 +22,11 @@ class ChargesController < ApplicationController
     end
 
     # Compute any tax adjustments
-    gross_price, tax = adjust_for_included_tax(discounted_price, request.remote_ip)
-    extra_descrip = get_tax_description(tax) 
+    gross_price = tax = 0
+    if assembly.price && assembly.price > 0
+      gross_price, tax = adjust_for_included_tax(discounted_price, request.remote_ip)
+      extra_descrip = get_tax_description(tax) 
+    end
 
     # We create the enrollment first, but wrap this whole block in a transaction, so if the stripe chage then fails,
     # the enrollment is rolled back. The exception will then be re-raised and end up in the rescue below.
@@ -33,14 +36,18 @@ class ChargesController < ApplicationController
       @enrollment.save!
       track_event @enrollment
 
-      # Take their money
-      set_stripe_id_on_user(params[:stripeToken])
-      charge = Stripe::Charge.create(
-        customer: current_user.stripe_id,
-        amount: (discounted_price * 100).to_i,
-        description: assembly.title + extra_descrip,
-        currency: 'usd'
-      )
+      # Take their money. Check assembly price, not discounted_price, to prevent an attack where someone
+      # adjusts the price they post back to us. This wouldn't stop them from reducing the price to a low number,
+      # but they will still have to provide a valid card.
+      if assembly.price && assembly.price > 0
+        set_stripe_id_on_user(params[:stripeToken])
+        charge = Stripe::Charge.create(
+          customer: current_user.stripe_id,
+          amount: (discounted_price * 100).to_i,
+          description: assembly.title + extra_descrip,
+          currency: 'usd'
+        )
+      end
 
       head :no_content
     end
