@@ -43,8 +43,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
       end
       cookies.delete(:viewed_activities)
       cookies[:returning_visitor] = true
-      mixpanel.append_identify @user.email
-      mixpanel.track 'Signed Up', { distinct_id: @user.email, time: @user.created_at }
+      # mixpanel.append_identify @user.email
+      anonymous_id = JSON.parse(cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"])['distinct_id']
+      mixpanel.alias(@user.email, anonymous_id)
+      mixpanel.track(@user.email, 'Signed Up')
       finished('counter_split', :reset => false)
     else
       render :new
