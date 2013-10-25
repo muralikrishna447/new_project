@@ -72,3 +72,7 @@
             .btn.btn-large.btn-primary     
               %a(ng-href="{{assemblyPath}}")
                 Start The Class
+  %div(ng-show="(! enrolled) && (discounted_price == '0')")
+    .main-cta
+      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="enroll()")
+        Enroll Now
