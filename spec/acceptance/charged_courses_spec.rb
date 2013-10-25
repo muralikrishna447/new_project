@@ -133,6 +133,23 @@ feature 'charge for classes', pending: true, :js => true do
   end
 end
 
+feature 'free courses', js: true do
+  let!(:assembly) { Fabricate :assembly, title: 'Free Course', assembly_type: 'Course', published: true }
+
+  describe 'when logged in' do
+    before :each do
+      login_user
+      visit '/classes/free-course/landing'
+      page.should have_content('Enroll Now')
+    end
+
+    scenario 'user should be able to enroll into a free course' do
+      page.find('#buy-button').click
+      page.should have_content('Continue Class')
+    end
+  end
+end
+
 
 # Redirect to buy from assembly if not signed in or not enrolled
 
