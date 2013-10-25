@@ -140,7 +140,7 @@ feature 'free courses', js: true do
     before :each do
       login_user
       visit '/classes/free-course/landing'
-      page.should have_content('Enroll Now')
+      page.should have_content('Enroll For Free')
     end
 
     scenario 'user should be able to enroll into a free course' do
