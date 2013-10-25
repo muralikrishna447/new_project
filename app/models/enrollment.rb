@@ -16,12 +16,13 @@ class Enrollment < ActiveRecord::Base
 
     # We create the enrollment first, but wrap this whole block in a transaction, so if the stripe chage then fails,
     # the enrollment is rolled back. The exception will then be re-raised and should be handled
-    # by the caller.
+    # by the caller. You don't want to charge first and then create the enrollement, b/c if
+    # the charge succeeds and the enrollment fails, you are hosed.
     @enrollment = nil
     Enrollment.transaction do 
       gross_price, tax, extra_descrip = get_tax_info(assembly.price, discounted_price, ip_address)
       @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
-      collect_money(assembly.price, user, stripe_token)
+      collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, user, stripe_token)
     end
 
     @enrollment

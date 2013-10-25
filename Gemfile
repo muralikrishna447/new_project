@@ -115,9 +115,7 @@ group :guard do
   gem 'guard-rspec'
   gem 'guard-spork'
   gem 'guard-jasmine'
-  # Problems with falling back to polling
-  # https://github.com/guard/listen/issues/62
-  gem 'listen', '0.4.7'
+  gem 'listen'
   gem 'growl'
   gem 'rb-fsevent'
 end
