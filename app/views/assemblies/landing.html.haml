@@ -74,7 +74,8 @@
         %ul
           %li Unlimited Access
           %li= "#{@course.video_count} HD Videos"
-          %li Three Fundamental Fillings Explained
+          / %li Three Fundamental Fillings Explained
+          = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
           - if @course.price
             %li Q&A Support
         - if @course.price

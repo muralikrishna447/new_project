@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131016205052) do
+ActiveRecord::Schema.define(:version => 20131025183651) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
     t.boolean  "show_prereg_page_in_index",                               :default => false
     t.text     "short_description"
     t.text     "upload_copy"
+    t.text     "buy_box_extra_bullets"
   end
 
   create_table "assembly_inclusions", :force => true do |t|
