@@ -70,15 +70,15 @@
         = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user.completed_course?(@assembly)
         .text-center.enroll-count.section
           %h4= "#{@course.enrollments.count} Enrolled"
-        %h5 Course Includes:
+        %h5 Class Includes:
         %ul
           %li Unlimited Access
           %li= "#{@course.video_count} HD Videos"
-          -# Pulling this because it lessons doesn't sound right when some parts are recipes etc.
-          -# %li= "#{@course.assembly_inclusions.count} Lessons"
           %li Three Fundamental Fillings Explained
-          %li Q&A Support
-        %h4 100% satisfaction guaranteed or your money back
+          - if @course.price
+            %li Q&A Support
+        - if @course.price
+          %h4 100% satisfaction guaranteed or your money back
 
       .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
         = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
