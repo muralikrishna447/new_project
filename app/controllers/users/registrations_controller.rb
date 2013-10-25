@@ -43,9 +43,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       end
       cookies.delete(:viewed_activities)
       cookies[:returning_visitor] = true
-      # mixpanel.append_identify @user.email
-      anonymous_id = JSON.parse(cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"])['distinct_id']
-      mixpanel.alias(@user.email, anonymous_id)
+      mixpanel.alias(@user.email, mixpanel_anonymous_id)
       mixpanel.track(@user.email, 'Signed Up')
       finished('counter_split', :reset => false)
     else
@@ -67,8 +65,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_in @user
       aweber_signup(@user.name, @user.email)
       cookies.delete(:viewed_activities)
-      mixpanel.append_identify @user.email
-      mixpanel.track 'Signed Up', { distinct_id: @user.email, time: @user.created_at }
+      mixpanel.alias(@user.email, mixpanel_anonymous_id)
+      mixpanel.track(@user.email, 'Signed Up')
       @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
       if @enrollment.save
         redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
