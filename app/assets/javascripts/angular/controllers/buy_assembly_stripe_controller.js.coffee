@@ -58,5 +58,16 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     mixpanel.track('Course Buy Box Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
     mixpanel.people.set('Paid Course Abandoned' : $scope.assembly.title)
 
+  $scope.enroll = ->
+    $http(
+      method: 'POST'
+      params: 
+        assembly_id: $scope.assembly.id
+        discounted_price: $scope.discounted_price
+
+      url: '/charges'
+    ).success((data, status, headers, config) ->
+      $scope.enrolled = true
+    )
 
 ]

@@ -64,31 +64,25 @@
             :markdown
               #{apply_shortcodes(@course.testimonials.content)}
 
-    -if @course.price
-      .span4.section
-        .buy-box
-          
-          = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: @discounted_price, completed: current_user && current_user.completed_course?(@assembly)
-          .text-center.enroll-count.section
-            %h4= "#{@course.enrollments.count} Enrolled"
-          %h5 Course Includes:
-          %ul
-            %li Unlimited Access
-            %li= "#{@course.video_count} HD Videos"
-            -# Pulling this because it lessons doesn't sound right when some parts are recipes etc.
-            -# %li= "#{@course.assembly_inclusions.count} Lessons"
-            %li Three Fundamental Fillings Explained
+    .span4.section
+      .buy-box
+        - discounted_price = @course.price ? @discounted_price : 0
+        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user.completed_course?(@assembly)
+        .text-center.enroll-count.section
+          %h4= "#{@course.enrollments.count} Enrolled"
+        %h5 Class Includes:
+        %ul
+          %li Unlimited Access
+          %li= "#{@course.video_count} HD Videos"
+          / %li Three Fundamental Fillings Explained
+          = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
+          - if @course.price
             %li Q&A Support
+        - if @course.price
           %h4 100% satisfaction guaranteed or your money back
 
-        .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
-          = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
-
-    -else
-      .span4.section
-        .btn.btn-primary.btn-large.input-block-level
-          %a(ng-href="#{class_url(@assembly, protocol: "http")}")
-            START CLASS
+      .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+        = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
 
 = render 'layouts/footer'
 
