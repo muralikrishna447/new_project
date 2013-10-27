@@ -239,10 +239,10 @@ class ActivitiesController < ApplicationController
   # See note in next method.
   def base_feed
     # this will be the name of the feed displayed on the feed reader
-    @title = "ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine"
+    @title = "ChefSteps - Modern Cuisine - Online Cooking School - Sous Vide Recipes"
 
     # the news items
-    @activities = Activity.published.by_published_at('desc').chefsteps_generated
+    @activities = Activity.published.by_published_at('desc').chefsteps_generated.really_include_in_gallery
 
     # this will be our Feed's update timestamp
     @updated = @activities.published.first.published_at unless @activities.empty?
