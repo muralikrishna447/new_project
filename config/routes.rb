@@ -153,6 +153,7 @@ Delve::Application.routes.draw do
     resources :comments
     resources :enrollments
   end
+  match "/gift/:gift_token", to: 'assemblies#redeem'
   resources :projects, controller: :assemblies
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'

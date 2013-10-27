@@ -13,6 +13,9 @@ class Assembly < ActiveRecord::Base
   has_many :uploads
   has_many :enrollments, as: :enrollable
 
+  has_many :gift_certificates, inverse_of: :assembly
+
+
   scope :published, where(published: true)
   scope :projects, where(assembly_type: 'Project')
   scope :pubbed_courses, where(assembly_type: 'Course', published: true)

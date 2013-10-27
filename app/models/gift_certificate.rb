@@ -1,5 +1,6 @@
 class GiftCertificate < ActiveRecord::Base
   belongs_to :user, foreign_key: :purchaser_id, inverse_of: :gift_certificates
+  belongs_to :assembly, inverse_of: :gift_certificates 
 
   after_initialize do
     loop do

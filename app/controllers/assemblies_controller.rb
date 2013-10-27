@@ -1,6 +1,6 @@
 class AssembliesController < ApplicationController
 
-  before_filter :load_assembly, except: [:index]
+  before_filter :load_assembly, except: [:index, :redeem]
 
   # Commenting out for now until we figure out what to do for Projects
 
@@ -37,6 +37,19 @@ class AssembliesController < ApplicationController
     render :json => @assembly
   end
 
+  def redeem
+    session[:gift_token] = params[:gift_token]
+    @gift_certificate = GiftCertificate.where(token: session[:gift_token]).first
+
+    if @gift_certificate
+      @assembly = @gift_certificate.assembly
+      redirect_to landing_class_url(@assembly)
+    else
+      flash[:error] = "Invalid gift certificate. Contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
+      redirect_to '/'
+    end
+  end
+
 private
 
   # This is obviously a very short term solution to price testing!
@@ -66,7 +79,7 @@ private
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = discounted_price(@assembly.price, session[:coupon])
  
-    rescue
+    rescue 
       # If they are looking for a course that isn't yet published, take them to a page where
       # they can get on an email list to be notified when it is available.
       @course = Assembly.find(params[:id])
@@ -80,5 +93,4 @@ private
 
     instance_variable_set("@#{@assembly.assembly_type.underscore}", @assembly)
   end
-
 end
