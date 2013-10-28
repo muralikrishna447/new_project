@@ -1,6 +1,9 @@
 @import 'mixins'
 @import 'application/custom_mixins'
 
+.buy-buttons
+  margin-bottom: $baseline
+
 .course-assembly-container
   @include boxsizing
 
@@ -287,8 +290,13 @@
       position: absolute
       left: 0
       right: 0
-      top: 12px
+      top: 9px
       border: 2px solid rgba(255, 255, 255, .9)
+
+.gift-cta
+  .full-price
+    .strike
+      border: 2px solid rgba(20, 20, 20, .9)
 
 .ingredients-title
   display: none

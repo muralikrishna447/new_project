@@ -3,9 +3,14 @@
 
 angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", ($scope, $http) ->
 
+  $scope.isGift = false
   $scope.buyModalOpen = false
+  $scope.giftInfo = {}
 
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
+
+  $scope.defaultGiftMessage = ->
+    ""
 
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
@@ -45,8 +50,14 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.processing = true
       $scope.errorText = false
 
-  $scope.openModal = ->
-    $scope.state = "charge" 
+  $scope.maybeMoveToCharge = (form) ->
+    if form?.$valid
+      $scope.state = "charge"  
+
+  $scope.openModal = (gift) ->
+    $scope.isGift = gift
+    $scope.recipientMessage = $scope.defaultGiftMessage()
+    $scope.state = if gift then "gift" else "charge" 
     if ! $scope.logged_in
       window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before purchasing a course.")
     else

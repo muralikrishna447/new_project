@@ -1,4 +1,4 @@
-%h3.price(ng-switch="assembly.price == discounted_price")<
+.price(ng-switch="assembly.price == discounted_price")<
   %div(ng-switch-when="true")<
     {{assembly.price | niceDollars}}
   %div(ng-switch-when="false")<

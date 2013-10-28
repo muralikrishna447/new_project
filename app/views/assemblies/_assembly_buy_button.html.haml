@@ -1,5 +1,6 @@
 -# Note! Really important to use class_url, not class_path, so we get off SSL after purchase.
-%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{class_url(assembly, protocol: "http")}"; completed="#{completed ? true : false}"; lastViewedActivity="#{current_user ? class_activity_path(assembly, current_user.last_viewed_activity_in_assembly(assembly)) : nil}"' ng-cloak)
+.buy-buttons(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{class_url(assembly, protocol: "http")}"; completed="#{completed ? true : false}"; lastViewedActivity="#{current_user ? class_activity_path(assembly, current_user.last_viewed_activity_in_assembly(assembly)) : nil}"' ng-cloak)
+
   %div(ng-show="enrolled")
     .main-cta
       %div(ng-hide='completed')
@@ -12,12 +13,46 @@
 
   %div(ng-show="(! enrolled) && assembly.price")
     .main-cta
-      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal()")
+      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal(false)")
         BUY NOW
         = render 'activities/latest/assembly_price'
 
+  %div(ng-show="assembly.price > 0")
+    .gift-cta
+      .btn.btn-secondary.btn-large.input-block-level#buy-button(ng-click="openModal(true)")
+        Send As Gift
+        %div.inline(ng-show="enrolled")
+          = render 'activities/latest/assembly_price'
+
+  %div(ng-show="(! enrolled) && (discounted_price == '0')")
+    .main-cta
+      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="enroll()")
+        Enroll For Free
     %div(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
       .modal-body.buy-modal(ng-switch on="state")
+        .row-fluid(ng-switch-when="gift")
+          .close-x.pull-right#cancel-charge(ng-click="closeModal()")
+            %i.icon-remove
+          %form.gift-form(name="giftForm") 
+            .control-group
+              %label.control-label(for="recipient_name")
+                Recipient Name
+              .controls
+                %input.input-full(ng-model="giftInfo.recipientName" type="text" required  name="recipient_name")
+              %label.control-label(for="recipient_email")
+                Recipient Email Address
+              .controls
+                %input.input-full(ng-model="giftInfo.recipientEmail" type="email" required  name="recipient_email")
+              %label.control-label(for="recipient_message")
+                Personal Message (Optional)
+              .controls
+                %textarea.input-full(ng-model="giftInfo.recipientMessage"  rows="4" name="recipient_message" maxlength="1024")
+            .divider
+            .control-group.text-center
+              .controls                    
+                %button.btn.btn-secondary.btn-large(ng-click="maybeMoveToCharge(giftForm)") 
+                  NEXT 
+
         .row-fluid(ng-switch-when="charge" )
           .close-x.pull-right#cancel-charge(ng-click="closeModal()")
             %i.icon-remove
@@ -50,6 +85,14 @@
                 .controls
                   %input.input-mini(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" required  name="cvc")
             .divider
+            .control-group(ng-show="isGift && ! processing")
+              %label.radio
+                %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="1")
+                  Email gift to {{giftInfo.recipientName}} now
+              %label.radio
+                %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="0")
+                  Email gift to me to deliver later
+
             .control-group.text-center(ng-hide="processing")
               .controls                    
                 %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") 
@@ -63,6 +106,7 @@
               .controls
                 %i.icon-spinner.icon-2x.icon-spin
                 Processing your card
+
         .row-fluid(ng-switch-when="thanks")
           %p 
             Thank you for your purchase of our {{assembly.title}} class. We're grateful to have you as a member of member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you at&nbsp; 
@@ -72,7 +116,3 @@
             .btn.btn-large.btn-primary     
               %a(ng-href="{{assemblyPath}}")
                 Start The Class
-  %div(ng-show="(! enrolled) && (discounted_price == '0')")
-    .main-cta
-      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="enroll()")
-        Enroll For Free
