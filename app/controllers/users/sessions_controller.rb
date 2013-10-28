@@ -25,9 +25,8 @@ class Users::SessionsController < Devise::SessionsController
     cookies[:returning_visitor] = true
     super
     remember_me(current_user)
-    mixpanel.track 'Signed In', { distinct_id: current_user.email }
-    mixpanel.append_identify current_user.email
-    mixpanel.increment 'Signed In Count'
+    mixpanel.track(current_user.email, 'Signed In')
+    mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
   end
 
   def signin_and_enroll
@@ -35,8 +34,8 @@ class Users::SessionsController < Devise::SessionsController
     @course = Course.find(params[:course_id])
     if @user.valid_password?(params[:password])
       sign_in @user
-      mixpanel.track 'Signed In', { distinct_id: @user.email }
-      mixpanel.append_identify @user.email
+      mixpanel.track(current_user.email, 'Signed In')
+      mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
       @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
       if @enrollment.save
         redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Course!"

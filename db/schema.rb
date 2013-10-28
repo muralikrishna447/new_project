@@ -272,20 +272,6 @@ ActiveRecord::Schema.define(:version => 20131025183651) do
   add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
 
-  create_table "gift_certificates", :force => true do |t|
-    t.integer  "purchaser_id"
-    t.string   "recipient_email",                               :default => "",  :null => false
-    t.integer  "assembly_id"
-    t.decimal  "price",           :precision => 8, :scale => 2, :default => 0.0
-    t.decimal  "sales_tax",       :precision => 8, :scale => 2, :default => 0.0
-    t.string   "token"
-    t.boolean  "redeemed"
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
-  end
-
-  add_index "gift_certificates", ["token"], :name => "index_gift_certificates_on_token"
-
   create_table "images", :force => true do |t|
     t.string   "filename"
     t.string   "url"
