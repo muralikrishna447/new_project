@@ -73,8 +73,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         track_event @course, 'enroll'
         finished('poutine', :reset => false)
         finished('free or not', :reset => false)
-        mixpanel.track(@user.email, 'Course Enrolled', { course: @course.title, enrollment_method: 'Sign Up and Enroll' })
         mixpanel.people.increment(@user.email, {'Course Enrolled Count' => 1})
+        mixpanel.people.append(@user.email, {'Classes Enrolled' => @course.title})
       end
     else
       redirect_to course_url(@course), notice: "Sorry, there was a problem with the information provided.  Please try again."

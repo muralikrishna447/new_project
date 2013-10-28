@@ -31,7 +31,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         $scope.state = "thanks"
         mixpanel.people.track_charge($scope.discounted_price)
         mixpanel.track('Course Purchased', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': response.type, 'card_type': response.card.type})
-        mixpanel.people.append('Class Purchased', $scope.assembly.title)
+        mixpanel.people.append('Classes Purchased', $scope.assembly.title)
+        mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
         mixpanel.people.set('Paid Course Abandoned' : false)
         $http.put('/splitty/finished?experiment=macaron_landing_video')
 

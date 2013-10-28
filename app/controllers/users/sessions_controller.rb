@@ -40,6 +40,7 @@ class Users::SessionsController < Devise::SessionsController
       if @enrollment.save
         redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Course!"
         track_event @course, 'enroll'
+        mixpanel.people.append(current_user.email, {'Classes Enrolled' => @course.title})
         finished('poutine', :reset => false)
         finished('free or not', :reset => false)
       else
