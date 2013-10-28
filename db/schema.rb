@@ -274,14 +274,16 @@ ActiveRecord::Schema.define(:version => 20131025183651) do
 
   create_table "gift_certificates", :force => true do |t|
     t.integer  "purchaser_id"
-    t.string   "recipient_email",                               :default => "",  :null => false
+    t.string   "recipient_email",                                 :default => "",    :null => false
+    t.string   "recipient_name",                                  :default => "",    :null => false
+    t.text     "recipient_message",                               :default => ""
     t.integer  "assembly_id"
-    t.decimal  "price",           :precision => 8, :scale => 2, :default => 0.0
-    t.decimal  "sales_tax",       :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "price",             :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",         :precision => 8, :scale => 2, :default => 0.0
     t.string   "token"
-    t.boolean  "redeemed"
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
+    t.boolean  "redeemed",                                        :default => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
   end
 
   add_index "gift_certificates", ["token"], :name => "index_gift_certificates_on_token"

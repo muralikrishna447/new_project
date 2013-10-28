@@ -5,7 +5,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.isGift = false
   $scope.buyModalOpen = false
-  $scope.giftInfo = {}
+  $scope.giftInfo = {
+    emailToRecipient: 1
+  }
 
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
 
@@ -25,7 +27,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
           stripeToken: response.id
           assembly_id: $scope.assembly.id
           discounted_price: $scope.discounted_price
-          giftInfo: $scope.giftInfo
+          gift_info: $scope.giftInfo
 
         url: '/charges'
 
