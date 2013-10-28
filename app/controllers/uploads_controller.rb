@@ -17,8 +17,7 @@ class UploadsController < ApplicationController
         format.js { render :json => @upload, root: false }
       end
       track_event @upload
-      mixpanel.track 'Photo Uploaded', { distinct_id: @upload.user.email, course: @upload.course ? @upload.course.title : 'none', activity: @upload.activity ? @upload.activity.title : "Custom Recipe" }
-      mixpanel.set({ :distinct_id => @upload.user.email}, { course: @upload.course ? @upload.course.title : 'none', activity: @upload.activity ? @upload.activity.title : "Custom Recipe", :email => @upload.user.email })
+      mixpanel.track(@upload.user.email, 'Photo Uploaded', {course: @upload.course ? @upload.course.title : 'none', activity: @upload.activity ? @upload.activity.title : "Custom Recipe"})
     end
   end
 end
