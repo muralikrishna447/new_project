@@ -7,18 +7,22 @@ input:not(:focus):not(.ng-pristine).ng-invalid
   border: 2px solid $dark-orange
   @include radius(1px)
 
-.modal-body
-  overflow: hidden
-
 .buy-modal
+  height: auto
+
+.buy-modal-body
   .close-x
     color: #ccc
     font-size: 22px
+  overflow: hidden
+  height: auto !important
+  max-height: inherit
+
 
 .charge-form, .gift-form
   margin-top: 30px
   margin-bottom: 0px
-  min-height: 200px
+  min-height: 250px
   margin-left: 20px
   margin-right: 20px
   .error-text

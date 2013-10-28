@@ -28,8 +28,8 @@
     .main-cta
       .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="enroll()")
         Enroll For Free
-    %div(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
-      .modal-body.buy-modal(ng-switch on="state")
+    .buy-modal(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
+      .modal-body.buy-modal-body(ng-switch on="state")
         .row-fluid(ng-switch-when="gift")
           .close-x.pull-right#cancel-charge(ng-click="closeModal()")
             %i.icon-remove
@@ -99,20 +99,29 @@
                   BUY NOW 
                   = render 'activities/latest/assembly_price'
 
-                %p
-                  .tiny-note
-                    All Taxes Included   
+                .tiny-note
+                  All Taxes Included   
             .control-group.text-center(ng-show="processing")
               .controls
                 %i.icon-spinner.icon-2x.icon-spin
                 Processing your card
 
         .row-fluid(ng-switch-when="thanks")
-          %p 
-            Thank you for your purchase of our {{assembly.title}} class. We're grateful to have you as a member of member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you at&nbsp; 
-            %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
-            \.
-          .section.text-center         
-            .btn.btn-large.btn-primary     
-              %a(ng-href="{{assemblyPath}}")
-                Start The Class
+          %div(ng-show="! isGift")
+            %p
+              Thank you for your purchase of our {{assembly.title}} class. We're grateful to have you as a member of member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you at&nbsp; 
+              %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
+              \.
+            .section.text-center         
+              .btn.btn-large.btn-primary     
+                %a(ng-href="{{assemblyPath}}")
+                  Start The Class
+          %div(ng-show="isGift")
+            %p
+              Thank you for giving our {{assembly.title}} class as a gift. We're grateful to have you as a member of member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you at&nbsp; 
+              %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
+              \.
+            .section.text-center         
+              .btn.btn-large.btn-primary     
+                %a(ng-click="closeModal(false)")
+                  OK

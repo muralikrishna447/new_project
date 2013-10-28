@@ -9,9 +9,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
 
-  $scope.defaultGiftMessage = ->
-    ""
-
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
 
@@ -28,14 +25,16 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
           stripeToken: response.id
           assembly_id: $scope.assembly.id
           discounted_price: $scope.discounted_price
+          giftInfo: $scope.giftInfo
 
         url: '/charges'
+
       ).success((data, status, headers, config) ->
         $scope.processing = false
         $scope.enrolled = true
         $scope.state = "thanks"
         mixpanel.people.track_charge($scope.discounted_price)
-        mixpanel.track('Course Purchased', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': response.type, 'card_type': response.card.type})
+        mixpanel.track('Course Purchased', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': response.type, 'card_type': response.card.type, 'gift' : $scope.isGift})
         mixpanel.people.set('Paid Course Abandoned' : false)
         $http.put('/splitty/finished?experiment=macaron_landing_video')
 
@@ -56,7 +55,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.openModal = (gift) ->
     $scope.isGift = gift
-    $scope.recipientMessage = $scope.defaultGiftMessage()
+    $scope.recipientMessage = ""
     $scope.state = if gift then "gift" else "charge" 
     if ! $scope.logged_in
       window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before purchasing a course.")
@@ -64,10 +63,11 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.buyModalOpen = true
       mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
 
-  $scope.closeModal = ->
+  $scope.closeModal = (abandon = true) ->
     $scope.buyModalOpen = false
-    mixpanel.track('Course Buy Box Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
-    mixpanel.people.set('Paid Course Abandoned' : $scope.assembly.title)
+    if abandon 
+      mixpanel.track('Course Buy Box Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
+      mixpanel.people.set('Paid Course Abandoned' : $scope.assembly.title)
 
   $scope.enroll = ->
     $http(
