@@ -4,7 +4,7 @@
   .noprint= render 'activities/hero_visual', activity: activity
   %div.noprint(ng-show="! editMode")
     = render 'layouts/social_buttons', media_object: activity
-  .noprint= render 'activities/description'
+  = render 'activities/description'
   = render 'activities/main_ingredients'
   = render 'activities/basic_edit_pair', model: "activity.yield", name: "Yield", add_text: "Add yield info...", itemprop: "recipeYield"
   = render 'activities/basic_edit_pair', model: "activity.timing", name: "Timing", add_text: "Add timing info..."
