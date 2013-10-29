@@ -41,13 +41,15 @@ class GiftCertificate < ActiveRecord::Base
 
   def send_email(to_recipient)
     #puts self.inspect
+    dom = DOMAIN
+    dom = "localhost:3000" if dom == "delve.dev"
     GiftCertificateMailer.recipient_email(
         User.find(purchaser_id), 
         Assembly.find(assembly_id).title, 
-        "http://chefsteps.com/gift/" + token,
+        "http://" + dom + "/gift/" + token,
         recipient_email,
         recipient_name,
         recipient_message
-      )
+      ).deliver()
   end
 end

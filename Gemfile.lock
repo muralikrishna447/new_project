@@ -243,6 +243,8 @@ GEM
     kgio (2.7.4)
     launchy (2.1.2)
       addressable (~> 2.3)
+    letter_opener (1.0.0)
+      launchy (>= 2.0.4)
     listen (0.7.3)
     lumberjack (1.0.4)
     mail (2.5.4)
@@ -492,6 +494,7 @@ DEPENDENCIES
   jquery-ui-rails
   kaminari
   launchy
+  letter_opener
   listen
   memcachier
   merit
