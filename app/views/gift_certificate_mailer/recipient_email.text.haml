@@ -1,11 +1,12 @@
+Hi there! #{@purchaser_name} has been a pal and purchased the ChefSteps #{@gift_title} class for you.
+
 -if @recipient_message
+  Message from #{@purchaser_name}:
   =@recipient_message
 
-#{@purchaser_name} has sent you a gift of free enrollment in the ChefSteps
-#{@gift_title} class. To join the class, paste the following link 
-into your browser:
-    
-=@redeem_url
+To redeem your gift, just use this link: #{@redeem_url}
 
-If we can help you in any way, just drop us a note to
-info@chefsteps.com.
+We're here to help. You can reach us anytime at info@chefsteps.com if you have any questions or issues getting to the course.
+
+Cheers,
+Team ChefSteps

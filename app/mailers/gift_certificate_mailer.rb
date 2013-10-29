@@ -8,7 +8,8 @@ class GiftCertificateMailer < ActionMailer::Base
     @redeem_url = redeem_url 
     @recipient_name = recipient_name 
     @recipient_message = recipient_message
-    @purchaser_name = purchaser.name || purchaser.email
+    @purchaser_name = purchaser.email
+    @purchaser_name = "#{purchaser.name} (#{purchaser.email})" if purchaser.name
     if to_recipient
       mail(to: recipient_email, subject: "A gift for you from " + @purchaser_name)
     else
