@@ -6,7 +6,10 @@ class GiftCertificate < ActiveRecord::Base
 
   after_initialize do
     loop do
-      self.token = SecureRandom.urlsafe_base64(6)
+      # 6 chars incluing 0-9, a-z, should give us 36^6 = 2,176,782,336 possibilities. Enough 
+      # to keep crackers at bay. Loop to avoid (extremely rare) duplicate.
+      # I wonder if I should be worried about the possibility of it generating something offensive.
+      self.token = SecureRandom.urlsafe_base64.downcase.delete('_-')[0..5]
       break unless GiftCertificate.unscoped.exists?(token: self.token)
     end
   end
@@ -30,8 +33,21 @@ class GiftCertificate < ActiveRecord::Base
               recipient_message: gift_info["recipientMessage"]
             )
       collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, purchaser, stripe_token)
+      @gc.send_email(gift_info["emailToRecipient"])
     end
 
     @gc
+  end
+
+  def send_email(to_recipient)
+    #puts self.inspect
+    GiftCertificateMailer.recipient_email(
+        User.find(purchaser_id), 
+        Assembly.find(assembly_id).title, 
+        "http://chefsteps.com/gift/" + token,
+        recipient_email,
+        recipient_name,
+        recipient_message
+      )
   end
 end
