@@ -6,6 +6,8 @@ class Assembly < ActiveRecord::Base
   has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :quizzes, through: :assembly_inclusions, source: :includable, source_type: 'Quiz'
+  has_many :pages, through: :assembly_inclusions, source: :includable, source_type: 'Page'
+  has_many :assignments, through: :assembly_inclusions, source: :includable, source_type: 'Assignment'
 
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
@@ -21,7 +23,7 @@ class Assembly < ActiveRecord::Base
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
   ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group']
-  INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz', 'Assembly', 'Page']
+  INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz', 'Assembly', 'Page', 'Assignment']
 
   def ingredients
     activities.map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}.reject{|i| i.unit == 'recipe'}
