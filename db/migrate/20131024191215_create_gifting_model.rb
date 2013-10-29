@@ -13,6 +13,7 @@ class CreateGiftingModel < ActiveRecord::Migration
       t.boolean :redeemed, default: false
       t.timestamps
     end
+    add_column :enrollments, :gift_certificate_id, :integer
     add_index :gift_certificates, :token
   end
 end

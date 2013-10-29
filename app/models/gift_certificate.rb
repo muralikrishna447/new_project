@@ -49,7 +49,7 @@ class GiftCertificate < ActiveRecord::Base
     GiftCertificate.transaction do
       gc.redeemed = true
       gc.save!
-      enrollment = Enrollment.create!(user_id: user.id, enrollable: gc.assembly)
+      enrollment = Enrollment.create!(user_id: user.id, enrollable: gc.assembly, gift_certificate_id: id)
     end
     enrollment
   end

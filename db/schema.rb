@@ -223,12 +223,13 @@ ActiveRecord::Schema.define(:version => 20131025183651) do
   create_table "enrollments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "course_id"
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
     t.integer  "enrollable_id"
     t.string   "enrollable_type"
-    t.decimal  "price",           :precision => 8, :scale => 2, :default => 0.0
-    t.decimal  "sales_tax",       :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "price",               :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",           :precision => 8, :scale => 2, :default => 0.0
+    t.integer  "gift_certificate_id"
   end
 
   create_table "equipment", :force => true do |t|

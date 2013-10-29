@@ -1,10 +1,11 @@
 class Enrollment < ActiveRecord::Base
   include ActsAsChargeable
 
-  attr_accessible :course_id, :user_id, :enrollable, :price, :sales_tax
+  attr_accessible :course_id, :user_id, :enrollable, :price, :sales_tax, :gift_certificate_id
   belongs_to :user
   belongs_to :enrollable, polymorphic: true
   has_many :events, as: :trackable, dependent: :destroy
+  has_one :gift_certificate
 
   validates :enrollable_id, uniqueness: {scope: [:user_id, :enrollable_type], message: 'can only be enrolled once per student.'}
 
