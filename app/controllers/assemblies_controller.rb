@@ -37,11 +37,15 @@ class AssembliesController < ApplicationController
     render :json => @assembly
   end
 
+  # Note that although this is called "redeem", it only starts the redemption process
+  # sending them to the landing page with the GC in the session. The reason we don't immediately
+
   def redeem
     session[:gift_token] = params[:gift_token]
     @gift_certificate = GiftCertificate.where(token: session[:gift_token]).first
 
     if @gift_certificate
+      flash[:notice] = "To redeem your gift certificate, click the orange button below!"
       @assembly = @gift_certificate.assembly
       redirect_to landing_class_url(@assembly)
     else
@@ -78,6 +82,7 @@ private
       @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = discounted_price(@assembly.price, session[:coupon])
+      @gift_certificate = GiftCertificate.where(token: session[:gift_token]).first if session[:gift_token]
  
     rescue 
       # If they are looking for a course that isn't yet published, take them to a page where

@@ -55,13 +55,17 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     if form?.$valid
       $scope.state = "charge"  
 
+  $scope.check_signed_in = ->
+    if ! $scope.logged_in
+      window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before purchasing a course.")
+      false
+    true
+
   $scope.openModal = (gift) ->
     $scope.isGift = gift
     $scope.recipientMessage = ""
     $scope.state = if gift then "gift" else "charge" 
-    if ! $scope.logged_in
-      window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before purchasing a course.")
-    else
+    if $scope.check_signed_in()
       $scope.buyModalOpen = true
       mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
 
@@ -77,10 +81,15 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       params: 
         assembly_id: $scope.assembly.id
         discounted_price: $scope.discounted_price
-
+        gift_certificate: $scope.gift_certificate
       url: '/charges'
     ).success((data, status, headers, config) ->
       $scope.enrolled = true
     )
+
+  $scope.redeemGift = ->
+    if $scope.check_signed_in()
+      $scope.enroll()
+
 
 ]

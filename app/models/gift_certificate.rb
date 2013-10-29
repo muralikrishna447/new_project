@@ -20,10 +20,10 @@ class GiftCertificate < ActiveRecord::Base
     # the enrollment is rolled back. The exception will then be re-raised and should be handled
     # by the caller. You don't want to charge first and then create the enrollement, b/c if
     # the charge succeeds and the enrollment fails, you are hosed.
-    @gc = nil
+    gc = nil
     GiftCertificate.transaction do 
       gross_price, tax, extra_descrip = get_tax_info(assembly.price, discounted_price, ip_address)
-      @gc = GiftCertificate.create!(
+      gc = GiftCertificate.create!(
               purchaser_id: purchaser.id, 
               assembly_id: assembly.id, 
               price: gross_price, 
@@ -33,10 +33,21 @@ class GiftCertificate < ActiveRecord::Base
               recipient_message: gift_info["recipientMessage"]
             )
       collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, purchaser, stripe_token)
-      @gc.send_email(gift_info["emailToRecipient"])
+      gc.send_email(gift_info["emailToRecipient"])
     end
 
-    @gc
+    gc
+  end
+
+  def self.redeem(user, id)
+    gc = GiftCertificate.find(id)
+    enrollment = nil
+    GiftCertificate.transaction do
+      gc.redeemed = true
+      gc.save!
+      enrollment = Enrollment.create!(user_id: user.id, enrollable: gc.assembly)
+    end
+    enrollment
   end
 
   def send_email(to_recipient)

@@ -67,7 +67,7 @@
     .span4.section
       .buy-box
         - discounted_price = @course.price ? @discounted_price : 0
-        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user.completed_course?(@assembly)
+        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user.completed_course?(@assembly), gift_certificate: @gift_certificate
         .text-center.enroll-count.section
           %h4= "#{@course.enrollments.count} Enrolled"
         %h5 Class Includes:
