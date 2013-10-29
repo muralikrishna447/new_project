@@ -45,11 +45,29 @@ class AssembliesController < ApplicationController
     @gift_certificate = GiftCertificate.where(token: session[:gift_token]).first
 
     if @gift_certificate
-      flash[:notice] = "To redeem your gift certificate, click the orange button below!"
       @assembly = @gift_certificate.assembly
-      redirect_to landing_class_url(@assembly)
+      if ! @gift_certificate.redeemed
+        # Normal redemption
+        flash[:notice] = "To redeem your gift, click the orange button below!"      
+        redirect_to landing_class_url(@assembly)
+      else
+        # Already redeemed, probably the same user so tell 'em what to do
+        if current_user
+          # Logged in? Just continue.
+          flash[:notice] = "Gift code already redeemed; click the orange button below to continue your class. If you need assistance, contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
+          redirect_to landing_class_url(@assembly)
+        else
+          # Not logged in, send 'em to log in
+          flash[:notice] = "Gift code already redeemed; please sign in to continue your class. If you need assistance, contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."       
+          session[:force_return_to] = request.original_url
+          redirect_to sign_in_url
+        end
+        
+      end
+       
     else
-      flash[:error] = "Invalid gift certificate. Contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
+      # Gift certificate we've never heard of. Someone try to rip us off?
+      flash[:error] = "Invalid gift code. Contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
       redirect_to '/'
     end
   end

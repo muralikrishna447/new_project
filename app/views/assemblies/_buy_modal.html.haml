@@ -86,12 +86,28 @@
           .btn.btn-large.btn-primary     
             %a(ng-href="{{assemblyPath}}")
               Start The Class
+
       %div(ng-show="isGift")
         %p
-          Thank you for giving our {{assembly.title}} class as a gift. We're grateful to have you as a member of member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you at&nbsp; 
+          Thank you for giving our {{assembly.title}} class as a gift. Your gift email has been sent. We're grateful to have you as a member of member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you at&nbsp; 
           %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
           \.
         .section.text-center         
           .btn.btn-large.btn-primary     
             %a(ng-click="closeModal(false)")
               OK
+
+    .row-fluid(ng-switch-when="thanks_redeem")
+      .text-center(ng-show="processing")
+        %i.icon-spinner.icon-2x.icon-spin
+        Redeeming your gift
+
+      %div(ng-show="! processing")
+        %p
+          Welcome to the ChefSteps' {{assembly.title}} class. If we can be of any assistance, we are always happy to hear from you at&nbsp; 
+          %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
+          \.
+        .section.text-center         
+          .btn.btn-large.btn-primary     
+            %a(ng-href="{{assemblyPath}}")
+              Start The Class

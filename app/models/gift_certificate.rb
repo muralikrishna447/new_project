@@ -5,12 +5,16 @@ class GiftCertificate < ActiveRecord::Base
   include ActsAsChargeable
 
   after_initialize do
-    loop do
-      # 6 chars incluing 0-9, a-z, should give us 36^6 = 2,176,782,336 possibilities. Enough 
-      # to keep crackers at bay. Loop to avoid (extremely rare) duplicate.
-      # I wonder if I should be worried about the possibility of it generating something offensive.
-      self.token = SecureRandom.urlsafe_base64.downcase.delete('_-')[0..5]
-      break unless GiftCertificate.unscoped.exists?(token: self.token)
+    if ! self.token
+      loop do
+        # 6 chars incluing 0-9, a-z, should give us 36^6 = 2,176,782,336 possibilities. Enough 
+        # to keep crackers at bay. Loop to avoid (extremely rare) duplicate.
+        # I wonder if I should be worried about the possibility of it generating something offensive.
+        puts "NEW TOKEN!!"
+        self.token = SecureRandom.urlsafe_base64.downcase.delete('_-')[0..5]
+        puts self.token
+        break unless GiftCertificate.unscoped.exists?(token: self.token)
+      end
     end
   end
 

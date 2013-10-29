@@ -13,7 +13,10 @@ class Users::SessionsController < Devise::SessionsController
     logger.debug "Request Referer: #{request.referer}"
     logger.debug "Root Url: #{root_url}"
     logger.debug '+++++++++++++++++++'
-    if request.referer && URI(request.referer).host == URI(root_url).host
+    if session[:force_return_to] 
+      session[:user_return_to] = session[:force_return_to]
+      session[:force_return_to] = nil
+    elsif request.referer && URI(request.referer).host == URI(root_url).host
       session[:user_return_to] = request.referer
     else
       session[:user_return_to] = root_url

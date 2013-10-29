@@ -75,7 +75,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       mixpanel.track('Course Buy Box Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
       mixpanel.people.set('Paid Course Abandoned' : $scope.assembly.title)
 
+  # Free enrollment, either for a free class or redeeming a gift
   $scope.enroll = ->
+    $scope.processing = true
     $http(
       method: 'POST'
       params: 
@@ -86,10 +88,12 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     ).success((data, status, headers, config) ->
       $scope.enrolled = true
     )
+    $scope.processing = false
 
   $scope.redeemGift = ->
     if $scope.check_signed_in()
       $scope.enroll()
-
+      $scope.state = "thanks_redeem"
+      $scope.buyModalOpen = true
 
 ]
