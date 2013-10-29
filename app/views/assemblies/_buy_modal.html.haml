@@ -57,10 +57,10 @@
         .divider
         .control-group(ng-show="isGift && ! processing")
           %label.radio
-            %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="1")
+            %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="true")
               Email gift to {{giftInfo.recipientName}} now
           %label.radio
-            %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="0")
+            %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="false")
               Email gift to me to deliver later
 
         .control-group.text-center(ng-hide="processing")
@@ -93,8 +93,8 @@
           %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
           \.
         .section.text-center         
-          .btn.btn-large.btn-primary     
-            %a(ng-click="closeModal(false)")
+          %a(ng-click="closeModal(false)")
+            .btn.btn-large.btn-primary     
               OK
 
     .row-fluid(ng-switch-when="thanks_redeem")
@@ -108,6 +108,6 @@
           %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
           \.
         .section.text-center         
-          .btn.btn-large.btn-primary     
-            %a(ng-href="{{assemblyPath}}")
+          %a(ng-href="{{assemblyPath}}")
+            .btn.btn-large.btn-primary     
               Start The Class

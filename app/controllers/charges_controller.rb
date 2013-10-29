@@ -15,6 +15,7 @@ class ChargesController < ApplicationController
       if params[:gift_certificate]
         # This is for *redeeming* a gift certificate
         @enrollment = GiftCertificate.redeem(current_user, JSON.parse(params[:gift_certificate])["id"])
+        session[:gift_token] = nil
 
       else
         # Normal course enrollment (paid or free)

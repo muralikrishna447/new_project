@@ -55,10 +55,12 @@ class GiftCertificate < ActiveRecord::Base
   end
 
   def send_email(to_recipient)
-    #puts self.inspect
+    # Little hack cuz I can't get pow to work lately
     dom = DOMAIN
     dom = "localhost:3000" if dom == "delve.dev"
+    
     GiftCertificateMailer.recipient_email(
+        to_recipient,
         User.find(purchaser_id), 
         Assembly.find(assembly_id).title, 
         "http://" + dom + "/gift/" + token,
