@@ -7,7 +7,7 @@ class AssemblyInclusionSerializer < ActiveModel::Serializer
   end
 
   def includable_description
-    if object.class.method_defined? :description
+    if object.includable.class.method_defined?(:description)
       object.includable.description
     end
   end
