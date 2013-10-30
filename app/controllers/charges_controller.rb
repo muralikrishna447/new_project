@@ -7,7 +7,8 @@ class ChargesController < ApplicationController
     assembly = Assembly.find(params[:assembly_id])
     gift_info = JSON.parse(params[:gift_info]) if params[:gift_info]
 
-    if defined? gift_info["recipientEmail"]
+
+    if gift_info && gift_info.has_key?("recipientEmail")
       # This is for *buying* a gift certificate
       @gift_cert = GiftCertificate.purchase(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken], gift_info)
     else

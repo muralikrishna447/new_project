@@ -48,7 +48,7 @@
   -# Sell gift certificate
   %div(ng-show="(! gift_certificate) && (assembly.price > 0)")
     .gift-cta
-      .btn.btn-secondary.btn-large.input-block-level#buy-button(ng-click="openModal(true)")
+      .btn.btn-secondary.btn-large.input-block-level#gift-button(ng-click="openModal(true)")
         Send As Gift
         %div.inline(ng-show="enrolled")
           = render 'activities/latest/assembly_price'

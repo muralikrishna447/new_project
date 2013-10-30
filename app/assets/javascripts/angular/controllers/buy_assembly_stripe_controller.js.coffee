@@ -59,7 +59,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.check_signed_in = ->
     if ! $scope.logged_in
-      window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before purchasing a course.")
+      window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before enrolling in a course.")
       false
     true
 

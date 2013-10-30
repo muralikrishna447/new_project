@@ -25,6 +25,7 @@ module ActsAsChargeable
           description: item_title + extra_descrip,
           currency: 'usd'
         )
+        puts charge.inspect
       end
     end
 

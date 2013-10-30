@@ -2,7 +2,7 @@ require 'spec_helper'
 include AcceptanceMacros
 Capybara.default_wait_time = 15
 
-feature 'charge for classes', pending: true, :js => true do
+feature 'charge for classes', pending: false, :js => true do
   let!(:assembly) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 147.47, published: true ) }
   let!(:landing_page) { Fabricate(:page, title: "Clummy LP", content: "You so clummy", primary_path: "/classes/clummy") }
   let(:current_user) { User.find(1) }
@@ -16,12 +16,12 @@ feature 'charge for classes', pending: true, :js => true do
 
     scenario "Should get a chance to sign in with nice message" do
       current_path.should == '/sign_in'
-      page.should have_content('before purchasing a course')
+      page.should have_content('before enrolling in a course')
     end 
 
     scenario "Should redirect back to course after signin" do
       current_path.should == '/sign_in'
-      page.should have_content('before purchasing a course')
+      page.should have_content('before enrolling in a course')
       Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password')
       fill_in 'user_email', with: 'bob@bob.com'
       fill_in 'user_password', with: 'password'
