@@ -69,7 +69,7 @@
         = render 'top_buttons'
 
     -# Main content row
-    .row.printable.printable-column
+    .row.printable
       .span12
         -# This seems a little weird, why do we have a row inside a span12?
         .row#main-content
@@ -173,7 +173,7 @@
 
 
 :javascript
-  mixpanel.track('Activity Viewed', {'distinct_id' : "#{current_user ? current_user.email : nil}", 'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
+  mixpanel.track('Activity Viewed', {'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
 
 
 

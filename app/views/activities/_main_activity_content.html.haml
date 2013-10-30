@@ -1,8 +1,8 @@
 .section.ng-cloak#video-ingredient-unit(ng-class="primaryColumnClass()")
 
   = render 'activities/metadata'
-  = render 'activities/hero_visual', activity: activity
-  %div(ng-show="! editMode")
+  .noprint= render 'activities/hero_visual', activity: activity
+  %div.noprint(ng-show="! editMode")
     = render 'layouts/social_buttons', media_object: activity
   = render 'activities/description'
   = render 'activities/main_ingredients'
