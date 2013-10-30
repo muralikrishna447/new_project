@@ -2,8 +2,7 @@
   %form(name='UploadForm' ng-submit='submit()')
     .row.section
       .span6
-        / %div(ng-bind-html-unsafe="assembly.upload_copy | markdown")
-        %h1
+        %h2
           {{currentIncludable.includable_title}}
         %p
           {{currentIncludable.includable_description}}
