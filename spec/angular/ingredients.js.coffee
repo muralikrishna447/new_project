@@ -1,4 +1,6 @@
 describe "IngredientIndexController", ->
+  return
+
   beforeEach ->
     browser().navigateTo('/ingredients')
 
