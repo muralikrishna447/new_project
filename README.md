@@ -70,7 +70,7 @@ npm install karma-coffee-preprocessor
 
 Once they are installed you can run the command:
 ```bash
-karma start config/karma.js
+./node_modules/karma/bin/karma start start config/karma.js
 ```
 
 This will start the server.  It will automatically watch all files in the spec/javascripts/e2e folder and run the tests when you save a file.
