@@ -1,63 +1,74 @@
 .container.smoker(ng-controller="SmokerController" ng-cloak)
-  .lrpair.first
-    .left
-      %label.control-label
-        %h4 Probe 1 Temp
-      %h1
-        {{probe1Temp}} °C
+  -#%pre
+    {{ state | json }}
 
-    .right
-      %label.control-label
-        %h4 Probe 2 Temp
-      %h1
-        {{probe2Temp}} °C
+  %h1.title
+    Smoker Prototype N+1
 
-
-  %hr
-
-  .lrpair
-    .left
-      %label.control-label
-        %h4 Target Temp
-      .controls
-        %input.input-full(ng-model="targetTemp" type="text")
-         
-    .right
-      %label.control-label
-        %h4 Current Temp
-      .controls
+  .all-controls
+    .lrpair.first
+      .left
+        %label.control-label
+          %h4 Probe 1 Temp
         %h1
-          {{currentTemp}}  °C
+          {{probe1Temp}} °C
 
-  .lrpair
-    .left
-      %label.control-label
-        %h4 Target RH
-      .controls
-        %input.input-full(ng-model="targetRH" type="text")
-          
-    .right
-      %label.control-label
-        %h4 Current RH
-      .controls
+      .right
+        %label.control-label
+          %h4 Probe 2 Temp
         %h1
-          {{currentRH}} %
+          {{probe2Temp}} °C
 
 
-  .lrpair
-    .left
-      %label.control-label
-        %h4 Smoke
-      .btn-group
-        %button.btn(btn-radio="false" ng-model="smokeState" type="button") Off
-        %button.btn(btn-radio="true" ng-model="smokeState" type="button") On
+    -# %hr
 
-    .right
-      %label.control-label
-        %h4 Fan
-      .btn-group
-        %button.btn(btn-radio="false" ng-model="fanState" type="button") Off
-        %button.btn(btn-radio="true" ng-model="fanState" type="button") On
+    .lrpair
+      .left
+        %label.control-label
+          %h4 Target Temp
+        .controls
+          %input.input-full.inline(ng-model="targetTemp" type="text")
+          %h1.inline
+            °C
+           
+      .right
+        %label.control-label
+          %h4 Current Temp
+        .controls
+          %h1(ng-class="colorClass(targetTemp, state.temperatureValue)")
+            {{state.temperatureValue}}  °C
+
+    .lrpair
+      .left
+        %label.control-label
+          %h4 Target RH
+        .controls
+          %input.input-full.inline(ng-model="targetRH" type="text")
+            %h1.inline
+              \%
+           
+      .right
+        %label.control-label
+          %h4 Current RH
+        .controls
+          %h1(ng-class="colorClass(targetRH, state.humidityValue)")
+            {{state.humidityValue}} %
+
+
+    .lrpair
+      .left
+        %label.control-label
+          %h4 Smoke
+        .btn-group
+          %button.btn(btn-radio="false" ng-model="smokeState" type="button") Off
+          %button.btn(btn-radio="true" ng-model="smokeState" type="button") On
+
+      .right
+        %label.control-label
+          %h4 Fan
+        .btn-group
+          %button.btn(btn-radio="false" ng-model="fanState" type="button") Off
+          %button.btn(btn-radio="true" ng-model="fanState" type="button") On
 
 
 = content_for :footer do
