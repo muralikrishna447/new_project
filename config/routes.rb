@@ -191,5 +191,6 @@ Delve::Application.routes.draw do
 
   resources :events, only: [:create]
 
+  get "smoker" => "smoker#index"
 end
 

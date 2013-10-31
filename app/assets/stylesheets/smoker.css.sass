@@ -1,0 +1,43 @@
+@import 'mixins'
+
+.smoker
+  .lrpair
+    width: 340px
+    margin-left: 10px
+    margin-bottom: $baseline * 2
+    text-align: center
+    .left, .right
+      display: inline-block
+      vertical-align: top
+      width: 140px
+    .left
+      margin-right: 40px
+
+    input
+      width: 120px
+      text-align: center
+      font-size: 4.4201rem
+      margin-top: -8px
+      background-color: transparent
+      border: none
+      box-shadow: none
+      @include primary-font
+      border-radius: 0
+      @include boxsizing
+
+      &:focus
+        border-bottom: 2px solid darkgray
+ 
+  .lrpair.first
+    margin-top: $baseline * 4
+
+
+
+  label
+    text-transform: uppercase
+    margin-bottom: -12px
+
+
+  h4
+    font-size: 90%
+    z-index: 10

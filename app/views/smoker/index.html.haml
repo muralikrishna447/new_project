@@ -1,0 +1,64 @@
+.container.smoker(ng-controller="SmokerController" ng-cloak)
+  .lrpair.first
+    .left
+      %label.control-label
+        %h4 Probe 1 Temp
+      %h1
+        {{probe1Temp}} °C
+
+    .right
+      %label.control-label
+        %h4 Probe 2 Temp
+      %h1
+        {{probe2Temp}} °C
+
+
+  %hr
+
+  .lrpair
+    .left
+      %label.control-label
+        %h4 Target Temp
+      .controls
+        %input.input-full(ng-model="targetTemp" type="text")
+         
+    .right
+      %label.control-label
+        %h4 Current Temp
+      .controls
+        %h1
+          {{currentTemp}}  °C
+
+  .lrpair
+    .left
+      %label.control-label
+        %h4 Target RH
+      .controls
+        %input.input-full(ng-model="targetRH" type="text")
+          
+    .right
+      %label.control-label
+        %h4 Current RH
+      .controls
+        %h1
+          {{currentRH}} %
+
+
+  .lrpair
+    .left
+      %label.control-label
+        %h4 Smoke
+      .btn-group
+        %button.btn(btn-radio="false" ng-model="smokeState" type="button") Off
+        %button.btn(btn-radio="true" ng-model="smokeState" type="button") On
+
+    .right
+      %label.control-label
+        %h4 Fan
+      .btn-group
+        %button.btn(btn-radio="false" ng-model="fanState" type="button") Off
+        %button.btn(btn-radio="true" ng-model="fanState" type="button") On
+
+
+= content_for :footer do
+  = render 'layouts/footer'
