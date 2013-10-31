@@ -1,6 +1,4 @@
-.container.smoker(ng-controller="SmokerController" ng-cloak)
-  -#%pre
-    {{ state | json }}
+.container.smoker.relative(ng-controller="SmokerController" ng-cloak)
 
   %h1.title
     Smoker Prototype N+1
@@ -70,6 +68,11 @@
           %button.btn(btn-radio="false" ng-model="fanState" type="button") Off
           %button.btn(btn-radio="true" ng-model="fanState" type="button") On
 
+  -#%pre
+    {{ state | json }}
+
+  .loading
+    %i.icon-2x.icon-spinner(ng-class="{'icon-spin': loading}")
 
 = content_for :footer do
   = render 'layouts/footer'
