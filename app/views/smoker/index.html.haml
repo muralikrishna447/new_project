@@ -34,7 +34,10 @@
           %h4 Current Temp
         .controls
           %h1(ng-class="colorClass(state.temperatureSetPoint, state.temperatureValue)" )
-            {{state.temperatureValue}}  °C
+            {{state.temperatureValue | number:1}}  °C
+
+      .third
+        %div(google-chart="" chart="chart" style="{{chart.cssStyle}}")
 
     .lrpair
       .left
@@ -50,7 +53,9 @@
           %h4 Current RH
         .controls
           %h1(ng-class="colorClass(state.humiditySetPoint, state.humidityValue)")
-            {{state.humidityValue}} %
+            {{state.humidityValue | number:1}} %
+      .third
+        %div(google-chart="" chart="chartRH" style="{{chart.cssStyle}}")
 
     .lrpair
       .right.right-only
@@ -79,7 +84,7 @@
   -#%pre
     {{ state | json }}
 
-  .loading
+  -#.loading
     %i.icon-2x.icon-spinner(ng-class="{'icon-spin': loading}")
 
 = content_for :footer do
