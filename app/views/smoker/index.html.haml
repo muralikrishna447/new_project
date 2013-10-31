@@ -1,7 +1,7 @@
 .container.smoker.relative(ng-controller="SmokerController" ng-cloak)
 
   %h1.title
-    Smoker Prototype N+1
+    SmokeBox N+1
 
   .all-controls
     .lrpair.first
@@ -25,7 +25,7 @@
         %label.control-label
           %h4 Target Temp
         .controls
-          %input.input-full.inline(ng-model="targetTemp" type="text")
+          %input.input-full.inline(ng-model="state.temperatureSetPoint" type="text" ui-event='{focus : "pauseLoad = true", blur: "pauseLoad = false"}')
           %h1.inline
             °C
            
@@ -33,7 +33,7 @@
         %label.control-label
           %h4 Current Temp
         .controls
-          %h1(ng-class="colorClass(targetTemp, state.temperatureValue)")
+          %h1(ng-class="colorClass(state.temperatureSetPoint, state.temperatureValue)" )
             {{state.temperatureValue}}  °C
 
     .lrpair
@@ -41,7 +41,7 @@
         %label.control-label
           %h4 Target RH
         .controls
-          %input.input-full.inline(ng-model="targetRH" type="text")
+          %input.input-full.inline(ng-model="state.humiditySetPoint" type="text" ui-event='{focus : "pauseLoad = true", blur: "pauseLoad = false"}')
             %h1.inline
               \%
            
@@ -49,8 +49,16 @@
         %label.control-label
           %h4 Current RH
         .controls
-          %h1(ng-class="colorClass(targetRH, state.humidityValue)")
+          %h1(ng-class="colorClass(state.humiditySetPoint, state.humidityValue)")
             {{state.humidityValue}} %
+
+    .lrpair
+      .right.right-only
+        %label.control-label
+          %h4 Wet Bulb Temp
+        .controls
+          %h1
+            {{wetBulb()}} °C
 
 
     .lrpair
