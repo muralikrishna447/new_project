@@ -66,11 +66,12 @@ brew install nodejs
 npm install karma
 npm install karma-ng-scenario
 npm install karma-coffee-preprocessor
+createdb delve_angular
 ```
 
 Once they are installed you can run the command:
 ```bash
-./node_modules/karma/bin/karma start config/karma.js
+script/e2e
 ```
 
 This will start the server.  It will automatically watch all files in the spec/javascripts/e2e folder and run the tests when you save a file.
