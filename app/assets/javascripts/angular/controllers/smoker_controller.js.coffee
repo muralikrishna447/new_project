@@ -76,7 +76,10 @@ angular.module('ChefStepsApp').controller 'SmokerController', ["$scope", "$rootS
       isStacked: "true"
       xfill: 20
       displayExactValues: true
+      curveType: "function"
       vAxis:
+        minValue: 22
+        maxValue: 23
         title: ""
         gridlines:
           color: "white"
@@ -115,8 +118,11 @@ angular.module('ChefStepsApp').controller 'SmokerController', ["$scope", "$rootS
       isStacked: "true"
       xfill: 20
       displayExactValues: true
+      curveType: "function"
       vAxis:
         title: ""
+        minValue: 56
+        maxValue: 57
         gridlines:
           color: "white"
 

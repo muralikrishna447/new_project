@@ -84,7 +84,7 @@
   -#%pre
     {{ state | json }}
 
-  -#.loading
+  .loading
     %i.icon-2x.icon-spinner(ng-class="{'icon-spin': loading}")
 
 = content_for :footer do
