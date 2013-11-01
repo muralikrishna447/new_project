@@ -58,6 +58,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.state = "charge"  
 
   $scope.check_signed_in = ->
+    # For e2e tests, don't require login
+    if $scope.rails_env? && $scope.rails_env == "angular"
+      return true
     if ! $scope.logged_in
       window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before enrolling in a course.")
       false

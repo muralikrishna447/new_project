@@ -70,11 +70,17 @@ module.exports = function(config) {
     // - IE (only Windows)
     browsers: [
       // 'PhantomJS',
-      "Chrome",
+      "Chrome_without_security",
       // "Safari",
       // "Firefox"
     ],
 
+    customLaunchers: {
+      Chrome_without_security: {
+        base: 'Chrome',
+        flags: ['--disable-web-security']
+      }
+    },
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
