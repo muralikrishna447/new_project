@@ -1143,6 +1143,14 @@ a:hover
   @include btn-social-base(#C92228)
 .btn-social-email
   @include btn-social-base(black)
+.btn-social-cs140
+  @include btn-social-base($orange)
+  .social-icon-group
+    width: 60px
+    color: white
+    &:hover
+      background-color: white
+      color: $orange
 
 
 .btn-outline-blue-large
@@ -1636,6 +1644,9 @@ csingredienteditpair
 
 .edit-meta-button
   margin-bottom: $baseline
+
+input.summary-tweet
+  width: 100%
 
 .alert.edit-alert
   text-align: left

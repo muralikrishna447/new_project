@@ -1,7 +1,11 @@
 .social-button-contents
   .social-icon-group
-    %span
-      %i{class: "icon-#{icon}"}
+    -if defined? icon
+      %span
+        %i{class: "icon-#{icon}"}
+    -if defined? xlabel
+      %span
+        #{xlabel}
   -if (defined? counter)
     .social-counter
       %span.text-center

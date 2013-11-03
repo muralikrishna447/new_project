@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131029230840) do
+ActiveRecord::Schema.define(:version => 20131102051548) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(:version => 20131029230840) do
     t.integer  "creator",                :default => 0
     t.string   "layout_name"
     t.boolean  "show_only_in_course",    :default => false
+    t.string   "summary_tweet"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -226,12 +227,13 @@ ActiveRecord::Schema.define(:version => 20131029230840) do
   create_table "enrollments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "course_id"
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
     t.integer  "enrollable_id"
     t.string   "enrollable_type"
-    t.decimal  "price",           :precision => 8, :scale => 2, :default => 0.0
-    t.decimal  "sales_tax",       :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "price",               :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",           :precision => 8, :scale => 2, :default => 0.0
+    t.integer  "gift_certificate_id"
   end
 
   create_table "equipment", :force => true do |t|
@@ -274,6 +276,22 @@ ActiveRecord::Schema.define(:version => 20131029230840) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], :name => "index_friendly_id_slugs_on_slug_and_sluggable_type", :unique => true
   add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
+
+  create_table "gift_certificates", :force => true do |t|
+    t.integer  "purchaser_id"
+    t.string   "recipient_email",                                 :default => "",    :null => false
+    t.string   "recipient_name",                                  :default => "",    :null => false
+    t.text     "recipient_message",                               :default => ""
+    t.integer  "assembly_id"
+    t.decimal  "price",             :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",         :precision => 8, :scale => 2, :default => 0.0
+    t.string   "token"
+    t.boolean  "redeemed",                                        :default => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
+  end
+
+  add_index "gift_certificates", ["token"], :name => "index_gift_certificates_on_token"
 
   create_table "images", :force => true do |t|
     t.string   "filename"
