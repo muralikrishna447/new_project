@@ -54,4 +54,26 @@ task :migrate_courses => :environment do
     end
   end
 
+  # Migrate Enrollments
+  course.enrollments.each do |enrollment|
+    enrollment.enrollable = assembly
+    if enrollment.save
+      puts "Migrated enrollment:"
+      puts enrollment.inspect
+      puts "***********************"
+    end
+  end
+
+  # Migrate Uploads
+
+  course.uploads.each do |upload|
+    upload.assembly_id = assembly.id
+    upload.course_id = nil
+    if upload.save
+      puts "Migrated upload:"
+      puts upload.inspect
+      puts "*************************"
+    end
+  end
+
 end
