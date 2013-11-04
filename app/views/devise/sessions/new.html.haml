@@ -2,8 +2,7 @@
 
 .container#main-container
   .row
-    .span5.offset1
-    .span5.registration
+    .span6.offset3.registration
       %h3 Sign into Chefsteps
       = form_for @user, url: session_path(@user) do |f|
         - if @signin_message
@@ -11,9 +10,12 @@
           %hr
         %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level', type: 'email'
         %div= f.password_field :password, placeholder: 'Password', class: 'input-block-level'
-        %div= f.submit 'Sign in', class: 'btn btn-primary btn-large'
-        %h3 or
-        = render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
+        %div= f.submit 'Sign in', class: 'btn btn-primary'
+        %h4 or
+        = render 'devise/shared/facebook_login', text: 'Log in with Facebook'
         %hr
-        %div= "Don't have an account? #{link_to 'Sign up', new_user_registration_path}".html_safe
+        %h3 Don't have an account? 
+        .btn.btn-primary
+          =link_to 'Sign up', new_user_registration_path
+        %hr
         %div= "Forgot your password? #{link_to 'Reset password', new_user_password_path}".html_safe
