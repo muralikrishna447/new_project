@@ -6,6 +6,8 @@
         %ul
           %li Participate in the forums
           %li Get your questions about cooking answered
+          %li Save your favorite recipes
+          %li Earn badges, enroll in classes, and connect with other cooks
     .span5.section.registration
       = form_for @user, url: registration_path(@user) do |f|
         = render 'shared/error_messages', target: f
