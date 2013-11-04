@@ -481,6 +481,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     return $scope.featuredImageURL(800) if $scope.hasFeaturedImage()
     null
 
+  $scope.cs140Message = ->
+    $scope.activity.summary_tweet || $scope.activity.title
+
   $scope.tweetMessage = ->
     "I love this:"
 

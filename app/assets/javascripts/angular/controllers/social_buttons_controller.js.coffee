@@ -29,6 +29,9 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     $scope.twitterCount = if $scope.twitterCount? then $scope.twitterCount + 1 else 1
     $scope.openSocialWindow 'Twitter', "https://twitter.com/intent/tweet?text=" + $scope.tweetMessage() + " " + $scope.socialTitle() + " @ChefSteps!&url=" + window.escape($scope.socialURL())
 
+  $scope.shareCS140 = ->
+    $scope.openSocialWindow 'Twitter', "https://twitter.com/intent/tweet?text=" + $scope.cs140Message() + " %23cs140 @ChefSteps&url=" + window.escape($scope.socialURL())
+
   $scope.shareFacebook = ->
     $scope.facebookCount = if $scope.facebookCount? then $scope.facebookCount + 1 else 1
     $scope.openSocialWindow 'Facebook', "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent($scope.socialURL()), 'width=626,height=436,top=100,left=100'

@@ -14,6 +14,9 @@
     %h6 Tags
     %input(type="text" ng-model="tags" ng-model="activity.tags" ui-select2="tagsSelect2")
 
+    %h6 #CS140 Summary Tweet (limit 96 chars to allow for link #cs140 @ChefSteps and RT)
+    %input.summary-tweet(type="text" ng-model="activity.summary_tweet" maxlength="96")
+
     %h6 Difficulty
     .btn-toolbar
       %button.btn(ng-repeat="actDifficulty in activityDifficulties" type="button" ng-click="setActivityDifficulty(actDifficulty)" ng-class="{active: hasActivityDifficulty(actDifficulty)}")

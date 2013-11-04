@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131025183651) do
+ActiveRecord::Schema.define(:version => 20131102051548) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(:version => 20131025183651) do
     t.integer  "creator",                :default => 0
     t.string   "layout_name"
     t.boolean  "show_only_in_course",    :default => false
+    t.string   "summary_tweet"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -159,6 +160,9 @@ ActiveRecord::Schema.define(:version => 20131025183651) do
     t.integer  "child_activity_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.string   "title"
+    t.text     "description"
+    t.string   "slug"
   end
 
   add_index "assignments", ["activity_id", "child_activity_id"], :name => "index_assignments_on_activity_id_and_child_activity_id"

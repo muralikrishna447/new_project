@@ -9,7 +9,7 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
   $scope.init = (assembly_id) ->
     $scope.upload.assembly_id = assembly_id
     $scope.shareModalShow = false
-    $http.get(assembly_id + '/show_as_json.json').success (data,status) ->
+    $http.get('/classes/' + assembly_id + '/show_as_json.json').success (data,status) ->
       $scope.assembly = data
       console.log $scope.assembly
 

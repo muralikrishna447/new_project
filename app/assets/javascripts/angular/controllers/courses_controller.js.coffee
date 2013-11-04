@@ -17,7 +17,6 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $scope.course = data
       console.log $scope.course.assembly_inclusions
       console.log $scope.course.assembly_inclusions[0].includable_id
-      addUploadToEnd()
       $scope.flatInclusions = $scope.computeflatVisibleInclusions($scope.course.assembly_inclusions)
       if $scope.routeParams.slug
         $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
@@ -147,13 +146,4 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       return $scope.collapsed[includable_id] 
     else 
       true
-
-  addUploadToEnd = ->
-    # Special treatment for upload - put it at end of last group
-    dummy_upload = {"includable_id" : "Upload", "includable_type" : "Upload", "includable_title" : "Upload Your Own", "includable_slug" : "upload"}
-    last_group = _.last(_.where($scope.course.assembly_inclusions, {includable_type: "Assembly"}))
-    if last_group
-      last_group.includable.assembly_inclusions.push(dummy_upload)
-    else
-      $scope.course.assembly_inclusions.push(dummy_upload)
 ]

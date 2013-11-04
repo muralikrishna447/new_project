@@ -50,5 +50,6 @@
  *= require application/assemblies/pre_registration
  *= require typography
  *= require about
+ *= require smoker
 
  */

@@ -1143,6 +1143,14 @@ a:hover
   @include btn-social-base(#C92228)
 .btn-social-email
   @include btn-social-base(black)
+.btn-social-cs140
+  @include btn-social-base($orange)
+  .social-icon-group
+    width: 60px
+    color: white
+    &:hover
+      background-color: white
+      color: $orange
 
 
 .btn-outline-blue-large
@@ -1637,6 +1645,9 @@ csingredienteditpair
 .edit-meta-button
   margin-bottom: $baseline
 
+input.summary-tweet
+  width: 100%
+
 .alert.edit-alert
   text-align: left
   padding: 0px 20px 20px 20px
@@ -1924,6 +1935,8 @@ csingredienteditpair
 
   .activity-description
     height: inherit
+  #activity-description-maximize
+    display: none
 
 @media (max-width: 320px)
   .popup-bottom

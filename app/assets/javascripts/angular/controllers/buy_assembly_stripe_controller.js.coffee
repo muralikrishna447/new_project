@@ -40,6 +40,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         mixpanel.people.append('Classes Purchased', $scope.assembly.title)
         mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
         mixpanel.people.set('Paid Course Abandoned' : false)
+        _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price])
         $http.put('/splitty/finished?experiment=macaron_landing_video')
 
       ).error((data, status, headers, config) ->
@@ -73,6 +74,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     if $scope.check_signed_in()
       $scope.buyModalOpen = true
       mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
+      _gaq.push(['_trackEvent', 'Buy Button', 'Clicked', $scope.assembly.title])
 
   $scope.closeModal = (abandon = true) ->
     $scope.buyModalOpen = false

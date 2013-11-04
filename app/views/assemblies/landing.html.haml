@@ -31,7 +31,7 @@
           %ul.dropdown-menu(ng-show="showDropdown")
             = render 'landing_page_tab_links'
 
-      .tab-content
+      .tab-content#class-overview
         %div(ng-show="tab=='default'")
           .two-columns
             :markdown
@@ -88,3 +88,4 @@
 
 :javascript
   mixpanel.track('Course Landing Viewed', {'context' : 'course', 'title' : "#{@course.title}", 'slug' : "#{@course.slug}"});
+  _gaq.push(['_trackEvent', 'Course', 'Viewed', "#{@course.title}"]);
