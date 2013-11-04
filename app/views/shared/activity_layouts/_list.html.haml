@@ -4,14 +4,12 @@
 /       %h3= step.title
 /       %p= step.directions
 
-%h1
-  {{activity.title}}
-
 .row
-  .span7
+  .span9.offset1
+    %h1(ng-bind-html-unsafe="step.title | markdown | shortcode")
+.row
+  .span9.offset1
     %ul.unstyled(ng-repeat="step in activity.steps")
       %li
-        %h3
-          {{step.title}}
-        %p
-          {{step.directions}}
+        %h3(ng-bind-html-unsafe="step.title | markdown | shortcode")
+        %p(ng-bind-html-unsafe="step.directions | markdown | shortcode")
