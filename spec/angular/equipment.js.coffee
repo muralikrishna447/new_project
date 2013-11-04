@@ -1,6 +1,6 @@
 
 describe "EquipmentController", ->
-  return
+
   beforeEach ->
     browser().navigateTo('/equipment')
 
