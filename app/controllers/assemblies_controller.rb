@@ -83,7 +83,7 @@ private
     when 'a1b71d389a50'
       pct = 29.0/39
     when 'be11c664ce1a'
-      pct = 24.0/39
+      pct = 23.0/39
     when 'cc448c11505a'
       pct = 20.0/39
     when 'd035c58a0a8c'

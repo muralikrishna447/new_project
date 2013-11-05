@@ -24,7 +24,7 @@ class ChefSteps.NavigationBootstrap
     @fixNavLinks()
 
 $ ->
-  filepicker.setKey('Ad8qmyXRSpy36YcW4CINQz')
+  filepicker.setKey('ANAsscmHGSKqZCHObvuK6z')
   $(document).on "click", ".forum-filepicker", (event) ->
     event.preventDefault()
     doc = $('.cleditorMain').find('iframe')[0].contentWindow.document
@@ -32,7 +32,7 @@ $ ->
     filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"}, (fpfiles) =>
       console.log(JSON.stringify(fpfiles))
       url = JSON.stringify(fpfiles[0]['url'])
-      convert = "/convert?fit=max&w=400"
+      convert = "/convert?fit=max&w=480"
       url_with_conversion = JSON.parse(url) + convert
       content = "<br/><a href='" + JSON.parse(url) + "' target='_blank'><img src='" + url_with_conversion + "'/></a><br/>"
       $(doc).find('body').append(content)
