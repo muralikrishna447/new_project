@@ -17,7 +17,7 @@
       .section.csmonitorinputactivity(ng-controller="IngredientsController" ng-cloak)
         .activity-ingredients-list#full-ingredients-list.section
           .well(ng-show="activity.ingredients.length" )
-            = render '/shared/ingredients_list', source: "activity", include_header: true
+            = render '/shared/ingredients_list', source: "activity"
     - if activity.yield.present?
       .section
         %h4 Yield

@@ -8,7 +8,7 @@
     .span6
       = render 'activities/latest/description'
     .span6
-      = render 'activities/main_ingredients', include_header: false
+      = render 'activities/main_ingredients'
       .row
         .span3
           = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/Materials", test_method: "hasAnyEquipment", required_string: "any", required: "any"

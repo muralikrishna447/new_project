@@ -2,8 +2,10 @@
 
   .activity-ingredients-list#full-ingredients-list.section
     %h4.ingredients-title Ingredients
-    .well(ng-show="activity.ingredients.length" )
-      = render 'shared/ingredients_list', source: "activity", include_header: (defined? include_header) ? include_header : true
+    .ingredients-well.well(ng-show="activity.ingredients.length" )
+      = render 'shared/ingredients_list', source: "activity"
+      .ingredients-menu
+        %i.icon-cog.icon-large
 
   .nav(ng-show="editMode")
     %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients

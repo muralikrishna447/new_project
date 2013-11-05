@@ -604,11 +604,29 @@ a:hover
     &:hover
       background: rgba(0, 128, 220, .2) !important
 
+.ingredients-well
+  position: relative
+
+.ingredients-menu
+  height: 100%
+  border-left: 1px solid white
+  display: inline-block
+  position: absolute
+  right: 24px
+  top: 0
+  i
+    position: absolute
+    margin-top: -10px
+    top: 50%
+    right: -20px
+    color: $lightgray
+
 .ingredients
 
   position: relative
   font-size: 14px
   width: 100%
+  display: inline-block
 
   div
     display: inline-block
@@ -618,6 +636,8 @@ a:hover
     width: 100%
     line-height: $baseline * 2
     min-height: $baseline * 2
+    input
+      border-top: none
 
   .ingredient-title
     width: auto
@@ -640,8 +660,20 @@ a:hover
 
   .quantity-edit
     position: relative
-    bottom: -4px
-    left:  -8px
+    bottom: -2px
+    left:  2px
+    input
+      font-weight: 300
+      margin-top: -12px
+      background-color: transparent
+      border: none
+      @include any-shadow(none)
+      @include primary-font-light
+      border-radius: 0
+      @include boxsizing
+      border-bottom: 2px solid darkgray
+      padding-bottom: 1px
+      outline: none
 
   .unit
     position: absolute
@@ -693,7 +725,6 @@ a:hover
       display: block
       @include transition(opacity 500ms)
       .ingredient-title
-        font-weight: 400
         @include transition(opacity 500ms)
       .quantity-group, .unit
         @include transition(opacity 500ms)
