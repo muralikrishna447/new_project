@@ -355,23 +355,35 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       r.unshift({title: equip_name})
       r
 
+  # Using _.compact was confusing angular - specifically ui-sortable for ingredients.
+  # https://www.pivotaltracker.com/story/show/59722984
+  # I don't know the exact reason.
+  myCompact = (a) ->
+    i = a.length - 1
+    while i >= 0
+      if ! a[i]
+        a.splice(i, 1)
+      i -= 1
+    a
+
+
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
   # autocomplete (unshift in all_equipment), it will be missing a nesting level in the model.
   $scope.normalizeModel = () ->
-    $scope.activity.equipment = _.compact($scope.activity.equipment)
+    myCompact($scope.activity.equipment)
     angular.forEach $scope.activity.equipment, (item) ->
       if _.isString(item["equipment"])
         item["equipment"] = {title: item["equipment"]}
 
-    $scope.activity.ingredients = _.compact($scope.activity.ingredients)
+    myCompact($scope.activity.ingredients)
     angular.forEach $scope.activity.ingredients, (item) ->
       if _.isString(item["ingredient"])
         item["ingredient"] = {title: item["ingredient"]}
 
-    $scope.activity.steps = _.compact($scope.activity.steps)
+    myCompact($scope.activity.steps)
     angular.forEach $scope.activity.steps, (step) ->
-      step.ingredients = _.compact(step.ingredients)
+      step.ingredients = myCompact(step.ingredients)
       angular.forEach step.ingredients, (item) ->
         if _.isString(item["ingredient"])
           item["ingredient"] = {title: item["ingredient"]}
