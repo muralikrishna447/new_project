@@ -41,6 +41,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
         mixpanel.people.set('Paid Course Abandoned' : false)
         _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price])
+        try
+          __adroll.record_user adroll_segments: "segment_name"
         $http.put('/splitty/finished?experiment=macaron_landing_video')
 
       ).error((data, status, headers, config) ->
