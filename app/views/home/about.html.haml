@@ -93,6 +93,6 @@
                           %p= member[:name]
                           %p= member[:title]
                         .team-member-bio
-                          %p= member[:bio]
+                          %p= member[:bio].html_safe
 
 = render 'layouts/footer'
