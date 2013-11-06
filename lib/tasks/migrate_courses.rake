@@ -1,9 +1,19 @@
-namespace :migrate_courses do
+namespace :courses do
 
-  # Example Usage: rake migrate_courses:course['science-of-poutine']
+  task :migrate_all => :environment do
+    courses = ['science-of-poutine', 'knife-sharpening', 'spherification']
+    courses.each do |slug|
+      migrate(slug)
+    end
+  end
 
-  task :course, [:slug] => :environment do |t,args|
-    course = Course.find(args.slug)
+  # Example Usage: rake courses:migrate['science-of-poutine']
+  task :migrate_one, [:slug] => :environment do |t,args|
+    migrate(args.slug)
+  end
+
+  def migrate(slug)
+    course = Course.find(slug)
     puts "Preparing to migrate course: #{course.title}"
 
     # Build the main Assembly
