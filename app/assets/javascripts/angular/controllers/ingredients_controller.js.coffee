@@ -73,6 +73,11 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
   $scope.loadSubrecipe = (id) ->
     window.location.href = '/activities/' + id unless $scope.overrideLoadActivity?(id) 
 
+  $scope.toggleIngredientsMenu = ->
+    $scope.showIngredientsMenu = ! $scope.showIngredientsMenu
+    if $scope.showIngredientsMenu
+      mixpanel.track('Ingredients Menu Opened', {'slug' : $scope.activity.slug});
+
   $scope.displayScaling = ->
     Math.round($rootScope.csScaling * 10) / 10
 
@@ -87,6 +92,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     idx = (idx + 1) % scales.length
     $rootScope.csScaling = scales[idx]
     window.updateUnits(true)
+    mixpanel.track('Scaling Button Pushed', {'slug' : $scope.activity.slug});
 
   $scope.displayUnits = ->
     return "oz" if $rootScope.csUnits == "ounces"
@@ -95,5 +101,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
   $scope.cycleUnits = ->
     $rootScope.csUnits = if $rootScope.csUnits == "ounces" then "grams" else "ounces"
     window.updateUnits(true)
+    mixpanel.track('Units Button Pushed', {'slug' : $scope.activity.slug});
+
 
 ]

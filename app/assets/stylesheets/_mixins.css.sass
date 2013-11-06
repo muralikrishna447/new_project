@@ -84,14 +84,15 @@
   -webkit-column-gap: $value
   -o-column-gap: $value
 
+/* This works on both inputs and spans */
 =editable_text
-  background-color: transparent
-  border: none
+  @include boxsizing
   @include any-shadow(none)
   @include primary-font-light
+  background-color: transparent
+  border: none
   border-radius: 0
-  @include boxsizing
-  border-bottom: 2px solid darkgray
+  border-bottom: 1px dotted darkgray
   padding-bottom: 1px
   outline: none
 

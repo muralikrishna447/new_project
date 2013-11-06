@@ -4,7 +4,7 @@
     .ingredients-well.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-slide' : showIngredientsMenu}")
       = render 'shared/ingredients_list', source: "activity"
     .ingredients-menu-button
-      %i.icon-cog.icon-large(ng-click="showIngredientsMenu = ! showIngredientsMenu")
+      %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()")
     .ingredients-menu.well
       .controls
         .btn.btn-primary(ng-click="cycleScaling()")
