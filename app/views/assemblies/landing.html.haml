@@ -88,4 +88,4 @@
 
 :javascript
   mixpanel.track('Course Landing Viewed', {'context' : 'course', 'title' : "#{@course.title}", 'slug' : "#{@course.slug}"});
-  _gaq.push(['_trackEvent', 'Course', 'Viewed', "#{@course.title}"]);
+  _gaq.push(['_trackEvent', 'Course', 'Viewed', "#{@course.title}", null, true]);
