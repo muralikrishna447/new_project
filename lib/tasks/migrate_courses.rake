@@ -1,4 +1,7 @@
 namespace :migrate_courses do
+
+  # Example Usage: rake migrate_courses:course['science-of-poutine']
+
   task :course, [:slug] => :environment do |t,args|
     course = Course.find(args.slug)
     puts "Preparing to migrate course: #{course.title}"
