@@ -3,6 +3,18 @@ csTempUnits = "c"
 csLengthUnits = "cm"
 window.csUnitsCookieName = "chefsteps_units"
 
+# Temporary way of dealing with stuff til this is all angularized
+
+rootScope = ->
+  angular.element('body').scope()
+
+getScaling = ->
+  rootScope()?.csScaling || 1.0
+
+setScaling = (newScale) ->
+  rootScope()?.csScaling = newScale
+  rootScope()?.$apply()
+
 window.allUnits = [
   {measures: "Weight", name: "g", menuName: "gram"},
   {measures: "Weight", name: "kg", menuName: "kilogram"},
@@ -43,11 +55,8 @@ isWeightUnit = (unitName) ->
 # possible to have a quantity row nested in a quantity row, specifically when shortcodes like [ea 5] are used
 # in the ingredient notes field.
 
-
-unless paramScaling?
-  window.csScaling = 1.0
-else
-  window.csScaling = paramScaling
+if paramScaling?
+  setScaling(paramScaling)
 
 # Set up bootstrap tooltips (should be moved to a more general place)
 $ ->
@@ -93,15 +102,13 @@ window.makeEditable = (elements) ->
           new_total = (old_lbs * 16) + new_val
 
         old_total = (old_lbs * 16) + old_ozs
-        window.csScaling = window.csScaling * new_total / old_total
+        setScaling(getScaling() * new_total / old_total)
 
       else
         # Any other unit (including ounces with no pounds)
-        window.csScaling = window.csScaling * new_val / old_val
+        setScaling(getScaling() * new_val / old_val)
     else
       value = old_val
-
-    value
 
   ), {
     width: "10px"
@@ -162,7 +169,7 @@ updateOneRowUnits = ->
     if existingUnits == "kg"
       base_orig_value = base_orig_value * 1000
       
-  origValue = Number(base_orig_value) * window.csScaling
+  origValue = Number(base_orig_value) * getScaling()
 
   # "ea" means each, just round up to nearest integer
   if existingUnits == "ea"

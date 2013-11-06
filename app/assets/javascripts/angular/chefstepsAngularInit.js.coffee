@@ -15,7 +15,7 @@ angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorag
         action: "slugChange"
     }
   )
-  
+
 ]
 
 # Thank god for Stack Overflow!
@@ -23,6 +23,11 @@ angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorag
 angular.module('ChefStepsApp').config ["$httpProvider", ($httpProvider) ->
   $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"
 ]
+
+angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
+  $rootScope.csScaling = 1.0
+]
+
 
 @$$parse = (url) ->
   matchUrl url, this

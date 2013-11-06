@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$timeout", "$http", "limitToFilter", ($scope, $timeout, $http, limitToFilter) ->
+angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$rootScope", "$timeout", "$http", "limitToFilter", ($scope, $rootScope, $timeout, $http, limitToFilter) ->
 
   $scope.shouldShowMasterIngredientsRemovedModal = false
   $scope.showIngredientsMenu = false
@@ -72,4 +72,20 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.loadSubrecipe = (id) ->
     window.location.href = '/activities/' + id unless $scope.overrideLoadActivity?(id) 
+
+  $scope.displayScaling = ->
+    Math.round($rootScope.csScaling * 10) / 10
+
+  lastCustomScale = 1
+  baseScales = [0.5, 1, 1.5, 2, 3, 4]
+
+  $scope.cycleScaling = ->
+    lastCustomScale = $scope.displayScaling() if _.indexOf(baseScales, $scope.displayScaling()) < 0
+    scales = _.uniq(_.sortBy(_.union(baseScales, [lastCustomScale]), (x) -> x))
+    idx = _.indexOf(scales, $scope.displayScaling(), true)
+    idx = 1 if idx == -1
+    idx = (idx + 1) % scales.length
+    $rootScope.csScaling = scales[idx]
+    window.updateUnits(true)
+
 ]

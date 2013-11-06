@@ -610,8 +610,7 @@ a:hover
 .ingredients-well
   position: relative
   z-index: 1
-  margin-right: 36px
-  border-right: 1px solid white
+  margin-right: 0px
   left: 0px
   @include transition(all 300ms ease-in-out)
 
@@ -623,19 +622,23 @@ a:hover
   top: 0 
   text-align: right
   .controls
+    margin-top: -10px
     margin-right: 14px
     width: 104px
     .btn
-      width: 100px
+      width: 120px
+
+.ingredients-menu-button
   i
+    z-index: 2
     position: absolute
-    margin-top: -10px
-    top: 50%
-    right: 10px
+    top: 2px
+    right: -24px
     color: gray
 
 .ingredients-menu-slide
-  left: -118px
+  left: -160px
+  border-right: 1px solid white
 
 .ingredients
 
