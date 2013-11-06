@@ -66,6 +66,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
           $rootScope.$broadcast("loadActivityEvent", includable_id)
           $scope.updateDisqus()
 
+
     $scope.showCourseMenu = false
 
     # So sue me

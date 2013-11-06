@@ -425,6 +425,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     $scope.activity = $scope.activities[id] 
     cs_event.track(id, 'Activity', 'show')
     mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
+    $rootScope.csUnits = "grams"
+    $rootScope.csScaling = 1
+    $timeout ->
+      window.updateUnits(false)
 
   $scope.loadActivity = (id) ->
     return if id == $scope.activity?.id
