@@ -1,5 +1,4 @@
 .section.csmonitorinputactivity(ng-controller="IngredientsController")
-
   .activity-ingredients-list#full-ingredients-list.section
     %h4.ingredients-title Ingredients
     .ingredients-well.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-slide' : showIngredientsMenu}")
@@ -10,8 +9,8 @@
       .controls
         .btn.btn-primary(ng-click="cycleScaling()")
           SCALE x{{displayScaling()}}
-        .btn.btn-primary
-          UNIT (g)
+        .btn.btn-primary(ng-click="cycleUnits()")
+          UNIT ({{displayUnits()}})
 
   .nav(ng-show="editMode")
     %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients

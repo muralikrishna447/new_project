@@ -88,4 +88,12 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     $rootScope.csScaling = scales[idx]
     window.updateUnits(true)
 
+  $scope.displayUnits = ->
+    return "oz" if $rootScope.csUnits == "ounces"
+    "g"
+
+  $scope.cycleUnits = ->
+    $rootScope.csUnits = if $rootScope.csUnits == "ounces" then "grams" else "ounces"
+    window.updateUnits(true)
+
 ]

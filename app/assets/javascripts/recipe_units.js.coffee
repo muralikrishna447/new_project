@@ -1,4 +1,3 @@
-window.csUnits = "grams"
 csTempUnits = "c"
 csLengthUnits = "cm"
 window.csUnitsCookieName = "chefsteps_units"
@@ -13,6 +12,13 @@ getScaling = ->
 
 setScaling = (newScale) ->
   rootScope()?.csScaling = newScale
+  rootScope()?.$apply()
+
+getUnits = ->
+  rootScope()?.csUnits || "grams"
+
+setUnits = (newUnits) ->
+  rootScope()?.csUnits = newUnits
   rootScope()?.$apply()
 
 window.allUnits = [
@@ -73,7 +79,7 @@ $ ->
 # Setup click handler for units toggle
 $ ->
   $(".change_units").click ->
-    window.csUnits = if window.csUnits == "ounces" then "grams" else "ounces"
+    setUnits(if getUnits() == "ounces" then "grams" else "ounces")
     # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
     updateUnits(true)
 
@@ -89,7 +95,7 @@ window.makeEditable = (elements) ->
 
       if cell.find('.lbs-qty').is(":visible")
 
-        # pounds and ounces
+        # pounds and coun
         if item.hasClass('lbs-qty')
           # editing pounds
           old_lbs = old_val
@@ -182,7 +188,7 @@ updateOneRowUnits = ->
   else if isWeightUnit(existingUnits)
 
     # grams or kilograms
-    if window.csUnits == "grams"
+    if getUnits() == "grams"
       if origValue < 5000
         setRow $(this), "", origValue, "g"
 
@@ -190,7 +196,7 @@ updateOneRowUnits = ->
         setRow $(this), "", origValue / 1000, "kg"
 
     # ounces or pounds and ounces
-    else if window.csUnits == "ounces"
+    else if getUnits() == "ounces"
       ounces = origValue * 0.035274
       pounds = Math.floor(ounces / 16)
       ounces = ounces - (pounds * 16)

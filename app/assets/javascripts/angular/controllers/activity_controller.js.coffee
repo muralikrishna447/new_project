@@ -47,7 +47,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       $scope.activity.$startedit()
       $timeout ->
         $rootScope.csScaling = 1
-        window.csUnits = "grams"
+        $rootScope.csUnits = "grams"
         window.updateUnits(false)
         window.expandSteps()
 
