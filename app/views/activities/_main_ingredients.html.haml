@@ -4,8 +4,13 @@
     %h4.ingredients-title Ingredients
     .ingredients-well.well(ng-show="activity.ingredients.length" )
       = render 'shared/ingredients_list', source: "activity"
-      .ingredients-menu
-        %i.icon-cog.icon-large
+    .ingredients-menu.well
+      .controls
+        .btn.btn-primary
+          SCALE x2
+        .btn.btn-primary
+          UNIT (g)
+      %i.icon-cog.icon-large
 
   .nav(ng-show="editMode")
     %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
