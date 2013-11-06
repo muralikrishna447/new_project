@@ -56,15 +56,11 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     document.title = $scope.currentIncludable.includable_title + ' - ' + $scope.course.title + ' Class - ChefSteps'
 
     console.log "switching to " + includable_type + ' with id ' + includable_id
-    switch includable_type
-      when 'Upload'
-        $scope.view_inclusion = 'Upload'
-      else
-        $scope.view_inclusion = includable_type
-        $scope.view_inclusion_id = includable_id
-        if includable_type == "Activity"
-          $rootScope.$broadcast("loadActivityEvent", includable_id)
-          $scope.updateDisqus()
+    $scope.view_inclusion = includable_type
+    $scope.view_inclusion_id = includable_id
+    if includable_type == "Activity"
+      $rootScope.$broadcast("loadActivityEvent", includable_id)
+      $scope.updateDisqus()
 
     $scope.showCourseMenu = false
 
