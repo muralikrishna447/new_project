@@ -1,6 +1,7 @@
 angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$timeout", "$http", "limitToFilter", ($scope, $timeout, $http, limitToFilter) ->
 
   $scope.shouldShowMasterIngredientsRemovedModal = false
+  $scope.showIngredientsMenu = false
 
   $scope.getAllUnits = ->
     window.allUnits

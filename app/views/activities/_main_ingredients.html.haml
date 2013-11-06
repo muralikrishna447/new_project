@@ -2,7 +2,7 @@
 
   .activity-ingredients-list#full-ingredients-list.section
     %h4.ingredients-title Ingredients
-    .ingredients-well.well(ng-show="activity.ingredients.length" )
+    .ingredients-well.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-slide' : showIngredientsMenu}")
       = render 'shared/ingredients_list', source: "activity"
     .ingredients-menu.well
       .controls
@@ -10,7 +10,7 @@
           SCALE x2
         .btn.btn-primary
           UNIT (g)
-      %i.icon-cog.icon-large
+      %i.icon-cog.icon-large(ng-click="showIngredientsMenu = ! showIngredientsMenu")
 
   .nav(ng-show="editMode")
     %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients

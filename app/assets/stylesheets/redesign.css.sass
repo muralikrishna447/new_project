@@ -612,7 +612,8 @@ a:hover
   z-index: 1
   margin-right: 36px
   border-right: 1px solid white
-  xleft: -118px
+  left: 0px
+  @include transition(all 300ms ease-in-out)
 
 .ingredients-menu
   height: 100%
@@ -632,6 +633,9 @@ a:hover
     top: 50%
     right: 10px
     color: gray
+
+.ingredients-menu-slide
+  left: -118px
 
 .ingredients
 
@@ -661,7 +665,6 @@ a:hover
       margin-left: .8em
       text-indent: -.8em
 
-
   .quantity-group
     position:  absolute
     right:  52px
@@ -673,19 +676,9 @@ a:hover
   .quantity-edit
     position: relative
     bottom: -2px
-    left:  2px
+    left:  1px
     input
-      font-weight: 300
-      margin-top: -12px
-      background-color: transparent
-      border: none
-      @include any-shadow(none)
-      @include primary-font-light
-      border-radius: 0
-      @include boxsizing
-      border-bottom: 2px solid darkgray
-      padding-bottom: 1px
-      outline: none
+      @include editable_text
 
   .unit
     position: absolute
@@ -740,6 +733,14 @@ a:hover
         @include transition(opacity 500ms)
       .quantity-group, .unit
         @include transition(opacity 500ms)
+
+.ingredients-menu-slide
+  [data-marked-editable]
+    @include editable_text
+  input
+    // because the span already has the border, don't double it
+    border-bottom: none !important
+    margin-bottom: 2px
 
 .step-ingredients-source
   //display: none
@@ -1713,7 +1714,6 @@ input.summary-tweet
   -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
   transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-
 
 .fade-hide-setup
   opacity: 1
