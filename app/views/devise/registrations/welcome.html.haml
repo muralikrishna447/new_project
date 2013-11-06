@@ -8,4 +8,5 @@
 
 - if current_user
   :javascript
-    mixpanel.alias("#{current_user.id}")
+    _gaq.push(['_trackEvent', 'Sign Up', 'Complete']);
+    mixpanel.alias("#{current_user.id}");

@@ -60,8 +60,13 @@ $ ->
 
   #### HACK FOR ANCHOR TAGS ####
   current_url = document.URL
+  console.log current_url
   pattern = /#/g
   if pattern.test(current_url)
-    string1 = String(current_url.match(/#\/.+/))
+    # string1 = String(current_url.match(/#.*(?=\?)/))
+    string1 = String(current_url.split('?')[0].match(/#.*/))
     string2 = string1.replace('/', '')
-    $('html, body').animate({scrollTop:$(string2).position().top - 130}, 'slow')
+    console.log string1
+    console.log string2
+    if $(string2).length > 0
+      $('html, body').animate({scrollTop:$(string2).position().top - 130}, 'slow')
