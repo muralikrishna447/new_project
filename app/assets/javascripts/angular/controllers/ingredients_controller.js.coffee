@@ -73,44 +73,51 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
   $scope.loadSubrecipe = (id) ->
     window.location.href = '/activities/' + id unless $scope.overrideLoadActivity?(id) 
 
+
+  lastCustomScale = 1
+  baseScales = [0.5, 1, 2, 4]
+
+  $scope.$watch 'csGlobals.scaling', (newValue) ->
+    if baseScales.indexOf(newValue) < 0
+      lastCustomScale = newValue
+
+  $scope.scaleFactors = ->
+    r = baseScales
+    if lastCustomScale != 1
+      r.pop()
+      r.push(lastCustomScale)
+      r = _.sortBy(r, (x) -> x)
+    r
+
   $scope.toggleIngredientsMenu = ->
     $scope.showIngredientsMenu = ! $scope.showIngredientsMenu
     if $scope.showIngredientsMenu
       mixpanel.track('Ingredients Menu Opened', {'slug' : $scope.activity.slug});
 
-  $scope.displayScaling = ->
-    Math.round($rootScope.csGlobals.scaling * 10) / 10
-
-  lastCustomScale = 1
-  baseScales = [0.5, 1, 1.5, 2, 3, 4]
-
-  $scope.cycleScaling = ->
-    lastCustomScale = $scope.displayScaling() if _.indexOf(baseScales, $scope.displayScaling()) < 0
-    scales = _.uniq(_.sortBy(_.union(baseScales, [lastCustomScale]), (x) -> x))
-    idx = _.indexOf(scales, $scope.displayScaling(), true)
-    idx = 1 if idx == -1
-    idx = (idx + 1) % scales.length
-    $rootScope.csGlobals.scaling = scales[idx]
-    window.updateUnits(false)
-    mixpanel.track('Scaling Button Pushed', {'slug' : $scope.activity.slug});
+  $scope.displayScaling = (scale) ->
+    r = (Math.round(scale * 10) / 10).toString()
+    r = "&frac12;" if r == "0.5"
+    r + "x"
 
   $scope.setScaling = (newScale) ->
     $rootScope.csGlobals.scaling = newScale
-    window.updateUnits(false)    
+    window.updateUnits(true)    
     mixpanel.track('Scaling Changed', {'slug' : $scope.activity.slug, 'scale' : newScale});
 
   $scope.isActiveScale = (scale) ->
     return "active" if scale == $rootScope.csGlobals.scaling
     ""
 
-  $scope.displayUnits = ->
-    return "oz" if $rootScope.csGlobals.units == "ounces"
-    "g"
+  $scope.unitChoices = ->
+    ["grams", "ounces"]
 
-  $scope.cycleUnits = ->
-    $rootScope.csGlobals.units = if $rootScope.csGlobals.units == "ounces" then "grams" else "ounces"
-    window.updateUnits(false)
+  $scope.setUnits = (unit) ->
+    $rootScope.csGlobals.units = unit
+    window.updateUnits(true)
     mixpanel.track('Units Button Pushed', {'slug' : $scope.activity.slug});
 
+  $scope.isActiveUnit = (unit) ->
+    return "active" if $rootScope.csGlobals.units == unit
+    ""
 
 ]

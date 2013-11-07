@@ -3,29 +3,21 @@
     %h4.ingredients-title Ingredients
     .ingredients-well.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-slide' : showIngredientsMenu}")
       = render 'shared/ingredients_list', source: "activity"
-    .ingredients-menu-button(ng-class="{'ingredients-menu-button-slide' : showIngredientsMenu}")
-      %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()" ng-show="activity.ingredients.length")
-    .ingredients-menu.well(ng-show="activity.ingredients.length")
+    .ingredients-menu-button(ng-class="{'ingredients-menu-button-slide' : showIngredientsMenu}" ng-show="activity.ingredients.length")
+      %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()" ng-class="{'active' : csGlobals.scaling != 1}")
+    .ingredients-menu.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-contents-slide' : showIngredientsMenu}")
       .controls
         .navlabel
           SCALE
         %ul.scaling-row.nav.nav-tabs.underline
-          %li(ng-click="setScaling(0.5)" ng-class='isActiveScale(0.5)')
-            %a
-              x&frac12;
-          %li(ng-click="setScaling(1)" ng-class='isActiveScale(1.0)')
-            %a
-              x1
-          %li(ng-click="setScaling(2)" ng-class='isActiveScale(2.0)')
-            %a
-              x2
-          %li(ng-click="setScaling(4)" ng-class='isActiveScale(4.0)')
-            %a
-              x4
+          %li(ng-repeat="f in scaleFactors()" ng-click="setScaling(f)" ng-class='isActiveScale(f)')
+            %a(ng-bind-html-unsafe="displayScaling(f)")
 
-        -#
-          .btn.btn-primary(ng-click="cycleUnits()")
-            UNIT ({{displayUnits()}})
+        .navlabel
+          UNITS
+        %ul.units-row.nav.nav-tabs.underline
+          %li(ng-repeat="u in unitChoices()" ng-click="setUnits(u)" ng-class='isActiveUnit(u)')
+            %a(ng-bind-html-unsafe="u")
 
   .nav(ng-show="editMode")
     %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients

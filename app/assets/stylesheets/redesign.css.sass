@@ -615,27 +615,36 @@ a:hover
   @include transition(all 300ms ease-in-out)
 
 .ingredients-menu
+  @include transition(all 300ms ease-in-out)
   height: 100%
   display: inline-block
   position: absolute
   right: 0px
   top: 0 
-  text-align: right
+  text-align: left
+  min-height: 0px
+  overflow: hidden
   .controls
     margin-top: 0px
-    width: 350px
+    width: 336px
     position: relative
+
     .navlabel
       display: inline-block
       position: relative
-      top: -30px
+      top: -26px
       margin-right: 10px
+      width: 50px
     ul
       display: inline-block
       li
         letter-spacing: 2px
         &:not(:last-child)
           margin-right: 20px
+      margin-bottom: 12px
+
+    .navlabel.units
+      margin-top: -24px
 
 
 .ingredients-menu-button
@@ -648,18 +657,24 @@ a:hover
   height: 30px
   text-align: center
   background-color: $offwhite
+  cursor: pointer
   i
     position: absolute
     top: 6px
     right: 7px
     color: gray
+  i.active
+    color: $orange
 
 .ingredients-menu-button-slide
-  right: 330px
+  right: 332px
 
 .ingredients-menu-slide
-  left: -360px
+  left: -380px
   border-right: 1px solid white
+
+.ingredients-menu-contents-slide
+  min-height: 140px
 
 .ingredients
 
