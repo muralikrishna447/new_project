@@ -219,11 +219,12 @@ updateOneRowUnits = ->
 window.updateUnits = (animate) ->
   if (animate)
     # animate all the values and units down ...
-    $('.qtyfade').fadeOut "fast"
-    $('.qtyfade').promise().done ->
+    $('.qtyfade').addClass('fade-out')
+    setTimeout ( ->
       $('.quantity-group').parent().each(updateOneRowUnits)
       $('.text-quantity-group').each(updateOneRowUnits)
-      $('.qtyfade').fadeIn "fast"
+      $('.qtyfade').removeClass('fade-out')
+    ), 320
   else
     $('.quantity-group').parent().each(updateOneRowUnits)
     $('.text-quantity-group').each(updateOneRowUnits)
