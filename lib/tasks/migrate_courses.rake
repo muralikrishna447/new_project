@@ -134,6 +134,14 @@ namespace :courses do
       old_quiz_inclusion.destroy
     end
 
+    # Badges
+    course.badge_id = 4
+    if course.save
+      course.uploads.each do |upload|
+        upload.user.add_badge(4)
+      end
+    end
+
   end
 
   task :special_knife => :environment do
@@ -208,6 +216,9 @@ namespace :courses do
       old_quiz_inclusion = AssemblyInclusion.find(128)
       old_quiz_inclusion.destroy
     end
+
+    course.badge_id = 2
+    course.save
 
   end
 
