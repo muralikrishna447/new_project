@@ -1,6 +1,5 @@
 csTempUnits = "c"
 csLengthUnits = "cm"
-window.csUnitsCookieName = "chefsteps_units"
 
 # Temporary way of dealing with stuff til this is all angularized
 
@@ -8,17 +7,17 @@ rootScope = ->
   angular.element('body').scope()
 
 getScaling = ->
-  rootScope()?.csScaling || 1.0
+  rootScope()?.csGlobals.scaling || 1.0
 
 setScaling = (newScale) ->
-  rootScope()?.csScaling = newScale
+  rootScope()?.csGlobals.scaling = newScale
   rootScope()?.$apply()
 
 getUnits = ->
-  rootScope()?.csUnits || "grams"
+  rootScope()?.csGlobals.units || "grams"
 
 setUnits = (newUnits) ->
-  rootScope()?.csUnits = newUnits
+  rootScope()?.csGlobals.units = newUnits
   rootScope()?.$apply()
 
 window.allUnits = [
@@ -80,7 +79,6 @@ $ ->
 $ ->
   $(".change_units").click ->
     setUnits(if getUnits() == "ounces" then "grams" else "ounces")
-    # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
     updateUnits(true)
 
 
@@ -316,7 +314,6 @@ updateLengthUnits =  ->
 $ ->
   $(document).on 'click', ".length-group", ->
     csLengthUnits = if csLengthUnits == "cm" then "in" else "cm"
-    # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
     updateLengthUnits(true)
 
 

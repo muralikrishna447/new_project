@@ -623,10 +623,20 @@ a:hover
   text-align: right
   .controls
     margin-top: 0px
-    margin-right: 14px
-    width: 104px
-    .btn
-      width: 120px
+    width: 350px
+    position: relative
+    .navlabel
+      display: inline-block
+      position: relative
+      top: -30px
+      margin-right: 10px
+    ul
+      display: inline-block
+      li
+        letter-spacing: 2px
+        &:not(:last-child)
+          margin-right: 20px
+
 
 .ingredients-menu-button
   @include transition(all 300ms ease-in-out)
@@ -645,10 +655,10 @@ a:hover
     color: gray
 
 .ingredients-menu-button-slide
-  right: 130px
+  right: 330px
 
 .ingredients-menu-slide
-  left: -160px
+  left: -360px
   border-right: 1px solid white
 
 .ingredients

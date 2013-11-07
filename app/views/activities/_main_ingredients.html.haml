@@ -7,10 +7,25 @@
       %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()")
     .ingredients-menu.well
       .controls
-        .btn.btn-primary(ng-click="cycleScaling()")
-          SCALE x{{displayScaling()}}
-        .btn.btn-primary(ng-click="cycleUnits()")
-          UNIT ({{displayUnits()}})
+        .navlabel
+          SCALE
+        %ul.scaling-row.nav.nav-tabs.underline
+          %li(ng-click="setScaling(0.5)" ng-class='isActiveScale(0.5)')
+            %a
+              x&frac12;
+          %li(ng-click="setScaling(1)" ng-class='isActiveScale(1.0)')
+            %a
+              x1
+          %li(ng-click="setScaling(2)" ng-class='isActiveScale(2.0)')
+            %a
+              x2
+          %li(ng-click="setScaling(4)" ng-class='isActiveScale(4.0)')
+            %a
+              x4
+
+        -#
+          .btn.btn-primary(ng-click="cycleUnits()")
+            UNIT ({{displayUnits()}})
 
   .nav(ng-show="editMode")
     %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients

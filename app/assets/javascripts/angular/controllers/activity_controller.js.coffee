@@ -46,8 +46,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       $scope.undoIndex = 0
       $scope.activity.$startedit()
       $timeout ->
-        $rootScope.csScaling = 1
-        $rootScope.csUnits = "grams"
+        $rootScope.csGlobals.scaling = 1
+        $rootScope.csGlobals.units = "grams"
         window.updateUnits(false)
         window.expandSteps()
 
@@ -425,8 +425,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     $scope.activity = $scope.activities[id] 
     cs_event.track(id, 'Activity', 'show')
     mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
-    $rootScope.csUnits = "grams"
-    $rootScope.csScaling = 1
+    $rootScope.csGlobals.units = "grams"
+    $rootScope.csGlobals.scaling = 1
     $timeout ->
       window.updateUnits(false)
 

@@ -79,7 +79,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
       mixpanel.track('Ingredients Menu Opened', {'slug' : $scope.activity.slug});
 
   $scope.displayScaling = ->
-    Math.round($rootScope.csScaling * 10) / 10
+    Math.round($rootScope.csGlobals.scaling * 10) / 10
 
   lastCustomScale = 1
   baseScales = [0.5, 1, 1.5, 2, 3, 4]
@@ -90,16 +90,25 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     idx = _.indexOf(scales, $scope.displayScaling(), true)
     idx = 1 if idx == -1
     idx = (idx + 1) % scales.length
-    $rootScope.csScaling = scales[idx]
+    $rootScope.csGlobals.scaling = scales[idx]
     window.updateUnits(false)
     mixpanel.track('Scaling Button Pushed', {'slug' : $scope.activity.slug});
 
+  $scope.setScaling = (newScale) ->
+    $rootScope.csGlobals.scaling = newScale
+    window.updateUnits(false)    
+    mixpanel.track('Scaling Changed', {'slug' : $scope.activity.slug, 'scale' : newScale});
+
+  $scope.isActiveScale = (scale) ->
+    return "active" if scale == $rootScope.csGlobals.scaling
+    ""
+
   $scope.displayUnits = ->
-    return "oz" if $rootScope.csUnits == "ounces"
+    return "oz" if $rootScope.csGlobals.units == "ounces"
     "g"
 
   $scope.cycleUnits = ->
-    $rootScope.csUnits = if $rootScope.csUnits == "ounces" then "grams" else "ounces"
+    $rootScope.csGlobals.units = if $rootScope.csGlobals.units == "ounces" then "grams" else "ounces"
     window.updateUnits(false)
     mixpanel.track('Units Button Pushed', {'slug' : $scope.activity.slug});
 
