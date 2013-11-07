@@ -102,7 +102,6 @@ namespace :courses do
   task :special_poutine => :environment do
     course = Assembly.find 'science-of-poutine'
     old_upload_page = Activity.find 'poutine-final-assignment'
-    puts old_upload_page.inspect
 
     new_upload_page = Assignment.new({title: old_upload_page.title, description: old_upload_page.description})
     puts "Setting up Upload page:"
@@ -119,6 +118,33 @@ namespace :courses do
       puts "--------------------"
 
       old_upload_inclusion = AssemblyInclusion.find(102)
+      old_upload_inclusion.destroy
+
+      puts "Deleted Old Upload Inclusion"
+      puts "--------------------"
+    end
+
+  end
+
+  task :special_knife => :environment do
+    course = Assembly.find 'knife-sharpening'
+    old_upload_page = Activity.find 'sharpen-and-post'
+
+    new_upload_page = Assignment.new({title: old_upload_page.title, description: old_upload_page.description})
+    puts "Setting up Upload page:"
+    puts new_upload_page.inspect
+    puts "--------------------"
+
+    new_upload_inclusion = AssemblyInclusion.new
+    new_upload_inclusion.includable = new_upload_page
+    new_upload_inclusion.assembly_id = course.id
+    new_upload_inclusion.position = course.assembly_inclusions.count + 1
+    if new_upload_inclusion.save
+      puts "Including upload into course:"
+      puts new_upload_inclusion.inspect
+      puts "--------------------"
+
+      old_upload_inclusion = AssemblyInclusion.find(112)
       old_upload_inclusion.destroy
 
       puts "Deleted Old Upload Inclusion"
