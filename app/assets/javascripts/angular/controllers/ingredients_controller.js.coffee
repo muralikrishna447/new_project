@@ -91,7 +91,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     idx = 1 if idx == -1
     idx = (idx + 1) % scales.length
     $rootScope.csScaling = scales[idx]
-    window.updateUnits(true)
+    window.updateUnits(false)
     mixpanel.track('Scaling Button Pushed', {'slug' : $scope.activity.slug});
 
   $scope.displayUnits = ->
@@ -100,7 +100,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.cycleUnits = ->
     $rootScope.csUnits = if $rootScope.csUnits == "ounces" then "grams" else "ounces"
-    window.updateUnits(true)
+    window.updateUnits(false)
     mixpanel.track('Units Button Pushed', {'slug' : $scope.activity.slug});
 
 
