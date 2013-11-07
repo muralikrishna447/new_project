@@ -1,79 +1,214 @@
-task :migrate_courses => :environment do
-  course = Course.find 'science-of-poutine'
-  puts "Preparing to migrate course: #{course.title}"
+namespace :courses do
 
-  # Build the main Assembly
-
-  assembly = Assembly.new({
-    title: course.title,
-    description: course.description,
-    short_description: course.short_description,
-    image_id: course.image_id,
-    youtube_id: course.youtube_id,
-    assembly_type: 'Course'
-  })
-
-  if assembly.save
-    puts "Built new assembly: "
-    puts assembly.inspect
-    puts "*********************"
+  task :migrate_all => :environment do
+    courses = ['science-of-poutine', 'knife-sharpening', 'spherification']
+    courses.each do |slug|
+      migrate(slug)
+    end
   end
 
-  # Split out the different nesting levels
-  course_nesting_parents = course.inclusions.to_a.select{|i| i.nesting_level == 0}
-  course_child_groups = course.inclusions.split{|i| i.nesting_level == 0}.reject{|i| i.length == 0}
+  # Example Usage: rake courses:migrate['science-of-poutine']
+  task :migrate_one, [:slug] => :environment do |t,args|
+    migrate(args.slug)
+  end
 
+  def migrate(slug)
+    course = Course.find(slug)
+    puts "Preparing to migrate course: #{course.title}"
 
-  course_nesting_parents.each_with_index do |parent, index|
-    group = Assembly.new({
-      title: parent.activity.title,
-      description: parent.activity.description,
-      image_id: parent.activity.image_id,
-      youtube_id: parent.activity.youtube_id,
-      assembly_type: 'Group'
+    # Build the main Assembly
+
+    assembly = Assembly.new({
+      title: course.title,
+      description: course.description,
+      short_description: course.short_description,
+      image_id: course.image_id,
+      youtube_id: course.youtube_id,
+      assembly_type: 'Course'
     })
 
-    group.activities = course_child_groups[index].map(&:activity)
+    if assembly.save
+      puts "Built new assembly: "
+      puts assembly.inspect
+      puts "*********************"
+    end
 
-    if group.save
-      puts "Built new Group:"
-      puts group.title
+    # Split out the different nesting levels
+    course_nesting_parents = course.inclusions.to_a.select{|i| i.nesting_level == 0}
+    course_child_groups = course.inclusions.split{|i| i.nesting_level == 0}.reject{|i| i.length == 0}
+
+
+    course_nesting_parents.each_with_index do |parent, index|
+      group = Assembly.new({
+        title: parent.activity.title,
+        description: parent.activity.description,
+        image_id: parent.activity.image_id,
+        youtube_id: parent.activity.youtube_id,
+        assembly_type: 'Group'
+      })
+
+      # group.activities = course_child_groups[index].map(&:activity)
+      course_child_groups[index].map(&:activity).each_with_index do |activity, index|
+        i = group.assembly_inclusions.new
+        i.includable = activity
+        i.position = index + 1
+        i.save
+      end
+
+      if group.save
+        puts "Built new Group:"
+        puts group.title
+        puts "--------------------"
+        puts "with activities:"
+        puts group.activities.map(&:title)
+        puts "**********************"
+      end
+
+      # Associate newly built group to the main assembly
+      inclusion = assembly.assembly_inclusions.new
+      inclusion.includable = group
+      inclusion.position = index + 1
+      if inclusion.save
+        puts "Associated group to main assembly:"
+        puts inclusion.inspect
+        puts " *********************"
+      end
+    end
+
+    # Migrate Enrollments
+    course.enrollments.each do |enrollment|
+      enrollment.enrollable = assembly
+      if enrollment.save
+        puts "Migrated enrollment:"
+        puts enrollment.inspect
+        puts "***********************"
+      end
+    end
+
+    # Migrate Uploads
+
+    course.uploads.each do |upload|
+      upload.assembly_id = assembly.id
+      upload.course_id = nil
+      if upload.save
+        puts "Migrated upload:"
+        puts upload.inspect
+        puts "*************************"
+      end
+    end
+  end
+
+  task :special_poutine => :environment do
+    course = Assembly.find 'science-of-poutine'
+    old_upload_page = Activity.find 'poutine-final-assignment'
+
+    new_upload_page = Assignment.new({title: old_upload_page.title, description: old_upload_page.description})
+    puts "Setting up Upload page:"
+    puts new_upload_page.inspect
+    puts "--------------------"
+
+    new_upload_inclusion = AssemblyInclusion.new
+    new_upload_inclusion.includable = new_upload_page
+    new_upload_inclusion.assembly_id = 21
+    new_upload_inclusion.position = 2
+    if new_upload_inclusion.save
+      puts "Including upload into course:"
+      puts new_upload_inclusion.inspect
       puts "--------------------"
-      puts "with activities:"
-      puts group.activities.map(&:title)
-      puts "**********************"
+
+      old_upload_inclusion = AssemblyInclusion.find(102)
+      old_upload_inclusion.destroy
+
+      puts "Deleted Old Upload Inclusion"
+      puts "--------------------"
     end
 
-    # Associate newly built group to the main assembly
-    inclusion = assembly.assembly_inclusions.new
-    inclusion.includable = group
-    if inclusion.save
-      puts "Associated group to main assembly:"
-      puts inclusion.inspect
-      puts " *********************"
+    # Migrate Quiz
+    quiz = Quiz.find 'poutine-quiz'
+    new_quiz_inclusion = AssemblyInclusion.new
+    new_quiz_inclusion.includable = quiz
+    new_quiz_inclusion.assembly_id = 21
+    new_quiz_inclusion.position = 1
+    if new_quiz_inclusion.save
+      old_quiz_inclusion = AssemblyInclusion.find(101)
+      old_quiz_inclusion.destroy
     end
+
   end
 
-  # Migrate Enrollments
-  course.enrollments.each do |enrollment|
-    enrollment.enrollable = assembly
-    if enrollment.save
-      puts "Migrated enrollment:"
-      puts enrollment.inspect
-      puts "***********************"
+  task :special_knife => :environment do
+    course = Assembly.find 'knife-sharpening'
+    old_upload_page = Activity.find 'sharpen-and-post'
+
+    new_upload_page = Assignment.new({title: old_upload_page.title, description: old_upload_page.description})
+    puts "Setting up Upload page:"
+    puts new_upload_page.inspect
+    puts "--------------------"
+
+    new_upload_inclusion = AssemblyInclusion.new
+    new_upload_inclusion.includable = new_upload_page
+    new_upload_inclusion.assembly_id = 25
+    new_upload_inclusion.position = 2
+    if new_upload_inclusion.save
+      puts "Including upload into course:"
+      puts new_upload_inclusion.inspect
+      puts "--------------------"
+
+      old_upload_inclusion = AssemblyInclusion.find(112)
+      old_upload_inclusion.destroy
+
+      puts "Deleted Old Upload Inclusion"
+      puts "--------------------"
     end
+
+    # Migrate Quiz
+    quiz = Quiz.find 'sharpening-quiz'
+    new_quiz_inclusion = AssemblyInclusion.new
+    new_quiz_inclusion.includable = quiz
+    new_quiz_inclusion.assembly_id = 25
+    new_quiz_inclusion.position = 1
+    if new_quiz_inclusion.save
+      old_quiz_inclusion = AssemblyInclusion.find(111)
+      old_quiz_inclusion.destroy
+    end
+
   end
 
-  # Migrate Uploads
+  task :special_spherification => :environment do
+    course = Assembly.find 'spherification'
+    old_upload_page = Activity.find 'final-assignment'
 
-  course.uploads.each do |upload|
-    upload.assembly_id = assembly.id
-    upload.course_id = nil
-    if upload.save
-      puts "Migrated upload:"
-      puts upload.inspect
-      puts "*************************"
+    new_upload_page = Assignment.new({title: old_upload_page.title, description: old_upload_page.description})
+    puts "Setting up Upload page:"
+    puts new_upload_page.inspect
+    puts "--------------------"
+
+    new_upload_inclusion = AssemblyInclusion.new
+    new_upload_inclusion.includable = new_upload_page
+    new_upload_inclusion.assembly_id = 31
+    new_upload_inclusion.position = 2
+    if new_upload_inclusion.save
+      puts "Including upload into course:"
+      puts new_upload_inclusion.inspect
+      puts "--------------------"
+
+      old_upload_inclusion = AssemblyInclusion.find(129)
+      old_upload_inclusion.destroy
+
+      puts "Deleted Old Upload Inclusion"
+      puts "--------------------"
     end
+
+    quiz = Quiz.find 'spherification-quiz'
+    new_quiz_inclusion = AssemblyInclusion.new
+    new_quiz_inclusion.includable = quiz
+    new_quiz_inclusion.assembly_id = 31
+    new_quiz_inclusion.position = 1
+    if new_quiz_inclusion.save
+      old_quiz_inclusion = AssemblyInclusion.find(128)
+      old_quiz_inclusion.destroy
+    end
+
   end
 
 end
