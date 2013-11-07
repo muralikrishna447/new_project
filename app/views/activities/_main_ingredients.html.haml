@@ -4,8 +4,8 @@
     .ingredients-well.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-slide' : showIngredientsMenu}")
       = render 'shared/ingredients_list', source: "activity"
     .ingredients-menu-button(ng-class="{'ingredients-menu-button-slide' : showIngredientsMenu}")
-      %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()")
-    .ingredients-menu.well
+      %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()" ng-show="activity.ingredients.length")
+    .ingredients-menu.well(ng-show="activity.ingredients.length")
       .controls
         .navlabel
           SCALE
