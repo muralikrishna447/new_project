@@ -137,7 +137,7 @@ namespace :courses do
 
     new_upload_inclusion = AssemblyInclusion.new
     new_upload_inclusion.includable = new_upload_page
-    new_upload_inclusion.assembly_id = course.id
+    new_upload_inclusion.assembly_id = 25
     new_upload_inclusion.position = course.assembly_inclusions.count + 1
     if new_upload_inclusion.save
       puts "Including upload into course:"
@@ -164,7 +164,7 @@ namespace :courses do
 
     new_upload_inclusion = AssemblyInclusion.new
     new_upload_inclusion.includable = new_upload_page
-    new_upload_inclusion.assembly_id = course.id
+    new_upload_inclusion.assembly_id = 31
     new_upload_inclusion.position = course.assembly_inclusions.count + 1
     if new_upload_inclusion.save
       puts "Including upload into course:"
