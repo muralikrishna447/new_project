@@ -44,8 +44,7 @@ namespace :courses do
         description: parent.activity.description,
         image_id: parent.activity.image_id,
         youtube_id: parent.activity.youtube_id,
-        assembly_type: 'Group',
-        published: true
+        assembly_type: 'Group'
       })
 
       # group.activities = course_child_groups[index].map(&:activity)
@@ -111,7 +110,7 @@ namespace :courses do
     new_upload_inclusion = AssemblyInclusion.new
     new_upload_inclusion.includable = new_upload_page
     new_upload_inclusion.assembly_id = 21
-    new_upload_inclusion.position = course.assembly_inclusions.count + 1
+    new_upload_inclusion.position = 2
     if new_upload_inclusion.save
       puts "Including upload into course:"
       puts new_upload_inclusion.inspect
@@ -122,6 +121,17 @@ namespace :courses do
 
       puts "Deleted Old Upload Inclusion"
       puts "--------------------"
+    end
+
+    # Migrate Quiz
+    quiz = Quiz.find 'poutine-quiz'
+    new_quiz_inclusion = AssemblyInclusion.new
+    new_quiz_inclusion.includable = quiz
+    new_quiz_inclusion.assembly_id = 21
+    new_quiz_inclusion.position = 1
+    if new_quiz_inclusion.save
+      old_quiz_inclusion = AssemblyInclusion.find(101)
+      old_quiz_inclusion.destroy
     end
 
   end
@@ -138,7 +148,7 @@ namespace :courses do
     new_upload_inclusion = AssemblyInclusion.new
     new_upload_inclusion.includable = new_upload_page
     new_upload_inclusion.assembly_id = 25
-    new_upload_inclusion.position = course.assembly_inclusions.count + 1
+    new_upload_inclusion.position = 2
     if new_upload_inclusion.save
       puts "Including upload into course:"
       puts new_upload_inclusion.inspect
@@ -149,6 +159,17 @@ namespace :courses do
 
       puts "Deleted Old Upload Inclusion"
       puts "--------------------"
+    end
+
+    # Migrate Quiz
+    quiz = Quiz.find 'sharpening-quiz'
+    new_quiz_inclusion = AssemblyInclusion.new
+    new_quiz_inclusion.includable = quiz
+    new_quiz_inclusion.assembly_id = 25
+    new_quiz_inclusion.position = 1
+    if new_quiz_inclusion.save
+      old_quiz_inclusion = AssemblyInclusion.find(111)
+      old_quiz_inclusion.destroy
     end
 
   end
@@ -165,7 +186,7 @@ namespace :courses do
     new_upload_inclusion = AssemblyInclusion.new
     new_upload_inclusion.includable = new_upload_page
     new_upload_inclusion.assembly_id = 31
-    new_upload_inclusion.position = course.assembly_inclusions.count + 1
+    new_upload_inclusion.position = 2
     if new_upload_inclusion.save
       puts "Including upload into course:"
       puts new_upload_inclusion.inspect
@@ -176,6 +197,16 @@ namespace :courses do
 
       puts "Deleted Old Upload Inclusion"
       puts "--------------------"
+    end
+
+    quiz = Quiz.find 'spherification-quiz'
+    new_quiz_inclusion = AssemblyInclusion.new
+    new_quiz_inclusion.includable = quiz
+    new_quiz_inclusion.assembly_id = 31
+    new_quiz_inclusion.position = 1
+    if new_quiz_inclusion.save
+      old_quiz_inclusion = AssemblyInclusion.find(128)
+      old_quiz_inclusion.destroy
     end
 
   end
