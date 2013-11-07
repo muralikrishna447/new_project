@@ -77,6 +77,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.buyModalOpen = true
       mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
       _gaq.push(['_trackEvent', 'Buy Button', 'Clicked', $scope.assembly.title, null, true])
+      $http.put('/splitty/finished?experiment=macaron_landing')
 
   $scope.closeModal = (abandon = true) ->
     $scope.buyModalOpen = false
