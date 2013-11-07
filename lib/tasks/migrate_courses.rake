@@ -44,10 +44,17 @@ namespace :courses do
         description: parent.activity.description,
         image_id: parent.activity.image_id,
         youtube_id: parent.activity.youtube_id,
-        assembly_type: 'Group'
+        assembly_type: 'Group',
+        published: true
       })
 
-      group.activities = course_child_groups[index].map(&:activity)
+      # group.activities = course_child_groups[index].map(&:activity)
+      course_child_groups[index].map(&:activity).each_with_index do |activity, index|
+        i = group.assembly_inclusions.new
+        i.includable = activity
+        i.position = index + 1
+        i.save
+      end
 
       if group.save
         puts "Built new Group:"
@@ -61,6 +68,7 @@ namespace :courses do
       # Associate newly built group to the main assembly
       inclusion = assembly.assembly_inclusions.new
       inclusion.includable = group
+      inclusion.position = index + 1
       if inclusion.save
         puts "Associated group to main assembly:"
         puts inclusion.inspect
@@ -89,6 +97,34 @@ namespace :courses do
         puts "*************************"
       end
     end
+  end
+
+  task :special_poutine => :environment do
+    course = Assembly.find 'science-of-poutine'
+    old_upload_page = Activity.find 'poutine-final-assignment'
+    puts old_upload_page.inspect
+
+    new_upload_page = Assignment.new({title: old_upload_page.title, description: old_upload_page.description})
+    puts "Setting up Upload page:"
+    puts new_upload_page.inspect
+    puts "--------------------"
+
+    new_upload_inclusion = AssemblyInclusion.new
+    new_upload_inclusion.includable = new_upload_page
+    new_upload_inclusion.assembly_id = 21
+    new_upload_inclusion.position = course.assembly_inclusions.count + 1
+    if new_upload_inclusion.save
+      puts "Including upload into course:"
+      puts new_upload_inclusion.inspect
+      puts "--------------------"
+
+      old_upload_inclusion = AssemblyInclusion.find(102)
+      old_upload_inclusion.destroy
+
+      puts "Deleted Old Upload Inclusion"
+      puts "--------------------"
+    end
+
   end
 
 end
