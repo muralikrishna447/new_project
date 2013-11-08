@@ -43,3 +43,10 @@ Merit::Badge.create!({
   description: 'Complete the Macaron Course',
   image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/04qCLrJ9Q9CEAacAVisg?cache=true'
 })
+
+Merit::Badge.create!({
+  id: 4,
+  name: 'poutine',
+  description: 'Complete the Poutine Course',
+  image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/l6M6wNJbR4CffTtCn95j?cache=true'
+})

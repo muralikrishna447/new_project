@@ -1,3 +1,5 @@
+= content_for :title, 'About'
+
 .container.about-quote
   .row
     .span8.offset2
@@ -93,6 +95,6 @@
                           %p= member[:name]
                           %p= member[:title]
                         .team-member-bio
-                          %p= member[:bio]
+                          %p= member[:bio].html_safe
 
 = render 'layouts/footer'

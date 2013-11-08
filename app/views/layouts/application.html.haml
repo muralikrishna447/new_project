@@ -30,7 +30,7 @@
       %link{rel: "canonical", href: yield(:canonical_link) }
     - if Rails.env.production?
       = render 'layouts/qbaka'
-      = render 'layouts/google_analytics'
+    = render 'layouts/google_analytics'
     = render 'layouts/adroll' if current_user
     = render 'layouts/stripe'
     = render 'layouts/mixpanel'

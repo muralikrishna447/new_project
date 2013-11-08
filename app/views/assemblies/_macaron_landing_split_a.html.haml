@@ -1,0 +1,82 @@
+.assembly-course-landing
+  .container
+    .row
+      .span12.section
+        .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+          - if @course.slug == 'french-macarons'
+            - ab_test 'macaron_landing_video', 'FA7XWOmcptU', '5adpHW6fqa0' do |video_id|
+              %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
+          - else
+            %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+
+.container.assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
+  .row
+    .span8
+      %ul.nav.nav-tabs.underline.landing-tab-menu
+        = render 'landing_page_tab_links'
+      %ul.nav
+        %li.dropdown.landing-tab-dropdown
+          %a.dropdown-toggle(ng-click="showDropdown = ! showDropdown")
+            %span {{tabTitle}}
+            %b.caret
+          %ul.dropdown-menu(ng-show="showDropdown")
+            = render 'landing_page_tab_links'
+
+      .tab-content#class-overview
+        %div(ng-show="tab=='default'")
+          .two-columns
+            :markdown
+              #{apply_shortcodes(@course.description)}
+
+          - if @course.landing_bottom
+            .section
+              :markdown
+                #{@course.landing_bottom.content}
+
+          - if @course.uploads.approved.any?
+            .section
+              %h4 Student Projects
+              - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
+                = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+
+
+        - if @course.faq    
+          %div(ng-show="tab=='faq'")
+            :markdown
+              #{apply_shortcodes(@course.faq.content)}
+
+        - if @course.ingredients_equipment    
+          %div(ng-show="tab=='ingredients-equipment'")
+            :markdown
+              #{apply_shortcodes(@course.ingredients_equipment.content)}
+
+        - if @course.testimonials 
+          %div(ng-show="tab=='testimonials'")
+            :markdown
+              #{apply_shortcodes(@course.testimonials.content)}
+
+    .span4.section
+      .buy-box
+        - discounted_price = @course.price ? @discounted_price : 0
+        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user.completed_course?(@assembly), gift_certificate: @gift_certificate
+        .text-center.enroll-count.section
+          %h4= "#{@course.enrollments.count} Enrolled"
+        %h5 Class Includes:
+        %ul
+          %li Unlimited Access
+          %li= "#{@course.video_count} HD Videos"
+          / %li Three Fundamental Fillings Explained
+          = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
+          - if @course.price
+            %li Q&A Support
+        - if @course.price
+          %h4 100% satisfaction guaranteed or your money back
+
+      .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+        = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
+
+= render 'layouts/footer'
+
+:javascript
+  mixpanel.track('Course Landing Viewed', {'context' : 'course', 'title' : "#{@course.title}", 'slug' : "#{@course.slug}"});
+  _gaq.push(['_trackEvent', 'Course', 'Viewed', "#{@course.title}", null, true]);
