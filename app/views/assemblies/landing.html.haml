@@ -31,9 +31,8 @@
   
         .tab-content#class-overview
           %div(ng-show="tab=='default'")
-            .two-columns
-              :markdown
-                #{apply_shortcodes(@course.description)}
+            :markdown
+              #{apply_shortcodes(@course.description)}
   
             - if @course.landing_bottom
               .section
