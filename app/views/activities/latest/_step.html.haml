@@ -9,8 +9,22 @@
   %csEditPairEdit
     %textarea.step-title-input(ng-model="step.title" rows="5" placeholder="Optional title...")
 
-.row.step-first-row(ng-show='(!! step.youtube_id) || (!! step.image_id) || (step.ingredients.length > 0)')
- 
+.row.step-first-row(ng-show='(step.ingredients.length > 0)')
+
+  %div(ng-class="ingredientSpanClass()")
+    =render 'activities/step_ingredients'
+
+.row
+  .span(ng-class="directionsSpanClass()")
+    .step-content
+      %csEditPair
+        %csEditPairShow
+          %div(ng-show="step.directions || editMode" ng-bind-html-unsafe="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
+        %csEditPairEdit
+          %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
+
+.row.step-last-row(ng-show='(!! step.youtube_id) || (!! step.image_id)')
+
   .span7(ng-show='hasAV()')
     .step-video-outer.noprint(ng-show="!! step.youtube_id")
       .new-step-video(id="{{'step-video-' + $index}}")
@@ -22,18 +36,4 @@
       .new-step-image(id="{{'step-image-' + $index}}")
         %img(ng-src="{{stepImageURL(step, 670)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
 
-  %div(ng-class="ingredientSpanClass()")
-    =render 'activities/step_ingredients'
-
-.row
   .divider(ng-class="dividerSpanClass()")
-
-.row
-  .span(ng-class="directionsSpanClass()")
-    .step-content
-      %csEditPair
-        %csEditPairShow
-          %div(ng-show="step.directions || editMode" ng-bind-html-unsafe="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
-        %csEditPairEdit
-          %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
-
