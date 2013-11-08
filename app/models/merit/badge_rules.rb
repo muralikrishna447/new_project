@@ -64,6 +64,26 @@ module Merit
           false
         end
       end
+
+      grant_on 'uploads#create', :badge => 'poutine' do |upload|
+        assembly = upload.assembly
+        user = upload.user
+        if assembly.present?
+          assembly.slug == 'science-of-poutine'
+        else
+          false
+        end
+      end
+
+      grant_on 'uploads#create', :badge => 'knife' do |upload|
+        assembly = upload.assembly
+        user = upload.user
+        if assembly.present?
+          assembly.slug == 'knife-sharpening'
+        else
+          false
+        end
+      end
     end
   end
 end
