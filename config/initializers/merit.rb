@@ -55,5 +55,5 @@ Merit::Badge.create!({
   id: 5,
   name: 'knife',
   description: 'Complete the Knife Sharpening Course',
-  image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/WZjdYjfJRHLpVexAkLkV?cache=true'
+  image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/QZt7rQzQK6gcuyYngoOb?cache=true'
 })
