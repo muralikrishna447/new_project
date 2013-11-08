@@ -180,6 +180,14 @@ namespace :courses do
       old_quiz_inclusion.destroy
     end
 
+    # Badges
+    course.badge_id = 5
+    if course.save
+      course.uploads.each do |upload|
+        upload.user.add_badge(5)
+      end
+    end
+
   end
 
   task :special_spherification => :environment do

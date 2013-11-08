@@ -50,3 +50,10 @@ Merit::Badge.create!({
   description: 'Complete the Poutine Course',
   image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/l6M6wNJbR4CffTtCn95j?cache=true'
 })
+
+Merit::Badge.create!({
+  id: 5,
+  name: 'knife',
+  description: 'Complete the Knife Sharpening Course',
+  image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/ZCsRGpDSRHOk9M8GZPC6?cache=true'
+})
