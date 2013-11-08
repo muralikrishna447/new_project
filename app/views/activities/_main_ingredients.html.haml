@@ -1,8 +1,5 @@
 .section.csmonitorinputactivity(ng-controller="IngredientsController")
   .activity-ingredients-list#full-ingredients-list.section
-    %h4.ingredients-title Ingredients
-    .ingredients-well.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-slide' : showIngredientsMenu}")
-      = render 'shared/ingredients_list', source: "activity"
     .ingredients-menu-button(ng-class="{'ingredients-menu-button-slide' : showIngredientsMenu}" ng-show="activity.ingredients.length")
       %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()" ng-class="{'active' : csGlobals.scaling != 1}")
     .ingredients-menu.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-contents-slide' : showIngredientsMenu}")
@@ -18,6 +15,8 @@
         %ul.units-row.nav.nav-tabs.underline
           %li(ng-repeat="u in unitChoices()" ng-click="setUnits(u)" ng-class='isActiveUnit(u)')
             %a(ng-bind-html-unsafe="u")
+    .ingredients-well.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-slide' : showIngredientsMenu}")
+      = render 'shared/ingredients_list', source: "activity"
 
   .nav(ng-show="editMode")
     %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
