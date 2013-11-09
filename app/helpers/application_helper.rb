@@ -31,7 +31,7 @@ module ApplicationHelper
   end
 
   def filepicker_gallery_image(fpfile)
-    filepicker_arbitrary_image(fpfile, 370)
+    filepicker_arbitrary_image(fpfile, 370, 'crop')
   end
 
   def filepicker_slider_image(fpfile)

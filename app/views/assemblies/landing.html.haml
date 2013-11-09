@@ -42,8 +42,10 @@
             - if @course.uploads.approved.any?
               .section
                 %h4 Student Projects
-                - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
-                  = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+                .row
+                  - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
+                    .span4
+                      = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
   
   
           - if @course.faq    
