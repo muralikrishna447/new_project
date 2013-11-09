@@ -111,13 +111,13 @@
   margin: 10px
   background: white
   float: left
-  @include transition(all 300ms)
+  @include transition(border 300ms)
   img
     width: 100%
     margin: 10px 0px
   a
     color: #333333
-    @include transition(all 300ms)
+    @include transition(border 300ms)
     .media-box-3-title
       @include primary-font-bold
       font-size: 15px
@@ -133,7 +133,7 @@
       .footer-right
         float: right
   &:hover
-    border-color: $orange
+    border: 1px solid $orange
     cursor: pointer
     a
       text-decoration: none
