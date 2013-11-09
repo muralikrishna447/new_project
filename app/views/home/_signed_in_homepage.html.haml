@@ -19,7 +19,7 @@
           = link_to home_featured_path do
             %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= @classes[0].title
             = image_tag filepicker_stream_image(@classes[0].featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
-            .section.pull-right(onclick= 'track_viewed_course_through_signed_in_homepage();')
+            .section.pull-right.home-featured-item-btn(onclick= 'track_viewed_course_through_signed_in_homepage();')
               = where_user_left_off_in_course(@classes[0], current_user, 'btn btn-primary btn-large')
           .section
             = @classes[0].short_description
