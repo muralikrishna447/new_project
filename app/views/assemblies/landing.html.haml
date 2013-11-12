@@ -16,6 +16,16 @@
     - elsif macaron_landing == 'macaron_landing_split_b'
       = render 'macaron_landing_split_b'
 - else
+  .assembly-course-landing
+    .container
+      .row
+        .span12.section
+          .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+            - if @course.slug == 'french-macarons'
+              - ab_test 'macaron_landing_video', 'FA7XWOmcptU', '5adpHW6fqa0' do |video_id|
+                %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
+            - else
+              %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
   .container.assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
     .row
       .span8
