@@ -727,11 +727,27 @@ a:hover
   div
     display: inline-block
 
+  .show-group
+    position: relative
+    overflow-x: hidden
+    &:after
+      float: left
+      position: absolute
+      left: 10px
+      bottom: -4px
+      z-index: -1
+      width: 0
+      white-space: nowrap
+      content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . "
+    .ingredient-title, .quantity-group, .unit
+      background: $offwhite
+
   .ingredient-table-row
     position: relative
     width: 100%
     line-height: $baseline * 2
     min-height: $baseline * 2
+    overflow-x: hidden
     input
       border-top: none
 
@@ -739,6 +755,7 @@ a:hover
     width: auto
     height:  auto
     margin-right: 120px
+    padding-right: 5px
 
   .edit-pair-show
     .ingredient-title
@@ -748,9 +765,10 @@ a:hover
   .quantity-group
     position:  absolute
     right:  52px
-    width:  80px
+    xwidth:  80px
     text-align:  right
-    bottom:  -2px
+    bottom:  -4px
+    padding-left: 5px
 
     .lbs-label
       margin-left: 4px
@@ -779,6 +797,7 @@ a:hover
     bottom:  -2px
     width:  45px
     text-align:  left
+    padding-left: 5px
 
   .ingredient-table-head
     position: relative
