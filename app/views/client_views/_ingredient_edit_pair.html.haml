@@ -30,7 +30,7 @@
     .ingredient-title
       %input(csselectonfocus="" csinputmonkeyingredient="" type="text" placeholder="New ingredient" typeahead-editable="true" autocomplete="off" class="ingredient-typeahead" ng-model="ai.ingredient" typeahead="i as i.title for i in all_ingredients($viewValue)")
       %input(csselectonfocus="" type="text" placeholder="note" autocomplete="off" ng-model="ai.note")
-    %input.quantity-group(csselectonfocus="" cslimitquantity="" placeholder="qty" autocomplete="off" ng-model="ai.display_quantity")
+    %input.quantity-group(csselectonfocus="" cslimitquantity="" placeholder="qty" autocomplete="off" ng-model="ai.display_quantity" size=5)
 
     .unit
       -# http://stackoverflow.com/questions/5912791/how-to-remove-the-arrow-from-a-select-tag-in-firefox - my favorite answer (not the accepted one)
