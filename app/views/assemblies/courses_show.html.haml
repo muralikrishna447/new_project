@@ -57,6 +57,26 @@
               %div(ng-switch-when='Page')
                 = render 'assembly_page'
 
+              - if current_user && current_user.role?(:admin)
+                .edit-button-box
+                  %div(ng-switch on="currentIncludable.includable_type")
+                    %div(ng-switch-when='Activity')
+                      %a.btn.btn-primary.btn-large(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
+                        %i.icon-edit
+                        edit
+                    %div(ng-switch-when='Assignment')
+                      %a.btn.btn-primary.btn-large(ng-href="/admin/assignments/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                        %i.icon-edit
+                        edit
+                    %div(ng-switch-when='Page')
+                      %a.btn.btn-primary.btn-large(ng-href="/admin/pages/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                        %i.icon-edit
+                        edit
+                    %div(ng-switch-when='Quiz')
+                      %a.btn.btn-primary.btn-large(ng-href="/admin/quizzes/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                        %i.icon-edit
+                        edit
+
         .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .span12
             -# Starts with a disqus id for course but for activities will get replaced using DISQUS.reset
