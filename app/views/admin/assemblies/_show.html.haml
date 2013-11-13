@@ -1,0 +1,13 @@
+%h1= assembly.title
+
+- assembly.assembly_inclusions.each do |inclusion|
+  - includable = inclusion.includable
+  %h2
+    = link_to includable.title, includable_path(includable), target: '_blank'
+    = "(#{includable.class.to_s})"
+  - if includable.class.to_s == 'Assembly'
+    - includable.assembly_inclusions.each do |group_inclusion|
+      - group_inclusion_includable = group_inclusion.includable
+      %h4
+        = link_to group_inclusion_includable.title, includable_path(group_inclusion_includable), target: '_blank'
+        = "(#{group_inclusion_includable.class.to_s})"

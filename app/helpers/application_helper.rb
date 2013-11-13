@@ -268,5 +268,22 @@ module ApplicationHelper
     markdown.render(text)
   end
 
+  def includable_path(includable)
+    case includable.class.to_s
+    when 'Activity'
+      activity_path(includable)
+    when 'Assignment'
+      edit_admin_assignment_path(includable)
+    when 'Assembly'
+      edit_admin_assembly_path(includable)
+    when 'Quiz'
+      edit_admin_quiz_path(includable)
+    when 'Page'
+      edit_admin_page_path(includable)
+    else
+      nil
+    end
+  end
+
 end
 
