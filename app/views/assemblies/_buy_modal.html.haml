@@ -36,24 +36,24 @@
           %label.control-label(for="")
             Credit Card Number
           .controls
-            %input.input-full(ng-model="number" payments-format="card" payments-validate="card" type="text" required  name="card_number")
+            %input.input-full.inspectletIgnore(ng-model="number" payments-format="card" payments-validate="card" type="text" required  name="card_number")
           %label.control-label(for="name")
             Name
           .controls
-            %input.input-full(type="text" ng-model="name" required name="cardholder_name")
+            %input.input-full.inspectletIgnore(type="text" ng-model="name" required name="cardholder_name")
           .expdate-group.inline
             %label.control-label(for="")
               Expiration Date
             .controls
-              %input.input-mini(ng-model="expMonth" type="text" pattern="[0-9]{1,2}" required  name="expMonth")
+              %input.input-mini.inspectletIgnore(ng-model="expMonth" type="text" pattern="[0-9]{1,2}" required  name="expMonth")
               .date-slash.inline
                 \/
-              %input.input-mini(ng-model="expYear" type="text" pattern="[0-9]{1,4}" required  name="expYear" )             
+              %input.input-mini.inspectletIgnore(ng-model="expYear" type="text" pattern="[0-9]{1,4}" required  name="expYear" )             
           .cvc-group.inline
             %label.control-label(for="")
               Security Code (CVC)
             .controls
-              %input.input-mini(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" required  name="cvc")
+              %input.input-mini.inspectletIgnore(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" required  name="cvc")
         .divider
         .control-group(ng-show="isGift && ! processing")
           %label.radio
