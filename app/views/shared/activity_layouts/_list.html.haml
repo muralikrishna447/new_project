@@ -6,8 +6,10 @@
 
 .row
   .span9.offset1
-    = render 'activities/hero_visual'
-    = render 'activities/latest/description'
+    %div(ng-show="activity.video")
+      = render 'activities/hero_visual'
+    %div(ng-show="activity.description")
+      = render 'activities/latest/description'
 .row
   .span9.offset1
     %ul.unstyled(ng-repeat="step in activity.steps")
