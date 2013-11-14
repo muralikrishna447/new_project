@@ -233,10 +233,12 @@ namespace :courses do
   # Script to convert an activity to a list view
 
   task :convert_to_list => :environment do
-    slugs = ['squeaky-cheese-curd-science', 'the-science-of-spherification', 'how-knives-cut']
+    slugs = ['squeaky-cheese-curd-science', 'the-science-of-spherification', 'how-knives-cut', 'the-benefits-of-sharp-knives--2', 'do-you-need-an-expensive-knife', 'how-to-sharpen-a-knife', 'sharp-knives-are-fun']
     slugs.each do |slug|
       activity = Activity.find(slug)
-      convert_one_to_list(activity)
+      if activity
+        convert_one_to_list(activity)
+      end
     end
   end
 
