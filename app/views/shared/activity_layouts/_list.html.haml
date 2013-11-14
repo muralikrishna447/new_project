@@ -6,7 +6,8 @@
 
 .row
   .span9.offset1
-    %h1(ng-bind-html-unsafe="step.title | markdown | shortcode")
+    = render 'activities/hero_visual'
+    = render 'activities/latest/description'
 .row
   .span9.offset1
     %ul.unstyled(ng-repeat="step in activity.steps")
