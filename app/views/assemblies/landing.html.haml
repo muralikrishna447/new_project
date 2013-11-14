@@ -7,10 +7,9 @@
   %meta{property: 'og:description', content: @course.description != "" ? strip_tags(markdown(@course.description)) : @course.title.html_safe}
   %meta{property: 'og:image', content: filepicker_hero_image(@course.image_id)}
 
-// Split test landing for macarons only
-
+// Split test landing for macarons only 
 - if @course.slug == 'french-macarons'
-  - ab_test 'macaron_landing', 'macaron_landing_split_a', 'macaron_landing_split_b' do |macaron_landing|
+  - ab_test "#{@split_name}", 'macaron_landing_split_a', 'macaron_landing_split_b' do |macaron_landing|
     - if macaron_landing == 'macaron_landing_split_a'
       = render 'macaron_landing_split_a'
     - elsif macaron_landing == 'macaron_landing_split_b'

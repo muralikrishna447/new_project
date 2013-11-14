@@ -43,7 +43,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
         try
           __adroll.record_user "adroll_segments": "fmpurchase"
-        $http.put('/splitty/finished?experiment=macaron_landing_video')
+        $http.put('/splitty/finished?experiment=' + $scope.split_name)
 
       ).error((data, status, headers, config) ->
         console.log "STRIPE CHARGE FAIL" + data
