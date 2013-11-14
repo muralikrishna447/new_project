@@ -51,4 +51,13 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
   $scope.hasIngredients = ->
     $scope.step.ingredients?.length    
 
+  $scope.ingredientSpanClass = ->
+    return "span5" if $scope.hasAV()
+    "span7"
+
+  $scope.dividerSpanClass = ->
+    return "span12" if ($scope.hasAV()) && ($scope.hasIngredients())
+    return "span7" if ($scope.hasAV()) || ($scope.hasIngredients())
+    return "hidden"
+
 ]
