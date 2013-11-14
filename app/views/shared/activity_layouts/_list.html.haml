@@ -11,5 +11,5 @@
   .span9.offset1
     %ul.unstyled(ng-repeat="step in activity.steps")
       %li
-        %h3(ng-bind-html-unsafe="step.title | markdown | shortcode")
+        %h4(ng-bind-html-unsafe="step.title | markdown | shortcode")
         %p(ng-bind-html-unsafe="step.directions | markdown | shortcode")

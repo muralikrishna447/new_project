@@ -230,4 +230,47 @@ namespace :courses do
 
   end
 
+  # Script to convert an activity to a list view
+
+  task :convert_to_list => :environment do
+    slugs = ['squeaky-cheese-curd-science', 'the-science-of-spherification']
+    slugs.each do |slug|
+      activity = Activity.find(slug)
+      convert_one_to_list(activity)
+    end
+  end
+
+  def convert_one_to_list(activity)
+    puts "Converting activity to list view:"
+    title = activity.title
+    description = activity.description
+    image = activity.featured_image_id
+
+    # Update activity to use list view
+    activity.layout_name = 'list'
+    if activity.save
+      puts activity.inspect
+    end
+
+    # Bump step order if there are any steps
+
+    if activity.steps.length > 0
+      activity.steps.each_with_index do |step,index|
+        step.step_order = index + 1
+        step.save
+      end
+    end
+
+    # Create step
+    image_url = JSON.parse(image)['url'].gsub('www.filepicker.io','d3awvtnmmsvyot.cloudfront.net')
+    directions = "<h4>#{title.upcase}</h4><img src='#{image_url}'><hr/>#{description}"
+    puts directions
+    step = Step.new({directions: directions, image_id: image, activity_id: activity.id})
+    step.step_order = 0
+    if step.save
+      puts step.inspect
+    end
+    puts "----------------"
+  end
+
 end
