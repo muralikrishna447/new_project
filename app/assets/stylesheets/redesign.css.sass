@@ -715,7 +715,24 @@ a:hover
   .ingredients-menu-slide
     left: 0
 
-
+// Leader dots between ingredient title and quantities
+.show-mode
+  .ingredients
+    .show-group:not(:empty)
+      position: relative
+      overflow-x: hidden
+      &:after
+        float: left
+        position: absolute
+        left: 10px
+        bottom: -4px
+        z-index: -1
+        width: 0
+        white-space: nowrap
+        content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " 
+        color: $light-gray
+      .ingredient-title, .quantity-group, .unit
+        background: $offwhite
 
 .ingredients
 
@@ -732,6 +749,8 @@ a:hover
     width: 100%
     line-height: $baseline * 2
     min-height: $baseline * 2
+    overflow-x: hidden
+    xoverflow-y: visible
     input
       border-top: none
 
@@ -739,6 +758,7 @@ a:hover
     width: auto
     height:  auto
     margin-right: 120px
+    padding-right: 5px
 
   .edit-pair-show
     .ingredient-title
@@ -748,9 +768,9 @@ a:hover
   .quantity-group
     position:  absolute
     right:  52px
-    width:  80px
     text-align:  right
-    bottom:  -2px
+    padding-left: 5px
+    bottom: -4px
 
     .lbs-label
       margin-left: 4px
@@ -758,27 +778,30 @@ a:hover
     .main-qty:hover, .lbs-qty:hover
       cursor: pointer
 
+  .unit
+    position: absolute
+    right: 0px
+    bottom: -4px
+    width:  45px
+    text-align:  left
+    padding-left: 7px
+    
   .qtyfade
-    opacity: 1
-    @include transition(all .3s ease-in-out)
+    @include transition(all 300ms ease-in-out)
+    color: rgba(51, 51, 51, 1)
 
   .fade-out
-    opacity: 0
+    // have to fade text opacity, not opacity, b/c have to cover leader dots during transition
+    color: rgba(51, 51, 51, 0) 
 
   .quantity-edit
     position: relative
-    bottom: -2px
     left:  1px
     input
       @include editable_text
       width: 3em !important
 
-  .unit
-    position: absolute
-    right: 0px
-    bottom:  -2px
-    width:  45px
-    text-align:  left
+
 
   .ingredient-table-head
     position: relative
@@ -821,12 +844,12 @@ a:hover
     .ingredient-table-row
       width: 100%
       display: block
-      @include transition(opacity 500ms)
-      .ingredient-title
-        @include transition(opacity 500ms)
-      .quantity-group, .unit
-        @include transition(opacity 500ms)
+      @include transition(opacity 300ms)
 
+.edit-mode
+  .ingredient-table-row
+    overflow: visible
+      
 .ingredients-menu-slide
   [data-marked-editable]
     @include editable_text
@@ -1622,16 +1645,20 @@ csequipmenteditpair, csingredienteditpair
       width: auto
 
   .edit-pair-edit
-
     input, select
       display: inline-block
       @include boxsizing
-      padding: 0px 2px 0px 2px
+      padding: 0px 2px 2px 2px
       margin-left: 0px
       margin-top: 0px
       margin-bottom: 0px
-      width: 100%
       max-width: 280px
+      width: 100%
+      @include primary-font-light
+      @include editable_text
+
+    input.quantity-group
+      width: 60px
 
     .unit
       margin-bottom: -10px
@@ -1641,11 +1668,12 @@ csequipmenteditpair
     top: -10px
 
 csingredienteditpair
+  overflow: visible
 
   .edit-pair-edit
 
     .ingredient-title
-      overflow: hidden
+      overflow: visible
       input
         &:first-child
           width: 64%
@@ -1653,7 +1681,7 @@ csingredienteditpair
           width: 34%
 
     .quantity-group
-      bottom: 2px
+      xbottom: 2px
 
     .unit
       cursor: pointer
@@ -1668,8 +1696,7 @@ csingredienteditpair
         width:  200%
         height:  100%
         z-index: 0
-        top: -7px
-
+ 
 .meta-edit
   border: 1px solid $offwhite
   padding:  10px

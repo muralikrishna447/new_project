@@ -25,4 +25,8 @@ ActiveAdmin.register Assembly do
     default_actions
   end
 
+  show do
+    render 'show', assembly: assembly
+  end
+
 end

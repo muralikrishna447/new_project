@@ -6,6 +6,8 @@ $ ->
     object_width = 380
     slider_wrap_width = object_width*number_of_objects
     slider_wrap.width(slider_wrap_width)
+    num_objects_to_slide = Math.floor(slider.width()/object_width)
+    distance_to_slide = num_objects_to_slide*object_width
 
     direction = $(this).data('direction')
 
@@ -15,10 +17,10 @@ $ ->
       btn_right.click ->
         if !slider.active
           slider.active = true
-          first_object = slider_wrap.children().first()
-          slider_wrap.children().animate {left: '-=380'}, 600, 'easeOutExpo', ->
-            first_object.remove()
-            slider_wrap.append first_object
+          objects_to_slide = slider_wrap.children().slice(0,num_objects_to_slide)
+          slider_wrap.children().animate {left: '-=' + distance_to_slide}, 600, 'easeOutExpo', ->
+            objects_to_slide.remove()
+            slider_wrap.append objects_to_slide
             slider_wrap.children().css 'left', '0'
             slider.active = false
 
@@ -30,10 +32,10 @@ $ ->
       btn_left.click ->
         if !slider.active
           slider.active = true
-          last_object = slider_wrap.children().last()
-          slider_wrap.children().animate {left: '+=380'}, 600, 'easeOutExpo', ->
-            last_object.remove()
-            slider_wrap.prepend last_object
+          objects_to_slide = slider_wrap.children().slice(number_of_objects - num_objects_to_slide, number_of_objects)
+          slider_wrap.children().animate {left: '+=' + distance_to_slide}, 600, 'easeOutExpo', ->
+            objects_to_slide.remove()
+            slider_wrap.prepend objects_to_slide
             slider_wrap.children().css 'left', '-' + slider_start_left
             slider.active = false
           

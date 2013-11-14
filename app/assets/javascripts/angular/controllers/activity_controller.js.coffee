@@ -148,7 +148,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     if condition then "disabled-section" else ""
 
   $scope.addEditModeClass = ->
-    if $scope.editMode then "edit-mode" else ""
+    if $scope.editMode then "edit-mode" else "show-mode"
 
   $scope.primaryColumnClass = ->
     if ($scope.editMode || ($scope.activity && $scope.activity.steps && ($scope.activity.steps.length > 0))) then 'span6' else 'no-steps span8 offset2'
