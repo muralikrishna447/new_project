@@ -31,6 +31,10 @@ class AssembliesController < ApplicationController
 
   def landing
     @upload = Upload.new
+    @split_name = "macaron_landing_no_campaign"
+    if params[:utm_campaign]
+      @split_name = "macaron_landing_campaign_#{params[:utm_campaign][0..4]}"
+    end
   end
 
   def show_as_json
