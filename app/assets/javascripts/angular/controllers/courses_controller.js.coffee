@@ -78,6 +78,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $timeout ->
         $('.prev-next-group').show()
 
+  $scope.inclusionActiveClass = (inclusion) ->
+    return 'active' if (inclusion.includable_type == $scope.view_inclusion) && (inclusion.includable_id == $scope.view_inclusion_id)
+    return ''
+
   $scope.updateDisqus = ->
     # Super gross. Was running into an issue where this could get called before DISQUS was loaded, fail, and
     # leave the user commenting on a bogus thread.

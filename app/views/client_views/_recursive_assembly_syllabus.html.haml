@@ -6,4 +6,7 @@
       %a
         {{inclusion.includable_title}}&hellip;
     %ul.no-bullet(ng-class="{'collapsed' : isCollapsed(inclusion.includable_id)}")
-      %li(ng-repeat='inclusion in inclusion.includable.assembly_inclusions' ng-click='loadInclusion(inclusion.includable_id); $event.stopPropagation()' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}" ng-include="'_recursive_assembly_syllabus.html'")
+      %li(ng-repeat='inclusion in inclusion.includable.assembly_inclusions' 
+          ng-click='loadInclusion(inclusion.includable_id); $event.stopPropagation()' 
+          ng-class="inclusionActiveClass(inclusion)" 
+          ng-include="'_recursive_assembly_syllabus.html'")
