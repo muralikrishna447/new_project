@@ -107,19 +107,20 @@ namespace :courses do
     puts new_upload_page.inspect
     puts "--------------------"
 
+    last_includable = course.assembly_inclusions.last.includable
+    last_includable.assembly_inclusions.each do |inclusion|
+      inclusion.destroy
+      puts "Deleted Old Upload Inclusion"
+      puts "--------------------"
+    end
+
     new_upload_inclusion = AssemblyInclusion.new
     new_upload_inclusion.includable = new_upload_page
-    new_upload_inclusion.assembly_id = 21
+    new_upload_inclusion.assembly_id = last_includable.id
     new_upload_inclusion.position = 2
     if new_upload_inclusion.save
       puts "Including upload into course:"
       puts new_upload_inclusion.inspect
-      puts "--------------------"
-
-      old_upload_inclusion = AssemblyInclusion.find(102)
-      old_upload_inclusion.destroy
-
-      puts "Deleted Old Upload Inclusion"
       puts "--------------------"
     end
 
@@ -127,11 +128,12 @@ namespace :courses do
     quiz = Quiz.find 'poutine-quiz'
     new_quiz_inclusion = AssemblyInclusion.new
     new_quiz_inclusion.includable = quiz
-    new_quiz_inclusion.assembly_id = 21
+    new_quiz_inclusion.assembly_id = last_includable.id
     new_quiz_inclusion.position = 1
     if new_quiz_inclusion.save
-      old_quiz_inclusion = AssemblyInclusion.find(101)
-      old_quiz_inclusion.destroy
+      puts "Saved quiz inclusion"
+      puts new_quiz_inclusion.inspect
+      puts "--------------------"
     end
 
     # Badges
@@ -153,19 +155,20 @@ namespace :courses do
     puts new_upload_page.inspect
     puts "--------------------"
 
+    last_includable = course.assembly_inclusions.last.includable
+    last_includable.assembly_inclusions.each do |inclusion|
+      inclusion.destroy
+      puts "Deleted Old Upload Inclusion"
+      puts "--------------------"
+    end
+
     new_upload_inclusion = AssemblyInclusion.new
     new_upload_inclusion.includable = new_upload_page
-    new_upload_inclusion.assembly_id = 25
+    new_upload_inclusion.assembly_id = last_includable.id
     new_upload_inclusion.position = 2
     if new_upload_inclusion.save
       puts "Including upload into course:"
       puts new_upload_inclusion.inspect
-      puts "--------------------"
-
-      old_upload_inclusion = AssemblyInclusion.find(112)
-      old_upload_inclusion.destroy
-
-      puts "Deleted Old Upload Inclusion"
       puts "--------------------"
     end
 
@@ -173,11 +176,12 @@ namespace :courses do
     quiz = Quiz.find 'sharpening-quiz'
     new_quiz_inclusion = AssemblyInclusion.new
     new_quiz_inclusion.includable = quiz
-    new_quiz_inclusion.assembly_id = 25
+    new_quiz_inclusion.assembly_id = last_includable.id
     new_quiz_inclusion.position = 1
     if new_quiz_inclusion.save
-      old_quiz_inclusion = AssemblyInclusion.find(111)
-      old_quiz_inclusion.destroy
+      puts "Saved quiz inclusion"
+      puts new_quiz_inclusion.inspect
+      puts "--------------------"
     end
 
     # Badges
@@ -199,30 +203,32 @@ namespace :courses do
     puts new_upload_page.inspect
     puts "--------------------"
 
+    last_includable = course.assembly_inclusions.last.includable
+    last_includable.assembly_inclusions.each do |inclusion|
+      inclusion.destroy
+      puts "Deleted Old Upload Inclusion"
+      puts "--------------------"
+    end
+
     new_upload_inclusion = AssemblyInclusion.new
     new_upload_inclusion.includable = new_upload_page
-    new_upload_inclusion.assembly_id = 31
+    new_upload_inclusion.assembly_id = last_includable.id
     new_upload_inclusion.position = 2
     if new_upload_inclusion.save
       puts "Including upload into course:"
       puts new_upload_inclusion.inspect
-      puts "--------------------"
-
-      old_upload_inclusion = AssemblyInclusion.find(129)
-      old_upload_inclusion.destroy
-
-      puts "Deleted Old Upload Inclusion"
       puts "--------------------"
     end
 
     quiz = Quiz.find 'spherification-quiz'
     new_quiz_inclusion = AssemblyInclusion.new
     new_quiz_inclusion.includable = quiz
-    new_quiz_inclusion.assembly_id = 31
+    new_quiz_inclusion.assembly_id = last_includable.id
     new_quiz_inclusion.position = 1
     if new_quiz_inclusion.save
-      old_quiz_inclusion = AssemblyInclusion.find(128)
-      old_quiz_inclusion.destroy
+      puts "Saved quiz inclusion"
+      puts new_quiz_inclusion.inspect
+      puts "--------------------"
     end
 
     course.badge_id = 2
@@ -254,24 +260,24 @@ namespace :courses do
       puts activity.inspect
     end
 
-    # Bump step order if there are any steps
+    # # Bump step order if there are any steps
 
-    if activity.steps.length > 0
-      activity.steps.each_with_index do |step,index|
-        step.step_order = index + 1
-        step.save
-      end
-    end
+    # if activity.steps.length > 0
+    #   activity.steps.each_with_index do |step,index|
+    #     step.step_order = index + 1
+    #     step.save
+    #   end
+    # end
 
-    # Create step
-    image_url = JSON.parse(image)['url'].gsub('www.filepicker.io','d3awvtnmmsvyot.cloudfront.net')
-    directions = "<h4>#{title.upcase}</h4><img src='#{image_url}'><hr/>#{description}"
-    puts directions
-    step = Step.new({directions: directions, image_id: image, activity_id: activity.id})
-    step.step_order = 0
-    if step.save
-      puts step.inspect
-    end
+    # # Create step
+    # image_url = JSON.parse(image)['url'].gsub('www.filepicker.io','d3awvtnmmsvyot.cloudfront.net')
+    # directions = "<h4>#{title.upcase}</h4><img src='#{image_url}'><hr/>#{description}"
+    # puts directions
+    # step = Step.new({directions: directions, image_id: image, activity_id: activity.id})
+    # step.step_order = 0
+    # if step.save
+    #   puts step.inspect
+    # end
     puts "----------------"
   end
 

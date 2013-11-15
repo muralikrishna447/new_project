@@ -1,6 +1,6 @@
 .row
   .span9.offset1
-    %div(ng-show="activity.youtube_id")
+    %div(ng-show="activity.youtube_id || activity.image_id")
       = render 'activities/hero_visual'
     %div(ng-show="activity.description")
       = render 'activities/latest/description'
@@ -14,4 +14,6 @@
           .video-container(csenforceaspect)
             %iframe(ng-style="setHeight()" csenforceaspect ng-src="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
         %div(ng-show="!!step.image_id")
+          %hr
           %img(ng-src="{{stepImageURL(step, 840)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+          %hr
