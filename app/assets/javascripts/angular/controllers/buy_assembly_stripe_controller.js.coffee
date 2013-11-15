@@ -106,4 +106,11 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.state = "thanks_redeem"
       $scope.buyModalOpen = true
 
+  $scope.free_enrollment = ->
+    if $scope.check_signed_in()
+      $scope.enroll()
+      $scope.state = "free_enrollment"
+      $scope.buyModalOpen = true
+      mixpanel.track('Class Enrolled', {'class' : $scope.assembly.title})
+
 ]
