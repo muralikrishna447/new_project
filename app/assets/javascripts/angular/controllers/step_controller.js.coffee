@@ -55,10 +55,6 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
     return "span5" if $scope.hasAV()
     "span7"
 
-  $scope.directionsSpanClass = ->
-    return "span12" if $scope.step.directions?.length > 700
-    "span7"
-
   $scope.dividerSpanClass = ->
     return "span12" if ($scope.hasAV()) && ($scope.hasIngredients())
     return "span7" if ($scope.hasAV()) || ($scope.hasIngredients())
