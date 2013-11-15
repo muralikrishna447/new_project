@@ -13,7 +13,7 @@
     .span8
       .home-section
         %h2
-          = link_to 'Courses', courses_path, class: 'orange-link'
+          = link_to 'Classes', courses_path, class: 'orange-link'
         .home-featured-item
           - home_featured_path = @classes[0].class.to_s == 'Assembly' ? landing_class_path(@classes[0]) : course_path(@classes[0])
           = link_to home_featured_path do

@@ -181,17 +181,17 @@ module ApplicationHelper
     if course.class.to_s == 'Assembly'
       last_viewed_activity = user.last_viewed_activity_in_assembly(course)
       if last_viewed_activity
-        link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, class_activity_path(course, last_viewed_activity), class: btn_class
+        link_to "Continue Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, class_activity_path(course, last_viewed_activity), class: btn_class
       else
-        link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, landing_class_path(course), class: btn_class
+        link_to "Start the Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, landing_class_path(course), class: btn_class
       end
     else
       last_viewed_activity = user.last_viewed_activity_in_course(course)
       if last_viewed_activity
-        link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
+        link_to "Continue Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
       else
         first_activity = course.first_published_activity
-        link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
+        link_to "Start the Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
       end
     end
   end
