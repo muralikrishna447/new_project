@@ -1,13 +1,37 @@
 .assembly-course-landing
   .container
     .row
-      .span12.section
+      .span8.section
         .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
           - if @course.slug == 'french-macarons'
             - ab_test 'macaron_landing_video', 'FA7XWOmcptU', '5adpHW6fqa0' do |video_id|
               %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
           - else
             %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+
+      .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
+        .buy-box
+          - discounted_price = @course.price ? @discounted_price : 0
+          = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate
+          .text-center.enroll-count.section
+            %h4= "#{@course.enrollments.count} Enrolled"
+          %h5 Class Includes:
+          %ul
+            %li Unlimited Access
+            %li= "#{@course.video_count} HD Videos"
+            / %li Three Fundamental Fillings Explained
+            = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
+            - if @course.price
+              %li Q&A Support
+          - if @course.price
+            %h4 100% satisfaction guaranteed or your money back
+        .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps .com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+          = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.  slug}/landing"
+        .testimonials.well
+          = image_tag 'https://www.filepicker.io/api/file/AShQR6KzQJeqKNwszJjK/convert?fit=crop&w=75&h=75', class: 'img-circle'
+          %p "...the best $39 of my life. On the first day we made the roasted cocoa macarons, and on the second, rainbow chip. Both days we made perfect cookies and filling, first try.”
+          %h5 -Patrick, North Carolina
+
 
 .container.assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
   .row
@@ -56,25 +80,6 @@
             :markdown
               #{apply_shortcodes(@course.testimonials.content)}
 
-    .span4.section
-      .buy-box
-        - discounted_price = @course.price ? @discounted_price : 0
-        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user.completed_course?(@assembly), gift_certificate: @gift_certificate
-        .text-center.enroll-count.section
-          %h4= "#{@course.enrollments.count} Enrolled"
-        %h5 Class Includes:
-        %ul
-          %li Unlimited Access
-          %li= "#{@course.video_count} HD Videos"
-          / %li Three Fundamental Fillings Explained
-          = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
-          - if @course.price
-            %li Q&A Support
-        - if @course.price
-          %h4 100% satisfaction guaranteed or your money back
-
-      .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
-        = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.slug}/landing"
 
 = render 'layouts/footer'
 
