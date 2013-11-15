@@ -1,7 +1,4 @@
-
-
 angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', '$route', '$routeParams', '$location', "$timeout", ($rootScope, $scope, $resource, $http, $route, $routeParams, $location, $timeout) ->
-
 
   $scope.routeParams = $routeParams
   $scope.route = $route
@@ -17,7 +14,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $scope.course = data
       console.log $scope.course.assembly_inclusions
       console.log $scope.course.assembly_inclusions[0].includable_id
-      $scope.flatInclusions = $scope.computeflatVisibleInclusions($scope.course.assembly_inclusions)
+      $scope.flatInclusions = $scope.computeflatVisibleInclusions(null, $scope.course.assembly_inclusions)
       if $scope.routeParams.slug
         $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
       else
@@ -32,10 +29,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     # ... make sure the group containing the currently active leaf is open
     # TODO: This actually needs to be recursive, but can get away with this for macarons.
     if $scope.currentIncludable
-      for top_incl in $scope.course.assembly_inclusions
-        if top_incl.includable_type == "Assembly"
-          if _.where(top_incl.includable.assembly_inclusions, {includable_id: $scope.currentIncludable.includable_id}).length
-            $scope.collapsed[top_incl.includable_id] = false
+      parent = $scope.currentIncludable
+      while parent
+        $scope.collapsed[parent.includable_id] = false
+        parent = parent.parent
 
   $scope.loadInclusion = (includable_id) ->
     return if $scope.currentIncludable?.includable_id == includable_id
@@ -77,6 +74,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $('.prev-next-group').hide()
       $timeout ->
         $('.prev-next-group').show()
+
+  $scope.inclusionActiveClass = (inclusion) ->
+    return 'active' if (inclusion.includable_type == $scope.view_inclusion) && (inclusion.includable_id == $scope.view_inclusion_id)
+    return ''
 
   $scope.updateDisqus = ->
     # Super gross. Was running into an issue where this could get called before DISQUS was loaded, fail, and
@@ -125,13 +126,14 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.loadPrevInclusion = ->
    $scope.loadInclusion($scope.prevInclusion().includable_id) 
 
-  $scope.computeflatVisibleInclusions = (inclusions) ->
+  $scope.computeflatVisibleInclusions = (parent, inclusions) ->
     result = []
     for incl in inclusions
+      incl.parent = parent
       if incl.includable_type != "Assembly"
         result.push(incl)
       else
-        result.push(sub) for sub in $scope.computeflatVisibleInclusions(incl.includable.assembly_inclusions)
+        result.push(sub) for sub in $scope.computeflatVisibleInclusions(incl, incl.includable.assembly_inclusions)
     result
 
   $scope.toggleCollapse = (includable_id) ->
