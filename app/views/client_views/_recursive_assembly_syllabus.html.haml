@@ -5,7 +5,7 @@
     .hit-box(ng-click="toggleCollapse(inclusion.includable_id); $event.stopPropagation()")
       %a
         {{inclusion.includable_title}}&hellip;
-    %ul.no-bullet(ng-class="{'collapsed' : isCollapsed(inclusion.includable_id)}")
+    %ul.no-bullet(collapse="isCollapsed(inclusion.includable_id)")
       %li(ng-repeat='inclusion in inclusion.includable.assembly_inclusions' 
           ng-click='loadInclusion(inclusion.includable_id); $event.stopPropagation()' 
           ng-class="inclusionActiveClass(inclusion)" 

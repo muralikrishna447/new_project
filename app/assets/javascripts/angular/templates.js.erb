@@ -6,4 +6,4 @@ angular.module('templates', []).run(["$templateCache", function($templateCache) 
     $templateCache.put("<%= File.basename(f).gsub(/\.haml$/, '')  %>", <%= Haml::Engine.new(File.read(f)).render.to_json %>);
     <% end %>
 }]);
-//25<= forced change, just add something here for every change to files in app/views/client_views
+//26<= forced change, just add something here for every change to files in app/views/client_views
