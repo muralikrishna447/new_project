@@ -4,7 +4,7 @@ csLengthUnits = "cm"
 # Temporary way of dealing with stuff til this is all angularized
 
 rootScope = ->
-  angular.element('body').scope()
+  angular.element('[ng-controller=ActivityController]').scope()
 
 getScaling = ->
   rootScope()?.csGlobals.scaling || 1.0
