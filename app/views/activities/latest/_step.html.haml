@@ -11,7 +11,7 @@
 
 .row.step-first-row(ng-show='(step.ingredients.length > 0)')
 
-  %div(ng-class="ingredientSpanClass()")
+  .span7
     =render 'activities/step_ingredients'
 
 .row
@@ -36,4 +36,4 @@
       .new-step-image(id="{{'step-image-' + $index}}")
         %img(ng-src="{{stepImageURL(step, 670)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
 
-  .divider(ng-class="dividerSpanClass()")
+  .divider.span7
