@@ -94,33 +94,25 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     if $scope.showIngredientsMenu
       mixpanel.track('Ingredients Menu Opened', {'slug' : $scope.activity.slug});
 
-  $scope.displayScaling = (scale) ->
-    r = (Math.round(scale * 10) / 10)
-    if r > 100
-      r = Math.round(r)
-    r = r.toString()
-    r = "&frac12;" if r == "0.5"
-    r + "x"
-
   $scope.setScaling = (newScale) ->
-    $rootScope.csGlobals.scaling = newScale
+    $scope.csGlobals.scaling = newScale
     window.updateUnits(true)    
     mixpanel.track('Scaling Changed', {'slug' : $scope.activity.slug, 'scale' : newScale});
 
   $scope.isActiveScale = (scale) ->
-    return "active" if scale == $rootScope.csGlobals.scaling
+    return "active" if scale == $scope.csGlobals.scaling
     ""
 
   $scope.unitChoices = ->
     ["grams", "ounces"]
 
   $scope.setUnits = (unit) ->
-    $rootScope.csGlobals.units = unit
+    $scope.csGlobals.units = unit
     window.updateUnits(true)
     mixpanel.track('Units Button Pushed', {'slug' : $scope.activity.slug});
 
   $scope.isActiveUnit = (unit) ->
-    return "active" if $rootScope.csGlobals.units == unit
+    return "active" if $scope.csGlobals.units == unit
     ""
 
 ]

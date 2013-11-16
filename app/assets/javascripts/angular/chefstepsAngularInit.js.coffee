@@ -25,9 +25,7 @@ angular.module('ChefStepsApp').config ["$httpProvider", ($httpProvider) ->
 ]
 
 angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
-  $rootScope.csGlobals = 
-    scaling: 1.0
-    units: "grams"
+
 ]
 
 

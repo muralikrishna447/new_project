@@ -28,6 +28,26 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.alerts = []
   $scope.activities = {}
 
+  $scope.csGlobals = 
+    scaling: 1.0
+    units: "grams"
+
+  $scope.displayScaling = (scale) ->
+    r = (Math.round(scale * 10) / 10)
+    if r > 100
+      r = Math.round(r)
+    r = r.toString()
+    r = "&frac12;" if r == "0.5"
+    "x" + r
+
+  $scope.maybeDisplayCurrentScaling = ->
+    return null if $scope.csGlobals.scaling == 1.0
+    $scope.displayScaling($scope.csGlobals.scaling)
+
+  $scope.maybeWarnCurrentScaling = ->
+    return null if $scope.csGlobals.scaling == 1.0
+    "- Adjust based on recipe " + $scope.maybeDisplayCurrentScaling()
+
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -46,8 +66,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       $scope.undoIndex = 0
       $scope.activity.$startedit()
       $timeout ->
-        $rootScope.csGlobals.scaling = 1
-        $rootScope.csGlobals.units = "grams"
+        $scope.csGlobals.scaling = 1
+        $scope.csGlobals.units = "grams"
         window.updateUnits(false)
         window.expandSteps()
 
@@ -425,8 +445,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     $scope.activity = $scope.activities[id] 
     cs_event.track(id, 'Activity', 'show')
     mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
-    $rootScope.csGlobals.units = "grams"
-    $rootScope.csGlobals.scaling = 1
+    $scope.csGlobals.units = "grams"
+    $scope.csGlobals.scaling = 1
     $timeout ->
       window.updateUnits(false)
 
