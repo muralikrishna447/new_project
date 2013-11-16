@@ -28,6 +28,23 @@ angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
   $rootScope.csGlobals = 
     scaling: 1.0
     units: "grams"
+
+  $rootScope.displayScaling = (scale) ->
+    r = (Math.round(scale * 10) / 10)
+    if r > 100
+      r = Math.round(r)
+    r = r.toString()
+    r = "&frac12;" if r == "0.5"
+    "x" + r
+
+  $rootScope.maybeDisplayCurrentScaling = ->
+    return null if $rootScope.csGlobals.scaling == 1.0
+    $rootScope.displayScaling($rootScope.csGlobals.scaling)
+
+  $rootScope.maybeWarnCurrentScaling = ->
+    return null if $rootScope.csGlobals.scaling == 1.0
+    "- Adjust based on recipe " + $rootScope.maybeDisplayCurrentScaling()
+
 ]
 
 

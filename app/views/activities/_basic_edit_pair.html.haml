@@ -1,10 +1,12 @@
+
 .section
   %csEditPair
-
     %csEditPairShow
       %div(ng-show="!!#{model}|| editMode" ng-class="disableIf(! #{model})")
         %h4= name
-        %span(ng-bind="#{model} || '#{add_text}' "){itemprop: (defined? itemprop) ? itemprop : nil}
+        %span(ng-class="{'box-extra-info' : #{show_extra}}")
+          %span(ng-bind="#{model} || '#{add_text}' "){itemprop: (defined? itemprop) ? itemprop : nil}
+          %span.extra-info(ng-bind-html-unsafe="#{show_extra}")
 
     %csEditPairEdit
       %h4= name

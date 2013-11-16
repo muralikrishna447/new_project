@@ -94,14 +94,6 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     if $scope.showIngredientsMenu
       mixpanel.track('Ingredients Menu Opened', {'slug' : $scope.activity.slug});
 
-  $scope.displayScaling = (scale) ->
-    r = (Math.round(scale * 10) / 10)
-    if r > 100
-      r = Math.round(r)
-    r = r.toString()
-    r = "&frac12;" if r == "0.5"
-    r + "x"
-
   $scope.setScaling = (newScale) ->
     $rootScope.csGlobals.scaling = newScale
     window.updateUnits(true)    
