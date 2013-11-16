@@ -59,6 +59,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $rootScope.$broadcast("loadActivityEvent", includable_id)
       $scope.updateDisqus()
 
+    mixpanel.track($scope.currentIncludable.includable_type + ' Viewed Within Class', {'title': $scope.currentIncludable.includable_title, 'class': $scope.course.title})
 
     $scope.showCourseMenu = false
 
