@@ -125,6 +125,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
             if (gip.page == 1) || (Object.keys($scope.activities).length == 0)
               $scope.activities = []
+              
             base = (gip.page - 1) * PAGINATION_COUNT
             $scope.activities[base..base + PAGINATION_COUNT] = more_activities
 
@@ -211,14 +212,18 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   # $scope.fill_screen()
 ]
 
+
+
 angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) ->
   (scope, element, attr) ->
     window_element = angular.element($window)
     raw = element[0]
-    window_element.scroll ->
+    maybe_call_cb = ->
       # console.log(element.height() - window.innerHeight)
       # console.log(window_element.scrollTop())
       if window_element.scrollTop() >= (element.height() - window.innerHeight)
         scope.$apply(attr.galleryscroll)
+    throttled_cb = _.throttle(maybe_call_cb, 250, trailing: false)
+    window_element.scroll(throttled_cb)
 ]
 
