@@ -256,9 +256,12 @@
         .btn-holder
           .btn-social
             margin: 0px
-    .note-left
+    .note-left, .note-center
       left: -300px
       top: 0px
+    .note-center
+      background-color: white
+      @include transition(all 300ms ease-in-out)
     .note-right
       right: -300px
       top: 0px

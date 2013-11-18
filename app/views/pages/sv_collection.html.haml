@@ -2,7 +2,7 @@
 - content_for :description, "Sous vide is a modernist technique that slowly cooks packaged foods to a particular temperature in a heated water bath. It prevents overcooking, preserves flavor, and yields inimitable texture. Many people believe that sous vide cooking is inherently expensive, and requires lots of gadgets. But often you can cook sous vide with nothing more than an inexpensive digital thermometer. Other times, dedicated sous vide equipment is the only practical way to do the job. Either way, having proper sous vide cooking equipment is invaluable if you frequently cook sous vide, and if you’ve never tried it, we highly recommend you do. It’s a simple technique that’s revolutionizing kitchens worldwide, and for good reason: it works."
 
 .container
-  .row.section#product-intro
+  .row.section#knife-intro
     .span5
       = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/wzElPtvhT9v6hUeDNgfQ?cache=true'
     .span7
@@ -11,8 +11,8 @@
       %p.section-small Sous vide is a modernist technique that slowly cooks packaged foods to a particular temperature in a heated water bath. It prevents overcooking, preserves flavor, and yields inimitable texture. Many people believe that sous vide cooking is inherently expensive, and requires lots of gadgets. But often you can cook sous vide with nothing more than an inexpensive digital thermometer. Other times, dedicated sous vide equipment is the only practical way to do the job. Either way, having proper sous vide cooking equipment is invaluable if you frequently cook sous vide, and if you’ve never tried it, we highly recommend you do. It’s a simple technique that’s revolutionizing kitchens worldwide, and for good reason: it works. 
 // Start SVS //
 
-.product.first.section
-  .product-content
+.knife.first.section
+  .knife-content
     %h3.media-heading Water Ovens
     %p SousVide Supreme brings sous vide cooking into your home with simplicity, convenience, and style. This countertop water oven allows you to cook nearly anything to perfection, with the click of a button. Just season your dish, place it in a food-grade pouch or plastic bag, cook in the water bath, sear or sauce if desired, and serve.
 
@@ -59,8 +59,8 @@
 
 // Start PolySci //
 
-.product.section#ohishi
-  .product-content
+.knife.section#ohishi
+  .knife-content
     %h3.media-heading Immersion Circulators 
     With the PolyScience Immersion Circulator you can create a circulating bath using your own vessel or a PolyScience open bath tank. Cooking in a circulating, precisely-controlled water bath yields uniform doneness, enhanced flavor, and perfect texture every time, without the stress of strict timing. Dishes can be held at serving temperature without the risk of drying out, over-cooking, or burning. The easy-to-store immersion circulator simply clamps to a pot or a tank, transforming it into a precisely-controlled bath capable of preparing a meal for one, or several dishes for a large dinner party. 
 
@@ -73,7 +73,7 @@
           .annotation-buttons
             %a.annotation-slider-btn#polysci-1(data-annotation-slider-reveal='left' onclick="mixpanel.track('Viewed product Detail', {'product' : 'Ohishi Chef product'});")
               +
-            %a.annotation-slider-btn#polysci-2(data-annotation-slider-reveal='left' onclick="mixpanel.track('Viewed product Detail', {'product' : 'Ohishi Petty product'});")
+            %a.annotation-slider-btn#polysci-2(data-annotation-slider-reveal='center' onclick="mixpanel.track('Viewed product Detail', {'product' : 'Ohishi Petty product'});")
               +
             %a.annotation-slider-btn#polysci-3(data-annotation-slider-reveal='right' onclick="mixpanel.track('Viewed product Detail', {'product' : 'Ohishi Petty product'});")
               +
@@ -93,7 +93,7 @@
             .btn.btn-primary.btn-large.btn-block
               = link_to("Buy Now for $399", "http://www.epicedge.com/shopaff.asp?affid=1&id=89157", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Creative'}); finishproductSplit();")
 
-          .annotation-slider-note.note-left
+          .annotation-slider-note.note-center
             %a.annotation-close-btn
               %i.icon-remove
             %h3 PolyScience Chef Series Immersion Circulator

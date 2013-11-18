@@ -45,6 +45,10 @@ annotationSlide = (slider, button, direction) ->
 
   if direction == 'left'
     slider.css 'left', note_width
+  else if direction == 'center'
+    center = slider.find('.note-center')
+    center.css 'left', 96
+    center.css 'opacity', 1
   else
     slider.css 'left', '-' + note_width
 
@@ -70,6 +74,9 @@ annotationClose = (slider) ->
   slider.css 'left', '0'
   slider_buttons.removeClass('annotation-slider-btn-close')
 
+  center = slider.find('.note-center')
+  center.css 'opacity', 0
+  center.css 'left', -300
 
 $ ->
   $('.annotation-slider-container').each ->
