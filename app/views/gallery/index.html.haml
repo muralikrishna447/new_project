@@ -65,8 +65,11 @@
             .media-box-3-footer
               .footer-left
                 {{activity.difficulty}}
-              .footer-right(ng-show="activity.creator.id != nil")
-                By {{activity.creator.name}}
+              .footer-right
+                %span(ng-show="activity.creator.id != nil")
+                  By {{activity.creator.name}}
+                %span(ng-show="activity.show_only_in_course")
+                  PAID CLASS
 
   .row
     .span2.offset5
