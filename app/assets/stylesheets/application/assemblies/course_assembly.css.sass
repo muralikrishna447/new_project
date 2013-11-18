@@ -293,8 +293,8 @@
 .ingredients-title
   display: none
 
-
-
+.responsive
+  display: none
 
 // Affixable Styles //
 
@@ -424,3 +424,50 @@
       bottom: 0px
       border-radius: 0px
       @include boxsizing
+
+@media (max-width: 720px)
+  .non-responsive
+    display: none
+
+  .responsive
+    display: inline-block
+  .course-nav-bottom-center
+    position: relative
+    margin-left: -20px
+    padding-left: 20px
+    width: 100%
+
+    hr
+      width: 120%
+      margin-left: -10%
+      border-top-color: $light-gray
+      padding-bottom: $baseline * 2
+    .next-activity-name
+      color: $orange
+
+    .course-nav-buttons-group
+      width: 100%
+      position: relative
+      padding-bottom: $baseline * 8
+      .btn
+        @include boxsizing
+        display: inline-block
+        width: 55%   
+        position: absolute
+        right: 50%
+        bottom: 0
+        height: $baseline * 5
+        padding-top: 14px
+        border-top: 1px solid $light-gray
+        border-bottom: none
+        i
+          font-size: $baseline * 3
+          vertical-align: middle
+          color: #ccc
+      .btn:not(:first-child)
+        left: 50%
+        right: auto
+        border-left: 1px solid $light-gray
+        
+
+
