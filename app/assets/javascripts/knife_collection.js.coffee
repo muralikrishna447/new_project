@@ -47,8 +47,12 @@ annotationSlide = (slider, button, direction) ->
     slider.css 'left', note_width
   else if direction == 'center'
     center = slider.find('.note-center')
-    center.css 'left', 96
+    center_image = slider.find('.annotation-slider-image-center')
     center.css 'opacity', 1
+    center.css 'z-index', 9999
+    center_image.css 'opacity', 0
+    center_image.css 'pointer-events', 'none'
+
   else
     slider.css 'left', '-' + note_width
 
@@ -75,9 +79,11 @@ annotationClose = (slider) ->
   slider_buttons.removeClass('annotation-slider-btn-close')
 
   center = slider.find('.note-center')
+  center_image = slider.find('.annotation-slider-image-center')
   center.css 'opacity', 0
-  center.css 'left', -300
-
+  center.css 'z-index', -1
+  center_image.css 'opacity', 1
+  center_image.css 'pointer-events', 'auto'
 $ ->
   $('.annotation-slider-container').each ->
     slider = $(this).find('.annotation-slider')

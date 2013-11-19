@@ -226,7 +226,7 @@
       bottom: 0px
       left: 0px
       right: 0px
-      z-index: 9999
+      z-index: 9998
       display: none
       &:hover
         cursor: pointer
@@ -256,12 +256,16 @@
         .btn-holder
           .btn-social
             margin: 0px
-    .note-left, .note-center
+    .note-left
       left: -300px
       top: 0px
     .note-center
       background-color: white
       @include transition(all 300ms ease-in-out)
+      left: 50%
+      margin-left: -130px
+      opacity: 0
+      z-index: -1
     .note-right
       right: -300px
       top: 0px

@@ -126,7 +126,12 @@
               = link_to("Buy Now for $1128", "http://www.epicedge.com/shopaff.asp?affid=1&id=89149", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Classic'}); finishproductSplit();")
 
           .annotation-slider-image
-            = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/Z4OFqZxGQa10FSmxuAj4?cache=true')
+            .annotation-slider-sub-image.annotation-slider-image-left
+              = image_tag ('//www.placehold.it/388x586&text=Left')
+            .annotation-slider-sub-image.annotation-slider-image-center
+              = image_tag ('//www.placehold.it/388x586&text=Center')
+            .annotation-slider-sub-image.annotation-slider-image-right
+              = image_tag ('//www.placehold.it/388x586&text=Right')
 
 // End PolySci //
 
