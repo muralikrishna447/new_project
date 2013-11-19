@@ -85,6 +85,8 @@
             .annotation-slider-note-gallery
               .annotation-slider-note-gallery-thumbnails
                 .annotation-slider-note-gallery-thumbnail
+                  = render '/shared/open_lightbox', image_url: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/MmoPbmkRScmHPr111XCm?cache=true', thumbnail_width: '258'
+                .annotation-slider-note-gallery-thumbnail
                   = render '/shared/open_lightbox', image_url: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/PJt7TRjUTYqLBTm47UOb?cache=true', thumbnail_width: '258'
                 .annotation-click-image
                   %small click images to enlarge
@@ -127,11 +129,11 @@
 
           .annotation-slider-image
             .annotation-slider-sub-image.annotation-slider-image-left
-              = image_tag ('//www.placehold.it/388x586&text=Left')
+              = image_tag ('//d3awvtnmmsvyot.cloudfront.net/api/file/MmoPbmkRScmHPr111XCm')
             .annotation-slider-sub-image.annotation-slider-image-center
-              = image_tag ('//www.placehold.it/388x586&text=Center')
+              = image_tag ('//d3awvtnmmsvyot.cloudfront.net/api/file/5WRvTSxJRpSsAY0iQFO7')
             .annotation-slider-sub-image.annotation-slider-image-right
-              = image_tag ('//www.placehold.it/388x586&text=Right')
+              = image_tag ('//d3awvtnmmsvyot.cloudfront.net/api/file/f4e2hwQQ6uTk0aqtog1Q')
 
 // End PolySci //
 
