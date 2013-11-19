@@ -1,30 +1,24 @@
 
-- if current_user
-  .flat-form
-    %form(ng-submit="addComment()")
-      %textarea.input-block-level(ng-model="newComment.content" placeholder='Write your review...')
-      %input.btn.btn-primary(type='submit' value='Add Review')
-- else
-  %hr
-  %h4
-    = link_to sign_in_path, class: 'btn btn-secondary' do
-      Sign In
-    or
-    = link_to sign_up_path, class: 'btn btn-secondary' do
-      Create an Account
-    to add a review.
+.review-group
+  - if current_user
+    .well(ng-click="showReviewInput = true" ng-hide="showReviewInput" )
+      Add your own review...
+    .flat-form(ng-show="showReviewInput"  ng-animate="'fade'")
+      %form(ng-submit="addComment()")
+        %textarea.input-block-level(ng-model="newComment.content" placeholder='Write your review...')
+        %input.btn.btn-primary(type='submit' value='Add Review')
 
-.reviews(ng-repeat="comment in comments|orderBy:['-id']|limitTo:commentLimit")
-  .review
-    %blockquote.review-content
-      {{comment.content}}
-    .review-user
-      \- 
-      %a(href="/profiles/{{comment.user.slug}}")
-        {{comment.user.name}}
- 
-%h4.comments-header(ng-show='comments.length > commentLimit')
-  %span(ng-pluralize count='comments_count - commentLimit' when="{'0':'0 more reviews', '1':'1 more review', 'other':'{{comments_count - commentLimit}} more reviews'}")
-  %span
-    .btn.btn-link(ng-click='showAllComments()')
-      Show All
+  .reviews(ng-repeat="comment in comments|orderBy:['-id']|limitTo:commentLimit")
+    .review
+      %blockquote.review-content
+        {{comment.content}}
+      .review-user
+        \- 
+        %a(href="/profiles/{{comment.user.slug}}")
+          {{comment.user.name}}
+   
+  %h4.comments-header(ng-show='comments.length > commentLimit')
+    %span(ng-pluralize count='comments_count - commentLimit' when="{'0':'0 more reviews', '1':'1 more review', 'other':'{{comments_count - commentLimit}} more reviews'}")
+    %span
+      .btn.btn-link(ng-click='showAllComments()')
+        Show All
