@@ -57,8 +57,8 @@
                       = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
 
           %div(ng-show="tab=='reviews'")
-            %div(ng-controller='CommentsController' ng-init="init('assemblies',@course.id)" ng-cloak)
-              = render 'comments/comments'
+            %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, true)" ng-cloak)
+              = render 'comments/reviews'
           - if @course.faq    
             %div(ng-show="tab=='faq'")
               :markdown

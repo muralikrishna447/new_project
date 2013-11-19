@@ -1,8 +1,12 @@
 angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$resource", "$http", "$filter", ($scope, $resource, $http, $filter) ->
 
-  $scope.init = (commentable_type, commentable_id) ->
+  $scope.init = (commentable_type, commentable_id, isReviews = false) ->
     $scope.commentable_type = commentable_type
     $scope.commentable_id = commentable_id
+    $scope.isReviews = isReviews 
+    $scope.defaultCommentLimit = 6
+    $scope.commentLimit = $scope.defaultCommentLimit
+    $scope.commentLimit *= -1 if ! isReviews
 
     $scope.Comment = $resource('/' + $scope.commentable_type + '/' + $scope.commentable_id + '/comments')
     $scope.comments = $scope.Comment.query(->
@@ -25,10 +29,8 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
 
     )
 
-  $scope.commentLimit = -6
-
   $scope.commentsToggle = ->
-    if $scope.comments.length > 6
+    if $scope.comments.length > $scope.defaultCommentLimit
       true
     else
       false
@@ -37,5 +39,6 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
     $scope.commentLimit = $scope.comments_count
 
   $scope.hideComments = ->
-    $scope.commentLimit = -6
+    $scope.commentLimit = $scope.defaultCommentLimit
+    $scope.commentLimit *= -1 if ! isReviews
 ]
