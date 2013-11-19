@@ -81,7 +81,6 @@
             %div(collapse='!poll_item.show_details')
               %div(ng-controller='CommentsController' ng-init="init('poll_items',poll_item.id)" ng-cloak)
                 = render 'comments/comments', commentable: nil
-              / = render 'comments/comments', commentable: @poll
 
       %div.voting-spinner(ng-hide="hideSpinner")
         %i.icon-spinner.icon-spin.icon-large
