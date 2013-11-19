@@ -1,18 +1,18 @@
 @import 'mixins'
 
-#knife-intro
+#product-intro
   position: fixed
 
-.knife.first
+.product.first
   margin-top: 350px
 
-.knife
+.product
   padding: 40px
   -webkit-transition-duration: 0.55s
   -moz-transition-duration: 0.5s
   -o-transition-duration: 0.5s
   transition-duration: 0.5s
-  .knife-content
+  .product-content
     width: 900px
     margin: 0 auto
 
@@ -24,7 +24,7 @@
   position: absolute
   top: 0
 
-.knife.alt
+.product.alt
   background: $offwhite
   border-bottom: 2px solid $orange
   padding: 20px 40px 30px 40px
@@ -34,7 +34,7 @@
   -moz-border-radius: 0px
   border-radius: 0px
 
-.knife.alt:after
+.product.alt:after
   content: ""
   position: absolute
   bottom: -20px
@@ -87,42 +87,32 @@
     -o-transition-duration: 0.5s
     transition-duration: 0.5s    
   
-  #asai-1
+  #svs-1
     position: absolute
     left: 25%
     top: 65%
   
-  #asai-2
+  #svs-2
     position: absolute
     left: 73%
     top: 54%
   
-  #ohishi-1
+  #polysci-1
     position: absolute
     left: 23%
     top: 55%
-  
-  #ohishi-2
+
+  #polysci-2
     position: absolute
     left: 83%
     top: 54%
-  
-  #yoshikane-1
-    position: absolute
-    left: 27%
-    top: 15%
-  
-  #yoshikane-2
-    position: absolute
-    left: 83%
-    top: 69%
-  
-  #sharpening
+
+  #polysci-3
     position: absolute
     left: 50%
-    top: 69%
-
-.knife-modal
+    top: 54%
+    
+.product-modal
   position: fixed
   top: 0px
   right: 0px
@@ -137,7 +127,7 @@
   @include boxsizing
   max-height: inherit
   max-width: 500px
-  .knife-modal-header
+  .product-modal-header
     position: absolute
     top: 0px
     left: 0px
@@ -149,7 +139,7 @@
       padding: 0px
       margin: 0px
       text-align: center
-  .knife-modal-body
+  .product-modal-body
     position: absolute
     margin-top: 60px
     margin-bottom: 53px
@@ -161,30 +151,30 @@
     -webkit-overflow-scrolling: touch
     img
       width: 100%
-  .knife-modal-footer
+  .product-modal-footer
     position: absolute
     bottom: 10px
     left: 10px
     right: 10px
 
 @media (min-width: 1160px)
-  .knife.first
+  .product.first
     margin-top: 350px
 
 @media (max-width: 1080px)
-  .knife.first
+  .product.first
     margin-top: 352px
 
 @media (max-width: 980px)
-  .knife.first
+  .product.first
     margin-top: 451px
 
-  .knife
-    .knife-content
+  .product
+    .product-content
       width: 100%
 
 @media (max-width: 767px)
-  .knife.first
+  .product.first
     margin-top: 10px
 
   .button-container
@@ -201,18 +191,18 @@
       width: 32px
       padding: 0px 0px
 
-  .knife-modal
+  .product-modal
     left: 0px
     margin-left: 5%
 
-  #knife-intro
+  #product-intro
     position: inherit
 
 @media (max-width: 480px)
-  .knife.first
+  .product.first
     margin-top: 10px
 
-  .knife.alt
+  .product.alt
     padding: 10px
 
 // Annotation Slider //
@@ -236,15 +226,11 @@
       bottom: 0px
       left: 0px
       right: 0px
-      z-index: 9999
+      z-index: 9998
       display: none
       &:hover
         cursor: pointer
     .annotation-slider-image
-      .annotation-slider-sub-image
-        display: inline-block
-        width: 32%
-        margin-right: 1%
     .annotation-slider-note
       position: absolute
       top: 0px
@@ -273,6 +259,13 @@
     .note-left
       left: -300px
       top: 0px
+    .note-center
+      background-color: white
+      @include transition(all 300ms ease-in-out)
+      left: 50%
+      margin-left: -130px
+      opacity: 0
+      z-index: -1
     .note-right
       right: -300px
       top: 0px
@@ -301,37 +294,25 @@
         padding: 9px 0px
         @include transform(rotate(45deg))
 
-#asai-1
-  left: 35%
-  top: 75%
-
-#asai-2
-  left: 63%
-  top: 15%
-
-#ohishi-1
+#svs-1
   left: 23%
-  top: 55%
+  top: 80%
 
-#ohishi-2
-  left: 83%
-  top: 54%
+#svs-2
+  left: 74%
+  top: 80%
 
-#yoshikane-1
-  left: 27%
-  top: 15%
+#polysci-1
+  left: 15%
+  top: 70%
 
-#yoshikane-2
-  left: 83%
-  top: 69%
+#polysci-2
+  left: 48%
+  top: 70%
 
-#sharpening
-  left: 40%
-  top: 75%
-
-#honing
-  left: 80%
-  top: 35%
+#polysci-3
+  left: 81%
+  top: 70%
 
 .annotation-click-image
   float: left
@@ -341,14 +322,6 @@
   .annotation-slider-note
     width: 100%
 
-  #ohishi-1
+  #svs-1
     left: 13%
     top: 45%
-
-  #sharpening
-    left: 50%
-    top: 55%
-
-  #honing
-    left: 75%
-    top: 20%
