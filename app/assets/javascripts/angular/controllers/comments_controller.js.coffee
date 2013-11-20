@@ -1,13 +1,14 @@
 angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$resource", "$http", "$filter", ($scope, $resource, $http, $filter) ->
 
-  $scope.init = (commentable_type, commentable_id, isReviews = false) ->
+  $scope.init = (commentable_type, commentable_id, currentUserID, isReviews = false) ->
     $scope.commentable_type = commentable_type
     $scope.commentable_id = commentable_id
-    $scope.isReviews = isReviews 
+    $scope.currentUserID = currentUserID
+    $scope.isReviews = isReviews
     $scope.defaultCommentLimit = 6
     $scope.commentLimit = $scope.defaultCommentLimit
     $scope.commentLimit *= -1 if ! isReviews
-    $scope.showReviewPrompt = true
+    $scope.newComment = {rating: 0, content: "", user_id: currentUserID}
 
     $scope.Comment = $resource('/' + $scope.commentable_type + '/' + $scope.commentable_id + '/comments')
     $scope.comments = $scope.Comment.query(->
@@ -29,7 +30,6 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
       mixpanel.track('Commented', {'Commentable': $scope.commentable_type + "_" + $scope.commentable_id })
     )
     $scope.showReviewInput = false
-    $scope.showReviewPrompt = false
 
   $scope.commentsToggle = ->
     if $scope.comments.length > $scope.defaultCommentLimit
@@ -45,8 +45,11 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
     $scope.commentLimit *= -1 if ! isReviews
 
   $scope.reviewProblems = (review) ->
-    return "Please choose a star rating" if review.rating < 1
-    return (30 - review.content.length) + " more characters required" if review.content.length < 30
+    return "Please choose a star rating" if review?.rating? < 1
+    return (30 - review.content.length) + " more characters required" if review?.content?.length < 30
     return ""
+
+  $scope.alreadyReviewed = ->
+    _.find($scope.comments, (c) -> c.user_id == $scope.currentUserID)
 
 ]

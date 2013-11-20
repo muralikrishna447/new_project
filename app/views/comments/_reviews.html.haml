@@ -1,8 +1,8 @@
 
 .review-group
-  - if current_user
-    .well(ng-click="showReviewInput = true; newComment.rating = 0; showReviewPrompt = false" 
-          ng-show="showReviewPrompt" )
+  - if current_user && current_user.enrolled?(@assembly)
+    .well(ng-click="showReviewInput = true; newComment.rating = 0;" 
+          ng-show="! alreadyReviewed()" )
       %a
         Add your own review...
     .flat-form(ng-show="showReviewInput"  ng-animate="'fade'")

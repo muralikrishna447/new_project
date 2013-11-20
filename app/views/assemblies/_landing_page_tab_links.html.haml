@@ -8,6 +8,3 @@
 - if @course.ingredients_equipment
   %li(ng-click="switchTab('ingredients-equipment', 'Ingredients / Equipment')" ng-class="isActiveTab('ingredients-equipment')")
     = link_to "What you'll need", '#ingredients-equipment'
-- if @course.testimonials
-  %li(ng-click="switchTab('testimonials', 'Testimonials')" ng-class="isActiveTab('testimonials')")
-    = link_to 'Testimonials', '#testimonials'
