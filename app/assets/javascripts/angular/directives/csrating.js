@@ -1,13 +1,5 @@
 // This is copied out of ui-bootstrap so I can support half stars
 
-angular.module("templates", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("template/csrating/csrating.html",
-    "<span ng-mouseleave=\"reset()\">\n" +
-    " <i ng-repeat=\"number in range\" ng-mouseenter=\"enter(number)\" ng-click=\"rate(number)\" ng-class=\"getIcon(number, val)\"></i>\n" +
-    "</span>\n" +
-    "");
-}]);
-
 angular.module('ChefStepsApp')
 
 .constant('ratingConfig', {

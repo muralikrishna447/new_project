@@ -6,6 +6,7 @@ angular.module('ChefStepsApp').controller 'TabOrDropdown', ["$scope", '$route', 
   $scope.showDropdown = false
 
   $scope.switchTab = (tab, title) ->
+    tab = "default" if tab == "overview"
     title = tab.charAt(0).toUpperCase() + tab.slice(1) if ! title
     $scope.tab = tab 
     $scope.tabTitle = title
