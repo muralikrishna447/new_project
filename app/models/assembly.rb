@@ -102,4 +102,8 @@ class Assembly < ActiveRecord::Base
       nil
     end
   end
+
+  def average_rating
+    comments.where("rating IS NOT NULL").average('rating').to_f
+  end
 end

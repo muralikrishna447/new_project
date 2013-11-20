@@ -1,8 +1,8 @@
 // Not having this be an actual form with a submit because it is nested in another form
 // on the class upload page, and nested forms can't have submit buttons
-.flat-form(ng-show="showReviewInput"  ng-animate="'fade'")
+.flat-form(ng-show="showReviewInput" ng-animate="'fade'")
   .rating-group
     Rating:
-    %rating.rating(value="newComment.rating")
+    %csrating.rating(value="newComment.rating")
   %textarea.input-block-level(ng-model="newComment.content" placeholder='Write your review...')
   %input.btn.btn-primary(ng-click="addComment()" value='Add Review' ng-disabled="reviewProblems(newComment) != ''")

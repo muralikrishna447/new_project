@@ -4,5 +4,8 @@
   = link_to url do
     .media-box-2-title
       = title.html_safe
+    - if defined? right_title
+      .media-box-2-title.media-box-2-right-title
+        = right_title.html_safe
     - if image
       = image_tag filepicker_gallery_image(image)

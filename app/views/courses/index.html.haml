@@ -11,9 +11,15 @@
   .container
     .row.section
       .span4
-        = render 'shared/media_box_2', url: landing_class_path(course), title: course.title, image: course.image_id, object: course
+        = render 'shared/media_box_2', url: landing_class_path(course), title: course.title, image: course.image_id, object: course, right_title: course.price ? "PAID CLASS" : ""
       .span8
-        %h2= course.title
+        .title-group
+          %h2.inline-group= course.title
+          -if course.average_rating > 0
+            .rating.inline-group
+              %csrating(value="#{course.average_rating}")
+            %a
+              = link_to 'See all reviews', landing_class_path(course, anchor: "reviews")
         %p.lead= course.short_description
         = link_to 'View the Class', landing_class_path(course), class: 'btn btn-primary btn-large'
 
