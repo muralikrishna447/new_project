@@ -60,7 +60,7 @@ angular.module('ChefStepsApp')
       }
 
       scope.getIcon = function(number, val) {
-        if (number < val) {
+        if (number <= val) {
           return 'icon-star';
         }
         if ((number - 0.5) <= val) {

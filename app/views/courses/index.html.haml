@@ -17,7 +17,7 @@
           %h2.inline-group= course.title
           -if course.average_rating > 0
             .rating.inline-group
-              %csrating(value="#{course.average_rating}")
+              %csrating(value="#{course.average_rating}" readonly="true")
             %a
               = link_to 'See all reviews', landing_class_path(course, anchor: "reviews")
         %p.lead= course.short_description
