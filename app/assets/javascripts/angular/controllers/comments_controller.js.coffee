@@ -45,11 +45,13 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
     $scope.commentLimit *= -1 if ! isReviews
 
   $scope.reviewProblems = (review) ->
-    return "Please choose a star rating" if review?.rating? < 1
-    return (30 - review.content.length) + " more characters required" if review?.content?.length < 30
+    return null if ! review
+    # Not fully in use yet, would need visual feedback; then could use a number > 1 for required length
+    return "Please choose a star rating" if review.rating < 1
+    return (1 - review.content.length) + " more characters required" if review.content.length < 1
     return ""
 
-  $scope.alreadyReviewed = ->
+  $scope.myReview = ->
     _.find($scope.comments, (c) -> c.user_id == $scope.currentUserID)
 
 ]

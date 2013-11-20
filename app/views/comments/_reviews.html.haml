@@ -2,16 +2,10 @@
 .review-group
   - if current_user && current_user.enrolled?(@assembly)
     .well(ng-click="showReviewInput = true; newComment.rating = 0;" 
-          ng-show="! alreadyReviewed()" )
+          ng-show="! myReview()" )
       %a
         Add your own review...
-    .flat-form(ng-show="showReviewInput"  ng-animate="'fade'")
-      %form(ng-submit="addComment()")
-        .rating-group
-          Rate this class:
-          %rating.rating(value="newComment.rating")
-        %textarea.input-block-level(ng-model="newComment.content" placeholder='Write your review...')
-        %input.btn.btn-primary(type='submit' value='Add Review' ng-disabled="reviewProblems(newComment) != ''")
+    = render 'comments/review_form'
 
   .reviews(ng-repeat="comment in comments|orderBy:['-id']|limitTo:commentLimit")
     .review
