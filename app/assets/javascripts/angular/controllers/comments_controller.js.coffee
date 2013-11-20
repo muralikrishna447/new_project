@@ -7,6 +7,7 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
     $scope.defaultCommentLimit = 6
     $scope.commentLimit = $scope.defaultCommentLimit
     $scope.commentLimit *= -1 if ! isReviews
+    $scope.showReviewPrompt = true
 
     $scope.Comment = $resource('/' + $scope.commentable_type + '/' + $scope.commentable_id + '/comments')
     $scope.comments = $scope.Comment.query(->
@@ -26,8 +27,9 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
       $scope.newComment = {}
       $scope.comments_count = $scope.comments.length
       mixpanel.track('Commented', {'Commentable': $scope.commentable_type + "_" + $scope.commentable_id })
-
     )
+    $scope.showReviewInput = false
+    $scope.showReviewPrompt = false
 
   $scope.commentsToggle = ->
     if $scope.comments.length > $scope.defaultCommentLimit
@@ -41,4 +43,10 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
   $scope.hideComments = ->
     $scope.commentLimit = $scope.defaultCommentLimit
     $scope.commentLimit *= -1 if ! isReviews
+
+  $scope.reviewProblems = (review) ->
+    return "Please choose a star rating" if review.rating < 1
+    return (30 - review.content.length) + " more characters required" if review.content.length < 30
+    return ""
+
 ]

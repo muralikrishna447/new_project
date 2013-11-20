@@ -2142,9 +2142,12 @@ input.summary-tweet
 
 
 body 
-  input, .btn, ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, input:-moz-placeholder
+  input, textarea, .btn
     @include primary-font
 
+  // I don't know why, but if you combine this with the previous line for input etc. it doesn't work
+  ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, input:-moz-placeholder
+    @include primary-font
 
 .nav
   @include primary-font
