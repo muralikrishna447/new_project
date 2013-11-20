@@ -7,5 +7,8 @@
     - if defined? right_title
       .media-box-2-title.media-box-2-right-title
         = right_title.html_safe
+    -if (defined? rating) && rating
+      .media-box-2-title.media-box-2-right-title.media-box-2-rating
+        %csrating.rating(value="#{rating}" readonly)
     - if image
       = image_tag filepicker_gallery_image(image)

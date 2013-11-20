@@ -21,7 +21,7 @@
             %a
               = link_to 'See all reviews', landing_class_path(course, anchor: "reviews")
         %p.lead= course.short_description
-        = link_to 'View the Class', landing_class_path(course), class: 'btn btn-primary btn-large'
+        = link_to 'Learn More', landing_class_path(course), class: 'btn btn-primary btn-large'
 
 - @courses.each do |course|
   .container
@@ -31,4 +31,4 @@
       .span8
         %h2= course.title
         %p.lead= course.short_description
-        = link_to 'View the Class', course, class: 'btn btn-primary btn-large'
+        = link_to 'Learn More', course, class: 'btn btn-primary btn-large'
