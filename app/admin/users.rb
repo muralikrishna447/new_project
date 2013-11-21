@@ -57,6 +57,7 @@ ActiveAdmin.register User do
   end
 
   csv do
+    column :id
     column :name
     column :email
   end
