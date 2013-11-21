@@ -15,10 +15,10 @@ class UserProfilesController < ApplicationController
     if params[:id] == 'self'
       if ! current_user
         redirect_to sign_in_url
-        return
       else
-        params[:id] = current_user.id
+        redirect_to user_profile_path(current_user)
       end
+      return
     end
     @user = User.find(params[:id])
     @courses = Course.published
