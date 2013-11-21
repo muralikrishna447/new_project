@@ -56,7 +56,7 @@ angular.module('ChefStepsApp')
           return 'icon-star';
         }
         if ((number - 0.5) <= val) {
-          return 'icon-star-half';
+          return 'icon-star-half-empty';
         }
         return 'icon-star-empty';
       }
