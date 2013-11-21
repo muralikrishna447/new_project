@@ -28,7 +28,7 @@
               %li Q&A Support
           - if @course.price
             %h4 100% satisfaction guaranteed or your money back
-        .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps .com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+        .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
           = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.  slug}/landing"
         .testimonials.well
           = image_tag 'https://www.filepicker.io/api/file/AShQR6KzQJeqKNwszJjK/convert?fit=crop&w=75&h=75', class: 'img-circle'
