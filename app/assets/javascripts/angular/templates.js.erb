@@ -8,7 +8,7 @@ angular.module('templates', []).run(["$templateCache", function($templateCache) 
 
     $templateCache.put("template/csrating/csrating.html",
       "<span ng-mouseleave=\"reset()\">\n" +
-      " <i ng-repeat=\"number in range\" ng-mouseenter=\"enter(number)\" ng-click=\"rate(number)\" ng-class=\"getIcon(number, val)\"></i>\n" +
+      " <i ng-repeat=\"number in range\" ng-hide=\"(readonly) && (val == 0.0)\" ng-mouseenter=\"enter(number)\" ng-click=\"rate(number)\" ng-class=\"getIcon(number, val)\"></i>\n" +
       "</span>\n" +
     "");
 }]);
