@@ -8,6 +8,7 @@
   %meta{property: 'og:image', content: filepicker_hero_image(@course.image_id)}
 
 // Split test landing for macarons only 
+
 - if @course.slug == 'french-macarons'
   - ab_test "#{@split_name}", 'macaron_landing_split_a', 'macaron_landing_split_b', 'macaron_landing_split_c' do |macaron_landing|
     - if macaron_landing == 'macaron_landing_split_a'
@@ -58,8 +59,10 @@
                   - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
                     .span4
                       = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
-  
-  
+
+          %div(ng-show="tab=='reviews'")
+            %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, #{(current_user && current_user.id) || 0}, true)" ng-cloak)
+              = render 'comments/reviews'
           - if @course.faq    
             %div(ng-show="tab=='faq'")
               :markdown
@@ -70,17 +73,16 @@
               :markdown
                 #{apply_shortcodes(@course.ingredients_equipment.content)}
   
-          - if @course.testimonials 
-            %div(ng-show="tab=='testimonials'")
-              :markdown
-                #{apply_shortcodes(@course.testimonials.content)}
-  
+
       .span4.section
         .buy-box
           - discounted_price = @course.price ? @discounted_price : 0
           = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user.completed_course?(@assembly), gift_certificate: @gift_certificate
           .text-center.enroll-count.section
             %h4= "#{@course.enrollments.count} Enrolled"
+          .text-center.section
+            %csrating.rating(value="#{@assembly.average_rating}" readonly="true")
+            %div (#{pluralize(@assembly.comments.count, 'review')})
           %h5 Class Includes:
           %ul
             %li Unlimited Access

@@ -1739,6 +1739,10 @@ csingredienteditpair
 .inline-group
   display: inline-block
 
+.nowrap
+  display: inline-block
+  white-space: nowrap
+
 .video-container
   .filepicker-group
     margin-top: 30px
@@ -1878,6 +1882,11 @@ input.summary-tweet
   opacity: 0
   &.custom-move-start
     opacity: 1
+
+
+.classes-index
+  .footer_left
+    color: $orange
 
 // BELOW ARE RESPONSIVE STYLES //
 
@@ -2142,9 +2151,12 @@ input.summary-tweet
 
 
 body 
-  input, .btn, ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, input:-moz-placeholder
+  input, textarea, .btn
     @include primary-font
 
+  // I don't know why, but if you combine this with the previous line for input etc. it doesn't work
+  ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, input:-moz-placeholder
+    @include primary-font
 
 .nav
   @include primary-font

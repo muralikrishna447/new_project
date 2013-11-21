@@ -1,3 +1,5 @@
+
+
 .flat-form(ng-controller='UploadsController' ng-init="init(#{assembly.id})" )
   %form(name='UploadForm' ng-submit='submit()')
     .row.section
@@ -29,6 +31,23 @@
               Upload Photo
             %span(ng-show="upload.image_id")
               Change Photo
+
+    .row.section.review-group.uploads(ng-controller='CommentsController' 
+                      ng-init="init('assemblies',#{@course.id}, #{current_user.id}, true); showReviewInput=true"
+                      ng-cloak)
+      .span12
+        %div(ng-show="! myReview()")
+          %h2.inline Review This Class
+          %span
+            (Optional)
+          = render 'comments/review_form'
+        %div(ng-show="myReview()")
+          %h2 Thanks for your review!
+          .reviews
+            .review
+              %csrating.rating(value="myReview().rating" readonly="true")
+              %blockquote.review-content
+                {{myReview().content}}
     .row
       .span12.well
         .row

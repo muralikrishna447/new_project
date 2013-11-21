@@ -14,10 +14,18 @@
     margin-bottom: $baseline * 2
     @include boxsizing
     @include primary-font
+
     h3
       margin: 0px
+      display: inline-block
+
     img
       margin-bottom: $baseline
+
+    .rating
+      margin-top: 10px
+      display: inline-block
+      float: right
 
   .home-standard-item
     margin-bottom: $baseline
@@ -39,6 +47,9 @@
       h3
         margin: 0px
 
+  .home-featured-item-btn
+    margin-left: 12px
+
 @media (max-width: 480px)
   .home-signed-in
     .home-featured-item
@@ -46,6 +57,9 @@
         width: 100%
         .btn
           width: 100%
+      .rating
+        float: none
+        margin-bottom: $baseline
 
     .home-standard-item
       .home-standard-item-image

@@ -87,12 +87,21 @@
       text-overflow: ellipsis
       white-space: nowrap
       overflow: hidden
-    .media-box-2-footer
-      .footer-left
-        float: left
-        text-transform: uppercase
-      .footer-right
-        float: right
+      display: inline-block
+      max-width: 100%
+    .media-box-2-right-title
+      @include primary-font
+      position: absolute
+      right: 10px
+      color: $orange
+
+  .media-box-2-footer
+    margin-top: 10px
+    .footer-left
+      float: left
+      text-transform: uppercase
+    .footer-right
+      float: right
   &:hover
     border-color: $orange
     cursor: pointer
