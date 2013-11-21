@@ -12,3 +12,11 @@
         %csrating.rating(value="#{rating}" readonly)
     - if image
       = image_tag filepicker_gallery_image(image)
+  - if (defined? footer_left) || (defined? footer_right)
+    .media-box-2-footer
+      - if defined? footer_left
+        .footer_left
+          #{footer_left}
+      - if defined? footer_right
+        .footer_left
+          #{footer_right}
