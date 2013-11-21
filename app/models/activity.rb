@@ -54,7 +54,8 @@ class Activity < ActiveRecord::Base
   scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
   scope :by_updated_at, -> direction { direction == 'desc' ? order('updated_at DESC') : order('updated_at ASC')}
   scope :randomize, order('random()')
-  scope :really_include_in_gallery, where(include_in_gallery: true, show_only_in_course: false)
+  scope :include_in_gallery, where(include_in_gallery: true)
+  scope :include_in_feeds, where(include_in_gallery: true, show_only_in_course: false)
   scope :chefsteps_generated, where('creator = ?', 0)
   scope :any_user_generated, where('creator != ?', 0)
   scope :user_generated, -> user { where('creator = ?', user) }

@@ -80,7 +80,7 @@
           .row-fluid.section
             .span12
               .course-nav-bottom
-                .course-nav-bottom-center
+                .course-nav-bottom-center.non-responsive
                   %h3
                     .course-nav-item.btn.btn-primary(ng-class="{disabled: ! prevInclusion()}" ng-click="loadPrevInclusion()")
                       PREVIOUS
@@ -88,6 +88,16 @@
                     .course-nav-item.btn.btn-primary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
                       NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
+
+  
+  .course-nav-bottom-center.responsive.container-fluid.noprint.text-center
+    %hr
+    %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
+    .course-nav-buttons-group
+      .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! prevInclusion()}" ng-click="loadPrevInclusion()")
+        %i.icon-chevron-up
+      .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
+        %i.icon-chevron-down
 
   .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
     .activity-loading-spinner

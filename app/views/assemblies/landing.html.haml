@@ -9,11 +9,14 @@
 
 // Split test landing for macarons only 
 - if @course.slug == 'french-macarons'
-  - ab_test "#{@split_name}", 'macaron_landing_split_a', 'macaron_landing_split_b' do |macaron_landing|
+  - ab_test "#{@split_name}", 'macaron_landing_split_a', 'macaron_landing_split_b', 'macaron_landing_split_c' do |macaron_landing|
     - if macaron_landing == 'macaron_landing_split_a'
       = render 'macaron_landing_split_a'
     - elsif macaron_landing == 'macaron_landing_split_b'
       = render 'macaron_landing_split_b'
+    - else macaron_landing == 'macaron_landing_split_c'
+      = render 'macaron_landing_split_c'
+
 - else
   .assembly-course-landing
     .container

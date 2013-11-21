@@ -7,15 +7,15 @@ class HomeController < ApplicationController
     @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
 
     if current_user
-      @latest = Activity.published.chefsteps_generated.really_include_in_gallery.order('published_at desc').first(6)
+      @latest = Activity.published.chefsteps_generated.include_in_feeds.order('published_at desc').first(6)
       @projects = Assembly.published.projects.last(3)
       # @followings_stream = Kaminari::paginate_array(current_user.followings_stream).page(params[:page]).per(6)
       # @stream = current_user.received_stream.take(4)
     else
       @heroes = Setting.featured_activities
-      @recipes = Activity.published.chefsteps_generated.recipes.really_include_in_gallery.includes(:steps).last(6) - @heroes
-      @techniques = Activity.published.chefsteps_generated.techniques.really_include_in_gallery.includes(:steps).last(6) - @heroes
-      @sciences = Activity.published.chefsteps_generated.sciences.really_include_in_gallery.includes(:steps).last(6) - @heroes
+      @recipes = Activity.published.chefsteps_generated.recipes.include_in_feeds.includes(:steps).last(6) - @heroes
+      @techniques = Activity.published.chefsteps_generated.techniques.include_in_feeds.includes(:steps).last(6) - @heroes
+      @sciences = Activity.published.chefsteps_generated.sciences.include_in_feeds.includes(:steps).last(6) - @heroes
       # cookies.delete(:returning_visitor)
       @returning_visitor = cookies[:returning_visitor]
       @new_visitor = params[:new_visitor] || !@returning_visitor

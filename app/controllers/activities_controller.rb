@@ -55,8 +55,8 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @techniques = Activity.published.chefsteps_generated.really_include_in_gallery.techniques.includes(:steps).last(6)
-        @recipes = Activity.published.chefsteps_generated.really_include_in_gallery.recipes.includes(:steps).last(6)
+        @techniques = Activity.published.chefsteps_generated.include_in_feeds.techniques.includes(:steps).last(6)
+        @recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).last(6)
 
         if params[:course_id]
           @course = Course.find(params[:course_id])
@@ -242,7 +242,7 @@ class ActivitiesController < ApplicationController
     @title = "ChefSteps - Modern Cuisine - Online Cooking School - Sous Vide Recipes"
 
     # the news items
-    @activities = Activity.published.by_published_at('desc').chefsteps_generated.really_include_in_gallery
+    @activities = Activity.published.by_published_at('desc').chefsteps_generated.include_in_feeds
 
     # this will be our Feed's update timestamp
     @updated = @activities.published.first.published_at unless @activities.empty?
