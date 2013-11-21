@@ -66,7 +66,14 @@
                     %li= link_to 'Knife Collection', knife_collection_url
                 %li
                   .nav-item-border
-                  - if current_user
+                  - if external
+                    -# Can't see current_user when external, so use a route that will
+                    -# either go to their profile if logged in, or take them to sign in
+                    = link_to user_profile_url('self') do
+                      %span
+                        Profile                    
+
+                  - elsif current_user
                     - unviewed_events_count = current_user.events.timeline.unviewed.count
                     = link_to user_profile_url(current_user) do
                       %span
