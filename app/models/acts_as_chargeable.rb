@@ -48,14 +48,20 @@ module ActsAsChargeable
     end
 
     def set_stripe_id_on_user(user, stripeToken)
-      # Create the stripe user if not already known
       if ! user.stripe_id
+        # Create the stripe user if not already known
         customer = Stripe::Customer.create(
           email: user.email,
           card: stripeToken
         )
         user.stripe_id = customer.id
         user.save!
+      else
+        # Update the customer's card and email
+        customer = Stripe::Customer.retrieve(user.stripe_id)
+        customer.card = stripeToken
+        customer.email = user.email
+        customer.save!
       end
     end
   end
