@@ -36,4 +36,5 @@ $ ->
       url_with_conversion = JSON.parse(url) + convert
       content = "<br/><a href='" + JSON.parse(url) + "' target='_blank'><img src='" + url_with_conversion + "'/></a><br/>"
       $(doc).find('body').append(content)
-      $('.cleditorMain').find('iframe')[0].updateTextArea() 
+      # Couldn't seem to call cleditor directly, so syncing manually - otherwise if you don't interact more, image can be lost
+      $('.cleditorMain textarea').val($(doc).find('body').html())
