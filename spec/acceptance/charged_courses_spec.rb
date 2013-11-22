@@ -176,7 +176,7 @@ feature 'charge for classes', pending: true, :js => true do
   end
 end
 
-feature 'free courses', js: true do
+feature 'free courses', pending: true, js: true do
   let!(:assembly) { Fabricate :assembly, title: 'Free Course', assembly_type: 'Course', published: true }
 
   describe 'when logged in' do
