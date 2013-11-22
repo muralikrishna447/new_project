@@ -80,7 +80,7 @@
           = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user.completed_course?(@assembly), gift_certificate: @gift_certificate
           .text-center.enroll-count.section
             %h4= "#{@course.enrollments.count} Enrolled"
-          .text-center.section
+          .text-center.section(ng-show="#{@assembly.average_rating} > 0")
             %csrating.rating(value="#{@assembly.average_rating}" readonly="true")
             %div (#{pluralize(@assembly.comments.count, 'review')})
           %h5 Class Includes:
