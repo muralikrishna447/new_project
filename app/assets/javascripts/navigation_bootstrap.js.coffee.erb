@@ -36,3 +36,4 @@ $ ->
       url_with_conversion = JSON.parse(url) + convert
       content = "<br/><a href='" + JSON.parse(url) + "' target='_blank'><img src='" + url_with_conversion + "'/></a><br/>"
       $(doc).find('body').append(content)
+      $('.cleditorMain').find('iframe')[0].updateTextArea() 
