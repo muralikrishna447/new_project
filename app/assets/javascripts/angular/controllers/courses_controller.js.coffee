@@ -95,7 +95,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         reload: true
         config: ->
           @page.identifier = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
-          @page.url = "http://chefsteps.com/classes/#{$scope.course.id}#!/#{$scope.currentIncludable.includable_slug}"
+          @page.url = "http://chefsteps.com/classes/#{$scope.course.id}#/#{$scope.currentIncludable.includable_slug}"
 
   $scope.overrideLoadActivity = (id) ->
     if _.find($scope.flatInclusions, (incl) -> incl.includable_id == id)
