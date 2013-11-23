@@ -43,7 +43,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
         try
           __adroll.record_user "adroll_segments": "fmpurchase"
-        $http.put('/splitty/finished?experiment=' + $scope.split_name)
 
       ).error((data, status, headers, config) ->
         console.log "STRIPE CHARGE FAIL" + data
@@ -73,12 +72,14 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.isGift = gift
     $scope.recipientMessage = ""
     $scope.state = if gift then "gift" else "charge" 
+
+    $http.put('/splitty/finished?experiment=' + $scope.split_name)
+    mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
+    _gaq.push(['_trackEvent', 'Buy Button', 'Clicked', $scope.assembly.title, null, true])
+    
     if $scope.check_signed_in()
       $scope.buyModalOpen = true
-      mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
-      _gaq.push(['_trackEvent', 'Buy Button', 'Clicked', $scope.assembly.title, null, true])
-      $http.put('/splitty/finished?experiment=macaron_landing')
-
+ 
   $scope.closeModal = (abandon = true) ->
     $scope.buyModalOpen = false
     if abandon 
