@@ -2,7 +2,7 @@ require 'spec_helper'
 include AcceptanceMacros
 Capybara.default_wait_time = 15
 
-feature 'charge for classes',:js => true, pending: true do
+feature 'charge for classes', pending: true, :js => true do
   let!(:assembly) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 147.47, published: true ) }
   let!(:landing_page) { Fabricate(:page, title: "Clummy LP", content: "You so clummy", primary_path: "/classes/clummy") }
   let(:current_user) { User.find(1) }
@@ -53,7 +53,7 @@ feature 'charge for classes',:js => true, pending: true do
     current_user.stripe_id.should_not == nil
   end
 
-  describe "With a logged out user", pending: true do
+  describe "With a logged out user" do
     before(:each) do 
       visit '/classes/clummy/landing'
       page.should have_content('147.47')
@@ -80,7 +80,7 @@ feature 'charge for classes',:js => true, pending: true do
 
   describe "With a logged in user" do
 
-    describe "regular purchase", pending: true do
+    describe "regular purchase" do
 
       before(:each) do 
         login_user
@@ -88,7 +88,7 @@ feature 'charge for classes',:js => true, pending: true do
         visit '/classes/clummy/landing'
         page.should have_content('147.47')
         #page.should_have_content('71.84')
-         page.find('#buy-button').click
+        page.find('#buy-button').click
       end
 
       scenario "Cancel button should get rid of charge modal" do
@@ -166,7 +166,7 @@ feature 'charge for classes',:js => true, pending: true do
       end
     end
 
-    scenario "Paywall should work", pending: true do
+    scenario "Paywall should work" do
       visit '/classes/clummy'
       current_path.should == '/classes/clummy/landing'
       login_user
@@ -187,7 +187,7 @@ feature 'free courses', pending: true, js: true do
     end
 
     scenario 'user should be able to enroll into a free course' do
-      page.find('#buy-button').click
+      page.find('#enroll-free-button').click
       page.should have_content('Continue Class')
     end
   end
