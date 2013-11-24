@@ -73,6 +73,15 @@ class IngredientsController < ApplicationController
     end
   end
 
+  def show
+  end
+
+  def get_as_json
+    @ingredient = Ingredient.find(params[:id])
+    render json: @ingredient
+  end
+
+
   def merge
     authorize! :update, Ingredient unless Rails.env.angular?
     puts "Merging " + @ingredients.inspect

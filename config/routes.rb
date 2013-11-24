@@ -118,7 +118,7 @@ Delve::Application.routes.draw do
     end
   end
 
-  resources :ingredients, only: [:index, :update, :destroy] do
+  resources :ingredients, only: [:index, :show, :get_as_json, :update, :destroy] do
     member do
       post 'merge' => 'ingredients#merge'
     end
