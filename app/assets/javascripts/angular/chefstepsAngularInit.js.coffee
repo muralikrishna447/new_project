@@ -12,10 +12,9 @@ angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorag
   $routeProvider.when(
     "/:slug",
     {
-        action: "slugChange"
+      action: "slugChange"
     }
   )
-
 ]
 
 # Thank god for Stack Overflow!

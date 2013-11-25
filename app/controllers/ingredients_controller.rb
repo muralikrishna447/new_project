@@ -74,6 +74,7 @@ class IngredientsController < ApplicationController
   end
 
   def show
+    @ingredient_id = params[:id]
   end
 
   def get_as_json

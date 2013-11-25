@@ -1,1 +1,22 @@
-Hello ongredeient!
+= render 'layouts/filepicker'
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "IngredientShowController", :'data-ingredient-id' => @ingredient_id}
+
+.container(ng-cloak)
+  .section
+  .row.section
+    .span8
+      %h2(ng-bind-html-unsafe="ingredient.title")
+
+  .row.section(ng-show="usedInChefStepsActivities().length > 0")
+    .span8
+      %h3 Used In
+      %ul
+        %li(ng-repeat="activity in usedInChefStepsActivities()")
+          %a(ng-href="/activities/{{activity.slug}}" ng-bind-html-unsafe="activity.title")
+
+  .row.section(ng-show="ingredient.product_url")
+    .span8
+      %h3 Where To Buy
+      %ul
+        %li
+          %a(ng-href="{{ingredient.product_url}}" target="_blank" ng-bind-html-unsafe="urlAsNiceText(ingredient.product_url)")
