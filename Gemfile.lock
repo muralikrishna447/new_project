@@ -233,7 +233,7 @@ GEM
       jquery-rails
       railties (>= 3.1.0)
     jruby-pageant (1.1.1)
-    json (1.8.0)
+    json (1.8.1)
     jwt (0.1.5)
       multi_json (>= 1.0)
     kaminari (0.14.1)
@@ -266,7 +266,7 @@ GEM
     mixpanel-ruby (1.2.0)
     mixpanel_client (3.1.2)
       typhoeus (~> 0.5.4)
-    multi_json (1.8.0)
+    multi_json (1.8.2)
     multi_xml (0.5.1)
     multipart-post (1.1.5)
     net-scp (1.0.4)
@@ -416,7 +416,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    turbo-sprockets-rails3 (0.3.6)
+    turbo-sprockets-rails3 (0.3.10)
       railties (> 3.2.8, < 4.0.0)
       sprockets (>= 2.0.0)
     typhoeus (0.5.4)
