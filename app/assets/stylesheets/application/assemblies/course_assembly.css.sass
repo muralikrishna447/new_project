@@ -1,6 +1,9 @@
 @import 'mixins'
 @import 'application/custom_mixins'
 
+.buy-buttons
+  margin-bottom: $baseline
+
 .course-assembly-container
   @include boxsizing
 
@@ -10,9 +13,8 @@
   -webkit-transform: translateZ(0)
   -webkit-backface-visibility: hidden
   position: fixed
-  //z-index: 9999
-  margin-top: 20px
-  margin-left: -48px
+  z-index: 1000
+  margin-left: -28px
   color: $orange
   font-size: 24px
   width: 28px
@@ -31,8 +33,8 @@
 
 .course-nav-slideout
   position: fixed
+  padding-top: $baseline * 5
   top: 0px
-  padding-top: 56px
   width: 295px
   height: 100%
   border-right: 1px solid $light-gray
@@ -49,7 +51,7 @@
 
   h4
     margin: 0px
-    padding: 10px 0px 0px 10px
+    padding: $baseline
     text-transform: uppercase
 
   ul
@@ -90,8 +92,6 @@
         margin-top: 0px
         border-bottom: none
         overflow: hidden
-        @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-        max-height: 300px
 
         li
           border-top: none
@@ -104,8 +104,6 @@
         .hitbox:hover
           color: #333
 
-      ul.collapsed
-        max-height: 0
 
 .course-nav-wrapper.affix
   position: fixed
@@ -121,8 +119,8 @@
     .course-content
       z-index: 1000
       background-color: white
-      padding-left: 0px
-      padding-right: 0px
+      padding-left: 20px
+      padding-right: 20px
       @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
       .row
         margin-left: 0px
@@ -205,33 +203,24 @@
 
 .assembly-activity
   .activity-description
-    padding: 0 10px
 
   .ordered-steps-new
     .ordered-step-item
       width: 100%
       float: left
       padding: 0px
-      margin-top: 30px
       @include boxsizing
       .step-number
-        @include gotham-bold
-        font-size: 50px
-        line-height: 50px
-        padding-bottom: 10px
+        @include primary-font-bold
       .step-content
-        h4
-          margin-top: 0px
-          margin-bottom: 0px
-          padding-bottom: 2px
         ul, li
           list-style: none
           padding: 0px 0px 10px 0px
-          margin: 0px
+          margin-bottom: $baseline
         ul
           padding: 0px
       .step-actions
-        margin-bottom: 10px
+        margin-bottom: $baseline
         .step-action-item
           display: inline-block
         .step-ingredients
@@ -241,16 +230,12 @@
         display: none
       .step-video
         display: none
-        margin-bottom: 10px
+        margin-bottom: $baseline * 2
       .divider
         height: 1px
         border-bottom: 1px solid $light-gray
-        margin-top: 14px
-        margin-bottom: 14px
-      .span12
-        .step-content
-          @include columncount(2)
-          @include columngap(40)
+        padding: $baseline 0px
+        margin-bottom: $baseline *2
 
 .hidden
   display: none
@@ -269,8 +254,8 @@
 
 .prev-next-group
   @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-  padding-top: 100px
-  padding-bottom: 100px
+  padding-top: 40px
+  padding-bottom: 40px
   background: white
   -webkit-backface-visibility: hidden
 
@@ -290,31 +275,27 @@
   margin-top: 5px
 
 .price
-  font-size: 22px
-  text-align: center
-  display: inline-box
-  margin-bottom: 11px
+  display: inline-block
   .full-price
     display: inline
-    font-size: 80%
-    color: gray
     .strike
       position: absolute
       left: 0
       right: 0
-      top: 7px
-      border: 3px solid rgba(226, 95, 37, 0.7)
+      top: 9px
+      border: 2px solid rgba(255, 255, 255, .9)
 
-.charge-form
-  .price
-    margin-bottom: 0px
-    margin-top: 11px
+.gift-cta
+  .full-price
+    .strike
+      border: 2px solid rgba(20, 20, 20, .9)
 
 .ingredients-title
   display: none
 
-
-
+.responsive
+  display: none
+  
 
 // Affixable Styles //
 
@@ -384,6 +365,9 @@
       .ingredient-title
         margin-left: 0
         text-indent: 0
+      
+    .ingredient-title, .quantity-group, .unit
+      background: white !important
 
 @media (max-width: 979px) and (min-width: 768px)
   .course-assembly-container
@@ -425,3 +409,66 @@
     display: none
   .course-nav-slideout.menu-slideout
     display: block
+
+@media (max-width: 480px)
+  .assembly-upload-modal
+    position: absolute
+    top: 0px
+    left: 0px
+    margin: -20px
+    @include boxsizing
+    .modal-body
+      max-height: none
+      @include boxsizing
+    .modal-footer
+      width: 100%
+      bottom: 0px
+      border-radius: 0px
+      @include boxsizing
+
+@media (max-width: 720px)
+  .non-responsive
+    display: none
+
+  .responsive
+    display: inline-block
+  .course-nav-bottom-center
+    position: relative
+    margin-left: -20px
+    padding-left: 20px
+    width: 100%
+
+    hr
+      width: 120%
+      margin-left: -10%
+      border-top-color: $light-gray
+      padding-bottom: $baseline * 2
+    .next-activity-name
+      color: $orange
+
+    .course-nav-buttons-group
+      width: 100%
+      position: relative
+      padding-bottom: $baseline * 8
+      .btn
+        @include boxsizing
+        display: inline-block
+        width: 55%   
+        position: absolute
+        right: 50%
+        bottom: 0
+        height: $baseline * 5
+        padding-top: 14px
+        border-top: 1px solid $light-gray
+        border-bottom: none
+        i
+          font-size: $baseline * 3
+          vertical-align: middle
+          color: #ccc
+      .btn:not(:first-child)
+        left: 50%
+        right: auto
+        border-left: 1px solid $light-gray
+        
+
+

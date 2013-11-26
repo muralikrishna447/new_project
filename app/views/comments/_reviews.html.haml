@@ -1,0 +1,24 @@
+
+.review-group
+  - if current_user && current_user.enrolled?(@assembly)
+    .well(ng-click="showReviewInput = true; newComment.rating = 0;" 
+          ng-show="! myReview()" )
+      %a
+        Add your own review...
+    = render 'comments/review_form'
+
+  .reviews(ng-repeat="comment in comments|orderBy:['-id']|limitTo:commentLimit")
+    .review
+      %csrating.rating(value="comment.rating" readonly="true")
+      %blockquote.review-content
+        {{comment.content}}
+      .review-user
+        \- 
+        %a(href="/profiles/{{comment.user.slug}}")
+          {{comment.user.name}}
+   
+  %h4.comments-header(ng-show='comments.length > commentLimit')
+    %span(ng-pluralize count='comments_count - commentLimit' when="{'0':'0 more reviews', '1':'1 more review', 'other':'{{comments_count - commentLimit}} more reviews'}")
+    %span
+      .btn.btn-link(ng-click='showAllComments()')
+        Show All

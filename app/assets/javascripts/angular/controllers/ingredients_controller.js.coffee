@@ -1,6 +1,7 @@
-angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$timeout", "$http", "limitToFilter", ($scope, $timeout, $http, limitToFilter) ->
+angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$rootScope", "$timeout", "$http", "limitToFilter", ($scope, $rootScope, $timeout, $http, limitToFilter) ->
 
   $scope.shouldShowMasterIngredientsRemovedModal = false
+  $scope.showIngredientsMenu = false
 
   $scope.getAllUnits = ->
     window.allUnits
@@ -71,4 +72,47 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.loadSubrecipe = (id) ->
     window.location.href = '/activities/' + id unless $scope.overrideLoadActivity?(id) 
+
+
+  lastCustomScale = 1
+  baseScales = [0.5, 1, 2, 4]
+
+  $scope.$watch 'csGlobals.scaling', (newValue) ->
+    if baseScales.indexOf(newValue) < 0
+      lastCustomScale = newValue
+
+  $scope.scaleFactors = ->
+    r = baseScales
+    if lastCustomScale != 1
+      r.pop()
+      r.push(lastCustomScale)
+      r = _.sortBy(r, (x) -> x)
+    r
+
+  $scope.toggleIngredientsMenu = ->
+    $scope.showIngredientsMenu = ! $scope.showIngredientsMenu
+    if $scope.showIngredientsMenu
+      mixpanel.track('Ingredients Menu Opened', {'slug' : $scope.activity.slug});
+
+  $scope.setScaling = (newScale) ->
+    $scope.csGlobals.scaling = newScale
+    window.updateUnits(true)    
+    mixpanel.track('Scaling Changed', {'slug' : $scope.activity.slug, 'scale' : newScale});
+
+  $scope.isActiveScale = (scale) ->
+    return "active" if scale == $scope.csGlobals.scaling
+    ""
+
+  $scope.unitChoices = ->
+    ["grams", "ounces"]
+
+  $scope.setUnits = (unit) ->
+    $scope.csGlobals.units = unit
+    window.updateUnits(true)
+    mixpanel.track('Units Button Pushed', {'slug' : $scope.activity.slug});
+
+  $scope.isActiveUnit = (unit) ->
+    return "active" if $scope.csGlobals.units == unit
+    ""
+
 ]

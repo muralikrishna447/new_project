@@ -5,6 +5,16 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http) ->
   $scope.register_user = {email: null, password: null, password_confirmation: null};
   $scope.register_error = {message: null, errors: {}};
 
+  $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
+
+  $scope.loginModalOpen = false
+
+  $scope.openModal = ->
+    $scope.loginModalOpen = true
+
+  $scope.closeModal = ->
+    $scope.loginModalOpen = false
+
   $scope.login = ->
     $scope.submit(
       method: 'POST'
@@ -71,6 +81,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http) ->
         $scope.dataLoading -= 1
         if (status == 200)
           $scope.message = parameters.success_message
+          $scope.logged_in = true
         else if (status == 201 || status == 204)
           parameters.error_entity.message = parameters.success_message;
           $scope.reset_users();
@@ -82,8 +93,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http) ->
       )
       .error( (data, status) ->
         $scope.dataLoading -= 1
-        if (status == 422)
-          parameters.error_entity.errors = data.errors;
+        if (status == 422 || status == 401)
+          parameters.error_entity.message = data.errors;
         else
           if (data.error)
             parameters.error_entity.message = data.error;

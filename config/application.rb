@@ -76,7 +76,7 @@ module Delve
     config.assets.paths << "#{Rails.root}/app/assets/maps"
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '7'
+    config.assets.version = '9'
     config.assets.initialize_on_precompile = false
 
 

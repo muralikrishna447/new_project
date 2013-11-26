@@ -6,19 +6,24 @@ input:not(:focus):not(.ng-pristine).ng-invalid
 .modal
   border: 2px solid $dark-orange
   @include radius(1px)
-
-.modal-body
-  overflow: hidden
+  max-height: 600px
 
 .buy-modal
+  height: auto
+
+.buy-modal-body
   .close-x
     color: #ccc
     font-size: 22px
+  overflow: hidden
+  height: auto !important
+  max-height: 600px
 
-.charge-form
+
+.charge-form, .gift-form
   margin-top: 30px
   margin-bottom: 0px
-  min-height: 200px
+  min-height: 250px
   margin-left: 20px
   margin-right: 20px
   .error-text
@@ -27,7 +32,7 @@ input:not(:focus):not(.ng-pristine).ng-invalid
     text-transform: uppercase
     margin-bottom: 0px
     margin-top: 5px
-  input
+  input, textarea
     border: 2px solid #ccc
     @include radius(1px)
     background-color: #eee

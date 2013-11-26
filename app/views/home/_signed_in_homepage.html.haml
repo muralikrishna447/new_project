@@ -13,33 +13,30 @@
     .span8
       .home-section
         %h2
-          = link_to 'Courses', courses_path, class: 'orange-link'
+          = link_to 'Classes', courses_path, class: 'orange-link'
         .home-featured-item
-          = link_to @courses[0] do
-            %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= @courses[0].title
-            = image_tag filepicker_stream_image(@courses[0].featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
-            .section.pull-right(onclick= 'track_viewed_course_through_signed_in_homepage();')
-              = where_user_left_off_in_course(@courses[0], current_user, 'btn btn-primary btn-large')
+          - home_featured_path = @classes[0].class.to_s == 'Assembly' ? landing_class_path(@classes[0]) : course_path(@classes[0])
+          = link_to home_featured_path do
+            .top-group
+              %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= @classes[0].title
+              %csrating.rating(value="#{@classes[0].average_rating}" readonly="true")
+            = image_tag filepicker_stream_image(@classes[0].featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
+            .section.pull-right.home-featured-item-btn(onclick= 'track_viewed_course_through_signed_in_homepage();')
+              = where_user_left_off_in_course(@classes[0], current_user, 'btn btn-primary btn-large')
           .section
-            = @courses[0].short_description
-        - @assembly_classes.each.with_index do |course, index|
+            = @classes[0].short_description
+        - @classes.from(1).each.with_index do |course, index|
+          - url = course.class.to_s == 'Assembly' ? landing_class_path(course) : course_path(course)
           .home-standard-item
             .home-standard-item-image
-              = link_to landing_class_path(course) do
-                = image_tag filepicker_stream_image(course.image_id)
-            .home-standard-item-text
-              = link_to landing_class_path(course) do
-                %h3= course.title
-              = course.short_description
-        - @courses.from(1).each.with_index do |course, index|
-          .home-standard-item
-            .home-standard-item-image
-              = link_to course do
+              = link_to url do
                 = image_tag filepicker_stream_image(course.featured_image)
             .home-standard-item-text
-              = link_to course do
+              = link_to url do
                 %h3= course.title
-              = course.short_description
+              -if course.class.to_s == 'Assembly'
+                %csrating.rating(value="#{@course.average_rating}" readonly="true")
+              %p= course.short_description
       .home-section
         %hr
       - if @projects.any?
@@ -54,10 +51,10 @@
               .home-standard-item-text
                 = link_to project_path(project) do
                   %h3= project.title
-                = project.description
+                %p= project.description
     .span4
       %h2 
-        = link_to 'Community Activity', community_activity_path, class: 'orange-link'
+        = link_to 'Activity Stream', community_activity_path, class: 'orange-link'
       .stream(ng-controller='StreamsController' ng-init="init()")
         %div(ng-repeat='stream in streams')
           %div(ng-include src="streamViewTemplate(stream)")

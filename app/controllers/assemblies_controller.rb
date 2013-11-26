@@ -1,6 +1,6 @@
 class AssembliesController < ApplicationController
 
-  before_filter :load_assembly, except: [:index]
+  before_filter :load_assembly, except: [:index, :redeem]
 
   # Commenting out for now until we figure out what to do for Projects
 
@@ -31,10 +31,49 @@ class AssembliesController < ApplicationController
 
   def landing
     @upload = Upload.new
+    @split_name = "macaron_landing_no_campaign"
+    if params[:utm_campaign]
+      @split_name = "macaron_landing_campaign_#{params[:utm_campaign][0..4]}"
+    end
   end
 
   def show_as_json
     render :json => @assembly
+  end
+
+  # Note that although this is called "redeem", it only starts the redemption process
+  # sending them to the landing page with the GC in the session. The reason we don't immediately
+
+  def redeem
+    session[:gift_token] = params[:gift_token]
+    @gift_certificate = GiftCertificate.where(token: session[:gift_token]).first
+
+    if @gift_certificate
+      @assembly = @gift_certificate.assembly
+      if ! @gift_certificate.redeemed
+        # Normal redemption
+        flash[:notice] = "To get your gift, click the orange button below!"      
+        redirect_to landing_class_url(@assembly)
+      else
+        # Already redeemed, probably the same user so tell 'em what to do
+        if current_user
+          # Logged in? Just continue.
+          flash[:notice] = "Gift code already used; click the orange button below to continue your class. If you need assistance, contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
+          redirect_to landing_class_url(@assembly)
+        else
+          # Not logged in, send 'em to log in
+          flash[:notice] = "Gift code already used; please sign in to continue your class. If you need assistance, contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."       
+          session[:force_return_to] = request.original_url
+          redirect_to sign_in_url
+        end
+        
+      end
+       
+    else
+      # Gift certificate we've never heard of. Someone try to rip us off?
+      flash[:error] = "Invalid gift code. Contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
+      redirect_to '/'
+    end
   end
 
 private
@@ -48,7 +87,7 @@ private
     when 'a1b71d389a50'
       pct = 29.0/39
     when 'be11c664ce1a'
-      pct = 24.0/39
+      pct = 23.0/39
     when 'cc448c11505a'
       pct = 20.0/39
     when 'd035c58a0a8c'
@@ -65,8 +104,9 @@ private
       @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = discounted_price(@assembly.price, session[:coupon])
+      @gift_certificate = GiftCertificate.where(token: session[:gift_token]).first if session[:gift_token]
  
-    rescue
+    rescue 
       # If they are looking for a course that isn't yet published, take them to a page where
       # they can get on an email list to be notified when it is available.
       @course = Assembly.find(params[:id])
@@ -80,5 +120,4 @@ private
 
     instance_variable_set("@#{@assembly.assembly_type.underscore}", @assembly)
   end
-
 end

@@ -2,16 +2,21 @@ class Assembly < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   friendly_id :title, use: [:slugged, :history]
-  attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy
+  attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets
   has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :quizzes, through: :assembly_inclusions, source: :includable, source_type: 'Quiz'
+  has_many :pages, through: :assembly_inclusions, source: :includable, source_type: 'Page'
+  has_many :assignments, through: :assembly_inclusions, source: :includable, source_type: 'Assignment'
 
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
 
   has_many :uploads
   has_many :enrollments, as: :enrollable
+
+  has_many :gift_certificates, inverse_of: :assembly
+
 
   scope :published, where(published: true)
   scope :projects, where(assembly_type: 'Project')
@@ -21,7 +26,7 @@ class Assembly < ActiveRecord::Base
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
   ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group']
-  INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz', 'Assembly']
+  INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz', 'Assembly', 'Page', 'Assignment']
 
   def ingredients
     activities.map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}.reject{|i| i.unit == 'recipe'}
@@ -78,19 +83,15 @@ class Assembly < ActiveRecord::Base
     3.times do
       inclusions.map! { |incl| incl.includable_type == "Assembly" ? incl.includable.assembly_inclusions : incl }
       inclusions.flatten!   
-   end
-   inclusions.select { |incl| incl.includable_type == "Activity" }.map(&:includable)
+    end
+    inclusions.select { |incl| incl.includable_type == "Activity" }.map(&:includable)
   end
 
   def video_count
     assembly_activities = leaf_activities
     activity_videos_count = assembly_activities.select{|a| a.youtube_id? }.count
-    activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.count
+    activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.map(&:youtube_id).uniq.count
     activity_videos_count + activity_step_videos_count
-  end
-
-  def leaf_activity_count
-    leaf_activities.count
   end
 
   def badge
@@ -100,5 +101,9 @@ class Assembly < ActiveRecord::Base
     else
       nil
     end
+  end
+
+  def average_rating
+    comments.where("rating IS NOT NULL").average('rating').to_f
   end
 end

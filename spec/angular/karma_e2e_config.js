@@ -23,7 +23,7 @@ module.exports = function(config) {
       "http://code.jquery.com/jquery-1.10.1.min.js",
       'http://localhost:3001/assets/application.js',
       'spec/angular/**/*.js.coffee',
-      { pattern: 'app/assets/javascripts/*.js',
+      { pattern: 'app/assets/javascripts/**/*.js.coffee',
         watched: true,
         included: false,
         served: false
@@ -70,11 +70,17 @@ module.exports = function(config) {
     // - IE (only Windows)
     browsers: [
       // 'PhantomJS',
-      "Chrome",
+      "Chrome_without_security",
       // "Safari",
       // "Firefox"
     ],
 
+    customLaunchers: {
+      Chrome_without_security: {
+        base: 'Chrome',
+        flags: ['--disable-web-security']
+      }
+    },
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,

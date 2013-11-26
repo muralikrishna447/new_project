@@ -69,7 +69,7 @@
         = render 'top_buttons'
 
     -# Main content row
-    .row.printable.printable-column
+    .row.printable
       .span12
         -# This seems a little weird, why do we have a row inside a span12?
         .row#main-content
@@ -79,7 +79,7 @@
     -# disappears roughly when the page is ready.
     .row.activity-loading-spinner(ng-hide="true")
       .span12
-        %i.icon-spinner.icon-spin
+        %i.icon-page-load
 
 -################################ BOTTOM OF PAGE CONTENT ################################
 
@@ -173,7 +173,7 @@
 
 
 :javascript
-  mixpanel.track('Activity Viewed', {'distinct_id' : "#{current_user ? current_user.email : nil}", 'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
+  mixpanel.track('Activity Viewed', {'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
 
 
 

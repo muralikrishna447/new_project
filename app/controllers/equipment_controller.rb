@@ -1,7 +1,8 @@
 class EquipmentController < ApplicationController
   # respond_to :json
-
-  has_scope :search_title
+  has_scope :search_title do |controller, scope, value|
+    controller.params[:exact_match] == "true" ? scope.exact_search(value) : scope.search_title(value)
+  end
 
   # This is the old equipment controller
   # def index
@@ -17,6 +18,8 @@ class EquipmentController < ApplicationController
           render :json => result
         else
           sort_string = (params[:sort] || "title") + " " + (params[:dir] || "ASC").upcase
+          # result = Equipment.where("title <>''").includes(:activities).order(sort_string).offset(params[:offset]).limit(params[:limit])
+          # result = (params[:exact_match]=="true") ? result.where("title = ?", params[:search_title]) : result.where("title iLIKE ?", "%#{params[:search_title]}%")
           result = apply_scopes(Equipment).where("title <>''").includes(:activities).order(sort_string).offset(params[:offset]).limit(params[:limit])
           if params[:detailed]
             render :json => result.as_json(include: {activities: {only: [:id, :title]}})
@@ -59,13 +62,12 @@ class EquipmentController < ApplicationController
           if (@equipment.activities.count) > 0
             raise "Can't delete equipment that is in use"
           else
-            @equipment.destroy if false #unless Rails.env.angular?
+            @equipment.destroy unless Rails.env.angular?
             head :no_content
           end
         rescue Exception => e
           messages = [] || @equipment.errors.full_messages
           messages.push(e.message)
-          puts $@
           render json: { errors: messages}, status: 422
         end
       end
@@ -83,10 +85,14 @@ class EquipmentController < ApplicationController
           puts "Into " + @result_equipment.inspect
           @result_equipment.merge(@equipment) unless Rails.env.angular?
           head :no_content
+        rescue ActiveRecord::RecordNotUnique => e
+          messages = [] || @equipment.errors.full_messages
+          messages.push("You cannot merge equipment that is used on the same activity")
+          render json: { errors: messages}, status: 422
         rescue Exception => e
           messages = [] || @equipment.errors.full_messages
           messages.push(e.message)
-          messages.push(e.backtrace)
+          # messages.push(e.backtrace) # For debuggin only
           render json: { errors: messages}, status: 422
         end
       end

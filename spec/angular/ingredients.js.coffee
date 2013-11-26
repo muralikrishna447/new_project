@@ -1,4 +1,5 @@
 describe "IngredientIndexController", ->
+
   beforeEach ->
     browser().navigateTo('/ingredients')
 
@@ -8,6 +9,15 @@ describe "IngredientIndexController", ->
   it "should search from the search box", ->
     expect(element("[ng-model='searchString']").count()).toBe(1)
     input("searchString").enter("salt")
+    expect(element(".ngRow").count()).toBe(3)
+
+  it "should perform an exact match", ->
+    element("#exact-match").click()
+    input("searchString").enter("Salt, Kosher")
+    expect(element(".ngRow").count()).toBe(1)
+    input("searchString").enter("salt")
+    expect(element(".ngRow").count()).toBe(0)
+    element("#exact-match").click()
     expect(element(".ngRow").count()).toBe(3)
 
   it "should bring up a modal when you click on uses and close when you click close", ->

@@ -1,18 +1,24 @@
 .stream-item
   .stream-item-dialogue
     %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
-    %h4
+    %h5
       %a(ng-href="/profiles/{{stream.user.slug}}" onclick='track_viewed_profile_through_stream();')
         {{stream.user.name}}
-      commented on
+      %span(ng-show="stream.trackable.comment.rating < 1")
+        commented on
+      %span(ng-show="stream.trackable.comment.rating >= 1")
+        reviewed
+
       %div(ng-switch="stream.trackable.comment.commentable_type")
         %div(ng-switch-when='PollItem')
           %a(ng-href="{{stream.trackable.comment.commentable.poll.path}}" onclick='track_viewed_item_through_stream();')
             {{stream.trackable.comment.commentable.title}}:
         %div(ng-switch-default)
           %a(ng-href="{{stream.trackable.comment.commentable.path}}" onclick='track_viewed_item_through_stream();')
-            {{stream.trackable.comment.commentable.title}}:
-      "{{stream.trackable.comment.content}}"
+            {{stream.trackable.comment.commentable.title}}
+          %span(ng-show="stream.trackable.comment.rating >= 1")
+            %csrating.rating(value="stream.trackable.comment.rating" readonly="true")
+      "{{stream.trackable.comment.content|cut:true:100}}"
       %small
         {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
   .stream-item-image

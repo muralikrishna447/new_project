@@ -7,13 +7,10 @@ class Equipment < ActiveRecord::Base
   attr_accessible :title, :product_url
 
   scope :search_title, -> title { where('title iLIKE ?', '%' + title + '%') }
+  scope :exact_search, -> title { where(title: title) }
 
   def self.titles
-    # Switching this because
-    # all.map(&:title)
-    #=> Equipment Load (3.4ms)  SELECT "equipment".* FROM "equipment"
     pluck(:title)
-    #=> SQL (0.7ms)  SELECT "equipment"."title" FROM "equipment"
   end
 
   def replace_activity_equipment_with(new_equipment)

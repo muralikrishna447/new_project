@@ -8,23 +8,28 @@
       %h1 Classes
 
 - @assembly_courses.each do |course|
-  .container
+  .container.classes-index
     .row.section
       .span4
-        = render 'shared/media_box_2', url: landing_class_path(course), title: course.title, image: course.image_id, object: course
+        = render 'shared/media_box_2', url: landing_class_path(course), title: course.title, image: course.image_id, object: course, right_title: course.price ? "PAID CLASS" : ""
       .span8
-        %h2= course.title
+        .title-group
+          %h2.inline-group= course.title
+          -if course.average_rating > 0
+            .nowrap
+              .rating.inline-group
+                %csrating(value="#{course.average_rating}" readonly="true")
+              %a
+                = link_to 'See all reviews', landing_class_path(course, anchor: "reviews")
         %p.lead= course.short_description
-        %h4= "#{course.video_count} HD Videos"
-        = link_to 'View the Class', landing_class_path(course), class: 'btn btn-primary btn-large'
+        = link_to 'Learn More', landing_class_path(course), class: 'btn btn-primary btn-large'
 
 - @courses.each do |course|
-  .container
+  .container.classes-index
     .row.section
       .span4
         = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.featured_image, object: course
       .span8
         %h2= course.title
         %p.lead= course.short_description
-        %h4= "#{course.viewable_activities.count} Lessons"
-        = link_to 'View the Class', course, class: 'btn btn-primary btn-large'
+        = link_to 'Learn More', course, class: 'btn btn-primary btn-large'

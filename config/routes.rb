@@ -57,6 +57,7 @@ Delve::Application.routes.draw do
   get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
+  get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   match '/mp', to: redirect('/courses/spherification')
   match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
@@ -107,6 +108,7 @@ Delve::Application.routes.draw do
       post 'start' => 'quizzes#start'
       post 'finish' => 'quizzes#finish'
       get 'results' => 'quizzes#results'
+      get 'retake' => 'quizzes#retake'
     end
   end
 
@@ -152,6 +154,7 @@ Delve::Application.routes.draw do
     resources :comments
     resources :enrollments
   end
+  match "/gift/:gift_token", to: 'assemblies#redeem'
   resources :projects, controller: :assemblies
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'
@@ -190,5 +193,6 @@ Delve::Application.routes.draw do
 
   resources :events, only: [:create]
 
+  get "smoker" => "smoker#index"
 end
 

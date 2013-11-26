@@ -6,12 +6,14 @@
         %ul
           %li Participate in the forums
           %li Get your questions about cooking answered
+          %li Save your favorite recipes
+          %li Earn badges, enroll in classes, and connect with other cooks
     .span5.section.registration
       = form_for @user, url: registration_path(@user) do |f|
         = render 'shared/error_messages', target: f
         = f.hidden_field :signed_up_from
         %div= f.text_field :name, placeholder: 'Name', class: 'input-block-level'
-        %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level'
+        %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level', type: 'email'
         %div= f.password_field :password, placeholder: 'Password', class: 'input-block-level'
         %div= f.password_field :password_confirmation, placeholder: 'Confirmation', class: 'input-block-level'
         %div= f.submit 'Sign up', class: 'btn btn-primary btn-large'

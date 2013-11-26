@@ -1,0 +1,10 @@
+%li(ng-click="switchTab('default', 'Overview')" ng-class="isActiveTab('default')")
+  = link_to 'Overview', '#overview'
+%li(ng-click="switchTab('reviews', 'Reviews')" ng-class="isActiveTab('reviews')")
+  = link_to "Reviews", '#reviews'
+- if @course.faq
+  %li(ng-click="switchTab('faq', 'FAQ')" ng-class="isActiveTab('faq')")
+    = link_to 'FAQ', '#faq'
+- if @course.ingredients_equipment
+  %li(ng-click="switchTab('ingredients-equipment', 'Ingredients / Equipment')" ng-class="isActiveTab('ingredients-equipment')")
+    = link_to "What you'll need", '#ingredients-equipment'

@@ -47,7 +47,7 @@ gem 'split', require: 'split/dashboard'
 gem 'redis'
 gem 'merit'
 gem 'has_scope'
-gem 'mixpanel'
+gem 'mixpanel-ruby'
 gem 'cancan'
 gem 'simple-rss'
 gem 'active_model_serializers'
@@ -55,6 +55,8 @@ gem 'mixpanel_client'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'geokit-rails'
 gem 'rack-ssl-enforcer'
+gem 'redcarpet'
+gem "letter_opener", :group => :development
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -114,9 +116,7 @@ group :guard do
   gem 'guard-rspec'
   gem 'guard-spork'
   gem 'guard-jasmine'
-  # Problems with falling back to polling
-  # https://github.com/guard/listen/issues/62
-  gem 'listen', '0.4.7'
+  gem 'listen'
   gem 'growl'
   gem 'rb-fsevent'
 end

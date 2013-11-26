@@ -57,8 +57,29 @@ module Merit
       grant_on 'uploads#create', :badge => 'macaron' do |upload|
         assembly = upload.assembly
         user = upload.user
+        quiz = Quiz.find(16)
         if assembly.present?
-          assembly.title == 'French Macarons'
+          assembly.title == 'French Macarons' && user.completed_quiz(quiz)
+        else
+          false
+        end
+      end
+
+      grant_on 'uploads#create', :badge => 'poutine' do |upload|
+        assembly = upload.assembly
+        user = upload.user
+        if assembly.present?
+          assembly.slug == 'science-of-poutine'
+        else
+          false
+        end
+      end
+
+      grant_on 'uploads#create', :badge => 'knife' do |upload|
+        assembly = upload.assembly
+        user = upload.user
+        if assembly.present?
+          assembly.slug == 'knife-sharpening'
         else
           false
         end

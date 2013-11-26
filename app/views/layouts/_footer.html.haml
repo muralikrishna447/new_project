@@ -1,4 +1,4 @@
-.container-fluid#footer(ng-cloak ng-hide="editMode"){style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
+.container-fluid#footer.noprint(ng-cloak ng-hide="editMode"){style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
   .row-fluid
     .span12
       .row
@@ -17,11 +17,12 @@
               %ul.unstyled
                 %li= link_to 'Recipes', gallery_index_url(activity_type: "Recipe")
                 %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
-                %li= link_to 'Courses', courses_url
+                %li= link_to 'Classes', courses_url
                 %li= link_to 'Science', gallery_index_url(activity_type: "Science")
 
             .span6.section.text-center
               = image_tag 'logo-minimal.png'
+              .sup.trademark ®
               %h5 ChefSteps is here to help you become a better cook.
               %p Handmade at Pike Place Market in Seattle, WA
           

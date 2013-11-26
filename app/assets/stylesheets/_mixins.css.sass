@@ -84,36 +84,44 @@
   -webkit-column-gap: $value
   -o-column-gap: $value
 
+/* This works on both inputs and spans */
+=editable_text
+  @include boxsizing
+  @include any-shadow(none)
+  @include primary-font-light
+  background-color: transparent
+  border: none
+  border-radius: 0
+  border-bottom: 1px solid darkgray
+  padding-bottom: 1px
+  outline: none
 
-=raleway
-  font-family: 'Raleway', sans-serif
-  font-weight: 500
-  -webkit-font-smoothing: antialiased
+/* Typography */
+
+$baseline: 1.1rem /* = 11px/14px */
 
 =gotham-narrow
   font-family: 'Gotham Narrow SSm A', 'Gotham Narrow SSm B', 'Helvetica Neue'
   font-weight: 400
   font-style: normal
 
-=gotham
-  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue'
+=primary-font
+  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
   font-weight: 400
   font-style: normal
 
-=gotham-light
-  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue'
+=primary-font-light
+  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
   font-weight: 300
-  font-style: normal  
+  font-style: normal 
 
-=gotham-bold
-  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue'
+=primary-font-bold
+  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
   font-weight: 700
-  font-style: normal    
+  font-style: normal 
 
-=whitney
-  font-family: 'Whitney SSm A', 'Whitney SSm B', 'Helvetica Neue'
-  font-weight: 300
-  font-style: normal
+
+
 
 /* Colors */
 $orange: #e25f25

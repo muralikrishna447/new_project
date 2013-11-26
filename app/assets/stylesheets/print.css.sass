@@ -92,11 +92,17 @@
     visibility: visible
     overflow: visible
     float: none
+    page-break-after: avoid
+    .well
+      border: 1px solid black
+    .span6
+      width: 600px
 
   .printable
-    position: absolute
+    position: relative !important
     left: 0
     top: 0
+    
 
   .printonly
     visibility: visible
@@ -127,3 +133,5 @@
     .tab-pane
       display: block
 
+  #activity-description
+    height: inherit

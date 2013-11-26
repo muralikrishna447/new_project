@@ -26,6 +26,12 @@ class QuizzesController < ApplicationController
     render json: {'success' => true}, status: :ok
   end
 
+  def retake
+    quiz = Quiz.find(params[:id])
+    quiz.destroy_answers_for(current_user)
+    redirect_to quiz_path(quiz, token: params[:token])
+  end
+
   private
 
   def redirect_to_results

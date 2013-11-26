@@ -55,8 +55,8 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @techniques = Activity.published.chefsteps_generated.techniques.includes(:steps).last(6)
-        @recipes = Activity.published.chefsteps_generated.recipes.includes(:steps).last(6)
+        @techniques = Activity.published.chefsteps_generated.include_in_feeds.techniques.includes(:steps).last(6)
+        @recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).last(6)
 
         if params[:course_id]
           @course = Course.find(params[:course_id])
@@ -75,8 +75,14 @@ class ActivitiesController < ApplicationController
           track_event @activity
           return
         else
+          # Old school course
           if @activity.courses.any? && @activity.courses.first.published?
             flash.now[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
+          end
+          # New school class
+          containing_class = @activity.containing_course
+          if containing_class && containing_class.published?
+            flash.now[:notice] = "This is part of the #{view_context.link_to containing_class.title, landing_class_path(containing_class)} class."
           end
           track_event @activity
         end
@@ -137,6 +143,7 @@ class ActivitiesController < ApplicationController
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
+    track_event(@activity, 'show')
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
@@ -232,10 +239,10 @@ class ActivitiesController < ApplicationController
   # See note in next method.
   def base_feed
     # this will be the name of the feed displayed on the feed reader
-    @title = "ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine"
+    @title = "ChefSteps - Modern Cuisine - Online Cooking School - Sous Vide Recipes"
 
     # the news items
-    @activities = Activity.published.by_published_at('desc').chefsteps_generated
+    @activities = Activity.published.by_published_at('desc').chefsteps_generated.include_in_feeds
 
     # this will be our Feed's update timestamp
     @updated = @activities.published.first.published_at unless @activities.empty?

@@ -1,11 +1,14 @@
-angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Ingredient", "csUrlService", ($scope, $resource, $http, $filter, $timeout, csAlertService, Ingredient, csUrlService) ->
+angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Ingredient", "csUrlService", "csAdminTable", ($scope, $resource, $http, $filter, $timeout, csAlertService, Ingredient, csUrlService, csAdminTable) ->
+  $scope.csAdminTable = csAdminTable # Load our csAdminTable service into the scope.
+  $scope.csAdminTable.resetLoading($scope) # Make sure our loading bar is off
+
   $scope.searchString = ""
-  $scope.dataLoading = 0
   $scope.cellValue = ""
   $scope.perPage = 24
   $scope.sortInfo = {fields: ["title"], directions: ["asc"]}
   $scope.alerts = []
   $scope.includeRecipes = false
+  $scope.exactMatch = false
   $scope.mergeKeeper = null
   $scope.confirmAction = null
   $scope.densityIngredient = null
@@ -97,13 +100,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     ingredient.$update  # Want to try to move this into the ingredient factory
       id: ingredient.id
       ->
-        console.log("INGREDIENT SAVE WIN")
-        $scope.dataLoading -= 1
+        $scope.csAdminTable.changedSuccess("Ingredient", $scope)
       (err) ->
-        console.log("INGREDIENT SAVE FAIL")
-        _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
-        $scope.dataLoading -= 1
-        $scope.resetIngredients()
+        $scope.csAdminTable.changedFailure("Ingredient", err, $scope)
 
   #Call the service for this to condense the code, but add it to the controller so it can be used in the view
   $scope.urlAsNiceText = (url) ->
@@ -118,21 +117,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (val.use_count == 0) && (! val.sub_activity_id)), true)
 
   $scope.deleteSelected = ->
-    _.each $scope.gridOptions.selectedItems, (ingredient) ->
-      $scope.dataLoading += 1
-      ingredient.$delete # Want to try to move this into the ingredient factory
-        id: ingredient.id
-        ->
-          console.log("INGREDIENT DELETE WIN")
-          $scope.dataLoading -= 1
-          index = $scope.ingredients.indexOf(ingredient)
-          $scope.gridOptions.selectItem(index, false)
-          $scope.ingredients.splice(index, 1)
-          $scope.$apply() if ! $scope.$$phase
-        (err) ->
-          console.log("INGREDIENT DELETE FAIL")
-          _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
-          $scope.dataLoading -= 1
+    $scope.csAdminTable.deleteSelected("Ingredients", $scope)
 
   $scope.mergeSelected = (keeper) ->
     $scope.mergeModalOpen = false
@@ -141,13 +126,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       id: keeper.id
       merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')
       ->
-        console.log("INGREDIENT MERGE WIN")
-        $scope.dataLoading -= 1
-        #$scope.refreshIngredients()
+        $scope.csAdminTable.mergeSuccess("Ingredient", $scope)
       (err) ->
-        console.log("INGREDIENT MERGE FAIL")
-        _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
-        $scope.dataLoading -= 1
+        $scope.csAdminTable.mergeFailure("Ingredient", err, $scope)
 
   $scope.uses = (ingredient) ->
     result = ingredient.activities
@@ -180,6 +161,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     Ingredient.query  # Want to try to move this into the ingredient factory
       search_title: ($scope.searchString || "")
       include_sub_activities: $scope.includeRecipes
+      exact_match: $scope.exactMatch
       sort: $scope.sortInfo.fields[0]
       dir: $scope.sortInfo.directions[0]
       offset: offset
@@ -191,7 +173,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
           _.each(response, (item) -> $scope.computeUseCount(item))
           $scope.ingredients[offset..offset + num] = response
       (err) ->
-        alert(err)
+        $scope.csAdminTable.loadFailure("Ingredient", err, $scope)
 
   $scope.resetIngredients = ->
     $scope.ingredients = []

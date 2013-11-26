@@ -3,7 +3,7 @@
     = where_user_left_off_in_course(@course, current_user, 'btn btn-primary btn-large')
   - else
     %h2= ab_test "free or not", "Enroll now", "Enroll now for free"
-    We'll keep track of your course progress and you can earn badges and upload your creations as you learn.
+    %p We'll keep track of your course progress and you can earn badges and upload your creations as you learn.
     .section 
       = form_tag enroll_course_path(@course) do
         = submit_tag 'Enroll', class: 'btn btn-primary btn-large btn-block', onclick: "mixpanel.people.set({ 'course enrolled': $('#course-title').data('course'), 'enrollment method': 'Standard' }); mixpanel.track('Course Enrolled', {'course': $('#course-title').data('course'), 'enrollment method': 'Standard'});"

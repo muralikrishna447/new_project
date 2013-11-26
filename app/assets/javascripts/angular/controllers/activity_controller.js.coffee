@@ -28,6 +28,26 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.alerts = []
   $scope.activities = {}
 
+  $scope.csGlobals = 
+    scaling: 1.0
+    units: "grams"
+
+  $scope.displayScaling = (scale) ->
+    r = (Math.round(scale * 10) / 10)
+    if r > 100
+      r = Math.round(r)
+    r = r.toString()
+    r = "&frac12;" if r == "0.5"
+    "x" + r
+
+  $scope.maybeDisplayCurrentScaling = ->
+    return null if $scope.csGlobals.scaling == 1.0
+    $scope.displayScaling($scope.csGlobals.scaling)
+
+  $scope.maybeWarnCurrentScaling = ->
+    return null if $scope.csGlobals.scaling == 1.0
+    "- Adjust based on recipe " + $scope.maybeDisplayCurrentScaling()
+
 
   $scope.fork = ->
     $scope.activity.$update({fork: true},
@@ -46,8 +66,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       $scope.undoIndex = 0
       $scope.activity.$startedit()
       $timeout ->
-        window.csScaling = 1
-        window.csUnits = "grams"
+        $scope.csGlobals.scaling = 1
+        $scope.csGlobals.units = "grams"
         window.updateUnits(false)
         window.expandSteps()
 
@@ -148,7 +168,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     if condition then "disabled-section" else ""
 
   $scope.addEditModeClass = ->
-    if $scope.editMode then "edit-mode" else ""
+    if $scope.editMode then "edit-mode" else "show-mode"
 
   $scope.primaryColumnClass = ->
     if ($scope.editMode || ($scope.activity && $scope.activity.steps && ($scope.activity.steps.length > 0))) then 'span6' else 'no-steps span8 offset2'
@@ -355,23 +375,35 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       r.unshift({title: equip_name})
       r
 
+  # Using _.compact was confusing angular - specifically ui-sortable for ingredients.
+  # https://www.pivotaltracker.com/story/show/59722984
+  # I don't know the exact reason.
+  myCompact = (a) ->
+    i = a.length - 1
+    while i >= 0
+      if ! a[i]
+        a.splice(i, 1)
+      i -= 1
+    a
+
+
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
   # autocomplete (unshift in all_equipment), it will be missing a nesting level in the model.
   $scope.normalizeModel = () ->
-    $scope.activity.equipment = _.compact($scope.activity.equipment)
+    myCompact($scope.activity.equipment)
     angular.forEach $scope.activity.equipment, (item) ->
       if _.isString(item["equipment"])
         item["equipment"] = {title: item["equipment"]}
 
-    $scope.activity.ingredients = _.compact($scope.activity.ingredients)
+    myCompact($scope.activity.ingredients)
     angular.forEach $scope.activity.ingredients, (item) ->
       if _.isString(item["ingredient"])
         item["ingredient"] = {title: item["ingredient"]}
 
-    $scope.activity.steps = _.compact($scope.activity.steps)
+    myCompact($scope.activity.steps)
     angular.forEach $scope.activity.steps, (step) ->
-      step.ingredients = _.compact(step.ingredients)
+      step.ingredients = myCompact(step.ingredients)
       angular.forEach step.ingredients, (item) ->
         if _.isString(item["ingredient"])
           item["ingredient"] = {title: item["ingredient"]}
@@ -413,6 +445,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     $scope.activity = $scope.activities[id] 
     cs_event.track(id, 'Activity', 'show')
     mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
+    $scope.csGlobals.units = "grams"
+    $scope.csGlobals.scaling = 1
+    $timeout ->
+      window.updateUnits(false)
 
   $scope.loadActivity = (id) ->
     return if id == $scope.activity?.id
@@ -480,6 +516,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.socialMediaItem = ->
     return $scope.featuredImageURL(800) if $scope.hasFeaturedImage()
     null
+
+  $scope.cs140Message = ->
+    $scope.activity.summary_tweet || $scope.activity.title
 
   $scope.tweetMessage = ->
     "I love this:"

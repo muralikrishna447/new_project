@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131016205052) do
+ActiveRecord::Schema.define(:version => 20131119233415) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
     t.integer  "creator",                :default => 0
     t.string   "layout_name"
     t.boolean  "show_only_in_course",    :default => false
+    t.string   "summary_tweet"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -89,28 +90,6 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
   add_index "activity_ingredients", ["activity_id"], :name => "index_activity_ingredients_on_activity_id"
   add_index "activity_ingredients", ["ingredient_id"], :name => "index_activity_ingredients_on_ingredient_id"
   add_index "activity_ingredients", ["ingredient_order"], :name => "index_activity_ingredients_on_ingredient_order"
-
-  create_table "activity_recipe_steps", :force => true do |t|
-    t.integer  "activity_id", :null => false
-    t.integer  "step_id",     :null => false
-    t.integer  "step_order"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  add_index "activity_recipe_steps", ["activity_id", "step_id"], :name => "index_activity_recipe_steps_on_activity_id_and_step_id", :unique => true
-  add_index "activity_recipe_steps", ["step_order"], :name => "index_activity_recipe_steps_on_step_order"
-
-  create_table "activity_recipes", :force => true do |t|
-    t.integer  "activity_id",  :null => false
-    t.integer  "recipe_id",    :null => false
-    t.integer  "recipe_order"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
-  add_index "activity_recipes", ["activity_id", "recipe_id"], :name => "index_activity_recipes_on_activity_id_and_recipe_id", :unique => true
-  add_index "activity_recipes", ["recipe_order"], :name => "index_activity_recipes_on_recipe_order"
 
   create_table "admin_users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -160,6 +139,7 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
     t.boolean  "show_prereg_page_in_index",                               :default => false
     t.text     "short_description"
     t.text     "upload_copy"
+    t.text     "buy_box_extra_bullets"
   end
 
   create_table "assembly_inclusions", :force => true do |t|
@@ -180,6 +160,9 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
     t.integer  "child_activity_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.string   "title"
+    t.text     "description"
+    t.string   "slug"
   end
 
   add_index "assignments", ["activity_id", "child_activity_id"], :name => "index_assignments_on_activity_id_and_child_activity_id"
@@ -214,6 +197,7 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
     t.string   "commentable_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.integer  "rating"
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
@@ -244,12 +228,13 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
   create_table "enrollments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "course_id"
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
     t.integer  "enrollable_id"
     t.string   "enrollable_type"
-    t.decimal  "price",           :precision => 8, :scale => 2, :default => 0.0
-    t.decimal  "sales_tax",       :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "price",               :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",           :precision => 8, :scale => 2, :default => 0.0
+    t.integer  "gift_certificate_id"
   end
 
   create_table "equipment", :force => true do |t|
@@ -292,6 +277,22 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], :name => "index_friendly_id_slugs_on_slug_and_sluggable_type", :unique => true
   add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
+
+  create_table "gift_certificates", :force => true do |t|
+    t.integer  "purchaser_id"
+    t.string   "recipient_email",                                 :default => "",    :null => false
+    t.string   "recipient_name",                                  :default => "",    :null => false
+    t.text     "recipient_message",                               :default => ""
+    t.integer  "assembly_id"
+    t.decimal  "price",             :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",         :precision => 8, :scale => 2, :default => 0.0
+    t.string   "token"
+    t.boolean  "redeemed",                                        :default => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
+  end
+
+  add_index "gift_certificates", ["token"], :name => "index_gift_certificates_on_token"
 
   create_table "images", :force => true do |t|
     t.string   "filename"
@@ -454,27 +455,6 @@ ActiveRecord::Schema.define(:version => 20131016205052) do
 
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
-
-  create_table "recipe_ingredients", :force => true do |t|
-    t.integer  "recipe_id",        :null => false
-    t.integer  "ingredient_id",    :null => false
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.string   "unit"
-    t.decimal  "quantity"
-    t.integer  "ingredient_order"
-    t.string   "display_quantity"
-  end
-
-  add_index "recipe_ingredients", ["ingredient_order"], :name => "index_recipe_ingredients_on_ingredient_order"
-  add_index "recipe_ingredients", ["recipe_id", "ingredient_id"], :name => "index_recipe_ingredients_on_recipe_id_and_ingredient_id", :unique => true
-
-  create_table "recipes", :force => true do |t|
-    t.string   "title"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "yield"
-  end
 
   create_table "revision_records", :force => true do |t|
     t.string   "revisionable_type", :limit => 100,                    :null => false

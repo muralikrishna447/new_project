@@ -6,7 +6,6 @@
     margin: 0px
 
 .course-nav-top
-  font-family: 'Raleway', sans-serif
   position: relative
   height: 34px
   margin-bottom: 10px
@@ -43,7 +42,6 @@
       width: auto
 
 .course-nav-modules
-  font-family: 'Raleway', sans-serif
   width: 100%
   border: 0px
   li
@@ -59,7 +57,6 @@
   top: 60px
 
 .course-nav-side
-  font-family: 'Raleway', sans-serif
   position: relative
   border: 1px solid $orange
   border-radius: 5px
@@ -94,7 +91,6 @@
     transform: rotate(45deg)
 
 .course-nav-bottom
-  font-family: 'Raleway', sans-serif
   position: relative
   .course-nav-bottom-left
     position: absolute
@@ -103,6 +99,14 @@
   .course-nav-bottom-center
     width: 100%
     text-align: center
+    .course-nav-item
+      display: inline-block
+      margin-bottom: $baseline * 2
+    .btn
+      font-size: 20px
+      margin: 0 20px
+    h3
+      margin-left: -40px
   .course-nav-bottom-right
     position: absolute
     top: 10px
@@ -133,6 +137,17 @@
   top: 0px
   opacity: 1
 
+.landing-tab-dropdown
+  display: none
+
+.assembly-course-landing
+
+.testimonials
+  border: 1px solid $orange
+  +radius(3px)
+  img
+    float: left
+
 /* Spherification Styles */
 
 .static-height
@@ -140,6 +155,12 @@
 
 .align-bottom
   bottom: 0
+
+.edit-button-box
+  position: fixed
+  top: 70px
+  right: 10px
+
 
 @media (min-width: 1200px)
   .course-side-bar
@@ -157,14 +178,24 @@
     width: 220px
 
   .static-height
-    height: 170px    
+    height: 170px
+
+@media (max-width: 979px)
+  .landing-tab-dropdown
+    display: block
+
+    .dropdown-toggle .caret
+      border-top-color: #0088cc !important
+
+  .nav.landing-tab-menu
+    display: none
 
 @media (min-width: 768px) and (max-width: 979px)
   .course-side-bar
     width: 166px
 
   .static-height
-    height: 220px    
+    height: 220px
 
 @media (max-width: 767px)
   .course-side-bar.affix
@@ -180,33 +211,42 @@
   .static-height
     inherit
 
+/* tabs */
+
+.underline.nav-tabs
+  border: none
+  li
+    a
+      color: $light-gray
+      border: none
+      border-bottom: 3px solid white
+      @include transition(all 200ms ease-in-out)
+      &:hover
+        color: gray
+        background: transparent
+        border-radius: 0px
+        border-bottom: 3px solid $light-gray
+  li.active
+    a
+      color: black
+      border-bottom: 3px solid $orange
+      background: transparent
+
+    a:focus, a:hover
+      border-top: none !important
+      border-left: none !important
+      border-right: none !important
+
+.testimonials
+  .img-circle
+    padding-right: 10px
+
 /* Macaron Styles */
 .assembly-course-landing
   .full-stripe
     width: 100%
     background: $offwhite
-
-
-  /* tabs */
-
-  .underline.nav-tabs
-    border: none
-    li
-      a
-        color: $light-gray
-        border: none
-        border-bottom: 3px solid white
-        @include transition(all 200ms ease-in-out)
-        &:hover
-          color: gray
-          background: white
-          border-radius: 0px
-          border-bottom: 3px solid $light-gray
-    li.active
-      a
-        color: black
-        border-bottom: 3px solid $orange
-
+    margin-bottom: $baseline
 
   .buy-box
     border-style: double
@@ -214,12 +254,14 @@
     border-color: $orange
     box-sizing: border-box
     padding: 20px
+    margin-bottom: $baseline
 
   .social-group
     margin-top: 0px
-    margin-bottom: 20px
+    margin-bottom: 10px
     .btn-social
       margin-top: 0px
+      margin-bottom: 10px
 
 @media (max-width: 767px)
   .assembly-course-landing
@@ -233,3 +275,45 @@
       -o-column-count: 1
       -o-column-gap: 30px
       min-height: auto
+
+@media (max-width: 780px)
+  .enroll-count
+    display: none
+
+  .main-cta
+    background-color: white
+    border-top: 2px solid $light-gray
+
+  .main-cta, .gift-cta
+    pointer-events: none
+    left: 0
+    right: 0
+    bottom: 0
+    height: 8em
+    position: fixed
+    text-align: center
+
+    .btn
+      width: 90%
+      left: 5%
+      right: 5%
+      position: absolute
+      pointer-events: auto
+
+  .main-cta
+    .btn
+      top: 8px
+
+  .gift-cta
+    .btn
+      bottom: 8px
+      text-transform: uppercase
+
+
+/* Split test sticky */
+
+@media (min-width: 768px)
+
+  .affixable-fixed
+    position: fixed
+    z-index: 999

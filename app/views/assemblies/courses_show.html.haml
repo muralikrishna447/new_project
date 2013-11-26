@@ -1,10 +1,10 @@
 = render 'layouts/filepicker'
-- content_for :title, "#{@course.title.html_safe} - Course"
+- content_for :title, "#{@course.title.html_safe} - Class"
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 
-.controller(ng-controller='CoursesController' ng-init="init(#{@course.id})" ng-cloak )
-  .container.course-assembly-container
+.controller(ng-controller='CoursesController' ng-init="init(#{@course.id})")
+  .container.course-assembly-container(ng-cloak)
 
     / .course-nav-hamburger.cs-affix(ng-click="showCourseMenu = ! showCourseMenu" data-offset-top='56' data-margin-top='10')
     .course-nav-hamburger(ng-click="toggleShowCourseMenu()" affixable="56")
@@ -12,34 +12,23 @@
       .hamburger-bar
       .hamburger-bar
       .hamburger-bar
-         
+
     / .course-nav-slideout.cs-affix(ng-class="{'menu-slideout': showCourseMenu}" data-offset-top='56' data-margin-top='0')
     .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}" affixable="56")
       %h4.lessons-heading
         Lessons
       %ul.section.no-bullet
-        %li(ng-repeat='inclusion in course.assembly_inclusions' ng-click='loadInclusion(inclusion.includable_id)' ng-class="{'active': (inclusion.includable_type == view_inclusion) && (inclusion.includable_id == view_inclusion_id)}")
-          %div(ng-switch="inclusion.includable_type")
-            %a(ng-switch-default)
-              {{inclusion.includable_title}}
-            %div.nested(ng-switch-when="Assembly")
-              .hit-box(ng-click="toggleCollapse(inclusion.includable_id); $event.stopPropagation()")
-                %a
-                  {{inclusion.includable_title}}&hellip;
-              %ul.no-bullet(ng-class="{'collapsed' : isCollapsed(inclusion.includable_id)}")
-                %li(ng-repeat='sub_inclusion in inclusion.includable.assembly_inclusions' ng-click='loadInclusion(sub_inclusion.includable_id); $event.stopPropagation()' ng-class="{'active': (sub_inclusion.includable_type == view_inclusion) && (sub_inclusion.includable_id == view_inclusion_id)}")
-                  %a
-                    {{sub_inclusion.includable_title}}
-                    
-        %li.forum
-          %a(href="http://forum.chefsteps.com/categories/#{@course.slug}-course-questions" target="_blank")
-            %i.icon-large.icon-question-sign
-            Visit The Forum
+        %li(ng-repeat='inclusion in course.assembly_inclusions' 
+            ng-click='loadInclusion(inclusion.includable_id)' 
+            ng-class="inclusionActiveClass(inclusion)" 
+            ng-include="'_recursive_assembly_syllabus.html'")
+
 
     .course-content-wrapper
       .container-fluid
         .row-fluid
-          .span12.relative.course-content(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
+
+          .span12.relative.course-content.printable(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
             %div(ng-switch on='view_inclusion')
               %div(ng-switch-when="Quiz")
                 .row-fluid
@@ -55,13 +44,35 @@
                     %div(ng-switch-default)
                       = render 'activities/latest/main_activity_content'
  
-              %div(ng-switch-when='Upload')
+              %div(ng-switch-when='Assignment')
                 = render 'assembly_upload', assembly: @course
+
+              %div(ng-switch-when='Page')
+                = render 'assembly_page'
+
+              - if current_user && current_user.role?(:admin)
+                .edit-button-box
+                  %div(ng-switch on="currentIncludable.includable_type")
+                    %div(ng-switch-when='Activity')
+                      %a.btn.btn-primary.btn-large(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
+                        %i.icon-edit
+                        edit
+                    %div(ng-switch-when='Assignment')
+                      %a.btn.btn-primary.btn-large(ng-href="/admin/assignments/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                        %i.icon-edit
+                        edit
+                    %div(ng-switch-when='Page')
+                      %a.btn.btn-primary.btn-large(ng-href="/admin/pages/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                        %i.icon-edit
+                        edit
+                    %div(ng-switch-when='Quiz')
+                      %a.btn.btn-primary.btn-large(ng-href="/admin/quizzes/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                        %i.icon-edit
+                        edit
 
         .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .span12
             -# Starts with a disqus id for course but for activities will get replaced using DISQUS.reset
-            -# Just kidding, couldn't get DISQUS.reset to work :(
             = render 'layouts/disqus_comments', disqus_id: "assembly-course-#{@course.id}", disqus_title:@course.title, disqus_url: course_url(@course)
 
 
@@ -69,25 +80,28 @@
           .row-fluid.section
             .span12
               .course-nav-bottom
-                .course-nav-bottom-left
-                  .btn.btn-primary(ng-show="prevInclusion()" ng-click="loadPrevInclusion()")
-                    PREVIOUS
-
-                .course-nav-bottom-center
-                  %h3(ng-bind-html-unsafe="currentIncludable.includable_title")
+                .course-nav-bottom-center.non-responsive
+                  %h3
+                    .course-nav-item.btn.btn-primary(ng-class="{disabled: ! prevInclusion()}" ng-click="loadPrevInclusion()")
+                      PREVIOUS
+                    .course-nav-item(ng-bind-html-unsafe="currentIncludable.includable_title")
+                    .course-nav-item.btn.btn-primary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
+                      NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
 
-                .course-nav-bottom-right
-                  .btn.btn-primary(ng-show="nextInclusion()" ng-click="loadNextInclusion()")
-                    NEXT
+  
+  .course-nav-bottom-center.responsive.container-fluid.noprint.text-center
+    %hr
+    %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
+    .course-nav-buttons-group
+      .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! prevInclusion()}" ng-click="loadPrevInclusion()")
+        %i.icon-chevron-up
+      .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
+        %i.icon-chevron-down
 
-    .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
-      .activity-loading-spinner
-        .span12
-          %i.icon-spinner.icon-spin
-
-
-
+  .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
+    .activity-loading-spinner
+      %i.icon-page-load
 
   .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
     = render 'layouts/footer'

@@ -14,7 +14,10 @@ class Users::SessionsController < Devise::SessionsController
     logger.debug "Request Referer: #{request.referer}"
     logger.debug "Root Url: #{root_url}"
     logger.debug '+++++++++++++++++++'
-    if request.referer && URI(request.referer).host == URI(root_url).host
+    if session[:force_return_to]
+      session[:user_return_to] = session[:force_return_to]
+      session[:force_return_to] = nil
+    elsif request.referer && URI(request.referer).host == URI(root_url).host
       session[:user_return_to] = request.referer
     else
       session[:user_return_to] = root_url
@@ -38,12 +41,13 @@ class Users::SessionsController < Devise::SessionsController
     @course = Course.find(params[:course_id])
     if @user.valid_password?(params[:password])
       sign_in @user
-      mixpanel.track 'Signed In', { distinct_id: @user.email }
-      mixpanel.append_identify @user.email
+      mixpanel.track(current_user.email, 'Signed In')
+      mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
       @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
       if @enrollment.save
-        redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Course!"
+        redirect_to course_url(@course), notice: "You are now enrolled into the #{@course.title} Class!"
         track_event @course, 'enroll'
+        mixpanel.people.append(current_user.email, {'Classes Enrolled' => @course.title})
         finished('poutine', :reset => false)
         finished('free or not', :reset => false)
       else
@@ -52,6 +56,10 @@ class Users::SessionsController < Devise::SessionsController
     else
       redirect_to course_url(@course), notice: 'Incorrect password.'
     end
+  end
+
+  def failure
+    render :status => 401, :json => { :success => false, :errors => "Login Credentials Failed"}
   end
 
   private
@@ -65,9 +73,8 @@ class Users::SessionsController < Devise::SessionsController
 
   def remember_and_track
     remember_me(current_user)
-    mixpanel.track 'Signed In', { distinct_id: current_user.email }
-    mixpanel.append_identify current_user.email
-    mixpanel.increment 'Signed In Count'
+    mixpanel.track(current_user.email, 'Signed In')
+    mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
   end
 
 end

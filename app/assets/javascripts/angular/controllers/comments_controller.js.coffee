@@ -1,8 +1,14 @@
 angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$resource", "$http", "$filter", ($scope, $resource, $http, $filter) ->
 
-  $scope.init = (commentable_type, commentable_id) ->
+  $scope.init = (commentable_type, commentable_id, currentUserID, isReviews = false) ->
     $scope.commentable_type = commentable_type
     $scope.commentable_id = commentable_id
+    $scope.currentUserID = currentUserID
+    $scope.isReviews = isReviews
+    $scope.defaultCommentLimit = 6
+    $scope.commentLimit = $scope.defaultCommentLimit
+    $scope.commentLimit *= -1 if ! isReviews
+    $scope.newComment = {rating: 0, content: "", user_id: currentUserID}
 
     $scope.Comment = $resource('/' + $scope.commentable_type + '/' + $scope.commentable_id + '/comments')
     $scope.comments = $scope.Comment.query(->
@@ -22,13 +28,11 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
       $scope.newComment = {}
       $scope.comments_count = $scope.comments.length
       mixpanel.track('Commented', {'Commentable': $scope.commentable_type + "_" + $scope.commentable_id })
-
     )
-
-  $scope.commentLimit = -6
+    $scope.showReviewInput = false
 
   $scope.commentsToggle = ->
-    if $scope.comments.length > 6
+    if $scope.comments.length > $scope.defaultCommentLimit
       true
     else
       false
@@ -37,5 +41,17 @@ angular.module('ChefStepsApp').controller 'CommentsController', ["$scope", "$res
     $scope.commentLimit = $scope.comments_count
 
   $scope.hideComments = ->
-    $scope.commentLimit = -6
+    $scope.commentLimit = $scope.defaultCommentLimit
+    $scope.commentLimit *= -1 if ! isReviews
+
+  $scope.reviewProblems = (review) ->
+    return null if ! review
+    # Not fully in use yet, would need visual feedback; then could use a number > 1 for required length
+    return "Please choose a star rating" if review.rating < 1
+    return (1 - review.content.length) + " more characters required" if review.content.length < 1
+    return ""
+
+  $scope.myReview = ->
+    _.find($scope.comments, (c) -> c.user_id == $scope.currentUserID)
+
 ]

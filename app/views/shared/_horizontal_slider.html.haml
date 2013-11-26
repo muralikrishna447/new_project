@@ -1,7 +1,8 @@
 .horizontal-slider{data: {direction: direction}}
   .horizontal-slider-wrap
     - items.each do |item|
-      = render 'shared/media_box', size: 'medium', url: activity_path(item), title: item.title, image: item.featured_image
+      /= render 'shared/media_box', size: 'medium', url: activity_path(item), title: item.title, image: item.featured_image
+      = render 'shared/media_box_3', url: activity_path(item), title: item.title, image: item.featured_image, object: item
   %div{class: "horizontal-slider-btn-#{direction} btn btn-circle"}
     %i{class: "icon-chevron-#{direction}"}
   %div{class: "horizontal-slider-shadow-overlay-#{direction}"}

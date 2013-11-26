@@ -13,7 +13,7 @@
     %a(href="{{'numbered-step-' + step.id}}" prevent-default scroll-to="{{'numbered-step-' + step.id}}" spy="{{'numbered-step-' + step.id}}")
       %div.step-dot-circle
 
-.ordered-steps-new(ng-show="activity.steps.length > 0"){:itemprop => "recipeInstructions"}
-  .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()")
+.ordered-steps-new(ng-show="activity.steps.length > 0" itemprop="recipeInstructions")
+  .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()")
     = render 'activities/latest/step'
 

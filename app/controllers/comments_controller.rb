@@ -16,12 +16,6 @@ class CommentsController < ApplicationController
       track_event @comment
       track_receiver_event @comment
     end
-    # if @comment.save
-    #   # redirect_to @commentable
-    #   redirect_to request.referer
-    # else
-    #   render :new
-    # end
   end
 
 private

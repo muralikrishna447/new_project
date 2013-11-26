@@ -3,6 +3,20 @@
 .media-box-2{data: {object: object_data}}
   = link_to url do
     .media-box-2-title
-      = title
+      = title.html_safe
+    - if defined? right_title
+      .media-box-2-title.media-box-2-right-title
+        = right_title.html_safe
+    -if (defined? rating) && rating && (rating > 0)
+      .media-box-2-title.media-box-2-right-title.media-box-2-rating
+        %csrating.rating(value="#{rating}" readonly=true)
     - if image
       = image_tag filepicker_gallery_image(image)
+  - if (defined? footer_left) || (defined? footer_right)
+    .media-box-2-footer
+      - if defined? footer_left
+        .footer_left
+          #{footer_left}
+      - if defined? footer_right
+        .footer_left
+          #{footer_right}

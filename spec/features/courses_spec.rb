@@ -22,21 +22,5 @@ feature 'class' do
         expect(page).to_not have_content('FAQ')
       end
     end
-
-    describe 'testimonials' do
-      it 'displays a testimonials section when a testimonials page is available' do
-        testimonials = Fabricate :page, title: 'Test class Testimonial', content: "This class is awesome - George Jetson"
-        visit landing_class_path @class
-        page.status_code.should eq(200)
-        expect(page).to have_content('This class is awesome - George Jetson')
-      end
-
-      it 'does not display a testimonials section when a testimonials page is not available' do
-        visit landing_class_path @class
-        page.status_code.should eq(200)
-        expect(page).to_not have_content('Testimonials')
-      end
-    end
-
   end
 end

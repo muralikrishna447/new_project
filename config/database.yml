@@ -15,7 +15,7 @@
 development:
              adapter: postgresql
              encoding: unicode
-             database: danahern_development
+             database: delve_development
              pool: 5
              username: delve
              password:

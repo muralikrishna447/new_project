@@ -38,7 +38,7 @@ To get vanilla to use this file, it is included in the Forum > Dashboard > Custo
 
 Make sure to use the latest uploaded version of navigation_bootstrap.js.  You may need to go to CloudFront account to find this.
 
-=Staging2 ChefSteps
+Staging2 ChefSteps
 =
 
 Deploying to Staging2
@@ -65,11 +65,11 @@ brew install nodejs
 npm install karma
 npm install karma-ng-scenario
 npm install karma-coffee-preprocessor
+createdb delve_angular
 ```
 
 Once they are installed you can run the command:
-```bash
-karma start config/karma.js
+script/e2e
 ```
 
 This will start the server.  It will automatically watch all files in the spec/javascripts/e2e folder and run the tests when you save a file.

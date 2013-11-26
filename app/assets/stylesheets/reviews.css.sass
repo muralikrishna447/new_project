@@ -1,0 +1,47 @@
+@import 'mixins'
+
+.rating
+  font-size: 18px
+  letter-spacing: 3px
+  color: #F5A623
+  white-space: nowrap
+
+.review-group
+  .flat-form
+    padding-bottom: $baseline * 2
+
+    .rating-group
+      padding-bottom: $baseline
+
+  .reviews
+    .review
+      margin-top: $baseline
+      border-top: 1px solid $offwhite
+      padding-bottom: $baseline * 3
+      position: relative
+      blockquote
+        @include primary-font-light
+
+      .rating
+        position: absolute
+        top: -9px
+        left: 50%
+        margin-left: -65px
+        width: 130px
+        text-align: center
+        background-color: white
+
+    .review-user
+      font-style: italic
+
+.uploads.review-group
+  border: 1px solid $offwhite
+  padding-left: 24px
+  padding-top: $baseline * 2
+  h2
+    padding-bottom: $baseline
+  textarea, .review
+    width: 100%
+    max-width: 400px
+
+

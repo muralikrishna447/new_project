@@ -1,6 +1,9 @@
-angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Equipment", "csUrlService", ($scope, $resource, $http, $filter, $timeout, csAlertService, Equipment, csUrlService) ->
+angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Equipment", "csUrlService", "csAdminTable", ($scope, $resource, $http, $filter, $timeout, csAlertService, Equipment, csUrlService, csAdminTable) ->
+  $scope.csAdminTable = csAdminTable # Load our csAdminTable service into the scope.
+  $scope.csAdminTable.resetLoading($scope) # Make sure our loading bar is off
+
   $scope.searchString = ""
-  $scope.dataLoading = 0
+  $scope.exactMatch = false
   $scope.cellValue = ""
   $scope.perPage = 24
   $scope.sortInfo = {fields: ["title"], directions: ["asc"]}
@@ -70,17 +73,13 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
 
   $scope.equipmentChanged =  (equipment) ->
     csUrlService.fixAmazonLink(equipment)
-    $scope.dataLoading += 1
+    $scope.csAdminTable.startLoading($scope)
     equipment.$update  # Want to try to move this into the equipment factory
       id: equipment.id
       ->
-        console.log("Equipment SAVE WIN")
-        $scope.dataLoading -= 1
+        $scope.csAdminTable.changedSuccess("Equipment", $scope)
       (err) ->
-        console.log("Equipment SAVE FAIL")
-        _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
-        $scope.dataLoading -= 1
-        $scope.resetEquipment()
+        $scope.csAdminTable.changedFailure("Equipment", err, $scope)
 
   #Call the service for this to condense the code, but add it to the controller so it can be used in the view
   $scope.urlAsNiceText = (url) ->
@@ -95,36 +94,18 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
     _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (val.use_count == 0) ), true)
 
   $scope.deleteSelected = ->
-    _.each $scope.gridOptions.selectedItems, (equipment) ->
-      $scope.dataLoading += 1
-      equipment.$delete # Want to try to move this into the equipment factory
-        id: equipment.id
-        ->
-          console.log("Equipment DELETE WIN")
-          $scope.dataLoading -= 1
-          index = $scope.equipment.indexOf(equipment)
-          $scope.gridOptions.selectItem(index, false)
-          $scope.equipment.splice(index, 1)
-          $scope.$apply() if ! $scope.$$phase
-        (err) ->
-          console.log("Equipment DELETE FAIL")
-          _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
-          $scope.dataLoading -= 1
+    $scope.csAdminTable.deleteSelected("Equipment", $scope)
 
   $scope.mergeSelected = (keeper) ->
     $scope.mergeModalOpen = false
-    $scope.dataLoading += 1
+    $scope.csAdminTable.startLoading($scope)
     keeper.$merge  # Want to try to move this into the equipment factory
       id: keeper.id
       merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')
       ->
-        console.log("Equipment MERGE WIN")
-        $scope.dataLoading -= 1
-        # $scope.refreshEquipment()
+        $scope.csAdminTable.mergeSuccess("Equipment", $scope)
       (err) ->
-        console.log("Equipment MERGE FAIL")
-        _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
-        $scope.dataLoading -= 1
+        $scope.csAdminTable.mergeFailure("Equipment", err, $scope)
 
   $scope.uses = (equipment) ->
     result = equipment.activities
@@ -142,25 +123,28 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
     equipment.use_count = $scope.uses(equipment).length
 
   $scope.loadEquipment =  (num) ->
-    $scope.dataLoading += 1
+    $scope.csAdminTable.startLoading($scope)
     searchWas = $scope.searchString
     offset = $scope.equipment.length
     num ||= $scope.perPage
 
     Equipment.query  # Want to try to move this into the equipment factory
       search_title: ($scope.searchString || "")
+      exact_match: $scope.exactMatch
       sort: $scope.sortInfo.fields[0]
       dir: $scope.sortInfo.directions[0]
       offset: offset
       limit: num
       (response) ->
-        $scope.dataLoading -= 1
+        $scope.csAdminTable.finishLoading($scope)
         # Avoid race condition with results coming in out of order
         if searchWas == $scope.searchString
           _.each(response, (item) -> $scope.computeUseCount(item))
           $scope.equipment[offset..offset + num] = response
+        # $scope.csAdminTable.loadSuccess("Equipment", response, searchWas, offset, num, $scope)
       (err) ->
-        alert(err)
+        $scope.csAdminTable.loadFailure("Equipment", err, $scope)
+
 
   $scope.resetEquipment = ->
     $scope.equipment = []

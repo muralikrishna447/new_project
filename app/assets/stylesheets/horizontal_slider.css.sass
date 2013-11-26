@@ -1,12 +1,15 @@
+@import 'mixins'
+
 .horizontal-slider
   position: relative
-  height: 228px
+  height: 290px
   overflow: hidden
   z-index: 1
   width: 100%
   .horizontal-slider-wrap
-    height: 248px
     position: relative
+    .media-box-3
+      margin: 10px 20px 10px 0px
   .horizontal-slider-btn-right
     position: absolute
     top: 50%
@@ -68,3 +71,17 @@
       right: 0
       bottom: -10px
       background: white
+
+.horizontal-slider[data-direction='left']
+  .media-box-3
+    .media-box-3-title
+      text-align: right
+    .media-box-3-footer
+      float: right
+
+@media (max-width: 1200px)
+  .horizontal-slider
+    .horizontal-slider-wrap
+      .media-box-3
+        width: 360px
+        height: 272px

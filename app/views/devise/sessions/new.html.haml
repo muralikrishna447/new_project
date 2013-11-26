@@ -2,45 +2,21 @@
 
 .container#main-container
   .row
-    .span5.offset1
-    .span5.registration
+    .span6.offset3.registration
       %h3 Sign into Chefsteps
       = form_for @user, url: session_path(@user) do |f|
         - if @signin_message
           %h2= @signin_message
           %hr
-        %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level'
+        %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level', type: 'email'
         %div= f.password_field :password, placeholder: 'Password', class: 'input-block-level'
-        %div= f.submit 'Sign in', class: 'btn btn-primary btn-large'
-        %h3 or
-        = render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
+        %div= f.submit 'Sign in', class: 'btn btn-primary'
+        %h4 or
+        = render 'devise/shared/facebook_login', text: 'Log in with Facebook'
+        %hr
+        %h3 Don't have an account?
+        .btn.btn-primary
+          =link_to 'Sign up', new_user_registration_path
         %hr
         %div= "Don't have an account? #{link_to 'Sign up', new_user_registration_path}".html_safe
         %div= "Forgot your password? #{link_to 'Reset password', new_user_password_path}".html_safe
-  .row
-    .span5.offset1
-    .span5.registration
-      .login-container.container.relative(ng-controller="LoginController")
-        %h3 Sign into Chefsteps
-        .form-horizontal
-          %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
-          .error(ng-show="login_error.message")
-            %p {{login_error.message}}
-          .message(ng-show="message")
-            %p {{message}}
-          %div(ng-class="{error: login_error.errors.email}")
-            Email
-            %input.input-block-level(ng-model="login_user.email" placeholder="Email")
-            %div(ng-show="login_error.errors.email")
-              %div(ng-repeat="field_error in login_error.errors.email")
-                {{field_error}}
-          %div(ng-class="{error: login_error.errors.password}")
-            Password
-            %input.input-block-level(type="password" ng-model="login_user.password" placeholder="Password")
-            %div(ng-show="login_error.errors.email")
-              %div(ng-repeat="field_error in login_error.errors.password")
-                {{field_error}}
-          %button.btn.btn-primary.btn-large(ng-click="login()") Sign in
-          %button.btn.btn-primary.btn-large(ng-click="logout()") Sign Out
-          = render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
-          %div= "Forgot your password? #{link_to 'Reset password', new_user_password_path}".html_safe

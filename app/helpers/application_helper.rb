@@ -31,7 +31,7 @@ module ApplicationHelper
   end
 
   def filepicker_gallery_image(fpfile)
-    filepicker_arbitrary_image(fpfile, 370)
+    filepicker_arbitrary_image(fpfile, 370, 'crop')
   end
 
   def filepicker_slider_image(fpfile)
@@ -177,12 +177,22 @@ module ApplicationHelper
   end
 
   def where_user_left_off_in_course(course, user, btn_class = nil)
-    last_viewed_activity = user.last_viewed_activity_in_course(course)
-    if last_viewed_activity
-      link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
+    # TODO needs refactoring when we move over old courses
+    if course.class.to_s == 'Assembly'
+      last_viewed_activity = user.last_viewed_activity_in_assembly(course)
+      if last_viewed_activity
+        link_to "Continue Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, class_activity_path(course, last_viewed_activity), class: btn_class
+      else
+        link_to "Start the Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, landing_class_path(course), class: btn_class
+      end
     else
-      first_activity = course.first_published_activity
-      link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
+      last_viewed_activity = user.last_viewed_activity_in_course(course)
+      if last_viewed_activity
+        link_to "Continue Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
+      else
+        first_activity = course.first_published_activity
+        link_to "Start the Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
+      end
     end
   end
 
@@ -243,6 +253,36 @@ module ApplicationHelper
 
   def http_referer_uri
     request.env["HTTP_REFERER"] && URI.parse(request.env["HTTP_REFERER"])
+  end
+
+  def class_activity_path(assembly, activity)
+    if assembly && activity
+      "/classes/#{assembly.slug}/##{activity.slug}"
+    end
+  end
+
+  def markdown(text)
+    # options = [:hard_wrap, :filter_html, :autolink, :no_intraemphasis, :fenced_code, :gh_blockcode]
+    # syntax_highlighter(Redcarpet.new(text, *options).to_html).html_safe
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true)
+    markdown.render(text)
+  end
+
+  def includable_path(includable)
+    case includable.class.to_s
+    when 'Activity'
+      activity_path(includable)
+    when 'Assignment'
+      edit_admin_assignment_path(includable)
+    when 'Assembly'
+      edit_admin_assembly_path(includable)
+    when 'Quiz'
+      edit_admin_quiz_path(includable)
+    when 'Page'
+      edit_admin_page_path(includable)
+    else
+      nil
+    end
   end
 
 end
