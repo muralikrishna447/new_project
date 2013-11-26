@@ -126,4 +126,10 @@
                       .video-container
                         %iframe{src: youtube_url(step.youtube_id)}
 
+      .row
+        .span12
+          %h3 Discussion
+          .section
+            - disqus_id = "activity-#{@activity.id}"
+            = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
 
