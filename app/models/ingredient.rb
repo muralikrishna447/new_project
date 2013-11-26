@@ -1,6 +1,8 @@
 class Ingredient < ActiveRecord::Base
   include CaseInsensitiveTitle
-  #extend FriendlyId
+  extend FriendlyId
+  
+  friendly_id :title, use: [:slugged, :history]
 
   has_many :step_ingredients, dependent: :destroy, inverse_of: :ingredient
   has_many :activity_ingredients, dependent: :destroy, inverse_of: :ingredient

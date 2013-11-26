@@ -1,3 +1,4 @@
+
 = render 'layouts/filepicker'
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "IngredientShowController", :'data-ingredient-id' => @ingredient_id}
 
@@ -6,6 +7,7 @@
   .row.section
     .span8
       %h2(ng-bind-html-unsafe="ingredient.title")
+      //= render 'layouts/social_buttons', media_object: nil
 
   .row.section(ng-show="usedInChefStepsActivities().length > 0")
     .span8

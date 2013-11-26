@@ -9,9 +9,8 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
   $scope.ingredient_display_type = (ai) ->
     result = "basic"
     if ai?.ingredient?
-      result = "product" if !! ai.ingredient.product_url
       result = "subrecipe" if !! ai.ingredient.sub_activity_id
-      result = "fake_link" if $scope.editMode && (result == "product" || result == "subrecipe")
+      result = "fake_link" if $scope.editMode && (result == "subrecipe")
     result
 
   $scope.unitMultiplier = (unit_name) ->
