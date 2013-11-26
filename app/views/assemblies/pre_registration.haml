@@ -1,4 +1,4 @@
-- content_for :title, "#{@course.title.html_safe} - Course"
+- content_for :title, "#{@course.title.html_safe} - Class"
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 
 .container.pre-registration
@@ -6,9 +6,9 @@
     .span8.offset2.text-center
 
       %h3
-        Enter your email address to be notified when our first paid course,&nbsp;
-        %b> French Macarons
-        ,&nbsp; is available.
+        Enter your email address to be notified when our &nbsp;
+        %b> #{@course.title.html_safe}
+        &nbsp; class is available.
 
       %form.form-horizontal{action: "http://www.aweber.com/scripts/addlead.pl ", method: "post"}
         %fieldset
