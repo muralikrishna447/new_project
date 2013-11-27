@@ -35,19 +35,27 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save
       sign_in @user
       aweber_signup(@user.name, @user.email)
-      # redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
-      if session[:user_return_to] && (session[:user_return_to] != root_url)
-        redirect_to session[:user_return_to], notice: "Thanks for signing up! Please check your email now to confirm your registration."
-      else
-        redirect_to welcome_url(email: @user.email)
-      end
       cookies.delete(:viewed_activities)
       cookies[:returning_visitor] = true
       mixpanel.alias(@user.email, mixpanel_anonymous_id)
       mixpanel.track(@user.email, 'Signed Up')
       finished('counter_split', :reset => false)
+      unless request.xhr?
+        # redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
+        if session[:user_return_to] && (session[:user_return_to] != root_url)
+          redirect_to session[:user_return_to], notice: "Thanks for signing up! Please check your email now to confirm your registration."
+        else
+          redirect_to welcome_url(email: @user.email)
+        end
+      else
+        return render status: 200, json: {success: true, info: "Logged in", user: @user}
+      end
     else
-      render :new
+      unless request.xhr?
+        render :new
+      else
+        render status: 401, json: {success: false, info: "There was a problem creating your user", errors: @user.errors}
+      end
     end
   end
 

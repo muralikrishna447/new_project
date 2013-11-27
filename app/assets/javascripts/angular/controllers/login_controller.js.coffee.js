@@ -1,13 +1,20 @@
-angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http) ->
+angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csAuthentication) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
   $scope.register_user = {email: null, password: null, password_confirmation: null};
   $scope.register_error = {message: null, errors: {}};
 
+  $scope.showForm = "signIn"
+
+  $scope.authentication = csAuthentication
+
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
 
   $scope.loginModalOpen = false
+
+  $scope.switchForm = (form) ->
+    $scope.showForm = form
 
   $scope.openModal = ->
     $scope.loginModalOpen = true
@@ -16,24 +23,67 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http) ->
     $scope.loginModalOpen = false
 
   $scope.login = ->
-    $scope.submit(
+    $scope.dataLoading += 1
+    $scope.reset_messages();
+    $http(
       method: 'POST'
       url: '/users/sign_in.json'
       data:
         user:
           email: $scope.login_user.email
           password: $scope.login_user.password
-      success_message: "You have been logged in."
-      error_entity: $scope.login_error
-    )
+      )
+      .success( (data, status) ->
+        $scope.dataLoading -= 1
+        if (status == 200)
+          $scope.message = "You have been signed in."
+          $scope.logged_in = true
+          $scope.authentication.setCurrentUser(data.user)
+        else
+          if (data.error)
+            $scope.message = data.error
+          else
+            $scope.message = "Success, but with an unexpected success code, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data)
+      )
+      .error( (data, status) ->
+        $scope.dataLoading -= 1
+        if (data.error)
+          $scope.message = data.error
+        else
+          $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data)
+      )
+
 
   $scope.logout = ->
-    $scope.submit(
+    $scope.dataLoading += 1
+    $scope.reset_messages();
+
+    $http(
       method: 'DELETE'
       url: '/users/sign_out.json'
-      success_message: "You have been logged out."
-      error_entity: $scope.login_error
-    )
+      )
+      .success( (data, status) ->
+        $scope.dataLoading -= 1
+        if (status == 200)
+          $scope.message = "You have been logged out."
+          $scope.logged_in = false
+          $scope.authentication.setCurrentUser(null)
+        else
+          if (data.error)
+            $scope.message = data.error;
+          else
+            $scope.message = "Success, but with an unexpected success code, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
+      )
+      .error( (data, status) ->
+        $scope.dataLoading -= 1
+        if (status == 422 || status == 401)
+          $scope.message = data.errors;
+        else
+          if (data.error)
+            $scope.message = data.error;
+          else
+            $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
+      )
 
   $scope.password_reset = ->
     $scope.submit(
@@ -47,16 +97,34 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http) ->
     )
 
   $scope.register = ->
-    $scope.submit(
+    $scope.dataLoading += 1
+    $scope.reset_messages();
+
+    $http(
       method: 'POST'
       url: '/users.json'
       data:
         user:
+          name: $scope.register_user.name
           email: $scope.register_user.email
           password: $scope.register_user.password
           password_confirmation: $scope.register_user.password_confirmation
-      success_message: "You have been registered and logged in.  A confirmation e-mail has been sent to your e-mail address, your access will terminate in 2 days if you do not use the link in that e-mail."
-      error_entity: $scope.register_error)
+      )
+      .success( (data, status) ->
+        $scope.dataLoading -= 1
+        if (status == 200)
+          $scope.logged_in = true
+          $scope.authentication.setCurrentUser(data.user)
+          $scope.message = "You have been registered and logged in."
+      )
+      .error( (data, status) ->
+        $scope.dataLoading -= 1
+        if (status == 401)
+          $scope.message = data.info;
+          $scope.errors = data.errors
+        else
+          $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
+      )
 
   $scope.change_password = ->
     $scope.submit(
@@ -87,17 +155,20 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http) ->
           $scope.reset_users();
         else
           if (data.error)
-            parameters.error_entity.message = data.error;
+            parameters.error_entity.message = data.info;
+            parameters.error_entity.errors = data.errors
           else
             parameters.error_entity.message = "Success, but with an unexpected success code, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
       )
       .error( (data, status) ->
         $scope.dataLoading -= 1
         if (status == 422 || status == 401)
-          parameters.error_entity.message = data.errors;
+          parameters.error_entity.message = data.info;
+          parameters.error_entity.errors = data.errors
         else
           if (data.error)
-            parameters.error_entity.message = data.error;
+            parameters.error_entity.message = data.info;
+            parameters.error_entity.errors = data.errors
           else
             parameters.error_entity.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
       )
@@ -111,6 +182,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http) ->
   $scope.reset_users = ->
     $scope.login_user.email = null;
     $scope.login_user.password = null;
+    $scope.register_user.name = null;
     $scope.register_user.email = null;
     $scope.register_user.password = null;
     $scope.register_user.password_confirmation = null;
