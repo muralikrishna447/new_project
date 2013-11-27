@@ -11,10 +11,16 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
                         )
 
 
-  $scope.ingredient = Ingredient.get({})
+  $scope.ingredient = Ingredient.get({}, ->
+    console.log JSON.stringify($scope.ingredient)
+  )
 
   $scope.usedInChefStepsActivities = ->
-    _.where($scope.ingredient.activities, {creator: null})
+    _.where($scope.ingredient.activities, {creator: null})[0..5]
+
+  $scope.frequentlyUsedWith = ->
+    _.filter($scope.ingredient.frequently_used_with, (x) -> (parseInt(x.id) != $scope.ingredient.id) && (parseInt(x.count) > 1))
+
 
   $scope.urlAsNiceText = (url) ->
     csUrlService.urlAsNiceText(url)

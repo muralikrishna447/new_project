@@ -16,6 +16,13 @@
         %li(ng-repeat="activity in usedInChefStepsActivities()")
           %a(ng-href="/activities/{{activity.slug}}" ng-bind-html-unsafe="activity.title")
 
+  .row.section(ng-show="frequentlyUsedWith().length > 0")
+    .span8
+      %h3 Frequently Used With
+      %ul
+        %li(ng-repeat="usedWith in frequentlyUsedWith()")
+          %a(ng-href="/ingredients/{{usedWith.slug}}" ng-bind-html-unsafe="usedWith.title")
+
   .row.section(ng-show="ingredient.product_url")
     .span8
       %h3 Where To Buy
