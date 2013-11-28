@@ -1,5 +1,5 @@
 class IngredientSerializer < ActiveModel::Serializer
-  attributes :id, :title, :slug, :product_url, :created_at, :updated_at, :for_sale, :sub_activity_id, :density
+  attributes :id, :title, :slug, :product_url, :created_at, :updated_at, :for_sale, :sub_activity_id, :density, :image_id
   attributes :frequently_used_with
   has_many :activities
 

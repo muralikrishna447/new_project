@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131126190511) do
+ActiveRecord::Schema.define(:version => 20131127223228) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -324,6 +324,7 @@ ActiveRecord::Schema.define(:version => 20131126190511) do
     t.integer  "sub_activity_id"
     t.decimal  "density"
     t.string   "slug"
+    t.string   "image_id"
   end
 
   add_index "ingredients", ["slug"], :name => "index_ingredients_on_slug"
