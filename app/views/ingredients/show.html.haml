@@ -2,13 +2,16 @@
 = render 'layouts/filepicker'
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "IngredientShowController", :'data-ingredient-id' => @ingredient_id}
 
-.container(ng-cloak)
+.container.ingredient-show(ng-cloak)
   .section
 
   .row.section
-    .span8
+    .span8.relative
+      .btn.btn-primary.edit-mode(ng-click="editMode = !editMode" ng-class="{'active' : editMode}")
+        %i.icon-edit
       %h2(ng-bind-html-unsafe="ingredient.title")
-      .noprint= render 'activities/hero_visual'
+      .noprint
+        = render 'activities/hero_visual'
       //= render 'layouts/social_buttons', media_object: nil
 
   .row.section(ng-show="usedInChefStepsActivities().length > 0")
