@@ -107,6 +107,7 @@ group :development, :test, :angular do
   gem 'launchy'
   gem 'childprocess', '0.3.6'
   gem 'xray-rails'
+  gem 'spring'
 end
 
 group :guard do

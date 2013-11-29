@@ -402,6 +402,7 @@ GEM
     spork-rails (3.2.0)
       rails (>= 3.0.0, < 3.3.0)
       spork (>= 1.0rc0)
+    spring (1.0.0)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -526,6 +527,7 @@ DEPENDENCIES
   simple-rss
   split
   spork-rails
+  spring
   stripe!
   thin
   turbo-sprockets-rails3
