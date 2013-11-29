@@ -16,7 +16,18 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
 
   $scope.ingredient = Ingredient.get({}, ->
-    console.log JSON.stringify($scope.ingredient)
+    if ! $scope.ingredient.text_fields
+      $scope.ingredient.text_fields =
+        [
+          { 
+            title: "Description"
+            contents: "Oh I love me some stuff"
+          },
+          { 
+            title: "History"
+            contents: "Never heard of it"
+          }
+        ]
   )
 
     # Overall edit mode

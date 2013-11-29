@@ -10,7 +10,7 @@
       .btn.btn-primary.edit-mode(ng-click="toggleEditMode()" ng-class="{'active' : editMode}")
         %i.icon-edit
       %h2(ng-bind-html-unsafe="ingredient.title")
-      
+
   .row
     .span6
       .row.section
@@ -18,6 +18,11 @@
           .noprint
             = render 'activities/hero_visual'
           //= render 'layouts/social_buttons', media_object: nil
+
+      .row.section(ng-repeat="textField in ingredient.text_fields")
+        .span6
+          %h3 {{textField.title}}
+          %p {{textField.contents}}
 
     .span6.well
       .row.section(ng-show="usedInChefStepsActivities().length > 0")
