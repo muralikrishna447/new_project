@@ -4,9 +4,11 @@
 
 .container(ng-cloak)
   .section
+
   .row.section
     .span8
       %h2(ng-bind-html-unsafe="ingredient.title")
+      .noprint= render 'activities/hero_visual'
       //= render 'layouts/social_buttons', media_object: nil
 
   .row.section(ng-show="usedInChefStepsActivities().length > 0")

@@ -7,6 +7,8 @@ window.deepCopy = (obj) ->
 
 angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll) ->
 
+  window.BaseMediaController($scope)
+
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id") || 1},
                         {
@@ -27,6 +29,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
   $scope.activities = {}
+
+  $scope.getObject = ->
+    $scope.activity
 
   $scope.csGlobals = 
     scaling: 1.0
@@ -284,42 +289,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
     initSelection: (element, callback) ->
       callback($scope.activity.tags)
-
-  # Video/image stuff
-  $scope.hasHeroVideo = ->
-    $scope.activity?.youtube_id? && $scope.activity.youtube_id
-
-  $scope.hasHeroImage = ->
-    $scope.activity?.image_id? && $scope.activity.image_id
-
-  $scope.hasFeaturedImage = ->
-    $scope.activity?.featured_image_id? && $scope.activity.featured_image_id
-
-  $scope.heroVideoURL = ->
-    autoplay = if $scope.url_params.autoplay then "1" else "0"
-    "//www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
-
-  $scope.heroVideoStillURL = ->
-    "//img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
-
-  $scope.heroImageURL = (width) ->
-    url = ""
-    if $scope.hasHeroImage()
-      url = JSON.parse($scope.activity.image_id).url
-      url + "/convert?fit=max&w=#{width}&cache=true"
-    window.cdnURL(url)
-
-  $scope.featuredImageURL = (width) ->
-    url = ""
-    if $scope.hasFeaturedImage()
-      url = JSON.parse($scope.activity.featured_image_id).url
-      url = url + "/convert?fit=max&w=#{width}&cache=true"
-    window.cdnURL(url)
-
-  $scope.heroDisplayType = ->
-    return "video" if $scope.hasHeroVideo()
-    return "image" if $scope.hasHeroImage()
-    return "none"
 
   $scope.sortOptions = {
     axis: 'y',
