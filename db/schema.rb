@@ -325,7 +325,7 @@ ActiveRecord::Schema.define(:version => 20131127223228) do
     t.decimal  "density"
     t.string   "slug"
     t.string   "image_id"
-    t.string   "youtube_id"
+    t.text     "youtube_id"
   end
 
   add_index "ingredients", ["slug"], :name => "index_ingredients_on_slug"

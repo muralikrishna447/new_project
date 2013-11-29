@@ -7,10 +7,10 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   # There are better ways of getting the id, but I was running into some hassles
   # because of our odd way of not being a single page app, and didn't want to take time
   # to chase them down right now.
-  Ingredient = $resource( "/ingredients/:id/get_as_json",
+  Ingredient = $resource( "/ingredients/:id/as_json",
                           id:  $('body').data("ingredient-id"),
                           {
-                            update: {method: "PUT"}
+                            update: {url: "/ingredients/:id", method: "PUT"}
                           }
                         )
 
@@ -18,6 +18,32 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.ingredient = Ingredient.get({}, ->
     console.log JSON.stringify($scope.ingredient)
   )
+
+    # Overall edit mode
+  $scope.startEditMode = ->
+    if ! $scope.editMode
+      $scope.editMode = true
+      $scope.showHeroVisualEdit = false
+
+  $scope.endEditMode = ->
+    $scope.ingredient.$update(
+      {},
+      ((response) ->
+        console.log "INGREDIENT SAVE WIN"
+      ),
+
+      ((error) ->
+        console.log "INGREDIENT SAVE ERRORS: " + JSON.stringify(error)
+        _.each(error.data.errors, (e) -> $scope.addAlert({message: e})))
+    )
+    $scope.editMode = false
+
+  $scope.toggleEditMode = ->
+    if $scope.editMode
+      $scope.endEditMode()
+    else 
+      $scope.startEditMode()
+
 
   $scope.getObject = ->
     $scope.ingredient

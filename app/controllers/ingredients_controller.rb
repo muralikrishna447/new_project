@@ -37,7 +37,10 @@ class IngredientsController < ApplicationController
           if @ingredient.sub_activity_id && params[:ingredient][:title] != @ingredient.title
             raise "Can't change name of ingredient that is a recipe"
           else
+            puts "---- #{params[:booger]} #{params[:youtube_id]} #{params[:image_id]}"
+            puts "---- #{params[:ingredient][:booger]} #{params[:ingredient][:youtube_id]} #{params[:ingredient][:image_id]}"
             @ingredient.update_attributes(params[:ingredient])
+
             head :no_content
           end
         rescue Exception => e
@@ -81,7 +84,6 @@ class IngredientsController < ApplicationController
     @ingredient = Ingredient.find(params[:id])
     render json: @ingredient
   end
-
 
   def merge
     authorize! :update, Ingredient unless Rails.env.angular?

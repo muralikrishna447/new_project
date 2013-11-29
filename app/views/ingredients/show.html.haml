@@ -7,11 +7,10 @@
 
   .row
     .span12.relative
-      .btn.btn-primary.edit-mode(ng-click="editMode = !editMode" ng-class="{'active' : editMode}")
+      .btn.btn-primary.edit-mode(ng-click="toggleEditMode()" ng-class="{'active' : editMode}")
         %i.icon-edit
       %h2(ng-bind-html-unsafe="ingredient.title")
-
-
+      
   .row
     .span6
       .row.section
@@ -30,7 +29,7 @@
 
       .row.section(ng-show="frequentlyUsedWith().length > 0")
         .span6
-          %h3 Frequently Used With
+          %h3 Often Used With
           %ul
             %li(ng-repeat="usedWith in frequentlyUsedWith()")
               %a(ng-href="/ingredients/{{usedWith.slug}}" ng-bind-html-unsafe="usedWith.title")

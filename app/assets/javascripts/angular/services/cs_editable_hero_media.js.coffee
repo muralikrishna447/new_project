@@ -18,7 +18,7 @@
       url = ""
       if this.hasHeroImage()
         url = JSON.parse(this.getObject().image_id).url
-        url + "/convert?fit=max&w=#{width}&cache=true"
+        url += "/convert?fit=max&w=#{width}&cache=true"
       window.cdnURL(url)
 
     this.heroDisplayType = ->
