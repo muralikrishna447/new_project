@@ -5,32 +5,39 @@
 .container.ingredient-show(ng-cloak)
   .section
 
-  .row.section
-    .span8.relative
+  .row
+    .span12.relative
       .btn.btn-primary.edit-mode(ng-click="editMode = !editMode" ng-class="{'active' : editMode}")
         %i.icon-edit
       %h2(ng-bind-html-unsafe="ingredient.title")
-      .noprint
-        = render 'activities/hero_visual'
-      //= render 'layouts/social_buttons', media_object: nil
 
-  .row.section(ng-show="usedInChefStepsActivities().length > 0")
-    .span8
-      %h3 Used In
-      %ul
-        %li(ng-repeat="activity in usedInChefStepsActivities()")
-          %a(ng-href="/activities/{{activity.slug}}" ng-bind-html-unsafe="activity.title")
 
-  .row.section(ng-show="frequentlyUsedWith().length > 0")
-    .span8
-      %h3 Frequently Used With
-      %ul
-        %li(ng-repeat="usedWith in frequentlyUsedWith()")
-          %a(ng-href="/ingredients/{{usedWith.slug}}" ng-bind-html-unsafe="usedWith.title")
+  .row
+    .span6
+      .row.section
+        .span6
+          .noprint
+            = render 'activities/hero_visual'
+          //= render 'layouts/social_buttons', media_object: nil
 
-  .row.section(ng-show="ingredient.product_url")
-    .span8
-      %h3 Where To Buy
-      %ul
-        %li
-          %a(ng-href="{{ingredient.product_url}}" target="_blank" ng-bind-html-unsafe="urlAsNiceText(ingredient.product_url)")
+    .span6.well
+      .row.section(ng-show="usedInChefStepsActivities().length > 0")
+        .span6
+          %h3 Used In
+          %ul
+            %li(ng-repeat="activity in usedInChefStepsActivities()")
+              %a(ng-href="/activities/{{activity.slug}}" ng-bind-html-unsafe="activity.title")
+
+      .row.section(ng-show="frequentlyUsedWith().length > 0")
+        .span6
+          %h3 Frequently Used With
+          %ul
+            %li(ng-repeat="usedWith in frequentlyUsedWith()")
+              %a(ng-href="/ingredients/{{usedWith.slug}}" ng-bind-html-unsafe="usedWith.title")
+
+      .row.section(ng-show="ingredient.product_url")
+        .span6
+          %h3 Where To Buy
+          %ul
+            %li
+              %a(ng-href="{{ingredient.product_url}}" target="_blank" ng-bind-html-unsafe="urlAsNiceText(ingredient.product_url)")

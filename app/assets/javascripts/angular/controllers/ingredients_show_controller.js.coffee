@@ -2,7 +2,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.heroMedia = csEditableHeroMediaService
 
-  $scope.editMode = true
+  $scope.editMode = false
 
   # There are better ways of getting the id, but I was running into some hassles
   # because of our odd way of not being a single page app, and didn't want to take time
