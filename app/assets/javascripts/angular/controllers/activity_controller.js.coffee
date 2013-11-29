@@ -5,9 +5,10 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll, csEditableHeroMediaService) ->
 
-  window.BaseMediaController($scope)
+  $scope.heroMedia = csEditableHeroMediaService
 
   Activity = $resource( "/activities/:id/as_json",
                         {id:  $('#activity-body').data("activity-id") || 1},
@@ -32,6 +33,18 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.getObject = ->
     $scope.activity
+  csEditableHeroMediaService.getObject = $scope.getObject
+
+  $scope.hasFeaturedImage = ->
+    $scope.getObject()?.featured_image_id? && $scope.getObject().featured_image_id
+
+  $scope.featuredImageURL = (width) ->
+    url = ""
+    if $scope.hasFeaturedImage()
+      url = JSON.parse($scope.getObject().featured_image_id).url
+      url = url + "/convert?fit=max&w=#{width}&cache=true"
+    window.cdnURL(url)
+
 
   $scope.csGlobals = 
     scaling: 1.0
@@ -462,7 +475,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   # that time period.
   $scope.schedulePostPlayEvent = ->
     $scope.heroVideoDuration = -1
-    if $scope.activity && $scope.hasHeroVideo()
+    if $scope.activity && csEditableHeroMediaService.hasHeroVideo()
       $http.jsonp("//gdata.youtube.com/feeds/api/videos/" + $scope.activity.youtube_id + "?v=2&callback=JSON_CALLBACK").then (response) ->
         # Good god, parsing XML that contains namespaces in the elements using jquery is a compatibility disaster!
         # See http://stackoverflow.com/questions/853740/jquery-xml-parsing-with-namespaces

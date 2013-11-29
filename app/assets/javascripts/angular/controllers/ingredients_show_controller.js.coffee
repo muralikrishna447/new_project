@@ -1,6 +1,6 @@
-angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService) ->
+angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService) ->
 
-  window.BaseMediaController($scope)
+  $scope.heroMedia = csEditableHeroMediaService
 
   $scope.editMode = true
 
@@ -21,6 +21,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.getObject = ->
     $scope.ingredient
+  csEditableHeroMediaService.getObject = $scope.getObject
 
   $scope.usedInChefStepsActivities = ->
     _.where($scope.ingredient.activities, {creator: null})[0..5]

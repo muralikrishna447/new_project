@@ -3,14 +3,14 @@
     %meta{itemprop: 'thumbnailUrl', content: "#{filepicker_gallery_image(main_object.featured_image)}"}
     %meta{itemprop: 'embedUrl', content: "www.youtube.com/embed/#{main_object.youtube_id}"}
   .hero-visual
-    .embed-container(ng-switch="heroDisplayType()")
-      %iframe.noprint#activityPlayer(ng-switch-when="video" cssrcreplacer="{{heroVideoURL()}}" webkitallowfullscreen mozallowfullscreen)
-      %img(ng-switch-when="image" ng-src="{{heroImageURL(570)}}" alt="{{getObject().title}}" title="{{getObject().title}}" itemprop="image")
+    .embed-container(ng-switch="heroMedia.heroDisplayType()")
+      %iframe.noprint#activityPlayer(ng-switch-when="video" cssrcreplacer="{{heroMedia.heroVideoURL()}}" webkitallowfullscreen mozallowfullscreen)
+      %img(ng-switch-when="image" ng-src="{{heroMedia.heroImageURL(570)}}" alt="{{getObject().title}}" title="{{getObject().title}}" itemprop="image")
 
-    %div.noprint.disabled-section(ng-show="(heroDisplayType() == 'none') && editMode" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
+    %div.noprint.disabled-section(ng-show="(heroMedia.heroDisplayType() == 'none') && editMode" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
       Add main video or image ...
 
-    .btn.btn-secondary.edit-hint.noprint(ng-show="editMode && (heroDisplayType() != 'none')" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
+    .btn.btn-secondary.edit-hint.noprint(ng-show="editMode && (heroMedia.heroDisplayType() != 'none')" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
       %i.icon-edit
       Edit
       %i.icon-chevron-up(ng-show="showHeroVisualEdit")
