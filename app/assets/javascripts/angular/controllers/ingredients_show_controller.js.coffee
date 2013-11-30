@@ -17,15 +17,19 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.ingredient = Ingredient.get({}, ->
     if ! $scope.ingredient.text_fields
+      # Ideas: description, uses, production, history, varieties, substitutions, storage
+      # Maybe change this to just a list of keys, maybe with an order?
       $scope.ingredient.text_fields =
         [
           { 
             title: "Description"
-            contents: "Oh I love me some stuff"
+            contents: null
           },
+          { title: "Uses"}
+          { title: "Production"}
           { 
             title: "History"
-            contents: "Never heard of it"
+            contents: null
           }
         ]
   )
@@ -54,6 +58,9 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
       $scope.endEditMode()
     else 
       $scope.startEditMode()
+
+  $scope.addUndo = ->
+    true
 
 
   $scope.getObject = ->

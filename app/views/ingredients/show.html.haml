@@ -21,8 +21,16 @@
 
       .row.section(ng-repeat="textField in ingredient.text_fields")
         .span6
-          %h3 {{textField.title}}
-          %p {{textField.contents}}
+          %csEditPair
+            %csEditPairShow
+              %div(ng-show="!! textField.contents|| editMode" ng-class="disableIf(! textField.contents)")
+                %h3(ng-bind-html-unsafe="textField.title")
+                %p {{textField.contents}}
+
+            %csEditPairEdit
+              %h3(ng-bind-html-unsafe="textField.title")
+              %input(type="text" ng-model="textField.contents" placeholder="Add text..." )
+          
 
     .span6.well
       .row.section(ng-show="usedInChefStepsActivities().length > 0")
