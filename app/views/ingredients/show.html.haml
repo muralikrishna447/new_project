@@ -19,11 +19,15 @@
             = render 'activities/hero_visual'
           //= render 'layouts/social_buttons', media_object: nil
 
-      .row.section(ng-repeat="textField in ingredient.text_fields")
+      .row.section(ng-repeat="textFieldName in textFieldOptions")
         .span6
-          %div(ng-show="!! textField.contents|| editMode" ng-class="disableIf(! textField.contents)")
-            %h3(ng-bind-html-unsafe="textField.title")
-            %p(ng-model="textField.contents" contenteditable="true")          
+          %div(ng-show="! editMode")
+            %div(ng-show="!! ingredient.text_fields[textFieldName]" )
+              %h3(ng-bind-html-unsafe="textFieldName")
+              %p(ng-bind-html-unsafe="ingredient.text_fields[textFieldName] | markdown | shortcode") 
+          %div(ng-show="editMode")         
+            %h3(ng-bind-html-unsafe="textFieldName")
+            %p(ng-model="ingredient.text_fields[textFieldName]" contenteditable="true")          
 
     .span6.well
       .row.section(ng-show="usedInChefStepsActivities().length > 0")

@@ -1,5 +1,18 @@
+@import 'mixins'
+
 .ingredient-show
   .btn.edit-mode
     position: absolute
     left: -60px
     top: 6px
+
+  [contenteditable]
+    outline: none
+
+    &:empty
+      &:before
+        content: "Click to start writing"
+        color: $light-gray
+
+  h3
+    text-transform: capitalize

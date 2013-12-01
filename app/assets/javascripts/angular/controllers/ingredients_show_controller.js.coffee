@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService) ->
+angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService',  ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService) ->
 
   $scope.heroMedia = csEditableHeroMediaService
 
@@ -14,31 +14,17 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
                           }
                         )
 
+  $scope.textFieldOptions = ["description", "uses", "production", "history"]
 
-  $scope.ingredient = Ingredient.get({}, ->
-    if ! $scope.ingredient.text_fields
-      # Ideas: description, uses, production, history, varieties, substitutions, storage
-      # Maybe change this to just a list of keys, maybe with an order?
-      $scope.ingredient.text_fields =
-        [
-          { 
-            title: "Description"
-            contents: null
-          },
-          { title: "Uses"}
-          { title: "Production"}
-          { 
-            title: "History"
-            contents: null
-          }
-        ]
+  $scope.ingredient = Ingredient.get({}, -> 
   )
 
-    # Overall edit mode
+  # Overall edit mode
   $scope.startEditMode = ->
     if ! $scope.editMode
       $scope.editMode = true
       $scope.showHeroVisualEdit = false
+      $scope.ingredient.text_fields ||= {}
 
   $scope.endEditMode = ->
     $scope.ingredient.$update(
