@@ -365,7 +365,7 @@ class Activity < ActiveRecord::Base
                 only: [:note, :display_quantity, :quantity, :unit],
                 include: {
                     ingredient: {
-                        only: [:id, :title, :product_url, :for_sale, :sub_activity_id]
+                        only: [:id, :title, :slug, :product_url, :for_sale, :sub_activity_id]
                     }
                 }
             }

@@ -41,11 +41,6 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     )
     $scope.editMode = false
 
-  $scope.toggleEditMode = ->
-    if $scope.editMode
-      $scope.endEditMode()
-    else 
-      $scope.startEditMode()
 
   $scope.addUndo = ->
     true

@@ -50,6 +50,15 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     selectedItems: []
     columnDefs: [
       {
+        field: "ingredient_show_url"
+        display_name: ""
+        width: 24
+        maxwidth: 24
+        enableCellEdit: false
+        sortable: false
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a href="/ingredients/{{row.getProperty(\'slug\')}}" target="_blank"  ng-show="! row.getProperty("sub_activity_id")" ><i class="icon-external-link"></i></a></div>'
+      }      
+      {
         field: "title"
         displayName: "Ingredient"
         width: "****"
