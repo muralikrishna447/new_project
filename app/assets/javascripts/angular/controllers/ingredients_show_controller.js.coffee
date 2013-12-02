@@ -1,6 +1,8 @@
-angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService',  ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService) ->
+angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService) ->
 
   $scope.heroMedia = csEditableHeroMediaService
+  $scope.alertService = csAlertService
+
   $scope.urlAsNiceText = (url) ->
     csUrlService.urlAsNiceText(url)
 
@@ -16,7 +18,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
                           }
                         )
 
-  $scope.textFieldOptions = ["description", "uses", "production", "history"]
+  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "substitutions", "purchasing tips", "storage", "production", "seasonality", "history"]
 
   $scope.ingredient = Ingredient.get({}, -> 
   )
@@ -37,7 +39,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
       ((error) ->
         console.log "INGREDIENT SAVE ERRORS: " + JSON.stringify(error)
-        _.each(error.data.errors, (e) -> $scope.addAlert({message: e})))
+        _.each(error.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout)))
     )
     $scope.editMode = false
 
@@ -50,7 +52,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   csEditableHeroMediaService.getObject = $scope.getObject
 
   $scope.usedInChefStepsActivities = ->
-    _.where($scope.ingredient.activities, {creator: null})[0..5]
+    _.where($scope.ingredient.activities, {creator: null, published: true})[0..5]
 
   $scope.frequentlyUsedWith = ->
     _.filter($scope.ingredient.frequently_used_with, (x) -> (parseInt(x.id) != $scope.ingredient.id) && (parseInt(x.count) > 1))

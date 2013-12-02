@@ -1,9 +1,13 @@
 angular.module('ChefStepsApp').service 'csAlertService',  ->
-  this.addAlert = (alert, $scope, $timeout) ->
-    $scope.alerts.push(alert)
+  this.alerts = []
+
+  this.addAlert = (alert, $timeout) ->
+    this.alerts.push(alert)
     $timeout ->
       $("html, body").animate({ scrollTop: -500 }, "slow")
 
-  this.closeAlert = (index, $scope) ->
-    $scope.closeAlert = (index) ->
-      $scope.alerts.splice(index, 1)
+  this.closeAlert = (index) ->
+    this.alerts.splice(index, 1)
+
+  this.getAlerts = ->
+    this.alerts

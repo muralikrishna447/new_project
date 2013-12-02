@@ -1,5 +1,7 @@
 angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Ingredient", "csUrlService", "csAdminTable", ($scope, $resource, $http, $filter, $timeout, csAlertService, Ingredient, csUrlService, csAdminTable) ->
   $scope.csAdminTable = csAdminTable # Load our csAdminTable service into the scope.
+  $scope.alertService = csAlertService
+
   $scope.csAdminTable.resetLoading($scope) # Make sure our loading bar is off
 
   $scope.searchString = ""
@@ -56,7 +58,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         maxwidth: 24
         enableCellEdit: false
         sortable: false
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><a href="/ingredients/{{row.getProperty(\'slug\')}}" target="_blank"  ng-show="! row.getProperty("sub_activity_id")" ><i class="icon-external-link"></i></a></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a href="/ingredients/{{row.getProperty(\'slug\')}}" target="_blank"  ng-show=\"! row.getProperty(\'sub_activity_id\')\")" ><i class="icon-external-link"></i></a></div>'
       }      
       {
         field: "title"
@@ -213,9 +215,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.$on 'ngGridEventScroll', ->
     $scope.loadIngredients()
-
-  $scope.closeAlert = (index) ->
-    csAlertService.closeAlert(index, $scope)
 
   $scope.setMergeKeeper = (ingredient) ->
     $scope.mergeKeeper = ingredient

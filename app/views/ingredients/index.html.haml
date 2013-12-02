@@ -26,10 +26,7 @@
           %i.loading-spinner.icon-spinner.icon-spin.pull-right(ng-show="dataLoading")
 
 
-  .row.noprint(ng-cloak ng-show="alerts.length > 0")
-    .span8.offset2
-      %alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="closeAlert($index)" ng-animate="'custom'")
-        {{alert.message}}
+  = render 'shared/alerts'
 
   .row.grid
     .table-index.span12(ng-grid="gridOptions")
