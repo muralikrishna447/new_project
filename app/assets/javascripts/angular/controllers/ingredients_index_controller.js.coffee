@@ -1,6 +1,7 @@
-angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Ingredient", "csUrlService", "csAdminTable", ($scope, $resource, $http, $filter, $timeout, csAlertService, Ingredient, csUrlService, csAdminTable) ->
+angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Ingredient", "csUrlService", "csAdminTable", "csDensityService", ($scope, $resource, $http, $filter, $timeout, csAlertService, Ingredient, csUrlService, csAdminTable, csDensityService) ->
   $scope.csAdminTable = csAdminTable # Load our csAdminTable service into the scope.
   $scope.alertService = csAlertService
+  $scope.densityService = csDensityService
 
   $scope.csAdminTable.resetLoading($scope) # Make sure our loading bar is off
 
@@ -18,18 +19,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.preventAutoFocus = true
   $scope.addUndo = ->
     true
-  $scope.densityUnits =
-    [
-      {name: 'Tablespoon', perL: 67.628},
-      {name: 'Cup', perL: 4.22675},
-      {name: 'Liter',  perL: 1}
-    ]
-
-  $scope.displayDensity = (x) ->
-    if x then window.roundSensible(x) else "Set..."
-
-  $scope.displayDensityNoSet = (x) ->
-    if x && _.isNumber(x) then window.roundSensible(x) else ""
 
   $scope.modalOptions =
     backdropFade: true
@@ -91,7 +80,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         field: "density"
         displayName: "Density g/L"
         width: "*"
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"editDensity(row.entity)\"><span ng-bind-html-unsafe=\"displayDensity(row.getProperty(col.field))\"/></a></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"densityService.editDensity(row.entity)\"><span ng-bind-html-unsafe=\"densityService.displayDensity(row.getProperty(col.field))\"/></a></div>'
         enableCellEdit: false
         sortable: true
       }
@@ -152,13 +141,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     $scope.usesForModalIngredient = ingredient
     $scope.usesForModal = $scope.uses(ingredient)
     $scope.usesModalOpen = true
-
-  $scope.editDensity = (ingredient) ->
-    $scope.densityIngredient = ingredient
-
-  $scope.finishDensityChange = (ingredient) ->
-    $scope.ingredientChanged(ingredient)
-    $scope.densityIngredient = null
 
   $scope.computeUseCount = (ingredient) ->
     ingredient.use_count = $scope.uses(ingredient).length
@@ -223,5 +205,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     idx = ingredient.title.indexOf(",")
     return null if idx < 0
     $.trim(ingredient.title.substring(idx + 1))
+
+  $scope.finishDensityChange = (ingredient) ->
+    $scope.ingredientChanged(ingredient)
+    $scope.densityService.editDensity(null)
 ]
 

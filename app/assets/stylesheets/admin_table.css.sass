@@ -61,28 +61,28 @@
     color: red
     font-size:  140%
 
-  .density-row
-    height: 30px
-    margin-left: 100px
+.density-row
+  height: 30px
+  margin-left: 100px
 
-    &.header
-      font-weight: bold
+  &.header
+    font-weight: bold
 
-  .density-unit
-    display: inline-block
-    text-align: right
+.density-unit
+  display: inline-block
+  text-align: right
+  width: 80px
+  margin-right: 16px
+  vertical-align: center
+
+.density-value
+  display: inline-block
+  width: 80px
+  margin-right: 4px
+  vertical-align: center
+  input
     width: 80px
-    margin-right: 16px
+    height: 28px
+    @include boxsizing
+    margin-bottom: 0
     vertical-align: center
-
-  .density-value
-    display: inline-block
-    width: 80px
-    margin-right: 4px
-    vertical-align: center
-    input
-      width: 80px
-      height: 28px
-      @include boxsizing
-      margin-bottom: 0
-      vertical-align: center

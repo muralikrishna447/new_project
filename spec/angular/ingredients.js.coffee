@@ -32,7 +32,7 @@ describe "IngredientIndexController", ->
 
   it "should bring up a modal when you click on density", ->
     el = ".ngRow:first"
-    element(el + " a[ng-click='editDensity(row.entity)']").click()
+    element(el + " a[ng-click='densityService.editDensity(row.entity)']").click()
     expect(element(".modal").html()).toContain("Salt, Kosher")
     expect(element(".modal cseditpairshow:first a").count()).toBe(1)
     element(".modal cseditpairshow:first a").click()
@@ -42,7 +42,7 @@ describe "IngredientIndexController", ->
     element(".modal-footer button").click()
     sleep 0.25
     expect(element(".modal").count()).toBe(0)
-    expect(element(el + " a[ng-click='editDensity(row.entity)']").html()).toContain("68")
+    expect(element(el + " a[ng-click='densityService.editDensity(row.entity)']").html()).toContain("68")
 
   it "should let you change the title by clicking on it", ->
     el = ".ngRow:last"

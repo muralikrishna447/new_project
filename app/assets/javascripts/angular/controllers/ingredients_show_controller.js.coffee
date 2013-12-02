@@ -1,7 +1,8 @@
-angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService) ->
+angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService) ->
 
   $scope.heroMedia = csEditableHeroMediaService
   $scope.alertService = csAlertService
+  $scope.densityService = csDensityService
 
   $scope.urlAsNiceText = (url) ->
     csUrlService.urlAsNiceText(url)
@@ -59,5 +60,8 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.showStartEditTip = ->
     (! $scope.editMode) && ($scope.heroMedia.heroDisplayType() == "none") && (_.isEmpty($scope.ingredient.text_fields))
+
+  $scope.finishDensityChange = (ingredient) ->
+    $scope.densityService.editDensity(null)
 
 ]

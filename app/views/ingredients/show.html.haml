@@ -36,7 +36,7 @@
 .container.ingredient-show(ng-cloak)
 
   = render 'shared/alerts'
-  
+
   .section
 
   .row.relative
@@ -94,7 +94,20 @@
             %li
               %a(ng-href="{{ingredient.product_url}}" target="_blank" ng-bind-html-unsafe="urlAsNiceText(ingredient.product_url)")
 
+      .row.section(ng-show="editMode || ingredient.density")
+        .span6
+          %h3.inline Volume Conversion
+          .btn.btn-link.inline(ng-show="editMode" ng-click="densityService.editDensity(ingredient)")
+            Set...
+          %ul(ng-show="!! ingredient.density")
+            %li(ng-repeat="du in densityService.densityUnits")
+              {{densityService.displayDensity(ingredient.density / du.perL)}} 
+              g per {{du.name|lowercase}}                  
+
 .container
   .row.activity-loading-spinner(ng-hide="true")
     .span12
       %i.icon-page-load
+
+= render 'density_table'
+
