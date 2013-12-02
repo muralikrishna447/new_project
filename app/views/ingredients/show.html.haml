@@ -40,11 +40,13 @@
   .section
 
   .row.relative
-    .span5
+    .span6
       %h2.inline(ng-bind-html-unsafe="ingredient.title")
-    .span1.offset6
+    .span6.edit-buttons-group
       .btn.btn-primary.edit-mode(ng-click="startEditMode()" ng-show="! editMode")
         EDIT
+      .btn.btn-link(ng-click="cancelEditMode()" ng-show="editMode")
+        Cancel
       .btn.btn-primary.edit-mode(ng-click="endEditMode()" ng-show="editMode")
         SAVE
 
@@ -62,7 +64,7 @@
             = render 'activities/hero_visual'
           //= render 'layouts/social_buttons', media_object: nil
 
-      .row(ng-repeat="textFieldName in textFieldOptions")
+      .row(ng-repeat="textFieldName in textFieldOptions" data-ng-animate="'custom'")
         .span6.section(ng-show="(! editMode) && (ingredient.text_fields[textFieldName].length)")
           %h3(ng-bind-html-unsafe="textFieldName")
           %div(ng-bind-html-unsafe="ingredient.text_fields[textFieldName] | markdown | shortcode") 

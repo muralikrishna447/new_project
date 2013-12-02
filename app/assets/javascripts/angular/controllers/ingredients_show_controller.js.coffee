@@ -30,6 +30,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
       $scope.editMode = true
       $scope.showHeroVisualEdit = false
       $scope.ingredient.text_fields ||= {}
+      $scope.backupIngredient = jQuery.extend(true, {}, $scope.ingredient)
 
   $scope.endEditMode = ->
     $scope.ingredient.$update(
@@ -44,6 +45,9 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     )
     $scope.editMode = false
 
+  $scope.cancelEditMode = ->
+    $scope.ingredient = jQuery.extend(true, {}, $scope.backupIngredient)
+    $scope.editMode = false
 
   $scope.addUndo = ->
     true

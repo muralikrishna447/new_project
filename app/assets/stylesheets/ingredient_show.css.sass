@@ -1,9 +1,12 @@
 @import 'mixins'
 
 .ingredient-show
-  .btn.edit-mode
+  .edit-buttons-group
     position: relative
     bottom: -8px
+    .btn
+      display: inline-block
+      float: right
 
   [contenteditable]
     outline: none
