@@ -1,6 +1,36 @@
+- content_for :title, "#{@ingredient.title} - Ingredient".html_safe
+- content_for :description, @ingredient.text_fields["description"] ? @ingredient.text_fields["description"].html_safe : @ingredient.title.html_safe
+- content_for :canonical_link, ingredient_url(@ingredient) if @ingredient.id
+-# content_for :keywords, @ingredient.tag_list.join(',')
+- if @ingredient.id
+  - content_for :facebook_og do
+    %meta{property: 'og:url', content: ingredient_url(@ingredient)}
+    %meta{property: 'og:title', content: @ingredient.title.html_safe}
+    %meta{property: 'og:description', content: @ingredient.text_fields["description"] ? @ingredient.text_fields["description"].html_safe : @ingredient.title.html_safe}
+    - if @ingredient.image_id?
+      %meta{property: 'og:image', content: filepicker_ingredient_hero_image(@ingredient.image_id)}
+  - content_for :twitter_cards do
+    %meta{property: 'twitter:site', content: '@chefsteps'}
+    %meta{property: 'twitter:title', content: @ingredient.title.html_safe }
+    %meta{property: 'twitter:description', content: @ingredient.text_fields["description"]}
+    - if @ingredient.image_id?
+      %meta{property: 'twitter:image:src', content: filepicker_ingredient_hero_image(@ingredient.image_id)}
+    - if @ingredient.youtube_id?
+      %meta{property: 'twitter:card', content: 'player'}
+      %meta{property: 'twitter:player', content: "https://www.youtube.com/embed/#{@ingredient.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720"}
+      %meta{property: 'twitter:player:height', content: '270'}
+      %meta{property: 'twitter:player:width', content: '480'}
+    - else
+      %meta{property: 'twitter:card', content: 'summary_large_image'}
+
+
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "IngredientShowController", :'data-ingredient-id' => @ingredient_id}
+
+-# This is how search engine crawlers know to request the _escaped_fragment_ page
+- content_for :ajax_seo do
+  %meta{name: "fragment", content: "!"}
 
 = render 'layouts/filepicker'
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "IngredientShowController", :'data-ingredient-id' => @ingredient_id}
 
 .container.ingredient-show(ng-cloak)
   .section
@@ -13,6 +43,12 @@
 
   .row
     .span6
+      .row.section(ng-show="showStartEditTip()")
+        .section
+        .span6
+          %h4
+            %i Be the first to add information about this ingredient. Click the edit button to get started.
+
       .row.section
         .span6
           .noprint

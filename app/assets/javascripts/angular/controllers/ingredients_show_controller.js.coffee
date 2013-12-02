@@ -1,6 +1,8 @@
 angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService',  ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService) ->
 
   $scope.heroMedia = csEditableHeroMediaService
+  $scope.urlAsNiceText = (url) ->
+    csUrlService.urlAsNiceText(url)
 
   $scope.editMode = false
 
@@ -48,7 +50,6 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.addUndo = ->
     true
 
-
   $scope.getObject = ->
     $scope.ingredient
   csEditableHeroMediaService.getObject = $scope.getObject
@@ -59,6 +60,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.frequentlyUsedWith = ->
     _.filter($scope.ingredient.frequently_used_with, (x) -> (parseInt(x.id) != $scope.ingredient.id) && (parseInt(x.count) > 1))
 
-  $scope.urlAsNiceText = (url) ->
-    csUrlService.urlAsNiceText(url)
+  $scope.showStartEditTip = ->
+    (! $scope.editMode) && ($scope.heroMedia.heroDisplayType() == "none") && (_.isEmpty($scope.ingredient.text_fields))
+
 ]
