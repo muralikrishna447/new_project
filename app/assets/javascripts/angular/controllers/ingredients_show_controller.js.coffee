@@ -68,4 +68,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.finishDensityChange = (ingredient) ->
     $scope.densityService.editDensity(null)
 
+  $scope.$watch('ingredient.image_id', (old_val, new_val) ->
+    $scope.showHeroVisualEdit = false if old_val != new_val
+  )
 ]

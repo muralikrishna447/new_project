@@ -64,7 +64,7 @@
             = render 'activities/hero_visual'
           //= render 'layouts/social_buttons', media_object: nil
 
-      .row(ng-repeat="textFieldName in textFieldOptions" data-ng-animate="'custom'")
+      .row(ng-repeat="textFieldName in textFieldOptions" ng-animate="'custom'")
         .span6.section(ng-show="(! editMode) && (ingredient.text_fields[textFieldName].length)")
           %h3(ng-bind-html-unsafe="textFieldName")
           %div(ng-bind-html-unsafe="ingredient.text_fields[textFieldName] | markdown | shortcode") 

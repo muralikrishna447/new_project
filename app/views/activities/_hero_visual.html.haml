@@ -6,6 +6,7 @@
     .embed-container(ng-switch="heroMedia.heroDisplayType()" ng-hide="(heroMedia.heroDisplayType() == 'none')")
       %iframe.noprint#activityPlayer(ng-switch-when="video" cssrcreplacer="{{heroMedia.heroVideoURL()}}" webkitallowfullscreen mozallowfullscreen)
       %img(ng-switch-when="image" ng-src="{{heroMedia.heroImageURL(570)}}" alt="{{getObject().title}}" title="{{getObject().title}}" itemprop="image")
+      %h4(style="z-index: -1; text-align: center; margin-top: 20px;" ng-show="editMode") Loading ...
 
     %div.noprint.disabled-section(ng-show="(heroMedia.heroDisplayType() == 'none') && editMode" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
       Add main video or image ...
@@ -16,7 +17,7 @@
       %i.icon-chevron-up(ng-show="showHeroVisualEdit")
       %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
 
-  %div.noprint(collapse="(! showHeroVisualEdit) || (! editMode)" ng-controller='HeroImagePickerController')
+  %div.noprint(collapse="(! showHeroVisualEdit) || (! editMode)" )
     %div
       .row
         .span2
