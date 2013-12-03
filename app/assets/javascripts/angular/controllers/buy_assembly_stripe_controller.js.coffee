@@ -11,6 +11,10 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
 
+  # A little hacky but it didn't like setting the variable directly from the view
+  $scope.buyingGift = ->
+    $scope.isGift = true
+
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
 
@@ -19,11 +23,11 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.errorText = response.error.message || response.error
       $scope.processing = false
 
-    else    
+    else
       # got stripe token, now charge it or smt
       $http(
         method: 'POST'
-        params: 
+        params:
           stripeToken: response.id
           assembly_id: $scope.assembly.id
           discounted_price: $scope.discounted_price
@@ -48,7 +52,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         console.log "STRIPE CHARGE FAIL" + data
         $scope.errorText = data.errors[0].message || data.errors[0]
         $scope.processing = false
-      ) 
+      )
 
   $scope.maybeStartProcessing = (form) ->
     if form?.$valid
@@ -57,7 +61,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.maybeMoveToCharge = (form) ->
     if form?.$valid
-      $scope.state = "charge"  
+      $scope.state = "charge"
 
   $scope.check_signed_in = ->
     # For e2e tests, don't require login
@@ -68,21 +72,31 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       false
     true
 
+  $scope.$on "loginSuccessful", (event, data) ->
+    $scope.logged_in = true
+    if $scope.isEnrolled(data.user) && $scope.isGift == false
+      window.location = $scope.assemblyPath
+    else
+      $scope.openModal($scope.isGift)
+
+  $scope.isEnrolled = (user) ->
+    !!_.find(user.enrollments, (enrollment) -> enrollment.enrollable_id == $scope.assembly.id && enrollment.enrollable_type == "Assembly" )
+
   $scope.openModal = (gift) ->
     $scope.isGift = gift
     $scope.recipientMessage = ""
-    $scope.state = if gift then "gift" else "charge" 
+    $scope.state = if gift then "gift" else "charge"
 
     $http.put('/splitty/finished?experiment=' + $scope.split_name)
     mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
     _gaq.push(['_trackEvent', 'Buy Button', 'Clicked', $scope.assembly.title, null, true])
-    
+
     if $scope.check_signed_in()
       $scope.buyModalOpen = true
- 
+
   $scope.closeModal = (abandon = true) ->
     $scope.buyModalOpen = false
-    if abandon 
+    if abandon
       mixpanel.track('Course Buy Box Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
       mixpanel.people.set('Paid Course Abandoned' : $scope.assembly.title)
 
@@ -91,7 +105,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.processing = true
     $http(
       method: 'POST'
-      params: 
+      params:
         assembly_id: $scope.assembly.id
         discounted_price: $scope.discounted_price
         gift_certificate: $scope.gift_certificate

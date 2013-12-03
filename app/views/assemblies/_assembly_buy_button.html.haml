@@ -12,7 +12,7 @@
   -#
   %div(ng-show="(! logged_in)")
     .login(ng-controller="LoginController")
-      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal(true)")
+      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal()")
         Sign In and BUY NOW
         = render 'activities/latest/assembly_price'
         = render "devise/sessions/new_angular"
@@ -53,11 +53,12 @@
 
   -# Sell gift certificate
   %div(ng-show="(! gift_certificate) && (assembly.price > 0)")
-    .gift-cta
-      .btn.btn-secondary.btn-large.input-block-level#gift-button(ng-click="openModal(true)")
+    .gift-cta(ng-controller="LoginController")
+      .btn.btn-secondary.btn-large.input-block-level#gift-button(ng-click="buyingGift(); openModal()")
         Send As Gift
         %div.inline(ng-show="enrolled")
           = render 'activities/latest/assembly_price'
+          = render "devise/sessions/new_angular"
 
 
   =render 'buy_modal'

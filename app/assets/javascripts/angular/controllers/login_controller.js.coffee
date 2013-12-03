@@ -5,16 +5,23 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
   $scope.register_user = {email: null, password: null, password_confirmation: null};
   $scope.register_error = {message: null, errors: {}};
 
-  $scope.showForm = "signIn"
+  $scope.showForm = "signIn" # For switching between signUp and signIn.
 
-  $scope.authentication = csAuthentication
+  $scope.authentication = csAuthentication # Authentication service
 
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
 
   $scope.loginModalOpen = false
 
+  $scope.passwordType = "password" # Defaults password to the password input type, but lets it switch to just text
+
   $scope.switchForm = (form) ->
     $scope.showForm = form
+
+  $scope.notifyLogin = (user) ->
+    $scope.closeModal()
+    user = $.parseJSON(user) if typeof(user) == "string"
+    $scope.$emit "loginSuccessful", {user: user}
 
   $scope.openModal = ->
     $scope.loginModalOpen = true
@@ -22,9 +29,15 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
   $scope.closeModal = ->
     $scope.loginModalOpen = false
 
+  $scope.togglePassword = ->
+    if $scope.passwordType == "password"
+      $scope.passwordType = "text"
+    else
+      $scope.passwordType = "password"
+
   $scope.login = ->
     $scope.dataLoading += 1
-    $scope.reset_messages();
+    $scope.reset_messages()
     $http(
       method: 'POST'
       url: '/users/sign_in.json'
@@ -39,6 +52,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
           $scope.message = "You have been signed in."
           $scope.logged_in = true
           $scope.authentication.setCurrentUser(data.user)
+          $scope.notifyLogin(data.user)
         else
           if (data.error)
             $scope.message = data.error
@@ -47,8 +61,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
       )
       .error( (data, status) ->
         $scope.dataLoading -= 1
-        if (data.error)
-          $scope.message = data.error
+        if (data.errors)
+          $scope.message = data.errors
         else
           $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data)
       )
@@ -108,7 +122,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
           name: $scope.register_user.name
           email: $scope.register_user.email
           password: $scope.register_user.password
-          password_confirmation: $scope.register_user.password_confirmation
       )
       .success( (data, status) ->
         $scope.dataLoading -= 1
@@ -116,12 +129,13 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
           $scope.logged_in = true
           $scope.authentication.setCurrentUser(data.user)
           $scope.message = "You have been registered and logged in."
+          $scope.notifyLogin(data.user)
       )
       .error( (data, status) ->
         $scope.dataLoading -= 1
         if (status == 401)
           $scope.message = data.info;
-          $scope.errors = data.errors
+          $scope.register_error.errors = data.errors
         else
           $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
       )

@@ -1,11 +1,16 @@
 describe 'csAuthentication', ->
   authentication = null
+  rootScope = null
   # IMPORTANT!
   # this is where we're setting up the $scope and
   # calling the controller function on it, injecting
   # all the important bits, like our mockService
   beforeEach ->
     module('ChefStepsApp')
+    inject ($injector) ->
+      rootScope = $injector.get '$rootScope'
+      spyOn rootScope, '$broadcast'
+
     inject (csAuthentication) ->
       authentication = csAuthentication
 
@@ -26,6 +31,10 @@ describe 'csAuthentication', ->
     it "should set the value of the user", ->
       authentication.setCurrentUser({email: "danahern@chefsteps.com"})
       expect(authentication.currentUser()).toEqual({email: "danahern@chefsteps.com"})
+
+    it "should broadcast a login event globally", ->
+      authentication.setCurrentUser({email: "danahern@chefsteps.com"})
+      expect(rootScope.$broadcast).toHaveBeenCalledWith('login', {user: {email: "danahern@chefsteps.com"}});
 
   describe "logged_in", ->
     it "should return true if user exists", ->

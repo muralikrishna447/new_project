@@ -1,9 +1,10 @@
 .login-modal(close="closeModal()" modal="loginModalOpen" options="modalOptions" ng-cloak)
+  .modal-header
+    .close-x.pull-right(ng-click="closeModal()")
+      %i.icon-remove
   .modal-body.login-modal-body
-    .row-fluid(ng-show="showForm=='signIn'")
-      .close-x.pull-right(ng-click="closeModal()")
-        %i.icon-remove
-      %h3 Sign into Chefsteps
+    .row-fluid(ng-show="showForm=='signIn'" ng-animate='fade')
+      %h3 Sign in to Chefsteps
       .form-horizontal(ng-show="!authentication.currentUser()")
         %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
         .error(ng-show="login_error.message")
@@ -20,14 +21,8 @@
           %div(ng-show="login_error.errors.email")
             %div(ng-repeat="field_error in login_error.errors.password")
               {{field_error}}
-        %button.btn.btn-primary.btn-large(ng-click="login()") Sign in
-        %button.btn.btn-primary.btn-large(ng-click="switchForm('signUp')") Sign Up
-        = render 'devise/shared/facebook_login', text: 'Log in with <b>Facebook</b>'
-        %div= "Forgot your password? #{link_to 'Reset password', new_user_password_path}".html_safe
       %button.btn.btn-primary.btn-large(ng-show="authentication.currentUser()" ng-click="logout()") Sign Out
-    .row-fluid(ng-show="showForm=='signUp'")
-      .close-x.pull-right(ng-click="closeModal()")
-        %i.icon-remove
+    .row-fluid(ng-show="showForm=='signUp'" ng-animate='fade')
       %h3 Sign Up to Chefsteps
       .form-horizontal(ng-show="!authentication.currentUser()")
         %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
@@ -46,18 +41,30 @@
             %div(ng-repeat="field_error in register_error.errors.email")
               {{field_error}}
         %div(ng-class="{error: login_error.errors.password}")
-          %input.input-block-level(type="password" ng-model="register_user.password" placeholder="Password")
+          %input(type="{{passwordType}}" ng-model="register_user.password" placeholder="Password")
+          %button(ng-click="togglePassword()")
+            Show
           %div(ng-show="register_error.errors.email")
             %div(ng-repeat="field_error in register_error.errors.password")
               {{field_error}}
-        %div(ng-class="{error: login_error.errors.password_confirmation}")
-          %input.input-block-level(type="password" ng-model="register_user.password_confirmation" placeholder="Confirmation")
-          %div(ng-show="register_error.errors.password_confirmation")
-            %div(ng-repeat="field_error in register_error.errors.password_confirmation")
-              {{field_error}}
+  .modal-footer.login-modal-footer
+    .sign-in-buttons(ng-show="showForm=='signIn'" ng-animate='fade')
+      %div
+        %button.btn.btn-primary.btn-large(ng-click="login()") Sign in
+        = render 'devise/shared/facebook_login', text: 'Sign in with <b>Facebook</b>'
+        %div
+          = link_to 'Forgot your password?', new_user_password_path
+      %div
+        %a(ng-click="switchForm('signUp')")
+          Get an Account
+    .sign-up-buttons(ng-show="showForm=='signUp'" ng-animate='fade')
+      %div
         %button.btn.btn-primary.btn-large(ng-click="register()") Sign Up
-        %button.btn.btn-primary.btn-large(ng-click="switchForm('signIn')") Sign In
-        %div= "Forgot your password? #{link_to 'Reset password', new_user_password_path}".html_safe
+        = render 'devise/shared/facebook_login', text: 'Sign Up with <b>Facebook</b>'
+      %div
+        %a(ng-click="switchForm('signIn')")
+          Already have an account
+
 
 -# .container#main-container
 -#   .row

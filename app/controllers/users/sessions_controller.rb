@@ -68,7 +68,7 @@ class Users::SessionsController < Devise::SessionsController
     resource ||= resource_or_scope
     sign_in(scope, resource) unless warden.user(scope) == resource
     remember_and_track
-    return render status: 200, json: {success: true, info: "Logged in", user: current_user}
+    return render status: 200, json: {success: true, info: "Logged in", user: current_user.to_json(include: :enrollments)}
   end
 
   def remember_and_track
