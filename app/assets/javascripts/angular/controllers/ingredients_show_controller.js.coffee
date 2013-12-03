@@ -63,7 +63,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   csEditableHeroMediaService.getObject = $scope.getObject
 
   $scope.usedInChefStepsActivities = ->
-    _.where($scope.ingredient.activities, {creator: null, published: true})[0..5]
+    _.where($scope.ingredient.chefsteps_activities, {published: true})[0..5]
 
   $scope.frequentlyUsedWith = ->
     _.filter($scope.ingredient.frequently_used_with, (x) -> (parseInt(x.id) != $scope.ingredient.id) && (parseInt(x.count) > 1))
