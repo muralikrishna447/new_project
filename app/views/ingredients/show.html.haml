@@ -64,7 +64,7 @@
         .span6
           .noprint
             = render 'activities/hero_visual'
-          //= render 'layouts/social_buttons', media_object: nil
+            = render 'layouts/social_buttons', media_object: nil
 
       .row(ng-repeat="textFieldName in textFieldOptions" ng-animate="'custom'")
         .span6.section(ng-show="(! editMode) && (ingredient.text_fields[textFieldName].length)")

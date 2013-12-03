@@ -59,6 +59,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.getObject = ->
     $scope.ingredient
+  
   csEditableHeroMediaService.getObject = $scope.getObject
 
   $scope.usedInChefStepsActivities = ->
@@ -107,5 +108,28 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
     initSelection: (element, callback) ->
       callback($scope.activity.tags)
+
+  # Social share callbacks
+  $scope.socialURL = ->
+    "http://chefsteps.com/ingredients/" + $scope.ingredient?.slug
+
+  $scope.socialTitle = ->
+    $scope.ingredient.title
+
+  $scope.socialMediaItem = ->
+    return csEditableHeroMediaService.heroImageURL(800) if csEditableHeroMediaService.hasHeroImage()
+    null
+
+  $scope.cs140Message = ->
+    $scope.ingredient.title
+
+  $scope.tweetMessage = ->
+    "Check the info for"
+
+  $scope.emailSubject = ->
+    "I thought you might like " + $scope.socialTitle()
+
+  $scope.emailBody = ->
+    "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
 
 ]
