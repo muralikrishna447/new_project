@@ -11,6 +11,9 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.editMode = false
 
+  $scope.addEditModeClass = ->
+    if $scope.editMode then "edit-mode" else "show-mode"
+
   # There are better ways of getting the id, but I was running into some hassles
   # because of our odd way of not being a single page app, and didn't want to take time
   # to chase them down right now.
@@ -21,7 +24,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
                           }
                         )
 
-  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "substitutions", "purchasing tips", "storage", "production", "seasonality", "history", "allergy info"]
+  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "substitutions", "purchasing tips", "storage", "production", "seasonality", "history"]
 
   $scope.ingredient = Ingredient.get({}, -> 
   )
@@ -73,4 +76,36 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.$watch('ingredient.image_id', (old_val, new_val) ->
     $scope.showHeroVisualEdit = false if old_val != new_val
   )
+
+   # Tags - TODO: needs to share code with activity_controller!!
+  $scope.tagsSelect2 =
+
+    placeholder: "Add some tags"
+    tags: true
+    multiple: true
+    width: "100%"
+
+    ajax:
+      url: "/ingredients/all_tags.json",
+      data: (term, page) ->
+        return {
+          q: term
+        }
+
+      results: (data, page) ->
+        return {results: data}
+
+    formatResult: (tag) ->
+      tag.name
+
+    formatSelection: (tag) ->
+      tag.name
+
+    createSearchChoice: (term, data) ->
+      id: term
+      name: term
+
+    initSelection: (element, callback) ->
+      callback($scope.activity.tags)
+
 ]

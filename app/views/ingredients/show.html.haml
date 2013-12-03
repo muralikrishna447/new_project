@@ -33,7 +33,7 @@
 
 = render 'layouts/filepicker'
 
-.container.ingredient-show(ng-cloak)
+.container.ingredient-show(ng-cloak ng-class="addEditModeClass()")
 
   = render 'shared/alerts'
 
@@ -75,6 +75,15 @@
           %div(ng-model="ingredient.text_fields[textFieldName]" contenteditable="true")          
 
     .span6.well
+      .row.section(ng-show="editMode")
+        .span6
+          %input(type="text" ng-model="tags" ng-model="ingredient.tags" ui-select2="tagsSelect2")
+      .row.section(ng-show="! editMode")
+        .span6
+          %span.ro-tag(ng-repeat="tag in ingredient.tags")
+            %i.icon-tag
+            {{tag.name}}
+
       .row.section(ng-show="usedInChefStepsActivities().length > 0")
         .span6
           %h3 Used In

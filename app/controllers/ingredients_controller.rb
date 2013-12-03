@@ -41,6 +41,12 @@ class IngredientsController < ApplicationController
             puts "---- #{params[:ingredient][:booger]} #{params[:ingredient][:youtube_id]} #{params[:ingredient][:image_id]}"
             @ingredient.update_attributes(params[:ingredient])
 
+            # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
+            # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
+            tags = params.delete(:tags)
+            @ingredient.tag_list = tags.map { |t| t[:name]} if tags
+            @ingredient.save!
+
             head :no_content
           end
         rescue Exception => e
@@ -106,4 +112,13 @@ class IngredientsController < ApplicationController
     end
   end
 
+    # TODO: duplicate code in activities_controller.rb
+  def get_all_tags
+    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + params[:q] + '%').all
+    respond_to do |format|
+      format.json {
+        render :json => result.to_json()
+      }
+    end
+  end
 end

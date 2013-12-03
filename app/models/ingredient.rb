@@ -1,6 +1,8 @@
 class Ingredient < ActiveRecord::Base
   include CaseInsensitiveTitle
   extend FriendlyId
+
+  acts_as_taggable
   
   friendly_id :title, use: [:slugged, :history]
 
@@ -10,7 +12,7 @@ class Ingredient < ActiveRecord::Base
   has_many :steps, through: :step_ingredients, inverse_of: :ingredients
   has_many :comments, as: :commentable, dependent: :destroy
 
-  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields
+  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields, :tag_list
 
   serialize :text_fields, JSON
 
@@ -119,6 +121,7 @@ class Ingredient < ActiveRecord::Base
     self.reload
 
   end
+
 
 end
 

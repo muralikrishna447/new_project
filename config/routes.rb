@@ -124,6 +124,9 @@ Delve::Application.routes.draw do
       get 'as_json' => 'ingredients#get_as_json'
       resources :comments
     end
+    collection do
+      get 'all_tags' => 'ingredients#get_all_tags'
+    end
   end
 
   resources :gallery, only: [:index], path: 'gallery' do
