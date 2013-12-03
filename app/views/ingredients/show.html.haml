@@ -80,9 +80,10 @@
           %input(type="text" ng-model="tags" ng-model="ingredient.tags" ui-select2="tagsSelect2")
       .row.section(ng-show="! editMode")
         .span6
-          %span.ro-tag(ng-repeat="tag in ingredient.tags")
-            %i.icon-tag
-            {{tag.name}}
+          .ro-tag-group
+            %span.ro-tag(ng-repeat="tag in ingredient.tags")
+              %i.icon-tag
+              {{tag.name}}
 
       .row.section(ng-show="usedInChefStepsActivities().length > 0")
         .span6
