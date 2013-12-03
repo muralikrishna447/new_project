@@ -11,9 +11,14 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
 
+  $scope.waitingForLogin = false
+
   # A little hacky but it didn't like setting the variable directly from the view
   $scope.buyingGift = ->
     $scope.isGift = true
+
+  $scope.waitForLogin = ->
+    $scope.waitingForLogin = true
 
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
@@ -72,12 +77,14 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       false
     true
 
-  $scope.$on "loginSuccessful", (event, data) ->
-    $scope.logged_in = true
-    if $scope.isEnrolled(data.user) && $scope.isGift == false
-      window.location = $scope.assemblyPath
-    else
-      $scope.openModal($scope.isGift)
+  $scope.$on "login", (event, data) ->
+    if $scope.waitingForLogin
+      $scope.logged_in = true
+      $scope.waitingForLogin = false
+      if $scope.isEnrolled(data.user) && $scope.isGift == false
+        window.location = $scope.assemblyPath
+      else
+        $scope.openModal($scope.isGift)
 
   $scope.isEnrolled = (user) ->
     !!_.find(user.enrollments, (enrollment) -> enrollment.enrollable_id == $scope.assembly.id && enrollment.enrollable_type == "Assembly" )

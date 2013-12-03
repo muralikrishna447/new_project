@@ -18,7 +18,8 @@ describe "LoginController", ->
 
     inject ($injector) ->
       rootScope = $injector.get '$rootScope'
-      spyOn rootScope, '$emit'
+      # spyOn rootScope, '$emit'
+      spyOn rootScope, '$broadcast'
   ))
 
   afterEach ->
@@ -60,8 +61,14 @@ describe "LoginController", ->
       it "should set the user on the authentication service", ->
         expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
 
-      it "should emit a loginSuccessful event upwards", ->
-        expect(scope.$emit).toHaveBeenCalledWith('loginSuccessful', { user : { email : 'test@example.com', name : 'Test User'}});
+      it "should close the modal", ->
+        expect(scope.loginModalOpen).toBe(false)
+
+      it "should broadcast a login event globally", ->
+        expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
+
+      # it "should emit a loginSuccessful event upwards", ->
+      #   expect(scope.$emit).toHaveBeenCalledWith('loginSuccessful', { user : { email : 'test@example.com', name : 'Test User'}})
 
     describe "error", ->
       it "should set the messages to the error", ->
@@ -111,8 +118,14 @@ describe "LoginController", ->
       it "should set the user on the authentication service", ->
         expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
 
-      it "should emit a loginSuccessful event upwards", ->
-        expect(scope.$emit).toHaveBeenCalledWith('loginSuccessful', { user : { email : 'test@example.com', name : 'Test User'}});
+      it "should close the modal", ->
+        expect(scope.loginModalOpen).toBe(false)
+
+      it "should broadcast a login event globally", ->
+        expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
+
+      # it "should emit a loginSuccessful event upwards", ->
+      #   expect(scope.$emit).toHaveBeenCalledWith('loginSuccessful', { user : { email : 'test@example.com', name : 'Test User'}})
 
     describe "error", ->
       describe "normal error", ->
@@ -155,14 +168,14 @@ describe "LoginController", ->
         scope.switchForm("signUp")
         expect(scope.showForm).toBe("signUp")
 
-    describe "#notifyLogin", ->
-      it "should propogate an emit event up", ->
-        scope.notifyLogin({name: "Test User"})
-        expect(scope.$emit).toHaveBeenCalledWith('loginSuccessful', {user: {name : 'Test User'}});
+    # describe "#notifyLogin", ->
+    #   it "should propogate an emit event up", ->
+    #     scope.notifyLogin({name: "Test User"})
+    #     expect(scope.$emit).toHaveBeenCalledWith('loginSuccessful', {user: {name : 'Test User'}})
 
-      it "should close the modal", ->
-        scope.notifyLogin({name: "Test User"})
-        expect(scope.loginModalOpen).toBe(false)
+    #   it "should close the modal", ->
+    #     scope.notifyLogin({name: "Test User"})
+    #     expect(scope.loginModalOpen).toBe(false)
 
     describe "#togglePassword", ->
       it "should switch the passwordType variable to text", ->
@@ -174,3 +187,4 @@ describe "LoginController", ->
         scope.togglePassword()
         expect(scope.passwordType).toBe("password")
 
+    describe "#reset_messages", ->
