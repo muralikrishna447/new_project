@@ -45,8 +45,8 @@
     .span6.edit-buttons-group
       .btn.btn-primary(ng-click="startEditMode()" ng-show="! editMode")
         EDIT
-      .btn.btn-secondary(ng-click="showHelpModal = true" ng-show="editMode")
-        %i.icon-question-sign
+      .btn.btn-link(ng-click="showHelpModal = true" ng-show="editMode")
+        Help
       .btn.btn-link(ng-click="cancelEditMode()" ng-show="editMode")
         Cancel
       .btn.btn-primary(ng-click="endEditMode()" ng-show="editMode")
@@ -122,7 +122,14 @@
     %h2
       How To Edit Ingredients
   .modal-body
-    Try harder.
+    %p
+      Thank you for contributing your knowledge to the ChefSteps community!
+    %p
+      Simply click in any text field and type; choose Save when you are done. Your edits
+      will be reviewed and published soon.
+
+    %p
+      To maximize the value of these pages, please stick to factual, non-self-promotional information, similar to what you would find on Wikipedia, Quora, or StackOverflow.
   .modal-footer
     %button.btn(ng-click="showHelpModal = false") Done
 

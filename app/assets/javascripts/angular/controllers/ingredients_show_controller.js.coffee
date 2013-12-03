@@ -1,8 +1,10 @@
-angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService) ->
+angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService) ->
 
   $scope.heroMedia = csEditableHeroMediaService
   $scope.alertService = csAlertService
   $scope.densityService = csDensityService
+  $scope.showHelpModal = true if ! localStorageService.get("seenEditIngredientsHelp")
+  localStorageService.add("seenEditIngredientsHelp", true)
 
   $scope.urlAsNiceText = (url) ->
     csUrlService.urlAsNiceText(url)
@@ -19,7 +21,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
                           }
                         )
 
-  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "substitutions", "purchasing tips", "storage", "production", "seasonality", "history"]
+  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "substitutions", "purchasing tips", "storage", "production", "seasonality", "history", "allergy info"]
 
   $scope.ingredient = Ingredient.get({}, -> 
   )
