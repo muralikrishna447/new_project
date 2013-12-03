@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131127223228) do
+ActiveRecord::Schema.define(:version => 20131202234540) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -327,6 +327,7 @@ ActiveRecord::Schema.define(:version => 20131127223228) do
     t.text     "image_id"
     t.string   "youtube_id"
     t.text     "text_fields"
+    t.integer  "comments_count",  :default => 0
   end
 
   add_index "ingredients", ["slug"], :name => "index_ingredients_on_slug"

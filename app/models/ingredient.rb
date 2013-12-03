@@ -8,6 +8,7 @@ class Ingredient < ActiveRecord::Base
   has_many :activity_ingredients, dependent: :destroy, inverse_of: :ingredient
   has_many :activities, through: :activity_ingredients, inverse_of: :ingredients
   has_many :steps, through: :step_ingredients, inverse_of: :ingredients
+  has_many :comments, as: :commentable, dependent: :destroy
 
   attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields
 

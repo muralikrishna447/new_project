@@ -122,6 +122,7 @@ Delve::Application.routes.draw do
     member do
       post 'merge' => 'ingredients#merge'
       get 'as_json' => 'ingredients#get_as_json'
+      resources :comments
     end
   end
 

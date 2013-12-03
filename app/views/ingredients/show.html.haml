@@ -50,7 +50,7 @@
       .btn.btn-primary.edit-mode(ng-click="endEditMode()" ng-show="editMode")
         SAVE
 
-  .row
+  .row.section
     .span6
       .row.section(ng-show="showStartEditTip()")
         .section
@@ -102,7 +102,11 @@
           %ul(ng-show="!! ingredient.density")
             %li(ng-repeat="du in densityService.densityUnits")
               {{densityService.displayDensity(ingredient.density / du.perL)}} 
-              grams per {{du.name|lowercase}}                  
+              grams per {{du.name|lowercase}}       
+  .row.section
+    .span12
+      %div(ng-controller='CommentsController' ng-init="init('ingredients','#{@ingredient.id}')")
+        = render 'comments/comments'           
 
 .container
   .row.activity-loading-spinner(ng-hide="true")
