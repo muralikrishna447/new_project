@@ -104,6 +104,6 @@ module Delve
     config.middleware.insert_before 'ActionDispatch::Static', 'Rack::AccessControlHeaders', /assets/
 
     # SSL
-    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: %r{/landing$}, only_environments: ['production', 'staging'], force_secure_cookies: false
+    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: %r{/landing$}, only_environments: ['production', 'staging'], force_secure_cookies: false, strict: true
   end
 end
