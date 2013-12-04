@@ -103,7 +103,7 @@ module Delve
     # Primarily to allow fontawesome access from blog/shop/forum in Firefox
     config.middleware.insert_before 'ActionDispatch::Static', 'Rack::AccessControlHeaders', /assets/
 
-    # SSL
+    # SSL configuration using strict: true so that only specific requests are using ssl.
     config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: %r{/landing$}, only_environments: ['production', 'staging'], force_secure_cookies: false, strict: true
   end
 end
