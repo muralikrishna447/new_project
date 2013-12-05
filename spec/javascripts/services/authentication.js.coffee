@@ -19,7 +19,7 @@ describe 'csAuthentication', ->
   it "should initialize", ->
     expect(authentication).toNotBe(null)
 
-  describe "current_user", ->
+  describe "#current_user", ->
     it "should return null if no user is set", ->
       expect(authentication.currentUser()).toBe(null)
 
@@ -27,14 +27,23 @@ describe 'csAuthentication', ->
       authentication.setCurrentUser({email: "danahern@chefsteps.com"})
       expect(authentication.currentUser()).toEqual({email: "danahern@chefsteps.com"})
 
-  describe "set_current_user", ->
+  describe "#set_current_user", ->
     it "should set the value of the user", ->
       authentication.setCurrentUser({email: "danahern@chefsteps.com"})
       expect(authentication.currentUser()).toEqual({email: "danahern@chefsteps.com"})
 
     it "should broadcast a login event globally", ->
       authentication.setCurrentUser({email: "danahern@chefsteps.com"})
-      expect(rootScope.$broadcast).toHaveBeenCalledWith('login', {user: {email: "danahern@chefsteps.com"}});
+      expect(rootScope.$broadcast).toHaveBeenCalledWith('login', {user: {email: "danahern@chefsteps.com"}})
+
+    describe "#clearCurrentUser", ->
+    it "should clear the value of the user", ->
+      authentication.clearCurrentUser()
+      expect(authentication.currentUser()).toEqual(null)
+
+    it "should broadcast a logout event globally", ->
+      authentication.clearCurrentUser()
+      expect(rootScope.$broadcast).toHaveBeenCalledWith('logout')
 
   describe "logged_in", ->
     it "should return true if user exists", ->

@@ -28,8 +28,15 @@
         %a.btn.btn-primary.btn-large.input-block-level#completed-button(ng-href="{{assemblyPath}}")
           %span View Class
 
+  -# Not logged in but gift certificate available
+  %div(ng-show="gift_certificate && (! enrolled) && assembly.price && ! logged_in")
+    .main-cta(ng-controller="LoginController")
+      .btn.btn-primary.btn-large.input-block-level#redeem-gift-button(ng-click="waitForRedemption(); openModal()")
+        Login & Get My Gift
+        = render "devise/sessions/new_angular"
+
   -# Not enrolled, paid class, gift certificate available
-  %div(ng-show="gift_certificate && (! enrolled) && assembly.price")
+  %div(ng-show="gift_certificate && (! enrolled) && assembly.price && logged_in")
     .main-cta
       .btn.btn-primary.btn-large.input-block-level#redeem-gift-button(ng-click="redeemGift()")
         Get My Gift

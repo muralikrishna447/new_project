@@ -59,13 +59,17 @@ describe "LoginController", ->
         expect(scope.logged_in).toBe(true)
 
       it "should set the user on the authentication service", ->
-        expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
+        waits(100)
+        runs ->
+          expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
 
       it "should close the modal", ->
         expect(scope.loginModalOpen).toBe(false)
 
       it "should broadcast a login event globally", ->
-        expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
+        waits(100)
+        runs ->
+          expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
 
       # it "should emit a loginSuccessful event upwards", ->
       #   expect(scope.$emit).toHaveBeenCalledWith('loginSuccessful', { user : { email : 'test@example.com', name : 'Test User'}})
@@ -116,13 +120,17 @@ describe "LoginController", ->
         expect(scope.logged_in).toEqual(true)
 
       it "should set the user on the authentication service", ->
-        expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
+        waits(100)
+        runs ->
+          expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
 
       it "should close the modal", ->
         expect(scope.loginModalOpen).toBe(false)
 
       it "should broadcast a login event globally", ->
-        expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
+        waits(100)
+        runs ->
+          expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
 
       # it "should emit a loginSuccessful event upwards", ->
       #   expect(scope.$emit).toHaveBeenCalledWith('loginSuccessful', { user : { email : 'test@example.com', name : 'Test User'}})

@@ -51,9 +51,12 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
         if (status == 200)
           $scope.message = "You have been signed in."
           $scope.logged_in = true
-          $scope.authentication.setCurrentUser(data.user)
-          # $scope.notifyLogin(data.user)
           $scope.closeModal()
+          setTimeout( -> # Done so that the modal has time to close before triggering events
+            $scope.authentication.setCurrentUser(data.user)
+          , 100)
+          # $scope.notifyLogin(data.user)
+
         else
           if (data.error)
             $scope.message = data.error
@@ -82,7 +85,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
         if (status == 200)
           $scope.message = "You have been logged out."
           $scope.logged_in = false
-          $scope.authentication.setCurrentUser(null)
+          $scope.closeModal()
+          setTimeout( -> # Done so that the modal has time to close before triggering events
+            $scope.authentication.clearCurrentUser()
+          , 100)
         else
           if (data.error)
             $scope.message = data.error;
@@ -128,10 +134,12 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
         $scope.dataLoading -= 1
         if (status == 200)
           $scope.logged_in = true
-          $scope.authentication.setCurrentUser(data.user)
-          $scope.message = "You have been registered and logged in."
-          # $scope.notifyLogin(data.user)
           $scope.closeModal()
+          $scope.message = "You have been registered and logged in."
+          setTimeout( -> # Done so that the modal has time to close before triggering events
+            $scope.authentication.setCurrentUser(data.user)
+          , 100)
+          # $scope.notifyLogin(data.user)
       )
       .error( (data, status) ->
         $scope.dataLoading -= 1

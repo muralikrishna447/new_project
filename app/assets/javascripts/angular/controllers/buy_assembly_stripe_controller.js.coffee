@@ -12,6 +12,18 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
 
   $scope.waitingForLogin = false
+  $scope.waitingforRedemption = false
+
+  $scope.$on "login", (event, data) ->
+    $scope.logged_in = true
+    if $scope.waitingForRedemption
+      $scope.redeemGift()
+    if $scope.waitingForLogin
+      $scope.waitingForLogin = false
+      if $scope.isEnrolled(data.user) && $scope.isGift == false
+        window.location = $scope.assemblyPath
+      else
+        $scope.openModal($scope.isGift)
 
   # A little hacky but it didn't like setting the variable directly from the view
   $scope.buyingGift = ->
@@ -19,6 +31,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.waitForLogin = ->
     $scope.waitingForLogin = true
+
+  $scope.waitForRedemption = ->
+    $scope.waitingForRedemption = true
 
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
@@ -72,19 +87,10 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     # For e2e tests, don't require login
     if $scope.rails_env? && $scope.rails_env == "angular"
       return true
-    if ! $scope.logged_in
-      window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before enrolling in a course.")
-      false
+    if !$scope.logged_in
+      # window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before enrolling in a course.")
+      return false
     true
-
-  $scope.$on "login", (event, data) ->
-    if $scope.waitingForLogin
-      $scope.logged_in = true
-      $scope.waitingForLogin = false
-      if $scope.isEnrolled(data.user) && $scope.isGift == false
-        window.location = $scope.assemblyPath
-      else
-        $scope.openModal($scope.isGift)
 
   $scope.isEnrolled = (user) ->
     !!_.find(user.enrollments, (enrollment) -> enrollment.enrollable_id == $scope.assembly.id && enrollment.enrollable_type == "Assembly" )
