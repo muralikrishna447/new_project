@@ -9,6 +9,13 @@
         %i.icon-ban-circle
       %button.btn.btn-secondary(ng-show="step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Show step number" tooltip-placement="left")
         \#
+
+      / Buttons to toggle Aside
+      %button.btn.btn-secondary(ng-show="! step.is_aside" type="button" btn-checkbox="" ng-model="step.is_aside" tooltip="Make this step an aside" tooltip-placement="left")
+        %i.icon-font
+      %button.btn.btn-secondary(ng-show="step.is_aside" type="button" btn-checkbox="" ng-model="step.is_aside" tooltip="Make this aside a regular step" tooltip-placement="left")
+        %i.icon-list-ol
+
       %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)" tooltip="Move step up" tooltip-placement="left")
         %i.icon-arrow-up
       %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)" tooltip="Move step down" tooltip-placement="left")
