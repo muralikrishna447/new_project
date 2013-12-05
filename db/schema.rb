@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131119233415) do
+ActiveRecord::Schema.define(:version => 20131204231600) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -513,6 +513,7 @@ ActiveRecord::Schema.define(:version => 20131119233415) do
     t.string   "audio_clip"
     t.string   "audio_title"
     t.boolean  "hide_number"
+    t.boolean  "is_aside"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
