@@ -15,8 +15,6 @@
 
     / .course-nav-slideout.cs-affix(ng-class="{'menu-slideout': showCourseMenu}" data-offset-top='56' data-margin-top='0')
     .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}" affixable="56")
-      %h4.lessons-heading
-        Lessons
       %ul.section.no-bullet
         %li(ng-repeat='inclusion in course.assembly_inclusions' 
             ng-click='loadInclusion(inclusion.includable_id)' 

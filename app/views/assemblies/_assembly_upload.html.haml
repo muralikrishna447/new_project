@@ -34,7 +34,7 @@
 
     .row.section.review-group.uploads(ng-controller='CommentsController' 
                       ng-init="init('assemblies',#{@course.id}, #{current_user.id}, true); showReviewInput=true"
-                      ng-cloak)
+                      ng-cloak ng-show="assembly.assembly_type != 'Project'")
       .span12
         %div(ng-show="! myReview()")
           %h2.inline Review This Class
