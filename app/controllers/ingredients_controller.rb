@@ -37,15 +37,17 @@ class IngredientsController < ApplicationController
           if @ingredient.sub_activity_id && params[:ingredient][:title] != @ingredient.title
             raise "Can't change name of ingredient that is a recipe"
           else
-            puts "---- #{params[:booger]} #{params[:youtube_id]} #{params[:image_id]}"
-            puts "---- #{params[:ingredient][:booger]} #{params[:ingredient][:youtube_id]} #{params[:ingredient][:image_id]}"
-            @ingredient.update_attributes(params[:ingredient])
+            @ingredient.store_revision do
+              puts "---- #{params[:booger]} #{params[:youtube_id]} #{params[:image_id]}"
+              puts "---- #{params[:ingredient][:booger]} #{params[:ingredient][:youtube_id]} #{params[:ingredient][:image_id]}"
+              @ingredient.update_attributes(params[:ingredient])
 
-            # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
-            # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
-            tags = params.delete(:tags)
-            @ingredient.tag_list = tags.map { |t| t[:name]} if tags
-            @ingredient.save!
+              # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
+              # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
+              tags = params.delete(:tags)
+              @ingredient.tag_list = tags.map { |t| t[:name]} if tags
+              @ingredient.save!
+            end
 
             head :no_content
           end

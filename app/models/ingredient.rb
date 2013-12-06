@@ -3,6 +3,7 @@ class Ingredient < ActiveRecord::Base
   extend FriendlyId
 
   acts_as_taggable
+  acts_as_revisionable
   
   friendly_id :title, use: [:slugged, :history]
 
