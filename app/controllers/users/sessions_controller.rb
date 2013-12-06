@@ -62,6 +62,14 @@ class Users::SessionsController < Devise::SessionsController
     render :status => 401, :json => { :success => false, :errors => "Login Credentials Failed"}
   end
 
+  def destroy
+    unless request.xhr?
+      super
+    else
+      return render status: 200, json: {success: true, info: "Logged Out"}
+    end
+  end
+
   private
   def sign_in_and_redirect(resource_or_scope, resource=nil)
     scope = Devise::Mapping.find_scope!(resource_or_scope)

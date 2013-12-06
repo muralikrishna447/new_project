@@ -1,0 +1,72 @@
+@import 'mixins'
+
+input:not(:focus):not(.ng-pristine).ng-invalid
+  border: 1px solid red
+
+.login-modal
+  height: auto
+
+.login-modal-body
+  .close-x
+    color: #ccc
+    font-size: 22px
+  overflow: hidden
+  height: auto !important
+  max-height: 600px
+
+
+.form-horizontal
+  margin-top: 30px
+  margin-bottom: 0px
+  min-height: 120px
+  margin-left: 20px
+  margin-right: 20px
+  .error-text
+    color: orange
+  label
+    text-transform: uppercase
+    margin-bottom: 0px
+    margin-top: 5px
+  input, textarea
+    margin-top: 5px
+    border: 1px solid #ccc
+    @include radius(1px)
+    padding: 4px 6px
+
+  .input-full
+    width: 100%
+
+  .tiny-note
+    font-size: 11px
+    color: #aaa
+
+  .password-with-show-button
+    width: 85%
+
+  .show-password
+    width: 15%
+    vertical-align: bottom
+
+.login-modal-footer
+  .facebook-login
+    display: inline
+
+  .button-group
+    text-align: center
+
+// .slide-enter-setup, .slide-leave-setup, .slide-move-setup
+//   -webksit-transition: 0.5s linear all
+//   -moz-transition: 0.5s linear all
+//   -o-transition: 0.5s linear all
+//   transition: 0.5s linear all
+//   left: 100%
+//   position: absolute
+
+// .slide-enter-setup
+//   &.slide-enter-start
+//     left: 0
+
+// .slide-leave-setup
+//   left: 0
+//   &.slide-leave-start
+//     left: -100%

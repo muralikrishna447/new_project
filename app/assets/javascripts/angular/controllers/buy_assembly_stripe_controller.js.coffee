@@ -101,7 +101,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.recipientMessage = ""
     $scope.state = if gift then "gift" else "charge"
 
-    $http.put('/splitty/finished?experiment=' + $scope.split_name)
+    $http.get('/splitty/finished?experiment=' + $scope.split_name)
     mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
     _gaq.push(['_trackEvent', 'Buy Button', 'Clicked', $scope.assembly.title, null, true])
 

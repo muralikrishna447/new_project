@@ -1,13 +1,13 @@
 describe "PaidClasses", ->
 
   beforeEach ->
-    browser().navigateTo('/sign_out')
+    browser().navigateTo('/sign_out.json')
     browser().navigateTo('/end_clean')
     browser().navigateTo('/start_clean')
     browser().navigateTo('/classes/become-a-badass/landing')
 
   afterEach ->
-    browser().navigateTo('/sign_out')
+    browser().navigateTo('/sign_out.json')
     browser().navigateTo('/end_clean')
 
   it "should be on the landing page", ->
@@ -82,7 +82,7 @@ describe "PaidClasses", ->
 
     describe "sign up", ->
       describe "purchase for myself", ->
-        it "should purchase the class for me", ->
+        iit "should purchase the class for me", ->
           element('#sign-in-and-buy-button').click()
           sleep .5
           expect(element('.login-modal-body').count()).toBe(1)
@@ -91,7 +91,7 @@ describe "PaidClasses", ->
           input("register_user.name").enter("Test Signup")
           input("register_user.password").enter("apassword")
           element("button.signup").click()
-          sleep 2
+          sleep 1
           expect(element(".buy-modal-body").count()).toBe(1)
           input("number").enter("4242424242424242")
           input("name").enter("Nigel Klotkin")
@@ -99,7 +99,6 @@ describe "PaidClasses", ->
           input("expYear").enter("22")
           input("cvc").enter("330")
           element('#complete-buy').click()
-          pause()
           sleep 3
           expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for your purchase")
 
