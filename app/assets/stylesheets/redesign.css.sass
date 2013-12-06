@@ -10,7 +10,7 @@ body
   overflow-x: hidden
   overflow-y: hidden
 
-a
+a, [ng-click]
   cursor: pointer
 
 .top-container
@@ -180,6 +180,12 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
 .well-gray
   padding: 20px
   background: $offwhite
+
+.well-border
+  border: 1px solid black
+  @include boxsizing
+  margin-bottom: $baseline * 2
+  padding: ($baseline * 2)
 
 .hero-unit
   background: none
@@ -591,6 +597,8 @@ a:hover
       display: none
     .step-video
       display: none
+    .aside
+      margin: 20px
 
 .edit-mode
   .edit-pair-show

@@ -36,16 +36,7 @@
                     -if can? :update, Equipment
                       %li= link_to 'Manage Equipment', equipment_index_path
 
-                %li.dropdown
-                  .nav-item-border
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Learn
-                    %i.icon-angle-down
-                  %ul.dropdown-menu
-                    .dropdown-background
-                    %li= link_to 'Classes', courses_url
-                    %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
-                    %li= link_to 'Science', gallery_index_url(activity_type: "Science")
+                %li= link_to 'Classes', courses_url
                 %li.dropdown
                   .nav-item-border
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do

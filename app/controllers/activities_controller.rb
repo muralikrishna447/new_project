@@ -55,8 +55,8 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @techniques = Activity.published.chefsteps_generated.include_in_feeds.techniques.includes(:steps).last(6)
-        @recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).last(6)
+        @random_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).order("RANDOM()").last(6)
+        @popular_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).order("RANDOM()").first(6)
 
         if params[:course_id]
           @course = Course.find(params[:course_id])
