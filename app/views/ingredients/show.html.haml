@@ -33,7 +33,7 @@
 
 = render 'layouts/filepicker'
 
-.container.ingredient-show(ng-cloak ng-class="addEditModeClass()")
+.container.ingredient-show(ng-cloak ng-class="addEditModeClass()"  ng-init="logged_in=#{current_user != nil}")
 
   = render 'shared/alerts'
 
@@ -43,9 +43,7 @@
     .span6
       %h2.inline(ng-bind-html-unsafe="ingredient.title")
     .span6.edit-buttons-group(ng-show="! editMode")
-      .btn.btn-link(ng-click="reportProblem()")
-        Report a problem
-      .btn.btn-primary(ng-click="startEditMode()")
+      .btn.btn-primary(ng-click="startEditMode()" ng-show="logged_in")
         EDIT
     .span6.edit-buttons-group(ng-show="editMode")
       .btn.btn-link(ng-click="showHelpModal = true")
@@ -77,47 +75,52 @@
           %h3(ng-bind-html-unsafe="textFieldName")
           %div(ng-model="ingredient.text_fields[textFieldName]" contenteditable="true")          
 
-    .span6.well
-      .row.section(ng-show="editMode")
-        .span6
-          %input(type="text" ng-model="tags" ng-model="ingredient.tags" ui-select2="tagsSelect2")
-      .row.section(ng-show="! editMode")
-        .span6
-          .ro-tag-group
-            %span.ro-tag(ng-repeat="tag in ingredient.tags")
-              %i.icon-tag
-              {{tag.name}}
+    .span6
+      .well.relative
+        .row.section(ng-show="editMode")
+          .span6
+            %input(type="text" ng-model="tags" ng-model="ingredient.tags" ui-select2="tagsSelect2")
+        .row.section(ng-show="! editMode")
+          .span6
+            .ro-tag-group
+              %span.ro-tag(ng-repeat="tag in ingredient.tags")
+                %i.icon-tag
+                {{tag.name}}
 
-      .row.section(ng-show="usedInChefStepsActivities().length > 0")
-        .span6
-          %h3 Used In
-          %ul
-            %li(ng-repeat="activity in usedInChefStepsActivities()")
-              %a(ng-href="/activities/{{activity.slug}}" ng-bind-html-unsafe="activity.title")
+        .row.section(ng-show="usedInChefStepsActivities().length > 0")
+          .span6
+            %h3 Used In
+            %ul
+              %li(ng-repeat="activity in usedInChefStepsActivities()")
+                %a(ng-href="/activities/{{activity.slug}}" ng-bind-html-unsafe="activity.title")
 
-      .row.section(ng-show="frequentlyUsedWith().length > 0")
-        .span6
-          %h3 Often Used With
-          %ul
-            %li(ng-repeat="usedWith in frequentlyUsedWith()")
-              %a(ng-href="/ingredients/{{usedWith.slug}}" ng-bind-html-unsafe="usedWith.title")
+        .row.section(ng-show="frequentlyUsedWith().length > 0")
+          .span6
+            %h3 Often Used With
+            %ul
+              %li(ng-repeat="usedWith in frequentlyUsedWith()")
+                %a(ng-href="/ingredients/{{usedWith.slug}}" ng-bind-html-unsafe="usedWith.title")
 
-      .row.section(ng-show="ingredient.product_url")
-        .span6
-          %h3 Where To Buy
-          %ul
-            %li
-              %a(ng-href="{{ingredient.product_url}}" target="_blank" ng-bind-html-unsafe="urlAsNiceText(ingredient.product_url)")
+        .row.section(ng-show="ingredient.product_url")
+          .span6
+            %h3 Where To Buy
+            %ul
+              %li
+                %a(ng-href="{{ingredient.product_url}}" target="_blank" ng-bind-html-unsafe="urlAsNiceText(ingredient.product_url)")
 
-      .row.section(ng-show="editMode || ingredient.density")
-        .span6
-          %h3.inline Volume Conversion
-          .btn.btn-link.inline(ng-show="editMode" ng-click="densityService.editDensity(ingredient)")
-            Set...
-          %ul(ng-show="!! ingredient.density")
-            %li(ng-repeat="du in densityService.densityUnits")
-              {{densityService.displayDensity(ingredient.density / du.perL)}} 
-              grams per {{du.name|lowercase}}       
+        .row(ng-show="editMode || ingredient.density")
+          .span6
+            %h3.inline Volume Conversion
+            .btn.btn-link.inline(ng-show="editMode" ng-click="densityService.editDensity(ingredient)")
+              Set...
+            %ul(ng-show="!! ingredient.density")
+              %li(ng-repeat="du in densityService.densityUnits")
+                {{densityService.displayDensity(ingredient.density / du.perL)}} 
+                grams per {{du.name|lowercase}}  
+        .btn.btn-link.btn-small.report-problem(ng-click="reportProblem()")
+          Report a problem
+ 
+
   .row.section
     .span12
       %div(ng-controller='CommentsController' ng-init="init('ingredients','#{@ingredient.id}')")
