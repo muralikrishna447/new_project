@@ -26,7 +26,6 @@ describe "PaidClasses", ->
           sleep 2
           expect(element(".buy-modal-body").count()).toBe(0)
 
-
         it "should purchase the class for me if I am not enrolled", ->
           element('#sign-in-and-buy-button').click()
           sleep .5
@@ -83,12 +82,12 @@ describe "PaidClasses", ->
 
     describe "sign up", ->
       describe "purchase for myself", ->
-        iit "should purchase the class for me", ->
+        it "should purchase the class for me", ->
           element('#sign-in-and-buy-button').click()
           sleep .5
           expect(element('.login-modal-body').count()).toBe(1)
           element("a.switch-to-signup").click()
-          input("register_user.email").enter("test@example.com")
+          input("register_user.email").enter("test#{Math.random(10000)}@example.com")
           input("register_user.name").enter("Test Signup")
           input("register_user.password").enter("apassword")
           element("button.signup").click()
@@ -100,25 +99,98 @@ describe "PaidClasses", ->
           input("expYear").enter("22")
           input("cvc").enter("330")
           element('#complete-buy').click()
-          sleep 3
           pause()
+          sleep 3
           expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for your purchase")
 
       describe "gift purchase", ->
         it "should allow me to purchase as a gift", ->
+          element('#sign-in-and-gift-button').click()
+          sleep .5
+          expect(element('.login-modal-body').count()).toBe(1)
+          element("a.switch-to-signup").click()
+          input("register_user.email").enter("test#{Math.random(10000)}@example.com")
+          input("register_user.name").enter("Test Signup")
+          input("register_user.password").enter("apassword")
+          element("button.signup").click()
+          sleep 2
+          expect(element(".buy-modal-body").count()).toBe(1)
+          input("giftInfo.recipientName").enter("Gift Person")
+          input("giftInfo.recipientEmail").enter("gift@example.com")
+          input("giftInfo.recipientMessage").enter("This is only a test")
+          element("#next-button").click()
+          input("number").enter("4242424242424242")
+          input("name").enter("Nigel Klotkin")
+          input("expMonth").enter("7")
+          input("expYear").enter("22")
+          input("cvc").enter("330")
+          input("giftInfo.emailToRecipient").select(false)
+          element('#complete-buy').click()
+          sleep 3
+          expect(element(".buy-modal-body .ng-binding").text()).toMatch("FAIL")
 
-  #     describe "gift redeem", ->
-  #       it "should allow me to redeem"
+      describe "gift redeem", ->
+        it "should allow me to redeem", ->
+          browser().navigateTo('/classes/become-a-badass/landing?gift_token=test')
+          element("#sign-in-and-redeem-gift-button").click()
+          expect(element('.login-modal-body').count()).toBe(1)
+          element("a.switch-to-signup").click()
+          input("register_user.email").enter("test#{Math.random(10000)}@example.com")
+          input("register_user.name").enter("Test Signup")
+          input("register_user.password").enter("apassword")
+          element("button.signup").click()
+          sleep 2
+          expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
 
-  # describe "signed in", ->
-  #   describe "purchase for myself", ->
-  #       it "should start the class for me if I am not enrolled", ->
+  describe "signed in", ->
+    beforeEach ->
+      element('#sign-in-and-buy-button').click()
+      sleep .5
+      expect(element('.login-modal-body').count()).toBe(1)
+      input("login_user.email").enter("ytrewq@example.com")
+      input("login_user.password").enter("apassword")
+      element("button.signin").click()
+      sleep 2
+      browser().navigateTo('/classes/become-a-badass/landing')
 
-  #     describe "gift purchase", ->
-  #       it "should allow me to purchase as a gift", ->
+    describe "purchase for myself", ->
+      it "should allow me to purchase for myself", ->
+        element("#buy-button").click()
+        sleep 1
+        expect(element('.buy-modal-body').count()).toBe(1)
+        input("number").enter("4242424242424242")
+        input("name").enter("Nigel Klotkin")
+        input("expMonth").enter("7")
+        input("expYear").enter("15")
+        input("cvc").enter("330")
+        element('#complete-buy').click()
+        sleep 3
+        expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for your purchase")
 
-  #     describe "gift redeem", ->
-  #       it "should allow me to redeem"
+    describe "gift purchase", ->
+      it "should allow me to purchase as a gift", ->
+        element("#gift-button").click()
+        expect(element(".buy-modal-body").count()).toBe(1)
+        input("giftInfo.recipientName").enter("Gift Person")
+        input("giftInfo.recipientEmail").enter("gift@example.com")
+        input("giftInfo.recipientMessage").enter("This is only a test")
+        element("#next-button").click()
+        input("number").enter("4242424242424242")
+        input("name").enter("Nigel Klotkin")
+        input("expMonth").enter("7")
+        input("expYear").enter("22")
+        input("cvc").enter("330")
+        input("giftInfo.emailToRecipient").select(false)
+        element('#complete-buy').click()
+        sleep 3
+        expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for giving our")
+
+    describe "gift redeem", ->
+      it "should allow me to redeem", ->
+        browser().navigateTo('/classes/become-a-badass/landing?gift_token=test')
+        element("#redeem-gift-button").click()
+        sleep 2
+        expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
 
 
   # it "should bring up a modal when you click the buy button", ->

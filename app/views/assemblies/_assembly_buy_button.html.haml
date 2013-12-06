@@ -59,13 +59,22 @@
   -#
 
   -# Sell gift certificate
-  %div(ng-show="(! gift_certificate) && (assembly.price > 0)")
+  -# Not Logged in but want to buy gift certificate
+  %div(ng-show="(! gift_certificate) && (assembly.price > 0) && ! logged_in")
     .gift-cta(ng-controller="LoginController")
       .btn.btn-secondary.btn-large.input-block-level#sign-in-and-gift-button(ng-click="waitForLogin(); buyingGift(); openModal()")
         Send As Gift
         %div.inline(ng-show="enrolled")
           = render 'activities/latest/assembly_price'
           = render "devise/sessions/new_angular"
+
+  -# Logged In
+  %div(ng-show="(! gift_certificate) && (assembly.price > 0) && logged_in")
+    .gift-cta
+      .btn.btn-secondary.btn-large.input-block-level#gift-button(ng-click="openModal(true)")
+        Send As Gift
+        %div.inline(ng-show="enrolled")
+          = render 'activities/latest/assembly_price'
 
 
   =render 'buy_modal'

@@ -3,7 +3,7 @@ class ChargesController < ApplicationController
   respond_to :json
 
   def create
-    
+
     assembly = Assembly.find(params[:assembly_id])
     gift_info = JSON.parse(params[:gift_info]) if params[:gift_info]
 
