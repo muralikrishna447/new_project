@@ -42,14 +42,17 @@
   .row.relative
     .span6
       %h2.inline(ng-bind-html-unsafe="ingredient.title")
-    .span6.edit-buttons-group
-      .btn.btn-primary(ng-click="startEditMode()" ng-show="! editMode")
+    .span6.edit-buttons-group(ng-show="! editMode")
+      .btn.btn-link(ng-click="reportProblem()")
+        Report a problem
+      .btn.btn-primary(ng-click="startEditMode()")
         EDIT
-      .btn.btn-link(ng-click="showHelpModal = true" ng-show="editMode")
+    .span6.edit-buttons-group(ng-show="editMode")
+      .btn.btn-link(ng-click="showHelpModal = true")
         Help
-      .btn.btn-link(ng-click="cancelEditMode()" ng-show="editMode")
+      .btn.btn-link(ng-click="cancelEditMode()")
         Cancel
-      .btn.btn-primary(ng-click="endEditMode()" ng-show="editMode")
+      .btn.btn-primary(ng-click="endEditMode()")
         SAVE
 
   .row.section

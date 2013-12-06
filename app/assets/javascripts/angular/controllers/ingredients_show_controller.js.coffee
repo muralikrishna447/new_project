@@ -3,8 +3,6 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.heroMedia = csEditableHeroMediaService
   $scope.alertService = csAlertService
   $scope.densityService = csDensityService
-  $scope.showHelpModal = true if ! localStorageService.get("seenEditIngredientsHelp")
-  localStorageService.add("seenEditIngredientsHelp", true)
 
   $scope.urlAsNiceText = (url) ->
     csUrlService.urlAsNiceText(url)
@@ -36,6 +34,8 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
       $scope.showHeroVisualEdit = false
       $scope.ingredient.text_fields ||= {}
       $scope.backupIngredient = jQuery.extend(true, {}, $scope.ingredient)
+      $scope.showHelpModal = true if ! localStorageService.get("seenEditIngredientsHelp")
+      localStorageService.add("seenEditIngredientsHelp", true)
 
   $scope.endEditMode = ->
     $scope.ingredient.$update(
@@ -131,5 +131,8 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.emailBody = ->
     "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
+
+  $scope.reportProblem = ->
+    window.open("mailto:info@chefsteps.com?subject=Problem with \'#{encodeURIComponent($scope.ingredient.title)}\ ingredient page'&body=[Please describe the problem].#{encodeURIComponent("\n\n")}Problem page: #{encodeURIComponent($scope.socialURL())}")
 
 ]
