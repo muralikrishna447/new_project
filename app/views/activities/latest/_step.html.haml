@@ -33,13 +33,4 @@
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(ng-src="{{stepImageURL(step, 670)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
 
-.aside(ng-show='step.is_aside' ng-class="asideClass()")
-  %h4
-    {{step.title}}
-  %div(ng-show='hasAV()')
-    .step-video-outer.noprint(ng-show="!! step.youtube_id")
-      .new-step-video(id="{{'step-video-' + $index}}")
-        .video-container(csenforceaspect)
-          %iframe(ng-src="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
-  %p
-    {{step.directions}}
+%div(ng-include="'/client_views/_aside'")
