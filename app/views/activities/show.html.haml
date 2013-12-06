@@ -99,16 +99,16 @@
                 %i{class: "icon-chevron-right"}
               %div{class: "horizontal-slider-shadow-overlay-right"}
 
-    - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @techniques && @recipes
+    - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @popular_recipes && @random_recipes
       .row(ng-hide="editMode" ng-cloak)
         .span12
-          %h3 Techniques
+          %h3 Popular Recipes
           #technique-carousel
-            = render 'shared/horizontal_slider', items: @techniques, direction: 'right'
+            = render 'shared/horizontal_slider', items: @popular_recipes, direction: 'right'
 
-          %h3 Recipes
+          %h3 From The Archives
           #related-carousel
-            = render 'shared/horizontal_slider', items: @recipes, direction: 'right'
+            = render 'shared/horizontal_slider', items: @random_recipes, direction: 'right'
     - if ! ENV["CS_NO_DISQUS"]
       .row(ng-hide="editMode" ng-cloak)
         .span12
