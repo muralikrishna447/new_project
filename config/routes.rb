@@ -194,5 +194,10 @@ Delve::Application.routes.draw do
   resources :events, only: [:create]
 
   get "smoker" => "smoker#index"
+
+  if Rails.env.angular?
+    get "start_clean" => "application#start_clean"
+    get "end_clean" => "application#end_clean"
+  end
 end
 

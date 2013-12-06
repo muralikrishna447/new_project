@@ -1,7 +1,7 @@
 # This mixes the concerns of managing a general purpose modal for charging stripe with
 # the special case of buying an assembly. Would be better to separate.
 
-angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", ($scope, $http) ->
+angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", "csAuthentication", ($scope, $http, csAuthentication) ->
 
   $scope.isGift = false
   $scope.buyModalOpen = false
@@ -17,6 +17,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
     if $scope.waitingForRedemption
+      $scope.waitingForRedemption = false
       $scope.redeemGift()
     if $scope.waitingForLogin
       $scope.waitingForLogin = false

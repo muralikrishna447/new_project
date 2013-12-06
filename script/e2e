@@ -50,6 +50,10 @@ equipment_3 = Equipment.create(title: 'Rusty Knife')
 activity_1.update_equipment([{title: 'Shun Edo Santoku Knife', optional: true}, {title: 'Chef Knife, Shun Edo 6-1/2 Blade', optional: false}])
 activity_2.update_equipment([{title: 'Chef Knife, Shun Edo 6-1/2 Blade'}])
 paidClass = Assembly.create(title: 'Become A Badass', assembly_type: 'Course', price: 39, published: true, description: 'foo')
+enrolled_user = User.create(name: 'Customer McPaid', email: 'qwerty@example.com', password: 'apassword')
+unenrolled_user = User.create(name: 'Possible Customer', email: 'ytrewq@example.com', password: 'apassword')
+enrollment = Enrollment.new; enrollment.user = enrolled_user; enrollment.enrollable = paidClass; enrollment.save!
+gift_certificate = GiftCertificate.new; gift_certificate.purchaser_id = enrolled_user.id; gift_certificate.recipient_email = 'abc@example.com'; gift_certificate.recipient_name = 'Abc'; gift_certificate.token = 'test'; gift_certificate.save
 "
 bundle exec thin start -p 3001 -e angular -P tmp/pids/angular.pid -d
 
@@ -57,6 +61,6 @@ echo "Waiting for rails server to startup before karma"
 sleep 30
 
 echo "Starting up Karma"
-./node_modules/karma/bin/karma start spec/angular/karma_e2e_config.js
+karma start spec/angular/karma_e2e_config.js
 
 

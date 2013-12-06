@@ -1,5 +1,4 @@
 class AssembliesController < ApplicationController
-
   before_filter :load_assembly, except: [:index, :redeem]
 
   # Commenting out for now until we figure out what to do for Projects
@@ -52,7 +51,7 @@ class AssembliesController < ApplicationController
       @assembly = @gift_certificate.assembly
       if ! @gift_certificate.redeemed
         # Normal redemption
-        flash[:notice] = "To get your gift, click the orange button below!"      
+        flash[:notice] = "To get your gift, click the orange button below!"
         redirect_to landing_class_url(@assembly)
       else
         # Already redeemed, probably the same user so tell 'em what to do
@@ -62,13 +61,13 @@ class AssembliesController < ApplicationController
           redirect_to landing_class_url(@assembly)
         else
           # Not logged in, send 'em to log in
-          flash[:notice] = "Gift code already used; please sign in to continue your class. If you need assistance, contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."       
+          flash[:notice] = "Gift code already used; please sign in to continue your class. If you need assistance, contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
           session[:force_return_to] = request.original_url
           redirect_to sign_in_url
         end
-        
+
       end
-       
+
     else
       # Gift certificate we've never heard of. Someone try to rip us off?
       flash[:error] = "Invalid gift code. Contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
@@ -104,9 +103,10 @@ private
       @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = discounted_price(@assembly.price, session[:coupon])
-      @gift_certificate = GiftCertificate.where(token: session[:gift_token]).first if session[:gift_token]
- 
-    rescue 
+      # Changing so that it accepts a param gift_toekn as well, this is solely for e2e testing and shouldn't be given to customers as it doesn't store the information in the sesion so they MUST use it on that page.
+      @gift_certificate = GiftCertificate.where(token: (session[:gift_token]||params[:gift_token])).first if (session[:gift_token]||params[:gift_token])
+
+    rescue
       # If they are looking for a course that isn't yet published, take them to a page where
       # they can get on an email list to be notified when it is available.
       @course = Assembly.find(params[:id])

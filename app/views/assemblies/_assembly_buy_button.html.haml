@@ -12,7 +12,7 @@
   -#
   %div(ng-show="(! logged_in)")
     .login(ng-controller="LoginController")
-      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="waitForLogin(); openModal()")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-buy-button(ng-click="waitForLogin(); openModal()")
         Sign In and BUY NOW
         = render 'activities/latest/assembly_price'
         = render "devise/sessions/new_angular"
@@ -31,7 +31,7 @@
   -# Not logged in but gift certificate available
   %div(ng-show="gift_certificate && (! enrolled) && assembly.price && ! logged_in")
     .main-cta(ng-controller="LoginController")
-      .btn.btn-primary.btn-large.input-block-level#redeem-gift-button(ng-click="waitForRedemption(); openModal()")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-redeem-gift-button(ng-click="waitForRedemption(); openModal()")
         Login & Get My Gift
         = render "devise/sessions/new_angular"
 
@@ -61,7 +61,7 @@
   -# Sell gift certificate
   %div(ng-show="(! gift_certificate) && (assembly.price > 0)")
     .gift-cta(ng-controller="LoginController")
-      .btn.btn-secondary.btn-large.input-block-level#gift-button(ng-click="waitForLogin(); buyingGift(); openModal()")
+      .btn.btn-secondary.btn-large.input-block-level#sign-in-and-gift-button(ng-click="waitForLogin(); buyingGift(); openModal()")
         Send As Gift
         %div.inline(ng-show="enrolled")
           = render 'activities/latest/assembly_price'
