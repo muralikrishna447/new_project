@@ -3,7 +3,7 @@
     .close-x.pull-right(ng-click="closeModal()")
       %i.icon-remove
     .row-fluid(ng-show="showForm=='signIn'" ng-animate='fade')
-      %h3 Sign in to Chefsteps
+      %h3 Sign in to ChefSteps
       .form-horizontal(ng-show="!authentication.currentUser()")
         %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
         .error(ng-show="login_error.message")
@@ -23,7 +23,7 @@
             %div(ng-repeat="field_error in login_error.errors.password")
               {{field_error}}
     .row-fluid(ng-show="showForm=='signUp'" ng-animate='fade')
-      %h3 Sign up to Chefsteps
+      %h3 Sign up to ChefSteps
       .form-horizontal(ng-show="!authentication.currentUser()")
         %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
         .error(ng-show="register_error.message")
