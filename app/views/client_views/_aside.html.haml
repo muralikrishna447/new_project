@@ -1,0 +1,12 @@
+.aside(ng-show='step.is_aside' ng-class="asideClass()")
+  %h4
+    {{step.title}}
+  .aside-video(ng-show='hasAV()')
+    .step-video-outer.noprint(ng-show="!! step.youtube_id")
+      .new-step-video(id="{{'step-video-' + $index}}")
+        .video-container(csenforceaspect)
+          %iframe(ng-style="setHeight()" csenforceaspect ng-src="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+  .aside-image(ng-show="!!step.image_id")
+    %img(ng-src="{{stepImageURL(step, 840)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+  %p.aside-text
+    {{step.directions}}

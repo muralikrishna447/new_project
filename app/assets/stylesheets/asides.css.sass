@@ -1,0 +1,26 @@
+@import 'mixins'
+
+.aside
+  .aside-image
+    margin-bottom: $baseline * 2
+
+
+.list-view
+  .aside
+    width: 100%
+    float: left
+    .aside-video
+      width: 50%
+      float: left
+      margin-bottom: 0px
+      @include boxsizing
+    .aside-image
+      width: 50%
+      float: left
+      margin-bottom: 0px
+      @include boxsizing
+    .aside-text
+      width: 50%
+      float: left
+      padding-left: 15px
+      @include boxsizing
