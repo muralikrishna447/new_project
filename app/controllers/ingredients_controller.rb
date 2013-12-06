@@ -47,6 +47,7 @@ class IngredientsController < ApplicationController
               tags = params.delete(:tags)
               @ingredient.tag_list = tags.map { |t| t[:name]} if tags
               @ingredient.save!
+              track_event(@ingredient, 'edit') unless current_admin?
             end
 
             head :no_content

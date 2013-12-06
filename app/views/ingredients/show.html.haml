@@ -87,6 +87,13 @@
                 %i.icon-tag
                 {{tag.name}}
 
+        .row.section(ng-show="ingredient.product_url")
+          .span6
+            %h3 Where To Buy
+            %ul
+              %li
+                %a(ng-href="{{ingredient.product_url}}" target="_blank" ng-bind-html-unsafe="urlAsNiceText(ingredient.product_url)")
+
         .row.section(ng-show="usedInChefStepsActivities().length > 0")
           .span6
             %h3 Used In
@@ -101,12 +108,12 @@
               %li(ng-repeat="usedWith in frequentlyUsedWith()")
                 %a(ng-href="/ingredients/{{usedWith.slug}}" ng-bind-html-unsafe="usedWith.title")
 
-        .row.section(ng-show="ingredient.product_url")
+        .row.section(ng-show="ingredient.editing_users.length > 0")
           .span6
-            %h3 Where To Buy
+            %h3 Contributions By
             %ul
-              %li
-                %a(ng-href="{{ingredient.product_url}}" target="_blank" ng-bind-html-unsafe="urlAsNiceText(ingredient.product_url)")
+              %li(ng-repeat="user in ingredient.editing_users")
+                %a(ng-href="/users/{{user.slug}}" ng-bind-html-unsafe="user.name")
 
         .row(ng-show="editMode || ingredient.density")
           .span6
