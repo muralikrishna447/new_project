@@ -58,8 +58,8 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
       'span7'
 
   $scope.asideClass = ->
-    if $scope.hasAV()
-      'well'
+    if $scope.hasAV() || $scope.step.image_id
+      'well aside-with-media'
     else
       'well-border'
 
