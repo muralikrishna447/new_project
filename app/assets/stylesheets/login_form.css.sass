@@ -6,14 +6,18 @@ input:not(:focus):not(.ng-pristine).ng-invalid
 .login-modal
   height: auto
 
+.modal
+  form
+    margin: 0
+
 .login-modal-body
   .close-x
     color: #ccc
     font-size: 22px
+    cursor: pointer
   overflow: hidden
   height: auto !important
   max-height: 600px
-
 
 .form-horizontal
   margin-top: 30px
@@ -44,15 +48,16 @@ input:not(:focus):not(.ng-pristine).ng-invalid
     width: 80%
 
   .show-password
-    width: 18%
+    width: 13%
     vertical-align: bottom
 
 .login-modal-footer
-  .facebook-login
-    display: inline
 
   .button-group
     text-align: center
+
+  hr
+    margin: 10px 0
 
 // .slide-enter-setup, .slide-leave-setup, .slide-move-setup
 //   -webksit-transition: 0.5s linear all
