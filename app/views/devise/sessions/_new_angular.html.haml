@@ -1,5 +1,5 @@
 .login-modal(close="closeModal()" modal="loginModalOpen" options="modalOptions" ng-cloak)
-  %form(ng-submit="showForm=='signIn' ? login() : register()")
+  %form
     .modal-body.login-modal-body
       .close-x.pull-right(ng-click="closeModal()")
         %i.icon-remove
@@ -32,17 +32,17 @@
           .message(ng-show="message")
             %p {{message}}
           %div(ng-class="{error: register_error.errors.name}")
-            %input.input-block-level(ng-model="register_user.name" placeholder="Name")
+            %input.input-block-level(ng-model="register_user.name" placeholder="Name" ng-class="hasError(register_error.errors.name)")
             %div(ng-show="register_error.errors.name")
               %div.error-text(ng-repeat="field_error in register_error.errors.name")
                 {{field_error}}
           %div(ng-class="{error: login_error.errors.email}")
-            %input.input-block-level(ng-model="register_user.email" placeholder="Email")
+            %input.input-block-level(ng-model="register_user.email" placeholder="Email" ng-class="hasError(register_error.errors.email)")
             %div(ng-show="register_error.errors.email")
               %div.error-text(ng-repeat="field_error in register_error.errors.email")
                 {{field_error}}
           %div(ng-class="{error: login_error.errors.password}")
-            %input.input-block-level.password-with-show-button(type="{{passwordType}}" ng-model="register_user.password" placeholder="Password")
+            %input.input-block-level.password-with-show-button(type="{{passwordType}}" ng-model="register_user.password" placeholder="Password" ng-class="hasError(register_error.errors.password)")
             %a.btn.show-password(ng-click="togglePassword()")
               Show
             %div(ng-show="register_error.errors.email")

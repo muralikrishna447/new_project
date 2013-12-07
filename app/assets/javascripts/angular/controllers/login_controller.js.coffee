@@ -15,6 +15,12 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
 
   $scope.passwordType = "password" # Defaults password to the password input type, but lets it switch to just text
 
+  $scope.hasError = (error) ->
+    if error
+      "error"
+    else
+      "clean"
+
   $scope.switchForm = (form) ->
     $scope.showForm = form
 

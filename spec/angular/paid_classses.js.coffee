@@ -82,7 +82,7 @@ describe "PaidClasses", ->
 
     describe "sign up", ->
       describe "purchase for myself", ->
-        iit "should purchase the class for me", ->
+        it "should purchase the class for me", ->
           element('#sign-in-and-buy-button').click()
           sleep .5
           expect(element('.login-modal-body').count()).toBe(1)
@@ -91,7 +91,7 @@ describe "PaidClasses", ->
           input("register_user.name").enter("Test Signup")
           input("register_user.password").enter("apassword")
           element("button.signup").click()
-          sleep 1
+          sleep 2
           expect(element(".buy-modal-body").count()).toBe(1)
           input("number").enter("4242424242424242")
           input("name").enter("Nigel Klotkin")
@@ -126,7 +126,7 @@ describe "PaidClasses", ->
           input("giftInfo.emailToRecipient").select(false)
           element('#complete-buy').click()
           sleep 3
-          expect(element(".buy-modal-body .ng-binding").text()).toMatch("FAIL")
+          expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for giving our")
 
       describe "gift redeem", ->
         it "should allow me to redeem", ->
@@ -155,7 +155,7 @@ describe "PaidClasses", ->
     describe "purchase for myself", ->
       it "should allow me to purchase for myself", ->
         element("#buy-button").click()
-        sleep 1
+        sleep 2
         expect(element('.buy-modal-body').count()).toBe(1)
         input("number").enter("4242424242424242")
         input("name").enter("Nigel Klotkin")
@@ -190,17 +190,3 @@ describe "PaidClasses", ->
         element("#redeem-gift-button").click()
         sleep 2
         expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
-
-
-  # it "should bring up a modal when you click the buy button", ->
-  #   element('#buy-button').click()
-  #   sleep .5
-  #   # pause()
-  #   expect(element('.buy-modal-body').count()).toBe(1)
-  #   input("number").enter("4242424242424242")
-  #   input("name").enter("Nigel Klotkin")
-  #   input("expMonth").enter("7")
-  #   input("expYear").enter("15")
-  #   input("cvc").enter("330")
-  #   element('#complete-buy').click()
-  #   sleep 5

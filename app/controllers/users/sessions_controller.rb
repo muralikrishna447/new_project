@@ -59,7 +59,7 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def failure
-    render :status => 401, :json => { :success => false, :errors => "Login Credentials Failed"}
+    render :status => 401, :json => { :success => false, :errors => "Invalid email or password"}
   end
 
   def destroy
