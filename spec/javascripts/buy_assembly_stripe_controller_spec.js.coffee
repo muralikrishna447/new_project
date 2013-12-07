@@ -145,7 +145,7 @@ describe "BuyAssemblyStripeController", ->
         scope.assembly = {id: 1, title: "Testing Fun", slug:"Testing-Fun"}
         scope.split_name = "Coding"
         scope.httpBackend.when(
-          'PUT'
+          'GET'
           '/splitty/finished?experiment=Coding'
         ).respond(200)
 
