@@ -186,6 +186,11 @@ namespace :courses do
 
     # Badges
     course.badge_id = 5
+
+    # Knife add
+    old_description = course.description
+    new_description = old_description + '<hr /><a href="/knife-collection" onclick="mixpanel.track(&#x27;Clicked Knife Ad&#x27;, {&#x27;url&#x27; : window.location.pathname});"><img alt="Sddgrd4aqzqgviiz9f1g?v=line" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/sddgrD4AQzqGvIiZ9f1G?v=line" /></a><hr />'
+    course.description = new_description
     if course.save
       course.uploads.each do |upload|
         upload.user.add_badge(5)
@@ -233,6 +238,10 @@ namespace :courses do
 
     course.badge_id = 2
     course.save
+
+    page = Page.new({title: "#{course.title} Ingredients Equipment"})
+    page.content = ApplicationController.new.render_to_string(partial: 'assemblies/landing_spherification')
+    page.save
 
   end
 
