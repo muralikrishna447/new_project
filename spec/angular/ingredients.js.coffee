@@ -77,15 +77,15 @@ describe "IngredientIndexController", ->
     expect(element(".modal").count()).toBe(1)
     expect(element(".modal-header").html()).toContain("Merge Ingredients")
     expect(element(".modal-body ul li a.merge-link").count()).toBe(3)
-    sleep 0.50
+    sleep 1
     element(".modal-body ul li a.merge-link:first").click()
     expect(element(".modal-body").html()).toContain("Will Be Kept")
     expect(element(".modal-body ul.to-keep li:visible").count()).toBe(1)
     expect(element(".modal-body").html()).toContain("Will Be Merged and Deleted")
     expect(element(".modal-body ul.to-delete li:visible").count()).toBe(2)
-    sleep 0.50
+    sleep 1
     element(".modal-footer .warning").click()
-    sleep 0.25
+    sleep 1
     expect(element(".modal").count()).toBe(0)
 
   it "should delete an ingredients", ->
