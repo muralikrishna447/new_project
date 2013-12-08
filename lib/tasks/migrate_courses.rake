@@ -290,4 +290,22 @@ namespace :courses do
     puts "----------------"
   end
 
+  task :publish_all => :environment do
+    slugs = ['spherification', 'science-of-poutine', 'knife-sharpening']
+    new_classes = Assembly.where(slug: slugs)
+    courses = Course.where(slug: slugs)
+    new_classes.each do |new_class|
+      new_class.published = true
+      new_class.save
+    end
+
+    courses.each do |course|
+      course.published = false
+      course.save
+    end
+    puts new_classes.inspect
+    puts courses.inspect
+
+  end
+
 end
