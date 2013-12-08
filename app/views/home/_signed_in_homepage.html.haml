@@ -35,7 +35,7 @@
               = link_to url do
                 %h3= course.title
               -if course.class.to_s == 'Assembly'
-                %csrating.rating(value="#{@course.average_rating}" readonly="true")
+                %csrating.rating(value="#{course.average_rating}" readonly="true")
               %p= course.short_description
       .home-section
         %hr
