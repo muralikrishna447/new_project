@@ -104,6 +104,7 @@ module Delve
     config.middleware.insert_before 'ActionDispatch::Static', 'Rack::AccessControlHeaders', /assets/
 
     # SSL configuration using strict: true so that only specific requests are using ssl.
-    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: %r{/landing$}, only_environments: ['production', 'staging'], force_secure_cookies: false, strict: true
+    # Had to comment this out, it kept sales from actually working.
+    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: %r{/landing$}, only_environments: ['production', 'staging'], force_secure_cookies: false
   end
 end
