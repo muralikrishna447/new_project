@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').service 'csAuthentication', ($rootScope) ->
+angular.module('ChefStepsApp').service 'csAuthentication', [ "$rootScope", ($rootScope) ->
   user = null
   this.currentUser = ->
     user
@@ -11,3 +11,4 @@ angular.module('ChefStepsApp').service 'csAuthentication', ($rootScope) ->
     $rootScope.$broadcast('logout')
   this.loggedIn = ->
     !!user
+]
