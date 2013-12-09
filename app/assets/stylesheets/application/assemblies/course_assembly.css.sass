@@ -55,7 +55,7 @@
     text-transform: uppercase
 
   ul
-    margin-top: 10px
+    margin-top: $baseline * 6
     border-bottom: 1px solid $light-gray
     width: 100%
     @include boxsizing
@@ -143,10 +143,6 @@
   opacity: 1
   pointer-events: inherit
 
-.lessons-heading
-  color: $orange
-  text-transform: uppercase
- 
 #step-dots
   position: fixed
   -webkit-backface-visibility: hidden
@@ -206,7 +202,6 @@
 
   .ordered-steps-new
     .ordered-step-item
-      width: 100%
       float: left
       padding: 0px
       @include boxsizing
@@ -226,16 +221,19 @@
         .step-ingredients
           .step-ingredients-source
             display: none
-      .step-image
+      .step-image 
         display: none
       .step-video
         display: none
-        margin-bottom: $baseline * 2
       .divider
         height: 1px
         border-bottom: 1px solid $light-gray
         padding: $baseline 0px
-        margin-bottom: $baseline *2
+        margin-bottom: $baseline * 2
+
+  .step-last-row
+    margin-bottom: $baseline * 3
+
 
 .hidden
   display: none

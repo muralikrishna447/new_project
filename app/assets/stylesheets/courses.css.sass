@@ -152,14 +152,26 @@
 
 .static-height
   height: 150px
+  width: 100%
 
 .align-bottom
   bottom: 0
 
 .edit-button-box
   position: fixed
-  top: 70px
-  right: 10px
+  bottom: 0px
+  right: 0px
+  z-index: 9999
+
+#professional
+  position: relative
+  .sold-out
+    position: absolute
+    top: 20px
+    padding: 10px
+    border: 1px solid $orange
+    background: white
+    @include boxsizing
 
 
 @media (min-width: 1200px)
@@ -167,7 +179,7 @@
     width: 270px
 
   .static-height
-    height: 150px
+    height: 260px
 
 @media (max-width: 1200px)
   .course_activity_content
@@ -178,7 +190,7 @@
     width: 220px
 
   .static-height
-    height: 170px
+    height: 210px
 
 @media (max-width: 979px)
   .landing-tab-dropdown
@@ -195,7 +207,7 @@
     width: 166px
 
   .static-height
-    height: 220px
+    height: 290px
 
 @media (max-width: 767px)
   .course-side-bar.affix

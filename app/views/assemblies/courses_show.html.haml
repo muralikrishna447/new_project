@@ -15,8 +15,6 @@
 
     / .course-nav-slideout.cs-affix(ng-class="{'menu-slideout': showCourseMenu}" data-offset-top='56' data-margin-top='0')
     .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}" affixable="56")
-      %h4.lessons-heading
-        Lessons
       %ul.section.no-bullet
         %li(ng-repeat='inclusion in course.assembly_inclusions' 
             ng-click='loadInclusion(inclusion.includable_id)' 
@@ -54,19 +52,19 @@
                 .edit-button-box
                   %div(ng-switch on="currentIncludable.includable_type")
                     %div(ng-switch-when='Activity')
-                      %a.btn.btn-primary.btn-large(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
+                      %a.btn.btn-secondary(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
                         %i.icon-edit
                         edit
                     %div(ng-switch-when='Assignment')
-                      %a.btn.btn-primary.btn-large(ng-href="/admin/assignments/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                      %a.btn.btn-secondary(ng-href="/admin/assignments/{{currentIncludable.includable_slug}}/edit" target="_blank")
                         %i.icon-edit
                         edit
                     %div(ng-switch-when='Page')
-                      %a.btn.btn-primary.btn-large(ng-href="/admin/pages/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                      %a.btn.btn-secondary(ng-href="/admin/pages/{{currentIncludable.includable_slug}}/edit" target="_blank")
                         %i.icon-edit
                         edit
                     %div(ng-switch-when='Quiz')
-                      %a.btn.btn-primary.btn-large(ng-href="/admin/quizzes/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                      %a.btn.btn-secondary(ng-href="/admin/quizzes/{{currentIncludable.includable_slug}}/edit" target="_blank")
                         %i.icon-edit
                         edit
 

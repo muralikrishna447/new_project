@@ -51,4 +51,16 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
   $scope.hasIngredients = ->
     $scope.step.ingredients?.length
 
+  $scope.stepSpan = ->
+    if $scope.step.is_aside
+      'span5'
+    else
+      'span7'
+
+  $scope.asideClass = ->
+    if $scope.hasAV() || $scope.step.image_id
+      'well aside-with-media'
+    else
+      'well-border'
+
 ]

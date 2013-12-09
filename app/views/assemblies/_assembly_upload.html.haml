@@ -33,8 +33,8 @@
               Change Photo
 
     .row.section.review-group.uploads(ng-controller='CommentsController' 
-                      ng-init="init('assemblies',#{@course.id}, #{current_user.id}, true); showReviewInput=true"
-                      ng-cloak)
+                      ng-init="init('assemblies',#{@course.id}, #{current_user ? current_user.id : nil}, true); showReviewInput=true"
+                      ng-cloak ng-show="#{defined? current_user} && assembly.assembly_type != 'Project'")
       .span12
         %div(ng-show="! myReview()")
           %h2.inline Review This Class

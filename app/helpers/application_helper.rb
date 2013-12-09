@@ -219,8 +219,9 @@ module ApplicationHelper
     end
   end
 
-  def buy_now(variant_id, price, mixpanel_track = nil)
-    link_to "Buy Now for $#{price}", 'http://store.chefsteps.com/cart/add', onclick: "#{mixpanel_track} var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; var v = document.createElement('input'); v.setAttribute('type', 'hidden'); v.setAttribute('name', 'id'); v.setAttribute('value', '#{variant_id}'); f.appendChild(v); var r = document.createElement('input'); r.setAttribute('type', 'hidden'); r.setAttribute('name', 'return_to'); r.setAttribute('value', 'http://store.chefsteps.com/checkout'); f.appendChild(r); f.submit(); return false;", class: 'btn btn-primary btn-large btn-block'
+  def buy_now(variant_id, price, mixpanel_track = nil, backordered = false)
+    message = backordered ? 'Backordered' : 'Buy Now'
+    link_to "#{message} for $#{price}", 'http://store.chefsteps.com/cart/add', onclick: "#{mixpanel_track} var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; var v = document.createElement('input'); v.setAttribute('type', 'hidden'); v.setAttribute('name', 'id'); v.setAttribute('value', '#{variant_id}'); f.appendChild(v); var r = document.createElement('input'); r.setAttribute('type', 'hidden'); r.setAttribute('name', 'return_to'); r.setAttribute('value', 'http://store.chefsteps.com/checkout'); f.appendChild(r); f.submit(); return false;", class: 'btn btn-primary btn-large btn-block'
     # link_to "Buy Now for $#{price}", "http://store.chefsteps.com/cart/#{variant_id}:1", class: 'btn btn-primary btn-large btn-block'
     # link_to "Buy Now for $#{price}", "http://store.chefsteps.com/cart/add.js?quantity=1&id=#{variant_id}", method: :post, class: 'btn btn-primary btn-large btn-block'
   end

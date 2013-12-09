@@ -16,10 +16,10 @@ class AssembliesController < ApplicationController
   def show
     @upload = Upload.new
     case @assembly.assembly_type
-    when 'Course'
+    when 'Course', 'Project'
       # Currently not requiring enrollment for free assembly-based course. This will probably want to change?
       if (current_user && current_user.enrolled?(@assembly)) || (! @assembly.price)
-        render "#{@assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
+        render "courses_#{params[:action]}"
       else
         redirect_to landing_class_url(@assembly)
       end
@@ -119,5 +119,8 @@ private
     end
 
     instance_variable_set("@#{@assembly.assembly_type.underscore}", @assembly)
+    # Hack to also make available as course so can be used for project without
+    # revamping views completely right now
+    @course = @assembly
   end
 end

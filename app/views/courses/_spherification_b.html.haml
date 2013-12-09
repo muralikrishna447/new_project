@@ -104,7 +104,11 @@
             = Course::SPHERIFICATION_PROFESSIONAL[:copy]
             %a(href='#professional-kit' data-target='#professional-kit' data-toggle='modal') See Kit Details
           .well.section
-            = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id], Course::SPHERIFICATION_PROFESSIONAL[:price])
+            = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id], Course::SPHERIFICATION_PROFESSIONAL[:price], nil, true)
+          .sold-out
+            Due to high holiday demand, the Professional Sphere Magic Kit is 
+            currently on backorder until December 20th. The Creative and
+            Enthusiast kits are still available for same day shipping.
 
 %hr
 
