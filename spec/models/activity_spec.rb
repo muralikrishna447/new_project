@@ -158,6 +158,7 @@ describe Activity do
       end
 
       it "creates unique ingredients for each non-empty attribute set" do
+        puts activity.ingredients.inspect
         activity.ingredients.should have(2).ingredients
       end
 
