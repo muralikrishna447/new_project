@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csAuthentication) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", ($scope, $http, csAuthentication) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -216,3 +216,4 @@ angular.module('ChefStepsApp').controller 'LoginController', ($scope, $http, csA
     $scope.register_user.email = null;
     $scope.register_user.password = null;
     $scope.register_user.password_confirmation = null;
+]
