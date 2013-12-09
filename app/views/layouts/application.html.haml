@@ -22,7 +22,7 @@
       %link{href: "/favicon-dev.png"}
     - else
       %link{href: "/favicon.ico", rel: "shortcut icon"}
-    
+
     %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
@@ -34,7 +34,7 @@
     = render 'layouts/adroll' if current_user
     = render 'layouts/stripe'
     = render 'layouts/mixpanel'
-    
+
     = render 'layouts/inspectlet'
     = render 'layouts/crazyegg'
     = javascript_include_tag 'application_head'
@@ -49,7 +49,7 @@
           %button.close{type: 'button', data: {dismiss: 'alert'}} x
           %h4.alert-message= msg.html_safe
           .lblock
-          
+
     = yield
 
     .container-fluid.noprint#slider-container

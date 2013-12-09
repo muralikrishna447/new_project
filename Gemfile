@@ -119,6 +119,7 @@ group :guard do
   gem 'listen'
   gem 'growl'
   gem 'rb-fsevent'
+  gem 'terminal-notifier-guard'
 end
 
 #force deploy

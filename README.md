@@ -58,7 +58,6 @@ Copy Production Database to Staging2
 2. This will give a warning asking you to type in 'staging2-chefsteps' to confirm the destructive action.  **Make sure it says staging2.**
 
 
-
 # Dan's Notes on E2E testing
 To perform E2E testing on angular you need to have node.js installed if you don't already.  You will also need the Karma test runner installed, as well as the ng-scenario and coffee-preprocessor plugins for karma.  You can install them with the following commands:
 ```bash
@@ -70,7 +69,6 @@ createdb delve_angular
 ```
 
 Once they are installed you can run the command:
-```bash
 script/e2e
 ```
 

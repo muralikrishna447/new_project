@@ -2,6 +2,19 @@ class ApplicationController < ActionController::Base
   include StatusHelpers
   protect_from_forgery
 
+  if Rails.env.angular?
+    require 'database_cleaner'
+    def start_clean
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.start
+      render nothing: true
+    end
+    def end_clean
+      DatabaseCleaner.clean
+      render nothing: true
+    end
+  end
+
   expose(:version) { Version.current }
   expose(:current_user_presenter) { current_user.present? ? UserPresenter.new(current_user) : nil }
 
@@ -45,7 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
 private
-  
+
   def track_event(trackable, action = params[:action])
     if current_user
       current_user.events.create! action: action, trackable: trackable

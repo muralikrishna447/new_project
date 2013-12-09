@@ -1,7 +1,7 @@
 # This mixes the concerns of managing a general purpose modal for charging stripe with
 # the special case of buying an assembly. Would be better to separate.
 
-angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", ($scope, $http) ->
+angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", "csAuthentication", ($scope, $http, csAuthentication) ->
 
   $scope.isGift = false
   $scope.buyModalOpen = false
@@ -11,6 +11,31 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
 
+  $scope.waitingForLogin = false
+  $scope.waitingforRedemption = false
+
+  $scope.$on "login", (event, data) ->
+    $scope.logged_in = true
+    if $scope.waitingForRedemption
+      $scope.waitingForRedemption = false
+      $scope.redeemGift()
+    if $scope.waitingForLogin
+      $scope.waitingForLogin = false
+      if $scope.isEnrolled(data.user) && $scope.isGift == false
+        window.location = $scope.assemblyPath
+      else
+        $scope.openModal($scope.isGift)
+
+  # A little hacky but it didn't like setting the variable directly from the view
+  $scope.buyingGift = ->
+    $scope.isGift = true
+
+  $scope.waitForLogin = ->
+    $scope.waitingForLogin = true
+
+  $scope.waitForRedemption = ->
+    $scope.waitingForRedemption = true
+
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
 
@@ -19,11 +44,11 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.errorText = response.error.message || response.error
       $scope.processing = false
 
-    else    
+    else
       # got stripe token, now charge it or smt
       $http(
         method: 'POST'
-        params: 
+        params:
           stripeToken: response.id
           assembly_id: $scope.assembly.id
           discounted_price: $scope.discounted_price
@@ -48,7 +73,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         console.log "STRIPE CHARGE FAIL" + data
         $scope.errorText = data.errors[0].message || data.errors[0]
         $scope.processing = false
-      ) 
+      )
 
   $scope.maybeStartProcessing = (form) ->
     if form?.$valid
@@ -57,32 +82,35 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.maybeMoveToCharge = (form) ->
     if form?.$valid
-      $scope.state = "charge"  
+      $scope.state = "charge"
 
   $scope.check_signed_in = ->
     # For e2e tests, don't require login
     if $scope.rails_env? && $scope.rails_env == "angular"
       return true
-    if ! $scope.logged_in
-      window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before enrolling in a course.")
-      false
+    if !$scope.logged_in
+      # window.location = '/sign_in?notice=' + encodeURIComponent("Please sign in or sign up before enrolling in a course.")
+      return false
     true
+
+  $scope.isEnrolled = (user) ->
+    !!_.find(user.enrollments, (enrollment) -> enrollment.enrollable_id == $scope.assembly.id && enrollment.enrollable_type == "Assembly" )
 
   $scope.openModal = (gift) ->
     $scope.isGift = gift
     $scope.recipientMessage = ""
-    $scope.state = if gift then "gift" else "charge" 
+    $scope.state = if gift then "gift" else "charge"
 
-    $http.put('/splitty/finished?experiment=' + $scope.split_name)
+    $http.get('/splitty/finished?experiment=' + $scope.split_name)
     mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
     _gaq.push(['_trackEvent', 'Buy Button', 'Clicked', $scope.assembly.title, null, true])
-    
+
     if $scope.check_signed_in()
       $scope.buyModalOpen = true
- 
+
   $scope.closeModal = (abandon = true) ->
     $scope.buyModalOpen = false
-    if abandon 
+    if abandon
       mixpanel.track('Course Buy Box Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
       mixpanel.people.set('Paid Course Abandoned' : $scope.assembly.title)
 
@@ -91,7 +119,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.processing = true
     $http(
       method: 'POST'
-      params: 
+      params:
         assembly_id: $scope.assembly.id
         discounted_price: $scope.discounted_price
         gift_certificate: $scope.gift_certificate
