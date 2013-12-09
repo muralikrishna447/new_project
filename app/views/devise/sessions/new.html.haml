@@ -14,8 +14,9 @@
         %h4 or
         = render 'devise/shared/facebook_login', text: 'Log in with Facebook'
         %hr
-        %h3 Don't have an account? 
+        %h3 Don't have an account?
         .btn.btn-primary
           =link_to 'Sign up', new_user_registration_path
         %hr
+        %div= "Don't have an account? #{link_to 'Sign up', new_user_registration_path}".html_safe
         %div= "Forgot your password? #{link_to 'Reset password', new_user_password_path}".html_safe

@@ -47,6 +47,7 @@
  *= require knife_collection
  *= require cs_lightbox
  *= require charge_form
+ *= require login_form
  *= require application/assemblies/pre_registration
  *= require typography
  *= require about

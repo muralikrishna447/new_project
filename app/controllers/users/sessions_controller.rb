@@ -1,4 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
+
   include Devise::Controllers::Rememberable
   def new
     flash[:notice] = params[:notice] if params[:notice]
@@ -13,7 +14,7 @@ class Users::SessionsController < Devise::SessionsController
     logger.debug "Request Referer: #{request.referer}"
     logger.debug "Root Url: #{root_url}"
     logger.debug '+++++++++++++++++++'
-    if session[:force_return_to] 
+    if session[:force_return_to]
       session[:user_return_to] = session[:force_return_to]
       session[:force_return_to] = nil
     elsif request.referer && URI(request.referer).host == URI(root_url).host
@@ -26,10 +27,13 @@ class Users::SessionsController < Devise::SessionsController
 
   def create
     cookies[:returning_visitor] = true
-    super
-    remember_me(current_user)
-    mixpanel.track(current_user.email, 'Signed In')
-    mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
+    unless request.xhr?
+      super
+      remember_and_track
+    else
+      resource = warden.authenticate!(:scope => :user, :recall => "#{controller_path}#failure")
+      sign_in_and_redirect(:user, resource)
+    end
   end
 
   def signin_and_enroll
@@ -52,6 +56,33 @@ class Users::SessionsController < Devise::SessionsController
     else
       redirect_to course_url(@course), notice: 'Incorrect password.'
     end
+  end
+
+  def failure
+    render :status => 401, :json => { :success => false, :errors => "Invalid email or password"}
+  end
+
+  def destroy
+    unless request.xhr?
+      super
+    else
+      return render status: 200, json: {success: true, info: "Logged Out"}
+    end
+  end
+
+  private
+  def sign_in_and_redirect(resource_or_scope, resource=nil)
+    scope = Devise::Mapping.find_scope!(resource_or_scope)
+    resource ||= resource_or_scope
+    sign_in(scope, resource) unless warden.user(scope) == resource
+    remember_and_track
+    return render status: 200, json: {success: true, info: "Logged in", user: current_user.to_json(include: :enrollments)}
+  end
+
+  def remember_and_track
+    remember_me(current_user)
+    mixpanel.track(current_user.email, 'Signed In')
+    mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
   end
 
 end
