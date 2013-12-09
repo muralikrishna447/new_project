@@ -10,7 +10,7 @@ body
   overflow-x: hidden
   overflow-y: hidden
 
-a, [ng-click]
+a, [ng-click], [contenteditable]:not(:focus)
   cursor: pointer
 
 .top-container
@@ -282,6 +282,12 @@ h4
         height: 40px
         padding: 10px
         @include boxsizing
+
+.image-loading-indicator
+  z-index: -1
+  position: absolute
+  top: 10px
+  left: 10px
 
 ////////////////////////////////////////
 

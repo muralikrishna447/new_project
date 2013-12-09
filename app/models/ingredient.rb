@@ -1,12 +1,22 @@
 class Ingredient < ActiveRecord::Base
   include CaseInsensitiveTitle
+  extend FriendlyId
+
+  acts_as_taggable
+  acts_as_revisionable
+  
+  friendly_id :title, use: [:slugged, :history]
 
   has_many :step_ingredients, dependent: :destroy, inverse_of: :ingredient
   has_many :activity_ingredients, dependent: :destroy, inverse_of: :ingredient
   has_many :activities, through: :activity_ingredients, inverse_of: :ingredients
   has_many :steps, through: :step_ingredients, inverse_of: :ingredients
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :events, as: :trackable, dependent: :destroy
 
-  attr_accessible :title, :product_url, :for_sale, :density
+  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields, :tag_list
+
+  serialize :text_fields, JSON
 
   # This is for activities that are used as an ingredient in higher level recipes.
   # Note the potential for confusion: the has_many activities is for activities
@@ -113,6 +123,7 @@ class Ingredient < ActiveRecord::Base
     self.reload
 
   end
+
 
 end
 

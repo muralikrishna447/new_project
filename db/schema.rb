@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131204231600) do
+ActiveRecord::Schema.define(:version => 20131206190918) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -257,6 +257,14 @@ ActiveRecord::Schema.define(:version => 20131204231600) do
     t.boolean  "published",      :default => false
   end
 
+  add_index "events", ["action", "trackable_type", "trackable_id"], :name => "index_events_on_action_and_trackable_type_and_trackable_id"
+  add_index "events", ["action"], :name => "index_events_on_action"
+  add_index "events", ["group_name"], :name => "index_events_on_group_name"
+  add_index "events", ["group_type"], :name => "index_events_on_group_type"
+  add_index "events", ["trackable_type", "trackable_id"], :name => "index_events_on_trackable_type_and_trackable_id"
+  add_index "events", ["trackable_type"], :name => "index_events_on_trackable_type"
+  add_index "events", ["user_id"], :name => "index_events_on_user_id"
+
   create_table "followerships", :force => true do |t|
     t.integer  "user_id"
     t.integer  "follower_id"
@@ -323,7 +331,14 @@ ActiveRecord::Schema.define(:version => 20131204231600) do
     t.boolean  "for_sale",        :default => false
     t.integer  "sub_activity_id"
     t.decimal  "density"
+    t.string   "slug"
+    t.text     "image_id"
+    t.string   "youtube_id"
+    t.text     "text_fields"
+    t.integer  "comments_count",  :default => 0
   end
+
+  add_index "ingredients", ["slug"], :name => "index_ingredients_on_slug"
 
   create_table "likes", :force => true do |t|
     t.integer  "user_id"

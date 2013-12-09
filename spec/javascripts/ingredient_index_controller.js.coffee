@@ -17,9 +17,9 @@ describe "IngredientsIndexController", ->
       0
 
   alertService =
-    addAlert: (alert, $scope, $timeout) ->
+    addAlert: (alert, $timeout) ->
       true
-    closeAlert: (index, $scope) ->
+    closeAlert: (index) ->
       false
 
   # Ingredient = angular.mock.module('ChefStepsApp').factory 'Ingredient', ($resource) ->
@@ -48,15 +48,15 @@ describe "IngredientsIndexController", ->
 
   describe "#displayDensity", ->
     it 'should display the density rounded', ->
-      expect(scope.displayDensity(1.22222222222222)).toEqual(1.2)
+      expect(scope.densityService.displayDensity(1.22222222222222)).toEqual(1.2)
     it 'should return Set... if no density', ->
-      expect(scope.displayDensity(null)).toEqual("Set...")
+      expect(scope.densityService.displayDensity(null)).toEqual("Set...")
 
   describe "#displayDensityNoSet", ->
     it 'should display the density when it is set', ->
-      expect(scope.displayDensityNoSet(1)).toEqual(1)
+      expect(scope.densityService.displayDensityNoSet(1)).toEqual(1)
     it 'should return Set... if no density', ->
-      expect(scope.displayDensityNoSet(null)).toEqual("")
+      expect(scope.densityService.displayDensityNoSet(null)).toEqual("")
 
   describe "#urlAsNiceText", ->
     it "should return the value from urlService.urlAsNiceText", ->

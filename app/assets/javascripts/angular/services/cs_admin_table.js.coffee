@@ -24,7 +24,7 @@ angular.module('ChefStepsApp').service 'csAdminTable', ["$timeout", "csAlertServ
 
   this.changedFailure = (type, err, $scope) ->
     console.log("#{type} SAVE FAIL")
-    _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
+    _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout)) 
     this.finishLoading($scope)
     # $scope.resetEquipment()
     eval("$scope.reset#{type}") if this.isAValidType(type)
@@ -50,7 +50,7 @@ angular.module('ChefStepsApp').service 'csAdminTable', ["$timeout", "csAlertServ
 
   this.deleteFailure = (type, err, $scope) ->
     console.log("#{type} DELETE FAIL")
-    _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
+    _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout))
     this.finishLoading($scope)
 
   this.mergeSuccess = (type, $scope) ->
@@ -60,7 +60,7 @@ angular.module('ChefStepsApp').service 'csAdminTable', ["$timeout", "csAlertServ
 
   this.mergeFailure = (type, err, $scope) ->
     console.log("#{type} MERGE FAIL")
-    _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
+    _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout)) 
     this.finishLoading($scope)
     $scope.gridOptions.selectedItems.length = 0
 
@@ -73,7 +73,7 @@ angular.module('ChefStepsApp').service 'csAdminTable', ["$timeout", "csAlertServ
 
   this.loadFailure = (type, err, $scope) ->
     this.finishLoading($scope)
-    _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $scope, $timeout)) #alerts.addAlert({message: e}))
+    _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout)) 
     # alert(err)
 
 

@@ -37,7 +37,19 @@ class IngredientsController < ApplicationController
           if @ingredient.sub_activity_id && params[:ingredient][:title] != @ingredient.title
             raise "Can't change name of ingredient that is a recipe"
           else
-            @ingredient.update_attributes(params[:ingredient])
+            @ingredient.store_revision do
+              puts "---- #{params[:booger]} #{params[:youtube_id]} #{params[:image_id]}"
+              puts "---- #{params[:ingredient][:booger]} #{params[:ingredient][:youtube_id]} #{params[:ingredient][:image_id]}"
+              @ingredient.update_attributes(params[:ingredient])
+
+              # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
+              # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
+              tags = params.delete(:tags)
+              @ingredient.tag_list = tags.map { |t| t[:name]} if tags
+              @ingredient.save!
+              track_event(@ingredient, 'edit') unless current_admin?
+            end
+
             head :no_content
           end
         rescue Exception => e
@@ -73,6 +85,16 @@ class IngredientsController < ApplicationController
     end
   end
 
+  def show
+    @ingredient_id = params[:id]
+    @ingredient = Ingredient.find(params[:id])
+  end
+
+  def get_as_json
+    @ingredient = Ingredient.find(params[:id])
+    render json: @ingredient
+  end
+
   def merge
     authorize! :update, Ingredient unless Rails.env.angular?
     puts "Merging " + @ingredients.inspect
@@ -93,4 +115,13 @@ class IngredientsController < ApplicationController
     end
   end
 
+    # TODO: duplicate code in activities_controller.rb
+  def get_all_tags
+    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + params[:q] + '%').all
+    respond_to do |format|
+      format.json {
+        render :json => result.to_json()
+      }
+    end
+  end
 end

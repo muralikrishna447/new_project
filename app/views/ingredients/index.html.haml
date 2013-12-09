@@ -26,10 +26,7 @@
           %i.loading-spinner.icon-spinner.icon-spin.pull-right(ng-show="dataLoading")
 
 
-  .row.noprint(ng-cloak ng-show="alerts.length > 0")
-    .span8.offset2
-      %alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="closeAlert($index)" ng-animate="'custom'")
-        {{alert.message}}
+  = render 'shared/alerts'
 
   .row.grid
     .table-index.span12(ng-grid="gridOptions")
@@ -79,27 +76,4 @@
       %button.btn.warning(ng-click="mergeSelected(mergeKeeper)" ng-show="mergeKeeper") Merge (No Undo!)
       %button.btn.cancel(ng-click="mergeModalOpen = false") Cancel
 
-  %div.density-modal(close="densityIngredient = null" modal="densityIngredient" options="modalOptions")
-    .modal-header
-      %h2
-        Density:
-        %span(ng-bind-html-unsafe="densityIngredient.title")
-    .modal-body
-      .density-row.header
-        .density-unit
-          Unit
-        .density-value
-          Grams
-      .density-row(ng-repeat="du in densityUnits")
-        .density-unit
-          {{du.name}}
-        .density-value
-          %csEditPair
-            %csEditPairShow
-              %a
-                {{displayDensity(densityIngredient.density / du.perL)}}
-            %csEditPairEdit
-              %input(type="text" ng-model="newDensityValue"  ng-change="densityIngredient.density = newDensityValue * du.perL" ui-keypress='{13: "finishDensityChange(densityIngredient)"}' ui-event='{blur: "ingredientChanged(densityIngredient)", focus: "newDensityValue = displayDensityNoSet(densityIngredient.density / du.perL)"}')
-
-    .modal-footer
-      %button.btn(ng-click="finishDensityChange(densityIngredient)") Done
+  = render 'density_table'
