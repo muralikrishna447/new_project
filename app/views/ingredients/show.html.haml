@@ -55,7 +55,7 @@
 
   .row.section
     .span6
-      .row.section(ng-show="showStartEditTip()")
+      .row.section(ng-show="showStartEditTip() && logged_in")
         .section
         .span6
           %h4
@@ -150,6 +150,10 @@
     %p
       Simply click in any text field and type; choose Save when you are done. Your edits
       will be reviewed and published soon.
+
+    %p
+      Please only include text, images or video that you create yourself or that you are
+      legally allowed to share, and include any required attribution.
 
     %p
       To maximize the value of these pages, please stick to factual, non-self-promotional information, similar to what you would find on Wikipedia, Quora, or StackOverflow.
