@@ -13,6 +13,7 @@ class Ability
     else
       can :manage, Activity, creator: user
       can :create, Activity
+      can :update, Ingredient
       can :read, :all
     end
   end

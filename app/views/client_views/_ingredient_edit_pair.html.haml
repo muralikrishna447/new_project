@@ -6,8 +6,7 @@
   %csEditPairShow.show-group
     .ingredient-title
       %span(ng-switch="" on="ingredient_display_type(ai)")>
-        %span(ng-switch-default="" ng-bind-html-unsafe="ai.ingredient.title")>
-        %a(ng-switch-when="product" ng-href="{{ai.ingredient.product_url}}" target='_blank' ng-bind-html-unsafe="ai.ingredient.title")>
+        %a(ng-switch-default="" ng-href="/ingredients/{{ai.ingredient.slug}}" target='_blank' ng-bind-html-unsafe="ai.ingredient.title")>
         %a(ng-switch-when="subrecipe" ng-click="loadSubrecipe(ai.ingredient.sub_activity_id)" ng-bind-html-unsafe="ai.ingredient.title" target="_blank")>
         %span.fake-link(ng-switch-when="fake_link" ng-bind-html-unsafe="ai.ingredient.title")>
       %span(ng-show="!!ai.note" ng-bind-html-unsafe="', ' + (ai.note | shortcode)")>

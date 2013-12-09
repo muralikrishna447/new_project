@@ -1,0 +1,14 @@
+.stream-item(ng-show="stream.trackable.ingredient")
+  .stream-item-dialogue
+    %img(ng-src="{{userImageUrl(stream.user.image_id)}}")
+    %h5
+      %a(ng-href="/profiles/{{stream.user.slug}}" onclick='track_viewed_profile_through_stream();')
+        {{stream.user.name}}
+      edited
+      %a(ng-href="/ingredients/{{stream.trackable.ingredient.slug}}" onclick='track_viewed_item_through_stream();')
+        {{stream.trackable.ingredient.title}}
+      %small
+        {{stream.created_at|date:'MMM d, yyyy @ h:mma'}}
+  .stream-item-image(ng-show="!! stream.trackable.ingredient.image_id")
+    %a(ng-href="/ingredients/{{stream.trackable.ingredient.slug}}" onclick='track_viewed_item_through_stream();')
+      %img(ng-src="{{mediaObjectImageUrl(stream.trackable.ingredient.image_id)}}")

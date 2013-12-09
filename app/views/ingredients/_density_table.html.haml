@@ -1,0 +1,23 @@
+%div.density-modal(close="densityService.editDensity(null)" modal="densityService.densityIngredient" options="modalOptions")
+  .modal-header
+    %h2
+      Density:
+      %span(ng-bind-html-unsafe="densityService.densityIngredient.title")
+  .modal-body
+    .density-row.header
+      .density-unit
+        Unit
+      .density-value
+        Grams
+    .density-row(ng-repeat="du in densityService.densityUnits")
+      .density-unit
+        {{du.name}}
+      .density-value
+        %csEditPair
+          %csEditPairShow
+            %a
+              {{densityService.displayDensity(densityService.densityIngredient.density / du.perL)}}
+          %csEditPairEdit
+            %input(type="text" ng-model="newDensityValue"  ng-change="densityService.densityIngredient.density = newDensityValue * du.perL" ui-keypress='{13: "finishDensityChange(densityService.densityIngredient)"}' ui-event='{blur: "ingredientChanged(densityService.densityIngredient)", focus: "newDensityValue = densityService.displayDensityNoSet(densityService.densityIngredient.density / du.perL)"}')
+  .modal-footer
+    %button.btn(ng-click="finishDensityChange(densityService.densityIngredient)") Done

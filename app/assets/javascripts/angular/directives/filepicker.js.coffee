@@ -61,5 +61,5 @@ angular.module('ChefStepsApp').directive 'csfilepicker', ->
 
     $scope.removeFile = ->
       $scope.ngModel.$setViewValue("")
-
+  
   ]

@@ -1,0 +1,5 @@
+.row.noprint(ng-cloak ng-show="alertService.getAlerts().length > 0")
+  .span8.offset2
+    %alert.alert-block(ng-repeat="alert in alertService.getAlerts()" type="alert.type || 'error'" close="alertService.closeAlert($index)" ng-animate="'custom'")
+      {{alert.message}}
+

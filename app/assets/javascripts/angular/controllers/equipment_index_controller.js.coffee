@@ -1,5 +1,7 @@
 angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Equipment", "csUrlService", "csAdminTable", ($scope, $resource, $http, $filter, $timeout, csAlertService, Equipment, csUrlService, csAdminTable) ->
   $scope.csAdminTable = csAdminTable # Load our csAdminTable service into the scope.
+  $scope.alertService = csAlertService
+
   $scope.csAdminTable.resetLoading($scope) # Make sure our loading bar is off
 
   $scope.searchString = ""
@@ -172,9 +174,6 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
 
   $scope.$on 'ngGridEventScroll', ->
     $scope.loadEquipment()
-
-  $scope.closeAlert = (index) ->
-    csAlertService.closeAlert(index, $scope)
 
   $scope.setMergeKeeper = (equipment) ->
     $scope.mergeKeeper = equipment
