@@ -16,8 +16,6 @@
         BUY NOW
         = render 'activities/latest/assembly_price'
         = render "devise/sessions/new_angular"
-        .signin-message
-          %small (Sign in Required)
 
   -# Already enrolled
   %div(ng-show="enrolled")
@@ -35,8 +33,6 @@
     .main-cta(ng-controller="LoginController")
       .btn.btn-primary.btn-large.input-block-level#sign-in-and-redeem-gift-button(ng-click="waitForRedemption(); openModal()")
         Get My Gift
-        .signin-message
-          %small (Sign in Required)
         = render "devise/sessions/new_angular"
 
   -# Not enrolled, paid class, gift certificate available
@@ -71,8 +67,6 @@
         %div.inline(ng-show="enrolled")
           = render 'activities/latest/assembly_price'
           = render "devise/sessions/new_angular"
-        .signin-message
-          %small (Sign in Required)
 
   -# Logged In
   %div(ng-show="(! gift_certificate) && (assembly.price > 0) && logged_in")
