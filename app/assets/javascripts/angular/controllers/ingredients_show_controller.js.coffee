@@ -38,16 +38,19 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
       localStorageService.add("seenEditIngredientsHelp", true)
 
   $scope.endEditMode = ->
-    $scope.ingredient.$update(
-      {},
-      ((response) ->
-        console.log "INGREDIENT SAVE WIN"
-      ),
+    if JSON.stringify($scope.ingredient) == JSON.stringify($scope.backupIngredient)
+      console.log "INGREDIENT NO CHANGES"
+    else
+      $scope.ingredient.$update(
+        {},
+        ((response) ->
+          console.log "INGREDIENT SAVE WIN"
+        ),
 
-      ((error) ->
-        console.log "INGREDIENT SAVE ERRORS: " + JSON.stringify(error)
-        _.each(error.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout)))
-    )
+        ((error) ->
+          console.log "INGREDIENT SAVE ERRORS: " + JSON.stringify(error)
+          _.each(error.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout)))
+      )
     $scope.editMode = false
 
   $scope.cancelEditMode = ->
