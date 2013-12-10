@@ -29,7 +29,7 @@ class IngredientsController < ApplicationController
   end
 
   def update
-    authorize! :manage, Ingredient unless Rails.env.angular?
+    authorize! :update, Ingredient unless Rails.env.angular?
     respond_to do |format|
       format.json do
         @ingredient = Ingredient.find(params[:id])
