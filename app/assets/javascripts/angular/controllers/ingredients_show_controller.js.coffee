@@ -26,12 +26,14 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "substitutions", "purchasing tips", "storage", "production", "seasonality", "history"]
 
   $scope.ingredient = Ingredient.get({}, -> 
+    mixpanel.track('Ingredient Viewed', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
   )
 
   $timeout ->
     if csAuthentication.loggedIn() && ! localStorageService.get("seenEditIngredientWelcome6")
       csAlertService.addAlert({type: "info", message: "Welcome to ingredient pages! You are invited to contribute your knowledge to the community. Click the edit button to get started."}, $timeout) 
       localStorageService.add("seenEditIngredientWelcome6", true)
+
 
   # Overall edit mode
   $scope.startEditMode = ->
@@ -42,24 +44,29 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
       $scope.backupIngredient = jQuery.extend(true, {}, $scope.ingredient)
       $scope.showHelpModal = true if ! localStorageService.get("seenEditIngredientsHelp")
       localStorageService.add("seenEditIngredientsHelp", true)
+      mixpanel.track('Ingredient Edit Started', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
 
   $scope.endEditMode = ->
     if JSON.stringify($scope.ingredient) == JSON.stringify($scope.backupIngredient)
+      mixpanel.track('Ingredient Edit No Changes', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
       console.log "INGREDIENT NO CHANGES"
     else
       $scope.ingredient.$update(
         {},
         ((response) ->
+          mixpanel.track('Ingredient Edit Saved', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
           console.log "INGREDIENT SAVE WIN"
         ),
 
         ((error) ->
+          mixpanel.track('Ingredient Edit Error', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
           console.log "INGREDIENT SAVE ERRORS: " + JSON.stringify(error)
           _.each(error.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout)))
       )
     $scope.editMode = false
 
   $scope.cancelEditMode = ->
+    mixpanel.track('Ingredient Edit Cancelled', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
     $scope.ingredient = jQuery.extend(true, {}, $scope.backupIngredient)
     $scope.editMode = false
 
