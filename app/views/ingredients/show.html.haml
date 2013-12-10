@@ -42,6 +42,13 @@
   .row.relative
     .span6
       %h2.inline(ng-bind-html-unsafe="ingredient.title")
+      %h5.inline.no-bold(ng-show="lastEditingUser()")
+        Last edited by
+        %span(ng-switch="lastEditingUser().role == 'admin'")
+          %span(ng-switch-when="true") Team ChefSteps
+          %span(ng-switch-when="false")  
+            %a(ng-href="/profiles/{{lastEditingUser().slug}}" ng-bind-html-unsafe="lastEditingUser().name")        
+
     .span6.edit-buttons-group(ng-show="! editMode")
       .btn.btn-primary(ng-click="startEditMode()" ng-show="logged_in")
         EDIT
@@ -108,11 +115,11 @@
               %li(ng-repeat="usedWith in frequentlyUsedWith()")
                 %a(ng-href="/ingredients/{{usedWith.slug}}" ng-bind-html-unsafe="usedWith.title")
 
-        .row.section(ng-show="ingredient.editing_users.length > 0")
+        .row.section(ng-show="getEditingUsers().length > 0")
           .span6
             %h3 Contributions By
             %ul
-              %li(ng-repeat="user in ingredient.editing_users")
+              %li(ng-repeat="user in getEditingUsers()")
                 %a(ng-href="/profiles/{{user.slug}}" ng-bind-html-unsafe="user.name")
 
         .row(ng-show="editMode || ingredient.density")

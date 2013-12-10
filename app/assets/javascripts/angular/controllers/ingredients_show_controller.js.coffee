@@ -138,4 +138,11 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.reportProblem = ->
     window.open("mailto:info@chefsteps.com?subject=Problem with \'#{encodeURIComponent($scope.ingredient.title)}\ ingredient page'&body=[Please describe the problem].#{encodeURIComponent("\n\n")}Problem page: #{encodeURIComponent($scope.socialURL())}")
 
+  $scope.lastEditingUser = ->
+    $scope.ingredient.editing_users?[0]
+
+  $scope.getEditingUsers = ->
+    return null if ! $scope.ingredient?.editing_users?
+    _.filter($scope.ingredient.editing_users, (x) -> x.role != 'admin')
+
 ]
