@@ -1,8 +1,9 @@
-angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService) ->
+angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', 'csAuthentication', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService, csAuthentication) ->
 
   $scope.heroMedia = csEditableHeroMediaService
   $scope.alertService = csAlertService
   $scope.densityService = csDensityService
+  $scope.csAuthentication = csAuthentication
 
   $scope.urlAsNiceText = (url) ->
     csUrlService.urlAsNiceText(url)
@@ -26,6 +27,11 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.ingredient = Ingredient.get({}, -> 
   )
+
+  $timeout ->
+    if csAuthentication.loggedIn() && ! localStorageService.get("seenEditIngredientWelcome6")
+      csAlertService.addAlert({type: "info", message: "Welcome to ingredient pages! You are invited to contribute your knowledge to the community. Click the edit button to get started."}, $timeout) 
+      localStorageService.add("seenEditIngredientWelcome6", true)
 
   # Overall edit mode
   $scope.startEditMode = ->

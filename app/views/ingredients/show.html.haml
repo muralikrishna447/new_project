@@ -33,7 +33,7 @@
 
 = render 'layouts/filepicker'
 
-.container.ingredient-show(ng-cloak ng-class="addEditModeClass()"  ng-init="logged_in=#{current_user != nil}")
+.container.ingredient-show(ng-cloak ng-class="addEditModeClass()")
 
   = render 'shared/alerts'
 
@@ -50,7 +50,7 @@
             %a(ng-href="/profiles/{{lastEditingUser().slug}}" ng-bind-html-unsafe="lastEditingUser().name")        
 
     .span6.edit-buttons-group(ng-show="! editMode")
-      .btn.btn-primary(ng-click="startEditMode()" ng-show="logged_in")
+      .btn.btn-primary(ng-click="startEditMode()" ng-show="csAuthentication.loggedIn()")
         EDIT
     .span6.edit-buttons-group(ng-show="editMode")
       .btn.btn-link(ng-click="showHelpModal = true")
@@ -62,7 +62,7 @@
 
   .row.section
     .span6
-      .row.section(ng-show="showStartEditTip() && logged_in")
+      .row.section(ng-show="showStartEditTip() && csAuthentication.loggedIn()")
         .section
         .span6
           %h4
