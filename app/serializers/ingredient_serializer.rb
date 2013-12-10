@@ -16,7 +16,7 @@ class IngredientSerializer < ActiveModel::Serializer
   end
 
   def editing_users
-    Event.where(trackable_type: "Ingredient", trackable_id: object.id, action: "edit").includes(:user).map(&:user).uniq()
+    Event.where(trackable_type: "Ingredient", trackable_id: object.id, action: "edit").order("created_at desc").includes(:user).map(&:user).uniq()
   end
 
 end

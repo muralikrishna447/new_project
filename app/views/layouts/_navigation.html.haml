@@ -36,7 +36,9 @@
                     -if can? :manage, Equipment
                       %li= link_to 'Manage Equipment', equipment_index_path
 
-                %li= link_to 'Classes', courses_url
+                %li
+                  .nav-item-border
+                  = link_to 'Classes', courses_url
                 %li.dropdown
                   .nav-item-border
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
