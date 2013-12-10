@@ -42,7 +42,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       finished('counter_split', :reset => false)
       unless request.xhr?
         # redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
-        if session[:user_return_to] && (session[:user_return_to] != root_url)
+        if session[:user_return_to] && (session[:user_return_to] != root_url && session[:user_return_to] != sign_in_url)
           redirect_to session[:user_return_to], notice: "Thanks for signing up! Please check your email now to confirm your registration."
         else
           redirect_to welcome_url(email: @user.email)
