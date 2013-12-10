@@ -1,4 +1,5 @@
 class IngredientSerializer < ActiveModel::Serializer
+
   attributes :id, :title, :slug, :product_url, :created_at, :updated_at, :for_sale, :sub_activity_id, :density, :youtube_id, :image_id, :text_fields, :tags
   attributes :frequently_used_with
   attributes :chefsteps_activities
@@ -17,4 +18,5 @@ class IngredientSerializer < ActiveModel::Serializer
   def editing_users
     Event.where(trackable_type: "Ingredient", trackable_id: object.id, action: "edit").includes(:user).map(&:user).uniq()
   end
+
 end

@@ -74,10 +74,10 @@ private
   end
 
   def mixpanel
-    if Rails.env.development?
-      @mixpanel ||= Mixpanel::Tracker.new 'd6d82f805f7d8a138228a52f17d6aaec'
-    else
+    if Rails.env.production?
       @mixpanel ||= Mixpanel::Tracker.new '84272cf32ff65b70b86639dacd53c0e0'
+    else
+      @mixpanel ||= Mixpanel::Tracker.new 'd6d82f805f7d8a138228a52f17d6aaec'
     end
   end
 
