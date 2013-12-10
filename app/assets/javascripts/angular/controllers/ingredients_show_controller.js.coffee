@@ -9,6 +9,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     csUrlService.urlAsNiceText(url)
 
   $scope.editMode = false
+  $scope.edited = false
 
   $scope.addEditModeClass = ->
     if $scope.editMode then "edit-mode" else "show-mode"
@@ -56,6 +57,8 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
         ((response) ->
           mixpanel.track('Ingredient Edit Saved', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
           console.log "INGREDIENT SAVE WIN"
+          $scope.edited = true
+          $scope.showPostEditModal = true
         ),
 
         ((error) ->
@@ -140,13 +143,19 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     $scope.ingredient.title
 
   $scope.tweetMessage = ->
-    "Check the info for"
+    if ! $scope.edited then "Check the info for" else "I just edited"
 
   $scope.emailSubject = ->
-    "I thought you might like " + $scope.socialTitle()
+    if ! $scope.edited  
+      "I thought you might like " + $scope.socialTitle() 
+    else 
+      "I just edited " + $scope.socialTitle()
 
   $scope.emailBody = ->
-    "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
+    if ! $scope.edited  
+      "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
+    else
+      "Hey, I just edited " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
 
   $scope.reportProblem = ->
     window.open("mailto:info@chefsteps.com?subject=Problem with \'#{encodeURIComponent($scope.ingredient.title)}\ ingredient page'&body=[Please describe the problem].#{encodeURIComponent("\n\n")}Problem page: #{encodeURIComponent($scope.socialURL())}")

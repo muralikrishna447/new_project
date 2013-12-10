@@ -167,3 +167,11 @@
   .modal-footer
     %button.btn(ng-click="showHelpModal = false") Done
 
+%div(close="showPostEditModal = false" modal="showPostEditModal" options="modalOptions")
+  .modal-header
+    %h2 Thanks For Your Contribution!
+  .modal-body
+    %h4 Now tell the world?
+    = render 'layouts/social_buttons', media_object: nil
+
+
