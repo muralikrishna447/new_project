@@ -1,13 +1,15 @@
-angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService) ->
+angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', 'csAuthentication', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService, csAuthentication) ->
 
   $scope.heroMedia = csEditableHeroMediaService
   $scope.alertService = csAlertService
   $scope.densityService = csDensityService
+  $scope.csAuthentication = csAuthentication
 
   $scope.urlAsNiceText = (url) ->
     csUrlService.urlAsNiceText(url)
 
   $scope.editMode = false
+  $scope.edited = false
 
   $scope.addEditModeClass = ->
     if $scope.editMode then "edit-mode" else "show-mode"
@@ -25,7 +27,14 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "substitutions", "purchasing tips", "storage", "production", "seasonality", "history"]
 
   $scope.ingredient = Ingredient.get({}, -> 
+    mixpanel.track('Ingredient Viewed', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
   )
+
+  $timeout ->
+    if csAuthentication.loggedIn() && ! localStorageService.get("seenEditIngredientWelcome6")
+      csAlertService.addAlert({type: "info", message: "Welcome to ingredient pages! You are invited to contribute your knowledge to the community. Click the edit button to get started."}, $timeout) 
+      localStorageService.add("seenEditIngredientWelcome6", true)
+
 
   # Overall edit mode
   $scope.startEditMode = ->
@@ -36,21 +45,31 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
       $scope.backupIngredient = jQuery.extend(true, {}, $scope.ingredient)
       $scope.showHelpModal = true if ! localStorageService.get("seenEditIngredientsHelp")
       localStorageService.add("seenEditIngredientsHelp", true)
+      mixpanel.track('Ingredient Edit Started', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
 
   $scope.endEditMode = ->
-    $scope.ingredient.$update(
-      {},
-      ((response) ->
-        console.log "INGREDIENT SAVE WIN"
-      ),
+    if JSON.stringify($scope.ingredient) == JSON.stringify($scope.backupIngredient)
+      mixpanel.track('Ingredient Edit No Changes', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
+      console.log "INGREDIENT NO CHANGES"
+    else
+      $scope.ingredient.$update(
+        {},
+        ((response) ->
+          mixpanel.track('Ingredient Edit Saved', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
+          console.log "INGREDIENT SAVE WIN"
+          $scope.edited = true
+          $scope.showPostEditModal = true
+        ),
 
-      ((error) ->
-        console.log "INGREDIENT SAVE ERRORS: " + JSON.stringify(error)
-        _.each(error.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout)))
-    )
+        ((error) ->
+          mixpanel.track('Ingredient Edit Error', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
+          console.log "INGREDIENT SAVE ERRORS: " + JSON.stringify(error)
+          _.each(error.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout)))
+      )
     $scope.editMode = false
 
   $scope.cancelEditMode = ->
+    mixpanel.track('Ingredient Edit Cancelled', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
     $scope.ingredient = jQuery.extend(true, {}, $scope.backupIngredient)
     $scope.editMode = false
 
@@ -124,15 +143,28 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     $scope.ingredient.title
 
   $scope.tweetMessage = ->
-    "Check the info for"
+    if ! $scope.edited then "Check the info for" else "I just edited"
 
   $scope.emailSubject = ->
-    "I thought you might like " + $scope.socialTitle()
+    if ! $scope.edited  
+      "I thought you might like " + $scope.socialTitle() 
+    else 
+      "I just edited " + $scope.socialTitle()
 
   $scope.emailBody = ->
-    "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
+    if ! $scope.edited  
+      "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
+    else
+      "Hey, I just edited " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
 
   $scope.reportProblem = ->
     window.open("mailto:info@chefsteps.com?subject=Problem with \'#{encodeURIComponent($scope.ingredient.title)}\ ingredient page'&body=[Please describe the problem].#{encodeURIComponent("\n\n")}Problem page: #{encodeURIComponent($scope.socialURL())}")
+
+  $scope.lastEditingUser = ->
+    $scope.ingredient.editing_users?[0]
+
+  $scope.getEditingUsers = ->
+    return null if ! $scope.ingredient?.editing_users?
+    _.filter($scope.ingredient.editing_users, (x) -> x.role != 'admin')
 
 ]

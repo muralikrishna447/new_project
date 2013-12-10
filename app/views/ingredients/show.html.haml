@@ -33,7 +33,7 @@
 
 = render 'layouts/filepicker'
 
-.container.ingredient-show(ng-cloak ng-class="addEditModeClass()"  ng-init="logged_in=#{current_user != nil}")
+.container.ingredient-show(ng-cloak ng-class="addEditModeClass()")
 
   = render 'shared/alerts'
 
@@ -42,8 +42,15 @@
   .row.relative
     .span6
       %h2.inline(ng-bind-html-unsafe="ingredient.title")
+      %h5.inline.no-bold(ng-show="lastEditingUser()")
+        Last edited by
+        %span(ng-switch="lastEditingUser().role == 'admin'")
+          %span(ng-switch-when="true") Team ChefSteps
+          %span(ng-switch-when="false")  
+            %a(ng-href="/profiles/{{lastEditingUser().slug}}" ng-bind-html-unsafe="lastEditingUser().name")        
+
     .span6.edit-buttons-group(ng-show="! editMode")
-      .btn.btn-primary(ng-click="startEditMode()" ng-show="logged_in")
+      .btn.btn-primary(ng-click="startEditMode()" ng-show="csAuthentication.loggedIn()")
         EDIT
     .span6.edit-buttons-group(ng-show="editMode")
       .btn.btn-link(ng-click="showHelpModal = true")
@@ -55,7 +62,7 @@
 
   .row.section
     .span6
-      .row.section(ng-show="showStartEditTip() && logged_in")
+      .row.section(ng-show="showStartEditTip() && csAuthentication.loggedIn()")
         .section
         .span6
           %h4
@@ -108,11 +115,11 @@
               %li(ng-repeat="usedWith in frequentlyUsedWith()")
                 %a(ng-href="/ingredients/{{usedWith.slug}}" ng-bind-html-unsafe="usedWith.title")
 
-        .row.section(ng-show="ingredient.editing_users.length > 0")
+        .row.section(ng-show="getEditingUsers().length > 0")
           .span6
             %h3 Contributions By
             %ul
-              %li(ng-repeat="user in ingredient.editing_users")
+              %li(ng-repeat="user in getEditingUsers()")
                 %a(ng-href="/profiles/{{user.slug}}" ng-bind-html-unsafe="user.name")
 
         .row(ng-show="editMode || ingredient.density")
@@ -159,4 +166,12 @@
       To maximize the value of these pages, please stick to factual, non-self-promotional information, similar to what you would find on Wikipedia, Quora, or StackOverflow.
   .modal-footer
     %button.btn(ng-click="showHelpModal = false") Done
+
+%div(close="showPostEditModal = false" modal="showPostEditModal" options="modalOptions")
+  .modal-header
+    %h2 Thanks For Your Contribution!
+  .modal-body
+    %h4 Now tell the world?
+    = render 'layouts/social_buttons', media_object: nil
+
 

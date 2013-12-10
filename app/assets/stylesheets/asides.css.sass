@@ -1,6 +1,7 @@
 @import 'mixins'
 
 .aside
+  width: 100%
   .aside-image
     margin-bottom: $baseline * 2
 
@@ -24,3 +25,18 @@
       float: left
       padding-left: 15px
       @include boxsizing
+
+// Fix for the case where the aside is in the last step in the class view
+.course-assembly-container
+  .ordered-step-item
+    .aside
+      position: absolute
+    &:last-of-type
+      .aside
+        position: relative
+
+@media (max-width: 767px)
+  .course-assembly-container
+    .ordered-step-item
+      .aside
+        position: relative

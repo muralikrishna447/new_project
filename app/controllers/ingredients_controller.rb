@@ -38,8 +38,6 @@ class IngredientsController < ApplicationController
             raise "Can't change name of ingredient that is a recipe"
           else
             @ingredient.store_revision do
-              puts "---- #{params[:booger]} #{params[:youtube_id]} #{params[:image_id]}"
-              puts "---- #{params[:ingredient][:booger]} #{params[:ingredient][:youtube_id]} #{params[:ingredient][:image_id]}"
               @ingredient.update_attributes(params[:ingredient])
 
               # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
@@ -47,7 +45,7 @@ class IngredientsController < ApplicationController
               tags = params.delete(:tags)
               @ingredient.tag_list = tags.map { |t| t[:name]} if tags
               @ingredient.save!
-              track_event(@ingredient, 'edit') unless current_admin?
+              track_event(@ingredient, 'edit')
             end
 
             head :no_content
