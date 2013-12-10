@@ -22,7 +22,7 @@ class IngredientsController < ApplicationController
       end
 
       format.html do
-        authorize! :update, Ingredient unless Rails.env.angular?
+        authorize! :manage, Ingredient unless Rails.env.angular?
         render
       end
     end
@@ -62,7 +62,7 @@ class IngredientsController < ApplicationController
   end
 
   def destroy
-    authorize! :update, Ingredient unless Rails.env.angular?
+    authorize! :manage, Ingredient unless Rails.env.angular?
     @ingredient = Ingredient.find(params[:id])
     respond_to do |format|
       format.json do
@@ -96,7 +96,7 @@ class IngredientsController < ApplicationController
   end
 
   def merge
-    authorize! :update, Ingredient unless Rails.env.angular?
+    authorize! :manage, Ingredient unless Rails.env.angular?
     puts "Merging " + @ingredients.inspect
     puts "Into " + @result_ingredient.inspect
     respond_to do |format|

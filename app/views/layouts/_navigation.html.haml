@@ -31,9 +31,9 @@
                     %li= link_to 'ChefSteps Recipes', gallery_index_url(activity_type: "Recipe")
                     %li= link_to 'Community Recipes', gallery_index_url(source: "community")
                     %li= link_to 'Add Recipe', new_activity_url
-                    -if can? :update, Ingredient
+                    -if can? :manage, Ingredient
                       %li= link_to 'Manage Ingredients', ingredients_path
-                    -if can? :update, Equipment
+                    -if can? :manage, Equipment
                       %li= link_to 'Manage Equipment', equipment_index_path
 
                 %li

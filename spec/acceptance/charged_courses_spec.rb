@@ -9,6 +9,7 @@ feature 'charge for classes', pending: true, :js => true do
 
   # Madness from http://artsy.github.io/blog/2012/02/03/reliably-testing-asynchronous-ui-w-slash-rspec-and-capybara/
   # But it does seem to help.
+  # Maybe force codeship to rebuild.
   def wait_for_dom(timeout = Capybara.default_wait_time)
     uuid = 'X' + SecureRandom.uuid.split('-')[0]
     page.find("body")
