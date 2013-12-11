@@ -30,12 +30,6 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     mixpanel.track('Ingredient Viewed', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
   )
 
-  $timeout ->
-    if csAuthentication.loggedIn() && ! localStorageService.get("seenEditIngredientWelcome6")
-      csAlertService.addAlert({type: "info", message: "Welcome to ingredient pages! You are invited to contribute your knowledge to the community. Click the edit button to get started."}, $timeout) 
-      localStorageService.add("seenEditIngredientWelcome6", true)
-
-
   # Overall edit mode
   $scope.startEditMode = ->
     if ! $scope.editMode
