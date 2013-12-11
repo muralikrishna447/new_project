@@ -1,28 +1,6 @@
 task :migrate_sousvide => :environment do
   course = Course.find(1)
   puts "Preparing to migrate Sous Vide Course"
-  # assembly = Assembly.find('accelerated-sous-vide-cooking-course')
-
-  # if assembly
-  #   puts "Existing assembly: "
-  #   puts assembly.inspect
-  # else
-  #   # Create assembly
-  #   assembly = Assembly.new({
-  #     title: course.title,
-  #     description: course.description,
-  #     short_description: course.short_description,
-  #     image_id: course.image_id,
-  #     youtube_id: course.youtube_id,
-  #     assembly_type: 'Course'
-  #   })
-
-  #   if assembly.save
-  #     puts "Built new assembly: "
-  #     puts assembly.inspect
-  #     puts "*********************"
-  #   end
-  # end
 
   assembly = Assembly.where(slug: 'accelerated-sous-vide-cooking-course').first_or_create({
     title: course.title,
@@ -111,8 +89,43 @@ task :migrate_sousvide => :environment do
       attach_includable(@group_vacuumpacking, activity, index)
     end
 
-    [@group_whypackagefood, @group_vacuumpacking].each_with_index do |activity, index|
+    @group_rigidcontainers = Assembly.create({title: "Rigid Containers", assembly_type: 'Group'})
+    [@aerated_green_apple_sorbet].each_with_index do |activity, index|
+      attach_includable(@group_rigidcontainers, activity, index)
+    end
+
+    @group_improvisedstrategies = Assembly.create({title: "Improvised Strategies", assembly_type: 'Group'})
+    [@simple_sous_vide_packaging].each_with_index do |activity, index|
+      attach_includable(@group_improvisedstrategies, activity, index)
+    end
+
+    [@group_whypackagefood, @group_vacuumpacking, @group_rigidcontainers, @group_improvisedstrategies].each_with_index do |activity, index|
       attach_includable(group_packaging, activity, index)
+    end
+  end
+
+  # Migrate Cooking Temperature
+  group_cookingtemperature = Assembly.new({
+    title: 'Cooking Temperature',
+    assembly_type: 'Group'
+  })
+
+  if group_cookingtemperature.save
+    puts "Saved Group: Cooking Temperature"
+    attach_includable(assembly, group_cookingtemperature, 3)
+
+    @group_selectingacookingtemperature = Assembly.create({title: "Selecting a Cooking Temperature", assembly_type: 'Group'})
+    [@sous_vide_steak, @short_ribs_time_and_temp].each_with_index do |activity, index|
+      attach_includable(@group_selectingacookingtemperature, activity, index)
+    end
+
+    @group_temperatureimprovisedstrategies = Assembly.create({title: "Temperature: Improvised Strategies", assembly_type: 'Group'})
+    [@improvised_sous_vide_pot_on_a_stove_method, @improvised_sous_vide_insulated_cooler_method, @improvised_sous_vide_running_water_method].each_with_index do |activity, index|
+      attach_includable(@group_temperatureimprovisedstrategies, activity, index)
+    end
+
+    [@group_selectingacookingtemperature, @group_temperatureimprovisedstrategies].each_with_index do |activity, index|
+      attach_includable(group_cookingtemperature, activity, index)
     end
   end
 
