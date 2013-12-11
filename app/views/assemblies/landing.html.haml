@@ -16,6 +16,16 @@
           - if @course.slug == 'french-macarons'
             - ab_test 'macaron_landing_video', 'FA7XWOmcptU', '5adpHW6fqa0' do |video_id|
               %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
+          - elsif @course.slug == 'accelerated-sous-vide-cooking-course'
+            %ul.rslides
+              %li
+                %img(src="http://d2eud0b65jr0pw.cloudfront.net/Module_7_Pork_Cheek_assembly20121204_4.jpg")
+              %li
+                %img(src="http://d2eud0b65jr0pw.cloudfront.net/final_dish_IMG_5402.jpg")
+              %li
+                %img(src="http://d2eud0b65jr0pw.cloudfront.net/Why%20Sous%20Vide_Convenience_6.jpg")
+              %li
+                %img(src="http://d2eud0b65jr0pw.cloudfront.net/Module%201_searing.jpg")
           - else
             %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
 
