@@ -129,6 +129,56 @@ task :migrate_sousvide => :environment do
     end
   end
 
+  # Migrate Finishing Strategies
+  group_finishingstrategies = Assembly.new({
+    title: 'Finishing Strategies',
+    assembly_type: 'Group'
+  })
+
+  if group_finishingstrategies.save
+    puts "Saved Group: Finishing Strategies"
+    attach_includable(assembly, group_finishingstrategies, 4)
+
+    @group_simplesousvidedishes = Assembly.create({title: "Simple Sous Vide Dishes", assembly_type: 'Group'})
+    [@simple_sous_vide_vegetables].each_with_index do |activity, index|
+      attach_includable(@group_simplesousvidedishes, activity, index)
+    end
+
+    @group_intermediatesousvidedishes = Assembly.create({title: "Intermediate Sous Vide Dishes", assembly_type: 'Group'})
+    [@salmon_104_f, @pork_cheek_celery_root_and_pickled_apple, @green_eggs_and_ham, @red_wine_poached_pear].each_with_index do |activity, index|
+      attach_includable(@group_intermediatesousvidedishes, activity, index)
+    end
+
+    @group_advancedsousvidedishes = Assembly.create({title: "Advanced Sous Vide Dishes", assembly_type: 'Group'})
+    [@sous_vide_pastrami].each_with_index do |activity, index|
+      attach_includable(@group_advancedsousvidedishes, activity, index)
+    end
+
+    @group_traditionalrecipes = Assembly.create({title: "Traditional Recipes", assembly_type: 'Group'})
+    [@pomme_rosti].each_with_index do |activity, index|
+      attach_includable(@group_traditionalrecipes, activity, index)
+    end
+
+    [@group_simplesousvidedishes, @group_intermediatesousvidedishes, @group_advancedsousvidedishes, @group_traditionalrecipes].each_with_index do |activity, index|
+      attach_includable(group_finishingstrategies, activity, index)
+    end
+  end
+
+  # Migrate Choosing Equipment
+  group_choosingequipment = Assembly.new({
+    title: 'Choosing Equipment',
+    assembly_type: 'Group'
+  })
+
+  if group_choosingequipment.save
+    puts "Saved Group: Choosing Equipment"
+    attach_includable(assembly, group_choosingequipment, 5)
+
+    [@choosing_a_thermometer, @choosing_a_scale].each_with_index do |activity, index|
+      attach_includable(group_choosingequipment, activity, index)
+    end
+  end
+
 end
 
 def attach_includable(assembly, includable, index)
