@@ -73,6 +73,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
         mixpanel.people.set('Paid Course Abandoned' : false)
         _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
+        $scope.shareASale($scope.discounted_price, response.id)
         try
           __adroll.record_user "adroll_segments": "fmpurchase"
 
@@ -149,4 +150,12 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.buyModalOpen = true
       mixpanel.track('Class Enrolled', {'class' : $scope.assembly.title})
 
+  $scope.shareASale = (amount, tracking) ->
+    $http(
+      url: "/affiliates/share_a_sale"
+      method: "GET"
+      params:
+        amount: amount
+        tracking: tracking
+      )
 ]
