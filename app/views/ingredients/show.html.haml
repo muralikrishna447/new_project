@@ -39,13 +39,19 @@
 
   .section
 
-  .row.section
-    .span12.well.text-center.wiki-warning(ng-show="! editMode")
+  .row.section(ng-show="! editMode")
+    .span12.well.text-center.wiki-warning(ng-show="csAuthentication.loggedIn()")
       ChefSteps ingredient wiki pages are community-edited. If you see incorrect information, please
       %a(ng-click="startEditMode()") fix it
       or
       %a(ng-click="reportProblem()") report it. 
       Your contributions are always welcome, just click the edit button below.
+    .span12.well.text-center.wiki-warning(ng-show="! csAuthentication.loggedIn()")
+      ChefSteps ingredient wiki pages are community-edited. If you see incorrect information, please
+      %a(ng-click="reportProblem()") report it,
+      or
+      %a(href="/sign_in") sign in
+      to edit.
 
   .row.relative
     .span6
