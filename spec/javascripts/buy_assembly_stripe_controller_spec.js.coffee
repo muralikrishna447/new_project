@@ -47,7 +47,22 @@ describe "BuyAssemblyStripeController", ->
       scope.waitForLogin()
       expect(scope.waitingForLogin).toBe(true)
 
+  describe "#waitForRedemption", ->
+    it "should set waitingForRedemption to true", ->
+      scope.waitingForRedemption = false
+      scope.waitForRedemption()
+      expect(scope.waitingForRedemption).toBe(true)
+
+  describe "#waitForFreeEnrollment", ->
+    it "should set waitingForFreeEnrollment to true", ->
+      scope.waitingForFreeEnrollment = false
+      scope.waitForFreeEnrollment()
+      expect(scope.waitingForFreeEnrollment).toBe(true)
+
   describe "#handleStripe", ->
+    beforeEach ->
+      spyOn(scope, 'shareASale')
+
     describe "response has an error", ->
       it "should set processing false", ->
         scope.handleStripe(200, {error: {message: "Error on processing"}})
@@ -77,6 +92,9 @@ describe "BuyAssemblyStripeController", ->
 
       it "should set enrolled to be true", ->
         expect(scope.state).toEqual("thanks")
+
+      it "should set enrolled to be true", ->
+        expect(scope.shareASale).toHaveBeenCalled()
 
     describe "ajax responds with an error", ->
       beforeEach ->
@@ -230,3 +248,12 @@ describe "BuyAssemblyStripeController", ->
     it "should call enroll", ->
       scope.free_enrollment()
       expect(scope.enroll()).toHaveBeenCalled
+
+  describe "#shareASale", ->
+    it "should make the http request", ->
+      scope.httpBackend.expect(
+        'GET'
+        '/affiliates/share_a_sale?amount=19.99&tracking=321'
+      ).respond(200)
+      scope.shareASale("19.99", "321")
+      scope.httpBackend.flush()

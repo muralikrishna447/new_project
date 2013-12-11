@@ -92,6 +92,14 @@ private
     cookies['XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
   end
 
+  before_filter :set_share_a_sale
+  def set_share_a_sale
+    if params[:SSAID].present? && params[:SSAIDDATA].present?
+      cookies['SSAID'] = params[:SSAID]
+      cookies['SSAIDDATA'] = params[:SSAIDDATA]
+    end
+  end
+
   protected
 
   def verified_request?

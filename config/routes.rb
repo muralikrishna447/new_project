@@ -200,6 +200,8 @@ Delve::Application.routes.draw do
 
   get "smoker" => "smoker#index"
 
+  get "/affiliates/share_a_sale" => "affiliates#share_a_sale"
+
   if Rails.env.angular?
     get "start_clean" => "application#start_clean"
     get "end_clean" => "application#end_clean"

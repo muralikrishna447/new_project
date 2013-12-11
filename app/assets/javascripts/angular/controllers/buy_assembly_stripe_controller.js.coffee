@@ -13,9 +13,13 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.waitingForLogin = false
   $scope.waitingforRedemption = false
+  $scope.waitingforFreeEnrollment = false
 
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
+    if $scope.waitingForFreeEnrollment
+      $scope.waitingForFreeEnrollment = false
+      $scope.free_enrollment()
     if $scope.waitingForRedemption
       $scope.waitingForRedemption = false
       $scope.redeemGift()
@@ -35,6 +39,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.waitForRedemption = ->
     $scope.waitingForRedemption = true
+
+  $scope.waitForFreeEnrollment = ->
+    $scope.waitingForFreeEnrollment = true
 
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
@@ -66,6 +73,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
         mixpanel.people.set('Paid Course Abandoned' : false)
         _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
+        $scope.shareASale($scope.discounted_price, response.id)
         try
           __adroll.record_user "adroll_segments": "fmpurchase"
 
@@ -142,4 +150,12 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.buyModalOpen = true
       mixpanel.track('Class Enrolled', {'class' : $scope.assembly.title})
 
+  $scope.shareASale = (amount, tracking) ->
+    $http(
+      url: "/affiliates/share_a_sale"
+      method: "GET"
+      params:
+        amount: amount
+        tracking: tracking
+      )
 ]

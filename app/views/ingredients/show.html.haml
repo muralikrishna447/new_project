@@ -39,6 +39,14 @@
 
   .section
 
+  .row.section
+    .span12.well.text-center.wiki-warning(ng-show="! editMode")
+      ChefSteps ingredient wiki pages are community-edited. If you see incorrect information, please
+      %a(ng-click="startEditMode()") fix it
+      or
+      %a(ng-click="reportProblem()") report it. 
+      Your contributions are always welcome, just click the edit button below.
+
   .row.relative
     .span6
       %h2.inline(ng-bind-html-unsafe="ingredient.title")
