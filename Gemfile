@@ -56,7 +56,11 @@ gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'geokit-rails'
 gem 'rack-ssl-enforcer'
 gem 'redcarpet'
-gem "letter_opener", :group => :development
+
+group :development do
+  gem 'spring'
+  gem "letter_opener"
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -107,7 +111,6 @@ group :development, :test, :angular do
   gem 'launchy'
   gem 'childprocess', '0.3.6'
   gem 'xray-rails'
-  gem 'spring'
 end
 
 group :guard do
