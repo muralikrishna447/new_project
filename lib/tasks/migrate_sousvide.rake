@@ -1,5 +1,7 @@
 task :migrate_sousvide => :environment do
   course = Course.find(1)
+  @quiz1 = Quiz.find(6)
+  @quiz2 = Quiz.find(12)
   puts "Preparing to migrate Sous Vide Course"
 
   assembly = Assembly.where(slug: 'accelerated-sous-vide-cooking-course').first_or_create({
@@ -33,7 +35,7 @@ task :migrate_sousvide => :environment do
     puts "Saved Group: Introduction"
     attach_includable(assembly, group_introduction, 0)
 
-    [@what_is_sous_vide, @why_sous_vide_convenience, @why_sous_vide_consistency, @what_you_ll_need_thermometer, @five_basic_steps_for_sous_vide].each_with_index do |activity, index|
+    [@what_is_sous_vide, @why_sous_vide_convenience, @why_sous_vide_consistency, @what_you_ll_need_thermometer, @five_basic_steps_for_sous_vide, @module_1_summary, @quiz1].each_with_index do |activity, index|
       attach_includable(group_introduction, activity, index)
     end
   end
@@ -64,7 +66,7 @@ task :migrate_sousvide => :environment do
       attach_includable(@group_pretreatments, activity, index)
     end
 
-    [@preparation_overview, @get_organized, @work_clean, @group_whatyoullneed, @group_portioning, @group_pretreatments].each_with_index do |activity, index|
+    [@preparation_overview, @get_organized, @work_clean, @group_whatyoullneed, @group_portioning, @group_pretreatments, @module_2_summary, @quiz2].each_with_index do |activity, index|
       attach_includable(group_preparation, activity, index)
     end
   end
