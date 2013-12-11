@@ -42,7 +42,7 @@
   .row.relative
     .span6
       %h2.inline(ng-bind-html-unsafe="ingredient.title")
-      %h5.inline.no-bold(ng-show="lastEditingUser()")
+      %h5.no-bold(ng-show="lastEditingUser()")
         Last edited by
         %span(ng-switch="lastEditingUser().role == 'admin'")
           %span(ng-switch-when="true") Team ChefSteps
