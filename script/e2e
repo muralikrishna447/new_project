@@ -50,6 +50,7 @@ equipment_3 = Equipment.create(title: 'Rusty Knife')
 activity_1.update_equipment([{title: 'Shun Edo Santoku Knife', optional: true}, {title: 'Chef Knife, Shun Edo 6-1/2 Blade', optional: false}])
 activity_2.update_equipment([{title: 'Chef Knife, Shun Edo 6-1/2 Blade'}])
 paidClass = Assembly.create(title: 'Become A Badass', assembly_type: 'Course', price: 39, published: true, description: 'foo')
+unpaidClass = Assembly.create(title: 'Become A Badass FOR FREE', assembly_type: 'Course', price: 0, published: true, description: 'foo for FREE!')
 enrolled_user = User.create(name: 'Customer McPaid', email: 'qwerty@example.com', password: 'apassword')
 unenrolled_user = User.create(name: 'Possible Customer', email: 'ytrewq@example.com', password: 'apassword')
 enrollment = Enrollment.new; enrollment.user = enrolled_user; enrollment.enrollable = paidClass; enrollment.save!

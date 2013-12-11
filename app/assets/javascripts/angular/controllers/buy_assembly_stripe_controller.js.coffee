@@ -13,9 +13,13 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.waitingForLogin = false
   $scope.waitingforRedemption = false
+  $scope.waitingforFreeEnrollment = false
 
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
+    if $scope.waitingForFreeEnrollment
+      $scope.waitingForFreeEnrollment = false
+      $scope.free_enrollment()
     if $scope.waitingForRedemption
       $scope.waitingForRedemption = false
       $scope.redeemGift()
@@ -35,6 +39,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.waitForRedemption = ->
     $scope.waitingForRedemption = true
+
+  $scope.waitForFreeEnrollment = ->
+    $scope.waitingForFreeEnrollment = true
 
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response

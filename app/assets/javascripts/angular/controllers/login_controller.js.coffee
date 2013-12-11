@@ -77,7 +77,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data)
       )
 
-
   $scope.logout = ->
     $scope.dataLoading += 1
     $scope.resetMessages();

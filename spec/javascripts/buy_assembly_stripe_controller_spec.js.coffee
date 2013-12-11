@@ -47,6 +47,18 @@ describe "BuyAssemblyStripeController", ->
       scope.waitForLogin()
       expect(scope.waitingForLogin).toBe(true)
 
+  describe "#waitForRedemption", ->
+    it "should set waitingForRedemption to true", ->
+      scope.waitingForRedemption = false
+      scope.waitForRedemption()
+      expect(scope.waitingForRedemption).toBe(true)
+
+  describe "#waitForFreeEnrollment", ->
+    it "should set waitingForFreeEnrollment to true", ->
+      scope.waitingForFreeEnrollment = false
+      scope.waitForFreeEnrollment()
+      expect(scope.waitingForFreeEnrollment).toBe(true)
+
   describe "#handleStripe", ->
     describe "response has an error", ->
       it "should set processing false", ->

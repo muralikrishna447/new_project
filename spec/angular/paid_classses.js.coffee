@@ -80,6 +80,18 @@ describe "PaidClasses", ->
           sleep 2
           expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
 
+      describe "free course", ->
+        it "should allow me to sign up for free", ->
+          browser().navigateTo('/classes/become-a-badass-for-free/landing')
+          element('#sign-in-and-enroll-free-button').click()
+          sleep .5
+          expect(element('.login-modal-body').count()).toBe(1)
+          input("login_user.email").enter("ytrewq@example.com")
+          input("login_user.password").enter("apassword")
+          element("button.signin").click()
+          sleep 2
+          expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
+
     describe "sign up", ->
       describe "purchase for myself", ->
         it "should purchase the class for me", ->
@@ -141,6 +153,19 @@ describe "PaidClasses", ->
           sleep 2
           expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
 
+      describe "free course", ->
+        it "should allow me to sign up for free", ->
+          browser().navigateTo('/classes/become-a-badass-for-free/landing')
+          element('#sign-in-and-enroll-free-button').click()
+          expect(element('.login-modal-body').count()).toBe(1)
+          element("a.switch-to-signup").click()
+          input("register_user.email").enter("test#{Math.random(10000)}@example.com")
+          input("register_user.name").enter("Test Signup")
+          input("register_user.password").enter("apassword")
+          element("button.signup").click()
+          sleep 2
+          expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
+
   describe "signed in", ->
     beforeEach ->
       element('#sign-in-and-buy-button').click()
@@ -188,5 +213,12 @@ describe "PaidClasses", ->
       it "should allow me to redeem", ->
         browser().navigateTo('/classes/become-a-badass/landing?gift_token=test')
         element("#redeem-gift-button").click()
+        sleep 2
+        expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
+
+    describe "free course", ->
+      it "should allow me to sign up for free", ->
+        browser().navigateTo('/classes/become-a-badass-for-free/landing')
+        element("#enroll-free-button").click()
         sleep 2
         expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
