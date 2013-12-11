@@ -10,7 +10,7 @@
   -#
   -# Primary CTA
   -#
-  %div(ng-show="(! logged_in)")
+  %div(ng-show="(! logged_in && assembly.price)")
     .login(ng-controller="LoginController")
       .btn.btn-primary.btn-large.input-block-level#sign-in-and-buy-button(ng-click="waitForLogin(); openModal()")
         BUY NOW
@@ -50,7 +50,11 @@
 
   -# Not enrolled, free class
   %div(ng-show="(! gift_certificate) && (! enrolled) && (discounted_price == '0')")
-    .main-cta
+    %div(ng-show="(! logged_in)")
+      .login(ng-controller="LoginController")
+        .btn.btn-primary.btn-large.input-block-level
+          = link_to 'Sign in and Enroll for Free', sign_in_path
+    .main-cta(ng-show="(logged_in)")
       .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="free_enrollment()")
         Enroll For Free
 
