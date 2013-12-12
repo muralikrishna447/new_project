@@ -1,3 +1,16 @@
+task :sousvide_inclusions => :environment do
+  course = Course.find(1)
+  # ids = []
+  # course.inclusions.each do |inclusion|
+  #   activity = inclusion.activity
+  #   ids << activity.id
+  # end
+  # puts ids.join(',')
+  ids = [61,15,27,28,51,35,54,110,62,46,47,48,52,26,53,50,60,135,65,58,116,130,181,67,68,193,457,70,186,177,72,129,73,6,80,81,84,85,29,17,75,76,86,10,12,23,87,88,89,90,92,7,93,1,34,118,56,94,9,117,55,13,14]
+  activities = Activity.find(ids)
+  puts activities.inspect
+end
+
 task :migrate_sousvide => :environment do
   course = Course.find(1)
   @quiz1 = Quiz.find(6)
@@ -24,6 +37,15 @@ task :migrate_sousvide => :environment do
     slug_underscore = activity.slug.gsub('-','_')
     instance_variable_set("@#{slug_underscore}",activity)
   end
+
+  ids = [61,15,27,28,51,35,54,110,62,46,47,48,52,26,53,50,60,135,65,58,116,130,181,67,68,193,457,70,186,177,72,129,73,6,80,81,84,85,29,17,75,76,86,10,12,23,87,88,89,90,92,7,93,1,34,118,56,94,9,117,55,13,14]
+  activities = Activity.find(ids)
+  activities.each do |activity|
+    slug_underscore = activity.slug.gsub('-','_')
+    instance_variable_set("@#{slug_underscore}",activity) 
+  end
+
+  puts activities.inspect
 
   # Migrate Introduction
   group_introduction = Assembly.new({
