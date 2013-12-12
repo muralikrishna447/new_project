@@ -6,9 +6,6 @@
   .row
     .span12
       %div
-        / .flat-form
-        /   %form
-        /     %input(ng-model='search' placeholder='Enter Name')
         .gallery-filter.navbar
           %ul.nav.left-group
 
@@ -57,20 +54,13 @@
   .row.gallery-contents(ng-click="collapse_filters = true")
     .span12
       %div(galleryscroll='load_data()')
-        .media-box-3(ng-cloak='' ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
-          %a(href= 'activities/{{activity.slug}}')
-            .media-box-3-title
-              {{activity.title}}
-            %img(ng-src="{{activityImageURL(activity, 400)}}")
-            .media-box-3-footer
-              .footer-left
-                {{activity.difficulty}}
-              .footer-right
-                %span(ng-show="activity.creator.id != nil")
-                  By {{activity.creator.name}}
-                %span(ng-show="activity.show_only_in_course")
-                  %h5.pop PAID CLASS
-
+        %div(ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
+          %csGalleryItem( title="activity.title"
+                          href="'activities/' + activity.slug"
+                          image="activityImageURL(activity, 400)"
+                          footer-left="activity.difficulty"
+                          footer-right="getFooterRightContents(activity)"
+                        )
   .row
     .span2.offset5
       .gallery-spinner(ng-show='spinner > 0')

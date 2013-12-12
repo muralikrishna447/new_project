@@ -205,14 +205,13 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     $scope.load_no_results_data()
   ), 1000
 
-  # $scope.fill_screen = ->
-  #   if ($("body").height() < window.innerHeight)
-  #     $scope.load_data()
+  $scope.getFooterRightContents = (activity) ->
+    if activity?.creator?.id
+      return "By #{activity.creator.name}"
+    else if activity?.show_only_in_course
+      return "<h5 class='pop'>PAID CLASS</h5>"
 
-  # $scope.fill_screen()
 ]
-
-
 
 angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) ->
   (scope, element, attr) ->
