@@ -49,13 +49,19 @@
   @include transition(opacity 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
   @include boxsizing
 
+  h1
+    padding: $baseline
+    margin: 5px
+    font-size: 20px
+    line-height: 20px
+    font-weight: bold
+
   h4
     margin: 0px
     padding: $baseline
     text-transform: uppercase
 
   ul
-    margin-top: $baseline * 6
     border-bottom: 1px solid $light-gray
     width: 100%
     @include boxsizing

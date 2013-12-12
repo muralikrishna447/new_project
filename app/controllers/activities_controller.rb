@@ -82,7 +82,7 @@ class ActivitiesController < ApplicationController
           # New school class
           containing_class = @activity.containing_course
           if containing_class && containing_class.published?
-            flash.now[:notice] = "This is part of the #{view_context.link_to containing_class.title, landing_class_path(containing_class)} class."
+            flash.now[:notice] = "This is part of the #{view_context.link_to containing_class.title, landing_class_path(containing_class)} #{containing_class.assembly_type.to_s}."
           end
           track_event @activity
         end
