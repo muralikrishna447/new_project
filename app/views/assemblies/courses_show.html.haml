@@ -71,12 +71,6 @@
                         %i.icon-edit
                         edit
 
-        .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
-          .span12
-            -# Starts with a disqus id for course but for activities will get replaced using DISQUS.reset
-            = render 'layouts/disqus_comments', disqus_id: "assembly-course-#{@course.id}", disqus_title:@course.title, disqus_url: course_url(@course)
-
-
         .prev-next-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .row-fluid.section
             .span12
@@ -90,7 +84,12 @@
                       NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
 
-  
+        .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
+          .span12
+            %hr
+            -# Starts with a disqus id for course but for activities will get replaced using DISQUS.reset
+            = render 'layouts/disqus_comments', disqus_id: "assembly-course-#{@course.id}", disqus_title:@course.title, disqus_url: course_url(@course)
+
   .course-nav-bottom-center.responsive.container-fluid.noprint.text-center
     %hr
     %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
