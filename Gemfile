@@ -91,7 +91,7 @@ group :assets, :angular do
 end
 
 group :development, :test, :angular do
-  gem 'heroku'
+  # gem 'heroku'
   gem 'heroku_san'
   gem 'rspec-rails'
   gem 'spork-rails'

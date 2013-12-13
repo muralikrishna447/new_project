@@ -7,6 +7,7 @@ class Comment < ActiveRecord::Base
   validates :commentable_id, :commentable_type, :content, :user_id, presence: true
 
   default_scope order('created_at ASC')
+  scope :as_reviews, where("rating IS NOT ?", nil)
 
   def receiver
     commentable.user if commentable.class.method_defined?(:user)

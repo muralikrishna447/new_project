@@ -57,3 +57,10 @@ Merit::Badge.create!({
   description: 'Complete the Knife Sharpening Course',
   image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/QZt7rQzQK6gcuyYngoOb?cache=true'
 })
+
+Merit::Badge.create!({
+  id: 6,
+  name: 'siphon',
+  description: 'Complete the Whipping Siphon Course',
+  image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/GXn75GCTq6Yze8tUZFM8?cache=true'
+})
