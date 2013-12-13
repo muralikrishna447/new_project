@@ -1,4 +1,5 @@
 = semantic_form_for [:admin, @assembly] do |f|
+  = f.semantic_errors *f.object.errors.keys
   = f.inputs do
     = f.input :assembly_type, as: :select, collection: Assembly::ASSEMBLY_TYPE_SELECTION
     = f.input :published, as: :boolean  
