@@ -25,6 +25,8 @@
                   %i.icon-remove
               .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" )
                 .btn-group.first-separate
+                  %csRadioButtons(choices="typeChoices" ng-model="filters.activity_type")
+                .btn-group.first-separate
                   %button.btn.btn-checkbox(ng-repeat="choice in typeChoices" ng-model="filters.activity_type" btn-radio="{{choice}}")
                     {{choice.name}}
                 .btn-group.first-separate
