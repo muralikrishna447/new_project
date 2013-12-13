@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    @classes = (Assembly.pubbed_courses.order('updated_at desc') + Course.published.order('updated_at desc'))
+    @classes = Assembly.pubbed_courses.order('updated_at desc').to_a
     prereg_assembly_classes = Assembly.prereg_courses.order('updated_at desc').limit(1)
     pubbed_assembly_classes = Assembly.pubbed_courses.order('updated_at desc').limit(1)
     @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
