@@ -57,22 +57,9 @@
       .stream(ng-controller='StreamsController' ng-init="init()")
         %div(ng-repeat='stream in streams')
           %div(ng-include src="streamViewTemplate(stream)")
-          / %div(ng-switch="stream.group_type")
-          /   %div(ng-switch-when='Comment_create')
-          /     %div(ng-include src="'stream_views/comment_create.html'")
-          /   %div(ng-switch-when='Course_enroll')
-          /     %div(ng-include src="'stream_views/course_enroll.html'")
-          /   %div(ng-switch-when='Like_create')
-          /     %div(ng-include src="'stream_views/like_create.html'")
-          /   %div(ng-switch-when='Upload_create')
-          /     %div(ng-include src="'stream_views/upload_create.html'")
-          /   %div(ng-switch-when='Vote_create')
-          /     %div(ng-include src="'stream_views/vote_create.html'")
         %div.stream-spinner(ng-hide="hideSpinner")
           %i.icon-spinner.icon-spin.icon-large
         .stream-more(ng-show="showMoreButton" ng-cloak)
-          / %a.btn.btn-large.btn-block.btn-outline-blue-large(ng-click="loadMore()")
-          /   See More
           = link_to 'See More', community_activity_path, class: 'btn btn-large btn-block btn-outline-blue-large'
     .span2
 
