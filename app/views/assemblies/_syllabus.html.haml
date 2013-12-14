@@ -1,0 +1,4 @@
+.controller(ng-controller='CoursesController' ng-init="init(#{@course.id})")
+  %ul.unstyled
+    %li(ng-repeat='inclusion in course.assembly_inclusions'
+        ng-include="'/client_views/_recursive_landing_syllabus.html'")
