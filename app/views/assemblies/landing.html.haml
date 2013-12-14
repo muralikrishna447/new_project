@@ -16,7 +16,7 @@
           - if @course.slug == 'french-macarons'
             - ab_test 'macaron_landing_video', 'FA7XWOmcptU', {'XqQZSn0uB2w' => 4} do |video_id|
               %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
-          - elsif @course.slug == 'accelerated-sous-vide-cooking-course'
+          - elsif @course.id == 47
             %ul.rslides
               %li
                 %img(src="http://d2eud0b65jr0pw.cloudfront.net/Module_7_Pork_Cheek_assembly20121204_4.jpg")
