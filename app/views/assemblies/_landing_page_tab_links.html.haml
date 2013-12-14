@@ -12,6 +12,6 @@
 - if @course.uploads.any?
   %li(ng-click="switchTab('student-projects', 'Student Projects')" ng-class="isActiveTab('student-projects')")
     = link_to "Student Projects", '#student-projects'
-- if @course.assembly_type == 'Course'
-  %li(ng-click="switchTab('syllabus', 'Syllabus')" ng-class="isActiveTab('syllabus')")
-    = link_to "Syllabus", '#syllabus'
+/ - if @course.assembly_type == 'Course'
+/   %li(ng-click="switchTab('syllabus', 'Syllabus')" ng-class="isActiveTab('syllabus')")
+/     = link_to "Syllabus", '#syllabus'
