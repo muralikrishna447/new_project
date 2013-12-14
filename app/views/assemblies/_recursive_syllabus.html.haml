@@ -1,0 +1,16 @@
+- level+=1
+- nesting_class = level == 1 ? '' : 'nested'
+- if includable.class.to_s == 'Assembly'
+  %div(class="#{nesting_class}")
+    - if level == 1
+      %h3= includable.title
+    - else
+      = includable.title
+    - includable.assembly_inclusions.each do |inclusion|
+      = render 'recursive_syllabus', includable: inclusion.includable, level: level
+- else
+  %div(class="#{nesting_class}")
+    - if level == 1
+      %h3= link_to includable.title, class_path(@assembly, anchor: includable.slug)
+    - else
+      = link_to includable.title, class_path(@assembly, anchor: includable.slug)
