@@ -3,7 +3,7 @@
 - if includable.class.to_s == 'Assembly'
   %div(class="#{nesting_class}")
     - if level == 1
-      %h3= includable.title
+      %strong= includable.title
     - else
       = includable.title
     - includable.assembly_inclusions.each do |inclusion|
@@ -11,6 +11,6 @@
 - else
   %div(class="#{nesting_class}")
     - if level == 1
-      %h3= link_to includable.title, class_path(@assembly, anchor: includable.slug)
+      %strong= link_to includable.title, class_path(@assembly, anchor: includable.slug), class: 'black-link'
     - else
-      = link_to includable.title, class_path(@assembly, anchor: includable.slug)
+      = link_to includable.title, class_path(@assembly, anchor: includable.slug), class: 'black-link'
