@@ -24,7 +24,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
                           }
                         )
 
-  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "substitutions", "purchasing tips", "storage", "production", "seasonality", "history"]
+  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "suggested cooking times and temperatures", "substitutions", "purchasing tips", "storage", "production", "seasonality", "history"]
 
   $scope.ingredient = Ingredient.get({}, -> 
     mixpanel.track('Ingredient Viewed', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});

@@ -1,0 +1,46 @@
+- content_for :title, "Ingredient Gallery"
+- content_for :description, "Learn more about your favorite ingredients"
+
+.container.gallery-wrapper.relative(ng-controller='IngredientsGalleryController' ng-cloak)
+  .row
+    .span12
+      %div
+        .gallery-filter.navbar
+          %ul.nav.left-group
+
+            %form.navbar-search.relative(ng-click="collapse_filters = true")
+              %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all")
+              %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
+                %i.icon-remove
+
+            %li.relative(ng-mouseenter="collapse_filters = false" ng-mouseleave="collapse_filters = true")
+              .filter-collapser(ng-click="collapse_filters = ! collapse_filters")
+                FILTER
+                %i.icon-angle-down(ng-show="collapse_filters")
+                %i.icon-angle-up(ng-hide="collapse_filters")
+              .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
+                {{f.name}}
+                %span.reset-filter(ng-click="resetFilter(k)")
+                  %i.icon-remove
+              .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" )
+                .btn-group.first-separate
+                  %csRadioButtons(ng-model="imageChoices" active="filters.image")
+
+
+  .row(ng-show="ingredients.length == 0" ng-click="collapse_filters = true")
+    .span12
+      %h3 No results found, but perhaps you'd enjoy these ingredients?
+
+  .row.gallery-contents(ng-click="collapse_filters = true")
+    .span12
+      %div(galleryscroll='load_data()')
+        %div(ng-repeat='ingredient in getIngredients()' ng-animate="'gallery-animation'")
+          %csGalleryItem( title="ingredient.title"
+                          href="'ingredients/' + ingredient.slug"
+                          image="ingredientImageURL(ingredient, 400)"
+
+                        )
+  .row
+    .span2.offset5
+      .gallery-spinner(ng-show='spinner > 0')
+        %i.icon-page-load

@@ -27,6 +27,7 @@ class Ingredient < ActiveRecord::Base
   scope :search_title, -> title { where('title iLIKE ?', '%' + title + '%') }
   scope :exact_search , -> title { where(title: title) }
   scope :no_sub_activities, where('sub_activity_id IS NULL')
+  scope :with_images, where('image_id IS NOT NULL')
 
   before_save :fix_title
   def fix_title
