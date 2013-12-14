@@ -111,8 +111,15 @@ private
       # they can get on an email list to be notified when it is available.
       @course = Assembly.find(params[:id])
       if @course && @course.assembly_type == "Course" && (! @course.published?)
-        @list_name = ("csp-" + @course.slug)[0...15]
-        render "pre_registration"
+        if current_user && current_user.enrolled?(@course)
+          @assembly = Assembly.find(params[:id])
+          session[:coupon] = params[:coupon] || session[:coupon]
+          @discounted_price = discounted_price(@assembly.price, session[:coupon])
+          @gift_certificate = GiftCertificate.where(token: (session[:gift_token]||params[:gift_token])).first if (session[:gift_token]||params[:gift_token])
+        else
+          @list_name = ("csp-" + @course.slug)[0...15]
+          render "pre_registration"
+        end
         return false
       end
       raise
