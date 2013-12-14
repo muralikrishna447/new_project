@@ -28,6 +28,15 @@ class IngredientsController < ApplicationController
     end
   end
 
+  def manager
+    respond_to do |format|
+      format.html do
+        authorize! :manage, Ingredient unless Rails.env.angular?
+        render
+      end
+    end
+  end
+
   def update
     authorize! :update, Ingredient unless Rails.env.angular?
     respond_to do |format|

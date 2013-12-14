@@ -126,6 +126,7 @@ Delve::Application.routes.draw do
     end
     collection do
       get 'all_tags' => 'ingredients#get_all_tags'
+      get 'manager' => 'ingredients#manager'
     end
   end
 
