@@ -25,20 +25,14 @@
                   %i.icon-remove
               .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" )
                 .btn-group.first-separate
-                  %csRadioButtons(choices="typeChoices" ng-model="filters.activity_type")
+                  %csRadioButtons(ng-model="typeChoices" active="filters.activity_type")
                 .btn-group.first-separate
-                  %button.btn.btn-checkbox(ng-repeat="choice in typeChoices" ng-model="filters.activity_type" btn-radio="{{choice}}")
-                    {{choice.name}}
-                .btn-group.first-separate
-                  %button.btn.btn-checkbox(ng-repeat="choice in difficultyChoices" ng-model="filters.difficulty" btn-radio="{{choice}}")
-                    {{choice.name}}
+                  %csRadioButtons(ng-model="difficultyChoices" active="filters.difficulty")
                 .btn-group
-                  %button.btn.btn-checkbox(ng-repeat="choice in generatorChoices" ng-model="filters.generator" btn-radio="{{choice}}")
-                    {{choice.name}}
+                  %csRadioButtons(ng-model="generatorChoices" active="filters.generator")
                 -if can? :update, User
                   .btn-group
-                    %button.btn.btn-checkbox(ng-repeat="choice in publishedStatusChoices" ng-model="filters.published_status" btn-radio="{{choice}}")
-                      {{choice.name}}
+                    %csRadioButtons(ng-model="publishedStatusChoices" active="filters.published_status")
 
           %ul.nav.browse-group.pull-right(ng-click="collapse_filters = true")
             %li.browse-by Browse By

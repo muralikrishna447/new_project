@@ -1,5 +1,4 @@
 angular.module('ChefStepsApp').directive 'csradiobuttons', ->
   restrict: 'E',
-  require: "^ngModel"
-  scope: { choices: '=', output: '=ngModel'},
+  scope: { active: "=", ngModel: "="},
   templateUrl: '/client_views/_cs_radio_buttons'
