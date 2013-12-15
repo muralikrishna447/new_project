@@ -77,11 +77,10 @@
                 :markdown
                   #{@course.landing_bottom.content}
 
-          - if @course.comments.as_reviews.any?
-            %div(ng-show="tab=='reviews'")
+          %div(ng-show="tab=='reviews'")
 
-              %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, #{(current_user && current_user.id) || 0}, true)")
-                = render 'comments/reviews'
+            %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, #{(current_user && current_user.id) || 0}, true)")
+              = render 'comments/reviews'
 
           - if @course.faq    
             %div(ng-show="tab=='faq'")
@@ -100,8 +99,8 @@
                   - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
                     .span4
                       = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
-          / %div(ng-show="tab=='syllabus'")
-          /   = render 'syllabus'
+          %div(ng-show="tab=='syllabus'")
+            = render 'syllabus'
 
 = render 'layouts/footer'
 

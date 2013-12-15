@@ -106,4 +106,8 @@ class Assembly < ActiveRecord::Base
   def average_rating
     comments.where("rating IS NOT NULL").average('rating').to_f
   end
+
+  def only_one_level
+    self.assembly_inclusions.map(&:includable_type).include?('Assembly') ? false : true
+  end
 end
