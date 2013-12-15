@@ -77,11 +77,10 @@
                 :markdown
                   #{@course.landing_bottom.content}
 
-          - if @course.comments.as_reviews.any?
-            %div(ng-show="tab=='reviews'")
+          %div(ng-show="tab=='reviews'")
 
-              %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, #{(current_user && current_user.id) || 0}, true)")
-                = render 'comments/reviews'
+            %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, #{(current_user && current_user.id) || 0}, true)")
+              = render 'comments/reviews'
 
           - if @course.faq    
             %div(ng-show="tab=='faq'")

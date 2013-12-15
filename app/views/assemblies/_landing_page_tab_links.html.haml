@@ -1,8 +1,7 @@
 %li(ng-click="switchTab('default', 'Overview')" ng-class="isActiveTab('default')")
   = link_to 'Overview', '#overview'
-- if @course.comments.as_reviews.any?
-  %li(ng-click="switchTab('reviews', 'Reviews')" ng-class="isActiveTab('reviews')")
-    = link_to "Reviews", '#reviews'
+%li(ng-click="switchTab('reviews', 'Reviews')" ng-class="isActiveTab('reviews')")
+  = link_to "Reviews", '#reviews'
 - if @course.faq
   %li(ng-click="switchTab('faq', 'FAQ')" ng-class="isActiveTab('faq')")
     = link_to 'FAQ', '#faq'
