@@ -19,8 +19,9 @@ class AffiliatesController < ApplicationController
         request = Net::HTTP::Get.new(uri.request_uri)
         response = http.request(request)
       end
+      return render json: {response: response, body: response.body, code: response.code, message: response.message}, status: 200
     end
-    render json: {response: response, body: response.body, code: response.code, message: response.message}, status: 200
+    render nothing: true
   end
 end
 
