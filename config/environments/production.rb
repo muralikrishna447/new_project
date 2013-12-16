@@ -62,7 +62,7 @@ Delve::Application.configure do
     port: 587,
     domain: 'www.chefsteps.com',
     user_name: 'noreply@chefsteps.com',
-    password: 'chefstepsnrply3#',
+    password: ENV["SMTP_PASSWORD"],
     authentication: 'plain',
     enable_starttls_auto: true
   }
