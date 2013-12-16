@@ -1,4 +1,4 @@
-%div.csmonitorinputactivity.ng-form(ng-controller="IngredientsController"  name="ingredientform" ng-hide="(! editMode) && (step.ingredients.length == 0)")
+%div.section.csmonitorinputactivity.ng-form(ng-controller="IngredientsController"  name="ingredientform" ng-hide="(! editMode) && (step.ingredients.length == 0)")
 
   .step-ingredients-source.ingredients-well.well(ng-hide="(step.ingredients.length == 0) || (editMode && masterSelect)")
     = render 'shared/ingredients_list', source: "step"
@@ -17,5 +17,3 @@
       %i.icon-plus
     %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs && (! masterSelect)" tooltip="Finish adding ingredients" tooltip-placement="bottom")
       Done
-
-.divider
