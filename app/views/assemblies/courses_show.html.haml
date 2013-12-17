@@ -87,8 +87,8 @@
         .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .span12
             %hr
-            -# Starts with a disqus id for course but for activities will get replaced using DISQUS.reset
-            = render 'layouts/disqus_comments', disqus_id: "assembly-course-#{@course.id}", disqus_title:@course.title, disqus_url: course_url(@course)
+            -# using DISQUS.reset to determine which disqus thread to display
+            = render 'layouts/disqus_angular'
 
   .course-nav-bottom-center.responsive.container-fluid.noprint.text-center
     %hr
