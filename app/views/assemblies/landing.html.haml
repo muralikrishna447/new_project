@@ -14,9 +14,9 @@
       .span8.section
         .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
           - if @course.slug == 'french-macarons'
-            - ab_test 'macaron_landing_video', 'FA7XWOmcptU', '5adpHW6fqa0' do |video_id|
+            - ab_test 'macaron_landing_video', 'FA7XWOmcptU', {'XqQZSn0uB2w' => 4} do |video_id|
               %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
-          - elsif @course.slug == 'accelerated-sous-vide-cooking-course'
+          - elsif @course.id == 47
             %ul.rslides
               %li
                 %img(src="http://d2eud0b65jr0pw.cloudfront.net/Module_7_Pork_Cheek_assembly20121204_4.jpg")
@@ -77,19 +77,11 @@
                 :markdown
                   #{@course.landing_bottom.content}
 
-            - if @course.uploads.approved.any?
-              .section
-                %h4 Student Projects
-                .row
-                  - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
-                    .span4
-                      = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
-
-
           %div(ng-show="tab=='reviews'")
 
             %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, #{(current_user && current_user.id) || 0}, true)")
               = render 'comments/reviews'
+
           - if @course.faq    
             %div(ng-show="tab=='faq'")
               :markdown
@@ -99,6 +91,16 @@
             %div(ng-show="tab=='ingredients-equipment'")
               :markdown
                 #{apply_shortcodes(@course.ingredients_equipment.content)}
+
+          - if @course.uploads.approved.any?
+            %div(ng-show="tab=='student-projects'")
+              .section
+                .row
+                  - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
+                    .span4
+                      = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
+          %div(ng-show="tab=='syllabus'")
+            = render 'syllabus'
 
 = render 'layouts/footer'
 

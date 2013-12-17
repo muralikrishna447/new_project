@@ -15,7 +15,7 @@
         %h2
           = link_to 'Classes', courses_path, class: 'orange-link'
         .home-featured-item
-          - home_featured_path = @classes[0].class.to_s == 'Assembly' ? landing_class_path(@classes[0]) : course_path(@classes[0])
+          - home_featured_path = landing_class_path(@classes[0])
           = link_to home_featured_path do
             .top-group
               %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= @classes[0].title
@@ -26,7 +26,7 @@
           .section
             = @classes[0].short_description
         - @classes.from(1).each.with_index do |course, index|
-          - url = course.class.to_s == 'Assembly' ? landing_class_path(course) : course_path(course)
+          - url = landing_class_path(course)
           .home-standard-item
             .home-standard-item-image
               = link_to url do
@@ -34,8 +34,7 @@
             .home-standard-item-text
               = link_to url do
                 %h3= course.title
-              -if course.class.to_s == 'Assembly'
-                %csrating.rating(value="#{course.average_rating}" readonly="true")
+              %csrating.rating(value="#{course.average_rating}" readonly="true")
               %p= course.short_description
       .home-section
         %hr
@@ -58,22 +57,9 @@
       .stream(ng-controller='StreamsController' ng-init="init()")
         %div(ng-repeat='stream in streams')
           %div(ng-include src="streamViewTemplate(stream)")
-          / %div(ng-switch="stream.group_type")
-          /   %div(ng-switch-when='Comment_create')
-          /     %div(ng-include src="'stream_views/comment_create.html'")
-          /   %div(ng-switch-when='Course_enroll')
-          /     %div(ng-include src="'stream_views/course_enroll.html'")
-          /   %div(ng-switch-when='Like_create')
-          /     %div(ng-include src="'stream_views/like_create.html'")
-          /   %div(ng-switch-when='Upload_create')
-          /     %div(ng-include src="'stream_views/upload_create.html'")
-          /   %div(ng-switch-when='Vote_create')
-          /     %div(ng-include src="'stream_views/vote_create.html'")
         %div.stream-spinner(ng-hide="hideSpinner")
           %i.icon-spinner.icon-spin.icon-large
         .stream-more(ng-show="showMoreButton" ng-cloak)
-          / %a.btn.btn-large.btn-block.btn-outline-blue-large(ng-click="loadMore()")
-          /   See More
           = link_to 'See More', community_activity_path, class: 'btn btn-large btn-block btn-outline-blue-large'
     .span2
 

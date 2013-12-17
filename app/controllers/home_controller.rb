@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    @classes = (Assembly.pubbed_courses.order('updated_at desc') + Course.published.order('updated_at desc'))
+    @classes = Assembly.pubbed_courses.order('updated_at desc').to_a
     prereg_assembly_classes = Assembly.prereg_courses.order('updated_at desc').limit(1)
     pubbed_assembly_classes = Assembly.pubbed_courses.order('updated_at desc').limit(1)
     @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
@@ -16,11 +16,8 @@ class HomeController < ApplicationController
       @recipes = Activity.published.chefsteps_generated.recipes.include_in_feeds.includes(:steps).last(6) - @heroes
       @techniques = Activity.published.chefsteps_generated.techniques.include_in_feeds.includes(:steps).last(6) - @heroes
       @sciences = Activity.published.chefsteps_generated.sciences.include_in_feeds.includes(:steps).last(6) - @heroes
-      # cookies.delete(:returning_visitor)
       @returning_visitor = cookies[:returning_visitor]
       @new_visitor = params[:new_visitor] || !@returning_visitor
-      # @discussion = Forum.discussions.first
-      #@status = Twitter.status_embed
       @user = User.new
     end
   end
