@@ -91,11 +91,18 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
 
     # Update to correct disqus view
     if $scope.currentIncludable?.include_disqus
+      if $scope.course.id == 3
+        # Hack for French Macaron Class Discussion page
+        pageURL = "http://chefsteps.com/classes/3#!/discussion"
+        pageID = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
+      else
+        pageURL = "http://chefsteps.com/classes/#{$scope.course.id}/#!#{$scope.currentIncludable.includable_slug}"
+        pageID = "assembly-inclusion-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
       DISQUS.reset
         reload: true
         config: ->
-          @page.identifier = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
-          @page.url = "http://chefsteps.com/classes/#{$scope.course.id}#/#{$scope.currentIncludable.includable_slug}"
+          @page.identifier = pageID
+          @page.url = pageURL
 
   $scope.overrideLoadActivity = (id) ->
     if _.find($scope.flatInclusions, (incl) -> incl.includable_id == id)
