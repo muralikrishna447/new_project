@@ -1,6 +1,6 @@
 # Angular.js stuff. This can't wait til after page load, it needs to happen in the <head>
 
-angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
+@app = angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
   # Don't make this true!! It will break every link on the page that isn't to
   # an angular known url. The addr bar changes but content doesn't load.
   # See https://groups.google.com/forum/#!topic/angular/cUjy9PEDeWE .
@@ -19,14 +19,9 @@ angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorag
 
 # Thank god for Stack Overflow!
 # http://stackoverflow.com/questions/14210218/http-get-to-a-rails-applicationcontroller-gives-http-error-406-not-acceptable
-angular.module('ChefStepsApp').config ["$httpProvider", ($httpProvider) ->
+@app.config ["$httpProvider", ($httpProvider) ->
   $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"
 ]
-
-angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
-
-]
-
 
 @$$parse = (url) ->
   matchUrl url, this

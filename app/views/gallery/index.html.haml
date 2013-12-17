@@ -53,7 +53,7 @@
         %div(ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
           %csGalleryItem( title="activity.title"
                           href="'activities/' + activity.slug"
-                          image="activityImageURL(activity, 400)"
+                          image="itemImageURL(activity, 400)"
                           footer-left="activity.difficulty"
                           footer-right="getFooterRightContents(activity)"
                         )

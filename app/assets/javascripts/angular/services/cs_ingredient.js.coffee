@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').factory 'Ingredient', ['$resource', ($resource) ->
+@app.factory 'Ingredient', ['$resource', ($resource) ->
   return $resource( "/ingredients/:id",
     { detailed: true},
     {

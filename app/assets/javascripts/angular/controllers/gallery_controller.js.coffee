@@ -1,4 +1,16 @@
-angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", ($scope, $resource, $location, $timeout) ->
+@app.controller 'GalleryBaseController', ["$scope", ($scope) ->
+    $scope.itemImageURL = (item, width) ->
+      fpfile = $scope.itemImageFpfile(item)
+      height = width * 9.0 / 16.0
+      return (window.cdnURL(fpfile.url) + "/convert?fit=crop&w=#{width}&h=#{height}&cache=true") if (fpfile? && fpfile.url?)
+      item.placeHolderImage()
+  ]
+
+@app.controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Activity",($scope, $resource, $location, $timeout, csGalleryService, $controller, Activity) ->
+
+  $controller('GalleryBaseController', {$scope: $scope});
+
+  $scope.galleryService = csGalleryService
 
   PAGINATION_COUNT = 12
 
@@ -9,7 +21,6 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
   ]
 
   $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x.value == "relevance")
-
 
   $scope.typeChoices = [
     {name: "Any", value: "any"}
@@ -43,10 +54,8 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
     generator: $scope.generatorChoices[0]
   }
 
-  $scope.placeHolderImage = "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
-
   # Must match logic in has_Activity#featurable_image !!
-  $scope.activityImageFpfile = (activity) ->
+  $scope.itemImageFpfile = (activity) ->
     if activity?
       if activity.featured_image_id
         return JSON.parse(activity.featured_image_id)
@@ -57,13 +66,6 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
           images = activity.steps.map (step) -> step.image_id
           image_fpfile = images[images.length - 1]
           return JSON.parse(image_fpfile) if (image_fpfile? && (image_fpfile != ""))
-    ""
-
-  $scope.activityImageURL = (activity, width) ->
-    fpfile = $scope.activityImageFpfile(activity)
-    height = width * 9.0 / 16.0
-    return (window.cdnURL(fpfile.url) + "/convert?fit=crop&w=#{width}&h=#{height}&cache=true") if (fpfile? && fpfile.url?)
-    $scope.placeHolderImage
 
   $scope.serialize = (obj) ->
     str = []
@@ -109,7 +111,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
       gip = $scope.galleryIndexParams()
       query_filters = angular.extend({}, $scope.filters)
-      more_activities = $resource($scope.gallery_index + '?' + $scope.serialize(gip)).query ->
+      more_activities = Activity.$index_as_json(gip, ->
 
         console.log "GOT BACK " + more_activities.length + " FOR PAGE " + gip.page
 
@@ -138,6 +140,7 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
           console.log "new: " + $scope.filters.search_all
 
         $scope.spinner -= 1
+      )
 
 
   $scope.load_no_results_data = ->
@@ -187,7 +190,6 @@ angular.module('ChefStepsApp').controller 'GalleryController', ["$scope", "$reso
 
   # Initialization
   $scope.collapse_filters = true
-  $scope.gallery_index = document.location.pathname + '/index_as_json.json'
   $scope.page = 1
   $scope.spinner = 0
   $scope.url_params = {}
