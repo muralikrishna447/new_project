@@ -1,5 +1,5 @@
 ActiveAdmin.register Assembly do
-  
+  menu parent: 'Assemblies'
   form :partial => "form"
 
   # Removing this for now b/c it is broken for courses (needs to be classes), and meaningless for groups
