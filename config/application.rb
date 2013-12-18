@@ -96,7 +96,8 @@ module Delve
     config.middleware.use Rack::Cors do
       allow do
         origins '*'
-        resource '/global-navigation', headers: :any, methods: [:get, :options]
+        # resource '/global-navigation', headers: :any, methods: [:get, :options]
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
       end
     end
 
