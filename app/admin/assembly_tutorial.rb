@@ -1,5 +1,6 @@
-ActiveAdmin.register_page "assemblies tutorial" do
+ActiveAdmin.register_page "Assemblies Tutorial" do
+  menu parent: 'Assemblies'
   content do
-    render 'assemblies/tutorial'
+    render 'admin/assemblies/tutorial'
   end
 end
