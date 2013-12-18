@@ -2,6 +2,8 @@
 - content_for :title, "#{@course.title.html_safe} - Class"
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+- content_for :ajax_seo do
+  %meta{name: "fragment", content: "!"}
 
 .controller(ng-controller='CoursesController' ng-init="init(#{@course.id})")
   .container.course-assembly-container(ng-cloak)

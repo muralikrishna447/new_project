@@ -6,6 +6,8 @@
   %meta{property: 'og:title', content: "#{@course.title.html_safe} - Class"}
   %meta{property: 'og:description', content: @course.description != "" ? strip_tags(markdown(@course.description)) : @course.title.html_safe}
   %meta{property: 'og:image', content: filepicker_hero_image(@course.image_id)}
+- content_for :ajax_seo do
+  %meta{name: "fragment", content: "!"}
 
 
 .assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
