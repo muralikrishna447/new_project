@@ -100,6 +100,23 @@ private
     end
   end
 
+  before_filter :get_escaped_fragment_from_brombone
+  def get_escaped_fragment_from_brombone
+    if params.has_key?(:'_escaped_fragment_')
+      puts "Rendering #{request.path} from brombone snapshot"
+      base_url = "http://chefsteps.brombonesnapshots.com/chefsteps.com#{request.path}"
+      uri = URI.parse(base_url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      response = http.request(Net::HTTP::Get.new(uri.request_uri))
+      puts response.inspect
+      if response.code.to_i == 200
+        render text: response.body
+      else
+        puts "Brombone returned #{response.code} for #{request.path} - falling back to standard page"
+      end
+    end
+  end
+
   protected
 
   def verified_request?
