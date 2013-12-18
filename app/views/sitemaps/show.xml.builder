@@ -7,15 +7,15 @@ xml.tag! 'urlset', 'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9' do
       xml.changefreq("daily")
     }
   end
-  @courses.each do |p|
+  @main_stuff.each do |p|
     xml.url {
-      xml.loc(course_url(p))
-      xml.changefreq("daily")
-    }
-  end
-  @activities.each do |p|
-    xml.url {
-      xml.loc(activity_url(p))
+      if p.is_a?(Assembly) && p.assembly_type == "Course"
+        xml.loc(landing_class_path(p))
+      elsif p.is_a?(Assembly) && p.assembly_type == "Project"
+        xml.loc(project_path(p))
+      else
+        xml.loc(url_for(p))
+      end
       xml.changefreq("daily")
     }
   end
