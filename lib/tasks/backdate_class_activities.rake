@@ -10,6 +10,8 @@ def recursive_backdate(assembly)
   assembly.assembly_inclusions.each do |ai|
     if ai.includable_type == "Activity"
       ai.includable.published_at = $next_date
+      ai.includable.published = true
+      ai.includable.include_in_gallery = true
       ai.includable.save!
       puts "Backdated " + ai.includable.slug + " to " + $next_date.to_s
       $next_date = $next_date.advance(days: -5)
