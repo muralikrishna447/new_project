@@ -49,22 +49,11 @@ feature 'timeline' do
     expect(page).to_not have_content 'liked Published Activity'
   end
 
-  scenario 'enrolling into a published course shows up in timeline' do
-    @published = Fabricate :course, title: 'Published Course', published: true
-    @course_activity = Fabricate :activity, title: 'First activity', published: true
-    @inclusion = Fabricate :inclusion, course_id: @published.id, activity_id: @course_activity.id
-    @event = Fabricate :event, trackable: @published, action: 'enroll', user: @user
-    visit user_profile_path(@user)
-    expect(page).to have_content 'enrolled into the Published Course'
+  scenario 'enrolling into a published course shows up in timeline', pending: true do
+
   end
 
-  scenario 'enrolling into a unpublished courses does not show up in timeline' do
-    @unpublished = Fabricate :course, title: 'Unpublished Course', published: false
-    @course_activity = Fabricate :activity, title: 'First activity', published: true
-    @inclusion = Fabricate :inclusion, course_id: @unpublished.id, activity_id: @course_activity.id
-    @event = Fabricate :event, trackable: @unpublished, action: 'enroll', user: @user
-    visit user_profile_path(@user)
-    expect(page).to_not have_content 'enrolled into the Unpublished Course'
+  scenario 'enrolling into a unpublished courses does not show up in timeline', pending: true do
   end
 
 end

@@ -29,8 +29,8 @@
                 = image_tag badge.image
       - if current_user
         - if current_user == @user
-          = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-primary btn-block'
-          = link_to 'Sign out', sign_out_path, class: 'btn btn-primary btn-block'
+          = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-secondary btn-block'
+          = link_to 'Sign out', sign_out_path, class: 'btn btn-secondary btn-block'
         - else
           / = link_to followership_path(@user), method: :put, class: 'btn btn-primary btn-block' do
           /   = current_user.follows?(@user) ? 'Unfollow' : 'Follow'
@@ -76,12 +76,8 @@
               = render 'shared/media_list_item', image: enrollment.enrollable.featured_image, title: course_title, text: course_text
           - else
             .tab-pane-header
-              %h3 Enroll into your first course today!
-            - @courses.each do |course|
-              - unless course.id == 1
-                - course_title = capture do
-                  = link_to "#{course.title} Course", course
-                = render 'shared/media_list_item', image: course.featured_image, title: course_title, text: ''
+              %h4 Enroll into your first Class today!
+              = link_to 'Classes', courses_path, class: 'btn btn-primary'
         .tab-pane#favorites
           - @user.likes.scoped_by_type('Activity').order('created_at DESC').each do |like|
             - likeable_title = capture do
@@ -118,11 +114,11 @@
           .timeline-end
           .timeline-left
             - @timeline_events.in_groups_of(2).map(&:first).compact.each do |event|
-              - if event.trackable
+              - if event.trackable_type != 'Course' && event.trackable
                 = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
           .timeline-right
             - @timeline_events.in_groups_of(2).map(&:last).compact.each do |event|
-              - if event.trackable
+              - if event.trackable_type != 'Course' && event.trackable
                 = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
         .text-center
           - if current_user == @user
