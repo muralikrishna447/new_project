@@ -114,11 +114,11 @@
           .timeline-end
           .timeline-left
             - @timeline_events.in_groups_of(2).map(&:first).compact.each do |event|
-              - if event.trackable
+              - if event.trackable_type != 'Course' && event.trackable
                 = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'left'
           .timeline-right
             - @timeline_events.in_groups_of(2).map(&:last).compact.each do |event|
-              - if event.trackable
+              - if event.trackable_type != 'Course' && event.trackable
                 = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: 'right'
         .text-center
           - if current_user == @user
