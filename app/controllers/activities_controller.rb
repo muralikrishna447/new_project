@@ -62,40 +62,18 @@ class ActivitiesController < ApplicationController
         @random_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).order("RANDOM()").last(6)
         @popular_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).order("RANDOM()").first(6)
 
-        if params[:course_id]
-          @course = Course.find(params[:course_id])
-          @current_module = @course.current_module(@activity)
-          @current_inclusion = @course.inclusions.where(activity_id: @activity.id).first
-          @prev_activity = @course.prev_published_activity(@activity)
-          @next_activity = @course.next_published_activity(@activity)
-          if @prev_activity
-            @prev_module = @course.current_module(@prev_activity)
+        # New school class
+        containing_class = @activity.containing_course
+        if containing_class && containing_class.published?
+          case containing_class.assembly_type
+          when 'Course'
+            path = view_context.link_to containing_class.title, landing_class_path(containing_class)
+          when 'Project'
+            path = view_context.link_to containing_class.title, project_path(containing_class)
           end
-          if @activity.assignments.any?
-            @upload = Upload.new
-            session[:return_to] = request.fullpath
-          end
-          render 'course_activity'
-          track_event @activity
-          return
-        else
-          # Old school course
-          if @activity.courses.any? && @activity.courses.first.published?
-            flash.now[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
-          end
-          # New school class
-          containing_class = @activity.containing_course
-          if containing_class && containing_class.published?
-            case containing_class.assembly_type
-            when 'Course'
-              path = view_context.link_to containing_class.title, landing_class_path(containing_class)
-            when 'Project'
-              path = view_context.link_to containing_class.title, project_path(containing_class)
-            end
-            flash.now[:notice] = "This is part of the #{path} #{containing_class.assembly_type.to_s}."
-          end
-          track_event @activity
+          flash.now[:notice] = "This is part of the #{path} #{containing_class.assembly_type.to_s}."
         end
+        track_event @activity
 
         @minimal = false
         if params[:minimal]
