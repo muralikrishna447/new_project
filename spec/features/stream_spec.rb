@@ -6,7 +6,7 @@ feature 'stream' do
     before :each do
       @assembly = Fabricate :assembly, title: 'Test Course', description: 'This is a test course.', published: true
       @activity = Fabricate :activity, title: 'Test Activity', published: true
-      @inclusion = Fabricate :inclusion, course_id: @assembly.id, activity_id: @activity.id
+      @inclusion = Fabricate :assembly_inclusion, assembly_id: @assembly.id, includable: @activity
       @upload = Fabricate :upload, title: 'Test Upload', notes: 'This is a test upload.', activity_id: @activity.id
       @poll = Fabricate :poll, title: 'Test Poll', description: 'Test Poll description'
       @poll_item = Fabricate :poll_item, title: 'Test Poll Item', description: 'Test Poll Item description'
