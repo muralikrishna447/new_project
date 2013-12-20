@@ -19,6 +19,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.passwordType = "password" # Defaults password to the password input type, but lets it switch to just text
 
   $scope.formFor = "signIn" # [signIn, purchase] # This determines if it's being used for a purchase or if it's being used for signup/signin
+  $scope.invitationsNextText = "Skip"
 
   $scope.inviteFriends = []
 
@@ -252,7 +253,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     # )
 
   $scope.sendInvites = ->
-    $scope.facebook.friendInvites() #This is a promise so you can do promisey stuff with it.
+    $scope.invitationsNextText = "Next"
+    $scope.facebook.friendInvites()
+    #This is a promise so you can do promisey stuff with it.
     # This version uses the chefsteps styling
     # friends = _.filter($scope.inviteFriends, (friend) -> (friend.value == true))
     # friendIDs = _.pluck(friends, 'id')
