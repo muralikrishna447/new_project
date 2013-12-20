@@ -101,9 +101,13 @@
               %a.btn-facebook.btn.btn-secondary(ng-click="sendInvites()")
                 Invite friends on
                 %b Facebook
-    .modal-footer.invite-modal-footer
-      %div
-        %button.btn.btn-primary.btn-large.next-button(ng-show="authentication.currentUser()" ng-click="welcome()") Next
+
+            %div
+              %a.next-button(ng-show="authentication.currentUser()" ng-click="welcome()") Skip
+
+    -# .modal-footer.invite-modal-footer
+    -#   %div
+    -#     %button.btn.btn-primary.btn-large.next-button(ng-show="authentication.currentUser()" ng-click="welcome()") Next
       -# .button-group
       -#   %div
       -#     %button.btn.btn-primary.btn-large.invite-friends(ng-show="authentication.currentUser()" ng-click="sendInvites()") Invite Friends
@@ -117,7 +121,7 @@
       %p
         Thanks for joining. We're so glad to have you. Here are some ideas to get you started on the road to cooking smarter.
       %p
-        = link_to "Recipe development", projects_path
+        = link_to "Recipe development", "/projects/doughnut-holes-recipe-development#/doughnut-holes-intro"
         %br
         Follow along as we develop a recipe from start to finish. Each day, our chefs keep notes as they modify, test, and improve their recipes. Use what you learn to test our recipes and offer suggestions, or develop your own!
       %p
