@@ -221,7 +221,7 @@ class ActivitiesController < ApplicationController
   # See note in next method.
   def base_feed
     # this will be the name of the feed displayed on the feed reader
-    @title = "ChefSteps - Modern Cuisine - Online Cooking School - Sous Vide Recipes"
+    @title = "ChefSteps - Cook Smarter"
 
     # the news items
     @activities = Activity.published.by_published_at('desc').chefsteps_generated.include_in_feeds
