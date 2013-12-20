@@ -57,6 +57,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def facebook_app_id
+    case Rails.env
+    when "production"
+      "380147598730003"
+    when "staging"
+      "642634055780525"
+    else
+      "249352241894051"
+    end
+  end
+
 private
 
   def track_event(trackable, action = params[:action])

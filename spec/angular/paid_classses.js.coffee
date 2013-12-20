@@ -234,7 +234,7 @@ describe "PaidClasses", ->
       sleep 2
       browser().navigateTo('/classes/become-a-badass/landing')
 
-    iit "should send a free course", ->
+    it "should send a free course", ->
       element("#gift-button").click()
       expect(element(".buy-modal-body").count()).toBe(1)
       input("giftInfo.recipientName").enter("Gift Person")

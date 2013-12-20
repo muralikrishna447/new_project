@@ -2,7 +2,7 @@
 :javascript
   window.fbAsyncInit = function() {
   FB.init({
-    appId      : '#{Rails.env.production? ? '380147598730003' : '249352241894051'}',
+    appId      : '#{facebook_app_id}',
     status     : true, // check login status
     cookie     : true, // enable cookies to allow the server to access the session
     xfbml      : true  // parse XFBML
