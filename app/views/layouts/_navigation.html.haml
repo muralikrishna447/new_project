@@ -76,8 +76,9 @@
                           .label
                             = "#{unviewed_events_count} New"
                   - else
-                    = link_to 'Sign in', sign_in_url, "ng-show" => "(! authentication.currentUser())"
-                    = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())"
+                    %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+                    = render "devise/sessions/new_angular"
+                    = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
 
                 - unless external
                   %li
