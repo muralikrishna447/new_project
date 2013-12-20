@@ -2,33 +2,33 @@ require 'spec_helper'
 
 feature 'stream' do
 
-  context 'item created' do
-    before :each do
-      @assembly = Fabricate :assembly, title: 'Test Course', description: 'This is a test course.', published: true
-      @activity = Fabricate :activity, title: 'Test Activity', published: true
-      @inclusion = Fabricate :assembly_inclusion, assembly_id: @assembly.id, includable: @activity
-      @upload = Fabricate :upload, title: 'Test Upload', notes: 'This is a test upload.', activity_id: @activity.id
-      @poll = Fabricate :poll, title: 'Test Poll', description: 'Test Poll description'
-      @poll_item = Fabricate :poll_item, title: 'Test Poll Item', description: 'Test Poll Item description'
-      @user = Fabricate :user, name: 'Test User', email: 'test@test.com', password: 'password'
+#   context 'item created' do
+#     before :each do
+#       @course = Fabricate :course, title: 'Test Course', description: 'This is a test course.', published: true
+#       @activity = Fabricate :activity, title: 'Test Activity', published: true
+#       @inclusion = Fabricate :inclusion, course_id: @course.id, activity_id: @activity.id
+#       @upload = Fabricate :upload, title: 'Test Upload', notes: 'This is a test upload.', activity_id: @activity.id
+#       @poll = Fabricate :poll, title: 'Test Poll', description: 'Test Poll description'
+#       @poll_item = Fabricate :poll_item, title: 'Test Poll Item', description: 'Test Poll Item description'
+#       @user = Fabricate :user, name: 'Test User', email: 'test@test.com', password: 'password'
 
-      visit '/'
-      click_link('Sign in')
-      current_path.should == sign_in_path
+#       visit '/'
+#       click_link('Sign in')
+#       current_path.should == sign_in_path
 
-      fill_in 'user_email', with: 'test@test.com'
-      fill_in 'user_password', with: 'password'
-      click_button 'Sign in'
-    end
+#       fill_in 'user_email', with: 'test@test.com'
+#       fill_in 'user_password', with: 'password'
+#       click_button 'Sign in'
+#     end
 
-    scenario 'when user comments' do
+#     scenario 'when user comments' do
 
-      @comment = Fabricate :comment, commentable: @upload, user: @user
-      visit '/streams'
-      # puts page.body
-      # expect(page).to have_content 'Comment'
-    end
-  end
+#       @comment = Fabricate :comment, commentable: @upload, user: @user
+#       visit '/streams'
+#       # puts page.body
+#       # expect(page).to have_content 'Comment'
+#     end
+#   end
 
   # scenario 'votes show up in timeline' do
   #   @vote = Fabricate :vote, votable: @poll_item, user: @user

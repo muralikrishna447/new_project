@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include StatusHelpers
   protect_from_forgery
 
-  if Rails.env.angular?
+  if Rails.env.angular? || Rails.env.development?
     require 'database_cleaner'
     def start_clean
       DatabaseCleaner.strategy = :transaction
@@ -54,6 +54,18 @@ class ApplicationController < ActionController::Base
     unless current_user.role?(:contractor)
       flash[:alert] = "Unauthorized Access!"
       redirect_to root_path
+    end
+  end
+
+  helper_method :facebook_app_id
+  def facebook_app_id
+    case Rails.env
+    when "production"
+      "380147598730003"
+    when "staging"
+      "642634055780525"
+    else
+      "249352241894051"
     end
   end
 

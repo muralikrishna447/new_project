@@ -15,6 +15,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.waitingforRedemption = false
   $scope.waitingforFreeEnrollment = false
 
+  $scope.authentication = csAuthentication
+
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
     if $scope.waitingForFreeEnrollment
@@ -65,7 +67,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
       ).success((data, status, headers, config) ->
         $scope.processing = false
-        $scope.enrolled = true
+        $scope.enrolled = true unless $scope.isGift
         $scope.state = "thanks"
         mixpanel.people.track_charge($scope.discounted_price)
         mixpanel.track('Course Purchased', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': response.type, 'card_type': response.card.type, 'gift' : $scope.isGift})
@@ -158,4 +160,25 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         amount: amount
         tracking: tracking
       )
+
+  $scope.adminSendGift = ->
+    $http(
+      method: 'POST'
+      params:
+        stripeToken: null
+        assembly_id: $scope.assembly.id
+        discounted_price: 0.0
+        gift_info: $scope.giftInfo
+
+      url: '/charges'
+
+    ).success((data, status, headers, config) ->
+      $scope.processing = false
+      $scope.state = "thanks"
+    ).error((data, status, headers, config) ->
+      console.log "STRIPE CHARGE FAIL" + data
+      $scope.errorText = data.errors[0].message || data.errors[0]
+      $scope.processing = false
+    )
+
 ]

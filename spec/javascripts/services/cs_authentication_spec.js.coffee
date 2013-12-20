@@ -21,6 +21,7 @@ describe 'csAuthentication', ->
 
   describe "#current_user", ->
     it "should return null if no user is set", ->
+      authentication.clearCurrentUser()
       expect(authentication.currentUser()).toBe(null)
 
     it "should return the current_user if one is set", ->
@@ -45,10 +46,24 @@ describe 'csAuthentication', ->
       authentication.clearCurrentUser()
       expect(rootScope.$broadcast).toHaveBeenCalledWith('logout')
 
-  describe "logged_in", ->
+  describe "#logged_in", ->
     it "should return true if user exists", ->
       authentication.setCurrentUser({email: "danahern@chefsteps.com"})
       expect(authentication.loggedIn()).toBe(true)
 
     it "should return false if the user is blank", ->
+      authentication.clearCurrentUser()
       expect(authentication.loggedIn()).toBe(false)
+
+  describe "#isAdmin", ->
+    it "should return true if user is an admin", ->
+      authentication.setCurrentUser({email: "danahern@chefsteps.com", role: "admin"})
+      expect(authentication.isAdmin()).toBe(true)
+
+    it "should return false if user is not an admin", ->
+      authentication.setCurrentUser({email: "danahern@chefsteps.com", role: ""})
+      expect(authentication.isAdmin()).toBe(false)
+
+    it "should return false if no user is logged in", ->
+      authentication.clearCurrentUser()
+      expect(authentication.isAdmin()).toBe(false)

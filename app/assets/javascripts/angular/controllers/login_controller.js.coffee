@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", ($scope, $http, csAuthentication) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", ($scope, $http, csAuthentication, csFacebook) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -8,12 +8,20 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.showForm = "signIn" # For switching between signUp and signIn.
 
   $scope.authentication = csAuthentication # Authentication service
+  $scope.facebook = csFacebook # Facebook service
 
-  $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
+  $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static', dialogClass: "modal login-controller-modal"}
 
   $scope.loginModalOpen = false
+  $scope.inviteModalOpen = false
+  $scope.welcomeModalOpen = false
 
   $scope.passwordType = "password" # Defaults password to the password input type, but lets it switch to just text
+
+  $scope.formFor = "signIn" # [signIn, purchase] # This determines if it's being used for a purchase or if it's being used for signup/signin
+  $scope.invitationsNextText = "Skip"
+
+  $scope.inviteFriends = []
 
   $scope.hasError = (error) ->
     if error
@@ -24,16 +32,24 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.switchForm = (form) ->
     $scope.showForm = form
 
-  # $scope.notifyLogin = (user) ->
-  #   $scope.closeModal()
-  #   user = $.parseJSON(user) if typeof(user) == "string"
-  #   $scope.$emit "loginSuccessful", {user: user}
+  $scope.openModal = (form) ->
+    if form == "login"
+      $scope.loginModalOpen = true
+    else if form == "invite"
+      $scope.inviteModalOpen = true
+    else if form == "welcome"
+      $scope.welcomeModalOpen = true
 
-  $scope.openModal = ->
-    $scope.loginModalOpen = true
+  $scope.closeModal = (form) ->
+    $scope.resetMessages()
+    $scope.reset_users()
+    if form == "login"
+      $scope.loginModalOpen = false
+    else if form == "invite"
+      $scope.inviteModalOpen = false
+    else if form == "welcome"
+      $scope.welcomeModalOpen = false
 
-  $scope.closeModal = ->
-    $scope.loginModalOpen = false
 
   $scope.togglePassword = ->
     if $scope.passwordType == "password"
@@ -57,11 +73,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         if (status == 200)
           $scope.message = "You have been signed in."
           $scope.logged_in = true
-          $scope.closeModal()
+          $scope.closeModal('login')
           setTimeout( -> # Done so that the modal has time to close before triggering events
             $scope.authentication.setCurrentUser(data.user)
           , 100)
-          # $scope.notifyLogin(data.user)
 
         else
           if (data.error)
@@ -90,7 +105,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         if (status == 200)
           $scope.message = "You have been logged out."
           $scope.logged_in = false
-          $scope.closeModal()
+          $scope.closeModal('login')
           setTimeout( -> # Done so that the modal has time to close before triggering events
             $scope.authentication.clearCurrentUser()
           , 100)
@@ -111,6 +126,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
             $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
       )
 
+  # Not ready yet.
   # $scope.password_reset = ->
   #   $scope.submit(
   #     method: 'POST'
@@ -139,10 +155,12 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         $scope.dataLoading -= 1
         if (status == 200)
           $scope.logged_in = true
-          $scope.closeModal()
+          $scope.closeModal('login')
           $scope.message = "You have been registered and logged in."
           setTimeout( -> # Done so that the modal has time to close before triggering events
             $scope.authentication.setCurrentUser(data.user)
+            unless $scope.formFor == "purchase"
+              $scope.loadFriends()
           , 100)
           # $scope.notifyLogin(data.user)
       )
@@ -155,6 +173,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
       )
 
+  # Not ready yet.
   # $scope.change_password = ->
   #   $scope.submit(
   #     method: 'PUT'
@@ -165,6 +184,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   #     success_message: "Your password has been updated."
   #     error_entity: $scope.register_error)
 
+  # Not ready yet.
   # $scope.submit = (parameters) ->
   #   $scope.dataLoading += 1
   #   $scope.resetMessages();
@@ -202,17 +222,65 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   #           parameters.error_entity.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
   #     )
 
+  $scope.facebookConnect = ->
+    $scope.dataLoading += 1
+    $scope.facebook.connect().then( (user) ->
+      $http(
+        method: "POST"
+        url: "/users/auth/facebook/callback.js"
+        data:
+          user: user
+      ).success( (data, status) ->
+        $scope.dataLoading -= 1
+        $scope.logged_in = true
+        $scope.closeModal('login')
+        setTimeout( -> # Done so that the modal has time to close before triggering events
+          $scope.authentication.setCurrentUser(data.user)
+          if $scope.formFor != "purchase" && data.new_user
+            $scope.loadFriends()
+        , 100)
+      ).error( (data, status) ->
+        $scope.dataLoading -= 1
+        $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
+      )
+    )
+
+  $scope.loadFriends = ->
+    $scope.openModal('invite')
+    # This version uses the chefsteps styling
+    # $scope.facebook.friends().then( (friends) ->
+    #   $scope.inviteFriends = friends
+    # )
+
+  $scope.sendInvites = ->
+    $scope.invitationsNextText = "Next"
+    $scope.facebook.friendInvites()
+    #This is a promise so you can do promisey stuff with it.
+    # This version uses the chefsteps styling
+    # friends = _.filter($scope.inviteFriends, (friend) -> (friend.value == true))
+    # friendIDs = _.pluck(friends, 'id')
+    # $scope.facebook.friendInvites(friendIDs).then( ->
+    #   $scope.closeModal("invite")
+    # )
+
+  $scope.welcome = ->
+    $scope.closeModal('invite')
+    setTimeout( -> # Done so that the modal has time to close before triggering events
+      $scope.openModal('welcome')
+    , 100)
+
   $scope.resetMessages = ->
-    $scope.login_error.message = null;
-    $scope.login_error.errors = {};
-    $scope.register_error.message = null;
-    $scope.register_error.errors = {};
+    $scope.message = null
+    $scope.login_error.message = null
+    $scope.login_error.errors = {}
+    $scope.register_error.message = null
+    $scope.register_error.errors = {}
 
   $scope.reset_users = ->
-    $scope.login_user.email = null;
-    $scope.login_user.password = null;
-    $scope.register_user.name = null;
-    $scope.register_user.email = null;
-    $scope.register_user.password = null;
-    $scope.register_user.password_confirmation = null;
+    $scope.login_user.email = null
+    $scope.login_user.password = null
+    $scope.register_user.name = null
+    $scope.register_user.email = null
+    $scope.register_user.password = null
+    $scope.register_user.password_confirmation = null
 ]
