@@ -57,6 +57,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :facebook_app_id
   def facebook_app_id
     case Rails.env
     when "production"

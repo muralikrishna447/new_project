@@ -58,11 +58,24 @@ angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", ($roo
   #   return deferred.promise
 
   # This method doesn't use the chefsteps branded version of the friend selector.
+  # this.friendInvites = ->
+  #   deferred = $q.defer()
+  #   FB.ui {
+  #     method: 'apprequests',
+  #     message: 'Come join me on ChefSteps, a social cooking site. '
+  #   }, ->
+  #     $rootScope.$apply ->
+  #       deferred.resolve("sent")
+  #   , ->
+  #     $rootScope.$apply ->
+  #       deferred.resolve("notSent")
+  #   return deferred.promise
+
   this.friendInvites = ->
     deferred = $q.defer()
     FB.ui {
-      method: 'apprequests',
-      message: 'Come join me on ChefSteps, a social cooking site. '
+      method: 'send',
+      link: 'http://www.chefsteps.com'
     }, ->
       $rootScope.$apply ->
         deferred.resolve("sent")
@@ -70,5 +83,19 @@ angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", ($roo
       $rootScope.$apply ->
         deferred.resolve("notSent")
     return deferred.promise
+
+  # this.friendInvites = ->
+  #   deferred = $q.defer()
+  #   FB.ui {
+  #     method: 'feed',
+  #     caption: 'Come join me on ChefSteps, a social cooking site. '
+  #     link: "http://www.chefsteps.com"
+  #   }, ->
+  #     $rootScope.$apply ->
+  #       deferred.resolve("sent")
+  #   , ->
+  #     $rootScope.$apply ->
+  #       deferred.resolve("notSent")
+  #   return deferred.promise
 
 ]
