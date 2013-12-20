@@ -35,6 +35,9 @@ class ActivitiesController < ApplicationController
       redirect_to class_path(@activity.containing_course), :status => :moved_permanently
     end
 
+    if @activity.containing_course && current_user && current_user.enrolled?(@activity.containing_course)
+      redirect_to class_activity_path(@activity.containing_course, @activity)
+    end
 
   rescue
     # Not a problem
