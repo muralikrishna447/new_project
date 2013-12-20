@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include StatusHelpers
   protect_from_forgery
 
-  if Rails.env.angular?
+  if Rails.env.angular? || Rails.env.development?
     require 'database_cleaner'
     def start_clean
       DatabaseCleaner.strategy = :transaction

@@ -11,4 +11,6 @@ angular.module('ChefStepsApp').service 'csAuthentication', [ "$rootScope", ($roo
     $rootScope.$broadcast('logout')
   this.loggedIn = ->
     !!user
+  this.isAdmin = ->
+    !!(user && user.role == "admin")
 ]
