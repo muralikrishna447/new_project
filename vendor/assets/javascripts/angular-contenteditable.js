@@ -30,8 +30,7 @@ angular.module('contenteditable', [])
       element.bind('input', function(e) {
         scope.$apply(function() {
           var html, html2, rerender
-          // 12/10/13 - michael natkin - i changed this to get .text() so users can type in HTML
-          html = element.text()
+          html = element.html()
           rerender = false
           if (opts.stripBr) {
             html = html.replace(/<br>$/, '')
