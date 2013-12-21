@@ -111,11 +111,10 @@
                       %td{:valign => "top"}
                         %p #{@purchaser_name} has been a pal and given you the ChefSteps #{@gift_title} class for you.
                         -case @gift_title
-                        -when "ChefSteps Whipping Siphons"
+                        -when "Whipping Siphons"
                           %img{:src => "https://chefsteps.s3.amazonaws.com/static/email/whipped.jpg"}
-                        -when "ChefSteps French Macarons"
+                        -when "French Macarons"
                           %img{:src => "https://chefsteps.s3.amazonaws.com/static/email/macarons.jpg"}
-                        -end
 
                         -if @recipient_message
                           %p Message from #{@purchaser_name}:
