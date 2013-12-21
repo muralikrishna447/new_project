@@ -262,6 +262,15 @@ module ApplicationHelper
     end
   end
 
+  def assembly_activity_path(assembly, activity)
+    if assembly.assembly_type?
+      assembly_type_path = assembly.assembly_type.downcase.pluralize
+      "/#{assembly_type_path}/#{assembly.slug}#/#{activity.slug}"
+    else
+      "/assemblies/#{assembly.slug}/#{activity.slug}"
+    end
+  end
+
   def markdown(text)
     # options = [:hard_wrap, :filter_html, :autolink, :no_intraemphasis, :fenced_code, :gh_blockcode]
     # syntax_highlighter(Redcarpet.new(text, *options).to_html).html_safe

@@ -28,7 +28,15 @@ describe ActivitiesController do
       inclusion1 = Fabricate :assembly_inclusion, assembly: assembly1, includable: activity1
       enrollment = Fabricate :enrollment, enrollable: assembly1, user: @user
       get :show, id: activity1.slug
-      expect(response).to redirect_to(class_activity_path(assembly1, activity1))
+      expect(response).to redirect_to(assembly_activity_path(assembly1, activity1))
+    end
+
+    it 'redirects to a project if the recipe is within a project' do
+      activity2 = Fabricate :activity, title: 'Activity 2', description: 'description', published: true
+      assembly2 = Fabricate :assembly, title: 'Assembly 2', description: 'description', published: true, assembly_type: 'Project'
+      inclusion2 = Fabricate :assembly_inclusion, assembly: assembly2, includable: activity2
+      get :show, id: activity2.slug
+      expect(response).to redirect_to(assembly_activity_path(assembly2, activity2))
     end
   end
 
