@@ -1,0 +1,37 @@
+.container(ng-controller="EggTimerController")
+  .row
+    .span6
+      %h1 Magic Egg Timer
+      .control-group
+        %label Water Temp (c)
+        .controls
+          %input(type="number" ng-model='inputs.waterTemp')
+      .control-group
+        %label Desired Viscosity
+        .controls
+          %input(type="number" ng-model='inputs.desiredViscosity')
+      .control-group
+        %label Egg Diameter (mm)
+        .controls
+          %input(type="number" ng-model='inputs.diameter')
+      .control-group
+        %label Start Temp (c)
+        .controls
+          %input(type="number" ng-model='inputs.startTemp')
+      .control-group
+        %label Heat Transfer Coefficient
+        .controls
+          %input(type="number" ng-model='inputs.surfaceHeatTransferCoefficient')
+      .control-group
+        %label Egg Shape
+        .controls
+          %input(type="number" ng-model='inputs.beta')
+
+      .control-group
+        %label Result
+        .controls
+        {{output}}
+        %i.icon-spinner.icon-spin(ng-show="loading")
+
+  
+
