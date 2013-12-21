@@ -35,7 +35,11 @@ class ActivitiesController < ApplicationController
       redirect_to class_path(@activity.containing_course), :status => :moved_permanently
     end
 
-    if @activity.assemblies.any?
+    if @activity.containing_course && current_user && current_user.enrolled?(@activity.containing_course)
+      redirect_to class_activity_path(@activity.containing_course, @activity)
+    end
+
+    if @activity.assemblies.first.assembly_type == 'Project'
       redirect_to assembly_activity_path(@activity.assemblies.first, @activity)
     end
 

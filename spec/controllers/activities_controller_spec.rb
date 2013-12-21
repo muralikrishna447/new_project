@@ -11,7 +11,7 @@ describe ActivitiesController do
     @inclusion = Fabricate :assembly_inclusion, assembly: @assembly, includable: @assembly_activity
   end
 
-  describe 'GET maybe_redirect_activity' do
+  describe 'GET show' do
     it 'redirects to the class activity when activity is marked as show only in course' do
       get :show, id: @assembly_activity.slug
       expect(response).to redirect_to(class_path(@assembly_activity.containing_course))
@@ -28,7 +28,7 @@ describe ActivitiesController do
       inclusion1 = Fabricate :assembly_inclusion, assembly: assembly1, includable: activity1
       enrollment = Fabricate :enrollment, enrollable: assembly1, user: @user
       get :show, id: activity1.slug
-      expect(response).to redirect_to(assembly_activity_path(assembly1, activity1))
+      expect(response).to redirect_to(class_activity_path(assembly1, activity1))
     end
 
     it 'redirects to a project if the recipe is within a project' do
@@ -38,6 +38,7 @@ describe ActivitiesController do
       get :show, id: activity2.slug
       expect(response).to redirect_to(assembly_activity_path(assembly2, activity2))
     end
+
   end
 
 end
