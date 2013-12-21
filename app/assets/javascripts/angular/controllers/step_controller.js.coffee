@@ -53,7 +53,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
 
   $scope.stepSpan = ->
     if $scope.step.is_aside
-      'span5'
+      'span5 step-with-aside'
     else
       'span7'
 

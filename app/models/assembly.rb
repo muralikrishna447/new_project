@@ -2,7 +2,7 @@ class Assembly < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   friendly_id :title, use: [:slugged, :history]
-  attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets
+  attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets, :preview_copy
   has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :quizzes, through: :assembly_inclusions, source: :includable, source_type: 'Quiz'
@@ -105,5 +105,9 @@ class Assembly < ActiveRecord::Base
 
   def average_rating
     comments.where("rating IS NOT NULL").average('rating').to_f
+  end
+
+  def only_one_level
+    self.assembly_inclusions.map(&:includable_type).include?('Assembly') ? false : true
   end
 end

@@ -1,13 +1,13 @@
 class GiftCertificate < ActiveRecord::Base
   attr_accessible :purchaser_id, :assembly_id, :price, :sales_tax, :recipient_email, :recipient_name, :recipient_message, :redeemed
   belongs_to :user, foreign_key: :purchaser_id, inverse_of: :gift_certificates
-  belongs_to :assembly, inverse_of: :gift_certificates 
+  belongs_to :assembly, inverse_of: :gift_certificates
   include ActsAsChargeable
 
   after_initialize do
     if ! self.token
       loop do
-        # 6 chars incluing 0-9, a-z, should give us 36^6 = 2,176,782,336 possibilities. Enough 
+        # 6 chars incluing 0-9, a-z, should give us 36^6 = 2,176,782,336 possibilities. Enough
         # to keep crackers at bay. Loop to avoid (extremely rare) duplicate.
         # I wonder if I should be worried about the possibility of it generating something offensive.
         puts "NEW TOKEN!!"
@@ -25,18 +25,20 @@ class GiftCertificate < ActiveRecord::Base
     # by the caller. You don't want to charge first and then create the enrollement, b/c if
     # the charge succeeds and the enrollment fails, you are hosed.
     gc = nil
-    GiftCertificate.transaction do 
+    GiftCertificate.transaction do
       gross_price, tax, extra_descrip = get_tax_info(assembly.price, discounted_price, ip_address)
       gc = GiftCertificate.create!(
-              purchaser_id: purchaser.id, 
-              assembly_id: assembly.id, 
-              price: gross_price, 
-              sales_tax: tax, 
-              recipient_email: gift_info["recipientEmail"], 
-              recipient_name: gift_info["recipientName"], 
+              purchaser_id: purchaser.id,
+              assembly_id: assembly.id,
+              price: gross_price,
+              sales_tax: tax,
+              recipient_email: gift_info["recipientEmail"],
+              recipient_name: gift_info["recipientName"],
               recipient_message: gift_info["recipientMessage"]
             )
-      collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, purchaser, stripe_token)
+      unless purchaser.admin?
+        collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, purchaser, stripe_token)
+      end
       gc.send_email(gift_info["emailToRecipient"])
     end
 
@@ -58,11 +60,11 @@ class GiftCertificate < ActiveRecord::Base
     # Little hack cuz I can't get pow to work lately
     dom = DOMAIN
     dom = "localhost:3000" if dom == "delve.dev"
-    
+
     GiftCertificateMailer.recipient_email(
         to_recipient,
-        User.find(purchaser_id), 
-        Assembly.find(assembly_id).title, 
+        User.find(purchaser_id),
+        Assembly.find(assembly_id).title,
         "http://" + dom + "/gift/" + token,
         recipient_email,
         recipient_name,

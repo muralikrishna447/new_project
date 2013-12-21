@@ -60,7 +60,9 @@ Delve::Application.routes.draw do
   get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   match '/mp', to: redirect('/courses/spherification')
+  match '/MP', to: redirect('/courses/spherification')
   match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
+  match '/PS', to: redirect('/courses/accelerated-sous-vide-cooking-course')
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
@@ -175,20 +177,14 @@ Delve::Application.routes.draw do
 
   resources :charges, only: [:create]
 
-  resources :courses, only: [:index], controller: :courses
-
-  constraints lambda {|request| ['/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path.split('/').reject! { |r| r.empty? }.take(2).join('/').prepend('/')) } do
-    resources :courses, only: [:index, :show] do
-      resources :activities, only: [:show], path: ''
-      member do
-        post 'enroll' => 'courses#enroll'
-      end
-    end
-  end
-
   # Legacy needed b/c the courses version of this URL was public in a few places
-  get '/courses/french-macarons', to: redirect('/classes/french-macarons')
+  get '/courses/accelerated-sous-vide-cooking-course', to: redirect('/classes/sous-vide-cooking')
+  get '/courses/accelerated-sous-vide-cooking-course/:activity_id', to: redirect('/classes/sous-vide-cooking#/%{activity_id}')
   get '/courses/french-macarons/landing', to: redirect('/classes/french-macarons/landing')
+  get '/courses/:id', to: redirect('/classes/%{id}/landing')
+  get '/courses/:id/:activity_id', to: redirect('/classes/%{id}#/%{activity_id}')
+
+  resources :courses, only: [:index], controller: :courses
 
   resources :classes, controller: :assemblies do
     member do
@@ -203,7 +199,7 @@ Delve::Application.routes.draw do
 
   get "/affiliates/share_a_sale" => "affiliates#share_a_sale"
 
-  if Rails.env.angular?
+  if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"
     get "end_clean" => "application#end_clean"
   end

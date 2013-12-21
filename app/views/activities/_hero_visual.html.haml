@@ -5,7 +5,7 @@
   .hero-visual
     .embed-container(ng-switch="heroMedia.heroDisplayType()" ng-hide="(heroMedia.heroDisplayType() == 'none')")
       %iframe.noprint#activityPlayer(ng-switch-when="video" cssrcreplacer="{{heroMedia.heroVideoURL()}}" webkitallowfullscreen mozallowfullscreen)
-      %img(ng-switch-when="image" ng-src="{{heroMedia.heroImageURL(1170)}}" alt="{{getObject().title}}" title="{{getObject().title}}" itemprop="image")
+      %img(ng-switch-when="image" ng-src="{{heroMedia.heroImageURL(heroImageSize || 1170)}}" alt="{{getObject().title}}" title="{{getObject().title}}" itemprop="image")
       %h4.image-loading-indicator(ng-show="editMode") Loading ...
 
     %div.noprint.disabled-section(ng-show="(heroMedia.heroDisplayType() == 'none') && editMode" ng-click="showHeroVisualEdit = ! showHeroVisualEdit")

@@ -25,6 +25,7 @@ describe AssembliesController, "#get" do
       expect(session[:coupon]).to eq('a1b71d389a50')
     end
 
+
   end
 
 

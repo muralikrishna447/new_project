@@ -1,6 +1,8 @@
 # Angular.js stuff. This can't wait til after page load, it needs to happen in the <head>
 
-@app = angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
+
+@app = angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable", "ngSanitize"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
+
   # Don't make this true!! It will break every link on the page that isn't to
   # an angular known url. The addr bar changes but content doesn't load.
   # See https://groups.google.com/forum/#!topic/angular/cUjy9PEDeWE .
