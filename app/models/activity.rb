@@ -35,6 +35,7 @@ class Activity < ActiveRecord::Base
   has_many :events, as: :trackable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :assembly_inclusions, as: :includable
+  has_many :assemblies, through: :assembly_inclusions
 
   belongs_to :creator, class_name: User, foreign_key: 'creator'
   belongs_to :last_edited_by, class_name: User, foreign_key: 'last_edited_by_id'
