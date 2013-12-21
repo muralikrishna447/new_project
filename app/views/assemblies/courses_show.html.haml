@@ -54,7 +54,7 @@
                 = render 'assembly_page'
 
               - if current_user && current_user.role?(:admin)
-                .edit-button-box
+                .edit-button-box.noprint
                   %div(ng-switch on="currentIncludable.includable_type")
                     %div(ng-switch-when='Activity')
                       %a.btn.btn-secondary(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
