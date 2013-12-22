@@ -3,15 +3,15 @@ class AssembliesController < ApplicationController
 
   # Commenting out for now until we figure out what to do for Projects
 
-  # def index
-  #   if request.path == '/assemblies'
-  #     @assembly_type = 'Assembly'
-  #     @assemblies = Assembly.published.order('created_at asc').page(params[:page]).per(12)
-  #   else
-  #     @assembly_type = request.path.gsub(/^\//, "").singularize.titleize
-  #     @assemblies = Assembly.published.where(assembly_type: @assembly_type).order('created_at asc').page(params[:page]).per(12)
-  #   end
-  # end
+  def index
+    if request.path == '/assemblies'
+      @assembly_type = 'Assembly'
+      @assemblies = Assembly.published.order('created_at asc').page(params[:page]).per(12)
+    else
+      @assembly_type = request.path.gsub(/^\//, "").singularize.titleize
+      @assemblies = Assembly.published.where(assembly_type: @assembly_type).order('created_at asc').page(params[:page]).per(12)
+    end
+  end
 
   def show
     @upload = Upload.new
@@ -23,8 +23,10 @@ class AssembliesController < ApplicationController
       else
         redirect_to landing_class_url(@assembly)
       end
+    when 'Recipe Development'
+      render "courses_#{params[:action]}"
     else
-      render "#{@assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
+      render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
     end
   end
 
@@ -125,7 +127,7 @@ private
       raise
     end
 
-    instance_variable_set("@#{@assembly.assembly_type.underscore}", @assembly)
+    instance_variable_set("@#{@assembly.assembly_type.underscore.gsub(' ','_')}", @assembly)
     # Hack to also make available as course so can be used for project without
     # revamping views completely right now
     @course = @assembly

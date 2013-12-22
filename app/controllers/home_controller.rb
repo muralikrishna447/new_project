@@ -8,7 +8,7 @@ class HomeController < ApplicationController
 
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_feeds.order('published_at desc').first(6)
-      @projects = Assembly.published.projects.last(3)
+      @recipe_developments = Assembly.published.recipe_developments.last(3)
       # @followings_stream = Kaminari::paginate_array(current_user.followings_stream).page(params[:page]).per(6)
       # @stream = current_user.received_stream.take(4)
     else
