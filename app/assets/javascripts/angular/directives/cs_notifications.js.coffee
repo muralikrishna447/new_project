@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').directive 'csNotifications', (csAlertService) ->
+angular.module('ChefStepsApp').directive 'csNotifications', ["csAlertService", (csAlertService) ->
   restrict: 'E'
   # transclude: true
   link: (scope, element, attrs) ->
@@ -10,3 +10,4 @@ angular.module('ChefStepsApp').directive 'csNotifications', (csAlertService) ->
       <div class="lblock"></div>
     </div>
   '
+]
