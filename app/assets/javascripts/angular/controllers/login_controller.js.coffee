@@ -235,6 +235,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         $scope.dataLoading -= 1
         $scope.logged_in = true
         $scope.closeModal('login')
+        $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
         setTimeout( -> # Done so that the modal has time to close before triggering events
           $scope.authentication.setCurrentUser(data.user)
           if $scope.formFor != "purchase" && data.new_user
