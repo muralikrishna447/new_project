@@ -28,47 +28,6 @@
       delete r.by_published_at
 
 
-  PAGINATION_COUNT = 12
-
-  $scope.loadData = ->
-    if ! $scope.all_loaded
-
-      $scope.spinner += 1
-
-      gip = $scope.galleryIndexParams()
-      query_filters = angular.extend({}, $scope.filters)
-      $scope.objectMethods.queryIndex()(gip, (more_activities) -> 
-
-        console.log "GOT BACK " + more_activities.length + " FOR PAGE " + gip.page
-
-        # Ignore any results that come back that don't match the current filters
-        if _.isEqual(query_filters, $scope.filters)
-
-          if more_activities
-            # Copy over any old activitites that the repeater has already added properties to
-            # and use them instead of the ones we just got back. Cuts down on flashing.
-            for i in [0...more_activities.length]
-              a = _.find($scope.activities, (x) -> x.slug == more_activities[i].slug)
-              more_activities[i] = a if a?
-
-            if (gip.page == 1) || (Object.keys($scope.activities).length == 0)
-              $scope.activities = []
-
-            base = (gip.page - 1) * PAGINATION_COUNT
-            $scope.activities[base..base + PAGINATION_COUNT] = more_activities
-
-          $scope.page = gip.page + 1
-          $scope.all_loaded = true if (! more_activities) || (more_activities.length < PAGINATION_COUNT)
-
-        else
-          console.log ".... FROM OLD PARAMS, IGNORING "
-          console.log "old: " + query_filters.search_all
-          console.log "new: " + $scope.filters.search_all
-
-        $scope.spinner -= 1
-      )
-
-
   $scope.load_no_results_data = ->
     $scope.no_results_activities = $resource($scope.gallery_index + '?activity_type=Recipe&page=3&sort=newest').query ->
       console.log "loaded backups"
@@ -111,8 +70,8 @@
     $scope.clear_and_load()
 
   $scope.getActivities = ->
-    return $scope.no_results_activities if (! $scope.activities?) || (! $scope.activities.length)
-    $scope.activities
+    return $scope.no_results_activities if (! $scope.galleryItems?) || (! $scope.galleryItems.length)
+    $scope.galleryItems
 
   # Initialization
   $scope.collapse_filters = true
