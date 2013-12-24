@@ -1,18 +1,40 @@
 @app.controller 'GalleryBaseController', ["$scope", ($scope) ->
+    
     $scope.itemImageURL = (item, width) ->
-      fpfile = $scope.itemImageFpfile(item)
+      fpfile = $scope.objectMethods.itemImageFpfile(item)
       height = width * 9.0 / 16.0
       return (window.cdnURL(fpfile.url) + "/convert?fit=crop&w=#{width}&h=#{height}&cache=true") if (fpfile? && fpfile.url?)
-      item.placeHolderImage()
+      $scope.placeHolderImage()
+
+    $scope.serialize = (obj) ->
+      str = []
+      for p of obj
+        str.push encodeURIComponent(p) + "=" + encodeURIComponent(obj[p])
+      str.join "&"
+
+    $scope.nonDefaultFilters = ->
+      r = _.reduce(
+        angular.extend({}, $scope.filters),
+        (mem, value, key) ->
+          if $scope.defaultFilters[key]?.value != value.value
+            mem[key] = value
+          mem
+        {}
+      )
+      delete r.search_all
+      delete r.sort
+      r
+
   ]
 
-@app.controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Activity",($scope, $resource, $location, $timeout, csGalleryService, $controller, Activity) ->
+@app.controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Activity", "ActivityMethods", ($scope, $resource, $location, $timeout, csGalleryService, $controller, Activity, ActivityMethods) ->
 
   $controller('GalleryBaseController', {$scope: $scope});
-
   $scope.galleryService = csGalleryService
+  $scope.objectMethods = ActivityMethods
 
-  PAGINATION_COUNT = 12
+  $scope.placeHolderImage = ->
+    ActivityMethods.placeHolderImage()
 
   $scope.sortChoices = [
     {name: "RELEVANCE", value: "relevance"}
@@ -54,25 +76,6 @@
     generator: $scope.generatorChoices[0]
   }
 
-  # Must match logic in has_Activity#featurable_image !!
-  $scope.itemImageFpfile = (activity) ->
-    if activity?
-      if activity.featured_image_id
-        return JSON.parse(activity.featured_image_id)
-      else if activity.image_id
-        return JSON.parse(activity.image_id)
-      else
-        if activity.steps?
-          images = activity.steps.map (step) -> step.image_id
-          image_fpfile = images[images.length - 1]
-          return JSON.parse(image_fpfile) if (image_fpfile? && (image_fpfile != ""))
-
-  $scope.serialize = (obj) ->
-    str = []
-    for p of obj
-      str.push encodeURIComponent(p) + "=" + encodeURIComponent(obj[p])
-    str.join "&"
-
   $scope.galleryIndexParams = ->
     r = {page: $scope.page}
     for filter, x of $scope.filters
@@ -87,22 +90,10 @@
       delete r.by_published_at
     r
 
-  $scope.nonDefaultFilters = ->
-    r = _.reduce(
-      angular.extend({}, $scope.filters),
-      (mem, value, key) ->
-        if $scope.defaultFilters[key]?.value != value.value
-          mem[key] = value
-        mem
-      {}
-    )
-    delete r.search_all
-    delete r.sort
-    r
-
   $scope.resetFilter = (key) ->
     $scope.filters[key] = $scope.defaultFilters[key]
 
+  PAGINATION_COUNT = 12
 
   $scope.load_data = ->
     if ! $scope.all_loaded
@@ -111,7 +102,7 @@
 
       gip = $scope.galleryIndexParams()
       query_filters = angular.extend({}, $scope.filters)
-      more_activities = Activity.$index_as_json(gip, ->
+      Activity.index_as_json(gip, (more_activities) -> 
 
         console.log "GOT BACK " + more_activities.length + " FOR PAGE " + gip.page
 

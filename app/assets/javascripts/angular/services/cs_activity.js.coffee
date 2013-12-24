@@ -1,5 +1,6 @@
 @app.factory 'Activity', ['$resource', ($resource) ->
-  Activity = $resource( "/activities/:id/as_json",
+
+  return $resource( "/activities/:id/as_json",
                     {id:  $('#activity-body').data("activity-id") || 1},
                     {
                       update: {method: "PUT"},
@@ -8,8 +9,27 @@
                       index_as_json: {method: "GET", url: "/gallery/index_as_json.json", isArray: true}
                     }
                   )
-  angular.extend Activity::,
-    placeHolderImage = ->
-      "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
+
+
+]
+
+# This can't be the best way to do this, but I can't figure out how to get the objects return from
+# $resource above to be Activities, not just Resources, so I can add these methods to the protoype.
+@app.service 'ActivityMethods', [() ->
+  this.placeHolderImage = ->
+    "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
+
+  # Must match logic in has_Activity#featurable_image !!
+  this.itemImageFpfile = (activity) ->
+    if activity?
+      if activity.featured_image_id
+        return JSON.parse(activity.featured_image_id)
+      else if activity.image_id
+        return JSON.parse(activity.image_id)
+      else
+        if activity.steps?
+          images = activity.steps.map (step) -> step.image_id
+          image_fpfile = images[images.length - 1]
+          return JSON.parse(image_fpfile) if (image_fpfile? && (image_fpfile != ""))
 
 ]
