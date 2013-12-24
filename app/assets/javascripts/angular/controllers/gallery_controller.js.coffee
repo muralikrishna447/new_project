@@ -12,6 +12,8 @@
   $scope.difficultyChoices = ["Any", "Easy", "Intermediate", "Advanced"]
   $scope.publishedStatusChoices = ["Published", "Unpublished"]
   $scope.generatorChoices = ["ChefSteps", "Community"]
+  $scope.sortChoices = ["relevance", "newest", "oldest"]
+  $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x == "relevance")
 
   $scope.defaultFilters = {
     sort: "Newest"
@@ -21,6 +23,13 @@
     generator: "ChefSteps"
   }
 
+  # Query results to show if user query results are empty
+  $scope.noResultsFilters = {
+    sort: "newest"
+    activityType: "recipe"
+    page: 3
+  }
+
   $scope.normalizeGalleryIndexParams = (r) ->
     # For unpublished, sort by updated date instead of published date
     if r.published_status == "Unpublished" && r.by_published_at?
@@ -28,50 +37,16 @@
       delete r.by_published_at
 
 
-  $scope.load_no_results_data = ->
-    $scope.no_results_activities = $resource($scope.gallery_index + '?activity_type=Recipe&page=3&sort=newest').query ->
-      console.log "loaded backups"
-
-  $scope.clear_and_load = ->
-    $scope.page = 1
-    $scope.all_loaded = false
-    $scope.loadData()
-
-  $scope.$watch 'filters.difficulty', (newValue) ->
+  $scope.$watchCollection 'filters', (newValue, oldValue) ->
     console.log newValue
-    $scope.clear_and_load() if newValue
-
-  $scope.$watch 'filters.sort', (newValue) ->
-    console.log newValue
-    $scope.clear_and_load() if newValue
-
-  $scope.$watch 'filters.published_status', (newValue) ->
-    console.log newValue
-    $scope.clear_and_load() if newValue
-
-  $scope.$watch 'filters.activity_type', (newValue) ->
-    console.log newValue
-    $scope.clear_and_load() if newValue
-
-  $scope.$watch 'filters.generator', (newValue) ->
-    console.log newValue
-    $scope.clear_and_load() if newValue
-
-  $scope.$watch 'filters.search_all', (newValue) ->
-    console.log newValue
-    $scope.filters.sort = "Relevance" if newValue? && (newValue.length == 1)
-    $scope.filters.sort = "Newest" if (! newValue?)  || newValue.length == 0
-    $timeout (->
-      $scope.clear_and_load()
-    ), 250
-
-  $scope.clearFilters = ->
-    $scope.filters = angular.extend({}, $scope.defaultFilters)
-    $scope.clear_and_load()
-
-  $scope.getActivities = ->
-    return $scope.no_results_activities if (! $scope.galleryItems?) || (! $scope.galleryItems.length)
-    $scope.galleryItems
+    if newValue.search_all != oldValue.search_all
+      if newValue.search_all? && (newValue.search_all.length > 0)
+        $scope.filters.sort = "relevance" 
+      else
+        $scope.filters.sort = "newest"
+    _.throttle(( ->
+      $scope.clearAndLoad()
+    ), 250)()
 
   # Initialization
   $scope.collapse_filters = true
@@ -85,13 +60,9 @@
     $scope.filters.sort = $scope.sortChoices[0]
   $scope.filters.generator = _.find($scope.generatorChoices, (x) -> x.value == $scope.url_params.source) if $scope.url_params.source
   $scope.filters.activity_type = _.find($scope.typeChoices, (x) -> x.value == $scope.url_params.activity_type) if $scope.url_params.activity_type
-  $scope.clear_and_load()
+  $scope.clearAndLoad()
 
-  # Load up some activities to use if we need to suggest alternatives for an empty result
-  $timeout (->
-    $scope.load_no_results_data()
-  ), 1000
-
+ 
   $scope.getFooterRightContents = (activity) ->
     if activity?.creator?.id
       return "By #{activity.creator.name}"

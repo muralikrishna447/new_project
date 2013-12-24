@@ -60,7 +60,7 @@ angular.module('ChefStepsApp').controller 'IngredientsGalleryController', ["$sco
   $scope.resetFilter = (key) ->
     $scope.filters[key] = $scope.defaultFilters[key]
 
-  $scope.load_data = ->
+  $scope.loadData = ->
     if ! $scope.all_loaded
 
       $scope.spinner += 1
@@ -102,26 +102,26 @@ angular.module('ChefStepsApp').controller 'IngredientsGalleryController', ["$sco
     $scope.no_results_ingredients = $resource($scope.gallery_index + '?page=3&sort=title').query ->
       console.log "loaded backups"
 
-  $scope.clear_and_load = ->
+  $scope.clearAndLoad = ->
     $scope.page = 1
     $scope.all_loaded = false
-    $scope.load_data()
+    $scope.loadData()
 
   $scope.$watch 'filters.sort', (newValue) ->
     console.log newValue
-    $scope.clear_and_load() if newValue
+    $scope.clearAndLoad() if newValue
 
   $scope.$watch 'filters.search_all', (newValue) ->
     console.log newValue
     #$scope.filters.sort = $scope.sortChoices[0] if newValue? && (newValue.length == 1)
     #$scope.filters.sort = $scope.sortChoices[1] if (! newValue?)  || newValue.length == 0
     $timeout (->
-      $scope.clear_and_load()
+      $scope.clearAndLoad()
     ), 250
 
   $scope.clearFilters = ->
     $scope.filters = angular.extend({}, $scope.defaultFilters)
-    $scope.clear_and_load()
+    $scope.clearAndLoad()
 
   $scope.getIngredients = ->
     return $scope.no_results_ingredients if (! $scope.ingredients?) || (! $scope.ingredients.length)
@@ -129,7 +129,7 @@ angular.module('ChefStepsApp').controller 'IngredientsGalleryController', ["$sco
 
   $scope.$watch 'filters.image', (newValue) ->
     console.log newValue
-    $scope.clear_and_load() if newValue
+    $scope.clearAndLoad() if newValue
 
   # Initialization
   $scope.collapse_filters = true
@@ -142,7 +142,7 @@ angular.module('ChefStepsApp').controller 'IngredientsGalleryController', ["$sco
   if $scope.url_params.search_all
     $scope.filters.search_all = $scope.url_params.search_all
     $scope.filters.sort = $scope.sortChoices[0]
-  $scope.clear_and_load()
+  $scope.clearAndLoad()
 
   # Load up some ingredients to use if we need to suggest alternatives for an empty result
   $timeout (->

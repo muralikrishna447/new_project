@@ -45,14 +45,14 @@
               %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
                 {{choice}}
 
-  .row(ng-show="activities.length == 0" ng-click="collapse_filters = true")
+  .row(ng-show="galleryItems.length == 0" ng-click="collapse_filters = true")
     .span12
       %h3 No results found, but perhaps you'd enjoy these recipes?
 
   .row.gallery-contents(ng-click="collapse_filters = true")
     .span12
       %div(galleryscroll='loadData()')
-        %div(ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
+        %div(ng-repeat='activity in getDisplayItems()' ng-animate="'gallery-animation'")
           %csGalleryItem( title="activity.title"
                           href="'activities/' + activity.slug"
                           image="itemImageURL(activity, 400)"

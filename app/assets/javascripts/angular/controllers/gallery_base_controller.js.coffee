@@ -1,12 +1,8 @@
-@app.controller 'GalleryBaseController', ["$scope", ($scope) ->
+@app.controller 'GalleryBaseController', ["$scope", "$timeout", ($scope, $timeout) ->
 
   # Initialization
   $scope.galleryItems = []
     
-  $scope.sortChoices = ["relevance", "newest", "oldest"]
- 
-  $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x == "relevance")
-
   $scope.resetFilter = (key) ->
     $scope.filters[key] = $scope.defaultFilters[key]
   
@@ -45,7 +41,7 @@
   PAGINATION_COUNT = 12
 
   $scope.loadData = ->
-    if ! $scope.all_loaded
+    if ! $scope.allLoaded
 
       $scope.spinner += 1
 
@@ -72,7 +68,7 @@
             $scope.galleryItems[base..base + PAGINATION_COUNT] = newItems
 
           $scope.page = gip.page + 1
-          $scope.all_loaded = true if (! newItems) || (newItems.length < PAGINATION_COUNT)
+          $scope.allLoaded = true if (! newItems) || (newItems.length < PAGINATION_COUNT)
 
         else
           console.log ".... FROM OLD PARAMS, IGNORING "
@@ -82,4 +78,28 @@
         $scope.spinner -= 1
       )
 
-  ]
+  $scope.loadNoResultsData = ->
+    $scope.objectMethods.queryIndex()($scope.noResultsFilters, (newItems) ->
+      $scope.noResultsItems = newItems
+      console.log "loaded backups"
+    )
+
+  $scope.clearFilters = ->
+    $scope.filters = angular.extend({}, $scope.defaultFilters)
+    $scope.clearAndLoad()
+
+  $scope.getDisplayItems = ->
+    return $scope.noResultsItems if (! $scope.galleryItems?) || (! $scope.galleryItems.length)
+    $scope.galleryItems
+
+  # Load up some activities to use if we need to suggest alternatives for an empty result
+  $timeout (->
+    $scope.loadNoResultsData()
+  ), 1000
+
+  $scope.clearAndLoad = ->
+    $scope.page = 1
+    $scope.allLoaded = false
+    $scope.loadData()
+
+]
