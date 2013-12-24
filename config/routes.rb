@@ -57,6 +57,7 @@ Delve::Application.routes.draw do
   get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
+  get 'egg-timer' => 'pages#egg_timer', as: 'egg_timer'
   get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   match '/mp', to: redirect('/courses/spherification')

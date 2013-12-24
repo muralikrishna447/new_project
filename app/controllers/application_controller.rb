@@ -129,6 +129,20 @@ private
     end
   end
 
+  def aweber_signup(name, email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
+    if Rails.env.production?
+      uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
+      response = Net::HTTP.post_form(uri,
+                                      { "name" => name,
+                                        "email" => email,
+                                        "listname" => listname,
+                                        "meta_adtracking" => meta_adtracking,
+                                        "custom signed_up_from" => signed_up_from})
+    else
+      logger.debug 'Newsletter Signup'
+    end
+  end
+
   protected
 
   def verified_request?

@@ -41,7 +41,7 @@ class IngredientsController < ApplicationController
   end
 
   def update
-    authorize! :update, Ingredient unless Rails.env.angular?
+    authorize! :update, Ingredient
     respond_to do |format|
       format.json do
         @ingredient = Ingredient.find(params[:id])
@@ -72,7 +72,7 @@ class IngredientsController < ApplicationController
   end
 
   def destroy
-    authorize! :manage, Ingredient unless Rails.env.angular?
+    authorize! :manage, Ingredient
     @ingredient = Ingredient.find(params[:id])
     respond_to do |format|
       format.json do
@@ -82,7 +82,7 @@ class IngredientsController < ApplicationController
           elsif (@ingredient.activities.count) > 0 || (@ingredient.steps.count > 0)
             raise "Can't delete an ingredient that is in use"
           else
-            @ingredient.destroy unless Rails.env.angular?
+            @ingredient.destroy
             head :no_content
           end
         rescue Exception => e
@@ -106,7 +106,7 @@ class IngredientsController < ApplicationController
   end
 
   def merge
-    authorize! :manage, Ingredient unless Rails.env.angular?
+    authorize! :manage, Ingredient
     puts "Merging " + @ingredients.inspect
     puts "Into " + @result_ingredient.inspect
     respond_to do |format|
@@ -114,7 +114,7 @@ class IngredientsController < ApplicationController
         begin
           @result_ingredient = Ingredient.find(params[:id])
           @ingredients = Ingredient.find(params[:merge].split(','))
-          @result_ingredient.merge(@ingredients) unless Rails.env.angular?
+          @result_ingredient.merge(@ingredients)
           head :no_content
         rescue Exception => e
           messages = [] || @ingredient.errors.full_messages

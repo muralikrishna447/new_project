@@ -2,28 +2,27 @@
 - content_for :description, "Batch edit equipment"
 
 .admin-table.container.relative(ng-controller="EquipmentIndexController" infinite-scroll="loadEquipment()" infinite-scroll-distance="3" ng-cloak)
+  .navbar
+    .container
+      .form-horizontal
+        %input.search-query(type="search" placeholder="Equipment name..." ng-model="searchString")
+        %button.btn#exact-match(btn-checkbox type="button" ng-model="exactMatch" ng-click="refreshEquipment()")
+          %i.icon-asterisk(tooltip="Exact Match Only")
+        .btn-toolbar
+          .btn-group
+            %button.btn#refresh-button(ng-click="refreshEquipment()")
+              %i.icon-refresh(tooltip="Refresh list (use when you make changes in another window)")
+          .btn-group
+            %button.btn#merge-button(ng-disabled="! canMerge()" ng-click="setMergeKeeper(null); mergeModalOpen = true" )
+              .icon-pair(tooltip="Merge selected equipment (No Undo!)")
+                %i.icon-arrow-right
+                %i.icon-arrow-left
+            %button.btn#delete-button(ng-disabled="! canDelete()" ng-click="deleteSelected()" )
+              %i.icon-trash(tooltip="Delete selected equipment (No Undo!)")
+        %i.loading-spinner.icon-spinner.icon-spin.pull-right(ng-show="dataLoading")
 
-  .navbar.navbar-fixed-top
-    .navbar-inner
-      .container
-        .form-horizontal
-          %input.search-query(type="search" placeholder="Equipment name..." ng-model="searchString")
-          %button.btn#exact-match(btn-checkbox type="button" ng-model="exactMatch" ng-click="refreshEquipment()")
-            %i.icon-asterisk(tooltip="Exact Match Only")
-          .btn-toolbar
-            .btn-group
-              %button.btn#refresh-button(ng-click="refreshEquipment()")
-                %i.icon-refresh(tooltip="Refresh list (use when you make changes in another window)")
-            .btn-group
-              %button.btn#merge-button(ng-disabled="! canMerge()" ng-click="setMergeKeeper(null); mergeModalOpen = true" )
-                .icon-pair(tooltip="Merge selected equipment (No Undo!)")
-                  %i.icon-arrow-right
-                  %i.icon-arrow-left
-              %button.btn#delete-button(ng-disabled="! canDelete()" ng-click="deleteSelected()" )
-                %i.icon-trash(tooltip="Delete selected equipment (No Undo!)")
-          %i.loading-spinner.icon-spinner.icon-spin.pull-right(ng-show="dataLoading")
+  -# %cs-notifications
 
-  = render 'shared/alerts'
   .row.grid
     .table-index.span12(ng-grid="gridOptions")
 

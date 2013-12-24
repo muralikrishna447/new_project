@@ -207,11 +207,14 @@ Devise.setup do |config|
   # this is the ca_file path for heroku
   ssl_options = {ca_file: '/usr/lib/ssl/certs/ca-certificates.crt'}
   ssl_options.merge!(verify_mode: OpenSSL::SSL::VERIFY_NONE) if Rails.env.development?
-  if Rails.env.production? || Rails.env.staging?
+  if Rails.env.production?
     # Production facebook settings
     config.omniauth :facebook, '380147598730003', ENV["FACEBOOK_SECRET"], {scope: 'email', client_options: {ssl: ssl_options}}
+  elsif Rails.env.staging?
+    # staging facebook settings
+    config.omniauth :facebook, '642634055780525', ENV["FACEBOOK_SECRET"], {scope: 'email', client_options: {ssl: ssl_options}}
   else
-    # Development facebook settings
+    # Development/Test facebook settings
     config.omniauth :facebook, '249352241894051', '57601926064dbde72d57fedd0af8914f', {scope: 'email'}
   end
 

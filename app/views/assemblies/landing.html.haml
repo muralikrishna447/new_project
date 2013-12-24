@@ -42,11 +42,7 @@
             %h4 100% satisfaction guaranteed or your money back
         .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
           = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.  slug}/landing"
-        .testimonials.well(ng-click="switchTab('reviews', 'Reviews')" ng-show="#{@course.slug == 'french-macarons'}")
-          = image_tag 'https://www.filepicker.io/api/file/AShQR6KzQJeqKNwszJjK/convert?fit=crop&w=75&h=75', class: 'img-circle'
-          %p "...the best $39 of my life. On the first day we made the roasted cocoa macarons, and on the second, rainbow chip. Both days we made perfect cookies and filling, first try.”
-          %h5 -Patrick, North Carolina
-
+        .testimonials.well(ng-click="switchTab('reviews', 'Reviews')" ng-show="#{!@course.testimonial_copy.blank?}" ng-bind-html-unsafe="'#{@course.testimonial_copy}'")
 
     .row
       .span8
