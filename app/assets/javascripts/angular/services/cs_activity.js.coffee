@@ -15,7 +15,8 @@
 
 # This can't be the best way to do this, but I can't figure out how to get the objects return from
 # $resource above to be Activities, not just Resources, so I can add these methods to the protoype.
-@app.service 'ActivityMethods', [() ->
+@app.service 'ActivityMethods', ["Activity", (Activity) ->
+
   this.placeHolderImage = ->
     "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
 
@@ -31,5 +32,8 @@
           images = activity.steps.map (step) -> step.image_id
           image_fpfile = images[images.length - 1]
           return JSON.parse(image_fpfile) if (image_fpfile? && (image_fpfile != ""))
+
+  this.queryIndex = ->
+    Activity.index_as_json
 
 ]

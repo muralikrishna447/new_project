@@ -1,14 +1,12 @@
-
-
 @app.controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Activity", "ActivityMethods", ($scope, $resource, $location, $timeout, csGalleryService, $controller, Activity, ActivityMethods) ->
 
   $controller('GalleryBaseController', {$scope: $scope});
   $scope.galleryService = csGalleryService
+  $scope.resource = Activity
   $scope.objectMethods = ActivityMethods
 
   $scope.placeHolderImage = ->
     ActivityMethods.placeHolderImage()
-
 
   $scope.typeChoices = [
     {name: "Any", value: "any"}
@@ -42,33 +40,25 @@
     generator: $scope.generatorChoices[0]
   }
 
-  $scope.galleryIndexParams = ->
-    r = {page: $scope.page}
-    for filter, x of $scope.filters
-      if _.isObject(x)
-        r[filter] = x.value if x.value != "any"
-      else
-        r[filter] = x
-
+  $scope.normalizeGalleryIndexParams = (r) ->
     # For unpublished, sort by updated date instead of published date
     if r.published_status == "Unpublished" && r.by_published_at?
       r.by_updated_at = r.by_published_at
       delete r.by_published_at
-    r
 
-  $scope.resetFilter = (key) ->
-    $scope.filters[key] = $scope.defaultFilters[key]
 
   PAGINATION_COUNT = 12
 
-  $scope.load_data = ->
+  $scope.getStuff = Activity.index_as_json
+
+  $scope.loadData = ->
     if ! $scope.all_loaded
 
       $scope.spinner += 1
 
       gip = $scope.galleryIndexParams()
       query_filters = angular.extend({}, $scope.filters)
-      Activity.index_as_json(gip, (more_activities) -> 
+      $scope.objectMethods.queryIndex()(gip, (more_activities) -> 
 
         console.log "GOT BACK " + more_activities.length + " FOR PAGE " + gip.page
 
@@ -107,7 +97,7 @@
   $scope.clear_and_load = ->
     $scope.page = 1
     $scope.all_loaded = false
-    $scope.load_data()
+    $scope.loadData()
 
   $scope.$watch 'filters.difficulty', (newValue) ->
     console.log newValue
@@ -172,16 +162,5 @@
 
 ]
 
-angular.module('ChefStepsApp').directive 'galleryscroll', ["$window", ($window) ->
-  (scope, element, attr) ->
-    window_element = angular.element($window)
-    raw = element[0]
-    window_element.scroll(
-      _.throttle( (->
-        # console.log(element.height() - window.innerHeight)
-        # console.log(window_element.scrollTop())
-        if window_element.scrollTop() >= (element.height() - window.innerHeight)
-          scope.$apply(attr.galleryscroll)), 
-      250, trailing: false))
-]
+
 

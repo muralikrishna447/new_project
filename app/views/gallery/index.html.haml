@@ -51,7 +51,7 @@
 
   .row.gallery-contents(ng-click="collapse_filters = true")
     .span12
-      %div(galleryscroll='load_data()')
+      %div(galleryscroll='loadData()')
         %div(ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
           %csGalleryItem( title="activity.title"
                           href="'activities/' + activity.slug"
