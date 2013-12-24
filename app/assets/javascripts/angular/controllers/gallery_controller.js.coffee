@@ -8,36 +8,17 @@
   $scope.placeHolderImage = ->
     ActivityMethods.placeHolderImage()
 
-  $scope.typeChoices = [
-    {name: "Any", value: "any"}
-    {name: "Recipes", value: "Recipe"},
-    {name: "Techniques", value: "Technique"},
-    {name: "Science", value: "Science"}
-  ]
-
-  $scope.difficultyChoices = [
-    {name: "Any", value: "any"}
-    {name: "Easy", value: "easy"},
-    {name: "Intermediate", value: "intermediate"}
-    {name: "Advanced", value: "advanced"}
-  ]
-
-  $scope.publishedStatusChoices = [
-    {name: "Published", value: "Published"},
-    {name: "Unpublished", value: "Unpublished"}
-  ]
-
-  $scope.generatorChoices = [
-    {name: "ChefSteps", value: "chefsteps"},
-    {name: "Community", value: "community"}
-  ]
+  $scope.typeChoices = ["Any", "Recipe", "Technique", "Science"]
+  $scope.difficultyChoices = ["Any", "Easy", "Intermediate", "Advanced"]
+  $scope.publishedStatusChoices = ["Published", "Unpublished"]
+  $scope.generatorChoices = ["ChefSteps", "Community"]
 
   $scope.defaultFilters = {
-    sort: $scope.sortChoices[1],
-    published_status: $scope.publishedStatusChoices[0]
-    activity_type: $scope.typeChoices[0]
-    difficulty: $scope.difficultyChoices[0]
-    generator: $scope.generatorChoices[0]
+    sort: "Newest"
+    published_status: "Published"
+    activity_type: "Recipe"
+    difficulty: "Any"
+    generator: "ChefSteps"
   }
 
   $scope.normalizeGalleryIndexParams = (r) ->
@@ -48,8 +29,6 @@
 
 
   PAGINATION_COUNT = 12
-
-  $scope.getStuff = Activity.index_as_json
 
   $scope.loadData = ->
     if ! $scope.all_loaded
@@ -121,8 +100,8 @@
 
   $scope.$watch 'filters.search_all', (newValue) ->
     console.log newValue
-    $scope.filters.sort = $scope.sortChoices[0] if newValue? && (newValue.length == 1)
-    $scope.filters.sort = $scope.sortChoices[1] if (! newValue?)  || newValue.length == 0
+    $scope.filters.sort = "Relevance" if newValue? && (newValue.length == 1)
+    $scope.filters.sort = "Newest" if (! newValue?)  || newValue.length == 0
     $timeout (->
       $scope.clear_and_load()
     ), 250

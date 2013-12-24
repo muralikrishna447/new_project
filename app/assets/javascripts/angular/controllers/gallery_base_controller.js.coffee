@@ -1,12 +1,8 @@
 @app.controller 'GalleryBaseController', ["$scope", ($scope) ->
     
-  $scope.sortChoices = [
-    {name: "RELEVANCE", value: "relevance"}
-    {name: "NEWEST", value: "newest"},
-    {name: "OLDEST", value: "oldest"},
-  ]
-
-  $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x.value == "relevance")
+  $scope.sortChoices = ["relevance", "newest", "oldest"]
+ 
+  $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x == "relevance")
 
   $scope.resetFilter = (key) ->
     $scope.filters[key] = $scope.defaultFilters[key]
@@ -39,10 +35,7 @@
   $scope.galleryIndexParams = ->
     r = {page: $scope.page}
     for filter, x of $scope.filters
-      if _.isObject(x)
-        r[filter] = x.value if x.value != "any"
-      else
-        r[filter] = x
+      r[filter] = x.toLowerCase() if x != "Any"
     $scope.normalizeGalleryIndexParams(r)
     r
 

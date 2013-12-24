@@ -22,7 +22,7 @@
                 %i.icon-angle-down(ng-show="collapse_filters")
                 %i.icon-angle-up(ng-hide="collapse_filters")
               .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
-                {{f.name}}
+                {{f}}
                 %span.reset-filter(ng-click="resetFilter(k)")
                   %i.icon-remove
               .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" )
@@ -40,10 +40,10 @@
             %li.browse-by Browse By
             %li(ng-repeat="choice in sortChoices" ng-hide="(filters.search_all || '') == ''")
               %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
-                {{choice.name}}
+                {{choice}}
             %li(ng-repeat="choice in sortChoicesWhenNoSearch" ng-show="(filters.search_all || '') == ''")
               %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
-                {{choice.name}}
+                {{choice}}
 
   .row(ng-show="activities.length == 0" ng-click="collapse_filters = true")
     .span12
