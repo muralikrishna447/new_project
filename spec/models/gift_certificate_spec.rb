@@ -1,9 +1,79 @@
 require 'spec_helper'
 
 describe GiftCertificate do
+  let(:purchaser){ Fabricate(:user) }
+  let(:ip_address) { "10.0.0.1" }
+  let(:assembly) { Fabricate(:assembly) }
+  let(:discounted_price) { 19.99 }
+  let(:stripe_token) { "12345" }
+  let(:gift_info) { {"recipientEmail" => "dan@chefsteps.com", "recipientName" => "Dan", "recipientMessage" => "Testing", "emailToRecipient" => "nad@chefsteps.com"} }
 
-  describe "creates a random token of at least 6 characters" do
-    gc = GiftCertificate.new
-    gc.token.length.should >= 6
+  before(:each) do
+    SecureRandom.stub(:urlsafe_base64).and_return("123456", "234567")
   end
+
+  describe "after_initialize" do
+    it "should create a random token of at least 6 characters" do
+      gc = GiftCertificate.new
+      gc.token.length.should >= 6
+    end
+
+    it "should retry if a duplicate is created" do
+      old_gc = Fabricate(:gift_certificate, token: "123456")
+      SecureRandom.stub(:urlsafe_base64).and_return("123456", "234567")
+      gift_certificate = GiftCertificate.new
+      expect(gift_certificate.token).to_not eq "123456"
+      expect(gift_certificate.token).to eq "234567"
+    end
+
+  end
+
+  describe ".purchase" do
+    it "should call get_tax_info from acts_as_chargeable" do
+      GiftCertificate.should_receive(:get_tax_info)
+      GiftCertificate.purchase(purchaser, ip_address, assembly, discounted_price, stripe_token, gift_info)
+    end
+    it "should call send_email" do
+      GiftCertificate.any_instance.should_receive(:send_email).with("nad@chefsteps.com")
+      GiftCertificate.purchase(purchaser, ip_address, assembly, discounted_price, stripe_token, gift_info)
+    end
+
+    context "#collect_money" do
+      it "should not collect money if user is an admin" do
+        admin = Fabricate(:user, role: "admin")
+        GiftCertificate.should_not_receive(:collect_money)
+        GiftCertificate.purchase(admin, ip_address, assembly, discounted_price, stripe_token, gift_info)
+      end
+
+      it "should collect money if the user is not an admin" do
+        GiftCertificate.should_receive(:collect_money)
+        GiftCertificate.purchase(purchaser, ip_address, assembly, discounted_price, stripe_token, gift_info)
+      end
+    end
+
+    context "no sales tax" do
+      before(:each) do
+        GiftCertificate.stub(:get_tax_info).and_return([19.00, 0.0, ""])
+      end
+
+      subject { GiftCertificate.purchase(purchaser, ip_address, assembly, discounted_price, stripe_token, gift_info) }
+      its(:token){ should == "123456"}
+      its(:purchaser_id){ should == assembly.id }
+      its(:price){ should == 19.00 }
+      its(:sales_tax){ should == 0.0}
+      its(:recipient_email){ should == "dan@chefsteps.com"}
+      its(:recipient_name){ should == "Dan"}
+      its(:recipient_message){should == "Testing"}
+
+      it "should return a gift_certificate" do
+        expect(GiftCertificate.purchase(purchaser, ip_address, assembly, discounted_price, stripe_token, gift_info)).to be_an_instance_of(GiftCertificate)
+      end
+
+
+    end
+  end
+
+
+
+
 end
