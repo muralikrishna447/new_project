@@ -33,6 +33,14 @@ angular.module('ChefStepsApp').controller 'GiftCertificatesController', ["$scope
     selectedItems: []
     columnDefs: [
       {
+        field: "token"
+        display_name: "Token"
+        width: 75
+        enableCellEdit: false
+        sortable: false
+        cellTemplate: '<div class="ngCellText colt{{$index}}">{{row.getProperty(col.field)}}</div>'
+      }
+      {
         field: "created_at"
         display_name: "Created At"
         width: "*"
