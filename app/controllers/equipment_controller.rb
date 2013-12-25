@@ -30,14 +30,14 @@ class EquipmentController < ApplicationController
       end
 
       format.html do
-        authorize! :update, Equipment unless Rails.env.angular?
+        authorize! :update, Equipment
         render
       end
     end
   end
 
   def update
-    authorize! :update, Equipment unless Rails.env.angular?
+    authorize! :update, Equipment
     respond_to do |format|
       format.json do
         @equipment = Equipment.find(params[:id])
@@ -54,7 +54,7 @@ class EquipmentController < ApplicationController
   end
 
   def destroy
-    authorize! :update, Equipment unless Rails.env.angular?
+    authorize! :update, Equipment
     @equipment = Equipment.find(params[:id])
     respond_to do |format|
       format.json do
@@ -62,7 +62,7 @@ class EquipmentController < ApplicationController
           if (@equipment.activities.count) > 0
             raise "Can't delete equipment that is in use"
           else
-            @equipment.destroy unless Rails.env.angular?
+            @equipment.destroy
             head :no_content
           end
         rescue Exception => e
@@ -75,7 +75,7 @@ class EquipmentController < ApplicationController
   end
 
   def merge
-    authorize! :update, Equipment unless Rails.env.angular?
+    authorize! :update, Equipment
     respond_to do |format|
       format.json do
         begin
@@ -83,7 +83,7 @@ class EquipmentController < ApplicationController
           @equipment = Equipment.find(params[:merge].split(','))
           puts "Merging " + @equipment.inspect
           puts "Into " + @result_equipment.inspect
-          @result_equipment.merge(@equipment) unless Rails.env.angular?
+          @result_equipment.merge(@equipment)
           head :no_content
         rescue ActiveRecord::RecordNotUnique => e
           messages = [] || @equipment.errors.full_messages
