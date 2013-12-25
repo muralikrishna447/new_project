@@ -1,8 +1,17 @@
+# Next step in refactoring would be to move much of this over to a service, but at least it is now shared by 
+# all gallery controllers.
 @app.controller 'GalleryBaseController', ["$scope", "$timeout", ($scope, $timeout) ->
 
   # Initialization
   $scope.galleryItems = []
-    
+  $scope.collapse_filters = true
+  $scope.page = 1
+  $scope.spinner = 0
+
+  # This muck will go away when I do deep routing properly
+  $scope.url_params = {}
+  $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
+  
   $scope.resetFilter = (key) ->
     $scope.filters[key] = $scope.defaultFilters[key]
   
@@ -22,13 +31,18 @@
     r = _.reduce(
       angular.extend({}, $scope.filters),
       (mem, value, key) ->
-        if $scope.defaultFilters[key]?.value != value.value
+        console.log $scope.defaultFilters[key] + ":" + value
+        if $scope.defaultFilters[key] != value
           mem[key] = value
         mem
       {}
     )
     delete r.search_all
     delete r.sort
+    r
+
+  # Override if needed in derived controllers
+  $scope.normalizeGalleryIndexParams = (r) ->
     r
 
   $scope.galleryIndexParams = ->
@@ -101,5 +115,17 @@
     $scope.page = 1
     $scope.allLoaded = false
     $scope.loadData()
+
+  $scope.$watchCollection 'filters', (newValue, oldValue) ->
+    console.log newValue
+    if newValue.search_all != oldValue.search_all
+      if newValue.search_all? && (newValue.search_all.length > 0)
+        $scope.filters.sort = "relevance" 
+      else
+        $scope.filters.sort = "newest"
+    _.throttle(( ->
+      $scope.clearAndLoad()
+    ), 250)()
+
 
 ]
