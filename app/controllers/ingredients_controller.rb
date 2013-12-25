@@ -9,8 +9,10 @@ class IngredientsController < ApplicationController
     controller.params[:exact_match] == "true" ? scope.exact_search(value) : scope.search_title(value)
   end
 
+  has_scope :search_all
+
   has_scope :image do |controller, scope, value|
-    value == "true" ? scope.with_images : scope
+    value == "withimage" ? scope.with_image : scope.no_image
   end
 
   def index
@@ -18,7 +20,7 @@ class IngredientsController < ApplicationController
       format.json do
         sort_string = (params[:sort] || "title") + " " + (params[:dir] || "ASC").upcase
         result = apply_scopes(Ingredient).where("title <>''").includes(:activities, steps: [:activity]).order(sort_string).offset(params[:offset]).limit(params[:limit]).page(params[:page]).per(12)
-        if params[:detailed]
+        if params[:detailed] == "true"
           render :json => result.as_json(include: {activities: {only: [:id, :title]}, steps: {only: :id, include: {activity: {only: [:id, :title]}}}})
         else
           render :json => result.to_json

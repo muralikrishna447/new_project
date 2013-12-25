@@ -31,7 +31,6 @@
     r = _.reduce(
       angular.extend({}, $scope.filters),
       (mem, value, key) ->
-        console.log $scope.defaultFilters[key] + ":" + value
         if $scope.defaultFilters[key] != value
           mem[key] = value
         mem
@@ -48,7 +47,7 @@
   $scope.galleryIndexParams = ->
     r = {page: $scope.page}
     for filter, x of $scope.filters
-      r[filter] = x.toLowerCase() if x != "Any"
+      r[filter] = x.replace(/\s+/g, '_').toLowerCase() if x != "any"
     $scope.normalizeGalleryIndexParams(r)
     r
 
@@ -60,6 +59,7 @@
       $scope.spinner += 1
 
       gip = $scope.galleryIndexParams()
+      console.log "Querying for " + JSON.stringify(gip)
       query_filters = angular.extend({}, $scope.filters)
       $scope.objectMethods.queryIndex()(gip, (newItems) -> 
 

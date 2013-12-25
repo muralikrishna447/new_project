@@ -1,5 +1,7 @@
 - content_for :title, "Ingredient Gallery"
-- content_for :description, "Learn more about your favorite ingredients"
+- content_for :description, "Become a better cook. Learn about these essential ingredients."
+- content_for :ajax_seo do
+  %meta{name: "fragment", content: "!"}
 
 .container.gallery-wrapper.relative(ng-controller='IngredientsGalleryController' ng-cloak)
   .row
@@ -19,26 +21,35 @@
                 %i.icon-angle-down(ng-show="collapse_filters")
                 %i.icon-angle-up(ng-hide="collapse_filters")
               .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
-                {{f.name}}
+                {{f}}
                 %span.reset-filter(ng-click="resetFilter(k)")
                   %i.icon-remove
               .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" )
                 .btn-group.first-separate
                   %csRadioButtons(ng-model="imageChoices" active="filters.image")
+ 
+          %ul.nav.browse-group.pull-right(ng-click="collapse_filters = true")
+            %li.browse-by Browse By
+            %li(ng-repeat="choice in sortChoices" ng-hide="(filters.search_all || '') == ''")
+              %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
+                {{choice}}
+            %li(ng-repeat="choice in sortChoicesWhenNoSearch" ng-show="(filters.search_all || '') == ''")
+              %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
+                {{choice}}
 
-
-  .row(ng-show="ingredients.length == 0" ng-click="collapse_filters = true")
+  .row(ng-show="galleryItems.length == 0" ng-click="collapse_filters = true")
     .span12
-      %h3 No results found, but perhaps you'd enjoy these ingredients?
+      %h3 No results found, but perhaps you'd enjoy these recipes?
 
   .row.gallery-contents(ng-click="collapse_filters = true")
     .span12
       %div(galleryscroll='loadData()')
-        %div(ng-repeat='ingredient in getIngredients()' ng-animate="'gallery-animation'")
-          %csGalleryItem( title="ingredient.title"
-                          href="'ingredients/' + ingredient.slug"
-                          image="ingredientImageURL(ingredient, 400)"
-
+        %div(ng-repeat='item in getDisplayItems()' ng-animate="'gallery-animation'")
+          %csGalleryItem( title="item.title"
+                          href="'ingredients/' + item.slug"
+                          image="itemImageURL(item, 400)"
+                          footer-left=""
+                          footer-right=""
                         )
   .row
     .span2.offset5
