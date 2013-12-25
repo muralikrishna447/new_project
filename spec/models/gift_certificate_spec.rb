@@ -58,7 +58,8 @@ describe GiftCertificate do
 
       subject { GiftCertificate.purchase(purchaser, ip_address, assembly, discounted_price, stripe_token, gift_info) }
       its(:token){ should == "123456"}
-      its(:purchaser_id){ should == assembly.id }
+      its(:purchaser_id){ should == purchaser.id }
+      its(:assembly_id){ should == assembly.id }
       its(:price){ should == 19.00 }
       its(:sales_tax){ should == 0.0}
       its(:recipient_email){ should == "dan@chefsteps.com"}
