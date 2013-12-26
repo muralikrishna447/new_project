@@ -102,7 +102,7 @@ private
   def load_assembly
 
     begin
-      @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
+      @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], can?(:update, @activity))
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = discounted_price(@assembly.price, session[:coupon])
       # Changing so that it accepts a param gift_toekn as well, this is solely for e2e testing and shouldn't be given to customers as it doesn't store the information in the sesion so they MUST use it on that page.
