@@ -197,6 +197,8 @@ Delve::Application.routes.draw do
 
   resources :events, only: [:create]
 
+  resources :gift_certificates
+
   get "smoker" => "smoker#index"
 
   get "/affiliates/share_a_sale" => "affiliates#share_a_sale"

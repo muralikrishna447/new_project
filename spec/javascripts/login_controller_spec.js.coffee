@@ -17,6 +17,8 @@ describe "LoginController", ->
     scope.httpBackend = _$httpBackend_
     $controller("LoginController", {$scope: scope})
 
+    scope.alertService = jasmine.createSpyObj('csAlertService', ['addAlert', 'getAlerts'])
+
     scope.facebook =
       connect: ( ->
         then: jasmine.createSpy("connect").andReturn({name: "Test User", email: "test@example.com", user_id: "123"})
@@ -115,6 +117,9 @@ describe "LoginController", ->
         runs ->
           expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
 
+      it "should create an alert message", ->
+        expect(scope.alertService.addAlert).toHaveBeenCalledWith({message: 'You have been signed in.', type: 'success'})
+
       # it "should emit a loginSuccessful event upwards", ->
       #   expect(scope.$emit).toHaveBeenCalledWith('loginSuccessful', { user : { email : 'test@example.com', name : 'Test User'}})
 
@@ -157,8 +162,8 @@ describe "LoginController", ->
         scope.register()
         scope.httpBackend.flush()
 
-      it "should set the success message", ->
-        expect(scope.message).toBe("You have been registered and logged in.")
+      it "should create an alert message", ->
+        expect(scope.alertService.addAlert).toHaveBeenCalledWith({message: 'You have been registered and signed in.', type: 'success'})
 
       it "should set the logged in to true", ->
         expect(scope.logged_in).toEqual(true)
