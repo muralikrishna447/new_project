@@ -2,6 +2,7 @@
 
   $controller('GalleryBaseController', {$scope: $scope});
   $scope.galleryService = csGalleryService
+  $scope.resourceName = "Activity"
   $scope.resource = Activity
   $scope.objectMethods = ActivityMethods
 

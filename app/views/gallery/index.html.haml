@@ -12,7 +12,7 @@
           %ul.nav.left-group
 
             %form.navbar-search.relative(ng-click="collapse_filters = true")
-              %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all")
+              %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all" ui-event='{blur: "trackSearch()"}')
               %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
                 %i.icon-remove
 

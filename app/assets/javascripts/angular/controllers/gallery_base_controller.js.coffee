@@ -47,7 +47,7 @@
   $scope.galleryIndexParams = (filters, page) ->
     r = {page: page}
     for filter, x of filters
-      r[filter] = x.replace(/\s+/g, '_').toLowerCase() if x.toLowerCase() != "any"
+      r[filter] = x.replace(/\s+/g, '_').toLowerCase() if x && x.toLowerCase() != "any"
     $scope.normalizeGalleryIndexParams(r)
     r
 
@@ -116,16 +116,22 @@
     $scope.allLoaded = false
     $scope.loadData()
 
-  $scope.$watchCollection 'filters', (newValue, oldValue) ->
-    console.log newValue
-    if newValue.search_all != oldValue.search_all
-      if newValue.search_all? && (newValue.search_all.length > 0)
-        $scope.filters.sort = "relevance" 
-      else
-        $scope.filters.sort = "newest"
-    _.throttle(( ->
-      $scope.clearAndLoad()
-    ), 250)()
+  $scope.$watch 'filters', 
+    (newValue, oldValue) ->
+      console.log newValue
+      if newValue.search_all != oldValue.search_all
+        if newValue.search_all? && (newValue.search_all.length > 0)
+          $scope.filters.sort = "relevance" 
+        else
+          $scope.filters.sort = $scope.defaultFilters.sort
+      _.throttle(( ->
+        $scope.clearAndLoad()
+      ), 250)()
+    , true
 
+  $scope.trackSearch = ->
+    if $scope.filters.search_all?.length > 0
+      mixpanel.track('Search', {'context': $scope.resourceName, 'term' : $scope.filters.search_all});
+ 
 
 ]
