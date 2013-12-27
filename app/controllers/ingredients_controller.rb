@@ -12,7 +12,24 @@ class IngredientsController < ApplicationController
   has_scope :search_all
 
   has_scope :image do |controller, scope, value|
-    value == "withimage" ? scope.with_image : scope.no_image
+    value == "with_image" ? scope.with_image : scope.no_image
+  end
+
+  has_scope :purchaseable do |controller, scope, value|
+    value == "with_purchase_link" ? scope.with_purchase_link : scope.no_purchase_link
+  end
+
+  has_scope :edit_level do |controller, scope, value|
+    case value
+    when "not_started"
+      value = scope.not_started
+    when "started"
+      value = scope.started
+    when "well_edited"
+      value = scope.well_edited
+    else
+      value = scope
+    end
   end
 
   def index

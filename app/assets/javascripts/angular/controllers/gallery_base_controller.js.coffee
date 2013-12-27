@@ -44,10 +44,10 @@
   $scope.normalizeGalleryIndexParams = (r) ->
     r
 
-  $scope.galleryIndexParams = ->
-    r = {page: $scope.page}
-    for filter, x of $scope.filters
-      r[filter] = x.replace(/\s+/g, '_').toLowerCase() if x != "any"
+  $scope.galleryIndexParams = (filters, page) ->
+    r = {page: page}
+    for filter, x of filters
+      r[filter] = x.replace(/\s+/g, '_').toLowerCase() if x.toLowerCase() != "any"
     $scope.normalizeGalleryIndexParams(r)
     r
 
@@ -58,7 +58,7 @@
 
       $scope.spinner += 1
 
-      gip = $scope.galleryIndexParams()
+      gip = $scope.galleryIndexParams($scope.filters, $scope.page)
       console.log "Querying for " + JSON.stringify(gip)
       query_filters = angular.extend({}, $scope.filters)
       $scope.objectMethods.queryIndex()(gip, (newItems) -> 
@@ -93,7 +93,7 @@
       )
 
   $scope.loadNoResultsData = ->
-    $scope.objectMethods.queryIndex()($scope.noResultsFilters, (newItems) ->
+    $scope.objectMethods.queryIndex()($scope.galleryIndexParams($scope.noResultsFilters, 5), (newItems) ->
       $scope.noResultsItems = newItems
       console.log "loaded backups"
     )

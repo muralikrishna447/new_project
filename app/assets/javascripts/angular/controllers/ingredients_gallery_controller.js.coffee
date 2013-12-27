@@ -8,13 +8,15 @@
   $scope.placeHolderImage = ->
     IngredientMethods.placeHolderImage()
 
-  $scope.sortChoices = ["title", "density"]
-  $scope.imageChoices = ["any", "withImage", "noImage"]
+  $scope.sortChoices = ["title"]
+  $scope.imageChoices = ["Any", "With Image", "No Image"]
+  $scope.editLevelChoices = ["Any", "Not Started", "Started", "Well Edited"]
   $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x == "relevance")
+  $scope.purchaseableChoices = ["Any", "With Purchase Link", "No Purchase Link"]
 
   $scope.defaultFilters = {
     detailed: "false" # speeds up query
-    image: "withImage"
+    image: "With Image"
     sort: "title"
   }
   $scope.filters = angular.extend({}, $scope.defaultFilters)
@@ -23,7 +25,7 @@
   # Query results to show if user query results are empty
   $scope.noResultsFilters = {
     sort: "title"
-    page: 3
+    image: "With Image"
   }
 
   $scope.getFooterRightContents = (activity) ->

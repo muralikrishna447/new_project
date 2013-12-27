@@ -29,13 +29,21 @@ class Ingredient < ActiveRecord::Base
   scope :no_sub_activities, where('sub_activity_id IS NULL')
   scope :with_image, where('image_id IS NOT NULL')
   scope :no_image, where('image_id IS NULL')
+  scope :with_purchase_link, where('product_url IS NOT NULL')
+  scope :no_purchase_link, where('product_url IS NULL')
+
+  # Temporary, til I can work out queries for number of distinct user edits
+  scope :not_started, where('CHAR_LENGTH(text_fields) < 100')
+  scope :started, joins(:events).where(events: {action: 'edit', trackable_type: 'Ingredient'}).group("ingredients.id").having("count(events.id) > 3 AND count(events.id) < 5")
+  scope :well_edited,  joins(:events).where(events: {action: 'edit', trackable_type: 'Ingredient'}).group("ingredients.id").having("count(events.id) > 5")
+
   include PgSearch
   multisearchable :against => [:title, :text_fields, :product_url]
 
   # Letters are the weighting
   pg_search_scope :search_all,
                   using: {tsearch: {prefix: true}},
-                  against: [[:title, 'A'], [:text_fields, 'C'], [:product_url, 'B']],
+                  against: [[:title, 'A'], [:text_fields, 'C']],
                   associated_against: {tags: [[:name, 'B']]}
 
   before_save :fix_title

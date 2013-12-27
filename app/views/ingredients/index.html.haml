@@ -27,6 +27,10 @@
               .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" )
                 .btn-group.first-separate
                   %csRadioButtons(ng-model="imageChoices" active="filters.image")
+                .btn-group.first-separate
+                  %csRadioButtons(ng-model="editLevelChoices" active="filters.edit_level")
+                .btn-group.first-separate
+                  %csRadioButtons(ng-model="purchaseableChoices" active="filters.purchaseable")
  
           %ul.nav.browse-group.pull-right(ng-click="collapse_filters = true")
             %li.browse-by Browse By
@@ -39,7 +43,7 @@
 
   .row(ng-show="galleryItems.length == 0" ng-click="collapse_filters = true")
     .span12
-      %h3 No results found, but perhaps you'd enjoy these recipes?
+      %h3 No results found, but perhaps you'd enjoy these ingredients?
 
   .row.gallery-contents(ng-click="collapse_filters = true")
     .span12
