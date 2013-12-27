@@ -32,6 +32,7 @@ describe GiftCertificatesController do
       it{ subject.first["id"].should eq @gift_certificate.id }
       it{ subject.first["user"]["id"].should eq @purchaser.id }
       it{ subject.first["assembly"]["id"].should eq @assembly.id }
+
       it "should set the gift_certificates" do
         sign_in admin
         get :index, format: :json
