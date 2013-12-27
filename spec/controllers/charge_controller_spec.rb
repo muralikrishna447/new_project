@@ -24,7 +24,7 @@ describe ChargesController, "#create" do
         @double_loc = double(Object)
         @double_loc.stub(:state).and_return("NJ")
         Geokit::Geocoders::IpGeocoder.should_receive(:geocode).and_return(@double_loc)
-     end        
+     end
 
       it 'is created in a normal case' do
         Stripe::Charge.should_receive(:create)
