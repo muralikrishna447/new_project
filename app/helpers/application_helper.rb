@@ -241,7 +241,7 @@ module ApplicationHelper
 
   def assembly_type_path(assembly)
     if assembly.assembly_type?
-      assembly_type_path = assembly.assembly_type.downcase.pluralize
+      assembly_type_path = assembly.assembly_type.downcase.pluralize.gsub(' ', '-')
       assembly_path(assembly).gsub('/assemblies', "/#{assembly_type_path}")
     else
       assembly_path(assembly)
