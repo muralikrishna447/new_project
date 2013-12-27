@@ -41,7 +41,7 @@
       - if @recipe_developments.any?
         .home-section
           %h2
-            = link_to 'Projects', projects_path, class: 'orange-link'
+            = link_to 'Recipe Developments', recipe_developments_path, class: 'orange-link'
           - @recipe_developments.each.with_index do |recipe_development, index|
             .home-standard-item
               .home-standard-item-image
