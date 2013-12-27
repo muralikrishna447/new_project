@@ -4,6 +4,7 @@
     {
       update: {method: "PUT"},
       merge: {url: "/ingredients/:id/merge", method: "POST"}
+      index_for_gallery: {method: "GET", url: "/ingredients/index_for_gallery.json", isArray: true}
     }
   )]
 
@@ -19,6 +20,6 @@
         return JSON.parse(ingredient.image_id)
 
   this.queryIndex = ->
-    Ingredient.query
+    Ingredient.index_for_gallery
 
 ]

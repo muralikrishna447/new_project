@@ -13,6 +13,7 @@ class GalleryController < ApplicationController
     end
   end
 
+  # Must be listed after :sort to combine correctly
   has_scope :search_all
   has_scope :difficulty
   has_scope :activity_type

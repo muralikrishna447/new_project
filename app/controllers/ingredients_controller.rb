@@ -9,8 +9,6 @@ class IngredientsController < ApplicationController
     controller.params[:exact_match] == "true" ? scope.exact_search(value) : scope.search_title(value)
   end
 
-  has_scope :search_all
-
   has_scope :image do |controller, scope, value|
     value == "with_image" ? scope.with_image : scope.no_image
   end
@@ -32,11 +30,29 @@ class IngredientsController < ApplicationController
     end
   end
 
+  has_scope :sort do |controller, scope, value|
+    case value
+      when "name"
+        scope.order('title ASC')
+      when "added"
+        scope.order('created_at DESC')
+      when "edited"
+        scope.order('updated_at DESC')
+      else
+        # Relevance is the default sort for pg_search so don't need to do anything
+        scope
+    end
+  end
+
+  # Must be listed after :sort to combine correctly
+  has_scope :search_all
+
+
   def index
     respond_to do |format|
       format.json do
         sort_string = (params[:sort] || "title") + " " + (params[:dir] || "ASC").upcase
-        result = apply_scopes(Ingredient).where("title <>''").includes(:activities, steps: [:activity]).order(sort_string).offset(params[:offset]).limit(params[:limit]).page(params[:page]).per(12)
+        result = apply_scopes(Ingredient).where("title <>''").includes(:activities, steps: [:activity]).order(sort_string).offset(params[:offset]).limit(params[:limit])
         if params[:detailed] == "true"
           render :json => result.as_json(include: {activities: {only: [:id, :title]}, steps: {only: :id, include: {activity: {only: [:id, :title]}}}})
         else
@@ -46,6 +62,16 @@ class IngredientsController < ApplicationController
 
       format.html do
         render
+      end
+    end
+  end
+
+  # Ugh, this should be temporary and moved into API, it just is getting too mess to share with the default index used for the manager
+  def index_for_gallery
+    respond_to do |format|
+      format.json do
+        result = apply_scopes(Ingredient).where("title <>''").page(params[:page]).per(12)
+        render :json => result.to_json
       end
     end
   end

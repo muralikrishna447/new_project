@@ -34,8 +34,8 @@ class Ingredient < ActiveRecord::Base
 
   # Temporary, til I can work out queries for number of distinct user edits
   scope :not_started, where('CHAR_LENGTH(text_fields) < 100')
-  scope :started, joins(:events).where(events: {action: 'edit', trackable_type: 'Ingredient'}).group("ingredients.id").having("count(events.id) > 3 AND count(events.id) < 5")
-  scope :well_edited,  joins(:events).where(events: {action: 'edit', trackable_type: 'Ingredient'}).group("ingredients.id").having("count(events.id) > 5")
+  scope :started, joins(:events).where('CHAR_LENGTH(text_fields) > 100 AND CHAR_LENGTH(text_fields) < 500').where(events: {action: 'edit'}).group("ingredients.id").having("count(events.id) >= 3")
+  scope :well_edited, joins(:events).where('CHAR_LENGTH(text_fields) >= 500').where(events: {action: 'edit'}).group("ingredients.id").having("count(events.id) >= 5")
 
   include PgSearch
   multisearchable :against => [:title, :text_fields, :product_url]

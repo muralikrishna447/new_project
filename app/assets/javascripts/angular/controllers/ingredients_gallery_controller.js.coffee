@@ -8,7 +8,7 @@
   $scope.placeHolderImage = ->
     IngredientMethods.placeHolderImage()
 
-  $scope.sortChoices = ["title"]
+  $scope.sortChoices = ["name", "added", "edited", "relevance"]
   $scope.imageChoices = ["Any", "With Image", "No Image"]
   $scope.editLevelChoices = ["Any", "Not Started", "Started", "Well Edited"]
   $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x == "relevance")
@@ -17,7 +17,7 @@
   $scope.defaultFilters = {
     detailed: "false" # speeds up query
     image: "With Image"
-    sort: "title"
+    sort: "name"
   }
   $scope.filters = angular.extend({}, $scope.defaultFilters)
 

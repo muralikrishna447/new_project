@@ -130,6 +130,7 @@ Delve::Application.routes.draw do
     collection do
       get 'all_tags' => 'ingredients#get_all_tags'
       get 'manager' => 'ingredients#manager'
+      get 'index_for_gallery' => 'ingredients#index_for_gallery'
     end
   end
 
