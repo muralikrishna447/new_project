@@ -4,7 +4,7 @@ describe Enrollment do
   before :each do
     @user = Fabricate :user, email: 'test@test.com', name: 'Test User'
     @assembly = Fabricate :assembly, title: 'Test Assembly'
-    @paid_assembly = Fabricate :assembly, title: 'Cooking For the Hirsute', price: 39, id: 37
+    @paid_assembly = Fabricate :assembly, title: 'Cooking For the Hirsute', price: 39
   end
 
   context 'Charging for classes do' do
