@@ -26,15 +26,11 @@
                 %span.reset-filter(ng-click="resetFilter(k)")
                   %i.icon-remove
               .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" )
-                .btn-group.first-separate
-                  %csRadioButtons(ng-model="typeChoices" active="filters.activity_type")
-                .btn-group.first-separate
-                  %csRadioButtons(ng-model="difficultyChoices" active="filters.difficulty")
-                .btn-group
-                  %csRadioButtons(ng-model="generatorChoices" active="filters.generator")
+                %csRadioButtons.first-separate(ng-model="typeChoices" active="filters.activity_type")
+                %csRadioButtons.first-separate(ng-model="difficultyChoices" active="filters.difficulty")
+                %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
                 -if can? :update, User
-                  .btn-group
-                    %csRadioButtons(ng-model="publishedStatusChoices" active="filters.published_status")
+                  %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
 
           %ul.nav.browse-group.pull-right(ng-click="collapse_filters = true")
             %li.browse-by Browse By

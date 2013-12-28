@@ -25,12 +25,9 @@
                 %span.reset-filter(ng-click="resetFilter(k)")
                   %i.icon-remove
               .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" )
-                .btn-group.first-separate
-                  %csRadioButtons(ng-model="imageChoices" active="filters.image")
-                .btn-group.first-separate
-                  %csRadioButtons(ng-model="editLevelChoices" active="filters.edit_level")
-                .btn-group.first-separate
-                  %csRadioButtons(ng-model="purchaseableChoices" active="filters.purchaseable")
+                %csRadioButtons.first-separate(ng-model="imageChoices" active="filters.image")
+                %csRadioButtons.first-separate(ng-model="editLevelChoices" active="filters.edit_level")
+                %csRadioButtons.first-separate(ng-model="purchaseableChoices" active="filters.purchaseable")
  
           %ul.nav.browse-group.pull-right(ng-click="collapse_filters = true")
             %li.browse-by Browse By
