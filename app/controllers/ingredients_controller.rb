@@ -71,7 +71,7 @@ class IngredientsController < ApplicationController
     respond_to do |format|
       format.json do
         result = apply_scopes(Ingredient).where("title <>''").page(params[:page]).per(12)
-        render :json => result.to_json
+        render :json => result.to_json()
       end
     end
   end

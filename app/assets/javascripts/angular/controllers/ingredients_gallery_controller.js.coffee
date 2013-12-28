@@ -29,9 +29,6 @@
     image: "With Image"
   }
 
-  $scope.getFooterRightContents = (activity) ->
-    ""
-
   # Initialize the view
   $scope.clearAndLoad()
 ]

@@ -116,18 +116,22 @@
     $scope.allLoaded = false
     $scope.loadData()
 
-  $scope.$watch 'filters', 
-    (newValue, oldValue) ->
-      console.log newValue
-      if newValue.search_all != oldValue.search_all
-        if newValue.search_all? && (newValue.search_all.length > 0)
-          $scope.filters.sort = "relevance" 
-        else
-          $scope.filters.sort = $scope.defaultFilters.sort
-      _.throttle(( ->
-        $scope.clearAndLoad()
-      ), 250)()
-    , true
+  # Need the timeout inside to get digest called
+  $scope.throttledClearAndLoad = _.throttle(( -> $timeout(-> $scope.clearAndLoad())), 250)
+
+  $scope.$watchCollection 'filters', (newValue) ->
+    console.log newValue
+    $scope.throttledClearAndLoad()
+
+  # When a search starts, switch to relevance sort. When search is cleared, relevance isn't
+  # allowed anymore, so go back to default sort.
+  $scope.$watch 'filters.search_all', (newValue, oldValue) ->
+    if newValue?.length > 0 && (! oldValue || oldValue.length == 0)
+      $scope.filters.sort = "relevance" 
+      $scope.throttledClearAndLoad()
+    else if newValue?.length == 0
+      $scope.filters.sort = $scope.defaultFilters.sort
+      $scope.throttledClearAndLoad()
 
   $scope.trackSearch = ->
     if $scope.filters.search_all?.length > 0
