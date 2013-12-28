@@ -60,5 +60,6 @@ class HomeController < ApplicationController
     ]
 
     @classes = Assembly.pubbed_courses
+    @recipes = Activity.published.recipes.chefsteps_generated.last(6)
   end
 end
