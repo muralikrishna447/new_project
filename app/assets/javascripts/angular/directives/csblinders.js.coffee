@@ -4,12 +4,13 @@ angular.module('ChefStepsApp').directive 'csblinders', [ ->
   link: (scope, element, attrs) ->
     el = angular.element(element)
     scope.width = angular.element(element).width()
-    scope.height = scope.width*9/16
+    # scope.height = scope.width*9/16
     el.css('height', scope.height)
     scope.objectCount = attrs.objectCount
     scope.blinderWidth = scope.width/scope.objectCount
-    scope.inactiveWidth = 20
-    scope.activeWidth = scope.width - 20*(scope.objectCount - 1)
+    scope.inactiveWidth = 40
+    scope.activeWidth = scope.width - scope.inactiveWidth*(scope.objectCount - 1)
+    scope.height = scope.activeWidth*9/16
     scope.$broadcast('blinderDimensionsReady', scope.blinderWidth, scope.height)
 
     scope.$on 'expandThisBlinder', (e) ->
@@ -46,8 +47,8 @@ angular.module('ChefStepsApp').directive 'csblinder', [ ->
       el.css('left', attrs.index*scope.blinderWidth)
 
     scope.setImage = ->
-      image.css('width', scope.width)
-      image.css('margin-left', -scope.width/2)
+      image.css('width', scope.activeWidth)
+      image.css('margin-left', -scope.activeWidth/2)
 
     scope.setHeight = ->
       el.css('height', scope.height)
