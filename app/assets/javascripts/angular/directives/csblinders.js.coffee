@@ -35,7 +35,7 @@ angular.module('ChefStepsApp').directive 'csblinders', [ ->
 
 angular.module('ChefStepsApp').directive 'csblinder', [ ->
   restrict: 'A'
-  scope: true
+  scope: {}
   link: (scope, element, attrs) ->
     el = angular.element(element)
     image = el.find('img')
@@ -63,5 +63,6 @@ angular.module('ChefStepsApp').directive 'csblinder', [ ->
 
     scope.expandBlinder = ->
       scope.$emit 'expandThisBlinder', attrs.index
+      scope.active = true
 
 ]
