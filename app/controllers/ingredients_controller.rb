@@ -36,8 +36,12 @@ class IngredientsController < ApplicationController
         scope.order('title ASC')
       when "added"
         scope.order('created_at DESC')
-      when "edited"
+      when "recently_edited"
         scope.order('updated_at DESC')
+      when "most_edited"
+        scope.select("DISTINCT count(DISTINCT(events.user_id)), ingredients.*").joins(:events).where(events: {action: 'edit'}).group('ingredients.id').order("count(DISTINCT(events.user_id)) DESC")
+      when "most_used"
+        scope.select("DISTINCT count(DISTINCT(activity_ingredients.id)), ingredients.*").joins(:activity_ingredients).group('ingredients.id').order("count(DISTINCT(activity_ingredients.id)) DESC")
       else
         # Relevance is the default sort for pg_search so don't need to do anything
         scope

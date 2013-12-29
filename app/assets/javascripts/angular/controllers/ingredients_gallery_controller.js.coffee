@@ -9,10 +9,10 @@
   $scope.placeHolderImage = ->
     IngredientMethods.placeHolderImage()
 
-  $scope.sortChoices = ["name", "added", "edited", "relevance"]
+  $scope.sortChoices = ["name", "added", "recently edited", "most edited", "most used", "relevance"]
+  $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x == "relevance")
   $scope.imageChoices = ["Any", "With Image", "No Image"]
   $scope.editLevelChoices = ["Any", "Not Started", "Started", "Well Edited"]
-  $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x == "relevance")
   $scope.purchaseableChoices = ["Any", "With Purchase Link", "No Purchase Link"]
 
   $scope.defaultFilters = {

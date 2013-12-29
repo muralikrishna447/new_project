@@ -32,10 +32,9 @@ class Ingredient < ActiveRecord::Base
   scope :with_purchase_link, where('product_url IS NOT NULL')
   scope :no_purchase_link, where('product_url IS NULL')
 
-  # Temporary, til I can work out queries for number of distinct user edits
-  scope :not_started, where('CHAR_LENGTH(text_fields) < 100')
-  scope :started, joins(:events).where('CHAR_LENGTH(text_fields) > 100 AND CHAR_LENGTH(text_fields) < 500').where(events: {action: 'edit'}).group("ingredients.id").having("count(events.id) >= 3")
-  scope :well_edited, joins(:events).where('CHAR_LENGTH(text_fields) >= 500').where(events: {action: 'edit'}).group("ingredients.id").having("count(events.id) >= 5")
+  scope :not_started, where('CHAR_LENGTH(text_fields) < 10')
+  scope :started, where('CHAR_LENGTH(text_fields) >= 1').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) > 0 AND count(DISTINCT(events.user_id)) < 3")
+  scope :well_edited, where('CHAR_LENGTH(text_fields) >= 1').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) >= 3")
 
   include PgSearch
   multisearchable :against => [:title, :text_fields, :product_url]
