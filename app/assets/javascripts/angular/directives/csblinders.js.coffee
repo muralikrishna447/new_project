@@ -21,10 +21,12 @@ angular.module('ChefStepsApp').directive 'csblinders', [ ->
         blinderElement = angular.element(blinder)
         image = blinderElement.find('img')
         if key == index
+          blinderElement.addClass('active')
           blinderElement.width(scope.activeWidth)
           blinderElement.css('left', key*scope.inactiveWidth)
           image.css('margin-left', 0)
         else
+          blinderElement.removeClass('active')
           blinderElement.width(scope.inactiveWidth)
           image.css('margin-left', -scope.width/2)
           if key < index
@@ -63,6 +65,5 @@ angular.module('ChefStepsApp').directive 'csblinder', [ ->
 
     scope.expandBlinder = ->
       scope.$emit 'expandThisBlinder', attrs.index
-      scope.active = true
 
 ]
