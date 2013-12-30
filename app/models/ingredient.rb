@@ -33,8 +33,8 @@ class Ingredient < ActiveRecord::Base
   scope :no_purchase_link, where('product_url IS NULL')
 
   scope :not_started, where('CHAR_LENGTH(text_fields) < 10')
-  scope :started, where('CHAR_LENGTH(text_fields) >= 1').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) > 0 AND count(DISTINCT(events.user_id)) < 3")
-  scope :well_edited, where('CHAR_LENGTH(text_fields) >= 1').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) >= 3")
+  scope :started, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) > 0 AND count(DISTINCT(events.user_id)) < 3")
+  scope :well_edited, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) >= 3")
 
   include PgSearch
   multisearchable :against => [:title, :text_fields, :product_url]

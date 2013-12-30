@@ -34,7 +34,7 @@ class IngredientsController < ApplicationController
     case value
       when "name"
         scope.order('title ASC')
-      when "added"
+      when "recently_added"
         scope.order('created_at DESC')
       when "recently_edited"
         scope.order('updated_at DESC')

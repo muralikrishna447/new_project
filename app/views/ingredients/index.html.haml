@@ -27,7 +27,7 @@
               .filters-group(ng-show="!collapseFilters" data-ng-animate="'filters'" )
                 %csRadioButtons.first-separate(ng-model="imageChoices" active="filters.image")
                 %csRadioButtons.first-separate(ng-model="editLevelChoices" active="filters.edit_level")
-                %csRadioButtons.first-separate(ng-model="purchaseableChoices" active="filters.purchaseable")
+                //%csRadioButtons.first-separate(ng-model="purchaseableChoices" active="filters.purchaseable")
  
             %li.relative(ng-mouseenter="collapseSort = false" ng-mouseleave="collapseSort = true")
               .filter-collapser(ng-click="collapseSort = ! collapseSort")
