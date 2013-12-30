@@ -8,71 +8,53 @@
   .row
     .span12
       %div
-        / .flat-form
-        /   %form
-        /     %input(ng-model='search' placeholder='Enter Name')
         .gallery-filter.navbar
           %ul.nav.left-group
 
-            %form.navbar-search.relative(ng-click="collapse_filters = true")
-              %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all")
+            %form.navbar-search.relative(ng-click="collapseFilters = true")
+              %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all" ui-event='{blur: "trackSearch()"}')
               %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
                 %i.icon-remove
 
-            %li.relative(ng-mouseenter="collapse_filters = false" ng-mouseleave="collapse_filters = true")
-              .filter-collapser(ng-click="collapse_filters = ! collapse_filters")
+            %li.relative(ng-mouseenter="collapseFilters = false" ng-mouseleave="collapseFilters = true")
+              .filter-collapser(ng-click="collapseFilters = ! collapseFilters")
                 FILTER
-                %i.icon-angle-down(ng-show="collapse_filters")
-                %i.icon-angle-up(ng-hide="collapse_filters")
+                %i.icon-angle-down(ng-show="collapseFilters")
+                %i.icon-angle-up(ng-hide="collapseFilters")
               .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
-                {{f.name}}
+                {{f}}
                 %span.reset-filter(ng-click="resetFilter(k)")
                   %i.icon-remove
-              .filters-group(ng-show="!collapse_filters" data-ng-animate="'filters'" )
-                .btn-group.first-separate
-                  %button.btn.btn-checkbox(ng-repeat="choice in typeChoices" ng-model="filters.activity_type" btn-radio="{{choice}}")
-                    {{choice.name}}
-                .btn-group.first-separate
-                  %button.btn.btn-checkbox(ng-repeat="choice in difficultyChoices" ng-model="filters.difficulty" btn-radio="{{choice}}")
-                    {{choice.name}}
-                .btn-group
-                  %button.btn.btn-checkbox(ng-repeat="choice in generatorChoices" ng-model="filters.generator" btn-radio="{{choice}}")
-                    {{choice.name}}
+              .filters-group(ng-show="!collapseFilters" data-ng-animate="'filters'" )
+                %csRadioButtons.first-separate(ng-model="typeChoices" active="filters.activity_type")
+                %csRadioButtons.first-separate(ng-model="difficultyChoices" active="filters.difficulty")
+                %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
                 -if can? :update, User
-                  .btn-group
-                    %button.btn.btn-checkbox(ng-repeat="choice in publishedStatusChoices" ng-model="filters.published_status" btn-radio="{{choice}}")
-                      {{choice.name}}
+                  %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
 
-          %ul.nav.browse-group.pull-right(ng-click="collapse_filters = true")
+          %ul.nav.browse-group.pull-right(ng-click="collapseFilters = true")
             %li.browse-by Browse By
             %li(ng-repeat="choice in sortChoices" ng-hide="(filters.search_all || '') == ''")
               %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
-                {{choice.name}}
+                {{choice}}
             %li(ng-repeat="choice in sortChoicesWhenNoSearch" ng-show="(filters.search_all || '') == ''")
               %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
-                {{choice.name}}
+                {{choice}}
 
-  .row(ng-show="activities.length == 0" ng-click="collapse_filters = true")
+  .row(ng-show="galleryItems.length == 0" ng-click="collapseFilters = true")
     .span12
       %h3 No results found, but perhaps you'd enjoy these recipes?
 
-  .row.gallery-contents(ng-click="collapse_filters = true")
+  .row.gallery-contents(ng-click="collapseFilters = true")
     .span12
-      %div(galleryscroll='load_data()')
-        .media-box-3(ng-cloak='' ng-repeat='activity in getActivities()' ng-animate="'gallery-animation'")
-          %a(href= 'activities/{{activity.slug}}')
-            .media-box-3-title
-              {{activity.title}}
-            %img(ng-src="{{activityImageURL(activity, 400)}}")
-            .media-box-3-footer
-              .footer-left
-                {{activity.difficulty}}
-              .footer-right
-                %span(ng-show="activity.creator.id != nil")
-                  By {{activity.creator.name}}
-                %span(ng-show="activity.show_only_in_course")
-                  %h5.pop PAID CLASS
-
+      %div(galleryscroll='loadData()')
+        %div(ng-repeat='activity in getDisplayItems()' ng-animate="'gallery-animation'")
+          %csGalleryItem( title="activity.title"
+                          href="'activities/' + activity.slug"
+                          image="itemImageURL(activity, 400)"
+                          footer-left="activity.difficulty"
+                          footer-right="getFooterRightContents(activity)"
+                        )
   .row
     .span2.offset5
       .gallery-spinner(ng-show='spinner > 0')

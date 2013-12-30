@@ -9,12 +9,55 @@ class IngredientsController < ApplicationController
     controller.params[:exact_match] == "true" ? scope.exact_search(value) : scope.search_title(value)
   end
 
+  has_scope :image do |controller, scope, value|
+    value == "with_image" ? scope.with_image : scope.no_image
+  end
+
+  has_scope :purchaseable do |controller, scope, value|
+    value == "with_purchase_link" ? scope.with_purchase_link : scope.no_purchase_link
+  end
+
+  has_scope :edit_level do |controller, scope, value|
+    case value
+    when "not_started"
+      value = scope.not_started
+    when "started"
+      value = scope.started
+    when "well_edited"
+      value = scope.well_edited
+    else
+      value = scope
+    end
+  end
+
+  has_scope :sort do |controller, scope, value|
+    case value
+      when "name"
+        scope.order('title ASC')
+      when "recently_added"
+        scope.order('created_at DESC')
+      when "recently_edited"
+        scope.order('updated_at DESC')
+      when "most_edited"
+        scope.select("DISTINCT count(DISTINCT(events.user_id)), ingredients.*").joins(:events).where(events: {action: 'edit'}).group('ingredients.id').order("count(DISTINCT(events.user_id)) DESC")
+      when "most_used"
+        scope.select("DISTINCT count(DISTINCT(activity_ingredients.id)), ingredients.*").joins(:activity_ingredients).group('ingredients.id').order("count(DISTINCT(activity_ingredients.id)) DESC")
+      else
+        # Relevance is the default sort for pg_search so don't need to do anything
+        scope
+    end
+  end
+
+  # Must be listed after :sort to combine correctly
+  has_scope :search_all
+
+
   def index
     respond_to do |format|
       format.json do
         sort_string = (params[:sort] || "title") + " " + (params[:dir] || "ASC").upcase
         result = apply_scopes(Ingredient).where("title <>''").includes(:activities, steps: [:activity]).order(sort_string).offset(params[:offset]).limit(params[:limit])
-        if params[:detailed]
+        if params[:detailed] == "true"
           render :json => result.as_json(include: {activities: {only: [:id, :title]}, steps: {only: :id, include: {activity: {only: [:id, :title]}}}})
         else
           render :json => result.to_json
@@ -22,7 +65,25 @@ class IngredientsController < ApplicationController
       end
 
       format.html do
-        authorize! :manage, Ingredient
+        render
+      end
+    end
+  end
+
+  # Ugh, this should be temporary and moved into API, it just is getting too mess to share with the default index used for the manager
+  def index_for_gallery
+    respond_to do |format|
+      format.json do
+        result = apply_scopes(Ingredient).where("title <>''").page(params[:page]).per(12)
+        render :json => result.to_json()
+      end
+    end
+  end
+
+  def manager
+    respond_to do |format|
+      format.html do
+        authorize! :manage, Ingredient unless Rails.env.angular?
         render
       end
     end

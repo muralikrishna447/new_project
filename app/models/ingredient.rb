@@ -27,6 +27,23 @@ class Ingredient < ActiveRecord::Base
   scope :search_title, -> title { where('title iLIKE ?', '%' + title + '%') }
   scope :exact_search , -> title { where(title: title) }
   scope :no_sub_activities, where('sub_activity_id IS NULL')
+  scope :with_image, where('image_id IS NOT NULL')
+  scope :no_image, where('image_id IS NULL')
+  scope :with_purchase_link, where('product_url IS NOT NULL')
+  scope :no_purchase_link, where('product_url IS NULL')
+
+  scope :not_started, where('CHAR_LENGTH(text_fields) < 10')
+  scope :started, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) > 0 AND count(DISTINCT(events.user_id)) < 3")
+  scope :well_edited, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) >= 3")
+
+  include PgSearch
+  multisearchable :against => [:title, :text_fields, :product_url]
+
+  # Letters are the weighting
+  pg_search_scope :search_all,
+                  using: {tsearch: {prefix: true}},
+                  against: [[:title, 'A'], [:text_fields, 'C']],
+                  associated_against: {tags: [[:name, 'B']]}
 
   before_save :fix_title
   def fix_title
