@@ -14,7 +14,9 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $scope.course = data
       console.log $scope.course.assembly_inclusions
       console.log $scope.course.assembly_inclusions[0].includable_id
-      $scope.flatInclusions = $scope.computeflatVisibleInclusions(null, $scope.course.assembly_inclusions)
+      # $scope.flatInclusions = $scope.computeflatVisibleInclusions(null, $scope.course.assembly_inclusions)
+      $scope.flatInclusions = $scope.computeFlatInclusions($scope.course)
+      console.log $scope.flatInclusions
       if $scope.routeParams.slug
         $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
       else
@@ -142,6 +144,15 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         result.push(incl)
       else
         result.push(sub) for sub in $scope.computeflatVisibleInclusions(incl, incl.includable.assembly_inclusions)
+    result
+
+  $scope.computeFlatInclusions = (assembly) ->
+    result = []
+    for inclusion in assembly.assembly_inclusions
+      if inclusion.includable_type == 'Assembly'
+        result.push(sub) for sub in $scope.computeFlatInclusions(inclusion.includable)
+      else
+        result.push(inclusion)
     result
 
   $scope.toggleCollapse = (includable_id) ->
