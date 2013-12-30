@@ -4,7 +4,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     desired_viscosity: 16
     diameter: 46.60
     start_temp: 5
-    surface_heat_transfer_coefficient: 155
+    surface_heat_transfer_coeff: 155
     beta: 1.7
 
   $scope.formatTime = (t) ->
