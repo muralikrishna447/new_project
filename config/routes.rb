@@ -195,7 +195,11 @@ Delve::Application.routes.draw do
     end
   end
 
+  resources 'recipe-developments', controller: :assemblies, as: :recipe_developments, only: [:index, :show]
+
   resources :events, only: [:create]
+
+  resources :gift_certificates
 
   get "smoker" => "smoker#index"
 

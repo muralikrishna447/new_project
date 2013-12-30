@@ -8,7 +8,7 @@ module ActsAsChargeable
       extra_descrip = ""
       if base_price && base_price > 0
         gross_price, tax = self.adjust_for_included_tax(discounted_price, ip_address)
-        extra_descrip = self.get_tax_description(tax) 
+        extra_descrip = self.get_tax_description(tax)
       end
       return gross_price, tax, extra_descrip
     end
@@ -25,7 +25,7 @@ module ActsAsChargeable
           description: item_title + extra_descrip,
           currency: 'usd'
         )
-        puts charge.inspect
+        # puts charge.inspect
       end
     end
 
@@ -41,7 +41,7 @@ module ActsAsChargeable
 
     def get_tax_description(tax)
       if tax > 0
-        " (including #{ActionController::Base.helpers.number_to_currency(tax)} WA state sales tax)" 
+        " (including #{ActionController::Base.helpers.number_to_currency(tax)} WA state sales tax)"
       else
         ""
       end
@@ -61,6 +61,7 @@ module ActsAsChargeable
         customer = Stripe::Customer.retrieve(user.stripe_id)
         customer.card = stripeToken
         customer.email = user.email
+        customer.save
       end
     end
   end

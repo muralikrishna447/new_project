@@ -8,7 +8,7 @@ class HomeController < ApplicationController
 
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_feeds.order('published_at desc').first(6)
-      @projects = Assembly.published.projects.last(3)
+      @recipe_developments = Assembly.published.recipe_developments.last(3)
       # @followings_stream = Kaminari::paginate_array(current_user.followings_stream).page(params[:page]).per(6)
       # @stream = current_user.received_stream.take(4)
     else
@@ -58,5 +58,8 @@ class HomeController < ApplicationController
       { image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/weHQHUSTBqKRI1bk2bMw/convert?fit=crop&w=100&h=100&cache=true', copy: Copy.find_by_location('about-tip-equipment') },
       { image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/a7vIXo8R4WeuesRE2J41/convert?fit=crop&w=100&h=100&cache=true', copy: Copy.find_by_location('about-tip-tools') }
     ]
+
+    @classes = Assembly.pubbed_courses
+    @recipes = Activity.published.recipes.chefsteps_generated.last(6)
   end
 end

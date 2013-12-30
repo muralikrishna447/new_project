@@ -20,12 +20,13 @@ class Assembly < ActiveRecord::Base
 
   scope :published, where(published: true)
   scope :projects, where(assembly_type: 'Project')
+  scope :recipe_developments, where(assembly_type: 'Recipe Development')
   scope :pubbed_courses, where(assembly_type: 'Course', published: true)
   scope :prereg_courses, where(assembly_type: 'Course', published: false, show_prereg_page_in_index: true)
 
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
-  ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group']
+  ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group', 'Recipe Development']
   INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz', 'Assembly', 'Page', 'Assignment']
 
   def ingredients

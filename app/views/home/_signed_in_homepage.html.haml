@@ -38,19 +38,19 @@
               %p= course.short_description
       .home-section
         %hr
-      - if @projects.any?
+      - if @recipe_developments.any?
         .home-section
           %h2
-            = link_to 'Projects', projects_path, class: 'orange-link'
-          - @projects.each.with_index do |project, index|
+            = link_to 'Recipe Developments', recipe_developments_path, class: 'orange-link'
+          - @recipe_developments.each.with_index do |recipe_development, index|
             .home-standard-item
               .home-standard-item-image
-                = link_to project_path(project) do
-                  = image_tag filepicker_stream_image(project.featured_image)
+                = link_to assembly_type_path(recipe_development) do
+                  = image_tag filepicker_stream_image(recipe_development.featured_image)
               .home-standard-item-text
-                = link_to project_path(project) do
-                  %h3= project.title
-                %p= project.description
+                = link_to assembly_type_path(recipe_development) do
+                  %h3= recipe_development.title
+                %p= recipe_development.description
     .span4
       %h2 
         = link_to 'Activity Stream', community_activity_path, class: 'orange-link'
