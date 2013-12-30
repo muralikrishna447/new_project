@@ -1,69 +1,84 @@
 angular.module('ChefStepsApp').directive 'csblinders', [ ->
   restrict: 'A'
-  scope: true
+  scope: {
+    blindercount: '='
+    inactivewidth: '='
+  }
+  controller: [ '$scope', ($scope) ->
+    $scope.blinders = []
+
+    this.blinders = $scope.blinders
+    this.inactivewidth = $scope.inactivewidth
+    this.blinderWidth = $scope.blinderWidth
+
+    this.addBlinder = (blinder) ->
+      $scope.blinders.push(blinder)
+  ]
   link: (scope, element, attrs) ->
     el = angular.element(element)
-    scope.width = angular.element(element).width()
-    # scope.height = scope.width*9/16
-    el.css('height', scope.height)
-    scope.objectCount = attrs.objectCount
-    scope.blinderWidth = scope.width/scope.objectCount
-    scope.inactiveWidth = 40
-    scope.activeWidth = scope.width - scope.inactiveWidth*(scope.objectCount - 1)
-    scope.height = scope.activeWidth*9/16
-    scope.$broadcast('blinderDimensionsReady', scope.blinderWidth, scope.height)
+    scope.width = el.width()
+    scope.blinderWidth = scope.width - (scope.blindercount - 1)*scope.inactivewidth
+    scope.height = scope.blinderWidth*9/16
+    scope.initialSpacing = scope.width/scope.blindercount
+    el.css 'height', scope.height
+    scope.$broadcast('blinderDimensionsReady')
 
     scope.$on 'expandThisBlinder', (e) ->
-      index = e.targetScope.index
-      blinders = el.find('.cs-blinder')
-
-      angular.forEach blinders, (blinder, key) ->
+      active = e.targetScope.index
+      angular.forEach scope.blinders, (blinder, index) ->
         blinderElement = angular.element(blinder)
-        image = blinderElement.find('img')
-        if key == index
-          blinderElement.addClass('active')
-          blinderElement.width(scope.activeWidth)
-          blinderElement.css('left', key*scope.inactiveWidth)
-          image.css('margin-left', 0)
-        else
-          blinderElement.removeClass('active')
-          blinderElement.width(scope.inactiveWidth)
-          image.css('margin-left', -scope.width/2)
-          if key < index
-            blinderElement.css('left', key*scope.inactiveWidth)
-          else
-            blinderElement.css('left', (key - 1)*scope.inactiveWidth + scope.activeWidth)
+        if index == active
+          console.log 'activating: ' + index
+          blinder.activate()
+        if index < active
+          console.log 'left: ' + index
+          blinder.deactivate('left')
+        if index > active
+          console.log 'right: ' + index
+          blinder.deactivate('right')
+
+    scope.$on 'reset', ->
+      angular.forEach scope.blinders, (blinder) ->
+        blinder.initBlinderDimensions()
 ]
 
 angular.module('ChefStepsApp').directive 'csblinder', [ ->
   restrict: 'A'
-  scope: {}
-  link: (scope, element, attrs) ->
+  require: '^csblinders'
+  scope: {
+    index: '='
+  }
+  link: (scope, element, attrs, csblinders) ->
+    csblinders.addBlinder(scope)
     el = angular.element(element)
-    image = el.find('img')
-    scope.index = parseInt(attrs.index)
-    scope.setWidth = ->
-      el.width(scope.blinderWidth)
 
-    scope.setPosition = ->
-      el.css('left', attrs.index*scope.blinderWidth)
+    scope.initBlinderDimensions = ->
+      el.css 'width', scope.width
+      el.css 'height', scope.height
+      el.css 'left', scope.index*scope.initialSpacing
+      scope.active = false
 
-    scope.setImage = ->
-      image.css('width', scope.activeWidth)
-      image.css('margin-left', -scope.activeWidth/2)
+    scope.activate = ->
+      scope.active = true
+      el.css 'left', scope.index*csblinders.inactivewidth
 
-    scope.setHeight = ->
-      el.css('height', scope.height)
+    scope.deactivate = (side) ->
+      scope.active = false
+      if side == 'left'
+        el.css 'left', scope.index*csblinders.inactivewidth
+      else
+        el.css 'left', (scope.index - 1)*csblinders.inactivewidth + scope.width
 
-    scope.$on 'blinderDimensionsReady', (w) ->
-      scope.blinderWidth = w.targetScope.blinderWidth
-      scope.height = w.targetScope.height
-      scope.setWidth()
-      scope.setHeight()
-      scope.setPosition()
-      scope.setImage()
+    scope.$on 'blinderDimensionsReady', (e) ->
+      scope.width = e.targetScope.blinderWidth
+      scope.height = e.targetScope.height
+      scope.initialSpacing = e.targetScope.initialSpacing
+      scope.initBlinderDimensions()
 
     scope.expandBlinder = ->
-      scope.$emit 'expandThisBlinder', attrs.index
+      if scope.active
+        scope.$emit 'reset'
+      else
+        scope.$emit 'expandThisBlinder', scope.index
 
 ]
