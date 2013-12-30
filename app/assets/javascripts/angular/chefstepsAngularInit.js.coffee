@@ -16,7 +16,7 @@
     {
       action: "slugChange"
     }
-  )
+  ).otherwise({foo: "bar"})
 ]
 
 # Thank god for Stack Overflow!

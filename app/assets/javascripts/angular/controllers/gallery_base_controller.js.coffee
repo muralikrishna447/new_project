@@ -1,6 +1,6 @@
 # Next step in refactoring would be to move much of this over to a service, but at least it is now shared by 
 # all gallery controllers.
-@app.controller 'GalleryBaseController', ["$scope", "$timeout", ($scope, $timeout) ->
+@app.controller 'GalleryBaseController', ["$scope", "$timeout", '$route', '$routeParams', '$location', ($scope, $timeout, $route, $routeParams, $location) ->
 
   # Initialization
   $scope.galleryItems = []
@@ -10,9 +10,19 @@
   $scope.spinner = 0
 
   # This muck will go away when I do deep routing properly
-  $scope.url_params = {}
-  $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  
+  #$scope.url_params = {}
+  #scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
+
+  $scope.routeParams = $routeParams
+  $scope.route = $route
+
+  $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
+    console.log $scope.routeParams
+    # Can't just angular.extend, you get an infinite loop
+    for k,v of $scope.routeParams
+      $scope.filters[k] = v if $scope.filters[k] != v
+    $scope.$apply if ! $scope.$$phase
+   
   $scope.resetFilter = (key) ->
     $scope.filters[key] = $scope.defaultFilters[key]
   
@@ -116,6 +126,7 @@
     $scope.page = 1
     $scope.allLoaded = false
     $scope.loadData()
+    $location.search(_.omit($scope.filters, 'detailed'))
 
   # Need the timeout inside to get digest called
   $scope.throttledClearAndLoad = _.throttle(( -> $timeout(-> $scope.clearAndLoad())), 250)
@@ -129,10 +140,10 @@
   $scope.$watch 'filters.search_all', (newValue, oldValue) ->
     if newValue?.length > 0 && (! oldValue || oldValue.length == 0)
       $scope.filters.sort = "Relevance" 
-      $scope.throttledClearAndLoad()
     else if newValue?.length == 0
       $scope.filters.sort = $scope.defaultFilters.sort
-      $scope.throttledClearAndLoad()
+    $scope.throttledClearAndLoad()
+    
 
   $scope.trackSearch = ->
     if $scope.filters.search_all?.length > 0
