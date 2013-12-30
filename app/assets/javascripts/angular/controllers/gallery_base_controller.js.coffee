@@ -4,7 +4,8 @@
 
   # Initialization
   $scope.galleryItems = []
-  $scope.collapse_filters = true
+  $scope.collapseFilters = true
+  $scope.collapseSort = true
   $scope.page = 1
   $scope.spinner = 0
 
@@ -136,6 +137,9 @@
   $scope.trackSearch = ->
     if $scope.filters.search_all?.length > 0
       mixpanel.track('Search', {'context': $scope.resourceName, 'term' : $scope.filters.search_all});
- 
+
+  $scope.getSortChoices = ->
+    return $scope.sortChoicesWhenNoSearch if ($scope.filters.search_all || '') == ''
+    $scope.sortChoices
 
 ]
