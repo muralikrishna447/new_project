@@ -5,15 +5,15 @@ class ChargesController < ApplicationController
   def create
 
     assembly = Assembly.find(params[:assembly_id])
-    gift_info = JSON.parse(params[:gift_info]) if params[:gift_info]
+    @gift_info = JSON.parse(params[:gift_info]) if params[:gift_info]
 
 
-    if gift_info && gift_info.has_key?("recipientEmail")
+    if is_a_gift_purchase?
       # This is for *buying* a gift certificate
-      @gift_cert = GiftCertificate.purchase(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken], gift_info)
+      @gift_cert = GiftCertificate.purchase(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken], @gift_info)
     else
       @enrollment = nil
-      if params[:gift_certificate]
+      if is_a_gift_redemption?
         # This is for *redeeming* a gift certificate
         @enrollment = GiftCertificate.redeem(current_user, JSON.parse(params[:gift_certificate])["id"])
         session[:gift_token] = nil
@@ -35,4 +35,14 @@ class ChargesController < ApplicationController
     e.backtrace.take(20).each { |x| logger.debug x}
     render json: { errors: [msg]}, status: 422
   end
+
+  private
+  def is_a_gift_purchase?
+    @gift_info && @gift_info.has_key?("recipientEmail")
+  end
+
+  def is_a_gift_redemption?
+    params[:gift_certificate]
+  end
+
 end
