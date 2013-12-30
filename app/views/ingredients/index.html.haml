@@ -52,7 +52,8 @@
           %csGalleryItem( title="item.title"
                           href="'ingredients/' + item.slug"
                           image="itemImageURL(item, 400)"
-                         )
+                          footer-right="maybeEditLink(item)"
+                        )
   .row
     .span2.offset5
       .gallery-spinner(ng-show='spinner > 0')

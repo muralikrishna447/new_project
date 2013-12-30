@@ -121,7 +121,7 @@
         .row.section(ng-show="! editMode")
           .span6
             .ro-tag-group
-              %span.ro-tag(ng-repeat="tag in ingredient.tags")
+              %a.ro-tag(ng-repeat="tag in ingredient.tags" ng-href="/ingredients?search_all={{tag.name}}")
                 %i.icon-tag
                 {{tag.name}}
 

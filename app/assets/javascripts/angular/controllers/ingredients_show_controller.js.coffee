@@ -1,5 +1,9 @@
 angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', 'csAuthentication', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService, csAuthentication) ->
 
+  # This muck will go away when I do deep routing properly
+  $scope.url_params = {}
+  $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
+  
   $scope.heroMedia = csEditableHeroMediaService
   $scope.alertService = csAlertService
   $scope.densityService = csDensityService
@@ -28,6 +32,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.ingredient = Ingredient.get({}, -> 
     mixpanel.track('Ingredient Viewed', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
+    $scope.startEditMode() if $scope.url_params?["edit"]? && csAuthentication.loggedIn()
   )
 
   # Overall edit mode

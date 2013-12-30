@@ -10,7 +10,7 @@
     IngredientMethods.placeHolderImage()
 
   $scope.sortChoices = ["Name", "Recently Added", "Recently Edited", "Most Edited", "Most Used", "Relevance"]
-  $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x == "relevance")
+  $scope.sortChoicesWhenNoSearch = _.reject($scope.sortChoices, (x) -> x == "Relevance")
   $scope.imageChoices = ["Any", "With Image", "No Image"]
   $scope.editLevelChoices = ["Any", "Not Started", "Started", "Well Edited"]
   $scope.purchaseableChoices = ["Any", "With Purchase Link", "No Purchase Link"]
@@ -32,6 +32,15 @@
     sort: "Name"
     image: "With Image"
   }
+
+  # This muck will go away when I do deep routing properly
+  if $scope.url_params.search_all
+    $scope.filters.search_all = $scope.url_params.search_all
+    $scope.filters.sort = $scope.sortChoices[0]
+
+  $scope.maybeEditLink = (ingredient) ->
+    if  ! ingredient.image_id
+      return "<a href='/ingredients/#{ingredient.slug}?edit=true' target='_blank'>Edit Ingredient...</a>"
 
   # Initialize the view
   $scope.clearAndLoad()
