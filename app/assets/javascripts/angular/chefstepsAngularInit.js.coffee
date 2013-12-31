@@ -6,24 +6,15 @@
   # Don't make this true!! It will break every link on the page that isn't to
   # an angular known url. The addr bar changes but content doesn't load.
   # See https://groups.google.com/forum/#!topic/angular/cUjy9PEDeWE .
-  # True was nice b/c it makes $location.search() provide what we want for activity.get(),
-  # but it was easier to workaround as seen in ActivityController
   $locationProvider.html5Mode(false)
   $locationProvider.hashPrefix()
 
-  $routeProvider.when(
-    "/:slug",
-    {
-      action: "slugChange"
-    }
-  )
+  # These dummy actions are needed to get routeChangeSuccess to be called
+  $routeProvider
+    .when("/", { action: "dummyAction2" })
+    .when("/:slug", { action: "dummyAction" })
+    .when("/:includable_type/:includable_slug", { action: "dummyAction3" })
 
-  $routeProvider.when(
-    "/:includable_type/:includable_slug",
-    {
-      action: "slugChange"
-    }
-  )
 ]
 
 # Thank god for Stack Overflow!

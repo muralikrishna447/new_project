@@ -178,7 +178,7 @@
 
 = render 'density_table'
 
-%div(close="showHelpModal = false" modal="showHelpModal" options="modalOptions")
+%div(ng-cloak close="showHelpModal = false" modal="showHelpModal" options="modalOptions")
   .modal-header
     %h2
       How To Edit Ingredients
@@ -198,7 +198,7 @@
   .modal-footer
     %button.btn(ng-click="showHelpModal = false") Done
 
-%div(close="showPostEditModal = false" modal="showPostEditModal" options="modalOptions")
+%div(ng-cloak close="showPostEditModal = false" modal="showPostEditModal" options="modalOptions")
   .modal-header
     %h2 Thanks For Your Contribution!
   .modal-body

@@ -34,10 +34,7 @@
 
           %ul.nav.browse-group.pull-right(ng-click="collapseFilters = true")
             %li.browse-by Browse By
-            %li(ng-repeat="choice in sortChoices" ng-hide="(filters.search_all || '') == ''")
-              %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
-                {{choice}}
-            %li(ng-repeat="choice in sortChoicesWhenNoSearch" ng-show="(filters.search_all || '') == ''")
+            %li(ng-repeat="choice in getSortChoices()")
               %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
                 {{choice}}
 
