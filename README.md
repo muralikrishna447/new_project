@@ -62,9 +62,9 @@ Copy Production Database to Staging2
 To perform E2E testing on angular you need to have node.js installed if you don't already.  You will also need the Karma test runner installed, as well as the ng-scenario and coffee-preprocessor plugins for karma.  You can install them with the following commands:
 ```bash
 brew install nodejs
-npm install karma
-npm install karma-ng-scenario
-npm install karma-coffee-preprocessor
+npm install -g karma
+npm install -g karma-ng-scenario
+npm install -g karma-coffee-preprocessor
 createdb delve_angular
 ```
 
