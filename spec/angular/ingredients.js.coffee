@@ -13,7 +13,7 @@ describe "IngredientIndexController", ->
     input("login_user.password").enter("apassword")
     element("button.signin").click()
     sleep 2
-    browser().navigateTo('/ingredients')
+    browser().navigateTo('/ingredients/manager')
     sleep 2
 
   afterEach ->
@@ -21,7 +21,7 @@ describe "IngredientIndexController", ->
     browser().navigateTo('/end_clean')
 
   it "should search from the search box", ->
-    expect(browser().window().path()).toBe("/ingredients")
+    expect(browser().window().path()).toBe("/ingredients/manager")
 
     # Test refresher
     expect(element(".ngRow").count()).toBe(3)

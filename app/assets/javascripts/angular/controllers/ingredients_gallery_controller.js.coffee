@@ -16,34 +16,27 @@
   $scope.purchaseableChoices = ["Any", "With Purchase Link", "No Purchase Link"]
 
   $scope.defaultFilters = {
-    detailed: "false" # speeds up query
     edit_level: "Any"
     image: "Any"
     sort: "Name"
   }
-  $scope.filters = angular.extend({}, $scope.defaultFilters)
 
-  # Not setting this in defaultFilters on purpose because I want it to be clear it is an applied filter
-  # even though it is on when the page loads.
-  $scope.filters["image"] = "With Image"
+  # This is for an odd little special case. We want "with image" to clearly be an applied filter (so it gets the
+  # litte "x" thingy) which it won't be if it is in defaultFilters. But we also want it to be applied by 
+  # default when you hit the root route for this page. This can go away when we go to a new filter UI that is
+  # open by default.
+  $scope.setAnyNonDefaultDefaults = ->
+    $scope.filters["image"] = "With Image"
 
-  # Query results to show if user query results are empty
+  # Results to show if user query results are empty
   $scope.noResultsFilters = {
     sort: "Name"
     image: "With Image"
   }
 
-  # This muck will go away when I do deep routing properly
-  if $scope.url_params.search_all
-    $scope.filters.search_all = $scope.url_params.search_all
-    $scope.filters.sort = $scope.sortChoices[0]
-
   $scope.maybeEditLink = (ingredient) ->
     if  ! ingredient.image_id
       return "<a href='/ingredients/#{ingredient.slug}?edit=true' target='_blank'>Edit Ingredient...</a>"
-
-  # Initialize the view
-  $scope.clearAndLoad()
 ]
 
 

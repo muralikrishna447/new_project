@@ -28,7 +28,7 @@
           %h2.text-orange Or just take in smaller bits...
       .row.section-large
         .span6
-          = link_to gallery_index_url(activity_type: "Recipe") do
+          = link_to gallery_index_url + "#/?activity_type=Recipe" do
             .lead
               %strong Learn a New Recipe
               .lead.black-link
@@ -41,7 +41,7 @@
         .span6
           = render 'shared/horizontal_slider', items: @techniques, direction: 'left'
         .span6
-          = link_to gallery_index_url(activity_type: "Technique") do
+          = link_to gallery_index_url + "#/?activity_type=Technique" do
             .lead
               %strong Perfect a New Technique
               .lead.black-link
@@ -49,7 +49,7 @@
 
       .row.section-large
         .span6
-          = link_to gallery_index_url(activity_type: "Science") do
+          = link_to gallery_index_url + "#/?activity_type=Science" do
             .lead
               %strong Absorb the Science
               .lead.black-link

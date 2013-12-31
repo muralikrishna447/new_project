@@ -1,6 +1,6 @@
 # Next step in refactoring would be to move much of this over to a service, but at least it is now shared by 
 # all gallery controllers.
-@app.controller 'GalleryBaseController', ["$scope", "$timeout", ($scope, $timeout) ->
+@app.controller 'GalleryBaseController', ["$scope", "$timeout", '$route', '$routeParams', '$location', ($scope, $timeout, $route, $routeParams, $location) ->
 
   # Initialization
   $scope.galleryItems = []
@@ -8,11 +8,23 @@
   $scope.collapseSort = true
   $scope.page = 1
   $scope.spinner = 0
+  $scope.routeParams = $routeParams
+  $scope.route = $route
 
-  # This muck will go away when I do deep routing properly
-  $scope.url_params = {}
-  $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  
+  $scope.$on "$routeChangeSuccess", (event, $currentRoute, $previousRoute) ->
+    console.log $scope.routeParams
+
+    $scope.filters = $scope.filters || {}
+    if ! $previousRoute?.params?
+      # Initial page load, get our defaults in place
+      _.defaults($scope.filters, $scope.defaultFilters)
+      $scope.setAnyNonDefaultDefaults?() 
+
+    # Mix in any params from the route
+    _.extend($scope.filters, $scope.routeParams)
+
+    $scope.$apply if ! $scope.$$phase
+   
   $scope.resetFilter = (key) ->
     $scope.filters[key] = $scope.defaultFilters[key]
   
@@ -46,7 +58,7 @@
     r
 
   $scope.galleryIndexParams = (filters, page) ->
-    r = {page: page}
+    r = {page: page, detailed: false}
     for filter, x of filters
       r[filter] = x.replace(/\s+/g, '_').toLowerCase() if x && x.toLowerCase() != "any"
     $scope.normalizeGalleryIndexParams(r)
@@ -87,8 +99,6 @@
 
         else
           console.log ".... FROM OLD PARAMS, IGNORING "
-          console.log "old: " + query_filters.search_all
-          console.log "new: " + $scope.filters.search_all
 
         $scope.spinner -= 1
       )
@@ -99,6 +109,12 @@
       console.log "loaded backups"
     )
 
+  # Load up some activities to use if we need to suggest alternatives for an empty result
+  $timeout (->
+    $scope.loadNoResultsData()
+  ), 1000
+
+
   $scope.clearFilters = ->
     $scope.filters = angular.extend({}, $scope.defaultFilters)
     $scope.clearAndLoad()
@@ -107,18 +123,20 @@
     return $scope.noResultsItems if (! $scope.galleryItems?) || (! $scope.galleryItems.length)
     $scope.galleryItems
 
-  # Load up some activities to use if we need to suggest alternatives for an empty result
-  $timeout (->
-    $scope.loadNoResultsData()
-  ), 1000
 
   $scope.clearAndLoad = ->
     $scope.page = 1
     $scope.allLoaded = false
     $scope.loadData()
+    $location.search(_.omit($scope.filters, 'detailed'))
 
   # Need the timeout inside to get digest called
-  $scope.throttledClearAndLoad = _.throttle(( -> $timeout(-> $scope.clearAndLoad())), 250)
+  $scope.throttledClearAndLoad = _.throttle(
+    ( -> $timeout (
+        -> $scope.clearAndLoad()
+      )
+    ), 
+  250)
 
   $scope.$watchCollection 'filters', (newValue) ->
     console.log newValue
@@ -129,17 +147,16 @@
   $scope.$watch 'filters.search_all', (newValue, oldValue) ->
     if newValue?.length > 0 && (! oldValue || oldValue.length == 0)
       $scope.filters.sort = "Relevance" 
-      $scope.throttledClearAndLoad()
     else if newValue?.length == 0
       $scope.filters.sort = $scope.defaultFilters.sort
-      $scope.throttledClearAndLoad()
-
+    $scope.throttledClearAndLoad()
+    
   $scope.trackSearch = ->
     if $scope.filters.search_all?.length > 0
       mixpanel.track('Search', {'context': $scope.resourceName, 'term' : $scope.filters.search_all});
 
   $scope.getSortChoices = ->
-    return $scope.sortChoicesWhenNoSearch if ($scope.filters.search_all || '') == ''
+    return $scope.sortChoicesWhenNoSearch if ($scope.filters?.search_all || '') == ''
     $scope.sortChoices
 
 ]
