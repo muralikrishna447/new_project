@@ -22,7 +22,7 @@
           {{course.title}}
       %ul.section.no-bullet
         %li(ng-repeat='inclusion in course.assembly_inclusions' 
-            ng-click='loadInclusion(inclusion.includable_id)' 
+            ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)' 
             ng-class="inclusionActiveClass(inclusion)" 
             ng-include="'_recursive_assembly_syllabus.html'")
 
@@ -31,7 +31,7 @@
       .container-fluid
         .row-fluid
 
-          .span12.relative.course-content.printable(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
+          .span12.relative.course-content.printable(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController')
             %div(ng-switch on='view_inclusion')
               %div(ng-switch-when="Quiz")
                 .row-fluid

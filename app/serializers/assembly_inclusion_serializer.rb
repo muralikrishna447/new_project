@@ -1,5 +1,5 @@
 class AssemblyInclusionSerializer < ActiveModel::Serializer
-  attributes :includable_type, :includable_id, :position, :includable_title, :include_disqus, :includable_description, :includable_slug
+  attributes :includable_type, :includable_id, :position, :includable_title, :include_disqus, :includable_description, :includable_slug, :assembly_id
   has_one :includable
 
   def includable_title
