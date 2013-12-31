@@ -43,7 +43,8 @@
     %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => Rails.env}
     = render 'layouts/facebook'
-    = render 'layouts/navigation', external: false
+    - unless @hide_nav == true
+      = render 'layouts/navigation', external: false
 
     .container.alert-container
       - flash.each do |name, msg|
