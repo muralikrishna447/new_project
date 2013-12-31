@@ -1,11 +1,11 @@
-angular.module('ChefStepsApp').directive 'affixableoffsetbottom', ["$window", ($window) ->
+angular.module('ChefStepsApp').directive 'affixableoffsetbottom', ["$window", "$document", ($window, $document) ->
   restrict: 'A'
   controller: ['$scope', '$window', ($scope, $window) ->
     $scope.setOffsetBottom = (elem,offset) ->
       window_scrollTop = $($window).scrollTop()
-      window_height = $($window).height()
+      doc_height = $($document).height()
       elem_height = elem.height()
-      offset_point = window_height - elem_height - offset
+      offset_point = doc_height - elem_height - offset
       new_elem_position = window_scrollTop - offset_point
       console.log new_elem_position
       if new_elem_position > 0

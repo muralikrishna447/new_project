@@ -87,13 +87,22 @@ describe "BuyAssemblyStripeController", ->
       it "should set processing to be false", ->
         expect(scope.processing).toBe(false)
 
-      it "should set enrolled to be true", ->
-        expect(scope.enrolled).toBe(true)
+      describe "if gift", ->
+        beforeEach ->
+          scope.isGift = true
+          scope.enrolled = false
 
-      it "should set enrolled to be true", ->
+        it "should not set enrolled", ->
+          expect(scope.enrolled).toBe(false)
+
+      describe "if not gift", ->
+        it "should set enrolled to be true", ->
+          expect(scope.enrolled).toBe(true)
+
+      it "should state to be thanks", ->
         expect(scope.state).toEqual("thanks")
 
-      it "should set enrolled to be true", ->
+      it "should call shareASale", ->
         expect(scope.shareASale).toHaveBeenCalled()
 
     describe "ajax responds with an error", ->
@@ -257,3 +266,43 @@ describe "BuyAssemblyStripeController", ->
       ).respond(200)
       scope.shareASale("19.99", "321")
       scope.httpBackend.flush()
+
+  describe "#adminSendGift", ->
+    describe "success", ->
+      beforeEach ->
+        scope.assembly = {id:321}
+        scope.discounted_price = 0.0
+        scope.giftInfo = "None"
+        scope.httpBackend.expect(
+          'POST'
+          '/charges?assembly_id=321&discounted_price=0&gift_info=None&stripeToken='
+        ).respond(200, {'success': true})
+        scope.handleStripe(200, {id:123, card: {type: "VISA"}})
+        scope.httpBackend.flush()
+
+        it "should set processing to false", ->
+          scope.adminSendGift()
+          expect(scope.processing).toBe(false)
+
+        it "should set the state to thanks", ->
+          scope.adminSendGift()
+          expect(scope.state).toBe("thanks")
+    describe "error", ->
+      beforeEach ->
+        scope.assembly = {id:321}
+        scope.discounted_price = 19.99
+        scope.giftInfo = "None"
+        scope.httpBackend.expect(
+          'POST'
+          '/charges?assembly_id=321&discounted_price=19.99&gift_info=None&stripeToken=123'
+        ).respond(500, {'success': false, errors: ["This broke"]})
+        scope.handleStripe(200, {id:123, card: {type: "VISA"}})
+        scope.httpBackend.flush()
+
+      it "should set the errorText variable", ->
+        expect(scope.errorText).toBe("This broke")
+
+      it "should set processing to be false", ->
+        expect(scope.processing).toBe(false)
+
+

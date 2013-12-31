@@ -12,6 +12,10 @@ class PagesController < ApplicationController
     @sv_page = Page.find 'sous-vide-collection'
   end
 
+  def egg_timer
+    Page.find 'egg-timer'
+  end
+
   def test_purchaseable_course
     @page = Page.find 'test-purchaseable-course'
     @assembly = Assembly.find('test-purchaseable-course')

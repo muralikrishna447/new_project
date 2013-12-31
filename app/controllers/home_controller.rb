@@ -1,14 +1,14 @@
 class HomeController < ApplicationController
 
   def index
-    @classes = (Assembly.pubbed_courses.order('updated_at desc') + Course.published.order('updated_at desc'))
+    @classes = Assembly.pubbed_courses.order('updated_at desc').to_a
     prereg_assembly_classes = Assembly.prereg_courses.order('updated_at desc').limit(1)
     pubbed_assembly_classes = Assembly.pubbed_courses.order('updated_at desc').limit(1)
     @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
 
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_feeds.order('published_at desc').first(6)
-      @projects = Assembly.published.projects.last(3)
+      @recipe_developments = Assembly.published.recipe_developments.last(3)
       # @followings_stream = Kaminari::paginate_array(current_user.followings_stream).page(params[:page]).per(6)
       # @stream = current_user.received_stream.take(4)
     else
@@ -16,11 +16,8 @@ class HomeController < ApplicationController
       @recipes = Activity.published.chefsteps_generated.recipes.include_in_feeds.includes(:steps).last(6) - @heroes
       @techniques = Activity.published.chefsteps_generated.techniques.include_in_feeds.includes(:steps).last(6) - @heroes
       @sciences = Activity.published.chefsteps_generated.sciences.include_in_feeds.includes(:steps).last(6) - @heroes
-      # cookies.delete(:returning_visitor)
       @returning_visitor = cookies[:returning_visitor]
       @new_visitor = params[:new_visitor] || !@returning_visitor
-      # @discussion = Forum.discussions.first
-      #@status = Twitter.status_embed
       @user = User.new
     end
   end
@@ -61,5 +58,8 @@ class HomeController < ApplicationController
       { image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/weHQHUSTBqKRI1bk2bMw/convert?fit=crop&w=100&h=100&cache=true', copy: Copy.find_by_location('about-tip-equipment') },
       { image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/a7vIXo8R4WeuesRE2J41/convert?fit=crop&w=100&h=100&cache=true', copy: Copy.find_by_location('about-tip-tools') }
     ]
+
+    @classes = Assembly.pubbed_courses
+    @recipes = Activity.published.recipes.chefsteps_generated.last(6)
   end
 end

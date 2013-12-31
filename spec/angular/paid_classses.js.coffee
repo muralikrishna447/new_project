@@ -222,3 +222,26 @@ describe "PaidClasses", ->
         element("#enroll-free-button").click()
         sleep 2
         expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
+
+  describe "admin account", ->
+    beforeEach ->
+      element('#sign-in-and-buy-button').click()
+      sleep .5
+      expect(element('.login-modal-body').count()).toBe(1)
+      input("login_user.email").enter("admin@chefsteps.com")
+      input("login_user.password").enter("apassword")
+      element("button.signin").click()
+      sleep 2
+      browser().navigateTo('/classes/become-a-badass/landing')
+
+    it "should send a free course", ->
+      element("#gift-button").click()
+      expect(element(".buy-modal-body").count()).toBe(1)
+      input("giftInfo.recipientName").enter("Gift Person")
+      input("giftInfo.recipientEmail").enter("gift@example.com")
+      input("giftInfo.recipientMessage").enter("This is only a test")
+      sleep 2
+      element("#admin-next-button").click()
+      sleep 2
+      expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for giving our")
+

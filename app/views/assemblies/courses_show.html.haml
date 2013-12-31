@@ -2,6 +2,8 @@
 - content_for :title, "#{@course.title.html_safe} - Class"
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+- content_for :ajax_seo do
+  %meta{name: "fragment", content: "!"}
 
 .controller(ng-controller='CoursesController' ng-init="init(#{@course.id})")
   .container.course-assembly-container(ng-cloak)
@@ -20,7 +22,7 @@
           {{course.title}}
       %ul.section.no-bullet
         %li(ng-repeat='inclusion in course.assembly_inclusions' 
-            ng-click='loadInclusion(inclusion.includable_id)' 
+            ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)' 
             ng-class="inclusionActiveClass(inclusion)" 
             ng-include="'_recursive_assembly_syllabus.html'")
 
@@ -29,7 +31,7 @@
       .container-fluid
         .row-fluid
 
-          .span12.relative.course-content.printable(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController' ng-init="loadInclusion(flatInclusions[0].includable_id)")
+          .span12.relative.course-content.printable(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController')
             %div(ng-switch on='view_inclusion')
               %div(ng-switch-when="Quiz")
                 .row-fluid
@@ -52,7 +54,7 @@
                 = render 'assembly_page'
 
               - if current_user && current_user.role?(:admin)
-                .edit-button-box
+                .edit-button-box.noprint
                   %div(ng-switch on="currentIncludable.includable_type")
                     %div(ng-switch-when='Activity')
                       %a.btn.btn-secondary(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
@@ -71,12 +73,6 @@
                         %i.icon-edit
                         edit
 
-        .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
-          .span12
-            -# Starts with a disqus id for course but for activities will get replaced using DISQUS.reset
-            = render 'layouts/disqus_comments', disqus_id: "assembly-course-#{@course.id}", disqus_title:@course.title, disqus_url: course_url(@course)
-
-
         .prev-next-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .row-fluid.section
             .span12
@@ -90,7 +86,12 @@
                       NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
 
-  
+        .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
+          .span12
+            %hr
+            -# using DISQUS.reset to determine which disqus thread to display
+            = render 'layouts/disqus_angular'
+
   .course-nav-bottom-center.responsive.container-fluid.noprint.text-center
     %hr
     %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")

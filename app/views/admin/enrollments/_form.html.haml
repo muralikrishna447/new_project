@@ -1,0 +1,13 @@
+%h2 User this form to create an enrollment for a user.
+%h3 Use Cases:
+%ul
+  %li Beta Testers
+  %li V.I.P.
+  %li International users who want to purchase a class but cannot because they do not have a credit card we accept. Have them pay through PayPal first. When payment is verified, come back to this page to give them a free enrollment.
+
+= form_tag('free', method: 'post') do
+  %fieldset
+    %div= email_field_tag :email, nil, placeholder: 'email', length: 50, required: true
+    %br
+    %div= select_tag :assembly_id, options_from_collection_for_select(Assembly.where(assembly_type: 'Course').order(:title), :id, :title)
+  = submit_tag 'Submit'

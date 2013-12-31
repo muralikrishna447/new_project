@@ -1,9 +1,0 @@
-.course-breakdown.unstyled
-
-  .nested-activity-list-shared.nested-activity-list-pretty
-    =render layout: 'shared/nested_activities', :locals => {for_form: false, course: course} do |incl|
-      - do_link = (incl.nesting_level != 0) && incl.activity.published?
-      - if ! do_link
-        = raw incl.activity.title.strip
-      - else
-        = link_to (raw incl.activity.title.strip), course_activity_path(course, incl.activity)

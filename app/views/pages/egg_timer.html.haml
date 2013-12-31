@@ -1,0 +1,54 @@
+.container(ng-controller="EggTimerController")
+  .row
+    .span6
+      %h1 Magic Egg Timer
+      .section
+        %h3 
+          Computed Times
+          %i.icon-spin.icon-spinner(ng-show="loading")
+        Immediate Service: Min {{formatTime(output.items[0])}}, Suggested {{formatTime(output.items[1])}}, Max {{formatTime(output.items[2])}}
+        %br
+        Ice Water Chilled: Min {{formatTime(output.items[3])}}, Suggested {{formatTime(output.items[4])}}, Max {{formatTime(output.items[5])}}
+      .section
+        %h3 Inputs
+      .control-group
+        %label Water Temp {{inputs.water_temp}} &deg;c
+        .controls
+          60 &deg;c
+          %input(type="range" ng-model='inputs.water_temp' min="60" max="85")
+          85 &deg;c
+      .control-group
+        %label Desired Viscosity {{inputs.desired_viscosity}} (Like {{viscosityToDescriptor(inputs.desired_viscosity)}})
+        .controls
+          5
+          %input(type="range" ng-model='inputs.desired_viscosity' min="5" max="30")
+          30
+          
+      .control-group
+        %label Egg Diameter {{inputs.diameter}} mm
+        .controls
+          30
+          %input(type="range" ng-model='inputs.diameter' min="30" max="60" step="0.5")
+          60
+      .control-group
+        %label Start Temp {{inputs.start_temp}}
+        .controls
+          1
+          %input(type="range" ng-model='inputs.start_temp' min="1" max="35")
+          35
+      .control-group
+        %label Heat Transfer Coefficient {{inputs.surface_heat_transfer_coeff}}
+        .controls
+          100
+          %input(type="range" ng-model='inputs.surface_heat_transfer_coeff' min="100" max="200")
+          200
+      .control-group
+        %label Egg Shape
+        .controls
+          .btn.btn-secondary(ng-click="inputs.beta = 1.6" ng-class="{active: inputs.beta==1.6}") Torpedo
+          .btn.btn-secondary(ng-click="inputs.beta = 1.7" ng-class="{active: inputs.beta==1.7}") Normal
+          .btn.btn-secondary(ng-click="inputs.beta = 1.8" ng-class="{active: inputs.beta==1.8}") Spherical
+
+
+  
+

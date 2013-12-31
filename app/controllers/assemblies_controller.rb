@@ -3,15 +3,15 @@ class AssembliesController < ApplicationController
 
   # Commenting out for now until we figure out what to do for Projects
 
-  # def index
-  #   if request.path == '/assemblies'
-  #     @assembly_type = 'Assembly'
-  #     @assemblies = Assembly.published.order('created_at asc').page(params[:page]).per(12)
-  #   else
-  #     @assembly_type = request.path.gsub(/^\//, "").singularize.titleize
-  #     @assemblies = Assembly.published.where(assembly_type: @assembly_type).order('created_at asc').page(params[:page]).per(12)
-  #   end
-  # end
+  def index
+    if request.path == '/assemblies'
+      @assembly_type = 'Assembly'
+      @assemblies = Assembly.published.order('created_at asc').page(params[:page]).per(12)
+    else
+      @assembly_type = request.path.gsub(/^\//, "").singularize.titleize
+      @assemblies = Assembly.published.where(assembly_type: @assembly_type).order('created_at asc').page(params[:page]).per(12)
+    end
+  end
 
   def show
     @upload = Upload.new
@@ -23,8 +23,10 @@ class AssembliesController < ApplicationController
       else
         redirect_to landing_class_url(@assembly)
       end
+    when 'Recipe Development'
+      render "courses_#{params[:action]}"
     else
-      render "#{@assembly.assembly_type.underscore.pluralize}_#{params[:action]}"
+      render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
     end
   end
 
@@ -100,7 +102,7 @@ private
   def load_assembly
 
     begin
-      @assembly = Assembly.find_published(params[:id], params[:token], can?(:update, @activity))
+      @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], can?(:update, @activity))
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = discounted_price(@assembly.price, session[:coupon])
       # Changing so that it accepts a param gift_toekn as well, this is solely for e2e testing and shouldn't be given to customers as it doesn't store the information in the sesion so they MUST use it on that page.
@@ -111,14 +113,21 @@ private
       # they can get on an email list to be notified when it is available.
       @course = Assembly.find(params[:id])
       if @course && @course.assembly_type == "Course" && (! @course.published?)
-        @list_name = ("csp-" + @course.slug)[0...15]
-        render "pre_registration"
+        if current_user && current_user.enrolled?(@course)
+          @assembly = Assembly.find(params[:id])
+          session[:coupon] = params[:coupon] || session[:coupon]
+          @discounted_price = discounted_price(@assembly.price, session[:coupon])
+          @gift_certificate = GiftCertificate.where(token: (session[:gift_token]||params[:gift_token])).first if (session[:gift_token]||params[:gift_token])
+        else
+          @list_name = ("csp-" + @course.slug)[0...15]
+          render "pre_registration"
+        end
         return false
       end
       raise
     end
 
-    instance_variable_set("@#{@assembly.assembly_type.underscore}", @assembly)
+    instance_variable_set("@#{@assembly.assembly_type.underscore.gsub(' ','_')}", @assembly)
     # Hack to also make available as course so can be used for project without
     # revamping views completely right now
     @course = @assembly

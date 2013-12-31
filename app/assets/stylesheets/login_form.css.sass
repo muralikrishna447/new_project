@@ -7,37 +7,43 @@ input:not(:focus):not(.ng-pristine).ng-invalid
   height: auto
 
 .modal
+  &.login-controller-modal
+    max-height: 500px
   form
     margin: 0
 
-.login-modal-body
+.login-modal-body, .invite-modal-body
   .close-x
     color: #ccc
     font-size: 22px
     cursor: pointer
   overflow: hidden
   height: auto !important
-  max-height: 600px
+  max-height: 400px
 
-.form-horizontal
-  margin-top: 30px
-  margin-bottom: 0px
-  min-height: 120px
-  margin-left: 20px
-  margin-right: 20px
-  .error-text
-    color: #E25F25
-  label
-    text-transform: uppercase
+  .button-group
+    text-align: center
+    padding-bottom: 10px
+
+  .form-horizontal
+    margin-top: 30px
     margin-bottom: 0px
-    margin-top: 5px
-  input, textarea
-    margin-top: 5px
-    border: 1px solid #ccc
-    @include radius(1px)
-    padding: 4px 6px
-    &.error
-      border: 1px solid #E25F25
+    min-height: 120px
+    margin-left: 20px
+    margin-right: 20px
+    .error-text
+      color: #E25F25
+    label
+      text-transform: uppercase
+      margin-bottom: 0px
+      margin-top: 5px
+    input, textarea
+      margin-top: 5px
+      border: 1px solid #ccc
+      @include radius(1px)
+      padding: 4px 6px
+      &.error
+        border: 1px solid #E25F25
 
   .input-full
     width: 100%
@@ -53,7 +59,32 @@ input:not(:focus):not(.ng-pristine).ng-invalid
     width: 13%
     vertical-align: bottom
 
-.login-modal-footer
+.invite-modal-body
+  p
+    margin-bottom: 1.2rem
+
+@media (max-width: 600px)
+  .invite-horizontal
+    .friend-list
+      overflow: scroll
+      max-height: 150px
+      li
+        width: 100%
+        display: inline
+        float: left
+
+@media (min-width: 601px)
+  .invite-horizontal
+    .friend-list
+      overflow: scroll
+      max-height: 250px
+      li
+        width: 49%
+        display: inline
+        float: left
+
+
+.login-modal-footer, .invite-modal-footer
 
   .button-group
     text-align: center

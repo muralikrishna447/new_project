@@ -6,6 +6,8 @@
   %meta{property: 'og:title', content: "#{@course.title.html_safe} - Class"}
   %meta{property: 'og:description', content: @course.description != "" ? strip_tags(markdown(@course.description)) : @course.title.html_safe}
   %meta{property: 'og:image', content: filepicker_hero_image(@course.image_id)}
+- content_for :ajax_seo do
+  %meta{name: "fragment", content: "!"}
 
 
 .assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
@@ -16,16 +18,6 @@
           - if @course.slug == 'french-macarons'
             - ab_test 'macaron_landing_video', 'FA7XWOmcptU', {'XqQZSn0uB2w' => 4} do |video_id|
               %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
-          - elsif @course.slug == 'accelerated-sous-vide-cooking-course'
-            %ul.rslides
-              %li
-                %img(src="http://d2eud0b65jr0pw.cloudfront.net/Module_7_Pork_Cheek_assembly20121204_4.jpg")
-              %li
-                %img(src="http://d2eud0b65jr0pw.cloudfront.net/final_dish_IMG_5402.jpg")
-              %li
-                %img(src="http://d2eud0b65jr0pw.cloudfront.net/Why%20Sous%20Vide_Convenience_6.jpg")
-              %li
-                %img(src="http://d2eud0b65jr0pw.cloudfront.net/Module%201_searing.jpg")
           - else
             %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
 
@@ -50,11 +42,7 @@
             %h4 100% satisfaction guaranteed or your money back
         .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
           = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.  slug}/landing"
-        .testimonials.well(ng-click="switchTab('reviews', 'Reviews')" ng-show="#{@course.slug == 'french-macarons'}")
-          = image_tag 'https://www.filepicker.io/api/file/AShQR6KzQJeqKNwszJjK/convert?fit=crop&w=75&h=75', class: 'img-circle'
-          %p "...the best $39 of my life. On the first day we made the roasted cocoa macarons, and on the second, rainbow chip. Both days we made perfect cookies and filling, first try.”
-          %h5 -Patrick, North Carolina
-
+        .testimonials.well(ng-click="switchTab('reviews', 'Reviews')" ng-show="#{!@course.testimonial_copy.blank?}" ng-bind-html-unsafe="'#{@course.testimonial_copy}'")
 
     .row
       .span8
@@ -81,6 +69,7 @@
 
             %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, #{(current_user && current_user.id) || 0}, true)")
               = render 'comments/reviews'
+
           - if @course.faq    
             %div(ng-show="tab=='faq'")
               :markdown
@@ -98,6 +87,14 @@
                   - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
                     .span4
                       = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
+          %div(ng-show="tab=='preview'")
+            .section
+              .row
+                .span6.section
+                  = render 'syllabus'
+                .span6.offset1.section
+                  :markdown
+                    #{@course.preview_copy}
 
 = render 'layouts/footer'
 

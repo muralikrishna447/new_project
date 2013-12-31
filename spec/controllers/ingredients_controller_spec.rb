@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe IngredientsController do
-  describe "#index" do
+  describe "#manager" do
     it "should cause a not authorized error when no user is logged in" do
-      expect { get :index }.to raise_error(CanCan::AccessDenied)
+      expect { get :manager }.to raise_error(CanCan::AccessDenied)
     end
   end
 

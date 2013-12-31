@@ -106,13 +106,6 @@ a, [ng-click], [contenteditable]:not(:focus)
 .extra-info
   color: $orange
 
-.box-extra-info
-  border: 1px solid $orange
-  padding: 4px
-  margin-left: -4px
-  display: inline-block
-  @include radius(3px)
-
 /* Bootstrap Overrides */
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
   height: inherit
@@ -1160,6 +1153,7 @@ a:hover
   border: 0px
   border-bottom: 1px #ccc solid
   border-radius: 0px
+  margin-bottom: $baseline
   @include transition(all 100ms)
   &:hover
     background: gray
@@ -1292,6 +1286,7 @@ a:hover
 
   .social-button-contents
     display: inline-block
+    height: 100%
 
   .social-icon-group
     display: inline-block

@@ -2,7 +2,7 @@ class Assembly < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   friendly_id :title, use: [:slugged, :history]
-  attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets
+  attr_accessible :description, :image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets, :preview_copy, :testimonial_copy
   has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :quizzes, through: :assembly_inclusions, source: :includable, source_type: 'Quiz'
@@ -20,12 +20,13 @@ class Assembly < ActiveRecord::Base
 
   scope :published, where(published: true)
   scope :projects, where(assembly_type: 'Project')
+  scope :recipe_developments, where(assembly_type: 'Recipe Development')
   scope :pubbed_courses, where(assembly_type: 'Course', published: true)
   scope :prereg_courses, where(assembly_type: 'Course', published: false, show_prereg_page_in_index: true)
 
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
-  ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group']
+  ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group', 'Recipe Development']
   INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz', 'Assembly', 'Page', 'Assignment']
 
   def ingredients
@@ -105,5 +106,9 @@ class Assembly < ActiveRecord::Base
 
   def average_rating
     comments.where("rating IS NOT NULL").average('rating').to_f
+  end
+
+  def only_one_level
+    self.assembly_inclusions.map(&:includable_type).include?('Assembly') ? false : true
   end
 end

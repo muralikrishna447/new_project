@@ -1,0 +1,3 @@
+.assembly-syllabus
+  - @assembly.assembly_inclusions.each do |inclusion|
+    = render 'recursive_syllabus', includable: inclusion.includable, level: 0

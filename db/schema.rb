@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131206190918) do
+ActiveRecord::Schema.define(:version => 20131221021749) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -140,6 +140,8 @@ ActiveRecord::Schema.define(:version => 20131206190918) do
     t.text     "short_description"
     t.text     "upload_copy"
     t.text     "buy_box_extra_bullets"
+    t.text     "preview_copy"
+    t.text     "testimonial_copy"
   end
 
   create_table "assembly_inclusions", :force => true do |t|

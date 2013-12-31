@@ -2,6 +2,8 @@
 - content_for :description, @poll.description != "" ? @poll.description.html_safe : @poll.title.html_safe
 - content_for :canonical_link, poll_url(@poll) if @poll.id
 - content_for :keywords, @poll.poll_items.map(&:title).join(',')
+- content_for :ajax_seo do
+  %meta{name: "fragment", content: "!"}
 
 - content_for :facebook_og do
   %meta{property: 'og:url', content: poll_url(@poll)}

@@ -4,7 +4,7 @@
   .edit-buttons-group
     position: relative
     bottom: -8px
-    .btn
+    .btn-toolbar
       display: inline-block
       float: right
 
@@ -27,19 +27,6 @@
     height: auto
     padding-bottom: $baseline
 
-  .ro-tag
-    background-color: white
-    color: #333
-    border: 1px solid #ccc
-    padding: 1px 4px
-    margin: 0px 8px $baseline 0px
-    @include radius(4px)
-    @include primary-font-light 
-    display: inline-block
-
-    i
-      color: #aaa
-
   .report-problem
     position: absolute
     right: 0
@@ -47,3 +34,22 @@
 
   .wiki-warning
     background: lighten($orange, 30%)
+
+  .text-fields
+    textarea
+      width: 100%
+
+.ro-tag
+  background-color: white
+  color: #333
+  border: 1px solid #ccc
+  padding: 1px 4px
+  margin: 0px 8px $baseline 0px
+  @include radius(4px)
+  @include primary-font-light 
+  display: inline-block
+
+  i
+    &:before
+      margin-right: 5px
+    color: #aaa

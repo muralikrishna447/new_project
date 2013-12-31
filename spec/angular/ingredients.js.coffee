@@ -1,26 +1,60 @@
 describe "IngredientIndexController", ->
 
   beforeEach ->
+    browser().navigateTo('/sign_out.json')
+    browser().navigateTo('/end_clean')
+    browser().navigateTo('/start_clean')
+    browser().navigateTo('/')
+    pause
+    element('#nav-sign-in-button').click()
+    sleep 0.5
+    expect(element('.login-modal-body').count()).toBe(1)
+    input("login_user.email").enter("admin@chefsteps.com")
+    input("login_user.password").enter("apassword")
+    element("button.signin").click()
+    sleep 2
     browser().navigateTo('/ingredients')
+    sleep 2
 
-  it "should go to the ingredients page", ->
-    expect(browser().window().path()).toBe("/ingredients")
+  afterEach ->
+    browser().navigateTo('/sign_out.json')
+    browser().navigateTo('/end_clean')
 
   it "should search from the search box", ->
+    expect(browser().window().path()).toBe("/ingredients")
+
+    # Test refresher
+    expect(element(".ngRow").count()).toBe(3)
+    element("#refresh-button").click()
+    sleep 0.25
+    expect(element(".ngRow").count()).toBe(3)
+
+    # Test searching
     expect(element("[ng-model='searchString']").count()).toBe(1)
     input("searchString").enter("salt")
-    expect(element(".ngRow").count()).toBe(3)
+    expect(repeater(".ngRow").count()).toBe(3)
 
-  it "should perform an exact match", ->
+    # Do exact Match Searches
     element("#exact-match").click()
     input("searchString").enter("Salt, Kosher")
-    expect(element(".ngRow").count()).toBe(1)
+    expect(repeater(".ngRow").count()).toBe(1)
     input("searchString").enter("salt")
-    expect(element(".ngRow").count()).toBe(0)
+    expect(repeater(".ngRow").count()).toBe(0)
     element("#exact-match").click()
-    expect(element(".ngRow").count()).toBe(3)
+    expect(repeater(".ngRow").count()).toBe(3)
 
-  it "should bring up a modal when you click on uses and close when you click close", ->
+    # Search includes recipes
+    input("searchString").enter("")
+    expect(repeater(".ngRow").count()).toBe(3)
+    element("[ng-model='includeRecipes']").click()
+    sleep 0.50
+    expect(repeater(".ngRow").count()).toBe(7)
+    expect(element(".ngRow").html()).toContain("[RECIPE]")
+    element("[ng-model='includeRecipes']").click()
+
+
+  it "should bring up modals", ->
+    #  when you click on uses and close when you click close
     el = ".ngRow:first"
     expect(element(el).html()).toContain("2")
     element(el + " a[ng-click='openUses(row.entity)']").click()
@@ -30,7 +64,7 @@ describe "IngredientIndexController", ->
     sleep 0.25
     expect(element(".modal").count()).toBe(0)
 
-  it "should bring up a modal when you click on density", ->
+    # when you click on density
     el = ".ngRow:first"
     element(el + " a[ng-click='densityService.editDensity(row.entity)']").click()
     expect(element(".modal").html()).toContain("Salt, Kosher")
@@ -44,32 +78,27 @@ describe "IngredientIndexController", ->
     expect(element(".modal").count()).toBe(0)
     expect(element(el + " a[ng-click='densityService.editDensity(row.entity)']").html()).toContain("68")
 
-  it "should let you change the title by clicking on it", ->
-    el = ".ngRow:last"
-    element(el + " .colt1").click()
-    using(el + " .colt1").input("row.entity.title").enter("Salt, Seasalt Flakes")
-    element(el + " .colt3").click()
-    sleep 0.50
-    expect(element(el + " .colt1").html()).toContain("Salt, Seasalt Flakes")
-    element(el + " .colt1").click()
-    using(el + " .colt1").input("row.entity.title").enter("Salt, Seasalt")
-    element(el + " .colt3").click()
 
-  it "should should change the product url and display", ->
+
+  it "should let you change the fields", ->
+    # Change title
     el = ".ngRow:last"
-    element(el + " .colt3").click()
-    using(el + " .colt3").input("row.entity.product_url").enter("http://www.amazon.com/Maldon-Sea-Salt-Flakes-ounce/dp/B00017028M/ref=sr_1_3?s=grocery&ie=UTF8&qid=1381020739&sr=1-3")
-    element(el + " .colt1").click()
+    element(el + " .colt2").click()
+    using(el + " .colt2").input("row.entity.title").enter("Salt, Seasalt Flakes")
+    element(el + " .colt4").click()
+    sleep 0.50
+    expect(element(el + " .colt2").html()).toContain("Salt, Seasalt Flakes")
+    element(el + " .colt2").click()
+    using(el + " .colt2").input("row.entity.title").enter("Salt, Seasalt")
+    element(el + " .colt4").click()
+
+    # Change product URL
+    el = ".ngRow:last"
+    element(el + " .colt4").click()
+    using(el + " .colt4").input("row.entity.product_url").enter("http://www.amazon.com/Maldon-Sea-Salt-Flakes-ounce/dp/B00017028M/ref=sr_1_3?s=grocery&ie=UTF8&qid=1381020739&sr=1-3")
+    element(el + " .colt2").click()
     sleep 0.55
-    expect(element(el + " .colt3").html()).toContain("amazon.com")
-
-  it "should include recipies ", ->
-    expect(element(".ngRow").count()).toBe(3)
-    element("[ng-model='includeRecipes']").click()
-    sleep 0.50
-    expect(element(".ngRow").count()).toBe(7)
-    expect(element(".ngRow").html()).toContain("[RECIPE]")
-    element("[ng-model='includeRecipes']").click()
+    expect(element(el + " .colt4").html()).toContain("amazon.com")
 
   it "should merge ingredients", ->
     input("allSelected").check()
@@ -96,9 +125,3 @@ describe "IngredientIndexController", ->
     sleep 0.25
     expect(element(".ngRow").count()).toBe(2)
     browser().reload()
-
-  it "should refresh the page", ->
-    expect(element(".ngRow").count()).toBe(3)
-    element("#refresh-button").click()
-    sleep 0.25
-    expect(element(".ngRow").count()).toBe(3)

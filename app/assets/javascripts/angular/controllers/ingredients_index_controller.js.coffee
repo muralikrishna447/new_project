@@ -1,4 +1,5 @@
-angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Ingredient", "csUrlService", "csAdminTable", "csDensityService", ($scope, $resource, $http, $filter, $timeout, csAlertService, Ingredient, csUrlService, csAdminTable, csDensityService) ->
+angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Ingredient", "csUrlService", "csAdminTable", "csDensityService", "csGalleryService", ($scope, $resource, $http, $filter, $timeout, csAlertService, Ingredient, csUrlService, csAdminTable, csDensityService, csGalleryService) ->
+
   $scope.csAdminTable = csAdminTable # Load our csAdminTable service into the scope.
   $scope.alertService = csAlertService
   $scope.densityService = csDensityService

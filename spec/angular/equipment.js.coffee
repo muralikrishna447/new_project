@@ -1,27 +1,51 @@
-
 describe "EquipmentController", ->
 
   beforeEach ->
+    browser().navigateTo('/sign_out.json')
+    browser().navigateTo('/end_clean')
+    browser().navigateTo('/start_clean')
+    browser().navigateTo('/')
+    pause
+    element('#nav-sign-in-button').click()
+    sleep 0.5
+    expect(element('.login-modal-body').count()).toBe(1)
+    input("login_user.email").enter("admin@chefsteps.com")
+    input("login_user.password").enter("apassword")
+    element("button.signin").click()
+    sleep 2
     browser().navigateTo('/equipment')
+    sleep 2
 
-  it "should go to the equipment page", ->
-    expect(browser().window().path()).toBe("/equipment")
+  afterEach ->
+    browser().navigateTo('/sign_out.json')
+    browser().navigateTo('/end_clean')
+
 
   it "should search from the search box", ->
+    expect(browser().window().path()).toBe("/equipment")
+
+    # Test refresher
+    expect(repeater(".ngRow").count()).toBe(3)
+    element("#refresh-button").click()
+    sleep 0.25
+    expect(repeater(".ngRow").count()).toBe(3)
+
+    # Test Searching
     expect(element("[ng-model='searchString']").count()).toBe(1)
     input("searchString").enter("knife")
-    expect(element(".ngRow").count()).toBe(3)
+    expect(repeater(".ngRow").count()).toBe(3)
 
-  it "should perform an exact match", ->
+    # Test Exact Match Search
     element("#exact-match").click()
     input("searchString").enter("Chef Knife, Shun Edo 6-1/2 Blade")
-    expect(element(".ngRow").count()).toBe(1)
+    expect(repeater(".ngRow").count()).toBe(1)
     input("searchString").enter("Knife")
-    expect(element(".ngRow").count()).toBe(0)
+    expect(repeater(".ngRow").count()).toBe(0)
     element("#exact-match").click()
-    expect(element(".ngRow").count()).toBe(3)
+    expect(repeater(".ngRow").count()).toBe(3)
 
-  it "should bring up a modal when you click on uses and close when you click close", ->
+  it "should bring up modals", ->
+    # when you click on uses and close when you click close
     el = ".ngRow:first"
     expect(element(el).html()).toContain("2")
     element(el + " a[ng-click='openUses(row.entity)']").click()
@@ -31,7 +55,8 @@ describe "EquipmentController", ->
     sleep 0.25
     expect(element(".modal").count()).toBe(0)
 
-  it "should let you change the title by clicking on it", ->
+  it "should let you change the fields", ->
+    # Change Title
     el = ".ngRow:last"
     element(el + " .colt1").click()
     using(el + " .colt1").input("row.entity.title").enter("Shun Edo Santoku 7-1/2 Blade")
@@ -42,13 +67,14 @@ describe "EquipmentController", ->
     using(el + " .colt1").input("row.entity.title").enter("Shun Edo Santoku Knife")
     element(el + " .colt3").click()
 
-  it "should should change the product url and display", ->
+    # Change product URL
     el = ".ngRow:first"
     element(el + " .colt3").click()
     using(el + " .colt3").input("row.entity.product_url").enter("http://www.amazon.com/Shun-BB1502-2-Inch-Chefs-Knife/dp/B00BIGCJCC/ref=sr_1_5?ie=UTF8&qid=1381284103&sr=8-5")
     element(el + " .colt1").click()
     sleep 0.55
     expect(element(el + " .colt3").html()).toContain("amazon.com")
+
 
   it "should merge equipment", ->
     input("allSelected").check()
@@ -76,8 +102,3 @@ describe "EquipmentController", ->
     expect(element(".ngRow").count()).toBe(2)
     browser().reload()
 
-  it "should refresh the page", ->
-    expect(element(".ngRow").count()).toBe(3)
-    element("#refresh-button").click()
-    sleep 0.25
-    expect(element(".ngRow").count()).toBe(3)

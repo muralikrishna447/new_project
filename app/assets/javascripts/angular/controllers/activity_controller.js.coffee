@@ -5,19 +5,10 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService",
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll, csEditableHeroMediaService) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService", "Activity"
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll, csEditableHeroMediaService, Activity) ->
 
   $scope.heroMedia = csEditableHeroMediaService
-
-  Activity = $resource( "/activities/:id/as_json",
-                        {id:  $('#activity-body').data("activity-id") || 1},
-                        {
-                          update: {method: "PUT"},
-                          startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
-                          endedit: {method: "PUT", url: "/activities/:id/notify_end_edit"}
-                        }
-                      )
 
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0

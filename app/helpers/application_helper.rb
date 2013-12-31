@@ -241,7 +241,7 @@ module ApplicationHelper
 
   def assembly_type_path(assembly)
     if assembly.assembly_type?
-      assembly_type_path = assembly.assembly_type.downcase.pluralize
+      assembly_type_path = assembly.assembly_type.downcase.pluralize.gsub(' ', '-')
       assembly_path(assembly).gsub('/assemblies', "/#{assembly_type_path}")
     else
       assembly_path(assembly)
@@ -259,6 +259,15 @@ module ApplicationHelper
   def class_activity_path(assembly, activity)
     if assembly && activity
       "/classes/#{assembly.slug}/##{activity.slug}"
+    end
+  end
+
+  def assembly_activity_path(assembly, activity)
+    if assembly.assembly_type?
+      assembly_type_path = assembly.assembly_type.downcase.pluralize
+      "/#{assembly_type_path}/#{assembly.slug}#/#{activity.slug}"
+    else
+      "/assemblies/#{assembly.slug}/#{activity.slug}"
     end
   end
 

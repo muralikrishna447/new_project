@@ -32,7 +32,7 @@
                     %li= link_to 'Community Recipes', gallery_index_url(source: "community")
                     %li= link_to 'Add Recipe', new_activity_url
                     -if can? :manage, Ingredient
-                      %li= link_to 'Manage Ingredients', ingredients_path
+                      %li= link_to 'Manage Ingredients', manager_ingredients_path
                     -if can? :manage, Equipment
                       %li= link_to 'Manage Equipment', equipment_index_path
 
@@ -76,8 +76,9 @@
                           .label
                             = "#{unviewed_events_count} New"
                   - else
-                    = link_to 'Sign in', sign_in_url, "ng-show" => "(! authentication.currentUser())"
-                    = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())"
+                    %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+                    = render "devise/sessions/new_angular"
+                    = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
 
                 - unless external
                   %li

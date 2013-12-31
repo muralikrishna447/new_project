@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include StatusHelpers
   protect_from_forgery
 
-  if Rails.env.angular?
+  if Rails.env.angular? || Rails.env.development?
     require 'database_cleaner'
     def start_clean
       DatabaseCleaner.strategy = :transaction
@@ -57,6 +57,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :facebook_app_id
+  def facebook_app_id
+    case Rails.env
+    when "production"
+      "380147598730003"
+    when "staging"
+      "642634055780525"
+    else
+      "249352241894051"
+    end
+  end
+
 private
 
   def track_event(trackable, action = params[:action])
@@ -97,6 +109,37 @@ private
     if params[:SSAID].present? && params[:SSAIDDATA].present?
       cookies['SSAID'] = params[:SSAID]
       cookies['SSAIDDATA'] = params[:SSAIDDATA]
+    end
+  end
+
+  before_filter :get_escaped_fragment_from_brombone
+  def get_escaped_fragment_from_brombone
+    if params.has_key?(:'_escaped_fragment_')
+      puts "Rendering #{request.path} from brombone snapshot"
+      base_url = "http://chefsteps.brombonesnapshots.com/www.chefsteps.com#{request.path}"
+      uri = URI.parse(base_url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      response = http.request(Net::HTTP::Get.new(uri.request_uri))
+      puts response.inspect
+      if response.code.to_i == 200
+        render text: response.body
+      else
+        puts "Brombone returned #{response.code} for #{request.path} - falling back to standard page"
+      end
+    end
+  end
+
+  def aweber_signup(name, email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
+    if Rails.env.production?
+      uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
+      response = Net::HTTP.post_form(uri,
+                                      { "name" => name,
+                                        "email" => email,
+                                        "listname" => listname,
+                                        "meta_adtracking" => meta_adtracking,
+                                        "custom signed_up_from" => signed_up_from})
+    else
+      logger.debug 'Newsletter Signup'
     end
   end
 

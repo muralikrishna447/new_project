@@ -1,3 +1,4 @@
+!!! 5
 %html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#" }
   %head
     %title= "#{yield :title} - ChefSteps"
@@ -41,6 +42,7 @@
     = javascript_include_tag 'application'
     %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => Rails.env}
+    = render 'layouts/facebook'
     = render 'layouts/navigation', external: false
 
     .container.alert-container
@@ -49,6 +51,7 @@
           %button.close{type: 'button', data: {dismiss: 'alert'}} x
           %h4.alert-message= msg.html_safe
           .lblock
+      %cs-notifications
 
     = yield
 
