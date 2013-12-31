@@ -17,6 +17,13 @@
       action: "slugChange"
     }
   )
+
+  $routeProvider.when(
+    "/:includable_type/:includable_slug",
+    {
+      action: "slugChange"
+    }
+  )
 ]
 
 # Thank god for Stack Overflow!
