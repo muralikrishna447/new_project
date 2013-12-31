@@ -14,12 +14,12 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.init = (course_id) ->
     $http.get('/classes/' + course_id + '/show_as_json').success (data, status) ->
       $scope.course = data
-      $scope.includable_type = $scope.routeParams.includable_type
       $scope.includable_slug = $scope.routeParams.slug
       $scope.sortInclusions($scope.course)
       if $scope.routeParams.slug
         $scope.loadInclusion('Activity', $scope.includable_slug)
       else
+        $scope.includable_type = $scope.routeParams.includable_type.toUpperCase()
         $scope.loadInclusion($scope.includable_type, $scope.includable_slug)
 
   $scope.loadInclusion = (includable_type, includable_slug) ->
@@ -38,7 +38,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     if includable_type == 'Activity'
       newPath = "/" + $scope.currentIncludable.includable_slug
     else
-      newPath = "/" + includable_type + "/" + $scope.currentIncludable.includable_slug
+      newPath = "/" + includable_type.toLowerCase() + "/" + $scope.currentIncludable.includable_slug
     $location.path(newPath) if $location.path() != newPath
 
     # Title tag
