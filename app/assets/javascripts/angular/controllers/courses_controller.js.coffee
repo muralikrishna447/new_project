@@ -8,35 +8,19 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   
   $scope.view_inclusion = {}
   $scope.collapsed = {}
+  $scope.flatInclusions = []
+  $scope.collapsibleInclusions = []
  
   $scope.init = (course_id) ->
     $http.get('/classes/' + course_id + '/show_as_json').success (data, status) ->
       $scope.course = data
-      console.log $scope.course.assembly_inclusions
-      console.log $scope.course.assembly_inclusions[0].includable_id
-      # $scope.flatInclusions = $scope.computeflatVisibleInclusions(null, $scope.course.assembly_inclusions)
-      $scope.flatInclusions = $scope.computeFlatInclusions($scope.course)
-      console.log $scope.flatInclusions
       $scope.includable_type = $scope.routeParams.includable_type
       $scope.includable_slug = $scope.routeParams.slug
+      $scope.sortInclusions($scope.course)
       if $scope.routeParams.slug
         $scope.loadInclusion('Activity', $scope.includable_slug)
       else
         $scope.loadInclusion($scope.includable_type, $scope.includable_slug)
-
-  $scope.toggleShowCourseMenu = ->
-    $scope.showCourseMenu = ! $scope.showCourseMenu
-
-    # Collapse all groups ... but 
-    $scope.collapsed = {} if $scope.showCourseMenu
-
-    # ... make sure the group containing the currently active leaf is open
-    # TODO: This actually needs to be recursive, but can get away with this for macarons.
-    if $scope.currentIncludable
-      parent = $scope.currentIncludable
-      while parent
-        $scope.collapsed[parent.includable_id] = false
-        parent = parent.parent
 
   $scope.loadInclusion = (includable_type, includable_slug) ->
     $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == includable_slug && incl.includable_type == includable_type)
@@ -128,8 +112,6 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   currentIncludableIndex = ->
     return 0 if ! $scope.flatInclusions?
     $scope.flatInclusions.indexOf($scope.currentIncludable)
-    # for incl, idx in $scope.flatInclusions
-    #   return idx if incl.includable_id == $scope.currentIncludable.includable_id
 
   $scope.nextInclusion = ->
     $scope.flatInclusions?[currentIncludableIndex() + 1]
@@ -143,18 +125,35 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.loadPrevInclusion = ->
    $scope.loadInclusion($scope.prevInclusion().includable_type, $scope.prevInclusion().includable_slug) 
 
-  $scope.computeFlatInclusions = (assembly) ->
-    result = []
+  $scope.sortInclusions = (assembly) ->
+    flat = []
     for inclusion in assembly.assembly_inclusions
       if inclusion.includable_type == 'Assembly'
-        result.push(sub) for sub in $scope.computeFlatInclusions(inclusion.includable)
+        $scope.collapsed[inclusion.includable_id] = true
+        $scope.collapsibleInclusions.push(inclusion)
+        flat.push(sub) for sub in $scope.sortInclusions(inclusion.includable)
       else
-        result.push(inclusion)
-    result
+        flat.push(inclusion)
+    $scope.flatInclusions = flat
+
+  $scope.toggleShowCourseMenu = ->
+    $scope.showCourseMenu = ! $scope.showCourseMenu
+    # First collapse all
+    $scope.collapsed = {}
+    $scope.determineCollapsed($scope.currentIncludable)
+
+  $scope.determineCollapsed = (inclusion)->
+    $scope.collapsed[inclusion.assembly_id] = false
+    console.log $scope.collapsed
+    # If Assembly is nested
+    parent_inclusion = _.find($scope.collapsibleInclusions, (incl) -> incl.includable_id == inclusion.assembly_id && incl.includable_type == 'Assembly')
+    $scope.determineCollapsed(parent_inclusion) if parent_inclusion
 
   $scope.toggleCollapse = (includable_id) ->
+    
     $scope.collapsed[includable_id] ?= true
-    $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id] 
+    $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id]
+    console.log $scope.collapsed 
 
   $scope.isCollapsed = (includable_id) ->
     if $scope.collapsed[includable_id]? 
