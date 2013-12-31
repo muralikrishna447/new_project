@@ -3,8 +3,8 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.routeParams = $routeParams
   $scope.route = $route
 
-  $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
-    $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
+  # $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
+  #   $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
   
   $scope.view_inclusion = {}
   $scope.collapsed = {}
@@ -17,10 +17,12 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       # $scope.flatInclusions = $scope.computeflatVisibleInclusions(null, $scope.course.assembly_inclusions)
       $scope.flatInclusions = $scope.computeFlatInclusions($scope.course)
       console.log $scope.flatInclusions
+      $scope.includable_type = $scope.routeParams.includable_type
+      $scope.includable_slug = $scope.routeParams.slug
       if $scope.routeParams.slug
-        $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
+        $scope.loadInclusion('Activity', $scope.includable_slug)
       else
-        $scope.loadInclusion($scope.flatInclusions[0].includable_id)
+        $scope.loadInclusion($scope.includable_type, $scope.includable_slug)
 
   $scope.toggleShowCourseMenu = ->
     $scope.showCourseMenu = ! $scope.showCourseMenu
@@ -36,25 +38,29 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         $scope.collapsed[parent.includable_id] = false
         parent = parent.parent
 
-  $scope.loadInclusion = (includable_id) ->
-    return if $scope.currentIncludable?.includable_id == includable_id
-    $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_id == includable_id)
+  $scope.loadInclusion = (includable_type, includable_slug) ->
+    $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == includable_slug && incl.includable_type == includable_type)
+    console.log "INCLUDABLE: " + $scope.currentIncludable
     if ! $scope.currentIncludable?
-      console.log "Couldn't find id " + includable_id
+      console.log "Couldn't find " + includable_type + " with slug " + includable_slug
       return
+    includable_id = $scope.currentIncludable.includable_id
     includable_type = $scope.currentIncludable.includable_type
 
     # Shouldn't happen
     return if includable_type == "Assembly"
 
     # Keep route sync'ed up if changing not from an anchor
-    newPath = "/" + $scope.currentIncludable.includable_slug
+    if includable_type == 'Activity'
+      newPath = "/" + $scope.currentIncludable.includable_slug
+    else
+      newPath = "/" + includable_type + "/" + $scope.currentIncludable.includable_slug
     $location.path(newPath) if $location.path() != newPath
 
     # Title tag
     document.title = $scope.currentIncludable.includable_title + ' - ' + $scope.course.title + ' Class - ChefSteps'
 
-    console.log "switching to " + includable_type + ' with id ' + includable_id
+    console.log "switching to " + includable_type + ' with slug ' + includable_slug
     $scope.view_inclusion = includable_type
     $scope.view_inclusion_id = includable_id
     if includable_type == "Activity"
@@ -112,17 +118,18 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       return true
     false
 
-  $scope.overrideLoadActivityBySlug = (slug) ->
-    incl = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == slug)
-    if incl
-      $scope.loadInclusion(incl.includable_id) 
-      return true
-    false
+  # $scope.overrideLoadActivityBySlug = (slug) ->
+  #   incl = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == slug)
+  #   if incl
+  #     $scope.loadInclusion('Activity', incl.includable_id) 
+  #     return true
+  #   false
 
   currentIncludableIndex = ->
     return 0 if ! $scope.flatInclusions?
-    for incl, idx in $scope.flatInclusions
-      return idx if incl.includable_id == $scope.currentIncludable.includable_id
+    $scope.flatInclusions.indexOf($scope.currentIncludable)
+    # for incl, idx in $scope.flatInclusions
+    #   return idx if incl.includable_id == $scope.currentIncludable.includable_id
 
   $scope.nextInclusion = ->
     $scope.flatInclusions?[currentIncludableIndex() + 1]
@@ -131,20 +138,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     $scope.flatInclusions?[currentIncludableIndex() - 1]
 
   $scope.loadNextInclusion = ->
-   $scope.loadInclusion($scope.nextInclusion().includable_id) 
+   $scope.loadInclusion($scope.nextInclusion().includable_type, $scope.nextInclusion().includable_slug) 
 
   $scope.loadPrevInclusion = ->
-   $scope.loadInclusion($scope.prevInclusion().includable_id) 
-
-  $scope.computeflatVisibleInclusions = (parent, inclusions) ->
-    result = []
-    for incl in inclusions
-      incl.parent = parent
-      if incl.includable_type != "Assembly"
-        result.push(incl)
-      else
-        result.push(sub) for sub in $scope.computeflatVisibleInclusions(incl, incl.includable.assembly_inclusions)
-    result
+   $scope.loadInclusion($scope.prevInclusion().includable_type, $scope.prevInclusion().includable_slug) 
 
   $scope.computeFlatInclusions = (assembly) ->
     result = []
