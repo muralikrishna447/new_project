@@ -28,7 +28,7 @@
           %h2.text-orange Or just take in smaller bits...
       .row.section-large
         .span6
-          = link_to gallery_index_url(activity_type: "Recipe") do
+          = link_to gallery_index_url + "#/?activity_type=Recipe" do
             %h4 Learn a New Recipe
             %p.lead.black-link
               ChefSteps is loaded with reliable original recipes, developed by our culinary team. Unlike other online recipes, ours are demonstrated through beautiful videos and pictures with clearly written explanations.
@@ -40,7 +40,7 @@
         .span6
           = render 'shared/horizontal_slider', items: @techniques, direction: 'left'
         .span6
-          = link_to gallery_index_url(activity_type: "Technique") do
+          = link_to gallery_index_url + "#/?activity_type=Technique" do
             .lead
               %h4 Perfect a New Technique
               %p.lead.black-link
@@ -48,7 +48,7 @@
 
       .row.section-large
         .span6
-          = link_to gallery_index_url(activity_type: "Science") do
+          = link_to gallery_index_url + "#/?activity_type=Science" do
             .lead
               %h4 Absorb the Science
               %p.lead.black-link

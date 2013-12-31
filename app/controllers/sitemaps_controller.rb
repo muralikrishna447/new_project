@@ -16,10 +16,9 @@ class SitemapsController < ApplicationController
                   Poll.all() | 
                   Upload.approved()
 
-    @other_routes = ["/", "/about", "/gallery", "/jobs", ]
+    @other_routes = ["/", "/about", "/gallery", "/jobs", "/ingredients" ]
     respond_to do |format|
       format.xml {
-        puts "HEEEREEE !!"
         render
       }
     end
