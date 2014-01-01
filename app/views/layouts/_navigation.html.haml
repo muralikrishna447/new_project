@@ -85,7 +85,7 @@
                     .nav-item-border
                     .nav-search.nav-search-toggle
                       %i.icon-search.icon-large
-                      = form_tag gallery_index_url, :method => :get, class: 'navbar-form form-search nav-search-form' do
-                        = text_field_tag :search_all, nil, :placeholder => 'search', class: 'search-query', id: 'nav-search-field'
+                      %form.navbar-form.form-search.nav-search-form(action="#{gallery_index_url}#/?search_all={{navbarSearchQuery}}" method="get")
+                        %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
                       .nav-search-hide
                         %i.icon-remove
