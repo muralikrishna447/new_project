@@ -166,8 +166,6 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     newScrollPosition = angular.element(this).scrollTop()
     scrollVelocity = newScrollPosition - $scope.oldScrollPosition
     threshold = -120
-    console.log 'Scroll Position: ' + newScrollPosition
-    console.log 'Scroll Velocity: ' + scrollVelocity
     if $scope.showGlobalNav
       # When the nav is showing, hide the nav when user scrolls down
       if scrollVelocity > 20
