@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', '$route', '$routeParams', '$location', "$timeout", ($rootScope, $scope, $resource, $http, $route, $routeParams, $location, $timeout) ->
+angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', '$route', '$routeParams', '$location', "$timeout", '$window', ($rootScope, $scope, $resource, $http, $route, $routeParams, $location, $timeout, $window) ->
 
   $scope.routeParams = $routeParams
   $scope.route = $route
@@ -160,4 +160,28 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       return $scope.collapsed[includable_id] 
     else 
       true
+
+  $scope.oldScrollPosition = 0
+  angular.element($window).on 'scroll', ->
+    newScrollPosition = angular.element(this).scrollTop()
+    scrollVelocity = newScrollPosition - $scope.oldScrollPosition
+    threshold = -120
+    console.log 'Scroll Position: ' + newScrollPosition
+    console.log 'Scroll Velocity: ' + scrollVelocity
+    if $scope.showGlobalNav
+      # When the nav is showing, hide the nav when user scrolls down
+      if scrollVelocity > 20
+        $scope.showGlobalNav = false
+    else
+      # When the nav is hidden, show the nav when the user quick scrolls up
+      if scrollVelocity < threshold
+        $scope.showGlobalNav = true
+      else
+        $scope.showGlobalNav = false
+
+      # Show the nav if the user reaches the top of the page
+      if newScrollPosition <= 0
+        $scope.showGlobalNav = true
+    $scope.$apply()
+    $scope.oldScrollPosition = newScrollPosition
 ]
