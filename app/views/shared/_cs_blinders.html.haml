@@ -2,5 +2,6 @@
   - media_objects.each_with_index do |media_object, index|
     .cs-blinder(csBlinder index="#{index}" ng-click="expandBlinder()")
       = image_tag filepicker_activity_hero_image(media_object.featured_image)
-      %h3(ng-show='active')
-        = media_object.title
+      .cs-blinder-title(ng-show='active')
+        = link_to "#{object_path}/#{media_object.slug}" do
+          %h3= media_object.title
