@@ -19,8 +19,12 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       if $scope.routeParams.slug
         $scope.loadInclusion('Activity', $scope.includable_slug)
       else
-        $scope.includable_type = $scope.routeParams.includable_type.toUpperCase()
-        $scope.loadInclusion($scope.includable_type, $scope.includable_slug)
+        if $scope.routeParams.includable_type
+          $scope.includable_type = $scope.routeParams.includable_type.toUpperCase()
+          $scope.loadInclusion($scope.includable_type, $scope.includable_slug)
+        else
+          firstInclusion = $scope.flatInclusions[0]
+          $scope.loadInclusion(firstInclusion.includable_type, firstInclusion.includable_slug)
 
   $scope.loadInclusion = (includable_type, includable_slug) ->
     $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == includable_slug && incl.includable_type == includable_type)

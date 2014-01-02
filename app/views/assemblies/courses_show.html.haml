@@ -78,7 +78,6 @@
       .activity-loading-spinner
         %i.icon-page-load
 
-    / .course-nav-slideout.cs-affix(ng-class="{'menu-slideout': showCourseMenu}" data-offset-top='56' data-margin-top='0')
     .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu, 'course-global-nav-show': showGlobalNav}")
       %a.black-link(ng-href='{{course.path}}')
         %h1
@@ -89,9 +88,7 @@
             ng-class="inclusionActiveClass(inclusion)" 
             ng-include="'_recursive_assembly_syllabus.html'")
 
-    / .course-nav-hamburger.cs-affix(ng-click="showCourseMenu = ! showCourseMenu" data-offset-top='56' data-margin-top='10')
     .course-nav-hamburger(ng-click="toggleShowCourseMenu()" ng-class="{'course-global-nav-show': showGlobalNav}")
-      / %i.icon-align-justify
       .hamburger-bar
       .hamburger-bar
       .hamburger-bar
