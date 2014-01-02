@@ -30,11 +30,11 @@
     activity_type: "recipe"
   }
 
-  $scope.getFooterRightContents = (activity) ->
-    if activity?.creator?.id
-      return "By #{activity.creator.name}"
-    else if activity?.show_only_in_course
-      return "<h5 class='pop'>PAID CLASS</h5>"
+  $scope.getFooterRightContents = (activity) ->  
+    return "By #{activity.creator.name}" if activity?.creator?.id
+
+  $scope.getSashContents = (activity) ->  
+    return "PAID CLASS" if activity?.show_only_in_course
 
   $scope.normalizeGalleryIndexParams = (r) ->
     # For unpublished, sort by updated date instead of published date
