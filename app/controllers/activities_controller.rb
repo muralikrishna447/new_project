@@ -77,6 +77,8 @@ class ActivitiesController < ApplicationController
             path = view_context.link_to containing_class.title, landing_class_path(containing_class)
           when 'Project'
             path = view_context.link_to containing_class.title, project_path(containing_class)
+          when 'Recipe Development'
+            path = view_context.link_to containing_class.title, recipe_development_path(containing_class)
           end
           flash.now[:notice] = "This is part of the #{path} #{containing_class.assembly_type.to_s}."
         end
