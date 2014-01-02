@@ -74,6 +74,7 @@
       gip = $scope.galleryIndexParams($scope.filters, $scope.page)
       console.log "Querying for " + JSON.stringify(gip)
       query_filters = angular.extend({}, $scope.filters)
+      $scope.spinner += 1
       $scope.objectMethods.queryIndex()(gip, (newItems) -> 
         $scope.initialLoadDone = true
         console.log "GOT BACK " + newItems.length + " FOR PAGE " + gip.page
