@@ -14,6 +14,7 @@ class AssembliesController < ApplicationController
   end
 
   def show
+    @hide_nav = true
     @upload = Upload.new
     case @assembly.assembly_type
     when 'Course', 'Project'

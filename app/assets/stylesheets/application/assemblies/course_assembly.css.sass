@@ -1,164 +1,197 @@
 @import 'mixins'
 @import 'application/custom_mixins'
 
+// Landing Page Styles
+.assembly-syllabus
+  .nested
+    padding-left: 20px
+
 .buy-buttons
   margin-bottom: $baseline
 
 .course-assembly-container
-  @include boxsizing
-
-.course-nav-hamburger
-  //position: fixed
-  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
-  -webkit-transform: translateZ(0)
-  -webkit-backface-visibility: hidden
-  position: fixed
-  z-index: 1000
-  margin-left: -28px
-  color: $orange
-  font-size: 24px
-  width: 28px
-  @include boxsizing
-  .hamburger-bar
-    width: 28px
-    height: 5px
-    border-radius: 1px
-    margin-bottom: 4px
-    background: $orange
+  position: relative
+  .course-nav-hamburger
+    z-index: 100
+    position: fixed
+    width: 40px
+    height: 100%
+    top: 0px
+    left: 0px
+    margin-top: 0px
+    padding-top: 5px
+    padding-left: 5px
+    padding-right: 5px
+    background-color: white
+    color: $orange
+    font-size: 24px
     @include boxsizing
-  &:hover
-    cursor: pointer
+    @include transition(margin-top 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
     .hamburger-bar
-      background: $dark-orange
+      width: 30px
+      height: 5px
+      border-radius: 1px
+      margin-bottom: 4px
+      background: $orange
+      @include boxsizing
+    &:hover
+      cursor: pointer
+      .hamburger-bar
+        background: $dark-orange
 
-.course-nav-slideout
-  position: fixed
-  padding-top: $baseline * 5
-  top: 0px
-  width: 295px
-  height: 100%
-  border-right: 1px solid $light-gray
-  overflow-y: auto
-  overflow-x: hidden
-  z-index: 100
-  opacity: 0
-  -webkit-overflow-scrolling: touch
-  -webkit-transform: translateZ(0)
-  -webkit-backface-visibility: hidden
-  pointer-events: none
-  @include transition(opacity 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-  @include boxsizing
-
-  h1
-    padding: $baseline
-    margin: 5px
-    font-size: 20px
-    line-height: 20px
-    font-weight: bold
-
-  h4
-    margin: 0px
-    padding: $baseline
-    text-transform: uppercase
-
-  ul
-    border-bottom: 1px solid $light-gray
-    width: 100%
+  .course-nav-slideout
+    position: fixed
+    top: 0px
+    left: 40px
+    width: 295px
+    height: 100%
+    margin-left: -295px
+    background-color: white
+    border-right: 1px solid $light-gray
+    overflow-y: auto
+    overflow-x: hidden
+    -webkit-overflow-scrolling: touch
+    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
     @include boxsizing
 
-    li
-      @include boxsizing
+    h1
+      padding: $baseline
+      margin: 5px
+      font-size: 20px
+      line-height: 20px
+      font-weight: bold
+
+    h4
+      margin: 0px
+      padding: $baseline
+      text-transform: uppercase
+
+    ul
+      border-bottom: 1px solid $light-gray
       width: 100%
-      border-top: 1px solid $light-gray
-      cursor: pointer
-      color: darkgray
+      @include boxsizing
 
-      a
-        line-height: 36px
-        margin-left: 10px
-        color: inherit
+      li
+        @include boxsizing
+        width: 100%
+        border-top: 1px solid $light-gray
+        cursor: pointer
+        color: darkgray
 
-    li:hover
-      color: #333
-      background-color: $offwhite
+        a
+          line-height: 36px
+          margin-left: 10px
+          color: inherit
 
-    li.forum
-      a
-        color: $orange
-        text-transform: uppercase
+      li:hover
+        color: #333
+        background-color: $offwhite
 
-    li.active
-      color: #333
-      background-color: $light-gray
+      li.forum
+        a
+          color: $orange
+          text-transform: uppercase
 
-    .nested
-      border-top: none
-      ul
-        margin-left: 20px
-        margin-top: 0px
-        border-bottom: none
-        overflow: hidden
+      li.active
+        color: #333
+        background-color: $light-gray
 
-        li
-          border-top: none
+      .nested
+        border-top: none
+        ul
+          margin-left: 20px
+          margin-top: 0px
+          border-bottom: none
+          overflow: hidden
 
-        li.active, li:hover
-          color: #333
-          font-weight: bold
-          background-color: inherit
+          li
+            border-top: none
 
-        .hitbox:hover
-          color: #333
+          li.active, li:hover
+            color: #333
+            font-weight: bold
+            background-color: inherit
 
+          .hitbox:hover
+            color: #333
 
-.course-nav-wrapper.affix
-  position: fixed
-  top: 56px
-
-.course-content-wrapper
-  .container-fluid
+  .course-content-wrapper
+    width: 100%
+    padding-left: 40px
+    padding-top: $baseline
     margin-left: 0px
-    margin-right: 0px
-    padding: 0px
-    .row-fluid [class*="span"]
-      min-height: 0px
-    .course-content
-      z-index: 1000
-      background-color: white
-      padding-left: 20px
-      padding-right: 20px
-      @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-      .row
-        margin-left: 0px
-      .span7
-        margin-left: 0px
-      .main-content-container
+    @include boxsizing
+    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+    .container-fluid
+      .row-fluid
         .row
-          .span3
-            width: 100%
-            margin-left: 0px
-      .step-ingredients-source
-        margin-bottom: 0px
-      #video-ingredient-unit
+          margin-left: 0px
+      .row-fluid [class*="span"]
         min-height: 0px
+      .course-content
+        .row
+          margin-left: 0px
+        .span7
+          margin-left: 0px
+        .main-content-container
+          .row
+            .span3
+              width: 100%
+              margin-left: 0px
+        .step-ingredients-source
+          margin-bottom: 0px
+        #video-ingredient-unit
+          min-height: 0px
 
-.course-content.menu-showing
-  left: 300px
+  .menu-slideout
+    margin-left: 0px
+    z-index: 10
 
-.course-nav-slideout.menu-slideout
-  opacity: 1
-  pointer-events: inherit
+  .course-slideout
+    margin-left: 295px
+
+  .assembly-loading-background
+    position: absolute
+    z-index: 9999
+    background: rgba(255, 255, 255, .9)
+    height: 100%
+    width: 100%
+    top: 0
+    left: 0
+    text-align: center
+
+// Global Nav
+.course-global-nav
+  .navbar.navbar-fixed-top
+    margin-top: -58px
+    @include transition(margin-top 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
+.course-global-nav.course-global-nav-show
+  .navbar.navbar-fixed-top
+    margin-top: 0px
+
+.course-content-wrapper.course-global-nav-show
+  margin-top: 58px
+
+.course-nav-slideout.course-global-nav-show
+  margin-top: 58px
+
+.course-nav-hamburger.course-global-nav-show
+  margin-top: 58px
+
+#step-dots.course-global-nav-show
+  margin-top: 58px
 
 #step-dots
   position: fixed
   -webkit-backface-visibility: hidden
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
+  z-index: 9999
   width: 14px
-  top: 115px
-  //margin-left: 50%
-  //left: -634px
-  margin-left: -41px
+  top: 50px
+  left: 0px
+  padding-left: 12px
   @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
 
 
@@ -299,136 +332,16 @@
 
 .responsive
   display: none
-  
-
-// Affixable Styles //
-
-@media (max-width: 979px)
-  .course-nav-hamburger
-    position: absolute
-
-  .course-nav-hamburger.affixable-fixed
-    position: fixed
-    top: 0px
-    margin-top: 10px
-
-  .course-nav-slideout
-    position: absolute
-    top: 56px
-    margin-top: 0px
-    padding: 0px
-
-  .course-nav-slideout.affixable-fixed
-    position: fixed
-    top: 0px
-    margin-top: 0px
 
 // Responsive Styles //
-
-@media (max-width: 1280px)
-  .course-assembly-container
-    margin: 0px
-    width: 100%
-    padding-left: 18px
-  .course-nav-hamburger
-    left: 10px
-    margin-top: 10px
-    margin-left: 0px
-  .course-nav-slideout
-    left: 38px
-  .course-content-wrapper
-    padding-left: 18px
-
+@media (max-width: 979px)
   .course-content-wrapper
     .container-fluid
-      .course-content
-        padding-left: 20px
-        padding-right: 20px
-
-@media (max-width: 979px)
-  .navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner
-    padding: 0px
-
-  .course-nav-wrapper
-    position: absolute
-
-  .course-nav-wrapper.affix
-    position: fixed
-    top: 0px
-
-@media (max-width: 480px)
-  .activity-ingredients-list .well, .ordered-step-item .step-ingredients-source.well  
-    background-color: transparent
-    padding: 0
-
-  .ingredients-title
-    display: block
-
-  .ingredients 
-    .edit-pair-show
-      .ingredient-title
-        margin-left: 0
-        text-indent: 0
-      
-    .ingredient-title, .quantity-group, .unit
-      background: white !important
-
-@media (max-width: 979px) and (min-width: 768px)
-  .course-assembly-container
-    .course-nav-wrapper
-      padding-left: 10px
-      left: 0px
-      width: 100%
-    .course-content-wrapper
       margin-left: 0px
-      .container-fluid
-        margin-left: 0px
-        margin-right: 0px
-        .row-fluid [class*="span"]
-          min-height: 0px
+      margin-right: 0px
 
-@media (max-width: 767px)
-  .course-assembly-container
-    padding-left: 0px
-    .course-nav-wrapper
-      padding-left: 10px
-      left: 0px
-      width: 100%
-    .course-content-wrapper
-      margin-left: 0px
-      .course-content
-        padding-right: 0px
-      .container-fluid
-        margin-left: 0px
-        margin-right: 0px
-        .row-fluid [class*="span"]
-          min-height: 0px
-      #video-ingredient-unit
-        min-height: 0px
-    .course-nav-bottom-center
-      padding-top: 50px
-
-  // Fix for really weird ios bug where you can't scroll content when menu is hidden
-  .course-nav-slideout
-    display: none
-  .course-nav-slideout.menu-slideout
-    display: block
-
-@media (max-width: 480px)
-  .assembly-upload-modal
-    position: absolute
-    top: 0px
-    left: 0px
-    margin: -20px
-    @include boxsizing
-    .modal-body
-      max-height: none
-      @include boxsizing
-    .modal-footer
-      width: 100%
-      bottom: 0px
-      border-radius: 0px
-      @include boxsizing
+  .course-content-wrapper.course-global-nav-show
+    margin-top: 0px
 
 @media (max-width: 720px)
   .non-responsive
@@ -473,8 +386,3 @@
         left: 50%
         right: auto
         border-left: 1px solid $light-gray
-    
-.assembly-syllabus       
-  .nested
-    padding-left: 20px
-
