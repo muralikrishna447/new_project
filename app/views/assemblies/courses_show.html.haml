@@ -96,7 +96,7 @@
       .hamburger-bar
       .hamburger-bar
 
-  .course-nav-bottom-center.responsive.container-fluid.noprint.text-center
+  .course-nav-bottom-center.responsive.container-fluid.noprint.text-center(ng-class="{'hide-when-menu-showing': showCourseMenu}")
     %hr
     %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
     .course-nav-buttons-group
