@@ -1,29 +1,5 @@
 @import 'mixins'
 
-// .cs-blinders
-//   width: 100%
-//   position: relative
-//   .cs-blinder
-//     position: absolute
-//     height: 100%
-//     top: 0px
-//     left: 0px
-//     overflow: hidden
-//     @include transition (all 300ms ease-in-out)
-//     img
-//       max-width: inherit
-//       @include transition (all 300ms ease-in-out)
-//     h3
-//       position: absolute
-//       bottom: 0px
-//       left: 5px
-//       color: white
-//       opacity: 0
-//       @include transition (all 300ms ease-in-out)
-//   .cs-blinder.active
-//     h3
-//       opacity: 1
-
 .cs-blinders
   position: relative
   overflow: hidden
@@ -33,8 +9,18 @@
     left: 0
     overflow: hidden
     @include transition (all 300ms ease-in-out)
-    h3
+    .cs-blinder-title
       position: absolute
       bottom: 0px
-      left: 5px
-      color: white
+      width: 100%
+      background-color: rgba(0,0,0,.5)
+      padding-left: 10px
+      padding-top: 5px
+      padding-bottom: 3px
+      a
+        h3
+          color: white
+          @include transition (all 100ms ease-in-out)
+        &:hover
+          h3
+            color: $orange
