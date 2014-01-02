@@ -421,7 +421,7 @@ class Activity < ActiveRecord::Base
     parent = ai.assembly
    
     begin
-      return parent if parent.assembly_type == "Course" || parent.assembly_type == "Project"
+      return parent if parent.assembly_type == "Course" || parent.assembly_type == "Project" || parent.assembly_type == "Recipe Development"
       ai = AssemblyInclusion.where(includable_type: "Assembly", includable_id: parent.id).first
       parent = ai.assembly
     end until ! parent
