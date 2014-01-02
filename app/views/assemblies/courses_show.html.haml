@@ -6,32 +6,14 @@
   %meta{name: "fragment", content: "!"}
 
 .controller(ng-controller='CoursesController' ng-init="init(#{@course.id})")
-  .container.course-assembly-container(ng-cloak)
-
-    / .course-nav-hamburger.cs-affix(ng-click="showCourseMenu = ! showCourseMenu" data-offset-top='56' data-margin-top='10')
-    .course-nav-hamburger(ng-click="toggleShowCourseMenu()" affixable="56")
-      / %i.icon-align-justify
-      .hamburger-bar
-      .hamburger-bar
-      .hamburger-bar
-
-    / .course-nav-slideout.cs-affix(ng-class="{'menu-slideout': showCourseMenu}" data-offset-top='56' data-margin-top='0')
-    .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}" affixable="56")
-      %a.black-link(ng-href='{{course.path}}')
-        %h1
-          {{course.title}}
-      %ul.section.no-bullet
-        %li(ng-repeat='inclusion in course.assembly_inclusions' 
-            ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)' 
-            ng-class="inclusionActiveClass(inclusion)" 
-            ng-include="'_recursive_assembly_syllabus.html'")
-
-
-    .course-content-wrapper
+  .course-global-nav(ng-class="{'course-global-nav-show': showGlobalNav}")
+    = render 'layouts/navigation', external: false
+  .course-assembly-container(ng-cloak)
+    .course-content-wrapper(ng-class="{'course-slideout': showCourseMenu, 'course-global-nav-show': showGlobalNav}")
       .container-fluid
         .row-fluid
 
-          .span12.relative.course-content.printable(ng-class="{'menu-showing': showCourseMenu}" ng-controller='ActivityController')
+          .span12.relative.course-content.printable(ng-controller='ActivityController')
             %div(ng-switch on='view_inclusion')
               %div(ng-switch-when="Quiz")
                 .row-fluid
@@ -92,7 +74,29 @@
             -# using DISQUS.reset to determine which disqus thread to display
             = render 'layouts/disqus_angular'
 
-  .course-nav-bottom-center.responsive.container-fluid.noprint.text-center
+    .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
+      .activity-loading-spinner
+        %i.icon-page-load
+
+    / .course-nav-slideout.cs-affix(ng-class="{'menu-slideout': showCourseMenu}" data-offset-top='56' data-margin-top='0')
+    .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu, 'course-global-nav-show': showGlobalNav}")
+      %a.black-link(ng-href='{{course.path}}')
+        %h1
+          {{course.title}}
+      %ul.section.no-bullet
+        %li(ng-repeat='inclusion in course.assembly_inclusions' 
+            ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)' 
+            ng-class="inclusionActiveClass(inclusion)" 
+            ng-include="'_recursive_assembly_syllabus.html'")
+
+    / .course-nav-hamburger.cs-affix(ng-click="showCourseMenu = ! showCourseMenu" data-offset-top='56' data-margin-top='10')
+    .course-nav-hamburger(ng-click="toggleShowCourseMenu()" ng-class="{'course-global-nav-show': showGlobalNav}")
+      / %i.icon-align-justify
+      .hamburger-bar
+      .hamburger-bar
+      .hamburger-bar
+
+  .course-nav-bottom-center.responsive.container-fluid.noprint.text-center(ng-class="{'hide-when-menu-showing': showCourseMenu}")
     %hr
     %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
     .course-nav-buttons-group
@@ -100,10 +104,6 @@
         %i.icon-chevron-up
       .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
         %i.icon-chevron-down
-
-  .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
-    .activity-loading-spinner
-      %i.icon-page-load
 
   .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
     = render 'layouts/footer'
