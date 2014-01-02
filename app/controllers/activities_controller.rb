@@ -231,7 +231,7 @@ class ActivitiesController < ApplicationController
     @title = "ChefSteps - Cook Smarter"
 
     # the news items
-    @activities = Activity.published.by_published_at('desc').chefsteps_generated.include_in_feeds
+    @activities = Activity.published.by_published_at('desc').chefsteps_generated.include_in_feeds.limit(40)
 
     # this will be our Feed's update timestamp
     @updated = @activities.published.first.published_at unless @activities.empty?
