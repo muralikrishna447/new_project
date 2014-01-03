@@ -3,8 +3,8 @@
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
-.container.gallery-wrapper.relative(ng-controller='IngredientsGalleryController' ng-cloak)
-  .row
+.container.gallery-wrapper.relative(ng-controller='IngredientsGalleryController' )
+  .row(ng-cloak)
     .span12
       %div
         .gallery-filter.navbar
@@ -41,11 +41,12 @@
                       ng-class="{active: filters.sort == choice}")
                   {{choice}}
 
-  .row(ng-show="galleryItems.length == 0" ng-click="collapseFilters = true")
+  .row(ng-cloak ng-show="(galleryItems.length == 0) && initialLoadDone" ng-click="collapseFilters = true")
+    .section
     .span12
       %h3 No results found, but perhaps you'd enjoy these ingredients?
 
-  .row.gallery-contents(ng-click="collapseFilters = true")
+  .row.gallery-contents(ng-cloak ng-click="collapseFilters = true")
     .span12
       %div(galleryscroll='loadData()')
         %div(ng-repeat='item in getDisplayItems()' ng-animate="'gallery-animation'")
@@ -56,5 +57,5 @@
                         )
   .row
     .span2.offset5
-      .gallery-spinner(ng-show='spinner > 0')
+      .gallery-spinner(ng-show='(spinner != 0) || (! initialLoadDone)')
         %i.icon-page-load

@@ -2,8 +2,11 @@
   %a(href='{{href}}')
     .media-box-3-title
       {{title}}
-    %img(ng-src="{{image}}")
+    .media-box-3-image.relative
+      %img(ng-src="{{image}}")
+      .sash(ng-show="sash" ng-bind-html-unsafe="sash")
     .media-box-3-footer
       .footer-left(ng-bind-html-unsafe="footerLeft")
       .footer-right(ng-bind-html-unsafe="footerRight")
+
 

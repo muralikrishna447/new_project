@@ -8,6 +8,7 @@
   $scope.collapseSort = true
   $scope.page = 1
   $scope.spinner = 0
+  $scope.initialLoadDone = false
   $scope.routeParams = $routeParams
   $scope.route = $route
 
@@ -69,13 +70,13 @@
   $scope.loadData = ->
     if ! $scope.allLoaded
 
-      $scope.spinner += 1
 
       gip = $scope.galleryIndexParams($scope.filters, $scope.page)
       console.log "Querying for " + JSON.stringify(gip)
       query_filters = angular.extend({}, $scope.filters)
+      $scope.spinner += 1
       $scope.objectMethods.queryIndex()(gip, (newItems) -> 
-
+        $scope.initialLoadDone = true
         console.log "GOT BACK " + newItems.length + " FOR PAGE " + gip.page
 
         # Ignore any results that come back that don't match the current filters
