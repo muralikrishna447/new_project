@@ -80,8 +80,7 @@
           {{course.title}}
       %ul.section.no-bullet
         %li(ng-repeat='inclusion in course.assembly_inclusions' 
-            ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)' 
-            ng-class="inclusionActiveClass(inclusion)" 
+            ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)'
             ng-include="'_recursive_assembly_syllabus.html'")
 
     .course-nav-hamburger-wrapper
@@ -89,7 +88,7 @@
         .hamburger-bar
         .hamburger-bar
         .hamburger-bar
-        
+
   .course-global-nav(ng-class="{'course-global-nav-show': showGlobalNav}")
     = render 'layouts/navigation', external: false
 
