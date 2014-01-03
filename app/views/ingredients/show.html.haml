@@ -118,11 +118,12 @@
         .row.section(ng-show="editMode")
           .span6
             %h3 Tags            
-            %input(type="text" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
+            %csTagInput(ng-model="ingredient.tags" ajax-path="'/ingredients/all_tags.json'")
             %csTagChooser(ng-model="ingredient.tags" options="suggestedTags")
         .row.section(ng-show="! editMode")
           .span6
-            %csTagList(ng-model="ingredient.tags" search-path="'/ingredients#/?search_all'")
+            %csTagList( ng-model="ingredient.tags" 
+                        search-path="'/ingredients#/?search_all'")
 
         .row.section(ng-show="ingredient.product_url")
           .span6

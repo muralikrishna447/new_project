@@ -97,9 +97,6 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     $scope.showHeroVisualEdit = false if old_val != new_val
   )
 
-  $scope.tagsSelect2 = -> 
-    csTagService.getSelect2Info($scope.ingredient.tags, "/ingredients/all_tags.json")
-
   # Social share callbacks
   $scope.socialURL = ->
     "http://chefsteps.com/ingredients/" + $scope.ingredient?.slug
