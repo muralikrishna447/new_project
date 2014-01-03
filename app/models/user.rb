@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_merit
 
+  include User::Google
   include User::Facebook
   include Gravtastic
   include UpdateWhitelistAttributes
@@ -36,7 +37,7 @@ class User < ActiveRecord::Base
   gravtastic
 
   devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+    :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:google_oauth2]
 
   attr_accessible :name, :email, :password, :password_confirmation,
     :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id

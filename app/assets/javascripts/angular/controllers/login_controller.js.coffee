@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", ($scope, $http, csAuthentication, csFacebook, csAlertService) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -15,6 +15,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.loginModalOpen = false
   $scope.inviteModalOpen = false
+  $scope.googleInviteModalOpen = false
   $scope.welcomeModalOpen = false
 
   $scope.passwordType = "password" # Defaults password to the password input type, but lets it switch to just text
@@ -38,6 +39,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.loginModalOpen = true
     else if form == "invite"
       $scope.inviteModalOpen = true
+    else if form == "googleInvite"
+      $scope.googleInviteModalOpen = true
     else if form == "welcome"
       $scope.welcomeModalOpen = true
 
@@ -48,6 +51,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.loginModalOpen = false
     else if form == "invite"
       $scope.inviteModalOpen = false
+    else if form == "googleInvite"
+      $scope.googleInviteModalOpen = false
     else if form == "welcome"
       $scope.welcomeModalOpen = false
 
@@ -247,12 +252,82 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       )
     )
 
+  # Because google is a little different we need to watch for an event
+  $scope.$on "event:google-plus-signin-success", (event, eventData) ->
+    unless $scope.authentication.currentUser()
+      console.dir(eventData)
+      $scope.googleConnect(eventData)
+
+  $scope.googleSignin = (google_app_id) ->
+    $scope.dataLoading += 1
+    # -# 'approvalprompt': "force" This requires them to reconfirm their permissions and gives us a new refresh token.
+    gapi.auth.signIn({
+      'callback': 'signInCallback',
+      'clientid': google_app_id,
+      'cookiepolicy': 'single_host_origin',
+      'scope': 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile',
+      'redirecturi': "postmessage",
+      'accesstype': "offline",
+      'approvalprompt': "force"
+    })
+
+  $scope.googleConnect = (eventData) ->
+    $http(
+      method: "POST"
+      url: "/users/auth/google/callback.js"
+      data:
+        google: eventData
+    ).success( (data, status) ->
+      $scope.dataLoading -= 1
+      $scope.logged_in = true
+      $scope.closeModal('login')
+      $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"})
+      setTimeout( -> # Done so that the modal has time to close before triggering events
+        $scope.authentication.setCurrentUser(data.user)
+        if $scope.formFor != "purchase" && data.new_user
+          $scope.loadFriends()
+      , 100)
+    ).error( (data, status) ->
+      $scope.dataLoading -= 1
+      $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
+    )
+
   $scope.loadFriends = ->
     $scope.openModal('invite')
     # This version uses the chefsteps styling
     # $scope.facebook.friends().then( (friends) ->
     #   $scope.inviteFriends = friends
     # )
+
+  $scope.loadGoogleContacts = ->
+    $scope.dataLoading += 1
+    $http(
+      method: "GET"
+      url: "/users/contacts/google.js"
+    ).success( (data, status) ->
+      friends = _.map(data, (email) -> {email: email, value: false})
+      $scope.inviteFriends = friends
+      $scope.dataLoading -= 1
+      $scope.closeModal('invite')
+      setTimeout( ->
+        $scope.openModal('googleInvite')
+      , 100)
+    )
+
+  $scope.sendInvitation = ->
+    $scope.dataLoading += 1
+    friends = _.filter($scope.inviteFriends, (friend) -> (friend.value == true))
+    friendEmails = _.pluck(friends, 'email')
+    $http(
+      method: "POST"
+      url: "/users/contacts/invite.js"
+      data:
+        emails: friendEmails
+    ).success( (data, status) ->
+      $scope.dataLoading -= 1
+      $scope.welcome()
+    )
+
 
   $scope.sendInvites = ->
     $scope.invitationsNextText = "Next"

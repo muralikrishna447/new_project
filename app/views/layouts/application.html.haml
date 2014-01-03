@@ -9,7 +9,11 @@
     %meta{name: 'description', content: yield(:description)}
     %meta{name: 'keywords', content: yield(:keywords)}
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1'}
-    %meta(http-equiv="Content-Language" content="en")
+    %meta{"http-equiv" => "Content-Language", content: "en"}
+    %meta{name: "google-signin-clientid", content: google_app_id}
+    %meta{name: "google-signin-scope", content: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile https://www.google.com/m8/feeds"}
+    %meta{name: "google-signin-requestvisibleactions", content: "http://schemas.google.com/AddActivity"}
+    %meta{name: "google-signin-cookiepolicy", content: "single_host_origin"}
     = yield :facebook_og
     = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
@@ -40,8 +44,10 @@
     = javascript_include_tag 'application_head'
     = javascript_include_tag 'application'
     %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
+    %script(src="//plus.google.com/js/client:plusone.js?onload=start")
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => Rails.env}
     = render 'layouts/facebook'
+    = render 'layouts/google'
     = render 'layouts/navigation', external: false
 
     .container.alert-container

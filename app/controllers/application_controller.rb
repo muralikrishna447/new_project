@@ -15,6 +15,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # For dynamically setting the host to whatever it needs to be for the environment we're testing.
+  before_filter :set_mailer_host
+  def set_mailer_host
+    ActionMailer::Base.default_url_options[:host] = request.host_with_port
+  end
+
   expose(:version) { Version.current }
   expose(:current_user_presenter) { current_user.present? ? UserPresenter.new(current_user) : nil }
 
@@ -66,6 +72,30 @@ class ApplicationController < ActionController::Base
       "642634055780525"
     else
       "249352241894051"
+    end
+  end
+
+  helper_method :google_app_id
+  def google_app_id
+    case Rails.env
+    when "production"
+      ""
+    when "staging"
+      ""
+    else
+      "108479453177.apps.googleusercontent.com"
+    end
+  end
+
+  helper_method :google_secret
+  def google_secret
+    case Rails.env
+    when "production"
+      ENV["GOOGLE_SECRET"]
+    when "staging"
+      ENV["GOOGLE_SECRET"]
+    else
+      "M2Y-HWIkTVPNHLUS1P_QNKHr"
     end
   end
 

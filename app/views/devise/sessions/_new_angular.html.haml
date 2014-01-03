@@ -1,15 +1,20 @@
-.login-modal(close="closeModal('login')" modal="loginModalOpen" options="modalOptions" ng-cloak)
+.login-modal(ng-when="login" close="closeModal('login')" modal="loginModalOpen" options="modalOptions" ng-cloak)
   %form
-    .modal-body.login-modal-body
+    .modal-body.login-modal-body(ng-switch="showForm")
       .close-x.pull-right(ng-click="closeModal('login')")
         %i.icon-remove
-      .row-fluid(ng-show="showForm=='signIn'" ng-animate='slide')
+      .row-fluid(ng-switch-when="signIn" ng-animate='slide')
         %h3 Sign in to ChefSteps
         .form-horizontal(ng-show="!authentication.currentUser()")
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
           .button-group
             .facebook-button.facebook-login
               %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook") Sign in with Facebook
+            .google-plus-login
+              -# %google-plus-signin(clientid="#{google_app_id}" data-approvalprompt="force" scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile")
+              #signinButton
+                %span.g-signin
+                  %a#google-signin-button(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google") Sign in with Google
           .error(ng-show="login_error.message")
             %p {{login_error.message}}
           .message(ng-show="message")
@@ -26,7 +31,7 @@
             %div(ng-show="login_error.errors.email")
               %div.error-text(ng-repeat="field_error in login_error.errors.password")
                 {{field_error}}
-      .row-fluid(ng-show="showForm=='signUp'" ng-animate='slide')
+      .row-fluid(ng-switch-when="signUp" ng-animate='slide')
         %h3 Sign up to ChefSteps
         .form-horizontal(ng-show="!authentication.currentUser()")
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
@@ -101,6 +106,10 @@
               %a.btn-facebook.btn.btn-secondary(ng-click="sendInvites()")
                 Invite friends on
                 %b Facebook
+            .google-button.google-login
+              %a.btn-google.btn.btn-secondary(ng-click="loadGoogleContacts()")
+                Invite friends from your
+                %b Google Address Book
 
             %div
               %a.next-button(ng-show="authentication.currentUser()" ng-click="welcome()") {{invitationsNextText}}
@@ -111,6 +120,28 @@
       -# .button-group
       -#   %div
       -#     %button.btn.btn-primary.btn-large.invite-friends(ng-show="authentication.currentUser()" ng-click="sendInvites()") Invite Friends
+
+.google-invite-modal(close="closeModal('googleInvite')" modal="googleInviteModalOpen" options="modalOptions" ng-cloak)
+  %form
+    .modal-body.invite-modal-body
+      .close-x.pull-right(ng-click="closeModal('googleInvite')")
+        %i.icon-remove
+      .row-fluid(ng-animate='slide')
+        %h3 Select who you want to invite
+        %p
+          Invite your friends to join you on ChefSteps.com
+        .invite-horizontal(ng-show="authentication.currentUser()")
+          %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
+          %div
+            %ul.friend-list
+              %li.friend.one_column(ng-repeat="friend in inviteFriends")
+                %label
+                  %input(type="checkbox" ng-model="friend.value")
+                  {{friend.email}}
+    .modal-footer.invite-modal-footer
+      %div
+        %button.btn.btn-primary.btn-large.next-button(ng-show="authentication.currentUser()" ng-click="sendInvitation()") Send Invitations
+
 
 .welcome-modal(close="closeModal('welcome')" modal="welcomeModalOpen" options="modalOptions" ng-cloak)
   .modal-body.welcome-modal-body

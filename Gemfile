@@ -56,6 +56,7 @@ gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'geokit-rails'
 gem 'rack-ssl-enforcer'
 gem 'redcarpet'
+gem 'google-api-client'
 
 group :development do
   gem 'spring'
@@ -111,6 +112,7 @@ group :development, :test, :angular do
   gem 'launchy'
   gem 'childprocess', '0.3.6'
   gem 'xray-rails'
+  gem 'net-http-spy', github: "justincaldwell/net-http-spy"
 end
 
 group :guard do
