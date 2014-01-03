@@ -76,8 +76,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         mixpanel.people.set('Paid Course Abandoned' : false)
         _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
         $scope.shareASale($scope.discounted_price, response.id)
-        try
-          __adroll.record_user "adroll_segments": "fmpurchase"
+        $scope.adroll($scope.assembly.title)
 
       ).error((data, status, headers, config) ->
         console.log "STRIPE CHARGE FAIL" + data
@@ -180,5 +179,14 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.errorText = data.errors[0].message || data.errors[0]
       $scope.processing = false
     )
+
+  $scope.adroll = (title) ->
+    if title == 'French Macarons'
+      segmentName = 'fmpurchase'
+    else
+      segmentName = title.toLowerCase().replace(' ','-') + '-purchase'
+
+    try
+      __adroll.record_user "adroll_segments": segmentName
 
 ]
