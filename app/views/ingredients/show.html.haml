@@ -115,7 +115,7 @@
 
     .span6
       .well.relative
-        .row.section(ng-show="editMode")
+        .row.section(ng-show="true || editMode")
           .span6
             %h3 Tags            
             %csTagInput(ng-model="ingredient.tags" ajax-path="'/ingredients/all_tags.json'")

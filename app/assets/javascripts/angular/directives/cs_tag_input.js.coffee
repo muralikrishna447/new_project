@@ -1,10 +1,11 @@
 @app.directive 'cstaginput', [() ->
   restrict: 'E',
+  require: "?ngModel"
   scope: { ngModel: "=", ajaxPath: "="},
   templateUrl: '/client_views/_cs_tag_input'
-  priority: 10000
 
   link: 
+    # pre-link needed so getSelect2Info available for call from child input link
     pre: (scope, element, attrs) ->
       scope.getSelect2Info = ->
         placeholder: "Add some tags"
