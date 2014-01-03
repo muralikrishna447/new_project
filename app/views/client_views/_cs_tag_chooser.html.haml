@@ -1,0 +1,7 @@
+.btn-group
+  %button.btn.btn-checkbox( ng-repeat="option in options" 
+                            ng-click="csTagService.addTag(ngModel, option)"
+                          )
+    {{option}}
+
+

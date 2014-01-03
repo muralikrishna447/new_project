@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', 'csAuthentication', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService, csAuthentication) ->
+angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', 'csAuthentication', 'csTagService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService, csAuthentication, csTagService) ->
 
   # This muck will go away when I do deep routing properly
   $scope.url_params = {}
@@ -7,7 +7,8 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.heroMedia = csEditableHeroMediaService
   $scope.alertService = csAlertService
   $scope.densityService = csDensityService
-  $scope.csAuthentication = csAuthentication
+  $scope.csAuthentication = csAuthentication 
+  $scope.csTagService = csTagService
 
   $scope.urlAsNiceText = (url) ->
     csUrlService.urlAsNiceText(url)
@@ -96,40 +97,8 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     $scope.showHeroVisualEdit = false if old_val != new_val
   )
 
-  # Tags - TODO: needs to share code with activity_controller!!
-  $scope.tagsSelect2 =
-
-    placeholder: "Add some tags"
-    tags: true
-    multiple: true
-    width: "100%"
-
-    ajax:
-      url: "/ingredients/all_tags.json",
-      data: (term, page) ->
-        return {
-          q: term
-        }
-
-      results: (data, page) ->
-        return {results: data}
-
-    formatResult: (tag) ->
-      tag.name
-
-    formatSelection: (tag) ->
-      tag.name
-
-    createSearchChoice: (term, data) ->
-      id: term
-      name: term
-
-    initSelection: (element, callback) ->
-      callback($scope.ingredient.tags)
-
-  $scope.addTag = (tag) ->
-    if ! _.find($scope.ingredient.tags, (x) -> x.name == tag)
-      $scope.ingredient.tags.push({name: tag, id: tag})
+  $scope.tagsSelect2 = -> 
+    csTagService.getSelect2Info($scope.ingredient.tags, "/ingredients/all_tags.json")
 
   # Social share callbacks
   $scope.socialURL = ->
@@ -169,5 +138,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.getEditingUsers = ->
     return null if ! $scope.ingredient?.editing_users?
     _.filter($scope.ingredient.editing_users, (x) -> x.role != 'admin')
+
+  $scope.suggestedTags = ["Vegetarian", "Vegan", "Gluten Free", "Kosher", "Paleo"]
 
 ]

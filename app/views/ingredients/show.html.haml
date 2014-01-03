@@ -117,8 +117,14 @@
       .well.relative
         .row.section(ng-show="editMode")
           .span6
-            .btn.btn-link(ng-click="addTag('vegetable')") Vegetable
-            %input(type="text" ng-model="tags" ng-model="ingredient.tags" ui-select2="tagsSelect2")
+            %h3 Tags            
+            %input(type="text" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
+            %csTagChooser(ng-model="ingredient.tags" options="suggestedTags")
+            %a.dropdown-toggle
+              Diets
+            %ul.dropdown-menu
+              %li(ng-repeat="tag in suggestedTags")
+                .btn.btn-link(ng-click="csTagService.addTag(ingredient.tags, tag)") {{tag}}
         .row.section(ng-show="! editMode")
           .span6
             .ro-tag-group
