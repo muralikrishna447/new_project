@@ -117,6 +117,7 @@
       .well.relative
         .row.section(ng-show="editMode")
           .span6
+            .btn.btn-link(ng-click="addTag('vegetable')") Vegetable
             %input(type="text" ng-model="tags" ng-model="ingredient.tags" ui-select2="tagsSelect2")
         .row.section(ng-show="! editMode")
           .span6

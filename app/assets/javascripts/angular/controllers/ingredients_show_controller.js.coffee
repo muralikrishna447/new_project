@@ -96,7 +96,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     $scope.showHeroVisualEdit = false if old_val != new_val
   )
 
-   # Tags - TODO: needs to share code with activity_controller!!
+  # Tags - TODO: needs to share code with activity_controller!!
   $scope.tagsSelect2 =
 
     placeholder: "Add some tags"
@@ -125,7 +125,11 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
       name: term
 
     initSelection: (element, callback) ->
-      callback($scope.activity.tags)
+      callback($scope.ingredient.tags)
+
+  $scope.addTag = (tag) ->
+    if ! _.find($scope.ingredient.tags, (x) -> x.name == tag)
+      $scope.ingredient.tags.push({name: tag, id: tag})
 
   # Social share callbacks
   $scope.socialURL = ->
