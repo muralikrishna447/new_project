@@ -13,13 +13,18 @@
 .assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
   .container
     .row
-      .span8.section
-        .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-          - if @course.slug == 'french-macarons'
-            - ab_test 'macaron_landing_video', 'FA7XWOmcptU', {'XqQZSn0uB2w' => 4} do |video_id|
-              %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
-          - else
-            %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+      -if ! @no_video
+        .span8.section
+          .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+            - if @course.slug == 'french-macarons'
+              - ab_test 'macaron_landing_video', 'FA7XWOmcptU', {'XqQZSn0uB2w' => 4} do |video_id|
+                %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
+            - else
+              %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+      -else 
+        .span8.section
+          .embed-container 
+            = image_tag filepicker_hero_image(@course.image_id)       
 
       .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
         .buy-box
