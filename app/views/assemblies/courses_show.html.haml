@@ -12,14 +12,12 @@
     .course-content-wrapper(ng-class="{'menu-slideout': showCourseMenu}" cscoursescroll)
       .container-fluid
         .row-fluid
-
           .span12.relative.course-content.printable(ng-controller='ActivityController')
             %div(ng-switch on='view_inclusion')
               %div(ng-switch-when="Quiz")
                 .row-fluid
                   .span12
                     %iframe#course-quiz(ng-src="{{'/quizzes/' + currentIncludable.includable_id}}" style='width: 100%; border: none; min-height: 1000px; overflow: hidden;' cssetiframeheight)
-
 
               %div(ng-switch-when="Activity")
                 %div(csFixNakedLinks="")
@@ -88,13 +86,13 @@
             ng-class="inclusionActiveClass(inclusion)" 
             ng-include="'_recursive_assembly_syllabus.html'")
 
-    .course-nav-hamburger(ng-click="toggleShowCourseMenu()")
-      .hamburger-bar
-      .hamburger-bar
-      .hamburger-bar
+    .course-nav-hamburger-wrapper
+      .course-nav-hamburger(ng-click="toggleShowCourseMenu()")
+        .hamburger-bar
+        .hamburger-bar
+        .hamburger-bar
 
-  .course-nav-bottom-center.responsive.container-fluid.noprint.text-center(ng-class="{'hide-when-menu-showing': showCourseMenu}")
-    %hr
+  .course-nav-bottom-center.responsive.container-fluid.noprint.text-center(ng-class="{'hide-when-menu-showing': showCourseMenu, 'show-nav-bottom': showBottomNav}")
     %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
     .course-nav-buttons-group
       .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! prevInclusion()}" ng-click="loadPrevInclusion()")

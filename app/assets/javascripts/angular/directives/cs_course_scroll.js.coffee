@@ -4,11 +4,12 @@ angular.module('ChefStepsApp').directive 'cscoursescroll', [ ->
     el = angular.element(element)
     scope.oldScrollPosition = 0
     scope.oldShowNav = false
+    scope.oldShowBottom = false
+    scope.height = el.height()
+    scope.window_height = angular.element(window).height()
     el.on 'scroll', ->
-      console.log 'scrolling'
       newScrollPosition = angular.element(this).scrollTop()
       scrollVelocity = newScrollPosition - scope.oldScrollPosition
-      console.log "newScrollPosition: " + newScrollPosition
       threshold = -120
       if scope.showNav
         # When the nav is showing, hide the nav when user scrolls down
@@ -27,7 +28,16 @@ angular.module('ChefStepsApp').directive 'cscoursescroll', [ ->
 
       if scope.oldShowNav != scope.showNav
         scope.$emit 'showGlobalNavChanged', scope.showNav
-        console.log "SHOW GLOBAL NAV CHANGED TO: " + scope.showNav
       scope.oldScrollPosition = newScrollPosition
       scope.oldShowNav = scope.showNav
+
+      # Show bottom if user reaches bottom
+      if newScrollPosition >= (el[0].scrollHeight - scope.height - 120)
+        scope.showBottom = true
+      else
+        scope.showBottom = false
+
+      if scope.oldShowBottom != scope.showBottom
+        scope.$emit 'showBottomChanged', scope.showBottom
+      scope.oldShowBottom = scope.showBottom
 ]
