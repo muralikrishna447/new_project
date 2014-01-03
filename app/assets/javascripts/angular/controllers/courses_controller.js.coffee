@@ -134,7 +134,11 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
 
   # Always show course nav on large screens
   angular.element($window).on 'resize', ->
-    console.log "RESIZED"
+    if $window.innerWidth >= 1024
+      $scope.largeScreen = true
+      $scope.showCourseMenu = false
+    else
+      $scope.largeScreen = false
 
 
   # Disqus
