@@ -122,10 +122,7 @@
             %csTagChooser(ng-model="ingredient.tags" options="suggestedTags")
         .row.section(ng-show="! editMode")
           .span6
-            .ro-tag-group
-              %a.ro-tag(ng-repeat="tag in ingredient.tags" ng-href="/ingredients?search_all={{tag.name}}")
-                %i.icon-tag
-                {{tag.name}}
+            %csTagList(ng-model="ingredient.tags" search-path="'/ingredients#/?search_all'")
 
         .row.section(ng-show="ingredient.product_url")
           .span6

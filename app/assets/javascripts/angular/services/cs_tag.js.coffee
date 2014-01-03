@@ -30,8 +30,9 @@
       callback(model)
 
   this.indexOfTag = (tagList, tagName) ->
-    for tag, index in tagList
-      return index if tag.name.toUpperCase() == tagName.toUpperCase()
+    if tagList
+      for tag, index in tagList
+        return index if tag.name.toUpperCase() == tagName.toUpperCase()
     -1
 
   this.hasTag = (tagList, tagName) ->
