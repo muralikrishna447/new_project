@@ -6,10 +6,8 @@
   %meta{name: "fragment", content: "!"}
 
 .controller.course-wrapper(ng-controller='CoursesController' ng-init="init(#{@course.id})")
-  .course-global-nav(ng-class="{'course-global-nav-show': showGlobalNav}")
-    = render 'layouts/navigation', external: false
   .course-assembly-container(ng-cloak ng-class="{'course-global-nav-show': showGlobalNav}")
-    .course-content-wrapper(ng-class="{'menu-slideout': showCourseMenu}" cscoursescroll)
+    .course-content-wrapper(ng-class="{'menu-slideout': showCourseMenu}" cscoursescroll scrollToTop="{{scrollToTop}}")
       .container-fluid
         .row-fluid
           .span12.relative.course-content.printable(ng-controller='ActivityController')
@@ -91,6 +89,9 @@
         .hamburger-bar
         .hamburger-bar
         .hamburger-bar
+        
+  .course-global-nav(ng-class="{'course-global-nav-show': showGlobalNav}")
+    = render 'layouts/navigation', external: false
 
   .course-nav-bottom-center.responsive.container-fluid.noprint.text-center(ng-class="{'hide-when-menu-showing': showCourseMenu, 'show-nav-bottom': showBottomNav}")
     %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")

@@ -27,4 +27,3 @@
 //= require cs_lightbox
 //= require angular-payments
 //= require hammer
-//= require navigation

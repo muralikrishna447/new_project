@@ -59,8 +59,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
 
     $scope.showCourseMenu = false
 
-    # So sue me
-    window.scrollTo(0, 0)
+    $scope.$broadcast 'scrollToTop'
 
     # Absolutely insane fix to https://www.pivotaltracker.com/story/show/59025778
     # Vaguely inspired by http://mir.aculo.us/2009/01/11/little-javascript-hints-episode-3-force-redraw/, though

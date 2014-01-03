@@ -7,6 +7,7 @@ angular.module('ChefStepsApp').directive 'cscoursescroll', [ ->
     scope.oldShowBottom = false
     scope.height = el.height()
     scope.window_height = angular.element(window).height()
+
     el.on 'scroll', ->
       newScrollPosition = angular.element(this).scrollTop()
       scrollVelocity = newScrollPosition - scope.oldScrollPosition
@@ -40,4 +41,8 @@ angular.module('ChefStepsApp').directive 'cscoursescroll', [ ->
       if scope.oldShowBottom != scope.showBottom
         scope.$emit 'showBottomChanged', scope.showBottom
       scope.oldShowBottom = scope.showBottom
+
+    scope.$on 'scrollToTop', ->
+      el.scrollTop 0
+
 ]
