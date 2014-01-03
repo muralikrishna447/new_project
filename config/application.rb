@@ -93,7 +93,8 @@ module Delve
     end
 
     # CORS
-    config.middleware.use Rack::Cors do
+
+    config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
       allow do
         origins '*'
         # resource '/global-navigation', headers: :any, methods: [:get, :options]
@@ -103,6 +104,7 @@ module Delve
 
     # Primarily to allow fontawesome access from blog/shop/forum in Firefox
     config.middleware.insert_before 'ActionDispatch::Static', 'Rack::AccessControlHeaders', /assets/
+
 
     # SSL configuration using strict: true so that only specific requests are using ssl.
     # Had to comment this out, it kept sales from actually working.
