@@ -5,11 +5,11 @@
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
-.controller(ng-controller='CoursesController' ng-init="init(#{@course.id})")
+.controller.course-wrapper(ng-controller='CoursesController' ng-init="init(#{@course.id})")
   .course-global-nav(ng-class="{'course-global-nav-show': showGlobalNav}")
     = render 'layouts/navigation', external: false
-  .course-assembly-container(ng-cloak)
-    .course-content-wrapper(ng-class="{'course-slideout': showCourseMenu, 'course-global-nav-show': showGlobalNav}")
+  .course-assembly-container(ng-cloak ng-class="{'course-global-nav-show': showGlobalNav}")
+    .course-content-wrapper(ng-class="{'course-slideout': showCourseMenu}" cscoursescroll)
       .container-fluid
         .row-fluid
 
@@ -78,7 +78,7 @@
       .activity-loading-spinner
         %i.icon-page-load
 
-    .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu, 'course-global-nav-show': showGlobalNav}")
+    .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}")
       %a.black-link(ng-href='{{course.path}}')
         %h1
           {{course.title}}
@@ -88,7 +88,7 @@
             ng-class="inclusionActiveClass(inclusion)" 
             ng-include="'_recursive_assembly_syllabus.html'")
 
-    .course-nav-hamburger(ng-click="toggleShowCourseMenu()" ng-class="{'course-global-nav-show': showGlobalNav}")
+    .course-nav-hamburger(ng-click="toggleShowCourseMenu()")
       .hamburger-bar
       .hamburger-bar
       .hamburger-bar
@@ -102,7 +102,7 @@
       .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
         %i.icon-chevron-down
 
-  .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
-    = render 'layouts/footer'
+  / .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
+  /   = render 'layouts/footer'
 
              
