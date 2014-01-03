@@ -32,7 +32,7 @@ angular.module('ChefStepsApp').directive 'cscoursescroll', [ ->
       scope.oldShowNav = scope.showNav
 
       # Show bottom if user reaches bottom
-      if newScrollPosition >= (el[0].scrollHeight - scope.height - 120)
+      if newScrollPosition >= (el[0].scrollHeight - scope.height - 125)
         scope.showBottom = true
       else
         scope.showBottom = false
