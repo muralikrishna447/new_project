@@ -132,6 +132,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     console.log "HERE : " + $scope.showBottomNav
     $scope.$apply()
 
+  # Always show course nav on large screens
+  angular.element($window).on 'resize', ->
+    console.log "RESIZED"
+
 
   # Disqus
   $scope.updateDisqus = ->
