@@ -139,6 +139,8 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     return null if ! $scope.ingredient?.editing_users?
     _.filter($scope.ingredient.editing_users, (x) -> x.role != 'admin')
 
-  $scope.suggestedTags = ["Vegetarian", "Vegan", "Gluten Free", "Kosher", "Paleo"]
+  $scope.suggestedTags = 
+    "Diets" : ["Vegetarian", "Vegan", "Gluten Free", "Kosher", "Paleo"]
+    "Seasons" : ["Spring", "Summer", "Winter", "Fall"]
 
 ]

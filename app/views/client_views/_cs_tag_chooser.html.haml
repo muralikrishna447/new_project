@@ -1,7 +1,11 @@
-.btn-group
-  %button.btn.btn-checkbox( ng-repeat="option in options" 
-                            ng-click="csTagService.addTag(ngModel, option)"
-                          )
-    {{option}}
+.row(ng-repeat="(groupName, group) in options")
+  .span6
+    .btn-group
+      %h4 {{groupName}}
+      %button.btn.btn-checkbox( ng-repeat="tagName in group" 
+                                ng-click="csTagService.toggleTag(ngModel, tagName)"
+                                ng-class="{active: csTagService.hasTag(ngModel, tagName)}"
+                              )
+        {{tagName}}
 
 
