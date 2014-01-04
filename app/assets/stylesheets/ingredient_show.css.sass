@@ -20,7 +20,7 @@
     text-transform: capitalize
 
   .well
-    ul, .ro-tag-group
+    ul, .tag-group
       margin-right: 25px
 
   .embed-container
@@ -39,7 +39,7 @@
     textarea
       width: 100%
 
-.ro-tag
+.tag
   background-color: white
   color: #333
   border: 1px solid #ccc
@@ -51,5 +51,15 @@
 
   i
     &:before
-      margin-right: 5px
-    color: #aaa
+      margin-left: 2px
+      margin-right: -2px
+    color: #555
+
+.tag.active
+  background-color: orange
+  i
+    color: white
+
+.tag-bg
+  background-color: #f2f2f2
+  overflow: hidden

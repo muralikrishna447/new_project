@@ -937,6 +937,17 @@ angular.module('ui.directives').directive('uiSelect2', ['ui.config', '$timeout',
 
         if (controller) {
           // Watch the model for programmatic changes
+          // mnatkin: grabbed this next function from latest ui-select2 b/c i needed it and don't
+          // have time right now to risk updating all of angular-ui.
+          scope.$watch(tAttrs.ngModel, function(current, old) {
+            if (!current) {
+              return;
+            }
+            if (current === old) {
+              return;
+            }
+            controller.$render();
+          }, true);
           controller.$render = function () {
             if (isSelect) {
               elm.select2('val', controller.$modelValue);
