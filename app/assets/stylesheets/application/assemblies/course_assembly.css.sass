@@ -169,15 +169,29 @@
 .menu-slideout
   @include transform(translateX(295px))
 
-.assembly-loading-background
+.assembly-loading-wrapper
   position: absolute
   z-index: 9999
-  background: rgba(255, 255, 255, .9)
+  // background: rgba(255, 255, 255, .9)
   height: 100%
   width: 100%
   top: 0
   left: 0
+  padding-left: 40px
   text-align: center
+  pointer-events: none
+  backface-visibility: hidden
+  -webkit-backface-visibility: hidden /* Chrome and Safari */
+  -moz-backface-visibility: hidden /* Firefox */
+  -ms-backface-visibility: hidden /* Internet Explorer */
+  @include boxsizing
+  .assembly-loading-background
+    width: 100%
+    height: 100%
+    padding-top: 100px
+    background-color: white
+    .activity-loading-spinner
+      margin-top: 0px
 
 // Global Nav
 .course-global-nav
@@ -348,6 +362,9 @@
     margin-left: 0px
 
   .course-content-wrapper
+    padding-left: 335px
+
+  .assembly-loading-wrapper
     padding-left: 335px
 
 @media (max-width: 979px)

@@ -69,11 +69,10 @@
             %hr
             -# using DISQUS.reset to determine which disqus thread to display
             = render 'layouts/disqus_angular'
-
-    .assembly-loading-background(ng-show="loading" ng-animate="'fade'")
-      .activity-loading-spinner
-        %i.icon-page-load
-
+    .assembly-loading-wrapper(ng-show="loading" ng-animate="'fade'")
+      .assembly-loading-background
+        .activity-loading-spinner
+          %i.icon-page-load
     .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}")
       %a.black-link(ng-href='{{course.path}}')
         %h1
