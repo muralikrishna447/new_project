@@ -115,11 +115,12 @@
 
     .span6
       .well.relative
+        %h3.inline Tags
         .row.section(ng-show="editMode")
           .span6
-            %h3 Tags            
+            .btn.btn-link.inline(ng-click="showTagsModal = true") Select...            
             %input(type="text" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
-            %csTagChooser(ng-model="ingredient.tags" options="suggestedTags")
+
         .row.section(ng-show="! editMode")
           .span6
             %csTagList(ng-model="ingredient.tags" search-path="'/ingredients#/?search_all'")
@@ -204,4 +205,15 @@
     %h4 Now tell the world?
     = render 'layouts/social_buttons', media_object: nil
 
+%div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
+  .modal-header
+    %h2 Choose Tags
+    Pick all that apply to how you think as a cook; e.g. it is ok to mark 
+    %i tomato 
+    as both a fruit and a vegetable.
+  .modal-body.tag-bg
+    %csTagChooser(  ng-model="ingredient.tags" 
+                    options="csTagService.ingredientSuggestedTags")
+  .modal-footer
+    %button.btn(ng-click="showTagsModal = false") Done
 

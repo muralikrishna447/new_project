@@ -1,5 +1,16 @@
 @app.service 'csTagService', [() ->
-  # Hmm, debating whether I like this here or maybe in a directive controller
+
+  # Possibly this should be in the db
+  this.ingredientSuggestedTags = [
+    {name: "Categories", tags: ["Animal", "Vegetable", "Fruit", "Fungi", "Dairy", "Herb", "Spice", "Modernist", "Beverage", "Pantry"]}
+    {name: "More...",  tags: ["Red Meat", "Poultry", "Seafood", "Cheese", "Grain", "Bean", "Nut", "Root", "Condiment"]}
+    {name: "Diets",  tags: ["Vegetarian", "Vegan", "Gluten Free", "Kosher", "Paleo"]}
+    {name: "Seasons", tags: ["Spring", "Summer", "Winter", "Fall"]}
+  ]
+
+  # I tried creating a directive instead of using ui-select2 directly and setting
+  # this up inside the directive but ran into some horror where I couldn't get initSelection
+  # to be called. So leaving as is. At least it is factored.
   this.getSelect2Info = (model, ajaxURL) ->
     placeholder: "Add some tags"
     tags: true
@@ -49,6 +60,4 @@
       this.removeTag(tagList, tagName)
     else
       this.addTag(tagList, tagName)
-
-
 ]
