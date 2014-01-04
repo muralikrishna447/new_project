@@ -1,0 +1,11 @@
+.row.section-tiny(ng-repeat="group in options")
+  .span6
+    %h4 {{group.name}}
+    .tag-group
+      .tag(   ng-repeat="tagName in group.tags" 
+              ng-click="csTagService.toggleTag(ngModel, tagName)"
+              ng-class="{active: csTagService.hasTag(ngModel, tagName)}")
+        %i.icon-tag
+          {{tagName}}
+
+
