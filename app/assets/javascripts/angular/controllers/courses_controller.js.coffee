@@ -129,12 +129,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   # Global Navigation Behavior
   $scope.$on 'showGlobalNavChanged', (e) ->
     $scope.showGlobalNav = e.targetScope.showNav
-    console.log 'Got it! Value: ' + $scope.showGlobalNav
     $scope.$apply()
 
   $scope.$on 'showBottomChanged', (e) ->
     $scope.showBottomNav = e.targetScope.showBottom
-    console.log "HERE : " + $scope.showBottomNav
     $scope.$apply()
 
   # Always show course nav on large screens

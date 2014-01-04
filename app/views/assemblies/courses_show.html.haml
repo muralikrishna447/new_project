@@ -7,7 +7,7 @@
 
 .controller.course-wrapper(ng-controller='CoursesController' ng-init="init(#{@course.id})")
   .course-assembly-container(ng-cloak ng-class="{'course-global-nav-show': showGlobalNav}")
-    .course-content-wrapper(ng-class="{'menu-slideout': showCourseMenu}" cscoursescroll scrollToTop="{{scrollToTop}}")
+    .course-content-wrapper(ng-class="{'menu-slideout': showCourseMenu}" cscoursescroll scrollToTop="{{scrollToTop}}" scroll-spy spyonelement="true" offset="240")
       .container-fluid
         .row-fluid
           .span12.relative.course-content.printable(ng-controller='ActivityController')

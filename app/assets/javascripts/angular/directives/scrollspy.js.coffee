@@ -28,6 +28,11 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
   link: (scope, elem, attrs) ->
     scope.spyElems = []
 
+    if attrs.spyonelement
+      scope.spyOnElement = angular.element(elem)[0]
+    else
+      scope.spyOnElement = $window
+
     scope.updateSpies = ->
       spy.out() for spy in scope.spies
       highlightSpy = scope.spies[0]
@@ -36,12 +41,12 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
       for spy in scope.spies
         # Find the targets and put them in the cache
         scope.spyElems[spy.id] = elem.find('#'+spy.id) unless (scope.spyElems[spy.id]?.length > 0)
-
+      console.log scope.spyOnElement.scrollTop
       for spy in scope.spies
         # Ignore any spies whose target isn't currently in the DOM - but it might come back
         if (scope.spyElems[spy.id]?.length > 0) && (scope.spyElems[spy.id].closest('html'))
           #console.log "Spy " + spy.id + " Delta " + (scope.spyElems[spy.id].offset().top - ($window.scrollY + offset))
-          if (pos = scope.spyElems[spy.id].offset().top) - $window.scrollY <= offset
+          if (pos = scope.spyElems[spy.id][0].offsetTop + offset) <= (scope.spyOnElement.scrollTop)
             spy.pos = pos
             if highlightSpy.pos < spy.pos
               highlightSpy = spy
@@ -53,7 +58,7 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
        scope.updateSpies()
       ), 1000
 
-    $($window).scroll ->
+    $(scope.spyOnElement).scroll ->
       scope.updateSpies()
 ]
 
