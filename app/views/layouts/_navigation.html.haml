@@ -48,16 +48,17 @@
                     .dropdown-background
                     %li= link_to 'Forum', 'http://forum.chefsteps.com'
                     %li= link_to 'Vote For New Courses', poll_url('vote-for-future-classes-3')
-                %li.dropdown
-                  .nav-item-border
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Shop
-                    %i.icon-angle-down
-                  %ul.dropdown-menu
-                    .dropdown-background
-                    %li= link_to 'Store', 'http://store.chefsteps.com'
-                    %li= link_to 'Knife Collection', knife_collection_url
-                    %li= link_to 'Sous Vide Collection', sv_collection_url
+                -unless @no_shop
+                  %li.dropdown
+                    .nav-item-border
+                    = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                      Shop
+                      %i.icon-angle-down
+                    %ul.dropdown-menu
+                      .dropdown-background
+                      %li= link_to 'Store', 'http://store.chefsteps.com'
+                      %li= link_to 'Knife Collection', knife_collection_url
+                      %li= link_to 'Sous Vide Collection', sv_collection_url
                 %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
                   .nav-item-border
                   - if external
