@@ -22,6 +22,7 @@ class AssembliesController < ApplicationController
       if (current_user && current_user.enrolled?(@assembly)) || (! @assembly.price)
         render "courses_#{params[:action]}"
       else
+        @no_shop = true
         redirect_to landing_class_url(@assembly)
       end
     when 'Recipe Development'
@@ -32,6 +33,7 @@ class AssembliesController < ApplicationController
   end
 
   def landing
+    @no_shop = true
     @upload = Upload.new
     @split_name = "macaron_landing_no_campaign"
     if params[:utm_campaign]
