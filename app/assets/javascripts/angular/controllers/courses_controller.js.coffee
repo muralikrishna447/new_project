@@ -55,6 +55,8 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     mixpanel.track($scope.currentIncludable.includable_type + ' Viewed Within Class', {'title': $scope.currentIncludable.includable_title, 'class': $scope.course.title})
 
     $scope.showCourseMenu = false
+    $scope.collapsed = {}
+    $scope.determineCollapsed($scope.currentIncludable)
 
     $scope.$broadcast 'scrollToTop'
 
@@ -95,6 +97,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         flat.push(inclusion)
     $scope.flatInclusions = flat
 
+  $scope.inclusionActiveClass = (inclusion) ->
+    return 'active' if (inclusion.includable_type == $scope.view_inclusion) && (inclusion.includable_id == $scope.view_inclusion_id)
+    return ''
+
   # Class Navigation Behavior
   $scope.toggleShowCourseMenu = ->
     $scope.showCourseMenu = ! $scope.showCourseMenu
@@ -112,8 +118,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.toggleCollapse = (includable_id) ->
     
     $scope.collapsed[includable_id] ?= true
-    $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id]
-    console.log $scope.collapsed 
+    $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id] 
 
   $scope.isCollapsed = (includable_id) ->
     if $scope.collapsed[includable_id]? 

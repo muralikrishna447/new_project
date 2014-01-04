@@ -78,7 +78,8 @@
         %h1
           {{course.title}}
       %ul.section.no-bullet
-        %li(ng-repeat='inclusion in course.assembly_inclusions' 
+        %li(ng-repeat='inclusion in course.assembly_inclusions'
+            ng-class="inclusionActiveClass(inclusion)"  
             ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)'
             ng-include="'_recursive_assembly_syllabus.html'")
 

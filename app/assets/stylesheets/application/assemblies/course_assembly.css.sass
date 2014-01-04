@@ -110,7 +110,7 @@
 
     li.active
       color: #333
-      background-color: $light-gray
+      background-color: $offwhite
 
     .nested
       border-top: none
@@ -122,6 +122,7 @@
 
         li
           border-top: none
+          @include transition(all 200ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
 
         li.active, li:hover
           color: #333
