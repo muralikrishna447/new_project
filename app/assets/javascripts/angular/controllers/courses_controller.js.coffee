@@ -2,9 +2,6 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
 
   $scope.routeParams = $routeParams
   $scope.route = $route
-
-  # $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
-  #   $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
   
   $scope.view_inclusion = {}
   $scope.collapsed = {}
@@ -58,9 +55,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     mixpanel.track($scope.currentIncludable.includable_type + ' Viewed Within Class', {'title': $scope.currentIncludable.includable_title, 'class': $scope.course.title})
 
     $scope.showCourseMenu = false
+    $scope.collapsed = {}
+    $scope.determineCollapsed($scope.currentIncludable)
 
-    # So sue me
-    window.scrollTo(0, 0)
+    $scope.$broadcast 'scrollToTop'
 
     # Absolutely insane fix to https://www.pivotaltracker.com/story/show/59025778
     # Vaguely inspired by http://mir.aculo.us/2009/01/11/little-javascript-hints-episode-3-force-redraw/, though
@@ -71,47 +69,6 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $('.prev-next-group').hide()
       $timeout ->
         $('.prev-next-group').show()
-
-  $scope.inclusionActiveClass = (inclusion) ->
-    return 'active' if (inclusion.includable_type == $scope.view_inclusion) && (inclusion.includable_id == $scope.view_inclusion_id)
-    return ''
-
-  $scope.updateDisqus = ->
-    # Super gross. Was running into an issue where this could get called before DISQUS was loaded, fail, and
-    # leave the user commenting on a bogus thread.
-    if ! DISQUS?
-      $timeout (->
-        $scope.updateDisqus()
-      ), 500
-      return
-
-    # Update to correct disqus view
-    if $scope.currentIncludable?.include_disqus
-      if $scope.course.id == 3
-        # Hack for French Macaron Class Discussion page
-        pageURL = "http://chefsteps.com/classes/3#!/discussion"
-        pageID = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
-      else
-        pageURL = "http://chefsteps.com/classes/#{$scope.course.id}/#!#{$scope.currentIncludable.includable_slug}"
-        pageID = "assembly-inclusion-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
-      DISQUS.reset
-        reload: true
-        config: ->
-          @page.identifier = pageID
-          @page.url = pageURL
-
-  $scope.overrideLoadActivity = (id) ->
-    if _.find($scope.flatInclusions, (incl) -> incl.includable_id == id)
-      $scope.loadInclusion(id) 
-      return true
-    false
-
-  # $scope.overrideLoadActivityBySlug = (slug) ->
-  #   incl = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == slug)
-  #   if incl
-  #     $scope.loadInclusion('Activity', incl.includable_id) 
-  #     return true
-  #   false
 
   currentIncludableIndex = ->
     return 0 if ! $scope.flatInclusions?
@@ -140,6 +97,11 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         flat.push(inclusion)
     $scope.flatInclusions = flat
 
+  $scope.inclusionActiveClass = (inclusion) ->
+    return 'active' if (inclusion.includable_type == $scope.view_inclusion) && (inclusion.includable_id == $scope.view_inclusion_id)
+    return ''
+
+  # Class Navigation Behavior
   $scope.toggleShowCourseMenu = ->
     $scope.showCourseMenu = ! $scope.showCourseMenu
     # First collapse all
@@ -156,8 +118,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.toggleCollapse = (includable_id) ->
     
     $scope.collapsed[includable_id] ?= true
-    $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id]
-    console.log $scope.collapsed 
+    $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id] 
 
   $scope.isCollapsed = (includable_id) ->
     if $scope.collapsed[includable_id]? 
@@ -165,25 +126,46 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     else 
       true
 
-  $scope.oldScrollPosition = 0
-  angular.element($window).on 'scroll', ->
-    newScrollPosition = angular.element(this).scrollTop()
-    scrollVelocity = newScrollPosition - $scope.oldScrollPosition
-    threshold = -120
-    if $scope.showGlobalNav
-      # When the nav is showing, hide the nav when user scrolls down
-      if scrollVelocity > 20
-        $scope.showGlobalNav = false
-    else
-      # When the nav is hidden, show the nav when the user quick scrolls up
-      if scrollVelocity < threshold
-        $scope.showGlobalNav = true
-      else
-        $scope.showGlobalNav = false
-
-      # Show the nav if the user reaches the top of the page
-      if newScrollPosition <= 0
-        $scope.showGlobalNav = true
+  # Global Navigation Behavior
+  $scope.$on 'showGlobalNavChanged', (e) ->
+    $scope.showGlobalNav = e.targetScope.showNav
     $scope.$apply()
-    $scope.oldScrollPosition = newScrollPosition
+
+  $scope.$on 'showBottomChanged', (e) ->
+    $scope.showBottomNav = e.targetScope.showBottom
+    $scope.$apply()
+
+  # Always show course nav on large screens
+  angular.element($window).on 'resize', ->
+    if $window.innerWidth >= 1024
+      $scope.largeScreen = true
+      $scope.showCourseMenu = false
+    else
+      $scope.largeScreen = false
+
+
+  # Disqus
+  $scope.updateDisqus = ->
+    # Super gross. Was running into an issue where this could get called before DISQUS was loaded, fail, and
+    # leave the user commenting on a bogus thread.
+    if ! DISQUS?
+      $timeout (->
+        $scope.updateDisqus()
+      ), 500
+      return
+
+    # Update to correct disqus view
+    if $scope.currentIncludable?.include_disqus
+      if $scope.course.id == 3
+        # Hack for French Macaron Class Discussion page
+        pageURL = "http://chefsteps.com/classes/3#!/discussion"
+        pageID = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
+      else
+        pageURL = "http://chefsteps.com/classes/#{$scope.course.id}/#!#{$scope.currentIncludable.includable_slug}"
+        pageID = "assembly-inclusion-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
+      DISQUS.reset
+        reload: true
+        config: ->
+          @page.identifier = pageID
+          @page.url = pageURL
 ]
