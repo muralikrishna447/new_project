@@ -1,6 +1,10 @@
 @import 'mixins'
 @import 'application/custom_mixins'
 
+.fs-course
+  height: 100%
+  margin: 0px
+
 // Landing Page Styles
 .assembly-syllabus
   .nested
@@ -9,24 +13,36 @@
 .buy-buttons
   margin-bottom: $baseline
 
-.course-assembly-container
+.course-wrapper
   position: relative
+  background-color: white
+  float: left
+  height: 100%
+  width: 100%
+
+.course-assembly-container
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0px
+  left: 0px
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
+.course-nav-hamburger-wrapper
+  position: absolute
+  width: 40px
+  height: 100%
+  top: 0px
+  left: 0px
+  margin-top: 0px
+  padding-top: 5px
+  padding-left: 5px
+  padding-right: 5px
+  background-color: white
+  color: $orange
+  font-size: 24px
+  @include boxsizing
   .course-nav-hamburger
-    z-index: 100
-    position: fixed
-    width: 40px
-    height: 100%
-    top: 0px
-    left: 0px
-    margin-top: 0px
-    padding-top: 5px
-    padding-left: 5px
-    padding-right: 5px
-    background-color: white
-    color: $orange
-    font-size: 24px
-    @include boxsizing
-    @include transition(margin-top 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
     .hamburger-bar
       width: 30px
       height: 5px
@@ -39,148 +55,153 @@
       .hamburger-bar
         background: $dark-orange
 
-  .course-nav-slideout
-    position: fixed
-    top: 0px
-    left: 40px
-    width: 295px
-    height: 100%
-    margin-left: -295px
-    background-color: white
-    border-right: 1px solid $light-gray
-    overflow-y: auto
-    overflow-x: hidden
-    -webkit-overflow-scrolling: touch
-    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+.course-nav-slideout
+  position: fixed
+  top: 0px
+  left: 40px
+  width: 295px
+  height: 100%
+  margin-left: -295px
+  background-color: white
+  border-right: 1px solid $light-gray
+  overflow-y: auto
+  overflow-x: hidden
+  -webkit-overflow-scrolling: touch
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+  @include boxsizing
+
+  h1
+    padding: $baseline
+    margin: 5px
+    font-size: 20px
+    line-height: 20px
+    font-weight: bold
+
+  h4
+    margin: 0px
+    padding: $baseline
+    text-transform: uppercase
+
+  ul
+    border-bottom: 1px solid $light-gray
+    width: 100%
     @include boxsizing
 
-    h1
-      padding: $baseline
-      margin: 5px
-      font-size: 20px
-      line-height: 20px
-      font-weight: bold
-
-    h4
-      margin: 0px
-      padding: $baseline
-      text-transform: uppercase
-
-    ul
-      border-bottom: 1px solid $light-gray
-      width: 100%
+    li
       @include boxsizing
+      width: 100%
+      border-top: 1px solid $light-gray
+      cursor: pointer
+      color: darkgray
 
-      li
-        @include boxsizing
-        width: 100%
-        border-top: 1px solid $light-gray
-        cursor: pointer
-        color: darkgray
+      a
+        line-height: 36px
+        margin-left: 10px
+        color: inherit
 
-        a
-          line-height: 36px
-          margin-left: 10px
-          color: inherit
+    li:hover
+      color: #333
+      background-color: $offwhite
 
-      li:hover
-        color: #333
-        background-color: $offwhite
+    li.forum
+      a
+        color: $orange
+        text-transform: uppercase
 
-      li.forum
-        a
-          color: $orange
-          text-transform: uppercase
+    li.active
+      color: #333
+      background-color: $offwhite
 
-      li.active
-        color: #333
-        background-color: $light-gray
+    .nested
+      border-top: none
+      ul
+        margin-left: 20px
+        margin-top: 0px
+        border-bottom: none
+        overflow: hidden
 
-      .nested
-        border-top: none
-        ul
-          margin-left: 20px
-          margin-top: 0px
-          border-bottom: none
-          overflow: hidden
+        li
+          border-top: none
+          @include transition(all 200ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
 
-          li
-            border-top: none
+        li.active, li:hover
+          color: #333
+          font-weight: bold
+          background-color: inherit
 
-          li.active, li:hover
-            color: #333
-            font-weight: bold
-            background-color: inherit
+        .hitbox:hover
+          color: #333
 
-          .hitbox:hover
-            color: #333
-
-  .course-content-wrapper
-    width: 100%
-    padding-left: 40px
-    padding-top: $baseline
-    margin-left: 0px
-    @include boxsizing
-    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-    .container-fluid
-      .row-fluid
+.course-content-wrapper
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0px
+  left: 0px
+  padding-left: 40px
+  padding-top: $baseline
+  margin-left: 0px
+  overflow-y: auto
+  overflow-x: hidden
+  -webkit-overflow-scrolling: touch
+  @include boxsizing
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+  .container-fluid
+    .row-fluid
+      .row
+        margin-left: 0px
+    .row-fluid [class*="span"]
+      min-height: 0px
+    .course-content
+      .row
+        margin-left: 0px
+      .span7
+        margin-left: 0px
+      .main-content-container
         .row
-          margin-left: 0px
-      .row-fluid [class*="span"]
+          .span3
+            width: 100%
+            margin-left: 0px
+      .step-ingredients-source
+        margin-bottom: 0px
+      #video-ingredient-unit
         min-height: 0px
-      .course-content
-        .row
-          margin-left: 0px
-        .span7
-          margin-left: 0px
-        .main-content-container
-          .row
-            .span3
-              width: 100%
-              margin-left: 0px
-        .step-ingredients-source
-          margin-bottom: 0px
-        #video-ingredient-unit
-          min-height: 0px
 
-  .menu-slideout
-    margin-left: 0px
-    z-index: 10
+.menu-slideout
+  @include transform(translateX(295px))
 
-  .course-slideout
-    margin-left: 295px
-
+.assembly-loading-wrapper
+  position: absolute
+  z-index: 9999
+  // background: rgba(255, 255, 255, .9)
+  height: 100%
+  width: 100%
+  top: 0
+  left: 0
+  padding-left: 40px
+  text-align: center
+  pointer-events: none
+  backface-visibility: hidden
+  -webkit-backface-visibility: hidden /* Chrome and Safari */
+  -moz-backface-visibility: hidden /* Firefox */
+  -ms-backface-visibility: hidden /* Internet Explorer */
+  @include boxsizing
   .assembly-loading-background
-    position: absolute
-    z-index: 9999
-    background: rgba(255, 255, 255, .9)
-    height: 100%
     width: 100%
-    top: 0
-    left: 0
-    text-align: center
+    height: 100%
+    padding-top: 100px
+    background-color: white
+    .activity-loading-spinner
+      margin-top: 0px
 
 // Global Nav
 .course-global-nav
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
   .navbar.navbar-fixed-top
     margin-top: -58px
-    @include transition(margin-top 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
 
-.course-global-nav.course-global-nav-show
-  .navbar.navbar-fixed-top
-    margin-top: 0px
-
-.course-content-wrapper.course-global-nav-show
-  margin-top: 58px
-
-.course-nav-slideout.course-global-nav-show
-  margin-top: 58px
-
-.course-nav-hamburger.course-global-nav-show
-  margin-top: 58px
-
-#step-dots.course-global-nav-show
-  margin-top: 58px
+.course-global-nav-show
+  @include transform(translateY(58px))
 
 #step-dots
   position: fixed
@@ -334,6 +355,19 @@
   display: none
 
 // Responsive Styles //
+@media (min-width: 1024px)
+  .course-nav-hamburger-wrapper
+    display: none
+
+  .course-nav-slideout
+    margin-left: 0px
+
+  .course-content-wrapper
+    padding-left: 335px
+
+  .assembly-loading-wrapper
+    padding-left: 335px
+
 @media (max-width: 979px)
   .course-content-wrapper
     .container-fluid
@@ -343,41 +377,63 @@
   .course-content-wrapper.course-global-nav-show
     margin-top: 0px
 
-@media (max-width: 720px)
+@media (max-width: 767px)
+  .fs-course
+    padding-left: 0px
+    padding-right: 0px
+
+  .course-global-nav
+    .navbar
+      margin-left: 0px
+      margin-right: 0px
+  
+  .course-content-wrapper
+    padding-bottom: 110px
+    .container-fluid
+      padding-left: 10px
+      padding-right: 10px
+
   .non-responsive
     display: none
 
   .responsive
     display: inline-block
-  .course-nav-bottom-center
-    position: relative
-    margin-left: -20px
-    padding-left: 20px
-    width: 100%
 
-    hr
-      width: 120%
-      margin-left: -10%
-      border-top-color: $light-gray
-      padding-bottom: $baseline * 2
+  // Mobile Bottom Nav
+  .course-nav-bottom-center
+    position: absolute
+    background-color: white
+    height: 100px
+    bottom: -100px
+    width: 100%
+    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
     .next-activity-name
       color: $orange
+      position: absolute
+      width: 100%
+      bottom: 55px
+      padding-bottom: 10px
+      background-color: white
+    h4
+      margin-bottom: 0px
 
     .course-nav-buttons-group
       width: 100%
-      position: relative
-      padding-bottom: $baseline * 8
+      position: absolute
+      bottom: 0px
+      height: 55px
       .btn
         @include boxsizing
-        display: inline-block
-        width: 55%   
+        width: 50%   
         position: absolute
-        right: 50%
-        bottom: 0
+        left: 0px
+        bottom: 0px
         height: $baseline * 5
         padding-top: 14px
         border-top: 1px solid $light-gray
         border-bottom: none
+        margin-bottom: 0px
         i
           font-size: $baseline * 3
           vertical-align: middle
@@ -386,3 +442,6 @@
         left: 50%
         right: auto
         border-left: 1px solid $light-gray
+
+  .show-nav-bottom
+    @include transform(translateY(-100px))
