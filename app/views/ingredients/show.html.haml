@@ -115,14 +115,15 @@
 
     .span6
       .well.relative
-        %h3.inline Tags
         .row.section(ng-show="editMode")
           .span6
+            %h3.inline Tags
             .btn.btn-link.inline(ng-click="showTagsModal = true") Select...            
             %input(type="text" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
 
         .row.section(ng-show="! editMode")
           .span6
+            %h3 Tags
             %csTagList(ng-model="ingredient.tags" search-path="'/ingredients#/?search_all'")
 
         .row.section(ng-show="ingredient.product_url")
