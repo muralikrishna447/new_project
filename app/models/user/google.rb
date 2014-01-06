@@ -34,6 +34,10 @@ module User::Google
     end
   end
 
+  def google_connect(user_options)
+    self.update_attributes({google_user_id: user_options[:google_user_id], google_refresh_token: user_options[:google_refresh_token], google_access_token: user_options[:google_access_token]}, without_protection: true)
+  end
+
   module ClassMethods
     def google_connect(user_options)
       User.where("users.email = :email OR users.google_user_id = :google_user_id", user_options).

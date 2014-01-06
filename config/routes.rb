@@ -39,6 +39,7 @@ Delve::Application.routes.draw do
     post 'signup_and_enroll', to: 'users/registrations#signup_and_enroll'
     post 'signin_and_enroll', to: 'users/sessions#signin_and_enroll'
     match '/users/auth/google/callback', to: 'users/omniauth_callbacks#google'
+    match '/users/auth/facebook/callback', to: 'users/omniauth_callbacks#facebook'
     match '/users/contacts/google', to: 'users/contacts#google'
     post '/users/contacts/invite', to: 'users/contacts#invite'
   end

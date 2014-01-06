@@ -11,10 +11,8 @@
             .facebook-button.facebook-login
               %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook") Sign in with Facebook
             .google-plus-login
-              -# %google-plus-signin(clientid="#{google_app_id}" data-approvalprompt="force" scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile")
-              #signinButton
-                %span.g-signin
-                  %a#google-signin-button(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google") Sign in with Google
+              %span.g-signin
+                %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google") Sign in with Google
           .error(ng-show="login_error.message")
             %p {{login_error.message}}
           .message(ng-show="message")
@@ -38,6 +36,9 @@
           .button-group
             .facebook-button.facebook-login
               %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook") Sign up with Facebook
+            .google-plus-login
+              %span.g-signin
+                %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google") Sign up with Google
           .error(ng-show="register_error.message")
             %p {{register_error.message}}
           .message(ng-show="message")
@@ -107,9 +108,11 @@
                 Invite friends on
                 %b Facebook
             .google-button.google-login
-              %a.btn-google.btn.btn-secondary(ng-click="loadGoogleContacts()")
+              %a.btn-google.btn.btn-secondary(ng-click="loadGoogleContacts()" ng-show="authentication.currentUser() && !!authentication.currentUser().google_access_token")
                 Invite friends from your
                 %b Google Address Book
+              %a.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin('#{google_app_id}')" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token")
+                Connect to Google & Invite Friends
 
             %div
               %a.next-button(ng-show="authentication.currentUser()" ng-click="welcome()") {{invitationsNextText}}
@@ -132,9 +135,11 @@
           Invite your friends to join you on ChefSteps.com
         .invite-horizontal(ng-show="authentication.currentUser()")
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
+          .search
+            %input(type="text" placeholder="Search For..." ng-model="searchFriends")
           %div
             %ul.friend-list
-              %li.friend.one_column(ng-repeat="friend in inviteFriends")
+              %li.friend.one_column(ng-repeat="friend in inviteFriends | filter:searchFriends")
                 %label
                   %input(type="checkbox" ng-model="friend.value")
                   {{friend.email}}

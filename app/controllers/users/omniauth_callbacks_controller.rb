@@ -26,8 +26,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       standard_login
     else
       user_options = User.gather_info_from_google(params, google_app_id, google_secret)
-      @user = User.google_connect(user_options)
-      javascript_login
+      if current_user
+        current_user.google_connect(user_options)
+        return render status: 200, json: {success: true, new_user: false, info: "Associated account", user: current_user.to_json(include: :enrollments)}
+      else
+        @user = User.google_connect(user_options)
+        javascript_login
+      end
     end
   end
 
