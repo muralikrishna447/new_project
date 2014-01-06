@@ -22,6 +22,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.alerts = []
   $scope.activities = {}
 
+  $scope.csTagService = csTagService
+
   $scope.getObject = ->
     $scope.activity
   csEditableHeroMediaService.getObject = $scope.getObject
