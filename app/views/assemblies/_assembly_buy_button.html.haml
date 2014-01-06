@@ -11,16 +11,15 @@
   -# Primary CTA
   -#
   %div(ng-show="(! logged_in && assembly.price)")
-    .main-cta
-      .login(ng-controller="LoginController" ng-init="formFor='purchase'")
-        .btn.btn-primary.btn-large.input-block-level#sign-in-and-buy-button(ng-click="waitForLogin(); openModal('login')")
-          BUY NOW
-          = render 'activities/latest/assembly_price'
-          = render "devise/sessions/new_angular"
+    .main-cta(ng-controller="LoginController" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-buy-button(ng-click="waitForLogin(); openModal('login')")
+        BUY NOW
+        = render 'activities/latest/assembly_price'
+        = render "devise/sessions/new_angular"
 
   -# Already enrolled
   %div(ng-show="enrolled")
-    .main-cta
+    .main-cta(ng-class="{'purchase-started': buyModalOpen}")
       %div(ng-hide='completed')
         %a.btn.btn-primary.btn-large.input-block-level#continue-button(ng-href="{{lastViewedActivity || assemblyPath}}")
           %span Continue Class
@@ -31,33 +30,31 @@
 
   -# Not logged in but gift certificate available
   %div(ng-show="gift_certificate && (! enrolled) && assembly.price && ! logged_in")
-    .main-cta(ng-controller="LoginController" ng-init="formFor='purchase'")
-      .login
-        .btn.btn-primary.btn-large.input-block-level#sign-in-and-redeem-gift-button(ng-click="waitForRedemption(); openModal('login')")
-          Get My Gift
-          = render "devise/sessions/new_angular"
+    .main-cta(ng-controller="LoginController" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-redeem-gift-button(ng-click="waitForRedemption(); openModal('login')")
+        Get My Gift
+        = render "devise/sessions/new_angular"
 
   -# Not enrolled, paid class, gift certificate available
   %div(ng-show="gift_certificate && (! enrolled) && assembly.price && logged_in")
-    .main-cta
+    .main-cta(ng-class="{'purchase-started': buyModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#redeem-gift-button(ng-click="redeemGift()")
         Get My Gift
 
   -# Not enrolled, paid class
   %div(ng-show="(! gift_certificate) && (! enrolled) && assembly.price && logged_in")
-    .main-cta
+    .main-cta(ng-class="{'purchase-started': buyModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal(false)")
         BUY NOW
         = render 'activities/latest/assembly_price'
 
   -# Not enrolled, free class
   %div(ng-show="(! gift_certificate) && (! enrolled) && (discounted_price == '0')")
-    .main-cta(ng-show="(! logged_in)")
-      .login(ng-controller="LoginController")
-        .btn.btn-primary.btn-large.input-block-level#sign-in-and-enroll-free-button(ng-click="waitForFreeEnrollment(); openModal('login');")
-          Enroll for Free
-          = render "devise/sessions/new_angular"
-    .main-cta(ng-show="(logged_in)")
+    .main-cta(ng-controller="LoginController" ng-show="(! logged_in)" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-enroll-free-button(ng-click="waitForFreeEnrollment(); openModal('login');")
+        Enroll for Free
+        = render "devise/sessions/new_angular"
+    .main-cta(ng-show="(logged_in)" ng-class="{'purchase-started': buyModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="free_enrollment()")
         Enroll For Free
 
@@ -68,7 +65,7 @@
   -# Sell gift certificate
   -# Not Logged in but want to buy gift certificate
   %div(ng-show="(! gift_certificate) && (assembly.price > 0) && ! logged_in")
-    .gift-cta(ng-controller="LoginController" ng-init="formFor='purchase'")
+    .gift-cta(ng-controller="LoginController" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-secondary.btn-large.input-block-level#sign-in-and-gift-button(ng-click="waitForLogin(); buyingGift(); openModal('login')")
         Send As Gift
         %div.inline(ng-show="enrolled")
@@ -77,7 +74,7 @@
 
   -# Logged In
   %div(ng-show="(! gift_certificate) && (assembly.price > 0) && logged_in")
-    .gift-cta
+    .gift-cta(ng-class="{'purchase-started': buyModalOpen}")
       .btn.btn-secondary.btn-large.input-block-level#gift-button(ng-click="openModal(true)")
         Send As Gift
         %div.inline(ng-show="enrolled")
