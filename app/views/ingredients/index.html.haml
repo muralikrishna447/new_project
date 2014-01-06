@@ -51,7 +51,7 @@
       %div(galleryscroll='loadData()')
         %div(ng-repeat='item in getDisplayItems()' ng-animate="'gallery-animation'")
           %csGalleryItem( title="item.title"
-                          href="'ingredients/' + item.slug"
+                          href="'/ingredients/' + item.slug"
                           image="itemImageURL(item, 400)"
                           footer-right="maybeEditLink(item)"
                         )
