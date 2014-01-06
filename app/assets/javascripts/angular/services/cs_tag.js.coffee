@@ -1,11 +1,22 @@
 @app.service 'csTagService', [() ->
 
-  # Possibly this should be in the db
+  # Possibly this should be in the db?
   this.ingredientSuggestedTags = [
     {name: "Categories", tags: ["Animal", "Vegetable", "Fruit", "Fungi", "Dairy", "Herb", "Spice", "Modernist", "Beverage", "Pantry"]}
     {name: "More...",  tags: ["Red Meat", "Poultry", "Seafood", "Cheese", "Grain", "Bean", "Nut", "Root", "Condiment"]}
     {name: "Diets",  tags: ["Vegetarian", "Vegan", "Gluten Free", "Kosher", "Paleo"]}
     {name: "Seasons", tags: ["Spring", "Summer", "Winter", "Fall"]}
+  ]
+
+  this.activitySuggestedTags = [
+    {name: "Main Ingredient", tags: ["Meat", "Fish", "Chicken", "Game", "Vegetable", "Pasta", "Poultry", "Cheese", "Fruit", "Grains"]}
+    {name: "Diets", tags: ["Vegetarian", "Vegan", "Gluten Free", "Kosher", "Paleo", "Raw"]}
+    {name: "Course", tags: ["Appetizer", "Soup", "Salad", "Main course", "Amuse bouche", "Dessert", "Cocktail", "Beverage", "Baking", "Sauce", "Condiment", "Snack", "Side dish"]}
+    {name: "Barriers", tags: ["No Special Equipment", "No Modernist Ingredients"]}
+    {name: "Meal", tags: ["Breakfast", "Brunch", "Lunch", "Dinner"]}
+    {name: "Method", tags: ["Sous vide", "Grilling", "Baking", "Pressure Cooker", "Barbeque", "Deep Frying"]}
+    {name: "Seasons", tags: ["Spring", "Summer", "Winter", "Fall"]}
+    {name: "Misc", tags: ["Holiday", "Quick", "Kid Friendly", "One Pot"]}
   ]
 
   # I tried creating a directive instead of using ui-select2 directly and setting
