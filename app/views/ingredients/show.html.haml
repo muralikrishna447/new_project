@@ -121,7 +121,7 @@
             .btn.btn-link.inline(ng-click="showTagsModal = true") Select...            
             %input(type="text" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
 
-        .row.section(ng-show="! editMode")
+        .row.section(ng-show="(! editMode) && ingredient.tags.length")
           .span6
             %h3 Tags
             %csTagList(ng-model="ingredient.tags" search-path="'/ingredients#/?search_all'")

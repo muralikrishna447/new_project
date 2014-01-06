@@ -110,13 +110,30 @@ class Ingredient < ActiveRecord::Base
     end
   end
 
+  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields, :tag_list
+
+  def merge_in_useful_details(other)
+    self.product_url = other.product_url if self.product_url.to_s == ''
+    self.density = other.density if ! self.density
+    self.image_id = other.image_id if self.image_id.to_s == ''
+    self.youtube_id = other.youtube_id if self.youtube_id.to_s == ''
+    self.text_fields = other.text_fields if self.text_fields.to_s == ''
+    other.tag_list.each { |tag| self.tag_list.add(tag) }
+  end
+
   # Replace all uses (in both activities and steps) of every ingredient in group with the self ingredient
   def merge(group)
     # Just to be sure
     group.delete(self)
 
+    # If the ones we are going to delete have any useful wiki details in fields that
+    # are blank in the final ingredient, copy them over.
     group.each do |ingredient|
+      self.merge_in_useful_details(ingredient)
+    end
+    self.save
 
+    group.each do |ingredient|
       ActivityIngredient.where(ingredient_id: ingredient.id).each do |ai|
         Ingredient.maybe_move_title_to_note(ai, self.title)
         ai.ingredient = self
