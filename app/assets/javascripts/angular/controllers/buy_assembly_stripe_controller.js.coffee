@@ -181,12 +181,13 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     )
 
   $scope.adroll = (title) ->
-    if title == 'French Macarons'
-      segmentName = 'fmpurchase'
-    else
-      segmentName = title.toLowerCase().replace(' ','-') + '-purchase'
+    if title
+      if title == 'French Macarons'
+        segmentName = 'fmpurchase'
+      else
+        segmentName = title.toLowerCase().replace(' ','-') + '-purchase'
 
-    try
-      __adroll.record_user "adroll_segments": segmentName
+      try
+        __adroll.record_user "adroll_segments": segmentName
 
 ]
