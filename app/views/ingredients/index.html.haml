@@ -75,19 +75,19 @@
         .div(ng-show="! exactMatchNewIngredient()")
           %h4 Could it be one of these? If so, click the name to edit the existing ingredient.
           %ul
-            %li(ng-repeat="ing in possibleIngredientMatches")
-              %a(ng-href="/ingredients/{{ing.slug}}?edit=true" target="_blank") 
+            %li(ng-repeat="ing in possibleIngredientMatches" ng-animate="'fade'")
+              %a(ng-href="/ingredients/{{ing.slug}}?edit=true" target="_blank" ) 
                 {{ing.title}}
         .div(ng-show="exactMatchNewIngredient()")
           %h4 That ingredient already exists, click below to edit it.
           %ul
             %li
-              %a(ng-href="/ingredients/{{exactMatchNewIngredient().slug}}" target="_blank")
+              %a(ng-href="/ingredients/{{exactMatchNewIngredient().slug}}?edit=true" target="_blank")
                 {{exactMatchNewIngredient().title}}
     .modal-footer
       %i.icon-spinner.icon-spin(ng-show="newIngSpinner")
       .btn-group
         %button.btn.btn-link(ng-click="showNewIngredientModal = false") Cancel
         %button.btn(  ng-disabled="(newIngredientName.length < 3) || newIngSpinner || exactMatchNewIngredient()" 
-                      ng-click="addAndEditNewIngredient") 
+                      ng-click="addAndEditNewIngredient()") 
           Create New Ingredient

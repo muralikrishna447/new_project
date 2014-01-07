@@ -40,12 +40,16 @@
 
   $scope.addAndEditNewIngredient = ->
     $scope.showNewIngredientModal = false
+    Ingredient.create {title: $scope.newIngredientName}, (newIng) ->
+      $scope.newIngredientName = ""
+      window.open("/ingredients/#{newIng.slug}?edit=true", '_blank')
 
   $scope.possibleIngredientMatches = []
 
   $scope.$watch 'newIngredientName', (newVal) -> 
     if newVal
       $scope.newIngSpinner = true
+      
       $http.get("/ingredients.json?limit=15&include_sub_activities=false&detailed=false&search_title=" + newVal).then (response) ->
         $scope.newIngSpinner = false
         $scope.possibleIngredientMatches = response.data
