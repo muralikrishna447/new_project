@@ -3,6 +3,10 @@
 .gallery-wrapper
   margin-top: 20px
 
+  .add-group
+    margin-right: 20px
+    margin-top: -4px
+    
 .gallery-contents
   margin-top: 10px
 
@@ -38,15 +42,6 @@
     padding: 0 0 2px 0 !important
     margin-left: 18px
     cursor: pointer
-
-  .browse-group
-    padding-right: 30px
-    a
-      text-transform: uppercase
-    .browse-by
-      font-size: 95%
-    a.active
-      border-bottom: 3px solid $orange
 
   .dropdown-menu
     a
@@ -119,7 +114,7 @@
   border-radius: 20px
   margin-left: 8px
   position:  relative
-  top: -2px
+  top: 2px
   padding: 0px 8px
 
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
@@ -197,11 +192,14 @@
   right: -60px
   text-align: center
 
+.new-ingredient-modal
+  input
+    width: 95%
 
 @media (max-width: 980px)
   .left-group
     width: 100%
-  .browse-group
+  .add-group
     .browse-by
       display: none
     padding-top: 10px
@@ -228,3 +226,6 @@
     .btn
       width:  80px
       text-align:  center
+
+  .add-group
+    float: none !important

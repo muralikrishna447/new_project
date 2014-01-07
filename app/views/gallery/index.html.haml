@@ -21,10 +21,6 @@
                 FILTER
                 %i.icon-angle-down(ng-show="collapseFilters")
                 %i.icon-angle-up(ng-hide="collapseFilters")
-              .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
-                {{f}}
-                %span.reset-filter(ng-click="resetFilter(k)")
-                  %i.icon-remove
               .filters-group(ng-show="!collapseFilters" data-ng-animate="'filters'" )
                 %csRadioButtons.first-separate(ng-model="typeChoices" active="filters.activity_type")
                 %csRadioButtons.first-separate(ng-model="difficultyChoices" active="filters.difficulty")
@@ -32,11 +28,24 @@
                 -if can? :update, User
                   %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
 
-          %ul.nav.browse-group.pull-right(ng-click="collapseFilters = true")
-            %li.browse-by Browse By
-            %li(ng-repeat="choice in getSortChoices()")
-              %a(ng-click="filters.sort = choice" ng-class="{active: filters.sort == choice}")
-                {{choice}}
+            %li.relative(ng-mouseenter="collapseSort = false" ng-mouseleave="collapseSort = true")
+              .filter-collapser(ng-click="collapseSort = ! collapseSort")
+                SORT
+                %i.icon-angle-down(ng-show="collapseSort")
+                %i.icon-angle-up(ng-hide="collapseSort")
+
+              .filters-group(ng-show="!collapseSort" data-ng-animate="'filters'")        
+                .btn( ng-repeat="choice in getSortChoices()" 
+                      ng-click="filters.sort = choice" 
+                      ng-class="{active: filters.sort == choice}")
+                  {{choice}}
+            .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
+              {{f}}
+              %span.reset-filter(ng-click="resetFilter(k)")
+                %i.icon-remove
+        .add-group.btn-group.pull-right(ng-show="filters.generator != 'ChefSteps'")
+          %a.btn.btn-secondary.add-button(href="/activities/new")
+            Add Recipe
 
   .row(ng-cloak ng-show="(galleryItems.length == 0) && initialLoadDone" ng-click="collapseFilters = true")
     .section
