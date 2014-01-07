@@ -49,10 +49,9 @@
   $scope.$watch 'newIngredientName', (newVal) -> 
     if newVal
       $scope.newIngSpinner = true
-      
-      $http.get("/ingredients.json?limit=15&include_sub_activities=false&detailed=false&search_title=" + newVal).then (response) ->
+      Ingredient.query {limit: 15, include_sub_activities: false, detailed: false, search_title: newVal}, (response) ->
         $scope.newIngSpinner = false
-        $scope.possibleIngredientMatches = response.data
+        $scope.possibleIngredientMatches = response
     else
       $scope.possibleIngredientMatches = []
 
