@@ -1,4 +1,4 @@
-@app.controller 'IngredientsGalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Ingredient", "IngredientMethods", ($scope, $resource, $location, $timeout, csGalleryService, $controller, Ingredient, IngredientMethods) ->
+@app.controller 'IngredientsGalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Ingredient", "IngredientMethods", "$http", ($scope, $resource, $location, $timeout, csGalleryService, $controller, Ingredient, IngredientMethods, $http) ->
 
   $controller('GalleryBaseController', {$scope: $scope});
   $scope.galleryService = csGalleryService
@@ -37,6 +37,26 @@
   $scope.maybeEditLink = (ingredient) ->
     if  ! ingredient.image_id
       return "<a href='/ingredients/#{ingredient.slug}?edit=true' target='_blank'>Edit Ingredient...</a>"
+
+  $scope.addAndEditNewIngredient = ->
+    $scope.showNewIngredientModal = false
+    Ingredient.create {title: $scope.newIngredientName}, (newIng) ->
+      $scope.newIngredientName = ""
+      window.open("/ingredients/#{newIng.slug}?edit=true", '_blank')
+
+  $scope.possibleIngredientMatches = []
+
+  $scope.$watch 'newIngredientName', (newVal) -> 
+    if newVal
+      $scope.newIngSpinner = true
+      Ingredient.query {limit: 15, include_sub_activities: false, detailed: false, search_title: newVal}, (response) ->
+        $scope.newIngSpinner = false
+        $scope.possibleIngredientMatches = response
+    else
+      $scope.possibleIngredientMatches = []
+
+  $scope.exactMatchNewIngredient = ->
+    _.find($scope.possibleIngredientMatches, (x) -> x.title.toLowerCase() == $scope.newIngredientName?.toLowerCase())
 ]
 
 

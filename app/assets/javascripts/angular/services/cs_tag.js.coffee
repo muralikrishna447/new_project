@@ -5,7 +5,7 @@
     {name: "Categories", tags: ["Animal", "Vegetable", "Fruit", "Fungi", "Dairy", "Herb", "Spice", "Modernist", "Beverage", "Pantry"]}
     {name: "More...",  tags: ["Red Meat", "Poultry", "Seafood", "Cheese", "Grain", "Bean", "Nut", "Root", "Condiment"]}
     {name: "Diets",  tags: ["Vegetarian", "Vegan", "Gluten Free", "Kosher", "Paleo"]}
-    {name: "Seasons", tags: ["Spring", "Summer", "Winter", "Fall"]}
+    {name: "Seasons", tags: ["Winter", "Spring", "Summer", "Fall"]}
   ]
 
   this.activitySuggestedTags = [
@@ -15,7 +15,7 @@
     {name: "Barriers", tags: ["No Special Equipment", "No Modernist Ingredients"]}
     {name: "Meal", tags: ["Breakfast", "Brunch", "Lunch", "Dinner"]}
     {name: "Method", tags: ["Sous vide", "Grilling", "Baking", "Pressure Cooker", "Barbeque", "Deep Frying"]}
-    {name: "Seasons", tags: ["Spring", "Summer", "Winter", "Fall"]}
+    {name: "Seasons", tags: ["Winter", "Spring", "Summer", "Fall"]}
     {name: "Misc", tags: ["Holiday", "Quick", "Kid Friendly", "One Pot"]}
   ]
 

@@ -120,6 +120,15 @@ class IngredientsController < ApplicationController
     end
   end
 
+  def create
+    @ingredient = Ingredient.new(params[:ingredient])
+    if @ingredient.save
+      respond_to do |format|
+        format.js { render :json => @ingredient, root: false }
+      end
+    end
+  end
+
   def destroy
     authorize! :manage, Ingredient
     @ingredient = Ingredient.find(params[:id])

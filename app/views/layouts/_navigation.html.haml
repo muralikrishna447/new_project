@@ -28,9 +28,11 @@
                     %i.icon-angle-down
                   %ul.dropdown-menu
                     .dropdown-background
-                    %li= link_to 'ChefSteps Recipes', gallery_index_url + "#/?activity_type=Recipe"
+                    %li= link_to 'ChefSteps Recipes', gallery_index_url + "#/?activity_type=Recipe&generator=ChefSteps"
                     %li= link_to 'Community Recipes', gallery_index_url + "#/?generator=Community"
-                    %li= link_to 'Add Recipe', new_activity_url
+                    %li= link_to 'Ingredients', ingredients_url
+                    -if (can? :manage, Ingredient) || (can? :manage, Ingredient)
+                      %li.divider
                     -if can? :manage, Ingredient
                       %li= link_to 'Manage Ingredients', manager_ingredients_path
                     -if can? :manage, Equipment

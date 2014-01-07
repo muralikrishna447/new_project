@@ -1,10 +1,11 @@
 @app.factory 'Ingredient', ['$resource', ($resource) ->
   return $resource( "/ingredients/:id",
-    { detailed: true},
+    { detailed: true, format: "json"},
     {
       update: {method: "PUT"},
       merge: {url: "/ingredients/:id/merge", method: "POST"}
       index_for_gallery: {method: "GET", url: "/ingredients/index_for_gallery.json", isArray: true}
+      create: {url: "/ingredients", method: "POST"}
     }
   )]
 
