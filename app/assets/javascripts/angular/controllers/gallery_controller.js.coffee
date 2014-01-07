@@ -1,7 +1,8 @@
-@app.controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Activity", "ActivityMethods", ($scope, $resource, $location, $timeout, csGalleryService, $controller, Activity, ActivityMethods) ->
+@app.controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Activity", "ActivityMethods", "csAuthentication", ($scope, $resource, $location, $timeout, csGalleryService, $controller, Activity, ActivityMethods, csAuthentication) ->
 
   $controller('GalleryBaseController', {$scope: $scope});
   $scope.galleryService = csGalleryService
+  $scope.csAuthentication = csAuthentication
   $scope.resourceName = "Activity"
   $scope.resource = Activity
   $scope.objectMethods = ActivityMethods

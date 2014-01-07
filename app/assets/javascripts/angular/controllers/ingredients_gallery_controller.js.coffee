@@ -1,10 +1,12 @@
-@app.controller 'IngredientsGalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Ingredient", "IngredientMethods", "$http", ($scope, $resource, $location, $timeout, csGalleryService, $controller, Ingredient, IngredientMethods, $http) ->
+@app.controller 'IngredientsGalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Ingredient", "IngredientMethods", "$http", "csAlertService", "csAuthentication", ($scope, $resource, $location, $timeout, csGalleryService, $controller, Ingredient, IngredientMethods, $http, csAlertService, csAuthentication) ->
 
   $controller('GalleryBaseController', {$scope: $scope});
   $scope.galleryService = csGalleryService
+  $scope.alertService = csAlertService
   $scope.resourceName = "Ingredient"
   $scope.resource = Ingredient
   $scope.objectMethods = IngredientMethods
+  $scope.csAuthentication = csAuthentication
 
   $scope.placeHolderImage = ->
     IngredientMethods.placeHolderImage()
@@ -40,9 +42,14 @@
 
   $scope.addAndEditNewIngredient = ->
     $scope.showNewIngredientModal = false
-    Ingredient.create {title: $scope.newIngredientName}, (newIng) ->
-      $scope.newIngredientName = ""
-      window.open("/ingredients/#{newIng.slug}?edit=true", '_blank')
+    Ingredient.create(
+      {title: $scope.newIngredientName}, 
+      (newIng) ->
+        $scope.newIngredientName = ""
+        window.open("/ingredients/#{newIng.slug}?edit=true", '_blank')
+      (error) ->
+        _.each(error.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout))
+    )  
 
   $scope.possibleIngredientMatches = []
 

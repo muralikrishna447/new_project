@@ -121,10 +121,18 @@ class IngredientsController < ApplicationController
   end
 
   def create
-    @ingredient = Ingredient.new(params[:ingredient])
-    if @ingredient.save
-      respond_to do |format|
-        format.js { render :json => @ingredient, root: false }
+    authorize! :create, Ingredient
+    respond_to do |format|
+      format.json do
+        begin
+          @ingredient = Ingredient.new(params[:ingredient])
+          @ingredient.save!
+          render :json => @ingredient, root: false
+        rescue Exception => e
+          messages = []
+          messages.push(e.message)
+          render json: { errors: messages}, status: 422
+        end
       end
     end
   end

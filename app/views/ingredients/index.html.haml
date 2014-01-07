@@ -41,7 +41,7 @@
               {{f}}
               %span.reset-filter(ng-click="resetFilter(k)")
                 %i.icon-remove
-          .add-group.btn-group.pull-right(ng-show="filters.generator != 'ChefSteps'")
+          .add-group.btn-group.pull-right(ng-show="csAuthentication.loggedIn()")
             %a.btn.btn-secondary.add-button(ng-click="showNewIngredientModal = true")
               Add Ingredient
             
