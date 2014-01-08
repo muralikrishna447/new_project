@@ -26,6 +26,8 @@
                   Syrup
                   %input(type="range" ng-model='inputs.desired_viscosity' min="5" max="30")
                   Icing
+            .page(ng-switch-when="results")
+              
         .egg-footer
           .btn.btn-primary.state-button-prev(ng-show="getPrevState()" ng-click="goPrevState()") 
             %i.icon-angle-left
