@@ -13,6 +13,9 @@ class PagesController < ApplicationController
   end
 
   def egg_timer
+    authenticate_or_request_with_http_basic('Tools') do |username, password|
+      username == 'delve' && password == 'howtoegg22'
+    end
     Page.find 'egg-timer'
   end
 
