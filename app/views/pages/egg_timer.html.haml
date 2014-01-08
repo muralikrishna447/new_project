@@ -11,14 +11,29 @@
             %h3 EGGS
 
         .egg-body
-          %h4.text-center What texture would you like your egg white?
-          .control-group
-            .controls
-              Runny
-              %input(type="range" ng-model='inputs.water_temp' min="60" max="85")
-              Very Firm
+          .page-switch(ng-switch="state.name" ng-animate="'fade'")
+            .page(ng-switch-when="white")
+              %h4.text-center What texture would you like your egg white?
+              .control-group
+                .controls
+                  Runny
+                  %input(type="range" ng-model='inputs.water_temp' min="60" max="85")
+                  Firm
+            .page(ng-switch-when="yolk")
+              %h4.text-center What texture would you like your egg yolk?
+              .control-group
+                .controls
+                  Syrup
+                  %input(type="range" ng-model='inputs.desired_viscosity' min="5" max="30")
+                  Icing
         .egg-footer
-          %h3 NEXT
+          .btn.btn-primary.state-button-prev(ng-show="getPrevState()" ng-click="goPrevState()") 
+            %i.icon-angle-left
+            BACK
+          .btn.btn-primary.state-button-next(ng-show="getNextState()" ng-click="goNextState()") 
+            NEXT
+            %i.icon-angle-right
+          
 
     .span6
       %h2 DEBUGGING

@@ -1,4 +1,17 @@
 angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$http", "$timeout", ($scope, $http, $timeout) ->
+
+  $scope.states = [
+    { name: "white", next: "yolk"}
+    { name: "yolk", prev: "white", next: "results" }
+    { name: "results", prev: "yolk", secondary: "rate"}
+    { name: "rate", next: "thanks"}
+    { name: "size", next: "results", secondary: "startTemp"}
+    { name: "startTemp", next: "results", secondary: "bathType"}
+    { name: "bathType", next: "results"}
+  ]
+
+  $scope.state = $scope.states[0]
+
   $scope.inputs = 
     water_temp: 70
     desired_viscosity: 16
@@ -37,4 +50,17 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
   $scope.$watchCollection 'inputs', -> 
     $scope.throttledUpdate()
+
+  $scope.getPrevState = ->
+    _.find($scope.states, (x) -> x.name == $scope.state.prev)
+
+  $scope.getNextState = ->
+    _.find($scope.states, (x) -> x.name == $scope.state.next)
+
+  $scope.goPrevState = ->
+    $scope.state = $scope.getPrevState()
+
+  $scope.goNextState = ->
+    $scope.state = $scope.getNextState()
+
 ]

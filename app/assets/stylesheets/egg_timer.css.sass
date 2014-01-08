@@ -20,7 +20,11 @@
       text-align: center
 
   .egg-body
-    padding: ($baseline * 2) $baseline
+    margin: ($baseline * 2) $baseline
+
+    .page
+      width: 320px
+      height: 400px
 
   .egg-footer
     position: absolute
@@ -30,7 +34,19 @@
     height: $baseline * 4
     color: white
     text-align: center
-    background-color: $orange
+    background-color: $light-gray
+
+    .btn
+      width: 50%
+      height: 100%
+      position: absolute
+      font-size: 24px
+      padding-top: 12px
+
+    .state-button-prev
+      left: 0
+    .state-button-next
+      right: 0
 
 .iphone-container
   margin-left: auto
@@ -41,4 +57,5 @@
   @include radius(10px)
   position: relative
   overflow: hidden
+
 
