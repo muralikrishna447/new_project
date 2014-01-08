@@ -429,6 +429,14 @@ class Activity < ActiveRecord::Base
     nil
   end
 
+  def disqus_id
+    "activity-#{self.id}"
+  end
+
+  def always_include_disqus
+    true if self.activity_type == 'Recipe' || 'Technique' || 'Science'
+  end
+
   private
 
   def check_published
@@ -521,8 +529,6 @@ class Activity < ActiveRecord::Base
       end
     end
   end
-
-
 
 end
 
