@@ -209,5 +209,8 @@ Delve::Application.routes.draw do
     get "start_clean" => "application#start_clean"
     get "end_clean" => "application#end_clean"
   end
+
+  # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
+  match '/*path' => 'application#options', :via => :options
 end
 
