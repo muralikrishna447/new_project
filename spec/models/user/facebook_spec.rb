@@ -5,7 +5,7 @@ describe User::Facebook do
 
   describe '#facebook_connected_user' do
     it 'returns nil if no user exists' do
-      User.facebook_connected_user(auth).should_not be
+      User.facebook_connected_user(auth).should be nil
     end
 
     it 'returns connected user if one exists' do
@@ -64,7 +64,7 @@ describe User::Facebook do
     end
   end
 
-  describe "#facebook_connect" do
+  describe ".facebook_connect" do
     let(:params){ {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"} }
 
     it "should initialize a new record if the user doesn't exist" do

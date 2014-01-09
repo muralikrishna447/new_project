@@ -5,15 +5,12 @@ module User::Google
   extend ActiveSupport::Concern
 
   def connected_with_google?
-    google_user_id.present?
+    self.google_user_id.present?
   end
 
   def gather_google_contacts(google_app_id, google_secret)
     if connected_with_google?
-      data = File.open(Rails.root.join("config", "client_secrets.json")) { |file| MultiJson.load(file.read) }
-      data["web"].merge!("redirect_uris" => ["postmessage"], "client_secret" => google_secret, "client_id" => google_app_id)
-      client_secrets = Google::APIClient::ClientSecrets.new(data)
-      authorization = client_secrets.to_authorization
+      authorization = self.class.create_authorization(google_app_id, google_secret)
       authorization.update_token!(refresh_token: google_refresh_token, access_token: google_access_token)
       # return authorization
       # authorization.update_token!(refresh_token: User.where(email: "danahern@gmail.com").first.google_refresh_token, access_token: User.where(email: "danahern@gmail.com").first.google_access_token)
@@ -50,12 +47,9 @@ module User::Google
     # https://github.com/google/google-api-ruby-client-samples
     def gather_info_from_google(params, google_app_id, google_secret)
       client = Google::APIClient.new(:application_name => 'Chefsteps', :application_version => 'beta')
-      info = Google::APIClient.new.discovered_api('oauth2', 'v2')
+      info = client.discovered_api('oauth2', 'v2')
       google_params = params[:google]
-      data = File.open(Rails.root.join("config", "client_secrets.json")) { |file| MultiJson.load(file.read) }
-      data["web"].merge!("redirect_uris" => ["postmessage"], "client_secret" => google_secret, "client_id" => google_app_id)
-      client_secrets = Google::APIClient::ClientSecrets.new(data)
-      authorization = client_secrets.to_authorization
+      authorization = create_authorization(google_app_id, google_secret)
       authorization.code = google_params[:code]
       authorization.fetch_access_token!
       results = client.execute( :api_method => info.userinfo.get, :authorization => authorization )
@@ -66,5 +60,13 @@ module User::Google
       google_access_token = authorization.access_token
       return {email: email, name: name, google_user_id: google_user_id, google_refresh_token: google_refresh_token, google_access_token: google_access_token}
     end
+
+    def create_authorization(google_app_id, google_secret)
+      data = File.open(Rails.root.join("config", "client_secrets.json")) { |file| MultiJson.load(file.read) }
+      data["web"].merge!("redirect_uris" => ["postmessage"], "client_secret" => google_secret, "client_id" => google_app_id)
+      client_secrets = Google::APIClient::ClientSecrets.new(data)
+      authorization = client_secrets.to_authorization
+    end
+
   end
 end

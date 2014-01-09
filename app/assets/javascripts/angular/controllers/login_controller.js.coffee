@@ -48,7 +48,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.resetMessages()
     $scope.reset_users()
     if form == "login"
-      $scope.formFor = "signIn"
+      $scope.showForm = "signIn"
       $scope.loginModalOpen = false
     else if form == "invite"
       $scope.inviteModalOpen = false
@@ -147,8 +147,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.register = ->
     $scope.dataLoading += 1
-    $scope.resetMessages();
-
+    $scope.resetMessages()
     $http(
       method: 'POST'
       url: '/users.json'
@@ -165,6 +164,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           $scope.closeModal('login')
           $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
+            $scope.$apply()
             $scope.authentication.setCurrentUser(data.user)
             unless $scope.formFor == "purchase"
               $scope.loadFriends()
@@ -281,13 +281,13 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         google: eventData
     ).success( (data, status) ->
       $scope.dataLoading = 0
-      unless $scope.formFor == 'googleInvite'
+      unless $scope.inviteModalOpen
         $scope.logged_in = true
         $scope.closeModal('login')
         $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"})
       $timeout( -> # Done so that the modal has time to close before triggering events
         $scope.authentication.setCurrentUser(data.user)
-        if $scope.formFor == 'googleInvite'
+        if $scope.inviteModalOpen
           $scope.loadGoogleContacts()
         else if $scope.formFor != "purchase" && data.new_user
           $scope.loadFriends()
