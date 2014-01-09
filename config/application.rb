@@ -94,13 +94,13 @@ module Delve
 
     # CORS
 
-    config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
-      allow do
-        origins '*'
-        # resource '/global-navigation', headers: :any, methods: [:get, :options]
-        resource '*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete]
-      end
-    end
+    # config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
+    #   allow do
+    #     origins '*'
+    #     # resource '/global-navigation', headers: :any, methods: [:get, :options]
+    #     resource '*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete]
+    #   end
+    # end
 
     # Primarily to allow fontawesome access from blog/shop/forum in Firefox
     config.middleware.insert_before ActionDispatch::Static, Rack::AccessControlHeaders, /assets/
