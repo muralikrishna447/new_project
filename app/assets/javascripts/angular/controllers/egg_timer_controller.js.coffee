@@ -15,7 +15,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
   $scope.inputs = 
     water_temp: 70
     desired_viscosity: 16
-    diameter: 46.60
+    diameter: 43
     start_temp: 5
     surface_heat_transfer_coeff: 155
     beta: 1.7
