@@ -11,6 +11,8 @@
             %h3 EGGS
 
         .egg-body
+          .page-bg
+            %img(src="assets/egg_timer_background.png")
           .page-switch(ng-switch="state.name" ng-animate="'fade'")
             .page(ng-switch-when="white")
               %h4.text-center What texture would you like your egg white?
@@ -19,6 +21,7 @@
                   Runny
                   %input(type="range" ng-model='inputs.water_temp' min="60" max="85")
                   Firm
+
             .page(ng-switch-when="yolk")
               %h4.text-center What texture would you like your egg yolk?
               .control-group
@@ -26,7 +29,43 @@
                   Syrup
                   %input(type="range" ng-model='inputs.desired_viscosity' min="5" max="30")
                   Icing
+
             .page(ng-switch-when="results")
+              %h4 {{inputs.water_temp}} &deg;C
+              %h4 {{formatTime(output.items[1])}} if serving immediately
+              %h4 {{formatTime(output.items[4])}} if ice-chilled and reheated later
+              .section
+                Add data for more accurate cooking time:
+              .section.text-center
+                .btn.btn-circle.large(ng-click="goState('size')") Size
+                .btn.btn-circle.large(ng-click="goState('startTemp')") Starting Temp
+                .btn.btn-circle.large(ng-click="goState('bathType')") Bath Type
+
+            .page(ng-switch-when="size")
+              %h4 What size is your egg?
+              .section.text-center
+                .btn-group
+                  .btn.btn-secondary(ng-click="inputs.diameter = 35" active="inputs.diameter == 35") Medium
+                  .btn.btn-secondary(ng-click="inputs.diameter = 43" active="inputs.diameter == 43") Large
+                  .btn.btn-secondary(ng-click="inputs.diameter = 47" active="inputs.diameter == 47") X-Large
+                  .btn.btn-secondary(ng-click="inputs.diameter = 50" active="inputs.diameter == 50") Jumbo
+              .section.text-center
+                or measure the diameter with a string at widest point
+              .section.text-center
+                %input(type="number" ng-model="inputs.diameter") cm
+
+            .page(ng-switch-when="startTemp")
+              %h4 What temperature is your egg?
+              .section.text-center
+                .btn-group
+                  .btn.btn-secondary(ng-click="inputs.start_temp = 5" active="inputs.start_temp == 5") Refrigerator
+                  .btn.btn-secondary(ng-click="inputs.start_temp = 22" active="inputs.start_temp == 22") Room Temp
+              .section.text-center
+                or 
+              .section.text-center
+                %input(type="number" ng-model="inputs.start_temp") &deg; C
+
+
               
         .egg-footer
           .btn.btn-primary.state-button-prev(ng-show="getPrevState()" ng-click="goPrevState()") 
@@ -35,6 +74,7 @@
           .btn.btn-primary.state-button-next(ng-show="getNextState()" ng-click="goNextState()") 
             NEXT
             %i.icon-angle-right
+
           
 
     .span6

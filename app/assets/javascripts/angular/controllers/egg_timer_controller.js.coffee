@@ -51,16 +51,22 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
   $scope.$watchCollection 'inputs', -> 
     $scope.throttledUpdate()
 
+  findState = (name) ->
+    _.find($scope.states, (x) -> x.name == name)
+
   $scope.getPrevState = ->
-    _.find($scope.states, (x) -> x.name == $scope.state.prev)
+    findState($scope.state.prev)
 
   $scope.getNextState = ->
-    _.find($scope.states, (x) -> x.name == $scope.state.next)
+    findState($scope.state.next)
 
   $scope.goPrevState = ->
     $scope.state = $scope.getPrevState()
 
   $scope.goNextState = ->
     $scope.state = $scope.getNextState()
+
+  $scope.goState = (name) ->
+    $scope.state = findState(name)
 
 ]
