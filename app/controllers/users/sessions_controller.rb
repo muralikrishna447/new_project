@@ -1,6 +1,8 @@
 class Users::SessionsController < Devise::SessionsController
-
   include Devise::Controllers::Rememberable
+
+  skip_before_filter :authenticate_cors_user
+
   def new
     flash[:notice] = params[:notice] if params[:notice]
     self.resource = build_resource(nil, :unsafe => true)
