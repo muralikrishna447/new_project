@@ -485,6 +485,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
      mixpanel.track('Activity Description Maximized', {'slug' : $scope.activity.slug});
      mixpanel.people.increment('Activity Description Maximized Count')
 
+  $scope.ingredientSpanClass = ->
+    if $scope.activity.description
+      'span6'
+    else
+      'span7'
 
   # One time stuff
   if $scope.parsePreloaded()

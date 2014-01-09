@@ -4,10 +4,10 @@
       .hero-video.noprint
         = render 'activities/hero_visual'
         
-  .row.main-content-container(ng-show="!!activity.description")
+  .row.main-content-container
     .span6
       = render 'activities/latest/description'
-    .span6
+    %div(ng-class='ingredientSpanClass()')
       = render 'activities/main_ingredients'
       .row
         .span3
