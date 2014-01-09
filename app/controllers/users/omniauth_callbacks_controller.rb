@@ -1,5 +1,8 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   include Devise::Controllers::Rememberable
+
+  skip_before_filter :authenticate_cors_user
+
   # def facebook
   #   auth = request.env["omniauth.auth"]
   #   @user = User.facebook_connected_user(auth)
