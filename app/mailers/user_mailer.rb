@@ -3,6 +3,6 @@ class UserMailer < ActionMailer::Base
 
   def invitations(to, sender)
     @sender = sender
-    mail(bcc: to, subject: "Join #{sender.name} on ChefSteps and cook smarter")
+    mail(bcc: to, subject: "Join #{@sender.name} on ChefSteps and cook smarter")
   end
 end
