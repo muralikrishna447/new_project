@@ -80,7 +80,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
         $scope.csGlobals.scaling = 1
         $scope.csGlobals.units = "grams"
         window.updateUnits(false)
-        window.expandSteps()
 
   $scope.maybeStartEditMode = ->
     # Must reload activity before checking currently_editing_user - want to get any changes that have
@@ -180,9 +179,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.addEditModeClass = ->
     if $scope.editMode then "edit-mode" else "show-mode"
-
-  $scope.primaryColumnClass = ->
-    if ($scope.editMode || ($scope.activity && $scope.activity.steps && ($scope.activity.steps.length > 0))) then 'span6' else 'no-steps span8 offset2'
 
   $scope.temporaryNoAutofocus = ->
     # Pretty ugly, but I don't see a cleaner solution
@@ -485,6 +481,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
      mixpanel.track('Activity Description Maximized', {'slug' : $scope.activity.slug});
      mixpanel.people.increment('Activity Description Maximized Count')
 
+  $scope.ingredientSpanClass = ->
+    if $scope.activity.description
+      'span6'
+    else
+      'span7'
 
   # One time stuff
   if $scope.parsePreloaded()

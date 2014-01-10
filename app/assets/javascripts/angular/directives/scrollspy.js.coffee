@@ -31,13 +31,14 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
     if attrs.spyonelement
       scope.spyOnElement = angular.element(elem)[0]
     else
-      scope.spyOnElement = $window
+      scope.spyOnElement = window
 
-    scope.$watch 'spies', (spies) ->
-      for spy in spies
-        unless scope.spyElems[spy.id]?
-          scope.spyElems[spy.id] = elem.find('#'+spy.id)
-          boundingRect = scope.spyElems[spy.id][0].getBoundingClientRect()
+    scope.$watch 'spies.length', (newValue, oldValue) ->
+      if newValue != oldValue
+        for spy in scope.spies
+          unless scope.spyElems[spy.id]?
+            scope.spyElems[spy.id] = elem.find('#'+spy.id)
+            boundingRect = scope.spyElems[spy.id][0].getBoundingClientRect()
 
     scope.updateSpies = ->
       spy.out() for spy in scope.spies
@@ -89,7 +90,11 @@ angular.module('ChefStepsApp').directive 'spy', ['$window', ($window)->
 
     el.on 'click', ->
       scrollElement = affix.getSpyOnElement()
-      angular.element(scrollElement)[0].scrollTop += scope.pos
+      if scrollElement == window
+        scrollPos = $(window).scrollTop() + scope.pos
+        $(window).scrollTop(scrollPos)
+      else
+        angular.element(scrollElement)[0].scrollTop += scope.pos
 
 ]
 
