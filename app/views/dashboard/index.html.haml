@@ -1,5 +1,11 @@
 .container
-  .row
+  .row.section
+    .span6
+      %h3= "New users last 7 days: #{@new_users_last_week.count}"
+      %h3= "New active users (> 3 events): #{@new_active_users.all.count}"
+      %h3= "New active users (> 10 events): #{@new_very_active_users.all.count}"
+
+  .row.section
     .span4
       %h3= "Users: #{@users_count}"
       %table.table-striped.table-bordered

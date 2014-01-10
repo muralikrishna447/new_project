@@ -20,25 +20,12 @@
     text-transform: capitalize
 
   .well
-    ul, .ro-tag-group
+    ul, .tag-group
       margin-right: 25px
 
   .embed-container
     height: auto
     padding-bottom: $baseline
-
-  .ro-tag
-    background-color: white
-    color: #333
-    border: 1px solid #ccc
-    padding: 1px 4px
-    margin: 0px 8px $baseline 0px
-    @include radius(4px)
-    @include primary-font-light 
-    display: inline-block
-
-    i
-      color: #aaa
 
   .report-problem
     position: absolute
@@ -51,3 +38,28 @@
   .text-fields
     textarea
       width: 100%
+
+.tag
+  background-color: white
+  color: #333
+  border: 1px solid #ccc
+  padding: 1px 4px
+  margin: 0px 8px $baseline 0px
+  @include radius(4px)
+  @include primary-font-light 
+  display: inline-block
+
+  i
+    &:before
+      margin-left: 2px
+      margin-right: -2px
+    color: #555
+
+.tag.active
+  background-color: orange
+  i
+    color: white
+
+.tag-bg
+  background-color: #f2f2f2
+  overflow: hidden

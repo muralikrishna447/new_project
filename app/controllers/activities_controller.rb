@@ -31,16 +31,18 @@ class ActivitiesController < ApplicationController
     referer = http_referer_uri
     is_google = request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (referer && referer.host.index('google'))
     is_brombone = request.headers["X-Crawl-Request"] == 'brombone'
-    if @activity.show_only_in_course && (! current_admin?) && (! is_google) && (! is_brombone)
-      redirect_to class_path(@activity.containing_course), :status => :moved_permanently
-    end
+    if (! current_admin?) && (! is_google) && (! is_brombone)
+      if @activity.show_only_in_course
+        redirect_to class_path(@activity.containing_course), :status => :moved_permanently
+      end
 
-    if @activity.containing_course && current_user && current_user.enrolled?(@activity.containing_course)
-      redirect_to class_activity_path(@activity.containing_course, @activity)
-    end
+      if @activity.containing_course && current_user && current_user.enrolled?(@activity.containing_course)
+        redirect_to class_activity_path(@activity.containing_course, @activity)
+      end
 
-    if @activity.assemblies.first.assembly_type == 'Project'
-      redirect_to assembly_activity_path(@activity.assemblies.first, @activity)
+      if @activity.assemblies.first.assembly_type == 'Project'
+        redirect_to assembly_activity_path(@activity.assemblies.first, @activity)
+      end
     end
 
   rescue
@@ -77,6 +79,8 @@ class ActivitiesController < ApplicationController
             path = view_context.link_to containing_class.title, landing_class_path(containing_class)
           when 'Project'
             path = view_context.link_to containing_class.title, project_path(containing_class)
+          when 'Recipe Development'
+            path = view_context.link_to containing_class.title, recipe_development_path(containing_class)
           end
           flash.now[:notice] = "This is part of the #{path} #{containing_class.assembly_type.to_s}."
         end
@@ -231,7 +235,7 @@ class ActivitiesController < ApplicationController
     @title = "ChefSteps - Cook Smarter"
 
     # the news items
-    @activities = Activity.published.by_published_at('desc').chefsteps_generated.include_in_feeds
+    @activities = Activity.published.by_published_at('desc').chefsteps_generated.include_in_feeds.limit(40)
 
     # this will be our Feed's update timestamp
     @updated = @activities.published.first.published_at unless @activities.empty?

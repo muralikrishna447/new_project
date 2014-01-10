@@ -1,6 +1,12 @@
 require 'spork'
 
 Spork.prefork do
+  unless ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails' do
+      coverage_dir('tmp/coverage')
+    end
+  end
 
   ENV["RAILS_ENV"] ||= 'test'
   # Avoid the User model from being always preloaded. See more info here:
@@ -69,7 +75,12 @@ Spork.prefork do
 end
 
 Spork.each_run do
-
+  if ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails' do
+      coverage_dir('tmp/coverage')
+    end
+  end
 end
 
 def current_path_info

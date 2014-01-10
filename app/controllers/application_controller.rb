@@ -28,6 +28,10 @@ class ApplicationController < ActionController::Base
     render partial: 'layouts/header', :locals => { :external => true }
   end
 
+  def options
+    render :text => '', :content_type => 'text/plain'
+  end
+
   # expose devise helper method to views
   helper_method :after_sign_in_path_for
 
@@ -171,6 +175,27 @@ private
     else
       logger.debug 'Newsletter Signup'
     end
+  end
+
+  # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
+  # do not use CSRF for CORS options
+  skip_before_filter :verify_authenticity_token, :only => [:options]
+
+  before_filter :cors_set_access_control_headers
+  before_filter :authenticate_cors_user
+
+  def authenticate_cors_user
+    if request.xhr? && !user_signed_in?
+      error = { :error => "You must be logged in." }
+      render :json => error, :status => 401
+    end
+  end
+
+  def cors_set_access_control_headers
+    headers['Access-Control-Allow-Origin'] = 'http://localhost'
+    headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+    headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type'
+    headers['Access-Control-Max-Age'] = "1728000"
   end
 
   protected

@@ -1,11 +1,11 @@
-.login-modal(ng-when="login" close="closeModal('login')" modal="loginModalOpen" options="modalOptions" ng-cloak)
-  %form
-    .modal-body.login-modal-body(ng-switch="showForm")
+.login-modal(close="closeModal('login')" modal="loginModalOpen" options="modalOptions" ng-cloak)
+  %form(ng-switch="showForm")
+    .modal-body.login-modal-body
       .close-x.pull-right(ng-click="closeModal('login')")
         %i.icon-remove
       .row-fluid(ng-switch-when="signIn" ng-animate='slide')
         %h3 Sign in to ChefSteps
-        .form-horizontal(ng-show="!authentication.currentUser()")
+        .form-horizontal(ng-show="!authentication.loggedIn()")
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
           .button-group
             .facebook-button.facebook-login
@@ -31,7 +31,7 @@
                 {{field_error}}
       .row-fluid(ng-switch-when="signUp" ng-animate='slide')
         %h3 Sign up to ChefSteps
-        .form-horizontal(ng-show="!authentication.currentUser()")
+        .form-horizontal(ng-show="!authentication.loggedIn()")
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
           .button-group
             .facebook-button.facebook-login
@@ -61,23 +61,23 @@
               %div.error-text(ng-repeat="field_error in register_error.errors.password")
                 {{field_error}}
     .modal-footer.login-modal-footer
-      .sign-out-buttons.button-group(ng-show="authentication.currentUser()")
-        %div
-          %button.btn.btn-primary.btn-large.sign-out(ng-show="authentication.currentUser()" ng-click="logout()") Sign Out
-      .sign-in-buttons.button-group(ng-show="showForm=='signIn'" ng-animate='slide')
+      .sign-in-buttons.button-group(ng-switch-when="signIn")
         %div
           %button.btn.btn-primary.btn-large.signin(ng-click="login()") Sign in
         %hr
         %div
           %a.switch-to-signup(ng-click="switchForm('signUp')")
             Get an Account
-      .sign-up-buttons.button-group(ng-show="showForm=='signUp'")
+      .sign-up-buttons.button-group(ng-switch-when="signUp")
         %div
           %button.btn.btn-primary.btn-large.signup(ng-click="register()") Sign Up
         %hr
         %div
           %a.switch-to-signin(ng-click="switchForm('signIn')")
             Already have an account
+      .sign-out-buttons.button-group(ng-show="authentication.cuurentUser()")
+        %div
+          %button.btn.btn-primary.btn-large.sign-out(ng-click="logout()") Sign Out
 
 .invite-modal(close="closeModal('invite')" modal="inviteModalOpen" options="modalOptions" ng-cloak)
   %form

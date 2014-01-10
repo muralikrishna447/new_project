@@ -11,8 +11,9 @@
       %button.btn(ng-repeat="actType in activityTypes" type="button" ng-click="toggleActivityType(actType)" ng-class="{active: hasActivityType(actType)}")
         {{actType}}
 
-    %h6 Tags
-    %input(type="text" ng-model="tags" ng-model="activity.tags" ui-select2="tagsSelect2")
+    %h6.inline Tags
+    .btn.btn-link.inline(ng-click="showTagsModal = true") Select...    
+    %input(type="text" ng-model="activity.tags" ui-select2="tagsSelect2()")
 
     %h6 #CS140 Summary Tweet (limit 96 chars to allow for link #cs140 @ChefSteps and RT)
     %input.summary-tweet(type="text" ng-model="activity.summary_tweet" maxlength="96")

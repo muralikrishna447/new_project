@@ -124,7 +124,7 @@ Delve::Application.routes.draw do
     end
   end
 
-  resources :ingredients, only: [:index, :show, :update, :destroy] do
+  resources :ingredients, only: [:index, :show, :update, :create, :destroy] do
     member do
       post 'merge' => 'ingredients#merge'
       get 'as_json' => 'ingredients#get_as_json'
@@ -132,6 +132,8 @@ Delve::Application.routes.draw do
     end
     collection do
       get 'all_tags' => 'ingredients#get_all_tags'
+      get 'manager' => 'ingredients#manager'
+      get 'index_for_gallery' => 'ingredients#index_for_gallery'
     end
   end
 
@@ -210,5 +212,8 @@ Delve::Application.routes.draw do
     get "start_clean" => "application#start_clean"
     get "end_clean" => "application#end_clean"
   end
+
+  # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
+  match '/*path' => 'application#options', :via => :options
 end
 

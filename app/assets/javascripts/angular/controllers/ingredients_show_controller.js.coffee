@@ -1,9 +1,14 @@
-angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', 'csAuthentication', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService, csAuthentication) ->
+angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', 'csAuthentication', 'csTagService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService, csAuthentication, csTagService) ->
 
+  # This muck will go away when I do deep routing properly
+  $scope.url_params = {}
+  $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
+  
   $scope.heroMedia = csEditableHeroMediaService
   $scope.alertService = csAlertService
   $scope.densityService = csDensityService
-  $scope.csAuthentication = csAuthentication
+  $scope.csAuthentication = csAuthentication 
+  $scope.csTagService = csTagService
 
   $scope.urlAsNiceText = (url) ->
     csUrlService.urlAsNiceText(url)
@@ -24,10 +29,11 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
                           }
                         )
 
-  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "substitutions", "purchasing tips", "storage", "production", "seasonality", "history"]
+  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "suggested cooking times and temperatures", "substitutions", "purchasing tips", "storage", "production", "safety", "seasonality", "history"]
 
   $scope.ingredient = Ingredient.get({}, -> 
     mixpanel.track('Ingredient Viewed', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
+    $scope.startEditMode() if $scope.url_params?["edit"]? && csAuthentication.loggedIn()
   )
 
   # Overall edit mode
@@ -91,36 +97,8 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     $scope.showHeroVisualEdit = false if old_val != new_val
   )
 
-   # Tags - TODO: needs to share code with activity_controller!!
-  $scope.tagsSelect2 =
-
-    placeholder: "Add some tags"
-    tags: true
-    multiple: true
-    width: "100%"
-
-    ajax:
-      url: "/ingredients/all_tags.json",
-      data: (term, page) ->
-        return {
-          q: term
-        }
-
-      results: (data, page) ->
-        return {results: data}
-
-    formatResult: (tag) ->
-      tag.name
-
-    formatSelection: (tag) ->
-      tag.name
-
-    createSearchChoice: (term, data) ->
-      id: term
-      name: term
-
-    initSelection: (element, callback) ->
-      callback($scope.activity.tags)
+  $scope.tagsSelect2 = -> 
+    csTagService.getSelect2Info($scope.ingredient.tags, "/ingredients/all_tags.json")
 
   # Social share callbacks
   $scope.socialURL = ->

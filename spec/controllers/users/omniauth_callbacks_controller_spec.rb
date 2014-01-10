@@ -42,17 +42,17 @@ describe Users::OmniauthCallbacksController do
       end
 
       context "user does not exist" do
-        it "should be a new sign up" do
-          xhr :get, :facebook, {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}
-          assigns(:new_signup).should be true
-        end
-
         it "should return a json" do
           xhr :get, :facebook, {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}
           response.status.should be 200
           response.body.should include "test@example.com"
           response.body.should include "\"new_user\":true"
           response.body.should include "\"success\":true"
+        end
+
+        it "should be a new sign up" do
+          xhr :get, :facebook, {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}
+          assigns(:new_signup).should be true
         end
 
         it "should sign them up to aweber" do

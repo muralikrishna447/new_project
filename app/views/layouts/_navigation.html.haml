@@ -28,11 +28,13 @@
                     %i.icon-angle-down
                   %ul.dropdown-menu
                     .dropdown-background
-                    %li= link_to 'ChefSteps Recipes', gallery_index_url(activity_type: "Recipe")
-                    %li= link_to 'Community Recipes', gallery_index_url(source: "community")
-                    %li= link_to 'Add Recipe', new_activity_url
+                    %li= link_to 'ChefSteps Recipes', gallery_index_url + "#/?activity_type=Recipe&generator=ChefSteps"
+                    %li= link_to 'Community Recipes', gallery_index_url + "#/?generator=Community"
+                    %li= link_to 'Ingredients', ingredients_url
+                    -if (can? :manage, Ingredient) || (can? :manage, Ingredient)
+                      %li.divider
                     -if can? :manage, Ingredient
-                      %li= link_to 'Manage Ingredients', ingredients_path
+                      %li= link_to 'Manage Ingredients', manager_ingredients_path
                     -if can? :manage, Equipment
                       %li= link_to 'Manage Equipment', equipment_index_path
 
@@ -48,16 +50,17 @@
                     .dropdown-background
                     %li= link_to 'Forum', 'http://forum.chefsteps.com'
                     %li= link_to 'Vote For New Courses', poll_url('vote-for-future-classes-3')
-                %li.dropdown
-                  .nav-item-border
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Shop
-                    %i.icon-angle-down
-                  %ul.dropdown-menu
-                    .dropdown-background
-                    %li= link_to 'Store', 'http://store.chefsteps.com'
-                    %li= link_to 'Knife Collection', knife_collection_url
-                    %li= link_to 'Sous Vide Collection', sv_collection_url
+                -unless @no_shop
+                  %li.dropdown
+                    .nav-item-border
+                    = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                      Shop
+                      %i.icon-angle-down
+                    %ul.dropdown-menu
+                      .dropdown-background
+                      %li= link_to 'Store', 'http://store.chefsteps.com'
+                      %li= link_to 'Knife Collection', knife_collection_url
+                      %li= link_to 'Sous Vide Collection', sv_collection_url
                 %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
                   .nav-item-border
                   - if external
@@ -93,7 +96,7 @@
                     .nav-item-border
                     .nav-search.nav-search-toggle
                       %i.icon-search.icon-large
-                      = form_tag gallery_index_url, :method => :get, class: 'navbar-form form-search nav-search-form' do
-                        = text_field_tag :search_all, nil, :placeholder => 'search', class: 'search-query', id: 'nav-search-field'
+                      %form.navbar-form.form-search.nav-search-form(action="#{gallery_index_url}#/?search_all={{navbarSearchQuery}}" method="get")
+                        %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
                       .nav-search-hide
                         %i.icon-remove

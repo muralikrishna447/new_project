@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Ingredient do
-  let(:ingredient) { Fabricate(:ingredient, title: 'black Pepper') }
-  let(:ingredient2) { Fabricate(:ingredient, title: 'Black peepper') }
-  let(:ingredient3) { Fabricate(:ingredient, title: 'Black pepper, whole') }
+  let(:ingredient) { Fabricate(:ingredient, title: 'black Pepper', image_id: "foo", tag_list: "a, b") }
+  let(:ingredient2) { Fabricate(:ingredient, title: 'Black peepper', image_id: "bar", text_fields: "baz", tag_list: "c") }
+  let(:ingredient3) { Fabricate(:ingredient, title: 'Black pepper, whole', density: 1, product_url: "sneegle", tag_list: "c, d") }
   let(:activity) { Fabricate(:activity, title: 'foo1') }
   let(:activity2) { Fabricate(:activity, title: 'foo2') }
   let(:activity3) { Fabricate(:activity, title: 'foo3') }
@@ -77,5 +77,14 @@ describe Ingredient do
     Ingredient.exists?(ingredient).should == true
     Ingredient.exists?(ingredient2).should == false
     Ingredient.exists?(ingredient3).should == false
+  end
+
+  it "copies over details from merged ingredients" do
+    ingredient.merge([ingredient2, ingredient3])
+    ingredient.image_id.should == "foo"
+    ingredient.text_fields.should == "baz"
+    ingredient.density.should == 1
+    ingredient.product_url.should == "sneegle"
+    ingredient.tag_list.should =~ ["a", "b", "c", "d"]
   end
 end

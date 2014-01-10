@@ -5,19 +5,10 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService",
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll, csEditableHeroMediaService) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService", "Activity", "csTagService",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll, csEditableHeroMediaService, Activity, csTagService) ->
 
   $scope.heroMedia = csEditableHeroMediaService
-
-  Activity = $resource( "/activities/:id/as_json",
-                        {id:  $('#activity-body').data("activity-id") || 1},
-                        {
-                          update: {method: "PUT"},
-                          startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
-                          endedit: {method: "PUT", url: "/activities/:id/notify_end_edit"}
-                        }
-                      )
 
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
@@ -30,6 +21,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
   $scope.activities = {}
+
+  $scope.csTagService = csTagService
 
   $scope.getObject = ->
     $scope.activity
@@ -272,36 +265,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     act_type =  $scope.sourceActivityTypes[0] if ! act_type
     act_type.name
 
-  # Tags
-  $scope.tagsSelect2 =
-
-    placeholder: "Add some tags"
-    tags: true
-    multiple: true
-    width: "100%"
-
-    ajax:
-      url: "/activities/all_tags.json",
-      data: (term, page) ->
-        return {
-          q: term
-        }
-
-      results: (data, page) ->
-        return {results: data}
-
-    formatResult: (tag) ->
-      tag.name
-
-    formatSelection: (tag) ->
-      tag.name
-
-    createSearchChoice: (term, data) ->
-      id: term
-      name: term
-
-    initSelection: (element, callback) ->
-      callback($scope.activity.tags)
+  $scope.tagsSelect2 = ->
+    csTagService.getSelect2Info($scope.activity?.tags, "/activities/all_tags.json")
 
   $scope.sortOptions = {
     axis: 'y',

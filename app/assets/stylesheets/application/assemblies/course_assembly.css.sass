@@ -1,52 +1,73 @@
 @import 'mixins'
 @import 'application/custom_mixins'
 
+.fs-course
+  height: 100%
+  margin: 0px
+
+// Landing Page Styles
+.assembly-syllabus
+  .nested
+    padding-left: 20px
+
 .buy-buttons
   margin-bottom: $baseline
 
-.course-assembly-container
-  @include boxsizing
+.course-wrapper
+  position: relative
+  background-color: white
+  float: left
+  height: 100%
+  width: 100%
 
-.course-nav-hamburger
-  //position: fixed
-  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
-  -webkit-transform: translateZ(0)
-  -webkit-backface-visibility: hidden
-  position: fixed
-  z-index: 1000
-  margin-left: -28px
+.course-assembly-container
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0px
+  left: 0px
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
+.course-nav-hamburger-wrapper
+  position: absolute
+  width: 40px
+  height: 100%
+  top: 0px
+  left: 0px
+  margin-top: 0px
+  padding-top: 5px
+  padding-left: 5px
+  padding-right: 5px
+  background-color: white
   color: $orange
   font-size: 24px
-  width: 28px
   @include boxsizing
-  .hamburger-bar
-    width: 28px
-    height: 5px
-    border-radius: 1px
-    margin-bottom: 4px
-    background: $orange
-    @include boxsizing
-  &:hover
-    cursor: pointer
+  .course-nav-hamburger
     .hamburger-bar
-      background: $dark-orange
+      width: 30px
+      height: 5px
+      border-radius: 1px
+      margin-bottom: 4px
+      background: $orange
+      @include boxsizing
+    &:hover
+      cursor: pointer
+      .hamburger-bar
+        background: $dark-orange
 
 .course-nav-slideout
   position: fixed
-  padding-top: $baseline * 5
   top: 0px
+  left: 40px
   width: 295px
   height: 100%
+  margin-left: -295px
+  background-color: white
   border-right: 1px solid $light-gray
   overflow-y: auto
   overflow-x: hidden
-  z-index: 100
-  opacity: 0
   -webkit-overflow-scrolling: touch
-  -webkit-transform: translateZ(0)
-  -webkit-backface-visibility: hidden
-  pointer-events: none
-  @include transition(opacity 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
   @include boxsizing
 
   h1
@@ -89,7 +110,7 @@
 
     li.active
       color: #333
-      background-color: $light-gray
+      background-color: $offwhite
 
     .nested
       border-top: none
@@ -101,6 +122,7 @@
 
         li
           border-top: none
+          @include transition(all 200ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
 
         li.active, li:hover
           color: #333
@@ -110,24 +132,27 @@
         .hitbox:hover
           color: #333
 
-
-.course-nav-wrapper.affix
-  position: fixed
-  top: 56px
-
 .course-content-wrapper
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0px
+  left: 0px
+  padding-left: 40px
+  padding-top: $baseline
+  margin-left: 0px
+  overflow-y: auto
+  overflow-x: hidden
+  -webkit-overflow-scrolling: touch
+  @include boxsizing
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
   .container-fluid
-    margin-left: 0px
-    margin-right: 0px
-    padding: 0px
+    .row-fluid
+      .row
+        margin-left: 0px
     .row-fluid [class*="span"]
       min-height: 0px
     .course-content
-      z-index: 1000
-      background-color: white
-      padding-left: 20px
-      padding-right: 20px
-      @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
       .row
         margin-left: 0px
       .span7
@@ -142,23 +167,52 @@
       #video-ingredient-unit
         min-height: 0px
 
-.course-content.menu-showing
-  left: 300px
+.menu-slideout
+  @include transform(translateX(295px))
 
-.course-nav-slideout.menu-slideout
-  opacity: 1
-  pointer-events: inherit
+.assembly-loading-wrapper
+  position: absolute
+  z-index: 9999
+  // background: rgba(255, 255, 255, .9)
+  height: 100%
+  width: 100%
+  top: 0
+  left: 0
+  padding-left: 40px
+  text-align: center
+  pointer-events: none
+  backface-visibility: hidden
+  -webkit-backface-visibility: hidden /* Chrome and Safari */
+  -moz-backface-visibility: hidden /* Firefox */
+  -ms-backface-visibility: hidden /* Internet Explorer */
+  @include boxsizing
+  .assembly-loading-background
+    width: 100%
+    height: 100%
+    padding-top: 100px
+    background-color: white
+    .activity-loading-spinner
+      margin-top: 0px
+
+// Global Nav
+.course-global-nav
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+  .navbar.navbar-fixed-top
+    margin-top: -58px
+
+.course-global-nav-show
+  @include transform(translateY(58px))
 
 #step-dots
   position: fixed
   -webkit-backface-visibility: hidden
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
+  z-index: 9999
   width: 14px
-  top: 115px
-  //margin-left: 50%
-  //left: -634px
-  margin-left: -41px
+  top: 50px
+  left: 0px
+  padding-left: 12px
   @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
 
 
@@ -299,172 +353,87 @@
 
 .responsive
   display: none
-  
-
-// Affixable Styles //
-
-@media (max-width: 979px)
-  .course-nav-hamburger
-    position: absolute
-
-  .course-nav-hamburger.affixable-fixed
-    position: fixed
-    top: 0px
-    margin-top: 10px
-
-  .course-nav-slideout
-    position: absolute
-    top: 56px
-    margin-top: 0px
-    padding: 0px
-
-  .course-nav-slideout.affixable-fixed
-    position: fixed
-    top: 0px
-    margin-top: 0px
 
 // Responsive Styles //
+@media (min-width: 1024px)
+  .course-nav-hamburger-wrapper
+    display: none
 
-@media (max-width: 1280px)
-  .course-assembly-container
-    margin: 0px
-    width: 100%
-    padding-left: 18px
-  .course-nav-hamburger
-    left: 10px
-    margin-top: 10px
-    margin-left: 0px
   .course-nav-slideout
-    left: 38px
-  .course-content-wrapper
-    padding-left: 18px
+    margin-left: 0px
 
   .course-content-wrapper
-    .container-fluid
-      .course-content
-        padding-left: 20px
-        padding-right: 20px
+    padding-left: 335px
+
+  .assembly-loading-wrapper
+    padding-left: 335px
 
 @media (max-width: 979px)
-  .navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner
-    padding: 0px
-
-  .course-nav-wrapper
-    position: absolute
-
-  .course-nav-wrapper.affix
-    position: fixed
-    top: 0px
-
-@media (max-width: 480px)
-  .activity-ingredients-list .well, .ordered-step-item .step-ingredients-source.well  
-    background-color: transparent
-    padding: 0
-
-  .ingredients-title
-    display: block
-
-  .ingredients 
-    .edit-pair-show
-      .ingredient-title
-        margin-left: 0
-        text-indent: 0
-      
-    .ingredient-title, .quantity-group, .unit
-      background: white !important
-
-@media (max-width: 979px) and (min-width: 768px)
-  .course-assembly-container
-    .course-nav-wrapper
-      padding-left: 10px
-      left: 0px
-      width: 100%
-    .course-content-wrapper
+  .course-content-wrapper
+    .container-fluid
       margin-left: 0px
-      .container-fluid
-        margin-left: 0px
-        margin-right: 0px
-        .row-fluid [class*="span"]
-          min-height: 0px
+      margin-right: 0px
+
+  .course-content-wrapper.course-global-nav-show
+    margin-top: 0px
 
 @media (max-width: 767px)
-  .course-assembly-container
+  .fs-course
     padding-left: 0px
-    .course-nav-wrapper
-      padding-left: 10px
-      left: 0px
-      width: 100%
-    .course-content-wrapper
+    padding-right: 0px
+
+  .course-global-nav
+    .navbar
       margin-left: 0px
-      .course-content
-        padding-right: 0px
-      .container-fluid
-        margin-left: 0px
-        margin-right: 0px
-        .row-fluid [class*="span"]
-          min-height: 0px
-      #video-ingredient-unit
-        min-height: 0px
-    .course-nav-bottom-center
-      padding-top: 50px
+      margin-right: 0px
+  
+  .course-content-wrapper
+    padding-bottom: 110px
+    .container-fluid
+      padding-left: 10px
+      padding-right: 10px
 
-  // Fix for really weird ios bug where you can't scroll content when menu is hidden
-  .course-nav-slideout
-    display: none
-  .course-nav-slideout.menu-slideout
-    display: block
-
-@media (max-width: 480px)
-  .assembly-upload-modal
-    position: absolute
-    top: 0px
-    left: 0px
-    margin: -20px
-    @include boxsizing
-    .modal-body
-      max-height: none
-      @include boxsizing
-    .modal-footer
-      width: 100%
-      bottom: 0px
-      border-radius: 0px
-      @include boxsizing
-
-@media (max-width: 720px)
   .non-responsive
     display: none
 
   .responsive
     display: inline-block
-  .course-nav-bottom-center
-    position: relative
-    margin-left: -20px
-    padding-left: 20px
-    width: 100%
 
-    hr
-      width: 120%
-      margin-left: -10%
-      border-top-color: $light-gray
-      padding-bottom: $baseline * 2
+  // Mobile Bottom Nav
+  .course-nav-bottom-center
+    position: absolute
+    background-color: white
+    height: 100px
+    bottom: -100px
+    width: 100%
+    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
     .next-activity-name
       color: $orange
+      position: absolute
+      width: 100%
+      bottom: 55px
+      padding-bottom: 10px
+      background-color: white
+    h4
+      margin-bottom: 0px
 
     .course-nav-buttons-group
       width: 100%
-      position: relative
-      padding-bottom: $baseline * 8
+      position: absolute
+      bottom: 0px
+      height: 55px
       .btn
         @include boxsizing
-        display: inline-block
-        width: 55%   
+        width: 50%   
         position: absolute
-        right: 50%
-        bottom: 0
+        left: 0px
+        bottom: 0px
         height: $baseline * 5
         padding-top: 14px
         border-top: 1px solid $light-gray
         border-bottom: none
+        margin-bottom: 0px
         i
           font-size: $baseline * 3
           vertical-align: middle
@@ -473,8 +442,6 @@
         left: 50%
         right: auto
         border-left: 1px solid $light-gray
-    
-.assembly-syllabus       
-  .nested
-    padding-left: 20px
 
+  .show-nav-bottom
+    @include transform(translateY(-100px))

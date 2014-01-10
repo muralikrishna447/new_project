@@ -39,14 +39,18 @@
 
   .row.section(ng-show="! editMode")
     .span12.well.text-center.wiki-warning(ng-show="csAuthentication.loggedIn()")
-      ChefSteps ingredient wiki pages are community-edited. If you see incorrect information, please
+      ChefSteps 
+      %a(href="/ingredients") ingredient wiki 
+      pages are community-edited. If you see incorrect information, please
       %a(ng-click="startEditMode()") fix it
       or
       %a(ng-click="reportProblem()") report it.
       %br
       Your contributions are always welcome, just click the edit button below.
     .span12.well.text-center.wiki-warning(ng-show="! csAuthentication.loggedIn()")
-      ChefSteps ingredient wiki pages are community-edited. If you see incorrect information, please
+      ChefSteps 
+      %a(href="/ingredients") ingredient wiki 
+      pages are community-edited. If you see incorrect information, please
       %a(ng-click="reportProblem()") report it,
       or
       %a(href="/sign_in") sign in
@@ -113,13 +117,14 @@
       .well.relative
         .row.section(ng-show="editMode")
           .span6
-            %input(type="text" ng-model="tags" ng-model="ingredient.tags" ui-select2="tagsSelect2")
-        .row.section(ng-show="! editMode")
+            %h3.inline Tags
+            .btn.btn-link.inline(ng-click="showTagsModal = true") Select...            
+            %input(type="text" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
+
+        .row.section(ng-show="(! editMode) && ingredient.tags.length")
           .span6
-            .ro-tag-group
-              %span.ro-tag(ng-repeat="tag in ingredient.tags")
-                %i.icon-tag
-                {{tag.name}}
+            %h3 Tags
+            %csTagList(ng-model="ingredient.tags" search-path="'/ingredients#/?search_all'")
 
         .row.section(ng-show="ingredient.product_url")
           .span6
@@ -174,7 +179,7 @@
 
 = render 'density_table'
 
-%div(close="showHelpModal = false" modal="showHelpModal" options="modalOptions")
+%div(ng-cloak close="showHelpModal = false" modal="showHelpModal" options="modalOptions")
   .modal-header
     %h2
       How To Edit Ingredients
@@ -194,11 +199,22 @@
   .modal-footer
     %button.btn(ng-click="showHelpModal = false") Done
 
-%div(close="showPostEditModal = false" modal="showPostEditModal" options="modalOptions")
+%div(ng-cloak close="showPostEditModal = false" modal="showPostEditModal" options="modalOptions")
   .modal-header
     %h2 Thanks For Your Contribution!
   .modal-body
     %h4 Now tell the world?
     = render 'layouts/social_buttons', media_object: nil
 
+%div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
+  .modal-header
+    %h2 Choose Tags
+    Pick all that apply to how you think as a cook; e.g. it is ok to mark 
+    %i tomato 
+    as both a fruit and a vegetable.
+  .modal-body.tag-bg
+    %csTagChooser(  ng-model="ingredient.tags" 
+                    options="csTagService.ingredientSuggestedTags")
+  .modal-footer
+    %button.btn(ng-click="showTagsModal = false") Done
 

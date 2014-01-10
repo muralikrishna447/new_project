@@ -1,8 +1,11 @@
-%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#" }
+!!! 5
+%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav}" }
   %head
     %title= "#{yield :title} - ChefSteps"
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
+    %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
+    %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
     = csrf_meta_tags
     = render 'layouts/twitter'
     %meta{charset: 'utf-8'}
@@ -27,8 +30,6 @@
     - else
       %link{href: "/favicon.ico", rel: "shortcut icon"}
 
-    %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
-    %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
@@ -44,19 +45,18 @@
     = javascript_include_tag 'application_head'
     = javascript_include_tag 'application'
     %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
-    %script(src="//plus.google.com/js/client:plusone.js?onload=start")
-  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => Rails.env}
+  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav}"}
     = render 'layouts/facebook'
     = render 'layouts/google'
-    = render 'layouts/navigation', external: false
-
-    .container.alert-container
-      - flash.each do |name, msg|
-        %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
-          %button.close{type: 'button', data: {dismiss: 'alert'}} x
-          %h4.alert-message= msg.html_safe
-          .lblock
-      %cs-notifications
+    - unless @hide_nav == true
+      = render 'layouts/navigation', external: false
+      .container.alert-container
+        - flash.each do |name, msg|
+          %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
+            %button.close{type: 'button', data: {dismiss: 'alert'}} x
+            %h4.alert-message= msg.html_safe
+            .lblock
+        %cs-notifications
 
     = yield
 
@@ -71,7 +71,7 @@
     / %script{src:'http://www.youtube.com/iframe_api'}
     / %script{src:'/assets/youtube.js'}
   / = render 'layouts/youtube'
-  = render 'layouts/app_init'
+  / = render 'layouts/app_init'
   = yield(:custom_js)
 
 -# This load on every page, so a convenient place to make sure mixpanel identity is known
