@@ -73,7 +73,7 @@
         = render 'activities/metadata'
 
     -# Main content row
-    .row.printable
+    .row.printable(ng-cloak)
       .span12
         -# This seems a little weird, why do we have a row inside a span12?
         #main-content(scroll-spy offset="140")
