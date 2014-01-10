@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
     case Rails.env
     when "production"
       "380147598730003"
-    when "staging"
+    when "staging", "staging2"
       "642634055780525"
     else
       "249352241894051"
@@ -84,7 +84,7 @@ class ApplicationController < ActionController::Base
     case Rails.env
     when "production"
       ENV["GOOGLE_APP_ID"]
-    when "staging"
+    when "staging", "staging2"
       ENV["GOOGLE_APP_ID"]
     else
       "108479453177.apps.googleusercontent.com"
@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
     case Rails.env
     when "production"
       ENV["GOOGLE_SECRET"]
-    when "staging"
+    when "staging", "staging2"
       ENV["GOOGLE_SECRET"]
     else
       "M2Y-HWIkTVPNHLUS1P_QNKHr"
