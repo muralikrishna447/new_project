@@ -61,6 +61,7 @@ gem 'google-api-client'
 group :development do
   gem 'spring'
   gem "letter_opener"
+  gem 'net-http-spy', github: "justincaldwell/net-http-spy"
 end
 
 group :development, :test do
@@ -116,7 +117,6 @@ group :development, :test, :angular do
   gem 'launchy'
   gem 'childprocess', '0.3.6'
   gem 'xray-rails'
-  gem 'net-http-spy', github: "justincaldwell/net-http-spy"
 end
 
 group :guard do
