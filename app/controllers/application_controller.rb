@@ -83,9 +83,9 @@ class ApplicationController < ActionController::Base
   def google_app_id
     case Rails.env
     when "production"
-      ""
+      ENV["GOOGLE_APP_ID"]
     when "staging"
-      ""
+      ENV["GOOGLE_APP_ID"]
     else
       "108479453177.apps.googleusercontent.com"
     end
