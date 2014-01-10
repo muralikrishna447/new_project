@@ -5,16 +5,15 @@
     Add first step...
 
 
-%ul#step-dots.nav(ng-class="{'menu-showing': showCourseMenu}")
+%ul#step-dots.nav(ng-class="{'hide-when-menu-showing': showCourseMenu, 'course-global-nav-show': showGlobalNav}" ng-hide="numberedSteps().length < 1")
   %li.step-dot.intro
     %a(href="video-ingredient-unit" prevent-default scroll-to="video-ingredient-unit" spy="video-ingredient-unit" )
-      %i.icon-circle
-
+      %div.step-dot-circle
   %li.step-dot(ng-repeat="step in numberedSteps()")
     %a(href="{{'numbered-step-' + step.id}}" prevent-default scroll-to="{{'numbered-step-' + step.id}}" spy="{{'numbered-step-' + step.id}}")
-      %i.icon-circle
+      %div.step-dot-circle
 
-.ordered-steps-new(ng-show="activity.steps.length > 0"){:itemprop => "recipeInstructions"}
-  .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" data-ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()")
+.row.ordered-steps-new(ng-show="activity.steps.length > 0" itemprop="recipeInstructions")
+  .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()" ng-class='stepSpan()')
     = render 'activities/latest/step'
 

@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 ruby "1.9.3"
 
-gem 'rails', '3.2.14'
-gem 'railties', '3.2.14'
+gem 'rails', '3.2.16'
+gem 'railties', '3.2.16'
 gem 'pg'
 
 gem 'unicorn'
@@ -47,17 +47,30 @@ gem 'split', require: 'split/dashboard'
 gem 'redis'
 gem 'merit'
 gem 'has_scope'
-gem 'mixpanel'
+gem 'mixpanel-ruby'
 gem 'cancan'
 gem 'simple-rss'
 gem 'active_model_serializers'
 gem 'mixpanel_client'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'geokit-rails'
+gem 'rack-ssl-enforcer'
+gem 'redcarpet'
+gem 'google-api-client'
+
+group :development do
+  gem 'spring'
+  gem "letter_opener"
+  gem 'net-http-spy', github: "justincaldwell/net-http-spy"
+end
+
+group :development, :test do
+  gem "simplecov", require: false
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
+group :assets, :angular do
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
   gem 'sass-rails',   '~> 3.2.3'
@@ -83,8 +96,8 @@ group :assets do
 
 end
 
-group :development, :test do
-  gem 'heroku'
+group :development, :test, :angular do
+  # gem 'heroku'
   gem 'heroku_san'
   gem 'rspec-rails'
   gem 'spork-rails'
@@ -113,10 +126,11 @@ group :guard do
   gem 'guard-rspec'
   gem 'guard-spork'
   gem 'guard-jasmine'
-  # Problems with falling back to polling
-  # https://github.com/guard/listen/issues/62
-  gem 'listen', '0.4.7'
+  gem 'listen'
   gem 'growl'
   gem 'rb-fsevent'
+  gem 'terminal-notifier-guard'
 end
+
+#force deploy
 

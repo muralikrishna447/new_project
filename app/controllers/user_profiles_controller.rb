@@ -12,8 +12,16 @@ class UserProfilesController < ApplicationController
   expose(:quiz_count) { started_quizzes.count + completed_quizzes.count }
 
   def show
+    if params[:id] == 'self'
+      if ! current_user
+        redirect_to sign_in_url
+      else
+        redirect_to user_profile_path(current_user)
+      end
+      return
+    end
     @user = User.find(params[:id])
-    @courses = Course.published
+    # @courses = Course.published
     @is_current_user =  (@user == current_user)
     @user_pubbed_recipes = @user.created_activities.published
     @user_unpubbed_recipes = ((current_user && current_user.admin?) || @is_current_user) ? @user.created_activities.unpublished : []

@@ -5,7 +5,7 @@ describe User::Facebook do
 
   describe '#facebook_connected_user' do
     it 'returns nil if no user exists' do
-      User.facebook_connected_user(auth).should_not be
+      User.facebook_connected_user(auth).should be nil
     end
 
     it 'returns connected user if one exists' do
@@ -64,9 +64,34 @@ describe User::Facebook do
     end
   end
 
+  describe ".facebook_connect" do
+    let(:params){ {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"} }
+
+    it "should initialize a new record if the user doesn't exist" do
+      returned_user = User.facebook_connect(params)
+      returned_user.new_record?.should be true
+    end
+
+    context "returning user" do
+      before do
+        @user = Fabricate(:user, params)
+      end
+
+      it "should return the user if they already exist" do
+        returned_user = User.facebook_connect(params)
+        returned_user.should eq @user
+      end
+
+      it "should not respond true to .new_record?" do
+        returned_user = User.facebook_connect(params)
+        returned_user.new_record?.should be false
+      end
+    end
+  end
+
   def create_auth
     Hashie::Mash.new(
-      provider: :facebook, 
+      provider: :facebook,
       uid: 'ABC',
       info: { email: 'test-user@test.com' },
       extra: {

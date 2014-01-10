@@ -76,8 +76,9 @@ module Delve
     config.assets.paths << "#{Rails.root}/app/assets/maps"
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '7'
+    config.assets.version = '9'
     config.assets.initialize_on_precompile = false
+
 
     # Caching intended for test, staging, and production environments
     unless Rails.env.development?
@@ -92,14 +93,21 @@ module Delve
     end
 
     # CORS
-    config.middleware.use Rack::Cors do
-      allow do
-        origins '*'
-        resource '/global-navigation', headers: :any, methods: [:get, :options]
-      end
-    end
+
+    # config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
+    #   allow do
+    #     origins '*'
+    #     # resource '/global-navigation', headers: :any, methods: [:get, :options]
+    #     resource '*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete]
+    #   end
+    # end
 
     # Primarily to allow fontawesome access from blog/shop/forum in Firefox
-    config.middleware.insert_before 'ActionDispatch::Static', 'Rack::AccessControlHeaders', /assets/
+    config.middleware.insert_before ActionDispatch::Static, Rack::AccessControlHeaders, /assets/
+
+
+    # SSL configuration using strict: true so that only specific requests are using ssl.
+    # Had to comment this out, it kept sales from actually working.
+    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: %r{/landing$}, only_environments: ['production', 'staging'], force_secure_cookies: false
   end
 end

@@ -1,14 +1,21 @@
 = semantic_form_for [:admin, @assembly] do |f|
+  = f.semantic_errors *f.object.errors.keys
   = f.inputs do
     = f.input :assembly_type, as: :select, collection: Assembly::ASSEMBLY_TYPE_SELECTION
-    = f.input :published, as: :boolean
+    = f.input :published, as: :boolean  
+    = f.input :show_prereg_page_in_index, label: "Show pre-reg in index (only if a course and currently unpublished). Turn on once you are ready for preregistrations to happen and the appropriate aweber list has been created."
     = f.input :title
     = f.input :description
+    = f.input :short_description, hint: "Used for course index"
     = f.input :badge_id, as: :select, collection: Merit::Badge
     = f.input :price, hint: "Leave blank for free project/course"
+    = f.input :buy_box_extra_bullets, hint: "Appends the bullets in buy box.  Use the html li tag to generate the list item bullet"
     = render '/shared/filepicker_group', label_text: "Image", param: "assembly[image_id]", value: @assembly.image_id
     / = f.input :image_id
     = f.input :youtube_id
+    = f.input :preview_copy, hint: 'This text will appear in the preview tab.'
+    = f.input :testimonial_copy, hint: 'This text will appear below the buy box'
+    = f.input :upload_copy, hint: 'This text will appear on the top portion of the upload page.'
 
   %h2 Assembly Inclusions
   
@@ -22,4 +29,7 @@
   #activity_selection_data{data: {:'activity-selection' => Activity.chefsteps_generated.where("title <> ''").order(:title).select('id, title').to_json}}
   #quiz_selection_data{data: {:'quiz-selection' => Quiz.where("title <> ''").order(:title).select('id, title').to_json}}
   #assembly_selection_data{data: {:'assembly-selection' => Assembly.where(assembly_type: 'Group').order(:title).select('id, title').to_json}}
+  #page_selection_data{data: {:'page-selection' => Page.order(:title).select('id, title').to_json}}
+  #assignment_selection_data{data: {:'assignment-selection' => Assignment.order(:title).select('id, title').to_json}}
+
 = render 'layouts/filepicker'

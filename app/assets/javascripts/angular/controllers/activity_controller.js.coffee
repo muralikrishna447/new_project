@@ -5,16 +5,10 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService", "Activity", "csTagService",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll, csEditableHeroMediaService, Activity, csTagService) ->
 
-  Activity = $resource( "/activities/:id/as_json",
-                        {id:  $('#activity-body').data("activity-id") || 1},
-                        {
-                          update: {method: "PUT"},
-                          startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
-                          endedit: {method: "PUT", url: "/activities/:id/notify_end_edit"}
-                        }
-                      )
+  $scope.heroMedia = csEditableHeroMediaService
 
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
@@ -27,6 +21,43 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
   $scope.activities = {}
+
+  $scope.csTagService = csTagService
+
+  $scope.getObject = ->
+    $scope.activity
+  csEditableHeroMediaService.getObject = $scope.getObject
+
+  $scope.hasFeaturedImage = ->
+    $scope.getObject()?.featured_image_id? && $scope.getObject().featured_image_id
+
+  $scope.featuredImageURL = (width) ->
+    url = ""
+    if $scope.hasFeaturedImage()
+      url = JSON.parse($scope.getObject().featured_image_id).url
+      url = url + "/convert?fit=max&w=#{width}&cache=true"
+    window.cdnURL(url)
+
+
+  $scope.csGlobals = 
+    scaling: 1.0
+    units: "grams"
+
+  $scope.displayScaling = (scale) ->
+    r = (Math.round(scale * 10) / 10)
+    if r > 100
+      r = Math.round(r)
+    r = r.toString()
+    r = "&frac12;" if r == "0.5"
+    "x" + r
+
+  $scope.maybeDisplayCurrentScaling = ->
+    return null if $scope.csGlobals.scaling == 1.0
+    $scope.displayScaling($scope.csGlobals.scaling)
+
+  $scope.maybeWarnCurrentScaling = ->
+    return null if $scope.csGlobals.scaling == 1.0
+    "- Adjust based on recipe " + $scope.maybeDisplayCurrentScaling()
 
 
   $scope.fork = ->
@@ -46,8 +77,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       $scope.undoIndex = 0
       $scope.activity.$startedit()
       $timeout ->
-        window.csScaling = 1
-        window.csUnits = "grams"
+        $scope.csGlobals.scaling = 1
+        $scope.csGlobals.units = "grams"
         window.updateUnits(false)
         window.expandSteps()
 
@@ -148,7 +179,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     if condition then "disabled-section" else ""
 
   $scope.addEditModeClass = ->
-    if $scope.editMode then "edit-mode" else ""
+    if $scope.editMode then "edit-mode" else "show-mode"
 
   $scope.primaryColumnClass = ->
     if ($scope.editMode || ($scope.activity && $scope.activity.steps && ($scope.activity.steps.length > 0))) then 'span6' else 'no-steps span8 offset2'
@@ -234,72 +265,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     act_type =  $scope.sourceActivityTypes[0] if ! act_type
     act_type.name
 
-  # Tags
-  $scope.tagsSelect2 =
-
-    placeholder: "Add some tags"
-    tags: true
-    multiple: true
-    width: "100%"
-
-    ajax:
-      url: "/activities/all_tags.json",
-      data: (term, page) ->
-        return {
-          q: term
-        }
-
-      results: (data, page) ->
-        return {results: data}
-
-    formatResult: (tag) ->
-      tag.name
-
-    formatSelection: (tag) ->
-      tag.name
-
-    createSearchChoice: (term, data) ->
-      id: term
-      name: term
-
-    initSelection: (element, callback) ->
-      callback($scope.activity.tags)
-
-  # Video/image stuff
-  $scope.hasHeroVideo = ->
-    $scope.activity?.youtube_id? && $scope.activity.youtube_id
-
-  $scope.hasHeroImage = ->
-    $scope.activity?.image_id? && $scope.activity.image_id
-
-  $scope.hasFeaturedImage = ->
-    $scope.activity?.featured_image_id? && $scope.activity.featured_image_id
-
-  $scope.heroVideoURL = ->
-    autoplay = if $scope.url_params.autoplay then "1" else "0"
-    "http://www.youtube.com/embed/#{$scope.activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
-
-  $scope.heroVideoStillURL = ->
-    "http://img.youtube.com/vi/#{$scope.activity.youtube_id}/0.jpg"
-
-  $scope.heroImageURL = (width) ->
-    url = ""
-    if $scope.hasHeroImage()
-      url = JSON.parse($scope.activity.image_id).url
-      url + "/convert?fit=max&w=#{width}&cache=true"
-    window.cdnURL(url)
-
-  $scope.featuredImageURL = (width) ->
-    url = ""
-    if $scope.hasFeaturedImage()
-      url = JSON.parse($scope.activity.featured_image_id).url
-      url = url + "/convert?fit=max&w=#{width}&cache=true"
-    window.cdnURL(url)
-
-  $scope.heroDisplayType = ->
-    return "video" if $scope.hasHeroVideo()
-    return "image" if $scope.hasHeroImage()
-    return "none"
+  $scope.tagsSelect2 = ->
+    csTagService.getSelect2Info($scope.activity?.tags, "/activities/all_tags.json")
 
   $scope.sortOptions = {
     axis: 'y',
@@ -355,23 +322,35 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       r.unshift({title: equip_name})
       r
 
+  # Using _.compact was confusing angular - specifically ui-sortable for ingredients.
+  # https://www.pivotaltracker.com/story/show/59722984
+  # I don't know the exact reason.
+  myCompact = (a) ->
+    i = a.length - 1
+    while i >= 0
+      if ! a[i]
+        a.splice(i, 1)
+      i -= 1
+    a
+
+
   # Use this to fix up anything that might be screwed up by our angular editing. E.g.
   # for the equipment edit, when typing in a new string, if it hasn't gone through the
   # autocomplete (unshift in all_equipment), it will be missing a nesting level in the model.
   $scope.normalizeModel = () ->
-    $scope.activity.equipment = _.compact($scope.activity.equipment)
+    myCompact($scope.activity.equipment)
     angular.forEach $scope.activity.equipment, (item) ->
       if _.isString(item["equipment"])
         item["equipment"] = {title: item["equipment"]}
 
-    $scope.activity.ingredients = _.compact($scope.activity.ingredients)
+    myCompact($scope.activity.ingredients)
     angular.forEach $scope.activity.ingredients, (item) ->
       if _.isString(item["ingredient"])
         item["ingredient"] = {title: item["ingredient"]}
 
-    $scope.activity.steps = _.compact($scope.activity.steps)
+    myCompact($scope.activity.steps)
     angular.forEach $scope.activity.steps, (step) ->
-      step.ingredients = _.compact(step.ingredients)
+      step.ingredients = myCompact(step.ingredients)
       angular.forEach step.ingredients, (item) ->
         if _.isString(item["ingredient"])
           item["ingredient"] = {title: item["ingredient"]}
@@ -413,6 +392,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     $scope.activity = $scope.activities[id] 
     cs_event.track(id, 'Activity', 'show')
     mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
+    $scope.csGlobals.units = "grams"
+    $scope.csGlobals.scaling = 1
+    $timeout ->
+      window.updateUnits(false)
 
   $scope.loadActivity = (id) ->
     return if id == $scope.activity?.id
@@ -433,6 +416,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.$on 'loadActivityEvent', (event, activity_id) ->
     $scope.loadActivity(activity_id)
+
 
   $scope.startViewActivity = (id, prefetch_id) ->
     $scope.loadActivity(id)
@@ -456,8 +440,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   # that time period.
   $scope.schedulePostPlayEvent = ->
     $scope.heroVideoDuration = -1
-    if $scope.activity && $scope.hasHeroVideo()
-      $http.jsonp("http://gdata.youtube.com/feeds/api/videos/" + $scope.activity.youtube_id + "?v=2&callback=JSON_CALLBACK").then (response) ->
+    if $scope.activity && csEditableHeroMediaService.hasHeroVideo()
+      $http.jsonp("//gdata.youtube.com/feeds/api/videos/" + $scope.activity.youtube_id + "?v=2&callback=JSON_CALLBACK").then (response) ->
         # Good god, parsing XML that contains namespaces in the elements using jquery is a compatibility disaster!
         # See http://stackoverflow.com/questions/853740/jquery-xml-parsing-with-namespaces
         # So for now I'm doing a fugly regexp parse. At least it works.
@@ -479,6 +463,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.socialMediaItem = ->
     return $scope.featuredImageURL(800) if $scope.hasFeaturedImage()
     null
+
+  $scope.cs140Message = ->
+    $scope.activity.summary_tweet || $scope.activity.title
 
   $scope.tweetMessage = ->
     "I love this:"

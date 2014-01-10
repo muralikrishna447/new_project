@@ -9,7 +9,8 @@ class Users::PasswordsController < Devise::PasswordsController
       set_flash_message(:notice, flash_message) if is_navigational_format?
       if resource.update_attributes(from_aweber: false)
         sign_in(resource_name, resource)
-        respond_with resource, :location => after_sign_in_path_for(resource)
+        # respond_with resource, :location => after_sign_in_path_for(resource)
+        redirect_to root_url
       end
     else
       respond_with resource

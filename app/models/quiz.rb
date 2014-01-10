@@ -59,6 +59,13 @@ class Quiz < ActiveRecord::Base
     question_count > 0 && questions_remaining_for_count(user) == 0
   end
 
+  def destroy_answers_for(user)
+    questions.each do |question|
+      answer = question.answer_for(user)
+      answer.destroy
+    end
+  end
+
   def started_count
     ordered_questions.first.answer_count
   end

@@ -1,0 +1,8 @@
+.price(ng-switch="assembly.price == discounted_price")<
+  %div(ng-switch-when="true")<
+    {{assembly.price | niceDollars}}
+  %div(ng-switch-when="false")<
+    .full-price.relative<
+      .strike<
+      {{assembly.price | niceDollars}}
+    {{discounted_price | niceDollars}}

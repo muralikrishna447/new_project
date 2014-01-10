@@ -1,5 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # append_after_filter :aweber_signup, :only => :create
+  skip_before_filter :authenticate_cors_user
 
   def welcome
     # name = params[:name]
@@ -35,19 +36,27 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save
       sign_in @user
       aweber_signup(@user.name, @user.email)
-      # redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
-      if session[:user_return_to] && (session[:user_return_to] != root_url)
-        redirect_to session[:user_return_to], notice: "Thanks for signing up! Please check your email now to confirm your registration."
-      else
-        redirect_to welcome_url(email: @user.email)
-      end
       cookies.delete(:viewed_activities)
       cookies[:returning_visitor] = true
-      mixpanel.append_identify @user.email
-      mixpanel.track 'Signed Up', { distinct_id: @user.email, time: @user.created_at }
+      mixpanel.alias(@user.email, mixpanel_anonymous_id)
+      mixpanel.track(@user.email, 'Signed Up')
       finished('counter_split', :reset => false)
+      unless request.xhr?
+        # redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
+        if session[:user_return_to] && (session[:user_return_to] != root_url && session[:user_return_to] != sign_in_url)
+          redirect_to session[:user_return_to], notice: "Thanks for signing up! Please check your email now to confirm your registration."
+        else
+          redirect_to welcome_url(email: @user.email)
+        end
+      else
+        return render status: 200, json: {success: true, info: "Logged in", user: @user}
+      end
     else
-      render :new
+      unless request.xhr?
+        render :new
+      else
+        render status: 401, json: {success: false, info: "Please fix the errors below", errors: @user.errors}
+      end
     end
   end
 
@@ -65,17 +74,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_in @user
       aweber_signup(@user.name, @user.email)
       cookies.delete(:viewed_activities)
-      mixpanel.append_identify @user.email
-      mixpanel.track 'Signed Up', { distinct_id: @user.email, time: @user.created_at }
+      mixpanel.alias(@user.email, mixpanel_anonymous_id)
+      mixpanel.track(@user.email, 'Signed Up')
       @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
       if @enrollment.save
         redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
         track_event @course, 'enroll'
         finished('poutine', :reset => false)
         finished('free or not', :reset => false)
-        mixpanel.track 'Course Enrolled', { distinct_id: @user.email, course: @course.title, enrollment_method: 'Sign Up and Enroll' }
-        mixpanel.increment 'Course Enrolled Count'
-
+        mixpanel.people.increment(@user.email, {'Course Enrolled Count' => 1})
+        mixpanel.people.append(@user.email, {'Classes Enrolled' => @course.title})
       end
     else
       redirect_to course_url(@course), notice: "Sorry, there was a problem with the information provided.  Please try again."
@@ -89,20 +97,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     fb_data = session["devise.facebook_data"]
     self.resource.assign_from_facebook(fb_data) if fb_data
-  end
-
-  def aweber_signup(name, email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
-    if Rails.env.production?
-      uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
-      response = Net::HTTP.post_form(uri,
-                                      { "name" => name,
-                                        "email" => email,
-                                        "listname" => listname,
-                                        "meta_adtracking" => meta_adtracking,
-                                        "custom signed_up_from" => signed_up_from})
-    else
-      logger.debug 'Newsletter Signup'
-    end
   end
 
   def after_sign_up_path_for(resource)

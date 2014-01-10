@@ -19,7 +19,9 @@ Delve::Application.configure do
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
 
-  config.action_mailer.default_url_options = { host: DOMAIN }
+  #config.action_mailer.default_url_options = { host: DOMAIN }
+  #config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :letter_opener
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -61,5 +63,7 @@ Delve::Application.configure do
     Bullet.airbrake = false
   end
   ENV["REDISTOGO_URL"] = 'redis://localhost:6379'
+
+  Net::HTTP.http_logger_options = {:verbose => true, :body => true}
 end
 

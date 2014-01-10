@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130926174619) do
+ActiveRecord::Schema.define(:version => 20131231065957) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
     t.boolean  "include_in_gallery",     :default => true
     t.integer  "creator",                :default => 0
     t.string   "layout_name"
+    t.boolean  "show_only_in_course",    :default => false
+    t.string   "summary_tweet"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -124,16 +126,22 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
     t.text     "description"
     t.text     "image_id"
     t.string   "youtube_id"
-    t.string   "assembly_type",                                :default => "Assembly"
+    t.string   "assembly_type",                                           :default => "Assembly"
     t.string   "slug"
     t.integer  "likes_count"
     t.integer  "comments_count"
-    t.datetime "created_at",                                                           :null => false
-    t.datetime "updated_at",                                                           :null => false
+    t.datetime "created_at",                                                                      :null => false
+    t.datetime "updated_at",                                                                      :null => false
     t.boolean  "published"
     t.datetime "published_at"
-    t.decimal  "price",          :precision => 8, :scale => 2
+    t.decimal  "price",                     :precision => 8, :scale => 2
     t.integer  "badge_id"
+    t.boolean  "show_prereg_page_in_index",                               :default => false
+    t.text     "short_description"
+    t.text     "upload_copy"
+    t.text     "buy_box_extra_bullets"
+    t.text     "preview_copy"
+    t.text     "testimonial_copy"
   end
 
   create_table "assembly_inclusions", :force => true do |t|
@@ -141,8 +149,9 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
     t.integer  "includable_id"
     t.integer  "assembly_id"
     t.integer  "position"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.boolean  "include_disqus",  :default => false
   end
 
   add_index "assembly_inclusions", ["assembly_id"], :name => "index_assembly_inclusions_on_assembly_id"
@@ -153,6 +162,9 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
     t.integer  "child_activity_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.string   "title"
+    t.text     "description"
+    t.string   "slug"
   end
 
   add_index "assignments", ["activity_id", "child_activity_id"], :name => "index_assignments_on_activity_id_and_child_activity_id"
@@ -187,6 +199,7 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
     t.string   "commentable_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.integer  "rating"
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
@@ -217,12 +230,13 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
   create_table "enrollments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "course_id"
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
     t.integer  "enrollable_id"
     t.string   "enrollable_type"
-    t.decimal  "price",           :precision => 8, :scale => 2, :default => 0.0
-    t.decimal  "sales_tax",       :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "price",               :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",           :precision => 8, :scale => 2, :default => 0.0
+    t.integer  "gift_certificate_id"
   end
 
   create_table "equipment", :force => true do |t|
@@ -245,6 +259,14 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
     t.boolean  "published",      :default => false
   end
 
+  add_index "events", ["action", "trackable_type", "trackable_id"], :name => "index_events_on_action_and_trackable_type_and_trackable_id"
+  add_index "events", ["action"], :name => "index_events_on_action"
+  add_index "events", ["group_name"], :name => "index_events_on_group_name"
+  add_index "events", ["group_type"], :name => "index_events_on_group_type"
+  add_index "events", ["trackable_type", "trackable_id"], :name => "index_events_on_trackable_type_and_trackable_id"
+  add_index "events", ["trackable_type"], :name => "index_events_on_trackable_type"
+  add_index "events", ["user_id"], :name => "index_events_on_user_id"
+
   create_table "followerships", :force => true do |t|
     t.integer  "user_id"
     t.integer  "follower_id"
@@ -265,6 +287,22 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], :name => "index_friendly_id_slugs_on_slug_and_sluggable_type", :unique => true
   add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
+
+  create_table "gift_certificates", :force => true do |t|
+    t.integer  "purchaser_id"
+    t.string   "recipient_email",                                 :default => "",    :null => false
+    t.string   "recipient_name",                                  :default => "",    :null => false
+    t.text     "recipient_message",                               :default => ""
+    t.integer  "assembly_id"
+    t.decimal  "price",             :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",         :precision => 8, :scale => 2, :default => 0.0
+    t.string   "token"
+    t.boolean  "redeemed",                                        :default => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
+  end
+
+  add_index "gift_certificates", ["token"], :name => "index_gift_certificates_on_token"
 
   create_table "images", :force => true do |t|
     t.string   "filename"
@@ -295,7 +333,14 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
     t.boolean  "for_sale",        :default => false
     t.integer  "sub_activity_id"
     t.decimal  "density"
+    t.string   "slug"
+    t.text     "image_id"
+    t.string   "youtube_id"
+    t.text     "text_fields"
+    t.integer  "comments_count",  :default => 0
   end
+
+  add_index "ingredients", ["slug"], :name => "index_ingredients_on_slug"
 
   create_table "likes", :force => true do |t|
     t.integer  "user_id"
@@ -353,6 +398,17 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
     t.text     "image_id"
     t.string   "primary_path"
   end
+
+  create_table "pending_edits", :force => true do |t|
+    t.integer  "user_id"
+    t.text     "serialized_content"
+    t.integer  "editable_id"
+    t.string   "editable_type"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "pending_edits", ["editable_id", "editable_type"], :name => "index_pending_edits_on_editable_id_and_editable_type"
 
   create_table "pg_search_documents", :force => true do |t|
     t.text     "content"
@@ -485,6 +541,7 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
     t.string   "audio_clip"
     t.string   "audio_title"
     t.boolean  "hide_number"
+    t.boolean  "is_aside"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
@@ -561,6 +618,9 @@ ActiveRecord::Schema.define(:version => 20130926174619) do
     t.integer  "level",                  :default => 0
     t.string   "role"
     t.string   "stripe_id"
+    t.string   "google_refresh_token"
+    t.string   "google_access_token"
+    t.string   "google_user_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

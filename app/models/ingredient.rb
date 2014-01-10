@@ -1,12 +1,22 @@
 class Ingredient < ActiveRecord::Base
   include CaseInsensitiveTitle
+  extend FriendlyId
+
+  acts_as_taggable
+  acts_as_revisionable
+  
+  friendly_id :title, use: [:slugged, :history]
 
   has_many :step_ingredients, dependent: :destroy, inverse_of: :ingredient
   has_many :activity_ingredients, dependent: :destroy, inverse_of: :ingredient
   has_many :activities, through: :activity_ingredients, inverse_of: :ingredients
   has_many :steps, through: :step_ingredients, inverse_of: :ingredients
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :events, as: :trackable, dependent: :destroy
 
-  attr_accessible :title, :product_url, :for_sale, :density
+  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields, :tag_list
+
+  serialize :text_fields, JSON
 
   # This is for activities that are used as an ingredient in higher level recipes.
   # Note the potential for confusion: the has_many activities is for activities
@@ -15,7 +25,25 @@ class Ingredient < ActiveRecord::Base
   attr_accessible :sub_activity_id
 
   scope :search_title, -> title { where('title iLIKE ?', '%' + title + '%') }
+  scope :exact_search , -> title { where(title: title) }
   scope :no_sub_activities, where('sub_activity_id IS NULL')
+  scope :with_image, where('image_id IS NOT NULL')
+  scope :no_image, where('image_id IS NULL')
+  scope :with_purchase_link, where('product_url IS NOT NULL')
+  scope :no_purchase_link, where('product_url IS NULL')
+
+  scope :not_started, where('CHAR_LENGTH(text_fields) < 10')
+  scope :started, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) > 0 AND count(DISTINCT(events.user_id)) < 3")
+  scope :well_edited, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) >= 3")
+
+  include PgSearch
+  multisearchable :against => [:title, :text_fields, :product_url]
+
+  # Letters are the weighting
+  pg_search_scope :search_all,
+                  using: {tsearch: {prefix: true}},
+                  against: [[:title, 'A'], [:text_fields, 'C']],
+                  associated_against: {tags: [[:name, 'B']]}
 
   before_save :fix_title
   def fix_title
@@ -82,13 +110,30 @@ class Ingredient < ActiveRecord::Base
     end
   end
 
+  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields, :tag_list
+
+  def merge_in_useful_details(other)
+    self.product_url = other.product_url if self.product_url.to_s == ''
+    self.density = other.density if ! self.density
+    self.image_id = other.image_id if self.image_id.to_s == ''
+    self.youtube_id = other.youtube_id if self.youtube_id.to_s == ''
+    self.text_fields = other.text_fields if self.text_fields.to_s == ''
+    other.tag_list.each { |tag| self.tag_list.add(tag) }
+  end
+
   # Replace all uses (in both activities and steps) of every ingredient in group with the self ingredient
   def merge(group)
     # Just to be sure
     group.delete(self)
 
+    # If the ones we are going to delete have any useful wiki details in fields that
+    # are blank in the final ingredient, copy them over.
     group.each do |ingredient|
+      self.merge_in_useful_details(ingredient)
+    end
+    self.save
 
+    group.each do |ingredient|
       ActivityIngredient.where(ingredient_id: ingredient.id).each do |ai|
         Ingredient.maybe_move_title_to_note(ai, self.title)
         ai.ingredient = self
@@ -112,6 +157,7 @@ class Ingredient < ActiveRecord::Base
     self.reload
 
   end
+
 
 end
 

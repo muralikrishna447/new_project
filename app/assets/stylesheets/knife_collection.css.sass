@@ -2,11 +2,9 @@
 
 #knife-intro
   position: fixed
-  h1
-    margin-bottom: 0px
 
 .knife.first
-  margin-top: 250px
+  margin-top: 350px
 
 .knife
   padding: 40px
@@ -175,11 +173,11 @@
 
 @media (max-width: 1080px)
   .knife.first
-    margin-top: 250px
+    margin-top: 352px
 
 @media (max-width: 980px)
   .knife.first
-    margin-top: 320px
+    margin-top: 451px
 
   .knife
     .knife-content
@@ -243,6 +241,14 @@
       &:hover
         cursor: pointer
     .annotation-slider-image
+      overflow: hidden
+      white-space: nowrap
+      .annotation-slider-sub-image
+        display: inline-block
+        width: 33%
+        margin-right: 0
+        img
+          width: 100%
     .annotation-slider-note
       position: absolute
       top: 0px
@@ -283,7 +289,7 @@
         font-size: 40px
         text-align: center
         border-radius: 22px
-        padding: 9px
+        padding: 13px 9px
         width: 44px
         height: 44px
         @include boxsizing
@@ -296,16 +302,16 @@
       .annotation-slider-btn-close
         background: $red
         border: 3px solid white
-        padding: 6px
+        padding: 9px 0px
         @include transform(rotate(45deg))
 
 #asai-1
-  left: 25%
-  top: 65%
+  left: 35%
+  top: 75%
 
 #asai-2
-  left: 73%
-  top: 54%
+  left: 63%
+  top: 15%
 
 #ohishi-1
   left: 23%

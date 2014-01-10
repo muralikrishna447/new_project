@@ -45,10 +45,10 @@ module Merit
       grant_on 'sessions#signin_and_enroll', :badge => 'new-student'
 
       grant_on 'uploads#create', :badge => 'spherification' do |upload|
-        course = upload.course
+        assembly = upload.assembly
         user = upload.user
-        if course.present?
-          course.title == 'Spherification' && user.viewed_activities_in_course(course).count >= course.viewable_activities.count
+        if assembly.present?
+          assembly.slug == 'spherification'
         else
           false
         end
@@ -57,8 +57,39 @@ module Merit
       grant_on 'uploads#create', :badge => 'macaron' do |upload|
         assembly = upload.assembly
         user = upload.user
+        quiz = Quiz.find(16)
         if assembly.present?
-          assembly.title == 'French Macarons'
+          assembly.title == 'French Macarons' && user.completed_quiz(quiz)
+        else
+          false
+        end
+      end
+
+      grant_on 'uploads#create', :badge => 'poutine' do |upload|
+        assembly = upload.assembly
+        user = upload.user
+        if assembly.present?
+          assembly.slug == 'science-of-poutine'
+        else
+          false
+        end
+      end
+
+      grant_on 'uploads#create', :badge => 'knife' do |upload|
+        assembly = upload.assembly
+        user = upload.user
+        if assembly.present?
+          assembly.slug == 'knife-sharpening'
+        else
+          false
+        end
+      end
+
+      grant_on 'uploads#create', :badge => 'siphon' do |upload|
+        assembly = upload.assembly
+        user = upload.user
+        if assembly.present?
+          assembly.slug == 'whipping-siphons'
         else
           false
         end

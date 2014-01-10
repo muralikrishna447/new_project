@@ -8,8 +8,8 @@ describe Assembly do
 
   context 'faq' do
     it 'returns an faq' do
-      faq = Fabricate :activity, title: 'Test Assembly FAQ', description: 'This is the test assembly faq.'
-      expect(@assembly.faq).to be_an_instance_of(Activity)
+      faq = Fabricate :page, title: 'Test Assembly FAQ', content: 'This is the test assembly faq.'
+      expect(@assembly.faq).to be_an_instance_of(Page)
       expect(@assembly.faq.slug).to eq('test-assembly-faq')
     end
   end
@@ -40,5 +40,45 @@ describe Assembly do
       expect(@assembly.video_count).to eq(3)
     end
   end
+
+  context 'containing course' do
+    it 'finds no containing course when none exists' do
+      activity1 = Fabricate :activity, title: 'activity1', youtube_id: 'activity1'
+      expect(activity1.containing_course).to be_nil
+    end
+
+    it 'finds correct containing course when one exists as direct parent' do
+      activity1 = Fabricate :activity, title: 'activity1', youtube_id: 'activity1'
+      assembly_inclusion_1 = Fabricate :assembly_inclusion, assembly: @assembly, includable: activity1
+      expect(activity1.containing_course).to eq(@assembly)
+    end
+
+    it 'finds no containing course when direct parent exists but isnt a course' do
+      activity1 = Fabricate :activity, title: 'activity1', youtube_id: 'activity1'
+      assembly_direct_parent = Fabricate :assembly, title: 'Test Parent', description: 'Test Parent Description', assembly_type: 'Assembly'
+      assembly_inclusion_1 = Fabricate :assembly_inclusion, assembly: assembly_direct_parent, includable: activity1
+      expect(activity1.containing_course).to be_nil
+    end
+
+    it 'finds correct containing course when one exists as 2nd level parent' do
+      activity1 = Fabricate :activity, title: 'activity1', youtube_id: 'activity1'
+      assembly_direct_parent = Fabricate :assembly, title: 'Test Parent', description: 'Test Parent Description', assembly_type: 'Assembly'
+      assembly_inclusion_1 = Fabricate :assembly_inclusion, assembly: assembly_direct_parent, includable: activity1
+      assembly_inclusion_2 = Fabricate :assembly_inclusion, assembly: @assembly, includable: assembly_direct_parent
+
+      expect(activity1.containing_course).to eq(@assembly)
+    end
+
+    it 'finds no containing course when 2nd level parent exists but isnt a course' do
+      activity1 = Fabricate :activity, title: 'activity1', youtube_id: 'activity1'
+      assembly_direct_parent = Fabricate :assembly, title: 'Test Parent', description: 'Test Parent Description', assembly_type: 'Assembly'
+      assembly_next_parent = Fabricate :assembly, title: 'Test Parent 2', description: 'Test Parent Description 2', assembly_type: 'Assembly'
+      assembly_inclusion_1 = Fabricate :assembly_inclusion, assembly: assembly_direct_parent, includable: activity1
+      assembly_inclusion_2 = Fabricate :assembly_inclusion, assembly:assembly_next_parent, includable: assembly_direct_parent
+
+      expect(activity1.containing_course).to be_nil
+    end
+  end
+
 
 end

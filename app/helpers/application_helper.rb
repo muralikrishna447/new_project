@@ -1,6 +1,6 @@
 module ApplicationHelper
   def s3_image_url(image_id)
-    "http://d2eud0b65jr0pw.cloudfront.net/#{image_id}"
+    "//d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end
 
   def filepicker_arbitrary_image(fpfile, width, fit='max')
@@ -31,7 +31,7 @@ module ApplicationHelper
   end
 
   def filepicker_gallery_image(fpfile)
-    filepicker_arbitrary_image(fpfile, 370)
+    filepicker_arbitrary_image(fpfile, 370, 'crop')
   end
 
   def filepicker_slider_image(fpfile)
@@ -65,7 +65,7 @@ module ApplicationHelper
       url = ActiveSupport::JSON.decode(fpfile)["url"]
       url + "/convert?fit=crop&w=#{width}&h=#{width}&cache=true"
     else
-      "http://www.placehold.it/#{width}x#{width}&text=ChefSteps"
+      "//www.placehold.it/#{width}x#{width}&text=ChefSteps"
     end
   end
 
@@ -74,7 +74,7 @@ module ApplicationHelper
       url = ActiveSupport::JSON.decode(fpfile)["url"]
       url + "/convert?fit=crop&w=#{width}&h=#{width}&cache=true"
     else
-      "http://www.placehold.it/#{width}x#{width}&text=ChefSteps"
+      "//www.placehold.it/#{width}x#{width}&text=ChefSteps"
     end
   end
 
@@ -177,12 +177,22 @@ module ApplicationHelper
   end
 
   def where_user_left_off_in_course(course, user, btn_class = nil)
-    last_viewed_activity = user.last_viewed_activity_in_course(course)
-    if last_viewed_activity
-      link_to "Continue Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
+    # TODO needs refactoring when we move over old courses
+    if course.class.to_s == 'Assembly'
+      last_viewed_activity = user.last_viewed_activity_in_assembly(course)
+      if last_viewed_activity
+        link_to "Continue Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, class_activity_path(course, last_viewed_activity), class: btn_class
+      else
+        link_to "Start the Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, landing_class_path(course), class: btn_class
+      end
     else
-      first_activity = course.first_published_activity
-      link_to "Start the Course #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
+      last_viewed_activity = user.last_viewed_activity_in_course(course)
+      if last_viewed_activity
+        link_to "Continue Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, last_viewed_activity], class: btn_class
+      else
+        first_activity = course.first_published_activity
+        link_to "Start the Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, [course, first_activity], class: btn_class
+      end
     end
   end
 
@@ -209,8 +219,9 @@ module ApplicationHelper
     end
   end
 
-  def buy_now(variant_id, price, mixpanel_track = nil)
-    link_to "Buy Now for $#{price}", 'http://store.chefsteps.com/cart/add', onclick: "#{mixpanel_track} var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; var v = document.createElement('input'); v.setAttribute('type', 'hidden'); v.setAttribute('name', 'id'); v.setAttribute('value', '#{variant_id}'); f.appendChild(v); var r = document.createElement('input'); r.setAttribute('type', 'hidden'); r.setAttribute('name', 'return_to'); r.setAttribute('value', 'http://store.chefsteps.com/checkout'); f.appendChild(r); f.submit(); return false;", class: 'btn btn-primary btn-large btn-block'
+  def buy_now(variant_id, price, mixpanel_track = nil, backordered = false)
+    message = backordered ? 'Backordered' : 'Buy Now'
+    link_to "#{message} for $#{price}", 'http://store.chefsteps.com/cart/add', onclick: "#{mixpanel_track} var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; var v = document.createElement('input'); v.setAttribute('type', 'hidden'); v.setAttribute('name', 'id'); v.setAttribute('value', '#{variant_id}'); f.appendChild(v); var r = document.createElement('input'); r.setAttribute('type', 'hidden'); r.setAttribute('name', 'return_to'); r.setAttribute('value', 'http://store.chefsteps.com/checkout'); f.appendChild(r); f.submit(); return false;", class: 'btn btn-primary btn-large btn-block'
     # link_to "Buy Now for $#{price}", "http://store.chefsteps.com/cart/#{variant_id}:1", class: 'btn btn-primary btn-large btn-block'
     # link_to "Buy Now for $#{price}", "http://store.chefsteps.com/cart/add.js?quantity=1&id=#{variant_id}", method: :post, class: 'btn btn-primary btn-large btn-block'
   end
@@ -230,7 +241,7 @@ module ApplicationHelper
 
   def assembly_type_path(assembly)
     if assembly.assembly_type?
-      assembly_type_path = assembly.assembly_type.downcase.pluralize
+      assembly_type_path = assembly.assembly_type.downcase.pluralize.gsub(' ', '-')
       assembly_path(assembly).gsub('/assemblies', "/#{assembly_type_path}")
     else
       assembly_path(assembly)
@@ -239,6 +250,49 @@ module ApplicationHelper
 
   def current_admin?
     (current_user && current_user.admin?)
+  end
+
+  def http_referer_uri
+    request.env["HTTP_REFERER"] && URI.parse(request.env["HTTP_REFERER"])
+  end
+
+  def class_activity_path(assembly, activity)
+    if assembly && activity
+      "/classes/#{assembly.slug}/##{activity.slug}"
+    end
+  end
+
+  def assembly_activity_path(assembly, activity)
+    if assembly.assembly_type?
+      assembly_type_path = assembly.assembly_type.downcase.pluralize
+      "/#{assembly_type_path}/#{assembly.slug}#/#{activity.slug}"
+    else
+      "/assemblies/#{assembly.slug}/#{activity.slug}"
+    end
+  end
+
+  def markdown(text)
+    # options = [:hard_wrap, :filter_html, :autolink, :no_intraemphasis, :fenced_code, :gh_blockcode]
+    # syntax_highlighter(Redcarpet.new(text, *options).to_html).html_safe
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true)
+    markdown.render(text)
+  end
+
+  def includable_path(includable)
+    case includable.class.to_s
+    when 'Activity'
+      activity_path(includable)
+    when 'Assignment'
+      edit_admin_assignment_path(includable)
+    when 'Assembly'
+      edit_admin_assembly_path(includable)
+    when 'Quiz'
+      edit_admin_quiz_path(includable)
+    when 'Page'
+      edit_admin_page_path(includable)
+    else
+      nil
+    end
   end
 
 end

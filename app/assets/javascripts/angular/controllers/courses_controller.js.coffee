@@ -1,47 +1,78 @@
-angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', ($rootScope, $scope, $resource, $http) ->
+angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', '$route', '$routeParams', '$location', "$timeout", '$window', ($rootScope, $scope, $resource, $http, $route, $routeParams, $location, $timeout, $window) ->
+
+  $scope.routeParams = $routeParams
+  $scope.route = $route
   
   $scope.view_inclusion = {}
   $scope.collapsed = {}
+  $scope.flatInclusions = []
+  $scope.collapsibleInclusions = []
  
   $scope.init = (course_id) ->
-    $http.get('/courses/' + course_id + '/show_as_json').success (data, status) ->
+    $http.get('/classes/' + course_id + '/show_as_json').success (data, status) ->
       $scope.course = data
-      console.log $scope.course.assembly_inclusions
-      console.log $scope.course.assembly_inclusions[0].includable_id
-      # Special treatment for upload
-      $scope.course.assembly_inclusions.push({"includable_id" : "Upload", "includable_type" : "Upload", "includable_title" : "Upload Your Own"})
-      $scope.flatInclusions = $scope.computeflatVisibleInclusions($scope.course.assembly_inclusions)
-      $scope.loadInclusion($scope.flatInclusions[0].includable_id)
+      $scope.includable_slug = $scope.routeParams.slug
+      $scope.sortInclusions($scope.course)
+      if $scope.routeParams.slug
+        $scope.loadInclusion('Activity', $scope.includable_slug)
+      else
+        if $scope.routeParams.includable_type
+          $scope.includable_type = $scope.routeParams.includable_type.toUpperCase()
+          $scope.loadInclusion($scope.includable_type, $scope.includable_slug)
+        else
+          firstInclusion = $scope.flatInclusions[0]
+          $scope.loadInclusion(firstInclusion.includable_type, firstInclusion.includable_slug)
 
-  $scope.loadInclusion = (includable_id) ->
-    $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_id == includable_id)
+  $scope.loadInclusion = (includable_type, includable_slug) ->
+    $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == includable_slug && incl.includable_type == includable_type)
+    console.log "INCLUDABLE: " + $scope.currentIncludable
     if ! $scope.currentIncludable?
-      console.log "Couldn't find id " + includable_id
+      console.log "Couldn't find " + includable_type + " with slug " + includable_slug
       return
+    includable_id = $scope.currentIncludable.includable_id
     includable_type = $scope.currentIncludable.includable_type
+
+    # Shouldn't happen
     return if includable_type == "Assembly"
 
-    console.log "switching to " + includable_type + 'with id ' + includable_id
+    # Keep route sync'ed up if changing not from an anchor
+    if includable_type == 'Activity'
+      newPath = "/" + $scope.currentIncludable.includable_slug
+    else
+      newPath = "/" + includable_type.toLowerCase() + "/" + $scope.currentIncludable.includable_slug
+    $location.path(newPath) if $location.path() != newPath
 
-    switch includable_type
-      when 'Upload'
-        $scope.view_inclusion = 'Upload'
-      else
-        $scope.view_inclusion = includable_type
-        $scope.view_inclusion_id = includable_id
-        if includable_type == "Activity"
-          console.log 'Broadcasting'
-          $rootScope.$broadcast("loadActivityEvent", includable_id)
-          console.log 'Done Broadcasting'
+    # Title tag
+    document.title = $scope.currentIncludable.includable_title + ' - ' + $scope.course.title + ' Class - ChefSteps'
+
+    console.log "switching to " + includable_type + ' with slug ' + includable_slug
+    $scope.view_inclusion = includable_type
+    $scope.view_inclusion_id = includable_id
+    if includable_type == "Activity"
+      $rootScope.$broadcast("loadActivityEvent", includable_id)
+      $scope.updateDisqus()
+
+    mixpanel.track($scope.currentIncludable.includable_type + ' Viewed Within Class', {'title': $scope.currentIncludable.includable_title, 'class': $scope.course.title})
+
     $scope.showCourseMenu = false
+    $scope.collapsed = {}
+    $scope.determineCollapsed($scope.currentIncludable)
 
-    # So sue me
-    window.scrollTo(0, 0)
+    $scope.$broadcast 'scrollToTop'
+
+    # Absolutely insane fix to https://www.pivotaltracker.com/story/show/59025778
+    # Vaguely inspired by http://mir.aculo.us/2009/01/11/little-javascript-hints-episode-3-force-redraw/, though
+    # the actualy fix there didn't work for me. This bug was manifesting only on mobile webkit, and was clearly a redraw
+    # issue because you could inspect the DOM and see the right content. It was only showing up doing prev/next into
+    # or out of a quiz, so it probably has something to do with the iframe on those pages. Anyhow this seems to fix it.
+    $timeout ->
+      $('.prev-next-group').hide()
+      $timeout ->
+        $('.prev-next-group').show()
 
   currentIncludableIndex = ->
     return 0 if ! $scope.flatInclusions?
-    for incl, idx in $scope.flatInclusions
-      return idx if incl.includable_id == $scope.currentIncludable.includable_id
+    $scope.flatInclusions.indexOf($scope.currentIncludable)
 
   $scope.nextInclusion = ->
     $scope.flatInclusions?[currentIncludableIndex() + 1]
@@ -50,25 +81,97 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     $scope.flatInclusions?[currentIncludableIndex() - 1]
 
   $scope.loadNextInclusion = ->
-   $scope.loadInclusion($scope.nextInclusion().includable_id) 
+   $scope.loadInclusion($scope.nextInclusion().includable_type, $scope.nextInclusion().includable_slug) 
 
   $scope.loadPrevInclusion = ->
-   $scope.loadInclusion($scope.prevInclusion().includable_id) 
+   $scope.loadInclusion($scope.prevInclusion().includable_type, $scope.prevInclusion().includable_slug) 
 
-  $scope.computeflatVisibleInclusions = (inclusions) ->
-    result = []
-    for incl in inclusions
-      if incl.includable_type != "Assembly"
-        result.push(incl)
+  $scope.sortInclusions = (assembly) ->
+    flat = []
+    for inclusion in assembly.assembly_inclusions
+      if inclusion.includable_type == 'Assembly'
+        $scope.collapsed[inclusion.includable_id] = true
+        $scope.collapsibleInclusions.push(inclusion)
+        flat.push(sub) for sub in $scope.sortInclusions(inclusion.includable)
       else
-        result.push(sub) for sub in $scope.computeflatVisibleInclusions(incl.includable.assembly_inclusions)
-    result
+        flat.push(inclusion)
+    $scope.flatInclusions = flat
+
+  $scope.inclusionActiveClass = (inclusion) ->
+    return 'active' if (inclusion.includable_type == $scope.view_inclusion) && (inclusion.includable_id == $scope.view_inclusion_id)
+    return ''
+
+  # Class Navigation Behavior
+  $scope.toggleShowCourseMenu = ->
+    $scope.showCourseMenu = ! $scope.showCourseMenu
+    # First collapse all
+    $scope.collapsed = {}
+    $scope.determineCollapsed($scope.currentIncludable)
+
+  $scope.determineCollapsed = (inclusion)->
+    $scope.collapsed[inclusion.assembly_id] = false
+    console.log $scope.collapsed
+    # If Assembly is nested
+    parent_inclusion = _.find($scope.collapsibleInclusions, (incl) -> incl.includable_id == inclusion.assembly_id && incl.includable_type == 'Assembly')
+    $scope.determineCollapsed(parent_inclusion) if parent_inclusion
 
   $scope.toggleCollapse = (includable_id) ->
-    $scope.collapsed[includable_id] ?= false
+    
+    $scope.collapsed[includable_id] ?= true
     $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id] 
 
   $scope.isCollapsed = (includable_id) ->
-    $scope.collapsed[includable_id]
+    if $scope.collapsed[includable_id]? 
+      return $scope.collapsed[includable_id] 
+    else 
+      true
 
+  # Global Navigation Behavior
+  $scope.$on 'showGlobalNavChanged', (e) ->
+    $scope.showGlobalNav = e.targetScope.showNav
+    $scope.$apply()
+
+  $scope.$on 'showBottomChanged', (e) ->
+    $scope.showBottomNav = e.targetScope.showBottom
+    $scope.$apply()
+
+  # Always show course nav on large screens
+  angular.element($window).on 'resize', ->
+    if $window.innerWidth >= 1024
+      $scope.largeScreen = true
+      $scope.showCourseMenu = false
+    else
+      $scope.largeScreen = false
+
+
+  # Disqus
+  $scope.updateDisqus = ->
+    # Super gross. Was running into an issue where this could get called before DISQUS was loaded, fail, and
+    # leave the user commenting on a bogus thread.
+    if ! DISQUS?
+      $timeout (->
+        $scope.updateDisqus()
+      ), 500
+      return
+
+    # Update to correct disqus view
+    if $scope.currentIncludable?.include_disqus || $scope.currentIncludable?.includable_always_include_disqus
+      if $scope.course.id == 3
+        # Hack for French Macaron Class Discussion page
+        pageURL = "http://chefsteps.com/classes/3#!/discussion"
+        pageID = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
+      else
+        if $scope.currentIncludable.includable_always_include_disqus
+          pageURL = 'http://chefsteps.com/activities/' + $scope.currentIncludable.includable_slug
+          pageID = $scope.currentIncludable.includable_disqus_id
+          console.log pageURL
+          console.log pageID
+        else 
+          pageURL = "http://chefsteps.com/classes/#{$scope.course.id}/#!#{$scope.currentIncludable.includable_slug}"
+          pageID = "assembly-inclusion-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
+      DISQUS.reset
+        reload: true
+        config: ->
+          @page.identifier = pageID
+          @page.url = pageURL
 ]

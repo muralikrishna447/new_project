@@ -56,6 +56,7 @@ Devise.setup do |config|
 
   # If http headers should be returned for AJAX requests. True by default.
   # config.http_authenticatable_on_xhr = true
+  config.http_authenticatable_on_xhr = false
 
   # The realm used in Http Basic Authentication. "Application" by default.
   # config.http_authentication_realm = "Application"
@@ -125,7 +126,7 @@ Devise.setup do |config|
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
   # config.timeout_in = 30.minutes
-  
+
   # If true, expires auth token on session timeout.
   # config.expire_auth_token_on_timeout = false
 
@@ -197,7 +198,7 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  # config.navigational_formats = ["*/*", :html]
+  config.navigational_formats = ["*/*", :html, :json]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
@@ -206,7 +207,16 @@ Devise.setup do |config|
   # this is the ca_file path for heroku
   ssl_options = {ca_file: '/usr/lib/ssl/certs/ca-certificates.crt'}
   ssl_options.merge!(verify_mode: OpenSSL::SSL::VERIFY_NONE) if Rails.env.development?
-  config.omniauth :facebook, '380147598730003', '99cd750ad7d0733a71b1fd7921d4b53b', {scope: 'email', client_options: {ssl: ssl_options}}
+  if Rails.env.production?
+    # Production facebook settings
+    config.omniauth :facebook, '380147598730003', ENV["FACEBOOK_SECRET"], {scope: 'email', client_options: {ssl: ssl_options}}
+  elsif Rails.env.staging?
+    # staging facebook settings
+    config.omniauth :facebook, '642634055780525', ENV["FACEBOOK_SECRET"], {scope: 'email', client_options: {ssl: ssl_options}}
+  else
+    # Development/Test facebook settings
+    config.omniauth :facebook, '249352241894051', '57601926064dbde72d57fedd0af8914f', {scope: 'email'}
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

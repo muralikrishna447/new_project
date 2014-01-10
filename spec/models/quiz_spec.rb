@@ -90,6 +90,15 @@ describe Quiz, "#questions_answered_by" do
     Fabricate(:multiple_choice_answer, user: user, question: questionB)
     should =~ [questionA, questionB]
   end
+
+  it 'clears all answers on retake without affecting other user' do
+    Fabricate(:multiple_choice_answer, user: user, question: questionA)
+    Fabricate(:multiple_choice_answer, user: user, question: questionB)
+    Fabricate(:multiple_choice_answer, user: other_user, question: questionA)
+    quiz.destroy_answers_for(user)
+    should =~ []
+    quiz.questions_answered_by(other_user).should =~ [questionA]
+  end
 end
 
 describe Quiz, '#questions_answered_by_count' do

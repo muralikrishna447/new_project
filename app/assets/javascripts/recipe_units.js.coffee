@@ -1,7 +1,24 @@
-window.csUnits = "grams"
 csTempUnits = "c"
 csLengthUnits = "cm"
-window.csUnitsCookieName = "chefsteps_units"
+
+# Temporary way of dealing with stuff til this is all angularized
+
+rootScope = ->
+  angular.element('[ng-controller=ActivityController]').scope()
+
+getScaling = ->
+  rootScope()?.csGlobals.scaling || 1.0
+
+setScaling = (newScale) ->
+  rootScope()?.csGlobals.scaling = newScale
+  rootScope()?.$apply()
+
+getUnits = ->
+  rootScope()?.csGlobals.units || "grams"
+
+setUnits = (newUnits) ->
+  rootScope()?.csGlobals.units = newUnits
+  rootScope()?.$apply()
 
 window.allUnits = [
   {measures: "Weight", name: "g", menuName: "gram"},
@@ -43,11 +60,8 @@ isWeightUnit = (unitName) ->
 # possible to have a quantity row nested in a quantity row, specifically when shortcodes like [ea 5] are used
 # in the ingredient notes field.
 
-
-unless paramScaling?
-  window.csScaling = 1.0
-else
-  window.csScaling = paramScaling
+if paramScaling?
+  setScaling(paramScaling)
 
 # Set up bootstrap tooltips (should be moved to a more general place)
 $ ->
@@ -64,8 +78,7 @@ $ ->
 # Setup click handler for units toggle
 $ ->
   $(".change_units").click ->
-    window.csUnits = if window.csUnits == "ounces" then "grams" else "ounces"
-    # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
+    setUnits(if getUnits() == "ounces" then "grams" else "ounces")
     updateUnits(true)
 
 
@@ -80,7 +93,7 @@ window.makeEditable = (elements) ->
 
       if cell.find('.lbs-qty').is(":visible")
 
-        # pounds and ounces
+        # pounds and coun
         if item.hasClass('lbs-qty')
           # editing pounds
           old_lbs = old_val
@@ -93,15 +106,13 @@ window.makeEditable = (elements) ->
           new_total = (old_lbs * 16) + new_val
 
         old_total = (old_lbs * 16) + old_ozs
-        window.csScaling = window.csScaling * new_total / old_total
+        setScaling(getScaling() * new_total / old_total)
 
       else
         # Any other unit (including ounces with no pounds)
-        window.csScaling = window.csScaling * new_val / old_val
+        setScaling(getScaling() * new_val / old_val)
     else
       value = old_val
-
-    value
 
   ), {
     width: "10px"
@@ -162,7 +173,7 @@ updateOneRowUnits = ->
     if existingUnits == "kg"
       base_orig_value = base_orig_value * 1000
       
-  origValue = Number(base_orig_value) * window.csScaling
+  origValue = Number(base_orig_value) * getScaling()
 
   # "ea" means each, just round up to nearest integer
   if existingUnits == "ea"
@@ -175,7 +186,7 @@ updateOneRowUnits = ->
   else if isWeightUnit(existingUnits)
 
     # grams or kilograms
-    if window.csUnits == "grams"
+    if getUnits() == "grams"
       if origValue < 5000
         setRow $(this), "", origValue, "g"
 
@@ -183,7 +194,7 @@ updateOneRowUnits = ->
         setRow $(this), "", origValue / 1000, "kg"
 
     # ounces or pounds and ounces
-    else if window.csUnits == "ounces"
+    else if getUnits() == "ounces"
       ounces = origValue * 0.035274
       pounds = Math.floor(ounces / 16)
       ounces = ounces - (pounds * 16)
@@ -208,11 +219,12 @@ updateOneRowUnits = ->
 window.updateUnits = (animate) ->
   if (animate)
     # animate all the values and units down ...
-    $('.qtyfade').fadeOut "fast"
-    $('.qtyfade').promise().done ->
+    $('.qtyfade').addClass('fade-out')
+    setTimeout ( ->
       $('.quantity-group').parent().each(updateOneRowUnits)
       $('.text-quantity-group').each(updateOneRowUnits)
-      $('.qtyfade').fadeIn "fast"
+      $('.qtyfade').removeClass('fade-out')
+    ), 320
   else
     $('.quantity-group').parent().each(updateOneRowUnits)
     $('.text-quantity-group').each(updateOneRowUnits)
@@ -303,7 +315,6 @@ updateLengthUnits =  ->
 $ ->
   $(document).on 'click', ".length-group", ->
     csLengthUnits = if csLengthUnits == "cm" then "in" else "cm"
-    # $.cookie(window.csUnitsCookieName, window.csUnits, { expires: 1000,  path: '/' })
     updateLengthUnits(true)
 
 

@@ -1,0 +1,65 @@
+@import 'mixins'
+
+.ingredient-show
+  .edit-buttons-group
+    position: relative
+    bottom: -8px
+    .btn-toolbar
+      display: inline-block
+      float: right
+
+  [contenteditable]
+    outline: none
+
+    &:empty
+      &:before
+        content: "Click to start writing"
+        color: $light-gray
+
+  h3
+    text-transform: capitalize
+
+  .well
+    ul, .tag-group
+      margin-right: 25px
+
+  .embed-container
+    height: auto
+    padding-bottom: $baseline
+
+  .report-problem
+    position: absolute
+    right: 0
+    bottom: -$baseline * 3
+
+  .wiki-warning
+    background: lighten($orange, 30%)
+
+  .text-fields
+    textarea
+      width: 100%
+
+.tag
+  background-color: white
+  color: #333
+  border: 1px solid #ccc
+  padding: 1px 4px
+  margin: 0px 8px $baseline 0px
+  @include radius(4px)
+  @include primary-font-light 
+  display: inline-block
+
+  i
+    &:before
+      margin-left: 2px
+      margin-right: -2px
+    color: #555
+
+.tag.active
+  background-color: orange
+  i
+    color: white
+
+.tag-bg
+  background-color: #f2f2f2
+  overflow: hidden

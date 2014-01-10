@@ -24,9 +24,9 @@ index do
   column :user do |upload|
     link_to upload.user.email, admin_user_path(upload.user)
   end
-  column :course do |upload|
-    if upload.course
-      link_to upload.course.title, course_path(upload.course)
+  column :assembly do |upload|
+    if upload.assembly
+      link_to upload.assembly.title, assembly_path(upload.assembly)
     end
   end
   column :activity do |upload|

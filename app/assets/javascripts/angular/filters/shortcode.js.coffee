@@ -9,6 +9,13 @@ angular.module('ChefStepsApp').filter "shortcode", ->
 
     if input
       input.replace /\[(\w+)\s+([^\]]*)\]/g, (orig, shortcode, contents) ->
+        arg1 = contents
+        arg2 = null
+        s = contents.match(/([^\s]*)\s(.*)/)
+        if s && s.length == 3
+          arg1 = s[1]
+          arg2 = s[2]
+
         switch shortcode
           when 'c' then "<span class='temperature'>#{convertCtoF(contents)}&nbsp;&deg;F / #{contents}&nbsp;&deg;C</span>"
           when 'f' then "<span class='temperature'>#{contents}&nbsp;&deg;F / #{convertFtoC(contents)}&nbsp;&deg;C</span>"
@@ -16,11 +23,15 @@ angular.module('ChefStepsApp').filter "shortcode", ->
           when 'mm' then "<a class='length-group'><span class='length' data-orig-value='#{contents / 10.0}'>#{contents}&nbsp;mm</span></a>"
           when 'g' then "<span class='text-quantity-group'><span class='quantity-group qtyfade'><span class='lbs-qty'></span> <span class='lbs-label'></span> <span class='main-qty' data-orig-value='#{contents}'}}>#{contents}</span></span> <span class='unit qtyfade'>g</span></span>"
           when 'ea' then "<span class='text-quantity-group'><span class='quantity-group qtyfade'><span class='lbs-qty'></span> <span class='lbs-label'></span> <span class='main-qty'>#{contents}</span></span> <span class='unit qtyfade alwayshidden'>ea</span></span>"
+          when 'courseActivity' 
+            if arg2
+              "<a ng-click='loadSubrecipe(#{arg1})'>#{arg2}</a>"
+            else
+              "<b>Badly formatted courseActivity shortcode<b>"
           when 'amzn'
-            s = contents.match(/([^\s]*)\s(.*)/)
-            if s && s.length == 3
-              asin = s[1]
-              anchor_text = s[2]
+            if arg2
+              asin = arg1
+              anchor_text = arg2
               "<a href='http://www.amazon.com/dp/#{asin}/?tag=delvkitc-20' target='_blank'>#{anchor_text}</a>"
             else
               orig

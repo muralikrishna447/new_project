@@ -1,0 +1,62 @@
+@import 'mixins'
+
+.smoker
+  .title
+    margin-top: $baseline * 2
+
+  .tooLow
+    color: #0000aa
+  .tooHigh
+    color: #aa0000
+  .justRight
+    color: #00aa00
+
+  .lrpair
+    width: 680px
+    margin-left: 10px
+    margin-bottom: $baseline * 2
+    
+
+    .left, .right, .third
+      display: inline-block
+      vertical-align: top
+      width: 180px
+      text-align: center
+    .right-only
+      margin-left: 230px
+    .left, .right
+      margin-right: 40px
+
+    input
+      width: 100px
+      text-align: center
+      font-size: 4.4201rem
+      margin-top: -12px
+      background-color: transparent
+      color: black
+      border: none
+      box-shadow: none
+      @include primary-font
+      border-radius: 0
+      @include boxsizing
+      border-bottom: 2px solid darkgray
+      padding-bottom: 0px
+
+ 
+  .lrpair.first
+    margin-top: $baseline * 4
+
+  .loading
+    position: absolute
+    bottom: 10px
+    right: 10px
+
+
+  label
+    text-transform: uppercase
+    margin-bottom: -10px
+
+
+  h4
+    font-size: 90%
+    z-index: 10

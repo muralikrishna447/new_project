@@ -2,58 +2,47 @@ class ChargesController < ApplicationController
 
   respond_to :json
 
-  def adjust_for_included_tax(price, ip)
-    tax = 0
-    location = Geokit::Geocoders::IpGeocoder.geocode(ip)
-    if location.state == "WA"
-      tax_rate = 0.095
-      tax = (price - (price / (1 + tax_rate))).round(2)
-    end
-    [(price - tax).round(2), tax]
-  end
-
   def create
-    
+
     assembly = Assembly.find(params[:assembly_id])
+    @gift_info = JSON.parse(params[:gift_info]) if params[:gift_info]
 
-    if Enrollment.where(user_id: current_user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
-      raise "You are already enrolled, we don't want to take your money again!"
+
+    if is_a_gift_purchase?
+      # This is for *buying* a gift certificate
+      @gift_cert = GiftCertificate.purchase(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken], @gift_info)
+    else
+      @enrollment = nil
+      if is_a_gift_redemption?
+        # This is for *redeeming* a gift certificate
+        @enrollment = GiftCertificate.redeem(current_user, JSON.parse(params[:gift_certificate])["id"])
+        session[:gift_token] = nil
+
+      else
+        # Normal course enrollment (paid or free)
+        @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken])
+      end
+      track_event @enrollment
     end
-
-    if ! current_user.stripe_id
-      customer = Stripe::Customer.create(
-        email: current_user.email,
-        card: params[:stripeToken]
-      )
-      current_user.stripe_id = customer.id
-      current_user.save!
-    end
-
-    extra_descrip = ""
-    gross_price, tax = adjust_for_included_tax(assembly.price, request.remote_ip)
-    if tax > 0
-      extra_descrip = " (including #{ActionController::Base.helpers.number_to_currency(tax)} WA state sales tax)"
-    end
-
-    charge = Stripe::Charge.create(
-      customer: current_user.stripe_id,
-      amount: (assembly.price * 100).to_i,
-      description: assembly.title + extra_descrip,
-      currency: 'usd'
-    )
-
-    # Kinda unclear what we should do here if we succesfully charged their card but 
-    # then saving the enrollment fails. Shouldn't happen though... famous last words.
-    @enrollment = Enrollment.new(user_id: current_user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
-    @enrollment.save!
 
     head :no_content
+
+  # If anything goes wrong and we weren't able to complete the charge & enrollment, tell the frontend
+  rescue Exception => e
+    msg = (e.message || "(blank)")
+    logger.debug "Enrollment failed with error: " + msg
+    logger.debug "Backtrace: "
+    e.backtrace.take(20).each { |x| logger.debug x}
+    render json: { errors: [msg]}, status: 422
   end
 
-  rescue_from 'Exception' do |e|
-    puts e.message
-    messages = []
-    messages.push(e.message)
-    render json: { errors: messages}, status: 422
+  private
+  def is_a_gift_purchase?
+    @gift_info && @gift_info.has_key?("recipientEmail")
   end
+
+  def is_a_gift_redemption?
+    params[:gift_certificate]
+  end
+
 end

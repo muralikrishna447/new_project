@@ -18,6 +18,12 @@ module User::Facebook
   end
 
   module ClassMethods
+    def facebook_connect(user)
+      user_options = {email: user[:email], provider: user[:provider], uid: user[:uid]}
+      User.where("users.email = :email OR (users.provider = :provider AND users.uid = :uid)", user_options).
+        first_or_initialize(user_options.merge(password: Devise.friendly_token[0,20], name: user[:name]), without_protection: true)
+    end
+
     def facebook_connected_user(auth)
       connected_user(auth) || connect_via_email(auth)
     end

@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_merit
 
+  include User::Google
   include User::Facebook
   include Gravtastic
   include UpdateWhitelistAttributes
@@ -29,16 +30,21 @@ class User < ActiveRecord::Base
   has_many :votes
 
   has_many :created_activities, class_name: 'Activity', foreign_key: 'creator'
+  has_many :gift_certificates, inverse_of: :purchaser
 
   serialize :viewed_activities, Array
 
   gravtastic
 
   devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+    :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:google_oauth2]
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :role
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id
+
+  # This is for active admin, so that it can edit the role (and so normal users can't edit their role)
+  attr_accessible :name, :email, :password, :password_confirmation,
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :role, as: :admin
 
   validates_presence_of :name
 
@@ -137,6 +143,18 @@ class User < ActiveRecord::Base
 
   def completed_course?(course)
     self.badges.include?(course.badge)
+  end
+
+  def completed_quiz(quiz)
+    self.quizzes.completed.where(quiz_id: quiz.id).any?
+  end
+
+  def last_viewed_activity_in_assembly(assembly)
+    child_ids = assembly.leaf_activities.map(&:id)
+    last_activity = self.events.where(group_type: 'activity_show').where(trackable_id: child_ids).last
+    if last_activity
+      last_activity.trackable
+    end
   end
 end
 

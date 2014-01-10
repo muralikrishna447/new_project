@@ -1,35 +1,63 @@
+
+
 .flat-form(ng-controller='UploadsController' ng-init="init(#{assembly.id})" )
-  .span6
-    %form(name='UploadForm' ng-submit='submit()')
-      %h2 Upload a Photo
+  %form(name='UploadForm' ng-submit='submit()')
+    .row.section
+      .span6
+        %h2
+          {{currentIncludable.includable_title}}
+        %p
+          {{currentIncludable.includable_description}}
+      .span2
+        %img(ng-src="{{assembly.badge_image}}")
+    .row
+      .span6
+        %h3 Title
+        %p Name your creation
+        %input.input-block-level(type='text' ng-model='upload.title' required)
 
-      %h3 Title
-      %p Name your creation
-      %input.input-block-level(type='text' ng-model='upload.title' required)
+        %h3 Story
+        %p Tell us a story about your successes, failures, variations, and creations. What worked and didn't work? What did you change?
+        %textarea.input-block-level(ng-model='upload.notes' required)
 
-      %h3 Story
-      %p Tell us a story about your success, failures, variations and creations.  What worked and what didn't work?  What did you change to suit your palate or your dietary restrictions?
-      %textarea.input-block-level(ng-model='upload.notes' required)
+        %h3 Add a photo
+        %p
+          %div(ng-switch='upload.image_src.length > 0')
+            %div(ng-switch-when="true")
+              %img(ng-src="{{upload.image_src}}")
+          %input(type='hidden' ng-model='upload.image_id' required)
+          .btn.btn-secondary(ng-click='addPhoto()')
+            %span(ng-hide="upload.image_id")
+              Upload Photo
+            %span(ng-show="upload.image_id")
+              Change Photo
 
-      %h3 Add a photo
-      %p Click the button below to show a picture along with your creation.
-      %p
-        %div(ng-switch='upload.image_src.length > 0')
-          %div(ng-switch-when="true")
-            %img(ng-src="{{upload.image_src}}")
-        %input(type='hidden' ng-model='upload.image_id' required)
-        .btn.btn-secondary(ng-click='addPhoto()')
-          %span(ng-hide="upload.image_id")
-            Upload Photo
-          %span(ng-show="upload.image_id")
-            Change Photo
-      %p
-        %div(ng-show='UploadForm.$valid')
-          .btn.btn-primary.btn-large(ng-click='submit()')
-            Save
-        %div(ng-hide='UploadForm.$valid')
-          .btn.btn-primary.btn-large.disabled
-            Save
+    .row.section.review-group.uploads(ng-controller='CommentsController' 
+                      ng-init="init('assemblies',#{@course.id}, #{current_user ? current_user.id : nil}, true); showReviewInput=true"
+                      ng-cloak ng-show="#{defined? current_user} && assembly.assembly_type != 'Project'")
+      .span12
+        %div(ng-show="! myReview()")
+          %h2.inline Review This Class
+          %span
+            (Optional)
+          = render 'comments/review_form'
+        %div(ng-show="myReview()")
+          %h2 Thanks for your review!
+          .reviews
+            .review
+              %csrating.rating(value="myReview().rating" readonly="true")
+              %blockquote.review-content
+                {{myReview().content}}
+    .row
+      .span12.well
+        .row
+          .span3.offset9
+            %div(ng-show='UploadForm.$valid')
+              .btn.btn-primary.btn-large.input-block-level(ng-click='submit()')
+                Finish the Course
+            %div(ng-hide='UploadForm.$valid')
+              .btn.btn-primary.btn-large.input-block-level.disabled
+                Finish the Course
 
   %div(ng-switch on='shareModalShow')
     %div(ng-switch-when='true')
@@ -48,3 +76,6 @@
         .modal-footer
           %a.btn.btn-primary.btn-large(ng-href='{{upload.path}}')
             Done
+
+:javascript
+  mixpanel.track('Assembly Upload Page Viewed', {'context' : 'course', 'title' : "#{assembly.title}", 'slug' : "#{assembly.slug}"});

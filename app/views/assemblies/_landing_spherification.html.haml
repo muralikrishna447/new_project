@@ -1,0 +1,77 @@
+#creative-kit.modal.hide.fade
+  .modal-header
+    %h3 The Creative Kit
+  .modal-body
+    = image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
+    %ul.section{style: "-webkit-column-count: 2"}
+      - Course::SPHERIFICATION_CREATIVE[:equipment].each do |equipment|
+        %li= equipment
+  .modal-footer.section
+    %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
+
+
+#enthusiast-kit.modal.hide.fade
+  .modal-header
+    %h3 The Enthusiast Kit
+  .modal-body
+    = image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
+    %ul.section{style: "-webkit-column-count: 2"}
+      - Course::SPHERIFICATION_ENTHUSIAST[:equipment].each do |equipment|
+        %li= equipment    
+  .modal-footer.section
+    %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
+
+
+#professional-kit.modal.hide.fade
+  .modal-header
+    %h3 The Professional Kit
+  .modal-body
+    = image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
+    %ul.section{style: "-webkit-column-count: 2"}
+      - Course::SPHERIFICATION_PROFESSIONAL[:equipment].each do |equipment|
+        %li= equipment
+  .modal-footer.section
+    %a(class="btn btn-secondary" data-dismiss="modal" aria-hidden="true") Close
+
+%hr
+
+.container-fluid
+  .row-fluid.section
+    .span12
+      %h3.text-center
+        Buy a kit to help you get started
+
+  .row-fluid.section
+    .span4.align-bottom#creative
+      /= image_tag 'https://www.filepicker.io/api/file/cFWqOq07TTyCzGPhs6Kn'
+      = image_tag 'https://www.filepicker.io/api/file/Mn5unIy2TSGXjBRiRsnj'
+      %h4= "The Creative Kit"
+      .static-height
+        = Course::SPHERIFICATION_CREATIVE[:copy]
+        %a(href='#creative-kit' data-target='#creative-kit' data-toggle='modal') See Kit Details
+      .well.section
+        = buy_now(Course::SPHERIFICATION_CREATIVE[:variant_id], Course::SPHERIFICATION_CREATIVE[:price])
+
+    .span4.align-bottom#enthusiast
+      /= image_tag 'https://www.filepicker.io/api/file/kBzOoRGkRsmpKSZPg9fg'
+      = image_tag 'https://www.filepicker.io/api/file/5wKEDSXZQgCgtA5W7JxI'
+      %h4="The Enthusiast Kit"
+      .static-height
+        = Course::SPHERIFICATION_ENTHUSIAST[:copy]
+        %a(href='#enthusiast-kit' data-target='#enthusiast-kit' data-toggle='modal') See Kit Details
+      .well.section
+        = buy_now(Course::SPHERIFICATION_ENTHUSIAST[:variant_id], Course::SPHERIFICATION_ENTHUSIAST[:price])
+
+    .span4.align-bottom#professional
+      /= image_tag 'https://www.filepicker.io/api/file/gV7vpXwSXi4eqHfOf1ED'
+      = image_tag 'https://www.filepicker.io/api/file/FBnDnqcUQRetfBswxNzq'          
+      %h4="The Professional Kit"
+      .static-height
+        = Course::SPHERIFICATION_PROFESSIONAL[:copy]
+        %a(href='#professional-kit' data-target='#professional-kit' data-toggle='modal') See Kit Details
+      .well.section
+        = buy_now(Course::SPHERIFICATION_PROFESSIONAL[:variant_id], Course::SPHERIFICATION_PROFESSIONAL[:price], nil, true)
+      .sold-out
+        Due to high holiday demand, the Professional Sphere Magic Kit is 
+        currently on backorder until December 20th. The Creative and
+        Enthusiast kits are still available for same day shipping.

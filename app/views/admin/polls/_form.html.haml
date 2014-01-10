@@ -7,8 +7,9 @@
 
   %h2 Poll Items
   = link_to_add_fields "Add Poll Item", f, :poll_items
-  = f.semantic_fields_for :poll_items do |builder|
-    = render 'poll_item_fields', f: builder
-  = f.actions
+  #poll_items
+    = f.semantic_fields_for :poll_items do |builder|
+      = render 'poll_item_fields', f: builder
+    = f.actions
 
 = render 'layouts/filepicker'

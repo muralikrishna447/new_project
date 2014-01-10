@@ -29,6 +29,9 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     $scope.twitterCount = if $scope.twitterCount? then $scope.twitterCount + 1 else 1
     $scope.openSocialWindow 'Twitter', "https://twitter.com/intent/tweet?text=" + $scope.tweetMessage() + " " + $scope.socialTitle() + " @ChefSteps!&url=" + window.escape($scope.socialURL())
 
+  $scope.shareCS140 = ->
+    $scope.openSocialWindow 'Twitter', "https://twitter.com/intent/tweet?text=" + $scope.cs140Message() + " %23cs140 @ChefSteps&url=" + window.escape($scope.socialURL())
+
   $scope.shareFacebook = ->
     $scope.facebookCount = if $scope.facebookCount? then $scope.facebookCount + 1 else 1
     $scope.openSocialWindow 'Facebook', "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent($scope.socialURL()), 'width=626,height=436,top=100,left=100'
@@ -39,7 +42,7 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
 
   $scope.sharePinterest = ->
     $scope.pinterestCount = if $scope.pinterestCount? then $scope.pinterestCount + 1 else 1
-    $scope.openSocialWindow 'Pinterest', "http://pinterest.com/pin/create/button/?url=" + encodeURIComponent($scope.socialURL()) + "&media=" + encodeURIComponent($scope.socialMediaItem()) + "&description=" + encodeURIComponent($scope.socialTitle()), 'width=300,height=600,top=100,left=100'
+    $scope.openSocialWindow 'Pinterest', "https://pinterest.com/pin/create/button/?url=" + encodeURIComponent($scope.socialURL()) + "&media=" + encodeURIComponent($scope.socialMediaItem()) + "&description=" + encodeURIComponent($scope.socialTitle()), 'width=300,height=600,top=100,left=100'
 
   $scope.shareEmail = ->
     $scope.openSocialWindow 'Email', "mailto:?subject="+ encodeURIComponent($scope.emailSubject()) + "&body=" + encodeURIComponent($scope.emailBody())
@@ -53,12 +56,13 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
       $scope.facebookCount = data.data[0]?.total_count || 0
     )
 
-    twitter_url = "http://urls.api.twitter.com/1/urls/count.json?callback=JSON_CALLBACK&url=" + www_url
+    # twitter_url = "http://urls.api.twitter.com/1/urls/count.json?callback=JSON_CALLBACK&url=" + www_url
+    twitter_url = "https://cdn.api.twitter.com/1/urls/count.json?callback=JSON_CALLBACK&url=" + www_url
     $http.jsonp(twitter_url).success((data) ->
       $scope.twitterCount = data.count
     )
 
-    pinterest_url = "http://api.pinterest.com/v1/urls/count.json?callback=JSON_CALLBACK&url=" + www_url
+    pinterest_url = "https://api.pinterest.com/v1/urls/count.json?callback=JSON_CALLBACK&url=" + www_url
     $http.jsonp(pinterest_url).success((data) ->
       $scope.pinterestCount = data.count
     )
@@ -98,4 +102,10 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     console.log url
     $scope.socialURL = () ->
       url
+
+  $scope.displayCount = (count) ->
+    return "" if ! count?
+    return count if count < 1000
+    String(Math.floor(count / 1000)) + "k"
+
 ]

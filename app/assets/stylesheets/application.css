@@ -19,7 +19,7 @@
  *= require application/assemblies/course_assembly
  *= require application/_dials
  *= require application/_checkboxes
- *= require ingredients_index
+ *= require admin_table
  *= require mobile
  *= require diffview
  *= require media_objects
@@ -47,4 +47,16 @@
  *= require knife_collection
  *= require cs_lightbox
  *= require charge_form
+ *= require login_form
+ *= require application/assemblies/pre_registration
+ *= require typography
+ *= require about
+ *= require smoker
+ *= require product_collection
+ *= require reviews
+ *= require ingredient_show
+ *= require asides
+ *= require cs_blinders
+
+
  */

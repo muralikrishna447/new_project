@@ -49,6 +49,8 @@ class Event < ActiveRecord::Base
       [trackable_type, trackable_id, action, trackable.commentable_type, trackable.commentable_id, "user_#{user_id}"].join('_').downcase
     when ['Course','enroll']
       [trackable_type, trackable_id, action, created_at.end_of_day.to_s(:number)].join('_').downcase
+    when ['Enrollment', 'create']
+      [trackable_type, trackable_id, action, created_at.end_of_day.to_s(:number)].join('_').downcase
     when ['Inclusion', 'show']
       trackable ? [trackable_type, trackable_id, action].join('_').downcase : nil
     when ['Like','create']

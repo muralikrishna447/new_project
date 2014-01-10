@@ -10,23 +10,34 @@
 
   .home-featured-item
     border: 1px solid $light-gray
-    padding: 10px
-    margin-bottom: 10px
+    padding: $baseline
+    margin-bottom: $baseline * 2
     @include boxsizing
-    @include raleway
+    @include primary-font
+
     h3
       margin: 0px
+      display: inline-block
+
+    img
+      margin-bottom: $baseline
+
+    .rating
+      margin-top: 10px
+      display: inline-block
+      float: right
 
   .home-standard-item
-    margin: 10px 0px
+    margin-bottom: $baseline
     float: left
     width: 100%
     @include boxsizing
-    @include raleway
+    @include primary-font
     .home-standard-item-image
       width: 50%
       float: left
       display: block
+      margin-bottom: $baseline
     .home-standard-item-text
       width: 50%
       float: left
@@ -35,3 +46,24 @@
       @include boxsizing
       h3
         margin: 0px
+
+  .home-featured-item-btn
+    margin-left: 12px
+
+@media (max-width: 480px)
+  .home-signed-in
+    .home-featured-item
+      .home-featured-item-btn
+        width: 100%
+        .btn
+          width: 100%
+      .rating
+        float: none
+        margin-bottom: $baseline
+
+    .home-standard-item
+      .home-standard-item-image
+        width: 100%
+      .home-standard-item-text
+        width: 100%
+        padding-left: 0px

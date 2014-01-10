@@ -25,7 +25,6 @@ Delve::Application.routes.draw do
   # get 'users/sign_in' => redirect('/#log-in')
   # get 'users/sign_up' => redirect('/#sign-up')
   devise_for :users, controllers: {
-    omniauth_callbacks: 'users/omniauth_callbacks',
     registrations: 'users/registrations',
     sessions: 'users/sessions',
     passwords: 'users/passwords'
@@ -39,6 +38,10 @@ Delve::Application.routes.draw do
     get 'welcome', to: 'users/registrations#welcome'
     post 'signup_and_enroll', to: 'users/registrations#signup_and_enroll'
     post 'signin_and_enroll', to: 'users/sessions#signin_and_enroll'
+    match '/users/auth/google/callback', to: 'users/omniauth_callbacks#google'
+    match '/users/auth/facebook/callback', to: 'users/omniauth_callbacks#facebook'
+    match '/users/contacts/google', to: 'users/contacts#google'
+    post '/users/contacts/invite', to: 'users/contacts#invite'
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
@@ -57,9 +60,13 @@ Delve::Application.routes.draw do
   get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
+  get 'egg-timer' => 'pages#egg_timer', as: 'egg_timer'
+  get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   match '/mp', to: redirect('/courses/spherification')
+  match '/MP', to: redirect('/courses/spherification')
   match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
+  match '/PS', to: redirect('/courses/accelerated-sous-vide-cooking-course')
 
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
@@ -107,13 +114,26 @@ Delve::Application.routes.draw do
       post 'start' => 'quizzes#start'
       post 'finish' => 'quizzes#finish'
       get 'results' => 'quizzes#results'
+      get 'retake' => 'quizzes#retake'
     end
   end
 
-  resources :equipment, only: [:index]
-  resources :ingredients, only: [:index, :update, :destroy] do
+  resources :equipment, only: [:index, :update, :destroy] do
+    member do
+      post 'merge' => 'equipment#merge'
+    end
+  end
+
+  resources :ingredients, only: [:index, :show, :update, :create, :destroy] do
     member do
       post 'merge' => 'ingredients#merge'
+      get 'as_json' => 'ingredients#get_as_json'
+      resources :comments
+    end
+    collection do
+      get 'all_tags' => 'ingredients#get_all_tags'
+      get 'manager' => 'ingredients#manager'
+      get 'index_for_gallery' => 'ingredients#index_for_gallery'
     end
   end
 
@@ -147,6 +167,7 @@ Delve::Application.routes.draw do
     resources :comments
     resources :enrollments
   end
+  match "/gift/:gift_token", to: 'assemblies#redeem'
   resources :projects, controller: :assemblies
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'
@@ -161,27 +182,38 @@ Delve::Application.routes.draw do
 
   resources :charges, only: [:create]
 
+  # Legacy needed b/c the courses version of this URL was public in a few places
+  get '/courses/accelerated-sous-vide-cooking-course', to: redirect('/classes/sous-vide-cooking')
+  get '/courses/accelerated-sous-vide-cooking-course/:activity_id', to: redirect('/classes/sous-vide-cooking#/%{activity_id}')
+  get '/courses/french-macarons/landing', to: redirect('/classes/french-macarons/landing')
+  get '/courses/:id', to: redirect('/classes/%{id}/landing')
+  get '/courses/:id/:activity_id', to: redirect('/classes/%{id}#/%{activity_id}')
+
   resources :courses, only: [:index], controller: :courses
 
-  constraints lambda {|request| ['/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path.split('/').reject! { |r| r.empty? }.take(2).join('/').prepend('/')) } do
-    resources :courses, only: [:index, :show] do
-      resources :activities, only: [:show], path: ''
-      member do
-        post 'enroll' => 'courses#enroll'
-      end
+  resources :classes, controller: :assemblies do
+    member do
+      get 'landing', to: 'assemblies#landing'
+      get 'show_as_json', to: 'assemblies#show_as_json'
     end
   end
 
-  constraints lambda {|request| !['/courses/science-of-poutine','/courses/knife-sharpening','/courses/accelerated-sous-vide-cooking-course', '/courses/spherification'].include?(request.path.split('/').reject! { |r| r.empty? }.take(2).join('/').prepend('/')) } do
-    resources :courses, controller: :assemblies do
-      member do
-        get 'landing' => 'assemblies#landing'
-        get 'show_as_json' => 'assemblies#show_as_json'
-      end
-    end
-  end
+  resources 'recipe-developments', controller: :assemblies, as: :recipe_developments, only: [:index, :show]
 
   resources :events, only: [:create]
 
+  resources :gift_certificates
+
+  get "smoker" => "smoker#index"
+
+  get "/affiliates/share_a_sale" => "affiliates#share_a_sale"
+
+  if Rails.env.angular? || Rails.env.development?
+    get "start_clean" => "application#start_clean"
+    get "end_clean" => "application#end_clean"
+  end
+
+  # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
+  match '/*path' => 'application#options', :via => :options
 end
 

@@ -5,6 +5,8 @@ class ActivitiesController < ApplicationController
 
   before_filter :maybe_redirect_activity, only: :show
 
+
+
   def maybe_redirect_activity
     @activity = Activity.find params[:id]
 
@@ -20,6 +22,29 @@ class ActivitiesController < ApplicationController
       redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
+
+    # If this activity should only be shown in paid courses, and the user isn't an admin, send
+    # them to the course landing page. Also allow:
+    # (1) Googlebot so it can index the page
+    # (2) Referred from google (for first click free: https://support.google.com/webmasters/answer/74536?hl=en)
+    # (3) Brombone bot so it can make the snapshot for _escaped_segment_
+    referer = http_referer_uri
+    is_google = request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (referer && referer.host.index('google'))
+    is_brombone = request.headers["X-Crawl-Request"] == 'brombone'
+    if (! current_admin?) && (! is_google) && (! is_brombone)
+      if @activity.show_only_in_course
+        redirect_to class_path(@activity.containing_course), :status => :moved_permanently
+      end
+
+      if @activity.containing_course && current_user && current_user.enrolled?(@activity.containing_course)
+        redirect_to class_activity_path(@activity.containing_course, @activity)
+      end
+
+      if @activity.assemblies.first.assembly_type == 'Project'
+        redirect_to assembly_activity_path(@activity.assemblies.first, @activity)
+      end
+    end
+
   rescue
     # Not a problem
   end
@@ -43,31 +68,23 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @techniques = Activity.published.chefsteps_generated.techniques.includes(:steps).last(6)
-        @recipes = Activity.published.chefsteps_generated.recipes.includes(:steps).last(6)
+        @random_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).order("RANDOM()").last(6)
+        @popular_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).order("RANDOM()").first(6)
 
-        if params[:course_id]
-          @course = Course.find(params[:course_id])
-          @current_module = @course.current_module(@activity)
-          @current_inclusion = @course.inclusions.where(activity_id: @activity.id).first
-          @prev_activity = @course.prev_published_activity(@activity)
-          @next_activity = @course.next_published_activity(@activity)
-          if @prev_activity
-            @prev_module = @course.current_module(@prev_activity)
+        # New school class
+        containing_class = @activity.containing_course
+        if containing_class && containing_class.published?
+          case containing_class.assembly_type
+          when 'Course'
+            path = view_context.link_to containing_class.title, landing_class_path(containing_class)
+          when 'Project'
+            path = view_context.link_to containing_class.title, project_path(containing_class)
+          when 'Recipe Development'
+            path = view_context.link_to containing_class.title, recipe_development_path(containing_class)
           end
-          if @activity.assignments.any?
-            @upload = Upload.new
-            session[:return_to] = request.fullpath
-          end
-          render 'course_activity'
-          track_event @activity
-          return
-        else
-          if @activity.courses.any? && @activity.courses.first.published?
-            flash.now[:notice] = "This is part of the free #{view_context.link_to @activity.courses.first.title, @activity.courses.first} course."
-          end
-          track_event @activity
+          flash.now[:notice] = "This is part of the #{path} #{containing_class.assembly_type.to_s}."
         end
+        track_event @activity
 
         @minimal = false
         if params[:minimal]
@@ -86,12 +103,6 @@ class ActivitiesController < ApplicationController
         end
 
         @source_activity = @activity.source_activity
-
-        # If this is a crawler, render a basic HTML page for SEO that doesn't depend on Angular
-        if params.has_key?(:'_escaped_fragment_')
-          render template: 'activities/static_html'
-          return
-        end
       end
     end
   end
@@ -125,6 +136,7 @@ class ActivitiesController < ApplicationController
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
+    track_event(@activity, 'show')
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
@@ -220,10 +232,10 @@ class ActivitiesController < ApplicationController
   # See note in next method.
   def base_feed
     # this will be the name of the feed displayed on the feed reader
-    @title = "ChefSteps - Free Sous Vide Cooking Course - Sous Vide Recipes - Modernist Cuisine"
+    @title = "ChefSteps - Cook Smarter"
 
     # the news items
-    @activities = Activity.published.by_published_at('desc').chefsteps_generated
+    @activities = Activity.published.by_published_at('desc').chefsteps_generated.include_in_feeds.limit(40)
 
     # this will be our Feed's update timestamp
     @updated = @activities.published.first.published_at unless @activities.empty?

@@ -1,9 +1,12 @@
 @import 'mixins'
 
 .gallery-wrapper
-  min-height: 2400px
   margin-top: 20px
 
+  .add-group
+    margin-right: 20px
+    margin-top: -4px
+    
 .gallery-contents
   margin-top: 10px
 
@@ -13,7 +16,7 @@
     margin-right: 20px !important
 
 .gallery-filter
-  @include raleway
+  @include primary-font
   font-size: 16px
   margin-bottom: 14px
   .dropdown
@@ -33,19 +36,12 @@
 
     a
       color: black
-      @include raleway
+      @include primary-font
       font-size: 16px
   li > a
     padding: 0 0 2px 0 !important
     margin-left: 18px
     cursor: pointer
-
-  .browse-group
-    padding-right: 30px
-    .browse-by
-      font-size: 95%
-    a.active
-      border-bottom: 3px solid $orange
 
   .dropdown-menu
     a
@@ -86,10 +82,11 @@
   @include bottom-only-annotation-shadow
   overflow:  hidden
 
-  .btn-group.first-separate
-    .btn:first-child
-      margin-right: 12px
-      width:  auto
+  .first-separate
+    .btn-group
+      .btn:first-child
+        margin-right: 12px
+        width:  auto
 
   .btn
     background-image: none
@@ -117,7 +114,7 @@
   border-radius: 20px
   margin-left: 8px
   position:  relative
-  top: -2px
+  top: 2px
   padding: 0px 8px
 
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
@@ -143,7 +140,7 @@
     max-height: 150px
 
 .pagination
-  @include raleway
+  @include primary-font
   font-size: 20px
 
 .gallery-animation-enter-setup, .gallery-animation-leave-setup, .gallery-animation-move-setup
@@ -173,11 +170,36 @@
   margin-top: 40px
   margin-left: 20px
 
+.left-group
+  li
+    margin-right: $baseline * 2
+
+.media-box-3-image
+  overflow: hidden
+  margin: 10px 0px
+  img
+    margin: 0
+
+.sash
+  color: white
+  background-color: $orange
+  @include transform(rotate(45deg))
+  @include transform-origin(50% 50%)
+  position: absolute
+  width: 200px
+  height: 20px
+  top: 30px
+  right: -60px
+  text-align: center
+
+.new-ingredient-modal
+  input
+    width: 95%
 
 @media (max-width: 980px)
   .left-group
     width: 100%
-  .browse-group
+  .add-group
     .browse-by
       display: none
     padding-top: 10px
@@ -204,3 +226,6 @@
     .btn
       width:  80px
       text-align:  center
+
+  .add-group
+    float: none !important

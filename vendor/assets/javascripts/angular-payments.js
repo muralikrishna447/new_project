@@ -694,7 +694,7 @@ angular.module('angularPayments', []);angular.module('angularPayments')
         } else {
           // Added this block - michael@chefsteps.com
           scope.$apply(function() {
-            scope[attr.stripeForm].apply(scope, [400, {error: 'Invalid form submitted.'}]);
+            scope[attr.stripeForm].apply(scope, [400, {error: 'There are errors in the form below. Please check any red highlighted boxes and then submit again.'}]);
           });
           button.prop('disabled', false);
         }

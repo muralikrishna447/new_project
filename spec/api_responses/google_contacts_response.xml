@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed gd:etag="W/&quot;DEMARH4zcCt7I2A9Wh5aEk8.&quot;" xmlns="http://www.w3.org/2005/Atom" xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:gContact="http://schemas.google.com/contact/2008" xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+  <id>test@chefsteps.com</id>
+  <updated>2014-01-09T00:14:05.088Z</updated>
+  <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/contact/2008#contact"/>
+  <title>Chef Steps' Contacts</title>
+  <link href="http://www.google.com/" rel="alternate" type="text/html"/>
+  <link href="https://www.google.com/m8/feeds/contacts/test%40chefsteps.com/full?v=3.0" rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+  <link href="https://www.google.com/m8/feeds/contacts/test%40chefsteps.com/full?v=3.0" rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+  <link href="https://www.google.com/m8/feeds/contacts/test%40chefsteps.com/full/batch?v=3.0" rel="http://schemas.google.com/g/2005#batch" type="application/atom+xml"/>
+  <link href="https://www.google.com/m8/feeds/contacts/test%40chefsteps.com/full?max-results=100000&amp;group=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2Fgroups%2Ftest%40chefsteps.com%2Fbase%2F6&amp;v=3.0" rel="self" type="application/atom+xml"/>
+  <author>
+    <name>Chef Steps</name>
+    <email>test@chefsteps.com</email>
+  </author>
+  <generator uri="http://www.google.com/m8/feeds" version="1.0">Contacts</generator>
+  <openSearch:totalResults>3</openSearch:totalResults>
+  <openSearch:startIndex>1</openSearch:startIndex>
+  <openSearch:itemsPerPage>100000</openSearch:itemsPerPage>
+  <entry gd:etag="&quot;Q3o4ezVSLSt7I2A9Wh5UEk8CTwE.&quot;">
+    <id>http://www.google.com/m8/feeds/contacts/test%40chefsteps.com/base/13</id>
+    <updated>2013-12-16T21:20:52.433Z</updated>
+    <app:edited xmlns:app="http://www.w3.org/2007/app">2013-12-16T21:20:52.433Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/contact/2008#contact"/>
+    <title>Test Testerson</title>
+    <link gd:etag="&quot;XQ5IAR4EWit7I2BpPW8pdzAMBmAbC2oSQTQ.&quot;" href="https://www.google.com/m8/feeds/photos/media/test%40chefsteps.com/13?v=3.0" rel="http://schemas.google.com/contacts/2008/rel#photo" type="image/*"/>
+    <link href="https://www.google.com/m8/feeds/contacts/test%40chefsteps.com/full/13?v=3.0" rel="self" type="application/atom+xml"/>
+    <link href="https://www.google.com/m8/feeds/contacts/test%40chefsteps.com/full/13?v=3.0" rel="edit" type="application/atom+xml"/>
+    <gd:name>
+      <gd:fullName>Test Testerson</gd:fullName>
+      <gd:givenName>Test</gd:givenName>
+      <gd:familyName>Testerson</gd:familyName>
+    </gd:name>
+    <gd:email address="test.testerson@gmail.com" primary="true" rel="http://schemas.google.com/g/2005#other"/>
+    <gContact:groupMembershipInfo deleted="false" href="http://www.google.com/m8/feeds/groups/test%40chefsteps.com/base/6"/>
+  </entry>
+  <entry gd:etag="&quot;Qnw5eDVSLyt7I2A9Wh5bGE8LQQA.&quot;">
+    <id>http://www.google.com/m8/feeds/contacts/test%40chefsteps.com/base/27</id>
+    <updated>2014-01-04T07:47:23.220Z</updated>
+    <app:edited xmlns:app="http://www.w3.org/2007/app">2014-01-04T07:47:23.220Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/contact/2008#contact"/>
+    <title>Tom Example</title>
+    <link href="https://www.google.com/m8/feeds/photos/media/test%40chefsteps.com/27?v=3.0" rel="http://schemas.google.com/contacts/2008/rel#photo" type="image/*"/>
+    <link href="https://www.google.com/m8/feeds/contacts/test%40chefsteps.com/full/27?v=3.0" rel="self" type="application/atom+xml"/>
+    <link href="https://www.google.com/m8/feeds/contacts/test%40chefsteps.com/full/27?v=3.0" rel="edit" type="application/atom+xml"/>
+    <gd:name>
+      <gd:fullName>Tom Example</gd:fullName>
+      <gd:givenName>Tom</gd:givenName>
+      <gd:familyName>Example</gd:familyName>
+    </gd:name>
+    <gd:email address="tom.example@gmail.com" primary="true" rel="http://schemas.google.com/g/2005#other"/>
+    <gContact:website href="http://www.google.com/profiles/110760706526650643346" rel="profile"/>
+    <gd:extendedProperty name="GCon" xmlns="">
+      <cc>0</cc>
+    </gd:extendedProperty>
+    <gContact:groupMembershipInfo deleted="false" href="http://www.google.com/m8/feeds/groups/test%40chefsteps.com/base/6"/>
+  </entry>
+  <entry gd:etag="&quot;RX07eTVSLyt7I2A9Wx9SE0kPRQA.&quot;">
+    <id>http://www.google.com/m8/feeds/contacts/test%40chefsteps.com/base/62</id>
+    <updated>2010-12-03T03:00:44.301Z</updated>
+    <app:edited xmlns:app="http://www.w3.org/2007/app">2010-12-03T03:00:44.301Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/contact/2008#contact"/>
+    <title>IM Trapped</title>
+    <link href="https://www.google.com/m8/feeds/photos/media/test%40chefsteps.com/62?v=3.0" rel="http://schemas.google.com/contacts/2008/rel#photo" type="image/*"/>
+    <link href="https://www.google.com/m8/feeds/contacts/test%40chefsteps.com/full/62?v=3.0" rel="self" type="application/atom+xml"/>
+    <link href="https://www.google.com/m8/feeds/contacts/test%40chefsteps.com/full/62?v=3.0" rel="edit" type="application/atom+xml"/>
+    <gd:name>
+      <gd:fullName>IM Trapped</gd:fullName>
+      <gd:givenName>IM</gd:givenName>
+    </gd:name>
+    <gd:email address="i.am.trapped.in.a.box@chefsteps.com" rel="http://schemas.google.com/g/2005#other"/>
+    <gd:extendedProperty name="GCon" xmlns="">
+      <cc>0</cc>
+    </gd:extendedProperty>
+    <gContact:groupMembershipInfo deleted="false" href="http://www.google.com/m8/feeds/groups/test%40chefsteps.com/base/6"/>
+    <gContact:groupMembershipInfo deleted="false" href="http://www.google.com/m8/feeds/groups/test%40chefsteps.com/base/e"/>
+  </entry>
+</feed>

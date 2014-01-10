@@ -1,92 +1,111 @@
-- content_for :title, "#{@course.title.html_safe} - Course"
-- content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
+- content_for :title, "#{@course.title.html_safe} - Class"
+- content_for :description, @course.description != "" ? strip_tags(markdown(@course.description)) : @course.title.html_safe
+- content_for :keywords, @course.leaf_activities.map(&:title).join(',')
+- content_for :facebook_og do
+  %meta{property: 'og:url', content: landing_class_url(@course)}
+  %meta{property: 'og:title', content: "#{@course.title.html_safe} - Class"}
+  %meta{property: 'og:description', content: @course.description != "" ? strip_tags(markdown(@course.description)) : @course.title.html_safe}
+  %meta{property: 'og:image', content: filepicker_hero_image(@course.image_id)}
+- content_for :ajax_seo do
+  %meta{name: "fragment", content: "!"}
 
-.assembly-course-landing
-  .full-stripe
-    .container
-      .row
-        .span12
+
+.assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
+  .container
+    .row
+      -if ! @no_video
+        .span8.section
           .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-            %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+            - if @course.slug == 'french-macarons'
+              - ab_test 'macaron_landing_video', 'FA7XWOmcptU', {'XqQZSn0uB2w' => 4} do |video_id|
+                %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
+            - else
+              %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+      -else 
+        .span8.section
+          .embed-container 
+            = image_tag filepicker_hero_image(@course.image_id)       
 
-.container.assembly-course-landing
-  .row
-    .span8.section
-      %ul.nav.nav-tabs.underline
-        %li.active
-          = link_to 'Overview', '#overview', data: {toggle: 'tab'}
-        - if @course.faq
-          %li
-            = link_to 'FAQ', '#faq', data: {toggle: 'tab'}
-        %li
-          = link_to 'Equipment / Ingredients', '#equipment-ingredients', data: {toggle: 'tab'}
-        - if @course.testimonials
-          %li
-            = link_to 'Testimonials', '#testimonials', data: { toggle: 'tab'}
-      .tab-content
-        .tab-pane.active#overview
-          .two-columns
-            = @course.description
-        - if @course.faq    
-          .tab-pane#faq
-            - @course.faq.steps.each do |step|
-              %h5= step.title
-              %p= step.directions
-        .tab-pane#equipment-ingredients
-          .row
-            .span4
-              %h4 Equipment you'll need
-              %ul.unstyled
-                - @course.required_equipment.each do |equipment_item|
-                  - if equipment_item.product_url?
-                    %li.bullet-for-sale= link_to equipment_item.title, equipment_item.product_url, { target: "_blank"}
-                  - else
-                    %li= equipment_item.title
-            .span4
-              %h4 Ingredients you'll need
-              %ul.unstyled
-                - @course.combined_ingredients.each do |ingredient_item|
-                  %li= ingredient_item[0][0].title
-        - if @course.testimonials 
-          .tab-pane#testimonials
-            = @course.testimonials.content
+      .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
+        .buy-box
+          - discounted_price = @course.price ? @discounted_price : 0
+          = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate
+          .text-center.enroll-count.section
+            %h4= "#{@course.enrollments.count} Enrolled"
+          .text-center.section(ng-show="#{@assembly.average_rating} > 0" ng-click="switchTab('reviews', 'Reviews')")
+            %csrating.rating(value="#{@assembly.average_rating}" readonly="true")
+            %div (#{pluralize(@assembly.comments.count, 'review')})
+          %h5 Class Includes:
+          %ul
+            %li Unlimited Access
+            %li= "#{@course.video_count} HD Videos"
+            / %li Three Fundamental Fillings Explained
+            = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
+            - if @course.price
+              %li Q&A Support
+          - if @course.price
+            %h4 100% satisfaction guaranteed or your money back
+        .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+          = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.  slug}/landing"
+        .testimonials.well(ng-click="switchTab('reviews', 'Reviews')" ng-show="#{!@course.testimonial_copy.blank?}" ng-bind-html-unsafe="'#{@course.testimonial_copy}'")
 
-    .span3.offset1.section
-      .buy-box
-        = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user.enrolled?(@assembly), completed: current_user && current_user.completed_course?(@assembly)
-        .text-center.section
-          %h4= "#{@course.enrollments.count} Enrolled"
-        %h5 Course Includes:
-        %ul
-          %li Full Access
-          %li= "#{@course.video_count} HD Videos"
-          %li= "#{@course.assembly_inclusions.count} Lessons"
-          %li Q&A from the chefs
-        %h4 100% satisfaction guaranteed or your money back
+    .row
+      .span8
+        %ul.nav.nav-tabs.underline.landing-tab-menu
+          = render 'landing_page_tab_links'
+        %ul.nav
+          %li.dropdown.landing-tab-dropdown
+            %a.dropdown-toggle(ng-click="showDropdown = ! showDropdown")
+              %span {{tabTitle}}
+              %b.caret
+            %ul.dropdown-menu(ng-show="showDropdown")
+              = render 'landing_page_tab_links'
 
-  .row
-    .span8
-      %h4 Course Preview
-      .row.section
-        .span4
-          = image_tag ('http://placehold.it/450x600'), class: 'image-shadow'
-          %ul.section
-            %li Some feature
-            %li Some feature
-            %li Some feature
-        .span4
-          = image_tag ('http://placehold.it/450x600'), class: 'image-shadow'
-          %ul.section
-            %li Some feature
-            %li Some feature
-            %li Some feature
-    .span3.offset1
-      = @course.testimonials.content if @course.testimonials
-  .row
-    .span12
-      - if @course.uploads.any?
-        %h4 Student Projects
-        - @course.uploads.each do |upload|
-          = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+        .tab-content#class-overview
+          %div(ng-show="tab=='default'")
+            :markdown
+              #{apply_shortcodes(@course.description)}
+            - if @course.landing_bottom
+              .section
+                :markdown
+                  #{@course.landing_bottom.content}
+
+          %div(ng-show="tab=='reviews'")
+
+            %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, #{(current_user && current_user.id) || 0}, true)")
+              = render 'comments/reviews'
+
+          - if @course.faq    
+            %div(ng-show="tab=='faq'")
+              :markdown
+                #{apply_shortcodes(@course.faq.content)}
+
+          - if @course.ingredients_equipment    
+            %div(ng-show="tab=='ingredients-equipment'")
+              :markdown
+                #{apply_shortcodes(@course.ingredients_equipment.content)}
+
+          - if @course.uploads.approved.any?
+            %div(ng-show="tab=='student-projects'")
+              .section
+                .row
+                  - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
+                    .span4
+                      = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
+          %div(ng-show="tab=='preview'")
+            .section
+              .row
+                .span6.section
+                  = render 'syllabus'
+                .span6.offset1.section
+                  :markdown
+                    #{@course.preview_copy}
 
 = render 'layouts/footer'
+
+:javascript
+  mixpanel.track('Course Landing Viewed', {'context' : 'course', 'title' : "#{@course.title}", 'slug' : "#{@course.slug}"});
+  _gaq.push(['_trackEvent', 'Course', 'Viewed', "#{@course.title}", null, true]);
+
+  
+  

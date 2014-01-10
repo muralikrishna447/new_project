@@ -1,5 +1,21 @@
-%ul.unstyled
-  - activity.steps.each_with_index do |step, index|
-    %li
-      %h3= step.title
-      %p= step.directions
+.row
+  .span9.offset1
+    %div(ng-show="activity.youtube_id || activity.image_id")
+      = render 'activities/hero_visual'
+    %div(ng-show="activity.description")
+      = render 'activities/latest/description'
+.row.list-view
+  .span9.offset1(ng-controller="StepsController")
+    %ul.unstyled(ng-repeat="step in activity.steps")
+      %li(ng-controller="StepController")
+        %div(ng-show='! step.is_aside')
+          %h4(ng-bind-html-unsafe="step.title | markdown | shortcode")
+          %p(ng-bind-html-unsafe="step.directions | markdown | shortcode")
+          %div(ng-show="!!step.youtube_id")
+            .video-container(csenforceaspect)
+              %iframe(ng-style="setHeight()" csenforceaspect ng-src="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+          %div(ng-show="!!step.image_id")
+            %hr
+            %img(ng-src="{{stepImageURL(step, 840)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+            %hr
+        %div(ng-include="'/client_views/_aside'")

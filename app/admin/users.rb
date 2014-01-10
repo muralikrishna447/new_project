@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  actions :all, except: [:edit, :destroy]
+  actions :all, except: [:destroy]
   menu parent: 'More'
 
   action_item only: [:show] do
@@ -50,12 +50,14 @@ ActiveAdmin.register User do
   end
 
   controller do
-    def max_csv_records                                                          
-      30_000                                                                    
+    with_role :admin
+    def max_csv_records
+      30_000
     end
   end
 
   csv do
+    column :id
     column :name
     column :email
   end

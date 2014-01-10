@@ -10,9 +10,12 @@ class Ability
       can :read, :all
     elsif (user.role? :moderator)
       can :manage, Activity
+      can :manage, Ingredient
     else
       can :manage, Activity, creator: user
       can :create, Activity
+      can :create, Ingredient
+      can :update, Ingredient
       can :read, :all
     end
   end

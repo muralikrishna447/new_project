@@ -1,69 +1,84 @@
-%div(ng-controller="BuyAssemblyStripeController" ng-init='assembly=#{assembly.to_json}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{course_path(assembly)}"; completed=#{completed ? true : false}' ng-cloak)
+-# Note! Really important to use class_url, not class_path, so we get off SSL after purchase.
+-# This way of using ng_init is ugly, need to come up with a better plan. One way
+-# would be to retrieve this info via a resource (which could be pre-rendered like)
+-# we do for activity show view.
+
+.buy-buttons(ng-controller="BuyAssemblyStripeController"
+              ng-cloak
+              ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{class_url(assembly, protocol: "http")}"; completed="#{completed ? true : false}"; lastViewedActivity="#{current_user ? class_activity_path(assembly, current_user.last_viewed_activity_in_assembly(assembly)) : nil}"; gift_certificate=#{gift_certificate.to_json}; rails_env="#{Rails.env}"; split_name="#{@split_name}";' )
+
+  -#
+  -# Primary CTA
+  -#
+  %div(ng-show="(! logged_in && assembly.price)")
+    .main-cta(ng-controller="LoginController" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-buy-button(ng-click="waitForLogin(); openModal('login')")
+        BUY NOW
+        = render 'activities/latest/assembly_price'
+        = render "devise/sessions/new_angular"
+
+  -# Already enrolled
   %div(ng-show="enrolled")
-    .btn.btn-primary.btn-large.input-block-level
+    .main-cta(ng-class="{'purchase-started': buyModalOpen}")
       %div(ng-hide='completed')
-        %a(ng-href="{{assemblyPath}}")
-          Continue Course
+        %a.btn.btn-primary.btn-large.input-block-level#continue-button(ng-href="{{lastViewedActivity || assemblyPath}}")
+          %span Continue Class
+
       %div(ng-show='completed')
-        %a(ng-href="{{assemblyPath}}")
-          Completed Course!
+        %a.btn.btn-primary.btn-large.input-block-level#completed-button(ng-href="{{assemblyPath}}")
+          %span View Class
 
-  %div(ng-show="(! enrolled) && assembly.price")
-    .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal()")
-      Buy Now For Just {{assembly.price | currency}}
+  -# Not logged in but gift certificate available
+  %div(ng-show="gift_certificate && (! enrolled) && assembly.price && ! logged_in")
+    .main-cta(ng-controller="LoginController" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-redeem-gift-button(ng-click="waitForRedemption(); openModal('login')")
+        Get My Gift
+        = render "devise/sessions/new_angular"
 
-    %div(close="closeModal()" modal="buyModalOpen" options="modalOptions" ng-cloak)
-      .modal-body.buy-modal(ng-switch on="state")
-        .row-fluid(ng-switch-when="charge" )
-          .close-x.pull-right#cancel-charge(ng-click="closeModal()")
-            %i.icon-remove
+  -# Not enrolled, paid class, gift certificate available
+  %div(ng-show="gift_certificate && (! enrolled) && assembly.price && logged_in")
+    .main-cta(ng-class="{'purchase-started': buyModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#redeem-gift-button(ng-click="redeemGift()")
+        Get My Gift
 
-          %form.charge-form(stripe-form="handleStripe" name="chargeForm") 
-            .control-group(ng-show="errorText")
-              .controls.error-text
-                {{errorText}}
-                Please fix errors and try again.
-                               
-            .control-group
-              %label.control-label(for="")
-                Credit Card Number
-              .controls
-                %input.input-full(ng-model="number" payments-format="card" payments-validate="card" type="text" required  name="card_number")
-              %label.control-label(for="name")
-                Name
-              .controls
-                %input.input-full(type="text" ng-model="name" required name="cardholder_name")
-              .expdate-group.inline
-                %label.control-label(for="")
-                  Expiration Date
-                .controls
-                  %input.input-mini(ng-model="expMonth" type="text" pattern="[0-9]{1,2}" required  name="expMonth")
-                  .date-slash.inline
-                    \/
-                  %input.input-mini(ng-model="expYear" type="text" pattern="[0-9]{1,4}" required  name="expYear" )             
-              .cvc-group.inline
-                %label.control-label(for="")
-                  Security Code (CVC)
-                .controls
-                  %input.input-mini(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" required  name="cvc")
-            .divider
-            .control-group.text-center(ng-hide="processing")
-              .controls                    
-                %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)") Buy Now {{assembly.price | currency}} 
-                %p
-                  .tiny-note
-                    All Taxes Included   
-            .control-group.text-center(ng-show="processing")
-              .controls
-                %i.icon-spinner.icon-2x.icon-spin
-                Processing your card
-        .row-fluid(ng-switch-when="thanks")
-          Thank you for your purchase of our {{assembly.title}} course. We're grateful to have you as a member
-          of member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you
-          at&nbsp; 
-          %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
-          \.
-          .section.text-center         
-            .btn.btn-large.btn-primary     
-              %a(ng-href="{{assemblyPath}}")
-                Start The Course
+  -# Not enrolled, paid class
+  %div(ng-show="(! gift_certificate) && (! enrolled) && assembly.price && logged_in")
+    .main-cta(ng-class="{'purchase-started': buyModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal(false)")
+        BUY NOW
+        = render 'activities/latest/assembly_price'
+
+  -# Not enrolled, free class
+  %div(ng-show="(! gift_certificate) && (! enrolled) && (discounted_price == '0')")
+    .main-cta(ng-controller="LoginController" ng-show="(! logged_in)" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-enroll-free-button(ng-click="waitForFreeEnrollment(); openModal('login');")
+        Enroll for Free
+        = render "devise/sessions/new_angular"
+    .main-cta(ng-show="(logged_in)" ng-class="{'purchase-started': buyModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="free_enrollment()")
+        Enroll For Free
+
+  -#
+  -# Secondary CTA
+  -#
+
+  -# Sell gift certificate
+  -# Not Logged in but want to buy gift certificate
+  %div(ng-show="(! gift_certificate) && (assembly.price > 0) && ! logged_in")
+    .gift-cta(ng-controller="LoginController" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+      .btn.btn-secondary.btn-large.input-block-level#sign-in-and-gift-button(ng-click="waitForLogin(); buyingGift(); openModal('login')")
+        Send As Gift
+        %div.inline(ng-show="enrolled")
+          = render 'activities/latest/assembly_price'
+          = render "devise/sessions/new_angular"
+
+  -# Logged In
+  %div(ng-show="(! gift_certificate) && (assembly.price > 0) && logged_in")
+    .gift-cta(ng-class="{'purchase-started': buyModalOpen}")
+      .btn.btn-secondary.btn-large.input-block-level#gift-button(ng-click="openModal(true)")
+        Send As Gift
+        %div.inline(ng-show="enrolled")
+          = render 'activities/latest/assembly_price'
+
+
+  =render 'buy_modal'

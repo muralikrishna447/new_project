@@ -1,11 +1,18 @@
-angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", ($scope, $resource, $http, $filter, $timeout) ->
+angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope", "$resource", "$http", "$filter", "$timeout", "csAlertService", "Ingredient", "csUrlService", "csAdminTable", "csDensityService", "csGalleryService", ($scope, $resource, $http, $filter, $timeout, csAlertService, Ingredient, csUrlService, csAdminTable, csDensityService, csGalleryService) ->
+
+  $scope.csAdminTable = csAdminTable # Load our csAdminTable service into the scope.
+  $scope.alertService = csAlertService
+  $scope.densityService = csDensityService
+
+  $scope.csAdminTable.resetLoading($scope) # Make sure our loading bar is off
+
   $scope.searchString = ""
-  $scope.dataLoading = 0
   $scope.cellValue = ""
   $scope.perPage = 24
   $scope.sortInfo = {fields: ["title"], directions: ["asc"]}
   $scope.alerts = []
   $scope.includeRecipes = false
+  $scope.exactMatch = false
   $scope.mergeKeeper = null
   $scope.confirmAction = null
   $scope.densityIngredient = null
@@ -13,59 +20,16 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.preventAutoFocus = true
   $scope.addUndo = ->
     true
-  $scope.densityUnits = 
-    [
-      {name: 'Tablespoon', perL: 67.628}, 
-      {name: 'Cup', perL: 4.22675}, 
-      {name: 'Liter',  perL: 1}
-    ]
 
-  $scope.displayDensity = (x) ->
-    if x
-      window.roundSensible(x)
-    else
-      "Set..."
-
-  $scope.displayDensityNoSet = (x) ->
-    if x && _.isNumber(x)
-      window.roundSensible(x)
-    else
-      ""
-
+  $scope.modalOptions =
+    backdropFade: true
+    dialogFade: true
 
   $scope.$watch 'cellValue', (v) ->
     console.log v
 
-  cellEditableTemplate = "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
-  cellTitleEditableTemplate = "<input ng-readonly=\"row.getProperty('sub_activity_id')\"  ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
-
-  Ingredient = $resource( "/ingredients/:id",
-    { detailed: true},
-    {
-      update: {method: "PUT"},
-      merge: {url: "/ingredients/:id/merge", method: "POST"}
-    }
-  )
-
-  $scope.urlAsNiceText = (url) ->
-    if url
-      result = "Link"
-      return "amazon.com" if url.indexOf("amzn") != -1
-      matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
-      if matches && matches[1]
-        result = matches[1]
-        result = result.replace('www.', '')
-      result
-    else
-      "&nbsp;"
-
-  $scope.sortByNiceURL = (a, b) ->
-    na = $scope.urlAsNiceText(a)
-    nb = $scope.urlAsNiceText(b)
-    return 0 if na == nb
-    return 1 if na > nb
-    -1
-
+  # These are the Angular-UI options
+  # http://angular-ui.github.io/ng-grid/
   $scope.gridOptions =
     data: 'ingredients'
     showSelectionCheckbox: true
@@ -78,20 +42,29 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     selectedItems: []
     columnDefs: [
       {
+        field: "ingredient_show_url"
+        display_name: ""
+        width: 24
+        maxwidth: 24
+        enableCellEdit: false
+        sortable: false
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a href="/ingredients/{{row.getProperty(\'slug\')}}" target="_blank"  ng-show=\"! row.getProperty(\'sub_activity_id\')\")" ><i class="icon-external-link"></i></a></div>'
+      }      
+      {
         field: "title"
         displayName: "Ingredient"
         width: "****"
         enableCellEdit: true
         cellTemplate: '<div class="ngCellText colt{{$index}}">{{row.getProperty(col.field)}}{{row.getProperty("sub_activity_id") && " [RECIPE]"}}</div>'
-        editableCellTemplate: cellTitleEditableTemplate
-      },
+        editableCellTemplate: "<input class='ingredient-edit-inpput' ng-readonly=\"row.getProperty('sub_activity_id')\"  ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
+      }
       {
         field: "product_url"
         displayName: ""
         width: 24
         maxWidth: 24
         enableCellEdit: false
-        sortable: false,
+        sortable: false
         cellTemplate: '<div class="ngCellText colt{{$index}}"><a href="{{row.getProperty(col.field)}}" target="_blank"  ng-show="row.getProperty(col.field)" ><i class="icon-external-link"></i></a></div>'
       }
       {
@@ -99,15 +72,16 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         displayName: "Affiliate Link"
         width: "***"
         enableCellEdit: true
-        sortFn: $scope.sortByNiceURL,
+        sortFn: csUrlService.sortByNiceURL
         cellTemplate: '<div class="ngCellText colt{{$index}}"><span ng-bind-html-unsafe=\"urlAsNiceText(row.getProperty(col.field))\"/></div>'
-        editableCellTemplate: cellEditableTemplate
+        # cellTemplate: "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
+        editableCellTemplate: "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
       }
       {
         field: "density"
         displayName: "Density g/L"
         width: "*"
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"editDensity(row.entity)\"><span ng-bind-html-unsafe=\"displayDensity(row.getProperty(col.field))\"/></a></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"densityService.editDensity(row.entity)\"><span ng-bind-html-unsafe=\"densityService.displayDensity(row.getProperty(col.field))\"/></a></div>'
         enableCellEdit: false
         sortable: true
       }
@@ -121,44 +95,20 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       }
     ]
 
-  $scope.modalOptions = {backdropFade: true, dialogFade:true}
-
-  # From http://stackoverflow.com/questions/5999118/add-or-update-query-string-parameter
-  updateQueryStringParameter = (uri, key, value) ->
-    re = new RegExp("([?|&])" + key + "=.*?(&|$)", "i")
-    separator = (if uri.indexOf("?") isnt -1 then "&" else "?")
-    if uri.match(re)
-      uri.replace re, "$1" + key + "=" + value + "$2"
-    else
-      uri + separator + key + "=" + value
-
-  fixAmazonLink = (i) ->
-    tag_value = "delvkitc-20"
-    tag = "tag=" + tag_value
-    url = i.product_url
-    if url
-      if url.match(/^[\w\d]{10}$/)
-        i.product_url = "http://www.amazon.com/gp/product/" + url + "/?" + tag
-      else if url.indexOf('amazon.com') != -1
-        if url.indexOf(tag) == -1
-          i.product_url = updateQueryStringParameter(url, "tag", tag_value)
-
   $scope.ingredientChanged =  (ingredient) ->
-    fixAmazonLink(ingredient)
-    console.log(ingredient)
-    $scope.dataLoading = $scope.dataLoading + 1
-    ingredient.$update({id: ingredient.id},
-    ( ->
-      console.log("INGREDIENT SAVE WIN")
-      $scope.dataLoading = $scope.dataLoading - 1
-    ),
-    ((err) ->
-      console.log("INGREDIENT SAVE FAIL")
-      _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
-      $scope.dataLoading = $scope.dataLoading - 1
-      $scope.resetIngredients()
-    ))
-  
+    csUrlService.fixAmazonLink(ingredient)
+    $scope.dataLoading += 1
+    ingredient.$update  # Want to try to move this into the ingredient factory
+      id: ingredient.id
+      ->
+        $scope.csAdminTable.changedSuccess("Ingredient", $scope)
+      (err) ->
+        $scope.csAdminTable.changedFailure("Ingredient", err, $scope)
+
+  #Call the service for this to condense the code, but add it to the controller so it can be used in the view
+  $scope.urlAsNiceText = (url) ->
+    csUrlService.urlAsNiceText(url)
+
   $scope.canMerge = ->
     return false if $scope.gridOptions.selectedItems.length < 2
     _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (! val.sub_activity_id)), true)
@@ -168,37 +118,18 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     _.reduce($scope.gridOptions.selectedItems, ((memo, val) -> memo && (val.use_count == 0) && (! val.sub_activity_id)), true)
 
   $scope.deleteSelected = ->
-    _.each $scope.gridOptions.selectedItems, (ingredient) ->
-      $scope.dataLoading = $scope.dataLoading + 1
-      ingredient.$delete({id: ingredient.id},
-      ( ->
-        console.log("INGREDIENT DELETE WIN")
-        $scope.dataLoading = $scope.dataLoading - 1
-        index = $scope.ingredients.indexOf(ingredient)
-        $scope.gridOptions.selectItem(index, false)
-        $scope.ingredients.splice(index, 1)
-        $scope.$apply() if ! $scope.$$phase
-      ),
-      ((err) ->
-        console.log("INGREDIENT DELETE FAIL")
-        _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
-        $scope.dataLoading = $scope.dataLoading - 1
-      ))
+    $scope.csAdminTable.deleteSelected("Ingredients", $scope)
 
   $scope.mergeSelected = (keeper) ->
     $scope.mergeModalOpen = false
-    $scope.dataLoading = $scope.dataLoading + 1
-    keeper.$merge({id: keeper.id, merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')},
-    ( ->
-      console.log("INGREDIENT MERGE WIN")
-      $scope.dataLoading = $scope.dataLoading - 1
-      #$scope.refreshIngredients()
-    ),
-    ((err) ->
-      console.log("INGREDIENT MERGE FAIL")
-      _.each(err.data.errors, (e) -> $scope.addAlert({message: e}))
-      $scope.dataLoading = $scope.dataLoading - 1
-    ))
+    $scope.dataLoading += 1
+    keeper.$merge  # Want to try to move this into the ingredient factory
+      id: keeper.id
+      merge: _.map($scope.gridOptions.selectedItems, (si) -> si.id).join(',')
+      ->
+        $scope.csAdminTable.mergeSuccess("Ingredient", $scope)
+      (err) ->
+        $scope.csAdminTable.mergeFailure("Ingredient", err, $scope)
 
   $scope.uses = (ingredient) ->
     result = ingredient.activities
@@ -212,40 +143,31 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     $scope.usesForModal = $scope.uses(ingredient)
     $scope.usesModalOpen = true
 
-  $scope.editDensity = (ingredient) ->
-    $scope.densityIngredient = ingredient
-
-  $scope.finishDensityChange = (ingredient) ->
-    $scope.ingredientChanged(ingredient)
-    $scope.densityIngredient = null
-
   $scope.computeUseCount = (ingredient) ->
     ingredient.use_count = $scope.uses(ingredient).length
 
   $scope.loadIngredients =  (num) ->
-    $scope.dataLoading = $scope.dataLoading + 1
+    $scope.dataLoading += 1
     searchWas = $scope.searchString
     offset = $scope.ingredients.length
-    num = num || $scope.perPage
+    num ||= $scope.perPage
 
-    Ingredient.query(
+    Ingredient.query  # Want to try to move this into the ingredient factory
       search_title: ($scope.searchString || "")
       include_sub_activities: $scope.includeRecipes
+      exact_match: $scope.exactMatch
       sort: $scope.sortInfo.fields[0]
       dir: $scope.sortInfo.directions[0]
       offset: offset
-      limit: num,
-
-    (response) ->
-      $scope.dataLoading = $scope.dataLoading - 1
-      # Avoid race condition with results coming in out of order
-      if searchWas == $scope.searchString
-        _.each(response, (item) -> $scope.computeUseCount(item))
-        $scope.ingredients[offset..offset + num] = response
-
-    , (err) ->
-      alert(err)
-    )
+      limit: num
+      (response) ->
+        $scope.dataLoading -= 1
+        # Avoid race condition with results coming in out of order
+        if searchWas == $scope.searchString
+          _.each(response, (item) -> $scope.computeUseCount(item))
+          $scope.ingredients[offset..offset + num] = response
+      (err) ->
+        $scope.csAdminTable.loadFailure("Ingredient", err, $scope)
 
   $scope.resetIngredients = ->
     $scope.ingredients = []
@@ -259,15 +181,15 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
 
   $scope.$watch 'searchString',  (new_val) ->
     # Don't search til the string has been stable for a bit, to avoid bogging down
-    $timeout ( ->
+    $timeout ->
       if new_val == $scope.searchString
         $scope.resetIngredients()
-    ), 250
+    , 250
 
   # Doc says to just watch sortInfo but not so much
   prevSortInfo = {}
   $scope.$on 'ngGridEventSorted', (event, sortInfo) ->
-    if ! _.isEqual(sortInfo, prevSortInfo)
+    unless _.isEqual(sortInfo, prevSortInfo)
       prevSortInfo = jQuery.extend(true, {}, sortInfo)
       $scope.resetIngredients()
 
@@ -277,15 +199,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.$on 'ngGridEventScroll', ->
     $scope.loadIngredients()
 
-  # DRY up with activity controller. Make a service or something.
-  $scope.addAlert = (alert) ->
-    $scope.alerts.push(alert)
-    $timeout ->
-      $("html, body").animate({ scrollTop: -500 }, "slow")
-
-  $scope.closeAlert = (index) ->
-    $scope.alerts.splice(index, 1)
-
   $scope.setMergeKeeper = (ingredient) ->
     $scope.mergeKeeper = ingredient
 
@@ -294,11 +207,8 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     return null if idx < 0
     $.trim(ingredient.title.substring(idx + 1))
 
-  $scope.confirmNo = ->
-    $scope.confirmAction = null
-
-  $scope.confirmYes = ->
-    act = $scope.confirmAction
-    $scope.confirmAction = null
-    eval("$scope." + act)
+  $scope.finishDensityChange = (ingredient) ->
+    $scope.ingredientChanged(ingredient)
+    $scope.densityService.editDensity(null)
 ]
+

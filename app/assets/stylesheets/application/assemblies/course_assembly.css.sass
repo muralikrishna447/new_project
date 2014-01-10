@@ -1,43 +1,88 @@
 @import 'mixins'
 @import 'application/custom_mixins'
 
-.course-nav-hamburger
-  //position: fixed
-  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
-  -webkit-transform: translateZ(0)
-  //top: 75px
-  //margin-left: 50%
-  //left: -636px
-  //font-size: 24px
-  //color: $orange
-  position: fixed
+.fs-course
+  height: 100%
+  margin: 0px
+
+// Landing Page Styles
+.assembly-syllabus
+  .nested
+    padding-left: 20px
+
+.buy-buttons
+  margin-bottom: $baseline
+
+.course-wrapper
+  position: relative
+  background-color: white
+  float: left
+  height: 100%
+  width: 100%
+
+.course-assembly-container
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0px
+  left: 0px
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
+.course-nav-hamburger-wrapper
+  position: absolute
+  width: 40px
+  height: 100%
+  top: 0px
+  left: 0px
+  margin-top: 0px
+  padding-top: 5px
+  padding-left: 5px
+  padding-right: 5px
+  background-color: white
   color: $orange
   font-size: 24px
-  margin-top: 10px
-  z-index: 9999
+  @include boxsizing
+  .course-nav-hamburger
+    .hamburger-bar
+      width: 30px
+      height: 5px
+      border-radius: 1px
+      margin-bottom: 4px
+      background: $orange
+      @include boxsizing
+    &:hover
+      cursor: pointer
+      .hamburger-bar
+        background: $dark-orange
 
 .course-nav-slideout
-  // position: fixed
-  // height: 100%
-  // width: 320px
-  // top: 0
-  // padding-top: 66px
-  // margin-left: 50%
-  // left: -585px
-  // background-color: white
-  // border-right: 1px solid $light-gray
   position: fixed
-  width: 320px
-  margin-left: 40px
-  border-right: 1px solid $light-gray
+  top: 0px
+  left: 40px
+  width: 295px
   height: 100%
+  margin-left: -295px
+  background-color: white
+  border-right: 1px solid $light-gray
+  overflow-y: auto
+  overflow-x: hidden
+  -webkit-overflow-scrolling: touch
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+  @include boxsizing
+
+  h1
+    padding: $baseline
+    margin: 5px
+    font-size: 20px
+    line-height: 20px
+    font-weight: bold
 
   h4
-    padding-left: 10px
+    margin: 0px
+    padding: $baseline
     text-transform: uppercase
 
   ul
-    margin-top: 10px
     border-bottom: 1px solid $light-gray
     width: 100%
     @include boxsizing
@@ -65,7 +110,7 @@
 
     li.active
       color: #333
-      background-color: $light-gray
+      background-color: $offwhite
 
     .nested
       border-top: none
@@ -74,11 +119,10 @@
         margin-top: 0px
         border-bottom: none
         overflow: hidden
-        @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-        max-height: 300px
 
         li
           border-top: none
+          @include transition(all 200ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
 
         li.active, li:hover
           color: #333
@@ -88,149 +132,190 @@
         .hitbox:hover
           color: #333
 
-      ul.collapsed
-        max-height: 0
-
-
-
 .course-content-wrapper
-  padding-left: 20px
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0px
+  left: 0px
+  padding-left: 40px
+  padding-top: $baseline
+  margin-left: 0px
+  overflow-y: auto
+  overflow-x: hidden
+  -webkit-overflow-scrolling: touch
+  @include boxsizing
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
   .container-fluid
-    margin-left: 0px
-    margin-right: 0px
-    .course-content
-      // z-index: 1
-      background-color: white
-      @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+    .row-fluid
       .row
         margin-left: 0px
+    .row-fluid [class*="span"]
+      min-height: 0px
+    .course-content
+      .row
+        margin-left: 0px
+      .span7
+        margin-left: 0px
+      .main-content-container
+        .row
+          .span3
+            width: 100%
+            margin-left: 0px
+      .step-ingredients-source
+        margin-bottom: 0px
+      #video-ingredient-unit
+        min-height: 0px
 
-.course-content.menu-showing
-  left: 340px
+.menu-slideout
+  @include transform(translateX(295px))
 
-.lessons-heading
-  color: $orange
-  text-transform: uppercase
- 
+.assembly-loading-wrapper
+  position: absolute
+  z-index: 9999
+  // background: rgba(255, 255, 255, .9)
+  height: 100%
+  width: 100%
+  top: 0
+  left: 0
+  padding-left: 40px
+  text-align: center
+  pointer-events: none
+  backface-visibility: hidden
+  -webkit-backface-visibility: hidden /* Chrome and Safari */
+  -moz-backface-visibility: hidden /* Firefox */
+  -ms-backface-visibility: hidden /* Internet Explorer */
+  @include boxsizing
+  .assembly-loading-background
+    width: 100%
+    height: 100%
+    padding-top: 100px
+    background-color: white
+    .activity-loading-spinner
+      margin-top: 0px
+
+// Global Nav
+.course-global-nav
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+  .navbar.navbar-fixed-top
+    margin-top: -58px
+
+.course-global-nav-show
+  @include transform(translateY(58px))
+
 #step-dots
   position: fixed
-
+  -webkit-backface-visibility: hidden
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
-  width: 15px
-  top: 115px
-  //margin-left: 50%
-  //left: -634px
-  margin-left: -38px
+  z-index: 9999
+  width: 14px
+  top: 50px
+  left: 0px
+  padding-left: 12px
   @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
 
   li
     height: 20px
+    width: 14px
 
-  li a
-    color: lighten($orange, 25%)
-    font-size: 10px
-    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
-    padding-left: 3px
-    padding-top: 2px
+  li 
+    a
+      padding: 5px 2px
+      .step-dot-circle
+        -webkit-backface-visibility: hidden
+        background-color: lighten($orange, 25%)
+        width: 10px
+        height: 10px
+        border-radius: 50%
+        @include boxsizing
 
-  li a.active
-    color: $orange
-    font-size: 15px
-    padding-left: 0px
-    padding-top: 0px
-
-  // This was from a previous iteration where we wanted just a couple of different
-  // sized dots right next to the active one
-  //li a.active-neighbor
-    //color: lighten($orange, 25%)
-    //display: block
-
-  // li a.active-more, li a.basic, li a.active-neighbor
-  //   color: lighten($orange, 25%)
-  //   margin-left: 3px 
-  //   font-size: 10px
-  //   display: block
+  li 
+    a.active
+      padding: 3px 0px
+      .step-dot-circle
+        background-color: $orange
+        width: 14px
+        height: 14px
    
-  li.intro a
-    font-size: 15px
-    color: $light-gray
-    padding-left: 0px
-    padding-top: 0px
+  li.intro 
+    a
+      padding: 3px 0px
+      .step-dot-circle
+        font-size: 15px
+        background-color: $light-gray
+        width: 14px
+        height: 14px
 
-  li.intro a.active
-    color: #555
-    display: block
-
+  li.intro a.active .step-dot-circle
+    background-color: #555
+ 
   a:hover
     background-color: inherit
 
-#step-dots.menu-showing
+.hide-when-menu-showing
   opacity: 0
 
 .assembly-activity
   .activity-description
-    padding: 0 10px
 
   .ordered-steps-new
     .ordered-step-item
-      width: 100%
       float: left
       padding: 0px
-      margin-top: 30px
       @include boxsizing
       .step-number
-        @include gotham-bold
-        font-size: 50px
-        line-height: 50px
-        padding-bottom: 10px
+        @include primary-font-bold
       .step-content
-        h4
-          margin-top: 0px
-          margin-bottom: 0px
-          padding-bottom: 2px
         ul, li
           list-style: none
           padding: 0px 0px 10px 0px
-          margin: 0px
+          margin-bottom: $baseline
         ul
           padding: 0px
       .step-actions
-        margin-bottom: 10px
+        margin-bottom: $baseline
         .step-action-item
           display: inline-block
         .step-ingredients
           .step-ingredients-source
             display: none
-      .step-image
+      .step-image 
         display: none
       .step-video
         display: none
-        margin-bottom: 10px
       .divider
         height: 1px
         border-bottom: 1px solid $light-gray
-        margin-top: 14px
-        margin-bottom: 14px
-      .span12
-        .step-content
-          @include columncount(2)
-          @include columngap(40)
+        padding: $baseline 0px
+        margin-bottom: $baseline * 2
+
+  .step-last-row
+    margin-bottom: $baseline * 3
+
 
 .hidden
   display: none
 
 .assembly-upload-modal
+  z-index: 9999
+  -webkit-transform: translateZ(0)
   .modal-body
     .modal-image
       width: 200px
       margin: 0 auto
 
+.footer-group
+  -webkit-backface-visibility: hidden
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
 .prev-next-group
-  padding-top: 50px
-  padding-bottom: 76px
-  margin-top: 65px
-  margin-bottom: -65px
+  @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+  padding-top: 40px
+  padding-bottom: 40px
+  background: white
+  -webkit-backface-visibility: hidden
 
   .next-activity-name
     color: darkgray
@@ -239,29 +324,124 @@
     font-size: 120%
     padding: 12px 12px
 
-@media (min-width: 1200px)
-  .course-content-wrapper
-    .course-content
-      .row
-        margin-left: 0px
+  .course-nav-bottom-left
+    left: 0
+  .course-nav-bottom-right
+    right: 0
 
-@media (max-width: 979px) and (min-width: 768px)
+#course-quiz
+  margin-top: 5px
+
+.price
+  display: inline-block
+  .full-price
+    display: inline
+    .strike
+      position: absolute
+      left: 0
+      right: 0
+      top: 9px
+      border: 2px solid rgba(255, 255, 255, .9)
+
+.gift-cta
+  .full-price
+    .strike
+      border: 2px solid rgba(20, 20, 20, .9)
+
+.ingredients-title
+  display: none
+
+.responsive
+  display: none
+
+// Responsive Styles //
+@media (min-width: 1024px)
+  .course-nav-hamburger-wrapper
+    display: none
+
+  .course-nav-slideout
+    margin-left: 0px
+
+  .course-content-wrapper
+    padding-left: 335px
+
+  .assembly-loading-wrapper
+    padding-left: 335px
+
+@media (max-width: 979px)
   .course-content-wrapper
     .container-fluid
       margin-left: 0px
       margin-right: 0px
+
+  .course-content-wrapper.course-global-nav-show
+    margin-top: 0px
 
 @media (max-width: 767px)
-  .course-nav-slideout
-    width: 100%
-  .course-content-wrapper
-    padding-left: 40px
-    margin-top: 30px
-    .container-fluid
+  .fs-course
+    padding-left: 0px
+    padding-right: 0px
+
+  .course-global-nav
+    .navbar
       margin-left: 0px
       margin-right: 0px
-      .course-content.menu-showing
-        left: 100%
-        margin-left: 20px
-      #video-ingredient-unit
-        min-height: 0px
+  
+  .course-content-wrapper
+    padding-bottom: 110px
+    .container-fluid
+      padding-left: 10px
+      padding-right: 10px
+
+  .non-responsive
+    display: none
+
+  .responsive
+    display: inline-block
+
+  // Mobile Bottom Nav
+  .course-nav-bottom-center
+    position: absolute
+    background-color: white
+    height: 100px
+    bottom: -100px
+    width: 100%
+    @include transition(all 300ms cubic-bezier(0.455,  0.030, 0.515, 0.955))
+
+    .next-activity-name
+      color: $orange
+      position: absolute
+      width: 100%
+      bottom: 55px
+      padding-bottom: 10px
+      background-color: white
+    h4
+      margin-bottom: 0px
+
+    .course-nav-buttons-group
+      width: 100%
+      position: absolute
+      bottom: 0px
+      height: 55px
+      .btn
+        @include boxsizing
+        width: 50%   
+        position: absolute
+        left: 0px
+        bottom: 0px
+        height: $baseline * 5
+        padding-top: 14px
+        border-top: 1px solid $light-gray
+        border-bottom: none
+        margin-bottom: 0px
+        i
+          font-size: $baseline * 3
+          vertical-align: middle
+          color: #ccc
+      .btn:not(:first-child)
+        left: 50%
+        right: auto
+        border-left: 1px solid $light-gray
+
+  .show-nav-bottom
+    @include transform(translateY(-100px))

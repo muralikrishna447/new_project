@@ -18,7 +18,7 @@
             #nav-edit-toolbar(collapse="!editMode")
               = render 'activities/edit_toolbar'
           %div(ng-style="toolbarBonusStyle()"){collapse: ("editMode" if @include_edit_toolbar)}
-            .nav-collapse.collapse.pull-right
+            .nav-collapse.collapse.pull-right#cs-navigation
               %ul.nav
                 %li.dropdown
                   .nav-item-border
@@ -28,23 +28,19 @@
                     %i.icon-angle-down
                   %ul.dropdown-menu
                     .dropdown-background
-                    %li= link_to 'ChefSteps Recipes', gallery_index_url(activity_type: "Recipe")
-                    %li= link_to 'Community Recipes', gallery_index_url(source: "community")
-                    %li= link_to 'Add Recipe', new_activity_url
-                    -if can? :update, Ingredient
-                      %li= link_to 'Manage Ingredients', ingredients_path
+                    %li= link_to 'ChefSteps Recipes', gallery_index_url + "#/?activity_type=Recipe&generator=ChefSteps"
+                    %li= link_to 'Community Recipes', gallery_index_url + "#/?generator=Community"
+                    %li= link_to 'Ingredients', ingredients_url
+                    -if (can? :manage, Ingredient) || (can? :manage, Ingredient)
+                      %li.divider
+                    -if can? :manage, Ingredient
+                      %li= link_to 'Manage Ingredients', manager_ingredients_path
+                    -if can? :manage, Equipment
+                      %li= link_to 'Manage Equipment', equipment_index_path
 
-                %li.dropdown
+                %li
                   .nav-item-border
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Learn
-                    %i.icon-angle-down
-                  %ul.dropdown-menu
-                    .dropdown-background
-                    / %li= link_to 'Sous Vide Course', course_url('accelerated-sous-vide-cooking-course')
-                    %li= link_to 'Courses', courses_url
-                    %li= link_to 'Techniques', gallery_index_url(activity_type: "Technique")
-                    %li= link_to 'Science', gallery_index_url(activity_type: "Science")
+                  = link_to 'Classes', courses_url
                 %li.dropdown
                   .nav-item-border
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
@@ -53,19 +49,28 @@
                   %ul.dropdown-menu
                     .dropdown-background
                     %li= link_to 'Forum', 'http://forum.chefsteps.com'
-                    %li= link_to 'Vote For New Courses', poll_url('vote-for-new-courses')
-                %li.dropdown
+                    %li= link_to 'Vote For New Courses', poll_url('vote-for-future-classes-3')
+                -unless @no_shop
+                  %li.dropdown
+                    .nav-item-border
+                    = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+                      Shop
+                      %i.icon-angle-down
+                    %ul.dropdown-menu
+                      .dropdown-background
+                      %li= link_to 'Store', 'http://store.chefsteps.com'
+                      %li= link_to 'Knife Collection', knife_collection_url
+                      %li= link_to 'Sous Vide Collection', sv_collection_url
+                %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
                   .nav-item-border
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Shop
-                    %i.icon-angle-down
-                  %ul.dropdown-menu
-                    .dropdown-background
-                    %li= link_to 'Store', 'http://store.chefsteps.com'
-                    %li= link_to 'Knife Collection', knife_collection_url
-                %li
-                  .nav-item-border
-                  - if current_user
+                  - if external
+                    -# Can't see current_user when external, so use a route that will
+                    -# either go to their profile if logged in, or take them to sign in
+                    = link_to user_profile_url('self') do
+                      %span
+                        Profile
+
+                  - elsif current_user
                     - unviewed_events_count = current_user.events.timeline.unviewed.count
                     = link_to user_profile_url(current_user) do
                       %span
@@ -74,13 +79,24 @@
                           .label
                             = "#{unviewed_events_count} New"
                   - else
-                    = link_to 'Sign in', sign_in_url
+                    %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+                    = render "devise/sessions/new_angular"
+                    = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
+                -# %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
+                -#   %span
+                -#     %a.btn-google.btn(ng-click="loadFriends('invite')") Invite
+                -#     = render "devise/sessions/new_angular"
+                -# %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
+                -#   %span
+                -#     %a.btn-google.btn(ng-click="openModal('googleInvite')") Google Invite
+                -#     = render "devise/sessions/new_angular"
+
                 - unless external
                   %li
                     .nav-item-border
                     .nav-search.nav-search-toggle
                       %i.icon-search.icon-large
-                      = form_tag gallery_index_url, :method => :get, class: 'navbar-form form-search nav-search-form' do
-                        = text_field_tag :search_all, nil, :placeholder => 'search', class: 'search-query', id: 'nav-search-field'
+                      %form.navbar-form.form-search.nav-search-form(action="#{gallery_index_url}#/?search_all={{navbarSearchQuery}}" method="get")
+                        %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
                       .nav-search-hide
                         %i.icon-remove

@@ -18,6 +18,7 @@
   = f.inputs name: "Activity Details" do
     = f.input :layout_name, as: :select, collection: Activity::LAYOUT_NAMES
     = f.input :include_in_gallery, as: :boolean
+    = f.input :show_only_in_course, label: "Show only in course"
     = f.input :published
     = f.input :title
     %li

@@ -1,0 +1,114 @@
+- if @returning_visitor || current_user
+  = render 'hero_carousel'
+- else
+  = render 'madlib'
+
+.container
+  .row.section
+    .span12
+      %h1.text-orange Check out our courses with more to come
+  .row.section
+    - if @courses.any?
+      - @courses.each do |course|
+        .span4
+          = render 'shared/media_box_2', url: course_path(course), title: course.title, image: course.featured_image, object: course
+      .span12.text-center
+        %p.lead 
+          %br
+          %strong With Award-Winning Chefs to Help You Succeed
+          %br
+          The James Beard award-winning culinary team at ChefSteps, along with its active global community of both novice and experienced cooks, will help you become more confident and creative in the kitchen.
+
+.container-fluid.well-gradient
+  .row-fluid
+    %hr
+    .container
+      .row.section
+        .span12
+          %h2.text-orange Or just take in smaller bits...
+      .row.section-large
+        .span6
+          = link_to gallery_index_url + "#/?activity_type=Recipe" do
+            .lead
+              %strong Learn a New Recipe
+              .lead.black-link
+                ChefSteps is loaded with reliable original recipes, developed by our culinary team. Unlike other online recipes, ours are demonstrated through beautiful videos and pictures with clearly written explanations.
+
+        .span6
+          = render 'shared/horizontal_slider', items: @recipes, direction: 'right'
+
+      .row.section-large
+        .span6
+          = render 'shared/horizontal_slider', items: @techniques, direction: 'left'
+        .span6
+          = link_to gallery_index_url + "#/?activity_type=Technique" do
+            .lead
+              %strong Perfect a New Technique
+              .lead.black-link
+                Until now, learning cutting-edge modernist cooking techniques— as well as many classic techniques—has been a haphazard process. ChefSteps offers step-by-step demonstrations that will enable you to create your own original recipes, improvise amazing meals for family and friends, or simply cook and eat better food every day.
+
+      .row.section-large
+        .span6
+          = link_to gallery_index_url + "#/?activity_type=Science" do
+            .lead
+              %strong Absorb the Science
+              .lead.black-link
+                ChefSteps is the place to turn to learn the why behind the how. Our recipes and techniques a  re supported by explanations of the underlying science of cooking. Our goal is to inform your intuition for how cooking really works, so that you become a more confident, resourceful, and creative cook.
+        .span6
+          = render 'shared/horizontal_slider', items: @sciences, direction: 'right'
+
+      .row.section-large
+        .span8.offset2
+          .lead
+            = link_to 'http://forum.chefsteps.com' do 
+              .lead
+              %strong Get Involved with a Passionate Community
+              .lead.black-link
+                Our forum is an incredibly active and friendly community of both novice and experienced cooks, as well as many professional chefs, including the award-winning creative team behind Modernist Cuisine. Sign up and get your questions about cooking answered, often within minutes.
+
+/- if @new_visitor
+/  .container
+/    .row.section
+/      .span12
+/        %h2.text-orange Did we mention it's free?
+/    .row.section
+/      .span6
+/        %p.lead
+/          Yes, ChefSteps is entirely free-to-learn. Our goal is to collaborate with the global community of curious cooks to create original recipes, invent new techniques, and help us all become better cooks. 
+/          / Skeptical? Read more here about how we plan to keep ChefSteps going without compromise.
+/      .span5.offset1
+/        %p.lead Keep up to date with the latest from ChefSteps.
+/        = form_tag sign_up_url, :method => :get, class: 'form-inline' do
+/          %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Email Address', required: true}
+/          %p= submit_tag 'Subscribe Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+
+/- else
+.container
+  .row.section
+    .span8#discussion
+      %h3 Latest From Our Forums:
+      %h4.discussion-name
+      %blockquote.word-wrap
+        %p.discussion-body
+        %small
+          %cite
+            .discussion-author
+      = link_to 'Join the Discussion', '#', class: 'btn btn-primary discussion-link'
+      %hr
+      - if @status
+        - cache @status, expires: 10.minutes do
+          #twitter-status
+            %h3 Latest Tweet:
+            = @status.html_safe
+            = link_to 'Follow us on Twitter', 'https://twitter.com/@chefsteps', class: 'btn btn-primary'
+    - unless current_user
+      .span4.signup-box
+        .well
+          %h3 Join the community!
+          = form_tag welcome_url, :method => :get, class: 'form-inline' do
+            = hidden_field_tag :signed_up_from, 'homepage_cta'
+            %p= email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
+            %p= submit_tag 'Sign Up Now', class: 'btn btn-primary btn-large btn-block', id: 'subscribe-email'
+
+= content_for :footer do
+  = render 'layouts/footer'

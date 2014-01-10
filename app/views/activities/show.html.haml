@@ -50,7 +50,7 @@
   .container#activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
     .row.noprint(ng-cloak ng-show="editMode && alerts.length > 0")
       .span8.offset2
-        %alert.edit-alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="closeAlert($index)" ng-animate="'custom'")
+        %alert.edit-alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="alertService.closeAlert($index)" ng-animate="'custom'")
           %h3 Save Failed!
           {{alert.message}}
           .section
@@ -69,7 +69,7 @@
         = render 'top_buttons'
 
     -# Main content row
-    .row.printable.printable-column
+    .row.printable
       .span12
         -# This seems a little weird, why do we have a row inside a span12?
         .row#main-content
@@ -79,7 +79,7 @@
     -# disappears roughly when the page is ready.
     .row.activity-loading-spinner(ng-hide="true")
       .span12
-        %i.icon-spinner.icon-spin
+        %i.icon-page-load
 
 -################################ BOTTOM OF PAGE CONTENT ################################
 
@@ -99,16 +99,16 @@
                 %i{class: "icon-chevron-right"}
               %div{class: "horizontal-slider-shadow-overlay-right"}
 
-    - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @techniques && @recipes
+    - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @popular_recipes && @random_recipes
       .row(ng-hide="editMode" ng-cloak)
         .span12
-          %h3 Techniques
+          %h3 Popular Recipes
           #technique-carousel
-            = render 'shared/horizontal_slider', items: @techniques, direction: 'right'
+            = render 'shared/horizontal_slider', items: @popular_recipes, direction: 'right'
 
-          %h3 Recipes
+          %h3 From The Archives
           #related-carousel
-            = render 'shared/horizontal_slider', items: @recipes, direction: 'right'
+            = render 'shared/horizontal_slider', items: @random_recipes, direction: 'right'
     - if ! ENV["CS_NO_DISQUS"]
       .row(ng-hide="editMode" ng-cloak)
         .span12
@@ -166,6 +166,16 @@
 = render 'restore_autosave.html.haml'
 = render 'already_editing_modal.html.haml'
 
+%div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
+  .modal-header
+    %h2 Choose Tags
+    Pick all that apply. It is ok to have more than one in a category.
+  .modal-body.tag-bg
+    %csTagChooser(  ng-model="activity.tags" 
+                    options="csTagService.activitySuggestedTags")
+  .modal-footer
+    %button.btn(ng-click="showTagsModal = false") Done
+
 -################################ PRELOADED JSON FOR SPEED ################################
 
 #preloaded-activity-json.hide
@@ -173,7 +183,7 @@
 
 
 :javascript
-  mixpanel.track('Activity Viewed', {'distinct_id' : "#{current_user ? current_user.email : nil}", 'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
+  mixpanel.track('Activity Viewed', {'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
 
 
 
