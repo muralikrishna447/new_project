@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Users::OmniauthCallbacksController, '#facebook' do
+describe Users::OmniauthCallbacksController do
   describe "#facebook" do
     before do
       request.env["devise.mapping"] = Devise.mappings[:user]
