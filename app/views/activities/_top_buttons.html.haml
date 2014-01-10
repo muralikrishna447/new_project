@@ -1,13 +1,9 @@
 %div.section(collapse="editMode")
   - if ! @minimal
     .activity-top-buttons
-      .pull-left
+      .pull-right(style="margin-left: 20px;")
         .btn.btn-secondary{onclick: 'window.print()'}
           Print
-        .btn.btn-secondary#show-all
-          Show All
-          %i.icon-picture#show-all-icon
-      .pull-right(style="margin-left: 20px;")
 
         -if can?(:update, @activity) && @include_edit_toolbar
           .btn.btn-secondary(ng-click="maybeStartEditMode()" tooltip="Edit this recipe" tooltip-placement="left")

@@ -80,7 +80,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
         $scope.csGlobals.scaling = 1
         $scope.csGlobals.units = "grams"
         window.updateUnits(false)
-        window.expandSteps()
 
   $scope.maybeStartEditMode = ->
     # Must reload activity before checking currently_editing_user - want to get any changes that have
