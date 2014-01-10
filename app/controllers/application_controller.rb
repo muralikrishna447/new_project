@@ -152,7 +152,7 @@ private
   skip_before_filter :verify_authenticity_token, :only => [:options]
 
   before_filter :cors_set_access_control_headers
-  before_filter :authenticate_cors_user
+  # before_filter :authenticate_cors_user
 
   def authenticate_cors_user
     if request.xhr? && !user_signed_in?

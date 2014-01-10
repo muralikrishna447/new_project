@@ -1,12 +1,14 @@
 require "js_connect"
 
 class SsoController < ApplicationController
+  before_filter :authenticate_cors_user
+
   def index
     # 1. Get your client ID and secret here. These must match those in your jsConnect settings.
     client_id = "1924714588"
     secret = "7ba99d277305511571d4b0ef843daa4c"
 
- 
+
     # 3. Fill in the user information in a way that Vanilla can understand.
     user = {}
 
@@ -21,7 +23,7 @@ class SsoController < ApplicationController
     # 4. Generate the jsConnect string.
     secure = true # this should be true unless you are testing.
     json = JsConnect.getJsConnectString(user, self.params, client_id, secret, secure)
-    
+
     render :text => json
   end
 
