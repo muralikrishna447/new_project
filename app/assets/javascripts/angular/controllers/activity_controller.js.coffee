@@ -180,9 +180,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.addEditModeClass = ->
     if $scope.editMode then "edit-mode" else "show-mode"
 
-  $scope.primaryColumnClass = ->
-    if ($scope.editMode || ($scope.activity && $scope.activity.steps && ($scope.activity.steps.length > 0))) then 'span6' else 'no-steps span8 offset2'
-
   $scope.temporaryNoAutofocus = ->
     # Pretty ugly, but I don't see a cleaner solution
     $scope.preventAutoFocus = true
