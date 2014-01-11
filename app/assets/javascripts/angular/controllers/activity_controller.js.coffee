@@ -379,8 +379,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     if _.isNumber(id) && ! $scope.activities[id] 
       console.log "Loading activity " + id   
       $scope.activities[id] = Activity.get({id: id}, ->
-       console.log "Loaded activity " + id   
-       callback() if callback
+        console.log "Loaded activity " + id   
+        callback() if callback
       )
 
   $scope.makeActivityActive = (id) ->
@@ -390,6 +390,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
     $scope.csGlobals.units = "grams"
     $scope.csGlobals.scaling = 1
+    $scope.setIngredientSpanClass()
     $timeout ->
       window.updateUnits(false)
 
@@ -481,11 +482,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
      mixpanel.track('Activity Description Maximized', {'slug' : $scope.activity.slug});
      mixpanel.people.increment('Activity Description Maximized Count')
 
-  $scope.ingredientSpanClass = ->
+  $scope.setIngredientSpanClass = ->
     if $scope.activity.description
-      'span6'
+      $scope.ingredientSpanClass = 'span6'
     else
-      'span7'
+      $scope.ingredientSpanClass = 'span7'
 
   # One time stuff
   if $scope.parsePreloaded()
