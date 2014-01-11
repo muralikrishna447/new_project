@@ -44,7 +44,7 @@ annotationSlide = (slider, button, direction) ->
   note_height = Math.max.apply(Math,heights)
 
   if direction == 'left'
-    slider.css 'left', note_width
+    slider.css 'left', Math.abs(note_width)
   else if direction == 'center'
     center = slider.find('.note-center')
     center_image = slider.find('.annotation-slider-image-center img')
@@ -54,7 +54,7 @@ annotationSlide = (slider, button, direction) ->
     center.css 'pointer-events', 'auto'
 
   else
-    slider.css 'left', '-' + note_width
+    slider.css 'left', -1*Math.abs(note_width)
 
   if note_height > slider_height
     slider_parent.css 'height', note_height
