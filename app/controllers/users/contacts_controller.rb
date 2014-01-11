@@ -5,7 +5,7 @@ class Users::ContactsController < ApplicationController
   end
 
   def invite
-    emails = params[:email]
+    emails = params[:emails]
     UserMailer.invitations(emails, current_user).deliver
     render(json: {status: :success})
   end
