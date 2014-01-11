@@ -434,7 +434,11 @@ class Activity < ActiveRecord::Base
   end
 
   def always_include_disqus
-    true if self.activity_type == 'Recipe' || 'Technique' || 'Science'
+    if self.activity_type.include?('Recipe') || self.activity_type.include?('Technique') || self.activity_type.include?('Science')
+      true
+    else
+      false
+    end
   end
 
   private
