@@ -43,7 +43,7 @@
 -################################ PRIMARY CONTENT ################################
 
 #activity-title(data-activity="#{@activity.title}")
-%form(name="activityForm")
+%form(ng-cloak name="activityForm")
   -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
   %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
@@ -73,7 +73,7 @@
         = render 'activities/metadata'
 
     -# Main content row
-    .row.printable(ng-cloak)
+    .row.printable
       .span12
         -# This seems a little weird, why do we have a row inside a span12?
         #main-content(scroll-spy offset="140")
