@@ -456,7 +456,7 @@ describe "LoginController", ->
 
   describe "#sendInvitation", ->
     beforeEach ->
-      scope.inviteFriends = [{email: "danahern@chefsteps.com", value: true}, {email: "test@chefsteps.com", value: true}, {email: "nogood@example.com", value: false}]
+      scope.inviteFriends = [{email: "danahern@chefsteps.com", name: "Dan Ahern", value: true}, {email: "test@chefsteps.com", name: "Test User", value: true}, {email: "nogood@example.com", name: "No Good", value: false}]
       scope.switchModal = jasmine.createSpy("switchModal")
       scope.httpBackend.expect(
         'POST'
@@ -515,3 +515,9 @@ describe "LoginController", ->
 
     it "should set call openModal", ->
       expect(scope.openModal).toHaveBeenCalledWith("welcome")
+
+  describe "#friendsSelected", ->
+    it "should return only selected values", ->
+      scope.inviteFriends = [{email: "danahern@chefsteps.com", name: "Dan Ahern", value: true}, {email: "test@chefsteps.com", name: "Test User", value: true}, {email: "nogood@example.com", name: "No Good", value: false}]
+      expect(scope.friendsSelected()).toEqual([{email: "danahern@chefsteps.com", name: "Dan Ahern", value: true}, {email: "test@chefsteps.com", name: "Test User", value: true}])
+

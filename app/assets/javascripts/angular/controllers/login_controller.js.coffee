@@ -319,7 +319,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.sendInvitation = ->
     $scope.dataLoading += 1
-    friends = _.filter($scope.inviteFriends, (friend) -> (friend.value == true))
+    friends = $scope.friendsSelected()
     friendEmails = _.pluck(friends, 'email')
     $http(
       method: "POST"
@@ -370,5 +370,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $timeout( -> # Done so that the modal has time to close before triggering events
       $scope.openModal(to)
     , 300)
+
+  $scope.friendsSelected = ->
+    _.filter($scope.inviteFriends, (friend) -> (friend.value == true))
 
 ]
