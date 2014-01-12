@@ -441,7 +441,7 @@ describe "LoginController", ->
       scope.httpBackend.expect(
         'GET'
         "/users/contacts/google.js"
-      ).respond(200, ["danahern@chefsteps.com", "test@chefsteps.com"])
+      ).respond(200, [{name: "Dan Ahern", email: "danahern@chefsteps.com"}, {name: "Test Guy", email: "test@chefsteps.com"}])
       scope.loadGoogleContacts()
       scope.httpBackend.flush()
 
@@ -449,7 +449,7 @@ describe "LoginController", ->
       expect(scope.dataLoading).toBe(0)
 
     it "should set inviteFriends to mapped data", ->
-      expect(scope.inviteFriends).toEqual([{email: "danahern@chefsteps.com", value: false}, {email: "test@chefsteps.com", value: false}])
+      expect(scope.inviteFriends).toEqual([{name: "Dan Ahern", email: "danahern@chefsteps.com", value: false}, {name: "Test Guy", email: "test@chefsteps.com", value: false}])
 
     it "should call switchModal", ->
       expect(scope.switchModal).toHaveBeenCalledWith('invite', 'googleInvite')
@@ -515,4 +515,3 @@ describe "LoginController", ->
 
     it "should set call openModal", ->
       expect(scope.openModal).toHaveBeenCalledWith("welcome")
-

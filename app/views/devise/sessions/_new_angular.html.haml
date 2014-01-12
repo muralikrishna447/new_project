@@ -142,7 +142,7 @@
               %li.friend.one_column(ng-repeat="friend in inviteFriends | filter:searchFriends")
                 %label
                   %input(type="checkbox" ng-model="friend.value")
-                  {{friend.email}}
+                  {{friend.name}} ({{friend.email}})
     .modal-footer.invite-modal-footer
       %div
         %button.btn.btn-primary.btn-large.next-button(ng-show="authentication.currentUser()" ng-click="sendInvitation()") Send Invitations

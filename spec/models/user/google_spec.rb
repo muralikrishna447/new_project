@@ -75,7 +75,7 @@ describe User::Google do
       end
 
       it "should have the contact emails" do
-        contacts.should eq ["i.am.trapped.in.a.box@chefsteps.com", "test.testerson@gmail.com", "tom.example@gmail.com"]
+        contacts.should eq [{:email=>"i.am.trapped.in.a.box@chefsteps.com", :name=>"IM Trapped"}, {:email=>"test.testerson@gmail.com", :name=>"Test Testerson"}, {:email=>"tom.example@gmail.com", :name=>"Tom Example"}]
       end
     end
 

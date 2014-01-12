@@ -20,10 +20,19 @@ module User::Google
         group = Nokogiri::XML(groups_request.body).css("id").text
         contacts_request = authorization.fetch_protected_resource(uri: "https://www.google.com/m8/feeds/contacts/default/full/?max-results=100000&v=3.0&group=#{group}")
         xml = Nokogiri::XML(contacts_request.body)
-        contacts = xml.document.xpath("//gd:email/@address").map(&:value)
-        current_users = User.where(email: contacts).pluck(:email)
-        contacts = contacts - current_users
-        return contacts.sort{|a,b| a.downcase <=> b.downcase}
+        contacts = []
+        entries = xml.search("entry")
+        entries.each do |entry|
+          contact = {email: nil, name: nil}
+          contact[:name] = entry.xpath(entry.path + "//gd:fullName").text
+          contact[:email] = entry.xpath(entry.path + "//gd:email[@primary='true']/@address").text
+          contact[:email] = entry.at_xpath(entry.path + "//gd:email/@address").try(:text) if contact[:email].blank?
+          contacts << contact if contact[:email].present?
+        end
+        # contacts = xml.document.xpath("//gd:email/@address").map(&:value)
+        current_users = User.where(email: contacts.map{|c| c[:email]}).pluck(:email)
+        contacts = contacts.reject{|c| current_users.include?(c[:email])}
+        return contacts.sort{|a,b| a[:name].downcase <=> b[:name].downcase}
       rescue Signet::AuthorizationError
         new_token = authorization.fetch_access_token!
         update_attribute(:google_access_token, new_token["access_token"])

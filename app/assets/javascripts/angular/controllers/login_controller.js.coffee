@@ -310,7 +310,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       method: "GET"
       url: "/users/contacts/google.js"
     ).success( (data, status) ->
-      friends = _.map(data, (email) -> {email: email, value: false})
+      friends = _.map(data, (contact) -> {name: contact.name, email: contact.email, value: false})
       $scope.inviteFriends = friends
       $scope.dataLoading -= 1
       $scope.switchModal('invite', 'googleInvite')
