@@ -1,10 +1,10 @@
 - content_for :title, "#{@course.title.html_safe} - Class"
-- content_for :description, @course.description != "" ? strip_tags(markdown(@course.description)) : @course.title.html_safe
+- content_for :description, @course.description != "" ? strip_tags(markdown(@course.short_description)) : @course.title.html_safe
 - content_for :keywords, @course.leaf_activities.map(&:title).join(',')
 - content_for :facebook_og do
   %meta{property: 'og:url', content: landing_class_url(@course)}
   %meta{property: 'og:title', content: "#{@course.title.html_safe} - Class"}
-  %meta{property: 'og:description', content: @course.description != "" ? strip_tags(markdown(@course.description)) : @course.title.html_safe}
+  %meta{property: 'og:description', content: @course.description != "" ? strip_tags(markdown(@course.short_description)) : @course.title.html_safe}
   %meta{property: 'og:image', content: filepicker_hero_image(@course.image_id)}
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
