@@ -17,15 +17,25 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     desired_viscosity: 16
     diameter: 43
     start_temp: 5
-    surface_heat_transfer_coeff: 155
+    surface_heat_transfer_coeff: 135
     beta: 1.7
 
-  $scope.formatTime = (t) ->
-    m = Math.floor(t/60)
-    s = String(Math.floor(t - m * 60))
-    if s.length == 1
-      s = "0" + s
-    return "#{m}:#{s}"
+  $scope.formatTime = (t, showSeconds) ->
+    h = Math.floor(t / 3600)
+    t = t - (h * 3600)
+    m = Math.floor(t / 60)
+    t = t - (m * 60)
+    s = Math.floor(t)
+    m += 1 if (s >= 30) && (! showSeconds)
+
+    result = ""
+    result += "#{h} hours, " if h > 0
+    result += "#{m} mins"
+    if showSeconds
+      # Force a non-zero second so user knows we need precision
+      s = 1 if s == 0 
+      result += ", #{s} secs"
+    result
 
   $scope.viscosityToDescriptor = (v) ->
     return "syrup" if v <= 8

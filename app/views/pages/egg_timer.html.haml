@@ -66,16 +66,11 @@
                 %input(type="number" ng-model="inputs.start_temp") &deg; C
 
             .page(ng-switch-when="bathType")
-              %h4 What temperature is your egg?
+              %h4 What type of water bath are you using?
               .section.text-center
                 .btn-group
-                  .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 5" active="inputs.surface_heat_transfer_coeff == 5") Refrigerator
-                  .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 22" active="inputs.surface_heat_transfer_coeff == 22") Room Temp
-              .section.text-center
-                or 
-              .section.text-center
-                %input(type="number" ng-model="inputs.surface_heat_transfer_coeff") &deg; C
-
+                  .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 135" active="inputs.surface_heat_transfer_coeff == 5") Stirred
+                  .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 165" active="inputs.surface_heat_transfer_coeff == 22") Unstirred
 
               
         .egg-footer
