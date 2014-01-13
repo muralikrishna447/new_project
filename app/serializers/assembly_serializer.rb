@@ -8,11 +8,7 @@ class AssemblySerializer < ActiveModel::Serializer
   end
 
   def path
-    if object.assembly_type == 'Recipe Development'
-      recipe_development_path(object)
-    else
-      landing_class_path(object)
-    end
+    landing_assembly_path(object)
   end
 
   def badge_image

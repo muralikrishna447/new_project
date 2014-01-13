@@ -295,5 +295,14 @@ module ApplicationHelper
     end
   end
 
+  def landing_assembly_path(assembly)
+    case assembly.assembly_type
+    when 'Course'
+      landing_class_path(assembly)
+    when 'Recipe Development'
+      recipe_development_path(assembly)
+    end
+  end
+
 end
 
