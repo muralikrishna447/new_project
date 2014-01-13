@@ -18,7 +18,7 @@
     .comment-content
       %a(href="/profiles/{{comment.user.slug}}")
         {{comment.user.name}}
-      {{comment.content}}
+      %div(ng-bind-html-unsafe='comment.content | newlines')
     .comment-created-at
       %small
         {{comment.created_at|date:'MMM d, yyyy @ h:mma'}}

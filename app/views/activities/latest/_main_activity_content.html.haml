@@ -1,13 +1,15 @@
 .spier.show-mode
   .row.relative(ng-hide="heroDisplayType() == 'none'")
-    .section.span12.ng-cloak.assembly-activity#video-ingredient-unit
+    .span12.ng-cloak.assembly-activity.section#video-ingredient-unit
       .hero-video.noprint
         = render 'activities/hero_visual'
-        
-  .row.main-content-container(ng-show="!!activity.description")
+      - unless @assembly
+        .noprint(ng-show="! editMode")
+          = render 'layouts/social_buttons', media_object: activity
+  .row.main-content-container
     .span6
       = render 'activities/latest/description'
-    .span6
+    %div(ng-class='ingredientSpanClass()')
       = render 'activities/main_ingredients'
       .row
         .span3

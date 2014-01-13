@@ -86,9 +86,6 @@ a, [ng-click], [contenteditable]:not(:focus)
   margin-top: 150px
   text-align: center
 
-.activity-top-buttons
-  margin-top: 20px
-
 .icon-page-load
   &:before
     content: url('page-load.gif')
@@ -471,9 +468,6 @@ a:hover
 //     .btn-text
 //       font-size: 12px
 
-#video-ingredient-unit
-  min-height: $baseline * 60
-
 .video-container
   margin-bottom: $baseline
   position: relative
@@ -693,6 +687,8 @@ a:hover
   .ingredients-menu
     height: 0
     width: 100%
+    padding: 0px
+    margin: 0px
     position: static
     .controls
       background-color: $offwhite
@@ -710,14 +706,6 @@ a:hover
 
   .ingredients-menu-contents-slide
     height: 191px
-
-  .ingredients-menu-button
-    background-color: transparent
-    top: -12px
-    right: auto
-    left: -18px
-    width: 40px
-    height: 40px
 
   .ingredients-menu-button-slide
     right: auto
@@ -750,6 +738,7 @@ a:hover
   font-size: 14px
   width: 100%
   display: inline-block
+  overflow: hidden
 
   div
     display: inline-block
@@ -1636,6 +1625,8 @@ a:hover
   label
     margin-right: 8px
     vertical-align: top
+  #step-dots
+    top: 70px
 
 
 csequipmenteditpair, csingredienteditpair
@@ -1769,7 +1760,7 @@ csingredienteditpair
 
 .step-sidebar-group
   position: absolute
-  left:  -16px
+  left:  -30px
   height:  100%
 
   button
@@ -1779,10 +1770,12 @@ csingredienteditpair
     padding: 2px 6px
   .btn-group-vertical
     margin-left: 0px !important
+    .btn
+      margin-bottom: 2px
 
 .step-edit-buttons
   position: absolute
-  top: 45px
+  top: 10px
   width: 30px
 
 .step-add-button-group

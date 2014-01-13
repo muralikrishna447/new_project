@@ -20,7 +20,9 @@
       %csEditPairEdit
         %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
 
-  .step-last-row(ng-show='(!! step.youtube_id) || (!! step.image_id)')
+    =render 'activities/step_edit_images'
+
+  .step-last-row(ng-show='((!! step.youtube_id) || (!! step.image_id)) && (! editMode)')
 
     %div(ng-show='hasAV()')
       .step-video-outer.noprint(ng-show="!! step.youtube_id")
@@ -32,7 +34,5 @@
       .step-image-outer(ng-show="(! step.youtube_id) && (!! step.image_id)")
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(ng-src="{{stepImageURL(step, 670)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
-
-      .divider
 
 %div(ng-include="'/client_views/_aside'")
