@@ -9,7 +9,7 @@ class AssemblySerializer < ActiveModel::Serializer
 
   def path
     if object.assembly_type == 'Recipe Development'
-      class_path(object)
+      recipe_development_path(object)
     else
       landing_class_path(object)
     end
