@@ -20,7 +20,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     surface_heat_transfer_coeff: 135
     beta: 1.7
 
-  $scope.formatTime = (t, showSeconds) ->
+  $scope.formatTime = (t, showSeconds = true) ->
 
     h = Math.floor(t / 3600)
     t = t - (h * 3600)

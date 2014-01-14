@@ -21,6 +21,10 @@
                   Runny
                   %input(type="range" ng-model='inputs.water_temp' min="60" max="85")
                   Firm
+              .egg-footer
+                .btn.btn-primary(ng-click="goState('yolk')") 
+                  NEXT
+                  %i.icon-angle-right
 
             .page(ng-switch-when="yolk")
               %h4.text-center What texture would you like your egg yolk?
@@ -29,6 +33,11 @@
                   Syrup
                   %input(type="range" ng-model='inputs.desired_viscosity' min="5" max="30")
                   Icing
+              .egg-footer
+                .btn.btn-left.btn-primary(ng-click="goState('white')") 
+                  %i.icon-angle-left
+                .btn.btn-right.btn-primary(ng-click="goState('results')") 
+                  %i.icon-angle-right
 
             .page(ng-switch-when="results")
               .section
@@ -46,6 +55,11 @@
                 .btn.btn-circle.large(ng-click="goState('size')") Size
                 .btn.btn-circle.large(ng-click="goState('startTemp')") Starting Temp
                 .btn.btn-circle.large(ng-click="goState('bathType')") Bath Type
+              .egg-footer
+                .btn.btn-secondary(ng-click="goState('rate')") 
+                  RATE YOUR RESULTS
+                .btn.btn-primary(ng-click="goState('white')") 
+                  START OVER
 
             .page(ng-switch-when="size")
               %h4 What size is your egg?
@@ -78,14 +92,6 @@
                   .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 135" active="inputs.surface_heat_transfer_coeff == 5") Stirred
                   .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 165" active="inputs.surface_heat_transfer_coeff == 22") Unstirred
 
-              
-        .egg-footer
-          .btn.btn-primary.state-button-prev(ng-show="getPrevState()" ng-click="goPrevState()") 
-            %i.icon-angle-left
-            BACK
-          .btn.btn-primary.state-button-next(ng-show="getNextState()" ng-click="goNextState()") 
-            NEXT
-            %i.icon-angle-right
 
           
 

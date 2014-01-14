@@ -46,25 +46,29 @@
 
   .egg-footer
     position: absolute
-    bottom: 0
+    bottom: $baseline
     left: 0
     right: 0
-    height: $baseline * 4
     color: white
     text-align: center
-    background-color: $light-gray
 
-    .btn
-      width: 50%
-      height: 100%
-      position: absolute
-      font-size: 24px
-      padding-top: 12px
-
-    .state-button-prev
+    .btn, .btn-primary, .btn-secondary
+      width: 90%
+      height: 40px
+      font-size: 16px
+      padding-top: 10px
+      .icon-angle-right
+        float: right
+      .icon-angle-left
+        float: left
+    .btn-left
       left: 0
-    .state-button-next
+      width: 46%
+      display: inline-block
+    .btn-right
       right: 0
+      width: 46%
+      display: inline-block
 
 .iphone-container
   margin-left: auto
