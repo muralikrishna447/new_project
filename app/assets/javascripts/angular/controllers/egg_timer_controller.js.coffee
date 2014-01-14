@@ -21,6 +21,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     beta: 1.7
 
   $scope.formatTime = (t, showSeconds) ->
+
     h = Math.floor(t / 3600)
     t = t - (h * 3600)
     m = Math.floor(t / 60)
@@ -28,14 +29,26 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     s = Math.floor(t)
     m += 1 if (s >= 30) && (! showSeconds)
 
-    result = ""
-    result += "#{h} hours, " if h > 0
-    result += "#{m} mins"
-    if showSeconds
+    # Three cases:
+    #
+    # (1) 6h 1m
+    if h > 0
+      result = "#{h}h #{m}m"
+
+    # (2) 7m 2s
+    else if showSeconds
       # Force a non-zero second so user knows we need precision
-      s = 1 if s == 0 
-      result += ", #{s} secs"
+      s = 1 if s == 0       
+      result = "#{m}m #{s}s"
+
+    # (3) 43 mins
+    else
+      result = "#{m} min"
+
     result
+
+  $scope.needsSeconds = ->
+    ($scope.output?.items?[2] - $scope.output?.items?[0]) < 90 
 
   $scope.viscosityToDescriptor = (v) ->
     return "syrup" if v <= 8

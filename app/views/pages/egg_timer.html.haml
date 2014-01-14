@@ -31,11 +31,17 @@
                   Icing
 
             .page(ng-switch-when="results")
-              %h4 {{inputs.water_temp}} &deg;C
-              %h4 {{formatTime(output.items[1])}} if serving immediately
-              %h4 {{formatTime(output.items[4])}} if ice-chilled and reheated later
               .section
-                Add data for more accurate cooking time:
+                %h2.text-center {{inputs.water_temp}} &deg;C
+              .section
+                .labeled-time
+                  %span Ice and reheat
+                  %h3 {{formatTime(output.items[4], needsSeconds())}}
+                .labeled-time
+                  %span Serve immediately
+                  %h3 {{formatTime(output.items[1], needsSeconds())}}
+              .section
+                Add data for more accurate time:
               .section.text-center
                 .btn.btn-circle.large(ng-click="goState('size')") Size
                 .btn.btn-circle.large(ng-click="goState('startTemp')") Starting Temp
