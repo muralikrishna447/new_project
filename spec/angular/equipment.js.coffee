@@ -5,7 +5,6 @@ describe "EquipmentController", ->
     browser().navigateTo('/end_clean')
     browser().navigateTo('/start_clean')
     browser().navigateTo('/')
-    pause
     element('#nav-sign-in-button').click()
     sleep 0.5
     expect(element('.login-modal-body').count()).toBe(1)
@@ -14,7 +13,7 @@ describe "EquipmentController", ->
     element("button.signin").click()
     sleep 2
     browser().navigateTo('/equipment')
-    sleep 2
+    sleep 3
 
   afterEach ->
     browser().navigateTo('/sign_out.json')
@@ -77,17 +76,18 @@ describe "EquipmentController", ->
 
 
   it "should merge equipment", ->
-    input("allSelected").check()
+    element(".ngRow:nth-child(1) .ngSelectionCheckbox").click()
+    element(".ngRow:nth-child(2) .ngSelectionCheckbox").click()
     element("#merge-button").click()
     expect(element(".modal").count()).toBe(1)
     expect(element(".modal-header").html()).toContain("Merge Equipment")
-    expect(element(".modal-body ul li a.merge-link").count()).toBe(3)
+    expect(element(".modal-body ul li a.merge-link").count()).toBe(2)
     sleep 0.50
     element(".modal-body ul li a.merge-link:first").click()
     expect(element(".modal-body").html()).toContain("Will Be Kept")
     expect(element(".modal-body ul.to-keep li:visible").count()).toBe(1)
     expect(element(".modal-body").html()).toContain("Will Be Merged and Deleted")
-    expect(element(".modal-body ul.to-delete li:visible").count()).toBe(2)
+    expect(element(".modal-body ul.to-delete li:visible").count()).toBe(1)
     sleep 0.50
     element(".modal-footer .warning").click()
     sleep 0.25
