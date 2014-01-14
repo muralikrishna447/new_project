@@ -49,7 +49,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
           redirect_to welcome_url(email: @user.email)
         end
       else
-        return render status: 200, json: {success: true, info: "Logged in", user: @user}
+        return render status: 200, json: {success: true, info: "Logged in", user: @user.to_json(methods: :authentication_token, include: [:enrollments])}
       end
     else
       unless request.xhr?

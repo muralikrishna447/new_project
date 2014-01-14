@@ -46,7 +46,8 @@ Delve::Application.configure do
 
   config.sass.preferred_syntax = :sass
 
-  DISQUS_SHORTNAME = "delvestaging"
+  # DISQUS_SHORTNAME = "delvestaging"
+  DISQUS_SHORTNAME = "chefstepsproduction"
 
   # Bullet Gem
   config.after_initialize do

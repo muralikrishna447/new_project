@@ -103,7 +103,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     $scope.editMode = false
     $timeout (->
       window.updateUnits(false)
-      window.collapseSteps()
     ), 0.5
     $scope.clearLocalStorage()
     $scope.saveBaseToLocalStorage()
@@ -307,7 +306,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.addEquipment = (optional) ->
     # *don't* use equip = {title: ...} here, it will screw up display if an empty one gets in the list
     equip = ""
-    item = {equipment: equip, optional: optional}
+    item = {equipment: equip, optional: false}
     $scope.activity.equipment.push(item)
     #$scope.addUndo()
 
@@ -390,7 +389,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
     $scope.csGlobals.units = "grams"
     $scope.csGlobals.scaling = 1
-    $scope.setIngredientSpanClass()
     $timeout ->
       window.updateUnits(false)
 
@@ -482,11 +480,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
      mixpanel.track('Activity Description Maximized', {'slug' : $scope.activity.slug});
      mixpanel.people.increment('Activity Description Maximized Count')
 
-  $scope.setIngredientSpanClass = ->
-    if $scope.activity.description
-      $scope.ingredientSpanClass = 'span6'
+  $scope.ingredientSpanClass = ->
+    if $scope.activity && $scope.activity.description
+      'span6'
     else
-      $scope.ingredientSpanClass = 'span7'
+      'span7'
 
   # One time stuff
   if $scope.parsePreloaded()

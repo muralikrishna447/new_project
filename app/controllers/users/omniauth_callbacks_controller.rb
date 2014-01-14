@@ -57,6 +57,7 @@ private
   def javascript_login
     @new_signup = @user.new_record?
     if @user.save
+      @user.ensure_authentication_token!
       if @new_signup
         # Trigger as a signup
         sign_in @user

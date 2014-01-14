@@ -2,6 +2,9 @@ class GiftCertificate < ActiveRecord::Base
   attr_accessible :purchaser_id, :assembly_id, :price, :sales_tax, :recipient_email, :recipient_name, :recipient_message, :redeemed
   belongs_to :user, foreign_key: :purchaser_id, inverse_of: :gift_certificates
   belongs_to :assembly, inverse_of: :gift_certificates
+
+  scope :free_gifts, -> { where(price: 0) }
+
   include ActsAsChargeable
 
   after_initialize do

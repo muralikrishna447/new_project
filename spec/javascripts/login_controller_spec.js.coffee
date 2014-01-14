@@ -19,6 +19,7 @@ describe "LoginController", ->
     scope.httpBackend = _$httpBackend_
     $controller("LoginController", {$scope: scope})
     timeout = $timeout
+    window = $window
 
     scope.alertService = jasmine.createSpyObj('csAlertService', ['addAlert', 'getAlerts'])
 
@@ -45,6 +46,8 @@ describe "LoginController", ->
     $window.gapi = gapi
     $window.mixpanel = mixpanel
     window = $window
+    scope.urlService = jasmine.createSpy("urlService")
+    scope.urlService.currentSiteAsHttps = jasmine.createSpy("scope.urlService.currentSiteAsHttps")
   ))
 
   afterEach ->
@@ -101,7 +104,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          '/users/sign_in.json'
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(202, {})
         scope.login()
@@ -114,7 +117,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          '/users/sign_in.json'
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(200, {'success': true, 'user': {'email': 'test@example.com', 'name': 'Test User'}})
         scope.login()
@@ -146,7 +149,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          '/users/sign_in.json'
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(401, {'success': false, errors: "Invalid Credentials"})
         scope.login()
@@ -158,7 +161,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          '/users/sign_in.json'
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(404, {'success': false})
         scope.login()
@@ -520,4 +523,3 @@ describe "LoginController", ->
     it "should return only selected values", ->
       scope.inviteFriends = [{email: "danahern@chefsteps.com", name: "Dan Ahern", value: true}, {email: "test@chefsteps.com", name: "Test User", value: true}, {email: "nogood@example.com", name: "No Good", value: false}]
       expect(scope.friendsSelected()).toEqual([{email: "danahern@chefsteps.com", name: "Dan Ahern", value: true}, {email: "test@chefsteps.com", name: "Test User", value: true}])
-

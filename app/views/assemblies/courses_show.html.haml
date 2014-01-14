@@ -63,7 +63,7 @@
                     .course-nav-item.btn.btn-primary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
                       NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html-unsafe="'NEXT: ' + nextInclusion().includable_title")
-        .row-fluid.section(ng-show="currentIncludable.includable_always_include_disqus || currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
+        .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .span12
             %hr
             -# using DISQUS.reset to determine which disqus thread to display
