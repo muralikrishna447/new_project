@@ -12,7 +12,7 @@
 # Configure Using Gemfile
 # gem 'pg'
 #
-development:
+development: &development
              adapter: postgresql
              encoding: unicode
              database: delve_development
@@ -45,6 +45,9 @@ test: &test
   pool: 5
   username: delve
   password:
+
+staging:
+  <<: *development
 
 angular:
   <<: *test
