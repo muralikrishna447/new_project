@@ -6,6 +6,8 @@
     .container
       .form-horizontal
         %input.search-query(type="search" placeholder="Place holder... I don't work" ng-model="searchString")
+        %button.btn(ng-model="onlyFree" btn-checkbox type="button")
+          %i.icon-th-list(tooltip="Only Free Gift Certificates" )
         -# %button.btn#exact-match(btn-checkbox type="button" ng-model="exactMatch" ng-click="refreshGiftCertificates()")
         -#   %i.icon-asterisk(tooltip="Exact Match Only")
         -# .btn-toolbar

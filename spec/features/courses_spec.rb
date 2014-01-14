@@ -5,6 +5,7 @@ feature 'class' do
     @class = Fabricate :assembly, title: 'Test class', description: 'Test class description', published: true, assembly_type: 'course'
   end
 
+
   context 'landing page' do
 
     describe 'faq' do

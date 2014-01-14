@@ -5,7 +5,6 @@ describe "IngredientIndexController", ->
     browser().navigateTo('/end_clean')
     browser().navigateTo('/start_clean')
     browser().navigateTo('/')
-    pause
     element('#nav-sign-in-button').click()
     sleep 0.5
     expect(element('.login-modal-body').count()).toBe(1)

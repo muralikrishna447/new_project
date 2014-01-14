@@ -28,15 +28,42 @@ describe GiftCertificatesController do
         parsed_body = JSON.parse(response.body)
       end
 
-      its(:count){ should == 1}
-      it{ subject.first["id"].should eq @gift_certificate.id }
-      it{ subject.first["user"]["id"].should eq @purchaser.id }
-      it{ subject.first["assembly"]["id"].should eq @assembly.id }
+      context "no scopes" do
+        subject do
+          sign_in admin
+          get :index, format: :json
+          parsed_body = JSON.parse(response.body)
+        end
 
-      it "should set the gift_certificates" do
-        sign_in admin
-        get :index, format: :json
-        expect(assigns(:gift_certificates)).to eq GiftCertificate.where(price: 0)
+        its(:count){ should == 2}
+        it{ subject.first["id"].should eq @gift_certificate.id }
+        it{ subject.first["user"]["id"].should eq @purchaser.id }
+        it{ subject.first["assembly"]["id"].should eq @assembly.id }
+
+        it "should set the gift_certificates" do
+          sign_in admin
+          get :index, format: :json
+          expect(assigns(:gift_certificates)).to eq GiftCertificate.all
+        end
+      end
+
+      context "free gift certificates" do
+        subject do
+          sign_in admin
+          get :index, free_gifts: "true", format: :json
+          parsed_body = JSON.parse(response.body)
+        end
+
+        its(:count){ should == 1}
+        it{ subject.first["id"].should eq @gift_certificate.id }
+        it{ subject.first["user"]["id"].should eq @purchaser.id }
+        it{ subject.first["assembly"]["id"].should eq @assembly.id }
+
+        it "should set the gift_certificates" do
+          sign_in admin
+          get :index, free_gifts: "true", format: :json
+          expect(assigns(:gift_certificates)).to eq GiftCertificate.free_gifts
+        end
       end
     end
 

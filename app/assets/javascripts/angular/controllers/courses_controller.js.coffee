@@ -155,37 +155,17 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       return
 
     # Update to correct disqus view
-    if $scope.currentIncludable?.include_disqus || $scope.currentIncludable?.includable_always_include_disqus
+    if $scope.currentIncludable?.include_disqus
       if $scope.course.id == 3
         # Hack for French Macaron Class Discussion page
         pageURL = "http://chefsteps.com/classes/3#!/discussion"
         pageID = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
       else
-        if $scope.currentIncludable.include_disqus
-          pageURL = "http://chefsteps.com/classes/#{$scope.course.id}/#!#{$scope.currentIncludable.includable_slug}"
-          pageID = "assembly-inclusion-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
-        else if $scope.currentIncludable.includable_always_include_disqus
-          pageURL = 'http://chefsteps.com/activities/' + $scope.currentIncludable.includable_slug
-          pageID = $scope.currentIncludable.includable_disqus_id
-          console.log pageURL
-          console.log pageID
-
+        pageURL = "http://chefsteps.com/classes/#{$scope.course.id}/#!#{$scope.currentIncludable.includable_slug}"
+        pageID = "assembly-inclusion-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
       DISQUS.reset
         reload: true
         config: ->
           @page.identifier = pageID
           @page.url = pageURL
-    # if $scope.currentIncludable?.include_disqus
-    #   if $scope.course.id == 3
-    #     # Hack for French Macaron Class Discussion page
-    #     pageURL = "http://chefsteps.com/classes/3#!/discussion"
-    #     pageID = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
-    #   else
-    #     pageURL = "http://chefsteps.com/classes/#{$scope.course.id}/#!#{$scope.currentIncludable.includable_slug}"
-    #     pageID = "assembly-inclusion-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
-    #   DISQUS.reset
-    #     reload: true
-    #     config: ->
-    #       @page.identifier = pageID
-    #       @page.url = pageURL
 ]

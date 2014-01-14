@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -10,6 +10,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.authentication = csAuthentication # Authentication service
   $scope.facebook = csFacebook # Facebook service
   $scope.alertService = csAlertService
+  $scope.urlService = csUrlService
 
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static', dialogClass: "modal login-controller-modal"}
 
@@ -69,7 +70,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.resetMessages()
     $http(
       method: 'POST'
-      url: '/users/sign_in.json'
+      url: "#{$scope.urlService.currentSiteAsHttps()}/users/sign_in.json"
       data:
         user:
           email: $scope.login_user.email
@@ -105,7 +106,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
     $http(
       method: 'DELETE'
-      url: '/users/sign_out.json'
+      url: "/users/sign_out.json"
       )
       .success( (data, status) ->
         $scope.dataLoading -= 1
@@ -150,7 +151,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.resetMessages()
     $http(
       method: 'POST'
-      url: '/users.json'
+      url: "#{$scope.urlService.currentSiteAsHttps()}/users.json"
       data:
         user:
           name: $scope.register_user.name
