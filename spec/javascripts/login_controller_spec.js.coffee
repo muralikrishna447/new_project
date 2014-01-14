@@ -47,7 +47,7 @@ describe "LoginController", ->
     $window.mixpanel = mixpanel
     window = $window
     scope.urlService = jasmine.createSpy("urlService")
-    scope.urlService.currentSiteAsHttps = jasmine.createSpy("scope.urlService.currentSiteAsHttps").andReturn("https://server")
+    scope.urlService.currentSiteAsHttps = jasmine.createSpy("scope.urlService.currentSiteAsHttps")
   ))
 
   afterEach ->

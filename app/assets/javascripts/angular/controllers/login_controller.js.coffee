@@ -70,7 +70,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.resetMessages()
     $http(
       method: 'POST'
-      url: "#{$scope.urlService.currentSiteAsHttps()}/users/sign_in.json"
+      url: "/users/sign_in.json"
       data:
         user:
           email: $scope.login_user.email
@@ -151,7 +151,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.resetMessages()
     $http(
       method: 'POST'
-      url: "#{$scope.urlService.currentSiteAsHttps()}/users.json"
+      url: "/users.json"
       data:
         user:
           name: $scope.register_user.name
@@ -267,7 +267,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     gapi.auth.signIn(
       callback: 'signInCallback'
       clientid: google_app_id
-      cookiepolicy: 'single_host_origin'
+      cookiepolicy: $scope.urlService.currentSiteAsHttps()
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile'
       redirecturi: "postmessage"
       accesstype: "offline"
