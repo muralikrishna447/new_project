@@ -34,7 +34,7 @@ describe "LoginController", ->
 
     q = $q
     scope.urlService = jasmine.createSpy("urlService")
-    scope.urlService.currentSiteAsHttps = jasmine.createSpy("scope.urlService.currentSiteAsHttps").andReturn("https://server")
+    scope.urlService.currentSiteAsHttps = jasmine.createSpy("scope.urlService.currentSiteAsHttps").andReturn("")
   ))
 
   afterEach ->
@@ -86,7 +86,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          "https://server/users/sign_in.json"
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(202, {})
         scope.login()
@@ -99,7 +99,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          "https://server/users/sign_in.json"
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(200, {'success': true, 'user': {'email': 'test@example.com', 'name': 'Test User'}})
         scope.login()
@@ -133,7 +133,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          "https://server/users/sign_in.json"
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(401, {'success': false, errors: "Invalid Credentials"})
         scope.login()
@@ -145,7 +145,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          "https://server/users/sign_in.json"
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(404, {'success': false})
         scope.login()
@@ -160,7 +160,7 @@ describe "LoginController", ->
         scope.register_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          'https://server/users.json'
+          '/users.json'
           '{"user":{"name":"Test User","email":"test@example.com","password":"apassword"}}'
         ).respond(200, {'success': true, 'user': {'email': 'test@example.com', 'name': 'Test User'}})
         scope.register()
@@ -197,7 +197,7 @@ describe "LoginController", ->
         scope.register_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          'https://server/users.json'
+          '/users.json'
           '{"user":{"name":"Test User","email":"test@example.com","password":"apassword"}}'
         ).respond(200, {'success': true, 'user': {'email': 'test@example.com', 'name': 'Test User'}})
         scope.register()
@@ -217,7 +217,7 @@ describe "LoginController", ->
           scope.register_user.password = "apassword"
           scope.httpBackend.when(
             'POST'
-            'https://server/users.json'
+            '/users.json'
             '{"user":{"name":"Test User","email":"test@example.com","password":"apassword"}}'
           ).respond(401, {errors: {name: ["Bad"]}, info: "Invalid"})
           scope.register()
@@ -236,7 +236,7 @@ describe "LoginController", ->
           scope.register_user.password = "apassword"
           scope.httpBackend.when(
             'POST'
-            'https://server/users.json'
+            '/users.json'
             '{"user":{"name":"Test User","email":"test@example.com","password":"apassword"}}'
           ).respond(404, {})
           scope.register()
