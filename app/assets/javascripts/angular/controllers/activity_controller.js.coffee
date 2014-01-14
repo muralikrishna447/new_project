@@ -103,7 +103,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     $scope.editMode = false
     $timeout (->
       window.updateUnits(false)
-      window.collapseSteps()
     ), 0.5
     $scope.clearLocalStorage()
     $scope.saveBaseToLocalStorage()
@@ -307,7 +306,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.addEquipment = (optional) ->
     # *don't* use equip = {title: ...} here, it will screw up display if an empty one gets in the list
     equip = ""
-    item = {equipment: equip, optional: optional}
+    item = {equipment: equip, optional: false}
     $scope.activity.equipment.push(item)
     #$scope.addUndo()
 
