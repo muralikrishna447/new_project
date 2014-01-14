@@ -52,3 +52,6 @@ describe "csUrlService", ->
     it "should return -1 if the first url is less than the second", ->
       expect(urlService.sortByNiceURL("http://amazon.com/", "http://google.com/")).toBe(-1)
 
+  describe "currentSiteAsHttps", ->
+    it "should return the current site starting with https", ->
+      expect(urlService.currentSiteAsHttps()).toBe("http://localhost:3000")

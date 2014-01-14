@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').service 'csUrlService', ->
+angular.module('ChefStepsApp').service 'csUrlService', ["$window", ($window) ->
   # From http://stackoverflow.com/questions/5999118/add-or-update-query-string-parameter
   this.updateQueryStringParameter = (uri, key, value) ->
     re = new RegExp("([?|&])" + key + "=.*?(&|$)", "i")
@@ -36,3 +36,10 @@ angular.module('ChefStepsApp').service 'csUrlService', ->
     return 0 if na == nb
     return 1 if na > nb
     -1
+
+  this.currentSiteAsHttps =  ->
+    if /localhost/.test($window.location.host) || /\.dev/.test($window.location.host)
+      "http://#{$window.location.host}"
+    else
+      "https://#{$window.location.host}"
+]
