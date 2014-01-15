@@ -379,6 +379,7 @@ class Activity < ActiveRecord::Base
     new_activity.source_activity = self
     new_activity.source_type = SourceType::ADAPTED_FROM
     new_activity.published = false
+    new_activity.published_at = nil
 
     self.ingredients.each do |ai|
       new_ai = ai.dup
@@ -427,6 +428,18 @@ class Activity < ActiveRecord::Base
   rescue
     # Rather than a lot of null checks.
     nil
+  end
+
+  def disqus_id
+    "activity-#{self.id}"
+  end
+
+  def always_include_disqus
+    if self.activity_type.include?('Recipe') || self.activity_type.include?('Technique') || self.activity_type.include?('Science')
+      true
+    else
+      false
+    end
   end
 
   private
@@ -521,8 +534,6 @@ class Activity < ActiveRecord::Base
       end
     end
   end
-
-
 
 end
 

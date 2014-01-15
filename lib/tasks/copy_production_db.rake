@@ -1,7 +1,7 @@
 require 'fileutils'
 
 task :copy_production_db do
-  username =  ENV['LOGNAME']
+  username =  'hueezer'
   username_dev = username + "_development"
   sh %{heroku pgbackups:capture --expire --remote production --app production-chefsteps}
   sh %{curl -o /tmp/latest.dump `heroku pgbackups:url --remote production --app production-chefsteps`}
@@ -9,5 +9,5 @@ task :copy_production_db do
     # pg_restore often has minor errors we have to ignore
   end
   sh %{rm /tmp/latest.dump}
-  sh %{psql -d #{username_dev}  -U #{username} -c "ALTER USER delve WITH SUPERUSER;"}
+  sh %{psql -d delve_development  -U #{username} -c "ALTER USER delve WITH SUPERUSER;"}
 end

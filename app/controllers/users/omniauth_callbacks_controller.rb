@@ -1,5 +1,8 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   include Devise::Controllers::Rememberable
+
+  skip_before_filter :authenticate_cors_user
+
   # def facebook
   #   auth = request.env["omniauth.auth"]
   #   @user = User.facebook_connected_user(auth)
@@ -39,6 +42,7 @@ private
     @user = User.facebook_connect(params[:user])
     @new_signup = @user.new_record?
     if @user.save
+      @user.ensure_authentication_token!
       if @new_signup
         # Trigger as a signup
         sign_in @user

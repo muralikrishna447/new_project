@@ -56,10 +56,10 @@
                 .btn.btn-circle.large(ng-click="goState('startTemp')") Starting Temp
                 .btn.btn-circle.large(ng-click="goState('bathType')") Bath Type
               .egg-footer
-                .btn.btn-secondary(ng-click="goState('rate')") 
-                  RATE YOUR RESULTS
-                .btn.btn-primary(ng-click="goState('white')") 
+                .btn.btn-secondary(ng-click="goState('white')") 
                   START OVER
+                .btn.btn-primary(ng-click="goState('rate')") 
+                  RATE YOUR RESULTS
 
             .page(ng-switch-when="size")
               %h4 What size is your egg?
@@ -73,6 +73,11 @@
                 or measure the diameter with a string at widest point
               .section.text-center
                 %input(type="number" ng-model="inputs.diameter") cm
+              .egg-footer
+                .btn.btn-secondary(ng-click="goState('startTemp')") 
+                  ADD START TEMP
+                .btn.btn-primary(ng-click="goState('results')") 
+                  DONE
 
             .page(ng-switch-when="startTemp")
               %h4 What temperature is your egg?
@@ -84,6 +89,11 @@
                 or 
               .section.text-center
                 %input(type="number" ng-model="inputs.start_temp") &deg; C
+              .egg-footer
+                .btn.btn-secondary(ng-click="goState('bathType')") 
+                  ADD BATH TYPE
+                .btn.btn-primary(ng-click="goState('results')") 
+                  DONE
 
             .page(ng-switch-when="bathType")
               %h4 What type of water bath are you using?
@@ -91,6 +101,9 @@
                 .btn-group
                   .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 135" active="inputs.surface_heat_transfer_coeff == 5") Stirred
                   .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 165" active="inputs.surface_heat_transfer_coeff == 22") Unstirred
+              .egg-footer
+                .btn.btn-primary(ng-click="goState('results')") 
+                  DONE
 
 
           

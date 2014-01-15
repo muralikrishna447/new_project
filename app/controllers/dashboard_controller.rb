@@ -27,6 +27,11 @@ class DashboardController < ApplicationController
       trend = assembly.enrollments.trend_by_day.last(10)
       @enrollments_trends << trend
     end
+
+    @new_users_last_week = @users.where("users.created_at > ?", 1.week.ago)
+    @new_active_users = @new_users_last_week.joins(:events).group('users.id').having("count(events.user_id) >= 3")
+    @new_very_active_users = @new_users_last_week.joins(:events).group('users.id').having("count(events.user_id) >= 10")
+
   end
 
 end

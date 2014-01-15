@@ -2,6 +2,7 @@ describe "LoginController", ->
   scope = null
   controller = null
   q = null
+  window = null
 
   # you need to indicate your module in a test
   beforeEach(angular.mock.module('ChefStepsApp'))
@@ -10,12 +11,13 @@ describe "LoginController", ->
   # this is where we're setting up the $scope and
   # calling the controller function on it, injecting
   # all the important bits, like our mockService
-  beforeEach(angular.mock.inject( ($controller, $rootScope, _$httpBackend_, $q) ->
+  beforeEach(angular.mock.inject( ($controller, $rootScope, _$httpBackend_, $q, $window) ->
     # create a scope object for us to use.
     scope = $rootScope.$new()
     # we're just declaring the httpBackend here, we're not setting up expectations or when's - they change on each test
     scope.httpBackend = _$httpBackend_
     $controller("LoginController", {$scope: scope})
+    window = $window
 
     scope.alertService = jasmine.createSpyObj('csAlertService', ['addAlert', 'getAlerts'])
 
@@ -31,6 +33,8 @@ describe "LoginController", ->
       spyOn rootScope, '$broadcast'
 
     q = $q
+    scope.urlService = jasmine.createSpy("urlService")
+    scope.urlService.currentSiteAsHttps = jasmine.createSpy("scope.urlService.currentSiteAsHttps").andReturn("")
   ))
 
   afterEach ->
@@ -82,7 +86,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          '/users/sign_in.json'
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(202, {})
         scope.login()
@@ -95,7 +99,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          '/users/sign_in.json'
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(200, {'success': true, 'user': {'email': 'test@example.com', 'name': 'Test User'}})
         scope.login()
@@ -129,7 +133,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          '/users/sign_in.json'
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(401, {'success': false, errors: "Invalid Credentials"})
         scope.login()
@@ -141,7 +145,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          '/users/sign_in.json'
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(404, {'success': false})
         scope.login()

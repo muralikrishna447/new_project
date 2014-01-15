@@ -80,7 +80,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
         $scope.csGlobals.scaling = 1
         $scope.csGlobals.units = "grams"
         window.updateUnits(false)
-        window.expandSteps()
 
   $scope.maybeStartEditMode = ->
     # Must reload activity before checking currently_editing_user - want to get any changes that have
@@ -104,7 +103,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     $scope.editMode = false
     $timeout (->
       window.updateUnits(false)
-      window.collapseSteps()
     ), 0.5
     $scope.clearLocalStorage()
     $scope.saveBaseToLocalStorage()
@@ -180,9 +178,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.addEditModeClass = ->
     if $scope.editMode then "edit-mode" else "show-mode"
-
-  $scope.primaryColumnClass = ->
-    if ($scope.editMode || ($scope.activity && $scope.activity.steps && ($scope.activity.steps.length > 0))) then 'span6' else 'no-steps span8 offset2'
 
   $scope.temporaryNoAutofocus = ->
     # Pretty ugly, but I don't see a cleaner solution
@@ -311,7 +306,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.addEquipment = (optional) ->
     # *don't* use equip = {title: ...} here, it will screw up display if an empty one gets in the list
     equip = ""
-    item = {equipment: equip, optional: optional}
+    item = {equipment: equip, optional: false}
     $scope.activity.equipment.push(item)
     #$scope.addUndo()
 
@@ -383,8 +378,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     if _.isNumber(id) && ! $scope.activities[id] 
       console.log "Loading activity " + id   
       $scope.activities[id] = Activity.get({id: id}, ->
-       console.log "Loaded activity " + id   
-       callback() if callback
+        console.log "Loaded activity " + id   
+        callback() if callback
       )
 
   $scope.makeActivityActive = (id) ->
@@ -485,6 +480,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
      mixpanel.track('Activity Description Maximized', {'slug' : $scope.activity.slug});
      mixpanel.people.increment('Activity Description Maximized Count')
 
+  $scope.ingredientSpanClass = ->
+    if $scope.activity && $scope.activity.description
+      'span6'
+    else
+      'span7'
 
   # One time stuff
   if $scope.parsePreloaded()

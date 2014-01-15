@@ -1,4 +1,4 @@
-ddescribe "IngredientGalleryController", ->
+describe "IngredientGalleryController", ->
 
   beforeEach ->
     browser().navigateTo('/end_clean')

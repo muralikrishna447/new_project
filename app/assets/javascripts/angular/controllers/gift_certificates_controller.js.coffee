@@ -12,6 +12,8 @@ angular.module('ChefStepsApp').controller 'GiftCertificatesController', ["$scope
   $scope.addUndo = ->
     true
 
+  $scope.onlyFree = false
+
   $scope.modalOptions =
     backdropFade: true
     dialogFade: true
@@ -95,6 +97,7 @@ angular.module('ChefStepsApp').controller 'GiftCertificatesController', ["$scope
       exact_match: $scope.exactMatch
       sort: $scope.sortInfo.fields[0]
       dir: $scope.sortInfo.directions[0]
+      free_gifts: $scope.onlyFree
       offset: offset
       limit: num
       (response) ->
@@ -114,6 +117,9 @@ angular.module('ChefStepsApp').controller 'GiftCertificatesController', ["$scope
     $scope.gift_certificates.length = 0
     $scope.gridOptions.selectedItems.length = 0
     $scope.loadGiftCertificates(num)
+
+  $scope.$watch 'onlyFree', ->
+    $scope.resetGiftCertificates()
 
   $scope.$watch 'searchString',  (new_val) ->
     # Don't search til the string has been stable for a bit, to avoid bogging down

@@ -1,6 +1,8 @@
 class Users::SessionsController < Devise::SessionsController
-
   include Devise::Controllers::Rememberable
+
+  skip_before_filter :authenticate_cors_user
+
   def new
     flash[:notice] = params[:notice] if params[:notice]
     self.resource = build_resource(nil, :unsafe => true)
@@ -66,6 +68,7 @@ class Users::SessionsController < Devise::SessionsController
     unless request.xhr?
       super
     else
+      current_user.reset_authentication_token!
       return render status: 200, json: {success: true, info: "Logged Out"}
     end
   end
@@ -75,8 +78,9 @@ class Users::SessionsController < Devise::SessionsController
     scope = Devise::Mapping.find_scope!(resource_or_scope)
     resource ||= resource_or_scope
     sign_in(scope, resource) unless warden.user(scope) == resource
+    current_user.ensure_authentication_token!  #make sure the user has a token generated
     remember_and_track
-    return render status: 200, json: {success: true, info: "Logged in", user: current_user.to_json(include: :enrollments)}
+    return render status: 200, json: {success: true, info: "Logged in", user: current_user.to_json(methods: :authentication_token, include: [:enrollments])}
   end
 
   def remember_and_track
