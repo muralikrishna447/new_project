@@ -74,4 +74,20 @@ class GiftCertificate < ActiveRecord::Base
         recipient_message
       ).deliver()
   end
+
+  def resend_email(to_recipient)
+    # Little hack cuz I can't get pow to work lately
+    dom = DOMAIN
+    dom = "localhost:3000" if dom == "delve.dev"
+
+    GiftCertificateMailer.resend_recipient_email(
+        to_recipient,
+        User.find(purchaser_id),
+        Assembly.find(assembly_id).title,
+        "http://" + dom + "/gift/" + token,
+        recipient_email,
+        recipient_name,
+        recipient_message
+      ).deliver()
+  end
 end
