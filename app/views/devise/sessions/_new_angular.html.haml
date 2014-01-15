@@ -107,11 +107,10 @@
                     %input(type="checkbox" ng-model="friend.value")
                     {{friend.name}}
           .button-group
-            .facebook-button.facebook-login
-              %a.btn-facebook.btn.btn-secondary(ng-click="sendInvites()")
-                Invite friends on
-                %b Facebook
-
+            .facebook-button.facebook-invite
+              %a(ng-click="sendInvites()" class="btn btn-secondary btn-facebook")
+                %i.icon-facebook
+                %b Invite friends from Facebook
             %div
               %a.next-button(ng-show="authentication.currentUser()" ng-click="welcome()") {{invitationsNextText}}
 

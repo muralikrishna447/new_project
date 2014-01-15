@@ -1,3 +1,5 @@
+- content_for :title, 'Sign Up'
+
 .container#main-container
   .row.section
     .span5.offset1.section
@@ -9,20 +11,6 @@
           %li Save your favorite recipes
           %li Earn badges, enroll in classes, and connect with other cooks
     .span5.section.registration
-      = form_for @user, url: registration_path(@user) do |f|
-        = render 'shared/error_messages', target: f
-        = f.hidden_field :signed_up_from
-        %div= f.text_field :name, placeholder: 'Name', class: 'input-block-level'
-        %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level', type: 'email'
-        %div= f.password_field :password, placeholder: 'Password', class: 'input-block-level'
-        %div= f.password_field :password_confirmation, placeholder: 'Confirmation', class: 'input-block-level'
-        %div= f.submit 'Sign up', class: 'btn btn-primary btn-large'
-        .section
-          = label_tag :terms_registration do
-            .hide
-              = check_box_tag :terms_registration, true, true, required: true
-            = "By signing up, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path}</b>.".html_safe
-
-      / %hr
-      / .registration.facebook
-      /   = render 'devise/shared/facebook_login', text: 'Sign up with <b>Facebook</b>'
+      %div(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json}); showForm='signUp'; openModal('login')")
+        %a.btn-primary.btn-large(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Click Here to Sign Up
+        = render "devise/sessions/new_angular"
