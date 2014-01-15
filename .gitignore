@@ -23,3 +23,6 @@ db/schema.rb.*
 node_modules
 
 .DS_Store
+
+# Ignore environment files
+.env

@@ -140,7 +140,7 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
   box-shadow: none
   @include boxsizing
   margin-bottom: $baseline * 2
-  padding: ($baseline * 2) 
+  padding: ($baseline * 2)
 
 .well-opaque
   background-color: rgba(255,255,255,.8)
@@ -311,7 +311,7 @@ a:hover
 .input-underlined
   input[type=text], input[type=email], input[type=password]
     border: none
-    box-shadow: none 
+    box-shadow: none
     border-bottom: 1px dashed gray
     text-align: center
     padding: 0px
@@ -336,7 +336,7 @@ a:hover
 
 .relative
   position: relative
-  
+
 .two-columns
   column-count: 2
   column-gap: 30px
@@ -387,7 +387,7 @@ a:hover
   width: 100%
   //margin-bottom: 20px
   //height: 208px
- 
+
 .media-hero
   position: relative
   //max-height: 586px
@@ -563,7 +563,7 @@ a:hover
         padding-bottom: 5px
       ul, li
         list-style: none
-        margin: 0px 0px $baseline 0px 
+        margin: 0px 0px $baseline 0px
       ul
         padding: 0px
     .step-actions
@@ -625,7 +625,7 @@ a:hover
   display: inline-block
   position: absolute
   right: 0px
-  top: 0 
+  top: 0
   text-align: left
   min-height: 0px
   overflow: hidden
@@ -727,7 +727,7 @@ a:hover
         z-index: -1
         width: 0
         white-space: nowrap
-        content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " 
+        content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . "
         color: $light-gray
       .ingredient-title, .quantity-group, .unit
         background: $offwhite
@@ -738,7 +738,6 @@ a:hover
   font-size: 14px
   width: 100%
   display: inline-block
-  overflow: hidden
 
   div
     display: inline-block
@@ -784,14 +783,14 @@ a:hover
     width:  45px
     text-align:  left
     padding-left: 7px
-    
+
   .qtyfade
     @include transition(all 300ms ease-in-out)
     color: rgba(51, 51, 51, 1)
 
   .fade-out
     // have to fade text opacity, not opacity, b/c have to cover leader dots during transition
-    color: rgba(51, 51, 51, 0) 
+    color: rgba(51, 51, 51, 0)
 
   .quantity-edit
     position: relative
@@ -848,7 +847,7 @@ a:hover
 .edit-mode
   .ingredient-table-row
     overflow: visible
-      
+
 .ingredients-menu-slide
   [data-marked-editable]
     @include editable_text
@@ -1003,7 +1002,7 @@ a:hover
     border-radius: 0px
     width: 100%
     @include boxsizing
-  
+
 #hero-container
   padding: 0px
   //max-height: 586px
@@ -1149,7 +1148,7 @@ a:hover
   box-shadow: 0 3px 0px -1px #999999
 
 .btn-facebook
-  background: #3B5898
+  background: #3B5998
   color: white
   text-shadow: none
   border: 0
@@ -1701,7 +1700,7 @@ csingredienteditpair
         width:  200%
         height:  100%
         z-index: 0
- 
+
 .meta-edit
   border: 1px solid $offwhite
   padding:  10px
@@ -1962,7 +1961,7 @@ input.summary-tweet
   .activity-description
     height: 187px
 
-  .navbar .nav > li > .dropdown-menu li a 
+  .navbar .nav > li > .dropdown-menu li a
     color: #333
     &:hover
       color: #fff
@@ -2005,7 +2004,7 @@ input.summary-tweet
         width: 50px
         height: 55px
         margin-left: 10px
-      .pull-left 
+      .pull-left
         float: left
       .media-header-background
         height: 77px
@@ -2048,7 +2047,7 @@ input.summary-tweet
   .nav-item-border
     display: none
 
-  .navbar .nav > li > .dropdown-menu li a 
+  .navbar .nav > li > .dropdown-menu li a
     color: #333
     &:hover
       color: #fff
@@ -2099,7 +2098,7 @@ input.summary-tweet
         width: 80%
         padding-top: 10px
 
-  .navbar .nav > li > .dropdown-menu li a 
+  .navbar .nav > li > .dropdown-menu li a
     color: #333
     font-weight: normal
     &:hover
@@ -2138,16 +2137,16 @@ input.summary-tweet
 
 /* Global on-select highlighting */
 
-::-moz-selection 
+::-moz-selection
   background-color: $orange
   color: #ffffff
 
-::selection 
+::selection
   background-color: $orange
   color: #ffffff
 
 
-body 
+body
   input, textarea, .btn
     @include primary-font
 

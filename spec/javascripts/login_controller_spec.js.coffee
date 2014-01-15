@@ -2,6 +2,7 @@ describe "LoginController", ->
   scope = null
   controller = null
   q = null
+  timeout = null
   window = null
 
   # you need to indicate your module in a test
@@ -11,12 +12,13 @@ describe "LoginController", ->
   # this is where we're setting up the $scope and
   # calling the controller function on it, injecting
   # all the important bits, like our mockService
-  beforeEach(angular.mock.inject( ($controller, $rootScope, _$httpBackend_, $q, $window) ->
+  beforeEach(angular.mock.inject( ($controller, $rootScope, _$httpBackend_, $q, $timeout, $window) ->
     # create a scope object for us to use.
     scope = $rootScope.$new()
     # we're just declaring the httpBackend here, we're not setting up expectations or when's - they change on each test
     scope.httpBackend = _$httpBackend_
     $controller("LoginController", {$scope: scope})
+    timeout = $timeout
     window = $window
 
     scope.alertService = jasmine.createSpyObj('csAlertService', ['addAlert', 'getAlerts'])
@@ -34,7 +36,7 @@ describe "LoginController", ->
 
     q = $q
     scope.urlService = jasmine.createSpy("urlService")
-    scope.urlService.currentSiteAsHttps = jasmine.createSpy("scope.urlService.currentSiteAsHttps").andReturn("https://server")
+    scope.urlService.currentSiteAsHttps = jasmine.createSpy("scope.urlService.currentSiteAsHttps").andReturn("")
   ))
 
   afterEach ->
@@ -86,7 +88,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          "https://server/users/sign_in.json"
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(202, {})
         scope.login()
@@ -99,7 +101,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          "https://server/users/sign_in.json"
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(200, {'success': true, 'user': {'email': 'test@example.com', 'name': 'Test User'}})
         scope.login()
@@ -133,7 +135,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          "https://server/users/sign_in.json"
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(401, {'success': false, errors: "Invalid Credentials"})
         scope.login()
@@ -145,7 +147,7 @@ describe "LoginController", ->
         scope.login_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          "https://server/users/sign_in.json"
+          "/users/sign_in.json"
           '{"user":{"email":"test@example.com","password":"apassword"}}'
         ).respond(404, {'success': false})
         scope.login()
@@ -160,7 +162,7 @@ describe "LoginController", ->
         scope.register_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          'https://server/users.json'
+          '/users.json'
           '{"user":{"name":"Test User","email":"test@example.com","password":"apassword"}}'
         ).respond(200, {'success': true, 'user': {'email': 'test@example.com', 'name': 'Test User'}})
         scope.register()
@@ -173,22 +175,19 @@ describe "LoginController", ->
         expect(scope.logged_in).toEqual(true)
 
       it "should set the user on the authentication service", ->
-        waits(100)
-        runs ->
-          expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
+        timeout.flush()
+        expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
 
       it "should close the modal", ->
         expect(scope.loginModalOpen).toBe(false)
 
       it "should broadcast a login event globally", ->
-        waits(100)
-        runs ->
-          expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
+        timeout.flush()
+        expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
 
       it "should open the invite modal if not a purchase", ->
-        waits(100)
-        runs ->
-          expect(scope.inviteModalOpen).toBe(true)
+        timeout.flush()
+        expect(scope.inviteModalOpen).toBe(true)
 
       it "should not open the invite modal if a purchase", ->
         scope.formFor = "purchase"
@@ -197,14 +196,13 @@ describe "LoginController", ->
         scope.register_user.password = "apassword"
         scope.httpBackend.when(
           'POST'
-          'https://server/users.json'
+          '/users.json'
           '{"user":{"name":"Test User","email":"test@example.com","password":"apassword"}}'
         ).respond(200, {'success': true, 'user': {'email': 'test@example.com', 'name': 'Test User'}})
         scope.register()
         scope.httpBackend.flush()
-        waits(100)
-        runs ->
-          expect(scope.inviteModalOpen).toBe(false)
+        timeout.flush()
+        expect(scope.inviteModalOpen).toBe(false)
 
       # it "should emit a loginSuccessful event upwards", ->
       #   expect(scope.$emit).toHaveBeenCalledWith('loginSuccessful', { user : { email : 'test@example.com', name : 'Test User'}})
@@ -217,7 +215,7 @@ describe "LoginController", ->
           scope.register_user.password = "apassword"
           scope.httpBackend.when(
             'POST'
-            'https://server/users.json'
+            '/users.json'
             '{"user":{"name":"Test User","email":"test@example.com","password":"apassword"}}'
           ).respond(401, {errors: {name: ["Bad"]}, info: "Invalid"})
           scope.register()
@@ -236,7 +234,7 @@ describe "LoginController", ->
           scope.register_user.password = "apassword"
           scope.httpBackend.when(
             'POST'
-            'https://server/users.json'
+            '/users.json'
             '{"user":{"name":"Test User","email":"test@example.com","password":"apassword"}}'
           ).respond(404, {})
           scope.register()
