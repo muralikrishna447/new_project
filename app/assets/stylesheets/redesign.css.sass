@@ -1849,10 +1849,7 @@ input.summary-tweet
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
 // names have to change when we go to angular >= 1.1.5
 .fade-show-setup, .fade-hide-setup, .fade-enter-setup, .fade-leave-setup
-  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+  @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
 
 .fade-hide-setup, .fade-leave-setup
   opacity: 1
