@@ -393,6 +393,7 @@ describe Activity, 'deep_copy' do
     a2.source_activity.should == activity
     a2.source_type.should == Activity::SourceType::ADAPTED_FROM
     a2.published.should == false
+    a2.published_at.should == nil
     a2.ingredients.should have(1).ingredients
     a2.equipment.should have(1).equipment
     a2.steps.should have(1).steps
