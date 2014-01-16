@@ -120,7 +120,7 @@ describe GiftCertificate do
     subject { gift_certificate.send_email("danahern@chefsteps.com") }
     it 'should send an email' do
       subject
-      check_email(to: "danahern@chefsteps.com", from: "info@chefsteps.com", subject: "A gift for you from Purchaser (test@chefsteps.com)")
+      check_email(to: "dev@chefsteps.com", from: "info@chefsteps.com", subject: "[\"danahern@chefsteps.com\"] A gift for you from Purchaser (test@chefsteps.com)")
     end
   end
 
@@ -128,7 +128,7 @@ describe GiftCertificate do
     subject { gift_certificate.resend_email("danahern@chefsteps.com") }
     it 'should send an email' do
       subject
-      check_email(to: "danahern@chefsteps.com", from: "info@chefsteps.com", subject: "A gift for you from Purchaser (test@chefsteps.com)")
+      check_email(to: "dev@chefsteps.com", from: "info@chefsteps.com", subject: "[\"danahern@chefsteps.com\"] A gift for you from Purchaser (test@chefsteps.com)")
       email = ActionMailer::Base.deliveries.first
       email.body.raw_source.should include 'We noticed you did not redeem this gift.'
     end
