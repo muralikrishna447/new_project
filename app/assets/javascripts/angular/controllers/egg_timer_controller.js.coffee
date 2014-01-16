@@ -1,16 +1,6 @@
 angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$http", "$timeout", ($scope, $http, $timeout) ->
 
-  $scope.states = [
-    { name: "white", next: "yolk"}
-    { name: "yolk", prev: "white", next: "results" }
-    { name: "results", prev: "yolk", secondary: "rate"}
-    { name: "rate", next: "thanks"}
-    { name: "size", next: "results", secondary: "startTemp"}
-    { name: "startTemp", next: "results", secondary: "bathType"}
-    { name: "bathType", next: "results"}
-  ]
-
-  $scope.state = $scope.states[0]
+  $scope.state = "white"
 
   $scope.inputs = 
     water_temp: 70
@@ -74,22 +64,27 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
   $scope.$watchCollection 'inputs', -> 
     $scope.throttledUpdate()
 
-  findState = (name) ->
-    _.find($scope.states, (x) -> x.name == name)
-
-  $scope.getPrevState = ->
-    findState($scope.state.prev)
-
-  $scope.getNextState = ->
-    findState($scope.state.next)
-
-  $scope.goPrevState = ->
-    $scope.state = $scope.getPrevState()
-
-  $scope.goNextState = ->
-    $scope.state = $scope.getNextState()
-
   $scope.goState = (name) ->
-    $scope.state = findState(name)
+    $scope.state = name
+
+  # Social share callbacks
+  $scope.socialURL = ->
+    "http://chefsteps.com/egg_timer"
+
+  $scope.socialTitle = ->
+    ""
+
+  $scope.socialMediaItem = ->
+    "https://d3awvtnmmsvyot.cloudfront.net/api/file/bIBHqoDWR3eLBtF8lQgu/convert?fit=crop&w=800&cache=true"
+
+  $scope.tweetMessage = ->
+    "Egg calculator says #{$scope.formatTime($scope.output.items[4], $scope.needsSeconds())} at #{$scope.inputs.water_temp} %C2%B0C for my perfect sous vide egg"
+
+  $scope.emailSubject = ->
+    "Sous vide egg calculator"
+
+  $scope.emailBody = ->
+    "Hey, I thought you might dig the sous vide egg calculator at ChefSteps.com. Here's the link: " + $scope.socialURL()
+
 
 ]

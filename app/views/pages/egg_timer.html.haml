@@ -13,7 +13,7 @@
         .egg-body
           .page-bg
             %img(src="assets/egg_timer_background.png")
-          .page-switch(ng-switch="state.name" ng-animate="'fade'")
+          .page-switch(ng-switch="state" ng-animate="'fade'")
             .page(ng-switch-when="white")
               %h4.text-center What texture would you like your egg white?
               .control-group
@@ -58,9 +58,17 @@
               .egg-footer
                 .btn.btn-secondary(ng-click="goState('white')") 
                   START OVER
-                .btn.btn-primary(ng-click="goState('rate')") 
-                  RATE YOUR RESULTS
+                .btn.btn-primary(ng-click="goState('share')") 
+                  SHARE
 
+            .page(ng-switch-when="share")
+              .section
+                %h4 Share the egg calculator on your social networks:
+              .section
+                = render 'layouts/social_buttons', media_object: nil
+              .egg-footer
+                .btn.btn-primary(ng-click="goState('white')") 
+                  NEW EGG
             .page(ng-switch-when="size")
               %h4 What size is your egg?
               .section.text-center
