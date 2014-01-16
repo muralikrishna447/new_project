@@ -4,6 +4,8 @@ class GiftCertificate < ActiveRecord::Base
   belongs_to :assembly, inverse_of: :gift_certificates
 
   scope :free_gifts, -> { where(price: 0) }
+  scope :unredeemed, -> { where(redeemed: false) }
+  scope :one_week_old, -> { where('created_at > ?', 1.week.ago)}
 
   include ActsAsChargeable
 
