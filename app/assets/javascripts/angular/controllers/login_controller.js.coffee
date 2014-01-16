@@ -144,7 +144,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.register = ->
     unless $scope.validNameAndEmail() && $scope.register_user.password
-      $scope.register_error.errors = {}
       $scope.register_error.errors.name = ["Please provide a name"] unless !!$scope.register_user.name
       $scope.register_error.errors.email = ["Please enter a valid email address"] unless /.*@.*\..*/.test($scope.register_user.email)
       $scope.register_error.errors.password = ["Please enter a password"] unless !!$scope.register_user.password
