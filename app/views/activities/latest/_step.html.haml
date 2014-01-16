@@ -10,7 +10,7 @@
     %csEditPairEdit
       %textarea.step-title-input(ng-model="step.title" rows="5" placeholder="Optional title...")
 
-  .step-first-row(ng-show='(step.ingredients.length > 0)')
+  .step-first-row
     =render 'activities/step_ingredients'
 
   .step-content
