@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "csUrlService", ($scope, $http, csAuthentication, csFacebook, csAlertService, csUrlService) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "csUrlService", "$timeout", ($scope, $http, csAuthentication, csFacebook, csAlertService, csUrlService, $timeout) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -159,11 +159,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           $scope.logged_in = true
           $scope.closeModal('login')
           $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})
-          setTimeout( -> # Done so that the modal has time to close before triggering events
+          $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.authentication.setCurrentUser(data.user)
             unless $scope.formFor == "purchase"
               $scope.loadFriends()
-          , 100)
+          , 200)
           # $scope.notifyLogin(data.user)
       )
       .error( (data, status) ->
