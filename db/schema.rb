@@ -608,6 +608,9 @@ ActiveRecord::Schema.define(:version => 20140116044848) do
     t.integer  "level",                  :default => 0
     t.string   "role"
     t.string   "stripe_id"
+    t.string   "google_refresh_token"
+    t.string   "google_access_token"
+    t.string   "google_user_id"
     t.string   "authentication_token"
   end
 

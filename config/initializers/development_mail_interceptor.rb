@@ -1,3 +1,3 @@
-if Rails.env.development? || Rails.env.staging?
+unless Rails.env.production?
   ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor)
 end
