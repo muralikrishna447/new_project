@@ -34,7 +34,9 @@
                   %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
                   Firm
               .egg-image-carousel
-                %img(ng-src="{{yolkImages(inputs.perceptual_yolk_viscosity)}}")
+                %carousel(interval="0")
+                  %slide(ng-repeat="yolkImage in yolkImages" active="slide.active")
+                    %img(ng-src="{{yolkImage}}")
               %h6.text-center
                 Like {{perceptualYolkDescriptor(inputs.perceptual_yolk_viscosity)}}
               .egg-footer

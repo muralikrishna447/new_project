@@ -52,17 +52,21 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     ] 
     descrips[Math.round(x - 1)]
 
-  $scope.yolkImages = (x) ->
-    images = [
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/NFDyyufQSaCx4OTqTS1n/convert?fit=max&w=670&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/g2hLw1KToCAmBLRILwNP/convert?fit=max&w=670&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/xqeQQvwRSGSdHEkU2du5/convert?fit=max&w=670&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/TIePI4PTCWEHGwPxWBpT/convert?fit=max&w=670&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/lxpXnhiIQaUlUa1DDVFQ/convert?fit=max&w=670&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/lxpXnhiIQaUlUa1DDVFQ/convert?fit=max&w=670&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/GynsRsomRtmBujrLTvJE/convert?fit=max&w=670&cache=true"
-    ]
-    images[Math.round(x - 1)]
+  $scope.yolkImages =
+    [
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/NFDyyufQSaCx4OTqTS1n/convert?fit=max&w=320&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/g2hLw1KToCAmBLRILwNP/convert?fit=max&w=320&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/xqeQQvwRSGSdHEkU2du5/convert?fit=max&w=320&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/TIePI4PTCWEHGwPxWBpT/convert?fit=max&w=320&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/lxpXnhiIQaUlUa1DDVFQ/convert?fit=max&w=320&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/5vzqnpRBQC6gbYX7gI85/convert?fit=max&w=320&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/GynsRsomRtmBujrLTvJE/convert?fit=max&w=320&cache=true"
+    ] 
+
+  $scope.yolkImages[0].active = true 
+
+  $scope.yolkImage = (x) ->
+    $scop.yolkImages[Math.round(x - 1)]
 
   $scope.update = ->
     $scope.loading = true
