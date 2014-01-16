@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140113192608) do
+ActiveRecord::Schema.define(:version => 20140116044848) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -300,6 +300,7 @@ ActiveRecord::Schema.define(:version => 20140113192608) do
     t.boolean  "redeemed",                                        :default => false
     t.datetime "created_at",                                                         :null => false
     t.datetime "updated_at",                                                         :null => false
+    t.boolean  "followed_up",                                     :default => false
   end
 
   add_index "gift_certificates", ["token"], :name => "index_gift_certificates_on_token"

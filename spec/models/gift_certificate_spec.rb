@@ -124,4 +124,19 @@ describe GiftCertificate do
     end
   end
 
+  describe "#resend_email" do
+    subject { gift_certificate.resend_email("danahern@chefsteps.com") }
+    it 'should send an email' do
+      subject
+      check_email(to: "danahern@chefsteps.com", from: "info@chefsteps.com", subject: "A gift for you from Purchaser (test@chefsteps.com)")
+      email = ActionMailer::Base.deliveries.first
+      email.body.raw_source.should include 'We noticed you did not redeem this gift.'
+    end
+
+    it 'should set followed up to true' do
+      subject
+      gift_certificate.followed_up.should eq(true)
+    end
+  end
+
 end
