@@ -25,6 +25,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.inviteFriends = []
 
+  $scope.showMadlibPassword = false
+
   $scope.hasError = (error) ->
     if error
       "error"
@@ -141,6 +143,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   #   )
 
   $scope.register = ->
+    unless $scope.validNameAndEmail() && $scope.register_user.password
+      $scope.register_error.errors.name = ["Please provide a name"] unless !!$scope.register_user.name
+      $scope.register_error.errors.email = ["Please enter a valid email address"] unless /.*@.*\..*/.test($scope.register_user.email)
+      $scope.register_error.errors.password = ["Please enter a password"] unless !!$scope.register_user.password
+      return
     $scope.dataLoading += 1
     $scope.resetMessages();
 
@@ -287,5 +294,12 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.register_user.password = null
     $scope.register_user.password_confirmation = null
 
+  $scope.validNameAndEmail = ->
+    valid_name = !!$scope.register_user.name
+    valid_email = /.*@.*\..*/.test($scope.register_user.email)
+    validation = valid_name && valid_email
+    if validation
+      $scope.showMadlibPassword = true
+    validation
 
 ]

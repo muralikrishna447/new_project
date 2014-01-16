@@ -306,3 +306,14 @@ describe "LoginController", ->
         waits(100)
         runs ->
           expect(scope.welcomeModalOpen).toBe(true)
+
+    describe "#validNameAndEmail", ->
+      it "should return false if values aren't set", ->
+        scope.register_user.email = null
+        scope.register_user.name = null
+        expect(scope.validNameAndEmail()).toBe false
+
+      it "should return true if the values are set", ->
+        scope.register_user.email = "a@b.c"
+        scope.register_user.name = "Test"
+        expect(scope.validNameAndEmail()).toBe true
