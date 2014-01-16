@@ -4,7 +4,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
   $scope.inputs = 
     water_temp: 70
-    desired_viscosity: 16
+    perceptual_yolk_viscosity: 3
     diameter: 43
     start_temp: 5
     surface_heat_transfer_coeff: 135
@@ -40,12 +40,29 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
   $scope.needsSeconds = ->
     ($scope.output?.items?[2] - $scope.output?.items?[0]) < 90 
 
-  $scope.viscosityToDescriptor = (v) ->
-    return "syrup" if v <= 8
-    return "mayonnaise" if v <= 12.5
-    return "pudding" if v <= 18
-    return "honey" if v <= 26
-    return "icing"
+  $scope.perceptualYolkDescriptor = (x) ->
+    descrips = [  
+      "evaporated milk",
+      "maple syrup",
+      "chocolate syrup",
+      "molasses",
+      "sweetened condensed milk",
+      "ready-to-eat pudding",
+      "ready-to-eat icing"
+    ] 
+    descrips[Math.round(x - 1)]
+
+  $scope.yolkImages = (x) ->
+    images = [
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/NFDyyufQSaCx4OTqTS1n/convert?fit=max&w=670&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/g2hLw1KToCAmBLRILwNP/convert?fit=max&w=670&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/xqeQQvwRSGSdHEkU2du5/convert?fit=max&w=670&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/TIePI4PTCWEHGwPxWBpT/convert?fit=max&w=670&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/lxpXnhiIQaUlUa1DDVFQ/convert?fit=max&w=670&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/lxpXnhiIQaUlUa1DDVFQ/convert?fit=max&w=670&cache=true",
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/GynsRsomRtmBujrLTvJE/convert?fit=max&w=670&cache=true"
+    ]
+    images[Math.round(x - 1)]
 
   $scope.update = ->
     $scope.loading = true
@@ -62,6 +79,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     _.throttle($scope.update, 250)
 
   $scope.$watchCollection 'inputs', -> 
+    $scope.inputs.desired_viscosity = Math.exp(-1.6 + (0.704 * $scope.inputs.perceptual_yolk_viscosity))
     $scope.throttledUpdate()
 
   $scope.goState = (name) ->
@@ -85,6 +103,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
   $scope.emailBody = ->
     "Hey, I thought you might dig the sous vide egg calculator at ChefSteps.com. Here's the link: " + $scope.socialURL()
+
+  $scope.oneDecimal = (x) ->
+    Math.round(x * 10) / 10
 
 
 ]

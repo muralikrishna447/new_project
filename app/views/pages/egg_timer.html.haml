@@ -28,11 +28,15 @@
 
             .page(ng-switch-when="yolk")
               %h4.text-center What texture would you like your egg yolk?
-              .control-group
+              .control-group.text-center
                 .controls
-                  Syrup
-                  %input(type="range" ng-model='inputs.desired_viscosity' min="5" max="30")
-                  Icing
+                  Runny
+                  %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
+                  Firm
+              .egg-image-carousel
+                %img(ng-src="{{yolkImages(inputs.perceptual_yolk_viscosity)}}")
+              %h6.text-center
+                Like {{perceptualYolkDescriptor(inputs.perceptual_yolk_viscosity)}}
               .egg-footer
                 .btn.btn-left.btn-primary(ng-click="goState('white')") 
                   %i.icon-angle-left
@@ -123,52 +127,25 @@
         %h3 
           Computed Times
           %i.icon-spin.icon-spinner(ng-show="loading")
-        Immediate Service: Min {{formatTime(output.items[0])}}, 
-        %b Suggested {{formatTime(output.items[1])}}
-        , Max {{formatTime(output.items[2])}}
-        %br
-        Ice Water Chilled: Min {{formatTime(output.items[3])}}, 
-        %b Suggested {{formatTime(output.items[4])}}
-        , Max {{formatTime(output.items[5])}}
+        .section-tiny
+          %h5 Immediate Service: 
+          Min {{formatTime(output.items[0])}}, 
+          %b Suggested {{formatTime(output.items[1])}}
+          , Max {{formatTime(output.items[2])}}
+        .section-tiny
+          %h5 Ice Water Chilled: 
+          Min {{formatTime(output.items[3])}}, 
+          %b Suggested {{formatTime(output.items[4])}}
+          , Max {{formatTime(output.items[5])}}
       .section
         %h3 Inputs
         .control-group
           %label Water Temp {{inputs.water_temp}} &deg;c
-          .controls
-            60 &deg;c
-            %input(type="range" ng-model='inputs.water_temp' min="60" max="85")
-            85 &deg;c
-        .control-group
-          %label Desired Viscosity {{inputs.desired_viscosity}} (Like {{viscosityToDescriptor(inputs.desired_viscosity)}})
-          .controls
-            5
-            %input(type="range" ng-model='inputs.desired_viscosity' min="5" max="30")
-            30
-            
-        .control-group
+          %label Perceptual desired viscosity {{oneDecimal(inputs.perceptual_yolk_viscosity)}}
+          %label Desired Viscosity {{oneDecimal(inputs.desired_viscosity)}} 
           %label Egg Diameter {{inputs.diameter}} mm
-          .controls
-            30
-            %input(type="range" ng-model='inputs.diameter' min="30" max="60" step="0.5")
-            60
-        .control-group
           %label Start Temp {{inputs.start_temp}}
-          .controls
-            1
-            %input(type="range" ng-model='inputs.start_temp' min="1" max="35")
-            35
-        .control-group
           %label Heat Transfer Coefficient {{inputs.surface_heat_transfer_coeff}}
-          .controls
-            50
-            %input(type="range" ng-model='inputs.surface_heat_transfer_coeff' min="50" max="200")
-            200
-        .control-group
-          %label Egg Shape
-          .controls
-            .btn.btn-secondary(ng-click="inputs.beta = 1.6" ng-class="{active: inputs.beta==1.6}") Torpedo
-            .btn.btn-secondary(ng-click="inputs.beta = 1.7" ng-class="{active: inputs.beta==1.7}") Normal
-            .btn.btn-secondary(ng-click="inputs.beta = 1.8" ng-class="{active: inputs.beta==1.8}") Spherical
 
 
   
