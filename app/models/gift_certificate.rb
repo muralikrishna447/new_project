@@ -5,7 +5,7 @@ class GiftCertificate < ActiveRecord::Base
 
   scope :free_gifts, -> { where(price: 0) }
   scope :unredeemed, -> { where(redeemed: false) }
-  scope :one_week_old, -> { where('created_at > ?', 1.week.ago)}
+  scope :one_week_old, -> { where('created_at < ?', 1.week.ago)}
   scope :not_followed_up, -> { where(followed_up: false)}
 
   include ActsAsChargeable
