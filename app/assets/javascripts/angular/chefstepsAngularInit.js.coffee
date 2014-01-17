@@ -31,6 +31,7 @@ angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
 angular.module('ChefStepsApp').run ["$window", "$rootScope", ($window, $rootScope) ->
   $window.signInCallback =  (authResult) ->
     if(authResult && authResult.access_token)
+      authResult['g-oauth-window'] = ""
       $rootScope.$broadcast('event:google-plus-signin-success',authResult)
     else
       $rootScope.$broadcast('event:google-plus-signin-failure',authResult)
