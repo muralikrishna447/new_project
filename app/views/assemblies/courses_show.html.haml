@@ -23,7 +23,7 @@
                     %div(ng-switch-when='list')
                       = render 'shared/activity_layouts/list'
                     %div(ng-switch-default)
-                      = render 'activities/latest/main_activity_content'
+                      = render 'activities/main_activity_content'
  
               %div(ng-switch-when='Assignment')
                 = render 'assembly_upload', assembly: @course
