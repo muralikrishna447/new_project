@@ -59,6 +59,15 @@ angular.module('ChefStepsApp').controller 'GiftCertificatesController', ["$scope
         cellTemplate: '<div class="ngCellText colt{{$index}}">{{row.getProperty(\'recipient_name\')}} ({{row.getProperty(col.field)}})</div>'
       }
       {
+        field: "followed_up"
+        displayName: "Followed Up?"
+        width: 75
+        maxWidth: 75
+        enableCellEdit: false
+        sortable: false
+        cellTemplate: '<div class="ngCellText colt{{$index}}">{{row.getProperty(col.field)}}</div>'
+      }
+      {
         field: "redeemed"
         displayName: "Redeemed?"
         width: 75
