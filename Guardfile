@@ -1,4 +1,20 @@
 
+guard 'livereload' do
+  watch(%r{app/views/.+\.(erb|haml|slim)})
+  watch(%r{app/helpers/.+\.rb})
+  watch(%r{public/.+\.(css|js|html)})
+  watch(%r{config/locales/.+\.yml})
+
+  # Rails Assets Pipeline
+  watch(%r{(app|vendor)/assets/\w+/(.+\.(js|html)).*})  { |m| "/assets/#{m[2]}" }
+  watch(%r{^(?:app|vendor)/assets/stylesheets/(?:([^/]+)/)?(?:.+/)*(.+?)\.(?:css\.)?s[ac]ss$}) { |m| "assets/#{m[1] || m[2]}.css" }
+
+  # jasmine
+  watch(%r{spec/javascripts/spec/(.+?)\.(js\.coffee|js|coffee)$})
+  watch(%r{^spec/javascripts/(.+)_spec\.(js\.coffee|js|coffee)$})
+  watch(%r{app/assets/javascripts/(.+?)\.(js\.coffee|js|coffee)$})
+end
+
 guard 'pow' do
   watch('.powrc')
   watch('.powenv')
@@ -36,19 +52,4 @@ guard 'jasmine', jasmine_url: 'http://localhost:3000/jasmine', port: 80, server_
   watch(%r{app/assets/javascripts/(.+?)\.(js\.coffee|js|coffee)$}) { |m| "spec/javascripts/#{m[1]}_spec.#{m[2]}" }
 end
 
-guard 'livereload' do
-  watch(%r{app/views/.+\.(erb|haml|slim)})
-  watch(%r{app/helpers/.+\.rb})
-  watch(%r{public/.+\.(css|js|html)})
-  watch(%r{config/locales/.+\.yml})
-
-  # Rails Assets Pipeline
-  watch(%r{(app|vendor)/assets/\w+/(.+\.(js|html)).*})  { |m| "/assets/#{m[2]}" }
-  watch(%r{^(?:app|vendor)/assets/stylesheets/(?:([^/]+)/)?(?:.+/)*(.+?)\.(?:css\.)?s[ac]ss$}) { |m| "assets/#{m[1] || m[2]}.css" }
-
-  # jasmine
-  watch(%r{spec/javascripts/spec/(.+?)\.(js\.coffee|js|coffee)$})
-  watch(%r{^spec/javascripts/(.+)_spec\.(js\.coffee|js|coffee)$})
-  watch(%r{app/assets/javascripts/(.+?)\.(js\.coffee|js|coffee)$})
-end
 

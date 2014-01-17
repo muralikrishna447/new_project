@@ -33,7 +33,7 @@
                   Runny
                   %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
                   Firm
-              %csfrictionslider.egg-image-carousel(xx="200" yy="{{inputs.perceptual_yolk_viscosity}}")
+              %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1")
                 %img(ng-src="{{yolkImage}}" ng-repeat="yolkImage in yolkImages" )
               %h6.text-center
                 Like {{perceptualYolkDescriptor(inputs.perceptual_yolk_viscosity)}}
