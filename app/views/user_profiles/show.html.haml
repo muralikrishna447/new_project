@@ -18,8 +18,9 @@
 
 .container
   .row
-    .span2
+    .span2(ng-controller="LoginController")
       .well.profile-badges
+        = render "devise/sessions/new_angular"
 
         - if @user.badges.any?
           %h4 Badges
@@ -30,6 +31,7 @@
       - if current_user
         - if current_user == @user
           = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-secondary btn-block'
+          -# %a(class="btn btn-secondary btn-block" ng-click="openModal('invite')") Invite Friends
           = link_to 'Sign out', sign_out_path, class: 'btn btn-secondary btn-block'
         - else
           / = link_to followership_path(@user), method: :put, class: 'btn btn-primary btn-block' do

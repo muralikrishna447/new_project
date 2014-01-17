@@ -379,6 +379,7 @@ class Activity < ActiveRecord::Base
     new_activity.source_activity = self
     new_activity.source_type = SourceType::ADAPTED_FROM
     new_activity.published = false
+    new_activity.published_at = nil
 
     self.ingredients.each do |ai|
       new_ai = ai.dup

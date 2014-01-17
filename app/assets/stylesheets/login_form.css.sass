@@ -9,7 +9,7 @@ input:not(:focus):not(.ng-pristine).ng-invalid
 .modal
   &.login-controller-modal
     max-height: 500px
-  form
+  .no-margin-modal-form
     margin: 0
 
 .login-modal-body, .invite-modal-body
@@ -24,6 +24,16 @@ input:not(:focus):not(.ng-pristine).ng-invalid
   .button-group
     text-align: center
     padding-bottom: 10px
+    .facebook-button, .google-button
+      a
+        width: 150px
+        i
+          font-size: 20px
+          float: left
+          padding-left: 10px
+      &.facebook-invite, &.google-invite
+        a
+          width: 280px
 
   .form-horizontal
     margin-top: 30px
@@ -58,6 +68,10 @@ input:not(:focus):not(.ng-pristine).ng-invalid
   .show-password
     width: 13%
     vertical-align: bottom
+
+  .terms
+    padding: 5px 0 5px 0
+    margin-bottom: $baseline
 
 .invite-modal-body
   p

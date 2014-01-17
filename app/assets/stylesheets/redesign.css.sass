@@ -315,8 +315,46 @@ a:hover
     border-bottom: 1px dashed gray
     text-align: center
     padding: 0px
+    &.error
+      border: 1px solid #E25F25
   input[type=text], input[type=email], input[type=password]
     width: 260px
+
+.madlib
+  span
+    position: relative
+    display: inline-block
+    .bubble
+      display: block
+      position: absolute
+      top: -30px
+      left: -10px
+      text-align: center
+      background-color: #fff
+      border: 2px solid #E25F25
+      -webkit-border-radius: 10px
+      -moz-border-radius: 10px
+      border-radius: 10px
+      -webkit-box-shadow: 2px 2px 4px #888
+      -moz-box-shadow: 2px 2px 4px #888
+      box-shadow: 2px 2px 4px #888
+      padding: 5px 10px
+      height: 22px
+      width: 330px
+      &:before
+        content: " "
+        position: absolute
+        border-top: 7px solid #E25F25
+        border-left: 7px solid transparent
+        border-right: 7px solid transparent
+        visibility: visible
+        top: 34px
+        left: 130px
+      &.passbubble
+        top: -38px
+
+
+
 
 .gallery
   .media-centered
@@ -1148,7 +1186,7 @@ a:hover
   box-shadow: 0 3px 0px -1px #999999
 
 .btn-facebook
-  background: #3B5898
+  background: #3B5998
   color: white
   text-shadow: none
   border: 0

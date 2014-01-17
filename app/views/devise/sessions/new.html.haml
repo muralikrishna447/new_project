@@ -3,20 +3,15 @@
 .container#main-container
   .row
     .span6.offset3.registration
-      %h3 Sign into Chefsteps
-      = form_for @user, url: session_path(@user) do |f|
-        - if @signin_message
-          %h2= @signin_message
-          %hr
-        %div= f.text_field :email, placeholder: 'Email', class: 'input-block-level', type: 'email'
-        %div= f.password_field :password, placeholder: 'Password', class: 'input-block-level'
-        %div= f.submit 'Sign in', class: 'btn btn-primary'
-        %h4 or
-        = render 'devise/shared/facebook_login', text: 'Log in with Facebook'
-        %hr
-        %h3 Don't have an account?
+      %div(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json}); openModal('login')")
+        %h3 Sign into Chefsteps
+        %a
+          .btn.btn-primary.btn-large(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Click Here to Sign In
+        = render "devise/sessions/new_angular"
+      %hr
+      %h3 Don't have an account?
+      =link_to new_user_registration_path do
         .btn.btn-primary
-          =link_to 'Sign up', new_user_registration_path
-        %hr
-        %div= "Don't have an account? #{link_to 'Sign up', new_user_registration_path}".html_safe
-        %div= "Forgot your password? #{link_to 'Reset password', new_user_password_path}".html_safe
+          Sign up
+      %hr
+      %div= "Forgot your password? #{link_to 'Reset password', new_user_password_path}".html_safe

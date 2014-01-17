@@ -1,18 +1,23 @@
 .login-modal(close="closeModal('login')" modal="loginModalOpen" options="modalOptions" ng-cloak)
-  %form(ng-switch="showForm")
+  %form(ng-switch="showForm" class="no-margin-modal-form")
     .modal-body.login-modal-body
       .close-x.pull-right(ng-click="closeModal('login')")
         %i.icon-remove
       .row-fluid(ng-switch-when="signIn" ng-animate='slide')
-        %h3 Sign in to ChefSteps
+        %h3 Sign in
         .form-horizontal(ng-show="!authentication.loggedIn()")
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
           .button-group
             .facebook-button.facebook-login
-              %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook") Sign in with Facebook
-            .google-plus-login
-              %span.g-signin
-                %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google") Sign in with Google
+              %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook")
+                %i.icon-facebook
+                %b Facebook
+            .google-button.google-plus-login
+              %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google")
+                %i.icon-google-plus
+                %b Google
+            .tiny-note
+              OR
           .error(ng-show="login_error.message")
             %p {{login_error.message}}
           .message(ng-show="message")
@@ -30,15 +35,21 @@
               %div.error-text(ng-repeat="field_error in login_error.errors.password")
                 {{field_error}}
       .row-fluid(ng-switch-when="signUp" ng-animate='slide')
-        %h3 Sign up to ChefSteps
+        %h3 Sign up
         .form-horizontal(ng-show="!authentication.loggedIn()")
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
           .button-group
             .facebook-button.facebook-login
-              %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook") Sign up with Facebook
-            .google-plus-login
-              %span.g-signin
-                %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google") Sign up with Google
+              %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook")
+                %i.icon-facebook
+                %b Facebook
+            .google-button.google-plus-login
+              -# %span.g-signin
+              %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google")
+                %i.icon-google-plus
+                %b Google
+            .tiny-note
+              OR
           .error(ng-show="register_error.message")
             %p {{register_error.message}}
           .message(ng-show="message")
@@ -60,6 +71,8 @@
             %div(ng-show="register_error.errors.email")
               %div.error-text(ng-repeat="field_error in register_error.errors.password")
                 {{field_error}}
+          .tiny-note.terms
+            = "By signing up, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path}</b>.".html_safe
     .modal-footer.login-modal-footer
       .sign-in-buttons.button-group(ng-switch-when="signIn")
         %div
@@ -80,16 +93,20 @@
           %button.btn.btn-primary.btn-large.sign-out(ng-click="logout()") Sign Out
 
 .invite-modal(close="closeModal('invite')" modal="inviteModalOpen" options="modalOptions" ng-cloak)
-  %form
+  %form(class="no-margin-modal-form")
     .modal-body.invite-modal-body
       .close-x.pull-right(ng-click="closeModal('invite')")
         %i.icon-remove
       .row-fluid(ng-animate='slide')
         %h3 Thanks for signing up!
+        -# %p
+        -#   We're sending you a confirmation email. Please check your email and click the link in it.
+        -# %p
+        -#   In the meantime, connect to these accounts to invite your friends to join you.
         %p
-          We're sending you a confirmation email. Please check your email and click the link in it.
+          We need to verify we got your email right, so please go check it!
         %p
-          In the meantime, connect to these accounts to invite your friends to join you.
+          If you have friends you'd like to invite to ChefSteps you can connect these accounts to send them an invitation.
         .invite-horizontal(ng-show="authentication.currentUser()")
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
           .message(ng-show="message")
@@ -103,17 +120,17 @@
                     %input(type="checkbox" ng-model="friend.value")
                     {{friend.name}}
           .button-group
-            .facebook-button.facebook-login
-              %a.btn-facebook.btn.btn-secondary(ng-click="sendInvites()")
-                Invite friends on
-                %b Facebook
-            .google-button.google-login
+            .facebook-button.facebook-invite
+              %a(ng-click="sendInvites()" class="btn btn-secondary btn-facebook")
+                %i.icon-facebook
+                %b Invite friends from Facebook
+            .google-button.google-invite
               %a.btn-google.btn.btn-secondary(ng-click="loadGoogleContacts()" ng-show="authentication.currentUser() && !!authentication.currentUser().google_access_token")
-                Invite friends from your
-                %b Google Address Book
+                %i.icon-google-plus
+                %b Invite friends from Google
               %a.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin('#{google_app_id}')" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token")
-                Connect to Google & Invite Friends
-
+                %i.icon-google-plus
+                %b Connect to Google and Invite
             %div
               %a.next-button(ng-show="authentication.currentUser()" ng-click="welcome()") {{invitationsNextText}}
 
@@ -133,6 +150,8 @@
         %h3 Select who you want to invite
         %p
           Invite your friends to join you on ChefSteps.com
+          %a(href="/invitation.html" target="_blank")
+            (Preview)
         .invite-horizontal(ng-show="authentication.currentUser()")
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
           .search

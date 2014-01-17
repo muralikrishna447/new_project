@@ -523,3 +523,14 @@ describe "LoginController", ->
     it "should return only selected values", ->
       scope.inviteFriends = [{email: "danahern@chefsteps.com", name: "Dan Ahern", value: true}, {email: "test@chefsteps.com", name: "Test User", value: true}, {email: "nogood@example.com", name: "No Good", value: false}]
       expect(scope.friendsSelected()).toEqual([{email: "danahern@chefsteps.com", name: "Dan Ahern", value: true}, {email: "test@chefsteps.com", name: "Test User", value: true}])
+
+  describe "#validNameAndEmail", ->
+    it "should return false if values aren't set", ->
+      scope.register_user.email = null
+      scope.register_user.name = null
+      expect(scope.validNameAndEmail()).toBe false
+
+    it "should return true if the values are set", ->
+      scope.register_user.email = "a@b.c"
+      scope.register_user.name = "Test"
+      expect(scope.validNameAndEmail()).toBe true

@@ -10,7 +10,7 @@
   -#
   -# Primary CTA
   -#
-  %div(ng-show="(! logged_in && assembly.price)")
+  %div(ng-show="(!gift_certificate && !logged_in && assembly.price)")
     .main-cta(ng-controller="LoginController" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#sign-in-and-buy-button(ng-click="waitForLogin(); openModal('login')")
         BUY NOW

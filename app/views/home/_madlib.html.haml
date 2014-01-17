@@ -1,25 +1,33 @@
-.container-fluid.well-gradient
+.container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()")
+  = render "devise/sessions/new_angular"
   .row-fluid
     .container
       .row
         .span10.offset1
-          = form_for @user, url: registration_path(@user), class: 'form-inline' do |f|
+          %form.form-inline
             %h2.madlib
               .madlib-item.text-orange
                 Hi ChefSteps,
               .madlib-item
                 I am
                 %span.input-underlined
-                  = f.text_field :name, {placeholder: 'name', required: true, id: 'madlib-name'}
+                  %p.bubble(ng-show="register_error.errors.name")
+                    {{register_error.errors.name[0]}}
+                  %input(type="text" placeholder="name" required="true" id="madlib-name" ng-model="register_user.name" ng-class="hasError(register_error.errors.name)" ng-keypress="validNameAndEmail()")
                 and my email is
                 %span.input-underlined
-                  = f.email_field :email, {placeholder: 'email', required: true, id: 'madlib-email'}
+                  %p.bubble(ng-show="register_error.errors.email")
+                    {{register_error.errors.email[0]}}
+                  %input(type="email" placeholder="email" required="true" id="madlib-email" ng-model="register_user.email" ng-class="hasError(register_error.errors.email)" ng-keypress="validNameAndEmail()")
                 &#46;
               .madlib-item
-                I want to join 24,700 others and learn how to be a better cook.
-              .madlib-item.hide#madlib-password-wrapper
+                I want to join 31,000 others and learn how to be a better cook.
+              .madlib-item#madlib-password-wrapper(ng-show="showMadlibPassword")
                 Please set my password to
                 %span.input-underlined.input-append
-                  = f.password_field :password, {placeholder: 'password', required: true, id: 'madlib-password'}
-                  = link_to 'Show', 'javascript:void(0);', class: 'btn btn-secondary', id: 'show-madlib-password'
-              = f.submit 'Sign Up Now', class: 'btn btn-primary btn-large', id: 'subscribe-email'
+                  %p.bubble.passbubble(ng-show="register_error.errors.password")
+                    {{register_error.errors.password[0]}}
+                  %input(type="password" placeholder="password" required="true" id="madlib-password" ng-model="register_user.password" ng-class="hasError(register_error.errors.password)")
+                  %a#show-madlib-password.btn.btn-secondary(ng-click="togglePassword()") Show
+              %button#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register()" ng-disabled="dataLoading") Sign Up Now
+              %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")

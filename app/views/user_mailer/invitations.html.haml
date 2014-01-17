@@ -154,7 +154,7 @@
             text-align:left;
           }
           .headerContainer .mcnTextContent a{
-            color:#6DC6DD;
+            color:#e25f25;
             font-weight:normal;
             text-decoration:underline;
           }
@@ -171,7 +171,7 @@
             text-align:left;
           }
           .bodyContainer .mcnTextContent a{
-            color:#6DC6DD;
+            color:#e25f25;
             font-weight:normal;
             text-decoration:underline;
           }
@@ -455,21 +455,68 @@
                                                   Join
                                                   =link_to(@sender.name, user_profile_url(@sender))
                                                   on
-                                                  %a{href: "http://www.chefsteps.com", style: "word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #6DC6DD;font-weight: normal;text-decoration: underline;", target: "_self"} ChefSteps
+                                                  %a{href: "http://www.chefsteps.com", style: "word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #e25f25;font-weight: normal;text-decoration: underline;", target: "_self"} ChefSteps
+                                                %br
+                                                %br
+                                                %center
+                                                  %a(href="http://www.chefsteps.com")
+                                                    %img(src="http://chefsteps.s3.amazonaws.com/static/email/acceptInvitation@2x.png" width="224" height="75")
                                                 %br/
                                                 %span{style: "font-size: 13px; line-height: 1.6em;"} Learn how to cook smarter
                                               %p{style: "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
-                                                Lorem lean startup ipsum product market fit customer development acquihire technical cofounder. User engagement A/B testing shrink a market venture capital pitch deck. Social bookmarking group buying crowded market pivot onboarding freemium prototype ping pong. Early stage disruptive ecosystem community outreach dynamic location based strategic investor. 
-                                                %br/
-                                                %br/
-                                                %br/
-                                                Accelerator photo sharing business school drop out ramen hustle crush it revenue traction platforms. Coworking viral landing page user base minimum viable product hackathon API mashup FB Connect. Main differentiators business model micro economics marketplace equity augmented reality human computer interaction. Board members super angel preferred stock. Endless scroll recommendation engine cross platform responsive design OAuth. 
-                                                %br/
-                                                %br/
-                                                %br/
-                                                Tablet publishing HTML5 mobile first really simple syndication meetups white board walls. User experience iterate algorithm gamification semantic web value add market research stealth. Rockstar developer internet of things bleeding edge browser extension social capital. Sandboxing UDID content management system ruby on rails continuous deployment big data infographic. Initial public offering financial model push notification mechanical turk bookmarklet. Term sheet convertible note colluding bootstrapping. Cloud computing subscription model out of the box proactive solution. 
-                                                %br/
-                                                Cheers, Team ChefSteps
+                                                Dear @receiver,
+                                                %br
+                                                %br
+                                                Your friend
+                                                =link_to(@sender.name, user_profile_url(@sender))
+                                                invited you to join
+                                                %a(href="http://www.chefsteps.com") ChefSteps
+                                                , an online cooking platform dedicated to helping you cook smarter!
+                                                %br
+                                                %br
+                                                Here are just a few of the things that you can do at ChefSteps:
+                                                %br
+                                                %br
+                                                1.
+                                                %a(href="http://www.chefsteps.com/classes") Take a Class -
+                                                Our classes are guided workshops for those who want to get hands-on in the kitchen. You'll master new skills that empower you to create your own recipes and become a more confident cook. And you'll make some delicious food and have fun in the process!
+                                                %br
+                                                %br
+                                                2.
+                                                %a(href="http://www.chefsteps.com/gallery#/?sort=Newest&published_status=Published&activity_type=Recipe&difficulty=Any&generator=ChefSteps") Try a New Recipe -
+                                                ChefSteps' recipes are reliable, original, and tested by our award-winning culinary team. Each recipe is demonstrated with a brief and entertaining video, and we explain the hows and whys of key techniques. And it doesn't stop there: Want to adjust the quantities in a recipe to suit your needs? Simply click on the amount and change it to scale up or down. With ChefSteps' interactive and entertaining recipes, culinary success is easier and more fun than ever before.
+                                                %br
+                                                %br
+                                                3. Get Support - Our award-winning team will support you in your culinary adventures. If you love browsing our recipes and videos and want to ask questions, sign up for our forum or ping us on social media - we do our best to respond thoroughly and often. If you're enrolled in a class, we provide personal support and engagement every step of the way.
+                                                %br
+                                                %br
+                                                %a(href="http://facebook.com/chefsteps" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
+                                                  %img(src="https://www.filepicker.io/api/file/ZxDuQHsZRACRdrN1EKuu/convert?" width="75" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
+                                                %a(href="http://twitter.com/chefsteps" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
+                                                  %img(src="https://www.filepicker.io/api/file/lXlpzjoGTpq4H19bbRQr/convert?" width="75" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
+                                                %a(href="http://pinterest.com/chefsteps" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
+                                                  %img(src="https://www.filepicker.io/api/file/8PiBecw7R5CGHLHJlvj8/convert?" width="75" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
+                                                %a(href="https://plus.google.com/106370441183974123730/posts" width="75" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
+                                                  %img(src="https://www.filepicker.io/api/file/FkBQ3LZRKyTJ2BDOkaAm/convert?" width="75" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
+                                                %br
+                                                %br
+                                                4. Get Involved - Our
+                                                %a(href="http://forum.chefsteps.com") forum
+                                                is an active and friendly community of novice and experienced cooks, including many professional chefs. Sign up with ChefSteps and get your questions answered, often within minutes. ChefSteps members can start community discussions, interact with other members, and post their own recipes, photos, and videos.
+                                                %br
+                                                %br
+                                                If there's anything we can do to help make your experience with ChefSteps better, please respond to this email and let us know!
+                                                %br
+                                                %br
+                                                Cheers,
+                                                %br
+                                                Team ChefSteps
+                                                %br
+                                                %br
+
+                                                %center
+                                                  %a(href="http://www.chefsteps.com")
+                                                    %img(src="http://chefsteps.s3.amazonaws.com/static/email/acceptInvitation@2x.png" width="224" height="75")
                   / // END BODY
               %tr
                 %td{align: "center", style: "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
