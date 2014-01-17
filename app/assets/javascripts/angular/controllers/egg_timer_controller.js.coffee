@@ -3,7 +3,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
   $scope.state = "white"
 
   $scope.inputs = 
-    water_temp: 70
+    perceptual_white_viscosity: 3
     perceptual_yolk_viscosity: 3
     diameter: 43
     start_temp: 5
@@ -63,10 +63,24 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       "https://d3awvtnmmsvyot.cloudfront.net/api/file/GynsRsomRtmBujrLTvJE/convert?fit=max&w=320&cache=true"
     ] 
 
-  $scope.yolkImages[0].active = true 
+  $scope.whiteImages = 
+    [
+      {temp: 60, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/eEbaYrmfTyahirkQZmFd/convert?fit=max&w=320&cache=true"}
+      {temp: 61, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/vgOyRiCSTzGnQ4dUCpFj/convert?fit=max&w=320&cache=true"}
+      {temp: 62, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/fZPCpQohTlGHeSWUipv0/convert?fit=max&w=320&cache=true"}
+      {temp: 63, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/6z6F36qBT4WybDaZp5Sy/convert?fit=max&w=320&cache=true"}
+      {temp: 64, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/QKeQCuJRISx5klbFyyTS/convert?fit=max&w=320&cache=true"}
+      {temp: 65, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/uTexSIQ4Qce4y2hxVoDN/convert?fit=max&w=320&cache=true"}
+      {temp: 66, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/WIm6HQWPRwCz93Kl7a6s/convert?fit=max&w=320&cache=true"}
+      {temp: 67, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/BhXtmLcKTv6Q8Y8lHzrJ/convert?fit=max&w=320&cache=true"}
+      {temp: 69, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/2t7XhKLOQOs3QMqQhjIr/convert?fit=max&w=320&cache=true"}
+      {temp: 70, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/2QynNcTtSi6SRNKEMV73/convert?fit=max&w=320&cache=true"}
+      {temp: 71, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/fmymXbNS0WPmzJMznCwd/convert?fit=max&w=320&cache=true"}
+      {temp: 72, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/6uDEuuTnKvRSHQ75VXOw/convert?fit=max&w=320&cache=true"}
+      {temp: 75, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/psBbjxLNTkaLhVuRMtUL/convert?fit=max&w=320&cache=true"}
+      {temp: 85, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/yPpKhnStRemAG8CfM0hw/convert?fit=max&w=320&cache=true"}
+    ]
 
-  $scope.yolkImage = (x) ->
-    $scop.yolkImages[Math.round(x - 1)]
 
   $scope.update = ->
     $scope.loading = true
@@ -84,6 +98,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
   $scope.$watchCollection 'inputs', -> 
     $scope.inputs.desired_viscosity = Math.exp(-1.6 + (0.704 * $scope.inputs.perceptual_yolk_viscosity))
+    $scope.inputs.water_temp = $scope.whiteImages[$scope.inputs.perceptual_white_viscosity].temp
     $scope.throttledUpdate()
 
   $scope.goState = (name) ->

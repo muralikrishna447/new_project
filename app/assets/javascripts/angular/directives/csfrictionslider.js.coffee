@@ -12,6 +12,7 @@ angular.module('ChefStepsApp').directive 'csfrictionslider', ["$window", ($windo
       itemWidth = $(element).children().first().children().first()?.width()
       return if ! itemWidth
       if Math.round(newValue) != Math.round(oldValue)
+        $(element).finish()
         $(element).animate({left: - Math.round(newValue) * itemWidth}, 250)
 
 

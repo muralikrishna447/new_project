@@ -1,7 +1,27 @@
 @import mixins
 
+.egg-bg
+  position: fixed
+  top: 30px
+  left: 0
+  right: 0
+  bottom: 0
+  background-image: url('https://d3awvtnmmsvyot.cloudfront.net/api/file/12WbSvJSiOzAjE7cuWt3')
+  background-repeat: no-repeat
+  background-position: center center
+  background-size: cover
+  z-index: -1
+
 .egg-timer-container
   margin-top: $baseline * 2
+  margin-left: auto
+  margin-right: auto
+  width: 320px
+  height: 480px
+  border: 1px solid $light-gray
+  position: relative
+  overflow: hidden
+  background-color: rgba(255, 255, 255, 0.8)
 
   .egg-header
     width: 100%
@@ -81,12 +101,3 @@
       display: inline
 
 
-.iphone-container
-  margin-left: auto
-  margin-right: auto
-  width: 320px
-  height: 480px
-  border: 1px solid $light-gray
-  @include radius(10px)
-  position: relative
-  overflow: hidden
