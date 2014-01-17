@@ -1,26 +1,26 @@
-.section.ng-cloak#video-ingredient-unit(ng-class="primaryColumnClass()")
+.spier.show-mode
+  .row.relative(ng-hide="heroDisplayType() == 'none'")
+    .span12.ng-cloak.assembly-activity.section#video-ingredient-unit
+      .hero-video.noprint
+        = render 'activities/hero_visual'
+      - unless @assembly
+        .noprint(ng-show="! editMode")
+          = render 'layouts/social_buttons', media_object: activity
+  .row.main-content-container
+    .span6
+      = render 'activities/latest/description'
+    %div(ng-class='ingredientSpanClass()')
+      = render 'activities/main_ingredients'
+      .row
+        .span3
+          = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/Materials", test_method: "hasAnyEquipment", required_string: "any", required: "any"
+        .span3
+          = render 'activities/basic_edit_pair', model: "activity.yield", name: "Yield", add_text: "Add yield info...", itemprop: "recipeYield", show_extra: "maybeDisplayCurrentScaling()"
+          = render 'activities/basic_edit_pair', model: "activity.timing", name: "Timing", add_text: "Add timing info...",  show_extra: "maybeWarnCurrentScaling()"
+          = render 'activities/activity_relationships'
 
-  = render 'activities/metadata'
-  .noprint= render 'activities/hero_visual', main_object: activity
-  %div.noprint(ng-show="! editMode")
-    = render 'layouts/social_buttons', media_object: activity
-  = render 'activities/description'
-  = render 'activities/main_ingredients'
-  = render 'activities/basic_edit_pair', model: "activity.yield", name: "Yield", add_text: "Add yield info...", itemprop: "recipeYield", show_extra: "maybeDisplayCurrentScaling()"
-  = render 'activities/basic_edit_pair', model: "activity.timing", name: "Timing", add_text: "Add timing info...", show_extra: "maybeWarnCurrentScaling()"
-  = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment and Materials", test_method: "hasRequiredEquipment", required_string: "required", required: true
-  = render 'activities/new_equipment_list', model: "activity.equipment", name: "Optional Equipment and Materials", test_method: "hasOptionalEquipment", required_string: "optional", required: false
-  = render 'activities/activity_relationships', activity: activity
-  -if activity.creator
-    = render 'shared/mini_profile', user: activity.creator
-
-.span6.ng-cloak(ng-controller="StepsController")
-  = render 'activities/steps'
-
--# Turn this on if you want to see the whole data structure for debugging
-  .row
-    .span12
-      %pre
-        {{activity | json}}
+  .row.step-container
+    .span12.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
+      = render 'activities/steps'
 
 

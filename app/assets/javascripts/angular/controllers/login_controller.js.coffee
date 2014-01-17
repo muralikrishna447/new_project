@@ -299,7 +299,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           $scope.loadGoogleContacts()
         else if $scope.formFor != "purchase" && data.new_user
           $scope.loadFriends()
-      , 500)
+      , 300)
     ).error( (data, status) ->
       $scope.dataLoading -= 1
       # $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
