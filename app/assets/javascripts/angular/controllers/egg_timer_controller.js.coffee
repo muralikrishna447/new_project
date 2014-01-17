@@ -128,9 +128,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
   $scope.toggleShowSettings = (event) ->
     if event.altKey
-      $('.egg-bg').css('background-image', 'url(http://www.welldonetoast.com/wp-content/uploads/2012/02/toastC.jpg)')
+      $scope.easterEgg = ! $scope.easterEgg
     else
-      showSettings = ! showSettings
+      $scope.showSettings = ! $scope.showSettings
 
 
 

@@ -1,152 +1,153 @@
-.egg-bg
+.egg-app(ng-controller="EggTimerController")
+  .egg-bg(ng-class="{'easter-egg' : easterEgg}")
 
-.egg-timer-container(ng-controller="EggTimerController")
-  .egg-header
-    .egg-hamburger(ng-click="toggleShowSettings($event)")
-      .hamburger-bar
-      .hamburger-bar
-      .hamburger-bar
-    .egg-title
-      %h3 EGGS
+  .egg-timer-container
+    .egg-header
+      .egg-hamburger(ng-click="toggleShowSettings($event)")
+        .hamburger-bar
+        .hamburger-bar
+        .hamburger-bar
+      .egg-title
+        %h3 EGGS
 
-  .egg-body
-    .page-bg
-      %img(src="assets/egg_timer_background.png")
-    .page-switch(ng-switch="state" ng-animate="'fade'")
-      .page(ng-switch-when="white")
-        %h4.text-center What texture would you like your egg white?
-        %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity")
-          %img(ng-src="{{whiteImage.image}}" ng-repeat="whiteImage in whiteImages" )
+    .egg-body
+      .page-bg
+        %img(src="assets/egg_timer_background.png")
+      .page-switch(ng-switch="state" ng-animate="'fade'")
+        .page(ng-switch-when="white")
+          %h4.text-center What texture would you like your egg white?
+          %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity")
+            %img(ng-src="{{whiteImage.image}}" ng-repeat="whiteImage in whiteImages" )
+          .control-group
+            .controls
+              Runny
+              %input(type="range" ng-model='inputs.perceptual_white_viscosity' min="0" max="13")
+              Firm
+          .egg-footer
+            .btn.btn-primary(ng-click="goState('yolk')") 
+              NEXT
+              %i.icon-angle-right
+
+        .page(ng-switch-when="yolk")
+          %h4.text-center What texture would you like your egg yolk?
+          %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1")
+            %img(ng-src="{{yolkImage}}" ng-repeat="yolkImage in yolkImages" )
+          .control-group.text-center
+            .controls
+              Runny
+              %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
+              Firm
+          %h6.text-center
+            Like {{perceptualYolkDescriptor(inputs.perceptual_yolk_viscosity)}}
+          .egg-footer
+            .btn.btn-left.btn-primary(ng-click="goState('white')") 
+              %i.icon-angle-left
+            .btn.btn-right.btn-primary(ng-click="goState('results')") 
+              %i.icon-angle-right
+
+        .page(ng-switch-when="results")
+          .section
+            %h2.text-center {{inputs.water_temp}} &deg;C
+          .section
+            .labeled-time
+              %span Ice and reheat
+              %h3 {{formatTime(output.items[4], needsSeconds())}}
+            .labeled-time
+              %span Serve immediately
+              %h3 {{formatTime(output.items[1], needsSeconds())}}
+          .section
+            Add data for more accurate time:
+          .section.text-center
+            .btn.btn-circle.large(ng-click="goState('size')") Size
+            .btn.btn-circle.large(ng-click="goState('startTemp')") Starting Temp
+            .btn.btn-circle.large(ng-click="goState('bathType')") Bath Type
+          .egg-footer
+            .btn.btn-secondary(ng-click="goState('white')") 
+              START OVER
+            .btn.btn-primary(ng-click="goState('share')") 
+              SHARE
+
+        .page(ng-switch-when="share")
+          .section
+            %h4 Share the egg calculator on your social networks:
+          .section
+            = render 'layouts/social_buttons', media_object: nil
+          .egg-footer
+            .btn.btn-primary(ng-click="goState('white')") 
+              NEW EGG
+        .page(ng-switch-when="size")
+          %h4 What size is your egg?
+          .section.text-center
+            .btn-group
+              .btn.btn-secondary(ng-click="inputs.diameter = 35" active="inputs.diameter == 35") Medium
+              .btn.btn-secondary(ng-click="inputs.diameter = 43" active="inputs.diameter == 43") Large
+              .btn.btn-secondary(ng-click="inputs.diameter = 47" active="inputs.diameter == 47") X-Large
+              .btn.btn-secondary(ng-click="inputs.diameter = 50" active="inputs.diameter == 50") Jumbo
+          .section.text-center
+            or measure the diameter with a string at widest point
+          .section.text-center
+            %input(type="number" ng-model="inputs.diameter") cm
+          .egg-footer
+            .btn.btn-secondary(ng-click="goState('startTemp')") 
+              ADD START TEMP
+            .btn.btn-primary(ng-click="goState('results')") 
+              DONE
+
+        .page(ng-switch-when="startTemp")
+          %h4 What temperature is your egg?
+          .section.text-center
+            .btn-group
+              .btn.btn-secondary(ng-click="inputs.start_temp = 5" active="inputs.start_temp == 5") Refrigerator
+              .btn.btn-secondary(ng-click="inputs.start_temp = 22" active="inputs.start_temp == 22") Room Temp
+          .section.text-center
+            or 
+          .section.text-center
+            %input(type="number" ng-model="inputs.start_temp") &deg; C
+          .egg-footer
+            .btn.btn-secondary(ng-click="goState('bathType')") 
+              ADD BATH TYPE
+            .btn.btn-primary(ng-click="goState('results')") 
+              DONE
+
+        .page(ng-switch-when="bathType")
+          %h4 What type of water bath are you using?
+          .section.text-center
+            .btn-group
+              .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 135" active="inputs.surface_heat_transfer_coeff == 5") Stirred
+              .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 165" active="inputs.surface_heat_transfer_coeff == 22") Unstirred
+          .egg-footer
+            .btn.btn-primary(ng-click="goState('results')") 
+              DONE
+
+
+            
+    .debugging(ng-show="debugging")                
+      %h2 DEBUGGING
+      .section
+      .section
+        %h3 
+          Computed Times
+          %i.icon-spin.icon-spinner(ng-show="loading")
+        .section-tiny
+          %h5 Immediate Service: 
+          Min {{formatTime(output.items[0])}}, 
+          %b Suggested {{formatTime(output.items[1])}}
+          , Max {{formatTime(output.items[2])}}
+        .section-tiny
+          %h5 Ice Water Chilled: 
+          Min {{formatTime(output.items[3])}}, 
+          %b Suggested {{formatTime(output.items[4])}}
+          , Max {{formatTime(output.items[5])}}
+      .section
+        %h3 Inputs
         .control-group
-          .controls
-            Runny
-            %input(type="range" ng-model='inputs.perceptual_white_viscosity' min="0" max="13")
-            Firm
-        .egg-footer
-          .btn.btn-primary(ng-click="goState('yolk')") 
-            NEXT
-            %i.icon-angle-right
-
-      .page(ng-switch-when="yolk")
-        %h4.text-center What texture would you like your egg yolk?
-        %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1")
-          %img(ng-src="{{yolkImage}}" ng-repeat="yolkImage in yolkImages" )
-        .control-group.text-center
-          .controls
-            Runny
-            %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
-            Firm
-        %h6.text-center
-          Like {{perceptualYolkDescriptor(inputs.perceptual_yolk_viscosity)}}
-        .egg-footer
-          .btn.btn-left.btn-primary(ng-click="goState('white')") 
-            %i.icon-angle-left
-          .btn.btn-right.btn-primary(ng-click="goState('results')") 
-            %i.icon-angle-right
-
-      .page(ng-switch-when="results")
-        .section
-          %h2.text-center {{inputs.water_temp}} &deg;C
-        .section
-          .labeled-time
-            %span Ice and reheat
-            %h3 {{formatTime(output.items[4], needsSeconds())}}
-          .labeled-time
-            %span Serve immediately
-            %h3 {{formatTime(output.items[1], needsSeconds())}}
-        .section
-          Add data for more accurate time:
-        .section.text-center
-          .btn.btn-circle.large(ng-click="goState('size')") Size
-          .btn.btn-circle.large(ng-click="goState('startTemp')") Starting Temp
-          .btn.btn-circle.large(ng-click="goState('bathType')") Bath Type
-        .egg-footer
-          .btn.btn-secondary(ng-click="goState('white')") 
-            START OVER
-          .btn.btn-primary(ng-click="goState('share')") 
-            SHARE
-
-      .page(ng-switch-when="share")
-        .section
-          %h4 Share the egg calculator on your social networks:
-        .section
-          = render 'layouts/social_buttons', media_object: nil
-        .egg-footer
-          .btn.btn-primary(ng-click="goState('white')") 
-            NEW EGG
-      .page(ng-switch-when="size")
-        %h4 What size is your egg?
-        .section.text-center
-          .btn-group
-            .btn.btn-secondary(ng-click="inputs.diameter = 35" active="inputs.diameter == 35") Medium
-            .btn.btn-secondary(ng-click="inputs.diameter = 43" active="inputs.diameter == 43") Large
-            .btn.btn-secondary(ng-click="inputs.diameter = 47" active="inputs.diameter == 47") X-Large
-            .btn.btn-secondary(ng-click="inputs.diameter = 50" active="inputs.diameter == 50") Jumbo
-        .section.text-center
-          or measure the diameter with a string at widest point
-        .section.text-center
-          %input(type="number" ng-model="inputs.diameter") cm
-        .egg-footer
-          .btn.btn-secondary(ng-click="goState('startTemp')") 
-            ADD START TEMP
-          .btn.btn-primary(ng-click="goState('results')") 
-            DONE
-
-      .page(ng-switch-when="startTemp")
-        %h4 What temperature is your egg?
-        .section.text-center
-          .btn-group
-            .btn.btn-secondary(ng-click="inputs.start_temp = 5" active="inputs.start_temp == 5") Refrigerator
-            .btn.btn-secondary(ng-click="inputs.start_temp = 22" active="inputs.start_temp == 22") Room Temp
-        .section.text-center
-          or 
-        .section.text-center
-          %input(type="number" ng-model="inputs.start_temp") &deg; C
-        .egg-footer
-          .btn.btn-secondary(ng-click="goState('bathType')") 
-            ADD BATH TYPE
-          .btn.btn-primary(ng-click="goState('results')") 
-            DONE
-
-      .page(ng-switch-when="bathType")
-        %h4 What type of water bath are you using?
-        .section.text-center
-          .btn-group
-            .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 135" active="inputs.surface_heat_transfer_coeff == 5") Stirred
-            .btn.btn-secondary(ng-click="inputs.surface_heat_transfer_coeff = 165" active="inputs.surface_heat_transfer_coeff == 22") Unstirred
-        .egg-footer
-          .btn.btn-primary(ng-click="goState('results')") 
-            DONE
-
-
-          
-  .debugging(ng-show="debugging")                
-    %h2 DEBUGGING
-    .section
-    .section
-      %h3 
-        Computed Times
-        %i.icon-spin.icon-spinner(ng-show="loading")
-      .section-tiny
-        %h5 Immediate Service: 
-        Min {{formatTime(output.items[0])}}, 
-        %b Suggested {{formatTime(output.items[1])}}
-        , Max {{formatTime(output.items[2])}}
-      .section-tiny
-        %h5 Ice Water Chilled: 
-        Min {{formatTime(output.items[3])}}, 
-        %b Suggested {{formatTime(output.items[4])}}
-        , Max {{formatTime(output.items[5])}}
-    .section
-      %h3 Inputs
-      .control-group
-        %label Perceptual desired white viscosity: {{inputs.perceptual_white_viscosity}}
-        %label Water Temp {{inputs.water_temp}} &deg;c
-        %label Perceptual desired viscosity {{oneDecimal(inputs.perceptual_yolk_viscosity)}}
-        %label Desired Viscosity {{oneDecimal(inputs.desired_viscosity)}} 
-        %label Egg Diameter {{inputs.diameter}} mm
-        %label Start Temp {{inputs.start_temp}}
-        %label Heat Transfer Coefficient {{inputs.surface_heat_transfer_coeff}}
+          %label Perceptual desired white viscosity: {{inputs.perceptual_white_viscosity}}
+          %label Water Temp {{inputs.water_temp}} &deg;c
+          %label Perceptual desired viscosity {{oneDecimal(inputs.perceptual_yolk_viscosity)}}
+          %label Desired Viscosity {{oneDecimal(inputs.desired_viscosity)}} 
+          %label Egg Diameter {{inputs.diameter}} mm
+          %label Start Temp {{inputs.start_temp}}
+          %label Heat Transfer Coefficient {{inputs.surface_heat_transfer_coeff}}
 
 
   
