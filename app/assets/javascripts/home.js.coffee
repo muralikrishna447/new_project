@@ -12,7 +12,6 @@ areCookiesEnabled = ->
   document.cookie = "__verify=1;expires=" + thePast.toUTCString()
   return supportsCookies
 
-
 $ ->
   # Hero Swiper
   window.heroSwipe = Swipe(document.getElementById('hero-swiper'),{

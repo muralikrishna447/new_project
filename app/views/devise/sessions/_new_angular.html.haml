@@ -9,11 +9,11 @@
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
           .button-group
             .facebook-button.facebook-login
-              %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook")
+              %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disable="dataLoading")
                 %i.icon-facebook
                 %b Facebook
             .google-button.google-plus-login
-              %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google")
+              %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google"  ng-disable="dataLoading || !googleLoaded")
                 %i.icon-google-plus
                 %b Google
             .tiny-note
@@ -40,12 +40,12 @@
           %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
           .button-group
             .facebook-button.facebook-login
-              %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook")
+              %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disable="dataLoading")
                 %i.icon-facebook
                 %b Facebook
             .google-button.google-plus-login
               -# %span.g-signin
-              %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google")
+              %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google" ng-disable="dataLoading || !googleLoaded")
                 %i.icon-google-plus
                 %b Google
             .tiny-note
@@ -76,14 +76,14 @@
     .modal-footer.login-modal-footer
       .sign-in-buttons.button-group(ng-switch-when="signIn")
         %div
-          %button.btn.btn-primary.btn-large.signin(ng-click="login()") Sign in
+          %button.btn.btn-primary.btn-large.signin(ng-click="login()" ng-disable="dataLoading") Sign in
         %hr
         %div
           %a.switch-to-signup(ng-click="switchForm('signUp')")
             Get an Account
       .sign-up-buttons.button-group(ng-switch-when="signUp")
         %div
-          %button.btn.btn-primary.btn-large.signup(ng-click="register()") Sign Up
+          %button.btn.btn-primary.btn-large.signup(ng-click="register()" ng-disable="dataLoading") Sign Up
         %hr
         %div
           %a.switch-to-signin(ng-click="switchForm('signIn')")
