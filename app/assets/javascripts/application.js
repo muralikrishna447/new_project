@@ -8,7 +8,6 @@
 //= require activities
 //= require step_ingredients
 //= require community
-//= require scroll_shadow
 //= require horizontal_slider
 //= require bootstrap-wysihtml5
 //= require bootstrap-wysihtml5/locales
