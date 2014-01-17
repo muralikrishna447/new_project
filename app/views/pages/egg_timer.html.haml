@@ -2,7 +2,7 @@
 
 .egg-timer-container(ng-controller="EggTimerController")
   .egg-header
-    .egg-hamburger(ng-click="showSettings = ! showSettings")
+    .egg-hamburger(ng-click="toggleShowSettings($event)")
       .hamburger-bar
       .hamburger-bar
       .hamburger-bar
@@ -15,13 +15,13 @@
     .page-switch(ng-switch="state" ng-animate="'fade'")
       .page(ng-switch-when="white")
         %h4.text-center What texture would you like your egg white?
+        %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity")
+          %img(ng-src="{{whiteImage.image}}" ng-repeat="whiteImage in whiteImages" )
         .control-group
           .controls
             Runny
             %input(type="range" ng-model='inputs.perceptual_white_viscosity' min="0" max="13")
             Firm
-        %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity")
-          %img(ng-src="{{whiteImage.image}}" ng-repeat="whiteImage in whiteImages" )
         .egg-footer
           .btn.btn-primary(ng-click="goState('yolk')") 
             NEXT
@@ -29,13 +29,13 @@
 
       .page(ng-switch-when="yolk")
         %h4.text-center What texture would you like your egg yolk?
+        %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1")
+          %img(ng-src="{{yolkImage}}" ng-repeat="yolkImage in yolkImages" )
         .control-group.text-center
           .controls
             Runny
             %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
             Firm
-        %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1")
-          %img(ng-src="{{yolkImage}}" ng-repeat="yolkImage in yolkImages" )
         %h6.text-center
           Like {{perceptualYolkDescriptor(inputs.perceptual_yolk_viscosity)}}
         .egg-footer

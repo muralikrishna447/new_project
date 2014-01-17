@@ -101,7 +101,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     $scope.inputs.water_temp = $scope.whiteImages[$scope.inputs.perceptual_white_viscosity].temp
     $scope.throttledUpdate()
 
-  $scope.goState = (name) ->
+  $scope.goState = (name, event) ->
     $scope.state = name
 
   # Social share callbacks
@@ -125,6 +125,13 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
   $scope.oneDecimal = (x) ->
     Math.round(x * 10) / 10
+
+  $scope.toggleShowSettings = (event) ->
+    if event.altKey
+      $('.egg-bg').css('background-image', 'url(http://www.welldonetoast.com/wp-content/uploads/2012/02/toastC.jpg)')
+    else
+      showSettings = ! showSettings
+
 
 
 ]
