@@ -56,10 +56,12 @@ gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'geokit-rails'
 gem 'rack-ssl-enforcer'
 gem 'redcarpet'
+gem 'google-api-client'
 
 group :development do
   gem 'spring'
   gem "letter_opener"
+  gem 'net-http-spy', github: "justincaldwell/net-http-spy"
 end
 
 group :development, :test do

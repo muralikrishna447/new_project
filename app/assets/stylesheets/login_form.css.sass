@@ -31,7 +31,7 @@ input:not(:focus):not(.ng-pristine).ng-invalid
           font-size: 20px
           float: left
           padding-left: 10px
-      &.facebook-invite
+      &.facebook-invite, &.google-invite
         a
           width: 280px
 
@@ -93,9 +93,14 @@ input:not(:focus):not(.ng-pristine).ng-invalid
       overflow: scroll
       max-height: 250px
       li
-        width: 49%
-        display: inline
-        float: left
+        &.two_column
+          width: 49%
+          display: inline
+          float: left
+        &.one_column
+          width: 100%
+          display: inline
+          float: left
 
 
 .login-modal-footer, .invite-modal-footer

@@ -73,5 +73,7 @@ Delve::Application.configure do
     Bullet.airbrake = false
   end
   ENV["REDISTOGO_URL"] = 'redis://localhost:6379'
+
+  Net::HTTP.http_logger_options = {:verbose => true, :body => true}
 end
 
