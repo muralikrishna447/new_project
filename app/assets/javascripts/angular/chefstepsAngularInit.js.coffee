@@ -34,6 +34,9 @@ angular.module('ChefStepsApp').run ["$window", "$rootScope", ($window, $rootScop
       $rootScope.$broadcast('event:google-plus-signin-success',authResult)
     else
       $rootScope.$broadcast('event:google-plus-signin-failure',authResult)
+
+  $window.render = ->
+    $rootScope.$broadcast('event:google-plus-loaded')
 ]
 
 @$$parse = (url) ->

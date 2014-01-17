@@ -27,6 +27,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.inviteFriends = []
 
   $scope.showMadlibPassword = false
+  $scope.googleLoaded = false
 
   $scope.hasError = (error) ->
     if error
@@ -267,6 +268,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.$apply( ->
         $scope.googleConnect(eventData)
       )
+
+  $scope.$on "event:google-plus-loaded", ->
+    $scope.googleLoaded = true
 
   $scope.googleSignin = (google_app_id) ->
     $scope.dataLoading += 1
