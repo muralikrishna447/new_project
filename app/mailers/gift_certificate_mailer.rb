@@ -11,7 +11,7 @@ class GiftCertificateMailer < ActionMailer::Base
   end
 
   def resend_recipient_email(to_recipient, purchaser, title, redeem_url, recipient_email, recipient_name, recipient_message)
-    set_variables
+    set_variables(to_recipient, purchaser, title, redeem_url, recipient_email, recipient_name, recipient_message)
     if @to_recipient
       mail(to: @recipient_email, subject: @recipient_subject)
     else
