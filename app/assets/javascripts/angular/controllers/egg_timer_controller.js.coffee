@@ -133,5 +133,4 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       $scope.showSettings = ! $scope.showSettings
 
 
-
 ]

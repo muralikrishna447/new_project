@@ -21,7 +21,7 @@
   margin-left: auto
   margin-right: auto
   width: 320px
-  height: 480px
+  height: 460px
   border: 1px solid $light-gray
   position: relative
   overflow: hidden
@@ -48,7 +48,7 @@
 
     .page
       width: 300px
-      height: 420px
+      height: 400px
       top: $baseline * 6
       left: 11px
       overflow: hidden
@@ -109,4 +109,31 @@
   .control-group
     margin-top: $baseline * 2
 
+input[type="range"]
+  height: 10px
+  width: 60%
+  -webkit-appearance: none
+  outline: none
+  box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.9), 0px 1px 1px 0px rgba(255, 255, 255, 0.13)
 
+  &:hover
+    box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.9), 0px 1px 1px 0px rgba(255, 255, 255, 0.13)
+
+  &::-webkit-slider-thumb
+    -webkit-appearance: none !important
+    width: 30px
+    height: 30px
+    -webkit-appearance: none
+    background: $darker-orange
+    @include radius(15px)
+    border: 1px solid black
+
+    &:hover
+      background: $orange
+
+@media (max-width: 320px)
+  .egg-bg
+    display: none
+  .egg-timer-container
+    margin-top: 0px
+    left: -20px
