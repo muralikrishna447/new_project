@@ -36,7 +36,6 @@
       .row-fluid(ng-switch-when="signUp" ng-animate='slide')
         %h3 Sign up
         .form-horizontal(ng-show="!authentication.loggedIn()")
-          %i.icon-page-load(ng-show="dataLoading")
           .button-group
             .facebook-button.facebook-login
               %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
@@ -85,7 +84,7 @@
       .sign-up-buttons.button-group(ng-switch-when="signUp")
         %div
           %button.btn.btn-primary.btn-large.signup(ng-click="register()" ng-disabled="dataLoading") Sign Up
-          .button-group(ng-show="!dataLoading")
+          .button-group(ng-show="dataLoading")
             %i.icon-page-load
         %hr
         %div
@@ -111,7 +110,8 @@
         %p
           If you have friends you'd like to invite to ChefSteps you can connect these accounts to send them an invitation.
         .invite-horizontal(ng-show="authentication.currentUser()")
-          %i.icon-page-load(ng-show="dataLoading")
+          .modal-center
+            %i.icon-page-load(ng-show="dataLoading")
           .message(ng-show="message")
             %p {{message}}
           - if false
@@ -156,7 +156,8 @@
           %a(href="/invitation.html" target="_blank")
             (Preview)
         .invite-horizontal(ng-show="authentication.currentUser()")
-          %i.icon-page-load(ng-show="dataLoading")
+          .modal-center
+            %i.icon-page-load(ng-show="dataLoading")
           .search
             %input(type="text" placeholder="Search For..." ng-model="searchFriends")
           %div
