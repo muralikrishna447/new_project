@@ -22,7 +22,6 @@ describe "EquipmentController", ->
 
   it "should search from the search box", ->
     expect(browser().window().path()).toBe("/equipment")
-
     # Test refresher
     expect(repeater(".ngRow").count()).toBe(3)
     element("#refresh-button").click()

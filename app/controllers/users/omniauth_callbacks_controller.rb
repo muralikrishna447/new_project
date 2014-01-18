@@ -19,7 +19,23 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     unless request.xhr?
       standard_login
     else
+      @user = User.facebook_connect(params[:user])
       javascript_login
+    end
+  end
+
+  def google
+    unless request.xhr?
+      standard_login
+    else
+      user_options = User.gather_info_from_google(params, google_app_id, google_secret)
+      if current_user
+        current_user.google_connect(user_options)
+        return render status: 200, json: {success: true, new_user: false, info: "Associated account", user: current_user.to_json(include: :enrollments)}
+      else
+        @user = User.google_connect(user_options)
+        javascript_login
+      end
     end
   end
 
@@ -39,7 +55,6 @@ private
   end
 
   def javascript_login
-    @user = User.facebook_connect(params[:user])
     @new_signup = @user.new_record?
     if @user.save
       @user.ensure_authentication_token!
@@ -62,5 +77,7 @@ private
       end
     end
   end
+
+
 
 end
