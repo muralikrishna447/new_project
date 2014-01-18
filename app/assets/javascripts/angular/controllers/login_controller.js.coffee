@@ -269,9 +269,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         $scope.googleConnect(eventData)
       )
 
-  $scope.$on "event:google-plus-loaded", ->
-    $scope.googleLoaded = true
-
   $scope.googleSignin = (google_app_id) ->
     $scope.dataLoading += 1
     # -# 'approvalprompt': "force" This requires them to reconfirm their permissions and gives us a new refresh token.
