@@ -19,18 +19,18 @@ if ! type "node" > /dev/null; then
   exit 1
 fi
 
-# if [ ! -d node_modules ]; then
-#   echo "You don't have the node modules installed.  Beginning installation:"
-#   echo
-#   echo "Installing karma"
-#   npm install -g karma
+if [ ! -d node_modules ]; then
+  echo "You don't have the node modules installed.  Beginning installation:"
+  echo
+  echo "Installing karma"
+  npm install -g karma
 
-#   echo "Installing karma-ng-scenario"
-#   npm install -g karma-ng-scenario
+  echo "Installing karma-ng-scenario"
+  npm install -g karma-ng-scenario
 
-#   echo "Installing karma-coffee-preprocessor"
-#   npm install -g karma-coffee-preprocessor
-# fi
+  echo "Installing karma-coffee-preprocessor"
+  npm install -g karma-coffee-preprocessor
+fi
 
 RAILS_ENV=angular bundle exec rake db:reset
 RAILS_ENV=angular bundle exec rake db:test:prepare
