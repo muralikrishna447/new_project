@@ -55,10 +55,14 @@
           .section
             .labeled-time
               %span Ice and reheat
-              %h3 {{formatTime(output.items[4], needsSeconds())}}
+              %h3(ng-show="loading")
+                %i.icon-spinner.icon-spin
+              %h3(ng-show="! loading") {{formatTime(output.items[4], needsSeconds())}}
             .labeled-time
               %span Serve immediately
-              %h3 {{formatTime(output.items[1], needsSeconds())}}
+              %h3(ng-show="! loading") {{formatTime(output.items[1], needsSeconds())}}
+              %h3(ng-show="loading")
+                %i.icon-spinner.icon-spin
           .section
             Add data for more accurate time:
           .section.text-center

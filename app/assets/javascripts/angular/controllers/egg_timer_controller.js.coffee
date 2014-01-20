@@ -83,6 +83,8 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
 
   $scope.update = ->
+    $scope.inputs.desired_viscosity = Math.exp(-1.6 + (0.704 * $scope.inputs.perceptual_yolk_viscosity))
+    $scope.inputs.water_temp = $scope.whiteImages[$scope.inputs.perceptual_white_viscosity].temp
     $scope.loading = true
     $http.get("http://gentle-taiga-4435.herokuapp.com/egg_time/", params: $scope.inputs).success((data, status) ->
       $scope.output = data
@@ -93,16 +95,10 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       debugger
     )
 
-  $scope.throttledUpdate = 
-    _.throttle($scope.update, 250)
-
-  $scope.$watchCollection 'inputs', -> 
-    $scope.inputs.desired_viscosity = Math.exp(-1.6 + (0.704 * $scope.inputs.perceptual_yolk_viscosity))
-    $scope.inputs.water_temp = $scope.whiteImages[$scope.inputs.perceptual_white_viscosity].temp
-    $scope.throttledUpdate()
-
-  $scope.goState = (name, event) ->
+  $scope.goState = (name) ->
     $scope.inputs.state = name
+    if name == "results"
+      $scope.update()
 
   # Social share callbacks
   $scope.socialURL = ->
