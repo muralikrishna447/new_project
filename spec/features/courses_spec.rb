@@ -3,6 +3,8 @@ require 'spec_helper'
 feature 'class' do
   before :each do
     @class = Fabricate :assembly, title: 'Test class', description: 'Test class description', published: true, assembly_type: 'course'
+    @activity = Fabricate :activity, title: 'Test Activity', description: 'Test activity description', published: true
+    @inclusion = Fabricate :assembly_inclusion, assembly_id: @class.id, includable_type: 'Activity', includable_id: @activity.id
   end
 
 
@@ -22,6 +24,14 @@ feature 'class' do
         page.status_code.should eq(200)
         expect(page).to_not have_content('FAQ')
       end
+    end
+  end
+
+  context 'assembly inclusions' do
+    it 'loads an activity inside a class' do
+      visit class_activity_path(@class, @activity)
+      puts class_activity_path(@class, @activity)
+      page.status_code.should eq(200)
     end
   end
 end
