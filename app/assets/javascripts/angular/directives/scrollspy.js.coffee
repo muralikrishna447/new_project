@@ -88,13 +88,14 @@ angular.module('ChefStepsApp').directive 'spy', ['$window', ($window)->
 
     affix.addSpy(scope)
 
-    el.on 'click', ->
+    el.on 'click', (e) ->
       scrollElement = affix.getSpyOnElement()
       if scrollElement == window
         scrollPos = $(window).scrollTop() + scope.pos
         $(window).scrollTop(scrollPos)
       else
         angular.element(scrollElement)[0].scrollTop += scope.pos
+      e.preventDefault()
 
 ]
 
