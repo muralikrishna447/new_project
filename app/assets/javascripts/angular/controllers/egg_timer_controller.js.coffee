@@ -1,8 +1,8 @@
 angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$http", "$timeout", ($scope, $http, $timeout) ->
 
-  $scope.state = "white"
 
   $scope.inputs = 
+    state: "white"
     perceptual_white_viscosity: 3
     perceptual_yolk_viscosity: 3
     diameter: 43
@@ -102,7 +102,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     $scope.throttledUpdate()
 
   $scope.goState = (name, event) ->
-    $scope.state = name
+    $scope.inputs.state = name
 
   # Social share callbacks
   $scope.socialURL = ->

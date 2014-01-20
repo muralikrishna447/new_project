@@ -1,6 +1,6 @@
 - content_for :title, "Sous Vide Egg Calculator"
    
-.egg-app#egg-top(ng-controller="EggTimerController" csskipnav)
+.egg-app#egg-top(ng-controller="EggTimerController" csskipnav ng-cloak)
   .egg-bg(ng-class="{'easter-egg' : easterEgg}")
 
   .egg-timer-container
@@ -15,10 +15,10 @@
     .egg-body
       .page-bg
         %img(src="assets/egg_timer_background.png")
-      .page-switch(ng-switch="state" ng-animate="'fade'")
+      .page-switch(ng-switch="inputs.state" ng-animate="'fade'")
         .page(ng-switch-when="white")
           %h4.text-center What texture would you like your egg white?
-          %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity")
+          %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity" item-width="300")
             %img(ng-src="{{whiteImage.image}}" ng-repeat="whiteImage in whiteImages" )
           .control-group.text-center
             .controls
@@ -32,7 +32,7 @@
 
         .page(ng-switch-when="yolk")
           %h4.text-center What texture would you like your egg yolk?
-          %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1")
+          %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1" item-width="300")
             %img(ng-src="{{yolkImage}}" ng-repeat="yolkImage in yolkImages" )
           %h6.text-center
             Like {{perceptualYolkDescriptor(inputs.perceptual_yolk_viscosity)}}
