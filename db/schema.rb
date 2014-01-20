@@ -620,6 +620,9 @@ ActiveRecord::Schema.define(:version => 20140116044848) do
     t.string   "role"
     t.string   "stripe_id"
     t.string   "authentication_token"
+    t.string   "google_refresh_token"
+    t.string   "google_access_token"
+    t.string   "google_user_id"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
