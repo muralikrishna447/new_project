@@ -63,12 +63,14 @@
               %h3(ng-show="! loading") {{formatTime(output.items[1], needsSeconds())}}
               %h3(ng-show="loading")
                 %i.icon-spinner.icon-spin
-          .section
+          .section-tiny.text-center
             Add data for more accurate time:
-          .section.text-center
-            .btn.btn-circle.large(ng-click="goState('size')") Size
-            .btn.btn-circle.large(ng-click="goState('startTemp')") Starting Temp
-            .btn.btn-circle.large(ng-click="goState('bathType')") Bath Type
+            .btn.btn-circle.large(ng-click="goState('size')") 
+              %h5 Egg Size
+            .btn.btn-circle.large(ng-click="goState('startTemp')") 
+              %h5 Start Temp
+            .btn.btn-circle.large(ng-click="goState('bathType')") 
+              %h5 Bath Type
           .egg-footer
             .btn.btn-secondary(ng-click="goState('white')") 
               START OVER
