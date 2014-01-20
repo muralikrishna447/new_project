@@ -9,6 +9,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     start_temp: 5
     surface_heat_transfer_coeff: 135
 
+  $scope.sizeChoices = 
+    [110,135,148,157]
+
   $scope.formatTime = (t, showSeconds = true) ->
 
     h = Math.floor(t / 3600)

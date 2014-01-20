@@ -10,7 +10,7 @@
   background-repeat: no-repeat
   background-position: center center
   background-size: cover
-  z-index: -1
+  z-index: -3
   @include transition(all 300ms ease-in-out)
 
 .egg-bg.easter-egg
@@ -60,7 +60,11 @@
       left: 0
       right: 0
       bottom: 0
-      z-index: -1
+      z-index: -2
+
+    .egg-circumference-image
+      img
+        width: 60%
 
     .labeled-time
       text-align: center
@@ -137,6 +141,18 @@ input[type="range"]
 
     &:hover
       background: $orange
+
+.egg-circumference  
+  position: relative
+  top: -65px
+  input
+    text-align: right
+    width: 30px
+    margin-right: 0px
+    outline: none
+    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button 
+      -webkit-appearance: none
+      margin: 0
 
 @media (max-width: 320px)
   .egg-bg

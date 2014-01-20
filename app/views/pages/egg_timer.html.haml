@@ -15,7 +15,7 @@
         %h3 EGGS
 
     .egg-body
-      .page-bg
+      .page-bg(ng-hide="inputs.state == 'size'")
         %img(src="assets/egg_timer_background.png")
       .page-switch(ng-switch="inputs.state" ng-animate="'fade'")
         .page(ng-switch-when="white")
@@ -85,18 +85,27 @@
           .egg-footer
             .btn.btn-primary(ng-click="goState('white')") 
               NEW EGG
+
         .page(ng-switch-when="size")
-          %h4 What size is your egg?
+          %h4 What (US) size is your egg?
           .section.text-center
-            .btn-group
-              .btn.btn-secondary(ng-click="inputs.circumference = 110" active="inputs.circumference == 110") Medium
-              .btn.btn-secondary(ng-click="inputs.circumference = 135" active="inputs.circumference == 135") Large
-              .btn.btn-secondary(ng-click="inputs.circumference = 148" active="inputs.circumference == 148") X-Large
-              .btn.btn-secondary(ng-click="inputs.circumference = 157" active="inputs.circumference == 157") Jumbo
-          .section.text-center
-            or measure the circumference with a string at widest point
-          .section.text-center
-            %input(type="number" ng-model="inputs.circumference") mm
+            %ul.nav.nav-tabs.underline.landing-tab-menu
+              %li(ng-click="inputs.circumference = 110" ng-class="{'active': inputs.circumference == 110}") 
+                %a Medium
+              %li(ng-click="inputs.circumference = 135" ng-class="{'active': inputs.circumference == 135}") 
+                %a Large
+              %li(ng-click="inputs.circumference = 148" ng-class="{'active': inputs.circumference == 148}") 
+                %a X-Large
+              %li(ng-click="inputs.circumference = 157" ng-class="{'active': inputs.circumference == 157}") 
+                %a Jumbo
+          .section-tiny.text-center
+            OR
+          .section-tiny.text-center
+            .egg-circumference-image
+              %img(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/cKrCwKDzTHelSwgNnrrJ/convert?fit=max&w=670&cache=true")
+          .section-tiny.text-center.egg-circumference
+            %input(type="number" ng-model="inputs.circumference" size="3") 
+            mm
           .egg-footer
             .btn.btn-secondary(ng-click="goState('startTemp')") 
               ADD START TEMP
