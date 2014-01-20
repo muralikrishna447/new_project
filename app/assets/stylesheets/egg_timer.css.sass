@@ -57,14 +57,22 @@
     .page-bg
       position: absolute
       top: 0
-      left: 0
+      left: 14px
       right: 0
       bottom: 0
       z-index: -2
 
     .egg-circumference-image
       img
-        width: 60%
+        width: 70%
+
+    .egg-circumference  
+      position: relative
+      top: -65px
+
+    .measure-text
+      position: absolute
+      top: 150px
 
     .labeled-time
       text-align: center
@@ -142,17 +150,14 @@ input[type="range"]
     &:hover
       background: $orange
 
-.egg-circumference  
-  position: relative
-  top: -65px
-  input
-    text-align: right
-    width: 30px
-    margin-right: 0px
-    outline: none
-    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button 
-      -webkit-appearance: none
-      margin: 0
+.tiny-input
+  text-align: right
+  width: 30px
+  margin-right: 4px
+  outline: none
+  &::-webkit-outer-spin-button, &::-webkit-inner-spin-button 
+    -webkit-appearance: none
+    margin: 0  
 
 @media (max-width: 320px)
   .egg-bg
