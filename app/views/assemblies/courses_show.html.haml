@@ -4,6 +4,7 @@
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
+- content_for :canonical_link, 'http://www.chefsteps.com/activities/'
 
 .controller.course-wrapper(ng-controller='CoursesController' ng-init="init(#{@course.id})")
   .course-assembly-container(ng-cloak ng-class="{'course-global-nav-show': showGlobalNav}")

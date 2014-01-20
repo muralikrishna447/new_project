@@ -59,6 +59,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     $scope.determineCollapsed($scope.currentIncludable)
 
     $scope.$broadcast 'scrollToTop'
+    $scope.updateCanonical()
 
     # Absolutely insane fix to https://www.pivotaltracker.com/story/show/59025778
     # Vaguely inspired by http://mir.aculo.us/2009/01/11/little-javascript-hints-episode-3-force-redraw/, though
@@ -143,6 +144,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     else
       $scope.largeScreen = false
 
+  $scope.updateCanonical = ->
+    canonical = angular.element('head').find("link[rel='canonical']")
+    link = canonical.attr('href') + $scope.includable_slug
+    canonical.attr('href', link)
 
   # Disqus
   $scope.updateDisqus = ->
