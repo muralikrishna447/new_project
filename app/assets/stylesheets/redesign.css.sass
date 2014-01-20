@@ -90,6 +90,7 @@ a, [ng-click], [contenteditable]:not(:focus)
   &:before
     content: url('page-load.gif')
 
+
 .extra-info
   color: $orange
 
@@ -1157,6 +1158,7 @@ a:hover
   border-bottom: 1px #ccc solid
   border-radius: 0px
   margin-bottom: $baseline
+  @include boxsizing
   @include transition(all 100ms)
   &:hover
     background: gray
@@ -1270,6 +1272,14 @@ a:hover
     text-decoration: none
     color: white
     cursor: pointer
+
+.btn-circle.large
+  height: 80px
+  width: 80px
+  margin: 10px 4px
+  padding: 20px 15px
+  font-size: 15px
+
 
 .btn-social-old
   width: 40px
@@ -1732,20 +1742,17 @@ input.summary-tweet
 
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
 // names have to change when we go to angular >= 1.1.5
-.fade-show-setup, .fade-hide-setup
-  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+.fade-show-setup, .fade-hide-setup, .fade-enter-setup, .fade-leave-setup
+  @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
 
-.fade-hide-setup
+.fade-hide-setup, .fade-leave-setup
   opacity: 1
-  &.fade-hide-start
+  &.fade-hide-start, &.fade-leave-start
     opacity: 0
 
-.fade-show-setup
+.fade-show-setup, .fade-enter-setup
   opacity: 0
-  &.fade-show-start
+  &.fade-show-start, &.fade-enter-start
     opacity: 1
 
 .custom-enter-setup, .custom-leave-setup, .custom-move-setup
