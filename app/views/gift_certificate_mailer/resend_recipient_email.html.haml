@@ -106,11 +106,10 @@
                     %td.main-letter{:valign => "top"}
                       / Note the use of table width instead of padding on the sides. We've found that this is a really clean and consistent way to do this.
                       %h1 Hi there!
-                      %br/
                       %tr
                       %td{:valign => "top"}
                         %p We noticed you did not redeem this gift.  Perhaps the first email ended up in the spam folder.  Here was the original email:
-                        %p #{@purchaser_name} has been a pal and given you the ChefSteps #{@gift_title} class for you.
+                        %p #{@purchaser.name} has been a pal and given you the ChefSteps #{@gift_title} Class for you.
                         -case @gift_title
                         -when "Whipping Siphons"
                           %img{:src => "https://chefsteps.s3.amazonaws.com/static/email/whipped.jpg"}
@@ -123,14 +122,17 @@
                             %p
                               =@recipient_message
                         %p<
-                          To get your gift, just use this link:
+                          Enjoy unlimited access at any time by using this link:
                           %a{href: @redeem_url, target: "_blank"}
                             =@redeem_url
                         %p<
                           We're here to help. You can reach us anytime at
                           %a(href="mailto:info@chefsteps.com" target="_blank")<
                             info@chefsteps.com
-                          if you have any questions or issues getting to the course.
+                          if you have any questions or issues getting to the class.
+                        %p{style: 'text-align: center;'}
+                          %a{href: @redeem_url, target: "_blank"}
+                            %img(src='https://www.filepicker.io/api/file/Mbf9cd8NTByHCVB8REAd?cache=true' style='width: 224px;')
                         %p
                           Cheers,
                           %br

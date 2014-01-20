@@ -20,17 +20,17 @@ Delve::Application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   #config.action_mailer.perform_deliveries = true
-  # config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.default_url_options = { host: DOMAIN }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    port: '587',
-    address: 'smtp.mandrillapp.com',
-    user_name: ENV['MANDRILL_USERNAME'],
-    password: ENV['MANDRILL_APIKEY'],
-    doman: 'heroku.com',
-    authentication: :plain
-  }
+  config.action_mailer.delivery_method = :letter_opener
+  # config.action_mailer.default_url_options = { host: DOMAIN }
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   port: '587',
+  #   address: 'smtp.mandrillapp.com',
+  #   user_name: ENV['MANDRILL_USERNAME'],
+  #   password: ENV['MANDRILL_APIKEY'],
+  #   doman: 'heroku.com',
+  #   authentication: :plain
+  # }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -73,5 +73,7 @@ Delve::Application.configure do
     Bullet.airbrake = false
   end
   ENV["REDISTOGO_URL"] = 'redis://localhost:6379'
+
+  Net::HTTP.http_logger_options = {:verbose => true, :body => true}
 end
 

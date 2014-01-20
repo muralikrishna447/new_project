@@ -25,7 +25,6 @@ Delve::Application.routes.draw do
   # get 'users/sign_in' => redirect('/#log-in')
   # get 'users/sign_up' => redirect('/#sign-up')
   devise_for :users, controllers: {
-    omniauth_callbacks: 'users/omniauth_callbacks',
     registrations: 'users/registrations',
     sessions: 'users/sessions',
     passwords: 'users/passwords'
@@ -39,6 +38,10 @@ Delve::Application.routes.draw do
     get 'welcome', to: 'users/registrations#welcome'
     post 'signup_and_enroll', to: 'users/registrations#signup_and_enroll'
     post 'signin_and_enroll', to: 'users/sessions#signin_and_enroll'
+    match '/users/auth/google/callback', to: 'users/omniauth_callbacks#google'
+    match '/users/auth/facebook/callback', to: 'users/omniauth_callbacks#facebook'
+    match '/users/contacts/google', to: 'users/contacts#google'
+    post '/users/contacts/invite', to: 'users/contacts#invite'
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'

@@ -43,18 +43,19 @@
   font-size: 24px
   @include boxsizing
   .course-nav-hamburger
-    .hamburger-bar
-      width: 30px
-      height: 5px
-      border-radius: 1px
-      margin-bottom: 4px
-      background: $orange
-      @include boxsizing
     &:hover
       cursor: pointer
       .hamburger-bar
         background: $dark-orange
 
+.hamburger-bar
+  width: 30px
+  height: 5px
+  border-radius: 1px
+  margin-bottom: 4px
+  background: $orange
+  @include boxsizing
+  
 .course-nav-slideout
   position: fixed
   top: 0px

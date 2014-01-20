@@ -90,6 +90,7 @@ a, [ng-click], [contenteditable]:not(:focus)
   &:before
     content: url('page-load.gif')
 
+
 .extra-info
   color: $orange
 
@@ -321,37 +322,27 @@ a:hover
     width: 260px
 
 .madlib
-  span
+
+  .bubble
+    display: inline
     position: relative
-    display: inline-block
-    .bubble
-      display: block
-      position: absolute
-      top: -30px
-      left: -10px
-      text-align: center
-      background-color: #fff
-      border: 2px solid #E25F25
-      -webkit-border-radius: 10px
-      -moz-border-radius: 10px
-      border-radius: 10px
-      -webkit-box-shadow: 2px 2px 4px #888
-      -moz-box-shadow: 2px 2px 4px #888
-      box-shadow: 2px 2px 4px #888
-      padding: 5px 10px
-      height: 22px
-      width: 330px
-      &:before
-        content: " "
-        position: absolute
-        border-top: 7px solid #E25F25
-        border-left: 7px solid transparent
-        border-right: 7px solid transparent
-        visibility: visible
-        top: 34px
-        left: 130px
-      &.passbubble
-        top: -38px
+    text-align: center
+    background-color: #fff
+    border: 2px solid #E25F25
+    -webkit-border-radius: 4px
+    -moz-border-radius: 4px
+    border-radius: 4px
+    -webkit-box-shadow: none
+    -moz-box-shadow: none
+    box-shadow: none
+    padding: 5px 10px
+    margin-bottom: $baseline
+    margin-right: 5px
+    top: -5px
+    white-space: nowrap
+    &.passbubble
+      top: 0
+      margin-left: 5px
 
 
 
@@ -1167,6 +1158,7 @@ a:hover
   border-bottom: 1px #ccc solid
   border-radius: 0px
   margin-bottom: $baseline
+  @include boxsizing
   @include transition(all 100ms)
   &:hover
     background: gray
@@ -1181,6 +1173,13 @@ a:hover
 
 .btn-facebook
   background: #3B5998
+  color: white
+  text-shadow: none
+  border: 0
+  padding: 10px
+
+.btn-google
+  background: #DD4B39
   color: white
   text-shadow: none
   border: 0
@@ -1273,6 +1272,14 @@ a:hover
     text-decoration: none
     color: white
     cursor: pointer
+
+.btn-circle.large
+  height: 80px
+  width: 80px
+  margin: 10px 4px
+  padding: 20px 15px
+  font-size: 15px
+
 
 .btn-social-old
   width: 40px
@@ -1735,20 +1742,17 @@ input.summary-tweet
 
 // See https://github.com/angular/angular.js/commit/11f712bc - these class
 // names have to change when we go to angular >= 1.1.5
-.fade-show-setup, .fade-hide-setup
-  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
+.fade-show-setup, .fade-hide-setup, .fade-enter-setup, .fade-leave-setup
+  @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
 
-.fade-hide-setup
+.fade-hide-setup, .fade-leave-setup
   opacity: 1
-  &.fade-hide-start
+  &.fade-hide-start, &.fade-leave-start
     opacity: 0
 
-.fade-show-setup
+.fade-show-setup, .fade-enter-setup
   opacity: 0
-  &.fade-show-start
+  &.fade-show-start, &.fade-enter-start
     opacity: 1
 
 .custom-enter-setup, .custom-leave-setup, .custom-move-setup
@@ -2060,3 +2064,6 @@ body
 .image-shadow
   @include any_shadow(0px 2px 5px #888888)
 
+.container.cookies-disabled
+  border: 2px $orange dotted
+  padding: 20px

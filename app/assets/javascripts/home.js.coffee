@@ -5,6 +5,13 @@ toggleMadlibPassword = (name_field, email_field) ->
     # if valid_name && valid_email
     #   $('#madlib-password-wrapper').delay(1000).fadeIn()
 
+areCookiesEnabled = ->
+  document.cookie = "__verify=1"
+  supportsCookies = document.cookie.length > 1 && document.cookie.indexOf("__verify=1") > -1
+  thePast = new Date(1976, 8, 16)
+  document.cookie = "__verify=1;expires=" + thePast.toUTCString()
+  return supportsCookies
+
 $ ->
   # Hero Swiper
   window.heroSwipe = Swipe(document.getElementById('hero-swiper'),{
@@ -90,3 +97,8 @@ $ ->
       madlib_password_field.attr 'type', 'text'
     else
       madlib_password_field.attr 'type', 'password'
+
+  unless areCookiesEnabled()
+    $(".cookies-disabled").show()
+
+
