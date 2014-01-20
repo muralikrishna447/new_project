@@ -5,10 +5,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     state: "white"
     perceptual_white_viscosity: 3
     perceptual_yolk_viscosity: 3
-    diameter: 43
+    circumference: 135
     start_temp: 5
     surface_heat_transfer_coeff: 135
-    beta: 1.7
 
   $scope.formatTime = (t, showSeconds = true) ->
 
@@ -83,10 +82,18 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
 
   $scope.update = ->
-    $scope.inputs.desired_viscosity = Math.exp(-1.6 + (0.704 * $scope.inputs.perceptual_yolk_viscosity))
-    $scope.inputs.water_temp = $scope.whiteImages[$scope.inputs.perceptual_white_viscosity].temp
+    params = 
+      desired_viscosity: Math.exp(-1.6 + (0.704 * $scope.inputs.perceptual_yolk_viscosity))
+      water_temp: $scope.whiteImages[$scope.inputs.perceptual_white_viscosity].temp
+      diameter: $scope.inputs.circumference / Math.PI
+      start_temp: $scope.inputs.start_temp
+      surface_heat_transfer_coeff: $scope.inputs.surface_heat_transfer_coeff
+      beta: 1.7
+
+    $scope.water_temp = params.water_temp
+
     $scope.loading = true
-    $http.get("http://gentle-taiga-4435.herokuapp.com/egg_time/", params: $scope.inputs).success((data, status) ->
+    $http.get("http://gentle-taiga-4435.herokuapp.com/egg_time/", params: params).success((data, status) ->
       $scope.output = data
       $scope.loading = false
       $scope.$apply() if ! $scope.$$phase

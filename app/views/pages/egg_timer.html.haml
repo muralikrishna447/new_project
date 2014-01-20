@@ -51,7 +51,7 @@
 
         .page(ng-switch-when="results")
           .section
-            %h2.text-center {{inputs.water_temp}} &deg;C
+            %h2.text-center {{water_temp}} &deg;C
           .section
             .labeled-time
               %span Ice and reheat
@@ -87,14 +87,14 @@
           %h4 What size is your egg?
           .section.text-center
             .btn-group
-              .btn.btn-secondary(ng-click="inputs.diameter = 35" active="inputs.diameter == 35") Medium
-              .btn.btn-secondary(ng-click="inputs.diameter = 43" active="inputs.diameter == 43") Large
-              .btn.btn-secondary(ng-click="inputs.diameter = 47" active="inputs.diameter == 47") X-Large
-              .btn.btn-secondary(ng-click="inputs.diameter = 50" active="inputs.diameter == 50") Jumbo
+              .btn.btn-secondary(ng-click="inputs.circumference = 110" active="inputs.circumference == 110") Medium
+              .btn.btn-secondary(ng-click="inputs.circumference = 135" active="inputs.circumference == 135") Large
+              .btn.btn-secondary(ng-click="inputs.circumference = 148" active="inputs.circumference == 148") X-Large
+              .btn.btn-secondary(ng-click="inputs.circumference = 157" active="inputs.circumference == 157") Jumbo
           .section.text-center
-            or measure the diameter with a string at widest point
+            or measure the circumference with a string at widest point
           .section.text-center
-            %input(type="number" ng-model="inputs.diameter") cm
+            %input(type="number" ng-model="inputs.circumference") mm
           .egg-footer
             .btn.btn-secondary(ng-click="goState('startTemp')") 
               ADD START TEMP
