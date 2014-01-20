@@ -1,9 +1,11 @@
 - content_for :title, "Sous Vide Egg Calculator"
+ 
+.activity-loading-spinner(ng-hide="true")
+  %i.icon-page-load 
    
-.egg-app#egg-top(ng-controller="EggTimerController" csskipnav ng-cloak)
+.egg-app#egg-top(ng-controller="EggTimerController" csskipnav)
   .egg-bg(ng-class="{'easter-egg' : easterEgg}")
-
-  .egg-timer-container
+  .egg-timer-container(ng-cloak)
     .egg-header
       %a.egg-hamburger(ng-click="toggleShowSettings($event)" ng-dblclick="easterEgg = ! easterEgg")
         .hamburger-bar
