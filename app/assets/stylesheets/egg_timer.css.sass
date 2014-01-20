@@ -17,7 +17,7 @@
   background-image: url(http://www.welldonetoast.com/wp-content/uploads/2012/02/toastC.jpg)
 
 .egg-timer-container
-  margin-top: $baseline * 2
+  margin-top: $baseline * 6
   margin-left: auto
   margin-right: auto
   width: 320px
@@ -127,27 +127,33 @@
     text-transform: uppercase
     color: black
     text-align: center
+    h5
+      padding-top: 4px
+      line-height: 16px
+      font-size: 14px
+
+  .btn-circle.visited
+    color: #ccc
 
 input[type="range"]
   height: 10px
   width: 60%
   -webkit-appearance: none
   outline: none
-  box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.9), 0px 1px 1px 0px rgba(255, 255, 255, 0.13)
+  background: #f1f1f1
+  border: 1px solid #ccc
+  border-radius: 40px
 
-  &:hover
-    box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.9), 0px 1px 1px 0px rgba(255, 255, 255, 0.13)
 
   &::-webkit-slider-thumb
     -webkit-appearance: none !important
     width: 30px
     height: 30px
     -webkit-appearance: none
-    background: $darker-orange
+    background: #ccc
     @include radius(15px)
-    border: 1px solid black
 
-    &:hover
+    &:hover, &:active
       background: $orange
 
 .tiny-input

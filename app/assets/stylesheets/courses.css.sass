@@ -231,7 +231,8 @@
     a
       color: $light-gray
       border: none
-      border-bottom: 3px solid white
+      // so doesn't change height, just disapparates
+      border-bottom: 3px solid rgba(0, 0, 0, 0)
       @include transition(all 200ms ease-in-out)
       &:hover
         color: gray
