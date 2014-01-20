@@ -64,7 +64,7 @@ private
         aweber_signup(@user.name, @user.email)
         cookies.delete(:viewed_activities)
         cookies[:returning_visitor] = true
-        mixpanel.alias(@user.email, mixpanel_anonymous_id)
+        mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
         mixpanel.track(@user.email, 'Signed Up')
         return render status: 200, json: {success: true, new_user: @new_signup, info: "Signed Up", user: current_user.to_json(include: :enrollments)}
       else
