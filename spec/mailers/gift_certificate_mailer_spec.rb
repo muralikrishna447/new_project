@@ -8,7 +8,7 @@ describe GiftCertificateMailer do
     context "to_recipient true" do
       it "should create an email to the recipient_email" do
         GiftCertificateMailer.recipient_email(true, purchaser, "Become a Badass", "chefsteps.test/gift/123456", "test@example.com", "Test User", "Enjoy the gift").deliver
-        check_email(to: "test@example.com", subject: "A gift for you from Purchaser (test@chefsteps.com)", from: "info@chefsteps.com")
+        check_email(to: "test@example.com", subject: "Purchaser gifted you the Become a Badass Class on ChefSteps.", from: "info@chefsteps.com")
       end
     end
 

@@ -29,7 +29,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
                           }
                         )
 
-  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "suggested cooking times and temperatures", "substitutions", "purchasing tips", "storage", "production", "safety", "seasonality", "history"]
+  $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "preparation tips", "suggested cooking times and temperatures", "substitutions", "purchasing tips", "storage", "production", "safety", "seasonality", "history"]
 
   $scope.ingredient = Ingredient.get({}, -> 
     mixpanel.track('Ingredient Viewed', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
@@ -87,8 +87,8 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.frequentlyUsedWith = ->
     _.filter($scope.ingredient.frequently_used_with, (x) -> (parseInt(x.id) != $scope.ingredient.id) && (parseInt(x.count) > 1))
 
-  $scope.showStartEditTip = ->
-    (! $scope.editMode) && ($scope.heroMedia.heroDisplayType() == "none") && (_.isEmpty($scope.ingredient.text_fields))
+  $scope.showStubTip = ->
+    (! $scope.editMode) && (_.isEmpty($scope.ingredient.text_fields))
 
   $scope.finishDensityChange = (ingredient) ->
     $scope.densityService.editDensity(null)

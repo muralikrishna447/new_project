@@ -1,7 +1,31 @@
 @import mixins
 
+.egg-bg
+  position: fixed
+  top: 30px
+  left: 0
+  right: 0
+  bottom: 0
+  background-image: url('https://d3awvtnmmsvyot.cloudfront.net/api/file/12WbSvJSiOzAjE7cuWt3')
+  background-repeat: no-repeat
+  background-position: center center
+  background-size: cover
+  z-index: -1
+  @include transition(all 300ms ease-in-out)
+
+.egg-bg.easter-egg
+  background-image: url(http://www.welldonetoast.com/wp-content/uploads/2012/02/toastC.jpg)
+
 .egg-timer-container
   margin-top: $baseline * 2
+  margin-left: auto
+  margin-right: auto
+  width: 320px
+  height: 460px
+  border: 1px solid $light-gray
+  position: relative
+  overflow: hidden
+  background-color: rgba(255, 255, 255, 0.9)
 
   .egg-header
     width: 100%
@@ -20,11 +44,16 @@
       text-align: center
 
   .egg-body
-    margin: ($baseline * 2) $baseline
+    overflow: hidden
 
     .page
-      width: 100%
-      height: 380px
+      width: 300px
+      height: 400px
+      top: $baseline * 6
+      left: 11px
+      overflow: hidden
+      position: absolute
+
     .page-bg
       position: absolute
       top: 0
@@ -33,36 +62,78 @@
       bottom: 0
       z-index: -1
 
+    .labeled-time
+      text-align: center
+      display: inline-block
+      width: 49%
+
+    h2,h3
+      font-weight: bold
+
   .egg-footer
     position: absolute
-    bottom: 0
+    bottom: $baseline
     left: 0
     right: 0
-    height: $baseline * 4
     color: white
     text-align: center
-    background-color: $light-gray
 
-    .btn
-      width: 50%
-      height: 100%
-      position: absolute
-      font-size: 24px
-      padding-top: 12px
-
-    .state-button-prev
+    .btn, .btn-primary, .btn-secondary
+      width: 90%
+      height: 40px
+      font-size: 16px
+      padding-top: 10px
+      .icon-angle-right
+        float: right
+      .icon-angle-left
+        float: left
+    .btn-left
       left: 0
-    .state-button-next
+      width: 46%
+      display: inline-block
+    .btn-right
       right: 0
+      width: 46%
+      display: inline-block
 
-.iphone-container
-  margin-left: auto
-  margin-right: auto
-  width: 320px
-  height: 480px
-  border: 1px solid $light-gray
-  @include radius(10px)
-  position: relative
-  overflow: hidden
+  .egg-image-carousel
+    position: relative
+    height: 169px
+    
+    div
+      overflow: visible
+      white-space: nowrap
+    img
+      display: inline
 
+  .control-group
+    margin-top: $baseline * 2
 
+input[type="range"]
+  height: 10px
+  width: 60%
+  -webkit-appearance: none
+  outline: none
+  box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.9), 0px 1px 1px 0px rgba(255, 255, 255, 0.13)
+
+  &:hover
+    box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.9), 0px 1px 1px 0px rgba(255, 255, 255, 0.13)
+
+  &::-webkit-slider-thumb
+    -webkit-appearance: none !important
+    width: 30px
+    height: 30px
+    -webkit-appearance: none
+    background: $darker-orange
+    @include radius(15px)
+    border: 1px solid black
+
+    &:hover
+      background: $orange
+
+@media (max-width: 320px)
+  .egg-bg
+    display: none
+  .egg-timer-container
+    margin-top: 0px
+    left: -20px
