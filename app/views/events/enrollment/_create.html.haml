@@ -4,6 +4,6 @@
   .timeline-text-only-text.text-center
     %div
       - url = event.trackable.enrollable.class.to_s == 'Assembly' ? landing_class_path(event.trackable.enrollable) : course_path(event.trackable.enrollable)
-      = "#{user_noun} enrolled into the #{link_to event.trackable.enrollable.title, url} class.".html_safe
+      = "#{user_noun} enrolled in the #{link_to event.trackable.enrollable.title, url} class.".html_safe
     %div
       = time_ago_in_words(event.created_at) + ' ago'

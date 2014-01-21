@@ -202,7 +202,7 @@ Delve::Application.routes.draw do
   get '/projects/recipe-development-doughnut-holes/landing', to: redirect('/recipe-developments/doughnut-holes')
   get '/projects/vegetable-demi-glace-recipe-development/landing', to: redirect('/recipe-developments/vegetable-demi-glace')
 
-  resources 'recipe-developments', controller: :assemblies, as: :recipe_developments, only: [:index, :show]
+  resources 'recipe-development', controller: :assemblies, as: :recipe_development, only: [:index, :show]
 
   resources :events, only: [:create]
 
