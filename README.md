@@ -73,3 +73,5 @@ script/e2e
 ```
 
 This will start the server.  It will automatically watch all files in the spec/javascripts/e2e folder and run the tests when you save a file.
+
+
