@@ -408,7 +408,7 @@ end
 
 describe Activity, 'gallery_path' do
 
-  before :all do
+  before :each do
     @plain_activity = Fabricate :activity, id: 1, title: 'Plain Activity', published: true
     @activity_within_class = Fabricate :activity, id: 2, title: 'Activity within class', published: true
     @activity_within_rd = Fabricate :activity, id: 3, title: 'Activity within rd', published: true
