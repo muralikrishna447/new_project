@@ -198,6 +198,13 @@ private
     headers['Access-Control-Max-Age'] = "1728000"
   end
 
+  def set_referrer_in_mixpanel(key)
+    if session[:referred_from] && session[:referred_by]
+      referrer = User.find(session[:referred_by])
+      mixpanel.people.increment(referrer.email, {key => 1})
+    end
+  end
+
   protected
 
   def verified_request?

@@ -76,6 +76,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       cookies.delete(:viewed_activities)
       mixpanel.alias(@user.email, mixpanel_anonymous_id)
       mixpanel.track(@user.email, 'Signed Up')
+      set_referrer_in_mixpanel("#{session[:referred_from]} invitee signed up")
       @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
       if @enrollment.save
         redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
