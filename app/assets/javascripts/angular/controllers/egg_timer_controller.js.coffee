@@ -109,7 +109,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       $scope.output = data
       $scope.loading = false
       $scope.$apply() if ! $scope.$$phase
-      console.log(data.items[1])
+      mixpanel.track('Egg Calculated', angular.extend({},  $scope.inputs, {water_temp: $scope.water_temp}, $scope.output))
+      mixpanel.people.increment('Egg Calculated')
+
     ).error((data, status, headers, config) ->
       debugger
     )
@@ -122,6 +124,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       $scope.visitedStates.push name
     if name == "results"
       $scope.update()
+    mixpanel.track('Egg Calculator Page', {'state' : name})
 
   $scope.stateVisited = (name) ->
     "visited" if $scope.visitedStates.indexOf(name) >= 0
@@ -157,6 +160,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       $scope.easterEgg = ! $scope.easterEgg
     else
       $scope.showSettings = ! $scope.showSettings
+
+  # To get started; makes sure we get our mixpanel track
+  $scope.goState('white')
 
 
 ]
