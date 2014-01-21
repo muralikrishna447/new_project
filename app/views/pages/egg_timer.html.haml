@@ -21,6 +21,14 @@
               %a &deg;C
             %li(ng-click="inputs.units ='f'" ng-class="{'active': inputs.units == 'f'}") 
               %a &deg;F
+        .band
+          %h5 
+            %i.icon-question-sign
+            FAQ
+        .indent-group
+          Visit our 
+          %a(href="http://www.chefsteps.com/pages/sous-vide-egg-calculator-faq" target="_blank")FAQ & discussion 
+          page.
 
       .egg-not-settings
         .egg-header
@@ -70,16 +78,16 @@
 
             .page(ng-switch-when="results")
               .section
-                %h2.text-center(ng-bind-html-unsafe="formatTemp(water_temp)")
+                %h2.text-center(ng-bind-html-unsafe="utils.formatTemp(water_temp, inputs.units)")
               .section
                 .labeled-time
                   %span Ice and reheat
                   %h3(ng-show="loading")
                     %i.icon-spinner.icon-spin
-                  %h3(ng-show="! loading") {{formatTime(output.items[4], needsSeconds())}}
+                  %h3(ng-show="! loading") {{utils.formatTime(output.items[4], needsSeconds())}}
                 .labeled-time
                   %span Serve immediately
-                  %h3(ng-show="! loading") {{formatTime(output.items[1], needsSeconds())}}
+                  %h3(ng-show="! loading") {{utils.formatTime(output.items[1], needsSeconds())}}
                   %h3(ng-show="loading")
                     %i.icon-spinner.icon-spin
               .section-tiny.text-center
@@ -109,14 +117,9 @@
               %h4.text-center What (US) size is your egg?
               .section.text-center
                 %ul.nav.nav-tabs.underline
-                  %li(ng-click="inputs.circumference = 110" ng-class="{'active': inputs.circumference == 110}") 
-                    %a Medium
-                  %li(ng-click="inputs.circumference = 135" ng-class="{'active': inputs.circumference == 135}") 
-                    %a Large
-                  %li(ng-click="inputs.circumference = 148" ng-class="{'active': inputs.circumference == 148}") 
-                    %a X-Large
-                  %li(ng-click="inputs.circumference = 157" ng-class="{'active': inputs.circumference == 157}") 
-                    %a Jumbo
+                  %li(ng-repeat="choice in eggService.sizeChoices()" ng-click="inputs.circumference = choice[1]" ng-class="{'active': inputs.circumference == choice[1]}") 
+                    %a {{choice[0]}}
+ 
               %h5.text-center.measure-text
                 &hellip; or measure with a string around widest part:
               .section-tiny.text-center
@@ -159,6 +162,15 @@
                     %a Stirred
                   %li(ng-click="inputs.surface_heat_transfer_coeff  = 165" ng-class="{'active': inputs.surface_heat_transfer_coeff == 165}")
                     %a Unstirred
+
+              .section.tight
+                %p(ng-show="inputs.surface_heat_transfer_coeff == 135")
+                  A stirred bath is heated by an immersion circulator which also
+                  circulates the water.
+                %p(ng-show="inputs.surface_heat_transfer_coeff == 165")
+                  An unstirred bath heats the water but relies on convection for mixing. Examples include Sous Vide Supreme or the 
+                  %a(target="http://www.chefsteps.com/activities/improvised-sous-vide-pot-on-a-stove-method" target="_blank") pot-on-the stove method
+                  %span> .
 
               .egg-footer
                 .btn.btn-primary(ng-click="goState('results')") 
