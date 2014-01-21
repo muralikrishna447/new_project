@@ -1,13 +1,15 @@
 require 'spec_helper'
 
 describe InvitationsController do
-  describe '#facebook' do
+  describe '#welcome' do
     before do
-      get :index, referrer_id: "123", referred_from: "facebook"
+      ApplicationController.any_instance.stub(:mixpanel_anonymous_id).and_return(1)
+      Fabricate(:user, id: 123)
+      get :welcome, referrer_id: "123", referred_from: "facebook"
     end
 
     it "should set the referrer_id" do
-      expect(session[:referrer_id]).to eq "123"
+      expect(session[:referrer_id]).to eq 123
     end
 
     it "should set the referred_from" do
