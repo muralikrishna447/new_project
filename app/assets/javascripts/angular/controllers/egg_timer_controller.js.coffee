@@ -1,4 +1,7 @@
-angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$http", "$timeout", ($scope, $http, $timeout) ->
+angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$http", "csEggCalculatorService", "csUtilities", ($scope, $http, csEggCalculatorService, csUtilities) ->
+
+  $scope.eggService = csEggCalculatorService
+  $scope.utils = csUtilities
 
   $scope.visitedStates = []
 
@@ -11,42 +14,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     surface_heat_transfer_coeff: 135
     units: 'c'
 
-  $scope.sizeChoices = 
-    [110,135,148,157]
 
-  $scope.formatTime = (t, showSeconds = true) ->
-
-    h = Math.floor(t / 3600)
-    t = t - (h * 3600)
-    m = Math.floor(t / 60)
-    t = t - (m * 60)
-    s = Math.floor(t)
-    m += 1 if (s >= 30) && (! showSeconds)
-
-    # Three cases:
-    #
-    # (1) 6h 1m
-    if h > 0
-      result = "#{h}h #{m}m"
-
-    # (2) 7m 2s
-    else if showSeconds
-      # Force a non-zero second so user knows we need precision
-      s = 1 if s == 0       
-      result = "#{m}m #{s}s"
-
-    # (3) 43 mins
-    else
-      result = "#{m} min"
-
-    result
-
-  cToF = (temp) ->
-    Math.round(temp * 9 / 5) + 32
-
-  $scope.formatTemp = (temp) ->
-    return "#{temp} &deg;C" if $scope.inputs.units == 'c'
-    "#{cToF(temp)} &deg;F"
 
   $scope.needsSeconds = ->
     ($scope.output?.items?[2] - $scope.output?.items?[0]) < 90 
@@ -109,7 +77,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       $scope.output = data
       $scope.loading = false
       $scope.$apply() if ! $scope.$$phase
-      console.log(data.items[1])
+      mixpanel.track('Egg Calculated', angular.extend({},  $scope.inputs, {water_temp: $scope.water_temp}, $scope.output))
+      mixpanel.people.increment('Egg Calculated')
+
     ).error((data, status, headers, config) ->
       debugger
     )
@@ -122,6 +92,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       $scope.visitedStates.push name
     if name == "results"
       $scope.update()
+    mixpanel.track('Egg Calculator Page', {'state' : name})
 
   $scope.stateVisited = (name) ->
     "visited" if $scope.visitedStates.indexOf(name) >= 0
@@ -138,9 +109,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
   $scope.tweetMessage = ->
     if $scope.inputs.units == "c"
-      "Egg calculator says #{$scope.formatTime($scope.output.items[4], $scope.needsSeconds())} at #{$scope.water_temp} %C2%B0C for my perfect sous vide egg"
+      "Egg calculator says #{$scope.utils.formatTime($scope.output.items[4], $scope.needsSeconds())} at #{$scope.water_temp} %C2%B0C for my perfect sous vide egg"
     else
-      "Egg calculator says #{$scope.formatTime($scope.output.items[4], $scope.needsSeconds())} at #{cToF($scope.water_temp)} %C2%B0F for my perfect sous vide egg"
+      "Egg calculator says #{$scope.utils.formatTime($scope.output.items[4], $scope.needsSeconds())} at #{$scope.utils.cToF($scope.water_temp)} %C2%B0F for my perfect sous vide egg"
 
 
   $scope.emailSubject = ->
@@ -157,6 +128,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       $scope.easterEgg = ! $scope.easterEgg
     else
       $scope.showSettings = ! $scope.showSettings
+
+  # To get started; makes sure we get our mixpanel track
+  $scope.goState('white')
 
 
 ]

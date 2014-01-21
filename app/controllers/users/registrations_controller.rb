@@ -1,6 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # append_after_filter :aweber_signup, :only => :create
-  skip_before_filter :authenticate_cors_user
+  skip_before_filter :require_no_authentication, on: :create, if: proc {|c| request.xhr?}
 
   def welcome
     # name = params[:name]

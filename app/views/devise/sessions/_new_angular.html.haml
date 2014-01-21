@@ -80,7 +80,7 @@
         %hr
         %div
           %a.switch-to-signup(ng-click="switchForm('signUp')")
-            Get an Account
+            I need an account
       .sign-up-buttons.button-group(ng-switch-when="signUp")
         %div
           %button.btn.btn-primary.btn-large.signup(ng-click="register()" ng-disabled="dataLoading") Sign Up
@@ -89,7 +89,7 @@
         %hr
         %div
           %a.switch-to-signin(ng-click="switchForm('signIn')")
-            Already have an account
+            I already have an account
       .sign-out-buttons.button-group(ng-show="authentication.cuurentUser()")
         %div
           %button.btn.btn-primary.btn-large.sign-out(ng-click="logout()") Sign Out
