@@ -20,6 +20,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       standard_login
     else
       @user = User.facebook_connect(params[:user])
+      set_referrer
       javascript_login
     end
   end
@@ -34,6 +35,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         return render status: 200, json: {success: true, new_user: false, info: "Associated account", user: current_user.to_json(include: :enrollments)}
       else
         @user = User.google_connect(user_options)
+        set_referrer
         javascript_login
       end
     end
@@ -42,10 +44,17 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
 private
 
+  def set_referrer
+    if @user
+      @user.referrer_id = session[:referrer_id]
+      @user.referred_from = session[:referred_from]
+    end
+  end
+
   def standard_login #old method for facebook
     auth = request.env["omniauth.auth"]
     @user = User.facebook_connected_user(auth)
-
+    set_referrer
     if @user
       sign_in_and_redirect @user, event: :authentication
     else

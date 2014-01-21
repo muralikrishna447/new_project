@@ -71,11 +71,12 @@ angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", ($roo
   #       deferred.resolve("notSent")
   #   return deferred.promise
 
-  this.friendInvites = ->
+  this.friendInvites = (user_id) ->
     deferred = $q.defer()
+    url = "http://www.chefsteps.com/invitations/welcome?referrer_id=#{user_id}&referred_from=facebook"
     FB.ui {
       method: 'send',
-      link: 'http://www.chefsteps.com'
+      link: url
     }, ->
       $rootScope.$apply ->
         deferred.resolve("sent")

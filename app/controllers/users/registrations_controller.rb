@@ -29,7 +29,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(params[:user].merge(referred_from: session[:referred_from], referrer_id: session[:referrer_id]))
     if cookies[:viewed_activities]
       @user.viewed_activities = JSON.parse(cookies[:viewed_activities])
     end

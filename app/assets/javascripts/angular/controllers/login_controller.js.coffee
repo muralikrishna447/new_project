@@ -345,7 +345,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.sendInvites = ->
     $scope.invitationsNextText = "Next"
-    $scope.facebook.friendInvites().then( ->
+    $scope.facebook.friendInvites($scope.authentication.currentUser().id).then( ->
       mixpanel.track("Facebook Invites Sent")
     )
     #This is a promise so you can do promisey stuff with it.
