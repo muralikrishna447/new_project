@@ -405,3 +405,31 @@ describe Activity, 'deep_copy' do
   end
 
 end
+
+describe Activity, 'gallery_path' do
+
+  before :all do
+    @plain_activity = Fabricate :activity, id: 1, title: 'Plain Activity', published: true
+    @activity_within_class = Fabricate :activity, id: 2, title: 'Activity within class', published: true
+    @activity_within_rd = Fabricate :activity, id: 3, title: 'Activity within rd', published: true
+
+    @assembly_type_class = Fabricate :assembly, id: 1, title: 'Assembly Class', published: true, assembly_type: 'Course'
+    @inclusion1 = Fabricate :assembly_inclusion, assembly_id: @assembly_type_class.id, includable_type: 'Activity', includable_id: @activity_within_class.id
+
+    @assembly_type_rd = Fabricate :assembly, id: 2, title: 'Assembly RD', published: true, assembly_type: 'Recipe Development'
+    @inclusion2 = Fabricate :assembly_inclusion, assembly_id: @assembly_type_rd.id, includable_type: 'Activity', includable_id: @activity_within_rd.id
+  end
+
+  it 'returns the correct path for plain activities' do
+    @plain_activity.gallery_path.should eq('/activities/plain-activity')
+  end
+
+  it 'returns the correct path for activities within an class' do
+    @activity_within_class.gallery_path.should eq('/classes/assembly-class#/activity-within-class')
+  end
+
+  it 'returns the correct path for activities within an recipe development' do
+    @activity_within_rd.gallery_path.should eq('/recipe-development/assembly-rd#/activity-within-rd')
+  end
+
+end

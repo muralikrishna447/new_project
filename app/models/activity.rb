@@ -80,6 +80,8 @@ class Activity < ActiveRecord::Base
 
   LAYOUT_NAMES = ['list']
 
+  include Rails.application.routes.url_helpers
+
   class SourceType
     # This is the default. Others are actually defined in activity_controller.js.coffee. Would
     # like to find a convenient way to dry this up.
@@ -439,6 +441,15 @@ class Activity < ActiveRecord::Base
       true
     else
       false
+    end
+  end
+
+  def gallery_path
+    if self.containing_course
+      parent = self.containing_course
+      assembly_activity_path(parent, self)
+    else
+      activity_path(self)
     end
   end
 
