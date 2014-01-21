@@ -28,6 +28,11 @@ angular.module('ChefStepsApp').filter "shortcode", ->
               "<a ng-click='loadSubrecipe(#{arg1})'>#{arg2}</a>"
             else
               "<b>Badly formatted courseActivity shortcode<b>"
+          when 'link'
+            if arg2
+              "<a href='#{arg1}' target='_blank'>#{arg2}</a>"
+            else
+              "<a href='#{arg1}' target='_blank'>#{arg1}</a>"
           when 'amzn'
             if arg2
               asin = arg1
