@@ -9,6 +9,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     circumference: 135
     start_temp: 5
     surface_heat_transfer_coeff: 135
+    units: 'c'
 
   $scope.sizeChoices = 
     [110,135,148,157]
@@ -39,6 +40,13 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       result = "#{m} min"
 
     result
+
+  cToF = (temp) ->
+    Math.round(temp * 9 / 5) + 32
+
+  $scope.formatTemp = (temp) ->
+    return "#{temp} &deg;C" if $scope.inputs.units == 'c'
+    "#{cToF(temp)} &deg;F"
 
   $scope.needsSeconds = ->
     ($scope.output?.items?[2] - $scope.output?.items?[0]) < 90 
@@ -129,7 +137,11 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     "https://d3awvtnmmsvyot.cloudfront.net/api/file/bIBHqoDWR3eLBtF8lQgu/convert?fit=crop&w=800&cache=true"
 
   $scope.tweetMessage = ->
-    "Egg calculator says #{$scope.formatTime($scope.output.items[4], $scope.needsSeconds())} at #{$scope.inputs.water_temp} %C2%B0C for my perfect sous vide egg"
+    if $scope.inputs.units == "c"
+      "Egg calculator says #{$scope.formatTime($scope.output.items[4], $scope.needsSeconds())} at #{$scope.water_temp} %C2%B0C for my perfect sous vide egg"
+    else
+      "Egg calculator says #{$scope.formatTime($scope.output.items[4], $scope.needsSeconds())} at #{cToF($scope.water_temp)} %C2%B0F for my perfect sous vide egg"
+
 
   $scope.emailSubject = ->
     "Sous vide egg calculator"
