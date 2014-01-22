@@ -96,6 +96,10 @@ describe "LoginController", ->
       scope.closeModal('welcome')
       expect(scope.welcomeModalOpen).toBe(false)
 
+    it "should close the survey modal if form is 'survey'", ->
+      scope.closeModal('survey')
+      expect(scope.surveyModalOpen).toBe(false)
+
     it "should clear the messages", ->
       scope.message = "This should be cleared"
       scope.closeModal('welcome')

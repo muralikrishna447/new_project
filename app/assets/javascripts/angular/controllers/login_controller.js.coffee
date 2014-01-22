@@ -62,7 +62,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.googleInviteModalOpen = false
     else if form == "welcome"
       $scope.welcomeModalOpen = false
-
+    else if form == "survey"
+      $scope.surveyModalOpen = false
 
   $scope.togglePassword = ->
     if $scope.passwordType == "password"
@@ -396,4 +397,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.askSurvey = ->
     $scope.openModal('survey')
+
+  $scope.submitSurvey = ->
+    $scope.switchModal('survey', 'invite')
 ]
