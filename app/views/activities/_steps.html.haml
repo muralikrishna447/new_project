@@ -10,7 +10,7 @@
     .dot(href="video-ingredient-unit" prevent-default scroll-to="video-ingredient-unit" spy="video-ingredient-unit" )
       %div.step-dot-circle
   %li.step-dot(ng-repeat="step in numberedSteps()")
-    .dot(href="{{'numbered-step-' + step.id}}" prevent-default scroll-to="{{'numbered-step-' + step.id}}" spy="{{'numbered-step-' + step.id}}")
+    .dot(scroll-to="{{'numbered-step-' + step.id}}" spy="{{'numbered-step-' + step.id}}")
       %div.step-dot-circle
 
 .row.ordered-steps-new(ng-show="activity.steps.length > 0" itemprop="recipeInstructions")
