@@ -268,7 +268,14 @@ module ApplicationHelper
 
   def assembly_activity_path(assembly, activity)
     if assembly.assembly_type?
-      assembly_type_path = assembly.assembly_type.downcase.pluralize
+      case assembly.assembly_type
+      when 'Course'
+        assembly_type_path = 'classes'
+      when 'Recipe Development'
+        assembly_type_path = 'recipe-development'
+      else
+        assembly_type_path = assembly.assembly_type.downcase.pluralize
+      end
       "/#{assembly_type_path}/#{assembly.slug}#/#{activity.slug}"
     else
       "/assemblies/#{assembly.slug}/#{activity.slug}"

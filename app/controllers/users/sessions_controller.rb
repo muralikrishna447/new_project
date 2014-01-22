@@ -1,7 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
   include Devise::Controllers::Rememberable
 
-  skip_before_filter :authenticate_cors_user
+  skip_before_filter :require_no_authentication, on: :create, if: proc {|c| request.xhr?}
 
   def new
     flash[:notice] = params[:notice] if params[:notice]
