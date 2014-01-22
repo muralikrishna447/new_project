@@ -64,7 +64,7 @@ class HomeController < ApplicationController
   end
 
   def welcome
-    if params[:referrer_id] && params[:referred_from]
+    if params[:referrer_id] && params[:referred_from] && mixpanel_anonymous_id.present?
       referrer = User.find(params[:referrer_id])
       session[:referrer_id] = referrer.id
       session[:referred_from] = params[:referred_from]
