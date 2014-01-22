@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", ($rootScope, $q) ->
+angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", "csUrlService", ($rootScope, $q, csUrlService) ->
   # Connects to facebook and authenticates then connects again to gather user's information.
   this.connect = ->
     deferred = $q.defer()
@@ -73,7 +73,8 @@ angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", ($roo
 
   this.friendInvites = (user_id) ->
     deferred = $q.defer()
-    url = "http://www.chefsteps.com/invitations/welcome?referrer_id=#{user_id}&referred_from=facebook"
+    url = "#{csUrlService.currentSite()}/invitations/welcome?referrer_id=#{user_id}&referred_from=facebook"
+    console.log(url)
     FB.ui {
       method: 'send',
       link: url

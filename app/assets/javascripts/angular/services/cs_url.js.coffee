@@ -42,4 +42,7 @@ angular.module('ChefStepsApp').service 'csUrlService', ["$window", ($window) ->
       "http://#{$window.location.host}"
     else
       "https://#{$window.location.host}"
+
+  this.currentSite = ->
+    "#{$window.location.protocol}//#{$window.location.host}"
 ]

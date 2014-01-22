@@ -5,7 +5,7 @@ class InvitationsController < ApplicationController
     session[:referred_from] = params[:referred_from]
     set_referrer_in_mixpanel("#{session[:referred_from]} invitee visited")
     mixpanel.people.set(mixpanel_anonymous_id, {invited_from: params[:referred_from], invited_by: referrer.email, invited_by_id: referrer.id})
-    # render("home/index")
-    redirect_to root_path
+    render("home/index")
+    # redirect_to root_path
   end
 end
