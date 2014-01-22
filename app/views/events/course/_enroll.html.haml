@@ -3,6 +3,6 @@
 .timeline-text-only{data: {direction: direction}}
   .timeline-text-only-text.text-center
     %div
-      = "#{user_noun} enrolled into the #{link_to event.trackable.title, event.trackable} class.".html_safe
+      = "#{user_noun} enrolled in the #{link_to event.trackable.title, event.trackable} class.".html_safe
     %div
       = time_ago_in_words(event.created_at) + ' ago'

@@ -38,7 +38,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       aweber_signup(@user.name, @user.email)
       cookies.delete(:viewed_activities)
       cookies[:returning_visitor] = true
-      mixpanel.alias(@user.email, mixpanel_anonymous_id)
+      mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
       mixpanel.track(@user.email, 'Signed Up')
       finished('counter_split', :reset => false)
       unless request.xhr?
@@ -74,7 +74,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_in @user
       aweber_signup(@user.name, @user.email)
       cookies.delete(:viewed_activities)
-      mixpanel.alias(@user.email, mixpanel_anonymous_id)
+      mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
       mixpanel.track(@user.email, 'Signed Up')
       set_referrer_in_mixpanel("#{session[:referred_from]} invitee signed up")
       @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
