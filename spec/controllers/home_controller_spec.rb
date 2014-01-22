@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe InvitationsController do
+describe HomeController do
   describe '#welcome' do
     before do
       ApplicationController.any_instance.stub(:mixpanel_anonymous_id).and_return(1)

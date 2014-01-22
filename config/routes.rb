@@ -212,7 +212,7 @@ Delve::Application.routes.draw do
 
   get "/affiliates/share_a_sale" => "affiliates#share_a_sale"
 
-  get "/invitations/welcome" => "invitations#welcome"
+  get "/invitations/welcome" => "home#welcome"
 
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"
