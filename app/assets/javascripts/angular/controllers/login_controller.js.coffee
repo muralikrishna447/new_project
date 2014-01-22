@@ -178,7 +178,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
             $scope.$apply()
             $scope.authentication.setCurrentUser(data.user)
             unless $scope.formFor == "purchase"
-              $scope.loadFriends()
+              # $scope.loadFriends()
+              $scope.askSurvey()
           , 300)
           # $scope.notifyLogin(data.user)
       )
@@ -393,4 +394,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.showMadlibPassword = true
     validation
 
+  $scope.askSurvey = ->
+    $scope.openModal('survey')
 ]
