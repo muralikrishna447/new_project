@@ -19,5 +19,17 @@ describe Users::RegistrationsController do
       Users::RegistrationsController.any_instance.should_receive(:aweber_signup)
       post :create, user: {email: "test@example.com", password: "apassword", name: "Test User"}
     end
+
+    it "should set referred_from if session is set" do
+      session[:referred_from] = "facebook"
+      post :create, user: {email: "test@example.com", password: "apassword", name: "Test User"}
+      expect(assigns(:user).referred_from).to eq "facebook"
+    end
+
+    it "should set referrer_id if session is set" do
+      session[:referrer_id] = 321
+      post :create, user: {email: "test@example.com", password: "apassword", name: "Test User"}
+      expect(assigns(:user).referrer_id).to eq 321
+    end
   end
 end

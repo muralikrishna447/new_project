@@ -62,4 +62,17 @@ class HomeController < ApplicationController
     @classes = Assembly.pubbed_courses
     @recipes = Activity.published.recipes.chefsteps_generated.last(6)
   end
+
+  def welcome
+    if params[:referrer_id] && params[:referred_from] && mixpanel_anonymous_id.present?
+      referrer = User.find(params[:referrer_id])
+      session[:referrer_id] = referrer.id
+      session[:referred_from] = params[:referred_from]
+      set_referrer_in_mixpanel("#{session[:referred_from]} invitee visited")
+      mixpanel.people.set(mixpanel_anonymous_id, {invited_from: params[:referred_from], invited_by: referrer.email, invited_by_id: referrer.id})
+    end
+    index
+    render("home/index")
+    # redirect_to root_path
+  end
 end

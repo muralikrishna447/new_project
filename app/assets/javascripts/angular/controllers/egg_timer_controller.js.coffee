@@ -5,7 +5,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
   $scope.visitedStates = []
 
-  $scope.inputs = 
+  $scope.inputs =
     state: "white"
     perceptual_white_viscosity: 3
     perceptual_yolk_viscosity: 3
@@ -17,10 +17,10 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
 
   $scope.needsSeconds = ->
-    ($scope.output?.items?[2] - $scope.output?.items?[0]) < 90 
+    ($scope.output?.items?[2] - $scope.output?.items?[0]) < 90
 
   $scope.perceptualYolkDescriptor = (x) ->
-    descrips = [  
+    descrips = [
       "evaporated milk",
       "maple syrup",
       "chocolate syrup",
@@ -28,7 +28,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       "sweetened condensed milk",
       "ready-to-eat pudding",
       "ready-to-eat icing"
-    ] 
+    ]
     descrips[Math.round(x - 1)]
 
   $scope.yolkImages =
@@ -40,9 +40,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       "https://d3awvtnmmsvyot.cloudfront.net/api/file/lxpXnhiIQaUlUa1DDVFQ/convert?fit=max&w=320&cache=true",
       "https://d3awvtnmmsvyot.cloudfront.net/api/file/5vzqnpRBQC6gbYX7gI85/convert?fit=max&w=320&cache=true",
       "https://d3awvtnmmsvyot.cloudfront.net/api/file/GynsRsomRtmBujrLTvJE/convert?fit=max&w=320&cache=true"
-    ] 
+    ]
 
-  $scope.whiteImages = 
+  $scope.whiteImages =
     [
       {temp: 60, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/eEbaYrmfTyahirkQZmFd/convert?fit=max&w=320&cache=true"}
       {temp: 61, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/vgOyRiCSTzGnQ4dUCpFj/convert?fit=max&w=320&cache=true"}
@@ -62,7 +62,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
 
   $scope.update = ->
-    params = 
+    params =
       desired_viscosity: Math.exp(-1.6 + (0.704 * $scope.inputs.perceptual_yolk_viscosity))
       water_temp: $scope.whiteImages[Math.round($scope.inputs.perceptual_white_viscosity)].temp
       diameter: $scope.inputs.circumference / Math.PI

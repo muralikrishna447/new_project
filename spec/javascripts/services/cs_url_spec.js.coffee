@@ -55,3 +55,7 @@ describe "csUrlService", ->
   describe "currentSiteAsHttps", ->
     it "should return the current site starting with https", ->
       expect(urlService.currentSiteAsHttps()).toBe("http://localhost:3000")
+
+  describe "currentSiteAsHttps", ->
+    it "should return the current site starting with https", ->
+      expect(urlService.currentSite()).toBe("http://localhost:3000")
