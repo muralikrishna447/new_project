@@ -222,7 +222,7 @@
     width: 14px
 
   li 
-    a
+    .dot
       padding: 5px 2px
       .step-dot-circle
         -webkit-backface-visibility: hidden
@@ -233,7 +233,7 @@
         @include boxsizing
 
   li 
-    a.active
+    .dot.active
       padding: 3px 0px
       .step-dot-circle
         background-color: $orange
@@ -241,7 +241,7 @@
         height: 14px
    
   li.intro 
-    a
+    .dot
       padding: 3px 0px
       .step-dot-circle
         font-size: 15px
@@ -249,10 +249,10 @@
         width: 14px
         height: 14px
 
-  li.intro a.active .step-dot-circle
+  li.intro .dot.active .step-dot-circle
     background-color: #555
  
-  a:hover
+  .dot:hover
     background-color: inherit
 
 .hide-when-menu-showing
