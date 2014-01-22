@@ -29,7 +29,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(params[:user].merge(referred_from: session[:referred_from], referrer_id: session[:referrer_id]))
     if cookies[:viewed_activities]
       @user.viewed_activities = JSON.parse(cookies[:viewed_activities])
     end
@@ -76,6 +76,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       cookies.delete(:viewed_activities)
       mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
       mixpanel.track(@user.email, 'Signed Up')
+      set_referrer_in_mixpanel("#{session[:referred_from]} invitee signed up")
       @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
       if @enrollment.save
         redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
