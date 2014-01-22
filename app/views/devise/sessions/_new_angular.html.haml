@@ -195,3 +195,14 @@
   .modal-footer.invite-modal-footer
     %div
       %button.btn.btn-primary.btn-large.close-welcome(ng-click="closeModal('welcome')") Done
+
+.survey-modal(close="closeModal('survey')" modal="surveyModalOpen" options="modalOptions" ng-cloak)
+  .modal-body.survey-modal-body
+    .close-x.pull-right(ng-click="closeModal('survey')")
+      %i.icon-remove
+    .row-fluid(ng-animate='slide')
+      %h3 Survey Modal
+
+  .modal-footer.invite-modal-footer
+    %div
+      %button.btn.btn-primary.btn-large.close-survey(ng-click="closeModal('survey')") Done

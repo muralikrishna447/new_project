@@ -47,6 +47,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.googleInviteModalOpen = true
     else if form == "welcome"
       $scope.welcomeModalOpen = true
+    else if form == "survey"
+      $scope.surveyModalOpen = true
 
   $scope.closeModal = (form) ->
     $scope.resetMessages()
