@@ -1,4 +1,13 @@
 %div(ng-controller='SurveyController')
-  %div(ng-repeat="question in questions")
-    .survey-question
-      {{question}}
+  %h3 Survey
+  %form(name='Survey')
+    %div(ng-repeat="question in questions")
+      %div(ng-switch on='question.type')
+        %div(ng-switch-when='select')
+          .survey-question
+            {{question.copy}}
+            %select(ng-model='question.answer' ng-options='choice for choice in question.choices ')
+        %div(ng-switch-when='multiple-select')
+          .survey-question
+            {{question.copy}}
+            %select(ng-model='question.answer' ng-options='choice for choice in question.choices' ui-select2 multiple)

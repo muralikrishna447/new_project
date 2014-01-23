@@ -106,6 +106,7 @@
                 = link_to 'Create a new recipe', new_activity_url, class: 'btn btn-primary'
 
     .span5
+      %div(ng-include="'/client_views/_survey'")
       %h4 Timeline
       .timeline
         .text-center
