@@ -112,7 +112,7 @@ describe Enrollment do
         let(:free_assembly) { Fabricate(:assembly, price: 0, assembly_type: "Course") }
         subject{ Enrollment.enroll_user_in_assembly(purchaser, ip_address, free_assembly, discounted_price, stripe_token) }
         its(:user_id){ should eq purchaser.id }
-        its(:enrollable){ should eq assembly }
+        its(:enrollable){ should eq free_assembly }
         its(:price){ should eq 0.0 }
         its(:sales_tax){ should eq 0.0 }
 
