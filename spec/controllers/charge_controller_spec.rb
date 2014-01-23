@@ -4,7 +4,7 @@ describe ChargesController, "#create" do
 
   context 'user is authenticated' do
     let(:user) { Fabricate(:user, id: 29) }
-    let(:assembly) { Fabricate(:assembly, id: 37, price: 39, title: "Cooking For the Hirsute")}
+    let(:assembly) { Fabricate(:assembly, id: 37, price: 39, title: "Cooking For the Hirsute", assembly_type: "Course")}
     before do
       sign_in user
     end
