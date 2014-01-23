@@ -1,0 +1,15 @@
+- content_for :title, "ChefSteps Class Redemption".html_safe
+
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+
+
+.container(ng-controller="GiftRedemptionIndexController")
+  .row
+    .span8.offset2
+      .section
+      %h1.text-center Welcome To ChefSteps
+      .section
+      %h5.text-center  Enter your redemtpion code here to get started
+      %form.form-inline.text-center(ng-submit="submitCode()")
+        %input(type="text" placeholder="Redemption code" ng-model="giftCode")
+        %input.btn(type="submit")
