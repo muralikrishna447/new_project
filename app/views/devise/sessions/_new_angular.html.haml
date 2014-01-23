@@ -201,8 +201,7 @@
     .close-x.pull-right(ng-click="closeModal('survey')")
       %i.icon-remove
     .row-fluid(ng-animate='slide')
-      %h3 Survey Modal
-
+      %div(ng-include="'/client_views/_survey'")
   .modal-footer.invite-modal-footer
     %div
       %button.btn.btn-primary.btn-large.close-survey(ng-click="submitSurvey()") Done
