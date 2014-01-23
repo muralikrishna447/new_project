@@ -112,7 +112,6 @@ group :development, :test, :angular do
   gem 'database_cleaner'
   gem 'rack-contrib'
   gem 'pry'
-  gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'thin'
@@ -121,6 +120,10 @@ group :development, :test, :angular do
   gem 'launchy'
   gem 'childprocess', '0.3.6'
   gem 'xray-rails'
+end
+
+group :development, :angular do
+  gem 'better_errors' #moving this out of tests for segfault problems.
 end
 
 group :guard do
