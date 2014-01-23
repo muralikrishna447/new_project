@@ -1,7 +1,7 @@
 require 'spork'
 
 Spork.prefork do
-  unless ENV['DRB']
+  unless ENV['DRB'].present?
     require 'simplecov'
     SimpleCov.start 'rails' do
       coverage_dir('tmp/coverage')
@@ -75,7 +75,7 @@ Spork.prefork do
 end
 
 Spork.each_run do
-  if ENV['DRB']
+  unless ENV['DRB'].present?
     require 'simplecov'
     SimpleCov.start 'rails' do
       coverage_dir('tmp/coverage')
