@@ -1,5 +1,5 @@
 class AssembliesController < ApplicationController
-  before_filter :load_assembly, except: [:index, :redeem]
+  before_filter :load_assembly, except: [:index, :redeem, :redeem_index]
 
   # Commenting out for now until we figure out what to do for Projects
 
@@ -79,6 +79,10 @@ class AssembliesController < ApplicationController
       flash[:error] = "Invalid gift code. Contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
       redirect_to '/'
     end
+  end
+
+  def redeem_index
+    render 'redeem_index'
   end
 
 private
