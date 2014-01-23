@@ -39,6 +39,7 @@ angular.module('ChefStepsApp').run ["$window", "$rootScope", ($window, $rootScop
 
   $window.render = ->
     $rootScope.$broadcast('event:google-plus-loaded')
+
 ]
 
 @$$parse = (url) ->

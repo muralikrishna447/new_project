@@ -5,7 +5,7 @@
       %div(ng-show="!!#{model}|| editMode" ng-class="disableIf(! #{model})")
         %h4= name
         %span(ng-bind="#{model} || '#{add_text}' "){itemprop: (defined? itemprop) ? itemprop : nil}
-        %span.extra-info(ng-bind-html-unsafe="#{show_extra}")
+        %span.extra-info(ng-bind-html="#{show_extra}")
 
     %csEditPairEdit
       %h4= name

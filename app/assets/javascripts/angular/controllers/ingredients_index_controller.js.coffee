@@ -73,7 +73,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         width: "***"
         enableCellEdit: true
         sortFn: csUrlService.sortByNiceURL
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><span ng-bind-html-unsafe=\"urlAsNiceText(row.getProperty(col.field))\"/></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><span ng-bind-html=\"urlAsNiceText(row.getProperty(col.field))\"/></div>'
         # cellTemplate: "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
         editableCellTemplate: "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"ingredientChanged(row.entity)\"}\'/>"
       }
@@ -81,7 +81,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         field: "density"
         displayName: "Density g/L"
         width: "*"
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"densityService.editDensity(row.entity)\"><span ng-bind-html-unsafe=\"densityService.displayDensity(row.getProperty(col.field))\"/></a></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"densityService.editDensity(row.entity)\"><span ng-bind-html=\"densityService.displayDensity(row.getProperty(col.field))\"/></a></div>'
         enableCellEdit: false
         sortable: true
       }
@@ -90,7 +90,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         displayName: "Uses"
         width: "*"
         enableCellEdit: false
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"openUses(row.entity)\"><span ng-bind-html-unsafe=\"row.getProperty(col.field)\"/></a></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"openUses(row.entity)\"><span ng-bind-html=\"row.getProperty(col.field)\"/></a></div>'
         sortable: false
       }
     ]

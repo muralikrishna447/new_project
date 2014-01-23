@@ -6,6 +6,6 @@
 
       %input.select-ingredient-checkbox(type="checkbox" ng-model="ai.included")
       %div(ng-click="ai.included = ! ai.included")
-        %span(ng-bind-html-unsafe="ai.ingredient.title")>
-        %span(ng-show="!!ai.note" ng-bind-html-unsafe="', ' + (ai.note | shortcode)")>
+        %span(ng-bind-html="ai.ingredient.title")>
+        %span(ng-show="!!ai.note" ng-bind-html="', ' + (ai.note | shortcode)")>
 

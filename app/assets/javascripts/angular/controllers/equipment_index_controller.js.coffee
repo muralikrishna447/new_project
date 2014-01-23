@@ -60,7 +60,7 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
         width: "***"
         enableCellEdit: true
         sortFn: csUrlService.sortByNiceURL
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><span ng-bind-html-unsafe=\"urlAsNiceText(row.getProperty(col.field))\"/></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><span ng-bind-html=\"urlAsNiceText(row.getProperty(col.field))\"/></div>'
         editableCellTemplate: "<input ng-class=\"'colt' + col.index\" ng-input=\"COL_FIELD\" ng-model=\"COL_FIELD\" ui-event=\'{blur: \"equipmentChanged(row.entity)\"}\'/>"
       }
       {
@@ -68,7 +68,7 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
         displayName: "Uses"
         width: "*"
         enableCellEdit: false
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"openUses(row.entity)\"><span ng-bind-html-unsafe=\"row.getProperty(col.field)\"/></a></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"openUses(row.entity)\"><span ng-bind-html=\"row.getProperty(col.field)\"/></a></div>'
         sortable: false
       }
     ]

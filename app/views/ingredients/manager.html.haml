@@ -33,12 +33,12 @@
   -# released build for 0.0.2 yet so I'm doing it the old fashioned way for now.
   %div.uses-modal(close="usesModalOpen = false" modal="usesModalOpen" options="modalOptions")
     .modal-header
-      %h2(ng-bind-html-unsafe="usesForModalIngredient.title")
+      %h2(ng-bind-html="usesForModalIngredient.title")
     .modal-body
       %h3 Used In
       %ul
         %li(ng-repeat="activity in usesForModal")
-          %a(ng-href="/activities/{{activity.id}}" target="_blank" ng-bind-html-unsafe="activity.title")
+          %a(ng-href="/activities/{{activity.id}}" target="_blank" ng-bind-html="activity.title")
     .modal-footer
       %button.btn.btn-warning.cancel(ng-click="usesModalOpen = false") Close
 
@@ -51,8 +51,8 @@
       %div(ng-show="mergeKeeper")
         %h3 Will Be Kept
         %ul.to-keep
-          %li(ng-bind-html-unsafe="mergeKeeper.title")
-            %a(ng-bind-html-unsafe="mergeKeeper.title" ng-click="setMergeKeeper(ingredient)")
+          %li(ng-bind-html="mergeKeeper.title")
+            %a(ng-bind-html="mergeKeeper.title" ng-click="setMergeKeeper(ingredient)")
             %span
               \- Uses: {{mergeKeeper.use_count}}
             %span(ng-show="ingredient.product_url")
@@ -61,7 +61,7 @@
       %h3(ng-show="mergeKeeper" ng-animate="'fade'") Will Be Merged and Deleted
       %ul.to-delete
         %li(ng-repeat="ingredient in gridOptions.selectedItems | orderBy:'useCount':true" ng-show="ingredient.id != mergeKeeper.id" ng-animate="'custom'")
-          %a.merge-link(ng-bind-html-unsafe="ingredient.title" ng-click="setMergeKeeper(ingredient)")
+          %a.merge-link(ng-bind-html="ingredient.title" ng-click="setMergeKeeper(ingredient)")
           %span
             \- Uses: {{ingredient.use_count}}
           %span(ng-show="ingredient.product_url")
