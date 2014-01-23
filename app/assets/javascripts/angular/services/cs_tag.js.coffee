@@ -71,4 +71,6 @@
       this.removeTag(tagList, tagName)
     else
       this.addTag(tagList, tagName)
+
+  this
 ]

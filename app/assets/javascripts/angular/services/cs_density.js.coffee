@@ -16,4 +16,6 @@ angular.module('ChefStepsApp').service 'csDensityService', [ ()  ->
   this.editDensity = (ingredient) ->
     this.densityIngredient = ingredient
 
+  this
+
 ]

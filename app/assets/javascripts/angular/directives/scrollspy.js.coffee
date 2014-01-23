@@ -23,6 +23,8 @@ angular.module('ChefStepsApp').directive 'scrollSpy', ["$window", "$timeout", ($
     $scope.$on 'loadActivityEvent',  ->
       # Clear cache
       $scope.spyElems = []
+
+    this
   ]
 
   link: (scope, elem, attrs) ->
