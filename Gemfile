@@ -96,6 +96,10 @@ group :assets, :angular do
 
 end
 
+group :production do
+  gem 'airbrake'
+end
+
 group :development, :test, :angular do
   # gem 'heroku'
   gem 'heroku_san'

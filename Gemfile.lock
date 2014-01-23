@@ -61,6 +61,9 @@ GEM
     acts_as_revisionable (1.2.2)
       activerecord (>= 2.3.9)
     addressable (2.3.5)
+    airbrake (3.1.15)
+      builder
+      multi_json
     ambry (0.3.1)
     arbre (1.0.1)
       activesupport (>= 3.0.0)
@@ -473,6 +476,7 @@ DEPENDENCIES
   activeadmin
   acts-as-taggable-on
   acts_as_revisionable
+  airbrake
   asset_sync
   better_errors
   binding_of_caller
