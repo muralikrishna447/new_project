@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140120193602) do
+ActiveRecord::Schema.define(:version => 20140124214349) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -614,11 +614,13 @@ ActiveRecord::Schema.define(:version => 20140120193602) do
     t.string   "google_user_id"
     t.integer  "referrer_id"
     t.string   "referred_from"
+    t.hstore   "survey_results"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["survey_results"], :name => "index_users_on_survey_results"
 
   create_table "versions", :force => true do |t|
     t.datetime "created_at", :null => false

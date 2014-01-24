@@ -50,6 +50,8 @@ class User < ActiveRecord::Base
 
   validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
 
+  serialize :survey_results, ActiveRecord::Coders::Hstore
+
   ROLES = %w[admin contractor moderator user banned]
 
   def role?(base_role)

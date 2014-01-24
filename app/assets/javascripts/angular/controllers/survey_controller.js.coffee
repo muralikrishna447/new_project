@@ -1,6 +1,7 @@
-@app.controller 'SurveyController', ["$scope", ($scope) ->
+@app.controller 'SurveyController', ['$scope', '$http', ($scope, $http) ->
 
   $scope.questions = []
+  $scope.survey_results = {}
 
   question1 = {}
   question1.type = 'select'
@@ -56,7 +57,23 @@
   $scope.questions.push(question4)
 
   $scope.update = ->
-    console.log JSON.stringify($scope.questions)
+    angular.forEach $scope.questions, (question, index) ->
+      switch question.type
+        when 'select'
+          $scope.survey_results[question.copy] = question.answer
+        when 'multiple-select'
+          answers = [] 
+          angular.forEach question.options, (option, index) ->
+            if option.checked
+              answers.push(option.name)
+          $scope.survey_results[question.copy] = answers.join()
+        when 'open-ended'
+          $scope.survey_results[question.copy] = question.answer
+    
+    data = {'survey_results': $scope.survey_results}
+    $http.post('/user_surveys', data).success(
+      console.log 'successfully update survey'
+    )
 ]
 
 
