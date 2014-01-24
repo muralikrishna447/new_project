@@ -6,7 +6,7 @@
     .container
       .form-horizontal
         %input.search-query(type="search" placeholder="Equipment name..." ng-model="searchString")
-        %button.btn#exact-match(btn-checkbox type="button" ng-model="exactMatch" ng-click="refreshEquipment()")
+        %button.btn#exact-match(btn-checkbox type="button" ng-model="exactMatch")
           %i.icon-asterisk(tooltip="Exact Match Only")
         .btn-toolbar
           .btn-group

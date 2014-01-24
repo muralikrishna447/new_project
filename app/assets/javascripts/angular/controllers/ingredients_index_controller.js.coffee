@@ -90,7 +90,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
         displayName: "Uses"
         width: "*"
         enableCellEdit: false
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"openUses(row.entity)\"><span ng-bind-html=\"row.getProperty(col.field)\"/></a></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"openUses(row.entity)\"><span ng-bind-html=\"row.getProperty(col.field).toString()\"/></a></div>'
         sortable: false
       }
     ]
@@ -194,6 +194,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
       $scope.resetIngredients()
 
   $scope.$watch 'includeRecipes', ->
+    $scope.resetIngredients()
+
+  $scope.$watch 'exactMatch', ->
     $scope.resetIngredients()
 
   $scope.$on 'ngGridEventScroll', ->

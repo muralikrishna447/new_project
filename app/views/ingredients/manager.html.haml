@@ -7,7 +7,7 @@
     .container
       .form-horizontal
         %input.search-query(type="search" placeholder="Ingredient name..." ng-model="searchString")
-        %button.btn#exact-match(btn-checkbox type="button" ng-model="exactMatch" ng-click="refreshIngredients()")
+        %button.btn#exact-match(btn-checkbox type="button" ng-model="exactMatch")
           %i.icon-asterisk(tooltip="Exact Match Only")
         .btn-toolbar
           .btn-group
@@ -63,7 +63,7 @@
         %li(ng-repeat="ingredient in gridOptions.selectedItems | orderBy:'useCount':true" ng-show="ingredient.id != mergeKeeper.id" ng-animate="'custom'")
           %a.merge-link(ng-bind-html="ingredient.title" ng-click="setMergeKeeper(ingredient)")
           %span
-            \- Uses: {{ingredient.use_count}}
+            \- Uses: {{ingredient.use_count.toString()}}
           %span(ng-show="ingredient.product_url")
             \- Link: {{urlAsNiceText(ingredient.product_url)}}
           %span(ng-show="mergeKeeper && splitNote(ingredient)")

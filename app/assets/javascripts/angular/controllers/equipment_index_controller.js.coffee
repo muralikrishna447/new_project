@@ -68,7 +68,7 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
         displayName: "Uses"
         width: "*"
         enableCellEdit: false
-        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"openUses(row.entity)\"><span ng-bind-html=\"row.getProperty(col.field)\"/></a></div>'
+        cellTemplate: '<div class="ngCellText colt{{$index}}"><a ng-click=\"openUses(row.entity)\"><span ng-bind-html=\"row.getProperty(col.field).toString()\"/></a></div>'
         sortable: false
       }
     ]
@@ -164,6 +164,9 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
       if new_val == $scope.searchString
         $scope.resetEquipment()
     , 250
+
+  $scope.$watch 'exactMatch', ->
+    $scope.resetEquipment()
 
   # Doc says to just watch sortInfo but not so much
   prevSortInfo = {}
