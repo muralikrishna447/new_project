@@ -4,10 +4,18 @@
     %div(ng-repeat="question in questions")
       %div(ng-switch on='question.type')
         %div(ng-switch-when='select')
-          .survey-question
-            {{question.copy}}
-            %select(ng-model='question.answer' ng-options='choice for choice in question.choices ')
+          %p.survey-question
+            %div
+              {{question.copy}}
+            %div
+              %select(ng-model='question.answer' ng-options='option for option in question.options ')
         %div(ng-switch-when='multiple-select')
-          .survey-question
-            {{question.copy}}
-            %select(ng-model='question.answer' ng-options='choice for choice in question.choices' ui-select2 multiple)
+          %p.survey-question
+            %div
+              {{question.copy}}
+            %div(ng-repeat='option in question.options')
+              %label
+                %input(type='checkbox' ng-model="option.checked" )
+                {{option.name}}
+    %button.btn.btn-primary(ng-click='update()')
+      Submit
