@@ -10,7 +10,7 @@ describe 'SurveyController', ->
     controller = $controller('SurveyController', {$scope: scope})
 
   describe "#update", ->
-    it "returns a JSON objet with answers", inject ($rootScope, $controller) ->
+    it "returns a JSON object with answers", inject ($rootScope, $controller) ->
       console.log 'hello'
 
 
