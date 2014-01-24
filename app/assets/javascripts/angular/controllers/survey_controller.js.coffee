@@ -50,6 +50,11 @@
   ]
   $scope.questions.push(question3)
 
+  question4 = {}
+  question4.type = 'open-ended'
+  question4.copy = 'Tell us more about yourself:'
+  $scope.questions.push(question4)
+
   $scope.update = ->
     console.log JSON.stringify($scope.questions)
 ]

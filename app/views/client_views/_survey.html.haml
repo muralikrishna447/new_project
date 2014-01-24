@@ -17,5 +17,11 @@
               %label
                 %input(type='checkbox' ng-model="option.checked" )
                 {{option.name}}
+        %div(ng-switch-when='open-ended')
+          %p.survey-question
+            %div
+              {{question.copy}}
+            %div
+              %textarea(ng-model='question.answer')
     %button.btn.btn-primary(ng-click='update()')
       Submit
