@@ -71,8 +71,8 @@
           $scope.survey_results[question.copy] = question.answer
     
     data = {'survey_results': $scope.survey_results}
-    $http.post('/user_surveys', data).success(
-      console.log 'successfully update survey'
+    $http.post('/user_surveys', data).success((data) ->
+      console.log data
     )
 ]
 
