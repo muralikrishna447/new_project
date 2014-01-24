@@ -4,7 +4,7 @@
     .step-video-outer.noprint(ng-show="!! step.youtube_id")
       .new-step-video(id="{{'step-video-' + $index}}")
         .video-container(csenforceaspect)
-          %iframe(ng-style="setHeight()" csenforceaspect ng-src="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+          %iframe(ng-style="setHeight()" csenforceaspect cssrcreplacer="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
   .aside-image(ng-show="!!step.image_id")
     %img(ng-src="{{stepImageURL(step, 840)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
   .aside-text(ng-show="step.directions"  ng-bind-html="step.directions | markdown | shortcode")
