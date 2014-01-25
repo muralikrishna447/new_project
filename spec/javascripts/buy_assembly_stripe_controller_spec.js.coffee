@@ -305,4 +305,15 @@ describe "BuyAssemblyStripeController", ->
       it "should set processing to be false", ->
         expect(scope.processing).toBe(false)
 
+  describe "$on", ->
+    it "should set logged_in to true", ->
+      scope.logged_in = false
+      scope.$broadcast("login", {user: {name: "Dan Ahern"}})
+      expect(scope.logged_in).toBe(true)
+
+    it "should set enrolled to true if in the class", ->
+      scope.enrolled = false
+      scope.assembly = {id: 123}
+      scope.$broadcast("login", {user: {name: "Dan Ahern", enrollments: [{enrollable_id: 123, enrollable_type: "Assembly"}]}})
+      expect(scope.enrolled).toBe(true)
 

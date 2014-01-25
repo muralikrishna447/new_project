@@ -11,7 +11,7 @@ class Enrollment < ActiveRecord::Base
 
   class << self
     def enroll_user_in_assembly(user, ip_address, assembly, discounted_price, stripe_token, free_trial_hours=0)
-      enrollment = Enrollment.where(user_id: user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly')
+      enrollment = Enrollment.where(user_id: user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
       raise "You are already enrolled!" if enrollment.present? && !enrollment.free_trial?
 
       @enrollment = nil

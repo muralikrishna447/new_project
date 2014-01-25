@@ -1,7 +1,7 @@
 # This mixes the concerns of managing a general purpose modal for charging stripe with
 # the special case of buying an assembly. Would be better to separate.
 
-angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", "csAuthentication", ($scope, $http, csAuthentication) ->
+angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", "csAuthentication", "csAlertService", ($scope, $http, csAuthentication, csAlertService) ->
 
   $scope.isGift = false
   $scope.buyModalOpen = false
@@ -16,21 +16,31 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.waitingforFreeEnrollment = false
 
   $scope.authentication = csAuthentication
+  $scope.alertService = csAlertService
+
+  $scope.loginState = null
+  $scope.free_trial_text = null
 
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
-    if $scope.waitingForFreeEnrollment
-      $scope.waitingForFreeEnrollment = false
-      $scope.free_enrollment()
-    if $scope.waitingForRedemption
-      $scope.waitingForRedemption = false
-      $scope.redeemGift()
-    if $scope.waitingForLogin
-      $scope.waitingForLogin = false
-      if $scope.isEnrolled(data.user) && $scope.isGift == false
-        window.location = $scope.assemblyPath
+    $scope.enrolled = true if $scope.isEnrolled(data.user)
+    switch($scope.loginState)
+      when "freeTrial"
+        $scope.loginState = null
+        $scope.freeTrial()
       else
-        $scope.openModal($scope.isGift)
+        if $scope.waitingForFreeEnrollment
+          $scope.waitingForFreeEnrollment = false
+          $scope.free_enrollment()
+        if $scope.waitingForRedemption
+          $scope.waitingForRedemption = false
+          $scope.redeemGift()
+        if $scope.waitingForLogin
+          $scope.waitingForLogin = false
+          if $scope.isEnrolled(data.user) && $scope.isGift == false
+            window.location = $scope.assemblyPath
+          else
+            $scope.openModal($scope.isGift)
 
   # A little hacky but it didn't like setting the variable directly from the view
   $scope.buyingGift = ->
@@ -44,6 +54,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.waitForFreeEnrollment = ->
     $scope.waitingForFreeEnrollment = true
+
+  $scope.setLoginState = (state) ->
+    $scope.loginState = state
 
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
@@ -103,6 +116,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     true
 
   $scope.isEnrolled = (user) ->
+    return false unless user.enrollments
     !!_.find(user.enrollments, (enrollment) -> enrollment.enrollable_id == $scope.assembly.id && enrollment.enrollable_type == "Assembly" )
 
   $scope.openModal = (gift) ->
@@ -189,5 +203,24 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
       try
         __adroll.record_user "adroll_segments": segmentName
+
+
+  $scope.freeTrial = ->
+    $scope.processing = true
+    $http(
+      method: 'POST'
+      params:
+        assembly_id: $scope.assembly.id
+        discounted_price: 0
+        free_trial: $scope.free_trial
+      url: '/charges'
+    ).success( (data, status, headers, config) ->
+      $scope.processing = false
+      $scope.state = "free_enrollment"
+      $scope.buyModalOpen = true
+    ).error( (data, status, headers, config) ->
+      $scope.processing = false
+      console.log "FAIL" + data
+    )
 
 ]

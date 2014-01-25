@@ -1,5 +1,5 @@
 class AssembliesController < ApplicationController
-  before_filter :load_assembly, except: [:index, :redeem, :redeem_index]
+  before_filter :load_assembly, except: [:index, :redeem, :redeem_index, :trial]
 
   # Commenting out for now until we figure out what to do for Projects
 
@@ -33,17 +33,26 @@ class AssembliesController < ApplicationController
   end
 
   def landing
+    @free_trial_text = Base64.decode64(session[:free_trial]).split("-").last.to_i.hours_to_pretty_time if session[:free_trial]
     @no_shop = true
     @upload = Upload.new
     @split_name = "macaron_landing_no_campaign"
     if params[:utm_campaign]
       @split_name = "macaron_landing_campaign_#{params[:utm_campaign][0..4]}"
-    end   
+    end
     @no_video = params[:no_video]
   end
 
   def show_as_json
     render :json => @assembly
+  end
+
+  def trial
+    session[:free_trial] = params[:trial_token]
+    assembly, hours = Base64.decode64(session[:free_trial]).split('-').map(&:to_i)
+    @assembly = Assembly.find(assembly)
+    flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
+    redirect_to landing_class_url(@assembly)
   end
 
   # Note that although this is called "redeem", it only starts the redemption process
