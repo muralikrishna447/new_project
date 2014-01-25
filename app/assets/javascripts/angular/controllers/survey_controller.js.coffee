@@ -56,7 +56,7 @@
   question4.copy = 'Tell us more about yourself:'
   $scope.questions.push(question4)
 
-  $scope.update = ->
+  $scope.getResults = ->
     angular.forEach $scope.questions, (question, index) ->
       switch question.type
         when 'select'
@@ -68,7 +68,10 @@
               answers.push(option.name)
           $scope.survey_results[question.copy] = answers.join()
         when 'open-ended'
-          $scope.survey_results[question.copy] = question.answer
+          $scope.survey_results[question.copy] = question.answer    
+
+  $scope.update = ->
+    $scope.getResults()
     
     data = {'survey_results': $scope.survey_results}
     $http.post('/user_surveys', data).success((data) ->

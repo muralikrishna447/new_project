@@ -9,9 +9,10 @@ describe UserSurveysController do
 
     it 'updates a user with survey results' do
       sign_in @user
-      post :create, survey_results: {data: 'Some Random JSON'}
+      post :create, survey_results: {data: 'Some Random Data'}
       expect(response).to be_success
-      expect(response.body).to eq("{\"data\":\"Some Random JSON\"}")
+      expect(response.body).to eq("{\"data\":\"Some Random Data\"}")
+
     end
   end
 end
