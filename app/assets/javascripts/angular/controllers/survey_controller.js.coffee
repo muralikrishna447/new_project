@@ -75,8 +75,11 @@
     
     data = {'survey_results': $scope.survey_results}
     $http.post('/user_surveys', data).success((data) ->
-      console.log data
+
     )
+
+  $scope.$on 'SurveySubmitted', ->
+    $scope.update()
 ]
 
 

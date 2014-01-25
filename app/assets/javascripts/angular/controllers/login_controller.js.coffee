@@ -399,5 +399,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.openModal('survey')
 
   $scope.submitSurvey = ->
+    $scope.$broadcast 'SurveySubmitted'
     $scope.switchModal('survey', 'invite')
 ]
