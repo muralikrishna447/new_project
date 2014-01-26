@@ -3,8 +3,9 @@
 //=require angular
 //=require angular-resource
 //=require angular-route
-//=require angular-ui
 //=require angular-sanitize
+//=require angular-ui
+//=require angular_select2
 //=require localStorageModule
 //=require select2
 //=require ui-bootstrap-tpls-0.3.0

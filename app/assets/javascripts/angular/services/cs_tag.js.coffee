@@ -24,7 +24,7 @@
   # to be called. So leaving as is. At least it is factored.
   this.getSelect2Info = (model, ajaxURL) ->
     placeholder: "Add some tags"
-    tags: true
+    tags: model
     multiple: true
     width: "100%"
 
@@ -46,7 +46,7 @@
 
     createSearchChoice: (term, data) ->
       id: term
-      name: term
+      name: term 
 
     initSelection: (element, callback) ->
       callback(model)
@@ -61,7 +61,7 @@
     this.indexOfTag(tagList, tagName) >= 0
 
   this.addTag = (tagList, tagName) ->
-    tagList.push({name: tagName, id: tagName}) unless this.hasTag(tagList, tagName)
+    tagList.push({text: tagName, id: tagName}) unless this.hasTag(tagList, tagName)
 
   this.removeTag = (tagList, tagName) ->
     tagList.splice(this.indexOfTag(tagList, tagName), 1)

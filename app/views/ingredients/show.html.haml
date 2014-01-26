@@ -123,9 +123,10 @@
       .well.relative
         .row.section(ng-show="editMode")
           .span6
+            %pre {{ ingredient.tags | json }}
             %h3.inline Tags
             .btn.btn-link.inline(ng-click="showTagsModal = true") Select...            
-            %input(type="text" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
+            %input(type="hidden" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
 
         .row.section(ng-show="(! editMode) && ingredient.tags.length")
           .span6
