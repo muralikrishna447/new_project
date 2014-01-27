@@ -69,7 +69,7 @@
             %hr
             -# using DISQUS.reset to determine which disqus thread to display
             = render 'layouts/disqus_angular'
-    .assembly-loading-wrapper(ng-show="loading" ng-animate="'fade'")
+    .assembly-loading-wrapper.anim-basic-fade(ng-show="loading")
       .assembly-loading-background
         .activity-loading-spinner
           %i.icon-page-load

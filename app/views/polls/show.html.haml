@@ -38,7 +38,7 @@
                 and counting...
       = link_to 'See Previous Polls', polls_path, class: 'btn btn-secondary pull-right section'
 
-      %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak ng-controller="PollItemController" ng-animate="'custom'" ng-init="init('#{@poll.status}')")
+      %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak ng-controller="PollItemController" ng-init="init('#{@poll.status}')")
         .poll-item
           .poll-item-vote-up(ng-click="mixpanel.track('Poll Voted', {'Poll Item': {{poll_item.id}} });")
             %span(ng-switch on="current_user_voted_for_this(poll_item)")

@@ -1,7 +1,7 @@
 
 .disabled-section
   -# display:none is a hack to keep from fading out at start. has to be inline style. Can go away w/ angular 1.1.5 I think.
-  %h4(style="display: none;" ng-show="editMode && (activity.steps.length == 0)" data-ng-animate="'fade'" ng-click="addStepAtIndex(0)")
+  %h4(style="display: none;" ng-show="editMode && (activity.steps.length == 0)"ng-click="addStepAtIndex(0)")
     Add first step...
 
 

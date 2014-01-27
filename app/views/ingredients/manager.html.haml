@@ -48,7 +48,7 @@
       %h2 Merge Ingredients
       Click on the ingredient that you want to keep to see a preview of your merge.
     .modal-body
-      %div(ng-show="mergeKeeper")
+      %div.anim-basic-fade(ng-show="mergeKeeper")
         %h3 Will Be Kept
         %ul.to-keep
           %li(ng-bind-html="mergeKeeper.title")
@@ -58,9 +58,9 @@
             %span(ng-show="ingredient.product_url")
               \- Link: {{urlAsNiceText(mergeKeeper.product_url)}}
 
-      %h3(ng-show="mergeKeeper" ng-animate="'fade'") Will Be Merged and Deleted
+      %h3.anim-basic-fade(ng-show="mergeKeeper") Will Be Merged and Deleted
       %ul.to-delete
-        %li(ng-repeat="ingredient in gridOptions.selectedItems | orderBy:'useCount':true" ng-show="ingredient.id != mergeKeeper.id" ng-animate="'custom'")
+        %li.anim-basic-fade(ng-repeat="ingredient in gridOptions.selectedItems | orderBy:'useCount':true" ng-show="ingredient.id != mergeKeeper.id")
           %a.merge-link(ng-bind-html="ingredient.title" ng-click="setMergeKeeper(ingredient)")
           %span
             \- Uses: {{ingredient.use_count.toString()}}
