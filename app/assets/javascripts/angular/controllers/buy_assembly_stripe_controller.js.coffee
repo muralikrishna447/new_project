@@ -215,6 +215,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         free_trial: $scope.free_trial
       url: '/charges'
     ).success( (data, status, headers, config) ->
+      mixpanel.people.append('Classes Free Trialed', $scope.assembly.title)
       $scope.processing = false
       $scope.state = "free_enrollment"
       $scope.buyModalOpen = true

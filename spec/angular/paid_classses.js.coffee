@@ -68,6 +68,17 @@ describe "PaidClasses", ->
           sleep 3
           expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for giving our")
 
+      describe "free trial", ->
+        it "should allow me try out the class", ->
+          browser().navigateTo('/trial/MS03Mg==')
+          element('#sign-in-and-free-trial-button').click()
+          sleep .5
+          expect(element('.login-modal-body').count()).toBe(1)
+          input("login_user.email").enter("ytrewq@example.com")
+          input("login_user.password").enter("apassword")
+          element("button.signin").click()
+          sleep 2
+          expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
 
       describe "gift redeem", ->
         it "should allow me to redeem", ->
@@ -208,6 +219,13 @@ describe "PaidClasses", ->
         element('#complete-buy').click()
         sleep 3
         expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for giving our")
+
+    describe "free trial", ->
+      it "should allow me try out the class", ->
+        browser().navigateTo('/trial/MS03Mg==')
+        element('#free-trial-button').click()
+        sleep 2
+        expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
 
     describe "gift redeem", ->
       it "should allow me to redeem", ->

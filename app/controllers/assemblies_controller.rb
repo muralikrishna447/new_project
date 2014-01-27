@@ -51,6 +51,7 @@ class AssembliesController < ApplicationController
     session[:free_trial] = params[:trial_token]
     assembly, hours = Base64.decode64(session[:free_trial]).split('-').map(&:to_i)
     @assembly = Assembly.find(assembly)
+    mixpanel.people.append(mixpanel_anonymous_id, {'Classes Free Trial Offered' => @assembly.title})
     flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
     redirect_to landing_class_url(@assembly)
   end
