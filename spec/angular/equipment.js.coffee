@@ -11,7 +11,7 @@ describe "EquipmentController", ->
     input("login_user.email").enter("admin@chefsteps.com")
     input("login_user.password").enter("apassword")
     element("button.signin").click()
-    sleep 2
+    sleep 3
     browser().navigateTo('/equipment')
     sleep 3
 

@@ -1784,6 +1784,19 @@ input.summary-tweet
   .footer_left
     color: $orange
 
+.anim-basic-fade
+  &.ng-enter, &.ng-leave, &.ng-move
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
+
+  &.ng-enter, &.ng-leave.ng-leave-active
+    opacity: 0
+  &.ng-leave, &.ng-enter.ng-enter-active, &.ng-move
+    opacity: 1    
+  &.ng-move-active
+    opacity: 0.5
+
+
+
 // BELOW ARE RESPONSIVE STYLES //
 
 /* Large desktop */
