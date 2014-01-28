@@ -1,10 +1,10 @@
 //=require showdown
 //=require jquery
-//=require angular
-//=require angular-resource
-//=require angular-route
-//=require angular-sanitize
-//=require angular-animate
+//=require angular.min
+//=require angular-resource.min
+//=require angular-route.min
+//=require angular-sanitize.min
+//=require angular-animate.min
 //=require angular-ui
 //=require angular_select2
 //=require localStorageModule

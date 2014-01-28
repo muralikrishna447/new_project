@@ -61,7 +61,7 @@
     this.indexOfTag(tagList, tagName) >= 0
 
   this.addTag = (tagList, tagName) ->
-    tagList.push({text: tagName, id: tagName}) unless this.hasTag(tagList, tagName)
+    tagList.push({name: tagName, id: tagName}) unless this.hasTag(tagList, tagName)
 
   this.removeTag = (tagList, tagName) ->
     tagList.splice(this.indexOfTag(tagList, tagName), 1)
