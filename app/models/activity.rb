@@ -57,6 +57,7 @@ class Activity < ActiveRecord::Base
   scope :chefsteps_generated, where('creator = ?', 0)
   scope :any_user_generated, where('creator != ?', 0)
   scope :user_generated, -> user { where('creator = ?', user) }
+  scope :popular, where('likes_count IS NOT NULL').order('likes_count DESC')
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 

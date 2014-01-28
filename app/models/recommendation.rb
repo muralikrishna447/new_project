@@ -6,6 +6,7 @@ class Recommendation
     activities = Activity.chefsteps_generated.published
     activities = activities.difficulty(difficulty) if difficulty
     activities = activities.tagged_with(interests, any: true) if interests
+    activities = activities.popular
     activities
   end
 
