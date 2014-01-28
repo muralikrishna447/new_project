@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', 'csAuthentication', 'csTagService', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService, csAuthentication, csTagService) ->
+angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", 'csUrlService', 'csEditableHeroMediaService', 'csAlertService', 'csDensityService', 'localStorageService', 'csAuthentication', 'csTagService', '$modal', ($scope, $rootScope, $resource, $location, $http, $timeout, csUrlService, csEditableHeroMediaService, csAlertService, csDensityService, localStorageService, csAuthentication, csTagService, $modal) ->
 
   # This muck will go away when I do deep routing properly
   $scope.url_params = {}
@@ -138,5 +138,12 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.getEditingUsers = ->
     return null if ! $scope.ingredient?.editing_users?
     _.filter($scope.ingredient.editing_users, (x) -> x.role != 'admin')
+
+  $scope.showTagsModal = ->
+    $modal.open(
+      templateUrl: "ingredientTagsModalContent.html"
+      resolve: 
+        ingredient: -> $scope.ingredient
+    )
 
 ]

@@ -124,7 +124,7 @@
         .row.section(ng-show="editMode")
           .span6
             %h3.inline Tags
-            .btn.btn-link.inline(ng-click="showTagsModal = true") Select...            
+            .btn.btn-link.inline(ng-click="showTagsModal()") Select...            
             %input(type="hidden" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
 
         .row.section(ng-show="(! editMode) && ingredient.tags.length")
@@ -212,7 +212,7 @@
     %h4 Now tell the world?
     = render 'layouts/social_buttons', media_object: nil
 
-%div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
+%script(type="text/ng-template" id="ingredientTagsModalContent.html")
   .modal-header
     %h2 Choose Tags
     Pick all that apply to how you think as a cook; e.g. it is ok to mark 
@@ -222,5 +222,5 @@
     %csTagChooser(  ng-model="ingredient.tags" 
                     options="csTagService.ingredientSuggestedTags")
   .modal-footer
-    %button.btn(ng-click="showTagsModal = false") Done
+    %button.btn(ng-click="$close()") Done
 
