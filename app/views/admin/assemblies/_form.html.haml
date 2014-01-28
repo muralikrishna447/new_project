@@ -11,6 +11,7 @@
     = f.input :price, hint: "Leave blank for free project/course"
     = f.input :buy_box_extra_bullets, hint: "Appends the bullets in buy box.  Use the html li tag to generate the list item bullet"
     = render '/shared/filepicker_group', label_text: "Image", param: "assembly[image_id]", value: @assembly.image_id
+    = render '/shared/filepicker_group', label_text: "Prereg Image", param: "assembly[prereg_image_id]", value: @assembly.prereg_image_id
     / = f.input :image_id
     = f.input :youtube_id
     = f.input :preview_copy, hint: 'This text will appear in the preview tab.'
