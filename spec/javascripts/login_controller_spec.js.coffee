@@ -491,6 +491,9 @@ describe "LoginController", ->
 
 
   describe "#sendInvites", ->
+    beforeEach ->
+      scope.authentication.setCurrentUser({id: 123})
+
     it "should call the facebook.friendInvites method", ->
       scope.sendInvites()
       expect(scope.facebook.friendInvites).toHaveBeenCalled()

@@ -25,3 +25,5 @@
       return "video" if this.hasHeroVideo()
       return "image" if this.hasHeroImage()
       return "none"
+
+    this

@@ -9,6 +9,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.densityService = csDensityService
   $scope.csAuthentication = csAuthentication 
   $scope.csTagService = csTagService
+  $scope.showTagsModal = false
 
   $scope.urlAsNiceText = (url) ->
     csUrlService.urlAsNiceText(url)

@@ -54,7 +54,7 @@
   .row.gallery-contents(ng-cloak ng-click="collapseFilters = true")
     .span12
       %div(galleryscroll='loadData()')
-        %div(ng-repeat='item in getDisplayItems()' ng-animate="'gallery-animation'")
+        %div.anim-basic-fade(ng-repeat='item in getDisplayItems()')
           %csGalleryItem( title="item.title"
                           href="'/ingredients/' + item.slug"
                           image="itemImageURL(item, 400)"
@@ -75,7 +75,7 @@
         .div(ng-show="! exactMatchNewIngredient()")
           %h4 Could it be one of these? If so, click the name to edit the existing ingredient.
           %ul
-            %li(ng-repeat="ing in possibleIngredientMatches" ng-animate="'fade'")
+            %li.anim-basic-fade(ng-repeat="ing in possibleIngredientMatches")
               %a(ng-href="/ingredients/{{ing.slug}}?edit=true" target="_blank" ) 
                 {{ing.title}}
         .div(ng-show="exactMatchNewIngredient()")

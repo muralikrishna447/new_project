@@ -168,6 +168,8 @@ Delve::Application.routes.draw do
     resources :enrollments
   end
   match "/gift/:gift_token", to: 'assemblies#redeem'
+  match "/gift", to: 'assemblies#redeem_index'
+
   resources :projects, controller: :assemblies
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'
@@ -212,6 +214,8 @@ Delve::Application.routes.draw do
   get "smoker" => "smoker#index"
 
   get "/affiliates/share_a_sale" => "affiliates#share_a_sale"
+
+  get "/invitations/welcome" => "home#welcome"
 
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"

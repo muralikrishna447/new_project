@@ -1740,49 +1740,32 @@ input.summary-tweet
     top: 10px
     right: 10px
 
-// See https://github.com/angular/angular.js/commit/11f712bc - these class
-// names have to change when we go to angular >= 1.1.5
-.fade-show-setup, .fade-hide-setup, .fade-enter-setup, .fade-leave-setup
-  @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
-
-.fade-hide-setup, .fade-leave-setup
-  opacity: 1
-  &.fade-hide-start, &.fade-leave-start
-    opacity: 0
-
-.fade-show-setup, .fade-enter-setup
-  opacity: 0
-  &.fade-show-start, &.fade-enter-start
-    opacity: 1
-
-.custom-enter-setup, .custom-leave-setup, .custom-move-setup
-  -webkit-transition: 0.5s linear all
-  -moz-transition: 0.5s linear all
-  -o-transition: 0.5s linear all
-  transition: 0.5s linear all
-  position: relative
-
-.custom-enter-setup
-  opacity: 0
-  &.custom-enter-start
-    left: 0
-    opacity: 1
-
-.custom-leave-setup
-  left: 0
-  opacity: 1
-  &.custom-leave-start
-    opacity: 0
-
-.custom-move-setup
-  opacity: 0
-  &.custom-move-start
-    opacity: 1
-
-
 .classes-index
   .footer_left
     color: $orange
+
+.anim-basic-fade
+  // The commented out background-colors are useful for debugging
+  // background-color: red
+
+  &.ng-enter, &.ng-leave, &.ng-move, &.ng-hide-add, &.ng-hide-remove
+    //background-color: green
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
+
+  &.ng-hide-add, &.ng-hide-remove
+    display: block !important
+    opacity: 1
+
+  &.ng-enter, &.ng-leave.ng-leave-active, &.ng-hide
+    //background-color: yellow
+    opacity: 0
+  &.ng-leave, &.ng-enter.ng-enter-active, &.ng-move
+    //background-color: orange
+    opacity: 1    
+  &.ng-move-active
+    opacity: 0.5
+
+
 
 // BELOW ARE RESPONSIVE STYLES //
 

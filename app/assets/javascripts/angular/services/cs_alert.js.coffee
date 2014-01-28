@@ -11,4 +11,6 @@ angular.module('ChefStepsApp').service 'csAlertService', ["$timeout", ($timeout)
 
   this.getAlerts = ->
     this.alerts
+
+  this
 ]

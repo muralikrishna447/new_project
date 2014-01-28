@@ -1,5 +1,5 @@
 - if ! @minimal
-  .navbar.navbar-fixed-top
+  .navbar.navbar-fixed-top(ng-controller="NavbarController")
     .navbar-inner
       .container
         = link_to root_url, class: 'brand' do
@@ -96,7 +96,7 @@
                     .nav-item-border
                     .nav-search.nav-search-toggle
                       %i.icon-search.icon-large
-                      %form.navbar-form.form-search.nav-search-form(action="#{gallery_index_url}#/?search_all={{navbarSearchQuery}}" method="get")
+                      %form.navbar-form.form-search.nav-search-form(action="{{getSearchQuery()}}" method="get")
                         %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
                       .nav-search-hide
                         %i.icon-remove

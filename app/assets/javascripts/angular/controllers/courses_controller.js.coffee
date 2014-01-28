@@ -2,6 +2,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
 
   $scope.routeParams = $routeParams
   $scope.route = $route
+
+  $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
+    if $previousRoute.params.slug == $scope.includable_slug
+      $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
   
   $scope.view_inclusion = {}
   $scope.collapsed = {}
@@ -71,6 +75,13 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       $timeout ->
         $('.prev-next-group').show()
 
+  $scope.overrideLoadActivityBySlug = (slug) ->
+    incl = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == slug)
+    if incl
+      $scope.loadInclusion(incl.includable_type, slug) 
+      return true
+    false
+
   currentIncludableIndex = ->
     return 0 if ! $scope.flatInclusions?
     $scope.flatInclusions.indexOf($scope.currentIncludable)
@@ -111,7 +122,6 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
 
   $scope.determineCollapsed = (inclusion)->
     $scope.collapsed[inclusion.assembly_id] = false
-    console.log $scope.collapsed
     # If Assembly is nested
     parent_inclusion = _.find($scope.collapsibleInclusions, (incl) -> incl.includable_id == inclusion.assembly_id && incl.includable_type == 'Assembly')
     $scope.determineCollapsed(parent_inclusion) if parent_inclusion
@@ -144,6 +154,9 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     else
       $scope.largeScreen = false
 
+  $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
+    $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
+ 
   $scope.updateCanonical = ->
     canonical = angular.element('head').find("link[rel='canonical']")
     link = canonical.attr('href') + $scope.includable_slug

@@ -1,19 +1,19 @@
 
 .disabled-section
   -# display:none is a hack to keep from fading out at start. has to be inline style. Can go away w/ angular 1.1.5 I think.
-  %h4(style="display: none;" ng-show="editMode && (activity.steps.length == 0)" data-ng-animate="'fade'" ng-click="addStepAtIndex(0)")
+  %h4(style="display: none;" ng-show="editMode && (activity.steps.length == 0)"ng-click="addStepAtIndex(0)")
     Add first step...
 
 
 %ul#step-dots.nav(ng-class="{'hide-when-menu-showing': showCourseMenu, 'course-global-nav-show': showGlobalNav}" ng-hide="numberedSteps().length < 1")
   %li.step-dot.intro
-    %a(href="video-ingredient-unit" prevent-default scroll-to="video-ingredient-unit" spy="video-ingredient-unit" )
+    .dot(href="video-ingredient-unit" prevent-default scroll-to="video-ingredient-unit" spy="video-ingredient-unit" )
       %div.step-dot-circle
   %li.step-dot(ng-repeat="step in numberedSteps()")
-    %a(href="{{'numbered-step-' + step.id}}" prevent-default scroll-to="{{'numbered-step-' + step.id}}" spy="{{'numbered-step-' + step.id}}")
+    .dot(scroll-to="{{'numbered-step-' + step.id}}" spy="{{'numbered-step-' + step.id}}")
       %div.step-dot-circle
 
 .row.ordered-steps-new(ng-show="activity.steps.length > 0" itemprop="recipeInstructions")
-  .ordered-step-item.relative(ng-repeat="step in activity.steps" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" ng-animate="'custom'" csstephovered="" ng-mouseenter="setMouseOverStep()" ng-class='stepSpan()')
+  .ordered-step-item.relative.anim-basic-fade(ng-repeat="step in activity.steps" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" csstephovered="" ng-mouseenter="setMouseOverStep()" ng-class='stepSpan()')
     = render 'activities/latest/step'
 

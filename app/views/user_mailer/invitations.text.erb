@@ -1,4 +1,6 @@
-Your friend <%= @sender.name %> (<%= url_for user_profile_url(@sender) %>) invited you to join ChefSteps (<%= url_for(root_url) %>), an online cooking platform dedicated to helping you cook smarter!
+Your friend <%= @sender.name %> (<%= url_for user_profile_url(@sender) %>) invited you to join ChefSteps (http://www.chefsteps.com/invitations/welcome?referrer_id=<%= @sender.id %>&referred_from=google_invite), an online cooking platform dedicated to helping you cook smarter!
+
+Go here to accept their invitation http://www.chefsteps.com/invitations/welcome?referrer_id=<%= @sender.id %>&referred_from=google_invite.
 
 Here are just a few of the things that you can do at ChefSteps:
 
@@ -18,6 +20,8 @@ Google+ - https://plus.google.com/106370441183974123730/posts
 http://forum.chefsteps.com
 
 If there's anything we can do to help make your experience with ChefSteps better, please respond to this email and let us know!
+
+Go here to accept their invitation http://www.chefsteps.com/invitations/welcome?referrer_id=<%= @sender.id %>&referred_from=google_invite.
 
 Cheers,
 Team ChefSteps

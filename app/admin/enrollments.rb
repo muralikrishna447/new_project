@@ -1,4 +1,5 @@
 ActiveAdmin.register Enrollment do
+  filter :enrollable, as: :select, :collection => proc { Assembly.pubbed_courses }
   menu parent: 'Assemblies'
 
   form :partial => "form"
@@ -21,6 +22,20 @@ ActiveAdmin.register Enrollment do
       flash[:error] = "Could not find user with email: #{params[:email]}."
     end
     redirect_to :action => :new
+  end
+
+  index do
+    column :id
+    column :created_at
+    column 'User Name' do |enrollment|
+      link_to enrollment.user.name, user_profile_path(enrollment.user)
+    end
+    column 'Email' do |enrollment|
+      enrollment.user.email
+    end
+    column 'Title' do |enrollment|
+      enrollment.enrollable.title
+    end
   end
 
 end

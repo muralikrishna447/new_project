@@ -50,7 +50,7 @@
   .container#activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
     .row.noprint(ng-cloak ng-show="editMode && alerts.length > 0")
       .span8.offset2
-        %alert.edit-alert.alert-block(ng-repeat="alert in alerts" type="alert.type || 'error'" close="alertService.closeAlert($index)" ng-animate="'custom'")
+        %alert.edit-alert.alert-block.anim-basic-fade(ng-repeat="alert in alerts" type="alert.type || 'error'" close="alertService.closeAlert($index)")
           %h3 Save Failed!
           {{alert.message}}
           .section

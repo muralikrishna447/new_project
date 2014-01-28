@@ -1,6 +1,6 @@
 .ingredients{:itemprop => "ingredients"}
   .ingredient-table-body(ui-sortable="sortOptions" ng-model="#{source}.ingredients")
-    .ingredient-table-row(ng-repeat="ai in #{source}.ingredients" ng-animate="'custom'")
+    .ingredient-table-row.anim-basic-fade(ng-repeat="ai in #{source}.ingredients")
       %csIngredientEditPair
 
 
