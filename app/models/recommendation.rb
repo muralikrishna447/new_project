@@ -5,7 +5,7 @@ class Recommendation
 
     activities = Activity.chefsteps_generated.published
     activities = activities.difficulty(difficulty) if difficulty
-    activities = activities.tagged_with(interests) if interests
+    activities = activities.tagged_with(interests, any: true) if interests
     activities
   end
 
@@ -28,17 +28,11 @@ class Recommendation
 
   def self.get_interests(user)
     interests = user.survey_results['Which culinary topics interest you the most?']
-    interests ? interests.split(',') : nil
+    if interests && interests.length > 0
+      interests
+    else
+      nil
+    end
   end
 
-  # Accepts a single tag or an array of tags
-  # Single: Recommendation.activities_by_tag('Modernist')
-  # Array: Recommendation.activities_by_tag(['Modernist','Butchery'])
-  def self.activities_by_tags(tags)
-    Activity.chefsteps_generated.published.tagged_with(tags, :any => true)
-  end
-
-  def self.activities_by_difficulty(difficulty)
-    Activity.chefsteps_generated.published.difficulty(difficulty)
-  end
 end
