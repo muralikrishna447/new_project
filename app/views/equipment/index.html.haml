@@ -56,7 +56,7 @@
             %span(ng-show="equipment.product_url")
               \- Link: {{urlAsNiceText(mergeKeeper.product_url)}}
 
-      %h3.anim-basic-fade(ng-show="mergeKeeper" ng-animate="'fade'") Will Be Merged and Deleted
+      %h3.anim-basic-fade(ng-show="mergeKeeper") Will Be Merged and Deleted
       %ul.to-delete
         %li.anim-basic-fade(ng-repeat="equipment in gridOptions.selectedItems | orderBy:'useCount':true" ng-show="equipment.id != mergeKeeper.id" )
           %a.merge-link(ng-bind-html="equipment.title" ng-click="setMergeKeeper(equipment)")

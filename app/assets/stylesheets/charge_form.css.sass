@@ -58,20 +58,3 @@ input:not(:focus):not(.ng-pristine).ng-invalid
 
     position: relative
     left: -40px
-
-.slide-enter-setup, .slide-leave-setup, .slide-move-setup
-  -webksit-transition: 0.5s linear all
-  -moz-transition: 0.5s linear all
-  -o-transition: 0.5s linear all
-  transition: 0.5s linear all
-  left: 100%
-  position: absolute
-
-.slide-enter-setup
-  &.slide-enter-start
-    left: 0
-
-.slide-leave-setup
-  left: 0
-  &.slide-leave-start
-    left: -100%

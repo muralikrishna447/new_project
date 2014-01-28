@@ -3,7 +3,7 @@
     .modal-body.login-modal-body
       .close-x.pull-right(ng-click="closeModal('login')")
         %i.icon-remove
-      .row-fluid(ng-switch-when="signIn" ng-animate='slide')
+      .row-fluid(ng-switch-when="signIn")
         %h3 Sign in
         .form-horizontal(ng-show="!authentication.loggedIn()")
           .button-group
@@ -33,7 +33,7 @@
             %div(ng-show="login_error.errors.email")
               %div.error-text(ng-repeat="field_error in login_error.errors.password")
                 {{field_error}}
-      .row-fluid(ng-switch-when="signUp" ng-animate='slide')
+      .row-fluid(ng-switch-when="signUp")
         %h3 Sign up
         .form-horizontal(ng-show="!authentication.loggedIn()")
           .button-group
@@ -99,7 +99,7 @@
     .modal-body.invite-modal-body
       .close-x.pull-right(ng-click="closeModal('invite')")
         %i.icon-remove
-      .row-fluid(ng-animate='slide')
+      .row-fluid
         %h3 Thanks for signing up!
         -# %p
         -#   We're sending you a confirmation email. Please check your email and click the link in it.
@@ -149,7 +149,7 @@
     .modal-body.invite-modal-body
       .close-x.pull-right(ng-click="closeModal('googleInvite')")
         %i.icon-remove
-      .row-fluid(ng-animate='slide')
+      .row-fluid
         %h3 Select who you want to invite
         %p
           Invite your friends to join you on ChefSteps.com
@@ -180,7 +180,7 @@
   .modal-body.welcome-modal-body
     .close-x.pull-right(ng-click="closeModal('welcome')")
       %i.icon-remove
-    .row-fluid(ng-animate='slide')
+    .row-fluid
       %h3 Welcome to ChefSteps
       %p
         Thanks for joining. We're so glad to have you. Here are some ideas to get you started on the road to cooking smarter.
