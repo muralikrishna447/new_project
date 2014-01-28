@@ -6,7 +6,7 @@
 
   %csEditPair
     %csEditPairShow
-      %h4(ng-show="step.title || editMode" ng-bind-html-unsafe="step.title || (editMode && 'Optional title...') | markdown | shortcode" ng-class="disableIf(! step.title.length)")
+      %h4(ng-show="step.title || editMode" ng-bind-html="step.title || (editMode && 'Optional title...') | markdown | shortcode" ng-class="disableIf(! step.title.length)")
     %csEditPairEdit
       %textarea.step-title-input(ng-model="step.title" rows="5" placeholder="Optional title...")
 
@@ -16,7 +16,7 @@
   .step-content
     %csEditPair
       %csEditPairShow
-        %div(ng-show="step.directions || editMode" ng-bind-html-unsafe="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
+        %div(ng-show="step.directions || editMode" ng-bind-html="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
       %csEditPairEdit
         %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
 
@@ -28,7 +28,7 @@
       .step-video-outer.noprint(ng-show="!! step.youtube_id")
         .new-step-video(id="{{'step-video-' + $index}}")
           .video-container(csenforceaspect)
-            %iframe(ng-src="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+            %iframe(cssrcreplacer="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
 
       -# Image only if there is no video
       .step-image-outer(ng-show="(! step.youtube_id) && (!! step.image_id)")

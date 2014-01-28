@@ -11,7 +11,7 @@ describe "EquipmentController", ->
     input("login_user.email").enter("admin@chefsteps.com")
     input("login_user.password").enter("apassword")
     element("button.signin").click()
-    sleep 2
+    sleep 3
     browser().navigateTo('/equipment')
     sleep 3
 
@@ -36,10 +36,13 @@ describe "EquipmentController", ->
     # Test Exact Match Search
     element("#exact-match").click()
     input("searchString").enter("Chef Knife, Shun Edo 6-1/2 Blade")
+    sleep 0.25
     expect(repeater(".ngRow").count()).toBe(1)
     input("searchString").enter("Knife")
+    sleep 0.25
     expect(repeater(".ngRow").count()).toBe(0)
     element("#exact-match").click()
+    sleep 0.25
     expect(repeater(".ngRow").count()).toBe(3)
 
   it "should bring up modals", ->

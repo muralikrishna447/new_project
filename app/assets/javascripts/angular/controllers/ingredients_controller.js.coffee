@@ -10,7 +10,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     result = "basic"
     if ai?.ingredient?
       result = "subrecipe" if !! ai.ingredient.sub_activity_id
-      result = "fake_link" if $scope.editMode && (result == "subrecipe")
+      result = "fake_link" if $scope.editMode
     result
 
   $scope.unitMultiplier = (unit_name) ->

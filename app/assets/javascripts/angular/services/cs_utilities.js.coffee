@@ -34,4 +34,6 @@
     return "#{temp} &deg;C" if units == 'c'
     "#{this.cToF(temp)} &deg;F"
 
+  this
+
 ]

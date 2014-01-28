@@ -42,8 +42,8 @@
         .egg-body
           .page-bg(ng-hide="inputs.state == 'size'")
             %img(src="assets/egg_timer_background.png")
-          .page-switch(ng-switch="inputs.state" ng-animate="'fade'")
-            .page(ng-switch-when="white")
+          .page-switch(ng-switch="inputs.state")
+            .page.anim-basic-fade(ng-switch-when="white")
               %h4.text-center What texture would you like your egg white?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity" item-width="300")
                 %img(ng-src="{{whiteImage.image}}" ng-repeat="whiteImage in whiteImages" )
@@ -57,7 +57,7 @@
                   NEXT
                   %i.icon-angle-right
 
-            .page(ng-switch-when="yolk")
+            .page.anim-basic-fade(ng-switch-when="yolk")
               %h4.text-center What texture would you like your egg yolk?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1" item-width="300")
                 %img(ng-src="{{yolkImage}}" ng-repeat="yolkImage in yolkImages" )
@@ -76,9 +76,9 @@
                   NEXT
                   %i.icon-angle-right
 
-            .page(ng-switch-when="results")
+            .page.anim-basic-fade(ng-switch-when="results")
               .section
-                %h2.text-center(ng-bind-html-unsafe="utils.formatTemp(water_temp, inputs.units)")
+                %h2.text-center(ng-bind-html="utils.formatTemp(water_temp, inputs.units)")
               .section
                 .labeled-time
                   %span Ice and reheat
@@ -104,7 +104,7 @@
                 .btn.btn-primary(ng-click="goState('share')")
                   SHARE
 
-            .page(ng-switch-when="share")
+            .page.anim-basic-fade(ng-switch-when="share")
               .section
                 %h4 Share the egg calculator on your social networks:
               .section
@@ -113,7 +113,7 @@
                 .btn.btn-primary(ng-click="goState('white')")
                   NEW EGG
 
-            .page(ng-switch-when="size")
+            .page.anim-basic-fade(ng-switch-when="size")
               %h4.text-center What (US) size is your egg?
               .section.text-center
                 %ul.nav.nav-tabs.underline
@@ -134,7 +134,7 @@
                 .btn.btn-primary(ng-click="goState('results')")
                   DONE
 
-            .page(ng-switch-when="startTemp")
+            .page.anim-basic-fade(ng-switch-when="startTemp")
               %h4.text-center What temperature is your egg?
               .section.text-center
                 %ul.nav.nav-tabs.underline.text-center.inline
@@ -153,7 +153,7 @@
                 .btn.btn-primary(ng-click="goState('results')")
                   DONE
 
-            .page(ng-switch-when="bathType")
+            .page.anim-basic-fade(ng-switch-when="bathType")
               %h4.text-center What type of water bath are you using?
 
               .section.text-center

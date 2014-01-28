@@ -1,6 +1,6 @@
 // Not having this be an actual form with a submit because it is nested in another form
 // on the class upload page, and nested forms can't have submit buttons
-.flat-form(ng-show="showReviewInput" ng-animate="'fade'")
+.flat-form.anim-basic-fade(ng-show="showReviewInput")
   .rating-group
     Rating:
     %csrating.rating(value="newComment.rating")

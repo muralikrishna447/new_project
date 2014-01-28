@@ -13,4 +13,6 @@ angular.module('ChefStepsApp').service 'csAuthentication', [ "$rootScope", ($roo
     !!user
   this.isAdmin = ->
     !!(user && user.role == "admin")
+
+  this
 ]

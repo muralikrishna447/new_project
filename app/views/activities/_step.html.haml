@@ -8,7 +8,7 @@
 
     %csEditPair
       %csEditPairShow
-        %h4(ng-show="step.title || editMode" ng-bind-html-unsafe="step.title || (editMode && 'Optional title...') | markdown | shortcode" ng-class="disableIf(! step.title.length)")
+        %h4(ng-show="step.title || editMode" ng-bind-html="step.title || (editMode && 'Optional title...') | markdown | shortcode" ng-class="disableIf(! step.title.length)")
       %csEditPairEdit
         %textarea.step-title-input(ng-model="step.title" rows="5" placeholder="Optional title...")
 
@@ -16,7 +16,7 @@
 
     %csEditPair
       %csEditPairShow
-        %div(ng-show="step.directions || editMode" ng-bind-html-unsafe="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
+        %div(ng-show="step.directions || editMode" ng-bind-html="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
       %csEditPairEdit
         %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
 

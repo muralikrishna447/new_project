@@ -1,7 +1,7 @@
 %csEditPair#title-edit-pair
 
   %csEditPairShow
-    %h1.activity-title(ng-bind-html-unsafe="activity.title || (editMode && 'Add title...')" itemprop='name' ng-class="disableIf(! activity.title.length)")
+    %h1.activity-title(ng-bind-html="activity.title || (editMode && 'Add title...')" itemprop='name' ng-class="disableIf(! activity.title.length)")
     -creator = @activity.creator
     -if  creator|| @activity.source_activity_id
       %h5.no-bold
