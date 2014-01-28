@@ -76,5 +76,6 @@ angular.module('ChefStepsApp').service 'csAdminTable', ["$timeout", "csAlertServ
     _.each(err.data.errors, (e) -> csAlertService.addAlert({message: e}, $timeout)) 
     # alert(err)
 
+  this
 
 ]

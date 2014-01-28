@@ -292,7 +292,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     return has
 
   $scope.hasAnyEquipment = ->
-    $scope.activity?.equipment.length > 0
+    $scope.activity?.equipment?.length > 0
 
   $scope.optionalEquipment = (item) ->
     item.optional

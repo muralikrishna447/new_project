@@ -8,13 +8,13 @@
           SCALE
         %ul.scaling-row.nav.nav-tabs.underline
           %li(ng-repeat="f in scaleFactors()" ng-click="setScaling(f)" ng-class='isActiveScale(f)')
-            %a(ng-bind-html-unsafe="displayScaling(f)")
+            %a(ng-bind-html="displayScaling(f)")
 
         .navlabel
           UNITS
         %ul.units-row.nav.nav-tabs.underline
           %li(ng-repeat="u in unitChoices()" ng-click="setUnits(u)" ng-class='isActiveUnit(u)')
-            %a(ng-bind-html-unsafe="u")
+            %a(ng-bind-html="u")
     .ingredients-well.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-slide' : showIngredientsMenu}")
       = render 'shared/ingredients_list', source: "activity"
 

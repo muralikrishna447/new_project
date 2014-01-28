@@ -117,52 +117,21 @@
   top: 2px
   padding: 0px 8px
 
-// See https://github.com/angular/angular.js/commit/11f712bc - these class
-// names have to change when we go to angular >= 1.1.5
-.filters-show-setup, .filters-hide-setup
-  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  -moz-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  -o-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s
-
-.filters-hide-setup
-  opacity: 1
-  max-height: 150px
-  &.filters-hide-start
-    opacity: 0
-    max-height: 0px
-
-.filters-show-setup
-  opacity: 0
-  max-height: 0px
-  &.filters-show-start
+.anim-filters
+  &.ng-hide-add, &.ng-hide-remove
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
+    display: block !important
     opacity: 1
     max-height: 150px
+  &.ng-hide
+    opacity: 0
+    max-height: 0px    
+
 
 .pagination
   @include primary-font
   font-size: 20px
 
-.gallery-animation-enter-setup, .gallery-animation-leave-setup, .gallery-animation-move-setup
-  @include transition(300ms ease all)
-
-.gallery-animation-enter-setup
-  opacity: 0
-
-.gallery-animation-enter-setup.gallery-animation-enter-start
-  opacity: 1
-
-.gallery-animation-leave-setup
-  opacity: 1
-
-.gallery-animation-leave-setup.gallery-animation-leave-start
-  opacity: 0
-
-.gallery-animation-move-setup
-  opacity: .5
-
-.gallery-animation-move-setup.gallery-animation-move-start
-  opacity: 1
 
 .gallery-spinner
   color: $orange

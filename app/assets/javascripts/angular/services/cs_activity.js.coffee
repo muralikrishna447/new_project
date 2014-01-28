@@ -36,4 +36,6 @@
   this.queryIndex = ->
     Activity.index_as_json
 
+  this
+
 ]
