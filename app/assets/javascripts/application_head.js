@@ -9,7 +9,7 @@
 //=require angular_select2
 //=require localStorageModule
 //=require select2
-//=require ui-bootstrap-tpls-0.3.0
+//=require ui-bootstrap-tpls-0.10.0.min
 //=require angular/templates
 //=require angular/chefstepsAngularInit
 //=require ingredient_parser
