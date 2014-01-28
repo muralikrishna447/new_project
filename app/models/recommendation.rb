@@ -1,17 +1,34 @@
 class Recommendation
   def self.activities_for(user)
+    difficulty = get_difficulty(user)
+    interests = get_interests(user)
+
+    activities = Activity.chefsteps_generated.published
+    activities = activities.difficulty(difficulty) if difficulty
+    activities = activities.tagged_with(interests) if interests
+    activities
+  end
+
+  def self.get_difficulty(user)
     cook_type = user.survey_results['What kind of cook are you?']
     case cook_type
     when 'Amateur'
-      activities_by_cook_type = self.activities_by_difficulty('easy')
+      difficulty = 'easy'
     when 'Home Cook'
-      activities_by_cook_type = self.activities_by_difficulty('intermediate')
+      difficulty = 'intermediate'
     when 'Culinary Student'
-      activities_by_cook_type = self.activities_by_difficulty('intermediate')
+      difficulty = 'intermediate'
     when 'Professional'
-      activities_by_cook_type = self.activities_by_difficulty('advanced')
+      difficulty = 'advanced'
+    else
+      difficulty = nil
     end
-    activities_by_cook_type
+    difficulty
+  end
+
+  def self.get_interests(user)
+    interests = user.survey_results['Which culinary topics interest you the most?']
+    interests ? interests.split(',') : nil
   end
 
   # Accepts a single tag or an array of tags
