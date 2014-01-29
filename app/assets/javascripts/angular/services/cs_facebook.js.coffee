@@ -100,4 +100,6 @@ angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", "csUr
   #       deferred.resolve("notSent")
   #   return deferred.promise
 
+  this
+
 ]

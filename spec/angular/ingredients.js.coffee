@@ -31,19 +31,24 @@ describe "IngredientIndexController", ->
     # Test searching
     expect(element("[ng-model='searchString']").count()).toBe(1)
     input("searchString").enter("salt")
+    sleep 0.25
     expect(repeater(".ngRow").count()).toBe(3)
 
     # Do exact Match Searches
     element("#exact-match").click()
     input("searchString").enter("Salt, Kosher")
+    sleep 0.25
     expect(repeater(".ngRow").count()).toBe(1)
     input("searchString").enter("salt")
+    sleep 0.25
     expect(repeater(".ngRow").count()).toBe(0)
     element("#exact-match").click()
+    sleep 0.25
     expect(repeater(".ngRow").count()).toBe(3)
 
     # Search includes recipes
     input("searchString").enter("")
+    sleep 0.25
     expect(repeater(".ngRow").count()).toBe(3)
     element("[ng-model='includeRecipes']").click()
     sleep 0.50

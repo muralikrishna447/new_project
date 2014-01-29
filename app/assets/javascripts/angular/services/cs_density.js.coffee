@@ -8,12 +8,14 @@ angular.module('ChefStepsApp').service 'csDensityService', [ ()  ->
     ]
 
   this.displayDensity = (x) ->
-    if x then window.roundSensible(x) else "Set..."
+    if x then window.roundSensible(x).toString() else "Set..."
 
   this.displayDensityNoSet = (x) ->
-    if x && _.isNumber(x) then window.roundSensible(x) else ""
+    if x && _.isNumber(x) then window.roundSensible(x).toString() else ""
 
   this.editDensity = (ingredient) ->
     this.densityIngredient = ingredient
+
+  this
 
 ]

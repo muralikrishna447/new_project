@@ -23,4 +23,6 @@
   this.queryIndex = ->
     Ingredient.index_for_gallery
 
+  this
+
 ]

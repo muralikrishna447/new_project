@@ -3,7 +3,7 @@
   %csEditPairShow
     .activity-description-wrapper(ng-show="!!activity.description")
       .activity-description#activity-description(ng-class="{'maximize-description': maximizeDescription}")
-        %div(ng-bind-html-unsafe="activity.description | markdown | shortcode")
+        %div(ng-bind-html="activity.description | markdown | shortcode")
         .activity-description-overlay(ng-hide="activity.description.length < 455")
       .text-center(ng-hide="false || editMode || (activity.description.length < 455)" )
         %a#activity-description-maximize.noprint(ng-click="toggleMaximizeDescription()")
