@@ -53,9 +53,13 @@ class AssembliesController < ApplicationController
     session[:coupon] = params[:coupon] if params[:coupon]
     assembly, hours = Base64.decode64(session[:free_trial]).split('-').map(&:to_i)
     @assembly = Assembly.find(assembly)
-    mixpanel.people.append(mixpanel_anonymous_id, {'Classes Free Trial Offered' => @assembly.title})
-    flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
-    redirect_to landing_class_url(@assembly)
+    if current_user && current_user.enrollments.where(enrollable_id: @assembly.id, enrollable_type: @assembly.class).first.try(:free_trial_expired?)
+      redirect_to landing_class_url(@assembly)
+    else
+      mixpanel.people.append(mixpanel_anonymous_id, {'Classes Free Trial Offered' => @assembly.title})
+      flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
+      redirect_to landing_class_url(@assembly)
+    end
   end
 
   # Note that although this is called "redeem", it only starts the redemption process

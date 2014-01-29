@@ -18,6 +18,7 @@ class ChargesController < ApplicationController
       assembly_from_free_trial, hours = Base64.decode64(@free_trial).split('-').map(&:to_i)
       @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, 0, nil, hours)
     else # Normal course enrollment (paid or free)
+      mixpanel.people.append(current_user.email, {'Free Trial Converted' => assembly.title}) if current_user.enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first.free_trial? && assembly.price > 0
       @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken])
     end
 

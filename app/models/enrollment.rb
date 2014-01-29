@@ -40,7 +40,6 @@ class Enrollment < ActiveRecord::Base
       gross_price, tax, extra_descrip = get_tax_info(assembly.price, discounted_price, ip_address)
       enrollment = Enrollment.where(user_id: user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
       if enrollment && enrollment.free_trial?
-        mixpanel.people.append(current_user.email, {'Free Trial Converted' => assembly.title})
         enrollment.update_attributes({price: gross_price, sales_tax: tax, trial_expires_at: nil}, without_protection: true)
       else
         @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: gross_price, sales_tax: tax)

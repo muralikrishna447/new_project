@@ -247,6 +247,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.freeTrialExpiredNotice = ->
     if $scope.isExpired()
-      $scope.alerts.addAlert({message: "Your free trial has expired, please purchase the class to continue.<br/>Please contact info@chefsteps.com if there is any problems.", type: "success", class: "long-header"})
+      $scope.alerts.addAlert({message: "Your free trial has expired, please buy the class to continue.<br/>Please contact info@chefsteps.com if there are any problems.", type: "success", class: "long-header"})
 
 ]
