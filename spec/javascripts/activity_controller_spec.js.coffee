@@ -12,11 +12,12 @@ describe 'ActivityController', ->
   #  $httpBackend.whenGET('/activities/1/as_json').respond({"title" : "original"})
   #)
 
-  beforeEach inject ($rootScope, $controller) ->
+  beforeEach inject ($rootScope, $controller, $httpBackend) ->
     scope = $rootScope.$new()
     ctrl = $controller('ActivityController', {$scope: scope})
     # Hack b/c I can't get the respond() above to do anything apparently
     scope.activity.title = "original"
+    scope.httpBackend = $httpBackend
 
   describe "#startEditMode", ->
     it "puts the app into edit mode", inject ($rootScope, $controller) ->
@@ -80,5 +81,3 @@ describe 'ActivityController', ->
       expect(scope.activity.title).toEqual("original")
       expect(scope.undoAvailable()).toBeFalsy()
       expect(scope.redoAvailable()).toBeTruthy()
-
-

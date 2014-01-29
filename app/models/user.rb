@@ -137,8 +137,15 @@ class User < ActiveRecord::Base
   end
 
   def enrolled?(enrollable)
-    enrollment = Enrollment.where(user_id: self.id, enrollable_type: enrollable.class.to_s, enrollable_id: enrollable.id)
-    enrollment.blank? ? false : enrollment
+    enrollment = Enrollment.where(user_id: self.id, enrollable_type: enrollable.class.to_s, enrollable_id: enrollable.id).first
+    case
+    when enrollment.blank?
+      false
+    when enrollment.free_trial?
+      !enrollment.free_trial_expired?
+    else
+      true
+    end
   end
 
   def completed_course?(course)

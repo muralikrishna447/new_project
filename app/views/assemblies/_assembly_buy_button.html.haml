@@ -5,7 +5,7 @@
 
 .buy-buttons(ng-controller="BuyAssemblyStripeController"
               ng-cloak
-              ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{class_url(assembly, protocol: "http")}"; completed="#{completed ? true : false}"; lastViewedActivity="#{current_user ? class_activity_path(assembly, current_user.last_viewed_activity_in_assembly(assembly)) : nil}"; gift_certificate=#{gift_certificate.to_json}; rails_env="#{Rails.env}"; split_name="#{@split_name}"; free_trial="#{session[:free_trial]}"; free_trial_text="#{@free_trial_text}"' )
+              ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{class_url(assembly, protocol: "http")}"; completed="#{completed ? true : false}"; lastViewedActivity="#{current_user ? class_activity_path(assembly, current_user.last_viewed_activity_in_assembly(assembly)) : nil}"; gift_certificate=#{gift_certificate.to_json}; rails_env="#{Rails.env}"; split_name="#{@split_name}"; freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}";freeTrialExpiredNotice(); ' )
 
   -#
   -# Primary CTA
@@ -60,7 +60,7 @@
   -#
 
   -# Sell gift certificate
-  %div(ng-show="(! gift_certificate) && (assembly.price > 0) && (! free_trial)")
+  %div(ng-show="(! gift_certificate) && (assembly.price > 0) && (!freeTrialCode || isExpired())")
     -# Not Logged in but want to buy gift certificate
     .gift-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-secondary.btn-large.input-block-level#sign-in-and-gift-button(ng-click="waitForLogin(); buyingGift(); openModal('login')")
@@ -75,13 +75,13 @@
         %div.inline(ng-show="enrolled")
           = render 'activities/latest/assembly_price'
 
-  %div(ng-show="(! enrolled) && (free_trial) && (assembly.price > 0)")
+  %div(ng-show="(! enrolled) && (freeTrialCode) && (assembly.price > 0) && (! isExpired())")
     .gift-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-secondary.btn-large.input-block-level#sign-in-and-free-trial-button(ng-click="setLoginState('freeTrial'); openModal('login')")
-        {{free_trial_text.toUpperCase()}} FREE TRIAL
+        {{freeTrialText.toUpperCase()}} FREE TRIAL
         = render "devise/sessions/new_angular"
     .gift-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
       .btn.btn-secondary.btn-large.input-block-level#free-trial-button(ng-click="freeTrial()")
-        {{free_trial_text.toUpperCase()}} FREE TRIAL
+        {{freeTrialText.toUpperCase()}} FREE TRIAL
 
   =render 'buy_modal'

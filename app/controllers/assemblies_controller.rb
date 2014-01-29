@@ -44,11 +44,13 @@ class AssembliesController < ApplicationController
   end
 
   def show_as_json
+    # return redirect_to landing_class_url(@assembly)#, notice: "Your free trial has expired, please purchase the class to continue.  Please contact info@chefsteps.com if there is any problems." if current_user && current_user.enrollments.where(enrollable_id: @assembly.id, enrollable_type: @assembly.class).first.try(:free_trial_expired?) && @assembly.price > 0
     render :json => @assembly
   end
 
   def trial
     session[:free_trial] = params[:trial_token]
+    session[:coupon] = params[:coupon] if params[:coupon]
     assembly, hours = Base64.decode64(session[:free_trial]).split('-').map(&:to_i)
     @assembly = Assembly.find(assembly)
     mixpanel.people.append(mixpanel_anonymous_id, {'Classes Free Trial Offered' => @assembly.title})

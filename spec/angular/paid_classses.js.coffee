@@ -227,6 +227,25 @@ describe "PaidClasses", ->
         sleep 2
         expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
 
+      it "should allow me to buy the class during my trial", ->
+        browser().navigateTo('/trial/MS03Mg==')
+        element('#free-trial-button').click()
+        sleep 2
+        expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
+        browser().navigateTo('/classes/become-a-badass/')
+        sleep 2
+        element("#buy-now").click()
+        sleep 2
+        expect(element('.buy-modal-body').count()).toBe(1)
+        input("number").enter("4242424242424242")
+        input("name").enter("Nigel Klotkin")
+        input("expMonth").enter("7")
+        input("expYear").enter("15")
+        input("cvc").enter("330")
+        element('#complete-buy').click()
+        sleep 3
+        expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for your purchase")
+
     describe "gift redeem", ->
       it "should allow me to redeem", ->
         browser().navigateTo('/classes/become-a-badass/landing?gift_token=test')

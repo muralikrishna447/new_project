@@ -19,11 +19,13 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.alertService = csAlertService
 
   $scope.loginState = null
-  $scope.free_trial_text = null
+  $scope.freeTrialText = null
+  $scope.freeTrialCode = false
 
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
-    $scope.enrolled = true if $scope.isEnrolled(data.user)
+    $scope.enrolled = true if $scope.isEnrolled() #(data.user)
+    # In the process of switching this over to a state rather than a boolean configuration.
     switch($scope.loginState)
       when "freeTrial"
         $scope.loginState = null
@@ -115,9 +117,29 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       return false
     true
 
-  $scope.isEnrolled = (user) ->
-    return false unless user.enrollments
-    !!_.find(user.enrollments, (enrollment) -> enrollment.enrollable_id == $scope.assembly.id && enrollment.enrollable_type == "Assembly" )
+  $scope.enrollment = ->
+    user = $scope.authentication.currentUser()
+    return null unless user.enrollments
+    _.find(user.enrollments, (enrollment) -> enrollment.enrollable_id == $scope.assembly.id && enrollment.enrollable_type == "Assembly" )
+
+  $scope.isEnrolled = ->
+    !!$scope.enrollment()
+
+  $scope.isFreeTrial = ->
+    enrollment = $scope.enrollment()
+    !!enrollment.trial_expires_at
+
+  $scope.differenceInTime = ->
+    enrollment = $scope.enrollment()
+    trial_expiration = new Date(enrollment.trial_expires_at)
+    current_time = new Date()
+    difference = trial_expiration - current_time
+    (difference/(1000*60))
+
+  $scope.isExpired = ->
+    enrollment = $scope.enrollment()
+    return false if !enrollment || isNaN(Date.parse(enrollment.trial_expires_at))
+    new Date(enrollment.trial_expires_at) < new Date()
 
   $scope.openModal = (gift) ->
     $scope.isGift = gift
@@ -204,7 +226,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       try
         __adroll.record_user "adroll_segments": segmentName
 
-
   $scope.freeTrial = ->
     $scope.processing = true
     $http(
@@ -212,16 +233,20 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       params:
         assembly_id: $scope.assembly.id
         discounted_price: 0
-        free_trial: $scope.free_trial
+        free_trial: $scope.freeTrialCode
       url: '/charges'
     ).success( (data, status, headers, config) ->
-      mixpanel.people.append('Classes Free Trialed', $scope.assembly.title)
+      mixpanel.people.append('Free Trial Classes', $scope.assembly.title)
       $scope.processing = false
-      $scope.state = "free_enrollment"
+      $scope.state = "free_trial"
       $scope.buyModalOpen = true
     ).error( (data, status, headers, config) ->
       $scope.processing = false
       console.log "FAIL" + data
     )
+
+  $scope.freeTrialExpiredNotice = ->
+    if $scope.isExpired()
+      $scope.alerts.addAlert({message: "Your free trial has expired, please purchase the class to continue.<br/>Please contact info@chefsteps.com if there is any problems.", type: "success", class: "long-header"})
 
 ]

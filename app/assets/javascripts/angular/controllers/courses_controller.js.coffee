@@ -2,14 +2,14 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
 
   $scope.routeParams = $routeParams
   $scope.route = $route
-  
+
   $scope.view_inclusion = {}
   $scope.collapsed = {}
   $scope.flatInclusions = []
   $scope.collapsibleInclusions = []
- 
+
   $scope.init = (course_id) ->
-    $http.get('/classes/' + course_id + '/show_as_json').success (data, status) ->
+    $http.get('/classes/' + course_id + '/show_as_json').success( (data, status) ->
       $scope.course = data
       $scope.includable_slug = $scope.routeParams.slug
       $scope.sortInclusions($scope.course)
@@ -22,6 +22,8 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         else
           firstInclusion = $scope.flatInclusions[0]
           $scope.loadInclusion(firstInclusion.includable_type, firstInclusion.includable_slug)
+    ).error( (data, status) ->
+    )
 
   $scope.loadInclusion = (includable_type, includable_slug) ->
     $scope.currentIncludable = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == includable_slug && incl.includable_type == includable_type)
@@ -82,10 +84,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     $scope.flatInclusions?[currentIncludableIndex() - 1]
 
   $scope.loadNextInclusion = ->
-   $scope.loadInclusion($scope.nextInclusion().includable_type, $scope.nextInclusion().includable_slug) 
+   $scope.loadInclusion($scope.nextInclusion().includable_type, $scope.nextInclusion().includable_slug)
 
   $scope.loadPrevInclusion = ->
-   $scope.loadInclusion($scope.prevInclusion().includable_type, $scope.prevInclusion().includable_slug) 
+   $scope.loadInclusion($scope.prevInclusion().includable_type, $scope.prevInclusion().includable_slug)
 
   $scope.sortInclusions = (assembly) ->
     flat = []
@@ -117,14 +119,14 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     $scope.determineCollapsed(parent_inclusion) if parent_inclusion
 
   $scope.toggleCollapse = (includable_id) ->
-    
+
     $scope.collapsed[includable_id] ?= true
-    $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id] 
+    $scope.collapsed[includable_id] = ! $scope.collapsed[includable_id]
 
   $scope.isCollapsed = (includable_id) ->
-    if $scope.collapsed[includable_id]? 
-      return $scope.collapsed[includable_id] 
-    else 
+    if $scope.collapsed[includable_id]?
+      return $scope.collapsed[includable_id]
+    else
       true
 
   # Global Navigation Behavior

@@ -38,7 +38,13 @@ class Enrollment < ActiveRecord::Base
       # by the caller. You don't want to charge first and then create the enrollement, b/c if
       # the charge succeeds and the enrollment fails, you are hosed.
       gross_price, tax, extra_descrip = get_tax_info(assembly.price, discounted_price, ip_address)
-      @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
+      enrollment = Enrollment.where(user_id: user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
+      if enrollment && enrollment.free_trial?
+        mixpanel.people.append(current_user.email, {'Free Trial Converted' => assembly.title})
+        enrollment.update_attributes({price: gross_price, sales_tax: tax, trial_expires_at: nil}, without_protection: true)
+      else
+        @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
+      end
       collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, user, stripe_token)
     end
 
@@ -51,10 +57,13 @@ class Enrollment < ActiveRecord::Base
         e.trial_expires_at = (Time.now+(free_trial_hours.hours))
       end
     end
-
   end
 
   def free_trial?
     trial_expires_at.present?
+  end
+
+  def free_trial_expired?
+    free_trial? && trial_expires_at < Time.now
   end
 end

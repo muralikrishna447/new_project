@@ -39,7 +39,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     window.cdnURL(url)
 
 
-  $scope.csGlobals = 
+  $scope.csGlobals =
     scaling: 1.0
     units: "grams"
 
@@ -375,16 +375,20 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       false
 
   $scope.fetchActivity = (id, callback) ->
-    if _.isNumber(id) && ! $scope.activities[id] 
-      console.log "Loading activity " + id   
-      $scope.activities[id] = Activity.get({id: id}, ->
-        console.log "Loaded activity " + id   
+    console.log("FETCH ACTIVITY-----------#{id}")
+    if _.isNumber(id) && ! $scope.activities[id]
+      console.log "Loading activity " + id
+      $scope.activities[id] = Activity.get({id: id}, ( ->
+        console.log "Loaded activity " + id
         callback() if callback
-      )
+      ),( (response) ->
+        window.location = response.data.path
+      ))
+    console.log("------------FETCH ACTIVITY-----------")
 
   $scope.makeActivityActive = (id) ->
     return if id == $scope.activity?.id
-    $scope.activity = $scope.activities[id] 
+    $scope.activity = $scope.activities[id]
     cs_event.track(id, 'Activity', 'show')
     mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
     $scope.csGlobals.units = "grams"
@@ -404,7 +408,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
         $rootScope.loading = false
       ), 500
     else
-      $scope.fetchActivity(id, -> 
+      $scope.fetchActivity(id, ->
         $scope.makeActivityActive(id)
         $rootScope.loading = false
       )
