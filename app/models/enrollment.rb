@@ -27,7 +27,6 @@ class Enrollment < ActiveRecord::Base
           free_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
         end
       end
-
       # Return the enrollment
       @enrollment
     end

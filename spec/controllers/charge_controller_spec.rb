@@ -60,7 +60,7 @@ describe ChargesController do
       end
 
       it "should call GiftCertificate.purchase" do
-        GiftCertificate.should_receive(:purchase)
+        GiftCertificate.should_receive(:purchase).and_call_original
         subject
       end
 
@@ -76,7 +76,7 @@ describe ChargesController do
       end
 
       it "should call GiftCertificate.redeem" do
-        GiftCertificate.should_receive(:redeem)
+        GiftCertificate.should_receive(:redeem).and_call_original
         subject
       end
 
@@ -94,7 +94,7 @@ describe ChargesController do
     context 'free_trial' do
       subject { post :create, assembly_id: assembly.id, free_trial: Base64.encode64("#{assembly.id}-64") }
       it "should Enrollment.call enroll_user_in_assembly" do
-        Enrollment.should_receive(:enroll_user_in_assembly)
+        Enrollment.should_receive(:enroll_user_in_assembly).and_call_original
         subject
       end
 
@@ -111,12 +111,17 @@ describe ChargesController do
         subject
         assigns(:enrollment).trial_expires_at.should_not be nil
       end
+
+      it "should call mixpanel track" do
+        ApplicationController.any_instance.should_receive(:mixpanel).exactly(2).times.and_call_original
+        subject
+      end
     end
 
     context "normal enrollment" do
       subject { post :create, assembly_id: assembly.id}
       it "should Enrollment.call enroll_user_in_assembly" do
-        Enrollment.should_receive(:enroll_user_in_assembly)
+        Enrollment.should_receive(:enroll_user_in_assembly).and_call_original
         subject
       end
 
