@@ -9,14 +9,14 @@ describe ChargesController do
       sign_in user
     end
 
-    # context "errors" do
-    #   it 'errors appropriately on a bad assembly id' do
-    #     controller.stub(:params) { {stripeToken: 'xxx', assembly_id: 1}  }
-    #     post :create
-    #     expect(response.status).to eq(422)
-    #     JSON.parse(response.body)["errors"][0].should include("Assembly")
-    #   end
-    # end
+    context "errors" do
+      it 'errors appropriately on a bad assembly id' do
+        controller.stub(:params) { {stripeToken: 'xxx', assembly_id: 1}  }
+        post :create
+        expect(response.status).to eq(422)
+        JSON.parse(response.body)["errors"][0].should include("Assembly")
+      end
+    end
 
     context 'Enrollment' do
       before do
