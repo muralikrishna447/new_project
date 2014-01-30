@@ -37,7 +37,7 @@
 
   .section
 
-  .row.section(ng-show="! editMode")
+  .row.section.anim-basic-fade(ng-show="! editMode")
     .span12.well.text-center.wiki-warning(ng-show="csAuthentication.loggedIn()")
       %div(ng-show="showStubTip()")
         %h3.section-tiny
@@ -82,7 +82,7 @@
         .btn-group
           .btn.btn-primary(ng-click="startEditMode()" ng-show="csAuthentication.loggedIn()")
             EDIT
-    .span6.edit-buttons-group(ng-show="editMode")
+    .span6.edit-buttons-group.anim-basic-fade(ng-show="editMode")
       .btn-toolbar
         .btn.btn-primary(ng-click="endEditMode()")
           SAVE
@@ -108,7 +108,7 @@
         .span6.section(ng-show="(! editMode) && (ingredient.text_fields[textFieldName].length)")
           %h3(ng-bind-html="textFieldName")
           %div(ng-bind-html="ingredient.text_fields[textFieldName] | markdown | shortcode")
-        .span6.section(ng-show="editMode")
+        .span6.section.anim-basic-fade(ng-show="editMode")
           %h3.inline(ng-bind-html="textFieldName")
           %div( ng-model="ingredient.text_fields[textFieldName]"
                 contenteditable="true"
@@ -121,10 +121,10 @@
 
     .span6
       .well.relative
-        .row.section(ng-show="editMode")
+        .row.section.anim-basic-fade(ng-show="editMode")
           .span6
             %h3.inline Tags
-            .btn.btn-link.inline(ng-click="showTagsModal = true") Select...            
+            .btn.btn-link.inline(ng-click="showTagsModal()") Select...            
             %input(type="hidden" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
 
         .row.section(ng-show="(! editMode) && ingredient.tags.length")
@@ -160,7 +160,7 @@
               %li(ng-repeat="user in getEditingUsers()")
                 %a(ng-href="/profiles/{{user.slug}}" ng-bind-html="user.name")
 
-        .row(ng-show="editMode || ingredient.density")
+        .row.anim-basic-fade(ng-show="editMode || ingredient.density")
           .span6
             %h3.inline Volume Conversion
             .btn.btn-link.inline(ng-show="editMode" ng-click="densityService.editDensity(ingredient)")
@@ -212,7 +212,7 @@
     %h4 Now tell the world?
     = render 'layouts/social_buttons', media_object: nil
 
-%div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
+%script(type="text/ng-template" id="ingredientTagChooserModal.html")
   .modal-header
     %h2 Choose Tags
     Pick all that apply to how you think as a cook; e.g. it is ok to mark 
@@ -222,5 +222,5 @@
     %csTagChooser(  ng-model="ingredient.tags" 
                     options="csTagService.ingredientSuggestedTags")
   .modal-footer
-    %button.btn(ng-click="showTagsModal = false") Done
+    %button.btn(ng-click="$close()") Done
 
