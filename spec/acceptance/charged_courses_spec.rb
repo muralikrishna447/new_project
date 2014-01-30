@@ -21,7 +21,7 @@ feature 'charge for classes', pending: true, :js => true do
     page.find("##{uuid}")
   end
 
-  def enrollment_should_fail(extra_msg = nil) 
+  def enrollment_should_fail(extra_msg = nil)
     page.find('#complete-buy').click
     wait_for_dom()
     page.should_not have_content('processing your card')
@@ -55,7 +55,7 @@ feature 'charge for classes', pending: true, :js => true do
   end
 
   describe "With a logged out user" do
-    before(:each) do 
+    before(:each) do
       visit '/classes/clummy/landing'
       page.should have_content('147.47')
       page.find('#buy-button').click
@@ -64,7 +64,7 @@ feature 'charge for classes', pending: true, :js => true do
     scenario "Should get a chance to sign in with nice message" do
       current_path.should == '/sign_in'
       page.should have_content('before enrolling in a course')
-    end 
+    end
 
     scenario "Should redirect back to course after signin" do
       current_path.should == '/sign_in'
@@ -72,9 +72,9 @@ feature 'charge for classes', pending: true, :js => true do
       Fabricate(:user, email: 'bob@bob.com', name: 'Bob Tester', password: 'password')
       fill_in 'user_email', with: 'bob@bob.com'
       fill_in 'user_password', with: 'password'
-      click_button 'Sign in'      
+      click_button 'Sign in'
       current_path.should == '/classes/clummy/landing'
-    end 
+    end
 
     # TODO should also test redirect after sign up
   end
@@ -83,7 +83,7 @@ feature 'charge for classes', pending: true, :js => true do
 
     describe "regular purchase" do
 
-      before(:each) do 
+      before(:each) do
         login_user
         #session[:coupon] = "'a1b71d389a50'"
         visit '/classes/clummy/landing'
@@ -97,7 +97,7 @@ feature 'charge for classes', pending: true, :js => true do
         wait_for_dom()
         page.should_not have_content('CVC')
       end
-       
+
       scenario "Logged in  user gets error when making various errors on card form" do
         enrollment_should_fail
 
@@ -135,7 +135,7 @@ feature 'charge for classes', pending: true, :js => true do
 
         visit '/classes/clummy/landing'
         page.should_not have_content('Buy Now')
-        page.should have_content('Continue Class') 
+        page.should have_content('Continue Class')
       end
     end
 
@@ -163,7 +163,7 @@ feature 'charge for classes', pending: true, :js => true do
 
         visit '/classes/clummy/landing'
         page.should have_content('Send As Gift')
-        page.should have_content('BUY NOW') 
+        page.should have_content('BUY NOW')
       end
     end
 

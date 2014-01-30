@@ -142,7 +142,13 @@ class ActivitiesController < ApplicationController
     # clearer what to do on update.
     respond_to do |format|
       format.json {
-        render :json => @activity.to_json
+        unless @activity.containing_course && current_user && current_user.enrollments.where(enrollable_id: @activity.containing_course.id, enrollable_type: @activity.containing_course.class).first.try(:free_trial_expired?) && @activity.containing_course.price > 0
+          render :json => @activity.to_json
+        else
+          mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.title})
+          mixpanel.track('Free Trial Expired', {class: @activity.containing_course.title, length: current_user.class_enrollment(@activity.containing_course).free_trial_length})
+          render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden
+        end
       }
     end
   end

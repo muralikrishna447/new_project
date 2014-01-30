@@ -4,7 +4,7 @@ describe "Activities" do
 
   describe "Activity slugs" do
     before(:each) do
-      @activity = Fabricate(:activity, title: 'Slug A Bug', published: false)
+      @activity = Fabricate(:activity, title: 'Slug A Bug', published: true)
     end
 
     it "creates a basic slug" do
@@ -42,7 +42,7 @@ describe "Activities" do
       page.status_code.should == 200
     end
 
-    it "passes token, minimal, and version params through redirect" do
+    it "passes token, minimal, and version params through redirect", pending: true do
       visit activity_path(@activity)
       p1 = current_path_info
       @activity.update_attributes(title: "Bug In A Rug")

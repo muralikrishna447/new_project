@@ -11,7 +11,6 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-
 ActiveRecord::Schema.define(:version => 20140128044815) do
 
   create_table "active_admin_comments", :force => true do |t|
@@ -239,6 +238,7 @@ ActiveRecord::Schema.define(:version => 20140128044815) do
     t.decimal  "price",               :precision => 8, :scale => 2, :default => 0.0
     t.decimal  "sales_tax",           :precision => 8, :scale => 2, :default => 0.0
     t.integer  "gift_certificate_id"
+    t.datetime "trial_expires_at"
   end
 
   create_table "equipment", :force => true do |t|
@@ -401,17 +401,6 @@ ActiveRecord::Schema.define(:version => 20140128044815) do
     t.text     "image_id"
     t.string   "primary_path"
   end
-
-  create_table "pending_edits", :force => true do |t|
-    t.integer  "user_id"
-    t.text     "serialized_content"
-    t.integer  "editable_id"
-    t.string   "editable_type"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
-  end
-
-  add_index "pending_edits", ["editable_id", "editable_type"], :name => "index_pending_edits_on_editable_id_and_editable_type"
 
   create_table "pg_search_documents", :force => true do |t|
     t.text     "content"
