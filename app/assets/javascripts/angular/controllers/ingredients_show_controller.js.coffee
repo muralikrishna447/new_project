@@ -142,6 +142,9 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   $scope.showTagsModal = ->
     modalInstance = $modal.open(
       templateUrl: "ingredientTagChooserModal.html"
+      backdrop: false
+      keyboard: false
+      windowClass: "takeover-modal"
       resolve: 
         ingredient: -> $scope.ingredient
         csTagService: -> $scope.csTagService
