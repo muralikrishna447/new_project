@@ -116,7 +116,7 @@ describe ChargesController do
         end
 
         it "should call mixpanel track" do
-          ApplicationController.any_instance.should_receive(:mixpanel).exactly(2).times.and_call_original
+          ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
           subject
         end
       end
@@ -157,7 +157,7 @@ describe ChargesController do
           end
 
           it "should call mixpanel track" do
-            ApplicationController.any_instance.should_receive(:mixpanel).exactly(2).times.and_call_original
+            ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
             subject
           end
         end
