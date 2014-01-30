@@ -148,9 +148,10 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
       resolve: 
         ingredient: -> $scope.ingredient
         csTagService: -> $scope.csTagService
-      controller: ($scope, $modalInstance, ingredient, csTagService) ->
+      controller: ["$scope", "$modalInstance", "ingredient", "csTagService", ($scope, $modalInstance, ingredient, csTagService) ->
         $scope.ingredient = ingredient
         $scope.csTagService = csTagService
+      ]
     )
 
 
