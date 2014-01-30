@@ -1500,7 +1500,9 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.transition'])
 
       function removeModalWindow(modalInstance) {
 
+        // mnatkin 1/30/14 - added html so OPENED_MODAL_CLASS can be used to hide scrollbars
         var body = $document.find('body').eq(0);
+        var html = $document.find('html').eq(0);
         var modalWindow = openedWindows.get(modalInstance).value;
 
         //clean up the stack
@@ -1509,6 +1511,7 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.transition'])
         //remove window DOM element
         removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, 300, checkRemoveBackdrop);
         body.toggleClass(OPENED_MODAL_CLASS, openedWindows.length() > 0);
+        html.toggleClass(OPENED_MODAL_CLASS, openedWindows.length() > 0);
       }
 
       function checkRemoveBackdrop() {
@@ -1579,6 +1582,7 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.transition'])
         });
 
         var body = $document.find('body').eq(0),
+            html = $document.find('html').eq(0),
             currBackdropIndex = backdropIndex();
 
         if (currBackdropIndex >= 0 && !backdropDomEl) {
@@ -1598,6 +1602,7 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.transition'])
         openedWindows.top().value.modalDomEl = modalDomEl;
         body.append(modalDomEl);
         body.addClass(OPENED_MODAL_CLASS);
+        html.addClass(OPENED_MODAL_CLASS);
       };
 
       $modalStack.close = function (modalInstance, result) {
