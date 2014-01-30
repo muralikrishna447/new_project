@@ -119,7 +119,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.enrollment = ->
     user = $scope.authentication.currentUser()
-    return null unless user.enrollments
+    return null unless user && user.enrollments
     _.find(user.enrollments, (enrollment) -> enrollment.enrollable_id == $scope.assembly.id && enrollment.enrollable_type == "Assembly" )
 
   $scope.isEnrolled = ->
