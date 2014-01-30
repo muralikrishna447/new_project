@@ -146,6 +146,7 @@ class ActivitiesController < ApplicationController
           render :json => @activity.to_json
         else
           mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.title})
+          mixpanel.track('Free Trial Expired', {class: @activity.containing_course.title, length: current_user.class_enrollment(@activity.containing_course).free_trial_length})
           render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden
         end
       }
