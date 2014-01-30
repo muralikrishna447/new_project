@@ -2,7 +2,7 @@
 
 .takeover-modal
   position: fixed !important
-  top: 0px !important
+  top: 0px 
   left: 0
   right: 0
   bottom: 0
@@ -15,27 +15,18 @@
   .modal-body
     max-height: 100%
 
-  // The commented out background-colors are useful for debugging
-  background-color: red
-
-  &.ng-enter, &.ng-leave, &.ng-move, &.ng-hide-add, &.ng-hide-remove
-    background-color: green
+  &.modal.fade
     @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
-
-  &.ng-hide-add, &.ng-hide-remove
-    display: block !important
     opacity: 1
+    overflow: hidden
+    top: 100%
+    // This keeps the browser from scrolling to bottom of page when the modal pops on
+    max-height: 0%
+  &.modal.fade.in
+    top: 0%
+    max-height: 100%
 
-  &.ng-enter, &.ng-leave.ng-leave-active, &.ng-hide
-    background-color: yellow
-    opacity: 0
-  &.ng-leave, &.ng-enter.ng-enter-active, &.ng-move
-    background-color: orange
-    opacity: 1    
-  &.ng-move-active
-    opacity: 0.5
+html
+  &.modal-open
+    overflow-y: hidden
 
-
-
-body.modal-open
-  overflow: hidden
