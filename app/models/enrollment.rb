@@ -41,6 +41,7 @@ class Enrollment < ActiveRecord::Base
       enrollment = Enrollment.where(user_id: user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
       if enrollment && enrollment.free_trial?
         enrollment.update_attributes({price: gross_price, sales_tax: tax, trial_expires_at: nil}, without_protection: true)
+        @enrollment = enrollment
       else
         @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
       end
@@ -64,5 +65,10 @@ class Enrollment < ActiveRecord::Base
 
   def free_trial_expired?
     free_trial? && trial_expires_at < Time.now
+  end
+
+  def free_trial_length
+    return nil unless free_trial?
+    ((trial_expires_at - created_at)/1.hours).round
   end
 end

@@ -163,5 +163,9 @@ class User < ActiveRecord::Base
       last_activity.trackable
     end
   end
+
+  def class_enrollment(assembly)
+    enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first
+  end
 end
 
