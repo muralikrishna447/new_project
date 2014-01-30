@@ -25,7 +25,7 @@
                       = render 'shared/activity_layouts/list'
                     %div(ng-switch-default)
                       = render 'activities/main_activity_content'
- 
+
               %div(ng-switch-when='Assignment')
                 = render 'assembly_upload', assembly: @course
 
@@ -79,9 +79,28 @@
           {{course.title}}
       %ul.section.no-bullet
         %li(ng-repeat='inclusion in course.assembly_inclusions'
-            ng-class="inclusionActiveClass(inclusion)"  
+            ng-class="inclusionActiveClass(inclusion)"
             ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)'
             ng-include="'_recursive_assembly_syllabus.html'")
+      .free-trial-section(ng-controller="BuyAssemblyStripeController" ng-cloak
+        ng-init='assembly=#{@course.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil};freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; assemblyPath="#{class_url(@course, protocol: "http")}"' ng-show="isFreeTrial()")
+        %p
+          %span(ng-show="differenceInTime() > 60 && differenceInTime() > 0")
+            You're in a free trial.
+            %br
+            Want to move at your own pace?
+          %span(ng-show="differenceInTime() < 60 && differenceInTime() > 0")
+            You're in a free trial.
+            %br
+            {{differenceInTime() | number:0}} minutes remaining
+          %span(ng-show="differenceInTime() <= 0")
+            Your free trial has expired.
+            %br
+            Please buy now to continue the class.
+        .buy-button
+          %a.btn.btn-primary#buy-now(ng-click="openModal(false)")
+            %b Buy Now {{discounted_price | niceDollars}}
+        =render 'buy_modal'
 
     .course-nav-hamburger-wrapper
       .course-nav-hamburger(ng-click="toggleShowCourseMenu()")
@@ -103,4 +122,4 @@
   / .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
   /   = render 'layouts/footer'
 
-             
+

@@ -169,6 +169,7 @@ Delve::Application.routes.draw do
   end
   match "/gift/:gift_token", to: 'assemblies#redeem'
   match "/gift", to: 'assemblies#redeem_index'
+  match "/trial/:trial_token", to: 'assemblies#trial'
 
   resources :projects, controller: :assemblies
   resources :streams, only: [:index, :show]

@@ -159,12 +159,73 @@ describe "BuyAssemblyStripeController", ->
     it "should return true if the user is enrolled in the activity", ->
       scope.assembly = {id: 1}
       user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly"}]}
-      expect(scope.isEnrolled(user)).toBe(true)
+      scope.authentication.setCurrentUser(user)
+      expect(scope.isEnrolled()).toBe(true)
 
     it "should return false if the user is not enrolled in the activity", ->
       scope.assembly = {id: 1}
       user = {email:"me3@danahern.com",enrollments:[]}
-      expect(scope.isEnrolled(user)).toBe(false)
+      scope.authentication.setCurrentUser(user)
+      expect(scope.isEnrolled()).toBe(false)
+
+  describe "#enrollment", ->
+    it "should return an enrollment for the user if they are enrolled", ->
+      scope.assembly = {id: 1}
+      user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly"}]}
+      scope.authentication.setCurrentUser(user)
+      expect(scope.enrollment()).toEqual({enrollable_id:1,enrollable_type:"Assembly"})
+
+    it "should return null if not enrolled", ->
+      scope.assembly = {id: 1}
+      user = {email:"me3@danahern.com",enrollments:[]}
+      scope.authentication.setCurrentUser(user)
+      expect(scope.enrollment()).toEqual(null)
+
+  describe "#isFreeTrial", ->
+    it "should return true if trial_expires_at exists", ->
+      scope.assembly = {id: 1}
+      user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly", trial_expires_at: "2000-01-27T18:15:34Z"}]}
+      scope.authentication.setCurrentUser(user)
+      expect(scope.isFreeTrial()).toBe(true)
+
+    it "should return false if trial_expires_at exists", ->
+      scope.assembly = {id: 1}
+      user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly"}]}
+      scope.authentication.setCurrentUser(user)
+      expect(scope.isFreeTrial()).toBe(false)
+
+  describe "#differenceInTime", ->
+    it "should return the minutes away", ->
+      scope.assembly = {id: 1}
+      current_time = new Date()
+      future_time = new Date(current_time.getTime() + 3600*1000)
+      user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly", trial_expires_at: future_time}]}
+      scope.authentication.setCurrentUser(user)
+      expect(scope.differenceInTime()).toBeGreaterThan(55)
+      expect(scope.differenceInTime()).toBeLessThan(65)
+
+  describe "#isExpired", ->
+    it "should return true if the trial is expired", ->
+      scope.assembly = {id: 1}
+      user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly", trial_expires_at: "2000-01-27T18:15:34Z"}]}
+      scope.authentication.setCurrentUser(user)
+      expect(scope.isExpired()).toBe(true)
+
+    it "should return false if the trial isn't expired", ->
+      scope.assembly = {id: 1}
+      user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly", trial_expires_at: "2100-01-27T18:15:34Z"}]}
+      scope.authentication.setCurrentUser(user)
+      expect(scope.isExpired()).toBe(false)
+
+  describe "#freeTrialExpiredNotice", ->
+    it "should call addAlert if trial is expired", ->
+      scope.assembly = {id: 1}
+      user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly", trial_expires_at: "2000-01-27T18:15:34Z"}]}
+      scope.authentication.setCurrentUser(user)
+      scope.alerts = {addAlert: jasmine.createSpy("addAlert")}
+      scope.freeTrialExpiredNotice()
+      expect(scope.alerts.addAlert).toHaveBeenCalled()
+
 
   describe "#openModal", ->
     describe "if it is a gift", ->
@@ -305,4 +366,17 @@ describe "BuyAssemblyStripeController", ->
       it "should set processing to be false", ->
         expect(scope.processing).toBe(false)
 
+  describe "$on", ->
+    beforeEach ->
+      scope.enrolled = false
+      scope.assembly = {id: 123}
+      spyOn(scope.authentication, "currentUser").andReturn({name: "Dan Ahern", enrollments: [{enrollable_id: 123, enrollable_type: "Assembly"}]})
+
+    it "should set logged_in to true", ->
+      scope.$broadcast("login", {user: {name: "Dan Ahern"}})
+      expect(scope.logged_in).toBe(true)
+
+    it "should set enrolled to true if in the class", ->
+      scope.$broadcast("login", {user: {name: "Dan Ahern", enrollments: [{enrollable_id: 123, enrollable_type: "Assembly"}]}})
+      expect(scope.enrolled).toBe(true)
 

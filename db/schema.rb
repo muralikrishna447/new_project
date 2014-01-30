@@ -238,6 +238,7 @@ ActiveRecord::Schema.define(:version => 20140128044815) do
     t.decimal  "price",               :precision => 8, :scale => 2, :default => 0.0
     t.decimal  "sales_tax",           :precision => 8, :scale => 2, :default => 0.0
     t.integer  "gift_certificate_id"
+    t.datetime "trial_expires_at"
   end
 
   create_table "equipment", :force => true do |t|

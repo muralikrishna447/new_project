@@ -79,11 +79,11 @@ class Assembly < ActiveRecord::Base
     Page.find_by_slug(self.slug + '-ingredients-equipment')
   end
 
-  def leaf_activities 
+  def leaf_activities
     inclusions = assembly_inclusions.to_a
     3.times do
       inclusions.map! { |incl| incl.includable_type == "Assembly" ? incl.includable.assembly_inclusions : incl }
-      inclusions.flatten!   
+      inclusions.flatten!
     end
     inclusions.select { |incl| incl.includable_type == "Activity" }.map(&:includable)
   end
@@ -110,5 +110,9 @@ class Assembly < ActiveRecord::Base
 
   def only_one_level
     self.assembly_inclusions.map(&:includable_type).include?('Assembly') ? false : true
+  end
+
+  def paid_class?
+    (assembly_type == "Course" && (price  && price > 0))
   end
 end

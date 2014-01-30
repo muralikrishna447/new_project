@@ -307,6 +307,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       , 300)
     ).error( (data, status) ->
       $scope.dataLoading -= 1
+      if status == 503
+        $scope.message = "There was a problem connecting to google"
       # $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
     )
 
