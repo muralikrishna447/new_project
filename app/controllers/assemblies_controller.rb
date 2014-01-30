@@ -56,8 +56,10 @@ class AssembliesController < ApplicationController
     if current_user && current_user.enrollments.where(enrollable_id: @assembly.id, enrollable_type: @assembly.class).first.try(:free_trial_expired?)
       redirect_to landing_class_url(@assembly)
     else
-      mixpanel.people.append(mixpanel_anonymous_id, {'Free Trial Offered' => @assembly.title})
-      mixpanel.track('Free Trial Offered', {class: @assembly.title, length: hours} )
+      if mixpanel_anonymous_id
+        mixpanel.people.append(mixpanel_anonymous_id, {'Free Trial Offered' => @assembly.title})
+        mixpanel.track(mixpanel_anonymous_id, 'Free Trial Offered', {class: @assembly.title, length: hours} )
+      end
       flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
       redirect_to landing_class_url(@assembly)
     end

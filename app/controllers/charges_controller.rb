@@ -17,14 +17,14 @@ class ChargesController < ApplicationController
     when is_a_free_trial? # This is for doing a free trial right now it's really similar to normal course but with an extra param
       assembly_from_free_trial, hours = Base64.decode64(@free_trial).split('-').map(&:to_i)
       @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, 0, nil, hours)
-      if @enrollment
+      if @enrollment && mixpanel_anonymous_id
         mixpanel.people.append(current_user.email, {'Free Trial Enrolled' => assembly})
-        mixpanel.track('Free Trial Enrolled', {class: assembly.title, length: hours})
+        mixpanel.track(mixpanel_anonymous_id, 'Free Trial Enrolled', {class: assembly.title, length: hours})
       end
     else # Normal course enrollment (paid or free)
-      if current_user.enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first.try(:free_trial?) && assembly.price > 0
+      if current_user.enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first.try(:free_trial?) && assembly.price > 0 && mixpanel_anonymous_id
         mixpanel.people.append(current_user.email, {'Free Trial Converted' => assembly.title})
-        mixpanel.track("Free Trial Conversion", {class: assembly.title, length: current_user.class_enrollment(assembly).free_trial_length})
+        mixpanel.track(mixpanel_anonymous_id, "Free Trial Conversion", {class: assembly.title, length: current_user.class_enrollment(assembly).free_trial_length})
       end
       @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken])
     end
