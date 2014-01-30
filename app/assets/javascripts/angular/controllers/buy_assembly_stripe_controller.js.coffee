@@ -127,10 +127,12 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.isFreeTrial = ->
     enrollment = $scope.enrollment()
+    return false unless enrollment
     !!enrollment.trial_expires_at
 
   $scope.differenceInTime = ->
     enrollment = $scope.enrollment()
+    return false unless enrollment
     trial_expiration = new Date(enrollment.trial_expires_at)
     current_time = new Date()
     difference = trial_expiration - current_time
