@@ -103,6 +103,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
 private
 
   def track_event(trackable, action = params[:action])
