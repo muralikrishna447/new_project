@@ -106,7 +106,10 @@
                 = link_to 'Create a new recipe', new_activity_url, class: 'btn btn-primary'
 
     .span5
-      %div(ng-include="'/client_views/_survey'")
+      / %div(ng-include="'/client_views/_survey'")
+      %div(ng-controller='SurveyController')
+        %btn.btn.btn-primary(ng-click='open()')
+          Open Survey
       %h4 Timeline
       .timeline
         .text-center

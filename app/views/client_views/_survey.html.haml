@@ -1,5 +1,7 @@
-%div(ng-controller='SurveyController')
+/ %div(ng-controller='SurveyController')
+.modal-header
   %h3 Survey
+.modal-body
   %form(name='Survey')
     %div(ng-repeat="question in questions")
       %div(ng-switch on='question.type')
@@ -23,5 +25,6 @@
               {{question.copy}}
             %div
               %textarea(ng-model='question.answer')
-    %button.btn.btn-primary(ng-click='update()')
-      Go!
+.modal-footer
+  %button.btn.btn-primary(ng-click='update()')
+    Go!

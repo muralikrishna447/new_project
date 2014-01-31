@@ -1,7 +1,6 @@
-@app.controller 'SurveyController', ['$scope', '$http', ($scope, $http) ->
+@app.controller 'SurveyController', ['$scope', '$http', '$modal', ($scope, $http, $modal) ->
 
   $scope.questions = []
-  $scope.survey_results = {}
 
   question1 = {}
   question1.type = 'select'
@@ -56,30 +55,42 @@
   question4.copy = 'Tell us more about yourself:'
   $scope.questions.push(question4)
 
-  $scope.getResults = ->
-    angular.forEach $scope.questions, (question, index) ->
-      switch question.type
-        when 'select'
-          $scope.survey_results[question.copy] = question.answer
-        when 'multiple-select'
-          answers = [] 
-          angular.forEach question.options, (option, index) ->
-            if option.checked
-              answers.push(option.name)
-          $scope.survey_results[question.copy] = answers.join()
-        when 'open-ended'
-          $scope.survey_results[question.copy] = question.answer    
-
-  $scope.update = ->
-    $scope.getResults()
-    
-    data = {'survey_results': $scope.survey_results}
-    $http.post('/user_surveys', data).success((data) ->
-
-    )
-
   $scope.$on 'SurveySubmitted', ->
     $scope.update()
+
+  $scope.open = ->
+    modalInstance = $modal.open(
+      templateUrl: "/client_views/_survey.html"
+      backdrop: false
+      keyboard: false
+      windowClass: "takeover-modal"
+      resolve:
+        questions: -> $scope.questions
+      controller: ($scope, $modalInstance, questions) ->
+        $scope.questions = questions
+        $scope.survey_results = {}
+        $scope.getResults = ->
+          angular.forEach $scope.questions, (question, index) ->
+            switch question.type
+              when 'select'
+                $scope.survey_results[question.copy] = question.answer
+              when 'multiple-select'
+                answers = [] 
+                angular.forEach question.options, (option, index) ->
+                  if option.checked
+                    answers.push(option.name)
+                $scope.survey_results[question.copy] = answers.join()
+              when 'open-ended'
+                $scope.survey_results[question.copy] = question.answer    
+
+        $scope.update = ->
+          $scope.getResults()
+          
+          data = {'survey_results': $scope.survey_results}
+          $http.post('/user_surveys', data).success((data) ->
+            $modalInstance.close()
+          )
+    )
 ]
 
 
