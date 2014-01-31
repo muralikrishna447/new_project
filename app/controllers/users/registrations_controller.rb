@@ -33,7 +33,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       mixpanel.track(@user.email, 'Signed Up')
       finished('counter_split', :reset => false)
       unless request.xhr?
-        # redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
         if session[:user_return_to] && (session[:user_return_to] != root_url && session[:user_return_to] != sign_in_url)
           redirect_to session[:user_return_to], notice: "Thanks for joining the ChefSteps community!"
         else
