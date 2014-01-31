@@ -3,15 +3,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   skip_before_filter :require_no_authentication, on: :create, if: proc {|c| request.xhr?}
 
   def welcome
-    # name = params[:name]
-    # email = params[:email]
-    # signed_up_from = params[:signed_up_from]
-    # @user = User.where(email: email).first
-    # if @user
-    #   redirect_to sign_in_url(name: name, email: email)
-    # else
-    #   aweber_signup(email, signed_up_from)
-    # end
   end
 
   def new
@@ -35,7 +26,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
     if @user.save
       sign_in @user
-      aweber_signup(@user.name, @user.email)
+      email_list_signup(@user.name, @user.email, "ajax_signup_form")
       cookies.delete(:viewed_activities)
       cookies[:returning_visitor] = true
       mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
@@ -44,7 +35,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       unless request.xhr?
         # redirect_to user_profile_path(@user), notice: "Thanks for signing up! Please check your email now to confirm your registration."
         if session[:user_return_to] && (session[:user_return_to] != root_url && session[:user_return_to] != sign_in_url)
-          redirect_to session[:user_return_to], notice: "Thanks for signing up! Please check your email now to confirm your registration."
+          redirect_to session[:user_return_to], notice: "Thanks for joining the ChefSteps community!"
         else
           redirect_to welcome_url(email: @user.email)
         end
@@ -62,33 +53,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def complete_registration
     @user = User.new
-  end
-
-  def signup_and_enroll
-    @user = User.new(params[:user])
-    @course = Course.find(params[:course_id])
-    if cookies[:viewed_activities]
-      @user.viewed_activities = JSON.parse(cookies[:viewed_activities])
-    end
-    if @user.save
-      sign_in @user
-      aweber_signup(@user.name, @user.email)
-      cookies.delete(:viewed_activities)
-      mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
-      mixpanel.track(@user.email, 'Signed Up')
-      set_referrer_in_mixpanel("#{session[:referred_from]} invitee signed up")
-      @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
-      if @enrollment.save
-        redirect_to course_url(@course), notice: "Thanks for enrolling! Please check your email now to confirm your registration."
-        track_event @course, 'enroll'
-        finished('poutine', :reset => false)
-        finished('free or not', :reset => false)
-        mixpanel.people.increment(@user.email, {'Course Enrolled Count' => 1})
-        mixpanel.people.append(@user.email, {'Classes Enrolled' => @course.title})
-      end
-    else
-      redirect_to course_url(@course), notice: "Sorry, there was a problem with the information provided.  Please try again."
-    end
   end
 
   protected
