@@ -57,8 +57,8 @@ class AssembliesController < ApplicationController
       redirect_to landing_class_url(@assembly)
     else
       if mixpanel_anonymous_id
-        mixpanel.people.append(mixpanel_anonymous_id, {'Free Trial Offered' => @assembly.title})
-        mixpanel.track(mixpanel_anonymous_id, 'Free Trial Offered', {class: @assembly.title, length: hours} )
+        mixpanel.people.append(mixpanel_anonymous_id, {'Free Trial Offered' => @assembly.slug})
+        mixpanel.track(mixpanel_anonymous_id, 'Free Trial Offered', {slug: @assembly.slug, length: hours} )
       end
       flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
       redirect_to landing_class_url(@assembly)
