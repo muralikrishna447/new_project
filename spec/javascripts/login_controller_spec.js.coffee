@@ -74,10 +74,6 @@ describe "LoginController", ->
       scope.openModal('welcome')
       expect(scope.welcomeModalOpen).toBe(true)
 
-    it "should open the survey model if form is 'survey'", ->
-      scope.openModal('survey')
-      expect(scope.surveyModalOpen).toBe(true)
-
   describe "#closeModal", ->
     it "should close the login modal if form is 'login'", ->
       scope.closeModal('login')
@@ -95,10 +91,6 @@ describe "LoginController", ->
     it "should close the welcome modal if form is 'welcome'", ->
       scope.closeModal('welcome')
       expect(scope.welcomeModalOpen).toBe(false)
-
-    it "should close the survey modal if form is 'survey'", ->
-      scope.closeModal('survey')
-      expect(scope.surveyModalOpen).toBe(false)
 
     it "should clear the messages", ->
       scope.message = "This should be cleared"
@@ -207,9 +199,9 @@ describe "LoginController", ->
         timeout.flush()
         expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
 
-      it "should open the survey modal if not a purchase", ->
+      it "should open the invite modal if not a purchase", ->
         timeout.flush()
-        expect(scope.surveyModalOpen).toBe(true)
+        expect(scope.inviteModalOpen).toBe(true)
 
       it "should not open the invite modal if a purchase", ->
         scope.formFor = "purchase"
@@ -545,8 +537,3 @@ describe "LoginController", ->
       scope.register_user.email = "a@b.c"
       scope.register_user.name = "Test"
       expect(scope.validNameAndEmail()).toBe true
-
-  describe "#askSurvey", ->
-    it "should open the invite modal", ->
-      scope.askSurvey()
-      expect(scope.surveyModalOpen).toBe(true)

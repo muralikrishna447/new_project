@@ -47,8 +47,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.googleInviteModalOpen = true
     else if form == "welcome"
       $scope.welcomeModalOpen = true
-    else if form == "survey"
-      $scope.surveyModalOpen = true
 
   $scope.closeModal = (form) ->
     $scope.resetMessages()
@@ -62,8 +60,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.googleInviteModalOpen = false
     else if form == "welcome"
       $scope.welcomeModalOpen = false
-    else if form == "survey"
-      $scope.surveyModalOpen = false
+
 
   $scope.togglePassword = ->
     if $scope.passwordType == "password"
@@ -179,8 +176,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
             $scope.$apply()
             $scope.authentication.setCurrentUser(data.user)
             unless $scope.formFor == "purchase"
-              # $scope.loadFriends()
-              $scope.askSurvey()
+              $scope.loadFriends()
           , 300)
           # $scope.notifyLogin(data.user)
       )
@@ -398,10 +394,4 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.showMadlibPassword = true
     validation
 
-  $scope.askSurvey = ->
-    $scope.openModal('survey')
-
-  $scope.submitSurvey = ->
-    $scope.$broadcast 'SurveySubmitted'
-    $scope.switchModal('survey', 'invite')
 ]
