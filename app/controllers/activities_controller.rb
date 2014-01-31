@@ -147,7 +147,7 @@ class ActivitiesController < ApplicationController
         else
           if mixpanel_anonymous_id
             mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.slug})
-            mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length})
+            mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
           end
           render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden
         end
