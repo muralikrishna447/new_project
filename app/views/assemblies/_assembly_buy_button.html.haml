@@ -37,7 +37,7 @@
   %div(ng-show="gift_certificate && (! enrolled) && assembly.price")
     -# Not logged in but gift certificate available
     .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#sign-in-and-redeem-gift-button(ng-click="waitForRedemption(); openModal('login')")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-redeem-gift-button(ng-click="showForm='signUp'; waitForRedemption(); openModal('login')")
         Get My Gift
         = render "devise/sessions/new_angular"
     -# Not enrolled, paid class, gift certificate available
@@ -77,7 +77,7 @@
 
   %div(ng-show="(! enrolled) && (freeTrialCode) && (assembly.price > 0) && (! isExpired())")
     .gift-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
-      .btn.btn-secondary.btn-large.input-block-level#sign-in-and-free-trial-button(ng-click="setLoginState('freeTrial'); openModal('login')")
+      .btn.btn-secondary.btn-large.input-block-level#sign-in-and-free-trial-button(ng-click="showForm='signUp'; setLoginState('freeTrial'); openModal('login')")
         {{freeTrialText.toUpperCase()}} FREE TRIAL
         = render "devise/sessions/new_angular"
     .gift-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
