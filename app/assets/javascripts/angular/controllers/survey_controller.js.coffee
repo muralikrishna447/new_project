@@ -90,6 +90,9 @@
           $http.post('/user_surveys', data).success((data) ->
             $modalInstance.close()
           )
+
+        $scope.cancel = ->
+          $modalInstance.dismiss('cancel')
     )
 ]
 

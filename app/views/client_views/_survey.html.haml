@@ -1,30 +1,36 @@
 / %div(ng-controller='SurveyController')
 .modal-header
-  %h3 Survey
+  .container
+    .span12
+      %h3 Survey
 .modal-body
-  %form(name='Survey')
-    %div(ng-repeat="question in questions")
-      %div(ng-switch on='question.type')
-        %div(ng-switch-when='select')
-          %p.survey-question
-            %div
-              {{question.copy}}
-            %div
-              %select(ng-model='question.answer' ng-options='option for option in question.options ')
-        %div(ng-switch-when='multiple-select')
-          %p.survey-question
-            %div
-              {{question.copy}}
-            %div(ng-repeat='option in question.options')
-              %label
-                %input(type='checkbox' ng-model="option.checked" )
-                {{option.name}}
-        %div(ng-switch-when='open-ended')
-          %p.survey-question
-            %div
-              {{question.copy}}
-            %div
-              %textarea(ng-model='question.answer')
+  .container
+    .span12
+      .pull-right(ng-click="cancel()")
+        %i.icon-remove
+      %form(name='Survey')
+        %div(ng-repeat="question in questions")
+          %div(ng-switch on='question.type')
+            %div(ng-switch-when='select')
+              %p.survey-question
+                %div
+                  {{question.copy}}
+                %div
+                  %select(ng-model='question.answer' ng-options='option for option in question.options ')
+            %div(ng-switch-when='multiple-select')
+              %p.survey-question
+                %div
+                  {{question.copy}}
+                %div(ng-repeat='option in question.options')
+                  %label
+                    %input(type='checkbox' ng-model="option.checked" )
+                    {{option.name}}
+            %div(ng-switch-when='open-ended')
+              %p.survey-question
+                %div
+                  {{question.copy}}
+                %div
+                  %textarea(ng-model='question.answer')
 .modal-footer
   %button.btn.btn-primary(ng-click='update()')
     Go!
