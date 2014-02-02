@@ -60,7 +60,7 @@ class AssembliesController < ApplicationController
       redirect_to landing_class_url(@assembly)
     else
       flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
-      redirect_to landing_class_url(@assembly)
+      redirect_to landing_class_url(@assembly, params.reject{|k,v| [:controller, :action, :trial_token].include?(k.to_sym)})
     end
   end
 
