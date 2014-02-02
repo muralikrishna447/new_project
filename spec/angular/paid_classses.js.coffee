@@ -73,6 +73,7 @@ describe "PaidClasses", ->
           browser().navigateTo('/trial/MS03Mg==')
           element('#sign-in-and-free-trial-button').click()
           sleep .5
+          element(".switch-to-signin").click()
           expect(element('.login-modal-body').count()).toBe(1)
           input("login_user.email").enter("ytrewq@example.com")
           input("login_user.password").enter("apassword")
@@ -84,6 +85,8 @@ describe "PaidClasses", ->
         it "should allow me to redeem", ->
           browser().navigateTo('/classes/become-a-badass/landing?gift_token=test')
           element("#sign-in-and-redeem-gift-button").click()
+          sleep .5
+          element(".switch-to-signin").click()
           expect(element('.login-modal-body').count()).toBe(1)
           input("login_user.email").enter("ytrewq@example.com")
           input("login_user.password").enter("apassword")
@@ -155,6 +158,8 @@ describe "PaidClasses", ->
         it "should allow me to redeem", ->
           browser().navigateTo('/classes/become-a-badass/landing?gift_token=test')
           element("#sign-in-and-redeem-gift-button").click()
+          sleep .5
+          element(".switch-to-signin").click()
           expect(element('.login-modal-body').count()).toBe(1)
           element("a.switch-to-signup").click()
           input("register_user.email").enter("test#{Math.random(10000)}@example.com")

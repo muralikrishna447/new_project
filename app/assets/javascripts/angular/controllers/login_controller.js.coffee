@@ -48,9 +48,12 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     else if form == "welcome"
       $scope.welcomeModalOpen = true
 
-  $scope.closeModal = (form) ->
+  $scope.closeModal = (form, abandon=true) ->
     $scope.resetMessages()
     $scope.reset_users()
+    if abandon
+      mixpanel.track('Login Box Abandoned')
+      mixpanel.people.set('Login Box Abandoned')
     if form == "login"
       $scope.showForm = "signIn"
       $scope.loginModalOpen = false
@@ -83,7 +86,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         $scope.dataLoading -= 1
         if (status == 200)
           $scope.logged_in = true
-          $scope.closeModal('login')
+          $scope.closeModal('login', false)
           $scope.alertService.addAlert({message: "You have been signed in.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.authentication.setCurrentUser(data.user)
@@ -116,7 +119,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         if (status == 200)
           $scope.message = "You have been signed out."
           $scope.logged_in = false
-          $scope.closeModal('login')
+          $scope.closeModal('login', false)
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.authentication.clearCurrentUser()
           , 300)
@@ -170,7 +173,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         $scope.dataLoading -= 1
         if (status == 200)
           $scope.logged_in = true
-          $scope.closeModal('login')
+          $scope.closeModal('login', false)
           $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.$apply()
@@ -249,7 +252,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       ).success( (data, status) ->
         $scope.dataLoading -= 1
         $scope.logged_in = true
-        $scope.closeModal('login')
+        $scope.closeModal('login', false)
         $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
         $timeout( -> # Done so that the modal has time to close before triggering events
           $scope.authentication.setCurrentUser(data.user)
@@ -292,7 +295,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.dataLoading = 0
       unless $scope.inviteModalOpen
         $scope.logged_in = true
-        $scope.closeModal('login')
+        $scope.closeModal('login', false)
         $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"})
       $timeout( -> # Done so that the modal has time to close before triggering events
         $scope.authentication.setCurrentUser(data.user)
@@ -378,7 +381,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.register_user.password_confirmation = null
 
   $scope.switchModal = (from, to) ->
-    $scope.closeModal(from)
+    $scope.closeModal(from, false)
     $timeout( -> # Done so that the modal has time to close before triggering events
       $scope.openModal(to)
     , 300)
