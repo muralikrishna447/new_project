@@ -10,7 +10,7 @@
   -#
   -# Primary CTA
   -#
-  %div(ng-show="(!gift_certificate && (! enrolled) && assembly.price)")
+  %div(ng-show="(!gift_certificate && (! enrolled) && assembly.price) && (!freeTrialCode || isExpired())")
     -# Not Signed in, paid class
     .main-cta(ng-controller="LoginController" ng-show="!logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#sign-in-and-buy-button(ng-click="waitForLogin(); openModal('login')")
@@ -76,12 +76,12 @@
           = render 'activities/latest/assembly_price'
 
   %div(ng-show="(! enrolled) && (freeTrialCode) && (assembly.price > 0) && (! isExpired())")
-    .gift-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
-      .btn.btn-secondary.btn-large.input-block-level#sign-in-and-free-trial-button(ng-click="showForm='signUp'; setLoginState('freeTrial'); openModal('login')")
+    .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-free-trial-button(ng-click="showForm='signUp'; setLoginState('freeTrial'); openModal('login')")
         {{freeTrialText.toUpperCase()}} FREE TRIAL
         = render "devise/sessions/new_angular"
-    .gift-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
-      .btn.btn-secondary.btn-large.input-block-level#free-trial-button(ng-click="freeTrial()")
+    .main-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#free-trial-button(ng-click="freeTrial()")
         {{freeTrialText.toUpperCase()}} FREE TRIAL
 
   =render 'buy_modal'
