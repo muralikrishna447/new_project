@@ -11,15 +11,22 @@
       backdrop: false
       keyboard: false
       windowClass: "takeover-modal"
-      resolve: 
+      resolve:
+        Recommendation: -> $scope.Recommendation 
         recommendations: -> $scope.recommendations
       controller: 'RecommendationsModalController'
     )
 ]
 
 
-@app.controller 'RecommendationsModalController', ['$scope', '$modalInstance', '$http', 'recommendations', ($scope, $modalInstance, $http, recommendations) ->
-  console.log recommendations
+@app.controller 'RecommendationsModalController', ['$scope', '$modalInstance', '$controller', 'csGalleryService', 'Recommendation', 'recommendations', 'ActivityMethods', ($scope, $modalInstance, $controller, csGalleryService, Recommendation, recommendations, ActivityMethods) ->
+  $controller('GalleryBaseController', {$scope: $scope});
+  $scope.galleryService = csGalleryService
+  $scope.resourceName = "Recommendation"
+  $scope.resource = Recommendation
+  $scope.objectMethods = ActivityMethods
+
+  $scope.recommendations = recommendations
   $scope.cancel = ->
     $modalInstance.dismiss('cancel')
 ]
