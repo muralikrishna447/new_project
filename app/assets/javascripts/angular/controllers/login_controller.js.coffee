@@ -26,6 +26,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.inviteFriends = []
 
+  $scope.headerText = null
+
   $scope.showMadlibPassword = false
   $scope.googleLoaded = false
 

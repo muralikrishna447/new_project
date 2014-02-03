@@ -75,13 +75,15 @@
         %div.inline(ng-show="enrolled")
           = render 'activities/latest/assembly_price'
 
-  %div(ng-show="(! enrolled) && (freeTrialCode) && (assembly.price > 0) && (! isExpired())")
-    .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+  %div.free-trial(ng-show="(! enrolled) && (freeTrialCode) && (assembly.price > 0) && (! isExpired())")
+    .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'; headerText='Create an account on ChefSteps to get access to our free trial.<br/>The account allows you to pick up from where you left off and continue your class on any device.'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#sign-in-and-free-trial-button(ng-click="showForm='signUp'; setLoginState('freeTrial'); openModal('login')")
-        {{freeTrialText.toUpperCase()}} FREE TRIAL
+        START YOUR FREE TRIAL
         = render "devise/sessions/new_angular"
     .main-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#free-trial-button(ng-click="freeTrial()")
-        {{freeTrialText.toUpperCase()}} FREE TRIAL
+        START YOUR FREE TRIAL
+    %p.additional-information
+      %small (No Credit Card Required)
 
   =render 'buy_modal'
