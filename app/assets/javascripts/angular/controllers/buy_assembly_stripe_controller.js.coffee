@@ -160,7 +160,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.closeModal = (abandon = true) ->
     $scope.buyModalOpen = false
     if abandon
-      mixpanel.track('Course Buy Box Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
+      mixpanel.track('Modal Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
       mixpanel.people.set('Paid Course Abandoned' : $scope.assembly.title)
 
   # Free enrollment, either for a free class or redeeming a gift
