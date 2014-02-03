@@ -241,7 +241,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   #           parameters.error_entity.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
   #     )
 
-  $scope.facebookConnect = ->
+  $scope.facebookConnect = (forLogin=true) ->
     $scope.dataLoading += 1
     $scope.facebook.connect().then( (user) ->
       $http(
@@ -253,12 +253,15 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         $scope.dataLoading -= 1
         $scope.logged_in = true
         $scope.closeModal('login', false)
-        $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
-        $timeout( -> # Done so that the modal has time to close before triggering events
+        if forLogin
+          $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
+          $timeout( -> # Done so that the modal has time to close before triggering events
+            $scope.authentication.setCurrentUser(data.user)
+            if $scope.formFor != "purchase" && data.new_user
+              $scope.loadFriends()
+          , 300)
+        else
           $scope.authentication.setCurrentUser(data.user)
-          if $scope.formFor != "purchase" && data.new_user
-            $scope.loadFriends()
-        , 300)
       ).error( (data, status) ->
         $scope.dataLoading -= 1
         $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
