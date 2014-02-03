@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "$modal", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, $modal) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -396,5 +396,17 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     if validation
       $scope.showMadlibPassword = true
     validation
+
+  $scope.socialConnect = ->
+    modalInstance = $modal.open(
+      templateUrl: "socialConnect.html"
+      backdrop: false
+      keyboard: false
+      windowClass: "takeover-modal"
+      resolve:
+        authentication: -> $scope.authentication
+      controller: ($scope, $modalInstance, authentication) ->
+        $scope.authentication = authentication
+    )
 
 ]

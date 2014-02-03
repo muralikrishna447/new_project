@@ -32,6 +32,7 @@
         - if current_user == @user
           = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-secondary btn-block'
           -# %a(class="btn btn-secondary btn-block" ng-click="openModal('invite')") Invite Friends
+          %a(class="btn btn-secondary btn-block" ng-click="socialConnect()") Social Connect
           = link_to 'Sign out', sign_out_path, class: 'btn btn-secondary btn-block'
         - else
           / = link_to followership_path(@user), method: :put, class: 'btn btn-primary btn-block' do
@@ -135,3 +136,6 @@
 
 = content_for :footer do
   = render 'layouts/footer'
+
+
+= render 'shared/social_connect'
