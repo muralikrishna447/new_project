@@ -1,32 +1,28 @@
 @app.controller 'RecommendationsController', ["$scope", "$resource", "$http", "$modal", ($scope, $resource, $http, $modal) ->
 
-  $scope.Recommendation = $resource('/recommendations')
-  $scope.recommendations = $scope.Recommendation.query(->
-
-  )
-
   $scope.open = ->
     modalInstance = $modal.open(
       templateUrl: "/client_views/_recommendations.html"
       backdrop: false
       keyboard: false
       windowClass: "takeover-modal"
-      resolve:
-        Recommendation: -> $scope.Recommendation 
-        recommendations: -> $scope.recommendations
       controller: 'RecommendationsModalController'
     )
 ]
 
 
-@app.controller 'RecommendationsModalController', ['$scope', '$modalInstance', '$controller', 'csGalleryService', 'Recommendation', 'recommendations', 'ActivityMethods', ($scope, $modalInstance, $controller, csGalleryService, Recommendation, recommendations, ActivityMethods) ->
+@app.controller 'RecommendationsModalController', ['$scope', '$resource', '$modalInstance', '$controller', 'csGalleryService', 'ActivityMethods', ($scope, $resource, $modalInstance, $controller, csGalleryService, ActivityMethods) ->
+  $scope.Recommendation = $resource('/recommendations')
+  $scope.recommendations = $scope.Recommendation.query(->
+
+  )
+
   $controller('GalleryBaseController', {$scope: $scope});
   $scope.galleryService = csGalleryService
   $scope.resourceName = "Recommendation"
-  $scope.resource = Recommendation
+  $scope.resource = $scope.Recommendation
   $scope.objectMethods = ActivityMethods
 
-  $scope.recommendations = recommendations
   $scope.cancel = ->
     $modalInstance.dismiss('cancel')
 ]

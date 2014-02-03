@@ -7,7 +7,7 @@
     .span12
       .pull-right(ng-click="cancel()")
         %i.icon-remove
-      %div(ng-repeat='activity in getDisplayItems()')
+      %div(ng-repeat='activity in recommendations')
         %csGalleryItem( title="activity.title"
                         href="activity.gallery_path"
                         image="itemImageURL(activity, 400)"
