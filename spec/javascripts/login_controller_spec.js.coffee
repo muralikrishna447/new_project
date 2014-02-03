@@ -42,6 +42,7 @@ describe "LoginController", ->
       track: jasmine.createSpy("mixpanel.track")
       people:
         increment: jasmine.createSpy("mixpanel.people.increment")
+        set: jasmine.createSpy("mixpanel.people.set")
     }
     $window.gapi = gapi
     $window.mixpanel = mixpanel
@@ -517,7 +518,7 @@ describe "LoginController", ->
       timeout.flush()
 
     it "should set call closeModal", ->
-      expect(scope.closeModal).toHaveBeenCalledWith("invite")
+      expect(scope.closeModal).toHaveBeenCalledWith("invite", false)
 
     it "should set call openModal", ->
       expect(scope.openModal).toHaveBeenCalledWith("welcome")

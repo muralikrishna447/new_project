@@ -52,8 +52,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.resetMessages()
     $scope.reset_users()
     if abandon
-      mixpanel.track('Login Box Abandoned')
-      mixpanel.people.set('Login Box Abandoned')
+      mixpanel.track('Modal Abandoned')
+      mixpanel.people.set('Login Modal Abandoned')
     if form == "login"
       $scope.showForm = "signIn"
       $scope.loginModalOpen = false
