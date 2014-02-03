@@ -211,6 +211,7 @@ Delve::Application.routes.draw do
 
   resources :gift_certificates
   resources :user_surveys, only: [:create]
+  resources :recommendations, only: [:index]
 
   get "smoker" => "smoker#index"
 
