@@ -11,9 +11,11 @@
     )
 ]
 
-@app.controller 'SurveyModalController', ['$scope', '$modalInstance', '$http', ($scope, $modalInstance, $http) ->
+@app.controller 'SurveyModalController', ['$scope', '$modalInstance', '$http', 'csAuthentication', ($scope, $modalInstance, $http, csAuthentication) ->
+  $scope.currentUser = csAuthentication.currentUser()
   $scope.questions = []
-  $scope.survey_results = {}
+  $scope.survey_results = $scope.currentUser.survey_results
+  console.log $scope.survey_results
   
   question1 = {}
   question1.type = 'select'
@@ -68,6 +70,19 @@
   question4.copy = 'Tell us more about yourself:'
   $scope.questions.push(question4)
 
+  $scope.loadResults = ->
+    angular.forEach $scope.questions, (question, index) ->
+      switch question.type
+        when 'select'
+          question.answer = $scope.survey_results[question.copy]
+        when 'multiple-select'
+          checked =  $scope.survey_results[question.copy].split(',')
+          angular.forEach question.options, (option, index) ->
+            if checked.indexOf(option.name) != -1
+              option.checked = true
+        when 'open-ended'
+          question.answer = $scope.survey_results[question.copy]
+
   $scope.getResults = ->
     angular.forEach $scope.questions, (question, index) ->
       switch question.type
@@ -92,6 +107,8 @@
 
   $scope.cancel = ->
     $modalInstance.dismiss('cancel')
+
+  $scope.loadResults()
 ]
 
 
