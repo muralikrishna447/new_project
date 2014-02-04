@@ -399,4 +399,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.showMadlibPassword = true
     validation
 
+  $scope.freeTrialLogin = ->
+    $scope.showForm = "signUp"
+    $scope.openModal("login")
+
+
 ]
