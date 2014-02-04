@@ -13,7 +13,6 @@ describe Recommendation do
   context 'activities_for' do
     it 'returns intermediate recipes when a user is a home cook' do
       expect(Recommendation.activities_for(@user1)).to include(@activity3)
-      expect(Recommendation.activities_for(@user1)).to_not include(@activity2)
     end
 
     it 'returns modernist recipes when a user marks it as an interest' do

@@ -3,10 +3,11 @@ class Recommendation
     difficulty = get_difficulty(user)
     interests = get_interests(user)
 
+    popular = Activity.chefsteps_generated.published.popular.first(12)
     activities = Activity.chefsteps_generated.published
     activities = activities.difficulty(difficulty) if difficulty
     activities = activities.tagged_with(interests, any: true) if interests
-    activities = activities.popular
+    activities = (activities + popular).uniq
     activities
   end
 
