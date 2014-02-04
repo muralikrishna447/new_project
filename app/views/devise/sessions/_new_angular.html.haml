@@ -6,6 +6,7 @@
       .row-fluid(ng-switch-when="signIn")
         %h3 Sign in
         .form-horizontal(ng-show="!authentication.loggedIn()")
+          .header-text(ng-show="headerText" ng-bind-html="headerText")
           .button-group
             .facebook-button.facebook-login
               %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
@@ -36,6 +37,7 @@
       .row-fluid(ng-switch-when="signUp")
         %h3 Sign up
         .form-horizontal(ng-show="!authentication.loggedIn()")
+          .header-text(ng-show="headerText" ng-bind-html="headerText")
           .button-group
             .facebook-button.facebook-login
               %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
