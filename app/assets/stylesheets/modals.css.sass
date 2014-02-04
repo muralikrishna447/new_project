@@ -30,3 +30,29 @@ html
   &.modal-open
     overflow-y: hidden
 
+.modal-fullscreen
+  .modal-header
+    position: absolute
+    width: 100%
+    height: 50px
+    top: 0px
+    left: 0px
+    background: white
+    @include boxsizing
+  .modal-body
+    position: absolute
+    width: 100%
+    height: 100%
+    top: 0px
+    left: 0px
+    padding: 0px
+    padding-top: 50px
+    padding-bottom: 50px
+    @include boxsizing
+  .modal-footer
+    position: absolute
+    width: 100%
+    height: 50px
+    bottom: 0px
+    left: 0px
+    @include boxsizing
