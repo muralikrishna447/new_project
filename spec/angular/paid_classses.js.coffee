@@ -169,7 +169,7 @@ describe "PaidClasses", ->
           expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
 
       describe "free trial", ->
-        iit "should allow me try out the class", ->
+        it "should allow me try out the class", ->
           browser().navigateTo('/trial/MS03Mg==')
           sleep .5
           input("register_user.email").enter("test#{Math.random(10000)}@example.com")
