@@ -73,6 +73,8 @@
     = yield :popup_bottom
 
     = yield :footer
+    .gallery-spinner.text-center(ng-show='sup')
+      %i.icon-page-load
     / %script{src:'http://www.youtube.com/iframe_api'}
     / %script{src:'/assets/youtube.js'}
   / = render 'layouts/youtube'
