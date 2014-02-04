@@ -15,6 +15,7 @@
     %div(ng-controller="LoginController")
       = Page.where(slug: "whipping-siphons-free-trial").first.content.html_safe
       = render "devise/sessions/new_angular"
+      = render 'buy_modal'
 - else
   .assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
     .container
