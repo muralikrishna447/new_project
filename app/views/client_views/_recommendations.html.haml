@@ -11,10 +11,10 @@
                           sash = "getSashContents(activity)"
                         )
           %div.text-center(ng-controller='LikesController')
-            .btn.btn-primary(ng-click="likeObject('Activity', activity.id)")
-              %div
-                %i.icon-star
-              %div
+            .btn.btn-save-for-later(ng-click="likeObject('Activity', activity.id)")
+              .btn-save-for-later-icon
+                %i.icon-star-empty
+              .btn-save-for-later-text
                 Save for Later
   .modal-header
     .container
