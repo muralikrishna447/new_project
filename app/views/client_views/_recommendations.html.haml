@@ -10,6 +10,9 @@
                           footer-right="getFooterRightContents(activity)"
                           sash = "getSashContents(activity)"
                         )
+          %div(ng-controller='LikesController')
+            %btn.btn-secondary(ng-click="likeObject('Activity', activity.id)")
+              Save For Later
       .gallery-spinner.text-center
         %i.icon-page-load
   .modal-header
