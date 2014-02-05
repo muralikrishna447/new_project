@@ -7,15 +7,17 @@
       keyboard: false
       windowClass: "takeover-modal"
       controller: 'SurveyModalController'
-
     )
+    mixpanel.track('Survey Opened')
 ]
 
 @app.controller 'SurveyModalController', ['$scope', '$modalInstance', '$http', 'csAuthentication', ($scope, $modalInstance, $http, csAuthentication) ->
   $scope.currentUser = csAuthentication.currentUser()
   $scope.questions = []
-  $scope.survey_results = $scope.currentUser.survey_results
-  console.log $scope.survey_results
+  if $scope.currentUser
+    $scope.survey_results = $scope.currentUser.survey_results
+  else
+    $scope.survey_results = {}
   
   question1 = {}
   question1.type = 'select'
@@ -99,7 +101,8 @@
 
   $scope.update = ->
     $scope.getResults()
-    
+    mixpanel.track('Survey Answered', $scope.survey_results)
+
     data = {'survey_results': $scope.survey_results}
     $http.post('/user_surveys', data).success((data) ->
       $modalInstance.close()
@@ -108,7 +111,8 @@
   $scope.cancel = ->
     $modalInstance.dismiss('cancel')
 
-  $scope.loadResults()
+  if $scope.currentUser
+    $scope.loadResults()
 ]
 
 
