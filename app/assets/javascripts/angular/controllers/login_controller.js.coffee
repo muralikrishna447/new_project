@@ -412,12 +412,12 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           password: $scope.register_user.password
       )
       .success( (data, status) ->
-        $scope.dataLoading -= 1
         if (status == 200)
           $scope.logged_in = true
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.$apply()
             $scope.authentication.setCurrentUser(data.user)
+            $scope.dataLoading -= 1
             unless $scope.formFor == "purchase"
               $scope.loadFriends()
           , 300)
