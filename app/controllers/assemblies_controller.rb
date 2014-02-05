@@ -59,7 +59,7 @@ class AssembliesController < ApplicationController
     if current_user && current_user.enrollments.where(enrollable_id: @assembly.id, enrollable_type: @assembly.class).first.try(:free_trial_expired?)
       redirect_to landing_class_url(@assembly)
     else
-      flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
+      # flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
       redirect_to landing_class_url(@assembly, params.reject{|k,v| [:controller, :action, :trial_token].include?(k.to_sym)})
     end
   end
