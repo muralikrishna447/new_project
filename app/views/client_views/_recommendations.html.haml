@@ -2,7 +2,7 @@
   .modal-body
     .container
       .span12
-        %div(ng-repeat='activity in recommendations')
+        .recommendation.pull-left(ng-repeat='activity in recommendations')
           %csGalleryItem( title="activity.title"
                           href="activity.gallery_path"
                           image="itemImageURL(activity, 400)"
@@ -10,11 +10,12 @@
                           footer-right="getFooterRightContents(activity)"
                           sash = "getSashContents(activity)"
                         )
-          %div(ng-controller='LikesController')
-            %btn.btn-secondary(ng-click="likeObject('Activity', activity.id)")
-              Save For Later
-      .gallery-spinner.text-center
-        %i.icon-page-load
+          %div.text-center(ng-controller='LikesController')
+            .btn.btn-primary(ng-click="likeObject('Activity', activity.id)")
+              %div
+                %i.icon-star
+              %div
+                Save for Later
   .modal-header
     .container
       .span12
