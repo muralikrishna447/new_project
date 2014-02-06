@@ -26,6 +26,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.inviteFriends = []
 
+  $scope.headerText = null
+
   $scope.showMadlibPassword = false
   $scope.googleLoaded = false
 
@@ -48,9 +50,12 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     else if form == "welcome"
       $scope.welcomeModalOpen = true
 
-  $scope.closeModal = (form) ->
+  $scope.closeModal = (form, abandon=true) ->
     $scope.resetMessages()
     $scope.reset_users()
+    if abandon
+      mixpanel.track('Modal Abandoned')
+      mixpanel.people.set('Login Modal Abandoned')
     if form == "login"
       $scope.showForm = "signIn"
       $scope.loginModalOpen = false
@@ -83,7 +88,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         $scope.dataLoading -= 1
         if (status == 200)
           $scope.logged_in = true
-          $scope.closeModal('login')
+          $scope.closeModal('login', false)
           $scope.alertService.addAlert({message: "You have been signed in.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.authentication.setCurrentUser(data.user)
@@ -116,7 +121,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         if (status == 200)
           $scope.message = "You have been signed out."
           $scope.logged_in = false
-          $scope.closeModal('login')
+          $scope.closeModal('login', false)
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.authentication.clearCurrentUser()
           , 300)
@@ -170,7 +175,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         $scope.dataLoading -= 1
         if (status == 200)
           $scope.logged_in = true
-          $scope.closeModal('login')
+          $scope.closeModal('login', false)
           $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.$apply()
@@ -249,7 +254,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       ).success( (data, status) ->
         $scope.dataLoading -= 1
         $scope.logged_in = true
-        $scope.closeModal('login')
+        $scope.closeModal('login', false)
         $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
         $timeout( -> # Done so that the modal has time to close before triggering events
           $scope.authentication.setCurrentUser(data.user)
@@ -292,7 +297,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.dataLoading = 0
       unless $scope.inviteModalOpen
         $scope.logged_in = true
-        $scope.closeModal('login')
+        $scope.closeModal('login', false)
         $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"})
       $timeout( -> # Done so that the modal has time to close before triggering events
         $scope.authentication.setCurrentUser(data.user)
@@ -378,7 +383,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.register_user.password_confirmation = null
 
   $scope.switchModal = (from, to) ->
-    $scope.closeModal(from)
+    $scope.closeModal(from, false)
     $timeout( -> # Done so that the modal has time to close before triggering events
       $scope.openModal(to)
     , 300)
@@ -393,5 +398,51 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     if validation
       $scope.showMadlibPassword = true
     validation
+
+  $scope.freeTrialRegister = ->
+    $scope.dataLoading += 1
+    $scope.resetMessages()
+    $http(
+      method: 'POST'
+      url: "/users.json"
+      data:
+        user:
+          free_trial: true
+          email: $scope.register_user.email
+          password: $scope.register_user.password
+      )
+      .success( (data, status) ->
+        if (status == 200)
+          $scope.logged_in = true
+          $timeout( -> # Done so that the modal has time to close before triggering events
+            $scope.$apply()
+            $scope.authentication.setCurrentUser(data.user)
+            $scope.dataLoading -= 1
+            unless $scope.formFor == "purchase"
+              $scope.loadFriends()
+          , 300)
+          # $scope.notifyLogin(data.user)
+      )
+      .error( (data, status) ->
+        $scope.dataLoading -= 1
+        if (status == 401)
+          $scope.message = data.info;
+          $scope.register_error.errors = data.errors
+          $scope.register_error.errors.password = ["Please enter a password"] if !$scope.register_user.password
+          $scope.register_error.errors.email = ["Please enter a valid email"] unless /.*@.*\..*/.test($scope.register_user.email)
+          $scope.showForm = "signUp"
+          $scope.openModal("login")
+        else
+          $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
+      )
+
+  $scope.startedDataFill = ->
+    unless $scope.showMadlibPassword
+      $scope.showMadlibPassword = true
+      mixpanel.track("Free Trial Data Entered")
+    if /.*@.*\..*/.test($scope.register_user.email)
+      mixpanel.track("Free Trial Valid Email Filled")
+
+
 
 ]

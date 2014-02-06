@@ -9,11 +9,25 @@ body
   font-size: 1.4rem
   font-size: 14px
 
-h1, h2, h3, h4, h5
+
+h1, h2, h3
   @include primary-font-bold
   color: inherit
   margin: 0
   padding: 0
+
+h4
+  @include primary-font
+  color: inherit
+  margin: 0
+  padding: 0
+
+h5
+  @include primary-font
+  text-transform: uppercase
+  margin: 0
+  padding: 0
+
 
 /* sizing according to http://modularscale.com/scale/?px1=14&px2=1136&ra1=1.333&ra2=0 */
 
@@ -79,6 +93,9 @@ li
 
 li > p
   margin-bottom: 0
+
+.align-base
+  vertical-align: bottom
 
 /*--- QUOTES ---*/
 

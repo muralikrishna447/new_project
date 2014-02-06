@@ -45,7 +45,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       unless request.xhr?
         render :new
       else
-        render status: 401, json: {success: false, info: "Please fix the errors below", errors: @user.errors}
+        render status: 401, json: {success: false, info: "Please fix the errors outlined below", errors: @user.errors}
       end
     end
   end

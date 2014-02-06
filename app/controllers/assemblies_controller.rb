@@ -33,7 +33,10 @@ class AssembliesController < ApplicationController
   end
 
   def landing
-    @free_trial_text = Base64.decode64(session[:free_trial]).split("-").last.to_i.hours_to_pretty_time if session[:free_trial]
+    if session[:free_trial]
+      @hours = Base64.decode64(session[:free_trial]).split("-").last
+      @free_trial_text = @hours.to_i.hours_to_pretty_time
+    end
     @no_shop = true
     @upload = Upload.new
     @split_name = "macaron_landing_no_campaign"
@@ -56,12 +59,8 @@ class AssembliesController < ApplicationController
     if current_user && current_user.enrollments.where(enrollable_id: @assembly.id, enrollable_type: @assembly.class).first.try(:free_trial_expired?)
       redirect_to landing_class_url(@assembly)
     else
-      if mixpanel_anonymous_id
-        mixpanel.people.append(mixpanel_anonymous_id, {'Free Trial Offered' => @assembly.title})
-        mixpanel.track(mixpanel_anonymous_id, 'Free Trial Offered', {class: @assembly.title, length: hours} )
-      end
-      flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
-      redirect_to landing_class_url(@assembly)
+      # flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
+      redirect_to landing_class_url(@assembly, params.reject{|k,v| [:controller, :action, :trial_token].include?(k.to_sym)})
     end
   end
 
