@@ -46,9 +46,9 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation,
     :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :role, :referred_from, :referrer_id, as: :admin
 
-  attr_accessor :free_trial
+  attr_accessor :free_trial, :skip_name_validation
 
-  validates_presence_of :name, unless: Proc.new {|user| user.free_trial == true}
+  validates_presence_of :name, unless: Proc.new {|user| user.free_trial == true || user.skip_name_validation == true}
 
   validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
 

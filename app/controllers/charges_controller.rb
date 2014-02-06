@@ -20,12 +20,12 @@ class ChargesController < ApplicationController
       session.delete(:free_trial)
       if @enrollment && mixpanel_anonymous_id
         mixpanel.people.append(current_user.email, {'Free Trial Enrolled' => assembly.slug})
-        mixpanel.track(mixpanel_anonymous_id, 'Free Trial Enrolled', {slug: assembly.slug, length: hours.to_s})
+        mixpanel.track(current_user.email, 'Free Trial Enrolled', {slug: assembly.slug, length: hours.to_s})
       end
     else # Normal course enrollment (paid or free)
-      if current_user.enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first.try(:free_trial?) && assembly.price > 0 && mixpanel_anonymous_id
+      if current_user.enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first.try(:free_trial?) && assembly.paid_class? && mixpanel_anonymous_id
         mixpanel.people.append(current_user.email, {'Free Trial Converted' => assembly.slug})
-        mixpanel.track(mixpanel_anonymous_id, "Free Trial Conversion", {slug: assembly.slug, length: current_user.class_enrollment(assembly).free_trial_length.to_s})
+        mixpanel.track(current_user.email, "Free Trial Conversion", {slug: assembly.slug, length: current_user.class_enrollment(assembly).free_trial_length.to_s})
       end
       @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken])
     end
