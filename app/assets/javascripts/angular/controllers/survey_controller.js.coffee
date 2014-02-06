@@ -70,6 +70,7 @@
   question4 = {}
   question4.type = 'multiple-select'
   question4.copy = 'What equipment do you have in your kitchen?'
+  question4.searchScope = 'by_equipment_title'
   question4.options = [
     {
       name: 'Blender'

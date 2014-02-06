@@ -58,6 +58,7 @@ class Activity < ActiveRecord::Base
   scope :any_user_generated, where('creator != ?', 0)
   scope :user_generated, -> user { where('creator = ?', user) }
   scope :popular, where('likes_count IS NOT NULL').order('likes_count DESC')
+  scope :by_equipment_title, -> title { joins(:terminal_equipment).where("equipment.title iLIKE ?", '%' + title + '%') }
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
