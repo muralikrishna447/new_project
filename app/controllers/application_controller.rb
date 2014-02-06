@@ -103,6 +103,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
 private
 
   def track_event(trackable, action = params[:action])
@@ -163,17 +164,24 @@ private
     end
   end
 
-  def aweber_signup(name, email, signed_up_from=nil, listname='cs_c_sousvide', meta_adtracking='site_top_form')
-    if Rails.env.production?
-      uri = URI.parse("http://www.aweber.com/scripts/addlead.pl")
-      response = Net::HTTP.post_form(uri,
-                                      { "name" => name,
-                                        "email" => email,
-                                        "listname" => listname,
-                                        "meta_adtracking" => meta_adtracking,
-                                        "custom signed_up_from" => signed_up_from})
-    else
-      logger.debug 'Newsletter Signup'
+  def email_list_signup(name, email, source='unknown', listname='a61ebdcaa6')
+    begin
+      Gibbon::API.lists.subscribe(
+        id: list_id, 
+        email: {email: email}, 
+        merge_vars: {NAME: name, SOURCE: source}, 
+        double_optin: false, 
+        send_welcome: true
+      )
+
+    rescue Exception => e
+      case Rails.env
+      when "production", "staging", "staging2"
+        logger.error("MailChimp error: #{e.message}")
+        raise e
+      else
+        logger.debug("MailChimp error, ignoring - did you set MAILCHIMP_API_KEY? Message: #{e.message}")
+      end
     end
   end
 

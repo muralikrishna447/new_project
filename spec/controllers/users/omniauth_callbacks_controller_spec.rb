@@ -55,8 +55,8 @@ describe Users::OmniauthCallbacksController do
           assigns(:new_signup).should be true
         end
 
-        it "should sign them up to aweber" do
-          Users::OmniauthCallbacksController.any_instance.should_receive(:aweber_signup)
+        it "should do email signup" do
+          Users::OmniauthCallbacksController.any_instance.should_receive(:email_list_signup)
           xhr :get, :facebook, {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}
         end
       end

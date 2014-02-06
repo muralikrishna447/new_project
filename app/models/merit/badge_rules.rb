@@ -41,8 +41,6 @@ module Merit
       # end
 
       grant_on 'courses#enroll', :badge => 'new-student'
-      grant_on 'registrations#signup_and_enroll', :badge => 'new-student'
-      grant_on 'sessions#signin_and_enroll', :badge => 'new-student'
 
       grant_on 'uploads#create', :badge => 'spherification' do |upload|
         assembly = upload.assembly
