@@ -167,7 +167,7 @@ private
   def email_list_signup(name, email, source='unknown', listname='a61ebdcaa6')
     begin
       Gibbon::API.lists.subscribe(
-        id: list_id, 
+        id: listname, 
         email: {email: email}, 
         merge_vars: {NAME: name, SOURCE: source}, 
         double_optin: false, 
