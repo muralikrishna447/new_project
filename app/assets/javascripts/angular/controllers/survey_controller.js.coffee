@@ -68,22 +68,55 @@
   $scope.questions.push(question3)
 
   question4 = {}
-  question4.type = 'open-ended'
-  question4.copy = 'Tell us more about yourself:'
+  question4.type = 'multiple-select'
+  question4.copy = 'What equipment do you have in your kitchen?'
+  question4.options = [
+    {
+      name: 'Blender'
+      checked: false
+    }
+    {
+      name: 'Immersion Blender'
+      checked: false
+    }
+    {
+      name:'Stand Mixer'
+      checked: false
+    }
+    {
+      name:'Pressure Cooker'
+      checked: false
+    }
+    {
+      name:'Immersion Circulator'
+      checked: false
+    }
+    {
+      name:'Whipping Siphon'
+      checked: false
+    }
+  ]
   $scope.questions.push(question4)
+
+  question5 = {}
+  question5.type = 'open-ended'
+  question5.copy = 'Tell us more about yourself:'
+  $scope.questions.push(question5)
 
   $scope.loadResults = ->
     angular.forEach $scope.questions, (question, index) ->
-      switch question.type
-        when 'select'
-          question.answer = $scope.survey_results[question.copy]
-        when 'multiple-select'
-          checked =  $scope.survey_results[question.copy].split(',')
-          angular.forEach question.options, (option, index) ->
-            if checked.indexOf(option.name) != -1
-              option.checked = true
-        when 'open-ended'
-          question.answer = $scope.survey_results[question.copy]
+      questionCopy = $scope.survey_results[question.copy]
+      if questionCopy
+        switch question.type
+          when 'select'
+            question.answer = questionCopy
+          when 'multiple-select'
+            checked =  questionCopy.split(',')
+            angular.forEach question.options, (option, index) ->
+              if checked.indexOf(option.name) != -1
+                option.checked = true
+          when 'open-ended'
+            question.answer = questionCopy
 
   $scope.getResults = ->
     angular.forEach $scope.questions, (question, index) ->
