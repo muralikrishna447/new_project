@@ -36,6 +36,7 @@ class AssembliesController < ApplicationController
     if session[:free_trial]
       @hours = Base64.decode64(session[:free_trial]).split("-").last
       @free_trial_text = @hours.to_i.hours_to_pretty_time
+      @minimal = true if !current_user && session[:free_trial] && @hours
     end
     @no_shop = true
     @upload = Upload.new
