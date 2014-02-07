@@ -22,7 +22,8 @@
   question1 = {}
   question1.type = 'select'
   question1.copy = 'What kind of cook are you?'
-  question1.options = ['Amateur', 'Home Cook', 'Culinary Student', 'Professional Chef']
+  question1.searchScope = 'difficulty'
+  question1.options = ['Amateur', 'Home Cook', 'Culinary Student', 'Professional']
   $scope.questions.push(question1)
 
   question2 = {}

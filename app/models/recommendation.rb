@@ -1,19 +1,25 @@
 class Recommendation
   def self.activities_for(user)
-    difficulty = get_difficulty(user)
-    interests = get_interests(user)
+    # difficulty = get_difficulty(user)
+    # interests = get_interests(user)
+    difficulty = nil
+    interests = nil
+    user.survey_results.each do |result|
+      case result['search_scope']
+      when 'difficulty'
+        difficulty = get_difficulty(result['answer'])
+      end
+    end
 
-    popular = Activity.chefsteps_generated.published.popular.first(12)
-    activities = Activity.chefsteps_generated.published
+    activities = Activity.chefsteps_generated.published.popular
     activities = activities.difficulty(difficulty) if difficulty
     activities = activities.tagged_with(interests, any: true) if interests
-    activities = (activities + popular).uniq.take(6)
+    activities = activities.first(6)
     activities
   end
 
-  def self.get_difficulty(user)
-    cook_type = user.survey_results['What kind of cook are you?']
-    case cook_type
+  def self.get_difficulty(answer)
+    case answer
     when 'Amateur'
       difficulty = 'easy'
     when 'Home Cook'
