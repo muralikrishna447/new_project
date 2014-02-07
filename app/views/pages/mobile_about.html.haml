@@ -1,0 +1,14 @@
+%style{:type => "text/css"}
+  :sass
+    body
+      font-family: 'Avenir',sans-serif
+    .about-cs p
+      display: block
+      font-size: 16px
+      line-height: 1.4
+      margin: 0 0 10px
+    .about-cs p.bold
+      font-weight: bold
+
+.about-cs
+  = @mobile_about.content.html_safe
