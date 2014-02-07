@@ -140,11 +140,11 @@
         when 'open-ended'
           # $scope.survey_results[question.copy] = question.answer
           survey_result.answer = question.answer
-      $scope.survey_results.push(survey_result) 
+      $scope.survey_results.push(survey_result)
+    $scope.currentUser.survey_results = $scope.survey_results
 
   $scope.update = ->
     $scope.getResults()
-    console.log $scope.survey_results[0].answer
     mixpanel.track('Survey Answered', $scope.survey_results)
 
     data = {'survey_results': $scope.survey_results}
