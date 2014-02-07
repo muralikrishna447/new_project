@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(:version => 20140203201306) do
     t.text     "preview_copy"
     t.text     "testimonial_copy"
     t.text     "prereg_image_id"
+    t.string   "prereg_email_list_id"
   end
 
   create_table "assembly_inclusions", :force => true do |t|

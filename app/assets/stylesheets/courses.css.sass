@@ -186,6 +186,7 @@
     .buy-button
       padding-left: 10px
 .free-trial-landing-page
+  margin-top: -75px
   .free-trial-offer
     .interest-image
       background: #FFFFFF url('http://chefsteps.s3.amazonaws.com/static/whipped_cream_landing.jpg') 50% 0 no-repeat
@@ -211,7 +212,7 @@
       h2
         font-size: 1.5em
         line-height: 1.5em
-      .input-medium
+      .free-trial-email
         width: 236px
         &.error
           border: red 1px solid
@@ -219,8 +220,14 @@
         width: 168px
         &.error
           border: red 1px solid
-      input[type="button"]
+      .start-free-trial-btn
         width: 250px
+        &[disabled]
+          color: lightgrey
+          background-color: dimgrey
+          &:hover
+            color: lightgrey
+            background-color: dimgrey
 
   .free-trial-learn-more
     text-align: center
@@ -265,6 +272,9 @@
     display: none
 
 @media (min-width: 768px) and (max-width: 979px)
+  .free-trial-landing-page
+    margin-top: 0
+
   .course-side-bar
     width: 166px
 
@@ -272,6 +282,19 @@
     height: 290px
 
 @media (max-width: 767px)
+  .free-trial-landing-page
+    margin-top: 0
+    .free-trial-offer
+      .alpha-box
+        .free-trial-email
+          width: 80%
+        .password-with-show-button
+          width: 80%
+        .show-password
+          width: 80%
+        .start-free-trial-btn
+          width: 80%
+
   .course-side-bar.affix
     position: inherit
 
@@ -282,6 +305,19 @@
     height: 140px
 
 @media (max-width: 480px)
+  .free-trial-landing-page
+    margin-top: 0
+    .free-trial-offer
+      .alpha-box
+        .free-trial-email
+          width: 80%
+        .password-with-show-button
+          width: 80%
+        .show-password
+          width: 80%
+        .start-free-trial-btn
+          width: 80%
+
   .static-height
     inherit
 
