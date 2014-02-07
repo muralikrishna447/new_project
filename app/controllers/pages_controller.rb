@@ -24,4 +24,9 @@ class PagesController < ApplicationController
     @assembly = Assembly.find('test-purchaseable-course')
     @enrolled = current_user ? Enrollment.where(user_id: current_user.id, enrollable_id: @assembly.id, enrollable_type: 'Assembly').first : false
   end
+
+  def mobile_about
+    @mobile_about = Page.find 'mobile-about'
+    render layout: false
+  end
 end

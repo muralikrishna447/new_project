@@ -60,6 +60,7 @@ Delve::Application.routes.draw do
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
   get 'egg-timer' => 'pages#egg_timer', as: 'egg_timer'
   get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
+  get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   match '/mp', to: redirect('/courses/spherification')
   match '/MP', to: redirect('/courses/spherification')
