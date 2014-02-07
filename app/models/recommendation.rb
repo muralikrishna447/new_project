@@ -8,13 +8,16 @@ class Recommendation
       case result['search_scope']
       when 'difficulty'
         difficulty = get_difficulty(result['answer'])
+      when 'interests'
+        interests = result['answer']
       end
     end
 
+    popular = Activity.chefsteps_generated.published.popular.first(6)
     activities = Activity.chefsteps_generated.published.popular
     activities = activities.difficulty(difficulty) if difficulty
     activities = activities.tagged_with(interests, any: true) if interests
-    activities = activities.first(6)
+    activities = (activities + popular).uniq.take(6)
     activities
   end
 

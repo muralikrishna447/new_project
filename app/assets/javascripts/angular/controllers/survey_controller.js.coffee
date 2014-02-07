@@ -48,6 +48,7 @@
   question3 = {}
   question3.type = 'multiple-select'
   question3.copy = 'Which culinary topics interest you the most?'
+  question3.searchScope = 'interests'
   question3.options = [
     {
       name: 'Modernist Cuisine'
