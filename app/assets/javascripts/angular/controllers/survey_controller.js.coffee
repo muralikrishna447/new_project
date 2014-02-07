@@ -14,10 +14,10 @@
 @app.controller 'SurveyModalController', ['$scope', '$modalInstance', '$http', 'csAuthentication', ($scope, $modalInstance, $http, csAuthentication) ->
   $scope.currentUser = csAuthentication.currentUser()
   $scope.questions = []
-  if $scope.currentUser
+  if $scope.currentUser && $scope.currentUser.survey_results
     $scope.survey_results = $scope.currentUser.survey_results
   else
-    $scope.survey_results = {}
+    $scope.survey_results = []
   
   question1 = {}
   question1.type = 'select'
@@ -106,35 +106,45 @@
 
   $scope.loadResults = ->
     angular.forEach $scope.questions, (question, index) ->
-      questionCopy = $scope.survey_results[question.copy]
-      if questionCopy
+      surveyResult = _.where($scope.survey_results, {copy: question.copy})
+      # questionCopy = $scope.survey_results[question.copy]
+      if surveyResult
         switch question.type
           when 'select'
-            question.answer = questionCopy
+            question.answer = surveyResult[0].answer
           when 'multiple-select'
-            checked =  questionCopy.split(',')
+            checked =  surveyResult[0].answer.split(',')
             angular.forEach question.options, (option, index) ->
               if checked.indexOf(option.name) != -1
                 option.checked = true
           when 'open-ended'
-            question.answer = questionCopy
+            question.answer = surveyResult[0].answer
 
   $scope.getResults = ->
+    $scope.survey_results = []
     angular.forEach $scope.questions, (question, index) ->
+      survey_result = {}
+      survey_result.copy = question.copy
+      survey_result.search_scope = question.searchScope
       switch question.type
         when 'select'
-          $scope.survey_results[question.copy] = question.answer
+          # $scope.survey_results[question.copy] = question.answer
+          survey_result.answer = question.answer
         when 'multiple-select'
           answers = [] 
           angular.forEach question.options, (option, index) ->
             if option.checked
               answers.push(option.name)
-          $scope.survey_results[question.copy] = answers.join()
+          # $scope.survey_results[question.copy] = answers.join()
+          survey_result.answer = answers.join()
         when 'open-ended'
-          $scope.survey_results[question.copy] = question.answer    
+          # $scope.survey_results[question.copy] = question.answer
+          survey_result.answer = question.answer
+      $scope.survey_results.push(survey_result) 
 
   $scope.update = ->
     $scope.getResults()
+    console.log $scope.survey_results
     mixpanel.track('Survey Answered', $scope.survey_results)
 
     data = {'survey_results': $scope.survey_results}

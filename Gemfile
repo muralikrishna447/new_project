@@ -57,7 +57,8 @@ gem 'geokit-rails'
 gem 'rack-ssl-enforcer'
 gem 'redcarpet'
 gem 'google-api-client'
-gem 'activerecord-postgres-hstore'
+# gem 'activerecord-postgres-hstore'
+gem 'nested-hstore'
 
 group :development do
   gem 'spring'

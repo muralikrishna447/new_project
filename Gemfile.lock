@@ -292,6 +292,10 @@ GEM
     multi_json (1.8.2)
     multi_xml (0.5.1)
     multipart-post (1.1.5)
+    nested-hstore (0.0.1)
+      activerecord
+      activerecord-postgres-hstore
+      activesupport
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-ssh (2.6.0)
@@ -478,7 +482,6 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   activeadmin
-  activerecord-postgres-hstore
   acts-as-taggable-on
   acts_as_revisionable
   airbrake
@@ -534,6 +537,7 @@ DEPENDENCIES
   meta_search
   mixpanel-ruby
   mixpanel_client
+  nested-hstore
   net-http-spy!
   newrelic_rpm
   oauth2
