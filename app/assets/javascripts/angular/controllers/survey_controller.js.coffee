@@ -144,7 +144,7 @@
 
   $scope.update = ->
     $scope.getResults()
-    console.log $scope.survey_results
+    console.log $scope.survey_results[0].answer
     mixpanel.track('Survey Answered', $scope.survey_results)
 
     data = {'survey_results': $scope.survey_results}
