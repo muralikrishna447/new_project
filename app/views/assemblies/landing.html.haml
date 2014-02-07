@@ -13,7 +13,7 @@
 - if !current_user && session[:free_trial] && @hours
   %div.free-trial-landing-page(ng-controller="BuyAssemblyStripeController" ng-cloak ng-init='assembly=#{@assembly.to_json}; logged_in=#{current_user.present?}; assemblyPath="#{class_url(@assembly, protocol: "http")}"; freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; freeTrialHours="#{@hours}"; freeTrialLogger();')
     %div(ng-controller="LoginController")
-      = Page.where(slug: "whipping-siphons-free-trial").first.content.html_safe
+      = landing_page_content(@course)
       = render "devise/sessions/new_angular"
       = render 'buy_modal'
 - else
