@@ -61,6 +61,12 @@ class AssembliesController < ApplicationController
       redirect_to landing_class_url(@assembly)
     else
       # flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
+      if mixpanel_anonymous_id
+        mixpanel.track(mixpanel_anonymous_id, "Free Trial Offered Server-Side", {slug: @assembly.slug, length: hours.to_s})
+      else
+        cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"] = {"distinct_id" => request.session_options[:id]}.to_json
+        mixpanel.track(request.session_options[:id], "Free Trial Offered Server-Side", {slug: @assembly.slug, length: hours.to_s})
+      end
       redirect_to landing_class_url(@assembly, params.reject{|k,v| [:controller, :action, :trial_token].include?(k.to_sym)})
     end
   end
