@@ -1,6 +1,6 @@
 //=require showdown
 //=require jquery
-//=require angular.min
+//=require angular
 //=require angular-resource.min
 //=require angular-route.min
 //=require angular-sanitize.min

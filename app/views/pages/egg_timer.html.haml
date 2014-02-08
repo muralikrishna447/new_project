@@ -46,7 +46,7 @@
             .page.anim-basic-fade(ng-switch-when="white")
               %h4.text-center What texture would you like your egg white?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity" item-width="300")
-                %img(ng-src="{{whiteImage.image}}" ng-repeat="whiteImage in whiteImages" )
+                %video(ng-src="{{trustedVideo(whiteVideo.video)}}" autoplay="{{$index == inputs.perceptual_white_viscosity}}" loop="true" controls="false" webkit-playsinline="true" ng-repeat="whiteVideo in whiteVideos" )
               .control-group.text-center
                 .controls
                   Runny
@@ -117,8 +117,10 @@
               %h4.text-center What (US) size is your egg?
               .section.text-center
                 %ul.nav.nav-tabs.underline
-                  %li(ng-repeat="choice in eggService.sizeChoices()" ng-click="inputs.circumference = choice[1]" ng-class="{'active': inputs.circumference == choice[1]}")
-                    %a {{choice[0]}}
+                  %li(  ng-repeat="choice in eggService.sizeChoices" 
+                        ng-click="inputs.circumference = choice['mm']" 
+                        ng-class="{'active': inputs.circumference == choice['mm']}")
+                    %a {{choice['name']}}
 
               %h5.text-center.measure-text
                 &hellip; or measure with a string around widest part:

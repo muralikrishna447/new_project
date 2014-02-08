@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$http", "csEggCalculatorService", "csUtilities", ($scope, $http, csEggCalculatorService, csUtilities) ->
+angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$http", "csEggCalculatorService", "csUtilities", "$sce", ($scope, $http, csEggCalculatorService, csUtilities, $sce) ->
 
   $scope.eggService = csEggCalculatorService
   $scope.utils = csUtilities
@@ -13,8 +13,6 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     start_temp: 5
     surface_heat_transfer_coeff: 135
     units: 'c'
-
-
 
   $scope.needsSeconds = ->
     ($scope.output?.items?[2] - $scope.output?.items?[0]) < 90
@@ -42,29 +40,32 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       "https://d3awvtnmmsvyot.cloudfront.net/api/file/GynsRsomRtmBujrLTvJE/convert?fit=max&w=320&cache=true"
     ]
 
-  $scope.whiteImages =
+  $scope.whiteVideos =
     [
-      {temp: 60, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/eEbaYrmfTyahirkQZmFd/convert?fit=max&w=320&cache=true"}
-      {temp: 61, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/vgOyRiCSTzGnQ4dUCpFj/convert?fit=max&w=320&cache=true"}
-      {temp: 62, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/fZPCpQohTlGHeSWUipv0/convert?fit=max&w=320&cache=true"}
-      {temp: 63, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/6z6F36qBT4WybDaZp5Sy/convert?fit=max&w=320&cache=true"}
-      {temp: 64, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/QKeQCuJRISx5klbFyyTS/convert?fit=max&w=320&cache=true"}
-      {temp: 65, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/uTexSIQ4Qce4y2hxVoDN/convert?fit=max&w=320&cache=true"}
-      {temp: 66, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/WIm6HQWPRwCz93Kl7a6s/convert?fit=max&w=320&cache=true"}
-      {temp: 67, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/BhXtmLcKTv6Q8Y8lHzrJ/convert?fit=max&w=320&cache=true"}
-      {temp: 69, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/2t7XhKLOQOs3QMqQhjIr/convert?fit=max&w=320&cache=true"}
-      {temp: 70, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/2QynNcTtSi6SRNKEMV73/convert?fit=max&w=320&cache=true"}
-      {temp: 71, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/fmymXbNS0WPmzJMznCwd/convert?fit=max&w=320&cache=true"}
-      {temp: 72, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/6uDEuuTnKvRSHQ75VXOw/convert?fit=max&w=320&cache=true"}
-      {temp: 75, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/psBbjxLNTkaLhVuRMtUL/convert?fit=max&w=320&cache=true"}
-      {temp: 85, image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/yPpKhnStRemAG8CfM0hw/convert?fit=max&w=320&cache=true"}
+      {temp: 60, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_60_60min.mp4"}
+      {temp: 61, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_61_60min.mp4"}
+      {temp: 62, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_62_60min.mp4"}
+      {temp: 63, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_63_60min.mp4"}
+      {temp: 64, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_64_60min.mp4"}
+      {temp: 65, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_65_60min.mp4"}
+      {temp: 66, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_66_60min.mp4"}
+      {temp: 67, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_67_60min.mp4"}
+      {temp: 69, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_69_60min.mp4"}
+      {temp: 70, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_70_60min.mp4"}
+      {temp: 71, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_71_60min.mp4"}
+      {temp: 72, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_72_60min.mp4"}
+      {temp: 75, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_75_60min.mp4"}
+      {temp: 85, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_85_60min.mp4"}
     ]
+
+  $scope.trustedVideo = (video) ->
+    $sce.trustAsResourceUrl(video)
 
 
   $scope.update = ->
     params =
       desired_viscosity: Math.exp(-1.6 + (0.704 * $scope.inputs.perceptual_yolk_viscosity))
-      water_temp: $scope.whiteImages[Math.round($scope.inputs.perceptual_white_viscosity)].temp
+      water_temp: $scope.whiteVideos[Math.round($scope.inputs.perceptual_white_viscosity)].temp
       diameter: $scope.inputs.circumference / Math.PI
       start_temp: $scope.inputs.start_temp
       surface_heat_transfer_coeff: $scope.inputs.surface_heat_transfer_coeff
