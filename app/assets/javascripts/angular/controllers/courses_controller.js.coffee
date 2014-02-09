@@ -180,6 +180,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         # Hack for French Macaron Class Discussion page
         pageURL = "http://chefsteps.com/classes/3#!/discussion"
         pageID = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
+      else if $scope.course.id == 29
+        # Hack for Vegetable Demi Discussion page
+        pageURL = "http://chefsteps.com/recipe-development/vegetable-demi-glace#/vegetable-demi-discussion"
+        pageID = "class-activity-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id
       else
         pageURL = "http://chefsteps.com/classes/#{$scope.course.id}/#!#{$scope.currentIncludable.includable_slug}"
         pageID = "assembly-inclusion-" + $scope.currentIncludable.includable_type + "-" + $scope.currentIncludable.includable_id

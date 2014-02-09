@@ -55,6 +55,7 @@ module ActsAsChargeable
           card: stripeToken
         )
         user.stripe_id = customer.id
+        user.skip_name_validation = true
         user.save!
       else
         # Update the customer's card and email

@@ -70,7 +70,7 @@ private
       if @new_signup
         # Trigger as a signup
         sign_in @user
-        aweber_signup(@user.name, @user.email)
+        email_list_signup(@user.name, @user.email, "ajax_signup_form_social")
         cookies.delete(:viewed_activities)
         cookies[:returning_visitor] = true
         mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id

@@ -38,28 +38,6 @@ class Users::SessionsController < Devise::SessionsController
     end
   end
 
-  def signin_and_enroll
-    @user = User.find_for_authentication(email: params[:email])
-    @course = Course.find(params[:course_id])
-    if @user.valid_password?(params[:password])
-      sign_in @user
-      mixpanel.track(current_user.email, 'Signed In')
-      mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
-      @enrollment = Enrollment.new(user_id: current_user.id, enrollable: @course)
-      if @enrollment.save
-        redirect_to course_url(@course), notice: "You are now enrolled in the #{@course.title} Class!"
-        track_event @course, 'enroll'
-        mixpanel.people.append(current_user.email, {'Classes Enrolled' => @course.title})
-        finished('poutine', :reset => false)
-        finished('free or not', :reset => false)
-      else
-        redirect_to course_url(@course), notice: "Sign in successful!"
-      end
-    else
-      redirect_to course_url(@course), notice: 'Incorrect password.'
-    end
-  end
-
   def failure
     render :status => 401, :json => { :success => false, :errors => "Invalid email or password"}
   end

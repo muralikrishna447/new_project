@@ -2,10 +2,8 @@
   .row
     .span12.well.section
       %h1.text-orange Thanks for Signing Up!
-      %h2 Please check your email now to confirm your registration.
-      - if params[:email]
-        = link_to_web_email(params[:email])
-
+      %h2 We're glad to have you as a member of the ChefSteps Community.
+      
 - if current_user
   :javascript
     _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);

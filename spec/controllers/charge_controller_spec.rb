@@ -9,14 +9,14 @@ describe ChargesController do
       sign_in user
     end
 
-    # context "errors" do
-    #   it 'errors appropriately on a bad assembly id' do
-    #     controller.stub(:params) { {stripeToken: 'xxx', assembly_id: 1}  }
-    #     post :create
-    #     expect(response.status).to eq(422)
-    #     JSON.parse(response.body)["errors"][0].should include("Assembly")
-    #   end
-    # end
+    context "errors" do
+      it 'errors appropriately on a bad assembly id' do
+        controller.stub(:params) { {stripeToken: 'xxx', assembly_id: 1}  }
+        post :create
+        expect(response.status).to eq(422)
+        JSON.parse(response.body)["errors"][0].should include("Assembly")
+      end
+    end
 
     context 'Enrollment' do
       before do
@@ -116,7 +116,7 @@ describe ChargesController do
         end
 
         it "should call mixpanel track" do
-          ApplicationController.any_instance.should_receive(:mixpanel).exactly(2).times.and_call_original
+          ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
           subject
         end
       end
@@ -157,7 +157,7 @@ describe ChargesController do
           end
 
           it "should call mixpanel track" do
-            ApplicationController.any_instance.should_receive(:mixpanel).exactly(2).times.and_call_original
+            ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
             subject
           end
         end

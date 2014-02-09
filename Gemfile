@@ -59,6 +59,7 @@ gem 'redcarpet'
 gem 'google-api-client'
 # gem 'activerecord-postgres-hstore'
 gem 'nested-hstore'
+gem 'gibbon'
 
 group :development do
   gem 'spring'

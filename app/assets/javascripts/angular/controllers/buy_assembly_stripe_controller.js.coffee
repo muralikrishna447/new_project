@@ -21,6 +21,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.loginState = null
   $scope.freeTrialText = null
   $scope.freeTrialCode = false
+  $scope.freeTrialHours = null
+  $scope.trialNotificationSent = false
 
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
@@ -127,10 +129,12 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.isFreeTrial = ->
     enrollment = $scope.enrollment()
+    return false unless enrollment
     !!enrollment.trial_expires_at
 
   $scope.differenceInTime = ->
     enrollment = $scope.enrollment()
+    return false unless enrollment
     trial_expiration = new Date(enrollment.trial_expires_at)
     current_time = new Date()
     difference = trial_expiration - current_time
@@ -156,7 +160,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.closeModal = (abandon = true) ->
     $scope.buyModalOpen = false
     if abandon
-      mixpanel.track('Course Buy Box Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
+      mixpanel.track('Modal Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
       mixpanel.people.set('Paid Course Abandoned' : $scope.assembly.title)
 
   # Free enrollment, either for a free class or redeeming a gift
@@ -247,5 +251,11 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.freeTrialExpiredNotice = ->
     if $scope.isExpired()
       $scope.alerts.addAlert({message: "Your free trial has expired, please buy the class to continue.<br/>Please contact info@chefsteps.com if there are any problems.", type: "success", class: "long-header"})
+
+  $scope.freeTrialLogger = ->
+    if $scope.freeTrialCode && (! $scope.isExpired()) && (! $scope.trialNotificationSent)
+      mixpanel.track('Free Trial Offered', {context:'course', title: $scope.assembly.title, slug: $scope.assembly.slug, length: $scope.freeTrialHours})
+      mixpanel.people.set('Free Trial Offered': $scope.assembly.title)
+      $scope.trialNotificationSent = true
 
 ]

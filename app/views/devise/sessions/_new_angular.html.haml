@@ -6,6 +6,7 @@
       .row-fluid(ng-switch-when="signIn")
         %h3 Sign in
         .form-horizontal(ng-show="!authentication.loggedIn()")
+          .header-text(ng-show="headerText" ng-bind-html="headerText")
           .button-group
             .facebook-button.facebook-login
               %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
@@ -36,6 +37,7 @@
       .row-fluid(ng-switch-when="signUp")
         %h3 Sign up
         .form-horizontal(ng-show="!authentication.loggedIn()")
+          .header-text(ng-show="headerText" ng-bind-html="headerText")
           .button-group
             .facebook-button.facebook-login
               %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
@@ -101,12 +103,6 @@
         %i.icon-remove
       .row-fluid
         %h3 Thanks for signing up!
-        -# %p
-        -#   We're sending you a confirmation email. Please check your email and click the link in it.
-        -# %p
-        -#   In the meantime, connect to these accounts to invite your friends to join you.
-        %p
-          We need to verify we got your email right, so please go check it!
         %p
           If you have friends you'd like to invite to ChefSteps you can connect these accounts to send them an invitation.
         .invite-horizontal(ng-show="authentication.currentUser()")
