@@ -62,7 +62,6 @@ module ActsAsChargeable
         customer = Stripe::Customer.retrieve(user.stripe_id)
         customer.card = stripeToken
         customer.email = user.email
-        customer.skip_name_validation = true
         customer.save
       end
     end

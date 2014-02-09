@@ -61,49 +61,49 @@ page.slug = 'whipping-siphons-free-trial'
 page.title = 'Whipping Siphons Free Trial'
 content = <<HEREDOC
 <div class=\"container-fluid free-trial-offer whipping-siphon-free-trial\">
-  <div class=\"interest-image\">
-    <div class=\"sales-dialog\">
-      <div class=\"alpha-box\">
-        <h1>Start your {{freeTrialText}} free trial</h1>
-        <h2>No credit card required, absolutely free</h2>
-        <p>
-          <b>ChefSteps exists to inspire creativity and encourage expertise in the kitchen.</b>
-          Drawing on our years of combined culinary experience, we create hands-on online classes about food and cooking that are both informative and entertaining.
-        </p>
-        <p>
-          Learn how to really use your whipping siphon: Low-fat whipped cream, egg white hollandaise, 10-minute cake, carbonated fruit and stuff you've never even thought of!
-        </p>
-        <div class=\"sign-up-box\">
-          <div ng-show=\"dataLoading\">
-            <i class=\"icon icon-page-load\"></i>
-          </div>
-          <div ng-class=\"{error: register_error.errors.email}\">
-            <input type=\"text\" ng-model=\"register_user.email\" placeholder=\"Email Address\" class=\"input-medium\" ng-change=\"startedDataFill()\" ng-class=\"hasError(register_error.errors.email)\" />
-          </div>
-          <div ng-show=\"showMadlibPassword\" class=\"anim-basic-fade\" ng-class=\"{error: register_error.errors.password}\">
-            <input type=\"{{passwordType}}\" ng-model=\"register_user.password\" placeholder=\"Pick a Password\" class=\"input-medium password-with-show-button\" ng-class=\"hasError(register_error.errors.password)\" /> <a class=\"btn btn-secondary show-password\" ng-click=\"togglePassword()\">Show</a>
-          </div>
-          <div>
-            <input type=\"button\" ng-disabled=\"dataLoading || !register_user.email || !register_user.password\" value=\"START YOUR FREE TRIAL\" class=\"btn btn-primary input-medium\" ng-click=\"formFor='purchase'; setLoginState('freeTrial'); freeTrialRegister()\" />
-          </div>
-          <div>
-            <small>Already have an account?  <a id=\"sign-in-free-trial\" ng-click=\"formFor='purchase'; setLoginState('freeTrial'); openModal('login')\">Sign in and start now.</a></small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class=\"interest-image\">
+<div class=\"sales-dialog\">
+<div class=\"alpha-box\">
+<h1>Start your {{freeTrialText}} free trial</h1>
+<h2>No credit card required, absolutely free</h2>
+<p>
+<b>ChefSteps exists to inspire creativity and encourage expertise in the kitchen.</b>
+Drawing on our years of combined culinary experience, we create hands-on online classes about food and cooking that are both informative and entertaining.
+</p>
+<p>
+Learn how to really use your whipping siphon: Low-fat whipped cream, egg white hollandaise, 10-minute cake, carbonated fruit and stuff you've never even thought of!
+</p>
+<div class=\"sign-up-box\">
+<div ng-show=\"dataLoading\">
+<i class=\"icon icon-page-load\"></i>
+</div>
+<div ng-class=\"{error: register_error.errors.email}\">
+<input type=\"text\" ng-model=\"register_user.email\" placeholder=\"Email Address\" class=\"input-medium\" ng-change=\"startedDataFill()\" ng-class=\"hasError(register_error.errors.email)\" />
+</div>
+<div ng-show=\"showMadlibPassword\" class=\"anim-basic-fade\" ng-class=\"{error: register_error.errors.password}\">
+<input type=\"{{passwordType}}\" ng-model=\"register_user.password\" placeholder=\"Pick a Password\" class=\"input-medium password-with-show-button\" ng-class=\"hasError(register_error.errors.password)\" /> <a class=\"btn btn-secondary show-password\" ng-click=\"togglePassword()\">Show</a>
+</div>
+<div>
+<input type=\"button\" ng-disabled=\"dataLoading || !register_user.email || !register_user.password\" value=\"START YOUR FREE TRIAL\" class=\"btn btn-primary input-medium\" ng-click=\"formFor='purchase'; setLoginState('freeTrial'); freeTrialRegister()\" />
+</div>
+<div>
+<small>Already have an account?  <a id=\"sign-in-free-trial\" ng-click=\"formFor='purchase'; setLoginState('freeTrial'); openModal('login')\">Sign in and start now.</a></small>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class=\"free-trial-learn-more container\">
-  <div class=\"row\">
-    <div class=\"learn-more-text offset3 span6\">
-      ChefSteps isn't your ordinary cooking site.  We're better.  <a href=\"/about\">Learn why</a>
-    </div>
-  </div>
+<div class=\"row\">
+<div class=\"learn-more-text offset3 span6\">
+ChefSteps isn't your ordinary cooking site.  We're better.  <a href=\"/about\">Learn why</a>
+</div>
+</div>
 </div>
 HEREDOC
 page.content = content
-page.save
+page.save!
 "
 bundle exec thin start -p 3001 -e angular -P tmp/pids/angular.pid -d
 

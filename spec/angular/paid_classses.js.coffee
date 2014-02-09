@@ -172,6 +172,7 @@ describe "PaidClasses", ->
         it "should allow me try out the class", ->
           browser().navigateTo('/trial/MS03Mg==')
           sleep .5
+          pause()
           input("register_user.email").enter("test#{Math.random(10000)}@example.com")
           input("register_user.password").enter("apassword")
           element("input.btn").click()
