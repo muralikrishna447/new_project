@@ -17,27 +17,17 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
   $scope.needsSeconds = ->
     ($scope.output?.items?[2] - $scope.output?.items?[0]) < 90
 
-  $scope.perceptualYolkDescriptor = (x) ->
-    descrips = [
-      "evaporated milk",
-      "maple syrup",
-      "chocolate syrup",
-      "molasses",
-      "sweetened condensed milk",
-      "ready-to-eat pudding",
-      "ready-to-eat icing"
-    ]
-    descrips[Math.round(x - 1)]
 
-  $scope.yolkImages =
+
+  $scope.yolkVideos =
     [
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/NFDyyufQSaCx4OTqTS1n/convert?fit=max&w=320&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/g2hLw1KToCAmBLRILwNP/convert?fit=max&w=320&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/xqeQQvwRSGSdHEkU2du5/convert?fit=max&w=320&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/TIePI4PTCWEHGwPxWBpT/convert?fit=max&w=320&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/lxpXnhiIQaUlUa1DDVFQ/convert?fit=max&w=320&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/5vzqnpRBQC6gbYX7gI85/convert?fit=max&w=320&cache=true",
-      "https://d3awvtnmmsvyot.cloudfront.net/api/file/GynsRsomRtmBujrLTvJE/convert?fit=max&w=320&cache=true"
+      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.mp4",
+      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_25min.mp4",
+      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_30min.mp4",
+      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_35min.mp4",
+      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_45min.mp4",
+      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_60min.mp4",
+      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_105min.mp4",
     ]
 
   $scope.whiteVideos =
@@ -97,6 +87,11 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
   $scope.stateVisited = (name) ->
     "visited" if $scope.visitedStates.indexOf(name) >= 0
+
+  $scope.increaseWhite = ->
+    $scope.inputs.perceptual_white_viscosity += 1 unless $scope.inputs.perceptual_white_viscosity >= 13
+  $scope.decreaseWhite = ->
+    $scope.inputs.perceptual_white_viscosity -= 1 unless $scope.inputs.perceptual_white_viscosity <= 0
 
   # Social share callbacks
   $scope.socialURL = ->
