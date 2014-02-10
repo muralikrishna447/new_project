@@ -14,4 +14,9 @@ class LikesController < ApplicationController
     # redirect_to request.referrer
   end
 
+  def by_user
+    @likes = current_user.likes
+    render :json => @likes.to_json
+  end
+
 end
