@@ -11,12 +11,12 @@ describe Recommendation do
     @activity4 = Fabricate :activity, title: 'Activity 4', published: true, tag_list: 'dinner', difficulty: 'advanced', likes_count: 40
     @activity5 = Fabricate :activity, title: 'Activity 5', published: true, tag_list: 'dinner', difficulty: 'advanced', likes_count: 50
     @activity6 = Fabricate :activity, title: 'Activity 6', published: true, tag_list: 'dinner', difficulty: 'easy', likes_count: 60
-    @activity7 = Fabricate :activity, title: 'Activity 7', published: true, tag_list: 'dinner', difficulty: 'easy', likes_count: 70
+    @activity7 = Fabricate :activity, title: 'Activity 7', published: true, tag_list: 'dinner', difficulty: 'intermediate', likes_count: 70
   end
 
   context 'activities_for' do
     it 'returns intermediate recipes when a user is a home cook' do
-      expect(Recommendation.activities_for(@user1)).to include(@activity3)
+      expect(Recommendation.activities_for(@user1)).to include(@activity7)
     end
 
     it 'returns modernist recipes when a user marks it as an interest' do
