@@ -4,12 +4,15 @@ class Recommendation
     # interests = get_interests(user)
     difficulty = nil
     interests = nil
+    equipment = nil
     user.survey_results.each do |result|
       case result['search_scope']
       when 'difficulty'
         difficulty = get_difficulty(result['answer'])
       when 'interests'
         interests = result['answer']
+      when 'by_equipment_title'
+        equipment = [result['answer']]
       end
     end
 
@@ -17,6 +20,7 @@ class Recommendation
     activities = Activity.chefsteps_generated.published.popular
     activities = activities.difficulty(difficulty) if difficulty
     activities = activities.tagged_with(interests, any: true) if interests
+    activities = activities.by_equipment_titles(equipment) if equipment
     activities = (activities + popular).uniq.take(6)
     activities
   end
