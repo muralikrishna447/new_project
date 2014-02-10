@@ -18,4 +18,15 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
     ).error((data, status, headers, config) ->
       $('.alert-container').append("<div class='alert alert-error'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'><a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to like this.</h4><div class='lblock'></div></div>")
     )
+
+  $scope.getCurrentUserLikes = (likeable_type, likeable_id) ->
+    url = '/likes/by_user?likeable_type=' + likeable_type + '&likeable_id=' + likeable_id
+    console.log url
+    $http(
+      method: 'GET'
+      url: url
+    ).success((data, status, headers, config) ->
+      if data && data == 'true'
+        $scope.current_user_likes = true
+    )
 ]
