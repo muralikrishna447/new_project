@@ -5,7 +5,8 @@
       templateUrl: "/client_views/_survey.html"
       backdrop: false
       keyboard: false
-      windowClass: "takeover-modal"
+      # windowClass: "takeover-modal"
+      windowClass: "modal-fullscreen"
       controller: 'SurveyModalController'
     )
     mixpanel.track('Survey Opened')
