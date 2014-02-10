@@ -15,7 +15,7 @@ class ChargesController < ApplicationController
       @enrollment = GiftCertificate.redeem(current_user, JSON.parse(params[:gift_certificate])["id"])
       session[:gift_token] = nil
     when is_a_free_trial? # This is for doing a free trial right now it's really similar to normal course but with an extra param
-      assembly_from_free_trial, hours = Base64.decode64(@free_trial).split('-').map(&:to_i)
+      hours = Assembly.free_trial_hours(@free_trial)
       @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, 0, nil, hours)
       session.delete(:free_trial)
       if @enrollment && mixpanel_anonymous_id

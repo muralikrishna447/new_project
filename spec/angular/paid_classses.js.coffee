@@ -80,6 +80,19 @@ describe "PaidClasses", ->
           sleep 2
           expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
 
+        it "should invent a trial duration if 0", ->
+          browser().navigateTo('/trial/MS0w')
+          sleep .5
+          expect(element(".alpha-box h1").text()).toMatch("Start your [1-9].*")      
+          element('#sign-in-free-trial').click()
+          sleep .5
+          expect(element('.login-modal-body').count()).toBe(1)
+          input("login_user.email").enter("ytrewq@example.com")
+          input("login_user.password").enter("apassword")
+          element("button.signin").click()
+          sleep 2
+          expect(element(".buy-modal-body .ng-binding").text()).toMatch("Welcome to the ChefSteps'")
+
       describe "gift redeem", ->
         it "should allow me to redeem", ->
           browser().navigateTo('/classes/become-a-badass/landing?gift_token=test')
