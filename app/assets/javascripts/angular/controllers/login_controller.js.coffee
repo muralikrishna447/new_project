@@ -30,6 +30,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.showMadlibPassword = false
   $scope.googleLoaded = false
+  $scope.validEmailSent = false
 
   $scope.hasError = (error) ->
     if error
@@ -440,8 +441,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     unless $scope.showMadlibPassword
       $scope.showMadlibPassword = true
       mixpanel.track("Free Trial Data Entered")
-    if /.*@.*\..*/.test($scope.register_user.email)
+    if /.*@.*\..*/.test($scope.register_user.email) && !$scope.validEmailSent
       mixpanel.track("Free Trial Valid Email Filled")
+      $scope.validEmailSent = true
 
 
 
