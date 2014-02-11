@@ -111,7 +111,7 @@
     angular.forEach $scope.questions, (question, index) ->
       surveyResult = _.where($scope.survey_results, {copy: question.copy})
       # questionCopy = $scope.survey_results[question.copy]
-      if surveyResult
+      if surveyResult.length > 0
         switch question.type
           when 'select'
             question.answer = surveyResult[0].answer

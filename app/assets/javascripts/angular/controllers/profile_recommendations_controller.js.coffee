@@ -1,5 +1,5 @@
-@app.controller 'ProfileRecommendationsController', ["$scope", "$resource", "$http", "$modal", ($scope, $resource, $http, $modal) ->
-
+@app.controller 'ProfileRecommendationsController', ["$scope", "$resource", "$http", "$modal", "csAuthentication", ($scope, $resource, $http, $modal, csAuthentication) ->
+  $scope.currentUser = csAuthentication.currentUser()
   $scope.refinable = true
 
   $scope.openRecommendations = ->
@@ -27,7 +27,10 @@
     mixpanel.track('Survey Opened')
 
   $scope.open = ->
-    $scope.openRecommendations()
+    if $scope.currentUser.survey_results
+      $scope.openRecommendations()
+    else
+      $scope.openSurvey()
 
   $scope.$on 'refineRecommendations', (event, data) ->
     $scope.openSurvey()
