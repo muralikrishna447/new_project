@@ -77,16 +77,11 @@
     / %script{src:'/assets/youtube.js'}
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
+  = render "layouts/login_hack"
+
   = yield(:custom_js)
 
 -# This load on every page, so a convenient place to make sure mixpanel identity is known
 - if current_user
   :javascript
     mixpanel.identify("#{current_user.email}")
-
-    %iframe#blackhole(style="display:none" src="dummy.html")
-    %form#fakelogin(target="blackhole" action="" method="post" style="display:none;")
-      %input(type="text" name="email" id="email")
-      %input(type="password" name="password" id="password")
-      %input(type="submit" value="Login" id="dummy_submit")
-

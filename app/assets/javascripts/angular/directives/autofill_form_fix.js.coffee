@@ -1,3 +1,4 @@
+#This directive is to make angular aware of the values of autofills on submit of a form.
 angular.module('ChefStepsApp').directive 'formAutofillFix', ->
   (scope, elem, attrs) ->
     # Fixes Chrome bug: https://groups.google.com/forum/#!topic/angular/6NlucSskQjY

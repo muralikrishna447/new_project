@@ -13,6 +13,9 @@ body
 a, [ng-click], [contenteditable]:not(:focus)
   cursor: pointer
 
+[ng-click]
+  @include unselectable
+
 .top-container
   margin-top: $baseline * 7
 
