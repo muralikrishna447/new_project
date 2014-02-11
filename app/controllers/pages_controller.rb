@@ -13,8 +13,10 @@ class PagesController < ApplicationController
   end
 
   def egg_timer
-    authenticate_or_request_with_http_basic('Tools') do |username, password|
-      username == 'delve' && password == 'howtoegg22'
+    if Rails.env.production?
+      authenticate_or_request_with_http_basic('Tools') do |username, password|
+        username == 'delve' && password == 'howtoegg22'
+      end
     end
     Page.find 'egg-timer'
   end
