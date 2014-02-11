@@ -77,6 +77,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.login = ->
     $scope.dataLoading += 1
     $scope.resetMessages()
+    console.log("Doing fake login")
+    $("#fakelogin #email").val($scope.login_user.email)
+    $("#fakelogin #password").val($scope.login_user.password)
+    $("#fakelogin").submit()
     $http(
       method: 'POST'
       url: "/users/sign_in.json"
@@ -88,9 +92,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       .success( (data, status) ->
         $scope.dataLoading -= 1
         if (status == 200)
-          $("#fakelogin #email").val($scope.login_user.email)
-          $("#fakelogin #password").val($scope.login_user.password)
-          $("#fakelogin").submit()
           $scope.logged_in = true
           $scope.closeModal('login', false)
           $scope.alertService.addAlert({message: "You have been signed in.", type: "success"})
