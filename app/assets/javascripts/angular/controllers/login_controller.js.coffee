@@ -77,10 +77,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.login = ->
     $scope.dataLoading += 1
     $scope.resetMessages()
-    console.log("Doing fake login")
-    $("#fakelogin #email").val($scope.login_user.email)
-    $("#fakelogin #password").val($scope.login_user.password)
-    $("#fakelogin").submit()
+    $scope.fakeLogin()
     $http(
       method: 'POST'
       url: "/users/sign_in.json"
@@ -450,5 +447,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.validEmailSent = true
 
 
-
+  $scope.fakeLogin = ->
+    $("#fakelogin #email").val($scope.login_user.email)
+    $("#fakelogin #password").val($scope.login_user.password)
+    $("#fakelogin").submit()
 ]
