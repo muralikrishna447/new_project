@@ -216,6 +216,8 @@ Delve::Application.routes.draw do
 
   get "/invitations/welcome" => "home#welcome"
 
+  match "/reports/stripe" => "reports#stripe"
+
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"
     get "end_clean" => "application#end_clean"

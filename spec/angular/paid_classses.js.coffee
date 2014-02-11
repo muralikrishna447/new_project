@@ -83,7 +83,7 @@ describe "PaidClasses", ->
         it "should invent a trial duration if 0", ->
           browser().navigateTo('/trial/MS0w')
           sleep .5
-          expect(element(".alpha-box h1").text()).toMatch("Start your [1-9].*")      
+          expect(element(".alpha-box h1").text()).toMatch("Start your [1-9].*")
           element('#sign-in-free-trial').click()
           sleep .5
           expect(element('.login-modal-body').count()).toBe(1)
@@ -185,7 +185,6 @@ describe "PaidClasses", ->
         it "should allow me try out the class", ->
           browser().navigateTo('/trial/MS03Mg==')
           sleep .5
-          pause()
           input("register_user.email").enter("test#{Math.random(10000)}@example.com")
           input("register_user.password").enter("apassword")
           element("input.btn").click()
@@ -248,7 +247,7 @@ describe "PaidClasses", ->
         sleep 3
         expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for giving our")
 
-    describe "free trial", ->
+    ddescribe "free trial", ->
       it "should allow me try out the class", ->
         browser().navigateTo('/trial/MS03Mg==')
         element('#free-trial-button').click()
