@@ -4,6 +4,8 @@ describe 'SurveyModalController', ->
   controller = {}
   modalInstance = {}
   http = {}
+  afterSubmit = {}
+  currentUser = {}
 
   fakeModal =
     command: null
@@ -18,7 +20,8 @@ describe 'SurveyModalController', ->
   beforeEach inject ($rootScope, $controller) ->
     scope = $rootScope.$new()
     modalInstance = jasmine.createSpy("$modalInstance").andReturn(fakeModalPromise)
-    controller = $controller('SurveyModalController', {$scope: scope, $modalInstance: modalInstance})
+    controller = $controller('SurveyModalController', {$scope: scope, $modalInstance: modalInstance, afterSubmit: afterSubmit})
+    scope.currentUser = {}
 
   describe "#getResults", ->
     describe "when question has a type of select", ->
