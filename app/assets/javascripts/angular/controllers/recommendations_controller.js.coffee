@@ -8,7 +8,6 @@
       windowClass: "takeover-modal"
       controller: 'RecommendationsModalController'
     )
-    mixpanel.track('Recommendations Opened')
 ]
 
 
@@ -33,6 +32,7 @@
   $scope.refine = ->
     $rootScope.$broadcast 'refineRecommendations'
     $modalInstance.close()
+    mixpanel.track('Recommendations Refine Button Clicked')
 
   $scope.loadCurated = ->
     urls = [
@@ -47,6 +47,8 @@
       $http.get(url).success((data) ->
         $scope.curated.push(data)
       )
+    mixpanel.track('Recommendations Opened - Curated')
 
-  $scope.loadCurated()
+  $scope.trackRecommended = ->
+    mixpanel.track('Recommendations Opened - Recommended')
 ]

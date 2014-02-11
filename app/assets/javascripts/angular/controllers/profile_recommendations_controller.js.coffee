@@ -13,7 +13,6 @@
           $scope.refinable
       controller: 'RecommendationsModalController'
     )
-    mixpanel.track('Recommendations Opened')
 
   $scope.openSurvey = ->
     modalInstance = $modal.open(

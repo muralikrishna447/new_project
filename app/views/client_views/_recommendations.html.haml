@@ -2,44 +2,46 @@
   .modal-body
     .container
       .span12
-        %div(ng-show='refinable')
         - ab_test('recommended_vs_curated', 'recommended', 'curated') do |recommendation_type|
           - if recommendation_type == 'recommended'
-            .btn.btn-secondary(ng-click='refine()')
-              Refine
-            .recommendation.pull-left(ng-repeat='activity in recommendations')
-              %csGalleryItem( title="activity.title"
-                              href="activity.gallery_path"
-                              image="itemImageURL(activity, 400)"
-                              footer-left="activity.difficulty"
-                              footer-right="getFooterRightContents(activity)"
-                              sash = "getSashContents(activity)"
-                            )
-              %div.text-center(ng-controller='LikesController' ng-init="getCurrentUserLikes('Activity', activity.id)")
-                .btn.btn-save-for-later(ng-click="likeObject('Activity', activity.id)")
-                  .btn-save-for-later-icon(ng-if="current_user_likes")
-                    %i.icon-star
-                  .btn-save-for-later-icon(ng-if="! current_user_likes")
-                    %i.icon-star-empty
-                  .btn-save-for-later-text
-                    Save for Later
+            %div(ng-init='trackRecommended()')
+              %div(ng-show='refinable')
+                .btn.btn-secondary(ng-click='refine()')
+                  Refine
+              .recommendation.pull-left(ng-repeat='activity in recommendations')
+                %csGalleryItem( title="activity.title"
+                                href="activity.gallery_path"
+                                image="itemImageURL(activity, 400)"
+                                footer-left="activity.difficulty"
+                                footer-right="getFooterRightContents(activity)"
+                                sash = "getSashContents(activity)"
+                              )
+                %div.text-center(ng-controller='LikesController' ng-init="getCurrentUserLikes('Activity', activity.id)")
+                  .btn.btn-save-for-later(ng-click="likeObject('Activity', activity.id)")
+                    .btn-save-for-later-icon(ng-if="current_user_likes")
+                      %i.icon-star
+                    .btn-save-for-later-icon(ng-if="! current_user_likes")
+                      %i.icon-star-empty
+                    .btn-save-for-later-text
+                      Save for Later
           - else
-            .recommendation.pull-left(ng-repeat='activity in curated')
-              %csGalleryItem( title="activity.title"
-                              href="activity.gallery_path"
-                              image="itemImageURL(activity, 400)"
-                              footer-left="activity.difficulty"
-                              footer-right="getFooterRightContents(activity)"
-                              sash = "getSashContents(activity)"
-                            )
-              %div.text-center(ng-controller='LikesController' ng-init="getCurrentUserLikes('Activity', activity.id)")
-                .btn.btn-save-for-later(ng-click="likeObject('Activity', activity.id)")
-                  .btn-save-for-later-icon(ng-if="current_user_likes")
-                    %i.icon-star
-                  .btn-save-for-later-icon(ng-if="! current_user_likes")
-                    %i.icon-star-empty
-                  .btn-save-for-later-text
-                    Save for Later
+            %div(ng-init='loadCurated()')
+              .recommendation.pull-left(ng-repeat='activity in curated')
+                %csGalleryItem( title="activity.title"
+                                href="activity.gallery_path"
+                                image="itemImageURL(activity, 400)"
+                                footer-left="activity.difficulty"
+                                footer-right="getFooterRightContents(activity)"
+                                sash = "getSashContents(activity)"
+                              )
+                %div.text-center(ng-controller='LikesController' ng-init="getCurrentUserLikes('Activity', activity.id)")
+                  .btn.btn-save-for-later(ng-click="likeObject('Activity', activity.id)")
+                    .btn-save-for-later-icon(ng-if="current_user_likes")
+                      %i.icon-star
+                    .btn-save-for-later-icon(ng-if="! current_user_likes")
+                      %i.icon-star-empty
+                    .btn-save-for-later-text
+                      Save for Later
         .gallery-spinner.text-center(ng-hide="recommendations.length > 0")
           %i.icon-page-load
   .modal-header
