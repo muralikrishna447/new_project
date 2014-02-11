@@ -2,6 +2,9 @@
   .modal-body
     .container
       .span12
+        %div(ng-show='refinable')
+          .btn.btn-secondary(ng-click='refine()')
+            Refine
         .recommendation.pull-left(ng-repeat='activity in recommendations')
           %csGalleryItem( title="activity.title"
                           href="activity.gallery_path"
@@ -26,6 +29,3 @@
         %h3.pull-left Recommendations
         .pull-right(ng-click="cancel()")
           %i.icon-remove
-  .modal-footer
-    %button.btn.btn-primary(ng-click='update()')
-      Go!

@@ -8,10 +8,13 @@
       windowClass: "takeover-modal"
       controller: 'RecommendationsModalController'
     )
+    mixpanel.track('Recommendations Opened')
 ]
 
 
-@app.controller 'RecommendationsModalController', ['$scope', '$resource', '$modalInstance', '$controller', 'csGalleryService', 'ActivityMethods', ($scope, $resource, $modalInstance, $controller, csGalleryService, ActivityMethods) ->
+@app.controller 'RecommendationsModalController', ['$scope', '$resource', '$modalInstance', '$controller', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', ($scope, $resource, $modalInstance, $controller, csGalleryService, ActivityMethods, refinable, $rootScope) ->
+  $scope.refinable = refinable
+
   $scope.Recommendation = $resource('/recommendations')
   $scope.recommendations = $scope.Recommendation.query(->
 
@@ -25,4 +28,8 @@
 
   $scope.cancel = ->
     $modalInstance.dismiss('cancel')
+
+  $scope.refine = ->
+    $rootScope.$broadcast 'refineRecommendations'
+    $modalInstance.close()
 ]
