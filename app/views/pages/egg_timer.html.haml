@@ -46,12 +46,16 @@
             .page.anim-basic-fade(ng-switch-when="white")
               %h4.text-center What texture would you like your egg white?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity" item-width="300")
-                %img(ng-src="{{whiteImage.image}}" ng-repeat="whiteImage in whiteImages" )
+                %video(ng-src="{{trustedVideo(whiteVideo.video)}}" autoplay="true" loop="true" controls="false" webkit-playsinline="true" ng-repeat="whiteVideo in whiteVideos" )
               .control-group.text-center
                 .controls
-                  Runny
+                  %a(ng-click="incrementWhite(-1)")
+                    %i.icon-angle-left 
+                    Runny
                   %input(type="range" ng-model='inputs.perceptual_white_viscosity' min="0" max="13" step=".01")
-                  Firm
+                  %a(ng-click="incrementWhite(1)")
+                    Firm
+                    %i.icon-angle-right
               .egg-footer
                 .btn.btn-primary(ng-click="goState('yolk')")
                   NEXT
@@ -60,14 +64,17 @@
             .page.anim-basic-fade(ng-switch-when="yolk")
               %h4.text-center What texture would you like your egg yolk?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1" item-width="300")
-                %img(ng-src="{{yolkImage}}" ng-repeat="yolkImage in yolkImages" )
-              %h6.text-center
-                Like {{perceptualYolkDescriptor(inputs.perceptual_yolk_viscosity)}}
+                %video(ng-src="{{trustedVideo(yolkVideo)}}" autoplay="true" loop="true" controls="false" webkit-playsinline="true" ng-repeat="yolkVideo in yolkVideos" )
+
               .control-group.text-center
                 .controls
-                  Runny
+                  %a(ng-click="incrementYolk(-1)")
+                    %i.icon-angle-left 
+                    Runny
                   %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
-                  Firm
+                  %a(ng-click="incrementYolk(1)")
+                    Firm
+                    %i.icon-angle-right
               .egg-footer
                 .btn.btn-left.btn-primary(ng-click="goState('white')")
                   %i.icon-angle-left
@@ -117,8 +124,10 @@
               %h4.text-center What (US) size is your egg?
               .section.text-center
                 %ul.nav.nav-tabs.underline
-                  %li(ng-repeat="choice in eggService.sizeChoices()" ng-click="inputs.circumference = choice[1]" ng-class="{'active': inputs.circumference == choice[1]}")
-                    %a {{choice[0]}}
+                  %li(  ng-repeat="choice in eggService.sizeChoices" 
+                        ng-click="inputs.circumference = choice['mm']" 
+                        ng-class="{'active': inputs.circumference == choice['mm']}")
+                    %a {{choice['name']}}
 
               %h5.text-center.measure-text
                 &hellip; or measure with a string around widest part:
