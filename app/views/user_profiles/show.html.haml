@@ -31,20 +31,10 @@
       - if current_user
         - if current_user == @user
           = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-secondary btn-block'
-          -# %a(class="btn btn-secondary btn-block" ng-click="openModal('invite')") Invite Friends
-          / %div(ng-controller='SurveyController')
-          /   %btn.btn.btn-secondary.btn-block(ng-click='open()')
-          /     Take a Survey
-          / %div(ng-controller='RecommendationsController')
-          /   %btn.btn.btn-secondary.btn-block(ng-click='open()')
-          /     Recipe Recommendations
           %div(ng-controller='ProfileRecommendationsController')
             %btn.btn.btn-secondary.btn-block(ng-click='open()')
               Recipe Recommendations
           = link_to 'Sign out', sign_out_path, class: 'btn btn-secondary btn-block'
-        - else
-          / = link_to followership_path(@user), method: :put, class: 'btn btn-primary btn-block' do
-          /   = current_user.follows?(@user) ? 'Unfollow' : 'Follow'
     .span5.nav-tabs-gray
       %h4 Bio
 
