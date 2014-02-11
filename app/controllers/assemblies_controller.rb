@@ -34,8 +34,8 @@ class AssembliesController < ApplicationController
 
   def landing
     if session[:free_trial]
-      @hours = Base64.decode64(session[:free_trial]).split("-").last
-      @free_trial_text = @hours.to_i.hours_to_pretty_time
+      @hours = Assembly.free_trial_hours(session[:free_trial])
+      @free_trial_text = @hours.hours_to_pretty_time
       # @minimal = true if !current_user && session[:free_trial] && @hours
     end
     @no_shop = true
@@ -55,19 +55,23 @@ class AssembliesController < ApplicationController
   def trial
     session[:free_trial] = params[:trial_token]
     session[:coupon] = params[:coupon] if params[:coupon]
-    assembly, hours = Base64.decode64(session[:free_trial]).split('-').map(&:to_i)
-    @assembly = Assembly.find(assembly)
+    @assembly = Assembly.free_trial_assembly(session[:free_trial])
+    hours = Assembly.free_trial_hours(session[:free_trial])
+
+    # If 0 hours in the trial code, it means run a split test from a randomly generated
+    # choice of hours. Shove it back in the session so it stays consistent for this user.
+    if hours == 0
+      hours = [1, 2, 24].sample
+      session[:free_trial] = Base64.encode64("#{@assembly.id}-#{hours}")
+    end
+
     if current_user && current_user.enrollments.where(enrollable_id: @assembly.id, enrollable_type: @assembly.class).first.try(:free_trial_expired?)
       redirect_to landing_class_url(@assembly)
     else
       # flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
-      if mixpanel_anonymous_id
-        mixpanel.track(mixpanel_anonymous_id, "Free Trial Offered Server-Side", {slug: @assembly.slug, length: hours.to_s})
-      else
-        cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"] = {"distinct_id" => request.session_options[:id]}.to_json
-        mixpanel.track(request.session_options[:id], "Free Trial Offered Server-Side", {slug: @assembly.slug, length: hours.to_s})
-      end
-      redirect_to landing_class_url(@assembly, params.reject{|k,v| [:controller, :action, :trial_token].include?(k.to_sym)})
+      appended_params = params.reject{|k,v| [:controller, :action, :trial_token].include?(k.to_sym)}
+      mixpanel.track(mixpanel_anonymous_id, "Free Trial Offered Server-Side", {slug: @assembly.slug, length: hours.to_s}.merge(appended_params))
+      redirect_to landing_class_url(@assembly, appended_params)
     end
   end
 

@@ -40,4 +40,15 @@ describe AssembliesController do
     end
   end
 
+  context "#trial duration split" do
+    let!(:assembly){ Fabricate(:assembly, title: "Free Trial", assembly_type: "Course", price: 39.00, published: true ) }
+    let!(:trial_code) { Base64.encode64("#{assembly.id}-0") }
+
+    subject { get :trial, trial_token: trial_code }
+
+    it 'it should pick a non-zero trial duration and store in session' do
+      subject
+      expect(Assembly.free_trial_hours(session[:free_trial])).not_to eq 0
+    end
+  end
 end
