@@ -49,11 +49,11 @@
                 %video(ng-src="{{trustedVideo(whiteVideo.video)}}" autoplay="true" loop="true" controls="false" webkit-playsinline="true" ng-repeat="whiteVideo in whiteVideos" )
               .control-group.text-center
                 .controls
-                  %a(ng-click="decreaseWhite()")
+                  %a(ng-click="incrementWhite(-1)")
                     %i.icon-angle-left 
                     Runny
                   %input(type="range" ng-model='inputs.perceptual_white_viscosity' min="0" max="13" step=".01")
-                  %a(ng-click="increaseWhite()")
+                  %a(ng-click="incrementWhite(1)")
                     Firm
                     %i.icon-angle-right
               .egg-footer
@@ -68,9 +68,13 @@
 
               .control-group.text-center
                 .controls
-                  Runny
+                  %a(ng-click="incrementYolk(-1)")
+                    %i.icon-angle-left 
+                    Runny
                   %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
-                  Firm
+                  %a(ng-click="incrementYolk(1)")
+                    Firm
+                    %i.icon-angle-right
               .egg-footer
                 .btn.btn-left.btn-primary(ng-click="goState('white')")
                   %i.icon-angle-left

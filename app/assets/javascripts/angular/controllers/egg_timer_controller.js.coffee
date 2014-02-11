@@ -88,11 +88,14 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
   $scope.stateVisited = (name) ->
     "visited" if $scope.visitedStates.indexOf(name) >= 0
 
-  $scope.increaseWhite = ->
-    $scope.inputs.perceptual_white_viscosity += 1 unless $scope.inputs.perceptual_white_viscosity >= 13
-  $scope.decreaseWhite = ->
-    $scope.inputs.perceptual_white_viscosity -= 1 unless $scope.inputs.perceptual_white_viscosity <= 0
+  $scope.incrementWhite = (increment) ->
+    pwv = parseInt($scope.inputs.perceptual_white_viscosity)
+    $scope.inputs.perceptual_white_viscosity = Math.max(Math.min(pwv + increment, 13), 0)
 
+  $scope.incrementYolk= (increment) ->
+    pyv = parseInt($scope.inputs.perceptual_yolk_viscosity)
+    $scope.inputs.perceptual_yolk_viscosity = Math.max(Math.min(pyv + increment, 7), 1)
+    
   # Social share callbacks
   $scope.socialURL = ->
     "http://chefsteps.com/egg_timer"
