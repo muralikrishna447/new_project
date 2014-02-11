@@ -1,6 +1,6 @@
 @app.service 'csEggCalculatorService', [ ()  ->
 
-  this.sizeChoices = ->
-    [["Medium", 110], ["Large", 135], ["X-Large", 148], ["Jumbo", 157]]  
+  this.sizeChoices = 
+    [{name:"Medium", mm: 110}, {name: "Large", mm: 135}, {name: "X-Large", mm: 148}, {name: "Jumbo", mm: 157}]  
   this
 ]

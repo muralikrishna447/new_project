@@ -1,5 +1,5 @@
 !!! 5
-%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav}" }
+%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main" }
   %head
     %title= "#{yield :title} - ChefSteps"
     = stylesheet_link_tag 'application', media: 'all'
@@ -78,6 +78,16 @@
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
   = yield(:custom_js)
+
+  / This is for doing remember me options.  Dirty, Dirty, Dirty!
+  / http://stackoverflow.com/questions/2382329/how-can-i-get-browser-to-prompt-to-save-password
+  %iframe#blackhole(style="display:none" src="dummy.html")
+  %form#fakelogin(target="blackhole" action="" method="post" style="display:none;")
+    %input(type="text" name="email" id="email")
+    %input(type="password" name="password" id="password")
+    %input(type="submit" value="Login" id="dummy_submit")
+
+
 
 -# This load on every page, so a convenient place to make sure mixpanel identity is known
 - if current_user

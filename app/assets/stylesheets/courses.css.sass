@@ -186,10 +186,15 @@
     .buy-button
       padding-left: 10px
 .free-trial-landing-page
-  margin-top: -75px
+  // margin-top: -75px
+  margin-top: -20px
   .free-trial-offer
+    padding: 0
     .interest-image
-      background: #FFFFFF url('http://chefsteps.s3.amazonaws.com/static/whipped_cream_landing.jpg') 50% 0 no-repeat
+      &.whipping-siphon-image
+        background: #FFFFFF url('http://chefsteps.s3.amazonaws.com/static/whipped_cream_landing.jpg') 50% 0 no-repeat
+      &.french-macaron-image
+        background: #FFFFFF url('http://chefsteps.s3.amazonaws.com/static/french_macaron_landing.jpg') 50% 0 no-repeat
       min-height: 1080px
       width: auto
       height: auto
@@ -232,15 +237,34 @@
   .free-trial-learn-more
     text-align: center
     .learn-more-text
-      padding: 30px 0
+      padding: 50px 0
       font-size: 2.5em
       line-height: 1em
+    .free-trial-about
+      text-align: left
 
   .free-trial
     .additional-information
       margin-bottom: 0
       text-align: center
       line-height: 0
+
+  .free-trial-reviews
+    padding-top: 50px
+    .review-content
+      border-left: 5px solid $orange
+      font-size: 1.5em
+      line-height: 1em
+    .profile-image
+      text-align: center
+      margin-bottom: $baseline
+    .img-circle
+      max-height: 100px
+    .reviewer-name
+      font-weight: 600
+    .review-content-left
+      border-right: 5px solid #e25f25
+      border-left: 0
 
 
 @media (min-width: 1200px)
@@ -273,7 +297,7 @@
 
 @media (min-width: 768px) and (max-width: 979px)
   .free-trial-landing-page
-    margin-top: 0
+    margin-top: -5px
 
   .course-side-bar
     width: 166px

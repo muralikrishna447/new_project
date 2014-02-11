@@ -1,101 +1,103 @@
 .login-modal(close="closeModal('login')" modal="loginModalOpen" options="modalOptions" ng-cloak)
-  %form(ng-switch="showForm" class="no-margin-modal-form")
-    .modal-body.login-modal-body
-      .close-x.pull-right(ng-click="closeModal('login')")
-        %i.icon-remove
-      .row-fluid(ng-switch-when="signIn")
-        %h3 Sign in
-        .form-horizontal(ng-show="!authentication.loggedIn()")
-          .header-text(ng-show="headerText" ng-bind-html="headerText")
-          .button-group
-            .facebook-button.facebook-login
-              %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
-                %i.icon-facebook
-                %b Facebook
-            .google-button.google-plus-login
-              %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google" ng-disabled="dataLoading")
-                %i.icon-google-plus
-                %b Google
-            .tiny-note
-              OR
-          .error(ng-show="login_error.message")
-            %p {{login_error.message}}
-          .message(ng-show="message")
-            %p {{message}}
-          %div(ng-class="{error: login_error.errors.email}")
-            %input.input-block-level(ng-model="login_user.email" placeholder="Email")
-            %div(ng-show="login_error.errors.email")
-              %div.error-text(ng-repeat="field_error in login_error.errors.email")
-                {{field_error}}
-          %div(ng-class="{error: login_error.errors.password}")
-            %input.input-block-level(type="password" ng-model="login_user.password" placeholder="Password")
-            %div.pull-right.tiny-note
-              = link_to 'Forgot your password?', new_user_password_path
-            %div(ng-show="login_error.errors.email")
-              %div.error-text(ng-repeat="field_error in login_error.errors.password")
-                {{field_error}}
-      .row-fluid(ng-switch-when="signUp")
-        %h3 Sign up
-        .form-horizontal(ng-show="!authentication.loggedIn()")
-          .header-text(ng-show="headerText" ng-bind-html="headerText")
-          .button-group
-            .facebook-button.facebook-login
-              %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
-                %i.icon-facebook
-                %b Facebook
-            .google-button.google-plus-login
-              -# %span.g-signin
-              %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google" ng-disabled="dataLoading")
-                %i.icon-google-plus
-                %b Google
-            .tiny-note
-              OR
-          .error(ng-show="register_error.message")
-            %p {{register_error.message}}
-          .message(ng-show="message")
-            %p {{message}}
-          %div(ng-class="{error: register_error.errors.name}")
-            %input.input-block-level(ng-model="register_user.name" placeholder="Name" ng-class="hasError(register_error.errors.name)")
-            %div(ng-show="register_error.errors.name")
-              %div.error-text(ng-repeat="field_error in register_error.errors.name")
-                {{field_error}}
-          %div(ng-class="{error: login_error.errors.email}")
-            %input.input-block-level(ng-model="register_user.email" placeholder="Email" ng-class="hasError(register_error.errors.email)")
-            %div(ng-show="register_error.errors.email")
-              %div.error-text(ng-repeat="field_error in register_error.errors.email")
-                {{field_error}}
-          %div(ng-class="{error: login_error.errors.password}")
-            %input.input-block-level.password-with-show-button(type="{{passwordType}}" ng-model="register_user.password" placeholder="Password" ng-class="hasError(register_error.errors.password)")
-            %a.btn.show-password(ng-click="togglePassword()")
-              Show
-            %div(ng-show="register_error.errors.email")
-              %div.error-text(ng-repeat="field_error in register_error.errors.password")
-                {{field_error}}
-          .tiny-note.terms
-            = "By signing up, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path}</b>.".html_safe
-    .modal-footer.login-modal-footer
-      .sign-in-buttons.button-group(ng-switch-when="signIn")
-        %div
-          %button.btn.btn-primary.btn-large.signin(ng-click="login()" ng-disabled="dataLoading") Sign in
-          .button-group(ng-show="dataLoading")
-            %i.icon-page-load
-        %hr
-        %div
-          %a.switch-to-signup(ng-click="switchForm('signUp')")
-            New to ChefSteps?  Create an account.
-      .sign-up-buttons.button-group(ng-switch-when="signUp")
-        %div
-          %button.btn.btn-primary.btn-large.signup(ng-click="register()" ng-disabled="dataLoading") Sign Up
-          .button-group(ng-show="dataLoading")
-            %i.icon-page-load
-        %hr
-        %div
-          %a.switch-to-signin(ng-click="switchForm('signIn')")
-            Already have an account?  Sign In.
-      .sign-out-buttons.button-group(ng-show="authentication.cuurentUser()")
-        %div
-          %button.btn.btn-primary.btn-large.sign-out(ng-click="logout()") Sign Out
-
+  .login-modal-content(ng-switch="showForm")
+    %form(ng-submit="login()" form-autofill-fix class="no-margin-modal-form")
+      .sign-in-body.modal-body.login-modal-body(ng-switch-when="signIn")
+        .close-x.pull-right(ng-click="closeModal('login')")
+          %i.icon-remove
+        .row-fluid
+          %h3 Sign in
+          .form-horizontal(ng-show="!authentication.loggedIn()")
+            .header-text(ng-show="headerText" ng-bind-html="headerText")
+            .button-group
+              .facebook-button.facebook-login
+                %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
+                  %i.icon-facebook
+                  %b Facebook
+              .google-button.google-plus-login
+                %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google" ng-disabled="dataLoading")
+                  %i.icon-google-plus
+                  %b Google
+              .tiny-note
+                OR
+            .error(ng-show="login_error.message")
+              %p {{login_error.message}}
+            .message(ng-show="message")
+              %p {{message}}
+            %div(ng-class="{error: login_error.errors.email}")
+              %input.input-block-level(name="email" ng-model="login_user.email" placeholder="Email")
+              %div(ng-show="login_error.errors.email")
+                %div.error-text(ng-repeat="field_error in login_error.errors.email")
+                  {{field_error}}
+            %div(ng-class="{error: login_error.errors.password}")
+              %input.input-block-level(name="password" type="password" ng-model="login_user.password" placeholder="Password")
+              %div.pull-right.tiny-note
+                = link_to 'Forgot your password?', new_user_password_path
+              %div(ng-show="login_error.errors.email")
+                %div.error-text(ng-repeat="field_error in login_error.errors.password")
+                  {{field_error}}
+      .sign-in-footer.modal-footer.login-modal-footer(ng-switch-when="signIn")
+        .sign-in-buttons.button-group
+          %div
+            %button.btn.btn-primary.btn-large.signin(type="submit" ng-disabled="dataLoading") Sign in
+            .button-group(ng-show="dataLoading")
+              %i.icon-page-load
+          %hr
+          %div
+            %a.switch-to-signup(ng-click="switchForm('signUp')")
+              New to ChefSteps?  Create an account.
+    %form(ng-submit="register()" form-autofill-fix class="no-margin-modal-form")
+      .sign-up-body.modal-body.login-modal-body(ng-switch-when="signUp")
+        .close-x.pull-right(ng-click="closeModal('login')")
+          %i.icon-remove
+        .row-fluid
+          %h3 Sign up
+          .form-horizontal(ng-show="!authentication.loggedIn()")
+            .header-text(ng-show="headerText" ng-bind-html="headerText")
+            .button-group
+              .facebook-button.facebook-login
+                %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
+                  %i.icon-facebook
+                  %b Facebook
+              .google-button.google-plus-login
+                -# %span.g-signin
+                %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google" ng-disabled="dataLoading")
+                  %i.icon-google-plus
+                  %b Google
+              .tiny-note
+                OR
+            .error(ng-show="register_error.message")
+              %p {{register_error.message}}
+            .message(ng-show="message")
+              %p {{message}}
+            %div(ng-class="{error: register_error.errors.name}")
+              %input.input-block-level(name="name" ng-model="register_user.name" placeholder="Name" ng-class="hasError(register_error.errors.name)")
+              %div(ng-show="register_error.errors.name")
+                %div.error-text(ng-repeat="field_error in register_error.errors.name")
+                  {{field_error}}
+            %div(ng-class="{error: login_error.errors.email}")
+              %input.input-block-level(name="email" ng-model="register_user.email" placeholder="Email" ng-class="hasError(register_error.errors.email)")
+              %div(ng-show="register_error.errors.email")
+                %div.error-text(ng-repeat="field_error in register_error.errors.email")
+                  {{field_error}}
+            %div(ng-class="{error: login_error.errors.password}")
+              %input.input-block-level.password-with-show-button(name="password" type="{{passwordType}}" ng-model="register_user.password" placeholder="Password" ng-class="hasError(register_error.errors.password)")
+              %a.btn.show-password(ng-click="togglePassword()")
+                Show
+              %div(ng-show="register_error.errors.email")
+                %div.error-text(ng-repeat="field_error in register_error.errors.password")
+                  {{field_error}}
+            .tiny-note.terms
+              = "By signing up, you are agreeing to the <b>#{link_to "Terms of Service", terms_of_service_path}</b>.".html_safe
+      .sign-up-footer.modal-footer.login-modal-footer(ng-switch-when="signUp")
+        .sign-up-buttons.button-group
+          %div
+            %button.btn.btn-primary.btn-large.signup(type="submit" ng-disabled="dataLoading") Sign Up
+            .button-group(ng-show="dataLoading")
+              %i.icon-page-load
+          %hr
+          %div
+            %a.switch-to-signin(ng-click="switchForm('signIn')")
+              Already have an account?  Sign In.
 .invite-modal(close="closeModal('invite')" modal="inviteModalOpen" options="modalOptions" ng-cloak)
   %form(class="no-margin-modal-form")
     .modal-body.invite-modal-body
