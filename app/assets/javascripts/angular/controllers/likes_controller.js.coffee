@@ -11,7 +11,7 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
       mixpanel.track('Liked', {'Activity': likeable_type + "_" + likeable_id})
       mixpanel.people.set('Liked':likeable_type + "_" + likeable_id)
       mixpanel.people.increment('Liked Count')
-
+      $http.get('/splitty/finished?experiment=recommended_vs_curated')
 
       # TODO will eventually need to angularize the alert notification system
       $('.alert-container').append("<div class='alert alert-success'><button class='close' data-dismiss='alert' type='button'>x</button><h4 class='alert-message'>You liked this!</h4><div class='lblock'></div></div>")

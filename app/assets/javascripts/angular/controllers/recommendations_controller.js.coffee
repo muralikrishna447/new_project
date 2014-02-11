@@ -12,7 +12,8 @@
 ]
 
 
-@app.controller 'RecommendationsModalController', ['$scope', '$resource', '$modalInstance', '$controller', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', ($scope, $resource, $modalInstance, $controller, csGalleryService, ActivityMethods, refinable, $rootScope) ->
+@app.controller 'RecommendationsModalController', ['$scope', '$resource', '$modalInstance', '$controller', '$http', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', ($scope, $resource, $modalInstance, $controller, $http, csGalleryService, ActivityMethods, refinable, $rootScope) ->
+  $scope.curated = []
   $scope.refinable = refinable
 
   $scope.Recommendation = $resource('/recommendations')
@@ -32,4 +33,20 @@
   $scope.refine = ->
     $rootScope.$broadcast 'refineRecommendations'
     $modalInstance.close()
+
+  $scope.loadCurated = ->
+    urls = [
+      '/activities/sous-vide-steak/as_json.json'
+      '/activities/pomme-rosti/as_json.json'
+      '/activities/molten-chocolate-souffle/as_json.json'
+      '/activities/how-to-sharpen-a-knife/as_json.json'
+      '/activities/perfect-yolks/as_json.json'
+      '/activities/ultimate-roast-chicken/as_json.json'
+    ]
+    angular.forEach urls, (url) ->
+      $http.get(url).success((data) ->
+        $scope.curated.push(data)
+      )
+
+  $scope.loadCurated()
 ]
