@@ -247,7 +247,7 @@ describe "PaidClasses", ->
         sleep 3
         expect(element(".buy-modal-body .ng-binding").text()).toMatch("Thank you for giving our")
 
-    ddescribe "free trial", ->
+    describe "free trial", ->
       it "should allow me try out the class", ->
         browser().navigateTo('/trial/MS03Mg==')
         element('#free-trial-button').click()
