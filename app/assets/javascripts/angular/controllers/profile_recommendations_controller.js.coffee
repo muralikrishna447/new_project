@@ -20,8 +20,10 @@
       templateUrl: "/client_views/_survey.html"
       backdrop: false
       keyboard: false
-      # windowClass: "takeover-modal"
       windowClass: "modal-fullscreen"
+      resolve:
+        afterSubmit: ->
+          'showRecommendations'
       controller: 'SurveyModalController'
     )
     mixpanel.track('Survey Opened')
@@ -34,4 +36,7 @@
 
   $scope.$on 'refineRecommendations', (event, data) ->
     $scope.openSurvey()
+
+  $scope.$on 'showRecommendations', ->
+    $scope.openRecommendations()
 ]

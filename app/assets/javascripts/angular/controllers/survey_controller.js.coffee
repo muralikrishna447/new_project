@@ -12,8 +12,9 @@
     mixpanel.track('Survey Opened')
 ]
 
-@app.controller 'SurveyModalController', ['$scope', '$modalInstance', '$http', 'csAuthentication', ($scope, $modalInstance, $http, csAuthentication) ->
+@app.controller 'SurveyModalController', ['$scope', '$modalInstance', '$http', 'csAuthentication', 'afterSubmit', '$rootScope', ($scope, $modalInstance, $http, csAuthentication, afterSubmit, $rootScope) ->
   $scope.currentUser = csAuthentication.currentUser()
+  $scope.afterSubmit = afterSubmit
   $scope.questions = []
   if $scope.currentUser && $scope.currentUser.survey_results
     $scope.survey_results = $scope.currentUser.survey_results
@@ -153,6 +154,9 @@
     data = {'survey_results': $scope.survey_results}
     $http.post('/user_surveys', data).success((data) ->
       $modalInstance.close()
+      if afterSubmit.length > 0
+        $rootScope.$broadcast afterSubmit
+
     )
 
   $scope.cancel = ->
