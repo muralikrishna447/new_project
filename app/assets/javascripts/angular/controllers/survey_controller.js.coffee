@@ -28,24 +28,24 @@
   question1.options = ['Amateur', 'Home Cook', 'Culinary Student', 'Professional']
   $scope.questions.push(question1)
 
-  question2 = {}
-  question2.type = 'multiple-select'
-  question2.copy = 'Dietary Restrictions. Select all that apply to you:'
-  question2.options = [
-    {
-      name: 'Vegetarian'
-      checked: false
-    }
-    {
-      name: 'Gluten-Free'
-      checked: false
-    }
-    {
-      name:'Nut-Allergy'
-      checked: false
-    }
-  ]
-  $scope.questions.push(question2)
+  # question2 = {}
+  # question2.type = 'multiple-select'
+  # question2.copy = 'Dietary Restrictions. Select all that apply to you:'
+  # question2.options = [
+  #   {
+  #     name: 'Vegetarian'
+  #     checked: false
+  #   }
+  #   {
+  #     name: 'Gluten-Free'
+  #     checked: false
+  #   }
+  #   {
+  #     name:'Nut-Allergy'
+  #     checked: false
+  #   }
+  # ]
+  # $scope.questions.push(question2)
 
   question3 = {}
   question3.type = 'multiple-select'
