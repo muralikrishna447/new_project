@@ -13,7 +13,6 @@
 
 @app.controller 'RecommendationsModalController', ['$scope', '$resource', '$modalInstance', '$controller', '$http', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', ($scope, $resource, $modalInstance, $controller, $http, csGalleryService, ActivityMethods, refinable, $rootScope) ->
   $scope.curated = []
-  $scope.refinable = refinable
 
   # $scope.Recommendation = $resource('/recommendations')
   # $scope.recommendations = $scope.Recommendation.query(->
@@ -59,7 +58,9 @@
 
   $scope.loadList = (recommendationType) ->
     if recommendationType == 'curated'
+      $scope.refinable = false
       $scope.loadCurated()
     else
+      $scope.refinable = refinable
       $scope.loadRecommended()
 ]
