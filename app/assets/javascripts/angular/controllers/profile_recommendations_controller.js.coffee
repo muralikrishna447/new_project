@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'ProfileRecommendationsController', ["$scope", "$resource", "$http", "$modal", "csAuthentication", ($scope, $resource, $http, $modal, csAuthentication) ->
+@app.controller 'ProfileRecommendationsController', ["$scope", "$resource", "$http", "$modal", "csAuthentication", ($scope, $resource, $http, $modal, csAuthentication) ->
   $scope.currentUser = csAuthentication.currentUser()
   $scope.refinable = true
 
