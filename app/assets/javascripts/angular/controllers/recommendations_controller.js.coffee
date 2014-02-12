@@ -15,10 +15,10 @@
   $scope.curated = []
   $scope.refinable = refinable
 
-  $scope.Recommendation = $resource('/recommendations')
-  $scope.recommendations = $scope.Recommendation.query(->
+  # $scope.Recommendation = $resource('/recommendations')
+  # $scope.recommendations = $scope.Recommendation.query(->
 
-  )
+  # )
 
   $controller('GalleryBaseController', {$scope: $scope});
   $scope.galleryService = csGalleryService
@@ -47,8 +47,19 @@
       $http.get(url).success((data) ->
         $scope.curated.push(data)
       )
+    $scope.recommendations = $scope.curated
     mixpanel.track('Recommendations Opened - Curated')
 
-  $scope.trackRecommended = ->
+  $scope.loadRecommended = ->
+    $scope.Recommendation = $resource('/recommendations')
+    $scope.recommendations = $scope.Recommendation.query(->
+
+    )
     mixpanel.track('Recommendations Opened - Recommended')
+
+  $scope.loadList = (recommendationType) ->
+    if recommendationType == 'curated'
+      $scope.loadCurated()
+    else
+      $scope.loadRecommended()
 ]
