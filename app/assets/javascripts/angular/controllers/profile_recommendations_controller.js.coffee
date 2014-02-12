@@ -2,6 +2,9 @@
   $scope.currentUser = csAuthentication.currentUser()
   $scope.refinable = true
 
+  $scope.init = (recommendationType) ->
+    $scope.recommendationType = recommendationType
+
   $scope.openRecommendations = ->
     modalInstance = $modal.open(
       templateUrl: "/client_views/_recommendations.html"
@@ -11,6 +14,8 @@
       resolve:
         refinable: ->
           $scope.refinable
+        recommendationType: ->
+          $scope.recommendationType
       controller: 'RecommendationsModalController'
     )
 

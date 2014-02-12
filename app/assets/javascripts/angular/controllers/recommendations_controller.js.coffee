@@ -11,7 +11,7 @@
 ]
 
 
-@app.controller 'RecommendationsModalController', ['$scope', '$resource', '$modalInstance', '$controller', '$http', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', ($scope, $resource, $modalInstance, $controller, $http, csGalleryService, ActivityMethods, refinable, $rootScope) ->
+@app.controller 'RecommendationsModalController', ['$scope', '$resource', '$modalInstance', '$controller', '$http', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', 'recommendationType', ($scope, $resource, $modalInstance, $controller, $http, csGalleryService, ActivityMethods, refinable, $rootScope, recommendationType) ->
   $scope.curated = []
 
   # $scope.Recommendation = $resource('/recommendations')
@@ -56,7 +56,7 @@
     )
     mixpanel.track('Recommendations Opened - Recommended')
 
-  $scope.loadList = (recommendationType) ->
+  $scope.loadList = () ->
     if recommendationType == 'curated'
       $scope.refinable = false
       $scope.loadCurated()
