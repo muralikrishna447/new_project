@@ -14,4 +14,12 @@ class LikesController < ApplicationController
     # redirect_to request.referrer
   end
 
+  def by_user
+    resource = params[:likeable_type]
+    id = params[:likeable_id]
+    @likeable = resource.singularize.classify.constantize.find(id)
+    @likes = current_user.likes_object?(@likeable)
+    render :json => @likes.to_json
+  end
+
 end

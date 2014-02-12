@@ -148,7 +148,11 @@ Delve::Application.routes.draw do
   resources :users do
     resources :uploads
   end
-  resources :likes, only: [:create]
+  resources :likes, only: [:create] do
+    collection do
+      get 'by_user' => 'likes#by_user'
+    end
+  end
   resources :pages, only: [:show]
   resources :badges, only: [:index]
   resources :polls do
@@ -209,6 +213,8 @@ Delve::Application.routes.draw do
   resources :events, only: [:create]
 
   resources :gift_certificates
+  resources :user_surveys, only: [:create]
+  resources :recommendations, only: [:index]
 
   get "smoker" => "smoker#index"
 
