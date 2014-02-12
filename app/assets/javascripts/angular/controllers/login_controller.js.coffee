@@ -30,6 +30,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   $scope.showMadlibPassword = false
   $scope.googleLoaded = false
+  $scope.validEmailSent = false
 
   $scope.hasError = (error) ->
     if error
@@ -76,6 +77,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.login = ->
     $scope.dataLoading += 1
     $scope.resetMessages()
+    $scope.fakeLogin()
     $http(
       method: 'POST'
       url: "/users/sign_in.json"
@@ -440,9 +442,13 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     unless $scope.showMadlibPassword
       $scope.showMadlibPassword = true
       mixpanel.track("Free Trial Data Entered")
-    if /.*@.*\..*/.test($scope.register_user.email)
+    if /.*@.*\..*/.test($scope.register_user.email) && !$scope.validEmailSent
       mixpanel.track("Free Trial Valid Email Filled")
+      $scope.validEmailSent = true
 
 
-
+  $scope.fakeLogin = ->
+    $("#fakelogin #email").val($scope.login_user.email)
+    $("#fakelogin #password").val($scope.login_user.password)
+    $("#fakelogin").submit()
 ]

@@ -1,5 +1,5 @@
 !!! 5
-%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav}" }
+%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main" }
   %head
     %title= "#{yield :title} - ChefSteps"
     = stylesheet_link_tag 'application', media: 'all'
@@ -79,6 +79,8 @@
     / %script{src:'/assets/youtube.js'}
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
+  = render "layouts/login_hack"
+
   = yield(:custom_js)
 
 -# This load on every page, so a convenient place to make sure mixpanel identity is known
