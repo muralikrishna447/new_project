@@ -36,9 +36,9 @@
 
   $scope.loadCurated = ->
     urls = [
-      '/activities/sous-vide-steak/as_json.json'
+      '/activities/coffee-butter-steak-and-spinach/as_json.json'
       '/activities/pomme-rosti/as_json.json'
-      '/activities/molten-chocolate-souffle/as_json.json'
+      '/activities/fresh-pasta/as_json.json'
       '/activities/how-to-sharpen-a-knife/as_json.json'
       '/activities/perfect-yolks/as_json.json'
       '/activities/ultimate-roast-chicken/as_json.json'
