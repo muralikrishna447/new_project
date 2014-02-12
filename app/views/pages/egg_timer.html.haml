@@ -46,7 +46,7 @@
             .page.anim-basic-fade(ng-switch-when="white")
               %h4.text-center What texture would you like your egg white?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity" item-width="300")
-                %video(ng-src="{{trustedVideo(whiteVideo.video)}}" autoplay="true" loop="true" controls="false" webkit-playsinline="true" ng-repeat="whiteVideo in whiteVideos" )
+                %video(ng-src="{{trustedVideo(whiteVideo.video)}}" autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="whiteVideo in whiteVideos" )
               .control-group.text-center
                 .controls
                   %a(ng-click="incrementWhite(-1)")
@@ -64,7 +64,7 @@
             .page.anim-basic-fade(ng-switch-when="yolk")
               %h4.text-center What texture would you like your egg yolk?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1" item-width="300")
-                %video(ng-src="{{trustedVideo(yolkVideo)}}" autoplay="true" loop="true" controls="false" webkit-playsinline="true" ng-repeat="yolkVideo in yolkVideos" )
+                %video(ng-src="{{trustedVideo(yolkVideo)}}" autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="yolkVideo in yolkVideos" )
 
               .control-group.text-center
                 .controls
