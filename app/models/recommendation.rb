@@ -24,7 +24,7 @@ class Recommendation
     by_interests = interests ? activities.tagged_with(interests, any: true) : []
     by_equipment = equipment ? activities.by_equipment_titles(equipment) : []
     activities = (activities + by_interests + by_equipment + popular).uniq
-    activities = activities.take(limit) if limit
+    activities = activities.sample(limit) if limit
     activities
   end
 
