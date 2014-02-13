@@ -29,7 +29,8 @@
     $modalInstance.dismiss('cancel')
 
   $scope.refine = ->
-    $rootScope.$broadcast 'refineRecommendations'
+    # $rootScope.$broadcast 'refineRecommendations'
+    $rootScope.$emit 'openSurvey'
     $modalInstance.close()
     mixpanel.track('Recommendations Refine Button Clicked')
 

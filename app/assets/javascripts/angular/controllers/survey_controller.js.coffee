@@ -1,15 +1,19 @@
-@app.controller 'SurveyController', ['$scope', '$http', '$modal', ($scope, $http, $modal) ->
-
-  $scope.open = ->
+@app.controller 'SurveyController', ['$scope', '$http', '$modal', '$rootScope', ($scope, $http, $modal, $rootScope) ->
+  unbind = {}
+  undbind = $rootScope.$on 'openSurvey', ->
     modalInstance = $modal.open(
       templateUrl: "/client_views/_survey.html"
       backdrop: false
       keyboard: false
-      # windowClass: "takeover-modal"
       windowClass: "modal-fullscreen"
+      resolve:
+        afterSubmit: ->
+          'showRecommendations'
       controller: 'SurveyModalController'
     )
     mixpanel.track('Survey Opened')
+
+  $scope.$on('$destroy', unbind)
 ]
 
 @app.controller 'SurveyModalController', ['$scope', '$modalInstance', '$http', 'csAuthentication', 'afterSubmit', '$rootScope', ($scope, $modalInstance, $http, csAuthentication, afterSubmit, $rootScope) ->

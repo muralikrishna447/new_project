@@ -1,4 +1,4 @@
-@app.controller 'ProfileRecommendationsController', ["$scope", "$resource", "$http", "$modal", "csAuthentication", ($scope, $resource, $http, $modal, csAuthentication) ->
+@app.controller 'ProfileRecommendationsController', ["$scope", "$resource", "$http", "$modal", "$rootScope", "csAuthentication", ($scope, $resource, $http, $modal, $rootScope, csAuthentication) ->
   $scope.currentUser = csAuthentication.currentUser()
   $scope.refinable = true
 
@@ -19,27 +19,11 @@
       controller: 'RecommendationsModalController'
     )
 
-  $scope.openSurvey = ->
-    modalInstance = $modal.open(
-      templateUrl: "/client_views/_survey.html"
-      backdrop: false
-      keyboard: false
-      windowClass: "modal-fullscreen"
-      resolve:
-        afterSubmit: ->
-          'showRecommendations'
-      controller: 'SurveyModalController'
-    )
-    mixpanel.track('Survey Opened')
-
   $scope.open = ->
     if $scope.currentUser.survey_results
       $scope.openRecommendations()
     else
-      $scope.openSurvey()
-
-  $scope.$on 'refineRecommendations', (event, data) ->
-    $scope.openSurvey()
+      $rootScope.$emit('openSurvey')
 
   $scope.$on 'showRecommendations', ->
     $scope.openRecommendations()
