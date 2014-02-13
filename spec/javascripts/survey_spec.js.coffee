@@ -1,5 +1,5 @@
 
-describe 'SurveyModalController', ->
+describe 'SurveyController', ->
   scope = {}
   controller = {}
   modalInstance = {}
@@ -20,7 +20,7 @@ describe 'SurveyModalController', ->
   beforeEach inject ($rootScope, $controller) ->
     scope = $rootScope.$new()
     modalInstance = jasmine.createSpy("$modalInstance").andReturn(fakeModalPromise)
-    controller = $controller('SurveyModalController', {$scope: scope, $modalInstance: modalInstance, afterSubmit: afterSubmit})
+    controller = $controller('SurveyController', {$scope: scope, $modalInstance: modalInstance, afterSubmit: afterSubmit, $rootScope: $rootScope})
     scope.currentUser = {}
 
   describe "#getResults", ->

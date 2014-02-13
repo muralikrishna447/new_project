@@ -1,17 +1,24 @@
-@app.controller 'RecommendationsController', ["$scope", "$resource", "$http", "$modal", ($scope, $resource, $http, $modal) ->
-
-  $scope.open = ->
+@app.controller 'RecommendationsModalController', ["$scope", "$resource", "$http", "$modal", "$rootScope", ($scope, $resource, $http, $modal, $rootScope) ->
+  unbind = {}
+  undbind = $rootScope.$on 'openRecommendations', ->
     modalInstance = $modal.open(
       templateUrl: "/client_views/_recommendations.html"
       backdrop: false
       keyboard: false
       windowClass: "takeover-modal"
-      controller: 'RecommendationsModalController'
+      resolve:
+        refinable: ->
+          $scope.refinable
+        recommendationType: ->
+          $scope.recommendationType
+      controller: 'RecommendationsController'
     )
+
+  $scope.$on('$destroy', unbind)
 ]
 
 
-@app.controller 'RecommendationsModalController', ['$scope', '$resource', '$modalInstance', '$controller', '$http', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', 'recommendationType', ($scope, $resource, $modalInstance, $controller, $http, csGalleryService, ActivityMethods, refinable, $rootScope, recommendationType) ->
+@app.controller 'RecommendationsController', ['$scope', '$resource', '$modalInstance', '$controller', '$http', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', 'recommendationType', ($scope, $resource, $modalInstance, $controller, $http, csGalleryService, ActivityMethods, refinable, $rootScope, recommendationType) ->
   $scope.curated = []
 
   # $scope.Recommendation = $resource('/recommendations')

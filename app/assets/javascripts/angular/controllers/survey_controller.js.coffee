@@ -8,7 +8,7 @@
       windowClass: "modal-fullscreen"
       resolve:
         afterSubmit: ->
-          'showRecommendations'
+          'openRecommendations'
       controller: 'SurveyController'
     )
     mixpanel.track('Survey Opened')
@@ -155,7 +155,7 @@
     $http.post('/user_surveys', data).success((data) ->
       $modalInstance.close()
       if afterSubmit.length > 0
-        $rootScope.$broadcast afterSubmit
+        $rootScope.$emit afterSubmit
 
     )
 
