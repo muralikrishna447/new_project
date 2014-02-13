@@ -1,5 +1,5 @@
 class AssembliesController < ApplicationController
-  before_filter :load_assembly, except: [:index, :redeem, :redeem_index, :trial]
+  before_filter :load_assembly, except: [:index, :redeem, :redeem_index, :trial, :force_ws_free_trial]
 
   # Commenting out for now until we figure out what to do for Projects
 
@@ -33,6 +33,10 @@ class AssembliesController < ApplicationController
   end
 
   def landing
+    if (@assembly.slug == "whipping-siphons") && ! session[:free_trial]
+      params[:trial_token] = "MTctMA=="
+      trial
+    end 
     if session[:free_trial]
       @hours = Assembly.free_trial_hours(session[:free_trial])
       @free_trial_text = @hours.hours_to_pretty_time
@@ -74,6 +78,7 @@ class AssembliesController < ApplicationController
       redirect_to landing_class_url(@assembly, appended_params)
     end
   end
+
 
   # Note that although this is called "redeem", it only starts the redemption process
   # sending them to the landing page with the GC in the session. The reason we don't immediately
