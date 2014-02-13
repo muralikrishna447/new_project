@@ -1,4 +1,4 @@
-@app.controller 'SurveyController', ['$scope', '$http', '$modal', '$rootScope', ($scope, $http, $modal, $rootScope) ->
+@app.controller 'SurveyModalController', ['$scope', '$http', '$modal', '$rootScope', ($scope, $http, $modal, $rootScope) ->
   unbind = {}
   undbind = $rootScope.$on 'openSurvey', ->
     modalInstance = $modal.open(
@@ -9,14 +9,14 @@
       resolve:
         afterSubmit: ->
           'showRecommendations'
-      controller: 'SurveyModalController'
+      controller: 'SurveyController'
     )
     mixpanel.track('Survey Opened')
 
   $scope.$on('$destroy', unbind)
 ]
 
-@app.controller 'SurveyModalController', ['$scope', '$modalInstance', '$http', 'csAuthentication', 'afterSubmit', '$rootScope', ($scope, $modalInstance, $http, csAuthentication, afterSubmit, $rootScope) ->
+@app.controller 'SurveyController', ['$scope', '$modalInstance', '$http', 'csAuthentication', 'afterSubmit', '$rootScope', ($scope, $modalInstance, $http, csAuthentication, afterSubmit, $rootScope) ->
   $scope.currentUser = csAuthentication.currentUser()
   $scope.afterSubmit = afterSubmit
   $scope.questions = []
@@ -115,7 +115,6 @@
   $scope.loadResults = ->
     angular.forEach $scope.questions, (question, index) ->
       surveyResult = _.where($scope.survey_results, {copy: question.copy})
-      # questionCopy = $scope.survey_results[question.copy]
       if surveyResult.length > 0
         switch question.type
           when 'select'
@@ -136,17 +135,14 @@
       survey_result.search_scope = question.searchScope
       switch question.type
         when 'select'
-          # $scope.survey_results[question.copy] = question.answer
           survey_result.answer = question.answer
         when 'multiple-select'
           answers = [] 
           angular.forEach question.options, (option, index) ->
             if option.checked
               answers.push(option.name)
-          # $scope.survey_results[question.copy] = answers.join()
           survey_result.answer = answers.join()
         when 'open-ended'
-          # $scope.survey_results[question.copy] = question.answer
           survey_result.answer = question.answer
       $scope.survey_results.push(survey_result)
     $scope.currentUser.survey_results = $scope.survey_results
