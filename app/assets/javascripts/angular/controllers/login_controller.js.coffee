@@ -293,6 +293,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     )
 
   $scope.googleConnect = (eventData) ->
+    console.log("googleConnect")
     $http(
       method: "POST"
       url: "/users/auth/google/callback.js"

@@ -19,9 +19,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     unless request.xhr?
       standard_login
     else
-      @user = User.facebook_connect(params[:user])
-      set_referrer
-      javascript_login
+      if current_user
+        current_user.facebook_connect(params[:user])
+        return render status: 200, json: {success: true, new_user: false, info: "Associated account", user: current_user.as_json(include: :enrollments)}
+      else
+        @user = User.facebook_connect(params[:user])
+        set_referrer
+        javascript_login
+      end
     end
   end
 
