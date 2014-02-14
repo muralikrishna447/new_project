@@ -1,14 +1,14 @@
 #edit-group.pull-right(ng-cloak="")
   .btn-toolbar
     .btn-group(data-toggle="buttons-radio")
-      %button.btn(type="button" ng-click="activity.published='false'" ng-class="{active: activity.published == false}")
+      .btn.btn-secondary(type="button" ng-click="activity.published='false'" ng-class="{active: activity.published == false}")
         Private
-      %button.btn(type="button" ng-click="activity.published='true'" ng-class="{active: activity.published == true}")
+      .btn.btn-secondary(type="button" ng-click="activity.published='true'" ng-class="{active: activity.published == true}")
         Published
     .btn-group
-      %button#edit-cancel.btn.btn-link{type: 'button', data: {toggle: 'modal', target: '#cancel-modal'}}
+      .btn.btn.btn-link{type: 'button', data: {toggle: 'modal', target: '#cancel-modal'}}
         Cancel
     .btn-group
-      %button#edit-save.btn.btn-primary(type='button' ng-click="endEditMode()" ng-show="editMode" ng-disabled="!activityForm.$valid")
+      .btn.btn-primary(type='button' ng-click="endEditMode()" ng-show="editMode" ng-disabled="!activityForm.$valid")
         Save
 
