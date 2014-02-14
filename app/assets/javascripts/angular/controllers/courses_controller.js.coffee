@@ -156,9 +156,6 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     else
       $scope.largeScreen = false
 
-  $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
-    $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
-
   $scope.updateCanonical = ->
     canonical = angular.element('head').find("link[rel='canonical']")
     link = canonical.attr('href') + $scope.includable_slug
