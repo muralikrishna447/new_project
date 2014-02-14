@@ -9,7 +9,11 @@ angular.module('ChefStepsApp').directive 'cscoursescroll', ["$rootScope", ($root
     scope.window_height = angular.element(window).height()
 
     el.on 'scroll', ->
-      newScrollPosition = angular.element(this).scrollTop()
+      _.throttle(scope.toggleNav(), 100)
+      console.log 'Scrolling'
+
+    scope.toggleNav = ->
+      newScrollPosition = angular.element(el).scrollTop()
       scrollVelocity = newScrollPosition - scope.oldScrollPosition
       threshold = -120
       if scope.showNav
