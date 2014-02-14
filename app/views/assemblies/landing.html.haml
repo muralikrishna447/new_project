@@ -23,11 +23,7 @@
         -if ! @no_video
           .span8.section
             .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-              - if @course.slug == 'french-macarons'
-                - ab_test 'macaron_landing_video', 'FA7XWOmcptU', {'XqQZSn0uB2w' => 4} do |video_id|
-                  %iframe(frameborder='0' allowfullscreen){src: youtube_url(video_id)}
-              - else
-                %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+              %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
         -else
           .span8.section
             .embed-container

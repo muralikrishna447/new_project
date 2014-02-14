@@ -21,6 +21,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
   $scope.activities = {}
+  $rootScope.loading = 0
 
   $scope.csTagService = csTagService
 
@@ -375,16 +376,24 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       false
 
   $scope.fetchActivity = (id, callback) ->
-    console.log("FETCH ACTIVITY-----------#{id}")
+    console.log("START FETCH ACTIVITY #{id}")
+    console.log "Loading count #{$rootScope.loading}"
+
     if _.isNumber(id) && ! $scope.activities[id]
+      $rootScope.loading += 1
       console.log "Loading activity " + id
       $scope.activities[id] = Activity.get({id: id}, ( ->
+        $rootScope.loading -= 1
+        console.log "Loading count #{$rootScope.loading}"
         console.log "Loaded activity " + id
         callback() if callback
       ),( (response) ->
+        $rootScope.loading -= 1
+        console.log "Loading count #{$rootScope.loading}"
+        console.log "Error response loading #{id}: #{response}.toString()"
         window.location = response.data.path
       ))
-    console.log("------------FETCH ACTIVITY-----------")
+    console.log("END FETCH ACTIVITY #{id}")
 
   $scope.makeActivityActive = (id) ->
     return if id == $scope.activity?.id
@@ -399,23 +408,27 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.loadActivity = (id) ->
     return if id == $scope.activity?.id
 
-    $rootScope.loading = true
     if $scope.activities[id]
       # Even if we have it cached, use a slight delay and dissolve to
       # make it feel smooth and let youtube load
       $scope.makeActivityActive(id)
-      $timeout (->
-        $rootScope.loading = false
+      console.log "Cached"
+      $rootScope.loading += 1
+      console.log "Loading count #{$rootScope.loading}"
+      $timeout (  -> 
+        $rootScope.loading -= 1
+        console.log "Loading count #{$rootScope.loading}"
       ), 500
     else
-      $scope.fetchActivity(id, ->
-        $scope.makeActivityActive(id)
-        $rootScope.loading = false
-      )
+      $scope.fetchActivity(id, -> $scope.makeActivityActive(id))
 
-  $scope.$on 'loadActivityEvent', (event, activity_id) ->
+  # $scope.$on 'loadActivityEvent', (event, activity_id) ->
+  #   $scope.loadActivity(activity_id)
+
+  unbind = {}
+  undbind = $rootScope.$on 'loadActivityEvent', (event, activity_id) ->
     $scope.loadActivity(activity_id)
-
+  $scope.$on('$destroy', unbind)
 
   $scope.startViewActivity = (id, prefetch_id) ->
     $scope.loadActivity(id)
