@@ -377,10 +377,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.fetchActivity = (id, callback) ->
     console.log("START FETCH ACTIVITY #{id}")
-    console.log "Loading count #{$rootScope.loading}"
 
     if _.isNumber(id) && ! $scope.activities[id]
       $rootScope.loading += 1
+      console.log "Loading count #{$rootScope.loading}"
       console.log "Loading activity " + id
       $scope.activities[id] = Activity.get({id: id}, ( ->
         $rootScope.loading -= 1
