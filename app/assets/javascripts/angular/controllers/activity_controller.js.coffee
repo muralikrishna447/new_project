@@ -413,9 +413,13 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
         $rootScope.loading = false
       )
 
-  $scope.$on 'loadActivityEvent', (event, activity_id) ->
-    $scope.loadActivity(activity_id)
+  # $scope.$on 'loadActivityEvent', (event, activity_id) ->
+  #   $scope.loadActivity(activity_id)
 
+  unbind = {}
+  undbind = $rootScope.$on 'loadActivityEvent', (event, activity_id) ->
+    $scope.loadActivity(activity_id)
+  $scope.$on('$destroy', unbind)
 
   $scope.startViewActivity = (id, prefetch_id) ->
     $scope.loadActivity(id)

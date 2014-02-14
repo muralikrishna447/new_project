@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').directive 'cscoursescroll', [ ->
+angular.module('ChefStepsApp').directive 'cscoursescroll', ["$rootScope", ($rootScope) ->
   restrict: 'A'
   link: (scope, element, attrs, CoursesController) ->
     el = angular.element(element)
@@ -42,7 +42,9 @@ angular.module('ChefStepsApp').directive 'cscoursescroll', [ ->
         scope.$emit 'showBottomChanged', scope.showBottom
       scope.oldShowBottom = scope.showBottom
 
-    scope.$on 'scrollToTop', ->
+    unbind = {}
+    undbind = $rootScope.$on 'scrollToTop', ->
       el.scrollTop 0
+    scope.$on('$destroy', unbind)
 
 ]
