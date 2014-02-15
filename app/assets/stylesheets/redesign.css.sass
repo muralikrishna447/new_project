@@ -1735,6 +1735,14 @@ input.summary-tweet
   #activity-description-maximize
     display: none
 
+[contenteditable]
+  outline: none
+
+  &:empty
+    &:before
+      content: "Click to start writing"
+      color: $light-gray
+
 @media (max-width: 320px)
   .popup-bottom
     font-size: 12px
