@@ -1429,17 +1429,25 @@ csingredienteditpair
 
   .drop-target
     width: 60px
+    height: 60px
+    font-size: 40px
+    text-align: center
+    background-color: $orange
+    i
+      color: white
+      position: relative
+      top: 10px
+      
+    &.drop-ready
+      background-color: red !important
 
     .upload-progress
-      width: 60px
-      position:  absolute
-      left:  0
+      position: absolute
       right:  0
-      bottom:  -22px
-
-    .progress
-      width: 100%
-      height:  11px
+      left: 0
+      top: 15px
+      color: black
+      font-size: 27px
 
 .no-bold
   font-weight: normal
