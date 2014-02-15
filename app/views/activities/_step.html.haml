@@ -19,8 +19,9 @@
         %div(ng-show="step.directions || editMode" ng-bind-html="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
       %csEditPairEdit
         %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
-
+    %h1 FOO    
     =render 'activities/step_show_images'
+    %h1 BAR
     =render 'activities/step_edit_images'
 
 %div(ng-include="'/client_views/_aside'")

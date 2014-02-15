@@ -1,18 +1,10 @@
-.section.clearfix(ng-show="editMode")
-  %div(ng-switch="!! step.youtube_id" )
-    .span2(ng-switch-when="true")
-      .video-container(csenforceaspect )
-        %iframe(cssrcreplacer="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=small'}}")
-  .span2(ng-show="!! step.image_id")
-    %img(ng-src="{{stepImageURL(step, 240)}}")
-
-.section.clearfix(ng-show="editMode")
+.section.clearfix(ng-show="editMode" ng-scope)
   .btn.btn-secondary(ng-click="showMediaEdit = ! showMediaEdit")
     %i.icon-edit
     Media
     %i.icon-chevron-up(ng-show="showMediaEdit")
     %i.icon-chevron-down(ng-show="! showMediaEdit")
-  %div(collapse="! showMediaEdit")
+  %div.anim-basic-fade(ng-show="showMediaEdit")
     .well
       %h4 Video
       %input.nohtml(type="text" ng-model="step.youtube_id" placeholder="Youtube ID" style="width: 100%;")
