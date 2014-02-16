@@ -13,6 +13,4 @@
 
     %div(ng-show="!!activity.author_notes  || editMode")
       %h4 Private Notes
-      %div( edit-mode = "editMode"
-            ng-model = "activity.author_notes"
-            cscontenteditable = "true")
+      %div(ng-model = "activity.author_notes" cs-contenteditable = "editMode")
