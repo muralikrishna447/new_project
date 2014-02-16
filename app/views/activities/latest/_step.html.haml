@@ -4,11 +4,8 @@
   %h1.step-number
     %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
 
-  %csEditPair
-    %csEditPairShow
-      %h4(ng-show="step.title || editMode" ng-bind-html="step.title || (editMode && 'Optional title...') | markdown | shortcode" ng-class="disableIf(! step.title.length)")
-    %csEditPairEdit
-      %textarea.step-title-input(ng-model="step.title" rows="5" placeholder="Optional title...")
+  %h4(  cs-contenteditable="editMode"
+        ng-model="step.title")
 
   .step-first-row
     =render 'activities/step_ingredients'

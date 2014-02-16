@@ -1,16 +1,12 @@
 .section
 
-  .activity-description-wrapper(ng-show="! editMode && !! activity.description")
+  .activity-description-wrapper(ng-show="!! activity.description || editMode")
     .activity-description.maximize-description#activity-description
-      %div(ng-bind-html="activity.description | markdown | shortcode")
-
-  %div( ng-show="editMode"
-        ng-model="activity.description"
-        contenteditable="true")
+      %div(ng-model="activity.description" cs-contenteditable = "editMode")
 
 -if can? :update, @activity
   .section
 
-    %div(ng-show="!!activity.author_notes  || editMode")
+    %div(ng-show="!!activity.author_notes || editMode")
       %h4 Private Notes
       %div(ng-model = "activity.author_notes" cs-contenteditable = "editMode")
