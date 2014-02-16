@@ -13,6 +13,9 @@ body
 a, [ng-click], [contenteditable]:not(:focus)
   cursor: pointer
 
+[contenteditable]:focus
+  cursor: text
+
 [ng-click]
   @include unselectable
 
@@ -1742,6 +1745,13 @@ input.summary-tweet
     &:before
       content: "Click to start writing"
       color: $light-gray
+
+[contenteditable=false]
+  &:empty
+    &:before
+      content: ""
+      color: $light-gray
+
 
 @media (max-width: 320px)
   .popup-bottom
