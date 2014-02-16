@@ -13,8 +13,6 @@
 
     %div(ng-show="!!activity.author_notes  || editMode")
       %h4 Private Notes
-      %div( ng-show = "! editMode"
-            ng-bind-html="activity.author_notes | markdown | shortcode")
-      %div( ng-show = "editMode"
+      %div( edit-mode = "editMode"
             ng-model = "activity.author_notes"
-            contenteditable = "true")
+            cscontenteditable = "true")
