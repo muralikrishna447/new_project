@@ -17,9 +17,15 @@
         .span3
           .section
             %h4(ng-show="editMode || !! activity.yield") Yield
-            %span(contenteditable="{{editMode}}" ng-model="activity.yield" itemprop="recipeYield")
+            %span(  contenteditable="{{editMode}}" 
+                    ng-model="activity.yield" 
+                    itemprop="recipeYield")
             %span.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
-          = render 'activities/basic_edit_pair', model: "activity.timing", name: "Timing", add_text: "Add timing info...",  show_extra: "maybeWarnCurrentScaling()"
+          .section
+            %h4(ng-show="editMode || !! activity.timing") Timing
+            %span(  contenteditable="{{editMode}}" 
+                    ng-model="activity.timing")
+            %span.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
           = render 'activities/activity_relationships'
 
   .row.step-container
