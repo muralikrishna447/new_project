@@ -19,6 +19,25 @@ a, [ng-click], [contenteditable]:not(:focus)
 [ng-click]
   @include unselectable
 
+[contenteditable]
+  outline: none
+
+  &:empty
+    &:before
+      content: "Click to start writing"
+      color: $light-gray
+
+  &:hover:not(:focus)
+    background-color: #eee
+
+[contenteditable=false]
+  &:empty
+    &:before
+      content: ""
+      color: $light-gray
+  &:hover:not(:focus)
+    background-color: inherit
+
 .top-container
   margin-top: $baseline * 7
 
@@ -1738,19 +1757,7 @@ input.summary-tweet
   #activity-description-maximize
     display: none
 
-[contenteditable]
-  outline: none
 
-  &:empty
-    &:before
-      content: "Click to start writing"
-      color: $light-gray
-
-[contenteditable=false]
-  &:empty
-    &:before
-      content: ""
-      color: $light-gray
 
 .activity-title:empty:before
   content: "Click to set title"
