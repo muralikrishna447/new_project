@@ -4,9 +4,6 @@
     .activity-description.maximize-description#activity-description
       %div(ng-model="activity.description" cs-contenteditable = "editMode")
 
-%div( ng-model="activity.description"
-      contenteditable="true")
-
 -if can? :update, @activity
   .section
 

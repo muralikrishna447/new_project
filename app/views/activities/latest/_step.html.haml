@@ -23,7 +23,5 @@
       .step-image-outer(ng-show="(! step.youtube_id) && (!! step.image_id)")
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(ng-src="{{stepImageURL(step, 670)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
-  
-  =render 'activities/step_edit_images'
-
+  %div(ng-include="'/client_views/_step_edit_images'")
 %div(ng-include="'/client_views/_aside'")

@@ -1,5 +1,5 @@
 .aside(ng-show='step.is_aside' ng-class="asideClass()")
-  %h4(ng-show="step.title" ng-bind-html="step.title | markdown | shortcode")
+  %h4(cs-contenteditable="editMode" ng-model="step.title")
   .aside-video(ng-show='hasAV()')
     .step-video-outer.noprint(ng-show="!! step.youtube_id")
       .new-step-video(id="{{'step-video-' + $index}}")
@@ -7,4 +7,5 @@
           %iframe(ng-style="setHeight()" csenforceaspect cssrcreplacer="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
   .aside-image(ng-show="!!step.image_id")
     %img(ng-src="{{stepImageURL(step, 840)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
-  .aside-text(ng-show="step.directions"  ng-bind-html="step.directions | markdown | shortcode")
+  %div(ng-include="'/client_views/_step_edit_images'")
+  .aside-text(cs-contenteditable="editMode" ng-model="step.directions")
