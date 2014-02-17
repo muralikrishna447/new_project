@@ -115,9 +115,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     $scope.alerts = []
     $scope.normalizeModel()
     $scope.normalizeWeightUnits()
+    $rootScope.loading += 1
     $scope.activity.$update(
       {},
       ((response) ->
+        $rootScope.loading -= 1
         console.log "ACTIVITY SAVE WIN"
         # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
         window.location = response.redirect_to if response.redirect_to
@@ -125,6 +127,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
         $scope.activity.is_new = false),
 
       ((error) ->
+        $rootScope.loading -= 1
         console.log "ACTIVITY SAVE ERRORS: " + JSON.stringify(error)
         _.each(error.data.errors, (e) -> $scope.addAlert({message: e})))
     )
