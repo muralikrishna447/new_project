@@ -8,9 +8,6 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     return [] if ! $scope.activity?.steps?
     _.filter($scope.activity.steps, (step) -> (! step.hide_number))
 
-  $scope.showStepDot = (index) ->
-    ! $scope.activity.steps[index].hide_number
-
   $scope.stepImageURL = (step, width) ->
     url = ""
     if step.image_id
