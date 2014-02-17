@@ -51,17 +51,4 @@ describe AssembliesController do
       expect(Assembly.free_trial_hours(session[:free_trial])).not_to eq 0
     end
   end
-
-  context "whipping siphon always trial" do
-    # id has to be 17 for this test because the id is baked into the trial code
-    # that is forced in #landing
-    let!(:assembly){ Fabricate(:assembly, id:17, title: "Whipping Siphons", assembly_type: "Course", price: 39.00, published: true ) }
-
-    subject { get :landing, id: assembly.id }
-
-    it 'should pick a non-zero trial duration and store in session' do
-      subject
-      expect(Assembly.free_trial_hours(session[:free_trial])).not_to eq 0
-    end
-  end
 end
