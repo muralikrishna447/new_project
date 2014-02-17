@@ -5,7 +5,7 @@ class ActivitiesController < ApplicationController
 
   before_filter :maybe_redirect_activity, only: :show
 
-
+  after_filter :track_iphone_app_activity
 
   def maybe_redirect_activity
     @activity = Activity.find params[:id]
@@ -259,6 +259,13 @@ class ActivitiesController < ApplicationController
   # and we can just change this one redirect below to go direct to base_feed.
   def feedburner_feed
     redirect_to "http://feeds.feedburner.com/ChefSteps"
+  end
+
+  private
+  def track_iphone_app_activity
+    if from_ios_app?
+      mixpanel.track(mixpanel_anonymous_id, '[iOS App] Activty Viewed', {slug: @activity.slug, title: @activity.title, context: "iOS App"})
+    end
   end
 
 end
