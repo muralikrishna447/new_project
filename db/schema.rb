@@ -620,11 +620,13 @@ ActiveRecord::Schema.define(:version => 20140203201306) do
     t.string   "twitter_user_id"
     t.string   "twitter_auth_token"
     t.string   "twitter_user_name"
+    t.hstore   "survey_results"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["survey_results"], :name => "index_users_on_survey_results"
 
   create_table "versions", :force => true do |t|
     t.datetime "created_at", :null => false

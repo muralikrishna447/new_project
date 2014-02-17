@@ -46,6 +46,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  def destroy
+    current_user.disconnect_service!(params[:service])
+    return render status: 200, json: {success: true, info: "Disassociated Account", user: current_user.as_json(include: :enrollments)}
+  end
+
 
 private
 

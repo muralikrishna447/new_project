@@ -462,10 +462,30 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       mixpanel.track("Free Trial Valid Email Filled")
       $scope.validEmailSent = true
 
+  # This submits a fake login request to a hidden iframe.  It's to do the remember me stuff in the browser
   $scope.fakeLogin = ->
     $("#fakelogin #email").val($scope.login_user.email)
     $("#fakelogin #password").val($scope.login_user.password)
     $("#fakelogin").submit()
+
+
+  $scope.disconnectSocial = (service) ->
+    $scope.dataLoading += 1
+    console.log("disconnectSocial")
+    $http(
+      method: 'DELETE'
+      url: "/users/social/disconnect.json"
+      params:
+        service: service
+      )
+      .success( (data, status) ->
+        $scope.dataLoading -= 1
+        $scope.authentication.setCurrentUser(data.user)
+      )
+      .error( (data, status) ->
+        $scope.dataLoading -= 1
+
+      )
 
 
 ]
