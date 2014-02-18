@@ -1474,7 +1474,7 @@ input.summary-tweet
     display: block !important
     opacity: 1
 
-  &.ng-enter, &.ng-leave.ng-leave-active, &.ng-hide
+  &.ng-enter, &.ng-leave.ng-leave-active, &.ng-hide-active
     //background-color: yellow
     opacity: 0
   &.ng-leave, &.ng-enter.ng-enter-active, &.ng-move
@@ -1483,6 +1483,19 @@ input.summary-tweet
   &.ng-move-active
     opacity: 0.5
 
+.anim-gallery-popover
+  &.ng-hide-add, &.ng-hide-remove
+    background-color: green
+    display: block !important
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
+
+  &.ng-hide-add, &.ng-hide-remove
+    background-color: red
+    left: -200px
+
+  &.ng-hide-add-active, &.ng-hide-remove-active
+    background-color: yellow
+    left: 0
 
 // BELOW ARE RESPONSIVE STYLES //
 
