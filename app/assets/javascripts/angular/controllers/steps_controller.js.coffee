@@ -2,7 +2,7 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
 
   $scope.stepNumber = (index) ->
     return "" if $scope.activity.steps[index].hide_number
-    _.filter($scope.activity.steps[0...index], (step) -> (! step.hide_number)).length + 1
+    _.filter($scope.activity.steps[0...index], (step) -> (! (step.hide_number || step.is_aside))).length + 1
 
   $scope.numberedSteps = ->
     return [] if ! $scope.activity?.steps?
@@ -31,14 +31,37 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     $scope.activity.steps.splice(idx, 1)
     $scope.addUndo()
 
-  $scope.addStepAtIndex = (idx) ->
-    step = {ingredients: []}
+
+  $scope.isAside = (idx) ->
+    return true if $scope.activity.steps[idx]?.is_aside
+    false
+   
+  # Whether this step has an aside, *not* whether it is an aside
+  $scope.hasAside = (idx) ->
+    return $scope.isAside(idx + 1)
+
+  $scope.canMakeAside = (idx) ->
+    return false if idx == 0
+    return false if $scope.isAside(idx)
+    return false if $scope.hasAside(idx)
+    return false if $scope.isAside(idx - 1)
+    true
+
+  $scope.addStep = (idx, direction) ->
+    newStep = angular.extend({}, {ingredients: []})
     if $scope.activity.steps.length == 0
-      $scope.activity.steps.push(step)
+      $scope.activity.steps.push(newStep)
     else
-      $scope.activity.steps.splice(idx, 0, step)
+      newIdx = idx
+      if $scope.hasAside(idx)
+        newIdx += 2 if direction > 0
+      else if $scope.isAside(idx)
+        newStep.is_aside = true
+        newIdx += 2 if direction > 0
+        newIdx -= 1 if direction < 0
+      else
+        newIdx += 1 if direction > 0
+
+      $scope.activity.steps.splice(newIdx, 0, newStep)
     $scope.addUndo()
-
-
-
 ]

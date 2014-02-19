@@ -1,9 +1,7 @@
 
 .disabled-section
-  -# display:none is a hack to keep from fading out at start. has to be inline style. Can go away w/ angular 1.1.5 I think.
-  %h4(ng-show="editMode && (activity.steps.length == 0)"ng-click="addStepAtIndex(0)")
+  %h4(ng-show="editMode && (activity.steps.length == 0)" ng-click="addStep(0, 0)")
     Add first step...
-
 
 .row.ordered-steps-new(ng-show="activity.steps.length > 0" itemprop="recipeInstructions")
   .ordered-step-item.relative.anim-basic-fade(ng-repeat="step in activity.steps" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" csstephovered="" ng-mouseenter="setMouseOverStep()" ng-class='stepSpan()')

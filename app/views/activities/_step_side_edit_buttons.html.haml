@@ -1,7 +1,7 @@
-.step-sidebar-group.anim-basic-fade(ng-show="editMode && mouseCurrentlyOverStep")
+.step-sidebar-group.anim-basic-fade(ng-if="editMode && mouseCurrentlyOverStep")
   .step-add-button-group(tooltip="Add step..." tooltip-placement="left")
     .step-add-button-line
-    %button.btn-secondary(type="button" ng-click="addStepAtIndex($index)")
+    %button.btn-secondary(type="button" ng-click="addStep($index, -1)")
       %i.icon-plus
   .btn-toolbar.step-edit-buttons
     .btn-group.btn-group-vertical
@@ -11,7 +11,7 @@
         \#
 
       / Buttons to toggle Aside
-      %button.btn.btn-secondary(ng-show="! step.is_aside" type="button" ng-click="step.is_aside = true" tooltip="Make this step an aside" tooltip-placement="left")
+      %button.btn.btn-secondary(ng-show="canMakeAside($index)" type="button" ng-click="step.is_aside = true" tooltip="Make this step an aside" tooltip-placement="left")
         %i.icon-arrow-right
       %button.btn.btn-secondary(ng-show="step.is_aside" type="button" ng-click="step.is_aside = false" tooltip="Make this aside a regular step" tooltip-placement="left")
         %i.icon-arrow-left
@@ -24,5 +24,5 @@
         %i.icon-remove-sign
   .step-add-button-end-group(tooltip="Add step..." tooltip-placement="left")
     .step-add-button-line
-    %button.btn-secondary(type="button" ng-click="addStepAtIndex($index+1)")
+    %button.btn-secondary(type="button" ng-click="addStep($index, 1)")
       %i.icon-plus
