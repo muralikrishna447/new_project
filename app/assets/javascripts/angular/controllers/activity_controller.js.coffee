@@ -62,6 +62,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
 
   $scope.fork = ->
+    $rootScope.loading += 1
     $scope.activity.$update({fork: true},
     ((response) ->
       # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
@@ -86,8 +87,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     # Must reload activity before checking currently_editing_user - want to get any changes that have
     # been made since we loaded the original page *and* want to know if anyone started editing.
     $scope.preventAutoFocus = true
-
+    $rootScope.loading += 1
     temp_activity = Activity.get($scope.url_params, ->
+      $rootScope.loading -= 1
       $scope.temporaryNoAutofocus()
 
       if temp_activity.updated_at != $scope.activity.updated_at

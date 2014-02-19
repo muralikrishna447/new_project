@@ -81,7 +81,7 @@
 
     -# Big spinner until the activity loads. By not cloaking but using angular to hide, it
     -# disappears roughly when the page is ready.
-    .row.activity-loading-spinner(ng-hide="true")
+    .row.activity-loading-spinner(ng-hide="! loading")
       .span12
         %i.icon-page-load
 
