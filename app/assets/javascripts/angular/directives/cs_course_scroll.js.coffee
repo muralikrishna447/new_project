@@ -7,10 +7,9 @@ angular.module('ChefStepsApp').directive 'cscoursescroll', ["$rootScope", ($root
     scope.oldShowBottom = false
     scope.height = el.height()
     scope.window_height = angular.element(window).height()
-
     el.on 'scroll', ->
-      _.throttle(scope.toggleNav(), 100)
-      console.log 'Scrolling'
+      if $rootScope.loading == 0
+        scope.toggleNav()
 
     scope.toggleNav = ->
       newScrollPosition = angular.element(el).scrollTop()
@@ -46,9 +45,7 @@ angular.module('ChefStepsApp').directive 'cscoursescroll', ["$rootScope", ($root
         scope.$emit 'showBottomChanged', scope.showBottom
       scope.oldShowBottom = scope.showBottom
 
-    unbind = {}
-    undbind = $rootScope.$on 'scrollToTop', ->
+    scope.$on 'scrollToTop', (event) ->
       el.scrollTop 0
-    scope.$on('$destroy', unbind)
 
 ]
