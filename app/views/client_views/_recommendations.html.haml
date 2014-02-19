@@ -12,6 +12,7 @@
                           footer-left="activity.difficulty"
                           footer-right="getFooterRightContents(activity)"
                           sash = "getSashContents(activity)"
+                          summary = "activity.description"
                         )
           %div.text-center(ng-controller='LikesController' ng-init="getCurrentUserLikes('Activity', activity.id)")
             .btn.btn-save-for-later(ng-click="likeObject('Activity', activity.id)")

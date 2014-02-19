@@ -1,5 +1,5 @@
 class GalleryController < ApplicationController
-
+  after_filter :track_iphone_app_activity, only: :index_as_json
 
   has_scope :sort do |controller, scope, value|
     case value
@@ -40,7 +40,15 @@ class GalleryController < ApplicationController
     @recipes = apply_scopes(Activity).uniq().page(params[:page]).per(12)
 
     respond_to do |format|
-      format.json { render :json => @recipes.to_json(only: [:id, :title, :image_id, :featured_image_id, :difficulty, :published_at, :slug, :show_only_in_course], :include => [:steps, :creator], methods: [:gallery_path]) }
+      format.json { render :json => @recipes.to_json(only: [:id, :title, :description, :image_id, :featured_image_id, :difficulty, :published_at, :slug, :show_only_in_course], :include => [:steps, :creator], methods: [:gallery_path]) }
+    end
+  end
+
+
+  private
+  def track_iphone_app_activity
+    if from_ios_app?
+      mixpanel.track(mixpanel_anonymous_id, '[iOS App] Gallery Page', {generator: params[:generator], page: params[:page], sort: params[:sort], activity_type: params[:activity_type], search: params[:search_all], context: "iOS App"})
     end
   end
 end

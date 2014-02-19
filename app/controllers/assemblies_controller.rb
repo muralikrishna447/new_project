@@ -33,10 +33,6 @@ class AssembliesController < ApplicationController
   end
 
   def landing
-    if (@assembly.slug == "whipping-siphons") && ! session[:free_trial]
-      params[:trial_token] = "MTctMA=="
-      trial
-    end 
     if session[:free_trial]
       @hours = Assembly.free_trial_hours(session[:free_trial])
       @free_trial_text = @hours.hours_to_pretty_time

@@ -130,10 +130,10 @@ private
 
   def mixpanel_anonymous_id
     begin
-      JSON.parse(cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"])['distinct_id'] 
+      JSON.parse(cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"])['distinct_id']
     rescue
       id = request.session_options[:id]
-      cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"] = {distinct_id: id}.to_json 
+      cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"] = {distinct_id: id}.to_json
       id
     end
   end
@@ -173,10 +173,10 @@ private
   def email_list_signup(name, email, source='unknown', listname='a61ebdcaa6')
     begin
       Gibbon::API.lists.subscribe(
-        id: listname, 
-        email: {email: email}, 
-        merge_vars: {NAME: name, SOURCE: source}, 
-        double_optin: false, 
+        id: listname,
+        email: {email: email},
+        merge_vars: {NAME: name, SOURCE: source},
+        double_optin: false,
         send_welcome: false
       )
 
@@ -217,6 +217,10 @@ private
       referrer = User.find(session[:referred_by])
       mixpanel.people.increment(referrer.email, {key => 1})
     end
+  end
+
+  def from_ios_app?
+    (params[:client] == "iOS")
   end
 
   protected
