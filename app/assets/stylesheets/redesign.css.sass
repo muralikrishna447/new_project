@@ -1403,6 +1403,23 @@ a:hover
   display: inline-block
   margin-left: -2px
 
+.loading-ball
+  .logo-box
+    .loading-no-logo
+      display: none
+    .is-loading.is-fullscreen
+      .loading-no-logo
+        display: block
+        position: fixed
+        top: 10px
+        left: 10px
+        z-index: 10000
+        border-radius: 50%
+        border: 1px solid #ccc
+        width: 80px
+        text-align: center
+        padding: 20px 10px
+        background-color: rgba(255, 255, 255, 0.6)
 
 /* Navbar */
 .navbar-fixed-top
@@ -1428,13 +1445,27 @@ a:hover
     text-shadow: none
     color: black
     padding: 4px 20px
-  .loading-no-logo
-    border-radius: 50%
-    border: 1px solid #ccc
-    width: 80px
-    text-align: center
-    padding: 10px 5px
-    background-color: rgba(255, 255, 255, 0.6)
+    .regular-logo
+      display: block
+    .is-loading
+      .loading-logo
+        display: block
+      .regular-logo
+        display: none
+      .loading-no-logo
+        display: none
+    .loading-logo
+      display: none
+    .loading-no-logo
+      display: none
+    .is-fullscreen
+      .regular-logo
+        display: block
+      .loading-logo
+        display: none
+      .loading-no-logo
+        display: none
+
   .nav
     .nav-item-border
       width: 1px
@@ -1828,6 +1859,61 @@ input.summary-tweet
         .brand
           margin-left: 0px
           padding: 4px 5px
+
+@media (max-width: 979px)
+  .loading-ball
+    .regular-logo
+      display: none
+    .loading-logo
+      display: none
+    .loading-no-logo
+      display: none
+    .is-loading
+      position: fixed
+      top: 10px
+      left: 10px
+      z-index: 1000
+      width: 100%
+      .loading-no-logo
+        display: block
+        border-radius: 50%
+        border: 1px solid #ccc
+        width: 80px
+        text-align: center
+        padding: 20px 10px
+        background-color: rgba(255, 255, 255, 0.6)
+
+
+  .brand
+    .logo-box
+      .regular-logo
+        display: block
+      .loading-logo
+        display: none
+      .is-loading
+        .regular-logo
+          display: block
+        .loading-logo
+          display: none
+        .loading-no-logo
+          display: none
+
+// .logo-box
+//   .regular-logo
+//     display: none
+//   .loading-logo
+//     display: none
+//   .loading-no-logo
+//     display: none
+//   .is-loading
+//     .regular-logo
+//       display: none
+//     .loading-logo
+//       position: absolute
+//       display: block
+//       padding: 6px 5px
+//       top: 0
+//       z-index: 10000
 
 
 /* Portrait tablet to landscape and desktop */
