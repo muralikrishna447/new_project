@@ -40,7 +40,7 @@ class GalleryController < ApplicationController
     @recipes = apply_scopes(Activity).uniq().page(params[:page]).per(12)
 
     respond_to do |format|
-      format.json { render :json => @recipes.to_json(only: [:id, :title, :image_id, :featured_image_id, :difficulty, :published_at, :slug, :show_only_in_course], :include => [:steps, :creator], methods: [:gallery_path]) }
+      format.json { render :json => @recipes.to_json(only: [:id, :title, :description, :image_id, :featured_image_id, :difficulty, :published_at, :slug, :show_only_in_course], :include => [:steps, :creator], methods: [:gallery_path]) }
     end
   end
 

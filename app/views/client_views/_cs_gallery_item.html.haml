@@ -2,9 +2,12 @@
   %a(href='{{href}}')
     .media-box-3-title
       {{title}}
-    .media-box-3-image.relative
-      %img(ng-src="{{image}}")
-      .sash(ng-show="sash" ng-bind-html="sash")
+    .media-box-3-image.relative(ng-mouseenter="showSummary = true" ng-mouseleave="showSummary = false")
+      .media-box-3-image-group.relative(ng-class="{'anim-summary' : !! summary && showSummary}")
+        %img(ng-src="{{image}}" title="{{title}}")
+        .sash(ng-show="sash" ng-bind-html="sash")
+      .media-box-3-summary.line-clamp(ng-bind-html="summary | markdown | shortcode")
+     
     .media-box-3-footer
       .footer-left(ng-bind-html="footerLeft")
       .footer-right(ng-bind-html="footerRight")
