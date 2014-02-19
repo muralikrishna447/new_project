@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "$modal", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, $modal) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "$modal", "csDataLoading", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, $modal, csDataLoading) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -11,6 +11,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.facebook = csFacebook # Facebook service
   $scope.alertService = csAlertService
   $scope.urlService = csUrlService
+  $scope.dataLoadingService = csDataLoading
 
   $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static', dialogClass: "modal login-controller-modal"}
 
@@ -31,6 +32,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.showMadlibPassword = false
   $scope.googleLoaded = false
   $scope.validEmailSent = false
+  $scope.waitingForGoogle = false
 
   $scope.hasError = (error) ->
     if error
@@ -50,6 +52,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.googleInviteModalOpen = true
     else if form == "welcome"
       $scope.welcomeModalOpen = true
+    $scope.dataLoadingService.willBeFullScreen(true)
 
   $scope.closeModal = (form, abandon=true) ->
     $scope.resetMessages()
@@ -66,6 +69,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.googleInviteModalOpen = false
     else if form == "welcome"
       $scope.welcomeModalOpen = false
+    $scope.dataLoadingService.willBeFullScreen(false)
 
 
   $scope.togglePassword = ->
@@ -247,20 +251,20 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   #     )
 
   $scope.facebookConnect = (forLogin=true) ->
-    $scope.dataLoading += 1
     $scope.facebook.connect().then( (user) ->
+      $scope.dataLoadingService.start()
       $http(
         method: "POST"
         url: "/users/auth/facebook/callback.js"
         data:
           user: user
       ).success( (data, status) ->
-        $scope.dataLoading -= 1
         $scope.logged_in = true
         $scope.closeModal('login', false)
         if forLogin
           $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
+            $scope.dataLoadingService.stop()
             $scope.authentication.setCurrentUser(data.user)
             if $scope.formFor != "purchase" && data.new_user
               $scope.loadFriends()
@@ -268,20 +272,23 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         else
           $scope.authentication.setCurrentUser(data.user)
       ).error( (data, status) ->
-        $scope.dataLoading -= 1
+        $scope.dataLoadingService.stop()
         $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
       )
     )
 
   # Because google is a little different we need to watch for an event
   $scope.$on "event:google-plus-signin-success", (event, eventData) ->
-    if $scope.dataLoading > 0
+    # if $scope.dataLoading > 0
+    if $scope.waitingForGoogle
+      $scope.dataLoadingService.start()
       $scope.$apply( ->
         $scope.googleConnect(eventData)
       )
 
   $scope.googleSignin = (google_app_id) ->
-    $scope.dataLoading += 1
+    # $scope.dataLoading += 1
+    $scope.waitingForGoogle = true
     # -# 'approvalprompt': "force" This requires them to reconfirm their permissions and gives us a new refresh token.
     gapi.auth.signIn(
       callback: 'signInCallback'
@@ -294,19 +301,18 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     )
 
   $scope.googleConnect = (eventData) ->
-    console.log("googleConnect")
     $http(
       method: "POST"
       url: "/users/auth/google/callback.js"
       data:
         google: eventData
     ).success( (data, status) ->
-      $scope.dataLoading = 0
       unless $scope.inviteModalOpen
         $scope.logged_in = true
         $scope.closeModal('login', false)
         $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"})
       $timeout( -> # Done so that the modal has time to close before triggering events
+        $scope.dataLoadingService.stop()
         $scope.authentication.setCurrentUser(data.user)
         if $scope.inviteModalOpen
           $scope.loadGoogleContacts()
@@ -314,7 +320,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           $scope.loadFriends()
       , 300)
     ).error( (data, status) ->
-      $scope.dataLoading -= 1
+      $scope.dataLoadingService.stop()
       if status == 503
         $scope.message = "There was a problem connecting to google"
       # $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
@@ -407,6 +413,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     validation
 
   $scope.socialConnect = ->
+    $scope.dataLoadingService.willBeFullScreen(true)
     modalInstance = $modal.open(
       templateUrl: "socialConnect.html"
       backdrop: false
