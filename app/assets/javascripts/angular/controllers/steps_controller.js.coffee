@@ -21,16 +21,9 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
       desc = JSON.parse(step.image_id).filename
     desc
 
-  $scope.reorderStep = (idx, direction) ->
-    t = $scope.activity.steps[idx]
-    $scope.activity.steps[idx] = $scope.activity.steps[idx + direction]
-    $scope.activity.steps[idx + direction] = t
-    $scope.addUndo()
-
   $scope.removeStep = (idx) ->
     $scope.activity.steps.splice(idx, 1)
     $scope.addUndo()
-
 
   $scope.isAside = (idx) ->
     return true if $scope.activity.steps[idx]?.is_aside
@@ -45,6 +38,14 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     return false if $scope.isAside(idx)
     return false if $scope.hasAside(idx)
     return false if $scope.isAside(idx - 1)
+    true
+
+  $scope.canMoveStep = (idx, direction) ->
+    return false if idx == 0 && direction < 0
+    return false if (idx == $scope.activity.steps.length - 1) && (direction > 0)
+    return true if ! $scope.isAside(idx)
+    return false if (direction < 0) && $scope.isAside(idx - 2) 
+    return false if (direction > 0) && $scope.isAside(idx + 2)
     true
 
   $scope.addStep = (idx, direction) ->
@@ -63,5 +64,24 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
         newIdx += 1 if direction > 0
 
       $scope.activity.steps.splice(newIdx, 0, newStep)
+    $scope.addUndo()
+
+  $scope.reorderStep = (idx, direction) ->
+    # If moving a step with an aside have to bring the aside along.
+    # But if moving an aside, it just moves by itself. This feels logical.
+    numToMove = if $scope.hasAside(idx) then 2 else 1
+    newIdx = idx + direction
+
+    # If moving up and previous step has an aside, have to move up 2
+    if direction == -1 && $scope.isAside(idx - 1)
+      newIdx = idx - 2
+
+    # If moving down and next step has an aside, have to move down 2
+    if direction == 1 && $scope.hasAside(idx + (if $scope.hasAside(idx) then 2 else 1))
+      newIdx = idx + 2
+
+    movers = $scope.activity.steps.splice(idx, numToMove)
+    $scope.activity.steps.splice(newIdx, 0, movers[0])
+    $scope.activity.steps.splice(newIdx + 1, 0, movers[1]) if numToMove > 1
     $scope.addUndo()
 ]
