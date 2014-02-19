@@ -55,7 +55,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     $scope.view_inclusion = includable_type
     $scope.view_inclusion_id = includable_id
     if includable_type == "Activity"
-      $rootScope.$emit("loadActivityEvent", includable_id)
+      $rootScope.$broadcast("loadActivityEvent", includable_id)
       $scope.updateDisqus()
 
     mixpanel.track($scope.currentIncludable.includable_type + ' Viewed Within Class', {'title': $scope.currentIncludable.includable_title, 'class': $scope.course.title})
@@ -64,7 +64,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     $scope.collapsed = {}
     $scope.determineCollapsed($scope.currentIncludable)
 
-    $rootScope.$emit('scrollToTop')
+    $scope.$broadcast 'scrollToTop'
     $scope.updateCanonical()
 
     # Absolutely insane fix to https://www.pivotaltracker.com/story/show/59025778
