@@ -4,6 +4,6 @@
     Add first step...
 
 .row.ordered-steps-new(ng-show="activity.steps.length > 0" itemprop="recipeInstructions")
-  .ordered-step-item.relative.anim-basic-fade(ng-repeat="step in activity.steps" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" csstephovered="" ng-mouseenter="setMouseOverStep()" ng-class='stepSpan()')
+  .ordered-step-item.relative.anim-basic-fade(ng-repeat="step in activity.steps track by $index" id="{{'numbered-step-' + step.id}}" ng-controller="StepController" csstephovered="" ng-mouseenter="setMouseOverStep()" ng-class='stepSpan()')
     = render 'activities/latest/step'
 

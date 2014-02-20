@@ -2,11 +2,11 @@
 
   .activity-description-wrapper(ng-show="!! activity.description || editMode")
     .activity-description.maximize-description#activity-description
-      %div(ng-model="activity.description" cs-contenteditable = "editMode")
+      %div.content-activity-description(ng-model="activity.description" cs-contenteditable = "editMode")
 
 -if can? :update, @activity
   .section
 
     %div(ng-show="!!activity.author_notes || editMode")
       %h4 Private Notes
-      %div(ng-model = "activity.author_notes" cs-contenteditable = "editMode")
+      %div.content-privat(ng-model = "activity.author_notes" cs-contenteditable = "editMode")
