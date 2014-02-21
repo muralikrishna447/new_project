@@ -10,7 +10,8 @@
 //=require localStorageModule
 //=require select2
 // ******* Using non-min version of this on purpose b/c I've put a patch in it!
-//=require ui-bootstrap-tpls-0.10.0
+// ******* Don't upgrade past 0.8.0, it is the last one compatible with bootstrap 2.0!
+//=require ui-bootstrap-tpls-0.8.0
 //=require angular/templates
 //=require angular/chefstepsAngularInit
 //=require ingredient_parser
