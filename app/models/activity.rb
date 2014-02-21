@@ -2,7 +2,7 @@ class Activity < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   acts_as_taggable
-  acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}, :quizzes, :inclusions], :dependent => :keep, :on_destroy => true
+  acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}, :quizzes], :dependent => :keep, :on_destroy => true
 
   friendly_id :title, use: [:slugged, :history]
 
