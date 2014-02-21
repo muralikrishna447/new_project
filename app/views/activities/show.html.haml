@@ -24,7 +24,7 @@
       %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.featured_image_id)}
     - if @activity.youtube_id?
       %meta{property: 'twitter:card', content: 'player'}
-      %meta{property: 'twitter:player', content: "https://www.youtube.com/embed/#{@activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720"}
+      %meta{property: 'twitter:player', content: "https://www.youtube.com/embed/#{@activity.youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0"}
       %meta{property: 'twitter:player:height', content: '270'}
       %meta{property: 'twitter:player:width', content: '480'}
     - else
