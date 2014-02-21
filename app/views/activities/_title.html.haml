@@ -1,7 +1,8 @@
-%csEditPair#title-edit-pair
+%h1.content-activity-title(ng-model="activity.title" contenteditable = "{{editMode}}")
 
+%csEditPair#title-edit-pair
   %csEditPairShow
-    %h1.activity-title(ng-bind-html="activity.title || (editMode && 'Add title...')" itemprop='name' ng-class="disableIf(! activity.title.length)")
+
     -creator = @activity.creator
     -if  creator|| @activity.source_activity_id
       %h5.no-bold
@@ -19,7 +20,6 @@
         = link_to @activity.source_activity.title, activity_path(@activity.source_activity)
 
   %csEditPairEdit
-    %textarea.nohtml(name="title" rows=2 data-ng-model="activity.title" placeholder="Add title..." required="true")
     -if @activity.source_activity_id
       %h5.no-bold
         %select.unit(type="text" ng-model="activity.source_type" required="true" ng-options="s.id as s.name for s in sourceActivityTypes")

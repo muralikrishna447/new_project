@@ -1,26 +1,35 @@
-.spier.show-mode
-  .row.relative(ng-hide="heroDisplayType() == 'none'")
-    .span12.ng-cloak.assembly-activity.section#video-ingredient-unit
-      .hero-video.noprint
-        = render 'activities/hero_visual'
-      - unless @assembly
-        .noprint(ng-show="! editMode")
-          = render 'layouts/social_buttons', media_object: activity
-  .row.main-content-container
-    .span6
-      = render 'activities/latest/description'
-    %div(ng-class='ingredientSpanClass()')
-      = render 'activities/main_ingredients'
-      .row
-        .span3
-          = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/Materials", test_method: "hasAnyEquipment", required_string: "any", required: "any"
-        .span3
-          = render 'activities/basic_edit_pair', model: "activity.yield", name: "Yield", add_text: "Add yield info...", itemprop: "recipeYield", show_extra: "maybeDisplayCurrentScaling()"
-          = render 'activities/basic_edit_pair', model: "activity.timing", name: "Timing", add_text: "Add timing info...",  show_extra: "maybeWarnCurrentScaling()"
-          = render 'activities/activity_relationships'
 
-  .row.step-container
-    .span12.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
-      = render 'activities/steps'
+.row.relative(ng-hide="heroDisplayType() == 'none'")
+  .span12.ng-cloak.assembly-activity.section#video-ingredient-unit
+    .hero-video.noprint
+      = render 'activities/hero_visual'
+    - unless @assembly
+      .noprint(ng-show="! editMode")
+        = render 'layouts/social_buttons', media_object: activity
+.row.main-content-container
+  .span6
+    = render 'activities/latest/description'
+  %div(ng-class='ingredientSpanClass()')
+    = render 'activities/main_ingredients'
+    .row
+      .span3
+        = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/&#8203;Materials", test_method: "hasAnyEquipment", required_string: "any", required: "any"
+      .span3
+        .section
+          %h4(ng-show="editMode || !! activity.yield") Yield
+          %span(  contenteditable="{{editMode}}" 
+                  ng-model="activity.yield" 
+                  itemprop="recipeYield")
+          %span.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
+        .section
+          %h4(ng-show="editMode || !! activity.timing") Timing
+          %span(  contenteditable="{{editMode}}" 
+                  ng-model="activity.timing")
+          %span.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
+        = render 'activities/activity_relationships'
+
+.row.step-container
+  .span12.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
+    = render 'activities/steps'
 
 

@@ -177,7 +177,7 @@ private
         email: {email: email},
         merge_vars: {NAME: name, SOURCE: source},
         double_optin: false,
-        send_welcome: true
+        send_welcome: false
       )
 
     rescue Exception => e

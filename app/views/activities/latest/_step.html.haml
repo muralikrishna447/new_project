@@ -4,25 +4,14 @@
   %h1.step-number
     %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
 
-  %csEditPair
-    %csEditPairShow
-      %h4(ng-show="step.title || editMode" ng-bind-html="step.title || (editMode && 'Optional title...') | markdown | shortcode" ng-class="disableIf(! step.title.length)")
-    %csEditPairEdit
-      %textarea.step-title-input(ng-model="step.title" rows="5" placeholder="Optional title...")
+  %h4(cs-contenteditable="editMode" ng-model="step.title")
 
   .step-first-row
     =render 'activities/step_ingredients'
 
-  .step-content
-    %csEditPair
-      %csEditPairShow
-        %div(ng-show="step.directions || editMode" ng-bind-html="(step.directions || 'Add direction...') | markdown | shortcode" ng-class="disableIf(!step.directions)")
-      %csEditPairEdit
-        %textarea(ng-model="step.directions" rows="5" placeholder="Add direction...")
+  .step-content(cs-contenteditable="editMode" ng-model="step.directions")
 
-    =render 'activities/step_edit_images'
-
-  .step-last-row(ng-show='((!! step.youtube_id) || (!! step.image_id)) && (! editMode)')
+  .step-last-row(ng-show='((!! step.youtube_id) || (!! step.image_id))')
 
     %div(ng-show='hasAV()')
       .step-video-outer.noprint(ng-show="!! step.youtube_id")
@@ -34,5 +23,5 @@
       .step-image-outer(ng-show="(! step.youtube_id) && (!! step.image_id)")
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(ng-src="{{stepImageURL(step, 670)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
-
+  %div(ng-include="'/client_views/_step_edit_images'")
 %div(ng-include="'/client_views/_aside'")

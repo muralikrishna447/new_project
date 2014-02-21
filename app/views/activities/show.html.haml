@@ -75,14 +75,13 @@
     -# Main content row
     .row.printable
       .span12
-        -# This seems a little weird, why do we have a row inside a span12?
-        #main-content(scroll-spy offset="140")
+        #main-content
           / = render 'main_activity_content', activity: @activity
           = render 'activities/main_activity_content', activity: @activity
 
     -# Big spinner until the activity loads. By not cloaking but using angular to hide, it
     -# disappears roughly when the page is ready.
-    .row.activity-loading-spinner(ng-hide="true")
+    .row.activity-loading-spinner(ng-hide="! loading")
       .span12
         %i.icon-page-load
 
@@ -92,6 +91,7 @@
   - if ! @minimal
     .row(ng-hide="editMode" ng-cloak)
       .span12
+        .section
         %h3 User Creations
         = link_to 'UPLOAD YOUR OWN', '#', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}, onclick: "mixpanel.people.set({ 'photo upload intent': '#{@activity.title}' }); mixpanel.track('Photo Upload Intent', { 'photo upload intent': '#{@activity.title}' });"
         #user-creations-carousel
