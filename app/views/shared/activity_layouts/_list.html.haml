@@ -13,7 +13,7 @@
           %p(ng-bind-html="step.directions | markdown | shortcode")
           %div(ng-show="!!step.youtube_id")
             .video-container(csenforceaspect)
-              %iframe(ng-style="setHeight()" csenforceaspect cssrcreplacer="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&vq=hd720'}}")
+              %iframe(ng-style="setHeight()" csenforceaspect cssrcreplacer="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0'}}")
           %div(ng-show="!!step.image_id")
             %hr
             %img(ng-src="{{stepImageURL(step, 840)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
