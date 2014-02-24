@@ -14,7 +14,7 @@ angular.module('ChefStepsApp').service 'csDataLoading', [ "$rootScope", ($rootSc
     dataLoading
   this.isFullScreen = ->
     fullScreen
-  this.willBeFullScreen = (fullScreenValue) ->
+  this.setFullScreen = (fullScreenValue) ->
     fullScreen = fullScreenValue
 
   this

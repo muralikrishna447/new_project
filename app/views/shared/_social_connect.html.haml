@@ -40,9 +40,12 @@
 
       %hr
 
-      %h2 Search for friends (Coming Soon)
-      .follow-friends-box
-
+      %h2 Friend Suggestions (Coming Soon)
+      .no-friends(ng-if="possibleFollowers.length == 0")
+        %p We can't seem to find any of your friends who use ChefSteps :(
+        %p Why don't you invite some friends to use ChefSteps?
+      .follow-friends-box(ng-if="possibleFollowers.length > 0")
+        Follow some of your friends.
 
 
 

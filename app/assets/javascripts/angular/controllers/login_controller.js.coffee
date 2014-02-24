@@ -34,6 +34,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.validEmailSent = false
   $scope.waitingForGoogle = false
 
+  $scope.possibleFollowers = []
+
   $scope.hasError = (error) ->
     if error
       "error"
@@ -52,7 +54,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.googleInviteModalOpen = true
     else if form == "welcome"
       $scope.welcomeModalOpen = true
-    $scope.dataLoadingService.willBeFullScreen(true)
+    $scope.dataLoadingService.setFullScreen(true)
 
   $scope.closeModal = (form, abandon=true) ->
     $scope.resetMessages()
@@ -69,8 +71,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.googleInviteModalOpen = false
     else if form == "welcome"
       $scope.welcomeModalOpen = false
-    $scope.dataLoadingService.willBeFullScreen(false)
-
+    $scope.dataLoadingService.setFullScreen(false)
 
   $scope.togglePassword = ->
     if $scope.passwordType == "password"
@@ -413,7 +414,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     validation
 
   $scope.socialConnect = ->
-    $scope.dataLoadingService.willBeFullScreen(true)
+    $scope.dataLoadingService.setFullScreen(true)
     modalInstance = $modal.open(
       templateUrl: "socialConnect.html"
       backdrop: false
@@ -424,6 +425,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       controller: ($scope, $modalInstance, authentication) ->
         $scope.authentication = authentication
     )
+
+  $scope.closeNewModal = ->
+    $scope.dataLoadingService.setFullScreen(false)
+    $close()
 
   $scope.freeTrialRegister = ->
     $scope.dataLoading += 1
@@ -478,8 +483,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
 
   $scope.disconnectSocial = (service) ->
-    $scope.dataLoading += 1
-    console.log("disconnectSocial")
+    $scope.dataLoadingService.start()
     $http(
       method: 'DELETE'
       url: "/users/social/disconnect.json"
@@ -487,11 +491,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         service: service
       )
       .success( (data, status) ->
-        $scope.dataLoading -= 1
+        $scope.dataLoadingService.stop()
         $scope.authentication.setCurrentUser(data.user)
       )
       .error( (data, status) ->
-        $scope.dataLoading -= 1
+        $scope.dataLoadingService.stop()
 
       )
 

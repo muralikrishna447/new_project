@@ -9,40 +9,51 @@ module User::Google
     self.google_user_id.present?
   end
 
+  def find_google_contact_friends(google_app_id, google_secret)
+    return nil unless connected_with_google?
+    gather_contacts(google_app_id, google_secret) do |contacts|
+      current_users = User.where(email: contacts.map{|c| c[:email]})
+      return current_users
+    end
+
+  end
+
   def gather_google_contacts(google_app_id, google_secret)
-    if connected_with_google?
-      authorization = self.class.create_authorization(google_app_id, google_secret)
-      authorization.update_token!(refresh_token: google_refresh_token, access_token: google_access_token)
-      # return authorization
-      # authorization.update_token!(refresh_token: User.where(email: "danahern@gmail.com").first.google_refresh_token, access_token: User.where(email: "danahern@gmail.com").first.google_access_token)
-      begin
-        groups_request = authorization.fetch_protected_resource(uri: "https://www.google.com/m8/feeds/groups/default/full/6?v=3.0")
-        group = Nokogiri::XML(groups_request.body).css("id").text
-        contacts_request = authorization.fetch_protected_resource(uri: "https://www.google.com/m8/feeds/contacts/default/full/?max-results=100000&v=3.0&group=#{group}")
-        xml = Nokogiri::XML(contacts_request.body)
-        contacts = []
-        entries = xml.search("entry")
-        entries.each do |entry|
-          contact = {email: nil, name: nil}
-          contact[:name] = entry.xpath(entry.path + "//gd:fullName").text
-          contact[:email] = entry.xpath(entry.path + "//gd:email[@primary='true']/@address").text
-          contact[:email] = entry.at_xpath(entry.path + "//gd:email/@address").try(:text) if contact[:email].blank?
-          contacts << contact if contact[:email].present?
-        end
-        # contacts = xml.document.xpath("//gd:email/@address").map(&:value)
-        current_users = User.where(email: contacts.map{|c| c[:email]}).pluck(:email)
-        contacts = contacts.reject{|c| current_users.include?(c[:email])}
-        return contacts.sort{|a,b| a[:name].downcase <=> b[:name].downcase}
-      rescue Signet::AuthorizationError
-        new_token = authorization.fetch_access_token!
-        update_attribute(:google_access_token, new_token["access_token"])
-        gather_google_contacts(google_app_id, google_secret)
-      end
+    return nil unless connected_with_google?
+    gather_contacts(google_app_id, google_secret) do |contacts|
+      current_users = User.where(email: contacts.map{|c| c[:email]}).pluck(:email)
+      contacts = contacts.reject{|c| current_users.include?(c[:email])}
+      return contacts.sort{|a,b| a[:name].downcase <=> b[:name].downcase}
     end
   end
 
   def google_connect(user_options)
     self.update_attributes({google_user_id: user_options[:google_user_id], google_refresh_token: user_options[:google_refresh_token], google_access_token: user_options[:google_access_token]}, without_protection: true)
+  end
+
+  def gather_contacts(google_app_id, google_secret, &block)
+    authorization = self.class.create_authorization(google_app_id, google_secret)
+    authorization.update_token!(refresh_token: google_refresh_token, access_token: google_access_token)
+    begin
+      groups_request = authorization.fetch_protected_resource(uri: "https://www.google.com/m8/feeds/groups/default/full/6?v=3.0")
+      group = Nokogiri::XML(groups_request.body).css("id").text
+      contacts_request = authorization.fetch_protected_resource(uri: "https://www.google.com/m8/feeds/contacts/default/full/?max-results=100000&v=3.0&group=#{group}")
+      xml = Nokogiri::XML(contacts_request.body)
+      contacts = []
+      entries = xml.search("entry")
+      entries.each do |entry|
+        contact = {email: nil, name: nil}
+        contact[:name] = entry.xpath(entry.path + "//gd:fullName").text
+        contact[:email] = entry.xpath(entry.path + "//gd:email[@primary='true']/@address").text
+        contact[:email] = entry.at_xpath(entry.path + "//gd:email/@address").try(:text) if contact[:email].blank?
+        contacts << contact if contact[:email].present?
+      end
+      block.call(contacts)
+    rescue Signet::AuthorizationError
+      new_token = authorization.fetch_access_token!
+      update_attribute(:google_access_token, new_token["access_token"])
+      retry
+    end
   end
 
   module ClassMethods
@@ -77,6 +88,5 @@ module User::Google
       client_secrets = Google::APIClient::ClientSecrets.new(data)
       authorization = client_secrets.to_authorization
     end
-
   end
 end

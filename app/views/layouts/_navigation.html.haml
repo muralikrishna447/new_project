@@ -7,9 +7,6 @@
         = link_to root_url, class: 'brand' do
           -# = image_tag "https://s3.amazonaws.com/chefsteps/static/csLogoHorizontalSmall.svg", id: 'chefsteps-logo', "ng-class" => "{'is-loading': dataLoading.isLoading()}"
           %cs-loading
-          %a(ng-click="dataLoading.start()") Start
-          %a(ng-click="dataLoading.willBeFullScreen(true)") Fullscreen
-          %a(ng-click="dataLoading.stopAll()") Stop
           / .logo-wrapper
           /   .logo-window
           /   .logo-block
