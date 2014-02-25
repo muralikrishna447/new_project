@@ -137,27 +137,11 @@
 - content_for :popup_bottom do
   - if ! ENV["CS_NO_POPUP"]
     - if @viewed_activities && @viewed_activities.count > 1 && current_user.nil?
-      .container-fluid.popup-bottom(ng-hide="editMode")
-        .row-fluid
-          .container
-            .row
-              .span12
-                .row
-                  .span5.offset1
-                    %h3 Cook Better Than You Ever Thought Possible
-                    = form_tag new_user_registration_url, :method => :get do
-                      = email_field_tag 'email', nil, {class: 'input-signup-email', placeholder: 'Enter email', required: true}
-                      = hidden_field_tag :signed_up_from, 'bottom_popup_cta'
-                      = submit_tag 'Sign Up Now', class: 'btn btn-secondary', id: 'subscribe-email'
-                  .span6
-                    %h3 Benefits Include
-                    %ul
-                      %li Ask questions of some of the world's best chefs
-                      %li Keep up to date with our latest recipes
-                      %li Enroll in courses, upload your creations
-                      %li Like other student creations
-                  .popup-bottom-close
-                    %i.icon-remove
+      .container-fluid.popup-bottom(ng-hide="editMode || authentication.currentUser()" ng-controller="LoginController" ng-cloak ng-init="registrationSource='activityMadlib'")
+        = render "devise/sessions/new_angular"
+        = render 'home/madlib'
+        .popup-bottom-close
+          %i.icon-remove
 
 //////// UPLOAD MODAL /////////
 - if params[:action] == 'show'

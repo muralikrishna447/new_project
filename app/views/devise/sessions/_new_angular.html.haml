@@ -45,7 +45,7 @@
           %div
             %a.switch-to-signup(ng-click="switchForm('signUp')")
               New to ChefSteps?  Create an account.
-    %form(ng-submit="register()" form-autofill-fix class="no-margin-modal-form")
+    %form(ng-submit="register(registrationSource)" form-autofill-fix class="no-margin-modal-form")
       .sign-up-body.modal-body.login-modal-body(ng-switch-when="signUp")
         .close-x.pull-right(ng-click="closeModal('login')")
           %i.icon-remove

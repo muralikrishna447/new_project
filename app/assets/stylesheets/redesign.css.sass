@@ -69,20 +69,27 @@ a, [ng-click], [contenteditable]:not(:focus)
   display: none
 
 .popup-bottom
-  color: white
+  @include transition(all 600ms ease-in-out)
+  color: black
   position: fixed
-  padding: 10px 0px
-  max-height: 200px
-  bottom: -200px
-  width: 100%
+  right: -53%
+  bottom: $baseline * 2
+  padding: $baseline * 2
+  border: 1px solid $light-gray
+  max-height: 465px
+  width: 50%
+  float: right
   @include boxsizing
   z-index: 9999
-  background: $orange
-  @include shadow
+  background-color: white
+  margin-right: 22px
+  @include bottom-only-annotation-shadow
   .row
     margin-left: 0px
-  h3
-    margin: 0px
+  .input-underlined
+    input
+      max-width: 50%
+
   form
     margin: 10px 0px
     .input-signup-email
@@ -97,8 +104,48 @@ a, [ng-click], [contenteditable]:not(:focus)
       color: $dark-orange
       cursor: pointer
 
+  .well
+    background: white
+
+@media (max-width: 1349px)
+  .popup-bottom
+    h2
+      font-size: 32px
+      line-height: 40px
+
+
+@media (max-width: 1070px)
+  .popup-bottom
+    h2
+      font-size: 20px
+      line-height: 30px
+
+    #show-madlib-password
+      padding-top: 0
+
+@media (max-width: 970px)
+  .popup-bottom
+    width: 100%
+    right: -100%
+    margin-left: 0 !important
+    margin-right: 0 !important
+    border-right: none
+    border-left: none
+    bottom: 0
+    h2
+      font-size: 20px
+      line-height: 30px
+
+    #show-madlib-password
+      padding-top: 0
+
+  .popup-bottom-show
+    left: 0
+    right: 0
+
+
 .popup-bottom-show
-  bottom: 0px
+  right: 0
 
 #technique-carousel, #related-carousel
   .scroll-overlay-left, .scroll-overlay-right
@@ -1661,11 +1708,6 @@ input.summary-tweet
     margin: 0px -20px
     padding: 0px 20px
 
-  .popup-bottom
-    margin: 0px -20px
-    padding: 20px
-    .text-right
-      text-align: left
 
   #footer
     margin: 0px -20px
@@ -1744,10 +1786,6 @@ input.summary-tweet
   .top-container
     margin-top: 0px
 
-  .popup-bottom
-    h3
-      font-size: 16px
-
   .static-height
     height: 10px
 
@@ -1770,16 +1808,6 @@ input.summary-tweet
     content: "Click to write main description"
 
 
-
-
-@media (max-width: 320px)
-  .popup-bottom
-    font-size: 12px
-    h3
-      font-size: 14px
-      line-height: 16px
-    .input-signup-email
-      width: 50%
 
 /* Global on-select highlighting */
 
