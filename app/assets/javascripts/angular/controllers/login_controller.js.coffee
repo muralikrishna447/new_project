@@ -156,7 +156,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   #     error_entity: $scope.login_error
   #   )
 
-  $scope.register = ->
+  $scope.register = (source = "unknown") ->
     unless $scope.validNameAndEmail() && $scope.register_user.password
       $scope.register_error.errors.name = ["Please provide a name"] unless !!$scope.register_user.name
       $scope.register_error.errors.email = ["Please enter a valid email address"] unless /.*@.*\..*/.test($scope.register_user.email)
@@ -176,6 +176,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       .success( (data, status) ->
         $scope.dataLoading -= 1
         if (status == 200)
+          mixpanel.track('Signed Up JS', {'source' : source})
           _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
           $scope.logged_in = true
           $scope.closeModal('login', false)
