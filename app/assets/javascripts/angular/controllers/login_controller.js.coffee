@@ -32,6 +32,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.googleLoaded = false
   $scope.validEmailSent = false
 
+  $scope.registrationSource = null
+
   $scope.hasError = (error) ->
     if error
       "error"
@@ -247,7 +249,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   #           parameters.error_entity.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
   #     )
 
-  $scope.facebookConnect = ->
+  $scope.facebookConnect = (source="undefined") ->
     $scope.dataLoading += 1
     $scope.facebook.connect().then( (user) ->
       $http(
@@ -265,6 +267,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           if $scope.formFor != "purchase" && data.new_user
             $scope.loadFriends()
         , 300)
+        mixpanel.track('Signed Up JS', {'source' : source, method: "facebook"}) if data.new_user
+        _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
       ).error( (data, status) ->
         $scope.dataLoading -= 1
         $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
@@ -273,6 +277,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   # Because google is a little different we need to watch for an event
   $scope.$on "event:google-plus-signin-success", (event, eventData) ->
+    console.dir("google-plus-signin")
     if $scope.dataLoading > 0
       $scope.$apply( ->
         $scope.googleConnect(eventData)
@@ -282,8 +287,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.dataLoading += 1
     # -# 'approvalprompt': "force" This requires them to reconfirm their permissions and gives us a new refresh token.
     gapi.auth.signIn(
-      callback: 'signInCallback'
       clientid: google_app_id
+      callback: 'signInCallback'
       cookiepolicy: $scope.urlService.currentSiteAsHttps()
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile'
       redirecturi: "postmessage"
@@ -292,13 +297,14 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     )
 
   $scope.googleConnect = (eventData) ->
+    console.log("googleConnect")
     $http(
       method: "POST"
       url: "/users/auth/google/callback.js"
       data:
         google: eventData
     ).success( (data, status) ->
-      $scope.dataLoading = 0
+      $scope.dataLoading -= 1
       unless $scope.inviteModalOpen
         $scope.logged_in = true
         $scope.closeModal('login', false)
@@ -310,6 +316,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         else if $scope.formFor != "purchase" && data.new_user
           $scope.loadFriends()
       , 300)
+      $scope.registrationSource = "unknown" unless $scope.registrationSource
+      mixpanel.track('Signed Up JS', {'source' : $scope.registrationSource, method: "google"}) if data.new_user
+      _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
+
     ).error( (data, status) ->
       $scope.dataLoading -= 1
       if status == 503
