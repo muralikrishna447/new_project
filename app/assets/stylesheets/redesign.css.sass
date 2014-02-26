@@ -68,7 +68,7 @@ a, [ng-click], [contenteditable]:not(:focus)
 .printonly
   display: none
 
-.popup-bottom
+.popup-bottom, .gallery-popup-bottom
   @include transition(all 600ms ease-in-out)
   color: black
   position: fixed
@@ -108,14 +108,14 @@ a, [ng-click], [contenteditable]:not(:focus)
     background: white
 
 @media (max-width: 1349px)
-  .popup-bottom
+  .popup-bottom, .gallery-popup-bottom
     h2
       font-size: 32px
       line-height: 40px
 
 
 @media (max-width: 1070px)
-  .popup-bottom
+  .popup-bottom, .gallery-popup-bottom
     h2
       font-size: 20px
       line-height: 30px
@@ -124,7 +124,7 @@ a, [ng-click], [contenteditable]:not(:focus)
       padding-top: 0
 
 @media (max-width: 970px)
-  .popup-bottom
+  .popup-bottom, .gallery-popup-bottom
     width: 100%
     right: -100%
     margin-left: 0 !important

@@ -1,6 +1,6 @@
 # Next step in refactoring would be to move much of this over to a service, but at least it is now shared by 
 # all gallery controllers.
-@app.controller 'GalleryBaseController', ["$scope", "$timeout", '$route', '$routeParams', '$location', ($scope, $timeout, $route, $routeParams, $location) ->
+@app.controller 'GalleryBaseController', ["$scope", "$rootScope", "$timeout", '$route', '$routeParams', '$location', ($scope, $rootScope, $timeout, $route, $routeParams, $location) ->
 
   # Initialization
   $scope.galleryItems = []
@@ -73,6 +73,7 @@
 
       gip = $scope.galleryIndexParams($scope.filters, $scope.page)
       console.log "Querying for " + JSON.stringify(gip)
+      $rootScope.showGalleryPopupBottom = true if ! $rootScope.showGalleryPopupBottom? && $scope.page == 3
       query_filters = angular.extend({}, $scope.filters)
       $scope.spinner += 1
       $scope.objectMethods.queryIndex()(gip, (newItems) -> 
