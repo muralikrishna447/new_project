@@ -59,5 +59,6 @@
                 ago
     
       %hr
-        %div(ng-controller='CommentsController' ng-init="init('uploads','#{@upload.id}')" ng-cloak)
-          = render 'comments/comments'
+        / %div(ng-controller='CommentsController' ng-init="init('uploads','#{@upload.id}')" ng-cloak)
+        /   = render 'comments/comments'
+        %cs-comments(get-with="#{['Upload', @upload.id]}")
