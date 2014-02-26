@@ -6,7 +6,9 @@
     console.log $scope.currentUser.name
 
   $scope.getAvatarUrl = ->
-    console.log $scope.currentUser.image_id
+    imageId = JSON.parse($scope.currentUser.image_id)
+    imageUrl = imageId.url.replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    console.log imageUrl
 
   $scope.getMe = ->
     console.log $scope.currentUser.id
