@@ -10,7 +10,7 @@
             .header-text(ng-show="headerText" ng-bind-html="headerText")
             .button-group
               .facebook-button.facebook-login
-                %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
+                %a(ng-click="facebookConnect(registrationSource)" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
                   %i.icon-facebook
                   %b Facebook
               .google-button.google-plus-login
@@ -55,7 +55,7 @@
             .header-text(ng-show="headerText" ng-bind-html="headerText")
             .button-group
               .facebook-button.facebook-login
-                %a(ng-click="facebookConnect()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
+                %a(ng-click="facebookConnect(registrationSource)" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
                   %i.icon-facebook
                   %b Facebook
               .google-button.google-plus-login

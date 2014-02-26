@@ -247,7 +247,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   #           parameters.error_entity.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
   #     )
 
-  $scope.facebookConnect = ->
+  $scope.facebookConnect = (source="undefined") ->
     $scope.dataLoading += 1
     $scope.facebook.connect().then( (user) ->
       $http(
@@ -265,6 +265,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           if $scope.formFor != "purchase" && data.new_user
             $scope.loadFriends()
         , 300)
+        mixpanel.track('Signed Up JS', {'source' : source, method: "facebook"})
+        _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
       ).error( (data, status) ->
         $scope.dataLoading -= 1
         $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
@@ -275,7 +277,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.$on "event:google-plus-signin-success", (event, eventData) ->
     if $scope.dataLoading > 0
       $scope.$apply( ->
-        $scope.googleConnect(eventData)
+        $scope.googleConnect(eventData, registrationSource)
       )
 
   $scope.googleSignin = (google_app_id) ->
@@ -291,7 +293,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       # approvalprompt: "force"
     )
 
-  $scope.googleConnect = (eventData) ->
+  $scope.googleConnect = (eventData, source="unknown") ->
     $http(
       method: "POST"
       url: "/users/auth/google/callback.js"
@@ -310,6 +312,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         else if $scope.formFor != "purchase" && data.new_user
           $scope.loadFriends()
       , 300)
+      mixpanel.track('Signed Up JS', {'source' : source, method: "google"})
+      _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
+
     ).error( (data, status) ->
       $scope.dataLoading -= 1
       if status == 503
