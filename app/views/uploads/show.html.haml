@@ -65,5 +65,5 @@
         /   %comments(get-with="getWith")
         / %div(ng-init="getWith = {'Upload': #{@upload.id} }")
         /   %comments(get-with="getWith")
-        %div(ng-controller='csCommentsController' ng-init="getWith = {'Upload': #{@upload.id} }")
+        %div(ng-controller='csCommentsController' ng-init="getWith = {'upload': '#{@upload.id}' }")
           %comments(get-with="getWith")

@@ -42254,6 +42254,7 @@ this.services.service('es', function(esFactory) {
 this.services.service('Comments', function(es, $http, $q, NotifSender, Forum, Session, parseElastic, BloomSettings) {
   var _this = this;
   window.client = es;
+  console.log(BloomSettings)
   this.sort = function(comments) {
     return _.sortBy(comments, function(c) {
       return -_this.rank(c);
@@ -42788,6 +42789,7 @@ this.services.service('Users', function(es, $q, parseElastic) {
 
 this.users.controller('UserNameCtrl', function($scope, Users, BloomSettings) {
   $scope.hover = false;
+  console.log('user name', $scope)
   BloomSettings.getUser($scope.id).then(function(user) {
     console.log('tried to get user ', $scope.id, 'got user', user)
     return $scope.name = user.name;
