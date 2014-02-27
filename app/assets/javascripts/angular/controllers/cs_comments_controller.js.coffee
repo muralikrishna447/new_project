@@ -1,5 +1,5 @@
-@app.service 'BloomSettings', ['$q', 'csAuthentication', ($q, csAuthentication) ->
-  @user = csAuthentication.currentUser().id
+@app.service 'BloomSettings', ['$q', 'csAuthentication', '$http', ($q, csAuthentication, $http) ->
+  @user = ''+csAuthentication.currentUser().id
   @token = csAuthentication.currentUser().authentication_token
   @getUser = (id) =>
     def = $q.defer()
@@ -13,9 +13,14 @@
   return this
 ]
 
+@app.service 'Session', ['BloomSettings', (BloomSettings) ->
+  @me = BloomSettings.user
+  return this
+]
+
 @app.controller 'csCommentsController', ["$scope", "$http", "csAuthentication", ($scope, $http, csAuthentication) ->
   $scope.currentUser = csAuthentication.currentUser()
-
+  console.log $scope.currentUser
   $scope.getName = ->
     console.log $scope.currentUser
     # console.log $scope.currentUser.name

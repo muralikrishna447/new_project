@@ -42220,6 +42220,10 @@ this.forum.controller('PostCtrl', function($stateParams, $scope, Forum, $rootSco
   return this;
 });
 
+var API;
+
+API = 'http://bloomapi-env-wivefkmkpp.elasticbeanstalk.com';
+
 this.services.service('parseElastic', function() {
   var _this = this;
   return function(promise) {
@@ -42243,11 +42247,11 @@ this.services.service('parseElastic', function() {
 
 this.services.service('es', function(esFactory) {
   return esFactory({
-    host: 'http://d4fa50a1ab918926000.qbox.io'
+    host: 'localhost:9200'
   });
 });
 
-this.services.service('Comments', function(es, $http, $q, NotifSender, Forum, parseElastic) {
+this.services.service('Comments', function(es, $http, $q, NotifSender, Forum, Session, parseElastic, BloomSettings) {
   var _this = this;
   window.client = es;
   this.sort = function(comments) {
@@ -42310,81 +42314,74 @@ this.services.service('Comments', function(es, $http, $q, NotifSender, Forum, pa
     });
   };
   this.addToPost = function(author, content, saveWith) {
-    var promise;
-    promise = es.create({
-      index: 'bloom',
-      type: 'comment',
-      refresh: true,
-      body: _.extend({
+    window.bs = BloomSettings;
+    console.log('adding ', author, content, saveWith);
+    var def, params;
+    def = $q.defer();
+    params = {
+      save: _.extend({
         author: author,
-        content: content,
-        upvotes: [],
-        asked: [],
-        createdAt: Date.now()
-      }, saveWith || {})
-    });
-    promise.then(function(newComment) {
-      if ((saveWith != null ? saveWith.postId : void 0) != null) {
-        return Forum.getPost(saveWith.postId).then(function(post) {
-          return NotifSender.create(post.author, 'postComment', {
-            author: author,
-            postId: saveWith.postId,
-            commentId: newComment._id
-          });
-        });
+        content: content
+      }, saveWith),
+      auth: {
+        user: Session.me,
+        token: BloomSettings.token
       }
+    };
+    $http.post("" + API + "/comments", {
+      params: params
+    }).then(function(res) {
+      return def.resolve(res.data);
     });
-    return promise;
+    return def.promise;
   };
   this.addToComment = function(author, content, parentCommentId, saveWith) {
-    var promise;
-    promise = es.create({
-      index: 'bloom',
-      createdAt: Date.now(),
-      type: 'comment',
-      refresh: true,
-      realtime: true,
-      body: _.extend({
+    var def, params;
+    def = $q.defer();
+    params = {
+      save: _.extend({
         parentCommentId: parentCommentId,
         author: author,
         content: content,
         asked: [],
         upvotes: [],
         createdAt: Date.now()
-      }, saveWith)
+      }, saveWith),
+      auth: {
+        user: Session.me,
+        token: BloomSettings.token
+      }
+    };
+    $http.post("" + API + "/comments", {
+      params: params
+    }).then(function(res) {
+      return def.resolve(res.data);
     });
-    promise.then(function(newComment) {
-      return _this.get(parentCommentId).then(function(comment) {
-        return NotifSender.create(comment.author, 'commentReply', _.extend({
-          author: author,
-          commentId: newComment._id
-        }, saveWith));
-      });
-    });
-    return promise;
+    return def.promise;
   };
   this.get = function(_id) {
-    return parseElastic(es.get({
-      index: 'bloom',
-      realtime: true,
-      type: 'comment',
-      id: _id
-    }));
+    var def;
+    def = $q.defer();
+    $http.get("" + API + "/comments/" + _id).then(function(res) {
+      return def.resolve(res.data);
+    });
+    return def.promise;
   };
   this.getWith = function(params) {
-    var q;
+    var def, q;
+    def = $q.defer();
     q = _.map(params, function(val, key) {
       return "" + key + ":" + val;
     }).join(', ');
-    return parseElastic(es.search({
-      method: 'GET',
-      type: 'comment',
-      index: 'bloom',
-      type: 'comment',
-      size: 1000,
-      realtime: true,
-      q: q
-    }));
+    $http.get("" + API + "/comments", {
+      params: {
+        q: q
+      }
+    }).then(function(res) {
+      console.log('resolving with', res.data);
+      return def.resolve(res.data);
+    });
+    return def.promise;
   };
   return this;
 });
@@ -42789,10 +42786,11 @@ this.services.service('Users', function(es, $q, parseElastic) {
   return this;
 });
 
-this.users.controller('UserNameCtrl', function($scope, Users) {
-  var _this = this;
-  Users.get($scope.id).then(function(user) {
-    return $scope.user = user;
+this.users.controller('UserNameCtrl', function($scope, Users, BloomSettings) {
+  $scope.hover = false;
+  BloomSettings.getUser($scope.id).then(function(user) {
+    console.log('tried to get user ', $scope.id, 'got user', user)
+    return $scope.name = user.name;
   });
   return this;
 });
@@ -42822,10 +42820,11 @@ this.users.directive('userName', function() {
   };
 });
 
-this.users.controller('UserAvatarCtrl', function($scope, Users) {
-  var _this = this;
-  Users.get($scope.id).then(function(user) {
-    return $scope.user = user;
+this.users.controller('UserAvatarCtrl', function($scope, Users, BloomSettings) {
+  $scope.hover = false;
+  BloomSettings.getUser($scope.id).then(function(user) {
+    console.log('user got is ', user);
+    return $scope.avatarUrl = user.avatarUrl;
   });
   return this;
 });
@@ -42892,10 +42891,10 @@ function notifLiveTest() {
       hideAfter: 3
     });
   }
-this.bloom.service('Session', function(Users, $q) {
+this.bloom.service('Session', function(Users, $q, BloomSettings) {
   var loadPromise,
     _this = this;
-  this.me = 'xmichael';
+  this.me = BloomSettings.user;
   this.loadOnce = false;
   loadPromise = $q.defer();
   Users.get(this.me).then(function(data) {
@@ -43222,6 +43221,7 @@ this.comments.controller('CommentsCtrl', function($scope, $timeout, Comments, Se
   this.data = [];
   this.newContent = '';
   this.add = function() {
+    console.log('session.me is ', Session.me)
     Comments.addToPost(Session.me, _this.newContent, _this.getWith).then(function(saved) {
       return Comments.get(saved._id).then(function(comment) {
         _this.data.unshift(comment);
@@ -43232,7 +43232,11 @@ this.comments.controller('CommentsCtrl', function($scope, $timeout, Comments, Se
   };
   this.refreshComments = function() {
     return Comments.getWith(_this.getWith).then(function(comments) {
+      console.log('My Data is ', comments.sort(Comments.toTree(comments)));
+
       return _this.data = Comments.sort(Comments.toTree(comments));
+
+
     });
   };
   this.refreshComments();
