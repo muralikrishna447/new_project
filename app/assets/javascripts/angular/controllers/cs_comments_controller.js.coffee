@@ -1,6 +1,6 @@
 @app.controller 'csCommentsController', ["$scope", "Session", "csAuthentication", ($scope, Session, csAuthentication) ->
   $scope.currentUser = csAuthentication.currentUser()
-
+  console.log $scope.currentUser
   # Session.me = 'xmichael'
   $scope.getName = ->
     console.log $scope.currentUser.name
