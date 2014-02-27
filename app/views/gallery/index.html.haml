@@ -68,3 +68,9 @@
     .span2.offset5
       .gallery-spinner(ng-show='(spinner != 0) || (! initialLoadDone)')
         %i.icon-page-load
+
+.container-fluid.gallery-popup-bottom(ng-show="(! authentication.currentUser())" ng-class="{'popup-bottom-show' : showGalleryPopupBottom}" ng-controller="LoginController" ng-cloak ng-init="registrationSource='gallery'")
+  = render "devise/sessions/new_angular"
+  = render 'home/madlib'
+  .popup-bottom-close(ng-click="showGalleryPopupBottom = false")
+    %i.icon-remove

@@ -1,33 +1,28 @@
-.container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak)
-  = render "devise/sessions/new_angular"
-  .row-fluid
-    .container
-      .row
-        .span10.offset1
-          %form.form-inline
-            %h2.madlib
-              .madlib-item.text-orange
-                Hi ChefSteps,
-              .madlib-item
-                I am
-                %span.input-underlined
-                  %input(type="text" placeholder="name" required="true" id="madlib-name" ng-model="register_user.name" ng-class="hasError(register_error.errors.name)" ng-keypress="validNameAndEmail()")
-                  %p.bubble(ng-show="register_error.errors.name")
-                    {{register_error.errors.name[0]}}
-                and my email is
-                %span.input-underlined
-                  %input(type="email" placeholder="email" required="true" id="madlib-email" ng-model="register_user.email" ng-class="hasError(register_error.errors.email)" ng-keypress="validNameAndEmail()")
-                  %p.bubble(ng-show="register_error.errors.email")
-                    {{register_error.errors.email[0]}}
-                &#46;
-              .madlib-item
-                I want to join 31,000 others and learn how to be a better cook.
-              .madlib-item#madlib-password-wrapper(ng-show="showMadlibPassword")
-                Please set my password to
-                %span.input-underlined.input-append
-                  %input(type="password" placeholder="password" required="true" id="madlib-password" ng-model="register_user.password" ng-class="hasError(register_error.errors.password)")
-                  %a#show-madlib-password.btn.btn-secondary(ng-click="togglePassword()") Show
-                  %p.bubble.passbubble(ng-show="register_error.errors.password")
-                    {{register_error.errors.password[0]}}
-              %button#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register()" ng-disabled="dataLoading") Sign Up Now
-              %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
+
+%form.form-inline
+  %h2.madlib
+    .madlib-item.text-orange
+      Hi ChefSteps,
+    .madlib-item
+      I am
+      %span.input-underlined
+        %input(type="text" placeholder="name" required="true" id="madlib-name" ng-model="register_user.name" ng-class="hasError(register_error.errors.name)" ng-keypress="validNameAndEmail()")
+        %p.bubble(ng-show="register_error.errors.name")
+          {{register_error.errors.name[0]}}
+      and my email is
+      %span.input-underlined<
+        %input(type="email" placeholder="email" required="true" id="madlib-email" ng-model="register_user.email" ng-class="hasError(register_error.errors.email)" ng-keypress="validNameAndEmail()")
+        %p.bubble(ng-show="register_error.errors.email")
+          {{register_error.errors.email[0]}}
+      &#46;
+    .madlib-item
+      I want to join 31,000 others and learn how to be a better cook.
+    .madlib-item#madlib-password-wrapper(ng-show="showMadlibPassword")
+      Please set my password to
+      %span.input-underlined.input-append
+        %input.password-with-show-button(name="password" type="{{passwordType}}" ng-model="register_user.password" placeholder="Password" ng-class="hasError(register_error.errors.password)")
+        %a#show-madlib-password.btn.btn-secondary(ng-click="togglePassword()") Show
+        %p.bubble.passbubble(ng-show="register_error.errors.password")
+          {{register_error.errors.password[0]}}
+    %button#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register(registrationSource)" ng-disabled="dataLoading") Sign Up Now
+    %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")

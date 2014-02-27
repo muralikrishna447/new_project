@@ -61,7 +61,7 @@
                       %li= link_to 'Store', 'http://store.chefsteps.com'
                       %li= link_to 'Knife Collection', knife_collection_url
                       %li= link_to 'Sous Vide Collection', sv_collection_url
-                %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])})")
+                %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])})" ng-init="registrationSource='nav'")
                   .nav-item-border
                   - if external
                     -# Can't see current_user when external, so use a route that will

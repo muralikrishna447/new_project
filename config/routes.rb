@@ -42,6 +42,8 @@ Delve::Application.routes.draw do
     post '/users/contacts/invite', to: 'users/contacts#invite'
   end
 
+  get 'users/verify' => 'tokens#verify', as: 'verify'
+
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
   get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
