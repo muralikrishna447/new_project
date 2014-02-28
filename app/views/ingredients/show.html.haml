@@ -170,6 +170,9 @@
     .span12
       %i.icon-page-load
 
+= content_for :footer do
+  = render 'layouts/footer'
+  
 = render 'density_table'
 
 %div(ng-cloak close="showHelpModal = false" modal="showHelpModal" options="modalOptions")
