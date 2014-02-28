@@ -499,5 +499,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
       )
 
+  $scope.gatherFriendsFromSocial = ->
 
 ]
