@@ -14,11 +14,14 @@ angular.module("ui.directives").directive "uiRedactor", ["ui.config", (uiConfig)
       execCommandCallback: apply
       keydownCallback: apply
       keyupCallback: apply
-      air: true
-      airButtons: ['bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist', 'link']
+      air: false
+      buttons: ['bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist', 'link', 'html']
       pastePlainText: true
-      linkSize: false
-      placeholder: "Click to start writing"
+      linkSize: 1000
+      placeholder: attrs.placeholder || "Click to start writing"
+      focusCallback: -> elm.parent().find('.redactor_toolbar').show()
+      blurCallback: -> elm.parent().find('.redactor_toolbar').hide()
+
 
     scope.$watch getVal, (newVal) ->
       ngModelCtrl.$setViewValue newVal unless ngModelCtrl.$pristine
@@ -34,4 +37,5 @@ angular.module("ui.directives").directive "uiRedactor", ["ui.config", (uiConfig)
 
     setTimeout ->
       redactor = elm.redactor options
+      elm.parent().find('.redactor_toolbar').hide()
 ]  

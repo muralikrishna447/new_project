@@ -688,18 +688,10 @@ a:hover
     overflow: visible
     border: none
 
-  .edithover:not(.cseditpairedit)
-    position:  relative !important
+  .ingredient-table-row
     cursor: pointer
-    &:before
-      content: ""
-      position: absolute
-      top:  -2
-      right:  -4
-      left:  -4
-      bottom:  -2
+    &:hover:not(:focus)
       background: rgba(0, 128, 220, .1) !important
-      border-radius:  5px
 
   .btn
     &:hover
