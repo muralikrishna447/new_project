@@ -26,7 +26,7 @@
           %span(  contenteditable="{{editMode}}" 
                   ng-model="activity.timing")
           %span.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
-        = render 'activities/activity_relationships'
+        = render 'activities/activity_relationships', activity: activity
 
 .row.step-container
   .span12.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
