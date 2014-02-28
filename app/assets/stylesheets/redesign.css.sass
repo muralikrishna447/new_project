@@ -30,13 +30,13 @@ div:not(.redactor_box)
         color: $light-gray
 
 // When not actually contenteditable, get rid of the cues
-div:not(.redactor_box) 
+div:not(.redactor_box)
   [contenteditable=false]
     &:empty
-    &:before
-      content: ""
-    &:hover:not(:focus)
-      background-color: inherit
+      &:before
+        content: ""
+      &:hover:not(:focus)
+        background-color: inherit
 
 .top-container
   margin-top: $baseline * 7
