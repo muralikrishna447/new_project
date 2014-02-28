@@ -18,14 +18,13 @@ angular.module("ui.directives").directive "uiRedactor", ["ui.config", (uiConfig)
       buttons: ['bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist', 'link', 'html']
       pastePlainText: true
       linkSize: 1000
+      linebreaks: true
       placeholder: attrs.placeholder || "Click to start writing"
       focusCallback: -> elm.parent().find('.redactor_toolbar').show()
       blurCallback: -> elm.parent().find('.redactor_toolbar').hide()
 
-
     scope.$watch getVal, (newVal) ->
       ngModelCtrl.$setViewValue newVal unless ngModelCtrl.$pristine
-
 
     #watch external model change
     ngModelCtrl.$render = ->
