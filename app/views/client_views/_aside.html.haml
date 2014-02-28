@@ -8,4 +8,6 @@
   .aside-image(ng-if="!!step.image_id")
     %img(ng-src="{{stepImageURL(step, 840)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
   %div(ng-include="'/client_views/_step_edit_images'")
-  .aside-text(cs-contenteditable="editMode" ng-model="step.directions")
+  .aside-text(  cs-contenteditable="editMode" 
+                ng-model="step.directions"
+                placeholder="'Click to write aside directions'" )

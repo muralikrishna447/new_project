@@ -17,24 +17,26 @@ a, [ng-click], [contenteditable]:not(:focus)
   cursor: text
 
 [contenteditable]
-  outline: none
-
-  &:empty
-    &:before
-      content: "Click to start writing"
-      color: $light-gray
-
   &:hover:not(:focus)
     background-color:   #F1FCFF
 
+div:not(.redactor_box)
+  [contenteditable]
+    outline: none
 
-[contenteditable=false]
-  &:empty
+    &:empty
+      &:before
+        content: "Click to start writing"
+        color: $light-gray
+
+// When not actually contenteditable, get rid of the cues
+div:not(.redactor_box) 
+  [contenteditable=false]
+    &:empty
     &:before
       content: ""
-      color: $light-gray
-  &:hover:not(:focus)
-    background-color: inherit
+    &:hover:not(:focus)
+      background-color: inherit
 
 .top-container
   margin-top: $baseline * 7
@@ -688,22 +690,17 @@ a:hover
     overflow: visible
     border: none
 
-  .edithover:not(.cseditpairedit)
-    position:  relative !important
+  .ingredient-table-row
     cursor: pointer
-    &:before
-      content: ""
-      position: absolute
-      top:  -2
-      right:  -4
-      left:  -4
-      bottom:  -2
+    &:hover:not(:focus)
       background: rgba(0, 128, 220, .1) !important
-      border-radius:  5px
 
   .btn
     &:hover
       background: rgba(0, 128, 220, .2) !important
+
+  .step-media-button
+    margin-top: $baseline * 2
 
 .activity-ingredients-list
   position: relative
@@ -1804,18 +1801,9 @@ input.summary-tweet
     display: none
 
 
-.content-activity-title:empty:before
+
+.content-activity-title:empty:not(:focus):before
   content: "Click to set title"
-
-.content-private-notes
-  [contenteditable]:empty:before
-    content: "Click to write private notes"
-
-.content-activity-description
-  [contenteditable]:empty:before
-    content: "Click to write main description"
-
-
 
 /* Global on-select highlighting */
 
