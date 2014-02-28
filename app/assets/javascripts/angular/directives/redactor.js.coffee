@@ -14,14 +14,15 @@ angular.module("ui.directives").directive "uiRedactor", ["ui.config", (uiConfig)
       execCommandCallback: apply
       keydownCallback: apply
       keyupCallback: apply
-      air: false
-      buttons: ['bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist', 'link', 'html']
+      air: true
+      airButtons: ['bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist', 'link']
       pastePlainText: true
       linkSize: 1000
       linebreaks: true
       placeholder: attrs.placeholder || "Click to start writing"
-      focusCallback: -> elm.parent().find('.redactor_toolbar').show()
-      blurCallback: -> elm.parent().find('.redactor_toolbar').hide()
+      # This works, but the placement is ugly. Going back air mode.
+      #focusCallback: -> elm.parent().find('.redactor_toolbar').show()
+      #blurCallback: -> elm.parent().find('.redactor_toolbar').hide()
 
     scope.$watch getVal, (newVal) ->
       ngModelCtrl.$setViewValue newVal unless ngModelCtrl.$pristine
