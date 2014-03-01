@@ -4,7 +4,7 @@
       %h2 Connect Your Accounts
       %p
         ChefSteps is built on community, plain and simple.  We'll show you what courses your friends are taking and what recipes they've liked, and you'll be able to meet, follow, an invite other folks who you think would be great additions to the community.
-    .modal-body(ng-controller="LoginController")
+    .modal-body(ng-controller="LoginController" ng-init="gatherFriendsFromSocial()")
       .row.connect-buttons
         .span6.offset3
           .loading(ng-show="dataLoading")
@@ -40,16 +40,24 @@
 
       %hr
 
-      %h2 Friend Suggestions (Coming Soon)
+      %h2 Friend Suggestions
       .no-friends(ng-if="possibleFollowers.length == 0")
         %p We can't seem to find any of your friends who use ChefSteps :(
         %p Why don't you invite some friends to use ChefSteps?
       .follow-friends-box(ng-if="possibleFollowers.length > 0")
-        Follow some of your friends.
-
-
-
-
+        .row-fluid
+          .span3.offset3
+            Here are some of your friends already on ChefSteps
+          .span3
+            %button
+              Follow All
+        .friends-to-follow(ng-repeat="possibleFollower in possibleFollowers")
+          .row-fluid
+            .span3.offset3
+              {{possibleFollower.name}}
+            .span3.offset1
+              %button
+                Follow
 
     .modal-footer
       %button.btn(ng-click="$close()") Done

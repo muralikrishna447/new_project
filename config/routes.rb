@@ -41,6 +41,7 @@ Delve::Application.routes.draw do
     delete '/users/social/disconnect', to: "users/omniauth_callbacks#destroy"
     match '/users/contacts/google', to: 'users/contacts#google'
     post '/users/contacts/invite', to: 'users/contacts#invite'
+    post '/users/contacts/gather_friends', to: 'users/contacts#gather_friends'
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'

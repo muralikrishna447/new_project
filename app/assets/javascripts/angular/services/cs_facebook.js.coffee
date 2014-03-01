@@ -24,9 +24,38 @@ angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", "csUr
     , {scope: "email"})
     return deferred.promise
 
+  this.friends = ->
+    deferred = $q.defer()
+    FB.api('/me/friends', (response) ->
+      console.dir(response)
+      $rootScope.$apply ->
+        friends = response.data.sort (a,b) ->
+          nameA = a.name.toLowerCase()
+          nameB = b.name.toLowerCase()
+          if (nameA < nameB)
+            return -1
+          if (nameA > nameB)
+            return 1
+          return 0
+        _.each(friends, (friend) ->
+          friend.value = false
+        )
+        deferred.resolve(friends)
+    )
+    return deferred.promise
+
+
   # This gets a list of the person's friends and sorts them alphabetically
   # this.friends = ->
   #   deferred = $q.defer()
+  #   friends = []
+  #   friendthis.getFriendsFromFacebook(friends, '').then (results) ->
+  #     if results.done
+  #       $rootScope.$apply ->
+  #         deferred.resolve(friends)
+
+
+  # this.sortFriends = (friends) ->
   #   FB.api('/me/friends', (response) ->
   #     $rootScope.$apply ->
   #       friends = response.data.sort (a,b) ->
@@ -43,6 +72,16 @@ angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", "csUr
   #       deferred.resolve(friends)
   #   )
   #   return deferred.promise
+
+  # this.getFriendsFromFacebook = (friends=[], options) ->
+  #   deferred = $q.defer()
+  #   FB.api('/me/friends?#{options}', (response) ->
+  #     $rootScope.$apply ->
+  #       if response.data.length = 0
+  #         deferred.resolve({done: true, friends=[]})
+  #         return deferred.promise
+
+
 
   # This version uses the chefsteps styling
   # this.friendInvites = (friendIDs) ->
