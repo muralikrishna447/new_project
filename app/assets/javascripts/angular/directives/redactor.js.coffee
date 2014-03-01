@@ -20,6 +20,8 @@ angular.module("ui.directives").directive "uiRedactor", ["ui.config", (uiConfig)
       linkSize: 1000
       linebreaks: true
       placeholder: attrs.placeholder || "Click to start writing"
+      # Had to disable shortcuts b/c contrary to doc, [ was increasing indent! 
+      shortcuts: false
       # This works, but the placement is ugly. Going back air mode.
       #focusCallback: -> elm.parent().find('.redactor_toolbar').show()
       #blurCallback: -> elm.parent().find('.redactor_toolbar').hide()

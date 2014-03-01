@@ -201,6 +201,7 @@
   .modal-body
     %h4 Now tell the world?
     = render 'layouts/social_buttons', media_object: nil
+    .section
 
 %script(type="text/ng-template" id="ingredientTagChooserModal.html")
   .modal-header
@@ -212,5 +213,5 @@
     %csTagChooser(  ng-model="ingredient.tags" 
                     options="csTagService.ingredientSuggestedTags")
   .modal-footer
-    %button.btn(ng-click="update()") Done
+    %button.btn(ng-click="$dismiss('close')") Done
 
