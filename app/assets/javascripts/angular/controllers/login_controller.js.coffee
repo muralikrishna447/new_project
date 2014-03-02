@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -32,7 +32,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.googleLoaded = false
   $scope.validEmailSent = false
 
-  $scope.registrationSource = null
+  trackRegistration = (source, method) ->
+    properties = {source : source, method: method}
+    mixpanel.track('Signed Up JS', _.extend(properties, $rootScope.splits))
+    _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
 
   $scope.hasError = (error) ->
     if error
@@ -178,8 +181,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       .success( (data, status) ->
         $scope.dataLoading -= 1
         if (status == 200)
-          mixpanel.track('Signed Up JS', {'source' : source})
-          _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
+          trackRegistration(source, "standard")
           $scope.logged_in = true
           $scope.closeModal('login', false)
           $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})
@@ -267,8 +269,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           if $scope.formFor != "purchase" && data.new_user
             $scope.loadFriends()
         , 300)
-        mixpanel.track('Signed Up JS', {'source' : source, method: "facebook"}) if data.new_user
-        _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
+        trackRegistration(source, "facebook") if data.new_user
       ).error( (data, status) ->
         $scope.dataLoading -= 1
         $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
@@ -316,9 +317,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         else if $scope.formFor != "purchase" && data.new_user
           $scope.loadFriends()
       , 300)
-      $scope.registrationSource = "unknown" unless $scope.registrationSource
-      mixpanel.track('Signed Up JS', {'source' : $scope.registrationSource, method: "google"}) if data.new_user
-      _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
+
+      trackRegistration($scope.registrationSource, "google") if data.new_user
 
     ).error( (data, status) ->
       $scope.dataLoading -= 1
