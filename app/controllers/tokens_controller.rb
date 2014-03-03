@@ -1,5 +1,5 @@
-class TokensController < ApplicationController
-
+class TokensController < ActionController::Metal
+  include ActionController::Rendering
   def verify
     @user = User.find_by_id(params[:id])
     if params[:auth_token] && @user && @user.authentication_token == params[:auth_token]
