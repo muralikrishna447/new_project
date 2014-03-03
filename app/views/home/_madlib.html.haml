@@ -15,9 +15,7 @@
           {{register_error.errors.email[0]}}
       &#46;
     .madlib-item
-      I want to
-      %span(ng-show="splits.showMadlibCount") join 31,000 others and 
-      learn how to be a better cook.
+      I want to join {{getTotalUsers() | number}} others and learn how to be a better cook.
     .madlib-item#madlib-password-wrapper(ng-show="showMadlibPassword")
       Please set my password to
       %span.input-underlined.input-append
