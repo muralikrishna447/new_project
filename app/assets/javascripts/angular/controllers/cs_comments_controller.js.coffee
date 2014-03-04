@@ -34,27 +34,7 @@
   return this
 ]
 
-@app.controller 'csCommentsController', ["$scope", "$http", "csAuthentication", ($scope, $http, csAuthentication) ->
-  $scope.currentUser = csAuthentication.currentUser()
-  console.log $scope.currentUser
-  $scope.getName = ->
-    console.log $scope.currentUser
-    # console.log $scope.currentUser.name
+@app.controller 'csCommentsController', ["$scope", ($scope) ->
 
-  $scope.getAvatarUrl = ->
-    imageId = JSON.parse($scope.currentUser.image_id)
-    imageUrl = imageId.url.replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
-    console.log imageUrl
-
-  $scope.getMe = ->
-    console.log $scope.currentUser.id
-
-  $scope.getUser = (id) ->
-    $http.get('/users/' + id).success (data,status) ->
-      console.log data
-
-  # $scope.getName()
-  # $scope.getAvatarUrl()
-  # $scope.getMe()
 
 ]
