@@ -26,5 +26,3 @@
 //= require cs_lightbox
 //= require angular-payments
 //= require hammer
-//= require bloom/bloom
-//= require bloom/template
