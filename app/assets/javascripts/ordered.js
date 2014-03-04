@@ -14,4 +14,3 @@
 //= require ./backbone/views/question
 //= require_tree ./backbone
 //= require_tree ./templates
-//= require cs_slideshow
