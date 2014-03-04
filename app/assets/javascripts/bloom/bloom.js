@@ -73303,19 +73303,25 @@ this.bloom.service('BloomSettings', function($q, parseElastic, es) {
   var _this = this;
   this.token = 'abc';
   this.user = 'xnick';
-  this.getProfileLink = function(user) {
-    return "/profiles/" + user._id;
-  };
   this.getUser = function(id) {
-    return parseElastic(es.get({
+    var def;
+    def = $q.defer();
+    parseElastic(es.get({
       index: 'bloom',
       realtime: true,
       type: 'user',
       id: id
-    }));
+    })).then(function(user) {
+      user.avatarUrl = _this.getAvatarUrl(user);
+      return def.resolve(user);
+    });
+    return def.promise;
   };
   this.getAvatarUrl = function(user) {
     return "/images/users/" + user._id + ".png";
+  };
+  this.getProfileLink = function(user) {
+    return "/users/" + user._id;
   };
   this.getName = function(userId) {
     var def;
@@ -74259,7 +74265,7 @@ this.services.service('Users', function(es, $q, parseElastic, BloomSettings) {
     }
     for (_j = 0, _len = list.length; _j < _len; _j++) {
       item = list[_j];
-      item.avatarUrl = "BloomSettings.getAvatarUrl(item);"
+      item.avatarUrl = "/images/users/" + item._id + ".png";
     }
     return list;
   };
@@ -74312,7 +74318,7 @@ this.users.controller('UserAvatarCtrl', function($scope, Users, BloomSettings) {
       return;
     }
     _this.user = val;
-    _this.avatarUrl = BloomSettings.getAvatarUrl(_this.user);
+    _this.avatarUrl = _this.user.avatarUrl;
     return _this.profileLink = BloomSettings.getProfileLink(_this.user);
   });
   return this;

@@ -2661,7 +2661,8 @@ body[commentable] .content-wrapper{right:17%}
 .bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote .comment-vote-icon{font-size:13px;vertical-align:top}
 .bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote span{padding-left:3px}
 .bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote:hover{text-decoration:none}
-.bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote.upvoted{color:#57ad68}
+.bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote.upvoted{color:#57ad68;}
+.bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote.upvoted.upvotedThisSession .comment-vote-icon{-webkit-animation:upvote .3s ease-out;-webkit-animation-iteration-count:1}
 .bloom-comments .comment-wrapper .comment-content .comment-reply{margin-top:5px}
 .atwho-view{z-index:10000;border:1px solid #aaa;min-width:250px;}
 .atwho-view ul{padding:3px 0;}
