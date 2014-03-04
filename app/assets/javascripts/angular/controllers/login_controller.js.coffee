@@ -99,6 +99,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
           $scope.alertService.addAlert({message: "You have been signed in.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.authentication.setCurrentUser(data.user)
+            # Temporary hack to make comments work correctly on login
+            # Causing tests to stall so will need to update the test.
+            window.location.reload()
           , 300)
 
         else
