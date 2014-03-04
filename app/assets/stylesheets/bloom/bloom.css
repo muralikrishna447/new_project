@@ -1396,12 +1396,15 @@ h3.header{color:#777;font-size:22px}
 .atwho-view-flag{color:#66b5d2 !important}
 .at-item{cursor:pointer;color:#66b5d2 !important}
 
-.bloom-input.focusedOnce button.create{display:block !important}
+.bloom-input.focusedOnce button.create,.bloom-input.focusedOnce ul.redactor_toolbar{display:block !important}
 .bloom-input .bloom-editor-wrapper{position:relative;}
 .bloom-input .bloom-editor-wrapper .redactor_box{border-radius:2px;}
-.bloom-input .bloom-editor-wrapper .redactor_box ul.redactor_toolbar{display:none}
+.bloom-input .bloom-editor-wrapper .redactor_box ul.redactor_toolbar{display:none;position:absolute;top:auto;left:auto;bottom:8px;right:77px;box-shadow:none;border:1px solid #ddd;background-color:#eee;opacity:.7;border-radius:2px;}
+.bloom-input .bloom-editor-wrapper .redactor_box ul.redactor_toolbar:hover{opacity:1}
+.bloom-input .bloom-editor-wrapper .redactor_box ul.redactor_toolbar li a{padding:5px;color:#777;}
+.bloom-input .bloom-editor-wrapper .redactor_box ul.redactor_toolbar li a:hover{background-color:#ccc}
 .bloom-input .bloom-editor-wrapper .redactor_box .bloom-editor{font-size:13px;min-height:60px;padding:10px;border:1px solid #eee;}
 .bloom-input .bloom-editor-wrapper .redactor_box .bloom-editor p{font-family:'Helvetica Neue',sans-serif;font-size:13px;line-height:1.5;color:#222}
-.bloom-input .bloom-editor-wrapper button.create{display:none;z-index:200;position:absolute;right:8px;bottom:8px;padding:0 10px;color:#777;min-width:60px;height:25px;border:1px solid #ddd;border-radius:2px;background-color:#eee;font-size:13px;opacity:.7;line-height:normal;}
+.bloom-input .bloom-editor-wrapper button.create{display:none;z-index:200;position:absolute;right:8px;bottom:8px;padding:0 10px;color:#777;min-width:60px;height:26px;border:1px solid #ddd;border-radius:2px;background-color:#eee;font-size:13px;opacity:.7;line-height:normal;}
 .bloom-input .bloom-editor-wrapper button.create:hover,.bloom-input .bloom-editor-wrapper button.create:focus{background-color:#fafafa;opacity:1}
 .bloom-input .bloom-editor-wrapper button.create:active{background-color:#ddd}
