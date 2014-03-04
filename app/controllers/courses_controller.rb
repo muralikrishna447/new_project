@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   before_filter :handle_ambassador, only: [:show, :index]
   def handle_ambassador
-    if defined? params[:ambassador]
+    if params[:ambassador]
       # 25% off
       session[:coupon] = 'a1b71d389a50'
       session[:ambassador] = params[:ambassador]
