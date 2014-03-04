@@ -14,8 +14,8 @@ namespace :bloom do
     #   puts comment.user
     #   post_comment(conn, comment.user, @upload.class.to_s.downcase, @upload.id, comment.content)
     # end
-    @comments = Comment.all
-    comments.each do |comment|
+    @comments = Comment.where(commentable_type: 'Upload')
+    @comments.each do |comment|
       puts comment.inspect
       puts comment.user
       post_comment(conn, comment.user, comment.commentable.class.to_s.downcase, comment.commentable.id, comment.content)
