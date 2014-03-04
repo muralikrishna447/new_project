@@ -1,6 +1,13 @@
-@app.service 'BloomSettings', ['$q', 'csAuthentication', '$http', ($q, csAuthentication, $http) ->
-  @user = ''+csAuthentication.currentUser().id
-  @token = csAuthentication.currentUser().authentication_token
+@app.service 'BloomSettings', ['$q', 'csAuthentication', '$http', '$rootScope', ($q, csAuthentication, $http, $rootScope) ->
+  setUser = =>
+    @loggedIn = csAuthentication.currentUser()?
+    @user = ''+csAuthentication.currentUser().id if @loggedIn
+    @token = csAuthentication.currentUser().authentication_token if @loggedIn
+
+  $rootScope.$on 'login', => setUser()
+  $rootScope.$on 'logout', => setUser()
+  setUser()
+  
   @getProfileLink = (user) => "/profiles/#{user.id}"
   @getAvatarUrl = =>
     "/notreal.png"
