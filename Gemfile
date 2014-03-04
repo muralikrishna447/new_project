@@ -60,6 +60,7 @@ gem 'google-api-client'
 # gem 'activerecord-postgres-hstore'
 gem 'nested-hstore'
 gem 'gibbon'
+gem 'faraday'
 
 group :development do
   gem 'spring'
