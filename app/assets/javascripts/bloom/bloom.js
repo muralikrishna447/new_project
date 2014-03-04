@@ -41515,7 +41515,7 @@ this.comments.controller('CommentCtrl', function($scope, $timeout, Users, BloomS
     this.data.comments = Comments.sort(this.data.comments);
   }
   this.upvote = function() {
-    if (!_this.loggedIn) {
+    if (!_this.bloomSettings.loggedIn) {
       return;
     }
     if (_this.upvoted) {

@@ -34,4 +34,11 @@ describe 'routes for Courses' do
     expect(get: "/classes/test/landing").to route_to(action: 'landing', controller: 'assemblies', id: 'test')
   end
 
+  
+  describe '/ambasssador invalid' do
+    it 'sets session and renders class index' do
+      expect(get: '/iAmNotAnAmbassador').not_to be_routable
+    end
+  end
+
 end

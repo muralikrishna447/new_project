@@ -24,7 +24,8 @@
 ]
 
 angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
-
+  # Split test params, b/c they often go across controllers
+  $rootScope.splits = {}
 ]
 
 # For google plus

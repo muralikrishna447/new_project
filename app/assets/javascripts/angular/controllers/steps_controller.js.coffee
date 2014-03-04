@@ -49,7 +49,7 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     true
 
   $scope.addStep = (idx, direction) ->
-    newStep = angular.extend({}, {ingredients: []})
+    newStep = angular.extend({}, {ingredients: [], id: (Math.random() * 999999999).toString()})
     if $scope.activity.steps.length == 0
       $scope.activity.steps.push(newStep)
     else

@@ -86,10 +86,6 @@
       .btn-toolbar
         .btn.btn-primary(ng-click="endEditMode()")
           SAVE
-        .btn.btn-link( ng-click="editHTML = true" ng-show="! editHTML")
-          Edit in HTML
-        .btn.btn-link( ng-click="editHTML = false" ng-show="editHTML")
-          Exit HTML
         .btn.btn-link(ng-click="cancelEditMode()")
           Cancel
         .btn.btn-link(ng-click="showHelpModal = true")
@@ -105,19 +101,10 @@
             = render 'layouts/social_buttons', media_object: nil
 
       .row.text-fields(ng-repeat="textFieldName in textFieldOptions")
-        .span6.section(ng-show="(! editMode) && (ingredient.text_fields[textFieldName].length)")
+        .span6.section(ng-show="editMode || (ingredient.text_fields[textFieldName].length)")
           %h3(ng-bind-html="textFieldName")
-          %div(ng-bind-html="ingredient.text_fields[textFieldName] | markdown | shortcode")
-        .span6.section.anim-basic-fade(ng-show="editMode")
-          %h3.inline(ng-bind-html="textFieldName")
-          %div( ng-model="ingredient.text_fields[textFieldName]"
-                contenteditable="true"
-                ng-show="! editHTML")
-          %textarea(  ng-model="ingredient.text_fields[textFieldName]"
-                      rows="5"
-                      ng-show="editHTML"
-                      placeholder="Edit HTML code here"
-                    )
+          %div( cs_contenteditable="editMode"
+                ng-model="ingredient.text_fields[textFieldName]")
 
     .span6
       .well.relative
@@ -183,6 +170,9 @@
     .span12
       %i.icon-page-load
 
+= content_for :footer do
+  = render 'layouts/footer'
+  
 = render 'density_table'
 
 %div(ng-cloak close="showHelpModal = false" modal="showHelpModal" options="modalOptions")
@@ -211,6 +201,7 @@
   .modal-body
     %h4 Now tell the world?
     = render 'layouts/social_buttons', media_object: nil
+    .section
 
 %script(type="text/ng-template" id="ingredientTagChooserModal.html")
   .modal-header
@@ -222,5 +213,5 @@
     %csTagChooser(  ng-model="ingredient.tags" 
                     options="csTagService.ingredientSuggestedTags")
   .modal-footer
-    %button.btn(ng-click="update()") Done
+    %button.btn(ng-click="$dismiss('close')") Done
 
