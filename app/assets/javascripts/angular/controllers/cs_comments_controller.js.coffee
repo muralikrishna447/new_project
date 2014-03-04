@@ -1,6 +1,10 @@
 @app.service 'BloomSettings', ['$q', 'csAuthentication', '$http', ($q, csAuthentication, $http) ->
   @user = ''+csAuthentication.currentUser().id
   @token = csAuthentication.currentUser().authentication_token
+  @getProfileLink = (user) => "/profiles/#{user.id}"
+  @getAvatarUrl = =>
+    "/notreal.png"
+    
   @getUser = (id) =>
     def = $q.defer()
 
