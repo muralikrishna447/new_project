@@ -40142,6 +40142,7 @@ this.bloom = angular.module('bloom', ['ui.router', 'ui.bootstrap', 'ngAnimate', 
           });
 
           startPromise.promise.then(function() {
+            return
             element.atwho({
               at: "@",
               data: Users.getList(),
@@ -41432,8 +41433,9 @@ this.bloom.controller('ContentCtrl', function($scope) {
   return this;
 });
 
-this.comments.controller('CommentsCtrl', function($scope, $timeout, Comments, Session) {
+this.comments.controller('CommentsCtrl', function($scope, $timeout, Comments, BloomSettings, Session) {
   var _this = this;
+  this.bloomSettings = BloomSettings;
   this.postId = $scope.postId;
   this.getWith = $scope.getWith;
   this.data = [];
@@ -41450,7 +41452,8 @@ this.comments.controller('CommentsCtrl', function($scope, $timeout, Comments, Se
     _this.data.unshift(newComment);
     $scope.$emit('addedComment');
     Comments.addToPost(Session.me, _this.newContent, _this.getWith).then(function(comment) {
-      return _this.data[0]._id = comment._id;
+      var _ref;
+      return (_ref = _this.data[0]) != null ? _ref._id = comment._id : void 0;
     });
     return _this.newContent = '';
   };
@@ -41463,8 +41466,14 @@ this.comments.controller('CommentsCtrl', function($scope, $timeout, Comments, Se
   return this;
 });
 
-this.comments.controller('CommentCtrl', function($scope, $timeout, Users, Session, Comments) {
+this.comments.controller('CommentCtrl', function($scope, $timeout, Users, BloomSettings, Session, Comments) {
   var _this = this;
+  this.bloomSettings = BloomSettings;
+  $scope.$watch((function() {
+    return _this.bloomSettings.loggedIn;
+  }), function() {
+    return _this.owner = Session.me === _this.data.author;
+  });
   this.data = $scope.data;
   this.saveWith = $scope.saveWith;
   this.depth = +$scope.depth;
@@ -41477,12 +41486,12 @@ this.comments.controller('CommentCtrl', function($scope, $timeout, Users, Sessio
   });
   this.newContent = '';
   this.myCommentsThisSession = [];
-  this.upvoted = _.contains(_.pluck(this.data.upvotes, 'author'), Session.me, this.askQuery = {
+  this.upvoted = _.contains(_.pluck(this.data.upvotes, 'author'), Session.me);
+  this.askQuery = {
     index: 'bloom',
     type: 'comment',
     id: this.data._id
-  });
-  this.owner = Session.me === this.data.author;
+  };
   this.editing = false;
   this["delete"] = function() {
     if (confirm("Are you sure you want to delete your comment?\n\nThe message will be removed but any replies will be preserved.")) {
@@ -41506,6 +41515,9 @@ this.comments.controller('CommentCtrl', function($scope, $timeout, Users, Sessio
     this.data.comments = Comments.sort(this.data.comments);
   }
   this.upvote = function() {
+    if (!_this.loggedIn) {
+      return;
+    }
     if (_this.upvoted) {
       return;
     }
@@ -41576,7 +41588,7 @@ this.comments.directive('comment', function($compile, $animate) {
           return el.append(clone);
         });
         return scope.animateUpvote = function() {
-          return $animate.addClass(el.find('.comment-vote-icon'), 'animate-upvote', function() {
+          return $animate.addClass(el.find('.comment-vote-icon:eq(0)'), 'animate-upvote', function() {
             return console.log('animation is done!');
           });
         };

@@ -985,10 +985,10 @@ button{border:0;background-color:transparent;transition:all 150ms ease;-webkit-t
 .post-container .post-landing .wrapper .bloom-biglogo-outer{position:absolute;top:-200px;left:-200px}
 .post-container .post-active{padding-top:50px;padding-bottom:50px;}
 .post-container .post-active.new-post{min-height:100%}
-.post-container .post-active .bloom-comments .post-reply-wrapper{width:100%;background-color:#f8fafb;padding:15px 0;margin-bottom:15px;border-top:1px solid #eaeaea;border-bottom:1px solid #eaeaea;}
-.post-container .post-active .bloom-comments .post-reply-wrapper .bloom-input{width:100%;max-width:770px;margin:0 auto;padding:0 10px}
-.post-container .post-active .bloom-comments ul.comment-list{width:100%;max-width:750px;margin:0 auto}
-.post-container .post-active .post-inner-wrapper{width:100%;max-width:770px;margin:0 auto;padding:0 10px;}
+.post-container .post-active .bloom-comments .post-reply-wrapper{width:100%;background-color:#f8fafb;padding:15px 0;border-top:1px solid #eaeaea;border-bottom:1px solid #eaeaea;}
+.post-container .post-active .bloom-comments .post-reply-wrapper .post-reply{width:100%;max-width:750px;margin:0 auto;padding:0}
+.post-container .post-active .bloom-comments ul.comment-list{width:100%;max-width:750px;margin-left:auto;margin-right:auto}
+.post-container .post-active .post-inner-wrapper{width:100%;max-width:750px;margin:0 auto;padding:0;}
 .post-container .post-active .post-inner-wrapper .bloom-loading{margin:0 auto;text-align:center;}
 .post-container .post-active .post-inner-wrapper .bloom-loading img{display:inline-block;vertical-align:middle;width:16px;height:16px;margin-right:4px;-webkit-animation:pulsate 1.2s ease-out;-webkit-animation-iteration-count:infinite;opacity:0}
 .post-container .post-active .post-inner-wrapper .bloom-loading span{display:inline-block;vertical-align:middle;font-size:12px;font-weight:bold}
@@ -1047,12 +1047,11 @@ body[commentable] .content-wrapper{right:17%}
 100%{margin-top:0}
 }.bloom-comments{width:100%;color:#222;font-size:13px;text-align:left;}
 .bloom-comments *{box-sizing:border-box}
-.bloom-comments ul.comment-list{list-style-type:none;margin:0;padding:0;overflow:hidden;}
+.bloom-comments ul.comment-list{list-style-type:none;margin:0;margin-top:15px;padding:0;overflow:hidden;}
 .bloom-comments ul.comment-list ul{list-style-type:none;margin:0;padding:0}
 .bloom-comments ul.comment-list li{overflow:hidden;}
 .bloom-comments ul.comment-list li.ng-enter{transition:all .3s ease-in;transform:translate(0,-100%);-webkit-transform:translate(0,-100%);opacity:0;}
 .bloom-comments ul.comment-list li.ng-enter.ng-enter-active{transform:translate(0,0);-webkit-transform:translate(0,0);opacity:1}
-.bloom-comments .comment-wrapper .comment-vote-icon.animate-upvote{-webkit-animation:upvote .3s ease-out;-webkit-animation-iteration-count:1}
 .bloom-comments .comment-wrapper.collapsed .comment-content,.bloom-comments .comment-wrapper.collapsed .subcomments{display:none}
 .bloom-comments .comment-wrapper.collapsed .comment-content-collapsed{display:block}
 .bloom-comments .comment-wrapper.collapsed .comment-avatar{opacity:.5}
@@ -1095,17 +1094,21 @@ body[commentable] .content-wrapper{right:17%}
 .bloom-comments .comment-wrapper .comment-content .comment-footer a{color:#777;cursor:pointer}
 .bloom-comments .comment-wrapper .comment-content .comment-footer span.bull{margin:0 5px;font-size:12px;color:#aaa}
 .bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote{cursor:pointer;color:#777;}
-.bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote .comment-vote-icon{font-size:13px;vertical-align:top}
+.bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote .comment-vote-icon{font-size:13px;vertical-align:top;}
+.bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote .comment-vote-icon.animate-upvote{-webkit-animation:upvote .3s ease-out;-webkit-animation-iteration-count:1}
 .bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote span{padding-left:3px}
 .bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote:hover{text-decoration:none}
 .bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote.upvoted{color:#57ad68;}
 .bloom-comments .comment-wrapper .comment-content .comment-footer .comment-vote.upvoted.upvotedThisSession .comment-vote-icon{-webkit-animation:upvote .3s ease-out;-webkit-animation-iteration-count:1}
-.bloom-comments .comment-wrapper .comment-content .comment-reply{margin-top:5px}
-.atwho-view{z-index:10000;border:1px solid #aaa;min-width:250px;}
-.atwho-view ul{padding:3px 0;}
-.atwho-view ul li{border-bottom:0;padding:0;padding:3px 6px;}
-.atwho-view ul li img{width:25px;height:25px;border-radius:2px;margin-right:5px}
-.atwho-view ul li.cur{background:#428bca}
+.bloom-comments .comment-wrapper .comment-content .comment-reply{margin-top:5px;position:relative}
+.bloom-comments .atwho-view{z-index:10000;border:1px solid #aaa;min-width:250px;}
+.bloom-comments .atwho-view ul{padding:3px 0;}
+.bloom-comments .atwho-view ul li{border-bottom:0;padding:0;padding:3px 6px;}
+.bloom-comments .atwho-view ul li img{width:25px;height:25px;border-radius:2px;margin-right:5px}
+.bloom-comments .atwho-view ul li.cur{background:#428bca}
+.bloom-comments .post-reply{position:relative}
+.bloom-comments .input-login-wall{position:absolute;top:0;left:0;bottom:0;right:0;z-index:1000;border-radius:2px;background-color:#fff;border:1px solid #ddd;text-align:center;padding-top:17px;transition:background-color .3s ease-out;}
+.bloom-comments .input-login-wall:hover{background-color:#fafafa}
 
 a.ask-answer-link.ask-answer-link-hide{color:#444;text-decoration:underline;}
 a.ask-answer-link.ask-answer-link-hide:hover{text-decoration:underline}
@@ -1275,6 +1278,6 @@ h3.header{color:#777;font-size:22px}
 .bloom-input .bloom-editor-wrapper .redactor_box ul.redactor_toolbar li a.re-italic{background-position:-77px}
 .bloom-input .bloom-editor-wrapper .redactor_box .bloom-editor{font-size:13px;min-height:50px;}
 .bloom-input .bloom-editor-wrapper .redactor_box .bloom-editor p{font-family:'Helvetica Neue',sans-serif;font-size:13px;line-height:1.5;color:#222}
-.bloom-input .bloom-editor-wrapper button.create{display:none;z-index:50000;position:absolute;right:8px;bottom:8px;padding:0 10px;color:#777;min-width:60px;height:25px;border:1px solid #ddd;border-radius:2px;background-color:#eee;font-size:13px;opacity:.7;line-height:normal;}
+.bloom-input .bloom-editor-wrapper button.create{display:none;z-index:200;position:absolute;right:8px;bottom:8px;padding:0 10px;color:#777;min-width:60px;height:25px;border:1px solid #ddd;border-radius:2px;background-color:#eee;font-size:13px;opacity:.7;line-height:normal;}
 .bloom-input .bloom-editor-wrapper button.create:hover,.bloom-input .bloom-editor-wrapper button.create:focus{background-color:#fafafa;opacity:1}
 .bloom-input .bloom-editor-wrapper button.create:active{background-color:#ddd}
