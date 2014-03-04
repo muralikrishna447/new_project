@@ -509,6 +509,7 @@ DEPENDENCIES
   decent_exposure
   devise
   fabrication
+  faraday
   filepicker-rails
   friendly_id
   geokit-rails
