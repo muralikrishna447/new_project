@@ -123,6 +123,8 @@ private
     return 0 if ! price
     pct = 1
     case coupon
+    when 'b3a72a32da71'
+      pct = 34.0/39
     when 'a1b71d389a50'
       pct = 29.0/39
     when 'be11c664ce1a'
