@@ -11,7 +11,7 @@
   .container.classes-index
     .row.section
       .span4
-        = render 'shared/media_box_2', url: landing_class_path(course), title: course.title, image: course.image_id, object: course, right_title: course.price ? "PAID CLASS" : ""
+        = render 'shared/media_box_2', url: landing_class_path(course), title: course.title, image: course.image_id, object: course, footer_left: course.price ? "PAID CLASS" : ""
       .span8
         .title-group
           %h2.inline-group= course.title
