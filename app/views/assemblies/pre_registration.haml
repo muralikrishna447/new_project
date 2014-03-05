@@ -6,9 +6,9 @@
     .span8.offset2.text-center
 
       %h3
-        Enter your email address to be notified when our &nbsp;
+        Enter your email address to be notified when our&nbsp;
         %b> #{@course.title.html_safe}
-        &nbsp; class is available.
+        &nbsp;class is available.
 
       %form.form-horizontal.validate{action: "http://chefsteps.us3.list-manage.com/subscribe/post?u=9f69331c823fb9ca452fe5184&id=#{@course.prereg_email_list_id}", method: "post", name: "mc-embedded-subscribe-form", novalidate: "", target: "_blank"}
         %fieldset
