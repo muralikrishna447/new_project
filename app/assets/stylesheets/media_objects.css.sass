@@ -76,8 +76,9 @@
   float: left
   img
     width: 100%
-    margin-top: 10px
+    margin-top: $baseline
     float: left
+    margin-bottom: $baseline
   a
     color: #333333
     @include transition(all 300ms)
@@ -187,6 +188,12 @@
     width: 100%
     height: inherit
     margin: 10px 0px
+
+@media (min-width: 768px) and (max-width: 979px)
+  .media-box-2
+    a
+      .media-box-2-right-title
+        display: none
 
 /// MEDIA LIST ITEM ///
 

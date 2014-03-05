@@ -6,6 +6,7 @@
     = stylesheet_link_tag 'print',  media: 'print'
     %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
+    %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
     = csrf_meta_tags
     = render 'layouts/twitter'
     %meta{charset: 'utf-8'}
@@ -44,6 +45,8 @@
     = render 'layouts/crazyegg'
     = javascript_include_tag 'application_head'
     = javascript_include_tag 'application'
+    %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bloom.js'}
+    %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/templates.js'}
     %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav}"}
     = render 'layouts/facebook'

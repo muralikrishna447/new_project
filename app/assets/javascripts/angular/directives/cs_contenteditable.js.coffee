@@ -1,0 +1,6 @@
+@app.directive 'csContenteditable', [() ->
+  restrict: 'A',
+  require: "?ngModel"
+  scope: {  placeholder: "=", ngModel: "=", editMode: "=csContenteditable"},
+  templateUrl: '/client_views/_cs_contenteditable'
+]

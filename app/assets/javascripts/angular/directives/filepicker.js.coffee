@@ -6,12 +6,12 @@ angular.module('ChefStepsApp').directive 'csfilepicker', ->
   template:
     '<div>' +
       '<div class="btn-toolbar" style="display: inline-block;">' +
-        '<button class="btn btn-large btn-primary drop-target relative" ng-click="pickOrRemoveFile()">' +
-          '<i class="{{hasFile() && \'icon-remove\' || \'icon-plus\'}}"></i>' +
+        '<div class="drop-target relative" ng-click="pickOrRemoveFile()" >' +
+          '<i ng-show="uploadProgress < 0" class="{{hasFile() && \'icon-remove\' || \'icon-plus\'}}"></i>' +
           '<div class="upload-progress" ng-show="uploadProgress >= 0">' +
-            '<progress value="uploadProgress"></progress>' +
+            '{{uploadProgress}}%' +
           '</div>' +
-        '</button>' +
+        '</div>' +
       '</div>' +
     '</div>'
 
@@ -22,25 +22,26 @@ angular.module('ChefStepsApp').directive 'csfilepicker', ->
     target = $(element).find('.drop-target')
 
     filepicker.makeDropPane target,
-      dragEnter: => target.addClass("active")
-      dragLeave: => target.removeClass("active")
+      dragEnter: => target.addClass("drop-ready")
+      dragLeave: => target.removeClass("drop-ready")
       onStart: =>
         scope.uploadProgress = 0
-        scope.$apply()
+        target.removeClass("drop-ready")
+        scope.$apply() if ! scope.$$phase
 
       onProgress: (percentage) =>
         scope.uploadProgress = percentage
-        scope.$apply()
+        scope.$apply() if ! scope.$$phase
 
       onSuccess: (fpfiles) =>
         scope.ngModel.$setViewValue(JSON.stringify(fpfiles[0]))
-        target.removeClass("active")
         scope.uploadProgress = -1
+        scope.$apply() if ! scope.$$phase
 
       onError: (type, message) ->
-        target.removeClass("active")
         scope.uploadProgress = -1
         alert(message)
+        scope.$apply() if ! scope.$$phase
 
   controller: ['$scope', '$element', ($scope, $element) ->
 
@@ -51,7 +52,7 @@ angular.module('ChefStepsApp').directive 'csfilepicker', ->
         filepicker.pickAndStore {mimetype:"image/*"}, {location:"S3"},
         ((fpfiles) =>
           $scope.ngModel.$setViewValue(JSON.stringify(fpfiles[0]))
-          $scope.$apply()
+          $scope.$apply() if ! $scope.$$phase
         )
         ((errorCode) =>
           console.log("FILEPICKER ERROR CODE: " + errorCode))
@@ -61,5 +62,6 @@ angular.module('ChefStepsApp').directive 'csfilepicker', ->
 
     $scope.removeFile = ->
       $scope.ngModel.$setViewValue("")
+      $scope.$apply() if ! $scope.$$phase
   
   ]

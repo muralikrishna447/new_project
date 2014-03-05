@@ -1,10 +1,3 @@
-toggleMadlibPassword = (name_field, email_field) ->
-    # valid_name = name_field[0].validity.valid
-    # valid_email = email_field[0].validity.valid
-
-    # if valid_name && valid_email
-    #   $('#madlib-password-wrapper').delay(1000).fadeIn()
-
 areCookiesEnabled = ->
   document.cookie = "__verify=1"
   supportsCookies = document.cookie.length > 1 && document.cookie.indexOf("__verify=1") > -1
@@ -83,20 +76,6 @@ $ ->
 
   $('.nav-search-hide').click ->
     $('.nav-search').removeClass('nav-search-show', 300)
-
-  $('#madlib-name').keyup ->
-    toggleMadlibPassword($(this), $('#madlib-email'))
-
-  $('#madlib-email').keyup ->
-    toggleMadlibPassword($('#madlib-name'), $(this))
-
-  show_password_index = 0
-  $('#show-madlib-password').click ->
-    madlib_password_field = $('#madlib-password')
-    if ++show_password_index % 2
-      madlib_password_field.attr 'type', 'text'
-    else
-      madlib_password_field.attr 'type', 'password'
 
   unless areCookiesEnabled()
     $(".cookies-disabled").show()

@@ -9,7 +9,7 @@
 
     this.heroVideoURL = ->
       autoplay = "0"
-      "//www.youtube.com/embed/#{this.getObject().youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&vq=hd720\&autoplay=#{autoplay}"
+      "//www.youtube.com/embed/#{this.getObject().youtube_id}?wmode=opaque\&rel=0&modestbranding=1\&showinfo=0\&autoplay=#{autoplay}"
 
     this.heroVideoStillURL = ->
       "//img.youtube.com/vi/#{this.getObject().youtube_id}/0.jpg"

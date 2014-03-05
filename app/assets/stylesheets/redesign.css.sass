@@ -13,8 +13,30 @@ body
 a, [ng-click], [contenteditable]:not(:focus)
   cursor: pointer
 
-[ng-click]
-  @include unselectable
+[contenteditable]:focus
+  cursor: text
+
+[contenteditable]
+  &:hover:not(:focus)
+    background-color:   #F1FCFF
+
+div:not(.redactor_box)
+  [contenteditable]
+    outline: none
+
+    &:empty
+      &:before
+        content: "Click to start writing"
+        color: $light-gray
+
+// When not actually contenteditable, get rid of the cues
+div:not(.redactor_box)
+  [contenteditable=false]
+    &:empty
+      &:before
+        content: ""
+      &:hover:not(:focus)
+        background-color: inherit
 
 .top-container
   margin-top: $baseline * 7
@@ -48,21 +70,28 @@ a, [ng-click], [contenteditable]:not(:focus)
 .printonly
   display: none
 
-.popup-bottom
-  color: white
+.popup-bottom, .gallery-popup-bottom
+  @include transition(all 600ms ease-in-out)
+  color: black
   position: fixed
-  padding: 10px 0px
-  max-height: 200px
-  bottom: -200px
-  width: 100%
+  right: -53%
+  bottom: $baseline * 2
+  padding: $baseline * 2
+  border: 1px solid $light-gray
+  max-height: 465px
+  width: 50%
+  float: right
   @include boxsizing
   z-index: 9999
-  background: $orange
-  @include shadow
+  background-color: white
+  margin-right: 22px
+  @include bottom-only-annotation-shadow
   .row
     margin-left: 0px
-  h3
-    margin: 0px
+  .input-underlined
+    input
+      max-width: 50%
+
   form
     margin: 10px 0px
     .input-signup-email
@@ -77,8 +106,48 @@ a, [ng-click], [contenteditable]:not(:focus)
       color: $dark-orange
       cursor: pointer
 
+  .well
+    background: white
+
+@media (max-width: 1349px)
+  .popup-bottom, .gallery-popup-bottom
+    h2
+      font-size: 32px
+      line-height: 40px
+
+
+@media (max-width: 1070px)
+  .popup-bottom, .gallery-popup-bottom
+    h2
+      font-size: 20px
+      line-height: 30px
+
+    #show-madlib-password
+      padding-top: 0
+
+@media (max-width: 970px)
+  .popup-bottom, .gallery-popup-bottom
+    width: 100%
+    right: -100%
+    margin-left: 0 !important
+    margin-right: 0 !important
+    border-right: none
+    border-left: none
+    bottom: 0
+    h2
+      font-size: 20px
+      line-height: 30px
+
+    #show-madlib-password
+      padding-top: 0
+
+  .popup-bottom-show
+    left: 0
+    right: 0
+
+
 .popup-bottom-show
-  bottom: 0px
+  right: 0
 
 #technique-carousel, #related-carousel
   .scroll-overlay-left, .scroll-overlay-right
@@ -86,7 +155,8 @@ a, [ng-click], [contenteditable]:not(:focus)
       background: $offwhite
 
 .activity-loading-spinner
-  margin-top: 150px
+  position: absolute
+  top: 150px
   text-align: center
 
 .icon-page-load
@@ -522,7 +592,7 @@ a:hover
 // temporary until steps are moved over to csenforceaspect
 .ordered-step-item
   .video-container
-    padding-bottom: 58%
+    padding-bottom: 56.25%
     iframe, object, embed
       position: absolute
       top: 0
@@ -588,7 +658,8 @@ a:hover
       padding-top: 20px
     .step-content
       width: 90%
-      padding: 20px 10px 10px 5px
+      padding: 20px 10px 0px 5px
+      margin-bottom: $baseline
       h4
         margin-top: 0px
         margin-bottom: 0px
@@ -620,22 +691,17 @@ a:hover
     overflow: visible
     border: none
 
-  .edithover:not(.cseditpairedit)
-    position:  relative !important
+  .ingredient-table-row
     cursor: pointer
-    &:before
-      content: ""
-      position: absolute
-      top:  -2
-      right:  -4
-      left:  -4
-      bottom:  -2
+    &:hover:not(:focus)
       background: rgba(0, 128, 220, .1) !important
-      border-radius:  5px
 
   .btn
     &:hover
       background: rgba(0, 128, 220, .2) !important
+
+  .step-media-button
+    margin-top: $baseline * 2
 
 .activity-ingredients-list
   position: relative
@@ -1701,14 +1767,16 @@ csingredienteditpair
   margin-bottom: $baseline
 
 .add-item, .add-from-master, .done
-  margin-top: -5px
+  margin-top: -11px
   height:  22px
 
 
 .step-sidebar-group
   position: absolute
-  left:  -30px
+  left:  -44px
   height:  100%
+  top: -5px
+  z-index: 1
 
   button
     width: 24px
@@ -1735,13 +1803,12 @@ csingredienteditpair
   position: absolute
   bottom: -10px
   .step-add-button-line
-    bottom: 8px
-
+    bottom: 22px
 
 .step-add-button-line
   position: absolute
   border-top:  1px dotted #d3d3d3
-  width: 600px
+  width: 300px
   z-index: -1
 
 .select-ingredient-checkbox
@@ -1756,17 +1823,25 @@ csingredienteditpair
 
   .drop-target
     width: 60px
+    height: 60px
+    font-size: 40px
+    text-align: center
+    background-color: $orange
+    i
+      color: white
+      position: relative
+      top: 10px
+
+    &.drop-ready
+      background-color: red !important
 
     .upload-progress
-      width: 60px
-      position:  absolute
-      left:  0
+      position: absolute
       right:  0
-      bottom:  -22px
-
-    .progress
-      width: 100%
-      height:  11px
+      left: 0
+      top: 15px
+      color: black
+      font-size: 22px
 
 .no-bold
   font-weight: normal
@@ -1913,6 +1988,8 @@ input.summary-tweet
 //       padding: 6px 5px
 //       top: 0
 //       z-index: 10000
+  .static-height
+    height: 360px
 
 
 /* Portrait tablet to landscape and desktop */
@@ -1964,6 +2041,9 @@ input.summary-tweet
       .container
         width: 100%
 
+  .static-height
+    height: 480px
+
   .img-circle
     padding-right: 10px
 
@@ -2013,11 +2093,6 @@ input.summary-tweet
     margin: 0px -20px
     padding: 0px 20px
 
-  .popup-bottom
-    margin: 0px -20px
-    padding: 20px
-    .text-right
-      text-align: left
 
   #footer
     margin: 0px -20px
@@ -2040,6 +2115,9 @@ input.summary-tweet
   .no-margin-padding
     padding: 0px
     margin: 0px
+
+  .static-height
+    height: 170px
 
 
 @media(max-width: 979px)
@@ -2096,10 +2174,6 @@ input.summary-tweet
   .top-container
     margin-top: 0px
 
-  .popup-bottom
-    h3
-      font-size: 16px
-
   .static-height
     height: 10px
 
@@ -2108,14 +2182,10 @@ input.summary-tweet
   #activity-description-maximize
     display: none
 
-@media (max-width: 320px)
-  .popup-bottom
-    font-size: 12px
-    h3
-      font-size: 14px
-      line-height: 16px
-    .input-signup-email
-      width: 50%
+
+
+.content-activity-title:empty:not(:focus):before
+  content: "Click to set title"
 
 /* Global on-select highlighting */
 

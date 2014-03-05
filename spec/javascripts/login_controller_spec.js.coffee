@@ -361,6 +361,7 @@ describe "LoginController", ->
 
       describe "inviteModalOpen false", ->
         beforeEach ->
+          scope.dataLoading = 1
           scope.inviteModalOpen = false
           scope.httpBackend.expect(
             'POST'

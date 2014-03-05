@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "$modal", "csDataLoading", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, $modal, csDataLoading) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "$route", "$modal", "csDataLoading", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, $route, $modal, csDataLoading) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -33,6 +33,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.googleLoaded = false
   $scope.validEmailSent = false
   $scope.waitingForGoogle = false
+
+  trackRegistration = (source, method) ->
+    properties = {source : source, method: method}
+    mixpanel.track('Signed Up JS', _.extend(properties, $rootScope.splits))
+    _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
 
   $scope.hasError = (error) ->
     if error
@@ -159,7 +164,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   #     error_entity: $scope.login_error
   #   )
 
-  $scope.register = ->
+  $scope.register = (source = "unknown") ->
     unless $scope.validNameAndEmail() && $scope.register_user.password
       $scope.register_error.errors.name = ["Please provide a name"] unless !!$scope.register_user.name
       $scope.register_error.errors.email = ["Please enter a valid email address"] unless /.*@.*\..*/.test($scope.register_user.email)
@@ -179,7 +184,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       .success( (data, status) ->
         $scope.dataLoading -= 1
         if (status == 200)
-          _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
+          trackRegistration(source, "standard")
           $scope.logged_in = true
           $scope.closeModal('login', false)
           $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})
@@ -249,7 +254,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   #           parameters.error_entity.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
   #     )
 
-  $scope.facebookConnect = (forLogin=true) ->
+  $scope.facebookConnect = (source="undefined") ->
     $scope.facebook.connect().then( (user) ->
       $scope.dataLoadingService.start()
       $http(
@@ -260,7 +265,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       ).success( (data, status) ->
         $scope.logged_in = true
         $scope.closeModal('login', false)
-        if forLogin
+        unless source == "socialConnect"
           $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.dataLoadingService.stop()
@@ -268,6 +273,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
             if $scope.formFor != "purchase" && data.new_user
               $scope.loadFriends()
           , 300)
+          trackRegistration(source, "facebook") if data.new_user
         else
           $scope.authentication.setCurrentUser(data.user)
       ).error( (data, status) ->
@@ -278,7 +284,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
   # Because google is a little different we need to watch for an event
   $scope.$on "event:google-plus-signin-success", (event, eventData) ->
-    # if $scope.dataLoading > 0
     if $scope.waitingForGoogle
       $scope.dataLoadingService.start()
       $scope.$apply( ->
@@ -286,12 +291,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       )
 
   $scope.googleSignin = (google_app_id) ->
-    # $scope.dataLoading += 1
     $scope.waitingForGoogle = true
     # -# 'approvalprompt': "force" This requires them to reconfirm their permissions and gives us a new refresh token.
     gapi.auth.signIn(
-      callback: 'signInCallback'
       clientid: google_app_id
+      callback: 'signInCallback'
       cookiepolicy: $scope.urlService.currentSiteAsHttps()
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile'
       redirecturi: "postmessage"
@@ -318,6 +322,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
         else if $scope.formFor != "purchase" && data.new_user
           $scope.loadFriends()
       , 300)
+
+      trackRegistration($scope.registrationSource, "google") if data.new_user
+
     ).error( (data, status) ->
       $scope.dataLoadingService.stop()
       if status == 503

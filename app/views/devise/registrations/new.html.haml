@@ -11,6 +11,6 @@
           %li Save your favorite recipes
           %li Earn badges, enroll in classes, and connect with other cooks
     .span5.section.registration
-      %div(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json}); showForm='signUp'; openModal('login')")
+      %div(ng-controller="LoginController" ng-init="registrationSource='oldSignUpPage'; authentication.setCurrentUser(#{current_user.to_json}); showForm='signUp'; openModal('login')")
         %a.btn-primary.btn-large(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Click Here to Sign Up
         = render "devise/sessions/new_angular"

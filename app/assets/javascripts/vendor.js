@@ -26,3 +26,4 @@
 //= require ng-infinite-scroll
 //= require ng-google-chart
 //= require angular-contenteditable
+//= require redactor

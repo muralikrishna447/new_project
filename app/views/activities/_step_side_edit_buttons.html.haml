@@ -1,7 +1,7 @@
-.step-sidebar-group.anim-basic-fade(ng-show="editMode && mouseCurrentlyOverStep")
+.step-sidebar-group.anim-basic-fade(ng-if="editMode && mouseCurrentlyOverStep")
   .step-add-button-group(tooltip="Add step..." tooltip-placement="left")
     .step-add-button-line
-    %button.btn-secondary(type="button" ng-click="addStepAtIndex($index)")
+    %button.btn-secondary(type="button" ng-click="addStep($index, -1)")
       %i.icon-plus
   .btn-toolbar.step-edit-buttons
     .btn-group.btn-group-vertical
@@ -11,18 +11,18 @@
         \#
 
       / Buttons to toggle Aside
-      %button.btn.btn-secondary(ng-show="! step.is_aside" type="button" btn-checkbox="" ng-model="step.is_aside" tooltip="Make this step an aside" tooltip-placement="left")
-        %i.icon-font
-      %button.btn.btn-secondary(ng-show="step.is_aside" type="button" btn-checkbox="" ng-model="step.is_aside" tooltip="Make this aside a regular step" tooltip-placement="left")
-        %i.icon-list-ol
+      %button.btn.btn-secondary(ng-show="canMakeAside($index)" type="button" ng-click="step.is_aside = true" tooltip="Make this step an aside" tooltip-placement="left")
+        %i.icon-arrow-right
+      %button.btn.btn-secondary(ng-show="step.is_aside" type="button" ng-click="step.is_aside = false" tooltip="Make this aside a regular step" tooltip-placement="left")
+        %i.icon-arrow-left
 
-      %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf($first)" tooltip="Move step up" tooltip-placement="left")
+      %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf(! canMoveStep($index, -1))" tooltip="Move step up" tooltip-placement="left")
         %i.icon-arrow-up
-      %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf($last)" tooltip="Move step down" tooltip-placement="left")
+      %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf(! canMoveStep($index, 1))" tooltip="Move step down" tooltip-placement="left")
         %i.icon-arrow-down
       %button.btn.btn-secondary(type="button" ng-click="removeStep($index)" tooltip="Remove step" tooltip-placement="left")
         %i.icon-remove-sign
-  .step-add-button-end-group(ng-show="$last" tooltip="Add step..." tooltip-placement="left")
+  .step-add-button-end-group(tooltip="Add step..." tooltip-placement="left")
     .step-add-button-line
-    %button.btn-secondary(type="button" ng-click="addStepAtIndex($index+1)")
+    %button.btn-secondary(type="button" ng-click="addStep($index, 1)")
       %i.icon-plus

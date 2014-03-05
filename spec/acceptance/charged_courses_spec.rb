@@ -194,6 +194,5 @@ feature 'free courses', pending: true, js: true do
   end
 end
 
-
 # Redirect to buy from assembly if not signed in or not enrolled
 

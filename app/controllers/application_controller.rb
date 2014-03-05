@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
     ActionMailer::Base.default_url_options[:host] = request.host_with_port
   end
 
+
   expose(:version) { Version.current }
   expose(:current_user_presenter) { current_user.present? ? UserPresenter.new(current_user) : nil }
 
@@ -189,7 +190,7 @@ private
         email: {email: email},
         merge_vars: {NAME: name, SOURCE: source},
         double_optin: false,
-        send_welcome: true
+        send_welcome: false
       )
 
     rescue Exception => e

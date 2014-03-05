@@ -30,6 +30,7 @@
  *= require bootstrap-wysihtml5
  *= require angular-ui
  *= require ng-grid.min
+ *= require redactor
 
  *= require alert
  *= require registration
@@ -61,5 +62,7 @@
  *= require activities
  *= require modals
  *= require buttons
+ *= require cs_redactor
+ *= require bloom/bloom
 
  */

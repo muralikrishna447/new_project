@@ -3,7 +3,7 @@
 .container#main-container
   .row
     .span6.offset3.registration
-      %div(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json}); openModal('login')")
+      %div(ng-controller="LoginController" ng-init="registrationSource='oldSignInPage'; authentication.setCurrentUser(#{current_user.to_json}); openModal('login')")
         %h3 Sign into Chefsteps
         %a
           .btn.btn-primary.btn-large(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Click Here to Sign In

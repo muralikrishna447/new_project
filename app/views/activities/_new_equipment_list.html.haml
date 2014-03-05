@@ -1,5 +1,5 @@
 .section.csmonitorinputactivity
-  %h4(ng-show="#{test_method}() || editMode" ng-class="disableIf(! #{test_method}())")= name
+  %h4(ng-show="#{test_method}() || editMode" ng-class="disableIf(! #{test_method}())")= name.html_safe
   %ul.no-bullet(ui-sortable="sortOptions" ng-model="#{model}")
     %li.relative(ng-repeat="item in #{model} | filter:#{required_string}Equipment")
       %csEquipmentEditPair.inline(csOptional="#{! required}")

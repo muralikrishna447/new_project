@@ -5,7 +5,7 @@
 
 .buy-buttons(ng-controller="BuyAssemblyStripeController"
               ng-cloak
-              ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{class_url(assembly, protocol: "http")}"; completed="#{completed ? true : false}"; lastViewedActivity="#{current_user ? class_activity_path(assembly, current_user.last_viewed_activity_in_assembly(assembly)) : nil}"; gift_certificate=#{gift_certificate.to_json}; rails_env="#{Rails.env}"; split_name="#{@split_name}"; freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; freeTrialHours="#{@hours}"; freeTrialExpiredNotice(); freeTrialLogger();' )
+              ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{class_url(assembly, protocol: "http")}"; completed="#{completed ? true : false}"; lastViewedActivity="#{current_user ? class_activity_path(assembly, current_user.last_viewed_activity_in_assembly(assembly)) : nil}"; gift_certificate=#{gift_certificate.to_json}; rails_env="#{Rails.env}"; split_name="#{@split_name}"; freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; freeTrialHours="#{@hours}"; freeTrialExpiredNotice(); freeTrialLogger(); registrationSource="class"; ambassador="#{session[:ambassador]}";' )
 
   -#
   -# Primary CTA

@@ -17,7 +17,7 @@
       %i.icon-chevron-up(ng-show="showHeroVisualEdit")
       %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
 
-  %div.noprint(collapse="(! showHeroVisualEdit) || (! editMode)" )
+  %div.anim-basic-fade.noprint(ng-hide="(! showHeroVisualEdit) || (! editMode)" )
     %div
       .row
         .span2
