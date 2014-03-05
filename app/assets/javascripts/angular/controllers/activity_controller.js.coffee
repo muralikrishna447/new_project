@@ -40,7 +40,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     window.cdnURL(url)
 
   $timeout ( ->
-    $rootScope.showPopupBottom = true if ! $rootScope.showPopupBottom? && $scope.popupEligible
+    $rootScope.$broadcast('showPopupCTA') if $scope.popupEligible
   ), 5000
 
   $scope.csGlobals =

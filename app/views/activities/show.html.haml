@@ -125,15 +125,8 @@
 = content_for :footer do
   = render 'layouts/footer'
 
-.container-fluid.popup-bottom(  ng-hide="editMode || authentication.currentUser()" 
-                                ng-class="{'popup-bottom-show' : showPopupBottom}" 
-                                ng-controller="LoginController" 
-                                ng-cloak 
-                                ng-init="registrationSource='activityMadlib'")
-  = render "devise/sessions/new_angular"
-  = render 'home/madlib'
-  .popup-bottom-close(ng-click="showPopupBottom = false")
-    %i.icon-remove
+%div(ng-include="'/client_views/_madlib_popup'" ng-init="registrationSource='activityMadlib'")
+
 
 -################################ MODALS  ################################
 
