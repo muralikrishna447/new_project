@@ -1,78 +1,86 @@
 - content_for :title, 'ChefSteps Jobs'
 
+.chefsteps-filter
+  .text-center
+    %h1.tagline Join ChefSteps
+    .text-center
+      .btn.btn-secondary SEE OPEN POSITIONS
+
 .container.jobs
-  .row
-    .span12.chefsteps-filter
-      .row
-        .span6.offset3.section.text-center
-          %h1.tagline Join ChefSteps
-          .text-center
-            .btn.btn-secondary SEE OPEN POSITIONS
-    .span12
-      .row
-        .span10.offset1
-          .text-center
-            %h2 ChefSteps is on a mission to help people cook smarter.
+  .span12
+    .row.whitespace
+      .text-center
+        %h2 Every cook, cooking smarter.
+        %h5 We're looking to educate and solve problems for every cook, to empower people to cook more efficiently and more often and inspire them to have fun doing it.
     .span12
       %hr
-      .row
-        .span4
-          %h3 Quality
-          %p We ship on quality, not time, quantity, or any other arbitrary measure. 
-        .span4
-          %h3 Communication
-          %p We thrive on open communication and understanding across disciplines. 
-        .span4 
-          %h3 Love
-          %p We do what we love, and people in turn, will love it.
-      .row
-        .span4 
-          %h3 Smart and Gets Things Done
-          %p Intelligence and Execution
-        .span4
-          %h3 Lipsum
-          %p dolor sit amet
-        .span4
-          %h3 Filler Filler
-          %p Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-      %hr
-      .row
-        .span12
-          .text-center.section
-            %h2 Why work here?
-      .row
-        .span5.offset1
-          %ul
-            %li Amazing work space in Pike PlaceMarket
-            %li Unlimited vacation & Sick time
-            %li Really freaking good Medical, Dental &  Vision
-            %li Flexible work environment
-        .span5
-          %ul
-            %li Food & Drink (The dev kitchen)
-            %li Bottomless supply o famazing coffee
-            %li Work on what you value most
-            %li Small team environment
-            %li Encouraged to learn
-            %li Be your own boss
-
-
-    .span12
-      %hr
+      .whitespace
         .row
+          .span8.well-white
+            %h2 ChefSteps Core Values
+            %p Sure, every startup's got core values. They're idealistic and may seem unattainable, but they're absolutely essential in creating a shared vision that everyone can get behind. And we work on them everyday at ChefSteps. 
+          .span4.well
+            %h3 Empower Cooks
+            %p Show people how something works instead of telling them it works. Focus on delivering guidance, rather than answers, and together we'll empower a generation of cooks who are hungry to learn more
+        .row
+          .span4.well
+            %h3 Ship on Quality
+            %p Knowing when something is good enough is different from knowing when it is great, and knowing when it is great is different from waiting until it is perfect. Quality, yes, but please, ship.
+          .span4.well
+            %h3 Over-communicate
+            %p Communicate openly. Ask lots of questions. Listen to your peers, interject your opinion, and have the courage and the curiosity to find out more about what people around you are working on.
+          .span4.well
+            %h3 Be Smart and Execute
+            %p Do what you think is effective. Not knowing is fine: frame an experiment, hypothesize, synthesize, learn, and move on.
+  
+        .row
+          .span4.well
+            %h3 Stay Hungry
+            %p Leave work every day having learned something new. Someone is always doing something that you don't yet know how to do, and taking the initiative to learn about it will earn respect.
+          .span4.well
+            %h3 Do What You Love
+            %p Think long-term about what you love to do, and that will guide you to where the most value is in the short-term. Do what needs to get done so you can continue doing what you love.
+          .span4.well
+            %h3 Win Together
+            %p We succeed and fail as a team. Don’t worry about getting credit, just make this place awesome.
+
+
+
+      %hr
+      .row.whitespace
+        .span12
+          %h1 Why work here?
+          %p A lot of reasons, really. Here's a few:
+          .two-columns
+            %ul
+              %li Amazing work space in Pike Place Market
+              %li Unlimited vacation & Sick time
+              %li Really freaking good Medical, Dental &  Vision
+              %li Flexible work environment
+              %li Food & Drink (The dev kitchen)
+              %li Bottomless supply of amazing coffee
+              %li Work on what you value most
+              %li Small team environment
+              %li Encouraged to learn
+              %li Be your own boss
+              %li= link_to 'A kick-ass team', '/about'
+          %h1 We also like to have a good time.
+          %iframe(src='//instagram.com/p/lLORSpOR8m/embed/' width='612' height='710' frameborder='0' scrolling='no' allowtransparency='true')
+
+      .span12
+        %hr
+        .row.whitespace
           .span12
             %h1 Open Positions
-            %p ChefSteps is a pretty flat company. We value self-starters
-        .row
-          .span6
+          .span7
             %h3 Product Designer
             %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             %script{type: "text/javascript", src: "http://app.theresumator.com/widgets/buttons/create/chefsteps/weQ3WD"}
-          .span6
             %h3 Software Developer
             %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             %script{type: "text/javascript", src: "http://app.theresumator.com/widgets/buttons/create/chefsteps/GVhfP6"}
 
 
+= render 'layouts/footer'
 
 

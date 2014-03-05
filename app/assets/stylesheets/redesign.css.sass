@@ -229,9 +229,9 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 )
   margin-bottom: $baseline * 2
 
-.well-gray
-  padding: 20px
-  background: $offwhite
+.well-white
+  @extend .well
+  background: #ffffff
 
 .well-border
   border: 1px solid $light-gray
@@ -1560,6 +1560,10 @@ input.summary-tweet
   &.ng-move-active
     opacity: 0.5
 
+
+
+
+
 // BELOW ARE RESPONSIVE STYLES //
 
 
@@ -1803,6 +1807,8 @@ input.summary-tweet
   #activity-description-maximize
     display: none
 
+  .whitespace
+    padding: 50px 0px
 
 .content-activity-title:empty:before
   content: "Click to set title"
@@ -1850,15 +1856,5 @@ body
   border: 2px $orange dotted
   padding: 20px
 
-/* JOBS PAGE */
 
-.chefsteps-filter
-  background: linear-gradient(rgba(226,95,37,.8), rgba(226,95,37,.8)), no-repeat url(https://d3awvtnmmsvyot.cloudfront.net/api/file/ATdWbFiWSLid1mqCe53v)
-  height: 375px
-  margin-bottom: $baseline * 3 
-
-.tagline
-  color: #fff
-  padding-top: 20%
-  text-transform: uppercase
 
