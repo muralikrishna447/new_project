@@ -25,17 +25,6 @@ window.setMaximizeDescription = (maximize) ->
   else
     $('#activity-description-maximize').text 'more'
 
-$ ->
-  # User Registration popup shows up after viewing 2 activities
-  popup_bottom = $('.popup-bottom')
-  if popup_bottom.is('*')
-    popup_bottom.delay(5000) ->
-      addClass 'popup-bottom-show', 1000
-      mixpanel.track('Madlib Shown', _.extend({source : "activityMadlib"}, $rootScop.splits))
-
-    $('.popup-bottom-close').click ->
-      popup_bottom.removeClass 'popup-bottom-show', 500
-
 
 # Prevent browser from changing pages if a user drags in an image and misses a drag target.
 # http://stackoverflow.com/questions/7395590/disable-dragging-of-a-file-system-image-into-a-browser
