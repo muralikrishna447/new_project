@@ -1,4 +1,10 @@
 angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", "csUrlService", ($rootScope, $q, csUrlService) ->
+  loggedIn = false
+
+  # This is how we know if you've logged in to facebook yet.
+  this.setLoggedIn = (value) ->
+    loggedIn = value
+
   # Connects to facebook and authenticates then connects again to gather user's information.
   this.connect = ->
     deferred = $q.defer()
@@ -24,10 +30,25 @@ angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", "csUr
     , {scope: "email"})
     return deferred.promise
 
+  this.ensureLoggedIn = ->
+    deferred = $q.defer()
+    if loggedIn
+      $rootScope.$apply ->
+        deferred.resolve(true)
+    else
+      FB.login (response, event) ->
+        $rootScope.$apply ->
+          if response.status == "connected"
+            deferred.resolve(true)
+          else
+            deferred.reject(response.status)
+    return deferred.promise
+
+
+
   this.friends = ->
     deferred = $q.defer()
-    FB.api('/me/friends', (response) ->
-      console.dir(response)
+    this.ensureLoggedIn().then FB.api('/me/friends', (response) ->
       $rootScope.$apply ->
         friends = response.data.sort (a,b) ->
           nameA = a.name.toLowerCase()
@@ -113,7 +134,6 @@ angular.module('ChefStepsApp').service 'csFacebook', [ "$rootScope", "$q", "csUr
   this.friendInvites = (user_id) ->
     deferred = $q.defer()
     url = "#{csUrlService.currentSite()}/invitations/welcome?referrer_id=#{user_id}&referred_from=facebook"
-    console.log(url)
     FB.ui {
       method: 'send',
       link: url

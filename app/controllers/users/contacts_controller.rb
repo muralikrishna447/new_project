@@ -20,6 +20,7 @@ class Users::ContactsController < ApplicationController
       end
     end
     @users = User.where("facebook_user_id in (?) or email in (?)", friends_from_facebook, friends_from_google)
-    render(json: @users)
+    # @users.reject!{|u| current_user.follows?(u) }
+    render(json: @users.map{|u| u.attributes.merge(following: current_user.follows?(u)) })
   end
 end

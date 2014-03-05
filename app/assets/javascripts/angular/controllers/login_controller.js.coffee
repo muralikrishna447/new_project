@@ -34,8 +34,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   $scope.validEmailSent = false
   $scope.waitingForGoogle = false
 
-  $scope.possibleFollowers = []
-
   $scope.hasError = (error) ->
     if error
       "error"
@@ -499,14 +497,4 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
       )
 
-  $scope.gatherFriendsFromSocial = ->
-    $scope.facebook.friends().then (friendsFromFacebook) ->
-      $http(
-        method: "POST"
-        url: "/users/contacts/gather_friends.json"
-        data:
-          friends_from_facebook: friendsFromFacebook
-      ).success( (data, status) ->
-        $scope.possibleFollowers = data
-      )
 ]

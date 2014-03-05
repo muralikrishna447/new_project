@@ -28,7 +28,7 @@ angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
 ]
 
 # For google plus
-angular.module('ChefStepsApp').run ["$window", "$rootScope", ($window, $rootScope) ->
+angular.module('ChefStepsApp').run ["$window", "$rootScope", "csFacebook", ($window, $rootScope, csFacebook) ->
   $window.signInCallback =  (authResult) ->
     if(authResult && authResult.access_token)
       # http://stackoverflow.com/questions/20837839/blocked-frame-error-when-signing-in-with-gplus-implemented-with-angularjs
@@ -40,6 +40,8 @@ angular.module('ChefStepsApp').run ["$window", "$rootScope", ($window, $rootScop
   $window.render = ->
     $rootScope.$broadcast('event:google-plus-loaded')
 
+  $window.facebookLoginStatus =  (loggedIn) ->
+    csFacebook.setLoggedIn(loggedIn)
 ]
 
 @$$parse = (url) ->

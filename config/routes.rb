@@ -167,7 +167,9 @@ Delve::Application.routes.draw do
   end
   resources :votes, only: [:create]
   resources :comments
-  resources :followerships, only: [:update]
+  resources :followerships, only: [:index, :update] do
+    post :follow_multiple,  on: :collection
+  end
   resources :assemblies, only: [:index, :show] do
     resources :comments
     resources :enrollments
