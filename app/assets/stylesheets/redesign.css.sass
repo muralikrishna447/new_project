@@ -16,9 +16,9 @@ a, [ng-click], [contenteditable]:not(:focus)
 [contenteditable]:focus
   cursor: text
 
-[contenteditable]
+[contenteditable], .redactor_editor
   &:hover:not(:focus)
-    background-color:   #F1FCFF
+    background-color:   #F1FCFF !important
 
 div:not(.redactor_box)
   [contenteditable]
@@ -1460,9 +1460,10 @@ csingredienteditpair
 .step-sidebar-group
   position: absolute
   left:  -44px
+  width: 44px
   height:  100%
   top: -5px
-  z-index: 1
+  z-index: 100
 
   button
     width: 24px
@@ -1482,8 +1483,6 @@ csingredienteditpair
 .step-add-button-group
   position: absolute
   top: -10px
-  .step-add-button-line
-    top: 12px
 
 .step-add-button-end-group
   position: absolute
@@ -1494,7 +1493,7 @@ csingredienteditpair
 .step-add-button-line
   position: absolute
   border-top:  1px dotted #d3d3d3
-  width: 300px
+  width: 30px
   z-index: -1
 
 .select-ingredient-checkbox

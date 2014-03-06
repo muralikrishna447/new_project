@@ -1,6 +1,5 @@
 .step-sidebar-group.anim-basic-fade(ng-if="editMode && mouseCurrentlyOverStep")
   .step-add-button-group(tooltip="Add step..." tooltip-placement="left")
-    .step-add-button-line
     %button.btn-secondary(type="button" ng-click="addStep($index, -1)")
       %i.icon-plus
   .btn-toolbar.step-edit-buttons
@@ -23,6 +22,5 @@
       %button.btn.btn-secondary(type="button" ng-click="removeStep($index)" tooltip="Remove step" tooltip-placement="left")
         %i.icon-remove-sign
   .step-add-button-end-group(tooltip="Add step..." tooltip-placement="left")
-    .step-add-button-line
     %button.btn-secondary(type="button" ng-click="addStep($index, 1)")
       %i.icon-plus

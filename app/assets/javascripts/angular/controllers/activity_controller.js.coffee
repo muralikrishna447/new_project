@@ -517,11 +517,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
         $scope.startEditMode()
         $scope.editMeta = true
-        setTimeout (->
-          title_elem = $('#title-edit-pair')
-          angular.element(title_elem).scope().setMouseOver(true)
-          title_elem.click()
-        ), 0
+
 
 
 

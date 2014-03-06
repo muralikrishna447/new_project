@@ -1,30 +1,35 @@
 @import mixins
 
-.redactor_box > div
-  border: none
-  padding: 0
-
-.redactor_box
-  background-color: inherit
-
 .edit-mode
+
+  .redactor_box > div
+    border: none
+    padding: 0
+
+  .redactor_box
+    background-color: rgba(0, 0, 0, 0)
+
   .redactor_box ::selection
     background: $orange
     color: white
 
-.well .redactor_editor
-  background-color: inherit
+  .well 
+    .redactor_editor
+      background-color: inherit
 
-.redactor_editor *
-  font-family: inherit !important
+  .redactor_editor *
+    font-family: inherit !important
 
-.redactor_editor
-  width: 100%
-  overflow: hidden
+  .redactor_editor
+    width: 100%
+    overflow: hidden
 
-  ul, ol
-    padding-left: 0 !important
-    margin: 0 0 10px 25px
+    ul, ol
+      padding-left: 0 !important
+      margin: 0 0 10px 25px
+
+    a
+      text-decoration: none !important
 
 
   
