@@ -1,17 +1,34 @@
 angular.module('ChefStepsApp').controller 'FollowershipsController', ["$scope", "$http", "csAuthentication", "csAlertService", "csDataLoading", "csFacebook", ($scope, $http, csAuthentication, csAlertService, csDataLoading, csFacebook) ->
   $scope.facebook = csFacebook
   $scope.dataLoading = csDataLoading
+  $scope.authentication = csAuthentication
 
   $scope.possibleFollowers = []
 
   $scope.gatherFriendsFromSocial = ->
     $scope.dataLoading.start()
-    $scope.facebook.friends().then (friendsFromFacebook) ->
+    if $scope.authentication.currentUser().facebook_user_id
+      $scope.facebook.friends().then (friendsFromFacebook) ->
+        $http(
+          method: "POST"
+          url: "/users/contacts/gather_friends.json"
+          data:
+            friends_from_facebook: friendsFromFacebook
+        ).success( (data, status) ->
+          # for user in data
+          #   user.following = false
+          $scope.possibleFollowers = data
+          $scope.dataLoading.stop()
+        ).error( (data, status) ->
+          $scope.dataLoading.stop()
+          console.log("Something went wrong!")
+        )
+    else
       $http(
         method: "POST"
         url: "/users/contacts/gather_friends.json"
         data:
-          friends_from_facebook: friendsFromFacebook
+          friends_from_facebook: []
       ).success( (data, status) ->
         # for user in data
         #   user.following = false
