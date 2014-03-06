@@ -69,4 +69,4 @@
       .gallery-spinner(ng-show='(spinner != 0) || (! initialLoadDone)')
         %i.icon-page-load
 
-%div(ng-include="'/client_views/_madlib_popup'" ng-init="registrationSource='gallery'")
+= render 'home/madlib_popup', registration_source: 'gallery'
