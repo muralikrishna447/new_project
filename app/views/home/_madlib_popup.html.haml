@@ -1,4 +1,6 @@
-%div(ng-controller="LoginController" ng-hide="editMode || authentication.currentUser()" )
+%div( ng-controller="LoginController" 
+      ng-hide="editMode || authentication.currentUser()" 
+      ng-init="registrationSource ='#{registration_source}'")
 
   .container-fluid.popup-bottom(ng-class="{'popup-bottom-show' : shouldShowPopupCTA()}" 
                                 ng-controller="PopupCTAController" 
