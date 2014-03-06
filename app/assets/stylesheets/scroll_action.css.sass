@@ -1,0 +1,9 @@
+@import 'mixins'
+
+.shift
+  margin-left: 20px
+  opacity: 0
+  @include transition(all 300ms)
+.shift.shift-left
+  margin-left: 0px
+  opacity: 1

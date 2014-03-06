@@ -4,12 +4,16 @@
   %h1.step-number
     %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
 
-  %h4(cs-contenteditable="editMode" ng-model="step.title")
+  %h4(  cs-contenteditable="editMode" 
+        ng-model="step.title"
+        placeholder="'Click to write step title'")
 
   .step-first-row
     =render 'activities/step_ingredients'
 
-  .step-content(cs-contenteditable="editMode" ng-model="step.directions")
+  .step-content(  cs-contenteditable="editMode" 
+                  ng-model="step.directions"
+                  placeholder="'Click to write step directions'" )
 
   .step-last-row(ng-show='((!! step.youtube_id) || (!! step.image_id))')
 

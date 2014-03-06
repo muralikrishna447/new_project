@@ -83,7 +83,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
           scope.editPending = false
       ), 100
 
-  template: '<div ng-switch="" on="active()" class="edit-pair" ng-mouseenter="setMouseOver(true)" ng-mouseleave="setMouseOver(false)" ng-class="{edithover: mouseCurrentlyOver && ! active()}">' +
+  template: '<div ng-switch="" on="active()" class="edit-pair" ng-mouseenter="setMouseOver(true)" ng-mouseleave="setMouseOver(false)">' +
               '<div ng-transclude class="edit-pair-transclude"></div>' +
             '</div>'
 

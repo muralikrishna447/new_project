@@ -43,6 +43,7 @@ Delve::Application.routes.draw do
   end
 
   get 'users/verify' => 'tokens#verify', as: 'verify'
+  resources :users, only: [:show]
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
@@ -72,6 +73,8 @@ Delve::Application.routes.draw do
   resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
+
+  get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle/
 
   # resources :courses, only: [:index, :show] do
   #   resources :activities, only: [:show], path: ''

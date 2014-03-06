@@ -92,6 +92,16 @@ module Merit
           false
         end
       end
+
+      grant_on 'uploads#create', :badge => 'meat' do |upload|
+        assembly = upload.assembly
+        user = upload.user
+        if assembly.present?
+          assembly.slug == 'steak-to-salmon-how-to-cook-meats-like-a-pro'
+        else
+          false
+        end
+      end
     end
   end
 end

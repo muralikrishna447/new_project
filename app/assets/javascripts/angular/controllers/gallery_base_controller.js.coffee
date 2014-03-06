@@ -73,7 +73,7 @@
 
       gip = $scope.galleryIndexParams($scope.filters, $scope.page)
       console.log "Querying for " + JSON.stringify(gip)
-      $rootScope.showGalleryPopupBottom = true if ! $rootScope.showGalleryPopupBottom? && $scope.page == 3
+      $rootScope.$broadcast('showPopupCTA') if $scope.page == 3
       query_filters = angular.extend({}, $scope.filters)
       $scope.spinner += 1
       $scope.objectMethods.queryIndex()(gip, (newItems) -> 

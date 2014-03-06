@@ -17,24 +17,26 @@ a, [ng-click], [contenteditable]:not(:focus)
   cursor: text
 
 [contenteditable]
-  outline: none
-
-  &:empty
-    &:before
-      content: "Click to start writing"
-      color: $light-gray
-
   &:hover:not(:focus)
     background-color:   #F1FCFF
 
+div:not(.redactor_box)
+  [contenteditable]
+    outline: none
 
-[contenteditable=false]
-  &:empty
-    &:before
-      content: ""
-      color: $light-gray
-  &:hover:not(:focus)
-    background-color: inherit
+    &:empty
+      &:before
+        content: "Click to start writing"
+        color: $light-gray
+
+// When not actually contenteditable, get rid of the cues
+div:not(.redactor_box)
+  [contenteditable=false]
+    &:empty
+      &:before
+        content: ""
+      &:hover:not(:focus)
+        background-color: inherit
 
 .top-container
   margin-top: $baseline * 7
@@ -68,16 +70,17 @@ a, [ng-click], [contenteditable]:not(:focus)
 .printonly
   display: none
 
-.popup-bottom, .gallery-popup-bottom
+.popup-bottom
   @include transition(all 600ms ease-in-out)
   color: black
   position: fixed
-  right: -53%
+  right: -66%
   bottom: $baseline * 2
   padding: $baseline * 2
   border: 1px solid $light-gray
   max-height: 465px
-  width: 50%
+  width: 62%
+  max-width: 800px
   float: right
   @include boxsizing
   z-index: 9999
@@ -107,15 +110,18 @@ a, [ng-click], [contenteditable]:not(:focus)
   .well
     background: white
 
+.popup-bottom-show
+  right: 0
+
 @media (max-width: 1349px)
-  .popup-bottom, .gallery-popup-bottom
+  .popup-bottom
     h2
       font-size: 32px
       line-height: 40px
 
 
 @media (max-width: 1070px)
-  .popup-bottom, .gallery-popup-bottom
+  .popup-bottom
     h2
       font-size: 20px
       line-height: 30px
@@ -124,14 +130,15 @@ a, [ng-click], [contenteditable]:not(:focus)
       padding-top: 0
 
 @media (max-width: 970px)
-  .popup-bottom, .gallery-popup-bottom
+  .popup-bottom
     width: 100%
-    right: -100%
+    max-width: inherit
+    right: 0
     margin-left: 0 !important
     margin-right: 0 !important
     border-right: none
     border-left: none
-    bottom: 0
+    bottom: -100%
     h2
       font-size: 20px
       line-height: 30px
@@ -140,12 +147,7 @@ a, [ng-click], [contenteditable]:not(:focus)
       padding-top: 0
 
   .popup-bottom-show
-    left: 0
-    right: 0
-
-
-.popup-bottom-show
-  right: 0
+    bottom: 0
 
 #technique-carousel, #related-carousel
   .scroll-overlay-left, .scroll-overlay-right
@@ -377,6 +379,19 @@ a:hover
     font-size: 2.2rem
     line-height: $baseline * 2
 
+  .social-signup-divider
+    display: inline-block
+    background-color: inherit
+    border-right: none
+    border-bottom: none
+    border-top: none
+    border-left: 1px solid $light-gray
+    @include any-shadow(none)
+    margin-left: 22px
+    font-size: 14px
+    padding-right: 0px
+
+
 .madlib-item
   margin-bottom: $baseline
 
@@ -590,7 +605,7 @@ a:hover
 // temporary until steps are moved over to csenforceaspect
 .ordered-step-item
   .video-container
-    padding-bottom: 58%
+    padding-bottom: 56.25%
     iframe, object, embed
       position: absolute
       top: 0
@@ -656,7 +671,8 @@ a:hover
       padding-top: 20px
     .step-content
       width: 90%
-      padding: 20px 10px 10px 5px
+      padding: 20px 10px 0px 5px
+      margin-bottom: $baseline
       h4
         margin-top: 0px
         margin-bottom: 0px
@@ -688,22 +704,17 @@ a:hover
     overflow: visible
     border: none
 
-  .edithover:not(.cseditpairedit)
-    position:  relative !important
+  .ingredient-table-row
     cursor: pointer
-    &:before
-      content: ""
-      position: absolute
-      top:  -2
-      right:  -4
-      left:  -4
-      bottom:  -2
+    &:hover:not(:focus)
       background: rgba(0, 128, 220, .1) !important
-      border-radius:  5px
 
   .btn
     &:hover
       background: rgba(0, 128, 220, .2) !important
+
+  .step-media-button
+    margin-top: $baseline * 2
 
 .activity-ingredients-list
   position: relative
@@ -1560,10 +1571,6 @@ input.summary-tweet
   &.ng-move-active
     opacity: 0.5
 
-
-
-
-
 // BELOW ARE RESPONSIVE STYLES //
 
 
@@ -1583,6 +1590,7 @@ input.summary-tweet
 
   .activity-description
     height: 121px
+
 
 @media (max-width: 1200px)
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
@@ -1615,6 +1623,10 @@ input.summary-tweet
 
   .static-height
     height: 360px
+
+  .madlib 
+    .social-signup-divider
+      display: inline-block
 
 
 /* Portrait tablet to landscape and desktop */
@@ -1810,18 +1822,9 @@ input.summary-tweet
   .whitespace
     padding: 50px 0px
 
-.content-activity-title:empty:before
+
+.content-activity-title:empty:not(:focus):before
   content: "Click to set title"
-
-.content-private-notes
-  [contenteditable]:empty:before
-    content: "Click to write private notes"
-
-.content-activity-description
-  [contenteditable]:empty:before
-    content: "Click to write main description"
-
-
 
 /* Global on-select highlighting */
 

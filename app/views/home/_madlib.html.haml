@@ -1,5 +1,4 @@
-
-%form.form-inline
+%form.form-inline(ng-controller="MadlibController")
   %h2.madlib
     .madlib-item.text-orange
       Hi ChefSteps,
@@ -16,7 +15,7 @@
           {{register_error.errors.email[0]}}
       &#46;
     .madlib-item
-      I want to join 31,000 others and learn how to be a better cook.
+      I want to join {{getTotalUsers() | number}} others and learn how to be a better cook.
     .madlib-item#madlib-password-wrapper(ng-show="showMadlibPassword")
       Please set my password to
       %span.input-underlined.input-append
@@ -24,5 +23,18 @@
         %a#show-madlib-password.btn.btn-secondary(ng-click="togglePassword()") Show
         %p.bubble.passbubble(ng-show="register_error.errors.password")
           {{register_error.errors.password[0]}}
-    %button#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register(registrationSource)" ng-disabled="dataLoading") Sign Up Now
+
+    .button-row
+      %button.inline#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register(registrationSource)" ng-disabled="dataLoading") Sign Up Now
+      .btn.btn-large.btn-secondary.social-signup-divider(ng-show="splits.includeSocialInMadlib") or sign up using
+      .facebook-button.facebook-login.inline(ng-show="splits.includeSocialInMadlib")
+        %a(ng-click="facebookConnect(registrationSource)" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
+          %i.icon-facebook
+          %b Facebook
+      .google-button.google-plus-login.inline(ng-show="splits.includeSocialInMadlib")
+        -# %span.g-signin
+        %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google" ng-disabled="dataLoading")
+          %i.icon-google-plus
+          %b Google    
     %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
+
