@@ -39,6 +39,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       url = url + "/convert?fit=max&w=#{width}&cache=true"
     window.cdnURL(url)
 
+  $timeout ( ->
+    $rootScope.$broadcast('showPopupCTA') if $scope.popupEligible
+  ), 5000
 
   $scope.csGlobals =
     scaling: 1.0
