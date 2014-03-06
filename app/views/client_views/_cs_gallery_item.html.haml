@@ -2,8 +2,8 @@
   %a(href='{{href}}' target="_blank")
     .media-box-3-title
       {{title}}
-    .media-box-3-image.relative(ng-mouseenter="showSummary = true" ng-mouseleave="showSummary = false")
-      .media-box-3-image-group.relative(ng-class="{'anim-summary' : !! summary && showSummary}")
+    .media-box-3-image.relative
+      .media-box-3-image-group.relative(ng-class="{'has-summary' : !! summary}")
         %img(ng-src="{{image}}" title="{{title}}")
         .sash(ng-show="sash" ng-bind-html="sash")
       .media-box-3-summary.line-clamp(ng-bind-html="summary | markdown | shortcode")
