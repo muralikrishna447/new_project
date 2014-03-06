@@ -138,6 +138,7 @@
       text-overflow: ellipsis
       white-space: nowrap
       overflow: hidden
+
     .media-box-3-footer
       .footer-left
         float: left
@@ -146,12 +147,10 @@
         float: right
 
     .media-box-3-image-group
-      z-index: 1
+      z-index: 1     
       @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
+      @include transition-delay(0.4s)
       bottom: 0px
-
-      &.anim-summary
-        bottom: 100px
 
     .media-box-3-summary
       position: absolute
@@ -166,6 +165,9 @@
     cursor: pointer
     a
       text-decoration: none
+
+    .media-box-3-image-group.has-summary
+      bottom: 100px
 
 .line-clamp
   &:after

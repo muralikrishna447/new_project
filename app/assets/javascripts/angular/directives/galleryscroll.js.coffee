@@ -5,8 +5,8 @@
     raw = element[0]
     window_element.scroll(
       _.throttle( (->
-        # console.log "#{window_element.scrollTop() + window_element.height()} #{document_element.height() - 200}"
+        #console.log "#{window_element.scrollTop() + window_element.height()} #{document_element.height() - 200}"
         if window_element.scrollTop() + window_element.height() >= document_element.height() - 200
           scope.$apply(attr.galleryscroll)), 
-      250, trailing: false))
+      250))
 ]

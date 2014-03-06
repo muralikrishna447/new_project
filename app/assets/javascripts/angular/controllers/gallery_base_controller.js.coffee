@@ -7,6 +7,7 @@
   $scope.collapseFilters = true
   $scope.collapseSort = true
   $scope.page = 1
+  $scope.requestedPages = []
   $scope.spinner = 0
   $scope.initialLoadDone = false
   $scope.routeParams = $routeParams
@@ -68,13 +69,12 @@
   PAGINATION_COUNT = 12
 
   $scope.loadData = ->
-    if ! $scope.allLoaded
-
-
+    if ! $scope.allLoaded && (_.indexOf($scope.requestedPages, $scope.page) == -1)
       gip = $scope.galleryIndexParams($scope.filters, $scope.page)
       console.log "Querying for " + JSON.stringify(gip)
       $rootScope.$broadcast('showPopupCTA') if $scope.page == 3
       query_filters = angular.extend({}, $scope.filters)
+      $scope.requestedPages.push($scope.page)
       $scope.spinner += 1
       $scope.objectMethods.queryIndex()(gip, (newItems) -> 
         $scope.initialLoadDone = true
@@ -128,6 +128,7 @@
 
   $scope.clearAndLoad = ->
     $scope.page = 1
+    $scope.requestedPages = []
     $scope.allLoaded = false
     $scope.loadData()
     $location.search(_.omit($scope.filters, 'detailed'))
