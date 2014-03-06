@@ -79,7 +79,8 @@ div:not(.redactor_box)
   padding: $baseline * 2
   border: 1px solid $light-gray
   max-height: 465px
-  width: 50%
+  width: 62%
+  max-width: 800px
   float: right
   @include boxsizing
   z-index: 9999
@@ -109,6 +110,9 @@ div:not(.redactor_box)
   .well
     background: white
 
+.popup-bottom-show
+  right: 0
+
 @media (max-width: 1349px)
   .popup-bottom
     h2
@@ -128,12 +132,13 @@ div:not(.redactor_box)
 @media (max-width: 970px)
   .popup-bottom
     width: 100%
-    right: -100%
+    max-width: inherit
+    right: 0
     margin-left: 0 !important
     margin-right: 0 !important
     border-right: none
     border-left: none
-    bottom: 0
+    bottom: -100%
     h2
       font-size: 20px
       line-height: 30px
@@ -142,12 +147,7 @@ div:not(.redactor_box)
       padding-top: 0
 
   .popup-bottom-show
-    left: 0
-    right: 0
-
-
-.popup-bottom-show
-  right: 0
+    bottom: 0
 
 #technique-carousel, #related-carousel
   .scroll-overlay-left, .scroll-overlay-right
@@ -378,6 +378,19 @@ a:hover
   input
     font-size: 2.2rem
     line-height: $baseline * 2
+
+  .social-signup-divider
+    display: inline-block
+    background-color: inherit
+    border-right: none
+    border-bottom: none
+    border-top: none
+    border-left: 1px solid $light-gray
+    @include any-shadow(none)
+    margin-left: 22px
+    font-size: 14px
+    padding-right: 0px
+
 
 .madlib-item
   margin-bottom: $baseline
@@ -1558,6 +1571,7 @@ input.summary-tweet
   &.ng-move-active
     opacity: 0.5
 
+
 // BELOW ARE RESPONSIVE STYLES //
 
 
@@ -1577,6 +1591,7 @@ input.summary-tweet
 
   .activity-description
     height: 121px
+
 
 @media (max-width: 1200px)
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
@@ -1609,6 +1624,10 @@ input.summary-tweet
 
   .static-height
     height: 360px
+
+  .madlib 
+    .social-signup-divider
+      display: inline-block
 
 
 /* Portrait tablet to landscape and desktop */
