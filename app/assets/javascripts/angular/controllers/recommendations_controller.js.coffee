@@ -1,24 +1,28 @@
 @app.controller 'RecommendationsModalController', ["$scope", "$resource", "$http", "$modal", "$rootScope", ($scope, $resource, $http, $modal, $rootScope) ->
   unbind = {}
-  undbind = $rootScope.$on 'openRecommendations', ->
+  unbind = $rootScope.$on 'openRecommendations', (event, data) ->
     modalInstance = $modal.open(
       templateUrl: "/client_views/_recommendations.html"
       backdrop: false
       keyboard: false
-      windowClass: "takeover-modal"
+      windowClass: "modal-fullscreen"
       resolve:
         refinable: ->
           $scope.refinable
         recommendationType: ->
           $scope.recommendationType
+        intent: ->
+          if data
+            data.intent
       controller: 'RecommendationsController'
     )
+    mixpanel.track('Recommendations Opened')
 
   $scope.$on('$destroy', unbind)
 ]
 
 
-@app.controller 'RecommendationsController', ['$scope', '$resource', '$modalInstance', '$controller', '$http', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', 'recommendationType', ($scope, $resource, $modalInstance, $controller, $http, csGalleryService, ActivityMethods, refinable, $rootScope, recommendationType) ->
+@app.controller 'RecommendationsController', ['$scope', '$resource', '$modalInstance', '$controller', '$http', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', 'recommendationType', 'intent', 'csFtue', ($scope, $resource, $modalInstance, $controller, $http, csGalleryService, ActivityMethods, refinable, $rootScope, recommendationType, intent, csFtue) ->
   $scope.curated = []
 
   # $scope.Recommendation = $resource('/recommendations')
@@ -34,6 +38,8 @@
 
   $scope.cancel = ->
     $modalInstance.dismiss('cancel')
+    if intent == 'ftue'
+      csFtue.next()
 
   $scope.refine = ->
     # $rootScope.$broadcast 'refineRecommendations'
@@ -71,4 +77,7 @@
     else
       $scope.refinable = refinable
       $scope.loadRecommended()
+
+  $rootScope.$on 'closeRecommendationsFromFtue', ->
+    $modalInstance.close()
 ]

@@ -101,6 +101,7 @@ class ApplicationController < ActionController::Base
       ENV["GOOGLE_APP_ID"]
     else
       "108479453177.apps.googleusercontent.com"
+      # "73963737070-9595b3hcj6kqpii3trkg398m4q5duck5.apps.googleusercontent.com"
     end
   end
 
@@ -113,6 +114,7 @@ class ApplicationController < ActionController::Base
       ENV["GOOGLE_SECRET"]
     else
       "M2Y-HWIkTVPNHLUS1P_QNKHr"
+      # "GDEp3Pw_vGew3dorCkurox8U"
     end
   end
 

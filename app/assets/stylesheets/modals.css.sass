@@ -1,5 +1,11 @@
 @import mixins
 
+// Bootstrap override
+.modal
+  .modal-content
+    .modal-footer
+      max-height: 80px
+
 .takeover-modal
   position: fixed !important
   top: 0px 
@@ -79,8 +85,8 @@ html
     top: 0px
     left: 0px
     padding: 0px
-    padding-top: 50px
-    padding-bottom: 50px
+    padding-top: 40px
+    padding-bottom: 140px
     @include boxsizing
   .modal-footer
     position: absolute
@@ -92,8 +98,15 @@ html
   .modal-overlay
     background-color: rgba(255,255,255,0.8)
     padding: 20px
+    @include boxsizing
+  &.modal.fade
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
+    overflow: hidden
+    top: -100%
+    left: 0%
+    max-height: 100%
   &.modal.fade.in
     top: 0%
-    left: 0px
-    width: 100%
+    left: 0%
     max-height: 100%
+

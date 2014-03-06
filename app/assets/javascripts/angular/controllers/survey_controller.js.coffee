@@ -1,6 +1,6 @@
 @app.controller 'SurveyModalController', ['$scope', '$http', '$modal', '$rootScope', ($scope, $http, $modal, $rootScope) ->
   unbind = {}
-  undbind = $rootScope.$on 'openSurvey', ->
+  unbind = $rootScope.$on 'openSurvey', (event, data) ->
     modalInstance = $modal.open(
       templateUrl: "/client_views/_survey.html"
       backdrop: false
@@ -9,6 +9,9 @@
       resolve:
         afterSubmit: ->
           'openRecommendations'
+        intent: ->
+          if data
+            data.intent
       controller: 'SurveyController'
     )
     mixpanel.track('Survey Opened')
@@ -16,7 +19,7 @@
   $scope.$on('$destroy', unbind)
 ]
 
-@app.controller 'SurveyController', ['$scope', '$modalInstance', '$http', 'csAuthentication', 'afterSubmit', '$rootScope', ($scope, $modalInstance, $http, csAuthentication, afterSubmit, $rootScope) ->
+@app.controller 'SurveyController', ['$scope', '$modalInstance', '$http', 'csAuthentication', 'afterSubmit', '$rootScope', 'intent', 'csFtue', ($scope, $modalInstance, $http, csAuthentication, afterSubmit, $rootScope, intent, csFtue) ->
   $scope.currentUser = csAuthentication.currentUser()
   $scope.afterSubmit = afterSubmit
   $scope.questions = []
@@ -26,6 +29,7 @@
     $scope.survey_results = []
   
   question1 = {}
+  question1.slug = 'Skill Level'
   question1.type = 'select'
   question1.copy = 'What kind of cook are you?'
   question1.searchScope = 'difficulty'
@@ -52,6 +56,7 @@
   # $scope.questions.push(question2)
 
   question3 = {}
+  question3.slug = 'Interests'
   question3.type = 'multiple-select'
   question3.copy = 'Which culinary topics interest you the most?'
   question3.searchScope = 'interests'
@@ -76,6 +81,7 @@
   $scope.questions.push(question3)
 
   question4 = {}
+  question4.slug = 'Equipment'
   question4.type = 'multiple-select'
   question4.copy = 'What equipment do you have in your kitchen?'
   question4.searchScope = 'by_equipment_title'
@@ -108,6 +114,7 @@
   $scope.questions.push(question4)
 
   question5 = {}
+  question5.slug = 'Bio'
   question5.type = 'open-ended'
   question5.copy = 'Tell us more about yourself:'
   $scope.questions.push(question5)
@@ -136,6 +143,7 @@
       switch question.type
         when 'select'
           survey_result.answer = question.answer
+          # mixpanel.people.set(question.slug, survey_result.answer)
         when 'multiple-select'
           answers = [] 
           angular.forEach question.options, (option, index) ->
@@ -145,6 +153,9 @@
         when 'open-ended'
           survey_result.answer = question.answer
       $scope.survey_results.push(survey_result)
+      console.log question.slug
+      mixpanel.people.set(question.slug, survey_result.answer)
+      console.log 'its set'
     $scope.currentUser.survey_results = $scope.survey_results
 
   $scope.update = ->
@@ -153,9 +164,8 @@
 
     data = {'survey_results': $scope.survey_results}
     $http.post('/user_surveys', data).success((data) ->
-      $modalInstance.close()
-      if afterSubmit.length > 0
-        $rootScope.$emit afterSubmit
+      unless intent == 'ftue'
+        $rootScope.$emit afterSubmit if afterSubmit.length > 0
 
     )
 
@@ -164,6 +174,10 @@
 
   if $scope.currentUser
     $scope.loadResults()
+
+  $rootScope.$on 'closeSurveyFromFtue', ->
+    $scope.update()
+    $modalInstance.close()
 ]
 
 

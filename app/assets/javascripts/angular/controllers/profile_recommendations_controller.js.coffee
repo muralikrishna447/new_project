@@ -11,4 +11,7 @@
     else
       $rootScope.$emit('openSurvey')
 
+  $scope.openInvite = ->
+    $rootScope.$emit('openInvite', {intent: 'ftue'})
+
 ]

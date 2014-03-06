@@ -1,0 +1,32 @@
+.modal-body
+  .container
+    .row
+      .span8.offset2.modal-overlay
+        %h2 Invite Your Friends
+        %p ChefSteps is built on a community, plain and simple. We'll show you what classes your friends are taking and what recipes they've liked, and you'll be able to meet, follow, and invite other folks you think would be great additions to our community
+        %form(class="no-margin-modal-form")
+          .invite-horizontal(ng-show="authentication.currentUser()")
+            .modal-center
+              %i.icon-page-load(ng-show="dataLoading")
+            .message(ng-show="message")
+              %p {{message}}
+            - if false
+              -# This verion uses chefsteps styling
+              %div
+                %ul.friend-list
+                  %li.friend(ng-repeat="friend in inviteFriends")
+                    %label
+                      %input(type="checkbox" ng-model="friend.value")
+                      {{friend.name}}
+            .button-group
+              .facebook-button.facebook-invite
+                %a(ng-click="sendInvites()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
+                  %i.icon-facebook
+                  %b Invite friends from Facebook
+              / .google-button.google-invite
+              /   %a.btn-google.btn.btn-secondary(ng-click="loadGoogleContacts()" ng-show="authentication.currentUser() && !!authentication.currentUser().google_access_token" ng-disabled="dataLoading")
+              /     %i.icon-google-plus
+              /     %b Invite friends from Google
+              /   %a.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin('#{google_app_id}')" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token" ng-disabled="dataLoading")
+              /     %i.icon-google-plus
+              /     %b Connect to Google and Invite

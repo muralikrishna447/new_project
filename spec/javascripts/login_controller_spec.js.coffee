@@ -4,6 +4,7 @@ describe "LoginController", ->
   q = null
   timeout = null
   window = null
+  rootScope = null
 
   # you need to indicate your module in a test
   beforeEach(angular.mock.module('ChefStepsApp'))
@@ -172,6 +173,7 @@ describe "LoginController", ->
   describe "#register", ->
     describe "success", ->
       beforeEach ->
+        scope.intent = 'ftue'
         scope.register_user.name = "Test User"
         scope.register_user.email = "test@example.com"
         scope.register_user.password = "apassword"
@@ -200,9 +202,9 @@ describe "LoginController", ->
         timeout.flush()
         expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
 
-      it "should open the invite modal if not a purchase", ->
-        timeout.flush()
-        expect(scope.inviteModalOpen).toBe(true)
+      # it "should open the invite modal if not a purchase", ->
+      #   timeout.flush()
+      #   expect(scope.inviteModalOpen).toBe(true)
 
       it "should not open the invite modal if a purchase", ->
         scope.formFor = "purchase"
@@ -435,11 +437,6 @@ describe "LoginController", ->
       #   scope.httpBackend.flush()
       #   expect(scope.message).toEqual("Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: {\"bad\":\"data\"}")
 
-  describe "#loadFriends", ->
-    it "should open the invite modal", ->
-      scope.loadFriends()
-      expect(scope.inviteModalOpen).toBe(true)
-
   describe "#loadGoogleContacts", ->
     beforeEach ->
       scope.switchModal = jasmine.createSpy("switchModal")
@@ -500,16 +497,6 @@ describe "LoginController", ->
     it "should set invitationsNextText to Next", ->
       scope.sendInvites()
       expect(scope.invitationsNextText).toEqual("Next")
-
-  describe "#welcome", ->
-    it "should close the invite modal", ->
-      scope.welcome()
-      expect(scope.inviteModalOpen).toBe(false)
-
-    it "should open the welcome modal", ->
-      scope.welcome()
-      timeout.flush()
-      expect(scope.welcomeModalOpen).toBe(true)
 
   describe "#switchModal", ->
     beforeEach ->

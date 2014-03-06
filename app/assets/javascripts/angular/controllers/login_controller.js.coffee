@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "$route", "$modal", "csDataLoading", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, $route, $modal, csDataLoading) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "$rootScope", "csIntent", "csFtue", "$route", "$modal", "csDataLoading", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, $rootScope, csIntent, csFtue, $route, $modal, csDataLoading) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -38,6 +38,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     properties = {source : source, method: method}
     mixpanel.track('Signed Up JS', _.extend(properties, $rootScope.splits))
     _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
+
+  $scope.setIntent = (intent) ->
+    $scope.intent = intent
+
+  $scope.registrationSource = null
 
   $scope.hasError = (error) ->
     if error
@@ -192,7 +197,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
             $scope.$apply()
             $scope.authentication.setCurrentUser(data.user)
             unless $scope.formFor == "purchase"
-              $scope.loadFriends()
+              if $scope.intent == 'ftue'
+                csIntent.setIntent('ftue')
+                csFtue.start()
           , 300)
           # $scope.notifyLogin(data.user)
       )
@@ -254,6 +261,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
   #           parameters.error_entity.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
   #     )
 
+  # This is the call that gets the facebook credientials and then passes them into our rails server,
+  # which then creates the user or logs them in.
   $scope.facebookConnect = (source="undefined") ->
     $scope.facebook.connect().then( (user) ->
       $scope.dataLoadingService.start()
@@ -283,6 +292,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     )
 
   # Because google is a little different we need to watch for an event
+  # This is the event that gets fired when google successfully returns the google credientials
   $scope.$on "event:google-plus-signin-success", (event, eventData) ->
     if $scope.waitingForGoogle
       $scope.dataLoadingService.start()
@@ -290,6 +300,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
         $scope.googleConnect(eventData)
       )
 
+  # This is the actual method that triggers the google authentication.
+  # This builds the requests and sends it.  When the data is returned the global signInCallback method is called
+  # which angular catches and turns into an event that can be watched for.
+  # event:google-plus-signin-success is the event
   $scope.googleSignin = (google_app_id) ->
     $scope.waitingForGoogle = true
     # -# 'approvalprompt': "force" This requires them to reconfirm their permissions and gives us a new refresh token.
@@ -303,6 +317,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       # approvalprompt: "force"
     )
 
+  # This methods sends the data to the rails server after the creditials are returned from google.
+  # It will login or create a user.
   $scope.googleConnect = (eventData) ->
     $http(
       method: "POST"
@@ -332,13 +348,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       # $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
     )
 
-  $scope.loadFriends = ->
-    $scope.openModal('invite')
-    # This version uses the chefsteps styling
-    # $scope.facebook.friends().then( (friends) ->
-    #   $scope.inviteFriends = friends
-    # )
-
+  # This method takes the credentials saved on the user and makes a query to google and returns the users contact information.
   $scope.loadGoogleContacts = ->
     $scope.dataLoading += 1
     $http(
@@ -352,6 +362,23 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
 
     )
 
+
+  # This is the method that opens up the facebook module for sending messages to your friends.
+  $scope.sendInvites = ->
+    $scope.invitationsNextText = "Next"
+    $scope.facebook.friendInvites($scope.authentication.currentUser().id).then( ->
+      mixpanel.track("Facebook Invites Sent")
+      mixpanel.people.increment('Facebook Invites Sent')
+    )
+    #This is a promise so you can do promisey stuff with it.
+    # This version uses the chefsteps styling
+    # friends = _.filter($scope.inviteFriends, (friend) -> (friend.value == true))
+    # friendIDs = _.pluck(friends, 'id')
+    # $scope.facebook.friendInvites(friendIDs).then( ->
+    #   $scope.closeModal("invite")
+    # )
+
+  # This method sends google invitations to the selected friends.
   $scope.sendInvitation = ->
     $scope.dataLoading += 1
     friends = $scope.friendsSelected()
@@ -367,24 +394,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       $scope.dataLoading -= 1
       $scope.switchModal('googleInvite', 'welcome')
     )
-
-
-  $scope.sendInvites = ->
-    $scope.invitationsNextText = "Next"
-    $scope.facebook.friendInvites($scope.authentication.currentUser().id).then( ->
-      mixpanel.track("Facebook Invites Sent")
-      mixpanel.people.increment('Facebook Invites Sent')
-    )
-    #This is a promise so you can do promisey stuff with it.
-    # This version uses the chefsteps styling
-    # friends = _.filter($scope.inviteFriends, (friend) -> (friend.value == true))
-    # friendIDs = _.pluck(friends, 'id')
-    # $scope.facebook.friendInvites(friendIDs).then( ->
-    #   $scope.closeModal("invite")
-    # )
-
-  $scope.welcome = ->
-    $scope.switchModal('invite', 'welcome')
 
   $scope.resetMessages = ->
     $scope.message = null
@@ -485,7 +494,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $("#fakelogin #email").val($scope.login_user.email)
     $("#fakelogin #password").val($scope.login_user.password)
     $("#fakelogin").submit()
-
 
   $scope.disconnectSocial = (service) ->
     $scope.dataLoadingService.start()

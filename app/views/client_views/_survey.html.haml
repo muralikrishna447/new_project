@@ -2,32 +2,35 @@
   %img(src='https://d3awvtnmmsvyot.cloudfront.net/api/file/3Gv3inT0S1Kf2rczZaEK?cache=true')
   .modal-body
     .container
-      .span4.modal-overlay
-        .pull-right(ng-click="cancel()")
-          %i.icon-remove
-        %h3 Survey
-        %form(name='Survey')
-          %div(ng-repeat="question in questions")
-            %div(ng-switch on='question.type')
-              %div(ng-switch-when='select')
-                %p.survey-question
-                  %div
-                    {{question.copy}}
-                  %div
-                    %select(ng-model='question.answer' ng-options='option for option in question.options ')
-              %div(ng-switch-when='multiple-select')
-                %p.survey-question
-                  %div
-                    {{question.copy}}
-                  %div(ng-repeat='option in question.options')
-                    %label
-                      %input(type='checkbox' ng-model="option.checked" )
-                      {{option.name}}
-              %div(ng-switch-when='open-ended')
-                %p.survey-question
-                  %div
-                    {{question.copy}}
-                  %div
-                    %textarea.input-block-level(ng-model='question.answer')
-        %button.btn.btn-primary.btn-large.btn-block(ng-click='update()')
-          Submit!
+      .row
+        .span6.offset3.modal-overlay
+          / .pull-right(ng-click="cancel()")
+          /   %i.icon-remove
+          %h2 Thanks for signing up!
+          %p
+            We're sending you a confirmation email as fast as the tubes can handle.  In the meantime, tell us about some cooking habits and we'll recommend some content for you.
+          %form(name='Survey')
+            %div(ng-repeat="question in questions")
+              %div(ng-switch on='question.type')
+                %div(ng-switch-when='select')
+                  %p.survey-question
+                    %div
+                      {{question.copy}}
+                    %div
+                      %select(ng-model='question.answer' ng-options='option for option in question.options ')
+                %div(ng-switch-when='multiple-select')
+                  %p.survey-question
+                    %div
+                      {{question.copy}}
+                    %div(ng-repeat='option in question.options')
+                      %label
+                        %input(type='checkbox' ng-model="option.checked" )
+                        {{option.name}}
+                %div(ng-switch-when='open-ended')
+                  %p.survey-question
+                    %div
+                      {{question.copy}}
+                    %div
+                      %textarea.input-block-level(ng-model='question.answer')
+          / %button.btn.btn-primary.btn-large.btn-block(ng-click='update()')
+          /   Submit!
