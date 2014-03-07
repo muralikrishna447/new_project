@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "$route", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, $route) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
