@@ -1,84 +1,97 @@
-# angular.module('ChefStepsApp').directive 'csblinders', [ ->
-#   restrict: 'A'
-#   scope: {
-#     blindercount: '='
-#     inactivewidth: '='
-#   }
-#   controller: [ '$scope', ($scope) ->
-#     $scope.blinders = []
+@app.controller 'csBlindersController', ['$scope', ($scope) ->
+  $scope.blinders = []
 
-#     this.blinders = $scope.blinders
-#     this.inactivewidth = $scope.inactivewidth
-#     this.blinderWidth = $scope.blinderWidth
+  this.inactiveWidth = $scope.inactiveWidth
 
-#     this.addBlinder = (blinder) ->
-#       $scope.blinders.push(blinder)
-#   ]
-#   link: (scope, element, attrs) ->
-#     el = angular.element(element)
-#     scope.width = el.width()
-#     scope.blinderWidth = scope.width - (scope.blindercount - 1)*scope.inactivewidth
-#     scope.height = scope.blinderWidth*9/16
-#     scope.initialSpacing = scope.width/scope.blindercount
-#     el.css 'height', scope.height
-#     scope.$broadcast('blinderDimensionsReady')
+  this.addBlinder = (blinder) ->
+    $scope.blinders.push(blinder)
 
-#     scope.$on 'expandThisBlinder', (e) ->
-#       active = e.targetScope.index
-#       angular.forEach scope.blinders, (blinder, index) ->
-#         blinderElement = angular.element(blinder)
-#         if index == active
-#           console.log 'activating: ' + index
-#           blinder.activate()
-#         if index < active
-#           console.log 'left: ' + index
-#           blinder.deactivate('left')
-#         if index > active
-#           console.log 'right: ' + index
-#           blinder.deactivate('right')
+  this.expand = (clickedIndex) ->
+    angular.forEach $scope.blinders, (blinder, key) ->
+      if blinder.index == clickedIndex
+        blinder.activate()
+      else
+        if blinder.index < clickedIndex
+          blinder.deactivate('left')
+        else
+          blinder.deactivate('right')
 
-#     scope.$on 'reset', ->
-#       angular.forEach scope.blinders, (blinder) ->
-#         blinder.initBlinderDimensions()
-# ]
+  return this
+]
 
-# angular.module('ChefStepsApp').directive 'csblinder', [ ->
-#   restrict: 'A'
-#   require: '^csblinders'
-#   scope: {
-#     index: '='
-#   }
-#   link: (scope, element, attrs, csblinders) ->
-#     csblinders.addBlinder(scope)
-#     el = angular.element(element)
+@app.directive 'csBlinders',[ '$window', ($window) ->
+  restrict: 'E'
+  scope: {  }
+  controller: 'csBlindersController'
+  link: (scope, element, attrs) ->
+    scope.calculateDimensions = ->
+      # Calculate Everything
+      el = angular.element(element)
+      scope.width = el.width()
+      if scope.width >= 420
+        scope.inactiveWidth = 30
+      else
+        scope.inactiveWidth = 15
+      scope.blinderCount = scope.blinders.length
+      scope.blinderWidth = scope.width - (scope.blinderCount - 1)*scope.inactiveWidth
+      scope.height = scope.blinderWidth*9/16
+      scope.initialSpacing = scope.width/scope.blinderCount
 
-#     scope.initBlinderDimensions = ->
-#       el.css 'width', scope.width
-#       el.css 'height', scope.height
-#       el.css 'left', scope.index*scope.initialSpacing
-#       scope.active = false
+      # Set height
+      el.css 'height', scope.height
+      scope.$parent.$broadcast 'blindersDimensionsSet', scope
 
-#     scope.activate = ->
-#       scope.active = true
-#       el.css 'left', scope.index*csblinders.inactivewidth
+    scope.calculateDimensions()
 
-#     scope.deactivate = (side) ->
-#       scope.active = false
-#       if side == 'left'
-#         el.css 'left', scope.index*csblinders.inactivewidth
-#       else
-#         el.css 'left', (scope.index - 1)*csblinders.inactivewidth + scope.width
+    angular.element($window).bind 'resize', ->
+      scope.calculateDimensions()
+]
 
-#     scope.$on 'blinderDimensionsReady', (e) ->
-#       scope.width = e.targetScope.blinderWidth
-#       scope.height = e.targetScope.height
-#       scope.initialSpacing = e.targetScope.initialSpacing
-#       scope.initBlinderDimensions()
+@app.directive 'csBlinder', ->
+  restrict: 'E'
+  scope: {
+    index: '='
+  }
+  require: '^csBlinders'
+  link: (scope, element, attrs, csBlinders) ->
+    csBlinders.addBlinder(scope)
+    el = angular.element(element)
 
-#     scope.expandBlinder = ->
-#       if scope.active
-#         scope.$emit 'reset'
-#       else
-#         scope.$emit 'expandThisBlinder', scope.index
+    scope.getDimensions = (blinders) ->
+      scope.width = blinders.blinderWidth
+      scope.height = blinders.height
+      scope.initialSpacing = blinders.initialSpacing
 
-# ]
+    scope.setInitialDimensions = () ->
+      el.css 'width', scope.width
+      el.css 'height', scope.height
+      el.css 'left', scope.index*scope.initialSpacing
+      el.removeClass('active')
+      if scope.index == 0
+        scope.activate()
+      else
+        scope.deactivate()
+        scope.active = false
+
+    scope.$on 'blindersDimensionsSet', (event, blinders) ->
+      scope.inactiveWidth = blinders.inactiveWidth
+      console.log scope.inactiveWidth
+      scope.getDimensions(blinders)
+      scope.setInitialDimensions()
+
+    el.click ->
+      unless scope.active
+        csBlinders.expand(scope.index)
+
+    scope.activate = ->
+      el.css 'left', scope.index*scope.inactiveWidth
+      el.addClass('active')
+      scope.active = true
+
+    scope.deactivate = (side)->
+      if side == 'left'
+        el.css 'left', scope.index*scope.inactiveWidth
+      else
+        el.css 'left', (scope.index - 1)*scope.inactiveWidth + scope.width
+      el.removeClass('active')
+      scope.active = false
