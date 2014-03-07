@@ -506,7 +506,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       'span7'
 
   $scope.getShowWhyByWeight = ->
-    true || $scope.showWhyByWeight
+    $scope.showWhyByWeight
 
   $scope.setShowWhyByWeight = (state) ->
     $scope.showWhyByWeight = state
