@@ -5,7 +5,7 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService", "Activity", "csTagService",
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService", "Activity", "csTagService", 
 ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll, csEditableHeroMediaService, Activity, csTagService) ->
 
   $scope.heroMedia = csEditableHeroMediaService
@@ -62,7 +62,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.maybeWarnCurrentScaling = ->
     return null if $scope.csGlobals.scaling == 1.0
     "- Adjust based on recipe " + $scope.maybeDisplayCurrentScaling()
-
 
   $scope.fork = ->
     $rootScope.loading += 1
@@ -506,7 +505,16 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     else
       'span7'
 
+  $scope.getShowWhyByWeight = ->
+    $scope.showWhyByWeight
+
+  $scope.setShowWhyByWeight = (state) ->
+    $scope.showWhyByWeight = state
+
   # One time stuff
+  $scope.showWhyByWeight = ! localStorageService.get('whyByWeightShown')
+  localStorageService.set('whyByWeightShown', true)
+
   if $scope.parsePreloaded()
 
     $scope.schedulePostPlayEvent()
@@ -517,6 +525,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
         $scope.startEditMode()
         $scope.editMeta = true
+
+
 
 
 
