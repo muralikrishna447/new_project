@@ -1,9 +1,10 @@
 @import 'mixins'
 
-.shift
-  margin-left: 20px
+.anim-shift-top
   opacity: 0
-  @include transition(all 300ms)
-.shift.shift-left
-  margin-left: 0px
-  opacity: 1
+  @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
+  margin-top: -40px
+  
+  &.anim-shift-top-active
+    margin-top: 10px
+    opacity: 1
