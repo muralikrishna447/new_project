@@ -1,4 +1,4 @@
-.step-sidebar-group.anim-basic-fade(ng-if="editMode && mouseCurrentlyOverStep")
+.step-sidebar-group.anim-basic-fade(ng-if="editMode && getMouseCurrentlyOverStep()")
   .step-add-button-group(tooltip="Add step..." tooltip-placement="left")
     %button.btn-secondary(type="button" ng-click="addStep($index, -1)")
       %i.icon-plus
