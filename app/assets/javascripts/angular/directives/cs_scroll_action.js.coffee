@@ -9,7 +9,7 @@ angular.module('ChefStepsApp').directive 'csScrollAction', ["$window", ($window)
     windowElement = angular.element($window)
     windowHeight = windowElement.height()
     startPosition = elementPosition - 0.5*windowHeight
-    endPosition = elementPosition + elementHeight
+    endPosition = elementPosition + 2*elementHeight
     # console.log 'Start Position', startPosition
     # console.log 'End Position', endPosition
 

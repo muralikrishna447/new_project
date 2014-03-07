@@ -19,8 +19,7 @@
         .span12
           .tab-content#about-tabs.shift(cs-scroll-action on-appear-class='shift-left')
             .tab-pane.active#about-overview
-              %h2
-                How to use this site
+              %h2 How to use this site
               %p Frankly, we think you should use this site in any way you please, but here are some things you might want to know:
               .overview-items
                 - @about_tips.each_slice(2) do |slice|
