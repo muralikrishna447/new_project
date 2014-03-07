@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout", ($scope, $timeout) ->
+angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$element", "$timeout", ($scope, $element, $timeout) ->
 
   $scope.masterSelect = false
 
@@ -36,8 +36,6 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
 
     $scope.temporaryNoAutofocus();
 
-
-
   $scope.toggleSelectFromMaster = ->
     $scope.masterSelect = ! $scope.masterSelect
     if $scope.masterSelect
@@ -50,6 +48,14 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$timeout
 
   $scope.hasIngredients = ->
     $scope.step.ingredients?.length
+
+  $scope.mouseCurrentlyOverStep = false
+
+  $scope.getMouseCurrentlyOverStep = ->
+    $scope.mouseCurrentlyOverStep || $element.find(":focus").length > 0
+
+  $scope.setMouseCurrentlyOverStep = (over) ->
+    $scope.mouseCurrentlyOverStep = over
 
   $scope.stepSpan = ->
     if $scope.step.is_aside
