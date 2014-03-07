@@ -1,7 +1,8 @@
-.cs-blinders(csblinders blindercount="#{media_objects.count}" inactivewidth=30)
-  - media_objects.each_with_index do |media_object, index|
-    .cs-blinder(csBlinder index="#{index}")
-      = image_tag filepicker_activity_hero_image(media_object.featured_image)
-      .cs-blinder-title(ng-show='active')
-        = link_to "#{object_path}/#{media_object.slug}" do
-          %h3= media_object.title
+%div(ng-controller='csBlindersController')
+  %cs-blinders(inactive-width=30)
+    - media_objects.each_with_index do |media_object, index|
+      %cs-blinder(index="#{index}")
+        = image_tag filepicker_activity_hero_image(media_object.featured_image)
+        .cs-blinder-title
+          = link_to "#{object_path}/#{media_object.slug}" do
+            %h3= media_object.title
