@@ -9,6 +9,10 @@ angular.module('ChefStepsApp').service 'csFtue', ['$rootScope', 'csIntent', ($ro
       title: 'How do you cook?'
     }
     {
+      name: 'Connect'
+      title: 'Connect Your Social Networks'
+    }
+    {
       name: 'Invite'
       title: 'Invite your friends'
     }
@@ -42,6 +46,7 @@ angular.module('ChefStepsApp').service 'csFtue', ['$rootScope', 'csIntent', ($ro
     csFtue.current = _.where(csFtue.items, {name: name})[0]
     csFtue.currentIndex = csFtue.indexOfItem(csFtue.current)
     methodName = 'open' + name
+    console.log "emtting", methodName
     $rootScope.$emit methodName, {intent: 'ftue'}
 
   csFtue.start = ->
