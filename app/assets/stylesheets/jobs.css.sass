@@ -1,0 +1,38 @@
+/* JOBS PAGE */
+
+@import 'mixins'
+@import 'circle_highlight_anim'
+
+.chefsteps-filter
+  background: linear-gradient(rgba(226,95,37,.7), rgba(226,95,37,.7)), url(https://d3awvtnmmsvyot.cloudfront.net/api/file/ATdWbFiWSLid1mqCe53v) no-repeat left top fixed
+  @include background-size(100%)
+  height: 300px
+  width: 100%
+  margin-bottom: $baseline * 3 
+
+.tagline
+  color: #fff
+  padding-top: 130px
+  text-transform: uppercase
+
+.whitespace
+  padding: 75px 0px 100px 0px
+
+.well
+  &.fixed
+    height: 250px
+
+/* Landscape Tablet, Small Desktop */
+@media (min-width: 768px) and (max-width: 979px)
+  .chefsteps-filter
+    @include background-size(auto)
+
+/* Portrait Tablet */
+@media (max-width: 767px)
+  .chefsteps-filter
+    @include background-size(auto)
+
+/* Phone */
+@media (max-width: 480px)
+  .chefsteps-filter
+    @include background-size(auto)  
