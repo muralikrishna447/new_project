@@ -414,7 +414,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.loadActivity = (id) ->
     return if id == $scope.activity?.id
-
+    $scope.maybeShowWhyByWeight()
     if $scope.activities[id]
       # Even if we have it cached, use a slight delay and dissolve to
       # make it feel smooth and let youtube load
@@ -508,15 +508,23 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.getShowWhyByWeight = ->
     $scope.showWhyByWeight
 
-  $scope.setShowWhyByWeight = (state) ->
-    $scope.showWhyByWeight = state
+  $scope.hideWhyByWeight = (abandon) ->
+    $scope.showWhyByWeight = false
+    if abandon
+      mixpanel.track('Why By Weight Abandoned', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
+    else
+      mixpanel.track('Why By Weight Tell Me More', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
+
+  $scope.maybeShowWhyByWeight = ->
+    return if ! $scope.activity || ! $scope.activity.ingredients?.length > 0
+    return if $scope.activity.ingredients[0].ai.unit != "g"
+    $scope.showWhyByWeight = ! localStorageService.get('whyByWeightShown')
+    localStorageService.set('whyByWeightShown', true)
 
   # One time stuff
-  $scope.showWhyByWeight = ! localStorageService.get('whyByWeightShown')
-  localStorageService.set('whyByWeightShown', true)
 
   if $scope.parsePreloaded()
-
+    $scope.maybeShowWhyByWeight()
     $scope.schedulePostPlayEvent()
 
     if ! $scope.maybeRestoreFromLocalStorage()
