@@ -35,7 +35,10 @@
   return this
 ]
 
-@app.controller 'csCommentsController', ["$scope", ($scope) ->
+@app.controller 'csCommentsController', ['$scope', '$resource', ($scope, $resource) ->
+  $scope.Comment = $resource('http://chefsteps-bloom.herokuapp.com/comments')
+  $scope.comments = $scope.Comment.query(->
 
+  )
 
 ]

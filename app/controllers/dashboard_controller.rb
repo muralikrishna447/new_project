@@ -34,4 +34,7 @@ class DashboardController < ApplicationController
 
   end
 
+  def comments
+  end
+
 end
