@@ -36,7 +36,8 @@
 ]
 
 @app.controller 'csCommentsController', ['$scope', '$resource', ($scope, $resource) ->
-  $scope.Comment = $resource('http://chefsteps-bloom.herokuapp.com/comments')
+  $scope.databaseUrl = 'http://chefsteps-bloom.herokuapp.com/comments'
+  $scope.Comment = $resource($scope.databaseUrl)
   $scope.comments = $scope.Comment.query(->
 
   )
