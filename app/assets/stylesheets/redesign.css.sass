@@ -391,6 +391,19 @@ a:hover
     font-size: 14px
     padding-right: 0px
 
+.madlib-in-content
+  @include boxsizing
+  //border: 1px solid $light-gray
+  float: left
+  margin: ($baseline * 3) 0 ($baseline * 3) 10px
+  clear: both
+  padding: $baseline $baseline
+  width: 100%
+  
+.buttons-lower-right
+  position: absolute
+  bottom: $baseline
+  right: 11px
 
 .madlib-item
   margin-bottom: $baseline
@@ -1806,6 +1819,7 @@ input.summary-tweet
     input[type='text'], input[type='email']
       width: 80%
       font-size: 20px
+
 
   .top-container
     margin-top: 0px
