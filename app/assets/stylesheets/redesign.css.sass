@@ -393,18 +393,17 @@ a:hover
 
 .madlib-in-content
   @include boxsizing
-  border: 1px solid $light-gray
+  //border: 1px solid $light-gray
   float: left
-  margin: -$baseline 0 $baseline 10px
+  margin: ($baseline * 3) 0 ($baseline * 3) 10px
   clear: both
   padding: $baseline $baseline
-  width: 360px * 3 + 10px * 4
-
+  width: 100%
+  
 .buttons-lower-right
   position: absolute
   bottom: $baseline
   right: 11px
-
 
 .madlib-item
   margin-bottom: $baseline

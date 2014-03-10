@@ -28,12 +28,3 @@
       .button-row
         %button.inline#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register(registrationSource)" ng-disabled="dataLoading") Sign Up Now
       %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
-.buttons-lower-right(ng-show="splits.includeSocialInMadlib2")
-  Or sign up instantly using
-  .btn-holder
-    .btn.btn-secondary.btn-social.btn-social-facebook(ng-click="facebookConnect(registrationSource)" ng-disabled="dataLoading")
-      = render 'layouts/social_button', icon: "facebook"
-  .btn-holder
-    .btn.btn-secondary.btn-social.btn-social-gplus(ng-click="googleSignin('#{google_app_id}')" ng-disabled="dataLoading")
-      = render 'layouts/social_button', icon: "google-plus"
-
