@@ -28,9 +28,9 @@ class ReportsController < ApplicationController
           end
         end
 
-        old_pages = Stripe::Charge.all(count: 1, created: {gte: (previous_month-1.month).beginning_of_month.to_i, lte: (previous_month-1.month).end_of_month.to_i})
+        old_pages = Stripe::Charge.all(count: 1, :refunded => true, created: {gte: (previous_month-1.month).beginning_of_month.to_i, lte: (previous_month-1.month).end_of_month.to_i})
         0.upto((pages.count/100)+1) do |x|
-          Stripe::Charge.all(offset: x*100, count: 100, created: {gte: (previous_month-1.month).beginning_of_month.to_i, lte: (previous_month-1.month).end_of_month.to_i} ).each do |charge|
+          Stripe::Charge.all(offset: x*100, count: 100, :refunded => true, created: {gte: (previous_month-1.month).beginning_of_month.to_i, lte: (previous_month-1.month).end_of_month.to_i} ).each do |charge|
             if charge["refunded"]
               refund_at = Time.at(charge["refunds"].first["created"])
               if refund_at.between?(previous_month.beginning_of_month, previous_month.end_of_month)
