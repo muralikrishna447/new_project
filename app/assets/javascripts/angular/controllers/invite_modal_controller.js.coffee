@@ -114,11 +114,11 @@
   # This builds the requests and sends it.  When the data is returned the global signInCallback method is called
   # which angular catches and turns into an event that can be watched for.
   # event:google-plus-signin-success is the event
-  $scope.googleSignin = (google_app_id) ->
+  $scope.googleSignin = () ->
     $scope.waitingForGoogle = true
     # -# 'approvalprompt': "force" This requires them to reconfirm their permissions and gives us a new refresh token.
     gapi.auth.signIn(
-      clientid: google_app_id
+      clientid: $scope.environmentConfiguration.google_app_id
       callback: 'signInCallback'
       cookiepolicy: $scope.urlService.currentSiteAsHttps()
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile'

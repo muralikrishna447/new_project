@@ -26,6 +26,11 @@
 angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
   # Split test params, b/c they often go across controllers
   $rootScope.splits = {}
+
+  # Set configuration options from the environment
+  $rootScope.environmentConfiguration =
+    google_app_id: null # This is for google connect it's the application id
+    environment: null # This is the rails environment that is currently running
 ]
 
 # For google plus

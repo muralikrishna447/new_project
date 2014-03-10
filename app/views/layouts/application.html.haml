@@ -48,7 +48,7 @@
     %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bloom.js'}
     %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/templates.js'}
     %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
-  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav}"}
+  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp", "ng-init" => "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'", :class => "#{Rails.env} #{'fs-course' if @hide_nav}"}}
     = render 'layouts/facebook'
     = render 'layouts/google'
     - unless @hide_nav == true
