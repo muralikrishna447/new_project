@@ -3,7 +3,7 @@
 -##################################################################################
 
 %csEditPair
-  %csEditPairShow.show-group
+  %csEditPairShow.show-group(itemprop="ingredients")
     .ingredient-title
       %span(ng-switch="" on="ingredient_display_type(ai)")>
         %a(ng-switch-default="" ng-href="/ingredients/{{ai.ingredient.slug}}" target='_blank' ng-bind-html="ai.ingredient.title")>
