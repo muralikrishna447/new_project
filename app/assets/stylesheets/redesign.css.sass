@@ -717,7 +717,7 @@ a:hover
     overflow: visible
     border: none
 
-  .ingredient-table-row
+  .ingredient-table-row, csequipmenteditpair
     cursor: pointer
     &:hover:not(:focus)
       background: rgba(0, 128, 220, .1) !important
@@ -1346,14 +1346,17 @@ csequipmenteditpair, csingredienteditpair
 
   .action-button-group
     position: absolute
-    left: -56px
-    top:  -11px
+    right: -58px
+    top:  -4px
     font-size:  18px
     margin-top: -2px
+    z-index: 101
+    border: none
+    
     .btn
       padding: 4px 6px
       border-shadow: none
-      -webkit-box-shadow: none
+      @include any-shadow(none)
 
       &:last
         padding-right: 12px
@@ -1383,6 +1386,7 @@ csequipmenteditpair, csingredienteditpair
 csequipmenteditpair
   .action-button-group
     top: -10px
+    z-index: 101
 
 csingredienteditpair
   overflow: visible
