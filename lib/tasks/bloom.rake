@@ -23,6 +23,12 @@ namespace :bloom do
 
   end
 
+  task :get_comments => :environment do
+    connect_to_bloom
+    response = @bloom.get '/comments'
+    puts response
+  end
+
   def post_comment(conn, user, commentable_name, commentable_id, content)
     body = {
       "params" => {
@@ -43,4 +49,13 @@ namespace :bloom do
       req.body = JSON.generate(body)
     end
   end
+
+  def connect_to_bloom
+    @bloom = Faraday.new(:url => 'http://chefsteps-bloom.herokuapp.com') do |faraday|
+      faraday.request  :url_encoded             # form-encode POST params
+      faraday.response :logger                  # log requests to STDOUT
+      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+    end
+  end
+
 end
