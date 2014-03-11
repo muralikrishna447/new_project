@@ -12,6 +12,7 @@
     =render 'activities/step_ingredients'
 
   .step-content(  cs-contenteditable="editMode && getMouseCurrentlyOverStep()" 
+                  creator="activity.creator"
                   ng-model="step.directions"
                   placeholder="'Click to write step directions'" )
 
