@@ -28,21 +28,29 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
     $scope.$watch $scope.focusedInside, ((newValue, oldValue) ->
       $scope.addUndo() if oldValue && ! newValue
     )
+
+    $scope.setEditPending = ->
+      if $scope.editMode
+        document.activeElement.blur() if document.activeElement
+        $scope.editPending = true
+        # Can't give it focus until it has a chance to become visible
+        setTimeout (
+          ->
+            e = $($element).find('input, textarea')[0]
+            $scope.$apply(e.focus()) if e && ! $scope.$$phase
+            $scope.editPending = false
+        ), 100
   ]
 
   link:  (scope, element, attrs) ->
 
     # If we get freshly added while in edit mode, make us active by focusing first input. Like when a + button is hit.
     if scope.editMode  && ! scope.preventAutoFocus
-      document.activeElement.blur() if document.activeElement
-      scope.editPending = true
-      # Can't give it focus until it has a chance to become visible
-      setTimeout (
-        ->
-          e = $(element).find('input, textarea')[0]
-          scope.$apply(e.focus()) if e
-          scope.editPending = false
-      ), 100
+      scope.setEditPending()
+
+
+
+
 
   template: '<div ng-switch="" on="active()" class="edit-pair">' +
               '<div ng-transclude class="edit-pair-transclude"></div>' +
@@ -56,4 +64,4 @@ angular.module('ChefStepsApp').directive 'cseditpairedit', ->
 angular.module('ChefStepsApp').directive 'cseditpairshow', ->
   restrict: 'E',
   transclude: true,
-  template: '<div ng-switch-default="" ng-transclude  class="edit-pair-show"></div>'
+  template: '<div ng-switch-default="" ng-transclude  class="edit-pair-show" ng-click="setEditPending()"></div>'
