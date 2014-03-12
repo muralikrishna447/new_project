@@ -26,7 +26,10 @@ namespace :bloom do
   task :get_comments => :environment do
     connect_to_bloom
     response = @bloom.get '/comments'
-    puts response
+    @comments =  JSON.parse(response.body)
+    @comments.each do |comment|
+      puts comment.inspect
+    end
   end
 
   def post_comment(conn, user, commentable_name, commentable_id, content)
