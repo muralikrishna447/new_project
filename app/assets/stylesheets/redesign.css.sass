@@ -10,7 +10,7 @@ body
   overflow-x: hidden
   overflow-y: hidden
 
-a, [ng-click], [contenteditable]:not(:focus)
+a, [contenteditable]:not(:focus)
   cursor: pointer
 
 [contenteditable]:focus
@@ -35,8 +35,8 @@ div:not(.redactor_box)
     &:empty
       &:before
         content: ""
-      &:hover:not(:focus)
-        background-color: inherit
+    &:hover:not(:focus)
+      background-color: inherit !important
 
 .top-container
   margin-top: $baseline * 7
