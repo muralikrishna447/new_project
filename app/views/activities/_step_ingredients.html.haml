@@ -6,7 +6,7 @@
   .select-from-master.well(ng-hide="! (editMode && masterSelect)")
     = render 'activities/select_ingredients_from_master'
 
-  .nav(ng-show="editMode && mouseCurrentlyOverStep")
+  .nav(ng-show="editMode && getMouseCurrentlyOverStep()")
     %h4(ng-show="! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Ingredients
 
     %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Quick add ingredient from master ingredient list..." tooltip-placement="bottom")

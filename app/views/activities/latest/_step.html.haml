@@ -4,14 +4,15 @@
   %h1.step-number
     %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
 
-  %h4(  cs-contenteditable="editMode && mouseCurrentlyOverStep" 
+  %h4(  cs-contenteditable="editMode && getMouseCurrentlyOverStep()" 
         ng-model="step.title"
         placeholder="'Click to write step title'")
 
   .step-first-row
     =render 'activities/step_ingredients'
 
-  .step-content(  cs-contenteditable="editMode && mouseCurrentlyOverStep" 
+  .step-content(  cs-contenteditable="editMode && getMouseCurrentlyOverStep()" 
+                  creator="activity.creator"
                   ng-model="step.directions"
                   placeholder="'Click to write step directions'" )
 
@@ -21,7 +22,7 @@
       .step-video-outer.noprint(ng-if="!! step.youtube_id")
         .new-step-video(id="{{'step-video-' + $index}}")
           .video-container(csenforceaspect)
-            %iframe(cssrcreplacer="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0'}}")
+            %iframe(cssrcreplacer="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3'}}")
 
       -# Image only if there is no video
       .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")

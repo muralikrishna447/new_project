@@ -59,7 +59,7 @@ Delve::Application.routes.draw do
   get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
   get 'discussion' => 'forum#discussion', as: 'discussion'
-  get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  # get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
   get 'egg-timer' => 'pages#egg_timer', as: 'egg_timer'
   get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
@@ -228,6 +228,12 @@ Delve::Application.routes.draw do
   get "/invitations/welcome" => "home#welcome"
 
   match "/reports/stripe" => "reports#stripe"
+
+  resources :dashboard, only: [:index] do
+    collection do
+      get 'comments', to: 'dashboard#comments'
+    end
+  end
 
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"

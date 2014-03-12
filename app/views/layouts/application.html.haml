@@ -53,13 +53,14 @@
     = render 'layouts/google'
     - unless @hide_nav == true
       = render 'layouts/navigation', external: false
-      .container.alert-container
-        - flash.each do |name, msg|
-          %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
-            %button.close{type: 'button', data: {dismiss: 'alert'}} x
-            %h4.alert-message= msg.html_safe
-            .lblock
-        %cs-notifications
+      - unless @no_alerts == true
+        .container.alert-container
+          - flash.each do |name, msg|
+            %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
+              %button.close{type: 'button', data: {dismiss: 'alert'}} x
+              %h4.alert-message= msg.html_safe
+              .lblock
+          %cs-notifications
 
     .container.noprint.cookies-disabled(style="display:none;")
       .row-fluid

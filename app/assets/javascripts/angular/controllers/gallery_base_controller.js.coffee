@@ -13,6 +13,8 @@
   $scope.routeParams = $routeParams
   $scope.route = $route
 
+  $rootScope.splits.galleryMadlibInContent = Math.random() > 0.5
+
   $scope.$on "$routeChangeSuccess", (event, $currentRoute, $previousRoute) ->
     console.log $scope.routeParams
 
@@ -72,7 +74,11 @@
     if ! $scope.allLoaded && (_.indexOf($scope.requestedPages, $scope.page) == -1)
       gip = $scope.galleryIndexParams($scope.filters, $scope.page)
       console.log "Querying for " + JSON.stringify(gip)
-      $rootScope.$broadcast('showPopupCTA') if $scope.page == 3
+
+      if ! $rootScope.splits.galleryMadlibInContent
+        $rootScope.$broadcast('showPopupCTA') if $scope.page == 3
+      else
+        mixpanel.track('Gallery Content CTA Shown', $rootScope.splits) if $scope.page == 3
       query_filters = angular.extend({}, $scope.filters)
       $scope.requestedPages.push($scope.page)
       $scope.spinner += 1

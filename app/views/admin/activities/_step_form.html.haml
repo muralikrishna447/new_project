@@ -14,6 +14,7 @@
     audio_clip = step.audio_clip
     audio_title = step.audio_title
     hide_number = step.hide_number
+    is_aside = step.is_aside
   end
 
 %tr{id: row_id, class: ('template-row' if is_template )}
@@ -22,6 +23,9 @@
     = label_tag hide_number, class: 'checkbox' do
       = check_box_tag "#{field_name_prefix}[hide_number]", hide_number, hide_number
       Hide Number
+    = label_tag hide_number, class: 'checkbox' do
+      = check_box_tag "#{field_name_prefix}[is_aside]", is_aside, is_aside
+      Aside
     = hidden_field_tag "#{field_name_prefix}[id]", id
   %td.directions= text_area_tag "#{field_name_prefix}[directions]", directions, placeholder: "This is how we do it", rows: 10
   %td.media

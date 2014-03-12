@@ -10,7 +10,7 @@ body
   overflow-x: hidden
   overflow-y: hidden
 
-a, [ng-click], [contenteditable]:not(:focus)
+a, [contenteditable]:not(:focus)
   cursor: pointer
 
 [contenteditable]:focus
@@ -35,8 +35,8 @@ div:not(.redactor_box)
     &:empty
       &:before
         content: ""
-      &:hover:not(:focus)
-        background-color: inherit
+    &:hover:not(:focus)
+      background-color: inherit !important
 
 .top-container
   margin-top: $baseline * 7
@@ -231,9 +231,9 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 )
   margin-bottom: $baseline * 2
 
-.well-gray
-  padding: 20px
-  background: $offwhite
+.well-white
+  @extend .well
+  background: #ffffff
 
 .well-border
   border: 1px solid $light-gray
@@ -391,6 +391,19 @@ a:hover
     font-size: 14px
     padding-right: 0px
 
+.madlib-in-content
+  @include boxsizing
+  //border: 1px solid $light-gray
+  float: left
+  margin: ($baseline * 3) 0 ($baseline * 3) 10px
+  clear: both
+  padding: $baseline $baseline
+  width: 100%
+  
+.buttons-lower-right
+  position: absolute
+  bottom: $baseline
+  right: 11px
 
 .madlib-item
   margin-bottom: $baseline
@@ -704,7 +717,7 @@ a:hover
     overflow: visible
     border: none
 
-  .ingredient-table-row
+  .ingredient-table-row, csequipmenteditpair
     cursor: pointer
     &:hover:not(:focus)
       background: rgba(0, 128, 220, .1) !important
@@ -1337,14 +1350,17 @@ csequipmenteditpair, csingredienteditpair
 
   .action-button-group
     position: absolute
-    left: -56px
-    top:  -11px
+    right: -58px
+    top:  -4px
     font-size:  18px
     margin-top: -2px
+    z-index: 101
+    border: none
+    
     .btn
       padding: 4px 6px
       border-shadow: none
-      -webkit-box-shadow: none
+      @include any-shadow(none)
 
       &:last
         padding-right: 12px
@@ -1374,6 +1390,7 @@ csequipmenteditpair, csingredienteditpair
 csequipmenteditpair
   .action-button-group
     top: -10px
+    z-index: 101
 
 csingredienteditpair
   overflow: visible
@@ -1573,7 +1590,6 @@ input.summary-tweet
     opacity: 1    
   &.ng-move-active
     opacity: 0.5
-
 
 // BELOW ARE RESPONSIVE STYLES //
 
@@ -1812,6 +1828,7 @@ input.summary-tweet
       width: 80%
       font-size: 20px
 
+
   .top-container
     margin-top: 0px
 
@@ -1823,6 +1840,8 @@ input.summary-tweet
   #activity-description-maximize
     display: none
 
+  .whitespace
+    padding: 50px 0px
 
 
 .content-activity-title:empty:not(:focus):before
@@ -1860,3 +1879,6 @@ body
 .container.cookies-disabled
   border: 2px $orange dotted
   padding: 20px
+
+
+
