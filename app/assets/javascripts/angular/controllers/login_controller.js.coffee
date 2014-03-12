@@ -274,6 +274,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       ).success( (data, status) ->
         $scope.logged_in = true
         $scope.closeModal('login', false)
+        $scope.$broadcast('socialConnect', {})
         unless source == "socialConnect"
           $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
@@ -314,7 +315,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile'
       redirecturi: "postmessage"
       accesstype: "offline"
-      # approvalprompt: "force"
+      approvalprompt: "force"
     )
 
   # This methods sends the data to the rails server after the creditials are returned from google.
@@ -329,6 +330,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       unless $scope.inviteModalOpen
         $scope.logged_in = true
         $scope.closeModal('login', false)
+        $scope.$broadcast('socialConnect', {})
         $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"})
       $timeout( -> # Done so that the modal has time to close before triggering events
         $scope.dataLoadingService.stop()

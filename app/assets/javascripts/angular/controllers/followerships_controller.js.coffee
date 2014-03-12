@@ -5,6 +5,9 @@ angular.module('ChefStepsApp').controller 'FollowershipsController', ["$scope", 
 
   $scope.possibleFollowers = []
 
+  $scope.$on "socialConnect", (event, eventData) ->
+    $scope.gatherFriendsFromSocial()
+
   $scope.gatherFriendsFromSocial = ->
     $scope.dataLoading.start()
     if $scope.authentication.currentUser().facebook_user_id

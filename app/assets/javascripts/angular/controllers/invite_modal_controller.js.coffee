@@ -25,6 +25,12 @@
 
   $scope.waitingForGoogle = false
 
+  $scope.checkToLoadGoogleContacts = ->
+    alert("Test1")
+    if $scope.authentication.currentUser().google_user_id
+      alert("Test")
+      $scope.loadGoogleContacts()
+
   # This is the method that opens up the facebook module for sending messages to your friends.
   $scope.sendInvites = ->
     $scope.invitationsNextText = "Next"
@@ -124,7 +130,7 @@
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile'
       redirecturi: "postmessage"
       accesstype: "offline"
-      # approvalprompt: "force"
+      approvalprompt: "force"
     )
 
   # This method takes the credentials saved on the user and makes a query to google and returns the users contact information.
@@ -137,8 +143,6 @@
       friends = _.map(data, (contact) -> {name: contact.name, email: contact.email, value: false})
       $scope.inviteFriends = friends
       $scope.dataLoading -= 1
-      $scope.switchModal('invite', 'googleInvite')
-
     )
 
   $scope.close = ->
@@ -148,6 +152,9 @@
     $modalInstance.close()
     if intent == 'ftue'
       csFtue.next()
+
+  $scope.friendsSelected = ->
+    _.filter($scope.inviteFriends, (friend) -> (friend.value == true))
 
   $rootScope.$on 'closeInviteFromFtue', ->
     $modalInstance.close()

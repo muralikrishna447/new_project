@@ -67,7 +67,7 @@ module User::Google
     # https://github.com/google/google-api-ruby-client
     # https://github.com/google/google-api-ruby-client-samples
     def gather_info_from_google(params, google_app_id, google_secret)
-      client = Google::APIClient.new(:application_name => 'Chefsteps', :application_version => 'beta')
+      client = Google::APIClient.new(:application_name => 'Chefsteps', :application_version => 'beta', auto_refresh_token: true)
       info = client.discovered_api('oauth2', 'v2')
       google_params = params[:google]
       authorization = create_authorization(google_app_id, google_secret)
