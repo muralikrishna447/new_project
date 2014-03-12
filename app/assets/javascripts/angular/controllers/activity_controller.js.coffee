@@ -517,8 +517,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.maybeShowWhyByWeight = ->
     return if ! $scope.activity || ! $scope.activity.ingredients?.length > 0
-    return if $scope.activity.ingredients[0].ai.unit != "g"
+    return if $scope.activity.ingredients[0]?.unit != "g"
     $scope.showWhyByWeight = ! localStorageService.get('whyByWeightShown')
+    mixpanel.track('Why By Weight Shown', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug}) if $scope.showWhyByWeight
     localStorageService.set('whyByWeightShown', true)
 
   # One time stuff

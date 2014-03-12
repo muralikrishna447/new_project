@@ -6,7 +6,6 @@
 //=require angular-sanitize.min
 //=require angular-animate.min
 //=require angular-ui
-//=require angular-cookies
 //=require angular_select2
 //=require localStorageModule
 //=require select2

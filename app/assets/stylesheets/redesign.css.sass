@@ -1571,11 +1571,7 @@ input.summary-tweet
     color: $orange
 
 .anim-basic-fade
-  // The commented out background-colors are useful for debugging
-  // background-color: red
-
   &.ng-enter, &.ng-leave, &.ng-move, &.ng-hide-add, &.ng-hide-remove
-    //background-color: green
     @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
 
   &.ng-hide-add, &.ng-hide-remove
@@ -1583,13 +1579,20 @@ input.summary-tweet
     opacity: 1
 
   &.ng-enter, &.ng-leave.ng-leave-active, &.ng-hide-active
-    //background-color: yellow
     opacity: 0
+
   &.ng-leave, &.ng-enter.ng-enter-active, &.ng-move
-    //background-color: orange
-    opacity: 1    
+    opacity: 1
+
   &.ng-move-active
     opacity: 0.5
+
+.anim-delayed-fade
+  @extend .anim-basic-fade
+  &.ng-enter, &.ng-leave, &.ng-move, &.ng-hide-add, &.ng-hide-remove
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s)
+    @include transition-delay(3s)
+
 
 // BELOW ARE RESPONSIVE STYLES //
 

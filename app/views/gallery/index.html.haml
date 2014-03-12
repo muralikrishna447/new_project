@@ -64,12 +64,6 @@
                           footer-right="getFooterRightContents(activity)"
                           sash = "getSashContents(activity)"
                         )
-          %div(ng-if="$index == 17 && ! csAuthentication.loggedIn() && splits.galleryMadlibInContent")
-            .section
-            .madlib-in-content( ng-controller="LoginController"                                 
-                                ng-init="registrationSource ='galleryInContent'")
-              = render "devise/sessions/new_angular"
-              = render 'home/madlib'
   .row
     .span2.offset5
       .gallery-spinner(ng-show='(spinner != 0) || (! initialLoadDone)')
