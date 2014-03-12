@@ -450,7 +450,8 @@ class Activity < ActiveRecord::Base
   def gallery_path
     if self.containing_course && self.containing_course.published
       parent = self.containing_course
-      assembly_activity_path(parent, self)
+      # assembly_activity_path(parent, self)
+      assembly_type_path(parent)
     else
       activity_path(self)
     end
