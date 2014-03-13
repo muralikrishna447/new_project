@@ -28,9 +28,6 @@
                 Save for Later
       .gallery-spinner.text-center(ng-hide="recommendations.length > 0")
         %i.icon-page-load
-/ .modal-header
-/   .container
-/     .span12
-/       %h3.pull-left Recommendations
-/       .pull-right(ng-click="cancel()")
-/         %i.icon-remove
+.modal-footer
+  %btn.btn.btn-large.btn-primary(ng-click="close()")
+    Done

@@ -80,4 +80,7 @@
 
   $rootScope.$on 'closeRecommendationsFromFtue', ->
     $modalInstance.close()
+
+  $scope.close = ->
+    $modalInstance.close()
 ]
