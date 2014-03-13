@@ -3,6 +3,8 @@ angular.module('ChefStepsApp').controller 'FollowershipsController', ["$scope", 
   $scope.dataLoading = csDataLoading
   $scope.authentication = csAuthentication
 
+  $scope.searchFriends = null
+
   $scope.possibleFollowers = []
 
   $scope.$on "socialConnect", (event, eventData) ->

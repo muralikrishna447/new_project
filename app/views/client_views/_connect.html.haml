@@ -37,7 +37,6 @@
     -#         Twitter
     -#         %small (Coming Soon)
 
-  %hr
   .followerships(ng-controller="FollowershipsController" ng-init="gatherFriendsFromSocial()")
     .row-fluid
       .span6.offset3
@@ -52,18 +51,23 @@
       .follow-friends-box(ng-if="possibleFollowers.length > 0")
         .row-fluid
           .span4.offset3
-            Here are some of your friends already on ChefSteps
-          .span2
-            %button.btn.btn-primary(ng-click="followMultiple()")
+            %b Here are your friends already on ChefSteps:
+          .span2.follow-buttons
+            %button.btn.btn-secondary(ng-click="followMultiple()")
               %b Follow All
-        .friends-to-follow(ng-repeat="possibleFollower in possibleFollowers")
+        %hr
+        .row-fluid
+          .span6.offset3
+            .search
+              %input(type="text" placeholder="Search For..." ng-model="searchFriends")
+        .friends-to-follow(ng-repeat="possibleFollower in possibleFollowers | filter:searchFriends")
           .row-fluid
             .span3.offset3
-              {{possibleFollower.name}}
-            .span3.offset1
-              %button.btn.btn-primary(ng-if="possibleFollower.following == false" ng-click="follow(possibleFollower.id)")
-                %b Follow
-              %button(ng-if="possibleFollower.following == true" disabled=true)
-                %b Following
+              %b {{possibleFollower.name}}
+            .span3.offset1.follow-buttons
+              %button.btn.btn-secondary(ng-if="possibleFollower.following == false" ng-click="follow(possibleFollower.id)")
+                %b FOLLOW
+              %button.btn.btn-secondary.btn-following(ng-if="possibleFollower.following == true" disabled=true)
+                %b FOLLOWING
 .modal-footer.social-connect-footer
   %button.btn(ng-click="$close()") Done
