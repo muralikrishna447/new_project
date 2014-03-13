@@ -22,7 +22,8 @@
     = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
-    / YouTube Iframe API can't be loaded async so we have to load it directly
+    %script(src='http://www.youtube.com/iframe_api' async='true')
+
 
     = auto_discovery_link_tag :atom, feed_path
     = auto_discovery_link_tag :rss, feed_path
@@ -79,8 +80,6 @@
     = yield :footer
     .gallery-spinner.text-center(ng-show='sup')
       %i.icon-page-load
-    / %script{src:'http://www.youtube.com/iframe_api'}
-    / %script{src:'/assets/youtube.js'}
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
   = render "layouts/login_hack"
