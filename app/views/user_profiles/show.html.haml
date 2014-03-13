@@ -46,16 +46,28 @@
       %p= @user.bio
       %ul.nav.nav-tabs
         %li.active
-          = link_to 'Classes', '#courses', data: {toggle: 'tab'}
-        %li
           = link_to 'Favorites', '#favorites', data: {toggle: 'tab'}
+        %li
+          = link_to 'Classes', '#courses', data: {toggle: 'tab'}
         %li
           = link_to 'Photos', '#photos', data: {toggle: 'tab'}
         -if @show_recipes_tab
           %li
             = link_to @is_current_user ? 'My Recipes' : @user.name + '\'s Recipes', '#recipes', data: {toggle: 'tab'}
       .tab-content
-        .tab-pane.active#courses
+        .tab-pane.active#favorites
+          - if @user.likes.count > 0
+            - @user.likes.scoped_by_type('Activity').order('created_at DESC').each do |like|
+              - likeable_title = capture do
+                = link_to like.likeable.title, like.likeable
+              = render 'shared/media_list_item', image: like.likeable.featured_image, title: likeable_title, text: ''
+          - else
+            .well-clear
+              %h4 Looks like you haven't favorited any recipes yet.
+              %div(ng-controller='ProfileRecommendationsController' ng-init="init('recommended')")
+                %btn.btn.btn-primary(ng-click='open()')
+                  See Recommendations
+        .tab-pane#courses
           - if @user.enrollments.any?
             - @user.enrollments.each do |enrollment|
               - case enrollment.enrollable_type
@@ -84,11 +96,6 @@
             .tab-pane-header
               %h4 Enroll into your first Class today!
               = link_to 'Classes', courses_path, class: 'btn btn-primary'
-        .tab-pane#favorites
-          - @user.likes.scoped_by_type('Activity').order('created_at DESC').each do |like|
-            - likeable_title = capture do
-              = link_to like.likeable.title, like.likeable
-            = render 'shared/media_list_item', image: like.likeable.featured_image, title: likeable_title, text: ''
         .tab-pane#photos
           - @user.uploads.each do |upload|
             - upload_title = capture do

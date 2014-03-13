@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').service 'csFtue', ['$rootScope', 'csIntent', ($rootScope, csIntent) ->
+angular.module('ChefStepsApp').service 'csFtue', ['$rootScope', 'csIntent', 'csAuthentication', ($rootScope, csIntent, csAuthentication) ->
   # First Time User Experience Flow
   # This array sets the sequence of modals to be opened when the intent is set to 'ftue'
   csFtue = {}
@@ -58,6 +58,9 @@ angular.module('ChefStepsApp').service 'csFtue', ['$rootScope', 'csIntent', ($ro
     # Close the current item and clear the intent
     $rootScope.$emit 'close' + csFtue.current.name + 'FromFtue'
     csIntent.clearIntent()
+    userProfilePath = '/profiles/' + csAuthentication.currentUser().slug
+    console.log userProfilePath
+    window.location.href = userProfilePath
 
   csFtue.indexOfItem = (item) ->
     value = {}
