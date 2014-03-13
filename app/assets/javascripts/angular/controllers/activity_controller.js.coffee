@@ -518,9 +518,33 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.maybeShowWhyByWeight = ->
     return if ! $scope.activity || ! $scope.activity.ingredients?.length > 0
     return if $scope.activity.ingredients[0]?.unit != "g"
+
     $scope.showWhyByWeight = ! localStorageService.get('whyByWeightShown')
-    mixpanel.track('Why By Weight Shown', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug}) if $scope.showWhyByWeight
-    localStorageService.set('whyByWeightShown', true)
+    if $scope.showWhyByWeight
+      mixpanel.track('Why By Weight Shown', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug}) 
+      # This is a really hacky business to do mixpanel tracking just for this one video.
+      # To do this right, what we should do is build a directive that embeds a YT video and 
+      # records events.
+      # (mozallowfullscreen webkitallowfullscreen src="//www.youtube.com/embed/YEt0I7I3MDM?wmode=opaque&amp;rel=0&amp;modestbranding=1&amp;showinfo=0&amp;autoplay=0")
+      $timeout ( ->
+        player = new YT.Player('why-by-weight-vid',
+          videoId: 'YEt0I7I3MDM'
+          width: '350'
+          height: '197'
+          playerVars: 
+            'wmode': 'opaque'
+            'modestbranding' : 1
+            'autohide' : 1
+            'rel': 0
+            'showinfo': 0
+            'autoplay': 0
+          events:
+            'onStateChange': (event) ->
+              if event.data == 1
+                mixpanel.track('Why By Weight Played', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug}) 
+        )   
+      ), 500
+      localStorageService.set('whyByWeightShown', true)
 
   # One time stuff
 
