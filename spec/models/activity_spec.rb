@@ -429,11 +429,11 @@ describe Activity, 'gallery_path' do
   end
 
   it 'returns the correct path for activities within an class' do
-    @activity_within_class.gallery_path.should eq('/classes/assembly-class#/activity-within-class')
+    @activity_within_class.gallery_path.should eq('/classes/assembly-class')
   end
 
   it 'returns the correct path for activities within an recipe development' do
-    @activity_within_rd.gallery_path.should eq('/recipe-development/assembly-rd#/activity-within-rd')
+    @activity_within_rd.gallery_path.should eq('/recipe-development/assembly-rd')
   end
 
   it 'returns the activity path if containing course is not published' do
