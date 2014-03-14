@@ -39,9 +39,6 @@
 
   .followerships(ng-controller="FollowershipsController" ng-init="gatherFriendsFromSocial()")
     .row-fluid
-      .span6.offset3
-        %h2 Friend Suggestions
-    .row-fluid
       .no-friends.span6.offset3(ng-if="possibleFollowers.length == 0")
         .not-connected(ng-if="authentication.currentUser().google_user_id == null && authentication.currentUser().facebook_user_id == null")
           %p You haven't connected your accounts yet.  Once you do we can gather your friends and show you people who are currently using ChefSteps.

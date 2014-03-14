@@ -460,12 +460,12 @@
                                                 %br
                                                 %br
                                                 %center
-                                                  %a(href="http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=google_invite")
+                                                  %a(href="http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")
                                                     %img(src="http://chefsteps.s3.amazonaws.com/static/email/acceptInvitation@2x.png" width="224" height="45")
                                                 %br/
                                                 %span{style: "font-size: 13px; line-height: 1.6em;"} Learn how to cook smarter
                                               %p{style: "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
-                                                Your friend #{link_to(@sender.name, user_profile_url(@sender))} invited you to join #{link_to("ChefSteps", "http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=google_invite")}, an online cooking platform dedicated to helping you cook smarter!
+                                                Your friend #{link_to(@sender.name, user_profile_url(@sender))} invited you to join #{link_to("ChefSteps", "http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")}, an online cooking platform dedicated to helping you cook smarter!
                                                 %br
                                                 %br
                                                 Here are just a few of the things that you can do at ChefSteps:
@@ -502,7 +502,7 @@
                                                 %br
 
                                                 %center
-                                                  %a(href="http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=google_invite")
+                                                  %a(href="http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")
                                                     %img(src="http://chefsteps.s3.amazonaws.com/static/email/acceptInvitation@2x.png" width="224" height="45")
                   / // END BODY
               %tr

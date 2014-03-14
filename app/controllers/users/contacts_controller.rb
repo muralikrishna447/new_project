@@ -1,16 +1,17 @@
 class Users::ContactsController < ApplicationController
-  def google
+  def google # Get contacts from google
     @contacts = current_user.gather_google_contacts(google_app_id, google_secret)
     render(json: @contacts)
   end
 
-  def invite
+  def invite #Google invite
     emails = params[:emails]
-    UserMailer.invitations(emails, current_user).deliver
+    from = params[:from] || "google_invite"
+    UserMailer.invitations(emails, current_user, from).deliver
     render(json: {status: :success})
   end
 
-  def gather_friends
+  def gather_friends # Get all friends from socail connections
     friends_from_facebook = params[:friends_from_facebook] || []
     friends_from_facebook = friends_from_facebook.map{|c| c["id"] } if params[:friends_from_facebook]
     friends_from_google = []

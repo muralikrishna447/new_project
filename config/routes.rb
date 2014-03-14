@@ -42,6 +42,7 @@ Delve::Application.routes.draw do
     match '/users/contacts/google', to: 'users/contacts#google'
     post '/users/contacts/invite', to: 'users/contacts#invite'
     post '/users/contacts/gather_friends', to: 'users/contacts#gather_friends'
+    post '/users/contacts/email_invite', to: "users/contacts#email_invite"
   end
 
   get 'users/verify' => 'tokens#verify', as: 'verify'

@@ -69,7 +69,9 @@ html
     width: 100%
 
   .modal-content
-    .social-connect-body
+    .social-connect-body, .invite-modal-body
+      .followerships
+        padding-top: 30px
       .connect-buttons
         button
           width: 200px
@@ -86,7 +88,33 @@ html
         input
           width: 100%
           padding-right: 30px
-
+      .email-invitation
+        input, textarea
+          width: 100%
+        textarea
+          height: 200px
+      .email-content, .google-content
+        border: 1px #ccc solid
+        padding-top: 20px
+        padding-bottom: 20px
+      .point-to-google, .point-to-email
+        height: 15px
+        .email-arrow, .google-arrow
+          width: 0
+          height: 0
+          border-left: 17px solid transparent
+          border-right: 17px solid transparent
+          border-bottom: 17px solid #ccc
+          position: relative
+          &:after
+            border-left: 20px solid transparent
+            border-right: 20px solid transparent
+            border-bottom: 20px solid white
+            bottom: -22px
+            content: ''
+            left: 50%
+            margin-left: -20px
+            position: absolute
 
   .modal-header
     position: absolute

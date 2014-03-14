@@ -24,16 +24,21 @@
   $scope.dataLoadingService = csDataLoading
 
   $scope.waitingForGoogle = false
+  $scope.inviteSite = null
+
+  $scope.showThankYou = false
+
+  $scope.emailObject =
+    emailToAddresses: null
+    bodyText: "Hi there, I just found ChefSteps and think it's pretty great. They're teaching me how to cook smarter and I thought you'd be interested!"
 
   $scope.checkToLoadGoogleContacts = ->
-    alert("Test1")
     if $scope.authentication.currentUser().google_user_id
-      alert("Test")
       $scope.loadGoogleContacts()
 
   # This is the method that opens up the facebook module for sending messages to your friends.
   $scope.sendInvites = ->
-    $scope.invitationsNextText = "Next"
+    $scope.inviteSite = 'google'
     $scope.facebook.friendInvites($scope.authentication.currentUser().id).then( ->
       mixpanel.track("Facebook Invites Sent")
       mixpanel.people.increment('Facebook Invites Sent')
@@ -135,6 +140,7 @@
 
   # This method takes the credentials saved on the user and makes a query to google and returns the users contact information.
   $scope.loadGoogleContacts = ->
+    $scope.inviteSite = 'google'
     $scope.dataLoading += 1
     $http(
       method: "GET"
@@ -143,6 +149,20 @@
       friends = _.map(data, (contact) -> {name: contact.name, email: contact.email, value: false})
       $scope.inviteFriends = friends
       $scope.dataLoading -= 1
+    )
+
+  $scope.sendInvitationsToEmail = ->
+    $scope.dataLoadingService.start()
+    $http(
+      method: "POST"
+      url: "/users/contacts/invite.js"
+      data:
+        emails: $scope.emailObject.emailToAddresses
+        body: $scope.emailObject.bodyText
+        from: "email_invite"
+    ).success( (data, status) ->
+      $scope.dataLoadingService.stop()
+      $scope.showThankYou = true
     )
 
   $scope.close = ->
