@@ -29,25 +29,30 @@
 
 namespace :disqus do
   task :get_comments => :environment do
+    parse_disqus
+    @thread = get_thread('2057223648')
+    pp @thread
+
+    @posts = get_posts('2057223648')
+    pp @posts
+  end
+
+  def parse_disqus
     data_file = '~/Downloads/chefstepsproduction-2014-03-14T18-40-58.671900-all.xml'
     xml = File.read(File.expand_path(data_file))
     parser = Nori.new
-    parsed = parser.parse(xml)['disqus']
+    @parsed = parser.parse(xml)['disqus']
+  end
 
-    threads = parsed['thread']
-    # pp threads.first
-    threads.each do |thread|
-      if thread["@dsq:id"] == '2057223648'
-        pp thread
-      end
-    end
+  def get_thread(thread_id)
+    threads = @parsed['thread']
+    thread = threads.select{|k,v| k["@dsq:id"] == thread_id}
+    thread
+  end
 
-    posts = parsed['post']
-    # pp posts
-    posts.each do |post|
-      if post['thread']["@dsq:id"] == '2057223648'
-        pp post
-      end
-    end
+  def get_posts(thread_id)
+    posts = @parsed['post']
+    specific_posts = posts.select{|k,v| k['thread']["@dsq:id"] == thread_id}
+    specific_posts
   end
 end
