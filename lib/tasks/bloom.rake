@@ -23,12 +23,31 @@ namespace :bloom do
 
   end
 
+  # task :get_comments => :environment do
+  #   connect_to_bloom
+  #   response = @bloom.get '/comments'
+  #   @comments =  JSON.parse(response.body)
+  #   @comments.each do |comment|
+  #     puts comment.inspect
+  #   end
+  # end
+
+  require 'elasticsearch/transport'
   task :get_comments => :environment do
-    connect_to_bloom
-    response = @bloom.get '/comments'
-    @comments =  JSON.parse(response.body)
-    @comments.each do |comment|
-      puts comment.inspect
+
+    @elasticsearch = Faraday.new(:url => 'http://d0d7d0e3f98196d4000.qbox.io/') do |faraday|
+      faraday.request  :url_encoded             # form-encode POST params
+      faraday.response :logger                  # log requests to STDOUT
+      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+    end
+
+    response = @elasticsearch.get '/bloom/comment/_search', {size: 1000, realtime: true}
+    
+    comments = JSON.parse(response.body)['hits']['hits']
+    comments.each do |comment|
+      puts '******'
+      p comment
+      puts '******'
     end
   end
 
