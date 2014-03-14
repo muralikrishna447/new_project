@@ -29,7 +29,7 @@
             %button.btn-google.btn.btn-secondary(ng-click="inviteSite='google'; loadGoogleContacts()" ng-show="authentication.currentUser() && !!authentication.currentUser().google_access_token" ng-disabled="dataLoading")
               %i.icon-google-plus
               %b Google
-            %button.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin('#{google_app_id}')" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token" ng-disabled="dataLoading")
+            %button.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin()" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token" ng-disabled="dataLoading")
               %i.icon-google-plus
               %b Google
             -# .button-group
