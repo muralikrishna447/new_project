@@ -164,16 +164,21 @@ setRow = (row, qtyLbs, qty, units) ->
 updateOneRowUnits = ->
   main_qty = $(this).children('.quantity-group').find('.main-qty')
   base_orig_value = main_qty.attr("data-orig-value")
+  orig_units = main_qty.attr("data-orig-units")
   existingUnits = $(this).children('.unit').text()
+
+  # Lazily store off the original units
+  if ! orig_units
+    orig_units = existingUnits
+    main_qty.attr("data-orig-units", orig_units)
 
   # Lazily store off the original value in grams
   if ! base_orig_value || base_orig_value == "null"
     base_orig_value = Number($(main_qty[0]).text())
     main_qty.attr("data-orig-value", base_orig_value)
-    if existingUnits == "kg"
-      base_orig_value = base_orig_value * 1000
-      
+    
   origValue = Number(base_orig_value) * getScaling()
+  origValue *= 1000 if orig_units == "kg"
 
   # "ea" means each, just round up to nearest integer
   if existingUnits == "ea"
