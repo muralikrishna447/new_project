@@ -74,7 +74,7 @@ Delve::Application.routes.draw do
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
-  get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle/
+  get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle|timf/
 
   # resources :courses, only: [:index, :show] do
   #   resources :activities, only: [:show], path: ''

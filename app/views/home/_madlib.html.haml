@@ -1,40 +1,30 @@
-%form.form-inline(ng-controller="MadlibController")
-  %h2.madlib
-    .madlib-item.text-orange
-      Hi ChefSteps,
-    .madlib-item
-      I am
-      %span.input-underlined
-        %input(type="text" placeholder="name" required="true" id="madlib-name" ng-model="register_user.name" ng-class="hasError(register_error.errors.name)" ng-keypress="validNameAndEmail()")
-        %p.bubble(ng-show="register_error.errors.name")
-          {{register_error.errors.name[0]}}
-      and my email is
-      %span.input-underlined<
-        %input(type="email" placeholder="email" required="true" id="madlib-email" ng-model="register_user.email" ng-class="hasError(register_error.errors.email)" ng-keypress="validNameAndEmail()")
-        %p.bubble(ng-show="register_error.errors.email")
-          {{register_error.errors.email[0]}}
-      &#46;
-    .madlib-item
-      I want to join {{getTotalUsers() | number}} others and learn how to be a better cook.
-    .madlib-item#madlib-password-wrapper(ng-show="showMadlibPassword")
-      Please set my password to
-      %span.input-underlined.input-append
-        %input.password-with-show-button(name="password" type="{{passwordType}}" ng-model="register_user.password" placeholder="Password" ng-class="hasError(register_error.errors.password)")
-        %a#show-madlib-password.btn.btn-secondary(ng-click="togglePassword()") Show
-        %p.bubble.passbubble(ng-show="register_error.errors.password")
-          {{register_error.errors.password[0]}}
+%div.relative
+  %form.form-inline(ng-controller="MadlibController")
+    %h2.madlib
+      .madlib-item.text-orange
+        Hi ChefSteps,
+      .madlib-item
+        I am
+        %span.input-underlined
+          %input(type="text" placeholder="name" required="true" id="madlib-name" ng-model="register_user.name" ng-class="hasError(register_error.errors.name)" ng-keypress="validNameAndEmail()")
+          %p.bubble(ng-show="register_error.errors.name")
+            {{register_error.errors.name[0]}}
+        and my email is
+        %span.input-underlined<
+          %input(type="email" placeholder="email" required="true" id="madlib-email" ng-model="register_user.email" ng-class="hasError(register_error.errors.email)" ng-keypress="validNameAndEmail()")
+          %p.bubble(ng-show="register_error.errors.email")
+            {{register_error.errors.email[0]}}
+        &#46;
+      .madlib-item
+        I want to join {{getTotalUsers() | number}} others and learn how to be a better cook.
+      .madlib-item#madlib-password-wrapper(ng-show="showMadlibPassword")
+        Please set my password to
+        %span.input-underlined.input-append
+          %input.password-with-show-button(name="password" type="{{passwordType}}" ng-model="register_user.password" placeholder="Password" ng-class="hasError(register_error.errors.password)")
+          %a#show-madlib-password.btn.btn-secondary(ng-click="togglePassword()") Show
+          %p.bubble.passbubble(ng-show="register_error.errors.password")
+            {{register_error.errors.password[0]}}
 
-    .button-row
-      %button.inline#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register(registrationSource)" ng-disabled="dataLoading") Sign Up Now
-      .btn.btn-large.btn-secondary.social-signup-divider(ng-show="splits.includeSocialInMadlib") or sign up using
-      .facebook-button.facebook-login.inline(ng-show="splits.includeSocialInMadlib")
-        %a(ng-click="facebookConnect(registrationSource)" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
-          %i.icon-facebook
-          %b Facebook
-      .google-button.google-plus-login.inline(ng-show="splits.includeSocialInMadlib")
-        -# %span.g-signin
-        %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google" ng-disabled="dataLoading")
-          %i.icon-google-plus
-          %b Google    
-    %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
-
+      .button-row
+        %button.inline#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register(registrationSource)" ng-disabled="dataLoading") Sign Up Now
+      %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")

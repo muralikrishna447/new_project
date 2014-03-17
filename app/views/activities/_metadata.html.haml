@@ -4,7 +4,7 @@
   %i.icon-chevron-up(ng-show="showHeroVisualEdit")
   %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
 
-%div(collapse="! (editMode && editMeta)")
+%div.anim-basic-fade(ng-show="editMode && editMeta")
   .meta-edit.well.noprint
     %h6 Activity Type
     .btn-toolbar

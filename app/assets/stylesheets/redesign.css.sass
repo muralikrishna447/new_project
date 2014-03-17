@@ -10,7 +10,7 @@ body
   overflow-x: hidden
   overflow-y: hidden
 
-a, [ng-click], [contenteditable]:not(:focus)
+a, [contenteditable]:not(:focus)
   cursor: pointer
 
 [contenteditable]:focus
@@ -35,8 +35,8 @@ div:not(.redactor_box)
     &:empty
       &:before
         content: ""
-      &:hover:not(:focus)
-        background-color: inherit
+    &:hover:not(:focus)
+      background-color: inherit !important
 
 .top-container
   margin-top: $baseline * 7
@@ -156,8 +156,9 @@ div:not(.redactor_box)
 
 .activity-loading-spinner
   position: absolute
-  top: 150px
-  text-align: center
+  top: 50px
+  left: 0px
+  right: 0px
 
 .icon-page-load
   &:before
@@ -391,6 +392,19 @@ a:hover
     font-size: 14px
     padding-right: 0px
 
+.madlib-in-content
+  @include boxsizing
+  //border: 1px solid $light-gray
+  float: left
+  margin: ($baseline * 3) 0 ($baseline * 3) 10px
+  clear: both
+  padding: $baseline $baseline
+  width: 100%
+  
+.buttons-lower-right
+  position: absolute
+  bottom: $baseline
+  right: 11px
 
 .madlib-item
   margin-bottom: $baseline
@@ -704,7 +718,7 @@ a:hover
     overflow: visible
     border: none
 
-  .ingredient-table-row
+  .ingredient-table-row, csequipmenteditpair
     cursor: pointer
     &:hover:not(:focus)
       background: rgba(0, 128, 220, .1) !important
@@ -856,7 +870,6 @@ a:hover
     line-height: $baseline * 2
     min-height: $baseline * 2
     overflow-x: hidden
-    xoverflow-y: visible
     input
       border-top: none
 
@@ -1098,6 +1111,11 @@ a:hover
 
 /* Unique Styles */
 
+.close-x
+  color: #ccc
+  font-size: 22px
+  cursor: pointer
+
 .signup-box
   overflow: hidden
   .input-signup-email
@@ -1333,14 +1351,17 @@ csequipmenteditpair, csingredienteditpair
 
   .action-button-group
     position: absolute
-    left: -56px
-    top:  -11px
+    right: -58px
+    top:  -4px
     font-size:  18px
     margin-top: -2px
+    z-index: 101
+    border: none
+    
     .btn
       padding: 4px 6px
       border-shadow: none
-      -webkit-box-shadow: none
+      @include any-shadow(none)
 
       &:last
         padding-right: 12px
@@ -1370,6 +1391,7 @@ csequipmenteditpair, csingredienteditpair
 csequipmenteditpair
   .action-button-group
     top: -10px
+    z-index: 101
 
 csingredienteditpair
   overflow: visible
@@ -1550,11 +1572,7 @@ input.summary-tweet
     color: $orange
 
 .anim-basic-fade
-  // The commented out background-colors are useful for debugging
-  // background-color: red
-
   &.ng-enter, &.ng-leave, &.ng-move, &.ng-hide-add, &.ng-hide-remove
-    //background-color: green
     @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
 
   &.ng-hide-add, &.ng-hide-remove
@@ -1562,13 +1580,20 @@ input.summary-tweet
     opacity: 1
 
   &.ng-enter, &.ng-leave.ng-leave-active, &.ng-hide-active
-    //background-color: yellow
     opacity: 0
+
   &.ng-leave, &.ng-enter.ng-enter-active, &.ng-move
-    //background-color: orange
-    opacity: 1    
+    opacity: 1
+
   &.ng-move-active
     opacity: 0.5
+
+.anim-delayed-fade
+  @extend .anim-basic-fade
+  &.ng-enter, &.ng-leave, &.ng-move, &.ng-hide-add, &.ng-hide-remove
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s)
+    @include transition-delay(3s)
+
 
 // BELOW ARE RESPONSIVE STYLES //
 
@@ -1806,6 +1831,7 @@ input.summary-tweet
     input[type='text'], input[type='email']
       width: 80%
       font-size: 20px
+
 
   .top-container
     margin-top: 0px

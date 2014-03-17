@@ -1,4 +1,4 @@
 %div
-  %div( ng-show="!editMode" ng-bind-html="ngModel | trim | markdown | shortcode")
+  %div(ng-show="!editMode" ng-bind-html="runFilters(ngModel)")
   %div(ng-show="editMode")
     %textarea(ng-model="ngModel" ui-redactor placeholder="{{placeholder}}")

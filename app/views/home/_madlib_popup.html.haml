@@ -1,10 +1,10 @@
 %div( ng-controller="LoginController" 
-      ng-hide="editMode || authentication.currentUser()" 
-      ng-init="registrationSource ='#{registration_source}'")
+      ng-init="registrationSource ='#{registration_source}'"
+      ng-hide="editMode || authentication.currentUser()" )
 
-  .container-fluid.popup-bottom(ng-class="{'popup-bottom-show' : shouldShowPopupCTA()}" 
-                                ng-controller="PopupCTAController" 
-                                ng-cloak)
+  .container-fluid.popup-bottom(  ng-class="{'popup-bottom-show' : shouldShowPopupCTA()}" 
+                                  ng-controller="PopupCTAController" 
+                                  ng-cloak)
                          
     = render "devise/sessions/new_angular"
     = render 'home/madlib'

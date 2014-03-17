@@ -2,7 +2,7 @@
 
 angular.module('templates', []).run(["$templateCache", function($templateCache) {
     <% Dir.glob(Rails.root.join('app','views','client_views', '*.haml')).each do |f| %>
-    // console.log("Caching <%= File.basename(f).gsub(/\.haml$/, '')  %>");
+    console.log("Caching <%= File.basename(f).gsub(/\.haml$/, '')  %>");
     $templateCache.put("<%= File.basename(f).gsub(/\.haml$/, '')  %>", <%= Haml::Engine.new(File.read(f)).render.to_json %>);
     <% end %>
 
@@ -12,4 +12,4 @@ angular.module('templates', []).run(["$templateCache", function($templateCache) 
       "</span>\n" +
     "");
 }]);
-//46<= forced change, just add something here for every change to files in app/views/client_views
+//49<= forced change, just add something here for every change to files in app/views/client_views
