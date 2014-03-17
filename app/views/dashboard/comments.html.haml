@@ -1,18 +1,19 @@
 .container
   .row
     .span12
-      %h1 ChefSteps Comments
-      %div(ng-controller='csCommentsController')
-        .row(ng-repeat="comment in comments | orderBy: '-createdAt'")
-          .span6
-            %div(ng-if='!comment.author')
-              %h1 NO AUTHOR
-            %small
-              {{comment.createdAt | date:'medium'}}
-            %div(bind-html-unsafe='comment.content')
-          .span6
-            %a.btn.btn-secondary(ng-href='{{databaseUrl}}/{{comment._id}}' target='_blank')
-              view on Elastic Search
-            %div(ng-if='comment.upload')
-              %a.btn.btn-secondary(ng-href='/uploads/{{comment.upload}}' target='_blank')
-                view
+      %dashboard
+      / %h1 ChefSteps Comments
+      / %div(ng-controller='csCommentsController')
+      /   .row(ng-repeat="comment in comments | orderBy: '-createdAt'")
+      /     .span6
+      /       %div(ng-if='!comment.author')
+      /         %h1 NO AUTHOR
+      /       %small
+      /         {{comment.createdAt | date:'medium'}}
+      /       %div(bind-html-unsafe='comment.content')
+      /     .span6
+      /       %a.btn.btn-secondary(ng-href='{{databaseUrl}}/{{comment._id}}' target='_blank')
+      /         view on Elastic Search
+      /       %div(ng-if='comment.upload')
+      /         %a.btn.btn-secondary(ng-href='/uploads/{{comment.upload}}' target='_blank')
+      /           view
