@@ -28,5 +28,5 @@
       .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(ng-src="{{stepImageURL(step, 670)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
-  %div(ng-include="'/client_views/_step_edit_images'")
-%div(ng-include="'/client_views/_aside'")
+  %div(ng-include="'_step_edit_images.html'")
+%div(ng-include="'_aside.html'")
