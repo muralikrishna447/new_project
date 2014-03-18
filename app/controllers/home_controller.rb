@@ -1,9 +1,9 @@
 class HomeController < ApplicationController
 
   def index
-    @classes = Assembly.pubbed_courses.order('created_at asc').to_a
-    prereg_assembly_classes = Assembly.prereg_courses.order('created_at asc').limit(1)
-    pubbed_assembly_classes = Assembly.pubbed_courses.order('created_at asc').limit(1)
+    @classes = Assembly.pubbed_courses.order('created_at desc').to_a
+    prereg_assembly_classes = Assembly.prereg_courses.order('created_at desc').limit(1)
+    pubbed_assembly_classes = Assembly.pubbed_courses.order('created_at desc').limit(1)
     @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
 
     if current_user
