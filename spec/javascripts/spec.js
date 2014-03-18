@@ -6,7 +6,6 @@
 //=require angular-mocks
 //=require_tree .
 //= require bloom/bloom
-//= require bloom/templates
 
 // Working around https://github.com/pivotal/jasmine/issues/334 - fun!
 angular.mock.clearDataCache = function() {
