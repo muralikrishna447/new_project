@@ -47,7 +47,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $scope.showForm = form
 
   $scope.openModal = (form) ->
-    console.log 'opening modal with form :', form
     if form == "login"
       $scope.loginModalOpen = true
     else if form == "invite"
@@ -466,7 +465,5 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $("#fakelogin").submit()
 
   $scope.$on 'openLoginModal', ->
-    console.log 'open login modal'
-    console.log $scope
     $scope.openModal('login')
 ]

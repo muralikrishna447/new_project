@@ -61,7 +61,3 @@
       %hr
       %div(ng-controller='csCommentsController')
         %comments(db-params="{'upload': '#{@upload.id}'}" on-login="showModal()")
-      / %div(ng-controller='LoginController')
-      /   %btn.btn.btn-secondary(ng-click="openModal('login')")
-      /     open
-      /   = render "devise/sessions/new_angular"
