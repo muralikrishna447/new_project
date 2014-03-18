@@ -82,7 +82,9 @@ class ActivitiesController < ApplicationController
           when 'Recipe Development'
             path = view_context.link_to containing_class.title, recipe_development_path(containing_class)
           end
-          flash.now[:notice] = "This is part of the #{path} #{containing_class.assembly_type.to_s}."
+          container_name = containing_class.assembly_type.to_s
+          container_name = "Class" if container_name == "Course"
+          flash.now[:notice] = "This is part of the #{path} #{container_name}."
         end
         track_event @activity
 
