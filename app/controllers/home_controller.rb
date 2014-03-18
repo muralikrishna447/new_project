@@ -6,6 +6,7 @@ class HomeController < ApplicationController
     pubbed_assembly_classes = Assembly.pubbed_courses.order('created_at asc').limit(1)
     @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
 
+
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_feeds.order('published_at desc').first(6)
     else
