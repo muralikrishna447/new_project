@@ -66,6 +66,7 @@
  *= require buttons
  *= require cs_redactor
  *= require bloom/bloom
+ *= require bloom/bloom_dashboard
  *= require scroll_action
  *= require why_by_weight
 

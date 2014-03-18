@@ -48,6 +48,7 @@
     = javascript_include_tag 'application'
     / %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bloom.js'}
     / %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/templates.js'}
+    / = stylesheet_link_tag 'https://s3.amazonaws.com/chefsteps-production-assets/bloom/dashboard.css', media: 'all'
     %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle.js'}
     %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav}"}
