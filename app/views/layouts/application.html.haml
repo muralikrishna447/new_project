@@ -46,8 +46,7 @@
     = render 'layouts/crazyegg'
     = javascript_include_tag 'application_head'
     = javascript_include_tag 'application'
-    %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle.js'}
-    / %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle.min.js'}
+    %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle.min.js'}
     %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav}"}
     = render 'layouts/facebook'
