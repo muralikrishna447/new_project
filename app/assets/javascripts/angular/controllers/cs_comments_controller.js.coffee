@@ -1,3 +1,4 @@
+@app.constant('BloomAPIUrl', "http://chefsteps-bloom.herokuapp.com")
 @app.service 'BloomSettings', ['$q', 'csAuthentication', '$http', '$rootScope', ($q, csAuthentication, $http, $rootScope) ->
   window.csA = csAuthentication
   setUser = (reload) =>
@@ -25,6 +26,14 @@
       data.avatarUrl = data['avatar_url']
       def.resolve data
    
+    def.promise
+
+  @commentsIdToData = (id) =>
+    def = $q.defer()
+
+    $http.get("/comments/info?commentsId=#{id}").then (res) =>\
+      def.resolve(res.data)
+
     def.promise
 
   return this
