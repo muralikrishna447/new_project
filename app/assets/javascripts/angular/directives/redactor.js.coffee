@@ -28,7 +28,7 @@ angular.module("ui.directives").directive "uiRedactor", ["ui.config", (uiConfig)
 
     scope.$watch getVal, (newVal) ->
       ngModelCtrl.$setViewValue newVal unless ngModelCtrl.$pristine
-
+      
     #watch external model change
     ngModelCtrl.$render = ->
       redactor.redactor('set', ngModelCtrl.$viewValue or '') if redactor?

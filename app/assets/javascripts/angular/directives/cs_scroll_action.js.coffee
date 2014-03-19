@@ -13,8 +13,10 @@ angular.module('ChefStepsApp').directive 'csScrollAction', ["$window", ($window)
     # console.log 'Start Position', startPosition
     # console.log 'End Position', endPosition
 
+
     windowElement.on 'scroll', (event) ->
       scrollPosition = windowElement.scrollTop()
+
       # console.log scrollPosition
       if startPosition < scrollPosition < endPosition
         element.addClass(scope.onAppearClass)
