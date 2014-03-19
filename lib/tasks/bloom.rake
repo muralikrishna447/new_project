@@ -32,7 +32,7 @@ namespace :bloom do
   #   end
   # end
 
-  task :get_comments => :environment do
+  task :update_comments => :environment do
     connect_to_es
     response = @elasticsearch.get '/bloom/comment/_search', {size: 1000, realtime: true}
 
@@ -47,41 +47,6 @@ namespace :bloom do
       add_db_params_to_comment(es_id,'upload',upload_id)
       puts '******'
     end
-    # response = @elasticsearch.get '/bloom/comment/SkJqrkYET0u46plX1pRASg'
-    # comment = JSON.parse(response.body)
-    # puts comment
-    # upload_id = comment['_source']['upload']
-
-    # post_body = {
-    #   "script" => "ctx._source.test = 'some text'"
-    # }
-
-    # post_body = {
-    #   "script" => "ctx._source.remove(\"test\")"
-    # }
-
-    # post_body = {
-    #   "script" => "ctx._source.remove(\"db-params\")"
-    # }
-
-    # post_body = {
-    #   "doc" => {
-    #     "db-params" => {
-    #       "commentsId" => "upload-#{upload_id}"
-    #     }
-    #   }
-    # }
-
-    # puts JSON.generate(post_body)
-    # post_response = @elasticsearch.post do |req|
-    #   req.url '/bloom/comment/SkJqrkYET0u46plX1pRASg/_update'
-    #   req.headers['Content-Type'] = 'application/json'
-    #   req.body = JSON.generate(post_body)
-    # end
-    # puts JSON.parse(post_response.body)
-
-    # remove_db_params_on_comment('SkJqrkYET0u46plX1pRASg')
-    # add_db_params_to_comment('SkJqrkYET0u46plX1pRASg','upload',upload_id)
   end
 
   def post_comment(conn, user, commentable_name, commentable_id, content)
