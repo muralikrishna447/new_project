@@ -1,4 +1,4 @@
-@app.constant('BloomAPIUrl', "http://chefsteps-bloom.heroku.com")
+@app.constant('BloomAPIUrl', "http://chefsteps-bloom.herokuapp.com")
 @app.service 'BloomSettings', ['$q', 'csAuthentication', '$http', '$rootScope', ($q, csAuthentication, $http, $rootScope) ->
   window.csA = csAuthentication
   setUser = (reload) =>
