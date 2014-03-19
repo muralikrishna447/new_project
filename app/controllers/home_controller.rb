@@ -1,16 +1,13 @@
 class HomeController < ApplicationController
 
   def index
-    @classes = Assembly.pubbed_courses.order('created_at asc').to_a
-    prereg_assembly_classes = Assembly.prereg_courses.order('created_at asc').limit(1)
-    pubbed_assembly_classes = Assembly.pubbed_courses.order('created_at asc').limit(1)
+    @classes = Assembly.pubbed_courses.order('created_at desc').to_a
+    prereg_assembly_classes = Assembly.prereg_courses.order('created_at desc').limit(1)
+    pubbed_assembly_classes = Assembly.pubbed_courses.order('created_at desc').limit(1)
     @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
 
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_feeds.order('published_at desc').first(6)
-      @recipe_developments = Assembly.published.recipe_developments.last(3)
-      # @followings_stream = Kaminari::paginate_array(current_user.followings_stream).page(params[:page]).per(6)
-      # @stream = current_user.received_stream.take(4)
     else
       @heroes = Setting.featured_activities
       @recipes = Activity.published.chefsteps_generated.recipes.include_in_feeds.includes(:steps).last(6) - @heroes

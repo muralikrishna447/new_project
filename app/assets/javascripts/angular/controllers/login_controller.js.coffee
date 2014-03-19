@@ -463,4 +463,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $("#fakelogin #email").val($scope.login_user.email)
     $("#fakelogin #password").val($scope.login_user.password)
     $("#fakelogin").submit()
+
+  $scope.$on 'openLoginModal', ->
+    $scope.openModal('login')
 ]

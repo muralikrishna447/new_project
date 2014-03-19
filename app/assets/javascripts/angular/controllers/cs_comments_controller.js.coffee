@@ -30,15 +30,13 @@
   return this
 ]
 
-@app.service 'Session', ['BloomSettings', (BloomSettings) ->
-  @me = BloomSettings.user
-  return this
-]
+# @app.service 'Session', ['BloomSettings', (BloomSettings) ->
+#   @me = BloomSettings.user
+#   return this
+# ]
 
-@app.controller 'csCommentsController', ['$scope', '$resource', ($scope, $resource) ->
-  $scope.Comment = $resource('http://chefsteps-bloom.herokuapp.com/comments')
-  $scope.comments = $scope.Comment.query(->
-
-  )
+@app.controller 'csCommentsController', ['$scope', '$resource', '$rootScope', ($scope, $resource, $rootScope) ->
+  $scope.showModal = =>
+    $rootScope.$broadcast 'openLoginModal'
 
 ]

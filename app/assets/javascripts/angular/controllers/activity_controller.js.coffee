@@ -5,8 +5,8 @@ window.deepCopy = (obj) ->
     jQuery.extend(true, {}, obj)
 
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService", "Activity", "csTagService", 
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll, csEditableHeroMediaService, Activity, csTagService) ->
+angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication"
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll, csEditableHeroMediaService, Activity, csTagService, csAuthentication) ->
 
   $scope.heroMedia = csEditableHeroMediaService
 
@@ -414,7 +414,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.loadActivity = (id) ->
     return if id == $scope.activity?.id
-    $scope.maybeShowWhyByWeight()
     if $scope.activities[id]
       # Even if we have it cached, use a slight delay and dissolve to
       # make it feel smooth and let youtube load
@@ -516,16 +515,16 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       mixpanel.track('Why By Weight Tell Me More', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
 
   $scope.maybeShowWhyByWeight = ->
+    return if localStorageService.get('whyByWeightShown')
+    return if csAuthentication.loggedIn()
     return if ! $scope.activity || ! $scope.activity.ingredients?.length > 0
     return if $scope.activity.ingredients[0]?.unit != "g"
-    $scope.showWhyByWeight = ! localStorageService.get('whyByWeightShown')
-    mixpanel.track('Why By Weight Shown', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug}) if $scope.showWhyByWeight
+
+    $scope.showWhyByWeight = true
     localStorageService.set('whyByWeightShown', true)
 
   # One time stuff
-
   if $scope.parsePreloaded()
-    $scope.maybeShowWhyByWeight()
     $scope.schedulePostPlayEvent()
 
     if ! $scope.maybeRestoreFromLocalStorage()

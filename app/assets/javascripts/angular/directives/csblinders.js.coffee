@@ -51,11 +51,17 @@
   restrict: 'E'
   scope: {
     index: '='
+    path: '@'
   }
   require: '^csBlinders'
+  controller: ['$scope', ($scope) ->
+    console.log $scope.active = false
+  ]
   link: (scope, element, attrs, csBlinders) ->
+    console.log scope
     csBlinders.addBlinder(scope)
     el = angular.element(element)
+    scope.active = false
 
     scope.getDimensions = (blinders) ->
       scope.width = blinders.blinderWidth
@@ -80,7 +86,9 @@
       scope.setInitialDimensions()
 
     el.click ->
-      unless scope.active
+      if scope.active
+        window.location = scope.path
+      else
         csBlinders.expand(scope.index)
 
     scope.activate = ->
