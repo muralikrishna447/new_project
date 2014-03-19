@@ -27,6 +27,9 @@ class ChargesController < ApplicationController
         mixpanel.people.append(current_user.email, {'Free Trial Converted' => assembly.slug})
         mixpanel.track(current_user.email, "Free Trial Conversion", {slug: assembly.slug, length: current_user.class_enrollment(assembly).free_trial_length.to_s})
       end
+      if assembly.paid_class?
+        mixpanel.track(current_user.email, 'Course Purchased Server Side', {slug: assembly.slug})
+      end
       @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken])
     end
 
