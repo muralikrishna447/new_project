@@ -169,7 +169,11 @@ Delve::Application.routes.draw do
     resources :comments
   end
   resources :votes, only: [:create]
-  resources :comments
+  resources :comments, only: [:index, :create] do
+    collection do
+      get 'info' => 'comments#info'
+    end
+  end
   resources :followerships, only: [:update]
   resources :assemblies, only: [:index, :show] do
     resources :comments

@@ -27,6 +27,14 @@
    
     def.promise
 
+  @commentsIdToData = (id) =>
+    def = $q.defer()
+
+    $http.get("/comments/info?commentsId=#{id}").then (res) =>\
+      def.resolve(res.data)
+
+    def.promise
+
   return this
 ]
 
