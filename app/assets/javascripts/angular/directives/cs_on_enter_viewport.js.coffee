@@ -2,6 +2,7 @@
   restrict: 'A'
   scope:
     reachedScreenCallback: '&'
+    offset: "="
 
   link: (scope, element, attrs) ->
     
@@ -10,14 +11,16 @@
     windowElement = angular.element($window)
     windowElement.on 'scroll', (event) ->
 
-      if scope.reachedScreenCallback # && ! scope.sentCallback 
+      if scope.reachedScreenCallback && ! scope.sentCallback 
         elementPosition = element[0].getBoundingClientRect().top
        
         windowHeight = windowElement.height()
         console.log elementPosition
         console.log windowHeight
 
-        if (elementPosition < windowHeight - 100)
+        offset = parseInt(scope.offset || 100)
+
+        if (elementPosition < windowHeight - offset)
           console.log "Sending callback"
           scope.reachedScreenCallback() 
           scope.sentCallback = true
