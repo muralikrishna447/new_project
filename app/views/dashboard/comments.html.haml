@@ -1,14 +1,5 @@
+= stylesheet_link_tag "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css", media: 'all'
 .container
   .row
     .span12
-      %h1 ChefSteps Comments
-      %div(ng-controller='csCommentsController')
-        .row(ng-repeat="comment in comments | orderBy: '-createdAt'")
-          .span6
-            %small
-              {{comment.createdAt | date:'medium'}}
-            %div(bind-html-unsafe='comment.content')
-          .span6
-            %div(ng-if='comment.upload')
-              %a.btn.btn-secondary(ng-href='/uploads/{{comment.upload}}' target='_blank')
-                view
+      %dashboard

@@ -61,6 +61,7 @@ gem 'google-api-client'
 gem 'nested-hstore'
 gem 'gibbon'
 gem 'faraday'
+gem 'nori'
 
 group :development do
   gem 'spring'

@@ -137,11 +137,15 @@ class User < ActiveRecord::Base
   end
 
   def profile_image_id
-    self.image_id ||= '{"url":"https://www.filepicker.io/api/file/U2RccgsARPyMmzJ5Ao0c","filename":"default-avatar@2x.png","mimetype":"image/png","size":6356,"key":"users_uploads/FhbcOZpQYKJU8nHeJg1j_default-avatar@2x.png","isWriteable":true}'
+    if self.image_id.blank?
+      '{"url":"https://www.filepicker.io/api/file/U2RccgsARPyMmzJ5Ao0c","filename":"default-avatar@2x.png","mimetype":"image/png","size":6356,"key":"users_uploads/FhbcOZpQYKJU8nHeJg1j_default-avatar@2x.png","isWriteable":true}'
+    else
+      self.image_id
+    end
   end
 
   def avatar_url
-    url = ActiveSupport::JSON.decode(self.image_id)["url"]
+    url = ActiveSupport::JSON.decode(self.profile_image_id)["url"]
     avatar_url = "#{url}/convert?fit=crop&w=70&h=70&cache=true".gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
   end
 
