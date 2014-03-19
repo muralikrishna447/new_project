@@ -513,12 +513,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       mixpanel.track('Why By Weight Tell Me More', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
 
   $scope.maybeShowWhyByWeight = ->
-    console.log "In callback"
     return if localStorageService.get('whyByWeightShown')
     return if csAuthentication.loggedIn()
     return if ! $scope.activity || ! $scope.activity.ingredients?.length > 0
     return if $scope.activity.ingredients[0]?.unit != "g"
-    console.log "Setting true"
     $scope.viewOptions.showWhyByWeight = true
     localStorageService.set('whyByWeightShown', true)
     mixpanel.track('Why By Weight Shown', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})

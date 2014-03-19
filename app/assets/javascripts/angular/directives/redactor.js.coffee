@@ -27,11 +27,8 @@ angular.module("ui.directives").directive "uiRedactor", ["ui.config", (uiConfig)
       #blurCallback: -> elm.parent().find('.redactor_toolbar').hide()
 
     scope.$watch getVal, (newVal) ->
-      _.throttle( (->
-        ngModelCtrl.$setViewValue newVal unless ngModelCtrl.$pristine
-      250))
+      ngModelCtrl.$setViewValue newVal unless ngModelCtrl.$pristine
       
-
     #watch external model change
     ngModelCtrl.$render = ->
       redactor.redactor('set', ngModelCtrl.$viewValue or '') if redactor?
