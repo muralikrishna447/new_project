@@ -33,21 +33,55 @@ namespace :bloom do
   # end
 
   task :get_comments => :environment do
-
-    @elasticsearch = Faraday.new(:url => 'http://d0d7d0e3f98196d4000.qbox.io/') do |faraday|
-      faraday.request  :url_encoded             # form-encode POST params
-      faraday.response :logger                  # log requests to STDOUT
-      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-    end
-
+    connect_to_es
     response = @elasticsearch.get '/bloom/comment/_search', {size: 1000, realtime: true}
 
     comments = JSON.parse(response.body)['hits']['hits']
     comments.each do |comment|
+      es_id = comment['_id']
+      upload_id = comment['_source']['upload']
       puts '******'
-      p comment
+      puts es_id
+      puts upload_id
+      # remove_db_params_on_comment(es_id)
+      add_db_params_to_comment(es_id,'upload',upload_id)
       puts '******'
     end
+    # response = @elasticsearch.get '/bloom/comment/SkJqrkYET0u46plX1pRASg'
+    # comment = JSON.parse(response.body)
+    # puts comment
+    # upload_id = comment['_source']['upload']
+
+    # post_body = {
+    #   "script" => "ctx._source.test = 'some text'"
+    # }
+
+    # post_body = {
+    #   "script" => "ctx._source.remove(\"test\")"
+    # }
+
+    # post_body = {
+    #   "script" => "ctx._source.remove(\"db-params\")"
+    # }
+
+    # post_body = {
+    #   "doc" => {
+    #     "db-params" => {
+    #       "commentsId" => "upload-#{upload_id}"
+    #     }
+    #   }
+    # }
+
+    # puts JSON.generate(post_body)
+    # post_response = @elasticsearch.post do |req|
+    #   req.url '/bloom/comment/SkJqrkYET0u46plX1pRASg/_update'
+    #   req.headers['Content-Type'] = 'application/json'
+    #   req.body = JSON.generate(post_body)
+    # end
+    # puts JSON.parse(post_response.body)
+
+    # remove_db_params_on_comment('SkJqrkYET0u46plX1pRASg')
+    # add_db_params_to_comment('SkJqrkYET0u46plX1pRASg','upload',upload_id)
   end
 
   def post_comment(conn, user, commentable_name, commentable_id, content)
@@ -77,6 +111,44 @@ namespace :bloom do
       faraday.response :logger                  # log requests to STDOUT
       faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
     end
+  end
+
+  def connect_to_es
+    @elasticsearch = Faraday.new(:url => 'http://d0d7d0e3f98196d4000.qbox.io/') do |faraday|
+      faraday.request  :url_encoded             # form-encode POST params
+      faraday.response :logger                  # log requests to STDOUT
+      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+    end
+  end
+
+  def add_db_params_to_comment(es_id, commentable_type, commentable_id)
+    post_body = {
+      "doc" => {
+        "dbParams" => {
+          "commentsId" => "#{commentable_type}-#{commentable_id}"
+        }
+      }
+    }
+    post_response = @elasticsearch.post do |req|
+      req.url "/bloom/comment/#{es_id}/_update"
+      req.headers['Content-Type'] = 'application/json'
+      req.body = JSON.generate(post_body)
+    end
+    puts JSON.parse(post_response.body)
+    puts '********'
+  end
+
+  def remove_db_params_on_comment(es_id)
+    post_body = {
+      "script" => "ctx._source.remove(\"dbParams\")"
+    }
+    post_response = @elasticsearch.post do |req|
+      req.url "/bloom/comment/#{es_id}/_update"
+      req.headers['Content-Type'] = 'application/json'
+      req.body = JSON.generate(post_body)
+    end
+    puts JSON.parse(post_response.body)
+    puts '********'
   end
 
 end
