@@ -1,4 +1,4 @@
-@app.directive 'csOnEnterViewport', ["$window", ($window) ->
+@app.directive 'csOnEnterViewport', ["$window", "$timeout", ($window, $timeout) ->
   restrict: 'A'
   scope:
     reachedScreenCallback: '&'
@@ -22,7 +22,8 @@
 
         if (elementPosition < windowHeight - offset)
           console.log "Sending callback"
-          scope.reachedScreenCallback() 
-          scope.sentCallback = true
-
+          $timeout ->
+            scope.reachedScreenCallback() 
+            scope.sentCallback = true
+          
 ]

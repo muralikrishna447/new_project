@@ -21,6 +21,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
   $scope.activities = {}
+  $scope.viewOptions = {showWhyByWeight: false}
   $rootScope.loading = 0
 
   $scope.csTagService = csTagService
@@ -504,24 +505,23 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     else
       'span7'
 
-  $scope.getShowWhyByWeight = ->
-    $scope.showWhyByWeight
-
   $scope.hideWhyByWeight = (abandon) ->
-    $scope.showWhyByWeight = false
+    $scope.viewOptions.showWhyByWeight = false
     if abandon
       mixpanel.track('Why By Weight Abandoned', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
     else
       mixpanel.track('Why By Weight Tell Me More', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
 
   $scope.maybeShowWhyByWeight = ->
+    console.log "In callback"
     return if localStorageService.get('whyByWeightShown')
     return if csAuthentication.loggedIn()
     return if ! $scope.activity || ! $scope.activity.ingredients?.length > 0
     return if $scope.activity.ingredients[0]?.unit != "g"
-
-    $scope.showWhyByWeight = true
+    console.log "Setting true"
+    $scope.viewOptions.showWhyByWeight = true
     localStorageService.set('whyByWeightShown', true)
+    mixpanel.track('Why By Weight Shown', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
 
   # One time stuff
   if $scope.parsePreloaded()
