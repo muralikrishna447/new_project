@@ -60,4 +60,4 @@
     
       %hr
       %div(ng-controller='csCommentsController')
-        %comments(db-params="{'upload': '#{@upload.id}'}" on-login="showModal()")
+        %comments(db-params="{'commentsId': 'upload_#{@upload.id}'}" on-login="showModal()")

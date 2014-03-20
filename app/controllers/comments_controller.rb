@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
   end
 
   def info
-    split_id = params['commentsId'].split('-')
+    split_id = params['commentsId'].split('_')
     resource = split_id[0]
     id = split_id[1]
     @commentable = resource.singularize.classify.constantize.find(id)
