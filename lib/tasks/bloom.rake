@@ -90,7 +90,7 @@ namespace :bloom do
     post_body = {
       "doc" => {
         "dbParams" => {
-          "commentsId" => "#{commentable_type}-#{commentable_id}"
+          "commentsId" => "#{commentable_type}_#{commentable_id}"
         }
       }
     }
