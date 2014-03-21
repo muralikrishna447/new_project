@@ -1,0 +1,17 @@
+.noprint
+  .top-triangle
+    %i.icon-caret-up
+  %h4 
+    HEY, WHY IS THIS IN GRAMS? 
+    <br>
+    THAT'S UN-AMERICAN!
+  .close-x(ng-click="hideWhyByWeight(true)")
+    %i.icon-remove
+
+  %p Well, because it's better. Here's why:
+  .section
+  %csEmbedYouTube(video-id="YEt0I7I3MDM" container-slug="{{activity.slug}}")
+  .btn.btn-primary.btn-large.section
+    %a(href="http://chefsteps.com/assemblies/why-work-by-weight" target="_blank" ng-click="hideWhyByWeight(false)") TELL ME MORE
+  .btn.btn-link.text-center(ng-click="hideWhyByWeight(true)") I got it, I got it.
+

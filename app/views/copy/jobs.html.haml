@@ -1,7 +1,144 @@
 - content_for :title, 'ChefSteps Jobs'
+- content_for :description, "We're looking to educate and solve problems for every cook. Empowering people to cook more efficiently, more often, and inspire them to have fun doing it. We hire people who are generalists, but also exhibit deep subject expertise. We're always interested in people with original ideas, but we hire people who also recognize the importance of collaboration to turn great ideas into great products."
+
+- @no_alerts = true
+
+.chefsteps-filter
+  .text-center
+    %h1.tagline Join ChefSteps
+/    .text-center
+/      .btn.btn-primary= link_to 'SEE OPEN POSITIONS', '#openPositions'
 
 .container.jobs
-  .row.intro
-    .span12
-      :markdown
-        #{jobs}
+  .span10.offset1
+    .row.whitespace
+      .text-center
+        %h1 Every cook, cooking smarter.
+        %h5.anim-change-bg(cs-scroll-action on-appear-class='anim-change-bg-active') We're looking to educate and solve problems for every cook. Empowering people to cook more efficiently, more often, and inspiring them to have fun doing it.
+  %hr
+    .row
+      .span12
+        %h2 ChefSteps Core Values
+        %p Sure, every startup's got core values. They're idealistic and may seem unattainable, but they're absolutely essential in creating a shared vision that everyone can get behind. And we work on them everyday at ChefSteps. 
+    .row
+      .span4.well.fixed
+        %h3 Empower Cooks
+        %p Show people how something works instead of telling them it works. Focus on delivering guidance, rather than answers, and together we'll empower a generation of cooks who are hungry to learn more.
+      .span4.well.fixed
+        %h3 Ship on Quality
+        %p Knowing when something is good enough is different from knowing when it is great, and knowing when it is great is different from waiting until it is perfect. Quality, yes, but please, ship.
+      .span4.well.fixed
+        %h3 Over-communicate
+        %p Communicate openly. Ask lots of questions. Listen to your peers, interject your opinion, and have the courage and the curiosity to find out more about what people around you are working on.
+    .row
+      .span4.well.fixed
+        %h3 Be Smart and Execute
+        %p Do what you think is effective. Not knowing is fine: frame an experiment, hypothesize, synthesize, learn, and move on.
+      .span4.well.fixed
+        %h3 Stay Hungry
+        %p Leave work every day having learned something new. Someone is always doing something that you don't yet know how to do, and taking the initiative to learn about it will earn respect.
+      .span4.well.fixed
+        %h3 Do What You Love
+        %p Think long-term about what you love to do, and that will guide you to where the most value is in the short-term. Do what needs to get done so you can continue doing what you love.
+    .row
+      .span4.well.fixed
+        %h3 Win Together
+        %p We succeed and fail as a team. Don’t worry about getting credit, just make this place awesome.
+  %hr
+  .span12
+    .row
+      %h2 Why work here?
+      %p A lot of reasons, really. We're thinking big about how the kitchen has (and hasn't changed) over the years, and we're working hard to be at the core of that. We're a product-oriented company from start-to-finish.
+    .row  
+      .anim-shift-top(cs-scroll-action on-appear-class='anim-shift-top-active')
+        .row
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/LcUGSVWeQ0Oglu1jybKs', class: 'img-circle', alt: ''
+            %h4 Amazing work space in Pike Place Market
+            %p Steps from where they throw all that fish. 
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/4BmANtBTQzCYNUGvO92J', class: 'img-circle', alt: ''
+            %h4 Unlimited vacation & Sick time
+            %p Because you're a grown up.
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/iZRgxrxYT02o07DEkc47', class: 'img-circle', alt: ''
+            %h4 Really freaking good Medical, Dental &  Vision
+            %p Stay healthy, stay happy.
+        .row
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/nrRdJZ7RD2Bg3TPmJf0w', class: 'img-circle', alt: ''
+            %h4 Flexible work environment
+            %p WFH, WFS (Stumptown), WFPR (Puerto Rico)
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/LSlMdhgQPgPUlyKc8HEg', class: 'img-circle', alt: ''
+            %h4 Food & Drink
+            %p Fish and chips, macarons, David Kinch gumbo, burgers, chicken wings, steak, pistachio gelato. And much more.
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/3Ut6jvLwRsW2iiUqIEw5', class: 'img-circle', alt: ''
+            %h4 Bottomless supply of amazing coffee
+            :markdown
+              Mostly [Herkimer](http://herkimercoffee.com/home.php) and you pull your own shots. But don't worry, we'll teach you.
+        .row
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/hLzzyxTzSxeW1hDS4vNG', class: 'img-circle', alt: ''
+            %h4 Work on what you value most
+            %p See above. Do what you love.
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/XJJl3gMQBOdNFaFfqpLc', class: 'img-circle', alt: ''
+            %h4 Small team environment
+            %p Everybody knows your name. That's Cheers for you millenials.
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/pxChjxHlTvqcaMnDiT7d', class: 'img-circle', alt: ''
+            %h4 Encouraged to learn
+            %p Spend some time in the kitchen, in the hardware lab, or outside in a glider (really).
+        .row
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/f7FkwsNARTuomIR5wKij', class: 'img-circle', alt: ''
+            %h4 Be your own boss
+            %p We don't micromanage.
+          .span4.well.fixed
+            .text-center.section
+              = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/Tclaix4iQIyER56xCkcT', class: 'img-circle', alt: 'Be your own boss'
+            %h4= link_to 'A kick-ass team', '/about'
+            :markdown
+              We also really like to [have a good time](//instagram.com/p/lLORSpOR8m).
+    .row
+      %hr  
+  .span8
+    .row
+      %h2#openPosition Open Positions
+      %ul.no-bullet
+        %li.section
+          %h3 Embedded Systems Engineer
+          %p.section ChefSteps is looking for someone fluent in embedded systems and firmware development. You'll work with our hardware team to conceive, design, evaluate, and produce a generation of intelligent kitchen tools and devices that will open up new possibilities for innovation. You will change the way the world cooks.
+          .btn.btn-primary= link_to 'Apply Now', '//chefsteps.theresumator.com/apply/ddbu1c/Embedded-Systems-Engineer.html'
+        %li.section
+          %h3 Full-Stack Web Developer
+          %p.section ChefSteps is looking for developers able to operate effectively across both server-side (primarily Rails) and client-side (primarily Angular.js) to create beautiful experiences for our users.
+          .btn.btn-primary= link_to 'Apply Now', '//chefsteps.theresumator.com/apply/x9pPkp/FullStack-Web-Developer.html'
+        %li.section
+          %h3 HTML5 Mobile App Developer
+          %p.section ChefSteps is looking for engineers with deep experience creating beautiful iOS apps using HTML5 and modern Javascript frameworks, preferably Angular.js. Your apps achieve a near-native feel, and are readily portable to Android. 
+          .btn.btn-primary= link_to 'Apply Now', '//chefsteps.theresumator.com/apply/6LztnD/HTML5-Mobile-App-Developer.html'
+        %li.section
+          %h3 Web Services Developer
+          %p.section ChefSteps is looking for engineers with demonstrable experience building high-performance, high-reliability web services.
+          .btn.btn-primary= link_to 'Apply Now', '//chefsteps.theresumator.com/apply/bVAP04/Web-Services-Developer.html'
+        %li.section
+          %h3 Product Designer
+          %p.section ChefSteps is looking for product designers with end-to-end experience designing products and systems that have the potential to invent culture.
+          .btn.btn-primary= link_to 'Apply Now', '//chefsteps.theresumator.com/apply/weQ3WD/Product-Designer.html'
+
+= render 'layouts/footer'
+
+

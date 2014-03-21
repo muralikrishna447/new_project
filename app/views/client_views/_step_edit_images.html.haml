@@ -1,4 +1,4 @@
-.section.clearfix(ng-show="editMode" ng-scope)
+.section.clearfix(ng-show="editMode && getMouseCurrentlyOverStep()" ng-scope)
   .btn.btn-secondary.step-media-button(ng-click="showMediaEdit = ! showMediaEdit")
     %i.icon-edit
     Media

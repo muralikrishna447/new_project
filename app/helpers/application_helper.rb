@@ -276,7 +276,7 @@ module ApplicationHelper
       else
         assembly_type_path = assembly.assembly_type.downcase.pluralize
       end
-      "/#{assembly_type_path}/#{assembly.slug}#/#{activity.slug}"
+      "/#{assembly_type_path}/#{assembly.slug}"
     else
       "/assemblies/#{assembly.slug}/#{activity.slug}"
     end

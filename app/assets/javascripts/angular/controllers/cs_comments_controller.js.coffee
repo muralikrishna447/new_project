@@ -1,3 +1,4 @@
+@app.constant('BloomAPIUrl', "http://chefsteps-bloom.herokuapp.com")
 @app.service 'BloomSettings', ['$q', 'csAuthentication', '$http', '$rootScope', ($q, csAuthentication, $http, $rootScope) ->
   window.csA = csAuthentication
   setUser = (reload) =>
@@ -27,15 +28,24 @@
    
     def.promise
 
+  @commentsIdToData = (id) =>
+    def = $q.defer()
+
+    $http.get("/comments/info?commentsId=#{id}").then (res) =>\
+      def.resolve(res.data)
+
+    def.promise
+
   return this
 ]
 
-@app.service 'Session', ['BloomSettings', (BloomSettings) ->
-  @me = BloomSettings.user
-  return this
-]
+# @app.service 'Session', ['BloomSettings', (BloomSettings) ->
+#   @me = BloomSettings.user
+#   return this
+# ]
 
-@app.controller 'csCommentsController', ["$scope", ($scope) ->
-
+@app.controller 'csCommentsController', ['$scope', '$resource', '$rootScope', ($scope, $resource, $rootScope) ->
+  $scope.showModal = =>
+    $rootScope.$broadcast 'openLoginModal'
 
 ]

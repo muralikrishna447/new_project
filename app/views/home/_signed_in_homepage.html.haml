@@ -1,13 +1,4 @@
 .container.home-signed-in
-  .row
-    .span12
-      .row
-        .span10
-          %h2
-            = link_to 'Latest from ChefSteps', gallery_index_path, class: 'orange-link'
-        .span2.text-right
-          = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
-      = render 'shared/horizontal_slider', items: @latest, direction: 'right'
 
   .row
     .span8
@@ -22,7 +13,10 @@
               %csrating.rating(value="#{@classes[0].average_rating}" readonly="true")
             = image_tag filepicker_stream_image(@classes[0].featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
             .section.pull-right.home-featured-item-btn(onclick= 'track_viewed_course_through_signed_in_homepage();')
-              = where_user_left_off_in_course(@classes[0], current_user, 'btn btn-primary btn-large')
+              / = where_user_left_off_in_course(@classes[0], current_user, 'btn btn-primary btn-large')
+              = link_to home_featured_path do
+                .btn.btn-primary.btn-large
+                  View the Class
           .section
             = @classes[0].short_description
         - @classes.from(1).each.with_index do |course, index|
@@ -36,32 +30,18 @@
                 %h3= course.title
               %csrating.rating(value="#{course.average_rating}" readonly="true")
               %p= course.short_description
-      .home-section
-        %hr
-      - if @recipe_developments.any?
-        .home-section
-          %h2
-            = link_to 'Recipe Development', recipe_development_index_path, class: 'orange-link'
-          - @recipe_developments.each.with_index do |recipe_development, index|
-            .home-standard-item
-              .home-standard-item-image
-                = link_to assembly_type_path(recipe_development) do
-                  = image_tag filepicker_stream_image(recipe_development.featured_image)
-              .home-standard-item-text
-                = link_to assembly_type_path(recipe_development) do
-                  %h3= recipe_development.title
-                %p= recipe_development.description
+
     .span4
-      %h2 
-        = link_to 'Activity Stream', community_activity_path, class: 'orange-link'
-      .stream(ng-controller='StreamsController' ng-init="init()")
-        %div(ng-repeat='stream in streams')
-          %div(ng-include src="streamViewTemplate(stream)")
-        %div.stream-spinner(ng-hide="hideSpinner")
-          %i.icon-spinner.icon-spin.icon-large
-        .stream-more(ng-show="showMoreButton" ng-cloak)
-          = link_to 'See More', community_activity_path, class: 'btn btn-large btn-block btn-outline-blue-large'
-    .span2
+      .home-section
+        %h2
+          = link_to "Latest", gallery_index_path, class: 'orange-link'
+        .whats-new
+          - @latest.each.with_index do |item, index|
+            = render 'shared/media_box_3', url: activity_path(item), title: item.title, image: item.featured_image, object: item
+        .text-right.section
+          = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
+
+
 
 :javascript
   mixpanel.track('Viewed Signed in Homepage', {'url' : window.location.pathname});

@@ -29,7 +29,7 @@
       %meta{property: 'twitter:player:width', content: '480'}
     - else
       %meta{property: 'twitter:card', content: 'summary_large_image'}
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()"}
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()", :'ng-init' => "popupEligible = #{@viewed_activities && @viewed_activities.count > 1}" }
 
 -# This is how search engine crawlers know to request the _escaped_fragment_ page
 - content_for :ajax_seo do
@@ -124,6 +124,10 @@
 
 = content_for :footer do
   = render 'layouts/footer'
+
+= render 'home/madlib_popup', registration_source: 'activityMadlib'
+
+
 -################################ MODALS  ################################
 
 - if @course
@@ -134,14 +138,7 @@
     .modal-body
       = course_syllabus(@course)
 
-- content_for :popup_bottom do
-  - if ! ENV["CS_NO_POPUP"]
-    - if @viewed_activities && @viewed_activities.count > 1 && current_user.nil?
-      .container-fluid.popup-bottom(ng-hide="editMode || authentication.currentUser()" ng-controller="LoginController" ng-cloak ng-init="registrationSource='activityMadlib'")
-        = render "devise/sessions/new_angular"
-        = render 'home/madlib'
-        .popup-bottom-close
-          %i.icon-remove
+
 
 //////// UPLOAD MODAL /////////
 - if params[:action] == 'show'

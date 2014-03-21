@@ -11,6 +11,8 @@
  *= require_self
  *= require twitter/bootstrap-no-sprites
  *= require twitter/bootstrap/_responsive
+ *= require jobs
+
  *= require redesign
  *= require application/responsiveslides
  *= require application/quizzes/_overview
@@ -65,5 +67,7 @@
  *= require cs_redactor
  *= require bloom/bloom
  *= require cs_ftue
+ *= require scroll_action
+ *= require why_by_weight
 
  */

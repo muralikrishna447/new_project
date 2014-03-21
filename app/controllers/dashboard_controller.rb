@@ -72,8 +72,9 @@ class DashboardController < ApplicationController
         end
       end
     end
+  end
 
-
+  def comments
   end
 
 end

@@ -7,6 +7,8 @@ class GalleryController < ApplicationController
         controller.showing_published? ? scope.by_published_at("asc") : scope.by_updated_at("asc")
       when "newest"
         controller.showing_published? ? scope.by_published_at("desc") : scope.by_updated_at("desc")
+      when "popular"
+        scope.popular
       else
         # Relevance is the default sort for pg_search so don't need to do anything
         scope
@@ -40,7 +42,7 @@ class GalleryController < ApplicationController
     @recipes = apply_scopes(Activity).uniq().page(params[:page]).per(12)
 
     respond_to do |format|
-      format.json { render :json => @recipes.to_json(only: [:id, :title, :description, :image_id, :featured_image_id, :difficulty, :published_at, :slug, :show_only_in_course], :include => [:steps, :creator], methods: [:gallery_path]) }
+      format.json { render :json => @recipes.to_json(only: [:id, :title, :description, :image_id, :featured_image_id, :difficulty, :published_at, :slug, :show_only_in_course, :likes_count], :include => [:steps, :creator], methods: [:gallery_path]) }
     end
   end
 

@@ -46,7 +46,7 @@ Delve::Application.routes.draw do
   end
 
   get 'users/verify' => 'tokens#verify', as: 'verify'
-  resources :users, only: [:show]
+  resources :users, only: [:index, :show]
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
@@ -78,7 +78,7 @@ Delve::Application.routes.draw do
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
-  get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian/
+  get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle|timf/
 
   # resources :courses, only: [:index, :show] do
   #   resources :activities, only: [:show], path: ''
@@ -173,7 +173,11 @@ Delve::Application.routes.draw do
     resources :comments
   end
   resources :votes, only: [:create]
-  resources :comments
+  resources :comments, only: [:index, :create] do
+    collection do
+      get 'info' => 'comments#info'
+    end
+  end
   resources :followerships, only: [:index, :update] do
     post :follow_multiple,  on: :collection
   end
@@ -234,6 +238,12 @@ Delve::Application.routes.draw do
   get "/invitations/welcome" => "home#welcome"
 
   match "/reports/stripe" => "reports#stripe"
+
+  resources :dashboard, only: [:index] do
+    collection do
+      get 'comments', to: 'dashboard#comments'
+    end
+  end
 
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"

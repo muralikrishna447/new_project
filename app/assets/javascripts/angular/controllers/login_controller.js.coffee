@@ -514,4 +514,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
 
       )
 
+  $scope.$on 'openLoginModal', ->
+    $scope.openModal('login')
 ]

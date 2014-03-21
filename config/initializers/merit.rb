@@ -26,41 +26,48 @@ end
 Merit::Badge.create!({
   id: 1,
   name: 'new-student',
-  description: 'Enroll into a Course',
+  description: 'Enroll into a Class',
   image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/jA2Oiu8ySQKZNLSTqlvq?cache=true'
 })
 
 Merit::Badge.create!({
   id: 2,
   name: 'spherification',
-  description: 'Complete the Spherification Course',
+  description: 'Complete the Spherification Class',
   image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/UyGR5gjaQKupcq6qJSR4?cache=true'
 })
 
 Merit::Badge.create!({
   id: 3,
   name: 'macaron',
-  description: 'Complete the Macaron Course',
+  description: 'Complete the Macaron Class',
   image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/04qCLrJ9Q9CEAacAVisg?cache=true'
 })
 
 Merit::Badge.create!({
   id: 4,
   name: 'poutine',
-  description: 'Complete the Poutine Course',
+  description: 'Complete the Poutine Class',
   image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/l6M6wNJbR4CffTtCn95j?cache=true'
 })
 
 Merit::Badge.create!({
   id: 5,
   name: 'knife',
-  description: 'Complete the Knife Sharpening Course',
+  description: 'Complete the Knife Sharpening Class',
   image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/QZt7rQzQK6gcuyYngoOb?cache=true'
 })
 
 Merit::Badge.create!({
   id: 6,
   name: 'siphon',
-  description: 'Complete the Whipping Siphon Course',
+  description: 'Complete the Whipping Siphon Class',
   image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/GXn75GCTq6Yze8tUZFM8?cache=true'
+})
+
+Merit::Badge.create!({
+  id: 7,
+  name: 'meat',
+  description: 'Complete the How to Cook Meats Class',
+  image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/zYyZBAzSLuCal9kyVcgE?cache=true'
 })

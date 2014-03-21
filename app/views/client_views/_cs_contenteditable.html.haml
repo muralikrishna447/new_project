@@ -1,4 +1,4 @@
 %div
-  %div.anim-basic-fade( ng-show="!editMode" ng-bind-html="ngModel | trim | markdown | shortcode")
-  %div(ng-show="editMode")
-    %textarea.anim-basic-fade(ng-model="ngModel" ui-redactor placeholder="{{placeholder}}")
+  %div(ng-if="!editMode" ng-bind-html="runFilters($parent.ngModel)")
+  %div(ng-if="editMode")
+    %textarea(ng-model="$parent.ngModel" ui-redactor placeholder="{{placeholder}}")

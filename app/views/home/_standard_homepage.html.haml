@@ -6,7 +6,7 @@
     .row-fluid
       .container
         .row
-          .span10.offset1
+          .span10.offset1.relative
             = render 'madlib'
 
 .container
@@ -40,11 +40,13 @@
               ChefSteps is loaded with reliable original recipes, developed by our culinary team. Unlike other online recipes, ours are demonstrated through beautiful videos and pictures with clearly written explanations.
 
         .span6
-          = render 'shared/horizontal_slider', items: @recipes, direction: 'right'
+          / = render 'shared/horizontal_slider', items: @recipes, direction: 'right'
+          = render 'shared/cs_blinders', media_objects: @recipes, object_path: '/activities'
 
       .row.section-large
         .span6
-          = render 'shared/horizontal_slider', items: @techniques, direction: 'left'
+          / = render 'shared/horizontal_slider', items: @techniques, direction: 'left'
+          = render 'shared/cs_blinders', media_objects: @techniques, object_path: '/activities'
         .span6
           = link_to gallery_index_url + "#/?activity_type=Technique" do
             .lead
@@ -60,7 +62,8 @@
               %p.lead.black-link
                 ChefSteps is the place to turn to learn the why behind the how. Our recipes and techniques are supported by explanations of the underlying science of cooking. Our goal is to inform your intuition for how cooking really works, so that you become a more confident, resourceful, and creative cook.
         .span6
-          = render 'shared/horizontal_slider', items: @sciences, direction: 'right'
+          / = render 'shared/horizontal_slider', items: @sciences, direction: 'right'
+          = render 'shared/cs_blinders', media_objects: @sciences, object_path: '/activities'
 
       .row.section-large
         .span8.offset2

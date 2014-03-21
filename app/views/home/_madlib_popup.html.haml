@@ -1,0 +1,12 @@
+%div( ng-controller="LoginController" 
+      ng-init="registrationSource ='#{registration_source}'"
+      ng-hide="editMode || authentication.currentUser()" )
+
+  .container-fluid.popup-bottom(  ng-class="{'popup-bottom-show' : shouldShowPopupCTA()}" 
+                                  ng-controller="PopupCTAController" 
+                                  ng-cloak)
+                         
+    = render "devise/sessions/new_angular"
+    = render 'home/madlib'
+    .popup-bottom-close(ng-click="hidePopupCTA()")
+      %i.icon-remove

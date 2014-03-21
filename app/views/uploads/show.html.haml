@@ -59,4 +59,5 @@
                 ago
     
       %hr
-      %comments(get-with="{'upload': '#{@upload.id}'}")
+      %div(ng-controller='csCommentsController')
+        %comments(db-params="{'commentsId': 'upload_#{@upload.id}'}" on-login="showModal()")

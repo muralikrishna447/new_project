@@ -74,13 +74,9 @@
                         Profile
 
                   - elsif current_user
-                    - unviewed_events_count = current_user.events.timeline.unviewed.count
                     = link_to user_profile_url(current_user) do
                       %span
                         Profile
-                        - if unviewed_events_count > 0
-                          .label
-                            = "#{unviewed_events_count} New"
                   - else
                     %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
                     = render "devise/sessions/new_angular"
