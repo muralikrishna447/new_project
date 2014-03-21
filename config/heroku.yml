@@ -17,7 +17,7 @@ production:
     RAILS_ENV: "production"
     FOG_DIRECTORY: production-chefsteps-assets
     FOG_PROVIDER: AWS
-    BUILDPACK_URL: https://github.com/ndbroadbent/heroku-buildpack-turbo-sprockets.git
+    BUILDPACK_URL: https://github.com/heroku/heroku-buildpack-ruby
   addons:
     - memcachier:dev
     - newrelic:standard
