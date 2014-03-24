@@ -88,7 +88,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.passwordType = "password"
 
   $scope.login = ->
-    $scope.dataLoading += 1
+    $scope.dataLoadingService.setFullScreen(true)
+    $scope.dataLoadingService.start()
     $scope.resetMessages()
     $scope.fakeLogin()
     $http(
@@ -100,7 +101,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           password: $scope.login_user.password
       )
       .success( (data, status) ->
-        $scope.dataLoading -= 1
+        $scope.dataLoadingService.stop()
+        $scope.dataLoadingService.setFullScreen(false)
         if (status == 200)
           $scope.logged_in = true
           $scope.closeModal('login', false)
@@ -175,7 +177,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       $scope.register_error.errors.email = ["Please enter a valid email address"] unless /.*@.*\..*/.test($scope.register_user.email)
       $scope.register_error.errors.password = ["Please enter a password"] unless !!$scope.register_user.password
       return
-    $scope.dataLoading += 1
+    $scope.dataLoadingService.setFullScreen(true)
+    $scope.dataLoadingService.start()
     $scope.resetMessages()
     $http(
       method: 'POST'
@@ -295,6 +298,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   # Because google is a little different we need to watch for an event
   # This is the event that gets fired when google successfully returns the google credientials
   $scope.$on "event:google-plus-signin-success", (event, eventData) ->
+    alert($scope.dataLoadingService.isFullScreen())
     if $scope.waitingForGoogle
       $scope.dataLoadingService.start()
       $scope.$apply( ->

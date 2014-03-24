@@ -1,6 +1,7 @@
-@app.controller 'InviteModalController', ['$scope', '$http', '$modal', '$rootScope', ($scope, $http, $modal, $rootScope) ->
+@app.controller 'InviteModalController', ['$scope', '$http', '$modal', '$rootScope', 'csDataLoading', ($scope, $http, $modal, $rootScope, csDataLoading) ->
   unbind = {}
   unbind = $rootScope.$on 'openInvite', (event, data) ->
+    csDataLoading.setFullScreen(true)
     modalInstance = $modal.open(
       templateUrl: "/client_views/_invite.html"
       backdrop: false
@@ -38,7 +39,7 @@
 
   # This is the method that opens up the facebook module for sending messages to your friends.
   $scope.sendInvites = ->
-    $scope.inviteSite = 'google'
+    $scope.inviteSite = 'facebook'
     $scope.facebook.friendInvites($scope.authentication.currentUser().id).then( ->
       mixpanel.track("Facebook Invites Sent")
       mixpanel.people.increment('Facebook Invites Sent')
@@ -141,14 +142,14 @@
   # This method takes the credentials saved on the user and makes a query to google and returns the users contact information.
   $scope.loadGoogleContacts = ->
     $scope.inviteSite = 'google'
-    $scope.dataLoading += 1
+    $scope.dataLoadingService.start()
     $http(
       method: "GET"
       url: "/users/contacts/google.js"
     ).success( (data, status) ->
       friends = _.map(data, (contact) -> {name: contact.name, email: contact.email, value: false})
       $scope.inviteFriends = friends
-      $scope.dataLoading -= 1
+      $scope.dataLoadingService.stop()
     )
 
   $scope.sendInvitationsToEmail = ->
@@ -167,6 +168,7 @@
 
   $scope.close = ->
     $modalInstance.close()
+    $scope.dataLoadingService.setFullScreen(false)
 
   $scope.next = ->
     $modalInstance.close()
