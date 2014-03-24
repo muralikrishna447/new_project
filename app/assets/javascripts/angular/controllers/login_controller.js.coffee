@@ -298,7 +298,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
   # Because google is a little different we need to watch for an event
   # This is the event that gets fired when google successfully returns the google credientials
   $scope.$on "event:google-plus-signin-success", (event, eventData) ->
-    alert($scope.dataLoadingService.isFullScreen())
     if $scope.waitingForGoogle
       $scope.dataLoadingService.start()
       $scope.$apply( ->
@@ -313,13 +312,13 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.waitingForGoogle = true
     # -# 'approvalprompt': "force" This requires them to reconfirm their permissions and gives us a new refresh token.
     gapi.auth.signIn(
+      callback: 'testing'
       clientid: $scope.environmentConfiguration.google_app_id
-      callback: 'signInCallback'
       cookiepolicy: $scope.urlService.currentSiteAsHttps()
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile'
       redirecturi: "postmessage"
       accesstype: "offline"
-      approvalprompt: "force"
+      # approvalprompt: "force"
     )
 
   # This methods sends the data to the rails server after the creditials are returned from google.
