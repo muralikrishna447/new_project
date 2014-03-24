@@ -57,9 +57,8 @@
             .span3.offset3
               %b {{possibleFollower.name}}
             .span3.offset1.follow-buttons
-              %button.btn.btn-secondary(ng-if="possibleFollower.following == false" ng-click="follow(possibleFollower.id)")
-                %b FOLLOW
-              %button.btn.btn-secondary.btn-following(ng-if="possibleFollower.following == true" ng-click="follow(possibleFollower.id, false)")
-                %b FOLLOWING
+              %button.btn.btn-secondary(ng-click="follow(possibleFollower, ! possibleFollower.following)" ng-class="{'btn-following': possibleFollower.following}")
+                %span(ng-show="!possibleFollower.following") FOLLOW
+                %span(ng-show="possibleFollower.following") FOLLOWING
 .modal-footer.social-connect-footer
   %button.btn(ng-click="$close()") Done

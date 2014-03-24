@@ -45,15 +45,13 @@ angular.module('ChefStepsApp').controller 'FollowershipsController', ["$scope", 
       )
 
 
-  $scope.follow = (user_id, following=true) ->
+  $scope.follow = (possibleFollower, following=true) ->
     $scope.dataLoading.start()
+    possibleFollower.following = following
     $http(
       method: "PUT"
-      url: "/followerships/#{user_id}.json"
+      url: "/followerships/#{possibleFollower.id}.json"
     ).success( (data, status) ->
-      for follower in $scope.possibleFollowers
-        if follower.id == data.id
-          follower.following = following
       $scope.dataLoading.stop()
     ).error( (data, status) ->
       $scope.dataLoading.stop()
