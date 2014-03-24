@@ -26,23 +26,5 @@ angular.module('ChefStepsApp').directive 'csFtueNav', ['csIntent', 'csFtue', (cs
     scope.showNext = ->
       true if scope.currentNumber() < scope.ftueLength()
 
-  template: '
-    <div class="ftue-nav" ng-show="showFtue">
-      <btn class="btn btn-circle-large btn-left pull-left" ng-click="prev()" ng-show="showPrev()">
-        <i class="icon-angle-left"></i>
-      </btn>
-      <div class="ftue-nav-middle">
-        <div class="ftue-nav-title">
-          <h4>{{ftue.current.title}}</h4>
-          <div>Step {{currentNumber()}} of {{ftueLength()}}</div>
-        </div>
-      </div>
-      <btn class="btn btn-circle-large btn-right pull-right" ng-click="next()" ng-show="showNext()">
-        <i class="icon-angle-right"></i>
-      </btn>
-      <btn class="btn btn-large btn-primary btn-done pull-right" ng-click="next()" ng-show="!showNext()">
-        Done!
-      </btn>
-    </div>
-  '
+  templateUrl: '/client_views/_ftue.html'
 ]

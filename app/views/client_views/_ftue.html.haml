@@ -1,0 +1,13 @@
+.ftue-nav(ng-show='showFtue')
+  %btn.btn.btn-circle-large.btn-left.pull-left(ng-click='prev()' ng-show="showPrev()")
+    %i.icon-angle-left
+  .ftue-nav-middle
+    .ftue-nav-title
+      %h4
+        {{ftue.current.title}}
+      %div
+        Step {{currentNumber()}} of {{ftueLength()}}
+  %btn.btn.btn-circle-large.btn-right.pull-right(ng-click='next()' ng-show="showNext()")
+    %i.icon-angle-right
+  %btn.btn.btn-large.btn-primary.btn-done.pull-right(ng-click='next()' ng-show='!showNext()')
+    Done!
