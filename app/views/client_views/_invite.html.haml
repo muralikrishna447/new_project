@@ -21,7 +21,7 @@
       .row-fluid.connect-buttons
         .span3.offset2
           .facebook-button
-            %button(ng-click="sendInvites()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading || authentication.currentUser().facebook_user_id")
+            %button(ng-click="sendInvites()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
               %i.icon-facebook
               %b Facebook
         .span3

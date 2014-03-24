@@ -26,8 +26,3 @@
 //= require cs_lightbox
 //= require angular-payments
 //= require hammer
-
-
-function testing(){
-  alert("testing called")
-}

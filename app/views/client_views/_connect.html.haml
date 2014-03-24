@@ -13,7 +13,7 @@
         %div(ng-show="authentication.currentUser().facebook_user_id")
           Connected!
           %a(ng-click="disconnectSocial('facebook')")
-            (X)
+            %i.icon-remove
     .span3
       .google-button
         -# %span.g-signin
@@ -23,7 +23,7 @@
         %div(ng-show="authentication.currentUser().google_user_id")
           Connected!
           %a(ng-click="disconnectSocial('google')")
-            (X)
+            %i.icon-remove
     -# .span2
     -#   .twitter-button
     -#     -# %span.g-signin
@@ -40,7 +40,6 @@
           %p You haven't connected your accounts yet.  Once you do we can gather your friends and show you people who are currently using ChefSteps.
         .no-connections(ng-if="authentication.currentUser().google_user_id != null || authentication.currentUser().facebook_user_id != null")
           %p We can't seem to find any of your friends who use ChefSteps :(
-          %p Why don't you invite some friends to use ChefSteps?
       .follow-friends-box(ng-if="possibleFollowers.length > 0")
         .row-fluid
           .span4.offset3
@@ -60,7 +59,7 @@
             .span3.offset1.follow-buttons
               %button.btn.btn-secondary(ng-if="possibleFollower.following == false" ng-click="follow(possibleFollower.id)")
                 %b FOLLOW
-              %button.btn.btn-secondary.btn-following(ng-if="possibleFollower.following == true" disabled=true)
+              %button.btn.btn-secondary.btn-following(ng-if="possibleFollower.following == true" ng-click="follow(possibleFollower.id, false)")
                 %b FOLLOWING
 .modal-footer.social-connect-footer
   %button.btn(ng-click="$close()") Done

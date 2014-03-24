@@ -277,7 +277,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       ).success( (data, status) ->
         $scope.logged_in = true
         $scope.closeModal('login', false)
-        $scope.$broadcast('socialConnect', {})
         unless source == "socialConnect"
           $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
@@ -289,6 +288,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
           trackRegistration(source, "facebook") if data.new_user
         else
           $scope.authentication.setCurrentUser(data.user)
+          $scope.$broadcast('socialConnect', {})
       ).error( (data, status) ->
         $scope.dataLoadingService.stop()
         $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
@@ -312,7 +312,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
     $scope.waitingForGoogle = true
     # -# 'approvalprompt': "force" This requires them to reconfirm their permissions and gives us a new refresh token.
     gapi.auth.signIn(
-      callback: 'testing'
+      callback: 'signInCallback'
       clientid: $scope.environmentConfiguration.google_app_id
       cookiepolicy: $scope.urlService.currentSiteAsHttps()
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile'
@@ -333,11 +333,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$http",
       unless $scope.inviteModalOpen
         $scope.logged_in = true
         $scope.closeModal('login', false)
-        $scope.$broadcast('socialConnect', {})
         $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"})
       $timeout( -> # Done so that the modal has time to close before triggering events
         $scope.dataLoadingService.stop()
         $scope.authentication.setCurrentUser(data.user)
+        $scope.$broadcast('socialConnect', {})
         if $scope.inviteModalOpen
           $scope.loadGoogleContacts()
         else if $scope.formFor != "purchase" && data.new_user
