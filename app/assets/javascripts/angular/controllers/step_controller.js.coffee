@@ -52,7 +52,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$element
   $scope.mouseCurrentlyOverStep = false
 
   $scope.getMouseCurrentlyOverStep = ->
-    $scope.mouseCurrentlyOverStep || $element.find(":focus").length > 0
+    $scope.mouseCurrentlyOverStep || $scope.childFocused
 
   $scope.setMouseCurrentlyOverStep = (over) ->
     $scope.mouseCurrentlyOverStep = over
