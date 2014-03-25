@@ -1,5 +1,5 @@
 //=require showdown
-//=require jquery
+//=require jquery.min
 //=require angular.min
 //=require angular-resource.min
 //=require angular-route.min
@@ -7,6 +7,7 @@
 //=require angular-animate.min
 //=require angular-ui
 //=require angular_select2
+//=require once
 //=require localStorageModule
 //=require select2
 // ******* Using non-min version of this on purpose b/c I've put a patch in it!
