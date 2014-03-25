@@ -2,4 +2,4 @@
   %div(ng-if="!editMode")
     %div(once-html="runFilters($parent.ngModel)")
   %div(ng-if="editMode")
-    %textarea(ng-model="$parent.ngModel" ui-redactor placeholder="{{placeholder}}")
+    %textarea(ng-hide ng-model="$parent.ngModel" ui-redactor placeholder="{{placeholder}}")

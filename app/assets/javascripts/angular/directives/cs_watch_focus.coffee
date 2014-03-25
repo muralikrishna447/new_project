@@ -6,9 +6,13 @@
   link: ($scope, $element, $attributes) ->
 
     $element.on 'focus', ->
+      #console.log("Focus:")
+      #console.log(this)
       $scope.$emit('childFocused', true)
 
     $element.on 'blur', ->
+      #console.log("Blur:")
+      #console.log(this)
       $scope.$emit('childFocused', false)
 
 
@@ -21,6 +25,7 @@
 
     $scope.childFocused = false
     $scope.$on 'childFocused', (event, x) ->
-      #console.log "Scope #{$scope.id} Received focus event #{x} on #{$element}"
+      #console.log "Scope #{$scope.$id} Received focus event #{x} parent element:"
+      #console.log $element
       $scope.childFocused = x
 

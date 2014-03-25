@@ -1,4 +1,4 @@
-.section(ng-controller="IngredientsController")
+.section(ng-controller="IngredientsController" cs-watch-focus)
   .activity-ingredients-list#full-ingredients-list.section
     .ingredients-menu-button(ng-class="{'ingredients-menu-button-slide' : showIngredientsMenu}" ng-show="activity.ingredients.length && ! editMode")
       %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()" ng-class="{'active' : csGlobals.scaling != 1}")
@@ -22,7 +22,7 @@
                             offset="200")
       = render 'shared/ingredients_list', source: "activity"
 
-  .nav(ng-show="editMode" cs-watch-focus='')
+  .nav(ng-show="editMode")
     %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
     %button.btn.btn-small.btn-secondary.add-from-master(ng-show="hasAnyStepIngredients()" ng-click="fillMasterIngredientsFromSteps()" tooltip="Replace master ingredients with step ingredients..." tooltip-placement="bottom")
       %i.icon-chevron-left

@@ -1,6 +1,7 @@
 %div.section.ng-form( ng-controller="IngredientsController"  
                       name="ingredientform" 
-                      ng-hide="(! editMode) && (step.ingredients.length == 0)")
+                      ng-hide="(! editMode) && (step.ingredients.length == 0)"
+                      cs-watch-focus)
 
   .step-ingredients-source.ingredients-well.well(ng-hide="(step.ingredients.length == 0) || (editMode && masterSelect)")
     = render 'shared/ingredients_list', source: "step"
@@ -8,7 +9,7 @@
   .select-from-master.well(ng-hide="! (editMode && masterSelect)")
     = render 'activities/select_ingredients_from_master'
 
-  .nav(ng-show="editMode && getMouseCurrentlyOverStep()" cs-watch-focus='')
+  .nav(ng-show="editMode && getMouseCurrentlyOverStep()")
     %h4(ng-show="! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Ingredients
 
     %button.btn.btn-small.btn-secondary.add-from-master(ng-show="!masterSelect" ng-click="toggleSelectFromMaster()" tooltip="Quick add ingredient from master ingredient list..." tooltip-placement="bottom")
