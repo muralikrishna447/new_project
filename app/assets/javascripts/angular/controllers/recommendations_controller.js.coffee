@@ -80,13 +80,13 @@
     #   $scope.loadRecommended()
 
   $rootScope.$on 'closeRecommendationsFromFtue', ->
-    $modalInstance.close()
+    console.log 'closed recommendations from ftue'
 
   $scope.close = ->
     $modalInstance.close()
 ]
 
-@app.directive 'csRecommendations', [ ->
+@app.directive 'csRecommendationsModal', [ ->
   restrict: 'E'
   controller: 'RecommendationsController'
   link: (scope, element, attrs) ->

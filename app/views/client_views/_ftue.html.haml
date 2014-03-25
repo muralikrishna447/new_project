@@ -1,7 +1,11 @@
 %div(ng-if="current.name == 'Survey'")
-  %cs-survey
+  %cs-survey-modal
+%div(ng-if="current.name == 'Connect'")
+  %cs-connect-modal
+%div(ng-if="current.name == 'Invite'")
+  %cs-invite-modal
 %div(ng-if="current.name == 'Recommendations'")
-  %cs-recommendations
+  %cs-recommendations-modal
 
 .ftue-nav
   %btn.btn.btn-circle-large.btn-left.pull-left(ng-click='prev()' ng-show="showPrev()")

@@ -163,8 +163,6 @@
 
     data = {'survey_results': $scope.survey_results}
     $http.post('/user_surveys', data).success((data) ->
-      unless intent == 'ftue'
-        $rootScope.$emit afterSubmit if afterSubmit.length > 0
 
     )
 
@@ -176,10 +174,9 @@
 
   $rootScope.$on 'closeSurveyFromFtue', ->
     $scope.update()
-    $modalInstance.close()
 ]
 
-@app.directive 'csSurvey', [ ->
+@app.directive 'csSurveyModal', [ ->
   restrict: 'E'
   controller: 'SurveyController'
   link: (scope, element, attrs) ->
