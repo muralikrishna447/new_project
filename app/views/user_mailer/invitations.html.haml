@@ -464,6 +464,9 @@
                                                     %img(src="http://chefsteps.s3.amazonaws.com/static/email/acceptInvitation@2x.png" width="224" height="45")
                                                 %br/
                                                 %span{style: "font-size: 13px; line-height: 1.6em;"} Learn how to cook smarter
+                                              -if @custom_text.present?
+                                                %p
+                                                  = @custom_text
                                               %p{style: "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
                                                 Your friend #{link_to(@sender.name, user_profile_url(@sender))} invited you to join #{link_to("ChefSteps", "http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")}, an online cooking platform dedicated to helping you cook smarter!
                                                 %br

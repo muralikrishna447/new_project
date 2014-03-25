@@ -19,12 +19,12 @@
                       %input(type="checkbox" ng-model="friend.value")
                       {{friend.name}}
       .row-fluid.connect-buttons
-        .span3.offset2
+        .span2.offset3
           .facebook-button
             %button(ng-click="sendInvites()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
               %i.icon-facebook
               %b Facebook
-        .span3
+        .span2
           .google-button.google-invite
             %button.btn-google.btn.btn-secondary(ng-click="inviteSite='google'; loadGoogleContacts()" ng-show="authentication.currentUser() && !!authentication.currentUser().google_access_token" ng-disabled="dataLoading")
               %i.icon-google-plus
@@ -44,7 +44,7 @@
             -#     %a.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin('#{google_app_id}')" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token" ng-disabled="dataLoading")
             -#       %i.icon-google-plus
             -#       %b Connect to Google and Invite
-        .span3
+        .span2
           .email-button
             %button.btn-email.btn.btn-secondary(ng-click="inviteSite='email'")
               %i.icon-envelope
@@ -55,36 +55,47 @@
             .google-arrow
       .row-fluid.google-content(ng-if="inviteSite == 'google' && inviteFriends.length > 0")
         .span8.offset2.google-invitation
-          %h3 Invite your friends from Google
-          %p
-            Invite your friends to join you on ChefSteps.com
-            %a(href="/invitation.html" target="_blank")
-              (Preview)
-          .invite-horizontal(ng-show="authentication.currentUser()")
-            .modal-center
-              %i.icon-page-load(ng-show="dataLoading")
-            .search
-              %input(type="text" placeholder="Search For..." ng-model="searchFriends")
-            %div
-              %ul.friend-list
-                %li.friend.one_column(ng-repeat="friend in inviteFriends | filter:searchFriends")
-                  %label
-                    %input(type="checkbox" ng-model="friend.value")
-                    %span(ng-show="friend.name")
-                      {{friend.name}} ({{friend.email}})
-                    %span(ng-show="!friend.name")
-                      {{friend.email}}
-            %div
-              {{friendsSelected().length}} friends selected.
+          %form(ng-submit="sendInvitation()")
+            %h3 Invite your friends from Google
+            %p
+              Invite your friends to join you on ChefSteps.com
+              %a(href="/invitation.html" target="_blank")
+                (Preview)
+            .invite-horizontal(ng-show="authentication.currentUser()")
+              .modal-center
+                %i.icon-page-load(ng-show="dataLoading")
+              .search
+                %input(type="text" placeholder="Search For..." ng-model="searchFriends")
+              %div
+                %ul.friend-list
+                  %li.friend.one_column(ng-repeat="friend in inviteFriends | filter:searchFriends")
+                    %label
+                      %input(type="checkbox" ng-model="friend.value")
+                      %span(ng-show="friend.name")
+                        {{friend.name}} ({{friend.email}})
+                      %span(ng-show="!friend.name")
+                        {{friend.email}}
+              %div
+                {{friendsSelected().length}} friends selected.
+            %hr
+            .body-text
+              %textarea(ng-model="emailObject.bodyText" name="body_text")
+            %hr
+            %center
+              %button.btn.btn-primary(type="submit")
+                %b INVITE FRIENDS
       .row-fluid.point-to-email(ng-if="inviteSite == 'email'")
-        .span2.offset8
+        .span2.offset7
           %center
             .email-arrow
       .row-fluid.email-content(ng-if="inviteSite == 'email'")
         .span8.offset2.email-invitation
           %form(ng-submit="sendInvitationsToEmail()" ng-if="!showThankYou")
             %h3 Want to invite some friends to ChefSteps via email?
-            %p Please seperate email addresses with a comma.
+            %p
+              Please seperate email addresses with a comma.
+              %a(href="/invitation.html" target="_blank")
+                (Preview)
             .email-input
               %input(type="text" name="email_addresses" ng-model="emailObject.emailToAddresses" placeholder="Email to (separated by commas)")
             .body-text

@@ -79,6 +79,9 @@ input:not(:focus):not(.ng-pristine).ng-invalid
 .invite-modal-body
   p
     margin-bottom: 1.2rem
+  .body-text
+    textarea
+      width: 100%
 
 @media (max-width: 600px)
   .invite-horizontal
@@ -93,7 +96,7 @@ input:not(:focus):not(.ng-pristine).ng-invalid
 @media (min-width: 601px)
   .invite-horizontal
     .friend-list
-      overflow: scroll
+      overflow-y: scroll
       max-height: 250px
       li
         &.two_column

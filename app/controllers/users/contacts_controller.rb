@@ -7,7 +7,8 @@ class Users::ContactsController < ApplicationController
   def invite #Google invite
     emails = params[:emails]
     from = params[:from] || "google_invite"
-    UserMailer.invitations(emails, current_user, from).deliver
+    invite_text = params[:body]
+    UserMailer.invitations(emails, current_user, from, invite_text).deliver
     render(json: {status: :success})
   end
 
