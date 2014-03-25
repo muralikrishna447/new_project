@@ -41,12 +41,6 @@
     if intent == 'ftue'
       csFtue.next()
 
-  $scope.refine = ->
-    # $rootScope.$broadcast 'refineRecommendations'
-    $rootScope.$emit 'openSurvey'
-    $modalInstance.close()
-    mixpanel.track('Recommendations Refine Button Clicked')
-
   $scope.loadCurated = ->
     urls = [
       '/activities/coffee-butter-steak-and-spinach/as_json.json'
@@ -81,9 +75,6 @@
 
   $rootScope.$on 'closeRecommendationsFromFtue', ->
     console.log 'closed recommendations from ftue'
-
-  $scope.close = ->
-    $modalInstance.close()
 ]
 
 @app.directive 'csRecommendationsModal', [ ->
