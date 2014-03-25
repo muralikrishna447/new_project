@@ -41,7 +41,7 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
       scope.setEditPending()
 
   template: '<div ng-switch="" on="active()" class="edit-pair" cs-watch-focus="">' +
-              '<p>CF: {{childFocused}}</p><div ng-transclude class="edit-pair-transclude"></div>' +
+              '<div ng-transclude class="edit-pair-transclude"></div>' +
             '</div>'
 
 angular.module('ChefStepsApp').directive 'cseditpairedit', ->

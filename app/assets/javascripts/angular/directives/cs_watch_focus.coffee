@@ -21,6 +21,6 @@
 
     $scope.childFocused = false
     $scope.$on 'childFocused', (event, x) ->
-      console.log "Scope #{$scope.id} Received focus event #{x} on #{$element}"
+      #console.log "Scope #{$scope.id} Received focus event #{x} on #{$element}"
       $scope.childFocused = x
 
