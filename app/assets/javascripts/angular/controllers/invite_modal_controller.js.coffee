@@ -16,7 +16,7 @@
   $scope.$on('$destroy', unbind)
 ]
 
-@app.controller 'InviteController', ['$scope', '$modalInstance', '$http', '$rootScope', 'intent', 'csAuthentication', 'csFacebook', 'csAlertService', 'csUrlService', 'csFtue', 'csDataLoading', ($scope, $modalInstance, $http, $rootScope, intent, csAuthentication, csFacebook, csAlertService, csUrlService, csFtue, csDataLoading) ->
+@app.controller 'InviteController', ['$scope', '$http', '$rootScope', 'csAuthentication', 'csFacebook', 'csAlertService', 'csUrlService', 'csDataLoading', ($scope, $http, $rootScope, csAuthentication, csFacebook, csAlertService, csUrlService, csDataLoading) ->
 
   $scope.authentication = csAuthentication
   $scope.facebook = csFacebook
@@ -179,7 +179,13 @@
     _.filter($scope.inviteFriends, (friend) -> (friend.value == true))
 
   $rootScope.$on 'closeInviteFromFtue', ->
-    $modalInstance.close()
+    console.log 'closed from ftue'
 ]
 
+@app.directive 'csInviteModal', [ ->
+  restrict: 'E'
+  controller: 'InviteController'
+  link: (scope, element, attrs) ->
+  templateUrl: '/client_views/_invite.html'
+]
 

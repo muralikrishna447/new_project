@@ -18,11 +18,15 @@
   $scope.$on('$destroy', unbind)
 ]
 
-@app.controller 'ConnectController', ['$scope', '$modalInstance', '$http', '$rootScope', 'intent', 'csDataLoading', ($scope, $modalInstance, $http, $rootScope, intent, csDataLoading) ->
+@app.controller 'ConnectController', ['$scope', 'csDataLoading', ($scope, csDataLoading) ->
   $scope.close = ->
-    $modalInstance.close()
     csDataLoading.setFullScreen(false)
 
-  $rootScope.$on 'closeConnectFromFtue', ->
-    $modalInstance.close()
+]
+
+@app.directive 'csConnectModal', [ ->
+  restrict: 'E'
+  controller: 'ConnectController'
+  link: (scope, element, attrs) ->
+  templateUrl: '/client_views/_connect.html'
 ]

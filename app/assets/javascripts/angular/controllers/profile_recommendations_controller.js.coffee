@@ -1,17 +1,33 @@
-@app.controller 'ProfileRecommendationsController', ["$scope", "$rootScope", "csAuthentication", ($scope, $rootScope, csAuthentication) ->
-  $scope.currentUser = csAuthentication.currentUser()
-  $scope.refinable = true
-
-  $scope.init = (recommendationType) ->
-    $scope.recommendationType = recommendationType
+@app.controller 'ProfileRecommendationsModalController', ["$scope", "$modal", ($scope, $modal) ->
 
   $scope.open = ->
-    if $scope.currentUser.survey_results
-      $rootScope.$emit('openRecommendations')
-    else
-      $rootScope.$emit('openSurvey')
+    modalInstance = $modal.open(
+      templateUrl: "/client_views/_profile_recommendations.html"
+      backdrop: false
+      keyboard: false
+      windowClass: "modal-fullscreen"
+      controller: 'ProfileRecommendationsController'
+    )
 
-  $scope.openInvite = ->
-    $rootScope.$emit('openInvite', {intent: 'ftue'})
+]
+
+@app.controller 'ProfileRecommendationsController', ["$scope", "$rootScope", "csAuthentication", '$modalInstance', ($scope, $rootScope, csAuthentication, $modalInstance) ->
+  $scope.currentUser = csAuthentication.currentUser()
+  $scope.refinable = true
+  $scope.showSurvey = false
+  $scope.showRecommendations = true
+
+  $scope.refine = ->
+    $scope.showSurvey = true
+    $scope.showRecommendations = false
+    mixpanel.track('Recommendations Refine Button Clicked')
+
+  $scope.saveSurvey = ->
+    $scope.showSurvey = false
+    $scope.showRecommendations = true
+    $rootScope.$emit 'closeSurveyFromFtue'
+
+  $scope.close = ->
+    $modalInstance.close()
 
 ]

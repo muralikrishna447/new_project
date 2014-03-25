@@ -19,9 +19,8 @@
   $scope.$on('$destroy', unbind)
 ]
 
-@app.controller 'SurveyController', ['$scope', '$modalInstance', '$http', 'csAuthentication', 'afterSubmit', '$rootScope', 'intent', 'csFtue', ($scope, $modalInstance, $http, csAuthentication, afterSubmit, $rootScope, intent, csFtue) ->
+@app.controller 'SurveyController', ['$scope', '$http', 'csAuthentication', '$rootScope', ($scope, $http, csAuthentication, $rootScope) ->
   $scope.currentUser = csAuthentication.currentUser()
-  $scope.afterSubmit = afterSubmit
   $scope.questions = []
   if $scope.currentUser && $scope.currentUser.survey_results
     $scope.survey_results = $scope.currentUser.survey_results
@@ -164,8 +163,6 @@
 
     data = {'survey_results': $scope.survey_results}
     $http.post('/user_surveys', data).success((data) ->
-      unless intent == 'ftue'
-        $rootScope.$emit afterSubmit if afterSubmit.length > 0
 
     )
 
@@ -177,7 +174,13 @@
 
   $rootScope.$on 'closeSurveyFromFtue', ->
     $scope.update()
-    $modalInstance.close()
+]
+
+@app.directive 'csSurveyModal', [ ->
+  restrict: 'E'
+  controller: 'SurveyController'
+  link: (scope, element, attrs) ->
+  templateUrl: '/client_views/_survey.html'
 ]
 
 
