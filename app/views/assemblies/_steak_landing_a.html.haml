@@ -1,0 +1,66 @@
+
+.steak-landing
+  .container
+    .row
+      .span6.offset3.masthead
+        %h1 Tender Cuts
+        %h5 One Simple Technique for Cooking Meat, Poultry, and Seafood
+        %p For any cook who's ever burned a steak, destroyed a perfectly good piece of fish, or rubberized a chicken breast, this is the class for you. Achieve mouthwatering, flavorful results every time, in your own kitchen. All you need is an oven, a pan, and a thermometer—we'll show you the rest.
+        .buy-box
+          - discounted_price = @course.price ? @discounted_price : 0
+          = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate, free_trial_hours: @free_trial_hours
+
+
+.container
+  .row.whitespace
+    .span12
+      %h2.text-center.section All you need
+    .span4.well-white.text-center
+      .section
+        = image_tag 'https://s3.amazonaws.com/uploads.hipchat.com/45918/307606/iHKzu3fvBWX607G/oven.png', alt: 'an oven'
+      %h3 Oven
+    .span4.well-white.text-center
+      .section
+        = image_tag 'https://s3.amazonaws.com/uploads.hipchat.com/45918/307606/3dO1eS8u3j1jSJn/pan.png', alt: 'an oven'
+      %h3 Pan
+    .span4.well-white.text-center
+      .section
+        = image_tag 'https://s3.amazonaws.com/uploads.hipchat.com/45918/307606/NXe00i9Z5pZOw06/thermometer.png', alt: 'an oven'
+      %h3 Thermometer
+  %hr
+  .row.whitespace
+    .span12
+      %h2.section People are saying
+    .span12.anim-hide(cs-on-enter-viewport reached-screen-callback='showSaying=true' ng-class="{'anim-slideRight' : showSaying}")
+      .section
+        .row
+          .span10
+            %blockquote.lead
+              %p Be prepared to alter how you think about cooking proteins, this isn't your father’s grill it and poke it procedure.
+          .span2.text-center
+            %img.img-circle.section{src: "https://d3awvtnmmsvyot.cloudfront.net/api/file/XqLRhVpeQbKq5GDVtHVA/convert?fit=crop&w=100&h=100&cache=true"}/
+            %p Brendan L.
+        .row
+          .span10
+            %blockquote.lead
+              %p If you’re going to spend time in the kitchen, you owe it to yourself and your guests to know how to cook a great piece of meat.
+          .span2.text-center
+            %img.img-circle.section{src: "https://d3awvtnmmsvyot.cloudfront.net/api/file/i9eVXWJTTKGhm6So6ALT/convert?fit=crop&w=100&h=100&cache=true"}/
+            %p Brian D.
+        .row
+          .span2.offset5
+            .btn-outline-blue-large.text-center
+              =link_to 'See all reviews'
+
+  %hr
+  .row.whitespace
+    .span12.section
+      %h2 Student Projects
+    .span12.anim-hide(cs-on-enter-viewport reached-screen-callback='showStudentProj=true' ng-class="{'anim-slideLeft' : showStudentProj}")
+      - if @course.uploads.approved.any?
+        .section
+          .row
+            - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
+              .span4
+                = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
+
