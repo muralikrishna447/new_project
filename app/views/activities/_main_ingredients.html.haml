@@ -1,4 +1,4 @@
-.section.csmonitorinputactivity(ng-controller="IngredientsController")
+.section(ng-controller="IngredientsController" cs-watch-focus)
   .activity-ingredients-list#full-ingredients-list.section
     .ingredients-menu-button(ng-class="{'ingredients-menu-button-slide' : showIngredientsMenu}" ng-show="activity.ingredients.length && ! editMode")
       %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()" ng-class="{'active' : csGlobals.scaling != 1}")
@@ -28,7 +28,7 @@
       %i.icon-chevron-left
     %button.btn.btn-small.btn-secondary.add-item(ng-click="addIngredient()" tooltip="Add ingredient"  tooltip-placement="bottom")
       %i.icon-plus
-    %button.btn.btn-small.btn-primary.done(ng-show="hasActiveInputs" tooltip="Finish adding ingredients" tooltip-placement="bottom")
+    %button.btn.btn-small.btn-primary.done(ng-show="childFocused" tooltip="Finish adding ingredients" tooltip-placement="bottom")
       Done
 
   = render 'activities/master_ingredients_removed_modal.html.haml'

@@ -14,13 +14,22 @@
         {{item.equipment.title || item.equipment}}&nbsp;
 
   %csEditPairEdit
-    .btn-toolbar.action-button-group(ng-show="focusedInside()")
+    .btn-toolbar.action-button-group
       .btn-group
         .btn.drag-handle.btn-small.btn-secondary(tooltip="Drag to reorder")
           %i.icon-sort
         .btn.remove-button.btn-small.btn-secondary(tooltip="Drag to reorder" tooltip="Remove equipment item" ng-click="removeItem()")
           %i.icon-remove
-    %input(csselectonfocus="" csinputmonkeyequipment="" type="text" placeholder="New equipment item" typeahead-editable="true" autocomplete="off" class="equipment-typeahead" ng-model="item.equipment" typeahead="e as e.title for e in all_equipment($viewValue)")
+    %input( cs-emit-focus
+            csselectonfocus
+            csinputmonkeyequipment
+            type="text" 
+            placeholder="New equipment item" 
+            typeahead-editable="true" 
+            autocomplete="off" 
+            class="equipment-typeahead" 
+            ng-model="item.equipment" 
+            typeahead="e as e.title for e in all_equipment($viewValue)")
     %label
       %input.hidden(type='checkbox' ng-model="item.optional")
       .btn.btn-small(ng-class="{true: 'btn-primary', false: 'btn-secondary'}[item.optional]")

@@ -21,18 +21,45 @@
 
   %csEditPairEdit
     .ingredient-title
-      %input(csselectonfocus="" csinputmonkeyingredient="" type="text" placeholder="New ingredient" typeahead-editable="true" autocomplete="off" class="ingredient-typeahead" ng-model="ai.ingredient" typeahead="i as i.title for i in all_ingredients($viewValue)")
-      %input(csselectonfocus="" type="text" placeholder="note" autocomplete="off" ng-model="ai.note")
-    %input.quantity-group(csselectonfocus="" cslimitquantity="" placeholder="qty" autocomplete="off" ng-model="ai.display_quantity" size=5)
+      %input( cs-emit-focus
+              selectonfocus 
+              csinputmonkeyingredient
+              type="text" 
+              placeholder="New ingredient" 
+              typeahead-editable="true" 
+              autocomplete="off" 
+              class="ingredient-typeahead" 
+              ng-model="ai.ingredient"
+              typeahead="i as i.title for i in all_ingredients($viewValue)")
+
+      %input( cs-emit-focus
+              csselectonfocus
+              type="text" 
+              placeholder="note" 
+              autocomplete="off" 
+              ng-model="ai.note")
+
+    %input.quantity-group(  cs-emit-focus
+                            csselectonfocus
+                            cslimitquantity 
+                            placeholder="qty" 
+                            autocomplete="off" 
+                            ng-model="ai.display_quantity" 
+                            size=5)
 
     .unit
       -# http://stackoverflow.com/questions/5912791/how-to-remove-the-arrow-from-a-select-tag-in-firefox - my favorite answer (not the accepted one)
       .select-readout(ng-class="{fakefocus: unitSelectHasFocus}")
         {{ai.unit}}
         %i.icon-caret-down
-      %select(type="text" ng-model="ai.unit" required="true" ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()" ui-event='{focus : "unitSelectHasFocus = true", blur: "unitSelectHasFocus = false"}')
+      %select(  cs-emit-focus
+                type="text" 
+                ng-model="ai.unit" 
+                required="true" 
+                ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()" 
+                ui-event='{focus : "unitSelectHasFocus = true", blur: "unitSelectHasFocus = false"}')
       
-    .btn-toolbar.action-button-group(ng-show="focusedInside()")
+    .btn-toolbar.action-button-group
       .btn-group
         .btn.drag-handle.btn-small.btn-secondary(tooltip="Drag to reorder")
           %i.icon-sort
