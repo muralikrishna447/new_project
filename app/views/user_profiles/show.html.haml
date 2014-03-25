@@ -36,7 +36,7 @@
             %div(ng-controller='ProfileRecommendationsController' ng-init="init('#{recommendation_type}')")
               %btn.btn.btn-secondary.btn-block(ng-click='open()')
                 Recipe Recommendations
-          %div(ng-controller='FtueController')
+          %div(ng-controller='FtueModalController')
             %btn.btn.btn-secondary.btn-block(ng-click='start()')
               FTUE
           = link_to 'Sign out', sign_out_path, class: 'btn btn-secondary btn-block'

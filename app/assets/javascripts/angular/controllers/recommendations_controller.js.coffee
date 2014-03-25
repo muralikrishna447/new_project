@@ -22,7 +22,7 @@
 ]
 
 
-@app.controller 'RecommendationsController', ['$scope', '$resource', '$modalInstance', '$controller', '$http', 'csGalleryService', 'ActivityMethods', 'refinable', '$rootScope', 'recommendationType', 'intent', 'csFtue', ($scope, $resource, $modalInstance, $controller, $http, csGalleryService, ActivityMethods, refinable, $rootScope, recommendationType, intent, csFtue) ->
+@app.controller 'RecommendationsController', ['$scope', '$resource', '$controller', '$http', 'csGalleryService', 'ActivityMethods', '$rootScope', ($scope, $resource, $controller, $http, csGalleryService, ActivityMethods, $rootScope) ->
   $scope.curated = []
 
   # $scope.Recommendation = $resource('/recommendations')
@@ -71,16 +71,24 @@
     mixpanel.track('Recommendations Opened - Recommended')
 
   $scope.loadList = () ->
-    if recommendationType == 'curated'
-      $scope.refinable = false
-      $scope.loadCurated()
-    else
-      $scope.refinable = refinable
-      $scope.loadRecommended()
+    $scope.loadRecommended()
+    # if recommendationType == 'curated'
+    #   $scope.refinable = false
+    #   $scope.loadCurated()
+    # else
+    #   $scope.refinable = refinable
+    #   $scope.loadRecommended()
 
   $rootScope.$on 'closeRecommendationsFromFtue', ->
     $modalInstance.close()
 
   $scope.close = ->
     $modalInstance.close()
+]
+
+@app.directive 'csRecommendations', [ ->
+  restrict: 'E'
+  controller: 'RecommendationsController'
+  link: (scope, element, attrs) ->
+  templateUrl: '/client_views/_recommendations.html'
 ]
