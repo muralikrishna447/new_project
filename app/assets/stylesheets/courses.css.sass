@@ -3,14 +3,33 @@
 /* LANDING PAGES */
 
 .steak-landing
-  @include chefsteps-filter('https://d3awvtnmmsvyot.cloudfront.net/api/file/aALsOtVLToOjuj2LUQ7Y')
+  @include chefsteps-filter('https://d3awvtnmmsvyot.cloudfront.net/api/file/aALsOtVLToOjuj2LUQ7Y/convert?fit=crop&w=1280&cache=true')
   height: 500px
   margin-top: -20px
 
 .masthead
   padding-top: $baseline * 10
   color: #fff
+  padding-left: 20px
 
+/* Landscape Tablet, Small Desktop */
+@media (min-width: 768px) and (max-width: 979px)
+  .steak-landing
+    @include background-size(cover)
+    
+
+/* Portrait Tablet */
+@media (max-width: 767px)
+  .steak-landing
+    @include background-size(cover)
+
+/* Phone */
+@media (max-width: 480px)
+  .masthead
+    padding-top: $baseline * 4
+  .steak-landing
+    @include background-size(cover)
+    margin: 0        
 
 /* GENERAL CLASS CONTENT */
 
@@ -281,6 +300,7 @@
       border-left: 0
 
 
+
 @media (min-width: 1200px)
   .course-side-bar
     width: 270px
@@ -414,6 +434,8 @@
     .btn-social
       margin-top: 0px
       margin-bottom: 10px
+
+
 
 @media (max-width: 767px)
   .assembly-course-landing
