@@ -1,5 +1,9 @@
 @import 'mixins'
 
+.anim-hide
+  opacity: 0
+  @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
+
 .anim-shift-top
   opacity: 0
   @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
@@ -8,3 +12,86 @@
   &.anim-shift-top-active
     margin-top: 10px
     opacity: 1
+
+/* SLIDE LEFT */
+
+.anim-slideLeft
+  opacity: 1
+  animation-name: slideLeft
+  -webkit-animation-name: slideLeft
+  animation-duration: 1s
+  -webkit-animation-duration: 1s
+  animation-timing-function: ease-in-out
+  -webkit-animation-timing-function: ease-in-out
+  visibility: visible !important
+
+@keyframes slideLeft
+  0%
+    transform: translateX(150%)
+  50%
+    transform: translateX(-8%)
+  65%
+    transform: translateX(2%)
+  80%
+    transform: translateX(-1%)
+  95%
+    transform: translateX(.5%)
+  100%
+    transform: translateX(0%)
+
+
+@-webkit-keyframes slideLeft
+  0%
+    -webkit-transform: translateX(150%)
+  50%
+    -webkit-transform: translateX(-8%)
+  65%
+    -webkit-transform: translateX(2%)
+  80%
+    -webkit-transform: translateX(-1%)
+  95%
+    -webkit-transform: translateX(.5%)
+  100%
+    -webkit-transform: translateX(0%)
+
+
+/* SLIDE RIGHT */
+
+.anim-slideRight
+  opacity: 1
+  animation-name: slideRight
+  -webkit-animation-name: slideRight
+  animation-duration: 1s
+  -webkit-animation-duration: 1s
+  animation-timing-function: ease-in-out
+  -webkit-animation-timing-function: ease-in-out
+  visibility: visible !important
+
+@keyframes slideRight
+  0%
+    transform: translateX(-150%)
+  50%
+    transform: translateX(8%)
+  65%
+    -webkit-transform: translateX(-2%)
+  80%
+    -webkit-transform: translateX(1%)
+  95%
+    -webkit-transform: translateX(-.5%)
+  100%
+    -webkit-transform: translateX(0%)
+
+
+@-webkit-keyframes slideRight
+  0%
+    -webkit-transform: translateX(-150%)
+  50%
+    -webkit-transform: translateX(8%)
+  65%
+    -webkit-transform: translateX(-2%)
+  80%
+    -webkit-transform: translateX(1%)
+  95%
+    -webkit-transform: translateX(-.5%)
+  100%
+    -webkit-transform: translateX(0%)
