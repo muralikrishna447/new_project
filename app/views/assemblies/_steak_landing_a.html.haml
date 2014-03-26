@@ -1,5 +1,5 @@
 
-.steak-landing
+.steak-landing(ng-cloak)
   .container
     .row
       .span6.offset3.masthead
@@ -11,7 +11,7 @@
           = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate, free_trial_hours: @free_trial_hours
 
 
-.container
+.container(ng-cloak)
   .row.whitespace
     .span12
       %h2.text-center.section All you need
