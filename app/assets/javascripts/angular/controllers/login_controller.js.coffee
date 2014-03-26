@@ -12,7 +12,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
   $scope.alertService = csAlertService
   $scope.urlService = csUrlService
 
-  $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static', dialogClass: "modal login-controller-modal"}
+  $scope.modalOptions = {dialogFade:true, backdrop: 'static', dialogClass: "modal login-controller-modal"}
 
   $scope.loginModalOpen = false
   $scope.inviteModalOpen = false
