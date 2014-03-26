@@ -1,7 +1,7 @@
 # This mixes the concerns of managing a general purpose modal for charging stripe with
 # the special case of buying an assembly. Would be better to separate.
 
-angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$http", "csAuthentication", "csAlertService", ($scope, $http, csAuthentication, csAlertService) ->
+angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", ($scope, $rootScope, $http, csAuthentication, csAlertService) ->
 
   $scope.isGift = false
   $scope.buyModalOpen = false
@@ -9,7 +9,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     emailToRecipient: 1
   }
 
-  $scope.modalOptions = {backdropFade: true, dialogFade:true, backdrop: 'static'}
+  $scope.modalOptions = {dialogFade:true, backdrop: 'static'}
 
   $scope.waitingForLogin = false
   $scope.waitingforRedemption = false
@@ -87,7 +87,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         $scope.enrolled = true unless $scope.isGift
         $scope.state = "thanks"
         mixpanel.people.track_charge($scope.discounted_price)
-        mixpanel.track('Course Purchased', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': response.type, 'card_type': response.card.type, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador})
+        mixpanel.track('Course Purchased', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': response.type, 'card_type': response.card.type, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador}, $rootScope.splits))
         mixpanel.people.append('Classes Purchased', $scope.assembly.title)
         mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
         mixpanel.people.set('Paid Course Abandoned' : false)
@@ -151,7 +151,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.state = if gift then "gift" else "charge"
 
     $http.get('/splitty/finished?experiment=' + $scope.split_name)
-    mixpanel.track('Course Buy Button Clicked', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
+    mixpanel.track('Course Buy Button Clicked', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug}, $rootScope.splits))
     _gaq.push(['_trackEvent', 'Buy Button', 'Clicked', $scope.assembly.title, null, true])
 
     if $scope.check_signed_in()
