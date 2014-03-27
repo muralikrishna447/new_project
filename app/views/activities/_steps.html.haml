@@ -7,8 +7,6 @@
   .ordered-step-item.relative.anim-basic-fade(  ng-repeat="step in activity.steps track by step.id" 
                                                 id="{{'numbered-step-' + step.id}}" 
                                                 ng-controller="StepController" 
-                                                ng-mouseenter="setMouseCurrentlyOverStep(true)" 
-                                                ng-mouseleave="setMouseCurrentlyOverStep(false)" 
                                                 ng-class='stepSpan()'
                                                 cs-watch-focus='')
     = render 'activities/latest/step'

@@ -6,3 +6,12 @@
   this
 
 ]
+
+@app.service 'csFacebookConversion', [ ->
+
+  this.track = (fb_pixel, fb_value) ->
+    image = new Image(1,1)
+    image.src = "//www.facebook.com/offsite_event.php?id=" + fb_pixel + "&amp;value=" + fb_value + "&amp;currency=USD"
+  this
+
+]

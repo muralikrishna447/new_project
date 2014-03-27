@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "csAdwords", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, csAdwords) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "csAdwords", "csFacebookConversion", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, csAdwords, csFacebookConversion) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -184,6 +184,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
           trackRegistration(source, "standard")
           # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
           csAdwords.track(998032928,'77TfCIjjrAgQoIzz2wM')
+          csFacebookConversion.track(6014798030226,0.00)
           $scope.logged_in = true
           $scope.closeModal('login', false)
           $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})
