@@ -23,7 +23,6 @@ describe "BuyAssemblyStripeController", ->
       track: ((key, objects) -> true)
     }
     gaq = jasmine.createSpyObj('gaq', ['push'])
-    adwordsTrack = jasmine.createSpy('adwordsTrack')
 
     $window.mixpanel = mixpanel
     $window._gaq = gaq
