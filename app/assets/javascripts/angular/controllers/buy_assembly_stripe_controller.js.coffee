@@ -1,7 +1,7 @@
 # This mixes the concerns of managing a general purpose modal for charging stripe with
 # the special case of buying an assembly. Would be better to separate.
 
-angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", ($scope, $rootScope, $http, csAuthentication, csAlertService) ->
+angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords) ->
 
   $scope.isGift = false
   $scope.buyModalOpen = false
@@ -93,9 +93,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         mixpanel.people.set('Paid Course Abandoned' : false)
         _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
         $scope.shareASale($scope.discounted_price, response.id)
-        $scope.adroll($scope.assembly.title)
         # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
-        adwordsTrack(998032928,'x2qKCIDkrAgQoIzz2wM')
+        csAdwords.track(998032928,'x2qKCIDkrAgQoIzz2wM')
 
       ).error((data, status, headers, config) ->
         console.log "STRIPE CHARGE FAIL" + data
@@ -221,16 +220,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.errorText = data.errors[0].message || data.errors[0]
       $scope.processing = false
     )
-
-  $scope.adroll = (title) ->
-    if title
-      if title == 'French Macarons'
-        segmentName = 'fmpurchase'
-      else
-        segmentName = title.toLowerCase().replace(' ','-') + '-purchase'
-
-      try
-        __adroll.record_user "adroll_segments": segmentName
 
   $scope.freeTrial = ->
     $scope.processing = true
