@@ -1,5 +1,5 @@
 .aside(ng-if='step.is_aside' ng-class="asideClass()")
-  %h4(cs-contenteditable="$parent.getStepOpenForEdit()" ng-model="step.title")
+  %h4(cs-contenteditable="getStepOpenForEdit()" ng-model="step.title")
   %div(ng-include="'_step_edit_images.html'")
   .aside-video(ng-if='hasAV()')
     .step-video-outer.noprint(ng-if="!! step.youtube_id")
