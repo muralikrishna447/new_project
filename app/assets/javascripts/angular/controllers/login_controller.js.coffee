@@ -182,6 +182,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
         $scope.dataLoading -= 1
         if (status == 200)
           trackRegistration(source, "standard")
+          # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
+          adwordsTrack(998032928,'77TfCIjjrAgQoIzz2wM')
           $scope.logged_in = true
           $scope.closeModal('login', false)
           $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})

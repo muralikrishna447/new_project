@@ -94,6 +94,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
         $scope.shareASale($scope.discounted_price, response.id)
         $scope.adroll($scope.assembly.title)
+        # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
+        adwordsTrack(998032928,'x2qKCIDkrAgQoIzz2wM')
 
       ).error((data, status, headers, config) ->
         console.log "STRIPE CHARGE FAIL" + data
