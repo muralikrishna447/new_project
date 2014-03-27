@@ -20,12 +20,11 @@
     "/notreal.png"
     
   @getUser = (id) =>
-    return unless id?
     def = $q.defer()
-
-    $http.get('/users/' + id).success (data,status) ->
-      data.avatarUrl = data['avatar_url']
-      def.resolve data
+    if id?
+      $http.get('/users/' + id).success (data,status) ->
+        data.avatarUrl = data['avatar_url']
+        def.resolve data
    
     def.promise
 
