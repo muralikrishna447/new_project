@@ -49,13 +49,16 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$element
   $scope.hasIngredients = ->
     $scope.step.ingredients?.length
 
-  $scope.mouseCurrentlyOverStep = false
+  $scope.stepOpenForEdit = false
 
-  $scope.getMouseCurrentlyOverStep = ->
-    $scope.mouseCurrentlyOverStep || $scope.childFocused
+  $scope.getStepOpenForEdit = ->
+    $scope.editMode && $scope.stepOpenForEdit
 
-  $scope.setMouseCurrentlyOverStep = (over) ->
-    $scope.mouseCurrentlyOverStep = over
+  $scope.toggleStepOpenForEdit = ->
+    $scope.stepOpenForEdit = ! $scope.stepOpenForEdit
+
+  $scope.setStepOpenForEdit = (open) ->
+    $scope.stepOpenForEdit = open
 
   $scope.stepSpan = ->
     if $scope.step.is_aside

@@ -4,14 +4,14 @@
   %h1.step-number
     %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
 
-  %h4(  cs-contenteditable="editMode && getMouseCurrentlyOverStep()" 
+  %h4(  cs-contenteditable="getStepOpenForEdit()" 
         ng-model="step.title"
         placeholder="'Click to write step title'")
 
   .step-first-row
     =render 'activities/step_ingredients'
 
-  .step-content(  cs-contenteditable="editMode && getMouseCurrentlyOverStep()" 
+  .step-content(  cs-contenteditable="getStepOpenForEdit()" 
                   creator="activity.creator"
                   ng-model="step.directions"
                   placeholder="'Click to write step directions'" )
