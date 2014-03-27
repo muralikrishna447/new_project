@@ -1,7 +1,7 @@
 # This mixes the concerns of managing a general purpose modal for charging stripe with
 # the special case of buying an assembly. Would be better to separate.
 
-angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords) ->
+angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", "csFacebookConversion", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords, csFacebookConversion) ->
 
   $scope.isGift = false
   $scope.buyModalOpen = false
@@ -95,6 +95,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         $scope.shareASale($scope.discounted_price, response.id)
         # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
         csAdwords.track(998032928,'x2qKCIDkrAgQoIzz2wM')
+        csFacebookConversion.track(6014798037826,$scope.discounted_price)
 
       ).error((data, status, headers, config) ->
         console.log "STRIPE CHARGE FAIL" + data
