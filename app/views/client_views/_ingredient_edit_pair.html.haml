@@ -47,17 +47,16 @@
                             ng-model="ai.display_quantity" 
                             size=5)
 
-    .unit
+    .unit(cs-watch-focus)
       -# http://stackoverflow.com/questions/5912791/how-to-remove-the-arrow-from-a-select-tag-in-firefox - my favorite answer (not the accepted one)
-      .select-readout(ng-class="{fakefocus: unitSelectHasFocus}")
+      .select-readout(ng-class="{fakefocus: childFocused}")
         {{ai.unit}}
         %i.icon-caret-down
       %select(  cs-emit-focus
                 type="text" 
                 ng-model="ai.unit" 
                 required="true" 
-                ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()" 
-                ui-event='{focus : "unitSelectHasFocus = true", blur: "unitSelectHasFocus = false"}')
+                ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()") 
       
     .btn-toolbar.action-button-group
       .btn-group
