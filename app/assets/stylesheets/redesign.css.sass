@@ -1188,17 +1188,13 @@ a:hover
   background-position: center top
   background-repeat: no-repeat
   //background-size: 100%
-  margin-left: 0px
-  margin-right: 0px
   margin-top: 60px
   .footer-image
-    max-height: 600px
-    overflow: hidden
-    position: absolute
-    left: 0px
-    z-index: -1
-    img
-      width: 100%
+    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0)), url('https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx?cache=true') no-repeat left top
+    @include background-size(cover)
+    padding: 0 20px
+    margin-left: -20px
+    margin-right: -20px
   #footer-body
     margin-top: 50px
     z-index: 999
@@ -1498,7 +1494,7 @@ csingredienteditpair
   left:  -44px
   width: 44px
   height:  100%
-  top: px
+  top: -5px
   z-index: 100
 
   button
@@ -1513,12 +1509,12 @@ csingredienteditpair
 
 .step-edit-buttons
   position: absolute
-  top: 50px
+  top: 10px
   width: 30px
 
 .step-add-button-group
   position: absolute
-  top: 30px
+  top: -10px
 
 .step-add-button-end-group
   position: absolute
