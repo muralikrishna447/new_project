@@ -55,6 +55,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       $scope.googleInviteModalOpen = true
     else if form == "welcome"
       $scope.welcomeModalOpen = true
+    else if form == "kioskWelcome"
+      $scope.kioskWelcomeModalOpen = true
 
   $scope.closeModal = (form, abandon=true) ->
     $scope.resetMessages()
@@ -181,20 +183,26 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       .success( (data, status) ->
         $scope.dataLoading -= 1
         if (status == 200)
-          trackRegistration(source, "standard")
-          # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
-          csAdwords.track(998032928,'77TfCIjjrAgQoIzz2wM')
-          csFacebookConversion.track(6014798030226,0.00)
-          $scope.logged_in = true
-          $scope.closeModal('login', false)
-          $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})
-          $timeout( -> # Done so that the modal has time to close before triggering events
-            $scope.$apply()
-            $scope.authentication.setCurrentUser(data.user)
-            unless $scope.formFor == "purchase"
-              $scope.loadFriends()
-          , 300)
-          # $scope.notifyLogin(data.user)
+          if source == 'kiosk'
+            $scope.openModal('kioskWelcome')
+            $timeout( ->
+              window.location.reload()
+            ,5000)
+          else
+            trackRegistration(source, "standard")
+            # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
+            csAdwords.track(998032928,'77TfCIjjrAgQoIzz2wM')
+            csFacebookConversion.track(6014798030226,0.00)
+            $scope.logged_in = true
+            $scope.closeModal('login', false)
+            $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})
+            $timeout( -> # Done so that the modal has time to close before triggering events
+              $scope.$apply()
+              $scope.authentication.setCurrentUser(data.user)
+              unless $scope.formFor == "purchase"
+                $scope.loadFriends()
+            , 300)
+            # $scope.notifyLogin(data.user)
       )
       .error( (data, status) ->
         $scope.dataLoading -= 1
@@ -469,4 +477,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
 
   $scope.$on 'openLoginModal', ->
     $scope.openModal('login')
+
+  $scope.kioskReload = ->
+    window.location.reload()
 ]
