@@ -193,3 +193,12 @@
   .modal-footer.invite-modal-footer
     %div
       %button.btn.btn-primary.btn-large.close-welcome(ng-click="closeModal('welcome')") Done
+
+.welcome-modal(close="closeModal('kioskWelcome')" modal="kioskWelcomeModalOpen" options="modalOptions" ng-cloak)
+  .modal-body.welcome-modal-body
+    .row-fluid
+      %h3 Thanks for joining the Community!
+      %p Check your email for updates on new Recipes, Classes and more.  
+  .modal-footer.invite-modal-footer
+    %div
+      %button.btn.btn-primary.btn-large.close-welcome(ng-click="kioskReload()") Done
