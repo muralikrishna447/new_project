@@ -38,4 +38,19 @@ ActiveAdmin.register Enrollment do
     end
   end
 
+  csv do
+    column :id
+    column :created_at
+    column 'User Name' do |enrollment|
+      enrollment.user.name
+    end
+    column 'Email' do |enrollment|
+      enrollment.user.email
+    end
+    column 'Class' do |enrollment|
+      enrollment.enrollable.slug
+    end
+  end
+ 
+
 end
