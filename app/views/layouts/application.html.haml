@@ -1,6 +1,7 @@
 !!! 5
 %html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main" }
   %head
+    / http://stackoverflow.com/questions/3326650/console-is-undefined-error-for-internet-explorer
     %script(type="text/javascript") 
       if (!window.console) console = {log: function() {}};
       window.lastPerfTime = new Date();
@@ -61,9 +62,6 @@
     = render 'layouts/crazyegg'
     = render 'layouts/cdn_js'
 
-    / %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle.min.js'}
-    %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle-dev.min.js'}
-    / http://stackoverflow.com/questions/3326650/console-is-undefined-error-for-internet-explorer
     %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
     %script(type="text/javascript") 
       logPerf("HEAD END");
@@ -100,11 +98,17 @@
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
   = render "layouts/login_hack"
+  / %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle.min.js'}
+  %script(type="text/javascript") 
+    logPerf("PRE BLOOM");
+  %script(src='https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle-dev.min.js')  
   %script(type="text/javascript") 
     logPerf("PRE APP");
   = javascript_include_tag 'application'
   %script(type="text/javascript") 
     logPerf("POST APP");
+
+
   = render 'layouts/facebook'
   = render 'layouts/google'
   = yield(:custom_js)
