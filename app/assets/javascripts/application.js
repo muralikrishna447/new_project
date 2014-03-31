@@ -9,14 +9,10 @@
 //= require step_ingredients
 //= require community
 //= require horizontal_slider
-//= require bootstrap-wysihtml5
-//= require bootstrap-wysihtml5/locales
 //= require rails.validations
 //= require rails.validations.formtastic
 //= require uploads
 //= require assignments
-//= require bootstrap-wysihtml5
-//= require bootstrap-wysihtml5/locales
 //= require rails.validations
 //= require user_profiles
 //= require iframe_height
