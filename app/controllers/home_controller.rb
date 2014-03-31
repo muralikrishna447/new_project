@@ -73,4 +73,8 @@ class HomeController < ApplicationController
     render("home/index")
     # redirect_to root_path
   end
+
+  def kiosk
+    @hide_nav = true
+  end
 end
