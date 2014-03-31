@@ -29,7 +29,6 @@
  *= require courses
  *= require uploads
  *= require profiles
- *= require bootstrap-wysihtml5
  *= require angular-ui
  *= require ng-grid.min
  *= require redactor
