@@ -1,5 +1,3 @@
-
-
 //=require navigation_bootstrap
 //=require jquery
 //=require active_admin
@@ -10,7 +8,6 @@
 //=require angular-sanitize.min
 //=require angular-animate.min
 //=require angular-ui
-//=require application_head
 //=require application
 //=require angular-mocks
 //=require_tree .

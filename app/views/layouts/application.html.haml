@@ -3,8 +3,8 @@
   %head
     %script(type="text/javascript") 
       if (!window.console) console = {log: function() {}};
-      window.launchTime = new Date();
-      window.logPerf = function(where) {d2 = new Date(); console.log(where + ": " + (d2 - window.launchTime)); window.launchTime = d2;};
+      window.lastPerfTime = new Date();
+      window.logPerf = function(where) {d2 = new Date(); console.log(where + ": " + (d2 - window.lastPerfTime)); window.lastPerfTime = d2;};
       logPerf("HEAD");
     %title= "#{yield :title} - ChefSteps"
     = stylesheet_link_tag 'application', media: 'all'
@@ -59,13 +59,8 @@
 
     = render 'layouts/inspectlet'
     = render 'layouts/crazyegg'
-    %script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
-    %script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js")
-    %script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-resource.min.js")
-    %script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-route.min.js")
-    %script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-sanitize.min.js")
-    %script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-animate.min.js")
-    %script(type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js")
+    = render 'layouts/cdn_js'
+
     / %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle.min.js'}
     %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle-dev.min.js'}
     / http://stackoverflow.com/questions/3326650/console-is-undefined-error-for-internet-explorer
@@ -105,9 +100,6 @@
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
   = render "layouts/login_hack"
-  %script(type="text/javascript") 
-    logPerf("PRE APP HEAD");
-  = javascript_include_tag 'application_head'
   %script(type="text/javascript") 
     logPerf("PRE APP");
   = javascript_include_tag 'application'
