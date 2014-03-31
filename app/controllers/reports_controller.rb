@@ -139,8 +139,8 @@ class ReportsController < ApplicationController
       "Siphon"
     elsif stripe_record["description"].include?("French Macarons")
       "Macaron"
-    elsif stripe_record["description"].include?("Meat Class") # Not used yet
-      "Meat"
+    elsif stripe_record["description"].include?("Tender Cuts") || stripe_record["description"].include?("Steak to Salmon")
+      "Tender Cuts"
     end
   end
 

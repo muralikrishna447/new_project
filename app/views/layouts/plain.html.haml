@@ -21,8 +21,8 @@
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
+    = render 'layouts/cdn_js'
     = render 'layouts/google_analytics' if Rails.env.production?
-    = javascript_include_tag 'application_head'
 
   %body{@body_tag_attributes || {}}
     = yield
