@@ -7,18 +7,10 @@
       window.lastPerfTime = new Date();
       window.logPerf = function(where) {d2 = new Date(); console.log(where + ": " + (d2 - window.lastPerfTime)); window.lastPerfTime = d2;};
       logPerf("HEAD");
+
     %title= "#{yield :title} - ChefSteps"
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
-    %script(type="text/javascript") 
-      logPerf("HEAD PRE-TYPOGRAPHY");
-    %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
-    %script(type="text/javascript") 
-      logPerf("HEAD POST-TYPOGRAPHY");
-    %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
-    %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
-    = csrf_meta_tags
-    = render 'layouts/twitter'
     %meta{charset: 'utf-8'}
     %meta{name: 'description', content: yield(:description)}
     %meta{name: 'keywords', content: yield(:keywords)}
@@ -27,44 +19,32 @@
     %meta{name: "google-signin-clientid", content: google_app_id}
     %meta{name: "google-signin-scope", content: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile https://www.google.com/m8/feeds"}
     %meta{name: "google-signin-requestvisibleactions", content: "http://schemas.google.com/AddActivity"}
-    %script(type="text/javascript") 
-      logPerf("HEAD MID 1");
+    = csrf_meta_tags
     %meta{name: "google-signin-cookiepolicy", content: "single_host_origin"}
+    = auto_discovery_link_tag :atom, feed_path
+    = auto_discovery_link_tag :rss, feed_path
+    %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
+    %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
+
+    - if Rails.env.development?
+      %link{href: "/favicon-dev.png"}
+    - else
+      %link{href: "/favicon.ico", rel: "shortcut icon"}
+    - unless yield(:canonical_link).blank?
+      %link{rel: "canonical", href: yield(:canonical_link) }
+      
+    %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
+    %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
+    %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
+
+    = render 'layouts/twitter'
     = yield :facebook_og
     = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
     %script(src='http://www.youtube.com/iframe_api' async='true')
 
-
-    = auto_discovery_link_tag :atom, feed_path
-    = auto_discovery_link_tag :rss, feed_path
-    - if Rails.env.development?
-      %link{href: "/favicon-dev.png"}
-    - else
-      %link{href: "/favicon.ico", rel: "shortcut icon"}
-    %script(type="text/javascript") 
-      logPerf("HEAD MID 2");
-    %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
-    - unless yield(:canonical_link).blank?
-      %link{rel: "canonical", href: yield(:canonical_link) }
-    - if Rails.env.production?
-      = render 'layouts/qbaka'
-    = render 'layouts/google_analytics'
-    = render 'layouts/adwords_remarketing'
-    = render 'layouts/facebook_remarketing'
-    = render 'layouts/stripe'
-    %script(type="text/javascript") 
-      logPerf("HEAD MID 3");
-    = render 'layouts/mixpanel'
-
-    = render 'layouts/inspectlet'
-    = render 'layouts/crazyegg'
     = render 'layouts/cdn_js'
-
-    %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
-    %script(type="text/javascript") 
-      logPerf("HEAD END");
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}"}
     - unless @hide_nav == true
@@ -111,6 +91,15 @@
 
   = render 'layouts/facebook'
   = render 'layouts/google'
+  - if Rails.env.production?
+    = render 'layouts/qbaka'
+  = render 'layouts/google_analytics'
+  = render 'layouts/adwords_remarketing'
+  = render 'layouts/facebook_remarketing'
+  = render 'layouts/stripe'
+  = render 'layouts/mixpanel'
+  = render 'layouts/inspectlet'
+  = render 'layouts/crazyegg'
   = yield(:custom_js)
 
 -# This load on every page, so a convenient place to make sure mixpanel identity is known

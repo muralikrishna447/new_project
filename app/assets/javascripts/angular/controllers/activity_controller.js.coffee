@@ -524,6 +524,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   # One time stuff
   if $scope.parsePreloaded()
     $scope.schedulePostPlayEvent()
+    mixpanel?.track('Activity Viewed', {'context' : 'naked', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
 
     if ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()
