@@ -1,7 +1,6 @@
 //=require navigation_bootstrap
-//=require jquery
-//=require active_admin
 //=require jquery.min
+//=require active_admin
 //=require angular.min
 //=require angular-resource.min
 //=require angular-route.min
