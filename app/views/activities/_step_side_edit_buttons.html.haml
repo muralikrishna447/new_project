@@ -2,11 +2,10 @@
   %button.btn-secondary.btn-edit-step(ng-show="editMode" ng-click="toggleStepOpenForEdit()")
     %i.icon-edit-sign
   %div(ng-if="getStepOpenForEdit()")
-    .step-add-button-group(tooltip="Add step..." tooltip-placement="left")
-      %button.btn-secondary(type="button" ng-click="addStep($index, -1)")
-        %i.icon-plus
     .btn-toolbar.step-edit-buttons
       .btn-group.btn-group-vertical
+        %button.btn.btn-secondary(type="button" ng-click="addStep($index, -1)")
+          %i.icon-plus
         %button.btn.btn-secondary(ng-show="! step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Hide step number" tooltip-placement="left")
           %i.icon-ban-circle
         %button.btn.btn-secondary(ng-show="step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Show step number" tooltip-placement="left")
@@ -24,6 +23,6 @@
           %i.icon-arrow-down
         %button.btn.btn-secondary(type="button" ng-click="removeStep($index)" tooltip="Remove step" tooltip-placement="left")
           %i.icon-remove-sign
-    .step-add-button-end-group(tooltip="Add step..." tooltip-placement="left")
-      %button.btn-secondary(type="button" ng-click="addStep($index, 1)")
+    .step-add-button-end-group
+      %button.btn.btn-secondary(type="button" ng-click="addStep($index, 1)")
         %i.icon-plus

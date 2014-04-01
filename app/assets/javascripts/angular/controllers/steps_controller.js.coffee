@@ -1,5 +1,9 @@
 angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$location", "$anchorScroll", ($scope, $location, $anchorScroll) ->
 
+  $scope.fuckMe = (idx) ->
+    alert("FUCK ME" + idx)
+    $scope.addStep(idx, -1)
+
   $scope.stepNumber = (index) ->
     return "" if $scope.activity.steps[index].hide_number
     _.filter($scope.activity.steps[0...index], (step) -> (! (step.hide_number || step.is_aside))).length + 1
