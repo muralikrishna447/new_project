@@ -535,7 +535,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
 
   $scope.showEmbed = (embedType, embedSlug) ->
-    alert("Hi embed")
+    0
 
 
 
