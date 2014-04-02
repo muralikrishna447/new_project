@@ -1,15 +1,17 @@
 # There should only be one of these on a page, it is intended as a singleton
-@app.directive 'nellPopup', ["$rootScope", ($rootScope) ->
+@app.directive 'nellPopup', ["$rootScope", "Ingredient", ($rootScope, Ingredient) ->
   restrict: 'A'
   scope: true
 
   link: ($scope, $element, $attrs) ->
-    $scope.$on 'showNellPopup', (event, info) ->
-      $scope.info = info
-      $scope.contents = $scope.info.include
+    $scope.$on 'showNellPopup', (event, _info) ->
+      $scope.info = _info
       # This could be in a service, though I don't see all that much advantage
       $rootScope.nellPopupShowing = true
       mixpanel.track 'Nell Shown', $scope.info
+      $scope.obj = null
+      if $scope.info.resourceClass == 'Ingredient'
+        $scope.obj = Ingredient.get_as_json({id: $scope.info.slug})
 
     $scope.hideNellPopup = ->
       $rootScope.nellPopupShowing = false
@@ -22,6 +24,14 @@
     $scope.$on 'hideNellPopup', (event) ->
       $scope.hideNellPopup()
 
+    $scope.imageURL = (imageID) ->
+      url = ""
+      if imageID
+        url = JSON.parse(imageID).url
+        url = url + "/convert?fit=max&w=320&cache=true"
+      window.cdnURL(url)
+
+
   template: '''
     <div class='nell-popup' ng-show="nellPopupShowing">
       <div class='top-triangle'>
@@ -30,7 +40,7 @@
       <div class='close-x' ng-click='abandonNellPopup()'>
         <i class='icon-remove'/>
       </div>
-      <div ng-include='contents'/>
+      <div ng-include='info.include'/>
     </div>
   '''
 ]
