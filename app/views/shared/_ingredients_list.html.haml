@@ -1,6 +1,6 @@
 .ingredients
   .ingredient-table-body(ui-sortable="sortOptions" ng-model="#{source}.ingredients")
-    .why-by-weight.anim-delayed-fade(ng-if="'#{source}' == 'activity' && ! editMode && getShowWhyByWeight()" ng-include="'_why_by_weight.html'")
+    .why-by-weight.anim-basic-fade(ng-if="viewOptions.showWhyByWeight && ('#{source}' == 'activity') && (! editMode)" ng-include="'_why_by_weight.html'")
     .ingredient-table-row.anim-basic-fade.relative(ng-repeat="ai in #{source}.ingredients")
       %csIngredientEditPair
 

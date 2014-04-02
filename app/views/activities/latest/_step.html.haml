@@ -4,18 +4,19 @@
   %h1.step-number
     %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
 
-  %h4(  cs-contenteditable="editMode && getMouseCurrentlyOverStep()" 
+  %h4(  cs-contenteditable="getStepOpenForEdit()" 
         ng-model="step.title"
         placeholder="'Click to write step title'")
 
   .step-first-row
     =render 'activities/step_ingredients'
 
-  .step-content(  cs-contenteditable="editMode && getMouseCurrentlyOverStep()" 
+  .step-content(  cs-contenteditable="getStepOpenForEdit()" 
                   creator="activity.creator"
                   ng-model="step.directions"
                   placeholder="'Click to write step directions'" )
 
+  %div(ng-include="'_step_edit_images.html'")
   .step-last-row(ng-show='((!! step.youtube_id) || (!! step.image_id))')
 
     %div(ng-if='hasAV()')
@@ -28,5 +29,4 @@
       .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(ng-src="{{stepImageURL(step, 670)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
-  %div(ng-include="'_step_edit_images.html'")
 %div(ng-include="'_aside.html'")

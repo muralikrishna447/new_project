@@ -62,8 +62,9 @@ class ReportsController < ApplicationController
   # end
 
   def stripe
-    previous_month = (Time.now-1.month)
-    stripe_csv = generate_csv(previous_month)
+    start_time = (Time.now).beginning_of_month
+    end_time = (Time.parse("15/03/2014")).end_of_day
+    stripe_csv = generate_csv(start_time, end_time)
 
     # Check is for money going out
     # Deposit for money going in
@@ -87,7 +88,7 @@ class ReportsController < ApplicationController
           refunds << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Credit Card Transaction Fees", "Stripe (Vendor)", "ChefSteps", stripe_record["refund_fee"], "Refund of fees for #{stripe_record["id"]}"]
           refunds << ["ENDTRNS"]
 
-          if Time.parse(stripe_record["transaction_created"]).between?(previous_month.beginning_of_month, previous_month.end_of_month)
+          if Time.parse(stripe_record["transaction_created"]).between?(start_time, end_time)
             charges << ["TRNS", "1", "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Stripe Account", nil, "ChefSteps", stripe_record["total_deposit"], "Net for charge ID: #{stripe_record["id"]}"]
             charges << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:#{deposit_type(stripe_record)}", "Delve Online", "ChefSteps", stripe_record["revenue"], "Charge ID: #{stripe_record["id"]}"]
             line_number = 3
@@ -121,7 +122,7 @@ class ReportsController < ApplicationController
       document.each{|d| tsv << d }
     end
 
-    send_data(tsv_string, :type => 'text/tsv; charset=utf-8; header=present', :filename => "quickbooks-file.tsv")
+    send_data(tsv_string, :type => 'text/tsv; charset=utf-8; header=present', :filename => "quickbooks-file-#{start_time}-#{end_time}.tsv")
   end
 
   private
@@ -138,8 +139,8 @@ class ReportsController < ApplicationController
       "Siphon"
     elsif stripe_record["description"].include?("French Macarons")
       "Macaron"
-    elsif stripe_record["description"].include?("Meat Class") # Not used yet
-      "Meat"
+    elsif stripe_record["description"].include?("Tender Cuts") || stripe_record["description"].include?("Steak to Salmon")
+      "Tender Cuts"
     end
   end
 
@@ -209,7 +210,7 @@ class ReportsController < ApplicationController
     -1*(refund_revenue(charge) + refund_tax(charge)) - refund_fee(charge)
   end
 
-  def generate_csv(previous_month)
+  def generate_csv(start_time, end_time)
   @transaction_fee = 0.3
   @per_transaction_percent = 0.029
   @sales_tax = 1.095
@@ -223,9 +224,9 @@ class ReportsController < ApplicationController
         # Transfer
         "charge_gross", "charge_fees", "refund_gross", "refund_fees", "charge_count", "refund_count", "net"
       ]
-      pages = Stripe::Charge.all(count: 1, created: {gte: previous_month.beginning_of_month.to_i, lte: previous_month.end_of_month.to_i})
+      pages = Stripe::Charge.all(count: 1, created: {gte: start_time.to_i, lte: end_time.to_i})
       0.upto((pages.count/100)+1) do |x|
-        Stripe::Charge.all(offset: x*100, count: 100, created: {gte: previous_month.beginning_of_month.to_i, lte: previous_month.end_of_month.to_i} ).each do |charge|
+        Stripe::Charge.all(offset: x*100, count: 100, created: {gte: start_time.to_i, lte: end_time.to_i} ).each do |charge|
           next unless charge["paid"]
           charge_amount = (charge["amount"].to_i/100.00)
           stripe_csv << [
@@ -235,12 +236,12 @@ class ReportsController < ApplicationController
         end
       end
 
-      old_pages = Stripe::Charge.all(count: 1, :refunded => true, created: {gte: (previous_month-1.month).beginning_of_month.to_i, lte: (previous_month-1.month).end_of_month.to_i})
+      old_pages = Stripe::Charge.all(count: 1, :refunded => true, created: {gte: start_time.to_i, lte: end_time.to_i})
       0.upto((pages.count/100)+1) do |x|
-        Stripe::Charge.all(offset: x*100, count: 100, :refunded => true, created: {gte: (previous_month-1.month).beginning_of_month.to_i, lte: (previous_month-1.month).end_of_month.to_i} ).each do |charge|
+        Stripe::Charge.all(offset: x*100, count: 100, :refunded => true, created: {gte: (start_time-1.month).beginning_of_month.to_i, lte: start_time.beginning_of_day.to_i} ).each do |charge|
           if charge["refunded"]
             refund_at = Time.at(charge["refunds"].first["created"])
-            if refund_at.between?(previous_month.beginning_of_month, previous_month.end_of_month)
+            if refund_at.between?(start_time, end_time)
               charge_amount = (charge["amount"].to_i/100.00)
               stripe_csv << [
                 charge["id"], charge["object"], Time.at(charge["created"]), charge["paid"], (charge["amount"].to_i/100.00), charge["refunded"], charge["card"]["id"], charge["card"]["object"], charge["card"]["last4"], charge["card"]["type"], charge["card"]["exp_month"], charge["card"]["exp_year"], charge["card"]["fingerprint"], charge["card"]["customer"], charge["card"]["country"], charge["card"]["name"], charge["card"]["address_line1"], charge["card"]["address_line2"], charge["card"]["address_city"], charge["card"]["address_state"], charge["card"]["address_zip"], charge["card"]["address_country"], charge["card"]["cvc_check"], charge["card"]["address_line1_check"], charge["card"]["address_cip_check"], charge["captured"], charge["balance_transaction"], charge["failure_message"], charge["failure_code"], (charge["amount_refunded"].to_i/100.00), (charge["refunds"].first.present? ? Time.at(charge["refunds"].first["created"]) : nil), (charge["refunds"].first.present? ? charge["refunds"].first["balance_transaction"] : nil), charge["customer"], charge["invoice"], charge["description"], charge["dispute"], charge["metadata"], charge["description"].include?("WA state").to_s,
@@ -251,7 +252,7 @@ class ReportsController < ApplicationController
         end
       end
 
-      Stripe::Transfer.all(count: 100, date: {gte: previous_month.beginning_of_month.to_i, lte: previous_month.end_of_month.to_i}).each do |transfer|
+      Stripe::Transfer.all(count: 100, date: {gte: start_time.to_i, lte: end_time.to_i}).each do |transfer|
         stripe_csv << [
           transfer["id"], transfer["object"], Time.at(transfer["date"]), nil, (transfer["amount"].to_i/100.00), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil,nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil,
           # calculated

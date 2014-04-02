@@ -13,7 +13,10 @@
               %csrating.rating(value="#{@classes[0].average_rating}" readonly="true")
             = image_tag filepicker_stream_image(@classes[0].featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
             .section.pull-right.home-featured-item-btn(onclick= 'track_viewed_course_through_signed_in_homepage();')
-              = where_user_left_off_in_course(@classes[0], current_user, 'btn btn-primary btn-large')
+              / = where_user_left_off_in_course(@classes[0], current_user, 'btn btn-primary btn-large')
+              = link_to home_featured_path do
+                .btn.btn-primary.btn-large
+                  View the Class
           .section
             = @classes[0].short_description
         - @classes.from(1).each.with_index do |course, index|

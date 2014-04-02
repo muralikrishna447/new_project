@@ -1,10 +1,13 @@
 angular.module("ui.directives").directive "uiRedactor", ["ui.config", (uiConfig) ->
 
   require: "ngModel"
+  # Not creating own scope b/c that messes with model control; i'm sure there is a fix
+  # but note that the currrent way using scope.redactor implies relying on only one ui-redactor
+  # per parent scope.
   link: (scope, elm, attrs, ngModelCtrl) ->
-    redactor = null
+    scope.redactor = null
 
-    getVal = -> if redactor then redactor.redactor('get') else null
+    getVal = -> if scope.redactor then scope.redactor.redactor('get') else null
 
     apply = ->
       ngModelCtrl.$pristine = false
@@ -22,22 +25,22 @@ angular.module("ui.directives").directive "uiRedactor", ["ui.config", (uiConfig)
       placeholder: attrs.placeholder || "Click to start writing"
       # Had to disable shortcuts b/c contrary to doc, [ was increasing indent! 
       shortcuts: false
-      # This works, but the placement is ugly. Going back air mode.
-      #focusCallback: -> elm.parent().find('.redactor_toolbar').show()
-      #blurCallback: -> elm.parent().find('.redactor_toolbar').hide()
+      # See also csEmitFocus
+      focusCallback: -> scope.$emit('childFocused', true)
+      blurCallback: -> scope.$emit('childFocused', false)
 
     scope.$watch getVal, (newVal) ->
       ngModelCtrl.$setViewValue newVal unless ngModelCtrl.$pristine
-
+      
     #watch external model change
     ngModelCtrl.$render = ->
-      redactor.redactor('set', ngModelCtrl.$viewValue or '') if redactor?
+      scope.redactor.redactor('set', ngModelCtrl.$viewValue or '') if scope.redactor?
 
     expression = if attrs.uiRedactor then scope.$eval(attrs.uiRedactor) else {}
 
     angular.extend options, expression
 
     setTimeout ->
-      redactor = elm.redactor options
+      scope.redactor = elm.redactor options
       elm.parent().find('.redactor_toolbar').hide()
 ]  

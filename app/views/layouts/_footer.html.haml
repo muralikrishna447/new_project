@@ -1,48 +1,49 @@
-.container-fluid#footer.noprint(ng-cloak ng-hide="editMode"){style: "background-image: url('#{s3_image_url(Setting.footer_image)}')"}
-  .row-fluid
-    .span12
-      .row
-        .container#footer-body
-          .span12.well.well-opaque
-            .span3
-              %h3 About
-              %ul.unstyled
-                %li= link_to 'About ChefSteps', '/about'
-                %li= link_to 'Blog', 'http://blog.chefsteps.com'
-                %li= link_to 'Jobs', '/jobs'
-                %li= link_to 'Press Kit', 'http://chefsteps.com/pages/presskit'
-
-            .span3
-              %h3 Learn 
-              %ul.unstyled
-                %li= link_to 'Recipes', gallery_index_url + "#/?activity_type=Recipe"
-                %li= link_to 'Techniques', gallery_index_url + "#/?activity_type=Technique"
-                %li= link_to 'Classes', courses_url
-                %li= link_to 'Science', gallery_index_url + "#/?activity_type=Science"
-                %li= link_to 'Ingredients', ingredients_url
-
-            .span6.section.text-center
-              = image_tag 'logo-minimal.png'
-              .sup.trademark ®
-              %h5 ChefSteps is here to help you become a better cook.
-              %p Handmade at Pike Place Market in Seattle, WA
-          
-            .row
-              .span12
-                %hr
-                %small 
-                  = mail_to 'info@chefsteps.com'
-                  &middot; 
-                  %a{href: 'http://feeds.feedburner.com/ChefSteps'} 
-                    %i.icon-rss
-                      Subscribe to RSS
-                  &middot; 
-                  =link_to 'Legal', legal_url
-
+.container-fluid#footer.noprint(ng-cloak ng-hide="editMode")
+  .footer-image
+    .row-fluid
+      .span12
         .row
-          .span12.section.text-center
-            %p.creative-commons
-              %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', ta: '_blank' }
-                = image_tag 'by-nc-sa.png'
-              %a{href: 'https://mixpanel.com/f/partner'}
-                %img{src: '//cdn.mxpnl.com/site_media/images/partner/badge_blue.png', alt: 'Mobile Analytics'}
+          .container#footer-body
+            .span12.well.well-opaque
+              .span3
+                %h3 About
+                %ul.unstyled
+                  %li= link_to 'About ChefSteps', '/about'
+                  %li= link_to 'Blog', 'http://blog.chefsteps.com'
+                  %li= link_to 'Jobs', '/jobs'
+                  %li= link_to 'Press Kit', 'http://chefsteps.com/pages/presskit'
+
+              .span3
+                %h3 Learn 
+                %ul.unstyled
+                  %li= link_to 'Recipes', gallery_index_url + "#/?activity_type=Recipe"
+                  %li= link_to 'Techniques', gallery_index_url + "#/?activity_type=Technique"
+                  %li= link_to 'Classes', courses_url
+                  %li= link_to 'Science', gallery_index_url + "#/?activity_type=Science"
+                  %li= link_to 'Ingredients', ingredients_url
+
+              .span6.section.text-center
+                = image_tag 'logo-minimal.png'
+                .sup.trademark ®
+                %h5 ChefSteps is here to help you become a better cook.
+                %p Handmade at Pike Place Market in Seattle, WA
+            
+              .row
+                .span12
+                  %hr
+                  %small 
+                    = mail_to 'info@chefsteps.com'
+                    &middot; 
+                    %a{href: 'http://feeds.feedburner.com/ChefSteps'} 
+                      %i.icon-rss
+                        Subscribe to RSS
+                    &middot; 
+                    =link_to 'Legal', legal_url
+
+          .row
+            .span12.section.text-center
+              %p.creative-commons
+                %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', ta: '_blank' }
+                  = image_tag 'by-nc-sa.png'
+                %a{href: 'https://mixpanel.com/f/partner'}
+                  %img{src: '//cdn.mxpnl.com/site_media/images/partner/badge_blue.png', alt: 'Mobile Analytics'}

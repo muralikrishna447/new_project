@@ -29,7 +29,6 @@
  *= require courses
  *= require uploads
  *= require profiles
- *= require bootstrap-wysihtml5
  *= require angular-ui
  *= require ng-grid.min
  *= require redactor
@@ -68,5 +67,6 @@
  *= require bloom/bloom
  *= require scroll_action
  *= require why_by_weight
+ *= require google_remarketing
 
  */

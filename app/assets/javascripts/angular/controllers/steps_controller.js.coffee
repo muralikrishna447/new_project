@@ -1,5 +1,9 @@
 angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$location", "$anchorScroll", ($scope, $location, $anchorScroll) ->
 
+  $scope.fuckMe = (idx) ->
+    alert("FUCK ME" + idx)
+    $scope.addStep(idx, -1)
+
   $scope.stepNumber = (index) ->
     return "" if $scope.activity.steps[index].hide_number
     _.filter($scope.activity.steps[0...index], (step) -> (! (step.hide_number || step.is_aside))).length + 1
@@ -18,7 +22,7 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
   $scope.stepImageDescription = (step) ->
     desc = step.image_description
     if ((! desc) || (desc.length == 0)) && step.image_id
-      desc = JSON.parse(step.image_id).filename
+      desc = $scope.activity.title
     desc
 
   $scope.removeStep = (idx) ->

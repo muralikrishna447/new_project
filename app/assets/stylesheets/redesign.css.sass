@@ -218,6 +218,7 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
   padding: ($baseline * 2)
 
 .well-opaque
+  @extend .well
   background-color: rgba(255,255,255,.8)
 
 .well-gradient
@@ -730,6 +731,18 @@ a:hover
   .step-media-button
     margin-top: $baseline * 2
 
+  .activity-description-wrapper
+    .activity-description
+      overflow: visible
+
+  .content-activity-description
+    textarea
+      height: 21rem
+
+  .step-content, .aside-text
+    textarea
+      height: 20rem
+
 .activity-ingredients-list
   position: relative
 
@@ -890,6 +903,7 @@ a:hover
     text-align:  right
     padding-left: 5px
     bottom: -4px
+    display: block
 
     .lbs-label
       margin-left: 4px
@@ -1174,17 +1188,13 @@ a:hover
   background-position: center top
   background-repeat: no-repeat
   //background-size: 100%
-  margin-left: 0px
-  margin-right: 0px
   margin-top: 60px
   .footer-image
-    max-height: 600px
-    overflow: hidden
-    position: absolute
-    left: 0px
-    z-index: -1
-    img
-      width: 100%
+    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0)), url('https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx?cache=true') no-repeat left top
+    @include background-size(cover)
+    padding: 0 20px
+    margin-left: -20px
+    margin-right: -20px
   #footer-body
     margin-top: 50px
     z-index: 999
@@ -1499,12 +1509,12 @@ csingredienteditpair
 
 .step-edit-buttons
   position: absolute
-  top: 10px
+  top: 47px
   width: 30px
 
 .step-add-button-group
   position: absolute
-  top: -10px
+  top: 30px
 
 .step-add-button-end-group
   position: absolute
@@ -1883,6 +1893,19 @@ body
 .container.cookies-disabled
   border: 2px $orange dotted
   padding: 20px
+
+.htcm
+  table
+    border-spacing: .5rem
+    border-collapse: collapse
+    border: 1px solid rgba(226,95,37,.3)
+    
+  thead
+    background: $offwhite
+
+  td, th
+    border: 1px solid rgba(226,95,37,.3)
+    padding: .5rem
 
 
 

@@ -1,5 +1,5 @@
 %div.relative
-  %form.form-inline(ng-controller="MadlibController")
+  %form.form-inline(ng-controller="MadlibController" ng-init="totalUsers=#{User.count}")
     %h2.madlib
       .madlib-item.text-orange
         Hi ChefSteps,

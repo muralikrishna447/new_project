@@ -1,6 +1,5 @@
 -################################ HEADER / LAYOUT STUFF ################################
 
-= render 'layouts/filepicker'
 - content_for :title, "#{@activity.title} - #{@activity.activity_type.first}".html_safe
 - content_for :description, @activity.description.to_s != "" ? @activity.description.html_safe : @activity.title.html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
@@ -166,10 +165,6 @@
 
 #preloaded-activity-json.hide
   = @activity.to_json
-
-
-:javascript
-  mixpanel.track('Activity Viewed', {'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
 
 
 
