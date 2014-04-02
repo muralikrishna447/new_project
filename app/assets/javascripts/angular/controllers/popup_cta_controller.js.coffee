@@ -4,7 +4,8 @@
 
   $scope.$on 'showPopupCTA', ->
     # Note tri-state, won't reshow once it becomes false
-    if $scope.showPopup == null && ! $scope.editMode && ! csAuthentication.currentUser() && ! $scope.viewOptions?.showWhyByWeight?
+    whyBy = $scope.viewOptions? && $scope.viewOptions.showWhyByWeight
+    if $scope.showPopup == null && ! $scope.editMode && ! csAuthentication.currentUser() && ! whyBy
       $scope.showPopup = true 
       mixpanel.track('Popup CTA Shown', _.extend({source : $scope.registrationSource}, $rootScope.splits))
 
