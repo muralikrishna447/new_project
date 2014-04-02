@@ -38,6 +38,7 @@
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
 
     = render 'layouts/mixpanel'
+    = render 'layouts/google_analytics'
     = render 'layouts/filepicker'
     = render 'layouts/twitter'
     = yield :facebook_og
@@ -95,7 +96,6 @@
   = render 'layouts/google'
   - if Rails.env.production?
     = render 'layouts/qbaka'
-  = render 'layouts/google_analytics'
   = render 'layouts/adwords_remarketing'
   = render 'layouts/facebook_remarketing'
   = render 'layouts/stripe'
