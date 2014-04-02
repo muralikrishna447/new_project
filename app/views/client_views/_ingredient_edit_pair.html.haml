@@ -4,7 +4,7 @@
 
 %csEditPair
   %csEditPairShow.show-group(itemprop="ingredients")
-    .ingredient-title
+    .ingredient-title(ng-mouseenter="showEmbed('ingredient', ai.ingredient.slug)" ng-mouseleave="closeEmbed()")
       %span(ng-switch="" on="ingredient_display_type(ai)")>
         %a(ng-switch-default="" ng-href="/ingredients/{{ai.ingredient.slug}}" target='_blank' ng-bind-html="ai.ingredient.title")>
         %a(ng-switch-when="subrecipe" ng-click="loadSubrecipe(ai.ingredient.sub_activity_id)" ng-bind-html="ai.ingredient.title" target="_blank")>

@@ -534,7 +534,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
         $scope.editMeta = true
 
 
-
+  $scope.showEmbed = (embedType, embedSlug) ->
+    alert("Hi embed")
 
 
 
