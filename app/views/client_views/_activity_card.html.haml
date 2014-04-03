@@ -1,0 +1,4 @@
+%h3.section {{obj.title}}
+%img.section(ng-src='{{imageURL(obj.featured_image_id)}}' ng-show="obj.featured_image_id")
+.short-summary.line-clamp(ng-bind-html="obj.description | markdown | shortcode")
+%a(ng-href='/activities/{{obj.slug}}' target='_blank') Full recipe ...

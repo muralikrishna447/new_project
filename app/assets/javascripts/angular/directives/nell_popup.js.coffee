@@ -1,10 +1,14 @@
 # There should only be one of these on a page, it is intended as a singleton
-@app.directive 'nellPopup', ["$rootScope", "Ingredient", ($rootScope, Ingredient) ->
+@app.directive 'nellPopup', ["$rootScope", "Ingredient", "Activity", ($rootScope, Ingredient, Activity) ->
   restrict: 'A'
   scope: true
+  replace: true
 
   link: ($scope, $element, $attrs) ->
     $scope.$on 'showNellPopup', (event, _info) ->
+      return if $scope.editMode
+      return if $rootScope.nellPopupShowing && (_info.include == $scope.info.include) && (_info.slug == $scope.info.slug)
+
       $scope.info = _info
       # This could be in a service, though I don't see all that much advantage
       $rootScope.nellPopupShowing = true
@@ -12,6 +16,11 @@
       $scope.obj = null
       if $scope.info.resourceClass == 'Ingredient'
         $scope.obj = Ingredient.get_as_json({id: $scope.info.slug})
+      else if $scope.info.resourceClass == "Activity"
+        $scope.obj = Activity.get_as_json({id: $scope.info.slug})
+      $element.css
+        left: $scope.info.position[0] - 31
+        top: $scope.info.position[1] + 11
 
     $scope.hideNellPopup = ->
       $rootScope.nellPopupShowing = false

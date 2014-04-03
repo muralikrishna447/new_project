@@ -530,16 +530,5 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
         $scope.startEditMode()
         $scope.editMeta = true
-
-  $scope.showEmbed = (embedType, embedSlug) ->
-    if embedType == 'ingredient'
-      $rootScope.$broadcast "showNellPopup", 
-        resourceClass: 'Ingredient'
-        include: '_ingredient_card.html'
-        slug: embedSlug
-
-
-
-
 ]
 
