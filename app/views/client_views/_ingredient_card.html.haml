@@ -1,2 +1,4 @@
-%h3 {{obj.title}}
-%img(ng-src='{{imageURL(obj.image_id)}}')
+%h3.section {{obj.title}}
+%img.section(ng-src='{{imageURL(obj.image_id)}}' ng-show="obj.image_id")
+%p.section(ng-bind-html="obj.text_fields.description")
+%a(ng-href='/ingredients/{{obj.slug}}' target='_blank') Details
