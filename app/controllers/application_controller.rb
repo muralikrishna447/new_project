@@ -2,10 +2,6 @@ class ApplicationController < ActionController::Base
   include StatusHelpers
   protect_from_forgery
 
-  def local_request?
-    false
-  end
-
   if Rails.env.angular? || Rails.env.development?
     require 'database_cleaner'
     def start_clean

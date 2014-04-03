@@ -1,19 +1,18 @@
 .container
   .span12.text-center.section
-    %h1 Whoa. Something's missing.
-  .span2.offset5.section
-    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/G6pD0urxRDKahYzkpCca'
-  .span12.text-center.section
+    %h1.section Whoa. Something’s missing.
+    .whitespace
+      = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/ACP0NbPjSeJtQQ8B6uVg?cache=true'
     %h2.section 
       = link_to 'Check out the Recipe Gallery?', gallery_index_url 
     %p Or contact us
     %ul.no-bullet
       %li
         %i.fa.fa-envelope-o
-        Email us
+          = mail_to 'Email us', 'info@chefsteps.com'
       %li 
         %i.fa.fa-twitter-square
-        Tweet us
+          = link_to 'Tweet us', '//twitter.com/chefsteps'
 
 
   - # Do not remove this line. It is used for development
