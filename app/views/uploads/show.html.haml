@@ -7,9 +7,10 @@
 
 .container
   .row
-    .span12
-      .section
-        %h2= @upload.title
+    .span8
+      %h2= @upload.title
+    .span4
+      .pull-right.btn.btn-primary ADD AS COMMUNITY RECIPE
   .row
     .span6
       .section
@@ -27,6 +28,7 @@
             .span6
               = link_to knife_collection_path do
                 = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/4Koc6GmGSRCLx3PC2GQs?v=photo'
+
     .span6
       %p.lead
         - if @upload.assembly

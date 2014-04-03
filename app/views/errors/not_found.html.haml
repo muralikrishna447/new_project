@@ -1,0 +1,23 @@
+.container
+  .span12.text-center.section
+    %h1 Whoa. Something's missing.
+  .span2.offset5.section
+    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/G6pD0urxRDKahYzkpCca'
+  .span12.text-center.section
+    %h2.section 
+      = link_to 'Check out the Recipe Gallery?', gallery_index_url 
+    %p Or contact us
+    %ul.no-bullet
+      %li
+        %i.fa.fa-envelope-o
+        Email us
+      %li 
+        %i.fa.fa-twitter-square
+        Tweet us
+
+
+  - # Do not remove this line. It is used for development
+  - # purposes. When an error is found. In development, it
+  - # shows the logs, in production it is nil.
+  .error-msg
+    = @log
