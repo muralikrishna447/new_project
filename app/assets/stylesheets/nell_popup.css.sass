@@ -1,5 +1,14 @@
 @import mixins
 
+.nell-backdrop
+  position: fixed
+  z-index: 1999
+  top: 0
+  bottom: 0
+  right: 0
+  left: 0
+  opacity: 0
+
 .nell-popup
   @extend noprint
   @include boxsizing
@@ -26,6 +35,13 @@
     position: absolute
     top: $baseline
     right: $baseline
+
+  .activity-loading-spinner
+    position: absolute
+    left: 50%
+    top: 50%
+    margin-top: -37px
+    margin-left: -16px
 
 @media (max-width: 430px)
   .nell-popup

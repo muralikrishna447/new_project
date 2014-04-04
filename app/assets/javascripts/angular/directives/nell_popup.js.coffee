@@ -15,7 +15,10 @@
       mixpanel.track 'Nell Shown', $scope.info
       $scope.obj = null
       if $scope.info.resourceClass == 'Ingredient'
-        $scope.obj = Ingredient.get_as_json({id: $scope.info.slug})
+        $scope.nellLoading = true
+        $scope.obj = Ingredient.get_as_json({id: $scope.info.slug}, ->
+          $scope.nellLoading = false
+        )
       else if $scope.info.resourceClass == "Activity"
         $scope.obj = Activity.get_as_json({id: $scope.info.slug})
       $element.addClass('active')
@@ -45,11 +48,17 @@
 
 
   template: '''
-    <div ng-class="getClass()">
-      <div class='close-x' ng-click='abandonNellPopup()'>
-        <i class='icon-remove'/>
+    <div>
+      <div class="nell-backdrop" ng-click='abandonNellPopup()' ng-show="nellPopupShowing"/>
+      <div ng-class="getClass()">
+        <div class='close-x' ng-click='abandonNellPopup()'>
+          <i class='icon-remove'/>
+        </div>
+        <div class="activity-loading-spinner" ng-if="nellLoading">
+          <i class='icon-page-load'/>
+        </div>
+        <div ng-include='info.include'/>
       </div>
-      <div ng-include='info.include'/>
     </div>
   '''
 ]
