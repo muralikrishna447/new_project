@@ -17,7 +17,7 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
             resourceClass: 'Activity'
             include: '_activity_card.html'
             slug: slug
-            event.preventDefault()
+        event.preventDefault()
         
       else 
         # Ingredient link
