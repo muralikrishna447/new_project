@@ -36,5 +36,8 @@
               mixpanel.track('Video Embed Played', mixpanelProperties) 
     )   
 
+    attrs.$observe 'videoId', (newVal) ->
+      player.loadVideoById(newVal) if player && newVal.length > 0
+
   template: '<div></div>'
 ]

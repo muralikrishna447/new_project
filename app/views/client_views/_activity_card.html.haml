@@ -1,4 +1,17 @@
-%h3.section {{obj.title}}
-%img.section(ng-src='{{imageURL(obj.featured_image_id)}}' ng-show="obj.featured_image_id")
-.short-summary.line-clamp(ng-bind-html="obj.description | markdown | shortcode")
-%a(ng-href='/activities/{{obj.slug}}' target='_blank') Full recipe ...
+.container-fluid
+  .row-fluid.section
+    .span12
+      %h6.no-margin-padding 
+        CHEFSTEPS {{obj.activity_type[0] || "Recipe" | uppercase}}
+      %h2 {{obj.title}}
+  .row-fluid
+    .span7
+      //%img.section(ng-src='{{imageURL(obj.featured_image_id)}}' ng-show="obj.featured_image_id")
+      %csEmbedYouTube(video-id="{{obj.youtube_id}}" container-slug="{{activity.slug}}")
+    .span5
+      .short-summary.section(ng-bind-html="obj.description | markdown | shortcode")
+      %a(ng-href='/activities/{{obj.slug}}' target='_blank') 
+        %div(ng-switch='obj.activity_type[0] || "Recipe"')
+          .btn.btn-large.btn-secondary(ng-switch-when="Recipe") SEE THE RECIPE
+          .btn.btn-large.btn-secondary(ng-switch-default) TELL ME MORE
+       
