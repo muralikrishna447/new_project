@@ -15,8 +15,8 @@
         elementPosition = element[0].getBoundingClientRect().top
        
         windowHeight = windowElement.height()
-        console.log elementPosition
-        console.log windowHeight
+        #console.log elementPosition
+        #console.log windowHeight
 
         offset = parseInt(scope.offset || 100)
 

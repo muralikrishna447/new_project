@@ -129,3 +129,32 @@
     .modal-footer.invite-modal-footer
       %div
         %button.btn.btn-primary.btn-large.next-button(ng-show="authentication.currentUser()" ng-click="sendInvitation()" ng-disabled="dataLoading") Send Invitations
+
+.welcome-modal(close="closeModal('welcome')" modal="welcomeModalOpen" options="modalOptions" ng-cloak)
+  .modal-body.welcome-modal-body
+    .close-x.pull-right(ng-click="closeModal('welcome')")
+      %i.icon-remove
+    .row-fluid
+      %h3 Welcome to ChefSteps
+      %p
+        Thanks for joining. We're so glad to have you. Here are some ideas to get you started on the road to cooking smarter.
+      %p
+        = link_to "Recipe development", "/projects/doughnut-holes-recipe-development#/doughnut-holes-intro"
+        %br
+        Follow along as we develop a recipe from start to finish. Each day, our chefs keep notes as they modify, test, and improve their recipes. Use what you learn to test our recipes and offer suggestions, or develop your own!
+      %p
+        = link_to "Classes", courses_path
+        %br
+        Drawing on our years of combined culinary experience, we create hands-on online classes about food and cooking that are both informative and entertaining. We won't tell you how to use a whipping siphon or make macarons from scratch — we'll show you.
+  .modal-footer.invite-modal-footer
+    %div
+      %button.btn.btn-primary.btn-large.close-welcome(ng-click="closeModal('welcome')") Done
+
+.welcome-modal(close="closeModal('kioskWelcome')" modal="kioskWelcomeModalOpen" options="modalOptions" ng-cloak)
+  .modal-body.welcome-modal-body
+    .row-fluid
+      %h3 Thanks for joining the Community!
+      %p Check your email for updates on new Recipes, Classes and more.
+  .modal-footer.invite-modal-footer
+    %div
+      %button.btn.btn-primary.btn-large.close-welcome(ng-click="kioskReload()") Done

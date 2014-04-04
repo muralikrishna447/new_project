@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$element", "$timeout", ($scope, $element, $timeout) ->
+angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootScope", "$element", "$timeout", ($scope, $rootScope, $element, $timeout) ->
 
   $scope.masterSelect = false
 
@@ -49,13 +49,21 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$element
   $scope.hasIngredients = ->
     $scope.step.ingredients?.length
 
-  $scope.mouseCurrentlyOverStep = false
+  $scope.getStepOpenForEdit = ->
+    $scope.editMode && $scope.stepOpenForEdit
+ 
+  $scope.toggleStepOpenForEdit = ->
+    if ! $scope.stepOpenForEdit
+      $rootScope.$broadcast('closeAllSteps')
+    $scope.stepOpenForEdit = ! $scope.stepOpenForEdit
 
-  $scope.getMouseCurrentlyOverStep = ->
-    $scope.mouseCurrentlyOverStep || $element.find(":focus").length > 0
+  $scope.$on 'closeAllSteps', ->
+    $scope.stepOpenForEdit = false
 
-  $scope.setMouseCurrentlyOverStep = (over) ->
-    $scope.mouseCurrentlyOverStep = over
+  # If step gets added while in edit mode, default it open
+  $scope.stepOpenForEdit = false
+  if $scope.editMode
+    $scope.toggleStepOpenForEdit()
 
   $scope.stepSpan = ->
     if $scope.step.is_aside

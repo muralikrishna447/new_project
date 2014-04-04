@@ -18,7 +18,7 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
   $scope.stepImageDescription = (step) ->
     desc = step.image_description
     if ((! desc) || (desc.length == 0)) && step.image_id
-      desc = JSON.parse(step.image_id).filename
+      desc = $scope.activity.title
     desc
 
   $scope.removeStep = (idx) ->

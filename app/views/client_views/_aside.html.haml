@@ -1,5 +1,6 @@
 .aside(ng-if='step.is_aside' ng-class="asideClass()")
-  %h4(cs-contenteditable="editMode && getMouseCurrentlyOverStep()" ng-model="step.title")
+  %h4(cs-contenteditable="getStepOpenForEdit()" ng-model="step.title")
+  %div(ng-include="'_step_edit_images.html'")
   .aside-video(ng-if='hasAV()')
     .step-video-outer.noprint(ng-if="!! step.youtube_id")
       .new-step-video(id="{{'step-video-' + $index}}")
@@ -7,8 +8,7 @@
           %iframe(ng-style="setHeight()" csenforceaspect cssrcreplacer="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0'}}")
   .aside-image(ng-if="!!step.image_id")
     %img(ng-src="{{stepImageURL(step, 840)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
-  %div(ng-include="'_step_edit_images.html'")
-  .aside-text(  cs-contenteditable="editMode && getMouseCurrentlyOverStep()" 
+  .aside-text(  cs-contenteditable="getStepOpenForEdit()" 
                 ng-model="step.directions"
                 creator="activity.creator"
                 placeholder="'Click to write aside directions'" )
