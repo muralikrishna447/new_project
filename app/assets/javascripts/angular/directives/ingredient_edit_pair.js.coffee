@@ -51,7 +51,7 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', [ "$rootScope",
     scope.hasIngredientTitle = ->
       scope.ai.ingredient? && scope.ai.ingredient.title? && (scope.ai.ingredient.title.length > 0)
 
-    scope.titleHovered = (event) ->
+    scope.showIngredientCard = (event) ->
       if scope.ai.ingredient.sub_activity_id?
        $rootScope.$broadcast "showNellPopup", 
           resourceClass: 'Activity'

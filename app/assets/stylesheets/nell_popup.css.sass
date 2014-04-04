@@ -1,25 +1,19 @@
 @import mixins
 
 .nell-popup
-  @include boxsizing
-  @extend anim-basic-fade
   @extend noprint
+  @include boxsizing
   @include shadow
 
   padding: $baseline $baseline*2
   background-color: white
-  position: absolute
+  position: fixed
   z-index: 20000
   border: 1px solid $light-gray
   border-top: 2px solid $orange
-  width: 320px
-
-  .top-triangle
-    position: absolute
-    top: -23px
-    left: 21px
-    color: $orange
-    font-size: 32px
+  width: 75%
+  top: 25%
+  right: 0
 
   .close-x
     position: absolute
@@ -31,6 +25,3 @@
     width: 320px
     right: -40px
     top: 54px
-
-    .top-triangle
-      right: 70px

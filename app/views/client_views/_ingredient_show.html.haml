@@ -1,0 +1,128 @@
+.container.ingredient-show(ng-cloak ng-class="addEditModeClass()")
+
+  .section
+
+  .row.section.anim-basic-fade(ng-show="! editMode")
+    .span12.well.text-center.wiki-warning(ng-show="csAuthentication.loggedIn()")
+      %div(ng-show="showStubTip()")
+        %h3.section-tiny
+          %i This page is a stub. You can help!
+        Your contributions to the ChefSteps ingredient wiki are always welcome. Just click the edit button below or
+        %a(href="http://www.chefsteps.com/pages/you-can-contribute-to-the-chefsteps-ingredient-wiki" target="_blank") read this article
+        for more information.
+     
+      %div(ng-show="! showStubTip()")
+        ChefSteps 
+        %a(href="/ingredients") ingredient wiki 
+        pages are community-edited. If you see incorrect information, please
+        %a(ng-click="startEditMode()") fix it
+        or
+        %a(ng-click="reportProblem()") report it.
+
+        Your contributions are always welcome, just click the edit button below or
+        %a(href="http://www.chefsteps.com/pages/you-can-contribute-to-the-chefsteps-ingredient-wiki" target="_blank")read this article
+        for more information.
+
+    .span12.well.text-center.wiki-warning(ng-show="! csAuthentication.loggedIn()")
+      ChefSteps 
+      %a(href="/ingredients") ingredient wiki 
+      pages are community-edited. If you see incorrect information, please
+      %a(ng-click="reportProblem()") report it,
+      or
+      %a(href="/sign_in") sign in
+      to edit.
+
+  .row.relative
+    .span6
+      %h2.inline(ng-bind-html="ingredient.title" itemprop="name")
+      %h5.no-bold(ng-show="lastEditingUser()")
+        Last edited by
+        %span(ng-switch="lastEditingUser().role == 'admin'")
+          %span(ng-switch-when="true") Team ChefSteps
+          %span(ng-switch-when="false")
+            %a(ng-href="/profiles/{{lastEditingUser().slug}}" ng-bind-html="lastEditingUser().name")
+
+    .span6.edit-buttons-group(ng-show="! editMode")
+      .btn-toolbar
+        .btn-group
+          .btn.btn-primary(ng-click="startEditMode()" ng-show="csAuthentication.loggedIn()")
+            EDIT
+    .span6.edit-buttons-group.anim-basic-fade(ng-show="editMode")
+      .btn-toolbar
+        .btn.btn-primary(ng-click="endEditMode()")
+          SAVE
+        .btn.btn-link(ng-click="cancelEditMode()")
+          Cancel
+        .btn.btn-link(ng-click="showHelpModal = true")
+          Help
+
+  .row.section
+    .span6
+
+      .row.section(ng-init="heroImageSize=570")
+        .span6
+          .noprint
+            //= render 'activities/hero_visual'
+            //= render 'layouts/social_buttons', media_object: nil
+
+      .row.text-fields(ng-repeat="textFieldName in textFieldOptions")
+        .span6.section(ng-show="editMode || (ingredient.text_fields[textFieldName].length)")
+          %h3(ng-bind-html="textFieldName")
+          %div( cs_contenteditable="editMode"
+                ng-model="ingredient.text_fields[textFieldName]")
+
+    .span6
+      .well.relative
+        .row.section.anim-basic-fade(ng-show="editMode")
+          .span6
+            %h3.inline Tags
+            .btn.btn-link.inline(ng-click="showTagsModal()") Select...            
+            %input(type="hidden" ng-model="ingredient.tags" ui-select2="tagsSelect2()")
+
+        .row.section(ng-show="(! editMode) && ingredient.tags.length")
+          .span6
+            %h3 Tags
+            %csTagList(ng-model="ingredient.tags" search-path="'/ingredients#/?search_all'")
+
+        .row.section(ng-show="ingredient.product_url")
+          .span6
+            %h3 Where To Buy
+            %ul
+              %li
+                %a(ng-href="{{ingredient.product_url}}" target="_blank" ng-bind-html="urlAsNiceText(ingredient.product_url)")
+
+        .row.section(ng-show="usedInChefStepsActivities().length > 0")
+          .span6
+            %h3 Used In
+            %ul
+              %li(ng-repeat="activity in usedInChefStepsActivities()")
+                %a(ng-href="/activities/{{activity.slug}}" ng-bind-html="activity.title")
+
+        .row.section(ng-show="frequentlyUsedWith().length > 0")
+          .span6
+            %h3 Often Used With
+            %ul
+              %li(ng-repeat="usedWith in frequentlyUsedWith()")
+                %a(ng-href="/ingredients/{{usedWith.slug}}" ng-bind-html="usedWith.title")
+
+        .row.section(ng-show="getEditingUsers().length > 0")
+          .span6
+            %h3 Contributions By
+            %ul
+              %li(ng-repeat="user in getEditingUsers()")
+                %a(ng-href="/profiles/{{user.slug}}" ng-bind-html="user.name")
+
+        .row.anim-basic-fade(ng-show="editMode || ingredient.density")
+          .span6
+            %h3.inline Volume Conversion
+            .btn.btn-link.inline(ng-show="editMode" ng-click="densityService.editDensity(ingredient)")
+              Set...
+            %ul(ng-show="!! ingredient.density")
+              %li(ng-repeat="du in densityService.densityUnits")
+                {{densityService.displayDensity(ingredient.density / du.perL)}}
+                grams per {{du.name|lowercase}}
+        .btn.btn-link.btn-small.report-problem(ng-click="reportProblem()")
+          Report a problem
+
+
+
