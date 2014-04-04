@@ -1,4 +1,12 @@
-%h3.section {{obj.title}}
-%img.section(ng-src='{{imageURL(obj.image_id)}}' ng-show="obj.image_id")
-.short-summary(ng-bind-html="obj.text_fields.description | markdown | shortcode")
-%a(ng-href='/ingredients/{{obj.slug}}' target='_blank') Ingredient wiki entry ...
+.container-fluid
+  .row-fluid
+    .span12
+      %h6.no-margin-padding CHEFSTEPS INGREDIENT WIKI
+      %h2.section {{obj.title}}
+  .row-fluid.section
+    .span7
+      %img.section(ng-src='{{imageURL(obj.image_id)}}' ng-show="obj.image_id")
+    .span5
+      .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
+      %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
+        .btn.btn-large.btn-secondary LEARN MORE

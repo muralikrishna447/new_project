@@ -18,12 +18,16 @@
         $scope.obj = Ingredient.get_as_json({id: $scope.info.slug})
       else if $scope.info.resourceClass == "Activity"
         $scope.obj = Activity.get_as_json({id: $scope.info.slug})
-      $element.addClass('anim-slideLeft')
+      $element.addClass('active')
+
+    $scope.getClass = ->
+      return ['nell-popup', 'active'] if $rootScope.nellPopupShowing
+      return 'nell-popup'
 
     $scope.hideNellPopup = ->
       $rootScope.nellPopupShowing = false
       mixpanel.track 'Nell Closed', $scope.info
-      $element.removeClass('anim-slideLeft')
+      $element.removeClass('active')
 
     $scope.abandonNellPopup = ->
       $rootScope.nellPopupShowing = false
@@ -36,12 +40,12 @@
       url = ""
       if imageID
         url = JSON.parse(imageID).url
-        url = url + "/convert?fit=max&w=320&cache=true"
+        url = url + "/convert?fit=max&w=480&cache=true"
       window.cdnURL(url)
 
 
   template: '''
-    <div class='nell-popup anim-hide' ng-show="nellPopupShowing">
+    <div ng-class="getClass()">
       <div class='close-x' ng-click='abandonNellPopup()'>
         <i class='icon-remove'/>
       </div>

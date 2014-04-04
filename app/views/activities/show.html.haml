@@ -42,7 +42,7 @@
 -################################ PRIMARY CONTENT ################################
 
 #activity-title(data-activity="#{@activity.title}")
-%form(ng-cloak name="activityForm")
+%form(ng-cloak name="activityForm" csfixnakedlinks)
   -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
   %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 

@@ -4,16 +4,23 @@
   @extend noprint
   @include boxsizing
   @include shadow
+  @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
 
   padding: $baseline $baseline*2
   background-color: white
   position: fixed
-  z-index: 20000
+  z-index: 2000
   border: 1px solid $light-gray
-  border-top: 2px solid $orange
-  width: 75%
+  border-top: 4px solid $orange
+  border-bottom: 2px solid $light-gray
+  width: 85%
   top: 25%
   right: 0
+  max-width: 900px
+  +transform(translateX(100%))
+
+  &.active
+    +transform(translateX(0%))
 
   .close-x
     position: absolute
