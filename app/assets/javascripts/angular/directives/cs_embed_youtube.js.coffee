@@ -21,8 +21,8 @@
     player = new YT.Player( 
       playerId,
       videoId: attrs.videoId
-      width: '350'
-      height: '197'
+      width: '466'
+      height: '263'
       playerVars: 
         'wmode': 'opaque'
         'modestbranding' : 1

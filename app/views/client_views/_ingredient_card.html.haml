@@ -1,9 +1,9 @@
 .container-fluid
-  .row-fluid
+  .row-fluid.section
     .span12
       %h6.no-margin-padding CHEFSTEPS INGREDIENT WIKI
-      %h2.section {{obj.title}}
-  .row-fluid.section
+      %h2 {{obj.title}}
+  .row-fluid
     .span7
       %img.section(ng-src='{{imageURL(obj.image_id)}}' ng-show="obj.image_id")
     .span5

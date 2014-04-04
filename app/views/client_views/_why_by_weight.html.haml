@@ -1,12 +1,16 @@
-.why-by-weight
-  %h4 
-    HEY, WHY IS THIS IN GRAMS? 
-    <br>
-    THAT'S UN-AMERICAN!
-  %p Well, because it's better. Here's why:
-  .section
-  %csEmbedYouTube(video-id="YEt0I7I3MDM" container-slug="{{activity.slug}}")
-  .btn.btn-primary.btn-large.section
-    %a(href="http://chefsteps.com/assemblies/why-work-by-weight" target="_blank" ng-click="tellMeMore()") TELL ME MORE
-  .btn.btn-link.text-center(ng-click="abandonNellPopup()") I got it, I got it.
+.container-fluid
+  .row-fluid.section
+    .span12
+      %h6.no-margin-padding CHEFSTEPS SKILLS
+      %h2 Why Are The Ingredients In Grams?
+  .row-fluid
+    .span7
+      %csEmbedYouTube(video-id="YEt0I7I3MDM" container-slug="{{activity.slug}}")
 
+    .span5
+      .section
+        Because it is faster, cleaner, more accurate and just an all-around better way to cook!
+      %div.text-center
+        .btn.btn-primary.btn-large.section
+          %a(href="http://chefsteps.com/assemblies/why-work-by-weight" target="_blank" ng-click="tellMeMore()") PROVE IT
+        .btn.btn-link.text-center(ng-click="abandonNellPopup()") I got it, I got it.
