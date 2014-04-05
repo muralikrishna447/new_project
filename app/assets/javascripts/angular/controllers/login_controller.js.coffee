@@ -292,7 +292,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
             $scope.dataLoadingService.stop()
             $scope.authentication.setCurrentUser(data.user)
             if $scope.formFor != "purchase" && data.new_user
-              $scope.loadFriends()
+              csIntent.setIntent('ftue')
+              csFtue.start()
           , 300)
           trackRegistration(source, "facebook") if data.new_user
         else
@@ -350,7 +351,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
         if $scope.inviteModalOpen
           $scope.loadGoogleContacts()
         else if $scope.formFor != "purchase" && data.new_user
-          $scope.loadFriends()
+          csIntent.setIntent('ftue')
+          csFtue.start()
       , 300)
 
       trackRegistration($scope.registrationSource, "google") if data.new_user
@@ -364,14 +366,14 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
 
   # This method takes the credentials saved on the user and makes a query to google and returns the users contact information.
   $scope.loadGoogleContacts = ->
-    $scope.dataLoading += 1
+    $scope.dataLoadingService.start()
     $http(
       method: "GET"
       url: "/users/contacts/google.js"
     ).success( (data, status) ->
       friends = _.map(data, (contact) -> {name: contact.name, email: contact.email, value: false})
       $scope.inviteFriends = friends
-      $scope.dataLoading -= 1
+      $scope.dataLoadingService.stop()
       $scope.switchModal('invite', 'googleInvite')
 
     )
