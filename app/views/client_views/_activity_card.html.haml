@@ -7,7 +7,7 @@
   .row-fluid
     .span7
       //%img.section(ng-src='{{imageURL(obj.featured_image_id)}}' ng-show="obj.featured_image_id")
-      %csEmbedYouTube(video-id="{{obj.youtube_id}}" container-slug="{{activity.slug}}")
+      %csEmbedYouTube(video-id="{{obj.youtube_id}}" container-slug="{{activity.slug}}" ng-if="nellPopupShowing")
     .span5
       .short-summary.section(ng-bind-html="obj.description | markdown | shortcode")
       %a(ng-href='/activities/{{obj.slug}}' target='_blank') 
