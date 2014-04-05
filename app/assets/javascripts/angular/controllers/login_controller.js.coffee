@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "csIntent", "csFtue", "$route", "$modal", "csDataLoading", "csAdwords", "csFacebookConversion", ($scope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, $rootScope, csIntent, csFtue, $route, $modal, csDataLoading, csAdwords, csFacebookConversion) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "csIntent", "csFtue", "$route", "$modal", "csDataLoading", "csAdwords", "csFacebookConversion", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, csIntent, csFtue, $route, $modal, csDataLoading, csAdwords, csFacebookConversion) ->
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -191,10 +191,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
           name: $scope.register_user.name
           email: $scope.register_user.email
           password: $scope.register_user.password
-      )
-      .success( (data, status) ->
-        $scope.dataLoading -= 1
+      ).success( (data, status) ->
         if (status == 200)
+          $scope.dataLoadingService.stop()
           if source == 'kiosk'
             $scope.openModal('kioskWelcome')
             $timeout( ->
@@ -216,10 +215,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
                   csIntent.setIntent('ftue')
                   csFtue.start()
             , 300)
-            # $scope.notifyLogin(data.user)
-      )
-      .error( (data, status) ->
-        $scope.dataLoading -= 1
+      ).error( (data, status) ->
+        $scope.dataLoadingService.stop()
         if (status == 401)
           $scope.message = data.info;
           $scope.register_error.errors = data.errors

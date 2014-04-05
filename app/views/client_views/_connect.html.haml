@@ -7,7 +7,7 @@
   .row-fluid.connect-buttons
     .span3.offset3
       .facebook-button.pull-right
-        %button(ng-click="facebookConnect('socialConnect')" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading || authentication.currentUser().facebook_user_id")
+        %button(ng-click="facebookConnect('socialConnect')" class="btn btn-secondary btn-facebook" ng-disabled="dataLoadingService.isLoading() || authentication.currentUser().facebook_user_id")
           %i.icon-facebook
           %b Facebook
         %div(ng-show="authentication.currentUser().facebook_user_id")
