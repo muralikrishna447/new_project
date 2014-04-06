@@ -21,23 +21,21 @@
         )
       else if $scope.info.resourceClass == "Activity"
         $scope.obj = Activity.get_as_json({id: $scope.info.slug})
-      $element.addClass('active')
 
     $scope.getClass = ->
       return ['nell-popup', 'active'] if $rootScope.nellPopupShowing
       return 'nell-popup'
 
-    $scope.hideNellPopup = ->
+    $scope.doHideNellPopup = ->
       $rootScope.nellPopupShowing = false
       mixpanel.track 'Nell Closed', $scope.info
-      $element.removeClass('active')
 
     $scope.abandonNellPopup = ->
       $rootScope.nellPopupShowing = false
       mixpanel.track 'Nell Abandoned', $scope.info
 
     $scope.$on 'hideNellPopup', (event) ->
-      $scope.hideNellPopup()
+      $scope.doHideNellPopup()
 
     $scope.imageURL = (imageID) ->
       url = ""

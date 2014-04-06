@@ -10,7 +10,7 @@
       %csEmbedYouTube(video-id="{{obj.youtube_id}}" container-slug="{{activity.slug}}" ng-if="nellPopupShowing")
     .span5
       .short-summary.section(ng-bind-html="obj.description | markdown | shortcode")
-      %a(ng-href='/activities/{{obj.slug}}' target='_blank') 
+      %a(ng-href='/activities/{{obj.slug}}' target='_blank' ng-click='doHideNellPopup()') 
         %div(ng-switch='obj.activity_type[0] || "Recipe"')
           .btn.btn-large.btn-secondary(ng-switch-when="Recipe") SEE THE RECIPE
           .btn.btn-large.btn-secondary(ng-switch-default) TELL ME MORE
