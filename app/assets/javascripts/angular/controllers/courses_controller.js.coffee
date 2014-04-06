@@ -78,9 +78,9 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         $('.prev-next-group').show()
 
   $scope.overrideLoadActivityBySlug = (slug) ->
-    incl = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == slug)
+    incl = _.find($scope.flatInclusions, (incl) -> (incl.includable_slug == slug) || (incl.includable_id == parseInt(slug)))
     if incl
-      $scope.loadInclusion(incl.includable_type, slug)
+      $scope.loadInclusion(incl.includable_type, incl.includable_slug)
       return true
     false
 
