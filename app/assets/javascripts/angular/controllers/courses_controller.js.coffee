@@ -3,9 +3,9 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.routeParams = $routeParams
   $scope.route = $route
 
-  $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
-    if $previousRoute.params.slug == $scope.includable_slug
-      $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
+  $scope.$on "$routeChangeSuccess", (event, $currentRoute, $previousRoute) ->
+    if $currentRoute.params.slug != $scope.includable_slug
+      $scope.overrideLoadActivityBySlug($currentRoute.params.slug)
 
   $scope.view_inclusion = {}
   $scope.collapsed = {}

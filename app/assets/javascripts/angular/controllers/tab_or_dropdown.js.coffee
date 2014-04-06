@@ -18,6 +18,6 @@ angular.module('ChefStepsApp').controller 'TabOrDropdown', ["$scope", '$route', 
   $scope.routeParams = $routeParams
   $scope.route = $route
 
-  $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
+  $scope.$on "$routeChangeSuccess", (event, $currentRoute, $previousRoute) ->
     $scope.switchTab($scope.routeParams.slug)
 ]
