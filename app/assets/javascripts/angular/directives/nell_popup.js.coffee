@@ -10,17 +10,16 @@
       return if $rootScope.nellPopupShowing && (_info.include == $scope.info.include) && (_info.slug == $scope.info.slug)
 
       $scope.info = _info
+
       # This could be in a service, though I don't see all that much advantage
       $rootScope.nellPopupShowing = true
       mixpanel.track 'Nell Shown', $scope.info
+      
       $scope.obj = null
-      if $scope.info.resourceClass == 'Ingredient'
-        $scope.nellLoading = true
-        $scope.obj = Ingredient.get_as_json({id: $scope.info.slug}, ->
-          $scope.nellLoading = false
-        )
-      else if $scope.info.resourceClass == "Activity"
-        $scope.obj = Activity.get_as_json({id: $scope.info.slug})
+      $scope.nellLoading = true
+      $scope.obj = eval($scope.info.resourceClass).get_as_json({id: $scope.info.slug}, ->
+        $scope.nellLoading = false
+      )
 
     $scope.getClass = ->
       return ['nell-popup', 'active'] if $rootScope.nellPopupShowing
