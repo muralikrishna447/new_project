@@ -201,7 +201,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
               $scope.authentication.setCurrentUser(data.user)
               unless $scope.formFor == "purchase"
                 $scope.loadFriends()
-            , 300)
+            , 500)
             # $scope.notifyLogin(data.user)
       )
       .error( (data, status) ->
