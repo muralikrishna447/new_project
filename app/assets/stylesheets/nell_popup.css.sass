@@ -61,6 +61,9 @@
   .nell-card
     .nell-card-media
       width: 320px
+      iframe
+        width: 320px
+        height: 180px
 
 @media (max-width: 970px)
   .nell-popup
@@ -68,14 +71,21 @@
   .nell-card
     margin-right: 22px
     margin-left: 22px
-    .nell-card-media, .nell-card-text
+    .nell-card-header, .nell-card-media, .nell-card-text
       width: 480px
       display: block
       margin-right: 0px
+      iframe
+        width: 480px
+        height: 270px
     .nell-card-media
       margin-bottom: $baseline
 
 @media (max-width: 640px)
   .nell-card
-    .nell-card-media, .nell-card-text
+    .nell-card-header, .nell-card-media, .nell-card-text
       width: 275px
+      iframe
+        width: 275px
+        height: 155px
+
