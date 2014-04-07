@@ -91,6 +91,24 @@
         $scope.associateGoogleAccount(eventData)
       )
 
+  # This is like google connect except it doesn't have the complex if logic
+  $scope.associateGoogleAccount = (eventData) ->
+    $http(
+      method: "POST"
+      url: "/users/auth/google/callback.js"
+      data:
+        google: eventData
+    ).success( (data, status) ->
+      $scope.dataLoadingService.stop()
+      $scope.authentication.setCurrentUser(data.user)
+      $scope.loadGoogleContacts()
+    ).error( (data, status) ->
+      $scope.dataLoadingService.stop()
+      if status == 503
+        $scope.message = "There was a problem connecting to google"
+      # $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
+    )
+
   # This methods sends the data to the rails server after the creditials are returned from google.
   # It will login or create a user.
   $scope.googleConnect = (eventData) ->
