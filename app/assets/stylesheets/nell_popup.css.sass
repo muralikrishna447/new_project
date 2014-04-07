@@ -15,17 +15,14 @@
   @include shadow
   @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
 
-  padding: $baseline $baseline*2
   background-color: white
   position: fixed
   z-index: 2000
   border: 1px solid $light-gray
   border-top: 4px solid $orange
   border-bottom: 2px solid $light-gray
-  width: 85%
   top: 25%
   right: 0
-  max-width: 900px
   +transform(translateX(100%))
 
   &.active
@@ -42,6 +39,23 @@
     top: 50%
     margin-top: -37px
     margin-left: -16px
+
+.nell-card
+  margin: $baseline*2 44px $baseline*2 22px
+
+  .nell-card-header
+    margin-bottom: $baseline
+  .nell-card-media
+    display: inline-block
+    width: 480px
+    margin-right: 33px
+    vertical-align: top
+  .nell-card-text
+    display: inline-block
+    width: 480px
+
+    .needs-work
+      color: $orange
 
 @media (max-width: 430px)
   .nell-popup

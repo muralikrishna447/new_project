@@ -1,12 +1,19 @@
-.container-fluid
-  .row-fluid.section
-    .span12
-      %h6.no-margin-padding CHEFSTEPS INGREDIENT WIKI
-      %h2 {{obj.title}}
-  .row-fluid
-    .span7
-      %img.section(ng-src='{{imageURL(obj.image_id)}}' ng-show="obj.image_id")
-    .span5
-      .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
-      %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
-        .btn.btn-large.btn-secondary LEARN MORE
+.nell-card
+  .nell-card-header
+    %h6.no-margin-padding CHEFSTEPS INGREDIENT WIKI
+    %h2 {{obj.title}}
+  .nell-card-body
+    .nell-card-media(ng-show="obj.image_id")
+      %img(ng-src='{{imageURL(obj.image_id)}}')
+    .nell-card-text
+      %div(ng-switch="obj.text_fields.description.length > 0") 
+        %div(ng-switch-when="true") 
+          .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
+          %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
+            .btn.btn-large.btn-secondary LEARN MORE
+        %div(ng-switch-when="false")
+          .needs-work.section
+            This ingredient needs community contribution!
+          .nell-cta-buttons
+            %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
+              .btn.btn-large.btn-secondary GET INVOLVED
