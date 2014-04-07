@@ -199,7 +199,7 @@ private
       case Rails.env
       when "production", "staging", "staging2"
         logger.error("MailChimp error: #{e.message}")
-        raise e
+        raise e unless e.message.include?("already subscribed to list")
       else
         logger.debug("MailChimp error, ignoring - did you set MAILCHIMP_API_KEY? Message: #{e.message}")
       end
