@@ -57,8 +57,25 @@
     .needs-work
       color: $orange
 
-@media (max-width: 430px)
+@media (max-width: 1170px)
+  .nell-card
+    .nell-card-media
+      width: 320px
+
+@media (max-width: 970px)
   .nell-popup
-    width: 320px
-    right: -40px
-    top: 54px
+    top: 10%
+  .nell-card
+    margin-right: 22px
+    margin-left: 22px
+    .nell-card-media, .nell-card-text
+      width: 480px
+      display: block
+      margin-right: 0px
+    .nell-card-media
+      margin-bottom: $baseline
+
+@media (max-width: 640px)
+  .nell-card
+    .nell-card-media, .nell-card-text
+      width: 275px
