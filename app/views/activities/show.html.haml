@@ -61,8 +61,14 @@
     -# Row with title and buttons
     .row.printable
 
-      .span8.relative.ng-cloak
-        = render 'title'
+      %div(ng-switch="activity.layout_name")
+        %div(ng-switch-default)
+          .span8.relative.ng-cloak
+            = render 'title'
+        %div(ng-switch-when='list')
+          .span7.offset1.relative.ng-cloak
+            = render 'title'
+
 
       .span4.noprint.ng-cloak
         = render 'top_buttons'
