@@ -1,16 +1,17 @@
-.container-fluid
-  .row-fluid.section
-    .span12
-      %h6.no-margin-padding CHEFSTEPS SKILLS
-      %h2 Why Are The Ingredients In Grams?
-  .row-fluid
-    .span7
-      %csEmbedYouTube(video-id="YEt0I7I3MDM" container-slug="{{activity.slug}}")
+.nell-card
+  .nell-card-header
+    %h6.no-margin-padding CHEFSTEPS SKILLS
+    %h2 Why Are The Ingredients In Grams?
+  .nell-card-body
+    .nell-card-media
+      %csEmbedYouTube(  ng-if='nellPopupShowing'
+                        video-id="YEt0I7I3MDM" 
+                        container-slug="{{activity.slug}}")
 
-    .span5
+    .nell-card-text
       .section
         Because it is faster, cleaner, more accurate and just an all-around better way to cook!
       %div.text-center
         .btn.btn-primary.btn-large.section
-          %a(href="http://chefsteps.com/assemblies/why-work-by-weight" target="_blank" ng-click="tellMeMore()") PROVE IT
-        .btn.btn-link.text-center(ng-click="abandonNellPopup()") I got it, I got it.
+          %a(href="http://chefsteps.com/assemblies/why-work-by-weight" target="_blank" ng-click="doHideNellPopup(); tellMeMore()") PROVE IT
+        .btn.btn-link.text-center(ng-click="doHideNellPopup(); abandonNellPopup()") I got it, I got it.

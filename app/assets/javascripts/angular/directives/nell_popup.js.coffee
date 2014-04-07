@@ -16,10 +16,11 @@
       mixpanel.track 'Nell Shown', $scope.info
       
       $scope.obj = null
-      $scope.nellLoading = true
-      $scope.obj = eval($scope.info.resourceClass).get_as_json({id: $scope.info.slug}, ->
-        $scope.nellLoading = false
-      )
+      if $scope.info.resourceClass
+        $scope.nellLoading = true
+        $scope.obj = eval($scope.info.resourceClass).get_as_json({id: $scope.info.slug}, ->
+          $scope.nellLoading = false
+        )
 
     $scope.getClass = ->
       return ['nell-popup', 'active'] if $rootScope.nellPopupShowing
