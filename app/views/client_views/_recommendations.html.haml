@@ -14,7 +14,7 @@
                         sash = "getSashContents(activity)"
                         summary = "activity.description"
                       )
-        %div.text-center(ng-controller='LikesController' ng-init="getCurrentUserLikes('Activity', activity.id)")
+        %div.text-center(ng-controller='LikesController' ng-init="getCurrentUserLikes('Activity', activity.id); showAlert = false;")
           .btn.btn-save-for-later(ng-click="likeObject('Activity', activity.id)")
             %div(ng-if="current_user_likes")
               .btn-save-for-later-icon

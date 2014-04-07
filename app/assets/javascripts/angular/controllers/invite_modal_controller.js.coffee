@@ -66,7 +66,6 @@
         $scope.logged_in = true
         $scope.closeModal('login', false)
         unless source == "socialConnect"
-          $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.dataLoadingService.stop()
             $scope.authentication.setCurrentUser(data.user)
@@ -121,7 +120,6 @@
       unless $scope.inviteModalOpen
         $scope.logged_in = true
         $scope.closeModal('login', false)
-        $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"})
       $timeout( -> # Done so that the modal has time to close before triggering events
         $scope.dataLoadingService.stop()
         $scope.authentication.setCurrentUser(data.user)

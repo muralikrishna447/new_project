@@ -206,7 +206,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
             csFacebookConversion.track(6014798030226,0.00)
             $scope.logged_in = true
             $scope.closeModal('login', false)
-            $scope.alertService.addAlert({message: "You have been registered and signed in.", type: "success"})
             $timeout( -> # Done so that the modal has time to close before triggering events
               $scope.$apply()
               $scope.authentication.setCurrentUser(data.user)
@@ -287,7 +286,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
         $scope.logged_in = true
         $scope.closeModal('login', false)
         unless source == "socialConnect"
-          $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"})
+          $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"}) unless data.new_user
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.dataLoadingService.stop()
             $scope.authentication.setCurrentUser(data.user)
@@ -343,7 +342,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       unless $scope.inviteModalOpen
         $scope.logged_in = true
         $scope.closeModal('login', false)
-        $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"})
+        $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"}) unless data.new_user
       $timeout( -> # Done so that the modal has time to close before triggering events
         $scope.dataLoadingService.stop()
         $scope.authentication.setCurrentUser(data.user)
