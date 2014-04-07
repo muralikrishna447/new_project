@@ -53,7 +53,8 @@
   .nell-card-text
     display: inline-block
     width: 480px
-
+    .short-summary
+      max-height: 18 * $baseline
     .needs-work
       color: $orange
 
@@ -64,6 +65,9 @@
       iframe
         width: 320px
         height: 180px
+    .nell-card-text
+      .short-summary
+        max-height: 10 * $baseline
 
 @media (max-width: 970px)
   .nell-popup
@@ -80,6 +84,10 @@
         height: 270px
     .nell-card-media
       margin-bottom: $baseline
+    .nell-card-text
+      .short-summary
+        max-height: 14 * $baseline
+
 
 @media (max-width: 640px)
   .nell-card

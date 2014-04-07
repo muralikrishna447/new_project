@@ -8,12 +8,13 @@
     .nell-card-text
       %div(ng-switch="obj.text_fields.description.length > 0") 
         %div(ng-switch-when="true") 
-          .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
+          .relative
+            .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
           %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
             .btn.btn-large.btn-secondary LEARN MORE
         %div(ng-switch-when="false")
           .needs-work.section
-            This ingredient wiki entry needs community contribution!
+            This ingredient wiki entry needs your help!
           .nell-cta-buttons
             %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
               .btn.btn-large.btn-secondary GET INVOLVED

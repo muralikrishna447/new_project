@@ -2,7 +2,7 @@
 
   .nell-card-header
     %h6.no-margin-padding 
-      CHEFSTEPS {{obj.activity_type[0] || "Recipe" | uppercase}}
+      {{obj.creator && 'COMMUNITY' || 'CHEFSTEPS'}} {{obj.activity_type[0] || "Recipe" | uppercase}}
     %h2 {{obj.title}}
 
   .nell-card-body
@@ -16,7 +16,8 @@
                         container-slug="{{activity.slug}}") 
 
     .nell-card-text
-      .short-summary.section(ng-bind-html="obj.description | markdown | shortcode")
+      .relative
+        .short-summary.section(ng-bind-html="obj.description | markdown | shortcode")
       %a( ng-href='/activities/{{obj.slug}}' 
           target='_blank' 
           ng-click='doHideNellPopup()') 

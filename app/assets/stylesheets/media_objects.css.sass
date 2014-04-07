@@ -178,6 +178,15 @@
     position: absolute
     right: 0
 
+.short-summary
+  @extend .line-clamp
+  max-height: 14 * $baseline
+  margin-bottom: $baseline
+  overflow: hidden
+
+  p
+    &:last-child
+      margin-bottom: 0
 
 @media (max-width: 1200px)
   .media-box-3
