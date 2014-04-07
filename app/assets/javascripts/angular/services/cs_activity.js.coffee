@@ -7,6 +7,7 @@
                       startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
                       endedit: {method: "PUT", url: "/activities/:id/notify_end_edit"}
                       index_as_json: {method: "GET", url: "/gallery/index_as_json.json", isArray: true}
+                      get_as_json: {url: "/activities/:id/as_json", method: "GET"}
                     }
                   )
 

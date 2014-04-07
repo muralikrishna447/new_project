@@ -3,9 +3,9 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.routeParams = $routeParams
   $scope.route = $route
 
-  $scope.$on "$routeChangeSuccess", ($currentRoute, $previousRoute) ->
-    if $previousRoute.params.slug == $scope.includable_slug
-      $scope.overrideLoadActivityBySlug($scope.routeParams.slug)
+  $scope.$on "$routeChangeSuccess", (event, $currentRoute, $previousRoute) ->
+    if $currentRoute.params.slug != $scope.includable_slug
+      $scope.overrideLoadActivityBySlug($currentRoute.params.slug)
 
   $scope.view_inclusion = {}
   $scope.collapsed = {}
@@ -78,9 +78,9 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         $('.prev-next-group').show()
 
   $scope.overrideLoadActivityBySlug = (slug) ->
-    incl = _.find($scope.flatInclusions, (incl) -> incl.includable_slug == slug)
+    incl = _.find($scope.flatInclusions, (incl) -> (incl.includable_slug == slug) || (incl.includable_id == parseInt(slug)))
     if incl
-      $scope.loadInclusion(incl.includable_type, slug)
+      $scope.loadInclusion(incl.includable_type, incl.includable_slug)
       return true
     false
 

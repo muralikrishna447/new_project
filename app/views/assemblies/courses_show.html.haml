@@ -117,7 +117,8 @@
         %i.icon-chevron-up
       .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
         %i.icon-chevron-down
-
+        
+%div(nell-popup) 
   / .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
   /   = render 'layouts/footer'
 

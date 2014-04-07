@@ -7,8 +7,6 @@ html
 
 body
   position: relative
-  overflow-x: hidden
-  overflow-y: hidden
 
 a, [contenteditable]:not(:focus)
   cursor: pointer
@@ -445,7 +443,22 @@ a:hover
       top: 0
       margin-left: 5px
 
+.kiosk-madlib
+  width: 200%
+  margin-left: 0%
+  @include transition(all 500ms)
+  .kiosk-madlib-left
+    width: 50%
+    float: left
+  .kiosk-madlib-right
+    width: 50%
+    float: right
 
+.madlib-page-1
+  margin-left: 0%
+
+.madlib-page-2
+  margin-left: -100%
 
 
 .gallery
@@ -1121,6 +1134,8 @@ a:hover
   .item
     margin: 0px
 
+
+
 ////////////////////////////////////////
 
 /* Unique Styles */
@@ -1315,6 +1330,9 @@ a:hover
   .nav-search-show
     width: 230px
 
+
+
+
 // WYSIWYG EDITING
 
 .edit-pair, .edit-pair-show, .edit-pair-edit
@@ -1460,6 +1478,7 @@ csingredienteditpair
 
 .fake-link, .fakefocus
   color: #0088cc
+  cursor: pointer
 
 
 .inline-group

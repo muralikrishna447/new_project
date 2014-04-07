@@ -1,0 +1,28 @@
+.nell-card
+
+  .nell-card-header
+    %h6.no-margin-padding 
+      {{obj.creator && 'COMMUNITY' || 'CHEFSTEPS'}} {{obj.activity_type[0] || "Recipe" | uppercase}}
+    %h2 {{obj.title}}
+
+  .nell-card-body
+    .nell-card-media
+      %img( ng-if='! obj.youtube_id && obj.featured_image_id' 
+            ng-src='{{imageURL(obj.featured_image_id)}}')
+
+      // Hide on ! nellPopupShowing to stop video
+      %csEmbedYouTube(  ng-if='nellPopupShowing && obj.youtube_id' 
+                        video-id="{{obj.youtube_id}}" 
+                        container-slug="{{activity.slug}}") 
+
+    .nell-card-text
+      .relative
+        .short-summary.section(ng-bind-html="obj.description | markdown | shortcode")
+      %a( ng-href='/activities/{{obj.slug}}' 
+          target='_blank' 
+          ng-click='doHideNellPopup()') 
+
+        %div(ng-switch='obj.activity_type[0] || "Recipe"')
+          .btn.btn-large.btn-secondary(ng-switch-when="Recipe") SEE THE RECIPE
+          .btn.btn-large.btn-secondary(ng-switch-default) TELL ME MORE
+       
