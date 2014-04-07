@@ -150,7 +150,7 @@
     gapi.auth.signIn(
       clientid: $scope.environmentConfiguration.google_app_id
       callback: 'signInCallback'
-      cookiepolicy: $scope.urlService.currentSiteAsHttps()
+      cookiepolicy: $scope.urlService.currentSite()
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile'
       redirecturi: "postmessage"
       accesstype: "offline"
