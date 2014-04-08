@@ -1,5 +1,6 @@
 namespace :comments do
   require 'nokogiri'
+  require 'json'
   task :migrate_activities => :environment do
     connect_to_disqus_xml('~/Downloads/chefstepsproduction-2014-04-07T20-09-24.957262-all.xml')
 
@@ -113,5 +114,13 @@ namespace :comments do
   def get_chefsteps_user_id(email)
     user = User.where(email: email).first
     user.id unless user.blank?
+  end
+
+  def connect_to_es
+    @elasticsearch = Faraday.new(:url => 'http://d0d7d0e3f98196d4000.qbox.io/') do |faraday|
+      faraday.request  :url_encoded             # form-encode POST params
+      faraday.response :logger                  # log requests to STDOUT
+      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+    end
   end
 end
