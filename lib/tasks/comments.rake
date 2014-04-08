@@ -7,41 +7,12 @@ namespace :comments do
     activities = Activity.any_user_generated.published
     
     activities.each do |activity|
-      # Hash containing meta data to help with migration
-      c = []
-
-      disqus_thread_id = determine_disqus_thread_id("activity-#{activity.id}")
-
-      # get the comments
-      disqus_comments = get_disqus_posts(disqus_thread_id)
-      disqus_comments.each do |comment|
-        c_info = Hash.new
-        c_info[:activity_id] = activity.id
-        c_info[:disqus_thread_id] = disqus_thread_id
-        c_info[:disqus_id] = comment['@dsq:id']
-        c_info[:disqus_parent_id] = comment['parent']['@dsq:id'] if comment['parent']
-        c_info[:disqus_user_email] = comment['author']['email']
-        c_info[:content] = Nokogiri::HTML(comment['message']).text
-        c_info[:created_at] = (comment['createdAt']).to_i
-
-        c_info[:chefsteps_user_id] = get_chefsteps_user_id(comment['author']['email'])
-        puts comment
-        puts "******THAT WAS THE COMMENT********"
-        puts c_info
-        puts "******THAT WAS THE INFO********"
-      end
-      
-      # get only comments without parent
-      # disqus_comments_without_parent = filter_comments_without_parent(disqus_comments)
-
-      # check to see if comments without parents have any children
-
-      # recursive children
-
-
-
+      migrate_one(activity)
     end
-    puts activities.count
+
+    # activity = Activity.find('honey-sriracha')
+    # migrate_one(activity)
+
   end
 
   task :migrate_polls => :environment do
@@ -50,6 +21,45 @@ namespace :comments do
 
   task :migrate_ingredients => :environment do
 
+  end
+
+  def migrate_one(activity)
+    # Hash containing meta data to help with migration
+    c = []
+
+    disqus_thread_id = determine_disqus_thread_id("activity-#{activity.id}")
+
+    # get the comments
+    disqus_comments = get_disqus_posts(disqus_thread_id)
+    disqus_comments.each do |comment|
+      c_info = Hash.new
+      c_info[:activity_id] = activity.id
+      c_info[:disqus_thread_id] = disqus_thread_id
+      c_info[:disqus_id] = comment['@dsq:id']
+      c_info[:disqus_parent_id] = comment['parent']['@dsq:id'] if comment['parent']
+      c_info[:disqus_user_email] = comment['author']['email']
+      
+      c_info[:created_at] = (comment['createdAt']).to_i
+
+      c_info[:chefsteps_user_id] = get_chefsteps_user_id(comment['author']['email'])
+      content = Nokogiri::HTML(comment['message']).text
+      if c_info[:chefsteps_user_id]
+        c_info[:content] = content
+      else
+        c_info[:content] = content + " - originally posted by #{comment['author']['name']}"
+      end
+      puts comment
+      puts "******THAT WAS THE COMMENT********"
+      puts c_info
+      puts "******THAT WAS THE INFO********"
+    end
+    
+    # get only comments without parent
+    # disqus_comments_without_parent = filter_comments_without_parent(disqus_comments)
+
+    # check to see if comments without parents have any children
+
+    # recursive children
   end
 
   def connect_to_disqus_xml(path_and_filename)
