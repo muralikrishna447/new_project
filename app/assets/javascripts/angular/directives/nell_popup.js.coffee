@@ -1,5 +1,5 @@
 # There should only be one of these on a page, it is intended as a singleton
-@app.directive 'nellPopup', ["$rootScope", "Ingredient", "Activity", ($rootScope, Ingredient, Activity) ->
+@app.directive 'nellPopup', ["$rootScope", "Ingredient", "Activity", "$timeout", ($rootScope, Ingredient, Activity, $timeout) ->
   restrict: 'A'
   scope: true
   replace: true
@@ -49,13 +49,13 @@
     <div>
       <div class="nell-backdrop" ng-click='abandonNellPopup()' ng-show='nellPopupShowing'/>
       <div ng-class="getClass()">
-        <div class='close-x' ng-click='abandonNellPopup()' ng-show='nellPopupShowing'>
+        <div class='close-x' ng-click='abandonNellPopup()' ng-show='nellPopupShowing && ! nellLoading'>
           <i class='icon-remove'/>
         </div>
         <div class="activity-loading-spinner" ng-if="nellLoading">
           <i class='icon-page-load'/>
         </div>
-        <div ng-include='info.include'/>
+        <div ng-include='info.include'/ ng-hide="nellLoading">
       </div>
     </div>
   '''
