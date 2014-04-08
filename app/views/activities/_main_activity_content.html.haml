@@ -31,7 +31,7 @@
       .dumb-mortar(ng-show='(! editMode) && (activity.used_in.length > 0)') 
         %h4 Used In
         %ul.no-bullet
-          %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true")
+          %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true | limitTo:10")
             %a( ng-bind-html='item.title'
                 ng-href='/activities/{{item.slug}}'
                 target='_blank')
@@ -41,7 +41,7 @@
       .dumb-mortar(ng-show='(! editMode) && (activity.forks.length > 0)') 
         %h4 Forks
         %ul.no-bullet
-          %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true")
+          %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true | limitTo:10")
             %a( ng-bind-html='item.title'
                 ng-href='/activities/{{item.slug}}'
                 target='_blank')
