@@ -49,7 +49,6 @@ class ActivitiesController < ApplicationController
     # Not a problem
   end
 
-
   before_filter :require_login, only: [:new, :fork, :update_as_json]
   def require_login
     unless current_user
@@ -58,9 +57,15 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def add_related_activities
+    @activity[:used_in] = @activity.used_in_activities.published
+    @activity[:forks] = @activity.published_variations
+  end
+
   def show
 
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
+    add_related_activities
     @upload = Upload.new
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
@@ -135,6 +140,7 @@ class ActivitiesController < ApplicationController
   def get_as_json
 
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, Activity))
+    add_related_activities
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
