@@ -173,6 +173,7 @@ Delve::Application.routes.draw do
   resources :comments, only: [:index, :create] do
     collection do
       get 'info' => 'comments#info'
+      get 'at' => 'comments#at'
     end
   end
   resources :followerships, only: [:update]
