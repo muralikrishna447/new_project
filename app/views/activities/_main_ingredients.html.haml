@@ -1,4 +1,4 @@
-.section(ng-controller="IngredientsController" cs-watch-focus ng-class='ingredientSpanClass()')
+.section(ng-controller="IngredientsController" cs-watch-focus)
   .activity-ingredients-list#full-ingredients-list.section
     .ingredients-menu-button(ng-class="{'ingredients-menu-button-slide' : showIngredientsMenu}" ng-show="activity.ingredients.length && ! editMode")
       %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()" ng-class="{'active' : csGlobals.scaling != 1}")

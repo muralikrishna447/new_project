@@ -11,7 +11,7 @@
     = render 'activities/latest/description'
   %div(ng-class='ingredientSpanClass()')
     = render 'activities/main_ingredients'
-    .row
+    .row.insanely-dumb-adjustment
       .dumb-mortar(ng-show="editMode || hasAnyEquipment()")
         = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/&#8203;Materials", required_string: "any", required: "any"
 
