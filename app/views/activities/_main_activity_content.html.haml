@@ -10,23 +10,23 @@
   .span6
     = render 'activities/latest/description'
   %div(ng-class='ingredientSpanClass()')
-    = render 'activities/main_ingredients'
-    .row
-      .span3
-        = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/&#8203;Materials", test_method: "hasAnyEquipment", required_string: "any", required: "any"
-      .span3
-        .section
-          %h4(ng-show="editMode || !! activity.yield") Yield
-          %span(  contenteditable="{{editMode}}" 
-                  ng-model="activity.yield" 
-                  itemprop="recipeYield")
-          %span.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
-        .section
-          %h4(ng-show="editMode || !! activity.timing") Timing
-          %span(  contenteditable="{{editMode}}" 
-                  ng-model="activity.timing")
-          %span.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
-        = render 'activities/activity_relationships'
+    .row.section
+      = render 'activities/main_ingredients'
+    .row.section
+      .span3(ng-show="editMode || hasAnyEquipment()")
+        = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/&#8203;Materials", required_string: "any", required: "any"
+      .span3(ng-show="editMode || !! activity.yield") 
+        %h4 Yield
+        %span(  cs-contenteditable="editMode" 
+                ng-model="activity.yield" 
+                itemprop="recipeYield")
+        %span.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
+      .span3(ng-show="editMode || !! activity.timing") 
+        %h4 Timing
+        %span(  cs-contenteditable="editMode" 
+                ng-model="activity.timing")
+        %span.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
+      = render 'activities/activity_relationships'
 
 .row.step-container
   .span12.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
