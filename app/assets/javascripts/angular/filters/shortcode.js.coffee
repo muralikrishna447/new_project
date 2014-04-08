@@ -40,6 +40,8 @@ angular.module('ChefStepsApp').filter "shortcode", ->
               "<a href='http://www.amazon.com/dp/#{asin}/?tag=delvkitc-20' target='_blank'>#{anchor_text}</a>"
             else
               orig
+          when 'view'
+            "<a ng-click=\"$parent.showNell('#{arg1}.html')\">#{arg2}</a>"
 
           else orig
     else

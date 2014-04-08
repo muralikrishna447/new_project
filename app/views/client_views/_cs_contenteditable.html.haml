@@ -1,5 +1,5 @@
 %div
-  %div(ng-show="!editMode")
-    %div(ng-bind-html="runFilters(ngModel)")
+  %div(ng-show="!editMode" )
+    %div(cs-dynamic-content="runFilters(ngModel)")
   %div(ng-show="editMode")
     %textarea(ng-hide ng-model="ngModel" placeholder="{{placeholder}}" cs-emit-focus)

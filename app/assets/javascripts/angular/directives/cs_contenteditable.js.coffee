@@ -8,5 +8,6 @@
       input = $filter('markdown')($filter('shortcode')(input))
       input = $sce.trustAsHtml(input) if $scope.creator == null
       input
+    
   ]
 ]
