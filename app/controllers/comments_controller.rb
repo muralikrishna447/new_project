@@ -51,7 +51,7 @@ class CommentsController < ApplicationController
     end
 
     ingredient_results = []
-    ingredients = Ingredient.no_sub_activities.where("title iLIKE ?", search_term).order('created_at asc').limit(300)
+    ingredients = Ingredient.no_sub_activities.where("title iLIKE ?", search_term).order('title asc').limit(300)
     ingredients.each do |ingredient|
       ingredient_results << {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}
     end
