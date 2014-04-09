@@ -125,12 +125,13 @@ namespace :comments do
   end
 
   task :update_events_count => :environment do
+    User.reset_column_information
     User.find_each do |user|
-      user.update_attribute(:events_count, user.events.length)
-      if user.save
-        puts 'Updated User Event'
+      if User.reset_counters user.id, :events
+        user.reload
+        puts 'updated'
         puts user.inspect
-        puts '******************'
+        puts '*********'
       end
     end
   end
