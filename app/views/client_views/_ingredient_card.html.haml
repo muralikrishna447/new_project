@@ -16,5 +16,7 @@
           .needs-work.section
             This ingredient wiki entry needs your help!
           .nell-cta-buttons
-            %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
+            %a( ng-href='/ingredients/{{obj.slug}}' 
+                target='_blank'
+                ng-click='doHideNellPopup()') 
               .btn.btn-large.btn-secondary GET INVOLVED
