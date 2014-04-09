@@ -348,10 +348,19 @@ h4
   margin-right: 30px
   vertical-align: top
 
-// Hack to 
+// Hack to deal with blocks that end up in both row-fluid and row
 form
   .insanely-dumb-adjustment
     margin-left: 0px
+
+.edit-mode
+  .dumb-mortar
+    display: block
+
+.align-baseline
+  vertical-align: baseline
+
+
 
 
 ////////////////////////////////////////
@@ -1429,8 +1438,11 @@ csequipmenteditpair, csingredienteditpair
 
 csequipmenteditpair
   .action-button-group
-    top: -10px
+    top: 0px
     z-index: 101
+    .btn
+      background-color: white
+      border-bottom: none
 
 csingredienteditpair
   overflow: visible
