@@ -41,13 +41,13 @@ class CommentsController < ApplicationController
     user_results = []
     users = User.where("name iLIKE ?", search_term).order('events_count desc').limit(300)
     users.each do |user|
-      user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url}
+      user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url, 'rank' => user.events_count}
     end
 
     recipe_results = []
     recipes = Activity.chefsteps_generated.where("title iLIKE ?", search_term).order('likes_count desc').limit(300)
     recipes.each do |recipe|
-      recipe_results << {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url}
+      recipe_results << {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url, 'rank' => recipe.likes_count}
     end
 
     ingredient_results = []
