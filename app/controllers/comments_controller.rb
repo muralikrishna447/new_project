@@ -39,21 +39,21 @@ class CommentsController < ApplicationController
     results = Hash.new
 
     user_results = []
-    users = User.where("name iLIKE ?", search_term).limit(300)
+    users = User.where("name iLIKE ?", search_term).order('created_at asc').limit(300)
     users.each do |user|
       user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url}
     end
 
     recipe_results = []
-    recipes = Activity.where("title iLIKE ?", search_term).limit(300)
+    recipes = Activity.where("title iLIKE ?", search_term).order('created_at asc').limit(300)
     recipes.each do |recipe|
-      recipe_results << {'name' => recipe.title, 'id' => recipe.id}
+      recipe_results << {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url}
     end
 
     ingredient_results = []
-    ingredients = Ingredient.where("title iLIKE ?", search_term).limit(300)
+    ingredients = Ingredient.where("title iLIKE ?", search_term).order('created_at asc').limit(300)
     ingredients.each do |ingredient|
-      ingredient_results << {'name' => ingredient.title, 'id' => ingredient.id}
+      ingredient_results << {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}
     end
 
     results['Users'] = user_results
