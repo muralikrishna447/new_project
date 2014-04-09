@@ -123,4 +123,16 @@ namespace :comments do
       faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
     end
   end
+
+  task :update_events_count => :environment do
+    User.reset_column_information
+    User.find_each do |user|
+      if User.reset_counters user.id, :events
+        user.reload
+        puts 'updated'
+        puts user.inspect
+        puts '*********'
+      end
+    end
+  end
 end

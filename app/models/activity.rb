@@ -456,6 +456,15 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  def avatar_url
+    if self.featured_image_id.blank?
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=crop&w=70&h=70&cache=true"
+    else
+      url = ActiveSupport::JSON.decode(self.featured_image_id)["url"]
+      avatar_url = "#{url}/convert?fit=crop&w=70&h=70&cache=true".gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    end
+  end
+
   private
 
   def check_published
