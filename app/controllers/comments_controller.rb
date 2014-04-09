@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
     results = Hash.new
 
     user_results = []
-    users = User.where("name iLIKE ?", search_term).order('created_at asc').limit(300)
+    users = User.where("name iLIKE ?", search_term).order('events_count desc').limit(300)
     users.each do |user|
       user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url}
     end
