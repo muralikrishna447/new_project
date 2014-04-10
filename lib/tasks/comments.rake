@@ -42,7 +42,7 @@ namespace :comments do
       c_info[:disqus_parent_id] = comment['parent']['@dsq:id'] if comment['parent']
       c_info[:disqus_user_email] = comment['author']['email']
       
-      c_info[:created_at] = (comment['createdAt']).to_i
+      c_info[:created_at] = (comment['createdAt']).to_i * 1000
 
       c_info[:chefsteps_user_id] = get_chefsteps_user_id(comment['author']['email'])
       content = Nokogiri::HTML(comment['message']).text
@@ -59,40 +59,39 @@ namespace :comments do
     end
 
     # Loop through c_info and migrate the parents
-    # c.each do |comment_info|
-    #   unless comment_info[:disqus_parent_id]
-    #     post_to_es(comment_info)
-    #     find_children(c, comment_info, 1)
-    #   end
-    # end
+    c.each do |comment_info|
+      unless comment_info[:disqus_parent_id]
+        post_to_es(comment_info)
+        find_children(c, comment_info, 1)
+      end
+    end
 
-    comment_info = c.first
-    post_to_es(comment_info)
-    find_children(c, comment_info, 1)
+    # comment_info = c.first
+    # post_to_es(comment_info)
+    # find_children(c, comment_info, 1)
   end
 
   def post_to_es(comment_info)
     puts '******************************'
     post_body = {
-      "doc" => {
-        "createdAt" => comment_info[:created_at],
-        "author" => comment_info[:chefsteps_user_id],
-        "content" => comment_info[:content],
-        "dbParams" => {
-          "commentsId" => "#{comment_info[:commentable_type]}_#{comment_info[:commentable_id]}"
-        }
+      "upvotes" => [],
+      "asked" => [],
+      "createdAt" => comment_info[:created_at],
+      "author" => comment_info[:chefsteps_user_id],
+      "content" => comment_info[:content],
+      "dbParams" => {
+        "commentsId" => "#{comment_info[:commentable_type]}_#{comment_info[:commentable_id]}"
       }
     }
-    post_body["doc"]["parentCommentId"] = comment_info[:bloom_parent_id] unless comment_info[:bloom_parent_id].blank?
+    post_body["parentCommentId"] = comment_info[:bloom_parent_id] unless comment_info[:bloom_parent_id].blank?
     puts post_body
     post_response = @elasticsearch.post do |req|
       req.url "/bloom/comment"
       req.headers['Content-Type'] = 'application/json'
       req.body = JSON.generate(post_body)
     end
-    puts post_response
-    # puts comment_info
-    comment_info[:bloom_id] = 'Bloom ID from Response'
+    comment_info[:bloom_id] = JSON.parse(post_response.body)["_id"]
+    puts comment_info
     puts '*** Posting to Elasticsearch ***'
   end
 
