@@ -3,16 +3,17 @@ namespace :comments do
   require 'json'
   task :migrate_activities => :environment do
     connect_to_disqus_xml('~/Downloads/chefstepsproduction-2014-04-07T20-09-24.957262-all.xml')
-
+    connect_to_es
     #go through each activity and get disqus id
-    activities = Activity.any_user_generated.published
+    # activities = Activity.any_user_generated.published
     
-    activities.each do |activity|
-      migrate_one(activity)
-    end
+    # activities.each do |activity|
+    #   migrate_one(activity)
+    # end
 
-    # activity = Activity.find('honey-sriracha')
-    # migrate_one(activity)
+    activity = Activity.find('honey-sriracha')
+    # activity = Activity.find('buffalo-style-chicken-skin')
+    migrate_one(activity)
 
   end
 
@@ -34,7 +35,8 @@ namespace :comments do
     disqus_comments = get_disqus_posts(disqus_thread_id)
     disqus_comments.each do |comment|
       c_info = Hash.new
-      c_info[:activity_id] = activity.id
+      c_info[:commentable_type] = 'activity'
+      c_info[:commentable_id] = activity.id
       c_info[:disqus_thread_id] = disqus_thread_id
       c_info[:disqus_id] = comment['@dsq:id']
       c_info[:disqus_parent_id] = comment['parent']['@dsq:id'] if comment['parent']
@@ -49,18 +51,62 @@ namespace :comments do
       else
         c_info[:content] = content + " - originally posted by #{comment['author']['name']}"
       end
-      puts comment
-      puts "******THAT WAS THE COMMENT********"
-      puts c_info
-      puts "******THAT WAS THE INFO********"
+      # puts comment
+      # puts "******THAT WAS THE COMMENT********"
+      # puts c_info
+      # puts "******THAT WAS THE INFO********"
+      c << c_info
     end
-    
-    # get only comments without parent
-    # disqus_comments_without_parent = filter_comments_without_parent(disqus_comments)
 
-    # check to see if comments without parents have any children
+    # Loop through c_info and migrate the parents
+    # c.each do |comment_info|
+    #   unless comment_info[:disqus_parent_id]
+    #     post_to_es(comment_info)
+    #     find_children(c, comment_info, 1)
+    #   end
+    # end
 
-    # recursive children
+    comment_info = c.first
+    post_to_es(comment_info)
+    find_children(c, comment_info, 1)
+  end
+
+  def post_to_es(comment_info)
+    puts '******************************'
+    post_body = {
+      "doc" => {
+        "createdAt" => comment_info[:created_at],
+        "author" => comment_info[:chefsteps_user_id],
+        "content" => comment_info[:content],
+        "dbParams" => {
+          "commentsId" => "#{comment_info[:commentable_type]}_#{comment_info[:commentable_id]}"
+        }
+      }
+    }
+    post_body["doc"]["parentCommentId"] = comment_info[:bloom_parent_id] unless comment_info[:bloom_parent_id].blank?
+    puts post_body
+    post_response = @elasticsearch.post do |req|
+      req.url "/bloom/comment"
+      req.headers['Content-Type'] = 'application/json'
+      req.body = JSON.generate(post_body)
+    end
+    puts post_response
+    # puts comment_info
+    comment_info[:bloom_id] = 'Bloom ID from Response'
+    puts '*** Posting to Elasticsearch ***'
+  end
+
+  def find_children(data, parent, depth)
+    children = data.select{|child| child[:disqus_parent_id] == parent[:disqus_id]}
+    if children.length > 0
+      children.each do |child|
+        child[:bloom_parent_id] = parent[:bloom_id]
+        post_to_es(child)
+        # puts '   '*depth + child[:content]
+
+        find_children(data, child, depth + 1)
+      end
+    end
   end
 
   def connect_to_disqus_xml(path_and_filename)
@@ -104,7 +150,12 @@ namespace :comments do
     puts comments_with_parents
   end
 
-  def connect_to_elasticsearch
+  def connect_to_es
+    @elasticsearch = Faraday.new(:url => 'http://d0d7d0e3f98196d4000.qbox.io/') do |faraday|
+      faraday.request  :url_encoded             # form-encode POST params
+      faraday.response :logger                  # log requests to STDOUT
+      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+    end
   end
 
   def connect_to_bloom
