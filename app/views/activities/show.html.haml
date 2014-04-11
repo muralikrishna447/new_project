@@ -131,9 +131,11 @@
       .row(ng-hide="editMode" ng-cloak)
         .span12
           %h3 Discussion
-          .section
-            - disqus_id = "activity-#{@activity.id}"
-            = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
+          .section(ng-controller='csCommentsController')
+            %comments(db-params="{'commentsId': 'activity_#{@activity.id}'}" on-login="showModal()")
+          / .section
+          /   - disqus_id = "activity-#{@activity.id}"
+          /   = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
 
 = content_for :footer do
   = render 'layouts/footer'
