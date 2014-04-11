@@ -1,9 +1,12 @@
 namespace :comments do
   require 'nokogiri'
   require 'json'
+  @already_migrated = []
+  @migrated_comments = []
   task :migrate_activities => :environment do
     connect_to_disqus_xml('~/Downloads/chefstepsproduction-2014-04-07T20-09-24.957262-all.xml')
     connect_to_es
+    connect_to_disqus_api
     #go through each activity and get disqus id
     # activities = Activity.any_user_generated.published
     
@@ -11,8 +14,9 @@ namespace :comments do
     #   migrate_one(activity)
     # end
 
-    activity = Activity.find('honey-sriracha')
+    # activity = Activity.find('honey-sriracha')
     # activity = Activity.find('buffalo-style-chicken-skin')
+    activity = Activity.find('strawberry-shortcake')
     migrate_one(activity)
 
   end
@@ -34,28 +38,27 @@ namespace :comments do
     # get the comments
     disqus_comments = get_disqus_posts(disqus_thread_id)
     disqus_comments.each do |comment|
-      c_info = Hash.new
-      c_info[:commentable_type] = 'activity'
-      c_info[:commentable_id] = activity.id
-      c_info[:disqus_thread_id] = disqus_thread_id
-      c_info[:disqus_id] = comment['@dsq:id']
-      c_info[:disqus_parent_id] = comment['parent']['@dsq:id'] if comment['parent']
-      c_info[:disqus_user_email] = comment['author']['email']
-      
-      c_info[:created_at] = (comment['createdAt']).to_i * 1000
+      unless @already_migrated.include?(comment['@dsq:id'].to_i)
+        image = get_disqus_image(comment['@dsq:id'])
+        c_info = Hash.new
+        c_info[:commentable_type] = 'activity'
+        c_info[:commentable_id] = activity.id
+        c_info[:disqus_thread_id] = disqus_thread_id
+        c_info[:disqus_id] = comment['@dsq:id']
+        c_info[:disqus_parent_id] = comment['parent']['@dsq:id'] if comment['parent']
+        c_info[:disqus_user_email] = comment['author']['email']
+        
+        c_info[:created_at] = (comment['createdAt']).to_i * 1000
 
-      c_info[:chefsteps_user_id] = get_chefsteps_user_id(comment['author']['email'])
-      content = Nokogiri::HTML(comment['message']).text
-      if c_info[:chefsteps_user_id]
-        c_info[:content] = content
-      else
-        c_info[:content] = content + " - originally posted by #{comment['author']['name']}"
+        c_info[:chefsteps_user_id] = get_chefsteps_user_id(comment['author']['email'])
+        content = compose_content(comment,image)
+        if c_info[:chefsteps_user_id]
+          c_info[:content] = content
+        else
+          c_info[:content] = content + " - originally posted by #{comment['author']['name']}"
+        end
+        c << c_info
       end
-      # puts comment
-      # puts "******THAT WAS THE COMMENT********"
-      # puts c_info
-      # puts "******THAT WAS THE INFO********"
-      c << c_info
     end
 
     # Loop through c_info and migrate the parents
@@ -65,14 +68,26 @@ namespace :comments do
         find_children(c, comment_info, 1)
       end
     end
+  end
 
-    # comment_info = c.first
-    # post_to_es(comment_info)
-    # find_children(c, comment_info, 1)
+  def get_disqus_image(disqus_thread_id)
+    disqus_data = @disqus.get('/api/3.0/posts/details.json', {post: disqus_thread_id, api_key: 'Y1S1wGIzdc63qnZ5rhHfjqEABGA4ZTDncauWFFWWTUBqkmLjdxloTb7ilhGnZ7z1'})
+    media = JSON.parse(disqus_data.body)['response']['media']
+    unless media.blank?
+      image = media[0]['url']
+    end
+    image
+  end
+
+  def compose_content(comment,image)
+    content = Nokogiri::HTML(comment['message']).text
+    content = "<p>" + content + "</p>"
+    content = content + "<img src='#{image}'>" unless image.blank?
+    content
   end
 
   def post_to_es(comment_info)
-    puts '******************************'
+    puts '-----------------'
     post_body = {
       "upvotes" => [],
       "asked" => [],
@@ -93,6 +108,8 @@ namespace :comments do
     comment_info[:bloom_id] = JSON.parse(post_response.body)["_id"]
     puts comment_info
     puts '*** Posting to Elasticsearch ***'
+    @migrated_comments << comment_info[:disqus_id]
+    puts @migrated_comments.join(',')
   end
 
   def find_children(data, parent, depth)
@@ -170,6 +187,13 @@ namespace :comments do
     @elasticsearch = Faraday.new(:url => 'http://d0d7d0e3f98196d4000.qbox.io/') do |faraday|
       faraday.request  :url_encoded             # form-encode POST params
       faraday.response :logger                  # log requests to STDOUT
+      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+    end
+  end
+
+  def connect_to_disqus_api
+    @disqus = Faraday.new(:url => 'https://disqus.com') do |faraday|
+      faraday.request  :url_encoded             # form-encode POST params
       faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
     end
   end
