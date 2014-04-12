@@ -1,7 +1,11 @@
-@app.constant('BloomAPIUrl', "http://chefsteps-bloom.herokuapp.com")
+@app.constant('BloomAPIUrl', "http://production-bloom.herokuapp.com")
 # @app.constant('BloomAPIUrl', "http://localhost:3000")
-@app.constant('BloomAPIKey', "bloom")
+@app.constant('BloomAPIKey', "xchefsteps")
+@app.constant('BloomData', window.encryptedUser)
+console.log window.encryptedUser
+
 @app.service 'BloomSettings', ['$q', 'csAuthentication', '$http', '$rootScope', ($q, csAuthentication, $http, $rootScope) ->
+  console.log csAuthentication.currentUser()['id']
   window.csA = csAuthentication
   setUser = (reload) =>
     @loggedIn = csAuthentication.currentUser()?
