@@ -1,20 +1,32 @@
-@app.constant('BloomAPIUrl', "http://production-bloom.herokuapp.com")
+#@app.constant('BloomAPIUrl', "http://production-bloom.herokuapp.com")
 # @app.constant('BloomAPIUrl', "http://localhost:3000")
-@app.constant('BloomAPIKey', "xchefsteps")
-@app.constant('BloomData', window.encryptedUser)
-$ ->
+#@app.constant('BloomAPIKey', "xchefsteps")
+#@app.constant('BloomData', window.encryptedUser)
+
+@app.run ['$http', '$q','$rootScope', ($http, $q, $rootScope) ->
   Bloom.configure {
     apiKey: 'xchefsteps'
     bloomData: window.encryptedUser
+    user: window.chefstepsUserId or null
+    on:
+      login: ->
+        $rootScope.$apply ->
+          console.log 'someone clicked login'
+          $rootScope.$emit 'openLoginModal'
     getUsers: (userIds) ->
       def = $q.defer()
-      if userIds?
-        $http.get('/users?ids=' + userIds).success (data,status) ->
-          data.avatarUrl = data['avatar_url']
-          def.resolve data
-     
+      $http.get('/users?ids=' + userIds).then (res) ->
+        users = res.data.map (user) ->
+          user._id = user.id
+          user.profileLink =  "/profiles/#{user._id}"
+          user.avatarUrl = user['avatar_url']
+          user
+        console.log('users is ', users)
+        def.resolve users
+
       def.promise
   }
+]
 
 @app.service 'BloomSettings', ['$q', 'csAuthentication', '$http', '$rootScope', ($q, csAuthentication, $http, $rootScope) ->
   console.log csAuthentication.currentUser()['id']
