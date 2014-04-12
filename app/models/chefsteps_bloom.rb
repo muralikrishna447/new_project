@@ -7,7 +7,7 @@ class ChefstepsBloom
 
     aes = OpenSSL::Cipher::Cipher.new('aes-256-cbc')
     aes.encrypt
-    aes.key = Digest::SHA256.digest('xbloom411') 
+    aes.key = Digest::SHA256.digest('xchefstepscRP9pJomgiluvfoodNTJto') 
     aes.iv  = 'chefsteps1234567'
 
     encrypted = Base64.encode64( aes.update(string) << aes.final )
