@@ -131,6 +131,8 @@
       .row(ng-hide="editMode" ng-cloak)
         .span12
           %h3 Discussion
+          .section
+            %cscomments(comments-id="activity_#{@activity.id}")
           .section(ng-controller='csCommentsController')
             %comments(db-params="{'commentsId': 'activity_#{@activity.id}'}" on-login="showModal()")
           / .section

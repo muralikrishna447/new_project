@@ -180,5 +180,11 @@ class User < ActiveRecord::Base
   def class_enrollment(assembly)
     enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first
   end
+
+  def encrypted_bloom_info
+    user_json = self.to_json(only: [:id, :name], methods: :avatar_url)
+    encrypted = ChefstepsBloom.encrypt(user_json)
+    encrypted
+  end
 end
 
