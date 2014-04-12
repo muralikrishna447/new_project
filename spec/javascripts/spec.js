@@ -10,7 +10,6 @@
 //=require application
 //=require angular-mocks
 //=require_tree .
-//= require bloom/bloom
 
 window.logPerf = function() {};
 
