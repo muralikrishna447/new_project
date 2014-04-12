@@ -476,8 +476,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $("#fakelogin #password").val($scope.login_user.password)
     $("#fakelogin").submit()
 
-  $rootScope.$on 'openLoginModal', ->
-    console.log 'got it dawg'
+  $rootScope.$on 'openLoginModal', (event) ->
+    if event.defaultPrevented
+      return
+    else
+      event.preventDefault()
     $scope.openModal('login')
 
   $scope.kioskReload = ->
