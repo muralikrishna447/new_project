@@ -76,4 +76,7 @@ class HomeController < ApplicationController
   def kiosk
     @hide_nav = true
   end
+
+  def jsapi
+  end
 end
