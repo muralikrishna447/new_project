@@ -2,7 +2,19 @@
 # @app.constant('BloomAPIUrl', "http://localhost:3000")
 @app.constant('BloomAPIKey', "xchefsteps")
 @app.constant('BloomData', window.encryptedUser)
-console.log window.encryptedUser
+$ ->
+  Bloom.configure {
+    apiKey: 'xchefsteps'
+    bloomData: window.encryptedUser
+    getUsers: (userIds) ->
+      def = $q.defer()
+      if userIds?
+        $http.get('/users?ids=' + userIds).success (data,status) ->
+          data.avatarUrl = data['avatar_url']
+          def.resolve data
+     
+      def.promise
+  }
 
 @app.service 'BloomSettings', ['$q', 'csAuthentication', '$http', '$rootScope', ($q, csAuthentication, $http, $rootScope) ->
   console.log csAuthentication.currentUser()['id']
