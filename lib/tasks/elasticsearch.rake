@@ -59,6 +59,35 @@ namespace :es do
     puts result
   end
 
+  task :fix_missing_users => :environment do
+    source = connect_to('http://ginkgo-5521397.us-east-1.bonsai.io',{params: {size: 100000, pretty: true}})
+    source_data = source.search(index: 'xchefsteps', type: 'comment', q: 'author:null')
+    source_comments = source_data['hits']['hits']
+    bulk_body = []
+    source_comments.each do |comment|
+      index = comment['_index']
+      type = comment['_type']
+      id = comment['_id']
+      content = comment['_source']['content'].gsub('@disqus_WygUd1dluR:disqus', "<a href='http://www.chefsteps.com/profiles/chris-young'>Chris Young</a>")
+      data = {'doc' => {'content' => content}}
+      c = {
+        'update' => {
+          '_index' => index,
+          '_type' => type,
+          '_id' => id,
+          'data' => data
+        }
+      }
+      bulk_body << c
+    end
+    puts bulk_body
+    puts bulk_body.length
+
+    # target = connect_to('http://ginkgo-5521397.us-east-1.bonsai.io',{params: {size: 100000, pretty: true}})
+    # result = target.bulk body: bulk_body
+    # puts result
+  end
+
   def connect_to_source(options=nil)
     @source = Elasticsearch::Client.new host: 'http://d0d7d0e3f98196d4000.qbox.io', transport_options: options
   end
