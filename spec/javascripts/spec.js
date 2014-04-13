@@ -9,6 +9,7 @@
 //=require angular-ui
 //=require application
 //=require angular-mocks
+//=require bloom/api
 //=require_tree .
 
 window.logPerf = function() {};
