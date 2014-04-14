@@ -68,13 +68,15 @@
               %p.black-link {{poll_item.description}}
             .poll-item-user-voted(ng-show='current_user_voted_for_this(poll_item)')
               You voted for this!
-            .poll-item-voters(ng-show='current_user_voted()')
-              %div(ng-repeat='voter in poll_item.users')
-                .poll-item-voter
-                  %a(href="/profiles/{{voter.slug}}")
-                    %img(ng-src="{{userImageUrl(voter.image_id)}}")
-                  .poll-item-voter-tooltip
-                    {{voter.name}}
+            %h4
+              {{poll_item.votes_count}} people voted for this.
+            / .poll-item-voters(ng-show='current_user_voted()')
+            /   %div(ng-repeat='voter in poll_item.users')
+            /     .poll-item-voter
+            /       %a(href="/profiles/{{voter.slug}}")
+            /         %img(ng-src="{{userImageUrl(voter.image_id)}}")
+            /       .poll-item-voter-tooltip
+            /         {{voter.name}}
             .section.social-group
               %a.btn.btn-primary.btn-poll-comments(ng-click='mixpanel.track("Poll View Comments"); pollItemDetails(poll_item)')
                 %ng-pluralize(count="poll_item.comments_count" when="{'0': 'Be the first to comment', 'one': '1 comment', 'other': '{} comments'}")
