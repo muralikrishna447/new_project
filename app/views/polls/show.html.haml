@@ -70,13 +70,6 @@
               You voted for this!
             %h4
               {{poll_item.votes_count}} people voted for this.
-            / .poll-item-voters(ng-show='current_user_voted()')
-            /   %div(ng-repeat='voter in poll_item.users')
-            /     .poll-item-voter
-            /       %a(href="/profiles/{{voter.slug}}")
-            /         %img(ng-src="{{userImageUrl(voter.image_id)}}")
-            /       .poll-item-voter-tooltip
-            /         {{voter.name}}
             .section.social-group
               %a.btn.btn-primary.btn-poll-comments(ng-click='mixpanel.track("Poll View Comments"); pollItemDetails(poll_item)')
                 %ng-pluralize(count="poll_item.comments_count" when="{'0': 'Be the first to comment', 'one': '1 comment', 'other': '{} comments'}")
