@@ -88,10 +88,10 @@ namespace :es do
     # puts result
   end
 
-  task :migrate_polls => :environment do
+  task :migrate_ingredients => :environment do
     migrated_ids = []
     connect_to_target
-    @comments = Comment.where(commentable_type: 'PollItem')
+    @comments = Comment.where(commentable_type: 'Ingredient')
     @comments.each do |comment|
       unless migrated_ids.include?(comment.id)
         puts comment.inspect
@@ -104,7 +104,7 @@ namespace :es do
           'author' => comment.user.id,
           'content' => comment.content,
           'dbParams' => {
-            'commentsId' => "poll_item_#{comment.commentable_id}"
+            'commentsId' => "ingredient_#{comment.commentable_id}"
           }
         }
         puts body
@@ -118,7 +118,7 @@ namespace :es do
 
   task :delete_one_comment => :environment do
     connect_to_target
-    @target.delete index: 'xchefsteps', type: 'comment', id: 'X7vzkwq3TXmm_mWVMrtmzQ'
+    @target.delete index: 'xchefsteps', type: 'comment', id: 'EHZxBPrfQEaJepLS-lcQ3g'
   end
 
   def connect_to_source(options=nil)

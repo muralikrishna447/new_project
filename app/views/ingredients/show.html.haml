@@ -160,8 +160,8 @@
 
   .row.section
     .span12
-      %div(ng-controller='CommentsController' ng-init="init('ingredients','#{@ingredient.id}')")
-        = render 'comments/comments'
+      %a(name='discussion')
+      %cscomments(comments-id="ingredient_#{@ingredient.id}")
 
 .container
   .row.activity-loading-spinner(ng-hide="true")
