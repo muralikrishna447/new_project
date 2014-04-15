@@ -88,6 +88,39 @@ namespace :es do
     # puts result
   end
 
+  task :migrate_polls => :environment do
+    migrated_ids = []
+    connect_to_target
+    @comments = Comment.where(commentable_type: 'PollItem')
+    @comments.each do |comment|
+      unless migrated_ids.include?(comment.id)
+        puts comment.inspect
+        index = 'xchefsteps'
+        type = 'comment'
+        body = {
+          'upvotes' => [],
+          'asked' => [],
+          'createdAt' => comment.created_at.to_i*1000,
+          'author' => comment.user.id,
+          'content' => comment.content,
+          'dbParams' => {
+            'commentsId' => "poll_item_#{comment.commentable_id}"
+          }
+        }
+        puts body
+        @target.index index: index, type: type, body: body
+        migrated_ids << comment.id
+        puts migrated_ids.join(',')
+        puts '_______________________'
+      end
+    end
+  end
+
+  task :delete_one_comment => :environment do
+    connect_to_target
+    @target.delete index: 'xchefsteps', type: 'comment', id: 'X7vzkwq3TXmm_mWVMrtmzQ'
+  end
+
   def connect_to_source(options=nil)
     @source = Elasticsearch::Client.new host: 'http://d0d7d0e3f98196d4000.qbox.io', transport_options: options
   end
