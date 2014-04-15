@@ -40,7 +40,7 @@
 
       %div(ng-repeat="poll_item in poll.poll_items | orderBy:'-votes_count'" ng-cloak ng-controller="PollItemController" ng-init="init('#{@poll.status}')")
         .poll-item
-          .poll-item-vote-up(ng-click="mixpanel.track('Poll Voted', {'Poll Item': {{poll_item.id}} });")
+          .poll-item-vote-up
             %span(ng-switch on="current_user_voted_for_this(poll_item)")
               %span(ng-switch-when='true')
                 .poll-item-btn.poll-item-btn-voted(ng-click="unvoteObject()")
