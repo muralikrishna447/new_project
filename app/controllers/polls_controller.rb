@@ -11,7 +11,7 @@ class PollsController < ApplicationController
     @poll = Poll.find(params[:id])
 
     respond_to do |format|
-      format.json { render :json => @poll.to_json(:include => {:poll_items => {:include => :users}}) }
+      format.json { render :json => @poll.to_json(:include => :poll_items) }
     end
   end
 end

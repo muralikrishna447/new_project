@@ -67,22 +67,19 @@
                   Winner!
               %p.black-link {{poll_item.description}}
             .poll-item-user-voted(ng-show='current_user_voted_for_this(poll_item)')
-              You voted for this!
-            .poll-item-voters(ng-show='current_user_voted()')
-              %div(ng-repeat='voter in poll_item.users')
-                .poll-item-voter
-                  %a(href="/profiles/{{voter.slug}}")
-                    %img(ng-src="{{userImageUrl(voter.image_id)}}")
-                  .poll-item-voter-tooltip
-                    {{voter.name}}
+              You and {{poll_item.votes_count - 1}} others voted for this.
+            .poll-item-user-voted(ng-show='!current_user_voted_for_this(poll_item)')
+              {{poll_item.votes_count}} people voted for this.
             .section.social-group
-              %a.btn.btn-primary.btn-poll-comments(ng-click='mixpanel.track("Poll View Comments"); pollItemDetails(poll_item)')
-                %ng-pluralize(count="poll_item.comments_count" when="{'0': 'Be the first to comment', 'one': '1 comment', 'other': '{} comments'}")
+              %a.btn.btn-primary.btn-poll-comments(ng-click='pollItemDetails(poll_item)')
+                %div(ng-show='poll_item.show_details')
+                  Hide Comments
+                %div(ng-show='!poll_item.show_details')
+                  Show Comments
               -ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
                 = render 'layouts/share_button', split_name: split_name
             %div(collapse='!poll_item.show_details')
-              %div(ng-controller='CommentsController' ng-init="init('poll_items',poll_item.id)" ng-cloak)
-                = render 'comments/comments', commentable: nil
+              %cscomments(comments-id="poll_item_{{poll_item.id}}")
 
       %div.voting-spinner(ng-hide="hideSpinner")
         %i.icon-spinner.icon-spin.icon-large
