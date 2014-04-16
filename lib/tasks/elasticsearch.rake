@@ -1,5 +1,5 @@
 namespace :es do
-
+  require 'hashie'
   task :migrate_db => :environment do
     connect_to_source({params: {size: 100000, pretty: true}})
     connect_to_target
@@ -119,6 +119,31 @@ namespace :es do
   task :delete_one_comment => :environment do
     connect_to_target
     @target.delete index: 'xchefsteps', type: 'comment', id: 'EHZxBPrfQEaJepLS-lcQ3g'
+  end
+
+  task :mail_report => :environment do
+    es = connect_to('http://ginkgo-5521397.us-east-1.bonsai.io')
+    response = es.search index: 'xchefsteps', type: 'comment', body: {
+      sort: [
+        createdAt: {
+          order: 'desc'
+        }
+      ],
+      query: {
+        range: {
+          createdAt: {
+            gte: (DateTime.now - 24.hours).to_i*1000
+          }
+        }
+      },
+      size: '20'
+    }
+    mash = Hashie::Mash.new response
+    comments = mash.hits.hits
+    comments.each do |comment|
+      puts comment._source.content
+      puts '****************'
+    end
   end
 
   def connect_to_source(options=nil)
