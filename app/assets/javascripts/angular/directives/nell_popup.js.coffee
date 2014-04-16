@@ -7,6 +7,7 @@
   link: ($scope, $element, $attrs) ->
     $scope.$on 'showNellPopup', (event, _info) ->
       return if $scope.editMode
+      return if $rootScope.showMadlibPopup
       return if $rootScope.nellPopupShowing && (_info.include == $scope.info.include) && (_info.slug == $scope.info.slug)
 
       $scope.info = _info
