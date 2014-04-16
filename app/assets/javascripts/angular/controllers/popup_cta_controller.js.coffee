@@ -1,11 +1,13 @@
-@app.controller 'PopupCTAController', ["$scope", "$rootScope", "csAuthentication", ($scope, $rootScope, csAuthentication) ->
+@app.controller 'PopupCTAController', ["$scope", "$rootScope", "csAuthentication", "localStorageService", ($scope, $rootScope, csAuthentication, localStorageService) ->
 
-  $scope.showPopup = null
+  $scope.showPopup = false
 
   $scope.$on 'showPopupCTA', ->
-    # Note tri-state, won't reshow once it becomes false
-    if $scope.showPopup == null && ! $scope.editMode && ! csAuthentication.currentUser() && ! $rootScope.nellPopupShowing
+    return if localStorageService.get('madlibPopupShown')
+
+    if ! $scope.showPopup && ! $scope.editMode && ! csAuthentication.currentUser() && ! $rootScope.nellPopupShowing
       $scope.showPopup = true 
+      localStorageService.set('madlibPopupShown', true)
       mixpanel.track('Popup CTA Shown', _.extend({source : $scope.registrationSource}, $rootScope.splits))
 
   $scope.shouldShowPopupCTA = ->
