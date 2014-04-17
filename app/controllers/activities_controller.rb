@@ -28,9 +28,8 @@ class ActivitiesController < ApplicationController
     # (1) Googlebot so it can index the page
     # (2) Referred from google (for first click free: https://support.google.com/webmasters/answer/74536?hl=en)
     # (3) Brombone bot so it can make the snapshot for _escaped_segment_
-    referer = http_referer_uri
-    is_google = request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (referer && referer.host.index('google'))
-    is_brombone = request.headers["X-Crawl-Request"] == 'brombone'
+
+    # is_google and is_brombone are now helpers and can be found in application_helper
     if (! current_admin?) && (! is_google) && (! is_brombone)
       if @activity.show_only_in_course
         redirect_to class_path(@activity.containing_course), :status => :moved_permanently

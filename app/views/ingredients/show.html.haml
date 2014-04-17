@@ -161,7 +161,7 @@
   .row.section
     .span12
       %a(name='discussion')
-      %cscomments(comments-id="ingredient_#{@ingredient.id}")
+      %cscomments(comments-id="ingredient_#{@ingredient.id}" seo-bot="#{is_brombone}")
 
 .container
   .row.activity-loading-spinner(ng-hide="true")
