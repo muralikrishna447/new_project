@@ -389,7 +389,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       $rootScope.loading += 1
       console.log "Loading count #{$rootScope.loading}"
       console.log "Loading activity " + id
-      $scope.activities[id] = Activity.get({id: id}, ( ->
+      Activity.get({id: id}, ( (value) ->
+        $scope.activities[id] = value
         $rootScope.loading -= 1
         console.log "Loading count #{$rootScope.loading}"
         console.log "Loaded activity " + id
