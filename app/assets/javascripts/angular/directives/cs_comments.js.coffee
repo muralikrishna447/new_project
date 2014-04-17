@@ -1,6 +1,7 @@
 @app.directive 'cscomments', ["$compile", ($compile) ->
   restrict: 'E'
-  scope: { 
+  scope: {
+    commentsType: '@' 
     commentsId: '@'
     seoBot: '@'
   }
@@ -14,13 +15,18 @@
           $scope.seoComments.push(comment.content)
   ]
   link: (scope, element, attrs) ->
+    console.log 'THIS IS THE COMMENTS ID: ', scope.commentsId
     console.log "THIS IS THE SEO BOT: ", scope.seoBot
-    if scope.seoBot == 'true'
-      scope.renderSeoComments()
-      element.replaceWith($compile("<div>{{seoComments}}</div>")(scope))
-    else
-      Bloom.installComments {
-        el: element[0]
-        id: scope.commentsId
-      }
+    scope.$watch 'commentsId', (newValue, oldValue) ->
+      console.log 'NEW VALUE: ', newValue
+      if newValue
+        if scope.seoBot == 'true'
+          scope.renderSeoComments()
+          element.replaceWith($compile("<div>{{seoComments}}</div>")(scope))
+        else
+          identifier = scope.commentsType + '_' + scope.commentsId
+          Bloom.installComments {
+            el: element[0]
+            id: identifier
+          }
 ]

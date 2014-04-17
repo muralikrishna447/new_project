@@ -127,7 +127,7 @@
           %h3 Discussion
           .section
             %a(name='discussion')
-            %cscomments(comments-id="activity_#{@activity.id}" seo-bot="#{is_brombone}")
+            %cscomments(comments-type="activity" comments-id="{{activity.id}}" seo-bot="#{is_brombone}")
             
 
 = content_for :footer do
