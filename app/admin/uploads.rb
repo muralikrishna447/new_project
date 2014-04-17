@@ -1,4 +1,5 @@
 ActiveAdmin.register Upload do
+config.filters = false
 menu parent: 'Engagement'
 scope :approved
 scope :unapproved

@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :token_authenticatable, :omniauth_providers => [:google_oauth2]
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :free_trial, :survey_results
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :free_trial, :survey_results, :events_count
 
   # This is for active admin, so that it can edit the role (and so normal users can't edit their role)
   attr_accessible :name, :email, :password, :password_confirmation,
@@ -179,6 +179,12 @@ class User < ActiveRecord::Base
 
   def class_enrollment(assembly)
     enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first
+  end
+
+  def encrypted_bloom_info
+    user_json = self.to_json(only: [:id, :name], methods: :avatar_url)
+    encrypted = ChefstepsBloom.encrypt(user_json)
+    encrypted
   end
 end
 

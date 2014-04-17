@@ -132,8 +132,8 @@
         .span12
           %h3 Discussion
           .section
-            - disqus_id = "activity-#{@activity.id}"
-            = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
+            %a(name='discussion')
+            %cscomments(comments-id="activity_#{@activity.id}")
 
 = content_for :footer do
   = render 'layouts/footer'

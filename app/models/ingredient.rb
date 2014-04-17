@@ -158,6 +158,14 @@ class Ingredient < ActiveRecord::Base
 
   end
 
+  def avatar_url
+    if self.image_id.blank?
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=crop&w=70&h=70&cache=true"
+    else
+      url = ActiveSupport::JSON.decode(self.image_id)["url"]
+      avatar_url = "#{url}/convert?fit=crop&w=70&h=70&cache=true".gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    end
+  end
 
 end
 

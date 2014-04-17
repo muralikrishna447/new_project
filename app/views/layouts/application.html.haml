@@ -48,6 +48,14 @@
     %script(src='http://www.youtube.com/iframe_api' async='true')
 
     = render 'layouts/cdn_js'
+    // Send Bloom Encrypted User data
+    - if current_user
+      :javascript
+        window.encryptedUser = "#{escape_javascript(current_user.encrypted_bloom_info)}";
+        window.chefstepsUserId = "#{current_user.id}"
+    - else
+      :javascript
+        window.chefstepsUserId = null
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}"}
     - unless @hide_nav == true
@@ -81,12 +89,9 @@
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
   = render "layouts/login_hack"
-  / %script{src:'https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle.min.js'}
-  %script(type="text/javascript") 
-    logPerf("PRE BLOOM");
-  %script(src="https://s3.amazonaws.com/chefsteps-production-assets/bloom/bundle-001.js")  
-  %script(type="text/javascript") 
-    logPerf("PRE APP");
+  // jsapi is for Bloom.  Folder in public to make iframe work
+  / %script(src="/jsapi/api.js")
+  %script(src="https://dpybg80nberao.cloudfront.net/bloom/jsapi/api.js")
   = javascript_include_tag 'application'
   %script(type="text/javascript") 
     logPerf("POST APP");
