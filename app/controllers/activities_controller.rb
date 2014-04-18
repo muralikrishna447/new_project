@@ -67,8 +67,8 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @random_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).order("RANDOM()").last(6)
-        @popular_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).order("RANDOM()").first(6)
+        @random_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.order("RANDOM()").last(6)
+        @popular_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.order("RANDOM()").first(6)
 
         # New school class
         containing_class = @activity.containing_course
