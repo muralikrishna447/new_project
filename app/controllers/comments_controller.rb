@@ -85,6 +85,8 @@ private
         @commentable = Upload.find(id)
       when 'poll_item'
         @commentable = PollItem.find(id)
+      when 'ingredient'
+        @commentable = Ingredient.find(id)
       else
         nil
       end
