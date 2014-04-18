@@ -509,6 +509,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     $rootScope.$broadcast "hideNellPopup"
     mixpanel.track('Why By Weight Tell Me More', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
 
+  $scope.showNell = (view) ->
+    $rootScope.$broadcast "showNellPopup", 
+      include: view
+
   $scope.maybeShowWhyByWeight = ->
     return if localStorageService.get('whyByWeightShown')
     return if csAuthentication.loggedIn()

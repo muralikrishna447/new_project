@@ -40,6 +40,13 @@ angular.module('ChefStepsApp').filter "shortcode", ->
               "<a href='http://www.amazon.com/dp/#{asin}/?tag=delvkitc-20' target='_blank'>#{anchor_text}</a>"
             else
               orig
+          when 'view'
+            "<a ng-click=\"$parent.showNell('#{arg1}.html')\">#{arg2}</a>"
+          when 'fetchIngredient'
+            "<div cs-fetch='#{arg1}' type='Ingredient' part='#{arg2}'></div>"
+          when 'fetchActivity'
+            "<div cs-fetch='#{arg1}' type='Activity' part='#{arg2}'></div>"
+
 
           else orig
     else
