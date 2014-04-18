@@ -3,7 +3,7 @@
   require: "?ngModel"
   scope: {  placeholder: "=", ngModel: "=", editMode: "=csContenteditable", creator: "="},
   templateUrl: '_cs_contenteditable.html'
-  controller: ["$scope", "$sce", "$filter", "$compile", ($scope, $sce, $filter) ->
+  controller: ["$scope", "$sce", "$filter", ($scope, $sce, $filter) ->
     $scope.runFilters = (input) ->
       input = $filter('markdown')($filter('shortcode')(input))
       input

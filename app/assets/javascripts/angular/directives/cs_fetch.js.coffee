@@ -17,10 +17,10 @@
           {id: attrs.csFetch}
           (value) ->
             scope.object = value
-            scope.fetched = scope.object[attrs.part] || scope.object.text_fields?[attrs.part] || ("ERROR: couldn't find section named '" + attrs.part + "'")
+            scope.fetched = scope.object[attrs.part] || scope.object.text_fields?[attrs.part] || ("<span style='color: red;'>ERROR: couldn't find section named '" + attrs.part + "'</span>")
           (error) ->
             error.data = "couldn't find #{attrs.type} with slug '#{attrs.csFetch}'" if error.status == 404
-            scope.fetched = "ERROR (#{error.status}): #{error.data}"
+            scope.fetched = "<span style='color: red;'>ERROR (#{error.status}): #{error.data}</span>"
         )
       ])
 
