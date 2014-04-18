@@ -2,7 +2,6 @@ describe "cscomments", ->
   $compile = undefined
   $rootScope = undefined
   $httpBackend = undefined
-  frame = undefined
 
   beforeEach module("ChefStepsApp")
 
@@ -24,4 +23,4 @@ describe "cscomments", ->
     $rootScope.$watch 'commentsId', (newValue, oldValue) ->
       if newValue
         $rootScope.$digest()
-    expect(element.html()).toNotContain('hello')
+        expect(Bloom.installComments()).toHaveBeenCalled()
