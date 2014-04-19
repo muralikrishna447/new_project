@@ -1,8 +1,8 @@
 @app.directive 'csFetch', ["$injector", ($injector) ->
   restrict: 'A'
   scope: { part: "@"},
-  transclude: true
-  template: '<div cs-contenteditable="false" ng-model="fetched"></div>'
+  replace: 'true'
+  template: '<div ng-bind-html="fetched"></div>'
 
   link: (scope, element, attrs) ->
     loading = '''
@@ -16,14 +16,15 @@
         resourceObject.get_as_json(
           {id: attrs.csFetch}
           (value) ->
-            scope.object = value
-            scope.fetched = scope.object[attrs.part] || scope.object.text_fields?[attrs.part] || ("<span style='color: red;'>ERROR: couldn't find section named '" + attrs.part + "'</span>")
+            scope.obj = value
+            if attrs.part?
+              scope.fetched = scope.obj[attrs.part] || scope.obj.text_fields?[attrs.part] || ("<span style='color: red;'>ERROR: couldn't find section named '" + attrs.part + "'</span>")
           (error) ->
             error.data = "couldn't find #{attrs.type} with slug '#{attrs.csFetch}'" if error.status == 404
             scope.fetched = "<span style='color: red;'>ERROR (#{error.status}): #{error.data}</span>"
         )
       ])
 
-    scope.$watch attrs,  ->
+    scope.$watch attrs.csFetch,  ->
       scope.reload()
 ]
