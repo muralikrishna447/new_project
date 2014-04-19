@@ -78,18 +78,7 @@ private
     if pos
       class_name = commentsId[0...pos]
       id = commentsId[pos+1..-1]
-      case class_name
-      when 'activity'
-        @commentable = Activity.find(id)
-      when 'upload'
-        @commentable = Upload.find(id)
-      when 'poll_item'
-        @commentable = PollItem.find(id)
-      when 'ingredient'
-        @commentable = Ingredient.find(id)
-      else
-        nil
-      end
+      class_name.gsub('_', ' ').titleize.gsub(' ','').singularize.classify.constantize.find(id)
     end
   end
 
