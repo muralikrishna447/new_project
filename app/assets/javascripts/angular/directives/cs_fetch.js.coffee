@@ -2,7 +2,12 @@
   restrict: 'A'
   scope: { part: "@"},
   replace: 'true'
-  template: '<div ng-bind-html="fetched"></div>'
+  template: """
+    <div>
+      <div ng-if="part != 'null'" ng-bind-html="fetched"></div>
+      <div ng-if="part == 'null'" ng-include="'_ingredient_card.html'"></div>
+    </div>
+  """
 
   link: (scope, element, attrs) ->
     loading = '''
@@ -17,7 +22,7 @@
           {id: attrs.csFetch}
           (value) ->
             scope.obj = value
-            if attrs.part?
+            if attrs.part? && attrs.part != "null"
               scope.fetched = scope.obj[attrs.part] || scope.obj.text_fields?[attrs.part] || ("<span style='color: red;'>ERROR: couldn't find section named '" + attrs.part + "'</span>")
           (error) ->
             error.data = "couldn't find #{attrs.type} with slug '#{attrs.csFetch}'" if error.status == 404

@@ -5,10 +5,13 @@
   templateUrl: '_cs_contenteditable.html'
 
   link: (scope, element, attrs) ->
+
     scope.$watch 'ngModel', (input) ->
       input = $filter('markdown')($filter('shortcode')(input))
       input = $sanitize(input) if scope.creator
-      $(element).find('.output').html input
-      $compile(element.contents()) scope
+      outElement = $(element).find('.output')
+      outElement.html input
+      $compile(outElement.contents()) scope
       return
+    
 ]
