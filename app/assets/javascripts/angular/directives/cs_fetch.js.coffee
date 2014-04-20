@@ -4,7 +4,7 @@
   replace: 'true'
   template: """
     <div>
-      <div ng-if="part != 'null'" ng-bind-html="fetched"></div>
+      <div ng-if="part != 'null'" ng-model="fetched" cs-contenteditable="false"></div>
       <div ng-if="part == 'null'" ng-include="'_ingredient_card.html'"></div>
     </div>
   """
