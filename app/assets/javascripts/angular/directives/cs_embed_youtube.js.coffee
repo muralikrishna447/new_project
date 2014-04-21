@@ -6,7 +6,7 @@
 
 @app.directive 'csembedyoutube', ["$timeout", ($timeout) ->
   restrict: 'E'
-  scope: { }
+  scope: { autoplay: '=' }
   link: (scope, element, attrs) ->
 
     playerId = "YT" + Date.now()
@@ -27,12 +27,19 @@
         'autohide' : 1
         'rel': 0
         'showinfo': 0
-        'autoplay': 1
+        width: '1466'
+        iv_load_policy: 3
+
+        'autoplay': attrs.autoplay || 0
       events:
         'onStateChange': (event) ->
           if event.data == 1
               mixpanel.track('Video Embed Played', mixpanelProperties) 
     )   
+    # Youtube player is clever enough to default a playback quality based on size
+    # but not to adjust it when going fullscreen. So wait a little while for
+    # csenforceaspect to do its thing, then bump it up.
+    $timeout ( -> player.setPlaybackQuality('hd1080')), 1000
 
     # # Dumb experimental workaround to having the correct onplayerready
     # loadVideo = (id) ->

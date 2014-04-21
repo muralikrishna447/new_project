@@ -5,27 +5,30 @@
   template: """
     <div class='nell-embed'>
       <div ng-if="part != 'null'" ng-model="fetched" cs-contenteditable="false"></div>
-      <div ng-if="part == 'null'" ng-include="getCard()"></div>
+      <div ng-if="part == 'null'">
+        <div ng-if="obj" ng-include="getCard()"></div>
+        <div ng-if="! obj" ng-bind-html="loadingMessage"></div>
+      </div>
     </div>
   """
 
   link: (scope, element, attrs) ->
     scope.csUtilities = csUtilities
 
-    loading = '''
+    scope.loadingMessage = '''
       <h4 class='fetch-content-loading'>Loading...</h4>
     '''
 
     scope.getCard = -> 
       attrs.card
 
-    scope.fetched = loading
+    scope.fetched = scope.loadingMessage
 
     scope.reload = ->
       $injector.invoke([attrs.type, (resourceObject) ->
         resourceObject.get_as_json(
           {id: attrs.csFetch}
-          (value) ->
+          (value) ->         
             scope.obj = value
             if attrs.part? && attrs.part != "null"
               scope.fetched = scope.obj[attrs.part] || scope.obj.text_fields?[attrs.part] || ("<span style='color: red;'>ERROR: couldn't find section named '" + attrs.part + "'</span>")
