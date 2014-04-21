@@ -15,7 +15,7 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
           # ... otherwise show card
           $rootScope.$broadcast "showNellPopup", 
             resourceClass: 'Activity'
-            include: '_activity_card.html'
+            include: '_activity_popup_card.html'
             slug: slug
         event.preventDefault()
         
@@ -25,7 +25,7 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
         if slug
           $rootScope.$broadcast "showNellPopup", 
             resourceClass: 'Ingredient'
-            include: '_ingredient_card.html'
+            include: '_ingredient_popup_card.html'
             slug: slug
           event.preventDefault()
 

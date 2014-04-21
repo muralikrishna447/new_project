@@ -6,11 +6,11 @@
 
 @app.directive 'csembedyoutube', ["$timeout", ($timeout) ->
   restrict: 'E'
-  scope: { }
+  scope: { autoplay: '=' }
   link: (scope, element, attrs) ->
 
     playerId = "YT" + Date.now()
-    $(element).find('div').attr('id', playerId)
+    $(element).find('.video-iframe').attr('id', playerId)
 
     mixpanelProperties =
       videoId: attrs.videoId
@@ -21,20 +21,25 @@
     player = new YT.Player( 
       playerId,
       videoId: attrs.videoId
-      width: '466'
-      height: '263'
       playerVars: 
         'wmode': 'opaque'
         'modestbranding' : 1
         'autohide' : 1
         'rel': 0
         'showinfo': 0
-        'autoplay': 1
+        width: '1466'
+        iv_load_policy: 3
+
+        'autoplay': attrs.autoplay || 0
       events:
         'onStateChange': (event) ->
           if event.data == 1
               mixpanel.track('Video Embed Played', mixpanelProperties) 
     )   
+    # Youtube player is clever enough to default a playback quality based on size
+    # but not to adjust it when going fullscreen. So wait a little while for
+    # csenforceaspect to do its thing, then bump it up.
+    $timeout ( -> player.setPlaybackQuality('hd1080')), 1000
 
     # # Dumb experimental workaround to having the correct onplayerready
     # loadVideo = (id) ->
@@ -47,5 +52,9 @@
     # attrs.$observe 'videoId', (newVal) ->  
     #   loadVideo(newVal)
 
-  template: '<div></div>'
+  template: """
+    <div class='video-container' csenforceaspect>
+      <div class='video-iframe'></div>
+    </div>
+  """
 ]

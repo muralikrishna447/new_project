@@ -34,6 +34,13 @@
     return "#{temp} &deg;C" if units == 'c'
     "#{this.cToF(temp)} &deg;F"
 
+  this.imageURL = (imageID, width) ->
+    url = ""
+    if imageID
+      url = JSON.parse(imageID).url
+      url = url + "/convert?fit=max&w=#{width || 480}&cache=true"
+    window.cdnURL(url)
+
   this
 
 ]
