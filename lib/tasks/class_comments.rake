@@ -5,7 +5,8 @@ namespace :disqus_comments do
 
   task :migrate_classes => :environment do
     connect_to_disqus_xml('~/Downloads/chefstepsproduction-2014-04-18T23-24-15.628707-all.xml')
-    puts @parsed
+    connect_to_disqus_api
+    # puts @parsed
     @macarons = Assembly.find('french-macarons')
     migrate_one_assembly(@macarons)
   end
@@ -13,36 +14,35 @@ namespace :disqus_comments do
   def migrate_one_assembly(assembly)
     # Hash containing meta data to help with migration
     c = []
-    disqus_thread_id = 1880805660
+    disqus_thread_id = '1880805660'
     # disqus_thread_id = determine_disqus_thread_id("assembly-#{assembly.id}")
 
     # get the comments
     if disqus_thread_id
       disqus_comments = get_disqus_posts(disqus_thread_id)
-      puts disqus_comments
-      # disqus_comments.each do |comment|
-      #   unless @migrated_comments.include?(comment['@dsq:id'].to_i)
-      #     image = get_disqus_image(comment['@dsq:id'])
-      #     c_info = Hash.new
-      #     c_info[:commentable_type] = 'assembly'
-      #     c_info[:commentable_id] = assembly.id
-      #     c_info[:disqus_thread_id] = disqus_thread_id
-      #     c_info[:disqus_id] = comment['@dsq:id']
-      #     c_info[:disqus_parent_id] = comment['parent']['@dsq:id'] if comment['parent']
-      #     c_info[:disqus_user_email] = comment['author']['email']
-          
-      #     c_info[:created_at] = (comment['createdAt']).to_i * 1000
+      disqus_comments.each do |comment|
+        unless @migrated_comments.include?(comment['@dsq:id'].to_i)
+          image = get_disqus_image(comment['@dsq:id'])
+          c_info = Hash.new
+          c_info[:commentable_type] = 'assembly'
+          c_info[:commentable_id] = assembly.id
+          c_info[:disqus_thread_id] = disqus_thread_id
+          c_info[:disqus_id] = comment['@dsq:id']
+          c_info[:disqus_parent_id] = comment['parent']['@dsq:id'] if comment['parent']
+          c_info[:disqus_user_email] = comment['author']['email']
 
-      #     c_info[:chefsteps_user_id] = get_chefsteps_user_id(comment['author']['email'])
-      #     content = compose_content(comment,image)
-      #     if c_info[:chefsteps_user_id]
-      #       c_info[:content] = content
-      #     else
-      #       c_info[:content] = content + " - originally posted by #{comment['author']['name']}"
-      #     end
-      #     c << c_info
-      #   end
-      # end
+          c_info[:created_at] = (comment['createdAt']).to_i * 1000
+
+          c_info[:chefsteps_user_id] = get_chefsteps_user_id(comment['author']['email'])
+          content = compose_content(comment,image)
+          if c_info[:chefsteps_user_id]
+            c_info[:content] = content
+          else
+            c_info[:content] = content + " - originally posted by #{comment['author']['name']}"
+          end
+          c << c_info
+        end
+      end
     end
 
     puts c
@@ -56,14 +56,14 @@ namespace :disqus_comments do
     # end
   end
 
-  # def get_disqus_image(disqus_thread_id)
-  #   disqus_data = @disqus.get('/api/3.0/posts/details.json', {post: disqus_thread_id, api_key: 'Y1S1wGIzdc63qnZ5rhHfjqEABGA4ZTDncauWFFWWTUBqkmLjdxloTb7ilhGnZ7z1'})
-  #   media = JSON.parse(disqus_data.body)['response']['media']
-  #   unless media.blank?
-  #     image = media[0]['url']
-  #   end
-  #   image
-  # end
+  def get_disqus_image(disqus_thread_id)
+    disqus_data = @disqus.get('/api/3.0/posts/details.json', {post: disqus_thread_id, api_key: 'Y1S1wGIzdc63qnZ5rhHfjqEABGA4ZTDncauWFFWWTUBqkmLjdxloTb7ilhGnZ7z1'})
+    media = JSON.parse(disqus_data.body)['response']['media']
+    unless media.blank?
+      image = media[0]['url']
+    end
+    image
+  end
 
   def compose_content(comment,image)
     content = Nokogiri::HTML(comment['message']).text
@@ -136,6 +136,7 @@ namespace :disqus_comments do
   # Get disqus comments by thread id
   def get_disqus_posts(thread_id)
     posts = @parsed['post']
+    puts posts
     specific_posts = posts.select{|k,v| k['thread']['@dsq:id'] == thread_id}
     specific_posts
   end
