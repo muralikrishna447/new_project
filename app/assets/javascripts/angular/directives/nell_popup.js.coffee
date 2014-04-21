@@ -1,10 +1,13 @@
 # There should only be one of these on a page, it is intended as a singleton
-@app.directive 'nellPopup', ["$rootScope", "Ingredient", "Activity", "$timeout", ($rootScope, Ingredient, Activity, $timeout) ->
+@app.directive 'nellPopup', ["$rootScope", "Ingredient", "Activity", "$timeout", "csUtilities", ($rootScope, Ingredient, Activity, $timeout, csUtilities) ->
   restrict: 'A'
   scope: true
   replace: true
 
+
   link: ($scope, $element, $attrs) ->
+    $scope.csUtilities = csUtilities
+    
     $scope.$on 'showNellPopup', (event, _info) ->
       return if $scope.editMode
       return if $rootScope.showMadlibPopup
@@ -37,13 +40,6 @@
 
     $scope.$on 'hideNellPopup', (event) ->
       $scope.doHideNellPopup()
-
-    $scope.imageURL = (imageID) ->
-      url = ""
-      if imageID
-        url = JSON.parse(imageID).url
-        url = url + "/convert?fit=max&w=480&cache=true"
-      window.cdnURL(url)
 
 
   template: '''

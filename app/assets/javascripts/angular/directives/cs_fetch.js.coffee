@@ -1,18 +1,23 @@
-@app.directive 'csFetch', ["$injector", ($injector) ->
+@app.directive 'csFetch', ["$injector", "csUtilities", ($injector, csUtilities) ->
   restrict: 'A'
-  scope: { part: "@"},
+  scope: { part: "@",  card: "="},
   replace: 'true'
   template: """
-    <div>
+    <div class='nell-embed'>
       <div ng-if="part != 'null'" ng-model="fetched" cs-contenteditable="false"></div>
-      <div ng-if="part == 'null'" ng-include="'_ingredient_card.html'"></div>
+      <div ng-if="part == 'null'" ng-include="getCard()"></div>
     </div>
   """
 
   link: (scope, element, attrs) ->
+    scope.csUtilities = csUtilities
+
     loading = '''
       <h4 class='fetch-content-loading'>Loading...</h4>
     '''
+
+    scope.getCard = -> 
+      attrs.card
 
     scope.fetched = loading
 

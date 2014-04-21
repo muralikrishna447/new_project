@@ -10,7 +10,7 @@
   link: (scope, element, attrs) ->
 
     playerId = "YT" + Date.now()
-    $(element).find('div').attr('id', playerId)
+    $(element).find('.video-iframe').attr('id', playerId)
 
     mixpanelProperties =
       videoId: attrs.videoId
@@ -21,8 +21,6 @@
     player = new YT.Player( 
       playerId,
       videoId: attrs.videoId
-      width: '466'
-      height: '263'
       playerVars: 
         'wmode': 'opaque'
         'modestbranding' : 1
@@ -47,5 +45,9 @@
     # attrs.$observe 'videoId', (newVal) ->  
     #   loadVideo(newVal)
 
-  template: '<div></div>'
+  template: """
+    <div class='video-container' csenforceaspect>
+      <div class='video-iframe'></div>
+    </div>
+  """
 ]

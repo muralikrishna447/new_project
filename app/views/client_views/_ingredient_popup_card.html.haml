@@ -4,7 +4,7 @@
     %h2 {{obj.title}}
   .nell-card-body
     .nell-card-media(ng-show="obj.image_id")
-      %img(ng-src='{{imageURL(obj.image_id)}}')
+      %img(ng-src='{{csUtilities.imageURL(obj.image_id)}}')
     .nell-card-text
       %div(ng-switch="obj.text_fields.description.length > 0") 
         %div(ng-switch-when="true") 
