@@ -1,8 +1,8 @@
 =render 'activities/step_side_edit_buttons'
 
 %div(ng-if='! step.is_aside')
-  %h1.step-number
-    %div(collapse="step.hide_number" ng-bind="stepNumber($index)")
+  %h1.step-number(ng-if="! step.hide_number")
+    %div(ng-bind="stepNumber($index)")
 
   %h4(  cs-contenteditable="getStepOpenForEdit()" 
         ng-model="step.title"
