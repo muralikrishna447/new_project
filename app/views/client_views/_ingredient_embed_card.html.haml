@@ -7,5 +7,5 @@
     .nell-card-text
       .relative
         .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
-      %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
+      %a(ng-href='/ingredients/{{obj.slug}}' target='_blank' no-nell-popup) 
         .btn.btn-large.btn-primary LEARN MORE
