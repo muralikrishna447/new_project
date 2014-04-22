@@ -15,7 +15,8 @@
     .nell-card-text
       .relative
         .short-summary.section(ng-bind-html="obj.description | markdown | shortcode")
-      %a( ng-href='/activities/{{obj.slug}}' 
+      %a( ng-href='/activities/{{obj.slug}}'
+          no-nell-popup 
           target='_blank') 
 
         %div(ng-switch='obj.activity_type[0] || "Recipe"' ng-if="obj.activity_type[0]")

@@ -39,7 +39,7 @@
     # Youtube player is clever enough to default a playback quality based on size
     # but not to adjust it when going fullscreen. So wait a little while for
     # csenforceaspect to do its thing, then bump it up.
-    $timeout ( -> player.setPlaybackQuality('hd1080')), 1000
+    $timeout ( -> player.setPlaybackQuality?('hd1080')), 2000
 
     # # Dumb experimental workaround to having the correct onplayerready
     # loadVideo = (id) ->
