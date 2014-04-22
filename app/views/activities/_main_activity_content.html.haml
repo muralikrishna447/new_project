@@ -1,53 +1,58 @@
 
-.row.relative(ng-hide="heroDisplayType() == 'none'")
-  .span12.ng-cloak.assembly-activity.section#video-ingredient-unit
-    .hero-video.noprint
-      = render 'activities/hero_visual'
-    - unless @assembly
-      .noprint(ng-show="! editMode")
-        = render 'layouts/social_buttons', media_object: activity
-.row.main-content-container
-  .span6
+/ .row.relative(ng-hide="heroDisplayType() == 'none'")
+/   .span12.ng-cloak.assembly-activity.section#video-ingredient-unit
+/     .hero-video.noprint
+/       = render 'activities/hero_visual'
+/     - unless @assembly
+/       .noprint(ng-show="! editMode")
+/         = render 'layouts/social_buttons', media_object: activity
+.row
+  .span8.offset2
     = render 'activities/latest/description'
-  %div(ng-class='ingredientSpanClass()')
+
+.row
+  .span8.offset2
     = render 'activities/main_ingredients'
-    .row.insanely-dumb-adjustment
-      .dumb-mortar(ng-show="editMode || hasAnyEquipment()")
-        = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/&#8203;Materials", required_string: "any", required: "any"
 
-      .dumb-mortar(ng-show="editMode || !! activity.yield") 
-        %h4 Yield
-        %span(  cs-contenteditable="editMode" 
-                ng-model="activity.yield" 
-                itemprop="recipeYield")
-        %span.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
+.row
+  .span8.offset2
+    .dumb-mortar(ng-show="editMode || hasAnyEquipment()")
+      = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/&#8203;Materials", required_string: "any", required: "any"
 
-      .dumb-mortar(ng-show="editMode || !! activity.timing") 
-        %h4 Timing
-        %span(  cs-contenteditable="editMode" 
-                ng-model="activity.timing")
-        %span.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
+    .dumb-mortar(ng-show="editMode || !! activity.yield") 
+      %h4 Yield
+      %span(  cs-contenteditable="editMode" 
+              ng-model="activity.yield" 
+              itemprop="recipeYield")
+      %span.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
 
-      .dumb-mortar(ng-show='(! editMode) && (activity.used_in.length > 0)') 
-        %h4 Used In
-        %ul.no-bullet
-          %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true | limitTo:10")
-            %a( ng-bind-html='item.title'
-                ng-href='/activities/{{item.slug}}'
-                target='_blank')
-            %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
-              %i.icon-group
+    .dumb-mortar(ng-show="editMode || !! activity.timing") 
+      %h4 Timing
+      %span(  cs-contenteditable="editMode" 
+              ng-model="activity.timing")
+      %span.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
 
-      .dumb-mortar(ng-show='(! editMode) && (activity.forks.length > 0)') 
-        %h4 Forks
-        %ul.no-bullet
-          %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true | limitTo:10")
-            %a( ng-bind-html='item.title'
-                ng-href='/activities/{{item.slug}}'
-                target='_blank')
-            %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
-              %i.icon-group
+    .dumb-mortar(ng-show='(! editMode) && (activity.used_in.length > 0)') 
+      %h4 Used In
+      %ul.no-bullet
+        %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true | limitTo:10")
+          %a( ng-bind-html='item.title'
+              ng-href='/activities/{{item.slug}}'
+              target='_blank')
+          %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
+            %i.icon-group
+
+    .dumb-mortar(ng-show='(! editMode) && (activity.forks.length > 0)') 
+      %h4 Forks
+      %ul.no-bullet
+        %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true | limitTo:10")
+          %a( ng-bind-html='item.title'
+              ng-href='/activities/{{item.slug}}'
+              target='_blank')
+          %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
+            %i.icon-group
+
 .row.step-container
-  .span12.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
+  .span8.offset2.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
     = render 'activities/steps'
 

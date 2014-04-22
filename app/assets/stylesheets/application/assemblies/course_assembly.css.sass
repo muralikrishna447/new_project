@@ -269,7 +269,20 @@
       padding: 0px
       @include boxsizing
       .step-number
+        position: absolute
+        top: 0
+        left: -77px
+        text-align: center
+        width: 52px
         @include primary-font-bold
+        -webkit-backface-visibility: hidden
+        border: 2px solid $light-gray
+        width: 60px
+        height: 60px
+        padding-top: 7px
+        border-radius: 50%
+        @include boxsizing
+
       .step-content
 
         margin-bottom: $baseline
