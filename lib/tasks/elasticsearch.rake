@@ -118,7 +118,7 @@ namespace :es do
 
   task :delete_one_comment => :environment do
     connect_to_target
-    @target.delete index: 'xchefsteps', type: 'comment', id: 'EHZxBPrfQEaJepLS-lcQ3g'
+    @target.delete index: 'xchefsteps', type: 'comment', id: 'Q2UncyLnQAyXxWXt-m3HTA'
   end
 
   task :mail_report => :environment do
