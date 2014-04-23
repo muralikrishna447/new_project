@@ -1,7 +1,8 @@
 @app.run ['$http', '$q','$rootScope', ($http, $q, $rootScope) ->
   Bloom.configure {
     apiKey: 'xchefsteps'
-    bloomData: window.encryptedUser
+    # bloomData: window.encryptedUser
+    auth: window.encryptedUser
     user: window.chefstepsUserId or null
     on:
       login: ->
