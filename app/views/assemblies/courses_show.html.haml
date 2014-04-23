@@ -66,8 +66,11 @@
         .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
           .span12
             %hr
-            %a(name='discussion')
-            %cscomments(comments-type="assembly" comments-id="{{course.id}}" seo-bot="#{is_brombone}")
+            / %a(name='discussion')
+            / %cscomments(comments-type="assembly" comments-id="{{course.id}}" seo-bot="#{is_brombone}")
+
+            -# using DISQUS.reset to determine which disqus thread to display
+            = render 'layouts/disqus_angular'
     .assembly-loading-wrapper.anim-basic-fade(ng-show="loading > 0")
       .assembly-loading-background
         .activity-loading-spinner
