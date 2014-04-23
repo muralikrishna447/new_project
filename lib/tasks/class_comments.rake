@@ -4,7 +4,8 @@ namespace :disqus_comments do
   @migrated_comments = []
 
   task :migrate_classes => :environment do
-    connect_to_disqus_xml('~/Downloads/chefstepsproduction-2014-04-18T23-24-15.628707-all.xml')
+    connect_to_elasticsearch
+    connect_to_disqus_xml('~/Downloads/chefstepsproduction-2014-04-23T03-58-58.463508-all.xml')
     connect_to_disqus_api
     # puts @parsed
     @macarons = Assembly.find('french-macarons')
@@ -48,12 +49,12 @@ namespace :disqus_comments do
     puts c
 
     # Loop through c_info and migrate the parents
-    # c.each do |comment_info|
-    #   unless comment_info[:disqus_parent_id]
-    #     post_to_es(comment_info)
-    #     find_children(c, comment_info, 1)
-    #   end
-    # end
+    c.each do |comment_info|
+      unless comment_info[:disqus_parent_id]
+        post_to_es(comment_info)
+        find_children(c, comment_info, 1)
+      end
+    end
   end
 
   def get_disqus_image(disqus_thread_id)
@@ -72,44 +73,41 @@ namespace :disqus_comments do
     content
   end
 
-  # def post_to_es(comment_info)
-  #   puts '-----------------'
-  #   post_body = {
-  #     "upvotes" => [],
-  #     "asked" => [],
-  #     "createdAt" => comment_info[:created_at],
-  #     "author" => comment_info[:chefsteps_user_id],
-  #     "content" => comment_info[:content],
-  #     "dbParams" => {
-  #       "commentsId" => "#{comment_info[:commentable_type]}_#{comment_info[:commentable_id]}"
-  #     }
-  #   }
-  #   post_body["parentCommentId"] = comment_info[:bloom_parent_id] unless comment_info[:bloom_parent_id].blank?
-  #   puts post_body
-  #   post_response = @elasticsearch.post do |req|
-  #     req.url "/bloom/comment"
-  #     req.headers['Content-Type'] = 'application/json'
-  #     req.body = JSON.generate(post_body)
-  #   end
-  #   comment_info[:bloom_id] = JSON.parse(post_response.body)["_id"]
-  #   puts comment_info
-  #   puts '*** Posting to Elasticsearch ***'
-  #   @migrated_comments << comment_info[:disqus_id]
-  #   puts @migrated_comments.join(',')
-  # end
+  def post_to_es(comment_info)
+    index = 'xchefsteps'
+    type = 'comment'
+    body = {
+      'upvotes' => [],
+      'asked' => [],
+      'createdAt' => comment_info[:created_at],
+      'author' => comment_info[:chefsteps_user_id],
+      'content' => comment_info[:content],
+      'dbParams' => {
+        'commentsId' => "#{comment_info[:commentable_type]}_#{comment_info[:commentable_id]}"
+      }
+    }
+    body["parentCommentId"] = comment_info[:bloom_parent_id] unless comment_info[:bloom_parent_id].blank?
+    puts body
+    response = @elasticsearch.index index: index, type: type, body: body
+    puts response
+    puts '* reponse *'
+    comment_info[:bloom_id] = response["_id"]
+    puts comment_info
+    puts '*** Posting to Elasticsearch ***'
+  end
 
-  # def find_children(data, parent, depth)
-  #   children = data.select{|child| child[:disqus_parent_id] == parent[:disqus_id]}
-  #   if children.length > 0
-  #     children.each do |child|
-  #       child[:bloom_parent_id] = parent[:bloom_id]
-  #       post_to_es(child)
-  #       # puts '   '*depth + child[:content]
+  def find_children(data, parent, depth)
+    children = data.select{|child| child[:disqus_parent_id] == parent[:disqus_id]}
+    if children.length > 0
+      children.each do |child|
+        child[:bloom_parent_id] = parent[:bloom_id]
+        post_to_es(child)
+        # puts '   '*depth + child[:content]
 
-  #       find_children(data, child, depth + 1)
-  #     end
-  #   end
-  # end
+        find_children(data, child, depth + 1)
+      end
+    end
+  end
 
   def connect_to_disqus_xml(path_and_filename)
     xml = File.read(File.expand_path(path_and_filename))
@@ -170,4 +168,16 @@ namespace :disqus_comments do
     end
   end
 
+  # def connect_to_es
+  #   @elasticsearch = Faraday.new(:url => 'http://d0d7d0e3f98196d4000.qbox.io/') do |faraday|
+  #     faraday.request  :url_encoded             # form-encode POST params
+  #     faraday.response :logger                  # log requests to STDOUT
+  #     faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+  #   end
+  # end
+
+  def connect_to_elasticsearch(options=nil)
+    # @elasticsearch = Elasticsearch::Client.new host: 'http://d0d7d0e3f98196d4000.qbox.io', transport_options: options
+    @elasticsearch = Elasticsearch::Client.new host: 'http://ginkgo-5521397.us-east-1.bonsai.io', transport_options: options
+  end
 end
