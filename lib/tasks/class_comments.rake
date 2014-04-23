@@ -8,14 +8,16 @@ namespace :disqus_comments do
     connect_to_disqus_xml('~/Downloads/chefstepsproduction-2014-04-23T03-58-58.463508-all.xml')
     connect_to_disqus_api
     # puts @parsed
-    @macarons = Assembly.find('french-macarons')
-    migrate_one_assembly(@macarons)
+    # @macarons = Assembly.find('french-macarons')
+    # @siphons = Assembly.find('whipping-siphons')
+    @meats = Assembly.find('tender-cuts-one-simple-technique-for-cooking-meat-poultry-and-seafood')
+    migrate_one_assembly(@meats)
   end
 
   def migrate_one_assembly(assembly)
     # Hash containing meta data to help with migration
     c = []
-    disqus_thread_id = '1880805660'
+    disqus_thread_id = '2426008607'
     # disqus_thread_id = determine_disqus_thread_id("assembly-#{assembly.id}")
 
     # get the comments
