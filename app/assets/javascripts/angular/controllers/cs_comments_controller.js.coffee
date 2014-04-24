@@ -6,8 +6,8 @@
     getUsers: (userIds, callback) ->
       $http.get('/users?ids=' + userIds).then (res) ->
         users = res.data.map (user) ->
-          user._id = "" + user.slug
-          user.profileLink =  "http://www.chefsteps.com/profiles/#{user._id}"
+          user._id = "" + user.id
+          user.profileLink =  "http://www.chefsteps.com/profiles/#{user.slug}"
           user.avatarUrl = user['avatar_url']
           user
 
