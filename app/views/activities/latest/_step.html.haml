@@ -1,6 +1,6 @@
 =render 'activities/step_side_edit_buttons'
 
-%div.span8.offset2(ng-if='! step.is_aside')
+.standard-item(ng-if='! step.is_aside')
   .step-number-container
     %h1.step-number(ng-if="! step.hide_number")
       %div(ng-bind="stepNumber($index)")

@@ -58,25 +58,25 @@
               send this error text to ChefSteps
             \.
 
-    .row
-      .span8.offset2
+    .master-column
+
+
+      .standard-item
         = render 'top_buttons'
 
-    .row.printable
-      .span8.offset2
+      .standard-item
         = render 'title'
 
-    .row.printable
-      .span8.offset2
+      .standard-item
         = render 'activities/metadata'
 
-    #main-content.main-content-container
-      / = render 'main_activity_content', activity: @activity
-      %div(ng-switch on="activity.layout_name")
-        %div(ng-switch-when='list')
-          = render 'shared/activity_layouts/list'
-        %div(ng-switch-default)
-          = render 'activities/main_activity_content', activity: @activity
+      #main-content.main-content-container
+        / = render 'main_activity_content', activity: @activity
+        %div(ng-switch on="activity.layout_name")
+          %div(ng-switch-when='list')
+            = render 'shared/activity_layouts/list'
+          %div(ng-switch-default)
+            = render 'activities/main_activity_content', activity: @activity
 
 
     -# Big spinner until the activity loads. By not cloaking but using angular to hide, it

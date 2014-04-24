@@ -1,0 +1,21 @@
+@import 'mixins'
+
+.master-column
+  width: 100%
+  max-width: 1200px
+  @include horizontal-center
+
+  .standard-item
+    width: 600px
+    @include horizontal-center
+
+  .half-item
+    width: 48%
+    display: inline-block
+
+  .wide-item
+    width: 100%
+
+  .aside-right-standard
+    width: 300px
+    display: inline-block

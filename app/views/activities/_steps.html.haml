@@ -3,7 +3,7 @@
   %h4(ng-show="editMode && (activity.steps.length == 0)" ng-click="addStep(0, 0)")
     Add first step...
 
-.row.ordered-steps-new(ng-show="activity.steps.length > 0" itemprop="recipeInstructions")
+.ordered-steps-new(ng-show="activity.steps.length > 0" itemprop="recipeInstructions")
   .ordered-step-item.relative.anim-basic-fade(  ng-repeat="step in activity.steps track by step.id" 
                                                 id="{{'numbered-step-' + step.id}}" 
                                                 ng-controller="StepController"                               

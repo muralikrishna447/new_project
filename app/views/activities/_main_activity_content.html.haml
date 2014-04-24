@@ -6,16 +6,17 @@
 /     - unless @assembly
 /       .noprint(ng-show="! editMode")
 /         = render 'layouts/social_buttons', media_object: activity
-.row
-  .span8.offset2
-    = render 'activities/latest/description'
+.standard-item
+  = render 'activities/latest/description'
 
-.row
-  .span8.offset2
+.section
+
+.wide-item
+
+  .half-item
     = render 'activities/main_ingredients'
 
-.row
-  .span8.offset2
+  .half-item
     .dumb-mortar(ng-show="editMode || hasAnyEquipment()")
       = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/&#8203;Materials", required_string: "any", required: "any"
 
@@ -51,6 +52,7 @@
               target='_blank')
           %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
             %i.icon-group
+.section
 
 .ng-cloak.assembly-activity.relative(ng-controller="StepsController")
   = render 'activities/steps'
