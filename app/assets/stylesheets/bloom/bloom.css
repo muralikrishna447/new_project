@@ -1,1 +1,0 @@
-iframe[seamless],iframe[seamless="*"]:not([seamless="false"]):not([seamless="no"]){border:none;padding:0;background-color:transparent;overflow:visible;overflow-y:visible;overflow-x:visible;width:100%;}
