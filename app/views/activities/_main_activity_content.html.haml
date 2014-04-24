@@ -52,7 +52,6 @@
           %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
             %i.icon-group
 
-.row.step-container
-  .span8.offset2.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
-    = render 'activities/steps'
+.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
+  = render 'activities/steps'
 

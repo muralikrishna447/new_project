@@ -1,8 +1,9 @@
 =render 'activities/step_side_edit_buttons'
 
-%div(ng-if='! step.is_aside')
-  %h1.step-number(ng-if="! step.hide_number")
-    %div(ng-bind="stepNumber($index)")
+%div.span8.offset2(ng-if='! step.is_aside')
+  .step-number-container
+    %h1.step-number(ng-if="! step.hide_number")
+      %div(ng-bind="stepNumber($index)")
 
   %h4(  cs-contenteditable="getStepOpenForEdit()" 
         ng-model="step.title"
@@ -28,5 +29,6 @@
       -# Image only if there is no video
       .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")
         .new-step-image(id="{{'step-image-' + $index}}")
-          %img(ng-src="{{stepImageURL(step, 670)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
-%div(ng-include="'_aside.html'")
+          %img(ng-src="{{stepImageURL(step, 770)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+
+%div(ng-if='step.is_aside' ng-include="'_aside.html'")

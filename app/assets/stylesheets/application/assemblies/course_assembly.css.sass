@@ -268,18 +268,19 @@
       float: left
       padding: 0px
       @include boxsizing
+
+      .step-number-container
+        width: 100%
       .step-number
-        position: absolute
-        top: 0
-        left: -77px
+        margin-left: auto
+        margin-right: auto
         text-align: center
-        width: 52px
+        padding-top: 9px
         @include primary-font-bold
         -webkit-backface-visibility: hidden
-        border: 2px solid $light-gray
+        background-color: lighten($orange, 25%)
         width: 60px
         height: 60px
-        padding-top: 7px
         border-radius: 50%
         @include boxsizing
 
