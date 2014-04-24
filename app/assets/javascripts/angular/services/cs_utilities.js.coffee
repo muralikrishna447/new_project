@@ -1,4 +1,4 @@
-@app.service 'csUtilities', [ ()  ->
+@app.service 'csUtilities', [ "$sce", ($sce)  ->
 
   this.formatTime = (t, showSeconds = true) ->
 
@@ -41,6 +41,11 @@
       url = url + "/convert?fit=max&w=#{width || 480}&cache=true"
     window.cdnURL(url)
 
+  # http://stackoverflow.com/questions/19306452/how-to-fix-10-digest-iterations-reached-aborting-error-in-angular-1-2-fil
+  this.converted = {}
+  this.trustButVerify = (value) ->
+    this.converted[value] || (this.converted[value] = $sce.trustAsHtml(value))
+  
   this
 
 ]
