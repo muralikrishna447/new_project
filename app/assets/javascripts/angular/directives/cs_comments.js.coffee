@@ -1,4 +1,4 @@
-@app.directive 'cscomments', ["$compile", ($compile) ->
+@app.directive 'cscomments', ["$compile", "$rootScope", ($compile, $rootScope) ->
   restrict: 'E'
   scope: {
     commentsType: '@' 
@@ -13,8 +13,12 @@
         comments = response.data
         angular.forEach comments, (comment) ->
           $scope.seoComments.push(comment.content)
+    $scope.openLogin = ->
+      $scope.$emit 'openLoginModal'
+      $scope.$apply()
   ]
   link: (scope, element, attrs) ->
+    console.log element.find('iframe')
     scope.$watch 'commentsId', (newValue, oldValue) ->
       if newValue
         if scope.seoBot == 'true'
@@ -26,10 +30,11 @@
             id: identifier
             on:
               login: ->
-                console.log 'hello'
-                $rootScope.$apply ->
-                  $rootScope.$emit 'openLoginModal'
+                scope.openLogin()
           }
+    $rootScope.$on 'reloadComments', (event) ->
+      window.location.reload()
+
   template: "<div>{{seoComments}}</div>"
 ]
 
