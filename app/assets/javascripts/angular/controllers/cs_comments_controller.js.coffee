@@ -7,7 +7,7 @@
       $http.get('/users?ids=' + userIds).then (res) ->
         users = res.data.map (user) ->
           user._id = "" + user.id
-          user.profileLink =  "/profiles/#{user._id}"
+          user.profileLink =  "http://www.chefsteps.com/profiles/#{user._id}"
           user.avatarUrl = user['avatar_url']
           user
 

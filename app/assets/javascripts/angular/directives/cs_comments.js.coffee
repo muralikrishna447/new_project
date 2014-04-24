@@ -31,3 +31,13 @@
           }
   template: "<div>{{seoComments}}</div>"
 ]
+
+@app.directive 'csnotifs', ["$compile", ($compile) ->
+  restrict: 'E'
+  scope: {}
+  link: (scope, element, attrs) ->
+    Bloom.installNotifs {
+      el: element[0]
+    }
+]
+
