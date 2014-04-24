@@ -26,18 +26,31 @@
             id: identifier
             on:
               login: ->
+                console.log 'hello'
                 $rootScope.$apply ->
                   $rootScope.$emit 'openLoginModal'
           }
   template: "<div>{{seoComments}}</div>"
 ]
 
-@app.directive 'csnotifs', ["$compile", ($compile) ->
+@app.directive 'csnotifs', [ ->
   restrict: 'E'
-  scope: {}
+  scope: {
+    'navigateToContent': '&navigateToContent'
+  }
+  controller: [ "$scope", "$http", ($scope, $http) ->
+    $scope.navigateToContent = (commentsId)->
+      url = '/comments/info?commentsId=' + commentsId
+      $http.get(url).then (response) ->
+        window.location = response.data.url
+  ]
   link: (scope, element, attrs) ->
     Bloom.installNotifs {
       el: element[0]
+      on:
+        navigateComment: (comment) ->
+          console.log 'navigation to comment: ', comment.dbParams.commentsId
+          scope.navigateToContent(comment.dbParams.commentsId)
     }
 ]
 
