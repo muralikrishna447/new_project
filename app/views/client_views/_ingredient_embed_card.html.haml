@@ -1,6 +1,6 @@
 .nell-card
   .nell-card-header
-    %h2 {{obj.title}}
+    %h3 {{obj.title}}
   .nell-card-body
     .nell-card-media(ng-show="obj.image_id")
       %img(ng-src='{{csUtilities.imageURL(obj.image_id, 700)}}')

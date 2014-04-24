@@ -1,4 +1,4 @@
-@app.controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Activity", "ActivityMethods", "csAuthentication", "$sce", ($scope, $resource, $location, $timeout, csGalleryService, $controller, Activity, ActivityMethods, csAuthentication, $sce) ->
+@app.controller 'GalleryController', ["$scope", "$resource", "$location", "$timeout", "csGalleryService", "$controller", "Activity", "ActivityMethods", "csAuthentication", "csUtilities", ($scope, $resource, $location, $timeout, csGalleryService, $controller, Activity, ActivityMethods, csAuthentication, csUtilities) ->
 
   $controller('GalleryBaseController', {$scope: $scope});
   $scope.galleryService = csGalleryService
@@ -33,7 +33,7 @@
 
   $scope.getFooterRightContents = (activity) ->  
     return "By #{activity.creator.name}" if activity?.creator?.id
-    return $sce.trustAsHtml("<span><i class='icon-star-empty'/></span>&nbsp;#{activity.likes_count}") if activity.likes_count > 0
+    return csUtilities.trustButVerify("<span><i class='icon-star-empty'/></span>&nbsp;#{activity.likes_count}") if activity.likes_count > 0
 
   $scope.getSashContents = (activity) ->  
     return "PAID CLASS" if activity?.show_only_in_course
