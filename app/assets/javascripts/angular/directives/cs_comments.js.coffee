@@ -24,6 +24,10 @@
           Bloom.installComments {
             el: element[0]
             id: identifier
+            on:
+              login: ->
+                $rootScope.$apply ->
+                  $rootScope.$emit 'openLoginModal'
           }
   template: "<div>{{seoComments}}</div>"
 ]
