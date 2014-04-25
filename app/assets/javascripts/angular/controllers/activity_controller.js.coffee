@@ -32,11 +32,19 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.hasFeaturedImage = ->
     $scope.getObject()?.featured_image_id? && $scope.getObject().featured_image_id
 
-  $scope.featuredImageURL = (width) ->
+  $scope.baseFeaturedImageURL = ->
     url = ""
     if $scope.hasFeaturedImage()
       url = JSON.parse($scope.getObject().featured_image_id).url
-      url = url + "/convert?fit=max&w=#{width}&cache=true"
+    url
+
+  $scope.featuredImageURL = (width) ->
+    url = $scope.baseFeaturedImageURL() + "/convert?fit=max&w=#{width}&cache=true"
+    window.cdnURL(url)
+
+  $scope.bannerImageURL = ->
+    url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
+    url += "/convert?fit=crop&w=1000&h=300"
     window.cdnURL(url)
 
   $timeout ( ->

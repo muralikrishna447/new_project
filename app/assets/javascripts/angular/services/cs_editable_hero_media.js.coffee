@@ -14,11 +14,14 @@
     this.heroVideoStillURL = ->
       "//img.youtube.com/vi/#{this.getObject().youtube_id}/0.jpg"
 
-    this.heroImageURL = (width) ->
+    this.baseHeroImageURL = ->
       url = ""
       if this.hasHeroImage()
-        url = JSON.parse(this.getObject().image_id).url
-        url += "/convert?fit=max&w=#{width}&cache=true"
+        url = JSON.parse(this.getObject().image_id).url      
+      url
+
+    this.heroImageURL = (width) ->
+      url = this.baseHeroImageURL() + "/convert?fit=max&w=#{width}&cache=true"
       window.cdnURL(url)
 
     this.heroDisplayType = ->

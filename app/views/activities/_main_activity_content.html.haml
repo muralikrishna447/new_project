@@ -1,13 +1,21 @@
+.standard-item
+  .hero-video.noprint
+    = render 'activities/hero_visual'
 
-/ .row.relative(ng-hide="heroDisplayType() == 'none'")
-/   .span12.ng-cloak.assembly-activity.section#video-ingredient-unit
-/     .hero-video.noprint
-/       = render 'activities/hero_visual'
-/     - unless @assembly
-/       .noprint(ng-show="! editMode")
-/         = render 'layouts/social_buttons', media_object: activity
+.standard-item
+  = render 'title'
+
+.standard-item
+  = render 'activities/metadata'
+
+ 
 .standard-item
   = render 'activities/latest/description'
+
+.aside
+  .noprint(ng-show="! editMode")
+    = render 'top_buttons'
+    = render 'layouts/social_buttons', media_object: activity
 
 .section
 
