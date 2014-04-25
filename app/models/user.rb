@@ -182,9 +182,12 @@ class User < ActiveRecord::Base
   end
 
   def encrypted_bloom_info
-    user_json = self.to_json(only: [:id, :name], methods: :avatar_url)
-    encrypted = ChefstepsBloom.encrypt(user_json)
-    encrypted
+    # user_json = self.to_json(only: [:id, :name], methods: :avatar_url)
+    user_json = {'userId' => self.id.to_s}.to_json
+    # encrypted = ChefstepsBloom.encrypt(user_json)
+    # encrypted
+    response = Faraday.get 'http://api.usebloom.com/encrypt?string=' + user_json + '&apiKey=xchefsteps'
+    response.body
   end
 end
 
