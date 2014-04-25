@@ -63,16 +63,18 @@ namespace :bloom do
         }
         bulk_body << c
 
-        puts bulk_body
-        puts bulk_body.length
+        # puts bulk_body
+        # puts bulk_body.length
 
-        # target_data = bloom.bulk body: bulk_body
-        # puts target_data
         migrated << "'#{id}'"
         puts migrated.join(',')
+        puts 'Migrated size'
+        puts migrated.size
       end
-      
     end
+    target_data = bloom.bulk body: bulk_body
+    puts target_data
+    puts 'Source comments size'
     puts source_comments.size
   end
 
