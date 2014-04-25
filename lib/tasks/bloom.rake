@@ -1,119 +1,80 @@
 namespace :bloom do
-  require 'json'  
-  desc "post comments"
-  task :post_comments => :environment do
-    conn = Faraday.new(:url => 'http://chefsteps-bloom.herokuapp.com') do |faraday|
-      faraday.request  :url_encoded             # form-encode POST params
-      faraday.response :logger                  # log requests to STDOUT
-      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-    end
+  require 'hashie'
+  task :migrate_chefsteps_to_bloom => :environment do
+    connect_to_new_bloom
+    ginko = connect_to('http://ginkgo-5521397.us-east-1.bonsai.io',{params: {size: 100000, pretty: true}})
+    source_data = ginko.search index: 'xchefsteps', type: 'comment', body: { query: { match_all: { } } }
+    source_comments = source_data['hits']['hits']
+    source_comments.each do |comment|
 
-    # @upload = Upload.find('macaron-with-chocolate-ganache')
-    # @upload.comments.each do |comment|
-    #   puts comment.inspect
-    #   puts comment.user
-    #   post_comment(conn, comment.user, @upload.class.to_s.downcase, @upload.id, comment.content)
-    # end
-    @comments = Comment.where(commentable_type: 'Upload')
-    @comments.each do |comment|
-      puts comment.inspect
-      puts comment.user
-      post_comment(conn, comment.user, comment.commentable.class.to_s.downcase, comment.commentable.id, comment.content)
-    end
+      # Extract the old data
+      content = comment['_source']['content']
+      comments_id = comment['_source']['dbParams']['commentsId']
+      comments_type = "comments"
+      author = comment['_source']['author'].to_s
+      parent_comment_id = comment['_source']['parentCommentId']
 
-  end
-
-  # task :get_comments => :environment do
-  #   connect_to_bloom
-  #   response = @bloom.get '/comments'
-  #   @comments =  JSON.parse(response.body)
-  #   @comments.each do |comment|
-  #     puts comment.inspect
-  #   end
-  # end
-
-  task :update_comments => :environment do
-    connect_to_es
-    response = @elasticsearch.get '/bloom/comment/_search', {size: 1000, realtime: true}
-
-    comments = JSON.parse(response.body)['hits']['hits']
-    comments.each do |comment|
-      es_id = comment['_id']
-      upload_id = comment['_source']['upload']
-      puts '******'
-      puts es_id
-      puts upload_id
-      # remove_db_params_on_comment(es_id)
-      add_db_params_to_comment(es_id,'upload',upload_id)
-      puts '******'
-    end
-  end
-
-  def post_comment(conn, user, commentable_name, commentable_id, content)
-    body = {
-      "params" => {
-        "save" => { 
-          "author" => user.id,
-          "content" => "<p>#{content}</p>",
-          "#{commentable_name}" => commentable_id
-        },
-        "auth" => {
-          "user" => user.id,
-          "token" => user.authentication_token
+      likes = []
+      comment['_source']['upvotes'].each do |vote|
+        vote_item = {
+          "user" => vote['author'],
+          "createdAt" => vote['createdAt']
         }
-      }
-    }
-    conn.post do |req|
-      req.url '/comments'
-      req.headers['Content-Type'] = 'application/json'
-      req.body = JSON.generate(body)
-    end
-  end
+        likes << vote_item
+      end
 
-  def connect_to_bloom
-    @bloom = Faraday.new(:url => 'http://chefsteps-bloom.herokuapp.com') do |faraday|
-      faraday.request  :url_encoded             # form-encode POST params
-      faraday.response :logger                  # log requests to STDOUT
-      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-    end
-  end
+      created_at = comment['_source']['createdAt']
 
-  def connect_to_es
-    @elasticsearch = Faraday.new(:url => 'http://d0d7d0e3f98196d4000.qbox.io/') do |faraday|
-      faraday.request  :url_encoded             # form-encode POST params
-      faraday.response :logger                  # log requests to STDOUT
-      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-    end
-  end
-
-  def add_db_params_to_comment(es_id, commentable_type, commentable_id)
-    post_body = {
-      "doc" => {
+      # Map it to the new data
+      update_data = {
+        "content" => content,
         "dbParams" => {
-          "commentsId" => "#{commentable_type}_#{commentable_id}"
-        }
+            "commentsId" => comments_id,
+            "commentsType" => comments_type
+        },
+        "parentCommentId" => parent_comment_id,
+        "author" => author,
+        "likes" => likes,
+        "createdAt" => created_at,
+        "apiKey" => 'xchefsteps',
+        "U2FsdGVkX19re0c2zy0ElfLsPY3sj11JsbCs81IK7Todj0mzFMb5%2B8zPBGJtyuFl" => "\\".first
       }
-    }
-    post_response = @elasticsearch.post do |req|
-      req.url "/bloom/comment/#{es_id}/_update"
-      req.headers['Content-Type'] = 'application/json'
-      req.body = JSON.generate(post_body)
+      if comment['_id'] == 'NgwF0jx2Ts66OTXFOBPqbA'
+        puts '*'*40
+        puts 'Trying to migrate this: '
+        puts comment
+        puts '-'* 40
+        puts 'Map data to new structure: '
+        puts update_data
+        puts '*'*40
+        # auth_params = {'apiKey' => 'xchefsteps', 'auth' => 'U2FsdGVkX19re0c2zy0ElfLsPY3sj11JsbCs81IK7Todj0mzFMb5%2B8zPBGJtyuFl'}
+        # data_with_auth = update_data.merge(auth_params)
+        # puts data_with_auth
+        bloom_response = @bloom.post('/comments', update_data)
+        # bloom_response = @bloom.basic_auth('xchefsteps','U2FsdGVkX19re0c2zy0ElfLsPY3sj11JsbCs81IK7Todj0mzFMb5%2B8zPBGJtyuFl')
+        puts bloom_response.body
+        # puts bloom_response
+      end
+      
     end
-    puts JSON.parse(post_response.body)
-    puts '********'
+    puts source_comments.size
   end
 
-  def remove_db_params_on_comment(es_id)
-    post_body = {
-      "script" => "ctx._source.remove(\"dbParams\")"
-    }
-    post_response = @elasticsearch.post do |req|
-      req.url "/bloom/comment/#{es_id}/_update"
-      req.headers['Content-Type'] = 'application/json'
-      req.body = JSON.generate(post_body)
-    end
-    puts JSON.parse(post_response.body)
-    puts '********'
+  task :delete_one_comment => :environment do
+    target = connect_to('http://ginkgo-5521397.us-east-1.bonsai.io',{params: {size: 100000, pretty: true}})
+    target.delete index: 'xchefsteps', type: 'comment', id: 'mpi_W5qQRbq281bhrIMVQg'
   end
 
+  ## Example with options:
+  ## connect_to('http://ginkgo-5521397.us-east-1.bonsai.io',{params: {size: 100000, pretty: true}})
+  def connect_to(host, options=nil)
+    Elasticsearch::Client.new host: host, transport_options: options
+  end
+
+  def connect_to_new_bloom
+    @bloom = Faraday.new(:url => 'http://api.usebloom.com') do |faraday|
+      faraday.request  :url_encoded             # form-encode POST params
+      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+    end
+  end
 end
