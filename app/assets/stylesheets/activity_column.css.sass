@@ -5,17 +5,28 @@
   max-width: 1200px
   @include horizontal-center
 
-  .standard-item
-    width: 600px
-    @include horizontal-center
+.base-item
+  @include boxsizing
+  @include horizontal-center  
 
-  .half-item
-    width: 48%
-    display: inline-block
+.standard-item
+  @extend .base-item
+  width: 600px
+  
+.medium-item
+  @extend .base-item
+  width: 700px
 
-  .wide-item
-    width: 100%
+.wide-item
+  @extend .base-item
+  width: 100%
 
-  .aside-right-standard
-    width: 300px
-    display: inline-block
+.half-item
+  display: inline-block
+  width: 48%
+  &:first-child
+    margin-right: 2%
+
+.aside-right-standard
+  width: 300px
+  display: inline-block

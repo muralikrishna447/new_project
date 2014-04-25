@@ -778,13 +778,6 @@ a:hover
 .activity-ingredients-list
   position: relative
 
-.ingredients-well
-  position: relative
-  z-index: 1
-  margin-right: 0px
-  left: 0px
-  @include transition(all 300ms ease-in-out)
-
 .ingredients-menu
   @include transition(all 300ms ease-in-out)
   height: 100%
@@ -828,7 +821,6 @@ a:hover
   width: 30px
   height: 30px
   text-align: center
-  background-color: $offwhite
   cursor: pointer
   @include radius(5)
   i
@@ -885,19 +877,6 @@ a:hover
   .ingredients
     .show-group:not(:empty)
       position: relative
-      overflow-x: hidden
-      &:after
-        float: left
-        position: absolute
-        left: 10px
-        bottom: -4px
-        z-index: -1
-        width: 0
-        white-space: nowrap
-        content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . "
-        color: $light-gray
-      .ingredient-title, .quantity-group, .unit
-        background: $offwhite
 
 .ingredients
 
@@ -914,28 +893,23 @@ a:hover
     width: 100%
     line-height: $baseline * 2
     min-height: $baseline * 2
-    overflow-x: hidden
     input
       border-top: none
 
   .ingredient-title
-    width: auto
+    vertical-align: top
+    width: 200px
     height:  auto
-    margin-right: 120px
-    padding-right: 5px
 
-  .edit-pair-show
-    .ingredient-title
-      margin-left: .8em
-      text-indent: -.8em
+  .quantity-and-unit
+    vertical-align: top
+    width: 100px
+    height: auto
+    text-align: right
+    display: inline-block
 
   .quantity-group
-    position:  absolute
-    right:  52px
-    text-align:  right
-    padding-left: 5px
-    bottom: -4px
-    display: block
+    display: inline-block
 
     .lbs-label
       margin-left: 4px
@@ -944,12 +918,7 @@ a:hover
       cursor: pointer
 
   .unit
-    position: absolute
-    right: 0px
-    bottom: -4px
-    width:  45px
-    text-align:  left
-    padding-left: 7px
+
 
   .qtyfade
     @include transition(all 300ms ease-in-out)
