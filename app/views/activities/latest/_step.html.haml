@@ -1,8 +1,8 @@
 =render 'activities/step_side_edit_buttons'
 
 .standard-item(ng-if='! step.is_aside')
-  .step-number-container
-    %h1.step-number(ng-if="! step.hide_number")
+  .step-number-container.section(ng-if="! step.hide_number")
+    %h1.step-number
       %div(ng-bind="stepNumber($index)")
 
   %h4(  cs-contenteditable="getStepOpenForEdit()" 
@@ -12,10 +12,16 @@
   .step-first-row
     =render 'activities/step_ingredients'
 
-  .step-content(  cs-contenteditable="getStepOpenForEdit()" 
-                  creator="activity.creator"
-                  ng-model="step.directions"
-                  placeholder="'Click to write step directions'" )
+  .step-content-container.relative
+    .step-content.relative(   cs-contenteditable="getStepOpenForEdit()" 
+                              creator="activity.creator"
+                              ng-model="step.directions"
+                              placeholder="'Click to write step directions'" )
+
+    // Tacky little trick to render asides by changing 'step' within this scope
+    %div( ng-if='activity.steps[$index + 1].is_aside' 
+          ng-init='step=activity.steps[$index + 1]' 
+          ng-include="'_aside.html'")
 
   %div(ng-include="'_step_edit_images.html'")
   .step-last-row(ng-show='((!! step.youtube_id) || (!! step.image_id))')
@@ -31,4 +37,3 @@
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(ng-src="{{stepImageURL(step, 770)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
 
-%div(ng-if='step.is_aside' ng-include="'_aside.html'")

@@ -1,6 +1,3 @@
-.standard-item
-  .hero-video.noprint
-    = render 'activities/hero_visual'
 
 .standard-item
   = render 'title'
@@ -12,10 +9,10 @@
 .standard-item
   = render 'activities/latest/description'
 
-.aside
-  .noprint(ng-show="! editMode")
-    = render 'top_buttons'
-    = render 'layouts/social_buttons', media_object: activity
+  .aside
+    .noprint(ng-show="! editMode")
+      = render 'top_buttons'
+      = render 'layouts/social_buttons', media_object: activity
 
 .section
 
@@ -25,8 +22,8 @@
     = render 'activities/main_ingredients'
 
   .half-item
-    .dumb-mortar(ng-show="editMode || hasAnyEquipment()")
-      = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/&#8203;Materials", required_string: "any", required: "any"
+    %div(ng-show="editMode || hasAnyEquipment()")
+      = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment", required_string: "any", required: "any"
 
     .dumb-mortar(ng-show="editMode || !! activity.yield") 
       %h4 Yield
@@ -41,7 +38,7 @@
               ng-model="activity.timing")
       %span.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
 
-    .dumb-mortar(ng-show='(! editMode) && (activity.used_in.length > 0)') 
+    %div(ng-show='(! editMode) && (activity.used_in.length > 0)') 
       %h4 Used In
       %ul.no-bullet
         %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true | limitTo:10")
@@ -51,7 +48,7 @@
           %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
             %i.icon-group
 
-    .dumb-mortar(ng-show='(! editMode) && (activity.forks.length > 0)') 
+    %div(ng-show='(! editMode) && (activity.forks.length > 0)') 
       %h4 Forks
       %ul.no-bullet
         %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true | limitTo:10")

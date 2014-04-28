@@ -19,6 +19,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.preventAutoFocus = false
   $scope.shouldShowRestoreAutosaveModal = false
   $scope.shouldShowAlreadyEditingModal = false
+  $scope.showHeroVideo = false
   $scope.alerts = []
   $scope.activities = {}
   $rootScope.loading = 0
@@ -44,8 +45,14 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.bannerImageURL = ->
     url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
-    url += "/convert?fit=crop&w=1000&h=300"
+    w = window.innerWidth
+    h = parseInt(.337 * w)
+    url += "/convert?fit=crop&h=#{h}&w=#{w}"
     window.cdnURL(url)
+
+  $scope.toggleHeroVideo = ->
+    $scope.showHeroVideo = ! $scope.showHeroVideo
+    $scope.$broadcast('playVideo', $scope.showHeroVideo)
 
   $timeout ( ->
     $rootScope.$broadcast('showPopupCTA') if $scope.popupEligible

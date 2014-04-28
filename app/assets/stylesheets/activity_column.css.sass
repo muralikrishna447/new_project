@@ -7,7 +7,8 @@
 
 .base-item
   @include boxsizing
-  @include horizontal-center  
+  @include horizontal-center
+  position: relative  
 
 .standard-item
   @extend .base-item
@@ -15,13 +16,14 @@
   
 .medium-item
   @extend .base-item
-  width: 700px
+  width: 800px
 
 .wide-item
   @extend .base-item
   width: 100%
 
 .half-item
+  vertical-align: top
   display: inline-block
   width: 48%
   &:first-child

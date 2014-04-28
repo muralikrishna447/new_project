@@ -41,6 +41,12 @@
     # csenforceaspect to do its thing, then bump it up.
     $timeout ( -> player.setPlaybackQuality?('hd1080')), 2000
 
+    scope.$on 'playVideo', (event, play) ->
+      if play
+        player.playVideo()
+      else
+        player.pauseVideo()
+        
     # # Dumb experimental workaround to having the correct onplayerready
     # loadVideo = (id) ->
     #   if player?.loadVideoById

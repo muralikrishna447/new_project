@@ -1,6 +1,6 @@
 %div.section.anim-basic-fade(ng-show="! editMode")
   - if ! @minimal
-    .pull-right(style="margin-left: 20px;")
+    %div
       .btn.btn-secondary{onclick: 'window.print()'}
         Print
 
@@ -12,7 +12,7 @@
         .btn.btn-secondary(ng-click="fork()" tooltip="Edit a copy of this recipe" tooltip-placement="left")
           Fork
 
-%div.pull-right.anim-basic-fade(ng-show="editMode")
+%div.anim-basic-fade(ng-show="editMode")
   .btn-toolbar
     .btn-group
       .btn.btn-secondary(type="button" ng-click="undo()" ng-disabled="! undoAvailable()")

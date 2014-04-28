@@ -1,13 +1,52 @@
 @import 'mixins'
 
 .banner-image
+  height: 338px
   width: 100%
-  position: absolute
-  top: -$baseline * 2
-  left: 0
-  img
+  position: relative
+
+  .play-button
+    position: absolute
+    top: 50%
+    bottom: 50%
+    right: 50%
+    left: 50%
+    margin-left: -50px
+    margin-top: -25px
+    font-size: 100px
+    color: $orange
+    text-shadow: 1px 1px 5px white
+
+  .banner-cropper
+    position: relative
+    overflow: hidden
     width: 100%
-    max-width: 100%
+    height: 100%
+    img
+      opacity: 1
+      width: 100%
+      max-width: 100%
+      @include transition(all 300ms ease-in-out)
+
+  .video-container
+    position: absolute
+    top: 0
+    width: 600px
+    height: 100%
+    opacity: 0
+    @include transition(all 300ms ease-in-out)
+
+  .hero-video
+    position: relative
+    top: -338px
+
+  &.hero-video-showing
+    img
+      opacity: .5
+      @include blur(3px)
+
+    .video-container
+      opacity: 1
 
 @media (max-width: 780px)
   #step-dots

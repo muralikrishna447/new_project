@@ -41,8 +41,14 @@
 
 -################################ PRIMARY CONTENT ################################
 
-.banner-image(ng-hide="editMode")
-  %img(ng-src="{{bannerImageURL()}}")      
+.banner-image(ng-hide="editMode" ng-click='toggleHeroVideo()' ng-class="{'hero-video-showing' : showHeroVideo}")
+  .banner-cropper
+    %img(ng-src="{{bannerImageURL()}}")  
+    .play-button
+      %i.icon-play-sign    
+  .standard-item
+    .hero-video.noprint
+      = render 'activities/hero_visual'
 
 #activity-title(data-activity="#{@activity.title}")
 %form(ng-cloak name="activityForm" csfixnakedlinks)
@@ -51,16 +57,6 @@
   %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
   .container#activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
-    .row.noprint(ng-cloak ng-show="editMode && alerts.length > 0")
-      .span8.offset2
-        %alert.edit-alert.alert-block.anim-basic-fade(ng-repeat="alert in alerts" type="alert.type || 'error'" close="alertService.closeAlert($index)")
-          %h3 Save Failed!
-          {{alert.message}}
-          .section
-            If you can't resolve the issue, please
-            %a(ng-href="mailto:michael@chefsteps.com?subject=Error%20Message&body=Error: {{alert.message}}. Please add any info about what caused this problem." target="_blank")>
-              send this error text to ChefSteps
-            \.
 
     .master-column
       #main-content.main-content-container
