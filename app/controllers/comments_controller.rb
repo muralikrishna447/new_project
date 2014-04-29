@@ -42,18 +42,20 @@ class CommentsController < ApplicationController
 
     user_results = []
     users = User.where("name iLIKE ?", search_term).order('events_count desc').limit(300)
-    users.each do |user|
-      user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url, 'rank' => user.events_count}
-    end
+    # users.each do |user|
+    #   user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url, 'rank' => user.events_count}
+    # end
 
     recipe_results = []
-    recipes = Activity.chefsteps_generated.where("title iLIKE ?", search_term).order('likes_count desc').limit(300)
+    # recipes = Activity.chefsteps_generated.where("title iLIKE ?", search_term).order('likes_count desc').limit(300)
+    recipes = Activity.search(match: { '_all' => search_term + '*' }).records
     recipes.each do |recipe|
       recipe_results << {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url, 'rank' => recipe.likes_count}
     end
 
     ingredient_results = []
-    ingredients = Ingredient.no_sub_activities.where("title iLIKE ?", search_term).order('title asc').limit(300)
+    # ingredients = Ingredient.no_sub_activities.where("title iLIKE ?", search_term).order('title asc').limit(300)
+    ingredients = Ingredient.search(search_term).records
     ingredients.each do |ingredient|
       ingredient_results << {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}
     end
@@ -62,6 +64,7 @@ class CommentsController < ApplicationController
     results['Recipes'] = recipe_results
     results['Ingredients'] = ingredient_results
     render :json => JSON.pretty_generate(results)
+    # render nothing: true
   end
 
 private
