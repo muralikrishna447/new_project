@@ -61,7 +61,9 @@ gem 'nested-hstore'
 gem 'gibbon'
 gem 'faraday'
 gem 'nori'
-gem 'elasticsearch'
+# gem 'elasticsearch'
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
 
 group :development do
   gem 'spring'
