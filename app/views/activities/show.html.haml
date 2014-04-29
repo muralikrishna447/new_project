@@ -41,7 +41,7 @@
 
 -################################ PRIMARY CONTENT ################################
 
-.banner-image(ng-hide="editMode" ng-click='toggleHeroVideo()' ng-class="{'hero-video-showing' : showHeroVideo}")
+.banner-image(ng-cloak ng-hide="editMode" ng-click='toggleHeroVideo()' ng-class="{'hero-video-showing' : showHeroVideo}")
   .banner-cropper
     %img(ng-src="{{bannerImageURL()}}")  
     .play-button

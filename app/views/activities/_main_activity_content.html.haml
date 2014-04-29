@@ -18,10 +18,10 @@
 
 .medium-item
 
-  .half-item
+  .half-medium-item
     = render 'activities/main_ingredients'
 
-  .half-item
+  .half-medium-item
     %div(ng-show="editMode || hasAnyEquipment()")
       = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment", required_string: "any", required: "any"
 
