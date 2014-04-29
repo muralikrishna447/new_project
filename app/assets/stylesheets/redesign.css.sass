@@ -686,6 +686,11 @@ a:hover
   &:after
     content: "..."
 
+.comma-list
+  &:not(:last-child)
+    &:after
+      content: ', '
+
 .ordered-steps
   overflow: auto
   border: 1px solid $offwhite
@@ -697,7 +702,7 @@ a:hover
   .ordered-step-item
     width: 100%
     padding: 0px
-    margin-bottom: $baseline
+    margin-bottom: $baseline * 10
     @include boxsizing
     .step-element
       float: left

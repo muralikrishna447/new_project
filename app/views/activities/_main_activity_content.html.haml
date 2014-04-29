@@ -22,24 +22,24 @@
     = render 'activities/main_ingredients'
 
   .half-medium-item
-    %div(ng-show="editMode || hasAnyEquipment()")
+    .section(ng-show="editMode || hasAnyEquipment()")
       = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment", required_string: "any", required: "any"
 
-    .dumb-mortar(ng-show="editMode || !! activity.yield") 
-      %h4 Yield
-      %span(  cs-contenteditable="editMode" 
-              ng-model="activity.yield" 
-              itemprop="recipeYield")
-      %span.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
+    .quarter-medium-item.section(ng-show="editMode || !! activity.yield") 
+      %h5 Yield
+      .inline(  cs-contenteditable="editMode" 
+                ng-model="activity.yield" 
+                itemprop="recipeYield")
+      .inline.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
 
-    .dumb-mortar(ng-show="editMode || !! activity.timing") 
-      %h4 Timing
-      %span(  cs-contenteditable="editMode" 
-              ng-model="activity.timing")
-      %span.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
+    .quarter-medium-item.section(ng-show="editMode || !! activity.timing") 
+      %h5 Timing
+      .inline(  cs-contenteditable="editMode" 
+                ng-model="activity.timing")
+      .inline.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
 
     %div(ng-show='(! editMode) && (activity.used_in.length > 0)') 
-      %h4 Used In
+      %h5 Used In
       %ul.no-bullet
         %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true | limitTo:10")
           %a( ng-bind-html='item.title'
@@ -49,7 +49,7 @@
             %i.icon-group
 
     %div(ng-show='(! editMode) && (activity.forks.length > 0)') 
-      %h4 Forks
+      %h5 Forks
       %ul.no-bullet
         %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true | limitTo:10")
           %a( ng-bind-html='item.title'

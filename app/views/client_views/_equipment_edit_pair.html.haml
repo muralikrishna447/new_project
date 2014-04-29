@@ -4,14 +4,14 @@
 
 %csEditPair
   %csEditPairShow
-    %div(ng-switch="" on="equipmentDisplayType(item)")
-      %span(ng-switch-when="product")
-        %a(ng-href='{{item.equipment.product_url}}' target='_blank')
-          {{item.equipment.title || item.equipment}}&nbsp;
-      %span.fake-link(ng-switch-when="fake_link")
-        {{item.equipment.title || item.equipment}}&nbsp;
-      %span(ng-switch-default="")
-        {{item.equipment.title || item.equipment}}&nbsp;
+    %div(ng-switch="" on="equipmentDisplayType(item)")>
+      %span(ng-switch-when="product")<
+        %a(ng-href='{{item.equipment.product_url}}' target='_blank')<
+          {{item.equipment.title || item.equipment}}
+      %span.fake-link(ng-switch-when="fake_link")<
+        {{item.equipment.title || item.equipment}}
+      %span(ng-switch-default="")<
+        {{item.equipment.title || item.equipment}}
 
   %csEditPairEdit
     .btn-toolbar.action-button-group
