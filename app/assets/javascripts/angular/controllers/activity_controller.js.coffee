@@ -4,8 +4,25 @@ window.deepCopy = (obj) ->
   else
     jQuery.extend(true, {}, obj)
 
+# This is a little captive controller only designed for use inside ActivityController for now.
+# Would be better as a directive but needs work to abstract it.
+@app.controller 'BannerController', ["$scope", ($scope) ->
+  $scope.showHeroVideo = false
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication"
+  $scope.bannerImageURL = ->
+    url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
+    w = window.innerWidth
+    h = parseInt(.337 * w)
+    url += "/convert?fit=crop&h=#{h}&w=#{w}"
+    window.cdnURL(url)
+
+  $scope.toggleHeroVideo = ->
+    $scope.showHeroVideo = ! $scope.showHeroVideo
+    $scope.$broadcast('playVideo', $scope.showHeroVideo)
+]
+
+
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "$anchorScroll", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication"
 ($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, $anchorScroll, csEditableHeroMediaService, Activity, csTagService, csAuthentication) ->
 
   $scope.heroMedia = csEditableHeroMediaService
@@ -19,7 +36,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.preventAutoFocus = false
   $scope.shouldShowRestoreAutosaveModal = false
   $scope.shouldShowAlreadyEditingModal = false
-  $scope.showHeroVideo = false
   $scope.alerts = []
   $scope.activities = {}
   $rootScope.loading = 0
@@ -42,17 +58,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.featuredImageURL = (width) ->
     url = $scope.baseFeaturedImageURL() + "/convert?fit=max&w=#{width}&cache=true"
     window.cdnURL(url)
-
-  $scope.bannerImageURL = ->
-    url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
-    w = window.innerWidth
-    h = parseInt(.337 * w)
-    url += "/convert?fit=crop&h=#{h}&w=#{w}"
-    window.cdnURL(url)
-
-  $scope.toggleHeroVideo = ->
-    $scope.showHeroVideo = ! $scope.showHeroVideo
-    $scope.$broadcast('playVideo', $scope.showHeroVideo)
 
   $timeout ( ->
     $rootScope.$broadcast('showPopupCTA') if $scope.popupEligible
