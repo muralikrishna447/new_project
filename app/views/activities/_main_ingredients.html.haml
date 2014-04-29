@@ -5,7 +5,8 @@
       %i.icon-cog.icon-large( ng-click="toggleIngredientsMenu()" 
                               ng-class="{'active' : csGlobals.scaling != 1}")
 
-    .ingredients-menu.well(ng-show="activity.ingredients.length")
+    .ingredients-menu.well( ng-show="activity.ingredients.length"
+                            ng-class="{'menu-active' : showIngredientsMenu}")
       .controls
         .navlabel
           SCALE
