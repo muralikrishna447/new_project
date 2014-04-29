@@ -25,20 +25,20 @@
     .section(ng-show="editMode || hasAnyEquipment()")
       = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment", required_string: "any", required: "any"
 
-    .quarter-medium-item.section(ng-show="editMode || !! activity.yield") 
+    .quarter-medium-item(ng-show="editMode || !! activity.yield") 
       %h5 Yield
       .inline(  cs-contenteditable="editMode" 
                 ng-model="activity.yield" 
                 itemprop="recipeYield")
       .inline.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
 
-    .quarter-medium-item.section(ng-show="editMode || !! activity.timing") 
+    .quarter-medium-item(ng-show="editMode || !! activity.timing") 
       %h5 Timing
       .inline(  cs-contenteditable="editMode" 
                 ng-model="activity.timing")
       .inline.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
 
-    %div(ng-show='(! editMode) && (activity.used_in.length > 0)') 
+    .section(ng-show='(! editMode) && (activity.used_in.length > 0)') 
       %h5 Used In
       %ul.no-bullet
         %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true | limitTo:10")
@@ -48,7 +48,7 @@
           %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
             %i.icon-group
 
-    %div(ng-show='(! editMode) && (activity.forks.length > 0)') 
+    .section(ng-show='(! editMode) && (activity.forks.length > 0)') 
       %h5 Forks
       %ul.no-bullet
         %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true | limitTo:10")
