@@ -158,10 +158,9 @@
           Report a problem
 
 
-  .row.section
-    .span12
-      %a(name='discussion')
-      %cscomments(comments-type="ingredient" comments-id="{{ingredient.id}}" seo-bot="#{is_brombone}")
+  .row.section#comments
+    %a(name='discussion')
+    %cscomments(comments-type="ingredient" comments-id="{{ingredient.id}}" seo-bot="#{is_brombone}")
 
 .container
   .row.activity-loading-spinner(ng-hide="true")
