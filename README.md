@@ -36,8 +36,8 @@ To set up a new machine:
 - rake copy_production_db (you’ll need your heroku acct/passwd and say yes to creating a new public key)
 - rails s
 - in another window:
-         * rake db:test:prepare
-         * guard
+-- rake db:test:prepare
+-- guard
 
 
 ## Personal / Optional
