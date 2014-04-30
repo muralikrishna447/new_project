@@ -103,6 +103,55 @@ namespace :bloom do
     puts ids.join(',')
   end
 
+  task :fix_anon => :environment do
+    bloom = connect_to('https://boxwood-2704780.us-east-1.bonsai.io',{params: {size: 100000, pretty: true}})
+    source_data = bloom.search index: 'xchefsteps', type: 'comment', body: {
+      query: {
+        match_all: {}
+      }
+    }
+    bulk_body = []
+    source_comments = source_data['hits']['hits']
+    source_comments.each do |comment|
+      content = comment['_source']['content']
+      comments_id = comment['_source']['dbParams']['commentsId']
+      comments_type = comment['_source']['dbParams']['commentsType']
+      parent_comment_id = comment['_source']['parentCommentId']
+      author = 'xanon'
+      likes = comment['_source']['likes']
+      created_at = comment['_source']['createdAt']
+
+      if comment['_source']['author'].blank?
+        update_data = {
+          "content" => content,
+          "dbParams" => {
+            "commentsId" => comments_id,
+            "commentsType" => comments_type
+          },
+          "parentCommentId" => parent_comment_id,
+          "author" => author,
+          "likes" => likes,
+          "createdAt" => created_at
+        }
+        c = {
+          'index' => {
+            '_index' => comment['_index'],
+            '_type' => comment['_type'],
+            '_id' => comment['_id'],
+            'data' => update_data
+          }
+        }
+        bulk_body << c
+      end
+    end
+    puts '***BULK BODY******'
+    puts bulk_body
+    puts '******************'
+    # Uncomment the line below to actually post update
+    # target_data = bloom.bulk body: bulk_body
+    # puts target_data
+  end
+
   ## Example with options:
   ## connect_to('http://ginkgo-5521397.us-east-1.bonsai.io',{params: {size: 100000, pretty: true}})
   def connect_to(host, options=nil)
