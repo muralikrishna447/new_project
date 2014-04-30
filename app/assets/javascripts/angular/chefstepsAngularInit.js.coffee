@@ -48,15 +48,6 @@ angular.module('ChefStepsApp').run ["$window", "$rootScope", ($window, $rootScop
 
 ]
 
-@app.run ["$rootScope", "$location", "$anchorScroll", ($rootScope, $location, $anchorScroll) ->
-
-  $rootScope.scrollTo = (id) ->
-    console.log 'hello'
-    $location.hash(id)
-    $anchorScroll
-
-]
-
 @$$parse = (url) ->
   matchUrl url, this
   withoutBaseUrl = beginsWith(appBase, url) or beginsWith(appBaseNoFile, url)
