@@ -60,6 +60,7 @@
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}"}
     - unless @hide_nav == true
       = render 'layouts/navigation', external: false
+      .nav-spacer
 
     .container.noprint.cookies-disabled(style="display:none;")
       .row-fluid
