@@ -45,7 +45,7 @@ Delve::Application.routes.draw do
   get 'users/verify' => 'tokens#verify', as: 'verify'
   resources :users, only: [:index, :show] do
     collection do
-      get 'admins' => 'users#admins'
+      get 'cs' => 'users#cs'
     end
   end
 

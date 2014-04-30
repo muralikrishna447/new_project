@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   # For Bloom Dashboard
-  def admins
+  def cs
     @admins = User.where(role: 'admin')
     render json: @admins.to_json(only: [:id, :email])
   end
