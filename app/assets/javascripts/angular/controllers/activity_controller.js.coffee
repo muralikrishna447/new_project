@@ -405,6 +405,7 @@ window.deepCopy = (obj) ->
       true
     else
       false
+    $scope.updateCommentCount()
 
   $scope.fetchActivity = (id, callback) ->
     console.log("START FETCH ACTIVITY #{id}")
@@ -452,6 +453,13 @@ window.deepCopy = (obj) ->
       ), 500
     else
       $scope.fetchActivity(id, -> $scope.makeActivityActive(id))
+    $scope.updateCommentCount()
+
+  $scope.commentCount = -1
+  $scope.updateCommentCount = -> 
+    $http.get("http://production-bloom.herokuapp.com/discussion/activity_#{$scope.activity.id}/comments?apiKey=xchefsteps").success((data, status) ->
+      $scope.commentCount = data.length
+    )
 
   $scope.$on 'loadActivityEvent', (event, activity_id) ->
     $scope.loadActivity(activity_id)
@@ -513,6 +521,7 @@ window.deepCopy = (obj) ->
 
   $scope.emailBody = ->
     "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
+
 
   $scope.maximizeDescription = false
   $scope.toggleMaximizeDescription = ->

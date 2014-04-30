@@ -56,15 +56,19 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  def add_related_activities
+  # This is absurd, should be part of the activity serializer, but that is used in different
+  # cases and we need to untangle what info should be passed into what view and then set up a way
+  # 
+  def add_extra_json_info
     @activity[:used_in] = @activity.used_in_activities.published
     @activity[:forks] = @activity.published_variations
+    @activity[:view_count] = Event.where(trackable_type: "Activity", trackable_id: @activity.id, action: "show").count
   end
 
   def show
 
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
-    add_related_activities
+    add_extra_json_info
     @upload = Upload.new
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
@@ -139,7 +143,7 @@ class ActivitiesController < ApplicationController
   def get_as_json
 
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, Activity))
-    add_related_activities
+    add_extra_json_info
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
