@@ -69,6 +69,8 @@ class Activity < ActiveRecord::Base
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
   attr_accessible :show_only_in_course, :summary_tweet
 
+  include Searchable
+
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
@@ -463,6 +465,18 @@ class Activity < ActiveRecord::Base
       url = ActiveSupport::JSON.decode(self.featured_image_id)["url"]
       avatar_url = "#{url}/convert?fit=crop&w=70&h=70&cache=true".gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
     end
+  end
+
+  # For elasticsearch.  See https://github.com/elasticsearch/elasticsearch-rails/tree/master/elasticsearch-model
+  def as_indexed_json(options={})
+    as_json(
+      only: [:title, :description],
+      methods: [:tag_list],
+      include: {
+        terminal_ingredients: { only: [:title] },
+        steps: { only: [:title, :directions] }
+      }
+    )
   end
 
   private
