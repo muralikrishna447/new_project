@@ -43,7 +43,11 @@ Delve::Application.routes.draw do
   end
 
   get 'users/verify' => 'tokens#verify', as: 'verify'
-  resources :users, only: [:index, :show]
+  resources :users, only: [:index, :show] do
+    collection do
+      get 'admins' => 'users#admins'
+    end
+  end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
