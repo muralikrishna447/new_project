@@ -86,7 +86,6 @@
                 -#   %span
                 -#     %a.btn-google.btn(ng-click="openModal('googleInvite')") Google Invite
                 -#     = render "devise/sessions/new_angular"
-
                 - unless external
                   %li
                     .nav-item-border
@@ -96,3 +95,8 @@
                         %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
                       .nav-search-hide
                         %i.icon-remove
+                - if current_user && current_user.admin?
+                  %li
+                    .nav-item-border
+                    .cs-bloom-notifs
+                      %csnotifs

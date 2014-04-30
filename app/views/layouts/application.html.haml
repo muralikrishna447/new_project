@@ -82,9 +82,7 @@
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
   = render "layouts/login_hack"
-  // jsapi is for Bloom.  Folder in public to make iframe work
-  / %script(src="/jsapi/api.js")
-  %script(src="https://dpybg80nberao.cloudfront.net/bloom/jsapi/api.js")
+  %script(src="https://components.usebloom.com/bloom-loader.js")
   = javascript_include_tag 'application'
   %script(type="text/javascript") 
     logPerf("POST APP");
