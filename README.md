@@ -7,13 +7,48 @@ To get started run:
 $ script/setup
 ```
 
-## Development
+# Development
 
-Postgres - OSX:
-```bash
-$ brew install autoconf
-$ brew install postgres
-```
+To set up a new machine:
+
+
+
+## Required
+   
+      * install homebrew (brew.sh)
+      * brew doctor
+      * brew install postgres
+      * set postgres to open at login (per output of previous cmd)
+      * cat > ~/.curlc
+      * 
+         * location
+      * rails ready install (github.com/joshfng/railsready)
+      * close your shell and reopen it
+      * git clone https://github.com/ChefSteps/ChefSteps.git
+      * cd ChefSteps
+      * install latest Xcode
+      * launch Xcode once
+      * xcode-select —install
+      * rvm install ruby (the version our Gemfile calls for)
+      * bundle
+      * createuser -l -s -r delve
+      * rake db:create
+      * install heroku toolbelt (toolbelt.heroku.com)
+      * rake copy_production_db (you’ll need your heroku acct/passwd and say yes to creating a new public key)
+      * rails s
+      * in another window:
+      * 
+         * rake db:test:prepare
+         * guard
+
+
+## Personal / Optional
+ 
+      * install Chrome or other preferred browser
+      * install iterm2 or other shell
+      * install sublime text 3 or other text editor
+      * clipmenu
+
 
 You need to install phantomjs to run jasmine specs with guard.
 
