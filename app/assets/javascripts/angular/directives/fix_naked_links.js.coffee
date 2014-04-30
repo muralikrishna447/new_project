@@ -5,13 +5,15 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
 
   link:  (scope, element, attrs) ->
     $(element).on 'click', 'a', (event)->
-      if $(event.currentTarget).attr('no-nell-popup')
-        return
+      return if $(event.currentTarget).attr('no-nell-popup')
+        
 
-      slug = event.currentTarget.href?.match('/activities/([^/]*)')?[1] 
-      slug = event.currentTarget.href?.match('/classes/[^/].*/([^/]*)')?[1] if ! slug
+      slug = event.currentTarget.pathname?.match('/activities/([^/]*)')?[1] 
+      slug = event.currentTarget.pathname?.match('/classes/[^/].*/([^/]*)')?[1] if ! slug
 
-      if slug 
+      return if scope.activity?.slug && slug == scope.activity?.slug
+
+      if slug
         # Activity link
         # First try override for load directly in class frame...
         if ! scope.overrideLoadActivityBySlug?(slug)
@@ -24,7 +26,7 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
         
       else 
         # Ingredient link
-        slug = event.currentTarget.href?.match('/ingredients/([^/]*)')?[1]
+        slug = event.currentTarget.pathname?.match('/ingredients/([^/]*)')?[1]
         if slug
           $rootScope.$broadcast "showNellPopup", 
             resourceClass: 'Ingredient'

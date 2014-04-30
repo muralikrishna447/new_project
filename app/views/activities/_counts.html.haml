@@ -5,6 +5,8 @@
   %li(  ng-pluralize 
         count='activity.view_count || 0' 
         when="  { '0' : 'You are the first to view!', '1' : '1 View', 'other' : '{} Views'}")
-  %li(  ng-pluralize 
-        count='commentCount' 
-        when="  { '-1' : '', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")
+  %li
+    %a(   href="#discussion"
+          ng-pluralize 
+          count='commentCount' 
+          when="  { '-1' : '', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")

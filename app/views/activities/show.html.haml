@@ -49,8 +49,9 @@
 
   .banner-cropper
     %img(ng-src="{{bannerImageURL()}}")  
+
     .play-button(ng-if="heroMedia.heroDisplayType() == 'video'")
-      %i.icon-play-sign    
+      %i.fa.fa-play-circle-o  
   .standard-item
     .hero-video.noprint
       = render 'activities/hero_visual'
