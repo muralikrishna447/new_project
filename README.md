@@ -32,13 +32,11 @@ To set up a new machine:
 - bundle
 - createuser -l -s -r delve
 - rake db:create
+- rake db:test:prepare
 - install heroku toolbelt (toolbelt.heroku.com)
 - rake copy_production_db (you’ll need your heroku acct/passwd and say yes to creating a new public key)
 - rails s
-- in another window:
--- rake db:test:prepare
--- guard
-
+- in another window: guard
 
 ## Personal / Optional
  
