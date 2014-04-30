@@ -41,12 +41,16 @@
     top: -338px
 
   &.hero-video-showing
-    img
-      opacity: .5
-      @include blur(3px)
+    .banner-cropper
+      img
+        opacity: .3
+        @include blur(10px)
 
     .video-container
       opacity: 1
+
+.banner-spacer
+  height: $baseline * 2
 
 @media (max-width: 780px)
   #step-dots

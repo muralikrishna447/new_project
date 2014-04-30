@@ -43,16 +43,23 @@
 
 .banner-image(  ng-controller="BannerController"
                 ng-cloak 
-                ng-click='toggleHeroVideo()' 
-                ng-class="{'hero-video-showing' : showHeroVideo}")
+                ng-click='toggleHeroVisual()' 
+                ng-if="heroMedia.heroDisplayType() != 'none'"
+                ng-class="{'hero-video-showing' : showHeroVisual()}")
 
   .banner-cropper
     %img(ng-src="{{bannerImageURL()}}")  
+<<<<<<< HEAD
     .play-button
       %i.fa.fa-play-circle-o
+=======
+    .play-button(ng-if="heroMedia.heroDisplayType() == 'video'")
+      %i.icon-play-sign    
+>>>>>>> 4800731079f05985436bec38c4f056d6b3e3c75c
   .standard-item
     .hero-video.noprint
       = render 'activities/hero_visual'
+.banner-spacer( ng-if="heroMedia.heroDisplayType() == 'none'" )
 
 #activity-title(data-activity="#{@activity.title}")
 %form(ng-cloak name="activityForm" csfixnakedlinks)

@@ -36,6 +36,9 @@ div:not(.redactor_box)
     &:hover:not(:focus)
       background-color: inherit !important
 
+.nav-spacer
+  height: $baseline * 3
+  
 .top-container
   margin-top: $baseline * 7
 
@@ -685,11 +688,6 @@ a:hover
   font-size: 110% !important
   &:after
     content: "..."
-
-.comma-list
-  &:not(:last-child)
-    &:after
-      content: ', '
 
 .ordered-steps
   overflow: auto

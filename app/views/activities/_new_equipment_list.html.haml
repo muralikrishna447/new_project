@@ -1,7 +1,7 @@
 .section(cs-watch-focus)
   %h5= name.html_safe
   %p(ui-sortable="sortOptions" ng-model="#{model}")
-    %span.comma-list(ng-repeat="item in #{model} | filter:#{required_string}Equipment")
+    %span(ng-repeat="item in #{model} | filter:#{required_string}Equipment")><
       %csEquipmentEditPair.inline<(csOptional="#{! required}")
       .inline(ng-show='item.optional && ("#{required_string}" == "any")')
         (optional)

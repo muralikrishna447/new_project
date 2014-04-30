@@ -7,7 +7,14 @@ window.deepCopy = (obj) ->
 # This is a little captive controller only designed for use inside ActivityController for now.
 # Would be better as a directive but needs work to abstract it.
 @app.controller 'BannerController', ["$scope", ($scope) ->
-  $scope.showHeroVideo = false
+  $scope.showVideo = false
+
+  $scope.showHeroVisual = ->
+   $scope.showVideo || ($scope.heroMedia.heroDisplayType() == 'image')
+
+  $scope.toggleHeroVisual = ->
+    $scope.showVideo = ! $scope.showVideo
+    $scope.$broadcast('playVideo', $scope.showVideo)
 
   $scope.bannerImageURL = ->
     url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
@@ -16,9 +23,6 @@ window.deepCopy = (obj) ->
     url += "/convert?fit=crop&h=#{h}&w=#{w}"
     window.cdnURL(url)
 
-  $scope.toggleHeroVideo = ->
-    $scope.showHeroVideo = ! $scope.showHeroVideo
-    $scope.$broadcast('playVideo', $scope.showHeroVideo)
 ]
 
 
