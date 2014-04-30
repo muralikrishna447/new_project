@@ -1,10 +1,13 @@
 %ul.no-bullet.activity-counts
+
   %li(  ng-pluralize 
         count='activity.likes_count || 0' 
         when="  { '0' : 'Be the first to bookmark', '1' : '1 Bookmark', 'other' : '{} Bookmarks'}")
+
   %li(  ng-pluralize 
         count='activity.view_count || 0' 
         when="  { '0' : 'You are the first to view!', '1' : '1 View', 'other' : '{} Views'}")
+
   %li
     %a(   href="#discussion"
           ng-pluralize 

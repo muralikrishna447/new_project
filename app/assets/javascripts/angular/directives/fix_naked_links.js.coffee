@@ -7,7 +7,6 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
     $(element).on 'click', 'a', (event)->
       return if $(event.currentTarget).attr('no-nell-popup')
         
-
       slug = event.currentTarget.pathname?.match('/activities/([^/]*)')?[1] 
       slug = event.currentTarget.pathname?.match('/classes/[^/].*/([^/]*)')?[1] if ! slug
 

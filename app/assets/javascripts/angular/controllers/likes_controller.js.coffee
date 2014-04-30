@@ -31,4 +31,6 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
       if data && data == 'true'
         $scope.current_user_likes = true
     )
+
+  $scope.currentUserLikes = $scope.getCurrentUserLikes()
 ]
