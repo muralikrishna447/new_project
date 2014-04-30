@@ -35,7 +35,7 @@
 
   .section
 
-  .row.section.anim-basic-fade(ng-show="! editMode")
+  .row.section.anim-basic-fade(ng-show="! editMode && ingredient.title")
     .span12.well.text-center.wiki-warning(ng-show="csAuthentication.loggedIn()")
       %div(ng-show="showStubTip()")
         %h3.section-tiny

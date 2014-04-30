@@ -78,6 +78,7 @@ class AssembliesController < ApplicationController
 
   # Note that although this is called "redeem", it only starts the redemption process
   # sending them to the landing page with the GC in the session. The reason we don't immediately
+  # redeem it is they might not be logged in.
 
   def redeem
     session[:gift_token] = params[:gift_token]

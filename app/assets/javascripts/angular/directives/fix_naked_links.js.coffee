@@ -5,6 +5,9 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
 
   link:  (scope, element, attrs) ->
     $(element).on 'click', 'a', (event)->
+      if $(event.currentTarget).attr('no-nell-popup')
+        return
+
       slug = event.currentTarget.href?.match('/activities/([^/]*)')?[1] 
       slug = event.currentTarget.href?.match('/classes/[^/].*/([^/]*)')?[1] if ! slug
 
@@ -15,7 +18,7 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
           # ... otherwise show card
           $rootScope.$broadcast "showNellPopup", 
             resourceClass: 'Activity'
-            include: '_activity_card.html'
+            include: '_activity_popup_card.html'
             slug: slug
         event.preventDefault()
         
@@ -25,7 +28,7 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
         if slug
           $rootScope.$broadcast "showNellPopup", 
             resourceClass: 'Ingredient'
-            include: '_ingredient_card.html'
+            include: '_ingredient_popup_card.html'
             slug: slug
           event.preventDefault()
 

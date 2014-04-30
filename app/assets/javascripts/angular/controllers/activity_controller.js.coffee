@@ -389,7 +389,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       $rootScope.loading += 1
       console.log "Loading count #{$rootScope.loading}"
       console.log "Loading activity " + id
-      $scope.activities[id] = Activity.get({id: id}, ( ->
+      Activity.get({id: id}, ( (value) ->
+        $scope.activities[id] = value
         $rootScope.loading -= 1
         console.log "Loading count #{$rootScope.loading}"
         console.log "Loaded activity " + id
@@ -507,6 +508,10 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.tellMeMore = ->
     $rootScope.$broadcast "hideNellPopup"
     mixpanel.track('Why By Weight Tell Me More', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
+
+  $scope.showNell = (view) ->
+    $rootScope.$broadcast "showNellPopup", 
+      include: view
 
   $scope.maybeShowWhyByWeight = ->
     return if localStorageService.get('whyByWeightShown')

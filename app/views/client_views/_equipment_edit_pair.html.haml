@@ -20,18 +20,19 @@
           %i.icon-sort
         .btn.remove-button.btn-small.btn-secondary(tooltip="Drag to reorder" tooltip="Remove equipment item" ng-click="removeItem()")
           %i.icon-remove
-    %input( cs-emit-focus
-            csselectonfocus
-            csinputmonkeyequipment
-            type="text" 
-            placeholder="New equipment item" 
-            typeahead-editable="true" 
-            autocomplete="off" 
-            class="equipment-typeahead" 
-            ng-model="item.equipment" 
-            typeahead="e as e.title for e in all_equipment($viewValue)")
-    %label
-      %input.hidden(type='checkbox' ng-model="item.optional")
-      .btn.btn-small(ng-class="{true: 'btn-primary', false: 'btn-secondary'}[item.optional]")
-        optional
+    .equipment-title.inline
+      %input( cs-emit-focus
+              csselectonfocus
+              csinputmonkeyequipment
+              type="text" 
+              placeholder="New equipment item" 
+              typeahead-editable="true" 
+              autocomplete="off" 
+              class="equipment-typeahead" 
+              ng-model="item.equipment" 
+              typeahead="e as e.title for e in all_equipment($viewValue)")
+
+    .btn.btn-small.inline.align-baseline( ng-click='item.optional = ! item.optional' 
+                    ng-class="{true: 'btn-primary', false: 'btn-secondary'}[item.optional]")
+      Optional
 

@@ -1,4 +1,5 @@
 //=require showdown
+//=require angular-ui
 //=require angular_select2
 //=require once
 //=require localStorageModule

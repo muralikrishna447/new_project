@@ -343,6 +343,26 @@ h4
   top: 10px
   left: 10px
 
+.dumb-mortar
+  display: inline-block
+  margin-right: 30px
+  vertical-align: top
+
+// Hack to deal with blocks that end up in both row-fluid and row
+form
+  .insanely-dumb-adjustment
+    margin-left: 0px
+
+.edit-mode
+  .dumb-mortar
+    display: block
+
+.align-baseline
+  vertical-align: baseline
+
+
+
+
 ////////////////////////////////////////
 
 /* No Step Activities */
@@ -630,8 +650,7 @@ a:hover
       &:hover
         cursor: pointer
 
-// temporary until steps are moved over to csenforceaspect
-.ordered-step-item
+.ordered-step-item, .nell-popup, .nell-embed
   .video-container
     padding-bottom: 56.25%
     iframe, object, embed
@@ -1418,8 +1437,11 @@ csequipmenteditpair, csingredienteditpair
 
 csequipmenteditpair
   .action-button-group
-    top: -10px
+    top: 0px
     z-index: 101
+    .btn
+      background-color: white
+      border-bottom: none
 
 csingredienteditpair
   overflow: visible
@@ -1875,6 +1897,9 @@ input.summary-tweet
 
   .whitespace
     padding: 50px 0px
+
+.fetch-content-loading
+  color: $light-gray
 
 
 .content-activity-title:empty:not(:focus):before

@@ -34,22 +34,21 @@
     right: $baseline
 
   .activity-loading-spinner
-    position: absolute
-    left: 50%
-    top: 50%
-    margin-top: -37px
-    margin-left: -16px
+    position: static
+    margin: 4 * $baseline
 
 .nell-card
   margin: $baseline*2 44px $baseline*2 22px
 
   .nell-card-header
     margin-bottom: $baseline
+
   .nell-card-media
     display: inline-block
     width: 480px
     margin-right: 33px
     vertical-align: top
+
   .nell-card-text
     display: inline-block
     width: 480px
@@ -58,13 +57,55 @@
     .needs-work
       color: $orange
 
+.nell-embed
+  margin-bottom: $baseline * 4
+
+  .nell-card
+    margin-left: 0
+    margin-right: 0
+
+    .nell-card-header
+      padding-bottom: $baseline
+      border-bottom: 4px solid $orange
+      width: 100%
+
+    .nell-card-media
+      margin-right: 22px
+
+    .nell-card-media, .nell-card-text
+      width: 318px
+
+    .short-summary
+      max-height: 10 * $baseline
+
+.aside
+  .nell-embed
+    margin-bottom: -$baseline * 2
+    margin-top: -$baseline * 2
+    .nell-card
+      .nell-card-media, .nell-card-text
+        width: 100% 
+
+
+@media (max-width: 1200px)
+  .nell-embed
+    .nell-card
+      .nell-card-media, .nell-card-text
+        width: 255px
+
+@media (max-width: 980px)
+  .nell-embed
+    .nell-card
+      .nell-card-media, .nell-card-text
+        width: 100%
+      .nell-card-media
+        margin-bottom: $baseline
+
 @media (max-width: 1170px)
   .nell-card
     .nell-card-media
       width: 320px
-      iframe
-        width: 320px
-        height: 180px
+
     .nell-card-text
       .short-summary
         max-height: 10 * $baseline
@@ -79,9 +120,7 @@
       width: 480px
       display: block
       margin-right: 0px
-      iframe
-        width: 480px
-        height: 270px
+ 
     .nell-card-media
       margin-bottom: $baseline
     .nell-card-text
@@ -93,9 +132,7 @@
   .nell-card
     .nell-card-header, .nell-card-media, .nell-card-text
       width: 275px
-      iframe
-        width: 275px
-        height: 155px
+
 
 @media (max-width: 480px)
   .nell-popup
