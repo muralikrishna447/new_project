@@ -45,7 +45,12 @@
     = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
-    %script(src='http://www.youtube.com/iframe_api' async='true')
+    :javascript
+      window.youtubeAPIReady = false;
+      window.onYouTubeIframeAPIReady = function() {
+        window.youtubeAPIReady = true;
+      }
+    %script(src='//www.youtube.com/iframe_api' async='true')
 
     = render 'layouts/cdn_js'
     // Send Bloom Encrypted User data
@@ -82,7 +87,7 @@
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
   = render "layouts/login_hack"
-  %script(src="https://components.usebloom.com/bloom-loader.js")
+  %script(src="//components.usebloom.com/bloom-loader.js")
   = javascript_include_tag 'application'
   %script(type="text/javascript") 
     logPerf("POST APP");

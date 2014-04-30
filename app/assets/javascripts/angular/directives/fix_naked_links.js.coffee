@@ -1,18 +1,27 @@
-angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootScope", ($window, $rootScope) ->
+angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootScope","$location", "$anchorScroll", ($window, $rootScope, $location, $anchorScroll) ->
 
   restrict: 'A',
   replace: true,
 
   link:  (scope, element, attrs) ->
     $(element).on 'click', 'a', (event)->
-      return if $(event.currentTarget).attr('no-nell-popup')
-        
-      slug = event.currentTarget.pathname?.match('/activities/([^/]*)')?[1] 
-      slug = event.currentTarget.pathname?.match('/classes/[^/].*/([^/]*)')?[1] if ! slug
 
-      return if scope.activity?.slug && slug == scope.activity?.slug
+      if $(event.currentTarget).attr('no-nell-popup')
+        return
 
-      if slug
+      slug = event.currentTarget.href?.match('/activities/([^/]*)')?[1] 
+      slug = event.currentTarget.href?.match('/classes/[^/].*/([^/]*)')?[1] if ! slug
+
+      # allow for anchor links
+      currentBaseUrl = $location.absUrl().split('#')[0]
+      targetBaseUrl = event.currentTarget.baseURI
+      if currentBaseUrl == targetBaseUrl && event.currentTarget.hash.length > 0
+        id = event.currentTarget.hash.replace('#','')
+        $location.hash(id)
+        $anchorScroll()
+        return
+
+      if slug 
         # Activity link
         # First try override for load directly in class frame...
         if ! scope.overrideLoadActivityBySlug?(slug)
@@ -25,7 +34,7 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
         
       else 
         # Ingredient link
-        slug = event.currentTarget.pathname?.match('/ingredients/([^/]*)')?[1]
+        slug = event.currentTarget.href?.match('/ingredients/([^/]*)')?[1]
         if slug
           $rootScope.$broadcast "showNellPopup", 
             resourceClass: 'Ingredient'

@@ -116,8 +116,9 @@
       .row(ng-hide="editMode" ng-cloak)
         .span12
           %h3 Discussion
-          .section
-            %a#discussion(name='discussion')
+
+          .section#comments
+            %a(name='discussion')
             %cscomments(comments-type="activity" comments-id="{{activity.id}}" seo-bot="#{is_brombone}")
             
 

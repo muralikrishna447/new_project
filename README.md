@@ -7,27 +7,44 @@ To get started run:
 $ script/setup
 ```
 
-## Development
+# Development
 
-Postgres - OSX:
-```bash
-$ brew install autoconf
-$ brew install postgres
-```
+To set up a new machine:
 
-You need to install phantomjs to run jasmine specs with guard.
 
-PhantomJS - OSX:
-```bash
-$ brew install phantomjs
-```
 
-PhantomJS - Ubuntu:
-```bash
-$ sudo apt-get install phantomjs
-```
+## Required
+   
+- install homebrew (brew.sh)
+- brew doctor
+- brew install postgres
+- brew install phantomjs
+- set postgres to open at login (per output of previous cmd)
+- echo 'location' > ~/.curlc
+- rails ready install (github.com/joshfng/railsready)
+- close your shell and reopen it
+- git clone https://github.com/ChefSteps/ChefSteps.git
+- cd ChefSteps
+- install latest Xcode
+- launch Xcode once
+- xcode-select —install
+- rvm install ruby (the version our Gemfile calls for)
+- bundle
+- createuser -l -s -r delve
+- rake db:create
+- rake db:test:prepare
+- install heroku toolbelt (toolbelt.heroku.com)
+- rake copy_production_db (you’ll need your heroku acct/passwd and say yes to creating a new public key)
+- rails s
+- in another window: guard
 
-For more info: [guard-jasmine](https://github.com/netzpirat/guard-jasmine)
+## Personal / Optional
+ 
+- install Chrome or other preferred browser
+- install iterm2 or other shell
+- install sublime text 3 or other text editor
+- clipmenu
+
 
 ## Forum Photo Uploads
 We use Filepicker for image uploads.  The main code can be found in navigation_bootstrap.js.coffee.erb.

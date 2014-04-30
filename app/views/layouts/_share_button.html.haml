@@ -1,36 +1,37 @@
-.social-flat(ng-controller="SocialButtonsController" ng-init="split=\'#{split_name}\'" ng-class='split' ng-cloak)
-  -# Very hacky, clean this up now that this version won the split test
-  -if (defined? likeable_object) && likeable_object
-    - current_user_likes = current_user && current_user.likes_object?(likeable_object) ? 'true' : 'false'
-    - likes_count = likeable_object.likes_count ? likeable_object.likes_count : 0
-    %span(ng-controller='LikesController' ng-cloak)
-      %span(ng-model="current_user_likes" ng-init="current_user_likes=#{current_user_likes}")
-      %span(ng-model="likes_count" ng-init="likes_count=#{likes_count}")
-      %span(ng-switch on="current_user_likes")
-        %span(ng-switch-when='true')
-          .btn-holder
-            .btn.btn-secondary.btn-social.btn-social-like.pulse-anim-before
-              = render 'layouts/social_button', icon: "star", networkFriendlyName: "Like", counter: "likes_count", split_name: split_name
-        %span(ng-switch-when='false')
-          .btn-holder
-            .btn.btn-secondary.btn-social.btn-social-like.pulse-anim-before(ng-click="likeObject('#{likeable_object.class.to_s}', '#{likeable_object.id}');")
-              = render 'layouts/social_button', icon: "star-empty", networkFriendlyName: "Like", counter: "likes_count", split_name: split_name
-  .btn-holder
-    .btn.btn-secondary.btn-social.btn-social-twitter.pulse-anim-before(ng-click="shareTwitter();")
-      = render 'layouts/social_button', icon: "twitter", networkFriendlyName: "Twitter", counter: "twitterCount", split_name: split_name
-  .btn-holder(ng-show="activity && activity.summary_tweet")
-    .btn.btn-secondary.btn-social.btn-social-cs140.pulse-anim-before(ng-click="shareCS140()")
-      = render 'layouts/social_button', xlabel: "#cs140", split_name: split_name
-  .btn-holder
-    .btn.btn-secondary.btn-social.btn-social-facebook.pulse-anim-before(ng-click="shareFacebook()")
-      = render 'layouts/social_button', icon: "facebook", networkFriendlyName: "Facebook", counter: "facebookCount", split_name: split_name
-  .btn-holder
-    .btn.btn-secondary.btn-social.btn-social-pinterest.pulse-anim-before(ng-show="socialMediaItem()" ng-click="sharePinterest()")
-      = render 'layouts/social_button', icon: "pinterest", networkFriendlyName: "Pinterest", counter: "pinterestCount", split_name: split_name
-  .btn-holder
-    .btn.btn-secondary.btn-social.btn-social-gplus.pulse-anim-before(ng-click="shareGooglePlus()")
-      = render 'layouts/social_button', icon: "google-plus", networkFriendlyName: "Google+", split_name: split_name
-  .btn-holder
-    .btn.btn-secondary.btn-social.btn-social-email.pulse-anim-before(ng-click="shareEmail()")
-      = render 'layouts/social_button', icon: "envelope", networkFriendlyName: "Email", split_name: split_name
+%div(ng-controller="SocialButtonsController" ng-init="split=\'#{split_name}\'" ng-class='split' ng-cloak)
 
+  .btn-holder.section-tiny
+    .btn.btn-secondary.btn-social.btn-social-email.pulse-anim-before(ng-click="shareEmail()")
+      = render 'layouts/social_button', icon: "envelope", networkFriendlyName: "Email"
+    %a(ng-click="shareEmail()") Email This {{hasActivityType('Recipe') && 'Recipe' || Page}}
+
+  .social-flat
+    .btn-holder
+      .btn.btn-secondary.btn-social.btn-social-twitter.pulse-anim-before(ng-click="shareTwitter();")
+        = render 'layouts/social_button', icon: "twitter", networkFriendlyName: "Twitter"
+    .btn-holder
+      .btn.btn-secondary.btn-social.btn-social-facebook.pulse-anim-before(ng-click="shareFacebook()")
+        = render 'layouts/social_button', icon: "facebook", networkFriendlyName: "Facebook"
+    .btn-holder
+      .btn.btn-secondary.btn-social.btn-social-pinterest.pulse-anim-before(ng-show="socialMediaItem()" ng-click="sharePinterest()")
+        = render 'layouts/social_button', icon: "pinterest", networkFriendlyName: "Pinterest"
+    .btn-holder
+      .btn.btn-secondary.btn-social.btn-social-gplus.pulse-anim-before(ng-click="shareGooglePlus()")
+        = render 'layouts/social_button', icon: "google-plus", networkFriendlyName: "Google+"
+
+    -# Very hacky, clean this up now that this version won the split test
+    -if (defined? likeable_object) && likeable_object
+      - current_user_likes = current_user && current_user.likes_object?(likeable_object) ? 'true' : 'false'
+      - likes_count = likeable_object.likes_count ? likeable_object.likes_count : 0
+      %span(ng-controller='LikesController' ng-cloak)
+        %span(ng-model="current_user_likes" ng-init="current_user_likes=#{current_user_likes}")
+        %span(ng-model="likes_count" ng-init="likes_count=#{likes_count}")
+        %span(ng-switch on="current_user_likes")
+          %span(ng-switch-when='true')
+            .btn-holder
+              .btn.btn-secondary.btn-social.btn-social-like.pulse-anim-before
+                = render 'layouts/social_button', icon: "star", networkFriendlyName: "Like", counter: "likes_count", split_name: split_name
+          %span(ng-switch-when='false')
+            .btn-holder
+              .btn.btn-secondary.btn-social.btn-social-like.pulse-anim-before(ng-click="likeObject('#{likeable_object.class.to_s}', '#{likeable_object.id}');")
+                = render 'layouts/social_button', icon: "star-empty", networkFriendlyName: "Like", counter: "likes_count", split_name: split_name
