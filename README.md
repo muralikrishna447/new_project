@@ -15,10 +15,10 @@ To set up a new machine:
 
 ## Required
    
-      * install homebrew (brew.sh)
-      * brew doctor
-      * brew install postgres
-      * set postgres to open at login (per output of previous cmd)
+- install homebrew (brew.sh)
+- brew doctor
+- brew install postgres
+set postgres to open at login (per output of previous cmd)
       * cat > ~/.curlc
       * 
          * location
