@@ -48,7 +48,7 @@ class CommentsController < ApplicationController
 
     recipe_results = []
     # recipes = Activity.chefsteps_generated.where("title iLIKE ?", search_term).order('likes_count desc').limit(300)
-    recipes = Activity.search(match: { '_all' => search_term + '*' }).records
+    recipes = Activity.search(search_term).records
     recipes.each do |recipe|
       recipe_results << {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url, 'rank' => recipe.likes_count}
     end
