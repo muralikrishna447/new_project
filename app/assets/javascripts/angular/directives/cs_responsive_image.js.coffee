@@ -19,11 +19,15 @@
 
     updateSource = ->
       width = getWidth()
-      attrs.$set('src', window.cdnURL(baseURL) + "/convert?w=#{width}&cache=true") if baseURL
+      if baseURL
+        attrs.$set('src', window.cdnURL(baseURL) + "/convert?w=#{width}&cache=true")
+      else
+        attrs.$set('src', null)
       console.log("Loading: ", attrs['src'])
 
     scope.$watch 'csResponsiveImage', (newVal, oldVal) -> 
-      baseURL = JSON.parse(newVal).url
+
+      baseURL = if newVal then JSON.parse(newVal).url else null
       updateSource()
     
     # The max here is what keeps us from reloading if the parent div gets smaller

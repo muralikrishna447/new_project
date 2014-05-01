@@ -23,6 +23,10 @@
   border-bottom: 2px solid $light-gray
   top: 25%
   right: 0
+  padding: $baseline*2 44px $baseline*2 22px
+  min-width: 320px
+  width: 75%
+
   +transform(translateX(100%))
 
   &.active
@@ -38,20 +42,26 @@
     margin: 4 * $baseline
 
 .nell-card
-  margin: $baseline*2 44px $baseline*2 22px
 
   .nell-card-header
     margin-bottom: $baseline
 
+  .nell-card-body
+    display: inline-flex
+    flex-wrap: wrap
+    justify-content: space-between
+    align-items: flex-start
+
   .nell-card-media
-    display: inline-block
-    width: 480px
-    margin-right: 33px
-    vertical-align: top
+    flex-basis: 300px
+    flex-grow: 1
+    margin-right: 22px
+    min-width: 300px
+    margin-bottom: $baseline
 
   .nell-card-text
-    display: inline-block
-    width: 480px
+    flex-basis: 300px
+    flex-grow: 1
     .short-summary
       max-height: 18 * $baseline
     .needs-work
@@ -86,56 +96,13 @@
       .nell-card-media, .nell-card-text
         width: 100% 
 
-@media (max-width: 1300px)
-  .nell-embed
-    .nell-card
-      margin-left: 0
-
-@media (max-width: 1024px)
-  .nell-embed
-    .nell-card
-      margin-right: 0
-
-@media (max-width: 1170px)
-  .nell-card
-    .nell-card-media
-      width: 320px
-
-    .nell-card-text
-      .short-summary
-        max-height: 10 * $baseline
-
 @media (max-width: 970px)
   .nell-popup
     top: 10%
-  .nell-card
-    margin-right: 22px
-    margin-left: 22px
-    .nell-card-header, .nell-card-media, .nell-card-text
-      width: 480px
-      display: block
-      margin-right: 0px
- 
-    .nell-card-media
-      margin-bottom: $baseline
-    .nell-card-text
-      .short-summary
-        max-height: 14 * $baseline
-
-
-@media (max-width: 640px)
-  .nell-card
-    .nell-card-header, .nell-card-media, .nell-card-text
-      width: 275px
-
 
 @media (max-width: 480px)
   .nell-popup
     top: 0
-  .nell-card
-    .nell-card-text
-      .short-summary
-        max-height: 8 * $baseline
 
 
 
