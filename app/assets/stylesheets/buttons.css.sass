@@ -182,9 +182,10 @@
 .btn-social
   margin: 0px 2px 4px 2px
   background-color: white
-  border-radius: 2px
   padding: 0px 0px 0px 0px
   height:  29px
+  border: none
+  @include any-shadow(none)
   @include transition(all 250ms ease-in-out 2 alternate)
 
   i
@@ -212,7 +213,6 @@
 
 =btn-social-base($c)
   color: $c
-  border:  1px solid $c
 
   .social-button-contents
     display: inline-block
@@ -274,8 +274,9 @@
 .social-counter, .social-icon-group
   display: inline-block
 .social-counter
-  margin-left: -3px
-  width: 30px
+  margin-left: $horz-baseline-small
+  margin-right: $horz-baseline-small
+  text-align: left
 
 .social-flat
   display: inline-block

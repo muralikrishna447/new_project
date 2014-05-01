@@ -62,7 +62,6 @@ class ActivitiesController < ApplicationController
   def add_extra_json_info
     @activity[:used_in] = @activity.used_in_activities.published
     @activity[:forks] = @activity.published_variations
-    @activity[:view_count] = Event.where(trackable_type: "Activity", trackable_id: @activity.id, action: "show").count
   end
 
   def show
