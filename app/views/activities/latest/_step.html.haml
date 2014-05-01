@@ -5,9 +5,9 @@
     %h1.step-number
       %div(ng-bind="stepNumber($index)")
 
-  %h4(  cs-contenteditable="getStepOpenForEdit()" 
-        ng-model="step.title"
-        placeholder="'Click to write step title'")
+  %h4.text-center(  cs-contenteditable="getStepOpenForEdit()" 
+                    ng-model="step.title"
+                    placeholder="'Click to write step title'")
 
   .step-first-row
     =render 'activities/step_ingredients'
@@ -19,6 +19,7 @@
                               placeholder="'Click to write step directions'" )
 
     // Tacky little trick to render asides by changing 'step' within this scope
+    // I guess fix by making step a directive so it can be recursive.
     %div( ng-if='activity.steps[$index + 1].is_aside' 
           ng-init='step=activity.steps[$index + 1]' 
           ng-include="'_aside.html'")
