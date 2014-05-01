@@ -1,13 +1,15 @@
 @import 'mixins'
 
-.aside
-  position: absolute
-  width: 289px
-  top: 0
-  right: -333px
-  .aside-image
-    margin-bottom: $baseline * 2
 
+
+.aside
+  float: right
+  width: $aside-width
+  .aside-image
+    margin-bottom: $baseline
+
+  &.left
+    float: left
 
 .list-view
   .aside.aside-with-media

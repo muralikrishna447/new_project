@@ -1,5 +1,13 @@
 =render 'activities/step_side_edit_buttons'
 
+-# Render the aside before the step so it can be floated left or
+-# right and align with the top. Note nasty little trick of rebinding step to
+-# the next step.
+.aside-separate(  ng-if='activity.steps[$index + 1].is_aside' 
+                  ng-init='step=activity.steps[$index + 1]' 
+                  ng-include="'_aside.html'")
+
+
 .standard-item(ng-if='! step.is_aside')
   .step-number-container.section(ng-if="! step.hide_number")
     %h1.step-number
@@ -18,12 +26,6 @@
                               ng-model="step.directions"
                               placeholder="'Click to write step directions'" )
 
-    // Tacky little trick to render asides by changing 'step' within this scope
-    // I guess fix by making step a directive so it can be recursive.
-    %div( ng-if='activity.steps[$index + 1].is_aside' 
-          ng-init='step=activity.steps[$index + 1]' 
-          ng-include="'_aside.html'")
-
   %div(ng-include="'_step_edit_images.html'")
   .step-last-row(ng-show='((!! step.youtube_id) || (!! step.image_id))')
 
@@ -37,4 +39,5 @@
       .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(cs-responsive-image='step.image_id' alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+
 

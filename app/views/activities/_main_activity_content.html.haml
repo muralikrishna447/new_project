@@ -1,12 +1,12 @@
 
+.aside
+  .noprint(ng-show="! editMode")
+    = render 'top_buttons'
+    = render 'activities/counts'
+    = render 'layouts/social_buttons', media_object: activity
+
 .standard-item
   = render 'title'
-
-  .aside
-    .noprint(ng-show="! editMode")
-      = render 'top_buttons'
-      = render 'activities/counts'
-      = render 'layouts/social_buttons', media_object: activity
 
 .standard-item
   = render 'activities/metadata'

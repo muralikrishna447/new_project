@@ -71,10 +71,16 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     else
       'span7'
 
-  $scope.asideClass = ->
+  stupidCache = {}
+  $scope.asideClass = (index) ->
+    result = "left " 
+    r = stupidCache[index] || (stupidCache[index] = Math.random())
+    if r > 0.5
+      result = "right "
     if $scope.hasAV() || $scope.step.image_id
-      'well aside-with-media'
+      result += 'well aside-with-media'
     else
-      'well-border'
+      result += 'well-border'
+    result
 
 ]
