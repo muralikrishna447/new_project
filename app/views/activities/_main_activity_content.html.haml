@@ -24,18 +24,19 @@
     .section(ng-show="editMode || hasAnyEquipment()")
       = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment", required_string: "any", required: "any"
 
-    .quarter-medium-item(ng-show="editMode || !! activity.yield") 
-      %h5 Yield
-      .inline(  cs-contenteditable="editMode" 
-                ng-model="activity.yield" 
-                itemprop="recipeYield")
-      .inline.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
+    .section
+      .quarter-medium-item(ng-show="editMode || !! activity.yield") 
+        %h5 Yield
+        .inline.no-p-margin(  cs-contenteditable="editMode" 
+                  ng-model="activity.yield" 
+                  itemprop="recipeYield")
+        .inline.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
 
-    .quarter-medium-item(ng-show="editMode || !! activity.timing") 
-      %h5 Timing
-      .inline(  cs-contenteditable="editMode" 
-                ng-model="activity.timing")
-      .inline.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
+      .quarter-medium-item(ng-show="editMode || !! activity.timing") 
+        %h5 Timing
+        .inline.no-p-margin(  cs-contenteditable="editMode" 
+                  ng-model="activity.timing")
+        .inline.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
 
     .section(ng-show='(! editMode) && (activity.used_in.length > 0)') 
       %h5 Used In

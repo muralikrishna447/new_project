@@ -85,7 +85,7 @@ window.deepCopy = (obj) ->
 
   $scope.maybeWarnCurrentScaling = ->
     return null if $scope.csGlobals.scaling == 1.0
-    "- Adjust based on recipe " + $scope.maybeDisplayCurrentScaling()
+    "Adjust based on recipe " + $scope.maybeDisplayCurrentScaling()
 
   $scope.fork = ->
     $rootScope.loading += 1

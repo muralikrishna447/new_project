@@ -45,6 +45,8 @@
 
   .nell-card-header
     margin-bottom: $baseline
+    margin-left: $horz-baseline-large
+    margin-right: $horz-baseline-large
 
   .nell-card-body
     display: inline-flex
@@ -55,11 +57,12 @@
   .nell-card-media
     flex-basis: 300px
     flex-grow: 1
-    margin-right: 22px
     min-width: 300px
     margin-bottom: $baseline
+    padding: 0px $horz-baseline-large
 
   .nell-card-text
+    padding: 0px $horz-baseline-large
     flex-basis: 300px
     flex-grow: 1
     .short-summary
@@ -78,12 +81,6 @@
       padding-bottom: $baseline
       border-bottom: 4px solid $orange
       width: 100%
-
-    .nell-card-media
-      margin-right: 22px
-
-    .nell-card-media, .nell-card-text
-      width: 48%
 
     .short-summary
       max-height: 18 * $baseline
@@ -104,6 +101,17 @@
   .nell-popup
     top: 0
 
+@media(max-width: 1300px)
+  .nell-embed
+    .nell-card
+      margin-left: 0
+      margin-right: -300px
+
+@media(max-width: 1024px)
+  .nell-embed
+    .nell-card
+      margin-left: 0
+      margin-right: 0
 
 
 
