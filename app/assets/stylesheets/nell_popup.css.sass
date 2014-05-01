@@ -58,11 +58,10 @@
       color: $orange
 
 .nell-embed
-  margin-bottom: $baseline * 4
 
   .nell-card
-    margin-left: 0
-    margin-right: 0
+    margin-left: -150px
+    margin-right: -150px
     position: relative
 
     .nell-card-header
@@ -74,7 +73,7 @@
       margin-right: 22px
 
     .nell-card-media, .nell-card-text
-      width: 384px
+      width: 48%
 
     .short-summary
       max-height: 18 * $baseline
@@ -87,20 +86,15 @@
       .nell-card-media, .nell-card-text
         width: 100% 
 
-
-@media (max-width: 1200px)
+@media (max-width: 1300px)
   .nell-embed
     .nell-card
-      .nell-card-media, .nell-card-text
-        width: 255px
+      margin-left: 0
 
-@media (max-width: 980px)
+@media (max-width: 1024px)
   .nell-embed
     .nell-card
-      .nell-card-media, .nell-card-text
-        width: 100%
-      .nell-card-media
-        margin-bottom: $baseline
+      margin-right: 0
 
 @media (max-width: 1170px)
   .nell-card
