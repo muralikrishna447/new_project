@@ -1,6 +1,6 @@
-%h1.content-activity-title(ng-model="activity.title" cs-contenteditable = "editMode" itemprop="name" placeholder="'Title this masterpiece'")
+%h1.content-activity-title.section-tiny(ng-model="activity.title" cs-contenteditable = "editMode" itemprop="name" placeholder="'Title this masterpiece'")
 
-%csEditPair#title-edit-pair
+%csEditPair.section-tiny#title-edit-pair
   %csEditPairShow
 
     -creator = @activity.creator

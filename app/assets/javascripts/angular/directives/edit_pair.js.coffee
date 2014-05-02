@@ -8,9 +8,6 @@ angular.module('ChefStepsApp').directive 'cseditpair', ->
  
     $scope.hasErrors = ->
       $element.find('.ng-invalid').length > 0
-
-    $scope.$on 'childFocused', (event, newValue) ->
-      $scope.addUndo() if $scope.childFocused && ! newValue
  
     # We should be active (edit half showing) if we have focus,
     # or if we have an form fields with errors, or if someone is forcing us to take focus (used
