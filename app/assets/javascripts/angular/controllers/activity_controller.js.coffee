@@ -33,8 +33,6 @@ window.deepCopy = (obj) ->
 
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  $scope.undoStack = []
-  $scope.undoIndex = -1
   $scope.editMode = false
   $scope.editMeta = false
   $scope.preventAutoFocus = false
@@ -101,9 +99,9 @@ window.deepCopy = (obj) ->
       $scope.editMode = true
       $scope.editMeta = false
       $scope.showHeroVisualEdit = false
-      $scope.undoStack = [deepCopy $scope.activity]
-      $scope.undoIndex = 0
       $scope.activity.$startedit()
+      $scope.activityBeforeEdit = deepCopy $scope.activity
+
       $timeout ->
         $scope.csGlobals.scaling = 1
         $scope.csGlobals.units = "grams"
@@ -161,8 +159,7 @@ window.deepCopy = (obj) ->
     )
 
   $scope.cancelEditMode = ->
-    if $scope.undoAvailable
-      $scope.activity = deepCopy $scope.undoStack[0]
+    $scope.activity = deepCopy $scope.activityBeforeEdit
     $scope.postEndEditMode()
 
   # Tweak to let dropdowns leak out of collapse when not collapsed
@@ -171,38 +168,6 @@ window.deepCopy = (obj) ->
     s = {}
     s = {overflow: "visible"} if ! $scope.editMode
     s
-
-  # Undo/redo TODO: could be a service I think
-  $scope.undo = ->
-    if $scope.undoAvailable
-      $scope.undoIndex -= 1
-      $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex ]
-      $scope.saveToLocalStorage()
-      $scope.temporaryNoAutofocus();
-    true
-
-  $scope.redo = ->
-    if $scope.redoAvailable
-      $scope.undoIndex += 1
-      $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex]
-      $scope.saveToLocalStorage()
-      $scope.temporaryNoAutofocus();
-    true
-
-  $scope.undoAvailable = ->
-    $scope.undoIndex > 0
-
-  $scope.redoAvailable = ->
-    $scope.undoIndex < ($scope.undoStack.length - 1)
-
-  $scope.addUndo = ->
-    # Get rid of any redos past the current spot and put the new state on the stack (unless no change)
-    newUndo = deepCopy($scope.activity)
-    if ! _.isEqual(newUndo, $scope.undoStack[$scope.undoIndex])
-      $scope.undoStack = $scope.undoStack[0..$scope.undoIndex]
-      $scope.undoStack.push newUndo
-      $scope.undoIndex = $scope.undoStack.length - 1
-      $scope.saveToLocalStorage()
 
   # Gray out a section if the contents are empty
   $scope.disableIf = (condition) ->
@@ -242,12 +207,6 @@ window.deepCopy = (obj) ->
 
       $scope.temporaryNoAutofocus();
       $scope.startEditMode()
-
-      # Coming back from local storage, our undo stack will be the [original, restored]
-      orig = localStorageService.get($scope.localStorageBaseKey())
-      if orig
-        $scope.undoStack = [new Activity(JSON.parse(orig)), $scope.undoStack[0]]
-        $scope.undoIndex = 1
 
       $timeout ( ->
         $scope.shouldShowRestoreAutosaveModal = true
@@ -340,7 +299,6 @@ window.deepCopy = (obj) ->
     equip = ""
     item = {equipment: equip, optional: false}
     $scope.activity.equipment.push(item)
-    #$scope.addUndo()
 
   $scope.all_equipment = (equip_name) ->
     $http.get("/equipment.json?q=" + equip_name).then (response) ->
@@ -559,7 +517,11 @@ window.deepCopy = (obj) ->
     $scope.schedulePostPlayEvent()
     mixpanel?.track('Activity Viewed', {'context' : 'naked', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
 
-    if ! $scope.maybeRestoreFromLocalStorage()
+    # Disabled local storage stuff for now, getting rid of undo. Maybe bring it back at some point.
+    # It was just causing more confusion than it was worth.
+    # Hmm, or maybe just do it every few seconds?
+
+    if true || ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()
 
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)

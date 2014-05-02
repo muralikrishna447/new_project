@@ -1,31 +1,53 @@
-%ul.no-bullet.activity-counts(ng-controller="SocialButtonsController")
+%ul.no-bullet.tools-list(ng-controller="SocialButtonsController")
 
-  %li(  ng-pluralize 
-        count='activity.likes_count || 0' 
-        when="  { '0' : 'Be the first to bookmark', '1' : '1 Bookmark', 'other' : '{} Bookmarks'}")
+  %li(ng-controller='LikesController' ng-cloak ng-click='toggleLikeObject("Activity", activity.id)' ng-init='getCurrentUserLikes("Activity", activity.id)')
+    .icon-holder
+      %i.icon-heart-empty(ng-if="!current_user_likes")
+      %i.icon-heart(ng-if="current_user_likes")
+    .inline(  ng-pluralize 
+            count='activity.likes_count || 0' 
+            when="  { '0' : 'Be the first to like', '1' : '1 like', 'other' : '{} likes'}")
+
 
   %li
-    %a(   href="#discussion"
-          ng-pluralize 
-          count='commentCount' 
-          when="  { '-1' : '', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")
+    %a(href='#discussion')
+      .icon-holder
+        %i.icon-comment
+      .inline(  href="#discussion"
+                ng-pluralize 
+                count='commentCount' 
+                when="  { '-1' : '', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")  
 
-  %li
-    %a(ng-click="shareEmail()") Email This {{hasActivityType('Recipe') && 'Recipe' || Page}}
+  %li(onclick="window.print()")
+    .icon-holder
+      %i.icon-print
+    .inline
+      Print
 
-  -# Very hacky, clean this up now that this version won the split test
-  -if (defined? likeable_object) && likeable_object
-    - current_user_likes = current_user && current_user.likes_object?(likeable_object) ? 'true' : 'false'
-    - likes_count = likeable_object.likes_count ? likeable_object.likes_count : 0
-    %span(ng-controller='LikesController' ng-cloak)
-      %span(ng-model="current_user_likes" ng-init="current_user_likes=#{current_user_likes}")
-      %span(ng-model="likes_count" ng-init="likes_count=#{likes_count}")
-      %span(ng-switch on="current_user_likes")
-        %span(ng-switch-when='true')
-          .btn-holder
-            .btn.btn-secondary.btn-social.btn-social-like.pulse-anim-before
-              = render 'layouts/social_button', icon: "star", networkFriendlyName: "Like", counter: "likes_count", split_name: split_name
-        %span(ng-switch-when='false')
-          .btn-holder
-            .btn.btn-secondary.btn-social.btn-social-like.pulse-anim-before(ng-click="likeObject('#{likeable_object.class.to_s}', '#{likeable_object.id}');")
-              = render 'layouts/social_button', icon: "star-empty", networkFriendlyName: "Like", counter: "likes_count", split_name: split_name
+  %li(ng-click="shareEmail()")
+    .icon-holder
+      %i.icon-envelope-alt
+    .inline
+      Email
+
+  -if can?(:update, @activity) && @include_edit_toolbar
+    %li(  ng-click="maybeStartEditMode()" 
+          tooltip="Edit this recipe" 
+          tooltip-placement="left")
+      .icon-holder
+        %i.icon-edit
+      .inline
+        Edit
+
+  -if can?(:update, Activity) && @include_edit_toolbar
+    %li(  ng-show="hasActivityType('Recipe')"
+          ng-click="fork()" 
+          tooltip="Edit a copy of this recipe" 
+          tooltip-placement="left")
+      .icon-holder
+        %i.icon-code-fork
+      .inline
+        Fork this recipe
+
+
+
