@@ -87,11 +87,11 @@
 
 - content_for :bottom do
   - if ! @minimal
-    .row(ng-hide="editMode" ng-cloak)
+    .row#user-creations(ng-hide="editMode" ng-cloak)
       .span12
         .section
         %h3 User Creations
-        = link_to 'UPLOAD YOUR OWN', '#', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}, onclick: "mixpanel.people.set({ 'photo upload intent': '#{@activity.title}' }); mixpanel.track('Photo Upload Intent', { 'photo upload intent': '#{@activity.title}' });"
+        = link_to 'ADD YOUR OWN', '#', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}, onclick: "mixpanel.people.set({ 'photo upload intent': '#{@activity.title}' }); mixpanel.track('Photo Upload Intent', { 'photo upload intent': '#{@activity.title}' });"
         #user-creations-carousel
           - if @activity.uploads.approved.any?
             .horizontal-slider{data: {direction: 'right'}}

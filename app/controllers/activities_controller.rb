@@ -62,6 +62,7 @@ class ActivitiesController < ApplicationController
   def add_extra_json_info
     @activity[:used_in] = @activity.used_in_activities.published
     @activity[:forks] = @activity.published_variations
+    @activity[:upload_count] = @activity.uploads.count
   end
 
   def show

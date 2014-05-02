@@ -28,7 +28,7 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
     ).success((data, status, headers, config) ->
         mixpanel.track('Unliked', {'Activity': likeable_type + "_" + likeable_id})
         mixpanel.people.set('Liked':likeable_type + "_" + likeable_id)
-        mixpanel.people.decrement('Liked Count')
+        mixpanel.people.increment('Liked Count', - 1)
     )
 
   $scope.toggleLikeObject = (likeable_type, likeable_id) ->

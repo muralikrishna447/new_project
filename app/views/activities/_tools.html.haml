@@ -6,7 +6,7 @@
       %i.icon-heart(ng-if="current_user_likes")
     .inline(  ng-pluralize 
             count='activity.likes_count || 0' 
-            when="  { '0' : 'Be the first to like', '1' : '1 like', 'other' : '{} likes'}")
+            when="  { '0' : 'Be the first to like', '1' : '1 Like', 'other' : '{} Likes'}")
 
 
   %li
@@ -17,6 +17,14 @@
                 ng-pluralize 
                 count='commentCount' 
                 when="  { '-1' : '', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")  
+
+  %li
+    %a(href='#user-creations')
+      .icon-holder
+        %i.icon-picture
+      .inline(  ng-pluralize 
+                count='activity.upload_count' 
+                when="  {'0' : 'Add your creation', '1' : '1 User creation', 'other' : '{} User creations'}")  
 
   %li(onclick="window.print()")
     .icon-holder

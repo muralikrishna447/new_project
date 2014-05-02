@@ -415,7 +415,7 @@ window.deepCopy = (obj) ->
 
   $scope.commentCount = -1
   $scope.updateCommentCount = -> 
-    $http.get("http://production-bloom.herokuapp.com/discussion/activity_#{$scope.activity.id}/comments?apiKey=xchefsteps").success((data, status) ->
+    $http.get("http://api.usebloom.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
       $scope.commentCount = data.length
     )
 
