@@ -23,7 +23,7 @@
         attrs.$set('src', window.cdnURL(baseURL) + "/convert?w=#{width}&cache=true")
       else
         attrs.$set('src', null)
-      console.log("Loading: ", attrs['src'])
+      # console.log("Loading: ", attrs['src'])
 
     scope.$watch 'csResponsiveImage', (newVal, oldVal) -> 
 
