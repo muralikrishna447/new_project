@@ -41,17 +41,18 @@ angular.module('ChefStepsApp').filter "shortcode", ->
             else
               orig
           when 'view'
-            "<a ng-click=\"$parent.showNell('#{arg1}.html')\">#{arg2}</a>"
+           "<a ng-click=\"$parent.showNell('#{arg1}.html')\">#{arg2}</a>"           
           when 'fetchIngredient'
             """
-              <div cs-fetch='#{arg1}' type='Ingredient' part='#{arg2}' card='_ingredient_embed_card.html'>
+             <div cs-fetch='#{arg1}' type='Ingredient' part='#{arg2}' card='_ingredient_embed_card.html'>
               </div>
             """
           when 'fetchActivity'
             """
               <div cs-fetch='#{arg1}' type='Activity' part='#{arg2}' card='_activity_embed_card.html'></div>
             """
-
+          when 'linktocomments'
+            "<a href='#comments'>#{contents}</a>"
 
           else orig
     else
