@@ -8,7 +8,7 @@ feature 'uploads' do
 
   scenario 'user can upload a photo for activities' do
     visit activity_path(@activity_1)
-    find_link('UPLOAD YOUR OWN').visible?
+    find_link('ADD YOUR OWN').visible?
     find('#upload-user-creation').visible?
   end
 
