@@ -4,9 +4,10 @@
     = render 'activities/tools'
 
 .standard-item
-  = render 'title'
-  .section-tiny
-    = render 'layouts/social_buttons', media_object: activity
+  = render 'activities/title'
+  -if defined? activity
+    .section-tiny
+      = render 'layouts/social_buttons', media_object: activity
 
 .standard-item
   = render 'activities/metadata'
