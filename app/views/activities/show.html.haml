@@ -59,7 +59,19 @@
 
 #activity-title(data-activity="#{@activity.title}")
 %form(ng-cloak name="activityForm" csfixnakedlinks)
-
+  #activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
+    .container
+      .row.noprint(ng-cloak ng-show="editMode && alerts.length > 0")
+        .span8.offset2
+          %alert.edit-alert.alert-block.anim-basic-fade(ng-repeat="alert in alerts" type="alert.type || 'error'" close="alertService.closeAlert($index)")
+            %h3 Save Failed!
+            {{alert.message}}
+            .section
+              If you can't resolve the issue, please
+              %a(ng-href="mailto:michael@chefsteps.com?subject=Error%20Message&body=Error: {{alert.message}}. Please add any info about what caused this problem." target="_blank")>
+                send this error text to ChefSteps
+              \.
+              
   -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
   %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
