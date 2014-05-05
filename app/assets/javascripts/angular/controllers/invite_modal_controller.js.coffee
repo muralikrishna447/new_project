@@ -168,6 +168,22 @@
       $scope.dataLoadingService.stop()
     )
 
+  $scope.sendInvitation = ->
+    $scope.dataLoadingService.start()
+    friends = $scope.friendsSelected()
+    friendEmails = _.pluck(friends, 'email')
+    $http(
+      method: "POST"
+      url: "/users/contacts/invite.js"
+      data:
+        emails: friendEmails
+    ).success( (data, status) ->
+      mixpanel.track("Google Invites Sent")
+      mixpanel.people.increment("Google Invitations", friendEmails.length)
+      $scope.dataLoadingService.stop()
+      $scope.showThankYou = true
+    )
+
   $scope.sendInvitationsToEmail = ->
     $scope.dataLoadingService.start()
     $http(
@@ -178,6 +194,8 @@
         body: $scope.emailObject.bodyText
         from: "email_invite"
     ).success( (data, status) ->
+      mixpanel.track("Email Invites Sent")
+      mixpanel.people.increment("Email Invitations", $scope.emailObject.emailToAddresses)
       $scope.dataLoadingService.stop()
       $scope.showThankYou = true
     )

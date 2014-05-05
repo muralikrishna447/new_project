@@ -62,8 +62,8 @@ class ReportsController < ApplicationController
   # end
 
   def stripe
-    start_time = (Time.now).beginning_of_month
-    end_time = (Time.parse("15/03/2014")).end_of_day
+    start_time = (Time.now-1.month).beginning_of_month
+    end_time = (Time.parse("30/04/2014")).end_of_month
     stripe_csv = generate_csv(start_time, end_time)
 
     # Check is for money going out

@@ -26,10 +26,10 @@
               %b Facebook
         .span2
           .google-button.google-invite
-            %button.btn-google.btn.btn-secondary(ng-click="inviteSite='google'; loadGoogleContacts()" ng-show="authentication.currentUser() && !!authentication.currentUser().google_access_token" ng-disabled="dataLoading")
+            %button.btn-google.btn.btn-secondary(ng-click="inviteSite='google'; loadGoogleContacts(); showThankYou = false" ng-show="authentication.currentUser() && !!authentication.currentUser().google_access_token" ng-disabled="dataLoading")
               %i.icon-google-plus
               %b Google
-            %button.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin()" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token" ng-disabled="dataLoading")
+            %button.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin(); showThankYou = false" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token" ng-disabled="dataLoading")
               %i.icon-google-plus
               %b Google
             -# .button-group
@@ -46,7 +46,7 @@
             -#       %b Connect to Google and Invite
         .span2
           .email-button
-            %button.btn-email.btn.btn-secondary(ng-click="inviteSite='email'")
+            %button.btn-email.btn.btn-secondary(ng-click="inviteSite='email'; showThankYou = false")
               %i.icon-envelope
               %b Email
       .row-fluid.point-to-google(ng-if="inviteSite == 'google' && inviteFriends.length > 0")
@@ -55,7 +55,7 @@
             .google-arrow
       .row-fluid.google-content(ng-if="inviteSite == 'google' && inviteFriends.length > 0")
         .span8.offset2.google-invitation
-          %form(ng-submit="sendInvitation()")
+          %form(ng-submit="sendInvitation()" ng-if="!showThankYou")
             %h3 Invite your friends from Google
             %p
               Invite your friends to join you on ChefSteps.com
@@ -84,6 +84,9 @@
             %center
               %button.btn.btn-primary(type="submit")
                 %b INVITE FRIENDS
+          .thank-you(ng-if="showThankYou")
+            %h3 Thank you for sending invites
+            %p The invites are on the way.  Thank you for sending them.
       .row-fluid.point-to-email(ng-if="inviteSite == 'email'")
         .span2.offset7
           %center
