@@ -1,0 +1,107 @@
+@import mixins
+
+.nell-backdrop
+  position: fixed
+  z-index: 1999
+  top: 0
+  bottom: 0
+  right: 0
+  left: 0
+  opacity: 0
+
+.nell-popup
+  @extend noprint
+  @include boxsizing
+  @include shadow
+  @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
+
+  background-color: white
+  position: fixed
+  z-index: 2000
+  border: 1px solid $light-gray
+  border-top: 4px solid $orange
+  border-bottom: 2px solid $light-gray
+  top: 25%
+  right: 0
+  +transform(translateX(100%))
+
+  &.active
+    +transform(translateX(0%))
+
+  .close-x
+    position: absolute
+    top: $baseline
+    right: $baseline
+
+  .activity-loading-spinner
+    position: static
+    margin: 4 * $baseline
+
+.nell-card
+  margin: $baseline*2 44px $baseline*2 22px
+
+  .nell-card-header
+    margin-bottom: $baseline
+  .nell-card-media
+    display: inline-block
+    width: 480px
+    margin-right: 33px
+    vertical-align: top
+  .nell-card-text
+    display: inline-block
+    width: 480px
+    .short-summary
+      max-height: 18 * $baseline
+    .needs-work
+      color: $orange
+
+@media (max-width: 1170px)
+  .nell-card
+    .nell-card-media
+      width: 320px
+      iframe
+        width: 320px
+        height: 180px
+    .nell-card-text
+      .short-summary
+        max-height: 10 * $baseline
+
+@media (max-width: 970px)
+  .nell-popup
+    top: 10%
+  .nell-card
+    margin-right: 22px
+    margin-left: 22px
+    .nell-card-header, .nell-card-media, .nell-card-text
+      width: 480px
+      display: block
+      margin-right: 0px
+      iframe
+        width: 480px
+        height: 270px
+    .nell-card-media
+      margin-bottom: $baseline
+    .nell-card-text
+      .short-summary
+        max-height: 14 * $baseline
+
+
+@media (max-width: 640px)
+  .nell-card
+    .nell-card-header, .nell-card-media, .nell-card-text
+      width: 275px
+      iframe
+        width: 275px
+        height: 155px
+
+@media (max-width: 480px)
+  .nell-popup
+    top: 0
+  .nell-card
+    .nell-card-text
+      .short-summary
+        max-height: 8 * $baseline
+
+
+
+

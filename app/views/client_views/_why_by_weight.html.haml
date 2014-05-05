@@ -1,17 +1,17 @@
-.noprint
-  .top-triangle
-    %i.icon-caret-up
-  %h4 
-    HEY, WHY IS THIS IN GRAMS? 
-    <br>
-    THAT'S UN-AMERICAN!
-  .close-x(ng-click="hideWhyByWeight(true)")
-    %i.icon-remove
+.nell-card
+  .nell-card-header
+    %h6.no-margin-padding CHEFSTEPS SKILLS
+    %h2 Why Are The Ingredients In Grams?
+  .nell-card-body
+    .nell-card-media
+      %csEmbedYouTube(  ng-if='nellPopupShowing'
+                        video-id="YEt0I7I3MDM" 
+                        container-slug="{{activity.slug}}")
 
-  %p Well, because it's better. Here's why:
-  .section
-  %csEmbedYouTube(video-id="YEt0I7I3MDM" container-slug="{{activity.slug}}")
-  .btn.btn-primary.btn-large.section
-    %a(href="http://chefsteps.com/assemblies/why-work-by-weight" target="_blank" ng-click="hideWhyByWeight(false)") TELL ME MORE
-  .btn.btn-link.text-center(ng-click="hideWhyByWeight(true)") I got it, I got it.
-
+    .nell-card-text
+      .section
+        Because it is faster, cleaner, more accurate and just an all-around better way to cook!
+      %div.text-center
+        .btn.btn-primary.btn-large.section
+          %a(href="http://chefsteps.com/assemblies/why-work-by-weight" target="_blank" ng-click="doHideNellPopup(); tellMeMore()") PROVE IT
+        .btn.btn-link.text-center(ng-click="doHideNellPopup(); abandonNellPopup()") I got it, I got it.

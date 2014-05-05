@@ -1,7 +1,7 @@
 class Event < ActiveRecord::Base
   attr_accessible :action, :user_id, :trackable, :trackable_id, :trackable_type, :viewed
 
-  belongs_to :user
+  belongs_to :user, counter_cache: true
   belongs_to :trackable, polymorphic: true
 
   # default_scope includes(:user).order('created_at DESC')

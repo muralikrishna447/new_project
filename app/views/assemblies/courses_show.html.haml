@@ -1,4 +1,3 @@
-= render 'layouts/filepicker'
 - content_for :title, "#{@course.title.html_safe} - Class"
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
@@ -118,7 +117,8 @@
         %i.icon-chevron-up
       .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
         %i.icon-chevron-down
-
+        
+%div(nell-popup) 
   / .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
   /   = render 'layouts/footer'
 

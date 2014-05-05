@@ -21,7 +21,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
   $scope.activities = {}
-  $scope.viewOptions = {showWhyByWeight: false}
   $rootScope.loading = 0
 
   $scope.csTagService = csTagService
@@ -505,25 +504,22 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     else
       'span7'
 
-  $scope.hideWhyByWeight = (abandon) ->
-    $scope.viewOptions.showWhyByWeight = false
-    if abandon
-      mixpanel.track('Why By Weight Abandoned', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
-    else
-      mixpanel.track('Why By Weight Tell Me More', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
+  $scope.tellMeMore = ->
+    $rootScope.$broadcast "hideNellPopup"
+    mixpanel.track('Why By Weight Tell Me More', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
 
   $scope.maybeShowWhyByWeight = ->
     return if localStorageService.get('whyByWeightShown')
     return if csAuthentication.loggedIn()
     return if ! $scope.activity || ! $scope.activity.ingredients?.length > 0
-    return if $scope.activity.ingredients[0]?.unit != "g"
-    $scope.viewOptions.showWhyByWeight = true
+    $rootScope.$broadcast "showNellPopup", 
+      include: '_why_by_weight.html'
     localStorageService.set('whyByWeightShown', true)
-    mixpanel.track('Why By Weight Shown', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
 
   # One time stuff
   if $scope.parsePreloaded()
     $scope.schedulePostPlayEvent()
+    mixpanel?.track('Activity Viewed', {'context' : 'naked', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
 
     if ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()
@@ -531,11 +527,5 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
         $scope.startEditMode()
         $scope.editMeta = true
-
-
-
-
-
-
 ]
 

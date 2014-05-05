@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140203201306) do
+ActiveRecord::Schema.define(:version => 20140409202332) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -618,6 +618,7 @@ ActiveRecord::Schema.define(:version => 20140203201306) do
     t.integer  "referrer_id"
     t.string   "referred_from"
     t.hstore   "survey_results"
+    t.integer  "events_count"
     t.string   "twitter_user_id"
     t.string   "twitter_auth_token"
     t.string   "twitter_user_name"

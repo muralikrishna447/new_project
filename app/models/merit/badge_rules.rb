@@ -93,11 +93,12 @@ module Merit
         end
       end
 
+      # Tender Cuts Class
       grant_on 'uploads#create', :badge => 'meat' do |upload|
         assembly = upload.assembly
         user = upload.user
         if assembly.present?
-          assembly.slug == 'steak-to-salmon-how-to-cook-meats-like-a-pro'
+          assembly.id == 67
         else
           false
         end

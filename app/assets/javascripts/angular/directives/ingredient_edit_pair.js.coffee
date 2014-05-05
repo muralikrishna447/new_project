@@ -39,7 +39,7 @@ angular.module('ChefStepsApp').directive 'cslimitquantity', ->
         scope.ai.display_quantity = window.roundSensible(scope.ai.display_quantity)
       return true
 
-angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
+angular.module('ChefStepsApp').directive 'csingredienteditpair', [ "$rootScope", ($rootScope) ->
   restrict: 'E',
 
   link: (scope, element, attrs) ->
@@ -66,6 +66,5 @@ angular.module('ChefStepsApp').directive 'csingredienteditpair', ->
 
       return true
 
-
-
   templateUrl: '_ingredient_edit_pair.html'
+]

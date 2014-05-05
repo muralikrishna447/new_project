@@ -213,7 +213,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
                 if $scope.intent == 'ftue'
                   csIntent.setIntent('ftue')
                   csFtue.start()
-            , 300)
+                else
+                  $scope.loadFriends()
+            , 500)
       ).error( (data, status) ->
         $scope.dataLoadingService.stop()
         if (status == 401)
@@ -429,7 +431,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $scope.closeModal(from, false)
     $timeout( -> # Done so that the modal has time to close before triggering events
       $scope.openModal(to)
-    , 300)
+    , 500)
 
   $scope.friendsSelected = ->
     _.filter($scope.inviteFriends, (friend) -> (friend.value == true))

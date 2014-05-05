@@ -1,11 +1,18 @@
 //=require navigation_bootstrap
-//=require jquery
+//=require jquery.min
 //=require active_admin
-//=require application_head
+//=require angular.min
+//=require angular-resource.min
+//=require angular-route.min
+//=require angular-sanitize.min
+//=require angular-animate.min
+//=require angular-ui
 //=require application
 //=require angular-mocks
 //=require_tree .
 //= require bloom/bloom
+
+window.logPerf = function() {};
 
 // Working around https://github.com/pivotal/jasmine/issues/334 - fun!
 angular.mock.clearDataCache = function() {

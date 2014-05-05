@@ -3,9 +3,14 @@
 
 @app = angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "ui.select2", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable", "ngSanitize", "ngRoute", "ngAnimate", "once", "bloom.comments", "bloom.dashboard"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
 
+  #window.logPerf("ANGULAR INIT")
+  #angular.element(document).ready ->
+    #window.logPerf("DOCUMENT READY")
+
   # Don't make this true!! It will break every link on the page that isn't to
   # an angular known url. The addr bar changes but content doesn't load.
   # See https://groups.google.com/forum/#!topic/angular/cUjy9PEDeWE .
+  # NOTE: WORTH TRYING AGAIN now that we are on a much more recent angular
   $locationProvider.html5Mode(false)
   $locationProvider.hashPrefix()
 

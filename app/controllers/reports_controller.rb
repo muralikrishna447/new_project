@@ -141,6 +141,8 @@ class ReportsController < ApplicationController
       "Macaron"
     elsif stripe_record["description"].include?("Tender Cuts") || stripe_record["description"].include?("Steak to Salmon")
       "Tender Cuts"
+    else
+      "Undefined"
     end
   end
 

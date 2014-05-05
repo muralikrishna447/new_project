@@ -18,6 +18,7 @@ class CommentsController < ApplicationController
     end
   end
 
+  # Used by Bloom
   def info
     split_id = params['commentsId'].split('_')
     resource = split_id[0]
@@ -29,6 +30,36 @@ class CommentsController < ApplicationController
     info['title'] = title
     info['url'] = url
     render :json => JSON.generate(info)
+  end
+
+  # Used by Bloom
+  def at
+    search_params = params['search']
+    search_term = '%' + search_params + '%'
+    results = Hash.new
+
+    user_results = []
+    users = User.where("name iLIKE ?", search_term).order('events_count desc').limit(300)
+    users.each do |user|
+      user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url, 'rank' => user.events_count}
+    end
+
+    recipe_results = []
+    recipes = Activity.chefsteps_generated.where("title iLIKE ?", search_term).order('likes_count desc').limit(300)
+    recipes.each do |recipe|
+      recipe_results << {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url, 'rank' => recipe.likes_count}
+    end
+
+    ingredient_results = []
+    ingredients = Ingredient.no_sub_activities.where("title iLIKE ?", search_term).order('title asc').limit(300)
+    ingredients.each do |ingredient|
+      ingredient_results << {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}
+    end
+
+    results['Users'] = user_results
+    results['Recipes'] = recipe_results
+    results['Ingredients'] = ingredient_results
+    render :json => JSON.pretty_generate(results)
   end
 
 private

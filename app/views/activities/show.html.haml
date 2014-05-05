@@ -1,6 +1,5 @@
 -################################ HEADER / LAYOUT STUFF ################################
 
-= render 'layouts/filepicker'
 - content_for :title, "#{@activity.title} - #{@activity.activity_type.first}".html_safe
 - content_for :description, @activity.description.to_s != "" ? @activity.description.html_safe : @activity.title.html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
@@ -43,7 +42,7 @@
 -################################ PRIMARY CONTENT ################################
 
 #activity-title(data-activity="#{@activity.title}")
-%form(ng-cloak name="activityForm")
+%form(ng-cloak name="activityForm" csfixnakedlinks)
   -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
   %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
@@ -62,8 +61,14 @@
     -# Row with title and buttons
     .row.printable
 
-      .span8.relative.ng-cloak
-        = render 'title'
+      %div(ng-switch="activity.layout_name")
+        %div(ng-switch-default)
+          .span8.relative.ng-cloak
+            = render 'title'
+        %div(ng-switch-when='list')
+          .span7.offset1.relative.ng-cloak
+            = render 'title'
+
 
       .span4.noprint.ng-cloak
         = render 'top_buttons'
@@ -77,13 +82,21 @@
       .span12
         #main-content
           / = render 'main_activity_content', activity: @activity
-          = render 'activities/main_activity_content', activity: @activity
+          %div(ng-switch on="activity.layout_name")
+            %div(ng-switch-when='list')
+              = render 'shared/activity_layouts/list'
+            %div(ng-switch-default)
+              = render 'activities/main_activity_content', activity: @activity
+
 
     -# Big spinner until the activity loads. By not cloaking but using angular to hide, it
     -# disappears roughly when the page is ready.
     .row.activity-loading-spinner(ng-hide="! loading")
       .span12
         %i.icon-page-load
+
+
+%div(nell-popup) 
 
 -################################ BOTTOM OF PAGE CONTENT ################################
 
@@ -166,10 +179,6 @@
 
 #preloaded-activity-json.hide
   = @activity.to_json
-
-
-:javascript
-  mixpanel.track('Activity Viewed', {'context' : 'naked', 'title' : "#{@activity.title}", 'slug' : "#{@activity.slug}"});
 
 
 

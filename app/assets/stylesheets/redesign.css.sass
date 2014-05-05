@@ -7,8 +7,6 @@ html
 
 body
   position: relative
-  overflow-x: hidden
-  overflow-y: hidden
 
 a, [contenteditable]:not(:focus)
   cursor: pointer
@@ -350,6 +348,26 @@ h4
   top: 10px
   left: 10px
 
+.dumb-mortar
+  display: inline-block
+  margin-right: 30px
+  vertical-align: top
+
+// Hack to deal with blocks that end up in both row-fluid and row
+form
+  .insanely-dumb-adjustment
+    margin-left: 0px
+
+.edit-mode
+  .dumb-mortar
+    display: block
+
+.align-baseline
+  vertical-align: baseline
+
+
+
+
 ////////////////////////////////////////
 
 /* No Step Activities */
@@ -450,7 +468,22 @@ a:hover
       top: 0
       margin-left: 5px
 
+.kiosk-madlib
+  width: 200%
+  margin-left: 0%
+  @include transition(all 500ms)
+  .kiosk-madlib-left
+    width: 50%
+    float: left
+  .kiosk-madlib-right
+    width: 50%
+    float: right
 
+.madlib-page-1
+  margin-left: 0%
+
+.madlib-page-2
+  margin-left: -100%
 
 
 .gallery
@@ -1126,6 +1159,8 @@ a:hover
   .item
     margin: 0px
 
+
+
 ////////////////////////////////////////
 
 /* Unique Styles */
@@ -1647,6 +1682,9 @@ a:hover
   .nav-search-show
     width: 230px
 
+
+
+
 // WYSIWYG EDITING
 
 .edit-pair, .edit-pair-show, .edit-pair-edit
@@ -1732,8 +1770,11 @@ csequipmenteditpair, csingredienteditpair
 
 csequipmenteditpair
   .action-button-group
-    top: -10px
+    top: 0px
     z-index: 101
+    .btn
+      background-color: white
+      border-bottom: none
 
 csingredienteditpair
   overflow: visible
@@ -1792,6 +1833,7 @@ csingredienteditpair
 
 .fake-link, .fakefocus
   color: #0088cc
+  cursor: pointer
 
 
 .inline-group
@@ -1841,12 +1883,12 @@ csingredienteditpair
 
 .step-edit-buttons
   position: absolute
-  top: 10px
+  top: 47px
   width: 30px
 
 .step-add-button-group
   position: absolute
-  top: -10px
+  top: 30px
 
 .step-add-button-end-group
   position: absolute
