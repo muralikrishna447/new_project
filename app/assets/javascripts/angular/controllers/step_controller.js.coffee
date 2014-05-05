@@ -1,5 +1,8 @@
 angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootScope", "$element", "$timeout", ($scope, $rootScope, $element, $timeout) ->
 
+  $scope.step.presentation_hints ||= {}
+  $scope.step.presentation_hints.aside_position ?= "left"
+
   $scope.masterSelect = false
 
   $scope.getIngredientsList = ->
@@ -71,16 +74,13 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     else
       'span7'
 
-  stupidCache = {}
-  $scope.asideClass = (index) ->
-    result = "left " 
-    r = stupidCache[index] || (stupidCache[index] = Math.random())
-    if r > 0.5
-      result = "right "
+  $scope.asideClass = ->
+    result = $scope.step.presentation_hints.aside_position + " "
     if $scope.hasAV() || $scope.step.image_id
       result += 'well aside-with-media'
     else
       result += 'well-border'
     result
+
 
 ]

@@ -1,28 +1,54 @@
 .step-sidebar-group.anim-basic-fade
   %button.btn-secondary.btn-edit-step(ng-show="editMode" ng-click="toggleStepOpenForEdit()")
     %i.icon-edit-sign
-  %div(ng-if="getStepOpenForEdit()")
+
+  %div.inline(ng-if="getStepOpenForEdit()")
     .btn-toolbar.step-edit-buttons
-      .btn-group.btn-group-vertical
+      .btn-group
         %button.btn.btn-secondary(type="button" ng-click="addStep($index, -1)")
           %i.icon-plus
+          %i.icon-arrow-up
+
+        %button.btn.btn-secondary(type="button" ng-click="addStep($index, 1)")
+          %i.icon-plus
+          %i.icon-arrow-down
+
         %button.btn.btn-secondary(ng-show="! step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Hide step number" tooltip-placement="left")
           %i.icon-ban-circle
+
         %button.btn.btn-secondary(ng-show="step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Show step number" tooltip-placement="left")
           \#
 
-        / Buttons to toggle Aside
         %button.btn.btn-secondary(ng-show="canMakeAside($index)" type="button" ng-click="step.is_aside = true" tooltip="Make this step an aside" tooltip-placement="left")
           %i.icon-arrow-right
+
         %button.btn.btn-secondary(ng-show="step.is_aside" type="button" ng-click="step.is_aside = false" tooltip="Make this aside a regular step" tooltip-placement="left")
           %i.icon-arrow-left
 
+        .aside-chooser-group(ng-show="step.is_aside")
+          .btn-group
+            %button.btn( ng-model="step.presentation_hints.aside_position"
+                                btn-radio="'left'"
+                                type="button")
+              Left
+            %button.btn( ng-model="step.presentation_hints.aside_position"
+                                btn-radio="'leftInset'"
+                                type="button")
+              Left Inset
+            %button.btn( ng-model="step.presentation_hints.aside_position"
+                                btn-radio="'right'"
+                                type="button")
+              Right
+            %button.btn( ng-model="step.presentation_hints.aside_position"
+                                btn-radio="'rightInset'"
+                                type="button")
+              Right Inset
+
         %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf(! canMoveStep($index, -1))" tooltip="Move step up" tooltip-placement="left")
           %i.icon-arrow-up
+
         %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf(! canMoveStep($index, 1))" tooltip="Move step down" tooltip-placement="left")
           %i.icon-arrow-down
+
         %button.btn.btn-secondary(type="button" ng-click="removeStep($index)" tooltip="Remove step" tooltip-placement="left")
           %i.icon-remove-sign
-    .step-add-button-end-group
-      %button.btn.btn-secondary(type="button" ng-click="addStep($index, 1)")
-        %i.icon-plus
