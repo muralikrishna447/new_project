@@ -23,11 +23,9 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     # but an ugly [object Object]
     item = {unit: "g", quantity: "0"}
     $scope.getIngredientsList().push(item)
-    #$scope.addUndo()
 
   $scope.removeIngredient = (index) ->
     $scope.getIngredientsList().splice(index, 1)
-    $scope.addUndo()
 
   $scope.all_ingredients = (term) ->
     s = ChefSteps.splitIngredient(term)
@@ -64,7 +62,6 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
             ing.display_quantity = parseFloat(ing.display_quantity) + parseFloat(si.display_quantity)
         else
           $scope.activity.ingredients.push(deepCopy(si))
-    $scope.addUndo()
     $scope.temporaryNoAutofocus()
     if $scope.activity.ingredients.length < old_count
       $scope.shouldShowMasterIngredientsRemovedModal = true

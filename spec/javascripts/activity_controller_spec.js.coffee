@@ -60,24 +60,4 @@ describe 'ActivityController', ->
       expect(scope.editMode).toBeFalsy()
       expect(scope.activity.title).toEqual("original")
 
-  describe "undo/redo sequence", ->
-    it "handles undo and redo commands as expected", ->
-      scope.startEditMode()
-      expect(scope.undoAvailable()).toBeFalsy()
-      scope.activity.title = "foobar1"
-      scope.addUndo()
-      scope.activity.title = "foobar2"
-      scope.addUndo()
-      expect(scope.undoAvailable()).toBeTruthy()
-      expect(scope.redoAvailable()).toBeFalsy()
-      scope.undo()
-      expect(scope.activity.title).toEqual("foobar1")
-      expect(scope.undoAvailable()).toBeTruthy()
-      expect(scope.redoAvailable()).toBeTruthy()
-      scope.redo()
-      expect(scope.activity.title).toEqual("foobar2")
-      scope.undo()
-      scope.undo()
-      expect(scope.activity.title).toEqual("original")
-      expect(scope.undoAvailable()).toBeFalsy()
-      expect(scope.redoAvailable()).toBeTruthy()
+

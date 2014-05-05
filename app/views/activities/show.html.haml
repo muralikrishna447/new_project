@@ -28,7 +28,7 @@
       %meta{property: 'twitter:player:width', content: '480'}
     - else
       %meta{property: 'twitter:card', content: 'summary_large_image'}
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()", :'ng-init' => "popupEligible = #{@viewed_activities && @viewed_activities.count > 1}" }
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()", :'ng-init' => "popupEligible = #{@viewed_activities && @viewed_activities.count > 1}", :'ng-class' => '{"activity_show" : true}'}
 
 -# This is how search engine crawlers know to request the _escaped_fragment_ page
 - content_for :ajax_seo do
@@ -59,7 +59,19 @@
 
 #activity-title(data-activity="#{@activity.title}")
 %form(ng-cloak name="activityForm" csfixnakedlinks)
-
+  #activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
+    .container
+      .row.noprint(ng-cloak ng-show="editMode && alerts.length > 0")
+        .span8.offset2
+          %alert.edit-alert.alert-block.anim-basic-fade(ng-repeat="alert in alerts" type="alert.type || 'error'" close="alertService.closeAlert($index)")
+            %h3 Save Failed!
+            {{alert.message}}
+            .section
+              If you can't resolve the issue, please
+              %a(ng-href="mailto:michael@chefsteps.com?subject=Error%20Message&body=Error: {{alert.message}}. Please add any info about what caused this problem." target="_blank")>
+                send this error text to ChefSteps
+              \.
+              
   -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
   %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
@@ -67,11 +79,7 @@
 
     .master-column
       #main-content.main-content-container
-        %div(ng-switch on="activity.layout_name")
-          %div(ng-switch-when='list')
-            = render 'shared/activity_layouts/list'
-          %div(ng-switch-default)
-            = render 'activities/main_activity_content', activity: @activity
+        = render 'activities/main_activity_content', activity: @activity
 
 
     -# Big spinner until the activity loads. By not cloaking but using angular to hide, it

@@ -27,7 +27,6 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
 
   $scope.removeStep = (idx) ->
     $scope.activity.steps.splice(idx, 1)
-    $scope.addUndo()
 
   $scope.isAside = (idx) ->
     return true if $scope.activity.steps[idx]?.is_aside
@@ -68,7 +67,6 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
         newIdx += 1 if direction > 0
 
       $scope.activity.steps.splice(newIdx, 0, newStep)
-    $scope.addUndo()
 
   $scope.reorderStep = (idx, direction) ->
     # If moving a step with an aside have to bring the aside along.
@@ -87,5 +85,4 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     movers = $scope.activity.steps.splice(idx, numToMove)
     $scope.activity.steps.splice(newIdx, 0, movers[0])
     $scope.activity.steps.splice(newIdx + 1, 0, movers[1]) if numToMove > 1
-    $scope.addUndo()
 ]
