@@ -1,6 +1,10 @@
 %ul.no-bullet.tools-list(ng-controller="SocialButtonsController")
 
-  %li(ng-controller='LikesController' ng-cloak ng-click='toggleLikeObject("Activity", activity.id)' ng-init='getCurrentUserLikes("Activity", activity.id)')
+  %li(  ng-cloak
+        ng-if="csAuthentication.loggedIn()"
+        ng-controller='LikesController' 
+        ng-click='toggleLikeObject("Activity", activity.id)' 
+        ng-init='getCurrentUserLikes("Activity", activity.id)')
     .icon-holder
       %i.icon-heart-empty(ng-if="!current_user_likes")
       %i.icon-heart(ng-if="current_user_likes")

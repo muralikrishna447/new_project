@@ -12,12 +12,12 @@
   = render 'activities/metadata'
 
  
-.standard-item.section-large
+.standard-item.section
   = render 'activities/latest/description'
 
 .medium-item
 
-  .half-medium-item
+  .half-medium-item(ng-if="activity.ingredients.length || editMode")
     = render 'activities/main_ingredients'
 
   .half-medium-item

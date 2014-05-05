@@ -40,6 +40,7 @@ window.deepCopy = (obj) ->
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
   $scope.activities = {}
+  $scope.csAuthentication = csAuthentication
   $rootScope.loading = 0
 
   $scope.csTagService = csTagService
