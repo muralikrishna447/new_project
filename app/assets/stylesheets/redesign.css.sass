@@ -1273,51 +1273,52 @@ a:hover
     background-color: $offwhite
     border-color: $dark-orange
     border: none
-    border-top: 2px solid $dark-orange
-    padding: 0px
-    @include shadow
+    border-bottom: 1px solid $light-gray
+    padding: 5px 0px
+
+
   .brand
     text-shadow: none
     color: black
     padding: 4px 20px
   .nav
-    .nav-item-border
-      width: 1px
-      height: 52px
-      float: left
-      background: -moz-linear-gradient(top, rgba(204,204,204,1) 0%, rgba(235,235,235,1) 60%, rgba(255,255,255,0) 100%)
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(204,204,204,1)), color-stop(60%,rgba(235,235,235,1)), color-stop(100%,rgba(255,255,255,0)))
-      background: -webkit-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: -o-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: -ms-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: linear-gradient(to bottom, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#00ffffff',GradientType=0 )
+  .nav-container
+    background: white
+    border: 1px solid $offwhite
+    position: absolute
+    top: 50px
+    margin-left: 20%
+    float: right
+    width: 80%
+    padding: $baseline
+    @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
+
   .nav > li > a
     text-shadow: none
     color: #333
-    line-height: 33px
-    font-size: 16px
+    line-height: $baseline *3 
     font-weight: 200
-    @include transition(background .25s)
+    @include transition(background .3s)
+    text-transform: uppercase
     &:hover
-      background: $orange
-      color: white
+      color: $orange
   .navbar-form
     margin: 12px 10px 12px
     input
       margin: 0px
   .btn-navbar
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from($orange), to($dark-orange))
-    background-image: -moz-linear-gradient(top, $orange, $dark-orange)
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$orange, endColorstr=$dark-orange, GradientType=0)
-    background-color: $orange
-    border-color: $dark-orange
+    margin-top: $baseline
+    color: $orange
+    background: none
+    cursor: pointer
+    h5
+      margin-bottom: 0
     .icon-bar
       background-color: white
     &:hover
       background-image: none
-      background-color: $dark-orange
-      float: left
+      background-color: $orange
+      +radius(2px)
   .nav-search
     height: 55px
     width: 40px
@@ -1926,7 +1927,6 @@ body
 
 .nav
   @include primary-font
-  letter-spacing: -1px
 
 .input-append
   margin: 0

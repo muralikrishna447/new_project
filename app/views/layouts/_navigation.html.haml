@@ -3,100 +3,100 @@
     .navbar-inner
       .container
         = link_to root_url, class: 'brand' do
-          = image_tag "https://s3.amazonaws.com/chefsteps/static/csLogoHorizontalSmall.svg", id: 'chefsteps-logo'
+          = image_tag "https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg", id: 'chefsteps-logo', width: "200"
           / .logo-wrapper
           /   .logo-window
           /   .logo-block
           /     .logo-text ChefSteps
           /     .logo-subtext cook connected
-        %button.btn.btn-navbar{style: 'float: right', data: {toggle: 'collapse', target: '.nav-collapse'}}
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
-        %div
+        .btn-navbar(ng-click="showMenu = !showMenu" ng-class="active='anim-shift-top-active'")
+          %h5 menu
           -if @include_edit_toolbar
             #nav-edit-toolbar(collapse="!editMode")
               = render 'activities/edit_toolbar'
           %div(ng-style="toolbarBonusStyle()" ng-hide='editMode')
-            .nav-collapse.collapse.pull-right#cs-navigation
-              %ul.nav
-                %li.dropdown
-                  .nav-item-border
+    #cs-navigation
+      .nav-container.anim-shift-top(ng-show="showMenu" ng-cloak ng-class="active")
+        %ul.nav
+          %li.dropdown
+            = link_to "Recipes"
+          %li= link_to "Resources"
+          %li= link_to "Community"
+          %li= link_to "Shop"
+          %li= link_to "Profile"
+          %li= link_to 'Notifications'
 
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Recipes
-                    %i.icon-angle-down
-                  %ul.dropdown-menu
-                    .dropdown-background
-                    %li= link_to 'ChefSteps Recipes', gallery_index_url + "#/?activity_type=Recipe&generator=ChefSteps"
-                    %li= link_to 'Community Recipes', gallery_index_url + "#/?generator=Community"
-                    %li= link_to 'Ingredients', ingredients_url
-                    -if (can? :manage, Ingredient) || (can? :manage, Ingredient)
-                      %li.divider
-                    -if can? :manage, Ingredient
-                      %li= link_to 'Manage Ingredients', manager_ingredients_path
-                    -if can? :manage, Equipment
-                      %li= link_to 'Manage Equipment', equipment_index_path
-
-                %li
-                  .nav-item-border
-                  = link_to 'Classes', courses_url
-                %li.dropdown
-                  .nav-item-border
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Community
-                    %i.icon-angle-down
-                  %ul.dropdown-menu
-                    .dropdown-background
-                    %li= link_to 'Forum', 'http://forum.chefsteps.com/discussions'
-                    %li= link_to 'Vote For New Courses', poll_url('vote-for-future-classes-3')
-                -unless @no_shop
-                  %li.dropdown
-                    .nav-item-border
-                    = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                      Shop
-                      %i.icon-angle-down
-                    %ul.dropdown-menu
-                      .dropdown-background
-                      %li= link_to 'Store', 'http://store.chefsteps.com'
-                      %li= link_to 'Knife Collection', knife_collection_url
-                      %li= link_to 'Sous Vide Collection', sv_collection_url
-                %li(ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
-                  .nav-item-border
-                  - if external
-                    -# Can't see current_user when external, so use a route that will
-                    -# either go to their profile if logged in, or take them to sign in
-                    = link_to user_profile_url('self') do
-                      %span
-                        Profile
-
-                  - elsif current_user
-                    = link_to user_profile_url(current_user) do
-                      %span
-                        Profile
-                  - else
-                    %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
-                    = render "devise/sessions/new_angular"
-                    = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
-                -# %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
-                -#   %span
-                -#     %a.btn-google.btn(ng-click="loadFriends('invite')") Invite
-                -#     = render "devise/sessions/new_angular"
-                -# %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
-                -#   %span
-                -#     %a.btn-google.btn(ng-click="openModal('googleInvite')") Google Invite
-                -#     = render "devise/sessions/new_angular"
-                - unless external
-                  %li
-                    .nav-item-border
-                    .nav-search.nav-search-toggle
-                      %i.icon-search.icon-large
-                      %form.navbar-form.form-search.nav-search-form(action="{{getSearchQuery()}}" method="get")
-                        %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
-                      .nav-search-hide
-                        %i.icon-remove
-                - if current_user && current_user.admin?
-                  %li
-                    .nav-item-border
-                    .cs-bloom-notifs
-                      %csnotifs
+    //.nav-collapse.collapse.pull-right#cs-navigation
+    //  %ul.nav
+    //    %li.dropdown
+    //      = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+    //        Recipes
+    //        %i.icon-angle-down
+    //      %ul.dropdown-menu
+    //        .dropdown-background
+    //        %li= link_to 'ChefSteps Recipes', gallery_index_url + "#/?activity_type=Recipe&generator=ChefSteps"
+    //        %li= link_to 'Community Recipes', gallery_index_url + "#/?generator=Community"
+    //        %li= link_to 'Ingredients', ingredients_url
+    //        -if (can? :manage, Ingredient) || (can? :manage, Ingredient)
+    //          %li.divider
+    //        -if can? :manage, Ingredient
+    //          %li= link_to 'Manage Ingredients', manager_ingredients_path
+    //        -if can? :manage, Equipment
+    //          %li= link_to 'Manage Equipment', equipment_index_path
+    //
+    //    %li
+    //      = link_to 'Classes', courses_url
+    //    %li.dropdown
+    //      = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+    //        Community
+    //        %i.icon-angle-down
+    //      %ul.dropdown-menu
+    //        .dropdown-background
+    //        %li= link_to 'Forum', 'http://forum.chefsteps.com/discussions'
+    //        %li= link_to 'Vote For New Courses', poll_url('vote-for-future-classes-3')
+    //    -unless @no_shop
+    //      %li.dropdown
+    //        = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+    //          Shop
+    //          %i.icon-angle-down
+    //        %ul.dropdown-menu
+    //          .dropdown-background
+    //          %li= link_to 'Store', 'http://store.chefsteps.com'
+    //          %li= link_to 'Knife Collection', knife_collection_url
+    //          %li= link_to 'Sous Vide Collection', sv_collection_url
+    //    %li(ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
+    //      - if external
+    //        -# Can't see current_user when external, so use a route that will
+    //        -# either go to their profile if logged in, or take them to sign in
+    //        = link_to user_profile_url('self') do
+    //          %span
+    //            Profile
+    //
+    //      - elsif current_user
+    //        = link_to user_profile_url(current_user) do
+    //          %span
+    //            Profile
+    //      - else
+    //        %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+    //        = render "devise/sessions/new_angular"
+    //        = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
+    //    -# %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
+    //    -#   %span
+    //    -#     %a.btn-google.btn(ng-click="loadFriends('invite')") Invite
+    //    -#     = render "devise/sessions/new_angular"
+    //    -# %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
+    //    -#   %span
+    //    -#     %a.btn-google.btn(ng-click="openModal('googleInvite')") Google Invite
+    //    -#     = render "devise/sessions/new_angular"
+    //    - unless external
+    //    %li
+    //      .nav-search.nav-search-toggle
+    //        %i.icon-search.icon-large
+    //        %form.navbar-form.form-search.nav-search-form(action="{{getSearchQuery()}}" method="get")
+    //          %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
+    //        .nav-search-hide
+    //          %i.icon-remove
+    //  - if current_user && current_user.admin?
+    //    %li
+    //      .cs-bloom-notifs
+    //        %csnotifs
