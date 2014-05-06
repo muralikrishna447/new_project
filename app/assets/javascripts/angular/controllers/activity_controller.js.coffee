@@ -138,7 +138,7 @@ window.deepCopy = (obj) ->
     true
 
   $scope.endEditMode = ->
-
+    console.log "ACTIVITY SAVE START"
     $scope.alerts = []
     $scope.normalizeModel()
     $scope.normalizeWeightUnits()

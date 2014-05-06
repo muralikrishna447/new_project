@@ -14,7 +14,12 @@
                 ng-controller="StepController"                               
                 cs-watch-focus='')
 
+  .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, -1)")
+    %i.icon-circle-arrow-up
+    Add step above
+
   =render 'activities/step_side_edit_buttons'
+
   .step-number-container.section(ng-if="! step.hide_number")
     %h1.step-number
       %div(ng-bind="stepNumber($index)")
@@ -53,5 +58,9 @@
       .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")
         .new-step-image(id="{{'step-image-' + $index}}")
           %img(cs-responsive-image='step.image_id' alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+
+  .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, 1)")
+    %i.icon-circle-arrow-down
+    Add step below
 
 

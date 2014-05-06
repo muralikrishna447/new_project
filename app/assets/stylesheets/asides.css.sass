@@ -8,14 +8,18 @@
   .aside-image
     margin-bottom: $baseline
 
-  &.left, .leftInset
+  &.left, &.leftInset
     float: left
+    margin-right: $horz-baseline-large
+    margin-left: -$aside-width
+
+  &.right, &.rightInset
+    float: right
+    margin-left: $horz-baseline-large
+    margin-right: -$aside-width
 
   &.aside-inset
     width: $aside-width * 2
-    margin-left: $horz-baseline-large
-    margin-right: -$aside-width
-    z-index: 100
 
 .list-view
   .aside.aside-with-media

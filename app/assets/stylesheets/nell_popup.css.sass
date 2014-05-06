@@ -42,24 +42,22 @@
     margin: 4 * $baseline
 
 .nell-card
+  display: inline-flex
+  flex-wrap: wrap
+  justify-content: space-between
+  align-items: flex-start
 
   .nell-card-header
+    width: 100%
     margin-bottom: $baseline
-    margin-left: $horz-baseline-large
-    margin-right: $horz-baseline-large
-
-  .nell-card-body
-    display: inline-flex
-    flex-wrap: wrap
-    justify-content: space-between
-    align-items: flex-start
+    margin: $baseline $horz-baseline-large
 
   .nell-card-media
     flex-basis: 300px
     flex-grow: 1
     min-width: 300px
     margin-bottom: $baseline
-    padding: 0px $horz-baseline-large
+    margin: 0px $horz-baseline-large
 
   .nell-card-text
     padding: 0px $horz-baseline-large
@@ -71,16 +69,13 @@
       color: $orange
 
 .nell-embed
+  margin-left: -$horz-baseline-large
+  margin-right: -$horz-baseline-large
 
   .nell-card
-    margin-left: -150px
-    margin-right: -150px
-    position: relative
 
     .nell-card-header
-      padding-bottom: $baseline
       border-bottom: 4px solid $orange
-      width: 100%
 
     .short-summary
       max-height: 18 * $baseline
