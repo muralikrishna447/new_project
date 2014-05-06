@@ -49,33 +49,23 @@ class CommentsController < ApplicationController
       ingredient_results = [{'name' =>' hello'}]
     else
       users = User.search(search_term).records
-      users.each do |user|
-        user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url}
-      end
+      user_results = users.map{|user| {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url}}
 
       recipes = Activity.search(search_term).records
-      recipes.each do |recipe|
-        recipe_results << {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url}
-      end
+      recipe_results = recipes.map{|recipe| {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url}}
 
       ingredients = Ingredient.search(search_term).records
-      ingredients.each do |ingredient|
-        ingredient_results << {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}
-      end
-
-      # users = User.search(search_term).results
-      # users.each do |user|
-      #   user_results << {'name' => user._source.name}
-      # end
-
-      # recipes = Activity.search(search_term).results
-      # recipes.each do |recipe|
-      #   recipe_results << {'name' => recipe._source.title}
-      # end
-
-      # ingredients = Ingredient.search(search_term).results
-      # ingredients.each do |ingredient|
-      #   ingredient_results << {'name' => ingredient._source.title}
+      ingredient_results = ingredients.map{|ingredient| {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}}
+      # hits = Searchable.search(search_params)['hits']['hits']
+      # hits.each do |hit|
+      #   case hit['_index']
+      #   when 'users'
+      #     user_results << hit
+      #   when 'activities'
+      #     recipe_results << hit
+      #   when 'ingredients'
+      #     ingredient_results << hit
+      #   end
       # end
     end
     results['Users'] = user_results
