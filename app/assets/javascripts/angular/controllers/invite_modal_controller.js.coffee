@@ -29,6 +29,8 @@
 
   $scope.showThankYou = false
 
+  $scope.validationError = false
+
   $scope.emailObject =
     emailToAddresses: null
     bodyText: "Hi there, I just found ChefSteps and think it's pretty great. They're teaching me how to cook smarter and I thought you'd be interested!"
@@ -184,7 +186,14 @@
       $scope.showThankYou = true
     )
 
+  $scope.validateEmails = ->
+    $scope.validationError = false
+    for email in $scope.emailObject.emailToAddresses.split(",")
+      $scope.validationError = true unless /.*@.*\..*/.test(email)
+    $scope.validationError
+
   $scope.sendInvitationsToEmail = ->
+    return false if $scope.validateEmails()
     $scope.dataLoadingService.start()
     $http(
       method: "POST"
@@ -199,6 +208,7 @@
       $scope.dataLoadingService.stop()
       $scope.showThankYou = true
     )
+
 
   $scope.close = ->
     $modalInstance.close()

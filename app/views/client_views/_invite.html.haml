@@ -100,7 +100,8 @@
               %a(href="/invitation.html" target="_blank")
                 (Preview)
             .email-input
-              %input(type="text" name="email_addresses" ng-model="emailObject.emailToAddresses" placeholder="Email to (separated by commas)")
+              %input(type="text" name="email_addresses" ng-model="emailObject.emailToAddresses" placeholder="Email to (separated by commas)" ng-class="{fieldError: validationError}")
+              %span(ng-if="validationError") Error with one of the email addresses entered
             .body-text
               %textarea(ng-model="emailObject.bodyText" name="body_text")
             %hr
