@@ -655,8 +655,7 @@ a:hover
       &:hover
         cursor: pointer
 
-// temporary until steps are moved over to csenforceaspect
-.ordered-step-item
+.ordered-step-item, .nell-popup, .nell-embed
   .video-container
     padding-bottom: 56.25%
     iframe, object, embed
@@ -1616,8 +1615,8 @@ a:hover
   .nav
     .nav-item-border
       width: 1px
-      height: 100%
-      position: absolute
+      height: 52px
+      float: left
       background: -moz-linear-gradient(top, rgba(204,204,204,1) 0%, rgba(235,235,235,1) 60%, rgba(255,255,255,0) 100%)
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(204,204,204,1)), color-stop(60%,rgba(235,235,235,1)), color-stop(100%,rgba(255,255,255,0)))
       background: -webkit-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
@@ -2284,6 +2283,9 @@ input.summary-tweet
 
   .whitespace
     padding: 50px 0px
+
+.fetch-content-loading
+  color: $light-gray
 
 
 .content-activity-title:empty:not(:focus):before

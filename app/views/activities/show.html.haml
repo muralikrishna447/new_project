@@ -131,9 +131,10 @@
       .row(ng-hide="editMode" ng-cloak)
         .span12
           %h3 Discussion
-          .section
-            - disqus_id = "activity-#{@activity.id}"
-            = render 'layouts/disqus_comments', disqus_id: disqus_id, disqus_title: @activity.title, disqus_url: activity_url(@activity)
+          .section#comments
+            %a(name='discussion')
+            %cscomments(comments-type="activity" comments-id="{{activity.id}}" seo-bot="#{is_brombone}")
+            
 
 = content_for :footer do
   = render 'layouts/footer'

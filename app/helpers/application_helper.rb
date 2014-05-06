@@ -260,6 +260,14 @@ module ApplicationHelper
     request.env["HTTP_REFERER"] && URI.parse(request.env["HTTP_REFERER"])
   end
 
+  def is_google
+    request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (http_referer_uri && http_referer_uri.host.index('google'))
+  end
+
+  def is_brombone
+    request.headers["X-Crawl-Request"] == 'brombone'
+  end
+
   def class_activity_path(assembly, activity)
     if assembly && activity
       "/classes/#{assembly.slug}/##{activity.slug}"

@@ -60,5 +60,6 @@
                 ago
     
       %hr
-      %div(ng-controller='csCommentsController')
-        %comments(db-params="{'commentsId': 'upload_#{@upload.id}'}" on-login="showModal()")
+      #comments
+        %a(name='discussion')
+        %cscomments(comments-type="upload" comments-id="#{@upload.id}" seo-bot="#{is_brombone}")

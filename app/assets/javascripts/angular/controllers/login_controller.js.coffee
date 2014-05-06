@@ -54,6 +54,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $scope.showForm = form
 
   $scope.openModal = (form) ->
+    console.log 'open modal', form
     if form == "login"
       $scope.loginModalOpen = true
     else if form == "invite"
@@ -112,6 +113,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
           $scope.alertService.addAlert({message: "You have been signed in.", type: "success"})
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.authentication.setCurrentUser(data.user)
+            $scope.$emit 'reloadComments'
           , 300)
 
         else
@@ -529,7 +531,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
 
       )
 
-  $scope.$on 'openLoginModal', ->
+  $rootScope.$on 'openLoginModal', (event) ->
+    if event.defaultPrevented
+      return
+    else
+      event.preventDefault()
     $scope.openModal('login')
 
   $scope.kioskReload = ->

@@ -48,6 +48,14 @@
     %script(src='http://www.youtube.com/iframe_api' async='true')
 
     = render 'layouts/cdn_js'
+    // Send Bloom Encrypted User data
+    - if current_user
+      :javascript
+        window.encryptedUser = "#{escape_javascript(current_user.encrypted_bloom_info)}";
+        window.chefstepsUserId = "#{current_user.id}"
+    - else
+      :javascript
+        window.chefstepsUserId = null
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp", "ng-init" => "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'", :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}"}}
     - unless @hide_nav == true
