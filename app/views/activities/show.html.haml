@@ -78,7 +78,7 @@
   #activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
 
     .master-column
-      #main-content.main-content-container
+      #main-content.main-content-container(ng-cloak)
         = render 'activities/main_activity_content', activity: @activity
 
 

@@ -198,6 +198,12 @@ window.deepCopy = (obj) ->
     if $scope.editMode
       localStorageService.add($scope.localStorageKey(), JSON.stringify($scope.activity))
 
+  window.setInterval ( ->
+    if $scope.editMode
+      $scope.saveToLocalStorage()
+      console.log("Autosaved")
+  ), 5000
+
   $scope.saveBaseToLocalStorage = ->
     localStorageService.add($scope.localStorageBaseKey(), JSON.stringify($scope.activity))
 
@@ -519,11 +525,7 @@ window.deepCopy = (obj) ->
     $scope.schedulePostPlayEvent()
     mixpanel?.track('Activity Viewed', {'context' : 'naked', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
 
-    # Disabled local storage stuff for now, getting rid of undo. Maybe bring it back at some point.
-    # It was just causing more confusion than it was worth.
-    # Hmm, or maybe just do it every few seconds?
-
-    if true || ! $scope.maybeRestoreFromLocalStorage()
+    if ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()
 
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
