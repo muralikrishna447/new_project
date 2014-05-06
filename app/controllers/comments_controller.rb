@@ -43,9 +43,11 @@ class CommentsController < ApplicationController
     recipe_results = []
     ingredient_results = []
 
-    if search_params.length > 1
-
-
+    if search_params == 'test'
+      user_results = [{'name' =>' hello'}]
+      recipe_results = [{'name' =>' hello'}]
+      ingredient_results = [{'name' =>' hello'}]
+    else
       users = User.search(search_term).records
       users.each do |user|
         user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url}
@@ -75,10 +77,6 @@ class CommentsController < ApplicationController
       # ingredients.each do |ingredient|
       #   ingredient_results << {'name' => ingredient._source.title}
       # end
-    else
-      user_results = [{'name' =>' hello'}]
-      recipe_results = [{'name' =>' hello'}]
-      ingredient_results = [{'name' =>' hello'}]
     end
     results['Users'] = user_results
     results['Recipes'] = recipe_results
