@@ -26,7 +26,7 @@
   .step-first-row
     =render 'activities/step_ingredients'
 
-  .step-content-container.relative
+  .step-content-container
     .aside.aside-inset(  ng-if='isInsetAside($index + 1)' 
                             ng-init='step=activity.steps[$index + 1]'       
                             ng-controller="StepController"                               
@@ -34,7 +34,8 @@
                             ng-class="asideClass()")
       =render 'activities/step_side_edit_buttons'
       %div(ng-include="'_aside.html'")
-    .step-content.relative(   cs-contenteditable="getStepOpenForEdit()" 
+
+    .step-content(   cs-contenteditable="getStepOpenForEdit()" 
                               creator="activity.creator"
                               ng-model="step.directions"
                               placeholder="'Click to write step directions'" )
