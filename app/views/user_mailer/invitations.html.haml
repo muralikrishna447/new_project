@@ -36,7 +36,14 @@
             padding:0;
           }
           a{
-            word-wrap:break-word;
+            word-wrap: break-word;
+            text-decoration: none;
+          }
+
+          .img-circle {
+            border-radius: 75px;
+            width: 75px;
+            max-width: 100%;
           }
           .ReadMsgBody{
             width:100%;
@@ -192,6 +199,16 @@
             font-weight:normal;
             text-decoration:underline;
           }
+
+          hr { 
+            display: block; 
+            height: 1px;
+            border: 0; 
+            border-top: 1px solid #f1f1f1;
+            margin: 1em 0; 
+            padding: 0; 
+            }
+
         @media only screen and (max-width: 480px){
           body,table,td,p,a,li,blockquote{
             -webkit-text-size-adjust:none !important;
@@ -432,8 +449,9 @@
                                           %tr
                                             %td.mcnImageContent{style: "padding-right: 9px;padding-left: 9px;padding-top: 0;padding-bottom: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
                                               %center
-                                                %img.mcnImage{align: "center", alt: "", src: "http://chefsteps.s3.amazonaws.com/static/email/logo-large.png", style: "max-width: 355px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;", width: "355"}
+                                                %img.mcnImage{align: "left", alt: "", src: "http://chefsteps.s3.amazonaws.com/static/email/chefsteps-logo-h-tagline.jpg", style: "max-width: 175px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;", width: "175"}
                   / // END HEADER
+              %hr
               %tr
                 %td{align: "center", style: "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
                   / BEGIN BODY //
@@ -442,7 +460,7 @@
                       %td{align: "center", style: "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
                         %table.templateContainer{border: "0", cellpadding: "0", cellspacing: "0", style: "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", width: "600"}
                           %tr
-                            %td.bodyContainer{style: "padding-top: 10px;padding-bottom: 10px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
+                            %td.bodyContainer{style: "border-top: 3px solid #e25f25; padding-top: 10px;padding-bottom: 10px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
                               %table.mcnTextBlock{border: "0", cellpadding: "0", cellspacing: "0", style: "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", width: "100%"}
                                 %tbody.mcnTextBlockOuter
                                   %tr
@@ -450,81 +468,57 @@
                                       %table.mcnTextContentContainer{align: "left", border: "0", cellpadding: "0", cellspacing: "0", style: "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", width: "600"}
                                         %tbody
                                           %tr
-                                            %td.mcnTextContent{style: "padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;", valign: "top"}
-                                              %h1{style: "margin: 0;padding: 0;display: block;font-family: Helvetica;font-size: 40px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: -1px;text-align: left;color: #606060 !important;"}
-                                                %span{style: "line-height: 1.6em;"}
-                                                  Join
-                                                  =link_to(@sender.name, user_profile_url(@sender))
-                                                  on
-                                                  %a{href: "http://www.chefsteps.com", style: "word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #e25f25;font-weight: normal;text-decoration: underline;", target: "_self"} ChefSteps
-                                                %br
-                                                %br
-                                                %center
-                                                  %a(href="http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")
-                                                    %img(src="http://chefsteps.s3.amazonaws.com/static/email/acceptInvitation@2x.png" width="224" height="45")
-                                                %br/
-                                                %span{style: "font-size: 13px; line-height: 1.6em;"} Learn how to cook smarter
+                                            %td.mcnTextContent{style: "text-align: center; padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;", valign: "top"}
+                                              %center{style: "margin: auto auto; width: 75px; max-width: 100%;"}
+                                                = image_tag filepicker_circle_image(@sender.profile_image_id), class: 'img-circle'                                                  
+                                              %center{style: "margin-top: 20px;"}
+                                                = link_to(@sender.name, user_profile_url(@sender))
+                                                invites you to join
+                                                %a{href: "http://www.chefsteps.com", style: "word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #e25f25;font-weight: normal;text-decoration: underline;", target: "_self"} ChefSteps
+                                                and start cooking smarter.
+                                              %hr
                                               -if @custom_text.present?
                                                 %p
                                                   = @custom_text
-                                              %p{style: "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
-                                                Your friend #{link_to(@sender.name, user_profile_url(@sender))} invited you to join #{link_to("ChefSteps", "http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")}, an online cooking platform dedicated to helping you cook smarter!
-                                                %br
-                                                %br
-                                                Here are just a few of the things that you can do at ChefSteps:
-                                                %br
-                                                %br
-                                                1. #{link_to "Take a Class", "http://www.chefsteps.com/classes"} - Our classes are guided workshops for those who want to get hands-on in the kitchen. You'll master new skills that empower you to create your own recipes and become a more confident cook. And you'll make some delicious food and have fun in the process!
-                                                %br
-                                                %br
-                                                2. #{link_to "Try a New Recipe", "http://www.chefsteps.com/gallery#/?sort=Newest&published_status=Published&activity_type=Recipe&difficulty=Any&generator=ChefSteps"} ChefSteps' recipes are reliable, original, and tested by our award-winning culinary team. Each recipe is demonstrated with a brief and entertaining video, and we explain the hows and whys of key techniques. And it doesn't stop there: Want to adjust the quantities in a recipe to suit your needs? Simply click on the amount and change it to scale up or down. With ChefSteps' interactive and entertaining recipes, culinary success is easier and more fun than ever before.
-                                                %br
-                                                %br
-                                                3. Get Support - Our award-winning team will support you in your culinary adventures. If you love browsing our recipes and videos and want to ask questions, sign up for our forum or ping us on social media - we do our best to respond thoroughly and often. If you're enrolled in a class, we provide personal support and engagement every step of the way.
-                                                %br
-                                                %br
-                                                4. Get Involved - Our #{link_to "Forum", "http://forum.chefsteps.com"} is an active and friendly community of novice and experienced cooks, including many professional chefs. Sign up with ChefSteps and get your questions answered, often within minutes. ChefSteps members can start community discussions, interact with other members, and post their own recipes, photos, and videos.
-                                                %br
-                                                %a(href="http://facebook.com/chefsteps" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
-                                                  %img(src="https://www.filepicker.io/api/file/ZxDuQHsZRACRdrN1EKuu/convert?" width="75" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
-                                                %a(href="http://twitter.com/chefsteps" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
-                                                  %img(src="https://www.filepicker.io/api/file/lXlpzjoGTpq4H19bbRQr/convert?" width="75" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
-                                                %a(href="http://pinterest.com/chefsteps" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
-                                                  %img(src="https://www.filepicker.io/api/file/8PiBecw7R5CGHLHJlvj8/convert?" width="75" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
-                                                %a(href="https://plus.google.com/106370441183974123730/posts" width="75" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
-                                                  %img(src="https://www.filepicker.io/api/file/FkBQ3LZRKyTJ2BDOkaAm/convert?" width="75" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
-                                                %br
-                                                %br
-                                                If there's anything we can do to help make your experience with ChefSteps better, please respond to this email and let us know!
-                                                %br
-                                                %br
-                                                Cheers,
-                                                %br
-                                                Team ChefSteps
-                                                %br
-                                                %br
+                                              %hr                                              
+                                              %center{style: "clear: both; margin-top: 22px"}
+                                                %a(href="http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")
+                                                  %img(src="http://chefsteps.s3.amazonaws.com/static/email/acceptInvitation@2x.png" width="224" height="45")
+                                                %p{style: "margin-top: 22px;"}
+                                                  If there's anything we can do to help make your experience with ChefSteps better, please respond to this email and let us know!
+                                              %br
+                                              Cheers,
+                                              %br
+                                              Team ChefSteps
+                                              %br
+                                              %br
 
-                                                %center
-                                                  %a(href="http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")
-                                                    %img(src="http://chefsteps.s3.amazonaws.com/static/email/acceptInvitation@2x.png" width="224" height="45")
                   / // END BODY
               %tr
                 %td{align: "center", style: "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
                   / BEGIN FOOTER //
                   %table#templateFooter{border: "0", cellpadding: "0", cellspacing: "0", style: "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #F2F2F2;border-top: 0;border-bottom: 0;", width: "100%"}
-                    %tr
-                      %td{align: "center", style: "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
-                        %table.templateContainer{border: "0", cellpadding: "0", cellspacing: "0", style: "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", width: "600"}
-                          %tr
-                            %td.footerContainer{style: "padding-top: 10px;padding-bottom: 10px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
-                              %table.mcnTextBlock{border: "0", cellpadding: "0", cellspacing: "0", style: "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", width: "100%"}
-                                %tbody.mcnTextBlockOuter
-                                  %tr
-                                    %td.mcnTextBlockInner{style: "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
-                                      %table.mcnTextContentContainer{align: "left", border: "0", cellpadding: "0", cellspacing: "0", style: "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", width: "600"}
-                                        %tbody
-                                          %tr
-                                            %td.mcnTextContent{style: "padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 11px;line-height: 125%;text-align: left;", valign: "top"}
-                                              %em Copyright © 2014 ChefSteps, All rights reserved.
+                    %td{align: "center", style: "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
+                      %table.templateContainer{border: "0", cellpadding: "0", cellspacing: "0", style: "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", width: "600"}
+                        %tr
+                          %td.footerContainer{style: "padding-top: 10px;padding-bottom: 10px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
+                            %table.mcnTextBlock{border: "0", cellpadding: "0", cellspacing: "0", style: "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", width: "100%"}
+                              %tbody.mcnTextBlockOuter
+                                %tr
+                                  %td.mcnTextBlockInner{style: "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", valign: "top"}
+                                    %table.mcnTextContentContainer{align: "left", border: "0", cellpadding: "0", cellspacing: "0", style: "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", width: "600"}
+                                      %tbody
+                                        %tr
+                                          %td.mcnTextContent{style: "padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 11px;line-height: 125%;text-align: left;", valign: "top"}
+                                            %a(href="http://facebook.com/chefsteps" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
+                                              %img(src="https://www.filepicker.io/api/file/ZxDuQHsZRACRdrN1EKuu/convert?" width="40" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
+                                            %a(href="http://twitter.com/chefsteps" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
+                                              %img(src="https://www.filepicker.io/api/file/lXlpzjoGTpq4H19bbRQr/convert?" width="40" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
+                                            %a(href="http://pinterest.com/chefsteps" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
+                                              %img(src="https://www.filepicker.io/api/file/8PiBecw7R5CGHLHJlvj8/convert?" width="40" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
+                                            %a(href="https://plus.google.com/106370441183974123730/posts" width="40" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
+                                              %img(src="https://www.filepicker.io/api/file/FkBQ3LZRKyTJ2BDOkaAm/convert?" width="40" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
+                                            %br  
+                                            %em Copyright © 2014 ChefSteps, All rights reserved.
                   / // END FOOTER
             / // END TEMPLATE
