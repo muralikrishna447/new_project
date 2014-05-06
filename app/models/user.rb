@@ -67,6 +67,8 @@ class User < ActiveRecord::Base
 
   ROLES = %w[admin contractor moderator user banned]
 
+  include Searchable
+
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
   end
@@ -205,12 +207,19 @@ class User < ActiveRecord::Base
   end
 
   def encrypted_bloom_info
-    # user_json = self.to_json(only: [:id, :name], methods: :avatar_url)
     user_json = {'userId' => self.id.to_s}.to_json
-    # encrypted = ChefstepsBloom.encrypt(user_json)
-    # encrypted
-    response = Faraday.get 'http://api.usebloom.com/encrypt?string=' + user_json + '&apiKey=xchefsteps'
-    response.body
+    begin
+      response = Faraday.get 'http://api.usebloom.com/encrypt?string=' + user_json + '&apiKey=xchefsteps'
+      response.body
+    rescue Faraday::Error::ConnectionFailed => e
+      logger.warn "Unable to encrypt info for Bloom: #{e}"
+    end
+  end
+
+  def as_indexed_json(options={})
+    as_json(
+      only: [:name, :bio]
+    )
   end
 end
 
