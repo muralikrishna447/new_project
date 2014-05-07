@@ -471,12 +471,12 @@ class Activity < ActiveRecord::Base
   def as_indexed_json(options={})
     as_json(
       only: [:title, :description],
-      methods: [:tag_list, :search_data],
+      methods: [:tag_list],
       include: {
         terminal_ingredients: { only: [:title] },
         steps: { only: [:title, :directions] }
       }
-    )
+    ).merge({'search_data' => search_data})
   end
 
   def search_data
