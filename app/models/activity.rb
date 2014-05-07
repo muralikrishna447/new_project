@@ -476,7 +476,16 @@ class Activity < ActiveRecord::Base
         terminal_ingredients: { only: [:title] },
         steps: { only: [:title, :directions] }
       }
-    )
+    ).merge({'search_data' => search_data})
+  end
+
+  def search_data
+    {
+      'title' => title,
+      'id' => id,
+      'avatarUrl' => avatar_url,
+      'path' => activity_path(self)
+    }
   end
 
   private

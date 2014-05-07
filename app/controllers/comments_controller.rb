@@ -38,51 +38,38 @@ class CommentsController < ApplicationController
   def at
     search_params = params['search']
     search_term = '%' + search_params + '%'
-    results = Hash.new
-    user_results = []
-    recipe_results = []
-    ingredient_results = []
+    # results = Hash.new
+    # @user_results = []
+    # @recipe_results = []
+    # @ingredient_results = []
 
-    if search_params == 'test'
-      user_results = [{'name' =>' hello'}]
-      recipe_results = [{'name' =>' hello'}]
-      ingredient_results = [{'name' =>' hello'}]
-    else
-      users = User.search(search_term).records
-      users.each do |user|
-        user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url}
-      end
+    # users = User.search(search_term).records
+    # users_elapsed_time = Benchmark.ms do
+    #   @user_results = users.map{|user| {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url}}
+    # end
 
-      recipes = Activity.search(search_term).records
-      recipes.each do |recipe|
-        recipe_results << {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url}
-      end
+    # recipes = Activity.search(search_term).records
+    # recipes_elapsed_time = Benchmark.ms do
+    #   @recipe_results = recipes.map{|recipe| {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url}}
+    # end
 
-      ingredients = Ingredient.search(search_term).records
-      ingredients.each do |ingredient|
-        ingredient_results << {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}
-      end
+    # ingredients = Ingredient.search(search_term).records
+    # ingredients_elapsed_time = Benchmark.ms do
+    #   @ingredient_results = ingredients.map{|ingredient| {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}}
+    # end
 
-      # users = User.search(search_term).results
-      # users.each do |user|
-      #   user_results << {'name' => user._source.name}
-      # end
+    # results['Users'] = @user_results
+    # results['Recipes'] = @recipe_results
+    # results['Ingredients'] = @ingredient_results
 
-      # recipes = Activity.search(search_term).results
-      # recipes.each do |recipe|
-      #   recipe_results << {'name' => recipe._source.title}
-      # end
+    # puts "User: #{users_elapsed_time}"
+    # puts "Recipes: #{recipes_elapsed_time}"
+    # puts "Ingredients: #{ingredients_elapsed_time}"
 
-      # ingredients = Ingredient.search(search_term).results
-      # ingredients.each do |ingredient|
-      #   ingredient_results << {'name' => ingredient._source.title}
-      # end
-    end
-    results['Users'] = user_results
-    results['Recipes'] = recipe_results
-    results['Ingredients'] = ingredient_results
+    # render :json => JSON.pretty_generate(results)
+
+    results = Searchable.search(search_params)
     render :json => JSON.pretty_generate(results)
-    # render nothing: true
   end
 
 private
