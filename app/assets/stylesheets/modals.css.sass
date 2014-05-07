@@ -68,53 +68,53 @@ html
     margin: 0px
     width: 100%
 
-  .modal-content
-    .social-connect-body, .invite-modal-body
-      .followerships
-        padding-top: 30px
-      .connect-buttons
-        button
-          width: 200px
-      .follow-buttons
-        .btn
-          width: 150px
-        .btn-following
-          color: $dark-orange
-          background-color: white
-          border-left: 1px #ccc solid
-          border-right: 1px #ccc solid
-          border-top: 1px #ccc solid
-      .search
-        input
-          width: 100%
-          padding-right: 30px
-      .email-invitation
-        input, textarea
-          width: 100%
-        textarea
-          height: 200px
-      .email-content, .google-content
-        border: 1px #ccc solid
-        padding-top: 20px
-        padding-bottom: 20px
-      .point-to-google, .point-to-email
-        height: 15px
-        .email-arrow, .google-arrow
-          width: 0
-          height: 0
-          border-left: 17px solid transparent
-          border-right: 17px solid transparent
-          border-bottom: 17px solid #ccc
-          position: relative
-          &:after
-            border-left: 20px solid transparent
-            border-right: 20px solid transparent
-            border-bottom: 20px solid white
-            bottom: -22px
-            content: ''
-            left: 50%
-            margin-left: -20px
-            position: absolute
+  // .modal-content
+  .social-connect-body, .invite-modal-body
+    .followerships
+      padding-top: 30px
+    .connect-buttons
+      button
+        width: 200px
+    .follow-buttons
+      .btn
+        width: 150px
+      .btn-following
+        color: $dark-orange
+        background-color: white
+        border-left: 1px #ccc solid
+        border-right: 1px #ccc solid
+        border-top: 1px #ccc solid
+    .search
+      input
+        width: 100%
+        padding-right: 30px
+    .email-invitation
+      input, textarea
+        width: 100%
+      textarea
+        height: 200px
+    .email-content, .google-content
+      border: 1px #ccc solid
+      padding-top: 20px
+      padding-bottom: 20px
+    .point-to-google, .point-to-email
+      height: 15px
+      .email-arrow, .google-arrow
+        width: 0
+        height: 0
+        border-left: 17px solid transparent
+        border-right: 17px solid transparent
+        border-bottom: 17px solid #ccc
+        position: relative
+        &:after
+          border-left: 20px solid transparent
+          border-right: 20px solid transparent
+          border-bottom: 20px solid white
+          bottom: -22px
+          content: ''
+          left: 50%
+          margin-left: -20px
+          position: absolute
 
   .modal-header
     position: absolute
@@ -158,3 +158,17 @@ html
     left: 0%
     max-height: 100%
 
+
+@media (max-width: 768px)
+  .modal-fullscreen
+    .social-connect-body, .invite-modal-body
+      .connect-buttons
+        display: inline
+        .span2
+          display: inline
+        .offset3
+          width: 0
+        .span3
+          display: inline
+        .google-button, .email-button, .facebook-button
+          display: inline
