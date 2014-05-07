@@ -39,15 +39,3 @@ describe "InviteController", ->
 
   describe "$on", ->
     beforeEach ->
-      scope.googleConnect = jasmine.createSpy('googleConnect')
-
-    it "should call googleConnect when data loading is greater than zero", ->
-      scope.dataLoading = 1
-      scope.$broadcast("event:google-plus-signin-success")
-      expect(scope.googleConnect).toHaveBeenCalled()
-
-    it "should not call googleConnect when data loading is 0", ->
-      scope.dataLoading = 0
-      scope.$broadcast("event:google-plus-signin-success")
-      expect(scope.googleConnect).not.toHaveBeenCalled()
-      

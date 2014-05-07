@@ -185,22 +185,11 @@ describe "LoginController", ->
         scope.register()
         scope.httpBackend.flush()
 
-      it "should create an alert message", ->
-        expect(scope.alertService.addAlert).toHaveBeenCalledWith({message: 'You have been registered and signed in.', type: 'success'})
-
       it "should set the logged in to true", ->
         expect(scope.logged_in).toEqual(true)
 
-      it "should set the user on the authentication service", ->
-        timeout.flush()
-        expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
-
       it "should close the modal", ->
         expect(scope.loginModalOpen).toBe(false)
-
-      it "should broadcast a login event globally", ->
-        timeout.flush()
-        expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
 
       # it "should open the invite modal if not a purchase", ->
       #   timeout.flush()
@@ -342,55 +331,6 @@ describe "LoginController", ->
         it "should not call loadGoogleContacts", ->
           timeout.flush()
           expect(scope.loadGoogleContacts).not.toHaveBeenCalled()
-
-      describe "inviteModalOpen false", ->
-        beforeEach ->
-          scope.inviteModalOpen = false
-          scope.httpBackend.expect(
-            'POST'
-            "/users/auth/google/callback.js"
-            {google: {access_token: "12345", code: "09876", scope: "all", id_token: "45678"}}
-          ).respond(200, {user: {name: "Test User", email: "test@example.com"}, new_user: true})
-          scope.googleConnect({access_token: "12345", code: "09876", scope: "all", id_token: "45678"})
-          scope.httpBackend.flush()
-
-        it "should set logged_in to true", ->
-          expect(scope.logged_in).toBe(true)
-
-        it "should call alertService.addAlert", ->
-          expect(scope.alertService.addAlert).toHaveBeenCalledWith({message: "You have been logged in through Google.", type: 'success'})
-
-        it "should call authentication.setCurrentUser", ->
-          timeout.flush()
-          expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
-
-        it "should not call loadGoogleContacts", ->
-          timeout.flush()
-          expect(scope.loadGoogleContacts).not.toHaveBeenCalled()
-
-
-      describe "inviteModalOpen", ->
-        beforeEach ->
-          scope.inviteModalOpen = true
-          scope.httpBackend.expect(
-            'POST'
-            "/users/auth/google/callback.js"
-            {google: {access_token: "12345", code: "09876", scope: "all", id_token: "45678"}}
-          ).respond(200, {user: {name: "Test User", email: "test@example.com", user_id: "123", new_user: true}})
-          scope.googleConnect({access_token: "12345", code: "09876", scope: "all", id_token: "45678"})
-          scope.httpBackend.flush()
-
-        it "should not call alertService.addAlert", ->
-          expect(scope.alertService.addAlert).not.toHaveBeenCalled()
-
-        it "should not call loadFriends", ->
-          timeout.flush()
-          expect(scope.loadFriends).not.toHaveBeenCalled()
-
-        it "should call loadGoogleContacts", ->
-          timeout.flush()
-          expect(scope.loadGoogleContacts).toHaveBeenCalled()
-
 
     describe "error", ->
       beforeEach ->
