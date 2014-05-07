@@ -31,7 +31,6 @@
             Hide
 
       .section
-        %pre {{step.presentation_hints | json}}
         %h5 Size 
         .btn-group
           .btn.btn-primary.btn-fake-radio(  ng-class="{'active': isStepType('normal')}"
@@ -40,7 +39,7 @@
           .btn.btn-primary.btn-fake-radio(  ng-class="{'active': isStepType('wide')}"
                                             ng-click='setStepType("wide")')
             Wide
-          .btn.btn-primary.btn-fake-radio(  disabled="! canMakeAside($index)" 
+          .btn.btn-primary.btn-fake-radio(  disabled="{{! canMakeAside($index)}}" 
                                             ng-class="{'active': isStepType('aside')}"
                                             ng-click='setStepType("aside")')
             Aside
@@ -50,20 +49,24 @@
       .section.aside-chooser-group(ng-show="step.is_aside")
         %h5 Preferred Position
         .btn-group
-          %button.btn( ng-model="step.presentation_hints.aside_position"
+          .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
                               btn-radio="'left'"
                               type="button")
-            Left
-          %button.btn( ng-model="step.presentation_hints.aside_position"
+            %i.icon-double-angle-left
+          .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
                               btn-radio="'leftInset'"
                               type="button")
-            Left Inset
-          %button.btn( ng-model="step.presentation_hints.aside_position"
-                              btn-radio="'right'"
+            %i.icon-angle-left
+          .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
+                              btn-radio="'center'"
                               type="button")
-            Right
-          %button.btn( ng-model="step.presentation_hints.aside_position"
+            %i.icon-resize-horizontal
+          .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
                               btn-radio="'rightInset'"
                               type="button")
-            Right Inset
+            %i.icon-angle-right
+          .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
+                              btn-radio="'right'"
+                              type="button")
+            %i.icon-double-angle-right
 

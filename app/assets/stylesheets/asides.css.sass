@@ -10,36 +10,17 @@
 
   &.left, &.leftInset
     float: left
-    margin-right: $horz-baseline-large
-    margin-left: -$aside-width
-
-  &.right, &.rightInset
-    float: right
-    margin-left: $horz-baseline-large
-    margin-right: -$aside-width
 
   &.aside-inset
     width: $aside-width * 2
 
-.list-view
-  .aside.aside-with-media
-    width: 100%
-    float: left
-    .aside-video
-      width: 50%
-      float: left
-      margin-bottom: 0px
-      @include boxsizing
-    .aside-image
-      width: 50%
-      float: left
-      margin-bottom: 0px
-      @include boxsizing
-    .aside-text
-      width: 50%
-      float: left
-      padding-left: 15px
-      @include boxsizing
+  &.leftInset
+    margin-right: $horz-baseline-large
+    margin-left: -$aside-width
+
+  &.rightInset
+    margin-left: $horz-baseline-large
+    margin-right: -$aside-width
 
 // Fix for the case where the aside is in the last step in the class view
 .course-assembly-container

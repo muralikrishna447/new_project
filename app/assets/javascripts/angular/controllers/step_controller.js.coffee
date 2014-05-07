@@ -62,10 +62,11 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     $scope.stepDetailsOpenForEdit = false
     
   $scope.getStepDetailsOpenForEdit = ->
-    $scope.getStepOpenForEdit() && $scope.stepDetailsOpenForEdit
+    $scope.getStepOpenForEdit() && $scope.step.stepDetailsOpenForEdit
  
   $scope.toggleStepDetailsOpenForEdit = ->
-    $scope.stepDetailsOpenForEdit = ! $scope.stepDetailsOpenForEdit
+    # Store in step so it doesn't change when ng-if creates a new scope
+    $scope.step.stepDetailsOpenForEdit = ! $scope.step.stepDetailsOpenForEdit
 
   $scope.$on 'closeAllSteps', ->
     $scope.stepOpenForEdit = false
@@ -74,12 +75,6 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
   $scope.stepOpenForEdit = false
   if $scope.editMode
     $scope.toggleStepOpenForEdit()
-
-  $scope.stepSpan = ->
-    if $scope.step.is_aside
-      'span5 step-with-aside'
-    else
-      'span7'
 
   $scope.asideClass = ->
     result = $scope.step.presentation_hints.aside_position + " "
@@ -100,7 +95,8 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
   $scope.setStepType = (t) ->
     if t == 'aside'
       $scope.step.is_aside = true
-      $scope.step.presentation_hints.aside_position = 'right'
+      # $scope.step.presentation_hints.aside_position = 'right'
     else
+      $scope.step.is_aside = false
       $scope.step.presentation_hints.width = t
 ]
