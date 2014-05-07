@@ -85,17 +85,20 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     $scope.activity.steps.splice(newIdx, 0, movers[0])
     $scope.activity.steps.splice(newIdx + 1, 0, movers[1]) if numToMove > 1
 
-  $scope.isInsetAside = (index) ->
+  $scope.getAsidePos = (index) ->
     step = $scope.activity.steps?[index]
-    return false if ! step || ! step.is_aside
-    pos = step.presentation_hints.aside_position
+    return null if ! step || ! step.is_aside
+    pos = step.presentation_hints?.aside_position
+    pos || "right"
+
+  $scope.isInsetAside = (index) ->
+    pos = $scope.getAsidePos(index)
     (pos == "leftInset") || (pos == "rightInset")
 
+  $scope.isCenterAside = (index) ->
+    $scope.getAsidePos(index) == "center"
+
   $scope.isSeparateAside = (index) ->
-    step = $scope.activity.steps?[index]
-    return false if ! step || ! step.is_aside
-    ! $scope.isInsetAside(index)    
-
-
-
+    pos = $scope.getAsidePos(index)
+    (pos == "left") || (pos == "right")
 ]

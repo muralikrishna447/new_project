@@ -2,8 +2,9 @@
   .activity-ingredients-list#full-ingredients-list.section
   
     .ingredients-menu-button(ng-show="activity.ingredients.length && ! editMode")
-      %i.icon-cog.icon-large( ng-click="toggleIngredientsMenu()" 
-                              ng-class="{'active' : csGlobals.scaling != 1}")
+      .btn.btn-link( ng-click="toggleIngredientsMenu()" 
+                      ng-class="{'active' : csGlobals.scaling != 1}")
+        Scale ...
 
     .ingredients-menu.well( ng-show="activity.ingredients.length"
                             ng-class="{'menu-active' : showIngredientsMenu}")

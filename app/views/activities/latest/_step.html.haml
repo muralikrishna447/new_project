@@ -64,4 +64,10 @@
     %i.icon-circle-arrow-down
     Add step below
 
-
+.aside.aside-center(  ng-if='isCenterAside($index + 1)' 
+                        ng-init='step=activity.steps[$index + 1]'       
+                        ng-controller="StepController"                               
+                        cs-watch-focus=''
+                        ng-class="asideClass()")
+  =render 'activities/step_side_edit_buttons'
+  %div(ng-include="'_aside.html'")

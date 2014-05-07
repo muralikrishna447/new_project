@@ -8,17 +8,17 @@
   %div(ng-if="getStepOpenForEdit()")
     .step-edit-tools.anim-basic-fade(ng-show="getStepDetailsOpenForEdit()")
       .section
-        .btn-link(  ng-click="reorderStep($index, -1)" 
+        .btn-link(  ng-click="reorderStep(stepIndex(), -1)" 
                         ng-class="disableIf(! canMoveStep(stepIndex(), -1))")
           %i.icon-arrow-up
           Move step up
 
-        .btn-link(  ng-click="reorderStep($index, 1)" 
+        .btn-link(  ng-click="reorderStep(stepIndex(), 1)" 
                         ng-class="disableIf(! canMoveStep(stepIndex(), 1))")
           %i.icon-arrow-down
           Move step down
 
-        .btn-link(ng-click="removeStep($index)")
+        .btn-link(ng-click="removeStep(stepIndex())")
           %i.icon-trash
           Delete step
 
