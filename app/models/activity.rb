@@ -471,12 +471,21 @@ class Activity < ActiveRecord::Base
   def as_indexed_json(options={})
     as_json(
       only: [:title, :description],
-      methods: [:tag_list],
+      methods: [:tag_list, :search_data],
       include: {
         terminal_ingredients: { only: [:title] },
         steps: { only: [:title, :directions] }
       }
     )
+  end
+
+  def search_data
+    {
+      'title' => title,
+      'id' => id,
+      'avatarUrl' => avatar_url,
+      'path' => activity_path(self)
+    }
   end
 
   private
