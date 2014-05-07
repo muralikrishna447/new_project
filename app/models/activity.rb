@@ -232,7 +232,8 @@ class Activity < ActiveRecord::Base
             audio_title: step_attr[:audio_title],
             step_order_position: :last,
             hide_number: step_attr[:hide_number],
-            is_aside: step_attr[:is_aside]
+            is_aside: step_attr[:is_aside],
+            presentation_hints: step_attr[:presentation_hints]
         )
         step.update_ingredients_json(step_attr[:ingredients])
       end

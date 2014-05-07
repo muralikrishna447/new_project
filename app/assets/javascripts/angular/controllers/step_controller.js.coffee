@@ -84,10 +84,13 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
       result += 'well-border'
     result
 
+  $scope.getStepClass = ->
+    return 'wide-item' if $scope.step.presentation_hints.width == 'wide'
+    return 'standard-item'
+
   $scope.getStepType = ->
     return 'aside' if $scope.step.is_aside
-    return 'wide' if $scope.step.presentation_hints.width == 'wide'
-    return 'normal'
+    return $scope.step.presentation_hints.width || 'normal'
 
   $scope.isStepType = (t) ->
     $scope.getStepType() == t

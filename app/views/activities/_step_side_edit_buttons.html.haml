@@ -39,7 +39,8 @@
           .btn.btn-primary.btn-fake-radio(  ng-class="{'active': isStepType('wide')}"
                                             ng-click='setStepType("wide")')
             Wide
-          .btn.btn-primary.btn-fake-radio(  ng-class="{'active': isStepType('aside'), 'disabled' : ! canMakeAside(stepIndex())}"
+          .btn.btn-primary.btn-fake-radio(  ng-show="canMakeAside(stepIndex())" 
+                                            ng-class="{'active': isStepType('aside')}"
                                             ng-click='setStepType("aside")')
             Aside
 

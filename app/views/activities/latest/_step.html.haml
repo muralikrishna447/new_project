@@ -10,9 +10,10 @@
   =render 'activities/step_side_edit_buttons'
   %div(ng-include="'_aside.html'")
 
-.standard-item( ng-if='! step.is_aside'
-                ng-controller="StepController"                               
-                cs-watch-focus='')
+%div( ng-if='! step.is_aside'
+      ng-controller="StepController"   
+      ng-class="getStepClass()"                            
+      cs-watch-focus='')
 
   .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, -1)")
     %i.icon-circle-arrow-up
