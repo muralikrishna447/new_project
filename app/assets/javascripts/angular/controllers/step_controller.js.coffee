@@ -99,4 +99,8 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     else
       $scope.step.is_aside = false
       $scope.step.presentation_hints.width = t
+
+  $scope.stepIndex = ->
+    return $scope.$index + 1 if $scope.step.is_aside
+    $scope.$index
 ]
