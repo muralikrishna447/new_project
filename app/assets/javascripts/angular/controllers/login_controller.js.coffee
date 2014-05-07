@@ -123,7 +123,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
             $scope.message = "Success, but with an unexpected success code, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data)
       )
       .error( (data, status) ->
-        $scope.dataLoading -= 1
+        $scope.dataLoadingService.stop()
         if (data.errors)
           $scope.message = data.errors
         else
