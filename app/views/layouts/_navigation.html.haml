@@ -9,20 +9,26 @@
           /   .logo-block
           /     .logo-text ChefSteps
           /     .logo-subtext cook connected
-        .btn-navbar(ng-click="showMenu = !showMenu" ng-class="active='anim-shift-top-active'")
+        .btn-navbar(ng-click="showMenu = !showMenu")
           %h5 menu
           -if @include_edit_toolbar
             #nav-edit-toolbar(collapse="!editMode")
               = render 'activities/edit_toolbar'
           %div(ng-style="toolbarBonusStyle()" ng-hide='editMode')
     #cs-navigation
-      .nav-container.anim-shift-top(ng-show="showMenu" ng-cloak ng-class="active")
+      .nav-container.anim-basic-fade(ng-show="showMenu" ng-cloak ng-class="active")
         %ul.nav
-          %li.dropdown
-            = link_to "Recipes"
-          %li= link_to "Resources"
-          %li= link_to "Community"
-          %li= link_to "Shop"
+          %li= link_to "Recipes"
+          %li
+            = link_to "Resources" 
+            %ul
+              %li
+                %i.fa.fa-leaf &nbsp; ingredients
+              %li
+                %i.fa.fa-book= link_to " classes", courses_url
+              %li= link_to "sous vide collection"
+              %li= link_to "knife collection"
+          %li= link_to "Forum"
           %li= link_to "Profile"
           %li= link_to 'Notifications'
 

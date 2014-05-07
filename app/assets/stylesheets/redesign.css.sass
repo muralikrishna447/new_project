@@ -174,6 +174,11 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   background: $orange
   color: white
 
+.navbar
+  .btn-navbar
+    display: block
+    text-shadow: none
+
 .navbar .nav > li > .dropdown-menu
   // min-width: 400px
   background: none
@@ -1282,26 +1287,59 @@ a:hover
     color: black
     padding: 4px 20px
   .nav
+
   .nav-container
     background: white
     border: 1px solid $offwhite
     position: absolute
-    top: 50px
-    margin-left: 20%
+    top: 60px
+    right: 10px
     float: right
-    width: 80%
+    width: 320px
     padding: $baseline
     @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
 
+  .nav-container 
+    position: absolute
+    background: #fff
+    border: 1px solid $offwhite
+    border-top: 2px solid $orange
+  
+  .nav-container:after, .nav-container:before 
+    bottom: 100%
+    left: 90%
+    border: solid transparent
+    content: " "
+    height: 0
+    width: 0
+    position: absolute
+    pointer-events: none
+  
+
+  .nav-container:after 
+    border-color: rgba(255, 255, 255, 0)
+    border-bottom-color: #fff
+    border-width: 7px
+    margin-left: -5px
+  
+  .nav-container:before 
+    border-color: rgba(194, 225, 245, 0)
+    border-bottom-color: $orange
+    border-width: 10px
+    margin-left: -8px
+  
+  .nav > li
+    width: 100%
   .nav > li > a
     text-shadow: none
     color: #333
     line-height: $baseline *3 
     font-weight: 200
-    @include transition(background .3s)
+    @include transition(all .3s)
     text-transform: uppercase
     &:hover
       color: $orange
+      margin-left: 10px
   .navbar-form
     margin: 12px 10px 12px
     input
@@ -1841,6 +1879,7 @@ input.summary-tweet
 
 /* Landscape phones and down */
 @media (max-width: 480px)
+
   #hero-container
     .media-object
       margin-bottom: 0px
@@ -1951,5 +1990,18 @@ body
     border: 1px solid rgba(226,95,37,.3)
     padding: .5rem
 
+
+@media (max-width: 320px)
+
+  .nav-container
+    margin-top: 7px
+    top: 0
+    left: 0
+
+  .nav > li
+    width: 100%
+    border-bottom: 1px solid #f1f1f1
+
+  .nav > ul
 
 
