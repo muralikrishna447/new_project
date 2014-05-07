@@ -200,13 +200,13 @@
             text-decoration:underline;
           }
 
-          hr { 
-            display: block; 
+          hr {
+            display: block;
             height: 1px;
-            border: 0; 
+            border: 0;
             border-top: 1px solid #f1f1f1;
-            margin: 1em 0; 
-            padding: 0; 
+            margin: 1em 0;
+            padding: 0;
             }
 
         @media only screen and (max-width: 480px){
@@ -470,7 +470,7 @@
                                           %tr
                                             %td.mcnTextContent{style: "text-align: center; padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;", valign: "top"}
                                               %center{style: "margin: auto auto; width: 75px; max-width: 100%;"}
-                                                = image_tag filepicker_circle_image(@sender.profile_image_id), class: 'img-circle'                                                  
+                                                = image_tag filepicker_circle_image(@sender.profile_image_id), class: 'img-circle', width: 75, height: 75
                                               %center{style: "margin-top: 20px;"}
                                                 = link_to(@sender.name, user_profile_url(@sender))
                                                 invites you to join
@@ -480,7 +480,7 @@
                                               -if @custom_text.present?
                                                 %p
                                                   = @custom_text
-                                              %hr                                              
+                                              %hr
                                               %center{style: "clear: both; margin-top: 22px"}
                                                 %a(href="http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")
                                                   %img(src="http://chefsteps.s3.amazonaws.com/static/email/acceptInvitation@2x.png" width="224" height="45")
@@ -518,7 +518,7 @@
                                               %img(src="https://www.filepicker.io/api/file/8PiBecw7R5CGHLHJlvj8/convert?" width="40" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
                                             %a(href="https://plus.google.com/106370441183974123730/posts" width="40" style="color: #2198D3; text-decoration: none; margin: 0; padding: 0;")
                                               %img(src="https://www.filepicker.io/api/file/FkBQ3LZRKyTJ2BDOkaAm/convert?" width="40" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; line-height: 100%; padding: 10px 5px; border: 0 none;")
-                                            %br  
+                                            %br
                                             %em Copyright © 2014 ChefSteps, All rights reserved.
                   / // END FOOTER
             / // END TEMPLATE
