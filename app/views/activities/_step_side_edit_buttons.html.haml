@@ -1,6 +1,8 @@
 .step-sidebar-group.anim-basic-fade.relative
   .btn-edit-step(ng-show="editMode" ng-click="toggleStepOpenForEdit()")
-    %i.icon-edit-sign
+    %i.icon-edit-sign(ng-show="getStepOpenForEdit()")
+    %i.icon-edit(ng-show="! getStepOpenForEdit()")
+
   .btn-edit-step(ng-show="getStepOpenForEdit()" ng-click="toggleStepDetailsOpenForEdit()")
     %i.icon-gear
 
@@ -18,11 +20,7 @@
           %i.icon-arrow-down
           Move step down
 
-        .btn-link(ng-click="removeStep(stepIndex())")
-          %i.icon-trash
-          Delete step
-
-      .section
+      .section(ng-hide="step.is_aside")
         %h5 Step Number
         .btn-group
           .btn.btn-primary(btn-radio="false" ng-model="step.hide_number")
@@ -69,4 +67,9 @@
                               btn-radio="'right'"
                               type="button")
             %i.icon-double-angle-right
+
+      .section
+        .btn-link(ng-click="removeStep(stepIndex())")
+          %i.icon-trash
+          Delete step
 

@@ -1344,15 +1344,15 @@ input.summary-tweet
   &.ng-hide
     opacity: 0
 
-  &.ng-enter, &.ng-leave, &.ng-move
+  &.ng-enter, &.ng-leave, &.ng-move, &.ng-if-enter
     @include transform(scale(1))
     @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms)
 
-  &.ng-enter, &.ng-leave.ng-leave-active
+  &.ng-enter, &.ng-leave.ng-leave-active, &.ng-if-enter, &.ng-if-leave.ng-if-leave-active
     opacity: 0
     @include transform(scale(0))
 
-  &.ng-leave, &.ng-enter-active
+  &.ng-leave, &.ng-enter-active, &.ng-if-leave, &.ng-if-enter.ng-if-enter-active
     opacity: 1
     @include transform(scale(1))
 
