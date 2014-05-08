@@ -1,0 +1,64 @@
+%script(type="text/ng-template" id="socialConnect.html")
+  .social-connect
+    .modal-header
+      %h2 Connect Your Accounts
+      %p
+        ChefSteps is built on community, plain and simple.  We'll show you what courses your friends are taking and what recipes they've liked, and you'll be able to meet, follow, an invite other folks who you think would be great additions to the community.
+    .modal-body(ng-controller="LoginController")
+      .row.connect-buttons
+        .span6.offset3
+          .loading(ng-show="dataLoading")
+            %i.icon-page-load.navigation
+      .row.connect-buttons
+        .span3.offset3
+          .facebook-button
+            %button(ng-click="facebookConnect('socialConnect')" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading || authentication.currentUser().facebook_user_id")
+              %i.icon-facebook
+              %b Facebook
+            %div(ng-show="authentication.currentUser().facebook_user_id")
+              Connected!
+              %a(ng-click="disconnectSocial('facebook')")
+                (X)
+        .span3
+          .google-button
+            -# %span.g-signin
+            %button(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google" ng-disabled="dataLoading || authentication.currentUser().google_user_id")
+              %i.icon-google-plus
+              %b Google
+            %div(ng-show="authentication.currentUser().google_user_id")
+              Connected!
+              %a(ng-click="disconnectSocial('google')")
+                (X)
+        -# .span2
+        -#   .twitter-button
+        -#     -# %span.g-signin
+        -#     %button(ng-click="" class="btn btn-secondary btn-twitter" ng-disabled="dataLoading || true")
+        -#       %i.icon-twitter
+        -#       %b
+        -#         Twitter
+        -#         %small (Coming Soon)
+
+      %hr
+      .followerships(ng-controller="FollowershipsController" ng-init="gatherFriendsFromSocial()")
+        %h2 Friend Suggestions
+        .no-friends(ng-if="possibleFollowers.length == 0")
+          %p We can't seem to find any of your friends who use ChefSteps :(
+          %p Why don't you invite some friends to use ChefSteps?
+        .follow-friends-box(ng-if="possibleFollowers.length > 0")
+          .row-fluid
+            .span3.offset3
+              Here are some of your friends already on ChefSteps
+            .span3
+              %button(ng-click="followMultiple()")
+                Follow All
+          .friends-to-follow(ng-repeat="possibleFollower in possibleFollowers")
+            .row-fluid
+              .span3.offset3
+                {{possibleFollower.name}}
+              .span3.offset1
+                %button(ng-if="possibleFollower.following == false" ng-click="follow(possibleFollower.id)")
+                  Follow
+                %button(ng-if="possibleFollower.following == true" disabled=true)
+                  Following
+    .modal-footer
+      %button.btn(ng-click="$close()") Done

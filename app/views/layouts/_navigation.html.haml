@@ -1,9 +1,12 @@
+.loading-ball(ng-controller="NavbarController")
+  %cs-loading
 - if ! @minimal
   .navbar.navbar-fixed-top(ng-controller="NavbarController")
     .navbar-inner
       .container
         = link_to root_url, class: 'brand' do
-          = image_tag "https://s3.amazonaws.com/chefsteps/static/csLogoHorizontalSmall.svg", id: 'chefsteps-logo'
+          -# = image_tag "https://s3.amazonaws.com/chefsteps/static/csLogoHorizontalSmall.svg", id: 'chefsteps-logo', "ng-class" => "{'is-loading': dataLoading.isLoading()}"
+          %cs-loading
           / .logo-wrapper
           /   .logo-window
           /   .logo-block
@@ -61,7 +64,7 @@
                       %li= link_to 'Store', 'http://store.chefsteps.com'
                       %li= link_to 'Knife Collection', knife_collection_url
                       %li= link_to 'Sous Vide Collection', sv_collection_url
-                %li(ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
+                %li(ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
                   .nav-item-border
                   - if external
                     -# Can't see current_user when external, so use a route that will

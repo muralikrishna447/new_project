@@ -60,6 +60,7 @@ class Activity < ActiveRecord::Base
   scope :popular, where('likes_count IS NOT NULL').order('likes_count DESC')
   scope :by_equipment_title, -> title { joins(:terminal_equipment).where("equipment.title iLIKE ?", '%' + title + '%') }
   scope :by_equipment_titles, -> titles { joins(:terminal_equipment).where("equipment.title iLIKE ANY (array[?])", titles.split(',').map{|a| "%#{a}%"} ) }
+  scope :not_in_course, where(show_only_in_course: false)
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 

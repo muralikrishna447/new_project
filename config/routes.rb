@@ -38,8 +38,11 @@ Delve::Application.routes.draw do
     get 'welcome', to: 'users/registrations#welcome'
     match '/users/auth/google/callback', to: 'users/omniauth_callbacks#google'
     match '/users/auth/facebook/callback', to: 'users/omniauth_callbacks#facebook'
+    delete '/users/social/disconnect', to: "users/omniauth_callbacks#destroy"
     match '/users/contacts/google', to: 'users/contacts#google'
     post '/users/contacts/invite', to: 'users/contacts#invite'
+    post '/users/contacts/gather_friends', to: 'users/contacts#gather_friends'
+    post '/users/contacts/email_invite', to: "users/contacts#email_invite"
   end
 
   get 'users/verify' => 'tokens#verify', as: 'verify'
@@ -64,7 +67,8 @@ Delve::Application.routes.draw do
   get 'about' => 'home#about', as: 'about'
   get 'kiosk' => 'home#kiosk', as: 'kiosk'
   get 'discussion' => 'forum#discussion', as: 'discussion'
-  # get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  get 'ftue' => 'dashboard#ftue', as: 'ftue'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
   get 'egg-timer' => 'pages#egg_timer', as: 'egg_timer'
   get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
@@ -180,7 +184,9 @@ Delve::Application.routes.draw do
       get 'at' => 'comments#at'
     end
   end
-  resources :followerships, only: [:update]
+  resources :followerships, only: [:index, :update] do
+    post :follow_multiple,  on: :collection
+  end
   resources :assemblies, only: [:index, :show] do
     resources :comments
     resources :enrollments

@@ -38,7 +38,7 @@ angular.module('ChefStepsApp').service 'csUrlService', ["$window", ($window) ->
     -1
 
   this.currentSiteAsHttps =  ->
-    if /localhost/.test($window.location.host) || /\.dev/.test($window.location.host)
+    if /localhost/.test($window.location.host) || /\.dev/.test($window.location.host) || /example/.test($window.location.host)
       "http://#{$window.location.host}"
     else
       "https://#{$window.location.host}"
