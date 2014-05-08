@@ -31,14 +31,13 @@
       - if current_user
         - if current_user == @user
           = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-secondary btn-block'
-          %a(class="btn btn-secondary btn-block" ng-click="socialConnect()") Social Connect
           - ab_test('recommended_vs_curated', 'recommended', 'curated') do |recommendation_type|
             %div(ng-controller='ProfileRecommendationsModalController' ng-init="init('#{recommendation_type}')")
               %btn.btn.btn-secondary.btn-block(ng-click='open()')
                 Recipe Recommendations
-          %div(ng-controller='FtueModalController')
-            %btn.btn.btn-secondary.btn-block(ng-click='start()')
-              FTUE
+          -# %div(ng-controller='FtueModalController')
+          -#   %btn.btn.btn-secondary.btn-block(ng-click='start()')
+          -#     FTUE
           = link_to 'Sign out', sign_out_path, class: 'btn btn-secondary btn-block'
     .span5.nav-tabs-gray
       %h4 Bio
