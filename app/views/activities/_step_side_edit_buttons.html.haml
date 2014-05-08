@@ -1,5 +1,5 @@
-.step-sidebar-group.anim-basic-fade.relative
-  .btn-edit-step(ng-show="editMode" ng-click="toggleStepOpenForEdit()")
+.step-sidebar-group.anim-basic-fade.relative.section(ng-show="editMode")
+  .btn-edit-step(ng-click="toggleStepOpenForEdit()")
     %i.icon-edit-sign(ng-class="{'active' : getStepOpenForEdit()}")
   .btn-edit-step(ng-show="getStepOpenForEdit()" ng-click="toggleStepDetailsOpenForEdit()")
     %i.icon-gear(ng-class="{'active' : getStepDetailsOpenForEdit()}")
