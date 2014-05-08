@@ -179,6 +179,8 @@
       url: "/users/contacts/invite.js"
       data:
         emails: friendEmails
+        body: $scope.emailObject.bodyText
+        from: "google_invite"
     ).success( (data, status) ->
       mixpanel.track("Google Invites Sent")
       mixpanel.people.increment("Google Invitations", friendEmails.length)
