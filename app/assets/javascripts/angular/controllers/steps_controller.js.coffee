@@ -27,6 +27,7 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
 
   $scope.removeStep = (idx) ->
     $scope.activity.steps.splice(idx, 1)
+    true
 
   $scope.isAside = (idx) ->
     return true if $scope.activity.steps[idx]?.is_aside

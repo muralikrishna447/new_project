@@ -1,10 +1,8 @@
 .step-sidebar-group.anim-basic-fade.relative
   .btn-edit-step(ng-show="editMode" ng-click="toggleStepOpenForEdit()")
-    %i.icon-edit-sign(ng-show="getStepOpenForEdit()")
-    %i.icon-edit(ng-show="! getStepOpenForEdit()")
-
+    %i.icon-edit-sign(ng-class="{'active' : getStepOpenForEdit()}")
   .btn-edit-step(ng-show="getStepOpenForEdit()" ng-click="toggleStepDetailsOpenForEdit()")
-    %i.icon-gear
+    %i.icon-gear(ng-class="{'active' : getStepDetailsOpenForEdit()}")
 
   -# Outer if to avoid clogging up DOM and expensive watches
   %div(ng-if="getStepOpenForEdit()")
@@ -68,8 +66,17 @@
                               type="button")
             %i.icon-double-angle-right
 
-      .section
-        .btn-link(ng-click="removeStep(stepIndex())")
+      .section(ng-scope)
+        .btn-link(ng-click="showDeleteStepConfirm = true")
           %i.icon-trash
           Delete step
+        %div(modal="showDeleteStepConfirm" close="showDeleteStepConfirm = false")
+          .modal-body
+            Delete this step for reals?
+          .modal-footer
+            .btn-link.btn(ng-click='(showDeleteStepConfirm = false) + removeStep(stepIndex())')
+              Yes, delete!  
+            .btn-link.btn(ng-click='showDeleteStepConfirm = false')
+              Cancel       
+
 

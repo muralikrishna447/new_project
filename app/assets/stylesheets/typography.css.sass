@@ -10,7 +10,7 @@ body
   line-height: $baseline * 2
 
 
-h1, h2, h3
+h1, h2, h3, h1 textarea, h2 textarea, h3 textarea
   @include primary-font-bold
   color: inherit
   margin: 0
@@ -20,13 +20,13 @@ h1, h2, h3
     line-height: inherit
     margin-bottom: 0
 
-h4
+h4, h4 textarea
   @include primary-font
   color: inherit
   margin: 0
   padding: 0
 
-h5
+h5, h5 textarea
   @include primary-font
   text-transform: uppercase
   margin: 0
@@ -35,19 +35,19 @@ h5
 
 /* sizing according to http://modularscale.com/scale/?px1=14&px2=1136&ra1=1.333&ra2=0 */
 
-h1
+h1, h1 textarea
   font-size: 4.4201rem /* 44.201px / 14px */
   line-height: 4.4rem /* 44px / 44px */
 
-h2
+h2, h2 textarea
   font-size: 3.6092rem /* 36.092px / 14px */
   line-height: 4.4rem /* 44px / 36.092px */
 
-h3
+h3, h3 textarea
   font-size: 2.4876rem /* 2.4876px / 14px */
   line-height: 3.3rem /* 33px / 14px */
 
-h4
+h4, h4 textarea
   font-size: 2.0312rem /* 20.312px / 14px */
   line-height: 2.2rem /* 22px / 14px */
   margin-bottom: $baseline
@@ -58,7 +58,7 @@ h4
     line-height: 2.2rem /* 22px / 14px */
     margin-bottom: $baseline
 
-h5
+h5, h5 textarea
   font-size: 1.5238rem
   line-height: 2.2rem
 

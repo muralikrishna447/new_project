@@ -57,6 +57,7 @@
   height: $baseline * 2
 
 .step-number-container
+  padding-top: $baseline * 3
   width: 100%
 
 .step-number
@@ -121,10 +122,12 @@
   border-top: 4px solid $orange
 
 .btn-edit-step
-  color: $orange
+  color: gray
   cursor: pointer
   display: inline-block
   font-size: 2.0312rem
+  i.active
+    color: $orange
 
 @media (max-width: 780px)
   #step-dots
