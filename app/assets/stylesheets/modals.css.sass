@@ -33,7 +33,7 @@
     @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
     opacity: 1
     overflow: hidden
-    top: 100%
+    top: 100
     // This keeps the browser from scrolling to bottom of page when the modal pops on
     max-height: 0%
   &.modal.fade.in
@@ -41,7 +41,7 @@
     max-height: 100%
 
 html
-  &.xmodal-open
+  &.modal-open
     overflow-y: hidden
 
 // Full screen modal with a background image.  Will have to refactor this modal and the takeover to share some code
