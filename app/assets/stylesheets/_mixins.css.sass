@@ -142,6 +142,19 @@
   padding-bottom: 1px
   outline: none
 
+=card
+  padding: $baseline * 2
+  background: white
+  border-top: 4px solid $orange
+
+=popup-card
+  @include card
+  @include transition(all 300ms ease-in-out)
+  @include dark-shadow
+  position: absolute
+  background-color: white
+
+
 /* Typography */
 
 $baseline: 1.1rem /* = 11px/14px */

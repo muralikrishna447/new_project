@@ -1343,23 +1343,49 @@ input.summary-tweet
     opacity: 0
 
   &.ng-enter, &.ng-leave, &.ng-move, &.ng-if-enter
-    @include transform(scale(1))
     @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms)
 
   &.ng-enter, &.ng-leave.ng-leave-active, &.ng-if-enter, &.ng-if-leave.ng-if-leave-active
     opacity: 0
-    @include transform(scale(0))
 
   &.ng-leave, &.ng-enter-active, &.ng-if-leave, &.ng-if-enter.ng-if-enter-active
     opacity: 1
-    @include transform(scale(1))
 
   &.ng-move
     opacity: 0.2
   
   &.ng-move.ng-move-active
     opacity: 1
- 
+
+.anim-scaling-fade
+  @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms)
+  opacity: 1
+
+  &.ng-hide-add, &.ng-hide-remove
+    display: block !important
+    
+  &.ng-hide-add.ng-hide-add-active, &.ng-hide-remove.ng-hide-remove-active
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms)
+
+  &.ng-hide
+    opacity: 0
+
+  &.ng-enter, &.ng-leave, &.ng-move, &.ng-if-enter
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms)
+    @include transform(scale(1))
+  &.ng-enter, &.ng-leave.ng-leave-active, &.ng-if-enter, &.ng-if-leave.ng-if-leave-active
+    @include transform(scale(0))
+    opacity: 0
+
+  &.ng-leave, &.ng-enter-active, &.ng-if-leave, &.ng-if-enter.ng-if-enter-active
+    @include transform(scale(1))
+    opacity: 1
+
+  &.ng-move
+    opacity: 0.2
+  
+  &.ng-move.ng-move-active
+    opacity: 1
 
 
 .anim-delayed-fade
@@ -1673,6 +1699,13 @@ body
   td, th
     border: 1px solid rgba(226,95,37,.3)
     padding: .5rem
+
+.cs-require-confirm-container
+  position: relative
+
+.cs-require-confirm-popup
+  @include popup-card    
+  width: 500px
 
 
 

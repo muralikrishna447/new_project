@@ -110,16 +110,12 @@
       color: #333333
 
 
-
 .step-edit-tools
-  @include transition(all 300ms ease-in-out)
-  @include dark-shadow
-  padding: $baseline * 2
-  background: white
-  position: absolute
+  @include popup-card
   top: 0
-  @include transform(translate(-105%, 0))
-  border-top: 4px solid $orange
+  right: 100%
+  margin-right: 22px
+
 
 .btn-edit-step
   color: gray
