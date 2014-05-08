@@ -67,16 +67,10 @@
             %i.icon-double-angle-right
 
       .section(ng-scope)
-        .btn-link(ng-click="showDeleteStepConfirm = true")
+        .btn-link(  cs-require-confirm
+                    message="Are you sure you want to delete this step?"
+                    action="removeStep(stepIndex())")
           %i.icon-trash
           Delete step
-        %div(modal="showDeleteStepConfirm" close="showDeleteStepConfirm = false")
-          .modal-body
-            Delete this step for reals?
-          .modal-footer
-            .btn-link.btn(ng-click='(showDeleteStepConfirm = false) + removeStep(stepIndex())')
-              Yes, delete!  
-            .btn-link.btn(ng-click='showDeleteStepConfirm = false')
-              Cancel       
 
 
