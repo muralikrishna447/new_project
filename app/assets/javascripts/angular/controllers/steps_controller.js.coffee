@@ -94,7 +94,6 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     if $scope.activityColumns < 2
       pos = "center" if pos == "left" || pos == "right"
     pos = "center" if $scope.noInsets
-    console.log "Now: #{pos}"
     pos
 
   $scope.isInsetAside = (index) ->

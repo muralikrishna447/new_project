@@ -21,10 +21,8 @@
       console.log("#{scope.activityColumns} #{scope.noInsets}")
 
       if ((oldColumns != scope.activityColumns) || (oldNoInsets != scope.noInsets))
-        console.log("apply")
         scope.$apply() if (! scope.$$phase)
       else
-        console.log("no apply")
 
     # Watch the element for direct resizing
     scope.$watch (-> $(element).width()), updateColumns 
