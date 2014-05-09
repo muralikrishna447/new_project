@@ -5,15 +5,26 @@
 
     updateColumns = ->
       oldColumns = scope.activityColumns
-      scope.activityColumns = 3
+      oldNoInsets = scope.noInsets
+
       width = $(element).width() 
+
       # Note these numbers relate to $desktop-standard-item-width etc; not sure how to share
       # them with css :(. 
+      scope.activityColumns = 3
       scope.activityColumns = 2 if width < 1266
-      scope.activityColumns = 1 if width < 933
+      scope.activityColumns = 1 if width < 990
       element.removeClass('activity-columns-1 activity-columns-2 activity-columns-3')
       element.addClass("activity-columns-#{scope.activityColumns}")
-      scope.$apply() if (! scope.$$phase) && (oldColumns != scope.activityColumns)
+
+      scope.noInsets = (window.innerWidth < 768)
+      console.log("#{scope.activityColumns} #{scope.noInsets}")
+
+      if ((oldColumns != scope.activityColumns) || (oldNoInsets != scope.noInsets))
+        console.log("apply")
+        scope.$apply() if (! scope.$$phase)
+      else
+        console.log("no apply")
 
     # Watch the element for direct resizing
     scope.$watch (-> $(element).width()), updateColumns 

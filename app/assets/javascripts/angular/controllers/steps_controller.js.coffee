@@ -89,11 +89,11 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
   $scope.effectiveAsideType = (index) ->
     return null if ! $scope.isAside(index)
     pos = $scope.activity.steps?[index].presentation_hints?.aside_position || "right"
-    console.log "Orig: #{pos}"
     if $scope.activityColumns < 3
-      pos = "center" if pos == "left" || pos == "leftInset"
+      pos = "center" if pos == "left"
     if $scope.activityColumns < 2
-      pos = "center"
+      pos = "center" if pos == "left" || pos == "right"
+    pos = "center" if $scope.noInsets
     console.log "Now: #{pos}"
     pos
 

@@ -1,6 +1,11 @@
 @import 'mixins'
 
+.master-column-container
+  @include boxsizing
+  width: 100%
+
 .master-column
+  @include boxsizing
   width: 100%
   max-width: $desktop-standard-item-width + (2 * $aside-width) + (2 * $aside-margin)
   @include horizontal-center
@@ -8,7 +13,8 @@
 .base-item
   @include boxsizing
   @include horizontal-center
-  position: relative  
+  position: relative 
+  max-width: 100% 
 
 .standard-item
   @extend .base-item
@@ -46,34 +52,35 @@
   .master-column
     width: $desktop-standard-item-width + $aside-width + $aside-margin
 
-  .base-item, .aside.center
-    margin-left: 0
-
-  .banner-image
-    .standard-item
-      margin-left: auto
-
 .activity-columns-1
   .master-column
     width: $desktop-standard-item-width
+    max-width: 100%
 
-  .base-item, .aside
-    margin-left: auto
+.activity-columns-2, .activity-columns-1
+  .leftInset, .rightInset
+    width: $desktop-standard-item-width / 1.5
+    margin-right: $horz-baseline-large * 2
 
-@media(max-width: 666px)
+  .leftInset
+    margin-left: -100px
+    margin-right: $horz-baseline-large * 2
+
+  .rightInset
+    margin-right: -100px
+    margin-left: $horz-baseline-large * 2
+
+@media (max-width: 860px)
   .activity-columns-1
-    .master-column-container
-      width: 100%
-      padding-left: $horz-baseline-large
-      padding-right: $horz-baseline-large
+    .leftInset, .rightInset
+      width: 60%
 
-    .master-column
-      width: 100%
+    .leftInset
+      margin-left: -7%
+      margin-right: $horz-baseline-large * 2
 
-    .base-item
-      margin-left: 0
-      margin-right: 0
+    .rightInset
+      margin-right: -7%
+      margin-left: $horz-baseline-large * 2
 
-    .standard-item, .medium-item, .wide-item, .aside
-      width: 100%
 
