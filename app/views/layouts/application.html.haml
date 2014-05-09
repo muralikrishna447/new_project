@@ -57,7 +57,7 @@
       :javascript
         window.chefstepsUserId = null
 
-  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp", "ng-init" => "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'", :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}"}}
+  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' => "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'"}
     - unless @hide_nav == true
       = render 'layouts/navigation', external: false
       - unless @no_alerts == true
