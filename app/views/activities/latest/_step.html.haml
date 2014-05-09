@@ -3,10 +3,10 @@
 -# right and align with the top. Note nasty little trick of rebinding step to
 -# the next step.
 .aside.aside-separate.anim-basic-fade(  ng-if='isSeparateAside($index + 1)' 
-                        ng-init='step=activity.steps[$index + 1]'       
-                        ng-controller="StepController"                               
-                        cs-watch-focus=''
-                        ng-class="asideClass()")
+                                        ng-init='step=activity.steps[$index + 1]'       
+                                        ng-controller="StepController"   
+                                        cs-watch-focus=''
+                                        ng-class="asideClass()")
   =render 'activities/step_side_edit_buttons'
   %div(ng-include="'_aside.html'")
 
@@ -34,13 +34,13 @@
 
   .step-content-container
     .aside.aside-inset.anim-basic-fade(  ng-if='isInsetAside($index + 1)' 
-                            ng-init='step=activity.steps[$index + 1]'       
-                            ng-controller="StepController"                               
-                            cs-watch-focus=''
-                            ng-class="asideClass()")
+                                            ng-init='step=activity.steps[$index + 1]'       
+                                            ng-controller="StepController"   
+                                            cs-watch-focus=''
+                                            ng-class="asideClass()")
       =render 'activities/step_side_edit_buttons'
       %div(ng-include="'_aside.html'")
-
+      
     .step-content(   cs-contenteditable="getStepOpenForEdit()" 
                               creator="activity.creator"
                               ng-model="step.directions"
@@ -65,9 +65,10 @@
     Add step below
 
 .aside.aside-center.anim-basic-fade(  ng-if='isCenterAside($index + 1)' 
-                        ng-init='step=activity.steps[$index + 1]'       
-                        ng-controller="StepController"                               
-                        cs-watch-focus=''
-                        ng-class="asideClass()")
+                                        ng-init='step=activity.steps[$index + 1]'       
+                                        ng-controller="StepController"   
+                                        cs-watch-focus=''
+                                        ng-class="asideClass()")
+
   =render 'activities/step_side_edit_buttons'
   %div(ng-include="'_aside.html'")

@@ -1,6 +1,5 @@
 @import 'mixins'
 
-
 .master-column
   width: 100%
   max-width: $desktop-standard-item-width + (2 * $aside-width) + (2 * $aside-margin)
@@ -15,7 +14,6 @@
   @extend .base-item
   width: $desktop-standard-item-width
 
-  
 .medium-item
   @extend .base-item
   width: $desktop-standard-item-width + 200px
@@ -44,43 +42,38 @@
   &:not(:first-child-of-type)
     margin-left: 30px
 
-
-// Single sidebar, all asides go right
-@media(max-width: 1300px)
+.activity-columns-2
   .master-column
     width: $desktop-standard-item-width + $aside-width + $aside-margin
 
-  .base-item
+  .base-item, .aside.center
     margin-left: 0
 
   .banner-image
     .standard-item
       margin-left: auto
 
-  .aside.left
-    float: right !important
-
-// No sidebar, asides fall in main column
-@media(max-width: 1024px)
+.activity-columns-1
   .master-column
     width: $desktop-standard-item-width
 
-  .base-item
+  .base-item, .aside
     margin-left: auto
 
-  .aside.left, .aside.right
-    float: none !important
-    width: 100%
-
-
 @media(max-width: 666px)
-  .master-column
-    width: 100%
+  .activity-columns-1
+    .master-column-container
+      width: 100%
+      padding-left: $horz-baseline-large
+      padding-right: $horz-baseline-large
 
-  .base-item
-    margin-left: 0
-    margin-right: 0
+    .master-column
+      width: 100%
 
-  .standard-item, .medium-item, .wide-item
-    width: 100%
+    .base-item
+      margin-left: 0
+      margin-right: 0
+
+    .standard-item, .medium-item, .wide-item, .aside
+      width: 100%
 

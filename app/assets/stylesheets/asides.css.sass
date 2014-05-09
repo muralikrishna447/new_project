@@ -1,7 +1,5 @@
 @import 'mixins'
 
-
-
 .aside
   float: right
   width: $aside-width
@@ -11,7 +9,7 @@
   &.left, &.leftInset
     float: left
 
-  &.aside-inset
+  &.leftInset, &.rightInset
     width: $aside-width * 2
 
   &.leftInset
@@ -22,7 +20,7 @@
     margin-left: $horz-baseline-large
     margin-right: -$aside-width
 
-  &.aside-center
+  &.center
     float: none
     width: $desktop-standard-item-width
     margin-left: auto

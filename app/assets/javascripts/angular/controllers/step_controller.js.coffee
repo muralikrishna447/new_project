@@ -76,13 +76,6 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
   if $scope.editMode
     $scope.toggleStepOpenForEdit()
 
-  $scope.asideClass = ->
-    result = ($scope.step.presentation_hints?.aside_position || "") + " "
-    if $scope.hasAV() || $scope.step.image_id
-      result += 'well aside-with-media'
-    else
-      result += 'well-border'
-    result
 
   $scope.getStepClass = ->
     return 'wide-item' if $scope.step.presentation_hints?.width == 'wide'
@@ -106,4 +99,12 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
   $scope.stepIndex = ->
     return $scope.$index + 1 if $scope.step.is_aside
     $scope.$index
+
+  $scope.asideClass =  ->
+    result = ($scope.effectiveAsideType($scope.stepIndex()) || '')
+    if $scope.hasAV() || $scope.step.image_id
+      result += ' well aside-with-media'
+    else
+      result += ' well-border'
+    result
 ]
