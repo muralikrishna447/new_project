@@ -1,8 +1,14 @@
 @import mixins
 
+// Bootstrap override
+.modal
+  .modal-content
+    .modal-footer
+      max-height: 80px
+
 .takeover-modal
   position: fixed !important
-  top: 0px 
+  top: 0px
   left: 0
   right: 0
   bottom: 0
@@ -21,7 +27,7 @@
     padding-left: 10%
     padding-right: 10%
     padding-top: $baseline * 3
- 
+
   .modal-body
     background-color: white
     max-height: 100%
@@ -48,7 +54,7 @@ html
 
 .modal-fullscreen
   position: fixed !important
-  top: 0px 
+  top: 0px
   left: 0
   right: 0
   bottom: 0
@@ -59,9 +65,56 @@ html
   border: none
   .modal-dialog
     height: 100%
-    overflow-y: auto
+    margin: 0px
+    width: 100%
 
-  .modal-content
+  // .modal-content
+  .social-connect-body, .invite-modal-body
+    .followerships
+      padding-top: 30px
+    .connect-buttons
+      button
+        width: 200px
+    .follow-buttons
+      .btn
+        width: 150px
+      .btn-following
+        color: $dark-orange
+        background-color: white
+        border-left: 1px #ccc solid
+        border-right: 1px #ccc solid
+        border-top: 1px #ccc solid
+    .search
+      input
+        width: 100%
+        padding-right: 30px
+    .email-invitation
+      input, textarea
+        width: 100%
+      textarea
+        height: 200px
+    .email-content, .google-content
+      border: 1px #ccc solid
+      padding-top: 20px
+      padding-bottom: 20px
+    .point-to-google, .point-to-email
+      height: 15px
+      .email-arrow, .google-arrow
+        width: 0
+        height: 0
+        border-left: 17px solid transparent
+        border-right: 17px solid transparent
+        border-bottom: 17px solid #ccc
+        position: relative
+        &:after
+          border-left: 20px solid transparent
+          border-right: 20px solid transparent
+          border-bottom: 20px solid white
+          bottom: -22px
+          content: ''
+          left: 50%
+          margin-left: -20px
+          position: absolute
 
   .modal-header
     position: absolute
@@ -79,21 +132,43 @@ html
     top: 0px
     left: 0px
     padding: 0px
-    padding-top: 50px
-    padding-bottom: 50px
+    padding-top: 40px
+    padding-bottom: 140px
     @include boxsizing
   .modal-footer
     position: absolute
     width: 100%
-    height: 50px
+    height: 75px
     bottom: 0px
     left: 0px
+    z-index: 10
     @include boxsizing
   .modal-overlay
     background-color: rgba(255,255,255,0.8)
     padding: 20px
+    @include boxsizing
+  &.modal.fade
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
+    overflow: hidden
+    top: -100%
+    left: 0%
+    max-height: 100%
   &.modal.fade.in
     top: 0%
-    left: 0px
-    width: 100%
+    left: 0%
     max-height: 100%
+
+
+@media (max-width: 768px)
+  .modal-fullscreen
+    .social-connect-body, .invite-modal-body
+      .connect-buttons
+        display: inline
+        .span2
+          display: inline
+        .offset3
+          width: 0
+        .span3
+          display: inline
+        .google-button, .email-button, .facebook-button
+          display: inline

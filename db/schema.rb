@@ -596,7 +596,7 @@ ActiveRecord::Schema.define(:version => 20140409202332) do
     t.datetime "updated_at",                             :null => false
     t.string   "name",                   :default => "", :null => false
     t.string   "provider"
-    t.string   "uid"
+    t.string   "facebook_user_id"
     t.string   "location",               :default => ""
     t.string   "website",                :default => ""
     t.text     "quote",                  :default => ""
@@ -619,6 +619,9 @@ ActiveRecord::Schema.define(:version => 20140409202332) do
     t.string   "referred_from"
     t.hstore   "survey_results"
     t.integer  "events_count"
+    t.string   "twitter_user_id"
+    t.string   "twitter_auth_token"
+    t.string   "twitter_user_name"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

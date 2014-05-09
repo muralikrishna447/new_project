@@ -34,6 +34,17 @@ class User < ActiveRecord::Base
 
   serialize :viewed_activities, Array
 
+  # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }
+  # scope :where_all, ->(column, key, value) { where("? = ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }
+  # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore LIKE ?)", value, '%' + key + '%') }
+  # scope :where_all, ->(column, key, value) { where("? = ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore LIKE ?)", value, '%' + key + '%') }
+
+  # scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", '%' + value + '%', key) }
+  # scope :where_all, ->(column, key, value) { where("? LIKE ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", '%' + value + '%', key) }
+
+  scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
+  scope :where_all, ->(column, key, value) { where("? LIKE ALL (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
+
   gravtastic
 
   devise :database_authenticatable, :registerable,
@@ -181,6 +192,18 @@ class User < ActiveRecord::Base
 
   def class_enrollment(assembly)
     enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first
+  end
+
+  def disconnect_service!(service)
+    case service
+    when "facebook"
+      update_attributes({facebook_user_id: nil, provider: nil}, without_protection: true)
+    when "google"
+      update_attributes({google_user_id: nil, google_access_token: nil}, without_protection: true)
+    when "twitter"
+    else
+      raise "Don't Recognize this service! Service was '#{service}'"
+    end
   end
 
   def encrypted_bloom_info
