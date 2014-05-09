@@ -1261,137 +1261,6 @@ a:hover
 .label-technique
   background: $red
 
-/* Navbar */
-.navbar-fixed-top
-  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
-  -webkit-transform: translateZ(0)
-  margin-bottom: 5px
-  //position: fixed
-  //margin-left: 0px
-  //margin-right: 0px
-  //-webkit-backface-visibility: hidden
-  @include transition(all 300ms)
-
-  .navbar-inner
-    box-shadow: none
-    background-image: none
-    background-color: $offwhite
-    border-color: $dark-orange
-    border: none
-    border-bottom: 1px solid $light-gray
-    padding: 5px 0px
-
-  .brand
-    text-shadow: none
-    color: black
-    padding: 4px 20px
-  .nav
-
-  .nav-container
-    background: white
-    border: 1px solid $offwhite
-    position: absolute
-    top: 60px
-    right: 10px
-    float: right
-    width: 320px
-    padding: $baseline
-    @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
-
-  .nav-container 
-    position: absolute
-    background: #fff
-    border: 1px solid $offwhite
-    border-top: 2px solid $orange
-  
-  .nav-container:after, .nav-container:before 
-    bottom: 100%
-    left: 90%
-    border: solid transparent
-    content: " "
-    height: 0
-    width: 0
-    position: absolute
-    pointer-events: none
-  
-
-  .nav-container:after 
-    border-color: rgba(255, 255, 255, 0)
-    border-bottom-color: #fff
-    border-width: 7px
-    margin-left: -5px
-  
-  .nav-container:before 
-    border-color: rgba(194, 225, 245, 0)
-    border-bottom-color: $orange
-    border-width: 10px
-    margin-left: -8px
-  
-  .nav > li
-    width: 100%
-    line-height: $baseline * 3
-
-  .nav > li > a
-    @include transition(all .3s)
-    text-transform: uppercase
-    &:hover
-      color: $orange
-      margin-left: 10px
-  .nav > li > ul
-    margin-bottom: $baseline * 2 
-  .nav > li > ul > li
-    margin-left: 10px
-    list-style-type: none
-  .navbar-form
-    margin: 12px 10px 12px
-    input
-      margin: 0px
-  .btn-navbar
-    margin-top: $baseline
-    color: $orange
-    background: none
-    cursor: pointer
-    h5
-      margin-bottom: 0
-    .icon-bar
-      background-color: white
-    &:hover
-      background-image: none
-      background-color: $orange
-      +radius(2px)
-  .nav-search
-    height: 55px
-    width: 40px
-    overflow: hidden
-    @include transition(background 300ms)
-    input[type='text']:focus
-      border-color: $orange
-      box-shadow: none
-    &:hover
-      cursor: pointer
-    .icon-search
-      margin: 21px 10px 22px
-      color: black
-      float: left
-    .icon-remove
-      margin: 20px 5px
-      color: black
-      float: left
-    .nav-search-form
-      float: left
-      width: 160px
-      padding: 0px
-      margin-right: 0px
-      margin-left: 0px
-      overflow: hidden
-      input
-        width: 130px
-        outline: none
-  .nav-search-show
-    width: 230px
-
-
-
 
 // WYSIWYG EDITING
 
@@ -1729,14 +1598,6 @@ input.summary-tweet
   .activity-description
     height: 143px
 
-  .navbar
-    .navbar-inner
-      .container
-        width: 100%
-        .brand
-          margin-left: 0px
-          padding: 4px 5px
-
   .static-height
     height: 360px
 
@@ -1773,11 +1634,6 @@ input.summary-tweet
   .activity-description
     height: 187px
 
-  .navbar .nav > li > .dropdown-menu li a
-    color: #333
-    &:hover
-      color: #fff
-
   .top-container
     margin-top: 0px
 
@@ -1788,11 +1644,6 @@ input.summary-tweet
   .no-margin-padding
     padding: 0px
     margin: 0px
-
-  .navbar
-    .navbar-inner
-      .container
-        width: 100%
 
   .static-height
     height: 480px        
@@ -1857,11 +1708,6 @@ input.summary-tweet
   .nav-item-border
     display: none
 
-  .navbar .nav > li > .dropdown-menu li a
-    color: #333
-    &:hover
-      color: #fff
-
   .top-container
     margin-top: 0px
 
@@ -1911,12 +1757,6 @@ input.summary-tweet
       .step-content
         width: 80%
         padding-top: 10px
-
-  .navbar .nav > li > .dropdown-menu li a
-    color: #333
-    font-weight: normal
-    &:hover
-      color: #fff
 
   .madlib, .madlib input
     font-size: 20px
