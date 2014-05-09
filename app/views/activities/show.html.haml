@@ -41,7 +41,7 @@
 
 -################################ PRIMARY CONTENT ################################
 
-.banner-image(  ng-controller="BannerController"
+.banner-image.noprint(  ng-controller="BannerController"
                 ng-cloak 
                 ng-click='toggleHeroVisual()' 
                 ng-if="heroMedia.heroDisplayType() != 'none'"
@@ -55,10 +55,10 @@
   .standard-item
     .hero-video.noprint
       = render 'activities/hero_visual'
-.banner-spacer( ng-if="heroMedia.heroDisplayType() == 'none'" )
+.banner-spacer.noprint( ng-if="heroMedia.heroDisplayType() == 'none'" )
 
 #activity-title(data-activity="#{@activity.title}")
-%form(ng-cloak name="activityForm" csfixnakedlinks)
+%form.printable(ng-cloak name="activityForm" csfixnakedlinks)
   #activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
     .container
       .row.noprint(ng-cloak ng-show="editMode && alerts.length > 0")

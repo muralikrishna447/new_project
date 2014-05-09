@@ -1,92 +1,12 @@
-// $print_gray: rgb(220, 220, 220)
 
-// .noprint
-//   display: none !important
-
-// @page
-//   margin: 1cm
-
-// p, body, .step-directions li, table.ingredients, .hero-unit
-//   font-size: 12pt
-//   line-height: 1.2em
-
-// #overview h1
-//   color: black
-//   font-size: 30pt
-
-// .navbar .brand-container
-//   margin-left: 20%
-//   margin-bottom: 2em
-
-// .main-container
-//   padding: 0
-//   float: none !important
-
-// .horizontal-divider
-//   display: none
-
-// .hero-well
-//   background: white
-
-// .hero-unit.hero-well.hero-step-by-step
-//   border: none
-//   padding-top: 0px
-
-// .hero-unit
-//   font-weight: normal
-
-// a, .step strong, table.ingredients thead
-//   color: black !important
-
-// table.ingredients
-//   margin-top: 6pt
-//   width: 20em
-//   line-height: 1em
-
-//   thead
-//     display: none
-
-// .hero-step-by-step
-//   margin-top: 0.5em
-//   margin-bottom: 0.5em
-
-//   .step
-//     margin-top: 1em !important
-//     page-break-inside: avoid
-
-//     .step_title
-//       box-shadow: 0 0 0 2em $print_gray inset
-//       padding-left: 20px
-//       width:  100%
-//       margin-top: 0px
-
-//     .well
-//       padding-top: 0
-//       background: transparent
-//       border:  none !important
-//       box-shadow:  none
-
-//     .step-directions
-//       vertical-align: top
-
-//     .step_directions_col
-//       width: 60%
-
-//     .step-img-col
-//       margin-right: 0
-//       width: 30%
-
-//       .well
-//         padding-right: 0
-
-//      img
-        //filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale")/* Firefox 10+, Firefox on Android */
-        //filter: gray
-//        -webkit-filter: grayscale(100%)
+@import 'mixins'
 
 @media print
   body *
     visibility: hidden
+
+  @page
+    margin: (5 * $baseline) ($horz-baseline-large * 5)
 
   .printable, .printable *
     visibility: visible
@@ -103,7 +23,6 @@
     left: 0
     top: 0
     
-
   .printonly
     visibility: visible
     display: block
@@ -112,7 +31,7 @@
     width: 50%
     margin-left: 25%
 
-  .noprint
+  .noprint, .nell-popup, .nell-embed, .navbar 
     display: none !important
 
   .video-container
@@ -130,8 +49,46 @@
     .tab-pane
       display: block
 
-  #activity-description
-    height: inherit
+  .standard-item, .medium-item, .wide-item
+    width: 100% !important
+    page-break-after: auto
+
+  .half-medium-item, .quarter-medium-item, .aside
+    width: 100% !important
+    page-break-after: auto
+    margin-left: 0 !important
+
+  .aside, .aside-separate
+    float: none !important
+    border: 1px solid gray !important
+
+  .step-number
+    font-size: 2.0312rem /* 20.312px / 14px */
+    line-height: 2.2rem /* 22px / 14px */
+    @include primary-font
+    margin-left: 0
+    margin-right: 0
+    text-align: left
+    display: inline
+    div
+      &:after
+        content: ". "
+
+  .step-number-container
+    margin-left: 0
+    margin-right: 5px
+    display: inline
+    padding-top: 0
+    margin-bottom: 0
+    width: auto
+    float: left
+    position: relative
+
+  [ng-model="step.title"]
+    display: inline
+    text-align: left
+    margin-left: 0
+    margin-right: 0
 
   .show-mode
     .ingredients-menu-button

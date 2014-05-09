@@ -1,12 +1,11 @@
 
-.aside
-  .noprint(ng-show="! editMode")
-    = render 'activities/tools'
+.aside.noprint(ng-show="! editMode")
+  = render 'activities/tools'
 
 .standard-item
   = render 'activities/title'
   -if defined? activity
-    .section-tiny(ng-hide="editMode")
+    .section-tiny.noprint(ng-hide="editMode")
       = render 'layouts/social_buttons', media_object: activity
 
 .standard-item
@@ -39,7 +38,7 @@
                   ng-model="activity.timing")
         .inline.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
 
-    .section(ng-show='(! editMode) && (activity.used_in.length > 0)') 
+    .section.noprint(ng-show='(! editMode) && (activity.used_in.length > 0)') 
       %h5 Used In
       %ul.no-bullet
         %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true | limitTo:10")
@@ -49,7 +48,7 @@
           %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
             %i.icon-group
 
-    .section(ng-show='(! editMode) && (activity.forks.length > 0)') 
+    .section.noprint(ng-show='(! editMode) && (activity.forks.length > 0)') 
       %h5 Forks
       %ul.no-bullet
         %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true | limitTo:10")
