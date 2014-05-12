@@ -65,6 +65,7 @@
  *= require buttons
  *= require cs_redactor
  *= require bloom/bloom
+ *= require cs_ftue
  *= require scroll_action
  *= require nell_popup
  *= require google_remarketing

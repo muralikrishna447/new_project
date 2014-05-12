@@ -16,7 +16,7 @@ class UserPresenter < Presenter
 
   def profile_image_url
     if @model.connected_with_facebook?
-      UserPresenter.facebook_image_url(@model.uid)
+      UserPresenter.facebook_image_url(@model.facebook_user_id)
     else
       @model.gravatar_url(default: default_profile_photo_url)
     end

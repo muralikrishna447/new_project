@@ -28,7 +28,8 @@
       %meta{property: 'twitter:player:width', content: '480'}
     - else
       %meta{property: 'twitter:card', content: 'summary_large_image'}
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()", :'ng-init' => "popupEligible = #{@viewed_activities && @viewed_activities.count > 1}", :'ng-class' => '{"activity_show" : true}'}
+
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()", :'ng-class' => '{"activity_show" : true}' }
 
 -# This is how search engine crawlers know to request the _escaped_fragment_ page
 - content_for :ajax_seo do

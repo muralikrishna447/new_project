@@ -22,6 +22,11 @@ class LikesController < ApplicationController
   end
 
   def by_user
+    if ! current_user
+      render json: []
+      return
+    end
+    
     resource = params[:likeable_type]
     id = params[:likeable_id]
     if ['Activity'].include?(resource)

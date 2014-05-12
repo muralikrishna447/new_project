@@ -19,9 +19,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     unless request.xhr?
       standard_login
     else
-      @user = User.facebook_connect(params[:user])
-      set_referrer
-      javascript_login
+      if current_user
+        current_user.facebook_connect(params[:user])
+        return render status: 200, json: {success: true, new_user: false, info: "Associated account", user: current_user.as_json(include: :enrollments)}
+      else
+        @user = User.facebook_connect(params[:user])
+        set_referrer
+        javascript_login
+      end
     end
   end
 
@@ -32,13 +37,18 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       user_options = User.gather_info_from_google(params, google_app_id, google_secret)
       if current_user
         current_user.google_connect(user_options)
-        return render status: 200, json: {success: true, new_user: false, info: "Associated account", user: current_user.to_json(include: :enrollments)}
+        return render status: 200, json: {success: true, new_user: false, info: "Associated account", user: current_user.as_json(include: :enrollments)}
       else
         @user = User.google_connect(user_options)
         set_referrer
         javascript_login
       end
     end
+  end
+
+  def destroy
+    current_user.disconnect_service!(params[:service])
+    return render status: 200, json: {success: true, info: "Disassociated Account", user: current_user.as_json(include: :enrollments)}
   end
 
 
@@ -75,14 +85,14 @@ private
         cookies[:returning_visitor] = true
         mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
         mixpanel.track(@user.email, 'Signed Up')
-        return render status: 200, json: {success: true, new_user: @new_signup, info: "Signed Up", user: current_user.to_json(include: :enrollments)}
+        return render status: 200, json: {success: true, new_user: @new_signup, info: "Signed Up", user: current_user.as_json(include: :enrollments)}
       else
         # Trigger as a login
         sign_in @user
         remember_me(current_user)
         mixpanel.track(current_user.email, 'Signed In')
         mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
-        return render status: 200, json: {success: true, new_user: @new_signup, info: "Logged in", user: current_user.to_json(include: :enrollments)}
+        return render status: 200, json: {success: true, new_user: @new_signup, info: "Logged in", user: current_user.as_json(include: :enrollments)}
       end
     end
   end

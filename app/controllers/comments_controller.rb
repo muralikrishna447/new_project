@@ -38,33 +38,38 @@ class CommentsController < ApplicationController
   def at
     search_params = params['search']
     search_term = '%' + search_params + '%'
-    results = Hash.new
+    # results = Hash.new
+    # @user_results = []
+    # @recipe_results = []
+    # @ingredient_results = []
 
-    user_results = []
-    users = User.where("name iLIKE ?", search_term).order('events_count desc').limit(300)
-    # users.each do |user|
-    #   user_results << {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url, 'rank' => user.events_count}
+    # users = User.search(search_term).records
+    # users_elapsed_time = Benchmark.ms do
+    #   @user_results = users.map{|user| {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url}}
     # end
 
-    recipe_results = []
-    # recipes = Activity.chefsteps_generated.where("title iLIKE ?", search_term).order('likes_count desc').limit(300)
-    recipes = Activity.search(search_term).records
-    recipes.each do |recipe|
-      recipe_results << {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url, 'rank' => recipe.likes_count}
-    end
+    # recipes = Activity.search(search_term).records
+    # recipes_elapsed_time = Benchmark.ms do
+    #   @recipe_results = recipes.map{|recipe| {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url}}
+    # end
 
-    ingredient_results = []
-    # ingredients = Ingredient.no_sub_activities.where("title iLIKE ?", search_term).order('title asc').limit(300)
-    ingredients = Ingredient.search(search_term).records
-    ingredients.each do |ingredient|
-      ingredient_results << {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}
-    end
+    # ingredients = Ingredient.search(search_term).records
+    # ingredients_elapsed_time = Benchmark.ms do
+    #   @ingredient_results = ingredients.map{|ingredient| {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}}
+    # end
 
-    results['Users'] = user_results
-    results['Recipes'] = recipe_results
-    results['Ingredients'] = ingredient_results
+    # results['Users'] = @user_results
+    # results['Recipes'] = @recipe_results
+    # results['Ingredients'] = @ingredient_results
+
+    # puts "User: #{users_elapsed_time}"
+    # puts "Recipes: #{recipes_elapsed_time}"
+    # puts "Ingredients: #{ingredients_elapsed_time}"
+
+    # render :json => JSON.pretty_generate(results)
+
+    results = Searchable.search(search_params)
     render :json => JSON.pretty_generate(results)
-    # render nothing: true
   end
 
 private

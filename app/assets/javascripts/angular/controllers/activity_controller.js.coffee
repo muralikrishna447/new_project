@@ -63,7 +63,7 @@ window.deepCopy = (obj) ->
     window.cdnURL(url)
 
   $timeout ( ->
-    $rootScope.$broadcast('showPopupCTA') if $scope.popupEligible
+    $rootScope.$broadcast('showPopupCTA')
   ), 5000
 
   $scope.csGlobals =
