@@ -18,7 +18,6 @@
       element.addClass("activity-columns-#{scope.activityColumns}")
 
       scope.noInsets = (window.innerWidth < 768)
-      console.log("#{scope.activityColumns} #{scope.noInsets}")
 
       if ((oldColumns != scope.activityColumns) || (oldNoInsets != scope.noInsets))
         scope.$apply() if (! scope.$$phase)

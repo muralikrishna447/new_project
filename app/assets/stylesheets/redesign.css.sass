@@ -8,6 +8,13 @@ html
 body
   position: relative
 
+// F-ing bootstrap wants to put 20px padding on the body, which makes it impossible to have
+// non-fixed position stuff that goes all the way across exactly.
+@media(max-width: 767px)
+  body
+    padding-left: 0 !important
+    padding-right: 0 !important
+
 a, [contenteditable]:not(:focus)
   cursor: pointer
 
@@ -38,6 +45,10 @@ div:not(.redactor_box)
 
 .nav-spacer
   height: $baseline * 7
+
+@media(max-width: 979px)
+  .nav-spacer
+    height: 0 !important
   
 .top-container
   margin-top: $baseline * 7
@@ -1002,7 +1013,7 @@ a:hover
 .navbar-fixed-top
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
-  margin-bottom: 5px
+  margin-bottom: 0px
   //position: fixed
   //margin-left: 0px
   //margin-right: 0px

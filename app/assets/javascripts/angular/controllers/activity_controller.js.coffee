@@ -19,7 +19,7 @@ window.deepCopy = (obj) ->
   $scope.bannerImageURL = ->
     url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
     w = window.innerWidth
-    h = parseInt(.337 * w)
+    h = 338
     url += "/convert?fit=crop&h=#{h}&w=#{w}"
     window.cdnURL(url)
 

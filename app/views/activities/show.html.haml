@@ -42,19 +42,19 @@
 -################################ PRIMARY CONTENT ################################
 
 .banner-image.noprint(  ng-controller="BannerController"
-                ng-cloak 
-                ng-click='toggleHeroVisual()' 
-                ng-if="heroMedia.heroDisplayType() != 'none'"
-                ng-class="{'hero-video-showing' : showHeroVisual()}")
+                        ng-cloak 
+                        ng-click='toggleHeroVisual()' 
+                        ng-if="heroMedia.heroDisplayType() != 'none'"
+                        ng-class="{'hero-video-showing' : showHeroVisual()}")
 
-  .banner-cropper
-    %img(ng-src="{{bannerImageURL()}}")  
+  %img(ng-src="{{bannerImageURL()}}")  
 
-    .play-button(ng-if="heroMedia.heroDisplayType() == 'video'")
-      %i.fa.fa-play-circle-o  
-  .standard-item
-    .hero-video.noprint
-      = render 'activities/hero_visual'
+  .play-button(ng-if="heroMedia.heroDisplayType() == 'video'")
+    %i.fa.fa-play-circle-o  
+
+  .hero-video.noprint
+    = render 'activities/hero_visual'
+
 .banner-spacer.noprint( ng-if="heroMedia.heroDisplayType() == 'none'" )
 
 #activity-title(data-activity="#{@activity.title}")
