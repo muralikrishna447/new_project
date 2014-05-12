@@ -13,8 +13,9 @@
         .nav-container
           %ul.nav
             %li= link_to "Recipes", gallery_index_url
-            %li
+            %li(ng-click="showResources = !showResources")
               = link_to "Resources"
+              .nav-container
               //%ul
               //  %li
               //    %i.fa.fa-leaf
