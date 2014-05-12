@@ -1,7 +1,9 @@
-angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', '$route', '$routeParams', '$location', "$timeout", '$window', ($rootScope, $scope, $resource, $http, $route, $routeParams, $location, $timeout, $window) ->
+angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$scope', '$resource', '$http', '$route', '$routeParams', '$location', "$timeout", '$window', "csDataLoading", ($rootScope, $scope, $resource, $http, $route, $routeParams, $location, $timeout, $window, csDataLoading) ->
 
   $scope.routeParams = $routeParams
   $scope.route = $route
+
+  csDataLoading.setFullScreen(true)
 
   $scope.$on "$routeChangeSuccess", (event, $currentRoute, $previousRoute) ->
     if $currentRoute.params.slug != $scope.includable_slug

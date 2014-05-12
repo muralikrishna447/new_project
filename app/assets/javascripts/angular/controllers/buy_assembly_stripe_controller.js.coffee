@@ -177,6 +177,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       url: '/charges'
     ).success((data, status, headers, config) ->
       $scope.enrolled = true
+      if $scope.gift_certificate
+        mixpanel.track('Gift Enrolled', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug}, $rootScope.splits, $scope.gift_certificate))
     )
     $scope.processing = false
 

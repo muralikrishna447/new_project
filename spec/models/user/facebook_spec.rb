@@ -9,7 +9,7 @@ describe User::Facebook do
     end
 
     it 'returns connected user if one exists' do
-      user = Fabricate(:user, provider: auth.provider, uid: auth.uid)
+      user = Fabricate(:user, provider: auth.provider, facebook_user_id: auth.uid)
       User.facebook_connected_user(auth).should == user
     end
 
@@ -35,7 +35,7 @@ describe User::Facebook do
     end
 
     it "assigns uid" do
-      user.assign_from_facebook(auth).uid.should == 'ABC'
+      user.assign_from_facebook(auth).facebook_user_id.should == 'ABC'
     end
 
     it "assigns name if blank" do
@@ -64,6 +64,20 @@ describe User::Facebook do
     end
   end
 
+  describe "#facebook_connect" do
+    let(:user) { Fabricate(:user, email: "not_facebook@example.com") }
+    it "should update the facebook_user_id" do
+      user.facebook_connect(user_id: "123")
+      user.facebook_user_id.should eq "123"
+    end
+
+    it "should not update the email address" do
+      user.facebook_connect(user_id: "123", email: "facebook@example.com")
+      user.email.should_not eq "facebook@example.com"
+      user.email.should eq "not_facebook@example.com"
+    end
+  end
+
   describe ".facebook_connect" do
     let(:params){ {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"} }
 
@@ -74,7 +88,7 @@ describe User::Facebook do
 
     context "returning user" do
       before do
-        @user = Fabricate(:user, params)
+        @user = Fabricate(:user, params.except(:uid).merge(facebook_user_id: "123"))
       end
 
       it "should return the user if they already exist" do
@@ -106,13 +120,13 @@ describe User::Facebook, '#connected_with_facebook?' do
   subject { user.connected_with_facebook? }
 
   context "hasn't connected with facebook" do
-    before { user.uid = nil }
+    before { user.facebook_user_id = nil }
     it { subject.should == false }
   end
 
   context "user has connected with facebook" do
     before do
-      user.uid = 'foo'
+      user.facebook_user_id = 'foo'
       user.provider = 'facebook'
     end
     it { subject.should == true }
@@ -120,7 +134,7 @@ describe User::Facebook, '#connected_with_facebook?' do
 
   context "user has connected with some other service" do
     before do
-      user.uid = 'foo'
+      user.facebook_user_id = 'foo'
       user.provider = 'some other service'
     end
     it { subject.should == false }

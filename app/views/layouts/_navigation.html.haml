@@ -1,9 +1,10 @@
+.loading-ball(ng-controller="NavbarController")
+  %cs-loading
 - if ! @minimal
   .navbar.navbar-fixed-top(ng-controller="NavbarController")
     .navbar-inner
       .container
         = link_to root_url, class: 'brand' do
-          = image_tag "https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg", id: 'chefsteps-logo', width: "200"
           / .logo-wrapper
           /   .logo-window
           /   .logo-block
@@ -31,7 +32,6 @@
 
               = link_to "#" do 
                 %i.fa.fa-search
-
 
             %li.border(ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
               - if external

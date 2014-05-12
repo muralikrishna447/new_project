@@ -2,7 +2,7 @@
 %html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main" }
   %head
     / http://stackoverflow.com/questions/3326650/console-is-undefined-error-for-internet-explorer
-    %script(type="text/javascript") 
+    %script(type="text/javascript")
       if (!window.console) console = {log: function() {}};
       window.lastPerfTime = new Date();
       window.logPerf = function(where) {d2 = new Date(); console.log(where + ": " + (d2 - window.lastPerfTime)); window.lastPerfTime = d2;};
@@ -32,7 +32,7 @@
       %link{href: "/favicon.ico", rel: "shortcut icon"}
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
-      
+
     %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
@@ -45,7 +45,7 @@
     = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
-    %script(src='http://www.youtube.com/iframe_api' async='true')
+    %script(src='//www.youtube.com/iframe_api' async='true')
 
     = render 'layouts/cdn_js'
     // Send Bloom Encrypted User data
@@ -57,7 +57,7 @@
       :javascript
         window.chefstepsUserId = null
 
-  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}"}
+  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' => "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'"}
     - unless @hide_nav == true
       = render 'layouts/navigation', external: false
       - unless @no_alerts == true
@@ -76,6 +76,14 @@
 
     = yield
 
+    / modals /
+    / %cs-ftue-nav
+    / %div(ng-controller='SurveyModalController')
+    / %div(ng-controller='ConnectModalController')
+    / %div(ng-controller='InviteModalController')
+    / %div(ng-controller='WelcomeModalController')
+    / %div(ng-controller='RecommendationsModalController')
+
     .container-fluid.noprint#slider-container
       .row-fluid
         .container
@@ -89,9 +97,9 @@
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
   = render "layouts/login_hack"
-  %script(src="//components.usebloom.com/bloom-loader.js")
+  %script(src="//s3.amazonaws.com/chefsteps-production-assets/bloom/bloom-loader.js")
   = javascript_include_tag 'application'
-  %script(type="text/javascript") 
+  %script(type="text/javascript")
     logPerf("POST APP");
 
 

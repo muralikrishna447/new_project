@@ -6,6 +6,7 @@ describe 'SurveyController', ->
   http = {}
   afterSubmit = {}
   currentUser = {}
+  intent = {}
 
   fakeModal =
     command: null
@@ -20,7 +21,7 @@ describe 'SurveyController', ->
   beforeEach inject ($rootScope, $controller) ->
     scope = $rootScope.$new()
     modalInstance = jasmine.createSpy("$modalInstance").andReturn(fakeModalPromise)
-    controller = $controller('SurveyController', {$scope: scope, $modalInstance: modalInstance, afterSubmit: afterSubmit, $rootScope: $rootScope})
+    controller = $controller('SurveyController', {$scope: scope, $modalInstance: modalInstance, afterSubmit: afterSubmit, $rootScope: $rootScope, intent: intent})
     scope.currentUser = {}
 
   describe "#getResults", ->

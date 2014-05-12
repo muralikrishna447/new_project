@@ -82,7 +82,7 @@ class AssembliesController < ApplicationController
 
   def redeem
     session[:gift_token] = params[:gift_token]
-    @gift_certificate = GiftCertificate.where(token: session[:gift_token]).first
+    @gift_certificate = GiftCertificate.where(token: session[:gift_token].downcase).first
 
     if @gift_certificate
       @assembly = @gift_certificate.assembly
@@ -146,8 +146,10 @@ private
       @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], can?(:update, @activity))
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = discounted_price(@assembly.price, session[:coupon])
-      # Changing so that it accepts a param gift_toekn as well, this is solely for e2e testing and shouldn't be given to customers as it doesn't store the information in the sesion so they MUST use it on that page.
-      @gift_certificate = GiftCertificate.where(token: (session[:gift_token]||params[:gift_token])).first if (session[:gift_token]||params[:gift_token])
+      # Changing so that it accepts a param gift_token as well, this is solely for e2e testing and shouldn't be given to customers as it 
+      # doesn't store the information in the sesion so they MUST use it on that page.
+      gc_token = session[:gift_token] || params[:gift_token]
+      @gift_certificate = GiftCertificate.where(token: gc_token.downcase).first if gc_token
 
     rescue
       # If they are looking for a course that isn't yet published, take them to a page where
@@ -157,8 +159,6 @@ private
         if current_user && current_user.enrolled?(@course)
           @assembly = Assembly.find(params[:id])
           session[:coupon] = params[:coupon] || session[:coupon]
-          @discounted_price = discounted_price(@assembly.price, session[:coupon])
-          @gift_certificate = GiftCertificate.where(token: (session[:gift_token]||params[:gift_token])).first if (session[:gift_token]||params[:gift_token])
         else
           @list_name = ("csp-" + @course.slug)[0...15]
           render "pre_registration"
