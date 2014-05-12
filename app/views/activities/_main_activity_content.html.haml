@@ -1,5 +1,5 @@
 
-.aside.noprint(ng-show="! editMode")
+.aside.noprint(ng-show="(! editMode) && (activityColumns >= 3)")
   = render 'activities/tools'
 
 .standard-item
@@ -14,6 +14,7 @@
  
 .standard-item.section
   = render 'activities/latest/description'
+
 
 .medium-item
 
