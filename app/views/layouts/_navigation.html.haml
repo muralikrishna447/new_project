@@ -9,29 +9,31 @@
           /   .logo-block
           /     .logo-text ChefSteps
           /     .logo-subtext cook connected
-        .btn-navbar(ng-click="showMenu = !showMenu")
-          %h5 menu
-          -if @include_edit_toolbar
-            #nav-edit-toolbar(collapse="!editMode")
-              = render 'activities/edit_toolbar'
-          %div(ng-style="toolbarBonusStyle()" ng-hide='editMode')
-      #cs-navigation
-        .nav-container(ng-show="showMenu" ng-cloak)
+        .nav-container
           %ul.nav
             %li= link_to "Recipes", gallery_index_url
             %li
               = link_to "Resources"
-              %ul
-                %li
-                  %i.fa.fa-leaf
-                  = link_to ' ingredients', ingredients_url
-                %li
-                  %i.fa.fa-book
-                  = link_to " classes", courses_url
-                %li= link_to "sous vide collection"
-                %li= link_to "knife collection"
+              //%ul
+              //  %li
+              //    %i.fa.fa-leaf
+              //    = link_to ' ingredients', ingredients_url
+              //  %li
+              //    %i.fa.fa-book
+              //    = link_to " classes", courses_url
+              //  %li= link_to "sous vide collection"
+              //  %li= link_to "knife collection"
             %li= link_to "Forum", 'http://forum.chefsteps.com/discussions'
-            %li(ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
+            %li.border(ng-click="showSearch = !showSearch")
+              .nav-search(ng-if='showSearch' ng-show="showSearch" ng-cloak)
+                %form.navbar-form.form-search.nav-search-form(action="{{getSearchQuery()}}" method="get")
+                %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
+
+              = link_to "#" do 
+                %i.fa.fa-search
+
+
+            %li.border(ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
               - if external
                 -# Can't see current_user when external, so use a route that will
                 -# either go to their profile if logged in, or take them to sign in
@@ -40,20 +42,20 @@
                     Profile
               - elsif current_user
                 = link_to user_profile_url(current_user) do
-                  .profile-image
-                    //= image_tag filepicker_arbitrary_image(@user.profile_image_id, 75) 
+                  .profile-image(tooltip="#{current_user.name}" tooltip-placement="bottom")
+                    = image_tag filepicker_arbitrary_image(current_user.image_id, 75) 
               - else
                 %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
                 = render "devise/sessions/new_angular"
                 = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
-          -# %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
-          -#   %span
-          -#     %a.btn-google.btn(ng-click="loadFriends('invite')") Invite
-          -#     = render "devise/sessions/new_angular"
-          -# %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
-          -#   %span
-          -#     %a.btn-google.btn(ng-click="openModal('googleInvite')") Google Invite
-          -#     = render "devise/sessions/new_angular"
+
+
+          //.btn-navbar(ng-click="showMenu = !showMenu")
+          //  %h5 menu
+          //  -if @include_edit_toolbar
+          //    #nav-edit-toolbar(collapse="!editMode")
+          //      = render 'activities/edit_toolbar'
+          //  %div(ng-style="toolbarBonusStyle()" ng-hide='editMode')
 
     //.nav-collapse.collapse.pull-right#cs-navigation
     //  %ul.nav

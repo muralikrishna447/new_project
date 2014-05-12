@@ -21,30 +21,36 @@
     border-color: $dark-orange
     border: none
     border-bottom: 1px solid $light-gray
-    padding: 5px 0px
 
   .brand
     text-shadow: none
     color: black
-    padding: 4px 20px
+    padding: 6px 20px
 
   .nav-container
-    position: relative
-    border: 1px solid $offwhite
-    padding: $baseline
     @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
 
+  .nav
+    float: right
+  .nav ul
+    max-width: 800px
+    margin: 10px 0 0 0
+    padding: 0
+    list-style: none
+    @include primary-font
+
+  .nav > li.border
+    border-left: 1px solid #fff
+    padding: 0 5px
+
   .nav > li
-    width: 100%
-    line-height: $baseline * 3
-    float: left
+    line-height: $baseline * 4
 
   .nav > li > a
     @include transition(all .3s)
     text-transform: uppercase
     &:hover
       color: $orange
-      margin-left: 10px
   .nav > li > ul
     margin-bottom: $baseline * 2 
   .nav > li > ul > li
@@ -68,15 +74,31 @@
       background-color: $orange
       +radius(2px)
   .nav-search
-    height: 55px
-    width: 40px
+    background: $offwhite
+    height: 78px
+    width: 300px
     overflow: hidden
+    position: absolute
+    margin-left: -300px
+    margin-top: -14px   
     @include transition(background 300ms)
     input[type='text']:focus
-      border-color: $orange
-      box-shadow: none
     &:hover
       cursor: pointer
+    &.ng-enter
+      @include transition(all 200ms ease-in-out)
+      opacity: 0
+      margin-left: -260px
+      &.ng-enter-active
+        opacity: 1  
+        margin-left: -300px
+    &.ng-leave
+      @include transition(all 200ms ease-in-out)
+      opacity: 1
+      margin-left: -300px
+      &.ng-leave-active
+        opacity: 0
+        margin-left: -260px
     .icon-search
       margin: 21px 10px 22px
       color: black
@@ -85,18 +107,12 @@
       margin: 20px 5px
       color: black
       float: left
-    .nav-search-form
-      float: left
-      width: 160px
-      padding: 0px
-      margin-right: 0px
-      margin-left: 0px
-      overflow: hidden
-      input
-        width: 130px
-        outline: none
-  .nav-search-show
-    width: 230px
+    #nav-search-field
+      +radius(2px)
+      border: 1px solid #ccc
+      width: 250px
+
+
 
 @media (min-width: 321px) and (max-width: 768px)
   .navbar-fixed-top
