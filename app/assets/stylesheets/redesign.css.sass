@@ -241,6 +241,11 @@ ul.nav li.dropdown:hover > ul.dropdown-menu
   margin-bottom: $baseline * 2
   padding: ($baseline * 2)
 
+.well-clear
+  @include boxsizing
+  margin-bottom: $baseline * 2
+  padding: ($baseline * 2)
+
 .hero-unit
   background: none
   border-radius: 0px
@@ -419,7 +424,7 @@ a:hover
   clear: both
   padding: $baseline $baseline
   width: 100%
-  
+
 .buttons-lower-right
   position: absolute
   bottom: $baseline
@@ -1256,6 +1261,319 @@ a:hover
 .label-technique
   background: $red
 
+/* Buttons */
+
+.btn
+  @include primary-font
+  line-height: $baseline*2
+  i
+    line-height: $baseline*2
+
+.btn-large
+  padding: 12px 19px 11px 19px
+.btn-group
+  .btn:first-child
+    border-radius: 0px
+  .btn:last-child
+    border-radius: 0px
+
+.btn-primary, .btn-primary.disabled
+  background: $orange
+  border: 0px
+  border-bottom: 1px $dark-orange solid
+  border-radius: 0px
+  margin-bottom: $baseline
+  position: relative
+  @include boxsizing
+  @include transition(all .25s)
+  &:hover
+    background: $darker_orange
+    @include transition(all .25s)
+    border-bottom: 1px $orange solid
+  &:disabled
+    background: #696969
+    color:  #d3d3d3
+  &:focus
+    background: $orange
+    outline: none
+  a
+    color: inherit
+
+.btn-secondary
+  background: $offwhite
+  border: 0px
+  border-bottom: 1px #ccc solid
+  border-radius: 0px
+  margin-bottom: $baseline
+  @include boxsizing
+  @include transition(all 100ms)
+  &:hover
+    background: gray
+    color: white
+    text-shadow: none
+    @include transition(all 100ms)
+
+.btn-secondary[disabled]
+  -webkit-box-shadow: 0 3px 0px -1px #999
+  -moz-box-shadow: 0 3px 0px -1px #999
+  box-shadow: 0 3px 0px -1px #999999
+
+.btn-facebook
+  background: #3B5998
+  color: white
+  text-shadow: none
+  border: 0
+  padding: 10px
+
+.btn-google
+  background: #DD4B39
+  color: white
+  text-shadow: none
+  border: 0
+  padding: 10px
+
+.btn-twitter
+  background: #1DACED
+  color: white
+  text-shadow: none
+  border: 0
+  padding: 10px
+
+.btn-gray
+  background: $offwhite
+  border: none
+  border-radius: 0px
+  @include transition(all 100ms)
+  &:hover
+    background: gray
+    @include transition(all 100ms)
+
+.btn-basic
+  background: $offwhite
+  border: 0px
+  border-radius: 0px
+  @include boxsizing
+  @include transition(all 100ms)
+  &:hover
+    background: $darker_orange
+    @include transition(all 100ms)
+
+.btn-play-image
+  position: relative
+  background: image-url('https://www.filepicker.io/api/file/IOjE35SKSmCjut9x1FBg?cache=true') no-repeat
+  width: 34px
+  height: 33px
+  margin: 33px 10px 22px 33px
+  @include boxsizing
+
+.btn-hero-next
+  background: $orange
+  height: 100%
+  width: 100%
+  @include boxsizing
+  padding: 30% 45%
+  transition: background 200ms
+  -webkit-transition: background 200ms
+  -moz-transition: background 200ms
+  -o-transition: background 200ms
+  &:hover
+    background: $dark-orange
+  &:before
+    content: ''
+    position: absolute
+    width: 10%
+    height: 30%
+    transform: skew(25deg)
+    -webkit-transform: skew(25deg)
+    -moz-transform: skew(25deg)
+    -o-transform: skew(25deg)
+    background: white
+  &:after
+    content: ''
+    position: absolute
+    width: 10%
+    height: 30%
+    transform: skew(-25deg)
+    -webkit-transform: skew(-25deg)
+    -moz-transform: skew(25deg)
+    -o-transform: skew(25deg)
+    background: white
+    top: 50%
+
+.btn-circle
+  height: 40px
+  width: 40px
+  padding: 10px 15px
+  margin: 5px 2px
+  border-radius: 50%
+  border: none
+  background-image: none
+  background: $orange
+  color: white
+  font-size: 17px
+  text-shadow: none
+  text-align: center
+  transition: background 200ms
+  -webkit-transition: background 200ms
+  -moz-transition: background 200ms
+  -o-transition: background 200ms
+  display: inline-block
+  @include boxsizing
+  i
+    line-height: 22px
+  &:hover
+    background: $dark-orange
+    text-decoration: none
+    color: white
+    cursor: pointer
+
+.btn-circle.large
+  height: 80px
+  width: 80px
+  margin: 10px 4px
+  padding: 20px 15px
+  font-size: 15px
+
+
+.btn-social-old
+  width: 40px
+  margin: 0 2px
+
+.btn-poll-comments
+  width: 200px
+  margin-right: 5px
+
+.btn-holder
+  position: relative
+  display: inline-block
+
+.btn-social
+  margin: 0px 2px 4px 2px
+  background-color: white
+  border-radius: 2px
+  padding: 0px 0px 0px 0px
+  height:  29px
+  @include transition(all 250ms ease-in-out 2 alternate)
+
+  i
+    color: white
+
+  .social-button-contents
+    display: inline-block
+    height: 100%
+
+  .social-icon-group
+    display: inline-block
+    width: 27px
+    height:  100%
+
+  span
+    position: relative
+    bottom:  -4px
+    padding-right: 0px
+    height: 33px
+    margin-bottom: 0px
+    .social-icon-group
+      height: 100%
+    border-radius:  0
+    text-shadow: none
+
+=btn-social-base($c)
+  color: $c
+  border:  1px solid $c
+
+  .social-button-contents
+    display: inline-block
+
+  &:hover
+    background-color: $c
+
+  .social-icon-group
+    background-color: $c
+
+.btn-social-like
+  @include btn-social-base($orange)
+.btn-social-twitter
+  @include btn-social-base(#4099FF)
+.btn-social-facebook
+  @include btn-social-base(#3B5998)
+.btn-social-gplus
+  @include btn-social-base(#D34836)
+.btn-social-pinterest
+  @include btn-social-base(#C92228)
+.btn-social-email
+  @include btn-social-base(black)
+.btn-social-cs140
+  @include btn-social-base($orange)
+  .social-icon-group
+    width: 60px
+    color: white
+    &:hover
+      background-color: white
+      color: $orange
+
+
+.btn-outline-blue-large
+  background: white
+  border: 1px solid $light-blue
+  border-radius: 55px
+  font-weight: 400
+  padding: 11px 22px
+  @include boxsizing
+  @include transition(all 200ms)
+  &:hover
+    background: white
+    border: 1px solid $orange
+
+/* Quiz button */
+.btn-next, .btn-prev
+  position: absolute
+  bottom: 0px
+  right: 0px
+  height: 66px
+  width: 32px
+  padding: 0
+  text-decoration: none
+  border-color: transparent
+  [class^="icon-"]
+    line-height: 66px
+    color: white
+
+.social-counter, .social-icon-group
+  display: inline-block
+.social-counter
+  margin-left: -3px
+  width: 30px
+
+.social-flat
+  display: inline-block
+  margin-left: -2px
+
+.loading-ball
+  .logo-box
+    .loading-no-logo
+      display: none
+    .is-loading.is-fullscreen
+      .loading-no-logo
+        display: block
+        position: fixed
+        top: 10px
+        left: 10px
+        z-index: 10000
+        border-radius: 50%
+        border: 1px solid #ccc
+        width: 80px
+        text-align: center
+        padding: 20px 10px
+        background-color: rgba(255, 255, 255, 0.6)
+
+.fs-course
+  .loading-ball
+    .regular-logo
+      display: none
+    .loading-logo
+      display: none
+
 /* Navbar */
 .navbar-fixed-top
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
@@ -1280,6 +1598,27 @@ a:hover
     text-shadow: none
     color: black
     padding: 4px 20px
+    .regular-logo
+      display: block
+    .is-loading
+      .loading-logo
+        display: block
+      .regular-logo
+        display: none
+      .loading-no-logo
+        display: none
+    .loading-logo
+      display: none
+    .loading-no-logo
+      display: none
+    .is-fullscreen
+      .regular-logo
+        display: block
+      .loading-logo
+        display: none
+      .loading-no-logo
+        display: none
+
   .nav
     .nav-item-border
       width: 1px
@@ -1404,7 +1743,7 @@ csequipmenteditpair, csingredienteditpair
     margin-top: -2px
     z-index: 101
     border: none
-    
+
     .btn
       padding: 4px 6px
       border-shadow: none
@@ -1589,7 +1928,7 @@ csingredienteditpair
       color: white
       position: relative
       top: 10px
-      
+
     &.drop-ready
       background-color: red !important
 
@@ -1696,10 +2035,64 @@ input.summary-tweet
           margin-left: 0px
           padding: 4px 5px
 
+@media (max-width: 979px)
+  .loading-ball
+    .regular-logo
+      display: none
+    .loading-logo
+      display: none
+    .loading-no-logo
+      display: none
+    .is-loading
+      position: fixed
+      top: 10px
+      left: 10px
+      z-index: 1000
+      width: 100%
+      .loading-no-logo
+        display: block
+        border-radius: 50%
+        border: 1px solid #ccc
+        width: 80px
+        text-align: center
+        padding: 20px 10px
+        background-color: rgba(255, 255, 255, 0.6)
+
+
+  .brand
+    .logo-box
+      .regular-logo
+        display: block
+      .loading-logo
+        display: none
+      .is-loading
+        .regular-logo
+          display: block
+        .loading-logo
+          display: none
+        .loading-no-logo
+          display: none
+
+// .logo-box
+//   .regular-logo
+//     display: none
+//   .loading-logo
+//     display: none
+//   .loading-no-logo
+//     display: none
+//   .is-loading
+//     .regular-logo
+//       display: none
+//     .loading-logo
+//       position: absolute
+//       display: block
+//       padding: 6px 5px
+//       top: 0
+//       z-index: 10000
   .static-height
     height: 360px
 
-  .madlib 
+  .madlib
     .social-signup-divider
       display: inline-block
 
@@ -1754,7 +2147,7 @@ input.summary-tweet
         width: 100%
 
   .static-height
-    height: 480px        
+    height: 480px
 
   .img-circle
     padding-right: 10px
@@ -1943,7 +2336,7 @@ body
     border-spacing: .5rem
     border-collapse: collapse
     border: 1px solid rgba(226,95,37,.3)
-    
+
   thead
     background: $offwhite
 

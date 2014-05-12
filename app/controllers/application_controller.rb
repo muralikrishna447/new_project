@@ -81,6 +81,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :facebook_secret
+  def facebook_secret
+    case Rails.env
+    when "production"
+      ENV["FACEBOOK_SECRET"]
+    when "staging", "staging2"
+      "1cb4115088bd42aed2dc6d9d11c82930"
+    else
+      "57601926064dbde72d57fedd0af8914f"
+    end
+  end
+
   helper_method :google_app_id
   def google_app_id
     case Rails.env
@@ -90,6 +102,7 @@ class ApplicationController < ActionController::Base
       ENV["GOOGLE_APP_ID"]
     else
       "108479453177.apps.googleusercontent.com"
+      # "73963737070-9595b3hcj6kqpii3trkg398m4q5duck5.apps.googleusercontent.com"
     end
   end
 
@@ -102,6 +115,7 @@ class ApplicationController < ActionController::Base
       ENV["GOOGLE_SECRET"]
     else
       "M2Y-HWIkTVPNHLUS1P_QNKHr"
+      # "GDEp3Pw_vGew3dorCkurox8U"
     end
   end
 
@@ -186,7 +200,7 @@ private
       case Rails.env
       when "production", "staging", "staging2"
         logger.error("MailChimp error: #{e.message}")
-        raise e
+        raise e unless e.message.include?("already subscribed to list")
       else
         logger.debug("MailChimp error, ignoring - did you set MAILCHIMP_API_KEY? Message: #{e.message}")
       end

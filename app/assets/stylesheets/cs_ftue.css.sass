@@ -1,0 +1,56 @@
+@import 'mixins'
+
+.ftue-nav
+  position: fixed
+  width: 100%
+  height: 100px
+  background-color: white
+  z-index: 9999
+  bottom: 0px
+  padding: 20px
+  @include boxsizing
+
+  .btn.btn-circle-large
+    position: absolute
+    top: 20px
+    height: 60px
+    width: 60px
+    margin: 0px
+    padding: 16px
+    border-radius: 30px
+    border: 1px solid $light-gray
+    background: $offwhite
+    color: $light-gray
+    font-size: 40px
+    @include boxsizing
+    @include transition(all 300ms)
+
+    &:hover
+      cursor: pointer
+      border: 1px solid $orange
+      color: $orange
+      background: white
+
+  .btn.btn-circle-large.btn-left
+    padding-left: 12px
+    left: 20px
+
+  .btn.btn-circle-large.btn-right
+    padding-right: 12px
+    right: 20px
+
+  .btn.btn-done
+    position: absolute
+    top: 20px
+    right: 20px
+
+.ftue-nav-middle
+  width: 100%
+  padding: 0px 80px
+  text-align: center
+  @include boxsizing
+  .ftue-nav-title
+    text-transform: uppercase
+    color: $orange
+  .ftue-nav-progress
+

@@ -4,6 +4,7 @@ describe "LoginController", ->
   q = null
   timeout = null
   window = null
+  rootScope = null
 
   # you need to indicate your module in a test
   beforeEach(angular.mock.module('ChefStepsApp'))
@@ -172,6 +173,7 @@ describe "LoginController", ->
   describe "#register", ->
     describe "success", ->
       beforeEach ->
+        scope.intent = 'ftue'
         scope.register_user.name = "Test User"
         scope.register_user.email = "test@example.com"
         scope.register_user.password = "apassword"
@@ -183,26 +185,15 @@ describe "LoginController", ->
         scope.register()
         scope.httpBackend.flush()
 
-      it "should create an alert message", ->
-        expect(scope.alertService.addAlert).toHaveBeenCalledWith({message: 'You have been registered and signed in.', type: 'success'})
-
       it "should set the logged in to true", ->
         expect(scope.logged_in).toEqual(true)
-
-      it "should set the user on the authentication service", ->
-        timeout.flush()
-        expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
 
       it "should close the modal", ->
         expect(scope.loginModalOpen).toBe(false)
 
-      it "should broadcast a login event globally", ->
-        timeout.flush()
-        expect(scope.$broadcast).toHaveBeenCalledWith('login', { user : { email : 'test@example.com', name : 'Test User'}})
-
-      it "should open the invite modal if not a purchase", ->
-        timeout.flush()
-        expect(scope.inviteModalOpen).toBe(true)
+      # it "should open the invite modal if not a purchase", ->
+      #   timeout.flush()
+      #   expect(scope.inviteModalOpen).toBe(true)
 
       it "should not open the invite modal if a purchase", ->
         scope.formFor = "purchase"
@@ -306,32 +297,14 @@ describe "LoginController", ->
       deferred.resolve({name: "Test User", email: "test@example.com", user_id: "123"})
       scope.httpBackend.flush()
 
-      expect(scope.dataLoading).toBe(0)
-      # expect(scope.facebook.connect().then).toHaveBeenCalled()
-
   describe "$on", ->
     beforeEach ->
       scope.googleConnect = jasmine.createSpy('googleConnect')
-
-    it "should call googleConnect when data loading is greater than zero", ->
-      scope.dataLoading = 1
-      scope.$broadcast("event:google-plus-signin-success")
-      expect(scope.googleConnect).toHaveBeenCalled()
-
-    it "should not call googleConnect when data loading is 0", ->
-      scope.dataLoading = 0
-      scope.$broadcast("event:google-plus-signin-success")
-      expect(scope.googleConnect).not.toHaveBeenCalled()
 
   describe "#googleSignin", ->
     it "should call gapi.auth.signIn", ->
       scope.googleSignin("123")
       expect(window.gapi.auth.signIn).toHaveBeenCalled()
-
-    it "should set dataLoading +1", ->
-      scope.dataLoading = 0
-      scope.googleSignin("123")
-      expect(scope.dataLoading).toBe(1)
 
   describe "#googleConnect", ->
     beforeEach ->
@@ -359,63 +332,6 @@ describe "LoginController", ->
           timeout.flush()
           expect(scope.loadGoogleContacts).not.toHaveBeenCalled()
 
-      describe "inviteModalOpen false", ->
-        beforeEach ->
-          scope.dataLoading = 1
-          scope.inviteModalOpen = false
-          scope.httpBackend.expect(
-            'POST'
-            "/users/auth/google/callback.js"
-            {google: {access_token: "12345", code: "09876", scope: "all", id_token: "45678"}}
-          ).respond(200, {user: {name: "Test User", email: "test@example.com"}, new_user: true})
-          scope.googleConnect({access_token: "12345", code: "09876", scope: "all", id_token: "45678"})
-          scope.httpBackend.flush()
-
-        it "should set dataLoading to 0", ->
-          expect(scope.dataLoading).toBe(0)
-
-        it "should set logged_in to true", ->
-          expect(scope.logged_in).toBe(true)
-
-        it "should call alertService.addAlert", ->
-          expect(scope.alertService.addAlert).toHaveBeenCalledWith({message: "You have been logged in through Google.", type: 'success'})
-
-        it "should call authentication.setCurrentUser", ->
-          timeout.flush()
-          expect(scope.authentication.currentUser()).toEqual({'email': 'test@example.com', 'name': 'Test User'})
-
-        it "should call loadFriends", ->
-          timeout.flush()
-          expect(scope.loadFriends).toHaveBeenCalled()
-
-        it "should not call loadGoogleContacts", ->
-          timeout.flush()
-          expect(scope.loadGoogleContacts).not.toHaveBeenCalled()
-
-
-      describe "inviteModalOpen", ->
-        beforeEach ->
-          scope.inviteModalOpen = true
-          scope.httpBackend.expect(
-            'POST'
-            "/users/auth/google/callback.js"
-            {google: {access_token: "12345", code: "09876", scope: "all", id_token: "45678"}}
-          ).respond(200, {user: {name: "Test User", email: "test@example.com", user_id: "123", new_user: true}})
-          scope.googleConnect({access_token: "12345", code: "09876", scope: "all", id_token: "45678"})
-          scope.httpBackend.flush()
-
-        it "should not call alertService.addAlert", ->
-          expect(scope.alertService.addAlert).not.toHaveBeenCalled()
-
-        it "should not call loadFriends", ->
-          timeout.flush()
-          expect(scope.loadFriends).not.toHaveBeenCalled()
-
-        it "should call loadGoogleContacts", ->
-          timeout.flush()
-          expect(scope.loadGoogleContacts).toHaveBeenCalled()
-
-
     describe "error", ->
       beforeEach ->
         scope.httpBackend.expect(
@@ -423,22 +339,6 @@ describe "LoginController", ->
           "/users/auth/google/callback.js"
           {google: {access_token: "12345", code: "09876", scope: "all", id_token: "45678"}}
         ).respond(500, {bad: "data"})
-
-      it "should set data loading to -1", ->
-        scope.dataLoading = 1
-        scope.googleConnect({access_token: "12345", code: "09876", scope: "all", id_token: "45678"})
-        scope.httpBackend.flush()
-        expect(scope.dataLoading).toBe(0)
-
-      # it "should set the message", ->
-      #   scope.googleConnect({access_token: "12345", code: "09876", scope: "all", id_token: "45678"})
-      #   scope.httpBackend.flush()
-      #   expect(scope.message).toEqual("Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: {\"bad\":\"data\"}")
-
-  describe "#loadFriends", ->
-    it "should open the invite modal", ->
-      scope.loadFriends()
-      expect(scope.inviteModalOpen).toBe(true)
 
   describe "#loadGoogleContacts", ->
     beforeEach ->
@@ -449,9 +349,6 @@ describe "LoginController", ->
       ).respond(200, [{name: "Dan Ahern", email: "danahern@chefsteps.com"}, {name: "Test Guy", email: "test@chefsteps.com"}])
       scope.loadGoogleContacts()
       scope.httpBackend.flush()
-
-    it "should set dataLoading to 0", ->
-      expect(scope.dataLoading).toBe(0)
 
     it "should set inviteFriends to mapped data", ->
       expect(scope.inviteFriends).toEqual([{name: "Dan Ahern", email: "danahern@chefsteps.com", value: false}, {name: "Test Guy", email: "test@chefsteps.com", value: false}])
@@ -477,9 +374,6 @@ describe "LoginController", ->
     it "should call mixpanel people increment", ->
       expect(window.mixpanel.people.increment).toHaveBeenCalledWith("Google Invitations", 2)
 
-    it "should set dataLoading -1", ->
-      expect(scope.dataLoading).toBe(0)
-
     it "should call switchModal", ->
       expect(scope.switchModal).toHaveBeenCalledWith("googleInvite", "welcome")
 
@@ -500,16 +394,6 @@ describe "LoginController", ->
     it "should set invitationsNextText to Next", ->
       scope.sendInvites()
       expect(scope.invitationsNextText).toEqual("Next")
-
-  describe "#welcome", ->
-    it "should close the invite modal", ->
-      scope.welcome()
-      expect(scope.inviteModalOpen).toBe(false)
-
-    it "should open the welcome modal", ->
-      scope.welcome()
-      timeout.flush()
-      expect(scope.welcomeModalOpen).toBe(true)
 
   describe "#switchModal", ->
     beforeEach ->
