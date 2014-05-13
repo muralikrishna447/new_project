@@ -35,25 +35,25 @@
                         offset="200")
       = render 'shared/ingredients_list', source: "activity"
 
-  .nav(ng-show="editMode")
-    %h4(  ng-show="! activity.ingredients.length" 
-          ng-class="disableIf(!activity.ingredients.length)") 
-      Ingredients
+  %h4(  ng-show="editMode && ! activity.ingredients.length" 
+        ng-class="disableIf(!activity.ingredients.length)") 
+    Ingredients
 
-    %button.btn.btn-small.btn-secondary.add-from-master(  ng-show="hasAnyStepIngredients()" 
+  .new-ingredients-group(ng-show="editMode")
+
+    %button.btn.btn-secondary.add-from-master(  ng-show="hasAnyStepIngredients()" 
                                                           ng-click="fillMasterIngredientsFromSteps()" 
                                                           tooltip="Replace master ingredients with step ingredients..." 
                                                           tooltip-placement="bottom")
       %i.icon-chevron-left
 
-    %button.btn.btn-small.btn-secondary.add-item( ng-click="addIngredient()" 
-                                                  tooltip="Add ingredient"  
-                                                  tooltip-placement="bottom")
-      %i.icon-plus
-
-    %button.btn.btn-small.btn-primary.done( ng-show="childFocused" 
-                                            tooltip="Finish adding ingredients" 
-                                            tooltip-placement="bottom")
-      Done
+    %input.new-ingredient(  cs-new-ingredient
+                            type="text" 
+                            placeholder="Add ingredient, e.g. 20 g Kosher Salt" 
+                            typeahead-editable="true" 
+                            autocomplete="off" 
+                            class="ingredient-typeahead" 
+                            ng-model="ai.ingredient"
+                            typeahead="i as i.title for i in all_ingredients($viewValue)")
 
   = render 'activities/master_ingredients_removed_modal.html.haml'

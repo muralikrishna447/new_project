@@ -2,6 +2,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.shouldShowMasterIngredientsRemovedModal = false
   $scope.showIngredientsMenu = false
+  $scope.preventAutoFocus = true
 
   $scope.getAllUnits = ->
     window.allUnits

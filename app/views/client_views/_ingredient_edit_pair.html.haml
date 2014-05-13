@@ -35,9 +35,9 @@
                   ng-model="ai.unit" 
                   required="true" 
                   ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()") 
+
     %input.name(  cs-emit-focus
                   selectonfocus 
-                  csinputmonkeyingredient
                   type="text" 
                   placeholder="New ingredient" 
                   typeahead-editable="true" 
