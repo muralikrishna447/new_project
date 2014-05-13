@@ -99,6 +99,42 @@
       &.ng-leave-active
         opacity: 0
         margin-left: -260px
+
+  .nav-container-popover
+    background: white
+    border: 1px solid $offwhite
+    position: absolute
+    top: 60px
+    right: 180px
+    float: right
+    width: 200px
+    padding: $baseline
+    background: #fff
+    border: 1px solid $offwhite
+    border-top: 2px solid $orange  
+    &.ng-enter
+      @include transition(all 100ms ease-in-out)
+      opacity: 0
+      margin-top: -10px
+    &.ng-enter-active
+      opacity: 1  
+      margin-top: 0px
+
+  .nav-container-popover:after, .nav-container-popover:before 
+    @include popover-arrow(40%)
+  
+
+  .nav-container-popover:after 
+    border-color: rgba(255, 255, 255, 0)
+    border-bottom-color: #fff
+    border-width: 7px
+    margin-left: -5px
+  
+  .nav-container-popover:before 
+    border-color: rgba(194, 225, 245, 0)
+    border-bottom-color: $orange
+    border-width: 10px
+    margin-left: -8px
     .icon-search
       margin: 21px 10px 22px
       color: black

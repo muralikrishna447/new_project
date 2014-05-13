@@ -1,10 +1,9 @@
-.loading-ball(ng-controller="NavbarController")
-  %cs-loading
 - if ! @minimal
   .navbar.navbar-fixed-top(ng-controller="NavbarController")
     .navbar-inner
       .container
         = link_to root_url, class: 'brand' do
+          = image_tag "https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg", id: 'chefsteps-logo', width: "200"        
           / .logo-wrapper
           /   .logo-window
           /   .logo-block
@@ -14,17 +13,17 @@
           %ul.nav
             %li= link_to "Recipes", gallery_index_url
             %li(ng-click="showResources = !showResources")
-              = link_to "Resources"
-              .nav-container
-              //%ul
-              //  %li
-              //    %i.fa.fa-leaf
-              //    = link_to ' ingredients', ingredients_url
-              //  %li
-              //    %i.fa.fa-book
-              //    = link_to " classes", courses_url
-              //  %li= link_to "sous vide collection"
-              //  %li= link_to "knife collection"
+              = link_to "Resources", "#"
+              .nav-container-popover(ng-if='showResources' ng-show="showResources" ng-cloak)
+                %ul
+                  %li
+                    %i.fa.fa-leaf
+                    = link_to ' ingredients', ingredients_url
+                  %li
+                    %i.fa.fa-book
+                    = link_to " classes", courses_url
+                  %li= link_to "sous vide collection"
+                  %li= link_to "knife collection"
             %li= link_to "Forum", 'http://forum.chefsteps.com/discussions'
             %li.border(ng-click="showSearch = !showSearch")
               .nav-search(ng-if='showSearch' ng-show="showSearch" ng-cloak)
