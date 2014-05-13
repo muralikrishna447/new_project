@@ -20,27 +20,8 @@
         %span.fake-link(ng-switch-when="fake_link" ng-bind-html="ai.ingredient.title")>
       %span(ng-show="!!ai.note" ng-bind-html="', ' + (ai.note | shortcode)")>
 
-  %csEditPairEdit
-    .ingredient-title
-      %input( cs-emit-focus
-              selectonfocus 
-              csinputmonkeyingredient
-              type="text" 
-              placeholder="New ingredient" 
-              typeahead-editable="true" 
-              autocomplete="off" 
-              class="ingredient-typeahead" 
-              ng-model="ai.ingredient"
-              typeahead="i as i.title for i in all_ingredients($viewValue)")
-
-      %input( cs-emit-focus
-              csselectonfocus
-              type="text" 
-              placeholder="note" 
-              autocomplete="off" 
-              ng-model="ai.note")
-
-    %input.quantity-group(  cs-emit-focus
+  %csEditPairEdit.ingredient-edit-half
+    %input.quantity(  cs-emit-focus
                             csselectonfocus
                             cslimitquantity 
                             placeholder="qty" 
@@ -48,16 +29,30 @@
                             ng-model="ai.display_quantity" 
                             size=5)
 
-    .unit(cs-watch-focus)
-      -# http://stackoverflow.com/questions/5912791/how-to-remove-the-arrow-from-a-select-tag-in-firefox - my favorite answer (not the accepted one)
-      .select-readout(ng-class="{fakefocus: childFocused}")
-        {{ai.unit}}
-        %i.icon-caret-down
-      %select(  cs-emit-focus
-                type="text" 
-                ng-model="ai.unit" 
-                required="true" 
-                ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()") 
+
+    %select.unit( cs-emit-focus
+                  type="text" 
+                  ng-model="ai.unit" 
+                  required="true" 
+                  ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()") 
+    %input.name(  cs-emit-focus
+                  selectonfocus 
+                  csinputmonkeyingredient
+                  type="text" 
+                  placeholder="New ingredient" 
+                  typeahead-editable="true" 
+                  autocomplete="off" 
+                  class="ingredient-typeahead" 
+                  ng-model="ai.ingredient"
+                  typeahead="i as i.title for i in all_ingredients($viewValue)")
+
+    %input.note(  cs-emit-focus
+                  csselectonfocus
+                  type="text" 
+                  placeholder="note" 
+                  autocomplete="off" 
+                  ng-model="ai.note")
+
       
     .btn-toolbar.action-button-group
       .btn-group

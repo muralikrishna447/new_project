@@ -1507,6 +1507,14 @@ csequipmenteditpair, csingredienteditpair
     i
       width: auto
 
+csequipmenteditpair
+  .action-button-group
+    top: 0px
+    z-index: 101
+    .btn
+      background-color: white
+      border-bottom: none
+      
   .edit-pair-edit
     input, select
       display: inline-block
@@ -1525,45 +1533,6 @@ csequipmenteditpair, csingredienteditpair
 
     .unit
       margin-bottom: -10px
-
-csequipmenteditpair
-  .action-button-group
-    top: 0px
-    z-index: 101
-    .btn
-      background-color: white
-      border-bottom: none
-
-csingredienteditpair
-  overflow: visible
-
-  .edit-pair-edit
-
-    .ingredient-title
-      overflow: visible
-      input
-        &:first-child
-          width: 64%
-        &:last-child
-          width: 34%
-
-    .quantity-group
-      xbottom: 2px
-
-    .unit
-      cursor: pointer
-      overflow:  visible
-      select
-        margin: 0
-        width: 100%
-        border:  none
-        opacity: 0
-      .select-readout
-        position: absolute
-        width:  200%
-        height:  100%
-        z-index: 0
-
 .meta-edit
   border: 1px solid $offwhite
   padding:  10px

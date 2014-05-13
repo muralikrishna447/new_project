@@ -21,7 +21,7 @@
 
       .medium-item
 
-        .half-medium-item(ng-if="activity.ingredients.length || editMode")
+        .half-medium-item.ingredients-item(ng-if="activity.ingredients.length || editMode")
           = render 'activities/main_ingredients'
 
         .half-medium-item
