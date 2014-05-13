@@ -17,7 +17,7 @@
         no-nell-popup 
         target='_blank') 
 
-      %div(ng-switch='obj.activity_type[0] || "Recipe"' ng-if="obj.activity_type[0]")
+      %div(ng-switch='obj.activity_type[0] || "Recipe"')
         .btn.btn-large.btn-primary(ng-switch-when="Recipe") SEE THE RECIPE
         .btn.btn-large.btn-primary(ng-switch-default) TELL ME MORE
      

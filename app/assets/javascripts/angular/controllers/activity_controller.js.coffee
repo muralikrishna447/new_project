@@ -10,13 +10,15 @@ window.deepCopy = (obj) ->
   $scope.showVideo = false
 
   $scope.showHeroVisual = ->
-   $scope.showVideo || ($scope.heroMedia.heroDisplayType() == 'image')
+    return true if $scope.editMode && ($scope.heroMedia.heroDisplayType() == 'video')
+    $scope.showVideo || ($scope.heroMedia.heroDisplayType() == 'image')
 
   $scope.toggleHeroVisual = ->
     $scope.showVideo = ! $scope.showVideo
     $scope.$broadcast('playVideo', $scope.showVideo)
 
   $scope.bannerImageURL = ->
+    return "" if ! ($scope.heroMedia.hasHeroImage() || $scope.hasFeaturedImage())
     url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
     w = window.innerWidth
     h = 338

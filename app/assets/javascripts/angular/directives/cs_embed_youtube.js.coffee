@@ -53,6 +53,9 @@
       else
         player?.pauseVideo()
 
+    attrs.$observe 'videoId', ->
+      player?.loadVideoById?(attrs.videoId, 0, 'hd1080')
+
   template: """
     <div class='video-container' csenforceaspect>
       <div class='video-iframe'></div>
