@@ -58,11 +58,6 @@
     %input.new-ingredient(  cs-new-ingredient
                             type="text" 
                             placeholder="Add ingredient, e.g. 20 g onion, minced" 
-                            typeahead-editable="true" 
-                            typeahead-on-select="onSelect($item, $model, label)"
-                            autocomplete="off" 
-                            class="ingredient-typeahead" 
-                            ng-model="ai.ingredient"
-                            typeahead="i as i.title for i in all_ingredients($viewValue, viewOptions.includeRecipes)")
+                            autocomplete="off")
 
   = render 'activities/master_ingredients_removed_modal.html.haml'

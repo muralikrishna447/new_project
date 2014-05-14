@@ -3,64 +3,30 @@
 
   link: (scope, element, attrs) ->
 
-    ###################################################################
-    #
-    # NOTE THIS IS SOME CRAZY TOUCHY SHIZNITZ. BE VERY AFRAID.
-    #
-    ###################################################################
-    scope.ai = {unit: "g", quantity: "0", note: null}
+    maybeCommitIngredient = ->
+      console.log "Maybe Commit"
 
-    scope.onSelect = (item, model, label) ->
-      # Get the ingredient selection, and reset the input to 
-      # what the user had originally typed (typeahead is going to trash it
-      # with just the selected ingredient name)
-      scope.ai.ingredient = window.deepCopy(item)
-      console.log "Select"
+      ai = {unit: "a/n", display_quantity: "1", note: null, ingredient: {title: null}}
 
-      if ! scope.ai.note
-        $timeout ->
-          console.log "Select post timeout"
-          $(element[0]).val("#{scope.ai.display_quantity} #{scope.ai.unit} #{scope.ai.ingredient.title}, ")
-          # Note how this is used as a signaling mechanism that keydown
-          # is allowed to commit the ingredient
-          scope.ai.note = ""
-
-      else
-        commitIngredient()
-
-    scope.hasIngredientTitle = ->
-      scope.ai.ingredient? && scope.ai.ingredient.title? && (scope.ai.ingredient.title.length > 0)
-
-    commitIngredient = ->
-      console.log "Commit"
-      # Double check title, in case it has [RECIPE] still in it, or a note
-      if scope.hasIngredientTitle()
-        s = window.ChefSteps.splitIngredient(scope.ai.ingredient.title, false)
-        scope.ai.ingredient.title = s.ingredient
-
-      scope.ai.unit = "recipe" if scope.ai.ingredient? && scope.ai.ingredient.sub_activity_id?
-
-      if scope.hasIngredientTitle() && scope.ai.unit? && ((scope.ai.display_quantity? ) || (scope.ai.unit == "a/n"))
-        scope.getIngredientsList().push(window.deepCopy(scope.ai))
-        scope.ai = {unit: "g", quantity: "0", note: null}
-        scope.$apply() if ! scope.$$phase
-
-    element.on 'keyup', (event) ->
-      console.log "Keyup #{JSON.stringify(scope.ai)}"
-      # Gotta grab the unit & quantity on each key b/c on selection
-      # it is too late to see the contents
-      s = window.ChefSteps.splitIngredient($(event.target).val())
-      scope.ai.unit = s.unit if s.unit?
+      s = window.ChefSteps.splitIngredient($(element).val())
+      ai.unit = s.unit if s.unit?
       # Holdover from sharing code with the old admin method
       s.quantity = 1 if s.quantity == -1
-      scope.ai.display_quantity = s.quantity if s.quantity?
-      scope.ai.note = s.note if s.note?
+      ai.display_quantity = s.quantity if s.quantity?
+      ai.display_quantity = null if ai.unit == "a/n"
+      ai.note = s.note if s.note?
+      ai.ingredient.title = s.ingredient if s.ingredient?
+      ai.unit = "recipe" if ai.ingredient.sub_activity_id?
 
-    # This is handling the case where the user hasn't typed
-    # a note, just pressed return, which won't trigger onSelect()
+      if ai.ingredient.title && ai.unit? && ((ai.display_quantity? ) || (ai.unit == "a/n"))
+        console.log "Commit!"
+        scope.getIngredientsList().push(window.deepCopy(ai))
+        $(element).val('')
+        scope.$apply() if ! scope.$$phase
+
     element.on 'keydown', (event) ->
-      if scope.ai.note == "" && event.which == 13
-        commitIngredient()
+      if event.which == 13
+        maybeCommitIngredient()
 
       return true   
 ]   

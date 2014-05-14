@@ -23,7 +23,7 @@ window.ChefSteps.splitIngredient = (term, parse_unitless_number) ->
 
   # None of the above, assumed to be a nekkid ingredient
   else
-    result = {"ingredient" : term}
+    result = {ingredient: term, unit: "a/n"}
     if result["ingredient"].match(/\[RECIPE\]/)
       result["quantity"] = -1
       result["unit"] = "recipe"

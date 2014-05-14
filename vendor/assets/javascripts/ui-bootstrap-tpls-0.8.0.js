@@ -3049,7 +3049,6 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
       var isEditable = originalScope.$eval(attrs.typeaheadEditable) !== false;
 
       //binding to a variable that indicates if matches are being retrieved asynchronously
-      var isLoading = false;
       var isLoadingSetter = $parse(attrs.typeaheadLoading).assign || angular.noop;
 
       //a callback executed when a match is selected
@@ -3099,7 +3098,6 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
 
         var locals = {$viewValue: inputValue};
         isLoadingSetter(originalScope, true);
-        isLoading = true;
         $q.when(parserResult.source(originalScope, locals)).then(function(matches) {
 
           //it might happen that several async queries were in progress if a user were typing fast
@@ -3130,12 +3128,10 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
               resetMatches();
             }
             isLoadingSetter(originalScope, false);
-            isLoading = false;
           }
         }, function(){
           resetMatches();
           isLoadingSetter(originalScope, false);
-          isLoading =
         });
       };
 
