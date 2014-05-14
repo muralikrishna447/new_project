@@ -9,9 +9,10 @@ angular.module('ChefStepsApp').directive 'csNewIngredient', ->
       scope.ai.ingredient? && scope.ai.ingredient.title? && (scope.ai.ingredient.title.length > 0)
 
     commitIngredient = ->
-      # any final cleanup if they typed too fast, or if [RECIPE] is left
-      s = window.ChefSteps.splitIngredient(scope.ai.ingredient.title, false)
-      scope.ai.ingredient = {title: s.ingredient}
+      # Double check title, in case it has [RECIPE] still in it, or a note
+      if scope.hasIngredientTitle()
+        s = window.ChefSteps.splitIngredient(scope.ai.ingredient.title, false)
+        scope.ai.ingredient = {title: s.ingredient}
 
       if scope.hasIngredientTitle() && scope.ai.unit? && ((scope.ai.display_quantity? ) || (scope.ai.unit == "a/n"))
         scope.getIngredientsList().push(window.deepCopy(scope.ai))
@@ -20,17 +21,19 @@ angular.module('ChefStepsApp').directive 'csNewIngredient', ->
     element.bind 'blur', ->
       commitIngredient()
 
-    element.bind 'keydown', (event) ->
-      if event.which == 13
+    element.on 'keydown', (event) ->
+      console.log element
+      console.log event.target
+      if event.target == element[0] && event.which == 13
         commitIngredient()
-        return false
+        return true
 
       s = window.ChefSteps.splitIngredient($(event.target).val())
       scope.ai.unit = s.unit if s.unit?
+      scope.ai.unit = "recipe" if scope.ai.ingredient? && scope.ai.ingredient.sub_activity_id?
       # Holdover from sharing code with the old admin method
       s.quantity = 1 if s.quantity == -1
       scope.ai.display_quantity = s.quantity if s.quantity?
-      scope.ai.unit = "recipe" if scope.ai.ingredient? && scope.ai.ingredient.sub_activity_id?
 
       return true      
        
