@@ -2,7 +2,11 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.shouldShowMasterIngredientsRemovedModal = false
   $scope.showIngredientsMenu = false
+  $scope.includeRecipes = false
   $scope.preventAutoFocus = true
+
+  $scope.viewOptions = {}
+  $scope.viewOptions.includeRecipes = false
 
   $scope.getAllUnits = ->
     window.allUnits
@@ -28,9 +32,9 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
   $scope.removeIngredient = (index) ->
     $scope.getIngredientsList().splice(index, 1)
 
-  $scope.all_ingredients = (term) ->
+  $scope.all_ingredients = (term, includeRecipes) ->
     s = ChefSteps.splitIngredient(term)
-    $http.get("/ingredients.json?limit=15&include_sub_activities=true&search_title=" + s["ingredient"]).then (response) ->
+    $http.get("/ingredients.json?limit=15&include_sub_activities=#{includeRecipes}&search_title=" + s["ingredient"]).then (response) ->
       r = response.data
       for i in r
         i.title += " [RECIPE]" if i.sub_activity_id?

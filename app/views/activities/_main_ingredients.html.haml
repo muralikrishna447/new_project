@@ -41,11 +41,19 @@
 
   .new-ingredients-group(ng-show="editMode")
 
-    %button.btn.btn-secondary.add-from-master(  ng-show="hasAnyStepIngredients()" 
-                                                          ng-click="fillMasterIngredientsFromSteps()" 
-                                                          tooltip="Replace master ingredients with step ingredients..." 
-                                                          tooltip-placement="bottom")
+    .btn.btn-secondary.add-from-master( ng-show="hasAnyStepIngredients()" 
+                                        ng-click="fillMasterIngredientsFromSteps()" 
+                                        tooltip="Replace master ingredients with step ingredients..." 
+                                        tooltip-placement="bottom")
       %i.icon-chevron-left
+
+    .btn.btn-secondary.include-recipes( ng-model="viewOptions.includeRecipes"
+                                        btn-checkbox
+                                        btn-checkbox-true="true"
+                                        btn-checkbox-false="false"
+                                        tooltip="Include sub-recipes in autocomplete"
+                                        tooltip-placement="bottom")
+      %i.icon-filter
 
     %input.new-ingredient(  cs-new-ingredient
                             type="text" 
@@ -55,6 +63,6 @@
                             autocomplete="off" 
                             class="ingredient-typeahead" 
                             ng-model="ai.ingredient"
-                            typeahead="i as i.title for i in all_ingredients($viewValue)")
+                            typeahead="i as i.title for i in all_ingredients($viewValue, viewOptions.includeRecipes)")
 
   = render 'activities/master_ingredients_removed_modal.html.haml'
