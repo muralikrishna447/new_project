@@ -5,6 +5,9 @@ angular.module('ChefStepsApp').directive 'csNewIngredient', ->
 
     scope.ai = {unit: "g", quantity: "0"}
 
+    scope.formatInput = ($model) ->
+      "#{scope.ai.quantity} #{scope.ai.unit} #{scope.ai.ingredient.title}"
+
     scope.hasIngredientTitle = ->
       scope.ai.ingredient? && scope.ai.ingredient.title? && (scope.ai.ingredient.title.length > 0)
 
@@ -22,8 +25,6 @@ angular.module('ChefStepsApp').directive 'csNewIngredient', ->
       commitIngredient()
 
     element.on 'keydown', (event) ->
-      console.log element
-      console.log event.target
       if event.target == element[0] && event.which == 13
         commitIngredient()
         return true
@@ -34,6 +35,7 @@ angular.module('ChefStepsApp').directive 'csNewIngredient', ->
       # Holdover from sharing code with the old admin method
       s.quantity = 1 if s.quantity == -1
       scope.ai.display_quantity = s.quantity if s.quantity?
+      console.log scope.ai
 
       return true      
        

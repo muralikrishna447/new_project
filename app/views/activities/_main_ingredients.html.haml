@@ -51,6 +51,7 @@
                             type="text" 
                             placeholder="Add ingredient, e.g. 20 g onion, minced" 
                             typeahead-editable="true" 
+                            typeahead-input-formatter="formatInput($model)"
                             autocomplete="off" 
                             class="ingredient-typeahead" 
                             ng-model="ai.ingredient"
