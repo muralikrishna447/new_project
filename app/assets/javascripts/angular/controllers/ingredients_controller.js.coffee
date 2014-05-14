@@ -34,7 +34,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.all_ingredients = (term, includeRecipes) ->
     s = ChefSteps.splitIngredient(term)
-    $http.get("/ingredients.json?limit=15&include_sub_activities=#{includeRecipes}&search_title=" + s["ingredient"]).then (response) ->
+    $http.get("/ingredients.json?limit=15&include_sub_activities=#{$scope.includeRecipes}&search_title=" + s["ingredient"]).then (response) ->
       r = response.data
       for i in r
         i.title += " [RECIPE]" if i.sub_activity_id?

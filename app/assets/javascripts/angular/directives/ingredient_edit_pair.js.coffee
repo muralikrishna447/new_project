@@ -3,6 +3,11 @@
 
   link: (scope, element, attrs) ->
 
+    ###################################################################
+    #
+    # NOTE THIS IS SOME CRAZY TOUCHY SHIZNITZ. BE VERY AFRAID.
+    #
+    ###################################################################
     scope.ai = {unit: "g", quantity: "0", note: null}
 
     scope.onSelect = (item, model, label) ->
@@ -11,6 +16,7 @@
       # with just the selected ingredient name)
       scope.ai.ingredient = window.deepCopy(item)
       console.log "Select"
+
       if ! scope.ai.note
         $timeout ->
           console.log "Select post timeout"
@@ -18,6 +24,9 @@
           # Note how this is used as a signaling mechanism that keydown
           # is allowed to commit the ingredient
           scope.ai.note = ""
+
+      else
+        commitIngredient()
 
     scope.hasIngredientTitle = ->
       scope.ai.ingredient? && scope.ai.ingredient.title? && (scope.ai.ingredient.title.length > 0)
@@ -47,7 +56,10 @@
       scope.ai.display_quantity = s.quantity if s.quantity?
       scope.ai.note = s.note if s.note?
 
-      if event.which == 13 && scope.ai.note?
+    # This is handling the case where the user hasn't typed
+    # a note, just pressed return, which won't trigger onSelect()
+    element.on 'keydown', (event) ->
+      if scope.ai.note == "" && event.which == 13
         commitIngredient()
 
       return true   
