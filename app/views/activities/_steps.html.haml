@@ -1,9 +1,10 @@
 
-.disabled-section
-  %h4(ng-show="editMode && (activity.steps.length == 0)" ng-click="addStep(0, 0)")
-    Add first step...
-
-.ordered-steps-new(ng-show="activity.steps.length > 0" itemprop="recipeInstructions")
+.ordered-steps-new(ng-show="editMode || (activity.steps.length > 0)" itemprop="recipeInstructions")
+  .ordered-step-item.relative.anim-scaling-fade
+    .standard-item
+      .btn.btn-link(ng-show="activity.steps.length == 0" ng-click="addStep(0, 0)")
+        %i.icon-circle-arrow-down
+        Add first step
   .ordered-step-item.relative.anim-scaling-fade(  ng-repeat="step in activity.steps track by step.id" 
                                                 id="{{'numbered-step-' + step.id}}")
     = render 'activities/latest/step'
