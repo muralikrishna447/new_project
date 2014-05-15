@@ -1,6 +1,6 @@
 # Originally this just used a ui bootstrap typeahead, but trying to have an autocomplete
 # for the ingredient name in the middle of something like "20 g banana, diced" was becoming too
-# problematic. So I compromised by reusing some of their internal components like typeahead-popup, but
+# problematic. So I compromised by reusing some of their internal components like typeahead-popup, butgoop
 # managing all of the input myself.
 
 @app.directive 'csNewIngredient', [ "$timeout", "$q", ($timeout, $q) ->
@@ -13,15 +13,16 @@
     scope.matches = []
     scope.activeIdx = -1
 
-
     input = $(element).find('input')
 
-    maybeCommitIngredient = ->
-      console.log "Maybe Commit"
+    resetMatches = ->
+      scope.matches = []
+      scope.activeIdx = -1
 
-      ai = {unit: "a/n", display_quantity: "1", note: null, ingredient: {title: null}}
+    currentAI = ->
+      ai = {unit: "a/n", display_quantity: "1", note: "", ingredient: {title: ""}}
 
-      s = window.ChefSteps.splitIngredient(input.val())
+      s = window.ChefSteps.splitIngredient(scope.inputText)
       ai.unit = s.unit if s.unit?
       # Holdover from sharing code with the old admin method
       s.quantity = 1 if s.quantity == -1
@@ -31,6 +32,13 @@
       ai.ingredient.title = s.ingredient if s.ingredient?
       ai.unit = "recipe" if ai.ingredient.sub_activity_id?
 
+      ai
+
+    maybeCommitIngredient = ->
+      console.log "Maybe Commit"
+
+      ai = currentAI()
+
       if ai.ingredient.title && ai.unit? && ((ai.display_quantity? ) || (ai.unit == "a/n"))
         console.log "Commit!"
         scope.getIngredientsList().push(window.deepCopy(ai))
@@ -38,19 +46,38 @@
         scope.$apply() if ! scope.$$phase
 
     element.on 'keydown', (event) ->
-      if event.which == 13
-        maybeCommitIngredient()
+      if event.which == 13 || event.which == 9
+        if (scope.activeIdx == 0) || (scope.matches.length == 0)
+          maybeCommitIngredient()
+        else
+          ai = currentAI()
+          ai.ingredient.title = scope.matches[scope.activeIdx].label
+          scope.inputText = "#{ai.display_quantity || ''} #{ai.unit} #{ai.ingredient.title}, #{ai.note}"
+
+      else if event.which is 40
+        scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length
+
+      else if event.which is 38
+        scope.activeIdx = ((if scope.activeIdx then scope.activeIdx else scope.matches.length)) - 1
+
+      else if event.which is 27
+        event.stopPropagation()
+        resetMatches()
+
+      scope.$digest()      
       true
 
     scope.$watch 'inputText', (val) ->
-      scope.matches = []
-      scope.activeIdx = -1
 
-      if val.length > 0
-        scope.matches = [{label: val}]
+      if (val.length == 0) || (val.indexOf(',') >= 0)
+        resetMatches()
+      else 
+        scope.matches[0] = {label: val}
         scope.activeIdx = 0
         $q.when(scope.all_ingredients(val, scope.includeRecipes)).then (matches) ->
-          scope.matches = _.extend(scope.matches, matches)
+          # all_ingredients returns the original, so skip it
+          scope.matches[1..] = matches[1..]
+
       true
 
 
