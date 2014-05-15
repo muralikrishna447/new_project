@@ -47,7 +47,10 @@
 
     scope.select = (idx) ->
       ai = currentAI()
-      ai.ingredient.title = scope.matches[idx].label
+      ai.ingredient.title = scope.matches[idx].title
+      if scope.matches[idx].sub_activity_id
+        ai.unit = 'recipe' 
+        ai.display_quantity = '1'
       scope.inputText = "#{ai.display_quantity || ''} #{ai.unit} #{ai.ingredient.title}, #{ai.note}"
 
     element.on 'keydown', (event) ->

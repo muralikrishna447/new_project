@@ -5,7 +5,6 @@ capitalizeFirstLetter = (string) ->
 
 window.ChefSteps.splitIngredient = (term) ->
   result = {}
-  parse_unitless_number = parse_unitless_number || true
 
   # a/n Tofu Eyeballs, diced [or an Tofu Eyeballs]
   if s = term.match(/\s*(an|a\/n)+\s+([^,]*),?\s*(.*)?/)
@@ -13,7 +12,7 @@ window.ChefSteps.splitIngredient = (term) ->
 
   # 10 g Tofu Eyeballs, diced (or kg, ea, each, r, recipe)
   # 10 Tofu Eyeballs (unit will be treated as 'ea')
-  else if s = term.match(/\s*([\d.]+)\s*(g|kg|ea|each|r|recipe)?\s?([^,]*),?\s*(.*)?/)
+  else if s = term.match(/\s*([\d.]+)\s*(g|kg|each|ea|recipe|r)?\s?([^,]*),?\s*(.*)?/)
     unit = if s[2] then s[2] else "ea"
     result = {quantity: s[1], unit: unit, ingredient: s[3], note: s[4]}
 
