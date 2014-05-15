@@ -1,4 +1,5 @@
 Delve::Application.routes.draw do
+  match '/forum', to: 'bloom#forum', constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
   root to: "home#index"
 
   ActiveAdmin.routes(self)
