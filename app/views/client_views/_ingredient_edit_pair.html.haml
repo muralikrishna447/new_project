@@ -44,7 +44,7 @@
                   autocomplete="off" 
                   class="ingredient-typeahead" 
                   ng-model="ai.ingredient"
-                  typeahead="i as i.title for i in all_ingredients($viewValue)")
+                  typeahead="i as i.label for i in all_ingredients($viewValue)")
 
     %input.note(  cs-emit-focus
                   csselectonfocus

@@ -41,25 +41,12 @@
 
   .new-ingredients-group(ng-show="editMode")
 
-    .btn.btn-secondary.add-from-master( ng-show="hasAnyStepIngredients()" 
+    .btn.btn-secondary.btn-small.add-from-master( ng-show="hasAnyStepIngredients()" 
                                         ng-click="fillMasterIngredientsFromSteps()" 
                                         tooltip="Replace master ingredients with step ingredients..." 
                                         tooltip-placement="bottom")
       %i.icon-chevron-left
 
-    %div(typeahead-popup matches="['dog', 'cat']")
-
-    .btn.btn-secondary.include-recipes( ng-model="viewOptions.includeRecipes"
-                                        btn-checkbox
-                                        btn-checkbox-true="true"
-                                        btn-checkbox-false="false"
-                                        tooltip="Include sub-recipes in autocomplete"
-                                        tooltip-placement="bottom")
-      %i.icon-filter
-
-    %input.new-ingredient(  cs-new-ingredient
-                            type="text" 
-                            placeholder="Add ingredient, e.g. 20 g onion, minced" 
-                            autocomplete="off")
+    .new-ingredient(cs-new-ingredient)
 
   = render 'activities/master_ingredients_removed_modal.html.haml'

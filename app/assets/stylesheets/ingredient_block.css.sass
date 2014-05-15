@@ -173,16 +173,26 @@
   .ingredients-item
     width: 100%
 
-  .new-ingredients-group
+  .new-ingredients-group, .new-ingredient-input
     width: 100%
     display: inline-flex
     justify-content: space-between
+    .btn
+      margin-right: $horz-baseline-small
+      height: 100%
 
-  .new-ingredient
+  .new-ingredient, .new-ingredient-input > input
     flex: 1 1 100px
 
-  .btn
-    margin-right: $horz-baseline-small
+.new-ingredient-input
+  position: relative
+  [typeahead-popup]
+    position: absolute
+    top: 35px
+    left: 60px
+
+
+
 
 .ingredients-well
   .menu-active
