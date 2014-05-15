@@ -43,16 +43,19 @@
         console.log "Commit!"
         scope.getIngredientsList().push(window.deepCopy(ai))
         scope.inputText = ''
-        scope.$apply() if ! scope.$$phase
+        resetMatches()
+
+    scope.select = (idx) ->
+      ai = currentAI()
+      ai.ingredient.title = scope.matches[idx].label
+      scope.inputText = "#{ai.display_quantity || ''} #{ai.unit} #{ai.ingredient.title}, #{ai.note}"
 
     element.on 'keydown', (event) ->
       if event.which == 13 || event.which == 9
         if (scope.activeIdx == 0) || (scope.matches.length == 0)
           maybeCommitIngredient()
         else
-          ai = currentAI()
-          ai.ingredient.title = scope.matches[scope.activeIdx].label
-          scope.inputText = "#{ai.display_quantity || ''} #{ai.unit} #{ai.ingredient.title}, #{ai.note}"
+          scope.select(scope.activeIdx)
 
       else if event.which is 40
         scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length
@@ -75,8 +78,10 @@
         scope.matches[0] = {label: val}
         scope.activeIdx = 0
         $q.when(scope.all_ingredients(val, scope.includeRecipes)).then (matches) ->
-          # all_ingredients returns the original, so skip it
-          scope.matches[1..] = matches[1..]
+          # Ignore any queries that come back late after the query no longer matches the control
+          if val == scope.inputText
+            # all_ingredients returns the original, so skip it
+            scope.matches[1..] = matches[1..]
 
       true
 
@@ -85,8 +90,8 @@
 
   template: '''
     <div class='new-ingredient-input'>
-      <div typeahead-popup matches='matches' active='activeIdx'></div>
-      <div class="btn btn-secondary btn-small include-recipes" ng-model="includeRecipes" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" tooltip="Include sub-recipes in autocomplete" tooltip-placement="bottom")><i class="icon-filter"/></div>
+      <div typeahead-popup matches='matches' active='activeIdx' select='select(activeIdx)'></div>
+      <div class="btn btn-secondary btn-small include-recipes" ng-model="$parent.includeRecipes" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" tooltip="Include sub-recipes in autocomplete" tooltip-placement="bottom")><i class="icon-filter"/></div>
       <input autocomplete="off" placeholder="Add ingredient, e.g. 20 g onion, minced" type="text" ng-model="inputText">
     </div>
   '''

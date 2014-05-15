@@ -3,23 +3,19 @@ window.ChefSteps = window.ChefSteps || {}
 capitalizeFirstLetter = (string) ->
   return string.charAt(0).toUpperCase() + string.slice(1)
 
-window.ChefSteps.splitIngredient = (term, parse_unitless_number) ->
+window.ChefSteps.splitIngredient = (term) ->
   result = {}
   parse_unitless_number = parse_unitless_number || true
 
   # a/n Tofu Eyeballs, diced [or an Tofu Eyeballs]
-  if s = term.match(/^(an|a\/n)+\s+([^,]*),?\s*(.*)?/)
+  if s = term.match(/\s*(an|a\/n)+\s+([^,]*),?\s*(.*)?/)
     result = {unit: "a/n", ingredient: s[2], note: s[3]}
 
   # 10 g Tofu Eyeballs, diced (or kg, ea, each, r, recipe)
-  else if s = term.match(/^([\d.]+)\s*(g|kg|ea|each|r|recipe)+\s+([^,]*),?\s*(.*)?/)
-    unit = if s[2] then s[2] else "g"
+  # 10 Tofu Eyeballs (unit will be treated as 'ea')
+  else if s = term.match(/\s*([\d.]+)\s*(g|kg|ea|each|r|recipe)?\s?([^,]*),?\s*(.*)?/)
+    unit = if s[2] then s[2] else "ea"
     result = {quantity: s[1], unit: unit, ingredient: s[3], note: s[4]}
-
-  # Any number at the beginning, even before there is a space. Use it as a quantity
-  # but it also might be an ingredient name.
-  else if  parse_unitless_number && (s = term.match(/^([\d.]+)/))
-    result = {quantity: s[1], ingredient: s[1]}
 
   # None of the above, assumed to be a nekkid ingredient
   else
