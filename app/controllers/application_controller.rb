@@ -222,20 +222,20 @@ private
     end
   end
 
-  # def cors_set_access_control_headers
-  #   headers['Access-Control-Allow-Origin'] = '*'
-  #   headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-  #   headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type, Authorization'
-  #   headers['Access-Control-Max-Age'] = "1728000"
-  # end
-
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Expose-Headers'] = 'Etag'
-    headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD'
-    headers['Access-Control-Allow-Headers'] = '*, x-Requested-with, X-Prototype-Version, X-CSRF-Token, Content-Type, If-Modified-Since, If-None-Match'
-    headers['Access-Control-Max-Age'] = '86400'
+    headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+    headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type, Authorization'
+    headers['Access-Control-Max-Age'] = "1728000"
   end
+
+  # def cors_set_access_control_headers
+  #   headers['Access-Control-Allow-Origin'] = '*'
+  #   headers['Access-Control-Expose-Headers'] = 'Etag'
+  #   headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD'
+  #   headers['Access-Control-Allow-Headers'] = '*, x-Requested-with, X-Prototype-Version, X-CSRF-Token, Content-Type, If-Modified-Since, If-None-Match'
+  #   headers['Access-Control-Max-Age'] = '86400'
+  # end
 
   def set_referrer_in_mixpanel(key)
     if session[:referred_from] && session[:referred_by]
