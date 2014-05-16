@@ -41,10 +41,10 @@
 
   .new-ingredients-group(ng-show="editMode")
 
-    .btn.btn-secondary.btn-small.add-from-master( ng-show="hasAnyStepIngredients()" 
-                                        ng-click="fillMasterIngredientsFromSteps()" 
-                                        tooltip="Replace master ingredients with step ingredients..." 
-                                        tooltip-placement="bottom")
+    .btn.btn-secondary.btn-small( ng-show="hasAnyStepIngredients()" 
+                                  ng-click="fillMasterIngredientsFromSteps()" 
+                                  tooltip="Replace master ingredients with step ingredients..." 
+                                  tooltip-placement="bottom")
       %i.icon-chevron-left
 
     .new-ingredient(cs-new-ingredient)

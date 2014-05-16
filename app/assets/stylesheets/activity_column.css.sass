@@ -28,6 +28,8 @@
 .medium-item
   @extend .base-item
   width: $desktop-standard-item-width + 200px
+  display: flex
+  flex-wrap: wrap
 
 .wide-item
   @extend .base-item
@@ -38,13 +40,9 @@
 
 .half-medium-item
   vertical-align: top
-  display: inline-block
-  width: 370px
+  flex: 1 0 300px
   &:not(:first-child)
     margin-left: 30px
-
-  &:first-child:last-child
-    margin-left: 100px
 
 .quarter-medium-item
   vertical-align: top
@@ -52,7 +50,6 @@
   width: 170px
   &:not(:first-child-of-type)
     margin-left: 30px
-
 
 .activity-columns-1
   .leftInset, .rightInset

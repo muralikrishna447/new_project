@@ -52,6 +52,7 @@
         ai.unit = 'recipe' 
         ai.display_quantity = '1'
       scope.inputText = "#{ai.display_quantity || ''} #{ai.unit} #{ai.ingredient.title}, #{ai.note}"
+      input.focus()
 
     element.on 'keydown', (event) ->
       if event.which == 13 || event.which == 9

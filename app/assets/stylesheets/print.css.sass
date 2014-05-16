@@ -1,20 +1,33 @@
 
 @import 'mixins'
 
+
 @media print
+  @page
+    // These sadly seem to be mostly ignored
+    margin-top: 2cm !important
+    margin-bottom: 2cm !important
+
+  html
+    font-size: 9px
+
+  body
+    line-height: 22px
+
   body *
     visibility: hidden
+    line-height: 22px
 
-  @page
-    margin: (5 * $baseline) ($horz-baseline-large * 5)
+  h1
+    margin-bottom: $baseline * 2 !important
 
   .printable, .printable *
     visibility: visible
     overflow: visible
     float: none
     page-break-after: avoid
-    .well
-      border: 1px solid black
+    .well, .ingredients-well
+      border: 1px solid darkgray
     .span6
       width: 600px
 
@@ -61,6 +74,11 @@
   .aside, .aside-separate
     float: none !important
     border: 1px solid gray !important
+
+  .assembly-activity
+    .ordered-steps-new
+      .ordered-step-item
+        margin-bottom: $baseline !important
 
   .step-number
     font-size: 2.0312rem /* 20.312px / 14px */

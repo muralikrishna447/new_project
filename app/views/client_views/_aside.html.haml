@@ -1,11 +1,11 @@
 %h4(cs-contenteditable="getStepOpenForEdit()" ng-model="step.title")
 %div(ng-include="'_step_edit_images.html'")
-.aside-video(ng-if='hasAV()')
-  .step-video-outer.noprint(ng-if="!! step.youtube_id")
+.aside-video.noprint(ng-if='hasAV()')
+  .step-video-outer(ng-if="!! step.youtube_id")
     .new-step-video(id="{{'step-video-' + $index}}")
       .video-container(csenforceaspect)
         %iframe(ng-style="setHeight()" csenforceaspect cssrcreplacer="{{'//www.youtube.com/embed/' + step.youtube_id + '?wmode=opaque&rel=0&modestbranding=1&showinfo=0'}}")
-.aside-image(ng-if="!!step.image_id")
+.aside-image.noprint(ng-if="!!step.image_id")
   %img(ng-src="{{stepImageURL(step, 840)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
 .aside-text(  cs-contenteditable="getStepOpenForEdit()" 
               ng-model="step.directions"
