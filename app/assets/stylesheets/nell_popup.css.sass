@@ -13,6 +13,7 @@
   @extend noprint
   @include boxsizing
   @include shadow
+  // Have to specify transform b/c don't want top animating when it is a .alert-popup
   @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
 
   background-color: white

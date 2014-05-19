@@ -28,8 +28,8 @@ window.deepCopy = (obj) ->
 ]
 
 
-@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication"
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication) ->
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService"
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService) ->
 
   $scope.heroMedia = csEditableHeroMediaService
 
@@ -43,6 +43,7 @@ window.deepCopy = (obj) ->
   $scope.alerts = []
   $scope.activities = {}
   $scope.csAuthentication = csAuthentication
+  $scope.csAlertService = csAlertService
   $rootScope.loading = 0
 
   $scope.csTagService = csTagService
@@ -158,7 +159,7 @@ window.deepCopy = (obj) ->
       ((error) ->
         $rootScope.loading -= 1
         console.log "ACTIVITY SAVE ERRORS: " + JSON.stringify(error)
-        _.each(error.data.errors, (e) -> $scope.addAlert({message: e})))
+        _.each(error.data.errors, (e) -> csAlertService.addAlert({message: e})))
     )
 
   $scope.cancelEditMode = ->
@@ -441,13 +442,6 @@ window.deepCopy = (obj) ->
        $scope.fetchActivity(prefetch_id)
       ), 3000
 
-  $scope.addAlert = (alert) ->
-    $scope.alerts.push(alert)
-    $timeout ->
-      $("html, body").animate({ scrollTop: -500 }, "slow")
-
-  $scope.closeAlert = (index) ->
-    $scope.alerts.splice(index, 1)
 
   # We've had bad luck getting the youtube iframe player API state change event to work reliably, so instead
   # we're asking youtube for the video duration and making the assumption that the video is done playing after
