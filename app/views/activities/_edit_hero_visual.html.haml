@@ -1,6 +1,7 @@
+.section-large.noprint( ng-if="heroMedia.heroDisplayType() == 'none'" )
 .standard-item(ng-cloak ng-if="editMode")
-  .btn.btn-secondary.noprint( ng-show="editMode" 
-                                        ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
+  .btn.btn-secondary.noprint.section( ng-show="editMode" 
+                                      ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
     %i.icon-edit
     Edit hero visual
     %i.icon-chevron-up(ng-show="showHeroVisualEdit")
@@ -8,9 +9,9 @@
 
   %div.anim-basic-fade.noprint(ng-hide="(! showHeroVisualEdit) || (! editMode)" )
     %div
-      .span2
+      %div.chunk
         %h5 Youtube ID
         %input(type="text" ng-model="getObject().youtube_id")
-      .span3.offset1
+      %div.chunk
         %h5 Hero Image
         .csfilepicker(ng-model="getObject().image_id")
