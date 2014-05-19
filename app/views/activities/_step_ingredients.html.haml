@@ -9,7 +9,7 @@
   .select-from-master.well(ng-hide="! (editMode && masterSelect)")
     = render 'activities/select_ingredients_from_master'
 
-  %h4(ng-show="! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Step Ingredients
+  %h4(ng-show="getStepOpenForEdit() && ! step.ingredients.length" ng-class="disableIf(!step.ingredients.length)") Step Ingredients
 
   .new-ingredients-group(ng-show="editMode && getStepOpenForEdit()")
 

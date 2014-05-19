@@ -2026,6 +2026,26 @@ input.summary-tweet
 .content-activity-title:empty:not(:focus):before
   content: "Click to set title"
 
+.quote-container
+  padding: $baseline * 2
+  hr
+    width: 75%
+    margin: 0 auto
+
+  .quote-source
+    @extend h4
+    margin-bottom: $baseline * 3
+    &:before
+      content: "- "
+
+.aside
+  .quote-container
+    hr
+      display: none
+    margin-left: $horz-baseline-large
+    blockquote
+      margin-top: 0
+
 /* Global on-select highlighting */
 
 ::-moz-selection
