@@ -8,9 +8,11 @@ class UsersController < ApplicationController
   end
 
   def index
-    ids = params[:ids].split(',')
-    @users = User.where(id: [ids])
-    render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
+    if params[:ids]
+      ids = params[:ids].split(',')
+      @users = User.where(id: [ids])
+      render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
+    end
   end
 
   # For Bloom Dashboard
