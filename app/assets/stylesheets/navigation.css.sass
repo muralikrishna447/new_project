@@ -4,6 +4,16 @@
 
 /* Navbar */
 
+body.nav-popover-open
+  .container
+    z-index: -1 !important
+  .resources-popover
+    z-index: 10000 !important
+  .nav-container-popover
+    z-index: 10000 !important
+
+.nav-collapse
+  display: none
 .navbar-fixed-top
   // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
   -webkit-transform: translateZ(0)
@@ -25,7 +35,7 @@
   .brand
     text-shadow: none
     color: black
-    padding: 6px 20px
+    padding: 6px 25px
 
   .nav-container
     @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
@@ -57,7 +67,7 @@
     margin-left: 10px
     list-style-type: none
   .navbar-form
-    margin: 12px 10px 12px
+    margin: 23px 7px
     input
       margin: 0px
   .btn-navbar
@@ -74,7 +84,6 @@
       background-color: $orange
       +radius(2px)
   .nav-search
-    background: $offwhite
     height: 78px
     width: 300px
     overflow: hidden
@@ -100,30 +109,40 @@
         opacity: 0
         margin-left: -260px
 
+  .resources-popover
+    @include popover(180px)
+    @include anim-slide-down(-10px)
+    z-index: 100000
+
+
+  .resources-popover:after, .resources-popover:before
+    @include popover-arrow(55%)
+
+  .resources-popover:after 
+    border-color: rgba(255, 255, 255, 0)
+    border-bottom-color: #fff
+    border-width: 7px
+    margin-left: -5px
+  
+  .resources-popover:before 
+    border-color: rgba(194, 225, 245, 0)
+    border-bottom-color: $orange
+    border-width: 10px
+    margin-left: -8px
+
   .nav-container-popover
-    background: white
-    border: 1px solid $offwhite
-    position: absolute
-    top: 60px
-    right: 180px
-    float: right
-    width: 200px
-    padding: $baseline
-    background: #fff
-    border: 1px solid $offwhite
-    border-top: 2px solid $orange  
-    &.ng-enter
-      @include transition(all 100ms ease-in-out)
-      opacity: 0
-      margin-top: -10px
-    &.ng-enter-active
-      opacity: 1  
-      margin-top: 0px
+    @include popover(10px)
+    @include anim-slide-down(-10px)
+    width: 300px
+
+    .nav > li
+      line-height: $baseline * 3
+      width: 100%
+      border-bottom: 1px solid $offwhite
 
   .nav-container-popover:after, .nav-container-popover:before 
-    @include popover-arrow(40%)
+    @include popover-arrow(90%)
   
-
   .nav-container-popover:after 
     border-color: rgba(255, 255, 255, 0)
     border-bottom-color: #fff
@@ -147,8 +166,18 @@
       +radius(2px)
       border: 1px solid #ccc
       width: 250px
+input.search-query
+  +radius(2px)
+  border: 1px solid $light-gray
+  width: 260px
 
+input:focus
+  border: 1px solid $dark-gray
+  outline: none
 
+@media (min-width: 768px)
+  .nav-container-popover
+    display: none
 
 @media (min-width: 321px) and (max-width: 768px)
   .navbar-fixed-top
@@ -179,7 +208,6 @@
       position: absolute
       pointer-events: none
     
-
     .nav-container:after 
       border-color: rgba(255, 255, 255, 0)
       border-bottom-color: #fff
@@ -192,6 +220,67 @@
       border-width: 10px
       margin-left: -8px
 
+    .resources-popover
+      display: block
+      border: none
+      position: relative
+      top: 0
+      right: 0
+      float: left
+      margin-left: 22px
+      width: 40%
+      padding: 0px
+      margin-bottom: $baseline
+      @include anim-slide-down(-20px)
+
+    .resources-popover:after, .resources-popover:before
+      display: none
+
+
+@media (max-width: 767px)
+  .nav-collapse
+    display: block
+    float: right
+    overflow: hidden
+    margin-top: $baseline *2
+    height: auto
+    margin-right: 11px
+    cursor: pointer
+    &:hover
+      color: $orange
+  .nav-container
+    display: none
+  .navbar-fixed-top
+    .nav-search
+      display: block
+      height: 78px
+      width: 250px
+      overflow: hidden
+      position: absolute
+      margin-left: 36px
+      margin-top: -12px
+      @include transition(background 300ms)
+      input[type='text']:focus
+      &:hover
+        cursor: pointer
+      &.ng-enter
+        @include transition(all 200ms ease-in-out)
+        opacity: 0
+        margin-left: 26px
+        &.ng-enter-active
+          opacity: 1  
+          margin-left: 36px
+      &.ng-leave
+        @include transition(all 200ms ease-in-out)
+        opacity: 1
+        margin-left: 36px
+        &.ng-leave-active
+          opacity: 0
+          margin-left: 26px  
+    input.search-query
+      width: 210px          
+
+
 @media (min-width: 768px) and (max-width: 979px)
 
   .nav-item-border
@@ -203,6 +292,7 @@
       color: #fff
   .navbar
     .navbar-inner
+      padding: 0px
       .container
         width: 100%
 
@@ -230,19 +320,19 @@
 @media (max-width: 320px)
 
   .navbar
-    .nav-container
+    .nav-container-popover
       position: absolute
-      margin-top: 7px
-      top: 60px
+      top: 72px
       left: 0
       background: #fff
       border: 1px solid $offwhite
       border-top: 2px solid $orange
-      z-index: 10000
+      width: 100%
+      z-index: 100000
       &:before, &:after
         display: none
-
 
   .nav > li
     width: 100%
     border-bottom: 1px solid #f1f1f1
+

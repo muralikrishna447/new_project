@@ -1,0 +1,98 @@
+%ul.nav
+  %li= link_to "Recipes", gallery_index_url
+  %li(ng-click="showResources = !showResources")
+    = link_to "Resources", "#"
+  .resources-popover(ng-if='showResources' ng-cloak)
+    %ul
+      %li
+        %i.fa.fa-leaf
+        = link_to ' ingredients', ingredients_url
+      %li
+        %i.fa.fa-book
+        = link_to " classes", courses_url
+      %li= link_to "sous vide collection"
+      %li= link_to "knife collection"
+  %li= link_to "Forum", 'http://forum.chefsteps.com/discussions'
+  %li
+    .nav-search(ng-if='showSearch' ng-cloak)
+      %form.navbar-form.form-search.nav-search-form(action="{{getSearchQuery()}}" method="get")
+        %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
+  %li(ng-click="toggleSearch()")
+    = link_to "#" do 
+      %i.fa.fa-search
+  %li.border(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
+    - if external
+      -# Can't see current_user when external, so use a route that will
+      -# either go to their profile if logged in, or take them to sign in
+      = link_to user_profile_url('self') do
+        %span
+          Profile
+    - elsif current_user
+      = link_to user_profile_url(current_user) do
+        .profile-image(tooltip="#{current_user.name}" tooltip-placement="bottom")
+          = image_tag filepicker_arbitrary_image(current_user.image_id, 75) 
+    - else
+      %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+      = render "devise/sessions/new_angular"
+      = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
+
+
+      //.btn-navbar(ng-click="showMenu = !showMenu")
+      //  %h5 menu
+      //  -if @include_edit_toolbar
+      //    #nav-edit-toolbar(collapse="!editMode")
+      //      = render 'activities/edit_toolbar'
+      //  %div(ng-style="toolbarBonusStyle()" ng-hide='editMode')
+
+    //.nav-collapse.collapse.pull-right#cs-navigation
+    //  %ul.nav
+    //    %li.dropdown
+    //      = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+    //        Recipes
+    //        %i.icon-angle-down
+    //      %ul.dropdown-menu
+    //        .dropdown-background
+    //        %li= link_to 'ChefSteps Recipes', gallery_index_url + "#/?activity_type=Recipe&generator=ChefSteps"
+    //        %li= link_to 'Community Recipes', gallery_index_url + "#/?generator=Community"
+    //        %li= link_to 'Ingredients', ingredients_url
+    //        -if (can? :manage, Ingredient) || (can? :manage, Ingredient)
+    //          %li.divider
+    //        -if can? :manage, Ingredient
+    //          %li= link_to 'Manage Ingredients', manager_ingredients_path
+    //        -if can? :manage, Equipment
+    //          %li= link_to 'Manage Equipment', equipment_index_path
+    //
+    //    %li
+    //      = link_to 'Classes', courses_url
+    //    %li.dropdown
+    //      = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+    //        Community
+    //        %i.icon-angle-down
+    //      %ul.dropdown-menu
+    //        .dropdown-background
+    //        %li= link_to 'Forum', 'http://forum.chefsteps.com/discussions'
+    //        %li= link_to 'Vote For New Courses', poll_url('vote-for-future-classes-3')
+    //    -unless @no_shop
+    //      %li.dropdown
+    //        = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+    //          Shop
+    //          %i.icon-angle-down
+    //        %ul.dropdown-menu
+    //          .dropdown-background
+    //          %li= link_to 'Store', 'http://store.chefsteps.com'
+    //          %li= link_to 'Knife Collection', knife_collection_url
+    //          %li= link_to 'Sous Vide Collection', sv_collection_url
+
+
+
+    //    %li
+    //      .nav-search.nav-search-toggle
+    //        %i.icon-search.icon-large
+    //        %form.navbar-form.form-search.nav-search-form(action="{{getSearchQuery()}}" method="get")
+    //          %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
+    //        .nav-search-hide
+    //          %i.icon-remove
+    //  - if current_user && current_user.admin?
+    //    %li
+    //      .cs-bloom-notifs
+    //        %csnotifs
