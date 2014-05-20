@@ -1,5 +1,8 @@
 @import 'mixins'
 
+.negative-z
+  z-index: -10000
+
 .activity_show, .action-jobs
   .nav-spacer
     height: 58px
@@ -35,29 +38,26 @@
       font-size: 100px
       color: #b4d8d8
 
-  .hero-video
+  .hero-visual
     position: absolute
     top: 0
     bottom: 0
     left: 50%
     width: 600px
+    height: 338px
     margin-left: -300px
-    overflow: none
+    overflow: hidden
 
-  .video-container
-    position: absolute
-    top: 0
-    height: 100%
+  .video-iframe-container
     opacity: 0
-    @include transition(all 300ms ease-in-out)
-
+    @include transition(opacity 300ms ease-in-out)
 
   &.hero-video-showing
     > img
       opacity: .3
       @include blur(10px)
 
-    .video-container
+    .video-iframe-container
       opacity: 1
 
 .banner-spacer
@@ -134,7 +134,7 @@
 
 @media (max-width: 650px)
   .banner-image
-    .hero-video
+    .hero-visual
       position: absolute
       top: 0
       bottom: 0

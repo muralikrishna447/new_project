@@ -4,7 +4,7 @@
 # Set up two-way binding for scope and change videos when the id changes
 # Maybe track more events beside load and play
 
-@app.directive 'csembedyoutube', ["$timeout", ($timeout) ->
+@app.directive 'csembedyoutube', ["$timeout", "$window", ($timeout, $window) ->
   restrict: 'E'
   scope: { autoplay: '=' }
   link: (scope, element, attrs) ->
@@ -26,17 +26,18 @@
           playerVars: 
             'wmode': 'opaque'
             'modestbranding' : 1
-            'autohide' : 1
             'rel': 0
             'showinfo': 0
-            width: '1466'
-            iv_load_policy: 3
+            'width': 1466
+            'iv_load_policy': 3
             'autoplay': attrs.autoplay || 0
 
           events:
             # Youtube player is clever enough to default a playback quality based on size
             # but not to adjust it when going fullscreen.         
-            'onReady' : (event) -> player.setPlaybackQuality?('hd1080') 
+            'onReady' : (event) -> 
+              player.setPlaybackQuality?('hd1080') 
+
             'onStateChange': (event) ->
               if event.data == 1
                   mixpanel.track('Video Embed Played', mixpanelProperties) 
@@ -50,14 +51,33 @@
     scope.$on 'playVideo', (event, play) ->
       if play
         player?.playVideo()
+        $timeout ( ->
+          scope.adjustHeight(1)
+        ), 3000
+
       else
         player?.pauseVideo()
 
     attrs.$observe 'videoId', ->
       player?.loadVideoById?(attrs.videoId, 0, 'hd1080')
 
-  template: """
-    <div class='video-container' csenforceaspect>
+    scope.adjustHeight = () ->
+      newHeight = Math.round(scope.getWidth() * (attrs.aspectRatio || (9.0 / 16.0)))
+      console.log("New height: #{newHeight}")
+      $(element).find('iframe').height(newHeight)
+
+    scope.getWidth = ->
+      $(element).find('iframe').width()
+
+    scope.$watch scope.getWidth, ( ->
+      scope.adjustHeight()
+    ), true
+
+    angular.element($window).bind "resize", ->
+      scope.$apply()
+
+  template: """ 
+    <div class="video-iframe-container">     
       <div class='video-iframe'></div>
     </div>
   """

@@ -3,7 +3,7 @@ angular.module('ChefStepsApp').directive "csenforceaspect", ["$window", ($window
   link: (scope, element, attrs) ->
 
     scope.getWidth = ->
-      $(element).width()
+      $(element).find('iframe').width()
 
     scope.$watch scope.getWidth, ((newValue, oldValue) ->
       scope.width = newValue
