@@ -63,7 +63,6 @@
 
     scope.adjustHeight = () ->
       newHeight = Math.round(scope.getWidth() * (attrs.aspectRatio || (9.0 / 16.0)))
-      console.log("New height: #{newHeight}")
       $(element).find('iframe').height(newHeight)
 
     scope.getWidth = ->

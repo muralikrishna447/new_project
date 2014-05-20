@@ -64,14 +64,16 @@
   height: $baseline * 2
 
 .step-number-container
-  padding-top: $baseline * 3
+  padding-top: $baseline * 2
   width: 100%
 
 .step-number
   margin-left: auto
   margin-right: auto
-  text-align: center
-  padding-top: 15px
+  display: -webkit-flex
+  -webkit-justify-content: center
+  -webkit-align-items: center
+  align-items: center
   @include primary-font-bold
   -webkit-backface-visibility: hidden
   background-color: $offwhite
