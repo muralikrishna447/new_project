@@ -26,6 +26,7 @@ describe 'ActivityController', ->
 
   describe "#endEditMode", ->
     it "ends edit mode with change committed", inject ($rootScope, $controller, $httpBackend) ->
+      $httpBackend.whenGET(/.*usebloom.com.*/).respond(200, '')
       $httpBackend.expectPUT('/activities/1/notify_start_edit').respond(204, '')
       scope.startEditMode()
 
@@ -33,13 +34,13 @@ describe 'ActivityController', ->
       $httpBackend.expectPUT('/activities/1/as_json').respond(204, '')
       $httpBackend.expectPUT('/activities/1/notify_end_edit').respond(204, '')
       scope.endEditMode()
-
       $httpBackend.flush();
       expect(scope.editMode).toBeFalsy()
       expect(scope.activity.description).toEqual("foobar")
 
   describe "#endEditMode with error", ->
-    it "reports error and stays in edit mode", inject ($rootScope, $controller, $httpBackend) ->
+    it "reports error and stays in edit mode", inject ($rootScope, $controller, $httpBackend, csAlertService) ->
+      $httpBackend.whenGET(/.*usebloom.com.*/).respond(200, '')
       $httpBackend.expectPUT('/activities/1/notify_start_edit').respond(204, '')
       scope.startEditMode()
 
@@ -49,7 +50,7 @@ describe 'ActivityController', ->
 
       $httpBackend.flush();
       expect(scope.editMode).toBeTruthy()
-      expect(scope.alerts.length).toEqual(1)
+      expect(csAlertService.getAlerts().length).toEqual(1)
 
 
   describe "#cancelEditMode", ->
