@@ -7,19 +7,17 @@ html
 
 body
   position: relative
+  overflow-x: hidden
 
 // F-ing bootstrap wants to put 20px padding on the body, which makes it impossible to have
 // non-fixed position stuff that goes all the way across exactly.
 @media(max-width: 767px)
-  body
-    overflow: hidden
-    padding-left: 0 !important
-    padding-right: 0 !important
-
-  .navbar-fixed-top
-    padding-left: 20px !important
-    padding-right: 20px !important
- 
+  body  
+    // To deal with bootstrap stupid body padding
+    .banner-image
+      width: 767px
+      position: relative
+      left: -20px
 
 a, [contenteditable]:not(:focus)
   cursor: pointer
@@ -1963,6 +1961,12 @@ input.summary-tweet
   .static-height
     height: 170px
 
+@media (max-width: 320px)
+  // To deal with bootstrap stupid body padding
+  body  
+    .banner-image
+      width: 320px !important
+
 
 @media(max-width: 979px)
 
@@ -1972,6 +1976,11 @@ input.summary-tweet
 
 /* Landscape phones and down */
 @media (max-width: 480px)
+  body  
+    // To deal with bootstrap stupid body padding
+    .banner-image
+      width: 480px
+
   #hero-container
     .media-object
       margin-bottom: 0px

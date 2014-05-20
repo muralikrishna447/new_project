@@ -80,17 +80,17 @@
       border-top: none
 
     .edit-pair-show
-      display: flex
+      @include display-flex
 
     .quantity-and-unit
-      flex: 0 0 100px
+      @include flex(0 0 100px)
       width: 100px
       text-align: right
 
     .ingredient-title
       &:before
         content: "\00a0"
-      flex: 1 1 200px
+      @include flex(1 1 200px)
       margin-right: $horz-baseline-small
 
 
@@ -175,14 +175,14 @@
 
   .new-ingredients-group, .new-ingredient-input
     width: 100%
-    display: inline-flex
-    justify-content: space-between
+    @include display-inline-flex
+    @include justify-content(space-between)
     .btn
       margin-right: $horz-baseline-small
       height: 100%
 
   .new-ingredient, .new-ingredient-input > input
-    flex: 1 1 100px
+    @include flex(1 1 100px)
 
 .new-ingredient-input
   position: relative
@@ -204,9 +204,9 @@
       margin-bottom: 2px
 
 csingredienteditpair .edit-pair-edit
-  display: inline-flex
-  justify-content: flex-end
-  align-items: flex-start
+  @include display-inline-flex
+  @include justify-content(flex-end)
+  @include align-items(flex-start)
   height: $baseline * 2
 
   > *
@@ -215,17 +215,17 @@ csingredienteditpair .edit-pair-edit
     width: auto
 
   .quantity
-    flex-basis: auto
+    @include flex-basis(auto)
     text-align: right
 
   .unit
-    flex-basis: 7em
+    @include flex-basis(7em)
     height: 100%
 
   .name
-    flex: 1 1 200px
+    @include flex(1 1 200px)
   .note
-    flex: 1 1 200px
+    @include flex(1 1 200px)
 
 .step-ingredients-source
   //display: none

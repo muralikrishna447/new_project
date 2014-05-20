@@ -43,10 +43,10 @@
     margin: 4 * $baseline
 
 .nell-card
-  display: inline-flex
-  flex-wrap: wrap
-  justify-content: space-between
-  align-items: flex-start
+  @include display-inline-flex
+  @include flex-wrap(wrap)
+  @include justify-content(space-between)
+  @include align-items(flex-start)
 
   .nell-card-header
     width: 100%
@@ -54,16 +54,14 @@
     margin: $baseline $horz-baseline-large
 
   .nell-card-media
-    flex-basis: 250px
-    flex-grow: 1
+    @include flex(1 0 250px)
     min-width: 250px
     margin-bottom: $baseline
     margin: 0px $horz-baseline-large
 
   .nell-card-text
     padding: 0px $horz-baseline-large
-    flex-basis: 250px
-    flex-grow: 1
+    @include flex(1 0 250px)
     .short-summary
       max-height: 18 * $baseline
     .needs-work

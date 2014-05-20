@@ -28,8 +28,8 @@
 .medium-item
   @extend .base-item
   width: $desktop-standard-item-width + 200px
-  display: flex
-  flex-wrap: wrap
+  @include display-flex
+  @include flex-wrap(wrap)
 
 .wide-item
   @extend .base-item

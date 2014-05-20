@@ -27,12 +27,7 @@
     bottom: 0
     right: 0
     left: 0
-    display: flex
-    justify-content: center
-    align-items: center
-    display: -webkit-inline-flex
-    -webkit-justify-content: center
-    -webkit-align-items: center
+    @include center-only-child
 
     .play-button
       font-size: 100px
@@ -70,10 +65,7 @@
 .step-number
   margin-left: auto
   margin-right: auto
-  display: -webkit-flex
-  -webkit-justify-content: center
-  -webkit-align-items: center
-  align-items: center
+  @include center-only-child
   @include primary-font-bold
   -webkit-backface-visibility: hidden
   background-color: $offwhite
