@@ -60,6 +60,8 @@ Staging2 ChefSteps
 
 Deploying to Staging2
 ```
+One time: git remote add staging2 git@heroku.com:staging2-chefsteps.git
+
 git checkout develop2
 merge paid-courses (or whatever you are working on) into develop2
 git push staging2 develop2:master
