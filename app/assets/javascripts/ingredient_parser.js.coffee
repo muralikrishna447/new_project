@@ -3,36 +3,22 @@ window.ChefSteps = window.ChefSteps || {}
 capitalizeFirstLetter = (string) ->
   return string.charAt(0).toUpperCase() + string.slice(1)
 
-window.ChefSteps.splitIngredient = (term, parse_unitless_number) ->
+window.ChefSteps.splitIngredient = (term) ->
   result = {}
-  parse_unitless_number = true if ! parse_unitless_number?
 
-  # a/n Tofu Eyeballs [or an Tofu Eyeballs]
-  if s = term.match(/^(an|a\/n)+\s+(.*)/)
-    result = {"unit": "a/n", "ingredient": s[2]}
+  # a/n Tofu Eyeballs, diced [or an Tofu Eyeballs]
+  if s = term.match(/\s*(an|a\/n)+\s+([^,]*),?\s*(.*)?/)
+    result = {unit: "a/n", ingredient: s[2], note: s[3]}
 
-  # Tofu Eyeballs a/n
-  else if s = term.match(/(.+)\s+(an|a\/n)$\s*/)
-    result = {"unit": "a/n", "ingredient": s[1]}
-
-  # 10 g Tofu Eyeballs (or kg, ea, each, r, recipe)
-  else if s = term.match(/^([\d.]+)\s*(g|kg|ea|each|r|recipe)+\s+(.*)/)
-    unit = if s[2] then s[2] else "g"
-    result = {"quantity": s[1], "unit": unit, "ingredient": s[3]}
-
-  # Tofu eyeballs 10 g
-  else if s = term.match(/(.+)\s+([\d.]+)\s*(g|kg|ea|each|r|recipe)+\s*$/)
-    unit = if s[3] then s[3] else "g"
-    result = {"quantity": s[2], "unit": unit, "ingredient": s[1]}
-
-  # Any number at the beginning, even before there is a space. Use it as a quantity
-  # but it also might be an ingredient name.
-  else if  parse_unitless_number && (s = term.match(/^([\d.]+)/))
-    result = {quantity: s[1], ingredient: s[1]}
+  # 10 g Tofu Eyeballs, diced (or kg, ea, each, r, recipe)
+  # 10 Tofu Eyeballs (unit will be treated as 'ea')
+  else if s = term.match(/\s*([\d.]+)\s*(g|kg|each|ea|recipe|r)?\s?([^,]*),?\s*(.*)?/)
+    unit = if s[2] then s[2] else "ea"
+    result = {quantity: s[1], unit: unit, ingredient: s[3], note: s[4]}
 
   # None of the above, assumed to be a nekkid ingredient
   else
-    result = {"ingredient" : term}
+    result = {ingredient: term, unit: "a/n"}
     if result["ingredient"].match(/\[RECIPE\]/)
       result["quantity"] = -1
       result["unit"] = "recipe"
@@ -44,5 +30,6 @@ window.ChefSteps.splitIngredient = (term, parse_unitless_number) ->
 
   result["ingredient"] = capitalizeFirstLetter($.trim(result["ingredient"]).replace(/\[RECIPE\]/,''))
 
+  console.log "Parser result: #{JSON.stringify(result)}"
   return result
 

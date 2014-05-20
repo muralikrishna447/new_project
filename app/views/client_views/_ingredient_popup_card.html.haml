@@ -2,21 +2,20 @@
   .nell-card-header
     %h6.no-margin-padding CHEFSTEPS INGREDIENT WIKI
     %h3 {{obj.title}}
-  .nell-card-body
-    .nell-card-media(ng-show="obj.image_id")
-      %img(ng-src='{{csUtilities.imageURL(obj.image_id)}}')
-    .nell-card-text
-      %div(ng-switch="obj.text_fields.description.length > 0") 
-        %div(ng-switch-when="true") 
-          .relative
-            .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
-          %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
-            .btn.btn-large.btn-secondary LEARN MORE
-        %div(ng-switch-when="false")
-          .needs-work.section
-            This ingredient wiki entry needs your help!
-          .nell-cta-buttons
-            %a( ng-href='/ingredients/{{obj.slug}}' 
-                target='_blank'
-                ng-click='doHideNellPopup()') 
-              .btn.btn-large.btn-secondary GET INVOLVED
+  .nell-card-media(ng-show="obj.image_id")
+    %img(cs-responsive-image='obj.image_id')
+  .nell-card-text
+    %div(ng-switch="obj.text_fields.description.length > 0") 
+      %div(ng-switch-when="true") 
+        .relative
+          .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
+        %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
+          .btn.btn-large.btn-secondary LEARN MORE
+      %div(ng-switch-when="false")
+        .needs-work.section
+          This ingredient wiki entry needs your help!
+        .nell-cta-buttons
+          %a( ng-href='/ingredients/{{obj.slug}}' 
+              target='_blank'
+              ng-click='doHideNellPopup()') 
+            .btn.btn-large.btn-secondary GET INVOLVED

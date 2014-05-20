@@ -1,4 +1,6 @@
 // Mixins
+@import compass/css3/box
+
 =boxsizing
   box-sizing: border-box
   -moz-box-sizing: border-box
@@ -122,6 +124,67 @@
   width: 100%
   margin-bottom: $baseline * 3 
 
+=blur($radius: 5px)
+  -webkit-filter: blur($radius)
+  -moz-filter: blur($radius)
+  -ms-filter: blur($radius)
+  -o-filter: blur($radius)
+  filter: blur($radius)
+
+=display-flex
+  display: flex
+  display: -webkit-flex
+  display: -moz-flex
+  display: -o-flex
+
+=display-inline-flex
+  display: inline-flex
+  display: -webkit-inline-flex
+  display: -moz-inline-flex
+  display: -o-inline-flex
+
+=justify-content($x)
+  -webkit-justify-content: $x
+  -moz-justify-content: $x
+  -ms-justify-content: $x
+  -o-justify-content: $x
+  justify-content: $x
+
+=align-items($x)
+  -webkit-align-items: $x
+  -moz-align-items: $x
+  -ms-align-items: $x
+  -o-align-items: $x
+  align-items: $x
+
+=flex-wrap($x)
+  -webkit-flex-wrap: $x
+  -moz-flex-wrap: $x
+  -ms-flex-wrap: $x
+  -o-flex-wrap: $x
+  flex-wrap: $x
+
+=flex-basis($x)
+  -webkit-flex-basis: $x
+  -moz-flex-basis: $x
+  -ms-flex-basis: $x
+  -o-flex-basis: $x
+  flex-basis: $x
+
+=flex($x)
+  -webkit-flex: $x
+  -moz-flex: $x
+  -ms-flex: $x
+  -o-flex: $x
+  flex: $x
+
+=center-only-child
+  @include display-flex
+  @include justify-content(center)
+  @include align-items(center)
+
+
+
 
 /* This works on both inputs and spans */
 =editable_text
@@ -135,9 +198,29 @@
   padding-bottom: 1px
   outline: none
 
+=card
+  padding: $baseline * 2
+  background: white
+  border-top: 4px solid $orange
+
+=popup-card
+  @include card
+  @include transition(all 300ms ease-in-out)
+  @include dark-shadow
+  position: absolute
+  background-color: white
+
+
+
 /* Typography */
 
 $baseline: 1.1rem /* = 11px/14px */
+
+/* Experimental - establishing standard spacing on horizontal axis */
+$horz-baseline-small: 3px
+$horz-baseline-medium: 9px
+$horz-baseline-large: 13px
+
 
 =gotham-narrow
   font-family: 'Gotham Narrow SSm A', 'Gotham Narrow SSm B', 'Helvetica Neue'
@@ -159,7 +242,9 @@ $baseline: 1.1rem /* = 11px/14px */
   font-weight: 700
   font-style: normal 
 
-
+=horizontal-center
+  margin-left: auto
+  margin-right: auto
 
 
 /* Colors */
@@ -175,3 +260,8 @@ $red-opaque: rgba(218,79,73,.8)
 $light-gray: #ccc
 $offwhite: #F2F2F2
 $white-opaque: rgba(255,255,255,.3)
+
+/* Layout */
+$desktop-standard-item-width: 600px
+$aside-width: 289px
+$aside-margin: 44px

@@ -1,6 +1,6 @@
 - content_for :title, "#{@course.title.html_safe} - Class"
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+-# - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 - content_for :canonical_link, 'http://www.chefsteps.com/activities/'
@@ -18,12 +18,10 @@
                     %iframe#course-quiz(ng-src="{{'/quizzes/' + currentIncludable.includable_id}}" style='width: 100%; border: none; min-height: 1000px; overflow: hidden;' cssetiframeheight)
 
               %div(ng-switch-when="Activity")
-                %div(csFixNakedLinks="")
-                  %div(ng-switch on="activity.layout_name")
-                    %div(ng-switch-when='list')
-                      = render 'shared/activity_layouts/list'
-                    %div(ng-switch-default)
-                      = render 'activities/main_activity_content'
+                .class-activity-wrapper
+                  = render 'activities/banner_image'
+                  %div(csFixNakedLinks="")
+                    = render 'activities/main_activity_content'
 
               %div(ng-switch-when='Assignment')
                 = render 'assembly_upload', assembly: @course
@@ -120,8 +118,8 @@
         %i.icon-chevron-up
       .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
         %i.icon-chevron-down
-        
-%div(nell-popup) 
+
+%div(nell-popup)
   / .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
   /   = render 'layouts/footer'
 

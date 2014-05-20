@@ -56,8 +56,9 @@ class IngredientsController < ApplicationController
     respond_to do |format|
       format.json do
         sort_string = (params[:sort] || "title") + " " + (params[:dir] || "ASC").upcase
-        result = apply_scopes(Ingredient).where("title <>''").includes(:activities, steps: [:activity]).order(sort_string).offset(params[:offset]).limit(params[:limit])
+        result = apply_scopes(Ingredient).where("title <>''").order(sort_string).offset(params[:offset]).limit(params[:limit])
         if params[:detailed] == "true"
+          result = result.includes(:activities, steps: [:activity])
           render :json => result.as_json(include: {activities: {only: [:id, :title]}, steps: {only: :id, include: {activity: {only: [:id, :title]}}}})
         else
           render :json => result.to_json

@@ -18,8 +18,6 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.densityIngredient = null
   $scope.editMode = true
   $scope.preventAutoFocus = true
-  $scope.addUndo = ->
-    true
 
   $scope.modalOptions =
     backdropFade: true

@@ -1,11 +1,10 @@
 .nell-card
   .nell-card-header
     %h3 {{obj.title}}
-  .nell-card-body
-    .nell-card-media(ng-show="obj.image_id")
-      %img(ng-src='{{csUtilities.imageURL(obj.image_id, 700)}}')
-    .nell-card-text
-      .relative
-        .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
-      %a(ng-href='/ingredients/{{obj.slug}}' target='_blank' no-nell-popup) 
-        .btn.btn-large.btn-primary LEARN MORE
+  .nell-card-media(ng-show="obj.image_id")
+    %img(cs-responsive-image='obj.image_id')
+  .nell-card-text
+    .relative
+      .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
+    %a(ng-href='/ingredients/{{obj.slug}}' target='_blank' no-nell-popup) 
+      .btn.btn-large.btn-primary LEARN MORE

@@ -66,7 +66,7 @@ class Activity < ActiveRecord::Base
 
   serialize :activity_type, Array
 
-  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids, :layout_name
+  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
   attr_accessible :show_only_in_course, :summary_tweet
 
@@ -83,8 +83,6 @@ class Activity < ActiveRecord::Base
                   associated_against: {terminal_equipment: [[:title, 'D']], terminal_ingredients: [[:title, 'D']], tags: [[:name, 'B']], steps: [[:title, 'C'], [:directions, 'C']]}
 
   TYPES = %w[Recipe Technique Science]
-
-  LAYOUT_NAMES = ['list']
 
   include Rails.application.routes.url_helpers
 
@@ -235,7 +233,8 @@ class Activity < ActiveRecord::Base
             audio_title: step_attr[:audio_title],
             step_order_position: :last,
             hide_number: step_attr[:hide_number],
-            is_aside: step_attr[:is_aside]
+            is_aside: step_attr[:is_aside],
+            presentation_hints: step_attr[:presentation_hints]
         )
         step.update_ingredients_json(step_attr[:ingredients])
       end

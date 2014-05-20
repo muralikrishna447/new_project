@@ -14,8 +14,6 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
   $scope.confirmAction = null
   $scope.editMode = true
   $scope.preventAutoFocus = true
-  $scope.addUndo = ->
-    true
 
   $scope.modalOptions =
     backdropFade: true

@@ -1,14 +1,14 @@
 angular.module('ChefStepsApp').directive "csenforceaspect", ["$window", ($window) ->
-  scope: true
-  link: (scope, element) ->
+  scope: { aspectRatio: '='}
+  link: (scope, element, attrs) ->
 
     scope.getWidth = ->
-      $(element).width()
+      $(element).find('iframe').width()
 
     scope.$watch scope.getWidth, ((newValue, oldValue) ->
       scope.width = newValue
       scope.setHeight = ->
-        height: (newValue * 9.0 / 16.0) + "px"
+        height: (newValue * (attrs.aspectRatio || (9.0 / 16.0))) + "px"
     ), true
 
     angular.element($window).bind "resize", ->

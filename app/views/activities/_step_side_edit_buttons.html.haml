@@ -1,28 +1,74 @@
-.step-sidebar-group.anim-basic-fade
-  %button.btn-secondary.btn-edit-step(ng-show="editMode" ng-click="toggleStepOpenForEdit()")
-    %i.icon-edit-sign
-  %div(ng-if="getStepOpenForEdit()")
-    .btn-toolbar.step-edit-buttons
-      .btn-group.btn-group-vertical
-        %button.btn.btn-secondary(type="button" ng-click="addStep($index, -1)")
-          %i.icon-plus
-        %button.btn.btn-secondary(ng-show="! step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Hide step number" tooltip-placement="left")
-          %i.icon-ban-circle
-        %button.btn.btn-secondary(ng-show="step.hide_number" type="button" btn-checkbox="" ng-model="step.hide_number" tooltip="Show step number" tooltip-placement="left")
-          \#
+.step-sidebar-group.relative.section(ng-show="editMode")
+  .btn-edit-step(ng-click="toggleStepOpenForEdit()")
+    %i.icon-edit-sign(ng-class="{'active' : getStepOpenForEdit()}")
+  .btn-edit-step(ng-show="getStepOpenForEdit()" ng-click="toggleStepDetailsOpenForEdit()")
+    %i.icon-gear(ng-class="{'active' : getStepDetailsOpenForEdit()}")
 
-        / Buttons to toggle Aside
-        %button.btn.btn-secondary(ng-show="canMakeAside($index)" type="button" ng-click="step.is_aside = true" tooltip="Make this step an aside" tooltip-placement="left")
-          %i.icon-arrow-right
-        %button.btn.btn-secondary(ng-show="step.is_aside" type="button" ng-click="step.is_aside = false" tooltip="Make this aside a regular step" tooltip-placement="left")
-          %i.icon-arrow-left
+  .step-edit-tools.anim-basic-fade(ng-if="getStepDetailsOpenForEdit()")
+    .section
+      .btn-link(  ng-click="reorderStep(stepIndex(), -1)" 
+                      ng-class="disableIf(! canMoveStep(stepIndex(), -1))")
+        %i.icon-arrow-up
+        Move step up
 
-        %button.btn.btn-secondary(ng-click="reorderStep($index, -1)" ng-class="disableIf(! canMoveStep($index, -1))" tooltip="Move step up" tooltip-placement="left")
-          %i.icon-arrow-up
-        %button.btn.btn-secondary(ng-click="reorderStep($index, 1)" ng-class="disableIf(! canMoveStep($index, 1))" tooltip="Move step down" tooltip-placement="left")
-          %i.icon-arrow-down
-        %button.btn.btn-secondary(type="button" ng-click="removeStep($index)" tooltip="Remove step" tooltip-placement="left")
-          %i.icon-remove-sign
-    .step-add-button-end-group
-      %button.btn.btn-secondary(type="button" ng-click="addStep($index, 1)")
-        %i.icon-plus
+      .btn-link(  ng-click="reorderStep(stepIndex(), 1)" 
+                      ng-class="disableIf(! canMoveStep(stepIndex(), 1))")
+        %i.icon-arrow-down
+        Move step down
+
+    .section(ng-hide="step.is_aside")
+      %h5 Step Number
+      .btn-group
+        .btn.btn-primary(btn-radio="false" ng-model="step.hide_number")
+          Show
+        .btn.btn-primary(btn-radio="true" ng-model="step.hide_number")
+          Hide
+
+    .section
+      %h5 Size 
+      .btn-group
+        .btn.btn-primary.btn-fake-radio(  ng-class="{'active': isStepType('normal')}"
+                                          ng-click='setStepType("normal")')
+          Normal
+        .btn.btn-primary.btn-fake-radio(  ng-class="{'active': isStepType('wide')}"
+                                          ng-click='setStepType("wide")')
+          Wide
+        .btn.btn-primary.btn-fake-radio(  ng-show="canMakeAside(stepIndex())" 
+                                          ng-class="{'active': isStepType('aside')}"
+                                          ng-click='setStepType("aside")')
+          Aside
+
+
+
+    .section.aside-chooser-group(ng-show="step.is_aside")
+      %h5 Preferred Position
+      .btn-group
+        .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
+                            btn-radio="'left'"
+                            type="button")
+          %i.icon-double-angle-left
+        .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
+                            btn-radio="'leftInset'"
+                            type="button")
+          %i.icon-angle-left
+        .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
+                            btn-radio="'center'"
+                            type="button")
+          %i.icon-resize-horizontal
+        .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
+                            btn-radio="'rightInset'"
+                            type="button")
+          %i.icon-angle-right
+        .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
+                            btn-radio="'right'"
+                            type="button")
+          %i.icon-double-angle-right
+
+    .section
+      .btn-link(  cs-require-confirm
+                  message="Are you sure you want to delete this step?"
+                  action="removeStep(stepIndex())")
+        %i.icon-trash
+        Delete step
+
+

@@ -10,6 +10,9 @@
       input = $filter('markdown')($filter('shortcode')(input))
       input = $sanitize(input) if scope.creator
       outElement = $(element).find('.output')
+      # Replace last space with &nbsp; for widow control, but not if it 
+      # appears to be inside an HTML tag.
+      # input = input.replace(/(\s)[^\s>]*$/, "&nbsp;")
       outElement.html input
       $compile(outElement.contents()) scope
       return
