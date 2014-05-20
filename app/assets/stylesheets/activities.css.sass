@@ -78,6 +78,7 @@
 .tools-list
   position: relative
   z-index: 1
+  max-width: 245px
   li 
     cursor: pointer
     border-bottom: 1px solid $offwhite
@@ -86,6 +87,10 @@
     padding-top: $baseline / 2 
     padding-bottom: $baseline / 2
     @include transition(all 300ms ease-in-out)
+
+    .tool-group
+      @include display-flex
+      @include align-items(baseline)
 
     &:hover
       color: $orange !important
@@ -98,8 +103,8 @@
       color: $orange !important
 
     .icon-holder
-      display: inline-block
       width: 18px !important
+      margin-right: $horz-baseline-small
       i
         @include transition(all 300ms ease-in-out)
         color: $light-gray
@@ -138,7 +143,11 @@
       height: 100%
       overflow: none
 
-
 @media (max-width: 780px)
   #step-dots
     display: none
+
+@media (max-width: 480px)
+  .activity-columns-1
+    .aside.rightInset
+      margin-right: -16%
