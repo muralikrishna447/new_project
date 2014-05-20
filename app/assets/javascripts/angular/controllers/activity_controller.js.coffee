@@ -11,16 +11,19 @@ window.deepCopy = (obj) ->
 
   $scope.showHeroVisual = ->
     return true if $scope.editMode && ($scope.heroMedia.heroDisplayType() == 'video')
-    $scope.showVideo || ($scope.heroMedia.heroDisplayType() == 'image')
+    $scope.showVideo || ($scope.heroMedia.heroDisplayType() == 'image') 
 
   $scope.toggleHeroVisual = ->
     $scope.showVideo = ! $scope.showVideo
     $scope.$broadcast('playVideo', $scope.showVideo)
 
+  $scope.$on 'resetVideo', ->
+    $scope.toggleHeroVisual() if $scope.showVideo
+
   $scope.bannerImageURL = ->
-    return "" if ! ($scope.heroMedia.hasHeroImage() || $scope.hasFeaturedImage())
     url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
-    w = window.innerWidth
+    url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
+    w = $('.banner-image').width()
     h = 338
     if w < 650
       h = w * 9.0 / 16.0
@@ -424,6 +427,7 @@ window.deepCopy = (obj) ->
     else
       $scope.fetchActivity(id, -> $scope.makeActivityActive(id))
     $scope.updateCommentCount()
+    $scope.$broadcast('resetVideo')
 
   $scope.commentCount = -1
   $scope.updateCommentCount = -> 

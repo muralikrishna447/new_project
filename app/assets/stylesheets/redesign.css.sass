@@ -15,7 +15,7 @@ body
   body  
     // To deal with bootstrap stupid body padding
     .banner-image
-      width: 767px
+      width: calc(100% + 40px)
       position: relative
       left: -20px
 
@@ -1946,11 +1946,6 @@ input.summary-tweet
   .static-height
     height: 170px
 
-@media (max-width: 320px)
-  // To deal with bootstrap stupid body padding
-  body  
-    .banner-image
-      width: 320px !important
 
 
 @media(max-width: 979px)
@@ -1961,10 +1956,7 @@ input.summary-tweet
 
 /* Landscape phones and down */
 @media (max-width: 480px)
-  body  
-    // To deal with bootstrap stupid body padding
-    .banner-image
-      width: 480px
+
 
   #hero-container
     .media-object
