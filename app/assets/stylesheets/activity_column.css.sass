@@ -4,11 +4,6 @@
   @include boxsizing
   width: 100%
 
-@media(max-width: 767px)
-  .master-column-container
-    padding-left: 20px
-    padding-right: 20px
-
 .master-column
   @include boxsizing
   width: 100%
@@ -79,4 +74,6 @@
       margin-right: -7%
       margin-left: $horz-baseline-large * 2
 
-
+@media (max-width: 320px)
+  .base-item
+    max-width: calc(100% - 0px) 
