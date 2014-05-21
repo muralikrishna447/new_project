@@ -4,16 +4,47 @@ window.deepCopy = (obj) ->
   else
     jQuery.extend(true, {}, obj)
 
+# This is a little captive controller only designed for use inside ActivityController for now.
+# Would be better as a directive but needs work to abstract it.
+@app.controller 'BannerController', ["$scope", ($scope) ->
+  $scope.showVideo = false
 
-angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication"
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication) ->
+  $scope.showHeroVisual = ->
+    return true if $scope.editMode && ($scope.heroMedia.heroDisplayType() == 'video')
+    # GD ios/yt. Not only does playVideo() not *work*, it actually causes the YT
+    # frame to be completely black, not even any chrome. Awesome.
+    # So since we don't want the user to have to click play twice, we just
+    # freaking always show the video.
+    return true if ($scope.heroMedia.heroDisplayType() == 'video') &&  /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
+    $scope.showVideo || ($scope.heroMedia.heroDisplayType() == 'image') 
+
+  $scope.toggleHeroVisual = ->
+    $scope.showVideo = ! $scope.showVideo
+    $scope.$broadcast('playVideo', $scope.showVideo)
+
+  $scope.$on 'resetVideo', ->
+    $scope.toggleHeroVisual() if $scope.showVideo
+
+  $scope.bannerImageURL = ->
+    url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
+    url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
+    w = $('.banner-image').width()
+    h = 338
+    if w < 650
+      h = w * 9.0 / 16.0
+    url += "/convert?fit=crop&h=#{h}&w=#{w}"
+    window.cdnURL(url)
+
+]
+
+
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService"
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService) ->
 
   $scope.heroMedia = csEditableHeroMediaService
 
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  $scope.undoStack = []
-  $scope.undoIndex = -1
   $scope.editMode = false
   $scope.editMeta = false
   $scope.preventAutoFocus = false
@@ -21,6 +52,8 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.shouldShowAlreadyEditingModal = false
   $scope.alerts = []
   $scope.activities = {}
+  $scope.csAuthentication = csAuthentication
+  $scope.csAlertService = csAlertService
   $rootScope.loading = 0
 
   $scope.csTagService = csTagService
@@ -32,11 +65,14 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
   $scope.hasFeaturedImage = ->
     $scope.getObject()?.featured_image_id? && $scope.getObject().featured_image_id
 
-  $scope.featuredImageURL = (width) ->
+  $scope.baseFeaturedImageURL = ->
     url = ""
     if $scope.hasFeaturedImage()
       url = JSON.parse($scope.getObject().featured_image_id).url
-      url = url + "/convert?fit=max&w=#{width}&cache=true"
+    url
+
+  $scope.featuredImageURL = (width) ->
+    url = $scope.baseFeaturedImageURL() + "/convert?fit=max&w=#{width}&cache=true"
     window.cdnURL(url)
 
   $timeout ( ->
@@ -61,7 +97,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.maybeWarnCurrentScaling = ->
     return null if $scope.csGlobals.scaling == 1.0
-    "- Adjust based on recipe " + $scope.maybeDisplayCurrentScaling()
+    "Adjust based on recipe " + $scope.maybeDisplayCurrentScaling()
 
   $scope.fork = ->
     $rootScope.loading += 1
@@ -77,9 +113,9 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       $scope.editMode = true
       $scope.editMeta = false
       $scope.showHeroVisualEdit = false
-      $scope.undoStack = [deepCopy $scope.activity]
-      $scope.undoIndex = 0
       $scope.activity.$startedit()
+      $scope.activityBeforeEdit = deepCopy $scope.activity
+
       $timeout ->
         $scope.csGlobals.scaling = 1
         $scope.csGlobals.units = "grams"
@@ -115,7 +151,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     true
 
   $scope.endEditMode = ->
-
+    console.log "ACTIVITY SAVE START"
     $scope.alerts = []
     $scope.normalizeModel()
     $scope.normalizeWeightUnits()
@@ -133,12 +169,11 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       ((error) ->
         $rootScope.loading -= 1
         console.log "ACTIVITY SAVE ERRORS: " + JSON.stringify(error)
-        _.each(error.data.errors, (e) -> $scope.addAlert({message: e})))
+        _.each(error.data.errors, (e) -> csAlertService.addAlert({message: e})))
     )
 
   $scope.cancelEditMode = ->
-    if $scope.undoAvailable
-      $scope.activity = deepCopy $scope.undoStack[0]
+    $scope.activity = deepCopy $scope.activityBeforeEdit
     $scope.postEndEditMode()
 
   # Tweak to let dropdowns leak out of collapse when not collapsed
@@ -147,38 +182,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     s = {}
     s = {overflow: "visible"} if ! $scope.editMode
     s
-
-  # Undo/redo TODO: could be a service I think
-  $scope.undo = ->
-    if $scope.undoAvailable
-      $scope.undoIndex -= 1
-      $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex ]
-      $scope.saveToLocalStorage()
-      $scope.temporaryNoAutofocus();
-    true
-
-  $scope.redo = ->
-    if $scope.redoAvailable
-      $scope.undoIndex += 1
-      $scope.activity = deepCopy $scope.undoStack[$scope.undoIndex]
-      $scope.saveToLocalStorage()
-      $scope.temporaryNoAutofocus();
-    true
-
-  $scope.undoAvailable = ->
-    $scope.undoIndex > 0
-
-  $scope.redoAvailable = ->
-    $scope.undoIndex < ($scope.undoStack.length - 1)
-
-  $scope.addUndo = ->
-    # Get rid of any redos past the current spot and put the new state on the stack (unless no change)
-    newUndo = deepCopy($scope.activity)
-    if ! _.isEqual(newUndo, $scope.undoStack[$scope.undoIndex])
-      $scope.undoStack = $scope.undoStack[0..$scope.undoIndex]
-      $scope.undoStack.push newUndo
-      $scope.undoIndex = $scope.undoStack.length - 1
-      $scope.saveToLocalStorage()
 
   # Gray out a section if the contents are empty
   $scope.disableIf = (condition) ->
@@ -208,6 +211,12 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     if $scope.editMode
       localStorageService.add($scope.localStorageKey(), JSON.stringify($scope.activity))
 
+  window.setInterval ( ->
+    if $scope.editMode
+      $scope.saveToLocalStorage()
+      console.log("Autosaved")
+  ), 5000
+
   $scope.saveBaseToLocalStorage = ->
     localStorageService.add($scope.localStorageBaseKey(), JSON.stringify($scope.activity))
 
@@ -218,12 +227,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
       $scope.temporaryNoAutofocus();
       $scope.startEditMode()
-
-      # Coming back from local storage, our undo stack will be the [original, restored]
-      orig = localStorageService.get($scope.localStorageBaseKey())
-      if orig
-        $scope.undoStack = [new Activity(JSON.parse(orig)), $scope.undoStack[0]]
-        $scope.undoIndex = 1
 
       $timeout ( ->
         $scope.shouldShowRestoreAutosaveModal = true
@@ -316,7 +319,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
     equip = ""
     item = {equipment: equip, optional: false}
     $scope.activity.equipment.push(item)
-    #$scope.addUndo()
 
   $scope.all_equipment = (equip_name) ->
     $http.get("/equipment.json?q=" + equip_name).then (response) ->
@@ -381,6 +383,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       true
     else
       false
+    $scope.updateCommentCount()
 
   $scope.fetchActivity = (id, callback) ->
     console.log("START FETCH ACTIVITY #{id}")
@@ -428,6 +431,15 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
       ), 500
     else
       $scope.fetchActivity(id, -> $scope.makeActivityActive(id))
+    $scope.updateCommentCount()
+    $scope.$broadcast('resetVideo')
+
+  $scope.commentCount = -1
+  $scope.updateCommentCount = -> 
+    if $scope.activity?
+      $http.get("http://api.usebloom.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
+        $scope.commentCount = data.length
+      )
 
   $scope.$on 'loadActivityEvent', (event, activity_id) ->
     $scope.loadActivity(activity_id)
@@ -441,13 +453,6 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
        $scope.fetchActivity(prefetch_id)
       ), 3000
 
-  $scope.addAlert = (alert) ->
-    $scope.alerts.push(alert)
-    $timeout ->
-      $("html, body").animate({ scrollTop: -500 }, "slow")
-
-  $scope.closeAlert = (index) ->
-    $scope.alerts.splice(index, 1)
 
   # We've had bad luck getting the youtube iframe player API state change event to work reliably, so instead
   # we're asking youtube for the video duration and making the assumption that the video is done playing after
@@ -489,6 +494,7 @@ angular.module('ChefStepsApp').controller 'ActivityController', ["$scope", "$roo
 
   $scope.emailBody = ->
     "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
+
 
   $scope.maximizeDescription = false
   $scope.toggleMaximizeDescription = ->

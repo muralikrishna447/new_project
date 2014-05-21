@@ -1,0 +1,270 @@
+@import 'mixins'
+
+.activity-ingredients-list
+  position: relative
+
+.ingredients-menu
+  @include transition(all 300ms ease-in-out)
+  position: absolute
+  right: 0px
+  top: 0
+  text-align: left
+  overflow: hidden
+  padding-left: 26px
+  opacity: 0
+
+  &.menu-active
+    opacity: 1
+    
+  .controls
+    margin-top: 0px
+    width: 100%
+    position: relative
+
+    .navlabel
+      display: inline-block
+      position: relative
+      top: -26px
+      margin-right: 10px
+      width: 50px
+
+    ul
+      display: inline-block
+      li
+        letter-spacing: 2px
+        &:not(:last-child)
+          margin-right: 20px
+      margin-bottom: 12px
+
+    .navlabel.units
+      margin-top: -24px
+
+.ingredients-menu-button
+  @include transition(all 300ms ease-in-out)
+  z-index: 3
+  position: absolute
+  top: -27px
+  right: 0
+  .btn
+    padding-right: 0
+    margin-right: 0
+  cursor: pointer
+  @include radius(5)
+
+.ingredients-well
+  @include boxsizing
+  @include transition(all 300ms ease-in-out)
+  position: relative
+  background-color: white
+  top: 0
+  border: 1px solid #eee
+  padding-top: $baseline
+  padding-bottom: $baseline
+
+  &.menu-active
+    top: $baseline * 13
+    z-index: 2
+    background-color: eee
+
+.ingredients
+  position: relative
+
+  div
+    display: inline-block
+
+  .ingredient-table-row
+    position: relative
+    line-height: $baseline * 2
+    min-height: $baseline * 2
+    input
+      border-top: none
+
+    .edit-pair-show
+      @include display-flex
+
+    .quantity-and-unit
+      @include flex(0 0 100px)
+      width: 100px
+      text-align: right
+
+    .ingredient-title
+      &:before
+        content: "\00a0"
+      @include flex(1 1 200px)
+      margin-right: $horz-baseline-large
+
+
+  .quantity-group
+    display: inline-block
+
+    .lbs-label
+      margin-left: 4px
+
+    .main-qty:hover, .lbs-qty:hover
+      cursor: pointer
+
+  .qtyfade
+    @include transition(all 300ms ease-in-out)
+    color: rgba(51, 51, 51, 1)
+
+  .fade-out
+    // have to fade text opacity, not opacity, b/c have to cover leader dots during transition
+    color: rgba(51, 51, 51, 0)
+
+  .quantity-edit
+    position: relative
+    left:  1px
+    input
+      @include editable_text
+      width: 3em !important
+
+  .ingredient-table-head
+    position: relative
+    width: 100%
+    line-height: 30px
+    font-size: 17.5px
+    margin-bottom: $baseline/2
+    display: block
+    font-weight: bold
+
+    .quantity-group
+      right:  0px
+      width:  120px
+
+  .ingredient-table-body
+    width: 100%
+    display: block
+
+  #ingredient
+    text-align: left
+
+  #quantity
+    text-align: right
+    margin-left: 22px
+    .recipetip
+      margin-left: -11px
+
+  form
+    margin: 0px
+    display: inline
+    input
+      width: 60px
+      text-align: right
+
+  .quantity-group
+    text-align: right
+    padding-right: 0px
+
+  .ingredient-table-body
+    .ingredient-table-row
+      width: 100%
+      display: block
+      @include transition(opacity 300ms)
+
+.edit-mode
+  .ingredient-table-row
+    overflow: visible
+
+  .ingredient-table-row, csequipmenteditpair
+    cursor: pointer
+    &:hover:not(:focus)
+      background: rgba(0, 128, 220, .1) !important
+
+  .ingredients-item
+    width: 100%
+
+  .new-ingredients-group, .new-ingredient-input
+    width: 100%
+    @include display-inline-flex
+    @include justify-content(space-between)
+    .btn
+      margin-right: $horz-baseline-small
+      height: 100%
+
+  .new-ingredient, .new-ingredient-input > input
+    @include flex(1 1 100px)
+
+.new-ingredient-input
+  position: relative
+  [typeahead-popup]
+    position: absolute
+    top: 35px
+    left: 60px
+
+
+
+
+.ingredients-well
+  .menu-active
+    [data-marked-editable]
+      @include editable_text
+    input
+      // because the span already has the border, don't double it
+      border-bottom: none !important
+      margin-bottom: 2px
+
+csingredienteditpair .edit-pair-edit
+  @include display-inline-flex
+  @include justify-content(flex-end)
+  @include align-items(flex-start)
+  height: $baseline * 2
+
+  > *
+    padding: 0
+    margin-right: 3px
+    width: auto
+
+  .quantity
+    @include flex-basis(auto)
+    text-align: right
+
+  .unit
+    @include flex-basis(7em)
+    height: 100%
+
+  .name
+    @include flex(1 1 200px)
+  .note
+    @include flex(1 1 200px)
+
+.step-ingredients-source
+  //display: none
+  thead
+    display: none
+
+.select-ingredient-checkbox
+  margin-top: -2px !important
+
+.unselected-ingredient
+  color: #a9a9a9
+
+
+@media (max-width: 480px)
+  .ingredients-menu
+    height: 0
+    width: 100%
+    padding: 0px
+    margin: 0px
+    position: static
+    .controls
+      background-color: $offwhite
+      padding: 10px
+      margin-top: 22px
+      width: 100%
+      .navlabel
+        display: block
+        position: static
+      ul
+        margin-bottom: $baseline * 2
+        li
+          &:not(:last-child)
+            margin-right: 5px
+
+  .ingredients-menu-contents-slide
+    height: 191px
+
+  .ingredients-menu-button-slide
+    right: auto
+
+  .ingredients-menu-slide
+    left: 0

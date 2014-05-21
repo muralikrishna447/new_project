@@ -45,6 +45,13 @@
     = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
+    :javascript
+      window.youtubeAPIReady = false;
+      window.onYouTubeIframeAPIReady = function() {
+        console.log('YT API ready')
+        window.youtubeAPIReady = true;
+      }
+
     %script(src='//www.youtube.com/iframe_api' async='true')
 
     = render 'layouts/cdn_js'
@@ -58,16 +65,11 @@
         window.chefstepsUserId = null
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' => "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'"}
+    #rails-flash.hide
+      = flash.to_json
     - unless @hide_nav == true
       = render 'layouts/navigation', external: false
-      - unless @no_alerts == true
-        .container.alert-container
-          - flash.each do |name, msg|
-            %div{class: "alert alert-#{name == :notice ? 'success' : 'error'}"}
-              %button.close{type: 'button', data: {dismiss: 'alert'}} x
-              %h4.alert-message= msg.html_safe
-              .lblock
-          %cs-notifications
+      .nav-spacer.noprint
 
     .container.noprint.cookies-disabled(style="display:none;")
       .row-fluid

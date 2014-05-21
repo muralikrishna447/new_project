@@ -13,6 +13,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.collapsed = {}
   $scope.flatInclusions = []
   $scope.collapsibleInclusions = []
+  $scope.inClass = true
 
   $scope.init = (course_id) ->
     $http.get('/classes/' + course_id + '/show_as_json').success( (data, status) ->

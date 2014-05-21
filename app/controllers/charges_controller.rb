@@ -40,8 +40,8 @@ class ChargesController < ApplicationController
   # If anything goes wrong and we weren't able to complete the charge & enrollment, tell the frontend
   rescue Exception => e
     msg = (e.message || "(blank)")
-    logger.debug "Enrollment failed with error: " + msg
-    logger.debug "Backtrace: "
+    logger.info "Enrollment failed with error: " + msg
+    logger.info "Backtrace: "
     e.backtrace.take(20).each { |x| logger.debug x}
     render json: { errors: [msg]}, status: 422
   end
