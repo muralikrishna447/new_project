@@ -44,7 +44,7 @@
     width: 50%
     margin-left: 25%
 
-  .noprint, .nell-popup, .nell-embed, .navbar 
+  .noprint, .nell-popup, .nell-embed, .navbar, .aside
     display: none !important
 
   .video-container
@@ -70,6 +70,7 @@
     width: 100% !important
     page-break-after: auto
     margin-left: 0 !important
+    @include flex(1 0 500px)
 
   .aside, .aside-separate
     float: none !important
