@@ -7,10 +7,8 @@
   %img( ng-src="{{bannerImageURL()}}" ng-if="bannerImageURL() != ''")  
 
   .play-button-container
-    .play-button( ng-if="heroMedia.heroDisplayType() == 'video'")
+    .play-button( ng-if="heroMedia.heroDisplayType() == 'video' && ! showHeroVisual()")
       %i.fa.fa-play-circle-o  
 
   .hero-video.noprint
     = render 'activities/hero_visual'
-
-= render 'activities/edit_hero_visual'
