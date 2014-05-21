@@ -53,18 +53,21 @@
     createPlayer() 
 
     scope.$on 'playVideo', (event, play) ->
+      console.log("playVideo: #{play}")
+
       # GD ios/yt. Not only does playVideo() not *work*, it actually causes the YT
       # frame to be completely black, not even any chrome. Awesome.
-      if ! /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
-        console.log("playVideo: #{play}")
-        player?.playVideo()
-        if play
-          $timeout ( ->
-           scope.adjustHeight(1)
-          ), 1000
+      if play
+        if ! /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
+          player?.playVideo()
 
       else
         player?.pauseVideo()
+
+      # Seems to help with occasional pillarboxing
+      $timeout ( ->
+       scope.adjustHeight(1)
+      ), 1000
 
     attrs.$observe 'videoId', ->
       if player? && player.loadVideoById?
