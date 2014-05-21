@@ -166,6 +166,28 @@ body.nav-popover-open
       +radius(2px)
       border: 1px solid #ccc
       width: 250px
+
+  .profile-image
+    .notifs
+      visibility: hidden
+      margin-top: -10px
+    &:hover
+      .notifs
+        margin-top: 0px
+        background: white
+        position: absolute
+        visibility: visible
+    .notifs-popover
+      &:hover
+        .notifs
+          visibility: visible
+          margin-top: 0px
+
+    .notifs-popover
+      @include transition(all 300ms ease)
+      @include popover(10px)
+
+
 input.search-query
   +radius(2px)
   border: 1px solid $light-gray
@@ -174,6 +196,8 @@ input.search-query
 input:focus
   border: 1px solid $dark-gray
   outline: none
+
+
 
 @media (min-width: 768px)
   .nav-container-popover

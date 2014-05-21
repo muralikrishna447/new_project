@@ -44,7 +44,6 @@ angular.module('ChefStepsApp').directive 'csequipmenteditpair', ->
   controller: ['$scope', '$element', ($scope, $element) ->
     $scope.removeItem = ->
       $scope.activity.equipment.splice($scope.activity.equipment.indexOf($scope.item), 1)
-      $scope.addUndo()
   ]
 
   templateUrl: '_equipment_edit_pair.html'

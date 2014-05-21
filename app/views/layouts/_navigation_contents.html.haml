@@ -29,12 +29,16 @@
           Profile
     - elsif current_user
       = link_to user_profile_url(current_user) do
-        .profile-image(tooltip="#{current_user.name}" tooltip-placement="bottom")
-          = image_tag filepicker_arbitrary_image(current_user.image_id, 75) 
+        .profile-image
+          = image_tag filepicker_arbitrary_image(current_user.image_id, 75)
+          .notifs.notifs-popover
+            .cs-bloom-notifs
+              %csnotifs
     - else
       %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
       = render "devise/sessions/new_angular"
       = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
+
 
 
       //.btn-navbar(ng-click="showMenu = !showMenu")

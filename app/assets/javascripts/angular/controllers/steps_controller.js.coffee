@@ -27,7 +27,7 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
 
   $scope.removeStep = (idx) ->
     $scope.activity.steps.splice(idx, 1)
-    $scope.addUndo()
+    true
 
   $scope.isAside = (idx) ->
     return true if $scope.activity.steps[idx]?.is_aside
@@ -39,7 +39,6 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
 
   $scope.canMakeAside = (idx) ->
     return false if idx == 0
-    return false if $scope.isAside(idx)
     return false if $scope.hasAside(idx)
     return false if $scope.isAside(idx - 1)
     true
@@ -68,7 +67,6 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
         newIdx += 1 if direction > 0
 
       $scope.activity.steps.splice(newIdx, 0, newStep)
-    $scope.addUndo()
 
   $scope.reorderStep = (idx, direction) ->
     # If moving a step with an aside have to bring the aside along.
@@ -87,5 +85,25 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     movers = $scope.activity.steps.splice(idx, numToMove)
     $scope.activity.steps.splice(newIdx, 0, movers[0])
     $scope.activity.steps.splice(newIdx + 1, 0, movers[1]) if numToMove > 1
-    $scope.addUndo()
+
+  $scope.effectiveAsideType = (index) ->
+    return null if ! $scope.isAside(index)
+    pos = $scope.activity.steps?[index].presentation_hints?.aside_position || "right"
+    if $scope.activityColumns < 3
+      pos = "center" if pos == "left"
+    if $scope.activityColumns < 2
+      pos = "center" if pos == "left" || pos == "right"
+    pos = "center" if $scope.noInsets
+    pos
+
+  $scope.isInsetAside = (index) ->
+    pos = $scope.effectiveAsideType(index)
+    (pos == "leftInset") || (pos == "rightInset")
+
+  $scope.isCenterAside = (index) ->
+    $scope.effectiveAsideType(index) == "center"
+
+  $scope.isSeparateAside = (index) ->
+    pos = $scope.effectiveAsideType(index)
+    (pos == "left") || (pos == "right")
 ]

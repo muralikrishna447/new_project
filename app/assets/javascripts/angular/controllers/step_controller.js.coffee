@@ -1,5 +1,8 @@
 angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootScope", "$element", "$timeout", ($scope, $rootScope, $element, $timeout) ->
 
+  $scope.step.presentation_hints ||= {}
+  $scope.step.presentation_hints.aside_position ?= "left"
+
   $scope.masterSelect = false
 
   $scope.getIngredientsList = ->
@@ -56,6 +59,14 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     if ! $scope.stepOpenForEdit
       $rootScope.$broadcast('closeAllSteps')
     $scope.stepOpenForEdit = ! $scope.stepOpenForEdit
+    $scope.stepDetailsOpenForEdit = false
+    
+  $scope.getStepDetailsOpenForEdit = ->
+    $scope.getStepOpenForEdit() && $scope.step.stepDetailsOpenForEdit
+ 
+  $scope.toggleStepDetailsOpenForEdit = ->
+    # Store in step so it doesn't change when ng-if creates a new scope
+    $scope.step.stepDetailsOpenForEdit = ! $scope.step.stepDetailsOpenForEdit
 
   $scope.$on 'closeAllSteps', ->
     $scope.stepOpenForEdit = false
@@ -65,16 +76,35 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
   if $scope.editMode
     $scope.toggleStepOpenForEdit()
 
-  $scope.stepSpan = ->
-    if $scope.step.is_aside
-      'span5 step-with-aside'
-    else
-      'span7'
 
-  $scope.asideClass = ->
+  $scope.getStepClass = ->
+    return 'wide-item' if $scope.step.presentation_hints?.width == 'wide'
+    return 'standard-item'
+
+  $scope.getStepType = ->
+    return 'aside' if $scope.step.is_aside
+    return $scope.step.presentation_hints?.width || 'normal'
+
+  $scope.isStepType = (t) ->
+    $scope.getStepType() == t
+
+  $scope.setStepType = (t) ->
+    if t == 'aside'
+      $scope.step.is_aside = true
+      # $scope.step.presentation_hints.aside_position = 'right'
+    else
+      $scope.step.is_aside = false
+      $scope.step.presentation_hints.width = t
+
+  $scope.stepIndex = ->
+    return $scope.$index + 1 if $scope.step.is_aside
+    $scope.$index
+
+  $scope.asideClass =  ->
+    result = ($scope.effectiveAsideType($scope.stepIndex()) || '')
     if $scope.hasAV() || $scope.step.image_id
-      'well aside-with-media'
+      result += ' well aside-with-media'
     else
-      'well-border'
-
+      result += ' well-border'
+    result
 ]

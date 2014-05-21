@@ -1,34 +1,52 @@
 .section(ng-controller="IngredientsController" cs-watch-focus)
   .activity-ingredients-list#full-ingredients-list.section
-    .ingredients-menu-button(ng-class="{'ingredients-menu-button-slide' : showIngredientsMenu}" ng-show="activity.ingredients.length && ! editMode")
-      %i.icon-cog.icon-large(ng-click="toggleIngredientsMenu()" ng-class="{'active' : csGlobals.scaling != 1}")
-    .ingredients-menu.well(ng-show="activity.ingredients.length" ng-class="{'ingredients-menu-contents-slide' : showIngredientsMenu}")
+  
+    .ingredients-menu-button(ng-show="activity.ingredients.length && ! editMode")
+      .btn.btn-link( ng-click="toggleIngredientsMenu()" 
+                      ng-class="{'active' : csGlobals.scaling != 1}")
+        Scale ...
+
+    .ingredients-menu.well( ng-show="activity.ingredients.length"
+                            ng-class="{'menu-active' : showIngredientsMenu}")
       .controls
         .navlabel
           SCALE
+
         %ul.scaling-row.nav.nav-tabs.underline
-          %li(ng-repeat="f in scaleFactors()" ng-click="setScaling(f)" ng-class='isActiveScale(f)')
+          %li(  ng-repeat="f in scaleFactors()" 
+                ng-click="setScaling(f)" 
+                ng-class='isActiveScale(f)')
+
             %a(ng-bind-html="displayScaling(f)")
 
         .navlabel
           UNITS
+
         %ul.units-row.nav.nav-tabs.underline
-          %li(ng-repeat="u in unitChoices()" ng-click="setUnits(u)" ng-class='isActiveUnit(u)')
+          %li(  ng-repeat="u in unitChoices()" 
+                ng-click="setUnits(u)" 
+                ng-class='isActiveUnit(u)')
             %a(ng-bind-html="u")
-    .ingredients-well.well( ng-show="activity.ingredients.length" 
-                            ng-class="{'ingredients-menu-slide' : showIngredientsMenu}"
-                            cs-on-enter-viewport
-                            reached-screen-callback="maybeShowWhyByWeight()"
-                            offset="200")
+
+    .ingredients-well(  ng-show="activity.ingredients.length" 
+                        ng-class="{'menu-active' : showIngredientsMenu}"
+                        cs-on-enter-viewport
+                        reached-screen-callback="maybeShowWhyByWeight()"
+                        offset="200")
       = render 'shared/ingredients_list', source: "activity"
 
-  .nav(ng-show="editMode")
-    %h4(ng-show="! activity.ingredients.length" ng-class="disableIf(!activity.ingredients.length)") Ingredients
-    %button.btn.btn-small.btn-secondary.add-from-master(ng-show="hasAnyStepIngredients()" ng-click="fillMasterIngredientsFromSteps()" tooltip="Replace master ingredients with step ingredients..." tooltip-placement="bottom")
+  %h4(  ng-show="editMode && ! activity.ingredients.length" 
+        ng-class="disableIf(!activity.ingredients.length)") 
+    Ingredients
+
+  .new-ingredients-group(ng-show="editMode")
+
+    .btn.btn-secondary.btn-small( ng-show="hasAnyStepIngredients()" 
+                                  ng-click="fillMasterIngredientsFromSteps()" 
+                                  tooltip="Replace master ingredients with step ingredients..." 
+                                  tooltip-placement="bottom")
       %i.icon-chevron-left
-    %button.btn.btn-small.btn-secondary.add-item(ng-click="addIngredient()" tooltip="Add ingredient"  tooltip-placement="bottom")
-      %i.icon-plus
-    %button.btn.btn-small.btn-primary.done(ng-show="childFocused" tooltip="Finish adding ingredients" tooltip-placement="bottom")
-      Done
+
+    .new-ingredient(cs-new-ingredient)
 
   = render 'activities/master_ingredients_removed_modal.html.haml'

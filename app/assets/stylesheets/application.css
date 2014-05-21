@@ -70,5 +70,7 @@
  *= require nell_popup
  *= require google_remarketing
  *= require navigation
+ *= require activity_column
+ *= require ingredient_block
 
  */

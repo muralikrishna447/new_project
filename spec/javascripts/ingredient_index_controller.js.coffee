@@ -19,8 +19,6 @@ describe "IngredientsIndexController", ->
   alertService =
     addAlert: (alert, $timeout) ->
       true
-    closeAlert: (index) ->
-      false
 
   # Ingredient = angular.mock.module('ChefStepsApp').factory 'Ingredient', ($resource) ->
   #   return $resource(Ingredient)

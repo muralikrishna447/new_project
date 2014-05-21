@@ -98,6 +98,14 @@
     background: $darker_orange
     @include transition(all 100ms)
 
+[btn-radio], .btn-fake-radio
+  border: 1px solid $orange !important
+  &.active
+    background-color: $orange !important
+  &:not(.active)
+    background-color: white !important
+    color: $orange !important
+
 .btn-play-image
   position: relative
   background: image-url('https://www.filepicker.io/api/file/IOjE35SKSmCjut9x1FBg?cache=true') no-repeat
@@ -190,9 +198,10 @@
 .btn-social
   margin: 0px 2px 4px 2px
   background-color: white
-  border-radius: 2px
   padding: 0px 0px 0px 0px
   height:  29px
+  border: none
+  @include any-shadow(none)
   @include transition(all 250ms ease-in-out 2 alternate)
 
   i
@@ -220,7 +229,6 @@
 
 =btn-social-base($c)
   color: $c
-  border:  1px solid $c
 
   .social-button-contents
     display: inline-block
@@ -282,12 +290,12 @@
 .social-counter, .social-icon-group
   display: inline-block
 .social-counter
-  margin-left: -3px
-  width: 30px
+  margin-left: $horz-baseline-small
+  margin-right: $horz-baseline-small
+  text-align: left
 
 .social-flat
   display: inline-block
-  margin-left: -2px
 
 .btn-save-for-later
   width: 200px
