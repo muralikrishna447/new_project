@@ -83,7 +83,7 @@
       @include display-flex
 
     .quantity-and-unit
-      @include flex(0 0 100px)
+      @include flex(0 1 100px)
       width: 100px
       text-align: right
 
@@ -92,6 +92,8 @@
         content: "\00a0"
       @include flex(1 1 200px)
       margin-right: $horz-baseline-large
+      text-indent: -16px
+      margin-left: 16px
 
 
   .quantity-group
