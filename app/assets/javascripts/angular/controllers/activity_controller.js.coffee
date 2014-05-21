@@ -11,6 +11,11 @@ window.deepCopy = (obj) ->
 
   $scope.showHeroVisual = ->
     return true if $scope.editMode && ($scope.heroMedia.heroDisplayType() == 'video')
+    # GD ios/yt. Not only does playVideo() not *work*, it actually causes the YT
+    # frame to be completely black, not even any chrome. Awesome.
+    # So since we don't want the user to have to click play twice, we just
+    # freaking always show the video.
+    return true if ($scope.heroMedia.heroDisplayType() == 'video') &&  /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
     $scope.showVideo || ($scope.heroMedia.heroDisplayType() == 'image') 
 
   $scope.toggleHeroVisual = ->

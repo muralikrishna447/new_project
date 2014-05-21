@@ -20,6 +20,7 @@
  
     createPlayer = ->
       if window.youtubeAPIReady
+        console.log('createPlayer')
         player = new YT.Player( 
           playerId,
           videoId: attrs.videoId
@@ -31,14 +32,17 @@
             'width': 1466
             'iv_load_policy': 3
             'autoplay': attrs.autoplay || 0
+            'playsinline' : 0
 
           events:
             # Youtube player is clever enough to default a playback quality based on size
             # but not to adjust it when going fullscreen.         
             'onReady' : (event) -> 
+              console.log("onReady #{player.getVideoUrl()}")
               player.setPlaybackQuality?('hd1080') 
 
             'onStateChange': (event) ->
+              console.log("onStateChange #{event.data} #{player.getVideoUrl()}")
               if event.data == 1
                   mixpanel.track('Video Embed Played', mixpanelProperties) 
         )
@@ -49,20 +53,27 @@
     createPlayer() 
 
     scope.$on 'playVideo', (event, play) ->
-      if play
+      # GD ios/yt. Not only does playVideo() not *work*, it actually causes the YT
+      # frame to be completely black, not even any chrome. Awesome.
+      if ! /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
+        console.log("playVideo: #{play}")
         player?.playVideo()
-        $timeout ( ->
-          scope.adjustHeight(1)
-        ), 3000
+        if play
+          $timeout ( ->
+           scope.adjustHeight(1)
+          ), 1000
 
       else
         player?.pauseVideo()
 
     attrs.$observe 'videoId', ->
-      player?.loadVideoById?(attrs.videoId, 0, 'hd1080')
+      if player? && player.loadVideoById?
+        console.log("loadVideo: #{attrs.videoId}")
+        player?.loadVideoById?(attrs.videoId, 0, 'hd1080')
 
     scope.adjustHeight = () ->
       newHeight = Math.round(scope.getWidth() * (attrs.aspectRatio || (9.0 / 16.0)))
+      console.log("new height #{newHeight}")
       $(element).find('iframe').height(newHeight)
 
     scope.getWidth = ->
