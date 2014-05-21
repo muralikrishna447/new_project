@@ -9,7 +9,6 @@
     $scope.csUtilities = csUtilities
     
     $scope.$on 'showNellPopup', (event, _info) ->
-      return if $scope.editMode
       return if $rootScope.showMadlibPopup
       return if $rootScope.nellPopupShowing && (_info.include == $scope.info.include) && (_info.slug == $scope.info.slug)
 
@@ -27,15 +26,21 @@
         )
 
     $scope.getClass = ->
-      return ['nell-popup', 'active'] if $rootScope.nellPopupShowing
-      return 'nell-popup'
+      classes = ['nell-popup']
+      classes.push('active') if $rootScope.nellPopupShowing
+      classes.push($scope.info.extraClass) if $scope.info?.extraClass
+      classes
+
+    $scope.closeNellPopup = ->
+      $scope.info.closeCallback() if $scope.info?.closeCallback
+      $rootScope.nellPopupShowing = false
 
     $scope.doHideNellPopup = ->
-      $rootScope.nellPopupShowing = false
+      $scope.closeNellPopup()
       mixpanel.track 'Nell Closed', $scope.info
 
     $scope.abandonNellPopup = ->
-      $rootScope.nellPopupShowing = false
+      $scope.closeNellPopup()
       mixpanel.track 'Nell Abandoned', $scope.info
 
     $scope.$on 'hideNellPopup', (event) ->

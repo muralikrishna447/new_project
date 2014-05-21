@@ -5,13 +5,7 @@
     .navbar-inner
       .container
         = link_to root_url, class: 'brand' do
-          -# = image_tag "https://s3.amazonaws.com/uploads.hipchat.com/45918/307606/LyX6OrjJzBDpK6D/csLogoHorizontalSmall.svg", id: 'chefsteps-logo', "ng-class" => "{'is-loading': dataLoading.isLoading()}"
           %cs-loading
-          / .logo-wrapper
-          /   .logo-window
-          /   .logo-block
-          /     .logo-text ChefSteps
-          /     .logo-subtext cook connected
         %button.btn.btn-navbar{style: 'float: right', data: {toggle: 'collapse', target: '.nav-collapse'}}
           %span.icon-bar
           %span.icon-bar

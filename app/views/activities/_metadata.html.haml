@@ -1,10 +1,10 @@
-.btn.btn-secondary.noprint.edit-meta-button(ng-show="editMode" ng-click="editMeta = ! editMeta")
+.btn.btn-secondary.noprint.edit-meta-button(ng-cloak ng-show="editMode" ng-click="editMeta = ! editMeta")
   %i.icon-edit
   Details ...
   %i.icon-chevron-up(ng-show="showHeroVisualEdit")
   %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
 
-%div.anim-basic-fade(ng-show="editMode && editMeta")
+%div(ng-show="editMode && editMeta")
   .meta-edit.well.noprint
     %h6 Activity Type
     .btn-toolbar

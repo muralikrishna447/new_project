@@ -1,11 +1,13 @@
 .section
 
-  .activity-description-wrapper(ng-show="!! activity.description || editMode")
+  .activity-description-wrapper
     .activity-description.maximize-description#activity-description
-      %div.content-activity-description(  ng-model="activity.description" 
+      .aside.right.rightInset.noprint(ng-show="(! editMode) && (activityColumns < 3)")
+        = render 'activities/tools'
+      %div.content-activity-description(  ng-show="!! activity.description || editMode"
+                                          ng-model="activity.description" 
                                           cs-contenteditable = "editMode"
                                           placeholder="'Click to write main description'" )
-
 -if can? :update, @activity
   .section
 

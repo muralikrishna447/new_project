@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140409202332) do
+ActiveRecord::Schema.define(:version => 20140505192216) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -55,7 +55,6 @@ ActiveRecord::Schema.define(:version => 20140409202332) do
     t.integer  "currently_editing_user"
     t.boolean  "include_in_gallery",     :default => true
     t.integer  "creator",                :default => 0
-    t.string   "layout_name"
     t.boolean  "show_only_in_course",    :default => false
     t.string   "summary_tweet"
   end
@@ -522,8 +521,8 @@ ActiveRecord::Schema.define(:version => 20140409202332) do
   create_table "steps", :force => true do |t|
     t.text     "title"
     t.integer  "activity_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.string   "youtube_id"
     t.integer  "step_order"
     t.text     "directions"
@@ -535,6 +534,7 @@ ActiveRecord::Schema.define(:version => 20140409202332) do
     t.string   "audio_title"
     t.boolean  "hide_number"
     t.boolean  "is_aside"
+    t.text     "presentation_hints", :default => "{}"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"

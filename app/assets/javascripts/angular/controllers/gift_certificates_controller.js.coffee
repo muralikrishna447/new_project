@@ -9,9 +9,6 @@ angular.module('ChefStepsApp').controller 'GiftCertificatesController', ["$scope
   $scope.sortInfo = {fields: ["created_at"], directions: ["asc"]}
   $scope.editMode = true
   $scope.preventAutoFocus = true
-  $scope.addUndo = ->
-    true
-
   $scope.onlyFree = false
 
   $scope.modalOptions =

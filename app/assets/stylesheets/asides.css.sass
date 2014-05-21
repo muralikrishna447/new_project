@@ -1,34 +1,28 @@
 @import 'mixins'
 
 .aside
-  width: 100%
+  float: right
+  width: $aside-width
+  max-width: 100%
   .aside-image
-    margin-bottom: $baseline * 2
+    margin-bottom: $baseline
 
-
-.list-view
-  .aside.aside-with-media
-    width: 100%
+  &.left, &.leftInset
     float: left
-    .aside-video
-      width: 50%
-      float: left
-      margin-bottom: 0px
-      @include boxsizing
-    .aside-image
-      width: 50%
-      float: left
-      margin-bottom: 0px
-      @include boxsizing
-    .aside-text
-      width: 50%
-      float: left
-      padding-left: 15px
-      @include boxsizing
 
-// Fix for the case where the aside is in the last step in the class view
-.course-assembly-container
-  .ordered-step-item
-    float: left
-  .ordered-step-item.step-with-aside
-    float: right
+  &.leftInset, &.rightInset
+    width: $aside-width * 2
+
+  &.leftInset
+    margin-right: $horz-baseline-large
+    margin-left: -$aside-width
+
+  &.rightInset
+    margin-left: $horz-baseline-large
+    margin-right: -$aside-width
+
+  &.center
+    float: none
+    width: $desktop-standard-item-width
+    margin-left: auto
+    margin-right: auto

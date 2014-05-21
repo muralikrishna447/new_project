@@ -53,7 +53,20 @@ angular.module('ChefStepsApp').filter "shortcode", ->
             """
           when 'linktocomments'
             "<a href='#comments'>#{contents}</a>"
-
+          when 'quote'
+            arg1 = arg1.replace('_', ' ')
+            """
+              <div class="quote-container">
+                <hr/>
+                <blockquote>
+                  #{arg2}
+                </blockquote>
+                <div class="quote-source">
+                  #{arg1}
+                </div>
+                <hr/>
+              </div>
+          """
           else orig
     else
       ""

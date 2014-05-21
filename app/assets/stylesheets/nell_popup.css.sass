@@ -13,6 +13,7 @@
   @extend noprint
   @include boxsizing
   @include shadow
+  // Have to specify transform b/c don't want top animating when it is a .alert-popup
   @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
 
   background-color: white
@@ -23,6 +24,10 @@
   border-bottom: 2px solid $light-gray
   top: 25%
   right: 0
+  padding: $baseline*2 44px $baseline*2 22px
+  min-width: 320px
+  width: 75%
+
   +transform(translateX(100%))
 
   &.active
@@ -38,45 +43,41 @@
     margin: 4 * $baseline
 
 .nell-card
-  margin: $baseline*2 44px $baseline*2 22px
+  @include display-inline-flex
+  @include flex-wrap(wrap)
+  @include justify-content(space-between)
+  @include align-items(flex-start)
 
   .nell-card-header
+    width: 100%
     margin-bottom: $baseline
+    margin: $baseline $horz-baseline-large
 
   .nell-card-media
-    display: inline-block
-    width: 480px
-    margin-right: 33px
-    vertical-align: top
+    @include flex(1 0 250px)
+    min-width: 250px
+    margin-bottom: $baseline
+    margin: 0px $horz-baseline-large
 
   .nell-card-text
-    display: inline-block
-    width: 480px
+    padding: 0px $horz-baseline-large
+    @include flex(1 0 250px)
     .short-summary
       max-height: 18 * $baseline
     .needs-work
       color: $orange
 
 .nell-embed
-  margin-bottom: $baseline * 4
+  margin-left: -$horz-baseline-large
+  margin-right: -$horz-baseline-large
 
   .nell-card
-    margin-left: 0
-    margin-right: 0
 
     .nell-card-header
-      padding-bottom: $baseline
       border-bottom: 4px solid $orange
-      width: 100%
-
-    .nell-card-media
-      margin-right: 22px
-
-    .nell-card-media, .nell-card-text
-      width: 318px
 
     .short-summary
-      max-height: 10 * $baseline
+      max-height: 18 * $baseline
 
 .aside
   .nell-embed
@@ -86,62 +87,13 @@
       .nell-card-media, .nell-card-text
         width: 100% 
 
-
-@media (max-width: 1200px)
-  .nell-embed
-    .nell-card
-      .nell-card-media, .nell-card-text
-        width: 255px
-
-@media (max-width: 980px)
-  .nell-embed
-    .nell-card
-      .nell-card-media, .nell-card-text
-        width: 100%
-      .nell-card-media
-        margin-bottom: $baseline
-
-@media (max-width: 1170px)
-  .nell-card
-    .nell-card-media
-      width: 320px
-
-    .nell-card-text
-      .short-summary
-        max-height: 10 * $baseline
-
 @media (max-width: 970px)
   .nell-popup
     top: 10%
-  .nell-card
-    margin-right: 22px
-    margin-left: 22px
-    .nell-card-header, .nell-card-media, .nell-card-text
-      width: 480px
-      display: block
-      margin-right: 0px
- 
-    .nell-card-media
-      margin-bottom: $baseline
-    .nell-card-text
-      .short-summary
-        max-height: 14 * $baseline
-
-
-@media (max-width: 640px)
-  .nell-card
-    .nell-card-header, .nell-card-media, .nell-card-text
-      width: 275px
-
 
 @media (max-width: 480px)
   .nell-popup
     top: 0
-  .nell-card
-    .nell-card-text
-      .short-summary
-        max-height: 8 * $baseline
-
 
 
 

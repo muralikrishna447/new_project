@@ -73,9 +73,6 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     $scope.ingredient = jQuery.extend(true, {}, $scope.backupIngredient)
     $scope.editMode = false
 
-  $scope.addUndo = ->
-    true
-
   $scope.getObject = ->
     $scope.ingredient
   

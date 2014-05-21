@@ -4,11 +4,11 @@
 # Set up two-way binding for scope and change videos when the id changes
 # Maybe track more events beside load and play
 
-@app.directive 'csembedyoutube', ["$timeout", ($timeout) ->
+@app.directive 'csembedyoutube', ["$timeout", "$window", ($timeout, $window) ->
   restrict: 'E'
   scope: { autoplay: '=' }
   link: (scope, element, attrs) ->
-
+    player = null
     playerId = "YT" + Date.now()
     $(element).find('.video-iframe').attr('id', playerId)
 
@@ -18,42 +18,76 @@
 
     mixpanel.track('Video Embed Loaded', mixpanelProperties) 
  
-    player = new YT.Player( 
-      playerId,
-      videoId: attrs.videoId
-      playerVars: 
-        'wmode': 'opaque'
-        'modestbranding' : 1
-        'autohide' : 1
-        'rel': 0
-        'showinfo': 0
-        width: '1466'
-        iv_load_policy: 3
+    createPlayer = ->
+      if window.youtubeAPIReady
+        console.log('createPlayer')
+        player = new YT.Player( 
+          playerId,
+          videoId: attrs.videoId
+          playerVars: 
+            'wmode': 'opaque'
+            'modestbranding' : 1
+            'rel': 0
+            'showinfo': 0
+            'width': 1466
+            'iv_load_policy': 3
+            'autoplay': attrs.autoplay || 0
+            'playsinline' : 0
 
-        'autoplay': attrs.autoplay || 0
-      events:
-        'onStateChange': (event) ->
-          if event.data == 1
-              mixpanel.track('Video Embed Played', mixpanelProperties) 
-    )   
-    # Youtube player is clever enough to default a playback quality based on size
-    # but not to adjust it when going fullscreen. So wait a little while for
-    # csenforceaspect to do its thing, then bump it up.
-    $timeout ( -> player.setPlaybackQuality?('hd1080')), 2000
+          events:
+            # Youtube player is clever enough to default a playback quality based on size
+            # but not to adjust it when going fullscreen.         
+            'onReady' : (event) -> 
+              console.log("onReady #{player.getVideoUrl()}")
+              player.setPlaybackQuality?('hd1080') 
 
-    # # Dumb experimental workaround to having the correct onplayerready
-    # loadVideo = (id) ->
-    #   if player?.loadVideoById
-    #     player.loadVideoById(id) if id.length > 0
-    #   else $timeout (->
-    #     loadVideo(id)
-    #   ), 500
+            'onStateChange': (event) ->
+              console.log("onStateChange #{event.data} #{player.getVideoUrl()}")
+              if event.data == 1
+                  mixpanel.track('Video Embed Played', mixpanelProperties) 
+        )
+      else
+        # If the YT api isn't ready yet, try again a little later
+        $timeout (-> createPlayer()), 500
 
-    # attrs.$observe 'videoId', (newVal) ->  
-    #   loadVideo(newVal)
+    createPlayer() 
 
-  template: """
-    <div class='video-container' csenforceaspect>
+    scope.$on 'playVideo', (event, play) ->
+      # GD ios/yt. Not only does playVideo() not *work*, it actually causes the YT
+      # frame to be completely black, not even any chrome. Awesome.
+      if ! /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
+        console.log("playVideo: #{play}")
+        player?.playVideo()
+        if play
+          $timeout ( ->
+           scope.adjustHeight(1)
+          ), 1000
+
+      else
+        player?.pauseVideo()
+
+    attrs.$observe 'videoId', ->
+      if player? && player.loadVideoById?
+        console.log("loadVideo: #{attrs.videoId}")
+        player?.loadVideoById?(attrs.videoId, 0, 'hd1080')
+
+    scope.adjustHeight = () ->
+      newHeight = Math.round(scope.getWidth() * (attrs.aspectRatio || (9.0 / 16.0)))
+      console.log("new height #{newHeight}")
+      $(element).find('iframe').height(newHeight)
+
+    scope.getWidth = ->
+      $(element).find('iframe').width()
+
+    scope.$watch scope.getWidth, ( ->
+      scope.adjustHeight()
+    ), true
+
+    angular.element($window).bind "resize", ->
+      scope.$apply()
+
+  template: """ 
+    <div class="video-iframe-container">     
       <div class='video-iframe'></div>
     </div>
   """

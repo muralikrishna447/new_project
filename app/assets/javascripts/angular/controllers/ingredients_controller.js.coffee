@@ -2,6 +2,11 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.shouldShowMasterIngredientsRemovedModal = false
   $scope.showIngredientsMenu = false
+  $scope.includeRecipes = false
+  $scope.preventAutoFocus = true
+
+  $scope.viewOptions = {}
+  $scope.viewOptions.includeRecipes = false
 
   $scope.getAllUnits = ->
     window.allUnits
@@ -18,26 +23,21 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     result = 1000 if unit_name == "kg"
     result
 
-  $scope.addIngredient =  ->
-    # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
-    # but an ugly [object Object]
-    item = {unit: "g", quantity: "0"}
-    $scope.getIngredientsList().push(item)
-    #$scope.addUndo()
 
   $scope.removeIngredient = (index) ->
     $scope.getIngredientsList().splice(index, 1)
-    $scope.addUndo()
 
-  $scope.all_ingredients = (term) ->
+  $scope.all_ingredients = (term, includeRecipes) ->
     s = ChefSteps.splitIngredient(term)
-    $http.get("/ingredients.json?limit=15&include_sub_activities=true&search_title=" + s["ingredient"]).then (response) ->
+    $http.get("/ingredients.json?limit=15&include_sub_activities=#{$scope.includeRecipes}&search_title=" + s["ingredient"]).then (response) ->
       r = response.data
       for i in r
-        i.title += " [RECIPE]" if i.sub_activity_id?
+        i.label = i.title
+        i.label += " [RECIPE]" if i.sub_activity_id?
+
       # always include current search text as an option, first!
       r = _.sortBy(r, (i) -> i.title != s["ingredient"])
-      r.unshift({title: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
+      r.unshift({label: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
       r
 
   $scope.matchableIngredients = (i1, i2) ->
@@ -64,7 +64,6 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
             ing.display_quantity = parseFloat(ing.display_quantity) + parseFloat(si.display_quantity)
         else
           $scope.activity.ingredients.push(deepCopy(si))
-    $scope.addUndo()
     $scope.temporaryNoAutofocus()
     if $scope.activity.ingredients.length < old_count
       $scope.shouldShowMasterIngredientsRemovedModal = true

@@ -1,25 +1,23 @@
 .nell-card
   .nell-card-header
-    %h3 {{obj.title}}
+    %h4 {{obj.title}}
+    
+  .nell-card-media
+    %img( ng-if='! obj.youtube_id && obj.featured_image_id' 
+          cs-responsive-image='obj.featured_image_id')
 
-  .nell-card-body
-    .nell-card-media
-      %img( ng-if='! obj.youtube_id && obj.featured_image_id' 
-            ng-src='{{csUtilities.imageURL(obj.featured_image_id, 700)}}')
+    %csEmbedYouTube(  ng-if='obj.youtube_id' 
+                      video-id="{{obj.youtube_id}}" 
+                      container-slug="{{activity.slug}}") 
 
-      // Hide on ! nellPopupShowing to stop video
-      %csEmbedYouTube(  ng-if='obj.youtube_id' 
-                        video-id="{{obj.youtube_id}}" 
-                        container-slug="{{activity.slug}}") 
+  .nell-card-text
+    .relative
+      .short-summary.section(ng-bind-html="obj.description | markdown | shortcode")
+    %a( ng-href='/activities/{{obj.slug}}'
+        no-nell-popup 
+        target='_blank') 
 
-    .nell-card-text
-      .relative
-        .short-summary.section(ng-bind-html="obj.description | markdown | shortcode")
-      %a( ng-href='/activities/{{obj.slug}}'
-          no-nell-popup 
-          target='_blank') 
-
-        %div(ng-switch='obj.activity_type[0] || "Recipe"' ng-if="obj.activity_type[0]")
-          .btn.btn-large.btn-primary(ng-switch-when="Recipe") SEE THE RECIPE
-          .btn.btn-large.btn-primary(ng-switch-default) TELL ME MORE
-       
+      %div(ng-switch='obj.activity_type[0] || "Recipe"')
+        .btn.btn-large.btn-primary(ng-switch-when="Recipe") SEE THE RECIPE
+        .btn.btn-large.btn-primary(ng-switch-default) TELL ME MORE
+     

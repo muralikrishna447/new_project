@@ -165,6 +165,7 @@ Delve::Application.routes.draw do
   resources :likes, only: [:create] do
     collection do
       get 'by_user' => 'likes#by_user'
+      post 'unlike' => 'likes#unlike'
     end
   end
   resources :pages, only: [:show]
