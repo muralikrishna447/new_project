@@ -23,11 +23,6 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     result = 1000 if unit_name == "kg"
     result
 
-  $scope.addIngredient =  ->
-    # Don't set an ingredient object within the item or you'll screw up the typeahead and not get your placeholder
-    # but an ugly [object Object]
-    item = {unit: "g", quantity: "0"}
-    $scope.getIngredientsList().push(item)
 
   $scope.removeIngredient = (index) ->
     $scope.getIngredientsList().splice(index, 1)
