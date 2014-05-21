@@ -15,8 +15,9 @@ window.deepCopy = (obj) ->
     # frame to be completely black, not even any chrome. Awesome.
     # So since we don't want the user to have to click play twice, we just
     # freaking always show the video.
-    return true if ($scope.heroMedia.heroDisplayType() == 'video') &&  /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
-    $scope.showVideo || ($scope.heroMedia.heroDisplayType() == 'image') 
+    # return true if ($scope.heroMedia.heroDisplayType() == 'video') &&  /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
+    return true if $('.banner-image').width() <= 900
+    $scope.showVideo
 
   $scope.toggleHeroVisual = ->
     $scope.showVideo = ! $scope.showVideo
@@ -29,7 +30,7 @@ window.deepCopy = (obj) ->
     url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
     url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
     w = $('.banner-image').width()
-    h = 338
+    h = 495
     if w < 650
       h = w * 9.0 / 16.0
     url += "/convert?fit=crop&h=#{h}&w=#{w}"
