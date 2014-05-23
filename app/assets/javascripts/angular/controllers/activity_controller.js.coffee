@@ -6,7 +6,7 @@ window.deepCopy = (obj) ->
 
 # This is a little captive controller only designed for use inside ActivityController for now.
 # Would be better as a directive but needs work to abstract it.
-@app.controller 'BannerController', ["$scope", ($scope) ->
+@app.controller 'BannerController', ["$scope", "ActivityMethods", ($scope, ActivityMethods) ->
   $scope.showVideo = false
 
   $scope.showHeroVisual = ->
@@ -27,7 +27,7 @@ window.deepCopy = (obj) ->
     $scope.toggleHeroVisual() if $scope.showVideo
 
   $scope.bannerImageURL = ->
-    url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
+    url = ActivityMethods.itemImageFpfile($scope.activity).url
     url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
     w = $('.banner-image').width()
     h = 495
