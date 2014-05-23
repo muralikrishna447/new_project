@@ -71,8 +71,9 @@
 
     attrs.$observe 'videoId', ->
       if player? && player.loadVideoById?
-        console.log("loadVideo: #{attrs.videoId}")
-        player?.loadVideoById?(attrs.videoId, 0, 'hd1080')
+        console.log("cueVideo: #{attrs.videoId}")
+        # want cue, not load. Load starts it playing.
+        player?.cueVideoById?(attrs.videoId, 0, 'hd1080')
 
     scope.adjustHeight = () ->
       newHeight = Math.round(scope.getWidth() * (attrs.aspectRatio || (9.0 / 16.0)))
