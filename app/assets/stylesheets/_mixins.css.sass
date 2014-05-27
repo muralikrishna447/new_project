@@ -274,6 +274,22 @@ $horz-baseline-large: 13px
     opacity: 1  
     margin-top: 0px  
 
+=anim-slide-left($start, $end)
+  &.ng-enter
+    @include transition(all 200ms ease-in-out)
+    opacity: 0
+    margin-left: $start
+    &.ng-enter-active
+      opacity: 1  
+      margin-left: $end
+  &.ng-leave
+    @include transition(all 200ms ease-in-out)
+    opacity: 1
+    margin-left: $end
+    &.ng-leave-active
+      opacity: 0
+      margin-left: $start  
+
 =horizontal-center
   margin-left: auto
   margin-right: auto

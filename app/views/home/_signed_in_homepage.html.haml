@@ -33,12 +33,12 @@
 
     .span4
       .home-section
-        %h2
+        %h2.section-tiny
           = link_to "Latest", gallery_index_path, class: 'orange-link'
-        .whats-new
+        .whats-new.section
           - @latest.each.with_index do |item, index|
             = render 'shared/media_box_3', url: activity_path(item), title: item.title, image: item.featured_image, object: item
-        .text-right.section
+        .section  
           = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
 
 

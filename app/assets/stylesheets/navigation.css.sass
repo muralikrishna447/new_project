@@ -94,20 +94,7 @@ body.nav-popover-open
     input[type='text']:focus
     &:hover
       cursor: pointer
-    &.ng-enter
-      @include transition(all 200ms ease-in-out)
-      opacity: 0
-      margin-left: -260px
-      &.ng-enter-active
-        opacity: 1  
-        margin-left: -300px
-    &.ng-leave
-      @include transition(all 200ms ease-in-out)
-      opacity: 1
-      margin-left: -300px
-      &.ng-leave-active
-        opacity: 0
-        margin-left: -260px
+    @include anim-slide-left(-260px, -300px)
 
   .resources-popover
     @include popover(180px)
@@ -252,7 +239,6 @@ input:focus
       right: 0
       float: left
       margin-left: 22px
-      width: 40%
       padding: 0px
       margin-bottom: $baseline
       @include anim-slide-down(-20px)
