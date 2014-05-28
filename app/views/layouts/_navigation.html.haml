@@ -18,8 +18,6 @@
             .nav-collapse.collapse.pull-right#cs-navigation
               %ul.nav
                 %li.dropdown
-                  .nav-item-border
-
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
                     Recipes
                     %i.icon-angle-down
@@ -36,10 +34,8 @@
                       %li= link_to 'Manage Equipment', equipment_index_path
 
                 %li
-                  .nav-item-border
                   = link_to 'Classes', courses_url
                 %li.dropdown
-                  .nav-item-border
                   = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
                     Community
                     %i.icon-angle-down
@@ -49,7 +45,6 @@
                     %li= link_to 'Vote For New Courses', poll_url('vote-for-future-classes-3')
                 -unless @no_shop
                   %li.dropdown
-                    .nav-item-border
                     = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
                       Shop
                       %i.icon-angle-down
@@ -59,7 +54,6 @@
                       %li= link_to 'Knife Collection', knife_collection_url
                       %li= link_to 'Sous Vide Collection', sv_collection_url
                 %li(ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
-                  .nav-item-border
                   - if external
                     -# Can't see current_user when external, so use a route that will
                     -# either go to their profile if logged in, or take them to sign in
@@ -85,7 +79,6 @@
                 -#     = render "devise/sessions/new_angular"
                 - unless external
                   %li
-                    .nav-item-border
                     .nav-search.nav-search-toggle
                       %i.icon-search.icon-large
                       %form.navbar-form.form-search.nav-search-form(action="{{getSearchQuery()}}" method="get")
@@ -94,6 +87,5 @@
                         %i.icon-remove
                 - if current_user && current_user.admin?
                   %li
-                    .nav-item-border
                     .cs-bloom-notifs
                       %csnotifs
