@@ -97,8 +97,8 @@
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
   = render "layouts/login_hack"
-  / %script(src="//s3.amazonaws.com/chefsteps-production-assets/bloom/bloom-loader.js")
-  %script(src="//community-staging.usebloom.com/export/loader.js")
+  %script(src="//s3.amazonaws.com/chefsteps-production-assets/bloom/bloom-loader.js")
+  / %script(src="//community-staging.usebloom.com/export/loader.js")
   = javascript_include_tag 'application'
   %script(type="text/javascript")
     logPerf("POST APP");
