@@ -8,9 +8,14 @@ class UsersController < ApplicationController
   end
 
   def index
+    # if params[:ids]
+    #   ids = params[:ids].split(',')
+    #   @users = User.where(id: [ids])
+    #   render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
+    # end
     if params[:ids]
       ids = params[:ids].split(',')
-      @users = User.where(id: [ids])
+      @users = User.where(email: [ids])
       render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
     end
   end
