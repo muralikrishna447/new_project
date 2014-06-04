@@ -7,15 +7,11 @@ class UsersController < ApplicationController
     render text: encrypted
   end
 
+  # Bloom will also be using this endpoint
   def index
-    # if params[:ids]
-    #   ids = params[:ids].split(',')
-    #   @users = User.where(id: [ids])
-    #   render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
-    # end
     if params[:ids]
       ids = params[:ids].split(',')
-      @users = User.where(email: [ids])
+      @users = User.where(id: [ids])
       render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
     end
   end
