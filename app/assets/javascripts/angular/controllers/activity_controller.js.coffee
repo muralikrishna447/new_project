@@ -27,7 +27,7 @@ window.deepCopy = (obj) ->
     $scope.toggleHeroVisual() if $scope.showVideo
 
   $scope.bannerImageURL = ->
-    url = ActivityMethods.itemImageFpfile($scope.activity).url
+    url = ActivityMethods.itemImageFpfile($scope.activity, 'hero').url
     url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
     w = $('.banner-image').width()
     h = 495
