@@ -9,7 +9,6 @@
 //=require angular-ui
 //=require application
 //=require angular-mocks
-//=require bloom/api
 //=require_tree .
 
 window.logPerf = function() {};
@@ -29,3 +28,5 @@ angular.mock.clearDataCache = function() {
     }
 };
 
+// Mock bloom to get tests to pass
+window.Bloom = jasmine.createSpyObj('Bloom', ['configure', 'installComments']);
