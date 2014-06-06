@@ -10,7 +10,7 @@
   .reviews(ng-repeat="comment in comments|orderBy:['-id']|limitTo:commentLimit")
     .review
       %csrating.rating(value="comment.rating" readonly="true")
-      %blockquote.review-content
+      .review-content
         {{comment.content}}
       .review-user
         \- 
