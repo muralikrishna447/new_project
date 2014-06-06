@@ -4,11 +4,6 @@
   @include boxsizing
   width: 100%
 
-@media(max-width: 767px)
-  .master-column-container
-    padding-left: 20px
-    padding-right: 20px
-
 .master-column
   @include boxsizing
   width: 100%
@@ -19,7 +14,7 @@
   @include boxsizing
   @include horizontal-center
   position: relative 
-  max-width: 100% 
+  max-width: calc(100% - 40px) 
 
 .standard-item
   @extend .base-item
@@ -35,12 +30,14 @@
   @extend .base-item
   width: $desktop-standard-item-width + 400px
   .step-first-row
-    margin-left: 200px
+    margin-left: auto
+    margin-right: auto
+    max-width: calc(100% - 40px) 
     width: $desktop-standard-item-width
 
 .half-medium-item
   vertical-align: top
-  flex: 1 0 300px
+  @include flex(1 0 300px)
   &:not(:first-child)
     margin-left: 30px
 
@@ -77,4 +74,6 @@
       margin-right: -7%
       margin-left: $horz-baseline-large * 2
 
-
+@media (max-width: 320px)
+  .base-item
+    max-width: calc(100% - 0px) 

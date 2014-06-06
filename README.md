@@ -59,7 +59,9 @@ Staging2 ChefSteps
 =
 
 Deploying to Staging2
--
+```
+One time: git remote add staging2 git@heroku.com:staging2-chefsteps.git
+
 git checkout develop2
 merge paid-courses (or whatever you are working on) into develop2
 git push staging2 develop2:master
@@ -73,7 +75,7 @@ Copy Production Database to Staging2
 1. heroku pgbackups:restore HEROKU_POSTGRESQL_CHARCOAL 'heroku pgbackups:url --app production-chefsteps' --app staging2-chefsteps
 
 2. This will give a warning asking you to type in 'staging2-chefsteps' to confirm the destructive action.  **Make sure it says staging2.**
-
+```
 
 # Dan's Notes on E2E testing
 To perform E2E testing on angular you need to have node.js installed if you don't already.  You will also need the Karma test runner installed, as well as the ng-scenario and coffee-preprocessor plugins for karma.  You can install them with the following commands:

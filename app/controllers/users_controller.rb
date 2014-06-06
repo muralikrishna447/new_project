@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     render text: encrypted
   end
 
+  # Bloom will also be using this endpoint
   def index
     if params[:ids]
       ids = params[:ids].split(',')

@@ -48,6 +48,7 @@
     :javascript
       window.youtubeAPIReady = false;
       window.onYouTubeIframeAPIReady = function() {
+        console.log('YT API ready')
         window.youtubeAPIReady = true;
       }
 
@@ -100,6 +101,7 @@
   
   = render "layouts/login_hack"
   %script(src="//s3.amazonaws.com/chefsteps-production-assets/bloom/bloom-loader.js")
+  / %script(src="//community-staging.usebloom.com/export/loader.js")
   = javascript_include_tag 'application'
   %script(type="text/javascript")
     logPerf("POST APP");

@@ -7,18 +7,19 @@
   .nav-spacer
     height: 58px
 
+$banner-height: $baseline * 45
+
 .banner-image
-  max-height: 338px
+  max-height: $banner-height
   width: 100%
   position: relative
   margin-bottom: $baseline
+  cursor: pointer
 
   img
     // Allowing a stretch here, but it is only effective temporarily because
     // we retrieve the correct sized image as quickly as possible.
-    width: 100%
-    height: 100%
-    max-height: 338px
+    max-height: $banner-height
     @include transition(all 300ms ease-in-out)
 
   .play-button-container
@@ -38,9 +39,9 @@
     top: 0
     bottom: 0
     left: 50%
-    width: 600px
-    height: 338px
-    margin-left: -300px
+    width: $banner-height * 16.0 / 9.0
+    height: $banner-height
+    margin-left: -444px
     overflow: hidden
 
   .video-iframe-container
@@ -50,7 +51,7 @@
   &.hero-video-showing
     > img
       opacity: .3
-      @include blur(10px)
+      @include blur(7px)
 
     .video-iframe-container
       opacity: 1
@@ -122,6 +123,11 @@
   right: 100%
   margin-right: 22px
 
+.left, .leftInset
+  .step-edit-tools
+    right: -100%
+
+
 
 .btn-edit-step
   color: gray
@@ -131,21 +137,23 @@
   i.active
     color: $orange
 
-@media (max-width: 650px)
+@media (max-width: 900px)
   .banner-image
+    > img
+      display: none
+
+    .play-button-container
+      display: none
+
     .hero-visual
-      position: absolute
-      top: 0
+      position: static
+      top: 0px
       bottom: 0
       left: 0
+      height: auto
       margin-left: 0
       width: 100%
-      height: 100%
-      overflow: none
-
-@media (max-width: 780px)
-  #step-dots
-    display: none
+      z-index: 1
 
 @media (max-width: 480px)
   .activity-columns-1

@@ -4,7 +4,7 @@
     .ingredients-menu-button(ng-show="activity.ingredients.length && ! editMode")
       .btn.btn-link( ng-click="toggleIngredientsMenu()" 
                       ng-class="{'active' : csGlobals.scaling != 1}")
-        Scale ...
+        Scale recipe ...
 
     .ingredients-menu.well( ng-show="activity.ingredients.length"
                             ng-class="{'menu-active' : showIngredientsMenu}")

@@ -6,22 +6,31 @@ window.deepCopy = (obj) ->
 
 # This is a little captive controller only designed for use inside ActivityController for now.
 # Would be better as a directive but needs work to abstract it.
-@app.controller 'BannerController', ["$scope", ($scope) ->
+@app.controller 'BannerController', ["$scope", "ActivityMethods", ($scope, ActivityMethods) ->
   $scope.showVideo = false
 
   $scope.showHeroVisual = ->
     return true if $scope.editMode && ($scope.heroMedia.heroDisplayType() == 'video')
-    $scope.showVideo || ($scope.heroMedia.heroDisplayType() == 'image')
+    # GD ios/yt. Not only does playVideo() not *work*, it actually causes the YT
+    # frame to be completely black, not even any chrome. Awesome.
+    # So since we don't want the user to have to click play twice, we just
+    # freaking always show the video.
+    # return true if ($scope.heroMedia.heroDisplayType() == 'video') &&  /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
+    return true if $('.banner-image').width() <= 900
+    $scope.showVideo
 
   $scope.toggleHeroVisual = ->
     $scope.showVideo = ! $scope.showVideo
     $scope.$broadcast('playVideo', $scope.showVideo)
 
+  $scope.$on 'resetVideo', ->
+    $scope.toggleHeroVisual() if $scope.showVideo
+
   $scope.bannerImageURL = ->
-    return "" if ! ($scope.heroMedia.hasHeroImage() || $scope.hasFeaturedImage())
-    url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
-    w = window.innerWidth
-    h = 338
+    url = ActivityMethods.itemImageFpfile($scope.activity, 'hero').url
+    url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
+    w = $('.banner-image').width()
+    h = 495
     if w < 650
       h = w * 9.0 / 16.0
     url += "/convert?fit=crop&h=#{h}&w=#{w}"
@@ -424,6 +433,7 @@ window.deepCopy = (obj) ->
     else
       $scope.fetchActivity(id, -> $scope.makeActivityActive(id))
     $scope.updateCommentCount()
+    $scope.$broadcast('resetVideo')
 
   $scope.commentCount = -1
   $scope.updateCommentCount = -> 
