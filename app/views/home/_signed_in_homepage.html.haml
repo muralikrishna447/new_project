@@ -30,6 +30,21 @@
                 %h3= course.title
               %csrating.rating(value="#{course.average_rating}" readonly="true")
               %p= course.short_description
+        %h4
+          = link_to 'See More...', courses_path
+        .home-section
+          %h2 Projects
+          - @projects.each do |project|
+            - url = project_path(project)
+            .home-standard-item
+              .home-standard-item-image
+                = link_to url do
+                  = image_tag filepicker_stream_image(project.featured_image)
+              .home-standard-item-text
+                = link_to url do
+                  %h3= project.title
+                %csrating.rating(value="#{project.average_rating}" readonly="true")
+                %p= project.short_description
 
     .span4
       .home-section
