@@ -62,7 +62,7 @@
                       NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html="'NEXT: ' + nextInclusion().includable_title")
         .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
-          .span12
+          .span12.course-comments
             %hr
             / %a(name='discussion')
             / %cscomments(comments-type="assembly" comments-id="{{course.id}}" seo-bot="#{is_brombone}")
