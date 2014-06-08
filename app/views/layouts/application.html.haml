@@ -65,11 +65,11 @@
         window.chefstepsUserId = null
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' => "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'", :'ng-class' =>'{"nav-popover-open" : $root.showNav}'}
-  #rails-flash.hide
-    = flash.to_json
-  - unless @hide_nav == true
-    = render 'layouts/navigation', external: false
-    .nav-spacer.noprint
+    #rails-flash.hide
+      = flash.to_json
+    - unless @hide_nav == true
+      = render 'layouts/navigation', external: false
+      .nav-spacer.noprint
 
     .container.noprint.cookies-disabled(style="display:none;")
       .row-fluid
