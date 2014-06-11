@@ -67,7 +67,7 @@
               %hr
               .section#comments
                 %a(name='discussion')
-                %cscomments(comments-type="assembly" comments-id="{{course.id}}" seo-bot="#{is_brombone}")
+                %cscomments(comments-type="activity" comments-id="{{currentIncludable.includable_id}}" seo-bot="#{is_brombone}")
         - else
           .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
             .span12.course-comments
