@@ -281,10 +281,12 @@ module ApplicationHelper
         assembly_type_path = 'classes'
       when 'Recipe Development'
         assembly_type_path = 'recipe-development'
+      when 'Project'
+        assembly_type_path = 'projects'
       else
         assembly_type_path = assembly.assembly_type.downcase.pluralize
       end
-      "/#{assembly_type_path}/#{assembly.slug}"
+      "/#{assembly_type_path}/#{assembly.slug}/##{activity.slug}"
     else
       "/assemblies/#{assembly.slug}/#{activity.slug}"
     end
