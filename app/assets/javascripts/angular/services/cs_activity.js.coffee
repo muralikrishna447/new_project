@@ -1,6 +1,10 @@
-@app.factory 'Activity', ['$resource', ($resource) ->
-
-  return $resource( "/activities/:id/as_json",
+@app.factory 'Activity', ['$resource', '$location', ($resource, $location) ->
+  console.log $location
+  if $location.host() == 'localhost'
+    rootUrl = "http://" + $location.host() + ':' + $location.port()
+  else
+    rootUrl = "http://" + $location.host()
+  return $resource( rootUrl + "/activities/:id/as_json",
                     {id:  $('#activity-body').data("activity-id") || 1},
                     {
                       update: {method: "PUT"},
