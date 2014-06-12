@@ -1,17 +1,13 @@
-@app.factory 'Activity', ['$resource', '$location', ($resource, $location) ->
-  console.log $location
-  if $location.host() == 'localhost'
-    rootUrl = "http://" + $location.host() + ':' + $location.port()
-  else
-    rootUrl = "http://" + $location.host()
-  return $resource( rootUrl + "/activities/:id/as_json",
+@app.factory 'Activity', ['$resource', ($resource) ->
+
+  return $resource( "/activities/:id/as_json",
                     {id:  $('#activity-body').data("activity-id") || 1},
                     {
                       update: {method: "PUT"},
-                      startedit: {method: "PUT", url: rootUrl + "/activities/:id/notify_start_edit"},
-                      endedit: {method: "PUT", url: rootUrl + "/activities/:id/notify_end_edit"}
+                      startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
+                      endedit: {method: "PUT", url: "/activities/:id/notify_end_edit"}
                       index_as_json: {method: "GET", url: "/gallery/index_as_json.json", isArray: true}
-                      get_as_json: {url: rootUrl + "/activities/:id/as_json", method: "GET"}
+                      get_as_json: {url: "/activities/:id/as_json", method: "GET"}
                     }
                   )
 
