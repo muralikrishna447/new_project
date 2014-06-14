@@ -92,6 +92,7 @@ class ActivitiesController < ApplicationController
           end
           container_name = containing_class.assembly_type.to_s
           container_name = "Class" if container_name == "Course"
+          container_name = "Mini-Class" if container_name == "Project"
           flash.now[:notice] = "This is part of the #{path} #{container_name}."
         end
         track_event @activity
@@ -151,18 +152,14 @@ class ActivitiesController < ApplicationController
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
-    respond_to do |format|
-      format.json {
-        unless @activity.containing_course && current_user && current_user.enrollments.where(enrollable_id: @activity.containing_course.id, enrollable_type: @activity.containing_course.class).first.try(:free_trial_expired?) && @activity.containing_course.price > 0
-          render :json => @activity.to_json
-        else
-          if mixpanel_anonymous_id
-            mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.slug})
-            mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
-          end
-          render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden
-        end
-      }
+    unless @activity.containing_course && current_user && current_user.enrollments.where(enrollable_id: @activity.containing_course.id, enrollable_type: @activity.containing_course.class).first.try(:free_trial_expired?) && @activity.containing_course.price > 0
+      render :json => @activity.to_json
+    else
+      if mixpanel_anonymous_id
+        mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.slug})
+        mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
+      end
+      render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden
     end
   end
 

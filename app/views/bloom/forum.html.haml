@@ -24,7 +24,7 @@
         user: window.chefstepsUserId,
         auth: window.encryptedUser,
         getUsers: function(userIds, callback) {
-          $.getJSON('/users?ids=' + userIds).then(function(response){
+          $.getJSON('/users?emails=' + userIds).then(function(response){
             var users;
             console.log(response);
             users = response.map(function(user) {

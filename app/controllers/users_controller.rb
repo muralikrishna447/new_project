@@ -12,8 +12,11 @@ class UsersController < ApplicationController
     if params[:ids]
       ids = params[:ids].split(',')
       @users = User.where(id: [ids])
-      render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
+    elsif params[:emails]
+      emails = params[:emails].split(',')
+      @users = User.where(email: [emails])
     end
+    render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
   end
 
   # For Bloom Dashboard
