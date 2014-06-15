@@ -2,6 +2,67 @@
 
 @import 'mixins'
 
+.cs-nav
+  display: block
+  background: white
+  position: fixed
+  width: 100%
+  z-index: 9999
+  border-bottom: 2px solid #ccc
+  border-top: 2px solid $orange
+  height: 6rem
+
+.cs-nav-logo
+  height: 100%
+  padding: 0.8rem
+  float: left
+  @include boxsizing
+  img
+    height: 100%
+
+.cs-nav-items
+  float: right
+  width: 430px
+  ul
+    margin: 0px
+    padding: 0px
+    li
+      list-style: none
+      display: inline
+      float: left
+      height: 6rem
+      padding: 0.8rem
+      line-height: 4.4rem
+      position: relative
+      @include boxsizing
+      a
+        display: block
+        text-transform: uppercase
+        color: #777
+        &:hover
+          color: $orange
+
+.cs-nav-dropdown-menu
+  position: absolute
+  left: 0px
+  top: 6rem
+  background: white
+  border: 2px solid #ccc
+  white-space: nowrap
+  ul
+    li
+      display: block
+      height: 4rem
+
+.cs-nav-collapsed
+  // display: none
+
+.cs-nav-notifs
+  width: 54px
+
+.cs-nav-profile
+  width: 75px
+
 /* Navbar */
 
 body.nav-popover-open

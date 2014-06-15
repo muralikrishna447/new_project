@@ -1,15 +1,64 @@
 - if ! @minimal
-  .navbar.navbar-fixed-top(ng-controller="NavbarController")
-    .navbar-inner
-      .container
-        .nav-collapse(ng-click="$root.showNav = !$root.showNav")
-          %h5 menu
-        = link_to root_url, class: 'brand' do
-          = image_tag "https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg", id: 'chefsteps-logo', width: "200"        
-        .nav-container(ng-if="!editMode")
-          = render 'layouts/navigation_contents', external: false
-        .nav-container-popover(ng-if="$root.showNav" ng-cloak)
-          = render 'layouts/navigation_contents', external: false
-        -if @include_edit_toolbar
-          #nav-edit-toolbar(collapse="!editMode")
-            = render 'activities/edit_toolbar'
+  / .navbar.navbar-fixed-top(ng-controller="NavbarController")
+  /   .navbar-inner
+  /     .container
+  /       .nav-collapse(ng-click="$root.showNav = !$root.showNav")
+  /         %h5 menu
+  /       = link_to root_url, class: 'brand' do
+  /         = image_tag "https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg", id: 'chefsteps-logo', width: "200"        
+  /       .nav-container(ng-if="!editMode")
+  /         = render 'layouts/navigation_contents', external: false
+  /       .nav-container-popover(ng-if="$root.showNav" ng-cloak)
+  /         = render 'layouts/navigation_contents', external: false
+  /       -if @include_edit_toolbar
+  /         #nav-edit-toolbar(collapse="!editMode")
+  /           = render 'activities/edit_toolbar'
+  .cs-nav
+    .cs-nav-logo
+      %img(src="https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg")
+    .cs-nav-items
+      %ul
+        %li
+          %a(href='#')
+            Recipes
+        %li.cs-nav-dropdown
+          %a(href='#')
+            Resources
+          .cs-nav-dropdown-menu.cs-nav-collapsed
+            %ul
+              %li
+                %a(href='#')
+                  Ingredients
+              %li
+                %a(href='#')
+                  Classes
+              %li
+                %a(href='#')
+                  Knife Collection
+              %li
+                %a(href='#')
+                  Sous Vide Collection
+        %li
+          %a(href='#')
+            Forum
+        %li
+          %a(href='#')
+            %i.fa.fa-search
+        %li.cs-nav-notifs
+          %csnotifs
+        %li.cs-nav-profile(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
+          - if external
+            -# Can't see current_user when external, so use a route that will
+            -# either go to their profile if logged in, or take them to sign in
+            = link_to user_profile_url('self') do
+              %span
+                Profile
+          - elsif current_user
+            = link_to user_profile_url(current_user) do
+              .profile-image
+                = image_tag filepicker_arbitrary_image(current_user.image_id, 75)
+
+          - else
+            %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+            = render "devise/sessions/new_angular"
+            = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
