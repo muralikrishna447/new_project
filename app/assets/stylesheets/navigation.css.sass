@@ -1,16 +1,23 @@
 /* Global Nav 08-May-2014 */
 
 @import 'mixins'
+=navpadding
+  height: 6rem
+  padding: 0.8rem
+  line-height: 4.4rem
 
 .cs-nav
   display: block
-  background: white
+  background: rgba(255,255,255,0.9)
   position: fixed
   width: 100%
   z-index: 9999
   border-bottom: 2px solid #ccc
   border-top: 2px solid $orange
   height: 6rem
+  ::selection
+    background: none
+    color: $orange
 
 .cs-nav-logo
   height: 100%
@@ -20,9 +27,8 @@
   img
     height: 100%
 
-.cs-nav-items
+.cs-nav-links
   float: right
-  width: 430px
   ul
     margin: 0px
     padding: 0px
@@ -30,11 +36,9 @@
       list-style: none
       display: inline
       float: left
-      height: 6rem
-      padding: 0.8rem
-      line-height: 4.4rem
       position: relative
       @include boxsizing
+      @include navpadding
       a
         display: block
         text-transform: uppercase
@@ -46,22 +50,30 @@
   position: absolute
   left: 0px
   top: 6rem
-  background: white
+  background: rgba(255,255,255,0.9)
   border: 2px solid #ccc
   white-space: nowrap
+  @include anim-slide-down(-20px)
   ul
     li
       display: block
       height: 4rem
 
-.cs-nav-collapsed
-  // display: none
+.cs-nav-search
+  float: right
+  @include navpadding
+  .cs-nav-search-toggle
+    display: inline-block
+  .cs-nav-search-input
+    display: inline-block
 
 .cs-nav-notifs
-  width: 54px
+  float: right
+  @include navpadding
 
 .cs-nav-profile
-  width: 75px
+  float: right
+  @include navpadding
 
 /* Navbar */
 

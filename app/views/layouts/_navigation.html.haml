@@ -13,52 +13,60 @@
   /       -if @include_edit_toolbar
   /         #nav-edit-toolbar(collapse="!editMode")
   /           = render 'activities/edit_toolbar'
-  .cs-nav
+  .cs-nav(ng-controller="NavbarController")
     .cs-nav-logo
-      %img(src="https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg")
-    .cs-nav-items
+      %a(href='/')
+        %img(src="https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg")
+
+    .cs-nav-profile(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
+      - if external
+        -# Can't see current_user when external, so use a route that will
+        -# either go to their profile if logged in, or take them to sign in
+        = link_to user_profile_url('self') do
+          %span
+            Profile
+      - elsif current_user
+        = link_to user_profile_url(current_user) do
+          .profile-image
+            = image_tag filepicker_arbitrary_image(current_user.image_id, 75)
+
+      - else
+        %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+        = render "devise/sessions/new_angular"
+        = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
+
+    .cs-nav-notifs
+      %csnotifs
+
+    .cs-nav-search
+      .cs-nav-search-toggle(ng-click="toggleSearch()")
+        %i.fa.fa-search
+      .cs-nav-search-input(ng-if="showSearch" ng-cloak)
+        %form
+          %input
+
+    .cs-nav-links(ng-if="! showSearch")
       %ul
         %li
-          %a(href='#')
+          %a(href='/gallery')
             Recipes
         %li.cs-nav-dropdown
-          %a(href='#')
+          %a(ng-click="showResources = !showResources")
             Resources
-          .cs-nav-dropdown-menu.cs-nav-collapsed
+          .cs-nav-dropdown-menu(ng-if="showResources" ng-cloak)
             %ul
               %li
-                %a(href='#')
+                %a(href='/ingredients')
                   Ingredients
               %li
-                %a(href='#')
+                %a(href='/courses')
                   Classes
               %li
-                %a(href='#')
+                %a(href='/knife-collection')
                   Knife Collection
               %li
-                %a(href='#')
+                %a(href='/sous-vide-collection')
                   Sous Vide Collection
         %li
-          %a(href='#')
+          %a(href='http://forum.chefsteps.com/discussions')
             Forum
-        %li
-          %a(href='#')
-            %i.fa.fa-search
-        %li.cs-nav-notifs
-          %csnotifs
-        %li.cs-nav-profile(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
-          - if external
-            -# Can't see current_user when external, so use a route that will
-            -# either go to their profile if logged in, or take them to sign in
-            = link_to user_profile_url('self') do
-              %span
-                Profile
-          - elsif current_user
-            = link_to user_profile_url(current_user) do
-              .profile-image
-                = image_tag filepicker_arbitrary_image(current_user.image_id, 75)
-
-          - else
-            %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
-            = render "devise/sessions/new_angular"
-            = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
