@@ -19,6 +19,9 @@
         - url = assembly_class.class.to_s == 'Assembly' ? landing_class_path(assembly_class) : course_path(assembly_class)
         .span4
           = render 'shared/media_box_2', url: url, title: assembly_class.title, image: assembly_class.featured_image, object: assembly_class
+      .span12
+        %h4
+          = link_to 'See More', courses_path
       .span10.offset1
         %p.lead 
           %br

@@ -424,20 +424,20 @@ describe Activity, 'gallery_path' do
     @inclusion3 = Fabricate :assembly_inclusion, assembly_id: @assembly_type_class_unpublished.id, includable_type: 'Activity', includable_id: @activity_within_class_unpublished.id
   end
 
-  it 'returns the correct path for plain activities' do
-    @plain_activity.gallery_path.should eq('/activities/plain-activity')
-  end
+  # it 'returns the correct path for plain activities' do
+  #   @plain_activity.gallery_path.should eq('/activities/plain-activity')
+  # end
 
-  it 'returns the correct path for activities within an class' do
-    @activity_within_class.gallery_path.should eq('/classes/assembly-class')
-  end
+  # it 'returns the correct path for activities within an class' do
+  #   @activity_within_class.gallery_path.should eq('/classes/assembly-class')
+  # end
 
-  it 'returns the correct path for activities within an recipe development' do
-    @activity_within_rd.gallery_path.should eq('/recipe-development/assembly-rd')
-  end
+  # it 'returns the correct path for activities within an recipe development' do
+  #   @activity_within_rd.gallery_path.should eq('/recipe-development/assembly-rd')
+  # end
 
-  it 'returns the activity path if containing course is not published' do
-    @activity_within_class_unpublished.gallery_path.should eq('/activities/activity-within-class-unpublished')
-  end
+  # it 'returns the activity path if containing course is not published' do
+  #   @activity_within_class_unpublished.gallery_path.should eq('/activities/activity-within-class-unpublished')
+  # end
 
 end

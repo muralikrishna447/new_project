@@ -1,4 +1,11 @@
 Delve::Application.routes.draw do
+  # Sets bloom forum to bloom.chefsteps.com/forum with angularJS html5mode
+  match '/forum', to: 'bloom#forum', constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
+  match '/forum/*path', to: 'bloom#forum', constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
+  match "/forum/*path" => redirect("/?goto=%{path}"), constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
+  match '/forum', to: 'bloom#forum'
+  match '/forum/*path', to: 'bloom#forum'
+  match "/forum/*path" => redirect("/?goto=%{path}")
   root to: "home#index"
 
   ActiveAdmin.routes(self)

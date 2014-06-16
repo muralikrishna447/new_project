@@ -1,0 +1,42 @@
+%html
+  %head
+    %title= "Chefsteps"
+    = csrf_meta_tags
+
+    %script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js")
+    %script(src="//community-staging.usebloom.com/export/loader.js")
+
+    - if current_user
+      :javascript
+        window.encryptedUser = "#{escape_javascript(current_user.encrypted_bloom_info)}";
+        window.chefstepsUserId = "#{current_user.id}"
+    - else
+      :javascript
+        window.chefstepsUserId = null
+
+
+  %body
+    .forum
+    :javascript
+      Bloom.configure({
+        env: 'staging',
+        apiKey: 'xchefsteps',
+        user: window.chefstepsUserId,
+        auth: window.encryptedUser,
+        getUsers: function(userIds, callback) {
+          $.getJSON('/users?emails=' + userIds).then(function(response){
+            var users;
+            console.log(response);
+            users = response.map(function(user) {
+              user._id = "" + user.id;
+              user.profileLink = "http://www.chefsteps.com/profiles/" + user.slug;
+              user.avatarUrl = user['avatar_url'];
+              return user;
+            });
+            return callback(users);
+          });
+        }
+      });
+      Bloom.installForum({
+        el: $('.forum')[0]
+      });

@@ -44,7 +44,9 @@
                     %div (#{pluralize(@assembly.comments.count, 'review')})
                   %h5 Class Includes:
                   %ul
-                    %li Unlimited Access
+                    - if @course.price
+                      %li
+                        Unlimited Access
                     %li= "#{@course.video_count} HD Videos"
                     / %li Three Fundamental Fillings Explained
                     = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
