@@ -28,7 +28,9 @@
     height: 100%
 
 .cs-nav-links
-  float: right
+  position: absolute
+  right: 145px
+  height: 6rem
   ul
     margin: 0px
     padding: 0px
@@ -46,6 +48,15 @@
         &:hover
           color: $orange
 
+.cs-nav-links.ng-hide-add, .cs-nav-links.ng-hide-remove
+  @include transition(100ms ease-in-out opacity)
+  /* remember to add this */
+  display: block!important
+  opacity: 1
+
+.cs-nav-links.ng-hide
+  opacity: 0
+
 .cs-nav-dropdown-menu
   position: absolute
   left: 0px
@@ -60,19 +71,36 @@
       height: 4rem
 
 .cs-nav-search
-  float: right
-  @include navpadding
+  position: absolute
+  right: 113px
+  width: 28px
+  height: 6rem
+  overflow: hidden
+  @include transition(100ms ease-in-out width)
   .cs-nav-search-toggle
     display: inline-block
+    @include boxsizing
+    @include navpadding
+    &:hover
+      color: $orange
+      cursor: pointer
   .cs-nav-search-input
     display: inline-block
+    @include boxsizing
+    @include navpadding
+
+.cs-nav-search.cs-nav-search-open
+  width: 300px
 
 .cs-nav-notifs
   float: right
+  margin-left: 28px
+  @include boxsizing
   @include navpadding
 
 .cs-nav-profile
   float: right
+  @include boxsizing
   @include navpadding
 
 /* Navbar */

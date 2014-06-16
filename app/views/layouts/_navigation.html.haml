@@ -38,14 +38,14 @@
     .cs-nav-notifs
       %csnotifs
 
-    .cs-nav-search
+    .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
       .cs-nav-search-toggle(ng-click="toggleSearch()")
         %i.fa.fa-search
       .cs-nav-search-input(ng-if="showSearch" ng-cloak)
-        %form
-          %input
+        %form(action="{{getSearchQuery()}}" method="get")
+          %input(placeholder="search" ng-model="navbarSearchQuery")
 
-    .cs-nav-links(ng-if="! showSearch")
+    .cs-nav-links(ng-hide="showSearch")
       %ul
         %li
           %a(href='/gallery')
