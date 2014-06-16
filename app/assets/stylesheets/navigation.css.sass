@@ -15,6 +15,7 @@
   border-bottom: 2px solid #ccc
   border-top: 2px solid $orange
   height: 6rem
+  left: 0px
   ::selection
     background: none
     color: $orange
@@ -88,6 +89,9 @@
     display: inline-block
     @include boxsizing
     @include navpadding
+    input
+      border: 2px solid #ccc
+      padding: 0.4rem
 
 .cs-nav-search.cs-nav-search-open
   width: 300px
