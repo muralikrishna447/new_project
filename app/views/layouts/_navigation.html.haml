@@ -28,7 +28,7 @@
       - elsif current_user
         = link_to user_profile_url(current_user) do
           .profile-image
-            = image_tag filepicker_arbitrary_image(current_user.image_id, 75)
+            = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
 
       - else
         %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
