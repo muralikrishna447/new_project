@@ -17,11 +17,17 @@
     %style
       :sass
         $orange: #e25f25
+
         =boxsizing
           box-sizing: border-box
           -moz-box-sizing: border-box
           -webkit-box-sizing: border-box
           -o-box-sizing: border-box
+
+        =navpadding
+          height: 6rem
+          padding: 0.8rem
+          line-height: 4.4rem
 
         html
           font-size: 62.5%
@@ -66,12 +72,25 @@
           img
             height: 100%
 
+        .cs-nav-profile
+          position: absolute
+          top: 0px
+          right: 0px
+          @include boxsizing
+          @include navpadding
   %body
     .cs-nav
       .cs-nav-logo
         %a(href='/')
           %img(src="https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg")
       %h3 Welcome to the ChefSteps Forum
+      .cs-nav-profile
+        - if current_user
+          = link_to user_profile_url(current_user) do
+            %span
+              = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
+        - else
+          sign in
     .forum
     :javascript
       Bloom.configure({
