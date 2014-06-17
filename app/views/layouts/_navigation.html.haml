@@ -18,6 +18,34 @@
       %a(href='/')
         %img(src="https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg")
 
+    .cs-nav-links(ng-hide="showSearch")
+      .cs-nav-links-toggle(ng-click="toggleMenu()")
+        Menu
+      %ul.cs-nav-links-list(ng-class="{'cs-nav-menu-open': showMenu}")
+        %li
+          %a(href='/gallery')
+            Recipes
+        %li.cs-nav-dropdown
+          %a(ng-click="showResources = !showResources")
+            Resources
+          .cs-nav-dropdown-menu(ng-if="showResources" ng-cloak)
+            %ul
+              %li
+                %a(href='/ingredients')
+                  Ingredients
+              %li
+                %a(href='/courses')
+                  Classes
+              %li
+                %a(href='/knife-collection')
+                  Knife Collection
+              %li
+                %a(href='/sous-vide-collection')
+                  Sous Vide Collection
+        %li
+          %a(href='http://forum.chefsteps.com/discussions')
+            Forum
+
     .cs-nav-profile(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
       - if external
         -# Can't see current_user when external, so use a route that will
@@ -44,29 +72,3 @@
       .cs-nav-search-input(ng-if="showSearch" ng-cloak)
         %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
           %input(placeholder="search" ng-model="navbarSearchQuery")
-
-    .cs-nav-links(ng-hide="showSearch")
-      %ul
-        %li
-          %a(href='/gallery')
-            Recipes
-        %li.cs-nav-dropdown
-          %a(ng-click="showResources = !showResources")
-            Resources
-          .cs-nav-dropdown-menu(ng-if="showResources" ng-cloak)
-            %ul
-              %li
-                %a(href='/ingredients')
-                  Ingredients
-              %li
-                %a(href='/courses')
-                  Classes
-              %li
-                %a(href='/knife-collection')
-                  Knife Collection
-              %li
-                %a(href='/sous-vide-collection')
-                  Sous Vide Collection
-        %li
-          %a(href='http://forum.chefsteps.com/discussions')
-            Forum

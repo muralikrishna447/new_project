@@ -30,15 +30,14 @@
 
 .cs-nav-links
   position: absolute
-  right: 145px
+  width: 100%
   height: 6rem
   ul
     margin: 0px
     padding: 0px
     li
       list-style: none
-      display: inline
-      float: left
+      display: inline-block
       position: relative
       @include boxsizing
       @include navpadding
@@ -48,6 +47,21 @@
         color: #777
         &:hover
           color: $orange
+
+.cs-nav-links-toggle
+  position: absolute
+  right: 145px
+  @include boxsizing
+  @include navpadding
+  text-transform: uppercase
+  color: #777
+  &:hover
+    color: $orange
+    cursor: pointer
+
+.cs-nav-links-list
+  position: absolute
+  right: 145px
 
 .cs-nav-links.ng-hide-add, .cs-nav-links.ng-hide-remove
   @include transition(100ms ease-in-out opacity)
@@ -113,6 +127,40 @@
   &:hover
     color: $orange
 
+@media(min-width: 768px)
+  .cs-nav-links-toggle
+    display: none
+
+@media(max-width: 767px)
+  .cs-nav-links
+    ul.cs-nav-links-list
+      background: white
+      position: fixed
+      right: 0px
+      top: 61px
+      width: 190px
+      border: 2px solid #ccc
+      padding: 0.8rem
+      li
+        width: 100%
+        line-height: 2.4rem
+        height: 2.4rem
+        ul
+          li
+            a
+              text-transform: none
+      li.cs-nav-dropdown
+        .cs-nav-dropdown-menu
+          position: relative
+          border: 0px
+          top: 0px
+  .cs-nav-links-toggle
+    display: inline-block
+  .cs-nav-links-list
+    display: none
+  .cs-nav-links-list.cs-nav-menu-open
+    display: block
+  
 /* Navbar */
 
 body.nav-popover-open
