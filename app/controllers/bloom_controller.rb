@@ -4,9 +4,10 @@ class BloomController < ApplicationController
   end
 
   def forum
-    puts 'THIS IS THE CURRENT USER: '
-    puts current_user
-    puts '*******'
-    render layout: false
+    if current_user
+      render layout: false
+    else
+      redirect_to(sign_in_path, notice: "You must be signed in to view the Forum")
+    end
   end
 end
