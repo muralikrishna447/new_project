@@ -109,6 +109,17 @@
           width: 400px
           background: white
           @include boxsizing
+          #message-close
+            position: absolute
+            top: 5px
+            right: 10px
+            font-weight: bold
+            &:hover
+              color: $orange
+              cursor: pointer
+        .message.message-closed
+          display: none
+
   %body
     .cs-nav
       .cs-nav-logo
@@ -124,6 +135,8 @@
           sign in
     .forum
     .message#message
+      #message-close
+        x
       %strong Welcome to the ChefSteps Forum Beta!
       %div
         We appreciate the time you've taken to be part of creating a better forum experience.  Feel free to explore, create new discussions, upload photos, and comment on other discussions.  You can report bugs in the Bug Reports category, but if all else fails, you can always email us 
@@ -131,7 +144,9 @@
           here.
     :javascript
       $(document).ready(function() {
-        $('#message').delay(10000).fadeOut(2000);
+        $('#message-close').click(function(){
+          $('#message').addClass('message-closed');
+        });
       });
       Bloom.installForum({
         el: $('.forum')[0]
