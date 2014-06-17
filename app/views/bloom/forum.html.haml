@@ -52,108 +52,162 @@
 
         html
           font-size: 62.5%
+          box-sizing: border-box
           @include boxsizing
 
         body
           margin: 0px
-          font-family: "Helvetica Neue",Helvetica,Arial,sans-serif
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
           font-size: 14px
-          line-height: 1.42857143
-          color: #333
-          background-color: #fff
+          line-height: 1.42857
+          color: #333333  
+          background-color: white
+
+        .forum
+          position: absolute
+          top: 50px
+          left: 0px
+          right: 0px
+          bottom: 0px
 
         .cs-nav
-          position: relative
           text-align: center
           display: block
-          background: rgba(255,255,255,0.9)
+          background: rgba(255, 255, 255, 0.9)
           width: 100%
           z-index: 9999
           border-bottom: 2px solid #ccc
           border-top: 2px solid $orange
-          height: 6rem
-          left: 0px
-          ::selection
-            background: none
-            color: $orange
+          @include boxsizing
 
-          h3
-            margin-top: 15px
-            margin-bottom: 15px
-            font-size: 24px
-            font-weight: 500
-            line-height: 1.1
+          position: fixed
+          top: 0
+          left: 0
+          height: 50px
+
+        .cs-nav::selection
+          background: none
+          color: #e25f25  
+
+        .cs-nav h3
+          margin-top: 15px
+          margin-bottom: 15px
+          font-size: 24px
+          font-weight: 500
+          line-height: 1.1
 
         .cs-nav-logo
           position: absolute
           height: 100%
           padding: 0.8rem
           float: left
+          box-sizing: border-box
           @include boxsizing
-          img
-            height: 100%
 
-        .cs-forum-notifs
-          position: absolute
-          top: 0px
-          right: 60px
-          padding: 18px 0px
-          @include boxsizing
+        .cs-nav-logo img
+          height: 100%
 
         .cs-nav-profile
-          position: absolute
-          top: 0px
-          right: 0px
+          float: right
           @include boxsizing
-          @include navpadding
+          line-height: 30px
+          padding: 8px 8px 0 0
+          @include boxsizing
 
-        .message
+        .cs-nav-profile a
+          display: block
+
+        .cs-nav-profile img
+          width: 30px
+          height: 30px
+          border-radius: 100%
+          -webkit-border-radius: 100%
+
+        .cs-forum-notifs
+          float: right
+          padding: 13px 8px 0 0
+          @include boxsizing
+
+        #message-container
           position: fixed
           bottom: 10px
           right: 10px
+
+        #message
           padding: 15px
-          border: 2px solid $orange
+          border: 2px solid #e25f25  
           width: 400px
           background: white
+          box-sizing: border-box
           @include boxsizing
-          #message-close
-            position: absolute
-            top: 5px
-            right: 10px
-            font-weight: bold
-            &:hover
-              color: $orange
-              cursor: pointer
-        .message.message-closed
+
+        #message.message-closed
           display: none
+
+        #message-open-button.message-closed
+          display: block
+
+        #message-open-button
+          display: none
+          position: absolute
+          bottom: 10px
+          right: 10px
+          &:hover
+            color: $orange
+            cursor: pointer
+
+        #message-close-button
+          position: absolute
+          top: 10px
+          right: 10px
+          &:hover
+            color: $orange
+            cursor: pointer
 
   %body
     .cs-nav
       .cs-nav-logo
         %a(href='/')
           %img(src="https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg")
-      %h3 ChefSteps Forum
-      .cs-forum-notifs
       .cs-nav-profile
         - if current_user
           = link_to user_profile_url(current_user) do
-            %span
-              = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
+            = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
         - else
           sign in
+      .cs-forum-notifs
     .forum
-    .message#message
-      #message-close
-        x
-      %strong Welcome to the ChefSteps Forum Beta!
-      %div
-        We appreciate the time you've taken to be part of creating a better forum experience.  Feel free to explore, create new discussions, upload photos, and comment on other discussions.  You can report bugs in the Bug Reports category, but if all else fails, you can always email us 
-        %a(href="mailto:info@chefsteps.com?Subject=Forun%20Bug%20Report" target="_blank")
-          here.
+    #message-container
+      #message-open-button
+        %i.fa.fa-question.fa-lg
+      #message
+        #message-close-button
+          %i.fa.fa-times
+        %strong Welcome to the ChefSteps Forum Beta!
+        %div
+          We appreciate the time you've taken to be part of creating a better forum experience.  Feel free to explore, create new discussions, upload photos, and comment on other discussions.  You can report bugs in the Bug Reports category, but if all else fails, you can always email us 
+          %a(href="mailto:info@chefsteps.com?Subject=Forun%20Bug%20Report" target="_blank")
+            here.
     :javascript
       $(document).ready(function() {
-        $('#message-close').click(function(){
+        if (localStorage.message == "closed") {
           $('#message').addClass('message-closed');
+          $('#message-open-button').addClass('message-closed');
+        } else {
+          $('#message').removeClass('message-closed');
+          $('#message-open-button').removeClass('message-closed');
+        }
+
+        $('#message-close-button').click(function(){
+          $('#message').addClass('message-closed');
+          $('#message-open-button').addClass('message-closed');
+          localStorage.setItem("message", "closed");
+        });
+
+        $('#message-open-button').click(function(){
+          $('#message').removeClass('message-closed');
+          $('#message-open-button').removeClass('message-closed');
+          localStorage.setItem("message", "opened");
         });
       });
       Bloom.installForum({
