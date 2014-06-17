@@ -14,8 +14,64 @@
       :javascript
         window.chefstepsUserId = null
 
+    %style
+      :sass
+        $orange: #e25f25
+        =boxsizing
+          box-sizing: border-box
+          -moz-box-sizing: border-box
+          -webkit-box-sizing: border-box
+          -o-box-sizing: border-box
+
+        html
+          font-size: 62.5%
+          @include boxsizing
+
+        body
+          margin: 0px
+          font-family: "Helvetica Neue",Helvetica,Arial,sans-serif
+          font-size: 14px
+          line-height: 1.42857143
+          color: #333
+          background-color: #fff
+
+        .cs-nav
+          position: relative
+          text-align: center
+          display: block
+          background: rgba(255,255,255,0.9)
+          width: 100%
+          z-index: 9999
+          border-bottom: 2px solid #ccc
+          border-top: 2px solid $orange
+          height: 6rem
+          left: 0px
+          ::selection
+            background: none
+            color: $orange
+
+          h3
+            margin-top: 15px
+            margin-bottom: 15px
+            font-size: 24px
+            font-weight: 500
+            line-height: 1.1
+
+        .cs-nav-logo
+          position: absolute
+          height: 100%
+          padding: 0.8rem
+          float: left
+          @include boxsizing
+          img
+            height: 100%
 
   %body
+    .cs-nav
+      .cs-nav-logo
+        %a(href='/')
+          %img(src="https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg")
+      %h3 Welcome to the ChefSteps Forum
     .forum
     :javascript
       Bloom.configure({
