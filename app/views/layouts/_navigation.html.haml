@@ -55,7 +55,8 @@
             .cs-nav-search-input(ng-if="showSearch" ng-cloak)
               %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
                 %input(placeholder="search" ng-model="navbarSearchQuery")
-                %icon.fa.fa-times(ng-click="toggleSearch()")
+            .cs-nav-search-toggle
+              %icon.fa.fa-times(ng-click="toggleSearch()")
 
         .cs-nav-profile-container(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
           - if current_user

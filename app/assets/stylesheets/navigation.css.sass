@@ -99,21 +99,27 @@
   overflow: hidden
   @include transition(100ms ease-in-out width)
   .cs-nav-search-toggle
-    // display: inline-block
-    // @include boxsizing
-    // @include navpadding
+    float: left
+    @include boxsizing
     &:hover
       color: $orange
       cursor: pointer
   .cs-nav-search-input
+    float: left
+    width: 200px
+    height: 100%
+    margin: 0px 5px
     // position: absolute
     // top: 0px
     // right: 0px
     // @include boxsizing
     // @include navpadding
     input
+      width: 100%
       border: 2px solid #ccc
       padding: 0.4rem
+      @include boxsizing
+
 
 .cs-nav-profile-container
   float: left
