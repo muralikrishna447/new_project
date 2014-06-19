@@ -2,9 +2,9 @@
 
 @import 'mixins'
 =navpadding
-  height: 6rem
+  height: 5rem
   padding: 0.8rem
-  line-height: 4.4rem
+  line-height: 3.8rem
 
 .cs-nav
   display: block
@@ -12,9 +12,9 @@
   position: fixed
   width: 100%
   z-index: 9999
-  border-bottom: 2px solid #ccc
+  border-bottom: 1px solid #ccc
   border-top: 2px solid $orange
-  height: 6rem
+  height: 5rem
   left: 0px
   ::selection
     background: none
@@ -30,8 +30,8 @@
 
 .cs-nav-items
   position: absolute
-  width: 100%
-  height: 6rem
+  right: 90px
+  height: 5rem
   ul
     margin: 0px
     padding: 0px
@@ -79,9 +79,9 @@
 .cs-nav-dropdown-menu
   position: absolute
   left: 0px
-  top: 6rem
+  top: 5rem
   background: rgba(255,255,255,0.9)
-  border: 2px solid #ccc
+  border: 1px solid #ccc
   white-space: nowrap
   @include anim-slide-down(-20px)
   ul
@@ -90,15 +90,12 @@
       height: 4rem
 
 .cs-nav-search
-  // position: absolute
-  // right: 0px
-  // top: 0px
   float: left
   width: 28px
-  height: 6rem
+  height: 5rem
   overflow: hidden
   @include transition(100ms ease-in-out width)
-  .cs-nav-search-toggle
+  .cs-nav-search-toggle, .cs-nav-search-close
     float: left
     @include boxsizing
     &:hover
@@ -109,38 +106,33 @@
     width: 200px
     height: 100%
     margin: 0px 5px
-    // position: absolute
-    // top: 0px
-    // right: 0px
-    // @include boxsizing
-    // @include navpadding
     input
       width: 100%
-      border: 2px solid #ccc
+      border: 1px solid #ccc
       padding: 0.4rem
       @include boxsizing
 
 
 .cs-nav-profile-container
-  float: left
-  display: inline-block
-  // float: right
-  // @include boxsizing
-  // @include navpadding
+  float: right
+  display: block
+
+.cs-nav-notifs
+  float: right
+  padding: 5px 0px
+  @include boxsizing
+
+.cs-nav-profile
+  float: right
+  width: 5rem
+  @include boxsizing
+  @include navpadding
+  .profile-image
+    img
+      float: left
 
 .cs-nav-search.cs-nav-search-open
   width: 260px
-
-.cs-nav-notifs
-  // float: right
-  // margin-left: 28px
-  // @include boxsizing
-  // @include navpadding
-
-.cs-nav-profile
-  // float: right
-  // @include boxsizing
-  // @include navpadding
 
 #nav-sign-in-button
   text-transform: uppercase
@@ -153,34 +145,51 @@
     display: none
 
 @media(max-width: 767px)
-  .cs-nav-items
-    ul.cs-nav-links-container
-      background: white
-      position: fixed
-      right: 0px
-      top: 61px
-      width: 190px
-      border: 2px solid #ccc
-      padding: 0.8rem
-      li
-        width: 100%
-        line-height: 2.4rem
-        height: 2.4rem
-        ul
-          li
-            a
-              text-transform: none
-      li.cs-nav-dropdown
-        .cs-nav-dropdown-menu
-          position: relative
-          border: 0px
-          top: 0px
   .cs-nav-items-toggle
     display: inline-block
   .cs-nav-links-container
     display: none
   .cs-nav-links-container.cs-nav-menu-open
     display: block
+
+  .cs-nav-items
+    ul.cs-nav-links-container
+      background: white
+      position: fixed
+      right: 0px
+      top: 53px
+      width: 210px
+      border-left: 1px solid #ccc
+      border-bottom: 1px solid #ccc
+      padding: 1rem
+      @include boxsizing
+      li
+        width: 100%
+        line-height: 3rem
+        height: 3rem
+        padding: 0px
+        ul
+          li
+            a
+              text-transform: upercase
+      li.cs-nav-dropdown
+        display: block
+        height: inherit
+        .csn-nav-resources-toggle
+          display: none
+        .cs-nav-dropdown-menu
+          display: block !important
+          position: relative
+          border: 0px
+          top: 0px
+  .cs-nav-search
+    width: 100%
+    height: 4rem
+    .cs-nav-search-input
+      display: block !important
+      width: 165px
+    .cs-nav-search-close
+      display: none
   
 /* Navbar */
 

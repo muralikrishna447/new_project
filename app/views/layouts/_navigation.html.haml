@@ -27,10 +27,10 @@
             %a(href='/gallery')
               Recipes
           %li.cs-nav-dropdown
-            %a(ng-click="showResources = !showResources")
+            %a.csn-nav-resources-toggle(ng-click="showResources = !showResources")
               Resources
               %i.fa.fa-caret-down
-            .cs-nav-dropdown-menu(ng-if="showResources" ng-cloak)
+            .cs-nav-dropdown-menu(ng-show="showResources" ng-cloak)
               %ul
                 %li
                   %a(href='/ingredients')
@@ -52,26 +52,24 @@
           %li
             .cs-nav-search-toggle(ng-click="toggleSearch()")
               %i.fa.fa-search
-            .cs-nav-search-input(ng-if="showSearch" ng-cloak)
+            .cs-nav-search-input(ng-show="showSearch" ng-cloak)
               %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
                 %input(placeholder="search" ng-model="navbarSearchQuery")
-            .cs-nav-search-toggle
+            .cs-nav-search-close
               %icon.fa.fa-times(ng-click="toggleSearch()")
 
-        .cs-nav-profile-container(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
-          - if current_user
-            %li
-              .cs-nav-notifs
-                %csnotifs
-            %li
-              .cs-nav-profile
-                = link_to user_profile_url(current_user) do
-                  .profile-image
-                    = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
-          - else
-            %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
-            = render "devise/sessions/new_angular"
-            = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
+    .cs-nav-profile-container(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
+      - if current_user
+        .cs-nav-profile
+          = link_to user_profile_url(current_user) do
+            .profile-image
+              = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
+        .cs-nav-notifs
+          %csnotifs
+      - else
+        %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+        = render "devise/sessions/new_angular"
+        = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
 
     / .cs-nav-profile-container(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
     /   - if current_user
