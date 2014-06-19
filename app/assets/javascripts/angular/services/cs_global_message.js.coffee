@@ -1,11 +1,9 @@
-angular.module('ChefStepsApp').service 'csGlobalMessage', ['$http', ($http) ->
-  settings = {}
-  this.getSettings = ->
-    $http.get('/settings').then (response) ->
-      settings = response.data
-    return settings
+@app.factory 'SiteSettings', ['$http', ($http) ->
 
-  this.getSettings()
+  this.getSettings = ->
+    $http.get("/settings").then (response) ->
+      response.data
 
   this
+
 ]

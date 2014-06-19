@@ -18,8 +18,6 @@
       $scope.$apply()
   ]
   link: (scope, element, attrs) ->
-    console.log element.find('iframe')
-    # element.find('iframe').remove()
 
     showComments = false
 
