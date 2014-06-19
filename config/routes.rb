@@ -259,6 +259,8 @@ Delve::Application.routes.draw do
     end
   end
 
+  resources :settings, only: [:index]
+
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"
     get "end_clean" => "application#end_clean"
