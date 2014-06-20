@@ -19,33 +19,30 @@
   ]
   link: (scope, element, attrs) ->
 
-    showComments = false
-
-    if showComments
-      scope.$watch 'commentsId', (newValue, oldValue) ->
-        if newValue
-          if scope.seoBot == 'true'
-            scope.renderSeoComments()
-          else
-            identifier = scope.commentsType + '_' + scope.commentsId
-            # Hack so that it doesn't install multiple iframes
-            iframe = element[0].getElementsByTagName('iframe')
-            if iframe.length > 0
-              console.log "HERE IS THE ELEMENT"
-              console.log element[0]
-              angular.forEach iframe, (frame) ->
-                frame.remove()
-            Bloom.installComments {
-              el: element[0]
-              id: identifier
-              on:
-                login: ->
-                  scope.openLogin()
-            }
+    scope.$watch 'commentsId', (newValue, oldValue) ->
+      if newValue
+        if scope.seoBot == 'true'
+          scope.renderSeoComments()
+        else
+          identifier = scope.commentsType + '_' + scope.commentsId
+          # Hack so that it doesn't install multiple iframes
+          iframe = element[0].getElementsByTagName('iframe')
+          if iframe.length > 0
+            console.log "HERE IS THE ELEMENT"
+            console.log element[0]
+            angular.forEach iframe, (frame) ->
+              frame.remove()
+          Bloom.installComments {
+            el: element[0]
+            id: identifier
+            on:
+              login: ->
+                scope.openLogin()
+          }
     $rootScope.$on 'reloadComments', (event) ->
       window.location.reload()
 
-  template: "<div>{{seoComments}}</div><div style='border: 1px solid #e25f25; background: white; padding: 15px;' ng-if='!showComments'>Our comment provider is currently down.  Please hold those thoughts and share them when comments become available again. Thank you for your patience!</div>"
+  template: "<div>{{seoComments}}</div>"
 ]
 
 @app.directive 'csnotifs', [ ->
