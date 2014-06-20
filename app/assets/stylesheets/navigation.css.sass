@@ -2,9 +2,9 @@
 
 @import 'mixins'
 =navpadding
-  height: 5rem
+  height: 6rem
   padding: 0.8rem
-  line-height: 3.8rem
+  line-height: 4.4rem
 
 .cs-nav
   display: block
@@ -13,8 +13,7 @@
   width: 100%
   z-index: 9999
   border-bottom: 1px solid #ccc
-  border-top: 2px solid $orange
-  height: 5rem
+  height: 6rem
   left: 0px
   -webkit-transform: translate3d(0,0,0)
   ::selection
@@ -23,16 +22,21 @@
 
 .cs-nav-logo
   height: 100%
-  padding: 0.8rem
+  padding: 0.4rem
   float: left
   @include boxsizing
-  img
-    height: 100%
+  .logo-box
+    .regular-logo
+      height: 52px
+    .loading-logo
+      display: none
+    .loading-no-logo
+      display: none
 
 .cs-nav-items
   position: absolute
-  right: 90px
-  height: 5rem
+  right: 80px
+  height: 6rem
   ul
     margin: 0px
     padding: 0px
@@ -45,7 +49,7 @@
       a
         display: block
         text-transform: uppercase
-        color: #777
+        color: #333
         &:hover
           color: $orange
 
@@ -54,7 +58,7 @@
   @include boxsizing
   @include navpadding
   text-transform: uppercase
-  color: #777
+  color: #333
   &:hover
     color: $orange
     cursor: pointer
@@ -80,7 +84,7 @@
 .cs-nav-dropdown-menu
   position: absolute
   left: 0px
-  top: 5rem
+  top: 6rem
   background: rgba(255,255,255,0.9)
   border: 1px solid #ccc
   white-space: nowrap
@@ -93,7 +97,7 @@
 .cs-nav-search
   float: left
   width: 28px
-  height: 5rem
+  height: 6rem
   overflow: hidden
   @include transition(100ms ease-in-out width)
   .cs-nav-search-toggle, .cs-nav-search-close
@@ -107,6 +111,8 @@
     width: 200px
     height: 100%
     margin: 0px 5px
+    padding: 0.8rem
+    @include boxsizing
     form
       height: 100%
       margin: 0px
@@ -125,14 +131,16 @@
 
 .cs-nav-notifs
   float: right
-  padding: 5px 0px
+  height: 6rem
+  padding: 8px 0px
   @include boxsizing
 
 .cs-nav-profile
   float: right
-  width: 5rem
+  width: 4rem
+  height: 6rem
+  padding: 1.5rem 0.5rem
   @include boxsizing
-  @include navpadding
   .profile-image
     img
       float: left
@@ -142,7 +150,11 @@
 
 #nav-sign-in-button
   text-transform: uppercase
-  color: #777
+  color: #333
+  height: 6rem
+  line-height: 6rem
+  padding: 1rem
+  @include boxsizing
   &:hover
     color: $orange
 
@@ -165,12 +177,18 @@
   .cs-nav-links-container.cs-nav-menu-open
     display: block
 
+  .cs-nav-logo
+    padding: 0.8rem
+    .logo-box
+      .regular-logo
+        height: 43px
+
   .cs-nav-items
     ul.cs-nav-links-container
       background: white
       position: fixed
       right: 0px
-      top: 53px
+      top: 61px
       width: 210px
       border-left: 1px solid #ccc
       border-bottom: 1px solid #ccc
@@ -196,6 +214,8 @@
   .cs-nav-search
     width: 100%
     height: 4rem
+    padding: 0.8rem 0px
+    @include boxsizing
     .cs-nav-search-input
       display: block !important
       width: 165px

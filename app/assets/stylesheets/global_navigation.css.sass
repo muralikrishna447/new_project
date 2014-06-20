@@ -1,178 +1,203 @@
-//@import bootstrap_config
-//@import twitter/bootstrap-no-sprites
-//@import font-awesome
-//@import twitter/bootstrap/responsive
-//@import application/fonts
-//@import application/sprites
-//@import application/custom_mixins
+@import 'mixins'
+=navpadding
+  height: 5rem
+  padding: 0.8rem
+  line-height: 3.8rem
 
-//@import application/base
-//@import application/header
-//@import application/media_queries
+.cs-nav
+  display: block
+  background: rgba(255,255,255,0.9)
+  position: fixed
+  width: 100%
+  z-index: 9999
+  border-bottom: 1px solid #ccc
+  border-top: 2px solid $orange
+  height: 5rem
+  left: 0px
+  -webkit-transform: translate3d(0,0,0)
+  ::selection
+    background: none
+    color: $orange
 
-
-//@font-face
-//  font-family: "FontAwesome"
-//  src: url("http://www.chefsteps.com/assets/fontawesome-webfont.eot")
-//  src: url("http://www.chefsteps.com/assets/fontawesome-webfont.eot?#iefix") format("eot"), url("http://www.chefsteps.com/assets/fontawesome-webfont.woff") format("woff"), url("http://www.chefsteps.com/assets/fontawesome-webfont.ttf") format("truetype"), url("http://www.chefsteps.com/assets/fontawesome-webfont.svgz#FontAwesomeRegular") format("svg"), url("http://www.chefsteps.com/assets/fontawesome-webfont.svg#FontAwesomeRegular") format("svg")
-//  font-style: normal
-//  font-weight: normal
-
-//.container
-//  margin-left: 24px
-
-
-// Mixins
-// TODO: the shared stuff oughta be refactored so these aren't duplicated here and in _mixins.css.sass
-=boxsizing
-  box-sizing: border-box
-  -moz-box-sizing: border-box
-  -webkit-box-sizing: border-box
-  -o-box-sizing: border-box
-
-=shadow
-  box-shadow: 0px 0px 5px #888888
-  -moz-box-shadow: 0px 0px 5px #888888
-  -webkit-box-shadow: 0px 0px 5px #888888
-  -o-box-shadow: 0px 0px 5px #888888
-
-=dark-shadow
-  box-shadow: 0px 0px 5px black
-  -moz-box-box-shadow: 0px 0px 5px black
-  -webkit-box-shadow: 0px 0px 5px black
-  -o-box-shadow: 0px 0px 5px black
-
-=radius($value)
-  border-radius: $value
-  -moz-border-radius: $value
-  -webkit-border-radius: $value
-  -o-box-border-radius: $value
-
-=transition($value)
-  transition: $value
-  -moz-transition: $value
-  -webkit-transition: $value
-  -o-transition: $value
-
-=primary-font
-  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
-  font-weight: 400
-  font-style: normal
-
-/* Colors */
-$orange: #DB7354
-$dark-orange: #D25029
-$darker-orange: #B84724
-$blue: #006DCC
-$blue-opaque: rgba(0,109,204,.8)
-$red: #DA4f49
-$red-opaque: rgba(218,79,73,.8)
-$light-gray: #ccc
-$offwhite: #F2F2F2
-
-.navbar-fixed-top
-  .navbar-inner
-    box-shadow: none
-    background-image: none
-    background-color: $offwhite
-    border-color: $dark-orange
-    border: none
-    border-top: 2px solid $dark-orange
-    @include shadow
-  .brand
-    text-shadow: none
-    color: black
-    padding: 4px 20px
-  .nav
-    .nav-item-border
-      width: 1px
-      height: 52px
-      float: left
-      background: -moz-linear-gradient(top, rgba(204,204,204,1) 0%, rgba(235,235,235,1) 60%, rgba(255,255,255,0) 100%)
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(204,204,204,1)), color-stop(60%,rgba(235,235,235,1)), color-stop(100%,rgba(255,255,255,0)))
-      background: -webkit-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: -o-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: -ms-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: linear-gradient(to bottom, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#00ffffff',GradientType=0 )
-  .nav > li > a
-    text-shadow: none
-    color: black
-    line-height: 34px
-    font-size: 16px
-    font-weight: 200
-    &:hover
-      background: $orange
-      color: white
-  .navbar-form
-    margin: 12px 10px 12px
-    input
-      margin: 0px
-  .btn-navbar
-    background-color: $orange
-    border-color: $dark-orange
-    .icon-bar
-      background-color: white
-    &:hover
-      background-image: none
-      background-color: $dark-orange
-  .nav-search
-    height: 54px
-    @include transition(background 300ms)
-    &:hover
-      background: $orange
-      cursor: pointer
-      #nav-search-toggle
-        color: white
-        text-decoration: none
-    #nav-search-toggle
-      margin: 21px 10px 22px
-      color: black
-      float: left
-    .nav-search-form
-      float: left
-      width: 0px
-      padding: 0px
-      margin-right: 0px
-      margin-left: 0px
-      overflow: hidden
-      display: none
-    .nav-search-show
-      width: 220px
-      display: block
-
-    
-#chefsteps-logo
-  height: 46px
-
-.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle
-  background: $dark_orange
-  color: white
-  @include transition(background .25s)
-
-.navbar .nav > li > .dropdown-menu
-  // min-width: 400px
-  background: none
-  border-radius: 0px
-  margin: 0px
-  li
-    a
-      color: white
-      padding: 3px 10px
-      &:hover
-        background: $dark_orange
-  &:after
-    content: normal
-  &:before
-    content: normal
-  .dropdown-background
-    background: black
-    position: absolute
-    width: 100%
+.cs-nav-logo
+  height: 100%
+  padding: 0.8rem
+  float: left
+  @include boxsizing
+  img
     height: 100%
-    top: 0px
-    z-index: -1
-    opacity: .1
 
-h1, h2, h3, h4
-  @include primary-font
+.cs-nav-items
+  position: absolute
+  right: 90px
+  height: 5rem
+  ul
+    margin: 0px
+    padding: 0px
+    li
+      list-style: none
+      display: inline-block
+      position: relative
+      @include boxsizing
+      @include navpadding
+      a
+        display: block
+        text-transform: uppercase
+        color: #777
+        &:hover
+          color: $orange
+
+.cs-nav-items-toggle
+  float: right
+  @include boxsizing
+  @include navpadding
+  text-transform: uppercase
+  color: #777
+  &:hover
+    color: $orange
+    cursor: pointer
+
+.cs-nav-links-container
+  float: right
+  // position: absolute
+  // right: 145px
+
+.cs-nav-links
+  display: inline-block
+  float: left
+
+.cs-nav-items.ng-hide-add, .cs-nav-items.ng-hide-remove
+  @include transition(100ms ease-in-out opacity)
+  /* remember to add this */
+  display: block!important
+  opacity: 1
+
+.cs-nav-items.ng-hide
+  opacity: 0
+
+.cs-nav-dropdown-menu
+  position: absolute
+  left: 0px
+  top: 5rem
+  background: rgba(255,255,255,0.9)
+  border: 1px solid #ccc
+  white-space: nowrap
+  @include anim-slide-down(-20px)
+  ul
+    li
+      display: block
+      height: 4rem
+
+.cs-nav-search
+  float: left
+  width: 28px
+  height: 5rem
+  overflow: hidden
+  @include transition(100ms ease-in-out width)
+  .cs-nav-search-toggle, .cs-nav-search-close
+    float: left
+    @include boxsizing
+    &:hover
+      color: $orange
+      cursor: pointer
+  .cs-nav-search-input
+    float: left
+    width: 200px
+    height: 100%
+    margin: 0px 5px
+    form
+      height: 100%
+      margin: 0px
+      input
+        float: left
+        height: 100%
+        width: 100%
+        border: 1px solid #ccc
+        padding: 0.4rem
+        @include boxsizing
+
+
+.cs-nav-profile-container
+  float: right
+  display: block
+
+.cs-nav-notifs
+  float: right
+  padding: 5px 0px
+  @include boxsizing
+
+.cs-nav-profile
+  float: right
+  width: 5rem
+  @include boxsizing
+  @include navpadding
+  .profile-image
+    img
+      float: left
+
+.cs-nav-search.cs-nav-search-open
+  width: 260px
+
+#nav-sign-in-button
+  text-transform: uppercase
+  color: #777
+  &:hover
+    color: $orange
+
+@media(min-width: 768px)
+  .cs-nav-items-toggle
+    display: none
+  .cs-nav-dropdown-menu
+    ul
+      li
+        height: 3rem
+        a
+          line-height: 1.6rem
+          text-transform: none
+
+@media(max-width: 767px)
+  .cs-nav-items-toggle
+    display: inline-block
+  .cs-nav-links-container
+    display: none
+  .cs-nav-links-container.cs-nav-menu-open
+    display: block
+
+  .cs-nav-items
+    ul.cs-nav-links-container
+      background: white
+      position: fixed
+      right: 0px
+      top: 51px
+      width: 210px
+      border-left: 1px solid #ccc
+      border-bottom: 1px solid #ccc
+      padding: 1rem
+      @include boxsizing
+      li
+        width: 100%
+        line-height: 2.6rem
+        height: 2.6rem
+        padding: 0px
+        a
+          text-transform: none
+      li.cs-nav-dropdown
+        display: block
+        height: inherit
+        .csn-nav-resources-toggle
+          display: none
+        .cs-nav-dropdown-menu
+          display: block !important
+          position: relative
+          border: 0px
+          top: 0px
+  .cs-nav-search
+    width: 100%
+    height: 4rem
+    padding: 0.8rem 0px
+    @include boxsizing
+    .cs-nav-search-input
+      display: block !important
+      width: 165px
+    .cs-nav-search-close
+      display: none
