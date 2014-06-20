@@ -149,7 +149,8 @@
   # allowed anymore, so go back to default sort.
   $scope.$watch 'filters.search_all', (newValue, oldValue) ->
     if newValue?.length > 0 && (! oldValue || oldValue.length == 0)
-      $scope.filters.sort = "Relevance" 
+      $scope.filters.sort = "Relevance"
+      $scope.filters.activity_type = "Any" 
     else if newValue?.length == 0
       $scope.filters.sort = $scope.defaultFilters.sort
     $scope.throttledClearAndLoad()
