@@ -106,11 +106,16 @@
     width: 200px
     height: 100%
     margin: 0px 5px
-    input
-      width: 100%
-      border: 1px solid #ccc
-      padding: 0.4rem
-      @include boxsizing
+    form
+      height: 100%
+      margin: 0px
+      input
+        float: left
+        height: 100%
+        width: 100%
+        border: 1px solid #ccc
+        padding: 0.4rem
+        @include boxsizing
 
 
 .cs-nav-profile-container
@@ -143,6 +148,13 @@
 @media(min-width: 768px)
   .cs-nav-items-toggle
     display: none
+  .cs-nav-dropdown-menu
+    ul
+      li
+        height: 3rem
+        a
+          line-height: 1.6rem
+          text-transform: none
 
 @media(max-width: 767px)
   .cs-nav-items-toggle
@@ -165,13 +177,11 @@
       @include boxsizing
       li
         width: 100%
-        line-height: 3rem
-        height: 3rem
+        line-height: 2.6rem
+        height: 2.6rem
         padding: 0px
-        ul
-          li
-            a
-              text-transform: upercase
+        a
+          text-transform: none
       li.cs-nav-dropdown
         display: block
         height: inherit
