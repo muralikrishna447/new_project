@@ -18,7 +18,7 @@
       %a(href='/')
         %img(src="https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg")
 
-    .cs-nav-items
+    .cs-nav-items(ng-show="!editMode")
       .cs-nav-items-toggle(ng-click="toggleMenu()")
         Menu
       %ul.cs-nav-links-container(ng-class="{'cs-nav-menu-open': showMenu}")
@@ -58,7 +58,7 @@
             .cs-nav-search-close
               %icon.fa.fa-times(ng-click="toggleSearch()")
 
-    .cs-nav-profile-container(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
+    .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
       - if current_user
         .cs-nav-profile
           = link_to user_profile_url(current_user) do
@@ -70,6 +70,10 @@
         %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
         = render "devise/sessions/new_angular"
         = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
+    %div
+      -if @include_edit_toolbar
+        #nav-edit-toolbar(collapse="!editMode")
+          = render 'activities/edit_toolbar'
 
     / .cs-nav-profile-container(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
     /   - if current_user
