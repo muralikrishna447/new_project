@@ -17,6 +17,19 @@
     .cs-nav-logo
       = link_to root_url do
         %cs-loading
+        
+    .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
+      - if current_user
+        .cs-nav-profile
+          = link_to user_profile_url(current_user) do
+            .profile-image
+              = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
+        .cs-nav-notifs
+          %csnotifs
+      - else
+        %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+        = render "devise/sessions/new_angular"
+        = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
 
     .cs-nav-items(ng-show="!editMode")
       .cs-nav-items-toggle(ng-click="toggleMenu()")
@@ -58,18 +71,6 @@
             .cs-nav-search-close
               %i.fa.fa-times(ng-click="toggleSearch()")
 
-    .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
-      - if current_user
-        .cs-nav-profile
-          = link_to user_profile_url(current_user) do
-            .profile-image
-              = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
-        .cs-nav-notifs
-          %csnotifs
-      - else
-        %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
-        = render "devise/sessions/new_angular"
-        = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
     %div
       -if @include_edit_toolbar
         #nav-edit-toolbar(collapse="!editMode")
