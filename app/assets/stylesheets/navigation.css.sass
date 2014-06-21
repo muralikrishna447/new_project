@@ -1,0 +1,578 @@
+/* Global Nav 08-May-2014 */
+
+@import 'mixins'
+=navpadding
+  height: 6rem
+  padding: 0.8rem
+  line-height: 4.4rem
+
+.cs-nav
+  display: block
+  background: rgba(255,255,255,0.9)
+  position: fixed
+  width: 100%
+  z-index: 9999
+  border-bottom: 1px solid #ccc
+  height: 6rem
+  left: 0px
+  -webkit-transform: translate3d(0,0,0)
+  ::selection
+    background: none
+    color: $orange
+
+.cs-nav-logo
+  height: 100%
+  padding: 0.4rem
+  float: left
+  @include boxsizing
+  .logo-box
+    .regular-logo
+      height: 52px
+    .loading-logo
+      display: none
+    .loading-no-logo
+      display: none
+
+.cs-nav-items
+  position: absolute
+  right: 80px
+  height: 6rem
+  ul
+    margin: 0px
+    padding: 0px
+    li
+      list-style: none
+      display: inline-block
+      position: relative
+      @include boxsizing
+      @include navpadding
+      a
+        display: block
+        text-transform: uppercase
+        color: #333
+        &:hover
+          color: $orange
+          cursor: pointer
+
+.cs-nav-items-toggle
+  float: right
+  @include boxsizing
+  @include navpadding
+  text-transform: uppercase
+  color: #333
+  &:hover
+    color: $orange
+    cursor: pointer
+
+.cs-nav-links-container
+  float: right
+  // position: absolute
+  // right: 145px
+
+.cs-nav-links
+  display: inline-block
+  float: left
+
+.cs-nav-items.ng-hide-add, .cs-nav-items.ng-hide-remove
+  @include transition(100ms ease-in-out opacity)
+  /* remember to add this */
+  display: block!important
+  opacity: 1
+
+.cs-nav-items.ng-hide
+  opacity: 0
+
+.cs-nav-dropdown-menu
+  position: absolute
+  left: 0px
+  top: 6rem
+  background: rgba(255,255,255,0.9)
+  border: 1px solid #ccc
+  white-space: nowrap
+  @include anim-slide-down(-20px)
+  ul
+    li
+      display: block
+      height: 4rem
+
+.cs-nav-search
+  float: left
+  width: 28px
+  height: 6rem
+  overflow: hidden
+  @include transition(100ms ease-in-out width)
+  .cs-nav-search-toggle, .cs-nav-search-close
+    float: left
+    height: 100%
+    @include boxsizing
+    i
+      line-height: inherit
+    &:hover
+      color: $orange
+      cursor: pointer
+  .cs-nav-search-input
+    float: left
+    width: 200px
+    height: 100%
+    margin: 0px 5px
+    padding: 0.8rem
+    @include boxsizing
+    form
+      height: 100%
+      margin: 0px
+      input
+        float: left
+        height: 100%
+        width: 100%
+        border: 1px solid #ccc
+        padding: 0.4rem
+        @include boxsizing
+
+
+.cs-nav-profile-container
+  float: right
+  display: block
+
+.cs-nav-notifs
+  float: right
+  height: 6rem
+  padding: 8px 0px
+  @include boxsizing
+  .bloom-notifs
+    .icon 
+      i.bloom-globe
+        line-height: inherit
+
+.cs-nav-profile
+  float: right
+  width: 4rem
+  height: 6rem
+  padding: 1.5rem 0.5rem
+  @include boxsizing
+  .profile-image
+    img
+      float: left
+      width: 100%
+
+.cs-nav-search.cs-nav-search-open
+  width: 260px
+
+#nav-sign-in-button
+  text-transform: uppercase
+  color: #333
+  height: 6rem
+  line-height: 6rem
+  padding: 1rem
+  @include boxsizing
+  &:hover
+    color: $orange
+
+@media(min-width: 768px)
+  .cs-nav-items-toggle
+    display: none
+  .cs-nav-dropdown-menu
+    ul
+      li
+        height: 3rem
+        a
+          line-height: 1.6rem
+          text-transform: none
+
+@media(max-width: 767px)
+  .cs-nav-items-toggle
+    display: inline-block
+  .cs-nav-links-container
+    display: none
+  .cs-nav-links-container.cs-nav-menu-open
+    display: block
+
+  .cs-nav-logo
+    padding: 0.8rem
+    .logo-box
+      .regular-logo
+        height: 43px
+
+  .cs-nav-items
+    ul.cs-nav-links-container
+      background: white
+      position: fixed
+      right: 0px
+      top: 61px
+      width: 210px
+      border-left: 1px solid #ccc
+      border-bottom: 1px solid #ccc
+      padding: 1rem
+      @include boxsizing
+      li
+        width: 100%
+        line-height: 2.6rem
+        height: 2.6rem
+        padding: 0px
+        a
+          text-transform: none
+      li.cs-nav-dropdown
+        display: block
+        height: inherit
+        .csn-nav-resources-toggle
+          display: none
+        .cs-nav-dropdown-menu
+          display: block !important
+          position: relative
+          border: 0px
+          top: 0px
+  .cs-nav-search
+    width: 100%
+    height: 4rem
+    padding: 0.8rem 0px
+    @include boxsizing
+    .cs-nav-search-input
+      display: block !important
+      width: 165px
+      padding: 0px
+    .cs-nav-search-close
+      display: none
+  
+/* Navbar */
+
+body.nav-popover-open
+  .container
+    z-index: -1 !important
+  .resources-popover
+    z-index: 10000 !important
+  .nav-container-popover
+    z-index: 10000 !important
+
+.nav-collapse
+  display: none
+.navbar-fixed-top
+  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
+  -webkit-transform: translateZ(0)
+  margin-bottom: 5px
+  //position: fixed
+  //margin-left: 0px
+  //margin-right: 0px
+  //-webkit-backface-visibility: hidden
+  @include transition(all 300ms)
+
+  .navbar-inner
+    box-shadow: none
+    background-image: none
+    background-color: rgba(255,255,255,.9)
+    border-color: $dark-orange
+    border: none
+    border-bottom: 1px solid $offwhite
+
+  .brand
+    text-shadow: none
+    color: black
+    padding: 6px 25px
+
+  .nav-container
+    @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
+
+  .nav
+    float: right
+  .nav ul
+    max-width: 800px
+    margin: 10px 0 0 0
+    padding: 0
+    list-style: none
+    @include primary-font
+
+  .nav > li.border
+    border-left: 1px solid #fff
+    padding: 0 5px
+
+  .nav > li
+    line-height: $baseline * 4
+
+  .nav > li > a
+    @include transition(all .3s)
+    text-transform: uppercase
+    &:hover
+      color: $orange
+  .nav > li > ul
+    margin-bottom: $baseline * 2 
+  .nav > li > ul > li
+    margin-left: 10px
+    list-style-type: none
+  .navbar-form
+    margin: 23px 7px
+    input
+      margin: 0px
+  .btn-navbar
+    margin-top: $baseline
+    color: $orange
+    background: none
+    cursor: pointer
+    h5
+      margin-bottom: 0
+    .icon-bar
+      background-color: white
+    &:hover
+      background-image: none
+      background-color: $orange
+      +radius(2px)
+  .nav-search
+    height: 78px
+    width: 300px
+    overflow: hidden
+    position: absolute
+    margin-left: -300px
+    margin-top: -14px   
+    @include transition(background 300ms)
+    input[type='text']:focus
+    &:hover
+      cursor: pointer
+    @include anim-slide-left(-260px, -300px)
+
+  .resources-popover
+    @include popover(180px)
+    @include anim-slide-down(-10px)
+    z-index: 100000
+
+
+  .resources-popover:after, .resources-popover:before
+    @include popover-arrow(35%)
+
+  .resources-popover:after 
+    border-color: rgba(255, 255, 255, 0)
+    border-bottom-color: #fff
+    border-width: 7px
+    margin-left: -5px
+  
+  .resources-popover:before 
+    border-color: rgba(194, 225, 245, 0)
+    border-bottom-color: $orange
+    border-width: 10px
+    margin-left: -8px
+
+  .nav-container-popover
+    @include popover(10px)
+    @include anim-slide-down(-10px)
+    width: 300px
+
+    .nav > li
+      line-height: $baseline * 3
+      width: 100%
+      border-bottom: 1px solid $offwhite
+
+  .nav-container-popover:after, .nav-container-popover:before 
+    @include popover-arrow(90%)
+  
+  .nav-container-popover:after 
+    border-color: rgba(255, 255, 255, 0)
+    border-bottom-color: #fff
+    border-width: 7px
+    margin-left: -5px
+  
+  .nav-container-popover:before 
+    border-color: rgba(194, 225, 245, 0)
+    border-bottom-color: $orange
+    border-width: 10px
+    margin-left: -8px
+    .icon-search
+      margin: 21px 10px 22px
+      color: black
+      float: left
+    .icon-remove
+      margin: 20px 5px
+      color: black
+      float: left
+    #nav-search-field
+      +radius(2px)
+      border: 1px solid #ccc
+      width: 250px
+
+  .profile-image
+    .notifs
+      visibility: hidden
+      margin-top: -10px
+    &:hover
+      .notifs
+        margin-top: 0px
+        background: white
+        position: absolute
+        visibility: visible
+    .notifs-popover
+      &:hover
+        .notifs
+          visibility: visible
+          margin-top: 0px
+
+    .notifs-popover
+      @include transition(all 300ms ease)
+      @include popover(10px)
+
+
+input.search-query
+  +radius(2px)
+  border: 1px solid $light-gray
+  width: 260px
+
+input:focus
+  border: 1px solid $dark-gray
+  outline: none
+
+
+
+@media (min-width: 768px)
+  .nav-container-popover
+    display: none
+
+@media (min-width: 321px) and (max-width: 768px)
+  .navbar-fixed-top
+    .nav-container
+      background: rgba(255,255,255,.9)
+      border: 1px solid $offwhite
+      position: absolute
+      top: 60px
+      right: 10px
+      float: right
+      width: 320px
+      padding: $baseline
+      @include transition(all 300ms cubic-bezier(.1, 0.7, 0.1, 1))
+
+    .nav-container 
+      position: absolute
+      background: #fff
+      border: 1px solid $offwhite
+      border-top: 2px solid $orange
+    
+    .nav-container:after, .nav-container:before 
+      bottom: 100%
+      left: 90%
+      border: solid transparent
+      content: " "
+      height: 0
+      width: 0
+      position: absolute
+      pointer-events: none
+    
+    .nav-container:after 
+      border-color: rgba(255, 255, 255, 0)
+      border-bottom-color: #fff
+      border-width: 7px
+      margin-left: -5px
+    
+    .nav-container:before 
+      border-color: rgba(194, 225, 245, 0)
+      border-bottom-color: $orange
+      border-width: 10px
+      margin-left: -8px
+
+    .resources-popover
+      display: block
+      border: none
+      position: relative
+      top: 0
+      right: 0
+      float: left
+      margin-left: 22px
+      padding: 0px
+      margin-bottom: $baseline
+      @include anim-slide-down(-20px)
+
+    .resources-popover:after, .resources-popover:before
+      display: none
+
+
+@media (max-width: 767px)
+  .nav-collapse
+    display: block
+    float: right
+    overflow: hidden
+    margin-top: $baseline *2
+    height: auto
+    margin-right: 11px
+    cursor: pointer
+    &:hover
+      color: $orange
+  .nav-container
+    display: none
+  .navbar-fixed-top
+    .nav-search
+      display: block
+      height: 78px
+      width: 250px
+      overflow: hidden
+      position: absolute
+      margin-left: 36px
+      margin-top: -12px
+      @include transition(background 300ms)
+      input[type='text']:focus
+      &:hover
+        cursor: pointer
+      &.ng-enter
+        @include transition(all 200ms ease-in-out)
+        opacity: 0
+        margin-left: 26px
+        &.ng-enter-active
+          opacity: 1  
+          margin-left: 36px
+      &.ng-leave
+        @include transition(all 200ms ease-in-out)
+        opacity: 1
+        margin-left: 36px
+        &.ng-leave-active
+          opacity: 0
+          margin-left: 26px  
+    input.search-query
+      width: 210px          
+
+
+@media (min-width: 768px) and (max-width: 979px)
+
+  .nav-item-border
+    display: none
+    
+  .navbar .nav > li > .dropdown-menu li a
+    color: #333
+    &:hover
+      color: #fff
+  .navbar
+    .navbar-inner
+      padding: 0px
+      .container
+        width: 100%
+
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px)
+
+  .nav-item-border
+    display: none
+
+  .navbar .nav > li > .dropdown-menu li a
+    color: #333
+    &:hover
+      color: #fff
+
+/* Landscape phones and down */
+@media (max-width: 480px)
+
+  .navbar .nav > li > .dropdown-menu li a
+    color: #333
+    font-weight: normal
+    &:hover
+      color: #fff     
+
+@media (max-width: 320px)
+
+  .navbar
+    .nav-container-popover
+      position: absolute
+      top: 72px
+      left: 0
+      background: #fff
+      border: 1px solid $offwhite
+      border-top: 2px solid $orange
+      width: 100%
+      z-index: 100000
+      &:before, &:after
+        display: none
+
+  .nav > li
+    width: 100%
+    border-bottom: 1px solid #f1f1f1
+

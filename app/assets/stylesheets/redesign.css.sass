@@ -48,11 +48,7 @@ div:not(.redactor_box)
       background-color: inherit !important
 
 .nav-spacer
-  height: $baseline * 7
-
-@media(max-width: 979px)
-  .nav-spacer
-    height: 0 !important
+  height: $baseline * 6
   
 .top-container
   margin-top: $baseline * 7
@@ -187,38 +183,6 @@ div:not(.redactor_box)
 /* Bootstrap Overrides */
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
   height: inherit
-
-.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle
-  background: $orange
-  color: white
-
-.navbar .nav > li > .dropdown-menu
-  // min-width: 400px
-  background: none
-  border-radius: 0px
-  margin: 0px
-  li
-    a
-      color: #333
-      padding: 3px 10px
-      &:hover
-        background: $orange
-        color: white
-  &:after
-    content: normal
-  &:before
-    content: normal
-  .dropdown-background
-    background: $offwhite
-    position: absolute
-    width: 100%
-    height: 100%
-    top: 0px
-    z-index: -1
-    opacity: .9
-
-ul.nav li.dropdown:hover > ul.dropdown-menu
-  display: block
 
 .well
   //border: 1px solid #ccc
@@ -1321,126 +1285,6 @@ csembedyoutube
     .loading-logo
       display: none
 
-/* Navbar */
-.regular-logo
-  width: 200px
-
-.navbar-fixed-top
-  // http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform
-  -webkit-transform: translateZ(0)
-  margin-bottom: 0px
-  //position: fixed
-  //margin-left: 0px
-  //margin-right: 0px
-  //-webkit-backface-visibility: hidden
-  @include transition(all 300ms)
-
-  .navbar-inner
-    box-shadow: none
-    background-image: none
-    background-color: $offwhite
-    border-color: $dark-orange
-    border: none
-    border-top: 2px solid $dark-orange
-    padding: 0px
-    @include shadow
-  .brand
-    text-shadow: none
-    color: black
-    padding: 4px 20px
-    .regular-logo
-      display: block
-    .is-loading
-      .loading-logo
-        display: block
-      .regular-logo
-        display: none
-      .loading-no-logo
-        display: none
-    .loading-logo
-      display: none
-    .loading-no-logo
-      display: none
-    .is-fullscreen
-      .regular-logo
-        display: block
-      .loading-logo
-        display: none
-      .loading-no-logo
-        display: none
-
-  .nav
-    .nav-item-border
-      width: 1px
-      height: 52px
-      float: left
-      background: -moz-linear-gradient(top, rgba(204,204,204,1) 0%, rgba(235,235,235,1) 60%, rgba(255,255,255,0) 100%)
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(204,204,204,1)), color-stop(60%,rgba(235,235,235,1)), color-stop(100%,rgba(255,255,255,0)))
-      background: -webkit-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: -o-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: -ms-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: linear-gradient(to bottom, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#00ffffff',GradientType=0 )
-  .nav > li > a
-    text-shadow: none
-    color: #333
-    line-height: 33px
-    font-size: 16px
-    font-weight: 200
-    @include transition(background .25s)
-    &:hover
-      background: $orange
-      color: white
-  .navbar-form
-    margin: 12px 10px 12px
-    input
-      margin: 0px
-  .btn-navbar
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from($orange), to($dark-orange))
-    background-image: -moz-linear-gradient(top, $orange, $dark-orange)
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$orange, endColorstr=$dark-orange, GradientType=0)
-    background-color: $orange
-    border-color: $dark-orange
-    .icon-bar
-      background-color: white
-    &:hover
-      background-image: none
-      background-color: $dark-orange
-      float: left
-  .nav-search
-    height: 55px
-    width: 40px
-    overflow: hidden
-    @include transition(background 300ms)
-    input[type='text']:focus
-      border-color: $orange
-      box-shadow: none
-    &:hover
-      cursor: pointer
-    .icon-search
-      margin: 21px 10px 22px
-      color: black
-      float: left
-    .icon-remove
-      margin: 20px 5px
-      color: black
-      float: left
-    .nav-search-form
-      float: left
-      width: 160px
-      padding: 0px
-      margin-right: 0px
-      margin-left: 0px
-      overflow: hidden
-      input
-        width: 130px
-        outline: none
-  .nav-search-show
-    width: 230px
-
-
-
-
 // WYSIWYG EDITING
 
 .edit-pair, .edit-pair-show, .edit-pair-edit
@@ -1752,68 +1596,6 @@ input.summary-tweet
   .activity-description
     height: 143px
 
-  .navbar
-    .navbar-inner
-      .container
-        width: 100%
-        .brand
-          margin-left: 0px
-          padding: 4px 5px
-
-@media (max-width: 979px)
-  .loading-ball
-    .regular-logo
-      display: none
-    .loading-logo
-      display: none
-    .loading-no-logo
-      display: none
-    .is-loading
-      position: fixed
-      top: 10px
-      left: 10px
-      z-index: 1000
-      width: 100%
-      .loading-no-logo
-        display: block
-        border-radius: 50%
-        border: 1px solid #ccc
-        width: 80px
-        text-align: center
-        padding: 20px 10px
-        background-color: rgba(255, 255, 255, 0.6)
-
-
-  .brand
-    .logo-box
-      .regular-logo
-        display: block
-      .loading-logo
-        display: none
-      .is-loading
-        .regular-logo
-          display: block
-        .loading-logo
-          display: none
-        .loading-no-logo
-          display: none
-
-// .logo-box
-//   .regular-logo
-//     display: none
-//   .loading-logo
-//     display: none
-//   .loading-no-logo
-//     display: none
-//   .is-loading
-//     .regular-logo
-//       display: none
-//     .loading-logo
-//       position: absolute
-//       display: block
-//       padding: 6px 5px
-//       top: 0
-//       z-index: 10000
   .static-height
     height: 360px
 
@@ -1824,8 +1606,10 @@ input.summary-tweet
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px)
+
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
-    width: 724px
+    width: 768px
+    margin: 0 auto
 
   #hero-container
     #hero-carousel
@@ -1850,11 +1634,6 @@ input.summary-tweet
   .activity-description
     height: 187px
 
-  .navbar .nav > li > .dropdown-menu li a
-    color: #333
-    &:hover
-      color: #fff
-
   .top-container
     margin-top: 0px
 
@@ -1865,11 +1644,6 @@ input.summary-tweet
   .no-margin-padding
     padding: 0px
     margin: 0px
-
-  .navbar
-    .navbar-inner
-      .container
-        width: 100%
 
   .static-height
     height: 480px
@@ -1934,11 +1708,6 @@ input.summary-tweet
   .nav-item-border
     display: none
 
-  .navbar .nav > li > .dropdown-menu li a
-    color: #333
-    &:hover
-      color: #fff
-
   .top-container
     margin-top: 0px
 
@@ -1950,15 +1719,18 @@ input.summary-tweet
     height: 170px
 
 
-
 @media(max-width: 979px)
-
   .new-line
     margin-top: 10px
     display: block
 
 /* Landscape phones and down */
 @media (max-width: 480px)
+
+  body  
+    // To deal with bootstrap stupid body padding
+    .banner-image
+      width: 480px
 
 
   #hero-container
@@ -1990,12 +1762,6 @@ input.summary-tweet
       .step-content
         width: 80%
         padding-top: 10px
-
-  .navbar .nav > li > .dropdown-menu li a
-    color: #333
-    font-weight: normal
-    &:hover
-      color: #fff
 
   .madlib, .madlib input
     font-size: 20px
@@ -2067,7 +1833,6 @@ body
 
 .nav
   @include primary-font
-  letter-spacing: -1px
 
 .input-append
   margin: 0
@@ -2099,5 +1864,18 @@ body
   @include popup-card    
   width: 500px
 
+
+@media (max-width: 320px)
+
+  .nav-container
+    margin-top: 7px
+    top: 0
+    left: 0
+
+  .nav > li
+    width: 100%
+    border-bottom: 1px solid #f1f1f1
+
+  .nav > ul
 
 

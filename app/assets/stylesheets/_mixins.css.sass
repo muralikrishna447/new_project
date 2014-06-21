@@ -124,6 +124,29 @@
   width: 100%
   margin-bottom: $baseline * 3 
 
+=popover-arrow($left)
+  bottom: 100%
+  left: $left
+  border: solid transparent
+  content: " "
+  height: 0
+  width: 0
+  position: absolute
+  pointer-events: none
+
+=popover($margin-right)
+  background: white
+  border: 1px solid $offwhite
+  position: absolute
+  top: 60px
+  right: $margin-right
+  float: right
+  width: 200px
+  padding: $baseline
+  background: #fff
+  border: 1px solid $offwhite
+  border-top: 2px solid $orange
+
 =blur($radius: 5px)
   -webkit-filter: blur($radius)
   -moz-filter: blur($radius)
@@ -184,8 +207,6 @@
   @include align-items(center)
 
 
-
-
 /* This works on both inputs and spans */
 =editable_text
   @include boxsizing
@@ -242,9 +263,37 @@ $horz-baseline-large: 13px
   font-weight: 700
   font-style: normal 
 
+/* Animations */
+
+=anim-slide-down($distance)
+  &.ng-enter
+    @include transition(all 100ms ease-in-out)
+    opacity: 0
+    margin-top: $distance
+  &.ng-enter-active
+    opacity: 1  
+    margin-top: 0px  
+
+=anim-slide-left($start, $end)
+  &.ng-enter
+    @include transition(all 200ms ease-in-out)
+    opacity: 0
+    margin-left: $start
+    &.ng-enter-active
+      opacity: 1  
+      margin-left: $end
+  &.ng-leave
+    @include transition(all 200ms ease-in-out)
+    opacity: 1
+    margin-left: $end
+    &.ng-leave-active
+      opacity: 0
+      margin-left: $start  
+
 =horizontal-center
   margin-left: auto
   margin-right: auto
+
 
 
 /* Colors */
@@ -258,7 +307,8 @@ $blue-opaque: rgba(0,109,204,.8)
 $red: #DA4f49
 $red-opaque: rgba(218,79,73,.8)
 $light-gray: #ccc
-$offwhite: #F2F2F2
+$dark-gray: rgb(146, 146, 146)
+$offwhite: #f1f1f1
 $white-opaque: rgba(255,255,255,.3)
 
 /* Layout */

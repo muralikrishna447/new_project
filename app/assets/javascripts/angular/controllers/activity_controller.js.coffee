@@ -177,13 +177,6 @@ window.deepCopy = (obj) ->
     $scope.activity = deepCopy $scope.activityBeforeEdit
     $scope.postEndEditMode()
 
-  # Tweak to let dropdowns leak out of collapse when not collapsed
-  # http://stackoverflow.com/questions/11926028/bootstrap-dropdown-in-collapse
-  $scope.toolbarBonusStyle = ->
-    s = {}
-    s = {overflow: "visible"} if ! $scope.editMode
-    s
-
   # Gray out a section if the contents are empty
   $scope.disableIf = (condition) ->
     if condition then "disabled-section" else ""
