@@ -1,114 +1,70 @@
 - if ! @minimal
-  / .navbar.navbar-fixed-top(ng-controller="NavbarController")
-  /   .navbar-inner
-  /     .container
-  /       .nav-collapse(ng-click="$root.showNav = !$root.showNav")
-  /         %h5 menu
-  /       = link_to root_url, class: 'brand' do
-  /         = image_tag "https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg", id: 'chefsteps-logo', width: "200"        
-  /       .nav-container(ng-if="!editMode")
-  /         = render 'layouts/navigation_contents', external: false
-  /       .nav-container-popover(ng-if="$root.showNav" ng-cloak)
-  /         = render 'layouts/navigation_contents', external: false
-  /       -if @include_edit_toolbar
-  /         #nav-edit-toolbar(collapse="!editMode")
-  /           = render 'activities/edit_toolbar'
-  .cs-nav(ng-controller="NavbarController")
-    .cs-nav-logo
-      = link_to root_url do
-        %cs-loading
-        
-    .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
-      - if current_user
-        .cs-nav-profile
-          = link_to user_profile_url(current_user) do
-            .profile-image
-              = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
-        .cs-nav-notifs
-          %csnotifs
-      - else
-        %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
-        = render "devise/sessions/new_angular"
-        = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
+  - if external
+    .cs-nav
+      .cs-nav-logo
+        = link_to root_url do
+          .logo-box
+            %img.regular-logo(src="https://s3.amazonaws.com/chefsteps/static/chefsteps-logo-h-tagline.png")
+  - else
+    .cs-nav(ng-controller="NavbarController")
+      .cs-nav-logo
+        = link_to root_url do
+          %cs-loading
+          
+      .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
+        - if current_user
+          .cs-nav-profile
+            = link_to user_profile_url(current_user) do
+              .profile-image
+                = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
+          .cs-nav-notifs
+            %csnotifs
+        - else
+          %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+          = render "devise/sessions/new_angular"
+          = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
 
-    .cs-nav-items(ng-show="!editMode")
-      .cs-nav-items-toggle(ng-click="toggleMenu()")
-        Menu
-      %ul.cs-nav-links-container(ng-class="{'cs-nav-menu-open': showMenu}")
-        .cs-nav-links(ng-hide="showSearch")
-          %li
-            %a(href='/gallery')
-              Recipes
-          %li.cs-nav-dropdown
-            %a.csn-nav-resources-toggle(ng-click="showResources = !showResources")
-              Resources
-              %i.fa.fa-caret-down
-            .cs-nav-dropdown-menu(ng-show="showResources" ng-cloak)
-              %ul
-                %li
-                  %a(href='/ingredients')
-                    Ingredients
-                %li
-                  %a(href='/courses')
-                    Classes
-                %li
-                  %a(href='/knife-collection')
-                    Knife Collection
-                %li
-                  %a(href='/sous-vide-collection')
-                    Sous Vide Collection
-          %li
-            %a(href='http://forum.chefsteps.com/discussions')
-              Forum
+      .cs-nav-items(ng-show="!editMode")
+        .cs-nav-items-toggle(ng-click="toggleMenu()")
+          Menu
+        %ul.cs-nav-links-container(ng-class="{'cs-nav-menu-open': showMenu}")
+          .cs-nav-links(ng-hide="showSearch")
+            %li
+              %a(href='/gallery')
+                Recipes
+            %li.cs-nav-dropdown
+              %a.csn-nav-resources-toggle(ng-click="showResources = !showResources")
+                Resources
+                %i.fa.fa-caret-down
+              .cs-nav-dropdown-menu(ng-show="showResources" ng-cloak)
+                %ul
+                  %li
+                    %a(href='/ingredients')
+                      Ingredients
+                  %li
+                    %a(href='/courses')
+                      Classes
+                  %li
+                    %a(href='/knife-collection')
+                      Knife Collection
+                  %li
+                    %a(href='/sous-vide-collection')
+                      Sous Vide Collection
+            %li
+              %a(href='http://forum.chefsteps.com/discussions')
+                Forum
 
-        .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
-          %li
-            .cs-nav-search-toggle(ng-click="toggleSearch()")
-              %i.fa.fa-search
-            .cs-nav-search-input(ng-show="showSearch" ng-cloak)
-              %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
-                %input(placeholder="search" ng-model="navbarSearchQuery")
-            .cs-nav-search-close
-              %i.fa.fa-times(ng-click="toggleSearch()")
+          .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
+            %li
+              .cs-nav-search-toggle(ng-click="toggleSearch()")
+                %i.fa.fa-search
+              .cs-nav-search-input(ng-show="showSearch" ng-cloak)
+                %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
+                  %input(placeholder="search" ng-model="navbarSearchQuery")
+              .cs-nav-search-close
+                %i.fa.fa-times(ng-click="toggleSearch()")
 
-    %div
-      -if @include_edit_toolbar
-        #nav-edit-toolbar(collapse="!editMode")
-          = render 'activities/edit_toolbar'
-
-    / .cs-nav-profile-container(ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
-    /   - if current_user
-    /     .cs-nav-profile
-    /       = link_to user_profile_url(current_user) do
-    /         .profile-image
-    /           = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
-    /     .cs-nav-notifs
-    /       %csnotifs
-    /   - else
-    /     %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
-    /     = render "devise/sessions/new_angular"
-    /     = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
-
-    /   / - if external
-    /   /   -# Can't see current_user when external, so use a route that will
-    /   /   -# either go to their profile if logged in, or take them to sign in
-    /   /   = link_to user_profile_url('self') do
-    /   /     %span
-    /   /       Profile
-    /   / - elsif current_user
-    /   /   = link_to user_profile_url(current_user) do
-    /   /     .profile-image
-    /   /       = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
-
-    /   / - else
-    /   /   %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
-    /   /   = render "devise/sessions/new_angular"
-    /   /   = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
-
-    / .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
-    /   .cs-nav-search-toggle(ng-click="toggleSearch()")
-    /     %i.fa.fa-search
-    /   .cs-nav-search-input(ng-if="showSearch" ng-cloak)
-    /     %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
-    /       %input(placeholder="search" ng-model="navbarSearchQuery")
-    /       %icon.fa.fa-times(ng-click="toggleSearch()")
+      %div
+        -if @include_edit_toolbar
+          #nav-edit-toolbar(collapse="!editMode")
+            = render 'activities/edit_toolbar'
