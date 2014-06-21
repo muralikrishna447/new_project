@@ -52,6 +52,7 @@
         color: #333
         &:hover
           color: $orange
+          cursor: pointer
 
 .cs-nav-items-toggle
   float: right
@@ -102,7 +103,10 @@
   @include transition(100ms ease-in-out width)
   .cs-nav-search-toggle, .cs-nav-search-close
     float: left
+    height: 100%
     @include boxsizing
+    i
+      line-height: inherit
     &:hover
       color: $orange
       cursor: pointer
@@ -134,6 +138,10 @@
   height: 6rem
   padding: 8px 0px
   @include boxsizing
+  .bloom-notifs
+    .icon 
+      i.bloom-globe
+        line-height: inherit
 
 .cs-nav-profile
   float: right
@@ -144,6 +152,7 @@
   .profile-image
     img
       float: left
+      width: 100%
 
 .cs-nav-search.cs-nav-search-open
   width: 260px
@@ -219,6 +228,7 @@
     .cs-nav-search-input
       display: block !important
       width: 165px
+      padding: 0px
     .cs-nav-search-close
       display: none
   

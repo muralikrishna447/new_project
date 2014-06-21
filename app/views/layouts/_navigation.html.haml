@@ -15,7 +15,7 @@
   /           = render 'activities/edit_toolbar'
   .cs-nav(ng-controller="NavbarController")
     .cs-nav-logo
-      %a(href='/')
+      = link_to root_url do
         %cs-loading
 
     .cs-nav-items(ng-show="!editMode")
@@ -56,7 +56,7 @@
               %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
                 %input(placeholder="search" ng-model="navbarSearchQuery")
             .cs-nav-search-close
-              %icon.fa.fa-times(ng-click="toggleSearch()")
+              %i.fa.fa-times(ng-click="toggleSearch()")
 
     .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])});")
       - if current_user

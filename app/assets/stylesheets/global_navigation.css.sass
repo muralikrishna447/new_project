@@ -1,203 +1,26 @@
+
 @import 'mixins'
-=navpadding
-  height: 5rem
-  padding: 0.8rem
-  line-height: 3.8rem
+@import 'typography'
+@import 'bloom/bloom'
+@import 'navigation'
 
-.cs-nav
-  display: block
-  background: rgba(255,255,255,0.9)
-  position: fixed
-  width: 100%
-  z-index: 9999
-  border-bottom: 1px solid #ccc
-  border-top: 2px solid $orange
-  height: 5rem
-  left: 0px
-  -webkit-transform: translate3d(0,0,0)
-  ::selection
-    background: none
-    color: $orange
+html
+  margin: 0px
+  padding: 0px
 
-.cs-nav-logo
-  height: 100%
-  padding: 0.8rem
-  float: left
-  @include boxsizing
-  img
-    height: 100%
+body
+  margin: 0px
+  padding: 0px
 
-.cs-nav-items
-  position: absolute
-  right: 90px
-  height: 5rem
-  ul
-    margin: 0px
-    padding: 0px
-    li
-      list-style: none
-      display: inline-block
-      position: relative
-      @include boxsizing
-      @include navpadding
-      a
-        display: block
-        text-transform: uppercase
-        color: #777
-        &:hover
-          color: $orange
-
-.cs-nav-items-toggle
-  float: right
-  @include boxsizing
-  @include navpadding
-  text-transform: uppercase
-  color: #777
-  &:hover
-    color: $orange
-    cursor: pointer
-
-.cs-nav-links-container
-  float: right
-  // position: absolute
-  // right: 145px
-
-.cs-nav-links
-  display: inline-block
-  float: left
-
-.cs-nav-items.ng-hide-add, .cs-nav-items.ng-hide-remove
-  @include transition(100ms ease-in-out opacity)
-  /* remember to add this */
-  display: block!important
-  opacity: 1
-
-.cs-nav-items.ng-hide
-  opacity: 0
-
-.cs-nav-dropdown-menu
-  position: absolute
-  left: 0px
-  top: 5rem
-  background: rgba(255,255,255,0.9)
-  border: 1px solid #ccc
-  white-space: nowrap
-  @include anim-slide-down(-20px)
-  ul
-    li
-      display: block
-      height: 4rem
-
-.cs-nav-search
-  float: left
-  width: 28px
-  height: 5rem
-  overflow: hidden
-  @include transition(100ms ease-in-out width)
-  .cs-nav-search-toggle, .cs-nav-search-close
-    float: left
-    @include boxsizing
-    &:hover
-      color: $orange
-      cursor: pointer
-  .cs-nav-search-input
-    float: left
-    width: 200px
-    height: 100%
-    margin: 0px 5px
-    form
-      height: 100%
-      margin: 0px
-      input
-        float: left
-        height: 100%
-        width: 100%
-        border: 1px solid #ccc
-        padding: 0.4rem
-        @include boxsizing
-
-
-.cs-nav-profile-container
-  float: right
-  display: block
-
-.cs-nav-notifs
-  float: right
-  padding: 5px 0px
-  @include boxsizing
+a
+  text-decoration: none
 
 .cs-nav-profile
   float: right
-  width: 5rem
+  width: 4rem
+  height: 6rem
+  padding: 1.5rem 0.5rem
   @include boxsizing
-  @include navpadding
   .profile-image
     img
       float: left
-
-.cs-nav-search.cs-nav-search-open
-  width: 260px
-
-#nav-sign-in-button
-  text-transform: uppercase
-  color: #777
-  &:hover
-    color: $orange
-
-@media(min-width: 768px)
-  .cs-nav-items-toggle
-    display: none
-  .cs-nav-dropdown-menu
-    ul
-      li
-        height: 3rem
-        a
-          line-height: 1.6rem
-          text-transform: none
-
-@media(max-width: 767px)
-  .cs-nav-items-toggle
-    display: inline-block
-  .cs-nav-links-container
-    display: none
-  .cs-nav-links-container.cs-nav-menu-open
-    display: block
-
-  .cs-nav-items
-    ul.cs-nav-links-container
-      background: white
-      position: fixed
-      right: 0px
-      top: 51px
-      width: 210px
-      border-left: 1px solid #ccc
-      border-bottom: 1px solid #ccc
-      padding: 1rem
-      @include boxsizing
-      li
-        width: 100%
-        line-height: 2.6rem
-        height: 2.6rem
-        padding: 0px
-        a
-          text-transform: none
-      li.cs-nav-dropdown
-        display: block
-        height: inherit
-        .csn-nav-resources-toggle
-          display: none
-        .cs-nav-dropdown-menu
-          display: block !important
-          position: relative
-          border: 0px
-          top: 0px
-  .cs-nav-search
-    width: 100%
-    height: 4rem
-    padding: 0.8rem 0px
-    @include boxsizing
-    .cs-nav-search-input
-      display: block !important
-      width: 165px
-    .cs-nav-search-close
-      display: none
