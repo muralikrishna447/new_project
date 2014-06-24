@@ -30,7 +30,7 @@
         %ul.cs-nav-links-container(ng-class="{'cs-nav-menu-open': showMenu}")
           .cs-nav-links(ng-hide="showSearch")
             %li
-              %a(href='/gallery')
+              = link_to gallery_index_url do
                 Recipes
             %li.cs-nav-dropdown
               %a.csn-nav-resources-toggle(ng-click="showResources = !showResources")
@@ -39,17 +39,20 @@
               .cs-nav-dropdown-menu(ng-show="showResources" ng-cloak)
                 %ul
                   %li
-                    %a(href='/ingredients')
+                    = link_to ingredients_url do
                       Ingredients
                   %li
-                    %a(href='/courses')
+                    = link_to courses_url do
                       Classes
                   %li
-                    %a(href='/knife-collection')
+                    = link_to knife_collection_url do
                       Knife Collection
                   %li
-                    %a(href='/sous-vide-collection')
+                    = link_to sv_collection_url do
                       Sous Vide Collection
+                  %li
+                    %a(href="http://store.chefsteps.com/collections/cookbooks-we-love")
+                      Cookbook Collection
             %li
               %a(href='http://forum.chefsteps.com/discussions')
                 Forum
