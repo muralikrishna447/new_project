@@ -1,4 +1,5 @@
 @app.controller 'NavbarController', ["$scope", "$rootScope", "$sce", "csDataLoading", "$timeout", ($scope, $rootScope, $sce, csDataLoading, $timeout) ->
+  $scope.showDropdown = {}
 
   $scope.toggleSearch = ->
     $scope.showSearch = ! $scope.showSearch
@@ -7,6 +8,12 @@
 
   $scope.toggleMenu = ->
     $scope.showMenu = ! $scope.showMenu
+
+  $scope.toggleDropdown = (dropdownName) ->
+    if $scope.showDropdown == dropdownName
+      $scope.showDropdown = {}
+    else
+      $scope.showDropdown = dropdownName
 ]
 
 @app.controller 'SearchController', ["$scope", "$sce", "$location", ($scope, $sce, $location) ->
