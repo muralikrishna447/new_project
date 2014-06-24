@@ -513,6 +513,7 @@ window.deepCopy = (obj) ->
     $rootScope.$broadcast "showNellPopup", 
       include: view
 
+  # Why by weight was removed but can always be added back by adding reached-screen-callback="maybeShowWhyByWeight()" as a attribute
   $scope.maybeShowWhyByWeight = ->
     return if localStorageService.get('whyByWeightShown')
     return if csAuthentication.loggedIn()
