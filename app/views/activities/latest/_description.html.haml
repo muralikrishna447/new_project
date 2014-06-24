@@ -1,5 +1,6 @@
 .section
-
+  %h5(ng-if="editMode")
+    Description
   .activity-description-wrapper
     .activity-description.maximize-description#activity-description
       .aside.right.rightInset.noprint(ng-show="(! editMode) && (activityColumns < 3)")

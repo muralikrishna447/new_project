@@ -25,6 +25,8 @@
     %h1.step-number
       %div(ng-bind="stepNumber($index)")
 
+  %h5(ng-if="editMode")
+    Step Title
   %h4.text-center(  cs-contenteditable="getStepOpenForEdit()" 
                     ng-model="step.title"
                     placeholder="'Click to write step title'")
@@ -40,7 +42,8 @@
                                             ng-class="asideClass()")
       =render 'activities/step_side_edit_buttons'
       %div(ng-include="'_aside.html'")
-      
+    %h5(ng-if="editMode")
+      Directions
     .step-content(   cs-contenteditable="getStepOpenForEdit()" 
                               creator="activity.creator"
                               ng-model="step.directions"

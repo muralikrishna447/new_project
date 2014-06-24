@@ -1,3 +1,5 @@
+%h5(ng-if="editMode")
+  Title
 %h2.content-activity-title.section-tiny(ng-model="activity.title" cs-contenteditable = "editMode" itemprop="name" placeholder="'Title this masterpiece'")
 
 -if @activity
