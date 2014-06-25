@@ -31,7 +31,6 @@
     .ingredients-well(  ng-show="activity.ingredients.length" 
                         ng-class="{'menu-active' : showIngredientsMenu}"
                         cs-on-enter-viewport
-                        reached-screen-callback="maybeShowWhyByWeight()"
                         offset="200")
       = render 'shared/ingredients_list', source: "activity"
 

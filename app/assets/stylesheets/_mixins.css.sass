@@ -293,7 +293,15 @@ $horz-baseline-large: 13px
     margin-top: $distance
   &.ng-enter-active
     opacity: 1  
-    margin-top: 0px  
+    margin-top: 0px
+  &.ng-hide-add, &.ng-hide-remove
+    @include transition(all 100ms ease-in-out)
+    display: block !important
+    opacity: 1
+    margin-top: 0px
+  &.ng-hide
+    margin-top: $distance
+    opacity: 0
 
 =anim-slide-left($start, $end)
   &.ng-enter
