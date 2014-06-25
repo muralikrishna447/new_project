@@ -67,6 +67,10 @@ angular.module('ChefStepsApp').filter "shortcode", ->
                 <hr/>
               </div>
           """
+          when 'fetchTool'
+            """
+              <div cs-fetch-tool='#{arg1}'></div>
+            """
           else orig
     else
       ""

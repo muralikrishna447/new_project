@@ -41,3 +41,18 @@
     scope.$watch attrs.csFetch,  ->
       scope.reload()
 ]
+
+@app.directive 'csFetchTool', [() ->
+  restrict: 'A'
+  scope: { csFetchTool: "@" },
+  replace: 'true'
+  template: """
+    <div class='nell-embed'>
+      <div ng-include="getTool()"></div>
+    </div>
+  """
+
+  link: (scope, element, attrs) ->
+    scope.getTool = ->
+      scope.csFetchTool + '.html'
+]
