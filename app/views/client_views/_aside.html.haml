@@ -1,4 +1,4 @@
-%h4(cs-contenteditable="getStepOpenForEdit()" ng-model="step.title")
+%h4(ng-if="step.title" cs-contenteditable="getStepOpenForEdit()" ng-model="step.title")
 %div(ng-include="'_step_edit_images.html'")
 .aside-video.noprint(ng-if='hasAV()')
   .step-video-outer(ng-if="!! step.youtube_id")
