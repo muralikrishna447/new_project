@@ -56,6 +56,7 @@
         display: block
         text-transform: uppercase
         color: #333
+        @include transition(all .3s)
         &:hover
           color: $orange
           cursor: pointer
@@ -95,6 +96,7 @@
   top: 6rem
   background: rgba(255,255,255,0.9)
   border: 1px solid #ccc
+  border-top: 1px solid $orange  
   white-space: nowrap
   @include anim-slide-down(-20px)
   ul
@@ -174,7 +176,17 @@
   &:hover
     color: $orange
 
+.menu-popover-arrow
+  @include popover-arrow(-5px, 210px)
+
 @media(min-width: 768px)
+
+  .resources-popover-arrow
+    @include popover-arrow(-5px, 40px)
+
+  .admin-popover-arrow
+    @include popover-arrow(-5px, 38px)
+
   .cs-nav-links
     position: absolute
     right: 110px
@@ -190,17 +202,23 @@
           text-transform: none
 
 @media(max-width: 767px)
+  .resources-popover-arrow
+    display: none
+  .admin-popover-arrow
+    display: none
   .cs-nav-items-toggle
     display: inline-block
   .cs-nav-items
     ul.cs-nav-links-container
       opacity: 0
-      margin-top: -20px
+      margin-top: -10px
       @include transition(all 300ms $standard-bezier)
+      border-top: 1px solid $orange
     ul.cs-nav-links-container.cs-nav-menu-open
       opacity: 1
       display: block
       margin-top: 0px
+
   .cs-nav-logo
     padding: 0.8rem
     .logo-box
@@ -209,11 +227,12 @@
 
   .cs-nav-links
     width: 100%
+    margin-left: $horz-baseline-large
   .cs-nav-items
     ul.cs-nav-links-container
       background: white
       position: absolute
-      top: 61px
+      top: 60px
       right: 0px
       width: 210px
       border-left: 1px solid #ccc
@@ -227,7 +246,9 @@
         height: $baseline * 4
         padding: 0px
         a
-          text-transform: none
+          text-transform: upper
+          &:hover
+            margin-left: 3px
       li.cs-nav-dropdown
         display: block
         height: inherit
@@ -242,15 +263,17 @@
           margin-top: 0px
   .cs-nav-search
     width: 100%
-    height: $baseline * 4
+    height: $baseline * 6
     padding: 0.8rem 0px
     @include boxsizing
     .cs-nav-search-input
       display: block !important
-      width: 165px
+      width: 250px
       padding: 0px
     .cs-nav-search-close
       display: none
+  .cs-nav-search-toggle
+    display: none
   
 /* Navbar */
 
@@ -353,7 +376,7 @@ body.nav-popover-open
 
 
   .resources-popover:after, .resources-popover:before
-    @include popover-arrow(35%)
+    // @include popover-arrow(35%)
 
   .resources-popover:after 
     border-color: rgba(255, 255, 255, 0)
@@ -378,7 +401,7 @@ body.nav-popover-open
       border-bottom: 1px solid $offwhite
 
   .nav-container-popover:after, .nav-container-popover:before 
-    @include popover-arrow(90%)
+    // @include popover-arrow(90%)
   
   .nav-container-popover:after 
     border-color: rgba(255, 255, 255, 0)
@@ -583,3 +606,9 @@ input:focus
     width: 100%
     border-bottom: 1px solid #f1f1f1
 
+@media (max-height: 610px)
+  .cs-nav
+    position: relative
+    top: 0px
+    left: -20px
+    min-width: 320px

@@ -124,15 +124,17 @@
   width: 100%
   margin-bottom: $baseline * 3 
 
-=popover-arrow($left)
-  bottom: 100%
-  left: $left
-  border: solid transparent
-  content: " "
-  height: 0
-  width: 0
+=popover-arrow($top, $left)
   position: absolute
-  pointer-events: none
+  height: 7px
+  width: 7px
+  border-top: 1px solid $orange
+  border-left: 1px solid $orange
+  @include transform(rotate(45deg))
+  top: $top
+  left: $left
+  background: white
+  z-index: 10001
 
 =popover($margin-right)
   background: white
