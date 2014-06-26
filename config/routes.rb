@@ -239,6 +239,12 @@ Delve::Application.routes.draw do
 
   resources 'recipe-development', controller: :assemblies, as: :recipe_development, only: [:index, :show]
 
+  resources :kits, controller: :assemblies, only: [:index, :show] do
+    member do
+      get 'show_as_json', to: 'assemblies#show_as_json'
+    end
+  end
+
   resources :events, only: [:create]
 
   resources :gift_certificates
