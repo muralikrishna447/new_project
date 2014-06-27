@@ -5,9 +5,20 @@
   width: 100%
 
   .kit-intro
-    background: blue
+    position: relative
     height: 70%
     @include transition(300ms all ease-in-out)
+    .kit-intro-title
+      position: absolute
+      bottom: 10px
+      left: 10px
+    .kit-intro-image
+      position: absolute
+      top: 0px
+      left: 0px
+      height: 100%
+      width: 100%
+      overflow: hidden
 
   .kit-nav-container
     background: red
@@ -19,20 +30,25 @@
     @include transition(300ms all ease-in-out)
 
     .kit-nav-item
-      height: 80%
-      border: 1px solid #ccc
+      height: 112.5px
+      overflow: hidden
       @include boxsizing
-      @include flex(0 0 20%)
+      @include flex(0 0 200px)
       &:hover
         cursor: pointer
+      .kit-nav-item-title
+        position: absolute
+      .kit-nav-item-image
+        
 
   .kit-viewer
     height: 0%
     width: 100%
+    overflow-y: auto
     @include transition(300ms all ease-in-out)
     .kit-page
-      height: 100%
-      width: 100%
+      width: 600px
+      margin: 0 auto
 
 .kit.intro-active
   .kit-intro

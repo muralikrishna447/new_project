@@ -1,19 +1,24 @@
 .kit(ng-controller="KitController" ng-init="loadKit()" ng-cloak ng-class="state")
   .kit-intro(ng-click="changeStateTo('intro-active')")
-    %h1
-      {{kit.title}}
-    %p
-      / {{kit.description}}
+    .kit-intro-image
+      %img(cs-responsive-image='kit.image_id')
+    .kit-intro-title
+      %h1
+        {{kit.title}}
   .kit-nav-container
     .kit-nav-item(ng-repeat="assembly in kit.assembly_inclusions" ng-click="loadItem(assembly)")
-      {{assembly.includable_title}}
+      .kit-nav-item-title
+        {{assembly.includable_title}}
+      .kit-nav-item-image
+        %img(cs-responsive-image='assembly.includable.image_id')
   .kit-viewer
-    %h2
-      {{currentItem.includable_title}}
-    %div
-      %h3
-        {{currentActivity.title}}
-      %csembedyoutube(video-id='{{currentActivity.youtube_id}}')
+    .kit-page
+      %h2
+        {{currentItem.includable_title}}
+      %div(ng-repeat="activity in currentItemActivities")
+        %h3
+          {{activity.title}}
+        %csembedyoutube(video-id='{{activity.youtube_id}}')
 
   .kit-toggles
     %a(ng-click="changeStateTo('intro-active')")
