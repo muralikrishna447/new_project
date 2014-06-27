@@ -14,8 +14,6 @@
         %img(cs-responsive-image='assembly.includable.image_id')
   .kit-viewer
     .kit-page
-      %h2
-        {{currentItem.includable_title}}
       %div(ng-repeat="activity in currentItemActivities")
         %h3
           {{activity.title}}
