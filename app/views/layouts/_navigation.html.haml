@@ -28,6 +28,7 @@
         .cs-nav-items-toggle(ng-click="toggleMenu()")
           Menu
         %ul.cs-nav-links-container(ng-class="{'cs-nav-menu-open': showMenu}")
+          .menu-popover-arrow
           .cs-nav-links(ng-hide="showSearch")
             %li
               = link_to gallery_index_url do
@@ -38,6 +39,7 @@
                 %i.fa.fa-caret-down
               .cs-nav-dropdown-menu(ng-show="showDropdown=='resources'" ng-cloak)
                 %ul
+                  .resources-popover-arrow
                   %li
                     = link_to ingredients_url do
                       Ingredients
@@ -60,6 +62,7 @@
                   %i.fa.fa-caret-down
                 .cs-nav-dropdown-menu(ng-show="showDropdown=='adminResources'" ng-cloak)
                   %ul
+                    .admin-popover-arrow
                     %li
                       %a(href="http://dashboard.usebloom.com/")
                         Comments Dashboard

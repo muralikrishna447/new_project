@@ -3,8 +3,9 @@
 
   $scope.toggleSearch = ->
     $scope.showSearch = ! $scope.showSearch
-    $timeout ->
-      $('#nav-search-field').focus() if $scope.showSearch
+    $timeout (->
+      $('input').focus()
+    ),300
 
   $scope.toggleMenu = ->
     $scope.showMenu = ! $scope.showMenu
