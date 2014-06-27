@@ -290,14 +290,14 @@ $horz-baseline-large: 13px
 
 =anim-slide-down($distance)
   &.ng-enter
-    @include transition(all 100ms $standard-bezier)
+    @include transition(all 300ms $standard-bezier)
     opacity: 0
     margin-top: $distance
   &.ng-enter-active
     opacity: 1  
     margin-top: 0px
   &.ng-hide-add, &.ng-hide-remove
-    @include transition(all 100ms ease-in-out)
+    @include transition(all 300ms $standard-bez-out)
     display: block !important
     opacity: 1
     margin-top: 0px
@@ -307,14 +307,14 @@ $horz-baseline-large: 13px
 
 =anim-slide-left($start, $end)
   &.ng-enter
-    @include transition(all 200ms ease-in-out)
+    @include transition(all 200ms $standard-bezier)
     opacity: 0
     margin-left: $start
     &.ng-enter-active
       opacity: 1  
       margin-left: $end
   &.ng-leave
-    @include transition(all 200ms ease-in-out)
+    @include transition(all 200ms $standard-bez-out)
     opacity: 1
     margin-left: $end
     &.ng-leave-active
@@ -325,7 +325,8 @@ $horz-baseline-large: 13px
   margin-left: auto
   margin-right: auto
 
-$standard-bezier: cubic-bezier(.46,.18,0,1)
+$standard-bezier: cubic-bezier(.81,0,0,.99)
+$standard-bez-out: cubic-bezier(.29,.04,.02,1)
 
 /* Colors */
 $orange: #e25f25
