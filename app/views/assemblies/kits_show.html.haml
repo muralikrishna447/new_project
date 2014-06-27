@@ -1,10 +1,11 @@
 .kit(ng-controller="KitController" ng-init="loadKit()" ng-cloak ng-class="state")
-  .kit-intro(ng-click="changeStateTo('intro-active')")
-    .kit-intro-image
-      %img(cs-responsive-image='kit.image_id')
-    .kit-intro-title
-      %h1
-        {{kit.title}}
+  .kit-intro-container(ng-click="changeStateTo('intro-active')")
+    .kit-intro
+      .kit-intro-image
+        %img(cs-responsive-image='kit.image_id')
+      .kit-intro-title
+        %h1
+          {{kit.title}}
   .kit-nav-container
     .kit-nav-item(ng-repeat="assembly in kit.assembly_inclusions" ng-click="loadItem(assembly)")
       .kit-nav-item-title
