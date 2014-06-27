@@ -1,0 +1,145 @@
+@import 'mixins'
+
+.kit
+  height: 100%
+  width: 100%
+
+  .kit-intro-container
+    position: absolute
+    height: 100%
+    width: 100%
+    padding-bottom: 200px
+    @include boxsizing
+    @include transition(300ms all ease-in-out)
+    .kit-intro
+      height: 100%
+      width: 100%
+      position: relative
+      .kit-intro-title
+        position: absolute
+        bottom: 10px
+        left: 10px
+        h1
+          @include transition(300ms all ease-in-out)
+          &:hover
+            color: $orange
+            cursor: pointer
+      .kit-intro-image
+        position: absolute
+        top: 0px
+        left: 0px
+        height: 100%
+        width: 100%
+        overflow: hidden
+
+  .kit-nav-container
+    position: absolute
+    bottom: 0px
+    background: rgba(255,255,255,.9)
+    height: 200px
+    width: 100%
+    @include display-flex
+    @include flex-wrap(wrap)
+    @include justify-content(space-around)
+    @include align-content(space-around)
+    @include transition(300ms all ease-in-out)
+
+    .kit-nav-item
+      position: relative
+      height: 112.5px
+      overflow: hidden
+      @include boxsizing
+      @include flex(0 0 200px)
+      @include transition(300ms all ease-in-out)
+      &:hover
+        cursor: pointer
+      .kit-nav-item-title
+        position: absolute
+        background: $orange
+        color: white
+        bottom: 10px
+        padding: 3px 5px
+        width: 180px
+        @include transition(300ms all ease-in-out)
+      .kit-nav-item-image
+        @include transition(300ms all ease-in-out)
+        
+
+  .kit-viewer
+    height: 0%
+    width: 100%
+    padding-top: 140px
+    overflow-y: auto
+    @include transition(300ms all ease-in-out)
+    @include boxsizing
+    .kit-page
+      width: 600px
+      margin: 0 auto
+
+.kit.intro-active
+  .kit-intro-container
+    height: 100%
+    padding-bottom: 200px
+  .kit-nav-container
+    height: 200px
+  .kit-viewer
+    height: 0%
+
+.kit.nav-active
+  .kit-intro-container
+    height: 50px
+    padding-bottom: 0px
+  .kit-nav-container
+    height: 200px
+    bottom: 100%
+    margin-bottom: -250px
+  .kit-viewer
+    height: 100%
+
+.kit.page-active
+  .kit-intro-container
+    height: 50px
+    padding-bottom: 0px
+    .kit-intro
+      .kit-intro-title
+        bottom: 5px
+        h1
+          font-size: 30px
+      .kit-intro-image
+  .kit-nav-container
+    height: 50px
+    bottom: 100%
+    margin-bottom: -100px
+    .kit-nav-item
+      height: 40px
+      .kit-nav-item-title
+        background: none
+        color: black
+        padding-left: 50px
+      .kit-nav-item-image
+        height: 40px
+        width: 40px
+    &:hover
+      height: 200px
+      bottom: 100%
+      margin-bottom: -250px
+      .kit-nav-item
+        height: 112.5px
+        .kit-nav-item-title
+          position: absolute
+          background: $orange
+          color: white
+          bottom: 10px
+          padding: 3px 5px
+          width: 180px
+        .kit-nav-item-image
+          height: 100%
+          width: 100%
+
+  .kit-viewer
+    height: 100%
+
+.kit-toggles
+  position: fixed
+  top: 10px
+  right: 10px
