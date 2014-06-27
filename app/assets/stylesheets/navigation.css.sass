@@ -66,7 +66,7 @@ input:focus
         display: block
         text-transform: uppercase
         color: #333
-        @include transition(all 1s)
+        @include transition(all .3s)
         &:hover
           color: $orange
           cursor: pointer
@@ -109,11 +109,13 @@ input:focus
   border-top: 1px solid $orange  
   white-space: nowrap
   @include anim-slide-down(-50px)
+  hr
+    margin: 5px 0 5px 0px
   ul
+    margin: $baseline $horz-baseline-small
     li
       display: block
       height: 4rem
-
 .cs-nav-search
   float: left
   width: 28px
@@ -211,6 +213,11 @@ input:focus
           text-transform: none
 
 @media(max-width: 767px)
+  .cs-nav-items
+    ul
+      li
+        a
+          text-transform: none
   .resources-popover-arrow
     display: none
   .admin-popover-arrow
@@ -227,7 +234,9 @@ input:focus
       opacity: 1
       display: block
       margin-top: 0px
-
+  .cs-nav-dropdown-menu
+    ul
+      border-top: 1px solid $orange
   .cs-nav-logo
     padding: 0.8rem
     .logo-box
@@ -255,7 +264,6 @@ input:focus
         height: $baseline * 4
         padding: 0px
         a
-          text-transform: upper
           &:hover
             margin-left: 3px
       li.cs-nav-dropdown

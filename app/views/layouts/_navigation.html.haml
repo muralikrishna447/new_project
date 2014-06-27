@@ -42,18 +42,24 @@
                   .resources-popover-arrow
                   %li
                     = link_to ingredients_url do
-                      Ingredients
+                      %i.fa.fa-leaf 
+                      Ingredient Wiki
                   %li
                     = link_to courses_url do
+                      %i.fa.fa-film 
                       Classes
+                  %hr
                   %li
                     = link_to knife_collection_url do
+                      = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/F0T93X9wSdGBCXEwBPWY", width: "15px"
                       Knife Collection
                   %li
                     = link_to sv_collection_url do
+                      = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/Obli4MvVSqKIhOsSFhny", width: "15px"
                       Sous Vide Collection
                   %li
                     %a(href="http://store.chefsteps.com/collections/cookbooks-we-love")
+                      %i.fa.fa-book
                       Cookbook Collection
             - if current_admin?
               %li.cs-nav-dropdown
@@ -71,6 +77,9 @@
             %li
               %a(href='http://forum.chefsteps.com/discussions')
                 Forum
+            %li
+              %a(href='/about')
+                About
 
           .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
             %li
