@@ -1,0 +1,64 @@
+@import 'mixins'
+
+.kit
+  height: 100%
+  width: 100%
+
+  .kit-intro
+    background: blue
+    height: 70%
+    @include transition(300ms all ease-in-out)
+
+  .kit-nav-container
+    background: red
+    height: 30%
+    @include display-flex
+    @include flex-wrap(wrap)
+    @include justify-content(space-around)
+    @include align-content(space-around)
+    @include transition(300ms all ease-in-out)
+
+    .kit-nav-item
+      height: 80%
+      border: 1px solid #ccc
+      @include boxsizing
+      @include flex(0 0 20%)
+      &:hover
+        cursor: pointer
+
+  .kit-viewer
+    height: 0%
+    width: 100%
+    @include transition(300ms all ease-in-out)
+    .kit-page
+      height: 100%
+      width: 100%
+
+.kit.intro-active
+  .kit-intro
+    height: 70%
+  .kit-nav-container
+    height: 30%
+  .kit-viewer
+    height: 0%
+
+.kit.nav-active
+  .kit-intro
+    height: 10%
+  .kit-nav-container
+    height: 30%
+  .kit-viewer
+    height: 60%
+
+.kit.page-active
+  .kit-intro
+    height: 10%
+  .kit-nav-container
+    height: 10%
+  .kit-viewer
+    height: 80%
+
+.kit-toggles
+  position: fixed
+  top: 10px
+  right: 10px

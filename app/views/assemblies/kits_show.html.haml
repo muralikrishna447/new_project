@@ -1,7 +1,24 @@
-.kit(ng-controller="KitController" ng-init="loadKit()")
-  %h1
-    {{kit.title}}
+.kit(ng-controller="KitController" ng-init="loadKit()" ng-cloak ng-class="state")
+  .kit-intro(ng-click="changeStateTo('intro-active')")
+    %h1
+      {{kit.title}}
+    %p
+      / {{kit.description}}
   .kit-nav-container
-    .kit-nav-item
-    .kit-nav-item
-  .kit-page
+    .kit-nav-item(ng-repeat="assembly in kit.assembly_inclusions" ng-click="loadItem(assembly)")
+      {{assembly.includable_title}}
+  .kit-viewer
+    %h2
+      {{currentItem.includable_title}}
+    %div
+      %h3
+        {{currentActivity.title}}
+      %csembedyoutube(video-id='{{currentActivity.youtube_id}}')
+
+  .kit-toggles
+    %a(ng-click="changeStateTo('intro-active')")
+      Intro
+    %a(ng-click="changeStateTo('nav-active')")
+      Nav
+    %a(ng-click="changeStateTo('page-active')")
+      Page
