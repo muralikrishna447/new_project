@@ -6,31 +6,33 @@
       .kit-intro-title
         %h1
           {{kit.title}}
+  .kit-viewer
+    .kit-page
+      %div(ng-switch="currentInclusion.includable_type")
+        %div(ng-switch-when="Activity")
+          %h3
+            {{currentItem.title}}
+          %p
+            {{currentItem.description}}
+          %csembedyoutube(video-id='{{currentItem.youtube_id}}')
+        %div(ng-switch-when="Assembly")
+          %div(ng-repeat="activity in currentItemActivities")
+            %h3
+              {{activity.title}}
+            %p
+              {{activity.description}}
+            %csembedyoutube(video-id='{{activity.youtube_id}}')
   .kit-nav-container
     .kit-nav-item(ng-repeat="inclusion in kit.assembly_inclusions" ng-click="loadItem(inclusion)")
       .kit-nav-item-title
         {{inclusion.includable_title}}
       .kit-nav-item-image
         %img(cs-responsive-image='inclusion.includable_image_id')
-  .kit-viewer
-    .kit-page
-      %div
-        %h3
-          {{currentItem.title}}
-        %p
-          {{currentItem.description}}
-        %csembedyoutube(video-id='{{currentItem.youtube_id}}')
-      / %div(ng-repeat="activity in currentItemActivities")
-      /   %h3
-      /     {{activity.title}}
-      /   %p
-      /     {{activity.description}}
-      /   %csembedyoutube(video-id='{{activity.youtube_id}}')
 
-  .kit-toggles
-    %a(ng-click="changeStateTo('intro-active')")
-      Intro
-    %a(ng-click="changeStateTo('nav-active')")
-      Nav
-    %a(ng-click="changeStateTo('page-active')")
-      Page
+  / .kit-toggles
+  /   %a(ng-click="changeStateTo('intro-active')")
+  /     Intro
+  /   %a(ng-click="changeStateTo('nav-active')")
+  /     Nav
+  /   %a(ng-click="changeStateTo('page-active')")
+  /     Page

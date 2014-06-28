@@ -99,9 +99,10 @@
         
 
   .kit-viewer
-    height: 0%
+    height: 100%
     width: 100%
-    padding-top: 140px
+    padding-top: 60px
+    padding-bottom: 210px
     overflow-y: auto
     @include transition(300ms all ease-in-out)
     @include boxsizing
@@ -116,16 +117,7 @@
   .kit-nav-container
     height: 200px
   .kit-viewer
-    height: 0%
-
-.kit.nav-active
-  .kit-intro-container
-    height: 50px
-    padding-bottom: 0px
-  .kit-nav-container
-    @include kit-nav-large
-  .kit-viewer
-    height: 100%
+    opacity: 0
 
 .kit.page-active
   .kit-intro-container
@@ -137,11 +129,8 @@
         h1
           font-size: 30px
       .kit-intro-image
-  .kit-nav-container
-    @include kit-nav-large
-
   .kit-viewer
-    height: 100%
+    opacity: 1
 
 .kit-toggles
   position: fixed
