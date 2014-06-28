@@ -1,5 +1,57 @@
 @import 'mixins'
 
+=kit-nav-large
+  height: 200px
+  bottom: 100%
+  margin-bottom: -250px
+  @include flex-wrap(wrap)
+  @include justify-content(space-around)
+  @include align-content(space-around)
+  .kit-nav-item
+    height: 112.5px
+    @include flex(0 0 200px)
+    .kit-nav-item-title
+      position: absolute
+      background: $orange
+      color: white
+      bottom: 10px
+      padding: 3px 5px
+      width: 180px
+      opacity: 1
+    .kit-nav-item-image
+      height: 100%
+      width: 100%
+      opacity: 1
+
+=kit-nav-small
+  height: 50px
+  bottom: 100%
+  margin-bottom: -100px
+  // @include flex-wrap(wrap)
+  // @include justify-content(flex-start)
+  // @include align-content(flex-start)
+  // .kit-nav-item
+  //   height: 40px
+  //   @include flex(0 0 40px)
+  //   background: white
+  //   border: 1px solid $orange
+  //   .kit-nav-item-title
+  //     opacity: 0
+  //     width: 0px
+  //   .kit-nav-item-image
+  //     opacity: 0
+  // .kit-nav-item:not(:first-child)
+  //   margin-left: -38px
+  .kit-nav-item
+    height: 40px
+    .kit-nav-item-title
+      background: none
+      color: black
+      padding-left: 50px
+    .kit-nav-item-image
+      height: 40px
+      width: 40px
+
 .kit
   height: 100%
   width: 100%
@@ -107,34 +159,9 @@
           font-size: 30px
       .kit-intro-image
   .kit-nav-container
-    height: 50px
-    bottom: 100%
-    margin-bottom: -100px
-    .kit-nav-item
-      height: 40px
-      .kit-nav-item-title
-        background: none
-        color: black
-        padding-left: 50px
-      .kit-nav-item-image
-        height: 40px
-        width: 40px
+    @include kit-nav-small
     &:hover
-      height: 200px
-      bottom: 100%
-      margin-bottom: -250px
-      .kit-nav-item
-        height: 112.5px
-        .kit-nav-item-title
-          position: absolute
-          background: $orange
-          color: white
-          bottom: 10px
-          padding: 3px 5px
-          width: 180px
-        .kit-nav-item-image
-          height: 100%
-          width: 100%
+      @include kit-nav-large
 
   .kit-viewer
     height: 100%

@@ -1,4 +1,4 @@
-.kit(ng-controller="KitController" ng-init="loadKit()" ng-cloak ng-class="state")
+.kit(ng-controller="KitController" ng-init="loadKit(#{@assembly.id})" ng-cloak ng-class="state")
   .kit-intro-container(ng-click="changeStateTo('intro-active')")
     .kit-intro
       .kit-intro-image
@@ -7,17 +7,25 @@
         %h1
           {{kit.title}}
   .kit-nav-container
-    .kit-nav-item(ng-repeat="assembly in kit.assembly_inclusions" ng-click="loadItem(assembly)")
+    .kit-nav-item(ng-repeat="inclusion in kit.assembly_inclusions" ng-click="loadItem(inclusion)")
       .kit-nav-item-title
-        {{assembly.includable_title}}
+        {{inclusion.includable_title}}
       .kit-nav-item-image
-        %img(cs-responsive-image='assembly.includable.image_id')
+        %img(cs-responsive-image='inclusion.includable_image_id')
   .kit-viewer
     .kit-page
-      %div(ng-repeat="activity in currentItemActivities")
+      %div
         %h3
-          {{activity.title}}
-        %csembedyoutube(video-id='{{activity.youtube_id}}')
+          {{currentItem.title}}
+        %p
+          {{currentItem.description}}
+        %csembedyoutube(video-id='{{currentItem.youtube_id}}')
+      / %div(ng-repeat="activity in currentItemActivities")
+      /   %h3
+      /     {{activity.title}}
+      /   %p
+      /     {{activity.description}}
+      /   %csembedyoutube(video-id='{{activity.youtube_id}}')
 
   .kit-toggles
     %a(ng-click="changeStateTo('intro-active')")
