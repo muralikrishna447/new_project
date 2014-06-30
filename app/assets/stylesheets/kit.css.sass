@@ -55,9 +55,9 @@
         @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
         h1
           font-size: 30px
-          @include transition(100ms all cubic-bezier(0.81, 0, 0, 0.99))
+          @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
           &:hover
-            color: $orange
+            color: white
             cursor: pointer
       .kit-intro-image
         position: absolute
@@ -66,6 +66,8 @@
         height: 100%
         width: 100%
         overflow: hidden
+        @include filter(grayscale(100%))
+        @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
 
   .kit-intro-container.intro-active
     height: 100%
@@ -73,6 +75,8 @@
       .kit-intro-title
         top: 20%
         left: 20%
+      .kit-intro-image
+        @include filter(grayscale(0%))
 
   .kit-nav-container
     position: absolute
@@ -88,12 +92,20 @@
 
     .kit-nav-toggle
       position: absolute
-      top: -50px
-      width: 50px
-      height: 50px
+      top: -30px
+      width: 100px
+      height: 30px
+      text-align: center
       background: white
       opacity: 1
+      border: 1px solid #ccc
+      border-bottom: 0px
+      border-radius: 5px 5px 0px 0px
+      padding: 5px
+      @include boxsizing
       @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
+      &:hover
+        cursor: pointer
 
     .kit-nav-item
       position: relative
@@ -125,28 +137,16 @@
     height: 100%
     width: 100%
     padding-top: 60px
-    padding-bottom: 210px
+    padding-bottom: 0px
     overflow-y: auto
+    opacity: 0
     @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
     @include boxsizing
     .kit-page
       width: 600px
       margin: 0 auto
 
-.kit
-
-
-.kit.page-active
-  .kit-intro-container
-    height: 50px
-    padding-bottom: 0px
-    .kit-intro
-      .kit-intro-title
-        bottom: 5px
-        h1
-          font-size: 30px
-      .kit-intro-image
-  .kit-viewer
+  .kit-viewer.viewer-active
     opacity: 1
 
 .kit-toggles
