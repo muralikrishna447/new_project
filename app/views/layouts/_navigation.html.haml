@@ -48,7 +48,7 @@
                     = link_to courses_url do
                       %i.fa.fa-film 
                       Classes
-                  %hr
+                  %hr{style: "border-bottom: 1px solid #ccc"}
                   %li
                     = link_to knife_collection_url do
                       = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/F0T93X9wSdGBCXEwBPWY", width: "15px"
@@ -61,6 +61,12 @@
                     %a(href="http://store.chefsteps.com/collections/cookbooks-we-love")
                       %i.fa.fa-book
                       Cookbook Collection
+            %li
+              %a(href='http://forum.chefsteps.com/discussions')
+                Forum
+            %li
+              %a(href='/about')
+                About
             - if current_admin?
               %li.cs-nav-dropdown
                 %a.cs-nav-dropdown-toggle(ng-click="toggleDropdown('adminResources')")
@@ -74,12 +80,6 @@
                         Comments Dashboard
                     %li= link_to 'Manage Ingredients', manager_ingredients_path
                     %li= link_to 'Manage Equipment', equipment_index_path
-            %li
-              %a(href='http://forum.chefsteps.com/discussions')
-                Forum
-            %li
-              %a(href='/about')
-                About
 
           .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
             %li

@@ -1,6 +1,7 @@
 !!! 5
-%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main" }
+%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main", :style => "font-size: 62.5% !important;"}
   %head
+    %style
     / http://stackoverflow.com/questions/3326650/console-is-undefined-error-for-internet-explorer
     %script(type="text/javascript")
       if (!window.console) console = {log: function() {}};
@@ -32,10 +33,6 @@
       %link{href: "/favicon.ico", rel: "shortcut icon"}
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
-
-    %style
-      %html
-        font-size: 62.5% !important
     %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
