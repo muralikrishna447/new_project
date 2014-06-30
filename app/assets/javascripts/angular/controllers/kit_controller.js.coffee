@@ -3,7 +3,9 @@
   $scope.kit = {}
   $scope.currentItem = {}
   $scope.currentItemActivities = []
-  $scope.state = 'intro-active'
+  # $scope.state = 'intro-active'
+  $scope.introClass = 'intro-active'
+  $scope.navClass = ''
 
   $scope.loadKit = (id)->
     $http.get('/kits/' + id + '/show_as_json').then (response) ->
@@ -21,9 +23,21 @@
         angular.forEach $scope.currentItem.includable.assembly_inclusions, (inclusion) ->
           $http.get('/activities/' + inclusion.includable_id + '/as_json').then (response) ->
             $scope.currentItemActivities.push(response.data)
-    $scope.changeStateTo('page-active')
+    # $scope.changeStateTo('page-active')
 
-  $scope.changeStateTo = (state) ->
-    if $scope.state != state
-      $scope.state = state
+  # $scope.changeStateTo = (state) ->
+  #   if $scope.state != state
+  #     $scope.state = state
+
+  $scope.toggleIntro = ->
+    if $scope.introClass == 'intro-active'
+      $scope.introClass = ''
+    else
+      $scope.introClass = 'intro-active'
+
+  $scope.toggleNav = ->
+    if $scope.navClass == 'nav-active'
+      $scope.navClass = ''
+    else
+      $scope.navClass = 'nav-active'
 ]

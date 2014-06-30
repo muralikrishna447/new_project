@@ -39,21 +39,23 @@
 
   .kit-intro-container
     position: absolute
-    height: 100%
+    height: 50px
     width: 100%
-    padding-bottom: 200px
+    padding-bottom: 0px
     @include boxsizing
-    @include transition(300ms all ease-in-out)
+    @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
     .kit-intro
       height: 100%
       width: 100%
       position: relative
       .kit-intro-title
         position: absolute
-        bottom: 10px
+        top: 0px
         left: 10px
+        @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
         h1
-          @include transition(300ms all ease-in-out)
+          font-size: 30px
+          @include transition(100ms all cubic-bezier(0.81, 0, 0, 0.99))
           &:hover
             color: $orange
             cursor: pointer
@@ -65,9 +67,16 @@
         width: 100%
         overflow: hidden
 
+  .kit-intro-container.intro-active
+    height: 100%
+    .kit-intro
+      .kit-intro-title
+        top: 20%
+        left: 20%
+
   .kit-nav-container
     position: absolute
-    bottom: 0px
+    bottom: -200px
     background: rgba(255,255,255,.9)
     height: 200px
     width: 100%
@@ -75,7 +84,16 @@
     @include flex-wrap(wrap)
     @include justify-content(space-around)
     @include align-content(space-around)
-    @include transition(300ms all ease-in-out)
+    @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
+
+    .kit-nav-toggle
+      position: absolute
+      top: -50px
+      width: 50px
+      height: 50px
+      background: white
+      opacity: 1
+      @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
 
     .kit-nav-item
       position: relative
@@ -83,7 +101,7 @@
       overflow: hidden
       @include boxsizing
       @include flex(0 0 200px)
-      @include transition(300ms all ease-in-out)
+      @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
       &:hover
         cursor: pointer
       .kit-nav-item-title
@@ -93,10 +111,15 @@
         bottom: 10px
         padding: 3px 5px
         width: 180px
-        @include transition(300ms all ease-in-out)
+        @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
       .kit-nav-item-image
-        @include transition(300ms all ease-in-out)
-        
+        @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
+  
+  .kit-nav-container.nav-active
+    height: 200px
+    bottom: 0px
+    .kit-nav-toggle
+      opacity: 0
 
   .kit-viewer
     height: 100%
@@ -104,20 +127,14 @@
     padding-top: 60px
     padding-bottom: 210px
     overflow-y: auto
-    @include transition(300ms all ease-in-out)
+    @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
     @include boxsizing
     .kit-page
       width: 600px
       margin: 0 auto
 
-.kit.intro-active
-  .kit-intro-container
-    height: 100%
-    padding-bottom: 200px
-  .kit-nav-container
-    height: 200px
-  .kit-viewer
-    opacity: 0
+.kit
+
 
 .kit.page-active
   .kit-intro-container
