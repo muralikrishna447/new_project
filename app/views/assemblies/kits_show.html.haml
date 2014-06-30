@@ -1,12 +1,12 @@
 .kit(ng-controller="KitController" ng-init="loadKit(#{@assembly.id})" ng-cloak)
-  .kit-intro-container(ng-click="toggleIntro()" ng-class="introClass")
+  .kit-intro-container(ng-click="toggleIntro()" ng-class="{'intro-active':introActive, 'nav-active':navActive}")
     .kit-intro
       .kit-intro-image
         %img(cs-responsive-image='kit.image_id')
       .kit-intro-title
         %h1
           {{kit.title}}
-  .kit-viewer(ng-class="viewerClass")
+  .kit-viewer(ng-class="{'viewer-active':viewerActive}")
     .kit-page
       %div(ng-switch="currentInclusion.includable_type")
         %div(ng-switch-when="Activity")
@@ -22,7 +22,7 @@
             %p
               {{activity.description}}
             %csembedyoutube(video-id='{{activity.youtube_id}}')
-  .kit-nav-container(ng-class="navClass")
+  .kit-nav-container(ng-class="{'nav-active':navActive}")
     .kit-nav-toggle(ng-click="toggleNav()")
       / %i.fa.fa-caret-up.fa-2x
       Menu

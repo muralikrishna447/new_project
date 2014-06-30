@@ -6,6 +6,9 @@
   $scope.introClass = 'intro-active'
   $scope.navClass = ''
   $scope.viewerClass = ''
+  $scope.introActive = true
+  $scope.navActive = false
+  $scope.viewerActive = false
 
   $scope.loadKit = (id)->
     $http.get('/kits/' + id + '/show_as_json').then (response) ->
@@ -23,25 +26,17 @@
         angular.forEach $scope.currentItem.includable.assembly_inclusions, (inclusion) ->
           $http.get('/activities/' + inclusion.includable_id + '/as_json').then (response) ->
             $scope.currentItemActivities.push(response.data)
-    $scope.introClass = ''
-    $scope.navClass = ''
-    $scope.viewerClass = 'viewer-active'
+    $scope.introActive = false
+    $scope.navActive = false
+    $scope.viewerActive = true
 
   $scope.toggleIntro = ->
-    if $scope.introClass == 'intro-active'
-      $scope.introClass = ''
-    else
-      $scope.introClass = 'intro-active'
+    if !$scope.introActive
+      $scope.introActive = ! $scope.introActive
 
   $scope.toggleNav = ->
-    if $scope.navClass == 'nav-active'
-      $scope.navClass = ''
-    else
-      $scope.navClass = 'nav-active'
+    $scope.navActive = ! $scope.navActive
 
   $scope.toggleViewer = ->
-    if $scope.viewerClass == 'viewer-active'
-      $scope.viewerClass = ''
-    else
-      $scope.viewerClass = 'viewer-active'
+    $scope.viewerActive = ! $scope.viewerActive
 ]
