@@ -33,6 +33,7 @@
   $scope.toggleIntro = ->
     if !$scope.introActive
       $scope.introActive = ! $scope.introActive
+      $scope.navActive = false
 
   $scope.toggleNav = ->
     $scope.navActive = ! $scope.navActive
