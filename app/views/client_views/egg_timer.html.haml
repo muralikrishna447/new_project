@@ -112,6 +112,7 @@
                 %h4 Share the egg calculator on your social networks:
               .section
                 //= render 'layouts/social_buttons', media_object: nil
+                %div(ng-include="'_egg_timer_social.html'")
               .egg-footer
                 .btn.btn-primary(ng-click="goState('white')")
                   NEW EGG
