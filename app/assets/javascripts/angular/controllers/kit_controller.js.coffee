@@ -27,7 +27,7 @@
           $http.get('/activities/' + inclusion.includable_id + '/as_json').then (response) ->
             $scope.currentItemActivities.push(response.data)
     $scope.introActive = false
-    $scope.navActive = false
+    $scope.navActive = true
     $scope.viewerActive = true
 
   $scope.toggleIntro = ->
