@@ -19,7 +19,7 @@
     switch item.includable_type
       when 'Activity'
         $http.get('/activities/' + item.includable_id + '/as_json').then (response) ->
-          $scope.currentItem = response.data
+          $scope.activity = response.data
       when 'Assembly'
         $scope.currentItemActivities = []
         $scope.currentItem = item

@@ -13,11 +13,14 @@
     .kit-page
       %div(ng-switch="currentInclusion.includable_type")
         %div(ng-switch-when="Activity")
-          %h3
-            {{currentItem.title}}
-          %p
-            {{currentItem.description}}
-          %csembedyoutube(video-id='{{currentItem.youtube_id}}')
+          .standard-item
+            %h2
+              {{activity.title}}
+            %p
+              {{activity.description}}
+            %csembedyoutube(video-id='{{activity.youtube_id}}')
+          %div(ng-controller="StepsController")
+            = render 'activities/steps'
         %div(ng-switch-when="Assembly")
           %div(ng-repeat="activity in currentItemActivities")
             %h3
