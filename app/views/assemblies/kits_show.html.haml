@@ -4,38 +4,34 @@
       .kit-intro-image
         %img(cs-responsive-image='kit.image_id')
         .kit-gradient
-      .kit-intro-title
-        %h1
+      .kit-intro-title(ng-click="toggleNav()")
+        %h1.section
           {{kit.title}}
-        %h3.get-started(ng-click="toggleNav()")
-          Let's get started!
+        .intro(ng-class="{'nav-active':navActive}")
+          %h5.get-started
+            Let's get started!
+          %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   .kit-viewer(ng-class="{'viewer-active':viewerActive, 'nav-active':navActive}")
     .kit-page
       %div(ng-switch="currentInclusion.includable_type")
         %div(ng-switch-when="Activity")
-          .standard-item
-            %h2
+          %h3
+            {{currentItem.title}}
+          %p
+            {{currentItem.description}}
+          %csembedyoutube(video-id='{{currentItem.youtube_id}}')
+        %div(ng-switch-when="Assembly")
+          %div(ng-repeat="activity in currentItemActivities")
+            %h3
               {{activity.title}}
             %p
               {{activity.description}}
             %csembedyoutube(video-id='{{activity.youtube_id}}')
-          %div(ng-controller="StepsController")
-            = render 'activities/steps'
-        %div(ng-switch-when="Assembly" ng-controller='GalleryController')
-          .wide-item(ng-repeat="activity in currentItemActivities")
-            %csGalleryItem( title="activity.title"
-                            href="'/activities/' + activity.slug"
-                            image="itemImageURL(activity, 400)"
-                            summary="activity.description"
-                            footer-left="activity.difficulty"
-                            footer-right="getFooterRightContents(activity)"
-                            sash = "getSashContents(activity)"
-                          )
-            / %h3
-            /   {{activity.title}}
-            / / %csembedyoutube(video-id='{{activity.youtube_id}}')
-            / %img(cs-responsive-image='activity.featured_image_id')
-  .kit-nav-container(ng-class="{'viewer-active':viewerActive, 'nav-active':navActive}")
+    .kit-gradient
+  .kit-nav-container(ng-class="{'nav-active':navActive}")
+    .kit-nav-toggle(ng-click="toggleNav()")
+      / %i.fa.fa-caret-up.fa-2x
+      Menu
     .kit-nav-item(ng-repeat="inclusion in kit.assembly_inclusions" ng-click="loadItem(inclusion)")
       .kit-nav-item-title
         {{inclusion.includable_title}}
