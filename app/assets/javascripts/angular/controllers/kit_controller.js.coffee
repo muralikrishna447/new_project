@@ -40,4 +40,11 @@
 
   $scope.toggleViewer = ->
     $scope.viewerActive = ! $scope.viewerActive
+
+  $scope.activateItem = (inclusion) ->
+    if $scope.currentInclusion == inclusion
+      'item-active'
+    else
+      ''
+
 ]
