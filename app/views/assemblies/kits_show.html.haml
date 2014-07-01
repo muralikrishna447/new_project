@@ -21,13 +21,20 @@
             %csembedyoutube(video-id='{{activity.youtube_id}}')
           %div(ng-controller="StepsController")
             = render 'activities/steps'
-        %div(ng-switch-when="Assembly")
-          %div(ng-repeat="activity in currentItemActivities")
-            %h3
-              {{activity.title}}
-            %p
-              {{activity.description}}
-            %csembedyoutube(video-id='{{activity.youtube_id}}')
+        %div(ng-switch-when="Assembly" ng-controller='GalleryController')
+          .wide-item(ng-repeat="activity in currentItemActivities")
+            %csGalleryItem( title="activity.title"
+                            href="'/activities/' + activity.slug"
+                            image="itemImageURL(activity, 400)"
+                            summary="activity.description"
+                            footer-left="activity.difficulty"
+                            footer-right="getFooterRightContents(activity)"
+                            sash = "getSashContents(activity)"
+                          )
+            / %h3
+            /   {{activity.title}}
+            / / %csembedyoutube(video-id='{{activity.youtube_id}}')
+            / %img(cs-responsive-image='activity.featured_image_id')
   .kit-nav-container(ng-class="{'nav-active':navActive}")
     .kit-nav-item(ng-repeat="inclusion in kit.assembly_inclusions" ng-click="loadItem(inclusion)")
       .kit-nav-item-title
