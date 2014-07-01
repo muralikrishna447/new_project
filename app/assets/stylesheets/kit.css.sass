@@ -110,6 +110,7 @@
     height: 160px
     width: 100%
     z-index: 200
+    @include boxsizing
     @include display-flex
     @include flex-wrap(wrap)
     @include justify-content(space-around)
@@ -136,6 +137,9 @@
       .kit-nav-item-image
         @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
   
+  .kit-nav-container.nav-active.viewer-active
+    border-top: 1px solid $orange
+
   .kit-intro-container.intro-active.nav-active
     .kit-intro
       .kit-intro-title
