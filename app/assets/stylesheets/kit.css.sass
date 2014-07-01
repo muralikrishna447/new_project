@@ -67,6 +67,7 @@
         left: 10px
         @include transition(1s all $standard-bezier)
         h1
+          display: inline-block
           font-size: 30px
           @include transition(1s all $standard-bezier)
           &:hover
@@ -86,7 +87,7 @@
         @include transition(300ms all $standard-bezier)
         .kit-gradient
           position: absolute
-          top: 0px
+          top: -120px
           left: 0px
           opacity: 0
           @include transition(300ms all $standard-bezier)
@@ -100,7 +101,7 @@
         top: 60%
         left: 50%
         h1
-          display: inline-block
+          
           background: rgba(226,95,37,.9)
           box-shadow: 15px 0 0 0 rgba(226,95,37,.9), -15px 0 0 0 rgba(226,95,37,.9)
           color: white
@@ -167,6 +168,7 @@
         padding: 0
         display: inline-block
         box-shadow: 10px 0 0 0 rgba(226,95,37,.9), -10px 0 0 0 rgba(226,95,37,.9)
+        @include boxsizing
         @include transition(300ms all $standard-bezier)
 
       .kit-nav-item-image
@@ -181,6 +183,7 @@
         background: white
         border-top: 1px solid $orange
         border-left: 1px solid $orange
+        @include boxsizing
         @include transform(rotate(45deg))
         @include transition(300ms opacity cubic-bezier(0.81, 0, 0, 0.99))
   
@@ -195,6 +198,7 @@
 
 
   .kit-intro-container.intro-active.nav-active
+    border-top: 0px
     .kit-intro
       .kit-intro-title
         h3
@@ -205,6 +209,12 @@
         margin-top: -160px
         .kit-gradient
           opacity: 1
+    .kit-nav-item
+      .knit-nav-item-trangle
+        opacity: 0
+    .kit-nav-item.item-active
+      .kit-nav-item-triangle
+        opacity: 0
 
 
   .kit-nav-container.nav-active

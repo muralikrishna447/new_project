@@ -34,6 +34,7 @@
     if !$scope.introActive
       $scope.introActive = ! $scope.introActive
       $scope.navActive = false
+      $scope.viewerActive = false
 
   $scope.toggleNav = ->
     $scope.navActive = ! $scope.navActive
