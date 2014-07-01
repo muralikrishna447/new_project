@@ -36,11 +36,15 @@
             / / %csembedyoutube(video-id='{{activity.youtube_id}}')
             / %img(cs-responsive-image='activity.featured_image_id')
   .kit-nav-container(ng-class="{'viewer-active':viewerActive, 'nav-active':navActive}")
-    .kit-nav-item(ng-repeat="inclusion in kit.assembly_inclusions" ng-click="loadItem(inclusion)")
+    .kit-nav-item(  ng-repeat="inclusion in kit.assembly_inclusions"
+                    ng-click="loadItem(inclusion)"
+                    ng-class="activateItem(inclusion)"
+                  )
       .kit-nav-item-title
         {{inclusion.includable_title}}
       .kit-nav-item-image
         %img(cs-responsive-image='inclusion.includable_image_id')
+      .kit-nav-item-triangle()
 
   / .kit-toggles
   /   %a(ng-click="toggleIntro()")
