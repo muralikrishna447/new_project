@@ -80,18 +80,19 @@
 
             .page.anim-basic-fade(ng-switch-when="results")
               .section
+                .labeled-time
+                  %span Cook at
                 %h2.text-center(ng-bind-html="utils.formatTemp(water_temp, inputs.units)")
-              .section
                 .labeled-time
-                  %span Ice and reheat
-                  %h3(ng-show="loading")
-                    %i.icon-spinner.icon-spin
-                  %h3(ng-show="! loading") {{utils.formatTime(output.items[4], needsSeconds())}}
-                .labeled-time
-                  %span Serve immediately
                   %h3(ng-show="! loading") {{utils.formatTime(output.items[1], needsSeconds())}}
                   %h3(ng-show="loading")
                     %i.icon-spinner.icon-spin
+              .section
+                .labeled-time
+                  %span Or, to ice and reheat
+                  %h3(ng-show="loading")
+                    %i.icon-spinner.icon-spin
+                  %h3(ng-show="! loading") {{utils.formatTime(output.items[4], needsSeconds())}}
               .section-tiny.text-center
                 Add data for more accurate time:
                 .btn.btn-circle.medium(ng-click="goState('size')" ng-class="stateVisited('size')")
