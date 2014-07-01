@@ -110,29 +110,12 @@
     height: 160px
     width: 100%
     z-index: 200
+    @include boxsizing
     @include display-flex
     @include flex-wrap(wrap)
     @include justify-content(space-around)
     @include align-content(space-around)
     @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
-
-    .kit-nav-toggle
-      position: absolute
-      top: -30px
-      left: 40px
-      width: 100px
-      height: 30px
-      text-align: center
-      background: white
-      opacity: 1
-      border: 1px solid #ccc
-      border-bottom: 0px
-      border-radius: 5px 5px 0px 0px
-      padding: 5px
-      @include boxsizing
-      @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
-      &:hover
-        cursor: pointer
 
     .kit-nav-item
       position: relative
@@ -154,6 +137,9 @@
       .kit-nav-item-image
         @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
   
+  .kit-nav-container.nav-active.viewer-active
+    border-top: 1px solid $orange
+
   .kit-intro-container.intro-active.nav-active
     .kit-intro
       .kit-intro-title
@@ -168,34 +154,22 @@
 
   .kit-nav-container.nav-active
     bottom: 0px
-    .kit-nav-toggle
-      opacity: 0
 
   .kit-viewer
     height: 100%
     width: 100%
     padding-top: 60px
-    padding-bottom: 0px
+    padding-bottom: 170px
     overflow-y: auto
     opacity: 0
     @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
     @include boxsizing
     .kit-page
-      width: 600px
+      width: 800px
       margin: 0 auto
-    .kit-gradient
-      position: absolute
-      top: 0px
-      left: 0px
-      opacity: 0
-      @include transition(300ms all cubic-bezier(0.81, 0, 0, 0.99))
 
   .kit-viewer.viewer-active
     opacity: 1
-
-  .kit-viewer.viewer-active.nav-active
-    .kit-gradient
-      opacity: 1
 
   .kit-gradient
     width: 100%
