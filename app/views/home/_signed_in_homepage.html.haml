@@ -3,7 +3,7 @@
   .row
     .span8
       .home-section
-        %h2
+        %h2.section
           = link_to 'Classes', courses_path, class: 'orange-link'
         .home-featured-item.section
           - home_featured_path = landing_class_path(@classes[0])
@@ -45,7 +45,7 @@
 
     .span4
       .home-section
-        %h2
+        %h2.section
           = link_to "Latest", gallery_index_path, class: 'orange-link'
         .whats-new.section
           - @latest.each.with_index do |item, index|
