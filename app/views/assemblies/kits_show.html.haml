@@ -13,12 +13,15 @@
     .kit-page
       %div(ng-switch="currentInclusion.includable_type")
         %div(ng-switch-when="Activity")
+          .wide-item
+            %csembedyoutube(video-id='{{activity.youtube_id}}')
           .standard-item
+            %br
             %h2
               {{activity.title}}
             %p
               {{activity.description}}
-            %csembedyoutube(video-id='{{activity.youtube_id}}')
+            %br
           %div(ng-controller="StepsController")
             = render 'activities/steps'
         %div(ng-switch-when="Assembly" ng-controller='GalleryController')
