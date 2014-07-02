@@ -167,6 +167,67 @@
     .media-box-3-image-group.has-summary
       bottom: 100px
 
+/// MEDIA BOX 4 ///
+
+.media-box-4
+  @include boxsizing
+  width: 360px
+  background: white
+  float: left
+  img
+    width: 100%
+    margin: 10px 0px
+  a
+    color: #333333
+    .media-box-4-title
+      position: absolute
+      background: rgba(226,95,37,.9)
+      box-shadow: 15px 0 0 0 rgba(226,95,37,.9), -15px 0 0 0 rgba(226,95,37,.9)
+      color: white
+      @include primary-font-light
+      margin-top: 190px
+      margin-left: 15px
+      text-transform: uppercase
+      text-overflow: ellipsis
+      white-space: nowrap
+      overflow: hidden
+      @include transition(.3s all $standard-bezier)
+      &:hover
+        background: rgba(255,255,255,.9)
+        color: $orange
+        box-shadow: 15px 0 0 0 rgba(255,255,255,.9), -15px 0 0 0 rgba(255,255,255,.9)
+
+
+
+    .media-box-4-footer
+      .footer-left
+        float: left
+        text-transform: uppercase
+      .footer-right
+        float: right
+
+    .media-box-4-image-group
+      z-index: 1     
+      @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
+      @include transition-delay(0.4s)
+      bottom: 0px
+
+    .media-box-4-summary
+      position: absolute
+      height: 88px
+      left: 0
+      right: 0
+      bottom: 0
+      text-overflow: ellipsis
+ 
+  &:hover
+    cursor: pointer
+    a
+      text-decoration: none
+
+    .media-box-4-image-group.has-summary
+      bottom: 100px    
+      
 .line-clamp
   &:after
     background: linear-gradient(to right, rgba(255, 255, 255, 0), white 50%) repeat scroll 0 0 rgba(0, 0, 0, 0)

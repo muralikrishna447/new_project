@@ -3,7 +3,7 @@
   .row
     .span8
       .home-section
-        %h2
+        %h2.section
           = link_to 'Classes', courses_path, class: 'orange-link'
         .home-featured-item
           - home_featured_path = landing_class_path(@classes[0])
@@ -49,11 +49,11 @@
 
     .span4
       .home-section
-        %h2.section-tiny
+        %h2.section
           = link_to "Latest", gallery_index_path, class: 'orange-link'
         .whats-new.section
           - @latest.each.with_index do |item, index|
-            = render 'shared/media_box_3', url: activity_path(item), title: item.title, image: item.featured_image, object: item
+            = render 'shared/media_box_4', url: activity_path(item), title: item.title, image: item.featured_image, object: item
         .section  
           = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
 
