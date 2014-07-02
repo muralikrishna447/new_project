@@ -5,35 +5,27 @@
     float: left
     width: 100%
 
+    img
+      margin-bottom: $baseline
+
   .home-header
     color: $orange
 
   .home-featured-item
+    border: 1px solid $light-gray
+    padding: $baseline
     margin-bottom: $baseline * 2
     @include boxsizing
     @include primary-font
 
-    h3
-      margin: 0px
-      display: inline-block
-
-    img
-      margin-bottom: $baseline
-      @include transition(.2s all $bounce-bez)
-      &:hover
-        margin-top: -5px  
-        @include any_shadow(0px 10px 20px #ccc)
-
-    .top-group
-      width: $horz-baseline-large * 40
-      margin-left: auto
-      margin-right: auto
-      margin-bottom: $baseline * 5
-
     .rating
-      text-align: center
-      display: block
-      margin-bottom: $baseline
+      display: inline-block
+      float: right
+
+  .top-group
+    margin-bottom: $baseline
+    h3
+      float: left
 
   .whats-new
     margin-top: -10px

@@ -5,16 +5,20 @@
       .home-section
         %h2.section
           = link_to 'Classes', courses_path, class: 'orange-link'
-        .home-featured-item.section
+        .home-featured-item
           - home_featured_path = landing_class_path(@classes[0])
           = link_to home_featured_path do
+            .top-group
+              %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= @classes[0].title
+              %csrating.rating(value="#{@classes[0].average_rating}" readonly="true")
             = image_tag filepicker_stream_image(@classes[0].featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
             .section.pull-right.home-featured-item-btn(onclick= 'track_viewed_course_through_signed_in_homepage();')
               / = where_user_left_off_in_course(@classes[0], current_user, 'btn btn-primary btn-large')
-          .section.top-group            
-            %p
-              = @classes[0].short_description
-                
+              = link_to home_featured_path do
+                .btn.btn-primary.btn-large
+                  View the Class
+          .section
+            = @classes[0].short_description
         - @classes.from(1).each.with_index do |course, index|
           - url = landing_class_path(course)
           .home-standard-item
