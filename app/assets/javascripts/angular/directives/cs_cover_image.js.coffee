@@ -1,71 +1,117 @@
-@app.directive 'csCoverImage', ['$window', ($window) ->
+@app.directive 'csCoverImage', ['$window', '$http', ($window, $http) ->
   restrict: 'A'
   scope: { csCoverImage: '='}
 
-  link: (scope, element, attrs) ->
-    baseURL = null
-    width = 0
-    scope.coverImageStyle = {}
+  # link: (scope, element, attrs) ->
+  #   baseURL = null
+  #   width = 0
+  #   scope.coverImageStyle = {}
+  #   placeHolderImageStyle = {}
+  #   scope.imageLoaded = false
     
-    getWidth = ->
-      element[0].clientWidth
+  #   getWidth = ->
+  #     element[0].clientWidth
 
-    getParentHeight = ->
-      element.parent()[0].clientHeight
+  #   getParentHeight = ->
+  #     element.parent()[0].clientHeight
 
-    updateSource = (apply) ->
-      apply ?= null
-      width = getWidth()
-      height = getParentHeight()
-      if baseURL
-        imageURL = window.cdnURL(baseURL) + "/convert?w=#{width}&cache=true"
-        console.log imageURL
-        scope.coverImageStyle = {
-          "background": "url('" + imageURL + "/convert?w=#{width}&cache=true') no-repeat center center fixed"
-          "height": height
-        }
-        if apply
-          scope.$apply()
-      # width = getWidth()
-      # if baseURL
-      #   attrs.$set('src', window.cdnURL(baseURL) + "/convert?w=#{width}&cache=true")
-      # else
-      #   attrs.$set('src', null)
+  #   updateSource = (apply) ->
+  #     scope.imageLoaded = true
+  #     apply ?= null
+  #     width = getWidth()
+  #     height = getParentHeight()
+  #     if baseURL
+  #       imageURL = window.cdnURL(baseURL) + "/convert?w=#{width}&cache=true"
+  #       console.log imageURL
+  #       scope.coverImageStyle = {
+  #         "background": "url('" + imageURL + "/convert?w=#{width}&cache=true') no-repeat center center fixed"
+  #         "height": height
+  #       }
+  #       if apply
+  #         scope.$apply()
 
-    # console.log getWidth()
+  #   insertPlaceholder = ->
+  #     console.log 'Inserting Placeholder'
+  #     height = getParentHeight()
+  #     scope.placeHolderImageStyle = {
+  #       "background" : "gray"
+  #       "height" : height
+  #     }
 
-    scope.$watch 'csCoverImage', (newVal, oldVal) -> 
+  #   scope.$watch 'csCoverImage', (newVal, oldVal) -> 
+  #     if newVal
+  #       baseURL = JSON.parse(newVal).url
+  #       updateSource()
+  #     else
+  #       insertPlaceholder()
 
-      baseURL = if newVal then JSON.parse(newVal).url else null
-      updateSource()
+  #   angular.element($window).bind 'resize', ->
+  #     _.throttle(updateSource(true))
 
-    ## Run updateSource() only when resizing is done
-    # rtime = new Date
-    # timeout = false
-    # delta = 200
+  link: (scope, element, attrs) ->
+    scope.baseURL = {}
+    scope.coverImageStyle = {}
+    scope.placeHolderImageStyle = {}
+    scope.imageLoaded = true
+    width = 0
+    height = 0
 
-    # resizeend = ->
-    #   if new Date() - rtime < delta
-    #     setTimeout resizeend, delta
-    #   else
-    #     timeout = false
-    #     updateSource()
-    #     scope.$apply()
-    #   return
+    getBaseURL = (fpfile) ->
+      scope.baseURL = JSON.parse(fpfile).url
 
-    # angular.element($window).bind 'resize', ->
-    #   rtime = new Date()
-    #   if timeout is false
-    #     timeout = true
-    #     setTimeout resizeend(), delta
-    #   return
+    getParentDimensions = ->
+      parent = element.parent()
+      width = element[0].clientWidth
+      height = parent[0].clientHeight
 
-    angular.element($window).bind 'resize', ->
-      _.throttle(updateSource(true))
+    getSourceImageDimensions = ->
+      url = scope.baseURL + "/metadata?width=true&height=true"
+      $http.get(url, {headers: {'X-Requested-With': undefined}}).then (response) ->
+        console.log response.data
+      # $http.get(url).then (response) ->
+      #   console.log response.data
+
+    loadImage = ->
+      imageURL = window.cdnURL(scope.baseURL) + "/convert?w=#{width}&cache=true"
+      scope.coverImageStyle = {
+        "background": "url('" + imageURL + "') no-repeat center center fixed"
+        "height": height
+      }
+
+    scope.$watch 'csCoverImage', (newValue, oldValue) ->
+      if newValue
+        getBaseURL(newValue)
+        getParentDimensions()
+        getSourceImageDimensions()
+        loadImage()
 
   template: """
-    <div ng-style="coverImageStyle">
-    <div>
+    <div ng-show="imageLoaded" ng-style="coverImageStyle">
+    </div>
+    <div ng-show="! imageLoaded" ng-style="placeHolderImageStyle">
+    </div>
   """
 
 ]
+
+
+## Run updateSource() only when resizing is done
+# rtime = new Date
+# timeout = false
+# delta = 200
+
+# resizeend = ->
+#   if new Date() - rtime < delta
+#     setTimeout resizeend, delta
+#   else
+#     timeout = false
+#     updateSource()
+#     scope.$apply()
+#   return
+
+# angular.element($window).bind 'resize', ->
+#   rtime = new Date()
+#   if timeout is false
+#     timeout = true
+#     setTimeout resizeend(), delta
+#   return
