@@ -5,7 +5,7 @@ class HomeController < ApplicationController
     prereg_assembly_classes = Assembly.prereg_courses.order('created_at desc').limit(1)
     pubbed_assembly_classes = Assembly.pubbed_courses.order('created_at desc').limit(1)
     @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
-    @projects = Assembly.projects.published
+    @projects = Assembly.projects.published.order('created_at desc')
 
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_feeds.order('published_at desc').first(6)
