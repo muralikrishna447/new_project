@@ -2,7 +2,8 @@
   .kit-intro-container(ng-click="toggleIntro()" ng-class="{'intro-active':introActive, 'nav-active':navActive}")
     .kit-intro
       .kit-intro-image
-        %img(cs-responsive-image='kit.image_id')
+        / %img(cs-responsive-image='kit.image_id')
+        %div(cs-cover-image="kit.image_id")
         .kit-gradient
       .kit-intro-title(ng-click="toggleNav()")
         %h1.section
