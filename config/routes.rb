@@ -10,6 +10,8 @@ Delve::Application.routes.draw do
 
   ActiveAdmin.routes(self)
 
+  match '/become', to: 'admin#become'
+
   # Redirects
   match '/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-cooking-running-water-method',
     to: redirect('/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-running-water-method')
