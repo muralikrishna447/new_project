@@ -13,6 +13,7 @@ ActiveAdmin.register Activity do
   filter :published
   filter :published_at
   filter :description
+  filter :creator, as: :check_boxes, collection: [0]
 
   menu priority: 2
 
