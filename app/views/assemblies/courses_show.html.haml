@@ -81,7 +81,7 @@
       .assembly-loading-background
         .activity-loading-spinner
           %i.icon-page-load
-    .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}")
+    .course-nav-slideout.noprint(ng-class="{'menu-slideout': showCourseMenu}")
       %a.black-link(ng-href='{{course.path}}')
         %h1
           {{course.title}}

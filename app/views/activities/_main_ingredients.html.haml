@@ -1,7 +1,7 @@
 .section(ng-controller="IngredientsController" cs-watch-focus)
   .activity-ingredients-list#full-ingredients-list.section
   
-    .ingredients-menu-button(ng-show="activity.ingredients.length && ! editMode")
+    .ingredients-menu-button.noprint(ng-show="activity.ingredients.length && ! editMode")
       .btn.btn-link( ng-click="toggleIngredientsMenu()" 
                       ng-class="{'active' : csGlobals.scaling != 1}")
         Scale recipe ...
