@@ -74,7 +74,10 @@
     loadImage = ->
       imageURL = window.cdnURL(scope.baseURL) + "/convert?w=#{width}&cache=true"
       scope.coverImageStyle = {
-        "background": "url('" + imageURL + "') no-repeat center center fixed"
+        "background-image": "url('" + imageURL + "')"
+        "background-repeat": "no-repeat"
+        "background-position": "center center"
+        "background-size": "cover"
         "height": height
       }
 
