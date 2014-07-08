@@ -7,6 +7,13 @@ class UsersController < ApplicationController
     render text: encrypted
   end
 
+  def get_user
+    @user = User.find(params[:userId])
+    user_json = {data: {id: @user.id.to_s, name: @user.name, avatarUrl: @user.avatar_url}}.to_json
+    encrypted = ChefstepsBloom.encrypt(user_json)
+    render text: encrypted
+  end
+
   # Bloom will also be using this endpoint
   def index
     if params[:ids]
