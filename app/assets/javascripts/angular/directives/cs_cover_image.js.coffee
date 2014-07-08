@@ -1,6 +1,14 @@
+# This directive will place the correct image size into a div
+# usage %div(cs-cover-image="FILEPICKER OBJECT")
+# set reload-on-window-resize="true" if you want the reload the image when the window is resized.
+# reloadOnWindowResize should probably be only used for once per page for performance reasons.  Ideal for large fullpage images
+
 @app.directive 'csCoverImage', ['$window', '$http', ($window, $http) ->
   restrict: 'A'
-  scope: { csCoverImage: '='}
+  scope: { 
+    csCoverImage: '='
+    reloadOnWindowResize: '='
+  }
 
   link: (scope, element, attrs) ->
     scope.baseURL = {}
@@ -63,13 +71,14 @@
         getSourceImageDimensions()
 
     angular.element($window).bind 'resize', ->
-      _.throttle(
-        console.log 'throttleeedd'
-        getParentDimensions()
-        compareDimensions()
-        loadImage()
-        scope.$apply()
-      )
+      if scope.reloadOnWindowResize
+        console.log 'WINDOW RESIZE RELOAD'
+        _.throttle(
+          getParentDimensions()
+          compareDimensions()
+          loadImage()
+          scope.$apply()
+        )
 
   template: """
     <div ng-show="imageLoaded" ng-style="coverImageStyle">
