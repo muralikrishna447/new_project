@@ -59,7 +59,7 @@
       scope.coverImageStyle = {
         "background-image": "url('" + imageURL + "')"
         "background-repeat": "no-repeat"
-        "background-position": "top center"
+        "background-position": "center center"
         "background-size": "cover"
         "height": parent.height
       }
