@@ -119,7 +119,7 @@
 
             .page.anim-basic-fade(ng-switch-when="size")
               %h4.text-center What (US) size is your egg?
-              .section.text-center
+              .section.text-center.egg-size
                 %ul.nav.nav-tabs.underline
                   %li(  ng-repeat="choice in eggService.sizeChoices" 
                         ng-click="inputs.circumference = choice['mm']" 
@@ -142,17 +142,17 @@
 
             .page.anim-basic-fade(ng-switch-when="startTemp")
               %h4.text-center What temperature is your egg?
-              .section.text-center
-                %ul.nav.nav-tabs.underline.text-center.inline
+              .section.text-center.egg-start-temp
+                %ul.nav.nav-tabs.underline.text-center
                   %li(ng-click="inputs.start_temp = 5" ng-class="{'active': inputs.start_temp == 5}")
                     %a Refrigerated
                   %li(ng-click="inputs.start_temp = 22" ng-class="{'active': inputs.start_temp == 22}")
                     %a Room Temperature
-              .div(ng-hide="inputs.units == 'f'")
+              %div(ng-hide="inputs.units == 'f'")
                 .section.text-center
                   OR
                 .section.text-center
-                  %input.tiny-input(type="number" ng-model="inputs.start_temp") &deg;C
+                  %input.tiny-input.egg-start-temp-input(type="number" ng-model="inputs.start_temp") &deg;C
               .egg-footer
                 .btn.btn-secondary(ng-click="goState('bathType')")
                   ADD BATH TYPE
