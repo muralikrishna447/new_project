@@ -1,34 +1,67 @@
+.master-column-container(cs-activity-columns)
+  .master-column
+    #main-content.main-content-container(ng-cloak)
 
-.row.relative(ng-hide="heroDisplayType() == 'none'")
-  .span12.ng-cloak.assembly-activity.section#video-ingredient-unit
-    .hero-video.noprint
-      = render 'activities/hero_visual'
-    - unless @assembly
-      .noprint(ng-show="! editMode")
-        = render 'layouts/social_buttons', media_object: activity
-.row.main-content-container
-  .span6
-    = render 'activities/latest/description'
-  %div(ng-class='ingredientSpanClass()')
-    = render 'activities/main_ingredients'
-    .row
-      .span3
-        = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment/&#8203;Materials", test_method: "hasAnyEquipment", required_string: "any", required: "any"
-      .span3
-        .section
-          %h4(ng-show="editMode || !! activity.yield") Yield
-          %span(  contenteditable="{{editMode}}" 
-                  ng-model="activity.yield" 
-                  itemprop="recipeYield")
-          %span.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
-        .section
-          %h4(ng-show="editMode || !! activity.timing") Timing
-          %span(  contenteditable="{{editMode}}" 
-                  ng-model="activity.timing")
-          %span.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
-        = render 'activities/activity_relationships'
+      .aside.noprint(ng-show="(! editMode) && (activityColumns >= 3)")
+        = render 'activities/tools'
 
-.row.step-container
-  .span12.ng-cloak.assembly-activity.relative(ng-controller="StepsController")
-    = render 'activities/steps'
+      .standard-item
+        = render 'activities/title'
+        -if defined? activity
+          .section-tiny.noprint(ng-hide="editMode")
+            = render 'layouts/social_buttons', media_object: activity
+
+      .standard-item
+        = render 'activities/metadata'
+
+       
+      .standard-item.section
+        = render 'activities/latest/description'
+
+      .section-large
+      .medium-item
+
+        .half-medium-item.ingredients-item(ng-if="activity.ingredients.length || editMode")
+          = render 'activities/main_ingredients'
+
+        .half-medium-item
+          .section(ng-show="editMode || hasAnyEquipment()")
+            = render 'activities/new_equipment_list', model: "activity.equipment", name: "Equipment", required_string: "any", required: "any"
+
+          .section
+            .quarter-medium-item(ng-show="editMode || !! activity.yield") 
+              %h5 Yield
+              .inline.no-p-margin(  cs-contenteditable="editMode" 
+                        ng-model="activity.yield" 
+                        itemprop="recipeYield")
+              .inline.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
+
+            .quarter-medium-item(ng-show="editMode || !! activity.timing") 
+              %h5 Timing
+              .inline.no-p-margin(  cs-contenteditable="editMode" 
+                        ng-model="activity.timing")
+              .inline.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
+
+          .section.noprint(ng-show='(! editMode) && (activity.used_in.length > 0)') 
+            %h5 Used In
+            %ul.no-bullet
+              %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true | limitTo:10")
+                %a( ng-bind-html='item.title'
+                    ng-href='/activities/{{item.slug}}'
+                    target='_blank')
+                %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
+                  %i.icon-group
+
+          .section.noprint(ng-show='(! editMode) && (activity.forks.length > 0)') 
+            %h5 Forks
+            %ul.no-bullet
+              %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true | limitTo:10")
+                %a( ng-bind-html='item.title'
+                    ng-href='/activities/{{item.slug}}'
+                    target='_blank')
+                %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
+                  %i.icon-group
+
+      .ng-cloak.assembly-activity.relative(ng-controller="StepsController")
+        = render 'activities/steps'
 

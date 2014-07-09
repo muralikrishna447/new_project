@@ -2,18 +2,14 @@
 
 .container.about-quote
   .row
-    .span8.offset2
-      .lead.section
-        %blockquote
-          %p
-            Whenever we cook we become practical chemists, drawing on the accumulated knowledge of generations, and transforming what the Earth offers us into more concentrated forms of pleasure and nourishment.
-          %p.pull-right
-            &#8211 Harold McGee
+    .span12
+      .lead.section.text-center
+        %h1.whitespace Every cook, cooking smarter.
 
 .container.about-mission
   .row
     .span12
-      %h1 About ChefSteps
+      %h2 About ChefSteps
       .row
         .span6
           :markdown
@@ -23,6 +19,5 @@
             #{@about_right}
 
 = render 'about_tabs'
-= render 'about_get_to_work'
-
+/ = render 'about_get_to_work'
 = render 'layouts/footer'

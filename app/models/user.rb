@@ -34,13 +34,24 @@ class User < ActiveRecord::Base
 
   serialize :viewed_activities, Array
 
+  # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }
+  # scope :where_all, ->(column, key, value) { where("? = ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }
+  # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore LIKE ?)", value, '%' + key + '%') }
+  # scope :where_all, ->(column, key, value) { where("? = ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore LIKE ?)", value, '%' + key + '%') }
+
+  # scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", '%' + value + '%', key) }
+  # scope :where_all, ->(column, key, value) { where("? LIKE ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", '%' + value + '%', key) }
+
+  scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
+  scope :where_all, ->(column, key, value) { where("? LIKE ALL (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
+
   gravtastic
 
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :token_authenticatable, :omniauth_providers => [:google_oauth2]
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :free_trial, :survey_results
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :free_trial, :survey_results, :events_count
 
   # This is for active admin, so that it can edit the role (and so normal users can't edit their role)
   attr_accessible :name, :email, :password, :password_confirmation,
@@ -55,6 +66,8 @@ class User < ActiveRecord::Base
   serialize :survey_results, ActiveRecord::Coders::NestedHstore
 
   ROLES = %w[admin contractor moderator user banned]
+
+  include Searchable
 
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
@@ -179,6 +192,34 @@ class User < ActiveRecord::Base
 
   def class_enrollment(assembly)
     enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first
+  end
+
+  def disconnect_service!(service)
+    case service
+    when "facebook"
+      update_attributes({facebook_user_id: nil, provider: nil}, without_protection: true)
+    when "google"
+      update_attributes({google_user_id: nil, google_access_token: nil}, without_protection: true)
+    when "twitter"
+    else
+      raise "Don't Recognize this service! Service was '#{service}'"
+    end
+  end
+
+  def encrypted_bloom_info
+    user_json = {'userId' => self.id.to_s}.to_json
+    begin
+      response = Faraday.get 'http://api.usebloom.com/encrypt?string=' + user_json + '&apiKey=xchefsteps'
+      response.body
+    rescue Faraday::Error::ConnectionFailed => e
+      logger.warn "Unable to encrypt info for Bloom: #{e}"
+    end
+  end
+
+  def as_indexed_json(options={})
+    as_json(
+      only: [:name, :bio]
+    )
   end
 end
 

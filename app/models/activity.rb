@@ -60,14 +60,17 @@ class Activity < ActiveRecord::Base
   scope :popular, where('likes_count IS NOT NULL').order('likes_count DESC')
   scope :by_equipment_title, -> title { joins(:terminal_equipment).where("equipment.title iLIKE ?", '%' + title + '%') }
   scope :by_equipment_titles, -> titles { joins(:terminal_equipment).where("equipment.title iLIKE ANY (array[?])", titles.split(',').map{|a| "%#{a}%"} ) }
+  scope :not_in_course, where(show_only_in_course: false)
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
   serialize :activity_type, Array
 
-  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids, :layout_name
+  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
   attr_accessible :show_only_in_course, :summary_tweet
+
+  include Searchable
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -80,8 +83,6 @@ class Activity < ActiveRecord::Base
                   associated_against: {terminal_equipment: [[:title, 'D']], terminal_ingredients: [[:title, 'D']], tags: [[:name, 'B']], steps: [[:title, 'C'], [:directions, 'C']]}
 
   TYPES = %w[Recipe Technique Science]
-
-  LAYOUT_NAMES = ['list']
 
   include Rails.application.routes.url_helpers
 
@@ -232,7 +233,8 @@ class Activity < ActiveRecord::Base
             audio_title: step_attr[:audio_title],
             step_order_position: :last,
             hide_number: step_attr[:hide_number],
-            is_aside: step_attr[:is_aside]
+            is_aside: step_attr[:is_aside],
+            presentation_hints: step_attr[:presentation_hints]
         )
         step.update_ingredients_json(step_attr[:ingredients])
       end
@@ -454,6 +456,36 @@ class Activity < ActiveRecord::Base
     else
       activity_path(self)
     end
+  end
+
+  def avatar_url
+    if self.featured_image_id.blank?
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=crop&w=70&h=70&cache=true"
+    else
+      url = ActiveSupport::JSON.decode(self.featured_image_id)["url"]
+      avatar_url = "#{url}/convert?fit=crop&w=70&h=70&cache=true".gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    end
+  end
+
+  # For elasticsearch.  See https://github.com/elasticsearch/elasticsearch-rails/tree/master/elasticsearch-model
+  def as_indexed_json(options={})
+    as_json(
+      only: [:title, :description],
+      methods: [:tag_list],
+      include: {
+        terminal_ingredients: { only: [:title] },
+        steps: { only: [:title, :directions] }
+      }
+    ).merge({'search_data' => search_data})
+  end
+
+  def search_data
+    {
+      'title' => title,
+      'id' => id,
+      'avatarUrl' => avatar_url,
+      'path' => activity_path(self)
+    }
   end
 
   private

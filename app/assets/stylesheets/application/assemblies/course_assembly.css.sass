@@ -1,6 +1,10 @@
 @import 'mixins'
 @import 'application/custom_mixins'
 
+.class-activity-wrapper
+  .standard-item
+    width: 700px
+
 .fs-course
   height: 100%
   margin: 0px
@@ -265,11 +269,10 @@
 
   .ordered-steps-new
     .ordered-step-item
-      float: left
       padding: 0px
+      margin-bottom: $baseline * 4
       @include boxsizing
-      .step-number
-        @include primary-font-bold
+
       .step-content
 
         margin-bottom: $baseline
@@ -350,6 +353,10 @@
 .ingredients-title
   display: none
 
+.course-comments
+  padding-left: 15px
+  padding-right: 15px
+
 .responsive
   display: none
 
@@ -363,6 +370,7 @@
 
   .course-content-wrapper
     padding-left: 335px
+    padding-right: 0px
 
   .assembly-loading-wrapper
     padding-left: 335px

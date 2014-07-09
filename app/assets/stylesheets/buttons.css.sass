@@ -5,6 +5,7 @@
 .btn
   @include primary-font
   line-height: $baseline*2
+  +radius(2px)
   i
     line-height: $baseline*2
 
@@ -20,7 +21,7 @@
   background: $orange
   border: 0px
   border-bottom: 1px $dark-orange solid
-  border-radius: 0px
+  +radius(2px)
   margin-bottom: $baseline
   position: relative
   @include boxsizing
@@ -71,6 +72,13 @@
   border: 0
   padding: 10px
 
+.btn-email
+  background: #000
+  color: white
+  text-shadow: none
+  border: 0
+  padding: 10px
+
 .btn-gray
   background: $offwhite
   border: none
@@ -89,6 +97,14 @@
   &:hover
     background: $darker_orange
     @include transition(all 100ms)
+
+[btn-radio], .btn-fake-radio
+  border: 1px solid $orange !important
+  &.active
+    background-color: $orange !important
+  &:not(.active)
+    background-color: white !important
+    color: $orange !important
 
 .btn-play-image
   position: relative
@@ -159,6 +175,13 @@
     color: white
     cursor: pointer
 
+.btn-circle.medium
+  height: 70px
+  width: 70px
+  margin: 10px 4px
+  padding: 16px 10px
+  font-size: 14px
+
 .btn-circle.large
   height: 80px
   width: 80px
@@ -182,9 +205,10 @@
 .btn-social
   margin: 0px 2px 4px 2px
   background-color: white
-  border-radius: 2px
   padding: 0px 0px 0px 0px
   height:  29px
+  border: none
+  @include any-shadow(none)
   @include transition(all 250ms ease-in-out 2 alternate)
 
   i
@@ -212,7 +236,6 @@
 
 =btn-social-base($c)
   color: $c
-  border:  1px solid $c
 
   .social-button-contents
     display: inline-block
@@ -274,12 +297,12 @@
 .social-counter, .social-icon-group
   display: inline-block
 .social-counter
-  margin-left: -3px
-  width: 30px
+  margin-left: $horz-baseline-small
+  margin-right: $horz-baseline-small
+  text-align: left
 
 .social-flat
   display: inline-block
-  margin-left: -2px
 
 .btn-save-for-later
   width: 200px

@@ -49,14 +49,7 @@
               %ul
                 - activity.optional_equipment.map do |equipment|
                   %li= link_to equipment.title, admin_equipment_path(equipment.equipment_id)
-          %tr
-            %th Ingredients
-            %td
-              %ol
-                - activity.ingredients.each do |ingredient|
-                  %li
-                    = ingredient.measurement
-                    = link_to ingredient.title, admin_ingredient_path(ingredient.ingredient_id)
+
           %tr
             %th Steps
             %td

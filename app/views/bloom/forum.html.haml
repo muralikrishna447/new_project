@@ -1,0 +1,222 @@
+%html
+  %head
+    %title= "ChefSteps Community Beta"
+    = csrf_meta_tags
+    %meta(name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width")
+    %script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js")
+    %script(src="//community-staging.usebloom.com/export/loader.js")
+    %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css")
+    %link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
+
+
+    - if current_user
+      :javascript
+        window.encryptedUser = "#{escape_javascript(current_user.encrypted_bloom_info)}";
+        window.chefstepsUserId = "#{current_user.id}"
+    - else
+      :javascript
+        window.chefstepsUserId = null
+
+    :javascript
+      Bloom.configure({
+        env: 'staging',
+        apiKey: 'xchefsteps',
+        user: window.chefstepsUserId,
+        auth: window.encryptedUser,
+        getUsers: function(userIds, callback) {
+          $.getJSON('/users?emails=' + userIds).then(function(response){
+            var users;
+            console.log(response);
+            users = response.map(function(user) {
+              user._id = "" + user.id;
+              user.profileLink = "http://www.chefsteps.com/profiles/" + user.slug;
+              user.avatarUrl = user['avatar_url'];
+              return user;
+            });
+            return callback(users);
+          });
+        }
+      });
+
+    %style
+      :sass
+        $orange: #e25f25
+
+        =boxsizing
+          box-sizing: border-box
+          -moz-box-sizing: border-box
+          -webkit-box-sizing: border-box
+          -o-box-sizing: border-box
+
+        =navpadding
+          height: 6rem
+          padding: 0.8rem
+          line-height: 4.4rem
+
+        html
+          font-size: 62.5%
+          box-sizing: border-box
+          @include boxsizing
+
+        body
+          margin: 0px
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+          font-size: 14px
+          line-height: 1.42857
+          color: #333333  
+          background-color: white
+
+        .forum
+          position: absolute
+          top: 0px
+          left: 0px
+          right: 0px
+          bottom: 0px
+
+        .cs-nav
+          text-align: center
+          display: block
+          background: rgba(255, 255, 255, 0.9)
+          width: 100%
+          z-index: 9999
+          border-bottom: 2px solid #ccc
+          border-top: 2px solid $orange
+          @include boxsizing
+
+          position: fixed
+          top: 0
+          left: 0
+          height: 50px
+
+        .cs-nav::selection
+          background: none
+          color: #e25f25  
+
+        .cs-nav h3
+          margin-top: 15px
+          margin-bottom: 15px
+          font-size: 24px
+          font-weight: 500
+          line-height: 1.1
+
+        .cs-nav-logo
+          position: absolute
+          height: 100%
+          padding: 0.8rem
+          float: left
+          box-sizing: border-box
+          @include boxsizing
+
+        .cs-nav-logo img
+          height: 100%
+
+        .cs-nav-profile
+          float: right
+          @include boxsizing
+          line-height: 30px
+          padding: 8px 8px 0 0
+          @include boxsizing
+
+        .cs-nav-profile a
+          display: block
+
+        .cs-nav-profile img
+          width: 30px
+          height: 30px
+          border-radius: 100%
+          -webkit-border-radius: 100%
+
+        .cs-forum-notifs
+          float: right
+          padding: 13px 8px 0 0
+          @include boxsizing
+
+        #message-container
+          position: fixed
+          bottom: 10px
+          right: 10px
+
+        #message
+          padding: 15px
+          border: 2px solid #e25f25  
+          width: 400px
+          background: white
+          border: 1px solid #ddd
+          @include boxsizing
+
+        #message.message-closed
+          display: none
+
+        #message-open-button.message-closed
+          display: block
+
+        #message-open-button
+          display: none
+          position: absolute
+          bottom: 10px
+          right: 10px
+          &:hover
+            color: $orange
+            cursor: pointer
+
+        #message-close-button
+          position: absolute
+          top: 10px
+          right: 10px
+          &:hover
+            color: $orange
+            cursor: pointer
+
+        @media (max-width: 480px)
+          #message-container
+            display: none
+
+  %body
+    / .cs-nav
+    /   .cs-nav-logo
+    /     %a(href='/')
+    /       %img(src="https://s3.amazonaws.com/uploads.hipchat.com/45918/740320/PBNf6MFq9hsgnF1/csLogoHorizontalSmall-2014.05.02.svg")
+    /   .cs-nav-profile
+    /     - if current_user
+    /       = link_to user_profile_url(current_user) do
+    /         = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
+    /     - else
+    /       sign in
+    /   .cs-forum-notifs
+    .forum
+    #message-container
+      #message-open-button
+        %i.fa.fa-question.fa-lg
+      #message
+        #message-close-button
+          %i.fa.fa-times
+        %strong Welcome to the ChefSteps Forum Beta!
+        %div
+          We appreciate the time you've taken to be part of creating a better forum experience.  Feel free to explore, create new discussions, upload photos, and comment on other discussions.  You can report bugs in the Bug Reports category, but if all else fails, you can always email us 
+          %a(href="mailto:hello@usebloom.com?Subject=Forum%20Bug%20Report" target="_blank")
+            here.
+    :javascript
+      $(document).ready(function() {
+        if (localStorage.message == "closed") {
+          $('#message').addClass('message-closed');
+          $('#message-open-button').addClass('message-closed');
+        } else {
+          $('#message').removeClass('message-closed');
+          $('#message-open-button').removeClass('message-closed');
+        }
+
+        $('#message-close-button').click(function(){
+          $('#message').addClass('message-closed');
+          $('#message-open-button').addClass('message-closed');
+          localStorage.setItem("message", "closed");
+        });
+
+        $('#message-open-button').click(function(){
+          $('#message').removeClass('message-closed');
+          $('#message-open-button').removeClass('message-closed');
+          localStorage.setItem("message", "opened");
+        });
+      });
+      Bloom.installForum({
+        el: $('.forum')[0]
+      });

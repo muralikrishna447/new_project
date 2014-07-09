@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include StatusHelpers
   protect_from_forgery
+  before_filter :cors_set_access_control_headers
 
   if Rails.env.angular? || Rails.env.development?
     require 'database_cleaner'
@@ -81,6 +82,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :facebook_secret
+  def facebook_secret
+    case Rails.env
+    when "production"
+      ENV["FACEBOOK_SECRET"]
+    when "staging", "staging2"
+      "1cb4115088bd42aed2dc6d9d11c82930"
+    else
+      "57601926064dbde72d57fedd0af8914f"
+    end
+  end
+
   helper_method :google_app_id
   def google_app_id
     case Rails.env
@@ -90,6 +103,7 @@ class ApplicationController < ActionController::Base
       ENV["GOOGLE_APP_ID"]
     else
       "108479453177.apps.googleusercontent.com"
+      # "73963737070-9595b3hcj6kqpii3trkg398m4q5duck5.apps.googleusercontent.com"
     end
   end
 
@@ -102,6 +116,7 @@ class ApplicationController < ActionController::Base
       ENV["GOOGLE_SECRET"]
     else
       "M2Y-HWIkTVPNHLUS1P_QNKHr"
+      # "GDEp3Pw_vGew3dorCkurox8U"
     end
   end
 
@@ -186,7 +201,7 @@ private
       case Rails.env
       when "production", "staging", "staging2"
         logger.error("MailChimp error: #{e.message}")
-        raise e
+        raise e unless e.message.include?("already subscribed to list")
       else
         logger.debug("MailChimp error, ignoring - did you set MAILCHIMP_API_KEY? Message: #{e.message}")
       end
@@ -197,7 +212,7 @@ private
   # do not use CSRF for CORS options
   skip_before_filter :verify_authenticity_token, :only => [:options]
 
-  before_filter :cors_set_access_control_headers
+  # before_filter :cors_set_access_control_headers
   # before_filter :authenticate_cors_user
 
   def authenticate_cors_user
@@ -210,9 +225,17 @@ private
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-    headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type'
+    headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type, Authorization'
     headers['Access-Control-Max-Age'] = "1728000"
   end
+
+  # def cors_set_access_control_headers
+  #   headers['Access-Control-Allow-Origin'] = '*'
+  #   headers['Access-Control-Expose-Headers'] = 'Etag'
+  #   headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD'
+  #   headers['Access-Control-Allow-Headers'] = '*, x-Requested-with, X-Prototype-Version, X-CSRF-Token, Content-Type, If-Modified-Since, If-None-Match'
+  #   headers['Access-Control-Max-Age'] = '86400'
+  # end
 
   def set_referrer_in_mixpanel(key)
     if session[:referred_from] && session[:referred_by]

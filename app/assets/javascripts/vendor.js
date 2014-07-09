@@ -27,3 +27,4 @@
 //= require ng-google-chart
 //= require angular-contenteditable
 //= require redactor
+//= require easyXDM.min

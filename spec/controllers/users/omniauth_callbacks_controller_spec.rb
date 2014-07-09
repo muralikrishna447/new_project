@@ -63,7 +63,7 @@ describe Users::OmniauthCallbacksController do
 
       context "user exists" do
         before do
-          Fabricate(:user, provider: "facebook", uid: "123", email: "test@example.com", name: "Test User")
+          Fabricate(:user, provider: "facebook", facebook_user_id: "123", email: "test@example.com", name: "Test User")
         end
 
         it "should return a json" do
@@ -77,6 +77,24 @@ describe Users::OmniauthCallbacksController do
         it "should not be a new_signup" do
           xhr :get, :facebook, {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}
           assigns(:new_signup).should be false
+        end
+      end
+
+      context "connect account to current_user" do
+        before do
+          @user = Fabricate(:user, email: "not_facebook@example.com", name: "Test User")
+          sign_in(@user)
+        end
+
+        it "should update the user with the facebook_user_id" do
+          xhr :get, :facebook, {user: {provider: "facebook", user_id: "123", email: "facebook@example.com", name: "Test User"}}
+          expect(@user.reload.facebook_user_id).to eq "123"
+        end
+
+        it "should not update the user email" do
+          xhr :get, :facebook, {user: {provider: "facebook", user_id: "123", email: "facebook@example.com", name: "Test User"}}
+          expect(@user.reload.email).to eq "not_facebook@example.com"
+          expect(@user.reload.email).to_not eq "facebook@example.com"
         end
       end
     end

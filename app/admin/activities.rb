@@ -13,6 +13,7 @@ ActiveAdmin.register Activity do
   filter :published
   filter :published_at
   filter :description
+  filter :creator, as: :check_boxes, collection: [0]
 
   menu priority: 2
 
@@ -48,6 +49,7 @@ ActiveAdmin.register Activity do
       truncate(activity.description, length: 50)
     end
     column :published
+    column :published_at
     default_actions
   end
 

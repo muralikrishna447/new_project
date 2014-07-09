@@ -1,0 +1,79 @@
+@import 'mixins'
+
+.master-column-container
+  @include boxsizing
+  width: 100%
+
+.master-column
+  @include boxsizing
+  width: 100%
+  max-width: $desktop-standard-item-width + (2 * $aside-width) + (2 * $aside-margin)
+  @include horizontal-center
+
+.base-item
+  @include boxsizing
+  @include horizontal-center
+  position: relative 
+  max-width: calc(100% - 40px) 
+
+.standard-item
+  @extend .base-item
+  width: $desktop-standard-item-width
+
+.medium-item
+  @extend .base-item
+  width: $desktop-standard-item-width + 200px
+  @include display-flex
+  @include flex-wrap(wrap)
+
+.wide-item
+  @extend .base-item
+  width: $desktop-standard-item-width + 400px
+  .step-first-row
+    margin-left: auto
+    margin-right: auto
+    max-width: calc(100% - 40px) 
+    width: $desktop-standard-item-width
+
+.half-medium-item
+  vertical-align: top
+  @include flex(1 0 300px)
+  &:not(:first-child)
+    margin-left: 30px
+
+.quarter-medium-item
+  vertical-align: top
+  display: inline-block
+  width: 170px
+  &:not(:first-child-of-type)
+    margin-left: 30px
+
+.activity-columns-1
+  .leftInset, .rightInset
+    width: $desktop-standard-item-width / 1.5
+    margin-right: $horz-baseline-large * 2
+
+  .leftInset
+    margin-left: -100px
+    margin-right: $horz-baseline-large * 2
+
+  .rightInset
+    margin-right: -100px
+    margin-left: $horz-baseline-large * 2
+
+@media (max-width: 860px)
+  .activity-columns-1
+    .leftInset, .rightInset
+      width: 60%
+
+    .leftInset
+      margin-left: -7%
+      margin-right: $horz-baseline-large * 2
+
+    .rightInset
+      margin-right: -7%
+      margin-left: $horz-baseline-large * 2
+
+@media (max-width: 320px)
+  .base-item
+    max-width: calc(100% - 0px) 

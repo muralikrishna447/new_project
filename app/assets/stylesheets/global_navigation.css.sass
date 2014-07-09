@@ -1,181 +1,26 @@
-//@import bootstrap_config
-//@import twitter/bootstrap-no-sprites
-//@import font-awesome
-//@import twitter/bootstrap/responsive
-//@import application/fonts
-//@import application/sprites
-//@import application/custom_mixins
 
-//@import application/base
-//@import application/header
-//@import application/media_queries
+@import 'mixins'
+@import 'typography'
+@import 'bloom/bloom'
+@import 'navigation'
 
-
-//@font-face
-//  font-family: "FontAwesome"
-//  src: url("http://www.chefsteps.com/assets/fontawesome-webfont.eot")
-//  src: url("http://www.chefsteps.com/assets/fontawesome-webfont.eot?#iefix") format("eot"), url("http://www.chefsteps.com/assets/fontawesome-webfont.woff") format("woff"), url("http://www.chefsteps.com/assets/fontawesome-webfont.ttf") format("truetype"), url("http://www.chefsteps.com/assets/fontawesome-webfont.svgz#FontAwesomeRegular") format("svg"), url("http://www.chefsteps.com/assets/fontawesome-webfont.svg#FontAwesomeRegular") format("svg")
-//  font-style: normal
-//  font-weight: normal
-
-//.container
-//  margin-left: 24px
-
-
-// Mixins
-// TODO: the shared stuff oughta be refactored so these aren't duplicated here and in _mixins.css.sass
-=boxsizing
-  box-sizing: border-box
-  -moz-box-sizing: border-box
-  -webkit-box-sizing: border-box
-  -o-box-sizing: border-box
-
-=shadow
-  box-shadow: 0px 0px 5px #888888
-  -moz-box-shadow: 0px 0px 5px #888888
-  -webkit-box-shadow: 0px 0px 5px #888888
-  -o-box-shadow: 0px 0px 5px #888888
-
-=dark-shadow
-  box-shadow: 0px 0px 5px black
-  -moz-box-box-shadow: 0px 0px 5px black
-  -webkit-box-shadow: 0px 0px 5px black
-  -o-box-shadow: 0px 0px 5px black
-
-=radius($value)
-  border-radius: $value
-  -moz-border-radius: $value
-  -webkit-border-radius: $value
-  -o-box-border-radius: $value
-
-=transition($value)
-  transition: $value
-  -moz-transition: $value
-  -webkit-transition: $value
-  -o-transition: $value
-
-=primary-font
-  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
-  font-weight: 400
-  font-style: normal
-
-/* Colors */
-$orange: #DB7354
-$dark-orange: #D25029
-$darker-orange: #B84724
-$blue: #006DCC
-$blue-opaque: rgba(0,109,204,.8)
-$red: #DA4f49
-$red-opaque: rgba(218,79,73,.8)
-$light-gray: #ccc
-$offwhite: #F2F2F2
-
-.navbar-fixed-top
-  .navbar-inner
-    box-shadow: none
-    background-image: none
-    background-color: $offwhite
-    border-color: $dark-orange
-    border: none
-    border-top: 2px solid $dark-orange
-    @include shadow
-  .brand
-    text-shadow: none
-    color: black
-    padding: 4px 20px
-  .nav
-    .nav-item-border
-      width: 1px
-      height: 100%
-      position: absolute
-      background: -moz-linear-gradient(top, rgba(204,204,204,1) 0%, rgba(235,235,235,1) 60%, rgba(255,255,255,0) 100%)
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(204,204,204,1)), color-stop(60%,rgba(235,235,235,1)), color-stop(100%,rgba(255,255,255,0)))
-      background: -webkit-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: -o-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: -ms-linear-gradient(top, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      background: linear-gradient(to bottom, rgba(204,204,204,1) 0%,rgba(235,235,235,1) 60%,rgba(255,255,255,0) 100%)
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#00ffffff',GradientType=0 )
-  .nav > li > a
-    text-shadow: none
-    color: black
-    line-height: 34px
-    font-size: 16px
-    font-weight: 200
-    &:hover
-      background: $orange
-      color: white
-  .navbar-form
-    margin: 12px 10px 12px
-    input
-      margin: 0px
-  .btn-navbar
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from($orange), to($dark-orange))
-    background-image: -moz-linear-gradient(top, $orange, $dark-orange)
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$orange, endColorstr=$dark-orange, GradientType=0)
-    background-color: $orange
-    border-color: $dark-orange
-    .icon-bar
-      background-color: white
-    &:hover
-      background-image: none
-      background-color: $dark-orange
-  .nav-search
-    height: 54px
-    @include transition(background 300ms)
-    &:hover
-      background: $orange
-      cursor: pointer
-      #nav-search-toggle
-        color: white
-        text-decoration: none
-    #nav-search-toggle
-      margin: 21px 10px 22px
-      color: black
-      float: left
-    .nav-search-form
-      float: left
-      width: 0px
-      padding: 0px
-      margin-right: 0px
-      margin-left: 0px
-      overflow: hidden
-      display: none
-    .nav-search-show
-      width: 220px
-      display: block
-
-    
-#chefsteps-logo
-  height: 46px
-
-.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle
-  background: $dark_orange
-  color: white
-  @include transition(background .25s)
-
-.navbar .nav > li > .dropdown-menu
-  // min-width: 400px
-  background: none
-  border-radius: 0px
+html
   margin: 0px
-  li
-    a
-      color: white
-      padding: 3px 10px
-      &:hover
-        background: $dark_orange
-  &:after
-    content: normal
-  &:before
-    content: normal
-  .dropdown-background
-    background: black
-    position: absolute
-    width: 100%
-    height: 100%
-    top: 0px
-    z-index: -1
-    opacity: .1
+  padding: 0px
 
-h1, h2, h3, h4
-  @include primary-font
+body
+  margin: 0px
+  padding: 0px
+
+a
+  text-decoration: none
+
+.cs-nav-profile
+  float: right
+  width: 4rem
+  height: 6rem
+  padding: 1.5rem 0.5rem
+  @include boxsizing
+  .profile-image
+    img
+      float: left

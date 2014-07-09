@@ -16,8 +16,8 @@ class Recommendation
       end
     end
 
-    popular = Activity.chefsteps_generated.published.popular.first(6)
-    activities = Activity.chefsteps_generated.published.popular
+    popular = Activity.chefsteps_generated.published.not_in_course.popular.first(6)
+    activities = Activity.chefsteps_generated.published.not_in_course.popular
     activities = activities.difficulty(difficulty) if difficulty
     # by_interests = activities.tagged_with(interests, any: true) if interests
     # by_equipment = activities.by_equipment_titles(equipment) if equipment

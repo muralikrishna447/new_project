@@ -35,7 +35,7 @@
 
   .section
 
-  .row.section.anim-basic-fade(ng-show="! editMode")
+  .row.section.anim-basic-fade(ng-show="! editMode && ingredient.title")
     .span12.well.text-center.wiki-warning(ng-show="csAuthentication.loggedIn()")
       %div(ng-show="showStubTip()")
         %h3.section-tiny
@@ -95,7 +95,9 @@
       .row.section(ng-init="heroImageSize=570")
         .span6
           .noprint
-            = render 'activities/hero_visual'
+            .section
+              = render 'activities/hero_visual'
+            = render 'activities/edit_hero_visual'
             = render 'layouts/social_buttons', media_object: nil
 
       .row.text-fields(ng-repeat="textFieldName in textFieldOptions")
@@ -158,10 +160,9 @@
           Report a problem
 
 
-  .row.section
-    .span12
-      %div(ng-controller='CommentsController' ng-init="init('ingredients','#{@ingredient.id}')")
-        = render 'comments/comments'
+  .row.section#comments
+    %a(name='discussion')
+    %cscomments(comments-type="ingredient" comments-id="{{ingredient.id}}" seo-bot="#{is_brombone}")
 
 .container
   .row.activity-loading-spinner(ng-hide="true")

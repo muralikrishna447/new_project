@@ -1,12 +1,15 @@
 # There should only be one of these on a page, it is intended as a singleton
-@app.directive 'nellPopup', ["$rootScope", "Ingredient", "Activity", ($rootScope, Ingredient, Activity) ->
+@app.directive 'nellPopup', ["$rootScope", "Ingredient", "Activity", "$timeout", "csUtilities", ($rootScope, Ingredient, Activity, $timeout, csUtilities) ->
   restrict: 'A'
   scope: true
   replace: true
 
+
   link: ($scope, $element, $attrs) ->
+    $scope.csUtilities = csUtilities
+    
     $scope.$on 'showNellPopup', (event, _info) ->
-      return if $scope.editMode
+      return if $rootScope.showMadlibPopup
       return if $rootScope.nellPopupShowing && (_info.include == $scope.info.include) && (_info.slug == $scope.info.slug)
 
       $scope.info = _info
@@ -23,39 +26,38 @@
         )
 
     $scope.getClass = ->
-      return ['nell-popup', 'active'] if $rootScope.nellPopupShowing
-      return 'nell-popup'
+      classes = ['nell-popup']
+      classes.push('active') if $rootScope.nellPopupShowing
+      classes.push($scope.info.extraClass) if $scope.info?.extraClass
+      classes
+
+    $scope.closeNellPopup = ->
+      $scope.info.closeCallback() if $scope.info?.closeCallback
+      $rootScope.nellPopupShowing = false
 
     $scope.doHideNellPopup = ->
-      $rootScope.nellPopupShowing = false
+      $scope.closeNellPopup()
       mixpanel.track 'Nell Closed', $scope.info
 
     $scope.abandonNellPopup = ->
-      $rootScope.nellPopupShowing = false
+      $scope.closeNellPopup()
       mixpanel.track 'Nell Abandoned', $scope.info
 
     $scope.$on 'hideNellPopup', (event) ->
       $scope.doHideNellPopup()
-
-    $scope.imageURL = (imageID) ->
-      url = ""
-      if imageID
-        url = JSON.parse(imageID).url
-        url = url + "/convert?fit=max&w=480&cache=true"
-      window.cdnURL(url)
 
 
   template: '''
     <div>
       <div class="nell-backdrop" ng-click='abandonNellPopup()' ng-show='nellPopupShowing'/>
       <div ng-class="getClass()">
-        <div class='close-x' ng-click='abandonNellPopup()' ng-show='nellPopupShowing'>
+        <div class='close-x' ng-click='abandonNellPopup()' ng-show='nellPopupShowing && ! nellLoading'>
           <i class='icon-remove'/>
         </div>
         <div class="activity-loading-spinner" ng-if="nellLoading">
           <i class='icon-page-load'/>
         </div>
-        <div ng-include='info.include'/>
+        <div ng-include='info.include'/ ng-hide="nellLoading">
       </div>
     </div>
   '''

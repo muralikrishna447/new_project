@@ -34,6 +34,46 @@ class DashboardController < ApplicationController
 
   end
 
+  def ftue
+    @users = User.where("survey_results IS NOT NULL").reject{|u| u.survey_results.blank?}
+
+    @amateurs = []
+    @users.each do |user|
+      user.survey_results.each do |result|
+        if result['search_scope'] == 'difficulty' && result['answer'] == 'Amateur'
+          @amateurs << user
+        end
+      end
+    end
+
+    @homecooks = []
+    @users.each do |user|
+      user.survey_results.each do |result|
+        if result['search_scope'] == 'difficulty' && result['answer'] == 'Home Cook'
+          @homecooks << user
+        end
+      end
+    end
+
+    @students = []
+    @users.each do |user|
+      user.survey_results.each do |result|
+        if result['search_scope'] == 'difficulty' && result['answer'] == 'Culinary Student'
+          @students << user
+        end
+      end
+    end
+
+    @professionals = []
+    @users.each do |user|
+      user.survey_results.each do |result|
+        if result['search_scope'] == 'difficulty' && result['answer'] == 'Professional'
+          @professionals << user
+        end
+      end
+    end
+  end
+
   def comments
   end
 

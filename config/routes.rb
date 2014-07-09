@@ -1,7 +1,16 @@
 Delve::Application.routes.draw do
+  # Sets bloom forum to bloom.chefsteps.com/forum with angularJS html5mode
+  match '/forum', to: 'bloom#forum', constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
+  match '/forum/*path', to: 'bloom#forum', constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
+  match "/forum/*path" => redirect("/?goto=%{path}"), constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
+  match '/forum', to: 'bloom#forum'
+  match '/forum/*path', to: 'bloom#forum'
+  match "/forum/*path" => redirect("/?goto=%{path}")
   root to: "home#index"
 
   ActiveAdmin.routes(self)
+
+  match '/become', to: 'admin#become'
 
   # Redirects
   match '/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-cooking-running-water-method',
@@ -38,12 +47,19 @@ Delve::Application.routes.draw do
     get 'welcome', to: 'users/registrations#welcome'
     match '/users/auth/google/callback', to: 'users/omniauth_callbacks#google'
     match '/users/auth/facebook/callback', to: 'users/omniauth_callbacks#facebook'
+    delete '/users/social/disconnect', to: "users/omniauth_callbacks#destroy"
     match '/users/contacts/google', to: 'users/contacts#google'
     post '/users/contacts/invite', to: 'users/contacts#invite'
+    post '/users/contacts/gather_friends', to: 'users/contacts#gather_friends'
+    post '/users/contacts/email_invite', to: "users/contacts#email_invite"
   end
 
   get 'users/verify' => 'tokens#verify', as: 'verify'
-  resources :users, only: [:index, :show]
+  resources :users, only: [:index, :show] do
+    collection do
+      get 'cs' => 'users#cs'
+    end
+  end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
@@ -60,7 +76,8 @@ Delve::Application.routes.draw do
   get 'about' => 'home#about', as: 'about'
   get 'kiosk' => 'home#kiosk', as: 'kiosk'
   get 'discussion' => 'forum#discussion', as: 'discussion'
-  # get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  get 'dashboard' => 'dashboard#index', as: 'dashboard'
+  get 'ftue' => 'dashboard#ftue', as: 'ftue'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
   get 'egg-timer' => 'pages#egg_timer', as: 'egg_timer'
   get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
@@ -157,6 +174,7 @@ Delve::Application.routes.draw do
   resources :likes, only: [:create] do
     collection do
       get 'by_user' => 'likes#by_user'
+      post 'unlike' => 'likes#unlike'
     end
   end
   resources :pages, only: [:show]
@@ -173,9 +191,12 @@ Delve::Application.routes.draw do
   resources :comments, only: [:index, :create] do
     collection do
       get 'info' => 'comments#info'
+      get 'at' => 'comments#at'
     end
   end
-  resources :followerships, only: [:update]
+  resources :followerships, only: [:index, :update] do
+    post :follow_multiple,  on: :collection
+  end
   resources :assemblies, only: [:index, :show] do
     resources :comments
     resources :enrollments
@@ -220,6 +241,12 @@ Delve::Application.routes.draw do
 
   resources 'recipe-development', controller: :assemblies, as: :recipe_development, only: [:index, :show]
 
+  resources :kits, controller: :assemblies, only: [:index, :show] do
+    member do
+      get 'show_as_json', to: 'assemblies#show_as_json'
+    end
+  end
+
   resources :events, only: [:create]
 
   resources :gift_certificates
@@ -239,6 +266,8 @@ Delve::Application.routes.draw do
       get 'comments', to: 'dashboard#comments'
     end
   end
+
+  resources :settings, only: [:index]
 
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"

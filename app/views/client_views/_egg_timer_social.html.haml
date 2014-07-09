@@ -1,0 +1,36 @@
+%div(ng-controller="SocialButtonsController" ng-init="split='slide_anim'" ng-cloak )
+
+  .social-flat
+    .btn-holder
+      .btn.btn-secondary.btn-social.btn-social-twitter.pulse-anim-before(ng-click="shareTwitter();")
+        .social-button-contents
+          .social-icon-group
+            %span
+              %i.fa.fa-twitter
+          .social-counter(ng-show="showCount(twitterCount)")
+            %span.text-center
+              {{displayCount(twitterCount)}}
+    .btn-holder
+      .btn.btn-secondary.btn-social.btn-social-facebook.pulse-anim-before(ng-click="shareFacebook()")
+        .social-button-contents
+          .social-icon-group
+            %span
+              %i.fa.fa-facebook
+          .social-counter(ng-show="showCount(facebookCount)")
+            %span.text-center
+              {{displayCount(facebookCount)}}
+    .btn-holder
+      .btn.btn-secondary.btn-social.btn-social-pinterest.pulse-anim-before(ng-show="socialMediaItem()" ng-click="sharePinterest()")
+        .social-button-contents
+          .social-icon-group
+            %span
+              %i.fa.fa-pinterest
+          .social-counter(ng-show="showCount(pinterestCount)")
+            %span.text-center
+              {{displayCount(pinterestCount)}}
+    .btn-holder
+      .btn.btn-secondary.btn-social.btn-social-gplus.pulse-anim-before(ng-click="shareGooglePlus()")
+        .social-button-contents
+          .social-icon-group
+            %span
+              %i.fa.fa-google-plus

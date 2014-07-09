@@ -36,6 +36,8 @@ class Ingredient < ActiveRecord::Base
   scope :started, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) > 0 AND count(DISTINCT(events.user_id)) < 3")
   scope :well_edited, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) >= 3")
 
+  include Searchable
+
   include PgSearch
   multisearchable :against => [:title, :text_fields, :product_url]
 
@@ -158,6 +160,20 @@ class Ingredient < ActiveRecord::Base
 
   end
 
+  def avatar_url
+    if self.image_id.blank?
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=crop&w=70&h=70&cache=true"
+    else
+      url = ActiveSupport::JSON.decode(self.image_id)["url"]
+      avatar_url = "#{url}/convert?fit=crop&w=70&h=70&cache=true".gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    end
+  end
 
+  # For elasticsearch.  See https://github.com/elasticsearch/elasticsearch-rails/tree/master/elasticsearch-model
+  def as_indexed_json(options={})
+    as_json(
+      only: [:title, :text_fields]
+    )
+  end
 end
 

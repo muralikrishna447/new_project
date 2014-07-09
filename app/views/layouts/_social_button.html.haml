@@ -7,6 +7,6 @@
       %span
         #{xlabel}
   -if (defined? counter)
-    .social-counter
+    .social-counter(ng-show="showCount(#{counter})")
       %span.text-center
         {{displayCount(#{counter})}}

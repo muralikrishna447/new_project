@@ -25,14 +25,13 @@
         .assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
           .container
             .row
-              -if ! @no_video
+              -if (! @no_video) && (! @course.youtube_id.empty?)
                 .span8.section
                   .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
                     %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
               -else
                 .span8.section
-                  .embed-container
-                    = image_tag filepicker_hero_image(@course.image_id)
+                  = image_tag filepicker_hero_image(@course.image_id)
 
               .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
                 .buy-box
@@ -45,7 +44,9 @@
                     %div (#{pluralize(@assembly.comments.count, 'review')})
                   %h5 Class Includes:
                   %ul
-                    %li Unlimited Access
+                    - if @course.price
+                      %li
+                        Unlimited Access
                     %li= "#{@course.video_count} HD Videos"
                     / %li Three Fundamental Fillings Explained
                     = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
@@ -70,7 +71,7 @@
                       = render 'landing_page_tab_links'
 
                 .tab-content#class-overview
-                  %div(ng-show="tab=='default'")
+                  %div(ng-show="tab=='menu'")
                     :markdown
                       #{apply_shortcodes(@course.description)}
                     - if @course.landing_bottom

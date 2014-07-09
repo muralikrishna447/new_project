@@ -28,9 +28,8 @@ class ActivitiesController < ApplicationController
     # (1) Googlebot so it can index the page
     # (2) Referred from google (for first click free: https://support.google.com/webmasters/answer/74536?hl=en)
     # (3) Brombone bot so it can make the snapshot for _escaped_segment_
-    referer = http_referer_uri
-    is_google = request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (referer && referer.host.index('google'))
-    is_brombone = request.headers["X-Crawl-Request"] == 'brombone'
+
+    # is_google and is_brombone are now helpers and can be found in application_helper
     if (! current_admin?) && (! is_google) && (! is_brombone)
       if @activity.show_only_in_course
         redirect_to class_path(@activity.containing_course), :status => :moved_permanently
@@ -49,7 +48,6 @@ class ActivitiesController < ApplicationController
     # Not a problem
   end
 
-
   before_filter :require_login, only: [:new, :fork, :update_as_json]
   def require_login
     unless current_user
@@ -58,9 +56,19 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  # This is absurd, should be part of the activity serializer, but that is used in different
+  # cases and we need to untangle what info should be passed into what view and then set up a way
+  # 
+  def add_extra_json_info
+    @activity[:used_in] = @activity.used_in_activities.published
+    @activity[:forks] = @activity.published_variations
+    @activity[:upload_count] = @activity.uploads.count
+  end
+
   def show
 
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
+    add_extra_json_info
     @upload = Upload.new
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
@@ -68,8 +76,8 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @random_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).order("RANDOM()").last(6)
-        @popular_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.includes(:steps).order("RANDOM()").first(6)
+        @random_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.order("RANDOM()").last(6)
+        @popular_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.order("RANDOM()").first(6)
 
         # New school class
         containing_class = @activity.containing_course
@@ -84,6 +92,7 @@ class ActivitiesController < ApplicationController
           end
           container_name = containing_class.assembly_type.to_s
           container_name = "Class" if container_name == "Course"
+          container_name = "Mini-Class" if container_name == "Project"
           flash.now[:notice] = "This is part of the #{path} #{container_name}."
         end
         track_event @activity
@@ -135,6 +144,7 @@ class ActivitiesController < ApplicationController
   def get_as_json
 
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, Activity))
+    add_extra_json_info
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
@@ -142,18 +152,14 @@ class ActivitiesController < ApplicationController
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
-    respond_to do |format|
-      format.json {
-        unless @activity.containing_course && current_user && current_user.enrollments.where(enrollable_id: @activity.containing_course.id, enrollable_type: @activity.containing_course.class).first.try(:free_trial_expired?) && @activity.containing_course.price > 0
-          render :json => @activity.to_json
-        else
-          if mixpanel_anonymous_id
-            mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.slug})
-            mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
-          end
-          render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden
-        end
-      }
+    unless @activity.containing_course && current_user && current_user.enrollments.where(enrollable_id: @activity.containing_course.id, enrollable_type: @activity.containing_course.class).first.try(:free_trial_expired?) && @activity.containing_course.price > 0
+      render :json => @activity.to_json
+    else
+      if mixpanel_anonymous_id
+        mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.slug})
+        mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
+      end
+      render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden
     end
   end
 

@@ -1,0 +1,114 @@
+.modal-body.invite-modal-body
+  .container
+    .row
+      .span8.offset2.modal-overlay
+        %h2 Invite Your Friends
+        %p ChefSteps is built on community, plain and simple.  We'll show you what classes your friends are taking and what recipes they've liked; you'll be able to meet and follow other members of the ChefSteps community; and you can invite folks who you think would be great additions.
+        %form(class="no-margin-modal-form")
+          .invite-horizontal(ng-show="authentication.currentUser()")
+            .modal-center
+              %i.icon-page-load(ng-show="dataLoading")
+            .message(ng-show="message")
+              %p {{message}}
+            - if false
+              -# This verion uses chefsteps styling
+              %div
+                %ul.friend-list
+                  %li.friend(ng-repeat="friend in inviteFriends")
+                    %label
+                      %input(type="checkbox" ng-model="friend.value")
+                      {{friend.name}}
+      .row-fluid.connect-buttons
+        .span2.offset3
+          .facebook-button
+            %button(ng-click="sendInvites()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
+              %i.icon-facebook
+              %b Facebook
+        .span2
+          .google-button.google-invite
+            %button.btn-google.btn.btn-secondary(ng-click="inviteSite='google'; loadGoogleContacts(); showThankYou = false" ng-show="authentication.currentUser() && !!authentication.currentUser().google_access_token" ng-disabled="dataLoading")
+              %i.icon-google-plus
+              %b Google
+            %button.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin(); showThankYou = false" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token" ng-disabled="dataLoading")
+              %i.icon-google-plus
+              %b Google
+            -# .button-group
+            -#   .facebook-button.facebook-invite
+            -#     %a(ng-click="sendInvites()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
+            -#       %i.icon-facebook
+            -#       %b Invite friends from Facebook
+            -#   .google-button.google-invite
+            -#     %a.btn-google.btn.btn-secondary(ng-click="loadGoogleContacts()" ng-show="authentication.currentUser() && !!authentication.currentUser().google_access_token" ng-disabled="dataLoading")
+            -#       %i.icon-google-plus
+            -#       %b Invite friends from Google
+            -#     %a.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin('#{google_app_id}')" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token" ng-disabled="dataLoading")
+            -#       %i.icon-google-plus
+            -#       %b Connect to Google and Invite
+        .span2
+          .email-button
+            %button.btn-email.btn.btn-secondary(ng-click="inviteSite='email'; showThankYou = false")
+              %i.icon-envelope
+              %b Email
+      .row-fluid.point-to-google(ng-if="inviteSite == 'google' && inviteFriends.length > 0")
+        .span2.offset5
+          %center
+            .google-arrow
+      .row-fluid.google-content(ng-if="inviteSite == 'google' && inviteFriends.length > 0")
+        .span8.offset2.google-invitation
+          %form(ng-submit="sendInvitation()" ng-if="!showThankYou")
+            %h3 Invite your friends from Google
+            %p
+              Invite your friends to join you on ChefSteps.com
+              %a(href="/invitation.html" target="_blank")
+                (Preview)
+            .invite-horizontal(ng-show="authentication.currentUser()")
+              .modal-center
+                %i.icon-page-load(ng-show="dataLoading")
+              .search
+                %input(type="text" placeholder="Search For..." ng-model="searchFriends")
+              %div
+                %ul.friend-list
+                  %li.friend.one_column(ng-repeat="friend in inviteFriends | filter:searchFriends")
+                    %label
+                      %input(type="checkbox" ng-model="friend.value")
+                      %span(ng-show="friend.name")
+                        {{friend.name}} ({{friend.email}})
+                      %span(ng-show="!friend.name")
+                        {{friend.email}}
+              %div
+                {{friendsSelected().length}} friends selected.
+            %hr
+            .body-text
+              %textarea(ng-model="emailObject.bodyText" name="body_text")
+            %hr
+            %center
+              %button.btn.btn-primary(type="submit")
+                %b INVITE FRIENDS
+          .thank-you(ng-if="showThankYou")
+            %h3 Thank you for sending invites
+            %p The invites are on the way.  Thank you for sending them.
+      .row-fluid.point-to-email(ng-if="inviteSite == 'email'")
+        .span2.offset7
+          %center
+            .email-arrow
+      .row-fluid.email-content(ng-if="inviteSite == 'email'")
+        .span8.offset2.email-invitation
+          %form(ng-submit="sendInvitationsToEmail()" ng-if="!showThankYou")
+            %h3 Want to invite some friends to ChefSteps via email?
+            %p
+              Please seperate email addresses with a comma.
+              %a(href="/invitation.html" target="_blank")
+                (Preview)
+            .email-input
+              %input(type="text" name="email_addresses" ng-model="emailObject.emailToAddresses" placeholder="Email to (separated by commas)" ng-class="{fieldError: validationError}")
+              %span(ng-if="validationError") Error with one of the email addresses entered
+            .body-text
+              %textarea(ng-model="emailObject.bodyText" name="body_text")
+            %hr
+            %center
+              %button.btn.btn-primary(type="submit")
+                %b INVITE FRIENDS
+          .thank-you(ng-if="showThankYou")
+            %h3 Thank you for sending invites
+            %p The invites are on the way.  Thank you for sending them.
+

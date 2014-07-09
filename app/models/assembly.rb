@@ -26,7 +26,7 @@ class Assembly < ActiveRecord::Base
 
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
-  ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group', 'Recipe Development']
+  ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group', 'Recipe Development', 'Kit']
   INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz', 'Assembly', 'Page', 'Assignment']
 
   def ingredients

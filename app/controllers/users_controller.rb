@@ -2,13 +2,27 @@ class UsersController < ApplicationController
   # before_filter :authenticate_user!
   def show
     @user = User.find(params[:id])
-    render json: @user.to_json(only: [:id, :name], methods: :avatar_url)
+    user_json = @user.to_json(only: [:id, :name], methods: :avatar_url)
+    encrypted = ChefstepsBloom.encrypt(user_json)
+    render text: encrypted
   end
 
+  # Bloom will also be using this endpoint
   def index
-    ids = params[:ids]
-    @users = User.where(id: ids)
-    render json: @users.to_json(only: [:id, :name], methods: :avatar_url)
+    if params[:ids]
+      ids = params[:ids].split(',')
+      @users = User.where(id: [ids])
+    elsif params[:emails]
+      emails = params[:emails].split(',')
+      @users = User.where(email: [emails])
+    end
+    render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
+  end
+
+  # For Bloom Dashboard
+  def cs
+    @admins = User.where(role: 'admin')
+    render json: @admins.to_json(only: [:id, :email])
   end
 
 end

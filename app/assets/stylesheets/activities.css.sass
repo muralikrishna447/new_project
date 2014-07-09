@@ -1,5 +1,166 @@
 @import 'mixins'
 
-@media (max-width: 780px)
-  #step-dots
-    display: none
+.negative-z
+  z-index: -10000
+
+.activity_show, .action-jobs
+  .nav-spacer
+    height: 60px
+
+$banner-height: $baseline * 45
+
+.banner-image
+  max-height: $banner-height
+  width: 100%
+  position: relative
+  margin-bottom: $baseline
+  cursor: pointer
+
+  img
+    // Allowing a stretch here, but it is only effective temporarily because
+    // we retrieve the correct sized image as quickly as possible.
+    max-height: $banner-height
+    @include transition(all 300ms ease-in-out)
+
+  .play-button-container
+    position: absolute
+    top: 0
+    bottom: 0
+    right: 0
+    left: 0
+    @include center-only-child
+
+    .play-button
+      font-size: 100px
+      color: #b4d8d8
+
+  .hero-visual
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 50%
+    width: $banner-height * 16.0 / 9.0
+    height: $banner-height
+    margin-left: -444px
+    overflow: hidden
+
+  .video-iframe-container
+    opacity: 0
+    @include transition(opacity 300ms ease-in-out)
+
+  &.hero-video-showing
+    > img
+      opacity: .3
+      @include blur(7px)
+
+    .video-iframe-container
+      opacity: 1
+
+.banner-spacer
+  height: $baseline * 2
+
+.step-number-container
+  padding-top: $baseline * 2
+  width: 100%
+
+.step-number
+  margin-left: auto
+  margin-right: auto
+  @include center-only-child
+  @include primary-font-bold
+  -webkit-backface-visibility: hidden
+  background-color: $offwhite
+  color: $orange
+  width: 70px
+  height: 70px
+  border-radius: 50%
+  @include boxsizing
+
+.tools-list
+  position: relative
+  z-index: 1
+  max-width: 245px
+  li 
+    cursor: pointer
+    border-bottom: 1px solid $offwhite
+    border-top: 1px solid rgba(0, 0, 0, 0)
+    margin-top: -1px
+    padding-top: $baseline / 2 
+    padding-bottom: $baseline / 2
+    @include transition(all 300ms ease-in-out)
+
+    .tool-group
+      @include display-flex
+      @include align-items(baseline)
+
+    &:hover
+      color: $orange !important
+      border-bottom: 1px solid $orange
+      border-top: 1px solid $orange
+      .icon-holder 
+        i
+          color: $orange
+    a:hover
+      color: $orange !important
+
+    .icon-holder
+      width: 18px !important
+      margin-right: $horz-baseline-small
+      i
+        @include transition(all 300ms ease-in-out)
+        color: $light-gray
+      i.icon-heart
+        color: $orange
+
+    a
+      @include transition(all 300ms ease-in-out)
+      color: #333333
+
+
+.step-edit-tools
+  @include popup-card
+  top: 0
+  right: 100%
+  margin-right: 22px
+
+.left, .leftInset
+  .step-edit-tools
+    right: -100%
+
+
+
+.btn-edit-step
+  color: gray
+  cursor: pointer
+  display: inline-block
+  font-size: 2.0312rem
+  i.active
+    color: $orange
+
+
+// Fix so that asides are always on top.  Triggered with isSeparateAside($index + 1)
+.is-aside
+  z-index: 9999
+
+@media (max-width: 900px)
+  .banner-image
+    > img
+      display: none
+
+    .play-button-container
+      display: none
+
+    .hero-visual
+      position: static
+      top: 0px
+      bottom: 0
+      left: 0
+      height: auto
+      margin-left: 0
+      width: 100%
+      z-index: 1
+
+@media (max-width: 480px)
+  .activity-columns-1
+    .aside.rightInset
+      margin-right: -16%

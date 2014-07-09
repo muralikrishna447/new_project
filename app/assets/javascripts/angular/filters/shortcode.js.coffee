@@ -40,7 +40,37 @@ angular.module('ChefStepsApp').filter "shortcode", ->
               "<a href='http://www.amazon.com/dp/#{asin}/?tag=delvkitc-20' target='_blank'>#{anchor_text}</a>"
             else
               orig
-
+          when 'view'
+           "<a ng-click=\"$parent.showNell('#{arg1}.html')\">#{arg2}</a>"           
+          when 'fetchIngredient'
+            """
+             <div cs-fetch='#{arg1}' type='Ingredient' part='#{arg2}' card='_ingredient_embed_card.html'>
+              </div>
+            """
+          when 'fetchActivity'
+            """
+              <div cs-fetch='#{arg1}' type='Activity' part='#{arg2}' card='_activity_embed_card.html'></div>
+            """
+          when 'linktocomments'
+            "<a href='#comments'>#{contents}</a>"
+          when 'quote'
+            arg1 = arg1.replace('_', ' ')
+            """
+              <div class="quote-container">
+                <hr/>
+                <blockquote>
+                  #{arg2}
+                </blockquote>
+                <div class="quote-source">
+                  #{arg1}
+                </div>
+                <hr/>
+              </div>
+          """
+          when 'fetchTool'
+            """
+              <div cs-fetch-tool='#{arg1}'></div>
+            """
           else orig
     else
       ""

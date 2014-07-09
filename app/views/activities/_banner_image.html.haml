@@ -1,0 +1,15 @@
+.banner-image.noprint(  ng-controller="BannerController"
+                        ng-cloak 
+                        ng-click='! editMode && toggleHeroVisual()' 
+                        ng-if="heroMedia.heroDisplayType() != 'none'"
+                        ng-class="{'hero-video-showing' : showHeroVisual()}")
+
+  %img( ng-src="{{bannerImageURL()}}" ng-if="bannerImageURL() != ''")  
+
+  .play-button-container
+    .play-button( ng-if="heroMedia.heroDisplayType() == 'video' && ! showHeroVisual()")
+      %i.fa.fa-play-circle-o  
+
+  .hero-video.noprint
+    = render 'activities/hero_visual'
+= render 'activities/edit_hero_visual'

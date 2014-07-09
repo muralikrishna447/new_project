@@ -1,0 +1,7 @@
+.container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='#{@registration_source}'")
+  = render "devise/sessions/new_angular"
+  .row-fluid
+    .container
+      .row
+        .span10.offset1.relative
+          = render 'madlib'

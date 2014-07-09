@@ -1,6 +1,6 @@
 - content_for :title, "#{@course.title.html_safe} - Class"
 - content_for :description, @course.description != "" ? @course.description.html_safe : @course.title.html_safe
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
+-# - @body_tag_attributes = {:'ng-app' => "ChefStepsApp"}
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 - content_for :canonical_link, 'http://www.chefsteps.com/activities/'
@@ -18,12 +18,10 @@
                     %iframe#course-quiz(ng-src="{{'/quizzes/' + currentIncludable.includable_id}}" style='width: 100%; border: none; min-height: 1000px; overflow: hidden;' cssetiframeheight)
 
               %div(ng-switch-when="Activity")
-                %div(csFixNakedLinks="")
-                  %div(ng-switch on="activity.layout_name")
-                    %div(ng-switch-when='list')
-                      = render 'shared/activity_layouts/list'
-                    %div(ng-switch-default)
-                      = render 'activities/main_activity_content'
+                .class-activity-wrapper
+                  = render 'activities/banner_image'
+                  %div(csFixNakedLinks="")
+                    = render 'activities/main_activity_content'
 
               %div(ng-switch-when='Assignment')
                 = render 'assembly_upload', assembly: @course
@@ -63,16 +61,27 @@
                     .course-nav-item.btn.btn-primary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
                       NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html="'NEXT: ' + nextInclusion().includable_title")
-        .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
-          .span12
-            %hr
-            -# using DISQUS.reset to determine which disqus thread to display
-            = render 'layouts/disqus_angular'
+        - if @course.id == 100
+          .row-fluid.section
+            .span12.course-comments
+              %hr
+              .section#comments
+                %a(name='discussion')
+                %cscomments(comments-type="activity" comments-id="{{currentIncludable.includable_id}}" seo-bot="#{is_brombone}")
+        - else
+          .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
+            .span12.course-comments
+              %hr
+              / %a(name='discussion')
+              / %cscomments(comments-type="assembly" comments-id="{{course.id}}" seo-bot="#{is_brombone}")
+
+              -# using DISQUS.reset to determine which disqus thread to display
+              = render 'layouts/disqus_angular'
     .assembly-loading-wrapper.anim-basic-fade(ng-show="loading > 0")
       .assembly-loading-background
         .activity-loading-spinner
           %i.icon-page-load
-    .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}")
+    .course-nav-slideout.noprint(ng-class="{'menu-slideout': showCourseMenu}")
       %a.black-link(ng-href='{{course.path}}')
         %h1
           {{course.title}}
@@ -81,8 +90,13 @@
             ng-class="inclusionActiveClass(inclusion)"
             ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)'
             ng-include="'_recursive_assembly_syllabus.html'")
+      // @discounted_price isn't always being set.  This is a hack to not show this when there is no free trial.  load_assembly may have weird edge cases we haven't thought of.
+      - if @course.price
+        - final_price = @discounted_price ? @discounted_price : @course.price
+      - else
+        - final_price = 0
       .free-trial-section(ng-controller="BuyAssemblyStripeController" ng-cloak
-        ng-init='assembly=#{@course.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil};freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; assemblyPath="#{class_url(@course, protocol: "http")}"' ng-show="isFreeTrial()")
+        ng-init='assembly=#{@course.to_json}; discounted_price=#{final_price}; logged_in=#{current_user != nil};freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; assemblyPath="#{class_url(@course, protocol: "http")}"' ng-show="isFreeTrial()")
         %p
           %span(ng-show="differenceInTime() > 60 && differenceInTime() > 0")
             You're in a free trial.
@@ -117,8 +131,8 @@
         %i.icon-chevron-up
       .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
         %i.icon-chevron-down
-        
-%div(nell-popup) 
+
+%div(nell-popup)
   / .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
   /   = render 'layouts/footer'
 

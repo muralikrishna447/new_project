@@ -1,10 +1,11 @@
 class HomeController < ApplicationController
 
   def index
-    @classes = Assembly.pubbed_courses.order('created_at desc').to_a
+    @classes = Assembly.pubbed_courses.order('created_at desc').limit(3).to_a
     prereg_assembly_classes = Assembly.prereg_courses.order('created_at desc').limit(1)
     pubbed_assembly_classes = Assembly.pubbed_courses.order('created_at desc').limit(1)
     @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
+    @projects = Assembly.projects.published.order('created_at desc')
 
     if current_user
       @latest = Activity.published.chefsteps_generated.include_in_feeds.order('published_at desc').first(6)
@@ -39,7 +40,7 @@ class HomeController < ApplicationController
       { name: 'Hans Twite', title: 'Director of Audio', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/A3Crl8glRyqbQjgu54mM/convert?fit=crop&w=400&h=400&cache=true', bio: "Hans is a multi instrumentalist, composer, and producer. Primarily working in soundtrack design and production consulting, he also continues to create and perform in local Seattle groups. Hans also happens to be an experienced bartender, which we take full advantage of here at ChefSteps." },
       { name: 'Kristina Krug', title: 'Multimedia Project Manager', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/qWzHicwzQaqGAnPSthgW/convert?fit=crop&w=400&h=400&cache=true', bio: "Kristina is a multi-talented multimedia expert. A native Oklahoman, Kristina graduated from UW with a degree in communications, and has since tackled a variety of projects for large corporations, art museums, start-up companies, and more. When she's not filming food, she creates legacy films for the elderly, and often corrals the ChefSteps team as its unofficial HR Lady." },
       { name: 'Karen Quinn', title: 'Managing Editor', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/ivvAekO6QGGNo02FR9cA/convert?fit=max&w=400&h=400&cache=true', bio: "Karen grew up in New England among family, friends, and teachers who instilled in her a deep appreciation for the power of words. She received a Bachelor's degree in English literature from Colgate University and worked on the editorial staff at Seattle Metropolitan magazine before coming to ChefSteps. A long&#8212;time habitu&#233; of kitchens&#8212;her own and some of the finest in Seattle&#8212;Karen has over the years developed a love of food, wine, and hospitality to match her fascination with words. She brings to ChefSteps her enthusiasm for both." },
-      { name: 'Cloud', title: 'Dog', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/7X5Dnuk3TmTqvqWmkHQA/convert?fit=max&w=400&h=400&cache=true', bio: 'More obsessed with food than the rest of us.' }
+      { name: 'Camp', title: 'Dog', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/T4Yh0hBQTHKwKNSXxehj/convert?fit=max&w=400&h=400&cache=true', bio: 'More obsessed with food than the rest of us.' }
     ]
 
     @about_left = Copy.find_by_location('about-left')
@@ -75,5 +76,8 @@ class HomeController < ApplicationController
 
   def kiosk
     @hide_nav = true
+  end
+
+  def jsapi
   end
 end

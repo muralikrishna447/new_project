@@ -103,8 +103,12 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     $scope.socialURL = () ->
       url
 
+  $scope.showCount = (count) ->
+    return false if (! count) || (parseInt(count) == 0)
+    true
+
   $scope.displayCount = (count) ->
-    return "" if ! count?
+    count = parseInt(count)
     return count if count < 1000
     String(Math.floor(count / 1000)) + "k"
 

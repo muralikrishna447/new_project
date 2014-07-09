@@ -1,7 +1,11 @@
-%link{href: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css", rel: "stylesheet", type: "text/css"}
-%link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
-%script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
-
-%script{src: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"}
+%link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
+%link{href: "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
 = stylesheet_link_tag 'global_navigation', media: 'all'
-= render 'layouts/navigation', external: true
+%script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+%script(src="//s3.amazonaws.com/chefsteps-production-assets/bloom/bloom-loader.js")
+
+= render 'layouts/cdn_js'
+%div(ng-app="ChefStepsApp")
+  = render 'layouts/navigation', external: true
+
+= javascript_include_tag 'application'
