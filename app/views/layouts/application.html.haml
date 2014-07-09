@@ -1,6 +1,7 @@
 !!! 5
 %html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main", :style => "font-size: 62.5% !important;"}
   %head
+    = render 'layouts/cdn_js'
     %style
     / http://stackoverflow.com/questions/3326650/console-is-undefined-error-for-internet-explorer
     %script(type="text/javascript")
@@ -53,8 +54,6 @@
       }
 
     %script(src='//www.youtube.com/iframe_api' async='true')
-
-    = render 'layouts/cdn_js'
     // Send Bloom Encrypted User data
     - if current_user
       :javascript
@@ -78,7 +77,7 @@
 
     = yield
 
-    %csglobalmessage
+    / %csglobalmessage
 
     / modals /
     / %cs-ftue-nav
