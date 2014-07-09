@@ -105,7 +105,7 @@ class ActivitiesController < ApplicationController
         @user_activity = UserActivity.new
 
         # cookies.delete(:viewed_activities)
-        @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
+        @viewed_activities = cookies[:viewed_activities].blank? ? [] : JSON.parse(cookies[:viewed_activities])
         @viewed_activities << [@activity.id, DateTime.now]
         cookies[:viewed_activities] = @viewed_activities.to_json
 
