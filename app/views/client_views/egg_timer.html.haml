@@ -41,7 +41,10 @@
             .page.anim-basic-fade(ng-switch-when="white")
               %h4.text-center What texture would you like your egg white?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity" item-width="300")
-                %video(ng-src="{{trustedVideo(whiteVideo.video)}}" autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="whiteVideo in whiteVideos" )
+                %video(autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="whiteVideo in whiteVideos" )
+                  %source(ng-src="{{trustedVideo(whiteVideo.video.mp4)}}" type="video/mp4")
+                  %source(ng-src="{{trustedVideo(whiteVideo.video.webm)}}" type="video/webm")
+                  Looks like your browser does not support the video tag.
               .control-group.text-center
                 .controls
                   %a(ng-click="incrementWhite(-1)")
@@ -59,8 +62,10 @@
             .page.anim-basic-fade(ng-switch-when="yolk")
               %h4.text-center What texture would you like your egg yolk?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1" item-width="300")
-                %video(ng-src="{{trustedVideo(yolkVideo)}}" autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="yolkVideo in yolkVideos" )
-
+                %video(autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="yolkVideo in yolkVideos" )
+                  %source(ng-src="{{trustedVideo(yolkVideo.video.mp4)}}" type="video/mp4")
+                  %source(ng-src="{{trustedVideo(yolkVideo.video.webm)}}" type="video/webm")
+                  Looks like your browser does not support the video tag.
               .control-group.text-center
                 .controls
                   %a(ng-click="incrementYolk(-1)")
