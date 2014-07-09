@@ -98,7 +98,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     
   # Social share callbacks
   $scope.socialURL = ->
-    "http://chefsteps.com/egg_timer"
+    window.location.href
 
   $scope.socialTitle = ->
     ""
