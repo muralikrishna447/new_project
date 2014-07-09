@@ -22,11 +22,11 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
   $scope.yolkVideos =
     [
       {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.webmsd.webm"}}
-      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_25min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.webmsd.webm"}}
-      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_30min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.webmsd.webm"}}
-      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_35min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.webmsd.webm"}}
-      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_45min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.webmsd.webm"}}
-      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_25min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_25min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_30min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_30min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_35min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_35min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_45min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_45min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_60min.webmsd.webm"}}
       {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_105min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_105min.webmsd.webm"}}
     ]
 
