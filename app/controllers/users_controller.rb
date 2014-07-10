@@ -8,9 +8,13 @@ class UsersController < ApplicationController
   end
 
   def get_user
-    @user = User.find(params[:userId])
-    user_json = {data: {id: @user.id.to_s, name: @user.name, avatarUrl: @user.avatar_url}}.to_json
-    render text: user_json
+    if params[:secret] && params[:secret] == 'xchefstepscRP9pJomgiluvfoodNTJto'
+      @user = User.find(params[:userId])
+      user_json = {data: {id: @user.id.to_s, name: @user.name, avatarUrl: @user.avatar_url, email: @user.email}}.to_json
+      render text: user_json
+    else
+      render text: 'Authorized Access', status: 401
+    end
   end
 
   # Bloom will also be using this endpoint
