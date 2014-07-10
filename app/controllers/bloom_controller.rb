@@ -7,7 +7,7 @@ class BloomController < ApplicationController
     if current_user
       render layout: false
     else
-      redirect_to(sign_in_path, notice: "You must be signed in to view the Forum")
+      redirect_to(sign_in_path(returnTo: '/forum'), notice: "You must be signed in to view the Forum")
     end
   end
 end
