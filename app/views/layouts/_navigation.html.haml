@@ -22,7 +22,7 @@
         - else
           %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
           = render "devise/sessions/new_angular"
-          = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
+          / = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
 
       .cs-nav-items(ng-show="!editMode")
         .cs-nav-items-toggle(ng-click="toggleMenu()")
