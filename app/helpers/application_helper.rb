@@ -22,6 +22,12 @@ module ApplicationHelper
     end
   end
 
+  def filepicker_cropped_image(fpfile, width, height)
+    url = ActiveSupport::JSON.decode(fpfile)["url"]
+    url = url + "/convert?fit=crop&w=#{width}&h=#{height}&cache=true"
+    url.gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+  end
+
   def filepicker_hero_image(fpfile)
     filepicker_arbitrary_image(fpfile, 1170)
   end
