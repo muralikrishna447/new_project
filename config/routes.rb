@@ -8,6 +8,12 @@ Delve::Application.routes.draw do
   match "/forum/*path" => redirect("/?goto=%{path}")
   root to: "home#index"
 
+  resources :featured, only: [:index] do
+    collection do
+      get 'cover-photo' => 'featured#cover'
+    end
+  end
+
   ActiveAdmin.routes(self)
 
   match '/become', to: 'admin#become'
