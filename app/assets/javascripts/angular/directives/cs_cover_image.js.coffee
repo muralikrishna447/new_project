@@ -63,6 +63,9 @@
 
     scope.$watch 'csCoverImage', (newValue, oldValue) ->
       if newValue
+        # csFilepickerMethods.convertTest(newValue, {w: 600, a: "16:9"})
+        csFilepickerMethods.convert(newValue, {w: 1600, h: 300})
+        # csFilepickerMethods.convertTest(newValue, {w: 600, h: 500})
         scope.baseURL = csFilepickerMethods.getBaseURL(newValue)
         getParentDimensions()
         getSourceImageDimensions()
