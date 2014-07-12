@@ -21,9 +21,6 @@
     parentHeightToWidth = 0
     sourceHeightToWidth = 0
 
-    getBaseURL = (fpfile) ->
-      scope.baseURL = JSON.parse(fpfile).url
-
     getParentDimensions = ->
       parent = element.parent()
       parent.width = element[0].clientWidth
@@ -66,8 +63,7 @@
 
     scope.$watch 'csCoverImage', (newValue, oldValue) ->
       if newValue
-        csFilepickerMethods.fitURL(newValue)
-        getBaseURL(newValue)
+        scope.baseURL = csFilepickerMethods.getBaseURL(newValue)
         getParentDimensions()
         getSourceImageDimensions()
 
