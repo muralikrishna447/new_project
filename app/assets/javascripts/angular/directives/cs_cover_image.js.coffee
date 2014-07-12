@@ -3,7 +3,7 @@
 # set reload-on-window-resize="true" if you want the reload the image when the window is resized.
 # reloadOnWindowResize should probably be only used for once per page for performance reasons.  Ideal for large fullpage images
 
-@app.directive 'csCoverImage', ['$window', '$http', ($window, $http) ->
+@app.directive 'csCoverImage', ['$window', '$http', 'csFilepickerMethods', ($window, $http, csFilepickerMethods) ->
   restrict: 'A'
   scope: { 
     csCoverImage: '='
@@ -66,6 +66,7 @@
 
     scope.$watch 'csCoverImage', (newValue, oldValue) ->
       if newValue
+        csFilepickerMethods.fitURL(newValue)
         getBaseURL(newValue)
         getParentDimensions()
         getSourceImageDimensions()
