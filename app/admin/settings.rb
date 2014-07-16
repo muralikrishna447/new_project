@@ -9,6 +9,7 @@ ActiveAdmin.register Setting, as: 'Site Settings' do
       f.input :footer_image
       f.input :global_message_active
       f.input :global_message
+      f.input :forum_maintenance
     end
 
     f.buttons

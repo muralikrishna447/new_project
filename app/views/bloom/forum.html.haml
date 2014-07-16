@@ -183,18 +183,23 @@
     /     - else
     /       sign in
     /   .cs-forum-notifs
-    .forum
-    #message-container
-      #message-open-button
-        %i.fa.fa-question.fa-lg
-      #message
-        #message-close-button
-          %i.fa.fa-times
-        %strong Welcome to the ChefSteps Forum Beta!
-        %div
-          We appreciate the time you've taken to be part of creating a better forum experience.  Feel free to explore, create new discussions, upload photos, and comment on other discussions.  You can report bugs in the Bug Reports category, but if all else fails, you can always email us 
-          %a(href="mailto:hello@usebloom.com?Subject=Forum%20Bug%20Report" target="_blank")
-            here.
+    - if Setting.first.forum_maintenance
+      %div(style="width: 600px; margin: 100 auto; border: 1px solid #ccc; padding: 20px;")
+        %h2.text-center(style="margin: 0")
+          We apologize for this inconvenience.  The forum is currently undergoing maintenance.  Please check back soon!
+    - else
+      .forum
+      #message-container
+        #message-open-button
+          %i.fa.fa-question.fa-lg
+        #message
+          #message-close-button
+            %i.fa.fa-times
+          %strong Welcome to the ChefSteps Forum Beta!
+          %div
+            We appreciate the time you've taken to be part of creating a better forum experience.  Feel free to explore, create new discussions, upload photos, and comment on other discussions.  You can report bugs in the Bug Reports category, but if all else fails, you can always email us 
+            %a(href="mailto:hello@usebloom.com?Subject=Forum%20Bug%20Report" target="_blank")
+              here.
     :javascript
       $(document).ready(function() {
         if (localStorage.message == "closed") {
