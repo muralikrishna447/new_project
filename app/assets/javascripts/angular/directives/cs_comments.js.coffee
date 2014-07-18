@@ -43,6 +43,7 @@
       window.location.reload()
 
   template: "<div>{{seoComments}}</div>"
+  # template: "<div>{{seoComments}}</div><div style='text-align: center; border: 1px solid #ccc; padding: 20px'>Comments are currently under maintenance and should be avilable shortly.  Thank you for your patience!</div>"
 ]
 
 @app.directive 'csnotifs', [ ->
