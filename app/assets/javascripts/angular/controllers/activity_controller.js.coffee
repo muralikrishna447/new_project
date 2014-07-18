@@ -431,8 +431,8 @@ window.deepCopy = (obj) ->
   $scope.commentCount = -1
   $scope.updateCommentCount = -> 
     if $scope.activity?
-      $http.get("http://api.usebloom.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
-        $scope.commentCount = data.length
+      $http.get("http://server.usebloom.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
+        $scope.commentCount = data["commentCount"]
       )
 
   $scope.$on 'loadActivityEvent', (event, activity_id) ->
