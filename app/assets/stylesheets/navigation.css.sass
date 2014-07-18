@@ -37,16 +37,20 @@ input:focus
 
 .cs-nav-logo
   height: 100%
-  padding: 0.4rem
+  padding: 1.2rem
   float: left
   @include boxsizing
   .logo-box
     .regular-logo
-      height: 52px
+      height: 36px
     .loading-logo
+      height: 36px
       display: none
     .loading-no-logo
       display: none
+      img
+        height: 40px
+        margin-top: -4px
 
 .cs-nav-items
   //position: absolute
@@ -169,11 +173,16 @@ input:focus
   width: 4rem
   height: 6rem
   padding: 1.5rem 0.5rem
+  margin-right: 1rem
   @include boxsizing
   .profile-image
     img
       float: left
       width: 100%
+      border-radius: 100%
+
+.cs-nav-search
+  margin-right: 1rem
 
 .cs-nav-search.cs-nav-search-open
   width: 260px

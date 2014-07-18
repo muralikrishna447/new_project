@@ -16,7 +16,7 @@
           .cs-nav-profile
             = link_to user_profile_url(current_user) do
               .profile-image
-                = image_tag filepicker_arbitrary_image(current_user.profile_image_id, 75)
+                = image_tag current_user.avatar_url
           / .cs-nav-notifs
           /   %csnotifs
         - else
