@@ -6,6 +6,7 @@ Delve::Application.routes.draw do
   match '/forum', to: 'bloom#forum'
   match '/forum/*path', to: 'bloom#forum'
   match "/forum/*path" => redirect("/?goto=%{path}")
+  match '/betainvite', to: 'bloom#betainvite'
   root to: "home#index"
 
   resources :featured, only: [:index] do
