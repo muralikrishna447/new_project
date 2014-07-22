@@ -67,5 +67,11 @@
         .tool-name
           Fork this recipe
 
+  - if @container_path && @container_name
+    %br
+    .text-center.well-border
+      %h5
+        = "This is part of the #{@container_path} #{@container_name}.".html_safe
+
 
 

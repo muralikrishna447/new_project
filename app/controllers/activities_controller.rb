@@ -93,7 +93,9 @@ class ActivitiesController < ApplicationController
           container_name = containing_class.assembly_type.to_s
           container_name = "Class" if container_name == "Course"
           container_name = "Mini-Class" if container_name == "Project"
-          flash.now[:notice] = "This is part of the #{path} #{container_name}."
+          @container_name = container_name
+          @container_path = path
+          # flash.now[:notice] = "This is part of the #{path} #{container_name}."
         end
         track_event @activity
 
