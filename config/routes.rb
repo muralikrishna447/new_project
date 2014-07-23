@@ -278,6 +278,14 @@ Delve::Application.routes.draw do
 
   resources :settings, only: [:index]
 
+  resources :playground, only: [:index]
+
+  resources :locations do
+    collection do
+      get 'autocomplete', to: 'locations#autocomplete'
+    end
+  end
+
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"
     get "end_clean" => "application#end_clean"
