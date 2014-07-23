@@ -95,6 +95,11 @@ class Assembly < ActiveRecord::Base
     activity_videos_count + activity_step_videos_count
   end
 
+  def sciences
+    assembly_activities = leaf_activities
+    assembly_activities.select{|a| a.activity_type.include?("Science")}
+  end
+
   def badge
     b = Merit::Badge.find(self.badge_id)
     if self.badge_id && b
