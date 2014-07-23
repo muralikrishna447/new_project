@@ -84,18 +84,18 @@ class ActivitiesController < ApplicationController
         if containing_class && containing_class.published?
           case containing_class.assembly_type
           when 'Course'
-            path = view_context.link_to containing_class.title, landing_class_path(containing_class)
+            path = view_context.link_to containing_class.title, landing_class_path(containing_class), {'no-nell-popup' => true}
           when 'Project'
-            path = view_context.link_to containing_class.title, project_path(containing_class)
+            path = view_context.link_to containing_class.title, project_path(containing_class), {'no-nell-popup' => true}
           when 'Recipe Development'
-            path = view_context.link_to containing_class.title, recipe_development_path(containing_class)
+            path = view_context.link_to containing_class.title, recipe_development_path(containing_class), {'no-nell-popup' => true}
           end
           container_name = containing_class.assembly_type.to_s
           container_name = "Class" if container_name == "Course"
           container_name = "Mini-Class" if container_name == "Project"
           @container_name = container_name
           @container_path = path
-          # flash.now[:notice] = "This is part of the #{path} #{container_name}."
+          flash.now[:notice] = "This is part of the #{path} #{container_name}."
         end
         track_event @activity
 
