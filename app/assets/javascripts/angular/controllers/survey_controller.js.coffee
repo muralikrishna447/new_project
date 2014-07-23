@@ -112,11 +112,11 @@
   ]
   $scope.questions.push(question4)
 
-  question5 = {}
-  question5.slug = 'Bio'
-  question5.type = 'open-ended'
-  question5.copy = 'Where do you cook? This will show up in your bio on your profile page.'
-  $scope.questions.push(question5)
+  # question5 = {}
+  # question5.slug = 'Bio'
+  # question5.type = 'open-ended'
+  # question5.copy = 'Where do you cook? This will show up in your bio on your profile page.'
+  # $scope.questions.push(question5)
 
   $scope.loadResults = ->
     angular.forEach $scope.questions, (question, index) ->
@@ -161,7 +161,7 @@
     $scope.getResults()
     mixpanel.track('Survey Answered', $scope.survey_results)
 
-    data = {'survey_results': $scope.survey_results, 'location': $scope.location.input}
+    data = {'survey_results': $scope.survey_results, 'location': $scope.location.input, 'bio': $scope.bio}
     $http.post('/user_surveys', data).success((data) ->
 
     )

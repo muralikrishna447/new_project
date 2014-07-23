@@ -11,8 +11,10 @@
             Tell us more about yourself and your cooking style and we'll help you find content you'll love!
             %em It's all optional.
           %form(name='Survey')
+
             %p Where do you live? This will help us connect you to other ChefSteppers.
             %input(type="text" ng-model="location.input" placeholder="ex: Seattle, WA" typeahead="prediction for prediction in getPredictions($viewValue)" typeahead-loading="loadingLocations" class="form-control")
+
             %div(ng-repeat="question in questions")
               %div(ng-switch on='question.type')
                 %div(ng-switch-when='select')
@@ -29,11 +31,9 @@
                       %label
                         %input(type='checkbox' ng-model="option.checked" )
                         {{option.name}}
-                %div(ng-switch-when='open-ended')
-                  %p.survey-question
-                    %div
-                      {{question.copy}}
-                    %div
-                      %textarea.input-block-level(ng-model='question.answer')
+            %p.survey-question
+              Where do you cook? This will show up in your bio on your profile page.
+              %div
+                %textarea.input-block-level(ng-model="bio")
           / %button.btn.btn-primary.btn-large.btn-block(ng-click='update()')
           /   Submit!
