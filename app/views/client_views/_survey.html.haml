@@ -8,9 +8,10 @@
           /   %i.icon-remove
           %h2 Thanks for signing up!
           %p
-            Tell us more about yourself and cooking style and we'll help you find content you'll love!
+            Tell us more about yourself and your cooking style and we'll help you find content you'll love!
+            %em It's all optional.
           %form(name='Survey')
-            %p What city do you live in?
+            %p Where do you live? This will help us connect you to other ChefSteppers.
             %input(type="text" ng-model="location.input" placeholder="ex: Seattle, WA" typeahead="prediction for prediction in getPredictions($viewValue)" typeahead-loading="loadingLocations" class="form-control")
             %div(ng-repeat="question in questions")
               %div(ng-switch on='question.type')

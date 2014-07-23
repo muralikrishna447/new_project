@@ -32,7 +32,7 @@
   question1.type = 'select'
   question1.copy = 'What kind of cook are you?'
   question1.searchScope = 'difficulty'
-  question1.options = ['Amateur', 'Home Cook', 'Culinary Student', 'Professional']
+  question1.options = ['Home Cook', 'Cooking Enthusiast', 'Culinary Student', 'Professional']
   $scope.questions.push(question1)
 
   # question2 = {}
@@ -115,7 +115,7 @@
   question5 = {}
   question5.slug = 'Bio'
   question5.type = 'open-ended'
-  question5.copy = 'Tell us more about yourself:'
+  question5.copy = 'Where do you cook? This will show up in your bio on your profile page.'
   $scope.questions.push(question5)
 
   $scope.loadResults = ->
