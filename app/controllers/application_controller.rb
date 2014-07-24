@@ -120,6 +120,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :google_simple_api_key
+  def google_simple_api_key
+    "AIzaSyDNwTTNyuKFWhBHq5EdL66YpGmsRF-dgwQ"
+  end
+
 
 private
 
