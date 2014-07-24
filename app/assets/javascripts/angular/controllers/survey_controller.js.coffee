@@ -163,7 +163,7 @@
 
     data = {'survey_results': $scope.survey_results, 'location': $scope.location.input, 'bio': $scope.bio}
     $http.post('/user_surveys', data).success((data) ->
-
+      mixpanel.people.set('location', $scope.location.input)
     )
 
   $scope.getPredictions = (input) ->
