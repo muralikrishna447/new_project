@@ -39,8 +39,8 @@ window.deepCopy = (obj) ->
 ]
 
 
-@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService"
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService) ->
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "$anchorScroll",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, $anchorScroll) ->
 
   $scope.heroMedia = csEditableHeroMediaService
 
@@ -533,5 +533,14 @@ window.deepCopy = (obj) ->
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
         $scope.startEditMode()
         $scope.editMeta = true
+
+  # Scroll to comment. Very hacky but it works
+  $scope.scrollToComments = ->
+    anchor = $location.path().replace(/\//g,'')
+    $location.path('')
+    $location.hash(anchor)
+    $anchorScroll()
+
+  $scope.scrollToComments()
 ]
 

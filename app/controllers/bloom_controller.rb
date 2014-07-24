@@ -22,7 +22,9 @@ class BloomController < ApplicationController
       name_id = bloom_id.rpartition('_')
       name = name_id.first.pluralize
       id = name_id.last
-      redirect_to "/#{name}/#{id}"
+      url = "/#{name}/#{id}#discussion"
+      redirect_to url
+      # redirect_to "/activities/nick-cammarata-s-version-of-foie-gras-ganache?hello=true"
     end
   end
 end

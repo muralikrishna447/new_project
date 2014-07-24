@@ -20,6 +20,7 @@ class ActivitiesController < ApplicationController
       redir_params[:minimal] = params[:minimal] if defined? params[:minimal]
       redir_params[:token] = params[:token] if defined? params[:token]
       redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
+      redir_params[:scrollto] = params[:scrollto] if defined? params[:scrollto]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
 
