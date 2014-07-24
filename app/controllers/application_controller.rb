@@ -122,7 +122,14 @@ class ApplicationController < ActionController::Base
 
   helper_method :google_simple_api_key
   def google_simple_api_key
-    "AIzaSyDNwTTNyuKFWhBHq5EdL66YpGmsRF-dgwQ"
+    case Rails.env
+    when "production"
+      ENV["GOOGLE_SIMPLE_API_KEY"]
+    when "staging", "staging2"
+      ENV["GOOGLE_SIMPLE_API_KEY"]
+    else
+      "AIzaSyBgB1d5J7_MXWk0omalNP3W71jRJ3p7p7Y"
+    end
   end
 
 
