@@ -167,7 +167,7 @@
     )
 
   $scope.getPredictions = (input) ->
-    url = "/locations/autocomplete?input=#{input}"
+    url = "/locations/autocomplete?input=#{input.replace(/\W/g, '')}"
     console.log "URL IS: ", url
     $http.get(url).then (response) ->
       predictions = []
