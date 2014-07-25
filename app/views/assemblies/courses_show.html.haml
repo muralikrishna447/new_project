@@ -34,21 +34,22 @@
 
               - if current_user && current_user.role?(:admin)
                 .edit-button-box.noprint
+                  %h5 Admin Tools
                   %div(ng-switch on="currentIncludable.includable_type")
                     %div(ng-switch-when='Activity')
-                      %a.btn.btn-secondary(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
+                      %a(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
                         %i.icon-edit
                         edit
                     %div(ng-switch-when='Assignment')
-                      %a.btn.btn-secondary(ng-href="/admin/assignments/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                      %a(ng-href="/admin/assignments/{{currentIncludable.includable_slug}}/edit" target="_blank")
                         %i.icon-edit
                         edit
                     %div(ng-switch-when='Page')
-                      %a.btn.btn-secondary(ng-href="/admin/pages/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                      %a(ng-href="/admin/pages/{{currentIncludable.includable_slug}}/edit" target="_blank")
                         %i.icon-edit
                         edit
                     %div(ng-switch-when='Quiz')
-                      %a.btn.btn-secondary(ng-href="/admin/quizzes/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                      %a(ng-href="/admin/quizzes/{{currentIncludable.includable_slug}}/edit" target="_blank")
                         %i.icon-edit
                         edit
 
