@@ -16,4 +16,13 @@ class Upload < ActiveRecord::Base
   def featured_image
     image_id
   end
+
+  def uploadable
+    if activity
+      activity
+    elsif assembly
+      assembly
+    end
+        
+  end
 end
