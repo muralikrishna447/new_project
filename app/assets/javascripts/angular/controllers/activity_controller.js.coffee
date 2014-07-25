@@ -541,6 +541,9 @@ window.deepCopy = (obj) ->
     $location.hash(anchor)
     $anchorScroll()
 
-  $scope.scrollToComments()
+  $timeout ( ->
+    $scope.scrollToComments()
+  ), 1000
+  
 ]
 
