@@ -162,6 +162,7 @@
           container.width = parent.width
           container.height = container.height = container.width * image.heightToWidth
         if height && width
+          console.log 'HEIGHT AND WIDTH'
           container.width =  if (width == 'parent') then parent.width else width
           container.height = if (height == 'parent') then parent.height else height
 
@@ -204,9 +205,9 @@
       # container.heightToWidth = container.height / container.width
 
     calculateImageDimensions = ->
-      # console.log "Calculating Image Dimensions"
-      # console.log 'Parent ratio: ', parent.heightToWidth
-      # console.log 'Image ratio: ', image.heightToWidth
+      console.log "Calculating Image Dimensions"
+      console.log 'Parent ratio: ', parent.heightToWidth
+      console.log 'Image ratio: ', image.heightToWidth
       if container.heightToWidth <= image.heightToWidth
         console.log 'short and wide'
         image.finalWidth = container.width
@@ -231,6 +232,7 @@
         "margin-left": "-" + (image.finalWidth - container.width)/2 + "px"
         "margin-top": "-" + (image.finalHeight - container.height)/2 + "px"
       }
+      console.log '*****'
 
     loadTinyImage = ->
       scope.tinyImageSrc = csFilepickerMethods.convert(image.url, {w: 100})
@@ -265,10 +267,10 @@
 
   template: """
     <div ng-if="!finalUrl" style="opacity:0;">
-      <img ng-src={{tinyImageSrc}} cs-tiny-image>
+      <img ng-src="{{tinyImageSrc}}" cs-tiny-image>
     </div>
     <div ng-style="containerStyle" class="cs-image">
-      <img ng-src={{finalUrl}} ng-style="imageStyle" cs-final-image-load>
+      <img ng-src="{{finalUrl}}" ng-style="imageStyle" cs-final-image-load>
     </div>
   """
 
