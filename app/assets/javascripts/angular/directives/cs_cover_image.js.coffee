@@ -92,19 +92,28 @@
 
 # Todo Make the default to the parent width and height but allows you to specify the width and height.
 
-@app.directive 'csTest', ['$window', '$timeout', 'csFilepickerMethods', ($window, $timeout, csFilepickerMethods) ->
+@app.directive 'csImage', ['$window', '$timeout', 'csFilepickerMethods', ($window, $timeout, csFilepickerMethods) ->
   restrict: 'E'
   scope: { 
-    imageUrl: '='
+    url: '='
+    height: '='
+    width: '='
+    aspect: '='
   }
 
   link: (scope, element, attrs) ->
     parent = {}
+    container = {}
     image = {}
-    image.url = scope.imageUrl
+    image.url = scope.url
     scope.finalImageClass = "cs-image hide"
 
-    getParentDimensions = ->
+    width = scope.width || false
+    height = scope.height || false
+    aspect = scope.aspect || false
+    console.log width, height, aspect
+
+    setContainerDimensions = ->
       parent = element.parent()
       parent.width = parent[0].clientWidth
       parent.height = parent[0].clientHeight
@@ -113,38 +122,79 @@
       # console.log "Parent Height: ", parent.height
       # console.log "Parent: ", parent
 
+      if aspect
+        aspectArray = scope.aspect.split(':')
+        aspectWidth = aspectArray[0]
+        aspectHeight = aspectArray[1]
+
+      # Only width is provided
+      if scope.width && ! scope.height
+        if scope.width == 'parent'
+          container.width = parent.width
+        else
+          container.width = scope.width
+
+        if scope.aspect
+          container.height = container.width * aspectHeight / aspectWidth
+
+      # Only height is provided
+      if ! scope.width && scope.height
+        if scope.height == 'parent'
+          container.height = parent.height
+        else
+          container.height = scope.height
+        if scope.aspect
+          container.width = container.height * aspectWidth / aspectHeight
+        else
+          container.width = parent.width
+
+      # Nothing is provided
+      if ! scope.width && ! scope.height
+        container.height = parent.height
+        container.width = parent.width
+
+      # Both width and height provided
+      if scope.width && scope.height
+        container.height = scope.height
+        container.width = scope.width
+
+      container.heightToWidth = container.height / container.width
+
     calculateImageDimensions = ->
       # console.log "Calculating Image Dimensions"
       # console.log 'Parent ratio: ', parent.heightToWidth
       # console.log 'Image ratio: ', image.heightToWidth
-      if parent.heightToWidth <= image.heightToWidth
-        image.finalWidth = parent.width
+      if container.heightToWidth <= image.heightToWidth
+        console.log 'short and wide'
+        image.finalWidth = container.width
         image.finalHeight = image.finalWidth*image.heightToWidth
       else
-        image.finalWidth = parent.height/image.heightToWidth
+        console.log 'tall and skinny'
+        image.finalWidth = container.height/container.heightToWidth
         image.finalHeight = image.finalWidth*image.heightToWidth
-
+        console.log "IMAGE FINAL WIDTH: ", image.finalWidth
+        console.log "IMAGE FINAL HEIGHT: ", image.finalHeight
       scope.finalUrl = csFilepickerMethods.convert(image.url, {w: image.finalWidth})
 
       scope.containerStyle = {
         "overflow": "hidden"
-        "height": parent.height
-        "width": parent.width
+        "height": container.height
+        "width": container.width
       }
       scope.imageStyle = {
         "max-width": "inherit"
-        "margin-left": "-" + (image.finalWidth - parent.width)/2 + "px"
-        "margin-top": "-" + (image.finalHeight - parent.height)/2 + "px"
+        "margin-left": "-" + (image.finalWidth - container.width)/2 + "px"
+        "margin-top": "-" + (image.finalHeight - container.height)/2 + "px"
       }
 
     loadTinyImage = ->
       scope.tinyImageSrc = csFilepickerMethods.convert(image.url, {w: 100})
 
     # 1. Get Parent dimensions
-    getParentDimensions()
+    setContainerDimensions()
 
-    # 2. When the imageUrl is available, load the tiny image
-    scope.$watch 'imageUrl', (newValue, oldValue) ->
+    # 2. When the url is available, load the tiny image
+    scope.$watch 'url', (newValue, oldValue) ->
       if newValue
         loadTinyImage()
 
@@ -160,7 +210,7 @@
 
     angular.element($window).bind 'resize', _.throttle( ->
         console.log 'actually TROTTLED'
-        getParentDimensions()
+        setContainerDimensions()
         calculateImageDimensions()
         scope.containerStyle["opacity"] = "1"
         scope.$apply()
