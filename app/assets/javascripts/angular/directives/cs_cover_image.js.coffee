@@ -214,8 +214,10 @@
         image.finalHeight = image.finalWidth*image.heightToWidth
       else
         console.log 'tall and skinny'
-        image.finalWidth = container.height/container.heightToWidth
-        image.finalHeight = image.finalWidth*image.heightToWidth
+        image.finalHeight = container.height
+        image.finalWidth = image.finalHeight / image.heightToWidth
+        # image.finalWidth = container.height/container.heightToWidth
+        # image.finalHeight = image.finalWidth*image.heightToWidth
         console.log "IMAGE FINAL WIDTH: ", image.finalWidth
         console.log "IMAGE FINAL HEIGHT: ", image.finalHeight
 
