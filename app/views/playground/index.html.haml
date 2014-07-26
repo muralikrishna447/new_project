@@ -1,8 +1,23 @@
 // Enter your test template here
 
-%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" height="100" width="parent")
-%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" height="200" aspect="'16:9'")
-%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" aspect="'16:9'" width="600")
+%h3 Height 200
+%cs-image(url="https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj" height="200")
+
+%h3 Height 200, Width Parent
+%cs-image(url="https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj" height="200" width="parent")
+
+/ %h3 Width 200
+/ %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" width="200")
+
+/ %h3 Height 100, Width 300
+/ %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" height="100" width="300")
+
+/ %h3 height 300, Width 100
+/ %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" height="300" width="100")
+
+/ %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" height="100" width="parent")
+/ %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" height="200" aspect="'16:9'")
+/ %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" aspect="'16:9'" width="600")
 
 / %div(style="height:200px; width:400px; background: #ccc;")
 /   %cs-test(image-url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'")

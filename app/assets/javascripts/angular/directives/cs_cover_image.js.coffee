@@ -95,10 +95,10 @@
 @app.directive 'csImage', ['$window', '$timeout', 'csFilepickerMethods', ($window, $timeout, csFilepickerMethods) ->
   restrict: 'E'
   scope: { 
-    url: '='
-    height: '='
-    width: '='
-    aspect: '='
+    url: '@'
+    height: '@'
+    width: '@'
+    aspect: '@'
   }
 
   link: (scope, element, attrs) ->
@@ -108,57 +108,100 @@
     image.url = scope.url
     scope.finalImageClass = "cs-image hide"
 
-    width = scope.width || false
-    height = scope.height || false
-    aspect = scope.aspect || false
+    width = scope.width
+    height = scope.height
+    aspect = scope.aspect
     console.log width, height, aspect
 
     setContainerDimensions = ->
       parent = element.parent()
-      parent.width = parent[0].clientWidth
-      parent.height = parent[0].clientHeight
+      console.log 'WIDTH: ', $(parent[0]).width()
+      parent.width = $(parent[0]).width()
+      parent.height = $(parent[0]).height()
       parent.heightToWidth = parent.height/parent.width
-      # console.log "Parent Width: ", parent.width
+      console.log "Parent Width: ", parent.width
       # console.log "Parent Height: ", parent.height
       # console.log "Parent: ", parent
+
+      # if width
+      #   console.log 'Width Set'
+      #   container.width =  if (width == 'parent') then parent.width else width
+
+      # if height
+      #   console.log 'Height Set'
+      #   container.height = if (height == 'parent') then parent.height else height
 
       if aspect
         aspectArray = scope.aspect.split(':')
         aspectWidth = aspectArray[0]
         aspectHeight = aspectArray[1]
 
-      # Only width is provided
-      if scope.width && ! scope.height
-        if scope.width == 'parent'
+        if height && ! width
+          container.height = if (height == 'parent') then parent.height else height
+          container.width = container.height * aspectWidth / aspectHeight
+        if ! height && width
+          container.width =  if (width == 'parent') then parent.width else width
+          container.height = container.width * aspectHeight / aspectWidth
+        if ! height && ! width
           container.width = parent.width
-        else
-          container.width = scope.width
-
-        if scope.aspect
+          container.height = container.width * aspectHeight /aspectWidth
+        if height && width
+          container.width =  if (width == 'parent') then parent.width else width
           container.height = container.width * aspectHeight / aspectWidth
 
-      # Only height is provided
-      if ! scope.width && scope.height
-        if scope.height == 'parent'
-          container.height = parent.height
-        else
-          container.height = scope.height
-        if scope.aspect
-          container.width = container.height * aspectWidth / aspectHeight
-        else
+      else
+
+        if height && ! width
+          console.log "Only Height", width
+          container.height = if (height == 'parent') then parent.height else height
+          container.width = container.height / image.heightToWidth
+        if ! height && width
+          container.width =  if (width == 'parent') then parent.width else width
+          container.height = container.width * image.heightToWidth
+        if ! height && ! width
           container.width = parent.width
-
-      # Nothing is provided
-      if ! scope.width && ! scope.height
-        container.height = parent.height
-        container.width = parent.width
-
-      # Both width and height provided
-      if scope.width && scope.height
-        container.height = scope.height
-        container.width = scope.width
+          container.height = container.height = container.width * image.heightToWidth
+        if height && width
+          container.width =  if (width == 'parent') then parent.width else width
+          container.height = if (height == 'parent') then parent.height else height
 
       container.heightToWidth = container.height / container.width
+      console.log "CONTAINER HEIGHT: ", container.height
+      console.log "CONTAINER WIDTH: ", container.width
+
+
+      # # Only width is provided
+      # if scope.width && ! scope.height
+      #   if scope.width == 'parent'
+      #     container.width = parent.width
+      #   else
+      #     container.width = scope.width
+
+      #   if scope.aspect
+      #     container.height = container.width * aspectHeight / aspectWidth
+
+      # # Only height is provided
+      # if ! scope.width && scope.height
+      #   if scope.height == 'parent'
+      #     container.height = parent.height
+      #   else
+      #     container.height = scope.height
+      #   if scope.aspect
+      #     container.width = container.height * aspectWidth / aspectHeight
+      #   else
+      #     container.width = parent.width
+
+      # # Nothing is provided
+      # if ! scope.width && ! scope.height
+      #   container.height = parent.height
+      #   container.width = parent.width
+
+      # # Both width and height provided
+      # if scope.width && scope.height
+      #   container.height = scope.height
+      #   container.width = scope.width
+
+      # container.heightToWidth = container.height / container.width
 
     calculateImageDimensions = ->
       # console.log "Calculating Image Dimensions"
@@ -174,6 +217,8 @@
         image.finalHeight = image.finalWidth*image.heightToWidth
         console.log "IMAGE FINAL WIDTH: ", image.finalWidth
         console.log "IMAGE FINAL HEIGHT: ", image.finalHeight
+
+    loadImage = ->
       scope.finalUrl = csFilepickerMethods.convert(image.url, {w: image.finalWidth})
 
       scope.containerStyle = {
@@ -191,7 +236,7 @@
       scope.tinyImageSrc = csFilepickerMethods.convert(image.url, {w: 100})
 
     # 1. Get Parent dimensions
-    setContainerDimensions()
+    # setContainerDimensions()
 
     # 2. When the url is available, load the tiny image
     scope.$watch 'url', (newValue, oldValue) ->
@@ -201,7 +246,9 @@
     # 3. When tiny image is loaded, calculate the final image dimensions
     scope.$on 'csTinyImageLoaded', (e, args) ->
       image.heightToWidth = args.height/args.width
+      setContainerDimensions()
       calculateImageDimensions()
+      loadImage()
       scope.$apply()
 
     scope.$on 'csFinalImageLoaded', (e, args) ->
