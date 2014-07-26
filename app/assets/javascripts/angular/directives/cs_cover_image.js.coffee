@@ -167,6 +167,8 @@
           container.height = if (height == 'parent') then parent.height else height
 
       container.heightToWidth = container.height / container.width
+      console.log "PARENT HEIGHT: ", parent.height
+      console.log "PARENT WIDTH: ", parent.width
       console.log "CONTAINER HEIGHT: ", container.height
       console.log "CONTAINER WIDTH: ", container.width
 
@@ -263,6 +265,7 @@
         console.log 'actually TROTTLED'
         setContainerDimensions()
         calculateImageDimensions()
+        loadImage()
         scope.containerStyle["opacity"] = "1"
         scope.$apply()
       , 1000)
