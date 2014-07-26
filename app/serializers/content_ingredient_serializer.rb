@@ -14,6 +14,6 @@ class ContentIngredientSerializer < ActiveModel::Serializer
   end
 
   def context
-    ''
+    'Ingredient'
   end
 end

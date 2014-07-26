@@ -17,7 +17,9 @@ class ContentActivitySerializer < ActiveModel::Serializer
       else
         type_name = assembly.assembly_type
       end
-      "#{assembly.title} #{type_name}" 
+      "#{assembly.title} #{type_name}"
+    else
+      "Recipe" 
     end
   end
 end
