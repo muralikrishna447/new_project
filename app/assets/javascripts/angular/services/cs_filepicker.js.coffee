@@ -41,14 +41,17 @@
   # Providing both width and height, it will ignore aspect ratio and provide an image cropped to the specified dimensions
   # csFilepickerMethods.convert(FilepickerObject, {height: 400, width: 300})
 
-  this.convert = (fpObject, options = {}) ->
+  this.convert = (fpObjectOrImageUrl, options = {}) ->
     # Accept both verbose and shorthand
     width = options.w || options.width
     height = options.h || options.height
     aspect = options.a || options.aspect
 
-    # Get the cdnURL for this Filepicker object
-    convertURL = this.cdnURL(fpObject)
+    # Try parsing the filepicker object first
+    try
+      convertURL = this.cdnURL(fpObjectOrImageUrl)
+    catch e
+      convertURL = fpObjectOrImageUrl
 
     if aspect
       aspectArray = aspect.split(':')
