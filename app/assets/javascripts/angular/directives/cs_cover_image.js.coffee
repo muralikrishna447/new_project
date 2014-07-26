@@ -92,55 +92,109 @@
 
 # Todo Make the default to the parent width and height but allows you to specify the width and height.
 
-@app.directive 'csTest', ['$window', '$timeout', '$q', ($window, $timeout, $q) ->
+@app.directive 'csTest', ['$window', '$timeout', 'csFilepickerMethods', ($window, $timeout, csFilepickerMethods) ->
   restrict: 'E'
   scope: { 
-    imageSrc: '@'
+    imageUrl: '='
   }
 
   link: (scope, element, attrs) ->
+    parent = {}
+    image = {}
+    image.url = scope.imageUrl
+    scope.finalImageClass = "cs-image hide"
 
     getParentDimensions = ->
       parent = element.parent()
       parent.width = parent[0].clientWidth
       parent.height = parent[0].clientHeight
-      console.log "Parent Width: ", parent.width
-      console.log "Parent Height: ", parent.height
-      console.log "Parent: ", parent
+      parent.heightToWidth = parent.height/parent.width
+      # console.log "Parent Width: ", parent.width
+      # console.log "Parent Height: ", parent.height
+      # console.log "Parent: ", parent
 
-    getImageDimensions = ->
-      scope.image = element.find('img')
-      scope.image.width = scope.image[0].clientWidth
-      scope.image.height = scope.image[0].clientHeight
-      console.log "Image Width: ", scope.image.width
-      console.log "Image Height: ", scope.image.height
-      console.log "Image: ", scope.image
+    calculateImageDimensions = ->
+      # console.log "Calculating Image Dimensions"
+      # console.log 'Parent ratio: ', parent.heightToWidth
+      # console.log 'Image ratio: ', image.heightToWidth
+      if parent.heightToWidth <= image.heightToWidth
+        image.finalWidth = parent.width
+        image.finalHeight = image.finalWidth*image.heightToWidth
+      else
+        image.finalWidth = parent.height/image.heightToWidth
+        image.finalHeight = image.finalWidth*image.heightToWidth
 
-    loadImage = ->
-      getParentDimensions()
-      getImageDimensions()
+      scope.finalUrl = csFilepickerMethods.convert(image.url, {w: image.finalWidth})
 
-    # scope.$watch 'imageSrc', (newValue, oldValue) ->
-    #   if newValue
-    #     loadImage()
+      scope.containerStyle = {
+        "overflow": "hidden"
+        "height": parent.height
+        "width": parent.width
+      }
+      scope.imageStyle = {
+        "max-width": "inherit"
+        "margin-left": "-" + (image.finalWidth - parent.width)/2 + "px"
+        "margin-top": "-" + (image.finalHeight - parent.height)/2 + "px"
+      }
 
-    angular.element($window).bind 'resize', ->
-        loadImage()
+    loadTinyImage = ->
+      scope.tinyImageSrc = csFilepickerMethods.convert(image.url, {w: 100})
 
-    scope.$on 'csTestLoaded', ->
-      loadImage()
+    # 1. Get Parent dimensions
+    getParentDimensions()
+
+    # 2. When the imageUrl is available, load the tiny image
+    scope.$watch 'imageUrl', (newValue, oldValue) ->
+      if newValue
+        loadTinyImage()
+
+    # 3. When tiny image is loaded, calculate the final image dimensions
+    scope.$on 'csTinyImageLoaded', (e, args) ->
+      image.heightToWidth = args.height/args.width
+      calculateImageDimensions()
+      scope.$apply()
+
+    scope.$on 'csFinalImageLoaded', (e, args) ->
+      scope.containerStyle["opacity"] = "1"
+      scope.$apply()
+
+    angular.element($window).bind 'resize', _.throttle( ->
+        console.log 'actually TROTTLED'
+        getParentDimensions()
+        calculateImageDimensions()
+        scope.containerStyle["opacity"] = "1"
+        scope.$apply()
+      , 1000)
 
   template: """
-    <img ng-src={{imageSrc}} cs-test-loaded>
+    <div ng-if="!finalUrl" style="opacity:0;">
+      <img ng-src={{tinyImageSrc}} cs-tiny-image>
+    </div>
+    <div ng-style="containerStyle" class="cs-image">
+      <img ng-src={{finalUrl}} ng-style="imageStyle" cs-final-image-load>
+    </div>
   """
 
 ]
 
-@app.directive 'csTestLoaded', ['$window', '$timeout', '$q', ($window, $timeout, $q) ->
+@app.directive 'csTinyImage', ['$window', '$timeout', '$q', ($window, $timeout, $q) ->
   restrict: 'A'
 
   link: (scope, element, attrs) ->
+
     element.on 'load', ->
-      scope.$emit 'csTestLoaded'
+      width = element[0].clientWidth
+      height = element[0].clientHeight
+      scope.$emit 'csTinyImageLoaded', {width: width, height: height}
+
+]
+
+@app.directive 'csFinalImageLoad', ['$window', '$timeout', '$q', ($window, $timeout, $q) ->
+  restrict: 'A'
+
+  link: (scope, element, attrs) ->
+
+    element.on 'load', ->
+      scope.$emit 'csFinalImageLoaded'
 
 ]

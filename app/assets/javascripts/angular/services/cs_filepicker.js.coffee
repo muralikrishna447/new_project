@@ -1,6 +1,6 @@
 # This service helps DRY up a lot of filepicker converting and cropping
 
-@app.service 'csFilepickerMethods', [ ->
+@app.service 'csFilepickerMethods', ['$q', ($q) ->
 
   baseURL = null
   cdnURL = null
@@ -42,6 +42,7 @@
   # csFilepickerMethods.convert(FilepickerObject, {height: 400, width: 300})
 
   this.convert = (fpObjectOrImageUrl, options = {}) ->
+
     # Accept both verbose and shorthand
     width = options.w || options.width
     height = options.h || options.height
@@ -62,24 +63,23 @@
     if width &&  ! height
       if aspect
         newHeight = width * aspectHeight / aspectWidth
-        convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{newHeight}&cache=true"
+        convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{newHeight}&quality=100&cache=true"
       else
-        convertURL = convertURL + "/convert?fit=max&w=#{width}&cache=true"
+        convertURL = convertURL + "/convert?fit=max&w=#{width}&quality=100&cache=true"
 
     # Only height is provided
     if ! width && height
       if aspect
         newWidth = height * aspectWidth / aspectHeight
-        convertURL = convertURL + "/convert?fit=crop&w=#{newWidth}&h=#{height}&cache=true"
+        convertURL = convertURL + "/convert?fit=crop&w=#{newWidth}&h=#{height}&quality=100&cache=true"
       else
-        convertURL = convertURL + "/convert?fit=max&h=#{height}&cache=true"
+        convertURL = convertURL + "/convert?fit=max&h=#{height}&quality=100&cache=true"
 
     # Both width and height provided
     if width && height
-      convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{height}&cache=true"
+      convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{height}&quality=100&cache=true"
 
     convertURL
-
 
   this
 ]
