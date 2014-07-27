@@ -60,7 +60,9 @@
       -# Image only if there is no video
       .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")
         .new-step-image(id="{{'step-image-' + $index}}")
-          %img(cs-responsive-image='step.image_id' alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+          / %img(cs-responsive-image='step.image_id' alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+          %csimage(url="step.image_id" aspect="'16:9'" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+          %cstest(url="step.image_id")
 
   .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, 1)")
     %i.icon-circle-arrow-down

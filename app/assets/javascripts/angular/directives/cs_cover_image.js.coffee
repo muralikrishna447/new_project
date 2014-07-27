@@ -92,16 +92,18 @@
 
 # Todo Make the default to the parent width and height but allows you to specify the width and height.
 
-@app.directive 'csImage', ['$window', '$timeout', 'csFilepickerMethods', ($window, $timeout, csFilepickerMethods) ->
+@app.directive 'csimage', ['$window', '$timeout', 'csFilepickerMethods', ($window, $timeout, csFilepickerMethods) ->
   restrict: 'E'
   scope: { 
-    url: '@'
-    height: '@'
-    width: '@'
-    aspect: '@'
+    url: '='
+    height: '='
+    width: '='
+    aspect: '='
   }
 
   link: (scope, element, attrs) ->
+    console.log "THIS IS THE URL: ", scope.url
+    console.log scope.url
     parent = {}
     container = {}
     image = {}
@@ -115,21 +117,9 @@
 
     setContainerDimensions = ->
       parent = element.parent()
-      console.log 'WIDTH: ', $(parent[0]).width()
       parent.width = $(parent[0]).width()
       parent.height = $(parent[0]).height()
       parent.heightToWidth = parent.height/parent.width
-      console.log "Parent Width: ", parent.width
-      # console.log "Parent Height: ", parent.height
-      # console.log "Parent: ", parent
-
-      # if width
-      #   console.log 'Width Set'
-      #   container.width =  if (width == 'parent') then parent.width else width
-
-      # if height
-      #   console.log 'Height Set'
-      #   container.height = if (height == 'parent') then parent.height else height
 
       if aspect
         aspectArray = scope.aspect.split(':')
@@ -167,44 +157,10 @@
           container.height = if (height == 'parent') then parent.height else height
 
       container.heightToWidth = container.height / container.width
-      console.log "PARENT HEIGHT: ", parent.height
-      console.log "PARENT WIDTH: ", parent.width
-      console.log "CONTAINER HEIGHT: ", container.height
-      console.log "CONTAINER WIDTH: ", container.width
-
-
-      # # Only width is provided
-      # if scope.width && ! scope.height
-      #   if scope.width == 'parent'
-      #     container.width = parent.width
-      #   else
-      #     container.width = scope.width
-
-      #   if scope.aspect
-      #     container.height = container.width * aspectHeight / aspectWidth
-
-      # # Only height is provided
-      # if ! scope.width && scope.height
-      #   if scope.height == 'parent'
-      #     container.height = parent.height
-      #   else
-      #     container.height = scope.height
-      #   if scope.aspect
-      #     container.width = container.height * aspectWidth / aspectHeight
-      #   else
-      #     container.width = parent.width
-
-      # # Nothing is provided
-      # if ! scope.width && ! scope.height
-      #   container.height = parent.height
-      #   container.width = parent.width
-
-      # # Both width and height provided
-      # if scope.width && scope.height
-      #   container.height = scope.height
-      #   container.width = scope.width
-
-      # container.heightToWidth = container.height / container.width
+      # console.log "PARENT HEIGHT: ", parent.height
+      # console.log "PARENT WIDTH: ", parent.width
+      # console.log "CONTAINER HEIGHT: ", container.height
+      # console.log "CONTAINER WIDTH: ", container.width
 
     calculateImageDimensions = ->
       console.log "Calculating Image Dimensions"
@@ -281,7 +237,7 @@
 
 ]
 
-@app.directive 'csTinyImage', ['$window', '$timeout', '$q', ($window, $timeout, $q) ->
+@app.directive 'csTinyImage', [ ->
   restrict: 'A'
 
   link: (scope, element, attrs) ->
@@ -293,12 +249,23 @@
 
 ]
 
-@app.directive 'csFinalImageLoad', ['$window', '$timeout', '$q', ($window, $timeout, $q) ->
+@app.directive 'csFinalImageLoad', [ ->
   restrict: 'A'
 
   link: (scope, element, attrs) ->
 
     element.on 'load', ->
       scope.$emit 'csFinalImageLoaded'
+
+]
+
+@app.directive 'cstest', [ ->
+  restrict: 'E'
+  scope: {
+    url: '='
+  }
+  link: (scope, element, attrs) ->
+
+    console.log "TESTING THE: ", scope.url
 
 ]
