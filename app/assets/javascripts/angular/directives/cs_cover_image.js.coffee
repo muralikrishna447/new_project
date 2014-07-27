@@ -25,13 +25,12 @@
       parent = element.parent()
       parent.width = element[0].clientWidth
       parent.height = parent[0].clientHeight
-      console.log "Parent Width: ", parent.width
-      console.log "Parent Height: ", parent.height
+      # console.log "Parent Width: ", parent.width
+      # console.log "Parent Height: ", parent.height
 
     getSourceImageDimensions = ->
       url = scope.baseURL + "/metadata?width=true&height=true"
       $http.get(url, {headers: {'X-Requested-With': undefined}}).then (response) ->
-        console.log response.data
         source.width = response.data.width
         source.height = response.data.height
         if source.width && source.height
@@ -102,7 +101,6 @@
   }
 
   link: (scope, element, attrs) ->
-    console.log "THIS IS THE url: ", scope
     console.log scope.url
     parent = {}
     container = {}
@@ -113,7 +111,7 @@
     width = scope.width
     height = scope.height
     aspect = scope.aspect
-    console.log width, height, aspect
+    # console.log width, height, aspect
 
     setContainerDimensions = ->
       parent = element.parent()
@@ -142,7 +140,6 @@
       else
 
         if height && ! width
-          console.log "Only Height", width
           container.height = if (height == 'parent') then parent.height else height
           container.width = container.height / image.heightToWidth
         if ! height && width
@@ -152,7 +149,6 @@
           container.width = parent.width
           container.height = container.height = container.width * image.heightToWidth
         if height && width
-          console.log 'HEIGHT AND WIDTH'
           container.width =  if (width == 'parent') then parent.width else width
           container.height = if (height == 'parent') then parent.height else height
 
@@ -163,23 +159,22 @@
       # console.log "CONTAINER WIDTH: ", container.width
 
     calculateImageDimensions = ->
-      console.log "Calculating Image Dimensions"
-      console.log 'Parent ratio: ', parent.heightToWidth
-      console.log 'Image ratio: ', image.heightToWidth
+      # console.log "Calculating Image Dimensions"
+      # console.log 'Parent ratio: ', parent.heightToWidth
+      # console.log 'Image ratio: ', image.heightToWidth
       if container.heightToWidth <= image.heightToWidth
-        console.log 'short and wide'
+        # console.log 'short and wide'
         image.finalWidth = container.width
         image.finalHeight = image.finalWidth*image.heightToWidth
       else
-        console.log 'tall and skinny'
+        # console.log 'tall and skinny'
         image.finalHeight = container.height
         image.finalWidth = image.finalHeight / image.heightToWidth
-        console.log "IMAGE FINAL WIDTH: ", image.finalWidth
-        console.log "IMAGE FINAL HEIGHT: ", image.finalHeight
+        # console.log "IMAGE FINAL WIDTH: ", image.finalWidth
+        # console.log "IMAGE FINAL HEIGHT: ", image.finalHeight
 
     loadImage = ->
       scope.finalUrl = csFilepickerMethods.convert(image.url, {w: image.finalWidth})
-
       scope.containerStyle = {
         "overflow": "hidden"
         "height": container.height
@@ -190,15 +185,12 @@
         "margin-left": "-" + (image.finalWidth - container.width)/2 + "px"
         "margin-top": "-" + (image.finalHeight - container.height)/2 + "px"
       }
-      console.log '*****'
 
     loadTinyImage = ->
       scope.tinyImageSrc = csFilepickerMethods.convert(image.url, {w: 100})
 
     # 1. When the url is available, load the tiny image
     scope.$watch 'url', (newValue, oldValue) ->
-      console.log "FROM URL NEW: ", newValue
-      console.log "FROM URL OLD: ", newValue
       if newValue && typeof(newValue) != undefined
         image.url = newValue
         loadTinyImage()
@@ -216,7 +208,6 @@
       scope.$apply()
 
     angular.element($window).bind 'resize', _.throttle( ->
-        console.log 'actually TROTTLED'
         setContainerDimensions()
         calculateImageDimensions()
         loadImage()
