@@ -92,22 +92,22 @@
 
 # Todo Make the default to the parent width and height but allows you to specify the width and height.
 
-@app.directive 'csimage', ['$window', '$timeout', 'csFilepickerMethods', ($window, $timeout, csFilepickerMethods) ->
+@app.directive 'csImage', ['$window', '$timeout', 'csFilepickerMethods', ($window, $timeout, csFilepickerMethods) ->
   restrict: 'E'
   scope: { 
     url: '='
-    height: '='
-    width: '='
-    aspect: '='
+    height: '@'
+    width: '@'
+    aspect: '@'
   }
 
   link: (scope, element, attrs) ->
-    console.log "THIS IS THE URL: ", scope.url
+    console.log "THIS IS THE url: ", scope
     console.log scope.url
     parent = {}
     container = {}
     image = {}
-    image.url = scope.url
+    image.url = {}
     scope.finalImageClass = "cs-image hide"
 
     width = scope.width
@@ -174,8 +174,6 @@
         console.log 'tall and skinny'
         image.finalHeight = container.height
         image.finalWidth = image.finalHeight / image.heightToWidth
-        # image.finalWidth = container.height/container.heightToWidth
-        # image.finalHeight = image.finalWidth*image.heightToWidth
         console.log "IMAGE FINAL WIDTH: ", image.finalWidth
         console.log "IMAGE FINAL HEIGHT: ", image.finalHeight
 
@@ -197,12 +195,12 @@
     loadTinyImage = ->
       scope.tinyImageSrc = csFilepickerMethods.convert(image.url, {w: 100})
 
-    # 1. Get Parent dimensions
-    # setContainerDimensions()
-
-    # 2. When the url is available, load the tiny image
+    # 1. When the url is available, load the tiny image
     scope.$watch 'url', (newValue, oldValue) ->
-      if newValue
+      console.log "FROM URL NEW: ", newValue
+      console.log "FROM URL OLD: ", newValue
+      if newValue && typeof(newValue) != undefined
+        image.url = newValue
         loadTinyImage()
 
     # 3. When tiny image is loaded, calculate the final image dimensions
@@ -256,16 +254,5 @@
 
     element.on 'load', ->
       scope.$emit 'csFinalImageLoaded'
-
-]
-
-@app.directive 'cstest', [ ->
-  restrict: 'E'
-  scope: {
-    url: '='
-  }
-  link: (scope, element, attrs) ->
-
-    console.log "TESTING THE: ", scope.url
 
 ]

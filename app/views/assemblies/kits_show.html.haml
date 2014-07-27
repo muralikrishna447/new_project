@@ -4,8 +4,7 @@
       .kit-intro-image
         / %img(cs-responsive-image='kit.image_id')
         / %div(cs-cover-image="kit.image_id" reload-on-window-resize="true")
-        %csimage(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'")
-        %cstest(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'")
+        %cs-image(url="kit.image_id" height="parent" width="parent")
         .kit-gradient
       .kit-intro-title(ng-click="toggleNav()")
         %h1.section
