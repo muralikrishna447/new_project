@@ -33,7 +33,7 @@ window.deepCopy = (obj) ->
     h = 495
     if w < 650
       h = w * 9.0 / 16.0
-    url += "/convert?fit=crop&h=#{h}&w=#{w}"
+    url += "/convert?fit=crop&h=#{h}&w=#{w}&quality=100&cache=true"
     window.cdnURL(url)
 
 ]
