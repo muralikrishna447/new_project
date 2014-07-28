@@ -3,20 +3,21 @@
 .container.about-quote
   .row
     .span12
-      .lead.section.text-center
-        %h1.whitespace Every cook, cooking smarter.
+      .lead.section.text-center.whitespace
+        %h1 Every cook, cooking smarter.
 
 .container.about-mission
   .row
-    .span12
-      %h2 About ChefSteps
-      .row
-        .span6
-          :markdown
-            #{@about_left}
-        .span6
-          :markdown
-            #{@about_right}
+    .span6
+      %csEmbedYouTube(  video-id="0wC4HlWnhZ0" 
+                        itemscope="true"
+                        itemprop="video"
+                        itemtype="http://schema.org/VideoObject")
+    .span6
+      :markdown
+        #{@about_left}
+      :markdown
+        #{@about_right}
 
 = render 'about_tabs'
 / = render 'about_get_to_work'

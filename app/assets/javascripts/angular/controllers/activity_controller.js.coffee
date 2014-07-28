@@ -33,14 +33,14 @@ window.deepCopy = (obj) ->
     h = 495
     if w < 650
       h = w * 9.0 / 16.0
-    url += "/convert?fit=crop&h=#{h}&w=#{w}"
+    url += "/convert?fit=crop&h=#{h}&w=#{w}&quality=100&cache=true"
     window.cdnURL(url)
 
 ]
 
 
-@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService"
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService) ->
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "$anchorScroll",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, $anchorScroll) ->
 
   $scope.heroMedia = csEditableHeroMediaService
 
@@ -537,5 +537,19 @@ window.deepCopy = (obj) ->
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
         $scope.startEditMode()
         $scope.editMeta = true
+
+  # Scroll to comment. Very hacky but it works
+  $scope.scrollToComments = ->
+    # Super hacky, without the condition, it creates some really really bad looking/long urls
+    if $location.path() && $location.path() == 'discussion'
+      anchor = $location.path().replace(/\//g,'')
+      $location.path('')
+      $location.hash(anchor)
+      $anchorScroll()
+
+  $timeout ( ->
+    $scope.scrollToComments()
+  ), 1000
+  
 ]
 

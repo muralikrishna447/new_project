@@ -20,6 +20,7 @@ class ActivitiesController < ApplicationController
       redir_params[:minimal] = params[:minimal] if defined? params[:minimal]
       redir_params[:token] = params[:token] if defined? params[:token]
       redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
+      redir_params[:scrollto] = params[:scrollto] if defined? params[:scrollto]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
 
@@ -95,7 +96,7 @@ class ActivitiesController < ApplicationController
           container_name = "Mini-Class" if container_name == "Project"
           @container_name = container_name
           @container_path = path
-          flash.now[:notice] = "This is part of the #{path} #{container_name}."
+          # flash.now[:notice] = "This is part of the #{path} #{container_name}."
         end
         track_event @activity
 

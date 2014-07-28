@@ -33,11 +33,11 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
       r = response.data
       for i in r
         i.label = i.title
-        i.label += " [RECIPE]" if i.sub_activity_id?
+        i.title += " [RECIPE]" if i.sub_activity_id?
 
       # always include current search text as an option, first!
       r = _.sortBy(r, (i) -> i.title != s["ingredient"])
-      r.unshift({label: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
+      r.unshift({title: s["ingredient"], label: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
       r
 
   $scope.matchableIngredients = (i1, i2) ->

@@ -23,7 +23,7 @@ class AssembliesController < ApplicationController
         render "courses_#{params[:action]}"
       else
         @no_shop = true
-        redirect_to landing_class_url(@assembly)
+        redirect_to landing_class_url(@assembly, anchor: '')
       end
     when 'Recipe Development'
       render "courses_#{params[:action]}"

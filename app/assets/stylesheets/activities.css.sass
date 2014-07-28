@@ -15,6 +15,7 @@ $banner-height: $baseline * 45
   position: relative
   margin-bottom: $baseline
   cursor: pointer
+  min-height: 500px
 
   img
     // Allowing a stretch here, but it is only effective temporarily because
@@ -144,6 +145,7 @@ $banner-height: $baseline * 45
 
 @media (max-width: 900px)
   .banner-image
+    min-height: 260px
     > img
       display: none
 
@@ -161,6 +163,8 @@ $banner-height: $baseline * 45
       z-index: 1
 
 @media (max-width: 480px)
+  .banner-image
+    min-height: 100px
   .activity-columns-1
     .aside.rightInset
       margin-right: -16%

@@ -450,9 +450,12 @@ a:hover
     margin-right: 5px
     top: -5px
     white-space: nowrap
+    font-size: 1.2rem
     &.passbubble
-      top: 0
-      margin-left: 5px
+      position: absolute
+      left: 0px
+      top: 40px
+      line-height: 1rem
 
 .kiosk-madlib
   width: 200%
@@ -1561,6 +1564,10 @@ input.summary-tweet
   margin-right: $horz-baseline-large * 2
   display: inline-block
   vertical-align: top
+
+.cs-image
+  @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms)
+  opacity: 0
 
 // BELOW ARE RESPONSIVE STYLES //
 
