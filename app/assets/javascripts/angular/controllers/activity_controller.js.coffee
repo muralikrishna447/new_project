@@ -536,10 +536,12 @@ window.deepCopy = (obj) ->
 
   # Scroll to comment. Very hacky but it works
   $scope.scrollToComments = ->
-    anchor = $location.path().replace(/\//g,'')
-    $location.path('')
-    $location.hash(anchor)
-    $anchorScroll()
+    # Super hacky, without the condition, it creates some really really bad looking/long urls
+    if $location.path() && $location.path() == 'discussion'
+      anchor = $location.path().replace(/\//g,'')
+      $location.path('')
+      $location.hash(anchor)
+      $anchorScroll()
 
   $timeout ( ->
     $scope.scrollToComments()
