@@ -18,6 +18,11 @@ Aspect ratio can also be passed in:
 %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" width="400" aspect="16:9")
 %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" width="400" aspect="4:3")
 
+Objects can also be passed in:
+%cs-image(url="step.image_id" width="400" aspect="4:3")
+
+Note: Objects can actually be a filepicker object or a URL
+
 Note: The if the viewable area of the resulting image is less than the original, this directive will center the viewable area. For example, if the viewable is short and wide, the viewable area will be vertically centered.
 ###
 
@@ -120,7 +125,9 @@ Note: The if the viewable area of the resulting image is less than the original,
     loadTinyImage = ->
       scope.tinyImageSrc = csFilepickerMethods.convert(image.url, {w: 100})
 
-    # 1. When the url is available, load the tiny image
+    # 1. When the url is available, load the tiny image.  
+    # TODO: Eventually we may want to store the base URL serverside along with image dimensions so we don't have to do this.
+    # This change should increase performance and reduce the number of http requests
     scope.$watch 'url', (newValue, oldValue) ->
       if newValue && typeof(newValue) != undefined
         image.url = newValue
