@@ -1,96 +1,30 @@
-# This directive will place the correct image size into a div
-# usage %div(cs-cover-image="FILEPICKER OBJECT")
-# set reload-on-window-resize="true" if you want the reload the image when the window is resized.
-# reloadOnWindowResize should probably be only used for once per page for performance reasons.  Ideal for large fullpage images
+###
+This directive will place the correct image size into a div
+Usage examples:
 
-@app.directive 'csCoverImage', ['$window', '$http', 'csFilepickerMethods', ($window, $http, csFilepickerMethods) ->
-  restrict: 'A'
-  scope: { 
-    csCoverImage: '='
-    reloadOnWindowResize: '='
-  }
+Simply providing a url will set the width the the width of the parent.  The height will be the aspect ratio of the original image.
+%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'")
 
-  link: (scope, element, attrs) ->
-    scope.baseURL = {}
-    scope.coverImageStyle = {}
-    scope.placeHolderImageStyle = {}
-    scope.imageLoaded = true
-    parent = {}
-    source = {}
-    urlWidth = 0
-    parentHeightToWidth = 0
-    sourceHeightToWidth = 0
+Set an image to a height of 200px.  The width will be the aspect ratio of the original image.
+%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" height="200")
 
-    getParentDimensions = ->
-      parent = element.parent()
-      parent.width = element[0].clientWidth
-      parent.height = parent[0].clientHeight
-      console.log "Parent Width: ", parent.width
-      console.log "Parent Height: ", parent.height
+Set an image to a height of 400px.  The height will be the aspect ratio of the original image.
+%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" width="400")
 
-    getSourceImageDimensions = ->
-      url = scope.baseURL + "/metadata?width=true&height=true"
-      $http.get(url, {headers: {'X-Requested-With': undefined}}).then (response) ->
-        console.log response.data
-        source.width = response.data.width
-        source.height = response.data.height
-        if source.width && source.height
-          compareDimensions()
-          loadImage()
+Setting both height and width will give you cropped image with the specified dimensions:
+%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" width="400" height="100")
 
-    # Determine if the parent dimensions are more landscape or more portrait compared to the source image dimensions
-    compareDimensions = ->
-      parentHeightToWidth = parent.height/parent.width
-      sourceHeightToWidth = source.height/source.width
-      console.log 'Parent ratio: ', parentHeightToWidth
-      console.log 'Source ratio: ', sourceHeightToWidth
-      if parentHeightToWidth <= sourceHeightToWidth
-        urlWidth = parent.width
-      else
-        urlWidth = parent.height/sourceHeightToWidth
-      console.log 'URL WIDTH: ', urlWidth
+Aspect ratio can also be passed in:
+%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" width="400" aspect="16:9")
+%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" width="400" aspect="4:3")
 
+Objects can also be passed in:
+%cs-image(url="step.image_id" width="400" aspect="4:3")
 
-    loadImage = ->
-      imageURL = window.cdnURL(scope.baseURL) + "/convert?w=#{urlWidth}&cache=true"
-      scope.coverImageStyle = {
-        "background-image": "url('" + imageURL + "')"
-        "background-repeat": "no-repeat"
-        "background-position": "center center"
-        "background-size": "cover"
-        "height": parent.height
-      }
+Note: Objects can actually be a filepicker object or a URL
 
-    scope.$watch 'csCoverImage', (newValue, oldValue) ->
-      if newValue
-        # csFilepickerMethods.convertTest(newValue, {w: 600, a: "16:9"})
-        # csFilepickerMethods.convert(newValue, {w: 1600, h: 300})
-        # csFilepickerMethods.convert(newValue, {w: 600, h: 500})
-        # csFilepickerMethods.convert('https://d3awvtnmmsvyot.cloudfront.net/api/file/hello', {w: 600, h: 500})
-        scope.baseURL = csFilepickerMethods.getBaseURL(newValue)
-        getParentDimensions()
-        getSourceImageDimensions()
-
-    angular.element($window).bind 'resize', ->
-      if scope.reloadOnWindowResize
-        console.log 'WINDOW RESIZE RELOAD'
-        _.throttle(
-          getParentDimensions()
-          compareDimensions()
-          loadImage()
-          scope.$apply()
-        )
-
-  template: """
-    <div ng-show="imageLoaded" ng-style="coverImageStyle">
-    </div>
-    <div ng-show="! imageLoaded" ng-style="placeHolderImageStyle">
-    </div>
-  """
-
-]
-
-# Todo Make the default to the parent width and height but allows you to specify the width and height.
+Note: The if the viewable area of the resulting image is less than the original, this directive will center the viewable area. For example, if the viewable is short and wide, the viewable area will be vertically centered.
+###
 
 @app.directive 'csImage', ['$window', '$timeout', 'csFilepickerMethods', ($window, $timeout, csFilepickerMethods) ->
   restrict: 'E'
@@ -102,7 +36,6 @@
   }
 
   link: (scope, element, attrs) ->
-    console.log "THIS IS THE url: ", scope
     console.log scope.url
     parent = {}
     container = {}
@@ -113,7 +46,7 @@
     width = scope.width
     height = scope.height
     aspect = scope.aspect
-    console.log width, height, aspect
+    # console.log width, height, aspect
 
     setContainerDimensions = ->
       parent = element.parent()
@@ -142,7 +75,6 @@
       else
 
         if height && ! width
-          console.log "Only Height", width
           container.height = if (height == 'parent') then parent.height else height
           container.width = container.height / image.heightToWidth
         if ! height && width
@@ -152,7 +84,6 @@
           container.width = parent.width
           container.height = container.height = container.width * image.heightToWidth
         if height && width
-          console.log 'HEIGHT AND WIDTH'
           container.width =  if (width == 'parent') then parent.width else width
           container.height = if (height == 'parent') then parent.height else height
 
@@ -163,23 +94,23 @@
       # console.log "CONTAINER WIDTH: ", container.width
 
     calculateImageDimensions = ->
-      console.log "Calculating Image Dimensions"
-      console.log 'Parent ratio: ', parent.heightToWidth
-      console.log 'Image ratio: ', image.heightToWidth
+      # console.log "Calculating Image Dimensions"
+      # console.log 'Parent ratio: ', parent.heightToWidth
+      # console.log 'Image ratio: ', image.heightToWidth
       if container.heightToWidth <= image.heightToWidth
-        console.log 'short and wide'
+        # console.log 'short and wide'
         image.finalWidth = container.width
         image.finalHeight = image.finalWidth*image.heightToWidth
       else
-        console.log 'tall and skinny'
+        # console.log 'tall and skinny'
         image.finalHeight = container.height
         image.finalWidth = image.finalHeight / image.heightToWidth
-        console.log "IMAGE FINAL WIDTH: ", image.finalWidth
-        console.log "IMAGE FINAL HEIGHT: ", image.finalHeight
+        # console.log "IMAGE FINAL WIDTH: ", image.finalWidth
+        # console.log "IMAGE FINAL HEIGHT: ", image.finalHeight
 
+    # Once everything is calculated, we can load the image and set some styling to center the viewable area
     loadImage = ->
       scope.finalUrl = csFilepickerMethods.convert(image.url, {w: image.finalWidth})
-
       scope.containerStyle = {
         "overflow": "hidden"
         "height": container.height
@@ -190,20 +121,19 @@
         "margin-left": "-" + (image.finalWidth - container.width)/2 + "px"
         "margin-top": "-" + (image.finalHeight - container.height)/2 + "px"
       }
-      console.log '*****'
 
     loadTinyImage = ->
       scope.tinyImageSrc = csFilepickerMethods.convert(image.url, {w: 100})
 
-    # 1. When the url is available, load the tiny image
+    # 1. When the url is available, load the tiny image.  
+    # TODO: Eventually we may want to store the base URL serverside along with image dimensions so we don't have to do this.
+    # This change should increase performance and reduce the number of http requests
     scope.$watch 'url', (newValue, oldValue) ->
-      console.log "FROM URL NEW: ", newValue
-      console.log "FROM URL OLD: ", newValue
       if newValue && typeof(newValue) != undefined
         image.url = newValue
         loadTinyImage()
 
-    # 3. When tiny image is loaded, calculate the final image dimensions
+    # 3. When tiny image is loaded, calculate the final image dimensions & original image aspect ratio
     scope.$on 'csTinyImageLoaded', (e, args) ->
       image.heightToWidth = args.height/args.width
       setContainerDimensions()
@@ -216,7 +146,6 @@
       scope.$apply()
 
     angular.element($window).bind 'resize', _.throttle( ->
-        console.log 'actually TROTTLED'
         setContainerDimensions()
         calculateImageDimensions()
         loadImage()
