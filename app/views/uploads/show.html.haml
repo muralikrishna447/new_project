@@ -25,11 +25,10 @@
       %p
         = @upload.notes
       %hr
-      .section#comments
+      .section#discussion
         %h3 Discussion
-        %a(name='discussion')
-        %cscomments(comments-type="upload" comments-id="{upload.id}" seo-bot="#{is_brombone}")
-    .aside.noprint(ng-controller="ActivityUploadsController" ng-init="init(#{@upload.id}, #{@upload.likes_count})")
+        %cscomments(comments-type="upload" comments-id="#{@upload.id}" seo-bot="#{is_brombone}")
+    .aside.noprint(ng-controller="ActivityUploadsController" ng-init="init(#{@upload.id}, #{@upload.likes_count.nil? ? 0 : @upload.likes_count})")
       /*(ng-show="(! editMode) && (activityColumns >= 3)")*/
       = render 'shared/tools'
 
