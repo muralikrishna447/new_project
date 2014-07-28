@@ -5,6 +5,10 @@
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityUploadsController", :'ng-init' => "init(#{@upload.id}, #{@upload.likes_count})"}
+
+
+
 .container
   .row
     .span8.offset2
@@ -12,11 +16,7 @@
       /* Create a new recipe out of the picture and ingredients listed in the description? */
   .row
     .span7.offset2
-      %h5.inline= "by #{link_to @upload.user.name, user_profile_path(@upload.user)}".html_safe
-    .span3
-      /* Show if owner of upload */
-      .btn.btn-primary
-        =link_to 'Convert to Recipe'    
+      %h5.inline= "#{link_to @upload.activity.title, @upload.activity} by #{link_to @upload.user.name, user_profile_path(@upload.user)}".html_safe
   .row
     .span7.offset2      
       .well.text-center= image_tag filepicker_hero_image(@upload.image_id)
@@ -25,25 +25,16 @@
       %p
         = @upload.notes
       %hr
-      %div(ng-controller='csCommentsController')
-      %comments(db-params="{'commentsId': 'upload_#{@upload.id}'}" on-login="showModal()")
-    .span3
-      .section.well-border.pull-left
-        /* If class show */
-        - if @upload.assembly
-          %h5
-            More from
-            =link_to truncate(@upload.assembly.title)
-          .navbar
-            .nav.pic-nav
-              .pull-left
-                = link_to 'blah' do
-                  %i.fa.fa-chevron-left
-                  = image_tag ('http://placehold.it/45x45')
-              .pull-right
-                = link_to 'blah' do
-                  = image_tag ('http://placehold.it/45x45')
-                  %i.fa.fa-chevron-right
-        /* If single recipe, show which recipe it came from and other uploads for recipe */
+      .section#comments
+        %h3 Discussion
+        %a(name='discussion')
+        %cscomments(comments-type="upload" comments-id="{upload.id}" seo-bot="#{is_brombone}")
+    .aside.noprint(ng-controller="ActivityUploadsController" ng-init="init(#{@upload.id}, #{@upload.likes_count})")
+      /*(ng-show="(! editMode) && (activityColumns >= 3)")*/
+      = render 'shared/tools'
 
 = render 'layouts/footer'
+
+#preloaded-activity-json.hide
+  = @upload.to_json
+

@@ -61,6 +61,10 @@ window.deepCopy = (obj) ->
 
   $scope.getObject = ->
     $scope.activity
+
+  $scope.getObjectTypeName = ->
+    "Activity"
+
   csEditableHeroMediaService.getObject = $scope.getObject
 
   $scope.hasFeaturedImage = ->

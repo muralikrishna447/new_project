@@ -51,5 +51,6 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
 
   $scope.socialURL = ->
     'http://www.chefsteps.com' + $scope.upload.path
-  
+
+  console.log("owoot")
 ]

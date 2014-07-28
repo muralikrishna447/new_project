@@ -1,15 +1,15 @@
 %ul.no-bullet.tools-list(ng-controller="SocialButtonsController" ng-if="! inClass")
 
-  %li(  ng-cloak
+  %li(  ng-if="true"
         ng-controller='LikesController' 
-        ng-click='toggleLikeObject("Activity", activity.id)' 
-        ng-init='getCurrentUserLikes("Activity", activity.id)')
+        ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'  
+        ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
     .tool-group
       .icon-holder
         %i.icon-heart-empty(ng-if="!current_user_likes")
         %i.icon-heart(ng-if="current_user_likes")
       .tool-name(  ng-pluralize 
-              count='activity.likes_count || 0' 
+              count='getObject().likes_count || 0' 
               when="  { '0' : 'Be the first to like', '1' : '1 Like', 'other' : '{} Likes'}")
 
 
@@ -18,12 +18,12 @@
       .tool-group
         .icon-holder
           %i.icon-comment
-        .tool-name(  href="#discussion"
+        .tool-name(href="#discussion"
                   ng-pluralize 
                   count='commentCount' 
                   when="  { '-1' : 'Comments', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")  
 
-  %li
+  %li(ng-if="getObjectTypeName() != 'Upload'")
     %a(href='#user-creations')
       .tool-group
         .icon-holder
@@ -32,7 +32,8 @@
                   count='activity.upload_count' 
                   when="  {'0' : 'Add your creation', '1' : '1 User creation', 'other' : '{} User creations'}")  
 
-  %li(onclick="window.print()")
+  %li(ng-if="getObjectTypeName() != 'Upload'"
+      onclick="window.print()")
     .tool-group
       .icon-holder
         %i.icon-print
