@@ -46,6 +46,10 @@
     $scope.$on 'hideNellPopup', (event) ->
       $scope.doHideNellPopup()
 
+    $scope.outclickProduct = ->
+      window.open($scope.obj.product_url, '_blank')
+      mixpanel.track('Buy Clicked', {source: 'nellCard', 'productSlug' : $scope.info.slug});
+
 
   template: '''
     <div>
