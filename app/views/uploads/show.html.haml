@@ -14,7 +14,7 @@
   .row
     .span7.offset2
 
-      %h5.inline= "#{link_to @upload.parent_title, @upload.activity} by #{link_to @upload.user.name, user_profile_path(@upload.user)}".html_safe
+      %h5.inline= "#{link_to @upload.parent.title, @upload.parent} by #{link_to @upload.user.name, user_profile_path(@upload.user)}".html_safe
   .section
   .row
     .span7.offset2
