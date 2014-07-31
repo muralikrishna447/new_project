@@ -1,7 +1,8 @@
-angular.module('ChefStepsApp').controller 'ActivityUploadsController' , ["$scope", "$resource", "$http", "$rootScope", ($scope, $resource, $http, $rootScope) ->
+angular.module('ChefStepsApp').controller 'ActivityUploadsController' , ["$scope", "$resource", "$http", "$rootScope", "csAlertService", ($scope, $resource, $http, $rootScope, csAlertService) ->
   
   $scope.upload = {}
   $scope.upload.likes_count = 0
+  $scope.csAlertService = csAlertService
 
   $scope.init = (upload_id, likes_count) ->
     $scope.upload.id = upload_id

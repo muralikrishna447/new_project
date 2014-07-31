@@ -83,6 +83,8 @@ brew install nodejs
 npm install -g karma
 npm install -g karma-ng-scenario
 npm install -g karma-coffee-preprocessor
+npm install -g karma-cli
+npm install -g karma-chrome-launcher
 createdb delve_angular
 ```
 

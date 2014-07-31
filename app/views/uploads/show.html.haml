@@ -5,11 +5,8 @@
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityUploadsController", :'ng-init' => "init(#{@upload.id}, #{@upload.likes_count})"}
 
-
-
-.container
+.container(csfixnakedlinks ng-controller="ActivityUploadsController" ng-init="init(#{@upload.id}, #{@upload.likes_count.nil? ? 0 : @upload.likes_count})")
   .row
     .span8.offset2
       %h2= @upload.title
@@ -17,8 +14,9 @@
   .row
     .span7.offset2
       %h5.inline= "#{link_to @upload.activity.title, @upload.activity} by #{link_to @upload.user.name, user_profile_path(@upload.user)}".html_safe
+  .section
   .row
-    .span7.offset2      
+    .span7.offset2
       .well.text-center= image_tag filepicker_hero_image(@upload.image_id)
       %div.section(ng-controller="NonAngularSocialController" ng-init="title='#{escape_javascript @upload.title}'; url='#{upload_url(@upload)}'; media='#{filepicker_hero_image(@upload.featured_image)}'")
         = render 'layouts/social_buttons', media_object: @upload, url: upload_url(@upload)
@@ -28,9 +26,10 @@
       .section#discussion
         %h3 Discussion
         %cscomments(comments-type="upload" comments-id="#{@upload.id}" seo-bot="#{is_brombone}")
-    .aside.noprint(ng-controller="ActivityUploadsController" ng-init="init(#{@upload.id}, #{@upload.likes_count.nil? ? 0 : @upload.likes_count})")
+    .span3.noprint()
       /*(ng-show="(! editMode) && (activityColumns >= 3)")*/
       = render 'shared/tools'
+  %div(nell-popup)
 
 = render 'layouts/footer'
 

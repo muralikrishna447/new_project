@@ -1,6 +1,6 @@
 %ul.no-bullet.tools-list(ng-controller="SocialButtonsController" ng-if="! inClass")
 
-  %li(  ng-if="true"
+  %li#like-button(  ng-if="true"
         ng-controller='LikesController' 
         ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'  
         ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
@@ -18,8 +18,7 @@
       .tool-group
         .icon-holder
           %i.icon-comment
-        .tool-name(href="#discussion"
-                  ng-pluralize 
+        .tool-name(ng-pluralize 
                   count='commentCount' 
                   when="  { '-1' : 'Comments', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")  
 
