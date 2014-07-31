@@ -13,6 +13,7 @@
       /* Create a new recipe out of the picture and ingredients listed in the description? */
   .row
     .span7.offset2
+
       %h5.inline= "#{link_to @upload.parent_title, @upload.activity} by #{link_to @upload.user.name, user_profile_path(@upload.user)}".html_safe
   .section
   .row
