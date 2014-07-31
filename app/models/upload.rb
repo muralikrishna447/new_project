@@ -25,4 +25,12 @@ class Upload < ActiveRecord::Base
     end
         
   end
+
+  def parent_title
+    if activity
+      activity.title
+    elsif assembly
+      assembly.title
+    end
+  end
 end

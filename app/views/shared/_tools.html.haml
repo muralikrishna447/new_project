@@ -1,15 +1,14 @@
 %ul.no-bullet.tools-list(ng-controller="SocialButtonsController" ng-if="! inClass")
 
-  %li#like-button(  ng-if="true"
-        ng-controller='LikesController' 
-        ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'  
+  %li#like-button(ng-controller='LikesController'
+        ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
         ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
     .tool-group
       .icon-holder
         %i.icon-heart-empty(ng-if="!current_user_likes")
         %i.icon-heart(ng-if="current_user_likes")
-      .tool-name(  ng-pluralize 
-              count='getObject().likes_count || 0' 
+      .tool-name(ng-pluralize
+              count='getObject().likes_count || 0'
               when="  { '0' : 'Be the first to like', '1' : '1 Like', 'other' : '{} Likes'}")
 
 
@@ -18,8 +17,8 @@
       .tool-group
         .icon-holder
           %i.icon-comment
-        .tool-name(ng-pluralize 
-                  count='commentCount' 
+        .tool-name(ng-pluralize
+                  count='commentCount'
                   when="  { '-1' : 'Comments', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")  
 
   %li(ng-if="getObjectTypeName() != 'Upload'")
@@ -27,8 +26,8 @@
       .tool-group
         .icon-holder
           %i.icon-picture
-        .tool-name(  ng-pluralize 
-                  count='activity.upload_count' 
+        .tool-name(ng-pluralize
+                  count='activity.upload_count'
                   when="  {'0' : 'Add your creation', '1' : '1 User creation', 'other' : '{} User creations'}")  
 
   %li(ng-if="getObjectTypeName() != 'Upload'"
@@ -47,8 +46,8 @@
         Email
 
   -if can?(:update, @activity) && @include_edit_toolbar
-    %li(  ng-click="maybeStartEditMode()" 
-          tooltip="Edit this recipe" 
+    %li(  ng-click="maybeStartEditMode()"
+          tooltip="Edit this recipe"
           tooltip-placement="left")
       .tool-group
         .icon-holder
@@ -58,8 +57,8 @@
 
   -if can?(:update, Activity) && @include_edit_toolbar
     %li(  ng-show="hasActivityType('Recipe')"
-          ng-click="fork()" 
-          tooltip="Edit a copy of this recipe" 
+          ng-click="fork()"
+          tooltip="Edit a copy of this recipe"
           tooltip-placement="left")
       .tool-group
         .icon-holder
