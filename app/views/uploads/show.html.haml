@@ -13,7 +13,11 @@
       /* Create a new recipe out of the picture and ingredients listed in the description? */
   .row
     .span7.offset2
-      %h5.inline= "#{link_to @upload.activity.title, @upload.activity} by #{link_to @upload.user.name, user_profile_path(@upload.user)}".html_safe
+      - if @upload.activity
+        %h5.inline= "#{link_to @upload.activity.title, @upload.activity} by #{link_to @upload.user.name, user_profile_path(@upload.user)}".html_safe
+      - else
+        %h5.inline
+          = "by #{link_to @upload.user.name, user_profile_path(@upload.user)}".html_safe
   .section
   .row
     .span7.offset2
