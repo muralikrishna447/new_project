@@ -108,6 +108,29 @@
       text-indent: -16px
       margin-left: 16px
 
+    .for-sale
+      margin-left: 14px
+      position: relative
+      display: inline
+
+      .for-sale-where
+        opacity: 0
+        margin-left: 14px
+        @include transition(all 200ms $standard-bezier)
+        text-transform: uppercase
+        position: absolute
+        top: -2px
+        left: 10px
+        max-width: 500px
+        background-color: rgba(255, 255, 255, .8)
+        white-space: nowrap
+
+      &:hover
+        .for-sale-where
+          opacity: 1
+
+
+
 
   .quantity-group
     display: inline-block
