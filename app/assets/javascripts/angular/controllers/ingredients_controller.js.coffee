@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$rootScope", "$timeout", "$http", "limitToFilter", ($scope, $rootScope, $timeout, $http, limitToFilter) ->
+angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$rootScope", "$timeout", "$http", "limitToFilter", "csUrlService", ($scope, $rootScope, $timeout, $http, limitToFilter, csUrlService) ->
 
   $scope.shouldShowMasterIngredientsRemovedModal = false
   $scope.showIngredientsMenu = false
@@ -7,6 +7,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.viewOptions = {}
   $scope.viewOptions.includeRecipes = false
+  $scope.csUrlService = csUrlService
 
   $scope.getAllUnits = ->
     window.allUnits
@@ -23,6 +24,9 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
     result = 1000 if unit_name == "kg"
     result
 
+  $scope.outclickProduct = (ai) ->
+    window.open(ai.ingredient.product_url, '_blank')
+    mixpanel.track('Buy Clicked', {source: 'ingredientList', 'activitySlug' : $scope.activity.slug, 'productSlug' : ai.ingredient.slug});
 
   $scope.removeIngredient = (index) ->
     $scope.getIngredientsList().splice(index, 1)
@@ -33,11 +37,11 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
       r = response.data
       for i in r
         i.label = i.title
-        i.label += " [RECIPE]" if i.sub_activity_id?
+        i.title += " [RECIPE]" if i.sub_activity_id?
 
       # always include current search text as an option, first!
       r = _.sortBy(r, (i) -> i.title != s["ingredient"])
-      r.unshift({label: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
+      r.unshift({title: s["ingredient"], label: s["ingredient"]}) if s["ingredient"]? && !_.find(r, (i) -> i.title == s["ingredient"])
       r
 
   $scope.matchableIngredients = (i1, i2) ->

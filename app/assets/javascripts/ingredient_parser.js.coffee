@@ -7,7 +7,7 @@ window.ChefSteps.splitIngredient = (term) ->
   result = {}
 
   # a/n Tofu Eyeballs, diced [or an Tofu Eyeballs]
-  if s = term.match(/\s*(an|a\/n)+\s+([^,]*),?\s*(.*)?/)
+  if s = term.match(/^\s*(an|a\/n)+\s+([^,]*),?\s*(.*)?/)
     result = {unit: "a/n", ingredient: s[2], note: s[3]}
 
   # 10 g Tofu Eyeballs, diced (or kg, ea, each, r, recipe)

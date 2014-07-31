@@ -4,7 +4,6 @@
 
 %csEditPair
   %csEditPairShow.show-group(itemprop="ingredients")
-
     .quantity-and-unit
       .quantity-group.qtyfade
         %span.lbs-qty(csscalingeditable){style: "display: none;"}
@@ -19,6 +18,10 @@
         %a(ng-switch-when="subrecipe" ng-href="/activities/{{ai.ingredient.sub_activity_id}}" ng-bind-html="ai.ingredient.title" )>
         %span.fake-link(ng-switch-when="fake_link" ng-bind-html="ai.ingredient.title")>
       %span(ng-show="!!ai.note" ng-bind-html="', ' + (ai.note | shortcode)")>
+      .for-sale(ng-if="ai.ingredient.product_url")
+        %a(ng-click="outclickProduct(ai)")
+          %i.icon-shopping-cart
+          -# .for-sale-where(ng-bind-html="'BUY AT '+ csUrlService.urlAsNiceText(ai.ingredient.product_url)")
 
   %csEditPairEdit.ingredient-edit-half
     %input.quantity(  cs-emit-focus
@@ -44,7 +47,7 @@
                   autocomplete="off" 
                   class="ingredient-typeahead" 
                   ng-model="ai.ingredient"
-                  typeahead="i as i.label for i in all_ingredients($viewValue)")
+                  typeahead="i as i.title for i in all_ingredients($viewValue)")
 
     %input.note(  cs-emit-focus
                   csselectonfocus

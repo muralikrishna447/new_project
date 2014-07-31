@@ -179,11 +179,6 @@ end
 
 @seed_data = parse_data('seeds.yml')
 
-@seed_data[:admins].each do |admin|
-  build_admin(admin)
-  build_user(admin)
-end
-
 =begin
 @seed_data[:activities].each do |activity_data|
   build_activity(activity_data)

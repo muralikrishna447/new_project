@@ -28,11 +28,10 @@ To set up a new machine:
 - install latest Xcode
 - launch Xcode once
 - xcode-select —install
-- rvm install ruby (the version our Gemfile calls for)
+- rvm install ruby (the version our Gemfile calls for, --with-gcc=clang may be required)
 - bundle
 - createuser -l -s -r delve
 - rake db:create
-- rake db:test:prepare
 - install heroku toolbelt (toolbelt.heroku.com)
 - rake copy_production_db (you’ll need your heroku acct/passwd and say yes to creating a new public key)
 - rails s
@@ -84,6 +83,8 @@ brew install nodejs
 npm install -g karma
 npm install -g karma-ng-scenario
 npm install -g karma-coffee-preprocessor
+npm install -g karma-cli
+npm install -g karma-chrome-launcher
 createdb delve_angular
 ```
 

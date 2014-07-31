@@ -34,7 +34,7 @@
               frame.remove()
           Bloom.installComments {
             el: element[0]
-            id: identifier
+            discussionId: identifier
             on:
               login: ->
                 scope.openLogin()

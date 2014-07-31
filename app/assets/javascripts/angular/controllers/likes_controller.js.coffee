@@ -5,13 +5,13 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
   $scope.showAlert = true
 
   $scope.likeObject = (likeable_type, likeable_id) ->
-    if ! csAuthentication.loggedIn()  
+    if ! csAuthentication.loggedIn()
       csAlertService.addAlert({message: "<a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to like this.", type: "error"}) if $scope.showAlert
       return
 
     url = "/likes?likeable_type=#{likeable_type}&likeable_id=#{likeable_id}"
     $scope.current_user_likes = true
-    $scope.activity.likes_count += 1
+    $scope.getObject().likes_count += 1
 
     $http(
       method: 'POST'
@@ -27,7 +27,7 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
   $scope.unlikeObject = (likeable_type, likeable_id) ->
     url = "/likes/unlike?likeable_type=#{likeable_type}&likeable_id=#{likeable_id}"
     $scope.current_user_likes = false
-    $scope.activity.likes_count -= 1
+    $scope.getObject().likes_count -= 1
 
     $http(
       method: 'POST'

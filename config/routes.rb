@@ -6,6 +6,9 @@ Delve::Application.routes.draw do
   match '/forum', to: 'bloom#forum'
   match '/forum/*path', to: 'bloom#forum'
   match "/forum/*path" => redirect("/?goto=%{path}")
+  match '/betainvite', to: 'bloom#betainvite'
+  match '/content-discussion/:id', to: 'bloom#content_discussion'
+  match '/content/:id', to: 'bloom#content'
   root to: "home#index"
 
   resources :featured, only: [:index] do
@@ -275,6 +278,14 @@ Delve::Application.routes.draw do
   end
 
   resources :settings, only: [:index]
+
+  resources :playground, only: [:index]
+
+  resources :locations do
+    collection do
+      get 'autocomplete', to: 'locations#autocomplete'
+    end
+  end
 
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"
