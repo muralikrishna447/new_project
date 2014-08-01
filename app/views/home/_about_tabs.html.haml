@@ -45,19 +45,22 @@
                   #{@about_kitchen}
             .tab-pane#about-our-team
               .row.section
-                .span4.text-center.founder
-                  = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RGKBOD8BTAmF1eO3FHkE/convert?fit=crop&w=400&h=400&cache=true', class: 'img-circle'
-                  %h4 Ryan Matthew Smith (Alumnus)
+                .span4.founder
+                  .text-center.section
+                    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RGKBOD8BTAmF1eO3FHkE/convert?fit=crop&w=400&h=400&cache=true', class: 'img-circle'
+                  %h4.text-center Ryan Matthew Smith (Alumnus)
                   %p
                     Ryan was the principal photographer and photo editor for Modernist Cuisine: The Art and Science of Cooking. Smith’s work has been featured by PPN, Photographer, Life, Time, The New York Times, Feature Shoot, Quo, and Abduzeedo.
-                .span4.text-center.founder
-                  = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/X5ZXg1LjTCKerc06Nzjj/convert?fit=crop&w=400&h=400&cache=true', class: 'img-circle'
-                  %h4 Chris Young
+                .span4.founder
+                  .text-center.section
+                    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/X5ZXg1LjTCKerc06Nzjj/convert?fit=crop&w=400&h=400&cache=true', class: 'img-circle'
+                  %h4.text-center Chris Young
                   %p
                     Chris is the principal coauthor of the acclaimed and world-wide bestselling six-volume work Modernist Cuisine: The Art and Science of Cooking. Modernist Cuisine was named the 2012 Cookbook of the Year and Best Professional Cookbook of the year by the James Beard Foundation. Chris was also the founding chef of Heston Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary laboratory behind the innovative dishes served at one of the best restaurants in the world. Prior to becoming a chef, he completed degrees in theoretical mathematics and biochemistry.
-                .span4.text-center.founder
-                  = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/optlOTIVS4GTtYUY6lwN/convert?fit=crop&w=400&h=400&cache=true', class: 'img-circle'
-                  %h4 Grant Lee Crilly
+                .span4.founder
+                  .text-center.section
+                    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/optlOTIVS4GTtYUY6lwN/convert?fit=crop&w=400&h=400&cache=true', class: 'img-circle'
+                  %h4.text-center Grant Lee Crilly
                   %p 
                     Grant was the first development chef hired by the Modernist Cuisine team. Prior to that, he was chef de cuisine at Busaba in Mumbai and Mistral in Seattle, and he served as head development chef at Delicious Planet. He has cooked for Pascal Barbot at L’Astrance, worked with Pierre Hermé’s team at Grégoire-Ferrandi, and practiced butchery at Bajon Jean Pierre in Paris.
               %hr
@@ -67,8 +70,8 @@
                     .span4
                       .team-member
                         .team-member-image
-                          = image_tag member[:image]
-                        .team-member-title
-                          %p= member[:name]
+                          = image_tag member[:image], class: "img-circle"
+                        .team-member-title.text-center
+                          %h5= member[:name]
                         .team-member-bio
                           %p= member[:bio].html_safe
