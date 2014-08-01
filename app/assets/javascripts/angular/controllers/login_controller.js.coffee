@@ -59,6 +59,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     console.log 'open modal', form
     if form == "login"
       $scope.loginModalOpen = true
+    else if form == "signUp"
+      $scope.loginModalOpen = true
+      $scope.showForm = 'signUp'
     else if form == "invite"
       $scope.inviteModalOpen = true
     else if form == "googleInvite"

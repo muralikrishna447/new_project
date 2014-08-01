@@ -48,7 +48,7 @@
   -# Not enrolled, free class
   %div(ng-show="(! gift_certificate) && (! enrolled) && (discounted_price == '0')")
     .main-cta(ng-controller="LoginController" ng-show="(! logged_in)" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#sign-in-and-enroll-free-button(ng-click="waitForFreeEnrollment(); openModal('login');")
+      .btn.btn-primary.btn-large.input-block-level#sign-in-and-enroll-free-button(ng-click="waitForFreeEnrollment(); openModal('signUp');")
         Enroll for Free
         = render "devise/sessions/new_angular"
     .main-cta(ng-show="(logged_in)" ng-class="{'purchase-started': buyModalOpen}")
