@@ -17,11 +17,16 @@
         BUY NOW
         = render 'activities/latest/assembly_price'
         = render "devise/sessions/new_angular"
-    -# Not enrolled, paid class
-    .main-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
+    -# Not enrolled, paid class, not admin
+    .main-cta(ng-show="logged_in && !isAdmin" ng-class="{'purchase-started': buyModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal(false)")
         BUY NOW
         = render 'activities/latest/assembly_price'
+    // Not Enrolled, paid class, admin
+    .main-cta(ng-show="logged_in && isAdmin" ng-class="{'purchase-started': buyModalOpen}")
+      %a.btn.btn-primary.btn-large.input-block-level#completed-button(ng-href="{{assemblyPath}}")
+        = render 'activities/latest/assembly_price'
+        %span (View as Admin)
 
   -# Already enrolled
   %div(ng-show="logged_in && enrolled")

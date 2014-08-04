@@ -17,6 +17,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.authentication = csAuthentication
   $scope.alertService = csAlertService
+  $scope.isAdmin = csAuthentication.isAdmin()
 
   $scope.loginState = null
   $scope.freeTrialText = null

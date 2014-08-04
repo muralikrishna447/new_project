@@ -19,11 +19,15 @@ class AssembliesController < ApplicationController
     case @assembly.assembly_type
     when 'Course', 'Project'
       # Currently not requiring enrollment for free assembly-based course. This will probably want to change?
-      if (current_user && current_user.enrolled?(@assembly)) || (! @assembly.price)
+      if current_user && current_user.admin?
         render "courses_#{params[:action]}"
       else
-        @no_shop = true
-        redirect_to landing_class_url(@assembly, anchor: '')
+        if (current_user && current_user.enrolled?(@assembly)) || (! @assembly.price)
+          render "courses_#{params[:action]}"
+        else
+          @no_shop = true
+          redirect_to landing_class_url(@assembly, anchor: '')
+        end
       end
     when 'Recipe Development'
       render "courses_#{params[:action]}"
