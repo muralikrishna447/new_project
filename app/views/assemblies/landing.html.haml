@@ -10,7 +10,7 @@
   %meta{name: "fragment", content: "!"}
 
 %div(ng-controller="AssemblyLandingPageController" ng-init='assembly=#{@assembly.to_json};')
-  %div(ng-switch="(#{@course.id} != 67) || (! splits.meatLandingFancy)")
+  %div(ng-switch="(#{@course.id} != 67)")
     %div(ng-switch-when="true")
       - if !current_user && session[:free_trial] && @hours
         %div.free-trial-landing-page(ng-controller="BuyAssemblyStripeController" ng-cloak ng-init='logged_in=#{current_user.present?}; assemblyPath="#{class_url(@assembly, protocol: "http")}"; freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; freeTrialHours="#{@hours}"; freeTrialLogger();')

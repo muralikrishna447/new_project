@@ -31,7 +31,7 @@
 angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
   # Split test params, b/c they often go across controllers
   $rootScope.splits = {}
-  $rootScope.splits = { meatLandingFancy : Math.random() > 0.5}
+  # $rootScope.splits = { meatLandingFancy : Math.random() > 0.5}
 
   # Set configuration options from the environment
   $rootScope.environmentConfiguration =
