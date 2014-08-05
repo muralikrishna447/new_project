@@ -105,6 +105,6 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     if $scope.hasAV() || $scope.step.image_id
       result += ' well aside-with-media'
     else
-      result += ' well-border'
+      result += ' well-white-with-border'
     result
 ]
