@@ -39,13 +39,13 @@ describe "csUrlService", ->
       expect(urlService.fixAffiliateLink(amazonURL)).toBe("http://www.amazon.com/gp/product/B00DHW4HXY/?tag=delvkitc-20")
 
     it "should normalize a bogus amazon affilate code to be the correct one", ->
-      expect(urlService.fixAffiliateLink(amazonURL)).toBe("http://www.amazon.com/gp/product/B00DHW4HXY/?tag=delvkitc-20")
+      expect(urlService.fixAffiliateLink(bogusAmazonURL)).toBe("http://www.amazon.com/gp/product/B002VECM6S/?tag=delvkitc-20")
 
     it "should add an affiliate code to a Mikuni Wild Havest link", ->
-      expect(urlService.fixAffiliateLink(mikuniURL)).toBe(mikuniURL.product_url + '#oid=1003_1')
+      expect(urlService.fixAffiliateLink(mikuniURL)).toBe('http://mikuni.myshopify.com/products/applewood-smoked-ikura-caviar#oid=1003_1')
 
     it "should not damage a pre-coded Mikuni Wild Harvest Link", ->
-      expect(urlService.fixAffiliateLink(preCodedMikuniURL)).toBe(preCodedMikuniURL.product_url)
+      expect(urlService.fixAffiliateLink(preCodedMikuniURL)).toBe('http://mikuni.myshopify.com/products/applewood-smoked-ikura-caviar#oid=1003_1')
 
 
 
