@@ -1,5 +1,5 @@
+//=require jquery
 //=require navigation_bootstrap
-//=require jquery.min
 //=require active_admin
 //=require angular
 //=require angular-resource
