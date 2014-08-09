@@ -27,6 +27,8 @@ angular.module('ChefStepsApp').service 'csUrlService', ["$window", ($window) ->
       if url.indexOf(mikuni_tag) == -1
         i.product_url = url + mikuni_tag
 
+    i.product_url
+
   this.urlAsNiceText = (url) ->
     if url
       result = "Link"
