@@ -69,11 +69,12 @@ group :development do
   gem 'spring'
   gem "letter_opener"
   gem 'net-http-spy', github: "justincaldwell/net-http-spy"
-  gem 'angularjs-rails'
 end
 
 group :development, :test do
   gem "simplecov", require: false
+  gem 'angularjs-rails'
+  gem 'jquery-rails'
 end
 
 # Gems used only for assets and not required
