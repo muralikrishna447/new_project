@@ -326,6 +326,8 @@ module ApplicationHelper
     case assembly.assembly_type
     when 'Course'
       landing_class_path(assembly)
+    when 'Project'
+      landing_project_path(assembly)
     when 'Recipe Development'
       recipe_development_path(assembly)
     end
