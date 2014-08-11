@@ -1,5 +1,6 @@
 ActiveAdmin.register GiftCertificate do
   menu parent: 'Assemblies'
+  remove_filter :user
 
   index do
     column "Course", :assembly
