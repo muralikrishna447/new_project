@@ -1,3 +1,4 @@
+- assembly_type_name = @assembly.assembly_type == 'Course' ? 'Class' : @assembly.assembly_type
 
 .steak-landing(ng-cloak)
   .container
@@ -8,7 +9,7 @@
         %p For any cook who's ever burned a steak, destroyed a perfectly good piece of fish, or rubberized a chicken breast, this is the class for you. With just one simple, versatile technique, you can achieve mouthwatering, flavorful results every time, in your own kitchen. All you need is an oven, a pan, and a thermometer—we'll show you the rest.
         .buy-box
           - discounted_price = @course.price ? @discounted_price : 0
-          = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate, free_trial_hours: @free_trial_hours
+          = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate, free_trial_hours: @free_trial_hours, assembly_type_name: assembly_type_name
 
 
 .container(ng-cloak)
