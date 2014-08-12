@@ -31,13 +31,13 @@ describe ActivitiesController do
       expect(response).to redirect_to(class_activity_path(assembly1, activity1))
     end
 
-    it 'redirects to a project if the recipe is within a project' do
-      activity2 = Fabricate :activity, title: 'Activity 2', description: 'description', published: true
-      assembly2 = Fabricate :assembly, title: 'Assembly 2', description: 'description', published: true, assembly_type: 'Project'
-      inclusion2 = Fabricate :assembly_inclusion, assembly: assembly2, includable: activity2
-      get :show, id: activity2.slug
-      expect(response).to redirect_to(assembly_activity_path(assembly2, activity2))
-    end
+    # it 'redirects to a project if the recipe is within a project' do
+    #   activity2 = Fabricate :activity, title: 'Activity 2', description: 'description', published: true
+    #   assembly2 = Fabricate :assembly, title: 'Assembly 2', description: 'description', published: true, assembly_type: 'Project'
+    #   inclusion2 = Fabricate :assembly_inclusion, assembly: assembly2, includable: activity2
+    #   get :show, id: activity2.slug
+    #   expect(response).to redirect_to(assembly_activity_path(assembly2, activity2))
+    # end
 
   end
 

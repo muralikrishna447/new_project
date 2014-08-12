@@ -40,9 +40,9 @@ class ActivitiesController < ApplicationController
         redirect_to class_activity_path(@activity.containing_course, @activity)
       end
 
-      if @activity.assemblies.first.assembly_type == 'Project'
-        redirect_to assembly_activity_path(@activity.assemblies.first, @activity)
-      end
+      # if @activity.assemblies.first.assembly_type == 'Project'
+      #   redirect_to assembly_activity_path(@activity.assemblies.first, @activity)
+      # end
     end
 
   rescue
@@ -93,7 +93,7 @@ class ActivitiesController < ApplicationController
           end
           container_name = containing_class.assembly_type.to_s
           container_name = "Class" if container_name == "Course"
-          container_name = "Mini-Class" if container_name == "Project"
+          container_name = "Project" if container_name == "Project"
           @container_name = container_name
           @container_path = path
           # flash.now[:notice] = "This is part of the #{path} #{container_name}."
