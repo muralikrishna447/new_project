@@ -50,12 +50,10 @@ describe ActivitiesController do
   # end
 
   describe 'show' do
-    context 'not within in assembly' do
-      it 'goes to an activity' do
-        activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
-        get :show, id: activity.slug
-        expect(response).to render_template(:show)
-      end
+    it 'goes to an activity' do
+      activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
+      get :show, id: activity.slug
+      expect(response).to render_template(:show)
     end
 
     context 'within an assembly' do
@@ -73,24 +71,22 @@ describe ActivitiesController do
         @assembly_inclusion2 = Fabricate :assembly_inclusion, assembly: @assembly2, includable: @activity2
       end
 
-      context 'activity show_only_in_course is false ' do
-        it 'goes to an activity even if the activity is within an assembly' do
-          get :show, id: @activity1.slug
-          expect(response).to render_template(:show)
-        end
+      it 'goes to an activity even if show_only_in_course is false' do
+        get :show, id: @activity1.slug
+        expect(response).to render_template(:show)
       end
 
-      context 'activity show_only_in_course is true' do
-        it 'redirects to the landing page if the user is not enrolled' do
-          get :show, id: @activity2.slug
-          puts response.inspect
-          expect(response).to redirect_to(landing_assembly_path(@assembly2))
-        end
+      it 'redirects to the landing page if show_only_in_course is true and user is not enrolled' do
+        get :show, id: @activity2.slug
+        puts response.inspect
+        expect(response).to redirect_to(landing_assembly_path(@assembly2))
+      end
 
-        it 'goes to the activity if the user is enrolled' do
-          enrollment = Fabricate :enrollment, enrollable: @assembly2, user: @user
-          expect(response).to render_template(:show)
-        end
+      it 'goes to the activity if show_only_in_course is true and user is enrolled' do
+        enrollment = Fabricate :enrollment, enrollable: @assembly2, user: @user
+        puts response.inspect
+        get :show, id: @activity2.slug
+        expect(response).to render_template(:show)
       end
 
     end
