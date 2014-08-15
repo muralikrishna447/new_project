@@ -33,16 +33,15 @@ class ActivitiesController < ApplicationController
     # is_google and is_brombone are now helpers and can be found in application_helper
     if (! current_admin?) && (! is_google) && (! is_brombone)
       if @activity.show_only_in_course
-        redirect_to class_path(@activity.containing_course), :status => :moved_permanently
+        # redirect_to class_path(@activity.containing_course), :status => :moved_permanently
+        if current_user
+          if current_user.enrolled?(@activity.containing_course) == false
+            redirect_to landing_assembly_path(@activity.containing_course)
+          end
+        else
+          redirect_to landing_assembly_path(@activity.containing_course)
+        end
       end
-
-      if @activity.containing_course && current_user && current_user.enrolled?(@activity.containing_course)
-        redirect_to class_activity_path(@activity.containing_course, @activity)
-      end
-
-      # if @activity.assemblies.first.assembly_type == 'Project'
-      #   redirect_to assembly_activity_path(@activity.assemblies.first, @activity)
-      # end
     end
 
   rescue
