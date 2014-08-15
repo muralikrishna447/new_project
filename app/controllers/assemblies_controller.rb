@@ -16,24 +16,35 @@ class AssembliesController < ApplicationController
   def show
     @hide_nav = true
     @upload = Upload.new
-    case @assembly.assembly_type
-    when 'Course', 'Project'
-      # Currently not requiring enrollment for free assembly-based course. This will probably want to change?
-      if current_user && current_user.admin?
-        render "courses_#{params[:action]}"
+    if current_user
+      if (current_user.enrolled?(@assembly))
+        render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
       else
-        if (current_user && current_user.enrolled?(@assembly)) || (! @assembly.price)
-          render "courses_#{params[:action]}"
-        else
-          @no_shop = true
-          redirect_to landing_class_url(@assembly, anchor: '')
-        end
+        redirect_to landing_assembly_path(@assembly)
       end
-    when 'Recipe Development'
-      render "courses_#{params[:action]}"
     else
-      render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
+      redirect_to landing_assembly_path(@assembly)
     end
+    # @hide_nav = true
+    # @upload = Upload.new
+    # case @assembly.assembly_type
+    # when 'Course', 'Project'
+    #   # Currently not requiring enrollment for free assembly-based course. This will probably want to change?
+    #   if current_user && current_user.admin?
+    #     render "courses_#{params[:action]}"
+    #   else
+    #     if (current_user && current_user.enrolled?(@assembly)) || (! @assembly.price)
+    #       render "courses_#{params[:action]}"
+    #     else
+    #       @no_shop = true
+    #       redirect_to landing_class_url(@assembly, anchor: '')
+    #     end
+    #   end
+    # when 'Recipe Development'
+    #   render "courses_#{params[:action]}"
+    # else
+    #   render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
+    # end
   end
 
   def landing
