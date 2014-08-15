@@ -18,7 +18,12 @@ class AssembliesController < ApplicationController
     @upload = Upload.new
     if current_user
       if (current_user.enrolled?(@assembly))
-        render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
+        case @assembly.assembly_type
+        when 'Course', 'Project'
+          render "courses_#{params[:action]}"
+        else
+          render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
+        end
       else
         redirect_to landing_assembly_path(@assembly)
       end
