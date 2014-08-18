@@ -19,11 +19,11 @@ class Enrollment < ActiveRecord::Base
       # Logic control flow
       Enrollment.transaction do
         case
-        when assembly.paid_class? && free_trial_hours > 0 # Paid Class and Free Trial
+        when assembly.paid? && free_trial_hours > 0 # Paid Class and Free Trial
           free_trial_enrollment(user, ip_address, assembly, discounted_price, stripe_token, free_trial_hours)
-        when assembly.paid_class? && free_trial_hours == 0 # Paid Class and No Free Trial
+        when assembly.paid? && free_trial_hours == 0 # Paid Class and No Free Trial
           paid_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
-        when !assembly.paid_class? # Free Class
+        when !assembly.paid? # Free Class
           free_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
         end
       end
