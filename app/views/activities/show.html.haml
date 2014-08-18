@@ -95,7 +95,7 @@
           #related-carousel
             = render 'shared/horizontal_slider', items: @random_recipes, direction: 'right'
     - if ! ENV["CS_NO_DISQUS"]
-      .row(ng-hide="editMode" ng-cloak)
+      .row.noprint(ng-hide="editMode" ng-cloak)
         .span12
           %h3 Discussion
 
