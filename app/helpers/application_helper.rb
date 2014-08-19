@@ -247,14 +247,27 @@ module ApplicationHelper
 
   def assembly_type_path(assembly)
     if assembly.assembly_type?
-      if assembly.assembly_type == 'Recipe Development'
-        assembly_type_path = 'recipe-development'
+      if assembly.assembly_type == 'Course'
+        assembly_type_path = 'classes'
       else
         assembly_type_path = assembly.assembly_type.downcase.pluralize.gsub(' ', '-')
       end
       assembly_path(assembly).gsub('/assemblies', "/#{assembly_type_path}")
     else
       assembly_path(assembly)
+    end
+  end
+
+  def assembly_type_url(assembly)
+    if assembly.assembly_type?
+      if assembly.assembly_type == 'Course'
+        assembly_type_url = 'classes'
+      else
+        assembly_type_url = assembly.assembly_type.downcase.pluralize.gsub(' ', '-')
+      end
+      assembly_url(assembly).gsub('/assemblies', "/#{assembly_type_url}")
+    else
+      assembly_url(assembly)
     end
   end
 
@@ -326,6 +339,8 @@ module ApplicationHelper
     case assembly.assembly_type
     when 'Course'
       landing_class_path(assembly)
+    when 'Project'
+      landing_project_path(assembly)
     when 'Recipe Development'
       recipe_development_path(assembly)
     end

@@ -517,6 +517,17 @@ window.deepCopy = (obj) ->
     $rootScope.$broadcast "showNellPopup", 
       include: view
 
+  $scope.showTitle = ->
+    if $scope.activity
+      switch $scope.activity.title
+        when 'FAQ'
+          false
+        when 'Discussion'
+          false
+        else
+          true
+
+
   # Why by weight was removed but can always be added back by adding reached-screen-callback="maybeShowWhyByWeight()" as a attribute
   $scope.maybeShowWhyByWeight = ->
     return if localStorageService.get('whyByWeightShown')

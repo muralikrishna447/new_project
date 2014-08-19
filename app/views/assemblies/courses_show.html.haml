@@ -22,7 +22,7 @@
                   = render 'activities/banner_image'
                   %div(csFixNakedLinks="")
                     = render 'activities/main_activity_content'
-                  .comments-container.section#comments
+                  .comments-container.section.noprint#comments
                     .standard-item
                       %h3 Discussion
                       %cscomments(comments-type="activity" comments-id="{{currentIncludable.includable_id}}" seo-bot="#{is_brombone}")
@@ -121,7 +121,7 @@
         .hamburger-bar
         .hamburger-bar
 
-  .course-global-nav(ng-class="{'course-global-nav-show': showGlobalNav}")
+  .course-global-nav.noprint(ng-class="{'course-global-nav-show': showGlobalNav}")
     = render 'layouts/navigation', external: false
 
   .course-nav-bottom-center.responsive.container-fluid.noprint.text-center(ng-class="{'hide-when-menu-showing': showCourseMenu, 'show-nav-bottom': showBottomNav}")

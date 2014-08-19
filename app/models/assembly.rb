@@ -121,6 +121,10 @@ class Assembly < ActiveRecord::Base
     (assembly_type == "Course" && (price  && price > 0))
   end
 
+  def paid?
+    price && price > 0
+  end
+
   def self.free_trial_hours(b64string)
     Base64.decode64(b64string).split('-').map(&:to_i)[1]
   end
