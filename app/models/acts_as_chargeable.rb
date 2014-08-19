@@ -18,13 +18,16 @@ module ActsAsChargeable
     # but they will still have to provide a valid card.
     def collect_money(base_price, discounted_price, item_title, extra_descrip, user, stripe_token)
       if base_price && base_price > 0
-        self.set_stripe_id_on_user(user, stripe_token)
-        charge = Stripe::Charge.create(
-          customer: user.stripe_id,
-          amount: (discounted_price * 100).to_i,
-          description: item_title + extra_descrip,
-          currency: 'usd'
-        )
+        if user.stripe_id
+          charge = Stripe::Charge.create(
+            customer: user.stripe_id,
+            amount: (discounted_price * 100).to_i,
+            description: item_title + extra_descrip,
+            currency: 'usd'
+          )
+        else
+          self.set_stripe_id_on_user(user, stripe_token)
+        end
         # puts charge.inspect
       end
     end

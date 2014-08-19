@@ -35,61 +35,61 @@
       .close-x.pull-right#cancel-charge(ng-click="closeModal()")
         %i.icon-remove
 
-      %div(ng-if="authentication.currentUser().stripe_id")
-        HEY I HAVE A STRIPE ID
-        Pay with card ending in XXX
-        .btn.btn-primary
-          Buy Now
+      / %div(ng-if="authentication.currentUser().stripe_id")
+      /   HEY I HAVE A STRIPE ID
+      /   Pay with card ending in XXX
+      /   .btn.btn-primary(ng-click="chargeCustomer()")
+      /     Buy Now
 
-      %div(ng-show="!authentication.currentUser().stripe_id")
-        %form.charge-form(stripe-form="handleStripe" name="chargeForm")
-        .control-group(ng-show="errorText")
-          .controls.error-text
-            {{errorText}}
+      / %div(ng-show="!authentication.currentUser().stripe_id")
+      %form.charge-form(stripe-form="handleStripe" name="chargeForm")
+      .control-group(ng-show="errorText")
+        .controls.error-text
+          {{errorText}}
 
-        .control-group(ng-show="!authentication.isAdmin()")
+      .control-group(ng-show="!authentication.isAdmin()")
+        %label.control-label(for="")
+          Credit Card Number
+        .controls
+          %input.input-full.inspectletIgnore(ng-model="number" payments-format="card" payments-validate="card" type="text" ng-required="!authentication.isAdmin()"  name="card_number")
+        %label.control-label(for="name")
+          Name
+        .controls
+          %input.input-full.inspectletIgnore(type="text" ng-model="name" ng-required="!authentication.isAdmin()" name="cardholder_name")
+        .expdate-group.inline
           %label.control-label(for="")
-            Credit Card Number
+            Expiration Date
           .controls
-            %input.input-full.inspectletIgnore(ng-model="number" payments-format="card" payments-validate="card" type="text" ng-required="!authentication.isAdmin()"  name="card_number")
-          %label.control-label(for="name")
-            Name
+            %input.input-mini.inspectletIgnore(ng-model="expMonth" type="text" pattern="[0-9]{1,2}" ng-required="!authentication.isAdmin()"  name="expMonth")
+            .date-slash.inline
+              \/
+            %input.input-mini.inspectletIgnore(ng-model="expYear" type="text" pattern="[0-9]{1,4}" ng-required="!authentication.isAdmin()"  name="expYear" )
+        .cvc-group.inline
+          %label.control-label(for="")
+            Security Code (CVC)
           .controls
-            %input.input-full.inspectletIgnore(type="text" ng-model="name" ng-required="!authentication.isAdmin()" name="cardholder_name")
-          .expdate-group.inline
-            %label.control-label(for="")
-              Expiration Date
-            .controls
-              %input.input-mini.inspectletIgnore(ng-model="expMonth" type="text" pattern="[0-9]{1,2}" ng-required="!authentication.isAdmin()"  name="expMonth")
-              .date-slash.inline
-                \/
-              %input.input-mini.inspectletIgnore(ng-model="expYear" type="text" pattern="[0-9]{1,4}" ng-required="!authentication.isAdmin()"  name="expYear" )
-          .cvc-group.inline
-            %label.control-label(for="")
-              Security Code (CVC)
-            .controls
-              %input.input-mini.inspectletIgnore(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" ng-required="!authentication.isAdmin()"  name="cvc")
-        .divider
-        .control-group(ng-show="isGift && ! processing")
-          %label.radio
-            %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="true")
-              Email gift to {{giftInfo.recipientName}} now
-          %label.radio
-            %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="false")
-              Email gift to me to deliver later
+            %input.input-mini.inspectletIgnore(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" ng-required="!authentication.isAdmin()"  name="cvc")
+      .divider
+      .control-group(ng-show="isGift && ! processing")
+        %label.radio
+          %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="true")
+            Email gift to {{giftInfo.recipientName}} now
+        %label.radio
+          %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="false")
+            Email gift to me to deliver later
 
-        .control-group.text-center(ng-hide="processing")
-          .controls
-            %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)")
-              BUY NOW
-              = render 'activities/latest/assembly_price'
+      .control-group.text-center(ng-hide="processing")
+        .controls
+          %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)")
+            BUY NOW
+            = render 'activities/latest/assembly_price'
 
-            .tiny-note
-              All Taxes Included
-        .control-group.text-center(ng-show="processing")
-          .controls
-            %i.icon-spinner.icon-2x.icon-spin
-            Processing your card
+          .tiny-note
+            All Taxes Included
+      .control-group.text-center(ng-show="processing")
+        .controls
+          %i.icon-spinner.icon-2x.icon-spin
+          Processing your card
 
     .row-fluid(ng-switch-when="thanks")
       %div(ng-show="! isGift")
