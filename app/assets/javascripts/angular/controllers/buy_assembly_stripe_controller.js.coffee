@@ -25,6 +25,11 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.freeTrialHours = null
   $scope.trialNotificationSent = false
 
+  if $scope.authentication.currentUser().stripe_id
+    $scope.creditCardFormVisible = false
+  else
+    $scope.creditCardFormVisible = true
+
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
     $scope.enrolled = true if $scope.isEnrolled() #(data.user)
@@ -106,24 +111,17 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.chargeCustomer = ->
     $scope.createCharge()
-    # $http(
-    #   method: 'POST'
-    #   params:
-    #     assembly_id: $scope.assembly.id
-    #     discounted_price: $scope.discounted_price
-    #     gift_info: $scope.giftInfo
 
-    #   url: '/charges'
+  $scope.createCharge = (reponse) ->
+    if typeof response != 'undefined'
+      stripeToken = response.id
+      paymentType = response.type
+      cardType = response.card.type
+    else  
+      stripeToken = null
+      paymentType = null
+      cardType = null
 
-    # ).success((data, status, headers, config) ->
-    #   console.log "Successfully Charged"
-
-    # ).error((data, status, headers, config) ->
-    #   console.log "STRIPE CHARGE FAIL"
-    # )
-
-  $scope.createCharge = (stripeToken) ->
-    stripeToken = stripeToken || null
     $http(
       method: 'POST'
       params:
@@ -139,12 +137,12 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.enrolled = true unless $scope.isGift
       $scope.state = "thanks"
       mixpanel.people.track_charge($scope.discounted_price)
-      mixpanel.track('Course Purchased', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': response.type, 'card_type': response.card.type, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador}, $rootScope.splits))
+      mixpanel.track('Course Purchased', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador}, $rootScope.splits))
       mixpanel.people.append('Classes Purchased', $scope.assembly.title)
       mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
       mixpanel.people.set('Paid Course Abandoned' : false)
       _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
-      $scope.shareASale($scope.discounted_price, response.id)
+      # $scope.shareASale($scope.discounted_price, response.id)
       # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
       csAdwords.track(998032928,'x2qKCIDkrAgQoIzz2wM')
       csFacebookConversion.track(6014798037826,$scope.discounted_price)
@@ -304,4 +302,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       mixpanel.people.set('Free Trial Offered': $scope.assembly.title)
       $scope.trialNotificationSent = true
 
+  $scope.showCreditCardForm = ->
+    $scope.creditCardFormVisible = true
 ]
