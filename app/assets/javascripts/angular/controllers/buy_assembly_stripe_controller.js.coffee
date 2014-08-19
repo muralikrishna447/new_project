@@ -1,7 +1,9 @@
 # This mixes the concerns of managing a general purpose modal for charging stripe with
 # the special case of buying an assembly. Would be better to separate.
 
-angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", "csFacebookConversion", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords, csFacebookConversion) ->
+angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", "csFacebookConversion", "csStripe", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords, csFacebookConversion, csStripe) ->
+
+  csStripe.getCustomer()
 
   $scope.isGift = false
   $scope.buyModalOpen = false
