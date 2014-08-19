@@ -35,7 +35,14 @@
       .close-x.pull-right#cancel-charge(ng-click="closeModal()")
         %i.icon-remove
 
-      %form.charge-form(stripe-form="handleStripe" name="chargeForm")
+      %div(ng-if="authentication.currentUser().stripe_id")
+        HEY I HAVE A STRIPE ID
+        Pay with card ending in XXX
+        .btn.btn-primary
+          Buy Now
+
+      %div(ng-show="!authentication.currentUser().stripe_id")
+        %form.charge-form(stripe-form="handleStripe" name="chargeForm")
         .control-group(ng-show="errorText")
           .controls.error-text
             {{errorText}}
