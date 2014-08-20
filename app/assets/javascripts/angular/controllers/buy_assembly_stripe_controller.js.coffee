@@ -3,8 +3,6 @@
 
 angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", "csFacebookConversion", "csStripe", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords, csFacebookConversion, csStripe) ->
 
-  csStripe.getCustomer()
-
   $scope.isGift = false
   $scope.buyModalOpen = false
   $scope.giftInfo = {
@@ -29,7 +27,10 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   if $scope.authentication.currentUser().stripe_id
     $scope.creditCardFormVisible = false
+    csStripe.getCurrentCustomer().then (response) ->
+      $scope.currentCustomer = response
   else
+    $scope.selectedCard = 'newCard'
     $scope.creditCardFormVisible = true
 
   $scope.$on "login", (event, data) ->
@@ -112,6 +113,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       )
 
   $scope.chargeCustomer = ->
+    $scope.processing = true
+    $scope.errorText = false
     $scope.createCharge()
 
   $scope.createCharge = (reponse) ->
@@ -155,10 +158,17 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.processing = false
     )
 
+  $scope.selectedCardChanged = (selectedCard) ->
+    $scope.selectedCard = selectedCard
+    console.log 'selectedCard Changed to: ', $scope.selectedCard
+    if $scope.selectedCard == 'newCard'
+      $scope.creditCardFormVisible = true
+    else
+      $scope.creditCardFormVisible = false
+
   $scope.maybeStartProcessing = (form) ->
-    if form?.$valid
-      $scope.processing = true
-      $scope.errorText = false
+    $scope.processing = true
+    $scope.errorText = false
 
   $scope.maybeMoveToCharge = (form) ->
     if form?.$valid
@@ -304,6 +314,4 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       mixpanel.people.set('Free Trial Offered': $scope.assembly.title)
       $scope.trialNotificationSent = true
 
-  $scope.showCreditCardForm = ->
-    $scope.creditCardFormVisible = true
 ]

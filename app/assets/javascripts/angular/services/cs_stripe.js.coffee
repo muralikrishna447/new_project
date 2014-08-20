@@ -1,8 +1,15 @@
-@app.service 'csStripe', ['csAuthentication', '$http', (csAuthentication, $http) ->
-  this.getCustomer = ->
+@app.service 'csStripe', ['csAuthentication', '$http', '$q', (csAuthentication, $http, $q) ->
+
+  this.getCurrentCustomer = ->
+    
     customer_id = csAuthentication.currentUser().stripe_id
-    Stripe.setPublishableKey('sk_test_vbGt58BNlwRrgjEvq9QtYf0G:')
-    $http.get("https://api.stripe.com/v1/customers/#{customer_id}").then (response) ->
+    promise = $http.get("/stripe/current_customer").then (response) ->
+      console.log "response: "
       console.log response
+      return response.data
+    console.log "promise: "
+    console.log promise
+    return promise
+
   this
 ]
