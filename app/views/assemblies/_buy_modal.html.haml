@@ -44,7 +44,7 @@
       
       %form.charge-form(stripe-form="handleStripe" name="chargeForm")
         %div(ng-if="authentication.currentUser().stripe_id")
-          Use a card on file:
+          USE A CARD ON FILE:
           %div(ng-repeat="card in currentCustomer.cards.data")
             %input(type='radio' name='selectedCard' data-ng-model='$parent.selectedCard' ng-value='card.id' ng-change='selectedCardChanged(selectedCard)')
               %i.fa.fa-asterisk
@@ -53,7 +53,7 @@
               %i.fa.fa-asterisk
               {{card.last4}}
           %input(type='radio' name='selectedCard' data-ng-model='selectedCard' value='newCard' ng-change='selectedCardChanged(selectedCard)')
-            Use a new card
+            USE A NEW CARD
 
         %div(ng-show="creditCardFormVisible")
           .control-group(ng-show="errorText")
@@ -82,7 +82,6 @@
                 Security Code (CVC)
               .controls
                 %input.input-mini.inspectletIgnore(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" ng-required="!authentication.isAdmin()"  name="cvc")
-          .divider
           .control-group(ng-show="isGift && ! processing")
             %label.radio
               %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="true")
@@ -91,18 +90,21 @@
               %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="false")
                 Email gift to me to deliver later
 
+        .divider
         .control-group.text-center(ng-hide="processing")
           .controls
-            .btn.btn-secondary.btn-large(disabled=true ng-show="!selectedCard")
-              Buy Now
-              = render 'activities/latest/assembly_price'
-            %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)" ng-show="selectedCard == 'newCard'")
-              BUY NOW
-              = render 'activities/latest/assembly_price'
-
-            .btn.btn-primary.btn-large(ng-click="chargeCustomer()" ng-show="selectedCard && selectedCard != 'newCard'")
-              BUY NOW
-              = render 'activities/latest/assembly_price'
+            %div(ng-show="!selectedCard")
+              .btn.btn-secondary.btn-large(disabled=true)
+                Buy Now
+                = render 'activities/latest/assembly_price'
+            %div(ng-show="selectedCard == 'newCard'")
+              %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)")
+                BUY NOW
+                = render 'activities/latest/assembly_price'
+            %div(ng-show="selectedCard && selectedCard != 'newCard'")
+              .btn.btn-primary.btn-large(ng-click="chargeCustomer()")
+                BUY NOW
+                = render 'activities/latest/assembly_price'
 
             .tiny-note
               All Taxes Included
