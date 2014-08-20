@@ -7,10 +7,10 @@
     :css
       body{font-family:'Lato','Helvetica Neue','Arial',sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       img.logo{height:36px}
-      img.hero-image{display:block;width:100%;margin:30px auto}
-      header{margin-top:20px;margin-bottom:40px}
+      img.hero-image{display:block;width:75%;margin:0 auto;}
+      header{margin-top:20px;margin-bottom:20px}
       h1{font-weight:700}
-      a.go-button{background-color:#e25f25;color:#fff;text-align:center;font-size:18px;border-radius:3px;display:block;line-height:50px;opacity:.9;transition:opacity .2s;width:100%;max-width:400px;margin:40px auto;}
+      a.go-button{background-color:#e25f25;color:#fff;text-align:center;font-size:18px;border-radius:3px;display:block;line-height:50px;opacity:.9;transition:opacity .2s;width:100%;max-width:400px;margin:20px auto;}
       a.go-button:hover{text-decoration:none;opacity:1}
       .wrapper{max-width:750px;width:90%;margin:0 auto 100px;}
       .wrapper p{font-size:16px;line-height:1.5}
@@ -23,13 +23,12 @@
       %header
         %img.logo(src="https://s3.amazonaws.com/chefsteps/static/chefsteps-logo-h-tagline.png")
 
-      %h1.text-center ChefSteps Community Beta Invite
       %img.hero-image(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/DlgwWNi9QJKGxb43IpQP?cache=true")
       .wrapper-inner
         %a.go-button(href="http://chefsteps.com/forum" target="_blank" onclick="mixpanel.track('Beta Invite Button Clicked');")
-          Go to ChefSteps Community Beta
+          Go to the new ChefSteps community
         %p
-          Community is incredibly important to ChefSteps, and we've been busy building better custom software to power it. Today, we're excited to invite you to beta test it.
+          Community is a core tenet at ChefSteps, and we've been busy building custom software to power it and make it better. Today, we're excited to open it up to public beta testing and would like to invite you to check it out.
         %p
           It's still early, and many things are different. We'll be listening closely to your feedback. You can help the most by starting to use it - create threads, post photos of what you had for dinner, and ask for help. Don't be shy!
         %p

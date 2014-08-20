@@ -1,4 +1,5 @@
 class ActivityIngredient < ActiveRecord::Base
+  set_primary_key :id
   include RankedModel
   include Quantity
 
