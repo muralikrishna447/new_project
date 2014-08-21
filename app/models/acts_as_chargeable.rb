@@ -41,6 +41,16 @@ module ActsAsChargeable
           self.set_stripe_id_on_user(user, stripe_token)
         end
       end
+      # if base_price && base_price > 0
+      #   self.set_stripe_id_on_user(user, stripe_token)
+      #   charge = Stripe::Charge.create(
+      #     customer: user.stripe_id,
+      #     amount: (discounted_price * 100).to_i,
+      #     description: item_title + extra_descrip,
+      #     currency: 'usd'
+      #   )
+      #   # puts charge.inspect
+      # end
     end
 
     def adjust_for_included_tax(price, ip)

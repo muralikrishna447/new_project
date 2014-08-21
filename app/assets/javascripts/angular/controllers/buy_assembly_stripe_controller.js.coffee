@@ -25,7 +25,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.freeTrialHours = null
   $scope.trialNotificationSent = false
 
-  if $scope.authentication.currentUser().stripe_id
+  # $scope.currentCustomerId = $scope.authentication.currentUser().stripe_id
+
+  if $scope.authentication.currentUser() && $scope.authentication.currentUser().stripe_id
     $scope.creditCardFormVisible = false
     csStripe.getCurrentCustomer().then (response) ->
       $scope.currentCustomer = response
@@ -119,7 +121,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
       mixpanel.people.set('Paid Course Abandoned' : false)
       _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
-      # $scope.shareASale($scope.discounted_price, response.id)
+      $scope.shareASale($scope.discounted_price, response.id)
       # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
       csAdwords.track(998032928,'x2qKCIDkrAgQoIzz2wM')
       csFacebookConversion.track(6014798037826,$scope.discounted_price)

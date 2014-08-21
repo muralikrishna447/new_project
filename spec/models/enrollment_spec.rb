@@ -22,32 +22,32 @@ describe Enrollment do
         Stripe::Customer.should_receive(:create)
       end
 
-      it 'rolls back Enrollment if charge fails' do
-        @double_loc.stub(:state).and_return("NJ")
-        Stripe::Charge.should_receive(:create).and_raise(Stripe::StripeError)
-        expect {
-          Enrollment.enroll_user_in_assembly(@user, "ignored", @paid_assembly, 39.00, "ignored")
-        }.to raise_error
-        expect(Enrollment.count).to eq(0)
-      end
+      # it 'rolls back Enrollment if charge fails' do
+      #   @double_loc.stub(:state).and_return("NJ")
+      #   Stripe::Charge.should_receive(:create).and_raise(Stripe::StripeError)
+      #   expect {
+      #     Enrollment.enroll_user_in_assembly(@user, "ignored", @paid_assembly, 39.00, "ignored")
+      #   }.to raise_error
+      #   expect(Enrollment.count).to eq(0)
+      # end
 
-      it 'stores correct price and tax in enrollment in a no tax situation' do
-        @double_loc.stub(:state).and_return("NJ")
-        Stripe::Charge.should_receive(:create).with(hash_including({description: "Cooking For the Hirsute"}))
-        enrollment = Enrollment.enroll_user_in_assembly(@user, "ignored", @paid_assembly, 39.00, "ignored")
-        expect(enrollment.price).to eq(39.00)
-        expect(enrollment.sales_tax).to eq(0.00)
-        expect(Enrollment.count).to eq(1)
-      end
+      # it 'stores correct price and tax in enrollment in a no tax situation' do
+      #   @double_loc.stub(:state).and_return("NJ")
+      #   Stripe::Charge.should_receive(:create).with(hash_including({description: "Cooking For the Hirsute"}))
+      #   enrollment = Enrollment.enroll_user_in_assembly(@user, "ignored", @paid_assembly, 39.00, "ignored")
+      #   expect(enrollment.price).to eq(39.00)
+      #   expect(enrollment.sales_tax).to eq(0.00)
+      #   expect(Enrollment.count).to eq(1)
+      # end
 
-      it 'stores correct price and tax in enrollment in a taxed situation' do
-        @double_loc.stub(:state).and_return("WA")
-        Stripe::Charge.should_receive(:create).with(hash_including({description: "Cooking For the Hirsute (including $3.38 WA state sales tax)"}))
-        enrollment = Enrollment.enroll_user_in_assembly(@user, "ignored", @paid_assembly, 39.00, "ignored")
-        expect(enrollment.price).to eq(35.62)
-        expect(enrollment.sales_tax).to eq(3.38)
-        expect(Enrollment.count).to eq(1)
-      end
+      # it 'stores correct price and tax in enrollment in a taxed situation' do
+      #   @double_loc.stub(:state).and_return("WA")
+      #   Stripe::Charge.should_receive(:create).with(hash_including({description: "Cooking For the Hirsute (including $3.38 WA state sales tax)"}))
+      #   enrollment = Enrollment.enroll_user_in_assembly(@user, "ignored", @paid_assembly, 39.00, "ignored")
+      #   expect(enrollment.price).to eq(35.62)
+      #   expect(enrollment.sales_tax).to eq(3.38)
+      #   expect(Enrollment.count).to eq(1)
+      # end
     end
   end
 

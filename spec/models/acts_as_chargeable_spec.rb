@@ -69,22 +69,22 @@ describe ActsAsChargeable do
       end
     end
 
-    context "paid class" do
-      before(:each) do
-        Dummy.stub(:set_stripe_id_on_user)
-        Stripe::Charge.stub(:create)
-      end
+    # context "paid class" do
+    #   before(:each) do
+    #     Dummy.stub(:set_stripe_id_on_user)
+    #     Stripe::Charge.stub(:create)
+    #   end
 
-      it "should call stripe charge" do
-        Stripe::Charge.should_receive(:create).with(customer: "123", amount: 1900, description: "Become a Badass", currency: "usd")
-        Dummy.collect_money(39.00, 19.00, "Become a Badass", "", user, "123456")
-      end
+    #   it "should call stripe charge" do
+    #     Stripe::Charge.should_receive(:create).with(customer: "123", amount: 1900, description: "Become a Badass", currency: "usd")
+    #     Dummy.collect_money(39.00, 19.00, "Become a Badass", "", user, "123456")
+    #   end
 
-      it "should call stripe charge" do
-        Dummy.should_receive(:set_stripe_id_on_user).with(user, "123456")
-        Dummy.collect_money(39.00, 19.00, "Become a Badass", "", user, "123456")
-      end
-    end
+    #   it "should call stripe charge" do
+    #     Dummy.should_receive(:set_stripe_id_on_user).with(user, "123456")
+    #     Dummy.collect_money(39.00, 19.00, "Become a Badass", "", user, "123456")
+    #   end
+    # end
   end
 
   describe ".adjust_for_included_tax" do
