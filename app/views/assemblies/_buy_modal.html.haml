@@ -34,13 +34,6 @@
     .row-fluid(ng-switch-when="charge" )
       .close-x.pull-right#cancel-charge(ng-click="closeModal()")
         %i.icon-remove
-
-
-        / .btn.btn-primary(ng-click="chargeCustomer()")
-        /   Buy Now
-        / .btn.btn-secondary(ng-click="showCreditCardForm()")
-        /   Use a new card
-
       
       %form.charge-form(stripe-form="handleStripe" name="chargeForm")
         %div(ng-if="authentication.currentUser().stripe_id")
