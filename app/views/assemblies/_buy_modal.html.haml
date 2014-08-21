@@ -40,10 +40,7 @@
           USE A CARD ON FILE:
           %div(ng-repeat="card in currentCustomer.cards.data")
             %input(type='radio' name='selectedCard' data-ng-model='$parent.selectedCard' ng-value='card.id' ng-change='selectedCardChanged(selectedCard)')
-              %i.fa.fa-asterisk
-              %i.fa.fa-asterisk
-              %i.fa.fa-asterisk
-              %i.fa.fa-asterisk
+              XXXX-
               {{card.last4}}
           %input(type='radio' name='selectedCard' data-ng-model='selectedCard' value='newCard' ng-change='selectedCardChanged(selectedCard)')
             USE A NEW CARD
