@@ -164,6 +164,7 @@ private
 
     begin
       @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], can?(:update, @activity))
+      # Once verified that coupons are working everywhere, delete the following:
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = discounted_price(@assembly.price, session[:coupon])
       # Changing so that it accepts a param gift_token as well, this is solely for e2e testing and shouldn't be given to customers as it 
@@ -178,6 +179,7 @@ private
       if @course && @course.assembly_type == "Course" && (! @course.published?)
         if current_user && current_user.enrolled?(@course)
           @assembly = Assembly.find(params[:id])
+          # Once verified that coupons are working everywhere, delete the following:
           session[:coupon] = params[:coupon] || session[:coupon]
         else
           @list_name = ("csp-" + @course.slug)[0...15]
