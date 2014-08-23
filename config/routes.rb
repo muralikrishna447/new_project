@@ -293,6 +293,12 @@ Delve::Application.routes.draw do
     end
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :activities
+    end
+  end
+
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"
     get "end_clean" => "application#end_clean"
