@@ -117,10 +117,6 @@ class Assembly < ActiveRecord::Base
     self.assembly_inclusions.map(&:includable_type).include?('Assembly') ? false : true
   end
 
-  def paid_class?
-    (assembly_type == "Course" && (price  && price > 0))
-  end
-
   def paid?
     price && price > 0
   end
