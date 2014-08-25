@@ -31,6 +31,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.creditCardFormVisible = false
     csStripe.getCurrentCustomer().then (response) ->
       $scope.currentCustomer = response
+      if $scope.currentCustomer.default_card
+        $scope.selectedCard = $scope.currentCustomer.default_card
+        console.log 'Selected Card: ', $scope.selectedCard
   else
     $scope.selectedCard = 'newCard'
     $scope.creditCardFormVisible = true
