@@ -37,7 +37,7 @@
       
       %form.charge-form(stripe-form="handleStripe" name="chargeForm")
         %h3 Woo-hoo!
-        %p.section You're about to purchase the <b>#{@course.title}</b> class. Please choose a payment method below:
+        %p.section You're about to purchase the <b>{{assembly.title}}</b> {{assembly.assembly_type == 'Course' ? 'Class':assembly.assembly_type}}. Please choose a payment method below:
         %div.section.cards-radio-select(ng-if="authentication.currentUser().stripe_id")
           %div.cards(ng-repeat="card in currentCustomer.cards.data")
             %input(type='radio' name='selectedCard' data-ng-model='$parent.selectedCard' ng-value='card.id' ng-change='selectedCardChanged(selectedCard)')
