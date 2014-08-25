@@ -9,5 +9,6 @@
   %fieldset
     %div= email_field_tag :email, nil, placeholder: 'email', length: 50, required: true
     %br
-    %div= select_tag :assembly_id, options_from_collection_for_select(Assembly.where(assembly_type: 'Course').order(:title), :id, :title)
+    / %div= select_tag :assembly_id, options_from_collection_for_select(Assembly.where(assembly_type: 'Course').order(:title), :id, :title)
+    %div= select_tag :assembly_id, options_for_select(Assembly.where('assembly_type = ? or assembly_type = ?', 'Course', 'Project').order(:title).map{|a| ["#{a.title} [#{a.assembly_type}]",a.id]})
   = submit_tag 'Submit'
