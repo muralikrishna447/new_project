@@ -17,7 +17,7 @@ class AssembliesController < ApplicationController
     @hide_nav = true
     @upload = Upload.new
     if current_user
-      if (current_user.enrolled?(@assembly))
+      if (current_user.enrolled?(@assembly)) || current_user.admin?
         case @assembly.assembly_type
         when 'Course', 'Project'
           render "courses_#{params[:action]}"
