@@ -277,6 +277,12 @@ Delve::Application.routes.draw do
 
   match "/reports/stripe" => "reports#stripe"
 
+  resources :stripe do
+    collection do
+      get 'current_customer'
+    end
+  end
+
   resources :dashboard, only: [:index] do
     collection do
       get 'comments', to: 'dashboard#comments'

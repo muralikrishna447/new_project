@@ -50,6 +50,9 @@ describe "LoginController", ->
     window = $window
     scope.urlService = jasmine.createSpy("urlService")
     scope.urlService.currentSiteAsHttps = jasmine.createSpy("scope.urlService.currentSiteAsHttps")
+
+    gaq = jasmine.createSpyObj('gaq', ['push'])
+    $window._gaq = gaq
   ))
 
   afterEach ->

@@ -18,15 +18,39 @@ module ActsAsChargeable
     # but they will still have to provide a valid card.
     def collect_money(base_price, discounted_price, item_title, extra_descrip, user, stripe_token)
       if base_price && base_price > 0
-        self.set_stripe_id_on_user(user, stripe_token)
-        charge = Stripe::Charge.create(
-          customer: user.stripe_id,
-          amount: (discounted_price * 100).to_i,
-          description: item_title + extra_descrip,
-          currency: 'usd'
-        )
-        # puts charge.inspect
+        if user.stripe_id
+          if stripe_token
+            customer = Stripe::Customer.retrieve(user.stripe_id)
+            new_card = customer.cards.create({card: stripe_token})
+            charge = Stripe::Charge.create(
+              amount: (discounted_price * 100).to_i,
+              description: item_title + extra_descrip,
+              currency: 'usd',
+              card: new_card.id,
+              customer: user.stripe_id
+            )
+          else
+            charge = Stripe::Charge.create(
+              customer: user.stripe_id,
+              amount: (discounted_price * 100).to_i,
+              description: item_title + extra_descrip,
+              currency: 'usd'
+            )
+          end
+        else
+          self.set_stripe_id_on_user(user, stripe_token)
+        end
       end
+      # if base_price && base_price > 0
+      #   self.set_stripe_id_on_user(user, stripe_token)
+      #   charge = Stripe::Charge.create(
+      #     customer: user.stripe_id,
+      #     amount: (discounted_price * 100).to_i,
+      #     description: item_title + extra_descrip,
+      #     currency: 'usd'
+      #   )
+      #   # puts charge.inspect
+      # end
     end
 
     def adjust_for_included_tax(price, ip)
