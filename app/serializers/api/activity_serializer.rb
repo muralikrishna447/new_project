@@ -1,11 +1,19 @@
 class Api::ActivitySerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :image, :url, :likes_count
+  attributes :id, :title, :description, :image, :url, :likesCount
+
+  has_many :ingredients
+  has_many :steps
+  has_many :equipment
 
   def image
-    object.featured_image_id
+    filepicker_to_s3_url(object.featured_image_id)
   end
 
   def url
     activity_url(object)
+  end
+
+  def likesCount
+    object.likes_count
   end
 end
