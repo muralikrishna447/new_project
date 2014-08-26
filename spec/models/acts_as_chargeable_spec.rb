@@ -52,6 +52,7 @@ describe ActsAsChargeable do
 
   describe ".collect_money" do
     let(:user){ Fabricate(:user, stripe_id: "123") }
+    let(:card){ double('card') }
 
     it "should have a collect_money method" do
       (Dummy.methods-Object.methods).should include(:collect_money)
@@ -73,17 +74,24 @@ describe ActsAsChargeable do
       before(:each) do
         Dummy.stub(:set_stripe_id_on_user)
         Stripe::Charge.stub(:create)
+        customer = double('customer')
+        customer.stub(:cards)
+
+        Stripe::Customer.stub(:retrieve).and_return(customer)
+        card.stub(:id)
+        customer.cards.stub(:create).and_return(card)
       end
 
-      it "should call stripe charge" do
+      it "should call stripe charge if there is a stripe token" do
+        Stripe::Charge.should_receive(:create).with(customer: "123", amount: 1900, description: "Become a Badass", currency: "usd", card: card.id)
+        Dummy.collect_money(39.00, 19.00, "Become a Badass", "", user, "123456")
+      end
+
+      it "should call stripe charge if there isn't a stripe token" do
         Stripe::Charge.should_receive(:create).with(customer: "123", amount: 1900, description: "Become a Badass", currency: "usd")
-        Dummy.collect_money(39.00, 19.00, "Become a Badass", "", user, "123456")
+        Dummy.collect_money(39.00, 19.00, "Become a Badass", "", user, nil)
       end
 
-      it "should call stripe charge" do
-        Dummy.should_receive(:set_stripe_id_on_user).with(user, "123456")
-        Dummy.collect_money(39.00, 19.00, "Become a Badass", "", user, "123456")
-      end
     end
   end
 

@@ -1,7 +1,7 @@
 # This mixes the concerns of managing a general purpose modal for charging stripe with
 # the special case of buying an assembly. Would be better to separate.
 
-angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", "csFacebookConversion", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords, csFacebookConversion) ->
+angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", "csFacebookConversion", "csStripe", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords, csFacebookConversion, csStripe) ->
 
   $scope.isGift = false
   $scope.buyModalOpen = false
@@ -24,6 +24,19 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.freeTrialCode = false
   $scope.freeTrialHours = null
   $scope.trialNotificationSent = false
+
+  # $scope.currentCustomerId = $scope.authentication.currentUser().stripe_id
+
+  if $scope.authentication.currentUser() && $scope.authentication.currentUser().stripe_id
+    $scope.creditCardFormVisible = false
+    csStripe.getCurrentCustomer().then (response) ->
+      $scope.currentCustomer = response
+      if $scope.currentCustomer.default_card
+        $scope.selectedCard = $scope.currentCustomer.default_card
+        console.log 'Selected Card: ', $scope.selectedCard
+  else
+    $scope.selectedCard = 'newCard'
+    $scope.creditCardFormVisible = true
 
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
@@ -72,42 +85,69 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.processing = false
 
     else
-      # got stripe token, now charge it or smt
-      $http(
-        method: 'POST'
-        params:
-          stripeToken: response.id
-          assembly_id: $scope.assembly.id
-          discounted_price: $scope.discounted_price
-          gift_info: $scope.giftInfo
+      $scope.chargedWith = 'newCard'
+      $scope.createCharge(response)
 
-        url: '/charges'
+  $scope.chargeCustomer = ->
+    $scope.processing = true
+    $scope.errorText = false
+    $scope.chargedWith = 'existingCard'
+    $scope.createCharge()
 
-      ).success((data, status, headers, config) ->
-        $scope.processing = false
-        $scope.enrolled = true unless $scope.isGift
-        $scope.state = "thanks"
-        mixpanel.people.track_charge($scope.discounted_price)
-        mixpanel.track('Course Purchased', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': response.type, 'card_type': response.card.type, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador}, $rootScope.splits))
-        mixpanel.people.append('Classes Purchased', $scope.assembly.title)
-        mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
-        mixpanel.people.set('Paid Course Abandoned' : false)
-        _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
-        $scope.shareASale($scope.discounted_price, response.id)
-        # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
-        csAdwords.track(998032928,'x2qKCIDkrAgQoIzz2wM')
-        csFacebookConversion.track(6014798037826,$scope.discounted_price)
+  $scope.createCharge = (response) ->
+    console.log 'This is the response: '
+    console.log response
+    if typeof response != 'undefined'
+      stripeToken = response.id
+      paymentType = response.type
+      cardType = response.card.type
+    else  
+      stripeToken = null
+      paymentType = null
+      cardType = null
 
-      ).error((data, status, headers, config) ->
-        console.log "STRIPE CHARGE FAIL" + data
-        $scope.errorText = data.errors[0].message || data.errors[0]
-        $scope.processing = false
-      )
+    $http(
+      method: 'POST'
+      params:
+        stripeToken: stripeToken
+        assembly_id: $scope.assembly.id
+        discounted_price: $scope.discounted_price
+        gift_info: $scope.giftInfo
+
+      url: '/charges'
+
+    ).success((data, status, headers, config) ->
+      $scope.processing = false
+      $scope.enrolled = true unless $scope.isGift
+      $scope.state = "thanks"
+      mixpanel.people.track_charge($scope.discounted_price)
+      mixpanel.track('Course Purchased', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador, 'chargedWith' : $scope.chargedWith}, $rootScope.splits))
+      mixpanel.people.append('Classes Purchased', $scope.assembly.title)
+      mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
+      mixpanel.people.set('Paid Course Abandoned' : false)
+      _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
+      $scope.shareASale($scope.discounted_price, response.id)
+      # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
+      csAdwords.track(998032928,'x2qKCIDkrAgQoIzz2wM')
+      csFacebookConversion.track(6014798037826,$scope.discounted_price)
+
+    ).error((data, status, headers, config) ->
+      console.log "STRIPE CHARGE FAIL" + data
+      $scope.errorText = data.errors[0].message || data.errors[0]
+      $scope.processing = false
+    )
+
+  $scope.selectedCardChanged = (selectedCard) ->
+    $scope.selectedCard = selectedCard
+    console.log 'selectedCard Changed to: ', $scope.selectedCard
+    if $scope.selectedCard == 'newCard'
+      $scope.creditCardFormVisible = true
+    else
+      $scope.creditCardFormVisible = false
 
   $scope.maybeStartProcessing = (form) ->
-    if form?.$valid
-      $scope.processing = true
-      $scope.errorText = false
+    $scope.processing = true
+    $scope.errorText = false
 
   $scope.maybeMoveToCharge = (form) ->
     if form?.$valid
