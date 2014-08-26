@@ -85,11 +85,13 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.processing = false
 
     else
+      $scope.chargedWith = 'newCard'
       $scope.createCharge(response)
 
   $scope.chargeCustomer = ->
     $scope.processing = true
     $scope.errorText = false
+    $scope.chargedWith = 'existingCard'
     $scope.createCharge()
 
   $scope.createCharge = (response) ->
@@ -119,7 +121,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.enrolled = true unless $scope.isGift
       $scope.state = "thanks"
       mixpanel.people.track_charge($scope.discounted_price)
-      mixpanel.track('Course Purchased', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador}, $rootScope.splits))
+      mixpanel.track('Course Purchased', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador, 'chargedWith' : $scope.chargedWith}, $rootScope.splits))
       mixpanel.people.append('Classes Purchased', $scope.assembly.title)
       mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
       mixpanel.people.set('Paid Course Abandoned' : false)
