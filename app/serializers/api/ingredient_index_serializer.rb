@@ -1,5 +1,5 @@
 class Api::IngredientIndexSerializer < ActiveModel::Serializer
-  attributes :id, :title, :image, :url, :product_url
+  attributes :id, :title, :image, :url, :productUrl
 
   def image
     filepicker_to_s3_url(object.image_id)
@@ -7,5 +7,9 @@ class Api::IngredientIndexSerializer < ActiveModel::Serializer
 
   def url
     ingredient_url(object)
+  end
+
+  def productUrl
+    object.product_url
   end
 end

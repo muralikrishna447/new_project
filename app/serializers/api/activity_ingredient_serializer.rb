@@ -1,13 +1,9 @@
 class Api::ActivityIngredientSerializer < ActiveModel::Serializer
-  attributes :title, :quantity, :unit, :url, :product_url
+  attributes :order, :title, :quantity, :unit
 
   has_one :ingredient, serializer: IngredientIndexSerializer
 
-  def url
-    ingredient_url(object.ingredient)
-  end
-
-  def product_url
-    object.ingredient.product_url
+  def order
+    object.ingredient_order
   end
 end
