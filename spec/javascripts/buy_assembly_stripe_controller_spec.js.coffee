@@ -100,8 +100,8 @@ describe "BuyAssemblyStripeController", ->
       it "should state to be thanks", ->
         expect(scope.state).toEqual("thanks")
 
-      it "should call shareASale", ->
-        expect(scope.shareASale).toHaveBeenCalled()
+      # it "should call shareASale", ->
+      #   expect(scope.shareASale).toHaveBeenCalled()
 
     describe "ajax responds with an error", ->
       beforeEach ->

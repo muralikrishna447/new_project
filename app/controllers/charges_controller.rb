@@ -30,7 +30,11 @@ class ChargesController < ApplicationController
       if assembly.paid?
         mixpanel.track(current_user.email, "#{assembly.assembly_type} Purchased Server Side", {slug: assembly.slug})
       end
-      @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken])
+      if params[:existingCard]
+        @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken], 0, params[:existingCard])
+      else
+        @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken])
+      end
     end
 
     track_event @enrollment if @enrollment.present?
