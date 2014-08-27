@@ -1,5 +1,5 @@
 module Api
-  module V1
+  module V0
     class ActivitiesController < ApplicationController
       has_scope :published, type: :boolean
 

@@ -294,7 +294,7 @@ Delve::Application.routes.draw do
   end
 
   namespace :api do
-    namespace :v1 do
+    namespace :v0 do
       resources :activities
     end
   end
