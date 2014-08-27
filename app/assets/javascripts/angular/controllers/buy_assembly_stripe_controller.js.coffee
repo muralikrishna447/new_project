@@ -80,24 +80,24 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     console.log "STRIPE status: " + status + ", response: " + response
 
     if response.error
-      console.log "STRIPE TOKEN FAIL: " + response.error
+      console.log "STRIPE TOKEN FAIL: ", response.error
       $scope.errorText = response.error.message || response.error
       $scope.processing = false
 
     else
       $scope.chargedWith = 'newCard'
-      $scope.createCharge(response)
+      $scope.createCharge(response, null)
 
   $scope.chargeCustomer = ->
     $scope.processing = true
     $scope.errorText = false
     $scope.chargedWith = 'existingCard'
-    $scope.createCharge()
+    $scope.createCharge(null, $scope.selectedCard)
 
-  $scope.createCharge = (response) ->
+  $scope.createCharge = (response, existingCard) ->
     console.log 'This is the response: '
     console.log response
-    if typeof response != 'undefined'
+    if response
       stripeToken = response.id
       paymentType = response.type
       cardType = response.card.type
@@ -113,6 +113,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         assembly_id: $scope.assembly.id
         discounted_price: $scope.discounted_price
         gift_info: $scope.giftInfo
+        existingCard: existingCard
 
       url: '/charges'
 
@@ -126,13 +127,13 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
       mixpanel.people.set('Paid Course Abandoned' : false)
       _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
-      $scope.shareASale($scope.discounted_price, response.id)
+      # $scope.shareASale($scope.discounted_price, response.id)
       # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
       csAdwords.track(998032928,'x2qKCIDkrAgQoIzz2wM')
       csFacebookConversion.track(6014798037826,$scope.discounted_price)
 
     ).error((data, status, headers, config) ->
-      console.log "STRIPE CHARGE FAIL" + data
+      console.log "STRIPE CHARGE FAIL", data
       $scope.errorText = data.errors[0].message || data.errors[0]
       $scope.processing = false
     )

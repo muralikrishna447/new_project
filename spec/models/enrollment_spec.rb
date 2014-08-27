@@ -167,7 +167,7 @@ describe Enrollment do
         Enrollment.stub(:collect_money)
       end
 
-      subject { Enrollment.paid_enrollment(purchaser, ip_address, assembly, discounted_price, stripe_token) }
+      subject { Enrollment.paid_enrollment(purchaser, ip_address, assembly, discounted_price, stripe_token, 0) }
       # its(:user_id){ should eq purchaser.id }
       # its(:enrollable){ should eq assembly }
       # its(:price){ should eq 19.00 }
