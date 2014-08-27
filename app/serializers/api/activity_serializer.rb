@@ -1,8 +1,8 @@
 class Api::ActivitySerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :image, :url, :likesCount
+  attributes :id, :title, :description, :image, :youtube_id, :url, :likesCount
 
-  has_many :ingredients, serializer: Api::V1::ActivityIngredientSerializer
-  has_many :steps
+  has_many :ingredients, serializer: Api::ActivityIngredientSerializer
+  has_many :steps, serializer: Api::StepSerializer
   has_many :equipment
 
   def image
