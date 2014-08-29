@@ -35,7 +35,7 @@
       .close-x.pull-right#cancel-charge(ng-click="closeModal()")
         %i.icon-remove
       
-      %form.charge-form(stripe-form="handleStripe" name="chargeForm")
+      %form.charge-form(stripe-form="handleStripe" name="chargeForm" ng-disabled="disableForm")
         %h3 Woo-hoo!
         %p.section You're about to purchase the <b>{{assembly.title}}</b> {{assembly.assembly_type == 'Course' ? 'Class':assembly.assembly_type}}. Please choose a payment method below:
         .control-group(ng-show="errorText")
@@ -85,16 +85,16 @@
         .divider
         .control-group.text-center(ng-hide="processing")
           .controls
-            %div(ng-show="!selectedCard")
+            %div(ng-if="!selectedCard")
               .btn.btn-secondary.btn-large(disabled=true)
                 Buy Now
                 = render 'activities/latest/assembly_price'
-            %div(ng-show="selectedCard == 'newCard'")
-              %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)")
+            %div(ng-if="selectedCard == 'newCard'")
+              %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)" ng-disabled="disableForm")
                 BUY NOW
                 = render 'activities/latest/assembly_price'
-            %div(ng-show="selectedCard && selectedCard != 'newCard'")
-              .btn.btn-primary.btn-large(ng-click="chargeCustomer()")
+            %div(ng-if="selectedCard && selectedCard != 'newCard'")
+              .btn.btn-primary.btn-large(ng-click="chargeCustomer()" ng-disabled="disableForm")
                 BUY NOW
                 = render 'activities/latest/assembly_price'
 
