@@ -1,7 +1,7 @@
 # This mixes the concerns of managing a general purpose modal for charging stripe with
 # the special case of buying an assembly. Would be better to separate.
 
-angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", "csFacebookConversion", "csStripe", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords, csFacebookConversion, csStripe) ->
+angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", "csFacebookConversion", "csStripe", "$timeout", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords, csFacebookConversion, csStripe, $timeout) ->
 
   $scope.isGift = false
   $scope.buyModalOpen = false
@@ -91,6 +91,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.chargeCustomer = ->
     $scope.processing = true
     $scope.errorText = false
+    $scope.disableForm = true
     $scope.chargedWith = 'existingCard'
     $scope.createCharge(null, $scope.selectedCard)
 
@@ -149,6 +150,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.maybeStartProcessing = (form) ->
     $scope.processing = true
     $scope.errorText = false
+    $timeout ( ->
+      $scope.disableForm = true
+    ), 0
 
   $scope.maybeMoveToCharge = (form) ->
     if form?.$valid
