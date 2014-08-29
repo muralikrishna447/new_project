@@ -4,7 +4,7 @@ module ApplicationHelper
   end
 
   def filepicker_to_s3_url(fpfile)
-    if fpfile
+    if fpfile && !fpfile.blank?
       url = ActiveSupport::JSON.decode(fpfile)["url"]
       url.gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
     else
