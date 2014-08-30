@@ -1,7 +1,7 @@
 describe Api::V0::ActivitiesController do
   
   before :each do
-    @activity = Fabricate :activity, title: 'Activity'
+    @activity = Fabricate :activity, title: 'Activity', published: true
   end
 
   # GET /api/v0/activities

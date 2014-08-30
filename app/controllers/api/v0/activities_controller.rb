@@ -1,7 +1,7 @@
 module Api
   module V0
     class ActivitiesController < ApplicationController
-      has_scope :published, type: :boolean
+      has_scope :published, default: true,  type: :boolean
 
       def index
         @activities = apply_scopes(Activity).uniq().page(params[:page]).per(12)
