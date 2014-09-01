@@ -49,6 +49,7 @@ Delve::Application.routes.draw do
   }
 
   devise_scope :user do
+    get "sign-in", :to => "users/sessions#new"
     get "sign_in", :to => "users/sessions#new"
     get "sign_up", to: 'users/registrations#new'
     get "sign_out", to: 'users/sessions#destroy'
@@ -215,7 +216,6 @@ Delve::Application.routes.draw do
   match "/gift", to: 'assemblies#redeem_index'
   match "/trial/:trial_token", to: 'assemblies#trial'
 
-  resources :projects, controller: :assemblies
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'
 
@@ -245,6 +245,12 @@ Delve::Application.routes.draw do
     end
   end
 
+  resources :projects, controller: :assemblies do
+    member do
+      get 'landing', to: 'assemblies#landing'
+    end
+  end
+
   # Recipe Development Routes
   get '/projects/recipe-development-doughnut-holes/landing', to: redirect('/recipe-developments/doughnut-holes')
   get '/projects/vegetable-demi-glace-recipe-development/landing', to: redirect('/recipe-developments/vegetable-demi-glace')
@@ -270,6 +276,12 @@ Delve::Application.routes.draw do
   get "/invitations/welcome" => "home#welcome"
 
   match "/reports/stripe" => "reports#stripe"
+
+  resources :stripe do
+    collection do
+      get 'current_customer'
+    end
+  end
 
   resources :dashboard, only: [:index] do
     collection do

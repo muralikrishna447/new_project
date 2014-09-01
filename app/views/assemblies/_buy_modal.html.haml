@@ -34,48 +34,69 @@
     .row-fluid(ng-switch-when="charge" )
       .close-x.pull-right#cancel-charge(ng-click="closeModal()")
         %i.icon-remove
-
-      %form.charge-form(stripe-form="handleStripe" name="chargeForm")
+      
+      %form.charge-form(stripe-form="handleStripe" name="chargeForm" ng-disabled="disableForm")
+        %h3 Woo-hoo!
+        %p.section You're about to purchase the <b>{{assembly.title}}</b> {{assembly.assembly_type == 'Course' ? 'Class':assembly.assembly_type}}. Please choose a payment method below:
         .control-group(ng-show="errorText")
           .controls.error-text
             {{errorText}}
+        %div.section.cards-radio-select(ng-if="authentication.currentUser().stripe_id")
+          %div.cards(ng-repeat="card in currentCustomer.cards.data")
+            %input(type='radio' name='selectedCard' data-ng-model='$parent.selectedCard' ng-value='card.id' ng-change='selectedCardChanged(selectedCard)')
+              {{card.type}} ending in {{card.last4}}, expires {{card.exp_month}}/{{card.exp_year}}
+          %input(type='radio' name='selectedCard' data-ng-model='selectedCard' value='newCard' ng-change='selectedCardChanged(selectedCard)')
+            %b Add a new card
 
-        .control-group(ng-show="!authentication.isAdmin()")
-          %label.control-label(for="")
-            Credit Card Number
-          .controls
-            %input.input-full.inspectletIgnore(ng-model="number" payments-format="card" payments-validate="card" type="text" ng-required="!authentication.isAdmin()"  name="card_number")
-          %label.control-label(for="name")
-            Name
-          .controls
-            %input.input-full.inspectletIgnore(type="text" ng-model="name" ng-required="!authentication.isAdmin()" name="cardholder_name")
-          .expdate-group.inline
+        %small We use <a href="https://stripe.com">Stripe</a> to process and keep track of all payments. They're super-secure.
+
+        %div(ng-show="creditCardFormVisible")
+
+          .control-group(ng-show="!authentication.isAdmin()")
             %label.control-label(for="")
-              Expiration Date
+              Credit Card Number
             .controls
-              %input.input-mini.inspectletIgnore(ng-model="expMonth" type="text" pattern="[0-9]{1,2}" ng-required="!authentication.isAdmin()"  name="expMonth")
-              .date-slash.inline
-                \/
-              %input.input-mini.inspectletIgnore(ng-model="expYear" type="text" pattern="[0-9]{1,4}" ng-required="!authentication.isAdmin()"  name="expYear" )
-          .cvc-group.inline
-            %label.control-label(for="")
-              Security Code (CVC)
+              %input.input-full.inspectletIgnore(ng-model="number" payments-format="card" payments-validate="card" type="text" ng-required="!authentication.isAdmin()"  name="card_number")
+            %label.control-label(for="name")
+              Name
             .controls
-              %input.input-mini.inspectletIgnore(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" ng-required="!authentication.isAdmin()"  name="cvc")
+              %input.input-full.inspectletIgnore(type="text" ng-model="name" ng-required="!authentication.isAdmin()" name="cardholder_name")
+            .expdate-group.inline
+              %label.control-label(for="")
+                Expiration Date
+              .controls
+                %input.input-mini.inspectletIgnore(ng-model="expMonth" type="text" pattern="[0-9]{1,2}" ng-required="!authentication.isAdmin()"  name="expMonth")
+                .date-slash.inline
+                  \/
+                %input.input-mini.inspectletIgnore(ng-model="expYear" type="text" pattern="[0-9]{1,4}" ng-required="!authentication.isAdmin()"  name="expYear" )
+            .cvc-group.inline
+              %label.control-label(for="")
+                Security Code (CVC)
+              .controls
+                %input.input-mini.inspectletIgnore(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" ng-required="!authentication.isAdmin()"  name="cvc")
+          .control-group(ng-show="isGift && ! processing")
+            %label.radio
+              %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="true")
+                Email gift to {{giftInfo.recipientName}} now
+            %label.radio
+              %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="false")
+                Email gift to me to deliver later
+
         .divider
-        .control-group(ng-show="isGift && ! processing")
-          %label.radio
-            %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="true")
-              Email gift to {{giftInfo.recipientName}} now
-          %label.radio
-            %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="false")
-              Email gift to me to deliver later
-
         .control-group.text-center(ng-hide="processing")
           .controls
-            %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)")
-              BUY NOW
-              = render 'activities/latest/assembly_price'
+            %div(ng-if="!selectedCard")
+              .btn.btn-secondary.btn-large(disabled=true)
+                Buy Now
+                = render 'activities/latest/assembly_price'
+            %div(ng-if="selectedCard == 'newCard'")
+              %button.btn.btn-primary.btn-large#complete-buy(ng-click="maybeStartProcessing(chargeForm)" ng-disabled="disableForm")
+                BUY NOW
+                = render 'activities/latest/assembly_price'
+            %div(ng-if="selectedCard && selectedCard != 'newCard'")
+              .btn.btn-primary.btn-large(ng-click="chargeCustomer()" ng-disabled="disableForm")
+                BUY NOW
+                = render 'activities/latest/assembly_price'
 
             .tiny-note
               All Taxes Included
@@ -127,13 +148,13 @@
 
       %div(ng-show="! processing")
         %p
-          Welcome to the ChefSteps' {{assembly.title}} class. If we can be of any assistance, we are always happy to hear from you at&nbsp;
+          Welcome to the ChefSteps' {{assembly.title}} {{assemblyTypeName}}. If we can be of any assistance, we are always happy to hear from you at&nbsp;
           %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
           \.
         .section.text-center
           %a(ng-href="{{assemblyPath}}")
             .btn.btn-large.btn-primary
-              Start The Class
+              Start The {{assemblyTypeName}}
 
     .row-fluid(ng-switch-when="free_trial")
       .text-center(ng-show="processing")

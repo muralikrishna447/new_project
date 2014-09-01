@@ -10,7 +10,7 @@ class Enrollment < ActiveRecord::Base
   validates :enrollable_id, uniqueness: {scope: [:user_id, :enrollable_type], message: 'can only be enrolled once per student.'}
 
   class << self
-    def enroll_user_in_assembly(user, ip_address, assembly, discounted_price, stripe_token, free_trial_hours=0)
+    def enroll_user_in_assembly(user, ip_address, assembly, discounted_price, stripe_token, free_trial_hours=0, existing_card=nil)
       enrollment = Enrollment.where(user_id: user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
       raise "You are already enrolled!" if enrollment.present? && !enrollment.free_trial?
 
@@ -19,11 +19,11 @@ class Enrollment < ActiveRecord::Base
       # Logic control flow
       Enrollment.transaction do
         case
-        when assembly.paid_class? && free_trial_hours > 0 # Paid Class and Free Trial
+        when assembly.paid? && free_trial_hours > 0 # Paid Class and Free Trial
           free_trial_enrollment(user, ip_address, assembly, discounted_price, stripe_token, free_trial_hours)
-        when assembly.paid_class? && free_trial_hours == 0 # Paid Class and No Free Trial
-          paid_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
-        when !assembly.paid_class? # Free Class
+        when assembly.paid? && free_trial_hours == 0 # Paid Class and No Free Trial
+          paid_enrollment(user, ip_address, assembly, discounted_price, stripe_token, existing_card)
+        when !assembly.paid? # Free Class
           free_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
         end
       end
@@ -31,11 +31,12 @@ class Enrollment < ActiveRecord::Base
       @enrollment
     end
 
-    def paid_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
+    def paid_enrollment(user, ip_address, assembly, discounted_price, stripe_token, existing_card)
       # We create the enrollment first, but wrap this whole block in a transaction, so if the stripe chage then fails,
       # the enrollment is rolled back. The exception will then be re-raised and should be handled
       # by the caller. You don't want to charge first and then create the enrollement, b/c if
       # the charge succeeds and the enrollment fails, you are hosed.
+      puts "THIS IS A PAID ENROLLMENT"
       gross_price, tax, extra_descrip = get_tax_info(assembly.price, discounted_price, ip_address)
       enrollment = Enrollment.where(user_id: user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
       if enrollment && enrollment.free_trial?
@@ -44,7 +45,7 @@ class Enrollment < ActiveRecord::Base
       else
         @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
       end
-      collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, user, stripe_token)
+      collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, user, stripe_token, existing_card)
     end
 
     def free_enrollment(user, ip_address, assembly, discounted_price, stripe_token)

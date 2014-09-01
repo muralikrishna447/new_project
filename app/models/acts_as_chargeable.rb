@@ -16,16 +16,43 @@ module ActsAsChargeable
     # Take their money.  Check base price, not discounted_price, to prevent an attack where someone
     # adjusts the price they post back to us. This wouldn't stop them from reducing the price to a low number,
     # but they will still have to provide a valid card.
-    def collect_money(base_price, discounted_price, item_title, extra_descrip, user, stripe_token)
+    def collect_money(base_price, discounted_price, item_title, extra_descrip, user, stripe_token, existing_card)
       if base_price && base_price > 0
-        self.set_stripe_id_on_user(user, stripe_token)
-        charge = Stripe::Charge.create(
-          customer: user.stripe_id,
-          amount: (discounted_price * 100).to_i,
-          description: item_title + extra_descrip,
-          currency: 'usd'
-        )
-        # puts charge.inspect
+        
+        if user.stripe_id
+          customer = Stripe::Customer.retrieve(user.stripe_id)
+          if existing_card
+            puts 'EXISTING CUSTOMER CHARGE EXISTING CARD'
+            charge = Stripe::Charge.create(
+              amount: (discounted_price * 100).to_i,
+              description: item_title + extra_descrip,
+              currency: 'usd',
+              card: existing_card,
+              customer: user.stripe_id
+            )
+          else
+            puts 'EXISTING CUSTOMER CHARGE NEW CARD'
+            new_card = customer.cards.create({card: stripe_token})
+            charge = Stripe::Charge.create(
+              amount: (discounted_price * 100).to_i,
+              description: item_title + extra_descrip,
+              currency: 'usd',
+              card: new_card.id,
+              customer: user.stripe_id
+            )
+          end
+        else
+          # New Customers
+          puts 'NEW CUSTOMER CHARGE NEW CARD'
+          self.set_stripe_id_on_user(user, stripe_token)
+          charge = Stripe::Charge.create(
+            customer: user.stripe_id,
+            amount: (discounted_price * 100).to_i,
+            description: item_title + extra_descrip,
+            currency: 'usd'
+          )
+        end
+
       end
     end
 

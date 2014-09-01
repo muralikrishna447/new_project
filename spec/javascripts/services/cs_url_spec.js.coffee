@@ -6,14 +6,14 @@ describe "csUrlService", ->
 
   amazonURL =
     product_url: "http://www.amazon.com/gp/product/B00DHW4HXY/"
-  
+
   bogusAmazonURL =
     product_url: "http://www.amazon.com/gp/product/B002VECM6S/?tag=xxxdesdfsadfc-20"
 
-  mikuniURL = 
+  mikuniURL =
     product_url: "http://mikuni.myshopify.com/products/applewood-smoked-ikura-caviar"
 
-  preCodedMikuniURL = 
+  preCodedMikuniURL =
     product_url: "http://mikuni.myshopify.com/products/applewood-smoked-ikura-caviar#oid=1003_1"
 
   beforeEach ->
@@ -74,8 +74,8 @@ describe "csUrlService", ->
 
   describe "currentSiteAsHttps", ->
     it "should return the current site starting with https", ->
-      expect(urlService.currentSiteAsHttps()).toBe("http://localhost:3000")
+      expect(urlService.currentSiteAsHttps()).toContain("http://localhost")
 
   describe "currentSiteAsHttps", ->
     it "should return the current site starting with https", ->
-      expect(urlService.currentSite()).toBe("http://localhost:3000")
+      expect(urlService.currentSite()).toContain("http://localhost")

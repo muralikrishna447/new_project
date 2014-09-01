@@ -260,6 +260,11 @@ private
     (params[:client] == "iOS")
   end
 
+  before_filter :set_coupon
+  def set_coupon
+    session[:coupon] = params[:coupon] || session[:coupon]
+  end
+
   protected
 
   def verified_request?

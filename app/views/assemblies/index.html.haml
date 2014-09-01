@@ -6,16 +6,19 @@
   .row
     .span12
       %h1= @assembly_type.pluralize
+      %br
       = paginate @assemblies
 
 - @assemblies.each do |assembly|
   .container
     .row.section
       .span4
-        = render 'shared/media_box_2', url: assembly_path(assembly), title: assembly.title, image: assembly.featured_image, object: assembly
+        = render 'shared/media_box_2', url: landing_assembly_path(assembly), title: assembly.title, image: assembly.featured_image, object: assembly
       .span8
         %h2= assembly.title
-        = link_to "View the #{assembly.assembly_type}", assembly, class: 'btn btn-primary btn-large'
+        %p
+          = assembly.short_description
+        = link_to "View the #{assembly.assembly_type}", landing_assembly_path(assembly), class: 'btn btn-primary btn-large'
 .container
   .row
     .span12
