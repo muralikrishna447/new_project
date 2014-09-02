@@ -1,5 +1,5 @@
 class Api::ActivityIndexSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :image, :url, :likesCount
+  attributes :id, :title, :description, :image, :url, :likesCount, :published
 
   def image
     filepicker_to_s3_url(object.featured_image_id)
