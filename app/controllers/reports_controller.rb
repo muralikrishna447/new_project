@@ -62,8 +62,8 @@ class ReportsController < ApplicationController
   # end
 
   def stripe
-    start_time = (Time.now-1.month).beginning_of_month
-    end_time = (Time.parse("30/04/2014")).end_of_month
+    start_time = (Time.parse("22/08/2014")).beginning_of_day
+    end_time = (Time.parse("31/08/2014")).end_of_month
     stripe_csv = generate_csv(start_time, end_time)
 
     # Check is for money going out
@@ -145,10 +145,12 @@ class ReportsController < ApplicationController
       "Fluid Gels"
     elsif stripe_record["description"].include?("Salmon 104")
       "Salmon 104"
-    elsif stripe_record["description"].include?("Barbacue")
-      "Barbacue"
+    elsif stripe_record["description"].include?("Barbecue")
+      "Barbecue"
     elsif stripe_record["description"].include?("Knife Sharpening")
       "Knife Sharpening"
+    elsif stripe_record["description"].include?("Burgers")
+      "Burgers"
     else
       "Undefined"
     end
