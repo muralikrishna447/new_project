@@ -12,14 +12,15 @@ module Api
             scope.popular
           else
             # Relevance is the default sort for pg_search so don't need to do anything
-            scope
+            scope.by_published_at("desc")
         end
       end
 
       has_scope :published, default: true,  type: :boolean
 
       def index
-        @activities = apply_scopes(Activity).uniq().page(params[:page]).per(12)
+        per = params[:per] ? params[:per] : 12
+        @activities = apply_scopes(Activity).uniq().page(params[:page]).per(per)
         render json: @activities, each_serializer: Api::ActivityIndexSerializer
       end
 
