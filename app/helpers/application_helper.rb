@@ -3,6 +3,15 @@ module ApplicationHelper
     "//d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end
 
+  def filepicker_to_s3_url(fpfile)
+    if fpfile && !fpfile.blank?
+      url = ActiveSupport::JSON.decode(fpfile)["url"]
+      url.gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    else
+      nil
+    end
+  end
+
   def filepicker_arbitrary_image(fpfile, width, fit='max')
     if ! fpfile
       ""
