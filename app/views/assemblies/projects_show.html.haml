@@ -1,4 +1,4 @@
-- content_for :title, "#{@project.title.html_safe} - Recipe Project"
+- content_for :title, "#{@project.title.html_safe} | Recipe Project"
 - content_for :description, @project.description != "" ? @project.description.html_safe : @project.title.html_safe
 - content_for :canonical_link, project_url(@project) if @project.id
 - content_for :keywords, @project.assembly_inclusions.map(&:includable).map(&:title).join(',')
