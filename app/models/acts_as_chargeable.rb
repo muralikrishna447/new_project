@@ -16,7 +16,7 @@ module ActsAsChargeable
     # Take their money.  Check base price, not discounted_price, to prevent an attack where someone
     # adjusts the price they post back to us. This wouldn't stop them from reducing the price to a low number,
     # but they will still have to provide a valid card.
-    def collect_money(base_price, discounted_price, item_title, extra_descrip, user, stripe_token, existing_card)
+    def collect_money(base_price, discounted_price, item_title, extra_descrip, user, stripe_token, existing_card=nil)
       if base_price && base_price > 0
         
         if user.stripe_id

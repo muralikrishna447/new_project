@@ -10,7 +10,7 @@ class ChargesController < ApplicationController
 
     case
     when is_a_gift_purchase? # This is for *buying* a gift certificate
-      @gift_cert = GiftCertificate.purchase(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken], @gift_info)
+      @gift_cert = GiftCertificate.purchase(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken], @gift_info, params[:existingCard])
     when is_a_gift_redemption? # This is for *redeeming* a gift certificate
       @enrollment = GiftCertificate.redeem(current_user, JSON.parse(params[:gift_certificate])["id"])
       session[:gift_token] = nil

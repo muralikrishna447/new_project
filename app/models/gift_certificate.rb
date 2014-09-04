@@ -24,7 +24,7 @@ class GiftCertificate < ActiveRecord::Base
     end
   end
 
-  def self.purchase(purchaser, ip_address, assembly, discounted_price, stripe_token, gift_info)
+  def self.purchase(purchaser, ip_address, assembly, discounted_price, stripe_token, gift_info, existing_card=nil)
 
     # We create the gift cert first, but wrap this whole block in a transaction, so if the stripe chage then fails,
     # the enrollment is rolled back. The exception will then be re-raised and should be handled
@@ -43,7 +43,7 @@ class GiftCertificate < ActiveRecord::Base
               recipient_message: gift_info["recipientMessage"]
             )
       unless purchaser.admin?
-        collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, purchaser, stripe_token)
+        collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, purchaser, stripe_token, existing_card)
       end
       gc.send_email(gift_info["emailToRecipient"])
     end
