@@ -74,13 +74,13 @@
                 Security Code (CVC)
               .controls
                 %input.input-mini.inspectletIgnore(ng-model="cvc" payments-format="cvc" payments-validate="cvc" type="text" pattern="[0-9]{3,4}" ng-required="!authentication.isAdmin()"  name="cvc")
-          .control-group(ng-show="isGift && ! processing")
-            %label.radio
-              %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="true")
-                Email gift to {{giftInfo.recipientName}} now
-            %label.radio
-              %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="false")
-                Email gift to me to deliver later
+        .control-group(ng-show="isGift && ! processing")
+          %label.radio
+            %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="true")
+              Email gift to {{giftInfo.recipientName}} now
+          %label.radio
+            %input(type="radio" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="false")
+              Email gift to me to deliver later
 
         .divider
         .control-group.text-center(ng-hide="processing")
