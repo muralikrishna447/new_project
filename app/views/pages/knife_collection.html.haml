@@ -16,6 +16,9 @@
 
 = render 'layouts/footer'
 
+%div(ng-controller="StandaloneMadlibController")
+  = render 'home/madlib_popup', registration_source: 'knife-collection-madlib'
+
 // Lightbox //
 
 .cs-lightbox
