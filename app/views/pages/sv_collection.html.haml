@@ -140,6 +140,8 @@
 .section
 
 = render 'layouts/footer'
+%div(ng-controller="StandaloneMadlibController")
+  = render 'home/madlib_popup', registration_source: 'sv-collection-madlib'
 
 // Lightbox //
 
