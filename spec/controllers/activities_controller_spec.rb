@@ -9,6 +9,16 @@ describe ActivitiesController do
       expect(response).to render_template(:show)
     end
 
+    it 'only returns secret circulator machine instructions if asked nicely' do
+      activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
+      step = Fabricate :step, extra: "Hola"
+      activity.steps << step
+      get :get_as_json, id: activity.slug
+      expect(response.body).to_not include("Hola")
+      get :get_as_json, param_info: 'a9a77bd9f', id: activity.slug
+      expect(response.body).to include("Hola")
+    end
+
     context 'within an assembly' do
       before :each do
         @user = Fabricate :user, id: 29
