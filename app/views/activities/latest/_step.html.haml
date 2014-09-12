@@ -25,7 +25,7 @@
     %h1.step-number
       %div(ng-bind="stepNumber($index)")
 
-  %h5(ng-if="editMode")
+  %h5(ng-if="getStepOpenForEdit()")
     Step Title
   %h4.text-center(  cs-contenteditable="getStepOpenForEdit()" 
                     ng-model="step.title"
@@ -42,12 +42,20 @@
                                             ng-class="asideClass()")
       =render 'activities/step_side_edit_buttons'
       %div(ng-include="'_aside.html'")
-    %h5(ng-if="editMode")
+    %h5(ng-if="getStepOpenForEdit()")
       Directions
     .step-content(   cs-contenteditable="getStepOpenForEdit()" 
                               creator="activity.creator"
                               ng-model="step.directions"
                               placeholder="'Click to write step directions'" )
+
+    %div(ng-if="getStepOpenForEdit() && csAuthentication.isAdmin()" )
+      %h5
+        Special Sauce
+      .step-special-sauce(   cs-contenteditable="getStepOpenForEdit()" 
+                                creator="activity.creator"
+                                ng-model="step.extra"
+                              placeholder="'Click to add special sauce'")
 
   %div(ng-include="'_step_edit_images.html'")
   .step-last-row.noprint(ng-show='((!! step.youtube_id) || (!! step.image_id))')

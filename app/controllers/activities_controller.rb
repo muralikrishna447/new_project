@@ -63,6 +63,14 @@ class ActivitiesController < ApplicationController
     @activity[:used_in] = @activity.used_in_activities.published
     @activity[:forks] = @activity.published_variations
     @activity[:upload_count] = @activity.uploads.count
+
+    # Hide secret circulator machine code field unless there is a special param in the request or requester is admin
+    unless params[:param_info] == "a9a77bd9f" || current_admin?
+      @activity.steps.each do |s|
+        s[:extra] = nil
+      end
+    end
+
   end
 
   def show
