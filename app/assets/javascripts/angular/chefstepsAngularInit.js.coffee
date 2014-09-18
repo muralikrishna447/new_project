@@ -56,6 +56,12 @@ angular.module('ChefStepsApp').run ["$window", "$rootScope", "csFacebook", ($win
     csFacebook.setLoggedIn(loggedIn)
 ]
 
+# For permissions
+angular.module('ChefStepsApp').run ["$rootScope", "csPermissions", ($rootScope, csPermissions) ->
+  $rootScope.hasPermission = (action) ->
+    csPermissions.check(action)
+]
+
 @$$parse = (url) ->
   matchUrl url, this
   withoutBaseUrl = beginsWith(appBase, url) or beginsWith(appBaseNoFile, url)

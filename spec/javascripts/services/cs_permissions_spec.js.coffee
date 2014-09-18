@@ -15,11 +15,11 @@ describe 'csPermissions', ->
 
     it "should return true if user role is admin", ->
       permissions.auth.setCurrentUser({email: "admin@chefsteps.com", role: "admin"})
-      expect(permissions.sendFreeGift()).toBe(true)
+      expect(permissions.check('sendFree gifts')).toBe(true)
 
     it "should return true if user role is collaborator", ->
       permissions.auth.setCurrentUser({email: "admin@chefsteps.com", role: "collaborator"})
-      expect(permissions.sendFreeGift()).toBe(true)
+      expect(permissions.check('sendFree gifts')).toBe(true)
 
     it "should return false if no user is present", ->
-      expect(permissions.sendFreeGift()).toBe(false)
+      expect(permissions.check('sendFree gifts')).toBe(false)
