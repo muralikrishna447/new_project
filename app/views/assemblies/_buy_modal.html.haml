@@ -24,7 +24,7 @@
             %button.btn.btn-secondary.btn-large#next-button(ng-click="maybeMoveToCharge(giftForm)")
               NEXT
           -# This is for admins to just submit the thing
-          .control-group(ng-show="isGift && authentication.isAdmin()")
+          .control-group(ng-show="isGift && authentication.isAdmin()" cs-has-permission='sendFree gifts')
             %label.radio
               %input(type="hidden" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="true")
             .controls
