@@ -20,11 +20,11 @@
         .divider
         .control-group.text-center
           -# This is for non admins to move to the CC step
-          .controls(ng-show="!authentication.isAdmin()")
+          .controls(ng-if="! hasPermission('sendFree gifts')")
             %button.btn.btn-secondary.btn-large#next-button(ng-click="maybeMoveToCharge(giftForm)")
               NEXT
           -# This is for admins to just submit the thing
-          .control-group(ng-show="isGift && authentication.isAdmin()")
+          .control-group(ng-if="isGift && hasPermission('sendFree gifts')")
             %label.radio
               %input(type="hidden" name="giftEmailRadios" ng-model="giftInfo.emailToRecipient" ng-value="true")
             .controls
