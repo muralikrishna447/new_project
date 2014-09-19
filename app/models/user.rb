@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
 
   serialize :survey_results, ActiveRecord::Coders::NestedHstore
 
-  ROLES = %w[admin collaborator moderator user banned]
+  ROLES = %w[admin contractor moderator collaborator user banned]
 
   include Searchable
 
