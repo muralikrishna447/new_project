@@ -1,4 +1,4 @@
-class CourseSerializer < ActiveModel::Serializer
+class CourseSerializer < ApplicationSerializer
   attributes :id, :title, :featured_image, :path
   
   def path

@@ -1,4 +1,4 @@
-class PollSerializer < ActiveModel::Serializer
+class PollSerializer < ApplicationSerializer
   attributes :id, :title, :description, :path
 
   def path

@@ -1,4 +1,4 @@
-class ContentIngredientSerializer < ActiveModel::Serializer
+class ContentIngredientSerializer < ApplicationSerializer
   attributes :id, :title, :image, :description, :url, :context
 
   def image
