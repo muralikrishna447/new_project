@@ -3,7 +3,8 @@
 
   $scope.search = (input) ->
     console.log 'Search input was: ', input
-    Search.query({query: input, page: 1}).$promise.then (results) ->
-      $scope.activities = results
+    if input.length > 1
+      Activity.query({search_all: input, page: 1}).$promise.then (results) ->
+        $scope.activities = results
     
 ]

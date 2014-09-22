@@ -3,7 +3,7 @@ module Api
     class SearchController < ApplicationController
 
       def index
-        @results = Activity.search_all(params[:query]).page(params[:page]).per(12)
+        @results = Activity.published.search_all(params[:query]).page(params[:page]).per(12)
         render json: @results, each_serializer: Api::ActivityIndexSerializer
       end
 

@@ -6,6 +6,5 @@
 ]
 
 @app.factory 'api.search', [ '$resource', ($resource) ->
-  console.log 'searching!'
   $resource '/api/v0/search', { query: { method: 'GET', isArray: true } }
 ]

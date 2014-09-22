@@ -3,7 +3,7 @@ class Api::ActivityIndexSerializer < ApplicationSerializer
   attributes :id, :title, :description, :image, :url, :likes_count, :published
 
   def image
-    filepicker_to_s3_url(object.featured_image_id)
+    filepicker_to_s3_url(object.featured_image)
   end
 
   def url

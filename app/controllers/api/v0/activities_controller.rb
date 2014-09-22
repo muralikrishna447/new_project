@@ -16,7 +16,19 @@ module Api
         end
       end
 
-      has_scope :published, default: true,  type: :boolean
+      # Must be listed after :sort to combine correctly
+      has_scope :search_all
+      has_scope :difficulty
+      has_scope :activity_type
+      has_scope :include_in_gallery
+
+      has_scope :generator, default: "chefsteps" do |controller, scope, value|
+        value == "chefsteps" ? scope.chefsteps_generated : scope.any_user_generated
+      end
+
+      has_scope :published_status, default: "published" do |controller, scope, value|
+        value == "published" ? scope.published.include_in_gallery : scope.unpublished.where("title != ''")
+      end
 
       def index
         per = params[:per] ? params[:per] : 12
