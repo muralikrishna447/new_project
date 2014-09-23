@@ -5,14 +5,16 @@ class Recommendation
     difficulty = nil
     interests = nil
     equipment = nil
-    user.survey_results.each do |result|
-      case result['search_scope']
-      when 'difficulty'
-        difficulty = get_difficulty(result['answer'])
-      when 'interests'
-        interests = result['answer']
-      when 'by_equipment_title'
-        equipment = result['answer']
+    if user.survey_results
+      user.survey_results.each do |result|
+        case result['search_scope']
+        when 'difficulty'
+          difficulty = get_difficulty(result['answer'])
+        when 'interests'
+          interests = result['answer']
+        when 'by_equipment_title'
+          equipment = result['answer']
+        end
       end
     end
 
