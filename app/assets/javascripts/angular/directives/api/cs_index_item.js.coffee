@@ -7,7 +7,7 @@
   }
 
   link: (scope, element, attrs) ->
-    console.log 'cs index item loaded'
+    # console.log 'cs index item loaded'
 
   template: """
     <a ng-href="{{url}}">

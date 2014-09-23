@@ -1,6 +1,19 @@
 @app.controller 'PlaygroundController', ['$scope', 'api.activity', 'api.search', ($scope, Activity, Search) ->
+
   $scope.filters = {}
-  $scope.activities = Activity.query()
+  # $scope.defaultFilters = {}
+  $scope.defaultFilters = {
+    'published':true
+    'generator':"chefsteps"
+    'sort':"newest"
+  }
+  # $scope.defaultFilters.published = true
+  # $scope.defaultFilters.generator = 'chefsteps'
+  # $scope.defaultFilters.sort = 'newest'
+
+  Activity.query($scope.defaultFilters).$promise.then (results) ->
+    console.log 'default filters: ', $scope.defaultFilters
+    $scope.activities = results
 
   $scope.search = (input) ->
     if input.length > 1
@@ -17,6 +30,7 @@
   $scope.$watchCollection 'filters', (newValue, oldValue) ->
     console.log 'old value: ', oldValue
     console.log 'new value: ', newValue
-    $scope.updateFilter()
+    if newValue != oldValue
+      $scope.updateFilter()
     
 ]
