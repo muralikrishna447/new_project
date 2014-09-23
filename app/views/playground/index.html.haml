@@ -2,5 +2,21 @@
 %div(ng-controller='PlaygroundController')
 
   %input(ng-model='input' ng-change='search(input)')
+  {{filters}}
+  %div(ng-click='filters.published = true')
+    published
+  %div(ng-click='filters.published = false')
+    unpublished
+
+  %div(ng-click="filters.sort = 'oldest'")
+    oldest
+  %div(ng-click="filters.sort = 'newest'")
+    newest
+
+  %div(ng-click="filters.generator = 'chefsteps'")
+    ChefSteps
+  %div(ng-click="filters.generator = 'community'")
+    Community
+
   %div(ng-repeat='activity in activities')
     %cs-index-item(title='activity.title' url='activity.url' image='activity.image')
