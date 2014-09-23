@@ -312,5 +312,8 @@ Delve::Application.routes.draw do
 
   # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
   match '/*path' => 'application#options', :via => :options
+
+  # http://techoctave.com/c7/posts/36-rails-3-0-rescue-from-routing-error-solution
+  match '*a', to: 'errors#routing', constraints: lambda { |r| ! r.url.match(/jasmine/) }
 end
 
