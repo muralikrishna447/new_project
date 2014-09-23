@@ -3,9 +3,9 @@
 
   %input(ng-model='input' ng-change='search(input)')
   {{filters}}
-  %div(ng-click='filters.published = true')
+  %div(ng-click="filters.published_status = 'published'")
     published
-  %div(ng-click='filters.published = false')
+  %div(ng-click="filters.published_status = 'unpublished'")
     unpublished
 
   %div(ng-click="filters.sort = 'oldest'")

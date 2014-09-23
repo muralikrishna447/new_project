@@ -1,13 +1,18 @@
 @app.controller 'PlaygroundController', ['$scope', '$location', 'api.activity', 'api.search', ($scope, $location, Activity, Search) ->
 
   defaultFilters = {
-    'published':true
+    'published_status':'published'
     'generator':"chefsteps"
     'sort':"newest"
   }
 
   # If the url contains filter parameters then use those.  If not then use the default filters.
-  $scope.filters = if Object.keys($location.search()).length > 0 then $location.search() else defaultFilters
+  params = $location.search()
+  keys = Object.keys(params)
+  if keys.length == 0
+    params = defaultFilters
+
+  $scope.filters = params
 
   # Load the first page
   Activity.query($scope.filters).$promise.then (results) ->
