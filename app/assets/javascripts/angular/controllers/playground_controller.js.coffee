@@ -1,5 +1,7 @@
 @app.controller 'PlaygroundController', ['$scope', '$location', 'api.activity', 'api.search', ($scope, $location, Activity, Search) ->
 
+  $scope.activities = []
+
   defaultFilters = {
     'published_status':'published'
     'generator':"chefsteps"
@@ -7,56 +9,55 @@
   }
 
   # If the url contains filter parameters then use those.  If not then use the default filters.
-  params = $location.search()
-  keys = Object.keys(params)
+  $scope.params = $location.search()
+  keys = Object.keys($scope.params)
   if keys.length == 0
-    params = defaultFilters
+    $scope.params = defaultFilters
 
-  $scope.filters = params
+  $scope.filters = {}
+  $scope.filters['published_status'] = $scope.params['published_status']
+  $scope.filters['generator'] = $scope.params['generator']
+  $scope.filters['sort'] = $scope.params['sort']
 
   # Load the first page
-  Activity.query($scope.filters).$promise.then (results) ->
+  Activity.query($scope.params).$promise.then (results) ->
     $scope.activities = results
-    $location.search($scope.filters)
+    $location.search($scope.params)
 
   $scope.search = (input) ->
     if input.length > 1
-      $scope.filters.search_all = input
+      $scope.params.search_all = input
 
-  $scope.updateFilter = ->
-    console.log 'updateFilter'
-    Activity.query($scope.filters).$promise.then (results) ->
-      $scope.activities = results
-      $location.search($scope.filters)
+  $scope.applyFilter = ->
+    console.log 'applyFilter'
+    $scope.params['published_status'] = $scope.filters['published_status']
+    $scope.params['generator'] = $scope.filters['generator']
+    $scope.params['sort'] = $scope.filters['sort']
+    delete $scope.params['page']
+    $scope.activities = []
+    $scope.getActivities()
 
   # If the filters change, then update the results
   $scope.$watchCollection 'filters', (newValue, oldValue) ->
     console.log newValue
     console.log oldValue
     if newValue != oldValue
-      $scope.updateFilter()
+      $scope.applyFilter()
 
-  $scope.dataLoading = false
-  $scope.addMoreActivities = ->
-  
-    if $scope.dataLoading == false
-      $scope.dataLoading = true
-      console.log 'Adding more activities'
-      params = $scope.filters
-      if params['page'] && parseInt(params['page']) > 0
-        page = parseInt(params['page'])
-        params['page'] = page + 1
-      else
-        params['page'] = 1
-      Activity.query(params).$promise.then (results) ->
-        # console.log $scope.activities
-        # $scope.activities.concat(results)
-        angular.forEach results, (result) ->
-          $scope.activities.push(result)
+  $scope.getActivities = ->
+    $scope.dataLoading = true
+    Activity.query($scope.params).$promise.then (results) ->
+      angular.forEach results, (result) ->
+        $scope.activities.push(result)
+      $location.search($scope.params)
+      $scope.dataLoading = false
 
-
-        $location.search($scope.filters)
-        $scope.dataLoading = false
-        # console.log $scope.activities
+  $scope.next = ->
+    console.log 'loading next'
+    if $scope.params['page'] && $scope.params['page'] >= 1
+      $scope.params['page'] += 1
+    else
+      $scope.params['page'] = 2
+    $scope.getActivities()
     
 ]
