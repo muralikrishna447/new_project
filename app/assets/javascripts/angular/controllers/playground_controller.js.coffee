@@ -19,17 +19,23 @@
   $scope.filters['generator'] = $scope.params['generator']
   $scope.filters['sort'] = $scope.params['sort']
 
-  # Load the first page
-  Activity.query($scope.params).$promise.then (results) ->
-    $scope.activities = results
-    $location.search($scope.params)
+  $scope.getActivities = ->
+    Activity.query($scope.params).$promise.then (results) ->
+      angular.forEach results, (result) ->
+        $scope.activities.push(result)
+      $location.search($scope.params)
+      $scope.dataLoading = false
 
   $scope.search = (input) ->
-    if input.length > 1
-      $scope.params.search_all = input
+    $scope.dataLoading = true
+    delete $scope.params['sort']
+    delete $scope.params['page']
+    $scope.params['search_all'] = input
+    $scope.activities = []
+    $scope.getActivities()
 
   $scope.applyFilter = ->
-    console.log 'applyFilter'
+    $scope.dataLoading = true
     $scope.params['published_status'] = $scope.filters['published_status']
     $scope.params['generator'] = $scope.filters['generator']
     $scope.params['sort'] = $scope.filters['sort']
@@ -39,25 +45,18 @@
 
   # If the filters change, then update the results
   $scope.$watchCollection 'filters', (newValue, oldValue) ->
-    console.log newValue
-    console.log oldValue
     if newValue != oldValue
       $scope.applyFilter()
 
-  $scope.getActivities = ->
-    $scope.dataLoading = true
-    Activity.query($scope.params).$promise.then (results) ->
-      angular.forEach results, (result) ->
-        $scope.activities.push(result)
-      $location.search($scope.params)
-      $scope.dataLoading = false
-
   $scope.next = ->
-    console.log 'loading next'
+    $scope.dataLoading = true
     if $scope.params['page'] && $scope.params['page'] >= 1
       $scope.params['page'] += 1
     else
       $scope.params['page'] = 2
     $scope.getActivities()
+
+  # Load the first page
+  $scope.getActivities()
     
 ]
