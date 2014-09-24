@@ -1,5 +1,5 @@
 // Enter your test template here
-%div(ng-controller='PlaygroundController')
+.container(ng-controller='PlaygroundController')
   %input(ng-model='input' ng-change='search(input)')
   {{filters}}
   %div(ng-click="filters.published_status = 'published'")
@@ -17,6 +17,7 @@
   %div(ng-click="filters.generator = 'community'")
     Community
 
-  %div(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='false')
-    %div(ng-repeat='activity in activities')
-      %cs-index-item(title='activity.title' url='activity.url' image='activity.image')
+  .row
+    .span12(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='false')
+      %div(ng-repeat='activity in activities')
+        %cs-index-item(title='activity.title' url='activity.url' image='activity.image')
