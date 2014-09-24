@@ -24,13 +24,39 @@
       $scope.filters.search_all = input
 
   $scope.updateFilter = ->
+    console.log 'updateFilter'
     Activity.query($scope.filters).$promise.then (results) ->
       $scope.activities = results
       $location.search($scope.filters)
 
   # If the filters change, then update the results
   $scope.$watchCollection 'filters', (newValue, oldValue) ->
+    console.log newValue
+    console.log oldValue
     if newValue != oldValue
       $scope.updateFilter()
+
+  $scope.dataLoading = false
+  $scope.addMoreActivities = ->
+  
+    if $scope.dataLoading == false
+      $scope.dataLoading = true
+      console.log 'Adding more activities'
+      params = $scope.filters
+      if params['page'] && parseInt(params['page']) > 0
+        page = parseInt(params['page'])
+        params['page'] = page + 1
+      else
+        params['page'] = 1
+      Activity.query(params).$promise.then (results) ->
+        # console.log $scope.activities
+        # $scope.activities.concat(results)
+        angular.forEach results, (result) ->
+          $scope.activities.push(result)
+
+
+        $location.search($scope.filters)
+        $scope.dataLoading = false
+        # console.log $scope.activities
     
 ]
