@@ -1,21 +1,39 @@
 // Enter your test template here
+
 .container(ng-controller='PlaygroundController')
-  %input(ng-model='input' ng-change='search(input)')
-  {{filters}}
-  %div(ng-click="filters.published_status = 'published'")
-    published
-  %div(ng-click="filters.published_status = 'unpublished'")
-    unpublished
+  .row
+    .span12
+      .gallery-filter.navbar
+        %ul.nav.left-group
 
-  %div(ng-click="filters.sort = 'oldest'")
-    oldest
-  %div(ng-click="filters.sort = 'newest'")
-    newest
+          %form.navbar-search.relative(ng-cloak)
+            %input.search-query(ng-model='input' ng-change='search(input)')
+            / %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
+            /   %i.icon-remove
 
-  %div(ng-click="filters.generator = 'chefsteps'")
-    ChefSteps
-  %div(ng-click="filters.generator = 'community'")
-    Community
+          %li.relative(ng-mouseenter="showOptions.filters = true" ng-mouseleave="showOptions.filters = false")
+            .filter-collapser(ng-click="showOptions.filters = ! showOptions.filters")
+              FILTER
+              %i.icon-angle-down(ng-hide="showOptions.filters")
+              %i.icon-angle-up(ng-show="showOptions.filters")
+            .filters-group.anim-filters(ng-show="showOptions.filters")
+              %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
+
+          %li.relative(ng-mouseenter="showOptions.sort = true" ng-mouseleave="showOptions.sort = false")
+            .filter-collapser(ng-click="showOptions.sort = ! showOptions.sort")
+              SORT
+              %i.icon-angle-down(ng-hide="showOptions.sort")
+              %i.icon-angle-up(ng-show="showOptions.sort")
+            .filters-group.anim-filters(ng-show="showOptions.sort")
+              %csRadioButtons.first-separate(ng-model="sortChoices" active="filters.sort")
+
+          %li.relative(ng-mouseenter="showOptions.publishedStatus = true" ng-mouseleave="showOptions.publishedStatus = false")
+            .filter-collapser(ng-click="showOptions.publishedStatus = ! showOptions.publishedStatus")
+              STATUS
+              %i.icon-angle-down(ng-hide="showOptions.publishedStatus")
+              %i.icon-angle-up(ng-show="showOptions.publishedStatus")
+            .filters-group.anim-filters(ng-show="showOptions.publishedStatus")
+              %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
 
   .row
     .span12(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='false')

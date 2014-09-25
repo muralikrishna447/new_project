@@ -2,6 +2,15 @@
 
   $scope.activities = []
 
+  $scope.showOptions = {}
+  $scope.showOptions.filters = false
+  $scope.showOptions.sort = false
+  $scope.showOptions.publishedStatus = false
+  $scope.publishedStatusChoices = ["published", "unpublished"]
+  $scope.generatorChoices = ["chefsteps", "community"]
+  $scope.sortChoices = ["relevance", "newest", "oldest", "popular"]
+
+
   defaultFilters = {
     'published_status':'published'
     'generator':"chefsteps"
