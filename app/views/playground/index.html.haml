@@ -1,12 +1,12 @@
 // Enter your test template here
 
-.container(ng-controller='PlaygroundController')
+.container(ng-controller='PlaygroundController' ng-cloak)
   .row
     .span12
       .gallery-filter.navbar
         %ul.nav.left-group
 
-          %form.navbar-search.relative(ng-cloak)
+          %form.navbar-search.relative
             %input.search-query(ng-model='input' ng-change='search(input)')
             / %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
             /   %i.icon-remove

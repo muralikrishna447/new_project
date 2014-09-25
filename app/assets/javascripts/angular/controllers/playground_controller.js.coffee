@@ -1,4 +1,4 @@
-@app.controller 'PlaygroundController', ['$scope', '$location', 'api.activity', 'api.search', ($scope, $location, Activity, Search) ->
+@app.controller 'PlaygroundController', ['$scope', '$location', '$timeout', 'api.activity', 'api.search', ($scope, $location, $timeout, Activity, Search) ->
 
   $scope.activities = []
 
@@ -30,18 +30,27 @@
 
   $scope.getActivities = ->
     Activity.query($scope.params).$promise.then (results) ->
-      angular.forEach results, (result) ->
-        $scope.activities.push(result)
-      $location.search($scope.params)
+      if results.length > 0
+        angular.forEach results, (result) ->
+          $scope.activities.push(result)
+        $location.search($scope.params)
       $scope.dataLoading = false
 
+  # Search only fires after the user stops typing
+  inputChangedPromise = null
   $scope.search = (input) ->
-    $scope.dataLoading = true
-    delete $scope.params['sort']
-    delete $scope.params['page']
-    $scope.params['search_all'] = input
-    $scope.activities = []
-    $scope.getActivities()
+
+    if inputChangedPromise
+      $timeout.cancel(inputChangedPromise)
+
+    inputChangedPromise = $timeout( ->
+      $scope.dataLoading = true
+      delete $scope.params['sort']
+      delete $scope.params['page']
+      $scope.params['search_all'] = input
+      $scope.activities = []
+      $scope.getActivities()
+    ,200)
 
   $scope.applyFilter = ->
     $scope.dataLoading = true
