@@ -5,13 +5,14 @@
   $scope.showOptions = {}
   $scope.showOptions.filters = false
   $scope.showOptions.sort = false
-  $scope.showOptions.publishedStatus = false
+  $scope.difficultyChoices = ["any", "easy", "intermediate", "advanced"]
   $scope.publishedStatusChoices = ["published", "unpublished"]
   $scope.generatorChoices = ["chefsteps", "community"]
-  $scope.sortChoices = ["relevance", "newest", "oldest", "popular"]
+  $scope.sortChoices = ["newest", "oldest", "popular"]
 
 
   defaultFilters = {
+    'difficulty':'any'
     'published_status':'published'
     'generator':"chefsteps"
     'sort':"newest"
@@ -29,14 +30,20 @@
   $scope.filters['sort'] = $scope.params['sort']
 
   $scope.getActivities = ->
+    $scope.params['page'] = $scope.page
+    if $scope.params['difficulty'] && $scope.params['difficulty'] == 'any'
+      $scope.params['difficulty'] = null
+    console.log "params: ", $scope.params
     Activity.query($scope.params).$promise.then (results) ->
       if results.length > 0
         angular.forEach results, (result) ->
           $scope.activities.push(result)
+        delete $scope.params['page']
         $location.search($scope.params)
       $scope.dataLoading = false
 
   # Search only fires after the user stops typing
+  # Seems like 300ms timeout is ideal
   inputChangedPromise = null
   $scope.search = (input) ->
 
@@ -44,26 +51,32 @@
       $timeout.cancel(inputChangedPromise)
 
     inputChangedPromise = $timeout( ->
-      $scope.dataLoading = true
-      delete $scope.params['sort']
-      delete $scope.params['page']
-      $scope.params['search_all'] = input
-      $scope.activities = []
-      $scope.getActivities()
-    ,200)
+      if input.length > 0
+        console.log 'Searching for: ', input
+        $scope.dataLoading = true
+        delete $scope.params['sort']
+        # delete $scope.params['page']
+        $scope.page = 1
+        $scope.params['search_all'] = input
+        $scope.activities = []
+        $scope.getActivities()
+    ,300)
 
   $scope.clearSearch = ->
     $scope.input = null
     delete $scope.params['search_all']
+    $scope.page = 1
     $scope.activities = []
     $scope.getActivities()
 
   $scope.applyFilter = ->
     $scope.dataLoading = true
+    $scope.params['difficulty'] = $scope.filters['difficulty']
     $scope.params['published_status'] = $scope.filters['published_status']
     $scope.params['generator'] = $scope.filters['generator']
     $scope.params['sort'] = $scope.filters['sort']
-    delete $scope.params['page']
+    # delete $scope.params['page']
+    $scope.page = 1
     $scope.activities = []
     $scope.getActivities()
 
@@ -74,10 +87,10 @@
 
   $scope.next = ->
     $scope.dataLoading = true
-    if $scope.params['page'] && $scope.params['page'] >= 1
-      $scope.params['page'] += 1
+    if $scope.page && $scope.page >= 1
+      $scope.page += 1
     else
-      $scope.params['page'] = 2
+      $scope.page = 2
     $scope.getActivities()
 
   # Load the first page
