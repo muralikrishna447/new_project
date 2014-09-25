@@ -1,4 +1,4 @@
-class AssemblyInclusionSerializer < ActiveModel::Serializer
+class AssemblyInclusionSerializer < ApplicationSerializer
   attributes :includable_type, :includable_id, :position, :includable_title, :include_disqus, :includable_description, :includable_slug, :assembly_id, :includable_disqus_id, :includable_always_include_disqus, :includable_image_id
   has_one :includable
 

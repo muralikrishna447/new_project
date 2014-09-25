@@ -1,10 +1,46 @@
 // Enter your test template here
 
-%h3 400px wide with a 16:9 aspect ratio
-%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" width="400" aspect="16:9")
+.container.gallery-wrapper.relative(ng-controller='PlaygroundController')
+  .row(ng-cloak)
+    .span12
+      %div
+        .gallery-filter.navbar
+          %ul.nav.left-group
 
-%h3 400px wide with a 4:3 aspect ratio
-%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" width="400" aspect="4:3")
+            %form.navbar-search.relative
+              %input.search-query(ng-model='input' ng-change='search(input)' placeholder='search')
+              %a.clear-search(ng-click="clearSearch()")
+                %i.icon-remove
 
-%h3 400px wide and 100px high
-%cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/REHPnf8WQZWhQzj4rCQj'" width="400" height="100")
+            %li.relative(ng-mouseenter="showOptions.filters = true" ng-mouseleave="showOptions.filters = false")
+              .filter-collapser(ng-click="showOptions.filters = ! showOptions.filters")
+                FILTER
+                %i.icon-angle-down(ng-hide="showOptions.filters")
+                %i.icon-angle-up(ng-show="showOptions.filters")
+              .filters-group.anim-filters(ng-show="showOptions.filters")
+                %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
+
+            %li.relative(ng-mouseenter="showOptions.sort = true" ng-mouseleave="showOptions.sort = false")
+              .filter-collapser(ng-click="showOptions.sort = ! showOptions.sort")
+                SORT
+                %i.icon-angle-down(ng-hide="showOptions.sort")
+                %i.icon-angle-up(ng-show="showOptions.sort")
+              .filters-group.anim-filters(ng-show="showOptions.sort")
+                %csRadioButtons.first-separate(ng-model="sortChoices" active="filters.sort")
+
+            %li.relative(ng-mouseenter="showOptions.publishedStatus = true" ng-mouseleave="showOptions.publishedStatus = false")
+              .filter-collapser(ng-click="showOptions.publishedStatus = ! showOptions.publishedStatus")
+                STATUS
+                %i.icon-angle-down(ng-hide="showOptions.publishedStatus")
+                %i.icon-angle-up(ng-show="showOptions.publishedStatus")
+              .filters-group.anim-filters(ng-show="showOptions.publishedStatus")
+                %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
+
+        .add-group.btn-group.pull-right(ng-show="(filters.generator != 'chefsteps') || csAuthentication.isAdmin()")
+          %a.btn.btn-secondary.add-button(href="/activities/new")
+            Add Recipe
+
+  .row
+    .span12(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='false')
+      %div(ng-repeat='activity in activities')
+        %cs-index-item(title='activity.title' url='activity.url' image='activity.image' likes-count='activity.likesCount')

@@ -1,15 +1,13 @@
-class Api::ActivityIndexSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :image, :url, :likesCount, :published
+class Api::ActivityIndexSerializer < ApplicationSerializer
+  format_keys :lower_camel
+  attributes :id, :title, :description, :image, :url, :likes_count, :published
 
   def image
-    filepicker_to_s3_url(object.featured_image_id)
+    filepicker_to_s3_url(object.featured_image)
   end
 
   def url
     activity_url(object)
   end
 
-  def likesCount
-    object.likes_count
-  end
 end

@@ -1,0 +1,14 @@
+.media-box-3
+  %a(ng-href="{{url}}" target="_blank")
+    .media-box-3-title
+      {{title}}
+    .media-box-3-image.relative
+      .media-box-3-image-group.relative
+        %cs-image(url='image' aspect="16:9")
+     
+    .media-box-3-footer
+      .footer-left
+      .footer-right(ng-show='likesCount > 0')
+        %span
+          %i.icon-star-empty
+        {{likesCount}}

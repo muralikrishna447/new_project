@@ -1,5 +1,6 @@
-class Api::ActivitySerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :image, :youtubeId, :url, :likesCount
+class Api::ActivitySerializer < ApplicationSerializer
+  format_keys :lower_camel
+  attributes :id, :title, :description, :image, :youtube_id, :url, :likes_count
 
   has_many :ingredients, serializer: Api::ActivityIngredientSerializer
   has_many :steps, serializer: Api::StepSerializer
@@ -13,11 +14,4 @@ class Api::ActivitySerializer < ActiveModel::Serializer
     activity_url(object)
   end
 
-  def youtubeId
-    object.youtube_id
-  end
-
-  def likesCount
-    object.likes_count
-  end
 end

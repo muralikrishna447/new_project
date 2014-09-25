@@ -1,4 +1,4 @@
-class Api::IngredientIndexSerializer < ApplicationSerializer
+class Api::IngredientSerializer < ApplicationSerializer
   format_keys :lower_camel
   attributes :id, :title, :image, :url, :product_url
 
