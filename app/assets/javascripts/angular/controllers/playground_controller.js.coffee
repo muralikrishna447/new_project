@@ -5,13 +5,14 @@
   $scope.showOptions = {}
   $scope.showOptions.filters = false
   $scope.showOptions.sort = false
-  $scope.showOptions.publishedStatus = false
+  $scope.difficultyChoices = ["any", "easy", "intermediate", "advanced"]
   $scope.publishedStatusChoices = ["published", "unpublished"]
   $scope.generatorChoices = ["chefsteps", "community"]
-  $scope.sortChoices = ["relevance", "newest", "oldest", "popular"]
+  $scope.sortChoices = ["newest", "oldest", "popular"]
 
 
   defaultFilters = {
+    'difficulty':'any'
     'published_status':'published'
     'generator':"chefsteps"
     'sort':"newest"
@@ -30,6 +31,9 @@
 
   $scope.getActivities = ->
     $scope.params['page'] = $scope.page
+    if $scope.params['difficulty'] && $scope.params['difficulty'] == 'any'
+      $scope.params['difficulty'] = null
+    console.log "params: ", $scope.params
     Activity.query($scope.params).$promise.then (results) ->
       if results.length > 0
         angular.forEach results, (result) ->
@@ -67,6 +71,7 @@
 
   $scope.applyFilter = ->
     $scope.dataLoading = true
+    $scope.params['difficulty'] = $scope.filters['difficulty']
     $scope.params['published_status'] = $scope.filters['published_status']
     $scope.params['generator'] = $scope.filters['generator']
     $scope.params['sort'] = $scope.filters['sort']

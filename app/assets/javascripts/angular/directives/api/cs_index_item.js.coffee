@@ -5,6 +5,7 @@
     url: '='
     image: '='
     likesCount: '='
+    difficulty: '='
   }
 
   link: (scope, element, attrs) ->
