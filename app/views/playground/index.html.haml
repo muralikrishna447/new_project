@@ -20,7 +20,7 @@
               .filters-group.anim-filters(ng-show="showOptions.filters")
                 %csRadioButtons.first-separate(ng-model="difficultyChoices" active="filters.difficulty")
                 %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
-                %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
+                %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status" ng-if="csAuthentication.isAdmin()")
 
             %li.relative(ng-mouseenter="showOptions.sort = true" ng-mouseleave="showOptions.sort = false")
               .filter-collapser(ng-click="showOptions.sort = ! showOptions.sort")
