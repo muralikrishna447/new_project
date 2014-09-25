@@ -7,5 +7,8 @@
         %cs-image(url='image' aspect="16:9")
      
     .media-box-3-footer
-      .footer-left(ng-bind-html="footerLeft")
-      .footer-right(ng-bind-html="footerRight")
+      .footer-left
+      .footer-right(ng-show='likesCount > 0')
+        %span
+          %i.icon-star-empty
+        {{likesCount}}

@@ -4,6 +4,7 @@
     title: '='
     url: '='
     image: '='
+    likesCount: '='
   }
 
   link: (scope, element, attrs) ->

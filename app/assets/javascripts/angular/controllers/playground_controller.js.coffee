@@ -1,5 +1,5 @@
-@app.controller 'PlaygroundController', ['$scope', '$location', '$timeout', 'api.activity', 'api.search', ($scope, $location, $timeout, Activity, Search) ->
-
+@app.controller 'PlaygroundController', ['$scope', '$location', '$timeout', 'api.activity', 'api.search', 'csAuthentication', ($scope, $location, $timeout, Activity, Search, csAuthentication) ->
+  $scope.csAuthentication = csAuthentication
   $scope.activities = []
 
   $scope.showOptions = {}
@@ -51,6 +51,12 @@
       $scope.activities = []
       $scope.getActivities()
     ,200)
+
+  $scope.clearSearch = ->
+    $scope.input = null
+    delete $scope.params['search_all']
+    $scope.activities = []
+    $scope.getActivities()
 
   $scope.applyFilter = ->
     $scope.dataLoading = true
