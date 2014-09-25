@@ -36,7 +36,6 @@ Note: The if the viewable area of the resulting image is less than the original,
   }
 
   link: (scope, element, attrs) ->
-    console.log scope.url
     parent = {}
     container = {}
     image = {}
