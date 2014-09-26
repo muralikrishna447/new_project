@@ -1,4 +1,4 @@
-class Api::ActivityEquipmentSerializer < ActiveModel::Serializer
+class Api::ActivityEquipmentSerializer < ApplicationSerializer
   attributes :order, :optional
 
   has_one :equipment, serializer: EquipmentIndexSerializer

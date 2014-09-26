@@ -1,20 +1,9 @@
-class Api::StepSerializer < ActiveModel::Serializer
-  attributes :order, :title, :directions, :image, :isAside, :youtubeId, :hideNumber
+class Api::StepSerializer < ApplicationSerializer
+  format_keys :lower_camel
+  attributes :order, :title, :directions, :image, :is_aside, :youtube_id, :hide_number
 
   def order
     object.step_order
-  end
-
-  def isAside
-    object.is_aside
-  end
-
-  def youtubeId
-    object.youtube_id
-  end
-
-  def hideNumber
-    object.hide_number
   end
 
   def image

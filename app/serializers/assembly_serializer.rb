@@ -1,4 +1,4 @@
-class AssemblySerializer < ActiveModel::Serializer
+class AssemblySerializer < ApplicationSerializer
   attributes :id, :title, :description, :image_id, :youtube_id, :likes_count, :comments_count, :price, :featured_image, :assembly_type, :path, :upload_copy, :badge_image
 
   has_many :assembly_inclusions
