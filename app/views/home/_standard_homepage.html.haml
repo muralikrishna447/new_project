@@ -97,7 +97,7 @@
 .container
   .row.section
     .span8#discussion
-      / = render 'shared/bloom_hot'
+      = render 'shared/bloom_hot'
       %hr
       - if @status
         - cache @status, expires: 10.minutes do
