@@ -9,6 +9,8 @@ Delve::Application.routes.draw do
   match '/betainvite', to: 'bloom#betainvite'
   match '/content-discussion/:id', to: 'bloom#content_discussion'
   match '/content/:id', to: 'bloom#content'
+  match 'whats-for-dinner', to: 'bloom#whats_for_dinner'
+  match 'hot', to: 'bloom#hot'
   root to: "home#index"
 
   resources :featured, only: [:index] do

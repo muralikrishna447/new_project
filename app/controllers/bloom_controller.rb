@@ -1,4 +1,8 @@
 class BloomController < ApplicationController
+
+  caches_action :whats_for_dinner, :expires_in => 10.minutes
+  caches_action :hot, :expires_in => 10.minutes
+
   def index
 
   end
@@ -35,5 +39,15 @@ class BloomController < ApplicationController
       content = name.constantize.find(id)
       render json: content, serializer: "Content#{name}Serializer".constantize
     end
+  end
+
+  def whats_for_dinner
+    @feed = HTTParty.get('https://server.usebloom.com/forum/posts?apiKey=xchefsteps&categoryId=7fc5373b-ed4e-43bd-acdc-10591eb205a0&hosted=false&seen=&size=3&sort=hot')
+    render json: @feed
+  end
+
+  def hot
+    @feed = HTTParty.get('https://server.usebloom.com/forum/posts?apiKey=xchefsteps&hosted=false&seen=&size=3&sort=hot')
+    render json: @feed
   end
 end

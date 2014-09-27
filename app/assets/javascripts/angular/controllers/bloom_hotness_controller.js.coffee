@@ -2,11 +2,11 @@
 
   $scope.posts = []
 
-  $http.get('https://server.usebloom.com/forum/posts?apiKey=xchefsteps&categoryId=7fc5373b-ed4e-43bd-acdc-10591eb205a0&hosted=false&seen=&size=3&sort=hot').then (response) ->
+  $http.get('/whats-for-dinner').then (response) ->
     angular.forEach response.data, (item) ->
       $scope.posts.push(item)
 
-    $http.get('https://server.usebloom.com/forum/posts?apiKey=xchefsteps&hosted=false&seen=&size=3&sort=hot').then (response) ->
+    $http.get('hot').then (response) ->
       angular.forEach response.data, (item) ->
         $scope.posts.push(item)
 
