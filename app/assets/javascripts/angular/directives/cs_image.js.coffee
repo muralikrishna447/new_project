@@ -116,7 +116,8 @@ Note: The if the viewable area of the resulting image is less than the original,
         "width": container.width
       }
       scope.imageStyle = {
-        "max-width": "inherit"
+        "max-width": image.finalWidth + "px"
+        "width": image.finalWidth + "px"
         "margin-left": "-" + (image.finalWidth - container.width)/2 + "px"
         "margin-top": "-" + (image.finalHeight - container.height)/2 + "px"
       }
