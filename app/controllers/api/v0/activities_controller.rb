@@ -17,11 +17,11 @@ module Api
       end
 
       # Must be listed after :sort to combine correctly
-      has_scope :search_all
+      
       has_scope :difficulty
-      has_scope :activity_type
       has_scope :include_in_gallery
       has_scope :published
+      has_scope :search_all
 
       has_scope :generator, default: "chefsteps" do |controller, scope, value|
         value == "chefsteps" ? scope.chefsteps_generated : scope.any_user_generated
