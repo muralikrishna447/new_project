@@ -2,8 +2,8 @@
 -# Render the aside before the step so it can be floated left or
 -# right and align with the top. Note nasty little trick of rebinding step to
 -# the next step.
-.aside.aside-separate.anim-basic-fade(  ng-if='isSeparateAside($index)' 
-                                        ng-init='step=activity.steps[$index]'       
+.aside.aside-separate.anim-basic-fade(  ng-if='isSeparateAside($index +1)' 
+                                        ng-init='step=activity.steps[$index +1]'       
                                         ng-controller="StepController"   
                                         cs-watch-focus=''
                                         ng-class="asideClass()")
