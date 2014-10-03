@@ -88,7 +88,6 @@ Delve::Application.routes.draw do
   get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
   get 'kiosk' => 'home#kiosk', as: 'kiosk'
-  get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'ftue' => 'dashboard#ftue', as: 'ftue'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
