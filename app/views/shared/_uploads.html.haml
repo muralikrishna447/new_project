@@ -8,7 +8,7 @@
       .span4
         %h4 Upload a Photo
         .upload-wrapper
-          = image_tag '/assets/missing.png', class: "upload-photo-preview"
+          = image_tag 'https://d92f495ogyf88.cloudfront.net/static/missing.png', class: "upload-photo-preview"
           = link_to '+', '#', class: 'upload-photo-btn'
           %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field', required: true
       .span8

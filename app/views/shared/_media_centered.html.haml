@@ -7,6 +7,6 @@
       -else
         = image_tag filepicker_gallery_image(media.featured_image), alt: media.title, title: media.title
     - else
-      = image_tag '/assets/missing.png'
+      = image_tag 'https://d92f495ogyf88.cloudfront.net/static/missing.png'
     .title-block
       = media.title.html_safe
