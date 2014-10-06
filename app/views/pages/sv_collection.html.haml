@@ -2,16 +2,26 @@
 - content_for :description, "Sous vide is a modernist technique that slowly cooks packaged foods to a particular temperature in a heated water bath. It prevents overcooking, preserves flavor, and yields inimitable texture. Many people believe that sous vide cooking is inherently expensive, and requires lots of gadgets. But often you can cook sous vide with nothing more than an inexpensive digital thermometer. Other times, dedicated sous vide equipment is the only practical way to do the job. Either way, having proper sous vide cooking equipment is invaluable if you frequently cook sous vide, and if you’ve never tried it, we highly recommend you do. It’s a simple technique that’s revolutionizing kitchens worldwide, and for good reason: it works."
 
 .container
-  .row.section#knife-intro
+  .row.section
     .span5
       = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/wzElPtvhT9v6hUeDNgfQ'
     .span7
       %h1 ChefSteps Sous Vide Collection
       /= render 'product_collection_social', title: 'Chefsteps product Collection', image: 'http://placehold.it/1170x737', likeable_object: @product_page
-      %p.section-small Sous vide is a modernist technique that slowly cooks packaged foods to a particular temperature in a heated water bath. It prevents overcooking, preserves flavor, and yields inimitable texture. Having proper equipment is invaluable if you frequently cook sous vide, and if you’ve never tried it, we highly recommend you do. It’s a simple technique that’s revolutionizing kitchens worldwide, and for good reason: it works. 
+      %p.section-small Sous vide is a modernist technique that slowly cooks packaged foods to a particular temperature in a heated water bath. It prevents overcooking, preserves flavor, and yields inimitable texture. Having proper equipment is invaluable if you frequently cook sous vide, and if you’ve never tried it, we highly recommend you do. It’s a simple technique that’s revolutionizing kitchens worldwide, and for good reason: it works.
+
+.container
+  .row.section
+    %hr
+    .span12
+      %h2 Here are some of our latest Sous Vide Recipes:
+      %br
+      %cssearchindex(query='{"search_all": "sous vide", "per": "6", "sort": "latest"}')
+      %a.btn.btn-large.btn-outline-blue-large(href='/gallery#?published_status=published&generator=chefsteps&search_all=sous%20vide&sort=newest')
+        See More
 // Start SVS //
 
-.knife.first.section
+.knife
   .knife-content
     %h3.media-heading SousVide Supreme Water Ovens
     %p SousVide Supreme brings sous vide cooking into your home with simplicity, convenience, and style. This countertop water oven allows you to cook nearly anything to perfection, with the click of a button. Just season your dish, place it in a food-grade pouch or plastic bag, cook in the water bath, sear or sauce if desired, and serve.
@@ -134,7 +144,6 @@
               = image_tag ('//d3awvtnmmsvyot.cloudfront.net/api/file/5WRvTSxJRpSsAY0iQFO7')
             .annotation-slider-sub-image.annotation-slider-image-right
               = image_tag ('//d3awvtnmmsvyot.cloudfront.net/api/file/f4e2hwQQ6uTk0aqtog1Q')
-
 // End PolySci //
 
 .section
