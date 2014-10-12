@@ -1,4 +1,4 @@
-@app.directive 'csImageVideo', ['$sce', 'csFilepickerMethods', ($sce, csFilepickerMethods) ->
+@app.directive 'csImageVideo', ['$sce', '$window', '$timeout', 'csFilepickerMethods', ($sce, $window, $timeout, csFilepickerMethods) ->
   restrict: 'E'
   scope: {
     image: '='
@@ -29,6 +29,36 @@
         scope.buttonClass = 'button-active'
         scope.imageClass = 'image-active'
         scope.videoClass = 'video-inactive'
+
+    scope.initialElementWidth = element[0].clientWidth
+    adjustWidth = ->
+      elementWidth = element[0].clientWidth
+      maxHeight = 600
+      widthAtMaxHeight = 500*16/9
+      console.log 'width max height: ', widthAtMaxHeight
+      
+      videoElement = element.find('.cs-video')
+      if elementWidth > widthAtMaxHeight
+        # Set max height to max height
+        element.height(maxHeight)
+        marginLeft = (elementWidth - widthAtMaxHeight)/2
+        videoWidth = widthAtMaxHeight
+
+        videoElement.css('width', videoWidth)
+          .css('margin-left', marginLeft)
+      else
+        element.height(elementWidth*9/16)
+        # element.height('inherit')
+        videoElement.css('width', 'inherit')
+          .css('margin-left', 'inherit')
+
+    angular.element($window).bind 'resize', ->
+      adjustWidth()
+
+    scope.$watch 'initialElementWidth', (newValue, oldValue) ->
+      console.log 'new value: ', newValue
+      console.log 'old value: ', oldValue
+      adjustWidth()
 
   templateUrl: '/client_views/cs_image_video.html'
 ]
