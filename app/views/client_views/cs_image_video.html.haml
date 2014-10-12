@@ -1,7 +1,7 @@
 
 / %cs-image(url='image' ng-click='togglePlay()' ng-class='imageClass')
 
-%div(ng-if='video')
+.cs-image-video-container(ng-if='video')
   .cs-image-video-play-button(ng-click='togglePlay()' ng-class='buttonClass')
     %i.fa.fa-play-circle-o
   .cs-image-video-image(ng-click='togglePlay()' ng-class='imageClass')
@@ -11,6 +11,6 @@
     / .embed-container
     /   %iframe(ng-src='{{videoUrl(video)}}' frameborder='0' allowfullscreen)
 
-%div(ng-if='!video')
+.cs-image-video-container(ng-if='!video')
   .cs-image-video-image(ng-click='togglePlay()' ng-class='imageClass')
     %img(ng-src='{{imageUrl(image)}}')
