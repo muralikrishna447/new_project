@@ -74,7 +74,7 @@ class ActivitiesController < ApplicationController
   end
 
   def show
-
+    @show_app_add = true
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
     add_extra_json_info
     @upload = Upload.new
