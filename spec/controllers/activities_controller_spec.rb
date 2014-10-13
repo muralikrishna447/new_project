@@ -3,20 +3,29 @@ require 'spec_helper'
 describe ActivitiesController do
 
   describe 'show' do
-    it 'goes to an activity' do
-      activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
-      get :show, id: activity.slug
-      expect(response).to render_template(:show)
-    end
+    context 'outside an assembly' do
+      before :each do
+        @activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
+        step = Fabricate :step, extra: "Hola"
+        @activity.steps << step      
+      end
 
-    it 'only returns secret circulator machine instructions if asked nicely' do
-      activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
-      step = Fabricate :step, extra: "Hola"
-      activity.steps << step
-      get :get_as_json, id: activity.slug
-      expect(response.body).to_not include("Hola")
-      get :get_as_json, param_info: 'a9a77bd9f', id: activity.slug
-      expect(response.body).to include("Hola")
+      it 'goes to an activity' do
+        get :show, id: @activity.slug
+        expect(response).to render_template(:show)
+      end
+
+      it 'only returns secret circulator machine instructions if asked nicely' do
+        get :get_as_json, id: @activity.slug
+        expect(response.body).to_not include("Hola")
+        get :get_as_json, param_info: 'a9a77bd9f', id: @activity.slug
+        expect(response.body).to include("Hola")
+      end
+
+      it 'shows smart app add' do
+        get :show, id: @activity.slug
+        assigns(:show_app_add).should_not be_nil
+      end
     end
 
     context 'within an assembly' do
