@@ -1,6 +1,9 @@
 !!! 5
 %html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main", :style => "font-size: 62.5% !important;"}
   %head
+    -if @show_app_add
+      %meta(name="apple-itunes-app" content="app-id=816731096, affiliate-data=at=10lIEQ&ct=MWSmartBanneriPhone, app-argument=http://nytimes.com?fromSmartAppBanner=1")
+      %meta(name="apple-mobile-web-app-title" content="ChefSteps")
     = render 'layouts/cdn_js'
     %style
     / http://stackoverflow.com/questions/3326650/console-is-undefined-error-for-internet-explorer
@@ -63,8 +66,6 @@
       :javascript
         window.chefstepsUserId = null
 
-    -if @show_app_add
-      %meta(name="apple-itunes-app" content="app-id=816731096")
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' => "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'"}
     #rails-flash.hide
