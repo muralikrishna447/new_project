@@ -1,85 +1,97 @@
 
--# Render the aside before the step so it can be floated left or
--# right and align with the top. Note nasty little trick of rebinding step to
--# the next step.
-.aside.aside-separate.anim-basic-fade(  ng-if='isSeparateAside($index +1)' 
-                                        ng-init='step=activity.steps[$index +1]'       
-                                        ng-controller="StepController"   
-                                        cs-watch-focus=''
-                                        ng-class="asideClass()")
-  =render 'activities/step_side_edit_buttons'
-  %div(ng-include="'_aside.html'")
+.step-row(ng-scope 
+          ng-mouseenter="hovered=true"
+          ng-mouseleave="hovered=false")
+  -# Render the aside before the step so it can be floated left or
+  -# right and align with the top. Note nasty little trick of rebinding step to
+  -# the next step.
+  .aside.aside-separate.anim-basic-fade(  ng-if='isSeparateAside($index +1)' 
+                                          ng-init='step=activity.steps[$index +1]'       
+                                          ng-controller="StepController"   
+                                          cs-watch-focus=''
+                                          ng-class="asideClass()")
+    =render 'activities/step_side_edit_buttons'
+    %div(ng-include="'_aside.html'")
 
-%div( ng-if='! step.is_aside'
-      ng-controller="StepController"   
-      ng-class="getStepClass()"                            
-      cs-watch-focus='')
+  %div( ng-if='! step.is_aside'
+        ng-controller="StepController"   
+        ng-class="getStepClass()"                            
+        cs-watch-focus='')
+        
 
-  .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, -1)")
-    %i.icon-circle-arrow-up
-    Add step above
+    .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, -1)")
+      %i.icon-circle-arrow-up
+      Add step above
 
-  =render 'activities/step_side_edit_buttons'
+    =render 'activities/step_side_edit_buttons'
 
-  .step-number-container.section(ng-if="! step.hide_number")
-    %h1.step-number
-      %div(ng-bind="stepNumber($index)")
+    .step-number-container.section(ng-if="! step.hide_number")
+      %h1.step-number
+        %div(ng-bind="stepNumber($index)")
 
-  %h5(ng-if="getStepOpenForEdit()")
-    Step Title
-  %h4.text-center(  cs-contenteditable="getStepOpenForEdit()" 
-                    ng-model="step.title"
-                    placeholder="'Click to write step title'")
-
-  .step-first-row
-    =render 'activities/step_ingredients'
-
-  .step-content-container
-    .aside.aside-inset.anim-basic-fade(  ng-if='isInsetAside($index + 1)' 
-                                            ng-init='step=activity.steps[$index + 1]'       
-                                            ng-controller="StepController"   
-                                            cs-watch-focus=''
-                                            ng-class="asideClass()")
-      =render 'activities/step_side_edit_buttons'
-      %div(ng-include="'_aside.html'")
     %h5(ng-if="getStepOpenForEdit()")
-      Directions
-    .step-content(   cs-contenteditable="getStepOpenForEdit()" 
-                              creator="activity.creator"
-                              ng-model="step.directions"
-                              placeholder="'Click to write step directions'" )
+      Step Title
+    %h4.text-center(  cs-contenteditable="getStepOpenForEdit()" 
+                      ng-model="step.title"
+                      placeholder="'Click to write step title'")
 
-    %div(ng-if="getStepOpenForEdit() && csAuthentication.isAdmin()" )
-      %h5
-        Special Sauce
-      .step-special-sauce(   cs-contenteditable="getStepOpenForEdit()" 
-                                creator="activity.creator"
-                                ng-model="step.extra"
-                              placeholder="'Click to add special sauce'")
+    .step-first-row
+      =render 'activities/step_ingredients'
 
-  %div(ng-include="'_step_edit_images.html'")
-  .step-last-row.noprint(ng-show='((!! step.youtube_id) || (!! step.image_id))')
+    .step-content-container
+      .aside.aside-inset.anim-basic-fade(  ng-if='isInsetAside($index + 1)' 
+                                              ng-init='step=activity.steps[$index + 1]'       
+                                              ng-controller="StepController"   
+                                              cs-watch-focus=''
+                                              ng-class="asideClass()")
+        =render 'activities/step_side_edit_buttons'
+        %div(ng-include="'_aside.html'")
+      %h5(ng-if="getStepOpenForEdit()")
+        Directions
+      .step-content-group
+        .step-content(   cs-contenteditable="getStepOpenForEdit()" 
+                                  creator="activity.creator"
+                                  ng-model="step.directions"
+                                  placeholder="'Click to write step directions'" )
 
-    %div(ng-if='hasAV()')
-      .step-video-outer.noprint(ng-if="!! step.youtube_id")
-        .new-step-video(id="{{'step-video-' + $index}}")
-          %csembedyoutube(video-id='{{step.youtube_id}}')
+        .step-comment-icon-group.anim-basic-fade(ng-show="hovered")
+          %i.icon-large.icon-comments(ng-click="step.commentsOpen = ! step.commentsOpen")
+          {{commentCount}}
+        .step-comment-container(ng-class="{'open' : step.commentsOpen}")
+          %cscomments(ng-if="step.commentsOpen" comments-type="activity-step" comments-id="{{commentsID()}}" seo-bot="#{is_brombone}")
 
-      -# Image only if there is no video
-      .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")
-        .new-step-image(id="{{'step-image-' + $index}}")
-          / %img(cs-responsive-image='step.image_id' alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}")
-          %cs-image(url="step.image_id" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}")
+      %div(ng-if="getStepOpenForEdit() && csAuthentication.isAdmin()" )
+        %h5
+          Special Sauce
+        .step-special-sauce(   cs-contenteditable="getStepOpenForEdit()" 
+                                  creator="activity.creator"
+                                  ng-model="step.extra"
+                                placeholder="'Click to add special sauce'")
 
-  .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, 1)")
-    %i.icon-circle-arrow-down
-    Add step below
+    %div(ng-include="'_step_edit_images.html'")
+    .step-last-row.noprint(ng-show='((!! step.youtube_id) || (!! step.image_id))')
 
-.aside.aside-center.anim-basic-fade(  ng-if='isCenterAside($index + 1)' 
-                                        ng-init='step=activity.steps[$index + 1]'       
-                                        ng-controller="StepController"   
-                                        cs-watch-focus=''
-                                        ng-class="asideClass()")
+      %div(ng-if='hasAV()')
+        .step-video-outer.noprint(ng-if="!! step.youtube_id")
+          .new-step-video(id="{{'step-video-' + $index}}")
+            %csembedyoutube(video-id='{{step.youtube_id}}')
 
-  =render 'activities/step_side_edit_buttons'
-  %div(ng-include="'_aside.html'")
+        -# Image only if there is no video
+        .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")
+          .new-step-image(id="{{'step-image-' + $index}}")
+            / %img(cs-responsive-image='step.image_id' alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}")
+            %cs-image(url="step.image_id" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}")
+
+    .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, 1)")
+      %i.icon-circle-arrow-down
+      Add step below
+
+  -# Center aside
+  .aside.aside-center.anim-basic-fade(  ng-if='isCenterAside($index + 1)' 
+                                          ng-init='step=activity.steps[$index + 1]'       
+                                          ng-controller="StepController"   
+                                          cs-watch-focus=''
+                                          ng-class="asideClass()")
+
+    =render 'activities/step_side_edit_buttons'
+    %div(ng-include="'_aside.html'")

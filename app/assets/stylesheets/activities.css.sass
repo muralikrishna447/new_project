@@ -64,6 +64,35 @@ $banner-height: $baseline * 45
   padding-top: $baseline * 2
   width: 100%
 
+.step-row
+  width: 100%
+
+.step-content-group
+  position: relative
+
+  .step-comment-icon-group
+    position: absolute
+    right: -55px
+    top: 0
+    @include transition(all 300ms ease-in-out)
+
+  .step-comment-container
+    position: absolute
+    right: -55px
+    top: 27px
+    z-index: 99
+    @include transition(all 300ms ease-in-out)
+    width: 0
+    background-color: white
+    padding: $baseline
+
+    &.open
+      width: 100%
+      max-width: 450px 
+      border: 1px solid $light-gray
+      @include shadow()
+
+
 .step-number
   margin-left: auto
   margin-right: auto

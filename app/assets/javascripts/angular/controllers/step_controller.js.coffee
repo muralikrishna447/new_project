@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootScope", "$element", "$timeout", ($scope, $rootScope, $element, $timeout) ->
+angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootScope", "$element", "$timeout", "$http", ($scope, $rootScope, $element, $timeout, $http) ->
 
   $scope.step.presentation_hints ||= {}
   $scope.step.presentation_hints.aside_position ?= "left"
@@ -107,4 +107,12 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     else
       result += ' well-white-with-border'
     result
+
+  $scope.commentsID = ->
+    "#{$scope.activity.slug}-#{$scope.stepIndex()}"
+
+  $scope.commentCount = -1
+  $http.get("http://server.usebloom.com/discussions/activity-step_#{$scope.commentsID()}?apiKey=xchefsteps").success((data, status) ->
+    $scope.commentCount = data["commentCount"]
+  )
 ]
