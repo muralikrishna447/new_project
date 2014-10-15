@@ -55,10 +55,10 @@
                                   placeholder="'Click to write step directions'" )
 
         .step-comment-icon-group.anim-basic-fade(ng-show="hovered")
-          %i.icon-large.icon-comments(ng-click="step.commentsOpen = ! step.commentsOpen")
+          %i.icon-large.icon-comments(ng-click="toggleShowComments()")
           {{commentCount}}
-        .step-comment-container(ng-class="{'open' : step.commentsOpen}")
-          %cscomments(ng-if="step.commentsOpen" comments-type="activity-step" comments-id="{{commentsID()}}" seo-bot="#{is_brombone}")
+        .step-comment-container(ng-class="{'open' : commentsOpen}")
+          %cscomments(ng-if="commentsOpen" comments-type="activity-step" comments-id="{{commentsID()}}" seo-bot="#{is_brombone}")
 
       %div(ng-if="getStepOpenForEdit() && csAuthentication.isAdmin()" )
         %h5
