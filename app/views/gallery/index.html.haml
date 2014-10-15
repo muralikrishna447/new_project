@@ -6,7 +6,7 @@
 
 .container.gallery-wrapper.relative(ng-controller='GalleryController')
   .row(ng-cloak)
-    .span12
+    .span12.section
       %div
         .gallery-filter.navbar
           %ul.nav.left-group
@@ -45,70 +45,5 @@
     .span12(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='dataLoading' infinite-scroll-distance=1)
       %div(ng-repeat='activity in activities')
         %cs-index-item(title='activity.title' url='activity.url' image='activity.image' difficulty='activity.difficulty' likes-count='activity.likesCount')
-
-/ .container.gallery-wrapper.relative(ng-controller='GalleryController')
-/   .row(ng-cloak)
-/     .span12
-/       %div
-/         .gallery-filter.navbar
-/           %ul.nav.left-group
-
-/             %form.navbar-search.relative(ng-click="collapseFilters = true")
-/               %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all" ui-event='{blur: "trackSearch()"}')
-/               %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
-/                 %i.icon-remove
-
-/             %li.relative(ng-mouseenter="collapseFilters = false" ng-mouseleave="collapseFilters = true")
-/               .filter-collapser(ng-click="collapseFilters = ! collapseFilters")
-/                 FILTER
-/                 %i.icon-angle-down(ng-show="collapseFilters")
-/                 %i.icon-angle-up(ng-hide="collapseFilters")
-/               .filters-group.anim-filters(ng-show="!collapseFilters")
-/                 %csRadioButtons.first-separate(ng-model="typeChoices" active="filters.activity_type")
-/                 %csRadioButtons.first-separate(ng-model="difficultyChoices" active="filters.difficulty")
-/                 %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
-/                 -if can? :update, User
-/                   %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
-
-/             %li.relative(ng-mouseenter="collapseSort = false" ng-mouseleave="collapseSort = true")
-/               .filter-collapser(ng-click="collapseSort = ! collapseSort")
-/                 SORT
-/                 %i.icon-angle-down(ng-show="collapseSort")
-/                 %i.icon-angle-up(ng-hide="collapseSort")
-
-/               .filters-group.anim-filters(ng-show="!collapseSort")        
-/                 .btn( ng-repeat="choice in getSortChoices()" 
-/                       ng-click="filters.sort = choice" 
-/                       ng-class="{active: filters.sort == choice}")
-/                   {{choice}}
-/             .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
-/               {{f}}
-/               %span.reset-filter(ng-click="resetFilter(k)")
-/                 %i.icon-remove
-/         .add-group.btn-group.pull-right(ng-show="(filters.generator != 'ChefSteps') || csAuthentication.isAdmin()")
-/           %a.btn.btn-secondary.add-button(href="/activities/new")
-/             Add Recipe
-
-/   .row(ng-cloak ng-show="(galleryItems.length == 0) && initialLoadDone" ng-click="collapseFilters = true")
-/     .section
-/     .span12
-/       %h3 No results found, but perhaps you'd enjoy these recipes?
-
-/   .row.gallery-contents(ng-cloak ng-click="collapseFilters = true")
-/     .span12
-/       %div(galleryscroll='loadData()')
-/         %div.anim-basic-fade(ng-repeat='activity in getDisplayItems()')
-/           %csGalleryItem( title="activity.title"
-/                           href="activity.gallery_path"
-/                           image="itemImageURL(activity, 400)"
-/                           summary="activity.description"
-/                           footer-left="activity.difficulty"
-/                           footer-right="getFooterRightContents(activity)"
-/                           sash = "getSashContents(activity)"
-/                         )
-/   .row
-/     .span2.offset5
-/       .gallery-spinner(ng-show='(spinner != 0) || (! initialLoadDone)')
-/         %i.icon-page-load
 
 = render 'home/madlib_popup', registration_source: 'gallery'

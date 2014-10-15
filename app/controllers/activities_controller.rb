@@ -105,7 +105,6 @@ class ActivitiesController < ApplicationController
           @container_path = path
           # flash.now[:notice] = "This is part of the #{path} #{container_name}."
         end
-        track_event @activity
 
         @minimal = false
         if params[:minimal]

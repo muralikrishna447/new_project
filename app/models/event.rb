@@ -40,8 +40,8 @@ class Event < ActiveRecord::Base
     case [trackable_type, action]
     when ['Activity', 'create']
       [trackable_type, trackable_id, action, "user_#{user_id}"].join('_').downcase
-    when ['Activity', 'show']
-      [trackable_type, trackable_id, action].join('_').downcase
+    # when ['Activity', 'show']
+    #   [trackable_type, trackable_id, action].join('_').downcase
     when ['Comment','create']
       [trackable_type, trackable_id, action, trackable.commentable_type, trackable.commentable_id, "user_#{user_id}"].join('_').downcase
       # "Comment_#{trackable_id}_created_for_#{trackable.commentable_type}_#{trackable.commentable_id}"
