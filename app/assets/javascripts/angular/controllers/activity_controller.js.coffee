@@ -84,6 +84,9 @@ window.deepCopy = (obj) ->
     $rootScope.$broadcast('showPopupCTA')
   ), 5000
 
+  $scope.bodyClick = ->
+    $rootScope.$broadcast('bodyClicked')
+
   $scope.csGlobals =
     scaling: 1.0
     units: "grams"

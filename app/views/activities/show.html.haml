@@ -43,26 +43,27 @@
 -################################ PRIMARY CONTENT ################################
 
 .schema-container{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : "http://schema.org/Article")}
+  .recipe-container.comments-slide(ng-class="{'comments-showing' : commentsShowing}")
 
-  = render 'activities/banner_image'
+    = render 'activities/banner_image'
 
-  .banner-spacer.noprint( ng-if="heroMedia.heroDisplayType() == 'none'" )
+    .banner-spacer.noprint( ng-if="heroMedia.heroDisplayType() == 'none'" )
 
-  #activity-title(data-activity="#{@activity.title}")
-  %form.printable(ng-cloak name="activityForm" csfixnakedlinks)
-           
-    -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
-    %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
+    #activity-title(data-activity="#{@activity.title}")
+    %form.printable(ng-cloak name="activityForm" csfixnakedlinks)
+             
+      -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
+      %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
-    #activity-body.recipe_schema(ng-class="addEditModeClass()"){data: {:'activity-id' => @activity.id}}
-      = render 'activities/main_activity_content', activity: @activity
+      #activity-body.recipe_schema(ng-class="addEditModeClass()"){data: {:'activity-id' => @activity.id}}
+        = render 'activities/main_activity_content', activity: @activity
 
 
-      -# Big spinner until the activity loads. By not cloaking but using angular to hide, it
-      -# disappears roughly when the page is ready.
-      .row.activity-loading-spinner(ng-hide="! loading")
-        .span12
-          %i.icon-page-load
+        -# Big spinner until the activity loads. By not cloaking but using angular to hide, it
+        -# disappears roughly when the page is ready.
+        .row.activity-loading-spinner(ng-hide="! loading")
+          .span12
+            %i.icon-page-load
 
 
   %div(nell-popup) 
