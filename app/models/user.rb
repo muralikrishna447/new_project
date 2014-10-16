@@ -213,6 +213,8 @@ class User < ActiveRecord::Base
       response.body
     rescue Faraday::Error::ConnectionFailed => e
       logger.warn "Unable to encrypt info for Bloom: #{e}"
+      # returns something escape_javascript can handle
+      return false
     end
   end
 
