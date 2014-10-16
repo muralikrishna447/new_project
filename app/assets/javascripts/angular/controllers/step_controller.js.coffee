@@ -117,8 +117,8 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
 
   $scope.commentCount = -1
   $scope.updateCommentCount = ->
-    $http.get("http://server.usebloom.com/discussions/activity-step_#{$scope.commentsID()}?apiKey=xchefsteps").success((data, status) ->
-      $scope.commentCount = data["commentCount"]
+    $http.get("http://server.usebloom.com/discussions/step_#{$scope.commentsID()}/count?apiKey=xchefsteps").success((data, status) ->
+      $scope.commentCount = data["count"]
     )
   $scope.updateCommentCount()
 ]

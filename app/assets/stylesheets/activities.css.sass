@@ -75,11 +75,38 @@ $banner-height: $baseline * 45
     right: -55px
     top: 0
     @include transition(all 300ms ease-in-out)
+    cursor: pointer
+
+    &:hover
+      i
+        color: $orange
+
+    i
+      font-size: 24px !important
+      color: $light-gray
+
+    .comments-with-count
+
+      position: relative
+      width: 24px
+      i
+        position: absolute
+        top: 0
+
+      .comment-count
+        position: relative
+        text-align: center
+        color: white
+        top: -1px
+        z-index: 2
+        font-size: 12px
+        &.three-digits
+          font-size: 9px
 
   .step-comment-container
     position: absolute
     right: -55px
-    top: 27px
+    top: 24px
     z-index: 99
     @include transition(all 300ms ease-in-out)
     width: 0
@@ -88,9 +115,21 @@ $banner-height: $baseline * 45
 
     &.open
       width: 100%
-      max-width: 450px 
+      max-width: 480px 
       border: 1px solid $light-gray
       @include shadow()
+
+@media (max-width: 860px)
+  .step-content-group
+    .step-comment-icon-group
+      right: -33px
+
+@media (max-width: 320px)
+  .step-content-group
+    .step-comment-container.open
+      right: -36px
+      width: 270px
+
 
 
 .step-number

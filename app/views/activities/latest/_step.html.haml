@@ -54,11 +54,18 @@
                                   ng-model="step.directions"
                                   placeholder="'Click to write step directions'" )
 
-        .step-comment-icon-group.anim-basic-fade(ng-show="hovered")
-          %i.icon-large.icon-comments(ng-click="toggleShowComments()")
-          {{commentCount}}
+        .step-comment-icon-group(ng-click="toggleShowComments()" ng-hide="editMode")
+          -# TODO: create a shared icon font using fontastic like we did for the mobile app, put it in cs-shared
+          %i.icon-cs-comment-open.anim-basic-fade(ng-show="hovered && (commentCount <= 0)")
+
+          .comments-with-count.anim-basic-fade(ng-show="commentCount > 0")
+            %i.icon-cs-comment-filled
+            .comment-count( ng-class="{'three-digits' : commentCount > 99}") {{commentCount}}
+
         .step-comment-container(ng-class="{'open' : commentsOpen}")
-          %cscomments(ng-if="commentsOpen" comments-type="activity-step" comments-id="{{commentsID()}}" seo-bot="#{is_brombone}")
+          %cscomments(  ng-if="commentsOpen" 
+                        comments-type="step" 
+                        comments-id="{{commentsID()}}" seo-bot="#{is_brombone}")
 
       %div(ng-if="getStepOpenForEdit() && csAuthentication.isAdmin()" )
         %h5
