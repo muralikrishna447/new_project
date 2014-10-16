@@ -109,7 +109,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     result
 
   $scope.commentsID = ->
-    "#{$scope.activity.slug}-#{$scope.stepIndex()}"
+    "#{$scope.activity.slug}-#{$scope.step.id}"
 
   $scope.toggleShowComments = ->
     $scope.commentsOpen = ! $scope.commentsOpen

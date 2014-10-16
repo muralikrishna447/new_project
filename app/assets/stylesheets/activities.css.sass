@@ -78,30 +78,35 @@ $banner-height: $baseline * 45
     cursor: pointer
 
     &:hover
-      i
+      i, .plus
         color: $orange
 
     i
-      font-size: 24px !important
+      font-size: 25px !important
       color: $light-gray
 
-    .comments-with-count
+    .comments-with-count, .comments-no-count
 
       position: relative
-      width: 24px
+      width: 25px
       i
         position: absolute
         top: 0
 
-      .comment-count
-        position: relative
-        text-align: center
-        color: white
-        top: -1px
-        z-index: 2
-        font-size: 12px
-        &.three-digits
-          font-size: 9px
+    .comment-count, .plus
+      position: relative
+      text-align: center
+      top: -1px
+      z-index: 2
+      font-size: 13px
+      &.three-digits
+        font-size: 9px
+
+    .comment-count
+      color: white
+    .plus
+      color: $light-gray
+      font-size: 15px
 
   .step-comment-container
     position: absolute
