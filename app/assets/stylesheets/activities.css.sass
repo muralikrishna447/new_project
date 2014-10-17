@@ -147,16 +147,17 @@ $banner-height: $baseline * 45
     &.comments-showing
       left: -400px
 
+@media (max-width: 768px)
+  .step-comment-icon-group
+    .comments-no-count-maybe-hover.ng-hide
+      display: block !important
+      opacity: 1 !important
+
 @media (max-width: 460px)
   .step-content-group
     .step-comment-container
       width: 290px
       right: -434px
-
-    .step-comment-icon-group
-      .comments-no-count.ng-hide
-        display: block !important
-        opacity: 1 !important
 
 @media (max-width: 860px)
   .step-content-group

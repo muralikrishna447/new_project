@@ -56,9 +56,10 @@
 
         .step-comment-icon-group(ng-click="toggleShowComments(); $event.stopPropagation()" ng-hide="editMode")
           -# TODO: create a shared icon font using fontastic like we did for the mobile app, put it in cs-shared
-          .comments-no-count.anim-basic-fade(ng-show="hovered && (commentCount <= 0)")
-            %i.icon-cs-comment-open
-            .plus +
+          .comments-no-count.anim-basic-fade(ng-show="commentCount <= 0")
+            .comments-no-count-maybe-hover(ng-show="hovered")
+              %i.icon-cs-comment-open
+              .plus +
 
           .comments-with-count.anim-basic-fade(ng-show="commentCount > 0")
             %i.icon-cs-comment-filled
