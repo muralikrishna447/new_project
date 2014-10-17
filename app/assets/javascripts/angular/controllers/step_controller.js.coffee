@@ -109,7 +109,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     result
 
   $scope.commentsID = ->
-    "#{$scope.activity.slug}-#{$scope.step.id}"
+    "step-#{$scope.activity.slug}-#{$scope.step.id}"
 
   $scope.toggleShowComments = ->
     $scope.commentsOpen = ! $scope.commentsOpen
@@ -125,7 +125,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
 
   $scope.commentCount = -1
   $scope.updateCommentCount = ->
-    $http.get("http://server.usebloom.com/discussions/step_#{$scope.commentsID()}/count?apiKey=xchefsteps").success((data, status) ->
+    $http.get("http://server.usebloom.com/discussions/activity_#{$scope.commentsID()}/count?apiKey=xchefsteps").success((data, status) ->
       $scope.commentCount = data["count"]
     )
   $scope.updateCommentCount()

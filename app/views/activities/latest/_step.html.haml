@@ -67,7 +67,7 @@
 
         .step-comment-container(ng-class="{'open' : commentsOpen}")
           %cscomments(  ng-if="commentsEverOpened" 
-                        comments-type="step" 
+                        comments-type="activity" 
                         comments-id="{{commentsID()}}" seo-bot="#{is_brombone}")
 
       %div(ng-if="getStepOpenForEdit() && csAuthentication.isAdmin()" )
