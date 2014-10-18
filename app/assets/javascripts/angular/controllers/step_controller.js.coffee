@@ -100,7 +100,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     return $scope.$index + 1 if $scope.step.is_aside
     $scope.$index
 
-  $scope.asideClass =  ->
+  $scope.asideClass = ->
     result = ($scope.effectiveAsideType($scope.stepIndex()) || '')
     if $scope.hasAV() || $scope.step.image_id
       result += ' well aside-with-media'
@@ -109,7 +109,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     result
 
   $scope.commentsID = ->
-    "step-#{$scope.activity.slug}-#{$scope.step.id}"
+    "#{$scope.step.id}"
 
   $scope.toggleShowComments = ->
     $scope.commentsOpen = ! $scope.commentsOpen
@@ -125,7 +125,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
 
   $scope.commentCount = -1
   $scope.updateCommentCount = ->
-    $http.get("http://server.usebloom.com/discussions/activity_#{$scope.commentsID()}/count?apiKey=xchefsteps").success((data, status) ->
+    $http.get("http://server.usebloom.com/discussions/step_#{$scope.commentsID()}/count?apiKey=xchefsteps").success((data, status) ->
       $scope.commentCount = data["count"]
     )
   $scope.updateCommentCount()

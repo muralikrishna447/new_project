@@ -37,7 +37,6 @@ class BloomController < ApplicationController
       name = name_id.first.split('_').map{|a| a.capitalize}.join('')
       id = name_id.last
       content = name.constantize.find(id)
-      puts "XXXX #{name} #{id}"
       render json: content, serializer: "Content#{name}Serializer".constantize
     end
   end
