@@ -126,6 +126,11 @@ $banner-height: $baseline * 45
       @include transition-delay(150ms)
       opacity: 1
 
+    .icon-cs-close
+      position: absolute
+      top: -32px
+      left: -8px
+
 .comments-slide
   position: relative
   left: 0
@@ -151,6 +156,13 @@ $banner-height: $baseline * 45
       left: -400px
 
 @media (max-width: 768px)
+  .comments-slide
+    &.comments-showing
+      left: -500px
+  .step-content-group
+    .comment-container
+      right: -550px
+
   .comment-icon-group
     .comments-no-count-maybe-hover.ng-hide
       display: block !important
@@ -160,7 +172,7 @@ $banner-height: $baseline * 45
   .step-content-group
     .comment-container
       width: 290px
-      right: -434px
+      right: -504px
 
 @media (max-width: 860px)
   .step-content-group

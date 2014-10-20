@@ -12,6 +12,7 @@
         {{commentCount}}
 
   .comment-container(ng-class="{'open' : commentsOpen}")
+    %i.icon-cs-close(ng-click='toggleShowComments($event)')
     %cscomments(  ng-if="commentsEverOpened" 
                   comments-type="{{commentsType}}" 
                   comments-id="{{commentsId}}" 
