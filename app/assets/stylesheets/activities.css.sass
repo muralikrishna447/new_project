@@ -70,66 +70,66 @@ $banner-height: $baseline * 45
 .step-content-group
   position: relative
 
-  .comment-icon-group
-    position: absolute
-    right: -40px
-    top: 0
-    @include transition(all 300ms ease-in-out)
-    @include unselectable
-    cursor: pointer
+.comment-icon-group
+  position: absolute
+  right: -40px
+  top: 0
+  @include transition(all 300ms ease-in-out)
+  @include unselectable
+  cursor: pointer
 
-    &:hover
-      i, .plus
-        color: $orange
+  &:hover
+    i, .plus
+      color: $orange
 
+  i
+    font-size: 25px !important
+    color: $light-gray
+
+  .comments-with-count, .comments-no-count
+
+    position: relative
+    width: 25px
     i
-      font-size: 25px !important
-      color: $light-gray
-
-    .comments-with-count, .comments-no-count
-
-      position: relative
-      width: 25px
-      i
-        position: absolute
-        top: 0
-
-    .comment-count, .plus
-      position: relative
-      text-align: center
-      top: -1px
-      z-index: 2
-      font-size: 13px
-      &.three-digits
-        font-size: 9px
-
-    .comment-count
-      color: white
-    .plus
-      color: $light-gray
-      font-size: 15px
-
-  .comment-container
-    position: absolute
-    right: -426px
-    top: 34px
-    z-index: 99
-    @include transition(opacity 300ms ease-in-out)
-    @include transition-delay(0ms)
-    opacity: 0
-    background-color: white
-    padding: 0
-    @include boxsizing
-    width: 400px
-
-    &.open
-      @include transition-delay(150ms)
-      opacity: 1
-
-    .icon-cs-close
       position: absolute
-      top: -32px
-      left: -8px
+      top: 0
+
+  .comment-count, .plus
+    position: relative
+    text-align: center
+    top: -1px
+    z-index: 2
+    font-size: 13px
+    &.three-digits
+      font-size: 9px
+
+  .comment-count
+    color: white
+  .plus
+    color: $light-gray
+    font-size: 15px
+
+.comment-container
+  position: absolute
+  right: -426px
+  top: 34px
+  z-index: 99
+  @include transition(opacity 300ms ease-in-out)
+  @include transition-delay(0ms)
+  opacity: 0
+  background-color: white
+  padding: 0
+  @include boxsizing
+  width: 400px
+
+  &.open
+    @include transition-delay(150ms)
+    opacity: 1
+
+  .icon-cs-close
+    position: absolute
+    top: -32px
+    left: -8px
 
 .comments-slide
   position: relative
@@ -139,7 +139,7 @@ $banner-height: $baseline * 45
   &.comments-showing
     left: 0px
 
-    .aside-separate, .aside-inset
+    .aside-separate, .aside-inset, .tools-list
       opacity: 0
 
     .comment-icon-group
