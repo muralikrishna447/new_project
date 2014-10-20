@@ -49,33 +49,18 @@
         %div(ng-include="'_aside.html'")
       %h5(ng-if="getStepOpenForEdit()")
         Directions
-      .step-content-group(  cs-comment-manager 
-                            comments-type="step" 
-                            comments-id="{{step.id}}"
-                            comment-count="step.commentCount"
-                            comments-open="step.commentsOpen"
-                            comments-ever-opened="step.commentsEverOpened")
+      .step-content-group
 
         .step-content(   cs-contenteditable="getStepOpenForEdit()" 
                                   creator="activity.creator"
                                   ng-model="step.directions"
                                   placeholder="'Click to write step directions'" )
 
-        .step-comment-icon-group(ng-click="$scope.emit('toggleShowComments'); $event.stopPropagation()" ng-hide="editMode")
-          .comments-no-count.anim-basic-fade(ng-show="step.commentCount <= 0")
-            .comments-no-count-maybe-hover(ng-show="hovered")
-              %i.icon-cs-comment-open
-              .plus +
+        %cs-comment-manager(  comments-type="step" 
+                            comments-id="{{step.id}}" 
+                            seo-bot="#{is_brombone}"
+                            show-when-zero="{{hovered}}")       
 
-          .comments-with-count.anim-basic-fade(ng-show="step.commentCount > 0")
-            %i.icon-cs-comment-filled
-            .comment-count( ng-class="{'three-digits' : step.commentCount > 99}") {{step.commentCount}}
-
-        .step-comment-container(ng-class="{'open' : step.commentsOpen}")
-          %cscomments(  ng-if="step.commentsEverOpened" 
-                        comments-type="step" 
-                        comments-id="step.id" 
-                        seo-bot="#{is_brombone}")
 
       %div(ng-if="getStepOpenForEdit() && csAuthentication.isAdmin()" )
         %h5
