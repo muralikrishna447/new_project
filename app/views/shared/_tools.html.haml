@@ -14,12 +14,10 @@
 
 
   %li(ng-if="! inClass")
-    %a
+    %a(cs-smooth-scroll-to='#discussion')
       .tool-group
-        %cs-comment-manager(  comments-type="{{getObjectTypeName() | lowercase}}" 
-                              comments-id="{{getObject().id}}" 
-                              seo-bot="false"
-                              show-when-zero="true")       
+        .icon-holder
+          %i.icon-cs-comment-filled
         .tool-name(ng-pluralize
                   count='commentCount'
                   when="  { '-1' : 'Comments', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")  
