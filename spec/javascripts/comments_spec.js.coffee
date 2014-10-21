@@ -10,7 +10,7 @@ describe "cscomments", ->
     $rootScope = _$rootScope_
     $httpBackend = _$httpBackend_
     $httpBackend = $injector.get('$httpBackend')
-    $httpBackend.when('GET', 'http://production-bloom.herokuapp.com/discussion/activity_2434/comments?apiKey=xchefsteps').respond("[{'content':'hello'}, {'content': 'sup'}]")
+    $httpBackend.when('GET', 'http://server.usebloom.com/discussions/activity_2434/comments?apiKey=xchefsteps').respond("[{'content':'hello'}, {'content': 'sup'}]")
   )
 
   it "should render seo comments when brombone is true", ->
