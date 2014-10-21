@@ -47,22 +47,22 @@
               .row.section
                 .span4.founder
                   .text-center.section
-                    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/RGKBOD8BTAmF1eO3FHkE/convert?fit=crop&w=400&h=400&cache=true', class: 'img-circle'
-                  %h4.text-center Ryan Matthew Smith (Alumnus)
-                  %p
-                    Ryan was the principal photographer and photo editor for Modernist Cuisine: The Art and Science of Cooking. Smith’s work has been featured by PPN, Photographer, Life, Time, The New York Times, Feature Shoot, Quo, and Abduzeedo.
-                .span4.founder
-                  .text-center.section
                     = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/X5ZXg1LjTCKerc06Nzjj/convert?fit=crop&w=400&h=400&cache=true', class: 'img-circle'
                   %h4.text-center Chris Young
                   %p
-                    Chris is the principal coauthor of the acclaimed and world-wide bestselling six-volume work Modernist Cuisine: The Art and Science of Cooking. Modernist Cuisine was named the 2012 Cookbook of the Year and Best Professional Cookbook of the year by the James Beard Foundation. Chris was also the founding chef of Heston Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary laboratory behind the innovative dishes served at one of the best restaurants in the world. Prior to becoming a chef, he completed degrees in theoretical mathematics and biochemistry.
+                    Chris is the principal coauthor of the acclaimed and world-wide bestselling six-volume work <i>Modernist Cuisine: The Art and Science of Cooking</i>. <i>Modernist Cuisine</i> was named the 2012 Cookbook of the Year and Best Professional Cookbook of the year by the James Beard Foundation. Chris was also the founding chef of Heston Blumenthal’s Fat Duck Experimental Kitchen, the secret culinary laboratory behind the innovative dishes served at one of the best restaurants in the world. Prior to becoming a chef, he completed degrees in theoretical mathematics and biochemistry.
                 .span4.founder
                   .text-center.section
                     = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/optlOTIVS4GTtYUY6lwN/convert?fit=crop&w=400&h=400&cache=true', class: 'img-circle'
                   %h4.text-center Grant Lee Crilly
                   %p 
-                    Grant was the first development chef hired by the Modernist Cuisine team. Prior to that, he was chef de cuisine at Busaba in Mumbai and Mistral in Seattle, and he served as head development chef at Delicious Planet. He has cooked for Pascal Barbot at L’Astrance, worked with Pierre Hermé’s team at Grégoire-Ferrandi, and practiced butchery at Bajon Jean Pierre in Paris.
+                    Grant was the first development chef hired by the <i>Modernist Cuisine</i> team. Prior to that, he was chef de cuisine at Busaba in Mumbai and Mistral in Seattle, and he served as head development chef at Delicious Planet. He cooked for Pascal Barbot at L’Astrance, worked with Pierre Hermé’s team at Grégoire-Ferrandi, and practiced butchery at Bajon Jean Pierre in Paris.
+                .span4.founder
+                  .text-center.section
+                    = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/5Iq86WtrSAe9xC0HCMre/convert?fit=crop&w=400&h=400&cache=true', class: 'img-circle'
+                  %h4.text-center Edward Starbird
+                  %p
+                    Edward spent 8 years in operations as an engineer, a production manager, and a supply chain manager. Seeking a smaller company, he has completely changed gears at ChefSteps and now wears many hats that keep the doors open, the lights on, and the development team innovating.
               %hr
               - @team.each_slice(3) do |slice|
                 .row
@@ -74,4 +74,5 @@
                         .team-member-title.text-center
                           %h5= member[:name]
                         .team-member-bio
-                          %p= member[:bio].html_safe
+                          %p
+                            = member[:bio].html_safe

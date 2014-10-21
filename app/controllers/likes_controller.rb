@@ -31,7 +31,7 @@ class LikesController < ApplicationController
     id = params[:likeable_id]
     if ['Activity', 'Upload'].include?(resource)
       @likeable = resource.singularize.classify.constantize.find(id)
-      @likes = current_user.likes_object?(@likeable)
+      @likes = current_user.likes_object?(@likeable) ? [true] : []
       render :json => @likes.to_json
     end
   end

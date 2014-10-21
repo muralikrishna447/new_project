@@ -1,3 +1,16 @@
+# Directive that takes an image and a video and creates an interactive element.
+# The directive uses the image as a cover photo and adds a play button.
+# Usage:
+# %cs-image-video(image='IMAGE_ID' video='YOUTUBE_ID')
+# Usage example: Hero Image/Video for recipes
+# Future improvements:
+#   Get it to work with cs-image
+#   Have it accept image url as well as Filepicker objects
+#   Generalize video so it accepts any url and not just a youtube_id
+#   A way to specify the size other than width 100% and height 600
+# Bugs:
+#   Autoplay doesn't seem to be working on iOS8 at the time of writing this
+
 @app.directive 'csImageVideo', ['$sce', '$window', '$timeout', 'csFilepickerMethods', ($sce, $window, $timeout, csFilepickerMethods) ->
   restrict: 'E'
   scope: {
