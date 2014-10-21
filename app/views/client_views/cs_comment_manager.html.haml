@@ -11,9 +11,9 @@
       .comment-count( ng-class="{'three-digits' : commentCount > 99}") 
         {{commentCount}}
 
-  .comment-container(ng-class="{'open' : commentsOpen}")
+  .comment-container(ng-class="{'open' : commentsOpen || brombone}")
     %i.icon-cs-close(ng-click='toggleShowComments($event)')
-    %cscomments(  ng-if="commentsEverOpened" 
+    %cscomments(  ng-if="commentsEverOpened || brombone" 
                   comments-type="{{commentsType}}" 
                   comments-id="{{commentsId}}" 
-                  seo-bot="#{is_brombone}")
+                  seo-bot="{{brombone}}")

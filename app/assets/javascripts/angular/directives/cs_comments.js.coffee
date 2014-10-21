@@ -7,10 +7,10 @@
   }
   controller: [ "$scope", "$http", ($scope, $http) ->
     $scope.renderSeoComments = ->
-      $scope.seoComments = ['hello']
+      $scope.seoComments = []
       identifier = $scope.commentsType + '_' + $scope.commentsId
-      $http.get('http://production-bloom.herokuapp.com/discussion/' + identifier + '/comments?apiKey=xchefsteps').then (response) ->
-        comments = response.data
+      $http.get('http://server.usebloom.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
+        comments = response.data.comments
         angular.forEach comments, (comment) ->
           $scope.seoComments.push(comment.content)
     $scope.openLogin = ->
