@@ -93,7 +93,7 @@ class HomeController < ApplicationController
       { 
         name: 'Jess Voelker', 
         title: 'Writer', 
-        image: 'http://placehold.it/400x400/&text=O_O', 
+        image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/68eXkVFVT32chsCtMWlA/convert?fit=max&w=300&h=300&cache=true', 
         bio: "It's possible Jessica Voelker overstated her culinary knowledge when she landed her first food and drink writing job at <i>Seattle Met</i> magazine, but she soon became obsessed-particularly with the cocktail world, which she covered in-depth on the magazine's <i>Sauced</i> blog. Before coming to ChefSteps, she worked as a restaurant reviewer and editor at <i>Washingtonian</i> magazine in Washington, DC, a finalist for the James Beard Award for food writing in a general-interest magazine in both 2013 and 2014."
       },
       { 
@@ -104,7 +104,7 @@ class HomeController < ApplicationController
       },
       { 
         name: 'Riley Moffit', 
-        image: 'http://placehold.it/400x400/&text=O_O', 
+        image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/8mg2DHfSTsmVLQlQeXBV/convert?fit=max&w=300&h=300&cache=true', 
         bio: "Riley decided he wanted to become a professional cook when he was just ten years old, and he's been pursuing that dream ever since. He attended the French Culinary Institute in Manhattan, and went on to work in several award-winning kitchens such as Blue Hill at Stone Barns, Mistral Kitchen, and the Willows Inn. Riley is also an occasional musician and actor (featured prominently in many-a-ChefSteps video), and the man washes dishes like a boss."
       },
       { 
@@ -114,17 +114,17 @@ class HomeController < ApplicationController
       },
       { 
         name: 'Alex Thomson', 
-        image: 'http://placehold.it/400x400/&text=O_O', 
+        image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/9PJlHJA4TsyOlFpFw2Wk/convert?fit=crop&w=300&h=300&cache=true', 
         bio: 'Coming soon. ...Right, Alex?'
       },
       { 
         name: 'Douglas Baldwin',
-        image: 'http://placehold.it/400x400/&text=O_O', 
+        image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/3Dsl13bSESwQhrb5qEwg/convert?fit=max&w=300&h=300&cache=true', 
         bio: "Douglas knows a thing or two about sous vide cooking: He posted his popular web guide in 2008, which has been translated into French, German, Portuguese, and Finnish; his book, <i>Sous Vide for the Home Cook</i>, was the third English-language cookbook (after Roca's and Keller's) on sous vide cooking when it came out in 2010; he wrote an article on it for the inaugural issue of the <i>International Journal of Gastronomy and Food Science</i>. If that wasn't enough, Douglas also has a Ph.D. in applied mathematics-his work on nonlinear dispersive wave interactions was highlighted in <i>Physics Today</i> and published in top journals like <i>Physical Review E</i>. Now he's using his knowledge of math, science, and cooking to help you cook smarter."
       },
       { 
         name: 'Reva Keller', 
-        image: 'http://placehold.it/400x400/&text=O_O', 
+        image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/DHQfrHVSbaUJpK8e34uM/convert?fit=max&w=300&h=300&cache=true', 
         bio: "Reva received a degree in fine arts from Cornish College of the Arts and has applied her expertise to everything from product photography to costume design. To avoid becoming a full-time starving artist, Reva decided to work somewhere where food was never scarce. At ChefSteps, she's fulfilling her childhood ambition of being around delicious food all day long, and making things look beautiful on film. Reva's greatest passions include stinky cheese, oysters, and Asian cuisine."
       },
       { 
