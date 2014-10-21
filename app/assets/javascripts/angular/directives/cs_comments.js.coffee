@@ -9,16 +9,18 @@
     $scope.renderSeoComments = ->
       $scope.seoComments = []
       identifier = $scope.commentsType + '_' + $scope.commentsId
+
       $http.get('http://server.usebloom.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
+
         comments = response.data.comments
-        angular.forEach comments, (comment) ->
+
+        angular.forEach comments, (comment) =>
           $scope.seoComments.push(comment.content)
     $scope.openLogin = ->
       $scope.$emit 'openLoginModal'
       $scope.$apply()
   ]
   link: (scope, element, attrs) ->
-
     scope.$watch 'commentsId', (newValue, oldValue) ->
       if newValue
         if scope.seoBot == 'true'
