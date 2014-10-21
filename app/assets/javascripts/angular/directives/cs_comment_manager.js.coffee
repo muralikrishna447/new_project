@@ -14,12 +14,24 @@
     $scope.commentsEverOpened = false
 
     $scope.toggleShowComments = ($event) ->
-      $scope.commentsOpen = ! $scope.commentsOpen
-      # Used with ng-if so we don't throw away the scope if they close it with an uncommitted comment. Also
-      # let's them close and reopen the same one quickly.
-      $scope.commentsEverOpened |= $scope.commentsOpen
+      $rootScope.commentsShowing = $scope.commentsOpen = ! $scope.commentsOpen
       $scope.updateCommentCount()
-      $rootScope.commentsShowing = $scope.commentsOpen
+
+      # Used with ng-if so we don't throw away the scope if they close it with an 
+      # uncommitted comment. Also let's them close and reopen the same one quickly.
+      $scope.commentsEverOpened |= $scope.commentsOpen
+
+      slide = $element.closest('.comments-slide')
+      if slide
+        if $scope.commentsOpen
+          # document.documentElement.clientWidth was wrong in classes... why?
+          viewRight = window.innerWidth || document.documentElement.clientWidth
+          rightMargin = if viewRight > 320 then 23 else 20
+          myRight = $element.find('.comment-container')[0].getBoundingClientRect().right + rightMargin
+          slide.animate({'left': Math.min(viewRight - myRight, 0)})
+        else
+          slide.animate({'left': 0})
+
       $event.stopPropagation() if $event
       true
 
