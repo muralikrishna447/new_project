@@ -2,7 +2,7 @@
   .master-column
     #main-content.main-content-container(ng-cloak)
 
-      .aside.noprint(ng-show="(! editMode) && (activityColumns >= 3)")
+      .aside.tools-aside.noprint(ng-show="(! editMode) && (activityColumns >= 3)")
         = render 'shared/tools'
 
       .standard-item

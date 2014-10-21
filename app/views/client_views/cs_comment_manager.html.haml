@@ -1,0 +1,19 @@
+.comment-manager(ng-hide="editMode")
+
+  .comment-icon-group(  ng-click="toggleShowComments($event)")
+    .comments-no-count.anim-basic-fade(ng-show="commentCount <= 0")
+      .comments-no-count-maybe-hover(ng-show="showWhenZero")
+        %i.icon-cs-comment-open
+        .plus +
+
+    .comments-with-count.anim-basic-fade(ng-show="commentCount > 0")
+      %i.icon-cs-comment-filled
+      .comment-count( ng-class="{'three-digits' : commentCount > 99}") 
+        {{commentCount}}
+
+  .comment-container(ng-class="{'open' : commentsOpen}")
+    %i.icon-cs-close(ng-click='toggleShowComments($event)')
+    %cscomments(  ng-if="commentsEverOpened" 
+                  comments-type="{{commentsType}}" 
+                  comments-id="{{commentsId}}" 
+                  seo-bot="#{is_brombone}")

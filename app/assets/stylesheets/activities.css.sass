@@ -64,6 +64,22 @@ $banner-height: $baseline * 45
   padding-top: $baseline * 2
   width: 100%
 
+.step-row
+  width: 100%
+
+.step-content-group
+  position: relative
+
+  .comment-manager
+    position: absolute
+    right: -40px
+    top: 0
+
+@media (max-width:320px)
+  .step-content-group
+    .comment-manager
+      right: -38px
+
 .step-number
   margin-left: auto
   margin-right: auto
@@ -76,6 +92,10 @@ $banner-height: $baseline * 45
   height: 70px
   border-radius: 50%
   @include boxsizing
+
+.tools-aside
+  margin-right: 100px
+
 
 .tools-list
   position: relative
@@ -93,6 +113,12 @@ $banner-height: $baseline * 45
     .tool-group
       @include display-flex
       @include align-items(baseline)
+
+      .comment-icon-group
+        .plus, .comment-count
+          opacity: 0
+        i
+          font-size: 16px !important
 
     &:hover
       color: $orange !important
