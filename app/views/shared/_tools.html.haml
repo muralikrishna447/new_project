@@ -14,10 +14,10 @@
 
 
   %li(ng-if="! inClass")
-    %a(href='#discussion')
+    %a(cs-smooth-scroll-to='#discussion')
       .tool-group
         .icon-holder
-          %i.icon-comment
+          %i.icon-cs-comment-filled
         .tool-name(ng-pluralize
                   count='commentCount'
                   when="  { '-1' : 'Comments', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")  

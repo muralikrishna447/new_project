@@ -40,6 +40,7 @@
     %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
+    %link(href="/chefsteps-icons.css" rel="stylesheet" type="text/css")
     %link{href:"/apple-touch-icon.png", rel:"apple-touch-icon" }
     = render 'layouts/mixpanel'
     = render 'layouts/google_analytics'
@@ -67,7 +68,7 @@
         window.chefstepsUserId = null
 
 
-  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' => "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'"}
+  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :'ng-click' => "$broadcast('bodyClicked')", :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' =>  "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'"}
     #rails-flash.hide
       = flash.to_json
     - unless @hide_nav == true

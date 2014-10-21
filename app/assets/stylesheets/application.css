@@ -63,6 +63,7 @@
  *= require cs_blinders
  *= require egg_timer
  *= require activities
+ *= require cs_comment_manager
  *= require modals
  *= require buttons
  *= require cs_redactor

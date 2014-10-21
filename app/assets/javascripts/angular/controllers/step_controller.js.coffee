@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootScope", "$element", "$timeout", ($scope, $rootScope, $element, $timeout) ->
+angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootScope", "$element", "$timeout", "$http", ($scope, $rootScope, $element, $timeout, $http) ->
 
   $scope.step.presentation_hints ||= {}
   $scope.step.presentation_hints.aside_position ?= "left"
@@ -100,11 +100,12 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     return $scope.$index + 1 if $scope.step.is_aside
     $scope.$index
 
-  $scope.asideClass =  ->
+  $scope.asideClass = ->
     result = ($scope.effectiveAsideType($scope.stepIndex()) || '')
     if $scope.hasAV() || $scope.step.image_id
       result += ' well aside-with-media'
     else
       result += ' well-white-with-border'
     result
+
 ]
