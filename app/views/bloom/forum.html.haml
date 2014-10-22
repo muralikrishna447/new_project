@@ -11,7 +11,7 @@
 
     - if current_user
       :javascript
-        window.encryptedUser = "#{escape_javascript(current_user.encrypted_bloom_forum)}";
+        window.encryptedUser = "#{escape_javascript(current_user.encrypted_bloom_info)}";
         window.chefstepsUserId = "#{current_user.id}"
     - else
       :javascript

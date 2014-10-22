@@ -209,18 +209,6 @@ class User < ActiveRecord::Base
   def encrypted_bloom_info
     user_json = {'userId' => self.id.to_s}.to_json
     begin
-      response = Faraday.get 'https://api.usebloom.com/encrypt?string=' + user_json + '&secret=xchefstepscRP9pJomgiluvfoodNTJto&apiKey=xchefsteps'
-      response.body
-    rescue Faraday::Error::ConnectionFailed => e
-      logger.warn "Unable to encrypt info for Bloom: #{e}"
-      # returns something escape_javascript can handle
-      return false
-    end
-  end
-
-  def encrypted_bloom_forum
-    user_json = {'userId' => self.id.to_s}.to_json
-    begin
       response = Faraday.get 'https://server.usebloom.com/encrypt?string=' + user_json + '&secret=xchefstepscRP9pJomgiluvfoodNTJto&apiKey=xchefsteps'
       response.body
     rescue Faraday::Error::ConnectionFailed => e
