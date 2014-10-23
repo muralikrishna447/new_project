@@ -7,6 +7,7 @@
     @include transition(all 300ms ease-in-out)
     @include unselectable
     cursor: pointer
+    position: relative
 
     &:hover
       i, .plus
@@ -69,13 +70,14 @@
   position: relative
   left: 0
 
-  &.comments-showing
+  &.open
 
     .aside-separate, .aside-inset, .hide-on-comment-slide
       opacity: 0
 
     .comment-icon-group
       opacity: 0
+      z-index: -1
 
     .tools-list
       li:not(.comment-list), .comment-list .tool-name
