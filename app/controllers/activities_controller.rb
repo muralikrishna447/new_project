@@ -221,7 +221,7 @@ class ActivitiesController < ApplicationController
 
               @activity.update_equipment_json(equip)
               @activity.update_ingredients_json(ingredients)
-              @activity.update_steps_json(steps)
+              @activity.update_json(steps)
 
               # This would be better handled by history state / routing in frontend, but ok for now
               if @activity.slug != old_slug

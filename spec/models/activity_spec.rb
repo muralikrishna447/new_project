@@ -292,12 +292,16 @@ describe Activity do
   end
 end
 
+
 describe Activity, "#update_steps" do
   let(:activity) { Fabricate(:activity, title: 'foo') }
 
-  let(:step1) { {title: 'Blend', directions: 'blend it'} }
-  let(:step2) { {title: '', directions: 'cut it'} }
-  let(:step_attrs) {[ step1, step2 ] }
+  let(:step1) { {title: 'Blend', directions: 'AAA'} }
+  let(:step2) { {title: '', directions: 'BBB'} }
+  let(:step3) { {title: '', directions: 'CCC'} }
+  let(:step4) { {id: 'NEW_9999', title: '', directions: 'DDD'} }
+  let(:step5) { {id: 'NEW_8888', title: '', directions: 'EEE'} }
+  let(:step_attrs) {[ step1, step2, step3 ] }
 
   describe "create" do
     before do
@@ -305,41 +309,42 @@ describe Activity, "#update_steps" do
     end
 
     it "creates unique steps for each non-empty attribute set" do
-      activity.steps.should have(2).steps
+      activity.steps.should have(3).steps
     end
 
     it "creates steps with specified attributes" do
       activity.steps.first.title.should == 'Blend'
-      activity.steps.first.directions.should == 'blend it'
+      activity.steps.first.directions.should == 'AAA'
     end
   end
 
   describe "update" do
     before do
       activity.update_steps(step_attrs)
-      step_attrs.first.merge!(title: 'Blend', directions: 'stuff')
+      step_attrs.first.merge!(title: 'Blend', directions: 'XXX')
       activity.update_steps(step_attrs)
       activity.steps.reload
     end
 
     it "updates existing steps" do
-      activity.steps.should have(2).steps
+      activity.steps.should have(3).steps
+
       activity.steps.first.title.should == 'Blend'
-      activity.steps.first.directions.should == 'stuff'
+      activity.steps.first.directions.should == 'XXX'
     end
   end
 
   describe "destroy" do
     before do
       activity.update_steps(step_attrs)
-      activity.update_steps(step_attrs[1..-1])
+      activity.update_steps([step1, step3])
       activity.steps.reload
     end
 
     it "deletes steps not included in attribute set" do
-      activity.steps.should have(1).steps
-      activity.steps.first.title.should == ''
-      activity.steps.first.directions.should == 'cut it'
+      activity.steps.should have(2).steps
+      activity.steps.first.directions.should == 'AAA'
+      activity.steps.last.directions.should == 'CCC'
     end
   end
 
@@ -349,8 +354,31 @@ describe Activity, "#update_steps" do
     end
 
     it "updates ordering" do
-      activity.update_steps([step2, step1])
-      activity.steps.ordered.first.directions.should == 'cut it'
+      activity.update_steps([step2, step1, step3])
+      activity.steps.ordered.first.directions.should == 'BBB'
+      activity.steps.ordered.last.directions.should == 'CCC'
+    end
+  end
+
+  describe "re-order, add, and delete combined - ids maintained" do
+    before do
+      activity.update_steps(step_attrs)
+      activity.steps.reload
+    end
+
+    it "updates ordering and maintains ids for old steps" do
+      old_ids = activity.steps.map(&:id)
+      activity.update_steps([step3, step4, step1, step5])
+      activity.steps.reload
+      new_ids = activity.steps.map(&:id)
+
+      activity.steps.should have(4).steps
+      activity.steps.ordered.map(&:directions).should == ['CCC', 'DDD','AAA', 'EEE']
+      new_ids[0].should == old_ids[2]
+      new_ids[1].should_not == 0
+      new_ids[2].should == old_ids[0]
+      new_ids[3].should_not == 0
+      puts activity.steps.inspect
     end
   end
 end
