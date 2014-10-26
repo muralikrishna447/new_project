@@ -9,9 +9,9 @@
     $scope.renderSeoComments = ->
       $scope.seoComments = []
       identifier = $scope.commentsType + '_' + $scope.commentsId
+      console.log "*** renderseo"
 
       $http.get('http://server.usebloom.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
-
         comments = response.data.comments
 
         angular.forEach comments, (comment) =>
