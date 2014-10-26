@@ -1,4 +1,7 @@
 - content_for :title, "Profile - #{@user.name}"
+/ Don't index user profiles - we don't want to leak Google juice from serious content pages onto profiles, and also some users get upset when they see their profile indexed.
+- content_for :extra_head_tags, '<META NAME="ROBOTS" CONTENT="NOINDEX">'.html_safe
+
 .hide
   / Automatically logs in user into forum
   %iframe{src:'http://forum.chefsteps.com/entry/jsconnect?client_id=1924714588&Target=%2F'}

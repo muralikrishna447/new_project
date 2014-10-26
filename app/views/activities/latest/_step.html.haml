@@ -16,8 +16,7 @@
   %div( ng-if='! step.is_aside'
         ng-controller="StepController"   
         ng-class="getStepClass()"                            
-        cs-watch-focus=''
-        id="step_{{step.id}}")
+        cs-watch-focus='')
         
 
     .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, -1)")

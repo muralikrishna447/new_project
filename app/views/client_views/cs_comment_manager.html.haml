@@ -1,6 +1,6 @@
 .comment-manager(ng-hide="editMode")
 
-  .comment-icon-group(  ng-click="toggleShowComments($event)")
+  .comment-icon-group(ng-click="toggleShowComments($event)")
     .comments-no-count.anim-basic-fade(ng-show="commentCount <= 0")
       .comments-no-count-maybe-hover(ng-show="showWhenZero")
         %i.icon-cs-comment-open
@@ -11,7 +11,7 @@
       .comment-count( ng-class="{'three-digits' : commentCount > 99}") 
         {{commentCount}}
 
-  .comment-container(ng-class="{'open' : commentsOpen || brombone}")
+  .comment-container.anim-basic-fade(ng-show="commentsOpen || brombone")
     %i.icon-cs-close(ng-click='toggleShowComments($event)')
     %cscomments(  ng-if="commentsEverOpened || brombone" 
                   comments-type="{{commentsType}}" 
