@@ -49,7 +49,7 @@
 
     .banner-spacer.noprint( ng-if="heroMedia.heroDisplayType() == 'none'" )
 
-    .comments-slide(ng-class="{'comments-showing' : commentsShowing}")
+    .comments-slide(ng-class="{'open' : anyCommentsOpen}")
       #activity-title(data-activity="#{@activity.title}")
       %form.printable(ng-cloak name="activityForm" csfixnakedlinks)
                

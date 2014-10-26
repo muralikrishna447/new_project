@@ -216,33 +216,14 @@ class Activity < ActiveRecord::Base
     self
   end
 
-  def update_steps_json(steps_attrs)
-    # Easiest just to be rid of all of the old steps, we'll make them from scratch
-    steps.destroy_all()
-    steps.reload()
-    if steps_attrs
-      steps_attrs.each do |step_attr|
-        step = steps.create()
-        step.update_attributes!(
-            title: step_attr[:title],
-            directions: step_attr[:directions],
-            youtube_id: step_attr[:youtube_id],
-            image_id: step_attr[:image_id],
-            image_description: step_attr[:image_description],
-            audio_clip: step_attr[:audio_clip],
-            audio_title: step_attr[:audio_title],
-            step_order_position: :last,
-            hide_number: step_attr[:hide_number],
-            is_aside: step_attr[:is_aside],
-            presentation_hints: step_attr[:presentation_hints],
-            extra: step_attr[:extra]
-        )
-        step.update_ingredients_json(step_attr[:ingredients])
+
+  def reject_invalid_steps(step_attrs)
+    step_attrs.select! do |step_attr|
+      [:directions].all? do |test|
+        step_attr[test].present?
       end
     end
-    self
   end
-
 
   def update_steps(step_attrs)
     if step_attrs
@@ -530,17 +511,13 @@ class Activity < ActiveRecord::Base
     equipment.where(equipment_id: old_equipment_ids).destroy_all
   end
 
-  def reject_invalid_steps(step_attrs)
-    step_attrs.select! do |step_attr|
-      [:directions].all? do |test|
-        step_attr[test].present?
-      end
-    end
-  end
-
   def update_and_create_steps(step_attrs)
     step_attrs.each do |step_attr|
-      step = steps.find_or_create_by_id(step_attr[:id])
+      step_id = step_attr[:id]
+      if step_id && (step_id.to_i == 0)
+        step_id = nil
+      end
+      step = steps.find_or_create_by_id(step_id)
       step.update_attributes(
         title: step_attr[:title],
         directions: step_attr[:directions],
@@ -551,7 +528,9 @@ class Activity < ActiveRecord::Base
         audio_title: step_attr[:audio_title],
         step_order_position: :last,
         hide_number: step_attr[:hide_number],
-        is_aside: step_attr[:is_aside]
+        is_aside: step_attr[:is_aside],
+        presentation_hints: step_attr[:presentation_hints],
+        extra: step_attr[:extra]
       )
       step_attr[:id] = step.id
     end

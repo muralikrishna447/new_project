@@ -1,9 +1,5 @@
 angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$location", "$anchorScroll", ($scope, $location, $anchorScroll) ->
 
-  $scope.fuckMe = (idx) ->
-    alert("FUCK ME" + idx)
-    $scope.addStep(idx, -1)
-
   $scope.stepNumber = (index) ->
     return "" if $scope.activity.steps[index].hide_number
     _.filter($scope.activity.steps[0...index], (step) -> (! (step.hide_number || step.is_aside))).length + 1
@@ -52,7 +48,7 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     true
 
   $scope.addStep = (idx, direction) ->
-    newStep = angular.extend({}, {ingredients: [], id: (Math.random() * 999999999).toString()})
+    newStep = angular.extend({}, {ingredients: [], id: "NEW_" + (Math.random() * 999999999).toString()})
     if $scope.activity.steps.length == 0
       $scope.activity.steps.push(newStep)
     else

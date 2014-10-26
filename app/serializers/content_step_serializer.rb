@@ -6,7 +6,7 @@ class ContentStepSerializer < ApplicationSerializer
   end
 
   def url
-    "#{activity_url(object.activity)}#step_#{object.id}"
+    "#{activity_url(object.activity)}#numbered-step-#{object.id}"
   end
 
   def context
