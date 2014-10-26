@@ -217,8 +217,17 @@ class Activity < ActiveRecord::Base
   end
 
 
+  def reject_invalid_steps(step_attrs)
+    step_attrs.select! do |step_attr|
+      [:directions].all? do |test|
+        step_attr[test].present?
+      end
+    end
+  end
+
   def update_steps(step_attrs)
     if step_attrs
+      reject_invalid_steps(step_attrs)
       update_and_create_steps(step_attrs)
       delete_old_steps(step_attrs)
     end
