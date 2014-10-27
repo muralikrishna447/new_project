@@ -113,5 +113,7 @@ module Delve
     # Make sure there is no ssl within the class itself
     # config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, except: [%r{^(?!.*landing).*classes.*$|.*projects.*$}], only_environments: ['production', 'staging'], force_secure_cookies: false
     # config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, except: [%r{.*/activities.*}], only_environments: ['production', 'staging'], force_secure_cookies: false, strict: true
+
+    config.log_tags = [:uuid ]
   end
 end
