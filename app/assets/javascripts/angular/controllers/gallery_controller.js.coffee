@@ -75,6 +75,7 @@
   $scope.filters['published_status'] = $scope.params['published_status']
   $scope.filters['generator'] = $scope.params['generator']
   $scope.filters['sort'] = $scope.params['sort']
+  $scope.filters['difficulty'] = $scope.params['difficulty']
 
   $scope.getActivities = ->
     $scope.params['page'] = $scope.page
