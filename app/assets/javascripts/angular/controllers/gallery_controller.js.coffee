@@ -79,8 +79,9 @@
 
   $scope.getActivities = ->
     $scope.params['page'] = $scope.page
-    if $scope.params['difficulty'] && $scope.params['difficulty'] == 'any'
-      delete $scope.params['difficulty']
+    if $scope.params['difficulty']
+      if $scope.params['difficulty'] == 'any' || $scope.params['difficulty'] == 'undefined'
+        delete $scope.params['difficulty']
     console.log "params: ", $scope.params
     Activity.query($scope.params).$promise.then (results) ->
       if results.length > 0
