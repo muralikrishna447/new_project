@@ -219,7 +219,7 @@ class Activity < ActiveRecord::Base
 
   def reject_invalid_steps(step_attrs)
     step_attrs.select! do |step_attr|
-      [:directions].all? do |test|
+      [:directions, :image_id, :youtube_id, :title].any? do |test|
         step_attr[test].present?
       end
     end
