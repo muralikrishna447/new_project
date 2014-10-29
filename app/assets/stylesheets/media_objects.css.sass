@@ -180,26 +180,41 @@
     width: 100%
   a
     color: #333333
-    .media-box-4-title
-      max-width: 100%
+    .media-box-4-title-container
       position: absolute
-      left: 0
-      bottom: 0
-      background: rgba(226,95,37,.9)
-      padding: 0px 10px
-      // box-shadow: 15px 0 0 0 rgba(226,95,37,.9), -15px 0 0 0 rgba(226,95,37,.9)
-      color: white
-      @include primary-font-light
-      text-transform: uppercase
-      text-overflow: ellipsis
-      white-space: nowrap
-      overflow: hidden
-      @include transition(.3s all $standard-bezier)
-      @include boxsizing
-      &:hover
-        background: rgba(255,255,255,.9)
-        color: $orange
-        box-shadow: 15px 0 0 0 rgba(255,255,255,.9), -15px 0 0 0 rgba(255,255,255,.9)
+      bottom: 0px
+      padding: 0px 25px 0px 10px
+      .media-box-4-title
+        display: inline
+        border-width: 3px 0px
+        border-color: rgba(226,95,37,.9)
+        border-style: solid
+        box-shadow: 10px 0 0 rgba(226,95,37,.9), -10px 0 0 rgba(226,95,37,.9)
+        max-width: 100%
+        // position: absolute
+        left: 0
+        bottom: 0
+        background: rgba(226,95,37,.9)
+        // padding: 0px 25px 0px 10px
+        // box-shadow: 15px 0 0 0 rgba(226,95,37,.9), -15px 0 0 0 rgba(226,95,37,.9)
+        color: white
+        @include primary-font-light
+        text-transform: uppercase
+        // text-overflow: ellipsis
+        // white-space: nowrap
+        overflow: hidden
+        @include transition(.3s all $standard-bezier)
+        @include boxsizing
+    &:hover
+      .media-box-4-title-container
+        .media-box-4-title
+          background: rgba(255,255,255,.9)
+          color: $orange
+          border-width: 3px 0px
+          border-color: rgba(255,255,255,.9)
+          border-style: solid
+          box-shadow: 10px 0 0 rgba(255,255,255,.9), -10px 0 0 rgba(255,255,255,.9)
+          // box-shadow: 15px 0 0 0 rgba(255,255,255,.9), -15px 0 0 0 rgba(255,255,255,.9)
 
 
 
