@@ -33,6 +33,9 @@ module Api
 
       def index
         per = params[:per] ? params[:per] : 12
+        if params[:difficulty] == 'any'
+          params.delete 'difficulty'
+        end
         @activities = apply_scopes(Activity).uniq().page(params[:page]).per(per)
         render json: @activities, each_serializer: Api::ActivityIndexSerializer
       end
