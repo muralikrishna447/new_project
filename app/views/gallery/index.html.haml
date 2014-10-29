@@ -42,7 +42,7 @@
             Add Recipe
 
   .row
-    .span12.gallery-items(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='dataLoading' infinite-scroll-distance='1')
+    .span12.gallery-items(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='true' infinite-scroll-distance='1')
       %cs-index-item.cs-index-item(ng-repeat='activity in activities' title='activity.title' url='activity.url' image='activity.image' difficulty='activity.difficulty' likes-count='activity.likesCount')
 
 = render 'home/madlib_popup', registration_source: 'gallery'
