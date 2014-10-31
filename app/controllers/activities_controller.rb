@@ -84,8 +84,6 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @random_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.order("RANDOM()").last(6)
-        @popular_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.order("RANDOM()").first(6)
 
         # New school class
         containing_class = @activity.containing_course
@@ -221,7 +219,7 @@ class ActivitiesController < ApplicationController
 
               @activity.update_equipment_json(equip)
               @activity.update_ingredients_json(ingredients)
-              @activity.update_steps_json(steps)
+              @activity.update_steps(steps)
 
               # This would be better handled by history state / routing in frontend, but ok for now
               if @activity.slug != old_slug

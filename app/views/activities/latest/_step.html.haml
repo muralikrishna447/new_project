@@ -5,8 +5,8 @@
   -# Render the aside before the step so it can be floated left or
   -# right and align with the top. Note nasty little trick of rebinding step to
   -# the next step.
-  .aside.aside-separate.anim-basic-fade(  ng-if='isSeparateAside($index +1)' 
-                                          ng-init='step=activity.steps[$index +1]'       
+  .aside.aside-separate.anim-basic-fade(  ng-if='isSeparateAside($index)' 
+                                          ng-init='step=activity.steps[$index]'       
                                           ng-controller="StepController"   
                                           cs-watch-focus=''
                                           ng-class="asideClass()")
@@ -16,8 +16,7 @@
   %div( ng-if='! step.is_aside'
         ng-controller="StepController"   
         ng-class="getStepClass()"                            
-        cs-watch-focus=''
-        id="step_{{step.id}}")
+        cs-watch-focus='')
         
 
     .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, -1)")
@@ -40,8 +39,8 @@
       =render 'activities/step_ingredients'
 
     .step-content-container
-      .aside.aside-inset.anim-basic-fade(  ng-if='isInsetAside($index + 1)' 
-                                              ng-init='step=activity.steps[$index + 1]'       
+      .aside.aside-inset.anim-basic-fade(  ng-if='isInsetAside($index)' 
+                                              ng-init='step=activity.steps[$index]'       
                                               ng-controller="StepController"   
                                               cs-watch-focus=''
                                               ng-class="asideClass()")
