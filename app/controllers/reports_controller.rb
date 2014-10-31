@@ -62,8 +62,8 @@ class ReportsController < ApplicationController
   # end
 
   def stripe
-    start_time = (Time.parse("22/08/2014")).beginning_of_day
-    end_time = (Time.parse("31/08/2014")).end_of_month
+    start_time = (Time.parse("01/09/2014")).beginning_of_day
+    end_time = (Time.parse("30/09/2014")).end_of_month
     stripe_csv = generate_csv(start_time, end_time)
 
     # Check is for money going out
@@ -78,7 +78,7 @@ class ReportsController < ApplicationController
     CSV.parse(stripe_csv, headers: true).each do |stripe_record|
       if stripe_record["object"] == "charge"
         if transaction_type(stripe_record) == "CHECK"
-          refunds << ["TRNS", "1", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Stripe Account", nil, "ChefSteps", stripe_record["total_refund"], "Refund for refunded charge ID: #{stripe_record["id"]}"]
+          refunds << ["TRNS", "1", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Stripe Account", nil, "ChefSteps", stripe_record["total_refund"], "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
           refunds << ["SPL", "2", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Returns", "Delve Online", "ChefSteps", stripe_record["refund_revenue"], "Refund of charge #{stripe_record["id"]}"]
           line_number = 3
           if stripe_record["sales_tax_paid?"] == "true"
@@ -90,7 +90,7 @@ class ReportsController < ApplicationController
 
           if Time.parse(stripe_record["transaction_created"]).between?(start_time, end_time)
             charges << ["TRNS", "1", "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Stripe Account", nil, "ChefSteps", stripe_record["total_deposit"], "Net for charge ID: #{stripe_record["id"]}"]
-            charges << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:#{deposit_type(stripe_record)}", "Delve Online", "ChefSteps", stripe_record["revenue"], "Charge ID: #{stripe_record["id"]}"]
+            charges << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:#{deposit_type(stripe_record)}", "Delve Online", "ChefSteps", stripe_record["revenue"], "Charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
             line_number = 3
             if stripe_record["sales_tax_paid?"] == "true"
               charges << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "ChefSteps", stripe_record["sales_tax"], "Sales Tax for charge ID: #{stripe_record["id"]}"]
@@ -101,7 +101,7 @@ class ReportsController < ApplicationController
           end
         elsif transaction_type(stripe_record) == "DEPOSIT"
           charges << ["TRNS", "1", transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Stripe Account", nil, "ChefSteps", stripe_record["total_deposit"], "Net for charge ID: #{stripe_record["id"]}"]
-          charges << ["SPL", "2", transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:#{deposit_type(stripe_record)}", "Delve Online", "ChefSteps", stripe_record["revenue"], "Charge ID: #{stripe_record["id"]}"]
+          charges << ["SPL", "2", transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:#{deposit_type(stripe_record)}", "Delve Online", "ChefSteps", stripe_record["revenue"], "Charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
           line_number = 3
           if stripe_record["sales_tax_paid?"] == "true"
             charges << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "ChefSteps", stripe_record["sales_tax"], "Sales Tax for charge ID: #{stripe_record["id"]}"]
