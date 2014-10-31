@@ -35,8 +35,8 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
 
   $scope.canMakeAside = (idx) ->
     return false if idx == 0
-    return false if $scope.hasAside(idx)
-    return false if $scope.isAside(idx - 1)
+    # return false if $scope.hasAside(idx)
+    return false if $scope.isAside(idx + 1)
     true
 
   $scope.canMoveStep = (idx, direction) ->
