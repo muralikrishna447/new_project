@@ -19,7 +19,7 @@ class AssembliesController < ApplicationController
     if current_user
       if (current_user.enrolled?(@assembly)) || current_user.admin?
         case @assembly.assembly_type
-        when 'Course', 'Project'
+        when 'Course', 'Project', 'Recipe Development'
           render "courses_#{params[:action]}"
         else
           render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
@@ -28,7 +28,11 @@ class AssembliesController < ApplicationController
         redirect_to landing_assembly_path(@assembly)
       end
     else
-      redirect_to landing_assembly_path(@assembly)
+      if @assembly.assembly_type == 'Recipe Development'
+        render "courses_#{params[:action]}"
+      else
+        redirect_to landing_assembly_path(@assembly)
+      end
     end
     # @hide_nav = true
     # @upload = Upload.new
