@@ -19,7 +19,7 @@ class AssembliesController < ApplicationController
     if current_user
       if (current_user.enrolled?(@assembly)) || current_user.admin?
         case @assembly.assembly_type
-        when 'Course', 'Project'
+        when 'Course', 'Project', 'Recipe Development'
           render "courses_#{params[:action]}"
         else
           render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
