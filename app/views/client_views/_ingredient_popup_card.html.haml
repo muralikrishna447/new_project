@@ -10,7 +10,12 @@
         .relative
           .short-summary.section(ng-bind-html="obj.text_fields.description | markdown | shortcode")
         %a(ng-href='/ingredients/{{obj.slug}}' target='_blank') 
-          .btn.btn-large.btn-secondary LEARN MORE
+          .btn.btn-large.btn-secondary LEARN MORE          
+        %a(ng-click="outclickProduct(ai)" ng-if="obj.product_url")
+          .btn.btn-large.btn-secondary
+            %i.icon-shopping-cart
+            BUY
+
       %div(ng-switch-when="false")
         .needs-work.section
           This ingredient wiki entry needs your help!

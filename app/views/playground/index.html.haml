@@ -1,0 +1,29 @@
+// Enter your test template here
+
+:css
+  .test-wrapper {
+    width: 100%;
+    display: inline-block;
+    position: relative;
+  }
+  .test-wrapper:after {
+    padding-top: 56.25%;
+    display: block;
+    content: '';
+  }
+  .test-main {
+    position: absolute;
+    top: 0; bottom: 0; right: 0; left: 0;
+    background-color: rgb(0, 140, 200);
+  }
+
+  @media (min-width: 1000px) {
+    .test-wrapper:after {
+      padding-top: 35%;
+    }
+  }
+
+/ .test-wrapper(ng-controller='PlaygroundController')
+/   .test-main
+%div(ng-controller='PlaygroundController')
+  %cs-image-video(image='activity.image' video='activity.youtubeId')

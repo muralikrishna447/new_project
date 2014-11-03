@@ -1,10 +1,10 @@
 .section(ng-controller="IngredientsController" cs-watch-focus)
   .activity-ingredients-list#full-ingredients-list.section
   
-    .ingredients-menu-button(ng-show="activity.ingredients.length && ! editMode")
+    .ingredients-menu-button.noprint(ng-show="activity.ingredients.length && ! editMode")
       .btn.btn-link( ng-click="toggleIngredientsMenu()" 
                       ng-class="{'active' : csGlobals.scaling != 1}")
-        Scale ...
+        Scale recipe ...
 
     .ingredients-menu.well( ng-show="activity.ingredients.length"
                             ng-class="{'menu-active' : showIngredientsMenu}")
@@ -31,7 +31,6 @@
     .ingredients-well(  ng-show="activity.ingredients.length" 
                         ng-class="{'menu-active' : showIngredientsMenu}"
                         cs-on-enter-viewport
-                        reached-screen-callback="maybeShowWhyByWeight()"
                         offset="200")
       = render 'shared/ingredients_list', source: "activity"
 

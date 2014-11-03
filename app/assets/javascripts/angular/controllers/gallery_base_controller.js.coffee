@@ -33,7 +33,7 @@
   $scope.itemImageURL = (item, width) ->
     fpfile = $scope.objectMethods.itemImageFpfile(item)
     height = width * 9.0 / 16.0
-    return (window.cdnURL(fpfile.url) + "/convert?fit=crop&w=#{width}&h=#{height}&cache=true") if (fpfile? && fpfile.url?)
+    return (window.cdnURL(fpfile.url) + "/convert?fit=crop&w=#{width}&h=#{height}&quality=90&cache=true") if (fpfile? && fpfile.url?)
     $scope.objectMethods.placeHolderImage()
 
   $scope.serialize = (obj) ->
@@ -149,7 +149,8 @@
   # allowed anymore, so go back to default sort.
   $scope.$watch 'filters.search_all', (newValue, oldValue) ->
     if newValue?.length > 0 && (! oldValue || oldValue.length == 0)
-      $scope.filters.sort = "Relevance" 
+      $scope.filters.sort = "Relevance"
+      $scope.filters.activity_type = "Any" 
     else if newValue?.length == 0
       $scope.filters.sort = $scope.defaultFilters.sort
     $scope.throttledClearAndLoad()

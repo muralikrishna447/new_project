@@ -20,7 +20,7 @@
             .row
               .span12
                 .upload-wrapper.profile-edit-image
-                  = image_tag '/assets/missing.png', class: "upload-photo-preview"
+                  = image_tag 'https://d92f495ogyf88.cloudfront.net/static/missing.png', class: "upload-photo-preview"
                   = link_to '+', '#', class: 'profile-photo-btn'
                   %p= f.hidden_field :image_id, class: 'input-block-level upload-photo-field'
             .row

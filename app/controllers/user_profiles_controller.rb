@@ -38,6 +38,7 @@ class UserProfilesController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    render_unauthorized unless current_user == @user
   end
 
   def update

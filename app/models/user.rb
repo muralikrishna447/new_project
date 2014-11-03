@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
 
   serialize :survey_results, ActiveRecord::Coders::NestedHstore
 
-  ROLES = %w[admin contractor moderator user banned]
+  ROLES = %w[admin contractor moderator collaborator user banned]
 
   include Searchable
 
@@ -209,7 +209,7 @@ class User < ActiveRecord::Base
   def encrypted_bloom_info
     user_json = {'userId' => self.id.to_s}.to_json
     begin
-      response = Faraday.get 'http://api.usebloom.com/encrypt?string=' + user_json + '&apiKey=xchefsteps'
+      response = Faraday.get 'https://server.usebloom.com/encrypt?string=' + user_json + '&secret=xchefstepscRP9pJomgiluvfoodNTJto&apiKey=xchefsteps'
       response.body
     rescue Faraday::Error::ConnectionFailed => e
       logger.warn "Unable to encrypt info for Bloom: #{e}"
@@ -220,6 +220,42 @@ class User < ActiveRecord::Base
     as_json(
       only: [:name, :bio]
     )
+  end
+
+  def self.with_views_greater_than(view_count)
+    user_count = User.joins(:events).select('events.user_id').group('events.user_id').having("count(events.id) >=#{view_count}").count
+    user_ids = user_count.keys
+    users = User.find(user_ids)
+    users
+  end
+
+  def self.export_top_users
+    data = []
+    users = User.with_views_greater_than(500).first(100)
+    users.each do |user|
+      unless (user.email.include? "@chefsteps.com") || (user.email.include? "desunaito@gmail.com")
+        data << user.email
+        puts "Importing user:"
+        puts user
+      end
+    end
+    open('///Users/hnguyen/Desktop/most_active_users', 'w') do |f|
+      f << data.to_json
+    end
+  end
+  def self.export_top_users_2
+    data = []
+    users = User.with_views_greater_than(500).last(500)
+    users.each do |user|
+      unless (user.email.include? "@chefsteps.com") || (user.email.include? "desunaito@gmail.com")
+        data << user.email
+        puts "Importing user:"
+        puts user
+      end
+    end
+    open('///Users/hnguyen/Desktop/most_active_users_2', 'w') do |f|
+      f << data.to_json
+    end
   end
 end
 

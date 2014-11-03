@@ -7,27 +7,36 @@
   }
   controller: [ "$scope", "$http", ($scope, $http) ->
     $scope.renderSeoComments = ->
-      $scope.seoComments = ['hello']
+      $scope.seoComments = []
       identifier = $scope.commentsType + '_' + $scope.commentsId
-      $http.get('http://production-bloom.herokuapp.com/discussion/' + identifier + '/comments?apiKey=xchefsteps').then (response) ->
-        comments = response.data
-        angular.forEach comments, (comment) ->
+      console.log "*** renderseo"
+
+      $http.get('http://server.usebloom.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
+        comments = response.data.comments
+
+        angular.forEach comments, (comment) =>
           $scope.seoComments.push(comment.content)
     $scope.openLogin = ->
       $scope.$emit 'openLoginModal'
       $scope.$apply()
   ]
   link: (scope, element, attrs) ->
-    console.log element.find('iframe')
     scope.$watch 'commentsId', (newValue, oldValue) ->
       if newValue
         if scope.seoBot == 'true'
           scope.renderSeoComments()
         else
           identifier = scope.commentsType + '_' + scope.commentsId
+          # Hack so that it doesn't install multiple iframes
+          iframe = element[0].getElementsByTagName('iframe')
+          if iframe.length > 0
+            console.log "HERE IS THE ELEMENT"
+            console.log element[0]
+            angular.forEach iframe, (frame) ->
+              frame.remove()
           Bloom.installComments {
             el: element[0]
-            id: identifier
+            discussionId: identifier
             on:
               login: ->
                 scope.openLogin()

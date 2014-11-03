@@ -26,7 +26,7 @@ class Assembly < ActiveRecord::Base
 
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
-  ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group', 'Recipe Development']
+  ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group', 'Recipe Development', 'Kit']
   INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz', 'Assembly', 'Page', 'Assignment']
 
   def ingredients
@@ -95,6 +95,11 @@ class Assembly < ActiveRecord::Base
     activity_videos_count + activity_step_videos_count
   end
 
+  def sciences
+    assembly_activities = leaf_activities
+    assembly_activities.select{|a| a.activity_type.include?("Science")}
+  end
+
   def badge
     b = Merit::Badge.find(self.badge_id)
     if self.badge_id && b
@@ -112,8 +117,8 @@ class Assembly < ActiveRecord::Base
     self.assembly_inclusions.map(&:includable_type).include?('Assembly') ? false : true
   end
 
-  def paid_class?
-    (assembly_type == "Course" && (price  && price > 0))
+  def paid?
+    price && price > 0
   end
 
   def self.free_trial_hours(b64string)

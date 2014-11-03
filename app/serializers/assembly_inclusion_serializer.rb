@@ -1,5 +1,5 @@
-class AssemblyInclusionSerializer < ActiveModel::Serializer
-  attributes :includable_type, :includable_id, :position, :includable_title, :include_disqus, :includable_description, :includable_slug, :assembly_id, :includable_disqus_id, :includable_always_include_disqus
+class AssemblyInclusionSerializer < ApplicationSerializer
+  attributes :includable_type, :includable_id, :position, :includable_title, :include_disqus, :includable_description, :includable_slug, :assembly_id, :includable_disqus_id, :includable_always_include_disqus, :includable_image_id
   has_one :includable
 
   def includable_title
@@ -25,6 +25,12 @@ class AssemblyInclusionSerializer < ActiveModel::Serializer
   def includable_always_include_disqus
     if object.includable.class.method_defined?(:always_include_disqus)
       object.includable.always_include_disqus
+    end
+  end
+
+  def includable_image_id
+    if object.includable.class.method_defined?(:image_id)
+      object.includable.image_id
     end
   end
 

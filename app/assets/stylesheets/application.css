@@ -9,6 +9,8 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
+ *= require reset
+ *= require navigation
  *= require twitter/bootstrap-no-sprites
  *= require twitter/bootstrap/_responsive
  *= require jobs
@@ -61,6 +63,7 @@
  *= require cs_blinders
  *= require egg_timer
  *= require activities
+ *= require cs_comment_manager
  *= require modals
  *= require buttons
  *= require cs_redactor
@@ -71,4 +74,8 @@
  *= require google_remarketing
  *= require activity_column
  *= require ingredient_block
+ *= require global_message
+ *= require kit
+ *= require cs_image_video
+ *= require cs_index_item
  */

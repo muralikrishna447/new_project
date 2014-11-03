@@ -1,0 +1,87 @@
+%html
+  %head
+    %title= "ChefSteps Community Beta"
+    = csrf_meta_tags
+    %meta(name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width")
+    %script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js")
+    %script(src="//community-staging.usebloom.com/export/loader.js")
+    %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css")
+    %link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
+
+
+    - if current_user
+      :javascript
+        window.encryptedUser = "#{escape_javascript(current_user.encrypted_bloom_info)}";
+        window.chefstepsUserId = "#{current_user.id}"
+    - else
+      :javascript
+        window.chefstepsUserId = null
+
+    :javascript
+      Bloom.configure({
+        env: 'staging',
+        apiKey: 'xchefsteps',
+        user: window.chefstepsUserId,
+        auth: window.encryptedUser,
+        getUsers: function(userIds, callback) {
+          $.getJSON('/users?emails=' + userIds).then(function(response){
+            var users;
+            console.log(response);
+            users = response.map(function(user) {
+              user._id = "" + user.id;
+              user.profileLink = "http://www.chefsteps.com/profiles/" + user.slug;
+              user.avatarUrl = user['avatar_url'];
+              return user;
+            });
+            return callback(users);
+          });
+        }
+      });
+
+    %style
+      :sass
+        $orange: #e25f25
+
+        =boxsizing
+          box-sizing: border-box
+          -moz-box-sizing: border-box
+          -webkit-box-sizing: border-box
+          -o-box-sizing: border-box
+
+        =navpadding
+          height: 6rem
+          padding: 0.8rem
+          line-height: 4.4rem
+
+        html
+          font-size: 62.5%
+          box-sizing: border-box
+          @include boxsizing
+
+        body
+          margin: 0px
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+          font-size: 14px
+          line-height: 1.42857
+          color: #333333  
+          background-color: white
+
+        .forum
+          position: absolute
+          top: 0px
+          left: 0px
+          right: 0px
+          bottom: 0px
+
+  %body
+    - if Setting.first.forum_maintenance
+      %div(style="width: 600px; margin: 100 auto; border: 1px solid #ccc; padding: 20px;")
+        %h2.text-center(style="margin: 0")
+          We apologize for this inconvenience.  The forum is currently undergoing maintenance.  Please check back soon!
+    - else
+      .forum
+
+    :javascript
+      Bloom.installForum({
+        el: $('.forum')[0]
+      });

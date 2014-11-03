@@ -1,0 +1,256 @@
+@import 'mixins'
+
+=kit-nav-large
+  height: 200px
+  @include flex-wrap(wrap)
+  @include justify-content(space-around)
+  @include align-content(space-around)
+  .kit-nav-item
+    height: 112.5px
+    @include flex(0 0 200px)
+    .kit-nav-item-title
+      position: absolute
+      background: $orange
+      color: white
+      bottom: 10px
+      padding: 3px 5px
+      width: 180px
+      opacity: 1
+    .kit-nav-item-image
+      height: 100%
+      width: 100%
+      opacity: 1
+
+=kit-nav-small
+  height: 50px
+  .kit-nav-item
+    height: 50px
+    .kit-nav-item-title
+      background: none
+      color: black
+      padding-left: 50px
+    .kit-nav-item-image
+      height: 40px
+      width: 40px
+
+.intro
+  width: $horz-baseline-large * 40
+  @include transition(all 300ms $standard-bezier)
+  opacity: 1
+  &:hover
+    cursor: pointer
+
+.kit
+  height: 100%
+  width: 100%
+
+  .kit-intro-container
+    position: absolute
+    height: 50px
+    width: 100%
+    padding-bottom: 0px
+    z-index: 100
+    @include boxsizing
+    @include transition(1s all $standard-bezier)
+    .kit-intro
+      height: 100%
+      width: 100%
+      position: relative
+      overflow: hidden
+      border-bottom: 1px solid #ccc
+      background: rgba(255,255,255,0.9)
+      .kit-intro-title
+        position: absolute
+        width: 900px
+        margin-left: 0px
+        top: 0px
+        left: 10px
+        @include transition(1s all $standard-bezier)
+        h1
+          display: inline-block
+          font-size: 30px
+          @include transition(1s all $standard-bezier)
+          &:hover
+            color: white
+            cursor: pointer
+        h3
+          opacity: 0
+      .kit-intro-image
+        position: absolute
+        top: 0px
+        left: 0px
+        height: 100%
+        width: 100%
+        overflow: hidden
+        opacity: 0
+        @include transition(300ms all $standard-bezier)
+        .kit-gradient
+          position: absolute
+          top: 0px
+          left: 0px
+          opacity: 0
+          @include transition(300ms all $standard-bezier)
+
+  .kit-intro-container.intro-active
+    height: 100%
+    .kit-intro
+      .kit-intro-title
+        width: 900px
+        margin-left: -450px
+        top: 60%
+        left: 50%
+        h1
+          
+          background: rgba(226,95,37,.9)
+          box-shadow: 15px 0 0 0 rgba(226,95,37,.9), -15px 0 0 0 rgba(226,95,37,.9)
+          color: white
+          &:hover
+            color: white
+        h3
+          color: $orange
+          opacity: 1
+          @include transition(500ms all $standard-bezier)
+          &:hover
+            color: $dark-orange
+            cursor: pointer
+      .kit-intro-image
+        margin-top: 0px
+        opacity: 1
+
+  .kit-nav-container
+    position: absolute
+    bottom: -160px
+    background: white
+    height: 160px
+    width: 100%
+    z-index: 200
+    @include boxsizing
+    @include display-flex
+    @include flex-wrap(wrap)
+    @include justify-content(space-around)
+    @include align-content(space-around)
+    @include align-items(center)
+    @include transition(300ms all $standard-bezier)
+
+    .kit-nav-toggle
+      position: absolute
+      top: -30px
+      left: 40px
+      width: 100px
+      height: 30px
+      text-align: center
+      background: white
+      opacity: 1
+      border: 1px solid #ccc
+      border-bottom: 0px
+      border-radius: 5px 5px 0px 0px
+      padding: 5px
+      @include boxsizing
+      @include transition(300ms all $standard-bezier)
+      &:hover
+        cursor: pointer
+
+    .kit-nav-item
+      position: relative
+      height: 112.5px
+      @include boxsizing
+      @include flex(0 0 200px)
+      @include transition(300ms all $standard-bezier)
+      &:hover
+        cursor: pointer
+      .kit-nav-item-title
+        position: absolute
+        background: rgba(226,95,37,.9)
+        color: white
+        bottom: 0px
+        left: 10px
+        padding: 0
+        display: inline-block
+        box-shadow: 10px 0 0 0 rgba(226,95,37,.9), -10px 0 0 0 rgba(226,95,37,.9)
+        @include boxsizing
+        @include transition(300ms all $standard-bezier)
+
+      .kit-nav-item-image
+        @include transition(300ms all $standard-bezier)
+      .kit-nav-item-triangle
+        opacity: 0
+        position: absolute
+        top: -32px
+        left: 94px
+        width: 16px
+        height: 16px
+        background: white
+        border-top: 1px solid $orange
+        border-left: 1px solid $orange
+        @include boxsizing
+        @include transform(rotate(45deg))
+        @include transition(300ms opacity cubic-bezier(0.81, 0, 0, 0.99))
+  
+  .kit-nav-container.nav-active.viewer-active
+    border-top: 1px solid $orange
+    .kit-nav-item
+      .knit-nav-item-trangle
+        opacity: 0
+    .kit-nav-item.item-active
+      .kit-nav-item-triangle
+        opacity: 1
+
+
+  .kit-intro-container.intro-active.nav-active
+    border-top: 0px
+    .kit-intro
+      .kit-intro-title
+        .intro
+          opacity: 0
+      .kit-intro-image
+        margin-top: -160px
+        .kit-gradient
+          opacity: 1
+    .kit-nav-item
+      .knit-nav-item-trangle
+        opacity: 0
+    .kit-nav-item.item-active
+      .kit-nav-item-triangle
+        opacity: 0
+
+
+  .kit-nav-container.nav-active
+    bottom: 0px
+
+  .kit-viewer
+    height: 100%
+    width: 100%
+    padding-top: 60px
+    padding-bottom: 170px
+    overflow-y: auto
+    opacity: 0
+    @include transition(300ms all $standard-bezier)
+    @include boxsizing
+
+    .kit-page
+      width: 800px
+      margin: 0 auto
+
+    .kit-gradient
+      position: absolute
+      top: 0px
+      left: 0px
+      opacity: 0
+      @include transition(300ms all $standard-bezier)
+
+  .kit-viewer.viewer-active
+    opacity: 1
+
+  .kit-gradient
+    width: 100%
+    height: 100%
+    opacity: 1
+    pointer-events: none
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 30%, rgba(255,255,255,1) 100%)
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 30%, rgba(255,255,255,1) 100%)
+
+.kit-toggles
+  position: fixed
+  z-index: 9999
+  top: 10px
+  right: 10px

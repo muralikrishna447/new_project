@@ -22,7 +22,7 @@ module.exports = function(config) {
       // 'http://localhost:3000/assets/angular-scenario.js',
       "http://code.jquery.com/jquery-1.10.1.min.js",
       'http://localhost:3001/assets/application.js',
-      'spec/angular/**/*.js.coffee',
+      'spec/angular/**/u*.js.coffee',
       { pattern: 'app/assets/javascripts/**/*.js.coffee',
         watched: true,
         included: false,

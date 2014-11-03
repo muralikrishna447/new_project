@@ -4,7 +4,8 @@
                         ng-if="heroMedia.heroDisplayType() != 'none'"
                         ng-class="{'hero-video-showing' : showHeroVisual()}")
 
-  %img( ng-src="{{bannerImageURL()}}" ng-if="bannerImageURL() != ''")  
+  %img( ng-src="{{bannerImageURL()}}" ng-if="bannerImageURL() != ''"  itemprop="image")
+  / %cs-image(url="activity.image_id" width="parent" aspect="16:9") 
 
   .play-button-container
     .play-button( ng-if="heroMedia.heroDisplayType() == 'video' && ! showHeroVisual()")
@@ -12,3 +13,4 @@
 
   .hero-video.noprint
     = render 'activities/hero_visual'
+= render 'activities/edit_hero_visual'

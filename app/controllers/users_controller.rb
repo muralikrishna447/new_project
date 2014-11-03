@@ -7,12 +7,26 @@ class UsersController < ApplicationController
     render text: encrypted
   end
 
+  def get_user
+    if params[:secret] && params[:secret] == 'xchefstepscRP9pJomgiluvfoodNTJto'
+      @user = User.find(params[:userId])
+      user_json = {data: {id: @user.id.to_s, name: @user.name, avatarUrl: @user.avatar_url, email: @user.email}}.to_json
+      render text: user_json
+    else
+      render text: 'Authorized Access', status: 401
+    end
+  end
+
+  # Bloom will also be using this endpoint
   def index
     if params[:ids]
       ids = params[:ids].split(',')
       @users = User.where(id: [ids])
-      render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
+    elsif params[:emails]
+      emails = params[:emails].split(',')
+      @users = User.where(email: [emails])
     end
+    render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
   end
 
   # For Bloom Dashboard

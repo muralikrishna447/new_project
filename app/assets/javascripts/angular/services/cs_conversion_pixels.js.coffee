@@ -10,8 +10,10 @@
 @app.service 'csFacebookConversion', [ ->
 
   this.track = (fb_pixel, fb_value) ->
-    image = new Image(1,1)
-    image.src = "//www.facebook.com/offsite_event.php?id=" + fb_pixel + "&amp;value=" + fb_value + "&amp;currency=USD"
+    # image = new Image(1,1)
+    # image.src = "//www.facebook.com/offsite_event.php?id=" + fb_pixel + "&amp;value=" + fb_value + "&amp;currency=USD"
+    if typeof window._fbq != 'undefined'
+      window._fbq.push(['track', fb_pixel, {'value':fb_value,'currency':'USD'}])
   this
 
 ]

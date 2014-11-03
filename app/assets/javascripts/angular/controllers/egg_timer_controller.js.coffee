@@ -17,35 +17,35 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
   $scope.needsSeconds = ->
     ($scope.output?.items?[2] - $scope.output?.items?[0]) < 90
 
-
+  webm = "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_63_60min.webmsd.webm"
 
   $scope.yolkVideos =
     [
-      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.mp4",
-      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_25min.mp4",
-      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_30min.mp4",
-      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_35min.mp4",
-      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_45min.mp4",
-      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_60min.mp4",
-      "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_105min.mp4",
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_20min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_25min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_25min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_30min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_30min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_35min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_35min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_45min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_45min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_60min.webmsd.webm"}}
+      {video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_105min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/yolk_63_105min.webmsd.webm"}}
     ]
 
   $scope.whiteVideos =
     [
-      {temp: 60, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_60_60min.mp4"}
-      {temp: 61, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_61_60min.mp4"}
-      {temp: 62, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_62_60min.mp4"}
-      {temp: 63, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_63_60min.mp4"}
-      {temp: 64, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_64_60min.mp4"}
-      {temp: 65, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_65_60min.mp4"}
-      {temp: 66, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_66_60min.mp4"}
-      {temp: 67, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_67_60min.mp4"}
-      {temp: 69, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_69_60min.mp4"}
-      {temp: 70, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_70_60min.mp4"}
-      {temp: 71, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_71_60min.mp4"}
-      {temp: 72, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_72_60min.mp4"}
-      {temp: 75, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_75_60min.mp4"}
-      {temp: 85, video: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_85_60min.mp4"}
+      {temp: 60, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_60_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_60_60min.webmsd.webm"}}
+      {temp: 61, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_61_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_61_60min.webmsd.webm"}}
+      {temp: 62, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_62_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_62_60min.webmsd.webm"}}
+      {temp: 63, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_63_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_63_60min.webmsd.webm"}}
+      {temp: 64, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_64_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_64_60min.webmsd.webm"}}
+      {temp: 65, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_65_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_65_60min.webmsd.webm"}}
+      {temp: 66, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_66_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_66_60min.webmsd.webm"}}
+      {temp: 67, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_67_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_67_60min.webmsd.webm"}}
+      {temp: 69, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_69_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_69_60min.webmsd.webm"}}
+      {temp: 70, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_70_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_70_60min.webmsd.webm"}}
+      {temp: 71, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_71_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_71_60min.webmsd.webm"}}
+      {temp: 72, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_72_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_72_60min.webmsd.webm"}}
+      {temp: 75, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_75_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_75_60min.webmsd.webm"}}
+      {temp: 85, video: {mp4: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_85_60min.mp4", webm: "https://s3.amazonaws.com/chefsteps/egg_timer_videos/white_85_60min.webmsd.webm"}}
     ]
 
   $scope.trustedVideo = (video) ->
@@ -67,7 +67,6 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     $http.get("http://gentle-taiga-4435.herokuapp.com/egg_time/", params: params).success((data, status) ->
       $scope.output = data
       $scope.loading = false
-      $scope.$apply() if ! $scope.$$phase
       mixpanel.track('Egg Calculated', angular.extend({},  $scope.inputs, {water_temp: $scope.water_temp}, $scope.output))
       mixpanel.people.increment('Egg Calculated')
 
@@ -98,7 +97,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     
   # Social share callbacks
   $scope.socialURL = ->
-    "http://chefsteps.com/egg_timer"
+    window.location.href
 
   $scope.socialTitle = ->
     ""

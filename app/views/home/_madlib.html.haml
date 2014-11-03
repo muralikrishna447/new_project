@@ -19,7 +19,7 @@
         I want to join {{getTotalUsers() | number}} others and learn how to be a better cook.
       .madlib-item#madlib-password-wrapper(ng-show="showMadlibPassword")
         Please set my password to
-        %span.input-underlined.input-append
+        %span.input-underlined.input-append.relative
           %input.password-with-show-button(name="password" type="{{passwordType}}" ng-model="register_user.password" placeholder="Password" ng-class="hasError(register_error.errors.password)")
           %a#show-madlib-password.btn.btn-secondary(ng-click="togglePassword()") Show
           %p.bubble.passbubble(ng-show="register_error.errors.password")

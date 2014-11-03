@@ -1,0 +1,48 @@
+@import 'mixins'
+
+.cs-index-item
+  display: inline-block
+  @include boxsizing
+  width: 360px
+  height: 272px
+  border: 1px solid $light-gray
+  padding: 10px
+  margin: 0 $horz-baseline-medium $baseline 0
+  background: white
+  @include transition(border 300ms)
+  float: left
+  cs-index-item
+    display: block
+  img
+    width: 100%
+    margin: 10px 0px
+  a
+    color: #333333
+    @include transition(border 300ms)
+    .cs-index-item-title
+      @include primary-font-bold
+      font-size: 15px
+      text-transform: uppercase
+      text-overflow: ellipsis
+      white-space: nowrap
+      overflow: hidden
+    .cs-index-item-image
+      margin-bottom: $baseline
+
+    .cs-index-item-footer
+      .footer-left
+        float: left
+        text-transform: uppercase
+      .footer-right
+        float: right
+
+@media (max-width: 1200px)
+  .cs-index-item
+    width: 280px
+    height: 227px
+
+@media (max-width: 480px)
+  .cs-index-item
+    width: 100%
+    height: inherit
+    margin: 10px 0px

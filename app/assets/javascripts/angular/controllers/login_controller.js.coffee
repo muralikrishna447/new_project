@@ -1,4 +1,6 @@
 angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "csIntent", "csFtue", "$modal", "csDataLoading", "csAdwords", "csFacebookConversion", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, csIntent, csFtue, $modal, csDataLoading, csAdwords, csFacebookConversion) ->
+  $scope.returnTo = null
+
   $scope.dataLoading = 0
   $scope.login_user = {email: null, password: null};
   $scope.login_error = {message: null, errors: {}};
@@ -57,6 +59,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     console.log 'open modal', form
     if form == "login"
       $scope.loginModalOpen = true
+    else if form == "signUp"
+      $scope.loginModalOpen = true
+      $scope.showForm = 'signUp'
     else if form == "invite"
       $scope.inviteModalOpen = true
     else if form == "googleInvite"
@@ -115,6 +120,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
             $scope.authentication.setCurrentUser(data.user)
             $scope.$emit 'reloadComments'
           , 300)
+          if $scope.returnTo
+            window.location = $scope.returnTo
 
         else
           if (data.error)

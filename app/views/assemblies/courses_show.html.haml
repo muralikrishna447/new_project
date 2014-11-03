@@ -18,11 +18,15 @@
                     %iframe#course-quiz(ng-src="{{'/quizzes/' + currentIncludable.includable_id}}" style='width: 100%; border: none; min-height: 1000px; overflow: hidden;' cssetiframeheight)
 
               %div(ng-switch-when="Activity")
-                .class-activity-wrapper
-                  = render 'activities/banner_image'
+                .class-activity-wrapper.comments-slide(ng-class="{'open' : anyCommentsOpen}")
+                  / = render 'activities/banner_image'
+                  %cs-image-video(image='currentIncludable.includable_image_id || currentIncludable.includable.featured_image_id' video='currentIncludable.includable.youtube_id')
                   %div(csFixNakedLinks="")
                     = render 'activities/main_activity_content'
-
+                  .comments-container.section.noprint#comments
+                    .standard-item
+                      %h3 Discussion
+                      %cscomments(comments-type="activity" comments-id="{{currentIncludable.includable_id}}" seo-bot="#{is_brombone}")
               %div(ng-switch-when='Assignment')
                 = render 'assembly_upload', assembly: @course
 
@@ -31,21 +35,22 @@
 
               - if current_user && current_user.role?(:admin)
                 .edit-button-box.noprint
+                  %h5 Admin Tools
                   %div(ng-switch on="currentIncludable.includable_type")
                     %div(ng-switch-when='Activity')
-                      %a.btn.btn-secondary(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
+                      %a(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
                         %i.icon-edit
                         edit
                     %div(ng-switch-when='Assignment')
-                      %a.btn.btn-secondary(ng-href="/admin/assignments/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                      %a(ng-href="/admin/assignments/{{currentIncludable.includable_slug}}/edit" target="_blank")
                         %i.icon-edit
                         edit
                     %div(ng-switch-when='Page')
-                      %a.btn.btn-secondary(ng-href="/admin/pages/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                      %a(ng-href="/admin/pages/{{currentIncludable.includable_slug}}/edit" target="_blank")
                         %i.icon-edit
                         edit
                     %div(ng-switch-when='Quiz')
-                      %a.btn.btn-secondary(ng-href="/admin/quizzes/{{currentIncludable.includable_slug}}/edit" target="_blank")
+                      %a(ng-href="/admin/quizzes/{{currentIncludable.includable_slug}}/edit" target="_blank")
                         %i.icon-edit
                         edit
 
@@ -61,19 +66,23 @@
                     .course-nav-item.btn.btn-primary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
                       NEXT
                   %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html="'NEXT: ' + nextInclusion().includable_title")
-        .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
-          .span12
-            %hr
-            / %a(name='discussion')
-            / %cscomments(comments-type="assembly" comments-id="{{course.id}}" seo-bot="#{is_brombone}")
-
-            -# using DISQUS.reset to determine which disqus thread to display
-            = render 'layouts/disqus_angular'
+        / - if @course.id == 100
+        /   .row-fluid.section
+        /     .span12.course-comments
+        /       %hr
+        /       .section#comments
+        /         %a(name='discussion')
+        /         %cscomments(comments-type="activity" comments-id="{{currentIncludable.includable_id}}" seo-bot="#{is_brombone}")
+        / - else
+        /   .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
+        /     .span12.course-comments
+        /       %hr
+        /       = render 'layouts/disqus_angular'
     .assembly-loading-wrapper.anim-basic-fade(ng-show="loading > 0")
       .assembly-loading-background
         .activity-loading-spinner
           %i.icon-page-load
-    .course-nav-slideout(ng-class="{'menu-slideout': showCourseMenu}")
+    .course-nav-slideout.noprint(ng-class="{'menu-slideout': showCourseMenu}")
       %a.black-link(ng-href='{{course.path}}')
         %h1
           {{course.title}}
@@ -82,8 +91,13 @@
             ng-class="inclusionActiveClass(inclusion)"
             ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)'
             ng-include="'_recursive_assembly_syllabus.html'")
+      // @discounted_price isn't always being set.  This is a hack to not show this when there is no free trial.  load_assembly may have weird edge cases we haven't thought of.
+      - if @course.price
+        - final_price = @discounted_price ? @discounted_price : @course.price
+      - else
+        - final_price = 0
       .free-trial-section(ng-controller="BuyAssemblyStripeController" ng-cloak
-        ng-init='assembly=#{@course.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil};freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; assemblyPath="#{class_url(@course, protocol: "http")}"' ng-show="isFreeTrial()")
+        ng-init='assembly=#{@course.to_json}; discounted_price=#{final_price}; logged_in=#{current_user != nil};freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; assemblyPath="#{class_url(@course, protocol: "http")}"' ng-show="isFreeTrial()")
         %p
           %span(ng-show="differenceInTime() > 60 && differenceInTime() > 0")
             You're in a free trial.
@@ -108,7 +122,7 @@
         .hamburger-bar
         .hamburger-bar
 
-  .course-global-nav(ng-class="{'course-global-nav-show': showGlobalNav}")
+  .course-global-nav.noprint(ng-class="{'course-global-nav-show': showGlobalNav}")
     = render 'layouts/navigation', external: false
 
   .course-nav-bottom-center.responsive.container-fluid.noprint.text-center(ng-class="{'hide-when-menu-showing': showCourseMenu, 'show-nav-bottom': showBottomNav}")

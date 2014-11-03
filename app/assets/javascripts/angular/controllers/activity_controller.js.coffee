@@ -6,7 +6,7 @@ window.deepCopy = (obj) ->
 
 # This is a little captive controller only designed for use inside ActivityController for now.
 # Would be better as a directive but needs work to abstract it.
-@app.controller 'BannerController', ["$scope", ($scope) ->
+@app.controller 'BannerController', ["$scope", "ActivityMethods", ($scope, ActivityMethods) ->
   $scope.showVideo = false
 
   $scope.showHeroVisual = ->
@@ -15,8 +15,9 @@ window.deepCopy = (obj) ->
     # frame to be completely black, not even any chrome. Awesome.
     # So since we don't want the user to have to click play twice, we just
     # freaking always show the video.
-    return true if ($scope.heroMedia.heroDisplayType() == 'video') &&  /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
-    $scope.showVideo || ($scope.heroMedia.heroDisplayType() == 'image') 
+    # return true if ($scope.heroMedia.heroDisplayType() == 'video') &&  /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
+    return true if $('.banner-image').width() <= 900
+    $scope.showVideo
 
   $scope.toggleHeroVisual = ->
     $scope.showVideo = ! $scope.showVideo
@@ -26,20 +27,20 @@ window.deepCopy = (obj) ->
     $scope.toggleHeroVisual() if $scope.showVideo
 
   $scope.bannerImageURL = ->
-    url = if $scope.heroMedia.hasHeroImage() then $scope.heroMedia.baseHeroImageURL() else $scope.baseFeaturedImageURL()
+    url = ActivityMethods.itemImageFpfile($scope.activity, 'hero').url
     url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
     w = $('.banner-image').width()
-    h = 338
+    h = 495
     if w < 650
       h = w * 9.0 / 16.0
-    url += "/convert?fit=crop&h=#{h}&w=#{w}"
+    url += "/convert?fit=crop&h=#{h}&w=#{w}&quality=90&cache=true"
     window.cdnURL(url)
 
 ]
 
 
-@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService"
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService) ->
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "$anchorScroll",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, $anchorScroll) ->
 
   $scope.heroMedia = csEditableHeroMediaService
 
@@ -60,6 +61,10 @@ window.deepCopy = (obj) ->
 
   $scope.getObject = ->
     $scope.activity
+
+  $scope.getObjectTypeName = ->
+    "Activity"
+
   csEditableHeroMediaService.getObject = $scope.getObject
 
   $scope.hasFeaturedImage = ->
@@ -175,13 +180,6 @@ window.deepCopy = (obj) ->
   $scope.cancelEditMode = ->
     $scope.activity = deepCopy $scope.activityBeforeEdit
     $scope.postEndEditMode()
-
-  # Tweak to let dropdowns leak out of collapse when not collapsed
-  # http://stackoverflow.com/questions/11926028/bootstrap-dropdown-in-collapse
-  $scope.toolbarBonusStyle = ->
-    s = {}
-    s = {overflow: "visible"} if ! $scope.editMode
-    s
 
   # Gray out a section if the contents are empty
   $scope.disableIf = (condition) ->
@@ -437,8 +435,8 @@ window.deepCopy = (obj) ->
   $scope.commentCount = -1
   $scope.updateCommentCount = -> 
     if $scope.activity?
-      $http.get("http://api.usebloom.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
-        $scope.commentCount = data.length
+      $http.get("http://server.usebloom.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
+        $scope.commentCount = data["commentCount"]
       )
 
   $scope.$on 'loadActivityEvent', (event, activity_id) ->
@@ -519,6 +517,18 @@ window.deepCopy = (obj) ->
     $rootScope.$broadcast "showNellPopup", 
       include: view
 
+  $scope.showTitle = ->
+    if $scope.activity
+      switch $scope.activity.title
+        when 'FAQ'
+          false
+        when 'Discussion'
+          false
+        else
+          true
+
+
+  # Why by weight was removed but can always be added back by adding reached-screen-callback="maybeShowWhyByWeight()" as a attribute
   $scope.maybeShowWhyByWeight = ->
     return if localStorageService.get('whyByWeightShown')
     return if csAuthentication.loggedIn()
@@ -538,5 +548,22 @@ window.deepCopy = (obj) ->
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
         $scope.startEditMode()
         $scope.editMeta = true
+
+  # Scroll to comment. Very hacky but it works
+  $scope.scrollToComments = ->
+    # Super hacky, without the condition, it creates some really really bad looking/long urls
+    if $location.path() && (($location.path() == 'discussion') || ($location.path().indexOf('/numbered-step-') == 0))
+      anchor = $location.path().replace(/\//g,'')
+      $location.path('')
+      $location.hash(anchor)
+    
+    # Regardless, make sure we get to our anchor
+    $anchorScroll()
+    $location.hash('')
+
+  $timeout ( ->
+    $scope.scrollToComments()
+  ), 1000
+  
 ]
 

@@ -19,7 +19,7 @@
     mixpanel.track('Video Embed Loaded', mixpanelProperties) 
  
     createPlayer = ->
-      if window.youtubeAPIReady
+      if window.youtubeAPIReady && attrs.videoId
         console.log('createPlayer')
         player = new YT.Player( 
           playerId,
@@ -53,23 +53,27 @@
     createPlayer() 
 
     scope.$on 'playVideo', (event, play) ->
+      console.log("playVideo: #{play}")
+
       # GD ios/yt. Not only does playVideo() not *work*, it actually causes the YT
       # frame to be completely black, not even any chrome. Awesome.
-      if ! /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
-        console.log("playVideo: #{play}")
-        player?.playVideo()
-        if play
-          $timeout ( ->
-           scope.adjustHeight(1)
-          ), 1000
+      if play
+        if ! /(iPad|iPhone|iPod)/g.test( navigator.userAgent )
+          player?.playVideo()
 
       else
         player?.pauseVideo()
 
+      # Seems to help with occasional pillarboxing
+      $timeout ( ->
+       scope.adjustHeight(1)
+      ), 1000
+
     attrs.$observe 'videoId', ->
       if player? && player.loadVideoById?
-        console.log("loadVideo: #{attrs.videoId}")
-        player?.loadVideoById?(attrs.videoId, 0, 'hd1080')
+        console.log("cueVideo: #{attrs.videoId}")
+        # want cue, not load. Load starts it playing.
+        player?.cueVideoById?(attrs.videoId, 0, 'hd1080')
 
     scope.adjustHeight = () ->
       newHeight = Math.round(scope.getWidth() * (attrs.aspectRatio || (9.0 / 16.0)))

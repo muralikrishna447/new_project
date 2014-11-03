@@ -20,6 +20,7 @@ class ActivitiesController < ApplicationController
       redir_params[:minimal] = params[:minimal] if defined? params[:minimal]
       redir_params[:token] = params[:token] if defined? params[:token]
       redir_params[:scaling] = params[:scaling] if defined? params[:scaling]
+      redir_params[:scrollto] = params[:scrollto] if defined? params[:scrollto]
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
 
@@ -32,15 +33,14 @@ class ActivitiesController < ApplicationController
     # is_google and is_brombone are now helpers and can be found in application_helper
     if (! current_admin?) && (! is_google) && (! is_brombone)
       if @activity.show_only_in_course
-        redirect_to class_path(@activity.containing_course), :status => :moved_permanently
-      end
-
-      if @activity.containing_course && current_user && current_user.enrolled?(@activity.containing_course)
-        redirect_to class_activity_path(@activity.containing_course, @activity)
-      end
-
-      if @activity.assemblies.first.assembly_type == 'Project'
-        redirect_to assembly_activity_path(@activity.assemblies.first, @activity)
+        # redirect_to class_path(@activity.containing_course), :status => :moved_permanently
+        if current_user
+          if current_user.enrolled?(@activity.containing_course) == false
+            redirect_to landing_assembly_path(@activity.containing_course)
+          end
+        else
+          redirect_to landing_assembly_path(@activity.containing_course)
+        end
       end
     end
 
@@ -63,10 +63,18 @@ class ActivitiesController < ApplicationController
     @activity[:used_in] = @activity.used_in_activities.published
     @activity[:forks] = @activity.published_variations
     @activity[:upload_count] = @activity.uploads.count
+
+    # Hide secret circulator machine code field unless there is a special param in the request or requester is admin
+    unless params[:param_info] == "a9a77bd9f" || current_admin?
+      @activity.steps.each do |s|
+        s[:extra] = nil
+      end
+    end
+
   end
 
   def show
-
+    @show_app_add = true
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
     add_extra_json_info
     @upload = Upload.new
@@ -76,25 +84,25 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @random_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.order("RANDOM()").last(6)
-        @popular_recipes = Activity.published.chefsteps_generated.include_in_feeds.recipes.order("RANDOM()").first(6)
 
         # New school class
         containing_class = @activity.containing_course
         if containing_class && containing_class.published?
           case containing_class.assembly_type
           when 'Course'
-            path = view_context.link_to containing_class.title, landing_class_path(containing_class)
+            path = view_context.link_to containing_class.title, landing_class_path(containing_class), {'no-nell-popup' => true}
           when 'Project'
-            path = view_context.link_to containing_class.title, project_path(containing_class)
+            path = view_context.link_to containing_class.title, project_path(containing_class), {'no-nell-popup' => true}
           when 'Recipe Development'
-            path = view_context.link_to containing_class.title, recipe_development_path(containing_class)
+            path = view_context.link_to containing_class.title, recipe_development_path(containing_class), {'no-nell-popup' => true}
           end
           container_name = containing_class.assembly_type.to_s
           container_name = "Class" if container_name == "Course"
-          flash.now[:notice] = "This is part of the #{path} #{container_name}."
+          container_name = "Project" if container_name == "Project"
+          @container_name = container_name
+          @container_path = path
+          # flash.now[:notice] = "This is part of the #{path} #{container_name}."
         end
-        track_event @activity
 
         @minimal = false
         if params[:minimal]
@@ -104,7 +112,7 @@ class ActivitiesController < ApplicationController
         @user_activity = UserActivity.new
 
         # cookies.delete(:viewed_activities)
-        @viewed_activities = cookies[:viewed_activities].nil? ? [] : JSON.parse(cookies[:viewed_activities])
+        @viewed_activities = cookies[:viewed_activities].blank? ? [] : JSON.parse(cookies[:viewed_activities])
         @viewed_activities << [@activity.id, DateTime.now]
         cookies[:viewed_activities] = @viewed_activities.to_json
 
@@ -151,18 +159,14 @@ class ActivitiesController < ApplicationController
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
-    respond_to do |format|
-      format.json {
-        unless @activity.containing_course && current_user && current_user.enrollments.where(enrollable_id: @activity.containing_course.id, enrollable_type: @activity.containing_course.class).first.try(:free_trial_expired?) && @activity.containing_course.price > 0
-          render :json => @activity.to_json
-        else
-          if mixpanel_anonymous_id
-            mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.slug})
-            mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
-          end
-          render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden
-        end
-      }
+    unless @activity.containing_course && current_user && current_user.enrollments.where(enrollable_id: @activity.containing_course.id, enrollable_type: @activity.containing_course.class).first.try(:free_trial_expired?) && @activity.containing_course.price > 0
+      render :json => @activity.to_json
+    else
+      if mixpanel_anonymous_id
+        mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.slug})
+        mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
+      end
+      render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden
     end
   end
 
@@ -215,7 +219,7 @@ class ActivitiesController < ApplicationController
 
               @activity.update_equipment_json(equip)
               @activity.update_ingredients_json(ingredients)
-              @activity.update_steps_json(steps)
+              @activity.update_steps(steps)
 
               # This would be better handled by history state / routing in frontend, but ok for now
               if @activity.slug != old_slug

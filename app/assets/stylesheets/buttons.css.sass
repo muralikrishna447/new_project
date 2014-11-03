@@ -5,6 +5,7 @@
 .btn
   @include primary-font
   line-height: $baseline*2
+  +radius(2px)
   i
     line-height: $baseline*2
 
@@ -20,7 +21,7 @@
   background: $orange
   border: 0px
   border-bottom: 1px $dark-orange solid
-  border-radius: 0px
+  +radius(2px)
   margin-bottom: $baseline
   position: relative
   @include boxsizing
@@ -173,6 +174,13 @@
     text-decoration: none
     color: white
     cursor: pointer
+
+.btn-circle.medium
+  height: 70px
+  width: 70px
+  margin: 10px 4px
+  padding: 16px 10px
+  font-size: 14px
 
 .btn-circle.large
   height: 80px

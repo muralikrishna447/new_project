@@ -2,8 +2,8 @@
   .master-column
     #main-content.main-content-container(ng-cloak)
 
-      .aside.noprint(ng-show="(! editMode) && (activityColumns >= 3)")
-        = render 'activities/tools'
+      .aside.tools-aside.noprint(ng-show="(! editMode) && (activityColumns >= 3)")
+        = render 'shared/tools'
 
       .standard-item
         = render 'activities/title'

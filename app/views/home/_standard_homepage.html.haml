@@ -1,4 +1,4 @@
-- if @returning_visitor || current_user
+- if @returning_visitor
   = render 'hero_carousel'
 - else
   .container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='homeMadlib'; setIntent('ftue')")
@@ -19,6 +19,9 @@
         - url = assembly_class.class.to_s == 'Assembly' ? landing_class_path(assembly_class) : course_path(assembly_class)
         .span4
           = render 'shared/media_box_2', url: url, title: assembly_class.title, image: assembly_class.featured_image, object: assembly_class
+      .span12
+        %h4
+          = link_to 'See More', courses_path
       .span10.offset1
         %p.lead 
           %br
@@ -94,14 +97,7 @@
 .container
   .row.section
     .span8#discussion
-      %h3 Latest From Our Forums:
-      %h4.discussion-name
-      %blockquote.word-wrap
-        %p.discussion-body
-        %small
-          %cite
-            .discussion-author
-      = link_to 'Join the Discussion', '#', class: 'btn btn-primary discussion-link'
+      = render 'shared/bloom_hot'
       %hr
       - if @status
         - cache @status, expires: 10.minutes do

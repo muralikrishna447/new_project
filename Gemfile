@@ -73,6 +73,8 @@ end
 
 group :development, :test do
   gem "simplecov", require: false
+  gem 'angularjs-rails'
+  gem 'jquery-rails'
 end
 
 # Gems used only for assets and not required

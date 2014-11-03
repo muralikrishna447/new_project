@@ -35,11 +35,9 @@ Delve::Application.configure do
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
-  config.logger = Logger.new(STDOUT)
-  config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')
 
-  # Prepend all log lines with the following tags
-  # config.log_tags = [ :subdomain, :uuid ]
+  config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+  config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')
 
   # Use a different logger for distributed setups
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)

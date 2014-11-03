@@ -6,30 +6,54 @@ class AssembliesController < ApplicationController
   def index
     if request.path == '/assemblies'
       @assembly_type = 'Assembly'
-      @assemblies = Assembly.published.order('created_at asc').page(params[:page]).per(12)
+      @assemblies = Assembly.published.order('created_at desc').page(params[:page]).per(12)
     else
       @assembly_type = request.path.gsub(/^\//, "").singularize.titleize
-      @assemblies = Assembly.published.where(assembly_type: @assembly_type).order('created_at asc').page(params[:page]).per(12)
+      @assemblies = Assembly.published.where(assembly_type: @assembly_type).order('created_at desc').page(params[:page]).per(12)
     end
   end
 
   def show
     @hide_nav = true
     @upload = Upload.new
-    case @assembly.assembly_type
-    when 'Course', 'Project'
-      # Currently not requiring enrollment for free assembly-based course. This will probably want to change?
-      if (current_user && current_user.enrolled?(@assembly)) || (! @assembly.price)
+    if current_user
+      if (current_user.enrolled?(@assembly)) || current_user.admin?
+        case @assembly.assembly_type
+        when 'Course', 'Project', 'Recipe Development'
+          render "courses_#{params[:action]}"
+        else
+          render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
+        end
+      else
+        redirect_to landing_assembly_path(@assembly)
+      end
+    else
+      if @assembly.assembly_type == 'Recipe Development'
         render "courses_#{params[:action]}"
       else
-        @no_shop = true
-        redirect_to landing_class_url(@assembly)
+        redirect_to landing_assembly_path(@assembly)
       end
-    when 'Recipe Development'
-      render "courses_#{params[:action]}"
-    else
-      render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
     end
+    # @hide_nav = true
+    # @upload = Upload.new
+    # case @assembly.assembly_type
+    # when 'Course', 'Project'
+    #   # Currently not requiring enrollment for free assembly-based course. This will probably want to change?
+    #   if current_user && current_user.admin?
+    #     render "courses_#{params[:action]}"
+    #   else
+    #     if (current_user && current_user.enrolled?(@assembly)) || (! @assembly.price)
+    #       render "courses_#{params[:action]}"
+    #     else
+    #       @no_shop = true
+    #       redirect_to landing_class_url(@assembly, anchor: '')
+    #     end
+    #   end
+    # when 'Recipe Development'
+    #   render "courses_#{params[:action]}"
+    # else
+    #   render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
+    # end
   end
 
   def landing
@@ -144,6 +168,7 @@ private
 
     begin
       @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], can?(:update, @activity))
+      # Once verified that coupons are working everywhere, delete the following:
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = discounted_price(@assembly.price, session[:coupon])
       # Changing so that it accepts a param gift_token as well, this is solely for e2e testing and shouldn't be given to customers as it 
@@ -158,6 +183,7 @@ private
       if @course && @course.assembly_type == "Course" && (! @course.published?)
         if current_user && current_user.enrolled?(@course)
           @assembly = Assembly.find(params[:id])
+          # Once verified that coupons are working everywhere, delete the following:
           session[:coupon] = params[:coupon] || session[:coupon]
         else
           @list_name = ("csp-" + @course.slug)[0...15]

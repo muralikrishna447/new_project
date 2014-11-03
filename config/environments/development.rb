@@ -75,5 +75,7 @@ Delve::Application.configure do
   ENV["REDISTOGO_URL"] = 'redis://localhost:6379'
 
   Net::HTTP.http_logger_options = {:verbose => true, :body => true, trace: true}
+
+  config.middleware.use PrettyJsonResponse
 end
 

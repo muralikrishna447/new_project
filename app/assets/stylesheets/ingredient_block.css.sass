@@ -39,6 +39,15 @@
     .navlabel.units
       margin-top: -24px
 
+@media (max-width: 480px)
+  .ingredients-menu
+    .controls
+      ul
+        li
+          &:not(:last-child)
+            margin-right: 10px !important
+
+
 .ingredients-menu-button
   @include transition(all 300ms ease-in-out)
   z-index: 3
@@ -48,6 +57,10 @@
   .btn
     padding-right: 0
     margin-right: 0
+
+    &.active
+      background-color: inherit
+      @include any-shadow(none)
   cursor: pointer
   @include radius(5)
 
@@ -83,7 +96,7 @@
       @include display-flex
 
     .quantity-and-unit
-      @include flex(0 0 100px)
+      @include flex(0 1 100px)
       width: 100px
       text-align: right
 
@@ -92,6 +105,31 @@
         content: "\00a0"
       @include flex(1 1 200px)
       margin-right: $horz-baseline-large
+      text-indent: -16px
+      margin-left: 16px
+
+    .for-sale
+      margin-left: 14px
+      position: relative
+      display: inline
+
+      .for-sale-where
+        opacity: 0
+        margin-left: 14px
+        @include transition(all 200ms $standard-bezier)
+        text-transform: uppercase
+        position: absolute
+        top: -2px
+        left: 10px
+        max-width: 500px
+        background-color: rgba(255, 255, 255, .8)
+        white-space: nowrap
+
+      &:hover
+        .for-sale-where
+          opacity: 1
+
+
 
 
   .quantity-group
@@ -192,8 +230,6 @@
     left: 60px
 
 
-
-
 .ingredients-well
   .menu-active
     [data-marked-editable]
@@ -239,32 +275,3 @@ csingredienteditpair .edit-pair-edit
   color: #a9a9a9
 
 
-@media (max-width: 480px)
-  .ingredients-menu
-    height: 0
-    width: 100%
-    padding: 0px
-    margin: 0px
-    position: static
-    .controls
-      background-color: $offwhite
-      padding: 10px
-      margin-top: 22px
-      width: 100%
-      .navlabel
-        display: block
-        position: static
-      ul
-        margin-bottom: $baseline * 2
-        li
-          &:not(:last-child)
-            margin-right: 5px
-
-  .ingredients-menu-contents-slide
-    height: 191px
-
-  .ingredients-menu-button-slide
-    right: auto
-
-  .ingredients-menu-slide
-    left: 0

@@ -115,12 +115,11 @@
 
 .media-box-3
   @include boxsizing
-  position: relative
   width: 360px
   height: 272px
   border: 1px solid $light-gray
   padding: 10px
-  margin: 10px
+  margin: 0 $horz-baseline-medium $baseline 0
   background: white
   float: left
   @include transition(border 300ms)
@@ -168,9 +167,88 @@
     .media-box-3-image-group.has-summary
       bottom: 100px
 
+/// MEDIA BOX 4 ///
+
+.media-box-4
+  @include boxsizing
+  width: 360px
+  background: white
+  float: left
+  position: relative
+  margin: 10px 0px
+  img
+    width: 100%
+  a
+    color: #333333
+    .media-box-4-title-container
+      position: absolute
+      bottom: 0px
+      padding: 0px 25px 0px 10px
+      .media-box-4-title
+        display: inline
+        border-width: 3px 0px
+        border-color: rgba(226,95,37,.9)
+        border-style: solid
+        box-shadow: 10px 0 0 rgba(226,95,37,.9), -10px 0 0 rgba(226,95,37,.9)
+        max-width: 100%
+        // position: absolute
+        left: 0
+        bottom: 0
+        background: rgba(226,95,37,.9)
+        // padding: 0px 25px 0px 10px
+        // box-shadow: 15px 0 0 0 rgba(226,95,37,.9), -15px 0 0 0 rgba(226,95,37,.9)
+        color: white
+        @include primary-font-light
+        text-transform: uppercase
+        // text-overflow: ellipsis
+        // white-space: nowrap
+        overflow: hidden
+        @include transition(.3s all $standard-bezier)
+        @include boxsizing
+    &:hover
+      .media-box-4-title-container
+        .media-box-4-title
+          background: rgba(255,255,255,.9)
+          color: $orange
+          border-width: 3px 0px
+          border-color: rgba(255,255,255,.9)
+          border-style: solid
+          box-shadow: 10px 0 0 rgba(255,255,255,.9), -10px 0 0 rgba(255,255,255,.9)
+          // box-shadow: 15px 0 0 0 rgba(255,255,255,.9), -15px 0 0 0 rgba(255,255,255,.9)
+
+
+
+    .media-box-4-footer
+      .footer-left
+        float: left
+        text-transform: uppercase
+      .footer-right
+        float: right
+
+    .media-box-4-image-group
+      z-index: 1     
+      @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
+      @include transition-delay(0.4s)
+      bottom: 0px
+
+    .media-box-4-summary
+      position: absolute
+      height: 88px
+      left: 0
+      right: 0
+      bottom: 0
+      text-overflow: ellipsis
+ 
+  &:hover
+    cursor: pointer
+    a
+      text-decoration: none
+
+    .media-box-4-image-group.has-summary
+      bottom: 100px    
+      
 .line-clamp
   &:after
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), white 50%) repeat scroll 0 0 rgba(0, 0, 0, 0)
     bottom: 0
     content: "..."
     padding: 0 20px 1px 45px

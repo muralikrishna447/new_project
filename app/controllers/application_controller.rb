@@ -120,6 +120,21 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :google_simple_api_key
+  def google_simple_api_key
+    case Rails.env
+    when "production"
+      ENV["GOOGLE_SIMPLE_API_KEY"]
+    when "staging", "staging2"
+      ENV["GOOGLE_SIMPLE_API_KEY"]
+    else
+      "AIzaSyBgB1d5J7_MXWk0omalNP3W71jRJ3p7p7Y"
+    end
+  end
+
+  def default_serializer_options
+    {root: false}
+  end
 
 private
 
@@ -248,6 +263,11 @@ private
     (params[:client] == "iOS")
   end
 
+  before_filter :set_coupon
+  def set_coupon
+    session[:coupon] = params[:coupon] || session[:coupon]
+  end
+
   protected
 
   def verified_request?
@@ -264,16 +284,14 @@ private
   # end
 
 
-  def render_404(exception)
-    @not_found_path = exception.message
+  def render_404(exception = nil)
+    @not_found_path = exception.message if exception
+    puts '---------- render_404'
+    puts exception.inspect if exception
     respond_to do |format|
       format.html { render template: 'errors/not_found', layout: 'layouts/application', status: 404 }
       format.all { render nothing: true, status: 404 }
     end
   end
-
-
-
-
 end
 

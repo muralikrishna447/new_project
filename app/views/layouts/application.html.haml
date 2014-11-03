@@ -1,6 +1,11 @@
 !!! 5
-%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main" }
+%html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main", :style => "font-size: 62.5% !important;"}
   %head
+    -if @show_app_add
+      %meta(name="apple-itunes-app" content="app-id=816731096, affiliate-data=at=10lIEQ&ct=MWSmartBanneriPhone, app-argument=http://nytimes.com?fromSmartAppBanner=1")
+      %meta(name="apple-mobile-web-app-title" content="ChefSteps")
+    = render 'layouts/cdn_js'
+    %style
     / http://stackoverflow.com/questions/3326650/console-is-undefined-error-for-internet-explorer
     %script(type="text/javascript")
       if (!window.console) console = {log: function() {}};
@@ -8,12 +13,14 @@
       window.logPerf = function(where) {d2 = new Date(); console.log(where + ": " + (d2 - window.lastPerfTime)); window.lastPerfTime = d2;};
       logPerf("HEAD");
 
-    %title= "#{yield :title} - ChefSteps"
+    %title= "#{yield :title} | ChefSteps"
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
     %meta{charset: 'utf-8'}
     %meta{name: 'description', content: yield(:description)}
     %meta{name: 'keywords', content: yield(:keywords)}
+    -unless yield(:extra_head_tags).blank?
+      = yield :extra_head_tags
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1'}
     %meta{"http-equiv" => "Content-Language", content: "en"}
     %meta{name: "google-signin-clientid", content: google_app_id}
@@ -32,11 +39,11 @@
       %link{href: "/favicon.ico", rel: "shortcut icon"}
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
-
     %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
-    %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
-
+    %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
+    %link(href="/chefsteps-icons.css" rel="stylesheet" type="text/css")
+    %link{href:"/apple-touch-icon.png", rel:"apple-touch-icon" }
     = render 'layouts/mixpanel'
     = render 'layouts/google_analytics'
     = render 'layouts/filepicker'
@@ -53,8 +60,6 @@
       }
 
     %script(src='//www.youtube.com/iframe_api' async='true')
-
-    = render 'layouts/cdn_js'
     // Send Bloom Encrypted User data
     - if current_user
       :javascript
@@ -64,7 +69,8 @@
       :javascript
         window.chefstepsUserId = null
 
-  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' => "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'"}
+
+  %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :'ng-click' => "$broadcast('bodyClicked')", :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' =>  "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'"}
     #rails-flash.hide
       = flash.to_json
     - unless @hide_nav == true
@@ -77,6 +83,8 @@
         ChefSteps accounts work best with cookies enabled in your browser. These are little text files stored on your computer that tell us to remember stuff. If you just want to look at recipes, go for it! If you want all the benefits of an account, please enable cookies.
 
     = yield
+
+    / %csglobalmessage
 
     / modals /
     / %cs-ftue-nav
@@ -98,8 +106,9 @@
       %i.icon-page-load
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
+  
   = render "layouts/login_hack"
-  %script(src="//s3.amazonaws.com/chefsteps-production-assets/bloom/bloom-loader.js")
+  %script(src="//community-staging.usebloom.com/export/loader.js")
   = javascript_include_tag 'application'
   %script(type="text/javascript")
     logPerf("POST APP");
@@ -108,9 +117,9 @@
   = render 'layouts/facebook'
   = render 'layouts/google'
   - if Rails.env.production?
-    = render 'layouts/qbaka'
     = render 'layouts/adwords_remarketing'
     = render 'layouts/facebook_remarketing'
+
   = render 'layouts/stripe'
   = render 'layouts/inspectlet'
   = render 'layouts/crazyegg'

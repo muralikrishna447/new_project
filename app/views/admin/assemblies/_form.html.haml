@@ -31,7 +31,7 @@
 #all_assembly_selection_data
   #activity_selection_data{data: {:'activity-selection' => Activity.chefsteps_generated.where("title <> ''").order(:title).select('id, title').to_json}}
   #quiz_selection_data{data: {:'quiz-selection' => Quiz.where("title <> ''").order(:title).select('id, title').to_json}}
-  #assembly_selection_data{data: {:'assembly-selection' => Assembly.where(assembly_type: 'Group').order(:title).select('id, title').to_json}}
+  #assembly_selection_data{data: {:'assembly-selection' => Assembly.order(:title).select("id, title, assembly_type").map{|a| {id: a.id, title: "#{a.title} (#{a.assembly_type})" }}.to_json}}
   #page_selection_data{data: {:'page-selection' => Page.order(:title).select('id, title').to_json}}
   #assignment_selection_data{data: {:'assignment-selection' => Assignment.order(:title).select('id, title').to_json}}
 

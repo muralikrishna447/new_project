@@ -1,4 +1,4 @@
-class PageSerializer < ActiveModel::Serializer
+class PageSerializer < ApplicationSerializer
   attributes :id, :title, :content, :featured_image, :likes_count, :like_users, :path
 
   def featured_image

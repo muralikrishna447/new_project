@@ -1,15 +1,14 @@
+//=require jquery
 //=require navigation_bootstrap
-//=require jquery.min
 //=require active_admin
-//=require angular.min
-//=require angular-resource.min
-//=require angular-route.min
-//=require angular-sanitize.min
-//=require angular-animate.min
+//=require angular
+//=require angular-resource
+//=require angular-route
+//=require angular-sanitize
+//=require angular-animate
 //=require angular-ui
 //=require application
 //=require angular-mocks
-//=require bloom/api
 //=require_tree .
 
 window.logPerf = function() {};
@@ -29,3 +28,5 @@ angular.mock.clearDataCache = function() {
     }
 };
 
+// Mock bloom to get tests to pass
+window.Bloom = jasmine.createSpyObj('Bloom', ['configure', 'installComments']);

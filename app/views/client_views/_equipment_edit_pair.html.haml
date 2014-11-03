@@ -12,6 +12,7 @@
         {{item.equipment.title || item.equipment}}
       %span(ng-switch-default="")><
         {{item.equipment.title || item.equipment}}
+    %span(ng-if="item.optional" ng-bind-html="'&nbsp;(optional)'")><
     %span(ng-if="! $last")>< ,
     
   %csEditPairEdit

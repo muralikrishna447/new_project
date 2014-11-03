@@ -1,5 +1,5 @@
 class Setting < ActiveRecord::Base
-  attr_accessible :footer_image, :featured_activity_1_id, :featured_activity_2_id, :featured_activity_3_id
+  attr_accessible :footer_image, :featured_activity_1_id, :featured_activity_2_id, :featured_activity_3_id, :global_message, :global_message_active, :forum_maintenance
 
   def self.footer_image
     if self.any?

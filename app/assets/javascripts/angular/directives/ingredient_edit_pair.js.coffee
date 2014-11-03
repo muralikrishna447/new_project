@@ -75,11 +75,10 @@
       true
 
     scope.$watch 'inputText', (val) ->
-
       if (val.length == 0) || (val.indexOf(',') >= 0)
         resetMatches()
       else 
-        scope.matches[0] = {label: window.ChefSteps.splitIngredient(val).ingredient}
+        scope.matches[0] = {title: window.ChefSteps.splitIngredient(val).ingredient}
         scope.activeIdx = 0
         $q.when(scope.all_ingredients(val, scope.includeRecipes)).then (matches) ->
           # Ignore any queries that come back late after the query no longer matches the control

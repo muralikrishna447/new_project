@@ -7,6 +7,15 @@ describe "csUrlService", ->
   amazonURL =
     product_url: "http://www.amazon.com/gp/product/B00DHW4HXY/"
 
+  bogusAmazonURL =
+    product_url: "http://www.amazon.com/gp/product/B002VECM6S/?tag=xxxdesdfsadfc-20"
+
+  mikuniURL =
+    product_url: "http://mikuni.myshopify.com/products/applewood-smoked-ikura-caviar"
+
+  preCodedMikuniURL =
+    product_url: "http://mikuni.myshopify.com/products/applewood-smoked-ikura-caviar#oid=1003_1"
+
   beforeEach ->
     module('ChefStepsApp')
     inject (csUrlService) ->
@@ -22,12 +31,23 @@ describe "csUrlService", ->
     it "should update a parameter in the param list if there is one", ->
       expect(urlService.updateQueryStringParameter("http://amazon.com?tag=totally-fake", "tag", "delvkitc-20")).toBe("http://amazon.com?tag=delvkitc-20")
 
-  describe "fixAmazonLink", ->
+  describe "fixAffiliateLink", ->
     it "should normalize an amazon product id to an amazon link", ->
-      expect(urlService.fixAmazonLink(amazonCode)).toBe("http://www.amazon.com/gp/product/B002VECM6S/?tag=delvkitc-20")
+      expect(urlService.fixAffiliateLink(amazonCode)).toBe("http://www.amazon.com/gp/product/B002VECM6S/?tag=delvkitc-20")
 
     it "should normalize an amazon product url and add affiliate code", ->
-      expect(urlService.fixAmazonLink(amazonURL)).toBe("http://www.amazon.com/gp/product/B00DHW4HXY/?tag=delvkitc-20")
+      expect(urlService.fixAffiliateLink(amazonURL)).toBe("http://www.amazon.com/gp/product/B00DHW4HXY/?tag=delvkitc-20")
+
+    it "should normalize a bogus amazon affilate code to be the correct one", ->
+      expect(urlService.fixAffiliateLink(bogusAmazonURL)).toBe("http://www.amazon.com/gp/product/B002VECM6S/?tag=delvkitc-20")
+
+    it "should add an affiliate code to a Mikuni Wild Havest link", ->
+      expect(urlService.fixAffiliateLink(mikuniURL)).toBe('http://mikuni.myshopify.com/products/applewood-smoked-ikura-caviar#oid=1003_1')
+
+    it "should not damage a pre-coded Mikuni Wild Harvest Link", ->
+      expect(urlService.fixAffiliateLink(preCodedMikuniURL)).toBe('http://mikuni.myshopify.com/products/applewood-smoked-ikura-caviar#oid=1003_1')
+
+
 
   describe "urlAsNiceText", ->
     it "should return amazon.com if url is amzn.com", ->
@@ -54,8 +74,8 @@ describe "csUrlService", ->
 
   describe "currentSiteAsHttps", ->
     it "should return the current site starting with https", ->
-      expect(urlService.currentSiteAsHttps()).toBe("http://localhost:3000")
+      expect(urlService.currentSiteAsHttps()).toContain("http://localhost")
 
   describe "currentSiteAsHttps", ->
     it "should return the current site starting with https", ->
-      expect(urlService.currentSite()).toBe("http://localhost:3000")
+      expect(urlService.currentSite()).toContain("http://localhost")

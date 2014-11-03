@@ -2,7 +2,7 @@
 - content_for :description, "An exceptional knife should be the cornerstone of a cook's arsenal. It becomes an extension of your own hands; the tool with which you will create art and bring refinement to the table. A beautiful, high-quality knife will follow you to every kitchen and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice—all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best."
 
 .container
-  .row.section#knife-intro
+  .row.section
     .span5
       = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/Ya5vpVc1RzysqAPC5ZIJ/convert?fit=712cache=true')
     .span7
@@ -10,11 +10,24 @@
       = render 'knife_collection_social', title: 'Chefsteps Knife Collection', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/Ya5vpVc1RzysqAPC5ZIJ', likeable_object: @knife_page
       %p.section-small An exceptional knife should be the cornerstone of a cook's arsenal. It becomes an extension of your own hands; the tool with which you will create art and bring refinement to the table. A beautiful, high-quality knife will follow you to every kitchen and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice—all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best.
 
+.container
+  .row.section
+    %hr
+    .span12
+      %h2 Here are some techniques to improve your knife skills:
+      %br
+      %cssearchindex(query='{"search_all": "knife", "per": "6"}')
+      %a.btn.btn-large.btn-outline-blue-large(href='/gallery#?published_status=published&generator=chefsteps&search_all=knife')
+        See More
+
 = render 'knife_collection_split_a'
 
 .section
 
 = render 'layouts/footer'
+
+%div(ng-controller="StandaloneMadlibController")
+  = render 'home/madlib_popup', registration_source: 'knife-collection-madlib'
 
 // Lightbox //
 

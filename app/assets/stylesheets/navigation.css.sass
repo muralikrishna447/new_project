@@ -1,0 +1,313 @@
+/* Global Nav 08-May-2014 */
+
+@import 'mixins'
+
+=navpadding
+  height: 6rem
+  padding: 0.8rem
+  line-height: 4.4rem
+
+input.search-query
+  +radius(2px)
+  border: 1px solid $light-gray
+  width: 250px
+
+input:focus
+  border: 1px solid $dark-gray
+  outline: none
+
+.course-global-nav
+  .cs-nav
+    margin-top: -6rem
+
+.cs-nav
+  display: block
+  background: rgba(255,255,255,0.9)
+  position: fixed
+  width: 100%
+  z-index: 99999
+  border-bottom: 1px solid #ccc
+  height: 6rem
+  left: 0px
+  top: 0px
+  -webkit-transform: translate3d(0,0,0)
+  ::selection
+    background: none
+    color: $orange
+
+.cs-nav-logo
+  height: 100%
+  padding: 1.2rem
+  float: left
+  @include boxsizing
+  .logo-box
+    .regular-logo
+      height: 36px
+    .loading-logo
+      height: 36px
+      display: none
+    .loading-no-logo
+      display: none
+      img
+        height: 40px
+        margin-top: -4px
+
+.cs-nav-items
+  //position: absolute
+  float: right
+  //right: 80px
+  height: 6rem
+  ul
+    margin: 0px
+    padding: 0px
+    li
+      list-style: none
+      display: inline-block
+      position: relative
+      @include boxsizing
+      @include navpadding
+      a
+        display: block
+        text-transform: uppercase
+        color: #333
+        @include transition(all .3s)
+        &:hover
+          color: $orange
+          cursor: pointer
+
+.cs-nav-items-toggle
+  float: right
+  @include boxsizing
+  height: 6rem
+  padding: 0.8rem 0rem
+  line-height: 4.4rem
+  text-transform: uppercase
+  color: #333
+  &:hover
+    color: $orange
+    cursor: pointer
+
+.cs-nav-links-container
+  float: right
+  // position: absolute
+  // right: 145px
+
+.cs-nav-links
+  display: inline-block
+  float: left
+
+.cs-nav-items.ng-hide-add, .cs-nav-items.ng-hide-remove
+  /* remember to add this */
+  display: block!important
+  opacity: 1
+
+.cs-nav-items.ng-hide
+  opacity: 0
+
+.cs-nav-dropdown-menu
+  position: absolute
+  left: 0px
+  top: 6rem
+  background: rgba(255,255,255,0.9)
+  border: 1px solid #ccc
+  border-top: 1px solid $orange  
+  white-space: nowrap
+  @include anim-slide-down(-50px)
+  hr
+    margin: 5px 0 5px 0px
+  ul
+    margin: $baseline $horz-baseline-small
+    li
+      display: block
+      height: 4rem
+.cs-nav-search
+  float: left
+  width: 28px
+  height: 6rem
+  overflow: hidden
+  @include transition(300ms $standard-bezier all)
+  .cs-nav-search-toggle, .cs-nav-search-close
+    float: left
+    height: 100%
+    @include boxsizing
+    i
+      line-height: inherit
+    &:hover
+      color: $orange
+      cursor: pointer
+  .cs-nav-search-input
+    float: left
+    width: 210px
+    height: 100%
+    margin: 0px 5px
+    padding: 0.8rem
+    @include boxsizing
+    form
+      height: 100%
+      margin: 0px
+      input
+        float: left
+        height: 100%
+        width: 100%
+        border: 1px solid #ccc
+        padding: 0.4rem
+        @include boxsizing
+
+
+.cs-nav-profile-container
+  float: right
+  display: block
+
+.cs-nav-notifs
+  float: right
+  height: 6rem
+  padding: 8px 0px
+  @include boxsizing
+  .bloom-notifs
+    .icon 
+      i.bloom-globe
+        line-height: inherit
+
+.cs-nav-profile
+  float: right
+  width: 4rem
+  height: 6rem
+  padding: 1.5rem 0.5rem
+  margin-right: 1rem
+  @include boxsizing
+  .profile-image
+    img
+      float: left
+      width: 100%
+      border-radius: 100%
+
+.cs-nav-search
+  margin-right: 1rem
+
+.cs-nav-search.cs-nav-search-open
+  width: 260px
+
+#nav-sign-in-button
+  text-transform: uppercase
+  color: #333
+  height: 6rem
+  line-height: 6rem
+  padding: 0.5rem
+  @include boxsizing
+  &:hover
+    color: $orange
+
+.menu-popover-arrow
+  @include popover-arrow(-5px, 210px)
+
+@media(min-width: 768px)
+  .resources-popover-arrow
+    @include popover-arrow(-5px, 40px)
+
+  .admin-popover-arrow
+    @include popover-arrow(-5px, 38px)
+
+  .cs-nav-links
+    position: absolute
+    right: 110px
+    @include anim-basic-fade(400ms)  
+  .cs-nav-items-toggle
+    display: none
+  .cs-nav-dropdown-menu
+    ul
+      li
+        height: 3rem
+        a
+          line-height: 1.6rem
+          text-transform: none
+
+@media(max-width: 767px)
+  .cs-nav-items
+    ul
+      li
+        a
+          text-transform: none
+  .resources-popover-arrow
+    display: none
+  .admin-popover-arrow
+    display: none
+  .cs-nav-items-toggle
+    display: inline-block
+  .cs-nav-items
+    ul.cs-nav-links-container
+      top: -999px !important
+      opacity: 0
+      @include transition(all 300ms $standard-bezier)
+      border-top: 1px solid $orange
+    ul.cs-nav-links-container.cs-nav-menu-open
+      opacity: 1
+      top: 60px !important
+
+  .cs-nav-dropdown-menu
+    ul
+      border-top: 1px solid $orange
+  .cs-nav-logo
+    padding: 0.8rem
+    .logo-box
+      .regular-logo
+        height: 43px
+
+  .cs-nav-links
+    width: 100%
+    margin-left: $horz-baseline-large
+  .cs-nav-items
+    ul.cs-nav-links-container
+      background: white
+      position: absolute
+      top: 60px
+      right: 0px
+      width: 210px
+      border-left: 1px solid #ccc
+      border-bottom: 1px solid #ccc
+      padding: 1rem
+      @include boxsizing
+      width: 320px
+      li
+        width: 100%
+        line-height: $baseline * 4
+        height: $baseline * 4
+        padding: 0px
+        a
+          &:hover
+            margin-left: 3px
+      li.cs-nav-dropdown
+        display: block
+        height: inherit
+        .cs-nav-dropdown-toggle
+          display: none
+        .cs-nav-dropdown-menu
+          display: block !important
+          opacity: 1
+          position: relative
+          border: 0px
+          top: 0px
+          margin-top: 0px
+  .cs-nav-search
+    width: 100%
+    height: $baseline * 6
+    padding: 0.8rem 0px
+    @include boxsizing
+    .cs-nav-search-input
+      display: block !important
+      width: 250px
+      padding: 0px
+    .cs-nav-search-close
+      display: none
+  .cs-nav-search-toggle
+    display: none
+
+@media(max-width: 700px) 
+  .cs-nav
+    position: relative
+    width: 100%
+
+@media(max-width: 320px) and (max-height: 480px)
+  .cs-nav
+    width: calc(100% + 40px)
+    margin-left: -20px
+

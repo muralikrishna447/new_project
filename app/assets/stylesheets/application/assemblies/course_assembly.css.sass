@@ -1,6 +1,10 @@
 @import 'mixins'
 @import 'application/custom_mixins'
 
+.class-activity-wrapper
+  .standard-item
+    width: 700px
+
 .fs-course
   height: 100%
   margin: 0px
@@ -94,11 +98,15 @@
       border-top: 1px solid $light-gray
       cursor: pointer
       color: darkgray
+      padding-right: 10px
 
       a
         line-height: 36px
         margin-left: 10px
         color: inherit
+        display: inline-block
+        padding-left: 1.5rem
+        text-indent: -1.5rem
 
     li:hover
       color: #333
@@ -132,6 +140,8 @@
 
         .hitbox:hover
           color: #333
+
+
 
 .course-content-wrapper
   position: absolute
@@ -349,6 +359,10 @@
 .ingredients-title
   display: none
 
+.course-comments
+  padding-left: 15px
+  padding-right: 15px
+
 .responsive
   display: none
 
@@ -359,9 +373,13 @@
 
   .course-nav-slideout
     margin-left: 0px
+    left: 0px
+    width: 335px
+    padding-left: 40px
 
   .course-content-wrapper
     padding-left: 335px
+    padding-right: 0px
 
   .assembly-loading-wrapper
     padding-left: 335px

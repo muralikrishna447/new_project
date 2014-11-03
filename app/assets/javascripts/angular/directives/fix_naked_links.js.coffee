@@ -6,6 +6,7 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
   link:  (scope, element, attrs) ->
     $(element).on 'click', 'a', (event)->
 
+      # We should really make this work in reverse and not override default link behavior.  Explicitly specificy which links open a nell card.
       if $(event.currentTarget).attr('no-nell-popup')
         return
 

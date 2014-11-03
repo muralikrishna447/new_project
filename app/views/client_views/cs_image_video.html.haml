@@ -1,0 +1,12 @@
+.cs-image-video-container(ng-if='video')
+  .cs-image-video-play-button(ng-click='togglePlay()' ng-class='buttonClass')
+    %i.fa.fa-play-circle-o
+  .cs-image-video-image(ng-click='togglePlay()' ng-class='imageClass' style="background-image: url('{{imageUrl(image)}}'); background-size: cover; background-repeat: no-repeat; background-position: center;")
+    / %img(ng-src='{{imageUrl(image)}}')
+  .cs-video(ng-class='videoClass')
+    %csembedyoutube(video-id='{{video}}')
+    / .embed-container
+    /   %iframe(ng-src='{{videoUrl(video)}}' frameborder='0' allowfullscreen)
+
+.cs-image-video-container(ng-if='!video')
+  .cs-image-video-image(ng-class='imageClass' style="background-image: url('{{imageUrl(image)}}'); background-size: cover; background-repeat: no-repeat; background-position: center;")

@@ -1,99 +1,115 @@
-.loading-ball(ng-controller="NavbarController")
-  %cs-loading
 - if ! @minimal
-  .navbar.navbar-fixed-top(ng-controller="NavbarController")
-    .navbar-inner
-      .container
-        = link_to root_url, class: 'brand' do
+  - if external
+    .cs-nav
+      .cs-nav-logo
+        = link_to root_url do
+          .logo-box
+            %img.regular-logo(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h-tagline.png")
+  - else
+    .cs-nav(ng-controller="NavbarController" ng-cloak)
+      .cs-nav-logo
+        = link_to root_url do
           %cs-loading
-        %button.btn.btn-navbar{style: 'float: right', data: {toggle: 'collapse', target: '.nav-collapse'}}
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
-        %div
-          -if @include_edit_toolbar
-            #nav-edit-toolbar(collapse="!editMode")
-              = render 'activities/edit_toolbar'
-          %div(ng-style="toolbarBonusStyle()" ng-hide='editMode')
-            .nav-collapse.collapse.pull-right#cs-navigation
-              %ul.nav
-                %li.dropdown
-                  .nav-item-border
+          
+      .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
+        - if current_user
+          .cs-nav-profile
+            = link_to user_profile_url(current_user) do
+              .profile-image
+                = image_tag current_user.avatar_url
+          / .cs-nav-notifs
+          /   %csnotifs
+        - else
+          %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+          = render "devise/sessions/new_angular"
+          .cs-nav-profile(ng-if="authentication.currentUser()")
+            %a(ng-href="{{'/profiles/' + authentication.currentUser().slug}}")
+              // Place holder for now until we write a filepicker service
+              %img(src="http://d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=max&w=75&h=75&cache=true")
+          / .cs-nav-notifs(ng-if="authentication.currentUser()")
+          /   %csnotifs
 
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Recipes
-                    %i.icon-angle-down
-                  %ul.dropdown-menu
-                    .dropdown-background
-                    %li= link_to 'ChefSteps Recipes', gallery_index_url + "#/?activity_type=Recipe&generator=ChefSteps"
-                    %li= link_to 'Community Recipes', gallery_index_url + "#/?generator=Community"
-                    %li= link_to 'Ingredients', ingredients_url
-                    -if (can? :manage, Ingredient) || (can? :manage, Ingredient)
-                      %li.divider
-                    -if can? :manage, Ingredient
-                      %li= link_to 'Manage Ingredients', manager_ingredients_path
-                    -if can? :manage, Equipment
-                      %li= link_to 'Manage Equipment', equipment_index_path
-
-                %li
-                  .nav-item-border
-                  = link_to 'Classes', courses_url
-                %li.dropdown
-                  .nav-item-border
-                  = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                    Community
-                    %i.icon-angle-down
-                  %ul.dropdown-menu
-                    .dropdown-background
-                    %li= link_to 'Forum', 'http://forum.chefsteps.com/discussions'
-                    %li= link_to 'Vote For New Courses', poll_url('vote-for-future-classes-3')
-                -unless @no_shop
-                  %li.dropdown
-                    .nav-item-border
-                    = link_to 'javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
-                      Shop
-                      %i.icon-angle-down
-                    %ul.dropdown-menu
-                      .dropdown-background
-                      %li= link_to 'Store', 'http://store.chefsteps.com'
-                      %li= link_to 'Knife Collection', knife_collection_url
-                      %li= link_to 'Sous Vide Collection', sv_collection_url
-                %li(ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
-                  .nav-item-border
-                  - if external
-                    -# Can't see current_user when external, so use a route that will
-                    -# either go to their profile if logged in, or take them to sign in
-                    = link_to user_profile_url('self') do
-                      %span
-                        Profile
-
-                  - elsif current_user
-                    = link_to user_profile_url(current_user) do
-                      %span
-                        Profile
-                  - else
-                    %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
-                    = render "devise/sessions/new_angular"
-                    = link_to 'Profile', user_profile_url('self'), "ng-show" => "(authentication.currentUser())", class: "profile-link"
-                -# %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
-                -#   %span
-                -#     %a.btn-google.btn(ng-click="loadFriends('invite')") Invite
-                -#     = render "devise/sessions/new_angular"
-                -# %li(ng-controller="LoginController" ng-init="authentication.setCurrentUser(#{current_user.to_json})")
-                -#   %span
-                -#     %a.btn-google.btn(ng-click="openModal('googleInvite')") Google Invite
-                -#     = render "devise/sessions/new_angular"
-                - unless external
+      .cs-nav-items(ng-show="!editMode")
+        .cs-nav-items-toggle(ng-click="toggleMenu()")
+          Menu
+        %ul.cs-nav-links-container(ng-class="{'cs-nav-menu-open': showMenu}")
+          .menu-popover-arrow
+          .cs-nav-links(ng-hide="showSearch")
+            %li
+              = link_to gallery_index_url do
+                Recipes
+            %li.cs-nav-dropdown
+              %a.cs-nav-dropdown-toggle(ng-click="toggleDropdown('resources')")
+                Resources
+                %i.fa.fa-caret-down
+              .cs-nav-dropdown-menu(ng-show="showDropdown=='resources'" ng-cloak)
+                %ul
+                  .resources-popover-arrow
                   %li
-                    .nav-item-border
-                    .nav-search.nav-search-toggle
-                      %i.icon-search.icon-large
-                      %form.navbar-form.form-search.nav-search-form(action="{{getSearchQuery()}}" method="get")
-                        %input#nav-search-field.search-query(placeholder='search' ng-model="navbarSearchQuery")
-                      .nav-search-hide
-                        %i.icon-remove
-                - if current_user && current_user.admin?
+                    = link_to ingredients_url do
+                      %i.fa.fa-leaf 
+                      Ingredient Wiki
                   %li
-                    .nav-item-border
-                    .cs-bloom-notifs
-                      %csnotifs
+                    = link_to courses_url do
+                      %i.fa.fa-film 
+                      Classes
+                  %li
+                    = link_to projects_url do
+                      %i.fa.fa-cubes
+                      Projects
+                  %hr{style: "border-bottom: 1px solid #ccc"}
+                  %li
+                    = link_to 'http://www.chefsteps.com/activities/the-egg-calculator' do
+                      = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/l4FOGWE7Swuz1kgKrNmZ", width: "15px"
+                      Egg Calculator
+                  %li
+                    = link_to "http://www.chefsteps.com/activities/sous-vide-time-and-temperature-guide" do
+                      %i.fa.fa-clock-o
+                      Time & Temperature Guide
+                  %hr{style: "border-bottom: 1px solid #ccc"}
+                  %li
+                    = link_to knife_collection_url do
+                      = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/F0T93X9wSdGBCXEwBPWY", width: "15px"
+                      Knife Collection
+                  %li
+                    = link_to sv_collection_url do
+                      = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/Obli4MvVSqKIhOsSFhny", width: "15px"
+                      Sous Vide Collection
+                  %li
+                    %a(href="http://store.chefsteps.com/collections/cookbooks-we-love")
+                      %i.fa.fa-book
+                      Cookbook Collection
+            %li
+              %a(href='http://www.chefsteps.com/forum' onclick="mixpanel.track('Forum Nav Clicked')")
+                Forum
+            %li
+              %a(href='/about')
+                About
+            - if current_admin?
+              %li.cs-nav-dropdown
+                %a.cs-nav-dropdown-toggle(ng-click="toggleDropdown('adminResources')")
+                  Admin
+                  %i.fa.fa-caret-down
+                .cs-nav-dropdown-menu(ng-show="showDropdown=='adminResources'" ng-cloak)
+                  %ul
+                    .admin-popover-arrow
+                    %li
+                      %a(href="/forum/admin/dashboard")
+                        Comments Dashboard
+                    %li= link_to 'Manage Ingredients', manager_ingredients_path
+                    %li= link_to 'Manage Equipment', equipment_index_path
+
+          .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
+            %li
+              .cs-nav-search-toggle(ng-click="toggleSearch()")
+                %i.fa.fa-search
+              .cs-nav-search-input(ng-show="showSearch" ng-cloak)
+                %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
+                  %input(placeholder="search" ng-model="navbarSearchQuery")
+              .cs-nav-search-close
+                %i.fa.fa-times(ng-click="toggleSearch()")
+
+      %div
+        -if @include_edit_toolbar
+          #nav-edit-toolbar(collapse="!editMode")
+            = render 'activities/edit_toolbar'

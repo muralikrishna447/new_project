@@ -94,7 +94,7 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
     ]
 
   $scope.ingredientChanged =  (ingredient) ->
-    csUrlService.fixAmazonLink(ingredient)
+    csUrlService.fixAffiliateLink(ingredient)
     $scope.dataLoading += 1
     ingredient.$update  # Want to try to move this into the ingredient factory
       id: ingredient.id

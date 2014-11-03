@@ -1,4 +1,4 @@
-class VoteSerializer < ActiveModel::Serializer
+class VoteSerializer < ApplicationSerializer
   attributes :id
 
   has_one :user

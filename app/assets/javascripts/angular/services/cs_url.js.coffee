@@ -8,16 +8,26 @@ angular.module('ChefStepsApp').service 'csUrlService', ["$window", ($window) ->
     else
       uri + separator + key + "=" + value
 
-  this.fixAmazonLink = (i) ->
+  this.fixAffiliateLink = (i) ->
     url = i.product_url
     return unless url
-    tag_value = "delvkitc-20"
-    tag = "tag=" + tag_value
+
+    amzn_tag_value = "delvkitc-20"
+    amzn_tag = "tag=" + amzn_tag_value
+    mikuni_tag = '#oid=1003_1'
+
     if url.match(/^[\w\d]{10}$/)
-      i.product_url = "http://www.amazon.com/gp/product/" + url + "/?" + tag
+      i.product_url = "http://www.amazon.com/gp/product/" + url + "/?" + amzn_tag
+
     else if url.indexOf('amazon.com') != -1
-      if url.indexOf(tag) == -1
-        i.product_url = this.updateQueryStringParameter(url, "tag", tag_value)
+      if url.indexOf(amzn_tag) == -1
+        i.product_url = this.updateQueryStringParameter(url, "tag", amzn_tag_value)
+
+    else if url.indexOf('mikuni.myshopify.com') != -1
+      if url.indexOf(mikuni_tag) == -1
+        i.product_url = url + mikuni_tag
+
+    i.product_url
 
   this.urlAsNiceText = (url) ->
     if url

@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "chefsteps-app";
+  src:url("fonts/chefsteps-app.eot");
+  src:url("fonts/chefsteps-app.eot?#iefix") format("embedded-opentype"),
+    url("fonts/chefsteps-app.woff") format("woff"),
+    url("fonts/chefsteps-app.ttf") format("truetype"),
+    url("fonts/chefsteps-app.svg#chefsteps-app") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "chefsteps-app" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-cs-"]:before,
+[class*=" icon-cs-"]:before {
+  font-family: "chefsteps-app" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-cs-celsius-selected:before {
+  content: "a";
+}
+.icon-cs-close:before {
+  content: "b";
+}
+.icon-cs-degree:before {
+  content: "c";
+}
+.icon-cs-drops:before {
+  content: "d";
+}
+.icon-cs-fahrenheit:before {
+  content: "e";
+}
+.icon-cs-nav:before {
+  content: "f";
+}
+.icon-cs-search:before {
+  content: "g";
+}
+.icon-cs-timer:before {
+  content: "h";
+}
+.icon-cs-waves:before {
+  content: "i";
+}
+.icon-cs-celsius:before {
+  content: "j";
+}
+.icon-cs-fahrenheit-selected:before {
+  content: "k";
+}
+.icon-cs-target:before {
+  content: "m";
+}
+.icon-cs-power:before {
+  content: "n";
+}
+.icon-cs-iback:before {
+  content: "l";
+}
+.icon-cs-colon:before {
+  content: "o";
+}
+.icon-cs-flag-goal:before {
+  content: "p";
+}
+.icon-cs-circulator:before {
+  content: "q";
+}
+.icon-cs-comment-open:before {
+  content: "r";
+}
+.icon-cs-comment-filled:before {
+  content: "s";
+}

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'routes for Courses' do
-  # The pending tests below just don't work...I have no clue!
+  # The pending tests below just don't work...I have no clue!x
   it 'routes /courses to the courses controller' do
     expect(get: '/courses').to route_to(action: 'index', controller: 'courses')
   end
@@ -32,13 +32,6 @@ describe 'routes for Courses' do
 
   it 'routes /classes/test/landing to the assemblies controller' do
     expect(get: "/classes/test/landing").to route_to(action: 'landing', controller: 'assemblies', id: 'test')
-  end
-
-  
-  describe '/ambasssador invalid' do
-    it 'sets session and renders class index' do
-      expect(get: '/iAmNotAnAmbassador').not_to be_routable
-    end
   end
 
 end

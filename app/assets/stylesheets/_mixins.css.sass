@@ -26,7 +26,7 @@
   -o-box-shadow: 0px 0px 2px #888888
 
 =big-shadow
-  @include any_shadow(5px 5px 15px #888888)
+  @include any_shadow(0px 0px 15px #333)
 
 =dark-shadow
   box-shadow: 0px 0px 5px black
@@ -118,11 +118,35 @@
   background-size: $value
 
 =chefsteps-filter($url)
-  background: linear-gradient(rgba(226,95,37,.7), rgba(226,95,37,.7)), url($url) no-repeat left top fixed
+  background: linear-gradient(rgba(226,95,37,.7), rgba(226,95,37,.7)), url($url) no-repeat top center fixed
   @include background-size(100%)
-  height: 300px
   width: 100%
   margin-bottom: $baseline * 3 
+
+=popover-arrow($top, $left)
+  position: absolute
+  height: 7px
+  width: 7px
+  border-top: 1px solid $orange
+  border-left: 1px solid $orange
+  @include transform(rotate(45deg))
+  top: $top
+  left: $left
+  background: white
+  z-index: 10001
+
+=popover($margin-right)
+  background: white
+  border: 1px solid $offwhite
+  position: absolute
+  top: 60px
+  right: $margin-right
+  float: right
+  width: 200px
+  padding: $baseline
+  background: #fff
+  border: 1px solid $offwhite
+  border-top: 2px solid $orange
 
 =blur($radius: 5px)
   -webkit-filter: blur($radius)
@@ -130,6 +154,13 @@
   -ms-filter: blur($radius)
   -o-filter: blur($radius)
   filter: blur($radius)
+
+=filter($value)
+  -webkit-filter: $value
+  -moz-filter: $value
+  -ms-filter: $value
+  -o-filter: $value
+  filter: $value
 
 =display-flex
   display: flex
@@ -157,6 +188,13 @@
   -o-align-items: $x
   align-items: $x
 
+=align-content($x)
+  -webkit-align-content: $x
+  -moz-align-content: $x
+  -ms-align-content: $x
+  -o-align-content: $x
+  align-content: $x
+
 =flex-wrap($x)
   -webkit-flex-wrap: $x
   -moz-flex-wrap: $x
@@ -182,8 +220,6 @@
   @include display-flex
   @include justify-content(center)
   @include align-items(center)
-
-
 
 
 /* This works on both inputs and spans */
@@ -242,10 +278,69 @@ $horz-baseline-large: 13px
   font-weight: 700
   font-style: normal 
 
+/* Animations */
+
+
+=anim-basic-fade($time)
+  @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  opacity: 1
+  &.ng-hide-add, &.ng-hide-remove
+    display: block !important
+  &.ng-hide-add.ng-hide-add-active, &.ng-hide-remove.ng-hide-remove-active
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  &.ng-hide
+    opacity: 0
+  &.ng-enter, &.ng-leave, &.ng-move, &.ng-if-enter
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  &.ng-enter, &.ng-leave.ng-leave-active, &.ng-if-enter, &.ng-if-leave.ng-if-leave-active
+    opacity: 0
+  &.ng-leave, &.ng-enter-active, &.ng-if-leave, &.ng-if-enter.ng-if-enter-active
+    opacity: 1
+  &.ng-move
+    opacity: 0.2
+  &.ng-move.ng-move-active
+    opacity: 1
+
+=anim-slide-down($distance)
+  &.ng-enter
+    @include transition(all 300ms $standard-bezier)
+    opacity: 0
+    margin-top: $distance
+  &.ng-enter-active
+    opacity: 1  
+    margin-top: 0px
+  &.ng-hide-add, &.ng-hide-remove
+    @include transition(all 300ms $standard-bez-out)
+    display: block !important
+    opacity: 1
+    margin-top: 0px
+  &.ng-hide
+    margin-top: $distance
+    opacity: 0
+
+=anim-slide-left($start, $end)
+  &.ng-enter
+    @include transition(all 200ms $standard-bezier)
+    opacity: 0
+    margin-left: $start
+    &.ng-enter-active
+      opacity: 1  
+      margin-left: $end
+  &.ng-leave
+    @include transition(all 200ms $standard-bez-out)
+    opacity: 1
+    margin-left: $end
+    &.ng-leave-active
+      opacity: 0
+      margin-left: $start  
+
 =horizontal-center
   margin-left: auto
   margin-right: auto
 
+$bounce-bez: cubic-bezier(0.25,0.25,0.325,1.39)
+$standard-bezier: cubic-bezier(.81,0,0,.99)
+$standard-bez-out: cubic-bezier(.29,.04,.02,1)
 
 /* Colors */
 $orange: #e25f25
@@ -258,7 +353,8 @@ $blue-opaque: rgba(0,109,204,.8)
 $red: #DA4f49
 $red-opaque: rgba(218,79,73,.8)
 $light-gray: #ccc
-$offwhite: #F2F2F2
+$dark-gray: rgb(146, 146, 146)
+$offwhite: #f1f1f1
 $white-opaque: rgba(255,255,255,.3)
 
 /* Layout */

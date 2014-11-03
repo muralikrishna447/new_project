@@ -17,6 +17,7 @@
   body *
     visibility: hidden
     line-height: 22px
+    @include transition(none !important)
 
   h1
     margin-bottom: $baseline * 2 !important
@@ -44,7 +45,7 @@
     width: 50%
     margin-left: 25%
 
-  .noprint, .nell-popup, .nell-embed, .navbar 
+  .noprint, .nell-popup, .nell-embed, .navbar, .aside
     display: none !important
 
   .video-container
@@ -70,6 +71,7 @@
     width: 100% !important
     page-break-after: auto
     margin-left: 0 !important
+    @include flex(1 0 500px)
 
   .aside, .aside-separate
     float: none !important
@@ -115,3 +117,27 @@
       .show-group:not(:empty)
         .quantity-group, .unit
           background: white !important
+
+  // Class Print Styles
+
+  body.fs-course
+    overflow: auto
+    height: initial
+
+  .course-wrapper
+    height: inherit
+    float: none
+    width: 100%
+
+  .course-assembly-container
+    position: relative
+    height: inherit
+    margin-top: -58px
+
+  .course-content-wrapper
+    position: relative
+    height: inherit
+    padding-left: 0px
+    padding-right: 0px
+    padding-top: 0px
+    padding-bottom: 0px

@@ -22,17 +22,28 @@
     "https://s3.amazonaws.com/chefsteps-production-assets/assets/img_placeholder.jpg"
 
   # Must match logic in has_Activity#featurable_image !!
-  this.itemImageFpfile = (activity) ->
+  this.itemImageFpfile = (activity, priority) ->
     if activity?
-      if activity.featured_image_id
-        return JSON.parse(activity.featured_image_id)
-      else if activity.image_id
-        return JSON.parse(activity.image_id)
+      if priority == 'hero'
+        if activity.image_id
+          return JSON.parse(activity.image_id)
+        else if activity.featured_image_id
+          return JSON.parse(activity.featured_image_id)
+        else
+          if activity.steps?
+            images = activity.steps.map (step) -> step.image_id
+            image_fpfile = images[images.length - 1]
+            return JSON.parse(image_fpfile) if (image_fpfile? && (image_fpfile != ""))
       else
-        if activity.steps?
-          images = activity.steps.map (step) -> step.image_id
-          image_fpfile = images[images.length - 1]
-          return JSON.parse(image_fpfile) if (image_fpfile? && (image_fpfile != ""))
+        if activity.featured_image_id
+          return JSON.parse(activity.featured_image_id)
+        else if activity.image_id
+          return JSON.parse(activity.image_id)
+        else
+          if activity.steps?
+            images = activity.steps.map (step) -> step.image_id
+            image_fpfile = images[images.length - 1]
+            return JSON.parse(image_fpfile) if (image_fpfile? && (image_fpfile != ""))
 
   this.queryIndex = ->
     Activity.index_as_json

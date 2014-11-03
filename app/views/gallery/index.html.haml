@@ -6,67 +6,47 @@
 
 .container.gallery-wrapper.relative(ng-controller='GalleryController')
   .row(ng-cloak)
-    .span12
+    .span12.section
       %div
         .gallery-filter.navbar
           %ul.nav.left-group
 
-            %form.navbar-search.relative(ng-click="collapseFilters = true")
-              %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all" ui-event='{blur: "trackSearch()"}')
-              %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
+            %form.navbar-search.relative
+              %input.search-query(ng-model='input' ng-change='search(input)' placeholder='search')
+              %a.clear-search(ng-click="clearSearch()")
                 %i.icon-remove
 
-            %li.relative(ng-mouseenter="collapseFilters = false" ng-mouseleave="collapseFilters = true")
-              .filter-collapser(ng-click="collapseFilters = ! collapseFilters")
+            %li.relative(ng-mouseenter="showOptions.filters = true" ng-mouseleave="showOptions.filters = false")
+              .filter-collapser(ng-click="showOptions.filters = ! showOptions.filters")
                 FILTER
-                %i.icon-angle-down(ng-show="collapseFilters")
-                %i.icon-angle-up(ng-hide="collapseFilters")
-              .filters-group.anim-filters(ng-show="!collapseFilters")
-                %csRadioButtons.first-separate(ng-model="typeChoices" active="filters.activity_type")
+                %i.icon-angle-down(ng-hide="showOptions.filters")
+                %i.icon-angle-up(ng-show="showOptions.filters")
+              .filters-group.anim-filters(ng-show="showOptions.filters")
                 %csRadioButtons.first-separate(ng-model="difficultyChoices" active="filters.difficulty")
                 %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
-                -if can? :update, User
-                  %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
+                %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status" ng-if="csAuthentication.isAdmin()")
 
-            %li.relative(ng-mouseenter="collapseSort = false" ng-mouseleave="collapseSort = true")
-              .filter-collapser(ng-click="collapseSort = ! collapseSort")
+            %li.relative(ng-mouseenter="showOptions.sort = true" ng-mouseleave="showOptions.sort = false")
+              .filter-collapser(ng-click="showOptions.sort = ! showOptions.sort")
                 SORT
-                %i.icon-angle-down(ng-show="collapseSort")
-                %i.icon-angle-up(ng-hide="collapseSort")
-
-              .filters-group.anim-filters(ng-show="!collapseSort")        
-                .btn( ng-repeat="choice in getSortChoices()" 
+                %i.icon-angle-down(ng-hide="showOptions.sort")
+                %i.icon-angle-up(ng-show="showOptions.sort")
+              .filters-group.anim-filters(ng-show="showOptions.sort")
+                .btn( ng-repeat="choice in sortChoices" 
                       ng-click="filters.sort = choice" 
                       ng-class="{active: filters.sort == choice}")
                   {{choice}}
-            .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
-              {{f}}
-              %span.reset-filter(ng-click="resetFilter(k)")
-                %i.icon-remove
-        .add-group.btn-group.pull-right(ng-show="(filters.generator != 'ChefSteps') || csAuthentication.isAdmin()")
+
+        .add-group.btn-group.pull-right(ng-show="(filters.generator != 'chefsteps') || csAuthentication.isAdmin()")
           %a.btn.btn-secondary.add-button(href="/activities/new")
             Add Recipe
 
-  .row(ng-cloak ng-show="(galleryItems.length == 0) && initialLoadDone" ng-click="collapseFilters = true")
-    .section
+  .row(ng-cloak ng-show='noResults')
     .span12
       %h3 No results found, but perhaps you'd enjoy these recipes?
 
-  .row.gallery-contents(ng-cloak ng-click="collapseFilters = true")
-    .span12
-      %div(galleryscroll='loadData()')
-        %div.anim-basic-fade(ng-repeat='activity in getDisplayItems()')
-          %csGalleryItem( title="activity.title"
-                          href="activity.gallery_path"
-                          image="itemImageURL(activity, 400)"
-                          summary="activity.description"
-                          footer-left="activity.difficulty"
-                          footer-right="getFooterRightContents(activity)"
-                          sash = "getSashContents(activity)"
-                        )
   .row
-    .span2.offset5
-      .gallery-spinner(ng-show='(spinner != 0) || (! initialLoadDone)')
-        %i.icon-page-load
+    .span12.gallery-items(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='true' infinite-scroll-distance='2' ng-cloak)
+      %cs-index-item.cs-index-item(ng-repeat='activity in activities' cs-title='activity.title' url='activity.url' image='activity.image' difficulty='activity.difficulty' likes-count='activity.likesCount')
 
 = render 'home/madlib_popup', registration_source: 'gallery'
