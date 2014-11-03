@@ -37,10 +37,15 @@
         delete $scope.params['difficulty']
     Activity.query($scope.params).$promise.then (results) ->
       if results.length > 0
+        $scope.noResults = false
         angular.forEach results, (result) ->
           $scope.activities.push(result)
         delete $scope.params['page']
         $location.search($scope.params)
+      else
+        $scope.noResults = true
+        Activity.query({sort: "popular"}).$promise.then (results) ->
+          angular.forEach results, (result) -> $scope.activities.push(result)
       $scope.dataLoading = false
 
   # Search only fires after the user stops typing
