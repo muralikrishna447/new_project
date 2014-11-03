@@ -1,7 +1,7 @@
 @app.directive 'csIndexItem', [ ->
   restrict: 'E'
   scope: {
-    title: '='
+    csTitle: '='
     url: '='
     image: '='
     likesCount: '='
