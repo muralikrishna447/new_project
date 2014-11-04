@@ -532,6 +532,7 @@ class Activity < ActiveRecord::Base
         presentation_hints: step_attr[:presentation_hints],
         extra: step_attr[:extra]
       )
+      step.update_ingredients_json(step_attr[:ingredients])
       step_attr[:id] = step.id
     end
   end

@@ -1,6 +1,6 @@
 .comment-manager(ng-hide="editMode")
 
-  .comment-icon-group(ng-click="toggleShowComments($event)")
+  .comment-icon-group.noprint(ng-click="toggleShowComments($event)")
     .comments-no-count.anim-basic-fade(ng-show="commentCount <= 0")
       .comments-no-count-maybe-hover(ng-show="showWhenZero")
         %i.icon-cs-comment-open
