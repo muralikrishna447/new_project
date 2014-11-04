@@ -39,8 +39,8 @@
       =render 'activities/step_ingredients'
 
     .step-content-container
-      .aside.aside-inset.anim-basic-fade(  ng-if='isInsetAside($index)' 
-                                              ng-init='step=activity.steps[$index]'       
+      .aside.aside-inset.anim-basic-fade(  ng-if='isInsetAside($index - 1)' 
+                                              ng-init='step=activity.steps[$index - 1]'       
                                               ng-controller="StepController"   
                                               cs-watch-focus=''
                                               ng-class="asideClass()")
@@ -87,8 +87,8 @@
       Add step below
 
   -# Center aside
-  .aside.aside-center.anim-basic-fade(  ng-if='isCenterAside($index + 1)' 
-                                          ng-init='step=activity.steps[$index + 1]'       
+  .aside.aside-center.anim-basic-fade(  ng-if='isCenterAside($index)' 
+                                          ng-init='step=activity.steps[$index]'       
                                           ng-controller="StepController"   
                                           cs-watch-focus=''
                                           ng-class="asideClass()")
