@@ -44,8 +44,6 @@
         $location.search($scope.params)
       else
         $scope.noResults = true
-        Activity.query({sort: "popular"}).$promise.then (results) ->
-          angular.forEach results, (result) -> $scope.activities.push(result)
       $scope.dataLoading = false
 
   # Search only fires after the user stops typing
