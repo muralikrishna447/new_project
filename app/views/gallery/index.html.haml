@@ -41,9 +41,9 @@
           %a.btn.btn-secondary.add-button(href="/activities/new")
             Add Recipe
 
-  .row(ng-cloak ng-show='noResults')
+  .row(ng-cloak ng-show='noResults && !dataLoading')
     .span12
-      %h3 No results found, but perhaps you'd enjoy these recipes?
+      %h3 No results found.
 
   .row
     .span12.gallery-items(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='true' infinite-scroll-distance='2' ng-cloak)
