@@ -31,20 +31,22 @@
   $scope.filters['difficulty'] = $scope.params['difficulty']
 
   $scope.getActivities = ->
-    $scope.params['page'] = $scope.page
-    if $scope.params['difficulty']
-      if $scope.params['difficulty'] == 'undefined'
-        delete $scope.params['difficulty']
-    Activity.query($scope.params).$promise.then (results) ->
-      if results.length > 0
-        $scope.noResults = false
-        angular.forEach results, (result) ->
-          $scope.activities.push(result)
-        delete $scope.params['page']
-        $location.search($scope.params)
-      else
-        $scope.noResults = true
-      $scope.dataLoading = false
+    if !$scope.dataLoading
+      $scope.dataLoading = true
+      $scope.params['page'] = $scope.page
+      if $scope.params['difficulty']
+        if $scope.params['difficulty'] == 'undefined'
+          delete $scope.params['difficulty']
+      Activity.query($scope.params).$promise.then (results) ->
+        if results.length > 0
+          $scope.noResults = false
+          angular.forEach results, (result) ->
+            $scope.activities.push(result)
+          delete $scope.params['page']
+          $location.search($scope.params)
+        else
+          $scope.noResults = true
+        $scope.dataLoading = false
 
   # Search only fires after the user stops typing
   # Seems like 300ms timeout is ideal
@@ -57,7 +59,6 @@
     inputChangedPromise = $timeout( ->
       if input.length > 0
         console.log 'Searching for: ', input
-        $scope.dataLoading = true
         delete $scope.params['sort']
         # delete $scope.params['page']
         $scope.page = 1
@@ -74,7 +75,6 @@
     $scope.getActivities()
 
   $scope.applyFilter = ->
-    $scope.dataLoading = true
     $scope.params['difficulty'] = $scope.filters['difficulty']
     $scope.params['published_status'] = $scope.filters['published_status']
     $scope.params['generator'] = $scope.filters['generator']
@@ -90,7 +90,6 @@
       $scope.applyFilter()
 
   $scope.next = ->
-    $scope.dataLoading = true
     if $scope.page && $scope.page >= 1
       $scope.page += 1
     else
