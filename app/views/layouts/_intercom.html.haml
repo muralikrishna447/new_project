@@ -4,6 +4,7 @@
     window.intercomSettings = {
       name: "#{current_user.name}",
       email: "#{current_user.email}",
+      user_id: "#{current_user.id}",
       created_at: "#{current_user.created_at.to_time.to_i}",
       app_id: ("#{Rails.env}" == "production") ? "vy04t2n1" : "pqm08zug"
     };
