@@ -32,7 +32,7 @@
             %span(ng-show="upload.image_id")
               Change Photo
 
-    .row.section.review-group.uploads(ng-controller='CommentsController' 
+    .row.section.review-group.uploads(ng-controller='CommentsController'
                       ng-init="init('assemblies',#{@course.id}, #{current_user ? current_user.id : nil}, true); showReviewInput=true"
                       ng-cloak ng-show="#{defined? current_user} && assembly.assembly_type != 'Project'")
       .span12
@@ -70,8 +70,7 @@
             .modal-image
               = image_tag assembly.badge.image
           %h4 Share this on:
-          - ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
-            = render 'layouts/share_button', split_name: split_name
+            = render 'layouts/share_button'
           %p= "Would you like to share your recipe of this on ChefSteps? #{link_to 'Start Here', new_activity_path}".html_safe
         .modal-footer
           %a.btn.btn-primary.btn-large(ng-href='{{upload.path}}')

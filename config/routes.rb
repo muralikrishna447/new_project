@@ -218,7 +218,6 @@ Delve::Application.routes.draw do
   get 'community-activity' => 'streams#feed', as: 'community_activity'
 
   resources :sitemaps, :only => :show
-  mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
   match "/splitty/finished", :controller => "splitty", :action => "finish_split"
 
