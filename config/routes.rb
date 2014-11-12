@@ -1,8 +1,13 @@
 Delve::Application.routes.draw do
-  # Sets bloom forum to bloom.chefsteps.com/forum with angularJS html5mode
-  match '/forum', to: 'bloom#forum', constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
-  match '/forum/*path', to: 'bloom#forum', constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
-  match "/forum/*path" => redirect("/?goto=%{path}"), constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
+
+  # Redirect old forum.chefsteps.com to new forum
+  constraints :subdomain => "forum" do
+    root to: redirect(:subdomain => 'www', :path => "/forum")
+    match "*any", to: redirect(:subdomain => 'www', :path => "/forum")
+  end
+
+  root to: "home#index"
+
   match '/forum', to: 'bloom#forum'
   match '/forum/*path', to: 'bloom#forum'
   match "/forum/*path" => redirect("/?goto=%{path}")
@@ -11,7 +16,6 @@ Delve::Application.routes.draw do
   match '/content/:id', to: 'bloom#content'
   match 'whats-for-dinner', to: 'bloom#whats_for_dinner'
   match 'hot', to: 'bloom#hot'
-  root to: "home#index"
 
   resources :featured, only: [:index] do
     collection do
@@ -105,13 +109,6 @@ Delve::Application.routes.draw do
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
   get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle|timf/
-
-  # resources :courses, only: [:index, :show] do
-  #   resources :activities, only: [:show], path: ''
-  #   member do
-  #     post 'enroll' => 'courses#enroll'
-  #   end
-  # end
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
