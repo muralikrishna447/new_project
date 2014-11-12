@@ -17,7 +17,9 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
       method: 'POST'
       url: url
     ).success((data, status, headers, config) ->
-        mixpanel.track('Liked', {'Activity': likeable_type + "_" + likeable_id})
+        eventData = {'Activity': likeable_type + "_" + likeable_id}
+        Intercom('trackEvent', 'liked', eventData)
+        mixpanel.track('Liked', eventData)
         mixpanel.people.set('Liked':likeable_type + "_" + likeable_id)
         mixpanel.people.increment('Liked Count')
         $http.get('/splitty/finished?experiment=recommended_vs_curated')
