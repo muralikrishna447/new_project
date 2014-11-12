@@ -68,6 +68,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       $scope.output = data
       $scope.loading = false
       mixpanel.track('Egg Calculated', angular.extend({},  $scope.inputs, {water_temp: $scope.water_temp}, $scope.output))
+      Intercom('trackEvent', 'egg-calculated')
       mixpanel.people.increment('Egg Calculated')
 
     ).error((data, status, headers, config) ->

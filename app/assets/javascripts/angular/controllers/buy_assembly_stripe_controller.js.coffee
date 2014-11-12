@@ -123,7 +123,10 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.enrolled = true unless $scope.isGift
       $scope.state = "thanks"
       mixpanel.people.track_charge($scope.discounted_price)
-      mixpanel.track('Course Purchased', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador, 'chargedWith' : $scope.chargedWith}, $rootScope.splits))
+      eventData = _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador, 'chargedWith' : $scope.chargedWith}, $rootScope.splits)
+      mixpanel.track('Course Purchased', eventData)
+      Intercom('trackEvent', 'course-purchased', eventData)
+
       mixpanel.people.append('Classes Purchased', $scope.assembly.title)
       mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
       mixpanel.people.set('Paid Course Abandoned' : false)
@@ -240,7 +243,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.enroll()
       $scope.state = "free_enrollment"
       $scope.buyModalOpen = true
-      mixpanel.track('Class Enrolled', {'class' : $scope.assembly.title})
+      eventData = {'class' : $scope.assembly.title}
+      mixpanel.track('Class Enrolled', eventData)
+      Intercom('trackEvent', 'free-class-enrolled', eventData)
 
   $scope.shareASale = (amount, tracking) ->
     $http(
