@@ -20,7 +20,7 @@
               %div(ng-switch-when="Activity")
                 .class-activity-wrapper.comments-slide(ng-class="{'open' : anyCommentsOpen}")
                   / = render 'activities/banner_image'
-                  %cs-image-video(image='currentIncludable.includable_image_id || currentIncludable.includable.featured_image_id' video='currentIncludable.includable.youtube_id')
+                  %cs-image-video(image='currentIncludable.includable_image_id || currentIncludable.includable.featured_image' video='currentIncludable.includable.youtube_id')
                   %div(csFixNakedLinks="")
                     = render 'activities/main_activity_content'
                   .comments-container.section.noprint#comments
