@@ -10,7 +10,7 @@
       .cs-nav-logo
         = link_to root_url do
           %cs-loading
-          
+
       .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
         - if current_user
           .cs-nav-profile
@@ -25,7 +25,7 @@
           .cs-nav-profile(ng-if="authentication.currentUser()")
             %a(ng-href="{{'/profiles/' + authentication.currentUser().slug}}")
               // Place holder for now until we write a filepicker service
-              %img(src="http://d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=max&w=75&h=75&cache=true")
+              %img(src="//d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=max&w=75&h=75&cache=true")
           / .cs-nav-notifs(ng-if="authentication.currentUser()")
           /   %csnotifs
 
@@ -47,11 +47,11 @@
                   .resources-popover-arrow
                   %li
                     = link_to ingredients_url do
-                      %i.fa.fa-leaf 
+                      %i.fa.fa-leaf
                       Ingredient Wiki
                   %li
                     = link_to courses_url do
-                      %i.fa.fa-film 
+                      %i.fa.fa-film
                       Classes
                   %li
                     = link_to projects_url do

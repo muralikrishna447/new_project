@@ -1,13 +1,10 @@
-- if @returning_visitor
-  = render 'hero_carousel'
-- else
-  .container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='homeMadlib'; setIntent('ftue')")
-    = render "devise/sessions/new_angular"
-    .row-fluid
-      .container
-        .row
-          .span10.offset1.relative
-            = render 'madlib'
+.container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='homeMadlib'; setIntent('ftue')")
+  = render "devise/sessions/new_angular"
+  .row-fluid
+    .container
+      .row
+        .span10.offset1.relative
+          = render 'madlib'
 
 .container
   .row.section

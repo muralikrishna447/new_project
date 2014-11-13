@@ -28,7 +28,6 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def create
-    cookies[:returning_visitor] = true
     unless request.xhr?
       super
       remember_and_track
