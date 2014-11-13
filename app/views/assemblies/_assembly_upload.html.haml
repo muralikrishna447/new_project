@@ -69,7 +69,8 @@
             %p= "Here's your badge, which we'll display on #{link_to 'your profile.', user_profile_path(current_user)}".html_safe
             .modal-image
               = image_tag assembly.badge.image
-          %h4 Share this on:
+          %h4 
+            Share this on:
             = render 'layouts/share_button'
           %p= "Would you like to share your recipe of this on ChefSteps? #{link_to 'Start Here', new_activity_path}".html_safe
         .modal-footer
