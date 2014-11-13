@@ -4,7 +4,7 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
   $scope.$on 'expandSocialButtons', ->
     $element.find('.pulse-anim-before').addClass('pulse-anim')
     $timeout ( ->
-      $element.find('.pulse-anim-before').returnemoveClass('pulse-anim')
+      $element.find('.pulse-anim-before').removeClass('pulse-anim')
     ), 400
 
   $scope.openSocialWindow = (mixpanel_name, url, spec) ->
