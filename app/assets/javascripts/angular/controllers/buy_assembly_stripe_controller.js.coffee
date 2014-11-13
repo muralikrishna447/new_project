@@ -102,7 +102,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       stripeToken = response.id
       paymentType = response.type
       cardType = response.card.type
-    else  
+    else
       stripeToken = null
       paymentType = null
       cardType = null
@@ -201,8 +201,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.isGift = gift
     $scope.recipientMessage = ""
     $scope.state = if gift then "gift" else "charge"
-
-    $http.get('/splitty/finished?experiment=' + $scope.split_name)
     mixpanel.track('Course Buy Button Clicked', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug}, $rootScope.splits))
     _gaq.push(['_trackEvent', 'Buy Button', 'Clicked', $scope.assembly.title, null, true])
 
