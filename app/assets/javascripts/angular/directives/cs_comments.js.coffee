@@ -11,7 +11,7 @@
       identifier = $scope.commentsType + '_' + $scope.commentsId
       console.log "*** renderseo"
 
-      $http.get('http://server.usebloom.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
+      $http.get('//apiv2.usebloom.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
         comments = response.data.comments
 
         angular.forEach comments, (comment) =>
