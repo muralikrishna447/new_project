@@ -26,6 +26,10 @@
 # http://stackoverflow.com/questions/14210218/http-get-to-a-rails-applicationcontroller-gives-http-error-406-not-acceptable
 @app.config ["$httpProvider", ($httpProvider) ->
   $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"
+  
+  # http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on
+  # This seems weird since we already have this in application_controller.rb, but this fixes the issue where people couldn't enroll into a class on Firefox
+  $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
 ]
 
 angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
