@@ -1,2 +1,18 @@
-%div(ng-repeat='item in items')
-  {{item}}
+.cs-showcase
+  .cs-annotated
+    %h2
+      {{currentItem.title}}
+    %p
+      {{currentItem.description}}
+    %img(ng-src="{{currentItem.imageUrl}}")
+  .cs-annotation-container(ng-repeat='item in items')
+
+    .cs-annotation(ng-repeat='annotation in item.annotations')
+      %h3
+        {{annotation.title}}
+      %p
+        {{annotation.description}}
+      %btn.btn.btn-primary
+        {{annotation.price}}
+      %div(ng-repeat='image in annotation.images')
+        %img(ng-src="{{image}}")
