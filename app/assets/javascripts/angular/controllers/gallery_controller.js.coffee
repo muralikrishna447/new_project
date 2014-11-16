@@ -45,7 +45,7 @@
           delete $scope.params['page']
           $location.search($scope.params)
         else
-          $scope.noResults = true
+          $scope.noResults = true if $scope.activities.length == 0
         $scope.dataLoading = false
 
   # Search only fires after the user stops typing
