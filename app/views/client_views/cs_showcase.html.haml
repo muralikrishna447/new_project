@@ -1,18 +1,13 @@
-.cs-showcase
-  .cs-annotated
-    %h2
-      {{currentItem.title}}
-    %p
-      {{currentItem.description}}
-    %img(ng-src="{{currentItem.imageUrl}}")
-  .cs-annotation-container(ng-repeat='item in items')
+.cs-showcase-container
+  .cs-showcase
+    .cs-showcase-image
 
-    .cs-annotation(ng-repeat='annotation in item.annotations')
-      %h3
-        {{annotation.title}}
-      %p
-        {{annotation.description}}
-      %btn.btn.btn-primary
-        {{annotation.price}}
-      %div(ng-repeat='image in annotation.images')
-        %img(ng-src="{{image}}")
+      %img(ng-src="{{currentItem.imageUrl}}")
+
+    .cs-showcase-items
+      .cs-showcase-item(ng-repeat='item in showcaseItems')
+        %h2
+          {{item.title}}
+        %p
+          {{item.description}}
+        %img(ng-src="{{item.imageUrl}}")
