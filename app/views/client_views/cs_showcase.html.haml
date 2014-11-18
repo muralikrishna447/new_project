@@ -1,13 +1,34 @@
+/ .cs-showcase-container
+/   .cs-showcase
+/     .cs-showcase-image
+/       %img(ng-src="{{currentItem.imageUrl}}")
+
+/ .cs-showcase-items
+/   .cs-showcase-item(ng-repeat='item in showcaseItems' cs-showcase-item='item')
+/     %h2
+/       {{item.title}}
+/     %p
+/       {{item.description}}
+/     %img(ng-src="{{item.imageUrl}}")
+
 .cs-showcase-container
   .cs-showcase
     .cs-showcase-image
-
       %img(ng-src="{{currentItem.imageUrl}}")
+      / %cs-image(url="currentItem.imageUrl")
+      .cs-showcase-annotations(ng-show='currentAnnotation.position')
+        .cs-showcase-annotation(ng-style='currentAnnotationStyle')
+          %i.fa.fa-circle.fa-2x
+    .cs-showcase-buy
+      %btn.btn.btn-primary.btn-large(ng-show='currentAnnotation.price')
+        Buy Now for ${{currentAnnotation.price}}
 
-    .cs-showcase-items
-      .cs-showcase-item(ng-repeat='item in showcaseItems')
-        %h2
-          {{item.title}}
-        %p
-          {{item.description}}
-        %img(ng-src="{{item.imageUrl}}")
+
+.cs-showcase-items
+  .cs-showcase-item-container(ng-repeat='item in annotations' cs-showcase-item='item' ng-class="item.class")
+    .cs-showcase-item
+      %h2
+        {{item.title}}
+      %p
+        {{item.description}}
+      %img(ng-src="{{item.imageUrl}}")

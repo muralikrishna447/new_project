@@ -1,96 +1,188 @@
-@app.directive 'csGetRects', ['$window', '$timeout', ($window, $timeout) ->
-  restrict: 'A'
-  scope: {
-    csGetRects: '='
-  }
-
-  link: (scope, element, attrs) ->
-
-    $timeout ( ->
-      console.log 'Get rects attrs: ', scope.csGetRects
-      scope.start = element[0].getBoundingClientRect().top
-      scope.end = angular.element(element).height()
-      console.log 'Get rects scope: ', scope
-    ), 5000
-]
-
 @app.directive 'csShowcase', ['$window', ($window) ->
   restrict: 'A'
   scope: {
     collectionName: '@'
   }
-  controller: ($scope) ->
+  controller: ['$scope', ($scope) ->
+
     if $scope.collectionName == 'knives'
       $scope.collection = [
         {
+          id: 1
           title: 'Asai'
           description: 'High in the Japanese Alps, in the small town of Takefu in the Fukui Prefecture, fifth-generation blacksmith Masami Asai forges some of the most distinctive handmade kitchen knives in the world. His knives are both elegant and functional, made with the highest grade carbon steel alloy for perfect edge retention, and finished with graceful details like mocha-colored Makassar ebony and rich Pakkawood ferrules. Together with four other bladesmiths in the region, Asai opened a knifemaking school in Takefu in 1993, where he and others teach the artistry and tradition of handmade knifemaking to the next generation. Asai is a living legend among Japanese knifemakers, well-known by chefs worldwide for his delicate handiwork.'
           imageUrl: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/5PSozfGPRJiTkQpha6rI?cache=true'
-          annotations: [
-            {
-              x: '30'
-              y: '50'
-              title: 'Asai Petty Knife'
-              description: "This high-performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. The blade's hand-hammered surface helps release food from the knife when cutting. The octagonal ambidextrous handle is made of rich Makassar ebony with Pakkawood ferrules. [5-1/3 inches, 82 g]"
-              imageUrl: "https://d3awvtnmmsvyot.cloudfront.net/api/file/nmsJg1TpSmiClRMvNqvb?cache=true"
-              price: '40.00'
-            },
-            {
-              x: '10'
-              y: '80'
-              title: "Asai Chef's Knife"
-              description: "Modeled after the French chef’s blade but with all the grace and beauty of a Japanese handmade knife, this Gyuto is exceptionally versatile as a general chef’s knife. The core is made of the finest Japanese carbon steel for unparalleled edge holding, and the blade’s distal tapering provides optimal balance and weight. A Makassar ebony handle and Pakkawood ferrules further classify this knife as a work of art. [8-1/4 inches, 193 grams]"
-              imageUrl: "https://d3awvtnmmsvyot.cloudfront.net/api/file/SUsrjsPbRyOzjSJwtFl3?cache=true"
-              price: '80.00'
-            }
-          ]
+          isCurrent: false
         }
         {
+          id: 2
           title: 'Oishi Hammer'
           description: "Ohishi produces some of the finest-quality factory knives in the world, with stylized, ultra-thin blades that surpass most German and American handmade knives in both performance and beauty. At Ohishi, a small team of twenty-or-so blacksmiths and artisans design and forge knives with a characteristically thin blade geometry for clean cutting, and western-style riveted handles. The company, named after a small village at the foot of Mt Fuji where lavender grows rampant, set out to introduce high-performance knives at affordable prices, and they’ve done just that."
           imageUrl: "https://d3awvtnmmsvyot.cloudfront.net/api/file/v5IsZcj3TFa3KmA6w0pB?cache=true"
-          annotations: [
-            {
-              x: '30'
-              y: '50'
-              title: "Oishi Petty Knife"
-              description: "This high-performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. The blade's hand-hammered surface helps release food from the knife when cutting. The octagonal ambidextrous handle is made of rich Makassar ebony with Pakkawood ferrules. [5-1/3 inches, 82 g]"
-              imageUrl: "https://d3awvtnmmsvyot.cloudfront.net/api/file/nmsJg1TpSmiClRMvNqvb?cache=true"
-              price: '40.00'
-            },
-            {
-              x: '10'
-              y: '80'
-              title: "Oishi Chef's Knife"
-              description: "Modeled after the French chef’s blade but with all the grace and beauty of a Japanese handmade knife, this Gyuto is exceptionally versatile as a general chef’s knife. The core is made of the finest Japanese carbon steel for unparalleled edge holding, and the blade’s distal tapering provides optimal balance and weight. A Makassar ebony handle and Pakkawood ferrules further classify this knife as a work of art. [8-1/4 inches, 193 grams]"
-              imageUrl: "https://d3awvtnmmsvyot.cloudfront.net/api/file/SUsrjsPbRyOzjSJwtFl3?cache=true"
-              price: '80.00'
-            }
-          ]
+          isCurrent: false
         }
       ]
 
-      $scope.currentItem = $scope.collection[0]
+      $scope.annotations = [
+        {
+          type: 'title'
+          title: ''
+          description: ''
+          parentId: 1
+        }
+        {
+          type: 'title'
+          title: 'Asai'
+          description: 'High in the Japanese Alps, in the small town of Takefu in the Fukui Prefecture, fifth-generation blacksmith Masami Asai forges some of the most distinctive handmade kitchen knives in the world. His knives are both elegant and functional, made with the highest grade carbon steel alloy for perfect edge retention, and finished with graceful details like mocha-colored Makassar ebony and rich Pakkawood ferrules. Together with four other bladesmiths in the region, Asai opened a knifemaking school in Takefu in 1993, where he and others teach the artistry and tradition of handmade knifemaking to the next generation. Asai is a living legend among Japanese knifemakers, well-known by chefs worldwide for his delicate handiwork.'
+          parentId: 1
+        }
+        {
+          type: 'right'
+          title: 'Asai Petty Knife'
+          description: "This high-performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. The blade's hand-hammered surface helps release food from the knife when cutting. The octagonal ambidextrous handle is made of rich Makassar ebony with Pakkawood ferrules. [5-1/3 inches, 82 g]"
+          imageUrl: "https://d3awvtnmmsvyot.cloudfront.net/api/file/nmsJg1TpSmiClRMvNqvb?cache=true"
+          price: '40.00'
+          parentId: 1
+          position: {
+            x: 58
+            y: 28
+          }
+        }
+        {
+          type: 'right'
+          title: "Asai Chef's Knife"
+          description: "Modeled after the French chef’s blade but with all the grace and beauty of a Japanese handmade knife, this Gyuto is exceptionally versatile as a general chef’s knife. The core is made of the finest Japanese carbon steel for unparalleled edge holding, and the blade’s distal tapering provides optimal balance and weight. A Makassar ebony handle and Pakkawood ferrules further classify this knife as a work of art. [8-1/4 inches, 193 grams]"
+          imageUrl: "https://d3awvtnmmsvyot.cloudfront.net/api/file/SUsrjsPbRyOzjSJwtFl3?cache=true"
+          price: '80.00'
+          parentId: 1
+          position: {
+            x: 60
+            y: 49
+          }
+        }
+        {
+          type: 'title'
+          title: 'Oishi'
+          description: "Ohishi produces some of the finest-quality factory knives in the world, with stylized, ultra-thin blades that surpass most German and American handmade knives in both performance and beauty. At Ohishi, a small team of twenty-or-so blacksmiths and artisans design and forge knives with a characteristically thin blade geometry for clean cutting, and western-style riveted handles. The company, named after a small village at the foot of Mt Fuji where lavender grows rampant, set out to introduce high-performance knives at affordable prices, and they’ve done just that."
+          parentId: 2
+        }
+        {
+          type: 'right'
+          title: "Oishi Petty Knife"
+          description: "This high-performance detail knife is made with the finest Japanese carbon steel for exceptional edge holding. The blade's hand-hammered surface helps release food from the knife when cutting. The octagonal ambidextrous handle is made of rich Makassar ebony with Pakkawood ferrules. [5-1/3 inches, 82 g]"
+          imageUrl: "https://d3awvtnmmsvyot.cloudfront.net/api/file/nmsJg1TpSmiClRMvNqvb?cache=true"
+          price: '40.00'
+          parentId: 2
+          position: {
+            x: 20
+            y: 10
+          }
+        },
+        {
+          type: 'right'
+          title: "Oishi Chef's Knife"
+          description: "Modeled after the French chef’s blade but with all the grace and beauty of a Japanese handmade knife, this Gyuto is exceptionally versatile as a general chef’s knife. The core is made of the finest Japanese carbon steel for unparalleled edge holding, and the blade’s distal tapering provides optimal balance and weight. A Makassar ebony handle and Pakkawood ferrules further classify this knife as a work of art. [8-1/4 inches, 193 grams]"
+          imageUrl: "https://d3awvtnmmsvyot.cloudfront.net/api/file/SUsrjsPbRyOzjSJwtFl3?cache=true"
+          price: '80.00'
+          parentId: 2
+          position: {
+            x: 10
+            y: 30
+          }
+        }
+      ]
 
-      $scope.showcaseItems = []
-      _.each $scope.collection, (collectionItem) ->
-        showcaseItem = {}
-        showcaseItem.title = collectionItem.title
-        showcaseItem.description = collectionItem.description
-        $scope.showcaseItems.push showcaseItem
-        _.each collectionItem.annotations, (annotation) ->
-          showcaseItem = {}
-          showcaseItem.title = annotation.title
-          showcaseItem.description = annotation.description
-          showcaseItem.imageUrl = annotation.imageUrl
-          $scope.showcaseItems.push showcaseItem
+    $scope.currentItem = $scope.collection[0]
+    $scope.currentAnnotation = null
+    $scope.currentAnnotationStyle = {}
 
-  link: (scope, element, attrs) ->
-    console.log 'csShowcase!'
+    _.each $scope.annotations, (item) ->
+      item.class = "cs-showcase-item-" + item.type
 
-    angular.element($window).on 'scroll', (e) ->
-      # console.log 'scroll event: ', e
+    # $scope.updateCurrent = (item) ->
+    #   if $scope.currentAnnotation != item
+    #     $scope.currentAnnotation = item
+    #     current = _.where($scope.collection, {id: item.parentId})[0]
+    #     if $scope.currentItem != current
+    #       $scope.currentItem = current
+    #       $scope.$apply()
+
+    updateCurrent: (item) ->
+      if $scope.currentAnnotation != item
+        $scope.currentAnnotation = item
+
+        # Set annotation style
+        if item.position
+          $scope.currentAnnotationStyle = {
+            top: item.position.y + '%'
+            left: item.position.x + '%'
+          }
+
+        # Set Current Collection Item
+        current = _.where($scope.collection, {id: item.parentId})[0]
+        if $scope.currentItem != current
+          $scope.currentItem = current
+        $scope.$apply()
+
+    # scrollAction: (item, windowHeight, scrollPosition) ->
+    #   offset = 0.5*windowHeight
+    #   position = scrollPosition
+    #   start = item.start - offset
+    #   end = item.end - offset
+    #   if start <= position <= end
+    #     # console.log 'current item: ', item.title
+    #     # console.log 'start: ', start
+    #     # console.log 'position: ', position
+    #     # console.log 'end: ', end
+    #     $scope.updateCurrent(item)
+    #     height = end - start
+    #     completed = position - start
+    #     progress = completed/height*100
+
+  ]
 
   templateUrl: '/client_views/cs_showcase.html'
+
+]
+
+@app.directive 'csShowcaseItem', ['$window', '$timeout', ($window, $timeout) ->
+  require: '^csShowcase'
+  restrict: 'A'
+  scope: {
+    csShowcaseItem: '='
+  }
+
+  link: (scope, element, attrs, csShowcaseController) ->
+    windowElement = angular.element($window)
+    windowHeight = windowElement.height()
+
+    angular.element($window).on 'scroll', (e) ->
+      el = angular.element(element)
+      offset = 0.5*windowHeight
+      height = el[0].offsetHeight
+
+      start = el[0].offsetTop - offset
+      end = start + height
+
+      position = windowElement.scrollTop()
+      
+      console.log 'position: ', position
+      
+      if start <= position < end
+        console.log 'current item: ', scope.csShowcaseItem.title
+        console.log 'start: ', start
+        console.log 'end: ', end
+        csShowcaseController.updateCurrent(scope.csShowcaseItem)
+
+        completed = position - start
+        progress = completed/height*100
+        console.log 'progress: ' + progress + '%'
+
+        if 5 <= progress <= 95
+          element.addClass('active')
+        else
+          element.removeClass('active')
+      else
+        element.removeClass('active')
 
 ]
