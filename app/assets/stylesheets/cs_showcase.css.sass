@@ -19,13 +19,6 @@
       position: relative
       img
         width: 100%
-    .cs-showcase-buy
-      position: absolute
-      bottom: 10px
-      width: 100%
-      .btn
-        margin: 0 40%
-        width: 20%
 
     .cs-showcase-annotations
       position: absolute
@@ -35,7 +28,15 @@
       height: 100%
       .cs-showcase-annotation
         position: absolute
-        color: white
+        color: $orange
+
+.cs-showcase-buy
+  position: fixed
+  bottom: 10px
+  width: 100%
+  .btn
+    margin: 0 40%
+    width: 20%
 
 .cs-showcase-items
   position: relative
@@ -47,13 +48,24 @@
     opacity: 0
     @include transition(all 600ms $standard-bezier)
     @include boxsizing
+    .cs-showcase-item
+      position: relative
+      .cs-showcase-item-image
+        opacity: 0
+        @include transition(all 600ms $standard-bezier)
 
   .cs-showcase-item-container.active
     opacity: 1
 
+  .cs-showcase-item-container.cs-showcase-item-spacer
+    padding-top: 10%
+    width: 100%
+    @include boxsizing
+
   .cs-showcase-item-container.cs-showcase-item-title
     padding-left: 25%
     padding-right: 25%
+    padding-bottom: 50%
     width: 100%
     @include boxsizing
     .cs-showcase-item
@@ -61,17 +73,26 @@
       padding: 20px
 
   .cs-showcase-item-container.cs-showcase-item-right
-    padding-left: 75%
     width: 100%
     @include boxsizing
     .cs-showcase-item
-      background: rgba(255,255,255,.8)
-      padding: 20px
-
-  .cs-showcase-item-container.cs-showcase-item-left
-    padding-right: 75%
-    width: 100%
-    @include boxsizing
-    .cs-showcase-item
-      background: rgba(255,255,255,.8)
-      padding: 20px
+      background: rgba(255,255,255,0)
+      .cs-showcase-item-text
+        float: right
+        width: 25%
+        padding: 20px
+        background: rgba(255,255,255,.8)
+        @include boxsizing
+        p
+          display: none
+      .cs-showcase-item-image
+        width: 75%
+    &.with-image
+      .cs-showcase-item
+        background: rgba(255,255,255,.8)
+        .cs-showcase-item-text
+          background: rgba(255,255,255,0)
+          p
+            display: block
+        .cs-showcase-item-image
+          opacity: 1

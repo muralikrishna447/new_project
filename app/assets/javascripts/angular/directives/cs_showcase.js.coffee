@@ -25,10 +25,7 @@
 
       $scope.annotations = [
         {
-          type: 'title'
-          title: ''
-          description: ''
-          parentId: 1
+          type: 'spacer'
         }
         {
           type: 'title'
@@ -61,6 +58,9 @@
           }
         }
         {
+          type: 'spacer'
+        }
+        {
           type: 'title'
           title: 'Oishi'
           description: "Ohishi produces some of the finest-quality factory knives in the world, with stylized, ultra-thin blades that surpass most German and American handmade knives in both performance and beauty. At Ohishi, a small team of twenty-or-so blacksmiths and artisans design and forge knives with a characteristically thin blade geometry for clean cutting, and western-style riveted handles. The company, named after a small village at the foot of Mt Fuji where lavender grows rampant, set out to introduce high-performance knives at affordable prices, and they’ve done just that."
@@ -74,8 +74,8 @@
           price: '40.00'
           parentId: 2
           position: {
-            x: 20
-            y: 10
+            x: 65
+            y: 80
           }
         },
         {
@@ -86,26 +86,23 @@
           price: '80.00'
           parentId: 2
           position: {
-            x: 10
-            y: 30
+            x: 25
+            y: 80
           }
         }
       ]
 
     $scope.currentItem = $scope.collection[0]
     $scope.currentAnnotation = null
-    $scope.currentAnnotationStyle = {}
 
     _.each $scope.annotations, (item) ->
       item.class = "cs-showcase-item-" + item.type
 
-    # $scope.updateCurrent = (item) ->
-    #   if $scope.currentAnnotation != item
-    #     $scope.currentAnnotation = item
-    #     current = _.where($scope.collection, {id: item.parentId})[0]
-    #     if $scope.currentItem != current
-    #       $scope.currentItem = current
-    #       $scope.$apply()
+    $scope.isCurrent = (item) ->
+      if $scope.currentItem.id == item.id
+        true
+      else
+        false
 
     updateCurrent: (item) ->
       if $scope.currentAnnotation != item
@@ -113,31 +110,42 @@
 
         # Set annotation style
         if item.position
-          $scope.currentAnnotationStyle = {
+          $scope.showAnnotations = true
+          $scope.currentItem.currentAnnotationStyle = {
             top: item.position.y + '%'
             left: item.position.x + '%'
           }
+        else
+          $scope.showAnnotations = false
 
-        # Set Current Collection Item
-        current = _.where($scope.collection, {id: item.parentId})[0]
-        if $scope.currentItem != current
-          $scope.currentItem = current
+        if item.parentId
+          if $scope.currentItem.id != item.parentId
+            currentItem = _.where($scope.collection, {id: item.parentId})[0]
+            $scope.currentItem = currentItem
+
         $scope.$apply()
 
-    # scrollAction: (item, windowHeight, scrollPosition) ->
-    #   offset = 0.5*windowHeight
-    #   position = scrollPosition
-    #   start = item.start - offset
-    #   end = item.end - offset
-    #   if start <= position <= end
-    #     # console.log 'current item: ', item.title
-    #     # console.log 'start: ', start
-    #     # console.log 'position: ', position
-    #     # console.log 'end: ', end
-    #     $scope.updateCurrent(item)
-    #     height = end - start
-    #     completed = position - start
-    #     progress = completed/height*100
+      # if $scope.currentAnnotation != item
+      #   $scope.currentAnnotation = item
+
+      #   # Set annotation style
+      #   if item.position
+      #     $scope.currentAnnotationStyle = {
+      #       top: item.position.y + '%'
+      #       left: item.position.x + '%'
+      #     }
+
+      #   # Set Current Collection Item
+        
+      #   if item.parentId
+      #     current = _.where($scope.collection, {id: item.parentId})
+      #     currentItem = current[0]
+      #     if $scope.currentItem != currentItem
+      #       $scope.currentItem = currentItem
+      #     $scope.showImage = true
+      #   else
+      #     $scope.showImage = false
+      #   $scope.$apply()
 
   ]
 
@@ -155,6 +163,8 @@
   link: (scope, element, attrs, csShowcaseController) ->
     windowElement = angular.element($window)
     windowHeight = windowElement.height()
+    # imageElement = element.find('img')
+    # console.log 'image: ', imageElement
 
     angular.element($window).on 'scroll', (e) ->
       el = angular.element(element)
@@ -180,6 +190,12 @@
 
         if 5 <= progress <= 95
           element.addClass('active')
+          if 50 <= progress <= 95
+            # imageElement.addClass('active')
+            element.addClass('with-image')
+          else
+            # imageElement.removeClass('active')
+            element.removeClass('with-image')
         else
           element.removeClass('active')
       else
