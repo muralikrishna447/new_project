@@ -125,28 +125,6 @@
 
         $scope.$apply()
 
-      # if $scope.currentAnnotation != item
-      #   $scope.currentAnnotation = item
-
-      #   # Set annotation style
-      #   if item.position
-      #     $scope.currentAnnotationStyle = {
-      #       top: item.position.y + '%'
-      #       left: item.position.x + '%'
-      #     }
-
-      #   # Set Current Collection Item
-        
-      #   if item.parentId
-      #     current = _.where($scope.collection, {id: item.parentId})
-      #     currentItem = current[0]
-      #     if $scope.currentItem != currentItem
-      #       $scope.currentItem = currentItem
-      #     $scope.showImage = true
-      #   else
-      #     $scope.showImage = false
-      #   $scope.$apply()
-
   ]
 
   templateUrl: '/client_views/cs_showcase.html'
@@ -190,12 +168,6 @@
 
         if 5 <= progress <= 95
           element.addClass('active')
-          if 50 <= progress <= 95
-            # imageElement.addClass('active')
-            element.addClass('with-image')
-          else
-            # imageElement.removeClass('active')
-            element.removeClass('with-image')
         else
           element.removeClass('active')
       else
