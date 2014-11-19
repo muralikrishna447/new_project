@@ -118,10 +118,13 @@
         else
           $scope.showAnnotations = false
 
+        # if item.parentId
+        #   if $scope.currentItem.id != item.parentId
+        #     currentItem = _.where($scope.collection, {id: item.parentId})[0]
+        #     $scope.currentItem = currentItem
         if item.parentId
-          if $scope.currentItem.id != item.parentId
-            currentItem = _.where($scope.collection, {id: item.parentId})[0]
-            $scope.currentItem = currentItem
+          _.each $scope.collection, (item) ->
+            console.log 'item height: ', item.imageHeight
 
         $scope.$apply()
 
@@ -154,17 +157,17 @@
 
       position = windowElement.scrollTop()
       
-      console.log 'position: ', position
+      # console.log 'position: ', position
       
       if start <= position < end
-        console.log 'current item: ', scope.csShowcaseItem.title
-        console.log 'start: ', start
-        console.log 'end: ', end
+        # console.log 'current item: ', scope.csShowcaseItem.title
+        # console.log 'start: ', start
+        # console.log 'end: ', end
         csShowcaseController.updateCurrent(scope.csShowcaseItem)
 
         completed = position - start
         progress = completed/height*100
-        console.log 'progress: ' + progress + '%'
+        # console.log 'progress: ' + progress + '%'
 
         if 5 <= progress <= 95
           element.addClass('active')
@@ -173,4 +176,27 @@
       else
         element.removeClass('active')
 
+]
+
+@app.directive 'csShowcaseImage', [ ->
+  restrict: 'A'
+  replace: true
+  scope: {
+    csShowcaseImage: '='
+  }
+
+  link: (scope, element, attrs) ->
+    # console.log 'scope: ', scope
+    # console.log 'image element: ', element[0].clientHeight
+
+    element.on 'load', (e) ->
+      console.log 'LOADED: ', e
+      console.log 'element: ', element
+      height = element[0].height
+      scope.csShowcaseImage.imageHeight = height
+
+  template:
+    """
+      <img src="{{csShowcaseImage.imageUrl}}"/>
+    """
 ]
