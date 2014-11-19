@@ -19,8 +19,6 @@ cscomments
   position: relative
   @include boxsizing
   @include transition(all 200ms ease-in-out)
-  h5
-    @include transition(all 200ms ease-in-out)
   hr
     margin: $baseline 0px
 
@@ -38,17 +36,3 @@ cscomments
     padding: $baseline/2 $baseline
     background-color: white
     @include boxsizing
-
-  .bloom-hot-gradient
-    position: absolute
-    bottom: 35px
-    left: 0px
-    height: 100px
-    width: 100%
-    background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1)))
-    background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%)
-    background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%)
-    background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%)
-    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%)
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 )
