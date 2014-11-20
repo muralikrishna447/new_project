@@ -156,7 +156,9 @@ window.deepCopy = (obj) ->
     true
 
   $scope.endEditMode = ->
-    console.log "ACTIVITY SAVE START"
+    console.log "ACTIVITY SAVE START - Here's the JSON ---------"
+    console.log JSON.stringify($scope.activity)
+    console.log "-----------------------------------------------"
     $scope.alerts = []
     $scope.normalizeModel()
     $scope.normalizeWeightUnits()
