@@ -37,6 +37,13 @@
                       ng-class="{active: filters.sort == choice}")
                   {{choice}}
 
+            %li.relative
+              %a(ng-click="search('fish')" ng-class="{'active' : params['search_all'] == 'fish' }") #fish
+            %li.relative
+              %a(ng-click="search('beef')" ng-class="{'active' : params['search_all'] == 'beef' }") #beef
+            %li.relative
+              %a(ng-click="search('salad')" ng-class="{'active' : params['search_all'] == 'salad' }") #salad
+
         .add-group.btn-group.pull-right(ng-show="(filters.generator != 'chefsteps') || csAuthentication.isAdmin()")
           %a.btn.btn-secondary.add-button(href="/activities/new")
             Add Recipe
