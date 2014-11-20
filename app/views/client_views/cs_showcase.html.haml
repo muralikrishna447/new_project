@@ -1,6 +1,6 @@
 .cs-showcase-container(ng-cloak)
-  .cs-showcase
-    .cs-showcase-image(ng-repeat='item in collection' ng-show='isCurrent(item)')
+  .cs-showcase(ng-style='showcaseStyle')
+    .cs-showcase-image(ng-repeat='item in collection')
       / %img(ng-src="{{item.imageUrl}}" cs-set-image-height='item')
       %div(cs-showcase-image='item')
       .cs-showcase-annotations.anim-basic-fade(ng-show='showAnnotations')

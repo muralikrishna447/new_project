@@ -98,33 +98,35 @@
     _.each $scope.annotations, (item) ->
       item.class = "cs-showcase-item-" + item.type
 
-    $scope.isCurrent = (item) ->
-      if $scope.currentItem.id == item.id
-        true
-      else
-        false
+    $scope.setAnnotation = (collectionItem, annotation) ->
+      collectionItem.currentAnnotationStyle = {
+        top: annotation.position.y + '%'
+        left: annotation.position.x + '%'
+      }
+      # console.log 'ANNOTATION: ', $scope.currentItem.currentAnnotationStyle
 
-    updateCurrent: (item) ->
-      if $scope.currentAnnotation != item
-        $scope.currentAnnotation = item
+    updateCurrent: (annotation) ->
+      if $scope.currentAnnotation != annotation
+        $scope.currentAnnotation = annotation
 
-        # Set annotation style
-        if item.position
-          $scope.showAnnotations = true
-          $scope.currentItem.currentAnnotationStyle = {
-            top: item.position.y + '%'
-            left: item.position.x + '%'
+        # Set current collection item
+        if annotation.parentId
+          translateDistance = 0
+          stop = false
+          _.each $scope.collection, (item, index) ->
+            if item.id == annotation.parentId
+              if annotation.position
+                $scope.showAnnotations = true
+                $scope.setAnnotation(item, annotation)
+              else
+                $scope.showAnnotations = false
+              stop = true
+            else if stop != true
+              translateDistance += item.imageHeight
+
+          $scope.showcaseStyle = {
+            transform: "translateY(-#{translateDistance}px)"
           }
-        else
-          $scope.showAnnotations = false
-
-        # if item.parentId
-        #   if $scope.currentItem.id != item.parentId
-        #     currentItem = _.where($scope.collection, {id: item.parentId})[0]
-        #     $scope.currentItem = currentItem
-        if item.parentId
-          _.each $scope.collection, (item) ->
-            console.log 'item height: ', item.imageHeight
 
         $scope.$apply()
 
