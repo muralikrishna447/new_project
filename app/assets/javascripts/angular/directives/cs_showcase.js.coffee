@@ -1,4 +1,4 @@
-@app.directive 'csShowcase', ['$window', ($window) ->
+@app.directive 'csShowcase', ['$window', '$timeout', ($window, $timeout) ->
   restrict: 'A'
   scope: {
     collectionName: '@'
@@ -10,7 +10,7 @@
           id: 1
           title: 'Gyuto Knives'
           description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Gyuto-all-2.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Knives-boxes-7.jpg"
         }
         {
           id: 2
@@ -76,10 +76,37 @@
       }
 
     updateCurrent: (item, progress) ->
-      $scope.currentItem = item
-      console.log 'currentItem is: ', $scope.currentItem
-      $scope.$apply()
+      if $scope.currentItem != item
+        $scope.showcaseCurrentClass = 'direction-' + $scope.direction
+        $scope.$apply()
+        $timeout ( ->
+          $scope.currentItem = item
+          console.log 'currentItem is: ', $scope.currentItem
+          console.log 'updating Current with: ', $scope.direction
+          $scope.showcaseCurrentClass = ''
+          $scope.$apply()
+        ), 500
+
   ]
+
+  link: (scope, element, attrs) ->
+    oldPosition = 0
+    windowElement = angular.element($window)
+    windowElement.on 'scroll', (e) ->
+      position = windowElement.scrollTop()
+      # console.log 'WINDOW POSITION: ', position
+      if oldPosition
+        diff = oldPosition - position
+        if diff > 0
+          # console.log 'SCROLLING UP'
+          scope.direction = 'up'
+        else
+          # console.log 'SCROLLING DOWN'
+          scope.direction = 'down'
+      # console.log 'oldPosition: ', oldPosition
+      oldPosition = position
+
+
 
   templateUrl: '/client_views/cs_showcase.html'
 ]
@@ -97,7 +124,7 @@
     # imageElement = element.find('img')
     # console.log 'image: ', imageElement
 
-    angular.element($window).on 'scroll', (e) ->
+    windowElement.on 'scroll', (e) ->
       el = angular.element(element)
       offset = 0.5*windowHeight
       height = el[0].offsetHeight
@@ -107,11 +134,11 @@
 
       position = windowElement.scrollTop()
       
-      console.log 'position: ', position
+      # console.log 'position: ', position
       
       if start <= position < end
-        console.log 'start', start
-        console.log 'end', end
+        # console.log 'start', start
+        # console.log 'end', end
         completed = position - start
         progress = completed/height*100
         csShowcaseController.updateCurrent(scope.csShowcaseItem, progress)

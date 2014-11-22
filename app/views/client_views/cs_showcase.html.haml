@@ -1,7 +1,8 @@
 .cs-showcase
   .cs-showcase-current
-    %h3 {{currentItem.title}}
-    %p {{currentItem.description}}
+    .cs-showcase-current-text(ng-class='showcaseCurrentClass')
+      %h3 {{currentItem.title}}
+      %p {{currentItem.description}}
   .cs-showcase-buy(ng-show='currentItem.price')
     %btn.btn.btn-primary.btn-large
       Buy Now ${{currentItem.price}}

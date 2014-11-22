@@ -5,7 +5,7 @@
     position: fixed
     top: 60px
     left: 0px
-    padding: $baseline
+    padding: $baseline 20%
     background: rgba(255,255,255,0.8)
     z-index: 9999
     p
@@ -48,6 +48,18 @@
           @include boxsizing
           p
             margin-bottom: 0px
+
+.cs-showcase-current
+  .cs-showcase-current-text
+    transform: translateY(0px)
+    opacity: 1
+    @include transition(all 600ms $standard-bezier)
+    &.direction-up
+      opacity: 0
+      transform: translateY(-100px)
+    &.direction-down
+      opacity: 0
+      transform: translateY(100px)
 
 // =anim-slide-up($time)
 //   @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
