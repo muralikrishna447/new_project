@@ -266,6 +266,8 @@ private
 
   # Moving this above fixes the issues people were having when purchasing a class.  It also allows us to get rid of the fix that was breaking commentsCount.
   # We can get rid of $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content') in chefstepsAngularInit.js.coffee that was detail in http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on
+  # I don't fully know the reason why yet, but these rescues where preventing the X_XSRF_TOKEN to be verified.  This is an issue when people are trying purchase a class, only on firefox.  The errors you typically see is 'no enrollments for nil class' because it doesn't think the user is signed in.
+  # Getting rid of the rescues totally alleviates those issues and moving them here helped.  If someone with deeper knowledge of this can figure this out for certain, that would be great.
 
   # # if Rails.env.production?
   #  # unless Rails.application.config.consider_all_requests_local
