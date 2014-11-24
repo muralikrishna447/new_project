@@ -85,7 +85,7 @@
           console.log 'updating Current with: ', $scope.direction
           $scope.showcaseCurrentClass = ''
           $scope.$apply()
-        ), 500
+        ), 300
 
   ]
 
