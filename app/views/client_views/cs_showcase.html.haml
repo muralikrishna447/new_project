@@ -3,12 +3,16 @@
     .cs-showcase-current-text(ng-class='showcaseCurrentClass')
       %h3 {{currentItem.title}}
       %p {{currentItem.description}}
-  .cs-showcase-buy(ng-show='currentItem.price')
+  .cs-showcase-buy.anim-basic-fade(ng-show='currentItem.price')
     %btn.btn.btn-primary.btn-large
       Buy Now ${{currentItem.price}}
   .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item')
     .cs-showcase-container
       .cs-showcase-item-image(cs-showcase-image='item')
+
+      / .cs-showcase-item-thumbnails
+      /   .cs-showcase-item-thumbnail(ng-repeat='image in item.images')
+      /     %img(ng-src='{{image}}')
 
       .cs-showcase-annotations
         .cs-showcase-annotation(ng-repeat='annotation in item.annotations')
@@ -18,27 +22,3 @@
           .cs-showcase-annotation-text
             %h4 {{annotation.title}}
             %p {{annotation.description}}
-
-
-/ .cs-showcase-container(ng-cloak)
-/   .cs-showcase(ng-style='showcaseStyle')
-/     .cs-showcase-image(ng-repeat='item in collection')
-/       / %img(ng-src="{{item.imageUrl}}" cs-set-image-height='item')
-/       %div(cs-showcase-image='item')
-/       .cs-showcase-annotations.anim-basic-fade(ng-show='showAnnotations')
-/         .cs-showcase-annotation-line(ng-style='item.annotationLineStyle')
-/         .cs-showcase-annotation(ng-style='item.currentAnnotationStyle')
-/           %i.fa.fa-circle.fa-2x
-
-/ .cs-showcase-items(ng-cloak)
-/   .cs-showcase-item-container(ng-repeat='item in annotations' cs-showcase-item='item' ng-class="item.class" ng-style="item.style")
-/     .cs-showcase-item
-/       %h3
-/         {{item.title}}
-/         {{item.style}}
-/       %p
-/         {{item.description}}
-
-/ .cs-showcase-buy(ng-cloak)
-/   %btn.btn.btn-primary.btn-large.anim-basic-fade(ng-show='currentItem.price')
-/     Buy Now for ${{currentItem.price}}
