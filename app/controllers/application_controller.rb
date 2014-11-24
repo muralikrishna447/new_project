@@ -264,20 +264,17 @@ private
     session[:coupon] = params[:coupon] || session[:coupon]
   end
 
-  protected
+  # Moving this above fixes the issues people were having when purchasing a class.  It also allows us to get rid of the fix that was breaking commentsCount.
+  # We can get rid of $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content') in chefstepsAngularInit.js.coffee that was detail in http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on
 
-  def verified_request?
-    super || form_authenticity_token == request.headers['X_XSRF_TOKEN']
-  end
-
-  # if Rails.env.production?
-   # unless Rails.application.config.consider_all_requests_local
-    rescue_from ActionController::RoutingError, with: :render_404
-    rescue_from ActionController::UnknownController, with: :render_404
-    rescue_from ActionController::UnknownAction, with: :render_404
-    rescue_from ActiveRecord::RecordNotFound, with: :render_404
-    #end
-  # end
+  # # if Rails.env.production?
+  #  # unless Rails.application.config.consider_all_requests_local
+  rescue_from ActionController::RoutingError, with: :render_404
+  rescue_from ActionController::UnknownController, with: :render_404
+  rescue_from ActionController::UnknownAction, with: :render_404
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+  #   #end
+  # # end
 
 
   def render_404(exception = nil)
@@ -289,5 +286,12 @@ private
       format.all { render nothing: true, status: 404 }
     end
   end
+
+  protected
+
+  def verified_request?
+    super || form_authenticity_token == request.headers['X_XSRF_TOKEN']
+  end
+
 end
 
