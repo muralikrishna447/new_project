@@ -5,10 +5,11 @@
   $scope.showOptions = {}
   $scope.showOptions.filters = false
   $scope.showOptions.sort = false
-  $scope.difficultyChoices = ["any", "easy", "intermediate", "advanced"]
+  $scope.difficultyChoices = ["any", "easy", "medium", "advanced"]
   $scope.publishedStatusChoices = ["published", "unpublished"]
   $scope.generatorChoices = ["chefsteps", "community"]
   $scope.sortChoices = ["newest", "oldest", "popular"]
+  $scope.suggestedSearches = ['sous vide', 'beef', 'chicken', 'pork', 'fish', 'salad', 'dessert', 'breakfast', 'cocktail', 'baking', 'vegetarian', 'egg', 'pasta']
 
 
   defaultFilters = {
@@ -77,6 +78,7 @@
 
   $scope.applyFilter = ->
     $scope.params['difficulty'] = $scope.filters['difficulty']
+    $scope.params['difficulty'] = 'intermediate' if $scope.params['difficulty'] == 'medium'
     $scope.params['published_status'] = $scope.filters['published_status']
     $scope.params['generator'] = $scope.filters['generator']
     $scope.params['sort'] = $scope.filters['sort']

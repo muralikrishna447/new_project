@@ -3,8 +3,9 @@
 .cs-index-item
   display: inline-block
   @include boxsizing
-  width: 360px
-  height: 272px
+  @include flex(1 0 auto)
+  width: 300px
+  max-width: 360px
   padding: 10px
   margin: 0 $horz-baseline-medium 0 0
   background: white
@@ -27,21 +28,15 @@
       overflow: hidden
     .cs-index-item-image
       margin-bottom: 0
+      img
+        width: 100%
+        height: auto
 
     .cs-index-item-footer
+      width: 100%
       .footer-left
         float: left
         text-transform: uppercase
       .footer-right
         float: right
 
-@media (max-width: 1200px)
-  .cs-index-item
-    width: 280px
-    height: 227px
-
-@media (max-width: 480px)
-  .cs-index-item
-    width: 100%
-    height: inherit
-    margin: 10px 0px

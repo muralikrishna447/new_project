@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootScope","$location", "$anchorScroll", ($window, $rootScope, $location, $anchorScroll) ->
+angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootScope","$location", "$anchorScroll", "$http", ($window, $rootScope, $location, $anchorScroll, $http) ->
 
   restrict: 'A',
   replace: true,
@@ -23,6 +23,13 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
         return
 
       if slug 
+
+        element.innerHTML = '';
+        $http.get(event.currentTarget.href).success((data, status) ->
+          
+        )
+        event.preventDefault()
+        return
         # Activity link
         # First try override for load directly in class frame...
         if ! scope.overrideLoadActivityBySlug?(slug)

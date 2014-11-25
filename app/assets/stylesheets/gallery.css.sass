@@ -3,21 +3,29 @@
 .gallery-wrapper
   margin-top: 20px
   overflow: hidden
+  @include display-flex
 
   .add-group
     margin-right: 20px
     margin-top: -4px
   
-  .gallery-items
-    float: left
-    
 .gallery-contents
   margin-top: 10px
 
 .gallery-filter
+  margin-left: $horz-baseline-large * 2
+  @include flex(0 0 320px)
   input
     margin-top: -4px
-    margin-right: 20px !important
+    margin-right: 0px !important
+
+.gallery-items
+  @include display-flex
+  @include flex-wrap(wrap)
+
+
+.gallery-results
+  @include flex(20 1 auto)
 
 .gallery-filter
   @include primary-font
@@ -43,14 +51,26 @@
       @include primary-font
       font-size: 16px
 
+  li, form
+    margin-bottom: $baseline * 2
 
-  li > a
-    padding: 0 0 2px 0 !important
-    margin-left: 18px
+
+  li a
     cursor: pointer
+    margin-right: $horz-baseline-large
+    color: $dark-gray
 
     &.active
       color: $orange
+
+  li h5
+    @include primary-font-bold
+    text-transform: none
+
+
+  li p a
+    margin-right: 5px
+    font-size: 16px
 
   .dropdown-menu
     a
@@ -65,12 +85,15 @@
 
   .clear-search
     position: absolute
-    right:  25px
-    bottom:  4px
+    right:  20px
+    bottom:  2px
     color:  #a9a9a9
 
+  form
+    margin-top: 17px
+    width: 100%
   .search-query
-    margin-top: -9px
+    width: calc(100% - 40px)
 
 .filter-collapser
   cursor: pointer

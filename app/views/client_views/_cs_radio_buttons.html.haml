@@ -1,5 +1,5 @@
-.btn-group
-  %button.btn.btn-checkbox( ng-repeat="choice in ngModel" 
+%div
+  %a( ng-repeat="choice in ngModel" 
                             ng-click="$parent.active = choice"
                             ng-class="{active: choice == $parent.active}"
                           )
