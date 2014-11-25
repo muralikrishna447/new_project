@@ -11,7 +11,7 @@
         = link_to root_url do
           %cs-loading
 
-      .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; setIntent('ftue')")
+      .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
         - if current_user
           .cs-nav-profile
             = link_to user_profile_url(current_user) do
