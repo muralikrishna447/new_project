@@ -52,6 +52,7 @@
   # Seems like 300ms timeout is ideal
   inputChangedPromise = null
   $scope.search = (input) ->
+    $scope.input = input
 
     if inputChangedPromise
       $timeout.cancel(inputChangedPromise)
