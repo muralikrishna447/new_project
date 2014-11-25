@@ -1,11 +1,12 @@
 .cs-showcase
   .cs-showcase-current
     .cs-showcase-current-text(ng-class='showcaseCurrentClass')
-      %h3 {{currentItem.title}}
-      %p {{currentItem.description}}
+      %h3(ng-bind-html='currentItem.title')
+      %p(ng-bind-html='currentItem.description')
   .cs-showcase-buy.anim-basic-fade(ng-show='currentItem.price')
     %btn.btn.btn-primary.btn-large
-      Buy Now ${{currentItem.price}}
+      %a(ng-href='{{buyNowUrl(currentItem)}}')
+        Buy Now ${{currentItem.price}}
   .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item')
     .cs-showcase-container
       .cs-showcase-item-image(cs-showcase-image='item')
