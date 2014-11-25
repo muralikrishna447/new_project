@@ -1,0 +1,25 @@
+.cs-showcase
+  .cs-showcase-current
+    .cs-showcase-current-text(ng-class='showcaseCurrentClass')
+      %h3(ng-bind-html='currentItem.title')
+      %p(ng-bind-html='currentItem.description')
+  .cs-showcase-buy.anim-basic-fade(ng-show='currentItem.price')
+    %btn.btn.btn-primary.btn-large
+      %a(ng-href='{{buyNowUrl(currentItem)}}')
+        Buy Now ${{currentItem.price}}
+  .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item')
+    .cs-showcase-container
+      .cs-showcase-item-image(cs-showcase-image='item')
+
+      / .cs-showcase-item-thumbnails
+      /   .cs-showcase-item-thumbnail(ng-repeat='image in item.images')
+      /     %img(ng-src='{{image}}')
+
+      .cs-showcase-annotations
+        .cs-showcase-annotation(ng-repeat='annotation in item.annotations')
+          .cs-showcase-annotation-line(ng-style="annotationLineStyle(annotation)")
+          .cs-showcase-annotation-dot(ng-style="annotationDotStyle(annotation)")
+            %i.fa.fa-circle.fa-2x
+          .cs-showcase-annotation-text
+            %h4 {{annotation.title}}
+            %p {{annotation.description}}
