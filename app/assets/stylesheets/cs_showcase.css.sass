@@ -1,0 +1,90 @@
+@import 'mixins'
+
+.cs-showcase
+  .cs-showcase-current
+    position: fixed
+    width: 100%
+    top: 60px
+    left: 0px
+    padding: $baseline 20%
+    background: rgba(255,255,255,0.8)
+    z-index: 9999
+    @include boxsizing
+    .cs-showcase-current-text
+      p
+        margin-bottom: $baseline
+      .cs-showcase-buy
+        btn
+          margin-bottom: 0px
+  .cs-showcase-item
+    position: relative
+    // padding: 2*$baseline
+    .cs-showcase-container
+      position: relative
+
+      // .cs-showcase-item-thumbnails
+      //   position: absolute
+      //   bottom: 5%
+      //   left: 0px
+      //   padding: 0px 5%
+      //   .cs-showcase-item-thumbnail
+      //     width: 10%
+      //     float: right
+      //     border: 2px solid white
+      //     @include boxsizing
+
+      .cs-showcase-annotations
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        .cs-showcase-annotation-line
+          position: absolute
+          color: white
+          border-top: 2px solid white
+          border-left: 2px solid white
+          top: 10%
+          left: 50%
+        .cs-showcase-annotation-dot
+          position: absolute
+          color: $orange
+          margin-left: -11px
+        .cs-showcase-annotation-text
+          position: absolute
+          right: 5%
+          top: 5%
+          width: 25%
+          padding: 2*$baseline
+          background: rgba(255,255,255,0.8)
+          @include boxsizing
+          p
+            margin-bottom: 0px
+
+.cs-showcase-current
+  .cs-showcase-current-text
+    transform: translateY(0px)
+    opacity: 1
+    @include transition(all 300ms $standard-bezier)
+    &.direction-up
+      opacity: 0
+      transform: translateY(-50px)
+    &.direction-down
+      opacity: 0
+      transform: translateY(50px)
+
+@media (max-width: 767px)
+  .cs-showcase
+    position: absolute
+    top: 60px
+    left: 0px
+    .cs-showcase-current
+      padding: $baseline
+      top: initial
+      bottom: 0px
+
+// @media (max-width: 480px)
+//   .cs-showcase
+//     .cs-showcase-current
+//       top: inherit
+//       bottom: 0px

@@ -160,6 +160,13 @@ private
       pct = 19.0/39
     when 'e8c479fa9279'
       pct = 14.0/39
+
+    # New coupons 11/26/2014 for SV 201 split test
+    when 'b3c6e268ed80'
+      pct = 14.0/20
+    when '460fb93a7cfe'
+      pct = 9.0/20
+
     end
     (price * pct).round(2)
   end
