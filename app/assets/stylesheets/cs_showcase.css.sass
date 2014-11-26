@@ -3,11 +3,13 @@
 .cs-showcase
   .cs-showcase-current
     position: fixed
+    width: 100%
     top: 60px
     left: 0px
     padding: $baseline 20%
     background: rgba(255,255,255,0.8)
     z-index: 9999
+    @include boxsizing
     .cs-showcase-current-text
       p
         margin-bottom: $baseline
@@ -71,108 +73,18 @@
       opacity: 0
       transform: translateY(50px)
 
-// =anim-slide-up($time)
-//   @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
-//   // opacity: 1
-//   transform: translateY(0)
-//   &.ng-hide
-//     // opacity: 0
-//     transform: translateY(-100%)
-//   &.ng-hide-add, &.ng-hide-remove
-//     display: block !important
+@media (max-width: 767px)
+  .cs-showcase
+    position: absolute
+    top: 60px
+    left: 0px
+    .cs-showcase-current
+      padding: $baseline
+      top: initial
+      bottom: 0px
 
-// .cs-showcase-container
-//   position: fixed
-//   padding-top: 60px
-//   top: 0px
-//   left: 0px
-//   height: 100%
-//   width: 100%
-//   z-index: -1
-//   @include boxsizing
+// @media (max-width: 480px)
 //   .cs-showcase
-//     position: relative
-//     top: 0px
-//     left: 0px
-//     height: 100%
-//     width: 100%
-//     @include transition(all 600ms $standard-bezier)
-//     .cs-showcase-image
-//       position: relative
-//       // @include anim-slide-up(1s)
-//       img
-//         width: 100%
-
-//     .cs-showcase-annotations
-//       position: absolute
-//       top: 0px
-//       left: 0px
-//       width: 100%
-//       height: 100%
-//       .cs-showcase-annotation
-//         position: absolute
-//         color: $orange
-//         margin-left: -11px
-//       .cs-showcase-annotation-line
-//         position: absolute
-//         color: white
-//         border-top: 2px solid white
-//         border-left: 2px solid white
-//         top: 10%
-//         left: 50%
-//         // width: 300px
-//         // height: 300px
-//         // -webkit-transform: skew(-30deg)
-//         // -moz-transform: skew(-30deg)
-//         // -o-transform: skew(-30deg)
-
-// .cs-showcase-buy
-//   position: fixed
-//   bottom: 10px
-//   width: 100%
-//   .btn
-//     margin: 0 40%
-//     width: 20%
-
-// .cs-showcase-items
-//   position: relative
-//   width: 100%
-//   height: 100%
-//   .cs-showcase-item-container
-//     height: 500px
-//     padding: 10%
-//     opacity: 0
-//     @include transition(all 600ms $standard-bezier)
-//     @include boxsizing
-//     .cs-showcase-item
-//       position: fixed
-
-//   .cs-showcase-item-container.active
-//     opacity: 1
-
-//   .cs-showcase-item-container.cs-showcase-item-spacer
-//     padding-top: 10%
-//     width: 100%
-//     @include boxsizing
-
-//   .cs-showcase-item-container.cs-showcase-item-title
-//     width: 100%
-//     @include boxsizing
-//     .cs-showcase-item
-//       top: 70px
-//       left: 25%
-//       width: 50%
-//       padding: 20px
-//       background: rgba(255,255,255,1)
-//       @include boxsizing
-
-//   .cs-showcase-item-container.cs-showcase-item-right
-//     width: 100%
-//     @include boxsizing
-//     .cs-showcase-item
-//       top: 70px
-//       right: 10px
-//       width: 25%
-//       padding: 20px
-//       background: rgba(255,255,255,1)
-//       @include boxsizing
+//     .cs-showcase-current
+//       top: inherit
+//       bottom: 0px
