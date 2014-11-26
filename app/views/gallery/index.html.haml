@@ -14,34 +14,27 @@
           %i.icon-remove
 
       %li
-        %h5 Suggestions
-        .basic-two-column
-          %a( ng-repeat="x in suggestedSearches" 
-              ng-click="search(x)" 
-              ng-class="{'active' : params['search_all'] == x}")
-            %span {{x}}
-            -#%span(ng-hide="$last")<
-              -#,&#32; 
-
+        %h5 Categories
+        %a( ng-repeat="x in suggestedSearches" 
+            ng-click="search(x)" 
+            ng-class="{'active' : params['search_all'] == x}")
+          %span {{x}}
 
       %li
         %h5 Difficulty
-        .basic-two-column
-          %csRadioButtons(ng-model="difficultyChoices" active="filters.difficulty")
+        %csRadioButtons(ng-model="difficultyChoices" active="filters.difficulty")
 
       %li
         %h5 Source
-        .basic-two-column
-          %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
+        %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
 
       %li
         %h5 Admin
-        .basic-two-column
-          %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status" ng-if="csAuthentication.isAdmin()")
+        %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status" ng-if="csAuthentication.isAdmin()")
 
       %li
         %h5 Sort
-        %div.basic-two-column
+        %div
           %a( ng-repeat="choice in sortChoices" 
                 ng-click="filters.sort = choice" 
                 ng-class="{active: filters.sort == choice}")
@@ -57,6 +50,6 @@
       %h3 No results found.
 
     .gallery-items(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='true' infinite-scroll-distance='2' ng-cloak)
-      %cs-index-item.cs-index-item(ng-repeat='activity in activities' cs-title='activity.title' url='activity.url' image='activity.image' hover-info='activity.likesCount')
+      %cs-index-item.cs-index-item(ng-repeat='activity in activities' cs-title='activity.title' url='activity.url' image='activity.image' hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
 
 = render 'home/madlib_popup', registration_source: 'gallery'

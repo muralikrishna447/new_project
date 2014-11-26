@@ -6,6 +6,7 @@
     image: '='
     likesCount: '='
     difficulty: '='
+    hoverInfo: '@'
   }
 
   link: (scope, element, attrs) ->
