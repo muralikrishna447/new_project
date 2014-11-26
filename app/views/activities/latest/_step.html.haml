@@ -2,11 +2,7 @@
 .step-row(ng-scope 
           ng-mouseenter="hovered=true"
           ng-mouseleave="hovered=false")
-  -# Render the aside before the step so it can be floated left or
-  -# right and align with the top. Note nasty little trick of rebinding step to
-  -# the next step.
   .aside.aside-separate.anim-basic-fade(  ng-if='isSeparateAside($index)' 
-                                          ng-init='step=activity.steps[$index]'       
                                           ng-controller="StepController"   
                                           cs-watch-focus=''
                                           ng-class="asideClass()")
@@ -88,10 +84,9 @@
 
   -# Center aside
   .aside.aside-center.anim-basic-fade(  ng-if='isCenterAside($index)' 
-                                          ng-init='step=activity.steps[$index]'       
-                                          ng-controller="StepController"   
-                                          cs-watch-focus=''
-                                          ng-class="asideClass()")
+                                        ng-controller="StepController"   
+                                        cs-watch-focus=''
+                                        ng-class="asideClass()")
 
     =render 'activities/step_side_edit_buttons'
     %div(ng-include="'_aside.html'")
