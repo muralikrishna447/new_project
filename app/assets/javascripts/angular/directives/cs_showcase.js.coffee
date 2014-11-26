@@ -1,9 +1,13 @@
-@app.directive 'csShowcase', ['$window', '$timeout', ($window, $timeout) ->
+@app.directive 'csShowcase', ['$window', '$timeout', '$location', '$anchorScroll', '$routeParams', ($window, $timeout, $location, $anchorScroll, $routeParams) ->
   restrict: 'A'
   scope: {
     collectionName: '@'
   }
   controller: ['$scope', ($scope) ->
+    $timeout ( ->
+      $anchorScroll()
+    ), 1000
+
     if $scope.collectionName == 'knives'
       $scope.collection = [
         # INTRODUCTION
@@ -15,11 +19,13 @@
         # END INTRODUCTION
         # GYUTO KNIVES
         {
+          id: "gyuto-knives"
           title: "Gyuto Knives"
           description: "Modeled after the French pattern chef's knife, Gyutos are longer and slimmer than Santokus. The elongated blade makes this an ideal knife for creating the sawing motion necessary for cleanly cut meat, and it’s specially crafted to allow plenty of finger clearance—particularly helpful when you’re working over a cutting board."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Knives-boxes-7.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Gyuto-all.jpg"
         }
         {
+          id: "tadafusa-nashiji-gyuto"
           title: "Tadafusa Nashiji Gyuto (210mm / 8&frac14in)"
           description: "We find ourselves returning time and again to this short, responsive knife—great when you need to work quickly or are looking for a versatile workhorse suitable for a full day of cooking."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Tadafusa-Nashiji.jpg"
@@ -154,9 +160,17 @@
         $scope.$apply()
         $timeout ( ->
           $scope.currentItem = item
-          console.log 'currentItem is: ', $scope.currentItem
-          console.log 'updating Current with: ', $scope.direction
+          # console.log 'currentItem is: ', $scope.currentItem
+          # console.log 'updating Current with: ', $scope.direction
           $scope.showcaseCurrentClass = ''
+
+          # Set the location has so anchorscrolling works
+          if item.id
+            $location.path('/item')
+            $location.hash(item.id)
+          else
+            $location.path('')
+            $location.hash('')
           $scope.$apply()
         ), 300
 

@@ -7,7 +7,7 @@
         %btn.btn.btn-primary.btn-small
           %a(ng-href='{{buyNowUrl(currentItem)}}')
             Buy Now ${{currentItem.price}}
-  .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item')
+  .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item' ng-attr-id='{{item.id}}')
     .cs-showcase-container
       .cs-showcase-item-image(cs-showcase-image='item')
 
