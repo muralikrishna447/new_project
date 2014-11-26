@@ -10,7 +10,7 @@
         {
           title: "The ChefSteps Knives Collection"
           description: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables. Today, even the most famous European knifemakers have mostly abandoned hand-forging, yet the Japanese continue to offer extraordinary made-from-scratch tools, along with innovative hybrids that combine sturdy, factory-created handles with remarkably slender, hand-forged blades. The upshot is an instrument of uncommon beauty and elegance that’s still relatively affordable. Here you’ll find 10 knives that we use, and love, in our own kitchens. Whether you’re looking for an efficient little utility blade to go all day in the kitchen or a long, elegant chef’s knife to up your chopping game, you can’t go wrong with this collection of superior tools."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Knives-boxes-5.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/knives-boxes-3.jpg"
         }
         # END INTRODUCTION
         # GYUTO KNIVES
@@ -22,9 +22,9 @@
         {
           title: "Tadafusa Nashiji Gyuto (210mm / 8&frac14in)"
           description: "We find ourselves returning time and again to this short, responsive knife—great when you need to work quickly or are looking for a versatile workhorse suitable for a full day of cooking."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Tadafusa-Nashiji-Gyuto.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Tadafusa-Nashiji.jpg"
           images: [
-            "https://d92f495ogyf88.cloudfront.net/Knives-draft/Tadafusa-Nashiji-close.jpg"
+            "https://d92f495ogyf88.cloudfront.net/Knives-final/Tadafusa-Nashiji-close.jpg"
           ]
           price: "139.85"
           productId: 91019
@@ -43,7 +43,7 @@
         {
           title: "RyuSen Gyuto (210mm / 8&frac14in)"
           description: "We love the beautiful steel polish on this relatively heavy knife, and also love knowing that its great looks will last a lifetime."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/RyuSen-Gyuto.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-RyuSen.jpg"
           price: "198.00"
           productId: 696
           annotations: [
@@ -61,7 +61,7 @@
         {
           title: 'Mutsumi Hinoura Gyuto'
           description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Mutsumi-Hinoura-Gyuto-2.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Mustumi-Hinoura.jpg"
           price: "279.00"
           productId: 92955
         }
@@ -70,19 +70,19 @@
         {
           title: "Utility / Petty Knives"
           description: "Utility knives are excellent for tasks that require delicate slicing and a lot of dexterity. This workhorse will always come in handy when you need to slice up meats, vegetables, and fruit."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Knives-boxes-2.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-all.jpg"
         }
         {
           title: "RyuSen Utility/Fruit (135mm / 5&frac12in)"
           description: "With a hand-forged, Damascus-patterned stainless steel blade and a pakkawood handle, this utility knife is light and durable, just the way we like them. It’s also remarkably comfortable in-hand."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/RyuSen-close.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-RyuSen.jpg"
           price: "116.95"
           productId: 801
         }
         {
           title: "Tadafusa Nashiji Utility/Fruit (135mm / 5&frac12in)"
           description: "An unbeatable value, this utility knife delivers in terms of weight and quality of materials, and feels great in hand. It’s a perfect tool for all those small prep tasks that are always coming up in the kitchen."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Tadafusa-Nashiji-petty.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Tadafusa-Nashiji.jpg"
           price: "89.85"
           productId: 85680
         }
@@ -91,19 +91,19 @@
         {
           title: "Santoku Knives"
           description: "The traditional Japanese chef’s knife, these versatile choppers are now essential tools in well-equipped kitchens throughout the Western world as well."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Santoku-all-3.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-all.jpg"
         }
         {
           title: "RyuSen Santuku (170mm / 7in)"
           description: "A great gift for new cooks looking to improve their knife skills, this versatile model is durable and safe—perfect for practicing vegetable-slicing skills."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/RyuSen-Santoku.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-RyuSen.jpg"
           price: "174.50"
           productId: 687
         }
         {
           title: "Tadafusa Nashiji Santoku (170mm / 6&frac34in)"
           description: "With this very fairly priced, razor-sharp Santoku you’ll easily achieve super-skinny slices of onions and other vegetables. The raw ho wood handle offers a great grip so you can work full speed ahead with zero fear of slipping."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Tadafusa-Nashiji-Santoku.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-Tadafusa-Nashiji.jpg"
           price: "99.85"
           productId: 85681
         }
@@ -112,12 +112,12 @@
         {
           title: "Sujihiki Knives"
           description: "It takes a very precise knife to create perfect sushi and sashimi. With a thin, long blade that ensures a remarkably clean cut, these extremely sharp carving knives are well suited for slicing and portioning meats and fish."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Knives-boxes.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-all.jpg"
         }
         {
           title: "RyuSen Sujihiki (270mm / 10&frac34in)"
           description: "Heavy, with a Pakkawood handle designed for the long haul, this sexy 16-incher will level up your slicing skills, helping you achieve perfect straight cuts."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Ryusen-sujihiki-4.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-RyuSen.jpg"
           price: "309.50"
           productId: 83501
         }
