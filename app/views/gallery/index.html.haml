@@ -49,7 +49,7 @@
     .no-results(ng-cloak ng-show='noResults && !dataLoading')
       %h3 No results found.
 
-    .gallery-items(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='true' infinite-scroll-distance='2' ng-cloak)
-      %cs-index-item.cs-index-item(ng-repeat='activity in activities' cs-title='activity.title' url='activity.url' image='activity.image' hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
+    .gallery-items(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='true' infinite-scroll-distance='1' ng-cloak)
+      %cs-index-item.cs-index-item(ng-repeat='activity in activities track by activity.id' cs-title='activity.title' url='activity.url' image='activity.image' hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
 
 = render 'home/madlib_popup', registration_source: 'gallery'

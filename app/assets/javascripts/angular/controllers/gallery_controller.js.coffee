@@ -49,6 +49,10 @@
             $scope.activities.push(result)
           delete $scope.params['page']
           $location.search($scope.params)
+          # This makes sure infinite-scroll rechecks itself after we change
+          # searchs and therefore resize back down to 0. Otherwise it can get stuck.
+          $timeout ->
+            window.scrollBy(0, 1)
         else
           $scope.noResults = true if $scope.activities.length == 0
         $scope.dataLoading = false
@@ -74,8 +78,6 @@
     $scope.input = null
     delete $scope.params['search_all']
     $scope.filters['sort'] = 'newest'
-    $scope.page = 1
-    $scope.activities = []
     $scope.applyFilter()
 
   $scope.applyFilter = ->
