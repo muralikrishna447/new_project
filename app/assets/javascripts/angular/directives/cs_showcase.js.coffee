@@ -26,7 +26,8 @@
         }
         {
           id: "tadafusa-nashiji-gyuto"
-          title: "Tadafusa Nashiji Gyuto (210mm / 8&frac14in)"
+          title: "Tadafusa Nashiji Gyuto"
+          dimensions: "(210mm / 8&frac14in)"
           description: "We find ourselves returning time and again to this short, responsive knife—great when you need to work quickly or are looking for a versatile workhorse suitable for a full day of cooking."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Tadafusa-Nashiji.jpg"
           images: [
@@ -48,7 +49,8 @@
         }
         {
           id: "ryusen-gyuto"
-          title: "RyuSen Gyuto (210mm / 8&frac14in)"
+          title: "RyuSen Gyuto"
+          dimensions: "(210mm / 8&frac14in)"
           description: "We love the beautiful steel polish on this relatively heavy knife, and also love knowing that its great looks will last a lifetime."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-RyuSen.jpg"
           price: "198.00"
@@ -68,6 +70,7 @@
         {
           id: "mutsumi-hinoura-gyuto"
           title: 'Mutsumi Hinoura Gyuto'
+          dimensions: ""
           description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Mustumi-Hinoura.jpg"
           price: "279.00"
@@ -83,7 +86,8 @@
         }
         {
           id: 'ryusen-utility-fruit'
-          title: "RyuSen Utility/Fruit (135mm / 5&frac12in)"
+          title: "RyuSen Utility/Fruit"
+          dimensions: "(135mm / 5&frac12in)"
           description: "With a hand-forged, Damascus-patterned stainless steel blade and a pakkawood handle, this utility knife is light and durable, just the way we like them. It’s also remarkably comfortable in-hand."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-RyuSen.jpg"
           price: "116.95"
@@ -91,7 +95,8 @@
         }
         {
           id: 'tadafusa-nashiji-utility-fruit'
-          title: "Tadafusa Nashiji Utility/Fruit (135mm / 5&frac12in)"
+          title: "Tadafusa Nashiji Utility/Fruit"
+          dimensions: "(135mm / 5&frac12in)"
           description: "An unbeatable value, this utility knife delivers in terms of weight and quality of materials, and feels great in hand. It’s a perfect tool for all those small prep tasks that are always coming up in the kitchen."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Tadafusa-Nashiji.jpg"
           price: "89.85"
@@ -107,7 +112,8 @@
         }
         {
           id: 'ryusen-santoku'
-          title: "RyuSen Santoku (170mm / 7in)"
+          title: "RyuSen Santoku"
+          dimensions: "(170mm / 7in)"
           description: "A great gift for new cooks looking to improve their knife skills, this versatile model is durable and safe—perfect for practicing vegetable-slicing skills."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-RyuSen.jpg"
           price: "174.50"
@@ -115,7 +121,8 @@
         }
         {
           id: 'tadafusa-nashiji-santoku'
-          title: "Tadafusa Nashiji Santoku (170mm / 6&frac34in)"
+          title: "Tadafusa Nashiji Santoku"
+          dimensions: "(170mm / 6&frac34in)"
           description: "With this very fairly priced, razor-sharp Santoku you’ll easily achieve super-skinny slices of onions and other vegetables. The raw ho wood handle offers a great grip so you can work full speed ahead with zero fear of slipping."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-Tadafusa-Nashiji.jpg"
           price: "99.85"
@@ -131,7 +138,8 @@
         }
         {
           id: 'ryusen-sujihiki'
-          title: "RyuSen Sujihiki (270mm / 10&frac34in)"
+          title: "RyuSen Sujihiki"
+          dimensions: "(270mm / 10&frac34in)"
           description: "Heavy, with a Pakkawood handle designed for the long haul, this sexy 16-incher will level up your slicing skills, helping you achieve perfect straight cuts."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-RyuSen.jpg"
           price: "309.50"
@@ -163,6 +171,20 @@
       return url
 
     $scope.currentItem = $scope.collection[0]
+
+    # Social share callbacks
+    $scope.socialURL = ->
+      console.log "SOCIAL URL: ", window.location.href
+      window.location.href
+
+    $scope.socialTitle = ->
+      ""
+
+    $scope.socialMediaItem = ->
+      "https://d3awvtnmmsvyot.cloudfront.net/api/file/bIBHqoDWR3eLBtF8lQgu/convert?fit=crop&w=800&cache=true"
+
+    $scope.tweetMessage = ->
+      "I really want the #{$scope.currentItem.title} from #{$scope.collection[0].title} #{window.location}"
 
     updateCurrent: (item, progress) ->
       if $scope.currentItem != item

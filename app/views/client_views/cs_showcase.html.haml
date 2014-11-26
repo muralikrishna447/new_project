@@ -1,7 +1,11 @@
 .cs-showcase
   .cs-showcase-current
     .cs-showcase-current-text(ng-class='showcaseCurrentClass')
-      %h3(ng-bind-html='currentItem.title')
+      %h3
+        %span
+          {{currentItem.title}}
+        %span(ng-bind-html='currentItem.dimensions')
+      %div(ng-include="'_egg_timer_social.html'")
       %p(ng-bind-html='currentItem.description')
       .cs-showcase-buy.anim-basic-fade(ng-if='currentItem.price')
         %btn.btn.btn-primary.btn-small
