@@ -8,7 +8,7 @@
   $scope.difficultyChoices = ["any", "easy", "medium", "advanced"]
   $scope.publishedStatusChoices = ["published", "unpublished"]
   $scope.generatorChoices = ["chefsteps", "community"]
-  $scope.sortChoices = ["newest", "oldest", "popular"]
+  $scope.sortChoices = ["relevance", "newest", "oldest", "popular"]
   $scope.suggestedSearches = ['sous vide', 'beef', 'chicken', 'pork', 'fish', 'salad', 'dessert', 'breakfast', 'cocktail', 'baking', 'vegetarian', 'egg', 'pasta']
 
 
@@ -20,16 +20,20 @@
   }
 
   # If the url contains filter parameters then use those.  If not then use the default filters.
-  $scope.params = $location.search()
+  $scope.params = angular.extend({}, defaultFilters, $location.search())
   keys = Object.keys($scope.params)
-  if keys.length == 0
-    $scope.params = defaultFilters
 
   $scope.filters = {}
   $scope.filters['published_status'] = $scope.params['published_status']
   $scope.filters['generator'] = $scope.params['generator']
   $scope.filters['sort'] = $scope.params['sort']
   $scope.filters['difficulty'] = $scope.params['difficulty']
+  $scope.input = $scope.params['search_all']
+
+  $scope.getSortChoices = ->
+    sc = angular.extend($scope.sortChoices)
+    sc = sc[1...] unless $scope.params['search_all']?.length > 0
+    sc
 
   $scope.getActivities = ->
     if !$scope.dataLoading
@@ -61,20 +65,18 @@
     inputChangedPromise = $timeout( ->
       if input.length > 0
         console.log 'Searching for: ', input
-        delete $scope.params['sort']
-        # delete $scope.params['page']
-        $scope.page = 1
         $scope.params['search_all'] = input
-        $scope.activities = []
-        $scope.getActivities()
+        $scope.filters['sort'] = "relevance"
+        $scope.applyFilter()
     ,300)
 
   $scope.clearSearch = ->
     $scope.input = null
     delete $scope.params['search_all']
+    $scope.filters['sort'] = 'newest'
     $scope.page = 1
     $scope.activities = []
-    $scope.getActivities()
+    $scope.applyFilter()
 
   $scope.applyFilter = ->
     $scope.params['difficulty'] = $scope.filters['difficulty']
@@ -82,6 +84,7 @@
     $scope.params['published_status'] = $scope.filters['published_status']
     $scope.params['generator'] = $scope.filters['generator']
     $scope.params['sort'] = $scope.filters['sort']
+    delete $scope.params['sort'] if $scope.params['sort'] == 'relevance'
     # delete $scope.params['page']
     $scope.page = 1
     $scope.activities = []
@@ -100,7 +103,7 @@
     $scope.getActivities()
 
   # Load the first page
-  $scope.getActivities()
+  $scope.applyFilter()
     
 ]
 

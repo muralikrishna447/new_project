@@ -35,7 +35,7 @@
       %li
         %h5 Sort
         %div
-          %a( ng-repeat="choice in sortChoices" 
+          %a( ng-repeat="choice in getSortChoices()" 
                 ng-click="filters.sort = choice" 
                 ng-class="{active: filters.sort == choice}")
             {{choice}}
