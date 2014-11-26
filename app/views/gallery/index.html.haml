@@ -15,7 +15,7 @@
 
       %li
         %h5 Suggestions
-        %p
+        .basic-two-column
           %a( ng-repeat="x in suggestedSearches" 
               ng-click="search(x)" 
               ng-class="{'active' : params['search_all'] == x}")
@@ -26,19 +26,22 @@
 
       %li
         %h5 Difficulty
-        %csRadioButtons.first-separate(ng-model="difficultyChoices" active="filters.difficulty")
+        .basic-two-column
+          %csRadioButtons(ng-model="difficultyChoices" active="filters.difficulty")
 
       %li
         %h5 Source
-        %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
+        .basic-two-column
+          %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
 
       %li
         %h5 Admin
-        %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status" ng-if="csAuthentication.isAdmin()")
+        .basic-two-column
+          %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status" ng-if="csAuthentication.isAdmin()")
 
       %li
         %h5 Sort
-        %div
+        %div.basic-two-column
           %a( ng-repeat="choice in sortChoices" 
                 ng-click="filters.sort = choice" 
                 ng-class="{active: filters.sort == choice}")
