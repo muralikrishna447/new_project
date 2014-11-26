@@ -47,6 +47,7 @@
           ]
         }
         {
+          id: "ryusen-gyuto"
           title: "RyuSen Gyuto (210mm / 8&frac14in)"
           description: "We love the beautiful steel polish on this relatively heavy knife, and also love knowing that its great looks will last a lifetime."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-RyuSen.jpg"
@@ -65,6 +66,7 @@
           ]
         }
         {
+          id: "mutsumi-hinoura-gyuto"
           title: 'Mutsumi Hinoura Gyuto'
           description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Mustumi-Hinoura.jpg"
@@ -74,11 +76,13 @@
         # END GYUTO KNIVES
         # PETTY KNIVES
         {
+          id: 'utility-petty-knives'
           title: "Utility / Petty Knives"
           description: "Utility knives are excellent for tasks that require delicate slicing and a lot of dexterity. This workhorse will always come in handy when you need to slice up meats, vegetables, and fruit."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-all.jpg"
         }
         {
+          id: 'ryusen-utility-fruit'
           title: "RyuSen Utility/Fruit (135mm / 5&frac12in)"
           description: "With a hand-forged, Damascus-patterned stainless steel blade and a pakkawood handle, this utility knife is light and durable, just the way we like them. It’s also remarkably comfortable in-hand."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-RyuSen.jpg"
@@ -86,6 +90,7 @@
           productId: 801
         }
         {
+          id: 'tadafusa-nashiji-utility-fruit'
           title: "Tadafusa Nashiji Utility/Fruit (135mm / 5&frac12in)"
           description: "An unbeatable value, this utility knife delivers in terms of weight and quality of materials, and feels great in hand. It’s a perfect tool for all those small prep tasks that are always coming up in the kitchen."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Tadafusa-Nashiji.jpg"
@@ -95,18 +100,21 @@
         # END PETTY KNIVES
         # SANTOKU KNIVES
         {
+          id: 'santoku-knives'
           title: "Santoku Knives"
           description: "The traditional Japanese chef’s knife, these versatile choppers are now essential tools in well-equipped kitchens throughout the Western world as well."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-all.jpg"
         }
         {
-          title: "RyuSen Santuku (170mm / 7in)"
+          id: 'ryusen-santoku'
+          title: "RyuSen Santoku (170mm / 7in)"
           description: "A great gift for new cooks looking to improve their knife skills, this versatile model is durable and safe—perfect for practicing vegetable-slicing skills."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-RyuSen.jpg"
           price: "174.50"
           productId: 687
         }
         {
+          id: 'tadafusa-nashiji-santoku'
           title: "Tadafusa Nashiji Santoku (170mm / 6&frac34in)"
           description: "With this very fairly priced, razor-sharp Santoku you’ll easily achieve super-skinny slices of onions and other vegetables. The raw ho wood handle offers a great grip so you can work full speed ahead with zero fear of slipping."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-Tadafusa-Nashiji.jpg"
@@ -116,11 +124,13 @@
         # END SANTOKU KNIVES
         # SUJIHIKI KNIVES
         {
+          id: 'sujihiki-knives'
           title: "Sujihiki Knives"
           description: "It takes a very precise knife to create perfect sushi and sashimi. With a thin, long blade that ensures a remarkably clean cut, these extremely sharp carving knives are well suited for slicing and portioning meats and fish."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-all.jpg"
         }
         {
+          id: 'ryusen-sujihiki'
           title: "RyuSen Sujihiki (270mm / 10&frac34in)"
           description: "Heavy, with a Pakkawood handle designed for the long haul, this sexy 16-incher will level up your slicing skills, helping you achieve perfect straight cuts."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-RyuSen.jpg"
@@ -149,7 +159,7 @@
     $scope.buyNowUrl = (item) ->
       productId = item.productId
       url = "http://www.epicedge.com/shopaff.asp?affid=1&id=#{productId}"
-      console.log 'the buy now url is: ', url
+      # console.log 'the buy now url is: ', url
       return url
 
     $scope.currentItem = $scope.collection[0]
@@ -208,10 +218,8 @@
   link: (scope, element, attrs, csShowcaseController) ->
     windowElement = angular.element($window)
     windowHeight = windowElement.height()
-    # imageElement = element.find('img')
-    # console.log 'image: ', imageElement
 
-    windowElement.on 'scroll', (e) ->
+    handleScroll = (e) ->
       el = angular.element(element)
       offset = 0.5*windowHeight
       height = el[0].offsetHeight
@@ -229,6 +237,10 @@
         completed = position - start
         progress = completed/height*100
         csShowcaseController.updateCurrent(scope.csShowcaseItem, progress)
+
+    windowElement.on 'scroll', (e) ->
+      # handleScroll(e)
+      _.throttle(handleScroll(e), 100)
 
 ]
 
