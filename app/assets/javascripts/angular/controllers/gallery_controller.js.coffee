@@ -10,6 +10,7 @@
   $scope.generatorChoices = ["chefsteps", "community"]
   $scope.sortChoices = ["relevance", "newest", "oldest", "popular"]
   $scope.suggestedSearches = ['sous vide', 'beef', 'chicken', 'pork', 'fish', 'salad', 'dessert', 'breakfast', 'cocktail', 'baking', 'vegetarian', 'egg', 'pasta']
+  $scope.dataLoading = $scope.doneLoading = false
 
 
   defaultFilters = {
@@ -36,12 +37,13 @@
     sc
 
   $scope.getActivities = ->
-    if !$scope.dataLoading
+    if (! $scope.dataLoading) && (! $scope.doneLoading)
       $scope.dataLoading = true
       $scope.params['page'] = $scope.page
       if $scope.params['difficulty']
         if $scope.params['difficulty'] == 'undefined'
           delete $scope.params['difficulty']
+      
       Activity.query($scope.params).$promise.then (results) ->
         if results.length > 0
           $scope.noResults = false
@@ -55,7 +57,9 @@
             window.scrollBy(0, 1)
         else
           $scope.noResults = true if $scope.activities.length == 0
+          $scope.doneLoading = true
         $scope.dataLoading = false
+
 
   # Search only fires after the user stops typing
   # Seems like 300ms timeout is ideal
@@ -88,6 +92,7 @@
     $scope.params['sort'] = $scope.filters['sort']
     delete $scope.params['sort'] if $scope.params['sort'] == 'relevance'
     # delete $scope.params['page']
+    $scope.doneLoading = false
     $scope.page = 1
     $scope.activities = []
     $scope.getActivities()
