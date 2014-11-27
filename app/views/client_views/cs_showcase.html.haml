@@ -9,7 +9,7 @@
       %p(ng-bind-html='currentItem.description')
       .cs-showcase-buy.anim-basic-fade(ng-if='currentItem.price')
         %btn.btn.btn-primary.btn-small
-          %a(ng-href='{{buyNowUrl(currentItem)}}')
+          %a(ng-href='{{buyNowUrl(currentItem)}}' target='_blank')
             Buy Now ${{currentItem.price}}
   .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item' ng-attr-id='{{item.id}}')
     .cs-showcase-container

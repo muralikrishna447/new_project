@@ -68,14 +68,23 @@
           ]
         }
         {
-          id: "mutsumi-hinoura-gyuto"
-          title: 'Mutsumi Hinoura Gyuto'
-          dimensions: ""
-          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Mustumi-Hinoura.jpg"
-          price: "279.00"
-          productId: 92955
+          id: "yoshikane-gyuto"
+          title: "Yoshikane Gyuto"
+          dimensions: "(210mm / 8&frac14in)"
+          description: "This elegant all-purpose chef’s knife features a long, slim blade perfect for sawing meat and vegetables, with a subtly uneven surface that prevents food from sticking."
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-yoshikane.jpg"
+          price: "219.75"
+          productId: 85673
         }
+        # {
+        #   id: "mutsumi-hinoura-gyuto"
+        #   title: 'Mutsumi Hinoura Gyuto'
+        #   dimensions: ""
+        #   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
+        #   imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Mustumi-Hinoura.jpg"
+        #   price: "279.00"
+        #   productId: 92955
+        # }
         # END GYUTO KNIVES
         # PETTY KNIVES
         {
@@ -85,22 +94,31 @@
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-all.jpg"
         }
         {
-          id: 'ryusen-utility-fruit'
-          title: "RyuSen Utility/Fruit"
-          dimensions: "(135mm / 5&frac12in)"
+          id: 'ryusen-utility-fruit-knife'
+          title: "RyuSen Utility/Fruit Knife"
+          dimensions: "(135mm / 5&frac13in)"
           description: "With a hand-forged, Damascus-patterned stainless steel blade and a pakkawood handle, this utility knife is light and durable, just the way we like them. It’s also remarkably comfortable in-hand."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-RyuSen.jpg"
           price: "116.95"
           productId: 801
         }
         {
-          id: 'tadafusa-nashiji-utility-fruit'
-          title: "Tadafusa Nashiji Utility/Fruit"
-          dimensions: "(135mm / 5&frac12in)"
+          id: 'tadafusa-nashiji-utility-fruit-knife'
+          title: "Tadafusa Nashiji Utility/Fruit Knife"
+          dimensions: "(135mm / 5&frac13in)"
           description: "An unbeatable value, this utility knife delivers in terms of weight and quality of materials, and feels great in hand. It’s a perfect tool for all those small prep tasks that are always coming up in the kitchen."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Tadafusa-Nashiji.jpg"
           price: "89.85"
           productId: 85680
+        }
+        {
+          id: 'yoshikane-fruit-knife'
+          title: "Yoshikane Fruit Knife"
+          dimensions: "(135mm / 5&frac13in)"
+          description: "Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade comprised of SLD stainless steel (core) and stainless steel damascus (surface) that slides easily through food."
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-yoshikane.jpg"
+          price: "143.95"
+          productId: 86374
         }
         # END PETTY KNIVES
         # SANTOKU KNIVES
@@ -127,6 +145,15 @@
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-Tadafusa-Nashiji.jpg"
           price: "99.85"
           productId: 85681
+        }
+        {
+          id: 'yoshikane-santoku'
+          title: "Yoshikane Santoku"
+          dimensions: "(180mm / 7&frac18in)"
+          description: "A multipurpose, rust-resistant chopper, this knife boasts a beautiful, hand-hammered surface and a comfortable handles made from Ho wood with buffalo horn ferrule."
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-yoshikane.jpg"
+          price: "179.95"
+          productId: 91655
         }
         # END SANTOKU KNIVES
         # SUJIHIKI KNIVES
