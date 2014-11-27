@@ -3,17 +3,16 @@
 .gallery-wrapper
   margin-top: 20px
   overflow: hidden
-  @include display-flex
 
   .add-group
     margin-right: 20px
     margin-top: -4px
   
-.gallery-contents
-  margin-top: 10px
-
 .gallery-filter
-  margin-left: $horz-baseline-large * 2
+  position: fixed
+  top: 84px
+  left: $horz-baseline-large * 2
+  width: 300px
   @include flex(0 0 320px)
   input
     margin-top: -4px
@@ -33,7 +32,7 @@
     background: linear-gradient(to right, rgba(147,147,147,1) 0%,rgba(204,204,204,1) 99%)
 
 .gallery-results
-  width: 100%
+  padding-left: 320px
   .loading-icon-group
     width: 100%
     @include display-flex
@@ -231,8 +230,6 @@
     right: -140px
   .current-filter
     display: none
-  .gallery-contents
-    margin-top: 4px
 
 
 @media (max-width: 400px)

@@ -95,6 +95,7 @@
     $scope.doneLoading = false
     $scope.page = 1
     $scope.activities = []
+    window.scroll(0, 0)
     $scope.getActivities()
 
   # If the filters change, then update the results
