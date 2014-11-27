@@ -35,17 +35,17 @@
           ]
           price: "139.85"
           productId: 91019
-          annotations: [
-            {
-              type: 'right'
-              title: 'Tadafusa Nashiji Gyuto'
-              description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
-              position: {
-                x: 58
-                y: 38
-              }
-            }
-          ]
+          # annotations: [
+          #   {
+          #     type: 'right'
+          #     title: 'Tadafusa Nashiji Gyuto'
+          #     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
+          #     position: {
+          #       x: 58
+          #       y: 38
+          #     }
+          #   }
+          # ]
         }
         {
           id: "ryusen-gyuto"
@@ -55,24 +55,24 @@
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-RyuSen.jpg"
           price: "198.00"
           productId: 696
-          annotations: [
-            {
-              type: 'right'
-              title: 'RyuSen Gyuto'
-              description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
-              position: {
-                x: 58
-                y: 42
-              }
-            }
-          ]
+          # annotations: [
+          #   {
+          #     type: 'right'
+          #     title: 'RyuSen Gyuto'
+          #     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
+          #     position: {
+          #       x: 58
+          #       y: 42
+          #     }
+          #   }
+          # ]
         }
         {
           id: "yoshikane-gyuto"
           title: "Yoshikane Gyuto"
           dimensions: "(210mm / 8&frac14in)"
           description: "This elegant all-purpose chef’s knife features a long, slim blade perfect for sawing meat and vegetables, with a subtly uneven surface that prevents food from sticking."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-yoshikane.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Yoshikane-Gyuto.jpg"
           price: "219.75"
           productId: 85673
         }
@@ -111,15 +111,15 @@
           price: "89.85"
           productId: 85680
         }
-        {
-          id: 'yoshikane-fruit-knife'
-          title: "Yoshikane Fruit Knife"
-          dimensions: "(135mm / 5&frac13in)"
-          description: "Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade comprised of SLD stainless steel (core) and stainless steel damascus (surface) that slides easily through food."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-yoshikane.jpg"
-          price: "143.95"
-          productId: 86374
-        }
+        # {
+        #   id: 'yoshikane-fruit-knife'
+        #   title: "Yoshikane Fruit Knife"
+        #   dimensions: "(135mm / 5&frac13in)"
+        #   description: "Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade comprised of SLD stainless steel (core) and stainless steel damascus (surface) that slides easily through food."
+        #   imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-yoshikane.jpg"
+        #   price: "143.95"
+        #   productId: 86374
+        # }
         # END PETTY KNIVES
         # SANTOKU KNIVES
         {
@@ -151,7 +151,7 @@
           title: "Yoshikane Santoku"
           dimensions: "(180mm / 7&frac18in)"
           description: "A multipurpose, rust-resistant chopper, this knife boasts a beautiful, hand-hammered surface and a comfortable handles made from Ho wood with buffalo horn ferrule."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-yoshikane.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Yoshikane-Santoku.jpg"
           price: "179.95"
           productId: 91655
         }
