@@ -163,7 +163,9 @@ private
 
     # New coupons 11/26/2014 for SV 201 split test
     when 'b3c6e268ed80'
-      pct = 14.0/20
+      #pct = 14.0/20
+      # The $9 won the split so handily and quickly that we decided to give it to everyone
+      pct = 9.0/20
     when '460fb93a7cfe'
       pct = 9.0/20
 
