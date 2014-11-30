@@ -4,9 +4,9 @@
     collectionName: '@'
   }
   controller: ['$scope', ($scope) ->
-    $timeout ( ->
-      $anchorScroll()
-    ), 1000
+    # $timeout ( ->
+    #   $anchorScroll()
+    # ), 1000
 
     if $scope.collectionName == 'knives'
       $scope.collection = [
@@ -224,14 +224,14 @@
           $scope.showcaseCurrentClass = ''
 
           # Set the location has so anchorscrolling works
-          if item.id
-            $location.path('/item')
-            $location.hash(item.id)
-          else
-            $location.path('')
-            $location.hash('')
+          # if item.id
+          #   $location.path('/item')
+          #   $location.hash(item.id)
+          # else
+          #   $location.path('')
+          #   $location.hash('')
           $scope.$apply()
-        ), 300
+        ), 100
 
   ]
 
