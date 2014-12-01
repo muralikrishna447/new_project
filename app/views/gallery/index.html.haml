@@ -47,10 +47,10 @@
 
   .gallery-results
     .no-results(ng-cloak ng-show='noResults && !dataLoading')
-      %h3 No results found.
+      %h3 No results found. Here are some of our most popular recipes:
 
     .gallery-items(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='true' infinite-scroll-distance='1' ng-cloak)
-      %cs-index-item.cs-index-item(ng-repeat='activity in activities track by activity.id' cs-title='activity.title' url='activity.url' image='activity.image' hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
+      %cs-index-item.cs-index-item(ng-repeat='activity in getDisplayActivities() track by activity.id' cs-title='activity.title' url='activity.url' image='activity.image' hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
 
     .loading-icon-group(ng-show="dataLoading && ! doneLoading")
       %i.icon-page-load

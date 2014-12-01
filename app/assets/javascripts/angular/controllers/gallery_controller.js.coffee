@@ -103,6 +103,19 @@
           $scope.noResults = true if $scope.activities.length == 0
           $scope.doneLoading = true
         $scope.dataLoading = false
+
+  $scope.getDisplayActivities = ->
+    return $scope.noResultsActivities if $scope.noResults && ! $scope.dataLoading
+    $scope.activities
+
+  $timeout ( ->
+    Activity.query(
+      'published_status':'published'
+      'generator':"chefsteps"
+      'sort':"popular"
+    ).$promise.then (results) ->
+      $scope.noResultsActivities = results
+  ), 1000
 ]
 
 
