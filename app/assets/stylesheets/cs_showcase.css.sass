@@ -44,18 +44,20 @@
           color: white
           border-top: 2px solid white
           border-left: 2px solid white
-          top: 10%
-          left: 50%
+          // top: 10%
+          // left: 50%
         .cs-showcase-annotation-dot
           position: absolute
           color: $orange
           margin-left: -11px
+          &:hover
+            cursor: pointer
         .cs-showcase-annotation-text
           position: absolute
-          right: 5%
-          top: 5%
+          // right: 5%
+          // top: 5%
           width: 25%
-          padding: 2*$baseline
+          padding: $baseline
           background: rgba(255,255,255,0.8)
           @include boxsizing
           p
@@ -81,6 +83,11 @@
     .cs-showcase-current
       padding: $baseline
       top: initial
+      h3
+        font-size: 1.4rem
+        line-height: 2rem
+      p
+        font-size: 1.2rem
       bottom: 0px
 
 // @media (max-width: 480px)
