@@ -2,7 +2,7 @@ module Api
   module V0
     class ActivitiesController < ApplicationController
       
-      has_scope :sort do |controller, scope, value|
+      has_scope :sort, default: 'newest' do |controller, scope, value|
         case value
           when "oldest"
             scope.by_published_at("asc")
