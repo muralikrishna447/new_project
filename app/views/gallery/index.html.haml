@@ -17,7 +17,7 @@
         %h5 Popular
         %a( ng-repeat="x in suggestedSearches" 
             ng-click="search(x)" 
-            ng-class="{'active' : params['search_all'] == x}")
+            ng-class="{'active' : filters['search_all'] == x}")
           %span {{x}}
 
       %li
