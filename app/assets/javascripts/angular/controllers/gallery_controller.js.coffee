@@ -29,15 +29,15 @@
       $scope.input = $currentRoute.params.search_all
       # If search changes, default sort to relevance - but only on search change
       # because we still want to let them switch to a different sort.
-      $scope.filters['sort'] = "relevance"
+      $scope.filters['sort'] = if $scope.input?.length > 0 then "relevance" else "newest"
     $scope.applyFilter()
 
-  # Filter change from the UI.
+  # Filter/sort change from the UI.
   $scope.$watchCollection 'filters', (newValue, oldValue) ->
     if newValue != oldValue
       $scope.applyFilter()
 
-  # Sort change from the UI.
+  # Search change from the UI.
   # Actual search only fires after the user stops typing
   # Seems like 300ms timeout is ideal
   inputChangedPromise = null
@@ -54,13 +54,11 @@
         $scope.applyFilter()
     , 300)
 
-  # Clear sort from the UI
+  # Clear search from the UI
   $scope.clearSearch = ->
     $scope.input = null
     delete $scope.filters['search_all']
-    $scope.filters['sort'] = 'newest'
     $scope.applyFilter()
-
 
   # Scroll
   $scope.next = ->
@@ -96,6 +94,7 @@
           $scope.noResults = false
           angular.forEach results, (result) ->
             $scope.activities.push(result)
+          # console.log(_.map($scope.activities, (x) -> x.id))
           # This makes sure infinite-scroll rechecks itself after we change
           # searches and therefore resize back down to 0. Otherwise it can get stuck.
           $timeout ->
