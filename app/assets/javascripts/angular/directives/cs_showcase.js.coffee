@@ -35,17 +35,24 @@
           ]
           price: "139.85"
           productId: 91019
-          # annotations: [
-          #   {
-          #     type: 'right'
-          #     title: 'Tadafusa Nashiji Gyuto'
-          #     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
-          #     position: {
-          #       x: 58
-          #       y: 38
-          #     }
-          #   }
-          # ]
+          annotations: [
+            {
+              description: "The blade is blue steel #2 forged between two layers of low carbon steel"
+              show: false
+              position: {
+                x: 58
+                y: 38
+              }
+            }
+            {
+              description: "The handle is ho wood (close relative to magnolia) with a Pakka wood ferrule."
+              show: false
+              position: {
+                x: 30
+                y: 58
+              }
+            }
+          ]
         }
         {
           id: "ryusen-gyuto"
@@ -55,17 +62,24 @@
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-RyuSen.jpg"
           price: "198.00"
           productId: 696
-          # annotations: [
-          #   {
-          #     type: 'right'
-          #     title: 'RyuSen Gyuto'
-          #     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et quam rhoncus, ornare erat in, volutpat purus. Maecenas lobortis vehicula lacus, quis mollis augue consequat ac. Maecenas lobortis semper sem nec mollis. Aenean auctor varius est sed pellentesque."
-          #     position: {
-          #       x: 58
-          #       y: 42
-          #     }
-          #   }
-          # ]
+          annotations: [
+            {
+              description: "Stainless Damascus san mai blade with a VG10 stainless steel core (Hrc 60 - 61)"
+              show: false
+              position: {
+                x: 58
+                y: 37
+              }
+            }
+            {
+              description: "Pakka Wood Handle"
+              show: false
+              position: {
+                x: 20
+                y: 49
+              }
+            }
+          ]
         }
         {
           id: "yoshikane-gyuto"
@@ -75,6 +89,24 @@
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Yoshikane-Gyuto.jpg"
           price: "219.75"
           productId: 85673
+          annotations: [
+            {
+              description: "San mai blade forged from SKD stainless steel surrounded by soft SUS-405 stainless steel, Hrc 64"
+              show: false
+              position: {
+                x: 58
+                y: 39
+              }
+            }
+            {
+              description: "Ho wood handle with buffalo horn ferrule"
+              show: false
+              position: {
+                x: 20
+                y: 49
+              }
+            }
+          ]
         }
         # {
         #   id: "mutsumi-hinoura-gyuto"
@@ -149,11 +181,11 @@
         {
           id: 'yoshikane-santoku'
           title: "Yoshikane Santoku"
-          dimensions: "(180mm / 7&frac18in)"
+          dimensions: "(180mm / 7&#8539in)"
           description: "A multipurpose, rust-resistant chopper, this knife boasts a beautiful, hand-hammered surface and a comfortable handles made from Ho wood with buffalo horn ferrule."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Yoshikane-Santoku.jpg"
           price: "179.95"
-          productId: 91655
+          productId: 91653
         }
         # END SANTOKU KNIVES
         # SUJIHIKI KNIVES
@@ -175,14 +207,22 @@
         # END SUJIHIKI KNIVES
       ]
 
+    annotationLineHeight = 5 # Percent
+    annotationLineWidth = 10 # Percent
     $scope.annotationLineStyle = (annotation) ->
-      lineHeight = 20 # Percent
-      annotationWidth = 30
+      
+      
       {
-        top: lineHeight + '%'
+        top: annotation.position.y - annotationLineHeight + '%'
         left: annotation.position.x + '%'
-        height: annotation.position.y - lineHeight + '%'
-        width: 100 - annotationWidth - annotation.position.x + '%'
+        height: annotationLineHeight + '%'
+        width: annotationLineWidth + '%'
+      }
+
+    $scope.annotationTextStyle = (annotation) ->
+      {
+        top: annotation.position.y - annotationLineHeight - 3 + '%'
+        left: annotation.position.x + annotationLineWidth + '%'
       }
 
     $scope.annotationDotStyle = (annotation) ->
@@ -212,6 +252,11 @@
 
     $scope.tweetMessage = ->
       "I really want the #{$scope.currentItem.title} from #{$scope.collection[0].title} #{window.location}"
+
+    $scope.toggleAnnotation = (annotation) ->
+
+      annotation.show = !annotation.show
+      console.log 'TOGGLING ANNOTATION: ', annotation
 
     updateCurrent: (item, progress) ->
       if $scope.currentItem != item

@@ -21,9 +21,10 @@
 
       .cs-showcase-annotations
         .cs-showcase-annotation(ng-repeat='annotation in item.annotations')
-          .cs-showcase-annotation-line(ng-style="annotationLineStyle(annotation)")
-          .cs-showcase-annotation-dot(ng-style="annotationDotStyle(annotation)")
+          .cs-showcase-annotation-line.anim-basic-fade(ng-style="annotationLineStyle(annotation)" ng-show='annotation.show')
+          .cs-showcase-annotation-dot(ng-style="annotationDotStyle(annotation)" ng-mouseenter='toggleAnnotation(annotation)' ng-mouseleave='toggleAnnotation(annotation)')
             %i.fa.fa-circle.fa-2x
-          .cs-showcase-annotation-text
-            %h4 {{annotation.title}}
+          .cs-showcase-annotation-text.anim-basic-fade(ng-style="annotationTextStyle(annotation)" ng-show='annotation.show')
+            %h4(ng-if='annotation.title')
+              {{annotation.title}}
             %p {{annotation.description}}
