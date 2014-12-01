@@ -14,7 +14,7 @@
         {
           title: "The ChefSteps Knives Collection"
           description: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables. Today, even the most famous European knifemakers have mostly abandoned hand-forging, yet the Japanese continue to offer extraordinary made-from-scratch tools, along with innovative hybrids that combine sturdy, factory-created handles with remarkably slender, hand-forged blades. The upshot is an instrument of uncommon beauty and elegance that’s still relatively affordable. Here you’ll find 10 knives that we use, and love, in our own kitchens. Whether you’re looking for an efficient little utility blade to go all day in the kitchen or a long, elegant chef’s knife to up your chopping game, you can’t go wrong with this collection of superior tools."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Knives-Intro-Img.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/knives-boxes-4.jpg"
         }
         # END INTRODUCTION
         # GYUTO KNIVES
@@ -37,19 +37,19 @@
           productId: 91019
           annotations: [
             {
-              description: "The blade is blue steel #2 forged between two layers of low carbon steel"
+              description: "Razor-sharp carbon steel blade"
               show: false
               position: {
                 x: 58
-                y: 38
+                y: 39
               }
             }
             {
-              description: "The handle is ho wood (close relative to magnolia) with a Pakka wood ferrule."
+              description: "Secure ho wood handle"
               show: false
               position: {
-                x: 30
-                y: 58
+                x: 28
+                y: 62
               }
             }
           ]
@@ -64,15 +64,15 @@
           productId: 696
           annotations: [
             {
-              description: "Stainless Damascus san mai blade with a VG10 stainless steel core (Hrc 60 - 61)"
+              description: "Long, slim blade that’s perfect for preparing raw meats"
               show: false
               position: {
                 x: 58
-                y: 37
+                y: 38
               }
             }
             {
-              description: "Pakka Wood Handle"
+              description: "Sturdy pakka wood handle for a great grip"
               show: false
               position: {
                 x: 20
@@ -91,7 +91,7 @@
           productId: 85673
           annotations: [
             {
-              description: "San mai blade forged from SKD stainless steel surrounded by soft SUS-405 stainless steel, Hrc 64"
+              description: "A long, slim blade that’s perfect for meat preparation"
               show: false
               position: {
                 x: 58
@@ -99,7 +99,7 @@
               }
             }
             {
-              description: "Ho wood handle with buffalo horn ferrule"
+              description: "Traditional ho wood blade"
               show: false
               position: {
                 x: 20
@@ -129,10 +129,28 @@
           id: 'ryusen-utility-fruit-knife'
           title: "RyuSen Utility/Fruit Knife"
           dimensions: "(135mm / 5&frac13in)"
-          description: "With a hand-forged, Damascus-patterned stainless steel blade and a pakkawood handle, this utility knife is light and durable, just the way we like them. It’s also remarkably comfortable in-hand."
+          description: "With a hand-forged steel blade, this utility knife is light and durable, just the way we like them. It’s also remarkably comfortable in-hand."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-RyuSen.jpg"
           price: "116.95"
           productId: 801
+          annotations: [
+            {
+              description: "Damascus-patterned blade with a stainless steel core"
+              show: false
+              position: {
+                x: 58
+                y: 41
+              }
+            }
+            {
+              description: "Sturdy pakka wood handle"
+              show: false
+              position: {
+                x: 20
+                y: 50
+              }
+            }
+          ]
         }
         {
           id: 'tadafusa-nashiji-utility-fruit-knife'
@@ -142,15 +160,51 @@
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Tadafusa-Nashiji.jpg"
           price: "89.85"
           productId: 85680
+          annotations: [
+            {
+              description: "Carbon steel blade designed to prevent food from sticking"
+              show: false
+              position: {
+                x: 58
+                y: 41
+              }
+            }
+            {
+              description: "Handle made from ho wood, a close relative of magnolia"
+              show: false
+              position: {
+                x: 20
+                y: 50
+              }
+            }
+          ]
         }
         {
           id: 'yoshikane-petty-knife'
           title: "Yoshikane Petty Knife"
           dimensions: "(135mm / 5&frac13in)"
-          description: "Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade comprised of SLD stainless steel (core) and stainless steel damascus (surface) that slides easily through food."
+          description: "Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade that slides easily through food."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Yoshikane.jpg"
           price: "143.95"
           productId: 86374
+          annotations: [
+            {
+              description: "Rust-resistant blade made from SLD stainless steel (core) and stainless steel damascus (surface)"
+              show: false
+              position: {
+                x: 58
+                y: 45
+              }
+            }
+            {
+              description: "Durable handle designed for right-handers"
+              show: false
+              position: {
+                x: 20
+                y: 52
+              }
+            }
+          ]
         }
         # END PETTY KNIVES
         # SANTOKU KNIVES
@@ -168,6 +222,24 @@
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-RyuSen.jpg"
           price: "174.50"
           productId: 687
+          annotations: [
+            {
+              description: "Stainless steel blade designed for multipurpose chopping"
+              show: false
+              position: {
+                x: 58
+                y: 34
+              }
+            }
+            {
+              description: "Comfortable pakka wood handle"
+              show: false
+              position: {
+                x: 20
+                y: 51
+              }
+            }
+          ]
         }
         {
           id: 'tadafusa-nashiji-santoku'
@@ -177,6 +249,24 @@
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-Tadafusa-Nashiji.jpg"
           price: "99.85"
           productId: 85681
+          annotations: [
+            {
+              description: "A versatile carbon steel blade"
+              show: false
+              position: {
+                x: 58
+                y: 42
+              }
+            }
+            {
+              description: "Comfortable, oval-shaped handle"
+              show: false
+              position: {
+                x: 20
+                y: 52
+              }
+            }
+          ]
         }
         {
           id: 'yoshikane-santoku'
@@ -186,6 +276,24 @@
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-Yoshikane.jpg"
           price: "179.95"
           productId: 91653
+          annotations: [
+            {
+              description: "Hand-hammered blade surface means food won’t stick while you chop"
+              show: false
+              position: {
+                x: 58
+                y: 42
+              }
+            }
+            {
+              description: "Ho wood handle with buffalo horn ferrule"
+              show: false
+              position: {
+                x: 20
+                y: 52
+              }
+            }
+          ]
         }
         # END SANTOKU KNIVES
         # SUJIHIKI KNIVES
@@ -200,9 +308,27 @@
           title: "RyuSen Sujihiki"
           dimensions: "(270mm / 10&frac34in)"
           description: "Heavy, with a Pakkawood handle designed for the long haul, this sexy 16-incher will level up your slicing skills, helping you achieve perfect straight cuts."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-RyuSen.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-Ryusen-2.jpg"
           price: "309.50"
           productId: 83501
+          annotations: [
+            {
+              description: "A sharp stainless steel blade for precision slicing"
+              show: false
+              position: {
+                x: 58
+                y: 42
+              }
+            }
+            {
+              description: "Handle made from multiple layers of wood impregnated with resin"
+              show: false
+              position: {
+                x: 20
+                y: 52
+              }
+            }
+          ]
         }
         # END SUJIHIKI KNIVES
       ]
