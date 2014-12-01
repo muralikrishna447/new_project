@@ -14,7 +14,7 @@
         {
           title: "The ChefSteps Knives Collection"
           description: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables. Today, even the most famous European knifemakers have mostly abandoned hand-forging, yet the Japanese continue to offer extraordinary made-from-scratch tools, along with innovative hybrids that combine sturdy, factory-created handles with remarkably slender, hand-forged blades. The upshot is an instrument of uncommon beauty and elegance that’s still relatively affordable. Here you’ll find 10 knives that we use, and love, in our own kitchens. Whether you’re looking for an efficient little utility blade to go all day in the kitchen or a long, elegant chef’s knife to up your chopping game, you can’t go wrong with this collection of superior tools."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/knives-boxes-3.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Knives-Intro-Img.jpg"
         }
         # END INTRODUCTION
         # GYUTO KNIVES
@@ -22,7 +22,7 @@
           id: "gyuto-knives"
           title: "Gyuto Knives"
           description: "Modeled after the French pattern chef's knife, Gyutos are longer and slimmer than Santokus. The elongated blade makes this an ideal knife for creating the sawing motion necessary for cleanly cut meat, and it’s specially crafted to allow plenty of finger clearance—particularly helpful when you’re working over a cutting board."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Gyuto-all.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-all.jpg"
         }
         {
           id: "tadafusa-nashiji-gyuto"
@@ -86,7 +86,7 @@
           title: "Yoshikane Gyuto"
           dimensions: "(210mm / 8&frac14in)"
           description: "This elegant all-purpose chef’s knife features a long, slim blade perfect for sawing meat and vegetables, with a subtly uneven surface that prevents food from sticking."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Yoshikane-Gyuto.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Yoshikane.jpg"
           price: "219.75"
           productId: 85673
           annotations: [
@@ -95,7 +95,7 @@
               show: false
               position: {
                 x: 58
-                y: 39
+                y: 41
               }
             }
             {
@@ -103,7 +103,7 @@
               show: false
               position: {
                 x: 20
-                y: 49
+                y: 50
               }
             }
           ]
@@ -143,22 +143,22 @@
           price: "89.85"
           productId: 85680
         }
-        # {
-        #   id: 'yoshikane-fruit-knife'
-        #   title: "Yoshikane Fruit Knife"
-        #   dimensions: "(135mm / 5&frac13in)"
-        #   description: "Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade comprised of SLD stainless steel (core) and stainless steel damascus (surface) that slides easily through food."
-        #   imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-yoshikane.jpg"
-        #   price: "143.95"
-        #   productId: 86374
-        # }
+        {
+          id: 'yoshikane-petty-knife'
+          title: "Yoshikane Petty Knife"
+          dimensions: "(135mm / 5&frac13in)"
+          description: "Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade comprised of SLD stainless steel (core) and stainless steel damascus (surface) that slides easily through food."
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Yoshikane.jpg"
+          price: "143.95"
+          productId: 86374
+        }
         # END PETTY KNIVES
         # SANTOKU KNIVES
         {
           id: 'santoku-knives'
           title: "Santoku Knives"
           description: "The traditional Japanese chef’s knife, these versatile choppers are now essential tools in well-equipped kitchens throughout the Western world as well."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-all.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-all-2.jpg"
         }
         {
           id: 'ryusen-santoku'
@@ -183,7 +183,7 @@
           title: "Yoshikane Santoku"
           dimensions: "(180mm / 7&#8539in)"
           description: "A multipurpose, rust-resistant chopper, this knife boasts a beautiful, hand-hammered surface and a comfortable handles made from Ho wood with buffalo horn ferrule."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-draft/Yoshikane-Santoku.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-Yoshikane.jpg"
           price: "179.95"
           productId: 91653
         }
