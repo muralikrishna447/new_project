@@ -58,7 +58,9 @@ module ActsAsChargeable
 
     def adjust_for_included_tax(price, ip)
       tax = 0.0
-      location = Geokit::Geocoders::IpGeocoder.geocode(ip)
+      logger.info("Geo locating IP #{ip}")
+      location = Geokit::Geocoders::GeoPluginGeocoder.geocode(ip)
+      logger.info("Geo located to #{location.inspect}")
       if location.state == "WA"
         tax_rate = 0.095
         tax = (price - (price / (1 + tax_rate))).round(2)
