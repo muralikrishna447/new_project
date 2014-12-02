@@ -394,7 +394,7 @@
       "https://d3awvtnmmsvyot.cloudfront.net/api/file/bIBHqoDWR3eLBtF8lQgu/convert?fit=crop&w=800&cache=true"
 
     $scope.tweetMessage = ->
-      "I really want the #{$scope.currentItem.title} from #{$scope.collection[0].title} #{window.location}"
+      "I really want the #{$scope.currentItem.title} from #{$scope.collection[0].title}"
 
     $scope.toggleAnnotation = (annotation) ->
 
@@ -408,25 +408,26 @@
       else
         return 'cs-showcase-item-standard'
 
-    # updateCurrent: (item, progress) ->
-    #   if $scope.currentItem != item
-    #     $scope.showcaseCurrentClass = 'direction-' + $scope.direction
-    #     $scope.$apply()
-    #     $timeout ( ->
-    #       $scope.currentItem = item
-    #       # console.log 'currentItem is: ', $scope.currentItem
-    #       # console.log 'updating Current with: ', $scope.direction
-    #       $scope.showcaseCurrentClass = ''
+    updateCurrent: (item, progress) ->
+      if $scope.currentItem != item
+        $scope.currentItem = item
+        # $scope.showcaseCurrentClass = 'direction-' + $scope.direction
+        # $scope.$apply()
+        # $timeout ( ->
+        #   $scope.currentItem = item
+        #   # console.log 'currentItem is: ', $scope.currentItem
+        #   # console.log 'updating Current with: ', $scope.direction
+        #   $scope.showcaseCurrentClass = ''
 
-    #       # Set the location has so anchorscrolling works
-    #       # if item.id
-    #       #   $location.path('/item')
-    #       #   $location.hash(item.id)
-    #       # else
-    #       #   $location.path('')
-    #       #   $location.hash('')
-    #       $scope.$apply()
-    #     ), 100
+        #   # Set the location has so anchorscrolling works
+        #   # if item.id
+        #   #   $location.path('/item')
+        #   #   $location.hash(item.id)
+        #   # else
+        #   #   $location.path('')
+        #   #   $location.hash('')
+        #   $scope.$apply()
+        # ), 100
 
   ]
 
@@ -478,7 +479,7 @@
         # console.log 'end', end
         # completed = position - start
         # progress = completed/height*100
-        # csShowcaseController.updateCurrent(scope.csShowcaseItem, progress)
+        csShowcaseController.updateCurrent(scope.csShowcaseItem)
         element.addClass('active')
       else
         element.removeClass('active')
