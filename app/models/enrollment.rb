@@ -39,12 +39,16 @@ class Enrollment < ActiveRecord::Base
       puts "THIS IS A PAID ENROLLMENT"
       gross_price, tax, extra_descrip = get_tax_info(assembly.price, discounted_price, ip_address)
       enrollment = Enrollment.where(user_id: user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
+      puts "Found enrollment #{enrollment}"
       if enrollment && enrollment.free_trial?
+        puts "Updating free trial enrollment"
         enrollment.update_attributes({price: gross_price, sales_tax: tax, trial_expires_at: nil}, without_protection: true)
         @enrollment = enrollment
       else
+        puts "Creating enrollment"
         @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
       end
+      puts "Collecting money"
       collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, user, stripe_token, existing_card)
     end
 

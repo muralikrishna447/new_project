@@ -5,7 +5,7 @@ class PagesController < ApplicationController
   end
 
   def knife_collection
-    @knife_page = Page.find 'knife-collection'
+    # @knife_page = Page.find 'knife-collection'
   end
 
   def sv_collection

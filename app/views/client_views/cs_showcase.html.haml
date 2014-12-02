@@ -1,25 +1,26 @@
 .cs-showcase
-  .cs-showcase-current
-    .cs-showcase-current-text(ng-class='showcaseCurrentClass')
-      %h3(ng-bind-html='currentItem.title')
-      %p(ng-bind-html='currentItem.description')
-      .cs-showcase-buy.anim-basic-fade(ng-show='currentItem.price')
-        %btn.btn.btn-primary.btn-small
-          %a(ng-href='{{buyNowUrl(currentItem)}}')
-            Buy Now ${{currentItem.price}}
-  .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item')
+  .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item' ng-attr-id='{{item.id}}' ng-class='itemClass(item)')
+    .cs-showcase-item-text
+      %h3
+        %span
+          {{item.title}}
+        %span(ng-bind-html='item.dimensions')
+      %div(ng-include="'_egg_timer_social.html'")
+      %p(ng-bind-html='item.description')
+      .cs-showcase-item-buy.anim-basic-fade(ng-if='item.price')
+        %btn.btn.btn-primary.btn-small(ng-click='trackBuyButtonClick(item)')
+          %a(ng-href='{{buyNowUrl(item)}}' target='_blank')
+            Buy Now ${{item.price}}
+            
     .cs-showcase-container
       .cs-showcase-item-image(cs-showcase-image='item')
 
-      / .cs-showcase-item-thumbnails
-      /   .cs-showcase-item-thumbnail(ng-repeat='image in item.images')
-      /     %img(ng-src='{{image}}')
-
       .cs-showcase-annotations
         .cs-showcase-annotation(ng-repeat='annotation in item.annotations')
-          .cs-showcase-annotation-line(ng-style="annotationLineStyle(annotation)")
-          .cs-showcase-annotation-dot(ng-style="annotationDotStyle(annotation)")
+          .cs-showcase-annotation-line.anim-basic-fade(ng-style="annotationLineStyle(annotation)" ng-show='annotation.show')
+          .cs-showcase-annotation-dot(ng-style="annotationDotStyle(annotation)" ng-mouseenter='toggleAnnotation(annotation)' ng-mouseleave='toggleAnnotation(annotation)')
             %i.fa.fa-circle.fa-2x
-          .cs-showcase-annotation-text
-            %h4 {{annotation.title}}
+          .cs-showcase-annotation-text.anim-basic-fade(ng-style="annotationTextStyle(annotation)" ng-show='annotation.show')
+            %h4(ng-if='annotation.title')
+              {{annotation.title}}
             %p {{annotation.description}}

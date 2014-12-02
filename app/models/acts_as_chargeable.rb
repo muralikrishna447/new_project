@@ -18,8 +18,8 @@ module ActsAsChargeable
     # but they will still have to provide a valid card.
     def collect_money(base_price, discounted_price, item_title, extra_descrip, user, stripe_token, existing_card=nil)
       if base_price && base_price > 0
-        
         if user.stripe_id
+          puts "Retrieving stripe customer"
           customer = Stripe::Customer.retrieve(user.stripe_id)
           if existing_card
             puts 'EXISTING CUSTOMER CHARGE EXISTING CARD'
@@ -58,7 +58,9 @@ module ActsAsChargeable
 
     def adjust_for_included_tax(price, ip)
       tax = 0.0
-      location = Geokit::Geocoders::IpGeocoder.geocode(ip)
+      puts "Geo locating IP #{ip}"
+      location = Geokit::Geocoders::MultiGeocoder.geocode(ip)
+      puts "Geo located to #{location.inspect}"
       if location.state == "WA"
         tax_rate = 0.095
         tax = (price - (price / (1 + tax_rate))).round(2)

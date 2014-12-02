@@ -2,6 +2,8 @@ module Api
   module V0
     class ActivitiesController < ApplicationController
       
+      # Removing default of "newest" for now; that helps with making sure we have a valid sort
+      # if there is no specificed sort, but wrecks relevance sort when there is a search. Will fix on categories branch.
       has_scope :sort do |controller, scope, value|
         case value
           when "oldest"

@@ -1,44 +1,14 @@
-- content_for :title, "Knife Collection"
-- content_for :description, "An exceptional knife should be the cornerstone of a cook's arsenal. It becomes an extension of your own hands; the tool with which you will create art and bring refinement to the table. A beautiful, high-quality knife will follow you to every kitchen and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice—all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best."
+- content_for :facebook_og do
+  %meta{property: 'og:url', content: "http://www.chefsteps.com/playground"}
+  %meta{property: 'og:title', content: "The ChefSteps Knife Collection"}
+  %meta{property: 'og:description', content: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables."}
+  %meta{property: 'og:image', content: "https://www.filepicker.io/api/file/UApxSAFQe2KAgZhSQXUc/convert?fit=max&w=1600&quality=90&cache=true"}
 
-.container
-  .row.section
-    .span5
-      = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/Ya5vpVc1RzysqAPC5ZIJ/convert?fit=712cache=true')
-    .span7
-      %h1 ChefSteps Knife Collection
-      = render 'knife_collection_social', title: 'Chefsteps Knife Collection', image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/Ya5vpVc1RzysqAPC5ZIJ', likeable_object: @knife_page
-      %p.section-small An exceptional knife should be the cornerstone of a cook's arsenal. It becomes an extension of your own hands; the tool with which you will create art and bring refinement to the table. A beautiful, high-quality knife will follow you to every kitchen and last a lifetime if properly cared for. Handcrafted Japanese knives in particular bring elegance and sophistication to any dish—a perfectly sliced piece of salmon; a delicate chiffonade; a meticulous dice—all expertly executed with slender, high-performance Japanese blades. Our readers have asked what knives we use when we cook, and this curated collection of hand-forged artisan knives, each completely unique and in finite supply, is our answer. In other words: Only the best.
+- content_for :twitter_cards do
+  %meta{property: 'twitter:site', content: '@chefsteps'}
+  %meta{property: 'twitter:title', content: "The ChefSteps Knife Collection" }
+  %meta{property: 'twitter:description', content: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables."}
+  %meta{property: 'twitter:image:src', content: "https://www.filepicker.io/api/file/UApxSAFQe2KAgZhSQXUc/convert?fit=max&w=1600&quality=90&cache=true"}
+  %meta{property: 'twitter:card', content: 'summary_large_image'}
 
-.container
-  .row.section
-    %hr
-    .span12
-      %h2 Here are some techniques to improve your knife skills:
-      %br
-      %cssearchindex(query='{"search_all": "knife", "per": "6"}')
-      %a.btn.btn-large.btn-outline-blue-large(href='/gallery#?published_status=published&generator=chefsteps&search_all=knife')
-        See More
-
-= render 'knife_collection_split_a'
-
-.section
-
-= render 'layouts/footer'
-
-%div(ng-controller="StandaloneMadlibController")
-  = render 'home/madlib_popup', registration_source: 'knife-collection-madlib'
-
-// Lightbox //
-
-.cs-lightbox
-  .cs-lightbox-overlay
-  .cs-lightbox-image
-    %img
-  .cs-lightbox-close
-    %i.icon-remove
-
-:javascript
-  mixpanel.track('Viewed Knife Collection', {'url' : window.location.pathname});
-
-
+%div(cs-showcase collection-name='knives')

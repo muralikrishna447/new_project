@@ -6,7 +6,7 @@ input:not(:focus):not(.ng-pristine).ng-invalid
 .modal
   border: 2px solid $dark-orange
   @include radius(1px)
-  max-height: 600px
+  max-height: 1000px
 
 .buy-modal
   height: auto
@@ -14,11 +14,7 @@ input:not(:focus):not(.ng-pristine).ng-invalid
 .buy-modal-body
   overflow: hidden
   height: auto !important
-  max-height: 600px
-
-.cards
-
-.card
+  max-height: 1000px
 
 .charge-form, .gift-form
   margin-top: 30px
@@ -61,3 +57,19 @@ input:not(:focus):not(.ng-pristine).ng-invalid
     position: relative
     margin-left: -40px
     margin-right: -40px
+
+@media (max-width: 480px)
+  .modal.fade.in
+    position: absolute
+  .charge-form, .gift-form
+    margin: 0px
+    h3
+      display: none
+    p
+      font-size: 1.2rem
+      margin-bottom: $baseline
+    .divider
+      margin-top: $baseline
+      margin-bottom: $baseline
+    .input-full
+      margin-bottom: 0px

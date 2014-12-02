@@ -1,5 +1,5 @@
 worker_processes 4 # amount of unicorn workers to spin up
-timeout 30         # restarts workers that hang for 30 seconds
+timeout 35         # restarts workers that hang for 35 seconds, 5 seconds longer than heroku timeout
 
 preload_app true
 GC.respond_to?(:copy_on_write_friendly=) and

@@ -106,7 +106,7 @@ describe ActsAsChargeable do
       before(:each) do
         location = double('location')
         location.stub(:state).and_return("WA")
-        Geokit::Geocoders::IpGeocoder.stub(:geocode).and_return(location)
+        Geokit::Geocoders::MultiGeocoder.stub(:geocode).and_return(location)
       end
       it "should return the price minus tax and the tax" do
         Dummy.adjust_for_included_tax(19.00, "127.0.0.1").should eq [17.35, 1.65]
@@ -117,7 +117,7 @@ describe ActsAsChargeable do
       before(:each) do
         location = double('location')
         location.stub(:state).and_return("OR")
-        Geokit::Geocoders::IpGeocoder.stub(:geocode).and_return(location)
+        Geokit::Geocoders::MultiGeocoder.stub(:geocode).and_return(location)
       end
       it "should return the price and 0 tax" do
         Dummy.adjust_for_included_tax(19.00, "127.0.0.1").should eq [19.00, 0]
