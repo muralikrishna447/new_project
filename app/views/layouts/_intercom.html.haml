@@ -17,8 +17,8 @@
       "chef_type": "#{current_user.chef_type}",
       "website": "#{current_user.website}",
       "role": "#{current_user.role}",
-      "paidClassesCount" : "#{current_user.enrollments.where('price > 0').count}",
-      "freeClassesCount" : "#{current_user.enrollments.where(price: 0).count}"
+      "paid_classes" : "#{current_user.enrollments.where('price > 0').count}",
+      "free_classes" : "#{current_user.enrollments.where(price: 0).count}"
     };
 
   :javascript
