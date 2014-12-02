@@ -317,7 +317,7 @@
               show: false
               position: {
                 x: 58
-                y: 42
+                y: 41
               }
             }
             {
@@ -325,7 +325,7 @@
               show: false
               position: {
                 x: 20
-                y: 52
+                y: 54
               }
             }
           ]
