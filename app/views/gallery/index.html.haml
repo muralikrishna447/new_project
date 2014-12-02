@@ -6,13 +6,19 @@
 
 .gallery-wrapper.relative(ng-controller='GalleryController' ng-cloak)
   .gallery-filter.navbar
-    %ul.nav.left-group
 
+    %ul.nav.search-group.left-group
       %form.navbar-search.relative
-        %input.search-query(ng-model='input' ng-change='search(input)' placeholder='search')
-        %a.clear-search(ng-click="clearSearch()")
-          %i.icon-remove
+        .input-group
+          %input.search-query(ng-model='input' ng-change='search(input)' placeholder='search')
+          %a.clear-search(ng-click="clearSearch()")
+            %i.icon-remove
+        .filter-toggle(ng-click="filtersCollapsed = ! filtersCollapsed")
+          FILTERS
+          %i.icon-angle-down(ng-show="filtersCollapsed")
+          %i.icon-angle-up(ng-hide="filtersCollapsed")
 
+    %ul.nav.filters-group.left-group(ng-class="{'filters-collapsed' : filtersCollapsed}")
       %li
         %h5 Popular
         %a( ng-repeat="x in suggestedSearches" 

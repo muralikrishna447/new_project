@@ -8,6 +8,7 @@
   $scope.sortChoices = ["relevance", "newest", "oldest", "popular"]
   $scope.suggestedSearches = ['sous vide', 'beef', 'chicken', 'pork', 'fish', 'salad', 'dessert', 'breakfast', 'cocktail', 'baking', 'vegetarian', 'egg', 'pasta']
   $scope.dataLoading = $scope.doneLoading = false
+  $scope.filtersCollapsed = true
 
   defaultFilters = {
     'difficulty':'any'

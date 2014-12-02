@@ -11,12 +11,17 @@
 .gallery-filter
   position: fixed
   top: 84px
-  left: $horz-baseline-large * 2
+  padding-left: $horz-baseline-large * 2
   width: 300px
   @include flex(0 0 320px)
+  ul
+    width: 100%
   input
     margin-top: -4px
     margin-right: 0px !important
+
+  .filter-toggle 
+    display: none
 
 .gallery-items
   @include display-flex
@@ -101,60 +106,24 @@
         font-size:  80%
         color:  $orange
 
+  .navbar-search
+    .input-group
+      position: relative
+      max-width: 320px
+      display: inline-block
+
   .clear-search
     position: absolute
-    right:  20px
+    right:  12px
     bottom:  2px
     color:  #a9a9a9
 
   form
     margin-top: 17px
     width: 100%
-  .search-query
-    width: calc(100% - 40px)
 
 .filter-collapser
   cursor: pointer
-
-.filters-group
-  width: auto
-  position: absolute
-  top:  90%
-  z-index: 100
-  padding: 10px 30px 20px 30px
-  background-color: rgba(255, 255, 255, .9)
-  border-bottom-left-radius: 5px
-  border-bottom-right-radius: 5px
-  border-top-right-radius: 5px
-  .btn-group
-    margin-top: 15px
-    margin-left: 0px
-  @include bottom-only-annotation-shadow
-  overflow:  hidden
-
-  li
-    list-style-type: none
-    
-  .first-separate
-    .btn-group
-      .btn:first-child
-        margin-right: 12px
-        width:  auto
-
-  .btn
-    background-image: none
-    background-color: #f1f1f1
-    border-color:  #ccc
-    color: #666
-    border-radius:  2px !important
-    -webkit-border-radius:  1px
-    width:  120px
-    text-align:  center
-
-  .btn.active
-    background-color: #ddd !important
-    color: inherit
-    text-shadow: none
 
 .filter-collapser
   display: inline-block
@@ -220,33 +189,52 @@
 
 
 @media (max-width: 980px)
-  .left-group
-    width: 100%
-  .add-group
-    .browse-by
-      display: none
-    padding-top: 10px
-    font-size: 80%
-    li > a
-      margin-left: 10px
-  .filters-group
-    right: -140px
-  .current-filter
-    display: none
+  .gallery-filter
+    z-index: 100
+    width: 100vw
+    left: 0
+    top: 60px
+    padding-left: 0px
 
+    > *
+      padding-left: 22px
 
-@media (max-width: 400px)
-  .search-query
-    width: 130px
+    ul
+      float: none !important
 
-  .filters-group
-    right: -90px
-    button
-      font-size: 10px !important
+    li
+      max-width: 320px
+      display: block
+      float: none !important
 
-    .btn
-      width:  80px
-      text-align:  center
+    .filter-toggle 
+      display: inline-block
+      cursor: pointer
+      margin-left: $horz-baseline-large
 
-  .add-group
-    float: none !important
+    .search-group
+      padding-top: 10px
+      background-color: white
+      opacity: 0.95
+      width: 100vh
+      height: 60px
+
+    .filters-group
+      top: 60px
+      padding-left: 22px
+      position: absolute
+      z-index: 100
+      background-color: white
+      opacity: 0.95
+      width: 100%
+      height: 100vh
+      overflow: hidden
+      @include transition(all 200ms ease-in)
+
+      &.filters-collapsed
+        height: 0
+
+  .gallery-results
+    padding-left: $horz-baseline-large
+    padding-top: 32px
+
