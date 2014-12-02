@@ -12,6 +12,7 @@
       $scope.collection = [
         # INTRODUCTION
         {
+          type: "title"
           title: "The ChefSteps Knives Collection"
           description: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables. Today, even the most famous European knifemakers have mostly abandoned hand-forging, yet the Japanese continue to offer extraordinary made-from-scratch tools, along with innovative hybrids that combine sturdy, factory-created handles with remarkably slender, hand-forged blades. The upshot is an instrument of uncommon beauty and elegance that’s still relatively affordable. Here you’ll find 10 knives that we use, and love, in our own kitchens. Whether you’re looking for an efficient little utility blade to go all day in the kitchen or a long, elegant chef’s knife to up your chopping game, you can’t go wrong with this collection of superior tools."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/knives-boxes-4.jpg"
@@ -20,6 +21,7 @@
         # GYUTO KNIVES
         {
           id: "gyuto-knives"
+          type: "title"
           title: "Gyuto Knives"
           description: "Modeled after the French pattern chef's knife, Gyutos are longer and slimmer than Santokus. The elongated blade makes this an ideal knife for creating the sawing motion necessary for cleanly cut meat, and it’s specially crafted to allow plenty of finger clearance—particularly helpful when you’re working over a cutting board."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-all.jpg"
@@ -121,6 +123,7 @@
         # PETTY KNIVES
         {
           id: 'utility-petty-knives'
+          type: "title"
           title: "Utility / Petty Knives"
           description: "Utility knives are excellent for tasks that require delicate slicing and a lot of dexterity. This workhorse will always come in handy when you need to slice up meats, vegetables, and fruit."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-all.jpg"
@@ -210,6 +213,7 @@
         # SANTOKU KNIVES
         {
           id: 'santoku-knives'
+          type: "title"
           title: "Santoku Knives"
           description: "The traditional Japanese chef’s knife, these versatile choppers are now essential tools in well-equipped kitchens throughout the Western world as well."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-all-2.jpg"
@@ -299,9 +303,10 @@
         # SUJIHIKI KNIVES
         {
           id: 'sujihiki-knives'
+          type: "title"
           title: "Sujihiki Knives"
           description: "It takes a very precise knife to create perfect sushi and sashimi. With a thin, long blade that ensures a remarkably clean cut, these extremely sharp carving knives are well suited for slicing and portioning meats and fish."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-all.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-Ryusen-close-up.jpg"
         }
         {
           id: 'ryusen-sujihiki'
@@ -384,46 +389,44 @@
       annotation.show = !annotation.show
       console.log 'TOGGLING ANNOTATION: ', annotation
 
-    updateCurrent: (item, progress) ->
-      if $scope.currentItem != item
-        $scope.showcaseCurrentClass = 'direction-' + $scope.direction
-        $scope.$apply()
-        $timeout ( ->
-          $scope.currentItem = item
-          # console.log 'currentItem is: ', $scope.currentItem
-          # console.log 'updating Current with: ', $scope.direction
-          $scope.showcaseCurrentClass = ''
+    # updateCurrent: (item, progress) ->
+    #   if $scope.currentItem != item
+    #     $scope.showcaseCurrentClass = 'direction-' + $scope.direction
+    #     $scope.$apply()
+    #     $timeout ( ->
+    #       $scope.currentItem = item
+    #       # console.log 'currentItem is: ', $scope.currentItem
+    #       # console.log 'updating Current with: ', $scope.direction
+    #       $scope.showcaseCurrentClass = ''
 
-          # Set the location has so anchorscrolling works
-          # if item.id
-          #   $location.path('/item')
-          #   $location.hash(item.id)
-          # else
-          #   $location.path('')
-          #   $location.hash('')
-          $scope.$apply()
-        ), 100
+    #       # Set the location has so anchorscrolling works
+    #       # if item.id
+    #       #   $location.path('/item')
+    #       #   $location.hash(item.id)
+    #       # else
+    #       #   $location.path('')
+    #       #   $location.hash('')
+    #       $scope.$apply()
+    #     ), 100
 
   ]
 
-  link: (scope, element, attrs) ->
-    oldPosition = 0
-    windowElement = angular.element($window)
-    windowElement.on 'scroll', (e) ->
-      position = windowElement.scrollTop()
-      # console.log 'WINDOW POSITION: ', position
-      if oldPosition
-        diff = oldPosition - position
-        if diff > 0
-          # console.log 'SCROLLING UP'
-          scope.direction = 'up'
-        else
-          # console.log 'SCROLLING DOWN'
-          scope.direction = 'down'
-      # console.log 'oldPosition: ', oldPosition
-      oldPosition = position
-
-
+  # link: (scope, element, attrs) ->
+  #   oldPosition = 0
+  #   windowElement = angular.element($window)
+  #   windowElement.on 'scroll', (e) ->
+  #     position = windowElement.scrollTop()
+  #     # console.log 'WINDOW POSITION: ', position
+  #     if oldPosition
+  #       diff = oldPosition - position
+  #       if diff > 0
+  #         # console.log 'SCROLLING UP'
+  #         scope.direction = 'up'
+  #       else
+  #         # console.log 'SCROLLING DOWN'
+  #         scope.direction = 'down'
+  #     # console.log 'oldPosition: ', oldPosition
+  #     oldPosition = position
 
   templateUrl: '/client_views/cs_showcase.html'
 ]
@@ -456,7 +459,10 @@
         # console.log 'end', end
         completed = position - start
         progress = completed/height*100
-        csShowcaseController.updateCurrent(scope.csShowcaseItem, progress)
+        # csShowcaseController.updateCurrent(scope.csShowcaseItem, progress)
+        element.addClass('active')
+      else
+        element.removeClass('active')
 
     windowElement.on 'scroll', (e) ->
       # handleScroll(e)
