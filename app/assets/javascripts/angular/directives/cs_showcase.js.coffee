@@ -15,7 +15,8 @@
           type: "title"
           title: "The ChefSteps Knives Collection"
           description: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables. Today, even the most famous European knifemakers have mostly abandoned hand-forging, yet the Japanese continue to offer extraordinary made-from-scratch tools, along with innovative hybrids that combine sturdy, factory-created handles with remarkably slender, hand-forged blades. The upshot is an instrument of uncommon beauty and elegance that’s still relatively affordable. Here you’ll find 10 knives that we use, and love, in our own kitchens. Whether you’re looking for an efficient little utility blade to go all day in the kitchen or a long, elegant chef’s knife to up your chopping game, you can’t go wrong with this collection of superior tools."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/knives-boxes-4.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/knives-boxes-6.jpg"
+          fp: "https://www.filepicker.io/api/file/UApxSAFQe2KAgZhSQXUc/convert?fit=max&w=1600&quality=90&cache=true"
         }
         # END INTRODUCTION
         # GYUTO KNIVES
@@ -25,6 +26,7 @@
           title: "Gyuto Knives"
           description: "Modeled after the French pattern chef's knife, Gyutos are longer and slimmer than Santokus. The elongated blade makes this an ideal knife for creating the sawing motion necessary for cleanly cut meat, and it’s specially crafted to allow plenty of finger clearance—particularly helpful when you’re working over a cutting board."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-all.jpg"
+          fp: "https://www.filepicker.io/api/file/t09yZx5RJ2mkWwPaHwiM/convert?fit=max&w=1600&quality=90&cache=true"
         }
         {
           id: "tadafusa-nashiji-gyuto"
@@ -32,9 +34,7 @@
           dimensions: "(210mm / 8&frac14in)"
           description: "We find ourselves returning time and again to this short, responsive knife—great when you need to work quickly or are looking for a versatile workhorse suitable for a full day of cooking."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Tadafusa-Nashiji.jpg"
-          images: [
-            "https://d92f495ogyf88.cloudfront.net/Knives-final/Tadafusa-Nashiji-close.jpg"
-          ]
+          fp: "https://www.filepicker.io/api/file/xNEMgtiGQuuaMZiLks38/convert?fit=max&w=1600&quality=90&cache=true"
           price: "139.85"
           productId: 91019
           annotations: [
@@ -62,6 +62,7 @@
           dimensions: "(210mm / 8&frac14in)"
           description: "We love the beautiful steel polish on this relatively heavy knife, and also love knowing that its great looks will last a lifetime."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-RyuSen.jpg"
+          fp: "https://www.filepicker.io/api/file/3GrSpazRRS22k0BHeQEv/convert?fit=max&w=1600&quality=90&cache=true"
           price: "198.00"
           productId: 696
           annotations: [
@@ -89,6 +90,7 @@
           dimensions: "(210mm / 8&frac14in)"
           description: "This elegant all-purpose chef’s knife features a long, slim blade perfect for sawing meat and vegetables, with a subtly uneven surface that prevents food from sticking."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Gyuto-Yoshikane.jpg"
+          fp: "https://www.filepicker.io/api/file/VaItDfJGQ5SAOUntu6BQ/convert?fit=max&w=1600&quality=90&cache=true"
           price: "219.75"
           productId: 85673
           annotations: [
@@ -127,6 +129,7 @@
           title: "Utility / Petty Knives"
           description: "Utility knives are excellent for tasks that require delicate slicing and a lot of dexterity. This workhorse will always come in handy when you need to slice up meats, vegetables, and fruit."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-all.jpg"
+          fp: "https://www.filepicker.io/api/file/D79DohtNSvOUTuBonPBw/convert?fit=max&w=1600&quality=90&cache=true"
         }
         {
           id: 'ryusen-utility-fruit-knife'
@@ -134,6 +137,7 @@
           dimensions: "(135mm / 5&#8531in)"
           description: "With a hand-forged steel blade, this utility knife is light and durable, just the way we like them. It’s also remarkably comfortable in-hand."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-RyuSen.jpg"
+          fp: "https://www.filepicker.io/api/file/AfECGop1R2yPKtcuZpTz/convert?fit=max&w=1600&quality=90&cache=true"
           price: "116.95"
           productId: 801
           annotations: [
@@ -161,6 +165,7 @@
           dimensions: "(135mm / 5&#8531in)"
           description: "An unbeatable value, this utility knife delivers in terms of weight and quality of materials, and feels great in hand. It’s a perfect tool for all those small prep tasks that are always coming up in the kitchen."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Tadafusa-Nashiji.jpg"
+          fp: "https://www.filepicker.io/api/file/glKMERBTyqCIKFBdpJK0/convert?fit=max&w=1600&quality=90&cache=true"
           price: "89.85"
           productId: 85680
           annotations: [
@@ -188,6 +193,7 @@
           dimensions: "(135mm / 5&#8531in)"
           description: "Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade that slides easily through food."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Yoshikane.jpg"
+          fp: "https://www.filepicker.io/api/file/Z41mMjzQzqhG0fw36eJ2/convert?fit=max&w=1600&quality=90&cache=true"
           price: "143.95"
           productId: 86374
           annotations: [
@@ -217,6 +223,7 @@
           title: "Santoku Knives"
           description: "The traditional Japanese chef’s knife, these versatile choppers are now essential tools in well-equipped kitchens throughout the Western world as well."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-all-2.jpg"
+          fp: "https://www.filepicker.io/api/file/Kj45qng0Q66ISMyoInEz/convert?fit=max&w=1600&quality=90&cache=true"
         }
         {
           id: 'ryusen-santoku'
@@ -224,6 +231,7 @@
           dimensions: "(170mm / 7in)"
           description: "A great gift for new cooks looking to improve their knife skills, this versatile model is durable and safe—perfect for practicing vegetable-slicing skills."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-RyuSen.jpg"
+          fp: "https://www.filepicker.io/api/file/HzOCF4v6QJKtVLsFqkws/convert?fit=max&w=1600&quality=90&cache=true"
           price: "174.50"
           productId: 687
           annotations: [
@@ -251,6 +259,7 @@
           dimensions: "(170mm / 6&frac34in)"
           description: "With this very fairly priced, razor-sharp Santoku you’ll easily achieve super-skinny slices of onions and other vegetables. The raw ho wood handle offers a great grip so you can work full speed ahead with zero fear of slipping."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-Tadafusa-Nashiji.jpg"
+          fp: "https://www.filepicker.io/api/file/AolIOupaRtKiosXb20Ov/convert?fit=max&w=1600&quality=90&cache=true"
           price: "99.85"
           productId: 85681
           annotations: [
@@ -278,6 +287,7 @@
           dimensions: "(180mm / 7&#8539in)"
           description: "A multipurpose, rust-resistant chopper, this knife boasts a beautiful, hand-hammered surface and a comfortable handles made from Ho wood with buffalo horn ferrule."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Santoku-Yoshikane.jpg"
+          fp: "https://www.filepicker.io/api/file/qtzXwi9SUgGVD6zmadAL/convert?fit=max&w=1600&quality=90&cache=true"
           price: "179.95"
           productId: 91653
           annotations: [
@@ -307,6 +317,7 @@
           title: "Sujihiki Knives"
           description: "It takes a very precise knife to create perfect sushi and sashimi. With a thin, long blade that ensures a remarkably clean cut, these extremely sharp carving knives are well suited for slicing and portioning meats and fish."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-Ryusen-close-up.jpg"
+          fp: "https://www.filepicker.io/api/file/dio3MFPSO25e3xDXbOkI/convert?fit=max&w=1600&quality=90&cache=true"
         }
         {
           id: 'ryusen-sujihiki'
@@ -314,6 +325,7 @@
           dimensions: "(270mm / 10&frac34in)"
           description: "Heavy, with a Pakkawood handle designed for the long haul, this sexy 16-incher will level up your slicing skills, helping you achieve perfect straight cuts."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-Ryusen-2.jpg"
+          fp: "https://www.filepicker.io/api/file/XYjURSpZQGyAzk7HmtHz/convert?fit=max&w=1600&quality=90&cache=true"
           price: "309.50"
           productId: 83501
           annotations: [
@@ -372,7 +384,6 @@
 
     # Social share callbacks
     $scope.socialURL = ->
-      console.log "SOCIAL URL: ", window.location.href
       window.location.href
 
     $scope.socialTitle = ->
@@ -382,32 +393,42 @@
       "https://d3awvtnmmsvyot.cloudfront.net/api/file/bIBHqoDWR3eLBtF8lQgu/convert?fit=crop&w=800&cache=true"
 
     $scope.tweetMessage = ->
-      "I really want the #{$scope.currentItem.title} from #{$scope.collection[0].title} #{window.location}"
+      "I really want the #{$scope.currentItem.title} from #{$scope.collection[0].title}"
 
     $scope.toggleAnnotation = (annotation) ->
 
       annotation.show = !annotation.show
       console.log 'TOGGLING ANNOTATION: ', annotation
 
-    # updateCurrent: (item, progress) ->
-    #   if $scope.currentItem != item
-    #     $scope.showcaseCurrentClass = 'direction-' + $scope.direction
-    #     $scope.$apply()
-    #     $timeout ( ->
-    #       $scope.currentItem = item
-    #       # console.log 'currentItem is: ', $scope.currentItem
-    #       # console.log 'updating Current with: ', $scope.direction
-    #       $scope.showcaseCurrentClass = ''
+    $scope.itemClass = (item) ->
+      if item.type == 'title'
+        return 'cs-showcase-item-title'
+      else
+        return 'cs-showcase-item-standard'
 
-    #       # Set the location has so anchorscrolling works
-    #       # if item.id
-    #       #   $location.path('/item')
-    #       #   $location.hash(item.id)
-    #       # else
-    #       #   $location.path('')
-    #       #   $location.hash('')
-    #       $scope.$apply()
-    #     ), 100
+    $scope.trackBuyButtonClick = (item) ->
+      mixpanel.track('Buy Button Clicked', {'context' : $scope.collectionName, 'title' : item.title, 'price' : item.price})
+
+    updateCurrent: (item, progress) ->
+      if $scope.currentItem != item
+        $scope.currentItem = item
+        # $scope.showcaseCurrentClass = 'direction-' + $scope.direction
+        # $scope.$apply()
+        # $timeout ( ->
+        #   $scope.currentItem = item
+        #   # console.log 'currentItem is: ', $scope.currentItem
+        #   # console.log 'updating Current with: ', $scope.direction
+        #   $scope.showcaseCurrentClass = ''
+
+        #   # Set the location has so anchorscrolling works
+        #   # if item.id
+        #   #   $location.path('/item')
+        #   #   $location.hash(item.id)
+        #   # else
+        #   #   $location.path('')
+        #   #   $location.hash('')
+        #   $scope.$apply()
+        # ), 100
 
   ]
 
@@ -457,9 +478,9 @@
       if start <= position < end
         # console.log 'start', start
         # console.log 'end', end
-        completed = position - start
-        progress = completed/height*100
-        # csShowcaseController.updateCurrent(scope.csShowcaseItem, progress)
+        # completed = position - start
+        # progress = completed/height*100
+        csShowcaseController.updateCurrent(scope.csShowcaseItem)
         element.addClass('active')
       else
         element.removeClass('active')
@@ -489,6 +510,6 @@
 
   template:
     """
-      <img src="{{csShowcaseImage.imageUrl}}"/>
+      <img src="{{csShowcaseImage.fp}}"/>
     """
 ]

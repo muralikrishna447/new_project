@@ -48,7 +48,6 @@
  *= require embed
  *= require projects
  *= require home
- *= require knife_collection
  *= require cs_lightbox
  *= require charge_form
  *= require login_form

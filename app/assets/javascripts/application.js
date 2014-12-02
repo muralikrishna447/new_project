@@ -31,7 +31,6 @@
 //= require iframe_height
 //= require annotations
 //= require projects
-//= require knife_collection
 //= require cs_lightbox
 //= require angular-payments
 //= require hammer
