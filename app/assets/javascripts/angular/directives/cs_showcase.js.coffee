@@ -402,11 +402,13 @@
       console.log 'TOGGLING ANNOTATION: ', annotation
 
     $scope.itemClass = (item) ->
-      console.log 'item type is: ', item.type
       if item.type == 'title'
         return 'cs-showcase-item-title'
       else
         return 'cs-showcase-item-standard'
+
+    $scope.trackBuyButtonClick = (item) ->
+      mixpanel.track('Buy Button Clicked', {'context' : $scope.collectionName, 'title' : item.title, 'price' : item.price})
 
     updateCurrent: (item, progress) ->
       if $scope.currentItem != item

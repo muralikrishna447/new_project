@@ -8,7 +8,7 @@
       %div(ng-include="'_egg_timer_social.html'")
       %p(ng-bind-html='item.description')
       .cs-showcase-item-buy.anim-basic-fade(ng-if='item.price')
-        %btn.btn.btn-primary.btn-small
+        %btn.btn.btn-primary.btn-small(ng-click='trackBuyButtonClick(item)')
           %a(ng-href='{{buyNowUrl(item)}}' target='_blank')
             Buy Now ${{item.price}}
             
