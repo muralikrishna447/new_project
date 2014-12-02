@@ -389,6 +389,13 @@
       annotation.show = !annotation.show
       console.log 'TOGGLING ANNOTATION: ', annotation
 
+    $scope.itemClass = (item) ->
+      console.log 'item type is: ', item.type
+      if item.type == 'title'
+        return 'cs-showcase-item-title'
+      else
+        return 'cs-showcase-item-standard'
+
     # updateCurrent: (item, progress) ->
     #   if $scope.currentItem != item
     #     $scope.showcaseCurrentClass = 'direction-' + $scope.direction
@@ -457,8 +464,8 @@
       if start <= position < end
         # console.log 'start', start
         # console.log 'end', end
-        completed = position - start
-        progress = completed/height*100
+        # completed = position - start
+        # progress = completed/height*100
         # csShowcaseController.updateCurrent(scope.csShowcaseItem, progress)
         element.addClass('active')
       else
