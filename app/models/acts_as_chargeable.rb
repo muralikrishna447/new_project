@@ -18,8 +18,8 @@ module ActsAsChargeable
     # but they will still have to provide a valid card.
     def collect_money(base_price, discounted_price, item_title, extra_descrip, user, stripe_token, existing_card=nil)
       if base_price && base_price > 0
-        
         if user.stripe_id
+          puts "Retrieving stripe customer"
           customer = Stripe::Customer.retrieve(user.stripe_id)
           if existing_card
             puts 'EXISTING CUSTOMER CHARGE EXISTING CARD'
