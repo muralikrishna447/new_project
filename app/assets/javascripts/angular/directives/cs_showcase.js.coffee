@@ -384,7 +384,6 @@
 
     # Social share callbacks
     $scope.socialURL = ->
-      console.log "SOCIAL URL: ", window.location.href
       window.location.href
 
     $scope.socialTitle = ->
