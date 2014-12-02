@@ -128,7 +128,7 @@
         {
           id: 'ryusen-utility-fruit-knife'
           title: "RyuSen Utility/Fruit Knife"
-          dimensions: "(135mm / 5&frac13in)"
+          dimensions: "(135mm / 5&#8531in)"
           description: "With a hand-forged steel blade, this utility knife is light and durable, just the way we like them. It’s also remarkably comfortable in-hand."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-RyuSen.jpg"
           price: "116.95"
@@ -155,7 +155,7 @@
         {
           id: 'tadafusa-nashiji-utility-fruit-knife'
           title: "Tadafusa Nashiji Utility/Fruit Knife"
-          dimensions: "(135mm / 5&frac13in)"
+          dimensions: "(135mm / 5&#8531in)"
           description: "An unbeatable value, this utility knife delivers in terms of weight and quality of materials, and feels great in hand. It’s a perfect tool for all those small prep tasks that are always coming up in the kitchen."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Tadafusa-Nashiji.jpg"
           price: "89.85"
@@ -182,7 +182,7 @@
         {
           id: 'yoshikane-petty-knife'
           title: "Yoshikane Petty Knife"
-          dimensions: "(135mm / 5&frac13in)"
+          dimensions: "(135mm / 5&#8531in)"
           description: "Best for detail slicing—think tomatoes and garlic—this utility knife by Yoshikane has a smooth, slender blade that slides easily through food."
           imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Petty-Yoshikane.jpg"
           price: "143.95"
