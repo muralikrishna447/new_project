@@ -301,7 +301,7 @@
           id: 'sujihiki-knives'
           title: "Sujihiki Knives"
           description: "It takes a very precise knife to create perfect sushi and sashimi. With a thin, long blade that ensures a remarkably clean cut, these extremely sharp carving knives are well suited for slicing and portioning meats and fish."
-          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-all.jpg"
+          imageUrl: "https://d92f495ogyf88.cloudfront.net/Knives-final/Sujihiki-Ryusen-close-up.jpg"
         }
         {
           id: 'ryusen-sujihiki'
