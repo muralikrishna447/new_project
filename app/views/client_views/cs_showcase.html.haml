@@ -6,10 +6,11 @@
           {{item.title}}
       %h4
         %span(ng-bind-html='item.dimensions')
-      %div(ng-include="'_egg_timer_social.html'")
+      %hr(ng-if="item.type == 'title'")
+      %div(ng-include="'_egg_timer_social.html'" ng-if="item.type != 'title'")
       %p(ng-bind-html='item.description')
       .cs-showcase-item-buy.anim-basic-fade(ng-if='item.price')
-        %btn.btn.btn-primary.btn-small(ng-click='trackBuyButtonClick(item)')
+        %btn.btn.btn-primary(ng-click='trackBuyButtonClick(item)')
           %a(ng-href='{{buyNowUrl(item)}}' target='_blank')
             Buy Now ${{item.price}}
             
