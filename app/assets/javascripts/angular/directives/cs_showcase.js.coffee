@@ -73,6 +73,7 @@
     updateCurrent: (item, progress) ->
       if $scope.currentItem != item
         $scope.currentItem = item
+        mixpanel.track('Scrolled to', {'context' : $scope.collectionName, 'title' : item.title, 'price' : item.price})
         # $scope.showcaseCurrentClass = 'direction-' + $scope.direction
         # $scope.$apply()
         # $timeout ( ->
