@@ -65,7 +65,6 @@
 .cs-showcase-item.cs-showcase-item-standard
   .cs-showcase-item-text
     opacity: 0
-    // transform: translateY(100px)
     @include transform(translateY(100px))
     @include transition(all 600ms $standard-bezier)
 
@@ -80,7 +79,7 @@
     position: absolute
     top: 60px
     left: 0px
-    .cs-showcase-item
+    .cs-showcase-item.cs-showcase-item-standard
       .cs-showcase-item-text
         position: relative
         top: 0px
@@ -98,12 +97,9 @@
           left: 50%
           background: white
           @include transform(rotate(45deg))
-    // .cs-showcase-current
-    //   padding: $baseline
-    //   top: initial
-    //   h3
-    //     font-size: 1.4rem
-    //     line-height: 2rem
-    //   p
-    //     font-size: 1.2rem
-    //   bottom: 0px
+  .cs-showcase-container
+    .cs-showcase-annotations
+      .cs-showcase-annotation-text
+        width: 30%
+        p
+          font-size: 0.8rem
