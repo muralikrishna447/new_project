@@ -3,7 +3,7 @@
 class PlaygroundController < ApplicationController
 
   def index
-    @activity = Activity.find 'beef-tartare'
+
   end
 
 end

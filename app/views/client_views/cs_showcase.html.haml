@@ -1,42 +1,21 @@
 .cs-showcase
-  / .cs-showcase-current
-  /   .cs-showcase-current-text(ng-class='showcaseCurrentClass')
-  /     %h3
-  /       %span
-  /         {{currentItem.title}}
-  /       %span(ng-bind-html='currentItem.dimensions')
-  /     %div(ng-include="'_egg_timer_social.html'")
-  /     %p(ng-bind-html='currentItem.description')
-  /     .cs-showcase-buy.anim-basic-fade(ng-if='currentItem.price')
-  /       %btn.btn.btn-primary.btn-small
-  /         %a(ng-href='{{buyNowUrl(currentItem)}}' target='_blank')
-  /           Buy Now ${{currentItem.price}}
-  .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item' ng-attr-id='{{item.id}}')
-    .cs-showcase-item-title(ng-if="item.type == 'title'")
+  .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item' ng-attr-id='{{item.id}}' ng-class='itemClass(item)')
+    .cs-showcase-item-text
       %h3
         %span
           {{item.title}}
-      %hr
-      / %div(ng-include="'_egg_timer_social.html'")
-      %p(ng-bind-html='item.description')
-    .cs-showcase-item-text(ng-if="item.type != 'title'")
-      %h3
-        %span
-          {{item.title}}
+      %h4
         %span(ng-bind-html='item.dimensions')
-      %div(ng-include="'_egg_timer_social.html'")
+      %hr(ng-if="item.type == 'title'")
+      %div(ng-include="'_egg_timer_social.html'" ng-if="item.type != 'title'")
       %p(ng-bind-html='item.description')
       .cs-showcase-item-buy.anim-basic-fade(ng-if='item.price')
-        %btn.btn.btn-primary.btn-small
+        %btn.btn.btn-primary(ng-click='trackBuyButtonClick(item)')
           %a(ng-href='{{buyNowUrl(item)}}' target='_blank')
             Buy Now ${{item.price}}
             
     .cs-showcase-container
       .cs-showcase-item-image(cs-showcase-image='item')
-
-      / .cs-showcase-item-thumbnails
-      /   .cs-showcase-item-thumbnail(ng-repeat='image in item.images')
-      /     %img(ng-src='{{image}}')
 
       .cs-showcase-annotations
         .cs-showcase-annotation(ng-repeat='annotation in item.annotations')
@@ -47,5 +26,3 @@
             %h4(ng-if='annotation.title')
               {{annotation.title}}
             %p {{annotation.description}}
-
-      / .cs-showcase-item-overlay

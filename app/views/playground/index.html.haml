@@ -1,17 +1,17 @@
 // Enter your test template here
 
-- content_for :facebook_og do
-  %meta{property: 'og:url', content: "http://www.chefsteps.com/playground"}
-  %meta{property: 'og:title', content: "The ChefSteps Knife Collection"}
-  %meta{property: 'og:description', content: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables."}
-  %meta{property: 'og:image', content: "https://d92f495ogyf88.cloudfront.net/Knives-final/Knives-boxes-2.jpg"}
+/ - content_for :facebook_og do
+/   %meta{property: 'og:url', content: "http://www.chefsteps.com/playground"}
+/   %meta{property: 'og:title', content: "The ChefSteps Knife Collection"}
+/   %meta{property: 'og:description', content: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables."}
+/   %meta{property: 'og:image', content: "https://www.filepicker.io/api/file/UApxSAFQe2KAgZhSQXUc/convert?fit=max&w=1600&quality=90&cache=true"}
 
-- content_for :twitter_cards do
-  %meta{property: 'twitter:site', content: '@chefsteps'}
-  %meta{property: 'twitter:title', content: "The ChefSteps Knife Collection" }
-  %meta{property: 'twitter:description', content: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables."}
-  %meta{property: 'twitter:image:src', content: "https://d92f495ogyf88.cloudfront.net/Knives-final/Knives-boxes-2.jpg"}
-  %meta{property: 'twitter:card', content: 'summary_large_image'}
+/ - content_for :twitter_cards do
+/   %meta{property: 'twitter:site', content: '@chefsteps'}
+/   %meta{property: 'twitter:title', content: "The ChefSteps Knife Collection" }
+/   %meta{property: 'twitter:description', content: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables."}
+/   %meta{property: 'twitter:image:src', content: "https://www.filepicker.io/api/file/UApxSAFQe2KAgZhSQXUc/convert?fit=max&w=1600&quality=90&cache=true"}
+/   %meta{property: 'twitter:card', content: 'summary_large_image'}
 
 %div(ng-controller='PlaygroundController')
-  %div(cs-showcase collection-name='knives')
+  %div(cs-showcase collection-name='sous-vide')
