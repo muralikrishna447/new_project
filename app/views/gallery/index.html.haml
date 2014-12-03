@@ -34,9 +34,9 @@
         %h5 Source
         %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
 
-      %li
+      %li(ng-if="csAuthentication.isAdmin()")
         %h5 Admin
-        %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status" ng-if="csAuthentication.isAdmin()")
+        %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
 
       %li
         %h5 Sort

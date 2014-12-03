@@ -20,6 +20,10 @@
     margin-top: -4px
     margin-right: 0px !important
 
+  .search-group 
+    margin-bottom: $baseline * 2
+    margin-left: -1px
+
   .filter-toggle 
     display: none
 
@@ -243,6 +247,41 @@
     padding-top: 32px
 
 @media (max-width: 700px)
+  .gallery-wrapper
+    margin-top: 0
+
   .gallery-filter
-    top: 0
+    position: absolute
+    top: 0px
+    right: 0
+    left: 0
+    width: auto
+
+    .search-group
+      padding-left: 0
+      height: auto
+      margin-left: 0
+
+    .navbar-search
+      margin-top: 0
+      margin-bottom: 0
+
+    input.search-query
+      width: 155px
+
+    .filters-group
+      top: $baseline * 4
+      right: 0
+      width: auto
+      padding-left: 1px
+      margin-right: 0
+
+  .gallery-results
+    padding-left: 0px
+
+    .cs-index-item
+      padding-left: 0
+      padding-right: 0
+      margin-left: 0
+      margin-right: 0
 
