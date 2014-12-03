@@ -2,9 +2,7 @@ module Api
   module V0
     class ActivitiesController < ApplicationController
       
-      # Removing default of "newest" for now; that helps with making sure we have a valid sort
-      # if there is no specificed sort, but wrecks relevance sort when there is a search. Will fix on categories branch.
-      has_scope :sort do |controller, scope, value|
+      has_scope :sort, default: 'newest' do |controller, scope, value|
         case value
           when "oldest"
             scope.by_published_at("asc")
@@ -12,8 +10,10 @@ module Api
             scope.by_published_at("desc")
           when "popular"
             scope.popular
-          else
+          when "relevance"
             # Relevance is the default sort for pg_search so don't need to do anything
+            scope
+          else
             scope.by_published_at("desc")
         end
       end
@@ -37,6 +37,9 @@ module Api
         per = params[:per] ? params[:per] : 12
         if params[:difficulty] == 'any'
           params.delete 'difficulty'
+        end
+        if params[:search_all] && ! params[:sort]
+          params[:sort] = "relevance"
         end
         @activities = apply_scopes(Activity).uniq().page(params[:page]).per(per)
         render json: @activities, each_serializer: Api::ActivityIndexSerializer

@@ -27,6 +27,10 @@
   @include display-flex
   @include flex-wrap(wrap)
 
+  .cs-index-item
+    margin-right: 11px
+    overflow: hidden
+
   .cs-index-item-image
     background: rgb(147,147,147)
     background: -moz-linear-gradient(left, rgba(147,147,147,1) 0%, rgba(204,204,204,1) 99%)
@@ -188,7 +192,7 @@
     width: 95%
 
 
-@media (max-width: 980px)
+@media (max-width: 960px)
   .gallery-filter
     z-index: 100
     width: 100vw
@@ -237,4 +241,8 @@
   .gallery-results
     padding-left: $horz-baseline-large
     padding-top: 32px
+
+@media (max-width: 700px)
+  .gallery-filter
+    top: 0
 

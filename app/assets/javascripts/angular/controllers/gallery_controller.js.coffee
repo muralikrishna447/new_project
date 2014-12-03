@@ -23,14 +23,17 @@
     sc = sc[1...] unless $scope.filters['search_all']?.length > 0
     sc
 
+  $scope.adjustSortForSearch = ->
+    # If search changes, default sort to relevance - but only on search change
+    # because we still want to let them switch to a different sort.
+    $scope.filters['sort'] = if $scope.input?.length > 0 then "relevance" else "newest"
+
   # Sort/filter change from URL. Copy from route params to filters. This will fire on first load, and also on search from navbar.
   $scope.$on "$routeChangeSuccess", (event, $currentRoute) ->
     $scope.filters = angular.extend({}, defaultFilters, $currentRoute.params)
     if $scope.input != $currentRoute.params.search_all
       $scope.input = $currentRoute.params.search_all
-      # If search changes, default sort to relevance - but only on search change
-      # because we still want to let them switch to a different sort.
-      $scope.filters['sort'] = if $scope.input?.length > 0 then "relevance" else "newest"
+      $scope.adjustSortForSearch()
     $scope.applyFilter()
 
   # Filter/sort change from the UI.
@@ -44,6 +47,7 @@
   inputChangedPromise = null
   $scope.search = (input) ->
     $scope.input = input
+    $scope.adjustSortForSearch()
 
     if inputChangedPromise
       $timeout.cancel(inputChangedPromise)
@@ -59,6 +63,7 @@
   $scope.clearSearch = ->
     $scope.input = null
     delete $scope.filters['search_all']
+    $scope.adjustSortForSearch()
     $scope.applyFilter()
 
   # Scroll
