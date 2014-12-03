@@ -11,6 +11,11 @@
         _.each data, (item) ->
           $scope.collection.push(item)
 
+    if $scope.collectionName == 'sous-vide'
+      $http.get('/pages/sous-vide-collection.json').success (data) ->
+        _.each data, (item) ->
+          $scope.collection.push(item)
+
     annotationLineHeight = 5 # Percent
     annotationLineWidth = 10 # Percent
     $scope.annotationLineStyle = (annotation) ->
