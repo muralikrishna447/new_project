@@ -31,9 +31,7 @@
   # Sort/filter change from URL. Copy from route params to filters. This will fire on first load, and also on search from navbar.
   $scope.$on "$routeChangeSuccess", (event, $currentRoute) ->
     $scope.filters = angular.extend({}, defaultFilters, $currentRoute.params)
-    if $scope.input != $currentRoute.params.search_all
-      $scope.input = $currentRoute.params.search_all
-      $scope.adjustSortForSearch()
+    $scope.input = $currentRoute.params.search_all
     $scope.applyFilter()
 
   # Filter/sort change from the UI.
@@ -79,6 +77,7 @@
     $scope.doneLoading = false
     $scope.page = 1
     $scope.activities = []
+    $scope.filtersCollapsed = true
     window.scroll(0, 0)
     # Update route params to match filters
     $location.search($scope.filters)
