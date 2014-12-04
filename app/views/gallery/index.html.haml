@@ -5,20 +5,24 @@
   %meta{name: "fragment", content: "!"}
 
 .gallery-wrapper.relative(ng-controller='GalleryController' ng-cloak)
-  .gallery-filter.navbar
 
-    %ul.nav.search-group.left-group
+  .gallery-controls.navbar
+
+    %ul.nav.search-group
       %form.navbar-search.relative
         .input-group
-          %input.search-query(ng-model='input' ng-change='search(input)' placeholder='search')
+          %input.search-query(  ng-model='input' 
+                                ng-change='search(input)' 
+                                placeholder='search')
           %a.clear-search(ng-click="clearSearch()")
             %i.icon-remove
+
         .filter-toggle(ng-click="filtersCollapsed = ! filtersCollapsed")
           FILTERS
           %i.icon-angle-down(ng-show="filtersCollapsed")
           %i.icon-angle-up(ng-hide="filtersCollapsed")
 
-    %ul.nav.filters-group.left-group(ng-class="{'filters-collapsed' : filtersCollapsed}")
+    %ul.nav.filters-group(ng-class="{'filters-collapsed' : filtersCollapsed}")
       %li
         %h5 Popular
         %a( ng-repeat="x in suggestedSearches" 
@@ -40,25 +44,27 @@
 
       %li
         %h5 Sort
-        %div
-          %a( ng-repeat="choice in getSortChoices()" 
-                ng-click="filters.sort = choice" 
-                ng-class="{active: filters.sort == choice}")
-            {{choice}}
-
-
-    -#.add-group.btn-group.pull-right(ng-show="(filters.generator != 'chefsteps') || csAuthentication.isAdmin()")
-      -#%a.btn.btn-secondary.add-button(href="/activities/new")
-        -# Add Recipe
+        %a( ng-repeat="choice in getSortChoices()" 
+            ng-click="filters.sort = choice" 
+            ng-class="{active: filters.sort == choice}") 
+          %span {{choice}}
 
   .gallery-results
-    .no-results(ng-cloak ng-show='noResults && !dataLoading')
+    .no-results(ng-show='noResults && !dataLoading')
       %h3 No results found. Here are some of our most popular recipes:
 
-    .gallery-items(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='true' infinite-scroll-distance='1' ng-cloak)
-      %cs-index-item.cs-index-item(ng-repeat='activity in getDisplayActivities() track by activity.id' cs-title='activity.title' url='activity.url' image='activity.image' hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
+    .gallery-items( infinite-scroll='next()' 
+                    infinite-scroll-disabled='dataLoading' 
+                    infinite-scroll-immediate-check='true' 
+                    infinite-scroll-distance='1')
+
+      %cs-index-item.cs-index-item( ng-repeat='activity in getDisplayActivities() track by activity.id' 
+                                    cs-title='activity.title' 
+                                    url='activity.url' 
+                                    image='activity.image' 
+                                    hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
 
     .loading-icon-group(ng-show="dataLoading && ! doneLoading")
       %i.icon-page-load
-      
+
 = render 'home/madlib_popup', registration_source: 'gallery'

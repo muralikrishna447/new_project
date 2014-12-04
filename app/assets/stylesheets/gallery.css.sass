@@ -4,45 +4,74 @@
   margin-top: 20px
   overflow: hidden
 
-  .add-group
-    margin-right: 20px
-    margin-top: -4px
-  
-.gallery-filter
+.gallery-controls
   position: fixed
   top: 84px
   padding-left: $horz-baseline-large * 2
   width: 300px
   @include flex(0 0 320px)
+  @include primary-font
+  font-size: 16px
+  margin-bottom: 14px
+
   ul
     width: 100%
-  input
-    margin-top: -4px
-    margin-right: 0px !important
+
+  li, form
+    margin-bottom: $baseline * 2
+
+  li a
+    display: inline
+    cursor: pointer
+    margin-right: $horz-baseline-large
+    padding: 0 !important
+    color: $dark-gray
+
+    &:hover
+      color: black
+
+    &.active
+      color: $orange !important
+
+  li h5
+    @include primary-font-bold
+    text-transform: none
 
   .search-group 
     margin-bottom: $baseline
     margin-left: -1px
 
-  .filter-toggle 
-    display: none
+    .navbar-search
+      margin-top: 15px
+      width: 100%
+
+      .input-group
+        position: relative
+        max-width: 320px
+        display: inline-block
+
+        input
+          margin-right: 0px !important
+
+        .clear-search
+          position: absolute
+          right:  12px
+          bottom:  2px
+          color:  #a9a9a9
+
+    .filter-toggle 
+      display: none
 
 .gallery-items
   @include display-flex
   @include flex-wrap(wrap)
 
   .cs-index-item
-    margin-right: 11px
+    margin-right: $horz-baseline-medium
     overflow: hidden
 
   .cs-index-item-image
-    background: rgb(147,147,147)
-    background: -moz-linear-gradient(left, rgba(147,147,147,1) 0%, rgba(204,204,204,1) 99%)
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(147,147,147,1)), color-stop(99%,rgba(204,204,204,1)))
-    background: -webkit-linear-gradient(left, rgba(147,147,147,1) 0%,rgba(204,204,204,1) 99%)
-    background: -o-linear-gradient(left, rgba(147,147,147,1) 0%,rgba(204,204,204,1) 99%)
-    background: -ms-linear-gradient(left, rgba(147,147,147,1) 0%,rgba(204,204,204,1) 99%)
-    background: linear-gradient(to right, rgba(147,147,147,1) 0%,rgba(204,204,204,1) 99%)
+    @include linear-gradient(rgba(147,147,147,1), rgba(204,204,204,1))
 
 .gallery-results
   padding-left: 320px
@@ -58,147 +87,12 @@
     margin-left: 8px
     margin-top: $baseline
 
-.gallery-filter
-  @include primary-font
-  font-size: 16px
-  margin-bottom: 14px
-  .dropdown
-    cursor: pointer
-    display: inline-block
-    margin-right: 10px
-    background:  white  !important
-
-    .dropdown-menu
-      box-shadow: none
-      background: white !important
-      border-radius: 0px
-      li > a
-        &:hover
-          background: $orange
-        color: black !important
-
-    a
-      color: black
-      @include primary-font
-      font-size: 16px
-
-  li, form
-    margin-bottom: $baseline * 2
-
-  li a
-    display: inline
-    cursor: pointer
-    margin-right: $horz-baseline-large
-    padding: 0 !important
-    color: $dark-gray
-
-    &.active
-      color: $orange !important
-
-  li h5
-    @include primary-font-bold
-    text-transform: none
-
-
-  li p a
-    margin-right: 5px
-    font-size: 16px
-
-  .dropdown-menu
-    a
-      margin-left: 30px
-    a.active
-      &:before
-        content: "\2713"
-        position:  absolute
-        left:  10px
-        font-size:  80%
-        color:  $orange
-
-  .navbar-search
-    .input-group
-      position: relative
-      max-width: 320px
-      display: inline-block
-
-  .clear-search
-    position: absolute
-    right:  12px
-    bottom:  2px
-    color:  #a9a9a9
-
-  form
-    margin-top: 17px
-    width: 100%
-
-.filter-collapser
-  cursor: pointer
-
-.filter-collapser
-  display: inline-block
-
-.current-filter
-  font-size: 70%
-  display: inline-block
-  color: $orange
-  border: 1px solid $orange
-  border-radius: 20px
-  margin-left: 8px
-  position:  relative
-  top: 2px
-  padding: 0px 8px
-
-.anim-filters
-  &.ng-hide-add, &.ng-hide-remove
-    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
-    display: block !important
-    opacity: 1
-    max-height: 150px
-  &.ng-hide
-    opacity: 0
-    max-height: 0px    
-
-
-.pagination
-  @include primary-font
-  font-size: 20px
-
-
-.gallery-spinner
-  color: $orange
-  font-size: 40px
-  margin-top: 40px
-  margin-left: 20px
-
-.left-group
-  li
-    margin-right: $baseline * 2
-
-.media-box-3-image
-  overflow: hidden
-  margin-bottom: 10px
-  img
-    margin: 0
-
-.sash
-  color: white
-  background-color: $orange
-  @include transform(rotate(45deg))
-  @include transform-origin(50% 50%)
-  position: absolute
-  width: 200px
-  height: 20px
-  top: 30px
-  right: -60px
-  text-align: center
-
 .new-ingredient-modal
   input
     width: 95%
 
-
 @media (max-width: 960px)
-  .gallery-filter
+  .gallery-controls
     z-index: 100
     width: 100vw
     left: 0
@@ -216,17 +110,17 @@
       display: block
       float: none !important
 
-    .filter-toggle 
-      display: inline-block
-      cursor: pointer
-      margin-left: $horz-baseline-large
-
     .search-group
       padding-top: 10px
       background-color: white
       opacity: 0.95
       width: 100vh
       height: 60px
+
+      .filter-toggle 
+        display: inline-block
+        cursor: pointer
+        margin-left: $horz-baseline-large
 
     .filters-group
       top: 60px
@@ -251,7 +145,7 @@
   .gallery-wrapper
     margin-top: 0
 
-  .gallery-filter
+  .gallery-controls
     position: absolute
     top: 0px
     right: 0
@@ -260,15 +154,17 @@
 
     .search-group
       padding-left: 0
+      padding-top: 5px
       height: auto
       margin-left: 0
 
-    .navbar-search
-      margin-top: 0
-      margin-bottom: 0
+      .navbar-search
+        margin-top: 0
+        margin-bottom: 0
 
-    input.search-query
-      width: 155px
+      .input-group
+        input.search-query
+          width: 155px
 
     .filters-group
       top: $baseline * 4
