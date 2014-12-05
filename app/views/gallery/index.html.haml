@@ -49,7 +49,7 @@
             ng-class="{active: filters.sort == choice}") 
           %span {{choice}}
 
-  .gallery-results
+  .gallery-results(ng-class="{'reloading' : reloading}")
     .no-results(ng-show='noResults && !dataLoading')
       %h3 No results found. Here are some of our most popular recipes:
 

@@ -74,13 +74,17 @@
 
   # Called whenever an option changes; start over at beginning
   $scope.applyFilter = ->
+    return if JSON.stringify($scope.filters) == JSON.stringify($scope.prevFilters)
+    $scope.prevFilters = _.extend({}, $scope.filters)
     $scope.doneLoading = false
     $scope.page = 1
     $scope.activities = []
     $scope.filtersCollapsed = true
+    $scope.reloading = true
     window.scroll(0, 0)
     # Update route params to match filters
     $location.search($scope.filters)
+    mixpanel.track('Gallery Filtered', _.extend({'context' : 'activity'}, $scope.filters));
     $scope.getActivities()
 
   # Get a page of data
@@ -95,6 +99,7 @@
       delete params['sort'] if params['sort'] == 'relevance'
       delete params['difficulty'] if params['difficulty'] && params['difficulty'] == 'undefined'       
       Activity.query(params).$promise.then (results) ->
+        $scope.reloading = false
         if results.length > 0
           $scope.noResults = false
           angular.forEach results, (result) ->
