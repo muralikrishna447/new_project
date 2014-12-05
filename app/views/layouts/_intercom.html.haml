@@ -19,7 +19,9 @@
       "role": "#{current_user.role}",
       "paid_classes" : #{current_user.enrollments.where('price > 0').count},
       "free_classes" : #{current_user.enrollments.where(price: 0).count},
-      "uploads" : #{current_user.uploads.count}
+      "uploads" : #{current_user.uploads.count},
+      "recipes_created" : #{current_user.created_activities.count},
+      "recipes_published" : #{current_user.created_activities.published.count}
     };
 
   :javascript
