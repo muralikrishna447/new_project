@@ -6,7 +6,7 @@
 
 .gallery-controls
   position: fixed
-  top: 84px
+  top: 74px
   padding-left: $horz-baseline-large * 2
   width: 300px
   @include flex(0 0 320px)
@@ -67,14 +67,13 @@
   @include flex-wrap(wrap)
 
   .cs-index-item
-    margin-right: $horz-baseline-medium
     overflow: hidden
 
   .cs-index-item-image
     @include linear-gradient(rgba(147,147,147,1), rgba(204,204,204,1))
 
 .gallery-results
-  padding-left: 320px
+  padding-left: 340px
   padding-bottom: $baseline * 2
   .loading-icon-group
     width: 100%
@@ -91,7 +90,11 @@
   input
     width: 95%
 
-@media (max-width: 960px)
+@media (max-width: 1440px)
+  .cs-index-item
+    max-width: 320px
+
+@media (max-width: 1050px)
   .gallery-controls
     z-index: 100
     width: 100vw
@@ -123,23 +126,25 @@
         margin-left: $horz-baseline-large
 
     .filters-group
+      position: absolute
       top: 60px
       padding-left: 22px
-      position: absolute
+      height: 300vh
       z-index: 100
       background-color: white
       opacity: 0.95
       width: 100%
-      height: 100vh
       overflow: hidden
+      max-height: 100000px
       @include transition(all 200ms ease-in)
 
       &.filters-collapsed
-        height: 0
+        opacity: 0
+        max-height: 0
 
   .gallery-results
     padding-left: $horz-baseline-large
-    padding-top: 32px
+    padding-top: 42px
 
 @media (max-width: 700px)
   .gallery-wrapper

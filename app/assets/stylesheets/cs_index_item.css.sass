@@ -3,11 +3,9 @@
 .cs-index-item
   display: inline-block
   @include boxsizing
-  @include flex(1 0 auto)
-  width: 300px
-  max-width: 360px
-  padding: 10px
-  margin: 0 $horz-baseline-medium 0 0
+  @include flex(0 0 auto)
+  width: 340px
+  margin: 0 ($horz-baseline-large * 2) $baseline 0
   background: white
   @include transition(border 300ms)
   float: left
