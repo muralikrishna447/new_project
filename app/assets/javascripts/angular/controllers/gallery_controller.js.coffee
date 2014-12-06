@@ -1,13 +1,20 @@
-@app.controller 'GalleryController', ['$scope', '$location', '$timeout', 'api.activity', 'api.search', 'csAuthentication', '$route', '$routeParams', ($scope, $location, $timeout, Activity, Search, csAuthentication, $route, $routeParams) ->
+@app.controller 'GalleryController', ['$scope', '$location', '$timeout', 'api.activity', 'api.search', 'csAuthentication', '$route', '$routeParams', '$controller', '$rootScope', ($scope, $location, $timeout, Activity, Search, csAuthentication, $route, $routeParams, $controller, $rootScope) ->
+
+  #$controller('GalleryBaseController', {$scope: $scope});
+  #$scope.resourceName = "Activity"
+
   $scope.csAuthentication = csAuthentication
+
   $scope.activities = []
 
   $scope.difficultyChoices = ["any", "easy", "medium", "advanced"]
   $scope.publishedStatusChoices = ["published", "unpublished"]
   $scope.generatorChoices = ["chefsteps", "community"]
   $scope.sortChoices = ["relevance", "newest", "oldest", "popular"]
-  $scope.suggestedSearches = ['sous vide', 'beef', 'chicken', 'pork', 'fish', 'salad', 'dessert', 'breakfast', 'cocktail', 'baking', 'vegetarian', 'egg', 'pasta']
-  $scope.dataLoading = $scope.doneLoading = false
+  $scope.suggestedSearches = ['sous vide', 'beef', 'chicken', 'pork', 'fish', 'egg', 'pasta', 'chocolate', 'baking', 'salad', 'dessert', 'breakfast', 'cocktail', 'vegetarian']
+  $scope.dataLoading = 0
+  $scope.doneLoading = false
+  $scope.requestedPages = {}
   $scope.filtersCollapsed = true
 
   defaultFilters = {
@@ -79,6 +86,7 @@
     $scope.doneLoading = false
     $scope.page = 1
     $scope.activities = []
+    $scope.requestedPages = {}
     $scope.filtersCollapsed = true
     $scope.reloading = true
     window.scroll(0, 0)
@@ -89,30 +97,38 @@
 
   # Get a page of data
   $scope.getActivities = ->
-    if (! $scope.dataLoading) && (! $scope.doneLoading)
-      $scope.dataLoading = true
+    if  (! $scope.doneLoading) && (! $scope.requestedPages[$scope.page])
+      $scope.dataLoading += 1
+      $rootScope.$broadcast('showPopupCTA') if $scope.page == 3
 
       # Set up actual query params; they are mostly the same as the filters we show with 
       # a few minor adjustments.
+      queryFilters = _.extend({}, $scope.filters)
       params = _.extend({page: $scope.page}, $scope.filters)
       params['difficulty'] = 'intermediate' if params['difficulty'] == 'medium'
       delete params['sort'] if params['sort'] == 'relevance'
-      delete params['difficulty'] if params['difficulty'] && params['difficulty'] == 'undefined'       
+      delete params['difficulty'] if params['difficulty'] && params['difficulty'] == 'undefined'
+      $scope.requestedPages[$scope.page] = true
+
       Activity.query(params).$promise.then (results) ->
+        $scope.dataLoading -= 1
+        # This hack makes sure infinite-scroll rechecks itself after we change
+        # searches and therefore resize back down to 0. Otherwise it can get stuck.
+        $rootScope.$broadcast 'infiniteScrollCheck'
+
+        if ! _.isEqual(queryFilters, $scope.filters)
+          console.log "FROM OLD FILTERS, IGNORING"
+          return
+
         $scope.reloading = false
+
         if results.length > 0
           $scope.noResults = false
           angular.forEach results, (result) ->
             $scope.activities.push(result)
-          # console.log(_.map($scope.activities, (x) -> x.id))
-          # This makes sure infinite-scroll rechecks itself after we change
-          # searches and therefore resize back down to 0. Otherwise it can get stuck.
-          $timeout ->
-            window.scrollBy(0, 1)
         else
           $scope.noResults = true if $scope.activities.length == 0
           $scope.doneLoading = true
-        $scope.dataLoading = false
 
   $scope.getDisplayActivities = ->
     return $scope.noResultsActivities if $scope.noResults && ! $scope.dataLoading

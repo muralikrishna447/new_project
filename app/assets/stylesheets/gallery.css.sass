@@ -68,6 +68,9 @@
 
   .cs-index-item
     overflow: hidden
+    /* Hack to help infinite scroll before content loads */
+    min-height: 190px
+    margin-bottom: $baseline *2
 
   .cs-index-item-image
     @include linear-gradient(rgba(147,147,147,1), rgba(204,204,204,1))

@@ -63,8 +63,8 @@
                                     url='activity.url' 
                                     image='activity.image' 
                                     hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
-
-    .loading-icon-group(ng-show="dataLoading && ! doneLoading")
+    .load-checker                                
+    .loading-icon-group(ng-show="dataLoading > 0")
       %i.icon-page-load
 
 = render 'home/madlib_popup', registration_source: 'gallery'
