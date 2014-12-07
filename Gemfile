@@ -63,6 +63,7 @@ gem 'nori'
 # gem 'elasticsearch'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
+gem 'aws-sdk'
 
 group :development do
   gem 'spring'
