@@ -20,3 +20,26 @@ task :backup_bloom => :environment do
   obj.write(data)
 
 end
+
+task :check_bloom_data => :environment do
+  s3 = AWS::S3.new(
+    :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
+    :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'])
+
+  keys = []
+  bucket = s3.buckets['chefsteps']
+  bucket.objects.with_prefix('bloom-backups/bloom-backup-').each do |obj|
+    keys << obj.key
+  end
+
+  # Get the last file in the folder
+  obj = s3.buckets['chefsteps'].objects[keys.last]
+
+  file = obj.read
+  data = JSON.parse file
+
+  puts "Posts Count: "
+  puts data["posts"].count
+  puts "Comments Count: "
+  puts data["comments"].count
+end
