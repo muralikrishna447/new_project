@@ -33,13 +33,18 @@ task :check_bloom_data => :environment do
   end
 
   # Get the last file in the folder
+  puts "Getting last file: "
   obj = s3.buckets['chefsteps'].objects[keys.last]
 
+  puts "Object: #{obj}"
   file = obj.read
+  puts "Parsing..."
   data = JSON.parse file
 
-  puts "Posts Count: "
-  puts data["posts"].count
-  puts "Comments Count: "
-  puts data["comments"].count
+  posts_count = data["posts"].count
+  comments_count data["comments"].count
+  msg += "\nPosts Count: #{posts_count}"
+  msg += "\nComments Count: #{comments_count}"
+
+  GenericMailer.recipient_email("huy@chefsteps.com", "CS AUTOMATED: Bloom Backup Report", msg).deliver
 end
