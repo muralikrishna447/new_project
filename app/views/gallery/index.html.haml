@@ -50,7 +50,7 @@
           %span {{choice}}
 
   .gallery-results(ng-class="{'reloading' : reloading}")
-    .no-results(ng-show='noResults && !dataLoading')
+    .no-results(ng-show='noResults()')
       %h3 No results found. Here are some of our most popular recipes:
 
     .gallery-items( infinite-scroll='next()' 
@@ -58,7 +58,7 @@
                     infinite-scroll-immediate-check='true' 
                     infinite-scroll-distance='1')
 
-      %cs-index-item.cs-index-item( ng-repeat='activity in getDisplayActivities() track by activity.id' 
+      %cs-index-item.cs-index-item( ng-repeat='activity in getResults() track by activity.id' 
                                     cs-title='activity.title' 
                                     url='activity.url' 
                                     image='activity.image' 
