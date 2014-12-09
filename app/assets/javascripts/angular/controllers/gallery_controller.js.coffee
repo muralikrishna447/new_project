@@ -1,13 +1,13 @@
 @app.controller 'GalleryController', ['$scope', 'api.activity', '$controller', ($scope, Activity, $controller) ->
 
   $scope.context                = "Activity"
-  $scope.difficultyChoices      = ["any", "easy", "medium", "advanced"]
-  $scope.publishedStatusChoices = ["published", "unpublished"]
-  $scope.generatorChoices       = ["chefsteps", "community"]
-  $scope.sortChoices            = ["relevance", "newest", "oldest", "popular"]
-  $scope.suggestedSearches      = ['sous vide', 'beef', 'chicken', 'pork', 
-                                    'fish', 'egg', 'pasta', 'chocolate', 'baking', 
-                                    'salad', 'dessert', 'breakfast', 'cocktail', 'vegetarian']
+  $scope.difficultyChoices      = ["Any", "Easy", "Medium", "Advanced"]
+  $scope.publishedStatusChoices = ["Published", "Unpublished"]
+  $scope.generatorChoices       = ["Chefsteps", "Community"]
+  $scope.sortChoices            = ["Relevance", "Newest", "Oldest", "Popular"]
+  $scope.suggestedSearches      = ['Sous Vide', 'Beef', 'Chicken', 'Pork', 
+                                    'Fish', 'Egg', 'Pasta', 'Chocolate', 'Baking', 
+                                    'Salad', 'Dessert', 'Breakfast', 'Cocktail', 'Vegetarian']
 
   $scope.defaultFilters = 
     generator: 'chefsteps'

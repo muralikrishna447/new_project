@@ -1,7 +1,7 @@
 %div
   %a( ng-repeat="choice in ngModel" 
       ng-click="$parent.active = choice"
-      ng-class="{active: choice == $parent.active}")
+      ng-class="{active: choice.toLowerCase() == $parent.active.toLowerCase()}")
       
     %span(ng-bind-html="choice | nbsp")
     %span(ng-bind-html=" ")

@@ -27,7 +27,7 @@
         %h5 Popular
         %a( ng-repeat="x in suggestedSearches" 
             ng-click="search(x)" 
-            ng-class="{'active' : filters['search_all'] == x}")
+            ng-class="{'active' : filters['search_all'].toLowerCase() == x.toLowerCase()}")
           %span {{x}}
 
       %li
@@ -46,7 +46,7 @@
         %h5 Sort
         %a( ng-repeat="choice in getSortChoices()" 
             ng-click="filters.sort = choice" 
-            ng-class="{active: filters.sort == choice}") 
+            ng-class="{active: filters.sort.toLowerCase() == choice.toLowerCase()}") 
           %span {{choice}}
 
   .gallery-results(ng-class="{'reloading' : reloading}")

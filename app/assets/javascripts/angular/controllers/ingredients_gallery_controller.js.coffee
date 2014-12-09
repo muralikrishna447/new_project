@@ -5,9 +5,7 @@
                             "Most Edited", "Most Used"]
   $scope.imageChoices       = ["Any", "With Image", "No Image"]
   $scope.editLevelChoices   = ["Any", "Not Started", "Started", "Well Edited"]
-  $scope.suggestedSearches  = ['sous vide', 'beef', 'chicken', 'pork', 
-                                    'fish', 'egg', 'pasta', 'chocolate', 'baking', 
-                                    'salad', 'dessert', 'breakfast', 'cocktail', 'vegetarian']
+  $scope.suggestedSearches  = ['Modernist', 'Meat', 'Cheese', 'Seafood', 'Vegetable', 'Condiment', 'Fruit', 'Gluten Free']
 
   $scope.defaultFilters = {
     sort: "Name"
