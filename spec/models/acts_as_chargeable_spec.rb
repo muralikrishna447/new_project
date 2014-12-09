@@ -104,19 +104,40 @@ describe ActsAsChargeable do
   describe ".adjust_for_included_tax" do
     context "inside of washington" do
       before(:each) do
-        location = double('location')
-        location.stub(:state).and_return("WA")
-        Geokit::Geocoders::MultiGeocoder.stub(:geocode).and_return(location)
+        location = double('location', :state => "WA", :success? => true)
+        Geokit::Geocoders::IpGeocoder.stub(:geocode).and_return(location)
       end
       it "should return the price minus tax and the tax" do
         Dummy.adjust_for_included_tax(19.00, "127.0.0.1").should eq [17.35, 1.65]
       end
     end
 
+    context "inside of washington with IP geocoder outage" do
+      before(:each) do
+        location = double('location', :success? => false)
+        Geokit::Geocoders::IpGeocoder.stub(:geocode).and_return(location)
+        location = double('location', :state => "WA", :success? => true)
+        Geokit::Geocoders::GeoPluginGeocoder.stub(:geocode).and_return(location)
+      end
+      it "should return the price minus tax and the tax" do
+        Dummy.adjust_for_included_tax(19.00, "127.0.0.1").should eq [17.35, 1.65]
+      end
+    end
+
+    context "complete geocoder outage" do
+      before(:each) do
+        location = double('location', :success? => false)
+        Geokit::Geocoders::IpGeocoder.stub(:geocode).and_return(location)
+        Geokit::Geocoders::GeoPluginGeocoder.stub(:geocode).and_return(location)
+      end
+      it "should return the price minus tax and the tax" do
+        Dummy.adjust_for_included_tax(19.00, "127.0.0.1").should eq [19.00, 0]
+      end
+    end
+
     context "outside of washington" do
       before(:each) do
-        location = double('location')
-        location.stub(:state).and_return("OR")
+        location = double('location', :state => "OR", :success? => true)
         Geokit::Geocoders::MultiGeocoder.stub(:geocode).and_return(location)
       end
       it "should return the price and 0 tax" do

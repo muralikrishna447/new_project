@@ -46,6 +46,7 @@
       if input.length > 0
         console.log 'Searching for: ', input
         $scope.filters['search_all'] = input
+        mixpanel.track('Gallery Popular Item', _.extend({'context' : $scope.context}, {search_all: input}));        
         $scope.applyFilter()
     , 300)
 

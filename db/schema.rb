@@ -11,6 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+
 ActiveRecord::Schema.define(:version => 20141209201827) do
 
   create_table "active_admin_comments", :force => true do |t|
@@ -303,6 +304,7 @@ ActiveRecord::Schema.define(:version => 20141209201827) do
     t.datetime "created_at",                                                         :null => false
     t.datetime "updated_at",                                                         :null => false
     t.boolean  "followed_up",                                     :default => false
+    t.boolean  "email_to_recipient"
   end
 
   add_index "gift_certificates", ["token"], :name => "index_gift_certificates_on_token"

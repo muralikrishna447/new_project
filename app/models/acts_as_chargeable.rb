@@ -61,6 +61,11 @@ module ActsAsChargeable
       puts "Geo locating IP #{ip}"
       location = Geokit::Geocoders::MultiGeocoder.geocode(ip)
       puts "Geo located to #{location.inspect}"
+      if location.success?
+        ::NewRelic::Agent.record_metric('Custom/Errors/Geocoding', 0)
+      else
+        ::NewRelic::Agent.record_metric('Custom/Errors/Geocoding', 1)
+      end
       if location.state == "WA"
         tax_rate = 0.095
         tax = (price - (price / (1 + tax_rate))).round(2)
