@@ -69,6 +69,13 @@ class AssembliesController < ApplicationController
       @split_name = "macaron_landing_campaign_#{params[:utm_campaign][0..4]}"
     end
     @no_video = params[:no_video]
+
+    # For the old sous vide class, render a page showing the class has moved
+    if @assembly.id == 47
+      render "moved"
+    else
+      render "landing"
+    end
   end
 
   def show_as_json
