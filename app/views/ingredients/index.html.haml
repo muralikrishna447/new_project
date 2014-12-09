@@ -42,7 +42,7 @@
         %a( ng-repeat="choice in getSortChoices()" 
             ng-click="filters.sort = choice" 
             ng-class="{active: filters.sort == choice}") 
-          %span {{choice}}
+          %span(ng-bind-html="choice | nbsp")
 
   .gallery-results(ng-class="{'reloading' : reloading}")
     .no-results(ng-show='noResults()')
