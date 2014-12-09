@@ -80,6 +80,12 @@
     mixpanel.track('Gallery Filtered', _.extend({'context' : $scope.context}, $scope.filters));
     $scope.loadOnePage()
 
+  fixParamEnums = (params) ->
+    for k, v of params
+      if k != "search_all"
+        params[k] = v.toString().toLowerCase().replace(' ', "_")
+    params
+
   # Get a page of data
   $scope.loadOnePage = ->
     if  (! $scope.doneLoading) && (! $scope.requestedPages[$scope.page])
@@ -90,10 +96,11 @@
       # a few minor adjustments.
       queryFilters = _.extend({}, $scope.filters)
       params = _.extend({page: $scope.page}, $scope.filters)
+      fixParamEnums(params)      
       $scope.adjustParams(params)
       $scope.requestedPages[$scope.page] = true
 
-      $scope.getQueryObject().query(params).$promise.then (results) ->
+      $scope.doQuery(params).$promise.then (results) ->
         $scope.dataLoading -= 1
         # This hack makes sure infinite-scroll rechecks itself after we change
         # searches and therefore resize back down to 0. Otherwise it can get stuck.
@@ -120,7 +127,7 @@
 
   # Load up some suggested results if the users query set is empty
   $timeout ( ->
-    $scope.getQueryObject().query($scope.noResultsQuery).$promise.then (results) ->
+    $scope.doQuery(fixParamEnums($scope.noResultsQuery)).$promise.then (results) ->
       $scope.emptyResultsSuggestions = results
   ), 1000
 ]

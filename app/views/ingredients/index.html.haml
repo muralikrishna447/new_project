@@ -3,92 +3,89 @@
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
-.container.gallery-wrapper.relative(ng-controller='IngredientsGalleryController' )
-  .row(ng-cloak)
-    .span12
-      %div
-        .gallery-filter.navbar
-          %ul.nav.left-group
+.gallery-wrapper.relative(ng-controller='IngredientsGalleryController' ng-cloak)
 
-            %form.navbar-search.relative(ng-click="collapseFilters = true")
-              %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all" ui-event='{blur: "trackSearch()"}')
-              %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
-                %i.icon-remove
+  .gallery-controls.navbar
 
-            %li.relative(ng-mouseenter="collapseFilters = false" ng-mouseleave="collapseFilters = true")
-              .filter-collapser(ng-click="collapseFilters = ! collapseFilters")
-                FILTER
-                %i.icon-angle-down(ng-show="collapseFilters")
-                %i.icon-angle-up(ng-hide="collapseFilters")
-              .filters-group(ng-show="!collapseFilters" data-ng-animate="'filters'" )
-                %csRadioButtons.first-separate(ng-model="imageChoices" active="filters.image")
-                %csRadioButtons.first-separate(ng-model="editLevelChoices" active="filters.edit_level")
-                //%csRadioButtons.first-separate(ng-model="purchaseableChoices" active="filters.purchaseable")
+    %ul.nav.search-group
+      %form.navbar-search.relative
+        .input-group
+          %input.search-query(  ng-model='input' 
+                                ng-change='search(input)' 
+                                placeholder='search')
+          %a.clear-search(ng-click="clearSearch()")
+            %i.icon-remove
 
- 
-            %li.relative(ng-mouseenter="collapseSort = false" ng-mouseleave="collapseSort = true")
-              .filter-collapser(ng-click="collapseSort = ! collapseSort")
-                SORT
-                %i.icon-angle-down(ng-show="collapseSort")
-                %i.icon-angle-up(ng-hide="collapseSort")
+        .filter-toggle(ng-click="filtersCollapsed = ! filtersCollapsed")
+          FILTERS
+          %i.icon-angle-down(ng-show="filtersCollapsed")
+          %i.icon-angle-up(ng-hide="filtersCollapsed")
 
-              .filters-group(ng-show="!collapseSort" data-ng-animate="'filters'")        
-                .btn( ng-repeat="choice in getSortChoices()" 
-                      ng-click="filters.sort = choice" 
-                      ng-class="{active: filters.sort == choice}")
-                  {{choice}}
-            .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
-              {{f}}
-              %span.reset-filter(ng-click="resetFilter(k)")
-                %i.icon-remove
-          .add-group.btn-group.pull-right(ng-show="csAuthentication.loggedIn()")
-            %a.btn.btn-secondary.add-button(ng-click="showNewIngredientModal = true")
-              Add Ingredient
-            
+    %ul.nav.filters-group(ng-class="{'filters-collapsed' : filtersCollapsed}")
+      %li
+        %h5 Popular
+        %a( ng-repeat="x in suggestedSearches" 
+            ng-click="search(x)" 
+            ng-class="{'active' : filters['search_all'] == x}")
+          %span {{x}}
 
-  .row(ng-cloak ng-show="(galleryItems.length == 0) && initialLoadDone" ng-click="collapseFilters = true")
-    .section
-    .span12
-      %h3 No results found, but perhaps you'd enjoy these ingredients?
+      %li
+        %h5 Image
+        %csRadioButtons(ng-model="imageChoices" active="filters.image")
 
-  .row.gallery-contents(ng-cloak ng-click="collapseFilters = true")
-    .span12
-      %div(galleryscroll='loadData()')
-        %div.anim-basic-fade(ng-repeat='item in getDisplayItems()')
-          %csGalleryItem( title="item.title"
-                          href="'/ingredients/' + item.slug"
-                          image="itemImageURL(item, 400)"
-                          footer-right="maybeEditLink(item)"
-                          summary = "item.text_fields['description']"
-                        )
-  .row
-    .span2.offset5
-      .gallery-spinner(ng-show='(spinner != 0) || (! initialLoadDone)')
-        %i.icon-page-load
+      %li
+        %h5 Edit Level
+        %csRadioButtons.first-separate(ng-model="editLevelChoices" active="filters.edit_level")
 
-  %div(ng-cloak close="showNewIngredientModal = false" modal="showNewIngredientModal" options="modalOptions")
-    .modal-header
-      %h2 Add Ingredient
-    .modal-body.new-ingredient-modal
-      .section-tiny
-        %input(type="text" ng-model="newIngredientName" placeholder="New ingredient name")
-      .section(ng-show="possibleIngredientMatches")
-        .div(ng-show="! exactMatchNewIngredient()")
-          %h4 Could it be one of these? If so, click the name to edit the existing ingredient.
-          %ul
-            %li.anim-basic-fade(ng-repeat="ing in possibleIngredientMatches")
-              %a(ng-href="/ingredients/{{ing.slug}}?edit=true" target="_blank" ) 
-                {{ing.title}}
-        .div(ng-show="exactMatchNewIngredient()")
-          %h4 That ingredient already exists, click below to edit it.
-          %ul
-            %li
-              %a(ng-href="/ingredients/{{exactMatchNewIngredient().slug}}?edit=true" target="_blank")
-                {{exactMatchNewIngredient().title}}
-    .modal-footer
-      %i.icon-spinner.icon-spin(ng-show="newIngSpinner")
-      .btn-group
-        %button.btn.btn-link(ng-click="showNewIngredientModal = false") Cancel
-        %button.btn(  ng-disabled="(newIngredientName.length < 3) || newIngSpinner || exactMatchNewIngredient()" 
-                      ng-click="addAndEditNewIngredient()") 
-          Create New Ingredient
+      %li
+        %h5 Sort
+        %a( ng-repeat="choice in getSortChoices()" 
+            ng-click="filters.sort = choice" 
+            ng-class="{active: filters.sort == choice}") 
+          %span {{choice}}
+
+  .gallery-results(ng-class="{'reloading' : reloading}")
+    .no-results(ng-show='noResults()')
+      %h3 No results found. Here are some of our favorite ingredients:
+
+    .gallery-items( infinite-scroll='next()' 
+                    infinite-scroll-disabled='dataLoading' 
+                    infinite-scroll-immediate-check='true' 
+                    infinite-scroll-distance='1')
+
+      %cs-index-item.cs-index-item( ng-repeat='ingredient in getResults() track by ingredient.id' 
+                                    cs-title='ingredient.title' 
+                                    url='ingredient.url' 
+                                    image='ingredient.image_id')
+    .load-checker                                
+    .loading-icon-group(ng-show="dataLoading > 0")
+      %i.icon-page-load
+
+= render 'home/madlib_popup', registration_source: 'gallery'
+
+%div(ng-cloak close="showNewIngredientModal = false" modal="showNewIngredientModal" options="modalOptions")
+  .modal-header
+    %h2 Add Ingredient
+  .modal-body.new-ingredient-modal
+    .section-tiny
+      %input(type="text" ng-model="newIngredientName" placeholder="New ingredient name")
+    .section(ng-show="possibleIngredientMatches")
+      .div(ng-show="! exactMatchNewIngredient()")
+        %h4 Could it be one of these? If so, click the name to edit the existing ingredient.
+        %ul
+          %li.anim-basic-fade(ng-repeat="ing in possibleIngredientMatches")
+            %a(ng-href="/ingredients/{{ing.slug}}?edit=true" target="_blank" ) 
+              {{ing.title}}
+      .div(ng-show="exactMatchNewIngredient()")
+        %h4 That ingredient already exists, click below to edit it.
+        %ul
+          %li
+            %a(ng-href="/ingredients/{{exactMatchNewIngredient().slug}}?edit=true" target="_blank")
+              {{exactMatchNewIngredient().title}}
+  .modal-footer
+    %i.icon-spinner.icon-spin(ng-show="newIngSpinner")
+    .btn-group
+      %button.btn.btn-link(ng-click="showNewIngredientModal = false") Cancel
+      %button.btn(  ng-disabled="(newIngredientName.length < 3) || newIngSpinner || exactMatchNewIngredient()" 
+                    ng-click="addAndEditNewIngredient()") 
+        Create New Ingredient

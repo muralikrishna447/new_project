@@ -1,8 +1,6 @@
 @app.controller 'GalleryController', ['$scope', 'api.activity', '$controller', ($scope, Activity, $controller) ->
 
-  $scope.context = "Activity"
-  $scope.getQueryObject = -> Activity
-
+  $scope.context                = "Activity"
   $scope.difficultyChoices      = ["any", "easy", "medium", "advanced"]
   $scope.publishedStatusChoices = ["published", "unpublished"]
   $scope.generatorChoices       = ["chefsteps", "community"]
@@ -26,6 +24,9 @@
     params['difficulty'] = 'intermediate' if params['difficulty'] == 'medium'
     delete params['sort'] if params['sort'] == 'relevance'
     delete params['difficulty'] if params['difficulty'] && params['difficulty'] == 'undefined'
+
+  $scope.doQuery = (params) ->
+    Activity.query(params)
 
   $controller('GalleryBaseController', {$scope: $scope});
 ]
