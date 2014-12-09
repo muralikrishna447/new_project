@@ -55,7 +55,7 @@ class Activity < ActiveRecord::Base
   scope :include_in_gallery, where(include_in_gallery: true)
   scope :include_in_feeds, where(include_in_gallery: true, show_only_in_course: false)
   scope :chefsteps_generated, where('creator = ?', 0)
-  scope :any_user_generated, where('creator != ?', 0)
+  scope :any_user_generated, where('creator != ?', 0).where(source_activity_id: nil)
   scope :user_generated, -> user { where('creator = ?', user) }
   scope :popular, where('likes_count IS NOT NULL').order('likes_count DESC')
   scope :by_equipment_title, -> title { joins(:terminal_equipment).where("equipment.title iLIKE ?", '%' + title + '%') }
