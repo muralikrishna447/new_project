@@ -42,9 +42,14 @@ task :check_bloom_data => :environment do
   data = JSON.parse file
 
   posts_count = data["posts"].count
-  comments_count data["comments"].count
+  comments_count = data["comments"].count
+  msg = "Bloom Backup Stats for: #{DateTime.now}"
+  msg += "\nLast Backup: #{keys.last}"
   msg += "\nPosts Count: #{posts_count}"
   msg += "\nComments Count: #{comments_count}"
 
-  GenericMailer.recipient_email("huy@chefsteps.com", "CS AUTOMATED: Bloom Backup Report", msg).deliver
+  puts "Sending message:"
+  puts msg
+
+  GenericMailer.recipient_email("dev@chefsteps.com", "CS AUTOMATED: Bloom Backup Report", msg).deliver
 end
