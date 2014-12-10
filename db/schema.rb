@@ -11,7 +11,6 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-
 ActiveRecord::Schema.define(:version => 20141209201827) do
 
   create_table "active_admin_comments", :force => true do |t|
@@ -293,17 +292,17 @@ ActiveRecord::Schema.define(:version => 20141209201827) do
 
   create_table "gift_certificates", :force => true do |t|
     t.integer  "purchaser_id"
-    t.string   "recipient_email",                                 :default => "",    :null => false
-    t.string   "recipient_name",                                  :default => "",    :null => false
-    t.text     "recipient_message",                               :default => ""
+    t.string   "recipient_email",                                  :default => "",    :null => false
+    t.string   "recipient_name",                                   :default => "",    :null => false
+    t.text     "recipient_message",                                :default => ""
     t.integer  "assembly_id"
-    t.decimal  "price",             :precision => 8, :scale => 2, :default => 0.0
-    t.decimal  "sales_tax",         :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "price",              :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",          :precision => 8, :scale => 2, :default => 0.0
     t.string   "token"
-    t.boolean  "redeemed",                                        :default => false
-    t.datetime "created_at",                                                         :null => false
-    t.datetime "updated_at",                                                         :null => false
-    t.boolean  "followed_up",                                     :default => false
+    t.boolean  "redeemed",                                         :default => false
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
+    t.boolean  "followed_up",                                      :default => false
     t.boolean  "email_to_recipient"
   end
 
