@@ -49,7 +49,8 @@
             ng-class="{active: filters.sort.toLowerCase() == choice.toLowerCase()}") 
           %span {{choice}}
 
-    %a.btn(href="/activities/new") Add New Recipe
+      %li
+        %a.btn(href="/activities/new") Add New Recipe
 
   .gallery-results(ng-class="{'reloading' : reloading}")
     .no-results(ng-show='noResults()')

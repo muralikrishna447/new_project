@@ -44,7 +44,8 @@
             ng-class="{active: filters.sort == choice}") 
           %span(ng-bind-html="choice | nbsp")
 
-    %a.btn(ng-click="showNewIngredientModal = true") Add New Ingredient
+      %li
+        %a.btn(ng-click="showNewIngredientModal = true") Add New Ingredient
 
   .gallery-results(ng-class="{'reloading' : reloading}")
     .no-results(ng-show='noResults()')
