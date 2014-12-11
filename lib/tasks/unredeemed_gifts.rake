@@ -1,5 +1,5 @@
 task :email_unredeemed_gifts => :environment do
-  gifts = GiftCertificate.unredeemed.one_week_old.not_followed_up
+  gifts = GiftCertificate.recipients_to_email.unredeemed.one_week_old.not_followed_up
 
   gifts.each do |gift|
     next if gift.recipient_email.empty?
@@ -12,14 +12,14 @@ task :email_unredeemed_gifts => :environment do
 end
 
 task :test_email_unredeemed_gifts => :environment do
-  gifts = GiftCertificate.unredeemed.one_week_old.not_followed_up.take(5)
+  gifts = GiftCertificate.recipients_to_email.unredeemed.one_week_old.not_followed_up.take(5)
 
   gifts.each do |gift|
     next if gift.recipient_email.empty?
     puts '***************************'
     puts "Sending email for gift:"
     puts gift.inspect
-    gift.resend_email(gift.recipient_email)
+    # gift.resend_email(gift.recipient_email)
     puts '***************************'
   end
 end

@@ -3,11 +3,9 @@
 .cs-index-item
   display: inline-block
   @include boxsizing
-  width: 360px
-  height: 272px
-  border: 1px solid $light-gray
-  padding: 10px
-  margin: 0 $horz-baseline-medium $baseline 0
+  @include flex(0 0 auto)
+  width: 340px
+  margin: 0 ($horz-baseline-large * 2) $baseline 0
   background: white
   @include transition(border 300ms)
   float: left
@@ -27,22 +25,26 @@
       white-space: nowrap
       overflow: hidden
     .cs-index-item-image
-      margin-bottom: $baseline
-
+      margin-bottom: 0
+    .cs-index-item-hover-info
+      @include transition(opacity 300ms)
+      opacity: 0
+      position: absolute
+      bottom: 0
+      right: 5px
+      color: white
+      text-shadow: 2px 1px 2px $dark-gray  
+      font-size: 15px
     .cs-index-item-footer
+      width: 100%
       .footer-left
         float: left
         text-transform: uppercase
       .footer-right
         float: right
 
-@media (max-width: 1200px)
-  .cs-index-item
-    width: 280px
-    height: 227px
+  a:hover
+    .cs-index-item-hover-info
+      opacity: 1
 
-@media (max-width: 480px)
-  .cs-index-item
-    width: 100%
-    height: inherit
-    margin: 10px 0px
+

@@ -145,10 +145,10 @@ private
   end
 
   def track_receiver_event(trackable, action = params[:action])
-    puts trackable.receiver.inspect
+    logger.info(trackable.receiver.inspect)
     if trackable.receiver
       new_event = trackable.receiver.events.create! action: "received_#{action}", trackable: trackable
-      puts new_event.inspect
+      logger.info(new_event.inspect)
     end
   end
 
@@ -188,16 +188,16 @@ private
   before_filter :get_escaped_fragment_from_brombone
   def get_escaped_fragment_from_brombone
     if params.has_key?(:'_escaped_fragment_')
-      puts "Rendering #{request.path} from brombone snapshot"
+      logger.info("Rendering #{request.path} from brombone snapshot")
       base_url = "http://chefsteps.brombonesnapshots.com/www.chefsteps.com#{request.path}"
       uri = URI.parse(base_url)
       http = Net::HTTP.new(uri.host, uri.port)
       response = http.request(Net::HTTP::Get.new(uri.request_uri))
-      puts response.inspect
+      logger.info(response.inspect)
       if response.code.to_i == 200
         render text: response.body
       else
-        puts "Brombone returned #{response.code} for #{request.path} - falling back to standard page"
+        logger.info("Brombone returned #{response.code} for #{request.path} - falling back to standard page")
       end
     end
   end
@@ -281,8 +281,8 @@ private
 
   def render_404(exception = nil)
     @not_found_path = exception.message if exception
-    puts '---------- render_404'
-    puts exception.inspect if exception
+    logger.info('---------- render_404')
+    logger.info(exception.inspect) if exception
     respond_to do |format|
       format.html { render template: 'errors/not_found', layout: 'layouts/application', status: 404 }
       format.all { render nothing: true, status: 404 }

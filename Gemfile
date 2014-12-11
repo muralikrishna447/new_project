@@ -30,6 +30,7 @@ gem 'comma'
 
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-access-control-headers'
+gem "rack-timeout"
 
 gem 'pg_search'                             # Postgres text search
 gem 'acts-as-taggable-on'                   # Taggable models
@@ -62,6 +63,7 @@ gem 'nori'
 # gem 'elasticsearch'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
+gem 'aws-sdk'
 
 group :development do
   gem 'spring'

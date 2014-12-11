@@ -32,9 +32,13 @@ class Ingredient < ActiveRecord::Base
   scope :with_purchase_link, where('product_url IS NOT NULL')
   scope :no_purchase_link, where('product_url IS NULL')
 
+  # These don't chain properly with search so doing something simpler for now
+  # scope :started, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) > 0 AND count(DISTINCT(events.user_id)) < 3")
+  # scope :well_edited, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) >= 3")
+
   scope :not_started, where('CHAR_LENGTH(text_fields) < 10')
-  scope :started, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) > 0 AND count(DISTINCT(events.user_id)) < 3")
-  scope :well_edited, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) >= 3")
+  scope :started, where('CHAR_LENGTH(text_fields) > 10 AND CHAR_LENGTH(text_fields) < 150')
+  scope :well_edited, where('CHAR_LENGTH(text_fields) > 150')
 
   include Searchable
 

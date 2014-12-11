@@ -10,7 +10,14 @@ class IngredientsController < ApplicationController
   end
 
   has_scope :image do |controller, scope, value|
-    value == "with_image" ? scope.with_image : scope.no_image
+    case value
+    when "with_image"
+      value = scope.with_image
+    when "no_image"
+      value = scope.no_image
+    else
+      value = scope
+    end
   end
 
   has_scope :purchaseable do |controller, scope, value|

@@ -4,49 +4,70 @@
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
-.container.gallery-wrapper.relative(ng-controller='GalleryController')
-  .row(ng-cloak)
-    .span12.section
-      %div
-        .gallery-filter.navbar
-          %ul.nav.left-group
+.gallery-wrapper.relative(ng-controller='GalleryController' ng-cloak)
 
-            %form.navbar-search.relative
-              %input.search-query(ng-model='input' ng-change='search(input)' placeholder='search')
-              %a.clear-search(ng-click="clearSearch()")
-                %i.icon-remove
+  .gallery-controls.navbar
 
-            %li.relative(ng-mouseenter="showOptions.filters = true" ng-mouseleave="showOptions.filters = false")
-              .filter-collapser(ng-click="showOptions.filters = ! showOptions.filters")
-                FILTER
-                %i.icon-angle-down(ng-hide="showOptions.filters")
-                %i.icon-angle-up(ng-show="showOptions.filters")
-              .filters-group.anim-filters(ng-show="showOptions.filters")
-                %csRadioButtons.first-separate(ng-model="difficultyChoices" active="filters.difficulty")
-                %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
-                %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status" ng-if="csAuthentication.isAdmin()")
+    %ul.nav.search-group
+      %form.navbar-search.relative
+        .input-group
+          %input.search-query(  ng-model='input' 
+                                ng-change='search(input)' 
+                                placeholder='search')
+          %a.clear-search(ng-click="clearSearch()")
+            %i.icon-remove
 
-            %li.relative(ng-mouseenter="showOptions.sort = true" ng-mouseleave="showOptions.sort = false")
-              .filter-collapser(ng-click="showOptions.sort = ! showOptions.sort")
-                SORT
-                %i.icon-angle-down(ng-hide="showOptions.sort")
-                %i.icon-angle-up(ng-show="showOptions.sort")
-              .filters-group.anim-filters(ng-show="showOptions.sort")
-                .btn( ng-repeat="choice in sortChoices" 
-                      ng-click="filters.sort = choice" 
-                      ng-class="{active: filters.sort == choice}")
-                  {{choice}}
+        .filter-toggle(ng-click="filtersCollapsed = ! filtersCollapsed")
+          FILTERS
+          %i.icon-angle-down(ng-show="filtersCollapsed")
+          %i.icon-angle-up(ng-hide="filtersCollapsed")
 
-        .add-group.btn-group.pull-right(ng-show="(filters.generator != 'chefsteps') || csAuthentication.isAdmin()")
-          %a.btn.btn-secondary.add-button(href="/activities/new")
-            Add Recipe
+    %ul.nav.filters-group(ng-class="{'filters-collapsed' : filtersCollapsed}")
+      %li
+        %h5 Popular
+        %a( ng-repeat="x in suggestedSearches" 
+            ng-click="search(x, true)" 
+            ng-class="{'active' : filters['search_all'].toLowerCase() == x.toLowerCase()}")
+          %span {{x}}
 
-  .row(ng-cloak ng-show='noResults && !dataLoading')
-    .span12
-      %h3 No results found.
+      %li
+        %h5 Difficulty
+        %csRadioButtons(ng-model="difficultyChoices" active="filters.difficulty")
 
-  .row
-    .span12.gallery-items(infinite-scroll='next()' infinite-scroll-disabled='dataLoading' infinite-scroll-immediate-check='true' infinite-scroll-distance='2' ng-cloak)
-      %cs-index-item.cs-index-item(ng-repeat='activity in activities' cs-title='activity.title' url='activity.url' image='activity.image' difficulty='activity.difficulty' likes-count='activity.likesCount')
+      %li
+        %h5 Source
+        %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
+
+      %li(ng-if="csAuthentication.isAdmin()")
+        %h5 Admin
+        %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
+
+      %li
+        %h5 Sort
+        %a( ng-repeat="choice in getSortChoices()" 
+            ng-click="filters.sort = choice" 
+            ng-class="{active: filters.sort.toLowerCase() == choice.toLowerCase()}") 
+          %span {{choice}}
+
+      %li
+        %a.btn(href="/activities/new") Add New Recipe
+
+  .gallery-results(ng-class="{'reloading' : reloading}")
+    .no-results(ng-show='noResults()')
+      %h3 No results found. Here are some of our most popular recipes:
+
+    .gallery-items( infinite-scroll='next()' 
+                    infinite-scroll-disabled='dataLoading' 
+                    infinite-scroll-immediate-check='true' 
+                    infinite-scroll-distance='1')
+
+      %cs-index-item.cs-index-item( ng-repeat='activity in getResults() track by activity.id' 
+                                    cs-title='activity.title' 
+                                    url='activity.url' 
+                                    image='activity.image' 
+                                    hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
+    .load-checker                                
+    .loading-icon-group(ng-show="dataLoading > 0")
+      %i.icon-page-load
 
 = render 'home/madlib_popup', registration_source: 'gallery'

@@ -129,9 +129,10 @@ Note: The if the viewable area of the resulting image is less than the original,
     # TODO: Eventually we may want to store the base URL serverside along with image dimensions so we don't have to do this.
     # This change should increase performance and reduce the number of http requests
     scope.$watch 'url', (newValue, oldValue) ->
-      if newValue && typeof(newValue) != undefined
-        image.url = newValue
-        loadTinyImage()
+      if ! newValue?
+        newValue = "https://d3awvtnmmsvyot.cloudfront.net/api/file/I6i4voprQ7ypbPQZLxIC"
+      image.url = newValue
+      loadTinyImage()
 
     # 3. When tiny image is loaded, calculate the final image dimensions & original image aspect ratio
     scope.$on 'csTinyImageLoaded', (e, args) ->
