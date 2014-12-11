@@ -35,7 +35,7 @@
   # Actual search only fires after the user stops typing
   # Seems like 300ms timeout is ideal
   inputChangedPromise = null
-  $scope.search = (input) ->
+  $scope.search = (input, fromPopular = false) ->
     $scope.input = input
     $scope.adjustSortForSearch()
 
@@ -46,8 +46,11 @@
       if input.length > 0
         console.log 'Searching for: ', input
         $scope.filters['search_all'] = input
-        mixpanel.track('Gallery Popular Item', _.extend({'context' : $scope.context}, {search_all: input}));        
-        $scope.applyFilter()
+        if fromPopular
+          mixpanel.track('Gallery Popular Item', _.extend({'context' : $scope.context}, {search_all: input}));        
+      else
+        $scope.clearSearch()
+      $scope.applyFilter()
     , 300)
 
   # Clear search from the UI
@@ -78,8 +81,12 @@
     window.scroll(0, 0)
     # Update route params to match filters
     $location.search($scope.filters)
-    mixpanel.track('Gallery Filtered', _.extend({'context' : $scope.context}, $scope.filters));
     $scope.loadOnePage()
+    _.throttle( 
+      (-> mixpanel.track('Gallery Filtered', _.extend({'context' : $scope.context}, $scope.filters))),
+      1000,
+      {leading: false}
+    )()
 
   fixParamEnums = (params) ->
     for k, v of params

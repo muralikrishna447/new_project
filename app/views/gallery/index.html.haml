@@ -26,7 +26,7 @@
       %li
         %h5 Popular
         %a( ng-repeat="x in suggestedSearches" 
-            ng-click="search(x)" 
+            ng-click="search(x, true)" 
             ng-class="{'active' : filters['search_all'].toLowerCase() == x.toLowerCase()}")
           %span {{x}}
 
