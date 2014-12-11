@@ -1,7 +1,8 @@
 # Next step in refactoring would be to move much of this over to a service, but at least it is now shared by 
 # all gallery controllers.
-@app.controller 'GalleryBaseController', ["$scope", "$rootScope", "$timeout", '$route', '$routeParams', '$location', ($scope, $rootScope, $timeout, $route, $routeParams, $location) ->
+@app.controller 'GalleryBaseController', ["$scope", "$rootScope", "$timeout", '$route', '$routeParams', '$location', 'csAuthentication', ($scope, $rootScope, $timeout, $route, $routeParams, $location, csAuthentication) ->
 
+  $scope.csAuthentication = csAuthentication
   $scope.filters = $scope.defaultFilters
   $scope.results = []
   $scope.emptyResultsSuggestions = []
