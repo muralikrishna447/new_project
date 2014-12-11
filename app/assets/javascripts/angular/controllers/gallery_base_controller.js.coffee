@@ -20,10 +20,12 @@
     # because we still want to let them switch to a different sort.
     $scope.filters['sort'] = if $scope.input?.length > 0 then "relevance" else "newest"
 
-  # Sort/filter change from URL. Copy from route params to filters. This will fire on first load, and also on search from navbar.
-  $scope.$on "$routeChangeSuccess", (event, $currentRoute) ->
+  # Sort/filter change from URL. Copy from route params to filters. This will fire on first load. Doing it all the time causes a nasty loop that
+  # can cause your typing to get erased.
+  $scope.$on "$routeChangeSuccess", (event, $currentRoute, $prevRoute) ->
     $scope.filters = angular.extend({}, $scope.defaultFilters, $currentRoute.params)
-    #$scope.input = $currentRoute.params.search_all
+    if ! $prevRoute
+      $scope.input = $currentRoute.params.search_all
     $scope.applyFilter()
 
   # Filter/sort change from the UI.
@@ -79,12 +81,21 @@
     $scope.filtersCollapsed = true
     $scope.reloading = true
     window.scroll(0, 0)
+
     # Update route params to match filters
     $location.search($scope.filters)
     $scope.loadOnePage()
+
+    # Update mixpanel with changed search. Throttled and trailing edge
+    # so if they type we wait until they stop typing. 
     _.throttle( 
-      (-> mixpanel.track('Gallery Filtered', _.extend({'context' : $scope.context}, $scope.filters))),
-      1000,
+      (-> 
+        filterData = angular.extend({}, $scope.defaultFilters, $scope.filters)
+        filterData['defaultFilter'] = _.isEqual(filterData, $scope.defaultFilters)
+        filterData['context'] = $scope.context
+        mixpanel.track('Gallery Filtered', filterData)
+      ), 
+      2000,
       {leading: false}
     )()
 
