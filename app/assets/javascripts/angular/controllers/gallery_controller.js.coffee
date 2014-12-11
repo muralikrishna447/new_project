@@ -1,4 +1,4 @@
-@app.controller 'GalleryController', ['$scope', 'api.activity', '$controller', ($scope, Activity, $controller) ->
+@app.controller 'GalleryController', ['$scope', 'api.activity', '$controller', "$timeout", ($scope, Activity, $controller, $timeout) ->
 
   $scope.context                = "Activity"
   $scope.difficultyChoices      = ["Any", "Easy", "Medium", "Advanced"]
@@ -29,6 +29,10 @@
     Activity.query(params)
 
   $controller('GalleryBaseController', {$scope: $scope});
+
+  $timeout ( -> 
+    Intercom('trackEvent', 'gallery-twenty-seconds')
+  ), 20000 
 ]
 
 
