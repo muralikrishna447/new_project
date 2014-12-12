@@ -41,8 +41,8 @@
               .cs-nav-search-input(ng-show="showSearch" ng-cloak)
                 %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
                   %input(placeholder="search" ng-model="navbarSearchQuery")
-              .cs-nav-search-close
-                %i.fa.fa-times(ng-click="toggleSearch()")
+              .cs-nav-search-close(ng-click="toggleSearch()")
+                %i.fa.fa-times
           .cs-nav-links(ng-hide="showSearch")
             %li
               = link_to gallery_index_url do

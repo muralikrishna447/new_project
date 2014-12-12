@@ -55,6 +55,7 @@ input:focus
 .cs-nav-items
   height: 100%
   padding: 1.2rem
+  margin-right: -15px
   //position: absolute
   float: right
   @include boxsizing
@@ -79,6 +80,8 @@ input:focus
           color: $orange
           cursor: pointer
 
+.fa-times:before 
+  margin-left: 4px
 
 .cs-nav-items-toggle
   float: right
@@ -100,7 +103,7 @@ input:focus
 .cs-nav-links
   display: inline-block
   float: left
-  margin-right: 20px
+  margin-right: 0px
 
 
 .cs-nav-items.ng-hide-add, .cs-nav-items.ng-hide-remove
@@ -131,7 +134,7 @@ input:focus
         font-weight: 300
 .cs-nav-search
   float: left
-  width: 28px
+  width: 35px
   height: 6rem
   overflow: hidden
   @include anim-basic-fade(100ms)
@@ -139,17 +142,19 @@ input:focus
   .cs-nav-search-toggle, .cs-nav-search-close
     float: left
     height: 100%
+    width: 20px
     @include boxsizing
     i
       line-height: inherit
+      margin-left: 0x
     &:hover
       color: $orange
       cursor: pointer
   .cs-nav-search-input
     float: left
-    width: 210px
+    width: 414px
     height: 100%
-    margin: 0px 5px
+    margin: 0px
     padding: 0.8rem
     @include boxsizing
     form
@@ -159,8 +164,10 @@ input:focus
         float: left
         height: 100%
         width: 100%
-        border: 1px solid #ccc
+        border: none
         padding: 0.4rem
+        font-size: 18px
+        font-weight: 100
         @include boxsizing
 
 
@@ -196,7 +203,7 @@ input:focus
   margin-right: 0px
 
 .cs-nav-search.cs-nav-search-open
-  width: 261px
+  width: 475px
 
 #nav-sign-in-button
   text-transform: uppercase
@@ -233,6 +240,11 @@ input:focus
           text-transform: none
 
 @media(max-width: 767px)
+
+  .cs-nav
+    position: relative
+    width: 100%
+
   .cs-nav-items
     ul
       li
@@ -253,12 +265,12 @@ input:focus
       border-top: 1px solid $orange
     ul.cs-nav-links-container.cs-nav-menu-open
       opacity: 1
-      top: 80px !important
+      top: 77px !important
 
   .cs-nav-dropdown-menu
-    @include anim-basic-fade(300ms)
     ul
       border-top: 1px solid $orange
+    
   .cs-nav-logo
     padding: 1.8rem
     .logo-box
@@ -280,6 +292,7 @@ input:focus
       padding-top: 1rem
       @include boxsizing
       width: 100%
+      @include anim-basic-fade (300ms)
       li
         width: 100%
         line-height: $baseline * 4
@@ -301,6 +314,7 @@ input:focus
           border: 0px
           top: 0px
           margin-top: 0px
+
   .cs-nav-search
     width: 100%
     height: $baseline * 6
@@ -322,6 +336,8 @@ input:focus
     width: 100%
   .nav-spacer
     height: $baseline !important
+  .cs-nav-dropdown-menu
+    @include anim-basic-fade (300ms)
 
 @media(max-width: 320px) and (max-height: 480px)
   .cs-nav
