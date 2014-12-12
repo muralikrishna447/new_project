@@ -33,7 +33,16 @@
         .cs-nav-items-toggle(ng-click="toggleMenu()")
           Menu
         %ul.cs-nav-links-container(ng-class="{'cs-nav-menu-open': showMenu}")
-          .menu-popover-arrow
+          /.menu-popover-arrow
+          .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
+            %li
+              .cs-nav-search-toggle(ng-click="toggleSearch()")
+                %i.fa.fa-search
+              .cs-nav-search-input(ng-show="showSearch" ng-cloak)
+                %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
+                  %input(placeholder="search" ng-model="navbarSearchQuery")
+              .cs-nav-search-close
+                %i.fa.fa-times(ng-click="toggleSearch()")
           .cs-nav-links(ng-hide="showSearch")
             %li
               = link_to gallery_index_url do
@@ -99,15 +108,7 @@
                     %li= link_to 'Manage Ingredients', manager_ingredients_path
                     %li= link_to 'Manage Equipment', equipment_index_path
 
-          .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
-            %li
-              .cs-nav-search-toggle(ng-click="toggleSearch()")
-                %i.fa.fa-search
-              .cs-nav-search-input(ng-show="showSearch" ng-cloak)
-                %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
-                  %input(placeholder="search" ng-model="navbarSearchQuery")
-              .cs-nav-search-close
-                %i.fa.fa-times(ng-click="toggleSearch()")
+
 
       %div
         -if @include_edit_toolbar

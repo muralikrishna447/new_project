@@ -27,7 +27,7 @@ input:focus
   width: 100%
   z-index: 99999
   border-bottom: 1px solid #f1f1f1
-  height: 8rem
+  height: $baseline * 7
   left: 0px
   top: 0px
   -webkit-transform: translate3d(0,0,0)
@@ -119,7 +119,7 @@ input:focus
   border: 1px solid #ccc
   border-top: 1px solid $orange  
   white-space: nowrap
-  @include anim-slide-down(-50px)
+  @include anim-basic-fade (300ms)
   hr
     margin: 5px 0 5px 0px
   ul
@@ -134,7 +134,8 @@ input:focus
   width: 28px
   height: 6rem
   overflow: hidden
-  @include transition(300ms $standard-bezier all)
+  @include anim-basic-fade(100ms)
+       
   .cs-nav-search-toggle, .cs-nav-search-close
     float: left
     height: 100%
@@ -220,7 +221,7 @@ input:focus
   .cs-nav-links
     position: absolute
     right: 110px
-    @include anim-basic-fade(400ms)  
+    @include anim-basic-fade(300ms) 
   .cs-nav-items-toggle
     display: none
   .cs-nav-dropdown-menu
@@ -249,13 +250,13 @@ input:focus
     ul.cs-nav-links-container
       top: -999px !important
       opacity: 0
-      @include transition(all 300ms $standard-bezier)
       border-top: 1px solid $orange
     ul.cs-nav-links-container.cs-nav-menu-open
       opacity: 1
       top: 80px !important
 
   .cs-nav-dropdown-menu
+    @include anim-basic-fade(300ms)
     ul
       border-top: 1px solid $orange
   .cs-nav-logo
@@ -307,8 +308,9 @@ input:focus
     @include boxsizing
     .cs-nav-search-input
       display: block !important
-      width: 250px
+      width: 100%
       padding: 0px
+      margin: 0px
     .cs-nav-search-close
       display: none
   .cs-nav-search-toggle
