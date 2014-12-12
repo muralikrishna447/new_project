@@ -7,7 +7,8 @@
       content = angular.element item.content
       images = content.find('img')
       if images.length > 0
-        item.image = images[0].src
+        item.image = csFilepickerMethods.convert(images[0].src, {width: 600})
+        console.log "item image: ", item.image
         $scope.posts.push(item)
 
     # $http.get('hot').then (response) ->
