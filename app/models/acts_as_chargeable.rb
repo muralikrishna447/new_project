@@ -19,10 +19,10 @@ module ActsAsChargeable
     def collect_money(base_price, discounted_price, item_title, extra_descrip, user, stripe_token, existing_card=nil)
       if base_price && base_price > 0
         if user.stripe_id
-          puts "Retrieving stripe customer"
+          Rails.logger.info('Retrieving stripe customer')
           customer = Stripe::Customer.retrieve(user.stripe_id)
           if existing_card
-            puts 'EXISTING CUSTOMER CHARGE EXISTING CARD'
+            Rails.logger.info('EXISTING CUSTOMER CHARGE EXISTING CARD')
             charge = Stripe::Charge.create(
               amount: (discounted_price * 100).to_i,
               description: item_title + extra_descrip,
@@ -31,7 +31,7 @@ module ActsAsChargeable
               customer: user.stripe_id
             )
           else
-            puts 'EXISTING CUSTOMER CHARGE NEW CARD'
+            Rails.logger.info('EXISTING CUSTOMER CHARGE NEW CARD')
             new_card = customer.cards.create({card: stripe_token})
             charge = Stripe::Charge.create(
               amount: (discounted_price * 100).to_i,
@@ -43,7 +43,7 @@ module ActsAsChargeable
           end
         else
           # New Customers
-          puts 'NEW CUSTOMER CHARGE NEW CARD'
+          Rails.logger.info('NEW CUSTOMER CHARGE NEW CARD')
           self.set_stripe_id_on_user(user, stripe_token)
           charge = Stripe::Charge.create(
             customer: user.stripe_id,
@@ -58,12 +58,13 @@ module ActsAsChargeable
 
     def adjust_for_included_tax(price, ip)
       tax = 0.0
-      puts "Geo locating IP #{ip}"
+      Rails.logger.info("Geo locating IP #{ip}")
       location = Geokit::Geocoders::MultiGeocoder.geocode(ip)
-      puts "Geo located to #{location.inspect}"
+      Rails.logger.info("Geo located to #{location.inspect}")
       if location.success?
         ::NewRelic::Agent.record_metric('Custom/Errors/Geocoding', 0)
       else
+        Rails.logger.info("Failed to geo-locate")
         ::NewRelic::Agent.record_metric('Custom/Errors/Geocoding', 1)
       end
       if location.state == "WA"
