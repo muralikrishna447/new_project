@@ -22,3 +22,7 @@
     %span
       .btn.btn-link(ng-click='showAllComments()')
         Show All
+
+  - unless current_user && current_user.enrolled?(@assembly)
+    .text-center
+      %strong Enroll today to add your own review
