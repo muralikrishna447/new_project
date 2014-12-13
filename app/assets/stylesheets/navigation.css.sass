@@ -106,6 +106,7 @@ input:focus
   margin-right: 0px
 
 
+
 .cs-nav-items.ng-hide-add, .cs-nav-items.ng-hide-remove
   /* remember to add this */
   display: block!important
@@ -117,9 +118,9 @@ input:focus
 .cs-nav-dropdown-menu
   position: absolute
   left: 0px
-  top: 6rem
-  background: rgba(255,255,255,0.9)
-  border: 1px solid #ccc
+  top: 6.5rem
+  background: rgba(255, 255, 255, 0.9)
+  border: none
   border-top: 1px solid $orange  
   white-space: nowrap
   @include anim-basic-fade (300ms)
@@ -131,7 +132,9 @@ input:focus
       display: block
       height: 4rem
       a
-        font-weight: 300
+        font-weight: 200
+       
+    
 .cs-nav-search
   float: left
   width: 35px
@@ -234,12 +237,15 @@ input:focus
   .cs-nav-dropdown-menu
     ul
       li
-        height: 3rem
+        height: 4rem
+        width: 400px
+        padding-left: 20px
         a
           line-height: 1.6rem
           text-transform: none
 
 @media(max-width: 767px)
+
 
   .cs-nav
     position: relative
@@ -250,6 +256,7 @@ input:focus
       li
         a
           text-transform: none
+          font-weight: 300
   .resources-popover-arrow
     display: none
   .admin-popover-arrow
@@ -260,16 +267,20 @@ input:focus
     font-size: 16px
   .cs-nav-items
     ul.cs-nav-links-container
-      top: -999px !important
+      top: 77px !important
       opacity: 0
       border-top: 1px solid $orange
+      @include transition(all 300ms $standard-bezier)
     ul.cs-nav-links-container.cs-nav-menu-open
       opacity: 1
       top: 77px !important
+      @include transition(all 300ms $standard-bezier)
+      text-align: center
+
 
   .cs-nav-dropdown-menu
     ul
-      border-top: 1px solid $orange
+      border-top: none
     
   .cs-nav-logo
     padding: 1.8rem
@@ -292,7 +303,6 @@ input:focus
       padding-top: 1rem
       @include boxsizing
       width: 100%
-      @include anim-basic-fade (300ms)
       li
         width: 100%
         line-height: $baseline * 4
@@ -324,11 +334,14 @@ input:focus
       display: block !important
       width: 100%
       padding: 0px
-      margin: 0px
+      margin: 0px    
+      input
+        text-align: center
     .cs-nav-search-close
       display: none
   .cs-nav-search-toggle
     display: none
+
 
 @media(max-width: 700px) 
   .cs-nav
@@ -337,7 +350,7 @@ input:focus
   .nav-spacer
     height: $baseline !important
   .cs-nav-dropdown-menu
-    @include anim-basic-fade (300ms)
+
 
 @media(max-width: 320px) and (max-height: 480px)
   .cs-nav
