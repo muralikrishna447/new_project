@@ -155,6 +155,12 @@ private
   # We'll need to make some sort of admin for this or use an off the shelf solution.
   def discounted_price(price, coupon)
     return 0 if ! price
+
+    # 12/15/2014 michael - from now through the holidays we are just giving
+    # everyone 50% off, no coupon needed.
+    pct = 0.5
+    
+=begin
     pct = 1
     case coupon
     when 'b3a72a32da71'
@@ -179,6 +185,8 @@ private
       pct = 9.0/20
 
     end
+=end
+
     (price * pct).round(2)
   end
 
