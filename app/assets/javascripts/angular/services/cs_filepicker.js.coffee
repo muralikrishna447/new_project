@@ -63,21 +63,21 @@
     if width &&  ! height
       if aspect
         newHeight = width * aspectHeight / aspectWidth
-        convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{newHeight}&quality=90&cache=true"
+        convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{newHeight}&quality=90&cache=true&rotate=exif"
       else
-        convertURL = convertURL + "/convert?fit=max&w=#{width}&quality=90&cache=true"
+        convertURL = convertURL + "/convert?fit=max&w=#{width}&quality=90&cache=true&rotate=exif"
 
     # Only height is provided
     if ! width && height
       if aspect
         newWidth = height * aspectWidth / aspectHeight
-        convertURL = convertURL + "/convert?fit=crop&w=#{newWidth}&h=#{height}&quality=90&cache=true"
+        convertURL = convertURL + "/convert?fit=crop&w=#{newWidth}&h=#{height}&quality=90&cache=true&rotate=exif"
       else
-        convertURL = convertURL + "/convert?fit=max&h=#{height}&quality=90&cache=true"
+        convertURL = convertURL + "/convert?fit=max&h=#{height}&quality=90&cache=true&rotate=exif"
 
     # Both width and height provided
     if width && height
-      convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{height}&quality=90&cache=true"
+      convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{height}&quality=90&cache=true&rotate=exif"
 
     convertURL
 

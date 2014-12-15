@@ -312,7 +312,27 @@ $horz-baseline-large: 13px
   &.ng-move.ng-move-active
     opacity: 1
 
-=anim-slide-down($distance)
+=anim-basic-fade2($time)
+  @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  opacity: 1
+  &.ng-hide-add, &.ng-hide-remove
+    display: block !important
+  &.ng-hide-add.ng-hide-add-active, &.ng-hide-remove.ng-hide-remove-active
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  &.ng-hide
+    opacity: 0
+  &.ng-enter, &.ng-leave, &.ng-move, &.ng-if-enter
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  &.ng-enter, &.ng-leave.ng-leave-active, &.ng-if-enter, &.ng-if-leave.ng-if-leave-active
+    opacity: 0
+  &.ng-leave, &.ng-enter-active, &.ng-if-leave, &.ng-if-enter.ng-if-enter-active
+    opacity: 1
+  &.ng-move
+    opacity: 0.2
+  &.ng-move.ng-move-active
+    opacity: 1
+
+/*=anim-slide-down($distance)
   &.ng-enter
     @include transition(all 300ms $standard-bezier)
     opacity: 0
@@ -327,7 +347,7 @@ $horz-baseline-large: 13px
     margin-top: 0px
   &.ng-hide
     margin-top: $distance
-    opacity: 0
+    opacity: 0 */
 
 =anim-slide-left($start, $end)
   &.ng-enter
@@ -352,6 +372,7 @@ $horz-baseline-large: 13px
 $bounce-bez: cubic-bezier(0.25,0.25,0.325,1.39)
 $standard-bezier: cubic-bezier(.81,0,0,.99)
 $standard-bez-out: cubic-bezier(.29,.04,.02,1)
+$standard-bez-in-out: cubic-bezier(0.42,0,0.58,1)
 
 /* Colors */
 $orange: #e25f25
@@ -364,6 +385,7 @@ $blue-opaque: rgba(0,109,204,.8)
 $red: #DA4f49
 $red-opaque: rgba(218,79,73,.8)
 $light-gray: #ccc
+$light-black: rgb(51,51,51)
 $dark-gray: rgb(146, 146, 146)
 $offwhite: #f1f1f1
 $white-opaque: rgba(255,255,255,.3)
