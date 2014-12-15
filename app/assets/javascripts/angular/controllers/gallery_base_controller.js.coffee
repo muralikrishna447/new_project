@@ -36,7 +36,7 @@
 
   # Search change from the UI.
   # Actual search only fires after the user stops typing
-  # Seems like 300ms timeout is ideal
+  # Seems like 500ms timeout is ideal
   inputChangedPromise = null
   $scope.search = (input, fromPopular = false) ->
     $scope.input = input
@@ -54,7 +54,7 @@
       else
         $scope.clearSearch()
       $scope.applyFilter()
-    , 300)
+    , 500)
 
   # Clear search from the UI
   $scope.clearSearch = ->
