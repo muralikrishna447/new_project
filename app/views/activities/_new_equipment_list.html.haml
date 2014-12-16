@@ -1,11 +1,11 @@
-.section(cs-watch-focus)
-  %h5= name.html_safe
+.section(cs-watch-focus ng-hide="editMode && ! csAuthentication.isAdmin()")
+  %h5 Equipment
   %p(ui-sortable="sortOptions" ng-model="#{model}")
     %span(ng-repeat="item in #{model} | filter:#{required_string}Equipment")><
       %csEquipmentEditPair.inline<(csOptional="#{! required}")
       .inline(ng-show='item.optional && ("#{required_string}" == "any")')
         (optional)
-  .nav(ng-show="editMode")
+  .nav(ng-show="editMode && csAuthentication.isAdmin()")
     %button.btn.btn-small.btn-basic.add-item(ng-click="addEquipment(! #{required})" tooltip="Add #{required_string} equipment item...")
       +
     %button.btn.btn-small.btn-primary.done(ng-show="childFocused" tooltip="Finish adding #{required_string} equipment")

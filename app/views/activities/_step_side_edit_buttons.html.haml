@@ -16,7 +16,7 @@
         %i.icon-arrow-down
         Move step down
 
-    .section(ng-hide="step.is_aside")
+    .section(ng-hide="step.is_aside || (! csAuthentication.isAdmin())")
       %h5 Step Number
       .btn-group
         .btn.btn-primary(btn-radio="false" ng-model="step.hide_number")
@@ -24,7 +24,7 @@
         .btn.btn-primary(btn-radio="true" ng-model="step.hide_number")
           Hide
 
-    .section
+    .section(ng-show="csAuthentication.isAdmin()")
       %h5 Size 
       .btn-group
         .btn.btn-primary.btn-fake-radio(  ng-class="{'active': isStepType('normal')}"
@@ -40,7 +40,7 @@
 
 
 
-    .section.aside-chooser-group(ng-show="step.is_aside")
+    .section.aside-chooser-group(ng-show="step.is_aside && csAuthentication.isAdmin()")
       %h5 Preferred Position
       .btn-group
         .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
