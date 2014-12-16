@@ -151,52 +151,13 @@ class AssembliesController < ApplicationController
 
 private
 
-  # This is obviously a very short term solution to price testing!
-  # We'll need to make some sort of admin for this or use an off the shelf solution.
-  def discounted_price(price, coupon)
-    return 0 if ! price
-
-    # 12/15/2014 michael - from now through the holidays we are just giving
-    # everyone 50% off, no coupon needed.
-    pct = 0.5
-    
-=begin
-    pct = 1
-    case coupon
-    when 'b3a72a32da71'
-      pct = 34.0/39
-    when 'a1b71d389a50'
-      pct = 29.0/39
-    when 'be11c664ce1a'
-      pct = 23.0/39
-    when 'cc448c11505a'
-      pct = 20.0/39
-    when 'd035c58a0a8c'
-      pct = 19.0/39
-    when 'e8c479fa9279'
-      pct = 14.0/39
-
-    # New coupons 11/26/2014 for SV 201 split test
-    when 'b3c6e268ed80'
-      #pct = 14.0/20
-      # The $9 won the split so handily and quickly that we decided to give it to everyone
-      pct = 9.0/20
-    when '460fb93a7cfe'
-      pct = 9.0/20
-
-    end
-=end
-
-    (price * pct).round(2)
-  end
-
   def load_assembly
 
     begin
       @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], can?(:update, @activity))
       # Once verified that coupons are working everywhere, delete the following:
       session[:coupon] = params[:coupon] || session[:coupon]
-      @discounted_price = discounted_price(@assembly.price, session[:coupon])
+      @discounted_price = @assembly.discounted_price(session[:coupon])
       # Changing so that it accepts a param gift_token as well, this is solely for e2e testing and shouldn't be given to customers as it 
       # doesn't store the information in the sesion so they MUST use it on that page.
       gc_token = session[:gift_token] || params[:gift_token]

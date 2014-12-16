@@ -2,27 +2,13 @@
 - content_for :description, "Become a better cook with our online classes"
 - content_for :keywords, @assembly_courses.map(&:title).to_sentence
 
-.container
-  .row.section-large
-    .text-center
-      %a(href="/courses")
-        %img.desktop-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/ufsLURLkRPSudD5gsUVK")
-        %img.mobile-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/tuSYnpjiTtit7BxOCPFh")
+.classes-index
+  .container
+    .row.section-large
+      .text-center
+        %a(href="/courses")
+          %img.desktop-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/ufsLURLkRPSudD5gsUVK")
+          %img.mobile-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/tuSYnpjiTtit7BxOCPFh")
 
-- @assembly_courses.each do |course|
-  .container.classes-index
-    .row.section
-      .span6
-        = render 'shared/media_box_2', url: landing_class_path(course), image: course.image_id, object: course
-      .span6
-        .title-group
-          .class-tag= course.price ? "PAID CLASS" : ""
-          %h3.inline-group= course.title
-          -if course.average_rating > 0
-            .nowrap
-              .rating.inline-group
-                %csrating(value="#{course.average_rating}" readonly="true")
-              %a
-                = link_to 'See all reviews', landing_class_path(course, anchor: "reviews")
-        %p= course.short_description
-        = link_to 'Learn More', landing_class_path(course), class: 'btn btn-primary btn-large'
+  - @assembly_courses.each do |course|
+    = render 'one_course', course: course
