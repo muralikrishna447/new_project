@@ -271,10 +271,12 @@ input:focus
     ul.cs-nav-links-container
       top: 77px !important
       opacity: 0
+      display: none
       border-top: 1px solid $orange
       @include transition(all 300ms $standard-bezier)
     ul.cs-nav-links-container.cs-nav-menu-open
       opacity: 1
+      display: block
       top: 77px !important
       @include transition(all 300ms $standard-bezier)
       text-align: center

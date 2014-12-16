@@ -1,7 +1,8 @@
 # Next step in refactoring would be to move much of this over to a service, but at least it is now shared by 
 # all gallery controllers.
-@app.controller 'GalleryBaseController', ["$scope", "$rootScope", "$timeout", '$route', '$routeParams', '$location', ($scope, $rootScope, $timeout, $route, $routeParams, $location) ->
+@app.controller 'GalleryBaseController', ["$scope", "$rootScope", "$timeout", '$route', '$routeParams', '$location', 'csAuthentication', ($scope, $rootScope, $timeout, $route, $routeParams, $location, csAuthentication) ->
 
+  $scope.csAuthentication = csAuthentication
   $scope.filters = $scope.defaultFilters
   $scope.results = []
   $scope.emptyResultsSuggestions = []
@@ -35,7 +36,7 @@
 
   # Search change from the UI.
   # Actual search only fires after the user stops typing
-  # Seems like 300ms timeout is ideal
+  # Seems like 500ms timeout is ideal
   inputChangedPromise = null
   $scope.search = (input, fromPopular = false) ->
     $scope.input = input
@@ -53,7 +54,7 @@
       else
         $scope.clearSearch()
       $scope.applyFilter()
-    , 300)
+    , 500)
 
   # Clear search from the UI
   $scope.clearSearch = ->
