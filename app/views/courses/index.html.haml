@@ -3,9 +3,11 @@
 - content_for :keywords, @assembly_courses.map(&:title).to_sentence
 
 .container
-  .row
+  .row.section
     .span12
-      %h1 Classes
+      .section
+      .text-center.section
+        %h1 Holiday Special: All Classes 50% Off!
 
 - @assembly_courses.each do |course|
   .container.classes-index
