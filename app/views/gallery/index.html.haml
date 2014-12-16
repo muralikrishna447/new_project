@@ -8,10 +8,10 @@
 
   .gallery-controls.navbar
 
-    %ul.nav.search-group
+    %ul.search-group
       %form.navbar-search.relative
         .input-group
-          %input.search-query(  ng-model='input' 
+          %input.cs-nav-search-input(  ng-model='input' 
                                 ng-change='search(input)' 
                                 placeholder='search')
           %a.clear-search(ng-click="clearSearch()")
