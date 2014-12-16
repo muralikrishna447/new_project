@@ -61,11 +61,15 @@
                     infinite-scroll-immediate-check='true' 
                     infinite-scroll-distance='1')
 
-      %cs-index-item.cs-index-item( ng-repeat='activity in getResults() track by activity.id' 
-                                    cs-title='activity.title' 
-                                    url='activity.url' 
-                                    image='activity.image' 
-                                    hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
+      %div(ng-repeat='activity in getResults() track by activity.id')
+        %cs-index-item.cs-index-item( cs-title='activity.title' 
+                                      url='activity.url' 
+                                      image='activity.image' 
+                                      hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
+        .gallery-madlib(ng-if="! csAuthentication.loggedIn() && $index == 12")
+          = render "devise/sessions/new_angular"
+          = render 'home/madlib'
+
     .load-checker                                
     .loading-icon-group(ng-show="dataLoading > 0")
       %i.icon-page-load
