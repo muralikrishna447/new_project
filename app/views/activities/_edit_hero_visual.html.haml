@@ -1,13 +1,13 @@
 .section-large.noprint( ng-if="heroMedia.heroDisplayType() == 'none'" )
 .standard-item(ng-cloak ng-if="editMode")
-  .btn.btn-secondary.noprint.section( ng-show="editMode" 
+  .btn.btn-secondary.noprint.section( ng-show="editMode && csAuthentication.isAdmin()" 
                                       ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
     %i.icon-edit
     Edit hero visual
     %i.icon-chevron-up(ng-show="showHeroVisualEdit")
     %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
 
-  %div.anim-basic-fade.noprint(ng-hide="(! showHeroVisualEdit) || (! editMode)" )
+  %div.anim-basic-fade.noprint(ng-show="showHeroVisualEdit || ! csAuthentication.isAdmin()" )
     %div
       %div.chunk
         %h5 Youtube ID
