@@ -40,18 +40,23 @@
   .search-group 
     margin-bottom: $baseline
     margin-left: -1px
+    display: block
+    position: relative
 
     .navbar-search
-      margin-top: 15px
+      margin-top: 22px
       width: 100%
 
       .input-group
         position: relative
         max-width: 320px
-        display: inline-block
+      
 
         input
           margin-right: 0px !important
+          border: none
+          font-size: 16px
+          font-weight: 300
 
         .clear-search
           position: absolute
@@ -74,7 +79,7 @@
 
   .cs-index-item-image
     min-height: 180px
-    @include linear-gradient(rgba(147,147,147,1), rgba(204,204,204,1))
+    background-color: #f1f1f1
 
 .gallery-results
   padding-left: 340px
@@ -123,7 +128,7 @@
       float: none !important
 
     .search-group
-      padding-top: 10px
+      padding-top: 22px
       background-color: white
       opacity: 0.95
       width: 100vh
@@ -134,9 +139,12 @@
         cursor: pointer
         margin-left: $horz-baseline-large
 
+      .input-group 
+        display: inline-block
+
     .filters-group
       position: absolute
-      top: 60px
+      top: 74px
       padding-left: 22px
       height: 300vh
       z-index: 100
@@ -165,7 +173,7 @@
     right: 0
     left: 0
     width: auto
-    z-index: 99999
+    z-index: 100
 
     .search-group
       padding-left: 0
@@ -178,8 +186,11 @@
         margin-bottom: 0
 
       .input-group
+        display: inline-block
         input.search-query
           width: 155px
+         
+        
 
     .filters-group
       top: $baseline * 4

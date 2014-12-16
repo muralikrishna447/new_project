@@ -20,8 +20,6 @@
 .btn-primary, .btn-primary.disabled
   background: $orange
   border: 0px
-  border-bottom: 1px $dark-orange solid
-  +radius(2px)
   margin-bottom: $baseline
   position: relative
   @include boxsizing
@@ -266,6 +264,22 @@
     &:hover
       background-color: white
       color: $orange
+
+.btn-outline-green-large
+  background: white
+  border: 2px solid rgba($green, 0.5) 
+  border-radius: 55px
+  font-weight: 400
+  display: inline-block
+  padding: 11px 22px
+  text-transform: uppercase
+  color: $green
+  @include boxsizing
+  @include transition(all 300ms)
+  &:hover
+    background: $green
+    color: white
+    border: 2px solid $green
 
 
 .btn-outline-blue-large

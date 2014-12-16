@@ -9,11 +9,11 @@
 
 input.search-query
   +radius(2px)
-  border: 1px solid $light-gray
+  border: none
   width: 250px
 
 input:focus
-  border: 1px solid $dark-gray
+  border: none
   outline: none
 
 .course-global-nav
@@ -167,6 +167,7 @@ input:focus
         float: left
         height: 100%
         width: 100%
+        background: none
         border: none
         padding: 0.4rem
         font-size: 18px
@@ -208,6 +209,7 @@ input:focus
 .cs-nav-search.cs-nav-search-open
   width: 475px
 
+
 #nav-sign-in-button
   text-transform: uppercase
   color: $light-black
@@ -220,6 +222,14 @@ input:focus
 
 .menu-popover-arrow
   @include popover-arrow(-5px, 290px)
+
+.cs-nav-click-box
+  position: absolute
+  top: 0px
+  left: 0px
+  width: 100%
+  height: 100%
+  display: none
 
 @media(min-width: 768px)
   .resources-popover-arrow
@@ -285,10 +295,13 @@ input:focus
       border-top: none
     
   .cs-nav-logo
-    padding: 1.8rem
+    padding-top: $baseline * 2
+    padding-bottom: $baseline * 2
+    padding-left: 0px
+    padding-right: 0px
     .logo-box
       .regular-logo
-        height: 43px
+        height: 36px
 
   .cs-nav-links
     width: 100%
@@ -344,6 +357,8 @@ input:focus
   .cs-nav-search-toggle
     display: none
 
+  .cs-nav-click-box
+    display: block
 
 @media(max-width: 700px) 
   .cs-nav
