@@ -148,7 +148,7 @@
 
   # Load up some suggested results if the users query set is empty
   $timeout ( ->
-    $scope.doQuery(fixParamEnums($scope.noResultsQuery)).$promise.then (results) ->
+    $scope.doQuery?(fixParamEnums($scope.noResultsQuery)).$promise.then (results) ->
       $scope.emptyResultsSuggestions = results
   ), 1000
 ]
