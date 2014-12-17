@@ -110,7 +110,6 @@
   $scope.loadOnePage = ->
     if  (! $scope.doneLoading) && (! $scope.requestedPages[$scope.page])
       $scope.dataLoading += 1
-      $rootScope.$broadcast('showPopupCTA') if $scope.page == 3
 
       # Set up actual query params; they are mostly the same as the filters we show with 
       # a few minor adjustments.
