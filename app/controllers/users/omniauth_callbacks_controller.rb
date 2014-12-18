@@ -82,17 +82,15 @@ private
         sign_in @user
         email_list_signup(@user.name, @user.email, "ajax_signup_form_social")
         cookies.delete(:viewed_activities)
-        # TODO MIXPANEL Add back in when mixpanel is stable
-        # mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
-        # mixpanel.track(@user.email, 'Signed Up')
+        mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
+        mixpanel.track(@user.email, 'Signed Up')
         return render status: 200, json: {success: true, new_user: @new_signup, info: "Signed Up", user: current_user.as_json(include: :enrollments)}
       else
         # Trigger as a login
         sign_in @user
         remember_me(current_user)
-        # TODO MIXPANEL Add back in when mixpanel is stable
-        # mixpanel.track(current_user.email, 'Signed In')
-        # mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
+        mixpanel.track(current_user.email, 'Signed In')
+        mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
         return render status: 200, json: {success: true, new_user: @new_signup, info: "Logged in", user: current_user.as_json(include: :enrollments)}
       end
     end
