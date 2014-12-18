@@ -1,7 +1,8 @@
 # Next step in refactoring would be to move much of this over to a service, but at least it is now shared by 
 # all gallery controllers.
-@app.controller 'GalleryBaseController', ["$scope", "$rootScope", "$timeout", '$route', '$routeParams', '$location', ($scope, $rootScope, $timeout, $route, $routeParams, $location) ->
+@app.controller 'GalleryBaseController', ["$scope", "$rootScope", "$timeout", '$route', '$routeParams', '$location', 'csAuthentication', ($scope, $rootScope, $timeout, $route, $routeParams, $location, csAuthentication) ->
 
+  $scope.csAuthentication = csAuthentication
   $scope.filters = $scope.defaultFilters
   $scope.results = []
   $scope.emptyResultsSuggestions = []
@@ -35,7 +36,7 @@
 
   # Search change from the UI.
   # Actual search only fires after the user stops typing
-  # Seems like 300ms timeout is ideal
+  # Seems like 500ms timeout is ideal
   inputChangedPromise = null
   $scope.search = (input, fromPopular = false) ->
     $scope.input = input
@@ -53,7 +54,7 @@
       else
         $scope.clearSearch()
       $scope.applyFilter()
-    , 300)
+    , 500)
 
   # Clear search from the UI
   $scope.clearSearch = ->
@@ -109,7 +110,6 @@
   $scope.loadOnePage = ->
     if  (! $scope.doneLoading) && (! $scope.requestedPages[$scope.page])
       $scope.dataLoading += 1
-      $rootScope.$broadcast('showPopupCTA') if $scope.page == 3
 
       # Set up actual query params; they are mostly the same as the filters we show with 
       # a few minor adjustments.
@@ -147,7 +147,7 @@
 
   # Load up some suggested results if the users query set is empty
   $timeout ( ->
-    $scope.doQuery(fixParamEnums($scope.noResultsQuery)).$promise.then (results) ->
+    $scope.doQuery?(fixParamEnums($scope.noResultsQuery)).$promise.then (results) ->
       $scope.emptyResultsSuggestions = results
   ), 1000
 ]

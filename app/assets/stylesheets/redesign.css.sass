@@ -1566,6 +1566,40 @@ input.summary-tweet
   @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms)
   opacity: 0
 
+
+// HOLIDAY BANNER STYLES //
+
+.desktop-banner-retina
+  display: none
+
+.desktop-banner
+  display: inline-block
+
+.mobile-banner
+  display: none
+
+@media (max-width: 767px)
+  .desktop-banner-retina
+    display: none 
+
+  .desktop-banner
+    display: none
+
+  .mobile-banner
+    display: inline-block
+
+@media (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) and (min-width: 767px)
+  .desktop-banner-retina
+    display: inline-block
+    width: 921px  
+
+  .mobile-banner
+    display: none
+
+  .desktop-banner
+    display: none
+
+
 // BELOW ARE RESPONSIVE STYLES //
 
 
@@ -1665,6 +1699,12 @@ input.summary-tweet
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
+  .desktop-banner
+    display: none
+
+  .mobile-banner
+    display: inline-block
+
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
     width: auto
 

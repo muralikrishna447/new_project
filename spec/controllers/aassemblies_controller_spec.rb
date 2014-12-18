@@ -1,11 +1,23 @@
 require 'spec_helper'
 
 describe AssembliesController do
-  describe 'redeem' do
-    before(:each) do
-      @purchaser = Fabricate(:user, name: "Purchaser", email: "test@chefsteps.com")
-      @assembly = Fabricate(:assembly, price: 39.00, assembly_type: "Course")
+  before(:each) do
+    @purchaser = Fabricate(:user, name: "Purchaser", email: "test@chefsteps.com")
+    @assembly = Fabricate(:assembly, price: 39.00, assembly_type: "Course", published: true)
+  end
+
+  describe 'discount' do
+    context "price computation" do
+      # This should fail when we revert the 12/15/2014 in discounted_price, and then
+      # it should be replaced with some actual testing of the coupons, which was never there before(!)
+      it "should compute the right discount" do
+        get :show, id: @assembly.id
+        assigns(:discounted_price).should eq(19.50)
+      end
     end
+  end
+
+  describe 'redeem' do
 
     context "invalid token" do
       it "should redirect" do
@@ -15,7 +27,7 @@ describe AssembliesController do
       it "should set flash" do
         expect{get :redeem, gift_token: "madeup"}.to change{flash[:error]}.to("Invalid gift code. Contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>.")
       end
-    end
+    end          
 
     context "valid gift certificate" do
       before(:each) do

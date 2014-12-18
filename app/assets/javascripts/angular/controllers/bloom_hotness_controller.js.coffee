@@ -8,6 +8,7 @@
       images = content.find('img')
       if images.length > 0
         item.image = images[0].src
+        console.log "item image: ", item.image
         $scope.posts.push(item)
 
     # $http.get('hot').then (response) ->

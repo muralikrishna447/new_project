@@ -53,6 +53,12 @@
         %a.blue-link(href="/activities/new") Add New Recipe
 
   .gallery-results(ng-class="{'reloading' : reloading}")
+    .gallery-madlib(ng-if="! csAuthentication.loggedIn()")          
+      %div.noprint( ng-controller="LoginController" 
+                    ng-init="registrationSource ='gallery'; setIntent('ftue');"
+                    ng-hide="editMode || authentication.currentUser()" )
+        = render "devise/sessions/new_angular"
+        = render 'home/madlib'
     .no-results(ng-show='noResults()')
       %h3 No results found. Here are some of our most popular recipes:
 
@@ -61,13 +67,13 @@
                     infinite-scroll-immediate-check='true' 
                     infinite-scroll-distance='1')
 
-      %cs-index-item.cs-index-item( ng-repeat='activity in getResults() track by activity.id' 
-                                    cs-title='activity.title' 
-                                    url='activity.url' 
-                                    image='activity.image' 
-                                    hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
+      %div(ng-repeat='activity in getResults() track by activity.id')
+        %cs-index-item.cs-index-item( cs-title='activity.title' 
+                                      url='activity.url' 
+                                      image='activity.image' 
+                                      hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
+
     .load-checker                                
     .loading-icon-group(ng-show="dataLoading > 0")
       %i.icon-page-load
 
-= render 'home/madlib_popup', registration_source: 'gallery'
