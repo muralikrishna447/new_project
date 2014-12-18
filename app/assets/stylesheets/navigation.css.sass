@@ -216,12 +216,18 @@ input:focus
 #nav-sign-in-button
   color: $green
   height: 6rem
-  font-weight: 600
+  margin-right: 0px
+  padding: 10px 10px
+  border-radius: 55px
+  border: 1px solid $green
+  font-weight: 300
   line-height: 6rem
-  padding: 0.5rem
   @include boxsizing
+  @include transition(all 300ms)
   &:hover
-    color: $orange
+    color: white
+    background: $green
+    border: 1px solid $green
 
 .menu-popover-arrow
   @include popover-arrow(-5px, 290px)
