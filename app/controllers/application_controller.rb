@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include StatusHelpers
   protect_from_forgery
-  before_filter :cors_set_access_control_headers, :record_uuid_in_new_relic
+  before_filter :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user
 
   if Rails.env.angular? || Rails.env.development?
     require 'database_cleaner'
@@ -239,6 +239,10 @@ private
 
   def record_uuid_in_new_relic
     ::NewRelic::Agent.add_custom_parameters({ request_id: request.uuid()})
+  end
+
+  def log_current_user
+    logger.info("current_user id: #{current_user.nil? ? "anon" : current_user.id}")
   end
 
   def cors_set_access_control_headers
