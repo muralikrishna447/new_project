@@ -51,7 +51,8 @@ class GalleryController < ApplicationController
   private
   def track_iphone_app_activity
     if from_ios_app?
-      mixpanel.track(mixpanel_anonymous_id, '[iOS App] Gallery Page', {generator: params[:generator], page: params[:page], sort: params[:sort], activity_type: params[:activity_type], search: params[:search_all], context: "iOS App"})
+      # TODO MIXPANEL Add back in when mixpanel is stable
+      # mixpanel.track(mixpanel_anonymous_id, '[iOS App] Gallery Page', {generator: params[:generator], page: params[:page], sort: params[:sort], activity_type: params[:activity_type], search: params[:search_all], context: "iOS App"})
     end
   end
 end
