@@ -570,10 +570,11 @@ window.deepCopy = (obj) ->
       anchor = $location.search().anchor
       $location.hash(anchor)
 
+  # Not particularly proud of this.  Had to bump up the timeout time. window.onload doesn't seem to work.  If we start using ng-view more, we should use this: http://stackoverflow.com/questions/21715256/angularjs-event-to-call-after-content-is-loaded
   $timeout ( ->
     $scope.scrollToComments()
     $scope.anchor()
-  ), 1000
+  ), 3000
   
 ]
 
