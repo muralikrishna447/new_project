@@ -563,8 +563,16 @@ window.deepCopy = (obj) ->
     $anchorScroll()
     $location.hash('')
 
+  # Attempt at a universal anchor scroll
+  # Usage http://localhost:3000/activities/creme-brulee/#/?anchor=strain will scroll to the div with id="strain"
+  $scope.anchor = ->
+    if $location.search() && $location.search().anchor
+      anchor = $location.search().anchor
+      $location.hash(anchor)
+
   $timeout ( ->
     $scope.scrollToComments()
+    $scope.anchor()
   ), 1000
   
 ]
