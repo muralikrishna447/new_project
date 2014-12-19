@@ -433,6 +433,8 @@ window.deepCopy = (obj) ->
       $scope.fetchActivity(id, -> $scope.makeActivityActive(id))
     $scope.updateCommentCount()
     $scope.$broadcast('resetVideo')
+    $scope.resetPageLoadedTime()
+
 
   $scope.commentCount = -1
   $scope.updateCommentCount = -> 
@@ -538,6 +540,27 @@ window.deepCopy = (obj) ->
     $rootScope.$broadcast "showNellPopup", 
       include: '_why_by_weight.html'
     localStorageService.set('whyByWeightShown', true)
+
+  $scope.maybeShowDidCook = ->
+    return if ! $scope.activity || ! $scope.activity.ingredients?.length > 0
+    $rootScope.$broadcast "showNellPopup", 
+      include: '_did_you_cook.html'
+    mixpanel.track('Did You Cook Asked', 
+      'slug' : $scope.activity.slug
+      'title' : $scope.activity.title
+      'class' : $scope.course?.slug
+      'classTitle' : $scope.course?.title
+      'secondsOnPage' : $scope.secondsOnPage()
+    );
+
+  $scope.secondsOnPage = ->
+    Math.floor((Date.now() - $scope.pageLoadedTime) / 1000)
+
+  $scope.resetPageLoadedTime = ->
+    $scope.pageLoadedTime = Date.now()
+
+  $scope.resetPageLoadedTime()
+
 
   # One time stuff
   if $scope.parsePreloaded()
