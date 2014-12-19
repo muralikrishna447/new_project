@@ -12,8 +12,18 @@
             %a
               = link_to 'See all reviews', landing_class_path(course, anchor: "reviews")
       %p= course.short_description
+      .section-tiny
+        .labeled-price-group
+          .labeled-price.sale-price(ng-if='discounted()')
+            .labeled-price-label SALE
+            .labeled-price-price {{discounted_price | niceDollars}}
+          .labeled-price.regular-price(ng-class='{struck: discounted()}')
+            .labeled-price-label {{priceLabel()}}
+            .labeled-price-price(ng-if="assembly.price > 0") 
+              {{assembly.price | niceDollars}}
+              .labeled-price-strike
+
+            .labeled-price-price(ng-if="assembly.price <= 0") Free
       %a(href="#{landing_class_path(course)}")
         .btn.btn-primary.btn-large
-          -if course.price && course.price > 0
-            = render 'activities/latest/assembly_price', assembly: course, discounted_price: course.discounted_price(session[:coupon])
           Learn More
