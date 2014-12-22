@@ -5,6 +5,8 @@
       'context': 'course', 
       'title' : $scope.assembly.title
       'slug' : $scope.assembly.slug
+      'discounted_price': $scope.discounted_price
+      'price': $scope.assembly.price
 
     mixpanel.track('Course Landing Viewed', 
       _.extend(eventData, $rootScope.splits));

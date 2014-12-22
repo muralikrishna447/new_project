@@ -11,7 +11,7 @@
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
-%div(ng-controller="AssemblyLandingPageController" ng-init='assembly=#{@assembly.to_json};')
+%div(ng-controller="AssemblyLandingPageController" ng-init='assembly=#{@assembly.to_json}; discounted_price=#{@discounted_price};')
   %div(ng-switch="(#{@course.id} != 67)")
     %div(ng-switch-when="true")
       - if !current_user && session[:free_trial] && @hours
