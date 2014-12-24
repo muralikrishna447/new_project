@@ -38,9 +38,10 @@ window.deepCopy = (obj) ->
 
 ]
 
+# This controller is a freaking abomination and needs to be broken up into about 5 different services and directives.
 
-@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "$anchorScroll",
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, $anchorScroll) ->
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "$anchorScroll", "$window",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, $anchorScroll, $window) ->
 
   $scope.heroMedia = csEditableHeroMediaService
 
@@ -56,6 +57,7 @@ window.deepCopy = (obj) ->
   $scope.csAuthentication = csAuthentication
   $scope.csAlertService = csAlertService
   $rootScope.loading = 0
+  $scope.activity?.printed = false
 
   $scope.csTagService = csTagService
 
@@ -408,9 +410,11 @@ window.deepCopy = (obj) ->
 
   $scope.makeActivityActive = (id) ->
     return if id == $scope.activity?.id
+    $scope.trackActivityEngagement() if $scope.activity?.id
     $scope.activity = $scope.activities[id]
+    $scope.activity.printed = false
     cs_event.track(id, 'Activity', 'show')
-    mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
+    mixpanel.track('Activity Viewed', $scope.getEventData());
     $scope.csGlobals.units = "grams"
     $scope.csGlobals.scaling = 1
     $timeout ->
@@ -433,6 +437,7 @@ window.deepCopy = (obj) ->
       $scope.fetchActivity(id, -> $scope.makeActivityActive(id))
     $scope.updateCommentCount()
     $scope.$broadcast('resetVideo')
+
 
   $scope.commentCount = -1
   $scope.updateCommentCount = -> 
@@ -539,10 +544,63 @@ window.deepCopy = (obj) ->
       include: '_why_by_weight.html'
     localStorageService.set('whyByWeightShown', true)
 
+
+  # Keep track of when the activity was loaded
+  $scope.resetPageLoadedTime = ->
+    $scope.lastActiveTime = $scope.pageLoadedTime = Date.now()
+  $scope.resetPageLoadedTime()
+
+  # Keep track of last time the user was active on the page
+  angular.element($window).on 'scroll', -> $scope.lastActiveTime = Date.now() 
+  $('.course-content-wrapper').on 'scroll', ->  $scope.lastActiveTime = Date.now() 
+
+  # various ways of tracking printing; if you google it you'll find out how unreliable they all are
+  window.onbeforeprint = ->
+    $scope.activity?.printed = true
+
+  if window.matchMedia
+    window.matchMedia("print").addListener (mql) ->
+      if mql.matches
+        # In chrome matches never seems to be true. But we've also instrumented the print button in the tools menu so maybe that helps.
+        $scope.activity?.printed = true
+
+  $scope.doPrint = ->
+    $scope.activity?.printed = true
+    window.print()
+
+  # Track everything we know about the user engagement on this activity, then reset it
+  $scope.trackActivityEngagement = ->
+    activeMinutes = Math.floor(($scope.lastActiveTime - $scope.pageLoadedTime) / (1000 * 60.0))
+    mixpanel?.track 'Activity Engagement', 
+      angular.extend $scope.getEventData(), 
+                      printed: $scope.activity.printed
+                      activeMinutes: activeMinutes
+                      probablyCooked: $scope.activity.printed || (activeMinutes > 15)
+
+    # Reset in case loading new activity in class
+    $scope.resetPageLoadedTime()
+    $scope.activity.printed = false
+
+  $(window).unload ->
+    $scope.trackActivityEngagement()
+
+    # http://stackoverflow.com/questions/8350215/delay-page-close-with-javascript
+    # Without this, a lot of times the mixpanel even doesn't get recorded; request shows as cancelled in network tab
+    start = Date.now()
+    while ((Date.now() - start) < 150)
+      ;
+
+  $scope.getEventData = ->
+    'context' : if $scope.course then 'course' else 'naked'
+    'classTitle' : $scope.course?.title
+    'title' : $scope.activity.title, 
+    'slug' : $scope.activity.slug
+    'isRecipe' : $scope.activity.ingredients?.length > 1
+
   # One time stuff
   if $scope.parsePreloaded()
     $scope.schedulePostPlayEvent()
-    mixpanel?.track('Activity Viewed', {'context' : 'naked', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
+    mixpanel?.track('Activity Viewed', $scope.getEventData());
 
     if ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()

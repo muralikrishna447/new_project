@@ -1,4 +1,4 @@
-// See http://minhajuddin.com/2013/04/28/angularjs-templates-and-rails-with-eager-loading !!!
+// See http://minhajuddin.com/2013/04/28/angularjs-templates-and-rails-with-eager-loading  !!!
 
 angular.module('templates', []).run(["$templateCache", function($templateCache) {
     <% Dir.glob(Rails.root.join('app','views','client_views', '*.haml')).each do |f| %>

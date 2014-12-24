@@ -32,7 +32,7 @@
                   when="  {'0' : 'Add your creation', '1' : '1 User creation', 'other' : '{} User creations'}")  
 
   %li(ng-if="getObjectTypeName() != 'Upload'"
-      onclick="window.print()")
+      ng-click="doPrint()")
     .tool-group
       .icon-holder
         %i.icon-print
