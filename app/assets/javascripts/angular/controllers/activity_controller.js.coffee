@@ -548,11 +548,23 @@ window.deepCopy = (obj) ->
   # Keep track of when the activity was loaded
   $scope.resetPageLoadedTime = ->
     $scope.lastActiveTime = $scope.pageLoadedTime = Date.now()
+    $scope.trackedTimes = {}
   $scope.resetPageLoadedTime()
 
   # Keep track of last time the user was active on the page
-  angular.element($window).on 'scroll', -> $scope.lastActiveTime = Date.now() 
-  $('.course-content-wrapper').on 'scroll', ->  $scope.lastActiveTime = Date.now() 
+  $scope.activeMinutes = ->
+    Math.floor(($scope.lastActiveTime - $scope.pageLoadedTime) / (1000 * 60.0))
+
+  $scope.updateActiveTime = ->
+    $scope.lastActiveTime = Date.now() 
+    activeMinutes = $scope.activeMinutes()
+    for reportTime in [10, 15, 20, 30, 40, 50, 60, 75, 90, 105, 120]
+      if (activeMinutes >= reportTime) && (! $scope.trackedTimes[reportTime])
+        $scope.trackActivityEngagement(false)
+        $scope.trackedTimes[reportTime] = true
+
+  angular.element($window).on 'scroll', -> $scope.updateActiveTime()
+  $('.course-content-wrapper').on 'scroll', -> $scope.updateActiveTime() 
 
   # various ways of tracking printing; if you google it you'll find out how unreliable they all are
   window.onbeforeprint = ->
@@ -569,23 +581,35 @@ window.deepCopy = (obj) ->
     window.print()
 
   # Track everything we know about the user engagement on this activity, then reset it
-  $scope.trackActivityEngagement = ->
-    activeMinutes = Math.floor(($scope.lastActiveTime - $scope.pageLoadedTime) / (1000 * 60.0))
-    mixpanel?.track 'Activity Engagement', 
-      angular.extend $scope.getEventData(), 
+  $scope.trackActivityEngagement = (reset = true) ->
+    activeMinutes = $scope.activeMinutes()
+    eventName = if reset then "Activity Engagement Final" else "Activity Engagement #{activeMinutes}"
+    probablyCooked = $scope.activity.printed || (activeMinutes >= 15)
+    eventData = $scope.getEventData()
+
+    mixpanel?.track eventName,
+      angular.extend eventData, 
                       printed: $scope.activity.printed
                       activeMinutes: activeMinutes
-                      probablyCooked: $scope.activity.printed || (activeMinutes > 15)
+                      probablyCooked: probablyCooked
+
+    
+    if probablyCooked
+      Intercom('trackEvent', "probably-cooked", eventData)
+      Intercom('update')
 
     # Reset in case loading new activity in class
-    $scope.resetPageLoadedTime()
-    $scope.activity.printed = false
+    if reset
+      $scope.resetPageLoadedTime()
+      $scope.activity.printed = false
 
   $(window).unload ->
     $scope.trackActivityEngagement()
 
     # http://stackoverflow.com/questions/8350215/delay-page-close-with-javascript
     # Without this, a lot of times the mixpanel even doesn't get recorded; request shows as cancelled in network tab
+    # Hmm, and even with this it doesn't work in mobile safari. I tried 'pagehide' stuff but didn't have any luck
+    # with that either; so now we track this final engagement when we can but also track on intervals. See updateActiveTime()
     start = Date.now()
     while ((Date.now() - start) < 250)
       ;
