@@ -560,7 +560,7 @@ window.deepCopy = (obj) ->
     activeMinutes = $scope.activeMinutes()
     for reportTime in [10, 15, 20, 30, 40, 50, 60, 75, 90, 105, 120]
       if (activeMinutes >= reportTime) && (! $scope.trackedTimes[reportTime])
-        $scope.trackActivityEngagement(false)
+        $scope.trackActivityEngagement(false, reportTime)
         $scope.trackedTimes[reportTime] = true
 
   angular.element($window).on 'scroll', -> $scope.updateActiveTime()
@@ -581,9 +581,9 @@ window.deepCopy = (obj) ->
     window.print()
 
   # Track everything we know about the user engagement on this activity, then reset it
-  $scope.trackActivityEngagement = (reset = true) ->
+  $scope.trackActivityEngagement = (reset = true, threshold) ->
     activeMinutes = $scope.activeMinutes()
-    eventName = if reset then "Activity Engagement Final" else "Activity Engagement #{activeMinutes}"
+    eventName = if reset then "Activity Engagement Final" else "Activity Engagement #{threshold}"
     probablyCooked = $scope.activity.printed || (activeMinutes >= 15)
     eventData = $scope.getEventData()
 
