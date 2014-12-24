@@ -57,7 +57,6 @@ window.deepCopy = (obj) ->
   $scope.csAuthentication = csAuthentication
   $scope.csAlertService = csAlertService
   $rootScope.loading = 0
-  $scope.activity?.printed = false
 
   $scope.csTagService = csTagService
 
@@ -381,6 +380,7 @@ window.deepCopy = (obj) ->
 
     if preloaded_activity
       $scope.activity = new Activity(JSON.parse(preloaded_activity))
+      $scope.activity?.printed = false
       $scope.activity.is_new = ($scope.activity.title.length == 0)
       true
     else
@@ -587,7 +587,7 @@ window.deepCopy = (obj) ->
     # http://stackoverflow.com/questions/8350215/delay-page-close-with-javascript
     # Without this, a lot of times the mixpanel even doesn't get recorded; request shows as cancelled in network tab
     start = Date.now()
-    while ((Date.now() - start) < 150)
+    while ((Date.now() - start) < 250)
       ;
 
   $scope.getEventData = ->
