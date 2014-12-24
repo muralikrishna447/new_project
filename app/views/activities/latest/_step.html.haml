@@ -25,9 +25,6 @@
       %h1.step-number
         %div(ng-bind="stepNumber($index)")
 
-      .maybe-track-cooking(ng-if="stepNumber($index) == 3") 
-        .track-cooking(cs-on-enter-viewport reached-screen-callback='maybeShowDidCook()')
-
     %h5(ng-if="getStepOpenForEdit()")
       Step Title
     %h4.text-center(  cs-contenteditable="getStepOpenForEdit()" 
