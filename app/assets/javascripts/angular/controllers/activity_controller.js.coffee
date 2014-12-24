@@ -582,6 +582,8 @@ window.deepCopy = (obj) ->
 
   # Track everything we know about the user engagement on this activity, then reset it
   $scope.trackActivityEngagement = (reset = true, threshold) ->
+    # the non-reset case is screwing up, temporarily disabling
+    return if ! reset
     activeMinutes = $scope.activeMinutes()
     eventName = if reset then "Activity Engagement Final" else "Activity Engagement #{threshold}"
     probablyCooked = $scope.activity.printed || (activeMinutes >= 15)
