@@ -57,6 +57,7 @@ window.deepCopy = (obj) ->
   $scope.csAuthentication = csAuthentication
   $scope.csAlertService = csAlertService
   $rootScope.loading = 0
+  reportedCooked = false
 
   $scope.csTagService = csTagService
 
@@ -410,7 +411,7 @@ window.deepCopy = (obj) ->
 
   $scope.makeActivityActive = (id) ->
     return if id == $scope.activity?.id
-    $scope.trackActivityEngagement() if $scope.activity?.id
+    $scope.trackActivityEngagementFinal() if $scope.activity?.id
     $scope.activity = $scope.activities[id]
     $scope.activity.printed = false
     cs_event.track(id, 'Activity', 'show')
@@ -548,7 +549,7 @@ window.deepCopy = (obj) ->
   # Keep track of when the activity was loaded
   $scope.resetPageLoadedTime = ->
     $scope.lastActiveTime = $scope.pageLoadedTime = Date.now()
-    $scope.trackedTimes = {}
+    reportedCooked = false
   $scope.resetPageLoadedTime()
 
   # Keep track of last time the user was active on the page
@@ -557,61 +558,56 @@ window.deepCopy = (obj) ->
 
   $scope.updateActiveTime = ->
     $scope.lastActiveTime = Date.now() 
-    activeMinutes = $scope.activeMinutes()
-    for reportTime in [10, 15, 20, 30, 40, 50, 60, 75, 90, 105, 120]
-      if (activeMinutes >= reportTime) && (! $scope.trackedTimes[reportTime])
-        $scope.trackActivityEngagement(false, reportTime)
-        $scope.trackedTimes[reportTime] = true
+    $scope.maybeReportCooked()
 
-  angular.element($window).on 'scroll', -> $scope.updateActiveTime()
-  $('.course-content-wrapper').on 'scroll', -> $scope.updateActiveTime() 
+  angular.element($window).on 'scroll', _.throttle($scope.updateActiveTime, 10000)
+  $('.course-content-wrapper').on 'scroll', _.throttle($scope.updateActiveTime, 10000)
+
+  $scope.probablyCooked = ->
+    $scope.activity.printed || ($scope.activeMinutes() >= 15)
+
+  $scope.maybeReportCooked = ->
+    return if reportedCooked
+    if $scope.probablyCooked()
+      eventData = $scope.getExtendedEventData()
+      mixpanel?.track "Activity Probably Cooked", eventData
+      Intercom('trackEvent', "probably-cooked", eventData)
+      Intercom('update')      
+      reportedCooked = true
 
   # various ways of tracking printing; if you google it you'll find out how unreliable they all are
   window.onbeforeprint = ->
     $scope.activity?.printed = true
+    $scope.maybeReportCooked()
 
   if window.matchMedia
     window.matchMedia("print").addListener (mql) ->
       if mql.matches
-        # In chrome matches never seems to be true. But we've also instrumented the print button in the tools menu so maybe that helps.
+        # In chrome "matches" never seems to be true. But we've also instrumented the print button in the tools menu so maybe that helps.
         $scope.activity?.printed = true
+        $scope.maybeReportCooked()
 
   $scope.doPrint = ->
     $scope.activity?.printed = true
     window.print()
+    $scope.maybeReportCooked()
 
   # Track everything we know about the user engagement on this activity, then reset it
-  $scope.trackActivityEngagement = (reset = true, threshold) ->
-    # the non-reset case is screwing up, temporarily disabling
-    return if ! reset
-    activeMinutes = $scope.activeMinutes()
-    eventName = if reset then "Activity Engagement Final" else "Activity Engagement #{threshold}"
-    probablyCooked = $scope.activity.printed || (activeMinutes >= 15)
-    eventData = $scope.getEventData()
-
-    mixpanel?.track eventName,
-      angular.extend eventData, 
-                      printed: $scope.activity.printed
-                      activeMinutes: activeMinutes
-                      probablyCooked: probablyCooked
-
-    
-    if probablyCooked
-      Intercom('trackEvent', "probably-cooked", eventData)
-      Intercom('update')
-
-    # Reset in case loading new activity in class
-    if reset
-      $scope.resetPageLoadedTime()
-      $scope.activity.printed = false
+  # in case loading new activity in class
+  $scope.trackActivityEngagementFinal =  ->
+    mixpanel?.track "Activity Engagement Final", $scope.getExtendedEventData()
+    $scope.resetPageLoadedTime()
+    $scope.activity.printed = false
+    reportedCooked = false
 
   $(window).unload ->
-    $scope.trackActivityEngagement()
+    $scope.trackActivityEngagementFinal()
 
     # http://stackoverflow.com/questions/8350215/delay-page-close-with-javascript
-    # Without this, a lot of times the mixpanel even doesn't get recorded; request shows as cancelled in network tab
+    # Without this, a lot of times the mixpanel event doesn't get recorded; request shows as cancelled in network tab
     # Hmm, and even with this it doesn't work in mobile safari. I tried 'pagehide' stuff but didn't have any luck
-    # with that either; so now we track this final engagement when we can but also track on intervals. See updateActiveTime()
+    # with that either; so now we track this final engagement when we can but also track send an event as soon
+    # as we think we've cooked, see maybeReportCooked()
     start = Date.now()
     while ((Date.now() - start) < 250)
       ;
@@ -622,6 +618,16 @@ window.deepCopy = (obj) ->
     'title' : $scope.activity.title, 
     'slug' : $scope.activity.slug
     'isRecipe' : $scope.activity.ingredients?.length > 1
+
+  $scope.getExtendedEventData = ->
+    activeMinutes = $scope.activeMinutes()
+    probablyCooked = $scope.probablyCooked()
+    eventData = $scope.getEventData()
+
+    angular.extend eventData, 
+                    printed: $scope.activity.printed
+                    activeMinutes: activeMinutes
+                    probablyCooked: probablyCooked   
 
   # One time stuff
   if $scope.parsePreloaded()
