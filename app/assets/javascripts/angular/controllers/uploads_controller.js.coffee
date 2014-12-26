@@ -39,7 +39,7 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
         photo_uploaded_for = 'Activity - ' + data.activity.title
       eventData = {'Uploaded Photo For' : photo_uploaded_for}
       mixpanel.people.set(eventData)
-      Intercom('trackEvent', 'activity-photo-uploaded', eventData)
+      Intercom?('trackEvent', 'activity-photo-uploaded', eventData)
     )
 
   $scope.photoPreview = (file) ->

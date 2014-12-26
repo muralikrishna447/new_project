@@ -136,7 +136,7 @@
             $scope.results.push(result)
         else
           $scope.doneLoading = true
-    Intercom('update')
+    Intercom?('update')
     
   $scope.noResults = ->
     ($scope.results.length == 0) && (! $scope.dataLoading)

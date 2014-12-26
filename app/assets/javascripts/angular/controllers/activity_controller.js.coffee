@@ -412,6 +412,7 @@ window.deepCopy = (obj) ->
   $scope.makeActivityActive = (id) ->
     return if id == $scope.activity?.id
     $scope.trackActivityEngagementFinal() if $scope.activity?.id
+    reportedCooked = false
     $scope.activity = $scope.activities[id]
     $scope.activity.printed = false
     cs_event.track(id, 'Activity', 'show')
@@ -549,7 +550,6 @@ window.deepCopy = (obj) ->
   # Keep track of when the activity was loaded
   $scope.resetPageLoadedTime = ->
     $scope.lastActiveTime = $scope.pageLoadedTime = Date.now()
-    reportedCooked = false
   $scope.resetPageLoadedTime()
 
   # Keep track of last time the user was active on the page
@@ -569,11 +569,11 @@ window.deepCopy = (obj) ->
   $scope.maybeReportCooked = ->
     return if reportedCooked
     if $scope.probablyCooked()
+      reportedCooked = true
       eventData = $scope.getExtendedEventData()
       mixpanel?.track "Activity Probably Cooked", eventData
-      Intercom('trackEvent', "probably-cooked", eventData)
-      Intercom('update')      
-      reportedCooked = true
+      Intercom?('trackEvent', "probably-cooked", eventData)
+      Intercom?('update')      
 
   # various ways of tracking printing; if you google it you'll find out how unreliable they all are
   window.onbeforeprint = ->
@@ -598,7 +598,6 @@ window.deepCopy = (obj) ->
     mixpanel?.track "Activity Engagement Final", $scope.getExtendedEventData()
     $scope.resetPageLoadedTime()
     $scope.activity.printed = false
-    reportedCooked = false
 
   $(window).unload ->
     $scope.trackActivityEngagementFinal()

@@ -18,7 +18,7 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
       url: url
     ).success((data, status, headers, config) ->
         eventData = {'Activity': likeable_type + "_" + likeable_id}
-        Intercom('trackEvent', 'liked', eventData)
+        Intercom?('trackEvent', 'liked', eventData)
         mixpanel.track('Liked', eventData)
         mixpanel.people.set('Liked':likeable_type + "_" + likeable_id)
         mixpanel.people.increment('Liked Count')

@@ -24,7 +24,7 @@ describe "BuyAssemblyStripeController", ->
     }
     gaq = jasmine.createSpyObj('gaq', ['push'])
     $window.Intercom = (a, b, c) ->
-      console.log "Called Intercom(#{a}, #{b}, #{c})"
+      console.log "Called Intercom?(#{a}, #{b}, #{c})"
 
     $window.mixpanel = mixpanel
     $window._gaq = gaq

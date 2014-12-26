@@ -57,7 +57,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
         ((response) ->
           eventData = {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug}
           mixpanel.track('Ingredient Edit Saved', eventData);
-          Intercom('trackEvent', 'ingredient-edited', eventData)
+          Intercom?('trackEvent', 'ingredient-edited', eventData)
           console.log "INGREDIENT SAVE WIN"
           $scope.edited = true
           $scope.showPostEditModal = true

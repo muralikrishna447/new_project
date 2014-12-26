@@ -31,7 +31,7 @@
   $controller('GalleryBaseController', {$scope: $scope});
 
   $timeout ( -> 
-    Intercom('trackEvent', 'gallery-twenty-seconds')
+    Intercom?('trackEvent', 'gallery-twenty-seconds')
   ), 20000 
 ]
 

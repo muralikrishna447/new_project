@@ -11,6 +11,6 @@
     mixpanel.track('Course Landing Viewed', 
       _.extend(eventData, $rootScope.splits));
     _gaq.push(['_trackEvent', 'Course', 'Viewed', $scope.assembly.title, null, true]);
-    Intercom('trackEvent', 'course-landing-viewed', eventData)
+    Intercom?('trackEvent', 'course-landing-viewed', eventData)
 
 ]
