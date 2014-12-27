@@ -571,7 +571,7 @@ window.deepCopy = (obj) ->
     if $scope.probablyCooked()
       reportedCooked = true
       eventData = $scope.getExtendedEventData()
-      mixpanel?.track "Activity Probably Cooked", eventData
+      mixpanel?.track "Activity Probably Cooked2", eventData
       Intercom?('trackEvent', "probably-cooked", eventData)
       Intercom?('update')      
 
