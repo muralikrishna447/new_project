@@ -56,8 +56,6 @@
                         %li= "#{science.title}"
                     / %li Three Fundamental Fillings Explained
                     = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
-                    - if @course.price
-                      %li Q&A Support
                   - if @course.price
                     %h4 100% satisfaction guaranteed or your money back
                 .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/#{assembly_type_name.downcase.pluralize}/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
