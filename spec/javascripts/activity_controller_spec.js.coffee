@@ -26,7 +26,7 @@ describe 'ActivityController', ->
 
   describe "#endEditMode", ->
     it "ends edit mode with change committed", inject ($rootScope, $controller, $httpBackend) ->
-      $httpBackend.whenGET(/.*usebloom.com.*/).respond(200, '')
+      $httpBackend.whenGET(/.*fathomless-mesa-5741.herokuapp.com.*/).respond(200, '')
       $httpBackend.expectPUT('/activities/1/notify_start_edit').respond(204, '')
       scope.startEditMode()
 
@@ -40,7 +40,7 @@ describe 'ActivityController', ->
 
   describe "#endEditMode with error", ->
     it "reports error and stays in edit mode", inject ($rootScope, $controller, $httpBackend, csAlertService) ->
-      $httpBackend.whenGET(/.*usebloom.com.*/).respond(200, '')
+      $httpBackend.whenGET(/.*fathomless-mesa-5741.herokuapp.com.*/).respond(200, '')
       $httpBackend.expectPUT('/activities/1/notify_start_edit').respond(204, '')
       scope.startEditMode()
 

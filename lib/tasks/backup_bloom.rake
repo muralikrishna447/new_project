@@ -1,7 +1,7 @@
 task :backup_bloom => :environment do
 
   # Get data from endpoint
-  url = "http://apiv2.usebloom.com/utils/backup?apiKey=xchefsteps&secret=xchefstepscRP9pJomgiluvfoodNTJto"
+  url = "http://fathomless-mesa-5741.herokuapp.com/utils/backup?apiKey=xchefsteps&secret=xchefstepscRP9pJomgiluvfoodNTJto"
   response = HTTParty.get url
   data = response.body
 
