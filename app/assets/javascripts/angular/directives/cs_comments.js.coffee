@@ -11,7 +11,7 @@
       identifier = $scope.commentsType + '_' + $scope.commentsId
       console.log "*** renderseo"
 
-      $http.get('//fathomless-mesa-5741.herokuapp.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
+      $http.get('//ancient-sea-7316.herokuapp.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
         comments = response.data.comments
 
         angular.forEach comments, (comment) =>
