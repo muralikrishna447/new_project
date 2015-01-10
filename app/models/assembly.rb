@@ -135,11 +135,6 @@ class Assembly < ActiveRecord::Base
   def discounted_price(coupon)
     return 0 if ! self.price
 
-    # 12/15/2014 michael - from now through the holidays we are just giving
-    # everyone 50% off, no coupon needed.
-    pct = 0.5
-    
-=begin
     pct = 1
     case coupon
     when 'b3a72a32da71'
@@ -164,7 +159,6 @@ class Assembly < ActiveRecord::Base
       pct = 9.0/20
 
     end
-=end
 
     (self.price * pct).round(2)
   end
