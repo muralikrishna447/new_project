@@ -9,8 +9,8 @@ describe AssembliesController do
   describe 'discount' do
     context "price computation" do
       it "should compute the right discount" do
-        get :show, id: @assembly.id, coupon: 'cc448c11505a'
-        assigns(:discounted_price).should eq(20)
+        get :show, id: @assembly.id, coupon: 'b1b01d389a50'
+        assigns(:discounted_price).should eq(19.5)
       end
     end
   end
