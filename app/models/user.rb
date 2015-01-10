@@ -209,7 +209,7 @@ class User < ActiveRecord::Base
   def encrypted_bloom_info
     user_json = {'userId' => self.id.to_s}.to_json
     begin
-      response = Faraday.get 'https://server.usebloom.com/encrypt?string=' + user_json + '&secret=xchefstepscRP9pJomgiluvfoodNTJto&apiKey=xchefsteps'
+      response = Faraday.get 'https://ancient-sea-7316.herokuapp.com/encrypt?string=' + user_json + '&secret=xchefstepscRP9pJomgiluvfoodNTJto&apiKey=xchefsteps'
       puts "This is the auth for bloom: #{response.body}"
       response.body
     rescue Faraday::Error::ConnectionFailed => e
