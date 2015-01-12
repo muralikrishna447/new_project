@@ -444,7 +444,7 @@ window.deepCopy = (obj) ->
   $scope.commentCount = -1
   $scope.updateCommentCount = -> 
     if $scope.activity?
-      $http.get("//fathomless-mesa-5741.herokuapp.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
+      $http.get("//ancient-sea-7316.herokuapp.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["commentCount"]
       )
 
