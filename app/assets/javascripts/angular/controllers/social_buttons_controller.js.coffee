@@ -2,25 +2,14 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
   $scope.expandSocial = false;
 
   $scope.$on 'expandSocialButtons', ->
-    # Hella ugly, this can be done with pure animation no timer, and with a directive, but
-    # good enough for testing.
-    if $scope.split == "shake_anim"
-      $timeout ( ->
-        $element.find('.pulse-anim-before').addClass('pulse-anim')
-        $timeout ( ->
-          $element.find('.pulse-anim-before').removeClass('pulse-anim')
-        ), 75
-      ), 75
-    else
-      $element.find('.pulse-anim-before').addClass('pulse-anim')
-      $timeout ( ->
-        $element.find('.pulse-anim-before').removeClass('pulse-anim')
-      ), 400
+    $element.find('.pulse-anim-before').addClass('pulse-anim')
+    $timeout ( ->
+      $element.find('.pulse-anim-before').removeClass('pulse-anim')
+    ), 400
 
   $scope.openSocialWindow = (mixpanel_name, url, spec) ->
     $scope.expandSocial = false
     window.open(url, "_blank", spec || "width=500, height=300, top=100, left=100")
-    $http.put('/splitty/finished?experiment=social_share4')
     share_cat = $scope.socialURL().split("/")[3]
     mixpanel.track('Share', { 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat})
     mixpanel.people.increment('Share Count')

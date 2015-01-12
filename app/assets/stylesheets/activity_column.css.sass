@@ -49,6 +49,12 @@
   &:not(:first-child-of-type)
     margin-left: 30px
 
+
+.edit-mode
+  .half-medium-item, .medium-item, .quarter-medium-item
+    @extend .base-item
+    width: $desktop-standard-item-width
+
 .activity-columns-1
   .leftInset, .rightInset
     width: $desktop-standard-item-width / 1.5

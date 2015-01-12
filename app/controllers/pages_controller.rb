@@ -2,10 +2,16 @@ class PagesController < ApplicationController
 
   def show
     @page = Page.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @page.content
+      end
+    end
   end
 
   def knife_collection
-    @knife_page = Page.find 'knife-collection'
+    # @knife_page = Page.find 'knife-collection'
   end
 
   def sv_collection

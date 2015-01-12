@@ -95,6 +95,12 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.chargedWith = 'existingCard'
     $scope.createCharge(null, $scope.selectedCard)
 
+  $scope.trackEnrollmentWorkaround = (eventData) ->
+    # This is a workaround for the fact that intercom can't segment based on the eventData, so 
+    # also tracking the same data right in the event name.
+    Intercom?('trackEvent', "class-enrolled-#{$scope.assembly.slug}", eventData)
+
+
   $scope.createCharge = (response, existingCard) ->
     console.log 'This is the response: '
     console.log response
@@ -102,7 +108,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       stripeToken = response.id
       paymentType = response.type
       cardType = response.card.type
-    else  
+    else
       stripeToken = null
       paymentType = null
       cardType = null
@@ -123,7 +129,11 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.enrolled = true unless $scope.isGift
       $scope.state = "thanks"
       mixpanel.people.track_charge($scope.discounted_price)
-      mixpanel.track('Course Purchased', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador, 'chargedWith' : $scope.chargedWith}, $rootScope.splits))
+      eventData = _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'price': $scope.assembly.price, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador, 'chargedWith' : $scope.chargedWith}, $rootScope.splits)
+      mixpanel.track('Course Purchased', eventData)
+      Intercom?('trackEvent', 'course-purchased', eventData)
+      $scope.trackEnrollmentWorkaround(eventData)
+
       mixpanel.people.append('Classes Purchased', $scope.assembly.title)
       mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
       mixpanel.people.set('Paid Course Abandoned' : false)
@@ -198,8 +208,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.isGift = gift
     $scope.recipientMessage = ""
     $scope.state = if gift then "gift" else "charge"
-
-    $http.get('/splitty/finished?experiment=' + $scope.split_name)
     mixpanel.track('Course Buy Button Clicked', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug}, $rootScope.splits))
     _gaq.push(['_trackEvent', 'Buy Button', 'Clicked', $scope.assembly.title, null, true])
 
@@ -240,7 +248,10 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.enroll()
       $scope.state = "free_enrollment"
       $scope.buyModalOpen = true
-      mixpanel.track('Class Enrolled', {'class' : $scope.assembly.title})
+      eventData = {'class' : $scope.assembly.title}
+      mixpanel.track('Class Enrolled', eventData)
+      Intercom?('trackEvent', 'free-class-enrolled', eventData)
+      $scope.trackEnrollmentWorkaround(eventData)
 
   $scope.shareASale = (amount, tracking) ->
     $http(

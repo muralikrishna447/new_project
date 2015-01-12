@@ -1,3 +1,6 @@
+# Putting this back in because the SV Collection relies on it.  
+# I know this is old horrible code, but until we decide to update the SV collection page we'll need to keep this around.
+
 $ -> 
   if $('.knife').is('*')
     $('.modal a').click (e) ->

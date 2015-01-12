@@ -27,3 +27,6 @@ node_modules
 
 # Ignore environment files
 .env
+db/schema.rb
+
+db/schema.rb

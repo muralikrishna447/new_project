@@ -101,7 +101,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     $scope.$index
 
   $scope.asideClass = ->
-    result = ($scope.effectiveAsideType($scope.stepIndex()) || '')
+    result = ($scope.effectiveAsideType($scope.$index) || '')
     if $scope.hasAV() || $scope.step.image_id
       result += ' well aside-with-media'
     else

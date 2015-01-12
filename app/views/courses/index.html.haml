@@ -3,23 +3,15 @@
 - content_for :keywords, @assembly_courses.map(&:title).to_sentence
 
 .container
-  .row
-    .span12
-      %h1 Classes
+  .row.section-large
+    .text-center
+      %a(href="/courses" onclick="mixpanel.track('Class Banner Clicked');")
+        %img.desktop-banner-retina(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/TiAbyp35QD2bwph7kXds")
+        %img.desktop-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/5NwrXpzgSuWOeCvPh6FJ")
+        %img.mobile-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/78FLYvUqRAK8HVI9Fai7")
 
-- @assembly_courses.each do |course|
-  .container.classes-index
-    .row.section
-      .span4
-        = render 'shared/media_box_2', url: landing_class_path(course), title: course.title, image: course.image_id, object: course, footer_left: course.price ? "PAID CLASS" : ""
-      .span8
-        .title-group
-          %h2.inline-group= course.title
-          -if course.average_rating > 0
-            .nowrap
-              .rating.inline-group
-                %csrating(value="#{course.average_rating}" readonly="true")
-              %a
-                = link_to 'See all reviews', landing_class_path(course, anchor: "reviews")
-        %p.lead= course.short_description
-        = link_to 'Learn More', landing_class_path(course), class: 'btn btn-primary btn-large'
+  - @assembly_courses.each do |course|
+    = render 'one_course', course: course
+
+:javascript
+  mixpanel.track('Viewed Classes Index Page');

@@ -1,39 +1,40 @@
 .btn.btn-secondary.noprint.edit-meta-button(ng-cloak ng-show="editMode" ng-click="editMeta = ! editMeta")
   %i.icon-edit
   Details ...
-  %i.icon-chevron-up(ng-show="showHeroVisualEdit")
-  %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
+  %i.icon-chevron-up(ng-show="editMeta")
+  %i.icon-chevron-down(ng-show="! editMeta")
 
 %div(ng-show="editMode && editMeta")
   .meta-edit.well.noprint
-    %h6 Activity Type
-    .btn-toolbar
-      %button.btn(ng-repeat="actType in activityTypes" type="button" ng-click="toggleActivityType(actType)" ng-class="{active: hasActivityType(actType)}")
-        {{actType}}
+    %div(ng-show="csAuthentication.isAdmin()")
+      %h6 Activity Type
+      .btn-toolbar
+        %button.btn(ng-repeat="actType in activityTypes" type="button" ng-click="toggleActivityType(actType)" ng-class="{active: hasActivityType(actType)}")
+          {{actType}}
 
     %h6.inline Tags
     .btn.btn-link.inline(ng-click="showTagsModal = true") Select...    
     %input(type="hidden" ng-model="activity.tags" ui-select2="tagsSelect2()")
 
-    %h6 #CS140 Summary Tweet (limit 96 chars to allow for link #cs140 @ChefSteps and RT)
-    %input.summary-tweet(type="text" ng-model="activity.summary_tweet" maxlength="96")
+    %div(ng-show="csAuthentication.isAdmin()")
+      %h6 Difficulty
+      .btn-toolbar
+        %button.btn(ng-repeat="actDifficulty in activityDifficulties" type="button" ng-click="setActivityDifficulty(actDifficulty)" ng-class="{active: hasActivityDifficulty(actDifficulty)}")
+          {{actDifficulty}}
 
-    %h6 Difficulty
-    .btn-toolbar
-      %button.btn(ng-repeat="actDifficulty in activityDifficulties" type="button" ng-click="setActivityDifficulty(actDifficulty)" ng-class="{active: hasActivityDifficulty(actDifficulty)}")
-        {{actDifficulty}}
+    %div(ng-show="csAuthentication.isAdmin()")
+      %h6 Featured Image (For Thumbnails)
+      %img(ng-if="hasFeaturedImage()" ng-src="{{featuredImageURL(200)}}")
+      .csfilepicker(ng-model="activity.featured_image_id")
 
-    %h6 Featured Image (For Thumbnails)
-    %img(ng-if="hasFeaturedImage()" ng-src="{{featuredImageURL(200)}}")
-    .csfilepicker(ng-model="activity.featured_image_id")
-
-    %h6 Include In Galleries
-    .btn-toolbar
-      .btn-group
-        %button.btn(type="button" ng-click="activity.include_in_gallery = true" ng-class="{active: activity.include_in_gallery}")
-          Yes
-        %button.btn(type="button" ng-click="activity.include_in_gallery = false" ng-class="{active: ! activity.include_in_gallery}")
-          No
+    %div(ng-show="csAuthentication.isAdmin()")
+      %h6 Include In Galleries
+      .btn-toolbar
+        .btn-group
+          %button.btn(type="button" ng-click="activity.include_in_gallery = true" ng-class="{active: activity.include_in_gallery}")
+            Yes
+          %button.btn(type="button" ng-click="activity.include_in_gallery = false" ng-class="{active: ! activity.include_in_gallery}")
+            No
 
     -if can? :manage, User
       %h6 Show Only In Paid Course

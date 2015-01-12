@@ -1,204 +1,213 @@
 @import 'mixins'
 
 .gallery-wrapper
-  margin-top: 20px
+  margin-top: 0px
   overflow: hidden
 
-  .add-group
-    margin-right: 20px
-    margin-top: -4px
-  
-  .gallery-items
-    float: left
-    
-.gallery-contents
-  margin-top: 10px
-
-.gallery-filter
-  input
-    margin-top: -4px
-    margin-right: 20px !important
-
-.gallery-filter
+.gallery-controls
+  position: fixed
+  top: 96px
+  padding-left: $horz-baseline-large * 2
+  width: 300px
+  @include flex(0 0 320px)
   @include primary-font
   font-size: 16px
   margin-bottom: 14px
-  .dropdown
+
+  ul
+    width: 100%
+
+  li, form
+    margin-bottom: $baseline * 2
+
+  li a:not(.btn)
+    display: inline
     cursor: pointer
-    display: inline-block
-    margin-right: 10px
-    background:  white  !important
+    margin-right: $horz-baseline-large
+    padding: 0 !important
+    color: $dark-gray
 
-    .dropdown-menu
-      box-shadow: none
-      background: white !important
-      border-radius: 0px
-      li > a
-        &:hover
-          background: $orange
-        color: black !important
-
-    a
+    &:hover
       color: black
-      @include primary-font
-      font-size: 16px
-  li > a
-    padding: 0 0 2px 0 !important
-    margin-left: 18px
-    cursor: pointer
 
-  .dropdown-menu
-    a
-      margin-left: 30px
-    a.active
-      &:before
-        content: "\2713"
-        position:  absolute
-        left:  10px
-        font-size:  80%
-        color:  $orange
+    &.active
+      color: $orange !important
 
-  .clear-search
-    position: absolute
-    right:  25px
-    bottom:  4px
-    color:  #a9a9a9
+  li h5
+    @include primary-font-bold
+    text-transform: none
 
-  .search-query
-    margin-top: -9px
+  .search-group 
+    margin-bottom: $baseline
+    margin-left: -1px
+    display: block
+    position: relative
 
-.filter-collapser
-  cursor: pointer
+    .navbar-search
+      margin-top: 22px
+      width: 100%
 
-.filters-group
-  width: auto
-  position: absolute
-  top:  90%
-  z-index: 100
-  padding: 10px 30px 20px 30px
-  background-color: rgba(255, 255, 255, .9)
-  border-bottom-left-radius: 5px
-  border-bottom-right-radius: 5px
-  border-top-right-radius: 5px
-  .btn-group
-    margin-top: 15px
-    margin-left: 0px
-  @include bottom-only-annotation-shadow
-  overflow:  hidden
+      .input-group
+        position: relative
+        max-width: 320px
+      
 
-  .first-separate
-    .btn-group
-      .btn:first-child
-        margin-right: 12px
-        width:  auto
+        input
+          margin-right: 0px !important
+          border: none
+          font-size: 16px
+          font-weight: 300
 
-  .btn
-    background-image: none
+        .clear-search
+          position: absolute
+          right:  12px
+          bottom:  2px
+          color:  #a9a9a9
+
+    .filter-toggle 
+      display: none
+
+.gallery-items
+  @include display-flex
+  @include flex-wrap(wrap)
+
+  .cs-index-item
+    overflow: hidden
+    /* Hack to help infinite scroll before content loads */
+    min-height: 190px
+    margin-bottom: $baseline *2
+
+  .cs-index-item-image
+    min-height: 180px
     background-color: #f1f1f1
-    border-color:  #ccc
-    color: #666
-    border-radius:  2px !important
-    -webkit-border-radius:  1px
-    width:  120px
-    text-align:  center
 
-  .btn.active
-    background-color: #ddd !important
-    color: inherit
-    text-shadow: none
+.gallery-results
+  padding-left: 340px
+  padding-bottom: $baseline * 2
+  @include transition(all 300ms ease-in-out)
+  opacity: 1
 
-.filter-collapser
-  display: inline-block
-
-.current-filter
-  font-size: 70%
-  display: inline-block
-  color: $orange
-  border: 1px solid $orange
-  border-radius: 20px
-  margin-left: 8px
-  position:  relative
-  top: 2px
-  padding: 0px 8px
-
-.anim-filters
-  &.ng-hide-add, &.ng-hide-remove
-    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) .25s)
-    display: block !important
-    opacity: 1
-    max-height: 150px
-  &.ng-hide
+  .loading-icon-group
+    width: 100%
+    @include display-flex
+    i
+      display: block
+      margin-left: auto
+      margin-right: auto
+  .no-results
+    margin-left: 0px
+    margin-bottom: $baseline
+  &.reloading
     opacity: 0
-    max-height: 0px    
-
-
-.pagination
-  @include primary-font
-  font-size: 20px
-
-
-.gallery-spinner
-  color: $orange
-  font-size: 40px
-  margin-top: 40px
-  margin-left: 20px
-
-.left-group
-  li
-    margin-right: $baseline * 2
-
-.media-box-3-image
-  overflow: hidden
-  margin-bottom: 10px
-  img
-    margin: 0
-
-.sash
-  color: white
-  background-color: $orange
-  @include transform(rotate(45deg))
-  @include transform-origin(50% 50%)
-  position: absolute
-  width: 200px
-  height: 20px
-  top: 30px
-  right: -60px
-  text-align: center
 
 .new-ingredient-modal
   input
     width: 95%
 
-@media (max-width: 980px)
-  .left-group
-    width: 100%
-  .add-group
-    .browse-by
-      display: none
-    padding-top: 10px
-    font-size: 80%
-    li > a
-      margin-left: 10px
-  .filters-group
-    right: -140px
-  .current-filter
-    display: none
-  .gallery-contents
-    margin-top: 4px
+.gallery-madlib
+  width: 100%
 
+@media (max-width: 1440px)
+  .cs-index-item
+    max-width: 320px
 
-@media (max-width: 400px)
-  .search-query
-    width: 130px
+@media (max-width: 1050px)
+  .gallery-controls
+    z-index: 100
+    width: 100vw
+    left: 0
+    top: 60px
+    padding-left: 0px
 
-  .filters-group
-    right: -90px
-    button
-      font-size: 10px !important
+    > *
+      padding-left: 22px
 
-    .btn
-      width:  80px
-      text-align:  center
+    ul
+      float: none !important
 
-  .add-group
-    float: none !important
+    li
+      max-width: 320px
+      display: block
+      float: none !important
+
+    .search-group
+      padding-top: 22px
+      background-color: white
+      opacity: 0.95
+      width: 100vh
+      height: 60px
+
+      .filter-toggle 
+        display: inline-block
+        cursor: pointer
+        margin-left: $horz-baseline-large
+
+      .input-group 
+        display: inline-block
+
+    .filters-group
+      position: absolute
+      top: 74px
+      padding-left: 22px
+      height: 300vh
+      z-index: 100
+      background-color: rgba(255,255,255,0.95)
+      opacity: 1
+      width: 100%
+      overflow: hidden
+      max-height: 100000px
+      @include transition(all 200ms ease-in)
+
+      &.filters-collapsed
+        opacity: 0
+        max-height: 0
+
+  .gallery-results
+    padding-left: $horz-baseline-large
+    padding-top: 42px
+
+@media (max-width: 700px)
+  .gallery-wrapper
+    margin-top: 0
+
+  .gallery-controls
+    position: absolute
+    top: 0px
+    right: 0
+    left: 0
+    width: auto
+    z-index: 100
+
+    .search-group
+      padding-left: 0
+      padding-top: 5px
+      height: auto
+      margin-left: 0
+
+      .navbar-search
+        margin-top: 0
+        margin-bottom: 0
+
+      .input-group
+        display: inline-block
+        input.search-query
+          width: 155px
+         
+        
+
+    .filters-group
+      top: $baseline * 4
+      right: 0
+      width: auto
+      padding-left: 1px
+      margin-right: 0
+
+  .gallery-results
+    padding-left: 0px
+
+    .cs-index-item
+      padding-left: 0
+      padding-right: 0
+      margin-left: 0
+      margin-right: 0
+

@@ -9,8 +9,8 @@
     color: $orange
 
   .home-featured-item
-    border: 1px solid $light-gray
-    padding: $baseline
+    border: none
+    padding: none
     margin-bottom: $baseline * 2
     @include boxsizing
     @include primary-font
@@ -47,12 +47,16 @@
       padding-left: 10px
       @include boxsizing
       h3
+        color: $light-black
         margin: 0px
 
   .home-featured-item-btn
     margin-left: 12px
 
 @media (max-width: 480px)
+  .btn-outline-green-large
+    width: 100%
+    
   .home-signed-in
     .home-featured-item
       .home-featured-item-btn

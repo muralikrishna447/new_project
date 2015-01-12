@@ -49,7 +49,7 @@ div:not(.redactor_box)
       background-color: inherit !important
 
 .nav-spacer
-  height: $baseline * 6
+  height: $baseline * 9
   
 .top-container
   margin-top: $baseline * 7
@@ -369,9 +369,9 @@ form
   color: $orange
 
 .black-link
-  color: black
+  color: $light-black
   &:hover
-    color: black
+    color: $light-black
 
 .orange-link
   color: $orange
@@ -420,7 +420,9 @@ a:hover
   input[type=text], input[type=email], input[type=password]
     border: none
     box-shadow: none
+    border-radius: 0px
     border-bottom: 1px dashed gray
+    background: none
     text-align: center
     padding: 0px
     &.error
@@ -1566,6 +1568,40 @@ input.summary-tweet
   @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms)
   opacity: 0
 
+
+// HOLIDAY BANNER STYLES //
+
+.desktop-banner-retina
+  display: none
+
+.desktop-banner
+  display: inline-block
+
+.mobile-banner
+  display: none
+
+@media (max-width: 767px)
+  .desktop-banner-retina
+    display: none 
+
+  .desktop-banner
+    display: none
+
+  .mobile-banner
+    display: inline-block
+
+@media (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) and (min-width: 767px)
+  .desktop-banner-retina
+    display: inline-block
+    width: 921px  
+
+  .mobile-banner
+    display: none
+
+  .desktop-banner
+    display: none
+
+
 // BELOW ARE RESPONSIVE STYLES //
 
 
@@ -1665,6 +1701,12 @@ input.summary-tweet
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px)
+  .desktop-banner
+    display: none
+
+  .mobile-banner
+    display: inline-block
+
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container
     width: auto
 
@@ -1729,6 +1771,9 @@ input.summary-tweet
 
   .static-height
     height: 170px
+
+  .nav-spacer
+    height: 1.1rem
 
 
 @media(max-width: 979px)

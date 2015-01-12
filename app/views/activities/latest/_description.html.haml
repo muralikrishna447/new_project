@@ -10,7 +10,7 @@
                                           cs-contenteditable = "editMode"
                                           placeholder="'Click to write main description'" )
 -if can? :update, @activity
-  .section
+  .section(ng-show="csAuthentication.isAdmin()")
 
     %div(ng-show="!!activity.author_notes || editMode")
       %h4 Private Notes

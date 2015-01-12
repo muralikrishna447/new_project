@@ -10,7 +10,7 @@
       .cs-nav-logo
         = link_to root_url do
           %cs-loading
-          
+
       .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
         - if current_user
           .cs-nav-profile
@@ -25,7 +25,7 @@
           .cs-nav-profile(ng-if="authentication.currentUser()")
             %a(ng-href="{{'/profiles/' + authentication.currentUser().slug}}")
               // Place holder for now until we write a filepicker service
-              %img(src="http://d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=max&w=75&h=75&cache=true")
+              %img(src="//d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=max&w=75&h=75&cache=true")
           / .cs-nav-notifs(ng-if="authentication.currentUser()")
           /   %csnotifs
 
@@ -33,31 +33,42 @@
         .cs-nav-items-toggle(ng-click="toggleMenu()")
           Menu
         %ul.cs-nav-links-container(ng-class="{'cs-nav-menu-open': showMenu}")
-          .menu-popover-arrow
+          /.menu-popover-arrow
+          .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
+            %li
+              .cs-nav-search-toggle(ng-click="toggleSearch()")
+                %i.fa.fa-search
+              .cs-nav-search-input(ng-show="showSearch" ng-cloak)
+                %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
+                  %input(placeholder="search" ng-model="navbarSearchQuery")
+              .cs-nav-search-close(ng-click="toggleSearch()")
+                %i.fa.fa-times
           .cs-nav-links(ng-hide="showSearch")
             %li
               = link_to gallery_index_url do
                 Recipes
+            %li
+              %a(href='http://www.chefsteps.com/forum' onclick="mixpanel.track('Forum Nav Clicked')")
+                Forum
             %li.cs-nav-dropdown
               %a.cs-nav-dropdown-toggle(ng-click="toggleDropdown('resources')")
                 Resources
                 %i.fa.fa-caret-down
               .cs-nav-dropdown-menu(ng-show="showDropdown=='resources'" ng-cloak)
-                %ul
-                  .resources-popover-arrow
+                %ul                  
                   %li
                     = link_to ingredients_url do
-                      %i.fa.fa-leaf 
+                      %i.fa.fa-leaf
                       Ingredient Wiki
                   %li
                     = link_to courses_url do
-                      %i.fa.fa-film 
+                      %i.fa.fa-film
                       Classes
                   %li
                     = link_to projects_url do
                       %i.fa.fa-cubes
                       Projects
-                  %hr{style: "border-bottom: 1px solid #ccc"}
+                  .section-tiny
                   %li
                     = link_to 'http://www.chefsteps.com/activities/the-egg-calculator' do
                       = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/l4FOGWE7Swuz1kgKrNmZ", width: "15px"
@@ -66,7 +77,7 @@
                     = link_to "http://www.chefsteps.com/activities/sous-vide-time-and-temperature-guide" do
                       %i.fa.fa-clock-o
                       Time & Temperature Guide
-                  %hr{style: "border-bottom: 1px solid #ccc"}
+                
                   %li
                     = link_to knife_collection_url do
                       = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/F0T93X9wSdGBCXEwBPWY", width: "15px"
@@ -80,9 +91,6 @@
                       %i.fa.fa-book
                       Cookbook Collection
             %li
-              %a(href='http://www.chefsteps.com/forum' onclick="mixpanel.track('Forum Nav Clicked')")
-                Forum
-            %li
               %a(href='/about')
                 About
             - if current_admin?
@@ -92,22 +100,13 @@
                   %i.fa.fa-caret-down
                 .cs-nav-dropdown-menu(ng-show="showDropdown=='adminResources'" ng-cloak)
                   %ul
-                    .admin-popover-arrow
                     %li
                       %a(href="/forum/admin/dashboard")
                         Comments Dashboard
                     %li= link_to 'Manage Ingredients', manager_ingredients_path
                     %li= link_to 'Manage Equipment', equipment_index_path
 
-          .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
-            %li
-              .cs-nav-search-toggle(ng-click="toggleSearch()")
-                %i.fa.fa-search
-              .cs-nav-search-input(ng-show="showSearch" ng-cloak)
-                %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
-                  %input(placeholder="search" ng-model="navbarSearchQuery")
-              .cs-nav-search-close
-                %i.fa.fa-times(ng-click="toggleSearch()")
+
 
       %div
         -if @include_edit_toolbar

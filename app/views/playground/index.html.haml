@@ -1,29 +1,17 @@
 // Enter your test template here
 
-:css
-  .test-wrapper {
-    width: 100%;
-    display: inline-block;
-    position: relative;
-  }
-  .test-wrapper:after {
-    padding-top: 56.25%;
-    display: block;
-    content: '';
-  }
-  .test-main {
-    position: absolute;
-    top: 0; bottom: 0; right: 0; left: 0;
-    background-color: rgb(0, 140, 200);
-  }
+/ - content_for :facebook_og do
+/   %meta{property: 'og:url', content: "http://www.chefsteps.com/playground"}
+/   %meta{property: 'og:title', content: "The ChefSteps Knife Collection"}
+/   %meta{property: 'og:description', content: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables."}
+/   %meta{property: 'og:image', content: "https://www.filepicker.io/api/file/UApxSAFQe2KAgZhSQXUc/convert?fit=max&w=1600&quality=90&cache=true"}
 
-  @media (min-width: 1000px) {
-    .test-wrapper:after {
-      padding-top: 35%;
-    }
-  }
+/ - content_for :twitter_cards do
+/   %meta{property: 'twitter:site', content: '@chefsteps'}
+/   %meta{property: 'twitter:title', content: "The ChefSteps Knife Collection" }
+/   %meta{property: 'twitter:description', content: "There’s a reason that chefs and enthusiastic home cooks the world over are so smitten with Japanese knives. Lovingly crafted from the finest and most durable materials, these sexy, slender blades allow us to achieve perfectly sliced sashimi, delicate chiffonades, and meticulously diced meats and vegetables."}
+/   %meta{property: 'twitter:image:src', content: "https://www.filepicker.io/api/file/UApxSAFQe2KAgZhSQXUc/convert?fit=max&w=1600&quality=90&cache=true"}
+/   %meta{property: 'twitter:card', content: 'summary_large_image'}
 
-/ .test-wrapper(ng-controller='PlaygroundController')
-/   .test-main
 %div(ng-controller='PlaygroundController')
-  %cs-image-video(image='activity.image' video='activity.youtubeId')
+  %div(cs-showcase collection-name='sous-vide')

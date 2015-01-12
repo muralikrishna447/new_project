@@ -23,6 +23,8 @@ describe "BuyAssemblyStripeController", ->
       track: ((key, objects) -> true)
     }
     gaq = jasmine.createSpyObj('gaq', ['push'])
+    $window.Intercom = (a, b, c) ->
+      console.log "Called Intercom?(#{a}, #{b}, #{c})"
 
     $window.mixpanel = mixpanel
     $window._gaq = gaq
@@ -228,28 +230,20 @@ describe "BuyAssemblyStripeController", ->
     describe "if it is a gift", ->
       beforeEach ->
         scope.assembly = {id: 1, title: "Testing Fun", slug:"Testing-Fun"}
-        scope.split_name = "Coding"
-        scope.httpBackend.when(
-          'GET'
-          '/splitty/finished?experiment=Coding'
-        ).respond(200)
 
       it "should set isGift to the passed in value", ->
         scope.isGift = false
         scope.openModal(true)
-        scope.httpBackend.flush()
         expect(scope.isGift).toBe(true)
 
       it "should set the state to gift", ->
         scope.state = null
         scope.openModal(true)
-        scope.httpBackend.flush()
         expect(scope.state).toBe("gift")
 
       it "it should set buyModalOpen to true if signed in", ->
         scope.logged_in = true
         scope.openModal(true)
-        scope.httpBackend.flush()
         expect(scope.buyModalOpen).toBe(true)
 
   describe "#closeModal", ->

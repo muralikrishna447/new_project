@@ -2,6 +2,9 @@ class ChargesController < ApplicationController
 
   respond_to :json
 
+  # Very temporary hack to deal with: Enrollment failed with error: undefined method `enrollments' for nil:NilClass 
+  skip_before_filter :verify_authenticity_token
+
   def create
 
     assembly = Assembly.find(params[:assembly_id])

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include StatusHelpers
   protect_from_forgery
-  before_filter :cors_set_access_control_headers
+  before_filter :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user
 
   if Rails.env.angular? || Rails.env.development?
     require 'database_cleaner'
@@ -145,10 +145,10 @@ private
   end
 
   def track_receiver_event(trackable, action = params[:action])
-    puts trackable.receiver.inspect
+    logger.info(trackable.receiver.inspect)
     if trackable.receiver
       new_event = trackable.receiver.events.create! action: "received_#{action}", trackable: trackable
-      puts new_event.inspect
+      logger.info(new_event.inspect)
     end
   end
 
@@ -188,16 +188,16 @@ private
   before_filter :get_escaped_fragment_from_brombone
   def get_escaped_fragment_from_brombone
     if params.has_key?(:'_escaped_fragment_')
-      puts "Rendering #{request.path} from brombone snapshot"
+      logger.info("Rendering #{request.path} from brombone snapshot")
       base_url = "http://chefsteps.brombonesnapshots.com/www.chefsteps.com#{request.path}"
       uri = URI.parse(base_url)
       http = Net::HTTP.new(uri.host, uri.port)
       response = http.request(Net::HTTP::Get.new(uri.request_uri))
-      puts response.inspect
+      logger.info(response.inspect)
       if response.code.to_i == 200
         render text: response.body
       else
-        puts "Brombone returned #{response.code} for #{request.path} - falling back to standard page"
+        logger.info("Brombone returned #{response.code} for #{request.path} - falling back to standard page")
       end
     end
   end
@@ -237,20 +237,20 @@ private
     end
   end
 
+  def record_uuid_in_new_relic
+    ::NewRelic::Agent.add_custom_parameters({ request_id: request.uuid()})
+  end
+
+  def log_current_user
+    logger.info("current_user id: #{current_user.nil? ? "anon" : current_user.id}")
+  end
+
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
     headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type, Authorization'
     headers['Access-Control-Max-Age'] = "1728000"
   end
-
-  # def cors_set_access_control_headers
-  #   headers['Access-Control-Allow-Origin'] = '*'
-  #   headers['Access-Control-Expose-Headers'] = 'Etag'
-  #   headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD'
-  #   headers['Access-Control-Allow-Headers'] = '*, x-Requested-with, X-Prototype-Version, X-CSRF-Token, Content-Type, If-Modified-Since, If-None-Match'
-  #   headers['Access-Control-Max-Age'] = '86400'
-  # end
 
   def set_referrer_in_mixpanel(key)
     if session[:referred_from] && session[:referred_by]
@@ -268,30 +268,36 @@ private
     session[:coupon] = params[:coupon] || session[:coupon]
   end
 
-  protected
+  # Moving this above fixes the issues people were having when purchasing a class.  It also allows us to get rid of the fix that was breaking commentsCount.
+  # We can get rid of $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content') in chefstepsAngularInit.js.coffee that was detail in http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on
+  # I don't fully know the reason why yet, but these rescues where preventing the X_XSRF_TOKEN to be verified.  This is an issue when people are trying purchase a class, only on firefox.  The errors you typically see is 'no enrollments for nil class' because it doesn't think the user is signed in.
+  # Getting rid of the rescues totally alleviates those issues and moving them here helped.  If someone with deeper knowledge of this can figure this out for certain, that would be great.
 
-  def verified_request?
-    super || form_authenticity_token == request.headers['X_XSRF_TOKEN']
-  end
-  
-  # if Rails.env.production?
-   # unless Rails.application.config.consider_all_requests_local
-    rescue_from ActionController::RoutingError, with: :render_404
-    rescue_from ActionController::UnknownController, with: :render_404
-    rescue_from ActionController::UnknownAction, with: :render_404
-    rescue_from ActiveRecord::RecordNotFound, with: :render_404
-    #end
-  # end
+  # # if Rails.env.production?
+  #  # unless Rails.application.config.consider_all_requests_local
+  rescue_from ActionController::RoutingError, with: :render_404
+  rescue_from ActionController::UnknownController, with: :render_404
+  rescue_from ActionController::UnknownAction, with: :render_404
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+  #   #end
+  # # end
 
 
   def render_404(exception = nil)
     @not_found_path = exception.message if exception
-    puts '---------- render_404'
-    puts exception.inspect if exception
+    logger.info('---------- render_404')
+    logger.info(exception.inspect) if exception
     respond_to do |format|
       format.html { render template: 'errors/not_found', layout: 'layouts/application', status: 404 }
       format.all { render nothing: true, status: 404 }
     end
   end
+
+  protected
+
+  def verified_request?
+    super || form_authenticity_token == request.headers['X_XSRF_TOKEN']
+  end
+
 end
 

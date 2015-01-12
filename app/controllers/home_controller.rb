@@ -15,8 +15,7 @@ class HomeController < ApplicationController
       @recipes = Activity.published.chefsteps_generated.recipes.include_in_feeds.includes(:steps).last(6) - @heroes
       @techniques = Activity.published.chefsteps_generated.techniques.include_in_feeds.includes(:steps).last(6) - @heroes
       @sciences = Activity.published.chefsteps_generated.sciences.include_in_feeds.includes(:steps).last(6) - @heroes
-      @returning_visitor = cookies[:returning_visitor]
-      @new_visitor = params[:new_visitor] || !@returning_visitor
+      @new_visitor = params[:new_visitor]
       @user = User.new
     end
   end

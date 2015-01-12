@@ -61,7 +61,7 @@
 
           .poll-item-text
             %a.poll-item-details-btn(ng-click='pollItemDetails(poll_item)')
-              %h3 
+              %h3
                 {{poll_item.title}}
                 .label(ng-show="#{@poll.status == 'Completed'} && $index == 0")
                   Winner!
@@ -76,8 +76,7 @@
                   Hide Comments
                 %div(ng-show='!poll_item.show_details')
                   Show Comments
-              -ab_test("social_share4", "circle_anim", "slide_anim", "glow_anim") do |split_name|
-                = render 'layouts/share_button', split_name: split_name
+              = render 'layouts/share_button'
             %div(collapse='!poll_item.show_details')
               %a(name='discussion')
               %cscomments(comments-type="poll_item" comments-id="{{poll_item.id}}" seo-bot="#{is_brombone}")
@@ -88,4 +87,4 @@
 = render 'layouts/footer'
 
 :javascript
-  mixpanel.track('Poll Viewed', {'poll' : "#{@poll.title}", 'url' : window.location.pathname});                
+  mixpanel.track('Poll Viewed', {'poll' : "#{@poll.title}", 'url' : window.location.pathname});

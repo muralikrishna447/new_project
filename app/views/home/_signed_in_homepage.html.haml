@@ -1,16 +1,27 @@
 .container.home-signed-in
 
-  .row
+  .row.section
+    .text-center
+      %a(href="/courses" onclick="mixpanel.track('Class Banner Clicked');")
+        %img.desktop-banner-retina(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/TiAbyp35QD2bwph7kXds")
+        %img.desktop-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/5NwrXpzgSuWOeCvPh6FJ")
+        %img.mobile-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/78FLYvUqRAK8HVI9Fai7")
+  .row.section
+    .text-center
+      %a(href="/courses")
+        .btn-outline-green-large Learn More
+
+  .row     
     .span8
       .home-section
-        %h2.section
-          = link_to 'Classes', courses_path, class: 'orange-link'
+        %h3.section
+          = link_to 'Classes', courses_path, class: 'black-link'
         .home-featured-item
           - home_featured_path = landing_class_path(@classes[0])
           = link_to home_featured_path do
             .top-group
-              %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= @classes[0].title
-              %csrating.rating(value="#{@classes[0].average_rating}" readonly="true")
+              / %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= @classes[0].title
+              / %csrating.rating(value="#{@classes[0].average_rating}" readonly="true")
             = image_tag filepicker_stream_image(@classes[0].featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
             .section.pull-right.home-featured-item-btn(onclick= 'track_viewed_course_through_signed_in_homepage();')
               / = where_user_left_off_in_course(@classes[0], current_user, 'btn btn-primary btn-large')
@@ -21,6 +32,7 @@
             = @classes[0].short_description
         - @classes.from(1).each.with_index do |course, index|
           - url = landing_class_path(course)
+          .section-large
           .home-standard-item
             .home-standard-item-image
               = link_to url do
@@ -30,11 +42,13 @@
                 %h3= course.title
               %csrating.rating(value="#{course.average_rating}" readonly="true")
               %p= course.short_description
-        %h4
-          = link_to 'See More...', courses_path
-        %hr
+        .section.pull-right
+          %h4.section
+            = link_to 'See more', courses_path
+
+        
         .home-section
-          %h2 Projects
+          %h3.section Projects
           - @projects.each do |project|
             - url = project_path(project)
             .home-standard-item
@@ -49,13 +63,14 @@
 
     .span4
       .home-section
-        %h2.section
-          = link_to "Latest", gallery_index_path, class: 'orange-link'
+        %h3.section
+          = link_to "Latest", gallery_index_path, class: 'black-link'
         .whats-new.section
           - @latest.each.with_index do |item, index|
             = render 'shared/media_box_4', url: activity_path(item), title: item.title, image: item.featured_image, object: item
-        .section  
-          = link_to 'See More', gallery_index_path, class: 'btn btn-large btn-outline-blue-large'
+        .section.pull-right 
+          %h4.section 
+            = link_to 'See more', gallery_index_path
 
       = render 'shared/bloom_hot'
 

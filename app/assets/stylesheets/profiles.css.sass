@@ -5,6 +5,7 @@
   background-size: 100%
   background-position: center
   margin-bottom: $baseline * 2
+  margin-top: -21px
   .profile-image-wrapper
     position: relative
     .profile-image
@@ -12,7 +13,7 @@
       width: 100%
       margin-top: 115px
       border: 2px solid $orange
-      border-radius: 50%
+      border-radius: 100%
       img
         @include boxsizing
   h1
@@ -62,30 +63,27 @@
     .profile-image
       margin-top: 145px
 
-@media (max-width: 767px)
-  .profile-cover
-    margin: -20px -20px 0px
-    .profile-image-wrapper
-      .profile-image
-        margin-top: 140px
-        margin-left: 10px
-        width: 120px
-        img
-          width: 120px
-    h1
-      margin-top: -120px
-      text-align: center
 
-@media (max-width: 480px)
+
+@media (max-width: 767px)
+  .profile-badges
+    margin-top: 50px
+
   .profile-cover
-    margin: -20px -20px 0px
+    margin: -11px -20px 0px
+    background-size: 150%
+    .profile-email-addr
+      margin-left: 145px
     .profile-image-wrapper
       .profile-image
-        margin-top: 140px
+        margin-top: 115px
         margin-left: 10px
         width: 120px
         img
           width: 120px
     h1
       font-size: 30px
-      margin-top: -180px
+      margin-top: 110px
+      line-height: $baseline * 3
+      margin-left: 145px
+      text-align: left

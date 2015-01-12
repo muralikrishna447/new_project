@@ -6,17 +6,17 @@
 
   .step-edit-tools.anim-basic-fade(ng-if="getStepDetailsOpenForEdit()")
     .section
-      .btn-link(  ng-click="reorderStep(stepIndex(), -1)" 
-                      ng-class="disableIf(! canMoveStep(stepIndex(), -1))")
+      .btn-link(  ng-click="reorderStep($index, -1)" 
+                      ng-class="disableIf(! canMoveStep($index, -1))")
         %i.icon-arrow-up
         Move step up
 
-      .btn-link(  ng-click="reorderStep(stepIndex(), 1)" 
-                      ng-class="disableIf(! canMoveStep(stepIndex(), 1))")
+      .btn-link(  ng-click="reorderStep($index, 1)" 
+                      ng-class="disableIf(! canMoveStep($index, 1))")
         %i.icon-arrow-down
         Move step down
 
-    .section(ng-hide="step.is_aside")
+    .section(ng-hide="step.is_aside || (! csAuthentication.isAdmin())")
       %h5 Step Number
       .btn-group
         .btn.btn-primary(btn-radio="false" ng-model="step.hide_number")
@@ -24,7 +24,7 @@
         .btn.btn-primary(btn-radio="true" ng-model="step.hide_number")
           Hide
 
-    .section
+    .section(ng-show="csAuthentication.isAdmin()")
       %h5 Size 
       .btn-group
         .btn.btn-primary.btn-fake-radio(  ng-class="{'active': isStepType('normal')}"
@@ -33,14 +33,14 @@
         .btn.btn-primary.btn-fake-radio(  ng-class="{'active': isStepType('wide')}"
                                           ng-click='setStepType("wide")')
           Wide
-        .btn.btn-primary.btn-fake-radio(  ng-show="canMakeAside(stepIndex())" 
+        .btn.btn-primary.btn-fake-radio(  ng-show="canMakeAside($index)" 
                                           ng-class="{'active': isStepType('aside')}"
                                           ng-click='setStepType("aside")')
           Aside
 
 
 
-    .section.aside-chooser-group(ng-show="step.is_aside")
+    .section.aside-chooser-group(ng-show="step.is_aside && csAuthentication.isAdmin()")
       %h5 Preferred Position
       .btn-group
         .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
@@ -67,7 +67,7 @@
     .section
       .btn-link(  cs-require-confirm
                   message="Are you sure you want to delete this step?"
-                  action="removeStep(stepIndex())")
+                  action="removeStep($index)")
         %i.icon-trash
         Delete step
 

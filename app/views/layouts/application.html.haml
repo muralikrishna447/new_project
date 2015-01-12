@@ -48,7 +48,10 @@
     = render 'layouts/google_analytics'
     = render 'layouts/filepicker'
     = render 'layouts/twitter'
-    = yield :facebook_og
+    - if yield(:facebook_og).blank?
+      = render 'layouts/facebook_og_default'
+    - else
+      = yield :facebook_og
     = yield :twitter_cards
     - unless yield(:ajax_seo).blank?
       = yield :ajax_seo
@@ -123,6 +126,7 @@
   = render 'layouts/stripe'
   = render 'layouts/inspectlet'
   = render 'layouts/crazyegg'
+  = render 'layouts/intercom'
   = yield(:custom_js)
 
 -# This load on every page, so a convenient place to make sure mixpanel identity is known

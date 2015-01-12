@@ -10,7 +10,7 @@
 
   template: """
     <div ng-repeat='result in results'>
-      <cs-index-item title='result.title' url='result.url' image='result.image' difficulty='result.difficulty' likes-count='result.likesCount'>
+      <cs-index-item class='cs-index-item' title='result.title' url='result.url' image='result.image' difficulty='result.difficulty' likes-count='result.likesCount'>
       </cs-index-item>
     </div>
   """
