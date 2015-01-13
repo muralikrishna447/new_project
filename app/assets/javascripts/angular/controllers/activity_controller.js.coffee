@@ -444,7 +444,7 @@ window.deepCopy = (obj) ->
   $scope.commentCount = -1
   $scope.updateCommentCount = -> 
     if $scope.activity?
-      $http.get("//apiv2.usebloom.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
+      $http.get("//ancient-sea-7316.herokuapp.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["commentCount"]
       )
 
@@ -573,6 +573,7 @@ window.deepCopy = (obj) ->
       eventData = $scope.getExtendedEventData()
       mixpanel?.track "Activity Probably Cooked2", eventData
       Intercom?('trackEvent', "probably-cooked", eventData)
+      Intercom?('trackEvent', "probably-cooked-souffle", eventData) if eventData.slug == "molten-chocolate-souffle"
       Intercom?('update')      
 
   # various ways of tracking printing; if you google it you'll find out how unreliable they all are

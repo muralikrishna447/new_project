@@ -8,11 +8,9 @@ describe AssembliesController do
 
   describe 'discount' do
     context "price computation" do
-      # This should fail when we revert the 12/15/2014 in discounted_price, and then
-      # it should be replaced with some actual testing of the coupons, which was never there before(!)
       it "should compute the right discount" do
-        get :show, id: @assembly.id
-        assigns(:discounted_price).should eq(19.50)
+        get :show, id: @assembly.id, coupon: 'b1b01d389a50'
+        assigns(:discounted_price).should eq(19.5)
       end
     end
   end

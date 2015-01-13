@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def get_user
-    if params[:secret] && params[:secret] == 'xchefstepscRP9pJomgiluvfoodNTJto'
+    if params[:secret] && params[:secret] == 'ilovesousvideYgpsagNPdJ'
       @user = User.find(params[:userId])
       user_json = {data: {id: @user.id.to_s, name: @user.name, avatarUrl: @user.avatar_url, email: @user.email}}.to_json
       render text: user_json
