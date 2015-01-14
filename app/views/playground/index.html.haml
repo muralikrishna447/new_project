@@ -1,7 +1,3 @@
 %div(ng-controller='PlaygroundController')
-
   %div(ng-repeat="step in steps")
-    %p {{step}}
     %div(cs-looping-video video-url="{{step.videoUrl}}")
-    -# %video(width="300px")
-    -#   %source(ng-src="{{trustedVideoUrl(step.videoUrl)}}")
