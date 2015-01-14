@@ -1,10 +1,7 @@
-%video(width="300px" loop)
-  %source(ng-src="{{trustedVideoUrl(videoUrl)}}")
+.video-loop-player
+  %video(loop)
+    %source(ng-src="{{trustedVideoUrl(videoUrl)}}")
 
-%button.btn.btn-secondary(ng-click="toggle()")
-  %span(ng-show="playing")
-    %i.fa.fa-pause 
-    Pause
-  %psan(ng-show="!playing")
-    %i.fa.fa-play 
-    Play
+  .video-loop-button(ng-click="toggle()")
+    %i.fa.fa-pause.fa-2x(ng-show="playing")
+    %i.fa.fa-play.fa-2x(ng-show="!playing")
