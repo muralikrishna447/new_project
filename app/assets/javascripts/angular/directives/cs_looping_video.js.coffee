@@ -61,9 +61,22 @@
         LoopingVideoService.play(scope)
 
     scope.speedUp = ->
-      if scope.video[0].playbackRate >= 1
-        newRate = scope.video[0].playbackRate + 1
-        scope.video[0].playbackRate = newRate
+      currentRate = scope.video[0].playbackRate
+      if currentRate >= 1
+        newRate = currentRate + 1
+      else
+        newRate = currentRate * 2
+      scope.video[0].playbackRate = newRate
+      console.log "newRate: #{newRate}"
+
+    scope.slowDown = ->
+      currentRate = scope.video[0].playbackRate
+      if currentRate > 1
+        newRate = currentRate - 1
+      else
+        newRate = currentRate / 2
+      scope.video[0].playbackRate = newRate
+      console.log "newRate: #{newRate}"
 
     scope.onmousedown = (e) ->
       scope.mousedown = true

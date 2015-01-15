@@ -6,13 +6,28 @@
     width: 100%
 
   .video-loop-controls
+    font-size: 2*$baseline
+    display: flex
+    justify-content: space-between
     .video-loop-control
-      // position: absolute
-      width: 100%
-      bottom: $baseline
-      right: $baseline
-      color: #b4d8d8
+      padding: 0.5*$baseline
+      @include boxsizing
 
-    .video-loop-control.slider
+    .video-loop-control.video-loop-button
+      color: #b4d8d8
+      &:hover
+        cursor: pointer
+        color: $orange
+
+    .video-loop-control.video-loop-slider
+      flex-grow: 1
       input
         width: 100%
+        height: $baseline
+        vertical-align: 2px
+        @include boxsizing
+        &:hover
+          cursor: pointer
+      input[type=range]::-webkit-slider-thumb
+        height: 2*$baseline
+        width: 2*$baseline
