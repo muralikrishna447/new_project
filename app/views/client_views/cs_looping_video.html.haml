@@ -1,7 +1,12 @@
 .video-loop-player
-  %video(loop)
+  %video(cs-looping-video loop)
     %source(ng-src="{{trustedVideoUrl(videoUrl)}}")
 
-  .video-loop-button(ng-click="toggle()")
-    %i.fa.fa-pause.fa-2x(ng-show="playing")
-    %i.fa.fa-play.fa-2x(ng-show="!playing")
+  .video-loop-controls
+    .video-loop-control(ng-click="toggle()")
+      %i.fa.fa-pause.fa-2x(ng-show="playing")
+      %i.fa.fa-play.fa-2x(ng-show="!playing")
+    -# .video-loop-control(ng-click="speedUp()")
+    -#   %i.fa.fa-plus.fa-2x(ng-show="playing")
+    .video-loop-control.slider
+      %input(type='range' min='0' max='100' ng-model='sliderValue')
