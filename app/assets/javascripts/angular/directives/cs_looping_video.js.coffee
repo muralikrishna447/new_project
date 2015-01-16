@@ -1,3 +1,4 @@
+# Video Looping service that allows only one looping video to play at a time.
 @app.service 'LoopingVideoService', [ ->
   this.videos = []
 
@@ -16,8 +17,14 @@
   this
 ]
 
+# Video Looping directive which can be used like a standard directive or as a shortcode as defined in shortcode.js.coffee
 
-@app.directive 'csLoopingVideoPlayer', ['$sce', 'LoopingVideoService', ($sce, LoopingVideoService) ->
+# To use as directive:
+# <div cs-looping-video-player video-url="somevideourl"></div>
+
+# To use as a shortcode:
+# [videoLoop somevideourl]
+@app.directive 'csLoopingVideoPlayer', ['$sce', 'LoopingVideoService', '$timeout', ($sce, LoopingVideoService, $timeout) ->
   # controller: 'VideoLoopController'
   restrict: 'A'
   scope: {
@@ -64,6 +71,9 @@
     scope.setRate = (rate) ->
       scope.playbackRate = rate
       scope.video[0].playbackRate = rate
+      $timeout (->
+        scope.showDisplay = false
+      ), 1000
 
     scope.speedUp = ->
       currentRate = scope.video[0].playbackRate
@@ -72,6 +82,7 @@
       else
         newRate = currentRate * 2
       scope.setRate(newRate)
+      scope.showDisplay = true
 
     scope.slowDown = ->
       currentRate = scope.video[0].playbackRate

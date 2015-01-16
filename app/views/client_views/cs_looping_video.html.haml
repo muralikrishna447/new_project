@@ -1,11 +1,8 @@
-%strong
-  {{videoUrl}}
-
 .video-loop-player
   %video(cs-looping-video loop)
     %source(ng-src="{{trustedVideoUrl(videoUrl)}}")
 
-  .video-loop-display
+  .video-loop-display(ng-show="showDisplay")
     .display-item
       speed: {{playbackRate}}x
 
@@ -22,5 +19,3 @@
 
     .video-loop-control.video-loop-button(ng-click="speedUp()")
       %i.fa.fa-plus.fa
-
-%hr
