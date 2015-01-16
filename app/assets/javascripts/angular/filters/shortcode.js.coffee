@@ -71,6 +71,10 @@ angular.module('ChefStepsApp').filter "shortcode", ->
             """
               <div cs-fetch-tool='#{arg1}'></div>
             """
+          when 'videoLoop'
+            """
+              <div cs-looping-video-player video-url='#{arg1}'></div>
+            """
           else orig
     else
       ""
