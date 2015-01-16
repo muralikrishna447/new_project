@@ -103,12 +103,12 @@
         newRate = currentRate / 2
       scope.setRate(newRate)
 
-    scope.onmousedown = (e) ->
+    scope.onmousedown = ->
       scope.mousedown = true
       LoopingVideoManager.pause(scope)
       console.log "Slider Focused: #{scope.mousedown}"
 
-    scope.onmouseup = (e) ->
+    scope.onmouseup = ->
       scope.mousedown = false
       LoopingVideoManager.play(scope)
       console.log "Slider Focused: #{scope.mousedown}"
