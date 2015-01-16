@@ -27,6 +27,7 @@
   controller: ($scope, $element) ->
     $scope.video = $element.find("video")
     $scope.video[0].defaultPlaybackRate = 1
+    $scope.playbackRate = 1
     LoopingVideoService.addVideo($scope)
     $scope.playing = false
     $scope.sliderValue = 0
@@ -60,14 +61,17 @@
       else
         LoopingVideoService.play(scope)
 
+    scope.setRate = (rate) ->
+      scope.playbackRate = rate
+      scope.video[0].playbackRate = rate
+
     scope.speedUp = ->
       currentRate = scope.video[0].playbackRate
       if currentRate >= 1
         newRate = currentRate + 1
       else
         newRate = currentRate * 2
-      scope.video[0].playbackRate = newRate
-      console.log "newRate: #{newRate}"
+      scope.setRate(newRate)
 
     scope.slowDown = ->
       currentRate = scope.video[0].playbackRate
@@ -75,8 +79,7 @@
         newRate = currentRate - 1
       else
         newRate = currentRate / 2
-      scope.video[0].playbackRate = newRate
-      console.log "newRate: #{newRate}"
+      scope.setRate(newRate)
 
     scope.onmousedown = (e) ->
       scope.mousedown = true
