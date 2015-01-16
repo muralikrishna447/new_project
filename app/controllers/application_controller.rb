@@ -132,6 +132,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :community_secret
+  def community_secret
+    case Rails.env
+    when "production"
+      ENV["COMMUNITY_SECRET"]
+    when "staging", "staging2"
+      ENV["COMMUNITY_SECRET"]
+    else
+      "iluvsousvideCrJIzzUcof1i1p2gDZJZZg"
+    end
+  end
+
   def default_serializer_options
     {root: false}
   end
