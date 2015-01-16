@@ -5,6 +5,12 @@
   this.addVideoScope = (scope) ->
     this.videos.push scope
 
+  this.removeScope = (currentScope) ->
+    videos = this.videos
+    videos.forEach (scope, i) ->
+      if scope == currentScope
+        videos.splice(i,1)
+
   this.play = (currentScope) ->
     for scope in this.videos
       if scope == currentScope
@@ -113,6 +119,10 @@
         console.log "Video current time updated"
 
     scope.video.bind 'timeupdate', scope.onTimeUpdate
+
+    # If the directive element is removed from dom, $destroy will be called and we'll make sure the scope is removed from the Looping Video Manager
+    element.bind '$destroy', ->
+      LoopingVideoManager.removeScope(scope)
 
 ]
 
