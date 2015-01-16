@@ -1,9 +1,9 @@
 # Video Looping service that allows only one looping video to play at a time.
-@app.service 'LoopingVideoService', [ ->
+@app.service 'LoopingVideoManager', [ ->
   this.videos = []
 
-  this.addVideo = (video) ->
-    this.videos.push video
+  this.addVideoScope = (scope) ->
+    this.videos.push scope
 
   this.play = (currentScope) ->
     for scope in this.videos
@@ -13,6 +13,10 @@
       else
         scope.video[0].pause()
         scope.playing = false
+
+  this.pause = (currentScope) ->
+    currentScope.video[0].pause()
+    currentScope.playing = false
 
   this
 ]
@@ -24,8 +28,7 @@
 
 # To use as a shortcode:
 # [videoLoop somevideourl]
-@app.directive 'csLoopingVideoPlayer', ['$sce', 'LoopingVideoService', '$timeout', ($sce, LoopingVideoService, $timeout) ->
-  # controller: 'VideoLoopController'
+@app.directive 'csLoopingVideoPlayer', ['$sce', 'LoopingVideoManager', '$timeout', ($sce, LoopingVideoManager, $timeout) ->
   restrict: 'A'
   scope: {
     videoUrl: '@'
@@ -35,17 +38,20 @@
     $scope.video = $element.find("video")
     $scope.video[0].defaultPlaybackRate = 1
     $scope.playbackRate = 1
-    LoopingVideoService.addVideo($scope)
+    LoopingVideoManager.addVideoScope($scope)
     $scope.playing = false
     $scope.sliderValue = 0
 
+    # Helper to convert time into a slider value
     $scope.timeToSlider = (time) ->
       sliderValue = (100 / $scope.video[0].duration) * time
       return sliderValue
 
+    # Helper to convert slider value to a time
     $scope.sliderToTime = (sliderValue) ->
       time = sliderValue * $scope.video[0].duration / 100
 
+    # Only update if the time change comes from video and not the user
     $scope.onTimeUpdate = ->
       if !$scope.mousedown
         video = $element.find 'video'
@@ -63,14 +69,14 @@
 
     scope.toggle = ->
       if scope.playing
-        scope.video[0].pause()
-        scope.playing = false
+        LoopingVideoManager.pause(scope)
       else
-        LoopingVideoService.play(scope)
+        LoopingVideoManager.play(scope)
 
     scope.setRate = (rate) ->
       scope.playbackRate = rate
       scope.video[0].playbackRate = rate
+      scope.showDisplay = true
       $timeout (->
         scope.showDisplay = false
       ), 1000
@@ -82,7 +88,6 @@
       else
         newRate = currentRate * 2
       scope.setRate(newRate)
-      scope.showDisplay = true
 
     scope.slowDown = ->
       currentRate = scope.video[0].playbackRate
@@ -94,12 +99,12 @@
 
     scope.onmousedown = (e) ->
       scope.mousedown = true
-      scope.video[0].pause()
+      LoopingVideoManager.pause(scope)
       console.log "Slider Focused: #{scope.mousedown}"
 
     scope.onmouseup = (e) ->
       scope.mousedown = false
-      LoopingVideoService.play(scope)
+      LoopingVideoManager.play(scope)
       console.log "Slider Focused: #{scope.mousedown}"
 
     scope.$watch 'sliderValue', (newValue, oldValue) ->
