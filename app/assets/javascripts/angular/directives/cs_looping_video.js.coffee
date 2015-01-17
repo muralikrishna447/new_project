@@ -40,7 +40,7 @@
     videoUrl: '@'
   }
   templateUrl: '/client_views/cs_looping_video.html'
-  controller: ($scope, $element) ->
+  controller: ['$scope', '$element', ($scope, $element) ->
     $scope.video = $element.find("video")
     $scope.video[0].defaultPlaybackRate = 1
     $scope.playbackRate = 1
@@ -67,7 +67,7 @@
 
         $scope.$apply ->
           $scope.sliderValue = $scope.timeToSlider(currentTime)
-
+  ]
   link: (scope, element, attrs) ->
 
     scope.trustedVideoUrl = (videoUrl) ->
