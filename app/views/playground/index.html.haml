@@ -1,6 +1,6 @@
 %div(ng-controller='PlaygroundController')
   .container
     .row
-      .span3
+      .span6
         %div(ng-repeat="step in steps")
-          %div(cs-looping-video-player video-url="{{step.videoUrl}}")
+          %div(cs-looping-video-player video-name="{{step.videoName}}")
