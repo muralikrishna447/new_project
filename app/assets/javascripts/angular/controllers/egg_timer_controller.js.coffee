@@ -108,9 +108,9 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
 
   $scope.tweetMessage = ->
     if $scope.inputs.units == "c"
-      "Egg calculator says #{$scope.utils.formatTime($scope.output.items[4], $scope.needsSeconds())} at #{$scope.water_temp} %C2%B0C for my perfect sous vide egg"
+      "Egg calculator says #{$scope.utils.formatTime($scope.output.items[1], $scope.needsSeconds())} at #{$scope.water_temp} %C2%B0C for my perfect sous vide egg"
     else
-      "Egg calculator says #{$scope.utils.formatTime($scope.output.items[4], $scope.needsSeconds())} at #{$scope.utils.cToF($scope.water_temp)} %C2%B0F for my perfect sous vide egg"
+      "Egg calculator says #{$scope.utils.formatTime($scope.output.items[1], $scope.needsSeconds())} at #{$scope.utils.cToF($scope.water_temp)} %C2%B0F for my perfect sous vide egg"
 
 
   $scope.emailSubject = ->
