@@ -38,6 +38,7 @@
   restrict: 'A'
   scope: {
     videoName: '@'
+    videoImage: '@'
   }
   templateUrl: '/client_views/cs_looping_video.html'
   controller: ['$scope', '$element', ($scope, $element) ->

@@ -1,6 +1,6 @@
 .video-loop-player
-  %video(cs-looping-video preload="metadata" loop webkit-playsinline)
-    -# %source(ng-src="{{trustedVideoUrl(videoUrl)}}")
+
+  %video(cs-looping-video preload="auto" loop webkit-playsinline poster="{{videoImage}}")
     %source(ng-src="{{trustedVideoUrl(source)}}" ng-repeat="source in sources")
 
   .video-loop-display(ng-show="showDisplay")
