@@ -30,14 +30,15 @@
 # Video Looping directive which can be used like a standard directive or as a shortcode as defined in shortcode.js.coffee
 
 # To use as directive:
-# <div cs-looping-video-player video-url="somevideourl"></div>
+# <div cs-looping-video-player video-name="somevideoname"></div>
 
 # To use as a shortcode:
-# [videoLoop somevideourl]
+# [videoLoop somevideoname]
 @app.directive 'csLoopingVideoPlayer', ['$sce', 'LoopingVideoManager', '$timeout', ($sce, LoopingVideoManager, $timeout) ->
   restrict: 'A'
   scope: {
-    videoUrl: '@'
+    videoName: '@'
+    videoImage: '@'
   }
   templateUrl: '/client_views/cs_looping_video.html'
   controller: ['$scope', '$element', ($scope, $element) ->
@@ -47,6 +48,13 @@
     LoopingVideoManager.addVideoScope($scope)
     $scope.playing = false
     $scope.sliderValue = 0
+    $scope.baseUrl = "https://s3.amazonaws.com/chefsteps-videos-transcoded/"
+
+    if $scope.videoName
+      $scope.sources = [
+        $scope.baseUrl + $scope.videoName + "-480p.mp4"
+        $scope.baseUrl + $scope.videoName + "-480p.webm"
+      ]
 
     # Helper to convert time into a slider value
     $scope.timeToSlider = (time) ->
@@ -123,6 +131,11 @@
     # If the directive element is removed from dom, $destroy will be called and we'll make sure the scope is removed from the Looping Video Manager
     element.bind '$destroy', ->
       LoopingVideoManager.removeScope(scope)
+
+    scope.video[0].onloadeddata = ->
+      scope.videoLoaded = true
+      scope.video[0].poster = scope.videoImage
+      scope.$apply()
 
 ]
 

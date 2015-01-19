@@ -6,6 +6,7 @@
   video
     width: 100%
     display: block
+    background-color: black
 
   .video-loop-display
     position: absolute
@@ -13,13 +14,13 @@
     left: 0px
     width: 100%
     height: 100%
-    display: flex
-    align-content: center
-    justify-content: center
+    @include display-flex
+    @include align-content(center)
+    @include justify-content(center)
+    @include align-items(center)
     pointer-events: none
     .display-item
-      flex: 0 1 auto
-      align-self: center
+      @include flex(0 1 auto)
       font-size: 2*$baseline
       color: white
 
@@ -30,8 +31,8 @@
     width: 100%
     height: 4*$baseline
     font-size: 2*$baseline
-    display: flex
-    justify-content: space-between
+    @include display-flex
+    @include justify-content(space-between)
 
     .video-loop-control
       @include boxsizing
@@ -45,17 +46,17 @@
         color: $orange
 
     .video-loop-control.video-loop-slider
-      flex-grow: 1
-      input
+      @include flex(1 1 auto)
+      input[type="range"]
         width: 100%
-        height: 1px
+        height: 2px
         vertical-align: -3px
         border-radius: 0px
         border: none
         @include boxsizing
         &:hover
           cursor: pointer
-      input[type=range]::-webkit-slider-thumb
+      input[type="range"]::-webkit-slider-thumb
         height: $baseline
         width: $baseline
         background: white
