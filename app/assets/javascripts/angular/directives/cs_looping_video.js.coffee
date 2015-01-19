@@ -132,5 +132,9 @@
     element.bind '$destroy', ->
       LoopingVideoManager.removeScope(scope)
 
+    scope.video[0].onloadeddata = ->
+      scope.videoLoaded = true
+      scope.$apply()
+
 ]
 
