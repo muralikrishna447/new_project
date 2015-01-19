@@ -134,6 +134,7 @@
 
     scope.video[0].onloadeddata = ->
       scope.videoLoaded = true
+      scope.video[0].poster = scope.videoImage
       scope.$apply()
 
 ]
