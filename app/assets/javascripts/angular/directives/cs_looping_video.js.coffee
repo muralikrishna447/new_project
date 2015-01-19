@@ -38,6 +38,7 @@
   restrict: 'A'
   scope: {
     videoName: '@'
+    videoImage: '@'
   }
   templateUrl: '/client_views/cs_looping_video.html'
   controller: ['$scope', '$element', ($scope, $element) ->
@@ -130,6 +131,10 @@
     # If the directive element is removed from dom, $destroy will be called and we'll make sure the scope is removed from the Looping Video Manager
     element.bind '$destroy', ->
       LoopingVideoManager.removeScope(scope)
+
+    scope.video[0].onloadeddata = ->
+      scope.videoLoaded = true
+      scope.$apply()
 
 ]
 
