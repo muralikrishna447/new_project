@@ -45,6 +45,9 @@
                 %i.fa.fa-times
           .cs-nav-links(ng-hide="showSearch")
             %li
+              = link_to courses_url do
+                Classes
+            %li
               = link_to gallery_index_url do
                 Recipes
             %li
@@ -60,10 +63,6 @@
                     = link_to ingredients_url do
                       %i.fa.fa-leaf
                       Ingredient Wiki
-                  %li
-                    = link_to courses_url do
-                      %i.fa.fa-film
-                      Classes
                   %li
                     = link_to projects_url do
                       %i.fa.fa-cubes
