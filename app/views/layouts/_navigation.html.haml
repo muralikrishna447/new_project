@@ -13,10 +13,14 @@
 
       .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
         - if current_user
-          .cs-nav-profile
-            = link_to user_profile_url(current_user) do
-              .profile-image
-                = image_tag current_user.avatar_url
+          = link_to user_profile_url(current_user) do
+            - if current_user.image_id.blank?
+              .profile-button
+                Profile
+            - else
+              .cs-nav-profile
+                .profile-image
+                  = image_tag current_user.avatar_url
           / .cs-nav-notifs
           /   %csnotifs
         - else
