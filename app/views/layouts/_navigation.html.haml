@@ -26,10 +26,9 @@
         - else
           %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
           = render "devise/sessions/new_angular"
-          .cs-nav-profile(ng-if="authentication.currentUser()")
-            %a(ng-href="{{'/profiles/' + authentication.currentUser().slug}}")
-              // Place holder for now until we write a filepicker service
-              %img(src="//d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=max&w=75&h=75&cache=true")
+          %a(ng-href="{{'/profiles/' + authentication.currentUser().slug}}" ng-if="authentication.currentUser()")
+            .profile-button
+              Profile
           / .cs-nav-notifs(ng-if="authentication.currentUser()")
           /   %csnotifs
 
